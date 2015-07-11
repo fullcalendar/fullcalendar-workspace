@@ -1,0 +1,15 @@
+{
+  "name": "fullcalendar-scheduler",
+  "title": "FullCalendar Scheduler",
+  "version": "1.0.0-beta",
+  "dependencies": {
+    "jquery": ">=1.7.1",
+    "moment": ">=2.5.0"
+  },
+  "devDependencies": {
+    "jquery-ui": ">=1.11.1",
+    "jquery-mockjax": "~2.0.1",
+    "jasmine-jquery": "~2.1.0",
+    "jasmine-fixture": "~1.3.2"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "fullcalendar-scheduler",
+  "title": "FullCalendar Scheduler",
+  "version": "1.0.0-beta",
+  "devDependencies": {
+    "coffee-script": "^1.9.3",
+    "del": "^1.2.0",
+    "gulp": "^3.9.0",
+    "gulp-coffee": "^2.3.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-cssmin": "^0.1.7",
+    "gulp-filter": "^2.0.2",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.3",
+    "gulp-sourcemaps": "*",
+    "gulp-template": "^3.0.0",
+    "gulp-uglify": "^1.2.0",
+    "gulp-zip": "^3.0.2",
+    "jasmine-core": "*",
+    "karma": "^0.12.37",
+    "karma-coffee-preprocessor": "^0.2.1",
+    "karma-jasmine": "^0.3.6",
+    "karma-phantomjs-launcher": "^0.2.0",
+    "phantomjs": "^1.9.17",
+    "run-sequence": "^1.1.1"
+  }
+}
