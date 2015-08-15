@@ -1,6 +1,20 @@
 
-rtlScrollSystem = null
+###
+Gets the first cell that doesn't have a multi-row rowspan.
+Accepts a jQuery object of one or more TRs and returns the first TD for each.
+Would use the [rowspan] selector, but never not defined in IE8.
+###
+getFirstOwnRow = (trs) ->
+	trs.map (i, trNode) ->
+		for tdNode in $(trNode).find('> td')
+			if tdNode.rowSpan <= 1
+				return tdNode
+		return
 
+
+# http://stackoverflow.com/questions/24276619/better-way-to-get-the-viewport-of-a-scrollable-div-in-rtl-mode/24394376#24394376
+
+rtlScrollSystem = null
 
 normalizedHScroll = (el, val) -> # TODO: make separate getter/setter
 	direction = el.css('direction')
@@ -25,7 +39,6 @@ normalizedHScroll = (el, val) -> # TODO: make separate getter/setter
 					val = -val
 		val
 
-
 getScrollFromLeft = (el) ->
 	direction = el.css('direction')
 	node = el[0]
@@ -39,7 +52,6 @@ getScrollFromLeft = (el) ->
 				val = -val - node.clientWidth + node.scrollWidth
 
 	val
-
 
 detectRtlScrollSystem = ->
 	el = $('
@@ -68,44 +80,5 @@ detectRtlScrollSystem = ->
 	el.remove()
 	system
 
-
 $ ->
 	rtlScrollSystem = detectRtlScrollSystem()
-
-
-
-
-###
-Gets the first cell that doesn't have a multi-row rowspan.
-Accepts a jQuery object of one or more TRs and returns the first TD for each.
-Would use the [rowspan] selector, but never not defined in IE8.
-###
-getFirstOwnRow = (trs) ->
-	trs.map (i, trNode) ->
-		for tdNode in $(trNode).find('> td')
-			if tdNode.rowSpan <= 1
-				return tdNode
-		return
-
-
-
-###
-# Pipes the given promise's resolve/reject/progress events to a Deferred object.
-# If a deferred object is not given, a new one is created.
-# The deferred object is always returned.
-pipeToDeferred = (promise, deferred=$.Deferred()) ->
-	$.when(promise)
-		.done (res) ->
-			deferred.resolve(res)
-		.fail ->
-			deferred.reject()
-		.progress (args) ->
-			deferred.notify(args)
-	deferred
-###
-
-
-
-
-
-# http://stackoverflow.com/questions/24276619/better-way-to-get-the-viewport-of-a-scrollable-div-in-rtl-mode/24394376#24394376
