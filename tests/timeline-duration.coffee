@@ -1,0 +1,4 @@
+
+fdescribe 'timeline duration', ->
+
+	;
