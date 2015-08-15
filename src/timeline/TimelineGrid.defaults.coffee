@@ -38,9 +38,13 @@ TimelineGrid::initScaleProps = ->
 	@ensureLabelInterval()
 	@ensureSlotDuration()
 
+	input = @opt('slotLabelFormat')
+	type = $.type(input)
 	@headerFormats =
-		if (input = @opt('timelineHeader')) and $.isArray(input)
+		if type == 'array'
 			input
+		else if type == 'string'
+			[ input ]
 		else
 			@computeHeaderFormats()
 
