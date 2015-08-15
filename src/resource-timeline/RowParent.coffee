@@ -437,7 +437,7 @@ class RowParent
 		max = 0
 		$.each @trHash, (type, tr) =>
 			# exclude multi-rowspans (probably done for row grouping)
-			innerEl = tr.find('> td:not([rowspan]):first > div')
+			innerEl = getFirstOwnRow(tr).find('> div')
 			max = Math.max(innerEl.height(), max)
 		max
 
@@ -446,7 +446,7 @@ class RowParent
 	###
 	setTrInnerHeight: (height) ->
 		# exclude multi-rowspans (probably done for row grouping)
-		@trs.find('> td:not([rowspan]):first > div').height(height)
+		getFirstOwnRow(@trs).find('> div').height(height)
 
 
 	# Triggering

@@ -74,6 +74,21 @@ $ ->
 
 
 
+
+###
+Gets the first cell that doesn't have a multi-row rowspan.
+Accepts a jQuery object of one or more TRs and returns the first TD for each.
+Would use the [rowspan] selector, but never not defined in IE8.
+###
+getFirstOwnRow = (trs) ->
+	trs.map (i, trNode) ->
+		for tdNode in $(trNode).find('> td')
+			if tdNode.rowSpan <= 1
+				return tdNode
+		return
+
+
+
 ###
 # Pipes the given promise's resolve/reject/progress events to a Deferred object.
 # If a deferred object is not given, a new one is created.
