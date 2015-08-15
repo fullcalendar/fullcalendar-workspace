@@ -380,7 +380,7 @@ class TimelineGrid extends Grid
 		if @isTimeScale
 			classes = []
 			classes.push \
-				if (date - @start) % @labelInterval is 0
+				if (date - @start) % @labelInterval is 0 # TODO: do duration divided by duration!!!
 					'fc-major'
 				else
 					'fc-minor'

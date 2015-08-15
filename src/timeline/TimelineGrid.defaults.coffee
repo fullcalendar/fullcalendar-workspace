@@ -6,6 +6,7 @@ MAX_CELLS = 1000 # TODO: make this a customizable prop
 
 DEFAULT_GRID_DURATION = { months: 1 }
 
+# potential nice values for slot-duration and interval-duration
 STOCK_SUB_DURATIONS = [ # from largest to smallest
 	{ years: 1 }
 	{ months: 1 }
@@ -271,7 +272,7 @@ TimelineGrid::computeHeaderFormats = ->
 	[].concat(format0 or [], format1 or [], format2 or [])
 
 
-warn = -> # TODO: merge with gcal. optimize
+warn = -> # TODO: merge with gcal. optimize # !!!!!
 	console = window.console
 	if console
 		if console.warn
