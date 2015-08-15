@@ -117,7 +117,8 @@ class ResourceManager extends Class
 
 		for resource in validResources
 			@addResourceToTree(resource)
-		return
+
+		@calendar.trigger('resourcesSet', null, @topLevelResources)
 
 
 	addResource: (resourceInput) -> # returns a promise

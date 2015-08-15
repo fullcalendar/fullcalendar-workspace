@@ -75,6 +75,39 @@ class CalendarExtension extends Calendar
 		range
 
 
+	getResourceById: (id) ->
+		@resourceManager.getResourceById(id)
+
+
+	# NOTE: views pair *segments* to resources. that's why there's no code reuse
+	getEventsForResource: (idOrResource) ->
+		resource = @getResourceById(
+			if typeof idOrResource == 'object'
+				idOrResource.id
+			else
+				idOrResource
+		)
+		if resource
+			eventResourceField = @resourceManager.getEventResourceField()
+			@clientEvents (event) -> # return value
+				event[eventResourceField] == resource.id
+		else
+			[]
+
+
+	getResourceForEvent: (idOrEvent) ->
+		event = @clientEvents(
+			if typeof idOrEvent == 'object'
+				idOrEvent.id
+			else
+				idOrEvent
+		)[0]
+		if event
+			resourceId = @resourceManager.getEventResourceId(event)
+			return @getResourceById(resourceId)
+		return null
+
+
 
 	# TODO: select method
 
