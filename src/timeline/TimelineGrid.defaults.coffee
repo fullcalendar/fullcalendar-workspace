@@ -33,9 +33,9 @@ TimelineGrid::initScaleProps = ->
 
 	@labelInterval = @queryDurationOption('slotLabelInterval')
 	@slotDuration = @queryDurationOption('slotDuration')
-	@validateLabelAndSlot()
 
 	@ensureGridDuration()
+	@validateLabelAndSlot() # validate after computed grid duration
 	@ensureLabelInterval()
 	@ensureSlotDuration()
 
@@ -78,29 +78,27 @@ TimelineGrid::queryDurationOption = (name) ->
 			dur
 
 
-TimelineGrid::validateLabelAndSlot = ->
+TimelineGrid::validateLabelAndSlot = -> # needs a defined @duration (grid's duration)
 
-	if @duration # grid duration
+	# make sure labelInterval doesn't exceed the max number of cells
+	if @labelInterval
+		labelCnt = divideDurationByDuration(@duration, @labelInterval)
+		if labelCnt > MAX_CELLS
+			FC.warn('slotLabelInterval results in too many cells')
+			@labelInterval = null
 
-		# make sure labelInterval doesn't exceed the max number of cells
-		if @labelInterval
-			labelCnt = divideDurationByDuration(@duration, @labelInterval)
-			if labelCnt > MAX_CELLS
-				warn('slotLabelInterval results in too many cells')
-				@labelInterval = null
-
-		# make sure slotDuration doesn't exceed the maximum number of cells
-		if @slotDuration
-			slotCnt = divideDurationByDuration(@duration, @slotDuration)
-			if slotCnt > MAX_CELLS
-				warn('slotDuration results in too many cells')
-				@slotDuration = null
+	# make sure slotDuration doesn't exceed the maximum number of cells
+	if @slotDuration
+		slotCnt = divideDurationByDuration(@duration, @slotDuration)
+		if slotCnt > MAX_CELLS
+			FC.warn('slotDuration results in too many cells')
+			@slotDuration = null
 
 	# make sure labelInterval is a multiple of slotDuration
 	if @labelInterval and @slotDuration
 		slotsPerLabel = divideDurationByDuration(@labelInterval, @slotDuration)
 		if not isInt(slotsPerLabel) or slotsPerLabel < 1
-			warn('slotLabelInterval must be a multiple of slotDuration')
+			FC.warn('slotLabelInterval must be a multiple of slotDuration')
 			@slotDuration = null
 
 
