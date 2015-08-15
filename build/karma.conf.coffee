@@ -22,11 +22,16 @@ module.exports = (config) ->
 			'lib/jasmine-fixture/dist/jasmine-fixture.js'
 
 			'tests/util/base.css'
+			'tests/util/util.coffee'
 			'tests/*.coffee'
+
+			{ pattern: 'dist/*.js.map', included: false }
+			{ pattern: 'src/**/*.coffee', included: false }
+			{ pattern: 'tests/json/*', included: false }
 		]
 
 		preprocessors:
-			'**/*.coffee': [ 'coffee' ]
+			'tests/**/*.coffee': [ 'coffee' ]
 
 		coffeePreprocessor:
 

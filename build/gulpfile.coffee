@@ -85,7 +85,7 @@ gulp.task 'minifyJs', [ 'compileJs' ], ->
 
 gulp.task 'watchJs', [ 'compileDevJs' ], -> # will do an initial compile
 	gulp.watch(
-		srcConfig.scripts
+		srcConfig.scripts # TODO: also watch the conf file and reload
 		{ cwd: 'src/' }
 		[ 'compileDevJs' ]
 	)
@@ -213,7 +213,6 @@ transformDemoPath = (path) ->
 
 # Automated Testing
 # ----------------------------------------------------------------------------------------------------------------------
-
 
 KARMA_CONFIG_FILE = path.join(__dirname, 'karma.conf.coffee') # was getting confused with relative URLs
 
