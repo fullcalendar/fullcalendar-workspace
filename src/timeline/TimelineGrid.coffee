@@ -236,7 +236,7 @@ class TimelineGrid extends Grid
 
 		@slatContainerEl = $('<div class="fc-slats"/>').appendTo(@bodyScroller.bgEl)
 		@segContainerEl = $('<div class="fc-event-container"/>').appendTo(@bodyScroller.contentEl) # I DONT LIKE all the css that goes with fc-event-container
-		@bgSegContainerEl = @bodyScroller.contentEl
+		@bgSegContainerEl = @bodyScroller.bgEl
 
 		@coordMap.containerEl = @bodyScroller.scrollEl
 
