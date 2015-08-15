@@ -677,7 +677,7 @@ class TimelineGrid extends Grid
 				else
 					'') +
 				'<span class="fc-title">' +
-					htmlEscape(seg.event.title) +
+					htmlEscape(seg.event.title || '') +
 				'</span>' +
 			'</div>' +
 			'<div class="fc-bg" />' +
