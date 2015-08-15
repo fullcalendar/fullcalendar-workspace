@@ -864,49 +864,6 @@ class TimelineGrid extends Grid
 		@unrenderHighlight()
 
 
-durationHasTime = FC.durationHasTime
-
-
-divideRangeByDuration = (start, end, dur) ->
-	if durationHasTime(dur)
-		(end - start) / dur
-	else
-		months = dur.asMonths()
-		if Math.abs(months) >= 1 and isInt(months)
-			end.diff(start, 'months', true) / months
-		else
-			end.diff(start, 'days', true) / dur.asDays()
-
-
-divideDurationByDuration = (dur1, dur2) ->
-	if durationHasTime(dur1) or durationHasTime(dur2)
-		dur1 / dur2
-	else
-		months1 = dur1.asMonths()
-		months2 = dur2.asMonths()
-		if Math.abs(months1) >= 1 and isInt(months1) and \
-		   Math.abs(months2) >= 1 and isInt(months2)
-			months1 / months2
-		else
-			dur1.asDays() / dur2.asDays()
-
-
-multiplyDuration = (dur, n) ->
-	if durationHasTime(dur)
-		moment.duration(dur * n)
-	else
-		months = dur.asMonths()
-		if Math.abs(months) >= 1 and isInt(months)
-			moment.duration({ months: months * n })
-		else
-			moment.duration({ days: dur.asDays() * n })
-
-
-# TODO: see how these utils related to the interval utils in util.js
-
-
-
-
 
 # Seg Rendering Utils
 # ----------------------------------------------------------------------------------------------------------------------

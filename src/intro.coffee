@@ -28,3 +28,7 @@ proxy = FC.proxy
 capitaliseFirstLetter = FC.capitaliseFirstLetter
 applyAll = FC.applyAll
 Emitter = FC.Emitter
+durationHasTime = FC.durationHasTime
+divideRangeByDuration = FC.divideRangeByDuration
+divideDurationByDuration = FC.divideDurationByDuration
+multiplyDuration = FC.multiplyDuration
