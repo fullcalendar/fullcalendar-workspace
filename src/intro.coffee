@@ -27,3 +27,4 @@ computeIntervalUnit = FC.computeIntervalUnit
 proxy = FC.proxy
 capitaliseFirstLetter = FC.capitaliseFirstLetter
 applyAll = FC.applyAll
+Emitter = FC.Emitter

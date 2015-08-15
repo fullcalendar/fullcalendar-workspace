@@ -5,7 +5,6 @@ module.exports =
 		'intro.coffee'
 
 		'util/util.coffee'
-		'util/Emitter.coffee'
 		'util/Scroller.coffee'
 		'util/ScrollJoiner.coffee'
 		'util/ScrollFollower.coffee'
