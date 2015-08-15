@@ -96,6 +96,8 @@ class ResourceTimelineGrid extends TimelineGrid
 
 		@renderFillInContainers(type, visiblePairs, className)
 
+		segs
+
 
 	# TODO: unrendering fill. update rowObj's bgSegs
 
