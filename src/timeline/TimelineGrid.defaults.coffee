@@ -268,12 +268,3 @@ TimelineGrid::computeHeaderFormats = ->
 			format1 = '[.]SSS' # '750'
 
 	[].concat(format0 or [], format1 or [], format2 or [])
-
-
-warn = -> # TODO: merge with gcal. optimize # !!!!!
-	console = window.console
-	if console
-		if console.warn
-			console.warn.apply(console, arguments)
-		else if console.log
-			console.log.apply(console, arguments)
