@@ -759,7 +759,7 @@ class TimelineGrid extends Grid
 
 				# FYI: containerObj is either the Grid or a ResourceRow
 
-				if sourceSeg and sourceSeg.resourceId == containerObj.resource?._id # DETANGLE !!!!!!!???????? but will work for now
+				if sourceSeg and sourceSeg.resourceId == containerObj.resource?.id # DETANGLE !!!!!!!???????? but will work for now
 					seg.el.css('top', sourceSeg.el.css('top'))
 				else
 					seg.el.css('top', 0)

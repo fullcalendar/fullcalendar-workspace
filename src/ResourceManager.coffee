@@ -1,8 +1,4 @@
 
-# TODO: search for use of resource.id (should be resource._id)
-#  (or should we just do resource.id normalized?)
-
-
 class ResourceManager extends Class
 
 	@mixin Emitter
@@ -133,22 +129,23 @@ class ResourceManager extends Class
 
 
 	addResourceToIndex: (resource) ->
-		if @resourcesById[resource._id]
+		if @resourcesById[resource.id]
 			false
 		else
-			@resourcesById[resource._id] = resource
+			@resourcesById[resource.id] = resource
 			for child in resource.children
 				@addResourceToIndex(child)
 			true
 
 
 	addResourceToTree: (resource) ->
-		if not resource._parent
+		if not resource.parent
+			parentId = String(resource[@getResourceParentField()] or '')
 
-			if resource._parentId
-				parent = @resourcesById[resource._parentId]
+			if parentId
+				parent = @resourcesById[parentId]
 				if parent
-					resource._parent = parent
+					resource.parent = parent
 					siblings = parent.children
 				else
 					return false
@@ -166,7 +163,7 @@ class ResourceManager extends Class
 	removeResource: (idOrResource) ->
 		id =
 			if typeof idOrResource == 'object'
-				idOrResource._id
+				idOrResource.id
 			else
 				idOrResource
 
@@ -183,7 +180,7 @@ class ResourceManager extends Class
 		if resource
 			delete @resourcesById[resourceId]
 			for child in resource.children
-				@removeResourceFromIndex(child._id)
+				@removeResourceFromIndex(child.id)
 			resource
 		else
 			false
@@ -192,7 +189,7 @@ class ResourceManager extends Class
 	removeResourceFromTree: (resource, siblings=@topLevelResources) ->
 		for sibling, i in siblings
 			if sibling == resource
-				resource._parent = null
+				resource.parent = null
 				siblings.splice(i, 1)
 				return true
 			if @removeResourceFromTree(resource, sibling.children)
@@ -205,15 +202,13 @@ class ResourceManager extends Class
 
 
 	buildResource: (resourceInput) ->
-		# QUESTION: do we use .id or ._id in the code???
 
 		resource = $.extend({}, resourceInput)
-		resource._id = String((resourceInput.id ? '_fc' + (ResourceManager.resourceGuid++)) or '')
-		resource._parentId = String(resourceInput[@getResourceParentField()] or '')
+		resource.id = String((resourceInput.id ? '_fc' + (ResourceManager.resourceGuid++)) or '')
 
 		# TODO: consolidate repeat logic
-		rawClassName = resourceInput.className
-		resource.className =
+		rawClassName = resourceInput.eventClassName
+		resource.eventClassName =
 			switch $.type(rawClassName)
 				when 'string'
 					rawClassName.split(/\s+/)
@@ -225,14 +220,14 @@ class ResourceManager extends Class
 		resource.children =
 			for childInput in resourceInput.children ? []
 				child = @buildResource(childInput)
-				child._parent = resource
+				child.parent = resource
 				child
 
 		resource
 
 
 	getResourceParentField: ->
-		@calendar.options['resourceParentProperty'] or 'parentId' # TODO: put into defaults
+		@calendar.options['resourceParentField'] or 'parentId' # TODO: put into defaults
 
 
 	# Event Utils
@@ -248,5 +243,5 @@ class ResourceManager extends Class
 
 
 	getEventResourceField: ->
-		@calendar.options['eventResourceProperty'] or 'resourceId' # TODO: put into defaults
+		@calendar.options['eventResourceField'] or 'resourceId' # TODO: put into defaults
 

@@ -21,7 +21,7 @@ class ResourceTimelineGrid extends TimelineGrid
 
 
 	getRowData: (row) ->
-		{ resourceId: @shownEventRows[row].resource._id }
+		{ resourceId: @shownEventRows[row].resource.id }
 
 
 	getRowEl: (row) -> # for computeRowCoords. TODO: won't work for RTL!!!
@@ -131,7 +131,7 @@ class ResourceTimelineGrid extends TimelineGrid
 				elBottom = el.offset().top + el.outerHeight()
 
 				if elBottom > scrollerTop
-					state.resourceId = rowObj.resource._id
+					state.resourceId = rowObj.resource.id
 					state.bottom = elBottom - scrollerTop
 					break
 		state
@@ -150,7 +150,7 @@ class ResourceTimelineGrid extends TimelineGrid
 
 
 	scrollToResource: (resource) -> # consolidate with above?
-		row = @view.getResourceRow(resource._id)
+		row = @view.getResourceRow(resource.id)
 		if row
 			el = row.getTr('event')
 			if el

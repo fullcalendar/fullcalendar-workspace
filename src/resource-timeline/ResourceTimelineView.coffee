@@ -46,7 +46,7 @@ class ResourceTimelineView extends TimelineView
 		if not allColSpecs.length
 			textFunc = @opt('resourceText')
 			textFunc or= (resource) ->
-				resource.title or resource._id # TODO: temp resources should always have an ID!!!
+				resource.title or resource.id
 			allColSpecs.push
 				labelText: labelText or defaultLabelText
 				text: textFunc
@@ -300,7 +300,7 @@ class ResourceTimelineView extends TimelineView
 
 	removeResource: (resource) ->
 		#console.log('removeResource', resource)
-		row = @getResourceRow(resource._id)
+		row = @getResourceRow(resource.id)
 		if row
 			@batchRows() # because multiple rows might be hidden (empty groups)
 			row.remove()
@@ -458,7 +458,7 @@ class ResourceTimelineView extends TimelineView
 		#console.log('rowAdded', row)
 
 		if row instanceof ResourceRow
-			@resourceRowHash[row.resource._id] = row
+			@resourceRowHash[row.resource.id] = row
 
 		# NOTE : repeat code
 		wasNesting = @isNesting
@@ -476,7 +476,7 @@ class ResourceTimelineView extends TimelineView
 		#console.log('rowRemoved', row)
 
 		if row instanceof ResourceRow
-			delete @resourceRowHash[row.resource._id]
+			delete @resourceRowHash[row.resource.id]
 
 		# NOTE : repeat code
 		wasNesting = @isNesting
