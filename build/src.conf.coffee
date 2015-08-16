@@ -34,6 +34,7 @@ module.exports =
 		'resource-timeline/ResourceRow.coffee'
 		'resource-timeline/config.coffee'
 
+		'license.coffee'
 		'outro.coffee'
 	]
 

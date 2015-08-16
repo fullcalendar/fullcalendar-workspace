@@ -4,8 +4,16 @@
 superDisplayEvents = View::displayEvents
 
 View::displayEvents = (events) ->
-	@listenToResources() # TODO: not really part of displaying. move elsewhere
-	@processLicenseKey(@calendar.options.schedulerLicenseKey) # TODO: not related to events. move elsewhere
+
+	# TODO: not really part of displaying. move elsewhere.
+	@listenToResources()
+
+	# TODO: not related to events. move elsewhere.
+	# but needs to be after the view has rendered.
+	processLicenseKey(
+		@calendar.options.schedulerLicenseKey,
+		@el # container element
+	)
 
 	@calendar.resourceManager.getResources().then =>
 		# hack to make sure resources are received first (for event color data)
@@ -39,18 +47,3 @@ View::removeResource = (resource) ->
 
 View::resetResources = (resources) ->
 	@calendar.rerenderEvents()
-
-
-# License Key Processing
-# ------------------------------------------------------------------------------------------
-
-
-View::processLicenseKey = (key) ->
-	if not key
-		@renderingWarning('Please use a valid license key. <a href="">More Info</a>')
-
-
-View::renderingWarning = (htmlMessage) ->
-	@el.append(
-		$('<div class="fc-license-message" />').html(htmlMessage)
-	)
