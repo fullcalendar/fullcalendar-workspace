@@ -1,7 +1,11 @@
 
 RELEASE_DATE = '<%= versionReleaseDate %>' # for Scheduler
 UPGRADE_WINDOW = { years: 1, weeks: 1 } # 1 week leeway, for tz shift reasons too
-LICENSE_INFO_URL = 'http://fullcalendar.io/scheduler/license/';
+LICENSE_INFO_URL = 'http://fullcalendar.io/scheduler/license/'
+PRESET_LICENSE_KEYS = [
+	'GPL-My-Project-Is-Open-Source'
+	'CC-Attribution-NonCommercial-NoDerivatives'
+]
 
 
 processLicenseKey = (key, containerEl) ->
@@ -15,6 +19,8 @@ processLicenseKey = (key, containerEl) ->
 This decryption is not meant to be bulletproof. Just a way to remind about an upgrade.
 ###
 isValidKey = (key) ->
+	if $.inArray(key, PRESET_LICENSE_KEYS) != -1
+		return true
 	parts = (key or '').match(/^(\d+)\-fcs\-(\d+)$/)
 	if parts and parts[1].length == 10
 		purchaseDate = moment.utc(parseInt(parts[2]) * 1000)

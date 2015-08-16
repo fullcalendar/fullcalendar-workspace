@@ -39,6 +39,20 @@ describe 'schedulerLicenseKey', ->
 					expectIsValid(false)
 					done()
 
+		it 'is valid when Creative Commons', (done) ->
+			initCalendar
+				schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives'
+				eventAfterAllRender: ->
+					expectIsValid(true)
+					done()
+
+		it 'is valid when GPL', (done) ->
+			initCalendar
+				schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source'
+				eventAfterAllRender: ->
+					expectIsValid(true)
+					done()
+
 	expectIsValid = (bool) ->
 		expect(!$('.fc-license-message').is(':visible')).toBe(bool)
 
