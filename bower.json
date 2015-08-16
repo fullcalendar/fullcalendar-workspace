@@ -4,7 +4,8 @@
   "version": "1.0.0-beta",
   "dependencies": {
     "jquery": ">=1.7.1",
-    "moment": ">=2.5.0"
+    "moment": ">=2.5.0",
+    "fullcalendar": "*"
   },
   "devDependencies": {
     "jquery-ui": ">=1.11.1",
