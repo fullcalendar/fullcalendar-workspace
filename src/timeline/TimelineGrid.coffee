@@ -367,7 +367,7 @@ class TimelineGrid extends Grid
 
 
 	renderSlatHtml: ->
-		@_slatHtml
+		@_slatHtml # TODO: kill this hack
 
 
 	slatCellHtml: (date, isEm) ->
@@ -375,7 +375,7 @@ class TimelineGrid extends Grid
 		if @isTimeScale
 			classes = []
 			classes.push \
-				if (date - @start) % @labelInterval is 0 # TODO: do duration divided by duration!!!
+				if isInt(divideRangeByDuration(@start, date, @labelInterval))
 					'fc-major'
 				else
 					'fc-minor'
