@@ -80,7 +80,7 @@ class CalendarExtension extends Calendar
 
 
 	# NOTE: views pair *segments* to resources. that's why there's no code reuse
-	getEventsForResource: (idOrResource) ->
+	getResourceEvents: (idOrResource) ->
 		resource =
 			if typeof idOrResource == 'object'
 				idOrResource
@@ -94,7 +94,7 @@ class CalendarExtension extends Calendar
 			[]
 
 
-	getResourceForEvent: (idOrEvent) ->
+	getEventResource: (idOrEvent) ->
 		event =
 			if typeof idOrEvent == 'object'
 				idOrEvent
