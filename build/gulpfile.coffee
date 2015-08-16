@@ -180,7 +180,8 @@ gulp.task 'transferTheme', ->
 
 
 gulp.task 'transferMisc', ->
-	gulp.src 'license.txt'
+	gulp.src [ 'LICENSE.*', 'CHANGELOG.*' ]
+		.pipe rename({ extname: '.txt' })
 		.pipe gulp.dest(TRANSFER_DIR)
 
 
