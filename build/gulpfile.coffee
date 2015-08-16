@@ -16,8 +16,10 @@ zip = require('gulp-zip')
 runSequence = require('run-sequence') # for chaining tasks in serial
 
 # our configs (paths are relative to this script)
-packageInfo = require('../package.json') # we are able to require a JSON file
+# TODO: move versionReleaseDate out of package.json. compute from GIT
+packageInfo = require('../package.json')
 srcConfig = require('./src.conf')
+
 
 # NOTE: all other paths are relative to the *project root*
 
