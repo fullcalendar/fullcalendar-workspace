@@ -706,9 +706,9 @@ class TimelineGrid extends Grid
 		classes = @getSegClasses(seg, isDraggable, isResizableFromStart or isResizableFromEnd)
 		classes.unshift('fc-timeline-event', 'fc-h-event')
 
-		timeText = @getEventTimeText(seg.event)
+		timeText = @getEventTimeText(event)
 
-		'<div class="' + classes.join(' ') + '" style="' + cssToStr(@getEventSkinCss(seg.event)) + '">' +
+		'<div class="' + classes.join(' ') + '" style="' + cssToStr(@getEventSkinCss(event)) + '">' +
 			'<div class="fc-content">' +
 				(if timeText
 					'<span class="fc-time">' +
@@ -717,7 +717,7 @@ class TimelineGrid extends Grid
 				else
 					'') +
 				'<span class="fc-title">' +
-					htmlEscape(seg.event.title || '') +
+					(if event.title then htmlEscape(event.title) else '&nbsp;') +
 				'</span>' +
 			'</div>' +
 			'<div class="fc-bg" />' +
