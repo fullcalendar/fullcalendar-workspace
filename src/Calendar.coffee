@@ -106,4 +106,4 @@ class CalendarExtension extends Calendar
 		return null
 
 
-Calendar.prototype = CalendarExtension.prototype
+Calendar.prototype = CalendarExtension.prototype # nothing subclasses Calendar, so this is okay
