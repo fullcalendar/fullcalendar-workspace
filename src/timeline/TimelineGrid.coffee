@@ -701,7 +701,12 @@ class TimelineGrid extends Grid
 
 		timeText = @getEventTimeText(event)
 
-		'<div class="' + classes.join(' ') + '" style="' + cssToStr(@getEventSkinCss(event)) + '">' +
+		'<a class="' + classes.join(' ') + '" style="' + cssToStr(@getEventSkinCss(event)) + '"' +
+			(if event.url
+				' href="' + htmlEscape(event.url) + '"'
+			else
+				'') +
+			'>' +
 			'<div class="fc-content">' +
 				(if timeText
 					'<span class="fc-time">' +
@@ -722,7 +727,7 @@ class TimelineGrid extends Grid
 				'<div class="fc-resizer fc-end-resizer"></div>'
 			else
 				'') +
-		'</div>'
+		'</a>'
 
 
 	updateSegFollowers: (segs) ->
