@@ -203,11 +203,6 @@ getRectHeight = (rect) ->
 	rect.bottom - rect.top
 
 
-testRectIntersection = (rect1, rect2) -> # TODO: use util in util.js!!!
-	rect1.right > rect2.left and rect2.right > rect1.left and
-		rect1.bottom > rect2.top and rect2.bottom > rect1.top
-
-
 testRectContains = (rect, innerRect) ->
 	testRectHContains(rect, innerRect) and testRectVContains(rect, innerRect)
 
@@ -244,16 +239,6 @@ vContainRect = (rect, outerRect) -> # returns true if it had to modify rect
 		true
 	else
 		false
-
-
-intersectRects = (rect1, rect2) -> # TODO: use utility in util.js!!!
-	if testRectIntersection(rect1, rect2)
-		{
-			left: Math.max(rect1.left, rect2.left)
-			right: Math.min(rect1.right, rect2.right)
-			top: Math.max(rect1.top, rect2.top)
-			bottom: Math.min(rect1.bottom, rect2.bottom)
-		}
 
 
 joinRects = (rect1, rect2) ->
