@@ -3,15 +3,17 @@
   "title": "FullCalendar Scheduler",
   "description": "A premium add-on to FullCalendar for displaying events and resources",
   "version": "1.0.0",
-  "dependencies": {
-    "jquery": ">=1.7.1",
-    "moment": ">=2.5.0",
-    "fullcalendar": ">=2.4.0"
-  },
+  "versionReleaseDate": "2015-08-17",
   "homepage": "http://fullcalendar.io/scheduler/",
   "repository": {
     "type": "git",
     "url": "https://github.com/fullcalendar/fullcalendar-scheduler.git"
+  },
+  "copyright": "2015 Adam Shaw",
+  "dependencies": {
+    "jquery": ">=1.7.1",
+    "moment": ">=2.5.0",
+    "fullcalendar": ">=2.4.0"
   },
   "devDependencies": {
     "jquery-ui": ">=1.11.1",

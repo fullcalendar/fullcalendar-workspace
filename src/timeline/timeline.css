@@ -1,6 +1,8 @@
 /*!
-<%= title %> v<%= version %>
-*/
+ * <%= title %> v<%= version %>
+ * Docs & License: <%= homepage %>
+ * (c) <%= copyright %>
+ */
 
 /* TODO: break this file up */
 
