@@ -106,8 +106,4 @@ class CalendarExtension extends Calendar
 		return null
 
 
-
-	# TODO: select method
-
-
 Calendar.prototype = CalendarExtension.prototype
