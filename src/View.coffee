@@ -6,6 +6,8 @@ class ViewExtension extends View
 
 	displayEvents: (events) ->
 		@listenToResources() # TODO: not really part of displaying. move elsewhere
+		@processLicenseKey(@calendar.options.schedulerLicenseKey) # TODO: not related to events. move elsewhere
+
 		@calendar.resourceManager.getResources().then =>
 			# hack to make sure resources are received first (for event color data)
 			super(events)
@@ -36,6 +38,21 @@ class ViewExtension extends View
 
 	resetResources: (resources) ->
 		@calendar.rerenderEvents()
+
+
+	# License Key Processing
+	# ------------------------------------------------------------------------------------------
+
+
+	processLicenseKey: (key) ->
+		if not key
+			@renderingWarning('Please use a valid license key. <a href="">More Info</a>')
+
+
+	renderingWarning: (htmlMessage) ->
+		@el.append(
+			$('<div class="fc-license-message" />').html(htmlMessage)
+		)
 
 
 View.prototype = ViewExtension.prototype

@@ -132,4 +132,3 @@ class ResourceView extends View
 			this # maintain order. this will also be automatically inserted last. oh well
 			resourceManager.getResourceById(range.resourceId)
 		)
-
