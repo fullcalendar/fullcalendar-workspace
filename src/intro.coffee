@@ -17,7 +17,6 @@ Class = FC.Class
 View = FC.View
 Grid = FC.Grid
 intersectionToSeg = FC.intersectionToSeg
-compareSegs = FC.compareSegs
 debounce = FC.debounce
 isInt = FC.isInt
 getScrollbarWidths = FC.getScrollbarWidths

@@ -640,7 +640,7 @@ class TimelineGrid extends Grid
 		for [ container, segs ] in pairs
 			for seg in segs
 				seg.height = seg.el.outerHeight(true) # include margin
-			buildSegLevels(segs)
+			@buildSegLevels(segs)
 			container.segContainerHeight = computeOffsetForSegs(segs) # returns this value!
 
 		# assign seg verticals
@@ -648,6 +648,46 @@ class TimelineGrid extends Grid
 			for seg in segs
 				seg.el.css('top', seg.top)
 			container.segContainerEl.height(container.segContainerHeight)
+
+
+	# NOTE: modified segs
+	buildSegLevels: (segs) ->
+		segLevels = []
+
+		@sortSegs(segs)
+
+		for unplacedSeg in segs
+			unplacedSeg.above = []
+
+			# determine the first level with no collisions
+			level = 0 # level index
+			while level < segLevels.length
+				isLevelCollision = false
+
+				# determine collisions
+				for placedSeg in segLevels[level]
+					if timeRowSegsCollide(unplacedSeg, placedSeg)
+						unplacedSeg.above.push(placedSeg)
+						isLevelCollision = true
+
+				if isLevelCollision
+					level += 1
+				else
+					break
+
+			# insert into the first non-colliding level. create if necessary
+			(segLevels[level] or (segLevels[level] = []))
+				.push(unplacedSeg)
+
+			# record possible colliding segments below (TODO: automated test for this)
+			level += 1
+			while level < segLevels.length
+				for belowSeg in segLevels[level]
+					if timeRowSegsCollide(unplacedSeg, belowSeg)
+						belowSeg.above.push(unplacedSeg)
+				level += 1
+
+		segLevels
 
 
 	unrenderFgContainers: (containers) ->
@@ -868,46 +908,6 @@ class TimelineGrid extends Grid
 # Seg Rendering Utils
 # ----------------------------------------------------------------------------------------------------------------------
 # TODO: move
-
-
-# NOTE: modified segs
-buildSegLevels = (segs) ->
-	segLevels = []
-
-	segs.sort(compareSegs)
-
-	for unplacedSeg in segs
-		unplacedSeg.above = []
-
-		# determine the first level with no collisions
-		level = 0 # level index
-		while level < segLevels.length
-			isLevelCollision = false
-
-			# determine collisions
-			for placedSeg in segLevels[level]
-				if timeRowSegsCollide(unplacedSeg, placedSeg)
-					unplacedSeg.above.push(placedSeg)
-					isLevelCollision = true
-
-			if isLevelCollision
-				level += 1
-			else
-				break
-
-		# insert into the first non-colliding level. create if necessary
-		(segLevels[level] or (segLevels[level] = []))
-			.push(unplacedSeg)
-
-		# record possible colliding segments below (TODO: automated test for this)
-		level += 1
-		while level < segLevels.length
-			for belowSeg in segLevels[level]
-				if timeRowSegsCollide(unplacedSeg, belowSeg)
-					belowSeg.above.push(unplacedSeg)
-			level += 1
-
-	segLevels
 
 
 computeOffsetForSegs = (segs) ->
