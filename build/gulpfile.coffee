@@ -161,6 +161,7 @@ gulp.task 'transferDeps', ->
 			'lib/fullcalendar/dist/fullcalendar.min.js'
 			'lib/fullcalendar/dist/fullcalendar.min.css'
 			'lib/fullcalendar/dist/fullcalendar.print.css'
+			'lib/fullcalendar/dist/gcal.js'
 		])
 		.pipe gulp.dest(TRANSFER_DIR + 'lib/')
 
