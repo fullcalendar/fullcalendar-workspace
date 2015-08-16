@@ -5,7 +5,7 @@ currentCalendar = null
 beforeEach ->
 	optionsStack = []
 
-stackCalendarOptions = (options) ->
+stackCalendarOptions = (options) -> # TODO: rename to pushCalendarOptions
 	beforeEach ->
 		optionsStack.push(options)
 

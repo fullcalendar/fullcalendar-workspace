@@ -2,6 +2,7 @@
   "name": "fullcalendar-scheduler",
   "title": "FullCalendar Scheduler",
   "version": "1.0.0-beta",
+  "versionReleaseDate": "2011-06-06",
   "devDependencies": {
     "coffee-script": "^1.9.3",
     "del": "^1.2.0",

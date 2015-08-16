@@ -1,10 +1,36 @@
 
+RELEASE_DATE = '<%= versionReleaseDate %>' # for Scheduler
+UPGRADE_WINDOW = { years: 1, weeks: 1 } # 1 week leeway, for tz shift reasons too
+LICENSE_INFO_URL = 'http://fullcalendar.io/scheduler/license/';
+
+
 processLicenseKey = (key, containerEl) ->
-	if not key
-		renderingWarningInContainer('Please use a valid license key. <a href="">More Info</a>', containerEl)
+	if not isImmuneUrl(window.location.href) and not isValidKey(key)
+		renderingWarningInContainer(
+			'Please use a valid license key. <a href="' + LICENSE_INFO_URL + '">More Info</a>',
+			containerEl
+		)
+
+###
+This decryption is not meant to be bulletproof. Just a way to remind about an upgrade.
+###
+isValidKey = (key) ->
+	parts = (key or '').match(/^(\d+)\-fcs\-(\d+)$/)
+	if parts and parts[1].length == 10
+		purchaseDate = moment.utc(parseInt(parts[2]) * 1000)
+		releaseDate = moment.utc(FC.mockSchedulerReleaseDate or RELEASE_DATE)
+		if releaseDate.isValid() # token won't be replaced in dev mode
+			minPurchaseDate = releaseDate.clone().subtract(UPGRADE_WINDOW)
+			if purchaseDate.isAfter(minPurchaseDate)
+				return true
+	false
 
 
-renderingWarningInContainer = (htmlMessage, containerEl) ->
+isImmuneUrl = (url) ->
+	Boolean(url.match(/\w+\:\/\/fullcalendar\.io\/|\/demos\/[\w-]+\.html$/))
+
+
+renderingWarningInContainer = (messageHtml, containerEl) ->
 	containerEl.append(
-		$('<div class="fc-license-message" />').html(htmlMessage)
+		$('<div class="fc-license-message" />').html(messageHtml)
 	)
