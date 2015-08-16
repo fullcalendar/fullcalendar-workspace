@@ -3,6 +3,11 @@
   "title": "FullCalendar Scheduler",
   "version": "1.0.0-beta",
   "versionReleaseDate": "2011-06-06",
+  "dependencies": {
+    "jquery": ">=1.7.1",
+    "moment": ">=2.5.0",
+    "fullcalendar": ">=2.4.0"
+  },
   "devDependencies": {
     "coffee-script": "^1.9.3",
     "del": "^1.2.0",
