@@ -197,7 +197,7 @@ class TimelineGrid extends Grid
 
 				normalizedRange = { start: newStart, end: newEnd }
 
-		seg = intersectionToSeg(normalizedRange, @view) # todo: what about normalizing timezone?
+		seg = intersectionToSeg(normalizedRange, @view) # TODO: what about normalizing timezone?
 
 		# TODO: what if month slots? should round it to nearest month
 		# TODO: dragging/resizing in this situation? deltas for dragging/resizing breaks down
