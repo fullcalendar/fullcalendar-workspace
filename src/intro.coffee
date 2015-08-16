@@ -31,3 +31,6 @@ durationHasTime = FC.durationHasTime
 divideRangeByDuration = FC.divideRangeByDuration
 divideDurationByDuration = FC.divideDurationByDuration
 multiplyDuration = FC.multiplyDuration
+parseFieldSpecs = FC.parseFieldSpecs;
+compareByFieldSpecs = FC.compareByFieldSpecs;
+flexibleCompare = FC.flexibleCompare;
