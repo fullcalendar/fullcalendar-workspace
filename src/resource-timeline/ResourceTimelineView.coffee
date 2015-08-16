@@ -301,14 +301,17 @@ class ResourceTimelineView extends TimelineView
 
 
 	# TODO: optimize this
+	# TODO: destroy all scrollfollowers when the View's skeleton is destroyed
 
 	cellFollower: null
 
 	reinitializeCellFollowers: ->
-		if not @cellFollower
-			@cellFollower = new ScrollFollower(@resourceGrid.bodyScroller)
-			@cellFollower.isHFollowing = false
-			@cellFollower.isVFollowing = true
+		if @cellFollower
+			@cellFollower.clearSprites() # the closest thing to a destroy
+
+		@cellFollower = new ScrollFollower(@resourceGrid.bodyScroller)
+		@cellFollower.isHFollowing = false
+		@cellFollower.isVFollowing = true
 
 		nodes = []
 		for row in @rowHierarchy.getNodes()

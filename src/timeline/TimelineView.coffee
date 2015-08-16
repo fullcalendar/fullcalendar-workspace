@@ -53,6 +53,7 @@ class TimelineView extends View
 		@timeGrid.setElement(@el.find('tbody .fc-time-area'))
 		@timeGrid.headEl = @el.find('thead .fc-time-area')
 		@timeGrid.renderSkeleton()
+		@isScrolled = false # because if the grid has been rerendered, it will get a zero scroll
 		@timeGrid.bodyScroller.on('scroll', proxy(this, 'handleBodyScroll'))
 
 
