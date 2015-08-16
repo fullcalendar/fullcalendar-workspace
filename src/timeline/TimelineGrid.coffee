@@ -262,6 +262,15 @@ class TimelineGrid extends Grid
 		@slatColEls = @slatContainerEl.find('col')
 		@slatEls = @slatContainerEl.find('td')
 
+		# overrides FF's behavior of trying to keep the old scroll state
+		# (both from previous view renderings and previous pageloads)
+		# TODO: make this normalization stuff part of Scroller
+		resetScroll = =>
+			normalizedHScroll(@headScroller.scrollEl, 0)
+			normalizedHScroll(@bodyScroller.scrollEl, 0)
+		resetScroll()
+		setTimeout(resetScroll, 0)
+
 		for date, i in @slotDates
 			@view.trigger('dayRender', null, date, @slatEls.eq(i))
 

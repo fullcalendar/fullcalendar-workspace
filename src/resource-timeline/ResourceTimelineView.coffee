@@ -105,6 +105,14 @@ class ResourceTimelineView extends TimelineView
 
 		@renderResourceGridSkeleton()
 
+		# hack for FF
+		# equivalent to what's going on in TimelineGrid
+		resetScroll = =>
+			@resourceGrid.bodyScroller.scrollTop(0)
+			@timeGrid.bodyScroller.scrollTop(0)
+		resetScroll()
+		setTimeout(resetScroll, 0)
+
 		@joiner = new ScrollJoiner('vertical', [
 			@resourceGrid.bodyScroller
 			@timeGrid.bodyScroller
