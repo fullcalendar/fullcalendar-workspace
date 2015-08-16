@@ -30,7 +30,7 @@ gulp.task 'default', [ 'dist' ]
 gulp.task 'compile', [ 'compileJs', 'compileCss' ]
 gulp.task 'minify', [ 'minifyJs', 'minifyCss' ]
 gulp.task 'clean', [ 'cleanDist', 'cleanZip' ]
-gulp.task 'watch', [ 'watchJs' ]
+gulp.task 'watch', [ 'watchJs', 'watchCss' ]
 
 
 # Dist (generates built JS/CSS and ZIP)
@@ -107,6 +107,14 @@ gulp.task 'minifyCss', ['compileCss'], ->
 		.pipe cssmin()
 		.pipe rename({ extname: '.min.css' })
 		.pipe gulp.dest('dist/')
+
+
+gulp.task 'watchCss', [ 'compileCss' ], -> # will do an initial compile
+	gulp.watch(
+		srcConfig.stylesheets
+		{ cwd: 'src/' }
+		[ 'compileCss' ]
+	)
 
 
 # ZIP
