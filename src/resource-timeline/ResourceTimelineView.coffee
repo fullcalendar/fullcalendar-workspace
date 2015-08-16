@@ -4,7 +4,7 @@ class ResourceTimelineView extends TimelineView
 	@mixin ResourceView
 
 
-	resourceGrid: null # TODO: rename!!!!!
+	resourceGrid: null # TODO: rename
 	joiner: null
 	dividerEls: null
 
@@ -133,7 +133,7 @@ class ResourceTimelineView extends TimelineView
 
 
 	renderResourceGridSkeleton: ->
-		@resourceGrid.el = @el.find('tbody .fc-resource-area') # TODO: better
+		@resourceGrid.el = @el.find('tbody .fc-resource-area')
 		@resourceGrid.headEl = @el.find('thead .fc-resource-area')
 		@resourceGrid.renderSkeleton()
 
@@ -147,12 +147,7 @@ class ResourceTimelineView extends TimelineView
 
 		@dividerWidth = @opt('resourceAreaWidth') ? @resourceGrid.tableWidth # tableWidth available after resourceGrid.renderSkeleton
 		if @dividerWidth?
-			@positionDivider(@dividerWidth) # !!!!
-
-		#@dividerEls.hover =>
-		#		@dividerEls.addClass('fc-hover')
-		#	, =>
-		#		@dividerEls.removeClass('fc-hover')
+			@positionDivider(@dividerWidth)
 
 		@dividerEls.on 'mousedown', (ev) =>
 			@dividerMousedown(ev)
@@ -180,7 +175,7 @@ class ResourceTimelineView extends TimelineView
 
 				@dividerWidth = width
 				@positionDivider(width)
-				@updateWidth() # maybe only do this at the very end!?
+				@updateWidth() # TODO: only do this at the very end?
 
 			dragStop: =>
 				@dividerEls.removeClass('fc-active')
@@ -189,11 +184,11 @@ class ResourceTimelineView extends TimelineView
 
 
 	getNaturalDividerWidth: ->
-		@el.find('.fc-resource-area').width() # don't we have this cached!?
+		@el.find('.fc-resource-area').width() # TODO: don't we have this cached?
 
 
 	positionDivider: (w) ->
-		@el.find('.fc-resource-area').width(w) # don't we have this cached!?
+		@el.find('.fc-resource-area').width(w) # TODO: don't we have this cached?
 
 
 	# Events
@@ -201,15 +196,15 @@ class ResourceTimelineView extends TimelineView
 
 
 	renderEvents: (events) ->
-		@timeGrid.renderEvents(events) # REPEAT
+		@timeGrid.renderEvents(events)
 		@syncRowHeights()
-		@updateWidth() # REPEAT
+		@updateWidth()
 
 
 	unrenderEvents: ->
-		@timeGrid.unrenderEvents() # REPEAT
+		@timeGrid.unrenderEvents()
 		@syncRowHeights()
-		@updateWidth() # REPEAT
+		@updateWidth()
 
 
 	# Sizing
@@ -261,7 +256,7 @@ class ResourceTimelineView extends TimelineView
 		headHeight
 
 
-	# best place for this?
+	# TODO: best place for this?
 	scrollToResource: (resource) ->
 		@timeGrid.scrollToResource(resource)
 
@@ -271,7 +266,6 @@ class ResourceTimelineView extends TimelineView
 
 
 	setResources: (resources) ->
-		#console.log('setResources', resources)
 		@batchRows()
 		for resource in resources
 			@insertResource(resource)
@@ -281,25 +275,22 @@ class ResourceTimelineView extends TimelineView
 
 
 	unsetResources: ->
-		#console.log('unsetResources')
 		@batchRows()
 		@rowHierarchy.removeChildren()
 		@unbatchRows()
 
 		@reinitializeCellFollowers()
 
-
+	###
+	TODO: the scenario where there were previously unassociated events that are now
+	 attached to this resource. should render those events immediately.
+	###
 	addResource: (resource) ->
-		#console.log('addResource', resource)
 		@insertResource(resource)
-
-		# WHAT ABOUT rendering existing events on it????
-
 		@reinitializeCellFollowers()
 
 
 	removeResource: (resource) ->
-		#console.log('removeResource', resource)
 		row = @getResourceRow(resource.id)
 		if row
 			@batchRows() # because multiple rows might be hidden (empty groups)
@@ -451,12 +442,10 @@ class ResourceTimelineView extends TimelineView
 
 	# this needs to exist even when no adhoc???
 	rowAdded: (row) ->
-		#console.log('rowAdded', row)
-
 		if row instanceof ResourceRow
 			@resourceRowHash[row.resource.id] = row
 
-		# NOTE : repeat code
+		# TODO: consolidate repeat code
 		wasNesting = @isNesting
 		isNesting = Boolean(
 			@nestingCnt += if row.depth then 1 else 0
@@ -469,12 +458,10 @@ class ResourceTimelineView extends TimelineView
 
 	# this needs to exist even when no adhoc???
 	rowRemoved: (row) ->
-		#console.log('rowRemoved', row)
-
 		if row instanceof ResourceRow
 			delete @resourceRowHash[row.resource.id]
 
-		# NOTE : repeat code
+		# TODO: consolidate repeat code
 		wasNesting = @isNesting
 		isNesting = Boolean(
 			@nestingCnt -= if row.depth then 1 else 0
@@ -526,13 +513,11 @@ class ResourceTimelineView extends TimelineView
 
 
 	rowsShown: (rows) ->
-		#console.log('rowShown', rows)
 		@syncRowHeights(rows)
 		@updateWidth()
 
 
 	rowsHidden: (rows) ->
-		#console.log('rowsHidden', rows)
 		@updateWidth()
 
 
@@ -558,9 +543,9 @@ class ResourceTimelineView extends TimelineView
 		@reinitializeCellFollowers()
 
 
-	syncRowHeights: (visibleRows, safe=false) -> # visibleRows is flat! does not do recursive
+	syncRowHeights: (visibleRows, safe=false) -> # visibleRows is flat. does not do recursive
 
-		# TODO: always restore scroll state afterwards!!!
+		# TODO: always restore scroll state afterwards
 		# (because it gets unrendered)
 
 		visibleRows ?= @getVisibleRows()

@@ -39,6 +39,10 @@ class ScrollFollower
 			@updatePositions()
 
 
+	# TODO: have a destroy method.
+	# View's whose skeletons get destroyed should unregister their scrollfollowers.
+
+
 	setSprites: (sprites) ->
 		@clearSprites()
 
