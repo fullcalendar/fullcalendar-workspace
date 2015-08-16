@@ -2,9 +2,7 @@
 <%= title %> v<%= version %>
 */
 
-/*
-TODO: break this file up
-*/
+/* TODO: break this file up */
 
 /* Scroll Pane
 --------------------------------------------------------------------------------------------------*/
@@ -34,7 +32,6 @@ TODO: break this file up
 	/* supresses rendering of native scrollbars */
 	width: 0;
 	height: 0;
-	/* invisible scrollbars? hidden scrollbars? */
 }
 
 
@@ -101,14 +98,18 @@ TODO: break this file up
 	cursor: col-resize;
 }
 
-/* TODO: figure out better styling
+/*
+Cells at the start of a week
+TODO: figure out better styling
+
 .fc-ltr .fc-timeline .fc-em-cell div {
 	border-left: 3px solid #eee;
 	height: 100%;
 }
-/*.fc-rtl .fc-timeline .fc-em-cell {
+.fc-rtl .fc-timeline .fc-em-cell {
 	border-right-width: 3px;
-}*/
+}
+*/
 
 /* head */
 

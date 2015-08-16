@@ -8,7 +8,6 @@ class ResourceTimelineGrid extends TimelineGrid
 	tbodyEl: null
 
 
-	# TODO: integrate this with the grid system!!!
 	build: ->
 		@eventRows = @view.getEventRows()
 		@shownEventRows = (row for row in @eventRows when row.isShown)
@@ -24,21 +23,23 @@ class ResourceTimelineGrid extends TimelineGrid
 		{ resourceId: @shownEventRows[row].resource.id }
 
 
-	getRowEl: (row) -> # for computeRowCoords. TODO: won't work for RTL!!!
+	getRowEl: (row) -> # for computeRowCoords. TODO: won't work for RTL?
 		@shownEventRows[row].getTr('event')
 
 
 	renderSkeleton: ->
 		super
 
-		@segContainerEl.remove() # haha
+		# only non-resource grid needs this, so kill it
+		# TODO: look into better solution
+		@segContainerEl.remove()
 		@segContainerEl = null
 
 		rowContainerEl = $('<div class="fc-rows"><table><tbody/></table></div>').appendTo(@bodyScroller.contentEl)
 		@tbodyEl = rowContainerEl.find('tbody')
 
 
-	renderFgSegs: (segs) -> # too much repeat :(
+	renderFgSegs: (segs) -> # TODO: make DRY-er
 		segs = @renderFgSegEls(segs)
 		pairs = @view.pairSegsWithRows(segs)
 
@@ -99,7 +100,7 @@ class ResourceTimelineGrid extends TimelineGrid
 		segs
 
 
-	# TODO: unrendering fill. update rowObj's bgSegs
+	# TODO: when unrendering fill, update rowObj's bgSegs
 
 
 	renderHelper: (event, sourceSeg) ->
@@ -158,5 +159,5 @@ class ResourceTimelineGrid extends TimelineGrid
 			if el
 				innerTop = @bodyScroller.innerEl.offset().top # TODO: use -scrollHeight or something
 				scrollTop = el.offset().top - innerTop
-				@bodyScroller.scrollEl.scrollTop(scrollTop) # TODO: better api
+				@bodyScroller.scrollEl.scrollTop(scrollTop) # TODO: better API
 

@@ -39,13 +39,7 @@ class EventRow extends RowParent
 
 		# TODO: triggerEventUnrender
 		# TODO: remove from Grid::elsByFill{}
-		#if @isSegsRendered # only this specific row is being killed. global events still intact
 
 		@bgSegs = null
 		@fgSegs = null
 		@isSegsRendered = false
-
-
-	# THESE dont really apply anymore. to *all*
-	# triggerEventRender
-	# triggerEventUnrender

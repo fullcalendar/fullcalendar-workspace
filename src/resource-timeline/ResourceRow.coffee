@@ -32,7 +32,7 @@ class ResourceRow extends EventRow
 			if not @children.length # no more rows?
 				@disableExpanding()
 
-	render: -> # !!!
+	render: ->
 		super
 
 		if @children.length > 0

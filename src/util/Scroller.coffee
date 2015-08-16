@@ -1,5 +1,5 @@
 
-class Scroller # ScrollPane ?
+class Scroller
 
 	el: null
 	innerEl: null
@@ -8,16 +8,16 @@ class Scroller # ScrollPane ?
 	overflowX: null
 	overflowY: null
 	isScrolling: false
-	handlers: null
-
+	handlers: null # TODO: use Emitter
+	height: null
+	contentWidth: null
+	contentMinWidth: null
+	gutters: null
 
 	###
-	'hidden', 'scroll', 'invisible-scroll', 'auto'
-	'visible' not allowed
-	TODO: on resize, redo!
+	Potential overflowX / overflowY values:
+		'hidden', 'scroll', 'invisible-scroll', 'auto'
 	###
-
-
 	constructor: (@overflowX='auto', @overflowY='auto') ->
 		@el = $('
 			<div class="fc-scrollpane">
@@ -41,19 +41,23 @@ class Scroller # ScrollPane ?
 		@handlers = {}
 		@gutters = {}
 
-
-	update: -> # how does this relate to updateCss???
+	###
+	TODO: automatically call this on window resize? (potential scrollbar width change)
+	###
+	update: ->
 		scrollEl = @scrollEl
 		overflowX = @overflowX
 		overflowY = @overflowY
-		isInvisibleScrollX = overflowX is 'invisible-scroll'
-		isInvisibleScrollY = overflowY is 'invisible-scroll'
+		isInvisibleScrollX = overflowX == 'invisible-scroll'
+		isInvisibleScrollY = overflowY == 'invisible-scroll'
 
-		#scrollEl.toggleClass(
-		#	'fc-no-scrollbars'
-		#	(overflowX is 'invisible-scroll' or overflowY is 'invisible-scroll') and
-		#		not hasAnyScrollbars(scrollEl)
-		#)
+		# if we are attempting to hide the scrollbars offscreen, OSX/iOS will still
+		# display the floating scrollbars. force-hide them.
+		scrollEl.toggleClass(
+			'fc-no-scrollbars'
+			(isInvisibleScrollX or isInvisibleScrollY) and
+				not hasAnyScrollbars(scrollEl) # floating scrollbars?
+		)
 
 		scrollEl.css
 			overflowX: if isInvisibleScrollX then 'scroll' else overflowX
@@ -78,11 +82,11 @@ class Scroller # ScrollPane ?
 	getScrollbarWidths: ->
 		scrollbarWidths = getScrollbarWidths(@scrollEl)
 
-		if @overflowX is 'invisible-scroll'
+		if @overflowX == 'invisible-scroll'
 			scrollbarWidths.top = 0
 			scrollbarWidths.bottom = 0
 
-		if @overflowY is 'invisible-scroll'
+		if @overflowY == 'invisible-scroll'
 			scrollbarWidths.left = 0
 			scrollbarWidths.right = 0
 
@@ -101,49 +105,43 @@ class Scroller # ScrollPane ?
 		@trigger('scrollStop')
 
 
-	height: null
-	contentWidth: null
-	contentMinWidth: null
-	gutters: null
-
-
 	setHeight: (@height) ->
 		@updateCss()
+
 
 	getHeight: ->
 		@height ? @scrollEl.height()
 
 	setContentWidth: (@contentWidth) ->
-		@updateCss() #optimize?
+		@updateCss() # TODO: optimize?
+
 
 	setContentMinWidth: (@contentMinWidth) ->
-		@updateCss() #contentMinWidth
+		@updateCss()
+
 
 	setGutters: (gutters) ->
-
 		if not gutters
 			@gutters = {}
 		else
 			$.extend(@gutters, gutters)
 
-		@updateCss() #optimize?
+		@updateCss() # TODO: optimize?
 
-	updateCss: ->
+
+	updateCss: -> # TODO: rename to applyCss
 		@scrollEl.height(@height)
 		gutters = @gutters
 
 		@innerEl.css # is border-box
-
 			width:
 				if @contentWidth
 					@contentWidth + (gutters.left or 0) + (gutters.right or 0)
 				else
 					''
-
 			minWidth:
 				if @contentMinWidth
 					@contentMinWidth + (gutters.left or 0) + (gutters.right or 0)
-
 			paddingLeft: gutters.left or ''
 			paddingRight: gutters.right or ''
 			paddingTop: gutters.top or ''
@@ -155,15 +153,17 @@ class Scroller # ScrollPane ?
 			top: gutters.top or ''
 			bottom: gutters.bottom or ''
 
+
 	append: (content) ->
 		@contentEl.append(content)
+
 
 	scrollTop: (top) ->
 		@scrollEl.scrollTop(top)
 
+
 	scrollLeft: (left) ->
 		@scrollEl.scrollLeft(left)
-
 
 
 	# PubSub

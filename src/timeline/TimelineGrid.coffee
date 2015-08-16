@@ -20,8 +20,8 @@ class TimelineGrid extends Grid
 
 	minTime: null
 	maxTime: null
-	slotDuration: null # TODO: move View's setting into here
-	snapDuration: null # TODO: rename cellDuration???
+	slotDuration: null
+	snapDuration: null
 
 	slotCnt: null
 	snapDiffToCol: null
@@ -40,7 +40,7 @@ class TimelineGrid extends Grid
 	segContainerEl: null
 	segContainerHeight: null
 
-	bgSegContainerEl: null # TODO: populate
+	bgSegContainerEl: null
 
 	helperEls: null
 
@@ -71,8 +71,7 @@ class TimelineGrid extends Grid
 		@slotWidth = @opt('slotWidth')
 
 
-	# TODO: do this for other grids
-	opt: (name) ->
+	opt: (name) -> # shortcut
 		@view.opt(name)
 
 
@@ -96,7 +95,6 @@ class TimelineGrid extends Grid
 
 	# Computes a default event time formatting string if `timeFormat` is not explicitly defined
 	computeEventTimeFormat: ->
-		#@opt('noMeridiemTimeFormat') # like "6:30" (no AM/PM)
 		@opt('extraSmallTimeFormat')
 
 
@@ -106,7 +104,7 @@ class TimelineGrid extends Grid
 
 	normalizeGridDate: (date) -> # returns new copy. "normalizeRangeDate"?
 		if @isTimeScale
-			@view.calendar.rezoneDate(date) # always do this?
+			@view.calendar.rezoneDate(date) # TODO: always do this?
 		else if @largeUnit
 			date.clone().startOf(@largeUnit)
 		else
@@ -128,7 +126,7 @@ class TimelineGrid extends Grid
 		@updateGridDates()
 
 
-	updateGridDates: -> # TODO: rename :(
+	updateGridDates: ->
 		col = -1
 		snapIndex = 0
 		snapDiffToCol = []
@@ -175,15 +173,12 @@ class TimelineGrid extends Grid
 		coords
 
 
-	computeCellRange: (cell) -> # TODO: use computeCellDate instead. make sure to return a clone from it
+	# TODO: use computeCellDate instead. make sure to return a clone from it.
+	computeCellRange: (cell) ->
 		start = @start.clone()
 		start.add(multiplyDuration(@snapDuration, @colToSnapDiff[cell.col]))
 		end = start.clone().add(@snapDuration)
 		{ start, end }
-
-
-
-	# TODO: don't show business hours if a large scale!!!
 
 
 	rangeToSegs: (range) ->
@@ -232,10 +227,10 @@ class TimelineGrid extends Grid
 		@bodyScroller = new Scroller()
 		@el.append(@bodyScroller.el)
 
-		@innerEl = @bodyScroller.contentEl # temporary
+		@innerEl = @bodyScroller.contentEl # TODO: temporary
 
 		@slatContainerEl = $('<div class="fc-slats"/>').appendTo(@bodyScroller.bgEl)
-		@segContainerEl = $('<div class="fc-event-container"/>').appendTo(@bodyScroller.contentEl) # I DONT LIKE all the css that goes with fc-event-container
+		@segContainerEl = $('<div class="fc-event-container"/>').appendTo(@bodyScroller.contentEl)
 		@bgSegContainerEl = @bodyScroller.bgEl
 
 		@coordMap.containerEl = @bodyScroller.scrollEl
@@ -289,7 +284,7 @@ class TimelineGrid extends Grid
 			width: ''
 
 
-	renderHeadHtml: -> # misnamed
+	renderHeadHtml: -> # TODO: misnamed
 		labelInterval = @labelInterval
 		formats = @headerFormats
 		cellRows = ([] for format in formats) # indexed by row,col
@@ -419,9 +414,10 @@ class TimelineGrid extends Grid
 	defaultSlotWidth: null
 
 
-	updateWidth: -> # TODO: call super?
+	# NOTE: not related to Grid. this is TimelineGrid's own method
+	updateWidth: ->
 
-		# reason for this complicated method is that thing went wrong when:
+		# reason for this complicated method is that things went wrong when:
 		#  slots/headers didn't fill content area and needed to be stretched
 		#  cells wouldn't align (rounding issues with available width calculated
 		#  differently because of padding VS scrollbar trick)
@@ -456,12 +452,12 @@ class TimelineGrid extends Grid
 			@follower.update()
 
 		if @eventTitleFollower
-			@eventTitleFollower.update() # do this here too?
+			@eventTitleFollower.update()
 
 
 	computeSlotWidth: -> # compute the *default*
 
-		# TODO: harness common's `matchCellWidths` for this
+		# TODO: harness core's `matchCellWidths` for this
 		maxInnerWidth = 0
 		innerEls = @headEl.find('tr:last-child th span') # TODO: cache
 		innerEls.each (i, node) ->
@@ -485,7 +481,6 @@ class TimelineGrid extends Grid
 	updateSlatElCoords: ->
 		divs = @slatEls.find('> div')
 
-		# TODO: negative margins !?
 		originEl = @bodyScroller.innerEl
 
 		if @isRTL
@@ -499,10 +494,10 @@ class TimelineGrid extends Grid
 				$(slatEl).offset().left - origin
 			coords[i] = $(slatEl).offset().left + $(slatEl).outerWidth() - origin
 
-		@slatElCoords = coords # has one more than we need. yayy!!!!!
+		@slatElCoords = coords # has one more than we need, which is good
 
 
-	dateToCol: (date) -> # might return in-between values!!!
+	dateToCol: (date) -> # might return in-between values
 		snapDiff = divideRangeByDuration(@start, date, @snapDuration)
 		if snapDiff < 0
 			0
@@ -521,7 +516,7 @@ class TimelineGrid extends Grid
 
 	dateToCoord: (date) ->
 		col = @dateToCol(date)
-		slotIndex = col / @colsPerSlot # TODO: test where there might be overflow
+		slotIndex = col / @colsPerSlot
 
 		slotIndex = Math.max(slotIndex, 0)
 		slotIndex = Math.min(slotIndex, @slotDates.length)
@@ -539,7 +534,7 @@ class TimelineGrid extends Grid
 			coord0 + (coord1 - coord0) * partial
 
 
-	rangeToCoords: (range) -> # endDiff was killed!
+	rangeToCoords: (range) ->
 		if @isRTL
 			{ right: @dateToCoord(range.start), left: @dateToCoord(range.end) }
 		else
@@ -557,11 +552,13 @@ class TimelineGrid extends Grid
 		coords
 
 
-	headHeight: -> # TODO: route this better
+	# a getter / setter
+	headHeight: ->
 		table = @headScroller.contentEl.find('table')
 		table.height.apply(table, arguments)
 
 
+	# this needs to be called if v scrollbars appear on body container. or zooming
 	updateSegPositions: ->
 		segs = (@segs or []).concat(@businessHourSegs or [])
 
@@ -571,10 +568,6 @@ class TimelineGrid extends Grid
 				left: (seg.left = coords.left)
 				right: -(seg.right = coords.right)
 		return
-
-		# needs this if v scrollbars appear on body container. or zooming
-
-		# do we even need to position the segs in the first place if this always gets called after?
 
 
 	# Scrolling
@@ -625,7 +618,7 @@ class TimelineGrid extends Grid
 
 		for [ container, segs ] in pairs
 			for seg in segs
-				# TODO: centralize logic
+				# TODO: centralize logic (also in updateSegPositions)
 				coords = @rangeToCoords(seg, -1)
 				seg.el.css
 					left: (seg.left = coords.left)
@@ -650,7 +643,7 @@ class TimelineGrid extends Grid
 			container.segContainerEl.height(container.segContainerHeight)
 
 
-	# NOTE: modified segs
+	# NOTE: this modifies the order of segs
 	buildSegLevels: (segs) ->
 		segLevels = []
 
@@ -791,15 +784,15 @@ class TimelineGrid extends Grid
 		for [ containerObj, segs ] in pairs
 			for seg in segs
 
-				# TODO: centralize logic
+				# TODO: centralize logic (also in renderFgSegsInContainers)
 				coords = @rangeToCoords(seg, -1)
 				seg.el.css
 					left: (seg.left = coords.left)
 					right: -(seg.right = coords.right)
 
 				# FYI: containerObj is either the Grid or a ResourceRow
-
-				if sourceSeg and sourceSeg.resourceId == containerObj.resource?.id # DETANGLE !!!!!!!???????? but will work for now
+				# TODO: detangle the concept of resources
+				if sourceSeg and sourceSeg.resourceId == containerObj.resource?.id
 					seg.el.css('top', sourceSeg.el.css('top'))
 				else
 					seg.el.css('top', 0)
@@ -829,21 +822,18 @@ class TimelineGrid extends Grid
 	# Renders a visual indication of an event being resized
 	renderEventResize: (range, seg) ->
 		@renderHighlight(@eventRangeToSegs(range))
-		@renderRangeHelper(range, seg) # TODO: make this a default in Grid
+		@renderRangeHelper(range, seg)
 
 
 	# Unrenders a visual indication of an event being resized
 	unrenderEventResize: ->
 		@unrenderHighlight()
-		@unrenderHelper() # TODO: make this a default in Grid
+		@unrenderHelper()
 
 
 	# Fill
 	# ---------------------------------------------------------------------------------
 
-	#
-	# BUG with rendering background fills over foreground
-	#
 
 	renderFill: (type, segs, className) ->
 		segs = @renderFillSegEls(type, segs) # pass in className?
@@ -874,7 +864,6 @@ class TimelineGrid extends Grid
 
 				seg.el.appendTo(containerEl)
 
-			# yuck!!!
 			# TODO: better API
 			if @elsByFill[type]
 				@elsByFill[type] = @elsByFill[type].add(containerEl)
@@ -886,11 +875,11 @@ class TimelineGrid extends Grid
 	# ---------------------------------------------------------------------------------
 
 
-	renderDrag: (dropLocation, seg) -> # TODO: different technique based on scale
+	# TODO: different technique based on scale.
+	#  when dragging, middle of event is the drop.
+	#  should be the edges when isTimeScale.
+	renderDrag: (dropLocation, seg) ->
 		if seg
-			# TODO: don't do this when @isTimeScale
-			# but we have to make really wide event dragfollowers work better
-
 			@renderRangeHelper(dropLocation, seg)
 			@applyDragOpacity(@helperEls)
 			true
@@ -902,7 +891,6 @@ class TimelineGrid extends Grid
 	unrenderDrag: ->
 		@unrenderHelper()
 		@unrenderHighlight()
-
 
 
 # Seg Rendering Utils

@@ -24,7 +24,9 @@ class ResourceGrid extends Grid
 
 	selectionRangeToSegs: (selectionRange) ->
 		segs = super
-		resourceId = selectionRange.resourceId # TODO: check customized value AS WELL
+		resourceId = selectionRange.resourceId
+			# TODO: in the case of eventResourceField,
+			#  would be nice to check customized value as well.
 
 		if resourceId
 			for seg in segs
@@ -33,10 +35,8 @@ class ResourceGrid extends Grid
 		segs
 
 
-
 	# DnD
 	# ---------------------------------------------------------------------------------
-
 
 
 	fabricateHelperEvent: (eventRange, seg) ->
@@ -47,10 +47,10 @@ class ResourceGrid extends Grid
 
 	computeEventDrop: (startCell, endCell, event) ->
 
-		if not endCell.resourceId # why would this ever happen tho?
+		if not endCell.resourceId # TODO: understand why this happens
 			return null
 
-		allowResourceChange = true # TODO: setting
+		allowResourceChange = true # TODO: make this a setting
 		if not allowResourceChange and startCell.resourceId != endCell.resourceId
 			return null
 
@@ -64,7 +64,7 @@ class ResourceGrid extends Grid
 
 	computeExternalDrop: (cell, meta) ->
 
-		if not cell.resourceId # why would this ever happen tho?
+		if not cell.resourceId # TODO: understand why this happens
 			return null
 
 		eventRange = super

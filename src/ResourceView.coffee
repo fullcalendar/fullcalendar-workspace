@@ -19,7 +19,7 @@ class ResourceView extends View
 		@clearResources()
 
 
-	#
+	# Resource Getting / Displaying
 	# ------------------------------------------------------------------------------------------------------------------
 
 
@@ -52,7 +52,7 @@ class ResourceView extends View
 
 
 	resetResources: (resources) -> # can be triggered by the resourcemanager, even when this view isn't rendered
-		# TODO: unlink from displaying
+		# TODO: unlink from display-related code
 
 		if not @displayingResources
 			@unassignResources()
@@ -67,15 +67,17 @@ class ResourceView extends View
 					@setScroll(scrollState)
 					@calendar.rerenderEvents()
 
-
-	assignResources: (resources) -> # TODO: remove resources param?
+	###
+	resources param is optional. if not given, gets them from resourceManager
+	###
+	assignResources: (resources) ->
 		@assigningResources or=
 			$.when(resources or @calendar.resourceManager.getResources())
 				.then (resources) =>
 					@setResources(resources)
 
 
-	unassignResources: -> # TODO: kill this now?
+	unassignResources: ->
 		assigning = @assigningResources
 		if assigning
 			assigning.then =>
@@ -85,7 +87,7 @@ class ResourceView extends View
 			$.when()
 
 
-	#
+	# Resource Displaying (subclasses must implement)
 	# ------------------------------------------------------------------------------------------------------------------
 
 
@@ -95,15 +97,15 @@ class ResourceView extends View
 	unsetResources: ->
 
 
-	renderStoredResources: -> #TODO::::: renderResources()
+	renderStoredResources: ->
 
 
 	unrenderStoredResources: ->
 
 
-
 	# Triggers
 	# ------------------------------------------------------------------------------------------------------------------
+
 
 	triggerDayClick: (cell, dayEl, ev) ->
 		resourceManager = @calendar.resourceManager

@@ -1,5 +1,5 @@
 
-# TODO: be 100% sure of return values here. want to allow .fullCalendar() jQuery chaining
+# NOTE: for public methods, always be sure of the return value. for chaining
 
 class CalendarExtension extends Calendar
 
@@ -36,28 +36,28 @@ class CalendarExtension extends Calendar
 		return
 
 
-
 	removeResource: (idOrResource) -> # assumes all resources already loaded
 		@resourceManager.removeResource(idOrResource)
 
 
 	refetchResources: -> # for API
 		@resourceManager.fetchResources()
+		return
 
 
 	rerenderResources: -> # for API
 		@view.redisplayResources?()
+		return
 
 
-	getEventResourceId: (event) -> # KILL THIS?
+	getEventResourceId: (event) ->
 		@resourceManager.getEventResourceId(event)
-		# TODO: getEventResource?
 
 
 	getPeerEvents: (event, range) ->
 		peerEvents = super
 
-		rangeResourceId = range.resourceId or '' #always normalize like this?
+		rangeResourceId = range.resourceId or '' # always normalize like this?
 		filteredPeerEvents = []
 
 		for peerEvent in peerEvents
@@ -81,12 +81,11 @@ class CalendarExtension extends Calendar
 
 	# NOTE: views pair *segments* to resources. that's why there's no code reuse
 	getEventsForResource: (idOrResource) ->
-		resource = @getResourceById(
+		resource =
 			if typeof idOrResource == 'object'
-				idOrResource.id
-			else
 				idOrResource
-		)
+			else
+				@getResourceById(idOrResource)
 		if resource
 			eventResourceField = @resourceManager.getEventResourceField()
 			@clientEvents (event) -> # return value
@@ -96,12 +95,11 @@ class CalendarExtension extends Calendar
 
 
 	getResourceForEvent: (idOrEvent) ->
-		event = @clientEvents(
+		event =
 			if typeof idOrEvent == 'object'
-				idOrEvent.id
-			else
 				idOrEvent
-		)[0]
+			else
+				@clientEvents(idOrEvent)[0]
 		if event
 			resourceId = @resourceManager.getEventResourceId(event)
 			return @getResourceById(resourceId)

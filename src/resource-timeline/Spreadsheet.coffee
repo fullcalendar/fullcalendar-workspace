@@ -157,9 +157,6 @@ class Spreadsheet
 		dragListener.mousedown(ev)
 
 
-	# TODO: do follower.disable, instead of checking for existence all the time
-
-
 	applyColWidths: ->
 		colMinWidths = @colMinWidths
 		colWidths = @colWidths
@@ -215,7 +212,6 @@ class Spreadsheet
 			$(node).outerWidth()
 
 
-
 	# Sizing
 	# ---------------------------------------------------------------------------------
 
@@ -225,6 +221,7 @@ class Spreadsheet
 		@bodyScroller.update()
 		@joiner.update()
 
+		# TODO: do follower.disable(), instead of checking for existence all the time
 		if @follower
 			@follower.update()
 

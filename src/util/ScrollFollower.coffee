@@ -12,7 +12,7 @@ class ScrollFollower
 	containOnNaturalLeft: false
 	containOnNaturalRight: false
 	shouldRequeryDimensions: false
-	minTravel: 0
+	minTravel: 0 # set by the caller
 
 	isForcedAbsolute: false
 	isForcedRelative: false
@@ -25,7 +25,7 @@ class ScrollFollower
 			if @shouldRequeryDimensions
 				@cacheDimensions()
 
-		@scroller.on 'scroll', (scrollTop, scrollLeft) => # todo: switch order
+		@scroller.on 'scroll', (scrollTop, scrollLeft) => # TODO: switch order
 			scrollEl = @scroller.scrollEl
 
 			left = getScrollFromLeft(scrollEl)
@@ -57,26 +57,22 @@ class ScrollFollower
 		@sprites = []
 
 
-	cacheDimensions: -> # cacheBounds  cacheRects
+	cacheDimensions: ->
 		scrollEl = @scroller.scrollEl
 
 		left = getScrollFromLeft(scrollEl)
 		top = scrollEl.scrollTop()
 
+		# TODO: use getViewportRect() for getting this rect
+		# TODO: make this more DRY. also in constructor. updateViewportRect
 		@viewportRect =
 			left: left
 			right: left + scrollEl[0].clientWidth
 			top: top
 			bottom: top + scrollEl[0].clientHeight
 
-		# TODO: getViewportRect(el)
-		# TODO: updateViewportRect(el)
-
 		@scrollbarWidths = @scroller.getScrollbarWidths()
-
-		# TODO: call scrollinneroffset???
 		@contentOffset = @scroller.innerEl.offset()
-		##@scroller.contentEl.offset()
 
 		for sprite in @sprites
 			sprite.cacheDimensions()
@@ -86,14 +82,14 @@ class ScrollFollower
 	forceAbsolute: ->
 		@isForcedAbsolute = true
 		for sprite in @sprites
-			if not sprite.doAbsolute # needless opimization?
+			if not sprite.doAbsolute
 				sprite.assignPosition()
 
 
 	forceRelative: ->
 		@isForcedRelative = true
 		for sprite in @sprites
-			if sprite.doAbsolute # needless opimization?
+			if sprite.doAbsolute
 				sprite.assignPosition()
 
 
@@ -109,13 +105,16 @@ class ScrollFollower
 		@updatePositions()
 
 
-	updatePositions: -> # TODO: break apart!!!
+	updatePositions: ->
 		for sprite in @sprites
 			sprite.updatePosition()
 		return
 
 
-	getContentRect: (el) -> # relative to inner content pane # TODO: use getContentRect from utils
+	# relative to inner content pane
+	# TODO: use getContentRect from utils
+	# TODO: make this a general util
+	getContentRect: (el) ->
 		res = el.offset()
 		left = res.left + parseFloat(el.css('border-left-width')) + parseFloat(el.css('padding-left')) - @contentOffset.left
 		top = res.top + parseFloat(el.css('border-left-width')) + parseFloat(el.css('padding-left')) - @contentOffset.top
@@ -126,7 +125,11 @@ class ScrollFollower
 			bottom: top + el.height()
 		}
 
-	getBoundingRect: (el) -> # relative to inner content pane # TODO: use getOuterRect from utils
+
+	# relative to inner content pane
+	# TODO: use getContentRect from utils
+	# TODO: make this a general util
+	getBoundingRect: (el) ->
 		res = el.offset()
 		left = res.left - @contentOffset.left
 		top = res.top - @contentOffset.top
@@ -136,6 +139,3 @@ class ScrollFollower
 			top: top
 			bottom: top + el.outerHeight()
 		}
-
-
-	# TODO: make the above things generic utilities!

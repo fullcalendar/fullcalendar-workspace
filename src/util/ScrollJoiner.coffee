@@ -21,26 +21,15 @@ class ScrollJoiner
 
 
 	initScroller: (scroller) ->
-
-		# TODO: any way to use "this" ?
 		scroller
 			.on 'scrollStart', =>
-
-				#if not @enabled
-				#	return
-
 				if not @masterScroller
 					@masterScroller = scroller
 				return
 
 			.on 'scroll', (scrollTop, scrollLeft) => # TODO: reverse arguments
-
-				#if not @enabled
-				#	return
-
 				#NOTE: it's okay because these are nativeScrollTop/nativeScrollLeft
 				if scroller is @masterScroller
-
 					for otherScroller in @scrollers
 						if otherScroller isnt @masterScroller
 							switch @axis
@@ -51,10 +40,6 @@ class ScrollJoiner
 				return
 
 			.on 'scrollStop', =>
-
-				#if not @enabled
-				#	return
-
 				if scroller is @masterScroller
 					@masterScroller = null
 				return

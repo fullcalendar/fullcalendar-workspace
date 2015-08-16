@@ -2,7 +2,7 @@
 MIN_AUTO_LABELS = 18 # more than `12` months but less that `24` hours
 MAX_AUTO_SLOTS_PER_LABEL = 6 # allows 6 10-min slots in an hour
 MAX_AUTO_CELLS = 200 # allows 4-days to have a :30 slot duration
-MAX_CELLS = 1000 # TODO: make this a customizable prop
+MAX_CELLS = 1000 # TODO: expose this for the poweruser
 
 DEFAULT_GRID_DURATION = { months: 1 }
 
@@ -185,7 +185,6 @@ TimelineGrid::ensureSlotDuration = ->
 		# only allow the value if it won't exceed the view's # of slots limit
 		if slotDuration and @duration
 			slotCnt = divideDurationByDuration(@duration, slotDuration)
-			#console.log('slotCnt', slotCnt)
 			if slotCnt > MAX_AUTO_CELLS
 				slotDuration = null
 

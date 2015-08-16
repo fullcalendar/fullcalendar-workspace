@@ -41,19 +41,8 @@ class ResourceManager extends Class
 			@fetching = @fetchResourceInputs().then (resourceInputs) =>
 				@setResources(resourceInputs)
 				if prevFetching
-					@trigger('reset', @topLevelResources) # TODO:::::: fire this after assignResources returns?
+					@trigger('reset', @topLevelResources)
 				@topLevelResources
-
-			###
-			@fetching = @fetchResourceInputs()
-				.then (resourceInputs) =>
-					@setResources(resourceInputs)
-					@topLevelResources
-				.done =>
-					if prevFetching
-						@trigger('reset', @topLevelResources) # TODO:::::: fire this after the promise returns?
-			###
-
 
 
 	fetchResourceInputs: -> # returns a promise
@@ -68,7 +57,7 @@ class ResourceManager extends Class
 			when 'function'
 				source (resourceInputs) =>
 					deferred.resolve(resourceInputs)
-				# TODO: timeout!?
+				# TODO: add a max timeout mechanism
 
 			when 'object'
 				promise = $.ajax($.extend({}, ResourceManager.ajaxDefaults, source))
@@ -226,6 +215,7 @@ class ResourceManager extends Class
 		resource
 
 
+	# TODO: kill this!!!!!
 	getResourceParentField: ->
 		@calendar.options['resourceParentField'] or 'parentId' # TODO: put into defaults
 

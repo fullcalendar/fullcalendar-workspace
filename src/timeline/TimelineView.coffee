@@ -1,14 +1,14 @@
 
 class TimelineView extends View
 
-	timeGrid: null # TODO: rename!!!!!!
+	timeGrid: null # TODO: rename
 	isScrolled: false
 
 
 	initialize: ->
 		@timeGrid = @instantiateGrid()
 		@intervalDuration = @timeGrid.duration
-		@coordMap = @timeGrid.coordMap # TODO: constrain by scroll panel!!!! (make part of panel system?)
+		@coordMap = @timeGrid.coordMap
 
 
 	instantiateGrid: ->
@@ -27,7 +27,7 @@ class TimelineView extends View
 	renderSkeleton: ->
 		@el.addClass('fc-timeline')
 
-		if @opt('eventOverlap') == false # best way to get option?
+		if @opt('eventOverlap') == false
 			@el.addClass('fc-no-overlap')
 
 		@el.html(@renderSkeletonHtml())
@@ -51,7 +51,7 @@ class TimelineView extends View
 
 	renderTimeGridSkeleton: ->
 		@timeGrid.setElement(@el.find('tbody .fc-time-area'))
-		@timeGrid.headEl = @el.find('thead .fc-time-area') # TODO: better
+		@timeGrid.headEl = @el.find('thead .fc-time-area')
 		@timeGrid.renderSkeleton()
 		@timeGrid.bodyScroller.on('scroll', proxy(this, 'handleBodyScroll'))
 
@@ -78,14 +78,14 @@ class TimelineView extends View
 
 
 	unrenderDates: ->
-		@timeGrid.unrenderDates() # wish this was called by removeElement
+		@timeGrid.unrenderDates()
 
 
 	renderBusinessHours: ->
 		@timeGrid.renderBusinessHours()
 
 
-	unrenderBusinessHours: -> # TODO: way to get around this!?
+	unrenderBusinessHours: ->
 		@timeGrid.unrenderBusinessHours()
 
 

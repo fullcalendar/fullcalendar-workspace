@@ -14,12 +14,8 @@ class ScrollFollowerSprite
 	isAbsolute: false
 	isCentered: false
 	rect: null # if null, then completely offscreen
-
 	isBlock: false
 	naturalWidth: null
-
-
-	# min travel requirement
 
 
 	constructor: (@el, @follower=null) ->
@@ -158,8 +154,6 @@ class ScrollFollowerSprite
 						top: top
 						left: left
 
-		# flooring was done for resizing resource columns that then create scrollbars
-
 
 	absolutize: ->
 		if not @isAbsolute
@@ -170,19 +164,17 @@ class ScrollFollowerSprite
 			@isAbsolute = true
 
 
-	unabsolutize: -> # relativize?
+	unabsolutize: ->
 		if @isAbsolute
 			@absoluteEl.detach()
 			@el.css('visibility', '')
 			@isAbsolute = false
 
 
-	buildAbsoluteEl: -> # TODO: cache this guy?
+	buildAbsoluteEl: -> # TODO: cache this?
 		@el.clone().addClass('fc-following').css
-			position: 'absolute'
-			'z-index': 1000, # bad!!!!!!!
-			#background: '#333'
-			# todo: other text properties
+			'position': 'absolute'
+			'z-index': 1000, # bad, but luckily scoped by .fc-content's z-index
 			'font-weight': @el.css('font-weight')
 			'font-size': @el.css('font-size')
 			'font-family': @el.css('font-family')
@@ -191,11 +183,13 @@ class ScrollFollowerSprite
 			'padding-bottom': @el.css('padding-bottom')
 			'padding-left': @el.css('padding-left')
 			'padding-right': @el.css('padding-right')
-			#'pointer-events': 'none'
+			'pointer-events': 'none'
 
 
+# Geometry Utils
+# ----------------------------------------------------------------------------------------------------------------------
+# TODO: move somewhere more common
 
-# TODO: merge with util.js
 
 copyRect = (rect) ->
 	{ left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom }
