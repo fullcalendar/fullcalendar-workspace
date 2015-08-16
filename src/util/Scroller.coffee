@@ -55,8 +55,9 @@ class Scroller
 		# display the floating scrollbars. force-hide them.
 		scrollEl.toggleClass(
 			'fc-no-scrollbars'
-			(isInvisibleScrollX or isInvisibleScrollY) and
-				not hasAnyScrollbars(scrollEl) # floating scrollbars?
+			(isInvisibleScrollX or overflowX == 'hidden') and # should never show?
+				(isInvisibleScrollY or overflowY == 'hidden') and # should never show?
+				not hasAnyScrollbars(scrollEl) # is floating scrollbars?
 		)
 
 		scrollEl.css
