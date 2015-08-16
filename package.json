@@ -37,5 +37,13 @@
     "karma-phantomjs-launcher": "^0.2.0",
     "phantomjs": "^1.9.17",
     "run-sequence": "^1.1.1"
-  }
+  },
+  "main": "dist/scheduler.js",
+  "files": [
+    "dist/*.js",
+    "dist/*.css",
+    "CHANGELOG.*",
+    "LICENSE.*",
+    "README.*"
+  ]
 }
