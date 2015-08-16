@@ -79,7 +79,7 @@ class ResourceTimelineView extends TimelineView
 					text: @opt('resourceGroupText')
 					render: @opt('resourceGroupRender')
 
-		allOrderSpecs = parseSpecs(@opt('resourceOrder'))
+		allOrderSpecs = parseFieldSpecs(@opt('resourceOrder'))
 		plainOrderSpecs = []
 
 		for orderSpec in allOrderSpecs
@@ -386,11 +386,7 @@ class ResourceTimelineView extends TimelineView
 
 	# given two resources, returns a cmp value (-1, 0, 1)
 	compareResources: (a, b) ->
-		for spec in @orderSpecs
-			cmp = flexibleCompare(a[spec.field], b[spec.field]) * spec.order
-			if cmp
-				return cmp
-		0
+		compareByFieldSpecs(a, b, @orderSpecs)
 
 
 	# given information on how a row should be inserted into one of the parent's child groups,
@@ -610,7 +606,20 @@ class ResourceTimelineView extends TimelineView
 
 
 
-parseSpecs = (input) -> # parseFieldSpecs?
+
+compareByFieldSpecs = (obj1, obj2, fieldSpecs) ->
+	for fieldSpec in fieldSpecs
+		cmp = compareByFieldSpec(obj1, obj2, fieldSpec)
+		if cmp
+			return cmp
+	0
+
+
+compareByFieldSpec = (obj1, obj2, fieldSpec) ->
+	flexibleCompare(obj1[fieldSpec.field], obj2[fieldSpec.field]) * fieldSpec.order
+
+
+parseFieldSpecs = (input) ->
 	input =
 		if typeof input == 'string'
 			input.split(/\s*,\s*/)
