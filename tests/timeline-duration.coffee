@@ -1,4 +1,4 @@
 
-fdescribe 'timeline duration', ->
+describe 'timeline duration', ->
 
 	;
