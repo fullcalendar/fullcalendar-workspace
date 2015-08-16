@@ -2,7 +2,7 @@
   "name": "fullcalendar-scheduler",
   "title": "FullCalendar Scheduler",
   "description": "A premium add-on to FullCalendar for displaying events and resources",
-  "version": "1.0.0-beta",
+  "version": "1.0.0",
   "dependencies": {
     "jquery": ">=1.7.1",
     "moment": ">=2.5.0",
