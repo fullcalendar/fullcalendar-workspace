@@ -19,9 +19,24 @@
 			aspectRatio: 1.8,
 			scrollTime: '00:00',
 			header: {
-				left: 'today prev,next',
+				left: 'promptResource today prev,next',
 				center: 'title',
 				right: 'timelineDay,timelineThreeDays,agendaWeek,month'
+			},
+			customButtons: {
+				promptResource: {
+					text: '+ room',
+					click: function() {
+						var title = prompt('Room name');
+						if (title) {
+							$('#calendar').fullCalendar(
+								'addResource',
+								{ title: title },
+								true // scroll to the new resource?
+							);
+						}
+					}
+				}
 			},
 			defaultView: 'timelineDay',
 			views: {
@@ -77,23 +92,6 @@
 				{ id: '5', resourceId: 'f', start: '2015-06-07T00:30:00', end: '2015-06-07T02:30:00', title: 'event 5' }
 			]
 		});
-
-		// ad-hoc way of getting an add button in there.
-		// for a better solution, please star this issue:
-		//  https://code.google.com/p/fullcalendar/issues/detail?id=225
-		$('.fc-toolbar .fc-left').prepend(
-			$('<button type="button" class="fc-button fc-state-default fc-corner-left fc-corner-right">+ room</button>')
-				.on('click', function() {
-					var title = prompt('Room name');
-					if (title) {
-						$('#calendar').fullCalendar(
-							'addResource',
-							{ title: title },
-							true // scroll to the new resource?
-						);
-					}
-				})
-		);
 	
 	});
 
