@@ -31,13 +31,9 @@
 				}
 			},
 
-			dayClick: function(date, jsEvent, view, resourceId) {
-				console.log('dayClick', date.format(), resourceId);
-			},
-
-			selectable: true,
-			select: function(start, end, jsEvent, view, resourceId) {
-				console.log('select', start.format(), '-', end.format(), resourceId);
+			// the point if this demo is to demonstrate dayClick...
+			dayClick: function(date, jsEvent, view, resourceObj) {
+				console.log('dayClick', date.format(), resourceObj);
 			},
 
 			resourceLabelText: 'Rooms',
@@ -107,15 +103,6 @@
 <body>
 
 	<div id='calendar'></div>
-
-	<p>
-		<button onclick='$("#calendar").fullCalendar("select","2015-08-07T01:00:00","2015-08-07T03:00:00")'>
-			select range
-		</button>
-		<button onclick='$("#calendar").fullCalendar("select","2015-08-07T01:00:00","2015-08-07T03:00:00","g")'>
-			select range and resource
-		</button>
-	</p>
 
 </body>
 </html>
