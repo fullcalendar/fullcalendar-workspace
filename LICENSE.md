@@ -1,1 +1,18 @@
-You are granted a revocable, non-exclusive, non-transferable and non-sublicensable license to install and use this Beta Software strictly for Your internal evaluation and review purposes and not for production purposes (the “Beta License”). You are explicitly not permitted to distribute the Software to any user outside the Organization on whose behalf you have undertaken this license. Your rights to use the Beta Software will immediately terminate upon the earlier of (i) the expiration of the evaluation period established by Us, or (ii) such time that You purchase a license to a non-evaluation version of the Software, or (iii) a non-beta version of this software is released. We reserve the right to terminate Your Beta License at any time in Our absolute and sole discretion.
+
+For complete licensing information, visit:
+http://fullcalendar.io/scheduler/license/
+
+FullCalendar Scheduler is tri-licensed, meaning you must choose
+one of three licenses to use. Here is a summary of those licenses:
+
+	- Commercial License
+	  (a paid license, meant for commercial use)
+	  http://fullcalendar.io/scheduler/license-details/
+
+	- Creative Commons Non-Commercial No-Derivatives
+	  (meant for trial and non-commercial use)
+	  https://creativecommons.org/licenses/by-nc-nd/4.0/
+
+	- GPLv3 License
+	  (meant for open-source projects)
+	  http://www.gnu.org/licenses/gpl-3.0.en.html
