@@ -22,6 +22,7 @@ git tag -a "v$version" -m "version $version" && \
 git checkout master && \
 echo && \
 echo 'DONE. It is now up to you to run `'"git push origin master && git push origin v$version"'`' && \
+echo 'and `npm publish`' && \
 echo
 
 # TODO: fix the git checkouts at the end
