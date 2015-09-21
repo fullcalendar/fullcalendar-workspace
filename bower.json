@@ -28,8 +28,7 @@
   "ignore": [
     "*",
     "**/.*",
-    "!/dist/*.js",
-    "!/dist/*.css",
+    "!/dist/**",
     "!/CHANGELOG.*",
     "!/LICENSE.*",
     "!/README.*"
