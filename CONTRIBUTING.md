@@ -1,28 +1,34 @@
 
 ## Reporting Bugs
 
-Each bug report MUST have a [JSFiddle/JSBin] recreation
-or else it will be deleted without explanation.
-[further instructions &raquo;][Bug Report Instructions]
+Each bug report MUST have a [JSFiddle/JSBin] recreation before any work can begin. [further instructions &raquo;](http://fullcalendar.io/wiki/Reporting-Bugs/)
 
 
 ## Requesting Features
 
-Before requesting a feature, please search the [Issue Tracker]
-to see if it has already been reported, and if so, subscribe to it.
-[further instructions &raquo;][Feature Request Instructions]
+Please search the [Issue Tracker] to see if your feature has already been requested, and if so, subscribe to it. Otherwise, read these [further instructions &raquo;](http://fullcalendar.io/wiki/Requesting-Features/)
 
 
-## Contributing Code
+## Contributing Features
 
-Code contributions are accepted via [Pull Request][Using Pull Requests].
-When modifying files, please do not edit the generated or minified files
-in the `dist/` directory. Please edit the original `src/` files.
+Each new feature should be designed as robustly as possible and be useful beyond the immediate usecase it was initially designed for. Feel free to start a ticket discussing the feature's specs before coding.
+
+
+## Contributing Bugfixes
+
+In the description of your [Pull Request][Using Pull Requests], please include recreation steps for the bug as well as a [JSFiddle/JSBin] demo. Communicating the buggy behavior is a requirement before a merge can happen.
+
+
+## Other Ways to Contribute
+
+For other ways to contribute to the FullCalendar project, such as answering questions and triage, please visit [this page](http://fullcalendar.io/wiki/Contributing/).
+
+
+## What to edit
+
+When modifying files, please do not edit the generated or minified files in the `dist/` directory. Please edit the original `src/` files.
 
 
 [JSFiddle/JSBin]: http://fullcalendar.io/wiki/Reporting-Bugs/
 [Issue Tracker]: https://github.com/fullcalendar/fullcalendar-scheduler/issues
-[Bug Report Instructions]: http://fullcalendar.io/wiki/Reporting-Bugs/
-[Feature Request Instructions]: http://fullcalendar.io/wiki/Requesting-Features/
 [Using Pull Requests]: https://help.github.com/articles/using-pull-requests/
-[MomentJS locale data]: https://github.com/moment/moment/tree/develop/locale
