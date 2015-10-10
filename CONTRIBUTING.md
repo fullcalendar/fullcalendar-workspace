@@ -21,7 +21,7 @@ In the description of your [Pull Request][Using Pull Requests], please include r
 
 ## Other Ways to Contribute
 
-For other ways to contribute to the FullCalendar project, such as answering questions and triage, please visit [this page](http://fullcalendar.io/wiki/Contributing/).
+[Read about other ways to contribute &raquo;](http://fullcalendar.io/wiki/Contributing/)
 
 
 ## What to edit
