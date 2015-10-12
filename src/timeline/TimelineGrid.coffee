@@ -4,7 +4,10 @@ cssToStr = FC.cssToStr
 
 class TimelineGrid extends Grid
 
-	slotDates: null
+	# FYI: the start/end properties have timezones stripped,
+	# even if the calendar/view has a timezone.
+
+	slotDates: null # has stripped timezones
 
 	headEl: null
 	slatContainerEl: null
@@ -32,6 +35,7 @@ class TimelineGrid extends Grid
 	labelInterval: null
 	headerFormats: null
 	isTimeScale: null
+	largeUnit: null # if the slots are > a day, the string name of the interval
 
 	emphasizeWeeks: false
 
@@ -102,13 +106,22 @@ class TimelineGrid extends Grid
 	# ---------------------------------------------------------------------------------
 
 
-	normalizeGridDate: (date) -> # returns new copy. "normalizeRangeDate"?
+	###
+	Makes the given date consistent with isTimeScale/largeUnit,
+	so, either removes the times, ensures a time, or makes it the startOf largeUnit.
+	Strips all timezones. Returns new copy.
+	TODO: should maybe be called "normalizeRangeDate".
+	###
+	normalizeGridDate: (date) ->
 		if @isTimeScale
-			@view.calendar.rezoneDate(date) # TODO: always do this?
-		else if @largeUnit
-			date.clone().startOf(@largeUnit)
+			normalDate = date.clone().stripZone()
+			if not normalDate.hasTime()
+				normalDate.time(0)
 		else
-			date.clone().stripTime()
+			normalDate = date.clone().stripTime()
+			if @largeUnit
+				normalDate.startOf(@largeUnit)
+		normalDate
 
 
 	rangeUpdated: ->
@@ -182,28 +195,22 @@ class TimelineGrid extends Grid
 
 
 	rangeToSegs: (range) ->
+		normalRange =
+			start: @normalizeGridDate(range.start)
+			end: @normalizeGridDate(range.end)
 
-		if @isTimeScale
-			normalizedRange = range
-		else
-			normalizedRange = @view.computeDayRange(range)
+		# in case largeUnit collapsed the range into the same date
+		if not normalRange.end.isAfter(normalRange.start)
+			normalRange.end = normalRange.start.clone().add(@slotDuration)
 
-			if @largeUnit
-				newStart = normalizedRange.start.clone().startOf(@largeUnit)
-				newEnd = normalizedRange.end.clone().startOf(@largeUnit)
-
-				if not newEnd.isSame(normalizedRange.end) or not newEnd.isAfter(newStart)
-					newEnd.add(@slotDuration)
-
-				normalizedRange = { start: newStart, end: newEnd }
-
-		seg = intersectionToSeg(normalizedRange, @view) # TODO: what about normalizing timezone?
+		# `this` has a start/end, an already normalized range.
+		# zones will have been stripped (a requirement for intersectionToSeg)
+		seg = intersectionToSeg(normalRange, this)
 
 		# TODO: what if month slots? should round it to nearest month
 		# TODO: dragging/resizing in this situation? deltas for dragging/resizing breaks down
 
 		if seg
-
 			if seg.isStart and not @isValidDate(seg.start)
 				seg.isStart = false
 
