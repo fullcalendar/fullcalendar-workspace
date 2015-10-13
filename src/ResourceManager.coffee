@@ -11,8 +11,7 @@ class ResourceManager extends Class
 	calendar: null
 	topLevelResources: null # if null, indicates not fetched
 	resourcesById: null
-	getting: null # a deferred
-	fetching: null # a promise
+	fetching: null # a promise. the last fetch. never cleared afterwards
 
 
 	constructor: (@calendar) ->
@@ -24,15 +23,18 @@ class ResourceManager extends Class
 
 
 	getResources: -> # returns a promise
-		getting = @getting
-		if not getting
-			getting = @getting = $.Deferred()
+		# never fetched? then fetch... (TODO: decouple from fetching)
+		if not @fetching
+			getting = $.Deferred()
 			@fetchResources()
 				.done (resources) ->
 					getting.resolve(resources)
 				.fail ->
 					getting.resolve([])
-		getting.promise()
+			getting
+		# otherwise, return what we already have...
+		else
+			$.Deferred().resolve(@topLevelResources).promise()
 
 
 	fetchResources: -> # returns a promise
