@@ -24,6 +24,10 @@ class EventRow extends RowParent
 		@segContainerEl = tr.find('.fc-event-container')
 		@innerEl = @bgSegContainerEl = tr.find('td > div')
 
+		@ensureSegsRendered()
+
+
+	ensureSegsRendered: ->
 		if not @isSegsRendered
 
 			if @bgSegs
@@ -39,6 +43,7 @@ class EventRow extends RowParent
 
 		# TODO: triggerEventUnrender
 		# TODO: remove from Grid::elsByFill{}
+		# TODO: ResourceTimelineGrid mimics this same logic :(
 
 		@bgSegs = null
 		@fgSegs = null

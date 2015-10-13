@@ -292,6 +292,11 @@ class RowParent
 			else
 				@trs.css('display', '') # remove display:none
 
+			# TODO: hack specific to EventRow.
+			# the re-display might not have rendered new segs
+			if @ensureSegsRendered
+				@ensureSegsRendered()
+
 			# update the expander icon
 			if @isExpanded
 				@indicateExpanded()

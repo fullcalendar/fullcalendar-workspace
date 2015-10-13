@@ -62,6 +62,8 @@ class ResourceTimelineGrid extends TimelineGrid
 		@clearSegFollowers()
 		eventRows = @view.getEventRows() # need to freshly query. grid might not be built
 
+		# TODO: consolidate with what EventRow does
+		# TODO: triggerEventUnrender
 		for eventRow in eventRows
 			eventRow.fgSegs = null
 			eventRow.isSegsRendered = false
