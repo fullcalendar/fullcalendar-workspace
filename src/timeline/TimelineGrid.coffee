@@ -189,6 +189,7 @@ class TimelineGrid extends Grid
 	# TODO: use computeCellDate instead. make sure to return a clone from it.
 	computeCellRange: (cell) ->
 		start = @start.clone()
+		start = @view.calendar.rezoneDate(start) # TODO: find a way to make this unnecessary
 		start.add(multiplyDuration(@snapDuration, @colToSnapDiff[cell.col]))
 		end = start.clone().add(@snapDuration)
 		{ start, end }
@@ -505,6 +506,8 @@ class TimelineGrid extends Grid
 
 
 	dateToCol: (date) -> # might return in-between values
+		date = date.clone().stripZone() # TODO: remove this noralization step somehow
+
 		snapDiff = divideRangeByDuration(@start, date, @snapDuration)
 		if snapDiff < 0
 			0
@@ -522,6 +525,8 @@ class TimelineGrid extends Grid
 
 
 	dateToCoord: (date) ->
+		date = date.clone().stripZone() # TODO: remove this noralization step somehow
+
 		col = @dateToCol(date)
 		slotIndex = col / @colsPerSlot
 
