@@ -105,14 +105,6 @@ class ResourceTimelineView extends TimelineView
 
 		@renderResourceGridSkeleton()
 
-		# hack for FF
-		# equivalent to what's going on in TimelineGrid
-		resetScroll = =>
-			@resourceGrid.bodyScroller.scrollTop(0)
-			@timeGrid.bodyScroller.scrollTop(0)
-		resetScroll()
-		setTimeout(resetScroll, 0)
-
 		@joiner = new ScrollJoiner('vertical', [
 			@resourceGrid.bodyScroller
 			@timeGrid.bodyScroller
@@ -594,3 +586,16 @@ class ResourceTimelineView extends TimelineView
 
 	getResourceRow: (resourceId) ->
 		@resourceRowHash[resourceId]
+
+
+	# Scrolling
+	# ---------------------------------------------------------------------------------
+	# TODO: kill this
+
+
+	setScroll: (state) ->
+		super # set the timegrid's scroll
+
+		# TODO: hack
+		# Similar to what is happening in TimelineGrid::setScroll. for FF
+		@resourceGrid.bodyScroller.scrollTop(state.top)
