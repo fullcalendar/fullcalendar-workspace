@@ -160,6 +160,7 @@ gulp.task 'transferDeps', ->
 	gulp.src([
 			'lib/moment/min/moment.min.js'
 			'lib/jquery/dist/jquery.min.js'
+			'lib/jquery-ui/jquery-ui.min.js'
 			'lib/fullcalendar/dist/fullcalendar.min.js'
 			'lib/fullcalendar/dist/fullcalendar.min.css'
 			'lib/fullcalendar/dist/fullcalendar.print.css'
