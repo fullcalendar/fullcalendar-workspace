@@ -132,3 +132,26 @@ class ResourceView extends View
 			this # maintain order. this will also be automatically inserted last. oh well
 			resourceManager.getResourceById(range.resourceId)
 		)
+
+
+	### Hacks
+	# ------------------------------------------------------------------------------------------------------------------
+	These triggers usually call mutateEvent with dropLocation, which causes an event modification and rerender.
+	But mutateEvent isn't aware of eventResourceField, so it might be setting the wrong property. Workaround.
+	TODO: normalize somewhere else. maybe make a hook in core.
+	###
+
+
+	reportEventDrop: (event, dropLocation, otherArgs...) ->
+		super(event, @normalizeDropLocation(dropLocation), otherArgs...)
+
+
+	reportExternalDrop: (meta, dropLocation, otherArgs...) ->
+		super(meta, @normalizeDropLocation(dropLocation), otherArgs...)
+
+
+	normalizeDropLocation: (dropLocation) ->
+		out = $.extend({}, dropLocation)
+		delete out.resourceId
+		@calendar.resourceManager.setEventResourceId(out, dropLocation.resourceId)
+		out
