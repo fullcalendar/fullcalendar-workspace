@@ -58,18 +58,18 @@ describe 'schedulerLicenseKey', ->
 
 
 	describe 'when in a timeline view with resource', ->
-		stackCalendarOptions
+		pushOptions
 			defaultView: 'timeline'
 			resources: [ { id: 'a', title: 'Resource A' } ]
 		defineTests()
 
 	describe 'when in a timeline view no resource', ->
-		stackCalendarOptions
+		pushOptions
 			defaultView: 'timeline'
 			resource: false
 		defineTests()
 
 	describe 'when in a month view', ->
-		stackCalendarOptions
+		pushOptions
 			defaultView: 'month'
 		defineTests()

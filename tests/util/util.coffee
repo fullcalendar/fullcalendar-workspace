@@ -5,11 +5,9 @@ currentCalendar = null
 beforeEach ->
 	optionsStack = []
 
-stackCalendarOptions = (options) -> # TODO: rename to pushCalendarOptions
+pushOptions = (options) ->
 	beforeEach ->
 		optionsStack.push(options)
-
-pushOptions = stackCalendarOptions
 
 initCalendar = (options) ->
 	affix('#calendar')

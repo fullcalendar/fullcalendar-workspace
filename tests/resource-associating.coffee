@@ -6,7 +6,7 @@ eventResourceField
 
 describe 'associating resources with event', ->
 
-	stackCalendarOptions
+	pushOptions
 		defaultView: 'timelineDay'
 		currentDate: '2015-07-11'
 

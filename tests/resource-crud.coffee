@@ -8,7 +8,7 @@ refetchResources
 
 describe 'resource crudding', ->
 
-	stackCalendarOptions
+	pushOptions
 		defaultView: 'timelineDay'
 
 	describe 'getResourceById', ->

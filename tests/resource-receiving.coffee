@@ -8,7 +8,7 @@ resourcesSet (callback)
 
 describe 'event resources', ->
 
-	stackCalendarOptions
+	pushOptions
 		defaultView: 'timelineDay'
 
 	it 'processes multiple resources', (done) ->
