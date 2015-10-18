@@ -2,8 +2,8 @@
   "name": "fullcalendar-scheduler",
   "title": "FullCalendar Scheduler",
   "description": "A premium add-on to FullCalendar for displaying events and resources",
-  "version": "1.0.1",
-  "versionReleaseDate": "2015-10-13",
+  "version": "1.0.2",
+  "versionReleaseDate": "2015-10-18",
   "homepage": "http://fullcalendar.io/scheduler/",
   "repository": {
     "type": "git",
