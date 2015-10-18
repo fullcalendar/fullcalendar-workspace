@@ -124,6 +124,27 @@ class TimelineGrid extends Grid
 		normalDate
 
 
+	normalizeGridRange: (range) ->
+		if @isTimeScale
+			normalRange =
+				start: @normalizeGridDate(range.start)
+				end: @normalizeGridDate(range.end)
+		else
+			normalRange = @view.computeDayRange(range)
+
+			if @largeUnit
+				normalRange.start.startOf(@largeUnit)
+
+				# if date is partially through the interval, or is in the same interval as the start,
+				# make the exclusive end be the *next* interval
+				adjustedEnd = normalRange.end.clone().startOf(@largeUnit)
+				if not adjustedEnd.isSame(normalRange.end) or not adjustedEnd.isAfter(normalRange.start)
+					adjustedEnd.add(@slotDuration)
+				normalRange.end = adjustedEnd
+
+		normalRange
+
+
 	rangeUpdated: ->
 		@start = @normalizeGridDate(@start)
 		@end = @normalizeGridDate(@end)
@@ -196,13 +217,7 @@ class TimelineGrid extends Grid
 
 
 	rangeToSegs: (range) ->
-		normalRange =
-			start: @normalizeGridDate(range.start)
-			end: @normalizeGridDate(range.end)
-
-		# in case largeUnit collapsed the range into the same date
-		if not normalRange.end.isAfter(normalRange.start)
-			normalRange.end = normalRange.start.clone().add(@slotDuration)
+		normalRange = @normalizeGridRange(range)
 
 		# `this` has a start/end, an already normalized range.
 		# zones will have been stripped (a requirement for intersectionToSeg)
