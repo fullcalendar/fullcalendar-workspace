@@ -235,7 +235,9 @@ TimelineGrid::computeHeaderFormats = ->
 			if weekNumbersVisible
 				format1 = @opt('weekFormat') # 'Wk 4'
 
-			format2 = @opt('smallDayDateFormat') # 'Su 9'
+			# TODO: would use smallDayDateFormat but the way timeline does RTL,
+			# we don't want the text to be flipped
+			format2 = 'dd D' # @opt('smallDayDateFormat') # 'Su 9'
 
 		when 'hour'
 			if weekNumbersVisible
