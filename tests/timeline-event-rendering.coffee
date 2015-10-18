@@ -1,5 +1,5 @@
 
-fdescribe 'timeline event rendering', ->
+describe 'timeline event rendering', ->
 
 	pushOptions
 		now: '2015-10-17'
