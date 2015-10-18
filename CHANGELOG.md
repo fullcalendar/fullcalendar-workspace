@@ -1,4 +1,12 @@
 
+v1.0.2 (2015-10-18)
+-------------------
+
+- incorrect rendering of events when using slotDuration equal to one day (#49)
+- minimum jQuery is now v1.8.0 (solves #44)
+- more tests
+
+
 v1.0.1 (2015-10-13)
 -------------------
 
