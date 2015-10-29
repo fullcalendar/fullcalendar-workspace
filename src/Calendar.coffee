@@ -54,6 +54,7 @@ class CalendarExtension extends Calendar
 		@resourceManager.getEventResourceId(event)
 
 
+	###
 	getPeerEvents: (event, range) ->
 		peerEvents = super
 
@@ -66,6 +67,7 @@ class CalendarExtension extends Calendar
 				filteredPeerEvents.push(peerEvent)
 
 		filteredPeerEvents
+	###
 
 
 	buildSelectRange: (start, end, resourceId) ->
