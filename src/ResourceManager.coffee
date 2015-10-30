@@ -208,11 +208,17 @@ class ResourceManager extends Class
 				else
 					[]
 
-		resource.children =
-			for childInput in resourceInput.children ? []
-				child = @buildResource(childInput)
+		switch $.type(resourceInput.children)
+			when 'array'
+				resource.children =
+					for childInput in resourceInput.children ? []
+						child = @buildResource(childInput)
+						child.parent = resource
+						child
+			when 'object'
+				child = @buildResource(resourceInput.children)
 				child.parent = resource
-				child
+				resource.children = [child]
 
 		resource
 
