@@ -14,8 +14,11 @@ class CalendarExtension extends Calendar
 		spec = @getViewSpec(viewType)
 		viewClass = spec['class']
 
-		if @options.resources and spec.options.resources != false and spec.resourceClass
-			viewClass = spec.resourceClass
+		if @options.resources and spec.options.resources != false
+			if spec.queryResourceClass
+				viewClass = spec.queryResourceClass(spec) or viewClass # might return falsy
+			else if spec.resourceClass
+				viewClass = spec.resourceClass
 
 		new viewClass(this, viewType, spec.options, spec.duration)
 
