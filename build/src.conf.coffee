@@ -18,6 +18,10 @@ module.exports =
 		'ResourceView.coffee'
 		'ResourceGrid.coffee'
 
+		'common/ResourceDayTableMixin.coffee'
+		'common/ResourceDayGrid.coffee'
+		'common/ResourceTimeGrid.coffee'
+
 		'timeline/TimelineView.coffee'
 		'timeline/TimelineGrid.coffee'
 		'timeline/TimelineGrid.defaults.coffee'
@@ -33,6 +37,13 @@ module.exports =
 		'resource-timeline/EventRow.coffee'
 		'resource-timeline/ResourceRow.coffee'
 		'resource-timeline/config.coffee'
+
+		'resource-agenda/ResourceAgendaView.coffee'
+		'resource-agenda/config.coffee'
+
+		'resource-basic/ResourceBasicView.coffee'
+		'resource-basic/ResourceMonthView.coffee'
+		'resource-basic/config.coffee'
 
 		'license.coffee'
 		'outro.coffee'
