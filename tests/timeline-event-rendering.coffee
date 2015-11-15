@@ -31,46 +31,52 @@ describe 'timeline event rendering', ->
 
 						pushOptions
 							defaultView: 'timelineDay'
+							slotDuration: { minutes: 30 }
 
-						it 'renders correctly when event completely fits', (done) ->
-							initCalendar
-								events: [
-									makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00')
-								]
-								eventAfterAllRender: ->
-									expectEventSlotSpan('event1', '2am', '5am')
-									expectEventIsStartEnd('event1', true, true)
-									done()
+						describeOptions 'snapDuration', {
+							'with default snapDuration': null
+							'with halved snapDuration': { minutes: 15 }
+						}, ->
 
-						it 'renders correctly when event starts early', (done) ->
-							initCalendar
-								events: [
-									makeEvent('event1', '2015-10-16T22:00:00', '2015-10-17T06:00:00')
-								]
-								eventAfterAllRender: ->
-									expectEventSlotSpan('event1', '12am', '5am')
-									expectEventIsStartEnd('event1', false, true)
-									done()
+							it 'renders correctly when event completely fits', (done) ->
+								initCalendar
+									events: [
+										makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00')
+									]
+									eventAfterAllRender: ->
+										expectEventSlotSpan('event1', '2am', '5am')
+										expectEventIsStartEnd('event1', true, true)
+										done()
 
-						it 'renders correctly when event ends late', (done) ->
-							initCalendar
-								events: [
-									makeEvent('event1', '2015-10-17T02:00:00', '2015-10-18T02:00:00')
-								]
-								eventAfterAllRender: ->
-									expectEventSlotSpan('event1', '2am', '11pm')
-									expectEventIsStartEnd('event1', true, false)
-									done()
+							it 'renders correctly when event starts early', (done) ->
+								initCalendar
+									events: [
+										makeEvent('event1', '2015-10-16T22:00:00', '2015-10-17T06:00:00')
+									]
+									eventAfterAllRender: ->
+										expectEventSlotSpan('event1', '12am', '5am')
+										expectEventIsStartEnd('event1', false, true)
+										done()
 
-						it 'renders correctly when event starts/ends outside', (done) ->
-							initCalendar
-								events: [
-									makeEvent('event1', '2015-10-16T22:00:00', '2015-10-18T02:00:00')
-								]
-								eventAfterAllRender: ->
-									expectEventSlotSpan('event1', '12am', '11pm')
-									expectEventIsStartEnd('event1', false, false)
-									done()
+							it 'renders correctly when event ends late', (done) ->
+								initCalendar
+									events: [
+										makeEvent('event1', '2015-10-17T02:00:00', '2015-10-18T02:00:00')
+									]
+									eventAfterAllRender: ->
+										expectEventSlotSpan('event1', '2am', '11pm')
+										expectEventIsStartEnd('event1', true, false)
+										done()
+
+							it 'renders correctly when event starts/ends outside', (done) ->
+								initCalendar
+									events: [
+										makeEvent('event1', '2015-10-16T22:00:00', '2015-10-18T02:00:00')
+									]
+									eventAfterAllRender: ->
+										expectEventSlotSpan('event1', '12am', '11pm')
+										expectEventIsStartEnd('event1', false, false)
+										done()
 
 						if not eventRendering # non-background
 							it 'render stacked events by duration', (done) ->
