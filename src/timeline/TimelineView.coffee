@@ -8,7 +8,6 @@ class TimelineView extends View
 	initialize: ->
 		@timeGrid = @instantiateGrid()
 		@intervalDuration = @timeGrid.duration
-		@coordMap = @timeGrid.coordMap
 
 
 	instantiateGrid: ->
@@ -88,6 +87,31 @@ class TimelineView extends View
 
 	unrenderBusinessHours: ->
 		@timeGrid.unrenderBusinessHours()
+
+
+	# Hit System
+	# ---------------------------------------------------------------------------------
+	# forward all hit-related method calls to timeGrid
+
+
+	prepareHits: ->
+		@timeGrid.prepareHits()
+
+
+	releaseHits: ->
+		@timeGrid.releaseHits()
+
+
+	queryHit: (leftOffset, topOffset) ->
+		@timeGrid.queryHit(leftOffset, topOffset)
+
+
+	getHitSpan: (hit) ->
+		@timeGrid.getHitSpan(hit)
+
+
+	getHitEl: (hit) ->
+		@timeGrid.getHitEl(hit)
 
 
 	# Sizing

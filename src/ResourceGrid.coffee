@@ -1,5 +1,10 @@
 
-class ResourceGrid extends Grid
+class ResourceGrid extends Grid # TODO: consider making this a mixin
+
+
+	# whether we should attempt to render selections or resizes that span
+	# across different resources
+	allowCrossResource: true
 
 
 	eventsToRanges: (events) ->
@@ -45,41 +50,45 @@ class ResourceGrid extends Grid
 		event
 
 
-	computeEventDrop: (startCell, endCell, event) ->
+	computeEventDrop: (startSpan, endSpan, event) ->
 
-		if not endCell.resourceId # TODO: understand why this happens
+		if not endSpan.resourceId # TODO: understand why this happens
 			return null
 
 		allowResourceChange = true # TODO: make this a setting
-		if not allowResourceChange and startCell.resourceId != endCell.resourceId
+		if not allowResourceChange and startSpan.resourceId != endSpan.resourceId
 			return null
 
 		eventRange = super
 
 		if eventRange
-			eventRange.resourceId = endCell.resourceId
+			eventRange.resourceId = endSpan.resourceId
 
 		eventRange
 
 
-	computeExternalDrop: (cell, meta) ->
+	computeExternalDrop: (span, meta) ->
 
-		if not cell.resourceId # TODO: understand why this happens
+		if not span.resourceId # TODO: understand why this happens
 			return null
 
 		eventRange = super
 
 		if eventRange
-			eventRange.resourceId = cell.resourceId
+			eventRange.resourceId = span.resourceId
 
 		eventRange
 
 
-	computeEventResize: (type, startCell, endCell, event) ->
+	computeEventResize: (type, startSpan, endSpan, event) ->
+
+		if not @allowCrossResource and startSpan.resourceId != endSpan.resourceId
+			return
+
 		eventRange = super
 
 		if eventRange
-			eventRange.resourceId = startCell.resourceId
+			eventRange.resourceId = startSpan.resourceId
 
 		eventRange
 
@@ -88,10 +97,14 @@ class ResourceGrid extends Grid
 	# ---------------------------------------------------------------------------------
 
 
-	computeSelection: (cell0, cell1) ->
+	computeSelection: (startSpan, endSpan) ->
+
+		if not @allowCrossResource and startSpan.resourceId != endSpan.resourceId
+			return
+
 		selectionRange = super
 
 		if selectionRange
-			selectionRange.resourceId = cell0.resourceId
+			selectionRange.resourceId = startSpan.resourceId
 
 		selectionRange

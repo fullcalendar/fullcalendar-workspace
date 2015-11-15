@@ -37,3 +37,4 @@ parseFieldSpecs = FC.parseFieldSpecs
 compareByFieldSpecs = FC.compareByFieldSpecs
 flexibleCompare = FC.flexibleCompare
 intersectRects = FC.intersectRects
+CoordCache = FC.CoordCache

@@ -6,25 +6,56 @@ class ResourceTimelineGrid extends TimelineGrid
 	eventRows: null
 	shownEventRows: null
 	tbodyEl: null
+	rowCoordCache: null
 
 
-	build: ->
+	prepareHits: ->
+		super
+
 		@eventRows = @view.getEventRows()
 		@shownEventRows = (row for row in @eventRows when row.isShown)
-		@rowCnt = @shownEventRows.length
+
+		trArray =
+			for row in @shownEventRows
+				row.getTr('event')[0]
+
+		@rowCoordCache = new CoordCache
+			els: trArray
+			isVertical: true
+		@rowCoordCache.build()
 
 
-	clear: ->
+	releaseHits: ->
+		super
 		@eventRows = null
 		@shownEventRows = null
+		@rowCoordCache.clear()
 
 
-	getRowData: (row) ->
-		{ resourceId: @shownEventRows[row].resource.id }
+	queryHit: (leftOffset, topOffset) ->
+		simpleHit = super
+		if simpleHit
+			rowIndex = @rowCoordCache.getVerticalIndex(topOffset)
+			if rowIndex?
+				{
+					resourceId: @shownEventRows[rowIndex].resource.id
+					snap: simpleHit.snap
+					component: this # need this unfortunately :(
+					left: simpleHit.left
+					right: simpleHit.right
+					top: @rowCoordCache.getTopOffset(rowIndex)
+					bottom: @rowCoordCache.getBottomOffset(rowIndex)
+				}
 
 
-	getRowEl: (row) -> # for computeRowCoords. TODO: won't work for RTL?
-		@shownEventRows[row].getTr('event')
+	getHitSpan: (hit) ->
+		span = @getSnapRange(hit.snap)
+		span.resourceId = hit.resourceId
+		span
+
+
+	getHitEl: (hit) ->
+		@getSnapEl(hit.snap)
 
 
 	renderSkeleton: ->

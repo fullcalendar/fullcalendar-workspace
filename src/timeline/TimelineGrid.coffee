@@ -8,12 +8,18 @@ class TimelineGrid extends Grid
 	# even if the calendar/view has a timezone.
 
 	slotDates: null # has stripped timezones
+	slotCnt: null
+	snapCnt: null
+	snapsPerSlot: null
+	snapDiffToIndex: null # maps number of snaps since the grid's start to the index
+	snapIndexToDiff: null # inverse
 
 	headEl: null
 	slatContainerEl: null
 	slatEls: null # in DOM order
 
-	slatElCoords: null # ordered by slotDate
+	containerCoordCache: null
+	slatCoordCache: null
 
 	headScroller: null
 	bodyScroller: null
@@ -25,11 +31,6 @@ class TimelineGrid extends Grid
 	maxTime: null
 	slotDuration: null
 	snapDuration: null
-
-	slotCnt: null
-	snapDiffToCol: null
-	colToSnapDiff: null
-	colsPerSlot: null
 
 	duration: null
 	labelInterval: null
@@ -43,13 +44,9 @@ class TimelineGrid extends Grid
 
 	segContainerEl: null
 	segContainerHeight: null
-
 	bgSegContainerEl: null
-
 	helperEls: null
-
 	innerEl: null
-
 
 
 	constructor: ->
@@ -67,9 +64,9 @@ class TimelineGrid extends Grid
 			else
 				@slotDuration
 
-		@cellDuration = @snapDuration # for Grid
+		@minResizeDuration = @snapDuration # for Grid
 
-		@colsPerSlot = divideDurationByDuration(@slotDuration, @snapDuration)
+		@snapsPerSlot = divideDurationByDuration(@slotDuration, @snapDuration)
 			# TODO: do this in initScaleProps?
 
 		@slotWidth = @opt('slotWidth')
@@ -102,7 +99,7 @@ class TimelineGrid extends Grid
 		@opt('extraSmallTimeFormat')
 
 
-	# Cell System
+	# Dates
 	# ---------------------------------------------------------------------------------
 
 
@@ -161,59 +158,27 @@ class TimelineGrid extends Grid
 
 
 	updateGridDates: ->
-		col = -1
-		snapIndex = 0
-		snapDiffToCol = []
-		colToSnapDiff = []
+		snapIndex = -1
+		snapDiff = 0 # index of the diff :(
+		snapDiffToIndex = []
+		snapIndexToDiff = []
 
 		date = @start.clone()
 		while date < @end
 			if @isValidDate(date)
-				col++
-				snapDiffToCol.push(col)
-				colToSnapDiff.push(snapIndex)
+				snapIndex++
+				snapDiffToIndex.push(snapIndex)
+				snapIndexToDiff.push(snapDiff)
 			else
-				snapDiffToCol.push(col + 0.5)
+				snapDiffToIndex.push(snapIndex + 0.5)
 			date.add(@snapDuration)
-			snapIndex++
+			snapDiff++
 
-		@snapDiffToCol = snapDiffToCol
-		@colToSnapDiff = colToSnapDiff
-		@colCnt = col + 1 # NOTE: since this is trailing
+		@snapDiffToIndex = snapDiffToIndex
+		@snapIndexToDiff = snapIndexToDiff
 
-
-	build: -> # build the grid
-		@rowCnt = 1
-
-
-	getRowEl: ->
-		@bodyScroller.contentEl
-
-
-	getCellDayEl: (cell) ->
-		@slatEls.eq(Math.floor(cell.col / @colsPerSlot))
-
-
-	computeColCoords: ->
-		coords = []
-		date = @start.clone()
-		while date < @end
-			if @isValidDate(date)
-				coords.push(@rangeToOffsets({
-					start: date,
-					end: date.clone().add(@snapDuration)
-				}))
-			date.add(@snapDuration)
-		coords
-
-
-	# TODO: use computeCellDate instead. make sure to return a clone from it.
-	computeCellRange: (cell) ->
-		start = @start.clone()
-		start = @view.calendar.rezoneDate(start) # TODO: find a way to make this unnecessary
-		start.add(multiplyDuration(@snapDuration, @colToSnapDiff[cell.col]))
-		end = start.clone().add(@snapDuration)
-		{ start, end }
+		@snapCnt = snapIndex + 1 # is always one behind
+		@slotCnt = @snapCnt / @snapsPerSlot
 
 
 	rangeToSegs: (range) ->
@@ -238,6 +203,78 @@ class TimelineGrid extends Grid
 			[]
 
 
+	# Hit System
+	# ---------------------------------------------------------------------------------
+
+
+	prepareHits: ->
+		@buildCoords()
+
+
+	# FYI: we don't want to clear the slatCoordCache in releaseHits()
+	# because those coordinates are needed for dateToCoord()
+
+
+	queryHit: (leftOffset, topOffset) ->
+		snapsPerSlot = @snapsPerSlot
+		slatCoordCache = @slatCoordCache
+		containerCoordCache = @containerCoordCache
+
+		if containerCoordCache.getVerticalIndex(topOffset)? # vertically in bounds?
+
+			slatIndex = slatCoordCache.getHorizontalIndex(leftOffset)
+			if slatIndex?
+				slatWidth = slatCoordCache.getWidth(slatIndex)
+
+				if @isRTL
+					slatRight = slatCoordCache.getRightOffset(slatIndex)
+					partial = (slatRight - leftOffset) / slatWidth
+					localSnapIndex = Math.floor(partial * snapsPerSlot)
+					snapIndex = slatIndex * snapsPerSlot + localSnapIndex
+					snapRight = slatRight - (localSnapIndex / snapsPerSlot) * slatWidth
+					snapLeft = snapRight - ((localSnapIndex + 1) / snapsPerSlot) * slatWidth
+				else
+					slatLeft = slatCoordCache.getLeftOffset(slatIndex)
+					partial = (leftOffset - slatLeft) / slatWidth
+					localSnapIndex = Math.floor(partial * snapsPerSlot)
+					snapIndex = slatIndex * snapsPerSlot + localSnapIndex
+					snapLeft = slatLeft + (localSnapIndex / snapsPerSlot) * slatWidth
+					snapRight = slatLeft + ((localSnapIndex + 1) / snapsPerSlot) * slatWidth
+
+				{
+					snap: snapIndex
+					component: this # needed unfortunately
+					left: snapLeft
+					right: snapRight
+					top: containerCoordCache.getTopOffset(0),
+					bottom: containerCoordCache.getBottomOffset(0)
+				}
+
+
+	getHitSpan: (hit) ->
+		@getSnapRange(hit.snap)
+
+
+	getHitEl: (hit) ->
+		@getSnapEl(hit.snap) # TODO: write a test for this
+
+
+	# Snap Utils
+	# ---------------------------------------------------------------------------------
+
+
+	getSnapRange: (snapIndex) -> # NOTE: not really hit-related
+		start = @start.clone()
+		start = @view.calendar.rezoneDate(start) # TODO: find a way to make this unnecessary
+		start.add(multiplyDuration(@snapDuration, @snapIndexToDiff[snapIndex]))
+		end = start.clone().add(@snapDuration)
+		{ start, end }
+
+
+	getSnapEl: (snapIndex) ->
+		@slatEls.eq(Math.floor(snapIndex / @snapsPerSlot))
+
+
 	# Main Rendering
 	# ---------------------------------------------------------------------------------
 
@@ -256,7 +293,10 @@ class TimelineGrid extends Grid
 		@segContainerEl = $('<div class="fc-event-container"/>').appendTo(@bodyScroller.contentEl)
 		@bgSegContainerEl = @bodyScroller.bgEl
 
-		@coordMap.containerEl = @bodyScroller.scrollEl
+		@containerCoordCache = new CoordCache
+			els: @slatContainerEl
+			isHorizontal: true # we use the left/right for adjusting RTL coordinates
+			isVertical: true
 
 		@joiner = new ScrollJoiner('horizontal', [ @headScroller, @bodyScroller ])
 
@@ -284,6 +324,10 @@ class TimelineGrid extends Grid
 		@slatContainerEl.html(@renderSlatHtml())
 		@slatColEls = @slatContainerEl.find('col')
 		@slatEls = @slatContainerEl.find('td')
+
+		@slatCoordCache = new CoordCache
+			els: @slatEls # TODO: coords are off-by-one when RTL
+			isHorizontal: true
 
 		for date, i in @slotDates
 			@view.trigger('dayRender', null, date, @slatEls.eq(i))
@@ -468,7 +512,7 @@ class TimelineGrid extends Grid
 		@bodyScroller.update()
 		@joiner.update()
 
-		@updateSlatElCoords()
+		@buildCoords()
 		@updateSegPositions()
 
 		if @follower
@@ -500,65 +544,48 @@ class TimelineGrid extends Grid
 		slotWidth
 
 
-	# absolute distance from origin
-	updateSlatElCoords: ->
-		divs = @slatEls.find('> div')
-
-		originEl = @bodyScroller.innerEl
-
-		if @isRTL
-			origin = originEl.offset().left + originEl.outerWidth() # TODO: cache
-			coords = for slatEl, i in divs
-				$(slatEl).offset().left + $(slatEl).outerWidth() - origin
-			coords[i] = $(slatEl).offset().left - origin
-		else
-			origin = originEl.offset().left
-			coords = for slatEl, i in divs
-				$(slatEl).offset().left - origin
-			coords[i] = $(slatEl).offset().left + $(slatEl).outerWidth() - origin
-
-		@slatElCoords = coords # has one more than we need, which is good
+	buildCoords: ->
+		@containerCoordCache.build()
+		@slatCoordCache.build()
 
 
-	dateToCol: (date) -> # might return in-between values
+	# returned value is between 0 and the number of snaps
+	computeDateSnapCoverage: (date) ->
 		date = date.clone().stripZone() # TODO: remove this noralization step somehow
-
 		snapDiff = divideRangeByDuration(@start, date, @snapDuration)
+
 		if snapDiff < 0
 			0
-		else if snapDiff >= @snapDiffToCol.length
-			@colCnt
+		else if snapDiff >= @snapDiffToIndex.length
+			@snapCnt
 		else
 			snapDiffInt = Math.floor(snapDiff)
 			snapDiffRemainder = snapDiff - snapDiffInt
+			snapCoverage = @snapDiffToIndex[snapDiffInt]
 
-			col = @snapDiffToCol[snapDiffInt]
-			if isInt(col) and snapDiffRemainder
-				col += snapDiffRemainder
+			if isInt(snapCoverage) # not an in-between value
+				snapCoverage += snapDiffRemainder
 
-			col
+			snapCoverage
 
 
+	# for LTR, results range from 0 to width of area
+	# for RTL, results range from negative width of area to 0
 	dateToCoord: (date) ->
 		date = date.clone().stripZone() # TODO: remove this noralization step somehow
+		snapCoverage = @computeDateSnapCoverage(date)
+		slotCoverage = snapCoverage / @snapsPerSlot
+		slotIndex = Math.floor(slotCoverage)
+		slotIndex = Math.min(slotIndex, @slotCnt - 1)
+		partial = slotCoverage - slotIndex
 
-		col = @dateToCol(date)
-		slotIndex = col / @colsPerSlot
-
-		slotIndex = Math.max(slotIndex, 0)
-		slotIndex = Math.min(slotIndex, @slotDates.length)
-
-		if isInt(slotIndex)
-			@slatElCoords[slotIndex]
+		if @isRTL
+			(@slatCoordCache.getRightPosition(slotIndex) -
+				@slatCoordCache.getWidth(slotIndex) * partial) -
+					@containerCoordCache.getWidth(0)
 		else
-			index0 = Math.floor(slotIndex)
-			ms0 = +@slotDates[index0]
-			ms1 = +@slotDates[index0].clone().add(@slotDuration)
-			partial = (date - ms0) / (ms1 - ms0)
-			partial = Math.min(partial, 1) # when in between the minTimes/maxTimes
-			coord0 = @slatElCoords[index0]
-			coord1 = @slatElCoords[index0 + 1]
-			coord0 + (coord1 - coord0) * partial
+			(@slatCoordCache.getLeftPosition(slotIndex) +
+				@slatCoordCache.getWidth(slotIndex) * partial)
 
 
 	rangeToCoords: (range) ->
@@ -566,17 +593,6 @@ class TimelineGrid extends Grid
 			{ right: @dateToCoord(range.start), left: @dateToCoord(range.end) }
 		else
 			{ left: @dateToCoord(range.start), right: @dateToCoord(range.end) }
-
-
-	rangeToOffsets: (range) ->
-		coords = @rangeToCoords(range)
-		origin = if @isRTL
-				@slatContainerEl.offset().left + @slatContainerEl.outerWidth() # TODO: cache
-			else
-				@slatContainerEl.offset().left
-		coords.left += origin
-		coords.right += origin
-		coords
 
 
 	# a getter / setter
@@ -607,7 +623,7 @@ class TimelineGrid extends Grid
 			scrollTime = @opt('scrollTime')
 			if scrollTime
 				scrollTime = moment.duration(scrollTime)
-				left = @dateToCoord(@start.clone().time(scrollTime))
+				left = @dateToCoord(@start.clone().time(scrollTime)) # TODO: fix this for RTL
 		{ left, top: 0 }
 
 
