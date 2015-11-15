@@ -44,12 +44,9 @@ class ResourceTimelineView extends TimelineView
 		superHeaderText = null
 
 		if not allColSpecs.length
-			textFunc = @opt('resourceText')
-			textFunc or= (resource) ->
-				resource.title or resource.id
 			allColSpecs.push
 				labelText: labelText or defaultLabelText
-				text: textFunc
+				text: @getResourceTextFunc()
 		else
 			superHeaderText = labelText
 

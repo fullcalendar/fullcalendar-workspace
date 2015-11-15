@@ -3,6 +3,7 @@ class ResourceView extends View
 
 	displayingResources: null
 	assigningResources: null
+	resourceTextFunc: null
 
 
 	displayView: ->
@@ -101,6 +102,25 @@ class ResourceView extends View
 
 
 	unrenderStoredResources: ->
+
+
+	# Resource Rendering Utils
+	# ------------------------------------------------------------------------------------------------------------------
+
+
+	getResourceText: (resource) ->
+		@getResourceTextFunc()(resource)
+
+
+	getResourceTextFunc: ->
+		if @resourceTextFunc
+			@resourceTextFunc
+		else
+			func = @opt('resourceText')
+			if typeof func != 'function'
+				func = (resource) ->
+					resource.title or resource.id
+			@resourceTextFunc = func # and return
 
 
 	# Triggers
