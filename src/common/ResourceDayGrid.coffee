@@ -13,13 +13,21 @@ class ResourceDayGrid extends FC.DayGrid
 
 
 	rangeToSegs: (range) ->
+		resourceCnt = @resourceCnt
 		genericSegs = # no assigned resources
 			if @datesAboveResources
 				@sliceRangeByDay(range) # each day-per-resource will need its own column
 			else
 				@sliceRangeByRow(range)
-		resourceCnt = @resourceCnt
+
 		if not resourceCnt
+			for seg in genericSegs
+				if @isRTL
+					seg.leftCol = seg.lastRowDayIndex
+					seg.rightCol = seg.firstRowDayIndex
+				else
+					seg.leftCol = seg.firstRowDayIndex
+					seg.rightCol = seg.lastRowDayIndex
 			genericSegs
 		else
 			resourceSegs = []

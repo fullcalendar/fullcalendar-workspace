@@ -20,12 +20,8 @@ class ResourceBasicView extends FC.BasicView
 
 
 	renderStoredResources: ->
-		if @isSkeletonRendered
-			@renderDates()
-			@updateSize()
+		@redisplay()
 
 
 	unrenderStoredResources: ->
-		if @isSkeletonRendered
-			@renderDates()
-			@updateSize()
+		@redisplay()

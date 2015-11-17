@@ -13,9 +13,12 @@ class ResourceTimeGrid extends FC.TimeGrid
 
 
 	rangeToSegs: (range) ->
-		genericSegs = @sliceRangeByTimes(range) # no assigned resources
 		resourceCnt = @resourceCnt
+		genericSegs = @sliceRangeByTimes(range) # no assigned resources
+
 		if not resourceCnt
+			for seg in genericSegs
+				seg.col = seg.dayIndex
 			genericSegs
 		else
 			resourceSegs = []

@@ -25,12 +25,8 @@ class ResourceAgendaView extends FC.AgendaView
 
 
 	renderStoredResources: ->
-		if @isSkeletonRendered
-			@renderDates()
-			@updateSize()
+		@redisplay()
 
 
 	unrenderStoredResources: ->
-		if @isSkeletonRendered
-			@renderDates()
-			@updateSize()
+		@redisplay()
