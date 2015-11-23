@@ -55,7 +55,7 @@ class ResourceGrid extends Grid # TODO: consider making this a mixin
 	# ---------------------------------------------------------------------------------
 
 
-	computeSelection: (startSpan, endSpan) ->
+	computeSelectionSpan: (startSpan, endSpan) ->
 
 		if not @allowCrossResource and startSpan.resourceId != endSpan.resourceId
 			return

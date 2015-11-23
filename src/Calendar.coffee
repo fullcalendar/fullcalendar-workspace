@@ -57,15 +57,18 @@ class CalendarExtension extends Calendar
 		@resourceManager.getEventResourceId(event)
 
 
-	getPeerEvents: (event, range) ->
+	getPeerEvents: (span, event) ->
 		peerEvents = super
 
-		rangeResourceId = range.resourceId or '' # always normalize like this?
-		filteredPeerEvents = []
+		newResourceId =
+			span.resourceId or
+			@getEventResourceId(event) or # span doesn't care. keep it the same
+			'' # the best fallback?
 
+		filteredPeerEvents = []
 		for peerEvent in peerEvents
 			peerResourceId = @getEventResourceId(peerEvent) or ''
-			if not peerResourceId or peerResourceId == rangeResourceId
+			if not peerResourceId or peerResourceId == newResourceId
 				filteredPeerEvents.push(peerEvent)
 
 		filteredPeerEvents
