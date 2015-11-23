@@ -127,30 +127,30 @@ class ResourceView extends View
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	triggerDayClick: (cell, dayEl, ev) ->
+	triggerDayClick: (span, dayEl, ev) ->
 		resourceManager = @calendar.resourceManager
 
 		@trigger(
 			'dayClick'
 			dayEl # this
-			cell.start
+			@calendar.applyTimezone(span.start)
 			ev
 			this # maintain order. this will also be automatically inserted last. oh well
-			resourceManager.getResourceById(cell.resourceId)
+			resourceManager.getResourceById(span.resourceId)
 		)
 
 
-	triggerSelect: (range, ev) ->
+	triggerSelect: (span, ev) ->
 		resourceManager = @calendar.resourceManager
 
 		@trigger(
 			'select'
 			null
-			range.start
-			range.end
+			@calendar.applyTimezone(span.start)
+			@calendar.applyTimezone(span.end)
 			ev
 			this # maintain order. this will also be automatically inserted last. oh well
-			resourceManager.getResourceById(range.resourceId)
+			resourceManager.getResourceById(span.resourceId)
 		)
 
 

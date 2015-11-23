@@ -9,6 +9,17 @@ class ResourceTimelineGrid extends TimelineGrid
 	rowCoordCache: null
 
 
+	spanToSegs: (span) ->
+		segs = super
+		resourceId = span.resourceId
+
+		if resourceId
+			for seg in segs
+				seg.resourceId = resourceId
+
+		segs
+
+
 	prepareHits: ->
 		super
 
@@ -137,7 +148,7 @@ class ResourceTimelineGrid extends TimelineGrid
 
 
 	renderHelper: (event, sourceSeg) ->
-		segs = @eventsToSegs([ event ]) # repeat :(
+		segs = @eventToSegs(event) # repeat :(
 		segs = @renderFgSegEls(segs)
 		pairs = @view.pairSegsWithRows(segs)
 		@renderHelperSegsInContainers(pairs, sourceSeg)

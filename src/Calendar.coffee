@@ -71,11 +71,11 @@ class CalendarExtension extends Calendar
 		filteredPeerEvents
 
 
-	buildSelectRange: (start, end, resourceId) ->
-		range = super
+	buildSelectSpan: (startInput, endInput, resourceId) ->
+		span = super
 		if resourceId
-			range.resourceId = resourceId
-		range
+			span.resourceId = resourceId
+		span
 
 
 	getResourceById: (id) ->

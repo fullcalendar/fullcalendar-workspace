@@ -7,77 +7,37 @@ class ResourceGrid extends Grid # TODO: consider making this a mixin
 	allowCrossResource: true
 
 
-	eventsToRanges: (events) ->
-		eventRanges = super
-
-		for eventRange in eventRanges
-			eventRange.resourceId = @view.calendar.getEventResourceId(eventRange.event)
-
-		eventRanges
-
-
-	eventRangeToSegs: (eventRange) ->
-		segs = super
-		resourceId = eventRange.resourceId
-
-		if resourceId
-			for seg in segs
-				seg.resourceId = resourceId
-
-		segs
-
-
-	selectionRangeToSegs: (selectionRange) ->
-		segs = super
-		resourceId = selectionRange.resourceId
-			# TODO: in the case of eventResourceField,
-			#  would be nice to check customized value as well.
-
-		if resourceId
-			for seg in segs
-				seg.resourceId = resourceId
-
-		segs
+	transformEventSpan: (span, event) ->
+		span.resourceId = @view.calendar.getEventResourceId(event)
 
 
 	# DnD
 	# ---------------------------------------------------------------------------------
 
 
-	fabricateHelperEvent: (eventRange, seg) ->
+	fabricateHelperEvent: (eventLocation, seg) ->
 		event = super
-		@view.calendar.resourceManager.setEventResourceId(event, eventRange.resourceId)
+		@view.calendar.resourceManager.setEventResourceId(event, eventLocation.resourceId)
 		event
 
 
 	computeEventDrop: (startSpan, endSpan, event) ->
 
-		if not endSpan.resourceId # TODO: understand why this happens
-			return null
-
 		allowResourceChange = true # TODO: make this a setting
 		if not allowResourceChange and startSpan.resourceId != endSpan.resourceId
 			return null
 
-		eventRange = super
-
-		if eventRange
-			eventRange.resourceId = endSpan.resourceId
-
-		eventRange
+		dropLocation = super
+		if dropLocation
+			dropLocation.resourceId = endSpan.resourceId
+		dropLocation
 
 
 	computeExternalDrop: (span, meta) ->
-
-		if not span.resourceId # TODO: understand why this happens
-			return null
-
-		eventRange = super
-
-		if eventRange
-			eventRange.resourceId = span.resourceId
-
-		eventRange
+		dropLocation = super
+		if dropLocation
+			dropLocation.resourceId = span.resourceId
+		dropLocation
 
 
 	computeEventResize: (type, startSpan, endSpan, event) ->
@@ -85,12 +45,10 @@ class ResourceGrid extends Grid # TODO: consider making this a mixin
 		if not @allowCrossResource and startSpan.resourceId != endSpan.resourceId
 			return
 
-		eventRange = super
-
-		if eventRange
-			eventRange.resourceId = startSpan.resourceId
-
-		eventRange
+		resizeLocation = super
+		if resizeLocation
+			resizeLocation.resourceId = startSpan.resourceId
+		resizeLocation
 
 
 	# Selection
@@ -102,9 +60,7 @@ class ResourceGrid extends Grid # TODO: consider making this a mixin
 		if not @allowCrossResource and startSpan.resourceId != endSpan.resourceId
 			return
 
-		selectionRange = super
-
-		if selectionRange
-			selectionRange.resourceId = startSpan.resourceId
-
-		selectionRange
+		selectionSpan = super
+		if selectionSpan
+			selectionSpan.resourceId = startSpan.resourceId
+		selectionSpan

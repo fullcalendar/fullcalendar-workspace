@@ -12,13 +12,13 @@ class ResourceDayGrid extends FC.DayGrid
 		span
 
 
-	rangeToSegs: (range) ->
+	spanToSegs: (span) ->
 		resourceCnt = @resourceCnt
 		genericSegs = # no assigned resources
 			if @datesAboveResources
-				@sliceRangeByDay(range) # each day-per-resource will need its own column
+				@sliceRangeByDay(span) # each day-per-resource will need its own column
 			else
-				@sliceRangeByRow(range)
+				@sliceRangeByRow(span)
 
 		if not resourceCnt
 			for seg in genericSegs
@@ -34,7 +34,7 @@ class ResourceDayGrid extends FC.DayGrid
 			for seg in genericSegs
 				for resourceIndex in [0...resourceCnt] by 1
 					resourceObj = @flattenedResources[resourceIndex]
-					if not range.resourceId or range.resourceId == resourceObj.id
+					if not span.resourceId or span.resourceId == resourceObj.id
 						copy = $.extend({}, seg)
 						if @isRTL
 							copy.leftCol = @indicesToCol(resourceIndex, seg.lastRowDayIndex)

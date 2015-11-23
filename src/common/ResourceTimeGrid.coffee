@@ -12,9 +12,9 @@ class ResourceTimeGrid extends FC.TimeGrid
 		span
 
 
-	rangeToSegs: (range) ->
+	spanToSegs: (span) ->
 		resourceCnt = @resourceCnt
-		genericSegs = @sliceRangeByTimes(range) # no assigned resources
+		genericSegs = @sliceRangeByTimes(span) # no assigned resources
 
 		if not resourceCnt
 			for seg in genericSegs
@@ -25,7 +25,7 @@ class ResourceTimeGrid extends FC.TimeGrid
 			for seg in genericSegs
 				for resourceIndex in [0...resourceCnt] by 1
 					resourceObj = @flattenedResources[resourceIndex]
-					if not range.resourceId or range.resourceId == resourceObj.id
+					if not span.resourceId or span.resourceId == resourceObj.id
 						copy = $.extend({}, seg)
 						copy.col = @indicesToCol(resourceIndex, seg.dayIndex)
 						resourceSegs.push(copy)

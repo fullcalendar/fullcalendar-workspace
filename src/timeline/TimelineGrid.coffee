@@ -111,7 +111,7 @@ class TimelineGrid extends Grid
 	###
 	normalizeGridDate: (date) ->
 		if @isTimeScale
-			normalDate = date.clone().stripZone()
+			normalDate = date.clone()
 			if not normalDate.hasTime()
 				normalDate.time(0)
 		else
@@ -181,12 +181,12 @@ class TimelineGrid extends Grid
 		@slotCnt = @snapCnt / @snapsPerSlot
 
 
-	rangeToSegs: (range) ->
-		normalRange = @normalizeGridRange(range)
+	spanToSegs: (span) ->
+		normalRange = @normalizeGridRange(span)
 
 		# `this` has a start/end, an already normalized range.
-		# zones will have been stripped (a requirement for intersectionToSeg)
-		seg = intersectionToSeg(normalRange, this)
+		# zones will have been stripped (a requirement for intersectRanges)
+		seg = intersectRanges(normalRange, this)
 
 		# TODO: what if month slots? should round it to nearest month
 		# TODO: dragging/resizing in this situation? deltas for dragging/resizing breaks down
@@ -263,9 +263,8 @@ class TimelineGrid extends Grid
 	# ---------------------------------------------------------------------------------
 
 
-	getSnapRange: (snapIndex) -> # NOTE: not really hit-related
+	getSnapRange: (snapIndex) ->
 		start = @start.clone()
-		start = @view.calendar.rezoneDate(start) # TODO: find a way to make this unnecessary
 		start.add(multiplyDuration(@snapDuration, @snapIndexToDiff[snapIndex]))
 		end = start.clone().add(@snapDuration)
 		{ start, end }
@@ -551,7 +550,6 @@ class TimelineGrid extends Grid
 
 	# returned value is between 0 and the number of snaps
 	computeDateSnapCoverage: (date) ->
-		date = date.clone().stripZone() # TODO: remove this noralization step somehow
 		snapDiff = divideRangeByDuration(@start, date, @snapDuration)
 
 		if snapDiff < 0
@@ -572,7 +570,6 @@ class TimelineGrid extends Grid
 	# for LTR, results range from 0 to width of area
 	# for RTL, results range from negative width of area to 0
 	dateToCoord: (date) ->
-		date = date.clone().stripZone() # TODO: remove this noralization step somehow
 		snapCoverage = @computeDateSnapCoverage(date)
 		slotCoverage = snapCoverage / @snapsPerSlot
 		slotIndex = Math.floor(slotCoverage)
@@ -697,7 +694,7 @@ class TimelineGrid extends Grid
 	buildSegLevels: (segs) ->
 		segLevels = []
 
-		@sortSegs(segs)
+		@sortEventSegs(segs)
 
 		for unplacedSeg in segs
 			unplacedSeg.above = []
@@ -828,7 +825,7 @@ class TimelineGrid extends Grid
 
 
 	renderHelper: (event, sourceSeg) ->
-		segs = @eventsToSegs([ event ])
+		segs = @eventToSegs(event)
 		segs = @renderFgSegEls(segs)
 		@renderHelperSegsInContainers([[ this, segs ]], sourceSeg)
 
@@ -875,9 +872,9 @@ class TimelineGrid extends Grid
 
 
 	# Renders a visual indication of an event being resized
-	renderEventResize: (range, seg) ->
-		@renderHighlight(@eventRangeToSegs(range))
-		@renderRangeHelper(range, seg)
+	renderEventResize: (resizeLocation, seg) ->
+		@renderHighlight(@eventToSpan(resizeLocation))
+		@renderEventLocationHelper(resizeLocation, seg)
 
 
 	# Unrenders a visual indication of an event being resized
@@ -935,11 +932,11 @@ class TimelineGrid extends Grid
 	#  should be the edges when isTimeScale.
 	renderDrag: (dropLocation, seg) ->
 		if seg
-			@renderRangeHelper(dropLocation, seg)
+			@renderEventLocationHelper(dropLocation, seg)
 			@applyDragOpacity(@helperEls)
 			true
 		else
-			@renderHighlight(@eventRangeToSegs(dropLocation))
+			@renderHighlight(@eventToSpan(dropLocation))
 			false
 
 
