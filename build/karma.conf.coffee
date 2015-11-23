@@ -23,6 +23,8 @@ module.exports = (config) ->
 
 			'tests/util/base.css'
 			'tests/util/util.coffee'
+			'tests/util/geom.coffee'
+			'tests/util/vresource.coffee'
 			'tests/*.coffee'
 
 			{ pattern: 'dist/*.js.map', included: false }
