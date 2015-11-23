@@ -17,6 +17,7 @@
 			defaultView: 'basicDay',
 			defaultDate: '2015-08-07',
 			editable: true,
+			selectable: true,
 			eventLimit: true, // allow "more" link when too many events
 			header: {
 				left: 'prev,next today',
@@ -48,7 +49,22 @@
 				{ id: '3', resourceId: 'b', start: '2015-08-07T12:00:00', end: '2015-08-08T06:00:00', title: 'event 3' },
 				{ id: '4', resourceId: 'c', start: '2015-08-07T07:30:00', end: '2015-08-07T09:30:00', title: 'event 4' },
 				{ id: '5', resourceId: 'd', start: '2015-08-07T10:00:00', end: '2015-08-07T15:00:00', title: 'event 5' }
-			]
+			],
+			select: function(start, end, jsEvent, view, resource) {
+				console.log(
+					'select',
+					start.format(),
+					end.format(),
+					resource ? resource.id : '(no resource)'
+				);
+			},
+			dayClick: function(date, jsEvent, view, resource) {
+				console.log(
+					'dayClick',
+					date.format(),
+					resource ? resource.id : '(no resource)'
+				);
+			}
 		});
 	
 	});
