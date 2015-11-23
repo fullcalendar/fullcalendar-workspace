@@ -77,6 +77,13 @@
 					end.format(),
 					resource ? resource.id : '(no resource)'
 				);
+			},
+			dayClick: function(date, jsEvent, view, resource) {
+				console.log(
+					'dayClick',
+					date.format(),
+					resource.id
+				);
 			}
 		});
 
