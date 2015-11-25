@@ -1,5 +1,4 @@
 
-# TODO: get rid of viewRender setTimeouts
 # TODO: test at bottom is busted !!!
 
 describe 'vresource event rendering', ->

@@ -1,6 +1,4 @@
 
-# TODO: get rid of viewRender setTimeouts
-
 describe 'vresource businessHours', ->
 	pushOptions
 		now: '2015-11-18'
@@ -25,7 +23,7 @@ describe 'vresource businessHours', ->
 
 				it 'greys out sat and sun', (done) ->
 					initCalendar
-						viewRender: -> setTimeout ->
+						viewRender: ->
 							aHeadRect = getBoundingRect(checkResourceHeadEl('Resource A'))
 							bHeadRect = getBoundingRect(checkResourceHeadEl('Resource B'))
 							aSunRect = getLeadingBoundingRect(getDowHeadEls('sun'), isRTL)
@@ -50,7 +48,7 @@ describe 'vresource businessHours', ->
 
 				it 'greys out sat and sunday', (done) ->
 					initCalendar
-						viewRender: -> setTimeout ->
+						viewRender: ->
 							sunHeadRect = getBoundingRect(checkDowHeadEl('sun'))
 							satHeadRect = getBoundingRect(checkDowHeadEl('sat'))
 							bizRects = sortBoundingRects(getDayGridNonBizHourEls(), isRTL)
@@ -71,7 +69,7 @@ describe 'vresource businessHours', ->
 
 				it 'greys out sat and sun', (done) ->
 					initCalendar
-						viewRender: -> setTimeout ->
+						viewRender: ->
 							aRect = getBoundingRect(checkResourceHeadEl('Resource A'))
 							bRect = getBoundingRect(checkResourceHeadEl('Resource B'))
 							bizRects = sortBoundingRects(getTimeGridNonBizHourEls(), isRTL)
@@ -89,7 +87,7 @@ describe 'vresource businessHours', ->
 
 				it 'greys out sat and sun', (done) ->
 					initCalendar
-						viewRender: -> setTimeout ->
+						viewRender: ->
 							bizRects = sortBoundingRects(getTimeGridNonBizHourEls(), isRTL)
 							sunRect = getBoundingRect(getDowHeadEls('sun'))
 							monRect = getBoundingRect(getDowHeadEls('mon'))

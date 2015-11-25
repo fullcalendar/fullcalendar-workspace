@@ -1,6 +1,4 @@
 
-# TODO: get rid of viewRender setTimeouts
-
 describe 'vresource structure', ->
 	pushOptions
 		now: '2015-11-16'
@@ -29,7 +27,7 @@ describe 'vresource structure', ->
 
 				it 'renders cells right-to-left', (callback) ->
 					initCalendar
-						viewRender: -> setTimeout -> # :(
+						viewRender: ->
 							aRect = getBoundingRect(checkResourceHeadEl('Resource A'))
 							bRect = getBoundingRect(checkResourceHeadEl('Resource B'))
 							cRect = getBoundingRect(checkResourceHeadEl('Resource C'))
@@ -46,7 +44,7 @@ describe 'vresource structure', ->
 
 				it 'renders cells left-to-right', (callback) ->
 					initCalendar
-						viewRender: -> setTimeout -> # :(
+						viewRender: ->
 							aRect = getBoundingRect(checkResourceHeadEl('Resource A'))
 							bRect = getBoundingRect(checkResourceHeadEl('Resource B'))
 							cRect = getBoundingRect(checkResourceHeadEl('Resource C'))
@@ -72,7 +70,7 @@ describe 'vresource structure', ->
 
 				it 'renders cells correctly', (callback) ->
 					initCalendar
-						viewRender: -> setTimeout -> # :(
+						viewRender: ->
 							aEl = checkResourceHeadEl('Resource A')
 							aRect = getBoundingRect(aEl)
 							monEls = getDowHeadEls('mon')
@@ -91,7 +89,7 @@ describe 'vresource structure', ->
 
 				it 'renders cells correctly', (callback) ->
 					initCalendar
-						viewRender: -> setTimeout -> # :(
+						viewRender: ->
 							monEl = checkDowHeadEl('mon')
 							monRect = getBoundingRect(monEl)
 							expect(monEl.length).toBe(1)
@@ -113,7 +111,7 @@ describe 'vresource structure', ->
 
 				it 'renders resources columns', (callback) ->
 					initCalendar
-						viewRender: -> setTimeout -> # :(
+						viewRender: ->
 							expect(getResourceHeadEls('Resource A').length).toBe(1)
 							expect(getResourceHeadEls('Resource B').length).toBe(1)
 							expect(getResourceHeadEls('Resource C').length).toBe(1)
@@ -126,7 +124,7 @@ describe 'vresource structure', ->
 
 				it 'renders resources columns', (callback) ->
 					initCalendar
-						viewRender: -> setTimeout -> # :(
+						viewRender: ->
 							expect(getResourceHeadEls('Resource A').length).toBe(0)
 							expect(getResourceHeadEls('Resource B').length).toBe(0)
 							expect(getResourceHeadEls('Resource C').length).toBe(0)
@@ -152,7 +150,7 @@ describe 'vresource structure', ->
 					checkDowHeadEl('mon')
 					firstCallbackCalled = true
 				initCalendar
-					viewRender: -> setTimeout -> # :(
+					viewRender: ->
 						expect(getResourceHeadEls('Resource A').length).toBe(1)
 						expect(getResourceHeadEls('Resource B').length).toBe(1)
 						expect(firstCallbackCalled).toBe(true)
@@ -175,7 +173,7 @@ describe 'vresource structure', ->
 
 			it 'renders side-by-side months', (callback) ->
 				initCalendar
-					viewRender: -> setTimeout -> # :(
+					viewRender: ->
 						checkResourceHeadEl('Resource A')
 						checkResourceHeadEl('Resource B')
 						expect(getDowHeadEls('sun').length).toBe(2)
