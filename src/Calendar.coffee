@@ -57,13 +57,15 @@ class CalendarExtension extends Calendar
 		@resourceManager.getEventResourceId(event)
 
 
+	# this method will take effect for *all* views, event ones that don't explicitly
+	# support resources. shouln't assume a resourceId on the span or event.
+	# `event` can be null.
 	getPeerEvents: (span, event) ->
 		peerEvents = super
 
-		newResourceId =
-			span.resourceId or
-			@getEventResourceId(event) or # span doesn't care. keep it the same
-			'' # the best fallback?
+		# if the span (basically the target drop area) has a resource, use its ID.
+		# otherwise, assume the the event wants to keep it's existing resource ID.
+		newResourceId = span.resourceId or (event and @getEventResourceId(event)) or ''
 
 		filteredPeerEvents = []
 		for peerEvent in peerEvents
