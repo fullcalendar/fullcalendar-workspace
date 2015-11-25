@@ -11,6 +11,14 @@ class ResourceGrid extends Grid # TODO: consider making this a mixin
 		span.resourceId = @view.calendar.getEventResourceId(event)
 
 
+	# when rendering foreground events, exclude events with no resource
+	renderFgEvents: (events) ->
+		calendar = @view.calendar
+		super(
+			event for event in events when calendar.getEventResourceId(event)
+		)
+
+
 	# DnD
 	# ---------------------------------------------------------------------------------
 

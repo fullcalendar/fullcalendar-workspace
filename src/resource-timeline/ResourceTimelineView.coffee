@@ -418,20 +418,23 @@ class ResourceTimelineView extends TimelineView
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	pairSegsWithRows: (segs) -> # produces array of [ rowObj, segs ]
+	# produces array of [ rowObj, segs ]
+	# segs that don't have any resourceId won't be paired
+	pairSegsWithRows: (segs) ->
 		pairs = []
 		pairsById = {}
 
 		for seg in segs
-			resourceId = seg.resourceId or ''
-			rowObj = @getResourceRow(resourceId)
-			if rowObj
-				pair = pairsById[resourceId]
-				if not pair
-					pair = [ rowObj, [] ]
-					pairs.push(pair)
-					pairsById[resourceId] = pair
-				pair[1].push(seg)
+			resourceId = seg.resourceId
+			if resourceId
+				rowObj = @getResourceRow(resourceId)
+				if rowObj
+					pair = pairsById[resourceId]
+					if not pair
+						pair = [ rowObj, [] ]
+						pairs.push(pair)
+						pairsById[resourceId] = pair
+					pair[1].push(seg)
 
 		pairs
 

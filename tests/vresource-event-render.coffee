@@ -1,6 +1,4 @@
 
-# TODO: test at bottom is busted !!!
-
 describe 'vresource event rendering', ->
 	pushOptions
 		now: '2015-11-17'
@@ -230,7 +228,7 @@ describe 'vresource event rendering', ->
 										callback()
 						else
 
-							xit 'doesn\'t render at all', (callback) -> # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+							it 'doesn\'t render at all', (callback) ->
 								initCalendar
 									eventAfterAllRender: ->
 										eventEls = $('.event1')
