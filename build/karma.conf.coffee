@@ -44,3 +44,11 @@ module.exports = (config) ->
 
 			transformPath: (path) ->
 				path.replace(/\.coffee$/, '.js')
+
+		customLaunchers:
+			PhantomJS_custom:
+				base: 'PhantomJS'
+				options:
+					viewportSize:
+						width: 1024
+						height: 768

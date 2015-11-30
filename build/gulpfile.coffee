@@ -244,7 +244,7 @@ Runs headlessly and continuously, watching files
 gulp.task 'karmaHeadless', ->
 	karmaServer.start
 		configFile: KARMA_CONFIG_FILE
-		browsers: [ 'PhantomJS' ]
+		browsers: [ 'PhantomJS_custom' ]
 		singleRun: false
 		autoWatch: true
 
@@ -254,7 +254,7 @@ Runs headlessly once, then exits
 gulp.task 'karmaSingle', ->
 	karmaServer.start
 		configFile: KARMA_CONFIG_FILE
-		browsers: [ 'PhantomJS' ]
+		browsers: [ 'PhantomJS_custom' ]
 		singleRun: true
 		autoWatch: false
 
