@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "jquery-ui": ">=1.11.1",
+    "jquery-simulate": "~1.0.1",
     "jasmine-jquery": "~2.1.0",
     "jasmine-fixture": "~1.3.2"
   },

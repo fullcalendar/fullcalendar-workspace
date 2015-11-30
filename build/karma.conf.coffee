@@ -19,6 +19,8 @@ module.exports = (config) ->
 
 			'lib/jasmine-jquery/lib/jasmine-jquery.js'
 			'lib/jasmine-fixture/dist/jasmine-fixture.js'
+			'lib/jquery-simulate/jquery.simulate.js'
+			'lib/jquery-ui/jquery-ui.js'
 
 			'tests/util/base.css'
 			'tests/util/util.coffee'
