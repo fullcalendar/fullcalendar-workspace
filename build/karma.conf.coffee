@@ -17,7 +17,6 @@ module.exports = (config) ->
 			'dist/scheduler.js'
 			'dist/scheduler.css'
 
-			'lib/jquery-mockjax/dist/jquery.mockjax.js'
 			'lib/jasmine-jquery/lib/jasmine-jquery.js'
 			'lib/jasmine-fixture/dist/jasmine-fixture.js'
 
