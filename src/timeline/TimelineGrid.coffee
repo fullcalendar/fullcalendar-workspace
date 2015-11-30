@@ -19,7 +19,11 @@ class TimelineGrid extends Grid
 	slatEls: null # in DOM order
 
 	containerCoordCache: null
-	slatCoordCache: null
+	slatCoordCache: null # used for hit detection
+
+	# for the inner divs within the slats
+	# used for event rendering and scrollTime, to disregard slat border
+	slatInnerCoordCache: null
 
 	headScroller: null
 	bodyScroller: null
@@ -293,7 +297,7 @@ class TimelineGrid extends Grid
 		@bgSegContainerEl = @bodyScroller.bgEl
 
 		@containerCoordCache = new CoordCache
-			els: @slatContainerEl
+			els: @bodyScroller.innerEl # better representative of bounding box, considering annoying negative margins
 			isHorizontal: true # we use the left/right for adjusting RTL coordinates
 			isVertical: true
 
@@ -325,8 +329,15 @@ class TimelineGrid extends Grid
 		@slatEls = @slatContainerEl.find('td')
 
 		@slatCoordCache = new CoordCache
-			els: @slatEls # TODO: coords are off-by-one when RTL
+			els: @slatEls
 			isHorizontal: true
+
+		@slatInnerCoordCache = new CoordCache
+			els: @slatEls.find('> div')
+			isHorizontal: true
+			# we use this coord cache for getPosition* for event rendering.
+			# workaround for .fc-content's negative margins.
+			offsetParent: @bodyScroller.innerEl
 
 		for date, i in @slotDates
 			@view.trigger('dayRender', null, date, @slatEls.eq(i))
@@ -546,6 +557,7 @@ class TimelineGrid extends Grid
 	buildCoords: ->
 		@containerCoordCache.build()
 		@slatCoordCache.build()
+		@slatInnerCoordCache.build()
 
 
 	# returned value is between 0 and the number of snaps
@@ -575,14 +587,15 @@ class TimelineGrid extends Grid
 		slotIndex = Math.floor(slotCoverage)
 		slotIndex = Math.min(slotIndex, @slotCnt - 1)
 		partial = slotCoverage - slotIndex
+		coordCache = @slatInnerCoordCache
 
 		if @isRTL
-			(@slatCoordCache.getRightPosition(slotIndex) -
-				@slatCoordCache.getWidth(slotIndex) * partial) -
+			(coordCache.getRightPosition(slotIndex) -
+				coordCache.getWidth(slotIndex) * partial) -
 					@containerCoordCache.getWidth(0)
 		else
-			(@slatCoordCache.getLeftPosition(slotIndex) +
-				@slatCoordCache.getWidth(slotIndex) * partial)
+			(coordCache.getLeftPosition(slotIndex) +
+				coordCache.getWidth(slotIndex) * partial)
 
 
 	rangeToCoords: (range) ->
