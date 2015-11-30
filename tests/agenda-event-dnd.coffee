@@ -41,7 +41,9 @@ describe 'agenda-view event drag-n-drop', ->
 					]
 					eventAfterAllRender: oneCall ->
 						$('.event0').simulate 'drag',
-							localStartPoint: { top: 0, left: '50%' }
+							localStartPoint:
+								top: 1 # fudge for IE10 :( do this all the time with localStartPoint???
+								left: '50%'
 							endPoint: getTimeGridResourceDatePoint('Resource A', '2015-12-01', '5am')
 							callback: ->
 								expect(dropSpy).toHaveBeenCalled()
