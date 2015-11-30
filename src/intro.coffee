@@ -14,6 +14,16 @@ Docs & License: <%= homepage %>
 })(function($, moment) {`
 
 FC = $.fullCalendar
+FC.schedulerVersion = "<%= version %>"
+
+if not (FC.internalApiVersion >= 1) # might be undefined, thus the `not`
+	FC.warn(
+		'v' + FC.schedulerVersion + ' of FullCalendar Scheduler ' +
+		'is incompatible with v' + FC.version + ' of the core.\n' +
+		'Please see http://fullcalendar.io/support/ for more information.'
+	)
+	return # stop execution. don't load the plugin
+
 Calendar = FC.Calendar
 Class = FC.Class
 View = FC.View
