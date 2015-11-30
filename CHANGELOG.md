@@ -1,16 +1,9 @@
 
-v1.1.0-beta2 (2015-11-23)
--------------------------
+v1.1.0 (2015-11-30)
+-------------------
 
-- fix dayClick not firing in resource views
-- fix businessHours not rendering
+- vertical resource view (#5)
 - fix event overlap not working in day/week/month view (#24)
-
-
-v1.1.0-beta (2015-11-15)
-------------------------
-
-vertical resource view (#5)
 
 
 v1.0.2 (2015-10-18)
