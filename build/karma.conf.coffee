@@ -25,7 +25,12 @@ module.exports = (config) ->
 			'tests/util/base.css'
 			'tests/util/util.coffee'
 			'tests/util/geom.coffee'
-			'tests/util/vresource.coffee'
+			'tests/util/day-grid.coffee'
+			'tests/util/time-grid.coffee'
+			'tests/util/column.coffee'
+			'tests/util/timeline.coffee'
+			'tests/util/moment.js'
+			'tests/util/simulate.js'
 			'tests/*.coffee'
 
 			{ pattern: 'dist/*.js.map', included: false }

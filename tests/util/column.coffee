@@ -1,4 +1,12 @@
 
+# for both day-grid time-grid
+
+# rename: query?
+# TODO: get data-time or data-date into every view
+# TODO: get data-resource-id into every view
+# TODO: always receive resource name in every method. no more leading/trailing/index
+
+
 checkDowHeadEl = (dayAbbrev) ->
 	els = getDowHeadEls(dayAbbrev)
 	expect(els.length).toBe(1)
@@ -26,28 +34,8 @@ checkDowBodyEls = (dayAbbrev, viewType) -> # todo: rename from "check" ? "lone"
 		checkDayGridDowBodyEl(dayAbbrev)
 
 
-checkTimeGridDowBodyEl = (dayAbbrev) ->
-	els = getTimeGridDowBodyEls(dayAbbrev)
-	expect(els.length).toBe(1)
-	els
-
-
-checkDayGridDowBodyEl = (dayAbbrev) ->
-	els = getDayGridDowBodyEls(dayAbbrev)
-	expect(els.length).toBe(1)
-	els
-
-
 getDowBodyEls = (dayAbbrev, viewType) ->
 	if viewType == 'agenda'
 		getTimeGridDowBodyEls(dayAbbrev)
 	else
 		getDayGridDowBodyEls(dayAbbrev)
-
-
-getTimeGridDowBodyEls = (dayAbbrev) ->
-	$('.fc-time-grid td.fc-day.fc-' + dayAbbrev)
-
-
-getDayGridDowBodyEls = (dayAbbrev) ->
-	$('.fc-day-grid .fc-row:first-child td.fc-day.fc-' + dayAbbrev)

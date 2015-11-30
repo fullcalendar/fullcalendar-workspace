@@ -49,3 +49,19 @@ describeValues = (hash, callback) ->
 	$.each hash, (desc, val) ->
 		describe desc, ->
 			callback(val)
+
+
+# TODO: move elsewhere?
+
+oneCall = (func) ->
+	called = false
+	->
+		if not called
+			called = true
+			func.apply(this, arguments)
+
+spyCall = (func) ->
+	func = func or ->
+	obj = { func: func }
+	spyOn(obj, 'func').and.callThrough()
+	obj.func

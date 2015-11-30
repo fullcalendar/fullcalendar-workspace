@@ -78,6 +78,25 @@ joinRects = (rect, otherRects...) ->
 	rect
 
 
+intersectRects = (rect, otherRects...) ->
+	for otherRect in otherRects
+		rect =
+			left: Math.max(rect.left, otherRect.left)
+			right: Math.min(rect.right, otherRect.right)
+			top: Math.max(rect.top, otherRect.top)
+			bottom: Math.min(rect.bottom, otherRect.bottom)
+		if rect.right < rect.left or rect.bottom < rect.top
+			return false
+	rect
+
+
+getRectCenter = (rect) ->
+	{
+		left: (rect.left + rect.right) / 2
+		top: (rect.top + rect.bottom) / 2
+	}
+
+
 beforeEach -> # TODO: need this?
 	jasmine.addMatchers
 
