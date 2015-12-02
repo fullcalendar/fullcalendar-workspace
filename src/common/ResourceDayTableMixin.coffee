@@ -186,6 +186,45 @@ ResourceDayTableMixin =
 		)
 
 
+	# given a container with already rendered resource cells
+	processHeadResourceEls: (containerEl) ->
+		containerEl.find('.fc-resource-cell').each (col, node) =>
+			resource = @getColResource(col)
+			@view.trigger(
+				'resourceRender',
+				resource, # this
+				resource,
+				$(node)
+			)
+
+
+	# Bg Rendering
+	# ----------------------------------------------------------------------------------------------
+	# TODO: unify with DayTableMixin more, instead of completely redefining
+
+
+	renderBgCellsHtml: (row) ->
+		if not @resourceCnt
+			FC.DayTableMixin.renderBgCellsHtml.call(this, row)
+		else
+			htmls = []
+
+			for col in [0...@colCnt] by 1
+				date = @getCellDate(row, col)
+				resource = @getColResource(col)
+				htmls.push(@renderResourceBgCellHtml(date, resource))
+
+			htmls.join('') # already accounted for RTL
+
+
+	renderResourceBgCellHtml: (date, resource) ->
+		@renderBgCellHtml(date, 'data-resource-id="' + resource.id + '"')
+
+
+	# Rendering Utils
+	# ----------------------------------------------------------------------------------------------
+
+	# only works for when given cells are ordered chronologically
 	# mutates cellHtmls
 	# TODO: make this a DayTableMixin utility
 	wrapTr: (cellHtmls, introMethodName) ->
@@ -200,15 +239,3 @@ ResourceDayTableMixin =
 				this[introMethodName]() +
 				cellHtmls.join('') +
 			'</tr>'
-
-
-	# given a container with already rendered resource cells
-	processHeadResourceEls: (containerEl) ->
-		containerEl.find('.fc-resource-cell').each (col, node) =>
-			resource = @getColResource(col)
-			@view.trigger(
-				'resourceRender',
-				resource, # this
-				resource,
-				$(node)
-			)
