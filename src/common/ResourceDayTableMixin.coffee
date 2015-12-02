@@ -103,67 +103,106 @@ ResourceDayTableMixin =
 			if @daysPerRow > 1
 				# do two levels
 				if @datesAboveResources
-					@renderHeadDateTrHtml(1, @resourceCnt) +
-						@renderHeadResourceTrHtml(@daysPerRow)
+					@renderHeadDateAndResourceHtml()
 				else
-					@renderHeadResourceTrHtml(1, @daysPerRow) +
-						@renderHeadDateTrHtml(@resourceCnt)
+					@renderHeadResourceAndDateHtml()
 			else
 				# do one level
-				@renderHeadResourceTrHtml()
+				@renderHeadResourceHtml()
 
 
-	# Date
+	# renders one row of resources header cell
+	renderHeadResourceHtml: ->
+		resourceHtmls = []
 
-	renderHeadDateTrHtml: (repeat, colspan) ->
-		'<tr>' +
-			(if @isRTL then '' else @renderHeadIntroHtml()) +
-			@renderHeadDateCellsHtml(repeat, colspan) +
-			(if @isRTL then @renderHeadIntroHtml() else '') +
-		'</tr>'
+		for resource in @flattenedResources
+			resourceHtmls.push \
+				@renderHeadResourceCellHtml(resource)
+
+		@wrapTr(resourceHtmls, 'renderHeadIntroHtml')
 
 
-	renderHeadDateCellsHtml: (repeat=1, colspan=1) ->
-		htmls = []
-		for i in [0...repeat] by 1
+	# renders resource cells above date cells
+	renderHeadResourceAndDateHtml: ->
+		resourceHtmls = []
+		dateHtmls = []
+
+		for resource in @flattenedResources
+			resourceHtmls.push \
+				@renderHeadResourceCellHtml(resource, null, @daysPerRow)
+
 			for dayIndex in [0...@daysPerRow] by 1
 				date = @dayDates[dayIndex].clone()
-				htmls.push(@renderHeadDateCellHtml(date, colspan))
-		if @isRTL
-			htmls.reverse()
-		htmls.join('')
+				dateHtmls.push \
+					@renderHeadResourceDateCellHtml(date, resource)
+
+		@wrapTr(resourceHtmls, 'renderHeadIntroHtml') +
+			@wrapTr(dateHtmls, 'renderHeadIntroHtml')
 
 
-	# Resource
+	# renders date cells above resource cells
+	renderHeadDateAndResourceHtml: ->
+		dateHtmls = []
+		resourceHtmls = []
 
-	renderHeadResourceTrHtml: (repeat, colspan) ->
-		'<tr>' +
-			(if @isRTL then '' else @renderHeadIntroHtml()) +
-			@renderHeadResourceCellsHtml(repeat, colspan) +
-			(if @isRTL then @renderHeadIntroHtml() else '') +
-		'</tr>'
+		for dayIndex in [0...@daysPerRow] by 1
+			date = @dayDates[dayIndex].clone()
+			dateHtmls.push \
+				@renderHeadDateCellHtml(date, @resourceCnt) # with colspan
 
-
-	renderHeadResourceCellsHtml: (repeat=1, colspan=1) ->
-		htmls = []
-		for i in [0...repeat] by 1
 			for resource in @flattenedResources
-				htmls.push(@renderHeadResourceCellHtml(resource, colspan))
-		if @isRTL
-			htmls.reverse()
-		htmls.join('')
+				resourceHtmls.push \
+					@renderHeadResourceCellHtml(resource, date)
+
+		@wrapTr(dateHtmls, 'renderHeadIntroHtml') +
+			@wrapTr(resourceHtmls, 'renderHeadIntroHtml')
 
 
-	renderHeadResourceCellHtml: (resource, colspan=1) ->
+	# given a resource and an optional date
+	renderHeadResourceCellHtml: (resource, date, colspan) ->
 		'<th class="fc-resource-cell"' +
-			(if colspan > 1 then ' colspan="' + colspan + '"' else '') +
-			'>' +
+			' data-resource-id="' + resource.id + '"' +
+			(if date
+				' data-date="' + date.format('YYYY-MM-DD') + '"'
+			else
+				'') +
+			(if colspan > 1
+				' colspan="' + colspan + '"'
+			else
+				'') +
+		'>' +
 			htmlEscape(
 				@view.getResourceText(resource)
 			) +
 		'</th>'
 
 
+	# given a date and a required resource
+	renderHeadResourceDateCellHtml: (date, resource, colspan) ->
+		@renderHeadDateCellHtml(
+			date,
+			colspan,
+			'data-resource-id="' + resource.id + '"'
+		)
+
+
+	# mutates cellHtmls
+	# TODO: make this a DayTableMixin utility
+	wrapTr: (cellHtmls, introMethodName) ->
+		if @isRTL
+			cellHtmls.reverse()
+			'<tr>' +
+				cellHtmls.join('') +
+				this[introMethodName]() +
+			'</tr>'
+		else
+			'<tr>' +
+				this[introMethodName]() +
+				cellHtmls.join('') +
+			'</tr>'
+
+
+	# given a container with already rendered resource cells
 	processHeadResourceEls: (containerEl) ->
 		containerEl.find('.fc-resource-cell').each (col, node) =>
 			resource = @getColResource(col)
