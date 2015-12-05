@@ -48,6 +48,12 @@ class ResourceRow extends EventRow
 			@getTr('event').find('> td') # TODO: optimize
 		)
 
+
+	renderEventContent: (tr) ->
+		super
+		tr.attr('data-resource-id', @resource.id)
+
+
 	###
 	Populates the TR with cells containing data about the resource
 	###
@@ -91,6 +97,8 @@ class ResourceRow extends EventRow
 				td.wrapInner('<div/>')
 
 			tr.append(td)
+
+		tr.attr('data-resource-id', resource.id)
 
 
 	###

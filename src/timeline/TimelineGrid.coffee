@@ -382,14 +382,16 @@ class TimelineGrid extends Grid
 
 				if isSuperRow
 					text = date.format(format)
+					dateData = date.format()
 					if !leadingCell or leadingCell.text != text
-						newCell = { text, colspan: 1 }
+						newCell = { text, dateData, colspan: 1 }
 					else
 						leadingCell.colspan += 1
 				else
 					if !leadingCell or isInt(divideRangeByDuration(@start, date, labelInterval))
 						text = date.format(format)
-						newCell = { text, colspan: 1 }
+						dateData = date.format()
+						newCell = { text, dateData, colspan: 1 }
 					else
 						leadingCell.colspan += 1
 
@@ -412,11 +414,13 @@ class TimelineGrid extends Grid
 			isLast = i == cellRows.length - 1
 			html += '<tr' + (if isChrono and isLast then ' class="fc-chrono"' else '') + '>'
 			for cell in rowCells
-				html += '<th class="' +
-						@view.widgetHeaderClass + ' ' +
-						(if cell.weekStart then 'fc-em-cell' else '') +
+				html +=
+					'<th class="' +
+							@view.widgetHeaderClass + ' ' +
+							(if cell.weekStart then 'fc-em-cell' else '') +
 						'"' +
-					(if cell.colspan > 1 then ' colspan="' + cell.colspan + '"' else '') +
+						' data-date="' + cell.dateData + '"' +
+						(if cell.colspan > 1 then ' colspan="' + cell.colspan + '"' else '') +
 					'>' +
 						'<div class="fc-cell-content">' +
 							'<span class="fc-cell-text">' +
