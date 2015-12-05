@@ -61,7 +61,7 @@ describe 'vresource event rendering', ->
 						it 'renders in the correct column', (callback) ->
 							initCalendar
 								eventAfterAllRender: ->
-									colRect = getTrailingBoundingRect(getDowHeadEls('tue'), isRTL)
+									colRect = getTrailingBoundingRect(getHeadDowEls('tue'), isRTL)
 									eventRect = getBoundingRect('.event1')
 									expect(eventRect).toBeMostlyHorizontallyWithin(colRect)
 									callback()
@@ -73,7 +73,7 @@ describe 'vresource event rendering', ->
 						it 'renders in the correct column', (callback) ->
 							initCalendar
 								eventAfterAllRender: ->
-									resourceRect = getLeadingBoundingRect(getResourceHeadEls('Resource C'), isRTL)
+									resourceRect = getLeadingBoundingRect(getHeadResourceEls('c'), isRTL)
 									eventRect = getBoundingRect('.event1')
 									expect(eventRect).toBeMostlyHorizontallyWithin(resourceRect)
 									callback()
@@ -108,8 +108,8 @@ describe 'vresource event rendering', ->
 									if not renderingType # non-background events
 										expect(firstEventRect.node).toHaveClass('fc-start')
 										expect(lastEventRect.node).toHaveClass('fc-end')
-									tueRect = getTrailingBoundingRect(getDowHeadEls('tue'), isRTL)
-									wedRect = getTrailingBoundingRect(getDowHeadEls('wed'), isRTL)
+									tueRect = getTrailingBoundingRect(getHeadDowEls('tue'), isRTL)
+									wedRect = getTrailingBoundingRect(getHeadDowEls('wed'), isRTL)
 									expect(firstEventRect).toBeMostlyHorizontallyWithin(tueRect)
 									expect(lastEventRect).toBeMostlyHorizontallyWithin(wedRect)
 									callback()
@@ -128,7 +128,7 @@ describe 'vresource event rendering', ->
 									if not renderingType # non-background events
 										expect(firstEventRect.node).toHaveClass('fc-start')
 										expect(lastEventRect.node).toHaveClass('fc-end')
-									resourceEls = getResourceHeadEls('Resource C')
+									resourceEls = getHeadResourceEls('c')
 									firstResourceRect = getLeadingBoundingRect(resourceEls, isRTL)
 									lastResourceRect = getTrailingBoundingRect(resourceEls, isRTL)
 									expect(firstEventRect).toBeMostlyHorizontallyWithin(firstResourceRect)
@@ -157,8 +157,8 @@ describe 'vresource event rendering', ->
 							initCalendar
 								eventAfterAllRender: ->
 									eventRect = getBoundingRect('.event1')
-									tueRect = getTrailingBoundingRect(getDowHeadEls('tue'), isRTL)
-									wedRect = getTrailingBoundingRect(getDowHeadEls('wed'), isRTL)
+									tueRect = getTrailingBoundingRect(getHeadDowEls('tue'), isRTL)
+									wedRect = getTrailingBoundingRect(getHeadDowEls('wed'), isRTL)
 									expect(tueRect).toBeMostlyHorizontallyWithin(eventRect)
 									expect(wedRect).toBeMostlyHorizontallyWithin(eventRect)
 									callback()
@@ -177,7 +177,7 @@ describe 'vresource event rendering', ->
 									if not renderingType # non-background events
 										expect(firstEventRect.node).toHaveClass('fc-start')
 										expect(lastEventRect.node).toHaveClass('fc-end')
-									resourceEls = getResourceHeadEls('Resource C')
+									resourceEls = getHeadResourceEls('c')
 									firstResourceRect = getLeadingBoundingRect(resourceEls, isRTL)
 									lastResourceRect = getTrailingBoundingRect(resourceEls, isRTL)
 									expect(firstEventRect).toBeMostlyHorizontallyWithin(firstResourceRect)

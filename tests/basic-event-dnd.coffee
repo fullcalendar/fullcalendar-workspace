@@ -40,7 +40,7 @@ describe 'basic-view event drag-n-drop', ->
 					]
 					eventAfterAllRender: oneCall ->
 						$('.event0').simulate 'drag',
-							endEl: getDayGridResourceRect('Resource A', '2015-12-01').node
+							endEl: getResourceDayGridDayEls('a', '2015-12-01').eq(0)
 							callback: ->
 								expect(dropSpy).toHaveBeenCalled()
 								done()

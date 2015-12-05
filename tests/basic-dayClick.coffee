@@ -20,7 +20,9 @@ describe 'basic-view dayClick', ->
 			dayClickCalled = false
 			initCalendar
 				eventAfterAllRender: ->
-					checkDayGridDowBodyEl('mon')
+					monEls = getDayGridDowEls('mon')
+					expect(monEls.length).toBe(1)
+					monEls.eq(0)
 						.simulate 'drag',
 							callback: ->
 								expect(dayClickCalled).toBe(true)
@@ -41,7 +43,7 @@ describe 'basic-view dayClick', ->
 			dayClickCalled = false
 			initCalendar
 				eventAfterAllRender: ->
-					sunAEl = $(getLeadingBoundingRect(getDayGridDowBodyEls('sun')).node)
+					sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
 					sunAEl.simulate 'drag',
 						callback: ->
 							expect(dayClickCalled).toBe(true)
@@ -62,7 +64,7 @@ describe 'basic-view dayClick', ->
 			dayClickCalled = false
 			initCalendar
 				eventAfterAllRender: ->
-					rects = sortBoundingRects(getDayGridDowBodyEls('mon'))
+					rects = sortBoundingRects(getDayGridDowEls('mon'))
 					monBEl = $(rects[1].node)
 					monBEl.simulate 'drag',
 						callback: ->

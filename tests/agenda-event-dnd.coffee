@@ -44,7 +44,7 @@ describe 'agenda-view event drag-n-drop', ->
 							localStartPoint:
 								top: 1 # fudge for IE10 :( do this all the time with localStartPoint???
 								left: '50%'
-							endPoint: getTimeGridResourceDatePoint('Resource A', '2015-12-01', '5am')
+							endPoint: getResourceTimeGridPoint('a', '2015-12-01T05:00:00')
 							callback: ->
 								expect(dropSpy).toHaveBeenCalled()
 								done()

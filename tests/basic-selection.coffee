@@ -21,9 +21,13 @@ describe 'basic-view selection', ->
 			selectCalled = false
 			initCalendar
 				eventAfterAllRender: ->
-					checkDayGridDowBodyEl('mon')
+					monEls = getDayGridDowEls('mon')
+					tueEls = getDayGridDowEls('tue')
+					expect(monEls.length).toBe(1)
+					expect(tueEls.length).toBe(1)
+					monEls.eq(0)
 						.simulate 'drag',
-							endEl: checkDayGridDowBodyEl('tue')
+							endEl: tueEls.eq(0)
 							callback: ->
 								expect(selectCalled).toBe(true)
 								done()
@@ -44,8 +48,8 @@ describe 'basic-view selection', ->
 			selectCalled = false
 			initCalendar
 				eventAfterAllRender: ->
-					sunAEl = $(getLeadingBoundingRect(getDayGridDowBodyEls('sun')).node)
-					monAEl = $(getLeadingBoundingRect(getDayGridDowBodyEls('mon')).node)
+					sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
+					monAEl = $(getLeadingBoundingRect(getDayGridDowEls('mon')).node)
 					sunAEl.simulate 'drag',
 						endEl: monAEl
 						callback: ->
@@ -63,8 +67,8 @@ describe 'basic-view selection', ->
 			selectCalled = false
 			initCalendar
 				eventAfterAllRender: ->
-					sunAEl = $(getLeadingBoundingRect(getDayGridDowBodyEls('sun')).node)
-					monBEl = $(getTrailingBoundingRect(getDayGridDowBodyEls('mon')).node)
+					sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
+					monBEl = $(getTrailingBoundingRect(getDayGridDowEls('mon')).node)
 					sunAEl.simulate 'drag',
 						endEl: monBEl
 						callback: ->
@@ -82,9 +86,9 @@ describe 'basic-view selection', ->
 			selectCalled = false
 			initCalendar
 				eventAfterAllRender: ->
-					monRects = sortBoundingRects(getDayGridDowBodyEls('mon'))
+					monRects = sortBoundingRects(getDayGridDowEls('mon'))
 					monBEl = $(monRects[1].node)
-					satRects = sortBoundingRects(getDayGridDowBodyEls('sat'))
+					satRects = sortBoundingRects(getDayGridDowEls('sat'))
 					satBEl = $(satRects[1].node)
 					monBEl.simulate 'drag',
 						endEl: satBEl
@@ -103,9 +107,9 @@ describe 'basic-view selection', ->
 			selectCalled = false
 			initCalendar
 				eventAfterAllRender: ->
-					monRects = sortBoundingRects(getDayGridDowBodyEls('mon'))
+					monRects = sortBoundingRects(getDayGridDowEls('mon'))
 					monBEl = $(monRects[1].node)
-					satRects = sortBoundingRects(getDayGridDowBodyEls('sat'))
+					satRects = sortBoundingRects(getDayGridDowEls('sat'))
 					satAEl = $(satRects[0].node)
 					monBEl.simulate 'drag',
 						endEl: satAEl

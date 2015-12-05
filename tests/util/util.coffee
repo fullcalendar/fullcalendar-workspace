@@ -65,3 +65,8 @@ spyCall = (func) ->
 	obj = { func: func }
 	spyOn(obj, 'func').and.callThrough()
 	obj.func
+
+
+isElWithinRtl = (el) ->
+	el.closest('.fc').hasClass('fc-rtl')
+

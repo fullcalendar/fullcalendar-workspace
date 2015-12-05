@@ -28,14 +28,14 @@ describe 'vresource structure', ->
 				it 'renders cells right-to-left', (callback) ->
 					initCalendar
 						viewRender: ->
-							aRect = getBoundingRect(checkResourceHeadEl('Resource A'))
-							bRect = getBoundingRect(checkResourceHeadEl('Resource B'))
-							cRect = getBoundingRect(checkResourceHeadEl('Resource C'))
-							dRect = getBoundingRect(checkResourceHeadEl('Resource D'))
+							aRect = getBoundingRect(getHeadResourceEls('a'))
+							bRect = getBoundingRect(getHeadResourceEls('b'))
+							cRect = getBoundingRect(getHeadResourceEls('c'))
+							dRect = getBoundingRect(getHeadResourceEls('d'))
 							expect(aRect).toBeMostlyLeftOf(bRect)
 							expect(bRect).toBeMostlyLeftOf(cRect)
 							expect(cRect).toBeMostlyLeftOf(dRect)
-							expect(getDowBodyEls('mon', viewType).length).toBe(4)
+							expect(getBodyDowEls('mon', viewType).length).toBe(4)
 							callback()
 
 			describe 'when RTL', ->
@@ -45,14 +45,14 @@ describe 'vresource structure', ->
 				it 'renders cells left-to-right', (callback) ->
 					initCalendar
 						viewRender: ->
-							aRect = getBoundingRect(checkResourceHeadEl('Resource A'))
-							bRect = getBoundingRect(checkResourceHeadEl('Resource B'))
-							cRect = getBoundingRect(checkResourceHeadEl('Resource C'))
-							dRect = getBoundingRect(checkResourceHeadEl('Resource D'))
+							aRect = getBoundingRect(getHeadResourceEls('a'))
+							bRect = getBoundingRect(getHeadResourceEls('b'))
+							cRect = getBoundingRect(getHeadResourceEls('c'))
+							dRect = getBoundingRect(getHeadResourceEls('d'))
 							expect(aRect).toBeMostlyRightOf(bRect)
 							expect(bRect).toBeMostlyRightOf(cRect)
 							expect(cRect).toBeMostlyRightOf(dRect)
-							expect(getDowBodyEls('mon', viewType).length).toBe(4)
+							expect(getBodyDowEls('mon', viewType).length).toBe(4)
 							callback()
 
 		describe 'with two-day', ->
@@ -71,16 +71,16 @@ describe 'vresource structure', ->
 				it 'renders cells correctly', (callback) ->
 					initCalendar
 						viewRender: ->
-							aEl = checkResourceHeadEl('Resource A')
+							aEl = getHeadResourceEls('a')
 							aRect = getBoundingRect(aEl)
-							monEls = getDowHeadEls('mon')
-							tuesEls = getDowHeadEls('tue')
+							monEls = getHeadDowEls('mon')
+							tuesEls = getHeadDowEls('tue')
 							expect(monEls.length).toBe(4)
 							expect(tuesEls.length).toBe(4)
 							monRect = getBoundingRect(monEls.eq(0))
 							expect(aRect).toBeMostlyAbove(monRect)
-							expect(getDowBodyEls('mon', viewType).length).toBe(4)
-							expect(getDowBodyEls('tue', viewType).length).toBe(4)
+							expect(getBodyDowEls('mon', viewType).length).toBe(4)
+							expect(getBodyDowEls('tue', viewType).length).toBe(4)
 							callback()
 
 			describe 'when dates are above resources', ->
@@ -90,17 +90,17 @@ describe 'vresource structure', ->
 				it 'renders cells correctly', (callback) ->
 					initCalendar
 						viewRender: ->
-							monEl = checkDowHeadEl('mon')
+							monEl = getHeadDowEls('mon')
 							monRect = getBoundingRect(monEl)
 							expect(monEl.length).toBe(1)
-							aEls = getResourceHeadEls('Resource A')
-							bEls = getResourceHeadEls('Resource B')
+							aEls = getHeadResourceEls('a')
+							bEls = getHeadResourceEls('b')
 							expect(aEls.length).toBe(2)
 							expect(bEls.length).toBe(2)
 							aRect = getBoundingRect(aEls.eq(0))
 							expect(monRect).toBeMostlyAbove(aRect)
-							expect(getDowBodyEls('mon', viewType).length).toBe(4)
-							expect(getDowBodyEls('tue', viewType).length).toBe(4)
+							expect(getBodyDowEls('mon', viewType).length).toBe(4)
+							expect(getBodyDowEls('tue', viewType).length).toBe(4)
 							callback()
 
 		describe 'when no groupBy settings specified', ->
@@ -112,10 +112,10 @@ describe 'vresource structure', ->
 				it 'renders resources columns', (callback) ->
 					initCalendar
 						viewRender: ->
-							expect(getResourceHeadEls('Resource A').length).toBe(1)
-							expect(getResourceHeadEls('Resource B').length).toBe(1)
-							expect(getResourceHeadEls('Resource C').length).toBe(1)
-							expect(getResourceHeadEls('Resource D').length).toBe(1)
+							expect(getHeadResourceEls('a').length).toBe(1)
+							expect(getHeadResourceEls('b').length).toBe(1)
+							expect(getHeadResourceEls('c').length).toBe(1)
+							expect(getHeadResourceEls('d').length).toBe(1)
 							callback()
 
 			describe 'when one-week', ->
@@ -125,10 +125,10 @@ describe 'vresource structure', ->
 				it 'renders resources columns', (callback) ->
 					initCalendar
 						viewRender: ->
-							expect(getResourceHeadEls('Resource A').length).toBe(0)
-							expect(getResourceHeadEls('Resource B').length).toBe(0)
-							expect(getResourceHeadEls('Resource C').length).toBe(0)
-							expect(getResourceHeadEls('Resource D').length).toBe(0)
+							expect(getHeadResourceEls('a').length).toBe(0)
+							expect(getHeadResourceEls('b').length).toBe(0)
+							expect(getHeadResourceEls('c').length).toBe(0)
+							expect(getHeadResourceEls('d').length).toBe(0)
 							callback()
 
 		describe 'when delay in resource fetching', ->
@@ -145,14 +145,14 @@ describe 'vresource structure', ->
 			it 'renders progressively', (callback) ->
 				firstCallbackCalled = false
 				firstCallback = ->
-					expect(getResourceHeadEls('Resource A').length).toBe(0)
-					expect(getResourceHeadEls('Resource B').length).toBe(0)
-					checkDowHeadEl('mon')
+					expect(getHeadResourceEls('a').length).toBe(0)
+					expect(getHeadResourceEls('b').length).toBe(0)
+					expect(getHeadDowEls('mon').length).toBe(1)
 					firstCallbackCalled = true
 				initCalendar
 					viewRender: ->
-						expect(getResourceHeadEls('Resource A').length).toBe(1)
-						expect(getResourceHeadEls('Resource B').length).toBe(1)
+						expect(getHeadResourceEls('a').length).toBe(1)
+						expect(getHeadResourceEls('b').length).toBe(1)
 						expect(firstCallbackCalled).toBe(true)
 						callback()
 				setTimeout firstCallback, 100
@@ -174,9 +174,9 @@ describe 'vresource structure', ->
 			it 'renders side-by-side months', (callback) ->
 				initCalendar
 					viewRender: ->
-						checkResourceHeadEl('Resource A')
-						checkResourceHeadEl('Resource B')
-						expect(getDowHeadEls('sun').length).toBe(2)
+						expect(getHeadResourceEls('a').length).toBe(1)
+						expect(getHeadResourceEls('b').length).toBe(1)
+						expect(getHeadDowEls('sun').length).toBe(2)
 						expect($('.fc-body .fc-row').length).toBe(6)
 						firstADayRect = getLeadingBoundingRect('td[data-date="2015-11-01"]', isRTL)
 						lastADayRect = getLeadingBoundingRect('td[data-date="2015-12-12"]', isRTL)

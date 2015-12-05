@@ -26,7 +26,7 @@ describe 'agenda-view event resizing', ->
 				eventAfterAllRender: oneCall -> setTimeout -> # TODO: setTimeout is LLAAAMMEEE
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
-							endPoint: getTimeGridDatePoint('2015-11-23', 0, '4am') # TODO: change method
+							endPoint: getTimeGridPoint('2015-11-23T04:00:00')
 							callback: ->
 								expect(resizeSpy).toHaveBeenCalled()
 								done()
@@ -50,7 +50,7 @@ describe 'agenda-view event resizing', ->
 				eventAfterAllRender: oneCall -> # avoid second call after event rerender
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
-							endPoint: getTimeGridSpecial('Resource B', '2015-11-29', '4am')
+							endPoint: getResourceTimeGridPoint('b', '2015-11-29T04:00:00')
 							callback: ->
 								expect(resizeSpy).toHaveBeenCalled()
 								done()
@@ -69,7 +69,7 @@ describe 'agenda-view event resizing', ->
 				eventAfterAllRender: oneCall ->
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
-							endPoint: getTimeGridSpecial('Resource B', '2015-11-30', '4am')
+							endPoint: getResourceTimeGridPoint('b', '2015-11-30T04:00:00')
 							callback: ->
 								expect(resizeSpy).toHaveBeenCalled()
 								done()
@@ -88,7 +88,7 @@ describe 'agenda-view event resizing', ->
 				eventAfterAllRender: oneCall ->
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
-							endPoint: getTimeGridSpecial('Resource B', '2015-11-30', '4am')
+							endPoint: getResourceTimeGridPoint('b', '2015-11-30T04:00:00')
 							callback: ->
 								expect(resizeSpy).not.toHaveBeenCalled()
 								done()
@@ -108,7 +108,7 @@ describe 'agenda-view event resizing', ->
 				eventAfterAllRender: oneCall ->
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
-							endPoint: getTimeGridSpecial('Resource B', '2015-11-30', '4am')
+							endPoint: getResourceTimeGridPoint('b', '2015-11-30T04:00:00')
 							callback: ->
 								expect(resizeSpy).toHaveBeenCalled()
 								done()
@@ -127,7 +127,7 @@ describe 'agenda-view event resizing', ->
 				eventAfterAllRender: oneCall ->
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
-							endPoint: getTimeGridSpecial('Resource A', '2015-11-30', '4am')
+							endPoint: getResourceTimeGridPoint('a', '2015-11-30T04:00:00')
 							callback: ->
 								expect(resizeSpy).toHaveBeenCalled()
 								done()
@@ -146,7 +146,7 @@ describe 'agenda-view event resizing', ->
 				eventAfterAllRender: oneCall ->
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
-							endPoint: getTimeGridSpecial('Resource B', '2015-11-29', '4am')
+							endPoint: getResourceTimeGridPoint('b', '2015-11-29T04:00:00')
 							callback: ->
 								expect(resizeSpy).not.toHaveBeenCalled()
 								done()

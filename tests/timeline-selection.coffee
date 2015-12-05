@@ -45,9 +45,9 @@ describe 'timeline selection', ->
 							selectCalled = false
 							initCalendar
 								eventAfterAllRender: -> setTimeout -> # TODO: llllaaaaaaammmmmmeeee
-									slatEl = getTimelineSlatEl('4am')
+									slatEl = getTimelineSlatEl('2015-11-28T04:00:00')
 									slatEl.simulate 'drag',
-										endEl: getTimelineSlatEl('7am')
+										endEl: getTimelineSlatEl('2015-11-28T07:00:00')
 										callback: ->
 											expect(selectCalled).toBe(true)
 											done()
@@ -65,9 +65,9 @@ describe 'timeline selection', ->
 							selectCalled = false
 							initCalendar
 								eventAfterAllRender: ->
-									slatEl = getTimelineSlatEl('4am')
+									slatEl = getTimelineSlatEl('2015-11-28T04:00:00')
 									slatEl.simulate 'drag',
-										endEl: getTimelineSlatEl('7am')
+										endEl: getTimelineSlatEl('2015-11-28T07:00:00')
 										callback: ->
 											expect(selectCalled).toBe(false)
 											done()
@@ -79,8 +79,8 @@ describe 'timeline selection', ->
 							initCalendar
 								eventAfterAllRender: ->
 									$.simulateByPoint 'drag',
-										point: getTimelineResourcePoint('Resource B', '4am')
-										endPoint: getTimelineResourcePoint('Resource B', '7am')
+										point: getResourceTimelinePoint('b', '2015-11-28T04:00:00')
+										endPoint: getResourceTimelinePoint('b', '2015-11-28T07:00:00')
 										callback: ->
 											expect(selectCalled).toBe(true)
 											done()
@@ -97,8 +97,8 @@ describe 'timeline selection', ->
 							initCalendar
 								eventAfterAllRender: ->
 									$.simulateByPoint 'drag',
-										point: getTimelineResourcePoint('Resource B', '4am')
-										endPoint: getTimelineResourcePoint('Resource A', '7am')
+										point: getResourceTimelinePoint('b', '2015-11-28T04:00:00')
+										endPoint: getResourceTimelinePoint('a', '2015-11-28T07:00:00')
 										callback: ->
 											expect(selectCalled).toBe(true)
 											done()
@@ -120,8 +120,8 @@ describe 'timeline selection', ->
 						initCalendar
 							eventAfterAllRender: ->
 								$.simulateByPoint 'drag',
-									point: getTimelineResourcePoint('Resource B', '4am', 0, 0.5) # +1/2 slot = 15 mins
-									endPoint: getTimelineResourcePoint('Resource B', '7am', 0, 1) # +1 slot = 30 mins
+									point: getResourceTimelinePoint('b', '2015-11-28T04:00:00', 0.5) # +1/2 slot = 15 mins
+									endPoint: getResourceTimelinePoint('b', '2015-11-28T07:30:00')
 									callback: ->
 										expect(selectCalled).toBe(true)
 										done()
@@ -143,8 +143,8 @@ describe 'timeline selection', ->
 				initCalendar
 					eventAfterAllRender: ->
 						$.simulateByPoint 'drag',
-							point: getTimelineResourcePoint('Resource A', 'Tu 3')
-							endPoint: getTimelineResourcePoint('Resource A', 'Th 5')
+							point: getResourceTimelinePoint('a', '2015-11-03')
+							endPoint: getResourceTimelinePoint('a', '2015-11-05')
 							callback: ->
 								expect(selectCalled).toBe(true)
 								done()
@@ -166,8 +166,8 @@ describe 'timeline selection', ->
 				initCalendar
 					eventAfterAllRender: ->
 						$.simulateByPoint 'drag',
-							point: getTimelineResourcePoint('Resource A', 'Su 18')
-							endPoint: getTimelineResourcePoint('Resource A', 'Su 8') # in Feb
+							point: getResourceTimelinePoint('a', '2015-01-18')
+							endPoint: getResourceTimelinePoint('a', '2015-02-08')
 							callback: ->
 								expect(selectCalled).toBe(true)
 								done()

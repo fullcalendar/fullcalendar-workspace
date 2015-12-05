@@ -11,7 +11,7 @@ describe 'basic-view event drag-n-drop', ->
 		]
 		defaultView: 'basicWeek'
 
-	describeValues { # TODO: abstract this. on other views too
+	describeValues { # TODO: abstract this. on other views too !!!
 		'no timezone': 
 			value: null
 			moment: (str) ->
@@ -46,7 +46,7 @@ describe 'basic-view event drag-n-drop', ->
 					eventAfterAllRender: oneCall ->
 						$('.external-event').simulate 'drag',
 							localStartPoint: { left: '50%', top: 0 }
-							endEl: getDayGridResourceRect('Resource A', '2015-12-01').node
+							endEl: getResourceDayGridDayEls('a', '2015-12-01').eq(0)
 							callback: ->
 								expect(dropSpy).toHaveBeenCalled()
 								expect(receiveSpy).toHaveBeenCalled()

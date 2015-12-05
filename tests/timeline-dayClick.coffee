@@ -1,4 +1,8 @@
 
+###
+TODO: kill the setTimeout's (used for isRTL initialScroll workaround)
+###
+
 describe 'timeline dayClick', ->
 	pushOptions
 		now: '2015-11-28'
@@ -43,8 +47,8 @@ describe 'timeline dayClick', ->
 						it 'reports date with no resource', (done) ->
 							dayClickCalled = false
 							initCalendar
-								eventAfterAllRender: -> setTimeout -> # TODO: llllaaaaaaammmmmmeeee
-									slatEl = getTimelineSlatEl('4am', 0, 1)
+								eventAfterAllRender: -> setTimeout -> # TODO: kill
+									slatEl = getTimelineSlatEl('2015-11-28T04:30:00')
 									slatEl.simulate 'drag',
 										callback: ->
 											expect(dayClickCalled).toBe(true)
@@ -62,7 +66,7 @@ describe 'timeline dayClick', ->
 							dayClickCalled = false
 							initCalendar
 								eventAfterAllRender: ->
-									slatEl = getTimelineSlatEl('4am', 0, 1)
+									slatEl = getTimelineSlatEl('2015-11-28T04:30:00')
 									slatEl.simulate 'drag',
 										callback: ->
 											expect(dayClickCalled).toBe(false)
@@ -75,7 +79,7 @@ describe 'timeline dayClick', ->
 							initCalendar
 								eventAfterAllRender: ->
 									$.simulateByPoint 'drag',
-										point: getTimelineResourcePoint('Resource B', '4am', 0, 1)
+										point: getResourceTimelinePoint('b', '2015-11-28T04:30:00')
 										callback: ->
 											expect(dayClickCalled).toBe(true)
 											done()
@@ -94,9 +98,9 @@ describe 'timeline dayClick', ->
 					it 'reports a smaller granularity', (done) ->
 						dayClickCalled = false
 						initCalendar
-							eventAfterAllRender: ->
+							eventAfterAllRender: -> setTimeout -> # TODO: kill
 								$.simulateByPoint 'drag',
-									point: getTimelineResourcePoint('Resource B', '4am', 0, 0.5) # +1/2 slot = 15 mins
+									point: getResourceTimelinePoint('b', '2015-11-28T04:00:00', 0.5) # +1/2 slot = 15 mins
 									callback: ->
 										expect(dayClickCalled).toBe(true)
 										done()
@@ -117,7 +121,7 @@ describe 'timeline dayClick', ->
 				initCalendar
 					eventAfterAllRender: ->
 						$.simulateByPoint 'drag',
-							point: getTimelineResourcePoint('Resource A', 'Tu 3')
+							point: getResourceTimelinePoint('a', '2015-11-03')
 							callback: ->
 								expect(dayClickCalled).toBe(true)
 								done()
@@ -138,7 +142,7 @@ describe 'timeline dayClick', ->
 				initCalendar
 					eventAfterAllRender: ->
 						$.simulateByPoint 'drag',
-							point: getTimelineResourcePoint('Resource A', 'Su 18')
+							point: getResourceTimelinePoint('a', '2015-01-18')
 							callback: ->
 								expect(dayClickCalled).toBe(true)
 								done()

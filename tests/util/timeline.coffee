@@ -1,48 +1,37 @@
 
-getTimelineResourcePoint = (resourceText, timeText, labelIndex=0, slatOffset=0) ->
-	resourceRect = getBoundingRect(getTimelineBodyResourceEl(resourceText))
-	timePoint = getTimelineSlatPoint(timeText, labelIndex, slatOffset)
+getResourceTimelinePoint = (resourceId, date, slatOffset) ->
+	rowRect = getBoundingRect(getTimelineRowEl(resourceId))
+	left = getTimelineLeft(date, slatOffset)
 	{
-		left: timePoint.left
-		top: (resourceRect.top + resourceRect.bottom) / 2
+		left: left,
+		top: (rowRect.top + rowRect.bottom) / 2
 	}
 
 
-isElWithinRtl = (el) ->
-	el.closest('.fc').hasClass('fc-rtl')
+getTimelinePoint = (date, slatOffset) ->
+	contentRect = getBoundingRect($('.fc-body .fc-time-area .fc-content'))
+	left = getTimelineLeft(date, slatOffset)
+	{
+		left: left,
+		top: (contentRect.top + contentRect.bottom) / 2
+	}
 
 
-getTimelineSlatPoint = (timeText, labelIndex=0, slatOffset=0) ->
-	slatInt = Math.floor(slatOffset)
-	slatRemainder = slatOffset - slatInt
-	slatEl = getTimelineSlatEl(timeText, labelIndex, slatInt)
-	slatRect = getBoundingRect(slatEl)
-	delta =
-		if slatRemainder
-			slatEl.outerWidth() * slatRemainder
-		else
-			0
+getTimelineLeft = (date, slatOffset=0) ->
+	slatEl = getTimelineSlatEl(date)
+	expect(slatEl.length).toBe(1)
+	slatWidth = slatEl.outerWidth()
+	# go 1px into slot, to guarantee avoiding border
 	if isElWithinRtl(slatEl)
-		slatLeft = slatRect.right - 1 - delta
+		slatEl.offset().left + slatWidth - slatWidth * slatOffset - 1
 	else
-		slatLeft = slatRect.left + 1 + delta # one to make sure no border issues
-	{
-		left: slatLeft,
-		top: (slatRect.top + slatRect.bottom) / 2
-	}
+		slatEl.offset().left + slatWidth * slatOffset + 1
 
 
-getTimelineSlatEl = (timeText, labelIndex=0, slatOffset=0) ->
-	thEl = $('.fc-head .fc-time-area .fc-cell-text:contains(' + timeText + '):eq(' + labelIndex + ')')
-		.parent().parent()
-	thIndex = thEl.prevAll().length
-	thColspan = parseInt(thEl.attr('colspan') || 1)
-	slatIndex = thIndex * thColspan + slatOffset
-	$('.fc-body .fc-time-area .fc-slats td:eq(' + slatIndex + ')')
+getTimelineRowEl = (resourceId) ->
+	$('.fc-body .fc-resource-area tr[data-resource-id="' + resourceId + '"]')
 
 
-getTimelineBodyResourceEl = (resourceText) ->
-	trEl = $('.fc-body .fc-resource-area .fc-cell-text:contains(' + resourceText + ')')
-		.closest('tr')
-	trIndex = trEl.prevAll().length
-	$('.fc-body .fc-time-area .fc-rows tr:eq(' + trIndex + ')')
+getTimelineSlatEl = (date) ->
+	date = $.fullCalendar.moment.parseZone(date)
+	$('.fc-body .fc-slats td[data-date="' + date.format() + '"')

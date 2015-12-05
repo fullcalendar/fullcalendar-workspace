@@ -22,7 +22,7 @@ describe 'agenda-view dayClick', ->
 			initCalendar
 				eventAfterAllRender: ->
 					$.simulateByPoint 'drag',
-						point: getTimeGridPoint('mon', 0, '9am')
+						point: getTimeGridPoint('2015-11-23T09:00:00')
 						callback: ->
 							expect(dayClickCalled).toBe(true)
 							done()
@@ -43,7 +43,7 @@ describe 'agenda-view dayClick', ->
 			initCalendar
 				eventAfterAllRender: ->
 					$.simulateByPoint 'drag',
-						point: getTimeGridPoint('sun', 1, '9am')
+						point: getResourceTimeGridPoint('b', '2015-11-29T09:00:00')
 						callback: ->
 							expect(dayClickCalled).toBe(true)
 							done()
@@ -64,7 +64,7 @@ describe 'agenda-view dayClick', ->
 			initCalendar
 				eventAfterAllRender: ->
 					$.simulateByPoint 'drag',
-						point: getTimeGridPoint('mon', 1, '9am', 1)
+						point: getResourceTimeGridPoint('b', '2015-11-30T09:30:00')
 						callback: ->
 							done()
 				dayClick: (date, jsEvent, view, resource) ->

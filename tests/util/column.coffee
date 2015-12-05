@@ -1,41 +1,36 @@
 
-# for both day-grid time-grid
-
-# rename: query?
-# TODO: get data-time or data-date into every view
-# TODO: get data-resource-id into every view
-# TODO: always receive resource name in every method. no more leading/trailing/index
+getHeadDateEls = (date) ->
+	date = $.fullCalendar.moment.parseZone(date)
+	$('.fc-day-header[data-date="' + date.format('YYYY-MM-DD') + '"]')
 
 
-checkDowHeadEl = (dayAbbrev) ->
-	els = getDowHeadEls(dayAbbrev)
-	expect(els.length).toBe(1)
-	els
+# date optional
+getHeadResourceEls = (resourceId, date) ->
+	datePart = ''
+	if date
+		date = $.fullCalendar.moment.parseZone(date)
+		datePart = '[data-date="' + date.format('YYYY-MM-DD') + '"]'
+	$('.fc-resource-cell' +
+		'[data-resource-id="' + resourceId + '"]' +
+		datePart)
 
 
-getDowHeadEls = (dayAbbrev) ->
-	$('th.fc-' + dayAbbrev)
+# resourceId is required
+getHeadResourceDateEls = (date, resourceId) ->
+	date = $.fullCalendar.moment.parseZone(date)
+	$('.fc-day-header' +
+		'[data-date="' + date.format('YYYY-MM-DD') + '"]' +
+		'[data-resource-id="' + resourceId + '"]')
 
 
-checkResourceHeadEl = (resourceTitle) ->
-	els = getResourceHeadEls(resourceTitle)
-	expect(els.length).toBe(1)
-	els
+# TODO: discourage use
+getHeadDowEls = (dayAbbrev) ->
+	$('.fc-day-header.fc-' + dayAbbrev)
 
 
-getResourceHeadEls = (resourceTitle) ->
-	$('th.fc-resource-cell:contains(' + resourceTitle + ')')
-
-
-checkDowBodyEls = (dayAbbrev, viewType) -> # todo: rename from "check" ? "lone"
+# TODO: discourage use
+getBodyDowEls = (dayAbbrev, viewType) ->
 	if viewType == 'agenda'
-		checkTimeGridDowBodyEl(dayAbbrev)
+		getTimeGridDowEls(dayAbbrev)
 	else
-		checkDayGridDowBodyEl(dayAbbrev)
-
-
-getDowBodyEls = (dayAbbrev, viewType) ->
-	if viewType == 'agenda'
-		getTimeGridDowBodyEls(dayAbbrev)
-	else
-		getDayGridDowBodyEls(dayAbbrev)
+		getDayGridDowEls(dayAbbrev)

@@ -24,12 +24,12 @@ describe 'vresource businessHours', ->
 				it 'greys out sat and sun', (done) ->
 					initCalendar
 						viewRender: ->
-							aHeadRect = getBoundingRect(checkResourceHeadEl('Resource A'))
-							bHeadRect = getBoundingRect(checkResourceHeadEl('Resource B'))
-							aSunRect = getLeadingBoundingRect(getDowHeadEls('sun'), isRTL)
-							aSatRect = getLeadingBoundingRect(getDowHeadEls('sat'), isRTL)
-							bSunRect = getTrailingBoundingRect(getDowHeadEls('sun'), isRTL)
-							bSatRect = getTrailingBoundingRect(getDowHeadEls('sat'), isRTL)
+							aHeadRect = getBoundingRect(getHeadResourceEls('a'))
+							bHeadRect = getBoundingRect(getHeadResourceEls('b'))
+							aSunRect = getLeadingBoundingRect(getHeadDowEls('sun'), isRTL)
+							aSatRect = getLeadingBoundingRect(getHeadDowEls('sat'), isRTL)
+							bSunRect = getTrailingBoundingRect(getHeadDowEls('sun'), isRTL)
+							bSatRect = getTrailingBoundingRect(getHeadDowEls('sat'), isRTL)
 							bizRects = sortBoundingRects(getDayGridNonBizHourEls(), isRTL)
 							expect(bizRects.length).toBe(4)
 							expect(aSunRect).toBeMostlyHorizontallyWithin(aHeadRect)
@@ -49,8 +49,8 @@ describe 'vresource businessHours', ->
 				it 'greys out sat and sunday', (done) ->
 					initCalendar
 						viewRender: ->
-							sunHeadRect = getBoundingRect(checkDowHeadEl('sun'))
-							satHeadRect = getBoundingRect(checkDowHeadEl('sat'))
+							sunHeadRect = getBoundingRect(getHeadDowEls('sun'))
+							satHeadRect = getBoundingRect(getHeadDowEls('sat'))
 							bizRects = sortBoundingRects(getDayGridNonBizHourEls(), isRTL)
 							expect(bizRects.length).toBe(4)
 							expect(bizRects[0]).toBeMostlyHorizontallyWithin(sunHeadRect)
@@ -70,8 +70,8 @@ describe 'vresource businessHours', ->
 				it 'greys out sat and sun', (done) ->
 					initCalendar
 						viewRender: ->
-							aRect = getBoundingRect(checkResourceHeadEl('Resource A'))
-							bRect = getBoundingRect(checkResourceHeadEl('Resource B'))
+							aRect = getBoundingRect(getHeadResourceEls('a'))
+							bRect = getBoundingRect(getHeadResourceEls('b'))
 							bizRects = sortBoundingRects(getTimeGridNonBizHourEls(), isRTL)
 							expect(bizRects.length).toBe(24)
 							for bizRect, i in bizRects
@@ -89,13 +89,13 @@ describe 'vresource businessHours', ->
 					initCalendar
 						viewRender: ->
 							bizRects = sortBoundingRects(getTimeGridNonBizHourEls(), isRTL)
-							sunRect = getBoundingRect(getDowHeadEls('sun'))
-							monRect = getBoundingRect(getDowHeadEls('mon'))
-							tueRect = getBoundingRect(getDowHeadEls('tue'))
-							wedRect = getBoundingRect(getDowHeadEls('wed'))
-							thuRect = getBoundingRect(getDowHeadEls('thu'))
-							friRect = getBoundingRect(getDowHeadEls('fri'))
-							satRect = getBoundingRect(getDowHeadEls('sat'))
+							sunRect = getBoundingRect(getHeadDowEls('sun'))
+							monRect = getBoundingRect(getHeadDowEls('mon'))
+							tueRect = getBoundingRect(getHeadDowEls('tue'))
+							wedRect = getBoundingRect(getHeadDowEls('wed'))
+							thuRect = getBoundingRect(getHeadDowEls('thu'))
+							friRect = getBoundingRect(getHeadDowEls('fri'))
+							satRect = getBoundingRect(getHeadDowEls('sat'))
 							expect(bizRects[0]).toBeMostlyHorizontallyWithin(sunRect)
 							expect(bizRects[1]).toBeMostlyHorizontallyWithin(sunRect)
 							expect(bizRects[2]).toBeMostlyHorizontallyWithin(monRect)

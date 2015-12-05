@@ -52,7 +52,7 @@ describe 'timeline event resizing', ->
 								eventAfterAllRender: oneCall -> setTimeout -> # TODO: llllaaaaaaammmmmmeeee
 									$('.event1 .fc-end-resizer')
 										.simulate 'drag',
-											endEl: getTimelineSlatEl('7am')
+											endEl: getTimelineSlatEl('2015-11-28T07:00:00')
 											callback: ->
 												expect(resizeSpy).toHaveBeenCalled()
 												done()
@@ -73,7 +73,7 @@ describe 'timeline event resizing', ->
 								eventAfterAllRender: oneCall ->
 									$('.event1 .fc-end-resizer')
 										.simulate 'drag',
-											endPoint: getTimelineResourcePoint('Resource B', '7am')
+											endPoint: getResourceTimelinePoint('b', '2015-11-28T07:00:00')
 											callback: ->
 												expect(resizeSpy).toHaveBeenCalled()
 												done()
@@ -92,7 +92,7 @@ describe 'timeline event resizing', ->
 								eventAfterAllRender: oneCall ->
 									$('.event1 .fc-end-resizer')
 										.simulate 'drag',
-											endPoint: getTimelineResourcePoint('Resource A', '7am')
+											endPoint: getResourceTimelinePoint('a', '2015-11-28T07:00:00')
 											callback: ->
 												expect(resizeSpy).toHaveBeenCalled()
 												done()
@@ -116,7 +116,7 @@ describe 'timeline event resizing', ->
 							eventAfterAllRender: oneCall ->
 								$('.event1 .fc-end-resizer')
 									.simulate 'drag',
-										endPoint: getTimelineResourcePoint('Resource B', '7am', 0, 1) # +1 slot = 30 mins
+										endPoint: getResourceTimelinePoint('b', '2015-11-28T07:30:00')
 										callback: ->
 											expect(resizeSpy).toHaveBeenCalled()
 											done()
@@ -140,7 +140,7 @@ describe 'timeline event resizing', ->
 					eventAfterAllRender: oneCall ->
 						$('.event1 .fc-end-resizer')
 							.simulate 'drag',
-								endPoint: getTimelineResourcePoint('Resource A', 'Th 5')
+								endPoint: getResourceTimelinePoint('a', '2015-11-05')
 								callback: ->
 									expect(resizeSpy).toHaveBeenCalled()
 									done()
@@ -164,7 +164,7 @@ describe 'timeline event resizing', ->
 					eventAfterAllRender: oneCall ->
 						$('.event1 .fc-end-resizer')
 							.simulate 'drag',
-								endPoint: getTimelineResourcePoint('Resource A', 'Su 8') # in Feb
+								endPoint: getResourceTimelinePoint('a', '2015-02-08')
 								callback: ->
 									expect(resizeSpy).toHaveBeenCalled()
 									done()
