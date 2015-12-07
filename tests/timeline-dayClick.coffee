@@ -13,22 +13,7 @@ describe 'timeline dayClick', ->
 		'RTL': true
 	}, ->
 
-		describeValues {
-			'no timezone': 
-				value: null
-				moment: (str) ->
-					$.fullCalendar.moment.parseZone(str)
-			'local timezone':
-				value: 'local'
-				moment: (str) ->
-					moment(str)
-			'UTC timezone':
-				value: 'UTC'
-				moment: (str) ->
-					moment.utc(str)
-		}, (tz) ->
-			pushOptions
-				timezone: tz.value
+		describeTimezones (tz) ->
 
 			describe 'when time scale', ->
 				pushOptions

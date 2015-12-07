@@ -12,22 +12,7 @@ describe 'timeline-view event drag-n-drop', ->
 		defaultView: 'timelineDay'
 		scrollTime: '00:00'
 
-	describeValues { # TODO: abstract this. on other views too
-		'no timezone': 
-			value: null
-			moment: (str) ->
-				$.fullCalendar.moment.parseZone(str)
-		'local timezone':
-			value: 'local'
-			moment: (str) ->
-				moment(str)
-		'UTC timezone':
-			value: 'UTC'
-			moment: (str) ->
-				moment.utc(str)
-	}, (tz) ->
-		pushOptions
-			timezone: tz.value
+	describeTimezones (tz) ->
 
 		it 'allows switching date and resource', (done) ->
 			initCalendar
