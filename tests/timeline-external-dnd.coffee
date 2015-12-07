@@ -41,8 +41,8 @@ describe 'timeline-view external element drag-n-drop', ->
 			initCalendar
 				eventAfterAllRender: oneCall ->
 					$('.external-event').simulate 'drag',
-						localStartPoint: { left: 0, top: '50%' }
-						endPoint: getResourceTimelinePoint('b', '2015-11-29T05:00:00')
+						localPoint: { left: 0, top: '50%' }
+						end: getResourceTimelinePoint('b', '2015-11-29T05:00:00')
 						callback: ->
 							expect(dropSpy).toHaveBeenCalled()
 							expect(receiveSpy).toHaveBeenCalled()

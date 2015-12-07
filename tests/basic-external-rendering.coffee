@@ -45,8 +45,8 @@ describe 'basic-view event drag-n-drop', ->
 				initCalendar
 					eventAfterAllRender: oneCall ->
 						$('.external-event').simulate 'drag',
-							localStartPoint: { left: '50%', top: 0 }
-							endEl: getResourceDayGridDayEls('a', '2015-12-01').eq(0)
+							localPoint: { left: '50%', top: 0 }
+							end: getResourceDayGridDayEls('a', '2015-12-01').eq(0)
 							callback: ->
 								expect(dropSpy).toHaveBeenCalled()
 								expect(receiveSpy).toHaveBeenCalled()

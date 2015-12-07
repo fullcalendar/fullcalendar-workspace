@@ -30,7 +30,7 @@ describe 'basic-view event resizing', ->
 					afterRenderCalled = true
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
-							endEl: getDayGridDayEls('2015-11-24').eq(0)
+							end: getDayGridDayEls('2015-11-24').eq(0)
 							callback: ->
 								expect(resizeCalled).toBe(true)
 								done()
@@ -59,7 +59,7 @@ describe 'basic-view event resizing', ->
 					afterRenderCalled = true
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
-							endEl: getDayGridDayEls('2015-11-30').eq(0)
+							end: getDayGridDayEls('2015-11-30').eq(0)
 							callback: ->
 								expect(resizeCalled).toBe(true)
 								done()
@@ -84,7 +84,7 @@ describe 'basic-view event resizing', ->
 					bMonRect = getTrailingBoundingRect(getDayGridDayEls('2015-11-30'))
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
-							endPoint: getRectCenter(bMonRect)
+							end: getRectCenter(bMonRect)
 							callback: ->
 								expect(resizeCalled).toBe(false)
 								done()
@@ -110,7 +110,7 @@ describe 'basic-view event resizing', ->
 					bMonRect = getTrailingBoundingRect(getDayGridDayEls('2015-11-30'))
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
-							endPoint: getRectCenter(bMonRect)
+							end: getRectCenter(bMonRect)
 							callback: ->
 								expect(resizeCalled).toBe(true)
 								done()
@@ -135,7 +135,7 @@ describe 'basic-view event resizing', ->
 					bMonRect = getTrailingBoundingRect(getDayGridDayEls('2015-11-30'))
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
-							endPoint: getRectCenter(bMonRect)
+							end: getRectCenter(bMonRect)
 							callback: ->
 								expect(resizeCalled).toBe(false)
 								done()

@@ -3,16 +3,15 @@
 
 $.simulateByPoint = function(type, options) {
 	var docEl = $(document);
-	var point = options ? (options.startPoint || options.point) : null;
-	var clientX = point.left - docEl.scrollLeft();
-	var clientY = point.top - docEl.scrollTop();
+	var point = options.point;
+	var clientX, clientY;
+	var node;
 
 	if (point) {
-		$(document.elementFromPoint(clientX, clientY))
-			.simulate(type, options);
-	}
-	else {
-		console.log('When calling simulate without an element, must specify a point.');
+		clientX = point.left - docEl.scrollLeft();
+		clientY = point.top - docEl.scrollTop();
+		node = document.elementFromPoint(clientX, clientY);
+		$(node).simulate(type, options);
 	}
 };
 
@@ -21,9 +20,10 @@ var DEBUG_DELAY = 500;
 var DEBUG_MIN_DURATION = 2000;
 var DEBUG_MIN_MOVES = 100;
 var DRAG_DEFAULTS = {
-	localStartPoint: { left: '50%', top: '50%' },
-	startPoint: null,
-	endPoint: null,
+	point: null, // the start point
+	localPoint: { left: '50%', top: '50%' },
+	end: null, // can be a point or an el
+	localEndPoint: { left: '50%', top: '50%' },
 	dx: 0,
 	dy: 0,
 	moves: 5,
@@ -35,36 +35,46 @@ $.simulate.prototype.simulateDrag = function() {
 	var targetNode = this.target;
 	var targetEl = $(targetNode);
 	var options = $.extend({}, DRAG_DEFAULTS, this.options);
-	var localStartPoint = options.localStartPoint || options.localPoint;
-	var startPoint = options.startPoint || options.point;
-	var endPoint = options.endPoint;
-	var endEl = options.endEl;
 	var dx = options.dx;
 	var dy = options.dy;
 	var duration = options.duration;
 	var moves = options.moves;
 	var debug = Boolean(options.debug);
-	var targetOffset;
+	var startPoint;
+	var endEl;
+	var endPoint;
+	var localPoint;
+	var offset;
 
-	if (!startPoint) {
-		if (localStartPoint) {
-			localStartPoint = normalizeElPoint(localStartPoint, targetEl);
-			targetOffset = targetEl.offset();
-			startPoint = {
-				left: targetOffset.left + localStartPoint.left,
-				top: targetOffset.top + localStartPoint.top
+	// compute start point
+	if (options.point) {
+		startPoint = options.point;
+	}
+	else {
+		localPoint = normalizeElPoint(options.localPoint, targetEl);
+		offset = targetEl.offset();
+		startPoint = {
+			left: offset.left + localPoint.left,
+			top: offset.top + localPoint.top
+		};
+	}
+
+	// compute end point
+	if (options.end) {
+		if (isPoint(options.end)) {
+			endPoint = options.end;
+		}
+		else { // assume options.end is an element
+			endEl = $(options.end);
+			localPoint = normalizeElPoint(options.localEndPoint, endEl);
+			offset = endEl.offset();
+			endPoint = {
+				left: offset.left + localPoint.left,
+				top: offset.top + localPoint.top
 			};
 		}
 	}
 
-	if (!endPoint && endEl) {
-		endEl = $(endEl);
-		var endOffset = endEl.offset();
-		endPoint = {
-			left: endOffset.left + endEl.outerWidth() / 2,
-			top: endOffset.top + endEl.outerHeight() / 2
-		};
-	}
 	if (endPoint) {
 		dx = endPoint.left - startPoint.left;
 		dy = endPoint.top - startPoint.top;
@@ -189,6 +199,11 @@ function normalizeElPoint(point, el) {
 	}
 
 	return { left: left, top: top };
+}
+
+
+function isPoint(input) {
+	return 'left' in input && 'top' in input;
 }
 
 

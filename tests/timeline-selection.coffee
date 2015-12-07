@@ -47,7 +47,7 @@ describe 'timeline selection', ->
 								eventAfterAllRender: -> setTimeout -> # TODO: llllaaaaaaammmmmmeeee
 									slatEl = getTimelineSlatEl('2015-11-28T04:00:00')
 									slatEl.simulate 'drag',
-										endEl: getTimelineSlatEl('2015-11-28T07:00:00')
+										end: getTimelineSlatEl('2015-11-28T07:00:00')
 										callback: ->
 											expect(selectCalled).toBe(true)
 											done()
@@ -67,7 +67,7 @@ describe 'timeline selection', ->
 								eventAfterAllRender: ->
 									slatEl = getTimelineSlatEl('2015-11-28T04:00:00')
 									slatEl.simulate 'drag',
-										endEl: getTimelineSlatEl('2015-11-28T07:00:00')
+										end: getTimelineSlatEl('2015-11-28T07:00:00')
 										callback: ->
 											expect(selectCalled).toBe(false)
 											done()
@@ -80,7 +80,7 @@ describe 'timeline selection', ->
 								eventAfterAllRender: ->
 									$.simulateByPoint 'drag',
 										point: getResourceTimelinePoint('b', '2015-11-28T04:00:00')
-										endPoint: getResourceTimelinePoint('b', '2015-11-28T07:00:00')
+										end: getResourceTimelinePoint('b', '2015-11-28T07:00:00')
 										callback: ->
 											expect(selectCalled).toBe(true)
 											done()
@@ -98,7 +98,7 @@ describe 'timeline selection', ->
 								eventAfterAllRender: ->
 									$.simulateByPoint 'drag',
 										point: getResourceTimelinePoint('b', '2015-11-28T04:00:00')
-										endPoint: getResourceTimelinePoint('a', '2015-11-28T07:00:00')
+										end: getResourceTimelinePoint('a', '2015-11-28T07:00:00')
 										callback: ->
 											expect(selectCalled).toBe(true)
 											done()
@@ -121,7 +121,7 @@ describe 'timeline selection', ->
 							eventAfterAllRender: ->
 								$.simulateByPoint 'drag',
 									point: getResourceTimelinePoint('b', '2015-11-28T04:00:00', 0.5) # +1/2 slot = 15 mins
-									endPoint: getResourceTimelinePoint('b', '2015-11-28T07:30:00')
+									end: getResourceTimelinePoint('b', '2015-11-28T07:30:00')
 									callback: ->
 										expect(selectCalled).toBe(true)
 										done()
@@ -144,7 +144,7 @@ describe 'timeline selection', ->
 					eventAfterAllRender: ->
 						$.simulateByPoint 'drag',
 							point: getResourceTimelinePoint('a', '2015-11-03')
-							endPoint: getResourceTimelinePoint('a', '2015-11-05')
+							end: getResourceTimelinePoint('a', '2015-11-05')
 							callback: ->
 								expect(selectCalled).toBe(true)
 								done()
@@ -167,7 +167,7 @@ describe 'timeline selection', ->
 					eventAfterAllRender: ->
 						$.simulateByPoint 'drag',
 							point: getResourceTimelinePoint('a', '2015-01-18')
-							endPoint: getResourceTimelinePoint('a', '2015-02-08')
+							end: getResourceTimelinePoint('a', '2015-02-08')
 							callback: ->
 								expect(selectCalled).toBe(true)
 								done()

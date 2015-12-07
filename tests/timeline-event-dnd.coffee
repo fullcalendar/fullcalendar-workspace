@@ -36,8 +36,8 @@ describe 'timeline-view event drag-n-drop', ->
 				]
 				eventAfterAllRender: oneCall ->
 					$('.event0').simulate 'drag',
-						localStartPoint: { left: 0, top: '50%' }
-						endPoint: getResourceTimelinePoint('a', '2015-11-29T05:00:00')
+						localPoint: { left: 0, top: '50%' }
+						end: getResourceTimelinePoint('a', '2015-11-29T05:00:00')
 						callback: ->
 							expect(dropSpy).toHaveBeenCalled()
 							done()

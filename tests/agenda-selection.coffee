@@ -24,7 +24,7 @@ describe 'agenda-view selection', ->
 				eventAfterAllRender: -> setTimeout ->
 					$.simulateByPoint 'drag',
 						point: getTimeGridPoint('2015-11-23T02:00:00')
-						endPoint: getTimeGridPoint('2015-11-23T04:00:00')
+						end: getTimeGridPoint('2015-11-23T04:00:00')
 						callback: ->
 							expect(selectCalled).toBe(true)
 							done()
@@ -47,7 +47,7 @@ describe 'agenda-view selection', ->
 				eventAfterAllRender: ->
 					$.simulateByPoint 'drag',
 						point: getResourceTimeGridPoint('b', '2015-11-29T02:00:00')
-						endPoint: getResourceTimeGridPoint('b', '2015-11-29T04:00:00')
+						end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00')
 						callback: ->
 							expect(selectCalled).toBe(true)
 							done()
@@ -65,7 +65,7 @@ describe 'agenda-view selection', ->
 				eventAfterAllRender: ->
 					$.simulateByPoint 'drag',
 						point: getResourceTimeGridPoint('b', '2015-11-29T02:00:00')
-						endPoint: getResourceTimeGridPoint('b', '2015-11-30T04:00:00')
+						end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00')
 						callback: ->
 							expect(selectCalled).toBe(true)
 							done()
@@ -83,7 +83,7 @@ describe 'agenda-view selection', ->
 				eventAfterAllRender: ->
 					$.simulateByPoint 'drag',
 						point: getResourceTimeGridPoint('a', '2015-11-29T02:00:00')
-						endPoint: getResourceTimeGridPoint('b', '2015-11-30T04:00:00')
+						end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00')
 						callback: ->
 							expect(selectCalled).toBe(false)
 							done()
@@ -101,7 +101,7 @@ describe 'agenda-view selection', ->
 				eventAfterAllRender: ->
 					$.simulateByPoint 'drag',
 						point: getResourceTimeGridPoint('b', '2015-11-30T02:00:00')
-						endPoint: getResourceTimeGridPoint('b', '2015-11-30T04:00:00')
+						end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00')
 						callback: ->
 							expect(selectCalled).toBe(true)
 							done()
@@ -119,7 +119,7 @@ describe 'agenda-view selection', ->
 				eventAfterAllRender: ->
 					$.simulateByPoint 'drag',
 						point: getResourceTimeGridPoint('b', '2015-11-30T02:00:00')
-						endPoint: getResourceTimeGridPoint('b', '2015-11-29T04:00:00')
+						end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00')
 						callback: ->
 							expect(selectCalled).toBe(true)
 							done()
@@ -137,7 +137,7 @@ describe 'agenda-view selection', ->
 				eventAfterAllRender: ->
 					$.simulateByPoint 'drag',
 						point: getResourceTimeGridPoint('a', '2015-11-29T02:00:00')
-						endPoint: getResourceTimeGridPoint('b', '2015-11-29T04:00:00')
+						end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00')
 						callback: ->
 							expect(selectCalled).toBe(false)
 							done()

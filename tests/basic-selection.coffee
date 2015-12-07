@@ -27,7 +27,7 @@ describe 'basic-view selection', ->
 					expect(tueEls.length).toBe(1)
 					monEls.eq(0)
 						.simulate 'drag',
-							endEl: tueEls.eq(0)
+							end: tueEls.eq(0)
 							callback: ->
 								expect(selectCalled).toBe(true)
 								done()
@@ -51,7 +51,7 @@ describe 'basic-view selection', ->
 					sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
 					monAEl = $(getLeadingBoundingRect(getDayGridDowEls('mon')).node)
 					sunAEl.simulate 'drag',
-						endEl: monAEl
+						end: monAEl
 						callback: ->
 							expect(selectCalled).toBe(true)
 							done()
@@ -70,7 +70,7 @@ describe 'basic-view selection', ->
 					sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
 					monBEl = $(getTrailingBoundingRect(getDayGridDowEls('mon')).node)
 					sunAEl.simulate 'drag',
-						endEl: monBEl
+						end: monBEl
 						callback: ->
 							expect(selectCalled).toBe(false)
 							done()
@@ -91,7 +91,7 @@ describe 'basic-view selection', ->
 					satRects = sortBoundingRects(getDayGridDowEls('sat'))
 					satBEl = $(satRects[1].node)
 					monBEl.simulate 'drag',
-						endEl: satBEl
+						end: satBEl
 						callback: ->
 							expect(selectCalled).toBe(true)
 							done()
@@ -112,7 +112,7 @@ describe 'basic-view selection', ->
 					satRects = sortBoundingRects(getDayGridDowEls('sat'))
 					satAEl = $(satRects[0].node)
 					monBEl.simulate 'drag',
-						endEl: satAEl
+						end: satAEl
 						callback: ->
 							expect(selectCalled).toBe(false)
 							done()

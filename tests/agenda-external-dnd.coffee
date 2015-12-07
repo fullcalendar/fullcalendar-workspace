@@ -46,8 +46,8 @@ describe 'agenda-view event drag-n-drop', ->
 				initCalendar
 					eventAfterAllRender: oneCall ->
 						$('.external-event').simulate 'drag',
-							localStartPoint: { left: '50%', top: 0 }
-							endPoint: getResourceTimeGridPoint('a', '2015-12-01T05:00:00')
+							localPoint: { left: '50%', top: 0 }
+							end: getResourceTimeGridPoint('a', '2015-12-01T05:00:00')
 							callback: ->
 								expect(dropSpy).toHaveBeenCalled()
 								expect(receiveSpy).toHaveBeenCalled()
