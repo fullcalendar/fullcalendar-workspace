@@ -34,4 +34,4 @@ getTimelineRowEl = (resourceId) ->
 
 getTimelineSlatEl = (date) ->
 	date = $.fullCalendar.moment.parseZone(date)
-	$('.fc-body .fc-slats td[data-date="' + date.format() + '"')
+	$('.fc-body .fc-slats td[data-date="' + date.format() + '"]')
