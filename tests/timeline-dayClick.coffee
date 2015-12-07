@@ -1,8 +1,4 @@
 
-###
-TODO: kill the setTimeout's (used for isRTL initialScroll workaround)
-###
-
 describe 'timeline dayClick', ->
 	pushOptions
 		now: '2015-11-28'
@@ -47,7 +43,7 @@ describe 'timeline dayClick', ->
 						it 'reports date with no resource', (done) ->
 							dayClickCalled = false
 							initCalendar
-								eventAfterAllRender: -> setTimeout -> # TODO: kill
+								eventAfterAllRender: ->
 									slatEl = getTimelineSlatEl('2015-11-28T04:30:00')
 									slatEl.simulate 'drag',
 										callback: ->
@@ -98,7 +94,7 @@ describe 'timeline dayClick', ->
 					it 'reports a smaller granularity', (done) ->
 						dayClickCalled = false
 						initCalendar
-							eventAfterAllRender: -> setTimeout -> # TODO: kill
+							eventAfterAllRender: ->
 								$.simulateByPoint 'drag',
 									point: getResourceTimelinePoint('b', '2015-11-28T04:00:00', 0.5) # +1/2 slot = 15 mins
 									callback: ->

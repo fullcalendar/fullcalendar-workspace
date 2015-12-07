@@ -44,7 +44,7 @@ describe 'timeline selection', ->
 						it 'reports selection with no resource', (done) ->
 							selectCalled = false
 							initCalendar
-								eventAfterAllRender: -> setTimeout -> # TODO: llllaaaaaaammmmmmeeee
+								eventAfterAllRender: ->
 									slatEl = getTimelineSlatEl('2015-11-28T04:00:00')
 									slatEl.simulate 'drag',
 										end: getTimelineSlatEl('2015-11-28T07:00:00')

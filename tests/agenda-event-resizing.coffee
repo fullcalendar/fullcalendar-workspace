@@ -23,7 +23,7 @@ describe 'agenda-view event resizing', ->
 				events: [
 					{ title: 'event1', className: 'event1', start: '2015-11-23T02:00:00', end: '2015-11-23T03:00:00' }
 				]
-				eventAfterAllRender: oneCall -> setTimeout -> # TODO: setTimeout is LLAAAMMEEE
+				eventAfterAllRender: oneCall ->
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
 							end: getTimeGridPoint('2015-11-23T04:00:00')

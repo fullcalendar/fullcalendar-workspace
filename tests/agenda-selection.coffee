@@ -21,7 +21,7 @@ describe 'agenda-view selection', ->
 		it 'allows non-resource selection', (done) ->
 			selectCalled = false
 			initCalendar
-				eventAfterAllRender: -> setTimeout ->
+				eventAfterAllRender: ->
 					$.simulateByPoint 'drag',
 						point: getTimeGridPoint('2015-11-23T02:00:00')
 						end: getTimeGridPoint('2015-11-23T04:00:00')

@@ -49,7 +49,7 @@ describe 'timeline event resizing', ->
 								events: [
 									{ title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00' }
 								]
-								eventAfterAllRender: oneCall -> setTimeout -> # TODO: llllaaaaaaammmmmmeeee
+								eventAfterAllRender: oneCall ->
 									$('.event1 .fc-end-resizer')
 										.simulate 'drag',
 											end: getTimelineSlatEl('2015-11-28T07:00:00')
