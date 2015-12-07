@@ -63,7 +63,7 @@ describe 'vresource event rendering', ->
 								eventAfterAllRender: ->
 									colRect = getTrailingBoundingRect(getHeadDowEls('tue'), isRTL)
 									eventRect = getBoundingRect('.event1')
-									expect(eventRect).toBeMostlyHorizontallyWithin(colRect)
+									expect(eventRect).toBeMostlyHBoundedBy(colRect)
 									callback()
 
 					describe 'when dates above resources', ->
@@ -75,7 +75,7 @@ describe 'vresource event rendering', ->
 								eventAfterAllRender: ->
 									resourceRect = getLeadingBoundingRect(getHeadResourceEls('c'), isRTL)
 									eventRect = getBoundingRect('.event1')
-									expect(eventRect).toBeMostlyHorizontallyWithin(resourceRect)
+									expect(eventRect).toBeMostlyHBoundedBy(resourceRect)
 									callback()
 
 			describe 'when a multi-day event', ->
@@ -110,8 +110,8 @@ describe 'vresource event rendering', ->
 										expect(lastEventRect.node).toHaveClass('fc-end')
 									tueRect = getTrailingBoundingRect(getHeadDowEls('tue'), isRTL)
 									wedRect = getTrailingBoundingRect(getHeadDowEls('wed'), isRTL)
-									expect(firstEventRect).toBeMostlyHorizontallyWithin(tueRect)
-									expect(lastEventRect).toBeMostlyHorizontallyWithin(wedRect)
+									expect(firstEventRect).toBeMostlyHBoundedBy(tueRect)
+									expect(lastEventRect).toBeMostlyHBoundedBy(wedRect)
 									callback()
 
 					describe 'when dates above resources', ->
@@ -131,8 +131,8 @@ describe 'vresource event rendering', ->
 									resourceEls = getHeadResourceEls('c')
 									firstResourceRect = getLeadingBoundingRect(resourceEls, isRTL)
 									lastResourceRect = getTrailingBoundingRect(resourceEls, isRTL)
-									expect(firstEventRect).toBeMostlyHorizontallyWithin(firstResourceRect)
-									expect(lastEventRect).toBeMostlyHorizontallyWithin(lastResourceRect)
+									expect(firstEventRect).toBeMostlyHBoundedBy(firstResourceRect)
+									expect(lastEventRect).toBeMostlyHBoundedBy(lastResourceRect)
 									callback()
 
 				describe 'when basicTwoDay', ->
@@ -159,8 +159,8 @@ describe 'vresource event rendering', ->
 									eventRect = getBoundingRect('.event1')
 									tueRect = getTrailingBoundingRect(getHeadDowEls('tue'), isRTL)
 									wedRect = getTrailingBoundingRect(getHeadDowEls('wed'), isRTL)
-									expect(tueRect).toBeMostlyHorizontallyWithin(eventRect)
-									expect(wedRect).toBeMostlyHorizontallyWithin(eventRect)
+									expect(tueRect).toBeMostlyHBoundedBy(eventRect)
+									expect(wedRect).toBeMostlyHBoundedBy(eventRect)
 									callback()
 
 					describe 'when dates above resources', ->
@@ -180,8 +180,8 @@ describe 'vresource event rendering', ->
 									resourceEls = getHeadResourceEls('c')
 									firstResourceRect = getLeadingBoundingRect(resourceEls, isRTL)
 									lastResourceRect = getTrailingBoundingRect(resourceEls, isRTL)
-									expect(firstEventRect).toBeMostlyHorizontallyWithin(firstResourceRect)
-									expect(lastEventRect).toBeMostlyHorizontallyWithin(lastResourceRect)
+									expect(firstEventRect).toBeMostlyHBoundedBy(firstResourceRect)
+									expect(lastEventRect).toBeMostlyHBoundedBy(lastResourceRect)
 									callback()
 
 			describe 'with an event with no resources', ->

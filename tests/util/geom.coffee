@@ -1,5 +1,6 @@
 
-# TODO: consolidate repeat code and clean up
+# Bounding Rect Utils
+# --------------------------------------------------------------------------------------------------
 
 
 getBoundingRect = (el) ->
@@ -8,7 +9,7 @@ getBoundingRect = (el) ->
 	rect = el.offset()
 	rect.right = rect.left + el.outerWidth()
 	rect.bottom = rect.top + el.outerHeight()
-	rect.node = el[0] # very useful for debuggin
+	rect.node = el[0] # very useful for debugging
 	rect
 
 
@@ -20,13 +21,12 @@ getJointBoundingRect = (els) ->
 	joinRects.apply(null, rect)
 
 
-getLeadingBoundingRect = (els, isRTL) -> # TODO: accept rects too???
+getLeadingBoundingRect = (els, isRTL) ->
 	els = $(els)
 	expect(els.length).toBeGreaterThan(0)
 	best = null
 	for node in els
 		rect = getBoundingRect(node)
-		rect.node = node
 		if not best
 			best = rect
 		else if isRTL
@@ -44,7 +44,6 @@ getTrailingBoundingRect = (els, isRTL) ->
 	best = null
 	for node in els
 		rect = getBoundingRect(node)
-		rect.node = node # redundant!!!
 		if not best
 			best = rect
 		else if isRTL
@@ -66,6 +65,21 @@ sortBoundingRects = (els, isRTL) ->
 			a.left - b.left
 	rects
 
+
+# given an element, returns its bounding box. given a rect, returns the rect.
+massageRect = (input) ->
+	if isRect(input)
+		input
+	else
+		getBoundingRect(input)
+
+
+isRect = (input) ->
+	'left' of input and 'right' of input and 'top' of input and 'bottom' of input
+
+
+# Geometry Utils
+# --------------------------------------------------------------------------------------------------
 
 
 joinRects = (rect, otherRects...) ->
@@ -97,81 +111,98 @@ getRectCenter = (rect) ->
 	}
 
 
-beforeEach -> # TODO: need this?
+isRectMostlyAbove = (subjectRect, otherRect) ->
+	(subjectRect.bottom - otherRect.top) < # overlap is less than
+		(subjectRect.bottom - subjectRect.top) / 2 # half the height
+
+
+isRectMostlyLeft = (subjectRect, otherRect) ->
+	(subjectRect.right - otherRect.left) < # overlap is less then
+		(subjectRect.right - subjectRect.left) / 2 # half the width
+
+
+isRectMostlyBounded = (subjectRect, boundRect) ->
+	isRectMostlyHBounded(subjectRect, boundRect) and
+		isRectMostlyVBounded(subjectRect, boundRect)
+
+
+isRectMostlyHBounded = (subjectRect, boundRect) ->
+	Math.min(subjectRect.right, boundRect.right) -
+		Math.max(subjectRect.left, boundRect.left) > # overlap area is greater than
+			(subjectRect.right - subjectRect.left) / 2 # half the width
+
+
+isRectMostlyVBounded = (subjectRect, boundRect) ->
+	Math.min(subjectRect.bottom, boundRect.bottom) -
+		Math.max(subjectRect.top, boundRect.top) > # overlap area is greater than
+			(subjectRect.bottom - subjectRect.top) / 2 # half the height
+
+
+# Jasmine Adapters
+# --------------------------------------------------------------------------------------------------
+
+beforeEach ->
 	jasmine.addMatchers
 
-		# TODO: accept els too? YES
-
 		toBeMostlyAbove: ->
-			compare: (subjectRect, otherRect) ->
-				result =
-					pass: subjectRect.bottom < otherRect.top or # completely above
-						(subjectRect.bottom - otherRect.top) < # overlap is less than
-							(subjectRect.bottom - subjectRect.top) / 2 # half the height
+			compare: (subject, other) ->
+				result = { pass: isRectMostlyAbove(massageRect(subject), massageRect(other)) }
 				if not result.pass
 					result.message = 'first rect is not mostly above the second'
 				result
 
+		toBeMostlyBelow: ->
+			compare: (subject, other) ->
+				result = { pass: not isRectMostlyAbove(massageRect(subject), massageRect(other)) }
+				if not result.pass
+					result.message = 'first rect is not mostly below the second'
+				result
+
 		toBeMostlyLeftOf: ->
-			compare: (subjectRect, otherRect) ->
-				result =
-					pass: subjectRect.right < otherRect.left or # completely left of
-						(subjectRect.right - otherRect.left) < # overlap is less then
-							(subjectRect.right - subjectRect.left) / 2 # half the width
+			compare: (subject, other) ->
+				result = { pass: isRectMostlyLeft(massageRect(subject), massageRect(other)) }
 				if not result.pass
 					result.message = 'first rect is not mostly left of the second'
 				result
 
 		toBeMostlyRightOf: ->
-			compare: (subjectRect, otherRect) ->
-				result =
-					pass: subjectRect.left > otherRect.right or # completely right of
-						(otherRect.right - subjectRect.left) < # overlap is less than
-							(subjectRect.right - subjectRect.left) / 2 # half the width
+			compare: (subject, other) ->
+				result = { pass: not isRectMostlyLeft(massageRect(subject), massageRect(other)) }
 				if not result.pass
 					result.message = 'first rect is not mostly right of the second'
 				result
 
-		toBeMostlyHorizontallyWithin: ->
-			compare: (subjectRect, otherRect) ->
-				result =
-					pass: Math.min(subjectRect.right, otherRect.right) -
-						Math.max(subjectRect.left, otherRect.left) > # overlap area is greater than
-							(subjectRect.right - subjectRect.left) / 2 # half the width
-				if not result.pass
-					result.message = 'first rect is not mostly horizontally within the second'
-				result
-
-
-
-		toBeMostlyBoundedBy: -> # naming :(
-			compare: (subjectRect, otherRect) ->
-				result =
-					pass: \
-						Math.min(subjectRect.right, otherRect.right) -
-							Math.max(subjectRect.left, otherRect.left) > # overlap area is greater than
-							(subjectRect.right - subjectRect.left) / 2 and # half the width
-						Math.min(subjectRect.bottom, otherRect.bottom) -
-							Math.max(subjectRect.top, otherRect.top) >
-							(subjectRect.bottom - subjectRect.top) / 2
+		toBeMostlyBoundedBy: ->
+			compare: (subject, other) ->
+				result = { pass: isRectMostlyBounded(massageRect(subject), massageRect(other)) }
 				if not result.pass
 					result.message = 'first rect is not mostly bounded by the second'
 				result
 
+		toBeMostlyHBoundedBy: ->
+			compare: (subject, other) ->
+				result = { pass: isRectMostlyHBounded(massageRect(subject), massageRect(other)) }
+				if not result.pass
+					result.message = 'first rect does not mostly horizontally bound the second'
+				result
 
+		toBeMostlyVBoundedBy: ->
+			compare: (subject, other) ->
+				result = { pass: isRectMostlyVBounded(massageRect(subject), massageRect(other)) }
+				if not result.pass
+					result.message = 'first rect does not mostly vertically bound the second'
+				result
 
 		toBeLeftOf: ->
-			compare: (subjectRect, otherRect) ->
-				result =
-					pass: subjectRect.right < otherRect.left
+			compare: (subject, other) ->
+				result = { pass: massageRect(subject).right < massageRect(other).left }
 				if not result.pass
 					result.message = 'first rect is not left of the second'
 				result
 
 		toBeRightOf: ->
-			compare: (subjectRect, otherRect) ->
-				result =
-					pass: subjectRect.left > otherRect.right
+			compare: (subject, other) ->
+				result = { pass: massageRect(subject).left > massageRect(other).right }
 				if not result.pass
 					result.message = 'first rect is not right of the second'
 				result
