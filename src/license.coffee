@@ -1,5 +1,5 @@
 
-RELEASE_DATE = '<%= versionReleaseDate %>' # for Scheduler
+RELEASE_DATE = '<%= releaseDate %>' # for Scheduler
 UPGRADE_WINDOW = { years: 1, weeks: 1 } # 1 week leeway, for tz shift reasons too
 LICENSE_INFO_URL = 'http://fullcalendar.io/scheduler/license/'
 PRESET_LICENSE_KEYS = [
