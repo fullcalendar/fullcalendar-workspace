@@ -15,13 +15,10 @@ then
 	exit
 fi
 
+gulp release
+
 # bump version number in .json files
 gulp bump --version="$version"
-
-# TODO: make karma and dist part of same task, so ctl+C kills all
-# NOTE: dist will clean first
-gulp dist
-gulp karmaSingle
 
 # save reference to current branch
 orig_ref=$(git symbolic-ref -q HEAD)

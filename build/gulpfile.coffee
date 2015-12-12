@@ -42,6 +42,10 @@ gulp.task 'watch', [ 'watchJs', 'watchCss' ]
 # ----------------------------------------------------------------------------------------------------------------------
 
 
+gulp.task 'release', (cb) ->
+	runSequence('dist', 'karmaSingle', cb)
+
+
 gulp.task 'dist', (cb) ->
 	runSequence('cleanDist', 'buildDist', cb)
 
