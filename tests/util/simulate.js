@@ -30,6 +30,8 @@ var DRAG_DEFAULTS = {
 	duration: 100 // ms
 };
 
+var dragStackCnt = 0;
+
 
 $.simulate.prototype.simulateDrag = function() {
 	var targetNode = this.target;
@@ -39,7 +41,6 @@ $.simulate.prototype.simulateDrag = function() {
 	var dy = options.dy;
 	var duration = options.duration;
 	var moves = options.moves;
-	var debug = Boolean(options.debug);
 	var startPoint;
 	var endEl;
 	var endPoint;
@@ -80,8 +81,8 @@ $.simulate.prototype.simulateDrag = function() {
 		dy = endPoint.top - startPoint.top;
 	}
 
-	moves = Math.max(moves, debug ? DEBUG_MIN_MOVES : 1);
-	duration = Math.max(duration, debug ? DEBUG_MIN_DURATION : 10);
+	moves = Math.max(moves, options.debug ? DEBUG_MIN_MOVES : 1);
+	duration = Math.max(duration, options.debug ? DEBUG_MIN_DURATION : 10);
 
 	simulateDrag(
 		this,
@@ -91,13 +92,13 @@ $.simulate.prototype.simulateDrag = function() {
 		dy,
 		moves,
 		duration,
-		options.callback || function() {},
-		debug
+		options
 	);
 };
 
 
-function simulateDrag(self, targetNode, startPoint, dx, dy, moveCnt, duration, callback, debug) {
+function simulateDrag(self, targetNode, startPoint, dx, dy, moveCnt, duration, options) {
+	var debug = options.debug;
 	var docNode = targetNode.ownerDocument;
 	var docEl = $(docNode);
 	var waitTime = duration / moveCnt;
@@ -105,6 +106,7 @@ function simulateDrag(self, targetNode, startPoint, dx, dy, moveCnt, duration, c
 	var clientCoords;
 	var intervalId;
 	var dotEl;
+	var dragId;
 
 	if (debug) {
 		dotEl = $('<div>')
@@ -135,7 +137,13 @@ function simulateDrag(self, targetNode, startPoint, dx, dy, moveCnt, duration, c
 
 	function startDrag() {
 		updateCoords();
-		self.simulateEvent(targetNode, 'mousedown', clientCoords);
+		dragId = ++dragStackCnt;
+
+		// simulate a drag-start only if another drag isn't already happening
+		if (dragStackCnt === 1) {
+			self.simulateEvent(targetNode, 'mousedown', clientCoords);
+		}
+
 		if (debug) {
 			setTimeout(function() {
 				startMoving();
@@ -173,14 +181,23 @@ function simulateDrag(self, targetNode, startPoint, dx, dy, moveCnt, duration, c
 	}
 
 	function stopDrag() { // progress at 1, coords already up to date at this point
-		if ($.contains(docNode, targetNode)) {
-			self.simulateEvent(targetNode, 'mouseup', clientCoords);
-			self.simulateEvent(targetNode, 'click', clientCoords);
+
+		(options.onBeforeRelease || function() {})();
+
+		// only simulate a drop if the current drag is still the active one.
+		// otherwise, this means another drag has begun via onBeforeRelease.
+		if (dragId === dragStackCnt) {
+			if ($.contains(docNode, targetNode)) {
+				self.simulateEvent(targetNode, 'mouseup', clientCoords);
+				self.simulateEvent(targetNode, 'click', clientCoords);
+			}
+			else {
+				self.simulateEvent(docNode, 'mouseup', clientCoords);
+			}
 		}
-		else {
-			self.simulateEvent(docNode, 'mouseup', clientCoords);
-		}
-		callback();
+
+		dragStackCnt--;
+		(options.onRelease || options.callback || function() {})(); // TODO: deprecate "callback" ?
 	}
 
 	startDrag();
@@ -203,7 +220,8 @@ function normalizeElPoint(point, el) {
 
 
 function isPoint(input) {
-	return 'left' in input && 'top' in input;
+	return typeof input === 'object' && // `in` operator only works on objects
+		'left' in input && 'top' in input;
 }
 
 
