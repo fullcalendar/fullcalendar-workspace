@@ -19,6 +19,7 @@
     "coffee-script": "^1.9.3",
     "del": "^1.2.0",
     "gulp": "^3.9.0",
+    "gulp-bump": "^1.0.0",
     "gulp-coffee": "^2.3.1",
     "gulp-concat": "^2.6.0",
     "gulp-cssmin": "^0.1.7",
@@ -36,7 +37,8 @@
     "karma-jasmine": "^0.3.6",
     "karma-phantomjs-launcher": "^0.2.0",
     "phantomjs": "^1.9.17",
-    "run-sequence": "^1.1.1"
+    "run-sequence": "^1.1.1",
+    "yargs": "^3.31.0"
   },
   "main": "dist/scheduler.js",
   "files": [
