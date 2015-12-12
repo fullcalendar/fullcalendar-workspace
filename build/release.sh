@@ -8,10 +8,6 @@ cd "`dirname $0`/.."
 
 ./build/require-clean-working-tree.sh
 
-echo
-echo "THIS SCRIPT ASSUMES YOU'VE ALREADY BUMPED THE VERSION IN ALL THE .json FILES"
-echo
-
 read -p "Enter the new version number with no 'v' (for example '1.0.1'): " version
 
 if [[ ! "$version" ]]
@@ -19,7 +15,11 @@ then
 	exit
 fi
 
+# bump version number in .json files
+gulp bump --version="$version"
+
 # TODO: clean first?
+# TODO: make karma and dist part of same task, so ctl+C kills all
 gulp dist
 gulp karmaSingle
 
@@ -29,6 +29,7 @@ orig_ref=$(git symbolic-ref -q HEAD)
 # make a tagged detached commit of the dist files
 # no-verify avoids commit hooks
 git checkout --detach --quiet
+git add *.json
 git add -f dist/*.js dist/*.css
 git commit -e -m "version $version"
 git tag -a "v$version" -m "version $version"

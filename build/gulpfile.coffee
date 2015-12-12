@@ -13,15 +13,17 @@ sourcemaps = require('gulp-sourcemaps')
 uglify = require('gulp-uglify')
 cssmin = require('gulp-cssmin')
 zip = require('gulp-zip')
+bump = require('gulp-bump')
 runSequence = require('run-sequence') # for chaining tasks in serial
 
 # our configs (paths are relative to this script)
 # TODO: move versionReleaseDate out of package.json. compute from GIT
+# NOTE: all other paths are relative to the *project root*
 packageInfo = require('../package.json')
 srcConfig = require('./src.conf')
 
-
-# NOTE: all other paths are relative to the *project root*
+# parsed command line arguments
+argv = require('yargs').argv
 
 
 # Main
@@ -258,3 +260,19 @@ gulp.task 'karmaSingle', ->
 		singleRun: true
 		autoWatch: false
 
+
+# Release
+# ----------------------------------------------------------------------------------------------------------------------
+
+###
+Bump the version in the *.json files, based on command line args
+###
+gulp.task 'bump', ->
+	bumpOptions =
+		if argv.version
+			{ version: argv.version }
+		else
+			{ type: argv.type or 'patch' }
+	gulp.src [ 'package.json', 'bower.json' ]
+		.pipe bump(bumpOptions)
+		.pipe gulp.dest('./')
