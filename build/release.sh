@@ -6,6 +6,8 @@ set -e
 # start in project root
 cd "`dirname $0`/.."
 
+./build/require-clean-working-tree.sh
+
 echo
 echo "THIS SCRIPT ASSUMES YOU'VE ALREADY BUMPED THE VERSION IN ALL THE .json FILES"
 echo
@@ -17,17 +19,26 @@ then
 	exit
 fi
 
+# TODO: clean first?
 gulp dist
 gulp karmaSingle
-git checkout `git rev-parse --verify HEAD`
+
+# save reference to current branch
+orig_ref=$(git symbolic-ref -q HEAD)
+
+# make a tagged detached commit of the dist files
+# no-verify avoids commit hooks
+git checkout --detach --quiet
 git add -f dist/*.js dist/*.css
 git commit -e -m "version $version"
 git tag -a "v$version" -m "version $version"
-git checkout master
+
+# go back original branch
+# need to reset so dist files are not staged
+git symbolic-ref HEAD "$orig_ref"
+git reset
 
 echo
 echo 'DONE. It is now up to you to run `'"git push origin master && git push origin v$version"'`'
 echo 'and `'"git checkout v$version && npm publish"'`'
 echo
-
-# TODO: fix the git checkouts at the end
