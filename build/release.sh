@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# always immediately exit upon error
+set -e
+
+# start in project root
 cd "`dirname $0`/.."
 
 echo
@@ -13,16 +17,17 @@ then
 	exit
 fi
 
-gulp dist && \
-gulp karmaSingle && \
-git checkout `git rev-parse --verify HEAD` && \
-git add -f dist/*.js dist/*.css && \
-git commit -e -m "version $version" && \
-git tag -a "v$version" -m "version $version" && \
-git checkout master && \
-echo && \
-echo 'DONE. It is now up to you to run `'"git push origin master && git push origin v$version"'`' && \
-echo 'and `'"git checkout v$version && npm publish"'`' && \
+gulp dist
+gulp karmaSingle
+git checkout `git rev-parse --verify HEAD`
+git add -f dist/*.js dist/*.css
+git commit -e -m "version $version"
+git tag -a "v$version" -m "version $version"
+git checkout master
+
+echo
+echo 'DONE. It is now up to you to run `'"git push origin master && git push origin v$version"'`'
+echo 'and `'"git checkout v$version && npm publish"'`'
 echo
 
 # TODO: fix the git checkouts at the end
