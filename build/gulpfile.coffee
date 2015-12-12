@@ -1,6 +1,8 @@
 del = require('del')
 path = require('path')
 karmaServer = require('karma').server
+_ = require('underscore')
+moment = require('moment')
 gulp = require('gulp')
 filter = require('gulp-filter')
 rename = require('gulp-rename')
@@ -61,7 +63,7 @@ gulp.task 'compileJs', ->
 		.pipe plumber() # affects future streams
 		.pipe concat('scheduler.coffee')
 		.pipe coffee({ bare: true })
-		.pipe template(packageInfo) # replaces <%= %> variables
+		.pipe template(getSrcTemplateVars()) # replaces <%= %> variables
 		.pipe gulp.dest('dist/')
 
 ###
@@ -102,7 +104,7 @@ gulp.task 'watchJs', [ 'compileDevJs' ], -> # will do an initial compile
 gulp.task 'compileCss', ->
 	gulp.src srcConfig.stylesheets, { cwd: 'src/', base: 'src/' }
 		.pipe concat('scheduler.css')
-		.pipe template(packageInfo) # replaces <%= %> variables
+		.pipe template(getSrcTemplateVars()) # replaces <%= %> variables
 		.pipe gulp.dest('dist/')
 
 
@@ -276,3 +278,16 @@ gulp.task 'bump', ->
 	gulp.src [ 'package.json', 'bower.json' ]
 		.pipe bump(bumpOptions)
 		.pipe gulp.dest('./')
+
+
+# Utils
+# ----------------------------------------------------------------------------------------------------------------------
+
+getSrcTemplateVars = ->
+	releaseDate =
+		if argv['release-date']
+			moment(argv['release-date'])
+		else
+			moment()
+	_.extend {}, packageInfo
+		versionReleaseDate: releaseDate.format('YYYY-MM-DD')

@@ -3,7 +3,6 @@
   "title": "FullCalendar Scheduler",
   "description": "A premium add-on to FullCalendar for displaying events and resources",
   "version": "1.1.0",
-  "versionReleaseDate": "2015-11-30",
   "homepage": "http://fullcalendar.io/scheduler/",
   "repository": {
     "type": "git",
@@ -38,6 +37,7 @@
     "karma-phantomjs-launcher": "^0.2.0",
     "phantomjs": "^1.9.17",
     "run-sequence": "^1.1.1",
+    "underscore": "^1.8.3",
     "yargs": "^3.31.0"
   },
   "main": "dist/scheduler.js",
