@@ -18,8 +18,8 @@ fi
 # bump version number in .json files
 gulp bump --version="$version"
 
-# TODO: clean first?
 # TODO: make karma and dist part of same task, so ctl+C kills all
+# NOTE: dist will clean first
 gulp dist
 gulp karmaSingle
 
@@ -38,8 +38,3 @@ git tag -a "v$version" -m "version $version"
 # need to reset so dist files are not staged
 git symbolic-ref HEAD "$orig_ref"
 git reset
-
-echo
-echo 'DONE. It is now up to you to run `'"git push origin master && git push origin v$version"'`'
-echo 'and `'"git checkout v$version && npm publish"'`'
-echo
