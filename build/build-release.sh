@@ -16,7 +16,6 @@ then
 fi
 
 read -p "Enter the new version number with no 'v' (for example '1.0.1'): " version
-
 if [[ ! "$version" ]]
 then
 	echo "Aborting."
@@ -29,16 +28,16 @@ fi
 gulp release --version="$version"
 
 # save reference to current branch
-orig_ref=$(git symbolic-ref -q HEAD)
+orig_ref=$(git symbolic-ref --quiet HEAD)
 
 # make a tagged detached commit of the dist files.
 # no-verify avoids commit hooks.
-# the &&'s make this an expression. won't exit on failure.
-git checkout --detach --quiet && \
+# make this a boolean expression that doesn't exit upon error.
+git checkout --detach && \
 git add *.json && \
 git add -f dist/*.js dist/*.css && \
 git commit -e -m "version $version" && \
-git tag -a "v$version" -m "version $version"
+git tag -a "v$version" -m "version $version" || true
 
 # if failure building the commit, there will be leftover .json changes.
 # always discard. won't be harmful otherwise.
