@@ -12,7 +12,7 @@ read -p "Enter the new version number with no 'v' (for example '1.0.1'): " versi
 
 if [[ ! "$version" ]]
 then
-	exit
+	exit 1
 fi
 
 # will do everything necessary for a release,
@@ -36,8 +36,10 @@ git tag -a "v$version" -m "version $version"
 # always discard. won't be harmful otherwise.
 git checkout "$orig_ref" -- *.json
 
-# go back original branch.
+# go back to the original branch.
 # need to reset so dist files are not staged.
-# this will be executed regardless of whether the commit was build correctly.
+# this will be executed regardless of whether the commit was built correctly.
 git symbolic-ref HEAD "$orig_ref"
 git reset
+
+echo "DONE"
