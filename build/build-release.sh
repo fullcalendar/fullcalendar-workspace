@@ -33,7 +33,7 @@ orig_ref=$(git symbolic-ref --quiet HEAD)
 # make a tagged detached commit of the dist files.
 # no-verify avoids commit hooks.
 # make this a boolean expression that doesn't exit upon error.
-git checkout --detach && \
+git checkout --detach --quiet && \
 git add *.json && \
 git add -f dist/*.js dist/*.css && \
 git commit -e -m "version $version" && \
