@@ -43,7 +43,7 @@ gulp.task 'watch', [ 'watchJs', 'watchCss' ]
 
 
 gulp.task 'release', (cb) ->
-	runSequence('dist', 'karmaSingle', cb)
+	runSequence('bump', 'dist', 'karmaSingle', cb)
 
 
 gulp.task 'dist', (cb) ->
@@ -292,5 +292,5 @@ getSrcTemplateVars = ->
 			moment(argv['release-date'])
 		else
 			moment()
-	_.extend {}, packageInfo
+	_.extend {}, packageInfo,
 		releaseDate: releaseDate.format('YYYY-MM-DD')
