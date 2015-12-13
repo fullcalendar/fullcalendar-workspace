@@ -8,10 +8,18 @@ cd "`dirname $0`/.."
 
 ./build/require-clean-working-tree.sh
 
+read -p "Have you already updated the changelog? (y/n): " updated_changelog
+if [[ "$updated_changelog" != "y" ]]
+then
+	echo "Go do that!"
+	exit 1
+fi
+
 read -p "Enter the new version number with no 'v' (for example '1.0.1'): " version
 
 if [[ ! "$version" ]]
 then
+	echo "Aborting."
 	exit 1
 fi
 

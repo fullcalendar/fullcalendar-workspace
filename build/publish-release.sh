@@ -19,6 +19,7 @@ fi
 read -p "Are you sure you want to publish $tag (y/n): " yn
 if [[ "$yn" != "y" ]]
 then
+	echo "Aborting."
 	exit 1
 fi
 
