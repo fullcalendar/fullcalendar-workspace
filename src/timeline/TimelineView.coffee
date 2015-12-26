@@ -81,12 +81,32 @@ class TimelineView extends View
 		@timeGrid.unrenderDates()
 
 
+	# Business Hours
+	# ------------------------------------------------------------------------------------------------------------------
+
+
 	renderBusinessHours: ->
 		@timeGrid.renderBusinessHours()
 
 
 	unrenderBusinessHours: ->
 		@timeGrid.unrenderBusinessHours()
+
+
+	# Now Indicator
+	# ------------------------------------------------------------------------------------------------------------------
+
+
+	getNowIndicatorUnit: ->
+		@timeGrid.getNowIndicatorUnit()
+
+
+	renderNowIndicator: (date) ->
+		@timeGrid.renderNowIndicator(date)
+
+
+	unrenderNowIndicator: ->
+		@timeGrid.unrenderNowIndicator()
 
 
 	# Hit System

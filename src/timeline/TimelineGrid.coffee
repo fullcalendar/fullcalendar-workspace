@@ -474,6 +474,10 @@ class TimelineGrid extends Grid
 			'><div /></td>'
 
 
+	#  Business Hours
+	# ---------------------------------------------------------------------------------
+
+
 	businessHourSegs: null
 
 
@@ -486,6 +490,48 @@ class TimelineGrid extends Grid
 
 	unrenderBusinessHours: ->
 		@unrenderFill('businessHours')
+
+
+	# Now Indicator
+	# ---------------------------------------------------------------------------------
+
+
+	nowIndicatorEls: null
+
+
+	getNowIndicatorUnit: ->
+		# TODO: converge with largeUnit. precompute
+		if @isTimeScale
+			computeIntervalUnit(@slotDuration)
+
+
+	# will only execute if isTimeScale
+	renderNowIndicator: (date) ->
+		nodes = []
+		date = @normalizeGridDate(date)
+		if date >= @start and date < @end
+			coord = @dateToCoord(date)
+			css = if @isRTL
+					{ right: -coord }
+				else
+					{ left: coord }
+
+			nodes.push($("<div class='fc-now-indicator fc-now-indicator-arrow'></div>")
+				.css(css)
+				.appendTo(@headScroller.innerEl)[0])
+
+			nodes.push($("<div class='fc-now-indicator fc-now-indicator-line'></div>")
+				.css(css)
+				.appendTo(@bodyScroller.innerEl)[0])
+
+		@nowIndicatorEls = $(nodes)
+
+
+	# will only execute if isTimeScale
+	unrenderNowIndicator: ->
+		if @nowIndicatorEls
+			@nowIndicatorEls.remove()
+			@nowIndicatorEls = null
 
 
 	# Coordinates
