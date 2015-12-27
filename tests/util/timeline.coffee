@@ -3,7 +3,7 @@ getResourceTimelinePoint = (resourceId, date, slatOffset) ->
 	rowRect = getBoundingRect(getTimelineRowEl(resourceId))
 	left = getTimelineLeft(date, slatOffset)
 	{
-		left: left,
+		left: left
 		top: (rowRect.top + rowRect.bottom) / 2
 	}
 
@@ -12,8 +12,19 @@ getTimelinePoint = (date, slatOffset) ->
 	contentRect = getBoundingRect($('.fc-body .fc-time-area .fc-content'))
 	left = getTimelineLeft(date, slatOffset)
 	{
-		left: left,
+		left: left
 		top: (contentRect.top + contentRect.bottom) / 2
+	}
+
+
+getTimelineLine = (date, slatOffset) ->
+	contentRect = getBoundingRect($('.fc-body .fc-time-area .fc-content'))
+	left = getTimelineLeft(date, slatOffset)
+	{
+		left: left
+		right: left
+		top: contentRect.top
+		bottom: contentRect.bottom
 	}
 
 
