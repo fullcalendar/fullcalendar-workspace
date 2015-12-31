@@ -16,6 +16,7 @@ ResourceDayTableMixin =
 	# ----------------------------------------------------------------------------------------------
 
 
+	# getting called twice unfortuntately :(
 	setResources: (resources) ->
 		@flattenedResources = @flattenResources(resources)
 		@resourceCnt = @flattenedResources.length
