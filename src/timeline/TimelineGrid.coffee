@@ -620,11 +620,13 @@ class TimelineGrid extends Grid
 			@snapCnt
 		else
 			snapDiffInt = Math.floor(snapDiff)
-			snapDiffRemainder = snapDiff - snapDiffInt
 			snapCoverage = @snapDiffToIndex[snapDiffInt]
 
 			if isInt(snapCoverage) # not an in-between value
-				snapCoverage += snapDiffRemainder
+				snapCoverage += snapDiff - snapDiffInt # add the remainder
+			else
+				# in between, so round down, but make sure negatives go to zero
+				snapCoverage = Math.max(0, Math.floor(snapCoverage))
 
 			snapCoverage
 
