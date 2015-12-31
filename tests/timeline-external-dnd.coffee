@@ -12,17 +12,23 @@ describe 'timeline-view external element drag-n-drop', ->
 		defaultView: 'timelineDay'
 		scrollTime: '00:00'
 
+	dragEl = null
+
+	beforeEach ->
+		dragEl = $('<a' +
+			' class="external-event fc-event"' +
+			' style="width:100px"' +
+			' data-event=\'{"title":"my external event"}\'' +
+			'>external</a>')
+			.appendTo('body')
+			.draggable()
+
+	afterEach ->
+		dragEl.remove()
+
 	describeTimezones (tz) ->
 
 		it 'allows dropping onto a resource', (done) ->
-			dragEl = $('<a' +
-				' class="external-event fc-event"' +
-				' style="width:100px"' +
-				' data-event=\'{"title":"my external event"}\'' +
-				'>external</a>')
-				.appendTo('body')
-				.draggable()
-
 			initCalendar
 				eventAfterAllRender: oneCall ->
 					$('.external-event').simulate 'drag',
@@ -31,7 +37,6 @@ describe 'timeline-view external element drag-n-drop', ->
 						callback: ->
 							expect(dropSpy).toHaveBeenCalled()
 							expect(receiveSpy).toHaveBeenCalled()
-							dragEl.remove()
 							done()
 				drop:
 					dropSpy = spyCall (date) ->
@@ -43,3 +48,28 @@ describe 'timeline-view external element drag-n-drop', ->
 						expect(event.end).toBe(null)
 						resource = currentCalendar.getEventResource(event)
 						expect(resource.id).toBe('b')
+
+	describe 'when overlap is false', ->
+		pushOptions
+			eventOverlap: false
+			events: [
+				{
+					title: 'existing event'
+					start: '2015-11-29T01:00:00'
+					end: '2015-11-29T03:00:00'
+					resourceId: 'a'
+				}
+			]
+
+		it 'doesn\'t allow the drop on an event', (done) ->
+			initCalendar
+				eventAfterAllRender: oneCall ->
+					$('.external-event').simulate 'drag',
+						localPoint: { left: 0, top: '50%' }
+						end: getResourceTimelinePoint('a', '2015-11-29T02:00:00')
+						callback: ->
+							expect(dropSpy).not.toHaveBeenCalled()
+							expect(receiveSpy).not.toHaveBeenCalled()
+							done()
+				drop: dropSpy = jasmine.createSpy('drop')
+				eventReceive: receiveSpy = jasmine.createSpy('receive')
