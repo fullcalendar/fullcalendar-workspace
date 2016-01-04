@@ -31,17 +31,24 @@ ResourceDayTableMixin =
 
 	# flattens and sorts
 	flattenResources: (resources) ->
-		orderSpecs = parseFieldSpecs(@view.opt('resourceOrder'))
-		sortFunc = (a, b) ->
-			compareByFieldSpecs(a, b, orderSpecs)
+		orderVal = @view.opt('resourceOrder')
+		if orderVal
+			orderSpecs = parseFieldSpecs(orderVal)
+			sortFunc = (a, b) ->
+				compareByFieldSpecs(a, b, orderSpecs)
+		else
+			sortFunc = null
 		res = []
 		@accumulateResources(resources, sortFunc, res)
 		res
 
 	# just flattens
 	accumulateResources: (resources, sortFunc, res) ->
-		sortedResources = resources.slice(0) # make copy
-		sortedResources.sort(sortFunc) # sorts in place
+		if sortFunc
+			sortedResources = resources.slice(0) # make copy
+			sortedResources.sort(sortFunc) # sorts in place
+		else
+			sortedResources = resources
 		for resource in sortedResources
 			res.push(resource)
 			@accumulateResources(resource.children, sortFunc, res)

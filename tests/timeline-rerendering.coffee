@@ -155,6 +155,7 @@ describe 'timeline view rerendering', ->
 			{ id: '5', resourceId: 'f', start: '2015-08-07T00:30:00', end: '2015-08-07T02:30:00', title: 'event 5' }
 		]
 
+	# TODO: consolidate. also in resourceOrder
 	getOrderedResourceIds = ->
 		$('.fc-resource-area tr[data-resource-id]').map (i, node) ->
 				$(node).data('resource-id')
