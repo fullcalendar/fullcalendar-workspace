@@ -135,7 +135,7 @@ class Spreadsheet
 	colResizeMousedown: (i, ev, resizerEl) ->
 		colWidths = @colWidths = @queryColWidths()
 		colWidths.pop()
-		colWidths.push('auto')
+		colWidths.push(null) # will result in 'auto' or ''
 
 		origColWidth = colWidths[i]
 		minWidth = Math.min(@colMinWidths[i], COL_MIN_WIDTH) # if given width is smaller, allow it
@@ -172,7 +172,13 @@ class Spreadsheet
 				if colWidth
 					anyPercentages = true
 
-		defaultCssWidth = if anyPercentages then 'auto' else ''
+		# percentage widths play better with 'auto' but h-grouped cells don't
+		defaultCssWidth =
+			if anyPercentages and not @view.isHGrouping
+				'auto'
+			else
+				''
+
 		cssWidths = for colWidth, i in colWidths
 			colWidth ? defaultCssWidth
 
