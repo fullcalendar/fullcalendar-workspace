@@ -442,7 +442,7 @@ class RowParent
 		max = 0
 		$.each @trHash, (type, tr) =>
 			# exclude multi-rowspans (probably done for row grouping)
-			innerEl = getFirstOwnRow(tr).find('> div')
+			innerEl = getOwnCells(tr).find('> div:not(.fc-cell-content):first')
 			max = Math.max(innerEl.height(), max)
 		max
 
@@ -451,7 +451,9 @@ class RowParent
 	###
 	setTrInnerHeight: (height) ->
 		# exclude multi-rowspans (probably done for row grouping)
-		getFirstOwnRow(@trs).find('> div').height(height)
+		$.each @trHash, (type, tr) =>
+			getOwnCells(tr).find('> div:not(.fc-cell-content):first')
+				.height(height)
 
 
 	# Triggering

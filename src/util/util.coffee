@@ -1,15 +1,11 @@
 
 ###
-Gets the first cell that doesn't have a multi-row rowspan.
-Accepts a jQuery object of one or more TRs and returns the first TD for each.
+Given a jQuery <tr> set, returns the <td>'s that do not have multi-line rowspans.
 Would use the [rowspan] selector, but never not defined in IE8.
 ###
-getFirstOwnRow = (trs) ->
-	trs.map (i, trNode) ->
-		for tdNode in $(trNode).find('> td')
-			if tdNode.rowSpan <= 1
-				return tdNode
-		return
+getOwnCells = (trs) ->
+	trs.find('> td').filter (i, tdNode) ->
+		tdNode.rowSpan <= 1
 
 
 # http://stackoverflow.com/questions/24276619/better-way-to-get-the-viewport-of-a-scrollable-div-in-rtl-mode/24394376#24394376
