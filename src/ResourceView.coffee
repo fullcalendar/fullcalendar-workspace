@@ -154,6 +154,15 @@ class ResourceView extends View
 		)
 
 
+	# override the view's default trigger in order to provide a resourceId to the `drop` event
+	# TODO: make more DRY with core
+	triggerExternalDrop: (event, dropLocation, el, ev, ui) ->
+		# trigger 'drop' regardless of whether element represents an event
+		@trigger('drop', el[0], dropLocation.start, ev, ui, dropLocation.resourceId)
+		if event
+			@trigger('eventReceive', null, event) # signal an external event landed
+
+
 	### Hacks
 	# ------------------------------------------------------------------------------------------------------------------
 	These triggers usually call mutateEvent with dropLocation, which causes an event modification and rerender.

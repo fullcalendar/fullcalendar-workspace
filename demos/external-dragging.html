@@ -96,7 +96,9 @@
 				{ id: '4', resourceId: 'e', start: '2016-01-07T03:00:00', end: '2016-01-07T08:00:00', title: 'event 4' },
 				{ id: '5', resourceId: 'f', start: '2016-01-07T00:30:00', end: '2016-01-07T02:30:00', title: 'event 5' }
 			],
-			drop: function() {
+			drop: function(date, jsEvent, ui, resourceId) {
+				console.log('drop', date.format(), resourceId);
+
 				// is the "remove after drop" checkbox checked?
 				if ($('#drop-remove').is(':checked')) {
 					// if so, remove the element from the "Draggable Events" list
