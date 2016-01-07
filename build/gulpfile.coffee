@@ -20,7 +20,6 @@ runSequence = require('run-sequence') # for chaining tasks in serial
 
 # our configs (paths are relative to this script)
 # NOTE: all other paths are relative to the *project root*
-packageInfo = require('../package.json')
 srcConfig = require('./src.conf')
 
 # parsed command line arguments
@@ -130,8 +129,11 @@ gulp.task 'watchCss', [ 'compileCss' ], -> # will do an initial compile
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-TRANSFER_DIR = 'build/temp/' + packageInfo.name + '-' + packageInfo.version + '/'
-ZIP_FILENAME = packageInfo.name + '-' + packageInfo.version + '.zip'
+# TODO: move these to more general places
+# did this so 'bump' could take effect first
+getPackageInfo = -> require('../package.json') # relative to this config, unlike others
+getTransferDir = -> 'build/temp/' + getPackageInfo().name + '-' + getPackageInfo().version + '/'
+getZipFilename = -> getPackageInfo().name + '-' + getPackageInfo().version + '.zip'
 
 
 gulp.task 'zip', (cb) ->
@@ -139,7 +141,7 @@ gulp.task 'zip', (cb) ->
 
 
 gulp.task 'cleanZip', (cb) ->
-	del([ TRANSFER_DIR, ZIP_FILENAME ], cb)
+	del([ getTransferDir(), getZipFilename() ], cb)
 
 
 gulp.task 'buildZip', [
@@ -149,8 +151,8 @@ gulp.task 'buildZip', [
 		'transferMisc'
 		'transferDemos'
 	], ->
-		gulp.src(TRANSFER_DIR + '**/*', { base: 'build/temp/' })
-			.pipe zip(ZIP_FILENAME)
+		gulp.src(getTransferDir() + '**/*', { base: 'build/temp/' })
+			.pipe zip(getZipFilename())
 			.pipe gulp.dest('dist/')
 
 
@@ -160,7 +162,7 @@ gulp.task 'buildZip', [
 
 gulp.task 'transferPackage', [ 'compile', 'minify' ], ->
 	gulp.src 'dist/*.{css,js}' # matches unminified and minified files
-		.pipe gulp.dest(TRANSFER_DIR)
+		.pipe gulp.dest(getTransferDir())
 
 
 gulp.task 'transferDeps', ->
@@ -173,7 +175,7 @@ gulp.task 'transferDeps', ->
 			'lib/fullcalendar/dist/fullcalendar.print.css'
 			'lib/fullcalendar/dist/gcal.js'
 		])
-		.pipe gulp.dest(TRANSFER_DIR + 'lib/')
+		.pipe gulp.dest(getTransferDir() + 'lib/')
 
 
 gulp.task 'transferTheme', ->
@@ -184,13 +186,13 @@ gulp.task 'transferTheme', ->
 			cwd: 'lib/jquery-ui/themes/cupertino/'
 			base: 'lib/jquery-ui/themes/cupertino/'
 		})
-		.pipe gulp.dest(TRANSFER_DIR + 'lib/cupertino/')
+		.pipe gulp.dest(getTransferDir() + 'lib/cupertino/')
 
 
 gulp.task 'transferMisc', ->
 	gulp.src [ 'LICENSE.*', 'CHANGELOG.*' ]
 		.pipe rename({ extname: '.txt' })
-		.pipe gulp.dest(TRANSFER_DIR)
+		.pipe gulp.dest(getTransferDir())
 
 
 # Transfering *demo* files
@@ -207,7 +209,7 @@ gulp.task 'transferDemos', ->
 		.pipe htmlFileFilter
 		.pipe demoPathReplace
 		.pipe htmlFileFilter.restore()
-		.pipe gulp.dest(TRANSFER_DIR + 'demos/')
+		.pipe gulp.dest(getTransferDir() + 'demos/')
 
 
 demoPathReplace = replace(
@@ -292,5 +294,5 @@ getSrcTemplateVars = ->
 			moment(argv['release-date'])
 		else
 			moment()
-	_.extend {}, packageInfo,
+	_.extend {}, getPackageInfo(),
 		releaseDate: releaseDate.format('YYYY-MM-DD')
