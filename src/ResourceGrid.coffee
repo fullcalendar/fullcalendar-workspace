@@ -7,16 +7,29 @@ class ResourceGrid extends Grid # TODO: consider making this a mixin
 	allowCrossResource: true
 
 
-	transformEventSpan: (span, event) ->
-		span.resourceId = @view.calendar.getEventResourceId(event)
+	eventRangeToSpans: (range, event) ->
+		resourceIds = @getEventResourceIds(event)
+		if resourceIds.length
+
+			# returns an array of copies, with disctinct resourceId's
+			for resourceId in resourceIds
+				$.extend({}, range, { resourceId })
+
+		else if FC.isBgEvent(event)
+			super # returns a single span with no resourceId
+		else
+			[] # non-bg events must have resourceIds, so return empty
 
 
-	# when rendering foreground events, exclude events with no resource
-	renderFgEvents: (events) ->
-		calendar = @view.calendar
-		super(
-			event for event in events when calendar.getEventResourceId(event)
-		)
+	getEventResourceIds: (event) ->
+		# we make event.resourceId take precedence over event.resourceIds
+		# because in DnD code, the helper event is programatically assigned a event.resourceId
+		# which is more convenient because it overrides event.resourceIds
+		resourceId = @view.calendar.getEventResourceId(event)
+		if resourceId
+			[ resourceId ]
+		else
+			event.resourceIds or []
 
 
 	# DnD

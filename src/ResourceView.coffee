@@ -163,11 +163,21 @@ class ResourceView extends View
 
 
 	reportEventDrop: (event, dropLocation, otherArgs...) ->
-		super(event, @normalizeDropLocation(dropLocation), otherArgs...)
+		dropLocation = @normalizeDropLocation(dropLocation)
+
+		# HACK
+		# if dropped on a single resourceId, and the event previously had multiple resources,
+		# null resourceIds out, which will null it out on the event object.
+		# in future, it'd be better to remove the event object's property altogether
+		if dropLocation.resourceId and event.resourceIds
+			dropLocation.resourceIds = null
+
+		super(event, dropLocation, otherArgs...)
 
 
 	reportExternalDrop: (meta, dropLocation, otherArgs...) ->
-		super(meta, @normalizeDropLocation(dropLocation), otherArgs...)
+		dropLocation = @normalizeDropLocation(dropLocation)
+		super(meta, dropLocation, otherArgs...)
 
 
 	normalizeDropLocation: (dropLocation) ->
