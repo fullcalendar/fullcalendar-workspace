@@ -16,7 +16,7 @@ Docs & License: <%= homepage %>
 FC = $.fullCalendar
 FC.schedulerVersion = "<%= version %>"
 
-if FC.internalApiVersion != 1
+if FC.internalApiVersion != 2
 	FC.warn(
 		'v' + FC.schedulerVersion + ' of FullCalendar Scheduler ' +
 		'is incompatible with v' + FC.version + ' of the core.\n' +
