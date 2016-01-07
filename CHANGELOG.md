@@ -1,4 +1,16 @@
 
+v1.2.0 (2016-01-07)
+-------------------
+
+- current time indicator (#9)
+- fix for refetchEvents reseting the scroll position (#89)
+- fix for addResource/removeResource failing to rerender in vertical views (#84)
+- fix for timeline resource rows sometimes being misaligned when column grouping (#80)
+- fix for timeline events not rendering correctly when minTime specified (#78)
+- fix for erradic resource ordering in verical views when no resourceOrder specified (#74)
+- fix bug where external event dragging would not respect eventOverlap (#72)
+
+
 v1.1.0 (2015-11-30)
 -------------------
 
