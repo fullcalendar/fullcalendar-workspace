@@ -33,7 +33,6 @@ describe 'timeline column resizing', ->
 
 		$('.fc-head .fc-resource-area .fc-col-resizer:first').simulate 'drag',
 			dx: 20
-			debug: true
 			callback: ->
 				expectColWidthsToMatch()
 				done()
