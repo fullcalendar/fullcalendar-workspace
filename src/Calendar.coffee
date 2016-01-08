@@ -97,7 +97,9 @@ class CalendarExtension extends Calendar
 		if resource
 			eventResourceField = @resourceManager.getEventResourceField()
 			@clientEvents (event) -> # return value
-				event[eventResourceField] == resource.id
+				if eventResourceField == 'resourceId' && !event[eventResourceField]
+					eventResourceField='resourceIds';
+				$.inArray(resource.id, event[eventResourceField])>-1
 		else
 			[]
 
