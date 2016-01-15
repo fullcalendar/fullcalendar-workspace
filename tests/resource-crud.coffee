@@ -170,14 +170,14 @@ describe 'resource crudding', ->
 						{ id: 'b', title: 'room b' }
 					]
 					events: [
-							{
-								title: 'event 1'
-								className: 'event1'
-								start: '2015-11-17'
-								end: '2015-11-18'
-								resourceId: 'a'
-							}
-						]
+						{
+							title: 'event 1'
+							className: 'event1'
+							start: '2015-11-17'
+							end: '2015-11-18'
+							resourceId: 'a'
+						}
+					]
 					eventAfterAllRender: ->
 						events = currentCalendar.getResourceEvents('a')
 						expect(events.length).toBe(1)
@@ -192,14 +192,14 @@ describe 'resource crudding', ->
 						{ id: 'b', title: 'room b' }
 					]
 					events: [
-							{
-								title: 'event 1'
-								className: 'event1'
-								start: '2015-11-17'
-								end: '2015-11-18'
-								resourceIds: ['a','b']
-							}
-						]
+						{
+							title: 'event 1'
+							className: 'event1'
+							start: '2015-11-17'
+							end: '2015-11-18'
+							resourceIds: ['a','b']
+						}
+					]
 					eventAfterAllRender: ->
 						events = currentCalendar.getResourceEvents('a')
 						expect(events.length).toBe(1)
