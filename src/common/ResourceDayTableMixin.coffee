@@ -214,7 +214,8 @@ ResourceDayTableMixin =
 				'resourceRender',
 				resource, # this
 				resource,
-				$(node)
+				$(node) # head <td>
+				$() # body <td>'s (we don't compute, but API should stay consistent)
 			)
 
 
