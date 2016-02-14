@@ -197,7 +197,19 @@ ResourceDayTableMixin =
 	# given a container with already rendered resource cells
 	processHeadResourceEls: (containerEl) ->
 		containerEl.find('.fc-resource-cell').each (col, node) =>
-			resource = @getColResource(col)
+
+			if @datesAboveResources
+				# each resource <td> is a distinct column
+				resource = @getColResource(col)
+			else
+				# each resource <td> covers multiple columns of dates
+				resource = @flattenedResources[\
+					if @isRTL
+						@flattenedResources.length - 1 - col
+					else
+						col
+				]
+
 			@view.trigger(
 				'resourceRender',
 				resource, # this
