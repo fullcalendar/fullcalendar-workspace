@@ -13,6 +13,7 @@ View::settingResources = null # a promise
 View::displayView = ->
 	origDisplayView.apply(this, arguments)
 	@bindResources()
+	@settingResources.promise() # 'render' trigger and sizing waits for this
 
 
 View::renderSkeleton = ->
