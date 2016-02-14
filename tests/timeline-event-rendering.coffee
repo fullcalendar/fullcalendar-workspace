@@ -78,6 +78,92 @@ describe 'timeline event rendering', ->
 										expectEventIsStartEnd('event1', false, false)
 										done()
 
+							# minTime/maxTime
+							if not eventRendering # non-background, for faster tests
+
+								it 'doesn\'t render when on same day before minTime', (done) ->
+									initCalendar
+										minTime: '09:00'
+										events: [
+											makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T09:00:00')
+										]
+										eventAfterAllRender: ->
+											expect($('.event1').length).toBe(0)
+											done()
+
+								it 'renders correctly when on different day, cropped by minTime', (done) ->
+									initCalendar
+										minTime: '03:00'
+										events: [
+											makeEvent('event1', '2015-10-16T12:00:00', '2015-10-17T06:00:00')
+										]
+										eventAfterAllRender: ->
+											expectEventSlotSpan('event1', '3am', '5am')
+											expectEventIsStartEnd('event1', false, true)
+											done()
+
+								it 'renders correctly when on same day, cropped by minTime', (done) ->
+									initCalendar
+										minTime: '03:00'
+										events: [
+											makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00')
+										]
+										eventAfterAllRender: ->
+											expectEventSlotSpan('event1', '3am', '5am')
+											expectEventIsStartEnd('event1', false, true)
+											done()
+
+								it 'doesn\'t render when on same day after maxTime', (done) ->
+									initCalendar
+										scrollTime: '24:00' # the most possible
+										maxTime: '18:00'
+										events: [
+											makeEvent('event1', '2015-10-17T18:00:00', '2015-10-17T23:00:00')
+										]
+										eventAfterAllRender: ->
+											expect($('.event1').length).toBe(0)
+											done()
+
+								it 'renders correctly when end on different day, cropped by maxTime', (done) ->
+									initCalendar
+										scrollTime: '24:00' # the most possible
+										maxTime: '21:00' # last slot will be 8pm-9pm
+										events: [
+											makeEvent('event1', '2015-10-17T19:00:00', '2015-10-18T02:00:00')
+										]
+										eventAfterAllRender: ->
+											expectEventSlotSpan('event1', '7pm', '8pm')
+											expectEventIsStartEnd('event1', true, false)
+											done()
+
+								it 'renders correctly when end on same day, cropped by maxTime', (done) ->
+									initCalendar
+										scrollTime: '24:00' # the most possible
+										maxTime: '18:00' # last slot will be 5pm-6pm
+										events: [
+											makeEvent('event1', '2015-10-17T12:00:00', '2015-10-17T22:00:00')
+										]
+										eventAfterAllRender: ->
+											expectEventSlotSpan('event1', '12pm', '5pm')
+											expectEventIsStartEnd('event1', true, false)
+											done()
+
+								it 'doesn\'t render when on dead zone between two days', (done) ->
+									initCalendar
+										minTime: '09:00'
+										maxTime: '17:00' # on the 17th
+										defaultView: 'timelineTwoDay'
+										views:
+											timelineTwoDay:
+												type: 'timeline'
+												duration: { days: 2 }
+										events: [
+											makeEvent('event1', '2015-10-17T17:00:00', '2015-10-18T09:00:00')
+										]
+										eventAfterAllRender: ->
+											expect($('.event1').length).toBe(0)
+											done()
+
 						if not eventRendering # non-background
 							it 'render stacked events by duration', (done) ->
 								initCalendar
@@ -112,29 +198,6 @@ describe 'timeline event rendering', ->
 										canvasEl = $('.fc-body .fc-time-area .fc-scrollpane-inner')
 										expect(Math.abs(eventEl.outerHeight() - canvasEl.height())).toBeLessThan(3)
 										done()
-
-						it 'renders correctly when cropped by minTime', (done) ->
-							initCalendar
-								minTime: '03:00'
-								events: [
-									makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00')
-								]
-								eventAfterAllRender: ->
-									expectEventSlotSpan('event1', '3am', '5am')
-									expectEventIsStartEnd('event1', false, true)
-									done()
-
-						it 'renders correctly when cropped by maxTime', (done) ->
-							initCalendar
-								scrollTime: '24:00' # the most possible
-								maxTime: '21:00' # last slot will be 8pm-9pm
-								events: [
-									makeEvent('event1', '2015-10-17T19:00:00', '2015-10-18T02:00:00')
-								]
-								eventAfterAllRender: ->
-									expectEventSlotSpan('event1', '7pm', '8pm')
-									expectEventIsStartEnd('event1', true, false)
-									done()
 
 					###
 					TODO: inverse-background doesn't work well with events rendered on day-scale or larger.
