@@ -10,10 +10,11 @@ PRESET_LICENSE_KEYS = [
 
 processLicenseKey = (key, containerEl) ->
 	if not isImmuneUrl(window.location.href) and not isValidKey(key)
-		renderingWarningInContainer(
-			'Please use a valid license key. <a href="' + LICENSE_INFO_URL + '">More Info</a>',
-			containerEl
-		)
+		if not detectWarningInContainer(containerEl)
+			renderingWarningInContainer(
+				'Please use a valid license key. <a href="' + LICENSE_INFO_URL + '">More Info</a>',
+				containerEl
+			)
 
 ###
 This decryption is not meant to be bulletproof. Just a way to remind about an upgrade.
@@ -40,3 +41,8 @@ renderingWarningInContainer = (messageHtml, containerEl) ->
 	containerEl.append(
 		$('<div class="fc-license-message" />').html(messageHtml)
 	)
+
+
+# returns boolean of whether a license message is already rendered
+detectWarningInContainer = (containerEl) ->
+	containerEl.find('.fc-license-message').length >= 1
