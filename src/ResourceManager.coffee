@@ -22,6 +22,10 @@ class ResourceManager extends Class
 	# ------------------------------------------------------------------------------------------------------------------
 
 
+	hasFetched: ->
+		@fetching and @fetching.state() == 'resolved'
+
+
 	getResources: -> # returns a promise
 		# never fetched? then fetch... (TODO: decouple from fetching)
 		if not @fetching
