@@ -672,7 +672,7 @@ class TimelineGrid extends Grid
 		segs = (@segs or []).concat(@businessHourSegs or [])
 
 		for seg in segs
-			coords = @rangeToCoords(seg, -1)
+			coords = @rangeToCoords(seg)
 			seg.el.css
 				left: (seg.left = coords.left)
 				right: -(seg.right = coords.right)
@@ -735,7 +735,7 @@ class TimelineGrid extends Grid
 		for [ container, segs ] in pairs
 			for seg in segs
 				# TODO: centralize logic (also in updateSegPositions)
-				coords = @rangeToCoords(seg, -1)
+				coords = @rangeToCoords(seg)
 				seg.el.css
 					left: (seg.left = coords.left)
 					right: -(seg.right = coords.right)
@@ -906,7 +906,7 @@ class TimelineGrid extends Grid
 			for seg in segs
 
 				# TODO: centralize logic (also in renderFgSegsInContainers)
-				coords = @rangeToCoords(seg, -1)
+				coords = @rangeToCoords(seg)
 				seg.el.css
 					left: (seg.left = coords.left)
 					right: -(seg.right = coords.right)
@@ -978,7 +978,7 @@ class TimelineGrid extends Grid
 				.appendTo(containerObj.bgSegContainerEl)
 
 			for seg in segs
-				coords = @rangeToCoords(seg, -1) # TODO: centralize logic
+				coords = @rangeToCoords(seg) # TODO: centralize logic
 				seg.el.css
 					left: (seg.left = coords.left)
 					right: -(seg.right = coords.right)
