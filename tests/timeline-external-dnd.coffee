@@ -73,3 +73,31 @@ describe 'timeline-view external element drag-n-drop', ->
 							done()
 				drop: dropSpy = jasmine.createSpy('drop')
 				eventReceive: receiveSpy = jasmine.createSpy('receive')
+
+	it 'works after a view switch', (done) ->
+		renderCnt = 0
+		initCalendar
+			viewRender: ->
+				renderCnt++
+				if renderCnt == 1
+					currentCalendar.changeView('timelineWeek')
+				else if renderCnt == 2
+					$('.external-event').simulate 'drag',
+						localPoint: { left: 0, top: '50%' }
+						end: getResourceTimelinePoint('b', '2015-11-29T05:00:00')
+						callback: ->
+							# all we care about is no JS errors
+							done()
+
+	it 'works after calling destroy', (done) ->
+		renderCnt = 0
+		initCalendar
+			viewRender: ->
+				setTimeout -> # problems with destroy otherwise
+					currentCalendar.destroy()
+					$('.external-event').simulate 'drag',
+						dx: 100
+						dy: 100
+						callback: ->
+							# all we care about is no JS errors
+							done()
