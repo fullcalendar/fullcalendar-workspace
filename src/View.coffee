@@ -2,6 +2,7 @@
 # We need to monkey patch these methods in, because subclasses of View might have already been made
 
 origDisplayView = View::displayView
+origRenderSkeleton = View::renderSkeleton
 origUnrenderSkeleton = View::unrenderSkeleton
 origDisplayEvents = View::displayEvents
 
@@ -13,8 +14,8 @@ View::displayView = ->
 	origDisplayView.apply(this, arguments)
 	@bindResources()
 
-	# TODO: not related to events. move elsewhere.
-	# but needs to be after the view has rendered.
+
+View::renderSkeleton = ->
 	processLicenseKey(
 		@calendar.options.schedulerLicenseKey,
 		@el # container element
