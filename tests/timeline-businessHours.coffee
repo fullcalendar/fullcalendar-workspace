@@ -1,5 +1,5 @@
 
-fdescribe 'timeline businessHours', ->
+describe 'timeline businessHours', ->
 	pushOptions
 		defaultView: 'timelineDay'
 
@@ -33,7 +33,6 @@ fdescribe 'timeline businessHours', ->
 				}
 				slotDuration: { hours: 1 }
 				viewRender: ->
-					debugger
 					greyAreas = $('.fc-nonbusiness')
 					expect(greyAreas.length).toBe(1)
 					expectTimelineSpan(greyAreas.eq(0), '2016-02-15T00:00', '2016-02-15T23:00', 1) # 24:00
