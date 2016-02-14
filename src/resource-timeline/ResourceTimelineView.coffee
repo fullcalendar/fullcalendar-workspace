@@ -5,6 +5,7 @@ class ResourceTimelineView extends TimelineView
 
 
 	resourceGrid: null # TODO: rename
+	tbodyHash: null # used by RowParent
 	joiner: null
 	dividerEls: null
 
@@ -101,6 +102,11 @@ class ResourceTimelineView extends TimelineView
 		super
 
 		@renderResourceGridSkeleton()
+
+		@tbodyHash = { # needed for rows to render
+			spreadsheet: @resourceGrid.tbodyEl
+			event: @timeGrid.tbodyEl
+		}
 
 		@joiner = new ScrollJoiner('vertical', [
 			@resourceGrid.bodyScroller
@@ -266,17 +272,21 @@ class ResourceTimelineView extends TimelineView
 		@batchRows()
 		for resource in resources
 			@insertResource(resource)
+		@rowHierarchy.show() # will trigger rowShown
 		@unbatchRows()
 
 		@reinitializeCellFollowers()
 
 
 	unsetResources: ->
+		@clearEvents()
+
 		@batchRows()
-		@rowHierarchy.removeChildren()
+		@rowHierarchy.removeChildren() # will trigger rowHidden
 		@unbatchRows()
 
 		@reinitializeCellFollowers()
+
 
 	###
 	TODO: the scenario where there were previously unassociated events that are now
@@ -525,28 +535,6 @@ class ResourceTimelineView extends TimelineView
 
 	rowsHidden: (rows) ->
 		@updateWidth()
-
-
-	tbodyHash: null
-
-	renderStoredResources: ->
-		@tbodyHash = {
-			spreadsheet: @resourceGrid.tbodyEl
-			event: @timeGrid.tbodyEl
-		}
-		@batchRows()
-		@rowHierarchy.show() # will trigger rowShown
-		@unbatchRows()
-
-		@reinitializeCellFollowers()
-
-
-	unrenderStoredResources: ->
-		@batchRows()
-		@rowHierarchy.recursivelyUnrender() # will trigger rowHidden
-		@unbatchRows()
-
-		@reinitializeCellFollowers()
 
 
 	syncRowHeights: (visibleRows, safe=false) -> # visibleRows is flat. does not do recursive
