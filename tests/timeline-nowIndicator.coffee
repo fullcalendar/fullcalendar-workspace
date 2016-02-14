@@ -49,6 +49,23 @@ describe 'timeline now-indicator', ->
 					, 1000
 			, 1000
 
+	it 'refreshes on resize when slot width changes', (done) ->
+		initCalendar
+			defaultView: 'timeline6hour'
+			views:
+				timeline6hour:
+					type: 'timeline'
+					duration: { hours: 6 }
+					slotDuration: { minutes: 30 }
+		nowIndicatorRendersAt('2015-12-26T02:30:00')
+		$('#calendar').width('50%')
+		$(window).trigger('resize') # simulate the window resize, even tho the container is just resizing
+		setTimeout ->
+				nowIndicatorRendersAt('2015-12-26T02:30:00')
+				$('#calendar').width('') # undo
+				done()
+			, 500
+
 
 	getNowIndicatorRenders = ->
 		$('.fc-timeline .fc-now-indicator').length > 0
