@@ -188,23 +188,26 @@ class TimelineGrid extends Grid
 	spanToSegs: (span) ->
 		normalRange = @normalizeGridRange(span)
 
-		# `this` has a start/end, an already normalized range.
-		# zones will have been stripped (a requirement for intersectRanges)
-		seg = intersectRanges(normalRange, this)
+		# protect against when the span is entirely in an invalid date region
+		if @computeDateSnapCoverage(span.start) < @computeDateSnapCoverage(span.end)
 
-		# TODO: what if month slots? should round it to nearest month
-		# TODO: dragging/resizing in this situation? deltas for dragging/resizing breaks down
+			# `this` has a start/end, an already normalized range.
+			# zones will have been stripped (a requirement for intersectRanges)
+			seg = intersectRanges(normalRange, this)
 
-		if seg
-			if seg.isStart and not @isValidDate(seg.start)
-				seg.isStart = false
+			# TODO: what if month slots? should round it to nearest month
+			# TODO: dragging/resizing in this situation? deltas for dragging/resizing breaks down
 
-			if seg.isEnd and seg.end and not @isValidDate(seg.end.clone().subtract(1))
-				seg.isEnd = false
+			if seg
+				if seg.isStart and not @isValidDate(seg.start)
+					seg.isStart = false
 
-			[ seg ]
-		else
-			[]
+				if seg.isEnd and seg.end and not @isValidDate(seg.end.clone().subtract(1))
+					seg.isEnd = false
+
+				return [ seg ]
+
+		return []
 
 
 	# Hit System
@@ -625,8 +628,9 @@ class TimelineGrid extends Grid
 			if isInt(snapCoverage) # not an in-between value
 				snapCoverage += snapDiff - snapDiffInt # add the remainder
 			else
-				# in between, so round down, but make sure negatives go to zero
-				snapCoverage = Math.max(0, Math.floor(snapCoverage))
+				# a fractional value, meaning the date is not visible
+				# always round up in this case. works for start AND end dates in a range.
+				snapCoverage = Math.ceil(snapCoverage)
 
 			snapCoverage
 
