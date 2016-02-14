@@ -15,7 +15,7 @@ class ResourceManager extends Class
 
 
 	constructor: (@calendar) ->
-		@unsetResources()
+		@initializeCache()
 
 
 	# Resource Data Getting
@@ -37,13 +37,13 @@ class ResourceManager extends Class
 			$.Deferred().resolve(@topLevelResources).promise()
 
 
-	fetchResources: -> # returns a promise
+	# will always fetch, even if done previously.
+	# returns a promise.
+	fetchResources: ->
 		prevFetching = @fetching
 		$.when(prevFetching).then =>
 			@fetching = @fetchResourceInputs().then (resourceInputs) =>
-				@setResources(resourceInputs)
-				if prevFetching
-					@trigger('reset', @topLevelResources)
+				@setResources(resourceInputs, Boolean(prevFetching))
 				@topLevelResources
 
 
@@ -80,6 +80,12 @@ class ResourceManager extends Class
 		promise
 
 
+	# fires the 'reset' handler with the already-fetch resource data
+	resetResources: ->
+		@getResources().then => # ensures initial fetch happened
+			@trigger('reset', @topLevelResources)
+
+
 	getResourceById: (id) -> # assumes already returned from fetch
 		@resourcesById[id]
 
@@ -88,13 +94,13 @@ class ResourceManager extends Class
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	unsetResources: ->
+	initializeCache: ->
 		@topLevelResources = []
 		@resourcesById = {}
 
 
-	setResources: (resourceInputs) ->
-		@unsetResources()
+	setResources: (resourceInputs, isReset) ->
+		@initializeCache()
 
 		resources = for resourceInput in resourceInputs
 			@buildResource(resourceInput)
@@ -104,6 +110,11 @@ class ResourceManager extends Class
 
 		for resource in validResources
 			@addResourceToTree(resource)
+
+		if isReset
+			@trigger('reset', @topLevelResources)
+		else
+			@trigger('set', @topLevelResources)
 
 		@calendar.trigger('resourcesSet', null, @topLevelResources)
 

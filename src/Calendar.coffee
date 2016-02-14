@@ -49,7 +49,8 @@ class CalendarExtension extends Calendar
 
 
 	rerenderResources: -> # for API
-		@view.redisplayResources?()
+		# will cause listeners of resources data to re-receive and re-render
+		@resourceManager.resetResources()
 		return
 
 
