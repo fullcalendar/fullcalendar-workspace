@@ -73,3 +73,24 @@ describe 'schedulerLicenseKey', ->
 		pushOptions
 			defaultView: 'month'
 		defineTests()
+
+
+	describeOptions 'defaultView', {
+		'when timeline view': 'timelineDay'
+		'when resource-agenda view': 'agendaDay'
+		'when resource-basic view': 'basicDay'
+	}, ->
+		it 'only renders one license message when view is rerendered', (done) ->
+			callCnt = 0
+			initCalendar
+				schedulerLicenseKey: '1234567890-fcs-1273017600' # purchased on 2010-05-05
+				resources: [
+					{ id: 'a', title: 'Resource A' }
+				]
+				viewRender: ->
+					expect($('.fc-license-message').length).toBe(1)
+					callCnt++
+					if callCnt == 1
+						currentCalendar.next()
+					else if callCnt == 2
+						done()
