@@ -14,26 +14,16 @@ class ResourceBasicView extends FC.BasicView
 	setResources: (resources) ->
 		@dayGrid.setResources(resources)
 
+		# TODO: optimize. only redisplay the columns
+		@clearView()
+		@displayView()
+
 
 	unsetResources: ->
+		@clearEvents()
+
 		@dayGrid.unsetResources()
 
-
-	renderStoredResources: ->
-		@redisplay()
-
-
-	unrenderStoredResources: ->
-		@redisplay()
-
-
-	# Responsible for rendering the new resource
-	addResource: (resource) ->
-		@resetResources() # will call unsetResources / setResources
-		@redisplay()
-
-
-	# Responsible for unrendering the old resource
-	removeResource: (resource) ->
-		@resetResources() # will call unsetResources / setResources
-		@redisplay()
+		# TODO: optimize. only redisplay the columns
+		@clearView()
+		@displayView()

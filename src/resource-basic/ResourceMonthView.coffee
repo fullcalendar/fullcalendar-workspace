@@ -16,18 +16,16 @@ class ResourceMonthView extends FC.MonthView
 	setResources: (resources) ->
 		@dayGrid.setResources(resources)
 
+		# TODO: optimize. only redisplay the columns
+		@clearView()
+		@displayView()
+
 
 	unsetResources: ->
+		@clearEvents()
+
 		@dayGrid.unsetResources()
 
-
-	renderStoredResources: ->
-		if @isSkeletonRendered
-			@renderDates()
-			@updateSize()
-
-
-	unrenderStoredResources: ->
-		if @isSkeletonRendered
-			@renderDates()
-			@updateSize()
+		# TODO: optimize. only redisplay the columns
+		@clearView()
+		@displayView()
