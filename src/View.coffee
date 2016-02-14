@@ -31,7 +31,7 @@ View::unrenderSkeleton = ->
 View::displayEvents = (events) ->
 	# make sure resource data is received first (for event coloring at the simplest).
 	# `settingResources` is guaranteed to be defined by displayView.
-	settingResources.then =>
+	@settingResources.then =>
 		origDisplayEvents.call(this, events)
 
 

@@ -8,7 +8,8 @@ class ResourceView extends View
 		@clearEvents() # subclasses should always remember to do this
 
 
-	# triggered when brand new resource data is received. keeps the current scroll state.
+	# triggered when brand new resource data is received.
+	# unsets/sets, and keeps the current scroll state.
 	resetResources: (resources) ->
 		scrollState = @queryScroll()
 		@unsetResources()
