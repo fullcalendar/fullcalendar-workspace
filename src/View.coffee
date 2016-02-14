@@ -11,16 +11,19 @@ View::settingResources = null # a promise
 
 
 View::displayView = ->
+	wasSkeletonRendered = @isSkeletonRendered
 	origDisplayView.apply(this, arguments)
+
+	# displayView can be called repeatedly, but we only want to do this once.
+	# TODO: better way to override renderSkeleton.
+	if not wasSkeletonRendered
+		processLicenseKey(
+			@calendar.options.schedulerLicenseKey,
+			@el # container element
+		)
+
 	@bindResources()
 	@settingResources.promise() # 'render' trigger and sizing waits for this
-
-
-View::renderSkeleton = ->
-	processLicenseKey(
-		@calendar.options.schedulerLicenseKey,
-		@el # container element
-	)
 
 
 View::unrenderSkeleton = ->
