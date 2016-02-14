@@ -17,8 +17,7 @@ describe 'timeline view rerendering', ->
 
 	describe 'when using rerenderResources', ->
 
-		# FAILS!!!
-		xit 'rerenders the DOM', (done) ->
+		it 'rerenders the DOM', (done) ->
 			testRerender ->
 					currentCalendar.rerenderResources()
 				, done
@@ -31,12 +30,12 @@ describe 'timeline view rerendering', ->
 	describe 'when using refetchResources', ->
 
 		it 'rerenders the DOM', (done) ->
-			testRerender ->
+			testRefetch ->
 					currentCalendar.refetchResources()
 				, done
 
 		it 'maintains scroll', (done) ->
-			testScroll ->
+			testRefetch ->
 					currentCalendar.refetchResources()
 				, done
 
@@ -76,7 +75,7 @@ describe 'timeline view rerendering', ->
 					, 100
 			resources: (callback) ->
 				setTimeout ->
-						callback(getResources(renderCalls))
+						callback(getResources())
 					, 100
 			eventAfterAllRender: ->
 				scrollEl = $('.fc-body .fc-time-area .fc-scrollpane > div')
@@ -104,7 +103,34 @@ describe 'timeline view rerendering', ->
 					, 100
 			resources: (callback) ->
 				setTimeout ->
-						callback(getResources(renderCalls))
+						callback(getResources())
+					, 100
+			resourceRender: (resource, headTd) ->
+				if resource.id == 'e'
+					headTd.find('.fc-cell-text').text(resource.title + renderCalls)
+			eventAfterAllRender: ->
+				cellText = $.trim($('tr[data-resource-id="e"] .fc-cell-text').text())
+				renderCalls++
+				if renderCalls == 1
+					expect(cellText).toBe('Auditorium E0')
+					actionFunc()
+				else if renderCalls == 2
+					expect(cellText).toBe('Auditorium E1')
+					doneFunc()
+
+	testRefetch = (actionFunc, doneFunc) ->
+		renderCalls = 0
+		initCalendar
+			now: '2015-08-07'
+			scrollTime: '00:00'
+			defaultView: 'timelineDay'
+			events: (start, end, timezone, callback) ->
+				setTimeout ->
+						callback(getEvents())
+					, 100
+			resources: (callback) ->
+				setTimeout ->
+						callback(getResources(renderCalls)) # renderCalls affects data!
 					, 100
 			eventAfterAllRender: ->
 				cellText = $.trim($('tr[data-resource-id="e"] .fc-cell-text').text())
@@ -116,7 +142,7 @@ describe 'timeline view rerendering', ->
 					expect(cellText).toBe('Auditorium E1')
 					doneFunc()
 
-	getResources = (cnt) ->
+	getResources = (cnt='') ->
 		[
 			{ id: 'a', title: 'Auditorium A' }
 			{ id: 'b', title: 'Auditorium B', eventColor: 'green' }
