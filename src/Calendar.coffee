@@ -110,15 +110,17 @@ class CalendarExtension extends Calendar
 	# ----------------------------------------------------------------------------------------
 
 
+	# DEPRECATED. for external API backwards compatibility
 	getEventResourceId: (event) ->
-		String(event[@getEventResourceField()] or '')
+		getEventResourceIds(event)[0]
 
 
 	getEventResourceIds: (event) ->
+		resourceId = String(event[@getEventResourceField()] or '')
+
 		# we make event.resourceId take precedence over event.resourceIds
 		# because in DnD code, the helper event is programatically assigned a event.resourceId
 		# which is more convenient because it overrides event.resourceIds
-		resourceId = @getEventResourceId(event)
 		if resourceId
 			[ resourceId ]
 		else
@@ -143,21 +145,29 @@ class CalendarExtension extends Calendar
 		if resource
 			eventResourceField = @getEventResourceField()
 			@clientEvents (event) -> # return value
-				event[eventResourceField] == resource.id
+				event[eventResourceField] == resource.id # TODO: cast string?
 		else
 			[]
 
 
+	# DEPRECATED. for external API backwards compatibility
 	getEventResource: (idOrEvent) ->
+		getEventResources(idOrEvent)[0]
+
+
+	getEventResources: (idOrEvent) ->
 		event =
 			if typeof idOrEvent == 'object'
 				idOrEvent
 			else
 				@clientEvents(idOrEvent)[0]
+		resources = []
 		if event
-			resourceId = @getEventResourceId(event)
-			return @getResourceById(resourceId)
-		return null
+			for resourceId in @getEventResourceIds(event)
+				resource = @getResourceById(resourceId)
+				if resource
+					resources.push(resource)
+		resources
 
 
 Calendar.prototype = CalendarExtension.prototype # nothing subclasses Calendar, so this is okay
