@@ -5,30 +5,30 @@ Grid::getEventSkinCss = (event) ->
 	eventColor = event.color
 	sourceColor = source.color
 	optionColor = view.opt('eventColor')
-	resource = view.calendar.getEventResource(event)
+	resources = view.calendar.getEventResources(event)
 
 	getResourceBackgroundColor = ->
 		val = null
-		currentResource = resource
-		while currentResource and not val
-			val = currentResource.eventBackgroundColor or currentResource.eventColor
-			currentResource = currentResource._parent
+		for currentResource in resources
+			while currentResource and not val
+				val = currentResource.eventBackgroundColor or currentResource.eventColor
+				currentResource = currentResource._parent
 		val
 
 	getResourceBorderColor = ->
 		val = null
-		currentResource = resource
-		while currentResource and not val
-			val = currentResource.eventBorderColor or currentResource.eventColor
-			currentResource = currentResource._parent
+		for currentResource in resources
+			while currentResource and not val
+				val = currentResource.eventBorderColor or currentResource.eventColor
+				currentResource = currentResource._parent
 		val
 
 	getResourceTextColor = ->
 		val = null
-		currentResource = resource
-		while currentResource and not val
-			val = currentResource.eventTextColor
-			currentResource = currentResource._parent
+		for currentResource in resources
+			while currentResource and not val
+				val = currentResource.eventTextColor
+				currentResource = currentResource._parent
 		val
 
 	return {
