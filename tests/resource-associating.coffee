@@ -8,7 +8,7 @@ describe 'associating resources with event', ->
 
 	pushOptions
 		defaultView: 'timelineDay'
-		currentDate: '2015-07-11'
+		defaultDate: '2015-07-11'
 
 	it 'works with an Event object\'s resourceId', (done) ->
 		initCalendar
@@ -17,8 +17,8 @@ describe 'associating resources with event', ->
 				{ id: 'b', title: 'room b' }
 			]
 			events: [
-				{ id: '1', title: 'event 1', resourceId: 'a', start: '2015-07-11T09:00:00' }
-				{ id: '2', title: 'event 2', resourceId: 'b', start: '2015-07-11T10:00:00' }
+				{ id: '1', title: 'event 1', resourceId: 'a', className: 'event1', start: '2015-07-11T09:00:00' }
+				{ id: '2', title: 'event 2', resourceId: 'b', className: 'event2', start: '2015-07-11T10:00:00' }
 			]
 			eventAfterAllRender: ->
 				roomAEvents = currentCalendar.getResourceEvents('a')
@@ -31,7 +31,12 @@ describe 'associating resources with event', ->
 				expect(event1Resource.title).toBe('room a')
 				event2Resource = currentCalendar.getEventResource('2')
 				expect(event2Resource.title).toBe('room b')
+				expect($('.event1').length).toBe(1)
+				expect($('.event2').length).toBe(1)
 				done()
+
+	# with resourceIds too!!!
+	# TODO: test 0 ID as well
 
 	it 'works with a custom eventResourceField', (done) ->
 		initCalendar
@@ -41,8 +46,8 @@ describe 'associating resources with event', ->
 				{ id: 'b', title: 'room b' }
 			]
 			events: [
-				{ id: '1', title: 'event 1', roomId: 'a', start: '2015-07-11T09:00:00' }
-				{ id: '2', title: 'event 2', roomId: 'b', start: '2015-07-11T10:00:00' }
+				{ id: '1', title: 'event 1', roomId: 'a', className: 'event1', start: '2015-07-11T09:00:00' }
+				{ id: '2', title: 'event 2', roomId: 'b', className: 'event2', start: '2015-07-11T10:00:00' }
 			]
 			eventAfterAllRender: ->
 				roomAEvents = currentCalendar.getResourceEvents('a')
@@ -55,6 +60,8 @@ describe 'associating resources with event', ->
 				expect(event1Resource.title).toBe('room a')
 				event2Resource = currentCalendar.getEventResource('2')
 				expect(event2Resource.title).toBe('room b')
+				expect($('.event1').length).toBe(1)
+				expect($('.event2').length).toBe(1)
 				done()
 
 	it 'works asynchronously with resource delay', (done) ->
@@ -70,8 +77,8 @@ describe 'associating resources with event', ->
 				)
 			events: (start, end, timezone, callback) ->
 				callback([
-					{ id: '1', title: 'event 1', resourceId: 'a', start: '2015-07-11T09:00:00' }
-					{ id: '2', title: 'event 2', resourceId: 'b', start: '2015-07-11T10:00:00' }
+					{ id: '1', title: 'event 1', resourceId: 'a', className: 'event1', start: '2015-07-11T09:00:00' }
+					{ id: '2', title: 'event 2', resourceId: 'b', className: 'event2', start: '2015-07-11T10:00:00' }
 				])
 			eventAfterAllRender: ->
 				roomAEvents = currentCalendar.getResourceEvents('a')
@@ -84,6 +91,8 @@ describe 'associating resources with event', ->
 				expect(event1Resource.title).toBe('room a')
 				event2Resource = currentCalendar.getEventResource('2')
 				expect(event2Resource.title).toBe('room b')
+				expect($('.event1').length).toBe(1)
+				expect($('.event2').length).toBe(1)
 				done()
 
 	it 'works asynchronously with events delay', (done) ->
@@ -97,8 +106,8 @@ describe 'associating resources with event', ->
 				setTimeout(
 					->
 						callback([
-							{ id: '1', title: 'event 1', resourceId: 'a', start: '2015-07-11T09:00:00' }
-							{ id: '2', title: 'event 2', resourceId: 'b', start: '2015-07-11T10:00:00' }
+							{ id: '1', title: 'event 1', resourceId: 'a', className: 'event1', start: '2015-07-11T09:00:00' }
+							{ id: '2', title: 'event 2', resourceId: 'b', className: 'event2', start: '2015-07-11T10:00:00' }
 						])
 					200
 				)
@@ -113,4 +122,6 @@ describe 'associating resources with event', ->
 				expect(event1Resource.title).toBe('room a')
 				event2Resource = currentCalendar.getEventResource('2')
 				expect(event2Resource.title).toBe('room b')
+				expect($('.event1').length).toBe(1)
+				expect($('.event2').length).toBe(1)
 				done()
