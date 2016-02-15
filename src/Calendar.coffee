@@ -54,10 +54,6 @@ class CalendarExtension extends Calendar
 		return
 
 
-	getEventResourceId: (event) ->
-		@resourceManager.getEventResourceId(event)
-
-
 	# this method will take effect for *all* views, event ones that don't explicitly
 	# support resources. shouln't assume a resourceId on the span or event.
 	# `event` can be null.
@@ -88,6 +84,22 @@ class CalendarExtension extends Calendar
 		@resourceManager.getResourceById(id)
 
 
+	# Resources + Events
+	# ----------------------------------------------------------------------------------------
+
+
+	getEventResourceId: (event) ->
+		String(event[@getEventResourceField()] or '')
+
+
+	setEventResourceId: (event, resourceId) ->
+		event[@getEventResourceField()] = String(resourceId or '')
+
+
+	getEventResourceField: ->
+		@calendar.options['eventResourceField'] or 'resourceId' # TODO: put into defaults
+
+
 	# NOTE: views pair *segments* to resources. that's why there's no code reuse
 	getResourceEvents: (idOrResource) ->
 		resource =
@@ -96,7 +108,7 @@ class CalendarExtension extends Calendar
 			else
 				@getResourceById(idOrResource)
 		if resource
-			eventResourceField = @resourceManager.getEventResourceField()
+			eventResourceField = @getEventResourceField()
 			@clientEvents (event) -> # return value
 				event[eventResourceField] == resource.id
 		else
@@ -110,7 +122,7 @@ class CalendarExtension extends Calendar
 			else
 				@clientEvents(idOrEvent)[0]
 		if event
-			resourceId = @resourceManager.getEventResourceId(event)
+			resourceId = @getEventResourceId(event)
 			return @getResourceById(resourceId)
 		return null
 

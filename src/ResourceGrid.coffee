@@ -38,7 +38,7 @@ class ResourceGrid extends Grid # TODO: consider making this a mixin
 
 	fabricateHelperEvent: (eventLocation, seg) ->
 		event = super
-		@view.calendar.resourceManager.setEventResourceId(event, eventLocation.resourceId)
+		@view.calendar.setEventResourceId(event, eventLocation.resourceId)
 		event
 
 

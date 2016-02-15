@@ -106,5 +106,5 @@ class ResourceView extends View
 	normalizeDropLocation: (dropLocation) ->
 		out = $.extend({}, dropLocation)
 		delete out.resourceId
-		@calendar.resourceManager.setEventResourceId(out, dropLocation.resourceId)
+		@calendar.setEventResourceId(out, dropLocation.resourceId)
 		out

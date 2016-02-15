@@ -236,19 +236,3 @@ class ResourceManager extends Class
 	getResourceParentField: ->
 		@calendar.options['resourceParentField'] or 'parentId' # TODO: put into defaults
 
-
-	# Event Utils
-	# ------------------------------------------------------------------------------------------------------------------
-
-
-	getEventResourceId: (event) ->
-		String(event[@getEventResourceField()] or '')
-
-
-	setEventResourceId: (event, resourceId) ->
-		event[@getEventResourceField()] = String(resourceId or '')
-
-
-	getEventResourceField: ->
-		@calendar.options['eventResourceField'] or 'resourceId' # TODO: put into defaults
-
