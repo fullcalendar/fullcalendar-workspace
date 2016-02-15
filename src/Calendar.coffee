@@ -92,6 +92,17 @@ class CalendarExtension extends Calendar
 		String(event[@getEventResourceField()] or '')
 
 
+	getEventResourceIds: (event) ->
+		# we make event.resourceId take precedence over event.resourceIds
+		# because in DnD code, the helper event is programatically assigned a event.resourceId
+		# which is more convenient because it overrides event.resourceIds
+		resourceId = @getEventResourceId(event)
+		if resourceId
+			[ resourceId ]
+		else
+			event.resourceIds or []
+
+
 	setEventResourceId: (event, resourceId) ->
 		event[@getEventResourceField()] = String(resourceId or '')
 

@@ -8,7 +8,7 @@ class ResourceGrid extends Grid # TODO: consider making this a mixin
 
 
 	eventRangeToSpans: (range, event) ->
-		resourceIds = @getEventResourceIds(event)
+		resourceIds = @view.calendar.getEventResourceIds(event)
 		if resourceIds.length
 
 			# returns an array of copies, with disctinct resourceId's
@@ -19,17 +19,6 @@ class ResourceGrid extends Grid # TODO: consider making this a mixin
 			super # returns a single span with no resourceId
 		else
 			[] # non-bg events must have resourceIds, so return empty
-
-
-	getEventResourceIds: (event) ->
-		# we make event.resourceId take precedence over event.resourceIds
-		# because in DnD code, the helper event is programatically assigned a event.resourceId
-		# which is more convenient because it overrides event.resourceIds
-		resourceId = @view.calendar.getEventResourceId(event)
-		if resourceId
-			[ resourceId ]
-		else
-			event.resourceIds or []
 
 
 	# DnD
