@@ -210,7 +210,7 @@ class ResourceManager extends Class
 	buildResource: (resourceInput) ->
 
 		resource = $.extend({}, resourceInput)
-		resource.id = String((resourceInput.id ? '_fc' + (ResourceManager.resourceGuid++)) or '')
+		resource.id = String(resourceInput.id ? '_fc' + ResourceManager.resourceGuid++)
 
 		# TODO: consolidate repeat logic
 		rawClassName = resourceInput.eventClassName

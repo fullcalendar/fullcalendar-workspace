@@ -448,7 +448,6 @@ class ResourceTimelineView extends TimelineView
 						pairs.push(pair)
 						pairsById[resourceId] = pair
 					pair[1].push(seg)
-
 		pairs
 
 

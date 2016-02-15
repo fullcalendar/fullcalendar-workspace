@@ -112,23 +112,32 @@ class CalendarExtension extends Calendar
 
 	# DEPRECATED. for external API backwards compatibility
 	getEventResourceId: (event) ->
-		getEventResourceIds(event)[0]
+		@getEventResourceIds(event)[0]
 
 
 	getEventResourceIds: (event) ->
-		resourceId = String(event[@getEventResourceField()] or '')
+		resourceId = String(event[@getEventResourceField()] ? '')
 
 		# we make event.resourceId take precedence over event.resourceIds
 		# because in DnD code, the helper event is programatically assigned a event.resourceId
-		# which is more convenient because it overrides event.resourceIds
+		# which is more convenient when it overrides event.resourceIds
 		if resourceId
 			[ resourceId ]
+
+		else if event.resourceIds
+			normalResourceIds = []
+			for resourceId in event.resourceIds
+				normalResourceId = String(resourceId ? '')
+				if normalResourceId
+					normalResourceIds.push(normalResourceId)
+			normalResourceIds
+
 		else
-			event.resourceIds or []
+			[]
 
 
 	setEventResourceId: (event, resourceId) ->
-		event[@getEventResourceField()] = String(resourceId or '')
+		event[@getEventResourceField()] = String(resourceId ? '')
 
 
 	getEventResourceField: ->
@@ -142,17 +151,20 @@ class CalendarExtension extends Calendar
 				idOrResource
 			else
 				@getResourceById(idOrResource)
+
 		if resource
 			eventResourceField = @getEventResourceField()
 			@clientEvents (event) -> # return value
-				event[eventResourceField] == resource.id # TODO: cast string?
+				# event's custom resource field not guaranteed to be a string.
+				# resource guaranteed to be normalized tho.
+				String(event[eventResourceField] ? '') == resource.id # true/false for filter
 		else
 			[]
 
 
 	# DEPRECATED. for external API backwards compatibility
 	getEventResource: (idOrEvent) ->
-		getEventResources(idOrEvent)[0]
+		@getEventResources(idOrEvent)[0]
 
 
 	getEventResources: (idOrEvent) ->
@@ -161,6 +173,7 @@ class CalendarExtension extends Calendar
 				idOrEvent
 			else
 				@clientEvents(idOrEvent)[0]
+
 		resources = []
 		if event
 			for resourceId in @getEventResourceIds(event)
