@@ -132,7 +132,7 @@ class CalendarExtension extends Calendar
 
 
 	getEventResourceField: ->
-		@calendar.options['eventResourceField'] or 'resourceId' # TODO: put into defaults
+		@options['eventResourceField'] or 'resourceId' # TODO: put into defaults
 
 
 	# NOTE: views pair *segments* to resources. that's why there's no code reuse
