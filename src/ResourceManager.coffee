@@ -146,7 +146,7 @@ class ResourceManager extends Class
 
 	addResourceToTree: (resource) ->
 		if not resource.parent
-			parentId = String(resource[@getResourceParentField()] or '')
+			parentId = String(resource['parentId'] ? '')
 
 			if parentId
 				parent = @resourcesById[parentId]
@@ -230,9 +230,4 @@ class ResourceManager extends Class
 				child
 
 		resource
-
-
-	# TODO: kill this!!!!!
-	getResourceParentField: ->
-		@calendar.options['resourceParentField'] or 'parentId' # TODO: put into defaults
 
