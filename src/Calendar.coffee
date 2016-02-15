@@ -54,6 +54,9 @@ class CalendarExtension extends Calendar
 		return
 
 
+	# Returns a list of events that the given event should be compared against when being considered for a move to
+	# the specified span. Attached to the Calendar's prototype because EventManager is a mixin for a Calendar.
+	#
 	# this method will take effect for *all* views, event ones that don't explicitly
 	# support resources. shouln't assume a resourceId on the span or event.
 	# `event` can be null.
@@ -61,13 +64,32 @@ class CalendarExtension extends Calendar
 		peerEvents = super
 
 		# if the span (basically the target drop area) has a resource, use its ID.
-		# otherwise, assume the the event wants to keep it's existing resource ID.
-		newResourceId = span.resourceId or (event and @getEventResourceId(event)) or ''
+		# otherwise, assume the the event wants to keep it's existing resource IDs.
+		newResourceIds =
+			if span.resourceId
+				[ span.resourceId ]
+			else if event
+				@getEventResourceIds(event)
+			else
+				[]
 
+		# find peer events that have one of the new resourceIds
 		filteredPeerEvents = []
 		for peerEvent in peerEvents
-			peerResourceId = @getEventResourceId(peerEvent) or ''
-			if not peerResourceId or peerResourceId == newResourceId
+			isPeer = false
+			peerResourceIds = @getEventResourceIds(peerEvent)
+
+			if not peerResourceIds.length or not newResourceIds.length
+				# when of the events isn't associated with ANY resources, it is considered
+				# to span across ALL resource, and should always be a peer (potential for colliding)
+				isPeer = true
+			else
+				for peerResourceId in peerResourceIds
+					for newResourceId in newResourceIds
+						if newResourceId == peerResourceId
+							isPeer = true
+							break
+			if isPeer
 				filteredPeerEvents.push(peerEvent)
 
 		filteredPeerEvents
