@@ -1,4 +1,19 @@
 
+v1.2.1 (2016-02-15)
+-------------------
+
+- fix for nowIndicator not updating position on window resize (#130)
+- fix for events resourceId/resourceIds being non-string integers (#120)
+- fix external drag handlers not being unbound (#117, #118)
+- fix refetchResources should rerender resources in vertical view (#100)
+- fix events incorrectly rendered when clipped by minTime/maxTime (#96)
+- fix resourceRender's resource object param when resources above dates (#91)
+- fix eventOverlap:false with eventResourceField (#86)
+- fix license key warning being rendered multiple times (#75)
+- fix broken Resource Object eventClassName property
+- fix separate event instances via multiple resourceIds, wrong color assignment
+
+
 v1.2.0 (2016-01-07)
 -------------------
 
