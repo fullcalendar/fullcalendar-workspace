@@ -4,9 +4,11 @@ origGetSegClasses = Grid::getSegClasses
 
 Grid::getSegClasses = (seg) ->
 	classes = origGetSegClasses.apply(this, arguments)
-	if seg.resource
+
+	for resource in @getSegResources(seg)
 		# .concat will process non-arrays and arrays
-		classes = classes.concat(seg.resource.eventClassName or [])
+		classes = classes.concat(resource.eventClassName or [])
+
 	classes
 
 
@@ -17,30 +19,30 @@ Grid::getSegSkinCss = (seg) ->
 	eventColor = event.color
 	sourceColor = source.color
 	optionColor = view.opt('eventColor')
-	resource = seg.resource
+	resources = @getSegResources(seg)
 
 	getResourceBackgroundColor = ->
 		val = null
-		currentResource = resource
-		while currentResource and not val
-			val = currentResource.eventBackgroundColor or currentResource.eventColor
-			currentResource = currentResource._parent
+		for currentResource in resources
+			while currentResource and not val
+				val = currentResource.eventBackgroundColor or currentResource.eventColor
+				currentResource = currentResource._parent
 		val
 
 	getResourceBorderColor = ->
 		val = null
-		currentResource = resource
-		while currentResource and not val
-			val = currentResource.eventBorderColor or currentResource.eventColor
-			currentResource = currentResource._parent
+		for currentResource in resources
+			while currentResource and not val
+				val = currentResource.eventBorderColor or currentResource.eventColor
+				currentResource = currentResource._parent
 		val
 
 	getResourceTextColor = ->
 		val = null
-		currentResource = resource
-		while currentResource and not val
-			val = currentResource.eventTextColor
-			currentResource = currentResource._parent
+		for currentResource in resources
+			while currentResource and not val
+				val = currentResource.eventTextColor
+				currentResource = currentResource._parent
 		val
 
 	return {
@@ -66,3 +68,13 @@ Grid::getSegSkinCss = (seg) ->
 			source.textColor or
 			view.opt('eventTextColor')
 	}
+
+
+Grid::getSegResources = (seg) ->
+	if seg.resource
+		# grid has defined an explicit resource that the seg lives in
+		[ seg.resource ]
+	else
+		# seg does not visually live inside a resource,
+		# so query all resources associated with the seg's event
+		@view.calendar.getEventResources(seg.event)
