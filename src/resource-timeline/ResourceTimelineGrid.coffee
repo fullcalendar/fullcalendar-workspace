@@ -11,7 +11,7 @@ class ResourceTimelineGrid extends TimelineGrid
 
 	spanToSegs: (span) ->
 		segs = super
-		calendar = @calendar
+		calendar = @view.calendar
 		resourceId = span.resourceId
 
 		if resourceId

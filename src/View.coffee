@@ -40,7 +40,7 @@ View::displayEvents = (events) ->
 # an initial 'set' event is guaranteed to fire.
 View::bindResources = ->
 	if not @isResourcesBound
-		@isResourcesBound = true
+		@isResourcesBound = true # immediately lock against re-binding
 
 		# an intercept that resolves the promise
 		@settingResources = $.Deferred()
@@ -67,7 +67,6 @@ View::bindResources = ->
 # triggers an 'unset' event to fire.
 View::unbindResources = ->
 	if @isResourcesBound
-		@isResourcesBound = false
 
 		@calendar.resourceManager
 			.off 'set', @_setResources
@@ -79,6 +78,8 @@ View::unbindResources = ->
 		if @settingResources.state() == 'resolved'
 			@unsetResources()
 		@settingResources = null
+
+		@isResourcesBound = false # finally allow re-binding
 
 
 # Methods for handling resource data
