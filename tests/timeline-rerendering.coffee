@@ -145,11 +145,11 @@ describe 'timeline view rerendering', ->
 	getResources = (cnt='') ->
 		[
 			{ id: 'a', title: 'Auditorium A' }
-			{ id: 'b', title: 'Auditorium B', eventColor: 'green' }
-			{ id: 'c', title: 'Auditorium C', eventColor: 'orange' }
+			{ id: 'b', title: 'Auditorium B' }
+			{ id: 'c', title: 'Auditorium C' }
 			{ id: 'd', title: 'Auditorium D' }
 			{ id: 'e', title: 'Auditorium E' + cnt }
-			{ id: 'f', title: 'Auditorium F', eventColor: 'red' }
+			{ id: 'f', title: 'Auditorium F' }
 			{ id: 'g', title: 'Auditorium G' }
 			{ id: 'h', title: 'Auditorium H' }
 			{ id: 'i', title: 'Auditorium I' }
