@@ -1,6 +1,7 @@
 
-Grid::getEventSkinCss = (event) ->
+Grid::getSegSkinCss = (seg) ->
 	view = @view
+	event = seg.event
 	source = event.source or {}
 	eventColor = event.color
 	sourceColor = source.color

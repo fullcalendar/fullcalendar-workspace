@@ -817,7 +817,7 @@ class TimelineGrid extends Grid
 
 		timeText = @getEventTimeText(event)
 
-		'<a class="' + classes.join(' ') + '" style="' + cssToStr(@getEventSkinCss(event)) + '"' +
+		'<a class="' + classes.join(' ') + '" style="' + cssToStr(@getSegSkinCss(seg)) + '"' +
 			(if event.url
 				' href="' + htmlEscape(event.url) + '"'
 			else
