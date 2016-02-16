@@ -2,6 +2,7 @@
 describe 'vresource event rendering', ->
 	pushOptions
 		now: '2015-11-17'
+		scrollTime: '00:00'
 		views:
 			agendaTwoDay:
 				type: 'agenda'
@@ -234,3 +235,27 @@ describe 'vresource event rendering', ->
 										eventEls = $('.event1')
 										expect(eventEls.length).toBe(0)
 										callback()
+
+	describe 'with an event with multiple', ->
+		pushOptions
+			events: [{
+				title: 'event 1'
+				className: 'event1'
+				start: '2015-11-17T01:00:00'
+				end: '2015-11-17T05:00:00'
+				resourceIds: [ 'a', 'b' ]
+			}]
+
+		it 'renders each event in a separate resource column', (done) ->
+			initCalendar
+				defaultView: 'agendaDay'
+				eventAfterAllRender: ->
+					expect($('.event1').length).toBe(2)
+					done()
+
+		it 'renders a single event when no resource columns', (done) ->
+			initCalendar
+				defaultView: 'agendaTwoDay'
+				eventAfterAllRender: ->
+					expect($('.event1').length).toBe(1)
+					done()
