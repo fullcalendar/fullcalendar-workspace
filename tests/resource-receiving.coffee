@@ -2,7 +2,6 @@
 resources as an array
 resources as a json feed
 resources as a function
-resourceParentField
 resourcesSet (callback)
 ###
 
@@ -72,20 +71,6 @@ describe 'event resources', ->
 			resources: [
 				{ id: 'a', title: 'room a' }
 				{ id: 'a1', title: 'room a1', parentId: 'a' }
-			]
-			resourcesSet: (resources) ->
-				expect(resources.length).toBe(1)
-				expect(resources[0].children.length).toBe(1)
-				expect(resources[0].title).toBe('room a')
-				expect(resources[0].children[0].title).toBe('room a1')
-				done()
-
-	it 'will allow flat children with a custom resourceParentId', (done) ->
-		initCalendar
-			resourceParentField: 'superRoomId',
-			resources: [
-				{ id: 'a', title: 'room a' }
-				{ id: 'a1', title: 'room a1', superRoomId: 'a' }
 			]
 			resourcesSet: (resources) ->
 				expect(resources.length).toBe(1)
