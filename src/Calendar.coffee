@@ -116,7 +116,11 @@ class CalendarExtension extends Calendar
 
 
 	getEventResourceIds: (event) ->
-		resourceId = String(event[@getEventResourceField()] ? '')
+		resourceId = String(
+			event[@getEventResourceField()] ?
+			event.resourceId ? # sometimes `event` is actually a span :(
+			''
+		)
 
 		# we make event.resourceId take precedence over event.resourceIds
 		# because in DnD code, the helper event is programatically assigned a event.resourceId
@@ -140,8 +144,8 @@ class CalendarExtension extends Calendar
 		event[@getEventResourceField()] = String(resourceId ? '')
 
 
-	getEventResourceField: ->
-		@options['eventResourceField'] or 'resourceId' # TODO: put into defaults
+	getEventResourceField: -> # DEPRECATED: eventResourceField
+		@options['eventResourceField'] or 'resourceId'
 
 
 	# NOTE: views pair *segments* to resources. that's why there's no code reuse
@@ -153,11 +157,9 @@ class CalendarExtension extends Calendar
 				@getResourceById(idOrResource)
 
 		if resource
-			eventResourceField = @getEventResourceField()
-			@clientEvents (event) -> # return value
-				# event's custom resource field not guaranteed to be a string.
-				# resource guaranteed to be normalized tho.
-				String(event[eventResourceField] ? '') == resource.id # true/false for filter
+			# return the event cache, filtered by events assigned to the resource
+			@clientEvents (event) =>
+				$.inArray(resource.id, @getEventResourceIds(event)) != -1
 		else
 			[]
 
