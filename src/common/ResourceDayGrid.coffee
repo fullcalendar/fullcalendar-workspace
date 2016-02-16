@@ -36,6 +36,7 @@ class ResourceDayGrid extends FC.DayGrid
 					resourceObj = @flattenedResources[resourceIndex]
 					if not span.resourceId or span.resourceId == resourceObj.id
 						copy = $.extend({}, seg)
+						copy.resource = resourceObj
 						if @isRTL
 							copy.leftCol = @indicesToCol(resourceIndex, seg.lastRowDayIndex)
 							copy.rightCol = @indicesToCol(resourceIndex, seg.firstRowDayIndex)

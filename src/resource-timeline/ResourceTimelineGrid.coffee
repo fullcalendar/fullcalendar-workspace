@@ -11,10 +11,13 @@ class ResourceTimelineGrid extends TimelineGrid
 
 	spanToSegs: (span) ->
 		segs = super
+		calendar = @calendar
 		resourceId = span.resourceId
 
 		if resourceId
 			for seg in segs
+				# TODO: pick a technique
+				seg.resource = calendar.getResourceById(resourceId)
 				seg.resourceId = resourceId
 
 		segs

@@ -27,6 +27,7 @@ class ResourceTimeGrid extends FC.TimeGrid
 					resourceObj = @flattenedResources[resourceIndex]
 					if not span.resourceId or span.resourceId == resourceObj.id
 						copy = $.extend({}, seg)
+						copy.resource = resourceObj
 						copy.col = @indicesToCol(resourceIndex, seg.dayIndex)
 						resourceSegs.push(copy)
 			resourceSegs

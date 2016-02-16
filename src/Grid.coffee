@@ -1,4 +1,15 @@
 
+origGetSegClasses = Grid::getSegClasses
+
+
+Grid::getSegClasses = (seg) ->
+	classes = origGetSegClasses.apply(this, arguments)
+	if seg.resource
+		# .concat will process non-arrays and arrays
+		classes = classes.concat(seg.resource.eventClassName or [])
+	classes
+
+
 Grid::getSegSkinCss = (seg) ->
 	view = @view
 	event = seg.event
@@ -6,30 +17,30 @@ Grid::getSegSkinCss = (seg) ->
 	eventColor = event.color
 	sourceColor = source.color
 	optionColor = view.opt('eventColor')
-	resources = view.calendar.getEventResources(event)
+	resource = seg.resource
 
 	getResourceBackgroundColor = ->
 		val = null
-		for currentResource in resources
-			while currentResource and not val
-				val = currentResource.eventBackgroundColor or currentResource.eventColor
-				currentResource = currentResource._parent
+		currentResource = resource
+		while currentResource and not val
+			val = currentResource.eventBackgroundColor or currentResource.eventColor
+			currentResource = currentResource._parent
 		val
 
 	getResourceBorderColor = ->
 		val = null
-		for currentResource in resources
-			while currentResource and not val
-				val = currentResource.eventBorderColor or currentResource.eventColor
-				currentResource = currentResource._parent
+		currentResource = resource
+		while currentResource and not val
+			val = currentResource.eventBorderColor or currentResource.eventColor
+			currentResource = currentResource._parent
 		val
 
 	getResourceTextColor = ->
 		val = null
-		for currentResource in resources
-			while currentResource and not val
-				val = currentResource.eventTextColor
-				currentResource = currentResource._parent
+		currentResource = resource
+		while currentResource and not val
+			val = currentResource.eventTextColor
+			currentResource = currentResource._parent
 		val
 
 	return {
