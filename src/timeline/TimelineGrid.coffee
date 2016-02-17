@@ -33,6 +33,7 @@ class TimelineGrid extends Grid
 
 	minTime: null
 	maxTime: null
+	timeWindowMs: null
 	slotDuration: null
 	snapDuration: null
 
@@ -61,6 +62,7 @@ class TimelineGrid extends Grid
 		# TODO: more formal option system. works with Agenda
 		@minTime = moment.duration(@opt('minTime') || '00:00')
 		@maxTime = moment.duration(@opt('maxTime') || '24:00')
+		@timeWindowMs = @maxTime - @minTime
 
 		@snapDuration =
 			if (input = @opt('snapDuration'))
@@ -84,8 +86,10 @@ class TimelineGrid extends Grid
 		if @view.isHiddenDay(date)
 			false
 		else if @isTimeScale
-			time = date.time()
-			time >= @minTime and time < @maxTime
+			# determine if the time is within minTime/maxTime, which may have wacky values
+			ms = date.time() - @minTime # milliseconds since minTime
+			ms = ((ms % 86400000) + 86400000) % 86400000 # make negative values wrap to 24hr clock
+			ms < @timeWindowMs # before the maxTime?
 		else
 			true
 
@@ -147,8 +151,10 @@ class TimelineGrid extends Grid
 
 
 	rangeUpdated: ->
-		@start = @normalizeGridDate(@start)
-		@end = @normalizeGridDate(@end)
+		# makes sure zone is stripped, and applies minTime/maxTime
+		# TODO: move towards .time(), but didn't play well with negatives
+		@start = @normalizeGridDate(@start).add(@minTime)
+		@end = @normalizeGridDate(@end).subtract(1, 'day').add(@maxTime)
 
 		slotDates = []
 		date = @start.clone()
