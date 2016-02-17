@@ -164,6 +164,36 @@ describe 'timeline event rendering', ->
 											expect($('.event1').length).toBe(0)
 											done()
 
+						if resources and not eventRendering # speedup
+
+							it 'renders events within exaggerated maxTime', (done) ->
+								initCalendar
+									minTime: '09:00'
+									maxTime: '28:00'
+									events: [
+										makeEvent('event1', '2015-10-17T08:00:00', '2015-10-18T02:00:00')
+									]
+									eventAfterAllRender: ->
+										expectEventSlotSpan('event1', '9am', '1am')
+										expectEventIsStartEnd('event1', false, true)
+										expect($('tr.fc-chrono th:first')).toHaveText('9am')
+										expect($('tr.fc-chrono th:last')).toHaveText('3am')
+										done()
+
+							it 'renders events past an exaggerated maxTime', (done) ->
+								initCalendar
+									minTime: '09:00'
+									maxTime: '28:00'
+									events: [
+										makeEvent('event1', '2015-10-17T08:00:00', '2015-10-18T05:00:00')
+									]
+									eventAfterAllRender: ->
+										expectEventSlotSpan('event1', '9am', '3am')
+										expectEventIsStartEnd('event1', false, false)
+										expect($('tr.fc-chrono th:first')).toHaveText('9am')
+										expect($('tr.fc-chrono th:last')).toHaveText('3am')
+										done()
+
 						if not eventRendering # non-background
 							it 'render stacked events by duration', (done) ->
 								initCalendar
