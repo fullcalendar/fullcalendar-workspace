@@ -102,7 +102,7 @@ describe 'event styling hooks', ->
 				eventAfterAllRender: ->
 					el = $('.event1')
 					expect(el.length).toBe(1)
-					expect(el.css('border-color')).toMatch(BLUE_RE)
+					expect(el.css('border-left-color')).toMatch(BLUE_RE)
 					expect(el.css('color')).toMatch(BLUE_RE) # text color
 					done()
 
