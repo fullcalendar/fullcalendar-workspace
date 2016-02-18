@@ -21,7 +21,7 @@ View::displayView = ->
 	)
 
 	@bindResources()
-	@settingResources.promise() # 'render' trigger and sizing waits for this
+	@whenResources() # 'render' trigger and sizing waits for this
 
 
 View::unrenderSkeleton = ->
@@ -31,8 +31,7 @@ View::unrenderSkeleton = ->
 
 View::displayEvents = (events) ->
 	# make sure resource data is received first (for event coloring at the simplest).
-	# `settingResources` is guaranteed to be defined by displayView.
-	@settingResources.then =>
+	@whenResources =>
 		origDisplayEvents.call(this, events)
 
 
@@ -80,6 +79,23 @@ View::unbindResources = ->
 		@settingResources = null
 
 		@isResourcesBound = false # finally allow re-binding
+
+
+# HACK instead of accessing @settingResources directly.
+# if already resolved, sometimes .promise() or .then() would not execute synchronously,
+# which might cause event/resource rendering to happen asynchronously,
+# which might suprise some people.
+# TODO: research why jQuery promises might do this.
+#
+# `thenFunc` is optional.
+# returns a promose.
+View::whenResources = (thenFunc) ->
+	if @settingResources.state() == 'resolved'
+		$.when(if thenFunc then thenFunc())
+	else if thenFunc
+		@settingResources.then(thenFunc)
+	else
+		@settingResources.promise()
 
 
 # Methods for handling resource data
