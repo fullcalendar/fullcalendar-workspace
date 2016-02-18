@@ -1,7 +1,8 @@
 
-v1.2.1 (2016-02-15)
+v1.2.1 (2016-02-17)
 -------------------
 
+- allow minTime/maxTime to be negative or beyond 24hrs in timeline (#112)
 - fix for nowIndicator not updating position on window resize (#130)
 - fix for events resourceId/resourceIds being non-string integers (#120)
 - fix external drag handlers not being unbound (#117, #118)
