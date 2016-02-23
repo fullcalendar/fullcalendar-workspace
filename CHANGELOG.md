@@ -19,6 +19,7 @@ v1.2.0 (2016-01-07)
 -------------------
 
 - current time indicator (#9)
+- resourceIds, allows associating an event to multiple resources (#13)
 - pass resourceId into the drop event (#27)
 - fix for refetchEvents reseting the scroll position (#89)
 - fix for addResource/removeResource failing to rerender in vertical views (#84)
