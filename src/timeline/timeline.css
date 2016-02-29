@@ -6,34 +6,34 @@
 
 /* TODO: break this file up */
 
-/* Scroll Pane
+/* Scroller
 --------------------------------------------------------------------------------------------------*/
 
-.fc-scrollpane {
+.fc-scroller-mask {
 	overflow: hidden; /* for clipping scrollbars */
 	position: relative; /* so things like scrollfollowers can attach to this */
 }
 
-.fc-scrollpane-inner {
+.fc-no-scrollbars::-webkit-scrollbar { /* on .fc-scroller */
+	/* supresses rendering of native scrollbars */
+	width: 0;
+	height: 0;
+}
+
+.fc-scroller-canvas {
 	overflow: hidden; /* for clipping inner content */
 	position: relative; /* origin for bg */
 	box-sizing: border-box; /* so that padding (for gutter) will be part of height */
 	min-height: 100%;
 }
 
-.fc-scrollpane-inner > .fc-bg {
+.fc-scroller-canvas > .fc-bg {
 	z-index: 1; /* make default? */
 }
 
-.fc-scrollpane-inner > .fc-content {
+.fc-scroller-canvas > .fc-content {
 	z-index: 2; /* make default? */
 	position: relative; /* origin for inner content */
-}
-
-.fc-no-scrollbars::-webkit-scrollbar { /* might be applied to scrollpane-scroller */
-	/* supresses rendering of native scrollbars */
-	width: 0;
-	height: 0;
 }
 
 
@@ -61,20 +61,20 @@
 	background-image: none;
 }
 
-.fc-scrolled .fc-head .fc-scrollpane {
+.fc-scrolled .fc-head .fc-scroller {
 	z-index: 2; /* so drop shadow will go above body panes */
 }
 
-.fc-timeline.fc-scrolled .fc-head .fc-scrollpane {
+.fc-timeline.fc-scrolled .fc-head .fc-scroller {
 	box-shadow: 0 3px 4px rgba(0,0,0,0.075);
 }
 
-.fc-timeline .fc-body .fc-scrollpane {
+.fc-timeline .fc-body .fc-scroller {
 	z-index: 1;
 }
 
-.fc-timeline .fc-scrollpane-inner > .fc-content,
-.fc-timeline .fc-scrollpane-inner > .fc-bg {
+.fc-timeline .fc-scroller-canvas > .fc-content,
+.fc-timeline .fc-scroller-canvas > .fc-bg {
 	margin: -1px;
 }
 

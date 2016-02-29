@@ -18,23 +18,22 @@ class ScrollFollower
 	isForcedRelative: false
 
 
-	constructor: (@scroller) ->
+	constructor: (scroller) ->
+		@scroller = scroller
 		@sprites = []
 
-		@scroller.on 'scrollStart', =>
+		scroller.on 'scrollStart', =>
 			if @shouldRequeryDimensions
 				@cacheDimensions()
 
-		@scroller.on 'scroll', (scrollTop, scrollLeft) => # TODO: switch order
-			scrollEl = @scroller.scrollEl
-
-			left = getScrollFromLeft(scrollEl)
-			top = scrollEl.scrollTop()
+		scroller.on 'scroll', =>
+			left = scroller.getScrollFromLeft()
+			top = scroller.getScrollTop()
 			@viewportRect =
 				left: left
-				right: left + scrollEl[0].clientWidth
+				right: left + scroller.getClientWidth()
 				top: top
-				bottom: top + scrollEl[0].clientHeight
+				bottom: top + scroller.getClientHeight()
 
 			@updatePositions()
 
@@ -62,21 +61,20 @@ class ScrollFollower
 
 
 	cacheDimensions: ->
-		scrollEl = @scroller.scrollEl
-
-		left = getScrollFromLeft(scrollEl)
-		top = scrollEl.scrollTop()
+		scroller = @scroller
+		left = scroller.getScrollFromLeft()
+		top = scroller.getScrollTop()
 
 		# TODO: use getViewportRect() for getting this rect
 		# TODO: make this more DRY. also in constructor. updateViewportRect
 		@viewportRect =
 			left: left
-			right: left + scrollEl[0].clientWidth
+			right: left + scroller.getClientWidth()
 			top: top
-			bottom: top + scrollEl[0].clientHeight
+			bottom: top + scroller.getClientHeight()
 
-		@scrollbarWidths = @scroller.getScrollbarWidths()
-		@contentOffset = @scroller.innerEl.offset()
+		@scrollbarWidths = scroller.getScrollbarWidths()
+		@contentOffset = scroller.canvas.el.offset()
 
 		for sprite in @sprites
 			sprite.cacheDimensions()

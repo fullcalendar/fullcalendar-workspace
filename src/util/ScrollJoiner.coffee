@@ -4,45 +4,38 @@ class ScrollJoiner
 	axis: null
 	scrollers: null
 	masterScroller: null
-	enabled: true
 
 
 	constructor: (@axis, @scrollers) ->
+		# will call assignMasterScroller immediately (true argument)
+		# but won't process subsequent calls until time has passed
+		@requestMasterScroller = debounce(@assignMasterScroller, 100, true)
+
 		for scroller in @scrollers
 			@initScroller(scroller)
-
-
-	enable: ->
-		@enabled = true
-
-
-	disable: ->
-		@enabled = false
+		return
 
 
 	initScroller: (scroller) ->
-		scroller
-			.on 'scrollStart', =>
-				if not @masterScroller
-					@masterScroller = scroller
-				return
+		scroller.on 'scroll', =>
 
-			.on 'scroll', (scrollTop, scrollLeft) => # TODO: reverse arguments
-				#NOTE: it's okay because these are nativeScrollTop/nativeScrollLeft
-				if scroller is @masterScroller
-					for otherScroller in @scrollers
-						if otherScroller isnt @masterScroller
-							switch @axis
-								when 'horizontal'
-									otherScroller.scrollLeft(scrollLeft)
-								when 'vertical'
-									otherScroller.scrollTop(scrollTop)
-				return
+			@requestMasterScroller(scroller)
+			if scroller == @masterScroller
 
-			.on 'scrollStop', =>
-				if scroller is @masterScroller
-					@masterScroller = null
-				return
+				for otherScroller in @scrollers
+					if otherScroller != scroller
+						switch @axis
+							when 'horizontal'
+								otherScroller.setNativeScrollLeft(scroller.getNativeScrollLeft())
+							when 'vertical'
+								otherScroller.setScrollTop(scroller.getScrollTop())
+			return
+
+
+	requestMasterScroller: null # created in the constructor
+
+
+	assignMasterScroller: (@masterScroller) ->
 
 
 	update: ->
@@ -58,7 +51,7 @@ class ScrollJoiner
 
 		for scroller, i in @scrollers
 			widths = allWidths[i]
-			scroller.setGutters \
+			scroller.canvas.setGutters \
 				if @axis == 'horizontal'
 					left: maxLeft - widths.left
 					right: maxRight - widths.right

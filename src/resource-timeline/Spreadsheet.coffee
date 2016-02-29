@@ -34,20 +34,27 @@ class Spreadsheet
 
 	renderSkeleton: ->
 
-		@headScroller = new Scroller('invisible-scroll', 'hidden')
-		@headScroller.contentEl.html(@renderHeadHtml())
+		@headScroller = new MaskedScroller
+			overflowX: 'masked'
+			overflowY: 'hidden'
+		@headScroller.canvas = new ScrollerCanvas()
+		@headScroller.render()
+		@headScroller.canvas.contentEl.html(@renderHeadHtml())
 		@headEl.append(@headScroller.el)
 
-		@bodyScroller = new Scroller('auto', 'invisible-scroll')
-		@bodyScroller.contentEl.html('<table>' + @colGroupHtml + '<tbody/></table>') # colGroupHtml hack
-		@tbodyEl = @bodyScroller.contentEl.find('tbody')
+		@bodyScroller = new MaskedScroller
+			overflowY: 'masked'
+		@bodyScroller.canvas = new ScrollerCanvas()
+		@bodyScroller.render()
+		@bodyScroller.canvas.contentEl.html('<table>' + @colGroupHtml + '<tbody/></table>') # colGroupHtml hack
+		@tbodyEl = @bodyScroller.canvas.contentEl.find('tbody')
 		@el.append(@bodyScroller.el)
 
 		@joiner = new ScrollJoiner('horizontal', [ @headScroller, @bodyScroller ])
 
 		@headTable = @headEl.find('table')
 		@headColEls = @headEl.find('col')
-		@headCellEls = @headScroller.contentEl.find('tr:last-child th')
+		@headCellEls = @headScroller.canvas.contentEl.find('tr:last-child th')
 		@bodyColEls = @el.find('col')
 		@bodyTable = @el.find('table')
 
@@ -198,8 +205,8 @@ class Spreadsheet
 			@headColEls.eq(i).width(cssWidth)
 			@bodyColEls.eq(i).width(cssWidth)
 
-		@headScroller.setContentMinWidth(tableMinWidth) # not really a table width anymore
-		@bodyScroller.setContentMinWidth(tableMinWidth)
+		@headScroller.canvas.setMinWidth(tableMinWidth) # not really a table width anymore
+		@bodyScroller.canvas.setMinWidth(tableMinWidth)
 
 		@tableMinWidth = tableMinWidth
 		@tableWidth = if allNumbers then total
@@ -223,8 +230,8 @@ class Spreadsheet
 
 
 	updateWidth: ->
-		@headScroller.update()
-		@bodyScroller.update()
+		@headScroller.updateSize()
+		@bodyScroller.updateSize()
 		@joiner.update()
 
 		# TODO: do follower.disable(), instead of checking for existence all the time
@@ -233,6 +240,6 @@ class Spreadsheet
 
 
 	headHeight: -> # TODO: route this better
-		table = @headScroller.contentEl.find('table')
+		table = @headScroller.canvas.contentEl.find('table')
 		table.height.apply(table, arguments)
 

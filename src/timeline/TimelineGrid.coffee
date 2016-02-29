@@ -293,20 +293,26 @@ class TimelineGrid extends Grid
 
 	renderSkeleton: ->
 
-		@headScroller = new Scroller('invisible-scroll', 'hidden')
+		@headScroller = new MaskedScroller
+			overflowX: 'masked'
+			overflowY: 'hidden'
+		@headScroller.canvas = new ScrollerCanvas()
+		@headScroller.render()
 		@headEl.append(@headScroller.el)
 
-		@bodyScroller = new Scroller()
+		@bodyScroller = new MaskedScroller()
+		@bodyScroller.canvas = new ScrollerCanvas()
+		@bodyScroller.render()
 		@el.append(@bodyScroller.el)
 
-		@innerEl = @bodyScroller.contentEl # TODO: temporary
+		@innerEl = @bodyScroller.canvas.contentEl # TODO: temporary
 
-		@slatContainerEl = $('<div class="fc-slats"/>').appendTo(@bodyScroller.bgEl)
-		@segContainerEl = $('<div class="fc-event-container"/>').appendTo(@bodyScroller.contentEl)
-		@bgSegContainerEl = @bodyScroller.bgEl
+		@slatContainerEl = $('<div class="fc-slats"/>').appendTo(@bodyScroller.canvas.bgEl)
+		@segContainerEl = $('<div class="fc-event-container"/>').appendTo(@bodyScroller.canvas.contentEl)
+		@bgSegContainerEl = @bodyScroller.canvas.bgEl
 
 		@containerCoordCache = new CoordCache
-			els: @bodyScroller.innerEl # better representative of bounding box, considering annoying negative margins
+			els: @bodyScroller.canvas.el # better representative of bounding box, considering annoying negative margins
 			isHorizontal: true # we use the left/right for adjusting RTL coordinates
 			isVertical: true
 
@@ -331,8 +337,8 @@ class TimelineGrid extends Grid
 
 
 	renderDates: ->
-		@headScroller.contentEl.html(@renderHeadHtml())
-		@headColEls = @headScroller.contentEl.find('col')
+		@headScroller.canvas.contentEl.html(@renderHeadHtml())
+		@headColEls = @headScroller.canvas.contentEl.find('col')
 		@slatContainerEl.html(@renderSlatHtml())
 		@slatColEls = @slatContainerEl.find('col')
 		@slatEls = @slatContainerEl.find('td')
@@ -346,7 +352,7 @@ class TimelineGrid extends Grid
 			isHorizontal: true
 			# we use this coord cache for getPosition* for event rendering.
 			# workaround for .fc-content's negative margins.
-			offsetParent: @bodyScroller.innerEl
+			offsetParent: @bodyScroller.canvas.el
 
 		for date, i in @slotDates
 			@view.trigger('dayRender', null, date, @slatEls.eq(i))
@@ -359,15 +365,13 @@ class TimelineGrid extends Grid
 		if @follower
 			@follower.clearSprites()
 
-		@headScroller.contentEl.empty()
+		@headScroller.canvas.contentEl.empty()
 		@slatContainerEl.empty()
 
-		# clear the width!
+		# clear the widths,
 		# for no jupiness when navigating
-		# TODO: more modular
-		@headScroller.contentEl.add(@bodyScroller.contentEl).css
-			minWidth: ''
-			width: ''
+		@headScroller.canvas.clearWidth()
+		@bodyScroller.canvas.clearWidth()
 
 
 	renderHeadHtml: -> # TODO: misnamed
@@ -527,11 +531,11 @@ class TimelineGrid extends Grid
 
 			nodes.push($("<div class='fc-now-indicator fc-now-indicator-arrow'></div>")
 				.css(css)
-				.appendTo(@headScroller.innerEl)[0])
+				.appendTo(@headScroller.canvas.el)[0])
 
 			nodes.push($("<div class='fc-now-indicator fc-now-indicator-line'></div>")
 				.css(css)
-				.appendTo(@bodyScroller.innerEl)[0])
+				.appendTo(@bodyScroller.canvas.el)[0])
 
 		@nowIndicatorEls = $(nodes)
 
@@ -563,22 +567,22 @@ class TimelineGrid extends Grid
 		containerMinWidth = ''
 		nonLastSlotWidth = slotWidth
 
-		availableWidth = @bodyScroller.scrollEl[0].clientWidth # util!?
+		availableWidth = @bodyScroller.getClientWidth()
 		if availableWidth > containerWidth
 			containerMinWidth = availableWidth
 			containerWidth = ''
 			nonLastSlotWidth = Math.floor(availableWidth / @slotDates.length)
 
-		@headScroller.setContentWidth(containerWidth)
-		@headScroller.setContentMinWidth(containerMinWidth)
-		@bodyScroller.setContentWidth(containerWidth)
-		@bodyScroller.setContentMinWidth(containerMinWidth)
+		@headScroller.canvas.setWidth(containerWidth)
+		@headScroller.canvas.setMinWidth(containerMinWidth)
+		@bodyScroller.canvas.setWidth(containerWidth)
+		@bodyScroller.canvas.setMinWidth(containerMinWidth)
 
 		@headColEls.slice(0, -1).add(@slatColEls.slice(0, -1))
 			.width(nonLastSlotWidth)
 
-		@headScroller.update()
-		@bodyScroller.update()
+		@headScroller.updateSize()
+		@bodyScroller.updateSize()
 		@joiner.update()
 
 		@buildCoords()
@@ -669,7 +673,7 @@ class TimelineGrid extends Grid
 
 	# a getter / setter
 	headHeight: ->
-		table = @headScroller.contentEl.find('table')
+		table = @headScroller.canvas.contentEl.find('table')
 		table.height.apply(table, arguments)
 
 
@@ -701,8 +705,8 @@ class TimelineGrid extends Grid
 
 	queryScroll: ->
 		{
-			left: normalizedHScroll(@bodyScroller.scrollEl)
-			top: @bodyScroller.scrollEl.scrollTop()
+			left: @bodyScroller.getScrollLeft()
+			top: @bodyScroller.getScrollTop()
 		}
 
 
@@ -712,10 +716,10 @@ class TimelineGrid extends Grid
 		# to override the native initial crappy scroll that FF applies.
 		# TODO: have the ScrollJoiner handle this
 		# Similar code in ResourceTimelineView::setScroll
-		normalizedHScroll(@headScroller.scrollEl, state.left)
+		@headScroller.setScrollLeft(state.left)
 
-		normalizedHScroll(@bodyScroller.scrollEl, state.left)
-		@bodyScroller.scrollEl.scrollTop(state.top)
+		@headScroller.setScrollLeft(state.left)
+		@bodyScroller.setScrollTop(state.top)
 
 
 	# Events

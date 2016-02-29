@@ -588,4 +588,4 @@ class ResourceTimelineView extends TimelineView
 
 		# TODO: hack
 		# Similar to what is happening in TimelineGrid::setScroll. for FF
-		@resourceGrid.bodyScroller.scrollTop(state.top)
+		@resourceGrid.bodyScroller.setScrollTop(state.top)

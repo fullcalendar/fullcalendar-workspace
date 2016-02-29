@@ -80,7 +80,7 @@ class ResourceTimelineGrid extends TimelineGrid
 		@segContainerEl.remove()
 		@segContainerEl = null
 
-		rowContainerEl = $('<div class="fc-rows"><table><tbody/></table></div>').appendTo(@bodyScroller.contentEl)
+		rowContainerEl = $('<div class="fc-rows"><table><tbody/></table></div>').appendTo(@bodyScroller.canvas.contentEl)
 		@tbodyEl = rowContainerEl.find('tbody')
 
 
@@ -193,7 +193,7 @@ class ResourceTimelineGrid extends TimelineGrid
 			if row
 				el = row.getTr('event')
 				if el
-					innerTop = @bodyScroller.innerEl.offset().top # TODO: use -scrollHeight or something
+					innerTop = @bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
 					elBottom = el.offset().top + el.outerHeight()
 					state.top = elBottom - state.bottom - innerTop
 		super(state)
@@ -204,7 +204,7 @@ class ResourceTimelineGrid extends TimelineGrid
 		if row
 			el = row.getTr('event')
 			if el
-				innerTop = @bodyScroller.innerEl.offset().top # TODO: use -scrollHeight or something
+				innerTop = @bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
 				scrollTop = el.offset().top - innerTop
 				@bodyScroller.scrollEl.scrollTop(scrollTop) # TODO: better API
 
