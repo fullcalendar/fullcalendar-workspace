@@ -114,30 +114,10 @@ class ScrollFollower
 
 
 	# relative to inner content pane
-	# TODO: use getContentRect from utils
-	# TODO: make this a general util
 	getContentRect: (el) ->
-		res = el.offset()
-		left = res.left + parseFloat(el.css('border-left-width')) + parseFloat(el.css('padding-left')) - @contentOffset.left
-		top = res.top + parseFloat(el.css('border-left-width')) + parseFloat(el.css('padding-left')) - @contentOffset.top
-		{
-			left: left
-			right: left + el.width()
-			top: top
-			bottom: top + el.height()
-		}
+		getContentRect(el, @contentOffset)
 
 
 	# relative to inner content pane
-	# TODO: use getContentRect from utils
-	# TODO: make this a general util
 	getBoundingRect: (el) ->
-		res = el.offset()
-		left = res.left - @contentOffset.left
-		top = res.top - @contentOffset.top
-		{
-			left: left
-			right: left + el.outerWidth()
-			top: top
-			bottom: top + el.outerHeight()
-		}
+		getOuterRect(el, @contentOffset)

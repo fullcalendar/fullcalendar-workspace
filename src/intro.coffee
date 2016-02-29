@@ -48,3 +48,5 @@ compareByFieldSpecs = FC.compareByFieldSpecs
 flexibleCompare = FC.flexibleCompare
 intersectRects = FC.intersectRects
 CoordCache = FC.CoordCache
+getContentRect = FC.getContentRect
+getOuterRect = FC.getOuterRect
