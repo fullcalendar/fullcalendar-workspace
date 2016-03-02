@@ -3,7 +3,7 @@
 
 class ResourceMonthView extends FC.MonthView
 
-	@mixin ResourceView
+	@mixin ResourceViewMixin
 
 	dayGridClass: ResourceDayGrid
 

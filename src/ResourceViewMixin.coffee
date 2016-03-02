@@ -1,5 +1,5 @@
 
-class ResourceView extends View
+ResourceViewMixin = # expects a View
 
 	resourceTextFunc: null
 
@@ -95,12 +95,15 @@ class ResourceView extends View
 		if dropLocation.resourceId and event.resourceIds
 			dropLocation.resourceIds = null
 
-		super(event, dropLocation, otherArgs...)
+		# super-method
+		View::reportEventDrop.call(this, event, dropLocation, otherArgs...)
 
 
 	reportExternalDrop: (meta, dropLocation, otherArgs...) ->
 		dropLocation = @normalizeDropLocation(dropLocation)
-		super(meta, dropLocation, otherArgs...)
+
+		# super-method
+		View::reportExternalDrop.call(this, meta, dropLocation, otherArgs...)
 
 
 	normalizeDropLocation: (dropLocation) ->

@@ -1,7 +1,7 @@
 
 class ResourceAgendaView extends FC.AgendaView
 
-	@mixin ResourceView
+	@mixin ResourceViewMixin
 
 	timeGridClass: ResourceTimeGrid
 	dayGridClass: ResourceDayGrid

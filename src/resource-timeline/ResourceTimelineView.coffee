@@ -1,7 +1,7 @@
 
 class ResourceTimelineView extends TimelineView
 
-	@mixin ResourceView
+	@mixin ResourceViewMixin
 
 
 	resourceGrid: null # TODO: rename
