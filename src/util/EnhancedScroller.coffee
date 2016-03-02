@@ -7,6 +7,8 @@ A Scroller with additional functionality:
 ###
 class EnhancedScroller extends FC.Scroller
 
+	@mixin Emitter
+
 	canvas: null # an optional ScrollerCanvas
 	isScrolling: false
 	isTouching: false # user currently has finger down?
