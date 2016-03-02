@@ -1,15 +1,23 @@
 
+###
+A rectangular area of content that lives within a Scroller.
+Can have "gutters", areas of dead spacing around the perimeter.
+Also very useful for forcing a width, which a Scroller cannot do alone.
+Has a content area that lives above a background area.
+###
 class ScrollerCanvas
 
 	el: null
 	contentEl: null
 	bgEl: null
-	gutters: null
+	gutters: null # an object {top,left,bottom,right}
 	width: null
 	minWidth: null
 
+
 	constructor: ->
 		@gutters = {}
+
 
 	render: ->
 		@el = $('
@@ -21,6 +29,10 @@ class ScrollerCanvas
 		@contentEl = @el.find('.fc-content')
 		@bgEl = @el.find('.fc-bg')
 
+
+	###
+	If falsy, resets all the gutters to 0
+	###
 	setGutters: (gutters) ->
 		if not gutters
 			@gutters = {}
@@ -28,33 +40,39 @@ class ScrollerCanvas
 			$.extend(@gutters, gutters)
 		@updateSize()
 
+
 	setWidth: (@width) ->
 		@updateSize()
 
+
 	setMinWidth: (@minWidth) ->
 		@updateSize()
+
 
 	clearWidth: ->
 		@width = null
 		@minWidth = null
 		@updateSize()
 
+
 	updateSize: ->
 		gutters = @gutters
 
-		@el.css # is border-box
+		@el.css # is border-box (width includes padding)
 			paddingLeft: gutters.left or ''
 			paddingRight: gutters.right or ''
 			paddingTop: gutters.top or ''
 			paddingBottom: gutters.bottom or ''
 			width:
-				if @width
+				if @width?
 					@width + (gutters.left or 0) + (gutters.right or 0)
 				else
 					''
 			minWidth:
-				if @minWidth
+				if @minWidth?
 					@minWidth + (gutters.left or 0) + (gutters.right or 0)
+				else
+					''
 
 		@bgEl.css
 			left: gutters.left or ''

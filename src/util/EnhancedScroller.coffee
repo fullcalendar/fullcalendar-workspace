@@ -1,4 +1,10 @@
 
+###
+A Scroller with additional functionality:
+- optional ScrollerCanvas for content
+- fired events for scroll start/end
+- cross-browser normalization of horizontal scroll for RTL
+###
 class EnhancedScroller extends FC.Scroller
 
 	canvas: null # an optional ScrollerCanvas
@@ -102,7 +108,9 @@ class EnhancedScroller extends FC.Scroller
 	# ----------------------------------------------------------------------------------------------
 	# http://stackoverflow.com/questions/24276619/better-way-to-get-the-viewport-of-a-scrollable-div-in-rtl-mode/24394376#24394376
 
-
+	###
+	If RTL, and scrolled to the left, returns NEGATIVE value (like Firefox)
+	###
 	getScrollLeft: ->
 		direction = @scrollEl.css('direction')
 		node = @scrollEl[0]
@@ -115,7 +123,9 @@ class EnhancedScroller extends FC.Scroller
 					val = -val
 		val
 
-
+	###
+	Accepts a NEGATIVE value for when scrolled in RTL
+	###
 	setScrollLeft: (val) ->
 		direction = @scrollEl.css('direction')
 		node = @scrollEl[0]
@@ -127,7 +137,10 @@ class EnhancedScroller extends FC.Scroller
 					val = -val
 		node.scrollLeft = val
 
-
+	###
+	Always returns the number of pixels scrolled from the leftmost position (even if RTL).
+	Always positive.
+	###
 	getScrollFromLeft: ->
 		direction = @scrollEl.css('direction')
 		node = @scrollEl[0]
