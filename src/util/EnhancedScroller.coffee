@@ -8,6 +8,7 @@ A Scroller with additional functionality:
 class EnhancedScroller extends FC.Scroller
 
 	@mixin EmitterMixin
+	@mixin ListenerMixin
 
 	canvas: null # an optional ScrollerCanvas
 	isScrolling: false
@@ -38,17 +39,14 @@ class EnhancedScroller extends FC.Scroller
 
 
 	bindHandlers: ->
-		@scrollEl
-			.on('scroll', this._scroll = proxy(this, 'reportScroll'))
-			.on('touchstart', this._touchstart = proxy(this, 'reportTouchStart'))
-			.on('touchend', this._touchend = proxy(this, 'reportTouchEnd'))
+		@listenTo @scrollEl,
+			scroll: @reportScroll
+			touchstart: @reportTouchStart
+			touchend: @reportTouchEnd
 
 
-	unbindHandlers: -> # TODO: find a better way
-		@scrollEl
-			.off('scroll', this._scroll)
-			.off('touchstart', this._touchstart)
-			.off('touchend', this._touchend)
+	unbindHandlers: ->
+		@stopListeningTo(@scrollEl)
 
 
 	# Scroll Events

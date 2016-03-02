@@ -39,6 +39,7 @@ proxy = FC.proxy
 capitaliseFirstLetter = FC.capitaliseFirstLetter
 applyAll = FC.applyAll
 EmitterMixin = FC.EmitterMixin
+ListenerMixin = FC.ListenerMixin
 durationHasTime = FC.durationHasTime
 divideRangeByDuration = FC.divideRangeByDuration
 divideDurationByDuration = FC.divideDurationByDuration

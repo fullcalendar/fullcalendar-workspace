@@ -47,12 +47,12 @@ View::bindResources = ->
 			@setResources(resources)
 			@settingResources.resolve()
 
-		@calendar.resourceManager
-			.on 'set', @_setResources = setResources
-			.on 'unset', @_unsetResources = proxy(this, 'unsetResources')
-			.on 'reset', @_resetResources = proxy(this, 'resetResources')
-			.on 'add', @_addResource = proxy(this, 'addResource')
-			.on 'remove', @_removeResource = proxy(this, 'removeResource')
+		@listenTo @calendar.resourceManager,
+			set: setResources
+			unset: @unsetResources
+			reset: @resetResources
+			add: @addResource
+			remove: @removeResource
 
 		if @calendar.resourceManager.hasFetched()
 			# already has results. simulate a 'set'
@@ -67,12 +67,7 @@ View::bindResources = ->
 View::unbindResources = ->
 	if @isResourcesBound
 
-		@calendar.resourceManager
-			.off 'set', @_setResources
-			.off 'unset', @_unsetResources
-			.off 'reset', @_resetResources
-			.off 'add', @_addResource
-			.off 'remove', @_removeResource
+		@stopListeningTo(@calendar.resourceManager)
 
 		if @settingResources.state() == 'resolved'
 			@unsetResources()
