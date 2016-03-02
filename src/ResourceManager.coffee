@@ -1,7 +1,7 @@
 
 class ResourceManager extends Class
 
-	@mixin Emitter
+	@mixin EmitterMixin
 
 	@resourceGuid: 1
 	@ajaxDefaults:

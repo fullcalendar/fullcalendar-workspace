@@ -7,7 +7,7 @@ A Scroller with additional functionality:
 ###
 class EnhancedScroller extends FC.Scroller
 
-	@mixin Emitter
+	@mixin EmitterMixin
 
 	canvas: null # an optional ScrollerCanvas
 	isScrolling: false
