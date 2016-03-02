@@ -18,7 +18,7 @@ module.exports =
 
 		'ResourceManager.coffee'
 		'ResourceView.coffee'
-		'ResourceGrid.coffee'
+		'ResourceGridMixin.coffee'
 
 		'common/ResourceDayTableMixin.coffee'
 		'common/ResourceDayGrid.coffee'

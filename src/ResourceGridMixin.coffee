@@ -1,5 +1,5 @@
 
-class ResourceGrid extends Grid # TODO: consider making this a mixin
+ResourceGridMixin = # expects a Grid
 
 
 	# whether we should attempt to render selections or resizes that span
@@ -16,7 +16,8 @@ class ResourceGrid extends Grid # TODO: consider making this a mixin
 				$.extend({}, range, { resourceId })
 
 		else if FC.isBgEvent(event)
-			super # returns a single span with no resourceId
+			# super-method. returns a single span with no resourceId
+			Grid::eventRangeToSpans.apply(this, arguments)
 		else
 			[] # non-bg events must have resourceIds, so return empty
 
@@ -26,7 +27,7 @@ class ResourceGrid extends Grid # TODO: consider making this a mixin
 
 
 	fabricateHelperEvent: (eventLocation, seg) ->
-		event = super
+		event = Grid::fabricateHelperEvent.apply(this, arguments) # super-method
 		@view.calendar.setEventResourceId(event, eventLocation.resourceId)
 		event
 
@@ -37,16 +38,16 @@ class ResourceGrid extends Grid # TODO: consider making this a mixin
 		if not allowResourceChange and startSpan.resourceId != endSpan.resourceId
 			return null
 
-		dropLocation = super
+		dropLocation = Grid::computeEventDrop.apply(this, arguments) # super-method
 		if dropLocation
 			dropLocation.resourceId = endSpan.resourceId
 		dropLocation
 
 
 	computeExternalDrop: (span, meta) ->
-		dropLocation = super
+		dropLocation = Grid::computeExternalDrop.apply(this, arguments)
 		if dropLocation
-			dropLocation.resourceId = span.resourceId
+			dropLocation.resourceId = span.resourceId # super-method
 		dropLocation
 
 
@@ -55,7 +56,7 @@ class ResourceGrid extends Grid # TODO: consider making this a mixin
 		if not @allowCrossResource and startSpan.resourceId != endSpan.resourceId
 			return
 
-		resizeLocation = super
+		resizeLocation = Grid::computeEventResize.apply(this, arguments) # super-method
 		if resizeLocation
 			resizeLocation.resourceId = startSpan.resourceId
 		resizeLocation
@@ -70,7 +71,7 @@ class ResourceGrid extends Grid # TODO: consider making this a mixin
 		if not @allowCrossResource and startSpan.resourceId != endSpan.resourceId
 			return
 
-		selectionSpan = super
+		selectionSpan = Grid::computeSelectionSpan.apply(this, arguments) # super-method
 		if selectionSpan
 			selectionSpan.resourceId = startSpan.resourceId
 		selectionSpan
