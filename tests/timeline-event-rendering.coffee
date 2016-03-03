@@ -225,7 +225,7 @@ describe 'timeline event rendering', ->
 										expectEventSlotSpan('event1', '2am', '5am')
 										expectEventIsStartEnd('event1', true, true)
 										eventEl = $('.event1')
-										canvasEl = $('.fc-body .fc-time-area .fc-scrollpane-inner')
+										canvasEl = $('.fc-body .fc-time-area .fc-scroller-canvas')
 										expect(Math.abs(eventEl.outerHeight() - canvasEl.height())).toBeLessThan(3)
 										done()
 
@@ -409,7 +409,7 @@ describe 'timeline event rendering', ->
 									right: eventEl.eq(0).offset().left
 								}
 						else
-							canvasEl = $('.fc-body .fc-time-area .fc-scrollpane-inner > .fc-content')
+							canvasEl = $('.fc-body .fc-time-area .fc-scroller-canvas > .fc-content')
 							canvasLeft = canvasEl.offset().left
 							canvasRight = canvasLeft + canvasEl.outerWidth()
 							if eventEl.length == 1

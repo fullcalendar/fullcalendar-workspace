@@ -78,7 +78,7 @@ describe 'timeline view rerendering', ->
 						callback(getResources())
 					, 100
 			eventAfterAllRender: ->
-				scrollEl = $('.fc-body .fc-time-area .fc-scrollpane > div')
+				scrollEl = $('.fc-body .fc-time-area .fc-scroller')
 				renderCalls++
 				if renderCalls == 1
 					setTimeout ->
