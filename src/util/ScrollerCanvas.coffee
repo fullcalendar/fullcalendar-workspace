@@ -58,21 +58,26 @@ class ScrollerCanvas
 	updateSize: ->
 		gutters = @gutters
 
-		@el.css # is border-box (width includes padding)
-			paddingLeft: gutters.left or ''
-			paddingRight: gutters.right or ''
-			paddingTop: gutters.top or ''
-			paddingBottom: gutters.bottom or ''
-			width:
-				if @width?
-					@width + (gutters.left or 0) + (gutters.right or 0)
-				else
-					''
-			minWidth:
-				if @minWidth?
-					@minWidth + (gutters.left or 0) + (gutters.right or 0)
-				else
-					''
+		@el # is border-box (width includes padding)
+			.toggleClass('fc-gutter-left', Boolean(gutters.left))
+			.toggleClass('fc-gutter-right', Boolean(gutters.right))
+			.toggleClass('fc-gutter-top', Boolean(gutters.top))
+			.toggleClass('fc-gutter-bottom', Boolean(gutters.bottom))
+			.css
+				paddingLeft: gutters.left or ''
+				paddingRight: gutters.right or ''
+				paddingTop: gutters.top or ''
+				paddingBottom: gutters.bottom or ''
+				width:
+					if @width?
+						@width + (gutters.left or 0) + (gutters.right or 0)
+					else
+						''
+				minWidth:
+					if @minWidth?
+						@minWidth + (gutters.left or 0) + (gutters.right or 0)
+					else
+						''
 
 		@bgEl.css
 			left: gutters.left or ''

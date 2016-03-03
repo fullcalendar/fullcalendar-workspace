@@ -25,7 +25,6 @@
 }
 
 .fc-scroller-canvas {
-	overflow: hidden; /* for clipping inner content */
 	position: relative; /* origin for bg */
 	box-sizing: border-box; /* so that padding (for gutter) will be part of height */
 	min-height: 100%;
@@ -38,7 +37,19 @@
 .fc-scroller-canvas > .fc-content {
 	z-index: 2; /* make default? */
 	position: relative; /* origin for inner content */
+	border-style: solid;
+	border-width: 0;
 }
+
+/* for themed, hard to get the border-color, so just forget it (REVISIT) */
+.ui-widget .fc-scroller-canvas > .fc-content {
+	border-color: transparent;
+}
+
+.fc-scroller-canvas.fc-gutter-left > .fc-content { border-left-width: 1px; margin-left: -1px }
+.fc-scroller-canvas.fc-gutter-right > .fc-content { border-right-width: 1px; margin-right: -1px }
+.fc-scroller-canvas.fc-gutter-top > .fc-content { border-top-width: 1px; margin-top: -1px }
+.fc-scroller-canvas.fc-gutter-bottom > .fc-content { border-bottom-width: 1px; margin-bottom: -1px }
 
 
 /* View Structure
@@ -77,9 +88,13 @@
 	z-index: 1;
 }
 
-.fc-timeline .fc-scroller-canvas > .fc-content,
-.fc-timeline .fc-scroller-canvas > .fc-bg {
-	margin: -1px;
+/*
+on all tables that expand to the edges, kill the outer border,
+because the container elements take care of it
+*/
+.fc-timeline .fc-scroller-canvas > div > table,
+.fc-timeline .fc-scroller-canvas > div > div > table {
+	border-style: hidden;
 }
 
 
