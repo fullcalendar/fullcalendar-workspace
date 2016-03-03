@@ -14,8 +14,12 @@
 	position: relative; /* so things like scrollfollowers can attach to this */
 }
 
-.fc-no-scrollbars::-webkit-scrollbar { /* on .fc-scroller */
-	/* supresses rendering of native scrollbars */
+/* supresses rendering of native scrollbars */
+/* on .fc-scroller */
+.fc-no-scrollbars {
+	background: rgba(255, 255, 255, 0); /* hack for dynamic DOM nodes (in Chrome OSX at least) */
+}
+.fc-no-scrollbars::-webkit-scrollbar {
 	width: 0;
 	height: 0;
 }
