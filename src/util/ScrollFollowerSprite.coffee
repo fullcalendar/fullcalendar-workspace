@@ -138,7 +138,7 @@ class ScrollFollowerSprite
 			if not @rect # completely offscreen?
 				@unabsolutize()
 
-			else if (@doAbsolute or @follower.isForcedAbsolute) and not @follower.isForcedRelative
+			else if @doAbsolute and not @follower.isForcedRelative
 				@absolutize()
 				@absoluteEl.css
 					top: @rect.top - @follower.viewportRect.top + @follower.scrollbarWidths.top

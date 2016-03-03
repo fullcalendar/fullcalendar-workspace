@@ -13,7 +13,6 @@ class ScrollFollower
 	containOnNaturalRight: false
 	minTravel: 0 # set by the caller
 
-	isForcedAbsolute: false
 	isForcedRelative: false
 
 
@@ -76,25 +75,19 @@ class ScrollFollower
 			bottom: top + scroller.getClientHeight()
 
 
-	forceAbsolute: ->
-		@isForcedAbsolute = true
-		for sprite in @sprites
-			if not sprite.doAbsolute
-				sprite.assignPosition()
-
-
 	forceRelative: ->
-		@isForcedRelative = true
-		for sprite in @sprites
-			if sprite.doAbsolute
-				sprite.assignPosition()
+		if not @isForcedRelative
+			@isForcedRelative = true
+			for sprite in @sprites
+				if sprite.doAbsolute
+					sprite.assignPosition()
 
 
 	clearForce: ->
-		@isForcedRelative = false
-		@isForcedAbsolute = false
-		for sprite in @sprites
-			sprite.assignPosition()
+		if @isForcedRelative
+			@isForcedRelative = false
+			for sprite in @sprites
+				sprite.assignPosition()
 
 
 	update: ->
