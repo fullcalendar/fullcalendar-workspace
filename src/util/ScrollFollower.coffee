@@ -9,6 +9,9 @@ class ScrollFollower
 	isHFollowing: true
 	isVFollowing: false
 
+	# feature detection to determine if touch device
+	isTouch: 'ontouchstart' of document
+
 	containOnNaturalLeft: false
 	containOnNaturalRight: false
 	minTravel: 0 # set by the caller
@@ -20,7 +23,12 @@ class ScrollFollower
 		@scroller = scroller
 		@sprites = []
 
-		scroller.on 'scroll', =>
+		# touch devices scroll too quick to make absolute ever look good
+		if @isTouch
+			@isForcedRelative = true
+
+		# touch devices should only updated after the scroll is over
+		scroller.on (if @isTouch then 'scrollEnd' else 'scroll'), =>
 			@handleScroll()
 
 
@@ -84,7 +92,7 @@ class ScrollFollower
 
 
 	clearForce: ->
-		if @isForcedRelative
+		if @isForcedRelative and not @isTouch # don't allow touch to ever NOT be relative
 			@isForcedRelative = false
 			for sprite in @sprites
 				sprite.assignPosition()
