@@ -11,7 +11,6 @@ class ScrollFollower
 
 	containOnNaturalLeft: false
 	containOnNaturalRight: false
-	shouldRequeryDimensions: false
 	minTravel: 0 # set by the caller
 
 	isForcedAbsolute: false
@@ -22,20 +21,8 @@ class ScrollFollower
 		@scroller = scroller
 		@sprites = []
 
-		scroller.on 'scrollStart', =>
-			if @shouldRequeryDimensions
-				@cacheDimensions()
-
 		scroller.on 'scroll', =>
-			left = scroller.getScrollFromLeft()
-			top = scroller.getScrollTop()
-			@viewportRect =
-				left: left
-				right: left + scroller.getClientWidth()
-				top: top
-				bottom: top + scroller.getClientHeight()
-
-			@updatePositions()
+			@handleScroll()
 
 
 	# TODO: have a destroy method.
@@ -60,25 +47,33 @@ class ScrollFollower
 		@sprites = []
 
 
+	handleScroll: ->
+		@updateViewport()
+		@updatePositions()
+
+
 	cacheDimensions: ->
+		@updateViewport()
+
+		@scrollbarWidths = @scroller.getScrollbarWidths()
+		@contentOffset = @scroller.canvas.el.offset()
+
+		for sprite in @sprites
+			sprite.cacheDimensions()
+		return
+
+
+	updateViewport: ->
 		scroller = @scroller
 		left = scroller.getScrollFromLeft()
 		top = scroller.getScrollTop()
 
 		# TODO: use getViewportRect() for getting this rect
-		# TODO: make this more DRY. also in constructor. updateViewportRect
 		@viewportRect =
 			left: left
 			right: left + scroller.getClientWidth()
 			top: top
 			bottom: top + scroller.getClientHeight()
-
-		@scrollbarWidths = scroller.getScrollbarWidths()
-		@contentOffset = scroller.canvas.el.offset()
-
-		for sprite in @sprites
-			sprite.cacheDimensions()
-		return
 
 
 	forceAbsolute: ->
