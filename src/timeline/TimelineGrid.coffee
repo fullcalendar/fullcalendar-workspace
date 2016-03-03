@@ -293,14 +293,14 @@ class TimelineGrid extends Grid
 
 	renderSkeleton: ->
 
-		@headScroller = new MaskedScroller
-			overflowX: 'masked'
+		@headScroller = new ClippedScroller
+			overflowX: 'clipped-scroll'
 			overflowY: 'hidden'
 		@headScroller.canvas = new ScrollerCanvas()
 		@headScroller.render()
 		@headEl.append(@headScroller.el)
 
-		@bodyScroller = new MaskedScroller()
+		@bodyScroller = new ClippedScroller()
 		@bodyScroller.canvas = new ScrollerCanvas()
 		@bodyScroller.render()
 		@el.append(@bodyScroller.el)

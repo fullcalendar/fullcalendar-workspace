@@ -9,7 +9,7 @@
 /* Scroller
 --------------------------------------------------------------------------------------------------*/
 
-.fc-scroller-mask {
+.fc-scroller-clip {
 	overflow: hidden; /* for clipping scrollbars */
 	position: relative; /* so things like scrollfollowers can attach to this */
 }

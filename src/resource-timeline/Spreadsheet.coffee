@@ -34,16 +34,16 @@ class Spreadsheet
 
 	renderSkeleton: ->
 
-		@headScroller = new MaskedScroller
-			overflowX: 'masked'
+		@headScroller = new ClippedScroller
+			overflowX: 'clipped-scroll'
 			overflowY: 'hidden'
 		@headScroller.canvas = new ScrollerCanvas()
 		@headScroller.render()
 		@headScroller.canvas.contentEl.html(@renderHeadHtml())
 		@headEl.append(@headScroller.el)
 
-		@bodyScroller = new MaskedScroller
-			overflowY: 'masked'
+		@bodyScroller = new ClippedScroller
+			overflowY: 'clipped-scroll'
 		@bodyScroller.canvas = new ScrollerCanvas()
 		@bodyScroller.render()
 		@bodyScroller.canvas.contentEl.html('<table>' + @colGroupHtml + '<tbody/></table>') # colGroupHtml hack

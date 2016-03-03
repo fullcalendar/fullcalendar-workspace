@@ -3,31 +3,31 @@
 A Scroller, but with a wrapping div that allows "clipping" away of native scrollbars,
 giving the appearance that there are no scrollbars.
 ###
-class MaskedScroller extends EnhancedScroller
+class ClippedScroller extends EnhancedScroller
 
-	isHScrollbarsMasked: false
-	isVScrollbarsMasked: false
+	isHScrollbarsClipped: false
+	isVScrollbarsClipped: false
 
 
 	###
-	Received overflows can be set to 'masked', meaning scrollbars shouldn't be visible
+	Received overflows can be set to 'clipped', meaning scrollbars shouldn't be visible
 	to the user, but the area should still scroll.
 	###
 	constructor: ->
 		super
 
-		if @overflowX == 'masked'
+		if @overflowX == 'clipped-scroll'
 			@overflowX = 'scroll'
-			@isHScrollbarsMasked = true
+			@isHScrollbarsClipped = true
 
-		if @overflowY == 'masked'
+		if @overflowY == 'clipped-scroll'
 			@overflowY = 'scroll'
-			@isVScrollbarsMasked = true
+			@isVScrollbarsClipped = true
 
 
 	renderEl: ->
 		scrollEl = super
-		$('<div class="fc-scroller-mask" />').append(scrollEl) # return value
+		$('<div class="fc-scroller-clip" />').append(scrollEl) # return value
 
 
 	updateSize: ->
@@ -37,10 +37,10 @@ class MaskedScroller extends EnhancedScroller
 
 		# give the inner scrolling div negative margins so that its scrollbars
 		# are nudged outside of the bounding box of the wrapper, which is overflow:hidden
-		if @isHScrollbarsMasked
+		if @isHScrollbarsClipped
 			cssProps.marginTop = -scrollbarWidths.top
 			cssProps.marginBottom = -scrollbarWidths.bottom
-		if @isVScrollbarsMasked
+		if @isVScrollbarsClipped
 			cssProps.marginLeft = -scrollbarWidths.left
 			cssProps.marginRight = -scrollbarWidths.right
 
@@ -50,8 +50,8 @@ class MaskedScroller extends EnhancedScroller
 		# display the floating scrollbars. attach a className to force-hide them.
 		scrollEl.toggleClass(
 			'fc-no-scrollbars'
-			(@isHScrollbarsMasked or @overflowX == 'hidden') and # should never show?
-			(@isVScrollbarsMasked or @overflowY == 'hidden') and # should never show?
+			(@isHScrollbarsClipped or @overflowX == 'hidden') and # should never show?
+			(@isVScrollbarsClipped or @overflowY == 'hidden') and # should never show?
 			not ( # doesn't have any scrollbar mass
 				scrollbarWidths.top or
 				scrollbarWidths.bottom or
@@ -62,16 +62,16 @@ class MaskedScroller extends EnhancedScroller
 
 
 	###
-	Accounts for 'masked' scrollbars
+	Accounts for 'clipped' scrollbars
 	###
 	getScrollbarWidths: ->
 		widths = getScrollbarWidths(@scrollEl)
 
-		if @isHScrollbarsMasked
+		if @isHScrollbarsClipped
 			widths.top = 0
 			widths.bottom = 0
 
-		if @isVScrollbarsMasked
+		if @isVScrollbarsClipped
 			widths.left = 0
 			widths.right = 0
 
