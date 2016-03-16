@@ -910,7 +910,8 @@ class TimelineGrid extends Grid
 
 
 	renderHelperSegsInContainers: (pairs, sourceSeg) ->
-		helperNodes = []
+		helperNodes = [] # .fc-event-container
+		segNodes = [] # .fc-event
 
 		for [ containerObj, segs ] in pairs
 			for seg in segs
@@ -937,11 +938,14 @@ class TimelineGrid extends Grid
 
 			for seg in segs
 				helperContainerEl.append(seg.el)
+				segNodes.push(seg.el[0])
 
 		if (@helperEls)
 			@helperEls = @helperEls.add($(helperNodes))
 		else
 			@helperEls = $(helperNodes)
+
+		$(segNodes) # return value
 
 
 	unrenderHelper: ->
@@ -953,7 +957,7 @@ class TimelineGrid extends Grid
 	# Renders a visual indication of an event being resized
 	renderEventResize: (resizeLocation, seg) ->
 		@renderHighlight(@eventToSpan(resizeLocation))
-		@renderEventLocationHelper(resizeLocation, seg)
+		@renderEventLocationHelper(resizeLocation, seg) # return value. rendered seg els
 
 
 	# Unrenders a visual indication of an event being resized
@@ -1011,8 +1015,7 @@ class TimelineGrid extends Grid
 	#  should be the edges when isTimeScale.
 	renderDrag: (dropLocation, seg) ->
 		if seg
-			@renderEventLocationHelper(dropLocation, seg)
-			@helperEls # return value. rendered helper els
+			@renderEventLocationHelper(dropLocation, seg) # return value. rendered seg els
 		else
 			@renderHighlight(@eventToSpan(dropLocation))
 			null # signals no helper els rendered
