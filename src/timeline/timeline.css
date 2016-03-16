@@ -437,8 +437,8 @@ tr.fc-collapsed > td > div {
 	padding: 0 1px;
 }
 
-.fc-timeline-event .fc-resizer:after {
-	width: 1px; /* activate! */
+.fc-timeline-event.fc-selected .fc-bg {
+	display: none; /* hide semi-white background, to appear darker */
 }
 
 

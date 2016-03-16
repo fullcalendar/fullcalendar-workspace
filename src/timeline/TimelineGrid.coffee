@@ -1012,11 +1012,10 @@ class TimelineGrid extends Grid
 	renderDrag: (dropLocation, seg) ->
 		if seg
 			@renderEventLocationHelper(dropLocation, seg)
-			@applyDragOpacity(@helperEls)
-			true
+			@helperEls # return value. rendered helper els
 		else
 			@renderHighlight(@eventToSpan(dropLocation))
-			false
+			null # signals no helper els rendered
 
 
 	unrenderDrag: ->
