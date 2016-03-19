@@ -158,10 +158,10 @@ class Spreadsheet
 				colWidths[i] = width
 				@applyColWidths()
 
-			dragStop: =>
+			dragEnd: =>
 				resizerEl.removeClass('fc-active')
 
-		dragListener.mousedown(ev)
+		dragListener.startInteraction(ev)
 
 
 	applyColWidths: ->

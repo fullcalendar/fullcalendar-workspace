@@ -180,10 +180,10 @@ class ResourceTimelineView extends TimelineView
 				@positionDivider(width)
 				@updateWidth() # TODO: only do this at the very end?
 
-			dragStop: =>
+			dragEnd: =>
 				@dividerEls.removeClass('fc-active')
 
-		dragListener.mousedown(ev)
+		dragListener.startInteraction(ev)
 
 
 	getNaturalDividerWidth: ->
