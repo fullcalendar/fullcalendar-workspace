@@ -17,11 +17,16 @@ class ScrollJoiner
 
 
 	initScroller: (scroller) ->
-		scroller.on 'scroll', =>
 
+		# when the user scrolls via touch or mousewheel, we know for sure the target
+		# scroller should be the master. capture the various x-browser events that fire.
+		scroller.scrollEl.on 'touchmove wheel mousewheel DomMouseScroll MozMousePixelScroll', =>
+			@assignMasterScroller(scroller)
+			return
+
+		scroller.on 'scroll', =>
 			@requestMasterScroller(scroller)
 			if scroller == @masterScroller
-
 				for otherScroller in @scrollers
 					if otherScroller != scroller
 						switch @axis
