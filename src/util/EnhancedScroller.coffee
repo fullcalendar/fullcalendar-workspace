@@ -15,6 +15,9 @@ class EnhancedScroller extends FC.Scroller
 	isTouching: false # user currently has finger down?
 	isMoving: false # whether a scroll event has happened recently
 
+	isTouchScrollEnabled: true
+	preventTouchScrollHandler: null
+
 
 	constructor: ->
 		super
@@ -32,6 +35,35 @@ class EnhancedScroller extends FC.Scroller
 	destroy: ->
 		super
 		@unbindHandlers()
+
+
+	# Touch scroll prevention
+	# ----------------------------------------------------------------------------------------------
+
+
+	disableTouchScroll: ->
+		@isTouchScrollEnabled = false
+		@bindPreventTouchScroll() # will be unbound in enableTouchScroll or reportTouchEnd
+
+
+	enableTouchScroll: ->
+		@isTouchScrollEnabled = true
+
+		# only immediately unbind if a touch event is NOT in progress.
+		# otherwise, it will be handled by reportTouchEnd.
+		if not @isTouching
+			@unbindPreventTouchScroll()
+
+
+	bindPreventTouchScroll: ->
+		if not @preventTouchScrollHandler
+			@scrollEl.on('touchmove', @preventTouchScrollHandler = FC.preventDefault)
+
+
+	unbindPreventTouchScroll: ->
+		if @preventTouchScrollHandler
+			@scrollEl.off('touchmove', @preventTouchScrollHandler)
+			@preventTouchScrollHandler = null
 
 
 	# Handlers
@@ -97,6 +129,11 @@ class EnhancedScroller extends FC.Scroller
 	reportTouchEnd: ->
 		if @isTouching
 			@isTouching = false
+
+			# if touch scrolling was re-enabled during a recent touch scroll
+			# then unbind the handlers that are preventing it from happening.
+			if @isTouchScrollEnabled
+				@unbindPreventTouchScroll() # won't do anything if not bound
 
 			# if the user ended their touch, and the scroll area wasn't moving,
 			# we consider this to be the end of the scroll.
