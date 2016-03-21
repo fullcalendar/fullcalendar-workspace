@@ -7,10 +7,6 @@ class ScrollJoiner
 
 
 	constructor: (@axis, @scrollers) ->
-		# will call assignMasterScroller immediately (true argument)
-		# but won't process subsequent calls until time has passed
-		@requestMasterScroller = debounce(@assignMasterScroller, 100, true)
-
 		for scroller in @scrollers
 			@initScroller(scroller)
 		return
@@ -18,29 +14,45 @@ class ScrollJoiner
 
 	initScroller: (scroller) ->
 
-		# when the user scrolls via touch or mousewheel, we know for sure the target
+		# when the user scrolls via mousewheel, we know for sure the target
 		# scroller should be the master. capture the various x-browser events that fire.
-		scroller.scrollEl.on 'touchmove wheel mousewheel DomMouseScroll MozMousePixelScroll', =>
+		scroller.scrollEl.on 'wheel mousewheel DomMouseScroll MozMousePixelScroll', =>
 			@assignMasterScroller(scroller)
 			return
 
-		scroller.on 'scroll', =>
-			@requestMasterScroller(scroller)
-			if scroller == @masterScroller
-				for otherScroller in @scrollers
-					if otherScroller != scroller
-						switch @axis
-							when 'horizontal'
-								otherScroller.setNativeScrollLeft(scroller.getNativeScrollLeft())
-							when 'vertical'
-								otherScroller.setScrollTop(scroller.getScrollTop())
-			return
+		scroller
+			.on 'scrollStart', =>
+				if not @masterScroller
+					@assignMasterScroller(scroller)
+			.on 'scroll', =>
+				if scroller == @masterScroller
+					for otherScroller in @scrollers
+						if otherScroller != scroller
+							switch @axis
+								when 'horizontal'
+									otherScroller.setNativeScrollLeft(scroller.getNativeScrollLeft())
+								when 'vertical'
+									otherScroller.setScrollTop(scroller.getScrollTop())
+			.on 'scrollEnd', =>
+				if scroller == @masterScroller
+					@unassignMasterScroller()
 
 
-	requestMasterScroller: null # created in the constructor
+	assignMasterScroller: (scroller) ->
+		@unassignMasterScroller()
+		@masterScroller = scroller
+		for otherScroller in @scrollers
+			if otherScroller != scroller
+				otherScroller.disableTouchScroll()
+		return
 
 
-	assignMasterScroller: (@masterScroller) ->
+	unassignMasterScroller: ->
+		if @masterScroller
+			for otherScroller in @scrollers
+				otherScroller.enableTouchScroll()
+			@masterScroller = null
+		return
 
 
 	update: ->
