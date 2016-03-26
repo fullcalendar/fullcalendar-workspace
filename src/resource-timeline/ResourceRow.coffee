@@ -109,5 +109,8 @@ class ResourceRow extends EventRow
 		html = ''
 		for i in [0...@depth] by 1
 			html += '<span class="fc-icon"/>'
-		html += '<span class="fc-icon fc-expander-space"/>'
+		html +=
+			'<span class="fc-expander-space">' +
+				'<span class="fc-icon"></span>' +
+			'</span>'
 		html

@@ -13,7 +13,11 @@ class HRowGroup extends RowGroup
 		contentEl = @renderGroupContentEl()
 
 		# add an expander icon. binding handlers and updating are done by RowParent
-		contentEl.prepend('<span class="fc-icon fc-expander" />')
+		contentEl.prepend(
+			'<span class="fc-expander">' +
+				'<span class="fc-icon"></span>' +
+			'</span>'
+		)
 
 		$('<td class="fc-divider" />')
 			.attr('colspan', @view.colSpecs.length) # span across all columns

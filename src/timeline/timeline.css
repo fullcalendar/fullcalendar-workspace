@@ -248,7 +248,7 @@ tr.fc-collapsed > td > div {
 
 .fc-resource-area .fc-expander {
 	cursor: pointer;
-	color: #666;
+	color: #666; /* for the icon within */
 }
 
 

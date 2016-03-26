@@ -379,7 +379,7 @@ class RowParent
 	Changes the expander icon to the "expanded" state
 	###
 	indicateExpanded: ->
-		@trs.find('.fc-expander')
+		@trs.find('.fc-expander .fc-icon')
 			.removeClass(@getCollapsedIcon())
 			.addClass(@getExpandedIcon())
 
@@ -387,7 +387,7 @@ class RowParent
 	Changes the expander icon to the "collapsed" state
 	###
 	indicateCollapsed: ->
-		@trs.find('.fc-expander')
+		@trs.find('.fc-expander .fc-icon')
 			.removeClass(@getExpandedIcon())
 			.addClass(@getCollapsedIcon())
 
@@ -402,8 +402,9 @@ class RowParent
 	disableExpanding: ->
 		@trs.find('.fc-expander-space')
 			.removeClass('fc-expander')
-			.removeClass(@getExpandedIcon())
-			.removeClass(@getCollapsedIcon())
+			.find('.fc-icon')
+				.removeClass(@getExpandedIcon())
+				.removeClass(@getCollapsedIcon())
 
 
 	getExpandedIcon: ->

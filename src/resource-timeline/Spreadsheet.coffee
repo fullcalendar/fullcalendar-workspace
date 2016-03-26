@@ -104,7 +104,9 @@ class Spreadsheet
 					'<div>' +
 						'<div class="fc-cell-content">' +
 							(if o.isMain
-								'<div class="fc-icon fc-expander-space" />'
+								'<span class="fc-expander-space">' +
+									'<span class="fc-icon"></span>' +
+								'</span>'
 							else
 								'') +
 							'<span class="fc-cell-text">' +
