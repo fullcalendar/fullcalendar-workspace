@@ -12,7 +12,7 @@
   "dependencies": {
     "jquery": ">=1.8.0",
     "moment": ">=2.5.0",
-    "fullcalendar": ">=2.6.1"
+    "fullcalendar": "2.7.0-beta"
   },
   "devDependencies": {
     "jquery-ui": ">=1.11.1",
