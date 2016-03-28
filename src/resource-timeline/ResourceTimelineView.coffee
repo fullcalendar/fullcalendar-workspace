@@ -319,7 +319,7 @@ class ResourceTimelineView extends TimelineView
 		if @cellFollower
 			@cellFollower.clearSprites() # the closest thing to a destroy
 
-		@cellFollower = new ScrollFollower(@resourceGrid.bodyScroller)
+		@cellFollower = new ScrollFollower(@resourceGrid.bodyScroller, @calendar.isTouch)
 		@cellFollower.isHFollowing = false
 		@cellFollower.isVFollowing = true
 

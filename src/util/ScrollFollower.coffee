@@ -13,19 +13,21 @@ class ScrollFollower
 	containOnNaturalRight: false
 	minTravel: 0 # set by the caller
 
+	# TODO: improve
+	isTouch: false
 	isForcedRelative: false
 
 
-	constructor: (scroller) ->
+	constructor: (scroller, @isTouch) ->
 		@scroller = scroller
 		@sprites = []
 
 		# touch devices scroll too quick to make absolute ever look good
-		if FC.isTouchEnabled
+		if @isTouch
 			@isForcedRelative = true
 
 		# touch devices should only updated after the scroll is over
-		scroller.on (if FC.isTouchEnabled then 'scrollEnd' else 'scroll'), =>
+		scroller.on (if @isTouch then 'scrollEnd' else 'scroll'), =>
 			@handleScroll()
 
 
@@ -89,7 +91,7 @@ class ScrollFollower
 
 
 	clearForce: ->
-		if @isForcedRelative and not FC.isTouchEnabled # don't allow touch to ever NOT be relative
+		if @isForcedRelative and not @isTouch # don't allow touch to ever NOT be relative
 			@isForcedRelative = false
 			for sprite in @sprites
 				sprite.assignPosition()
