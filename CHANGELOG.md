@@ -1,8 +1,8 @@
 
-v1.3.0-beta (2016-03-26)
-------------------------
+v1.3.0 (2016-04-23)
+-------------------
 
-touch support introduced in core v2.7.0-beta
+touch support introduced in core v2.7.0
 
 
 v1.2.1 (2016-02-17)
