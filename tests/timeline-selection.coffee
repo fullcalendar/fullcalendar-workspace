@@ -163,3 +163,26 @@ describe 'timeline selection', ->
 						expect(typeof jsEvent).toBe('object')
 						expect(typeof view).toBe('object')
 						expect(resource.id).toBe('a')
+
+	it 'reports selection on a resource via touch', (done) ->
+		selectCalled = false
+		initCalendar
+			isTouch: true
+			longPressDelay: 100
+			defaultView: 'timelineDay'
+			eventAfterAllRender: ->
+				$.simulateByPoint 'drag',
+					isTouch: true
+					delay: 200
+					point: getResourceTimelinePoint('b', '2015-11-28T04:00:00')
+					end: getResourceTimelinePoint('b', '2015-11-28T07:00:00')
+					callback: ->
+						expect(selectCalled).toBe(true)
+						done()
+			select: (start, end, jsEvent, view, resource) ->
+				selectCalled = true
+				expect(start).toEqualMoment('2015-11-28T04:00:00')
+				expect(end).toEqualMoment('2015-11-28T07:30:00')
+				expect(typeof jsEvent).toBe('object')
+				expect(typeof view).toBe('object')
+				expect(resource.id).toBe('b')

@@ -112,6 +112,34 @@ describe 'timeline event resizing', ->
 									resource = currentCalendar.getEventResource(event)
 									expect(resource.id).toBe('b')
 
+		it 'works with touch', (done) ->
+			initCalendar
+				isTouch: true
+				longPressDelay: 100
+				defaultView: 'timelineDay'
+				events: [
+					{ title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
+				]
+				eventAfterAllRender: oneCall ->
+					$('.event1').simulate 'drag',
+						isTouch: true
+						delay: 200
+						callback: ->
+							$('.event1 .fc-end-resizer').simulate 'drag',
+								# hack to make resize start within the bounds of the event
+								localPoint: { top: '50%', left: (if isRTL then '100%' else '0%') }
+								isTouch: true
+								end: getResourceTimelinePoint('b', '2015-11-28T07:00:00')
+								callback: ->
+									expect(resizeSpy).toHaveBeenCalled()
+									done()
+				eventResize:
+					resizeSpy = spyCall (event) ->
+						expect(event.start).toEqualMoment('2015-11-28T04:00:00')
+						expect(event.end).toEqualMoment('2015-11-28T07:30:00')
+						resource = currentCalendar.getEventResource(event)
+						expect(resource.id).toBe('b')
+
 		describe 'when day scale', ->
 			pushOptions
 				defaultView: 'timelineMonth'
