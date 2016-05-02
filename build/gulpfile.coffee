@@ -1,6 +1,6 @@
 del = require('del')
 path = require('path')
-karmaServer = require('karma').server
+KarmaServer = require('karma').Server
 _ = require('underscore')
 moment = require('moment')
 gulp = require('gulp')
@@ -200,7 +200,7 @@ gulp.task 'transferMisc', ->
 
 
 gulp.task 'transferDemos', ->
-	htmlFileFilter = filter('*.html')
+	htmlFileFilter = filter('*.html', { restore: true })
 
 	gulp.src('**/*', {
 			cwd: 'demos/'
@@ -208,7 +208,7 @@ gulp.task 'transferDemos', ->
 		})
 		.pipe htmlFileFilter
 		.pipe demoPathReplace
-		.pipe htmlFileFilter.restore()
+		.pipe htmlFileFilter.restore
 		.pipe gulp.dest(getTransferDir() + 'demos/')
 
 
@@ -241,31 +241,38 @@ KARMA_CONFIG_FILE = path.join(__dirname, 'karma.conf.coffee') # was getting conf
 ###
 Runs a server, outputs a URL to visit
 ###
-gulp.task 'karma', ->
-	karmaServer.start
-		configFile: KARMA_CONFIG_FILE
-		singleRun: false
-		autoWatch: true
+gulp.task 'karma', (done) ->
+	server = new KarmaServer
+			configFile: KARMA_CONFIG_FILE
+			singleRun: false
+			autoWatch: true
+		, done
+	server.start()
+
 
 ###
 Runs headlessly and continuously, watching files
 ###
-gulp.task 'karmaHeadless', ->
-	karmaServer.start
-		configFile: KARMA_CONFIG_FILE
-		browsers: [ 'PhantomJS_custom' ]
-		singleRun: false
-		autoWatch: true
+gulp.task 'karmaHeadless', (done) ->
+	server = new KarmaServer
+			configFile: KARMA_CONFIG_FILE
+			browsers: [ 'PhantomJS_custom' ]
+			singleRun: false
+			autoWatch: true
+		, done
+	server.start()
 
 ###
 Runs headlessly once, then exits
 ###
-gulp.task 'karmaSingle', ->
-	karmaServer.start
-		configFile: KARMA_CONFIG_FILE
-		browsers: [ 'PhantomJS_custom' ]
-		singleRun: true
-		autoWatch: false
+gulp.task 'karmaSingle', (done) ->
+	server = new KarmaServer
+			configFile: KARMA_CONFIG_FILE
+			browsers: [ 'PhantomJS_custom' ]
+			singleRun: true
+			autoWatch: false
+		, done
+	server.start()
 
 
 # Release
