@@ -1,4 +1,11 @@
 
+v1.3.1 (2016-05-01)
+-------------------
+
+- events offset by minTime in timelineWeek view (#151)
+- icons for prev/next not working in MS Edge
+
+
 v1.3.0 (2016-04-23)
 -------------------
 
