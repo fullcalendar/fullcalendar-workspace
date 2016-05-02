@@ -241,9 +241,10 @@ tr.fc-collapsed > td > div {
 }
 
 .fc-resource-area .fc-icon { /* the expander and spacers before the expander */
+	width: 1em; /* ensure constant width, esp for empty icons */
 	font-size: .9em;
 	vertical-align: middle;
-	margin-top: -2%;
+	margin-top: -1%;
 }
 
 .fc-resource-area .fc-expander {
