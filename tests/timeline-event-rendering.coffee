@@ -318,6 +318,19 @@ describe 'timeline event rendering', ->
 										expectEventIsStartEnd('event1', true, true)
 										done()
 
+							# https://github.com/fullcalendar/fullcalendar-scheduler/issues/151
+							it 'renders correctly when minTime/maxTime', (done) ->
+								initCalendar
+									minTime: '09:00'
+									maxTime: '17:00'
+									events: [
+										makeEvent('event1', '2015-10-16', '2015-10-18')
+									]
+									eventAfterAllRender: ->
+										expectEventSlotSpan('event1', 'Fr 16', 'Sa 17')
+										expectEventIsStartEnd('event1', true, true)
+										done()
+
 						describe 'when week scale', ->
 
 							pushOptions

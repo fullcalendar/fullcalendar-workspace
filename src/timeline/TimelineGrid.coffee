@@ -151,10 +151,15 @@ class TimelineGrid extends Grid
 
 
 	rangeUpdated: ->
-		# makes sure zone is stripped, and applies minTime/maxTime
+		# makes sure zone is stripped
+		@start = @normalizeGridDate(@start)
+		@end = @normalizeGridDate(@end)
+
+		# apply minTime/maxTime
 		# TODO: move towards .time(), but didn't play well with negatives
-		@start = @normalizeGridDate(@start).add(@minTime)
-		@end = @normalizeGridDate(@end).subtract(1, 'day').add(@maxTime)
+		if @isTimeScale
+			@start.add(@minTime)
+			@end.subtract(1, 'day').add(@maxTime)
 
 		slotDates = []
 		date = @start.clone()
