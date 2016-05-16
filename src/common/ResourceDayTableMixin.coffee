@@ -168,7 +168,11 @@ ResourceDayTableMixin =
 
 	# given a resource and an optional date
 	renderHeadResourceCellHtml: (resource, date, colspan) ->
-		'<th class="fc-resource-cell"' +
+		'<th class="fc-resource-cell' +
+			(if resource.cellClassName
+				' ' + resource.cellClassName + '"'
+			else
+				'"') +
 			' data-resource-id="' + resource.id + '"' +
 			(if date
 				' data-date="' + date.format('YYYY-MM-DD') + '"'
