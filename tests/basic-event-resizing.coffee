@@ -28,6 +28,7 @@ describe 'basic-view event resizing', ->
 					if afterRenderCalled
 						return
 					afterRenderCalled = true
+					$('.event1').simulate('mouseover') # resizer only shows on hover
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
 							end: getDayGridDayEls('2015-11-24').eq(0)
@@ -57,6 +58,7 @@ describe 'basic-view event resizing', ->
 					if afterRenderCalled
 						return
 					afterRenderCalled = true
+					$('.event1').simulate('mouseover') # resizer only shows on hover
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
 							end: getDayGridDayEls('2015-11-30').eq(0)
@@ -82,6 +84,7 @@ describe 'basic-view event resizing', ->
 						return
 					afterRenderCalled = true
 					bMonRect = getTrailingBoundingRect(getDayGridDayEls('2015-11-30'))
+					$('.event1').simulate('mouseover') # resizer only shows on hover
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
 							end: getRectCenter(bMonRect)
@@ -108,6 +111,7 @@ describe 'basic-view event resizing', ->
 						return
 					afterRenderCalled = true
 					bMonRect = getTrailingBoundingRect(getDayGridDayEls('2015-11-30'))
+					$('.event1').simulate('mouseover') # resizer only shows on hover
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
 							end: getRectCenter(bMonRect)
@@ -133,6 +137,7 @@ describe 'basic-view event resizing', ->
 						return
 					afterRenderCalled = true
 					bMonRect = getTrailingBoundingRect(getDayGridDayEls('2015-11-30'))
+					$('.event1').simulate('mouseover') # resizer only shows on hover
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
 							end: getRectCenter(bMonRect)

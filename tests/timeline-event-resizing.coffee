@@ -35,6 +35,7 @@ describe 'timeline event resizing', ->
 									{ title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00' }
 								]
 								eventAfterAllRender: oneCall ->
+									$('.event1').simulate('mouseover') # resizer only shows on hover
 									$('.event1 .fc-end-resizer')
 										.simulate 'drag',
 											end: getTimelineSlatEl('2015-11-28T07:00:00')
@@ -56,6 +57,7 @@ describe 'timeline event resizing', ->
 									{ title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
 								]
 								eventAfterAllRender: oneCall ->
+									$('.event1').simulate('mouseover') # resizer only shows on hover
 									$('.event1 .fc-end-resizer')
 										.simulate 'drag',
 											end: getResourceTimelinePoint('b', '2015-11-28T07:00:00')
@@ -75,6 +77,7 @@ describe 'timeline event resizing', ->
 									{ title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
 								]
 								eventAfterAllRender: oneCall ->
+									$('.event1').simulate('mouseover') # resizer only shows on hover
 									$('.event1 .fc-end-resizer')
 										.simulate 'drag',
 											end: getResourceTimelinePoint('a', '2015-11-28T07:00:00')
@@ -99,6 +102,7 @@ describe 'timeline event resizing', ->
 								{ title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
 							]
 							eventAfterAllRender: oneCall ->
+								$('.event1').simulate('mouseover') # resizer only shows on hover
 								$('.event1 .fc-end-resizer')
 									.simulate 'drag',
 										end: getResourceTimelinePoint('b', '2015-11-28T07:30:00')
@@ -125,6 +129,7 @@ describe 'timeline event resizing', ->
 						isTouch: true
 						delay: 200
 						callback: ->
+							$('.event1').simulate('mouseover') # resizer only shows on hover
 							$('.event1 .fc-end-resizer').simulate 'drag',
 								# hack to make resize start within the bounds of the event
 								localPoint: { top: '50%', left: (if isRTL then '100%' else '0%') }
@@ -151,6 +156,7 @@ describe 'timeline event resizing', ->
 						{ title: 'event1', className: 'event1', start: '2015-11-03', resourceId: 'a' }
 					]
 					eventAfterAllRender: oneCall ->
+						$('.event1').simulate('mouseover') # resizer only shows on hover
 						$('.event1 .fc-end-resizer')
 							.simulate 'drag',
 								end: getResourceTimelinePoint('a', '2015-11-05')
@@ -175,6 +181,7 @@ describe 'timeline event resizing', ->
 						{ title: 'event1', className: 'event1', start: '2015-01-18', end: '2015-01-25', resourceId: 'a' }
 					]
 					eventAfterAllRender: oneCall ->
+						$('.event1').simulate('mouseover') # resizer only shows on hover
 						$('.event1 .fc-end-resizer')
 							.simulate 'drag',
 								end: getResourceTimelinePoint('a', '2015-02-08')

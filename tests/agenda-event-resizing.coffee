@@ -24,6 +24,7 @@ describe 'agenda-view event resizing', ->
 					{ title: 'event1', className: 'event1', start: '2015-11-23T02:00:00', end: '2015-11-23T03:00:00' }
 				]
 				eventAfterAllRender: oneCall ->
+					$('.event1').simulate('mouseover') # resizer only shows on hover
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
 							end: getTimeGridPoint('2015-11-23T04:00:00')
@@ -48,6 +49,7 @@ describe 'agenda-view event resizing', ->
 					{ title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
 				]
 				eventAfterAllRender: oneCall -> # avoid second call after event rerender
+					$('.event1').simulate('mouseover') # resizer only shows on hover
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
 							end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00')
@@ -67,6 +69,7 @@ describe 'agenda-view event resizing', ->
 					{ title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
 				]
 				eventAfterAllRender: oneCall ->
+					$('.event1').simulate('mouseover') # resizer only shows on hover
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
 							end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00')
@@ -86,6 +89,7 @@ describe 'agenda-view event resizing', ->
 					{ title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' }
 				]
 				eventAfterAllRender: oneCall ->
+					$('.event1').simulate('mouseover') # resizer only shows on hover
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
 							end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00')
@@ -106,6 +110,7 @@ describe 'agenda-view event resizing', ->
 					{ title: 'event1', className: 'event1', start: '2015-11-30T02:00:00', end: '2015-11-30T03:00:00', resourceId: 'b' }
 				]
 				eventAfterAllRender: oneCall ->
+					$('.event1').simulate('mouseover') # resizer only shows on hover
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
 							end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00')
@@ -125,6 +130,7 @@ describe 'agenda-view event resizing', ->
 					{ title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' }
 				]
 				eventAfterAllRender: oneCall ->
+					$('.event1').simulate('mouseover') # resizer only shows on hover
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
 							end: getResourceTimeGridPoint('a', '2015-11-30T04:00:00')
@@ -144,6 +150,7 @@ describe 'agenda-view event resizing', ->
 					{ title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' }
 				]
 				eventAfterAllRender: oneCall ->
+					$('.event1').simulate('mouseover') # resizer only shows on hover
 					$('.event1 .fc-resizer')
 						.simulate 'drag',
 							end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00')
