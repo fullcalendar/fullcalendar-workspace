@@ -76,7 +76,7 @@ class ResourceManager extends Class
 
 		promise or= deferred.promise()
 
-		if not promise.state() == 'pending'
+		if promise.state() == 'pending'
 			@calendar.pushLoading()
 			promise.always ->
 				@calendar.popLoading()
