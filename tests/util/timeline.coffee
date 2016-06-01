@@ -46,3 +46,9 @@ getTimelineRowEl = (resourceId) ->
 getTimelineSlatEl = (date) ->
 	date = $.fullCalendar.moment.parseZone(date)
 	$('.fc-body .fc-slats td[data-date="' + date.format() + '"]')
+
+
+getTimelineResourceIds = ->
+	$('.fc-body .fc-resource-area tr[data-resource-id]').map (i, tr) ->
+		$(tr).data('resource-id')
+	.get() # jquery -> array
