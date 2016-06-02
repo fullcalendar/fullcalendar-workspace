@@ -26,7 +26,7 @@ View::displayView = ->
 
 View::unrenderSkeleton = ->
 	origUnrenderSkeleton.apply(this, arguments)
-	@unbindResources()
+	@unbindResources(true) # isDestroying=true
 
 
 View::displayEvents = (events) ->
@@ -64,13 +64,13 @@ View::bindResources = ->
 
 # stops listening to ResourceManager events.
 # triggers an 'unset' event to fire.
-View::unbindResources = ->
+View::unbindResources = (isDestroying) ->
 	if @isResourcesBound
 
 		@stopListeningTo(@calendar.resourceManager)
 
 		if @settingResources.state() == 'resolved'
-			@unsetResources()
+			@unsetResources(isDestroying)
 		@settingResources = null
 
 		@isResourcesBound = false # finally allow re-binding
