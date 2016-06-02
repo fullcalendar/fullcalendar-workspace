@@ -112,6 +112,15 @@ class CalendarExtension extends Calendar
 	# ----------------------------------------------------------------------------------------
 
 
+	# make sure events have defined values for the resource-related properties.
+	# essential for DnD's revertFunc to work, which relies on revert to old not-undefined properties.
+	# essential for the case where `resourceId` overrode `resourceIds` and needs to be reverted.
+	normalizeEvent: (event) ->
+		super
+		event.resourceId ?= null
+		event.resourceIds ?= null
+
+
 	# DEPRECATED. for external API backwards compatibility
 	getEventResourceId: (event) ->
 		@getEventResourceIds(event)[0]
