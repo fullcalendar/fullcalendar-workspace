@@ -22,7 +22,8 @@ describe 'event resources', ->
 				expect(resources[1].id).toBe('2')
 				expect(resources[0].title).toBe('room 1')
 				expect(resources[1].title).toBe('room 2')
-				done()
+				setTimeout ->
+					done()
 
 	it 'will not process colliding IDs', (done) ->
 		initCalendar
@@ -38,7 +39,8 @@ describe 'event resources', ->
 				expect(resources[1].id).toBe('2')
 				expect(resources[0].title).toBe('room 1')
 				expect(resources[1].title).toBe('room 2')
-				done()
+				setTimeout ->
+					done()
 
 	it 'will process resources without IDs', (done) ->
 		initCalendar
@@ -50,7 +52,8 @@ describe 'event resources', ->
 				expect(resources.length).toBe(2)
 				expect(resources[0].title).toBe('room 1')
 				expect(resources[1].title).toBe('room 2')
-				done()
+				setTimeout ->
+					done()
 
 	it 'will allow nested children', (done) ->
 		initCalendar
@@ -64,7 +67,8 @@ describe 'event resources', ->
 				expect(resources[0].children.length).toBe(1)
 				expect(resources[0].title).toBe('room a')
 				expect(resources[0].children[0].title).toBe('room a1')
-				done()
+				setTimeout ->
+					done()
 
 	it 'will allow flat children', (done) ->
 		initCalendar
@@ -77,7 +81,8 @@ describe 'event resources', ->
 				expect(resources[0].children.length).toBe(1)
 				expect(resources[0].title).toBe('room a')
 				expect(resources[0].children[0].title).toBe('room a1')
-				done()
+				setTimeout ->
+					done()
 
 	it 'will read resources from a json feed', (done) ->
 		initCalendar
@@ -88,7 +93,8 @@ describe 'event resources', ->
 				expect(resources[1].id).toBe('2')
 				expect(resources[0].title).toBe('room 1')
 				expect(resources[1].title).toBe('room 2')
-				done()
+				setTimeout ->
+					done()
 
 	it 'will read resources from a function', (done) ->
 		initCalendar
@@ -103,4 +109,5 @@ describe 'event resources', ->
 				expect(resources[1].id).toBe('2')
 				expect(resources[0].title).toBe('room 1')
 				expect(resources[1].title).toBe('room 2')
-				done()
+				setTimeout ->
+					done()
