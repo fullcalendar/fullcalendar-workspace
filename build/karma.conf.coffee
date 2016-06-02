@@ -24,6 +24,7 @@ module.exports = (config) ->
 
 			'tests/util/base.css'
 			'tests/util/util.coffee'
+			'tests/util/util-more.js'
 			'tests/util/geom.coffee'
 			'tests/util/day-grid.coffee'
 			'tests/util/time-grid.coffee'
