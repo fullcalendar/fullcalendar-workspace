@@ -1,4 +1,15 @@
 
+v1.3.2 (2016-06-02)
+-------------------
+
+- refetchResources and view switching causes blank screen (#179)
+- UMD definition for Node, defined core dependency (#172)
+- setResources should return an array copy (#160)
+- revertFunc misbehaves for events specified with multiple resourceIds (#156)
+- nowIndicator sometimes incorrectly positioned on wide screens (#130)
+- memory leak upon destroy (#87)
+
+
 v1.3.1 (2016-05-01)
 -------------------
 
