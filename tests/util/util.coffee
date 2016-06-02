@@ -8,21 +8,29 @@ currentCalendar = null
 beforeEach ->
 	optionsStack = []
 
-pushOptions = (options) ->
+pushOptions = (options) -> # FYI, too late to be called within an `it`
 	beforeEach ->
 		optionsStack.push(options)
 
-initCalendar = (options) ->
-	affix('#calendar')
+initCalendar = (options, el) -> # el is optional
+
 	if options
 		optionsStack.push(options)
-	options = $.extend.apply($, [ {} ].concat(optionsStack))
+
+	if el
+		$el = $(el) # caller is responsible for eventually removing
+	else
+		affix('#calendar') # will automatically get removed
+		$el = $('#calendar')
 
 	# do this instead of the normal constructor,
 	# so currentCalendar is available even before render
 	Calendar = $.fullCalendar.Calendar
-	currentCalendar = new Calendar($('#calendar'), options)
+	currentCalendar = new Calendar($el, getCurrentOptions())
 	currentCalendar.render()
+
+getCurrentOptions = ->
+	options = $.extend.apply($, [ {} ].concat(optionsStack))
 
 afterEach ->
 	$('#calendar').fullCalendar('destroy')
