@@ -47,6 +47,12 @@ getTimeGridSlotEls = (timeDuration) ->
 	$('.fc-time-grid .fc-slats tr[data-time="' + date.format('HH:mm:ss') + '"]')
 
 
+getTimeGridResourceIds = ->
+	$('.fc-agenda-view .fc-head .fc-resource-cell').map (i, th) ->
+		$(th).data('resource-id')
+	.get() # jQuery -> array
+
+
 # TODO: discourage use
 getTimeGridDowEls = (dayAbbrev) ->
 	$('.fc-time-grid .fc-day.fc-' + dayAbbrev)
