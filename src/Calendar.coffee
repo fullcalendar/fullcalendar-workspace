@@ -26,7 +26,9 @@ class CalendarExtension extends Calendar
 	# for the API only
 	# retrieves what is currently in memory. no fetching
 	getResources: ->
-		@resourceManager.topLevelResources
+		Array.prototype.slice.call( # make a copy
+			@resourceManager.topLevelResources
+		)
 
 
 	addResource: (resourceInput, scroll=false) -> # assumes all resources already loaded
