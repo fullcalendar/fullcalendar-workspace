@@ -593,6 +593,12 @@ class TimelineGrid extends Grid
 		@buildCoords()
 		@updateSegPositions()
 
+		# this updateWidth method is triggered by callers who don't always subsequently call updateNowIndicator,
+		# and updateWidth always has the risk of changing horizontal spacing which will affect nowIndicator positioning,
+		# so always call it here too. will often rerender twice unfortunately.
+		# TODO: more closely integrate updateSize with updateNowIndicator
+		@view.updateNowIndicator()
+
 		if @follower
 			@follower.update()
 
