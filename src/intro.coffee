@@ -6,7 +6,14 @@ Docs & License: <%= homepage %>
 
 `(function(factory) {
 	if (typeof define === 'function' && define.amd) {
-		define([ 'jquery', 'moment' ], factory);
+		define([ 'jquery', 'moment', 'fullcalendar' ], factory);
+	}
+	else if (typeof exports === 'object') { // Node/CommonJS
+		module.exports = factory(
+			require('jquery'),
+			require('moment'),
+			require('fullcalendar')
+		);
 	}
 	else {
 		factory(jQuery, moment);
