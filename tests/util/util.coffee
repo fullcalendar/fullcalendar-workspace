@@ -114,12 +114,3 @@ oneCall = (func) ->
 		if not called
 			called = true
 			func.apply(this, arguments)
-
-
-# Hacks
-# --------------------------------------------------------------------------------------------------
-
-# phantom JS falsely reports touch abilities, so explicitly disable.
-# tests can override this on a per-calendar basis.
-beforeEach ->
-	$.fullCalendar.isTouch = false
