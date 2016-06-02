@@ -20,8 +20,7 @@ initCalendar = (options, el) -> # el is optional
 	if el
 		$el = $(el) # caller is responsible for eventually removing
 	else
-		affix('#calendar') # will automatically get removed
-		$el = $('#calendar')
+		$el = $('<div id="calendar">').appendTo('body')
 
 	# do this instead of the normal constructor,
 	# so currentCalendar is available even before render
@@ -33,8 +32,10 @@ getCurrentOptions = ->
 	options = $.extend.apply($, [ {} ].concat(optionsStack))
 
 afterEach ->
-	$('#calendar').fullCalendar('destroy')
-	currentCalendar = null
+	if currentCalendar
+		currentCalendar.destroy()
+		currentCalendar = null
+	$('#calendar').remove()
 
 ###
 describeOptions(optionName, descriptionAndValueHash, callback)
