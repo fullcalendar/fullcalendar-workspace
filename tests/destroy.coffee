@@ -18,18 +18,21 @@ describe 'destroy', ->
 		'when basic vertical resource view': 'basicDay'
 	}, ->
 		it 'unbinds all handlers', (done) ->
-			documentCnt = countHandlers(document)
-			windowCnt = countHandlers(window)
-			initCalendar
-				allDaySlot: false
-				eventAfterAllRender: ->
-					setTimeout -> # wait to render events
-						currentCalendar.destroy()
-						$el = $('#calendar')
-						expect($el.length).toBe(1)
-						expect(countHandlers($el)).toBe(0)
-						expect(countHandlers(document)).toBe(documentCnt)
-						expect(countHandlers(window)).toBe(windowCnt)
-						expect($el.attr('class') || '').toBe('')
-						done()
-					, 0
+			setTimeout -> # other tests might still be cleaning up after their callbacks
+				documentCnt = countHandlers(document)
+				windowCnt = countHandlers(window)
+				initCalendar
+					allDaySlot: false
+					eventAfterAllRender: ->
+						setTimeout -> # wait to render events
+							currentCalendar.destroy()
+							window.currentCalendar = null # for tests/util.coffee
+							$el = $('#calendar')
+							expect($el.length).toBe(1)
+							expect(countHandlers($el)).toBe(0)
+							expect(countHandlers(document)).toBe(documentCnt)
+							expect(countHandlers(window)).toBe(windowCnt)
+							expect($el.attr('class') || '').toBe('')
+							done()
+						, 0
+			, 0
