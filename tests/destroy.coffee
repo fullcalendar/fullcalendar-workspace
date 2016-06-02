@@ -15,6 +15,7 @@ describe 'destroy', ->
 	describeOptions 'defaultView', {
 		'when timelineDay view': 'timelineDay'
 		'when vertical resource view': 'agendaDay'
+		'when basic vertical resource view': 'basicDay'
 	}, ->
 		it 'unbinds all handlers', (done) ->
 			documentCnt = countHandlers(document)
