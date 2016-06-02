@@ -15,6 +15,13 @@ then
 	exit 1
 fi
 
+read -p "Have you already updated any dependency changes? (y/n): " updated_deps
+if [[ "$updated_deps" != "y" ]]
+then
+	echo "Go do that!"
+	exit 1
+fi
+
 read -p "Enter the new version number with no 'v' (for example '1.0.1'): " version
 if [[ ! "$version" ]]
 then
