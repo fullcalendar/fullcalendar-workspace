@@ -83,14 +83,9 @@ View::unbindResources = (isDestroying) ->
 # TODO: research why jQuery promises might do this.
 #
 # `thenFunc` is optional.
-# returns a promose.
+# returns a promise.
 View::whenResources = (thenFunc) ->
-	if @settingResources.state() == 'resolved'
-		$.when(if thenFunc then thenFunc())
-	else if thenFunc
-		@settingResources.then(thenFunc)
-	else
-		@settingResources.promise()
+	syncThen(@settingResources, thenFunc)
 
 
 # Methods for handling resource data

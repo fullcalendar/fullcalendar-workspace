@@ -30,12 +30,11 @@ class ResourceManager extends Class
 		# never fetched? then fetch... (TODO: decouple from fetching)
 		if not @fetching
 			getting = $.Deferred()
-			@fetchResources()
-				.done (resources) ->
-					getting.resolve(resources)
-				.fail ->
-					getting.resolve([])
-			getting
+			syncThen @fetchResources(), ->
+				getting.resolve(@topLevelResources)
+			, ->
+				getting.resolve([])
+			getting.promise()
 		# otherwise, return what we already have...
 		else
 			$.Deferred().resolve(@topLevelResources).promise()
@@ -45,14 +44,16 @@ class ResourceManager extends Class
 	# returns a promise.
 	fetchResources: ->
 		prevFetching = @fetching
-		$.when(prevFetching).then =>
-			@fetching = @fetchResourceInputs().then (resourceInputs) =>
+		syncThen prevFetching, =>
+			@fetching = $.Deferred()
+			@fetchResourceInputs (resourceInputs) =>
 				@setResources(resourceInputs, Boolean(prevFetching))
-				@topLevelResources
+				@fetching.resolve(@topLevelResources)
+			@fetching.promise()
 
 
-	fetchResourceInputs: -> # returns a promise
-		deferred = $.Deferred()
+	# calls callback when done
+	fetchResourceInputs: (callback) ->
 		source = @calendar.options['resources']
 
 		if $.type(source) == 'string'
@@ -61,32 +62,28 @@ class ResourceManager extends Class
 		switch $.type(source)
 
 			when 'function'
+				@calendar.pushLoading()
 				source (resourceInputs) =>
-					deferred.resolve(resourceInputs)
-				# TODO: add a max timeout mechanism
+					@calendar.popLoading()
+					callback(resourceInputs)
 
 			when 'object'
-				promise = $.ajax($.extend({}, ResourceManager.ajaxDefaults, source))
+				@calendar.pushLoading()
+				$.ajax($.extend({}, ResourceManager.ajaxDefaults, source))
+					.done (resourceInputs) =>
+						@calendar.popLoading()
+						callback(resourceInputs)
 
 			when 'array'
-				deferred.resolve(source)
+				callback(source)
 
 			else
-				deferred.resolve([])
-
-		promise or= deferred.promise()
-
-		if not promise.state() == 'pending'
-			@calendar.pushLoading()
-			promise.always ->
-				@calendar.popLoading()
-
-		promise
+				callback([])
 
 
 	# fires the 'reset' handler with the already-fetch resource data
 	resetResources: ->
-		@getResources().then => # ensures initial fetch happened
+		syncThen @getResources(), => # ensures initial fetch happened
 			@trigger('reset', @topLevelResources)
 
 
@@ -124,7 +121,7 @@ class ResourceManager extends Class
 
 
 	addResource: (resourceInput) -> # returns a promise
-		$.when(@fetching).then =>
+		syncThen @fetching, =>
 			resource = @buildResource(resourceInput)
 			if @addResourceToIndex(resource)
 				@addResourceToTree(resource)
@@ -173,7 +170,7 @@ class ResourceManager extends Class
 			else
 				idOrResource
 
-		$.when(@fetching).then =>
+		syncThen @fetching, =>
 			resource = @removeResourceFromIndex(id)
 			if resource
 				@removeResourceFromTree(resource)
