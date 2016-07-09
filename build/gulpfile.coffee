@@ -246,7 +246,7 @@ gulp.task 'karma', (done) ->
 			configFile: KARMA_CONFIG_FILE
 			singleRun: false
 			autoWatch: true
-		, done
+		, done()
 	server.start()
 
 
@@ -259,7 +259,7 @@ gulp.task 'karmaHeadless', (done) ->
 			browsers: [ 'PhantomJS_custom' ]
 			singleRun: false
 			autoWatch: true
-		, done
+		, done()
 	server.start()
 
 ###
@@ -271,7 +271,7 @@ gulp.task 'karmaSingle', (done) ->
 			browsers: [ 'PhantomJS_custom' ]
 			singleRun: true
 			autoWatch: false
-		, done
+		, done()
 	server.start()
 
 
