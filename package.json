@@ -16,6 +16,7 @@
     "fullcalendar": ">=2.7.3"
   },
   "devDependencies": {
+    "bower": "^1.7.9",
     "coffee-script": "^1.9.3",
     "del": "^2.2.0",
     "gulp": "^3.9.0",
