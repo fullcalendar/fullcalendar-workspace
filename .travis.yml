@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - 'node'
+
+cache:
+  directories:
+    - node_modules
+    - lib
+
+before_script:
+  - bower install
