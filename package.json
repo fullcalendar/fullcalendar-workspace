@@ -51,6 +51,6 @@
     "README.*"
   ],
   "scripts": {
-    "test": "gulp dist && gulp karmaSingle"
+    "test": "gulp karmaSingle"
   }
 }
