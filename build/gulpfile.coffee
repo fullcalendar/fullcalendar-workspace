@@ -241,7 +241,7 @@ KARMA_CONFIG_FILE = path.join(__dirname, 'karma.conf.coffee') # was getting conf
 ###
 Runs a server, outputs a URL to visit
 ###
-gulp.task 'karma', (done) ->
+gulp.task 'karma', [ 'compile' ], (done) ->
 	server = new KarmaServer
 			configFile: KARMA_CONFIG_FILE
 			singleRun: false
@@ -253,7 +253,7 @@ gulp.task 'karma', (done) ->
 ###
 Runs headlessly and continuously, watching files
 ###
-gulp.task 'karmaHeadless', (done) ->
+gulp.task 'karmaHeadless', [ 'compile' ], (done) ->
 	server = new KarmaServer
 			configFile: KARMA_CONFIG_FILE
 			browsers: [ 'PhantomJS_custom' ]
@@ -265,7 +265,7 @@ gulp.task 'karmaHeadless', (done) ->
 ###
 Runs headlessly once, then exits
 ###
-gulp.task 'karmaSingle', (done) ->
+gulp.task 'karmaSingle', [ 'compile' ], (done) ->
 	server = new KarmaServer
 			configFile: KARMA_CONFIG_FILE
 			browsers: [ 'PhantomJS_custom' ]
