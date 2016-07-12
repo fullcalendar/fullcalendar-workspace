@@ -58,3 +58,5 @@ module.exports = (config) ->
 					viewportSize:
 						width: 1024
 						height: 768
+
+		reporters: [ 'dots' ]
