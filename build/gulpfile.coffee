@@ -243,10 +243,11 @@ Runs a server, outputs a URL to visit
 ###
 gulp.task 'karma', [ 'compile' ], (done) ->
 	server = new KarmaServer
-			configFile: KARMA_CONFIG_FILE
-			singleRun: false
-			autoWatch: true
-		, done
+		configFile: KARMA_CONFIG_FILE
+		singleRun: false
+		autoWatch: true
+	server.on 'run_complete', (browsers, results) ->
+		done(results.exitCode)
 	server.start()
 
 
@@ -255,11 +256,12 @@ Runs headlessly and continuously, watching files
 ###
 gulp.task 'karmaHeadless', [ 'compile' ], (done) ->
 	server = new KarmaServer
-			configFile: KARMA_CONFIG_FILE
-			browsers: [ 'PhantomJS_custom' ]
-			singleRun: false
-			autoWatch: true
-		, done
+		configFile: KARMA_CONFIG_FILE
+		browsers: [ 'PhantomJS_custom' ]
+		singleRun: false
+		autoWatch: true
+	server.on 'run_complete', (browsers, results) ->
+		done(results.exitCode)
 	server.start()
 
 ###
@@ -267,11 +269,12 @@ Runs headlessly once, then exits
 ###
 gulp.task 'karmaSingle', [ 'compile' ], (done) ->
 	server = new KarmaServer
-			configFile: KARMA_CONFIG_FILE
-			browsers: [ 'PhantomJS_custom' ]
-			singleRun: true
-			autoWatch: false
-		, done
+		configFile: KARMA_CONFIG_FILE
+		browsers: [ 'PhantomJS_custom' ]
+		singleRun: true
+		autoWatch: false
+	server.on 'run_complete', (browsers, results) ->
+		done(results.exitCode)
 	server.start()
 
 
