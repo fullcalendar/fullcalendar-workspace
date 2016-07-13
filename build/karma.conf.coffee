@@ -34,8 +34,15 @@ module.exports = (config) ->
 			'tests/util/simulate.js'
 			'tests/*.coffee'
 
-			{ pattern: 'dist/*.js.map', included: false }
-			{ pattern: 'src/**/*.coffee', included: false }
+			# serve everything in the dist directory, like sourcemaps.
+			# above files take precedence of over this, and will be watched.
+			{ pattern: 'dist/*', included: false, watched: false }
+
+			# serve source files for sourcemap debugging.
+			# don't watch. dist files will be generated and trigger a retest.
+			{ pattern: 'src/**/*.coffee', included: false, watched: false }
+
+			# serve JSON files for AJAX-related tests. watch also.
 			{ pattern: 'tests/json/*', included: false }
 		]
 
@@ -43,11 +50,9 @@ module.exports = (config) ->
 			'tests/**/*.coffee': [ 'coffee' ]
 
 		coffeePreprocessor:
-
 			options:
 				bare: true
 				sourceMap: true
-
 			transformPath: (path) ->
 				path.replace(/\.coffee$/, '.js')
 
