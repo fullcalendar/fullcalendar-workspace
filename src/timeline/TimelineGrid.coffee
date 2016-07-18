@@ -36,6 +36,7 @@ class TimelineGrid extends Grid
 	timeWindowMs: null
 	slotDuration: null
 	snapDuration: null
+	customTimeSlot: null
 
 	duration: null
 	labelInterval: null
@@ -62,6 +63,7 @@ class TimelineGrid extends Grid
 		# TODO: more formal option system. works with Agenda
 		@minTime = moment.duration(@opt('minTime') || '00:00')
 		@maxTime = moment.duration(@opt('maxTime') || '24:00')
+		@customTimeSlot = @opt('customTimeSlot')
 		@timeWindowMs = @maxTime - @minTime
 
 		@snapDuration =
@@ -151,22 +153,31 @@ class TimelineGrid extends Grid
 
 
 	rangeUpdated: ->
+		slotDates = []
 		# makes sure zone is stripped
 		@start = @normalizeGridDate(@start)
 		@end = @normalizeGridDate(@end)
-
-		# apply minTime/maxTime
-		# TODO: move towards .time(), but didn't play well with negatives
-		if @isTimeScale
-			@start.add(@minTime)
-			@end.subtract(1, 'day').add(@maxTime)
-
-		slotDates = []
-		date = @start.clone()
-		while date < @end
-			if @isValidDate(date)
+		
+		if @customTimeSlot != null
+			date = @start.clone()
+			for TimeRange in @customTimeSlot
+				date.Hours(TimeRange.Start.getHours())
+				date.Minutes(TimeRange.Start.getMinutes())
 				slotDates.push(date.clone())
-			date.add(@slotDuration)
+				console.log(TimeRange.Start + " => " + TimeRange.End)
+			
+		else
+			# apply minTime/maxTime
+			# TODO: move towards .time(), but didn't play well with negatives
+			if @isTimeScale
+				@start.add(@minTime)
+				@end.subtract(1, 'day').add(@maxTime)
+
+			date = @start.clone()
+			while date < @end
+				if @isValidDate(date)
+					slotDates.push(date.clone())
+				date.add(@slotDuration)
 
 		@slotDates = slotDates
 		@updateGridDates()
