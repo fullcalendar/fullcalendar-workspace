@@ -154,30 +154,46 @@ class TimelineGrid extends Grid
 
 	rangeUpdated: ->
 		slotDates = []
-		# makes sure zone is stripped
-		@start = @normalizeGridDate(@start)
-		@end = @normalizeGridDate(@end)
 		
-		if @customTimeSlot != null
+		if (typeof @customTimeSlot != "undefined" && @customTimeSlot != null)
+			# makes sure zone is stripped
+			@start = @normalizeGridDate(@start)
+			@end = @normalizeGridDate(@end)
 			date = @start.clone()
-			for TimeRange in @customTimeSlot
-				date.Hours(TimeRange.Start.getHours())
-				date.Minutes(TimeRange.Start.getMinutes())
-				slotDates.push(date.clone())
+
+			for TimeRange, index in @customTimeSlot
+				inputDateStart = moment(TimeRange.Start)
+				inputDateEnd = moment(TimeRange.End)
+
+				moment.duration(inputDateEnd.diff(inputDateStart)).asMinutes()
+
+				date.hours(inputDateStart.hours())
+				date.minutes(inputDateStart.minutes())
+				if @isValidDate(date) && !date.isSame(slotDates[slotDates.length - 1])
+					slotDates.push(date.clone())
+
+				date.hours(inputDateEnd.hours())
+				date.minutes(inputDateEnd.minutes())
+				if @isValidDate(date)
+					slotDates.push(date.clone())
+
 				console.log(TimeRange.Start + " => " + TimeRange.End)
-			
 		else
+			# makes sure zone is stripped
+			@start = @normalizeGridDate(@start)
+			@end = @normalizeGridDate(@end)
+			date = @start.clone()
+
 			# apply minTime/maxTime
 			# TODO: move towards .time(), but didn't play well with negatives
 			if @isTimeScale
 				@start.add(@minTime)
 				@end.subtract(1, 'day').add(@maxTime)
 
-			date = @start.clone()
-			while date < @end
-				if @isValidDate(date)
-					slotDates.push(date.clone())
-				date.add(@slotDuration)
+				while date < @end
+					if @isValidDate(date)
+						slotDates.push(date.clone())
+					date.add(@slotDuration)
 
 		@slotDates = slotDates
 		@updateGridDates()
