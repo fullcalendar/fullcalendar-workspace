@@ -55,6 +55,11 @@ getTrailingBoundingRect = (els, isRTL) ->
 	best
 
 
+getBoundingRects = (els) ->
+	rects = for node in els
+		getBoundingRect(node)
+
+
 sortBoundingRects = (els, isRTL) ->
 	rects = for node in els
 		getBoundingRect(node)
@@ -136,6 +141,20 @@ isRectMostlyVBounded = (subjectRect, boundRect) ->
 	Math.min(subjectRect.bottom, boundRect.bottom) -
 		Math.max(subjectRect.top, boundRect.top) > # overlap area is greater than
 			(subjectRect.bottom - subjectRect.top) / 2 # half the height
+
+
+isRectsSimilar = (rect1, rect2) ->
+	isRectsHSimilar(rect1, rect2) and isRectsVSimilar(rect1, rect2)
+
+
+isRectsHSimilar = (rect1, rect2) ->
+	# 1, because of possible borders
+	Math.abs(rect1.left - rect2.left) <= 1 and Math.abs(rect1.right - rect2.right) <= 1
+
+
+isRectsVSimilar = (rect1, rect2) ->
+	# 1, because of possible borders
+	Math.abs(rect1.top - rect2.top) <= 1 and Math.abs(rect1.bottom - rect2.bottom) <= 1
 
 
 # Jasmine Adapters

@@ -44,7 +44,10 @@ getTimeGridDayEls = (date) ->
 getTimeGridSlotEls = (timeDuration) ->
 	timeDuration = moment.duration(timeDuration)
 	date = $.fullCalendar.moment.utc('2016-01-01').time(timeDuration)
-	$('.fc-time-grid .fc-slats tr[data-time="' + date.format('HH:mm:ss') + '"]')
+	if date.date() == 1 # ensure no time overflow/underflow
+		$('.fc-time-grid .fc-slats tr[data-time="' + date.format('HH:mm:ss') + '"]')
+	else
+		$()
 
 
 getTimeGridResourceIds = ->
