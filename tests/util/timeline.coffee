@@ -21,6 +21,20 @@ getResourceTimelinePoint = (resourceId, date) ->
 	}
 
 
+getTimelineRect = (start, end) ->
+	start = $.fullCalendar.moment.parseZone(start)
+	end = $.fullCalendar.moment.parseZone(end)
+	coord0 = getTimelineLeft(start)
+	coord1 = getTimelineLeft(end)
+	canvasRect = getBoundingRect($('.fc-body .fc-time-area .fc-scroller-canvas'))
+	{
+		left: Math.min(coord0, coord1)
+		right: Math.max(coord0, coord1)
+		top: canvasRect.top
+		bottom: canvasRect.bottom
+	}
+
+
 getTimelinePoint = (date) ->
 	contentRect = getBoundingRect($('.fc-body .fc-time-area .fc-content'))
 	{

@@ -246,8 +246,8 @@ gulp.task 'karma', [ 'compile' ], (done) ->
 		configFile: KARMA_CONFIG_FILE
 		singleRun: false
 		autoWatch: true
-	server.on 'run_complete', (browsers, results) ->
-		done(results.exitCode)
+	, (exitCode) -> # plays best with developing from command line
+		process.exit(exitCode)
 	server.start()
 
 
@@ -260,8 +260,8 @@ gulp.task 'karmaHeadless', [ 'compile' ], (done) ->
 		browsers: [ 'PhantomJS_custom' ]
 		singleRun: false
 		autoWatch: true
-	server.on 'run_complete', (browsers, results) ->
-		done(results.exitCode)
+	, (exitCode) -> # plays best with developing from command line
+		process.exit(exitCode)
 	server.start()
 
 ###
@@ -273,7 +273,7 @@ gulp.task 'karmaSingle', [ 'compile' ], (done) ->
 		browsers: [ 'PhantomJS_custom' ]
 		singleRun: true
 		autoWatch: false
-	server.on 'run_complete', (browsers, results) ->
+	server.on 'run_complete', (browsers, results) -> # plays best with CI and other tasks
 		done(results.exitCode)
 	server.start()
 

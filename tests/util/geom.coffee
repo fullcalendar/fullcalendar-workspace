@@ -149,12 +149,12 @@ isRectsSimilar = (rect1, rect2) ->
 
 isRectsHSimilar = (rect1, rect2) ->
 	# 1, because of possible borders
-	Math.abs(rect1.left - rect2.left) <= 1 and Math.abs(rect1.right - rect2.right) <= 1
+	Math.abs(rect1.left - rect2.left) <= 1.1 and Math.abs(rect1.right - rect2.right) <= 1.1
 
 
 isRectsVSimilar = (rect1, rect2) ->
 	# 1, because of possible borders
-	Math.abs(rect1.top - rect2.top) <= 1 and Math.abs(rect1.bottom - rect2.bottom) <= 1
+	Math.abs(rect1.top - rect2.top) <= 1.1 and Math.abs(rect1.bottom - rect2.bottom) <= 1.1
 
 
 # Jasmine Adapters

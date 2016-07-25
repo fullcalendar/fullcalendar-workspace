@@ -2,6 +2,7 @@
 describe 'vresource businessHours', ->
 	pushOptions
 		now: '2015-11-18'
+		scrollTime: '00:00'
 		businessHours: true
 		resources: [
 			{ id: 'a', title: 'Resource A' }
@@ -45,7 +46,7 @@ describe 'vresource businessHours', ->
 				it 'greys out sat and sun', (done) ->
 					initCalendar
 						viewRender: ->
-							expect(isTimeGridNonBusinessSegsRendered([
+							expect(isResourceTimeGridNonBusinessSegsRendered([
 								# sun
 								{ resourceId: 'a', start: '2015-11-15T00:00:00', end: '2015-11-16T00:00:00' }
 								# mon
@@ -67,7 +68,7 @@ describe 'vresource businessHours', ->
 								{ resourceId: 'a', start: '2015-11-21T00:00:00', end: '2015-11-22T00:00:00' }
 								# sun
 								{ resourceId: 'b', start: '2015-11-15T00:00:00', end: '2015-11-16T00:00:00' }
-								# mom
+								# mon
 								{ resourceId: 'b', start: '2015-11-16T00:00:00', end: '2015-11-16T09:00:00' }
 								{ resourceId: 'b', start: '2015-11-16T17:00:00', end: '2015-11-17T00:00:00' }
 								# tue
@@ -87,6 +88,63 @@ describe 'vresource businessHours', ->
 							])).toBe(true)
 							done()
 
+		describe 'for agendaDay with resources', ->
+			pushOptions
+				defaultView: 'agendaDay'
+
+			it 'renders all with same businessHours', (done) ->
+				initCalendar
+					viewRender: ->
+						expectDay9to5()
+						done()
+
+			it 'renders a resource override', (done) ->
+				initCalendar
+					resources: [
+						{ id: 'a', title: 'Resource A' }
+						{ id: 'b', title: 'Resource B', businessHours: { start: '02:00', end: '22:00' } }
+					]
+					viewRender: ->
+						expectResourceOverride()
+						done()
+
+			it 'renders a resource override dynamically', (done) ->
+				specialResource = { id: 'b', title: 'Resource B', businessHours: { start: '02:00', end: '22:00' } }
+				initCalendar
+					resources: [
+						{ id: 'a', title: 'Resource A' }
+						specialResource
+					]
+					viewRender: ->
+						expectResourceOverride()
+						setTimeout ->
+							currentCalendar.removeResource(specialResource)
+							expectLonelyDay9to5()
+							currentCalendar.addResource(specialResource)
+							expectResourceOverride()
+							done()
+
+	expectDay9to5 = ->
+		expect(isResourceTimeGridNonBusinessSegsRendered([
+			{ resourceId: 'a', start: '2015-11-18T00:00', end: '2015-11-18T09:00' }
+			{ resourceId: 'a', start: '2015-11-18T17:00', end: '2015-11-19T00:00' }
+			{ resourceId: 'b', start: '2015-11-18T00:00', end: '2015-11-18T09:00' }
+			{ resourceId: 'b', start: '2015-11-18T17:00', end: '2015-11-19T00:00' }
+		])).toBe(true)
+
+	expectResourceOverride = -> # one resource 2am - 10pm, the rest 9am - 5pm
+		expect(isResourceTimeGridNonBusinessSegsRendered([
+			{ resourceId: 'a', start: '2015-11-18T00:00', end: '2015-11-18T09:00' }
+			{ resourceId: 'a', start: '2015-11-18T17:00', end: '2015-11-19T00:00' }
+			{ resourceId: 'b', start: '2015-11-18T00:00', end: '2015-11-18T02:00' }
+			{ resourceId: 'b', start: '2015-11-18T22:00', end: '2015-11-19T00:00' }
+		])).toBe(true)
+
+	expectLonelyDay9to5 = -> # only one resource 9am - 5pm
+		expect(isResourceTimeGridNonBusinessSegsRendered([
+			{ resourceId: 'a', start: '2015-11-18T00:00', end: '2015-11-18T09:00' }
+			{ resourceId: 'a', start: '2015-11-18T17:00', end: '2015-11-19T00:00' }
+		])).toBe(true)
 
 	isDayGridNonBusinessSegsRendered = (expectedSegs) ->
 		segEls = $('.fc-day-grid .fc-nonbusiness')
@@ -112,8 +170,7 @@ describe 'vresource businessHours', ->
 
 		true # every seg was found
 
-
-	isTimeGridNonBusinessSegsRendered = (expectedSegs) ->
+	isResourceTimeGridNonBusinessSegsRendered = (expectedSegs) ->
 		segEls = $('.fc-time-grid .fc-nonbusiness')
 		unmatchedSegRects = getBoundingRects(segEls)
 
