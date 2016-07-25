@@ -1,33 +1,102 @@
 
+###
+for a single segment
+###
+getResourceTimeGridRect = (resourceId, start, end) ->
+	start = $.fullCalendar.moment.parseZone(start)
+	end = $.fullCalendar.moment.parseZone(end)
+
+	startTime = start.time()
+	endTime =
+		if end.isSame(start, 'day')
+			end.time()
+		else if end < start
+			startTime
+		else
+			moment.duration({ hours: 24 })
+
+	dayEls = getResourceTimeGridDayEls(resourceId, start)
+	if dayEls.length == 1
+		dayRect = getBoundingRect(dayEls.eq(0))
+		{
+			left: dayRect.left
+			right: dayRect.right
+			top: getTimeGridTop(startTime)
+			bottom: getTimeGridTop(endTime)
+		}
+
+
 getResourceTimeGridPoint = (resourceId, date) ->
 	date = $.fullCalendar.moment.parseZone(date)
-	top = getTimeGridTop(date.time())
+
 	dayEls = getResourceTimeGridDayEls(resourceId, date)
-	expect(dayEls.length).toBe(1)
-	dayRect = getBoundingRect(dayEls.eq(0))
-	{
-		left: (dayRect.left + dayRect.right) / 2
-		top: top
-	}
+	if dayEls.length == 1
+		dayRect = getBoundingRect(dayEls.eq(0))
+		{
+			left: (dayRect.left + dayRect.right) / 2
+			top: getTimeGridTop(date.time())
+		}
+	else
+		null
 
 
 getTimeGridPoint = (date) ->
 	date = $.fullCalendar.moment.parseZone(date)
-	top = getTimeGridTop(date.time())
+
 	dayEls = getTimeGridDayEls(date)
-	expect(dayEls.length).toBe(1)
-	dayRect = getBoundingRect(dayEls.eq(0))
-	{
-		left: (dayRect.left + dayRect.right) / 2
-		top: top
-	}
+	if dayEls.length == 1
+		dayRect = getBoundingRect(dayEls.eq(0))
+		{
+			left: (dayRect.left + dayRect.right) / 2
+			top: getTimeGridTop(date.time())
+		}
+	else
+		null
 
+###
+targetTime is a time (duration) that can be in between slots
+###
+getTimeGridTop = (targetTime) ->
+	targetTime = moment.duration(targetTime)
+	slotEls = getTimeGridSlotEls(targetTime)
+	topBorderWidth = 1 # TODO: kill
 
-getTimeGridTop = (time) ->
-	time = moment.duration(time)
-	slotEls = getTimeGridSlotEls(time)
-	expect(slotEls.length).toBe(1)
-	slotEls.offset().top + 1 # +1 make sure after border
+	# exact slot match
+	if slotEls.length == 1
+		return slotEls.eq(0).offset().top + topBorderWidth
+
+	slotEls = $('.fc-time-grid .fc-slats tr[data-time]') # all slots
+	slotTime = null
+	prevSlotTime = null
+
+	for slotEl, i in slotEls # traverse earlier to later
+		slotEl = $(slotEl)
+
+		prevSlotTime = slotTime
+		slotTime = moment.duration(slotEl.data('time'))
+
+		# is target time between start of previous slot but before this one?
+		if targetTime < slotTime
+			# before first slot
+			if not prevSlotTime
+				return slotEl.offset().top + topBorderWidth
+			else
+				prevSlotEl = slotEls.eq(i - 1)
+				return prevSlotEl.offset().top + # previous slot top
+					topBorderWidth +
+					prevSlotEl.outerHeight() *
+					((targetTime - prevSlotTime) / (slotTime - prevSlotTime))
+
+	# target time must be after the start time of the last slot.
+	# `slotTime` is set to the start time of the last slot.
+
+	# guess the duration of the last slot, based on previous duration
+	slotMsDuration = slotTime - prevSlotTime
+
+	slotEl.offset().top + # last slot's top
+		topBorderWidth +
+		slotEl.outerHeight() *
+		Math.min(1, (targetTime - slotTime) / slotMsDuration) # don't go past end of last slot
 
 
 getResourceTimeGridDayEls = (resourceId, date) ->
