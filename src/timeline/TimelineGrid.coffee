@@ -153,48 +153,41 @@ class TimelineGrid extends Grid
 
 
 	rangeUpdated: ->
+		# makes sure zone is stripped
+		@start = @normalizeGridDate(@start)
+		@end = @normalizeGridDate(@end)
+		date = @start.clone()
 		slotDates = []
-		
+
 		if (typeof @customTimeSlot != "undefined" && @customTimeSlot != null)
-			# makes sure zone is stripped
-			@start = @normalizeGridDate(@start)
-			@end = @normalizeGridDate(@end)
-			date = @start.clone()
+			customRangeMode = true
+		else
+			customRangeMode = false
+			
+		# makes sure zone is stripped
+		@start = @normalizeGridDate(@start)
+		@end = @normalizeGridDate(@end)
+		date = @start.clone()
 
-			for TimeRange, index in @customTimeSlot
-				inputDateStart = moment(TimeRange.Start)
-				inputDateEnd = moment(TimeRange.End)
-
-				moment.duration(inputDateEnd.diff(inputDateStart)).asMinutes()
-
-				date.hours(inputDateStart.hours())
-				date.minutes(inputDateStart.minutes())
-				if @isValidDate(date) && !date.isSame(slotDates[slotDates.length - 1])
-					slotDates.push(date.clone())
-
-				date.hours(inputDateEnd.hours())
-				date.minutes(inputDateEnd.minutes())
+		# apply minTime/maxTime
+		# TODO: move towards .time(), but didn't play well with negatives
+		if @isTimeScale
+			@start.add(@minTime)
+			@end.subtract(1, 'day').add(@maxTime)
+				
+			slotCounter = 0
+			while ((!customRangeMode && date < @end) || (customRangeMode && slotCounter <= @customTimeSlot.length))
 				if @isValidDate(date)
 					slotDates.push(date.clone())
-
-				console.log(TimeRange.Start + " => " + TimeRange.End)
-		else
-			# makes sure zone is stripped
-			@start = @normalizeGridDate(@start)
-			@end = @normalizeGridDate(@end)
-			date = @start.clone()
-
-			# apply minTime/maxTime
-			# TODO: move towards .time(), but didn't play well with negatives
-			if @isTimeScale
-				@start.add(@minTime)
-				@end.subtract(1, 'day').add(@maxTime)
-
-				while date < @end
-					if @isValidDate(date)
-						slotDates.push(date.clone())
+					
+				if (customRangeMode)
+					date.add(@customTimeSlot[slotCounter])
+				else
 					date.add(@slotDuration)
 
+				slotCounter++
+				
+		@end = date.clone()
 		@slotDates = slotDates
 		@updateGridDates()
 
@@ -205,16 +198,29 @@ class TimelineGrid extends Grid
 		snapDiffToIndex = []
 		snapIndexToDiff = []
 
+		if (typeof @customTimeSlot != "undefined" && @customTimeSlot != null)
+			customRangeMode = true
+		else
+			customRangeMode = false
+
 		date = @start.clone()
-		while date < @end
+
+		slotCounter = 0
+		while ((!customRangeMode && date < @end) || (customRangeMode && slotCounter <= @customTimeSlot.length))
 			if @isValidDate(date)
 				snapIndex++
 				snapDiffToIndex.push(snapIndex)
-				snapIndexToDiff.push(snapDiff)
+				snapIndexToDiff.push(slotCounter)
 			else
 				snapDiffToIndex.push(snapIndex + 0.5)
-			date.add(@snapDuration)
-			snapDiff++
+
+			if (customRangeMode)
+				date.add(@customTimeSlot[slotCounter])
+			else
+				date.add(@slotDuration)
+
+			slotCounter++
+
 
 		@snapDiffToIndex = snapDiffToIndex
 		@snapIndexToDiff = snapIndexToDiff

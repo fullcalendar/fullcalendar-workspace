@@ -13,9 +13,24 @@
 
 	$(function() { // document ready
 
-		var myJSON = '[ { "Start": "1899-12-30 05:00:00.000", "End": "1899-12-30 06:00:00.000" },{ "Start": "1899-12-30 08:00:00.000", "End": "1899-12-30 09:00:00.000" }, { "Start": "1899-12-30 09:00:00.000", "End": "1899-12-30 10:00:00.000" }, { "Start": "1899-12-30 10:00:00.000", "End": "1899-12-30 11:00:00.000" }, { "Start": "1899-12-30 11:00:00.000", "End": "1899-12-30 12:00:00.000" }, { "Start": "1899-12-30 12:00:00.000", "End": "1899-12-30 13:00:00.000" } ]';
-
-		var customTimeSlot = JSON.parse(myJSON);	
+		var customTimeSlot = [	moment.duration(30, 'minutes'), 
+								moment.duration(30, 'minutes'), 
+								moment.duration(30, 'minutes'), 
+								moment.duration(210, 'minutes'),
+								moment.duration(30, 'minutes'),
+								moment.duration(30, 'minutes'),
+								moment.duration(30, 'minutes'),
+								moment.duration(210, 'minutes'),
+								moment.duration(30, 'minutes'),
+								moment.duration(30, 'minutes'),
+								moment.duration(30, 'minutes'),
+								moment.duration(30, 'minutes'),
+								moment.duration(210, 'minutes'),
+								moment.duration(30, 'minutes'),
+								moment.duration(30, 'minutes'),
+								moment.duration(30, 'minutes'),
+								moment.duration(30, 'minutes')
+								];	
 
 
 		$('#calendar').fullCalendar({
