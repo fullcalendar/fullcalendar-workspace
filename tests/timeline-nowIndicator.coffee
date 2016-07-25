@@ -70,9 +70,9 @@ describe 'timeline now-indicator', ->
 	getNowIndicatorRenders = ->
 		$('.fc-timeline .fc-now-indicator').length > 0
 
-	nowIndicatorRendersAt = (date, slatOffset, thresh=3) ->
+	nowIndicatorRendersAt = (date, thresh=3) ->
 		# wish threshold could do a smaller default threshold, but RTL messing up
-		line = getTimelineLine(date, slatOffset)
+		line = getTimelineLine(date)
 		arrowRect = getBoundingRect('.fc-timeline .fc-now-indicator-arrow')
 		lineRect = getBoundingRect('.fc-timeline .fc-now-indicator-line')
 		expect(Math.abs(

@@ -20,7 +20,7 @@ describe 'timeline businessHours', ->
 					greyAreas = $('.fc-nonbusiness')
 					expect(greyAreas.length).toBe(2)
 					expectTimelineSpan(greyAreas.eq(0), '2016-02-15T00:00', '2016-02-15T10:00')
-					expectTimelineSpan(greyAreas.eq(1), '2016-02-15T16:00', '2016-02-15T23:00', 1) # 24:00
+					expectTimelineSpan(greyAreas.eq(1), '2016-02-15T16:00', '2016-02-16T00:00')
 					done()
 
 		# FAILS
@@ -35,10 +35,10 @@ describe 'timeline businessHours', ->
 				viewRender: ->
 					greyAreas = $('.fc-nonbusiness')
 					expect(greyAreas.length).toBe(1)
-					expectTimelineSpan(greyAreas.eq(0), '2016-02-15T00:00', '2016-02-15T23:00', 1) # 24:00
+					expectTimelineSpan(greyAreas.eq(0), '2016-02-15T00:00', '2016-02-16T00:00')
 					done()
 
-	expectTimelineSpan = (el, startTime, endTime, slatOffset) ->
+	expectTimelineSpan = (el, startTime, endTime) ->
 		isRTL = isElWithinRtl(el)
 		elRect = getBoundingRect(el)
 		expect(Math.abs(
@@ -46,6 +46,6 @@ describe 'timeline businessHours', ->
 			if isRTL then elRect.right else elRect.left
 		)).toBeLessThan(3)
 		expect(Math.abs(
-			getTimelineLeft(endTime, slatOffset) -
+			getTimelineLeft(endTime) -
 			if isRTL then elRect.left else elRect.right
 		)).toBeLessThan(3)
