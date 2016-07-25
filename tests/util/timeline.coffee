@@ -1,18 +1,30 @@
 
+getResourceTimelineRect = (resourceId, start, end) ->
+	start = $.fullCalendar.moment.parseZone(start)
+	end = $.fullCalendar.moment.parseZone(end)
+	coord0 = getTimelineLeft(start)
+	coord1 = getTimelineLeft(end)
+	rowRect = getBoundingRect(getTimelineRowEl(resourceId))
+	{
+		left: Math.min(coord0, coord1)
+		right: Math.max(coord0, coord1)
+		top: rowRect.top
+		bottom: rowRect.bottom
+	}
+
+
 getResourceTimelinePoint = (resourceId, date) ->
 	rowRect = getBoundingRect(getTimelineRowEl(resourceId))
-	left = getTimelineLeft(date)
 	{
-		left: left
+		left: getTimelineLeft(date)
 		top: (rowRect.top + rowRect.bottom) / 2
 	}
 
 
 getTimelinePoint = (date) ->
 	contentRect = getBoundingRect($('.fc-body .fc-time-area .fc-content'))
-	left = getTimelineLeft(date)
 	{
-		left: left
+		left: getTimelineLeft(date)
 		top: (contentRect.top + contentRect.bottom) / 2
 	}
 
