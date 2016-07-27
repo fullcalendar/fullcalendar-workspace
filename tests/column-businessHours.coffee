@@ -146,53 +146,8 @@ describe 'vresource businessHours', ->
 			{ resourceId: 'a', start: '2015-11-18T17:00', end: '2015-11-19T00:00' }
 		])).toBe(true)
 
-	isDayGridNonBusinessSegsRendered = (expectedSegs) ->
-		segEls = $('.fc-day-grid .fc-nonbusiness')
-		unmatchedSegRects = getBoundingRects(segEls)
+	isDayGridNonBusinessSegsRendered = (segs) ->
+		doElsMatchSegs($('.fc-day-grid .fc-nonbusiness'), segs, getResourceDayGridRect)
 
-		if unmatchedSegRects.length != expectedSegs.length
-			return false
-
-		for expectedSeg, i in expectedSegs
-			headEl = getHeadResourceTh(expectedSeg.resourceId, expectedSeg.date)
-			headRect = getBoundingRect(headEl) # expected
-
-			# find an element with matching horizontal coords
-			found = false
-			for actualRect, i in unmatchedSegRects
-				if isRectsHSimilar(actualRect, headRect)
-					unmatchedSegRects.splice(i, 1) # remove
-					found = true
-					break
-
-			if not found
-				return false
-
-		true # every seg was found
-
-	isResourceTimeGridNonBusinessSegsRendered = (expectedSegs) ->
-		segEls = $('.fc-time-grid .fc-nonbusiness')
-		unmatchedSegRects = getBoundingRects(segEls)
-
-		if unmatchedSegRects.length != expectedSegs.length
-			return false
-
-		for expectedSeg in expectedSegs
-			expectedSegRect = getResourceTimeGridRect(
-				expectedSeg.resourceId
-				expectedSeg.start
-				expectedSeg.end
-			)
-
-			# find an element with rectangle that matches
-			found = false
-			for actualRect, i in unmatchedSegRects
-				if isRectsSimilar(actualRect, expectedSegRect)
-					unmatchedSegRects.splice(i, 1) # remove
-					found = true
-					break
-
-			if not found
-				return false
-
-		true # every seg was found
+	isResourceTimeGridNonBusinessSegsRendered = (segs) ->
+		doElsMatchSegs($('.fc-time-grid .fc-nonbusiness'), segs, getResourceTimeGridRect)

@@ -101,55 +101,8 @@ describe 'timeline businessHours', ->
 			{ resourceId: 'c', start: '2016-02-15T17:00', end: '2016-02-16T00:00' }
 		])).toBe(true)
 
-	isTimelineNonBusinessSegsRendered = (expectedSegs) ->
-		segEls = $('.fc-timeline .fc-nonbusiness')
-		unmatchedSegRects = getBoundingRects(segEls)
+	isTimelineNonBusinessSegsRendered = (segs) ->
+		doElsMatchSegs($('.fc-timeline .fc-nonbusiness'), segs, getTimelineRect)
 
-		if unmatchedSegRects.length != expectedSegs.length
-			return false
-
-		for expectedSeg in expectedSegs
-			expectedSegRect = getTimelineRect(
-				expectedSeg.start
-				expectedSeg.end
-			)
-
-			# find an element with rectangle that matches
-			found = false
-			for actualRect, i in unmatchedSegRects
-				if isRectsSimilar(actualRect, expectedSegRect)
-					unmatchedSegRects.splice(i, 1) # remove
-					found = true
-					break
-
-			if not found
-				return false
-
-		true # every seg was found
-
-	isResourceTimelineNonBusinessSegsRendered = (expectedSegs) ->
-		segEls = $('.fc-timeline .fc-nonbusiness')
-		unmatchedSegRects = getBoundingRects(segEls)
-
-		if unmatchedSegRects.length != expectedSegs.length
-			return false
-
-		for expectedSeg in expectedSegs
-			expectedSegRect = getResourceTimelineRect(
-				expectedSeg.resourceId
-				expectedSeg.start
-				expectedSeg.end
-			)
-
-			# find an element with rectangle that matches
-			found = false
-			for actualRect, i in unmatchedSegRects
-				if isRectsSimilar(actualRect, expectedSegRect)
-					unmatchedSegRects.splice(i, 1) # remove
-					found = true
-					break
-
-			if not found
-				return false
-
-		true # every seg was found
+	isResourceTimelineNonBusinessSegsRendered = (segs) ->
+		doElsMatchSegs($('.fc-timeline .fc-nonbusiness'), segs, getResourceTimelineRect)

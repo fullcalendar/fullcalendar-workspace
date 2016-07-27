@@ -83,6 +83,33 @@ isRect = (input) ->
 	'left' of input and 'right' of input and 'top' of input and 'bottom' of input
 
 
+# FC-specific Geometry Utils
+# --------------------------------------------------------------------------------------------------
+
+
+doElsMatchSegs = (els, segs, segToRectFunc) ->
+	unmatchedRects = getBoundingRects(els)
+
+	if unmatchedRects.length != segs.length
+		return false
+
+	for seg in segs
+		segRect = segToRectFunc(seg)
+
+		# find an element with rectangle that matches
+		found = false
+		for elRect, i in unmatchedRects
+			if isRectsSimilar(elRect, segRect)
+				unmatchedRects.splice(i, 1) # remove
+				found = true
+				break
+
+		if not found
+			return false
+
+	true # every seg was found
+
+
 # Geometry Utils
 # --------------------------------------------------------------------------------------------------
 

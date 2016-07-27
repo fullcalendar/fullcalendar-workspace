@@ -1,5 +1,10 @@
 
 getResourceTimelineRect = (resourceId, start, end) ->
+	if typeof resourceId == 'object'
+		obj = resourceId
+		resourceId = obj.resourceId
+		start = obj.start
+		end = obj.end
 	start = $.fullCalendar.moment.parseZone(start)
 	end = $.fullCalendar.moment.parseZone(end)
 	coord0 = getTimelineLeft(start)
@@ -22,6 +27,10 @@ getResourceTimelinePoint = (resourceId, date) ->
 
 
 getTimelineRect = (start, end) ->
+	if typeof start == 'object'
+		obj = start
+		start = obj.start
+		end = obj.end
 	start = $.fullCalendar.moment.parseZone(start)
 	end = $.fullCalendar.moment.parseZone(end)
 	coord0 = getTimelineLeft(start)

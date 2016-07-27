@@ -3,6 +3,12 @@
 for a single segment
 ###
 getResourceTimeGridRect = (resourceId, start, end) ->
+	if typeof resourceId == 'object'
+		obj = resourceId
+		resourceId = obj.resourceId
+		start = obj.start
+		end = obj.end
+
 	start = $.fullCalendar.moment.parseZone(start)
 	end = $.fullCalendar.moment.parseZone(end)
 
