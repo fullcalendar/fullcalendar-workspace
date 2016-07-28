@@ -36,6 +36,6 @@ class ResourceTimeGrid extends FC.TimeGrid
 	renderBusinessHours: ->
 		segs = @computePerResourceBusinessHourSegs(false) # wholeDay=false
 		if segs
-			@renderBusinessSegs(allSegs)
+			@renderBusinessSegs(segs)
 		else
 			super # render global business hours
