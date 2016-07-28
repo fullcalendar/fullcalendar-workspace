@@ -91,6 +91,11 @@ class ResourceManager extends Class
 		@resourcesById[id]
 
 
+	getFlatResources: ->
+		for id of @resourcesById
+			@resourcesById[id]
+
+
 	# Resource Adding
 	# ------------------------------------------------------------------------------------------------------------------
 

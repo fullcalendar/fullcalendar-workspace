@@ -97,6 +97,37 @@ class CalendarExtension extends Calendar
 		filteredPeerEvents
 
 
+	# overridden to consider resources
+	spanContainsSpan: (outerSpan, innerSpan) ->
+		if outerSpan.resourceId and outerSpan.resourceId != innerSpan.resourceId
+			false
+		else
+			super
+
+
+	# overridden to consider resources. not really "events" FYI
+	getCurrentBusinessHourEvents: (wholeDay) ->
+		flatResources = @resourceManager.getFlatResources()
+
+		# any per-resource business hours? or will one global businessHours suffice?
+		anyCustomBusinessHours = false
+		for resource in flatResources
+			if resource.businessHours
+				anyCustomBusinessHours = true
+
+		if anyCustomBusinessHours
+			# if there are any custom business hours, all business hours must be sliced per-resources
+			allEvents = []
+			for resource in flatResources
+				events = @computeBusinessHourEvents(wholeDay, resource.businessHours or @options.businessHours)
+				for event in events
+					event.resourceId = resource.id
+					allEvents.push(event)
+			allEvents
+		else
+			super
+
+
 	buildSelectSpan: (startInput, endInput, resourceId) ->
 		span = super
 		if resourceId

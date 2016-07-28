@@ -260,3 +260,34 @@ ResourceDayTableMixin =
 				this[introMethodName]() +
 				cellHtmls.join('') +
 			'</tr>'
+
+	# Business Hours
+	# ----------------------------------------------------------------------------------------------
+
+	###
+	If there are no per-resource business hour definitions, returns null.
+	Otherwise, returns a list of business hours segs for *every* resource.
+	###
+	computePerResourceBusinessHourSegs: (wholeDay) ->
+		if @flattenedResources # any resources rendered?
+
+			anyCustomBusinessHours = false
+			for resource in @flattenedResources
+				if resource.businessHours
+					anyCustomBusinessHours = true
+
+			if anyCustomBusinessHours
+				allSegs = []
+
+				for resource in @flattenedResources
+					businessHours = resource.businessHours or @view.opt('businessHours')
+					events = @view.calendar.computeBusinessHourEvents(wholeDay, businessHours)
+
+					for event in events
+						event.resourceId = resource.id
+
+					segs = @eventsToSegs(events)
+					allSegs.push.apply(allSegs, segs) # append
+
+				return allSegs
+		null
