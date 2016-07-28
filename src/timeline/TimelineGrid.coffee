@@ -501,7 +501,7 @@ class TimelineGrid extends Grid
 
 	renderBusinessHours: ->
 		if not @largeUnit
-			events = @view.calendar.getBusinessHoursEvents(not @isTimeScale)
+			events = @view.calendar.getCurrentBusinessHourEvents(not @isTimeScale)
 			segs = @businessHourSegs = @eventsToSegs(events)
 			@renderFill('businessHours', segs, 'bgevent')
 
@@ -979,6 +979,7 @@ class TimelineGrid extends Grid
 
 	# Fill
 	# ---------------------------------------------------------------------------------
+	# these functions expect segs to have rendered els (not yet attached to DOM)
 
 
 	renderFill: (type, segs, className) ->

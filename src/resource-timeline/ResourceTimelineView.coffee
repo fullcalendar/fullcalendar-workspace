@@ -459,6 +459,7 @@ class ResourceTimelineView extends TimelineView
 	rowAdded: (row) ->
 		if row instanceof ResourceRow
 			@resourceRowHash[row.resource.id] = row
+			@timeGrid.assignRowBusinessHourSegs(row)
 
 		# TODO: consolidate repeat code
 		wasNesting = @isNesting
@@ -475,6 +476,7 @@ class ResourceTimelineView extends TimelineView
 	rowRemoved: (row) ->
 		if row instanceof ResourceRow
 			delete @resourceRowHash[row.resource.id]
+			@timeGrid.destroyRowBusinessHourSegs(row)
 
 		# TODO: consolidate repeat code
 		wasNesting = @isNesting
