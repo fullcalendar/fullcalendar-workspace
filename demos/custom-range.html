@@ -9,6 +9,7 @@
 <script src='../lib/jquery/dist/jquery.js'></script>
 <script src='../lib/fullcalendar/dist/fullcalendar.js'></script>
 <script src='../dist/scheduler.js'></script>
+<script src='../lib/fullcalendar/dist/lang-all.js'></script>
 <script>
 
 	$(function() { // document ready
@@ -16,24 +17,15 @@
 		var customTimeSlot = [	moment.duration(30, 'minutes'), 
 								moment.duration(30, 'minutes'), 
 								moment.duration(30, 'minutes'), 
-								moment.duration(210, 'minutes'),
 								moment.duration(30, 'minutes'),
-								moment.duration(30, 'minutes'),
-								moment.duration(30, 'minutes'),
-								moment.duration(210, 'minutes'),
-								moment.duration(30, 'minutes'),
-								moment.duration(30, 'minutes'),
-								moment.duration(30, 'minutes'),
-								moment.duration(30, 'minutes'),
-								moment.duration(210, 'minutes'),
-								moment.duration(30, 'minutes'),
-								moment.duration(30, 'minutes'),
-								moment.duration(30, 'minutes'),
+								moment.duration(60, 'minutes'),
+								moment.duration(60, 'minutes'),
 								moment.duration(30, 'minutes')
 								];	
 
 
 		$('#calendar').fullCalendar({
+			lang: "en",
 			now: '2016-05-07',
 			editable: true, // enable draggable events
 			aspectRatio: 1.8,
@@ -42,7 +34,7 @@
 			header: {
 				left: 'today prev,next',
 				center: 'title',
-				right: 'timelineDay,timelineThreeDays,agendaWeek,month'
+				right: 'timelineDay,timelineWeek,timelineMonth,timelineYear'
 			},
 			defaultView: 'timelineDay',
 			views: {
@@ -84,10 +76,10 @@
 				{ id: 'z', title: 'Auditorium Z' }
 			],
 			events: [
-				{ id: '1', resourceId: 'b', start: '2016-05-07T09:00:00', end: '2016-05-07T10:00:00', title: 'event 1' },
-				{ id: '2', resourceId: 'c', start: '2016-05-07T08:00:00', end: '2016-05-07T09:30:00', title: 'event 2' },
-				{ id: '3', resourceId: 'd', start: '2016-05-06', end: '2016-05-08', title: 'event 3' },
-				{ id: '4', resourceId: 'e', start: '2016-05-07T03:00:00', end: '2016-05-07T08:00:00', title: 'event 4' },
+				//{ id: '1', resourceId: 'b', start: '2016-05-07T09:00:00', end: '2016-05-07T10:00:00', title: 'event 1' },
+				//{ id: '2', resourceId: 'c', start: '2016-05-07T08:00:00', end: '2016-05-07T09:30:00', title: 'event 2' },
+				//{ id: '3', resourceId: 'd', start: '2016-05-06', end: '2016-05-08', title: 'event 3' },
+				{ id: '4', resourceId: 'e', start: '2016-05-06T03:00:00', end: '2016-05-08T02:00:00', title: 'event 4' },
 				{ id: '5', resourceId: 'f', start: '2016-05-07T00:30:00', end: '2016-05-07T02:30:00', title: 'event 5' }
 			]
 		});

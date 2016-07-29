@@ -37,6 +37,7 @@ class TimelineGrid extends Grid
 	slotDuration: null
 	snapDuration: null
 	customTimeSlot: null
+	customRangeMode: false
 
 	duration: null
 	labelInterval: null
@@ -64,6 +65,13 @@ class TimelineGrid extends Grid
 		@minTime = moment.duration(@opt('minTime') || '00:00')
 		@maxTime = moment.duration(@opt('maxTime') || '24:00')
 		@customTimeSlot = @opt('customTimeSlot')
+
+		#Simple var to know the state of customTimeSlot easily
+		if (typeof @customTimeSlot != "undefined" && @customTimeSlot != null)
+			@customRangeMode = true
+		else
+			@customRangeMode = false
+
 		@timeWindowMs = @maxTime - @minTime
 
 		@snapDuration =
@@ -159,11 +167,6 @@ class TimelineGrid extends Grid
 		date = @start.clone()
 		slotDates = []
 
-		if (typeof @customTimeSlot != "undefined" && @customTimeSlot != null)
-			customRangeMode = true
-		else
-			customRangeMode = false
-			
 		# makes sure zone is stripped
 		@start = @normalizeGridDate(@start)
 		@end = @normalizeGridDate(@end)
@@ -175,17 +178,26 @@ class TimelineGrid extends Grid
 			@start.add(@minTime)
 			@end.subtract(1, 'day').add(@maxTime)
 				
-			slotCounter = 0
-			while ((!customRangeMode && date < @end) || (customRangeMode && slotCounter <= @customTimeSlot.length))
-				if @isValidDate(date)
-					slotDates.push(date.clone())
-					
-				if (customRangeMode)
-					date.add(@customTimeSlot[slotCounter])
-				else
-					date.add(@slotDuration)
+		slotCounter = 0
 
-				slotCounter++
+		while (date < @end)
+			if @isValidDate(date)
+				slotDates.push(date.clone())
+					
+			if @customRangeMode
+				date.add(@customTimeSlot[slotCounter])
+			else
+				date.add(@slotDuration)
+
+			slotCounter++
+
+			#Here is the tricky part, if we are at the end of the customTimeSlot, we need to move the date forward
+			#and restart looping the customTimeSlot
+			if @customRangeMode
+				if slotCounter >= @customTimeSlot.length
+					slotCounter = 0
+					date.add(1, 'day')
+					date.startOf('day')
 				
 		@end = date.clone()
 		@slotDates = slotDates
@@ -198,28 +210,33 @@ class TimelineGrid extends Grid
 		snapDiffToIndex = []
 		snapIndexToDiff = []
 
-		if (typeof @customTimeSlot != "undefined" && @customTimeSlot != null)
-			customRangeMode = true
-		else
-			customRangeMode = false
-
 		date = @start.clone()
 
 		slotCounter = 0
-		while ((!customRangeMode && date < @end) || (customRangeMode && slotCounter <= @customTimeSlot.length))
+
+		while (date < @end)
 			if @isValidDate(date)
 				snapIndex++
 				snapDiffToIndex.push(snapIndex)
 				snapIndexToDiff.push(slotCounter)
 			else
 				snapDiffToIndex.push(snapIndex + 0.5)
-
-			if (customRangeMode)
+					
+			if @customRangeMode
 				date.add(@customTimeSlot[slotCounter])
 			else
 				date.add(@slotDuration)
 
 			slotCounter++
+
+			#Here is the tricky part, if we are at the end of the customTimeSlot, we need to move the date forward
+			#and restart looping the customTimeSlot
+			if @customRangeMode
+				if slotCounter >= @customTimeSlot.length
+					slotCounter = 0
+					date.add(1, 'day')
+					date.startOf('day')
+
 
 
 		@snapDiffToIndex = snapDiffToIndex
@@ -669,24 +686,50 @@ class TimelineGrid extends Grid
 
 	# returned value is between 0 and the number of snaps
 	computeDateSnapCoverage: (date) ->
-		snapDiff = divideRangeByDuration(@start, date, @snapDuration)
+		#Two case, we use custom time slot or we don't
+		if @customRangeMode
+			loopProgress = @start.clone()
+			loopStop = false
+			slotCounter = 1 #Since there is no do while loop, it is possible we never enter the while, thus, we start at 1
 
-		if snapDiff < 0
-			0
-		else if snapDiff >= @snapDiffToIndex.length
-			@snapCnt
-		else
-			snapDiffInt = Math.floor(snapDiff)
-			snapCoverage = @snapDiffToIndex[snapDiffInt]
+			#We loop until the date is behid the progress or until we decide to stop the loop
+			while (loopProgress < date && !loopStop)
+				loopProgress.add(@customTimeSlot[slotCounter - 1])
+				slotCounter++
 
-			if isInt(snapCoverage) # not an in-between value
-				snapCoverage += snapDiff - snapDiffInt # add the remainder
+				#If we finished looping our customTimeSlot and we still are behind the date, it means
+				#it is supposed to be rendered on another day.
+				if slotCounter == @customTimeSlot.length + 1
+					loopStop = true #its not on the same day
+
+			#If the given date is between a slat which is visible (we didn't stop the loop)
+			if(!loopStop)
+				#Now we compute the position. No question here, just some blackmagic math I wrote like "hm, lets put a -1 here maybe it'll work"
+				snapCoverage = slotCounter - 1 - ((loopProgress - date) / (this.customTimeSlot[slotCounter - 1]))
+				
+				if snapCoverage < 0
+					0
 			else
-				# a fractional value, meaning the date is not visible
-				# always round up in this case. works for start AND end dates in a range.
-				snapCoverage = Math.ceil(snapCoverage)
+				snapCoverage = @snapCnt
+		else
+			snapDiff = divideRangeByDuration(@start, date, @snapDuration)
+		
+			if snapDiff < 0
+				0
+			else if snapDiff >= @snapDiffToIndex.length
+				@snapCnt
+			else
+				snapDiffInt = Math.floor(snapDiff)
+				snapCoverage = @snapDiffToIndex[snapDiffInt]
 
-			snapCoverage
+				if isInt(snapCoverage) # not an in-between value
+					snapCoverage += snapDiff - snapDiffInt # add the remainder
+				else
+					# a fractional value, meaning the date is not visible
+					# always round up in this case. works for start AND end dates in a range.
+					snapCoverage = Math.ceil(snapCoverage)
+
+		snapCoverage
 
 
 	# for LTR, results range from 0 to width of area
