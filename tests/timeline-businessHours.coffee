@@ -20,7 +20,7 @@ describe 'timeline businessHours', ->
 					done()
 
 		# FAILS
-		xit 'renders all-day on a day completely outside of business hours', (done) ->
+		fit 'renders all-day on a day completely outside of business hours', (done) ->
 			initCalendar
 				now: '2016-02-14' # weekend
 				businessHours: {
@@ -29,7 +29,9 @@ describe 'timeline businessHours', ->
 				}
 				slotDuration: { hours: 1 }
 				viewRender: ->
-					expectNoBusiness()
+					expect(isTimelineNonBusinessSegsRendered([
+						{ start: '2016-02-14T00:00', end: '2016-02-15T00:00' }
+					])).toBe(true)
 					done()
 
 		it 'renders once even with resources', (done) ->
@@ -84,11 +86,6 @@ describe 'timeline businessHours', ->
 		expect(isTimelineNonBusinessSegsRendered([
 			{ start: '2016-02-15T00:00', end: '2016-02-15T10:00' }
 			{ start: '2016-02-15T16:00', end: '2016-02-16T00:00' }
-		])).toBe(true)
-
-	expectNoBusiness = ->
-		expect(isTimelineNonBusinessSegsRendered([
-			{ start: '2016-02-15T00:00', end: '2016-02-15T00:00' }
 		])).toBe(true)
 
 	expectResourceOverride = -> # one resource 2am - 10pm, the rest 9am - 5pm

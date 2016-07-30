@@ -501,8 +501,7 @@ class TimelineGrid extends Grid
 
 	renderBusinessHours: ->
 		if not @largeUnit
-			events = @view.calendar.getCurrentBusinessHourEvents(not @isTimeScale)
-			segs = @businessHourSegs = @eventsToSegs(events)
+			segs = @businessHourSegs = @buildBusinessHourSegs(not @isTimeScale)
 			@renderFill('businessHours', segs, 'bgevent')
 
 
