@@ -56,7 +56,7 @@ getTrailingBoundingRect = (els, isRTL) ->
 
 
 getBoundingRects = (els) ->
-	rects = for node in els
+	for node in els
 		getBoundingRect(node)
 
 
