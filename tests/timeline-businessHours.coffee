@@ -19,8 +19,7 @@ describe 'timeline businessHours', ->
 					expect10to4()
 					done()
 
-		# FAILS
-		fit 'renders all-day on a day completely outside of business hours', (done) ->
+		it 'renders all-day on a day completely outside of business hours', (done) ->
 			initCalendar
 				now: '2016-02-14' # weekend
 				businessHours: {
