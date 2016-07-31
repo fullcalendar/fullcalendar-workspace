@@ -1,4 +1,16 @@
 
+v1.3.3 (2016-7-31)
+------------------
+
+- business hours per-resource (#61)
+- fix non-business days without styles (#109)
+- fix bug with scrollbars causing selection after the first (#192)
+- certain rendering actions, such as initial rendering of a resource view,
+   would not always execute synchronously once jQuery 3 was introduced.
+   fixes have been made to ensure synchronous execution with jQuery 3.
+- integration with TravisCI
+
+
 v1.3.2 (2016-06-02)
 -------------------
 
