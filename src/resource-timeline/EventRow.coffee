@@ -9,6 +9,8 @@ class EventRow extends RowParent
 	bgSegContainerEl: null # same thing :(
 
 	isSegsRendered: false # for *fg* segs, but also a proxy for if bg segs were rendered too
+	isBusinessHourSegsRendered: false
+	businessHourSegs: null
 	bgSegs: null
 	fgSegs: null
 
@@ -30,6 +32,8 @@ class EventRow extends RowParent
 	ensureSegsRendered: ->
 		if not @isSegsRendered
 
+			@ensureBusinessHourSegsRendered()
+
 			if @bgSegs
 				@view.timeGrid.renderFillInContainer('bgEvent', this, @bgSegs)
 
@@ -39,12 +43,36 @@ class EventRow extends RowParent
 			@isSegsRendered = true
 
 
+	ensureBusinessHourSegsRendered: ->
+		if @businessHourSegs and not @isBusinessHourSegsRendered
+
+			# do what TimelineGrid::renderBusinessHours does
+			# but call renderFillInContainer directly
+			@view.timeGrid.renderFillInContainer('businessHours', this, @businessHourSegs, 'bgevent')
+
+			@isBusinessHourSegsRendered = true
+
+
 	unrenderEventContent: ->
 
 		# TODO: triggerEventUnrender
 		# TODO: remove from Grid::elsByFill{}
 		# TODO: ResourceTimelineGrid mimics this same logic :(
 
+		@clearBusinessHourSegs()
 		@bgSegs = null
 		@fgSegs = null
 		@isSegsRendered = false
+
+
+	clearBusinessHourSegs: ->
+
+		# TODO: remove from Grid::elsByFill{}
+
+		if @businessHourSegs
+			for seg in @businessHourSegs
+				if seg.el
+					seg.el.remove()
+			@businessHourSegs = null
+
+		@isBusinessHourSegsRendered = false

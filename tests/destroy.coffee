@@ -34,5 +34,7 @@ describe 'destroy', ->
 							expect(countHandlers(window)).toBe(windowCnt)
 							expect($el.attr('class') || '').toBe('')
 							done()
-						, 0
-			, 0
+						, 100
+			, 100
+			# needs non-zero waits unfortunately. other tests are probably
+			# considered "done()" by karma, but still actually shutting down.

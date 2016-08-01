@@ -31,3 +31,11 @@ class ResourceTimeGrid extends FC.TimeGrid
 						copy.col = @indicesToCol(resourceIndex, seg.dayIndex)
 						resourceSegs.push(copy)
 			resourceSegs
+
+
+	renderBusinessHours: ->
+		segs = @computePerResourceBusinessHourSegs(false) # wholeDay=false
+		if segs
+			@renderBusinessSegs(segs)
+		else
+			super # render global business hours

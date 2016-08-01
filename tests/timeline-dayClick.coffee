@@ -81,7 +81,7 @@ describe 'timeline dayClick', ->
 						initCalendar
 							eventAfterAllRender: ->
 								$.simulateByPoint 'drag',
-									point: getResourceTimelinePoint('b', '2015-11-28T04:00:00', 0.5) # +1/2 slot = 15 mins
+									point: getResourceTimelinePoint('b', '2015-11-28T04:15:00')
 									callback: ->
 										expect(dayClickCalled).toBe(true)
 										done()

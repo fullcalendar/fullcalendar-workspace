@@ -1,25 +1,60 @@
 
-getResourceTimelinePoint = (resourceId, date, slatOffset) ->
+getResourceTimelineRect = (resourceId, start, end) ->
+	if typeof resourceId == 'object'
+		obj = resourceId
+		resourceId = obj.resourceId
+		start = obj.start
+		end = obj.end
+	start = $.fullCalendar.moment.parseZone(start)
+	end = $.fullCalendar.moment.parseZone(end)
+	coord0 = getTimelineLeft(start)
+	coord1 = getTimelineLeft(end)
 	rowRect = getBoundingRect(getTimelineRowEl(resourceId))
-	left = getTimelineLeft(date, slatOffset)
 	{
-		left: left
+		left: Math.min(coord0, coord1)
+		right: Math.max(coord0, coord1)
+		top: rowRect.top
+		bottom: rowRect.bottom
+	}
+
+
+getResourceTimelinePoint = (resourceId, date) ->
+	rowRect = getBoundingRect(getTimelineRowEl(resourceId))
+	{
+		left: getTimelineLeft(date)
 		top: (rowRect.top + rowRect.bottom) / 2
 	}
 
 
-getTimelinePoint = (date, slatOffset) ->
-	contentRect = getBoundingRect($('.fc-body .fc-time-area .fc-content'))
-	left = getTimelineLeft(date, slatOffset)
+getTimelineRect = (start, end) ->
+	if typeof start == 'object'
+		obj = start
+		start = obj.start
+		end = obj.end
+	start = $.fullCalendar.moment.parseZone(start)
+	end = $.fullCalendar.moment.parseZone(end)
+	coord0 = getTimelineLeft(start)
+	coord1 = getTimelineLeft(end)
+	canvasRect = getBoundingRect($('.fc-body .fc-time-area .fc-scroller-canvas'))
 	{
-		left: left
+		left: Math.min(coord0, coord1)
+		right: Math.max(coord0, coord1)
+		top: canvasRect.top
+		bottom: canvasRect.bottom
+	}
+
+
+getTimelinePoint = (date) ->
+	contentRect = getBoundingRect($('.fc-body .fc-time-area .fc-content'))
+	{
+		left: getTimelineLeft(date)
 		top: (contentRect.top + contentRect.bottom) / 2
 	}
 
 
-getTimelineLine = (date, slatOffset) ->
+getTimelineLine = (date) ->
 	contentRect = getBoundingRect($('.fc-body .fc-time-area .fc-content'))
-	left = getTimelineLeft(date, slatOffset)
+	left = getTimelineLeft(date)
 	{
 		left: left
 		right: left
@@ -27,16 +62,65 @@ getTimelineLine = (date, slatOffset) ->
 		bottom: contentRect.bottom
 	}
 
+###
+targetDate can be in between slat dates
+###
+getTimelineLeft = (targetDate) ->
+	targetDate = $.fullCalendar.moment.parseZone(targetDate)
+	isRtl = $('.fc').hasClass('fc-rtl')
+	borderWidth = 1
+	slatEls = getTimelineSlatEl(targetDate)
 
-getTimelineLeft = (date, slatOffset=0) ->
-	slatEl = getTimelineSlatEl(date)
-	expect(slatEl.length).toBe(1)
-	slatWidth = slatEl.outerWidth()
-	# go 1px into slot, to guarantee avoiding border
-	if isElWithinRtl(slatEl)
-		slatEl.offset().left + slatWidth - slatWidth * slatOffset - 1
-	else
-		slatEl.offset().left + slatWidth * slatOffset + 1
+	getLeadingEdge = (cellEl) ->
+		if isRtl
+			cellEl.offset().left + cellEl.outerWidth() - borderWidth
+		else
+			cellEl.offset().left + borderWidth
+
+	getTrailingEdge = (cellEl) ->
+		if isRtl
+			cellEl.offset().left - borderWidth
+		else
+			cellEl.offset().left + borderWidth + cellEl.outerWidth()
+
+	if slatEls.length == 1
+		return getLeadingEdge(slatEls)
+
+	slatEls = $('.fc-body .fc-slats td') # all slats
+	slatDate = null
+	prevSlatDate = null
+
+	for slatEl, i in slatEls # traverse earlier to later
+		slatEl = $(slatEl)
+
+		prevSlatDate = slatDate
+		slatDate = $.fullCalendar.moment.parseZone(slatEl.data('date'))
+
+		# is target time between start of previous slat but before this one?
+		if targetDate < slatDate
+			# before first slat
+			if not prevSlatDate
+				return getLeadingEdge(slatEl)
+			else
+				prevSlatEl = slatEls.eq(i - 1)
+				prevSlatCoord = getLeadingEdge(prevSlatEl)
+				slatCoord = getLeadingEdge(slatEl)
+				return prevSlatCoord +
+					(slatCoord - prevSlatCoord) *
+					((targetDate - prevSlatDate) / (slatDate - prevSlatDate))
+
+	# target date must be after start date of last slat
+	# `slatDate` is set to the start date of the last slat
+
+	# guess the duration of the last slot, based on previous duration
+	slatMsDuration = slatDate - prevSlatDate
+
+	slatCoord = getLeadingEdge(slatEl)
+	slatEndCoord = getTrailingEdge(slatEl)
+
+	slatCoord + # last slat's starting edge
+		(slatEndCoord - slatCoord) *
+		Math.min(1, (targetDate - slatDate) / slatMsDuration) # don't go past the last slat
 
 
 getTimelineRowEl = (resourceId) ->

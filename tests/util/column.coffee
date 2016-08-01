@@ -15,6 +15,13 @@ getHeadResourceEls = (resourceId, date) ->
 		datePart)
 
 
+# either a day cell OR a resource cell
+getHeadResourceTh = (resourceId, date) ->
+	date = $.fullCalendar.moment.parseZone(date)
+	$('th[data-resource-id="' + resourceId + '"]' +
+		'[data-date="' + date.format('YYYY-MM-DD') + '"]')
+
+
 # resourceId is required
 getHeadResourceDateEls = (date, resourceId) ->
 	date = $.fullCalendar.moment.parseZone(date)

@@ -2,6 +2,7 @@
 describe 'vresource businessHours', ->
 	pushOptions
 		now: '2015-11-18'
+		scrollTime: '00:00'
 		businessHours: true
 		resources: [
 			{ id: 'a', title: 'Resource A' }
@@ -17,113 +18,136 @@ describe 'vresource businessHours', ->
 			pushOptions
 				defaultView: 'basicWeek'
 
-			describe 'when resources above dates', ->
-				pushOptions
-					groupByResource: true
+			describeOptions {
+				'when resources above dates': { groupByResource: true }
+				'when dates above resources': { groupByDateAndResource: true }
+			}, ->
 
 				it 'greys out sat and sun', (done) ->
 					initCalendar
 						viewRender: ->
-							aHeadRect = getBoundingRect(getHeadResourceEls('a'))
-							bHeadRect = getBoundingRect(getHeadResourceEls('b'))
-							aSunRect = getLeadingBoundingRect(getHeadDowEls('sun'), isRTL)
-							aSatRect = getLeadingBoundingRect(getHeadDowEls('sat'), isRTL)
-							bSunRect = getTrailingBoundingRect(getHeadDowEls('sun'), isRTL)
-							bSatRect = getTrailingBoundingRect(getHeadDowEls('sat'), isRTL)
-							bizRects = sortBoundingRects(getDayGridNonBizHourEls(), isRTL)
-							expect(bizRects.length).toBe(4)
-							expect(aSunRect).toBeMostlyHBoundedBy(aHeadRect)
-							expect(aSatRect).toBeMostlyHBoundedBy(aHeadRect)
-							expect(bSunRect).toBeMostlyHBoundedBy(bHeadRect)
-							expect(bSatRect).toBeMostlyHBoundedBy(bHeadRect)
-							expect(bizRects[0]).toBeMostlyHBoundedBy(aSunRect)
-							expect(bizRects[1]).toBeMostlyHBoundedBy(aSatRect)
-							expect(bizRects[2]).toBeMostlyHBoundedBy(bSunRect)
-							expect(bizRects[3]).toBeMostlyHBoundedBy(bSatRect)
-							done()
-
-			describe 'when dates above resources', ->
-				pushOptions
-					groupByDateAndResource: true
-
-				it 'greys out sat and sunday', (done) ->
-					initCalendar
-						viewRender: ->
-							sunHeadRect = getBoundingRect(getHeadDowEls('sun'))
-							satHeadRect = getBoundingRect(getHeadDowEls('sat'))
-							bizRects = sortBoundingRects(getDayGridNonBizHourEls(), isRTL)
-							expect(bizRects.length).toBe(4)
-							expect(bizRects[0]).toBeMostlyHBoundedBy(sunHeadRect)
-							expect(bizRects[1]).toBeMostlyHBoundedBy(sunHeadRect)
-							expect(bizRects[2]).toBeMostlyHBoundedBy(satHeadRect)
-							expect(bizRects[3]).toBeMostlyHBoundedBy(satHeadRect)
+							expect(isDayGridNonBusinessSegsRendered([
+								{ resourceId: 'a', date: '2015-11-15' }
+								{ resourceId: 'a', date: '2015-11-21' }
+								{ resourceId: 'b', date: '2015-11-15' }
+								{ resourceId: 'b', date: '2015-11-21' }
+							])).toBe(true)
 							done()
 
 		describe 'for agendaWeek', ->
 			pushOptions
 				defaultView: 'agendaWeek'
 
-			describe 'when resources above dates', ->
-				pushOptions
-					groupByResource: true
+			describeOptions {
+				'when resources above dates': { groupByResource: true }
+				'when dates above resources': { groupByDateAndResource: true }
+			}, ->
 
 				it 'greys out sat and sun', (done) ->
 					initCalendar
 						viewRender: ->
-							aRect = getBoundingRect(getHeadResourceEls('a'))
-							bRect = getBoundingRect(getHeadResourceEls('b'))
-							bizRects = sortBoundingRects(getTimeGridNonBizHourEls(), isRTL)
-							expect(bizRects.length).toBe(24)
-							for bizRect, i in bizRects
-								if i < 12
-									expect(bizRect).toBeMostlyHBoundedBy(aRect)
-								else
-									expect(bizRect).toBeMostlyHBoundedBy(bRect)
+							expect(isResourceTimeGridNonBusinessSegsRendered([
+								# sun
+								{ resourceId: 'a', start: '2015-11-15T00:00:00', end: '2015-11-16T00:00:00' }
+								# mon
+								{ resourceId: 'a', start: '2015-11-16T00:00:00', end: '2015-11-16T09:00:00' }
+								{ resourceId: 'a', start: '2015-11-16T17:00:00', end: '2015-11-17T00:00:00' }
+								# tue
+								{ resourceId: 'a', start: '2015-11-17T00:00:00', end: '2015-11-17T09:00:00' }
+								{ resourceId: 'a', start: '2015-11-17T17:00:00', end: '2015-11-18T00:00:00' }
+								# wed
+								{ resourceId: 'a', start: '2015-11-18T00:00:00', end: '2015-11-18T09:00:00' }
+								{ resourceId: 'a', start: '2015-11-18T17:00:00', end: '2015-11-19T00:00:00' }
+								# thu
+								{ resourceId: 'a', start: '2015-11-19T00:00:00', end: '2015-11-19T09:00:00' }
+								{ resourceId: 'a', start: '2015-11-19T17:00:00', end: '2015-11-20T00:00:00' }
+								# fru
+								{ resourceId: 'a', start: '2015-11-20T00:00:00', end: '2015-11-20T09:00:00' }
+								{ resourceId: 'a', start: '2015-11-20T17:00:00', end: '2015-11-21T00:00:00' }
+								# sat
+								{ resourceId: 'a', start: '2015-11-21T00:00:00', end: '2015-11-22T00:00:00' }
+								# sun
+								{ resourceId: 'b', start: '2015-11-15T00:00:00', end: '2015-11-16T00:00:00' }
+								# mon
+								{ resourceId: 'b', start: '2015-11-16T00:00:00', end: '2015-11-16T09:00:00' }
+								{ resourceId: 'b', start: '2015-11-16T17:00:00', end: '2015-11-17T00:00:00' }
+								# tue
+								{ resourceId: 'b', start: '2015-11-17T00:00:00', end: '2015-11-17T09:00:00' }
+								{ resourceId: 'b', start: '2015-11-17T17:00:00', end: '2015-11-18T00:00:00' }
+								# wed
+								{ resourceId: 'b', start: '2015-11-18T00:00:00', end: '2015-11-18T09:00:00' }
+								{ resourceId: 'b', start: '2015-11-18T17:00:00', end: '2015-11-19T00:00:00' }
+								# thu
+								{ resourceId: 'b', start: '2015-11-19T00:00:00', end: '2015-11-19T09:00:00' }
+								{ resourceId: 'b', start: '2015-11-19T17:00:00', end: '2015-11-20T00:00:00' }
+								# fri
+								{ resourceId: 'b', start: '2015-11-20T00:00:00', end: '2015-11-20T09:00:00' }
+								{ resourceId: 'b', start: '2015-11-20T17:00:00', end: '2015-11-21T00:00:00' }
+								# sat
+								{ resourceId: 'b', start: '2015-11-21T00:00:00', end: '2015-11-22T00:00:00' }
+							])).toBe(true)
 							done()
 
-			describe 'when dates above resources', ->
-				pushOptions
-					groupByDateAndResource: true
+		describe 'for agendaDay with resources', ->
+			pushOptions
+				defaultView: 'agendaDay'
 
-				it 'greys out sat and sun', (done) ->
-					initCalendar
-						viewRender: ->
-							bizRects = sortBoundingRects(getTimeGridNonBizHourEls(), isRTL)
-							sunRect = getBoundingRect(getHeadDowEls('sun'))
-							monRect = getBoundingRect(getHeadDowEls('mon'))
-							tueRect = getBoundingRect(getHeadDowEls('tue'))
-							wedRect = getBoundingRect(getHeadDowEls('wed'))
-							thuRect = getBoundingRect(getHeadDowEls('thu'))
-							friRect = getBoundingRect(getHeadDowEls('fri'))
-							satRect = getBoundingRect(getHeadDowEls('sat'))
-							expect(bizRects[0]).toBeMostlyHBoundedBy(sunRect)
-							expect(bizRects[1]).toBeMostlyHBoundedBy(sunRect)
-							expect(bizRects[2]).toBeMostlyHBoundedBy(monRect)
-							expect(bizRects[3]).toBeMostlyHBoundedBy(monRect)
-							expect(bizRects[4]).toBeMostlyHBoundedBy(monRect)
-							expect(bizRects[5]).toBeMostlyHBoundedBy(monRect)
-							expect(bizRects[6]).toBeMostlyHBoundedBy(tueRect)
-							expect(bizRects[7]).toBeMostlyHBoundedBy(tueRect)
-							expect(bizRects[8]).toBeMostlyHBoundedBy(tueRect)
-							expect(bizRects[9]).toBeMostlyHBoundedBy(tueRect)
-							expect(bizRects[10]).toBeMostlyHBoundedBy(wedRect)
-							expect(bizRects[11]).toBeMostlyHBoundedBy(wedRect)
-							expect(bizRects[12]).toBeMostlyHBoundedBy(wedRect)
-							expect(bizRects[13]).toBeMostlyHBoundedBy(wedRect)
-							expect(bizRects[14]).toBeMostlyHBoundedBy(thuRect)
-							expect(bizRects[15]).toBeMostlyHBoundedBy(thuRect)
-							expect(bizRects[16]).toBeMostlyHBoundedBy(thuRect)
-							expect(bizRects[17]).toBeMostlyHBoundedBy(thuRect)
-							expect(bizRects[18]).toBeMostlyHBoundedBy(friRect)
-							expect(bizRects[19]).toBeMostlyHBoundedBy(friRect)
-							expect(bizRects[20]).toBeMostlyHBoundedBy(friRect)
-							expect(bizRects[21]).toBeMostlyHBoundedBy(friRect)
-							expect(bizRects[22]).toBeMostlyHBoundedBy(satRect)
-							expect(bizRects[23]).toBeMostlyHBoundedBy(satRect)
+			it 'renders all with same businessHours', (done) ->
+				initCalendar
+					viewRender: ->
+						expectDay9to5()
+						done()
+
+			it 'renders a resource override', (done) ->
+				initCalendar
+					resources: [
+						{ id: 'a', title: 'Resource A' }
+						{ id: 'b', title: 'Resource B', businessHours: { start: '02:00', end: '22:00' } }
+					]
+					viewRender: ->
+						expectResourceOverride()
+						done()
+
+			it 'renders a resource override dynamically', (done) ->
+				specialResource = { id: 'b', title: 'Resource B', businessHours: { start: '02:00', end: '22:00' } }
+				initCalendar
+					resources: [
+						{ id: 'a', title: 'Resource A' }
+						specialResource
+					]
+					viewRender: ->
+						expectResourceOverride()
+						setTimeout ->
+							currentCalendar.removeResource(specialResource)
+							expectLonelyDay9to5()
+							currentCalendar.addResource(specialResource)
+							expectResourceOverride()
 							done()
 
-	getDayGridNonBizHourEls = ->
-		$('.fc-day-grid .fc-nonbusiness')
+	expectDay9to5 = ->
+		expect(isResourceTimeGridNonBusinessSegsRendered([
+			{ resourceId: 'a', start: '2015-11-18T00:00', end: '2015-11-18T09:00' }
+			{ resourceId: 'a', start: '2015-11-18T17:00', end: '2015-11-19T00:00' }
+			{ resourceId: 'b', start: '2015-11-18T00:00', end: '2015-11-18T09:00' }
+			{ resourceId: 'b', start: '2015-11-18T17:00', end: '2015-11-19T00:00' }
+		])).toBe(true)
 
-	getTimeGridNonBizHourEls = ->
-		$('.fc-time-grid .fc-nonbusiness')
+	expectResourceOverride = -> # one resource 2am - 10pm, the rest 9am - 5pm
+		expect(isResourceTimeGridNonBusinessSegsRendered([
+			{ resourceId: 'a', start: '2015-11-18T00:00', end: '2015-11-18T09:00' }
+			{ resourceId: 'a', start: '2015-11-18T17:00', end: '2015-11-19T00:00' }
+			{ resourceId: 'b', start: '2015-11-18T00:00', end: '2015-11-18T02:00' }
+			{ resourceId: 'b', start: '2015-11-18T22:00', end: '2015-11-19T00:00' }
+		])).toBe(true)
+
+	expectLonelyDay9to5 = -> # only one resource 9am - 5pm
+		expect(isResourceTimeGridNonBusinessSegsRendered([
+			{ resourceId: 'a', start: '2015-11-18T00:00', end: '2015-11-18T09:00' }
+			{ resourceId: 'a', start: '2015-11-18T17:00', end: '2015-11-19T00:00' }
+		])).toBe(true)
+
+	isDayGridNonBusinessSegsRendered = (segs) ->
+		doElsMatchSegs($('.fc-day-grid .fc-nonbusiness'), segs, getResourceDayGridRect)
+
+	isResourceTimeGridNonBusinessSegsRendered = (segs) ->
+		doElsMatchSegs($('.fc-time-grid .fc-nonbusiness'), segs, getResourceTimeGridRect)

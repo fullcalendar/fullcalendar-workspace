@@ -289,7 +289,7 @@ class TimelineGrid extends Grid
 		slatCoordCache = @slatCoordCache
 		containerCoordCache = @containerCoordCache
 
-		if containerCoordCache.getVerticalIndex(topOffset)? # vertically in bounds?
+		if containerCoordCache.isTopInBounds(topOffset)
 
 			slatIndex = slatCoordCache.getHorizontalIndex(leftOffset)
 			if slatIndex?
@@ -552,8 +552,7 @@ class TimelineGrid extends Grid
 
 	renderBusinessHours: ->
 		if not @largeUnit
-			events = @view.calendar.getBusinessHoursEvents(not @isTimeScale)
-			segs = @businessHourSegs = @eventsToSegs(events)
+			segs = @businessHourSegs = @buildBusinessHourSegs(not @isTimeScale)
 			@renderFill('businessHours', segs, 'bgevent')
 
 
@@ -1063,6 +1062,7 @@ class TimelineGrid extends Grid
 
 	# Fill
 	# ---------------------------------------------------------------------------------
+	# these functions expect segs to have rendered els (not yet attached to DOM)
 
 
 	renderFill: (type, segs, className) ->

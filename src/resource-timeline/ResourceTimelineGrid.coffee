@@ -116,6 +116,93 @@ class ResourceTimelineGrid extends TimelineGrid
 		@unrenderFgContainers(eventRows)
 
 
+	# Business Hours
+	# ---------------------------------------------------------------------------------
+	# all of the below `row`s are assumed to be *RESOURCE* rows
+
+	# a running count of rows that define their own business hour rules
+	rowCntWithCustomBusinessHours: 0
+
+	renderBusinessHours: ->
+		if @rowCntWithCustomBusinessHours # need to render individual?
+			@ensureIndividualBusinessHours()
+		else
+			super
+
+	unrenderBusinessHours: ->
+		if @rowCntWithCustomBusinessHours # need to unrender individual?
+			@clearIndividualBusinessHours()
+		else
+			super
+
+	###
+	Ensures that all rows have their individual business hours DISPLAYED.
+	###
+	ensureIndividualBusinessHours: ->
+		for row in @view.getEventRows()
+
+			if not row.businessHourSegs
+				@populateRowBusinessHoursSegs(row)
+
+			if row.isShown
+				row.ensureBusinessHourSegsRendered()
+
+	###
+	Ensures that all rows have their individual business hours CLEARED.
+	###
+	clearIndividualBusinessHours: ->
+		for row in @view.getEventRows()
+			row.clearBusinessHourSegs() # sets row.businessHourSegs to null
+
+	###
+	Called when a row has been added to the tree data structure, but before it's rendered.
+	Computes and assigns business hour data *if necessary*. To be rendered soon after.
+	###
+	assignRowBusinessHourSegs: (row) ->
+		if row.resource.businessHours
+
+			# was previously rendering general business hour,
+			# but now needs to render per-resource business hours for every resource?
+			if not @rowCntWithCustomBusinessHours
+				TimelineGrid::unrenderBusinessHours.call(this) # unrender general
+				@ensureIndividualBusinessHours() # render per-resource
+
+			@rowCntWithCustomBusinessHours += 1
+
+		if @rowCntWithCustomBusinessHours
+			# will need for render later, regardless of whether row defines its own custom rules
+			@populateRowBusinessHoursSegs(row)
+
+	###
+	Called when a row has been removed from the tree data structure.
+	Unrenders the row's segs and, if necessary, forces businessHours back to generic rendering.
+	###
+	destroyRowBusinessHourSegs: (row) ->
+		row.clearBusinessHourSegs() # sets row.businessHourSegs to null
+
+		if row.resource.businessHours
+			@rowCntWithCustomBusinessHours -= 1
+
+			if not @rowCntWithCustomBusinessHours
+				@clearIndividualBusinessHours() # unrender individual
+				TimelineGrid::renderBusinessHours.call(this) # render general
+
+	###
+	Compute and assign to row.businessHourSegs unconditionally
+	###
+	populateRowBusinessHoursSegs: (row) ->
+		businessHours = row.resource.businessHours or @view.opt('businessHours')
+		businessHoursEvents = @view.calendar.computeBusinessHourEvents(not @isTimeScale, businessHours)
+		businessHourSegs = @eventsToSegs(businessHoursEvents)
+		businessHourSegs = @renderFillSegEls('businessHours', businessHourSegs) # pass in className? # always needs this because EventRow doesnt do it
+		row.businessHourSegs = businessHourSegs
+		return
+
+
+	# Fill System
+	# ---------------------------------------------------------------------------------
+
+
 	renderFill: (type, segs, className) ->
 		segs = @renderFillSegEls(type, segs)
 		resourceSegs = []

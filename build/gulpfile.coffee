@@ -241,37 +241,40 @@ KARMA_CONFIG_FILE = path.join(__dirname, 'karma.conf.coffee') # was getting conf
 ###
 Runs a server, outputs a URL to visit
 ###
-gulp.task 'karma', (done) ->
+gulp.task 'karma', [ 'compile' ], (done) ->
 	server = new KarmaServer
-			configFile: KARMA_CONFIG_FILE
-			singleRun: false
-			autoWatch: true
-		, done
+		configFile: KARMA_CONFIG_FILE
+		singleRun: false
+		autoWatch: true
+	, (exitCode) -> # plays best with developing from command line
+		process.exit(exitCode)
 	server.start()
 
 
 ###
 Runs headlessly and continuously, watching files
 ###
-gulp.task 'karmaHeadless', (done) ->
+gulp.task 'karmaHeadless', [ 'compile' ], (done) ->
 	server = new KarmaServer
-			configFile: KARMA_CONFIG_FILE
-			browsers: [ 'PhantomJS_custom' ]
-			singleRun: false
-			autoWatch: true
-		, done
+		configFile: KARMA_CONFIG_FILE
+		browsers: [ 'PhantomJS_custom' ]
+		singleRun: false
+		autoWatch: true
+	, (exitCode) -> # plays best with developing from command line
+		process.exit(exitCode)
 	server.start()
 
 ###
 Runs headlessly once, then exits
 ###
-gulp.task 'karmaSingle', (done) ->
+gulp.task 'karmaSingle', [ 'compile' ], (done) ->
 	server = new KarmaServer
-			configFile: KARMA_CONFIG_FILE
-			browsers: [ 'PhantomJS_custom' ]
-			singleRun: true
-			autoWatch: false
-		, done
+		configFile: KARMA_CONFIG_FILE
+		browsers: [ 'PhantomJS_custom' ]
+		singleRun: true
+		autoWatch: false
+	server.on 'run_complete', (browsers, results) -> # plays best with CI and other tasks
+		done(results.exitCode)
 	server.start()
 
 

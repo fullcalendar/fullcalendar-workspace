@@ -46,3 +46,10 @@ class ResourceDayGrid extends FC.DayGrid
 						resourceSegs.push(copy)
 			resourceSegs
 
+
+	renderBusinessHours: ->
+		segs = @computePerResourceBusinessHourSegs(true) # wholeDay=true
+		if segs
+			@renderFill('businessHours', segs, 'bgevent')
+		else
+			super # render global business hours
