@@ -69,8 +69,12 @@ class TimelineGrid extends Grid
 		#Simple var to know the state of customTimeSlot easily
 		if (typeof @customTimeSlot != "undefined" && @customTimeSlot != null)
 			@customRangeMode = true
-		else
-			@customRangeMode = false
+			@maxTime = moment.duration(@minTime);
+			
+			`var thisProxy = this;
+			$.each(this.customTimeSlot, function() {
+				thisProxy.maxTime.add(this);
+			});`
 
 		@timeWindowMs = @maxTime - @minTime
 
@@ -214,6 +218,7 @@ class TimelineGrid extends Grid
 
 		slotCounter = 0
 
+		#This is the same logic as in the rangeUpdated function, absolutly the same.
 		while (date < @end)
 			if @isValidDate(date)
 				snapIndex++
@@ -229,15 +234,11 @@ class TimelineGrid extends Grid
 
 			slotCounter++
 
-			#Here is the tricky part, if we are at the end of the customTimeSlot, we need to move the date forward
-			#and restart looping the customTimeSlot
 			if @customRangeMode
 				if slotCounter >= @customTimeSlot.length
 					slotCounter = 0
 					date.add(1, 'day')
 					date.startOf('day')
-
-
 
 		@snapDiffToIndex = snapDiffToIndex
 		@snapIndexToDiff = snapIndexToDiff
@@ -688,29 +689,36 @@ class TimelineGrid extends Grid
 	computeDateSnapCoverage: (date) ->
 		#Two case, we use custom time slot or we don't
 		if @customRangeMode
-			loopProgress = @start.clone()
+			loopProgress = date.clone().startOf('day')
 			loopStop = false
 			slotCounter = 1 #Since there is no do while loop, it is possible we never enter the while, thus, we start at 1
 
-			#We loop until the date is behid the progress or until we decide to stop the loop
-			while (loopProgress < date && !loopStop)
-				loopProgress.add(@customTimeSlot[slotCounter - 1])
-				slotCounter++
+			#Lets first figure out if we have to loop
+			if date.isBetween(@start, @end)
+				#We loop until the date is behind the progress or until we decide to stop the loop
+				while loopProgress < date && !loopStop
+					loopProgress.add(@customTimeSlot[slotCounter - 1])
+					slotCounter++
 
-				#If we finished looping our customTimeSlot and we still are behind the date, it means
-				#it is supposed to be rendered on another day.
-				if slotCounter == @customTimeSlot.length + 1
-					loopStop = true #its not on the same day
+					if slotCounter == @customTimeSlot.length + 1
+						loopStop = true #We looped all our timeslot, so it is outside our customTimeSlot
 
-			#If the given date is between a slat which is visible (we didn't stop the loop)
-			if(!loopStop)
-				#Now we compute the position. No question here, just some blackmagic math I wrote like "hm, lets put a -1 here maybe it'll work"
-				snapCoverage = slotCounter - 1 - ((loopProgress - date) / (this.customTimeSlot[slotCounter - 1]))
-				
-				if snapCoverage < 0
-					0
+				if(!loopStop)
+					#Now we compute the position. No question here, just some blackmagic.
+					#(-1 because we start at 1, we calculate the exact offset, and we add the number of slot which are before this day (because we dont loop all the days))
+					snapCoverage = (slotCounter - 1 - ((loopProgress - date) / (this.customTimeSlot[slotCounter - 1]))) + (date.diff(@start, 'day') * @customTimeSlot.length)
+				else
+					#The loop has been stopped because the date is outside our range, so lets just return the number of snap displayed
+					snapCoverage = @snapCnt
 			else
-				snapCoverage = @snapCnt
+				if date.isSameOrAfter(@end)
+					snapCoverage = @snapCnt
+				else
+					snapCoverage = 0
+
+			if snapCoverage < 0
+				snapCoverage = 0
+
 		else
 			snapDiff = divideRangeByDuration(@start, date, @snapDuration)
 		
