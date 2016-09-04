@@ -32,15 +32,21 @@ ResourceGridMixin = # expects a Grid
 		event
 
 
+	# TODO: if resource-only dragging or date-only dragging,
+	# optimize the Grid's hit coordinate computations.
 	computeEventDrop: (startSpan, endSpan, event) ->
 
-		allowResourceChange = true # TODO: make this a setting
-		if not allowResourceChange and startSpan.resourceId != endSpan.resourceId
-			return null
+		if @view.isEventStartEditable(event)
+			dropLocation = Grid::computeEventDrop.apply(this, arguments) # super-method
+		else
+			dropLocation = FC.pluckEventDateProps(event) # keep event dates the same
 
-		dropLocation = Grid::computeEventDrop.apply(this, arguments) # super-method
 		if dropLocation
-			dropLocation.resourceId = endSpan.resourceId
+			if @view.isEventResourceEditable(event)
+				dropLocation.resourceId = endSpan.resourceId
+			else
+				dropLocation.resourceId = startSpan.resourceId # the original
+
 		dropLocation
 
 
