@@ -1,4 +1,35 @@
 
+dragResourceTimelineEvent = (eventEl, dropInfo) ->
+	new Promise (resolve) ->
+		modifiedEvent = null
+
+		currentCalendar.on 'eventDragStop', ->
+			setTimeout -> # wait for eventDrop to be called
+				resolve(modifiedEvent)
+
+		currentCalendar.on 'eventDrop', (event) ->
+			modifiedEvent = event
+
+		eventEl.simulate 'drag',
+			localPoint: { left: 0, top: '50%' },
+			end: getResourceTimelinePoint(dropInfo.resourceId, dropInfo.date)
+
+
+selectResourceTimeline = (startInfo, inclusiveEndInfo) ->
+	new Promise (resolve) ->
+		selectInfo = null
+
+		currentCalendar.on 'select', (start, end) ->
+			selectInfo = { start, end }
+
+		$('.fc-body .fc-time-area').simulate 'drag',
+			point: getResourceTimelinePoint(startInfo.resourceId, startInfo.date)
+			end: getResourceTimelinePoint(inclusiveEndInfo.resourceId, inclusiveEndInfo.date)
+			onRelease: ->
+				setTimeout -> # wait for select to fire
+					resolve(selectInfo)
+
+
 getResourceTimelineRect = (resourceId, start, end) ->
 	if typeof resourceId == 'object'
 		obj = resourceId
