@@ -56,6 +56,17 @@ class CalendarExtension extends Calendar
 		return
 
 
+	# enforce resource ID constraint
+	isSpanAllowed: (span, constraint) ->
+		if typeof constraint == 'object'
+			constrainToResourceIds = @getEventResourceIds(constraint) # abuse of event system :(
+
+			if constrainToResourceIds.length and
+				(not span.resourceId or not (span.resourceId in constrainToResourceIds))
+					return false
+		super
+
+
 	# Returns a list of events that the given event should be compared against when being considered for a move to
 	# the specified span. Attached to the Calendar's prototype because EventManager is a mixin for a Calendar.
 	#
