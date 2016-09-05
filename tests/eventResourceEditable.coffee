@@ -10,7 +10,7 @@ describe 'eventResourceEditable', ->
 		]
 
 	buildEvent = (extra={}) ->
-		Object.assign({
+		$.extend({
 			title: 'event 1'
 			start: '2016-09-04T01:00:00'
 			resourceId: 'b'
