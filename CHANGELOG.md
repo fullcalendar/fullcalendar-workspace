@@ -1,4 +1,13 @@
 
+v1.4.0 (2016-09-04)
+-------------------
+
+- `eventResourceEditable` for control over events changing resources (#140)
+- `eventConstraint` accepts `resourceId` or `resourceIds` (#50)
+- `eventAllow`, programmatic control over event dragging (#50)
+- `selectAllow`,  programmatic over allowed selection
+
+
 v1.3.3 (2016-7-31)
 ------------------
 
