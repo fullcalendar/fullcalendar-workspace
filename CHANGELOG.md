@@ -9,8 +9,8 @@ v1.4.0 (2016-09-04)
 - adjustments to work with v3 of the core project
 
 
-v1.3.3 (2016-7-31)
-------------------
+v1.3.3 (2016-07-31)
+-------------------
 
 - business hours per-resource (#61)
 - fix non-business days without styles (#109)
