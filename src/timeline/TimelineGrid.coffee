@@ -324,10 +324,10 @@ class TimelineGrid extends Grid
 		@joiner = new ScrollJoiner('horizontal', [ @headScroller, @bodyScroller ])
 
 		if true
-			@follower = new ScrollFollower(@headScroller, @view.calendar.isTouch)
+			@follower = new ScrollFollower(@headScroller)
 
 		if true
-			@eventTitleFollower = new ScrollFollower(@bodyScroller, @view.calendar.isTouch)
+			@eventTitleFollower = new ScrollFollower(@bodyScroller)
 			@eventTitleFollower.minTravel = 50
 			if @isRTL
 				@eventTitleFollower.containOnNaturalRight = true

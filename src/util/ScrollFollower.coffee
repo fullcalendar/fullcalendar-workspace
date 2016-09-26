@@ -18,16 +18,22 @@ class ScrollFollower
 	isForcedRelative: false
 
 
-	constructor: (scroller, @isTouch) ->
+	constructor: (scroller) ->
 		@scroller = scroller
 		@sprites = []
 
-		# touch devices scroll too quick to make absolute ever look good
-		if @isTouch
-			@isForcedRelative = true
+		scroller.on 'scroll', =>
+			if scroller.isTouching
+				# touch devices should only updated after the scroll is over
+				@isTouch = true
+				@isForcedRelative = true # touch devices scroll too quick to make absolute ever look good
+			else
+				@isTouch = false
+				@isForcedRelative = false
+				@handleScroll()
 
-		# touch devices should only updated after the scroll is over
-		scroller.on (if @isTouch then 'scrollEnd' else 'scroll'), =>
+		# for touch devices
+		scroller.on 'scrollEnd', =>
 			@handleScroll()
 
 
