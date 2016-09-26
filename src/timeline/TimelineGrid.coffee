@@ -324,7 +324,7 @@ class TimelineGrid extends Grid
 		@joiner = new ScrollJoiner('horizontal', [ @headScroller, @bodyScroller ])
 
 		if true
-			@follower = new ScrollFollower(@headScroller)
+			@follower = new ScrollFollower(@headScroller, true) # allowPointerEvents=true
 
 		if true
 			@eventTitleFollower = new ScrollFollower(@bodyScroller)

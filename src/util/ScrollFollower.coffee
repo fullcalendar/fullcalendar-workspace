@@ -9,6 +9,8 @@ class ScrollFollower
 	isHFollowing: true
 	isVFollowing: false
 
+	allowPointerEvents: false
+
 	containOnNaturalLeft: false
 	containOnNaturalRight: false
 	minTravel: 0 # set by the caller
@@ -18,7 +20,7 @@ class ScrollFollower
 	isForcedRelative: false
 
 
-	constructor: (scroller) ->
+	constructor: (scroller, @allowPointerEvents=false) ->
 		@scroller = scroller
 		@sprites = []
 

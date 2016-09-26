@@ -172,7 +172,9 @@ class ScrollFollowerSprite
 
 
 	buildAbsoluteEl: -> # TODO: cache this?
-		@el.clone().addClass('fc-following').css
+		el = @el.clone().addClass('fc-following')
+
+		el.css
 			'position': 'absolute'
 			'z-index': 1000, # bad, but luckily scoped by .fc-content's z-index
 			'font-weight': @el.css('font-weight')
@@ -183,7 +185,11 @@ class ScrollFollowerSprite
 			'padding-bottom': @el.css('padding-bottom')
 			'padding-left': @el.css('padding-left')
 			'padding-right': @el.css('padding-right')
-			'pointer-events': 'none'
+
+		if not @follower.allowPointerEvents
+			el.css('pointer-events', 'none')
+
+		el
 
 
 # Geometry Utils
