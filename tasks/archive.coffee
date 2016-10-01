@@ -46,6 +46,8 @@ gulp.task 'archive:deps', [ 'archive:jqui:theme' ], ->
 		'node_modules/components-jqueryui/jquery-ui.min.js'
 		'node_modules/fullcalendar/dist/fullcalendar.min.js'
 		'node_modules/fullcalendar/dist/fullcalendar.min.css'
+		'node_modules/fullcalendar/dist/fullcalendar.print.min.css'
+		'node_modules/fullcalendar/dist/gcal.min.js'
 	])
 	.pipe(gulp.dest('tmp/' + packageId + '/lib/'))
 
@@ -86,8 +88,8 @@ transformDemoPath = (path) ->
 	# reroot dist files to archive root
 	path = path.replace('../dist/', '../')
 
-	# always use minified
-	# won't mutate .print.css thankfully
-	path = path.replace(/\/([^\.]+)\.(js|css)/, '/$1.min.$2')
+	# use minified if not already using
+	if !/\.min\.(js|css)$/.test(path)
+		path = path.replace(/\/([^\/]*)\.(js|css)$/, '/$1.min.$2')
 
 	path

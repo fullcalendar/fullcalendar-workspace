@@ -2,8 +2,8 @@ gulp = require('gulp')
 del = require('del')
 
 require('./tasks/modules')
-require('./tasks/archive')
 require('./tasks/minify')
+require('./tasks/archive')
 require('./tasks/test')
 require('./tasks/bump')
 
@@ -13,7 +13,7 @@ gulp.task('default', [ 'dist' ])
 # everything needed for running demos and developing
 gulp.task('dev', [ 'modules:dev' ])
 
-# watch anything that needs to be built (JS and CSS)
+# watch anything that needs to be built
 gulp.task('watch', [ 'modules:watch' ])
 
 # generates all files that end up in package manager release
