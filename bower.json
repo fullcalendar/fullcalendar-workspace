@@ -14,12 +14,6 @@
     "moment": ">=2.9.0",
     "fullcalendar": ">=3.0.0"
   },
-  "devDependencies": {
-    "jquery-ui": ">=1.11.1",
-    "jquery-simulate": "~1.0.1",
-    "jasmine-jquery": "~2.1.1",
-    "jasmine-fixture": "~2.0.0"
-  },
   "main": [
     "dist/scheduler.js",
     "dist/scheduler.css"
