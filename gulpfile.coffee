@@ -5,6 +5,7 @@ require('./tasks/modules')
 require('./tasks/archive')
 require('./tasks/minify')
 require('./tasks/test')
+require('./tasks/bump')
 
 # when running just `gulp`
 gulp.task('default', [ 'dist' ])
