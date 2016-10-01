@@ -40,9 +40,7 @@ module.exports = (config) ->
 			{
 				included: false # don't immediately execute
 				nocache: true # don't let the webserver cache
-				pattern: '{' + [
-					'tests/json' # data requested by tests
-				].join(',') + '}/**/*'
+				pattern: 'tests/json/**/*' # data requested by tests
 			}
 
 			# serve misc files, but don't watch
