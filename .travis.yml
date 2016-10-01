@@ -1,11 +1,9 @@
 language: node_js
 node_js:
-  - 'node'
+  - 'node' # implies latest version
 
 cache:
   directories:
     - node_modules
-    - lib
 
-before_script:
-  - bower install
+script: npm run test

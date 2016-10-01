@@ -16,8 +16,8 @@
     "fullcalendar": ">=3.0.0"
   },
   "devDependencies": {
-    "bower": "^1.7.9",
     "coffee-script": "^1.9.3",
+    "components-jqueryui": "github:components/jqueryui",
     "del": "^2.2.0",
     "gulp": "^3.9.0",
     "gulp-bump": "^2.1.0",
@@ -33,14 +33,16 @@
     "gulp-uglify": "^1.2.0",
     "gulp-zip": "^3.0.2",
     "jasmine-core": "*",
+    "jasmine-fixture": "^2.0.0",
+    "jasmine-jquery": "^2.1.1",
+    "jquery-simulate": "github:jquery/jquery-simulate",
     "karma": "^1.1.1",
     "karma-coffee-preprocessor": "^1.0.1",
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.1",
+    "lodash": "^4.16.2",
     "native-promise-only": "^0.8.1",
     "phantomjs-prebuilt": "^2.1.7",
-    "run-sequence": "^1.1.1",
-    "underscore": "^1.8.3",
     "yargs": "^4.6.0"
   },
   "main": "dist/scheduler.js",
