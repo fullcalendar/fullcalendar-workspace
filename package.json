@@ -1,7 +1,6 @@
 {
   "name": "fullcalendar-scheduler",
   "title": "FullCalendar Scheduler",
-  "version": "0.0.0",
   "description": "A premium add-on to FullCalendar for displaying events and resources",
   "homepage": "http://fullcalendar.io/scheduler/",
   "repository": {
@@ -15,12 +14,13 @@
     "moment": ">=2.9.0",
     "fullcalendar": ">=3.0.0"
   },
+  "version": "0.0.0",
+  "releaseDate": "1970-01-01",
   "devDependencies": {
     "coffee-script": "^1.9.3",
     "components-jqueryui": "github:components/jqueryui",
     "del": "^2.2.0",
     "gulp": "^3.9.0",
-    "gulp-bump": "^2.1.0",
     "gulp-coffee": "^2.3.1",
     "gulp-concat": "^2.6.0",
     "gulp-cssmin": "^0.1.7",
@@ -49,11 +49,12 @@
   "files": [
     "dist/*.js",
     "dist/*.css",
-    "CHANGELOG.*",
+    "README.*",
     "LICENSE.*",
-    "README.*"
+    "CHANGELOG.*",
+    "CONTRIBUTING.*"
   ],
   "scripts": {
-    "test": "gulp karmaSingle"
+    "test": "gulp test:single"
   }
 }

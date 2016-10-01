@@ -1,7 +1,6 @@
 {
   "name": "fullcalendar-scheduler",
   "title": "FullCalendar Scheduler",
-  "version": "0.0.0",
   "description": "A premium add-on to FullCalendar for displaying events and resources",
   "homepage": "http://fullcalendar.io/scheduler/",
   "repository": {
@@ -29,8 +28,9 @@
     "*",
     "**/.*",
     "!/dist/**",
-    "!/CHANGELOG.*",
+    "!/README.*",
     "!/LICENSE.*",
-    "!/README.*"
+    "!/CHANGELOG.*",
+    "!/CONTRIBUTING.*"
   ]
 }
