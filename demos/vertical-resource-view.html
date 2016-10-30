@@ -38,6 +38,11 @@
 				}
 			},
 
+			//businessHours: [
+			//	{"start":"09:00:00","end":"13:00:00","dow":[1,2,3,4,5]},
+			//	{"start":"14:00:00","end":"18:00:00","dow":[1,2,3,4,5]}
+			//],
+
 			//// uncomment this line to hide the all-day slot
 			//allDaySlot: false,
 
@@ -45,7 +50,10 @@
 				{ id: 'a', title: 'Room A' },
 				{ id: 'b', title: 'Room B', eventColor: 'green' },
 				{ id: 'c', title: 'Room C', eventColor: 'orange' },
-				{ id: 'd', title: 'Room D', eventColor: 'red' }
+				{ id: 'd', title: 'Room D', eventColor: 'red', businessHours: [
+					{"start":"09:00:00","end":"13:00:00","dow":[1,2,3,4,5]},
+					{"start":"14:00:00","end":"18:00:00","dow":[1,2,3,4,5]}
+				] }
 			],
 			events: [
 				{ id: '1', resourceId: 'a', start: '2016-09-06', end: '2016-09-08', title: 'event 1' },
