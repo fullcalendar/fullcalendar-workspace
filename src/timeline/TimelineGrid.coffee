@@ -400,16 +400,14 @@ class TimelineGrid extends Grid
 
 				if isSuperRow
 					text = date.format(format)
-					dateData = date.format()
 					if !leadingCell or leadingCell.text != text
-						newCell = { text, dateData, colspan: 1 }
+						newCell = { text, date: date.clone(), colspan: 1 }
 					else
 						leadingCell.colspan += 1
 				else
 					if !leadingCell or isInt(divideRangeByDuration(@start, date, labelInterval))
 						text = date.format(format)
-						dateData = date.format()
-						newCell = { text, dateData, colspan: 1 }
+						newCell = { text, date: date.clone(), colspan: 1 }
 					else
 						leadingCell.colspan += 1
 
@@ -421,6 +419,7 @@ class TimelineGrid extends Grid
 			prevWeekNumber = weekNumber
 
 		isChrono = labelInterval > @slotDuration
+		isSingleDay = @slotDuration.as('days') == 1
 
 		html = '<table>'
 		html += '<colgroup>'
@@ -432,12 +431,18 @@ class TimelineGrid extends Grid
 			isLast = i == cellRows.length - 1
 			html += '<tr' + (if isChrono and isLast then ' class="fc-chrono"' else '') + '>'
 			for cell in rowCells
+
+				headerCellClassNames = [ @view.widgetHeaderClass ]
+				if cell.weekStart
+					headerCellClassNames.push('fc-em-cell')
+				if isSingleDay
+					headerCellClassNames = headerCellClassNames.concat(
+						@getDayClasses(cell.date, true) # adds "today" class and other day-based classes
+					)
+
 				html +=
-					'<th class="' +
-							@view.widgetHeaderClass + ' ' +
-							(if cell.weekStart then 'fc-em-cell' else '') +
-						'"' +
-						' data-date="' + cell.dateData + '"' +
+					'<th class="' + headerCellClassNames.join(' ') + '"' +
+						' data-date="' + cell.date.format() + '"' +
 						(if cell.colspan > 1 then ' colspan="' + cell.colspan + '"' else '') +
 					'>' +
 						'<div class="fc-cell-content">' +
