@@ -324,10 +324,10 @@ class TimelineGrid extends Grid
 		@joiner = new ScrollJoiner('horizontal', [ @headScroller, @bodyScroller ])
 
 		if true
-			@follower = new ScrollFollower(@headScroller, @view.calendar.isTouch)
+			@follower = new ScrollFollower(@headScroller, true) # allowPointerEvents=true
 
 		if true
-			@eventTitleFollower = new ScrollFollower(@bodyScroller, @view.calendar.isTouch)
+			@eventTitleFollower = new ScrollFollower(@bodyScroller)
 			@eventTitleFollower.minTravel = 50
 			if @isRTL
 				@eventTitleFollower.containOnNaturalRight = true
@@ -363,7 +363,7 @@ class TimelineGrid extends Grid
 			@view.trigger('dayRender', null, date, @slatEls.eq(i))
 
 		if @follower
-			@follower.setSprites(@headEl.find('tr:not(:last-child) span'))
+			@follower.setSprites(@headEl.find('tr:not(:last-child) .fc-cell-text'))
 
 
 	unrenderDates: ->
@@ -388,6 +388,10 @@ class TimelineGrid extends Grid
 		slotDates = @slotDates
 		slotCells = [] # meta
 
+		rowUnits =
+			for format in formats
+				FC.queryMostGranularFormatUnit(format)
+
 		for date in slotDates
 			weekNumber = date.week()
 			isWeekStart = @emphasizeWeeks and prevWeekNumber != null and prevWeekNumber != weekNumber
@@ -400,16 +404,14 @@ class TimelineGrid extends Grid
 
 				if isSuperRow
 					text = date.format(format)
-					dateData = date.format()
 					if !leadingCell or leadingCell.text != text
-						newCell = { text, dateData, colspan: 1 }
+						newCell = @buildCellObject(date, text, rowUnits[row])
 					else
 						leadingCell.colspan += 1
 				else
 					if !leadingCell or isInt(divideRangeByDuration(@start, date, labelInterval))
 						text = date.format(format)
-						dateData = date.format()
-						newCell = { text, dateData, colspan: 1 }
+						newCell = @buildCellObject(date, text, rowUnits[row])
 					else
 						leadingCell.colspan += 1
 
@@ -441,9 +443,7 @@ class TimelineGrid extends Grid
 						(if cell.colspan > 1 then ' colspan="' + cell.colspan + '"' else '') +
 					'>' +
 						'<div class="fc-cell-content">' +
-							'<span class="fc-cell-text">' +
-								htmlEscape(cell.text) +
-							'</span>' +
+							cell.spanHtml +
 						'</div>' +
 					'</th>'
 
@@ -463,6 +463,22 @@ class TimelineGrid extends Grid
 		@_slatHtml = slatHtml
 
 		html
+
+
+	buildCellObject: (date, text, rowUnit) ->
+		spanHtml = @view.buildGotoAnchorHtml(
+			{
+				date
+				type: rowUnit
+				forceOff: not rowUnit
+			},
+			{
+				'class': 'fc-cell-text'
+			},
+			htmlEscape(text)
+		)
+		dateData = date.format()
+		{ text, spanHtml, dateData, colspan: 1 }
 
 
 	renderSlatHtml: ->
@@ -609,7 +625,7 @@ class TimelineGrid extends Grid
 
 		# TODO: harness core's `matchCellWidths` for this
 		maxInnerWidth = 0
-		innerEls = @headEl.find('tr:last-child th span') # TODO: cache
+		innerEls = @headEl.find('tr:last-child th .fc-cell-text') # TODO: cache
 		innerEls.each (i, node) ->
 			innerWidth = $(node).outerWidth()
 			maxInnerWidth = Math.max(maxInnerWidth, innerWidth)
