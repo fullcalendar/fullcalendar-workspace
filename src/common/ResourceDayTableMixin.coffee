@@ -280,8 +280,13 @@ ResourceDayTableMixin =
 				allSegs = []
 
 				for resource in @flattenedResources
-					businessHours = resource.businessHours or @view.opt('businessHours')
-					events = @view.calendar.computeBusinessHourEvents(wholeDay, businessHours)
+
+					businessHours = resource.businessHours or
+						@view.calendar.options.businessHours
+						# fallback. access from calendar.
+						# don't access from view. doesn't update with dynamic options
+
+					events = @buildBusinessHourEvents(wholeDay, businessHours)
 
 					for event in events
 						event.resourceId = resource.id

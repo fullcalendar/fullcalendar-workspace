@@ -423,6 +423,7 @@ class TimelineGrid extends Grid
 			prevWeekNumber = weekNumber
 
 		isChrono = labelInterval > @slotDuration
+		isSingleDay = @slotDuration.as('days') == 1
 
 		html = '<table>'
 		html += '<colgroup>'
@@ -434,12 +435,18 @@ class TimelineGrid extends Grid
 			isLast = i == cellRows.length - 1
 			html += '<tr' + (if isChrono and isLast then ' class="fc-chrono"' else '') + '>'
 			for cell in rowCells
+
+				headerCellClassNames = [ @view.widgetHeaderClass ]
+				if cell.weekStart
+					headerCellClassNames.push('fc-em-cell')
+				if isSingleDay
+					headerCellClassNames = headerCellClassNames.concat(
+						@getDayClasses(cell.date, true) # adds "today" class and other day-based classes
+					)
+
 				html +=
-					'<th class="' +
-							@view.widgetHeaderClass + ' ' +
-							(if cell.weekStart then 'fc-em-cell' else '') +
-						'"' +
-						' data-date="' + cell.dateData + '"' +
+					'<th class="' + headerCellClassNames.join(' ') + '"' +
+						' data-date="' + cell.date.format() + '"' +
 						(if cell.colspan > 1 then ' colspan="' + cell.colspan + '"' else '') +
 					'>' +
 						'<div class="fc-cell-content">' +
@@ -466,6 +473,7 @@ class TimelineGrid extends Grid
 
 
 	buildCellObject: (date, text, rowUnit) ->
+		date = date.clone() # ensure our own reference
 		spanHtml = @view.buildGotoAnchorHtml(
 			{
 				date
@@ -477,8 +485,7 @@ class TimelineGrid extends Grid
 			},
 			htmlEscape(text)
 		)
-		dateData = date.format()
-		{ text, spanHtml, dateData, colspan: 1 }
+		{ text, spanHtml, date, colspan: 1 }
 
 
 	renderSlatHtml: ->
