@@ -1,4 +1,13 @@
 
+v1.4.1
+------
+
+- navLinks support (#218)
+- fc-today and other day-related classes in timeline header cells
+- fix touch scrolling glitchiness regression
+- made gulp-based build system consistent with core project
+
+
 v1.4.0 (2016-09-04)
 -------------------
 
