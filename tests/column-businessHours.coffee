@@ -124,6 +124,22 @@ describe 'vresource businessHours', ->
 							expectResourceOverride()
 							done()
 
+			it 'greys out whole day for single resource', (done) ->
+				initCalendar
+					defaultDate: '2016-10-30', # a Sunday
+					businessHours: false
+					resources: [
+						{ id: 'a', title: 'Resource A' }
+						{ id: 'b', title: 'Resource B', businessHours: [
+							{ start: '08:00', end: '18:00', dow: [ 1, 2, 3, 4, 5 ] }
+						] }
+					]
+					viewRender: ->
+						expect(isResourceTimeGridNonBusinessSegsRendered([
+							{ resourceId: 'b', start: '2016-10-30T00:00', end: '2016-10-31T00:00' }
+						])).toBe(true)
+						done()
+
 	expectDay9to5 = ->
 		expect(isResourceTimeGridNonBusinessSegsRendered([
 			{ resourceId: 'a', start: '2015-11-18T00:00', end: '2015-11-18T09:00' }
