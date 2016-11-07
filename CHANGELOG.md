@@ -1,6 +1,16 @@
 
-v1.3.3 (2016-7-31)
-------------------
+v1.4.0 (2016-09-04)
+-------------------
+
+- `eventResourceEditable` for control over events changing resources (#140)
+- `eventConstraint` accepts `resourceId` or `resourceIds` (#50)
+- `eventAllow`, programmatic control over event dragging (#50)
+- `selectAllow`,  programmatic control over allowed selection
+- adjustments to work with v3 of the core project
+
+
+v1.3.3 (2016-07-31)
+-------------------
 
 - business hours per-resource (#61)
 - fix non-business days without styles (#109)

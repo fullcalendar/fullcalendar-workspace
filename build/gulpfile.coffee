@@ -50,7 +50,7 @@ gulp.task 'dist', (cb) ->
 
 
 gulp.task 'cleanDist', (cb) ->
-	del('dist/*', cb)
+	del('dist/*', cb) # need callback?
 
 
 gulp.task 'buildDist', [ 'compile', 'minify', 'zip' ]
@@ -141,7 +141,7 @@ gulp.task 'zip', (cb) ->
 
 
 gulp.task 'cleanZip', (cb) ->
-	del([ getTransferDir(), getZipFilename() ], cb)
+	del([ getTransferDir(), getZipFilename() ], cb) # need callback?
 
 
 gulp.task 'buildZip', [

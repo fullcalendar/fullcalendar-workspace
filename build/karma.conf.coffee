@@ -10,6 +10,7 @@ module.exports = (config) ->
 		frameworks: [ 'jasmine' ]
 
 		files: [
+			'node_modules/native-promise-only/lib/npo.src.js',
 			'lib/moment/moment.js'
 			'lib/jquery/dist/jquery.js'
 			'lib/fullcalendar/dist/fullcalendar.js'

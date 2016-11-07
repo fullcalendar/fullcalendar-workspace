@@ -1,4 +1,7 @@
 
+###
+A view that structurally distinguishes events by resource
+###
 ResourceViewMixin = # expects a View
 
 	resourceTextFunc: null
@@ -16,6 +19,22 @@ ResourceViewMixin = # expects a View
 		@setResources(resources)
 		@setScroll(scrollState)
 		@calendar.rerenderEvents()
+
+
+	# Event Dragging
+	# ------------------------------------------------------------------------------------------------------------------
+
+
+	# if an event's dates are not draggable, but it's resource IS, still allow dragging
+	isEventDraggable: (event) ->
+		@isEventResourceEditable(event) or View::isEventDraggable.call(this, event)
+
+
+	isEventResourceEditable: (event) ->
+		event.resourceEditable ?
+			(event.source || {}).resourceEditable ?
+			@opt('eventResourceEditable') ?
+			@isEventGenerallyEditable(event)
 
 
 	# Resource Rendering Utils

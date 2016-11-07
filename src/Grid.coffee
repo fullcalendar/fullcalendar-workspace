@@ -1,9 +1,12 @@
 
-origGetSegClasses = Grid::getSegClasses
+origGetSegCustomClasses = Grid::getSegCustomClasses
+origGetSegDefaultBackgroundColor = Grid::getSegDefaultBackgroundColor
+origGetSegDefaultBorderColor = Grid::getSegDefaultBorderColor
+origGetSegDefaultTextColor = Grid::getSegDefaultTextColor
 
 
-Grid::getSegClasses = (seg) ->
-	classes = origGetSegClasses.apply(this, arguments)
+Grid::getSegCustomClasses = (seg) ->
+	classes = origGetSegCustomClasses.apply(this, arguments)
 
 	for resource in @getSegResources(seg)
 		# .concat will process non-arrays and arrays
@@ -12,62 +15,43 @@ Grid::getSegClasses = (seg) ->
 	classes
 
 
-Grid::getSegSkinCss = (seg) ->
-	view = @view
-	event = seg.event
-	source = event.source or {}
-	eventColor = event.color
-	sourceColor = source.color
-	optionColor = view.opt('eventColor')
+Grid::getSegDefaultBackgroundColor = (seg) ->
 	resources = @getSegResources(seg)
 
-	getResourceBackgroundColor = ->
-		val = null
-		for currentResource in resources
-			while currentResource and not val
-				val = currentResource.eventBackgroundColor or currentResource.eventColor
-				currentResource = currentResource._parent
-		val
+	for currentResource in resources
+		while currentResource
+			val = currentResource.eventBackgroundColor or currentResource.eventColor
+			if val
+				return val
+			currentResource = currentResource._parent
 
-	getResourceBorderColor = ->
-		val = null
-		for currentResource in resources
-			while currentResource and not val
-				val = currentResource.eventBorderColor or currentResource.eventColor
-				currentResource = currentResource._parent
-		val
+	origGetSegDefaultBackgroundColor.apply(this, arguments) # super
 
-	getResourceTextColor = ->
-		val = null
-		for currentResource in resources
-			while currentResource and not val
-				val = currentResource.eventTextColor
-				currentResource = currentResource._parent
-		val
 
-	return {
-		'background-color':
-			event.backgroundColor or
-			eventColor or
-			getResourceBackgroundColor() or
-			source.backgroundColor or
-			sourceColor or
-			view.opt('eventBackgroundColor') or
-			optionColor
-		'border-color':
-			event.borderColor or
-			eventColor or
-			getResourceBorderColor() or
-			source.borderColor or
-			sourceColor or
-			view.opt('eventBorderColor') or
-			optionColor
-		'color':
-			event.textColor or
-			getResourceTextColor() or
-			source.textColor or
-			view.opt('eventTextColor')
-	}
+Grid::getSegDefaultBorderColor = (seg) ->
+	resources = @getSegResources(seg)
+
+	for currentResource in resources
+		while currentResource
+			val = currentResource.eventBorderColor or currentResource.eventColor
+			if val
+				return val
+			currentResource = currentResource._parent
+
+	origGetSegDefaultBorderColor.apply(this, arguments) # super
+
+
+Grid::getSegDefaultTextColor = (seg) ->
+	resources = @getSegResources(seg)
+
+	for currentResource in resources
+		while currentResource
+			val = currentResource.eventTextColor
+			if val
+				return val
+			currentResource = currentResource._parent
+
+	origGetSegDefaultTextColor.apply(this, arguments) # super
 
 
 Grid::getSegResources = (seg) ->
