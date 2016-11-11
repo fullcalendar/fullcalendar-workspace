@@ -22,34 +22,18 @@ class ResourceManager extends Class
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	hasFetched: ->
-		@fetching and @fetching.state() == 'resolved'
-
-
 	getResources: -> # returns a promise
-		# never fetched? then fetch... (TODO: decouple from fetching)
-		if not @fetching
-			getting = $.Deferred()
-			syncThen @fetchResources(), ->
-				getting.resolve(@topLevelResources)
-			, ->
-				getting.resolve([])
-			getting.promise()
-		# otherwise, return what we already have...
-		else
-			$.Deferred().resolve(@topLevelResources).promise()
+		@fetching or @fetchResources()
 
 
 	# will always fetch, even if done previously.
 	# returns a promise.
 	fetchResources: ->
-		prevFetching = @fetching
-		syncThen prevFetching, =>
-			@fetching = $.Deferred()
-			@fetchResourceInputs (resourceInputs) =>
-				@setResources(resourceInputs, Boolean(prevFetching))
-				@fetching.resolve(@topLevelResources)
-			@fetching.promise()
+		Promise.resolve(@fetching).then => # wait for most recent fetch to finish
+			@fetching = new Promise (resolve) =>
+				@fetchResourceInputs (resourceInputs) =>
+					@setResources(resourceInputs)
+					resolve(@topLevelResources)
 
 
 	# calls callback when done
@@ -73,6 +57,7 @@ class ResourceManager extends Class
 					.done (resourceInputs) =>
 						@calendar.popLoading()
 						callback(resourceInputs)
+					# TODO: handle failure
 
 			when 'array'
 				callback(source)
@@ -81,16 +66,12 @@ class ResourceManager extends Class
 				callback([])
 
 
-	# fires the 'reset' handler with the already-fetch resource data
-	resetResources: ->
-		syncThen @getResources(), => # ensures initial fetch happened
-			@trigger('reset', @topLevelResources)
-
-
 	getResourceById: (id) -> # assumes already returned from fetch
 		@resourcesById[id]
 
 
+
+	# assumes already completed fetch
 	getFlatResources: ->
 		for id of @resourcesById
 			@resourcesById[id]
@@ -105,7 +86,7 @@ class ResourceManager extends Class
 		@resourcesById = {}
 
 
-	setResources: (resourceInputs, isReset) ->
+	setResources: (resourceInputs) ->
 		@initializeCache()
 
 		resources = for resourceInput in resourceInputs
@@ -117,16 +98,14 @@ class ResourceManager extends Class
 		for resource in validResources
 			@addResourceToTree(resource)
 
-		if isReset
-			@trigger('reset', @topLevelResources)
-		else
-			@trigger('set', @topLevelResources)
+		# an unset is implied, which makes this a 'reset' (all new data)
+		@trigger('reset', @topLevelResources)
 
 		@calendar.trigger('resourcesSet', null, @topLevelResources)
 
 
 	addResource: (resourceInput) -> # returns a promise
-		syncThen @fetching, =>
+		@getResources().then => # wait for initial batch of resources
 			resource = @buildResource(resourceInput)
 			if @addResourceToIndex(resource)
 				@addResourceToTree(resource)
@@ -175,7 +154,7 @@ class ResourceManager extends Class
 			else
 				idOrResource
 
-		syncThen @fetching, =>
+		@getResources().then => # wait for initial batch of resources
 			resource = @removeResourceFromIndex(id)
 			if resource
 				@removeResourceFromTree(resource)
