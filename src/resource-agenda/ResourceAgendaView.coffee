@@ -13,26 +13,18 @@ class ResourceAgendaView extends FC.AgendaView
 
 
 	setResources: (resources) ->
-		@timeGrid.setResources(resources)
+		@timeGrid.setResources(resources) # doesn't rerender
 		if @dayGrid
-			@dayGrid.setResources(resources)
+			@dayGrid.setResources(resources) # doesn't rerender
 
-		# TODO: optimize. only redisplay the columns
-		@clearView()
-		@displayView()
+		if @isDisplayingDateVisuals
+			@displayDateVisuals() # rerenders the whole grid, with resources
 
 
-	unsetResources: (isDestroying) ->
-		@clearEvents()
-
+	unsetResources: ->
 		@timeGrid.unsetResources()
 		if @dayGrid
 			@dayGrid.unsetResources()
 
-		# HACK
-		# don't re-render resources if we don't need to
-		# solves ResourceManager unbinding bugs
-		if not isDestroying
-			# TODO: optimize. only redisplay the columns
-			@clearView()
-			@displayView()
+		# HACK: don't need to unrender because unsetEvents is never called
+		# without the view subsequently being removed.

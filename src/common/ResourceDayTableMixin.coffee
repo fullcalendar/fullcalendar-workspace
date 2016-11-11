@@ -16,13 +16,14 @@ ResourceDayTableMixin =
 	# ----------------------------------------------------------------------------------------------
 
 
-	# getting called twice unfortuntately :(
+	# doesn't render anything
 	setResources: (resources) ->
 		@flattenedResources = @flattenResources(resources)
 		@resourceCnt = @flattenedResources.length
 		@updateDayTableCols() # will call computeColCnt
 
 
+	# doesn't render anything
 	unsetResources: ->
 		@flattenedResources = null
 		@resourceCnt = 0
