@@ -11,7 +11,7 @@ ResourceViewMixin = # expects a View
 
 	stopDisplayingResources: ->
 		@stopDisplayingEvents() # because events are assumed to be on top of resources
-		super
+		View::stopDisplayingResources.apply(this, arguments)
 
 
 	setResources: (resources) ->
