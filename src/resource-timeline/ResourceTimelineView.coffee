@@ -268,7 +268,7 @@ class ResourceTimelineView extends TimelineView
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	setResources: (resources) ->
+	renderResources: (resources) ->
 		@batchRows()
 		for resource in resources
 			@insertResource(resource)
@@ -278,9 +278,7 @@ class ResourceTimelineView extends TimelineView
 		@reinitializeCellFollowers()
 
 
-	unsetResources: ->
-		@clearEvents()
-
+	unrenderResources: ->
 		@batchRows()
 		@rowHierarchy.removeChildren() # will trigger rowHidden
 		@unbatchRows()

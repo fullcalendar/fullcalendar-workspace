@@ -583,43 +583,50 @@ class TimelineGrid extends Grid
 
 	# NOTE: not related to Grid. this is TimelineGrid's own method
 	updateWidth: ->
-
 		# reason for this complicated method is that things went wrong when:
 		#  slots/headers didn't fill content area and needed to be stretched
 		#  cells wouldn't align (rounding issues with available width calculated
 		#  differently because of padding VS scrollbar trick)
 
-		slotWidth = Math.round(@slotWidth or= @computeSlotWidth())
-		containerWidth = slotWidth * @slotDates.length
-		containerMinWidth = ''
-		nonLastSlotWidth = slotWidth
+		isDatesRendered = @headColEls # TODO: refactor use of this
 
-		availableWidth = @bodyScroller.getClientWidth()
-		if availableWidth > containerWidth
-			containerMinWidth = availableWidth
+		if isDatesRendered
+			slotWidth = Math.round(@slotWidth or= @computeSlotWidth())
+			containerWidth = slotWidth * @slotDates.length
+			containerMinWidth = ''
+			nonLastSlotWidth = slotWidth
+
+			availableWidth = @bodyScroller.getClientWidth()
+			if availableWidth > containerWidth
+				containerMinWidth = availableWidth
+				containerWidth = ''
+				nonLastSlotWidth = Math.floor(availableWidth / @slotDates.length)
+		else
 			containerWidth = ''
-			nonLastSlotWidth = Math.floor(availableWidth / @slotDates.length)
+			containerMinWidth = ''
 
 		@headScroller.canvas.setWidth(containerWidth)
 		@headScroller.canvas.setMinWidth(containerMinWidth)
 		@bodyScroller.canvas.setWidth(containerWidth)
 		@bodyScroller.canvas.setMinWidth(containerMinWidth)
 
-		@headColEls.slice(0, -1).add(@slatColEls.slice(0, -1))
-			.width(nonLastSlotWidth)
+		if isDatesRendered
+			@headColEls.slice(0, -1).add(@slatColEls.slice(0, -1))
+				.width(nonLastSlotWidth)
 
 		@headScroller.updateSize()
 		@bodyScroller.updateSize()
 		@joiner.update()
 
-		@buildCoords()
-		@updateSegPositions()
+		if isDatesRendered
+			@buildCoords()
+			@updateSegPositions()
 
-		# this updateWidth method is triggered by callers who don't always subsequently call updateNowIndicator,
-		# and updateWidth always has the risk of changing horizontal spacing which will affect nowIndicator positioning,
-		# so always call it here too. will often rerender twice unfortunately.
-		# TODO: more closely integrate updateSize with updateNowIndicator
-		@view.updateNowIndicator()
+			# this updateWidth method is triggered by callers who don't always subsequently call updateNowIndicator,
+			# and updateWidth always has the risk of changing horizontal spacing which will affect nowIndicator positioning,
+			# so always call it here too. will often rerender twice unfortunately.
+			# TODO: more closely integrate updateSize with updateNowIndicator
+			@view.updateNowIndicator()
 
 		if @follower
 			@follower.update()
