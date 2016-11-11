@@ -4,21 +4,70 @@ A view that structurally distinguishes events by resource
 ###
 ResourceViewMixin = # expects a View
 
+	isResourcesSet: false
+	resourceRenderQueue: null
 	resourceTextFunc: null
 
 
+	stopDisplayingResources: ->
+		@stopDisplayingEvents() # because events are assumed to be on top of resources
+		super
+
+
+	setResources: (resources) ->
+		scrollState = @queryScroll()
+
+		if @isResourcesSet
+			@resetResources(resources)
+		else
+			@isResourcesSet = true
+			@getResourceRenderQueue().push =>
+				@renderResources(resources)
+				@setScroll(scrollState)
+
+
 	unsetResources: ->
-		@clearEvents() # subclasses should always remember to do this
+		if @isResourcesSet
+			@isResourcesSet = false
+			@getResourceRenderQueue().clear()
+			@unrenderResources()
 
 
-	# triggered when brand new resource data is received.
-	# unsets/sets, and keeps the current scroll state.
 	resetResources: (resources) ->
 		scrollState = @queryScroll()
 		@unsetResources()
-		@setResources(resources)
-		@setScroll(scrollState)
-		@calendar.rerenderEvents()
+		@setResources(resources).then =>
+			@setScroll(scrollState)
+
+
+	addResource: (resource) ->
+		@getResourceRenderQueue().push =>
+			@renderResource(resource)
+
+
+	removeResource: (resource) ->
+		@getResourceRenderQueue().push =>
+			@unrenderResource(resource)
+
+
+	renderResources: (resources) ->
+		# abstract
+
+
+	unrenderResources: ->
+		# abstract
+
+
+	renderResource: (resource) ->
+		# abstract
+
+
+	unrenderResource: (resource) ->
+		# abstract
+
+
+	getResourceRenderQueue: ->
+		@resourceRenderQueue ?= new RunQueue()
 
 
 	# Event Dragging
