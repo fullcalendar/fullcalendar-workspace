@@ -9,11 +9,7 @@ ResourceViewMixin = # expects a View
 	resourceTextFunc: null
 
 
-	stopDisplayingResources: ->
-		@stopDisplayingEvents() # because events are assumed to be on top of resources
-		View::stopDisplayingResources.apply(this, arguments)
-
-
+	# assumes dates have been rendered
 	setResources: (resources) ->
 		scrollState = @queryScroll()
 
@@ -26,11 +22,12 @@ ResourceViewMixin = # expects a View
 				@setScroll(scrollState)
 
 
-	unsetResources: ->
+	unsetResources: (isDestroying) ->
 		if @isResourcesSet
 			@isResourcesSet = false
 			@getResourceRenderQueue().clear()
-			@unrenderResources()
+			@stopDisplayingEvents() # events are assumed to be on top of resources
+			@unrenderResources(isDestroying)
 
 
 	resetResources: (resources) ->
@@ -38,32 +35,35 @@ ResourceViewMixin = # expects a View
 		@unsetResources()
 		@setResources(resources).then =>
 			@setScroll(scrollState)
+			@displayEvents() # unsetResources would have cleared events, so restore
 
 
 	addResource: (resource) ->
 		@getResourceRenderQueue().push =>
-			@renderResource(resource)
+			@renderResource(resource) # allowed to return a promise
 
 
 	removeResource: (resource) ->
 		@getResourceRenderQueue().push =>
-			@unrenderResource(resource)
+			@unrenderResource(resource) # allowed to return a promise
 
 
 	renderResources: (resources) ->
 		# abstract
 
 
-	unrenderResources: ->
+	unrenderResources: (isDestroying) ->
 		# abstract
 
 
+	# by default, rerender all resources. don't bother with an individual resource.
 	renderResource: (resource) ->
-		# abstract
+		@displayResources() # will redisplay
 
 
+	# by default, rerender all resources. don't bother with an individual resource.
 	unrenderResource: (resource) ->
-		# abstract
+		@displayResources() # will redisplay
 
 
 	getResourceRenderQueue: ->

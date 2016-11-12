@@ -13,19 +13,18 @@ class ResourceMonthView extends FC.MonthView
 		@dayGrid.processHeadResourceEls(@headContainerEl)
 
 
-	setResources: (resources) ->
-		@dayGrid.setResources(resources)
+	renderResources: (resources) ->
+		@dayGrid.setResources(resources) # doesn't rerender
 
-		# TODO: optimize. only redisplay the columns
-		@clearView()
-		@displayView()
+		if @isDisplayingDateVisuals
+			@displayDateVisuals() # rerenders the whole grid, with resources
 
 
-	unsetResources: ->
-		@clearEvents()
+	unrenderResources: (isDestroying) ->
+		@dayGrid.unsetResources() # doesn't rerender
 
-		@dayGrid.unsetResources()
-
-		# TODO: optimize. only redisplay the columns
-		@clearView()
-		@displayView()
+		# if already rendered, then rerender.
+		# otherwise, displayDateVisuals will be called anyway.
+		# if in the process of destroying the view, don't bother.
+		if not isDestroying and @isDisplayingDateVisuals
+			@displayDateVisuals() # rerenders the whole grid, with resources

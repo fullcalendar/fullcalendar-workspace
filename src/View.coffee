@@ -4,28 +4,32 @@
 View::isResourcesBound = false
 View::displayingResources = null # a promise
 
-origSetElement = View::setElement
+
+origSetDate = View::setDate
 origRemoveElement = View::removeElement
 
 
-View::setElement = (el) ->
-	origSetElement.apply(this, arguments)
+View::setDate = (date) ->
+	origSetDate.apply(this, arguments)
 
-	processLicenseKey(
-		@calendar.options.schedulerLicenseKey,
-		el # container element
-	)
-
-	@displayResources()
+	# TODO: eventually detangle resource rendering from date rendering in the view
+	@ensureDisplayingResources()
 
 
 View::triggerDateVisualsRendered = ->
 	@ensureDisplayingResources().then => # wait until resources rendered
+
+		# put this here mainly to wait get in before event render
+		processLicenseKey(
+			@calendar.options.schedulerLicenseKey
+			@el # container element
+		)
+
 		@triggerRender()
 
 
 View::removeElement = ->
-	@stopDisplayingResources()
+	@stopDisplayingResources(true)
 	origRemoveElement.apply(this, arguments)
 
 
@@ -48,10 +52,10 @@ View::displayResources = ->
 		@setResources(resources)
 
 
-View::stopDisplayingResources = ->
+View::stopDisplayingResources = (isDestroying) ->
 	@displayingResources = null
 	@unbindResources()
-	@unsetResources()
+	@unsetResources(isDestroying)
 
 
 # causes events that fire from ResourceManager to call methods of this object.
@@ -75,7 +79,7 @@ View::unbindResources =  ->
 View::setResources = (resources) ->
 
 
-View::unsetResources = ->
+View::unsetResources = (isDestroying) ->
 
 
 View::resetResources = (resources) ->

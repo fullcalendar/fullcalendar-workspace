@@ -12,7 +12,7 @@ class ResourceAgendaView extends FC.AgendaView
 		@timeGrid.processHeadResourceEls(@headContainerEl)
 
 
-	setResources: (resources) ->
+	renderResources: (resources) ->
 		@timeGrid.setResources(resources) # doesn't rerender
 		if @dayGrid
 			@dayGrid.setResources(resources) # doesn't rerender
@@ -21,10 +21,13 @@ class ResourceAgendaView extends FC.AgendaView
 			@displayDateVisuals() # rerenders the whole grid, with resources
 
 
-	unsetResources: ->
-		@timeGrid.unsetResources()
+	unrenderResources: (isDestroying) ->
+		@timeGrid.unsetResources() # doesn't rerender
 		if @dayGrid
-			@dayGrid.unsetResources()
+			@dayGrid.unsetResources() # doesn't rerender
 
-		# HACK: don't need to unrender because unsetEvents is never called
-		# without the view subsequently being removed.
+		# if already rendered, then rerender.
+		# otherwise, displayDateVisuals will be called anyway.
+		# if in the process of destroying the view, don't bother.
+		if not isDestroying and @isDisplayingDateVisuals
+			@displayDateVisuals() # rerenders the whole grid, with resources
