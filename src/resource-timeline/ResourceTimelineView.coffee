@@ -576,16 +576,3 @@ class ResourceTimelineView extends TimelineView
 
 	getResourceRow: (resourceId) ->
 		@resourceRowHash[resourceId]
-
-
-	# Scrolling
-	# ---------------------------------------------------------------------------------
-	# TODO: kill this
-
-
-	setScroll: (state) ->
-		super # set the timegrid's scroll
-
-		# TODO: hack
-		# Similar to what is happening in TimelineGrid::setScroll. for FF
-		@resourceGrid.bodyScroller.setScrollTop(state.top)

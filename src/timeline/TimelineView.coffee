@@ -162,16 +162,16 @@ class TimelineView extends View
 	# ---------------------------------------------------------------------------------
 
 
-	computeInitialScroll: (prevScrollState) ->
-		@timeGrid.computeInitialScroll(prevScrollState)
+	computeInitialScroll: ->
+		@timeGrid.computeInitialScroll()
 
 
 	queryScroll: ->
 		@timeGrid.queryScroll()
 
 
-	setScroll: (state) ->
-		@timeGrid.setScroll(state)
+	setScroll: (scroll) ->
+		@timeGrid.setScroll(scroll)
 
 
 	# Events

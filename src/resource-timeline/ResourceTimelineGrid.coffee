@@ -249,16 +249,8 @@ class ResourceTimelineGrid extends TimelineGrid
 	# this is useful for scrolling prev/next dates while resource is scrolled down
 
 
-	computeInitialScroll: (prevState) ->
-		state = super
-		if prevState
-			state.resourceId = prevState.resourceId
-			state.bottom = prevState.bottom
-		state
-
-
 	queryScroll: ->
-		state = super
+		scroll = super
 
 		scrollerTop = @bodyScroller.scrollEl.offset().top # TODO: use getClientRect
 
@@ -268,22 +260,24 @@ class ResourceTimelineGrid extends TimelineGrid
 				elBottom = el.offset().top + el.outerHeight()
 
 				if elBottom > scrollerTop
-					state.resourceId = rowObj.resource.id
-					state.bottom = elBottom - scrollerTop
+					scroll.resourceId = rowObj.resource.id
+					scroll.bottom = elBottom - scrollerTop
 					break
-		state
+		scroll
 
 
-	setScroll: (state) ->
-		if state.resourceId
-			row = @view.getResourceRow(state.resourceId)
+	setScroll: (scroll) ->
+
+		if scroll.resourceId
+			row = @view.getResourceRow(scroll.resourceId)
 			if row
 				el = row.getTr('event')
 				if el
 					innerTop = @bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
 					elBottom = el.offset().top + el.outerHeight()
-					state.top = elBottom - state.bottom - innerTop
-		super(state)
+					scroll.top = elBottom - scroll.bottom - innerTop
+
+		super(scroll)
 
 
 	scrollToResource: (resource) -> # consolidate with above?

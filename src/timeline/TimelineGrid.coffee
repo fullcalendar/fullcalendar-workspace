@@ -733,7 +733,7 @@ class TimelineGrid extends Grid
 	# ---------------------------------------------------------------------------------
 
 
-	computeInitialScroll: (prevState) ->
+	computeInitialScroll: ->
 		left = 0
 		if @isTimeScale
 			scrollTime = @opt('scrollTime')
@@ -750,16 +750,16 @@ class TimelineGrid extends Grid
 		}
 
 
-	setScroll: (state) ->
+	setScroll: (scroll) ->
 
 		# TODO: workaround for FF. the ScrollJoiner sibling won't react fast enough
 		# to override the native initial crappy scroll that FF applies.
 		# TODO: have the ScrollJoiner handle this
 		# Similar code in ResourceTimelineView::setScroll
-		@headScroller.setScrollLeft(state.left)
+		@headScroller.setScrollLeft(scroll.left)
 
-		@headScroller.setScrollLeft(state.left)
-		@bodyScroller.setScrollTop(state.top)
+		@headScroller.setScrollLeft(scroll.left)
+		@bodyScroller.setScrollTop(scroll.top)
 
 
 	# Events

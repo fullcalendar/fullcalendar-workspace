@@ -11,15 +11,18 @@ ResourceViewMixin = # expects a View
 
 	# assumes dates have been rendered
 	setResources: (resources) ->
-		scrollState = @queryScroll()
-
 		if @isResourcesSet
 			@resetResources(resources)
 		else
 			@isResourcesSet = true
 			@getResourceRenderQueue().push =>
+				@captureScroll()
+				@freezeHeight()
+
 				@renderResources(resources)
-				@setScroll(scrollState)
+
+				@thawHeight()
+				@releaseScroll()
 
 
 	unsetResources: (isDestroying) ->
@@ -31,10 +34,14 @@ ResourceViewMixin = # expects a View
 
 
 	resetResources: (resources) ->
-		scrollState = @queryScroll()
+		@captureScroll()
+		@freezeHeight()
+
 		@unsetResources()
 		@setResources(resources).then =>
-			@setScroll(scrollState)
+			@thawHeight()
+			@releaseScroll()
+
 			@displayEvents() # unsetResources would have cleared events, so restore
 
 
