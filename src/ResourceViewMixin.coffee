@@ -34,6 +34,8 @@ ResourceViewMixin = # expects a View
 
 
 	resetResources: (resources) ->
+		isEventsSet = @isEventsSet
+
 		@captureScroll()
 		@freezeHeight()
 
@@ -42,7 +44,8 @@ ResourceViewMixin = # expects a View
 			@thawHeight()
 			@releaseScroll()
 
-			@displayEvents() # unsetResources would have cleared events, so restore
+			if isEventsSet # was previously displaying events?
+				@displayEvents() # caller will wait for this promise
 
 
 	addResource: (resource) ->
@@ -56,11 +59,11 @@ ResourceViewMixin = # expects a View
 
 
 	renderResources: (resources) ->
-		# abstract
+		@displayResources() # will redisplay
 
 
 	unrenderResources: (isDestroying) ->
-		# abstract
+		@displayResources() # will redisplay
 
 
 	# by default, rerender all resources. don't bother with an individual resource.

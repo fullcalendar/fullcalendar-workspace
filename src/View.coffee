@@ -2,6 +2,7 @@
 # We need to monkey patch these methods in, because subclasses of View might have already been made
 
 View::isResourcesBound = false
+View::refreshingResources = null # a promise
 View::displayingResources = null # a promise
 
 
@@ -9,23 +10,20 @@ origSetDate = View::setDate
 origRemoveElement = View::removeElement
 
 
-View::setDate = (date) ->
+View::setDate = ->
+	# will cause a 'reset' if already bound.
+	# otherwise, will start displayResources's fetch early.
+	#@refreshingResources = @calendar.resourceManager.fetchResources()
 	origSetDate.apply(this, arguments)
 
-	# TODO: eventually detangle resource rendering from date rendering in the view
-	@ensureDisplayingResources()
 
-
-View::triggerDateVisualsRendered = ->
-	@ensureDisplayingResources().then => # wait until resources rendered
-
-		# put this here mainly to wait get in before event render
-		processLicenseKey(
-			@calendar.options.schedulerLicenseKey
-			@el # container element
-		)
-
-		@triggerRender()
+View::ensureDisplayBaseVisuals = ->
+	Promise.resolve(@refreshingResources).then => # if not refreshing, will resolve immediately
+		@ensureDisplayingResources().then => # wait until resources rendered
+			processLicenseKey(
+				@calendar.options.schedulerLicenseKey
+				@el # container element
+			)
 
 
 View::removeElement = ->
@@ -54,6 +52,7 @@ View::displayResources = ->
 
 View::stopDisplayingResources = (isDestroying) ->
 	@displayingResources = null
+	@refreshingResources = null
 	@unbindResources()
 	@unsetResources(isDestroying)
 
@@ -62,6 +61,8 @@ View::stopDisplayingResources = (isDestroying) ->
 View::bindResources = ->
 	if not @isResourcesBound
 		@listenTo @calendar.resourceManager,
+			set: @setResources
+			unset: @unsetResources
 			reset: @resetResources
 			add: @addResource
 			remove: @removeResource
@@ -77,9 +78,11 @@ View::unbindResources =  ->
 
 
 View::setResources = (resources) ->
+	@redisplayEvents()
 
 
 View::unsetResources = (isDestroying) ->
+	@redisplayEvents()
 
 
 View::resetResources = (resources) ->

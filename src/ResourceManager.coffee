@@ -87,6 +87,7 @@ class ResourceManager extends Class
 
 
 	setResources: (resourceInputs) ->
+		wasSet = Boolean(@topLevelResources)
 		@initializeCache()
 
 		resources = for resourceInput in resourceInputs
@@ -98,8 +99,10 @@ class ResourceManager extends Class
 		for resource in validResources
 			@addResourceToTree(resource)
 
-		# an unset is implied, which makes this a 'reset' (all new data)
-		@trigger('reset', @topLevelResources)
+		if wasSet
+			@trigger('reset', @topLevelResources)
+		else
+			@trigger('set', @topLevelResources)
 
 		@calendar.trigger('resourcesSet', null, @topLevelResources)
 
