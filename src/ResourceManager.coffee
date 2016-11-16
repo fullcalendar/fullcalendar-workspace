@@ -107,6 +107,11 @@ class ResourceManager extends Class
 		@calendar.trigger('resourcesSet', null, @topLevelResources)
 
 
+	resetResources: ->
+		if @topLevelResources
+			@trigger('reset', @topLevelResources)
+
+
 	addResource: (resourceInput) -> # returns a promise
 		@getResources().then => # wait for initial batch of resources
 			resource = @buildResource(resourceInput)

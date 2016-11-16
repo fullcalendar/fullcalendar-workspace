@@ -54,7 +54,9 @@ describe 'timeline', ->
 						currentCalendar.changeView('month')
 					when 6
 						expect(view.type).toBe('month')
-						currentCalendar.changeView('timelineDay')
+						setTimeout -> # need to do this because of eventAfterAllRender recursion?
+							currentCalendar.changeView('timelineDay')
+						, 1000 # why needed to long?
 					when 7
 						expect(view.type).toBe('timelineDay')
 						done()

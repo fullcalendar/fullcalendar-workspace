@@ -16,6 +16,8 @@ class ResourceMonthView extends FC.MonthView
 	setResources: (resources) ->
 		@dayGrid.setResources(resources) # doesn't rerender
 
+		@isResourcesSet = true
+
 		if @isDateRendered
 			@requestRerenderDate() # rerenders the whole grid, with resources
 		else
@@ -24,6 +26,8 @@ class ResourceMonthView extends FC.MonthView
 
 	unsetResources: (isDestroying) ->
 		@dayGrid.unsetResources() # doesn't rerender
+
+		@isResourcesSet = true
 
 		# if already rendered, then rerender.
 		# otherwise, requestRerenderDate will be called anyway.
@@ -34,7 +38,10 @@ class ResourceMonthView extends FC.MonthView
 			Promise.resolve()
 
 
-	# don't block event render nor the 'viewRender' trigger on resource rendering.
-	# resources will render on their own time, causing a full requestRerenderDate.
-	ensureRenderResources: ->
+	triggerDateRender: ->
+		if @isResourcesSet
+			View::triggerDateRender.apply(this, arguments)
+
+
+	resolveEventRenderDeps: ->
 		Promise.resolve()

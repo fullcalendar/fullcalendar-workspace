@@ -11,14 +11,11 @@ ResourceViewMixin = # expects a View
 
 
 	setElement: ->
-		@resourceRenderQueue = new RunQueue() # setElement might need it
+		# put this first, because setElement might need it.
+		# don't clear this out in removeElement. headless rendering might continue.
+		@resourceRenderQueue = new RunQueue()
+
 		View::setElement.apply(this, arguments)
-
-
-	removeElement: ->
-		promise = View::removeElement.apply(this, arguments)
-		@resourceRenderQueue = null # needs to go after. unrendering might need it
-		promise
 
 
 	# Hooks into standard rendering
@@ -54,7 +51,7 @@ ResourceViewMixin = # expects a View
 			@captureScroll()
 			@freezeHeight()
 
-			@unsetResources()
+			@unsetResources(true) # true = the view doesn't need to be pretty after
 			@setResources(resources).then =>
 				@thawHeight()
 				@releaseScroll()
@@ -124,7 +121,7 @@ ResourceViewMixin = # expects a View
 			Promise.resolve()
 		else
 			new Promise (resolve) =>
-				@resourceRenderQueue.on('ran', resolve) # fire when next task done
+				@resourceRenderQueue.one('ran', resolve) # fire when next task done
 
 
 	# Actual Resource Rendering

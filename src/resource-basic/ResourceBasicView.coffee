@@ -15,6 +15,8 @@ class ResourceBasicView extends FC.BasicView
 	setResources: (resources) ->
 		@dayGrid.setResources(resources) # doesn't rerender
 
+		@isResourcesSet = true
+
 		if @isDateRendered
 			@requestRerenderDate() # rerenders the whole grid, with resources
 		else
@@ -23,6 +25,8 @@ class ResourceBasicView extends FC.BasicView
 
 	unsetResources: (isDestroying) ->
 		@dayGrid.unsetResources() # doesn't rerender
+
+		@isResourcesSet = true
 
 		# if already rendered, then rerender.
 		# otherwise, requestRerenderDate will be called anyway.
@@ -33,7 +37,10 @@ class ResourceBasicView extends FC.BasicView
 			Promise.resolve()
 
 
-	# don't block event render nor the 'viewRender' trigger on resource rendering.
-	# resources will render on their own time, causing a full requestRerenderDate.
-	ensureRenderResources: ->
+	triggerDateRender: ->
+		if @isResourcesSet
+			View::triggerDateRender.apply(this, arguments)
+
+
+	resolveEventRenderDeps: ->
 		Promise.resolve()
