@@ -1,105 +1,81 @@
 
 # We need to monkey patch these methods in, because subclasses of View might have already been made
 
-View::isResourcesBound = false
-View::refreshingResources = null # a promise
-View::displayingResources = null # a promise
-
-
-origSetDate = View::setDate
+origSetElement = View::setElement
 origRemoveElement = View::removeElement
 
 
-View::setDate = ->
-	# will cause a 'reset' if already bound.
-	# otherwise, will start displayResources's fetch early.
-	#@refreshingResources = @calendar.resourceManager.fetchResources()
-	origSetDate.apply(this, arguments)
+View::isResourcesBound = false
 
 
-View::ensureDisplayBaseVisuals = ->
-	Promise.resolve(@refreshingResources).then => # if not refreshing, will resolve immediately
-		@ensureDisplayingResources().then => # wait until resources rendered
-			processLicenseKey(
-				@calendar.options.schedulerLicenseKey
-				@el # container element
-			)
+View::setElement = ->
+	promise = origSetElement.apply(this, arguments)
+	@bindResources() # wait until after skeleton
+	promise
 
 
 View::removeElement = ->
-	@stopDisplayingResources(true)
+	@unbindResources(true) # isDestroying=true
 	origRemoveElement.apply(this, arguments)
 
 
-View::displayEvents = ->
-	Promise.all([
-		@requestEvents()
-		@ensureDisplayingResources()
-	]).then (values) =>
-		@bindEvents()
-		@setEvents(values[0])
+View::triggerDateRender = ->
+	processLicenseKey(
+		@calendar.options.schedulerLicenseKey
+		@el # container element
+	)
+	@triggerRender()
 
 
-View::ensureDisplayingResources = ->
-	@displayingResources or @displayResources()
+View::resolveEventRenderDeps = ->
+	@requestResources() # because event rendering assumes this data
 
 
-View::displayResources = ->
-	@displayingResources = @calendar.resourceManager.getResources().then (resources) =>
-		@bindResources()
-		@setResources(resources)
-
-
-View::stopDisplayingResources = (isDestroying) ->
-	@displayingResources = null
-	@refreshingResources = null
-	@unbindResources()
-	@unsetResources(isDestroying)
-
-
-# causes events that fire from ResourceManager to call methods of this object.
 View::bindResources = ->
 	if not @isResourcesBound
-		@listenTo @calendar.resourceManager,
-			set: @setResources
-			unset: @unsetResources
-			reset: @resetResources
-			add: @addResource
-			remove: @removeResource
-		@isResourcesBound = true # immediately lock against re-binding
+		@isResourcesBound = true
+		@requestResources().then (resources) =>
+			if @isResourcesBound # hasn't been unbound in the meantime
+				@listenTo @calendar.resourceManager,
+					set: @setResources
+					unset: @unsetResources
+					reset: @resetResources
+					add: @addResource
+					remove: @removeResource
+				@setResources(resources)
 
 
-# stops listening to ResourceManager events.
-# triggers an 'unset' event to fire.
-View::unbindResources =  ->
+View::unbindResources = (isDestroying) ->
 	if @isResourcesBound
+		@isResourcesBound = false
 		@stopListeningTo(@calendar.resourceManager)
-		@isResourcesBound = false # finally allow re-binding
+		@unsetResources(isDestroying)
+
+
+View::requestResources = ->
+	@calendar.resourceManager.getResources()
 
 
 View::setResources = (resources) ->
-	@redisplayEvents()
+	if @isEventsSet
+		@resetEvents()
 
 
 View::unsetResources = (isDestroying) ->
-	@redisplayEvents()
+	if not isDestroying and @isEventsSet
+		@resetEvents()
 
 
 View::resetResources = (resources) ->
-	@redisplayEvents()
+	if @isEventsSet
+		@resetEvents()
 
 
 View::addResource = ->
-	@redisplayEvents()
+	if @isEventsSet
+		@resetEvents()
 
 
 View::removeResource = ->
-	@redisplayEvents()
-
-
-View::redisplayEvents = ->
-	if @displayingEvents # already being displayed, or in the process?
-		@displayingEvents.then => # wait for current display to finish
-			@displayEvents() # redisplay
-	else
-		Promise.resolve() # won't try to display if not already
+	if @isEventsSet
+		@resetEvents()

@@ -758,7 +758,7 @@ class TimelineGrid extends Grid
 		# Similar code in ResourceTimelineView::setScroll
 		@headScroller.setScrollLeft(scroll.left)
 
-		@headScroller.setScrollLeft(scroll.left)
+		@bodyScroller.setScrollLeft(scroll.left)
 		@bodyScroller.setScrollTop(scroll.top)
 
 

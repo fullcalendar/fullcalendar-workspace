@@ -3,7 +3,7 @@
 
 class ResourceMonthView extends FC.MonthView
 
-	@mixin ResourceViewMixin
+	@mixin ResourceViewMixin # we don't need the resourceRenderQueue, but we need other utils
 
 	dayGridClass: ResourceDayGrid
 
@@ -13,18 +13,28 @@ class ResourceMonthView extends FC.MonthView
 		@dayGrid.processHeadResourceEls(@headContainerEl)
 
 
-	renderResources: (resources) ->
+	setResources: (resources) ->
 		@dayGrid.setResources(resources) # doesn't rerender
 
-		if @isDisplayingDateVisuals
-			@displayDateVisuals() # rerenders the whole grid, with resources
+		if @isDateRendered
+			@requestRerenderDate() # rerenders the whole grid, with resources
+		else
+			Promise.resolve()
 
 
-	unrenderResources: (isDestroying) ->
+	unsetResources: (isDestroying) ->
 		@dayGrid.unsetResources() # doesn't rerender
 
 		# if already rendered, then rerender.
-		# otherwise, displayDateVisuals will be called anyway.
+		# otherwise, requestRerenderDate will be called anyway.
 		# if in the process of destroying the view, don't bother.
-		if not isDestroying and @isDisplayingDateVisuals
-			@displayDateVisuals() # rerenders the whole grid, with resources
+		if not isDestroying and @isDateRendered
+			@requestRerenderDate() # rerenders the whole grid, with resources
+		else
+			Promise.resolve()
+
+
+	# don't block event render nor the 'viewRender' trigger on resource rendering.
+	# resources will render on their own time, causing a full requestRerenderDate.
+	ensureRenderResources: ->
+		Promise.resolve()

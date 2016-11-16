@@ -5,79 +5,146 @@ A view that structurally distinguishes events by resource
 ResourceViewMixin = # expects a View
 
 	isResourcesSet: false
+	isResourcesRendered: false
 	resourceRenderQueue: null
 	resourceTextFunc: null
 
 
-	# assumes dates have been rendered
+	setElement: ->
+		@resourceRenderQueue = new RunQueue() # setElement might need it
+		View::setElement.apply(this, arguments)
+
+
+	removeElement: ->
+		promise = View::removeElement.apply(this, arguments)
+		@resourceRenderQueue = null # needs to go after. unrendering might need it
+		promise
+
+
+	# Hooks into standard rendering
+	# ------------------------------------------------------------------------------------------------------------------
+
+
+	triggerDateRender: ->
+		@ensureRenderResources().then =>
+			View::triggerDateRender.call(this, arguments)
+
+
+	resolveEventRenderDeps: ->
+		@ensureRenderResources()
+
+
+	# Resource Data
+	# ------------------------------------------------------------------------------------------------------------------
+
+
 	setResources: (resources) ->
 		if @isResourcesSet
 			@resetResources(resources)
 		else
 			@isResourcesSet = true
-			@getResourceRenderQueue().push =>
-				@captureScroll()
-				@freezeHeight()
+			@requestRenderResources(resources)
 
-				@renderResources(resources)
 
+	# if `resources` not specified, will use current
+	resetResources: (resources) ->
+		wasEventsSet = @isEventsSet
+
+		Promise.resolve(resources or @requestResources()).then (resources) =>
+			@captureScroll()
+			@freezeHeight()
+
+			@unsetResources()
+			@setResources(resources).then =>
 				@thawHeight()
 				@releaseScroll()
+
+				if wasEventsSet
+					@resetEvents()
+				return # don't wait for anything
 
 
 	unsetResources: (isDestroying) ->
 		if @isResourcesSet
 			@isResourcesSet = false
-			@getResourceRenderQueue().clear()
-			@stopDisplayingEvents() # events are assumed to be on top of resources
-			@unrenderResources(isDestroying)
-
-
-	resetResources: (resources) ->
-		isEventsSet = @isEventsSet
-
-		@captureScroll()
-		@freezeHeight()
-
-		@unsetResources()
-		@setResources(resources).then =>
-			@thawHeight()
-			@releaseScroll()
-
-			if isEventsSet # was previously displaying events?
-				@displayEvents() # caller will wait for this promise
+			@requestUnrenderResources(isDestroying)
 
 
 	addResource: (resource) ->
-		@getResourceRenderQueue().push =>
-			@renderResource(resource) # allowed to return a promise
+		@resetResources() # rerender all by default. subclasses can opt to use requestRenderResource
 
 
 	removeResource: (resource) ->
-		@getResourceRenderQueue().push =>
-			@unrenderResource(resource) # allowed to return a promise
+		@resetResources() # rerender all by default. subclasses can opt to use requestUnrenderResource
+
+
+	# Resource Rendering Queue
+	# ------------------------------------------------------------------------------------------------------------------
+
+
+	requestRenderResources: (resources) ->
+		@resourceRenderQueue.add =>
+			@captureScroll()
+			@freezeHeight()
+
+			@renderResources(resources)
+
+			@thawHeight()
+			@releaseScroll()
+
+			@isResourcesRendered = true
+
+
+	requestUnrenderResources: (isDestroying) ->
+		@resourceRenderQueue.add =>
+			@requestUnrenderEvents().then =>
+				@captureScroll()
+				@freezeHeight()
+
+				@unrenderResources(isDestroying)
+
+				@thawHeight()
+				@releaseScroll()
+
+				@isResourcesRendered = false
+
+
+	requestRenderResource: (resource) -> # not called by default
+		@resourceRenderQueue.add =>
+			@renderResource(resource)
+
+
+	requestUnrenderResource: (resource) -> # not called by default
+		@resourceRenderQueue.add =>
+			@unrenderResource(resource)
+
+
+	ensureRenderResources: ->
+		if @isResourcesRendered
+			Promise.resolve()
+		else
+			new Promise (resolve) =>
+				@resourceRenderQueue.on('ran', resolve) # fire when next task done
+
+
+	# Actual Resource Rendering
+	# ------------------------------------------------------------------------------------------------------------------
 
 
 	renderResources: (resources) ->
-		@displayResources() # will redisplay
+		# abstract
 
 
 	unrenderResources: (isDestroying) ->
-		@displayResources() # will redisplay
+		# abstract
 
 
-	# by default, rerender all resources. don't bother with an individual resource.
 	renderResource: (resource) ->
-		@displayResources() # will redisplay
+		# abstract, for requestRenderResource
 
 
-	# by default, rerender all resources. don't bother with an individual resource.
 	unrenderResource: (resource) ->
-		@displayResources() # will redisplay
-
-
-	getResourceRenderQueue: ->
-		@resourceRenderQueue ?= new RunQueue()
+		# abstract, for requestUnrenderResource
 
 
 	# Event Dragging
