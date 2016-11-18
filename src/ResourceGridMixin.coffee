@@ -29,14 +29,11 @@ ResourceGridMixin = # expects a Grid
 	fabricateHelperEvent: (eventLocation, seg) ->
 		event = Grid::fabricateHelperEvent.apply(this, arguments) # super-method
 		@view.calendar.setEventResourceId(event, eventLocation.resourceId)
-		`
-		// @fix jga
-		var resourceIds = eventLocation.resourceIds;
-		if (resourceIds && resourceIds.length > 1) {
-			event.resourceIds = resourceIds;
-		}
-		// @endfix jga
-		`
+
+		resourceIds = eventLocation.resourceIds
+		if resourceIds and resourceIds.length > 1
+			event.resourceIds = resourceIds
+
 		event
 
 
@@ -51,25 +48,17 @@ ResourceGridMixin = # expects a Grid
 
 		if dropLocation
 			if @view.isEventResourceEditable(event)
-				# # fix #111
-				`
-				var resourceIds = event.resourceIds;
-				if (resourceIds && resourceIds.length > 1) {
-					if (endSpan.resourceId != startSpan.resourceId) {
-						resourceIds = resourceIds.filter(function(resourceId) {
-							return resourceId != startSpan.resourceId;
-						});
+				resourceIds = event.resourceIds
+				if resourceIds and resourceIds.length > 1
+					if endSpan.resourceId != startSpan.resourceId
+						resourceIds = resourceIds.filter (resourceId) ->
+							`resourceId != startSpan.resourceId`
 
-						resourceIds.push(endSpan.resourceId);
-					}
+						resourceIds.push endSpan.resourceId
 
-					dropLocation.resourceIds = resourceIds;
-				} else {
-					dropLocation.resourceId = endSpan.resourceId;
-				}
-				`
-				# dropLocation.resourceId = endSpan.resourceId
-				# endfix #111
+					dropLocation.resourceIds = resourceIds
+				else
+					dropLocation.resourceId = endSpan.resourceId
 			else
 				dropLocation.resourceId = startSpan.resourceId # the original
 
@@ -89,8 +78,13 @@ ResourceGridMixin = # expects a Grid
 			return
 
 		resizeLocation = Grid::computeEventResize.apply(this, arguments) # super-method
-		if resizeLocation
+
+		resourceIds = event.resourceIds
+		if resourceIds and resourceIds.length > 1
+			resizeLocation.resourceIds = resourceIds
+		else
 			resizeLocation.resourceId = startSpan.resourceId
+
 		resizeLocation
 
 
