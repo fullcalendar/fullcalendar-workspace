@@ -56,6 +56,7 @@ ResourceGridMixin = # expects a Grid
 
 						resourceIds.push endSpan.resourceId
 
+					resourceIds = $.unique resourceIds
 					dropLocation.resourceIds = resourceIds
 				else
 					dropLocation.resourceId = endSpan.resourceId
