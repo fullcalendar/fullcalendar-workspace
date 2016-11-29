@@ -48,6 +48,7 @@ module.exports =
 		'resource-basic/config.coffee'
 
 		'license.coffee'
+		'export-timelinegrid'
 		'outro.coffee'
 	]
 

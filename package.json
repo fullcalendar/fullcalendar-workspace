@@ -6,7 +6,7 @@
   "homepage": "http://fullcalendar.io/scheduler/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fullcalendar/fullcalendar-scheduler.git"
+    "url": "https://github.com/BeatSwitch/fullcalendar-scheduler.git"
   },
   "license": "SEE LICENSE IN LICENSE.md",
   "copyright": "2016 Adam Shaw",
