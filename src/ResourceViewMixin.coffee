@@ -49,7 +49,7 @@ ResourceViewMixin = # expects a View
 
 		@requestResourcesRender(resources).then =>
 			if isReset and @isEventsSet and not @isEventsRendered
-				@requestRenderEvents() # TODO: ensure no double call?
+				@requestEventsRerender() # TODO: ensure no double call?
 
 		if not isReset
 			@triggerWith('resourcesSet', this, []) # TODO: .trigger()
@@ -79,22 +79,29 @@ ResourceViewMixin = # expects a View
 
 	requestResourcesRender: (resources) ->
 		@resourceRenderQueue.add =>
-			@captureScroll()
-			@freezeHeight()
+			@forceResourcesRender(resources)
 
-			@forceResourcesUnrender().then =>
-				@renderResources(resources)
 
-				@thawHeight()
-				@releaseScroll()
+	forceResourcesRender: (resources) ->
+		@captureScroll()
+		@freezeHeight()
 
-				@isResourcesRendered = true
-				@triggerWith('resourcesRender', this, [])
+		@forceResourcesUnrender().then =>
+			@renderResources(resources)
+
+			@thawHeight()
+			@releaseScroll()
+
+			@isResourcesRendered = true
+			@triggerWith('resourcesRender', this, [])
 
 
 	requestResourcesUnrender: (teardownOptions) ->
-		@resourceRenderQueue.add =>
-			@forceResourcesUnrender(teardownOptions)
+		if @isResourcesRendered
+			@resourceRenderQueue.add =>
+				@forceResourcesUnrender(teardownOptions)
+		else
+			Promise.resolve()
 
 
 	forceResourcesUnrender: (teardownOptions) ->
