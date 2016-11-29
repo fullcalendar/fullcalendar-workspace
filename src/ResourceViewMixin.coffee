@@ -4,7 +4,6 @@ A view that structurally distinguishes events by resource
 ###
 ResourceViewMixin = # expects a View
 
-	isResourcesSet: false
 	isResourcesRendered: false
 	resourceRenderQueue: null
 	resourceTextFunc: null
@@ -18,17 +17,26 @@ ResourceViewMixin = # expects a View
 		View::setElement.apply(this, arguments)
 
 
-	# Hooks into standard rendering
+	# Date Rendering
 	# ------------------------------------------------------------------------------------------------------------------
 
 
 	triggerDateRender: ->
-		@ensureRenderResources().then =>
-			View::triggerDateRender.call(this, arguments)
+		@rejectOn('dateUnrender', @whenResourcesRendered()).then =>
+			View::triggerDateRender.call(this)
 
 
-	resolveEventRenderDeps: ->
-		@ensureRenderResources()
+	# Event Rendering
+	# ------------------------------------------------------------------------------------------------------------------
+
+
+	# adds some dependencies to the event rendering process.
+	# don't need to reject-on-events-unrender because an events unrender request
+	# will always be queued up after this finishes, it won't interrupt.
+	forceEventsRender: (events) ->
+		@whenResourcesSet().then => # needs the resource data
+			@whenResourcesRendered().then => # AND needs to have rendered that resource data
+				View::forceEventsRender.call(this, events)
 
 
 	# Resource Data
@@ -36,92 +44,95 @@ ResourceViewMixin = # expects a View
 
 
 	setResources: (resources) ->
-		if @isResourcesSet
-			@resetResources(resources)
-		else
-			@isResourcesSet = true
-			@requestRenderResources(resources)
+		isReset = @isResourcesSet
+		@isResourcesSet = true
+
+		@requestResourcesRender(resources).then =>
+			if isReset and @isEventsSet and not @isEventsRendered
+				@requestRenderEvents() # TODO: ensure no double call?
+
+		if not isReset
+			@triggerWith('resourcesSet', this, []) # TODO: .trigger()
 
 
-	# if `resources` not specified, will use current
-	resetResources: (resources) ->
-		wasEventsSet = @isEventsSet
-
-		Promise.resolve(resources or @requestResources()).then (resources) =>
-			@captureScroll()
-			@freezeHeight()
-
-			@unsetResources(true) # true = the view doesn't need to be pretty after
-			@setResources(resources).then =>
-				@thawHeight()
-				@releaseScroll()
-
-				if wasEventsSet
-					@resetEvents()
-				return # don't wait for anything
-
-
-	unsetResources: (isDestroying) ->
+	unsetResources: (teardownOptions={}) ->
 		if @isResourcesSet
 			@isResourcesSet = false
-			@requestUnrenderResources(isDestroying)
+
+			if not teardownOptions.skipUnrender
+				@requestResourcesUnrender(teardownOptions)
+
+			@triggerWith('resourcesUnset', this, []) # TODO: .trigger()
 
 
 	addResource: (resource) ->
-		@resetResources() # rerender all by default. subclasses can opt to use requestRenderResource
+		@requestResourcesRerender() # rerender all by default. subclasses can opt to use requestResourceRender
 
 
 	removeResource: (resource) ->
-		@resetResources() # rerender all by default. subclasses can opt to use requestUnrenderResource
+		@requestResourcesRerender() # rerender all by default. subclasses can opt to use requestResourceUnrender
 
 
 	# Resource Rendering Queue
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	requestRenderResources: (resources) ->
+	requestResourcesRender: (resources) ->
 		@resourceRenderQueue.add =>
 			@captureScroll()
 			@freezeHeight()
 
-			@renderResources(resources)
+			@forceResourcesUnrender().then =>
+				@renderResources(resources)
 
-			@thawHeight()
-			@releaseScroll()
+				@thawHeight()
+				@releaseScroll()
 
-			@isResourcesRendered = true
+				@isResourcesRendered = true
+				@triggerWith('resourcesRender', this, [])
 
 
-	requestUnrenderResources: (isDestroying) ->
+	requestResourcesUnrender: (teardownOptions) ->
 		@resourceRenderQueue.add =>
-			@requestUnrenderEvents().then =>
+			@forceResourcesUnrender(teardownOptions)
+
+
+	forceResourcesUnrender: (teardownOptions) ->
+		if @isResourcesRendered
+			@requestEventsUnrender().then =>
 				@captureScroll()
 				@freezeHeight()
 
-				@unrenderResources(isDestroying)
+				@unrenderResources(teardownOptions)
 
 				@thawHeight()
 				@releaseScroll()
 
 				@isResourcesRendered = false
+		else
+			Promise.resolve()
 
 
-	requestRenderResource: (resource) -> # not called by default
+	requestResourcesRerender: -> # TODO: add tests, esp for resources-based-on-events
+		@requestResourcesRender(@resourceManager.topLevelResources)
+
+
+	requestResourceRender: (resource) -> # not called by default
 		@resourceRenderQueue.add =>
 			@renderResource(resource)
 
 
-	requestUnrenderResource: (resource) -> # not called by default
+	requestResourceUnrender: (resource) -> # not called by default
 		@resourceRenderQueue.add =>
 			@unrenderResource(resource)
 
 
-	ensureRenderResources: ->
+	whenResourcesRendered: ->
 		if @isResourcesRendered
 			Promise.resolve()
 		else
 			new Promise (resolve) =>
-				@resourceRenderQueue.one('ran', resolve) # fire when next task done
+				@one('resourcesRender', resolve)
 
 
 	# Actual Resource Rendering
@@ -132,16 +143,16 @@ ResourceViewMixin = # expects a View
 		# abstract
 
 
-	unrenderResources: (isDestroying) ->
+	unrenderResources: (teardownOptions) ->
 		# abstract
 
 
 	renderResource: (resource) ->
-		# abstract, for requestRenderResource
+		# abstract, for requestResourceRender
 
 
 	unrenderResource: (resource) ->
-		# abstract, for requestUnrenderResource
+		# abstract, for requestResourceUnrender
 
 
 	# Event Dragging

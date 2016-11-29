@@ -9,6 +9,7 @@ class ResourceManager extends Class
 		cache: false
 
 	calendar: null
+	fetchId: 0
 	topLevelResources: null # if null, indicates not fetched
 	resourcesById: null
 	fetching: null # a promise. the last fetch. never cleared afterwards
@@ -29,11 +30,14 @@ class ResourceManager extends Class
 	# will always fetch, even if done previously.
 	# returns a promise.
 	fetchResources: ->
-		Promise.resolve(@fetching).then => # wait for most recent fetch to finish
-			@fetching = new Promise (resolve) =>
-				@fetchResourceInputs (resourceInputs) =>
+		currentFetchId = (@fetchId += 1)
+		@fetching = new Promise (resolve, reject) =>
+			@fetchResourceInputs (resourceInputs) =>
+				if currentFetchId == @fetchId
 					@setResources(resourceInputs)
 					resolve(@topLevelResources)
+				else
+					reject()
 
 
 	# calls callback when done

@@ -13,39 +13,34 @@ class ResourceAgendaView extends FC.AgendaView
 		@timeGrid.processHeadResourceEls(@headContainerEl)
 
 
-	setResources: (resources) ->
+	triggerDateRender: ->
+		if @isResourcesSet # wait for a requestDateRender that has resource data
+			View::triggerDateRender.apply(this, arguments)
+
+
+	forceEventsRender: (events) ->
+		# don't impose any resource dependencies.
+		# allow events to render even if resources haven't arrive yet.
+		View::forceEventsRender.call(this, events)
+
+
+	forceResourcesRender: (resources) ->
 		@timeGrid.setResources(resources) # doesn't rerender
 		if @dayGrid
 			@dayGrid.setResources(resources) # doesn't rerender
 
-		@isResourcesSet = true
-
 		if @isDateRendered
-			@requestRerenderDate() # rerenders the whole grid, with resources
+			@requestDateRender() # rerenders the whole grid, with resources
 		else
 			Promise.resolve()
 
 
-	unsetResources: (isDestroying) ->
+	forceResourcesUnrender: (teardownOptions={}) ->
 		@timeGrid.unsetResources() # doesn't rerender
 		if @dayGrid
 			@dayGrid.unsetResources() # doesn't rerender
 
-		@isResourcesSet = true
-
-		# if already rendered, then rerender.
-		# otherwise, requestRerenderDate will be called anyway.
-		# if in the process of destroying the view, don't bother.
-		if not isDestroying and @isDateRendered
-			@requestRerenderDate() # rerenders the whole grid, with resources
+		if @isDateRendered and not teardownOptions.skipRerender
+			@requestDateRender() # rerenders the whole grid, with resources
 		else
 			Promise.resolve()
-
-
-	triggerDateRender: ->
-		if @isResourcesSet
-			View::triggerDateRender.apply(this, arguments)
-
-
-	resolveEventRenderDeps: ->
-		Promise.resolve()

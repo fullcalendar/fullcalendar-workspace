@@ -287,10 +287,10 @@ class ResourceTimelineView extends TimelineView
 
 
 	addResource: (resource) ->
-		@requestRenderResource(resource)
+		@requestResourceRender(resource)
 
 	removeResource: (resource) ->
-		@requestUnrenderResource(resource)
+		@requestResourceUnrender(resource)
 
 
 	###
