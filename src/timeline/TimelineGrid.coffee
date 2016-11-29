@@ -729,39 +729,6 @@ class TimelineGrid extends Grid
 		return
 
 
-	# Scrolling
-	# ---------------------------------------------------------------------------------
-
-
-	computeInitialScroll: ->
-		left = 0
-		if @isTimeScale
-			scrollTime = @opt('scrollTime')
-			if scrollTime
-				scrollTime = moment.duration(scrollTime)
-				left = @dateToCoord(@start.clone().time(scrollTime)) # TODO: fix this for RTL
-		{ left, top: 0 }
-
-
-	queryScroll: ->
-		{
-			left: @bodyScroller.getScrollLeft()
-			top: @bodyScroller.getScrollTop()
-		}
-
-
-	setScroll: (scroll) ->
-
-		# TODO: workaround for FF. the ScrollJoiner sibling won't react fast enough
-		# to override the native initial crappy scroll that FF applies.
-		# TODO: have the ScrollJoiner handle this
-		# Similar code in ResourceTimelineView::setScroll
-		@headScroller.setScrollLeft(scroll.left)
-
-		@bodyScroller.setScrollLeft(scroll.left)
-		@bodyScroller.setScrollTop(scroll.top)
-
-
 	# Events
 	# ---------------------------------------------------------------------------------
 

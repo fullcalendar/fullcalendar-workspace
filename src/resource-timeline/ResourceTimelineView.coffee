@@ -259,11 +259,6 @@ class ResourceTimelineView extends TimelineView
 		headHeight
 
 
-	# TODO: best place for this?
-	scrollToResource: (resource) ->
-		@timeGrid.scrollToResource(resource)
-
-
 	# Resource Setting / Unsetting
 	# ------------------------------------------------------------------------------------------------------------------
 
@@ -583,3 +578,54 @@ class ResourceTimelineView extends TimelineView
 
 	getResourceRow: (resourceId) ->
 		@resourceRowHash[resourceId]
+
+
+	# Scrolling
+	# ---------------------------------------------------------------------------------
+	# this is useful for scrolling prev/next dates while resource is scrolled down
+
+
+	queryScroll: ->
+		scroll = super
+
+		scrollerTop = @timeGrid.bodyScroller.scrollEl.offset().top # TODO: use getClientRect
+
+		for rowObj in @getVisibleRows()
+			if rowObj.resource
+				el = rowObj.getTr('event')
+				elBottom = el.offset().top + el.outerHeight()
+
+				if elBottom > scrollerTop
+					scroll.resourceId = rowObj.resource.id
+					scroll.bottom = elBottom - scrollerTop
+					break
+		scroll
+		# TODO: what about left scroll state for spreadsheet area?
+
+
+	setScroll: (scroll) ->
+
+		if scroll.resourceId
+			row = @getResourceRow(scroll.resourceId)
+			if row
+				el = row.getTr('event')
+				if el
+					innerTop = @timeGrid.bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
+					elBottom = el.offset().top + el.outerHeight()
+					scroll.top = elBottom - scroll.bottom - innerTop
+
+		super(scroll) # handles everything but the resource grid's vertical scroll
+		@resourceGrid.bodyScroller.setScrollTop(scroll.top)
+
+
+	scrollToResource: (resource) -> # TODO: test this
+		@timeGrid.scrollToResource(resource)
+
+		row = @getResourceRow(resource.id)
+		if row
+			el = row.getTr('event')
+			if el
+				innerTop = @timeGrid.bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
+				scrollTop = el.offset().top - innerTop
+				@timeGrid.bodyScroller.setScrollTop(scrollTop)
+				@resourceGrid.bodyScroller.setScrollTop(scrollTop)
