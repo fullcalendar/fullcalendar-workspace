@@ -40,7 +40,7 @@ class ResourceRow extends EventRow
 		else
 			@disableExpanding()
 
-		@view.trigger(
+		@view.publiclyTrigger(
 			'resourceRender',
 			@resource, # this
 			@resource,

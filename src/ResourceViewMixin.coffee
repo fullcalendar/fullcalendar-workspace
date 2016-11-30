@@ -213,7 +213,7 @@ ResourceViewMixin = # expects a View
 	triggerDayClick: (span, dayEl, ev) ->
 		resourceManager = @calendar.resourceManager
 
-		@trigger(
+		@publiclyTrigger(
 			'dayClick'
 			dayEl # this
 			@calendar.applyTimezone(span.start)
@@ -226,7 +226,7 @@ ResourceViewMixin = # expects a View
 	triggerSelect: (span, ev) ->
 		resourceManager = @calendar.resourceManager
 
-		@trigger(
+		@publiclyTrigger(
 			'select'
 			null
 			@calendar.applyTimezone(span.start)
@@ -241,9 +241,9 @@ ResourceViewMixin = # expects a View
 	# TODO: make more DRY with core
 	triggerExternalDrop: (event, dropLocation, el, ev, ui) ->
 		# trigger 'drop' regardless of whether element represents an event
-		@trigger('drop', el[0], dropLocation.start, ev, ui, dropLocation.resourceId)
+		@publiclyTrigger('drop', el[0], dropLocation.start, ev, ui, dropLocation.resourceId)
 		if event
-			@trigger('eventReceive', null, event) # signal an external event landed
+			@publiclyTrigger('eventReceive', null, event) # signal an external event landed
 
 
 	### Hacks

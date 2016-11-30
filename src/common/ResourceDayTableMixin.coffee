@@ -211,7 +211,7 @@ ResourceDayTableMixin =
 						col
 				]
 
-			@view.trigger(
+			@view.publiclyTrigger(
 				'resourceRender',
 				resource, # this
 				resource,

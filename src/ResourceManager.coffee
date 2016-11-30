@@ -108,7 +108,7 @@ class ResourceManager extends Class
 		else
 			@trigger('set', @topLevelResources)
 
-		@calendar.trigger('resourcesSet', null, @topLevelResources)
+		@calendar.publiclyTrigger('resourcesSet', null, @topLevelResources)
 
 
 	resetResources: ->
