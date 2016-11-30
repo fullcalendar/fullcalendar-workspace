@@ -101,7 +101,7 @@ ResourceViewMixin = # expects a View
 		return # don't return promise result
 
 
-	whenResourcesRendered: -> # TODO: whenResourcesRender
+	whenResourcesRendered: ->
 		if @isResourcesRendered
 			Promise.resolve()
 		else
