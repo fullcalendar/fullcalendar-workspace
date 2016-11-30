@@ -604,7 +604,6 @@ class ResourceTimelineView extends TimelineView
 
 
 	setScroll: (scroll) ->
-
 		if scroll.resourceId
 			row = @getResourceRow(scroll.resourceId)
 			if row
@@ -619,8 +618,6 @@ class ResourceTimelineView extends TimelineView
 
 
 	scrollToResource: (resource) -> # TODO: test this
-		@timeGrid.scrollToResource(resource)
-
 		row = @getResourceRow(resource.id)
 		if row
 			el = row.getTr('event')
