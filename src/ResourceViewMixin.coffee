@@ -35,7 +35,7 @@ ResourceViewMixin = # expects a View
 	# will always be queued up after this finishes, it won't interrupt.
 	forceEventsRender: (events) ->
 		@whenResourcesSet().then => # needs the resource data
-			@whenResourcesRendered().then => # AND needs to have rendered that resource data
+			@whenResourcesRendered().then => # AND needs to have rendered that resource data (esp important for skipUnrender)
 				View::forceEventsRender.call(this, events)
 
 
@@ -47,9 +47,7 @@ ResourceViewMixin = # expects a View
 		isReset = @isResourcesSet
 		@isResourcesSet = true
 
-		@requestResourcesRender(resources).then =>
-			if isReset and @isEventsSet and not @isEventsRendered
-				@requestEventsRerender() # TODO: ensure no double call?
+		@requestResourcesRender(resources)
 
 		if not isReset
 			@triggerWith('resourcesSet', this, []) # TODO: .trigger()
@@ -85,15 +83,30 @@ ResourceViewMixin = # expects a View
 	forceResourcesRender: (resources) ->
 		@captureScroll()
 		@freezeHeight()
-
 		@forceResourcesUnrender().then =>
 			@renderResources(resources)
-
 			@thawHeight()
 			@releaseScroll()
+			@afterResourcesRender()
 
-			@isResourcesRendered = true
-			@triggerWith('resourcesRender', this, [])
+
+	afterResourcesRender: ->
+		@isResourcesRendered = true
+		@triggerWith('resourcesRender', this, [])
+
+		# the 'resourcesRender' trigger might have rendered pending events,
+		# but if not, make sure events are rendered
+		if @isEventsSet and not @isEventsRendered
+			@requestEventsRerender()
+		return # don't return promise result
+
+
+	whenResourcesRendered: -> # TODO: whenResourcesRender
+		if @isResourcesRendered
+			Promise.resolve()
+		else
+			new Promise (resolve) =>
+				@one('resourcesRender', resolve)
 
 
 	requestResourcesUnrender: (teardownOptions) ->
@@ -109,19 +122,16 @@ ResourceViewMixin = # expects a View
 			@requestEventsUnrender().then =>
 				@captureScroll()
 				@freezeHeight()
-
 				@unrenderResources(teardownOptions)
-
 				@thawHeight()
 				@releaseScroll()
-
-				@isResourcesRendered = false
+				@afterResourcesUnrender()
 		else
 			Promise.resolve()
 
 
-	requestResourcesRerender: -> # TODO: add tests, esp for resources-based-on-events
-		@requestResourcesRender(@resourceManager.topLevelResources)
+	afterResourcesUnrender: ->
+		@isResourcesRendered = false
 
 
 	requestResourceRender: (resource) -> # not called by default
@@ -134,12 +144,11 @@ ResourceViewMixin = # expects a View
 			@unrenderResource(resource)
 
 
-	whenResourcesRendered: ->
-		if @isResourcesRendered
-			Promise.resolve()
+	requestResourcesRerender: ->
+		if @isResourcesSet
+			@requestResourcesRender(@calendar.resourceManager.topLevelResources)
 		else
-			new Promise (resolve) =>
-				@one('resourcesRender', resolve)
+			Promise.reject()
 
 
 	# Actual Resource Rendering

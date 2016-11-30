@@ -59,7 +59,7 @@ View::forceEventsRender = (events) ->
 		origForceEventsRender.call(this, events)
 
 
-# Resource Binding / Setting
+# Resource Binding
 # --------------------------------------------------------------------------------------------------
 
 
@@ -88,6 +88,10 @@ View::requestResources = ->
 	@calendar.resourceManager.getResources()
 
 
+# Resource Setting
+# --------------------------------------------------------------------------------------------------
+
+
 View::setResources = (resources) ->
 	isReset = @isResourcesSet
 	@isResourcesSet = true
@@ -109,6 +113,14 @@ View::unsetResources = (teardownOptions={}) ->
 		@triggerWith('resourcesUnset', this, []) # TODO: .trigger()
 
 
+View::whenResourcesSet = ->
+	if @isResourcesSet
+		Promise.resolve()
+	else
+		new Promise (resolve) =>
+			@one('resourcesSet', resolve)
+
+
 View::addResource = ->
 	if @isEventsRendered
 		@requestEventsRerender()
@@ -119,14 +131,6 @@ View::removeResource = ->
 		@requestEventsRerender()
 
 
-View::requestRerenderResources = ->
+View::requestResourcesRerender = ->
 	if @isEventsRendered
 		@requestEventsRerender()
-
-
-View::whenResourcesSet = ->
-	if @isResourcesSet
-		Promise.resolve()
-	else
-		new Promise (resolve) =>
-			@one('resourcesSet', resolve)

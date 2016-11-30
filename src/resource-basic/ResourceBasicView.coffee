@@ -27,7 +27,8 @@ class ResourceBasicView extends FC.BasicView
 		@dayGrid.setResources(resources) # doesn't rerender
 
 		if @isDateRendered
-			@requestDateRender() # rerenders the whole grid, with resources
+			@requestDateRender().then => # rerenders the whole grid, with resources
+				@afterResourcesRender()
 		else
 			Promise.resolve()
 
@@ -36,6 +37,7 @@ class ResourceBasicView extends FC.BasicView
 		@dayGrid.unsetResources() # doesn't rerender
 
 		if @isDateRendered and not teardownOptions.skipRerender
-			@requestDateRender() # rerenders the whole grid, with resources
+			@requestDateRender().then => # rerenders the whole grid, with resources
+				@afterResourcesUnrender()
 		else
 			Promise.resolve()
