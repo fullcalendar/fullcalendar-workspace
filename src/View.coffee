@@ -81,7 +81,7 @@ View::unbindResources = (teardownOptions) ->
 		@isResourcesBound = false
 		@stopListeningTo(@calendar.resourceManager)
 		@unsetResources(teardownOptions)
-		@triggerWith('resourcesUnbind', this, []) # TODO: .trigger()
+		@trigger('resourcesUnbind')
 
 
 View::requestResources = ->
@@ -100,7 +100,7 @@ View::setResources = (resources) ->
 		@requestEventsRerender() # event coloring might have changed
 
 	if not isReset
-		@triggerWith('resourcesSet', this, []) # TODO: .trigger()
+		@trigger('resourcesSet')
 
 
 View::unsetResources = (teardownOptions={}) ->
@@ -110,7 +110,7 @@ View::unsetResources = (teardownOptions={}) ->
 		if @isEventsRendered and not teardownOptions.skipRerender
 			@requestEventsRerender()
 
-		@triggerWith('resourcesUnset', this, []) # TODO: .trigger()
+		@trigger('resourcesUnset')
 
 
 View::whenResourcesSet = ->

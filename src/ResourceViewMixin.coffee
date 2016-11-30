@@ -50,7 +50,7 @@ ResourceViewMixin = # expects a View
 		@requestResourcesRender(resources)
 
 		if not isReset
-			@triggerWith('resourcesSet', this, []) # TODO: .trigger()
+			@trigger('resourcesSet')
 
 
 	unsetResources: (teardownOptions={}) ->
@@ -60,7 +60,7 @@ ResourceViewMixin = # expects a View
 			if not teardownOptions.skipUnrender
 				@requestResourcesUnrender(teardownOptions)
 
-			@triggerWith('resourcesUnset', this, []) # TODO: .trigger()
+			@trigger('resourcesUnset')
 
 
 	addResource: (resource) ->
@@ -92,7 +92,7 @@ ResourceViewMixin = # expects a View
 
 	afterResourcesRender: ->
 		@isResourcesRendered = true
-		@triggerWith('resourcesRender', this, [])
+		@trigger('resourcesRender')
 
 		# the 'resourcesRender' trigger might have rendered pending events,
 		# but if not, make sure events are rendered
