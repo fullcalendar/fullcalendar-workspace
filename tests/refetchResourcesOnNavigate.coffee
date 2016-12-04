@@ -137,7 +137,49 @@ fdescribe 'refetchResourcesOnNavigate', ->
 
 		currentCalendar.changeView('agendaTwoDay')
 
-		expect(resourceCallCnt).toBe(2)
+		expect(resourceCallCnt).toBe(2) # kill some of these
 		expect(getHeadResourceTitles()).toEqual([ 'resource a-2', 'resource b-2' ])
 		expect($('.day1event').length).toBe(2)
 		expect($('.day2event').length).toBe(2)
+
+
+	it 'affects event rendering in non-resource views', (done) ->
+		resourceCallCnt = 0
+		eventRenderingCnt = 0
+
+		initCalendar
+			defaultView: 'agendaDay'
+			groupByResource: false
+			groupByDateAndResource: false
+
+			resources: (callback) ->
+				resourceCallCnt += 1
+				setTimeout ->
+					callback([
+						{ title: 'resource a-' + resourceCallCnt, id: 'a', eventClassName: 'resource-a-' + resourceCallCnt }
+						{ title: 'resource b-' + resourceCallCnt, id: 'b', eventClassName: 'resource-b-' + resourceCallCnt }
+					])
+				, 100
+
+			eventAfterAllRender: ->
+				eventRenderingCnt += 1
+
+				# step 2
+				if eventRenderingCnt == 1
+					expect(resourceCallCnt).toBe(1)
+					expect($('.resource-a-1').length).toBe(1)
+					expect($('.resource-b-1').length).toBe(1)
+					currentCalendar.next()
+
+				# step 3
+				else if eventRenderingCnt == 2
+					expect(resourceCallCnt).toBe(2)
+					expect($('.resource-a-1').length).toBe(0)
+					expect($('.resource-b-1').length).toBe(0)
+					expect($('.resource-a-2').length).toBe(1)
+					expect($('.resource-b-2').length).toBe(1)
+					done()
+
+		# step 1 (nothing rendered initially)
+		expect($('.resource-a-1').length).toBe(0)
+		expect($('.resource-b-1').length).toBe(0)
