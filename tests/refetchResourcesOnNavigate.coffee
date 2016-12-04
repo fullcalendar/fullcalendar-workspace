@@ -88,6 +88,32 @@ fdescribe 'refetchResourcesOnNavigate', ->
 			expect($('.day1event').length).toBe(0)
 
 
+		it 'calls viewRender after resources rendered for each navigation', (done) ->
+			resourceCallCnt = 0
+			viewRenderCallCnt = 0
+
+			initCalendar
+				resources: (callback) ->
+					resourceCallCnt += 1
+					setTimeout ->
+						callback([
+							{ title: 'resource a-' + resourceCallCnt, id: 'a' }
+							{ title: 'resource b-' + resourceCallCnt, id: 'b' }
+						])
+					, 100
+
+				viewRender: ->
+					viewRenderCallCnt += 1
+
+					if viewRenderCallCnt == 1
+						expect(settings.getResourceTitles()).toEqual([ 'resource a-1', 'resource b-1' ])
+						currentCalendar.next()
+
+					else if viewRenderCallCnt == 2
+						expect(settings.getResourceTitles()).toEqual([ 'resource a-2', 'resource b-2' ])
+						done()
+
+
 	it 'refetches resources on view switch', ->
 		resourceCallCnt = 0
 

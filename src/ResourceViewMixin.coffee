@@ -194,8 +194,9 @@ ResourceViewMixin = # expects a View
 		@isResourcesDirty = false
 
 
+	# will ignore the current resource render if it is dirty
 	whenResourcesRendered: ->
-		if @isResourcesRendered
+		if @isResourcesRendered and not @isResourcesDirty
 			Promise.resolve()
 		else
 			new Promise (resolve) =>
