@@ -22,6 +22,12 @@ getHeadResourceTh = (resourceId, date) ->
 		'[data-date="' + date.format('YYYY-MM-DD') + '"]')
 
 
+getHeadResourceTitles = ->
+	$('th[data-resource-id]').map (i, th) ->
+		$(th).text()
+	.get() # jQuery -> Array
+
+
 # resourceId is required
 getHeadResourceDateEls = (date, resourceId) ->
 	date = $.fullCalendar.moment.parseZone(date)
