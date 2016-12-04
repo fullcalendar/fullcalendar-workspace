@@ -24,7 +24,7 @@ View::setElement = ->
 
 
 View::removeElement = ->
-	@unbindResources({ skipRerender: true })
+	@unbindResources({ skipRerender: true }) # don't bother to make display pretty for after
 	origRemoveElement.apply(this, arguments)
 
 
@@ -34,7 +34,7 @@ View::removeElement = ->
 
 View::handleDate = (date, isReset) ->
 	if isReset and @opt('refetchResourcesOnNavigate')
-		@unsetResources({ skipUnrender: true })
+		@unsetResources({ skipUnrender: true }) # keep same resources showing
 		@fetchResources()
 
 	origHandleDate.apply(this, arguments)
@@ -145,8 +145,8 @@ View::handleResources = (resources) ->
 
 
 View::handleUnsetResources = (teardownOptions={}) ->
-	if @isEventsRendered and not teardownOptions.skipRerender
-		@requestCurrentEventsRender()
+	# event rendering is dependent on resource data
+	@requestEventsUnrender()
 
 
 View::handleAddResource = (resource) ->
