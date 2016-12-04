@@ -1,4 +1,4 @@
-fdescribe 'refetchResourcesOnNavigate', ->
+describe 'refetchResourcesOnNavigate', ->
 	pushOptions
 		refetchResourcesOnNavigate: true
 		now: '2016-12-04'
@@ -24,6 +24,7 @@ fdescribe 'refetchResourcesOnNavigate', ->
 		pushOptions
 			defaultView: settings.view
 
+
 		it 'refetches resources when navigating', ->
 			resourceCallCnt = 0
 
@@ -35,13 +36,11 @@ fdescribe 'refetchResourcesOnNavigate', ->
 						{ title: 'resource b-' + resourceCallCnt, id: 'b' }
 					])
 
-			expect(resourceCallCnt).toBe(1)
 			expect(settings.getResourceTitles()).toEqual([ 'resource a-1', 'resource b-1' ])
 			expect($('.day1event').length).toBe(2)
 
 			currentCalendar.next()
 
-			expect(resourceCallCnt).toBe(2)
 			expect(settings.getResourceTitles()).toEqual([ 'resource a-2', 'resource b-2' ])
 			expect($('.day1event').length).toBe(0)
 			expect($('.day2event').length).toBe(2)
@@ -66,7 +65,6 @@ fdescribe 'refetchResourcesOnNavigate', ->
 
 					# step 2
 					if eventRenderingCnt == 1
-						expect(resourceCallCnt).toBe(1)
 						expect(settings.getResourceTitles()).toEqual([ 'resource a-1', 'resource b-1' ])
 						expect($('.day1event').length).toBe(2)
 						currentCalendar.next()
@@ -76,7 +74,6 @@ fdescribe 'refetchResourcesOnNavigate', ->
 						# if the 2nd day's events rendered without waiting for the new resources,
 						# then you'd still have resource a-1 and b-1
 
-						expect(resourceCallCnt).toBe(2)
 						expect(settings.getResourceTitles()).toEqual([ 'resource a-2', 'resource b-2' ])
 						expect($('.day1event').length).toBe(0)
 						expect($('.day2event').length).toBe(2)
@@ -131,13 +128,11 @@ fdescribe 'refetchResourcesOnNavigate', ->
 					{ title: 'resource b-' + resourceCallCnt, id: 'b' }
 				])
 
-		expect(resourceCallCnt).toBe(1)
 		expect(getHeadResourceTitles()).toEqual([ 'resource a-1', 'resource b-1' ])
 		expect($('.day1event').length).toBe(2)
 
 		currentCalendar.changeView('agendaTwoDay')
 
-		expect(resourceCallCnt).toBe(2) # kill some of these
 		expect(getHeadResourceTitles()).toEqual([ 'resource a-2', 'resource b-2' ])
 		expect($('.day1event').length).toBe(2)
 		expect($('.day2event').length).toBe(2)
@@ -156,8 +151,8 @@ fdescribe 'refetchResourcesOnNavigate', ->
 				resourceCallCnt += 1
 				setTimeout ->
 					callback([
-						{ title: 'resource a-' + resourceCallCnt, id: 'a', eventClassName: 'resource-a-' + resourceCallCnt }
-						{ title: 'resource b-' + resourceCallCnt, id: 'b', eventClassName: 'resource-b-' + resourceCallCnt }
+						{ id: 'a', eventClassName: 'resource-a-' + resourceCallCnt }
+						{ id: 'b', eventClassName: 'resource-b-' + resourceCallCnt }
 					])
 				, 100
 
@@ -181,5 +176,6 @@ fdescribe 'refetchResourcesOnNavigate', ->
 					done()
 
 		# step 1 (nothing rendered initially)
+		expect(resourceCallCnt).toBe(1)
 		expect($('.resource-a-1').length).toBe(0)
 		expect($('.resource-b-1').length).toBe(0)
