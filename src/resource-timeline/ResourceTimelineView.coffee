@@ -3,6 +3,8 @@ class ResourceTimelineView extends TimelineView
 
 	@mixin ResourceViewMixin
 
+	# settings for ResourceViewMixin
+	canRenderSpecificResources: true
 
 	resourceGrid: null # TODO: rename
 	tbodyHash: null # used by RowParent

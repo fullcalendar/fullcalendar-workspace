@@ -3,13 +3,16 @@
 
 origSetElement = View::setElement
 origRemoveElement = View::removeElement
-origSetDate = View::setDate
-origTriggerDateRender = View::triggerDateRender
+origHandleDate = View::handleDate
+origOnDateRender = View::onDateRender
 origForceEventsRender = View::forceEventsRender
 
 
 View::isResourcesBound = false
 View::isResourcesSet = false
+
+# temporarily hardcoded settings
+View::alwaysRefetchResources = false
 
 
 # View Rendering
@@ -31,23 +34,20 @@ View::removeElement = ->
 # --------------------------------------------------------------------------------------------------
 
 
-View::setDate = ->
-	isReset = @isDateSet
-
-	# go first, before events bind (which might immediately request + render)
-	if isReset and false
+View::handleDate = (date, isReset) ->
+	if isReset and @alwaysRefetchResources
 		@unsetResources({ skipUnrender: true })
-		@calendar.resourceManager.fetchResources()
+		@fetchResources()
 
-	origSetDate.apply(this, arguments)
+	origHandleDate.apply(this, arguments)
 
 
-View::triggerDateRender = ->
+View::onDateRender = ->
 	processLicenseKey(
 		@calendar.options.schedulerLicenseKey
 		@el # container element
 	)
-	origTriggerDateRender.apply(this, arguments)
+	origOnDateRender.apply(this, arguments) # fire public handlers
 
 
 # Event Rendering
@@ -66,6 +66,7 @@ View::forceEventsRender = (events) ->
 View::bindResources = ->
 	if not @isResourcesBound
 		@isResourcesBound = true
+		@trigger('resourcesBind')
 		@rejectOn('resourcesUnbind', @requestResources()).then (resources) =>
 			@listenTo @calendar.resourceManager,
 				set: @setResources
@@ -84,32 +85,24 @@ View::unbindResources = (teardownOptions) ->
 		@trigger('resourcesUnbind')
 
 
-View::requestResources = ->
-	@calendar.resourceManager.getResources()
-
-
-# Resource Setting
+# Resource Setting/Unsetting
 # --------------------------------------------------------------------------------------------------
 
 
 View::setResources = (resources) ->
 	isReset = @isResourcesSet
 	@isResourcesSet = true
+	@handleResources(resources, isReset)
+	@trigger(
+		if isReset then 'resourcesReset' else 'resourcesSet'
+		resources
+	)
 
-	if @isEventsRendered
-		@requestEventsRerender() # event coloring might have changed
 
-	if not isReset
-		@trigger('resourcesSet')
-
-
-View::unsetResources = (teardownOptions={}) ->
+View::unsetResources = (teardownOptions) ->
 	if @isResourcesSet
 		@isResourcesSet = false
-
-		if @isEventsRendered and not teardownOptions.skipRerender
-			@requestEventsRerender()
-
+		@handleUnsetResources(teardownOptions)
 		@trigger('resourcesUnset')
 
 
@@ -121,16 +114,59 @@ View::whenResourcesSet = ->
 			@one('resourcesSet', resolve)
 
 
-View::addResource = ->
+# Resource Adding/Removing
+# --------------------------------------------------------------------------------------------------
+
+
+View::addResource = (resource) ->
+	if @isResourcesSet
+		@handleAddResource(resource)
+		@trigger('resourceAdd', resource)
+
+
+View::removeResource = (resource) ->
+	if @isResourcesSet
+		@handleRemoveResource(resource)
+		@trigger('resourceRemove', resource)
+
+
+# Resource Handling
+# --------------------------------------------------------------------------------------------------
+
+
+View::handleResources = (resources) ->
 	if @isEventsRendered
-		@requestEventsRerender()
+		@requestCurrentEventsRender() # event coloring might have changed
 
 
-View::removeResource = ->
+View::handleUnsetResources = (teardownOptions={}) ->
+	if @isEventsRendered and not teardownOptions.skipRerender
+		@requestCurrentEventsRender()
+
+
+View::handleAddResource = (resource) ->
 	if @isEventsRendered
-		@requestEventsRerender()
+		@requestCurrentEventsRender() # event coloring might have changed
 
 
-View::requestResourcesRerender = ->
+View::handleRemoveResource = (resource) ->
 	if @isEventsRendered
-		@requestEventsRerender()
+		@requestCurrentEventsRender() # event coloring might have changed
+
+
+# Resource Data Access
+# --------------------------------------------------------------------------------------------------
+
+
+View::requestResources = ->
+	@calendar.resourceManager.getResources()
+
+
+View::fetchResources = ->
+	@calendar.resourceManager.fetchResources()
+
+
+# returns *unfiltered* current resources.
+# assumes isResourcesSet.
+View::getCurrentResources = ->
+	@calendar.resourceManager.topLevelResources

@@ -58,6 +58,7 @@ intersectRects = FC.intersectRects
 CoordCache = FC.CoordCache
 getContentRect = FC.getContentRect
 getOuterRect = FC.getOuterRect
+createObject = FC.createObject
 
 Promise = FC.Promise
 RunQueue = FC.RunQueue

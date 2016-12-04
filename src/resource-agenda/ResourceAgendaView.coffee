@@ -1,8 +1,7 @@
 
 class ResourceAgendaView extends FC.AgendaView
 
-	# we don't use the render-queue, but many other utils are useful
-	@mixin ResourceViewMixin
+	@mixin VertResourceViewMixin
 
 	timeGridClass: ResourceTimeGrid
 	dayGridClass: ResourceDayGrid
@@ -13,36 +12,13 @@ class ResourceAgendaView extends FC.AgendaView
 		@timeGrid.processHeadResourceEls(@headContainerEl)
 
 
-	triggerDateRender: ->
-		if @isResourcesSet # wait for a requestDateRender that has resource data
-			View::triggerDateRender.apply(this, arguments)
-
-
-	forceEventsRender: (events) ->
-		# don't impose any resource dependencies.
-		# allow events to render even if resources haven't arrive yet.
-		View::forceEventsRender.call(this, events)
-
-
-	forceResourcesRender: (resources) ->
-		@timeGrid.setResources(resources) # doesn't rerender
+	setResourcesOnGrids: (resources) ->
+		@timeGrid.setResources(resources)
 		if @dayGrid
-			@dayGrid.setResources(resources) # doesn't rerender
-
-		if @isDateRendered
-			@requestDateRender().then => # rerenders the whole grid, with resources
-				@afterResourcesRender()
-		else
-			Promise.resolve()
+			@dayGrid.setResources(resources)
 
 
-	forceResourcesUnrender: (teardownOptions={}) ->
-		@timeGrid.unsetResources() # doesn't rerender
+	unsetResourcesOnGrids: ->
+		@timeGrid.unsetResources()
 		if @dayGrid
-			@dayGrid.unsetResources() # doesn't rerender
-
-		if @isDateRendered and not teardownOptions.skipRerender
-			@requestDateRender().then => # rerenders the whole grid, with resources
-				@afterResourcesUnrender()
-		else
-			Promise.resolve()
+			@dayGrid.unsetResources()

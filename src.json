@@ -16,6 +16,7 @@
 
     "ResourceManager.coffee",
     "ResourceViewMixin.coffee",
+    "VertResourceViewMixin.coffee",
     "ResourceGridMixin.coffee",
 
     "common/ResourceDayTableMixin.coffee",
