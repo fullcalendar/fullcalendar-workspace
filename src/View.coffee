@@ -7,12 +7,10 @@ origHandleDate = View::handleDate
 origOnDateRender = View::onDateRender
 origForceEventsRender = View::forceEventsRender
 
-
 View::isResourcesBound = false
 View::isResourcesSet = false
 
-# temporarily hardcoded settings
-View::alwaysRefetchResources = false
+Calendar.defaults.refetchResourcesOnNavigate = false
 
 
 # View Rendering
@@ -35,7 +33,7 @@ View::removeElement = ->
 
 
 View::handleDate = (date, isReset) ->
-	if isReset and @alwaysRefetchResources
+	if isReset and @opt('refetchResourcesOnNavigate')
 		@unsetResources({ skipUnrender: true })
 		@fetchResources()
 
