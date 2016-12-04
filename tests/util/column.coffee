@@ -23,7 +23,7 @@ getHeadResourceTh = (resourceId, date) ->
 
 
 getHeadResourceTitles = ->
-	$('th[data-resource-id]').map (i, th) ->
+	$('th.fc-resource-cell').map (i, th) ->
 		$(th).text()
 	.get() # jQuery -> Array
 

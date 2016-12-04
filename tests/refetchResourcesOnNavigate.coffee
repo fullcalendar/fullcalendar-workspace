@@ -86,3 +86,32 @@ fdescribe 'refetchResourcesOnNavigate', ->
 			expect(resourceCallCnt).toBe(1)
 			expect(settings.getResourceTitles()).toEqual([ ])
 			expect($('.day1event').length).toBe(0)
+
+
+	it 'refetches resources on view switch', ->
+		resourceCallCnt = 0
+
+		initCalendar
+			defaultView: 'agendaDay'
+			views:
+				agendaTwoDay:
+					type: 'agenda'
+					duration: { days: 2 }
+					groupByResource: true
+			resources: (callback) ->
+				resourceCallCnt += 1
+				callback([
+					{ title: 'resource a-' + resourceCallCnt, id: 'a' }
+					{ title: 'resource b-' + resourceCallCnt, id: 'b' }
+				])
+
+		expect(resourceCallCnt).toBe(1)
+		expect(getHeadResourceTitles()).toEqual([ 'resource a-1', 'resource b-1' ])
+		expect($('.day1event').length).toBe(2)
+
+		currentCalendar.changeView('agendaTwoDay')
+
+		expect(resourceCallCnt).toBe(2)
+		expect(getHeadResourceTitles()).toEqual([ 'resource a-2', 'resource b-2' ])
+		expect($('.day1event').length).toBe(2)
+		expect($('.day2event').length).toBe(2)

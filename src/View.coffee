@@ -65,7 +65,14 @@ View::bindResources = ->
 	if not @isResourcesBound
 		@isResourcesBound = true
 		@trigger('resourcesBind')
-		@rejectOn('resourcesUnbind', @requestResources()).then (resources) =>
+
+		promise = # first-time get/fetch
+			if @opt('refetchResourcesOnNavigate')
+				@fetchResources()
+			else
+				@requestResources()
+
+		@rejectOn('resourcesUnbind', promise).then (resources) =>
 			@listenTo @calendar.resourceManager,
 				set: @setResources
 				reset: @setResources
