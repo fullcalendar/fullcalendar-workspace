@@ -36,27 +36,25 @@ describe 'timeline', ->
 			]
 			eventAfterAllRender: (view) ->
 				switchCnt++
-				setTimeout -> # to avoid nested renders queueing
-					switch switchCnt
-						when 1
-							expect(view.type).toBe('timelineDay')
-							currentCalendar.changeView('timelineThreeDays')
-						when 2
-							expect(view.type).toBe('timelineThreeDays')
-							currentCalendar.changeView('agendaDay')
-						when 3
-							expect(view.type).toBe('agendaDay')
-							currentCalendar.changeView('agendaTwoDay')
-						when 4
-							expect(view.type).toBe('agendaTwoDay')
-							currentCalendar.changeView('agendaWeek')
-						when 5
-							expect(view.type).toBe('agendaWeek')
-							currentCalendar.changeView('month')
-						when 6
-							expect(view.type).toBe('month')
-							currentCalendar.changeView('timelineDay')
-						when 7
-							expect(view.type).toBe('timelineDay')
-							done()
-				, 0
+				switch switchCnt
+					when 1
+						expect(view.type).toBe('timelineDay')
+						currentCalendar.changeView('timelineThreeDays')
+					when 2
+						expect(view.type).toBe('timelineThreeDays')
+						currentCalendar.changeView('agendaDay')
+					when 3
+						expect(view.type).toBe('agendaDay')
+						currentCalendar.changeView('agendaTwoDay')
+					when 4
+						expect(view.type).toBe('agendaTwoDay')
+						currentCalendar.changeView('agendaWeek')
+					when 5
+						expect(view.type).toBe('agendaWeek')
+						currentCalendar.changeView('month')
+					when 6
+						expect(view.type).toBe('month')
+						currentCalendar.changeView('timelineDay')
+					when 7
+						expect(view.type).toBe('timelineDay')
+						done()
