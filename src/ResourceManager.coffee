@@ -58,7 +58,7 @@ class ResourceManager extends Class
 			when 'object'
 				@calendar.pushLoading()
 				$.ajax($.extend({}, ResourceManager.ajaxDefaults, source))
-					.done (resourceInputs) =>
+					.then (resourceInputs) =>
 						@calendar.popLoading()
 						callback(resourceInputs)
 					# TODO: handle failure

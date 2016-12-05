@@ -35,7 +35,7 @@ class CalendarExtension extends Calendar
 		promise = @resourceManager.addResource(resourceInput)
 
 		if scroll and @view.scrollToResource
-			promise.done (resource) =>
+			promise.then (resource) =>
 				@view.scrollToResource(resource)
 
 		return
