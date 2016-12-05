@@ -18,7 +18,7 @@ ResourceViewMixin = # expects a View
 	setElement: ->
 		# put this first, because setElement might need it.
 		# don't clear this out in removeElement. headless rendering might continue.
-		@resourceRenderQueue = new RunQueue()
+		@resourceRenderQueue = new TaskQueue()
 
 		View::setElement.apply(this, arguments)
 
