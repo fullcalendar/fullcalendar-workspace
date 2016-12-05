@@ -69,14 +69,14 @@ ResourceViewMixin = # expects a View
 			@requestResourcesRender(resources)
 
 
-	handleUnsetResources: (teardownOptions={}) ->
+	handleResourcesUnset: (teardownOptions={}) ->
 		if teardownOptions.skipUnrender
 			@isResourcesDirty = @isResourcesRendered
 		else
 			@requestResourcesUnrender(teardownOptions)
 
 
-	handleAddResource: (resource) ->
+	handleResourceAdd: (resource) ->
 		if @canRenderSpecificResources
 			if @opt('filterResourcesWithEvents')
 				if @isEventsSet
@@ -92,7 +92,7 @@ ResourceViewMixin = # expects a View
 			@handleResources(@getCurrentResources())
 
 
-	handleRemoveResource: (resource) ->
+	handleResourceRemove: (resource) ->
 		if @canRenderSpecificResources
 			@requestResourceUnrender(resource)
 		else

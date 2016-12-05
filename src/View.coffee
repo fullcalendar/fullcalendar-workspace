@@ -107,7 +107,7 @@ View::setResources = (resources) ->
 View::unsetResources = (teardownOptions) ->
 	if @isResourcesSet
 		@isResourcesSet = false
-		@handleUnsetResources(teardownOptions)
+		@handleResourcesUnset(teardownOptions)
 		@trigger('resourcesUnset')
 
 
@@ -125,13 +125,13 @@ View::whenResourcesSet = ->
 
 View::addResource = (resource) ->
 	if @isResourcesSet
-		@handleAddResource(resource)
+		@handleResourceAdd(resource)
 		@trigger('resourceAdd', resource)
 
 
 View::removeResource = (resource) ->
 	if @isResourcesSet
-		@handleRemoveResource(resource)
+		@handleResourceRemove(resource)
 		@trigger('resourceRemove', resource)
 
 
@@ -146,17 +146,17 @@ View::handleResources = (resources) ->
 	#	executeEventsRender waits for resources and renders events
 
 
-View::handleUnsetResources = (teardownOptions={}) ->
+View::handleResourcesUnset = (teardownOptions={}) ->
 	# event rendering is dependent on resource data
 	@requestEventsUnrender()
 
 
-View::handleAddResource = (resource) ->
+View::handleResourceAdd = (resource) ->
 	if @isEventsRendered
 		@requestCurrentEventsRender() # event coloring might have changed
 
 
-View::handleRemoveResource = (resource) ->
+View::handleResourceRemove = (resource) ->
 	if @isEventsRendered
 		@requestCurrentEventsRender() # event coloring might have changed
 
