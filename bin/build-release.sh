@@ -37,8 +37,8 @@ fi
 
 success=0
 if {
-	# make sure deps are as new as possible for bundle
-	npm install &&
+	## make sure deps are as new as possible for bundle
+	#npm install &&
 
 	# ensures stray files stay out of the release
 	gulp clean &&
