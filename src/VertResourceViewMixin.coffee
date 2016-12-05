@@ -1,4 +1,8 @@
 
+###
+For vertical resource view.
+For views that rely on grids that don't render their resources and dates together.
+###
 VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 
 
@@ -50,6 +54,8 @@ VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 
 
 	setResourcesOnGrids: (resources) -> # for rendering
+		# abstract
 
 
 	unsetResourcesOnGrids: -> # for rendering
+		# abstract

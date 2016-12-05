@@ -612,7 +612,7 @@ class ResourceTimelineView extends TimelineView
 		@resourceGrid.bodyScroller.setScrollTop(scroll.top)
 
 
-	scrollToResource: (resource) -> # TODO: test this
+	scrollToResource: (resource) ->
 		row = @getResourceRow(resource.id)
 		if row
 			el = row.getTr('event')

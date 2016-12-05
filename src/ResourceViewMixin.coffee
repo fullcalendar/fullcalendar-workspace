@@ -356,7 +356,7 @@ _filterResourcesWithEvents = (sourceResources, resourceIdHits) ->
 				filteredResource = createObject(sourceResource) # mask
 				filteredResource.children = filteredChildren
 				filteredResources.push(filteredResource)
-		else
+		else # no children, so no need to mask
 			if resourceIdHits[sourceResource.id]
 				filteredResources.push(sourceResource)
 	filteredResources
