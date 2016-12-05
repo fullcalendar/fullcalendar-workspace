@@ -1,4 +1,6 @@
 
+Calendar.defaults.filterResourcesWithEvents = false
+
 ###
 A view that structurally distinguishes events by resource
 ###
@@ -11,9 +13,6 @@ ResourceViewMixin = # expects a View
 	resourceTextFunc: null
 
 	canRenderSpecificResources: false
-
-	# temporarily hardcoded settings
-	onlyResourcesWithEvents: false
 
 
 	setElement: ->
@@ -40,7 +39,7 @@ ResourceViewMixin = # expects a View
 
 
 	handleEvents: (events) ->
-		if @onlyResourcesWithEvents
+		if @opt('filterResourcesWithEvents')
 			if @isResourcesSet
 				resources = @getCurrentResources()
 				filteredResources = @filterResourcesWithEvents(resources, events)
@@ -59,7 +58,7 @@ ResourceViewMixin = # expects a View
 
 
 	handleResources: (resources) ->
-		if @onlyResourcesWithEvents
+		if @opt('filterResourcesWithEvents')
 			if @isEventsSet
 				events = @getCurrentEvents()
 				filteredResources = @filterResourcesWithEvents(resources, events)
@@ -79,7 +78,7 @@ ResourceViewMixin = # expects a View
 
 	handleAddResource: (resource) ->
 		if @canRenderSpecificResources
-			if @onlyResourcesWithEvents
+			if @opt('filterResourcesWithEvents')
 				if @isEventsSet
 					events = @getCurrentEvents()
 					a = @filterResourcesWithEvents([ resource ], events)
