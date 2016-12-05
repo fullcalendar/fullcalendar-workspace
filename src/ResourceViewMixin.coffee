@@ -105,42 +105,42 @@ ResourceViewMixin = # expects a View
 
 	requestResourcesRender: (resources) ->
 		@resourceRenderQueue.add =>
-			@forceResourcesRender(resources)
+			@executeResourcesRender(resources)
 
 
 	requestResourcesUnrender: (teardownOptions) ->
 		if @isResourcesRendered
 			@resourceRenderQueue.add =>
-				@forceResourcesUnrender(teardownOptions)
+				@executeResourcesUnrender(teardownOptions)
 		else
 			Promise.resolve()
 
 
 	requestResourceRender: (resource) -> # canRenderSpecificResources must be activated
 		@resourceRenderQueue.add =>
-			@forceResourceRender(resource)
+			@executeResourceRender(resource)
 
 
 	requestResourceUnrender: (resource) -> # canRenderSpecificResources must be activated
 		@resourceRenderQueue.add =>
-			@forceResourceUnrender(resource)
+			@executeResourceUnrender(resource)
 
 
 	# Resource High-level Rendering/Unrendering
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	forceResourcesRender: (resources) ->
+	executeResourcesRender: (resources) ->
 		@captureScroll()
 		@freezeHeight()
-		@forceResourcesUnrender().then =>
+		@executeResourcesUnrender().then =>
 			@renderResources(resources)
 			@thawHeight()
 			@releaseScroll()
 			@reportResourcesRender()
 
 
-	forceResourcesUnrender: (teardownOptions) ->
+	executeResourcesUnrender: (teardownOptions) ->
 		if @isResourcesRendered
 			@requestEventsUnrender().then =>
 				@captureScroll()
@@ -153,7 +153,7 @@ ResourceViewMixin = # expects a View
 			Promise.resolve()
 
 
-	forceResourceRender: (resource) ->
+	executeResourceRender: (resource) ->
 		if @isResourcesRendered
 			@captureScroll()
 			@freezeHeight()
@@ -164,7 +164,7 @@ ResourceViewMixin = # expects a View
 			Promise.reject()
 
 
-	forceResourceUnrender: (resource) ->
+	executeResourceUnrender: (resource) ->
 		if @isResourcesRendered
 			@captureScroll()
 			@freezeHeight()

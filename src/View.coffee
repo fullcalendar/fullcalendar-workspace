@@ -5,7 +5,7 @@ origSetElement = View::setElement
 origRemoveElement = View::removeElement
 origHandleDate = View::handleDate
 origOnDateRender = View::onDateRender
-origForceEventsRender = View::forceEventsRender
+origExecuteEventsRender = View::executeEventsRender
 
 View::isResourcesBound = false
 View::isResourcesSet = false
@@ -52,9 +52,9 @@ View::onDateRender = ->
 # --------------------------------------------------------------------------------------------------
 
 
-View::forceEventsRender = (events) ->
+View::executeEventsRender = (events) ->
 	@whenResourcesSet().then => # wait for resource data, for coloring
-		origForceEventsRender.call(this, events)
+		origExecuteEventsRender.call(this, events)
 
 
 # Resource Binding
@@ -143,7 +143,7 @@ View::handleResources = (resources) ->
 	if @isEventsRendered
 		@requestCurrentEventsRender() # event coloring might have changed
 	# else (not already renderd)
-	#	forceEventsRender waits for resources and renders events
+	#	executeEventsRender waits for resources and renders events
 
 
 View::handleUnsetResources = (teardownOptions={}) ->

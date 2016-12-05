@@ -6,7 +6,7 @@ VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 	# ----------------------------------------------------------------------------------------------
 
 
-	forceResourcesRender: (resources) ->
+	executeResourcesRender: (resources) ->
 		@setResourcesOnGrids(resources) # doesn't unrender
 
 		if @isDateRendered
@@ -17,7 +17,7 @@ VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 			Promise.resolve()
 
 
-	forceResourcesUnrender: (teardownOptions={}) ->
+	executeResourcesUnrender: (teardownOptions={}) ->
 		@unsetResourcesOnGrids() # doesn't unrender
 
 		if @isDateRendered and not teardownOptions.skipRerender
@@ -33,14 +33,14 @@ VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 	# ----------------------------------------------------------------------------------------------
 
 
-	forceDateRender: (date) ->
-		View::forceDateRender.apply(this, arguments).then =>
+	executeDateRender: (date) ->
+		View::executeDateRender.apply(this, arguments).then =>
 			if @isResourcesSet
 				@reportResourcesRender() # resources were rendered
 
 
-	forceDateUnrender: (date) ->
-		View::forceDateUnrender.apply(this, arguments).then =>
+	executeDateUnrender: (date) ->
+		View::executeDateUnrender.apply(this, arguments).then =>
 			if @isResourcesSet
 				@reportResourcesUnrender() # resources were rendered
 
