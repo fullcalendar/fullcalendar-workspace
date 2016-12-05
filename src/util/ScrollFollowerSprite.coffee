@@ -180,6 +180,7 @@ class ScrollFollowerSprite
 			'font-weight': @el.css('font-weight')
 			'font-size': @el.css('font-size')
 			'font-family': @el.css('font-family')
+			'text-decoration': @el.css('text-decoration')
 			'color': @el.css('color')
 			'padding-top': @el.css('padding-top')
 			'padding-bottom': @el.css('padding-bottom')
