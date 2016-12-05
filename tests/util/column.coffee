@@ -22,6 +22,12 @@ getHeadResourceTh = (resourceId, date) ->
 		'[data-date="' + date.format('YYYY-MM-DD') + '"]')
 
 
+getHeadResourceIds = ->
+	$('th.fc-resource-cell').map (i, th) ->
+		$(th).data('resource-id')
+	.get() # jQuery -> Array
+
+
 getHeadResourceTitles = ->
 	$('th.fc-resource-cell').map (i, th) ->
 		$(th).text()
