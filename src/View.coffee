@@ -142,6 +142,8 @@ View::removeResource = (resource) ->
 View::handleResources = (resources) ->
 	if @isEventsRendered
 		@requestCurrentEventsRender() # event coloring might have changed
+	# else (not already renderd)
+	#	forceEventsRender waits for resources and renders events
 
 
 View::handleUnsetResources = (teardownOptions={}) ->

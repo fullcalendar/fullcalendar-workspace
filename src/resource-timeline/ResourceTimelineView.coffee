@@ -283,13 +283,6 @@ class ResourceTimelineView extends TimelineView
 		@reinitializeCellFollowers()
 
 
-	addResource: (resource) ->
-		@requestResourceRender(resource)
-
-	removeResource: (resource) ->
-		@requestResourceUnrender(resource)
-
-
 	###
 	TODO: the scenario where there were previously unassociated events that are now
 	 attached to this resource. should render those events immediately.
