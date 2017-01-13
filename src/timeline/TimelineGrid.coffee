@@ -238,7 +238,8 @@ class TimelineGrid extends Grid
 		slatCoordCache = @slatCoordCache
 		containerCoordCache = @containerCoordCache
 
-		if containerCoordCache.isTopInBounds(topOffset)
+		# within scroll container's content rectangle?
+		if containerCoordCache.isPointInBounds(leftOffset, topOffset)
 
 			slatIndex = slatCoordCache.getHorizontalIndex(leftOffset)
 			if slatIndex?
