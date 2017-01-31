@@ -324,10 +324,10 @@ class TimelineGrid extends Grid
 		@joiner = new ScrollJoiner('horizontal', [ @headScroller, @bodyScroller ])
 
 		if true
-			@follower = new ScrollFollower(@headScroller, @view.calendar.isTouch)
+			@follower = new ScrollFollower(@headScroller, true) # allowPointerEvents=true
 
 		if true
-			@eventTitleFollower = new ScrollFollower(@bodyScroller, @view.calendar.isTouch)
+			@eventTitleFollower = new ScrollFollower(@bodyScroller)
 			@eventTitleFollower.minTravel = 50
 			if @isRTL
 				@eventTitleFollower.containOnNaturalRight = true
@@ -360,10 +360,10 @@ class TimelineGrid extends Grid
 			offsetParent: @bodyScroller.canvas.el
 
 		for date, i in @slotDates
-			@view.trigger('dayRender', null, date, @slatEls.eq(i))
+			@view.publiclyTrigger('dayRender', null, date, @slatEls.eq(i))
 
 		if @follower
-			@follower.setSprites(@headEl.find('tr:not(:last-child) span'))
+			@follower.setSprites(@headEl.find('tr:not(:last-child) .fc-cell-text'))
 
 
 	unrenderDates: ->
@@ -388,6 +388,10 @@ class TimelineGrid extends Grid
 		slotDates = @slotDates
 		slotCells = [] # meta
 
+		rowUnits =
+			for format in formats
+				FC.queryMostGranularFormatUnit(format)
+
 		for date in slotDates
 			weekNumber = date.week()
 			isWeekStart = @emphasizeWeeks and prevWeekNumber != null and prevWeekNumber != weekNumber
@@ -400,16 +404,14 @@ class TimelineGrid extends Grid
 
 				if isSuperRow
 					text = date.format(format)
-					dateData = date.format()
 					if !leadingCell or leadingCell.text != text
-						newCell = { text, dateData, colspan: 1 }
+						newCell = @buildCellObject(date, text, rowUnits[row])
 					else
 						leadingCell.colspan += 1
 				else
 					if !leadingCell or isInt(divideRangeByDuration(@start, date, labelInterval))
 						text = date.format(format)
-						dateData = date.format()
-						newCell = { text, dateData, colspan: 1 }
+						newCell = @buildCellObject(date, text, rowUnits[row])
 					else
 						leadingCell.colspan += 1
 
@@ -421,6 +423,7 @@ class TimelineGrid extends Grid
 			prevWeekNumber = weekNumber
 
 		isChrono = labelInterval > @slotDuration
+		isSingleDay = @slotDuration.as('days') == 1
 
 		html = '<table>'
 		html += '<colgroup>'
@@ -432,18 +435,22 @@ class TimelineGrid extends Grid
 			isLast = i == cellRows.length - 1
 			html += '<tr' + (if isChrono and isLast then ' class="fc-chrono"' else '') + '>'
 			for cell in rowCells
+
+				headerCellClassNames = [ @view.widgetHeaderClass ]
+				if cell.weekStart
+					headerCellClassNames.push('fc-em-cell')
+				if isSingleDay
+					headerCellClassNames = headerCellClassNames.concat(
+						@getDayClasses(cell.date, true) # adds "today" class and other day-based classes
+					)
+
 				html +=
-					'<th class="' +
-							@view.widgetHeaderClass + ' ' +
-							(if cell.weekStart then 'fc-em-cell' else '') +
-						'"' +
-						' data-date="' + cell.dateData + '"' +
+					'<th class="' + headerCellClassNames.join(' ') + '"' +
+						' data-date="' + cell.date.format() + '"' +
 						(if cell.colspan > 1 then ' colspan="' + cell.colspan + '"' else '') +
 					'>' +
 						'<div class="fc-cell-content">' +
-							'<span class="fc-cell-text">' +
-								htmlEscape(cell.text) +
-							'</span>' +
+							cell.spanHtml +
 						'</div>' +
 					'</th>'
 
@@ -463,6 +470,22 @@ class TimelineGrid extends Grid
 		@_slatHtml = slatHtml
 
 		html
+
+
+	buildCellObject: (date, text, rowUnit) ->
+		date = date.clone() # ensure our own reference
+		spanHtml = @view.buildGotoAnchorHtml(
+			{
+				date
+				type: rowUnit
+				forceOff: not rowUnit
+			},
+			{
+				'class': 'fc-cell-text'
+			},
+			htmlEscape(text)
+		)
+		{ text, spanHtml, date, colspan: 1 }
 
 
 	renderSlatHtml: ->
@@ -560,43 +583,50 @@ class TimelineGrid extends Grid
 
 	# NOTE: not related to Grid. this is TimelineGrid's own method
 	updateWidth: ->
-
 		# reason for this complicated method is that things went wrong when:
 		#  slots/headers didn't fill content area and needed to be stretched
 		#  cells wouldn't align (rounding issues with available width calculated
 		#  differently because of padding VS scrollbar trick)
 
-		slotWidth = Math.round(@slotWidth or= @computeSlotWidth())
-		containerWidth = slotWidth * @slotDates.length
-		containerMinWidth = ''
-		nonLastSlotWidth = slotWidth
+		isDatesRendered = @headColEls # TODO: refactor use of this
 
-		availableWidth = @bodyScroller.getClientWidth()
-		if availableWidth > containerWidth
-			containerMinWidth = availableWidth
+		if isDatesRendered
+			slotWidth = Math.round(@slotWidth or= @computeSlotWidth())
+			containerWidth = slotWidth * @slotDates.length
+			containerMinWidth = ''
+			nonLastSlotWidth = slotWidth
+
+			availableWidth = @bodyScroller.getClientWidth()
+			if availableWidth > containerWidth
+				containerMinWidth = availableWidth
+				containerWidth = ''
+				nonLastSlotWidth = Math.floor(availableWidth / @slotDates.length)
+		else
 			containerWidth = ''
-			nonLastSlotWidth = Math.floor(availableWidth / @slotDates.length)
+			containerMinWidth = ''
 
 		@headScroller.canvas.setWidth(containerWidth)
 		@headScroller.canvas.setMinWidth(containerMinWidth)
 		@bodyScroller.canvas.setWidth(containerWidth)
 		@bodyScroller.canvas.setMinWidth(containerMinWidth)
 
-		@headColEls.slice(0, -1).add(@slatColEls.slice(0, -1))
-			.width(nonLastSlotWidth)
+		if isDatesRendered
+			@headColEls.slice(0, -1).add(@slatColEls.slice(0, -1))
+				.width(nonLastSlotWidth)
 
 		@headScroller.updateSize()
 		@bodyScroller.updateSize()
 		@joiner.update()
 
-		@buildCoords()
-		@updateSegPositions()
+		if isDatesRendered
+			@buildCoords()
+			@updateSegPositions()
 
-		# this updateWidth method is triggered by callers who don't always subsequently call updateNowIndicator,
-		# and updateWidth always has the risk of changing horizontal spacing which will affect nowIndicator positioning,
-		# so always call it here too. will often rerender twice unfortunately.
-		# TODO: more closely integrate updateSize with updateNowIndicator
-		@view.updateNowIndicator()
+			# this updateWidth method is triggered by callers who don't always subsequently call updateNowIndicator,
+			# and updateWidth always has the risk of changing horizontal spacing which will affect nowIndicator positioning,
+			# so always call it here too. will often rerender twice unfortunately.
+			# TODO: more closely integrate updateSize with updateNowIndicator
+			@view.updateNowIndicator()
 
 		if @follower
 			@follower.update()
@@ -609,7 +639,7 @@ class TimelineGrid extends Grid
 
 		# TODO: harness core's `matchCellWidths` for this
 		maxInnerWidth = 0
-		innerEls = @headEl.find('tr:last-child th span') # TODO: cache
+		innerEls = @headEl.find('tr:last-child th .fc-cell-text') # TODO: cache
 		innerEls.each (i, node) ->
 			innerWidth = $(node).outerWidth()
 			maxInnerWidth = Math.max(maxInnerWidth, innerWidth)
@@ -697,39 +727,6 @@ class TimelineGrid extends Grid
 				left: (seg.left = coords.left)
 				right: -(seg.right = coords.right)
 		return
-
-
-	# Scrolling
-	# ---------------------------------------------------------------------------------
-
-
-	computeInitialScroll: (prevState) ->
-		left = 0
-		if @isTimeScale
-			scrollTime = @opt('scrollTime')
-			if scrollTime
-				scrollTime = moment.duration(scrollTime)
-				left = @dateToCoord(@start.clone().time(scrollTime)) # TODO: fix this for RTL
-		{ left, top: 0 }
-
-
-	queryScroll: ->
-		{
-			left: @bodyScroller.getScrollLeft()
-			top: @bodyScroller.getScrollTop()
-		}
-
-
-	setScroll: (state) ->
-
-		# TODO: workaround for FF. the ScrollJoiner sibling won't react fast enough
-		# to override the native initial crappy scroll that FF applies.
-		# TODO: have the ScrollJoiner handle this
-		# Similar code in ResourceTimelineView::setScroll
-		@headScroller.setScrollLeft(state.left)
-
-		@headScroller.setScrollLeft(state.left)
-		@bodyScroller.setScrollTop(state.top)
 
 
 	# Events

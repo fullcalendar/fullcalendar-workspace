@@ -3,6 +3,8 @@ class ResourceTimelineView extends TimelineView
 
 	@mixin ResourceViewMixin
 
+	# settings for ResourceViewMixin
+	canRenderSpecificResources: true
 
 	resourceGrid: null # TODO: rename
 	tbodyHash: null # used by RowParent
@@ -259,16 +261,11 @@ class ResourceTimelineView extends TimelineView
 		headHeight
 
 
-	# TODO: best place for this?
-	scrollToResource: (resource) ->
-		@timeGrid.scrollToResource(resource)
-
-
 	# Resource Setting / Unsetting
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	setResources: (resources) ->
+	renderResources: (resources) ->
 		@batchRows()
 		for resource in resources
 			@insertResource(resource)
@@ -278,9 +275,7 @@ class ResourceTimelineView extends TimelineView
 		@reinitializeCellFollowers()
 
 
-	unsetResources: ->
-		@clearEvents()
-
+	unrenderResources: ->
 		@batchRows()
 		@rowHierarchy.removeChildren() # will trigger rowHidden
 		@unbatchRows()
@@ -294,13 +289,13 @@ class ResourceTimelineView extends TimelineView
 
 	Responsible for rendering the new resource
 	###
-	addResource: (resource) ->
+	renderResource: (resource) ->
 		@insertResource(resource)
 		@reinitializeCellFollowers()
 
 
 	# Responsible for unrendering the old resource
-	removeResource: (resource) ->
+	unrenderResource: (resource) ->
 		row = @getResourceRow(resource.id)
 		if row
 			@batchRows() # because multiple rows might be hidden (empty groups)
@@ -319,7 +314,7 @@ class ResourceTimelineView extends TimelineView
 		if @cellFollower
 			@cellFollower.clearSprites() # the closest thing to a destroy
 
-		@cellFollower = new ScrollFollower(@resourceGrid.bodyScroller, @calendar.isTouch)
+		@cellFollower = new ScrollFollower(@resourceGrid.bodyScroller, true) # allowPointerEvents
 		@cellFollower.isHFollowing = false
 		@cellFollower.isVFollowing = true
 
@@ -582,12 +577,47 @@ class ResourceTimelineView extends TimelineView
 
 	# Scrolling
 	# ---------------------------------------------------------------------------------
-	# TODO: kill this
+	# this is useful for scrolling prev/next dates while resource is scrolled down
 
 
-	setScroll: (state) ->
-		super # set the timegrid's scroll
+	queryScroll: ->
+		scroll = super
 
-		# TODO: hack
-		# Similar to what is happening in TimelineGrid::setScroll. for FF
-		@resourceGrid.bodyScroller.setScrollTop(state.top)
+		scrollerTop = @timeGrid.bodyScroller.scrollEl.offset().top # TODO: use getClientRect
+
+		for rowObj in @getVisibleRows()
+			if rowObj.resource
+				el = rowObj.getTr('event')
+				elBottom = el.offset().top + el.outerHeight()
+
+				if elBottom > scrollerTop
+					scroll.resourceId = rowObj.resource.id
+					scroll.bottom = elBottom - scrollerTop
+					break
+		scroll
+		# TODO: what about left scroll state for spreadsheet area?
+
+
+	setScroll: (scroll) ->
+		if scroll.resourceId
+			row = @getResourceRow(scroll.resourceId)
+			if row
+				el = row.getTr('event')
+				if el
+					innerTop = @timeGrid.bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
+					elBottom = el.offset().top + el.outerHeight()
+					scroll.top = elBottom - scroll.bottom - innerTop
+
+		super(scroll) # handles everything but the resource grid's vertical scroll
+		@resourceGrid.bodyScroller.setScrollTop(scroll.top)
+
+
+	scrollToResource: (resource) ->
+		row = @getResourceRow(resource.id)
+		if row
+			el = row.getTr('event')
+			if el
+				innerTop = @timeGrid.bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
+				scrollTop = el.offset().top - innerTop
+				@timeGrid.bodyScroller.setScrollTop(scrollTop)
+				@resourceGrid.bodyScroller.setScrollTop(scrollTop)

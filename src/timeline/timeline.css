@@ -49,7 +49,7 @@
 .fc-scroller-canvas.fc-gutter-left > .fc-content { border-left-width: 1px; margin-left: -1px }
 .fc-scroller-canvas.fc-gutter-right > .fc-content { border-right-width: 1px; margin-right: -1px }
 .fc-scroller-canvas.fc-gutter-top > .fc-content { border-top-width: 1px; margin-top: -1px }
-.fc-scroller-canvas.fc-gutter-bottom > .fc-content { border-bottom-width: 1px; margin-bottom: -1px }
+/* content is responsible for bottom border */
 
 
 /* View Structure
@@ -89,12 +89,23 @@
 }
 
 /*
-on all tables that expand to the edges, kill the outer border,
-because the container elements take care of it
+on most tables that expand to the edges, kill the outer border,
+because the container elements take care of it.
+example tables:
+.fc-scroller-canvas .fc-content table
+.fc-scroller-canvas .fc-bg .fc-slats table
 */
 .fc-timeline .fc-scroller-canvas > div > table,
 .fc-timeline .fc-scroller-canvas > div > div > table {
 	border-style: hidden;
+}
+
+/*
+for resource rows (in both the spreadsheet and timeline areas),
+undo previous rule in order to always show last border.
+*/
+.fc-timeline .fc-scroller-canvas > .fc-content > .fc-rows > table {
+	border-bottom-style: none;
 }
 
 

@@ -23,7 +23,7 @@ Docs & License: <%= homepage %>
 FC = $.fullCalendar
 FC.schedulerVersion = "<%= version %>"
 
-if FC.internalApiVersion != 6
+if FC.internalApiVersion != 7
 	FC.warn(
 		'v' + FC.schedulerVersion + ' of FullCalendar Scheduler ' +
 		'is incompatible with v' + FC.version + ' of the core.\n' +
@@ -58,3 +58,7 @@ intersectRects = FC.intersectRects
 CoordCache = FC.CoordCache
 getContentRect = FC.getContentRect
 getOuterRect = FC.getOuterRect
+createObject = FC.createObject
+
+Promise = FC.Promise
+TaskQueue = FC.TaskQueue

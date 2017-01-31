@@ -109,6 +109,7 @@ describe 'vresource businessHours', ->
 						done()
 
 			it 'renders a resource override dynamically', (done) ->
+				viewRenderCnt = 0
 				specialResource = { id: 'b', title: 'Resource B', businessHours: { start: '02:00', end: '22:00' } }
 				initCalendar
 					resources: [
@@ -116,13 +117,31 @@ describe 'vresource businessHours', ->
 						specialResource
 					]
 					viewRender: ->
-						expectResourceOverride()
-						setTimeout ->
-							currentCalendar.removeResource(specialResource)
-							expectLonelyDay9to5()
-							currentCalendar.addResource(specialResource)
+						viewRenderCnt += 1
+						if viewRenderCnt == 1
 							expectResourceOverride()
-							done()
+							currentCalendar.removeResource(specialResource)
+							setTimeout -> # because removeResource will trigger another viewRender
+								expectLonelyDay9to5()
+								currentCalendar.addResource(specialResource)
+								expectResourceOverride()
+								done()
+
+			it 'greys out whole day for single resource', (done) ->
+				initCalendar
+					defaultDate: '2016-10-30', # a Sunday
+					businessHours: false
+					resources: [
+						{ id: 'a', title: 'Resource A' }
+						{ id: 'b', title: 'Resource B', businessHours: [
+							{ start: '08:00', end: '18:00', dow: [ 1, 2, 3, 4, 5 ] }
+						] }
+					]
+					viewRender: ->
+						expect(isResourceTimeGridNonBusinessSegsRendered([
+							{ resourceId: 'b', start: '2016-10-30T00:00', end: '2016-10-31T00:00' }
+						])).toBe(true)
+						done()
 
 	expectDay9to5 = ->
 		expect(isResourceTimeGridNonBusinessSegsRendered([

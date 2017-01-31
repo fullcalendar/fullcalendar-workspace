@@ -1,7 +1,7 @@
 
 class ResourceBasicView extends FC.BasicView
 
-	@mixin ResourceViewMixin
+	@mixin VertResourceViewMixin
 
 	dayGridClass: ResourceDayGrid
 
@@ -11,23 +11,9 @@ class ResourceBasicView extends FC.BasicView
 		@dayGrid.processHeadResourceEls(@headContainerEl)
 
 
-	setResources: (resources) ->
+	setResourcesOnGrids: (resources) ->
 		@dayGrid.setResources(resources)
 
-		# TODO: optimize. only redisplay the columns
-		@clearView()
-		@displayView()
 
-
-	unsetResources: (isDestroying) ->
-		@clearEvents()
-
+	unsetResourcesOnGrids: ->
 		@dayGrid.unsetResources()
-
-		# HACK
-		# don't re-render resources if we don't need to
-		# solves ResourceManager unbinding bugs
-		if not isDestroying
-			# TODO: optimize. only redisplay the columns
-			@clearView()
-			@displayView()

@@ -162,16 +162,31 @@ class TimelineView extends View
 	# ---------------------------------------------------------------------------------
 
 
-	computeInitialScroll: (prevScrollState) ->
-		@timeGrid.computeInitialScroll(prevScrollState)
+	computeInitialScroll: ->
+		left = 0
+		if @timeGrid.isTimeScale
+			scrollTime = @opt('scrollTime')
+			if scrollTime
+				scrollTime = moment.duration(scrollTime)
+				left = @timeGrid.dateToCoord(@start.clone().time(scrollTime)) # TODO: fix this for RTL
+		{ left, top: 0 }
 
 
 	queryScroll: ->
-		@timeGrid.queryScroll()
+		{
+			left: @timeGrid.bodyScroller.getScrollLeft()
+			top: @timeGrid.bodyScroller.getScrollTop()
+		}
 
 
-	setScroll: (state) ->
-		@timeGrid.setScroll(state)
+	setScroll: (scroll) ->
+		# TODO: workaround for FF. the ScrollJoiner sibling won't react fast enough
+		# to override the native initial crappy scroll that FF applies.
+		# TODO: have the ScrollJoiner handle this
+		# Similar code in ResourceTimelineView::setScroll
+		@timeGrid.headScroller.setScrollLeft(scroll.left)
+		@timeGrid.bodyScroller.setScrollLeft(scroll.left)
+		@timeGrid.bodyScroller.setScrollTop(scroll.top)
 
 
 	# Events

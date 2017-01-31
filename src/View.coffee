@@ -1,114 +1,179 @@
 
 # We need to monkey patch these methods in, because subclasses of View might have already been made
 
-origDisplayView = View::displayView
-origRenderSkeleton = View::renderSkeleton
-origUnrenderSkeleton = View::unrenderSkeleton
-origDisplayEvents = View::displayEvents
+origSetElement = View::setElement
+origRemoveElement = View::removeElement
+origHandleDate = View::handleDate
+origOnDateRender = View::onDateRender
+origExecuteEventsRender = View::executeEventsRender
 
 View::isResourcesBound = false
-View::settingResources = null # a promise
+View::isResourcesSet = false
+
+Calendar.defaults.refetchResourcesOnNavigate = false
 
 
-View::displayView = ->
-	origDisplayView.apply(this, arguments)
+# View Rendering
+# --------------------------------------------------------------------------------------------------
 
-	# TODO: get this into renderSkeleton somehow
-	# won't rerender if a warning message already exists
+
+View::setElement = ->
+	promise = origSetElement.apply(this, arguments)
+	@bindResources() # wait until after skeleton
+	promise
+
+
+View::removeElement = ->
+	@unbindResources({ skipRerender: true }) # don't bother to make display pretty for after
+	origRemoveElement.apply(this, arguments)
+
+
+# Date Setting / Rendering
+# --------------------------------------------------------------------------------------------------
+
+
+View::handleDate = (date, isReset) ->
+	if isReset and @opt('refetchResourcesOnNavigate')
+		@unsetResources({ skipUnrender: true }) # keep same resources showing
+		@fetchResources()
+
+	origHandleDate.apply(this, arguments)
+
+
+View::onDateRender = ->
 	processLicenseKey(
-		@calendar.options.schedulerLicenseKey,
+		@calendar.options.schedulerLicenseKey
 		@el # container element
 	)
-
-	@bindResources()
-	@whenResources() # 'render' trigger and sizing waits for this
+	origOnDateRender.apply(this, arguments) # fire public handlers
 
 
-View::unrenderSkeleton = ->
-	origUnrenderSkeleton.apply(this, arguments)
-	@unbindResources(true) # isDestroying=true
+# Event Rendering
+# --------------------------------------------------------------------------------------------------
 
 
-View::displayEvents = (events) ->
-	# make sure resource data is received first (for event coloring at the simplest).
-	@whenResources =>
-		origDisplayEvents.call(this, events)
+View::executeEventsRender = (events) ->
+	@whenResourcesSet().then => # wait for resource data, for coloring
+		origExecuteEventsRender.call(this, events)
 
 
-# causes events that fire from ResourceManager to call methods of this object.
-# an initial 'set' event is guaranteed to fire.
+# Resource Binding
+# --------------------------------------------------------------------------------------------------
+
+
 View::bindResources = ->
 	if not @isResourcesBound
-		@isResourcesBound = true # immediately lock against re-binding
+		@isResourcesBound = true
+		@trigger('resourcesBind')
 
-		# an intercept that resolves the promise
-		@settingResources = $.Deferred()
-		setResources = (resources) =>
+		promise = # first-time get/fetch
+			if @opt('refetchResourcesOnNavigate')
+				@fetchResources()
+			else
+				@requestResources()
+
+		@rejectOn('resourcesUnbind', promise).then (resources) =>
+			@listenTo @calendar.resourceManager,
+				set: @setResources
+				reset: @setResources
+				unset: @unsetResources
+				add: @addResource
+				remove: @removeResource
 			@setResources(resources)
-			@settingResources.resolve()
-
-		@listenTo @calendar.resourceManager,
-			set: setResources
-			unset: @unsetResources
-			reset: @resetResources
-			add: @addResource
-			remove: @removeResource
-
-		if @calendar.resourceManager.hasFetched()
-			# already has results. simulate a 'set'
-			setResources(@calendar.resourceManager.topLevelResources)
-		else
-			# start a fetch if hasn't already happened. will eventually trigger 'set'
-			@calendar.resourceManager.getResources()
 
 
-# stops listening to ResourceManager events.
-# triggers an 'unset' event to fire.
-View::unbindResources = (isDestroying) ->
+View::unbindResources = (teardownOptions) ->
 	if @isResourcesBound
-
+		@isResourcesBound = false
 		@stopListeningTo(@calendar.resourceManager)
-
-		if @settingResources.state() == 'resolved'
-			@unsetResources(isDestroying)
-		@settingResources = null
-
-		@isResourcesBound = false # finally allow re-binding
+		@unsetResources(teardownOptions)
+		@trigger('resourcesUnbind')
 
 
-# HACK instead of accessing @settingResources directly.
-# if already resolved, sometimes .promise() or .then() would not execute synchronously,
-# which might cause event/resource rendering to happen asynchronously,
-# which might suprise some people.
-# TODO: research why jQuery promises might do this.
-#
-# `thenFunc` is optional.
-# returns a promise.
-View::whenResources = (thenFunc) ->
-	syncThen(@settingResources, thenFunc)
-
-
-# Methods for handling resource data
-# ------------------------------------------------------------------------------------------
+# Resource Setting/Unsetting
+# --------------------------------------------------------------------------------------------------
 
 
 View::setResources = (resources) ->
-	# subclasses should implement
+	isReset = @isResourcesSet
+	@isResourcesSet = true
+	@handleResources(resources, isReset)
+	@trigger(
+		if isReset then 'resourcesReset' else 'resourcesSet'
+		resources
+	)
 
 
-View::unsetResources = ->
-	# subclasses should implement
+View::unsetResources = (teardownOptions) ->
+	if @isResourcesSet
+		@isResourcesSet = false
+		@handleResourcesUnset(teardownOptions)
+		@trigger('resourcesUnset')
 
 
-View::resetResources = (resources) ->
-	@calendar.rerenderEvents() # useful for views that don't formally support resources
+View::whenResourcesSet = ->
+	if @isResourcesSet
+		Promise.resolve()
+	else
+		new Promise (resolve) =>
+			@one('resourcesSet', resolve)
+
+
+# Resource Adding/Removing
+# --------------------------------------------------------------------------------------------------
 
 
 View::addResource = (resource) ->
-	# for implementations don't want to optimize for a single add, just do a reset
-	@resetResources(@calendar.resourceManager.topLevelResources)
+	if @isResourcesSet
+		@handleResourceAdd(resource)
+		@trigger('resourceAdd', resource)
 
 
 View::removeResource = (resource) ->
-	# for implementations don't want to optimize for a single remove, just do a reset
-	@resetResources(@calendar.resourceManager.topLevelResources)
+	if @isResourcesSet
+		@handleResourceRemove(resource)
+		@trigger('resourceRemove', resource)
+
+
+# Resource Handling
+# --------------------------------------------------------------------------------------------------
+
+
+View::handleResources = (resources) ->
+	if @isEventsRendered
+		@requestCurrentEventsRender() # event coloring might have changed
+	# else (not already renderd)
+	#	executeEventsRender waits for resources and renders events
+
+
+View::handleResourcesUnset = (teardownOptions={}) ->
+	# event rendering is dependent on resource data
+	@requestEventsUnrender()
+
+
+View::handleResourceAdd = (resource) ->
+	if @isEventsRendered
+		@requestCurrentEventsRender() # event coloring might have changed
+
+
+View::handleResourceRemove = (resource) ->
+	if @isEventsRendered
+		@requestCurrentEventsRender() # event coloring might have changed
+
+
+# Resource Data Access
+# --------------------------------------------------------------------------------------------------
+
+
+View::requestResources = ->
+	@calendar.resourceManager.getResources()
+
+
+View::fetchResources = ->
+	@calendar.resourceManager.fetchResources()
+
+
+# returns *unfiltered* current resources.
+# assumes isResourcesSet.
+View::getCurrentResources = ->
+	@calendar.resourceManager.topLevelResources

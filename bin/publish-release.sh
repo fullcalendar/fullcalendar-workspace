@@ -6,7 +6,7 @@ set -e
 # start in project root
 cd "`dirname $0`/.."
 
-./build/require-clean-working-tree.sh
+./bin/require-clean-working-tree.sh
 
 read -p "Enter the version you want to publish, with no 'v' (for example '1.0.1'): " version
 if [[ ! "$version" ]]
@@ -19,10 +19,29 @@ fi
 git push
 git push origin "v$version"
 
-# temporarily checkout the tag's commit for publishing to NPM
+success=0
+
+# save reference to current branch
 current_branch=$(git symbolic-ref --quiet --short HEAD)
+
+# temporarily checkout the tag's commit, publish to NPM
 git checkout --quiet "v$version"
-npm publish
+if npm publish
+then
+	success=1
+fi
+
+# return to branch
 git checkout --quiet "$current_branch"
 
-echo "DONE"
+# restore generated dist files
+git checkout --quiet "v$version" -- dist
+git reset --quiet -- dist
+
+if [[ "$success" == "1" ]]
+then
+	echo "Success."
+else
+	echo "Failure."
+	exit 1
+fi

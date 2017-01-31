@@ -167,3 +167,9 @@ getTimelineResourceIds = ->
 	$('.fc-body .fc-resource-area tr[data-resource-id]').map (i, tr) ->
 		$(tr).data('resource-id')
 	.get() # jquery -> array
+
+
+getTimelineResourceTitles = ->
+	$('.fc-body .fc-resource-area tr[data-resource-id] .fc-cell-text').map (i, td) ->
+		$(td).text()
+	.get() # jquery -> array

@@ -46,7 +46,7 @@ class Spreadsheet
 			overflowY: 'clipped-scroll'
 		@bodyScroller.canvas = new ScrollerCanvas()
 		@bodyScroller.render()
-		@bodyScroller.canvas.contentEl.html('<table>' + @colGroupHtml + '<tbody/></table>') # colGroupHtml hack
+		@bodyScroller.canvas.contentEl.html('<div class="fc-rows"><table>' + @colGroupHtml + '<tbody/></table></div>') # colGroupHtml hack
 		@tbodyEl = @bodyScroller.canvas.contentEl.find('tbody')
 		@el.append(@bodyScroller.el)
 

@@ -141,7 +141,7 @@ class ResourceTimelineGrid extends TimelineGrid
 	ensureIndividualBusinessHours: ->
 		for row in @view.getEventRows()
 
-			if not row.businessHourSegs
+			if @view.isDateSet and not row.businessHourSegs
 				@populateRowBusinessHoursSegs(row)
 
 			if row.isShown
@@ -169,7 +169,7 @@ class ResourceTimelineGrid extends TimelineGrid
 
 			@rowCntWithCustomBusinessHours += 1
 
-		if @rowCntWithCustomBusinessHours
+		if @view.isDateSet and @rowCntWithCustomBusinessHours
 			# will need for render later, regardless of whether row defines its own custom rules
 			@populateRowBusinessHoursSegs(row)
 
@@ -242,56 +242,3 @@ class ResourceTimelineGrid extends TimelineGrid
 		segs = @renderFgSegEls(segs)
 		pairs = @view.pairSegsWithRows(segs)
 		@renderHelperSegsInContainers(pairs, sourceSeg)
-
-
-	# Scrolling
-	# ---------------------------------------------------------------------------------
-	# this is useful for scrolling prev/next dates while resource is scrolled down
-
-
-	computeInitialScroll: (prevState) ->
-		state = super
-		if prevState
-			state.resourceId = prevState.resourceId
-			state.bottom = prevState.bottom
-		state
-
-
-	queryScroll: ->
-		state = super
-
-		scrollerTop = @bodyScroller.scrollEl.offset().top # TODO: use getClientRect
-
-		for rowObj in @view.getVisibleRows()
-			if rowObj.resource
-				el = rowObj.getTr('event')
-				elBottom = el.offset().top + el.outerHeight()
-
-				if elBottom > scrollerTop
-					state.resourceId = rowObj.resource.id
-					state.bottom = elBottom - scrollerTop
-					break
-		state
-
-
-	setScroll: (state) ->
-		if state.resourceId
-			row = @view.getResourceRow(state.resourceId)
-			if row
-				el = row.getTr('event')
-				if el
-					innerTop = @bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
-					elBottom = el.offset().top + el.outerHeight()
-					state.top = elBottom - state.bottom - innerTop
-		super(state)
-
-
-	scrollToResource: (resource) -> # consolidate with above?
-		row = @view.getResourceRow(resource.id)
-		if row
-			el = row.getTr('event')
-			if el
-				innerTop = @bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
-				scrollTop = el.offset().top - innerTop
-				@bodyScroller.scrollEl.scrollTop(scrollTop) # TODO: better API
-

@@ -1,9 +1,7 @@
 
-# TODO: somehow make more DRY with ResourceBasicView
-
 class ResourceMonthView extends FC.MonthView
 
-	@mixin ResourceViewMixin
+	@mixin VertResourceViewMixin
 
 	dayGridClass: ResourceDayGrid
 
@@ -13,19 +11,9 @@ class ResourceMonthView extends FC.MonthView
 		@dayGrid.processHeadResourceEls(@headContainerEl)
 
 
-	setResources: (resources) ->
+	setResourcesOnGrids: (resources) ->
 		@dayGrid.setResources(resources)
 
-		# TODO: optimize. only redisplay the columns
-		@clearView()
-		@displayView()
 
-
-	unsetResources: ->
-		@clearEvents()
-
+	unsetResourcesOnGrids: ->
 		@dayGrid.unsetResources()
-
-		# TODO: optimize. only redisplay the columns
-		@clearView()
-		@displayView()

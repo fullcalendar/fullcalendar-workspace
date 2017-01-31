@@ -1,7 +1,7 @@
 
 class ResourceAgendaView extends FC.AgendaView
 
-	@mixin ResourceViewMixin
+	@mixin VertResourceViewMixin
 
 	timeGridClass: ResourceTimeGrid
 	dayGridClass: ResourceDayGrid
@@ -12,27 +12,13 @@ class ResourceAgendaView extends FC.AgendaView
 		@timeGrid.processHeadResourceEls(@headContainerEl)
 
 
-	setResources: (resources) ->
+	setResourcesOnGrids: (resources) ->
 		@timeGrid.setResources(resources)
 		if @dayGrid
 			@dayGrid.setResources(resources)
 
-		# TODO: optimize. only redisplay the columns
-		@clearView()
-		@displayView()
 
-
-	unsetResources: (isDestroying) ->
-		@clearEvents()
-
+	unsetResourcesOnGrids: ->
 		@timeGrid.unsetResources()
 		if @dayGrid
 			@dayGrid.unsetResources()
-
-		# HACK
-		# don't re-render resources if we don't need to
-		# solves ResourceManager unbinding bugs
-		if not isDestroying
-			# TODO: optimize. only redisplay the columns
-			@clearView()
-			@displayView()
