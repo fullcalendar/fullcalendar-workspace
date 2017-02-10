@@ -72,9 +72,12 @@ class CalendarExtension extends Calendar
 		# unrelated resource IDs, we want to keep those intact
 		if newProps.resourceId
 
+			# no standard way of getting a span's resource ID :(
+			oldResourceId = span.resource?.id or span.resourceId
+
 			# remove old resource ID
 			newResourceIds = @getEventResourceIds(span.event).filter (resourceId) ->
-				resourceId != span.resourceId
+				resourceId != oldResourceId
 
 			# add new resource ID
 			newResourceIds.push(newProps.resourceId)
