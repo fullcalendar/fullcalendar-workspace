@@ -305,20 +305,6 @@ ResourceViewMixin = # expects a View
 	###
 
 
-	reportEventDrop: (event, dropLocation, otherArgs...) ->
-		dropLocation = @normalizeDropLocation(dropLocation)
-
-		# HACK
-		# if dropped on a single resourceId, and the event previously had multiple resources,
-		# null resourceIds out, which will null it out on the event object.
-		# in future, it'd be better to remove the event object's property altogether
-		if dropLocation.resourceId and event.resourceIds
-			dropLocation.resourceIds = null
-
-		# super-method
-		View::reportEventDrop.call(this, event, dropLocation, otherArgs...)
-
-
 	reportExternalDrop: (meta, dropLocation, otherArgs...) ->
 		dropLocation = @normalizeDropLocation(dropLocation)
 

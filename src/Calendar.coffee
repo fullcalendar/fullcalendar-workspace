@@ -66,6 +66,25 @@ class CalendarExtension extends Calendar
 		super
 
 
+	mutateSeg: (span, newProps, largeUnit) ->
+
+		# the span is being moved to a new resource ID, but if there are multiple other
+		# unrelated resource IDs, we want to keep those intact
+		if newProps.resourceId
+
+			# remove old resource ID
+			newResourceIds = @getEventResourceIds(span.event).filter (resourceId) ->
+				resourceId != span.resourceId
+
+			# add new resource ID
+			newResourceIds.push(newProps.resourceId)
+
+			newProps = $.extend({}, newProps) # clone
+			@setEventResourceIds(newProps, newResourceIds) # works with event-like objects
+
+		@mutateEvent(span.event, newProps, largeUnit)
+
+
 	# Returns a list of events that the given event should be compared against when being considered for a move to
 	# the specified span. Attached to the Calendar's prototype because EventManager is a mixin for a Calendar.
 	#
@@ -192,8 +211,26 @@ class CalendarExtension extends Calendar
 			[]
 
 
-	setEventResourceId: (event, resourceId) ->
-		event[@getEventResourceField()] = String(resourceId ? '')
+	setEventResourceId: (event, resourceId) -> # DEPRECATED
+		@setEventResourceIds(
+			event
+			if resourceId then [ resourceId ] else []
+		)
+
+
+	setEventResourceIds: (event, resourceIds) ->
+
+		event[@getEventResourceField()] =
+			if resourceIds.length == 1
+				resourceIds[0]
+			else
+				null
+
+		event.resourceIds =
+			if resourceIds.length > 1
+				resourceIds
+			else
+				null
 
 
 	getEventResourceField: -> # DEPRECATED: eventResourceField
