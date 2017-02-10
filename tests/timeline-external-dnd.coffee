@@ -74,6 +74,34 @@ describe 'timeline-view external element drag-n-drop', ->
 				drop: dropSpy = jasmine.createSpy('drop')
 				eventReceive: receiveSpy = jasmine.createSpy('receive')
 
+	# issue 256 (but with event dragging, not dayClick)
+	it 'restricts drop to bounding area', (done) ->
+		isDropCalled = false
+
+		# get dragEl to the right of the calendar, parallel with body slots
+		wrapEl = $('<div style="float:left;position:relative;width:500px">').appendTo('body')
+		calEl = $('<div>').appendTo(wrapEl)
+		dragEl.appendTo(wrapEl)
+			.css
+				position: 'absolute'
+				left: '100%'
+				top: 50
+
+		initCalendar
+			header: false # better guarantee that dragEl is parallel with body slots
+			viewRender: ->
+				dragEl.simulate 'drag',
+					dy: 10 # some movement
+					callback: ->
+						setTimeout -> # wait for potential `drop`
+							expect(isDropCalled).toBe(false)
+							calEl.remove()
+							done()
+						, 100
+			drop: ->
+				isDropCalled = true
+			, calEl # will render calendar within this el
+
 	it 'works after a view switch', (done) ->
 		renderCnt = 0
 		initCalendar
