@@ -91,6 +91,27 @@ describe 'timeline event resizing', ->
 										resource = currentCalendar.getEventResource(event)
 										expect(resource.id).toBe('b')
 
+						it 'reports resize on one event of multiple resources', (done) ->
+							initCalendar
+								events: [
+									{ title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceIds: [ 'a', 'b' ] }
+								]
+								eventAfterAllRender: oneCall ->
+									$('.event1:first').simulate('mouseover') # resizer only shows on hover
+									$('.event1:first .fc-end-resizer')
+										.simulate 'drag',
+											end: getResourceTimelinePoint('a', '2015-11-28T07:00:00')
+											callback: ->
+												expect(resizeSpy).toHaveBeenCalled()
+												done()
+								eventResize:
+									resizeSpy = spyCall (event) ->
+										expect(event.start).toEqualMoment(tz.moment('2015-11-28T04:00:00'))
+										expect(event.end).toEqualMoment(tz.moment('2015-11-28T07:30:00'))
+										expect(event.resourceId).toBe(null)
+										# resources stay the same
+										expect(event.resourceIds).toEqual([ 'a', 'b' ])
+
 				describe 'when snap smaller than slots', ->
 					pushOptions
 						slotDuration: '00:30'

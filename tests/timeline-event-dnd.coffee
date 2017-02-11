@@ -31,6 +31,21 @@ describe 'timeline-view event drag-n-drop', ->
 						resource = currentCalendar.getEventResource(event)
 						expect(resource.id).toBe('a')
 
+	it 'can drag one of multiple event occurences', (done) ->
+		initCalendar
+			events: [
+				{ title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceIds: [ 'a', 'b' ] }
+			]
+			eventAfterAllRender: oneCall ->
+				dragElTo($('.event0:first'), 'c', '2015-11-29T05:00:00')
+			eventDrop: (event, delta, revert) ->
+				setTimeout -> # let the drop rerender
+					expect(event.start).toEqualMoment('2015-11-29T05:00:00')
+					expect(event.end).toEqualMoment('2015-11-29T06:00:00')
+					expect(event.resourceId).toBe(null)
+					expect(event.resourceIds).toEqual([ 'b', 'c' ])
+					done()
+
 	it 'allows dragging via touch', (done) ->
 		initCalendar
 			isTouch: true
@@ -78,8 +93,8 @@ describe 'timeline-view event drag-n-drop', ->
 				setTimeout -> # let the drop rerender
 					expect(event.start).toEqualMoment('2015-11-29T05:00:00')
 					expect(event.end).toEqualMoment('2015-11-29T06:00:00')
-					expect(event.resourceId).toBe('c')
-					expect(event.resourceIds).toBe(null)
+					expect(event.resourceId).toBe(null)
+					expect(event.resourceIds).toEqual([ 'b', 'c' ])
 					revert()
 					expect(event.start).toEqualMoment('2015-11-29T02:00:00')
 					expect(event.end).toEqualMoment('2015-11-29T03:00:00')
