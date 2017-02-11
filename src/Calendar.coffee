@@ -72,23 +72,24 @@ class CalendarExtension extends Calendar
 		# unrelated resource IDs, we want to keep those intact
 		if newProps.resourceId
 
-			# no standard way of getting a span's resource ID :(
-			oldResourceId = span.resource?.id or span.resourceId
+			oldResourceId = span.resource?.id or span.resourceId # no standard way of getting a span's resource ID :(
+			newResourceId = newProps.resourceId
 
-			newResourceIds = @getEventResourceIds(span.event)
+			mutatedResourceIds = @getEventResourceIds(span.event)
 
 			# compare old to new. is a change?
-			if oldResourceId != newProps.resourceId
+			if oldResourceId != newResourceId
 
 				# remove old resource ID
-				newResourceIds = newResourceIds.filter (resourceId) ->
-					resourceId != oldResourceId
+				mutatedResourceIds = mutatedResourceIds.filter (resourceId) ->
+					resourceId != oldResourceId and \
+					resourceId != newResourceId # will add later. prevents dups if new already in resourceIds
 
 				# add new resource ID
-				newResourceIds.push(newProps.resourceId)
+				mutatedResourceIds.push(newResourceId)
 
 			newProps = $.extend({}, newProps) # clone
-			@setEventResourceIds(newProps, newResourceIds) # works with event-like objects
+			@setEventResourceIds(newProps, mutatedResourceIds) # works with event-like objects
 
 		@mutateEvent(span.event, newProps, largeUnit)
 
