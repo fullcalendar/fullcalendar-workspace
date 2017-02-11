@@ -75,12 +75,17 @@ class CalendarExtension extends Calendar
 			# no standard way of getting a span's resource ID :(
 			oldResourceId = span.resource?.id or span.resourceId
 
-			# remove old resource ID
-			newResourceIds = @getEventResourceIds(span.event).filter (resourceId) ->
-				resourceId != oldResourceId
+			newResourceIds = @getEventResourceIds(span.event)
 
-			# add new resource ID
-			newResourceIds.push(newProps.resourceId)
+			# compare old to new. is a change?
+			if oldResourceId != newProps.resourceId
+
+				# remove old resource ID
+				newResourceIds = newResourceIds.filter (resourceId) ->
+					resourceId != oldResourceId
+
+				# add new resource ID
+				newResourceIds.push(newProps.resourceId)
 
 			newProps = $.extend({}, newProps) # clone
 			@setEventResourceIds(newProps, newResourceIds) # works with event-like objects
