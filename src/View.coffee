@@ -35,9 +35,12 @@ View::removeElement = ->
 View::handleDate = (date, isReset) ->
 	if isReset and @opt('refetchResourcesOnNavigate')
 		@unsetResources({ skipUnrender: true }) # keep same resources showing
-		@fetchResources()
 
-	origHandleDate.apply(this, arguments)
+		# before fetching resources, wait for the new start/end to be computed
+		origHandleDate.apply(this, arguments).then =>
+			@fetchResources()
+	else
+		origHandleDate.apply(this, arguments)
 
 
 View::onDateRender = ->
@@ -68,7 +71,8 @@ View::bindResources = ->
 
 		promise = # first-time get/fetch
 			if @opt('refetchResourcesOnNavigate')
-				@fetchResources()
+				@whenDateSet().then => # fetchResources expects start/end/timezone to be populated
+					@fetchResources()
 			else
 				@requestResources()
 
@@ -165,12 +169,27 @@ View::handleResourceRemove = (resource) ->
 # --------------------------------------------------------------------------------------------------
 
 
+###
+Like fetchResources, but won't refetch if already fetched (regardless of start/end).
+If refetchResourcesOnNavigate is enabled,
+this function expects the view's start/end to be already populated.
+###
 View::requestResources = ->
-	@calendar.resourceManager.getResources()
+	if @opt('refetchResourcesOnNavigate')
+		@calendar.resourceManager.getResources(@start, @end, @calendar.options.timezone)
+	else
+		@calendar.resourceManager.getResources()
 
 
+###
+If refetchResourcesOnNavigate is enabled,
+this function expects the view's start/end to be already populated.
+###
 View::fetchResources = ->
-	@calendar.resourceManager.fetchResources()
+	if @opt('refetchResourcesOnNavigate')
+		@calendar.resourceManager.fetchResources(@start, @end, @calendar.options.timezone)
+	else
+		@calendar.resourceManager.fetchResources()
 
 
 # returns *unfiltered* current resources.

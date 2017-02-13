@@ -23,13 +23,19 @@ class ResourceManager extends Class
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	getResources: -> # returns a promise
-		@fetching or @fetchResources()
+	###
+	Like fetchResources, but won't refetch if already fetched (regardless of start/end).
+	###
+	getResources: (start, end, timezone) -> # returns a promise
+		@fetching or @fetchResources(start, end, timezone)
 
 
-	# will always fetch, even if done previously.
-	# returns a promise.
-	fetchResources: ->
+	###
+	Will always fetch, even if done previously.
+	Accepts optional chrono-related params to pass on to the raw resource sources.
+	Returns a promise.
+	###
+	fetchResources: (start, end, timezone) ->
 		currentFetchId = (@fetchId += 1)
 		@fetching = new Promise (resolve, reject) =>
 			@fetchResourceInputs (resourceInputs) =>
@@ -38,10 +44,14 @@ class ResourceManager extends Class
 					resolve(@topLevelResources)
 				else
 					reject()
+			, start, end, timezone
 
 
-	# calls callback when done
-	fetchResourceInputs: (callback) ->
+	###
+	Accepts optional chrono-related params to pass on to the raw resource sources.
+	Calls callback when done.
+	###
+	fetchResourceInputs: (callback, start, end, timezone) ->
 		source = @calendar.options['resources']
 
 		if $.type(source) == 'string'
@@ -54,6 +64,7 @@ class ResourceManager extends Class
 				source (resourceInputs) =>
 					@calendar.popLoading()
 					callback(resourceInputs)
+				, start, end, timezone
 
 			when 'object'
 				@calendar.pushLoading()
