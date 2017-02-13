@@ -37,6 +37,7 @@
     "jasmine-core": "*",
     "jasmine-fixture": "^2.0.0",
     "jasmine-jquery": "^2.1.1",
+    "jquery-mockjax": "^2.2.1",
     "jquery-simulate": "github:jquery/jquery-simulate",
     "karma": "^1.1.1",
     "karma-coffee-preprocessor": "^1.0.1",

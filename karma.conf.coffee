@@ -23,6 +23,7 @@ module.exports = (config) ->
 			'node_modules/jasmine-jquery/lib/jasmine-jquery.js'
 			'node_modules/jasmine-fixture/dist/jasmine-fixture.js'
 			'node_modules/jquery-simulate/jquery.simulate.js'
+			'node_modules/jquery-mockjax/dist/jquery.mockjax.js'
 
 			'tests/util/base.css'
 			'tests/util/util.coffee'
