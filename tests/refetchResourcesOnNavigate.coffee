@@ -179,3 +179,48 @@ describe 'refetchResourcesOnNavigate', ->
 		expect(resourceCallCnt).toBe(1)
 		expect($('.resource-a-1').length).toBe(0)
 		expect($('.resource-b-1').length).toBe(0)
+
+
+	it 'resources function will receive view start/end/timezone', (done) ->
+		initCalendar
+			defaultView: 'timelineWeek'
+			now: '2017-02-12'
+			timezone: 'America/Chicago'
+			resources: (callback, start, end, timezone) ->
+				expect(start.format()).toBe('2017-02-12')
+				expect(end.format()).toBe('2017-02-19')
+				expect(timezone).toBe('America/Chicago')
+				callback([])
+			resourcesSet: (resources) ->
+				expect(resources.length).toBe(0)
+				setTimeout ->
+					done()
+
+
+	it 'will cause a resource function to receive start/end/timezone after navigate', (done) ->
+		renderCnt = 0
+
+		initCalendar
+			defaultView: 'timelineWeek'
+			now: '2017-02-12'
+			timezone: 'America/Chicago'
+
+			resources: (callback, start, end, timezone) ->
+				renderCnt += 1
+
+				if renderCnt == 1
+					expect(start.format()).toBe('2017-02-12')
+					expect(end.format()).toBe('2017-02-19')
+				else if renderCnt == 2
+					expect(start.format()).toBe('2017-02-19')
+					expect(end.format()).toBe('2017-02-26')
+
+				expect(timezone).toBe('America/Chicago')
+				callback([])
+
+			eventAfterAllRender: (resources) ->
+				if renderCnt == 1
+					setTimeout ->
+						currentCalendar.next()
+				else if renderCnt == 2
+					done()
