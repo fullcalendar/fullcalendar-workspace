@@ -52,7 +52,8 @@ class ResourceManager extends Class
 	Calls callback when done.
 	###
 	fetchResourceInputs: (callback, start, end, timezone) ->
-		source = @calendar.options['resources']
+		calendar = @calendar
+		source = calendar.options['resources']
 
 		if $.type(source) == 'string'
 			source = { url: source }
@@ -67,12 +68,26 @@ class ResourceManager extends Class
 				, start, end, timezone
 
 			when 'object'
-				@calendar.pushLoading()
-				$.ajax($.extend({}, ResourceManager.ajaxDefaults, source))
-					.then (resourceInputs) =>
-						@calendar.popLoading()
-						callback(resourceInputs)
-					# TODO: handle failure
+				calendar.pushLoading()
+
+				requestParams = {}
+				if start
+					requestParams[calendar.options.startParam] = start.format()
+				if end
+					requestParams[calendar.options.endParam] = end.format()
+				if timezone and timezone != 'local'
+					requestParams[calendar.options.timezoneParam] = timezone # TODO: make this more global
+
+				$.ajax(
+					$.extend(
+						{ data: requestParams }
+						ResourceManager.ajaxDefaults
+						source
+					)
+				).then (resourceInputs) =>
+					calendar.popLoading()
+					callback(resourceInputs)
+				# TODO: handle failure
 
 			when 'array'
 				callback(source)
