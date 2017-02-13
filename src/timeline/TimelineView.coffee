@@ -114,6 +114,14 @@ class TimelineView extends View
 	# forward all hit-related method calls to timeGrid
 
 
+	hitsNeeded: ->
+		@timeGrid.hitsNeeded()
+
+
+	hitsNotNeeded: ->
+		@timeGrid.hitsNotNeeded()
+
+
 	prepareHits: ->
 		@timeGrid.prepareHits()
 
