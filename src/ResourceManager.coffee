@@ -26,8 +26,8 @@ class ResourceManager extends Class
 	###
 	Like fetchResources, but won't refetch if already fetched (regardless of start/end).
 	###
-	getResources: (start, end, timezone) -> # returns a promise
-		@fetching or @fetchResources(start, end, timezone)
+	getResources: (start, end) -> # returns a promise
+		@fetching or @fetchResources(start, end)
 
 
 	###
@@ -35,7 +35,7 @@ class ResourceManager extends Class
 	Accepts optional chrono-related params to pass on to the raw resource sources.
 	Returns a promise.
 	###
-	fetchResources: (start, end, timezone) ->
+	fetchResources: (start, end) ->
 		currentFetchId = (@fetchId += 1)
 		@fetching = new Promise (resolve, reject) =>
 			@fetchResourceInputs (resourceInputs) =>
@@ -44,16 +44,17 @@ class ResourceManager extends Class
 					resolve(@topLevelResources)
 				else
 					reject()
-			, start, end, timezone
+			, start, end
 
 
 	###
 	Accepts optional chrono-related params to pass on to the raw resource sources.
 	Calls callback when done.
 	###
-	fetchResourceInputs: (callback, start, end, timezone) ->
+	fetchResourceInputs: (callback, start, end) ->
 		calendar = @calendar
-		source = calendar.options['resources']
+		options = calendar.options
+		source = options.resources
 
 		if $.type(source) == 'string'
 			source = { url: source }
@@ -65,18 +66,20 @@ class ResourceManager extends Class
 				source (resourceInputs) =>
 					@calendar.popLoading()
 					callback(resourceInputs)
-				, start, end, timezone
+				, start, end, options.timezone
 
 			when 'object'
 				calendar.pushLoading()
-
 				requestParams = {}
-				if start
-					requestParams[calendar.options.startParam] = start.format()
-				if end
-					requestParams[calendar.options.endParam] = end.format()
-				if timezone and timezone != 'local'
-					requestParams[calendar.options.timezoneParam] = timezone # TODO: make this more global
+
+				if start and end
+					requestParams[options.startParam] = start.format()
+					requestParams[options.endParam] = end.format()
+
+					# mimick what EventManager does
+					# TODO: more DRY
+					if options.timezone and options.timezone != 'local'
+						requestParams[options.timezoneParam] = options.timezone
 
 				$.ajax(
 					$.extend(

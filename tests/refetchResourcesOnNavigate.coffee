@@ -230,8 +230,8 @@ describe 'refetchResourcesOnNavigate', ->
 
 		beforeEach ->
 			$.mockjax
-				url: '*',
-				contentType: 'text/json',
+				url: '*'
+				contentType: 'text/json'
 				responseText: []
 			$.mockjaxSettings.log = -> # don't console.log
 

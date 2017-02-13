@@ -19,7 +19,10 @@ Calendar.defaults.refetchResourcesOnNavigate = false
 
 View::setElement = ->
 	promise = origSetElement.apply(this, arguments)
-	@bindResources() # wait until after skeleton
+
+	if not @opt('refetchResourcesOnNavigate') # otherwise, handleDate will do it
+		@bindResources() # wait until after skeleton
+
 	promise
 
 
@@ -32,15 +35,20 @@ View::removeElement = ->
 # --------------------------------------------------------------------------------------------------
 
 
+###
+Replace the supermethod's logic. Important to unbind/bind *events* (TODO: make more DRY)
+###
 View::handleDate = (date, isReset) ->
-	if isReset and @opt('refetchResourcesOnNavigate')
-		@unsetResources({ skipUnrender: true }) # keep same resources showing
+	resourcesNeedDate = @opt('refetchResourcesOnNavigate')
 
-		# before fetching resources, wait for the new start/end to be computed
-		origHandleDate.apply(this, arguments).then =>
-			@fetchResources()
-	else
-		origHandleDate.apply(this, arguments)
+	@unbindEvents()
+	if resourcesNeedDate
+		@unbindResources({ skipUnrender: true }) # keep same resources showing
+
+	@requestDateRender(date).then =>
+		@bindEvents()
+		if resourcesNeedDate
+			@bindResources(true) # forceInitialFetch=true
 
 
 View::onDateRender = ->
@@ -64,15 +72,14 @@ View::executeEventsRender = (events) ->
 # --------------------------------------------------------------------------------------------------
 
 
-View::bindResources = ->
+View::bindResources = (forceInitialFetch) ->
 	if not @isResourcesBound
 		@isResourcesBound = true
 		@trigger('resourcesBind')
 
 		promise = # first-time get/fetch
-			if @opt('refetchResourcesOnNavigate')
-				@whenDateSet().then => # fetchResources expects start/end/timezone to be populated
-					@fetchResources()
+			if forceInitialFetch
+				@fetchResources()
 			else
 				@requestResources()
 
@@ -176,7 +183,7 @@ this function expects the view's start/end to be already populated.
 ###
 View::requestResources = ->
 	if @opt('refetchResourcesOnNavigate')
-		@calendar.resourceManager.getResources(@start, @end, @calendar.options.timezone)
+		@calendar.resourceManager.getResources(@start, @end)
 	else
 		@calendar.resourceManager.getResources()
 
@@ -187,7 +194,7 @@ this function expects the view's start/end to be already populated.
 ###
 View::fetchResources = ->
 	if @opt('refetchResourcesOnNavigate')
-		@calendar.resourceManager.fetchResources(@start, @end, @calendar.options.timezone)
+		@calendar.resourceManager.fetchResources(@start, @end)
 	else
 		@calendar.resourceManager.fetchResources()
 
