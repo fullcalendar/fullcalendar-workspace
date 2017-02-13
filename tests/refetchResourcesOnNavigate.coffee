@@ -224,3 +224,69 @@ describe 'refetchResourcesOnNavigate', ->
 						currentCalendar.next()
 				else if renderCnt == 2
 					done()
+
+
+	describe 'when calling a JSON feed', ->
+
+		beforeEach ->
+			$.mockjax
+				url: '*',
+				contentType: 'text/json',
+				responseText: []
+			$.mockjaxSettings.log = -> # don't console.log
+
+		afterEach ->
+			$.mockjax.clear()
+
+
+		it 'receives the start/end/timezone GET parameters', (done) ->
+
+			initCalendar
+				defaultView: 'timelineWeek'
+				now: '2017-02-12'
+				timezone: 'America/Chicago'
+				resources: 'my-feed.php' # will be picked up by mockjax
+
+			setTimeout -> # wait for ajax
+				request = $.mockjax.mockedAjaxCalls()[0];
+				expect(request.data.start).toBe('2017-02-12')
+				expect(request.data.end).toBe('2017-02-19')
+				expect(request.data.timezone).toBe('America/Chicago')
+				done()
+
+
+		it 'respects startParam/endParam/timezoneParam', (done) ->
+
+			initCalendar
+				defaultView: 'timelineWeek'
+				now: '2017-02-12'
+				timezone: 'America/Chicago'
+				resources: 'my-feed.php' # will be picked up by mockjax
+				startParam: 'mystart'
+				endParam: 'myend'
+				timezoneParam: 'mytimezone'
+
+			setTimeout -> # wait for ajax
+				request = $.mockjax.mockedAjaxCalls()[0];
+				expect(request.data.mystart).toBe('2017-02-12')
+				expect(request.data.myend).toBe('2017-02-19')
+				expect(request.data.mytimezone).toBe('America/Chicago')
+				done()
+
+
+		it 'won\'t send start/end/timezone params when off', (done) ->
+
+			initCalendar
+				defaultView: 'timelineWeek'
+				now: '2017-02-12'
+				timezone: 'America/Chicago'
+				resources: 'my-feed.php' # will be picked up by mockjax
+				refetchResourcesOnNavigate: false
+
+			setTimeout -> # wait for ajax
+				request = $.mockjax.mockedAjaxCalls()[0];
+				requestData = request.data or {}
+				expect(request.data.start).toBeFalsy()
+				expect(request.data.end).toBeFalsy()
+				expect(request.data.timezone).toBeFalsy()
+				done()
