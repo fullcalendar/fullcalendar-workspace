@@ -10,9 +10,9 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "copyright": "2016 Adam Shaw",
   "dependencies": {
-    "jquery": ">=2.0.0",
-    "moment": ">=2.9.0",
-    "fullcalendar": ">=3.0.1"
+    "jquery": "2 - 3",
+    "moment": "^2.9.0",
+    "fullcalendar": "^3.1.1"
   },
   "main": [
     "dist/scheduler.js",
