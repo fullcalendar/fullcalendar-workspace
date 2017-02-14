@@ -1,4 +1,16 @@
 
+v1.5.1 (2017-02-14)
+-------------------
+
+- dragging an event that lives on multiple resources should maintain the
+  non-dragged resource IDs when dropped (#111)
+- resources function/feed should receive start/end params (#246)
+  (when `refetchResourcesOnNavigate` is true)
+- iOS 10, unwanted scrolling while dragging events/selection (#230)
+- timeline, clicking scrollbars triggers dayClick (#256)
+- timeline, external drag element droppable when outside of calendar (#256)
+
+
 v1.5.0 (2016-12-05)
 -------------------
 
