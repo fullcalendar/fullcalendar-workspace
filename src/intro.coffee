@@ -23,6 +23,10 @@ Docs & License: <%= homepage %>
 FC = $.fullCalendar
 FC.schedulerVersion = "<%= version %>"
 
+# When the required internal version is upped,
+# also update the .json files with a new minor version requirement.
+# Example: bump ~2.7.2 to ~2.8.0
+# Use a tilde to match future patch-level changes only!
 if FC.internalApiVersion != 8
 	FC.warn(
 		'v' + FC.schedulerVersion + ' of FullCalendar Scheduler ' +
