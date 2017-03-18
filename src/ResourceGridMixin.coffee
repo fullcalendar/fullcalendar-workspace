@@ -7,13 +7,13 @@ ResourceGridMixin = # expects a Grid
 	allowCrossResource: true
 
 
-	eventRangeToSpans: (range, event) ->
+	eventRangeToSpans: (eventRange, event) ->
 		resourceIds = @view.calendar.getEventResourceIds(event)
 		if resourceIds.length
 
 			# returns an array of copies, with disctinct resourceId's
 			for resourceId in resourceIds
-				$.extend({}, range, { resourceId })
+				$.extend({}, eventRange, { resourceId })
 
 		else if FC.isBgEvent(event)
 			# super-method. returns a single span with no resourceId

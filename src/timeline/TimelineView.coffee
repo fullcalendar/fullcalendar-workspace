@@ -14,11 +14,6 @@ class TimelineView extends View
 		new TimelineGrid(this)
 
 
-	setRange: (range) ->
-		super
-		@timeGrid.setRange(range)
-
-
 	# Rendering
 	# ------------------------------------------------------------------------------------------------------------------
 
@@ -74,6 +69,7 @@ class TimelineView extends View
 
 
 	renderDates: ->
+		@timeGrid.setRange(@renderRange)
 		@timeGrid.renderDates()
 
 
@@ -176,7 +172,7 @@ class TimelineView extends View
 			scrollTime = @opt('scrollTime')
 			if scrollTime
 				scrollTime = moment.duration(scrollTime)
-				left = @timeGrid.dateToCoord(@start.clone().time(scrollTime)) # TODO: fix this for RTL
+				left = @timeGrid.dateToCoord(@activeRange.start.clone().time(scrollTime)) # TODO: fix this for RTL
 		{ left, top: 0 }
 
 

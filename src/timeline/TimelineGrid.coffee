@@ -543,7 +543,7 @@ class TimelineGrid extends Grid
 	getNowIndicatorUnit: ->
 		# TODO: converge with largeUnit. precompute
 		if @isTimeScale
-			computeIntervalUnit(@slotDuration)
+			computeGreatestUnit(@slotDuration)
 
 
 	# will only execute if isTimeScale
@@ -964,7 +964,11 @@ class TimelineGrid extends Grid
 
 	# Renders a visual indication of an event being resized
 	renderEventResize: (resizeLocation, seg) ->
-		@renderHighlight(@eventToSpan(resizeLocation))
+		eventSpans = @eventToSpans(resizeLocation)
+
+		for eventSpan in eventSpans
+			@renderHighlight(eventSpan)
+
 		@renderEventLocationHelper(resizeLocation, seg) # return value. rendered seg els
 
 
@@ -1026,7 +1030,11 @@ class TimelineGrid extends Grid
 		if seg
 			@renderEventLocationHelper(dropLocation, seg) # return value. rendered seg els
 		else
-			@renderHighlight(@eventToSpan(dropLocation))
+			eventSpans = @eventToSpans(dropLocation)
+
+			for eventSpan in eventSpans
+				@renderHighlight(eventSpan)
+
 			null # signals no helper els rendered
 
 

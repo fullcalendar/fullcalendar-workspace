@@ -183,7 +183,7 @@ this function expects the view's start/end to be already populated.
 ###
 View::requestResources = ->
 	if @opt('refetchResourcesOnNavigate')
-		@calendar.resourceManager.getResources(@start, @end)
+		@calendar.resourceManager.getResources(@activeRange.start, @activeRange.end)
 	else
 		@calendar.resourceManager.getResources()
 
@@ -194,7 +194,7 @@ this function expects the view's start/end to be already populated.
 ###
 View::fetchResources = ->
 	if @opt('refetchResourcesOnNavigate')
-		@calendar.resourceManager.fetchResources(@start, @end)
+		@calendar.resourceManager.fetchResources(@activeRange.start, @activeRange.end)
 	else
 		@calendar.resourceManager.fetchResources()
 

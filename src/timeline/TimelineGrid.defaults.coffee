@@ -52,7 +52,7 @@ TimelineGrid::initScaleProps = ->
 	@isTimeScale = durationHasTime(@slotDuration)
 	@largeUnit =
 		if not @isTimeScale
-			slotUnit = computeIntervalUnit(@slotDuration)
+			slotUnit = computeGreatestUnit(@slotDuration)
 			if /year|month|week/.test(slotUnit)
 				slotUnit
 
@@ -201,7 +201,7 @@ TimelineGrid::computeHeaderFormats = ->
 	view = @view
 	gridDuration = @duration
 	labelInterval = @labelInterval
-	unit = computeIntervalUnit(labelInterval)
+	unit = computeGreatestUnit(labelInterval)
 	weekNumbersVisible = @opt('weekNumbers')
 	format0 = format1 = format2 = null
 
