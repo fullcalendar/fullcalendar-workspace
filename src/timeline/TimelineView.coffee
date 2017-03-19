@@ -15,9 +15,13 @@ class TimelineView extends View
 
 
 	setRangeFromDate: (date) ->
-		super # might call getFallbackDuration
-		@timeGrid.initScaleProps()
-		@timeGrid.setRange(@renderRange)
+		isChange = super # might call getFallbackDuration
+
+		if isChange
+			@timeGrid.initScaleProps()
+			@timeGrid.setRange(@renderRange)
+
+		isChange
 
 
 	getFallbackDuration: ->

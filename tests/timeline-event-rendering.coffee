@@ -1,5 +1,5 @@
 
-describe 'timeline event rendering', ->
+describe 'timeline event rendering', -> # TAKE A REALLY LONG TIME B/C SO MANY LOOPS!
 
 	pushOptions
 		now: '2015-10-17'
