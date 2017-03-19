@@ -3,6 +3,7 @@ class TimelineView extends View
 
 	timeGrid: null # TODO: rename
 	isScrolled: false
+	usesMinMaxTime: true # indicates that minTime/maxTime affects rendering
 
 
 	initialize: ->
