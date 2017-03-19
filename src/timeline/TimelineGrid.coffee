@@ -57,23 +57,10 @@ class TimelineGrid extends Grid
 	constructor: ->
 		super
 
-		@initScaleProps()
-
 		# TODO: more formal option system. works with Agenda
 		@minTime = moment.duration(@opt('minTime') || '00:00')
 		@maxTime = moment.duration(@opt('maxTime') || '24:00')
 		@timeWindowMs = @maxTime - @minTime
-
-		@snapDuration =
-			if (input = @opt('snapDuration'))
-				moment.duration(input)
-			else
-				@slotDuration
-
-		@minResizeDuration = @snapDuration # for Grid
-
-		@snapsPerSlot = divideDurationByDuration(@slotDuration, @snapDuration)
-			# TODO: do this in initScaleProps?
 
 		@slotWidth = @opt('slotWidth')
 

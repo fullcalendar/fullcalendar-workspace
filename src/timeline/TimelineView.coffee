@@ -7,11 +7,20 @@ class TimelineView extends View
 
 	initialize: ->
 		@timeGrid = @instantiateGrid()
-		@intervalDuration = @timeGrid.duration
 
 
 	instantiateGrid: ->
 		new TimelineGrid(this)
+
+
+	setRangeFromDate: (date) ->
+		super # might call getFallbackDuration
+		@timeGrid.initScaleProps()
+		@timeGrid.setRange(@renderRange)
+
+
+	getFallbackDuration: ->
+		@timeGrid.computeFallbackDuration()
 
 
 	# Rendering
@@ -69,7 +78,6 @@ class TimelineView extends View
 
 
 	renderDates: ->
-		@timeGrid.setRange(@renderRange)
 		@timeGrid.renderDates()
 
 

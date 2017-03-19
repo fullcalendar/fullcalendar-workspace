@@ -20,7 +20,7 @@ class CalendarExtension extends Calendar
 			else if spec.resourceClass
 				viewClass = spec.resourceClass
 
-		new viewClass(this, viewType, spec.options, spec.duration)
+		new viewClass(this, spec)
 
 
 	# for the API only

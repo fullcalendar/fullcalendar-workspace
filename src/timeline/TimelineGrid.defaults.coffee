@@ -29,12 +29,12 @@ STOCK_SUB_DURATIONS = [ # from largest to smallest
 ]
 
 
+# assumes the View already has a currentRange
 TimelineGrid::initScaleProps = ->
 
 	@labelInterval = @queryDurationOption('slotLabelInterval')
 	@slotDuration = @queryDurationOption('slotDuration')
 
-	@ensureGridDuration()
 	@validateLabelAndSlot() # validate after computed grid duration
 	@ensureLabelInterval()
 	@ensureSlotDuration()
@@ -57,17 +57,26 @@ TimelineGrid::initScaleProps = ->
 				slotUnit
 
 	@emphasizeWeeks = @slotDuration.as('days') == 1 and
-		@duration.as('weeks') >= 2 and
+		@view.currentRangeAs('weeks') >= 2 and
 		not @opt('businessHours')
 
 	###
-	console.log('view duration =', @duration.humanize())
 	console.log('label interval =', @labelInterval.humanize())
 	console.log('slot duration =', @slotDuration.humanize())
 	console.log('header formats =', @headerFormats)
 	console.log('isTimeScale', @isTimeScale)
 	console.log('largeUnit', @largeUnit)
 	###
+
+	@snapDuration =
+		if (input = @opt('snapDuration'))
+			moment.duration(input)
+		else
+			@slotDuration
+
+	@minResizeDuration = @snapDuration # for Grid
+
+	@snapsPerSlot = divideDurationByDuration(@slotDuration, @snapDuration)
 
 
 TimelineGrid::queryDurationOption = (name) ->
@@ -78,18 +87,19 @@ TimelineGrid::queryDurationOption = (name) ->
 			dur
 
 
-TimelineGrid::validateLabelAndSlot = -> # needs a defined @duration (grid's duration)
+TimelineGrid::validateLabelAndSlot = ->
+	currentRange = @view.currentRange
 
 	# make sure labelInterval doesn't exceed the max number of cells
 	if @labelInterval
-		labelCnt = divideDurationByDuration(@duration, @labelInterval)
+		labelCnt = divideRangeByDuration(currentRange.start, currentRange.end, @labelInterval)
 		if labelCnt > MAX_CELLS
 			FC.warn('slotLabelInterval results in too many cells')
 			@labelInterval = null
 
 	# make sure slotDuration doesn't exceed the maximum number of cells
 	if @slotDuration
-		slotCnt = divideDurationByDuration(@duration, @slotDuration)
+		slotCnt = divideRangeByDuration(currentRange.start, currentRange.end, @slotDuration)
 		if slotCnt > MAX_CELLS
 			FC.warn('slotDuration results in too many cells')
 			@slotDuration = null
@@ -102,42 +112,33 @@ TimelineGrid::validateLabelAndSlot = -> # needs a defined @duration (grid's dura
 			@slotDuration = null
 
 
-TimelineGrid::ensureGridDuration = ->
-	gridDuration = @duration
+# has side-effects
+TimelineGrid::computeFallbackDuration = ->
+	duration = null
 
-	if not gridDuration
-		gridDuration = @view.intervalDuration
+	# no values to compute from. resort to default
+	if not @labelInterval and not @slotDuration
+		duration = moment.duration(DEFAULT_GRID_DURATION)
 
-		if not gridDuration
+	# compute based off label interval
+	# find the smallest view duration that yields the minimum number of labels
+	else
+		labelInterval = @ensureLabelInterval()
 
-			# no values to compute from. resort to default
-			if not @labelInterval and not @slotDuration
-				gridDuration = moment.duration(DEFAULT_GRID_DURATION)
+		for input in STOCK_SUB_DURATIONS by -1 # smallest to largest
+			duration = moment.duration(input)
+			labelCnt = divideDurationByDuration(duration, labelInterval)
+			if labelCnt >= MIN_AUTO_LABELS
+				break
 
-			# compute based off label interval
-			# find the smallest view duration that yields the minimum number of labels
-			else
-				labelInterval = @ensureLabelInterval()
-
-				for input in STOCK_SUB_DURATIONS by -1 # smallest to largest
-					gridDuration = moment.duration(input)
-					labelCnt = divideDurationByDuration(gridDuration, labelInterval)
-					if labelCnt >= MIN_AUTO_LABELS
-						break
-
-		@duration = gridDuration
-
-	gridDuration
+	duration
 
 
 TimelineGrid::ensureLabelInterval = ->
+	currentRange = @view.currentRange
 	labelInterval = @labelInterval
 
 	if not labelInterval
-
-		# no values to compute from. resort to the default view duration
-		if not @duration and not @slotDuration
-			@ensureGridDuration() # will compute @duration
 
 		# compute based off the slot duration
 		# find the largest label interval with an acceptable slots-per-label
@@ -158,7 +159,7 @@ TimelineGrid::ensureLabelInterval = ->
 		else
 			for input in STOCK_SUB_DURATIONS
 				labelInterval = moment.duration(input)
-				labelCnt = divideDurationByDuration(@duration, labelInterval)
+				labelCnt = divideRangeByDuration(currentRange.start, currentRange.end, labelInterval)
 				if labelCnt >= MIN_AUTO_LABELS
 					break
 
@@ -168,6 +169,7 @@ TimelineGrid::ensureLabelInterval = ->
 
 
 TimelineGrid::ensureSlotDuration = ->
+	currentRange = @view.currentRange
 	slotDuration = @slotDuration
 
 	if not slotDuration
@@ -183,8 +185,8 @@ TimelineGrid::ensureSlotDuration = ->
 				break
 
 		# only allow the value if it won't exceed the view's # of slots limit
-		if slotDuration and @duration
-			slotCnt = divideDurationByDuration(@duration, slotDuration)
+		if slotDuration
+			slotCnt = divideRangeByDuration(currentRange.start, currentRange.end, slotDuration)
 			if slotCnt > MAX_AUTO_CELLS
 				slotDuration = null
 
@@ -199,7 +201,6 @@ TimelineGrid::ensureSlotDuration = ->
 
 TimelineGrid::computeHeaderFormats = ->
 	view = @view
-	gridDuration = @duration
 	labelInterval = @labelInterval
 	unit = computeGreatestUnit(labelInterval)
 	weekNumbersVisible = @opt('weekNumbers')
@@ -215,21 +216,21 @@ TimelineGrid::computeHeaderFormats = ->
 			format0 = 'YYYY' # '2015'
 
 		when 'month'
-			if gridDuration.asYears() > 1
+			if view.currentRangeAs('years') > 1
 				format0 = 'YYYY' # '2015'
 
 			format1 = 'MMM' # 'Jan'
 
 		when 'week'
-			if gridDuration.asYears() > 1
+			if view.currentRangeAs('years') > 1
 				format0 = 'YYYY' # '2015'
 
 			format1 = @opt('shortWeekFormat') # 'Wk4'
 
 		when 'day'
-			if gridDuration.asYears() > 1
+			if view.currentRangeAs('years') > 1
 				format0 = @opt('monthYearFormat') # 'January 2014'
-			else if gridDuration.asMonths() > 1
+			else if view.currentRangeAs('months') > 1
 				format0 = 'MMMM' # 'January'
 
 			if weekNumbersVisible
@@ -243,7 +244,7 @@ TimelineGrid::computeHeaderFormats = ->
 			if weekNumbersVisible
 				format0 = @opt('weekFormat') # 'Wk 4'
 
-			if gridDuration.asDays() > 1
+			if view.currentRangeAs('days') > 1
 				format1 = @opt('dayOfMonthFormat') # 'Fri 9/15'
 
 			format2 = @opt('smallTimeFormat') # '6pm'
