@@ -13,6 +13,7 @@ class EnhancedScroller extends FC.Scroller
 	canvas: null # an optional ScrollerCanvas
 	isScrolling: false
 	isTouching: false # user currently has finger down?
+	isTouchedEver: false # user ever initiated with touch? (hack)
 	isMoving: false # whether a scroll event has happened recently
 
 	isTouchScrollEnabled: true
@@ -124,6 +125,7 @@ class EnhancedScroller extends FC.Scroller
 	# will fire *before* the scroll event is fired
 	reportTouchStart: ->
 		@isTouching = true
+		@isTouchedEver = true
 
 
 	reportTouchEnd: ->

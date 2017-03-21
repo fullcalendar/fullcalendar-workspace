@@ -11,6 +11,9 @@ Adjustments to accommodate all date-related features in core v3.3.0, including:
 - `dayCount` - force a fixed number-of-days, even with hiddenDays
 - `disableNonCurrentDates` - option to hide day cells for prev/next months
 
+Bugfixes:
+- event titles strangely positioned while touch scrolling in Timeline (#223)
+
 
 v1.5.1 (2017-02-14)
 -------------------

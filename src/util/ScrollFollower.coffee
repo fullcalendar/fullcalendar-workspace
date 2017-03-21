@@ -25,7 +25,7 @@ class ScrollFollower
 		@sprites = []
 
 		scroller.on 'scroll', =>
-			if scroller.isTouching
+			if scroller.isTouchedEver
 				# touch devices should only updated after the scroll is over
 				@isTouch = true
 				@isForcedRelative = true # touch devices scroll too quick to make absolute ever look good
