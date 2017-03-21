@@ -1,4 +1,17 @@
 
+v1.6.0
+------
+
+Adjustments to accommodate all date-related features in core v3.3.0, including:
+- `visibleRange` - complete control over view's date range
+- `validRange` - restrict date range
+- `changeView` - pass in a date or visibleRange as second param
+- `dateIncrement` - customize prev/next jump (#36)
+- `dateAlignment` - custom view alignment, like start-of-week
+- `dayCount` - force a fixed number-of-days, even with hiddenDays
+- `disableNonCurrentDates` - option to hide day cells for prev/next months
+
+
 v1.5.1 (2017-02-14)
 -------------------
 
