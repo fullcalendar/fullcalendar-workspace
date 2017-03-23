@@ -1,6 +1,6 @@
 
-v1.6.0
-------
+v1.6.0 (2017-03-23)
+-------------------
 
 Adjustments to accommodate all date-related features in core v3.3.0, including:
 - `visibleRange` - complete control over view's date range
