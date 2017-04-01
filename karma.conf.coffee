@@ -35,6 +35,7 @@ module.exports = (config) ->
 			'tests/util/timeline.coffee'
 			'tests/util/moment.js'
 			'tests/util/simulate.js'
+			'tests/util/ViewDateUtils.js'
 			'tests/*.coffee'
 
 			# serve misc files
