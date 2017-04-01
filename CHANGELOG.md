@@ -1,4 +1,15 @@
 
+v1.6.1 (2017-04-01)
+-------------------
+
+Bugfixes (code changes in v3.3.1 of core project):
+- stale calendar title when navigate away from then back to the a view
+- js error when gotoDate immediately after calendar initialization
+- agenda view scrollbars causes misalignment in jquery 3.2.1
+- navigation bug when trying to navigate to a day of another week
+- dateIncrement not working when duration and dateIncrement have different units (#287)
+
+
 v1.6.0 (2017-03-23)
 -------------------
 
