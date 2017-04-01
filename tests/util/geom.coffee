@@ -176,12 +176,12 @@ isRectsSimilar = (rect1, rect2) ->
 
 isRectsHSimilar = (rect1, rect2) ->
 	# 1, because of possible borders
-	Math.abs(rect1.left - rect2.left) <= 1.1 and Math.abs(rect1.right - rect2.right) <= 1.1
+	Math.abs(rect1.left - rect2.left) <= 2 and Math.abs(rect1.right - rect2.right) <= 2
 
 
 isRectsVSimilar = (rect1, rect2) ->
 	# 1, because of possible borders
-	Math.abs(rect1.top - rect2.top) <= 1.1 and Math.abs(rect1.bottom - rect2.bottom) <= 1.1
+	Math.abs(rect1.top - rect2.top) <= 2 and Math.abs(rect1.bottom - rect2.bottom) <= 2
 
 
 # Jasmine Adapters
@@ -241,14 +241,14 @@ beforeEach ->
 
 		toBeLeftOf: ->
 			compare: (subject, other) ->
-				result = { pass: massageRect(subject).right < massageRect(other).left }
+				result = { pass: massageRect(subject).right < massageRect(other).left + 2 }
 				if not result.pass
 					result.message = 'first rect is not left of the second'
 				result
 
 		toBeRightOf: ->
 			compare: (subject, other) ->
-				result = { pass: massageRect(subject).left > massageRect(other).right }
+				result = { pass: massageRect(subject).left > massageRect(other).right - 2 }
 				if not result.pass
 					result.message = 'first rect is not right of the second'
 				result
