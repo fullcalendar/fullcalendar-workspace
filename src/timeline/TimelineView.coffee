@@ -14,14 +14,10 @@ class TimelineView extends View
 		new TimelineGrid(this)
 
 
-	setRangeFromDate: (date) ->
-		isChange = super # might call getFallbackDuration
-
-		if isChange
-			@timeGrid.initScaleProps()
-			@timeGrid.setRange(@renderRange)
-
-		isChange
+	setDateProfile: (dateProfile) ->
+		super
+		@timeGrid.initScaleProps()
+		@timeGrid.setRange(@renderRange)
 
 
 	getFallbackDuration: ->

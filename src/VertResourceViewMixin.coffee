@@ -37,13 +37,13 @@ VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 	# ----------------------------------------------------------------------------------------------
 
 
-	executeDateRender: (date) ->
+	executeDateRender: (dateProfile) ->
 		View::executeDateRender.apply(this, arguments).then =>
 			if @isResourcesSet
 				@reportResourcesRender() # resources were rendered
 
 
-	executeDateUnrender: (date) ->
+	executeDateUnrender: ->
 		View::executeDateUnrender.apply(this, arguments).then =>
 			if @isResourcesSet
 				@reportResourcesUnrender() # resources were rendered
