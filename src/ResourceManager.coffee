@@ -27,7 +27,10 @@ class ResourceManager extends Class
 	Like fetchResources, but won't refetch if already fetched (regardless of start/end).
 	###
 	getResources: (start, end) -> # returns a promise
-		@fetching or @fetchResources(start, end)
+		if start # if needs specific window of time, never rely on cached result
+			@fetchResources(start, end)
+		else
+			@fetching or @fetchResources()
 
 
 	###
