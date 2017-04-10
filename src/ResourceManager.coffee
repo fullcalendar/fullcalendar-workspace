@@ -150,7 +150,7 @@ class ResourceManager extends Class
 			resource = @buildResource(resourceInput)
 			if @addResourceToIndex(resource)
 				@addResourceToTree(resource)
-				@trigger('add', resource)
+				@trigger('add', resource , @topLevelResources)
 				resource
 			else
 				false
@@ -199,7 +199,7 @@ class ResourceManager extends Class
 			resource = @removeResourceFromIndex(id)
 			if resource
 				@removeResourceFromTree(resource)
-				@trigger('remove', resource)
+				@trigger('remove', resource, @topLevelResources)
 			resource
 
 

@@ -6,97 +6,48 @@ A view that structurally distinguishes events by resource
 ###
 ResourceViewMixin = # expects a View
 
-	isResourcesRendered: false
-	isResourcesDirty: false # rendered but outdated?
-
-	resourceRenderQueue: null
 	resourceTextFunc: null
 
 	canRenderSpecificResources: false
 
 
 	setElement: ->
-		# put this first, because setElement might need it.
-		# don't clear this out in removeElement. headless rendering might continue.
-		@resourceRenderQueue = new TaskQueue()
-
 		View::setElement.apply(this, arguments)
 
-
-	# Date Rendering
-	# ------------------------------------------------------------------------------------------------------------------
-
-
-	onDateRender: ->
-		@rejectOn('dateUnrender', @whenResourcesRendered()).then =>
-			View::onDateRender.apply(this, arguments)
-			# ^ will trigger the public handlers AND render the license warning
-			# TODO: only care about public handlers. detangle the two.
+		# replace the `currentResources` dependency with `displayingResources`,
+		# which means resources need to be rendered before events can be rendered.
+		View.watch 'displayingEvents', [ 'displayingDates', 'currentEvents', 'displayingResources' ], (deps) ->
+			@requestEventsRender(deps.currentEvents)
+		, ->
+			@requestEventsUnrender()
 
 
-	# Events
-	# ------------------------------------------------------------------------------------------------------------------
-
-
-	handleEvents: (events) ->
-		if @opt('filterResourcesWithEvents')
-			if @isResourcesSet
-				resources = @getCurrentResources()
-				filteredResources = @filterResourcesWithEvents(resources, events)
-				@requestResourcesRender(filteredResources) # will render events
-			# else
-			#	handleResources will render events later
-		else
-			if @isResourcesRendered and not @isResourcesDirty
-				@requestEventsRender(events)
-			# else
-			#	handleResources will render events later
-
-
-	# Resource Handling
+	# Resource Handling (actually render)
 	# ------------------------------------------------------------------------------------------------------------------
 
 
 	handleResources: (resources) ->
-		if @opt('filterResourcesWithEvents')
-			if @isEventsSet
-				events = @getCurrentEvents()
-				filteredResources = @filterResourcesWithEvents(resources, events)
-				@requestResourcesRender(filteredResources)
-			# else
-			#	handleEvents will render resources later
-		else
-			@requestResourcesRender(resources)
+		@set('displayingResources', true)
+		@requestResourcesRender(resources)
 
 
-	handleResourcesUnset: (teardownOptions={}) ->
-		if teardownOptions.skipUnrender
-			@isResourcesDirty = @isResourcesRendered
-		else
-			@requestResourcesUnrender(teardownOptions)
+	handleResourcesUnset: ->
+		@unset('displayingResources')
+		@requestResourcesUnrender()
 
 
-	handleResourceAdd: (resource) ->
+	handleResourceAdd: (resource, allResources) ->
 		if @canRenderSpecificResources
-			if @opt('filterResourcesWithEvents')
-				if @isEventsSet
-					events = @getCurrentEvents()
-					a = @filterResourcesWithEvents([ resource ], events)
-					if a.length
-						@requestResourceRender(a[0])
-				# else
-				#	handleEvents will render the resource later
-			else
-				@requestResourceRender(resource)
+			@requestResourceRender(resource)
 		else
-			@handleResources(@getCurrentResources())
+			@handleResources(allResources)
 
 
-	handleResourceRemove: (resource) ->
+	handleResourceRemove: (resource, allResources) ->
 		if @canRenderSpecificResources
 			@requestResourceUnrender(resource)
 		else
-			@handleResources(@getCurrentResources())
+			@handleResources(allResources)
 
 
 	# Resource Rendering/Unrendering Queuing
@@ -104,25 +55,22 @@ ResourceViewMixin = # expects a View
 
 
 	requestResourcesRender: (resources) ->
-		@resourceRenderQueue.add =>
+		@renderQueue.add =>
 			@executeResourcesRender(resources)
 
 
-	requestResourcesUnrender: (teardownOptions) ->
-		if @isResourcesRendered
-			@resourceRenderQueue.add =>
-				@executeResourcesUnrender(teardownOptions)
-		else
-			Promise.resolve()
+	requestResourcesUnrender: ->
+		@renderQueue.add =>
+			@executeResourcesUnrender()
 
 
 	requestResourceRender: (resource) -> # canRenderSpecificResources must be activated
-		@resourceRenderQueue.add =>
+		@renderQueue.add =>
 			@executeResourceRender(resource)
 
 
 	requestResourceUnrender: (resource) -> # canRenderSpecificResources must be activated
-		@resourceRenderQueue.add =>
+		@renderQueue.add =>
 			@executeResourceUnrender(resource)
 
 
@@ -133,73 +81,33 @@ ResourceViewMixin = # expects a View
 	executeResourcesRender: (resources) ->
 		@captureScroll()
 		@freezeHeight()
-		@executeResourcesUnrender().then =>
-			@renderResources(resources)
-			@thawHeight()
-			@releaseScroll()
-			@reportResourcesRender()
+		@renderResources(resources)
+		@thawHeight()
+		@releaseScroll()
 
 
-	executeResourcesUnrender: (teardownOptions) ->
-		if @isResourcesRendered
-			@requestEventsUnrender().then =>
-				@captureScroll()
-				@freezeHeight()
-				@unrenderResources(teardownOptions)
-				@thawHeight()
-				@releaseScroll()
-				@reportResourcesUnrender()
-		else
-			Promise.resolve()
+	executeResourcesUnrender: ->
+		@captureScroll()
+		@freezeHeight()
+		@unrenderResources()
+		@thawHeight()
+		@releaseScroll()
 
 
 	executeResourceRender: (resource) ->
-		if @isResourcesRendered
-			@captureScroll()
-			@freezeHeight()
-			@renderResource(resource)
-			@thawHeight()
-			@releaseScroll()
-		else
-			Promise.reject()
+		@captureScroll()
+		@freezeHeight()
+		@renderResource(resource)
+		@thawHeight()
+		@releaseScroll()
 
 
 	executeResourceUnrender: (resource) ->
-		if @isResourcesRendered
-			@captureScroll()
-			@freezeHeight()
-			@unrenderResource(resource)
-			@thawHeight()
-			@releaseScroll()
-		else
-			Promise.reject()
-
-
-	# Resource Render Triggering
-	# ------------------------------------------------------------------------------------------------------------------
-
-
-	reportResourcesRender: ->
-		@isResourcesRendered = true
-		@trigger('resourcesRender')
-
-		if @isEventsSet
-			@requestEventsRender(@getCurrentEvents())
-		return # don't return promise result
-
-
-	reportResourcesUnrender: ->
-		@isResourcesRendered = false
-		@isResourcesDirty = false
-
-
-	# will ignore the current resource render if it is dirty
-	whenResourcesRendered: ->
-		if @isResourcesRendered and not @isResourcesDirty
-			Promise.resolve()
-		else
-			new Promise (resolve) =>
-				@one('resourcesRender', resolve)
+		@captureScroll()
+		@freezeHeight()
+		@unrenderResource(resource)
+		@thawHeight()
+		@releaseScroll()
 
 
 	# Resource Low-level Rendering
@@ -210,7 +118,7 @@ ResourceViewMixin = # expects a View
 		# abstract
 
 
-	unrenderResources: (teardownOptions) ->
+	unrenderResources: ->
 		# abstract
 
 
@@ -317,32 +225,3 @@ ResourceViewMixin = # expects a View
 		delete out.resourceId
 		@calendar.setEventResourceId(out, dropLocation.resourceId)
 		out
-
-
-	# Resource Filtering
-	# ------------------------------------------------------------------------------------------------------------------
-
-
-	filterResourcesWithEvents: (resources, events) ->
-		resourceIdHits = {}
-		for event in events
-			for resourceId in @calendar.getEventResourceIds(event)
-				resourceIdHits[resourceId] = true
-
-		_filterResourcesWithEvents(resources, resourceIdHits)
-
-
-# provides a new structure with masked objects
-_filterResourcesWithEvents = (sourceResources, resourceIdHits) ->
-	filteredResources = []
-	for sourceResource in sourceResources
-		if sourceResource.children.length
-			filteredChildren = _filterResourcesWithEvents(sourceResource.children, resourceIdHits)
-			if filteredChildren.length or resourceIdHits[sourceResource.id]
-				filteredResource = createObject(sourceResource) # mask
-				filteredResource.children = filteredChildren
-				filteredResources.push(filteredResource)
-		else # no children, so no need to mask
-			if resourceIdHits[sourceResource.id]
-				filteredResources.push(sourceResource)
-	filteredResources

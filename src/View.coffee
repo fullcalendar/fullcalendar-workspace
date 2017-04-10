@@ -3,11 +3,6 @@
 
 origSetElement = View::setElement
 origRemoveElement = View::removeElement
-origOnDateRender = View::onDateRender
-origExecuteEventsRender = View::executeEventsRender
-
-View::isResourcesBound = false
-View::isResourcesSet = false
 
 Calendar.defaults.refetchResourcesOnNavigate = false
 
@@ -17,132 +12,125 @@ Calendar.defaults.refetchResourcesOnNavigate = false
 
 
 View::setElement = ->
-	promise = origSetElement.apply(this, arguments)
+	origSetElement.apply(this, arguments)
+	@watchResources() # do after have the el, because might render, which assumes a render skeleton
 
-	if not @opt('refetchResourcesOnNavigate') # otherwise, handleDate will do it
-		@bindResources() # wait until after skeleton
-
-	promise
 
 
 View::removeElement = ->
-	@unbindResources({ skipRerender: true }) # don't bother to make display pretty for after
+	@unwatchResources()
 	origRemoveElement.apply(this, arguments)
-
-
-# Date Setting / Rendering
-# --------------------------------------------------------------------------------------------------
-
-
-###
-Replace the supermethod's logic. Important to unbind/bind *events* (TODO: make more DRY)
-###
-View::handleDate = (dateProfile) ->
-	resourcesNeedDate = @opt('refetchResourcesOnNavigate')
-
-	@unbindEvents()
-	if resourcesNeedDate
-		@unbindResources({ skipUnrender: true }) # keep same resources showing
-
-	@requestDateRender(dateProfile).then =>
-		@bindEvents()
-		if resourcesNeedDate
-			@bindResources(true) # forceInitialFetch=true
-
-
-View::onDateRender = ->
-	processLicenseKey(
-		@calendar.options.schedulerLicenseKey
-		@el # container element
-	)
-	origOnDateRender.apply(this, arguments) # fire public handlers
-
-
-# Event Rendering
-# --------------------------------------------------------------------------------------------------
-
-
-View::executeEventsRender = (events) ->
-	@whenResourcesSet().then => # wait for resource data, for coloring
-		origExecuteEventsRender.call(this, events)
 
 
 # Resource Binding
 # --------------------------------------------------------------------------------------------------
 
 
-View::bindResources = (forceInitialFetch) ->
-	if not @isResourcesBound
-		@isResourcesBound = true
-		@trigger('resourcesBind')
+View::watchResources = ->
+	initialDepNames = []
+	bindingDepNames = [ 'initialResources' ]
 
-		promise = # first-time get/fetch
-			if forceInitialFetch
-				@fetchResources()
-			else
-				@requestResources()
+	if @opt('refetchResourcesOnNavigate')
+		initialDepNames.push('dateProfile')
 
-		@rejectOn('resourcesUnbind', promise).then (resources) =>
-			@listenTo @calendar.resourceManager,
-				set: @setResources
-				reset: @setResources
-				unset: @unsetResources
-				add: @addResource
-				remove: @removeResource
-			@setResources(resources)
+	if @opt('filterResourcesWithEvents')
+		bindingDepNames.push('currentEvents')
 
+	@watch 'initialResources', initialDepNames, (deps) =>
+		@fetchInitialResources(deps.dateProfile) # promise
 
-View::unbindResources = (teardownOptions) ->
-	if @isResourcesBound
-		@isResourcesBound = false
-		@stopListeningTo(@calendar.resourceManager)
-		@unsetResources(teardownOptions)
-		@trigger('resourcesUnbind')
+	@watch 'bindingResources', bindingDepNames, (deps) =>
+		@bindResourceChanges(deps.currentEvents)
+		@setResources(deps.initialResources, deps.currentEvents)
+		return # make sure no return promise
+	, =>
+		@unbindResourceChanges()
+		@unsetResources()
+		return # make sure no return promise
 
 
-# Resource Setting/Unsetting
-# --------------------------------------------------------------------------------------------------
+View::unwatchResources = ->
+	@unwatch('initialResources')
+	@unwatch('bindingResources')
 
 
-View::setResources = (resources) ->
-	isReset = @isResourcesSet
-	@isResourcesSet = true
-	@handleResources(resources, isReset)
-	@trigger(
-		if isReset then 'resourcesReset' else 'resourcesSet'
-		resources
-	)
-
-
-View::unsetResources = (teardownOptions) ->
-	if @isResourcesSet
-		@isResourcesSet = false
-		@handleResourcesUnset(teardownOptions)
-		@trigger('resourcesUnset')
-
-
-View::whenResourcesSet = ->
-	if @isResourcesSet
-		Promise.resolve()
+# dateProfile is optional
+View::fetchInitialResources = (dateProfile) ->
+	if dateProfile
+		@calendar.resourceManager.getResources(
+			dateProfile.activeRange.start,
+			dateProfile.activeRange.end
+		)
 	else
-		new Promise (resolve) =>
-			@one('resourcesSet', resolve)
+		@calendar.resourceManager.getResources()
 
 
-# Resource Adding/Removing
+# currentEvents is optional
+View::bindResourceChanges = (currentEvents) ->
+	@listenTo @calendar.resourceManager,
+		set: (resources) =>
+			@setResources(resources, currentEvents)
+		unset: =>
+			@unsetResources()
+		reset: (resources) =>
+			@unsetResources()
+			@setResources(resources, currentEvents)
+		add: (resource, allResources) =>
+			@addResource(resource, allResources, currentEvents)
+		remove: (resource, allResources) =>
+			@removeResource(resource, allResources)
+
+
+View::unbindResourceChanges = ->
+	@stopListeningTo(@calendar.resourceManager)
+
+
+# Event Rendering
 # --------------------------------------------------------------------------------------------------
 
 
-View::addResource = (resource) ->
-	if @isResourcesSet
-		@handleResourceAdd(resource)
-		@trigger('resourceAdd', resource)
+# add the `currentResources` dependency because down the chain,
+# event rendering will query for live resource data.
+View.watch 'displayingEvents', [ 'displayingDates', 'currentEvents', 'currentResources' ], (deps) ->
+	@requestEventsRender(deps.currentEvents)
+, ->
+	@requestEventsUnrender()
 
 
-View::removeResource = (resource) ->
-	if @isResourcesSet
-		@handleResourceRemove(resource)
-		@trigger('resourceRemove', resource)
+# Resource Data
+# --------------------------------------------------------------------------------------------------
+
+
+View::setResources = (resources, currentEvents) ->
+	if currentEvents
+		resources = @filterResourcesWithEvents(resources, currentEvents)
+
+	@set('currentResources', resources)
+	@handleResources(resources)
+
+
+View::unsetResources = ->
+	@unset('currentResources')
+	@handleResourcesUnset()
+
+
+# currentEvents is optional
+View::addResource = (resource, allResources, currentEvents) ->
+	if currentEvents
+		a = @filterResourcesWithEvents([ resource ], currentEvents)
+		if not a.length
+			resource = null
+
+	if resource
+		@set('currentResources', allResources)
+		@handleResourceAdd(resource, allResources)
+		# TODO: filter allResources against currentEvents?
+
+
+View::removeResource = (resource, allResources) ->
+	@set('currentResources', allResources)
+	@handleResourceRemove(resource, allResources)
+	# TODO: filter allResources against currentEvents?
 
 
 # Resource Handling
@@ -150,55 +138,41 @@ View::removeResource = (resource) ->
 
 
 View::handleResources = (resources) ->
-	if @isEventsRendered
-		@requestCurrentEventsRender() # event coloring might have changed
-	# else (not already renderd)
-	#	executeEventsRender waits for resources and renders events
 
 
-View::handleResourcesUnset = (teardownOptions={}) ->
-	# event rendering is dependent on resource data
-	@requestEventsUnrender()
+View::handleResourcesUnset = ->
 
 
-View::handleResourceAdd = (resource) ->
-	if @isEventsRendered
-		@requestCurrentEventsRender() # event coloring might have changed
+View::handleResourceAdd = (resource, allResources) ->
 
 
-View::handleResourceRemove = (resource) ->
-	if @isEventsRendered
-		@requestCurrentEventsRender() # event coloring might have changed
+View::handleResourceRemove = (resource, allResources) ->
 
 
-# Resource Data Access
-# --------------------------------------------------------------------------------------------------
+# Resource Filtering
+# ------------------------------------------------------------------------------------------------------------------
 
 
-###
-Like fetchResources, but won't refetch if already fetched (regardless of start/end).
-If refetchResourcesOnNavigate is enabled,
-this function expects the view's start/end to be already populated.
-###
-View::requestResources = ->
-	if @opt('refetchResourcesOnNavigate')
-		@calendar.resourceManager.getResources(@activeRange.start, @activeRange.end)
-	else
-		@calendar.resourceManager.getResources()
+View::filterResourcesWithEvents = (resources, events) ->
+	resourceIdHits = {}
+	for event in events
+		for resourceId in @calendar.getEventResourceIds(event)
+			resourceIdHits[resourceId] = true
+
+	_filterResourcesWithEvents(resources, resourceIdHits)
 
 
-###
-If refetchResourcesOnNavigate is enabled,
-this function expects the view's start/end to be already populated.
-###
-View::fetchResources = ->
-	if @opt('refetchResourcesOnNavigate')
-		@calendar.resourceManager.fetchResources(@activeRange.start, @activeRange.end)
-	else
-		@calendar.resourceManager.fetchResources()
-
-
-# returns *unfiltered* current resources.
-# assumes isResourcesSet.
-View::getCurrentResources = ->
-	@calendar.resourceManager.topLevelResources
+# provides a new structure with masked objects
+_filterResourcesWithEvents = (sourceResources, resourceIdHits) ->
+	filteredResources = []
+	for sourceResource in sourceResources
+		if sourceResource.children.length
+			filteredChildren = _filterResourcesWithEvents(sourceResource.children, resourceIdHits)
+			if filteredChildren.length or resourceIdHits[sourceResource.id]
+				filteredResource = createObject(sourceResource) # mask
+				filteredResource.children = filteredChildren
+				filteredResources.push(filteredResource)
+		else # no children, so no need to mask
+			if resourceIdHits[sourceResource.id]
+				filteredResources.push(sourceResource)
+	filteredResources

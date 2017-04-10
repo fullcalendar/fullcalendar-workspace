@@ -1,52 +1,69 @@
 
 ###
 For vertical resource view.
-For views that rely on grids that don't render their resources and dates together.
+For views that rely on grids that render their resources and dates in the same pass.
 ###
 VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 
 
-	# Resources
-	# ----------------------------------------------------------------------------------------------
+	setElement: ->
+		ResourceViewMixin.setElement.apply(this, arguments)
+		@watchDatesAndResources()
 
 
-	executeResourcesRender: (resources) ->
+	removeElement: ->
+		ResourceViewMixin.removeElement.apply(this, arguments)
+		@unwatchDatesAndResources()
+
+
+	watchDatesAndResources: ->
+		# override displayingDates to also watch currentResources
+		@watch 'displayingDates', [ 'dateProfile', '?currentResources' ], (deps) =>
+			if deps.currentResources
+				@requestDatesAndResourcesRender(deps.dateProfile, deps.currentResources)
+			else
+				@requestDateRender(deps.dateProfile)
+		, =>
+			if @has('currentResources')
+				@requestDatesAndResourcesUnrender()
+			else
+				@requestDateUnrender()
+
+
+	unwatchDatesAndResources: ->
+		@unwatch('displayingDates')
+
+
+	requestResourcesRender: (resources) ->
+		# don't add anything to the render queue
+		# resource rendering is handled by watchDatesAndResources
+
+
+	requestResourcesUnrender: ->
+		# don't add anything to the render queue
+		# resource rendering is handled by watchDatesAndResources
+
+
+	requestDatesAndResourcesRender: (dateProfile, resources) ->
+		@set('displayingResources', true)
+		@renderQueue.add =>
+			@executeDatesAndResourcesRender(dateProfile, resources)
+
+
+	requestDatesAndResourcesUnrender: ->
+		@unset('displayingResources')
+		@renderQueue.add =>
+			@executeDatesAndResourcesUnrender()
+
+
+	executeDatesAndResourcesRender: (dateProfile, resources) ->
 		@setResourcesOnGrids(resources) # doesn't unrender
-
-		if @isDateRendered
-			@requestDateRender().then =>
-				@reportResourcesRender()
-		else
-			# resources will eventually be rendered by date rendering
-			Promise.resolve()
+		@executeDateRender(dateProfile)
 
 
-	executeResourcesUnrender: (teardownOptions={}) ->
+	executeDatesAndResourcesUnrender: ->
 		@unsetResourcesOnGrids() # doesn't unrender
-
-		if @isDateRendered and not teardownOptions.skipRerender
-			@requestDateRender().then =>
-				@reportResourcesUnrender()
-		else
-			# no need to unrender resources
-			@reportResourcesUnrender()
-			Promise.resolve()
-
-
-	# Dates
-	# ----------------------------------------------------------------------------------------------
-
-
-	executeDateRender: (dateProfile) ->
-		View::executeDateRender.apply(this, arguments).then =>
-			if @isResourcesSet
-				@reportResourcesRender() # resources were rendered
-
-
-	executeDateUnrender: ->
-		View::executeDateUnrender.apply(this, arguments).then =>
-			if @isResourcesSet
-				@reportResourcesUnrender() # resources were rendered
+		@executeDateUnrender()
 
 
 	# Grid Hookups
