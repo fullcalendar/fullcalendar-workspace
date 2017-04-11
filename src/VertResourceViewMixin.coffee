@@ -5,6 +5,8 @@ For views that rely on grids that render their resources and dates in the same p
 ###
 VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 
+	isDestroying: false # hack to prevent rerendering while destroying
+
 
 	setElement: ->
 		ResourceViewMixin.setElement.apply(this, arguments)
@@ -12,22 +14,31 @@ VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 
 
 	removeElement: ->
+		@isDestroying = true
 		ResourceViewMixin.removeElement.apply(this, arguments)
 		@unwatchDatesAndResources()
+		@isDestroying = false
 
 
 	watchDatesAndResources: ->
+		didDestroyUnrender = false
+
 		# override displayingDates to also watch currentResources
 		@watch 'displayingDates', [ 'dateProfile', '?currentResources' ], (deps) =>
-			if deps.currentResources
-				@requestDatesAndResourcesRender(deps.dateProfile, deps.currentResources)
-			else
-				@requestDateRender(deps.dateProfile)
+			if not @isDestroying
+				if deps.currentResources
+					@requestDatesAndResourcesRender(deps.dateProfile, deps.currentResources)
+				else
+					@requestDateRender(deps.dateProfile)
 		, =>
-			if @has('currentResources')
-				@requestDatesAndResourcesUnrender()
-			else
-				@requestDateUnrender()
+			if not didDestroyUnrender
+				if @has('currentResources')
+					@requestDatesAndResourcesUnrender()
+				else
+					@requestDateUnrender()
+
+				if @isDestroying
+					didDestroyUnrender = true
 
 
 	unwatchDatesAndResources: ->
@@ -59,9 +70,11 @@ VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 	executeDatesAndResourcesRender: (dateProfile, resources) ->
 		@setResourcesOnGrids(resources) # doesn't unrender
 		@executeDateRender(dateProfile)
+		@trigger('resourcesRendered')
 
 
 	executeDatesAndResourcesUnrender: ->
+		@trigger('before:resourcesUnrendered')
 		@unsetResourcesOnGrids() # doesn't unrender
 		@executeDateUnrender()
 

@@ -22,6 +22,49 @@ ResourceViewMixin = # expects a View
 			@requestEventsUnrender()
 
 
+	# this exists solely for sub-mixins of ResourceViewMixin
+	removeElement: ->
+		View::removeElement.apply(this, arguments)
+
+
+	# When the "meat" of the view is rendered (aka the base)
+	# -----------------------------------------------------------------------------------------------------------------
+
+
+	# NOTE: we don't need to worry about because unbindBaseRenderHandlers removes all .baseHandler
+	# Logic: base render trigger should fire when BOTH the resources and dates have rendered,
+	# but the unrender trigger should fire after ONLY the dates are about to be unrendered.
+	bindBaseRenderHandlers: ->
+		isResourcesEverRendered = false
+		isDatesRendered = false
+
+		@on 'resourcesRendered.baseHandler', ->
+			if not isResourcesEverRendered
+				isResourcesEverRendered = true
+				if isDatesRendered
+					@onBaseRender()
+
+		@on 'datesRendered.baseHandler', ->
+			if not isDatesRendered
+				isDatesRendered = true
+				if isResourcesEverRendered
+					@onBaseRender()
+
+		@on 'before:datesUnrendered.baseHandler', ->
+			if isDatesRendered
+				isDatesRendered = false
+				if isResourcesEverRendered
+					@onBeforeBaseUnrender()
+
+
+	onBaseRender: ->
+		View::onBaseRender.apply(this, arguments)
+		processLicenseKey(
+			@calendar.options.schedulerLicenseKey
+			@el # container element
+		)
+
+
 	# Resource Handling (actually render)
 	# ------------------------------------------------------------------------------------------------------------------
 
@@ -84,9 +127,11 @@ ResourceViewMixin = # expects a View
 		@renderResources(resources)
 		@thawHeight()
 		@releaseScroll()
+		@trigger('resourcesRendered')
 
 
 	executeResourcesUnrender: ->
+		@trigger('before:resourcesUnrendered')
 		@captureScroll()
 		@freezeHeight()
 		@unrenderResources()
