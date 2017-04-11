@@ -121,11 +121,12 @@ describe 'vresource businessHours', ->
 						if viewRenderCnt == 1
 							expectResourceOverride()
 							currentCalendar.removeResource(specialResource)
-							setTimeout -> # because removeResource will trigger another viewRender
-								expectLonelyDay9to5()
-								currentCalendar.addResource(specialResource)
-								expectResourceOverride()
-								done()
+						else if viewRenderCnt == 2
+							expectLonelyDay9to5()
+							currentCalendar.addResource(specialResource)
+						else if viewRenderCnt == 3
+							expectResourceOverride()
+							done()
 
 			it 'greys out whole day for single resource', (done) ->
 				initCalendar
