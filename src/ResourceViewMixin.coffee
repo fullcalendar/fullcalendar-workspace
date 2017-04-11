@@ -62,14 +62,6 @@ ResourceViewMixin = # expects a View
 				@onBeforeBaseUnrender()
 
 
-	onBaseRender: ->
-		View::onBaseRender.apply(this, arguments)
-		processLicenseKey(
-			@calendar.options.schedulerLicenseKey
-			@el # container element
-		)
-
-
 	# Resource Handling (actually render)
 	# ------------------------------------------------------------------------------------------------------------------
 

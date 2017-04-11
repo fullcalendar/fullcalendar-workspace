@@ -3,6 +3,7 @@
 
 origSetElement = View::setElement
 origRemoveElement = View::removeElement
+origOnBaseRender = View::onBaseRender
 
 Calendar.defaults.refetchResourcesOnNavigate = false
 
@@ -20,6 +21,15 @@ View::setElement = ->
 View::removeElement = ->
 	@unwatchResources()
 	origRemoveElement.apply(this, arguments)
+
+
+View::onBaseRender = ->
+	# inject license key before 'viewRender' which is called by super's onBaseRender
+	processLicenseKey(
+		@calendar.options.schedulerLicenseKey
+		@el # container element
+	)
+	origOnBaseRender.apply(this, arguments)
 
 
 # Resource Binding
