@@ -141,7 +141,7 @@ class ResourceTimelineGrid extends TimelineGrid
 	ensureIndividualBusinessHours: ->
 		for row in @view.getEventRows()
 
-			if @view.isDateSet and not row.businessHourSegs
+			if @view.has('dateProfile') and not row.businessHourSegs
 				@populateRowBusinessHoursSegs(row)
 
 			if row.isShown
@@ -169,7 +169,7 @@ class ResourceTimelineGrid extends TimelineGrid
 
 			@rowCntWithCustomBusinessHours += 1
 
-		if @view.isDateSet and @rowCntWithCustomBusinessHours
+		if @view.has('dateProfile') and @rowCntWithCustomBusinessHours
 			# will need for render later, regardless of whether row defines its own custom rules
 			@populateRowBusinessHoursSegs(row)
 

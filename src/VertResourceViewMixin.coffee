@@ -20,49 +20,61 @@ VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 		@isDestroying = false
 
 
+	# Resource Binding
+	# ----------------------------------------------------------------------------------------------
+
+
 	watchDatesAndResources: ->
-		didDestroyUnrender = false
+		isRendered = false
 
-		# override displayingDates to also watch currentResources
 		@watch 'displayingDates', [ 'dateProfile', '?currentResources' ], (deps) =>
-			if not @isDestroying
-				if deps.currentResources
-					@requestDatesAndResourcesRender(deps.dateProfile, deps.currentResources)
-				else
-					@requestDateRender(deps.dateProfile)
+			# DON'T render if we know there are resources available.
+			# This lets displayingResources handle it.
+			# This may introduce imbalance between rendering/unrendering,
+			# so introduce isRendered as a safeguard.
+			if not @isDestroying and not deps.currentResources
+				isRendered = true
+				@requestDateRender(deps.dateProfile)
 		, =>
-			if not didDestroyUnrender
-				if @has('currentResources')
-					@requestDatesAndResourcesUnrender()
-				else
-					@requestDateUnrender()
+			if isRendered
+				@requestDateUnrender()
 
-				if @isDestroying
-					didDestroyUnrender = true
+		@watch 'displayingResources', [ 'dateProfile', 'currentResources' ], (deps) =>
+			if not @isDestroying
+				isRendered = true
+				@requestDatesAndResourcesRender(deps.dateProfile, deps.currentResources)
+		, =>
+			if isRendered
+				@requestDatesAndResourcesUnrender()
 
 
 	unwatchDatesAndResources: ->
+		@unwatch('displayingResources') # do first, because might clear BOTH resources and dates
 		@unwatch('displayingDates')
 
 
-	requestResourcesRender: (resources) ->
-		# don't add anything to the render queue
-		# resource rendering is handled by watchDatesAndResources
+	# Resource Handling
+	# ----------------------------------------------------------------------------------------------
 
 
-	requestResourcesUnrender: ->
-		# don't add anything to the render queue
-		# resource rendering is handled by watchDatesAndResources
+	handleResources: (resources) ->
+		# don't request rendering nor set displayingResources. watchDatesAndResources does it.
+
+
+	handleResourcesUnset: ->
+		# don't request rendering nor set displayingResources. watchDatesAndResources does it.
+
+
+	# Resource+Date Rendering
+	# ----------------------------------------------------------------------------------------------
 
 
 	requestDatesAndResourcesRender: (dateProfile, resources) ->
-		@set('displayingResources', true)
 		@renderQueue.add =>
 			@executeDatesAndResourcesRender(dateProfile, resources)
 
 
 	requestDatesAndResourcesUnrender: ->
-		@unset('displayingResources')
 		@renderQueue.add =>
 			@executeDatesAndResourcesUnrender()
 

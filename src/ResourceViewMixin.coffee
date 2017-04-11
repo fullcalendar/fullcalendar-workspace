@@ -16,10 +16,12 @@ ResourceViewMixin = # expects a View
 
 		# replace the `currentResources` dependency with `displayingResources`,
 		# which means resources need to be rendered before events can be rendered.
-		View.watch 'displayingEvents', [ 'displayingDates', 'currentEvents', 'displayingResources' ], (deps) ->
+		@watch 'displayingEvents', [ 'displayingDates', 'currentEvents', 'displayingResources' ], (deps) =>
 			@requestEventsRender(deps.currentEvents)
-		, ->
+			return # no return promise
+		, =>
 			@requestEventsUnrender()
+			return # no return promise
 
 
 	# this exists solely for sub-mixins of ResourceViewMixin
@@ -35,26 +37,29 @@ ResourceViewMixin = # expects a View
 	# Logic: base render trigger should fire when BOTH the resources and dates have rendered,
 	# but the unrender trigger should fire after ONLY the dates are about to be unrendered.
 	bindBaseRenderHandlers: ->
-		isResourcesEverRendered = false
+		isResourcesRendered = false
 		isDatesRendered = false
 
 		@on 'resourcesRendered.baseHandler', ->
-			if not isResourcesEverRendered
-				isResourcesEverRendered = true
+			if not isResourcesRendered
+				isResourcesRendered = true
 				if isDatesRendered
 					@onBaseRender()
 
 		@on 'datesRendered.baseHandler', ->
 			if not isDatesRendered
 				isDatesRendered = true
-				if isResourcesEverRendered
+				if isResourcesRendered
 					@onBaseRender()
+
+		@on 'before:resourcesUnrendered.baseHandler', ->
+			if isResourcesRendered
+				isResourcesRendered = false
 
 		@on 'before:datesUnrendered.baseHandler', ->
 			if isDatesRendered
 				isDatesRendered = false
-				if isResourcesEverRendered
-					@onBeforeBaseUnrender()
+				@onBeforeBaseUnrender()
 
 
 	onBaseRender: ->
@@ -70,8 +75,8 @@ ResourceViewMixin = # expects a View
 
 
 	handleResources: (resources) ->
-		@set('displayingResources', true)
 		@requestResourcesRender(resources)
+		@set('displayingResources', true) # this needs to go after the request
 
 
 	handleResourcesUnset: ->
