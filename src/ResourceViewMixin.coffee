@@ -67,51 +67,33 @@ ResourceViewMixin = # expects a View
 
 
 	handleResources: (resources) ->
-		@requestResourcesRender(resources)
+		@renderQueue.add =>
+			@executeResourcesRender(resources)
+
 		@set('displayingResources', true) # this needs to go after the request
 
 
 	handleResourcesUnset: ->
 		@unset('displayingResources')
-		@requestResourcesUnrender()
+
+		@renderQueue.add =>
+			@executeResourcesUnrender()
 
 
 	handleResourceAdd: (resource, allResources) ->
 		if @canRenderSpecificResources
-			@requestResourceRender(resource)
+			@renderQueue.add =>
+				@executeResourceRender(resource)
 		else
 			@handleResources(allResources)
 
 
 	handleResourceRemove: (resource, allResources) ->
 		if @canRenderSpecificResources
-			@requestResourceUnrender(resource)
+			@renderQueue.add =>
+				@executeResourceUnrender(resource)
 		else
 			@handleResources(allResources)
-
-
-	# Resource Rendering/Unrendering Queuing
-	# ------------------------------------------------------------------------------------------------------------------
-
-
-	requestResourcesRender: (resources) ->
-		@renderQueue.add =>
-			@executeResourcesRender(resources)
-
-
-	requestResourcesUnrender: ->
-		@renderQueue.add =>
-			@executeResourcesUnrender()
-
-
-	requestResourceRender: (resource) -> # canRenderSpecificResources must be activated
-		@renderQueue.add =>
-			@executeResourceRender(resource)
-
-
-	requestResourceUnrender: (resource) -> # canRenderSpecificResources must be activated
-		@renderQueue.add =>
-			@executeResourceUnrender(resource)
 
 
 	# Resource High-level Rendering/Unrendering
