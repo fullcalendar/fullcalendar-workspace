@@ -73,6 +73,18 @@ ResourceViewMixin = # expects a View
 		@set('displayingResources', true) # this needs to go after the request
 
 
+	handleResourcesReset: (resources) ->
+		@renderQueue.add =>
+			@unset('displayingResources')
+			@captureScroll()
+			@freezeHeight()
+			@executeResourcesUnrender()
+			@executeResourcesRender(resources)
+			@thawHeight()
+			@releaseScroll()
+			@set('displayingResources', true)
+
+
 	handleResourcesUnset: ->
 		@unset('displayingResources')
 

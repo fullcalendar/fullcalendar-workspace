@@ -83,8 +83,7 @@ View::bindResourceChanges = (currentEvents) ->
 		unset: =>
 			@unsetResources()
 		reset: (resources) =>
-			@unsetResources()
-			@setResources(resources, currentEvents)
+			@resetResources(resources, currentEvents)
 		add: (resource, allResources) =>
 			@addResource(resource, allResources, currentEvents)
 		remove: (resource, allResources) =>
@@ -119,6 +118,14 @@ View::setResources = (resources, currentEvents) ->
 	@handleResources(resources)
 
 
+View::resetResources = (resources, currentEvents) ->
+	if currentEvents
+		resources = @filterResourcesWithEvents(resources, currentEvents)
+
+	@set('currentResources', resources)
+	@handleResourcesReset(resources)
+
+
 View::unsetResources = ->
 	@unset('currentResources')
 	@handleResourcesUnset()
@@ -148,6 +155,9 @@ View::removeResource = (resource, allResources) ->
 
 
 View::handleResources = (resources) ->
+
+
+View::handleResourcesReset = (resources) ->
 
 
 View::handleResourcesUnset = ->
