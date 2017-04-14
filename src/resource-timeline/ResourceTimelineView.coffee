@@ -580,8 +580,8 @@ class ResourceTimelineView extends TimelineView
 	# this is useful for scrolling prev/next dates while resource is scrolled down
 
 
-	queryScroll: ->
-		scroll = super
+	queryResourceScroll: ->
+		scroll = {}
 
 		scrollerTop = @timeGrid.bodyScroller.scrollEl.offset().top # TODO: use getClientRect
 
@@ -594,11 +594,12 @@ class ResourceTimelineView extends TimelineView
 					scroll.resourceId = rowObj.resource.id
 					scroll.bottom = elBottom - scrollerTop
 					break
-		scroll
+
 		# TODO: what about left scroll state for spreadsheet area?
+		scroll
 
 
-	setScroll: (scroll) ->
+	applyResourceScroll: (scroll) ->
 		if scroll.resourceId
 			row = @getResourceRow(scroll.resourceId)
 			if row
@@ -606,10 +607,9 @@ class ResourceTimelineView extends TimelineView
 				if el
 					innerTop = @timeGrid.bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
 					elBottom = el.offset().top + el.outerHeight()
-					scroll.top = elBottom - scroll.bottom - innerTop
-
-		super(scroll) # handles everything but the resource grid's vertical scroll
-		@resourceGrid.bodyScroller.setScrollTop(scroll.top)
+					scrollTop = elBottom - scroll.bottom - innerTop
+					@timeGrid.bodyScroller.setScrollTop(scrollTop)
+					@resourceGrid.bodyScroller.setScrollTop(scrollTop)
 
 
 	scrollToResource: (resource) ->

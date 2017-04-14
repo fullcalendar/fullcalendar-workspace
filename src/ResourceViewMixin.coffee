@@ -29,6 +29,31 @@ ResourceViewMixin = # expects a View
 		View::removeElement.apply(this, arguments)
 
 
+	# Scrolling
+	# ------------------------------------------------------------------------------------------------------------------
+
+
+	queryScroll: ->
+		$.extend(
+			View::queryScroll.apply(this, arguments) # super
+			@queryResourceScroll()
+		)
+
+
+	applyScroll: (scroll) ->
+		View::applyScroll.apply(this, arguments)
+		@applyResourceScroll(scroll)
+
+
+	queryResourceScroll: ->
+		{} # subclasses must implement
+
+
+	applyResourceScroll: ->
+		# subclasses must implement
+
+
+
 	# When the "meat" of the view is rendered (aka the base)
 	# -----------------------------------------------------------------------------------------------------------------
 
