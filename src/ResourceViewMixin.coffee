@@ -6,27 +6,10 @@ A view that structurally distinguishes events by resource
 ###
 ResourceViewMixin = # expects a View
 
+	isResourcesRendered: false
 	resourceTextFunc: null
 
 	canRenderSpecificResources: false
-
-
-	setElement: ->
-		View::setElement.apply(this, arguments)
-
-		# replace the `currentResources` dependency with `displayingResources`,
-		# which means resources need to be rendered before events can be rendered.
-		@watch 'displayingEvents', [ 'displayingDates', 'currentEvents', 'displayingResources' ], (deps) =>
-			@requestEventsRender(deps.currentEvents)
-			return # no return promise
-		, =>
-			@requestEventsUnrender()
-			return # no return promise
-
-
-	# this exists solely for sub-mixins of ResourceViewMixin
-	removeElement: ->
-		View::removeElement.apply(this, arguments)
 
 
 	# Scrolling
@@ -95,24 +78,8 @@ ResourceViewMixin = # expects a View
 		@renderQueue.add =>
 			@executeResourcesRender(resources)
 
-		@set('displayingResources', true) # this needs to go after the request
-
-
-	handleResourcesReset: (resources) ->
-		@renderQueue.add =>
-			@unset('displayingResources')
-			@captureScroll()
-			@freezeHeight()
-			@executeResourcesUnrender()
-			@executeResourcesRender(resources)
-			@thawHeight()
-			@releaseScroll()
-			@set('displayingResources', true)
-
 
 	handleResourcesUnset: ->
-		@unset('displayingResources')
-
 		@renderQueue.add =>
 			@executeResourcesUnrender()
 
@@ -138,37 +105,54 @@ ResourceViewMixin = # expects a View
 
 
 	executeResourcesRender: (resources) ->
-		@captureScroll()
+		scroll = @queryScroll()
 		@freezeHeight()
+
+		@executeResourcesUnrender(true)
 		@renderResources(resources)
+
 		@thawHeight()
-		@releaseScroll()
+		@applyScroll(scroll)
+
+		@isResourcesRendered = true
 		@trigger('resourcesRendered')
 
 
-	executeResourcesUnrender: ->
-		@trigger('before:resourcesUnrendered')
-		@captureScroll()
-		@freezeHeight()
-		@unrenderResources()
-		@thawHeight()
-		@releaseScroll()
+	executeResourcesUnrender: (willRender) ->
+		if @isResourcesRendered
+			@trigger('before:resourcesUnrendered')
+
+			if not willRender
+				scroll = @queryScroll()
+				@freezeHeight()
+
+			@unrenderResources()
+
+			if not willRender
+				@thawHeight()
+				@applyScroll(scroll)
+
+			@isResourcesRendered = false
 
 
 	executeResourceRender: (resource) ->
-		@captureScroll()
+		scroll = @queryScroll()
 		@freezeHeight()
+
 		@renderResource(resource)
+
 		@thawHeight()
-		@releaseScroll()
+		@applyScroll(scroll)
 
 
 	executeResourceUnrender: (resource) ->
-		@captureScroll()
+		scroll = @queryScroll()
 		@freezeHeight()
+
 		@unrenderResource(resource)
+
 		@thawHeight()
-		@releaseScroll()
+		@applyScroll(scroll)
 
 
 	# Resource Low-level Rendering

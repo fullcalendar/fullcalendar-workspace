@@ -14,7 +14,7 @@ class TimelineView extends View
 		new TimelineGrid(this)
 
 
-	setDateProfile: (dateProfile) ->
+	setDateProfileForRendering: (dateProfile) ->
 		super
 		@timeGrid.initScaleProps()
 		@timeGrid.setRange(@renderRange)
