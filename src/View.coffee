@@ -83,6 +83,10 @@ View::fetchInitialResources = (dateProfile) ->
 # currentEvents is optional
 View::bindResourceChanges = (currentEvents) ->
 	@listenTo @calendar.resourceManager,
+		set: (resources) =>
+			@setResources(resources, currentEvents)
+		unset: =>
+			@unsetResources()
 		reset: (resources) =>
 			@resetResources(resources, currentEvents)
 		add: (resource, allResources) =>
@@ -105,7 +109,7 @@ View.watch 'displayingEvents', [ 'displayingDates', 'bindingEvents', 'currentRes
 	@requestEventsUnrender()
 
 
-# Resource Base Data
+# Resource Data
 # --------------------------------------------------------------------------------------------------
 
 
@@ -114,14 +118,12 @@ View::setResources = (resources, currentEvents) ->
 		resources = @filterResourcesWithEvents(resources, currentEvents)
 
 	@set('currentResources', resources)
+	@handleResourcesSet(resources)
 
 
 View::unsetResources = ->
 	@unset('currentResources')
-
-
-# Resource Mod Data
-# --------------------------------------------------------------------------------------------------
+	@handleResourcesUnset()
 
 
 View::resetResources = (resources, currentEvents) ->
@@ -149,8 +151,14 @@ View::removeResource = (resource, allResources) ->
 	@handleResourceRemove(resource, allResources)
 
 
-# Resource Change Handling
+# Resource Handling
 # --------------------------------------------------------------------------------------------------
+
+
+View::handleResourcesSet = (resources) ->
+
+
+View::handleResourcesUnset = (resources) ->
 
 
 View::handleResourcesReset = (resources) ->

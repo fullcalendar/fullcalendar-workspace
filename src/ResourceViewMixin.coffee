@@ -96,8 +96,20 @@ ResourceViewMixin = # expects a View
 	# ------------------------------------------------------------------------------------------------------------------
 
 
+	handleResourcesSet: (resources) ->
+		if @has('displayingResources')
+			@requestResourcesRender(resources)
+
+
+	handleResourcesUnset: ->
+		if @has('displayingResources')
+			@requestEventsUnrender()
+
+
 	handleResourcesReset: (resources) ->
 		if @has('displayingResources')
+			# needs to be in one swipe, for after-rendering batch actions
+			# TODO: move into rendering section?
 			@renderQueue.queue =>
 				@executeEventsUnrender()
 			, =>
@@ -112,21 +124,17 @@ ResourceViewMixin = # expects a View
 	handleResourceAdd: (resource, allResources) ->
 		if @has('displayingResources')
 			if @canRenderSpecificResources
-				@renderQueue.queue =>
-					@executeResourceRender(resource)
+				@requestResourceRender(resource)
 			else
-				@renderQueue.queue =>
-					@executeResourcesRender(allResources)
+				@requestResourcesRender(allResources) # TODO: what about unrendering?
 
 
 	handleResourceRemove: (resource, allResources) ->
 		if @has('displayingResources')
 			if @canRenderSpecificResources
-				@renderQueue.queue =>
-					@executeResourceUnrender(resource)
+				@requestResourceUnrender(resource)
 			else
-				@renderQueue.queue =>
-					@executeResourcesRender(allResources)
+				@requestResourcesRender(allResources) # TODO: what about unrendering?
 
 
 	# Resource Rendering
@@ -141,6 +149,16 @@ ResourceViewMixin = # expects a View
 	requestResourcesUnrender: ->
 		@renderQueue.queue =>
 			@executeResourcesUnrender()
+
+
+	requestResourceRender: (resource) ->
+		@renderQueue.queue =>
+			@executeResourceRender(resource)
+
+
+	requestResourceUnrender: (resource) ->
+		@renderQueue.queue =>
+			@executeResourceUnrender(resource)
 
 
 	# Resource High-level Rendering/Unrendering
