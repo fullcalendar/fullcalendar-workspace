@@ -9,8 +9,6 @@ ResourceViewMixin = # expects a View
 	isResourcesRendered: false
 	resourceTextFunc: null
 
-	canRenderSpecificResources: false
-
 
 	setElement: ->
 		View::setElement.apply(this, arguments)
@@ -104,20 +102,12 @@ ResourceViewMixin = # expects a View
 		# displayingResources does teardown unrendering
 
 
-	handleResourceAdd: (resource, allResources) ->
-		if @has('displayingResources')
-			if @canRenderSpecificResources
-				@requestResourceRender(resource)
-			else
-				@requestResourcesRender(allResources) # TODO: what about unrendering?
+	handleResourceAdd: (resource) ->
+		@requestResourceRender(resource)
 
 
-	handleResourceRemove: (resource, allResources) ->
-		if @has('displayingResources')
-			if @canRenderSpecificResources
-				@requestResourceUnrender(resource)
-			else
-				@requestResourcesRender(allResources) # TODO: what about unrendering?
+	handleResourceRemove: (resource) ->
+		@requestResourceUnrender(resource)
 
 
 	# Resource Rendering

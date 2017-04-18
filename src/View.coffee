@@ -12,13 +12,13 @@ Calendar.defaults.refetchResourcesOnNavigate = false
 # --------------------------------------------------------------------------------------------------
 
 
+View::canHandleSpecificResources = false
 View::isDestroying = false
 
 
 View::setElement = ->
 	origSetElement.apply(this, arguments)
 	@watchResources() # do after have the el, because might render, which assumes a render skeleton
-
 
 
 View::removeElement = ->
@@ -92,7 +92,7 @@ View::bindResourceChanges = (currentEvents) ->
 		add: (resource, allResources) =>
 			@addResource(resource, allResources, currentEvents)
 		remove: (resource, allResources) =>
-			@removeResource(resource, allResources)
+			@removeResource(resource, allResources, currentEvents)
 
 
 View::unbindResourceChanges = ->
@@ -139,6 +139,10 @@ View::resetResources = (resources, currentEvents) ->
 
 # currentEvents is optional
 View::addResource = (resource, allResources, currentEvents) ->
+
+	if not @canHandleSpecificResources
+		return @resetResources(allResources, currentEvents)
+
 	if currentEvents
 		a = @filterResourcesWithEvents([ resource ], currentEvents)
 		if not a.length
@@ -146,12 +150,16 @@ View::addResource = (resource, allResources, currentEvents) ->
 
 	if resource
 		@set('currentResources', allResources) # TODO: filter against currentEvents?
-		@handleResourceAdd(resource, allResources)
+		@handleResourceAdd(resource)
 
 
-View::removeResource = (resource, allResources) ->
+View::removeResource = (resource, allResources, currentEvents) ->
+
+	if not @canHandleSpecificResources
+		return @resetResources(allResources, currentEvents)
+
 	@set('currentResources', allResources) # TODO: filter against currentEvents?
-	@handleResourceRemove(resource, allResources)
+	@handleResourceRemove(resource)
 
 
 # Resource Handling
@@ -164,10 +172,10 @@ View::handleResourcesSet = (resources) ->
 View::handleResourcesUnset = (resources) ->
 
 
-View::handleResourceAdd = (resource, allResources) ->
+View::handleResourceAdd = (resource) ->
 
 
-View::handleResourceRemove = (resource, allResources) ->
+View::handleResourceRemove = (resource) ->
 
 
 # Resource Filtering
