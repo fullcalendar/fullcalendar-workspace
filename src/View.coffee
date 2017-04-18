@@ -103,7 +103,7 @@ View::unbindResourceChanges = ->
 # --------------------------------------------------------------------------------------------------
 
 
-View.watch 'displayingEvents', [ 'displayingDates', 'bindingEvents', 'currentResources' ], (deps) ->
+View.watch 'displayingEvents', [ 'displayingDates', 'hasEvents', 'currentResources' ], (deps) ->
 	@requestEventsRender(@get('currentEvents'))
 , ->
 	@requestEventsUnrender()
@@ -113,25 +113,28 @@ View.watch 'displayingEvents', [ 'displayingDates', 'bindingEvents', 'currentRes
 # --------------------------------------------------------------------------------------------------
 
 
+# currentEvents is optional
 View::setResources = (resources, currentEvents) ->
 	if currentEvents
 		resources = @filterResourcesWithEvents(resources, currentEvents)
 
 	@set('currentResources', resources)
+	@set('hasResources', true)
 	@handleResourcesSet(resources)
 
 
 View::unsetResources = ->
 	@unset('currentResources')
+	@unset('hasResources')
 	@handleResourcesUnset()
 
 
+# currentEvents is optional
 View::resetResources = (resources, currentEvents) ->
-	if currentEvents
-		resources = @filterResourcesWithEvents(resources, currentEvents)
-
-	@set('currentResources', resources)
-	@handleResourcesReset(resources)
+	@startBatchRender()
+	@unsetResources()
+	@setResources(resources, currentEvents)
+	@stopBatchRender()
 
 
 # currentEvents is optional
@@ -159,9 +162,6 @@ View::handleResourcesSet = (resources) ->
 
 
 View::handleResourcesUnset = (resources) ->
-
-
-View::handleResourcesReset = (resources) ->
 
 
 View::handleResourceAdd = (resource, allResources) ->

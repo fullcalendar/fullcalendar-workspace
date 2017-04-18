@@ -16,13 +16,13 @@ ResourceViewMixin = # expects a View
 		View::setElement.apply(this, arguments)
 
 		# new task
-		@watch 'displayingResources', [ 'bindingResources' ], =>
+		@watch 'displayingResources', [ 'hasResources' ], =>
 			@requestResourcesRender(@get('currentResources'))
 		, =>
 			@requestResourcesUnrender()
 
 		# start relying on resource displaying rather than just current resources
-		@watch 'displayingEvents', [ 'displayingDates', 'bindingEvents', 'displayingResources' ], =>
+		@watch 'displayingEvents', [ 'displayingDates', 'hasEvents', 'displayingResources' ], =>
 			@requestEventsRender(@get('currentEvents'))
 		, =>
 			@requestEventsUnrender()
@@ -97,28 +97,11 @@ ResourceViewMixin = # expects a View
 
 
 	handleResourcesSet: (resources) ->
-		if @has('displayingResources')
-			@requestResourcesRender(resources)
+		# displayingResources does initial rendering
 
 
 	handleResourcesUnset: ->
-		if @has('displayingResources')
-			@requestEventsUnrender()
-
-
-	handleResourcesReset: (resources) ->
-		if @has('displayingResources')
-			# needs to be in one swipe, for after-rendering batch actions
-			# TODO: move into rendering section?
-			@renderQueue.queue =>
-				@executeEventsUnrender()
-			, =>
-				@executeResourcesUnrender()
-			, =>
-				@executeResourcesRender(resources)
-			, =>
-				if @has('currentEvents') # why wouldn't it tho???
-					@executeEventsRender(@get('currentEvents'))
+		# displayingResources does teardown unrendering
 
 
 	handleResourceAdd: (resource, allResources) ->
