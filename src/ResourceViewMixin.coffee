@@ -66,8 +66,6 @@ ResourceViewMixin = # expects a View
 		isResourcesRendered = false
 		isDatesRendered = false
 
-		# TODO: use displayingDates/displayingResources ?
-
 		@on 'resourcesRendered.baseHandler', ->
 			if not isResourcesRendered
 				isResourcesRendered = true

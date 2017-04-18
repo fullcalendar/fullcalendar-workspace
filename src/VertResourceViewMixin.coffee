@@ -46,18 +46,6 @@ VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 			false
 
 
-	# Resource Handling
-	# ----------------------------------------------------------------------------------------------
-
-
-	handleResources: (resources) ->
-		# dont do anything
-
-
-	handleResourcesUnset: ->
-		# dont do anything
-
-
 	# Grid Hookups
 	# ----------------------------------------------------------------------------------------------
 
