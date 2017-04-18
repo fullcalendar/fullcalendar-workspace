@@ -6,18 +6,44 @@ For views that rely on grids that render their resources and dates in the same p
 VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 
 
-	# Resource Binding
-	# ----------------------------------------------------------------------------------------------
+	setElement: ->
+		View::setElement.apply(this, arguments)
 
+		isDisplayingDatesOnly = false
+		isDisplayingBoth = false
 
-	handleDateProfile: (dateProfile, forcedScroll) ->
-		if not @has('currentResources') and not @isDestroying
-			View::handleDateProfile.apply(this, arguments)
+		# temporary rendering of just date
+		@watch 'displayingDatesOnly', [ 'dateProfile', '?currentResources' ], (deps) =>
+			if not deps.currentResources and not @isDestroying
+				isDisplayingDatesOnly = true
+				@renderQueue.queue =>
+					@executeDateRender(deps.dateProfile)
+		, =>
+			if isDisplayingDatesOnly
+				isDisplayingDatesOnly = false
+				@renderQueue.queue =>
+					@executeDateUnrender()
 
+		# override
+		@watch 'displayingDates', [ 'dateProfile', 'currentResources' ], (deps) =>
+			if not @isDestroying
+				isDisplayingBoth = true
+				@renderQueue.queue =>
+					@setResourcesOnGrids(deps.currentResources) # doesn't unrender
+					@executeDateRender(deps.dateProfile)
+					@trigger('resourcesRendered')
+		, =>
+			if isDisplayingBoth
+				isDisplayingBoth = false
+				@renderQueue.queue =>
+					@trigger('before:resourcesUnrendered')
+					@unsetResourcesOnGrids() # doesn't unrender
+					@executeDateUnrender()
 
-	handleDateProfileUnset: ->
-		if not @has('currentResources')
-			View::handleDateProfileUnset.apply(this, arguments)
+		@watch 'displayingResources', [ 'displayingDates' ], =>
+			true
+		, =>
+			false
 
 
 	# Resource Handling
@@ -25,31 +51,11 @@ VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 
 
 	handleResources: (resources) ->
-		if @has('dateProfile') and not @isDestroying
-			@renderQueue.add =>
-				@executeDatesAndResourcesRender(@get('dateProfile'), resources)
+		# dont do anything
 
 
 	handleResourcesUnset: ->
-		if @has('dateProfile')
-			@renderQueue.add =>
-				@executeDatesAndResourcesUnrender()
-
-
-	# Resource+Date Rendering
-	# ----------------------------------------------------------------------------------------------
-
-
-	executeDatesAndResourcesRender: (dateProfile, resources) ->
-		@setResourcesOnGrids(resources) # doesn't unrender
-		@executeDateRender(dateProfile)
-		@trigger('resourcesRendered')
-
-
-	executeDatesAndResourcesUnrender: ->
-		@trigger('before:resourcesUnrendered')
-		@unsetResourcesOnGrids() # doesn't unrender
-		@executeDateUnrender()
+		# dont do anything
 
 
 	# Grid Hookups

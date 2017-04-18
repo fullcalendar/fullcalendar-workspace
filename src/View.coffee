@@ -45,17 +45,14 @@ View::watchResources = ->
 	initialDepNames = []
 	bindingDepNames = [ 'initialResources' ]
 
-	# always! make a note
-	initialDepNames.push('dateProfile')
+	if @opt('refetchResourcesOnNavigate')
+		initialDepNames.push('dateProfile')
 
 	if @opt('filterResourcesWithEvents')
 		bindingDepNames.push('currentEvents')
 
 	@watch 'initialResources', initialDepNames, (deps) =>
-		@fetchInitialResources( # promise
-			if @opt('refetchResourcesOnNavigate')
-				deps.dateProfile
-		)
+		@fetchInitialResources(deps.dateProfile) # promise
 
 	@watch 'bindingResources', bindingDepNames, (deps) =>
 		@bindResourceChanges(deps.currentEvents)
@@ -86,12 +83,8 @@ View::fetchInitialResources = (dateProfile) ->
 # currentEvents is optional
 View::bindResourceChanges = (currentEvents) ->
 	@listenTo @calendar.resourceManager,
-		set: (resources) =>
-			@setResources(resources, currentEvents)
-		unset: =>
-			@unsetResources()
-		reset: (resources) => # can remove this hook from ResourceManager?
-			@setResources(resources, currentEvents)
+		reset: (resources) =>
+			@resetResources(resources, currentEvents)
 		add: (resource, allResources) =>
 			@addResource(resource, allResources, currentEvents)
 		remove: (resource, allResources) =>
@@ -106,15 +99,13 @@ View::unbindResourceChanges = ->
 # --------------------------------------------------------------------------------------------------
 
 
-View.watch 'bindingEvents', [ 'initialEvents', 'currentResources' ], (deps) ->
-	@bindEventChanges()
-	@setEvents(deps.initialEvents)
+View.watch 'displayingEvents', [ 'displayingDates', 'bindingEvents', 'currentResources' ], (deps) ->
+	@requestEventsRender(@get('currentEvents'))
 , ->
-	@unbindEventChanges()
-	@unsetEvents()
+	@requestEventsUnrender()
 
 
-# Resource Data
+# Resource Base Data
 # --------------------------------------------------------------------------------------------------
 
 
@@ -122,13 +113,23 @@ View::setResources = (resources, currentEvents) ->
 	if currentEvents
 		resources = @filterResourcesWithEvents(resources, currentEvents)
 
-	@handleResources(resources)
 	@set('currentResources', resources)
 
 
 View::unsetResources = ->
 	@unset('currentResources')
-	@handleResourcesUnset()
+
+
+# Resource Mod Data
+# --------------------------------------------------------------------------------------------------
+
+
+View::resetResources = (resources, currentEvents) ->
+	if currentEvents
+		resources = @filterResourcesWithEvents(resources, currentEvents)
+
+	@set('currentResources', resources)
+	@handleResourcesReset(resources)
 
 
 # currentEvents is optional
@@ -139,25 +140,20 @@ View::addResource = (resource, allResources, currentEvents) ->
 			resource = null
 
 	if resource
+		@set('currentResources', allResources) # TODO: filter against currentEvents?
 		@handleResourceAdd(resource, allResources)
-		@set('currentResources', allResources)
-		# TODO: filter allResources against currentEvents?
 
 
 View::removeResource = (resource, allResources) ->
+	@set('currentResources', allResources) # TODO: filter against currentEvents?
 	@handleResourceRemove(resource, allResources)
-	@set('currentResources', allResources)
-	# TODO: filter allResources against currentEvents?
 
 
-# Resource Handling
+# Resource Change Handling
 # --------------------------------------------------------------------------------------------------
 
 
-View::handleResources = (resources) ->
-
-
-View::handleResourcesUnset = ->
+View::handleResourcesReset = (resources) ->
 
 
 View::handleResourceAdd = (resource, allResources) ->
