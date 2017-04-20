@@ -115,21 +115,25 @@ ResourceViewMixin = # expects a View
 	requestResourcesRender: (resources) ->
 		@renderQueue.queue =>
 			@executeResourcesRender(resources)
+		, 'resource', 'init'
 
 
 	requestResourcesUnrender: ->
 		@renderQueue.queue =>
 			@executeResourcesUnrender()
+		, 'resource', 'destroy'
 
 
 	requestResourceRender: (resource) ->
 		@renderQueue.queue =>
 			@executeResourceRender(resource)
+		, 'resource', 'add'
 
 
 	requestResourceUnrender: (resource) ->
 		@renderQueue.queue =>
 			@executeResourceUnrender(resource)
+		, 'resource', 'remove'
 
 
 	# Resource High-level Rendering/Unrendering
