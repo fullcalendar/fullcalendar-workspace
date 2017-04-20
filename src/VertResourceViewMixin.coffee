@@ -12,12 +12,17 @@ VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 		isDisplayingDatesOnly = false
 		isDisplayingBoth = false
 
+		needsScroll = false
+		@watch 'dateProfileOnly', [ 'dateProfile' ], =>
+			needsScroll = true
+
 		# temporary rendering of just date
 		@watch 'displayingDatesOnly', [ 'dateProfile', '?currentResources' ], (deps) =>
 			if not deps.currentResources and not @isDestroying
 				isDisplayingDatesOnly = true
 				@renderQueue.queue =>
-					@executeDateRender(deps.dateProfile)
+					@executeDateRender(deps.dateProfile, not needsScroll)
+					needsScroll = false
 		, =>
 			if isDisplayingDatesOnly
 				isDisplayingDatesOnly = false
@@ -30,7 +35,8 @@ VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 				isDisplayingBoth = true
 				@renderQueue.queue =>
 					@setResourcesOnGrids(deps.currentResources) # doesn't unrender
-					@executeDateRender(deps.dateProfile)
+					@executeDateRender(deps.dateProfile, not needsScroll)
+					needsScroll = false
 					@trigger('resourcesRendered')
 		, =>
 			if isDisplayingBoth
