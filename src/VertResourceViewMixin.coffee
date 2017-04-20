@@ -7,7 +7,7 @@ VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 
 
 	setElement: ->
-		View::setElement.apply(this, arguments)
+		ResourceViewMixin.setElement.apply(this, arguments)
 
 		isDisplayingDatesOnly = false
 		isDisplayingBoth = false
