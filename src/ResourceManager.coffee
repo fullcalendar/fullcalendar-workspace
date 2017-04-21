@@ -40,7 +40,7 @@ class ResourceManager extends Class
 	###
 	fetchResources: (start, end) ->
 		currentFetchId = (@fetchId += 1)
-		@fetching = new Promise (resolve, reject) =>
+		@fetching = Promise.construct (resolve, reject) =>
 			@fetchResourceInputs (resourceInputs) =>
 				if currentFetchId == @fetchId
 					@setResources(resourceInputs)
