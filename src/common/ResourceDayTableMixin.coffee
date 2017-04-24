@@ -283,7 +283,7 @@ ResourceDayTableMixin =
 				for resource in @flattenedResources
 
 					businessHours = resource.businessHours or
-						@view.calendar.options.businessHours
+						@view.calendar.opt('businessHours')
 						# fallback. access from calendar.
 						# don't access from view. doesn't update with dynamic options
 

@@ -56,8 +56,8 @@ class ResourceManager extends Class
 	###
 	fetchResourceInputs: (callback, start, end) ->
 		calendar = @calendar
-		options = calendar.options
-		source = options.resources
+		source = calendar.opt('resources')
+		timezone = calendar.opt('timezone')
 
 		if $.type(source) == 'string'
 			source = { url: source }
@@ -69,20 +69,20 @@ class ResourceManager extends Class
 				source (resourceInputs) =>
 					@calendar.popLoading()
 					callback(resourceInputs)
-				, start, end, options.timezone
+				, start, end, calendar.opt('timezone')
 
 			when 'object'
 				calendar.pushLoading()
 				requestParams = {}
 
 				if start and end
-					requestParams[options.startParam] = start.format()
-					requestParams[options.endParam] = end.format()
+					requestParams[calendar.opt('startParam')] = start.format()
+					requestParams[calendar.opt('endParam')] = end.format()
 
 					# mimick what EventManager does
 					# TODO: more DRY
-					if options.timezone and options.timezone != 'local'
-						requestParams[options.timezoneParam] = options.timezone
+					if timezone and timezone != 'local'
+						requestParams[calendar.opt('timezoneParam')] = timezone
 
 				$.ajax(
 					$.extend(

@@ -31,7 +31,7 @@ View::removeElement = ->
 View::onBaseRender = ->
 	# inject license key before 'viewRender' which is called by super's onBaseRender
 	processLicenseKey(
-		@calendar.options.schedulerLicenseKey
+		@calendar.opt('schedulerLicenseKey')
 		@el # container element
 	)
 	origOnBaseRender.apply(this, arguments)

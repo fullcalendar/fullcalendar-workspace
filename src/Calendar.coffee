@@ -14,7 +14,7 @@ class CalendarExtension extends Calendar
 		spec = @getViewSpec(viewType)
 		viewClass = spec['class']
 
-		if @options.resources and spec.options.resources != false
+		if @opt('resources') and spec.options.resources != false
 			if spec.queryResourceClass
 				viewClass = spec.queryResourceClass(spec) or viewClass # might return falsy
 			else if spec.resourceClass
@@ -157,7 +157,7 @@ class CalendarExtension extends Calendar
 			# if there are any custom business hours, all business hours must be sliced per-resources
 			allEvents = []
 			for resource in flatResources
-				events = @computeBusinessHourEvents(wholeDay, resource.businessHours or @options.businessHours)
+				events = @computeBusinessHourEvents(wholeDay, resource.businessHours or @opt('businessHours'))
 				for event in events
 					event.resourceId = resource.id
 					allEvents.push(event)
@@ -243,7 +243,7 @@ class CalendarExtension extends Calendar
 
 
 	getEventResourceField: -> # DEPRECATED: eventResourceField
-		@options['eventResourceField'] or 'resourceId'
+		@opt('eventResourceField') or 'resourceId'
 
 
 	# NOTE: views pair *segments* to resources. that's why there's no code reuse
