@@ -116,6 +116,17 @@ class ResourceTimelineGrid extends TimelineGrid
 		@unrenderFgContainers(eventRows)
 
 
+	unrenderBgSegs: ->
+		super
+
+		eventRows = @view.getEventRows() # need to freshly query. grid might not be built
+
+		# TODO: consolidate with what EventRow does
+		# TODO: triggerEventUnrender
+		for eventRow in eventRows
+			eventRow.bgSegs = null
+
+
 	# Business Hours
 	# ---------------------------------------------------------------------------------
 	# all of the below `row`s are assumed to be *RESOURCE* rows
