@@ -8,6 +8,12 @@ cd "`dirname $0`/.."
 
 ./bin/require-clean-working-tree.sh
 
+if [[ -f "fullcalendar-branch.txt" ]]
+then
+	echo "Please delete fullcalendar-branch.txt"
+	exit 1
+fi
+
 read -p "Have you already updated the changelog? (y/N): " updated_changelog
 if [[ "$updated_changelog" != "y" ]]
 then
