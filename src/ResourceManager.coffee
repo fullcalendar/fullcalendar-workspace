@@ -24,16 +24,6 @@ class ResourceManager extends Class
 
 
 	###
-	Like fetchResources, but won't refetch if already fetched (regardless of start/end).
-	###
-	getResources: (start, end) -> # returns a promise
-		if start # if needs specific window of time, never rely on cached result
-			@fetchResources(start, end)
-		else
-			@fetching or @fetchResources()
-
-
-	###
 	Will always fetch, even if done previously.
 	Accepts optional chrono-related params to pass on to the raw resource sources.
 	Returns a promise.
@@ -149,14 +139,17 @@ class ResourceManager extends Class
 
 
 	addResource: (resourceInput) -> # returns a promise
-		@getResources().then => # wait for initial batch of resources
-			resource = @buildResource(resourceInput)
-			if @addResourceToIndex(resource)
-				@addResourceToTree(resource)
-				@trigger('add', resource , @topLevelResources)
-				resource
-			else
-				false
+		if @fetching
+			@fetching.then => # wait for initial batch of resources
+				resource = @buildResource(resourceInput)
+				if @addResourceToIndex(resource)
+					@addResourceToTree(resource)
+					@trigger('add', resource , @topLevelResources)
+					resource
+				else
+					false
+		else
+			Promise.reject()
 
 
 	addResourceToIndex: (resource) ->
@@ -198,12 +191,15 @@ class ResourceManager extends Class
 			else
 				idOrResource
 
-		@getResources().then => # wait for initial batch of resources
-			resource = @removeResourceFromIndex(id)
-			if resource
-				@removeResourceFromTree(resource)
-				@trigger('remove', resource, @topLevelResources)
-			resource
+		if @fetching
+			@fetching.then => # wait for initial batch of resources
+				resource = @removeResourceFromIndex(id)
+				if resource
+					@removeResourceFromTree(resource)
+					@trigger('remove', resource, @topLevelResources)
+				resource # return value
+		else
+			Promise.reject()
 
 
 	removeResourceFromIndex: (resourceId) ->

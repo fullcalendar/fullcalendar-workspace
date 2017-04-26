@@ -72,12 +72,12 @@ View::unwatchResources = ->
 # dateProfile is optional
 View::fetchInitialResources = (dateProfile) ->
 	if dateProfile
-		@calendar.resourceManager.getResources(
+		@calendar.resourceManager.fetchResources(
 			dateProfile.activeRange.start,
 			dateProfile.activeRange.end
 		)
 	else
-		@calendar.resourceManager.getResources()
+		@calendar.resourceManager.fetchResources()
 
 
 # currentEvents is optional
