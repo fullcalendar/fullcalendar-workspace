@@ -52,8 +52,6 @@ VertResourceViewMixin = $.extend {}, ResourceViewMixin,
 
 		@watch 'displayingResources', [ 'displayingDates' ], =>
 			true
-		, =>
-			false
 
 
 	# Grid Hookups

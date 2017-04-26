@@ -154,6 +154,11 @@ class ResourceManager extends Class
 			@trigger('reset', @topLevelResources)
 
 
+	clear: ->
+		@topLevelResources = null
+		@fetching = null
+
+
 	addResource: (resourceInput) -> # returns a promise
 		if @fetching
 			@fetching.then => # wait for initial batch of resources

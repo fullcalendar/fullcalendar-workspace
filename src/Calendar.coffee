@@ -46,7 +46,8 @@ class CalendarExtension extends Calendar
 
 
 	refetchResources: -> # for API
-		@resourceManager.fetchResources()
+		@resourceManager.clear()
+		@view.flash('initialResources')
 		return
 
 

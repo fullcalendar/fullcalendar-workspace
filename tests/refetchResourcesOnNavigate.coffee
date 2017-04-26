@@ -226,6 +226,26 @@ describe 'refetchResourcesOnNavigate', ->
 					done()
 
 
+	it 'will receive start/end/timezone params when refetchResources', ->
+		requestCnt = 0
+
+		initCalendar
+			defaultView: 'timelineWeek'
+			now: '2017-02-12'
+			timezone: 'America/Chicago'
+
+			resources: (callback, start, end, timezone) ->
+				requestCnt += 1
+				expect(start.format()).toBe('2017-02-12')
+				expect(end.format()).toBe('2017-02-19')
+				expect(timezone).toBe('America/Chicago')
+				callback([])
+
+		expect(requestCnt).toBe(1)
+		currentCalendar.refetchResources()
+		expect(requestCnt).toBe(2)
+
+
 	describe 'when calling a JSON feed', ->
 
 		beforeEach ->
