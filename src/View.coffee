@@ -52,7 +52,7 @@ View::watchResources = ->
 		bindingDepNames.push('currentEvents')
 
 	@watch 'initialResources', initialDepNames, (deps) =>
-		@fetchInitialResources(deps.dateProfile) # promise
+		@getInitialResources(deps.dateProfile) # promise
 
 	@watch 'bindingResources', bindingDepNames, (deps) =>
 		@bindResourceChanges(deps.currentEvents)
@@ -70,14 +70,14 @@ View::unwatchResources = ->
 
 
 # dateProfile is optional
-View::fetchInitialResources = (dateProfile) ->
+View::getInitialResources = (dateProfile) ->
 	if dateProfile
-		@calendar.resourceManager.fetchResources(
+		@calendar.resourceManager.getResources(
 			dateProfile.activeRange.start,
 			dateProfile.activeRange.end
 		)
 	else
-		@calendar.resourceManager.fetchResources()
+		@calendar.resourceManager.getResources()
 
 
 # currentEvents is optional

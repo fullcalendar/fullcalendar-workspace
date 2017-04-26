@@ -14,6 +14,9 @@ class ResourceManager extends Class
 	resourcesById: null
 	fetching: null # a promise. the last fetch. never cleared afterwards
 
+	currentStart: null
+	currentEnd: null
+
 
 	constructor: (@calendar) ->
 		@initializeCache()
@@ -21,6 +24,19 @@ class ResourceManager extends Class
 
 	# Resource Data Getting
 	# ------------------------------------------------------------------------------------------------------------------
+
+
+	###
+	Like fetchResources, but won't refetch if already fetched.
+	###
+	getResources: (start, end) ->
+		isSameRange = (not start and not @currentStart) or # both nonexistent ranges?
+			(start and @currentStart and start.isSame(@currentStart) and end.isSame(@currentEnd))
+
+		if not @fetching or not isSameRange # first time? or is range different?
+			@fetchResources(start, end)
+		else
+			@fetching
 
 
 	###
