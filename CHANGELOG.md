@@ -1,4 +1,13 @@
 
+v1.6.2 (2017-04-27)
+-------------------
+
+- composer.js for Composer (PHP package manager) (#291)
+- fixed removed background events coming back when collapsing & expanding a resource (#295)
+- fixed refetchResourcesOnNavigate with refetchResources not receiving start & end (#296)
+- internal refactor of async systems
+
+
 v1.6.1 (2017-04-01)
 -------------------
 
