@@ -1,7 +1,7 @@
 
 ## Reporting Bugs
 
-Each bug report MUST have a [JSFiddle/JSBin] recreation before any work can begin. [further instructions &raquo;](http://fullcalendar.io/wiki/Reporting-Bugs/)
+Each bug report MUST have a [Codepen/JSFiddle] recreation before any work can begin. [further instructions &raquo;](http://fullcalendar.io/wiki/Reporting-Bugs/)
 
 
 ## Requesting Features
@@ -29,6 +29,6 @@ In the description of your [Pull Request][Using Pull Requests], please include r
 When modifying files, please do not edit the generated or minified files in the `dist/` directory. Please edit the original `src/` files.
 
 
-[JSFiddle/JSBin]: http://fullcalendar.io/wiki/Reporting-Bugs/
+[Codepen/JSFiddle]: http://fullcalendar.io/wiki/Reporting-Bugs/
 [Issue Tracker]: https://github.com/fullcalendar/fullcalendar-scheduler/issues
 [Using Pull Requests]: https://help.github.com/articles/using-pull-requests/
