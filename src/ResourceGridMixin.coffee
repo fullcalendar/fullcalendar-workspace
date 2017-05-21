@@ -29,6 +29,11 @@ ResourceGridMixin = # expects a Grid
 	fabricateHelperEvent: (eventLocation, seg) ->
 		event = Grid::fabricateHelperEvent.apply(this, arguments) # super-method
 		@view.calendar.setEventResourceId(event, eventLocation.resourceId)
+
+		resourceIds = eventLocation.resourceIds
+		if resourceIds and resourceIds.length > 1
+			event.resourceIds = resourceIds
+
 		event
 
 
@@ -43,7 +48,18 @@ ResourceGridMixin = # expects a Grid
 
 		if dropLocation
 			if @view.isEventResourceEditable(event)
-				dropLocation.resourceId = endSpan.resourceId
+				resourceIds = event.resourceIds
+				if resourceIds and resourceIds.length > 1
+					if endSpan.resourceId != startSpan.resourceId
+						resourceIds = resourceIds.filter (resourceId) ->
+							`resourceId != startSpan.resourceId`
+
+						resourceIds.push endSpan.resourceId
+
+					resourceIds = $.unique resourceIds
+					dropLocation.resourceIds = resourceIds
+				else
+					dropLocation.resourceId = endSpan.resourceId
 			else
 				dropLocation.resourceId = startSpan.resourceId # the original
 
@@ -63,8 +79,13 @@ ResourceGridMixin = # expects a Grid
 			return
 
 		resizeLocation = Grid::computeEventResize.apply(this, arguments) # super-method
-		if resizeLocation
+
+		resourceIds = event.resourceIds
+		if resourceIds and resourceIds.length > 1
+			resizeLocation.resourceIds = resourceIds
+		else
 			resizeLocation.resourceId = startSpan.resourceId
+
 		resizeLocation
 
 
