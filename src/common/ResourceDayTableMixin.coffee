@@ -1,3 +1,13 @@
+
+BUSINESS_HOUR_EVENT_DEFAULTS = {
+	id: '_fcBusinessHours', # will relate events from different calls to expandEvent
+	start: '09:00',
+	end: '17:00',
+	dow: [ 1, 2, 3, 4, 5 ], # monday - friday
+	rendering: 'inverse-background'
+	# classNames are defined in businessHoursSegClasses
+}
+
 ###
 Requirements:
 - must be a Grid
@@ -288,6 +298,18 @@ ResourceDayTableMixin =
 						# don't access from view. doesn't update with dynamic options
 
 					events = @buildBusinessHourEvents(wholeDay, businessHours)
+
+					# HACK. Eventually refactor business hours "events" system.
+					# If no events are given, but businessHours is activated, this means the entire visible range should be
+					# marked as *not* business-hours, via inverse-background rendering.
+					if not events.length and resource.businessHours
+						events = [
+							$.extend({}, BUSINESS_HOUR_EVENT_DEFAULTS, {
+								start: @view.end, # guaranteed out-of-range
+								end: @view.end,   # "
+								dow: null
+							})
+						]
 
 					for event in events
 						event.resourceId = resource.id
