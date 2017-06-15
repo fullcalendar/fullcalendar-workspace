@@ -58,10 +58,6 @@ class TimelineGrid extends Grid
 		@slotWidth = @opt('slotWidth')
 
 
-	opt: (name) -> # shortcut
-		@view.opt(name)
-
-
 	isValidDate: (date) ->
 		if @view.isHiddenDay(date)
 			false

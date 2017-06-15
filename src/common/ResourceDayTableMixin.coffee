@@ -32,7 +32,7 @@ ResourceDayTableMixin =
 
 	# flattens and sorts
 	flattenResources: (resources) ->
-		orderVal = @view.opt('resourceOrder')
+		orderVal = @opt('resourceOrder')
 		if orderVal
 			orderSpecs = parseFieldSpecs(orderVal)
 			sortFunc = (a, b) ->
@@ -60,7 +60,7 @@ ResourceDayTableMixin =
 
 
 	updateDayTableCols: ->
-		@datesAboveResources = @view.opt('groupByDateAndResource')
+		@datesAboveResources = @opt('groupByDateAndResource')
 		FC.DayTableMixin.updateDayTableCols.call(this)
 
 
