@@ -268,32 +268,43 @@ ResourceDayTableMixin =
 	###
 	If there are no per-resource business hour definitions, returns null.
 	Otherwise, returns a list of business hours segs for *every* resource.
+	TODO: make more DRY with Calendar::buildCurrentBusinessFootprints
 	###
 	computePerResourceBusinessHourSegs: (wholeDay) ->
+
 		if @flattenedResources # any resources rendered?
 
 			anyCustomBusinessHours = false
+
 			for resource in @flattenedResources
 				if resource.businessHours
 					anyCustomBusinessHours = true
 
 			if anyCustomBusinessHours
-				allSegs = []
+				eventFootprints = []
 
 				for resource in @flattenedResources
 
-					businessHours = resource.businessHours or
+					businessDefInput = resource.businessHours or
 						@view.calendar.opt('businessHours')
 						# fallback. access from calendar.
 						# don't access from view. doesn't update with dynamic options
 
-					events = @buildBusinessHourEvents(wholeDay, businessHours)
+					plainEventFootprints = @buildBusinessHourEventFootprints(wholeDay, businessDefInput)
 
-					for event in events
-						event.resourceId = resource.id
+					for plainEventFootprint in plainEventFootprints
+						eventFootprints.push(
+							new EventFootprint(
+								new ResourceComponentFootprint(
+									plainEventFootprint.unzonedRange,
+									plainEventFootprint.isAllDay,
+									resource.id
+								)
+								plainEventFootprint.eventDef
+								plainEventFootprint.eventInstance
+							)
+						)
 
-					segs = @eventsToSegs(events)
-					allSegs.push.apply(allSegs, segs) # append
+				return @eventFootprintsToSegs(eventFootprints)
 
-				return allSegs
 		null

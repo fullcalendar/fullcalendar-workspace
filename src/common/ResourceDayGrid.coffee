@@ -5,20 +5,27 @@ class ResourceDayGrid extends FC.DayGrid
 	@mixin ResourceDayTableMixin
 
 
-	getHitSpan: (hit) ->
-		span = super
+	# TODO: make DRY with ResourceTimeGrid
+	getHitFootprint: (hit) ->
+		plainFootprint = super
+
 		if @resourceCnt
-			span.resourceId = @getColResource(hit.col).id
-		span
+			new ResourceComponentFootprint(
+				plainFootprint.unzonedRange,
+				plainFootprint.isAllDay,
+				@getColResource(hit.col).id
+			)
+		else
+			plainFootprint
 
 
-	spanToSegs: (span) ->
+	componentFootprintToSegs: (componentFootprint) ->
 		resourceCnt = @resourceCnt
 		genericSegs = # no assigned resources
 			if @datesAboveResources
-				@sliceRangeByDay(span) # each day-per-resource will need its own column
+				@sliceRangeByDay(componentFootprint.unzonedRange.getRange()) # each day-per-resource will need its own column
 			else
-				@sliceRangeByRow(span)
+				@sliceRangeByRow(componentFootprint.unzonedRange.getRange())
 
 		if not resourceCnt
 			for seg in genericSegs
@@ -31,18 +38,24 @@ class ResourceDayGrid extends FC.DayGrid
 			genericSegs
 		else
 			resourceSegs = []
+
 			for seg in genericSegs
+
 				for resourceIndex in [0...resourceCnt] by 1
 					resourceObj = @flattenedResources[resourceIndex]
-					if not span.resourceId or span.resourceId == resourceObj.id
+
+					if not (componentFootprint instanceof ResourceComponentFootprint) or
+							componentFootprint.resourceId == resourceObj.id
 						copy = $.extend({}, seg)
 						copy.resource = resourceObj
+
 						if @isRTL
 							copy.leftCol = @indicesToCol(resourceIndex, seg.lastRowDayIndex)
 							copy.rightCol = @indicesToCol(resourceIndex, seg.firstRowDayIndex)
 						else
 							copy.leftCol = @indicesToCol(resourceIndex, seg.firstRowDayIndex)
 							copy.rightCol = @indicesToCol(resourceIndex, seg.lastRowDayIndex)
+
 						resourceSegs.push(copy)
 			resourceSegs
 

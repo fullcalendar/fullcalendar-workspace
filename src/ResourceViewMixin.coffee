@@ -219,59 +219,49 @@ ResourceViewMixin = # expects a View
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	triggerDayClick: (span, dayEl, ev) ->
-		resourceManager = @calendar.resourceManager
+	###
+	footprint is a ResourceComponentFootprint
+	###
+	triggerDayClick: (footprint, dayEl, ev) ->
+		dateProfile = @calendar.footprintToDateProfile(footprint) # abuse of "Event"DateProfile?
 
 		@publiclyTrigger(
 			'dayClick'
 			dayEl # this
-			@calendar.applyTimezone(span.start)
+			dateProfile.start
 			ev
 			this # maintain order. this will also be automatically inserted last. oh well
-			resourceManager.getResourceById(span.resourceId)
+			@calendar.resourceManager.getResourceById(footprint.resourceId)
 		)
 
 
-	triggerSelect: (span, ev) ->
-		resourceManager = @calendar.resourceManager
+	###
+	footprint is a ResourceComponentFootprint
+	###
+	triggerSelect: (footprint, ev) ->
+		dateProfile = @calendar.footprintToDateProfile(footprint) # abuse of "Event"DateProfile?
 
 		@publiclyTrigger(
 			'select'
 			null
-			@calendar.applyTimezone(span.start)
-			@calendar.applyTimezone(span.end)
+			dateProfile.start
+			dateProfile.end
 			ev
 			this # maintain order. this will also be automatically inserted last. oh well
-			resourceManager.getResourceById(span.resourceId)
+			@calendar.resourceManager.getResourceById(footprint.resourceId)
 		)
 
 
 	# override the view's default trigger in order to provide a resourceId to the `drop` event
 	# TODO: make more DRY with core
-	triggerExternalDrop: (event, dropLocation, el, ev, ui) ->
+	triggerExternalDrop: (singleEventDef, isEvent, el, ev, ui) ->
+
 		# trigger 'drop' regardless of whether element represents an event
-		@publiclyTrigger('drop', el[0], dropLocation.start, ev, ui, dropLocation.resourceId)
-		if event
-			@publiclyTrigger('eventReceive', null, event) # signal an external event landed
+		@publiclyTrigger(
+			'drop', el[0], singleEventDef.dateProfile.start, ev, ui,
+			singleEventDef.getResourceIds()[0]
+		)
 
-
-	### Hacks
-	# ------------------------------------------------------------------------------------------------------------------
-	These triggers usually call mutateEvent with dropLocation, which causes an event modification and rerender.
-	But mutateEvent isn't aware of eventResourceField, so it might be setting the wrong property. Workaround.
-	TODO: normalize somewhere else. maybe make a hook in core.
-	###
-
-
-	reportExternalDrop: (meta, dropLocation, otherArgs...) ->
-		dropLocation = @normalizeDropLocation(dropLocation)
-
-		# super-method
-		View::reportExternalDrop.call(this, meta, dropLocation, otherArgs...)
-
-
-	normalizeDropLocation: (dropLocation) ->
-		out = $.extend({}, dropLocation)
-		delete out.resourceId
-		@calendar.setEventResourceId(out, dropLocation.resourceId)
-		out
+		if isEvent
+			# signal an external event landed
+			@publiclyTrigger('eventReceive', null, singleEventDef.buildInstance().toLegacy())

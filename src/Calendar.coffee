@@ -57,121 +57,75 @@ class CalendarExtension extends Calendar
 
 
 	# enforce resource ID constraint
-	isSpanAllowed: (span, constraint) ->
-		if typeof constraint == 'object'
-			constrainToResourceIds = @getEventResourceIds(constraint) # abuse of event system :(
+	isFootprintAllowed: (footprint, peerEventFootprints, constraintVal, overlapVal, subjectEventInstance) ->
+		if typeof constraintVal == 'object'
 
-			if constrainToResourceIds.length and
-				(not span.resourceId or not (span.resourceId in constrainToResourceIds))
-					return false
+			constrainToResourceIds = Resource.extractIds(constraintVal, this)
+
+			if constrainToResourceIds.length and (
+				not (footprint instanceof ResourceComponentFootprint) or
+				not (footprint.resourceId in constrainToResourceIds)
+			)
+				return false
+
 		super
 
 
-	mutateSeg: (span, newProps, largeUnit) ->
+	getPeerEventInstances: (subjectEventDef) ->
+		subjectResourceIds = subjectEventDef.getResourceIds()
+		peerInstances = super
 
-		# the span is being moved to a new resource ID, but if there are multiple other
-		# unrelated resource IDs, we want to keep those intact
-		if newProps.resourceId
-
-			oldResourceId = span.resource?.id or span.resourceId # no standard way of getting a span's resource ID :(
-			newResourceId = newProps.resourceId
-
-			mutatedResourceIds = @getEventResourceIds(span.event)
-
-			# compare old to new. is a change?
-			if oldResourceId != newResourceId
-
-				# remove old resource ID
-				mutatedResourceIds = mutatedResourceIds.filter (resourceId) ->
-					resourceId != oldResourceId and \
-					resourceId != newResourceId # will add later. prevents dups if new already in resourceIds
-
-				# add new resource ID
-				mutatedResourceIds.push(newResourceId)
-
-			newProps = $.extend({}, newProps) # clone
-			@setEventResourceIds(newProps, mutatedResourceIds) # works with event-like objects
-
-		@mutateEvent(span.event, newProps, largeUnit)
-
-
-	# Returns a list of events that the given event should be compared against when being considered for a move to
-	# the specified span. Attached to the Calendar's prototype because EventManager is a mixin for a Calendar.
-	#
-	# this method will take effect for *all* views, event ones that don't explicitly
-	# support resources. shouln't assume a resourceId on the span or event.
-	# `event` can be null.
-	getPeerEvents: (span, event) ->
-		peerEvents = super
-
-		# if the span (basically the target drop area) has a resource, use its ID.
-		# otherwise, assume the the event wants to keep it's existing resource IDs.
-		newResourceIds =
-			if span.resourceId
-				[ span.resourceId ]
-			else if event
-				@getEventResourceIds(event)
-			else
-				[]
-
-		# find peer events that have one of the new resourceIds
-		filteredPeerEvents = []
-		for peerEvent in peerEvents
-			isPeer = false
-			peerResourceIds = @getEventResourceIds(peerEvent)
-
-			if not peerResourceIds.length or not newResourceIds.length
-				# when of the events isn't associated with ANY resources, it is considered
-				# to span across ALL resource, and should always be a peer (potential for colliding)
-				isPeer = true
-			else
-				for peerResourceId in peerResourceIds
-					for newResourceId in newResourceIds
-						if newResourceId == peerResourceId
-							isPeer = true
-							break
-			if isPeer
-				filteredPeerEvents.push(peerEvent)
-
-		filteredPeerEvents
-
-
-	# overridden to consider resources
-	spanContainsSpan: (outerSpan, innerSpan) ->
-		if outerSpan.resourceId and outerSpan.resourceId != innerSpan.resourceId
-			false
+		if not subjectResourceIds.length
+			peerInstances
 		else
-			super
+			peerInstances.filter (eventInstance) ->
+				for resourceId in subjectResourceIds
+					if eventInstance.def.hasResourceId(resourceId)
+						return true # shares a resource ID, so is a peer
+				false
 
 
-	# overridden to consider resources. not really "events" FYI
-	getCurrentBusinessHourEvents: (wholeDay) ->
+	buildCurrentBusinessFootprints: (wholeDay) ->
 		flatResources = @resourceManager.getFlatResources()
+		anyCustomBusinessHours = false
 
 		# any per-resource business hours? or will one global businessHours suffice?
-		anyCustomBusinessHours = false
 		for resource in flatResources
 			if resource.businessHours
 				anyCustomBusinessHours = true
 
+		# if there are any custom business hours, all business hours must be sliced per-resources
 		if anyCustomBusinessHours
-			# if there are any custom business hours, all business hours must be sliced per-resources
-			allEvents = []
+			footprints = []
+
 			for resource in flatResources
-				events = @computeBusinessHourEvents(wholeDay, resource.businessHours or @opt('businessHours'))
-				for event in events
-					event.resourceId = resource.id
-					allEvents.push(event)
-			allEvents
+				plainFootprints = super(wholeDay, resource.businessHours or @opt('businessHours'))
+
+				for plainFootprint in plainFootprints
+					footprints.push(
+						new ResourceComponentFootprint(
+							plainFootprint.unzonedRange,
+							plainFootprint.isAllDay,
+							resource.id
+						)
+					)
+
+			footprints
 		else
-			super
+			super(wholeDay)
 
 
-	buildSelectSpan: (startInput, endInput, resourceId) ->
-		span = super
+	buildSelectFootprint: (zonedStartInput, zonedEndInput, resourceId) ->
+		plainFootprint = super
+
 		if resourceId
-			span.resourceId = resourceId
-		span
+			new ResourceComponentFootprint(
+				plainFootprint.unzonedRange,
+				plainFootprint.isAllDay,
+				resourceId
+			)
+		else
+			plainFootprint
 
 
 	getResourceById: (id) ->
@@ -182,46 +136,22 @@ class CalendarExtension extends Calendar
 	# ----------------------------------------------------------------------------------------
 
 
-	# make sure events have defined values for the resource-related properties.
-	# essential for DnD's revertFunc to work, which relies on revert to old not-undefined properties.
-	# essential for the case where `resourceId` overrode `resourceIds` and needs to be reverted.
-	normalizeEvent: (event) ->
-		super
-		event.resourceId ?= null
-		event.resourceIds ?= null
-
-
 	# DEPRECATED. for external API backwards compatibility
 	getEventResourceId: (event) ->
 		@getEventResourceIds(event)[0]
 
 
 	getEventResourceIds: (event) ->
-		resourceId = String(
-			event[@getEventResourceField()] ?
-			event.resourceId ? # sometimes `event` is actually a span :(
-			''
-		)
+		eventDef = @eventManager.getEventDefByUid(event._id)
 
-		# we make event.resourceId take precedence over event.resourceIds
-		# because in DnD code, the helper event is programatically assigned a event.resourceId
-		# which is more convenient when it overrides event.resourceIds
-		if resourceId
-			[ resourceId ]
-
-		else if event.resourceIds
-			normalResourceIds = []
-			for resourceId in event.resourceIds
-				normalResourceId = String(resourceId ? '')
-				if normalResourceId
-					normalResourceIds.push(normalResourceId)
-			normalResourceIds
-
+		if eventDef
+			eventDef.getResourceIds()
 		else
 			[]
 
 
-	setEventResourceId: (event, resourceId) -> # DEPRECATED
+	# DEPRECATED
+	setEventResourceId: (event, resourceId) ->
 		@setEventResourceIds(
 			event
 			if resourceId then [ resourceId ] else []
@@ -229,22 +159,12 @@ class CalendarExtension extends Calendar
 
 
 	setEventResourceIds: (event, resourceIds) ->
+		eventDef = @eventManager.getEventDefByUid(event._id)
 
-		event[@getEventResourceField()] =
-			if resourceIds.length == 1
-				resourceIds[0]
-			else
-				null
-
-		event.resourceIds =
-			if resourceIds.length > 1
-				resourceIds
-			else
-				null
-
-
-	getEventResourceField: -> # DEPRECATED: eventResourceField
-		@opt('eventResourceField') or 'resourceId'
+		if eventDef
+			eventDef.resourceIds =
+				for rawResourceId in resourceIds
+					Resource.normalizeId(rawResourceId)
 
 
 	# NOTE: views pair *segments* to resources. that's why there's no code reuse
@@ -257,6 +177,7 @@ class CalendarExtension extends Calendar
 
 		if resource
 			# return the event cache, filtered by events assigned to the resource
+			# TODO: move away from using clientId
 			@clientEvents (event) =>
 				$.inArray(resource.id, @getEventResourceIds(event)) != -1
 		else

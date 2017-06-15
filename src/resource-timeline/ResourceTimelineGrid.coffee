@@ -9,10 +9,13 @@ class ResourceTimelineGrid extends TimelineGrid
 	rowCoordCache: null
 
 
-	spanToSegs: (span) ->
+	###
+	footprint is a ResourceComponentFootprint
+	###
+	componentFootprintToSegs: (footprint) ->
 		segs = super
 		calendar = @view.calendar
-		resourceId = span.resourceId
+		resourceId = footprint.resourceId
 
 		if resourceId
 			for seg in segs
@@ -62,10 +65,13 @@ class ResourceTimelineGrid extends TimelineGrid
 				}
 
 
-	getHitSpan: (hit) ->
-		span = @getSnapRange(hit.snap)
-		span.resourceId = hit.resourceId
-		span
+	getHitFootprint: (hit) ->
+		componentFootprint = super
+		new ResourceComponentFootprint(
+			componentFootprint.unzonedRange
+			componentFootprint.isAllDay
+			hit.resourceId
+		)
 
 
 	getHitEl: (hit) ->

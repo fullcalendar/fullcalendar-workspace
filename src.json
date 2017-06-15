@@ -14,6 +14,8 @@
     "View.coffee",
     "Grid.coffee",
 
+    "EventDef.coffee",
+
     "ResourceManager.coffee",
     "ResourceViewMixin.coffee",
     "VertResourceViewMixin.coffee",

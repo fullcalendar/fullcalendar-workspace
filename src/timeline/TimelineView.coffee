@@ -8,6 +8,7 @@ class TimelineView extends View
 
 	initialize: ->
 		@timeGrid = @instantiateGrid()
+		@addChild(@timeGrid)
 
 
 	instantiateGrid: ->
@@ -86,65 +87,12 @@ class TimelineView extends View
 		@timeGrid.unrenderDates()
 
 
-	# Business Hours
-	# ------------------------------------------------------------------------------------------------------------------
-
-
-	renderBusinessHours: ->
-		@timeGrid.renderBusinessHours()
-
-
-	unrenderBusinessHours: ->
-		@timeGrid.unrenderBusinessHours()
-
-
 	# Now Indicator
 	# ------------------------------------------------------------------------------------------------------------------
 
 
 	getNowIndicatorUnit: ->
 		@timeGrid.getNowIndicatorUnit()
-
-
-	renderNowIndicator: (date) ->
-		@timeGrid.renderNowIndicator(date)
-
-
-	unrenderNowIndicator: ->
-		@timeGrid.unrenderNowIndicator()
-
-
-	# Hit System
-	# ---------------------------------------------------------------------------------
-	# forward all hit-related method calls to timeGrid
-
-
-	hitsNeeded: ->
-		@timeGrid.hitsNeeded()
-
-
-	hitsNotNeeded: ->
-		@timeGrid.hitsNotNeeded()
-
-
-	prepareHits: ->
-		@timeGrid.prepareHits()
-
-
-	releaseHits: ->
-		@timeGrid.releaseHits()
-
-
-	queryHit: (leftOffset, topOffset) ->
-		@timeGrid.queryHit(leftOffset, topOffset)
-
-
-	getHitSpan: (hit) ->
-		@timeGrid.getHitSpan(hit)
-
-
-	getHitEl: (hit) ->
-		@timeGrid.getHitEl(hit)
 
 
 	# Sizing
@@ -203,36 +151,12 @@ class TimelineView extends View
 	# ---------------------------------------------------------------------------------
 
 
-	renderEvents: (events) ->
-		@timeGrid.renderEvents(events)
-		@updateWidth()
+	renderEventsPayload: (eventsPayload) ->
+		@timeGrid.renderEventsPayload(eventsPayload)
+		@updateWidth() # could rely on ChronoComponent entirely if not for this line
 
 
 	unrenderEvents: ->
 		@timeGrid.unrenderEvents()
-		@updateWidth()
-
-
-	renderDrag: (dropLocation, seg) ->
-		@timeGrid.renderDrag(dropLocation, seg)
-
-
-	unrenderDrag: ->
-		@timeGrid.unrenderDrag()
-
-
-	getEventSegs: ->
-		@timeGrid.getEventSegs()
-
-
-	# Selection
-	# ---------------------------------------------------------------------------------
-
-
-	renderSelection: (range) ->
-		@timeGrid.renderSelection(range)
-
-
-	unrenderSelection: ->
-		@timeGrid.unrenderSelection()
+		@updateWidth() # could rely on ChronoComponent entirely if not for this line
 

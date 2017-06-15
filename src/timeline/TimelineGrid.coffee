@@ -109,25 +109,43 @@ class TimelineGrid extends Grid
 		normalDate
 
 
-	normalizeGridRange: (range) ->
+	###
+	TODO: avoid using Moments. use slat system somehow
+	THEN, can have componentFootprintToSegs handle this on its own
+	###
+	normalizeComponentFootprint: (componentFootprint) ->
 		if @isTimeScale
-			normalRange =
-				start: @normalizeGridDate(range.start)
-				end: @normalizeGridDate(range.end)
+
+			if componentFootprint.isAllDay
+				new ComponentFootprint(
+					componentFootprint.unzonedRange
+					false # isAllDay
+				)
+			else
+				componentFootprint
+
 		else
-			normalRange = @view.computeDayRange(range)
 
 			if @largeUnit
-				normalRange.start.startOf(@largeUnit)
+
+				adjustedStart = componentFootprint.unzonedRange.getStart()
+					.startOf(@largeUnit)
+
+				unzonedEnd = componentFootprint.unzonedRange.getEnd()
+				adjustedEnd = unzonedEnd.startOf(@largeUnit)
 
 				# if date is partially through the interval, or is in the same interval as the start,
 				# make the exclusive end be the *next* interval
-				adjustedEnd = normalRange.end.clone().startOf(@largeUnit)
-				if not adjustedEnd.isSame(normalRange.end) or not adjustedEnd.isAfter(normalRange.start)
+				if not adjustedEnd.isSame(unzonedEnd) or not adjustedEnd.isAfter(adjustedStart)
 					adjustedEnd.add(@slotDuration)
-				normalRange.end = adjustedEnd
 
-		normalRange
+				new ComponentFootprint(
+					new UnzonedRange(adjustedStart, adjustedEnd)
+					true # isAllDay
+				)
+
+			else
+				componentFootprint
 
 
 	rangeUpdated: ->
@@ -180,15 +198,15 @@ class TimelineGrid extends Grid
 		@slotCnt = @snapCnt / @snapsPerSlot
 
 
-	spanToSegs: (span) ->
-		normalRange = @normalizeGridRange(span)
+	componentFootprintToSegs: (footprint) ->
+		normalFootprint = @normalizeComponentFootprint(footprint)
 
 		# protect against when the span is entirely in an invalid date region
-		if @computeDateSnapCoverage(span.start) < @computeDateSnapCoverage(span.end)
+		if @computeDateSnapCoverage(footprint.unzonedRange.getStart()) < @computeDateSnapCoverage(footprint.unzonedRange.getEnd())
 
 			# `this` has a start/end, an already normalized range.
 			# zones will have been stripped (a requirement for intersectRanges)
-			seg = intersectRanges(normalRange, this)
+			seg = intersectRanges(normalFootprint.unzonedRange.getRange(), this)
 
 			# TODO: what if month slots? should round it to nearest month
 			# TODO: dragging/resizing in this situation? deltas for dragging/resizing breaks down
@@ -254,8 +272,11 @@ class TimelineGrid extends Grid
 				}
 
 
-	getHitSpan: (hit) ->
-		@getSnapRange(hit.snap)
+	getHitFootprint: (hit) ->
+		new ComponentFootprint(
+			@getSnapUnzonedRange(hit.snap)
+			not @isTimeScale # isAllDay
+		)
 
 
 	getHitEl: (hit) ->
@@ -266,11 +287,14 @@ class TimelineGrid extends Grid
 	# ---------------------------------------------------------------------------------
 
 
-	getSnapRange: (snapIndex) ->
+	###
+	TODO: avoid using moments
+	###
+	getSnapUnzonedRange: (snapIndex) ->
 		start = @start.clone()
 		start.add(multiplyDuration(@snapDuration, @snapIndexToDiff[snapIndex]))
 		end = start.clone().add(@snapDuration)
-		{ start, end }
+		new UnzonedRange(start, end)
 
 
 	getSnapEl: (snapIndex) ->
@@ -895,8 +919,8 @@ class TimelineGrid extends Grid
 	# ---------------------------------------------------------------------------------
 
 
-	renderHelper: (event, sourceSeg) ->
-		segs = @eventToSegs(event)
+	renderHelperEventFootprintEls: (eventFootprints, sourceSeg) ->
+		segs = @eventFootprintsToSegs(eventFootprints)
 		segs = @renderFgSegEls(segs)
 		@renderHelperSegsInContainers([[ this, segs ]], sourceSeg)
 
@@ -947,13 +971,12 @@ class TimelineGrid extends Grid
 
 
 	# Renders a visual indication of an event being resized
-	renderEventResize: (resizeLocation, seg) ->
-		eventSpans = @eventToSpans(resizeLocation)
+	renderEventResize: (eventFootprints, seg) ->
 
-		for eventSpan in eventSpans
-			@renderHighlight(eventSpan)
+		for eventFootprint in eventFootprints
+			@renderHighlight(eventFootprint.componentFootprint)
 
-		@renderEventLocationHelper(resizeLocation, seg) # return value. rendered seg els
+		@renderHelperEventFootprints(eventFootprints, seg) # return value. rendered seg els
 
 
 	# Unrenders a visual indication of an event being resized
@@ -1010,14 +1033,12 @@ class TimelineGrid extends Grid
 	# TODO: different technique based on scale.
 	#  when dragging, middle of event is the drop.
 	#  should be the edges when isTimeScale.
-	renderDrag: (dropLocation, seg) ->
+	renderDrag: (eventFootprints, seg) ->
 		if seg
-			@renderEventLocationHelper(dropLocation, seg) # return value. rendered seg els
+			@renderHelperEventFootprints(eventFootprints) # return value. rendered seg els
 		else
-			eventSpans = @eventToSpans(dropLocation)
-
-			for eventSpan in eventSpans
-				@renderHighlight(eventSpan)
+			for eventFootprint in eventFootprints
+				@renderHighlight(eventFootprint.componentFootprint)
 
 			null # signals no helper els rendered
 
