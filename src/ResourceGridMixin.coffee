@@ -42,6 +42,26 @@ ResourceGridMixin = # expects a Grid
 		eventDef
 
 
+	# Resize
+	# ---------------------------------------------------------------------------------
+
+
+	computeEventStartResizeMutation: (startFootprint, endFootprint, event) ->
+
+		if not @allowCrossResource and startFootprint.resourceId != endFootprint.resourceId
+			return
+
+		Grid::computeEventStartResizeMutation.apply(this, arguments)
+
+
+	computeEventEndResizeMutation: (startFootprint, endFootprint, event) ->
+
+		if not @allowCrossResource and startFootprint.resourceId != endFootprint.resourceId
+			return
+
+		Grid::computeEventEndResizeMutation.apply(this, arguments)
+
+
 	# Selection
 	# ---------------------------------------------------------------------------------
 
