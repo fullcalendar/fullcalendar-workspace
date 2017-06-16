@@ -140,6 +140,7 @@ class ResourceTimelineView extends TimelineView
 		@resourceGrid.el = @el.find('tbody .fc-resource-area')
 		@resourceGrid.headEl = @el.find('thead .fc-resource-area')
 		@resourceGrid.renderSkeleton()
+		# ^ is not a Grid/ChronoComponent
 
 
 	# Divider moving
@@ -199,8 +200,8 @@ class ResourceTimelineView extends TimelineView
 	# ---------------------------------------------------------------------------------
 
 
-	renderEvents: (events) ->
-		@timeGrid.renderEvents(events)
+	renderEventsPayload: (eventsPayload) ->
+		@timeGrid.renderEventsPayload(eventsPayload)
 		@syncRowHeights()
 		@updateWidth()
 

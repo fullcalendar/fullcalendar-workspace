@@ -11,7 +11,7 @@ Resource.extractIds = (rawProps, calendar) ->
 			resourceIds.push(Resource.normalizeId(rawResourceId))
 
 	if rawProps[resourceField]?
-		resourceId.push(Resource.normalizeId(rawProps[resourceField]))
+		resourceIds.push(Resource.normalizeId(rawProps[resourceField]))
 
 	resourceIds
 

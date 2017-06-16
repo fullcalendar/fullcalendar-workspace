@@ -27,7 +27,7 @@ ResourceGridMixin = # expects a Grid
 
 
 	computeEventDropMutation: (startFootprint, endFootprint) ->
-		mutation = super
+		mutation = Grid::computeEventDropMutation.apply(this, arguments)
 
 		if startFootprint.resourceId != endFootprint.resourceId
 			mutation.oldResourceId = startFootprint.resourceId
@@ -37,7 +37,7 @@ ResourceGridMixin = # expects a Grid
 
 
 	computeExternalDrop: (resourceComponentFootprint, meta) ->
-		eventDef = super
+		eventDef = Grid::computeExternalDrop.apply(this, arguments)
 		eventDef.addResourceId(resourceComponentFootprint.resourceId)
 		eventDef
 
@@ -51,7 +51,7 @@ ResourceGridMixin = # expects a Grid
 		if not @allowCrossResource and startFootprint.resourceId != endFootprint.resourceId
 			return
 
-		plainFootprint = super
+		plainFootprint = Grid::computeSelectionFootprint.apply(this, arguments)
 
 		new ResourceComponentFootprint(
 			plainFootprint.unzonedRange,
