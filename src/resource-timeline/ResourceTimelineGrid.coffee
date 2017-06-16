@@ -254,8 +254,8 @@ class ResourceTimelineGrid extends TimelineGrid
 	# TODO: when unrendering fill, update rowObj's bgSegs
 
 
-	renderHelper: (event, sourceSeg) ->
-		segs = @eventToSegs(event) # repeat :(
-		segs = @renderFgSegEls(segs)
+	renderHelperEventFootprintEls: (eventFootprints, sourceSeg) ->
+		segs = @eventFootprintsToSegs(eventFootprints)
+		segs = @renderFgSegEls(segs) # repeat :(
 		pairs = @view.pairSegsWithRows(segs)
 		@renderHelperSegsInContainers(pairs, sourceSeg)
