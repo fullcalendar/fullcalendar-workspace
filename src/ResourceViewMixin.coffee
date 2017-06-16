@@ -258,7 +258,11 @@ ResourceViewMixin = # expects a View
 
 		# trigger 'drop' regardless of whether element represents an event
 		@publiclyTrigger(
-			'drop', el[0], singleEventDef.dateProfile.start, ev, ui,
+			'drop',
+			el[0],
+			singleEventDef.dateProfile.start,
+			ev,
+			ui,
 			singleEventDef.getResourceIds()[0]
 		)
 
