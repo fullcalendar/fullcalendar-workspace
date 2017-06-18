@@ -7,6 +7,9 @@ ResourceGridMixin = # expects a Grid
 	allowCrossResource: true
 
 
+	###
+	TODO: somehow more DRY with Calendar::eventRangeToEventFootprints
+	###
 	eventRangeToEventFootprints: (eventRange) ->
 		eventDef = eventRange.eventDef
 		resourceIds = eventDef.getResourceIds()
@@ -22,7 +25,7 @@ ResourceGridMixin = # expects a Grid
 					eventDef
 					eventRange.eventInstance # might not exist
 				)
-		else if eventDef.hasBgRendering()
+		else if eventDef.hasBgRendering() # TODO: it's strange to be relying on this
 			Grid::eventRangeToEventFootprints.apply(this, arguments)
 		else
 			[]

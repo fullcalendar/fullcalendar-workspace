@@ -71,6 +71,28 @@ class CalendarExtension extends Calendar
 		super
 
 
+	###
+	TODO: somehow more DRY with ResourceGridMixin.eventRangeToEventFootprints
+	###
+	eventRangeToEventFootprints: (eventRange) ->
+		eventDef = eventRange.eventDef
+		resourceIds = eventDef.getResourceIds()
+
+		if resourceIds.length
+			for resourceId in resourceIds # returns the accumulation
+				new EventFootprint(
+					new ResourceComponentFootprint(
+						eventRange.unzonedRange
+						eventDef.isAllDay()
+						resourceId
+					)
+					eventDef
+					eventRange.eventInstance # might not exist
+				)
+		else
+			[]
+
+
 	getPeerEventInstances: (subjectEventDef) ->
 		subjectResourceIds = subjectEventDef.getResourceIds()
 		peerInstances = super
