@@ -8,21 +8,24 @@ ResourceGridMixin = # expects a Grid
 
 
 	eventRangeToEventFootprints: (eventRange) ->
-		resourceIds = eventRange.eventDef.getResourceIds()
+		eventDef = eventRange.eventDef
+		resourceIds = eventDef.getResourceIds()
 
 		if resourceIds.length
 			for resourceId in resourceIds # returns the accumulation
 				new EventFootprint(
 					new ResourceComponentFootprint(
 						eventRange.unzonedRange
-						eventRange.eventDef.isAllDay()
+						eventDef.isAllDay()
 						resourceId
 					)
-					eventRange.eventDef
+					eventDef
 					eventRange.eventInstance # might not exist
 				)
-		else
+		else if eventDef.hasBgRendering()
 			Grid::eventRangeToEventFootprints.apply(this, arguments)
+		else
+			[]
 
 
 	# DnD
