@@ -265,46 +265,38 @@ ResourceDayTableMixin =
 	# Business Hours
 	# ----------------------------------------------------------------------------------------------
 
+
 	###
 	If there are no per-resource business hour definitions, returns null.
 	Otherwise, returns a list of business hours segs for *every* resource.
 	TODO: make more DRY with Calendar::buildCurrentBusinessFootprints
 	###
-	computePerResourceBusinessHourSegs: (wholeDay) ->
-
+	buildBusinessHourEventFootprints: (wholeDay) ->
 		if @flattenedResources # any resources rendered?
-
-			anyCustomBusinessHours = false
+			eventFootprints = []
 
 			for resource in @flattenedResources
-				if resource.businessHours
-					anyCustomBusinessHours = true
-
-			if anyCustomBusinessHours
-				eventFootprints = []
-
-				for resource in @flattenedResources
-
-					businessDefInput = resource.businessHours or
+				plainEventFootprints = @_buildBusinessHourEventFootprints(
+					wholeDay
+					resource.businessHours or
 						@view.calendar.opt('businessHours')
 						# fallback. access from calendar.
 						# don't access from view. doesn't update with dynamic options
+				)
 
-					plainEventFootprints = @buildBusinessHourEventFootprints(wholeDay, businessDefInput)
-
-					for plainEventFootprint in plainEventFootprints
-						eventFootprints.push(
-							new EventFootprint(
-								new ResourceComponentFootprint(
-									plainEventFootprint.unzonedRange,
-									plainEventFootprint.isAllDay,
-									resource.id
-								)
-								plainEventFootprint.eventDef
-								plainEventFootprint.eventInstance
+				for plainEventFootprint in plainEventFootprints
+					eventFootprints.push(
+						new EventFootprint(
+							new ResourceComponentFootprint(
+								plainEventFootprint.componentFootprint.unzonedRange,
+								plainEventFootprint.componentFootprint.isAllDay,
+								resource.id
 							)
+							plainEventFootprint.eventDef
+							plainEventFootprint.eventInstance
 						)
+					)
 
-				return @eventFootprintsToSegs(eventFootprints)
-
-		null
+			eventFootprints
+		else
+			Grid::buildBusinessHourEventFootprints.apply(this, arguments)

@@ -208,9 +208,11 @@ class ResourceTimelineGrid extends TimelineGrid
 	Compute and assign to row.businessHourSegs unconditionally
 	###
 	populateRowBusinessHoursSegs: (row) ->
-		businessHours = row.resource.businessHours or @opt('businessHours')
-		businessHoursEvents = @view.calendar.computeBusinessHourEvents(not @isTimeScale, businessHours)
-		businessHourSegs = @eventsToSegs(businessHoursEvents)
+		businessHourEventFootprints = @_buildBusinessHourEventFootprints(
+			not @isTimeScale
+			row.resource.businessHours or @opt('businessHours')
+		)
+		businessHourSegs = @eventFootprintsToSegs(businessHourEventFootprints)
 		businessHourSegs = @renderFillSegEls('businessHours', businessHourSegs) # pass in className? # always needs this because EventRow doesnt do it
 		row.businessHourSegs = businessHourSegs
 		return

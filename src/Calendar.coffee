@@ -99,7 +99,10 @@ class CalendarExtension extends Calendar
 			footprints = []
 
 			for resource in flatResources
-				plainFootprints = super(wholeDay, resource.businessHours or @opt('businessHours'))
+				plainFootprints = @_buildCurrentBusinessFootprints(
+					wholeDay
+					resource.businessHours or @opt('businessHours')
+				)
 
 				for plainFootprint in plainFootprints
 					footprints.push(
