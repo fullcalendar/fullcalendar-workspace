@@ -9,6 +9,7 @@ ResourceGridMixin = # expects a Grid
 
 	###
 	TODO: somehow more DRY with Calendar::eventRangeToEventFootprints
+	(However, this DOES have slightly different logic, for rendering).
 	###
 	eventRangeToEventFootprints: (eventRange) ->
 		eventDef = eventRange.eventDef

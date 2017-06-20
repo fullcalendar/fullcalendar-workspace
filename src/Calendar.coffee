@@ -90,7 +90,7 @@ class CalendarExtension extends Calendar
 					eventRange.eventInstance # might not exist
 				)
 		else
-			[]
+			super
 
 
 	getPeerEventInstances: (subjectEventDef) ->
@@ -101,10 +101,16 @@ class CalendarExtension extends Calendar
 			peerInstances
 		else
 			peerInstances.filter (peerInstance) ->
+
+				# always consider non-resource events to be peers
+				if not peerInstance.def.resourceIds.length
+					return true
+
+				# has same resource? consider it a peer
 				for resourceId in subjectResourceIds
-					if not peerInstance.def.resourceIds.length or \ # non-resource event OR
-							peerInstance.def.hasResourceId(resourceId) # within same resource?
-						return true # ...then consider it a peer
+					if peerInstance.def.hasResourceId(resourceId)
+						return true
+
 				false
 
 
