@@ -114,6 +114,32 @@ class CalendarExtension extends Calendar
 				false
 
 
+	constraintValToFootprints: (constraintVal, isAllDay) ->
+		###
+		Allow an object like { resourceId }, which implies ANY time within a resource
+		###
+		if not constraintVal.start and constraintVal.resourceId
+			[ new ResourceComponentFootprint(null, isAllDay, constraintVal.resourceId) ]
+		else
+			super
+
+
+	footprintContainsFootprint: (outerFootprint, innerFootprint) ->
+		if outerFootprint instanceof ResourceComponentFootprint and
+				(not (innerFootprint instanceof ResourceComponentFootprint) or
+				 innerFootprint.resourceId != outerFootprint.resourceId)
+			return false
+		super
+
+
+	footprintsIntersect: (footprint0, footprint1) ->
+		if outerFootprint instanceof ResourceComponentFootprint and
+				innerFootprint instanceof ResourceComponentFootprint and
+				outerFootprint.resourceId != innerFootprint.resourceId
+			return false
+		super
+
+
 	buildCurrentBusinessFootprints: (wholeDay) ->
 		flatResources = @resourceManager.getFlatResources()
 		anyCustomBusinessHours = false
