@@ -114,14 +114,29 @@ class CalendarExtension extends Calendar
 				false
 
 
-	constraintValToFootprints: (constraintVal, isAllDay) ->
-		###
-		Allow an object like { resourceId }, which implies ANY time within a resource
-		###
-		if not constraintVal.start and constraintVal.resourceId
-			[ new ResourceComponentFootprint(null, isAllDay, constraintVal.resourceId) ]
+	parseFootprints: (input) ->
+		plainFootprints = super
+		resourceIds = input.resourceIds or []
+
+		if input.resourceId
+			resourceIds = [ input.resourceId ].concat(resourceIds)
+
+		if resourceIds.length
+			footprints = []
+
+			for resourceId in resourceIds
+				for plainFootprint in plainFootprints
+					footprints.push(
+						new ResourceComponentFootprint(
+							plainFootprint.unzonedRange
+							plainFootprint.isAllDay
+							resourceId
+						)
+					)
+
+			footprints
 		else
-			super
+			plainFootprints
 
 
 	footprintContainsFootprint: (outerFootprint, innerFootprint) ->
@@ -133,9 +148,9 @@ class CalendarExtension extends Calendar
 
 
 	footprintsIntersect: (footprint0, footprint1) ->
-		if outerFootprint instanceof ResourceComponentFootprint and
-				innerFootprint instanceof ResourceComponentFootprint and
-				outerFootprint.resourceId != innerFootprint.resourceId
+		if footprint0 instanceof ResourceComponentFootprint and
+				footprint1 instanceof ResourceComponentFootprint and
+				footprint0.resourceId != footprint1.resourceId
 			return false
 		super
 
