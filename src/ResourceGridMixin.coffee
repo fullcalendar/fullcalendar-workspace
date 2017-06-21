@@ -36,10 +36,14 @@ ResourceGridMixin = # expects a Grid
 	# ---------------------------------------------------------------------------------
 
 
-	computeEventDropMutation: (startFootprint, endFootprint) ->
-		mutation = Grid::computeEventDropMutation.apply(this, arguments)
+	computeEventDropMutation: (startFootprint, endFootprint, legacyEvent) ->
 
-		if startFootprint.resourceId != endFootprint.resourceId
+		if @view.isEventStartEditable(legacyEvent)
+			mutation = Grid::computeEventDropMutation.apply(this, arguments)
+		else
+			mutation = new EventDefMutation()
+
+		if @view.isEventResourceEditable(legacyEvent) and startFootprint.resourceId != endFootprint.resourceId
 			mutation.oldResourceId = startFootprint.resourceId
 			mutation.newResourceId = endFootprint.resourceId
 
