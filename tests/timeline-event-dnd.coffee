@@ -92,6 +92,7 @@ describe 'timeline-view event drag-n-drop', ->
 					expect(event.end).toEqualMoment('2015-11-29T06:00:00')
 					expect(event.resourceId).toBe('a')
 					revert()
+					event = currentCalendar.clientEvents()[0]
 					expect(event.start).toEqualMoment('2015-11-29T02:00:00')
 					expect(event.end).toEqualMoment('2015-11-29T03:00:00')
 					expect(event.resourceId).toBe('b')
@@ -111,6 +112,7 @@ describe 'timeline-view event drag-n-drop', ->
 					expect(event.resourceId).toBe(null)
 					expect(event.resourceIds).toEqual([ 'b', 'c' ])
 					revert()
+					event = currentCalendar.clientEvents()[0]
 					expect(event.start).toEqualMoment('2015-11-29T02:00:00')
 					expect(event.end).toEqualMoment('2015-11-29T03:00:00')
 					expect(event.resourceId).toBe(null)
