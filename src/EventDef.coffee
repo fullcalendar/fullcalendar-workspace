@@ -28,7 +28,8 @@ EventDef::removeResourceId = (resourceId) ->
 resourceId should already be normalized
 ###
 EventDef::addResourceId = (resourceId) ->
-	@resourceIds.push(resourceId)
+	if not @hasResourceId(resourceId)
+		@resourceIds.push(resourceId)
 
 
 EventDef::getResourceIds = ->
@@ -45,13 +46,20 @@ EventDef::toLegacy = ->
 	obj = origEventDefToLegacy.apply(this, arguments)
 	resourceIds = @getResourceIds()
 
-	obj.resourceIds = resourceIds
+	obj.resourceId =
+		if resourceIds.length == 1
+			resourceIds[0]
+		else
+			null
+
+	obj.resourceIds =
+		if resourceIds.length > 1
+			resourceIds
+		else
+			null
 
 	if @resourceEditable? # allows an unspecified state
 		obj.resourceEditable = @resourceEditable
-
-	if resourceIds.length == 1
-		obj.resourceId = resourceIds[0]
 
 	obj
 

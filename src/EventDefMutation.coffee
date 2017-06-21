@@ -8,15 +8,15 @@ EventDefMutation::newResourceId = null
 
 EventDefMutation::mutateSingle = (eventDef) ->
 	undo = oldMutateSingle.apply(this, arguments)
-	isAffected = @oldResourceId and eventDef.hasResourceId(@oldResourceId)
+	savedResourceIds = null
 
-	if isAffected
+	if @oldResourceId and eventDef.hasResourceId(@oldResourceId)
+		savedResourceIds = eventDef.getResourceIds()
 		eventDef.removeResourceId(@oldResourceId)
 		eventDef.addResourceId(@newResourceId)
 
 	=> # return value
 		undo()
 
-		if isAffected
-			eventDef.removeResourceId(@newResourceId)
-			eventDef.addResourceId(@oldResourceId)
+		if savedResourceIds
+			eventDef.resourceIds = savedResourceIds
