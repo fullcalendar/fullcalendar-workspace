@@ -3,7 +3,7 @@ origApplyRawProps = EventDef::applyRawProps
 origEventDefClone = EventDef::clone
 origEventDefToLegacy = EventDef::toLegacy
 
-# defineStandardProps won't work :(
+# allowRawProps won't work :(
 EventDef::standardPropMap.resourceId = false # don't automatically copy
 EventDef::standardPropMap.resourceIds = false # "
 EventDef::standardPropMap.resourceEditable = true # automatically transfer

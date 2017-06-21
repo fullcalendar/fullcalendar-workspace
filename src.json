@@ -15,6 +15,7 @@
     "Grid.coffee",
 
     "EventDef.coffee",
+    "EventSource.coffee",
     "EventDefMutation.coffee",
 
     "Resource.coffee",

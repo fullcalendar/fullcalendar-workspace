@@ -68,5 +68,6 @@ TaskQueue = FC.TaskQueue
 UnzonedRange = FC.UnzonedRange
 ComponentFootprint = FC.ComponentFootprint
 EventDef = FC.EventDef
+EventSource = FC.EventSource
 EventFootprint = FC.EventFootprint
 EventDefMutation = FC.EventDefMutation
