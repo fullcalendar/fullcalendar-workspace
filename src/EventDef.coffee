@@ -1,15 +1,13 @@
 
-origApplyManualRawProps = EventDef::applyManualRawProps
 origEventDefClone = EventDef::clone
 origEventDefToLegacy = EventDef::toLegacy
+origApplyOtherRawProps = EventDef::applyOtherRawProps
 
 # allowRawProps won't work :(
-EventDef::standardPropMap.resourceId = false # don't automatically copy
-EventDef::standardPropMap.resourceIds = false # "
 EventDef::standardPropMap.resourceEditable = true # automatically transfer
 
 ###
-NOTE: will always be populated by applyRawProps
+NOTE: will always be populated by applyOtherRawProps
 ###
 EventDef::resourceIds = null
 EventDef::resourceEditable = null # `null` is unspecified state
@@ -37,12 +35,6 @@ EventDef::getResourceIds = ->
 	@resourceIds.slice() # clone
 
 
-EventDef::applyManualRawProps = (rawProps) ->
-	isSuccess = origApplyManualRawProps.apply(this, arguments)
-	@resourceIds = Resource.extractIds(rawProps, @source.calendar)
-	isSuccess
-
-
 EventDef::clone = ->
 	def = origEventDefClone.apply(this, arguments)
 	def.resourceIds = @getResourceIds()
@@ -62,3 +54,14 @@ EventDef::toLegacy = ->
 		obj.resourceId = resourceIds[0]
 
 	obj
+
+
+EventDef::applyOtherRawProps = (rawProps) ->
+	rawProps = $.extend({}, rawProps) # clone, because of delete
+
+	@resourceIds = Resource.extractIds(rawProps, @source.calendar)
+
+	delete rawProps.resourceId
+	delete rawProps.resourceIds
+
+	origApplyOtherRawProps.apply(this, arguments)
