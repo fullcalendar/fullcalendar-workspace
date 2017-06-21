@@ -1,5 +1,5 @@
 
-origApplyRawProps = EventDef::applyRawProps
+origApplyManualRawProps = EventDef::applyManualRawProps
 origEventDefClone = EventDef::clone
 origEventDefToLegacy = EventDef::toLegacy
 
@@ -37,8 +37,8 @@ EventDef::getResourceIds = ->
 	@resourceIds.slice() # clone
 
 
-EventDef::applyRawProps = (rawProps) ->
-	isSuccess = origApplyRawProps.apply(this, arguments)
+EventDef::applyManualRawProps = (rawProps) ->
+	isSuccess = origApplyManualRawProps.apply(this, arguments)
 	@resourceIds = Resource.extractIds(rawProps, @source.calendar)
 	isSuccess
 

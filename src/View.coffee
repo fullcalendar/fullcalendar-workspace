@@ -80,19 +80,19 @@ View::getInitialResources = (dateProfile) ->
 		@calendar.resourceManager.getResources()
 
 
-# currentEvents is optional
-View::bindResourceChanges = (currentEvents) ->
+# eventsPayload is optional
+View::bindResourceChanges = (eventsPayload) ->
 	@listenTo @calendar.resourceManager,
 		set: (resources) =>
-			@setResources(resources, currentEvents)
+			@setResources(resources, eventsPayload)
 		unset: =>
 			@unsetResources()
 		reset: (resources) =>
-			@resetResources(resources, currentEvents)
+			@resetResources(resources, eventsPayload)
 		add: (resource, allResources) =>
-			@addResource(resource, allResources, currentEvents)
+			@addResource(resource, allResources, eventsPayload)
 		remove: (resource, allResources) =>
-			@removeResource(resource, allResources, currentEvents)
+			@removeResource(resource, allResources, eventsPayload)
 
 
 View::unbindResourceChanges = ->
@@ -114,9 +114,9 @@ View.watch 'displayingEvents', [ 'displayingDates', 'hasEvents', 'currentResourc
 
 
 # currentEvents is optional
-View::setResources = (resources, currentEvents) ->
-	if currentEvents
-		resources = @filterResourcesWithEvents(resources, currentEvents)
+View::setResources = (resources, eventsPayload) ->
+	if eventsPayload
+		resources = @filterResourcesWithEvents(resources, eventsPayload)
 
 	@set('currentResources', resources)
 	@set('hasResources', true)
@@ -129,36 +129,36 @@ View::unsetResources = ->
 	@handleResourcesUnset()
 
 
-# currentEvents is optional
-View::resetResources = (resources, currentEvents) ->
+# eventsPayload is optional
+View::resetResources = (resources, eventsPayload) ->
 	@startBatchRender()
 	@unsetResources()
-	@setResources(resources, currentEvents)
+	@setResources(resources, eventsPayload)
 	@stopBatchRender()
 
 
-# currentEvents is optional
-View::addResource = (resource, allResources, currentEvents) ->
+# eventsPayload is optional
+View::addResource = (resource, allResources, eventsPayload) ->
 
 	if not @canHandleSpecificResources
-		return @resetResources(allResources, currentEvents)
+		return @resetResources(allResources, eventsPayload)
 
-	if currentEvents
-		a = @filterResourcesWithEvents([ resource ], currentEvents)
+	if eventsPayload
+		a = @filterResourcesWithEvents([ resource ], eventsPayload)
 		if not a.length
 			resource = null
 
 	if resource
-		@set('currentResources', allResources) # TODO: filter against currentEvents?
+		@set('currentResources', allResources) # TODO: filter against eventsPayload?
 		@handleResourceAdd(resource)
 
 
-View::removeResource = (resource, allResources, currentEvents) ->
+View::removeResource = (resource, allResources, eventsPayload) ->
 
 	if not @canHandleSpecificResources
-		return @resetResources(allResources, currentEvents)
+		return @resetResources(allResources, eventsPayload)
 
-	@set('currentResources', allResources) # TODO: filter against currentEvents?
+	@set('currentResources', allResources) # TODO: filter against eventsPayload?
 	@handleResourceRemove(resource)
 
 
@@ -182,11 +182,16 @@ View::handleResourceRemove = (resource) ->
 # ------------------------------------------------------------------------------------------------------------------
 
 
-View::filterResourcesWithEvents = (resources, events) ->
+View::filterResourcesWithEvents = (resources, eventsPayload) ->
 	resourceIdHits = {}
-	for event in events
-		for resourceId in @calendar.getEventResourceIds(event)
-			resourceIdHits[resourceId] = true
+
+	for id of eventsPayload
+		eventInstanceGroup = eventsPayload[id]
+
+		# TODO: not efficient looping over repeat instances
+		for eventInstance in eventInstanceGroup.eventInstances
+			for resourceId in eventInstance.def.getResourceIds()
+				resourceIdHits[resourceId] = true
 
 	_filterResourcesWithEvents(resources, resourceIdHits)
 
