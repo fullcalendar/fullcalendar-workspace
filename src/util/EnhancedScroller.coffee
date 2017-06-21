@@ -209,7 +209,7 @@ class EnhancedScroller extends FC.Scroller
 	detectRtlScrollSystem = ->
 		el = $('
 			<div style="
-			position: absolute
+			position: absolute;
 			top: -1000px;
 			width: 1px;
 			height: 1px;
