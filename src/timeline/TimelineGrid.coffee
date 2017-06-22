@@ -111,37 +111,28 @@ class TimelineGrid extends Grid
 	###
 	normalizeComponentFootprint: (componentFootprint) ->
 		if @isTimeScale
-
-			if componentFootprint.isAllDay
-				new ComponentFootprint(
-					componentFootprint.unzonedRange
-					false # isAllDay
-				)
-			else
-				componentFootprint
-
+			adjustedStart = @normalizeGridDate(componentFootprint.unzonedRange.getStart())
+			adjustedEnd = @normalizeGridDate(componentFootprint.unzonedRange.getEnd())
 		else
+			dayRange = @view.computeDayRange(componentFootprint.unzonedRange.getRange())
 
 			if @largeUnit
-
-				adjustedStart = componentFootprint.unzonedRange.getStart()
-					.startOf(@largeUnit)
-
-				unzonedEnd = componentFootprint.unzonedRange.getEnd()
-				adjustedEnd = unzonedEnd.startOf(@largeUnit)
+				adjustedStart = dayRange.start.clone().startOf(@largeUnit)
+				adjustedEnd = dayRange.end.clone().startOf(@largeUnit)
 
 				# if date is partially through the interval, or is in the same interval as the start,
 				# make the exclusive end be the *next* interval
-				if not adjustedEnd.isSame(unzonedEnd) or not adjustedEnd.isAfter(adjustedStart)
+				if not adjustedEnd.isSame(dayRange.end) or not adjustedEnd.isAfter(adjustedStart)
 					adjustedEnd.add(@slotDuration)
 
-				new ComponentFootprint(
-					new UnzonedRange(adjustedStart, adjustedEnd)
-					true # isAllDay
-				)
-
 			else
-				componentFootprint
+				adjustedStart = dayRange.start
+				adjustedEnd = dayRange.end
+
+		new ComponentFootprint(
+			new UnzonedRange(adjustedStart, adjustedEnd)
+			not @isTimeScale # isAllDay
+		)
 
 
 	rangeUpdated: ->
