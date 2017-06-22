@@ -74,8 +74,6 @@ TimelineGrid::initScaleProps = ->
 		else
 			@slotDuration
 
-	@minResizeDuration = @snapDuration # for Grid
-
 	@snapsPerSlot = divideDurationByDuration(@slotDuration, @snapDuration)
 
 
