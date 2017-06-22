@@ -209,13 +209,13 @@ class EnhancedScroller extends FC.Scroller
 	detectRtlScrollSystem = ->
 		el = $('
 			<div style="
-			position: absolute
+			position: absolute;
 			top: -1000px;
 			width: 1px;
 			height: 1px;
 			overflow: scroll;
 			direction: rtl;
-			font-size: 14px;
+			font-size: 100px;
 			">A</div>
 			').appendTo('body')
 		node = el[0]
