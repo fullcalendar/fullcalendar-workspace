@@ -215,7 +215,7 @@ class EnhancedScroller extends FC.Scroller
 			height: 1px;
 			overflow: scroll;
 			direction: rtl;
-			font-size: 14px;
+			font-size: 100px;
 			">A</div>
 			').appendTo('body')
 		node = el[0]
