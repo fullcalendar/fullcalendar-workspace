@@ -20,7 +20,6 @@ class ScrollFollowerSprite
 
 	constructor: (@el, @follower=null) ->
 		@isBlock = @el.css('display') == 'block'
-		@el.css('position', 'relative')
 
 
 	disable: ->
