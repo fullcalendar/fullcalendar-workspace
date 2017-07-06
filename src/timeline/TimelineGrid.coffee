@@ -7,6 +7,10 @@ class TimelineGrid extends Grid
 	# FYI: the start/end properties have timezones stripped,
 	# even if the calendar/view has a timezone.
 
+	# unzonedRange converted to Moments
+	unzonedStart: null
+	unzonedEnd: null
+
 	slotDates: null # has stripped timezones
 	slotCnt: null
 	snapCnt: null
@@ -110,11 +114,13 @@ class TimelineGrid extends Grid
 	THEN, can have componentFootprintToSegs handle this on its own
 	###
 	normalizeComponentFootprint: (componentFootprint) ->
+		unzonedRange = componentFootprint.unzonedRange
+
 		if @isTimeScale
-			adjustedStart = @normalizeGridDate(componentFootprint.unzonedRange.getStart())
-			adjustedEnd = @normalizeGridDate(componentFootprint.unzonedRange.getEnd())
+			adjustedStart = @normalizeGridDate(unzonedRange.getStart())
+			adjustedEnd = @normalizeGridDate(unzonedRange.getEnd())
 		else
-			dayRange = @view.computeDayRange(componentFootprint.unzonedRange.getRange())
+			dayRange = @view.computeDayRange(unzonedRange)
 
 			if @largeUnit
 				adjustedStart = dayRange.start.clone().startOf(@largeUnit)
@@ -137,22 +143,24 @@ class TimelineGrid extends Grid
 
 	rangeUpdated: ->
 
-		# makes sure zone is stripped
-		@start = @normalizeGridDate(@start)
-		@end = @normalizeGridDate(@end)
-
 		@timeWindowMs = @view.maxTime - @view.minTime
+
+		# makes sure zone is stripped
+		@unzonedStart = @normalizeGridDate(@unzonedRange.getStart())
+		@unzonedEnd = @normalizeGridDate(@unzonedRange.getEnd())
 
 		# apply minTime/maxTime
 		# TODO: move towards .time(), but didn't play well with negatives.
 		# TODO: View should be responsible.
 		if @isTimeScale
-			@start.add(@view.minTime)
-			@end.subtract(1, 'day').add(@view.maxTime)
+			@unzonedStart.add(@view.minTime)
+			@unzonedEnd.subtract(1, 'day').add(@view.maxTime)
+
+		@unzonedRange = new UnzonedRange(@unzonedStart, @unzonedEnd)
 
 		slotDates = []
-		date = @start.clone()
-		while date < @end
+		date = @unzonedStart.clone()
+		while date < @unzonedEnd
 			if @isValidDate(date)
 				slotDates.push(date.clone())
 			date.add(@slotDuration)
@@ -167,8 +175,8 @@ class TimelineGrid extends Grid
 		snapDiffToIndex = []
 		snapIndexToDiff = []
 
-		date = @start.clone()
-		while date < @end
+		date = @unzonedStart.clone()
+		while date < @unzonedEnd
 			if @isValidDate(date)
 				snapIndex++
 				snapDiffToIndex.push(snapIndex)
@@ -186,28 +194,31 @@ class TimelineGrid extends Grid
 
 
 	componentFootprintToSegs: (footprint) ->
+		footprintStart = footprint.unzonedRange.getStart()
+		footprintEnd = footprint.unzonedRange.getEnd()
 		normalFootprint = @normalizeComponentFootprint(footprint)
+		segs = []
 
 		# protect against when the span is entirely in an invalid date region
-		if @computeDateSnapCoverage(footprint.unzonedRange.getStart()) < @computeDateSnapCoverage(footprint.unzonedRange.getEnd())
+		if @computeDateSnapCoverage(footprintStart) < @computeDateSnapCoverage(footprintEnd)
 
-			# `this` has a start/end, an already normalized range.
-			# zones will have been stripped (a requirement for intersectRanges)
-			seg = intersectRanges(normalFootprint.unzonedRange.getRange(), this)
+			# intersect the footprint's range with the grid'd range
+			segRange = normalFootprint.unzonedRange.intersect(@unzonedRange)
+
+			if segRange
+				segStart = segRange.getStart()
+				segEnd = segRange.getEnd()
+				segs.push({
+					start: segStart
+					end: segEnd
+					isStart: segRange.isStart and @isValidDate(segStart)
+					isEnd: segRange.isEnd and @isValidDate(segEnd.clone().subtract(1))
+				})
 
 			# TODO: what if month slots? should round it to nearest month
 			# TODO: dragging/resizing in this situation? deltas for dragging/resizing breaks down
 
-			if seg
-				if seg.isStart and not @isValidDate(seg.start)
-					seg.isStart = false
-
-				if seg.isEnd and seg.end and not @isValidDate(seg.end.clone().subtract(1))
-					seg.isEnd = false
-
-				return [ seg ]
-
-		return []
+		segs
 
 
 	# Hit System
@@ -278,7 +289,7 @@ class TimelineGrid extends Grid
 	TODO: avoid using moments
 	###
 	getSnapUnzonedRange: (snapIndex) ->
-		start = @start.clone()
+		start = @unzonedStart.clone()
 		start.add(multiplyDuration(@snapDuration, @snapIndexToDiff[snapIndex]))
 		end = start.clone().add(@snapDuration)
 		new UnzonedRange(start, end)
@@ -405,7 +416,7 @@ class TimelineGrid extends Grid
 					else
 						leadingCell.colspan += 1
 				else
-					if !leadingCell or isInt(divideRangeByDuration(@start, date, labelInterval))
+					if !leadingCell or isInt(divideRangeByDuration(@unzonedStart, date, labelInterval))
 						text = date.format(format)
 						newCell = @buildCellObject(date, text, rowUnits[row])
 					else
@@ -493,7 +504,7 @@ class TimelineGrid extends Grid
 		if @isTimeScale
 			classes = []
 			classes.push \
-				if isInt(divideRangeByDuration(@start, date, @labelInterval))
+				if isInt(divideRangeByDuration(@unzonedStart, date, @labelInterval))
 					'fc-major'
 				else
 					'fc-minor'
@@ -545,7 +556,8 @@ class TimelineGrid extends Grid
 	renderNowIndicator: (date) ->
 		nodes = []
 		date = @normalizeGridDate(date)
-		if date >= @start and date < @end
+
+		if @unzonedRange.containsDate(date)
 			coord = @dateToCoord(date)
 			css = if @isRTL
 					{ right: -coord }
@@ -661,7 +673,7 @@ class TimelineGrid extends Grid
 
 	# returned value is between 0 and the number of snaps
 	computeDateSnapCoverage: (date) ->
-		snapDiff = divideRangeByDuration(@start, date, @snapDuration)
+		snapDiff = divideRangeByDuration(@unzonedStart, date, @snapDuration)
 
 		if snapDiff < 0
 			0
@@ -820,19 +832,19 @@ class TimelineGrid extends Grid
 
 
 	fgSegHtml: (seg, disableResizing) ->
-		event = seg.event
-		isDraggable = @view.isEventDraggable(event)
-		isResizableFromStart = seg.isStart and @view.isEventResizableFromStart(event)
-		isResizableFromEnd = seg.isEnd and @view.isEventResizableFromEnd(event)
+		eventDef = seg.footprint.eventDef
+		isDraggable = @view.isEventDefDraggable(eventDef)
+		isResizableFromStart = seg.isStart and @view.isEventDefResizableFromStart(eventDef)
+		isResizableFromEnd = seg.isEnd and @view.isEventDefResizableFromEnd(eventDef)
 
 		classes = @getSegClasses(seg, isDraggable, isResizableFromStart or isResizableFromEnd)
 		classes.unshift('fc-timeline-event', 'fc-h-event')
 
-		timeText = @getEventTimeText(event)
+		timeText = @getEventTimeText(seg.footprint)
 
 		'<a class="' + classes.join(' ') + '" style="' + cssToStr(@getSegSkinCss(seg)) + '"' +
-			(if event.url
-				' href="' + htmlEscape(event.url) + '"'
+			(if eventDef.url
+				' href="' + htmlEscape(eventDef.url) + '"'
 			else
 				'') +
 			'>' +
@@ -844,7 +856,7 @@ class TimelineGrid extends Grid
 				else
 					'') +
 				'<span class="fc-title">' +
-					(if event.title then htmlEscape(event.title) else '&nbsp;') +
+					(if eventDef.title then htmlEscape(eventDef.title) else '&nbsp;') +
 				'</span>' +
 			'</div>' +
 			'<div class="fc-bg" />' +

@@ -71,13 +71,15 @@ View::unwatchResources = ->
 
 # dateProfile is optional
 View::getInitialResources = (dateProfile) ->
+	calendar = @calendar
+
 	if dateProfile
-		@calendar.resourceManager.getResources(
-			dateProfile.activeRange.start,
-			dateProfile.activeRange.end
+		calendar.resourceManager.getResources(
+			calendar.msToMoment(dateProfile.activeUnzonedRange.startMs, dateProfile.isRangeAllDay),
+			calendar.msToMoment(dateProfile.activeUnzonedRange.endMs, dateProfile.isRangeAllDay)
 		)
 	else
-		@calendar.resourceManager.getResources()
+		calendar.resourceManager.getResources()
 
 
 # eventsPayload is optional

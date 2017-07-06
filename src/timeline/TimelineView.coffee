@@ -18,7 +18,7 @@ class TimelineView extends View
 	setDateProfileForRendering: (dateProfile) ->
 		super
 		@timeGrid.initScaleProps()
-		@timeGrid.setRange(@renderRange)
+		@timeGrid.setRange(@renderUnzonedRange)
 
 
 	getFallbackDuration: ->
@@ -129,7 +129,7 @@ class TimelineView extends View
 			scrollTime = @opt('scrollTime')
 			if scrollTime
 				scrollTime = moment.duration(scrollTime)
-				left = @timeGrid.dateToCoord(@activeRange.start.clone().time(scrollTime)) # TODO: fix this for RTL
+				left = @timeGrid.dateToCoord(@activeUnzonedRange.getStart().time(scrollTime)) # TODO: fix this for RTL
 		{ left }
 
 

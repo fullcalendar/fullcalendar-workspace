@@ -23,9 +23,9 @@ class ResourceDayGrid extends FC.DayGrid
 		resourceCnt = @resourceCnt
 		genericSegs = # no assigned resources
 			if @datesAboveResources
-				@sliceRangeByDay(componentFootprint.unzonedRange.getRange()) # each day-per-resource will need its own column
+				@sliceRangeByDay(componentFootprint.unzonedRange) # each day-per-resource will need its own column
 			else
-				@sliceRangeByRow(componentFootprint.unzonedRange.getRange())
+				@sliceRangeByRow(componentFootprint.unzonedRange)
 
 		if not resourceCnt
 			for seg in genericSegs

@@ -39,7 +39,6 @@ Calendar = FC.Calendar
 Class = FC.Class
 View = FC.View
 Grid = FC.Grid
-intersectRanges = FC.intersectRanges
 debounce = FC.debounce
 isInt = FC.isInt
 removeExact = FC.removeExact

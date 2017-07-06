@@ -29,7 +29,7 @@ STOCK_SUB_DURATIONS = [ # from largest to smallest
 ]
 
 
-# assumes the View already has a currentRange
+# assumes the View already has a currentUnzonedRange
 TimelineGrid::initScaleProps = ->
 
 	@labelInterval = @queryDurationOption('slotLabelInterval')
@@ -86,18 +86,18 @@ TimelineGrid::queryDurationOption = (name) ->
 
 
 TimelineGrid::validateLabelAndSlot = ->
-	currentRange = @view.currentRange
+	currentUnzonedRange = @view.currentUnzonedRange
 
 	# make sure labelInterval doesn't exceed the max number of cells
 	if @labelInterval
-		labelCnt = divideRangeByDuration(currentRange.start, currentRange.end, @labelInterval)
+		labelCnt = divideRangeByDuration(currentUnzonedRange.getStart(), currentUnzonedRange.getEnd(), @labelInterval)
 		if labelCnt > MAX_CELLS
 			FC.warn('slotLabelInterval results in too many cells')
 			@labelInterval = null
 
 	# make sure slotDuration doesn't exceed the maximum number of cells
 	if @slotDuration
-		slotCnt = divideRangeByDuration(currentRange.start, currentRange.end, @slotDuration)
+		slotCnt = divideRangeByDuration(currentUnzonedRange.getStart(), currentUnzonedRange.getEnd(), @slotDuration)
 		if slotCnt > MAX_CELLS
 			FC.warn('slotDuration results in too many cells')
 			@slotDuration = null
@@ -133,7 +133,7 @@ TimelineGrid::computeFallbackDuration = ->
 
 
 TimelineGrid::ensureLabelInterval = ->
-	currentRange = @view.currentRange
+	currentUnzonedRange = @view.currentUnzonedRange
 	labelInterval = @labelInterval
 
 	if not labelInterval
@@ -157,7 +157,7 @@ TimelineGrid::ensureLabelInterval = ->
 		else
 			for input in STOCK_SUB_DURATIONS
 				labelInterval = moment.duration(input)
-				labelCnt = divideRangeByDuration(currentRange.start, currentRange.end, labelInterval)
+				labelCnt = divideRangeByDuration(currentUnzonedRange.getStart(), currentUnzonedRange.getEnd(), labelInterval)
 				if labelCnt >= MIN_AUTO_LABELS
 					break
 
@@ -167,7 +167,7 @@ TimelineGrid::ensureLabelInterval = ->
 
 
 TimelineGrid::ensureSlotDuration = ->
-	currentRange = @view.currentRange
+	currentUnzonedRange = @view.currentUnzonedRange
 	slotDuration = @slotDuration
 
 	if not slotDuration
@@ -184,7 +184,7 @@ TimelineGrid::ensureSlotDuration = ->
 
 		# only allow the value if it won't exceed the view's # of slots limit
 		if slotDuration
-			slotCnt = divideRangeByDuration(currentRange.start, currentRange.end, slotDuration)
+			slotCnt = divideRangeByDuration(currentUnzonedRange.getStart(), currentUnzonedRange.getEnd(), slotDuration)
 			if slotCnt > MAX_AUTO_CELLS
 				slotDuration = null
 

@@ -21,7 +21,7 @@ class ResourceTimeGrid extends FC.TimeGrid
 
 	componentFootprintToSegs: (componentFootprint) ->
 		resourceCnt = @resourceCnt
-		genericSegs = @sliceRangeByTimes(componentFootprint.unzonedRange.getRange()) # no assigned resources
+		genericSegs = @sliceRangeByTimes(componentFootprint.unzonedRange) # no assigned resources
 
 		if not resourceCnt
 			for seg in genericSegs

@@ -185,15 +185,15 @@ ResourceViewMixin = # expects a View
 
 
 	# if an event's dates are not draggable, but it's resource IS, still allow dragging
-	isEventDraggable: (event) ->
-		@isEventResourceEditable(event) or View::isEventDraggable.call(this, event)
+	isEventDefDraggable: (eventDef) ->
+		@isEventDefResourceEditable(eventDef) or View::isEventDefDraggable.call(this, eventDef)
 
 
-	isEventResourceEditable: (event) ->
-		event.resourceEditable ?
-			(event.source || {}).resourceEditable ?
+	isEventDefResourceEditable: (eventDef) ->
+		eventDef.resourceEditable ?
+			(eventDef.source || {}).resourceEditable ? # TODO: make part of model
 			@opt('eventResourceEditable') ?
-			@isEventGenerallyEditable(event)
+			@isEventDefGenerallyEditable(eventDef)
 
 
 	# Resource Rendering Utils

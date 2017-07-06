@@ -61,4 +61,5 @@ Grid::getSegResources = (seg) ->
 	else
 		# seg does not visually live inside a resource,
 		# so query all resources associated with the seg's event
-		@view.calendar.getEventResources(seg.event)
+		# TODO: move away from legacy!!!
+		@view.calendar.getEventResources(seg.footprint.getEventLegacy())
