@@ -11,7 +11,7 @@ dragResourceTimelineEvent = (eventEl, dropInfo) ->
 			modifiedEvent = event
 
 		eventEl.simulate 'drag',
-			localPoint: { left: 0, top: '50%' },
+			localPoint: { left: 2, top: '50%' }, # 2 for zoom
 			end: getResourceTimelinePoint(dropInfo.resourceId, dropInfo.date)
 
 
