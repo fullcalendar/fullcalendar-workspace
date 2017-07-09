@@ -225,14 +225,15 @@ ResourceViewMixin = # expects a View
 	triggerDayClick: (footprint, dayEl, ev) ->
 		dateProfile = @calendar.footprintToDateProfile(footprint) # abuse of "Event"DateProfile?
 
-		@publiclyTrigger(
-			'dayClick'
-			dayEl # this
-			dateProfile.start
-			ev
-			this # maintain order. this will also be automatically inserted last. oh well
-			@calendar.resourceManager.getResourceById(footprint.resourceId)
-		)
+		@publiclyTrigger('dayClick', {
+			context: dayEl
+			args: [
+				dateProfile.start
+				ev
+				this
+				@calendar.resourceManager.getResourceById(footprint.resourceId)
+			]
+		})
 
 
 	###
@@ -241,15 +242,16 @@ ResourceViewMixin = # expects a View
 	triggerSelect: (footprint, ev) ->
 		dateProfile = @calendar.footprintToDateProfile(footprint) # abuse of "Event"DateProfile?
 
-		@publiclyTrigger(
-			'select'
-			null
-			dateProfile.start
-			dateProfile.end
-			ev
-			this # maintain order. this will also be automatically inserted last. oh well
-			@calendar.resourceManager.getResourceById(footprint.resourceId)
-		)
+		@publiclyTrigger('select', {
+			context: this
+			args: [
+				dateProfile.start
+				dateProfile.end
+				ev
+				this
+				@calendar.resourceManager.getResourceById(footprint.resourceId)
+			]
+		})
 
 
 	# override the view's default trigger in order to provide a resourceId to the `drop` event
@@ -257,15 +259,23 @@ ResourceViewMixin = # expects a View
 	triggerExternalDrop: (singleEventDef, isEvent, el, ev, ui) ->
 
 		# trigger 'drop' regardless of whether element represents an event
-		@publiclyTrigger(
-			'drop',
-			el[0],
-			singleEventDef.dateProfile.start,
-			ev,
-			ui,
-			singleEventDef.getResourceIds()[0]
-		)
+		@publiclyTrigger('drop', {
+			context: el[0]
+			args: [
+				singleEventDef.dateProfile.start.clone()
+				ev
+				ui
+				singleEventDef.getResourceIds()[0]
+				this
+			]
+		})
 
 		if isEvent
 			# signal an external event landed
-			@publiclyTrigger('eventReceive', null, singleEventDef.buildInstance().toLegacy())
+			@publiclyTrigger('eventReceive', {
+				context: this
+				args: [
+					singleEventDef.buildInstance().toLegacy()
+					this
+				]
+			})

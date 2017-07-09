@@ -367,7 +367,10 @@ class TimelineGrid extends Grid
 			offsetParent: @bodyScroller.canvas.el
 
 		for date, i in @slotDates
-			@view.publiclyTrigger('dayRender', null, date, @slatEls.eq(i))
+			@publiclyTrigger('dayRender', {
+				context: @view
+				args: [ date, @slatEls.eq(i), @view ]
+			})
 
 		if @follower
 			@follower.setSprites(@headEl.find('tr:not(:last-child) .fc-cell-text'))

@@ -40,13 +40,15 @@ class ResourceRow extends EventRow
 		else
 			@disableExpanding()
 
-		@view.publiclyTrigger(
-			'resourceRender',
-			@resource, # this
-			@resource,
-			@getTr('spreadsheet').find('> td'), # TODO: optimize
-			@getTr('event').find('> td') # TODO: optimize
-		)
+		@view.publiclyTrigger('resourceRender', {
+			context: @resource
+			args: [
+				@resource
+				@getTr('spreadsheet').find('> td') # TODO: optimize
+				@getTr('event').find('> td') # TODO: optimize
+				@view
+			]
+		})
 
 
 	renderEventContent: (tr) ->

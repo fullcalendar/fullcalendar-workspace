@@ -211,13 +211,15 @@ ResourceDayTableMixin =
 						col
 				]
 
-			@view.publiclyTrigger(
-				'resourceRender',
-				resource, # this
-				resource,
-				$(node) # head <td>
-				$() # body <td>'s (we don't compute, but API should stay consistent)
-			)
+			@publiclyTrigger('resourceRender', {
+				context: resource,
+				args: [
+					resource
+					$(node) # head <td>
+					$() # body <td>'s (we don't compute, but API should stay consistent)
+					@view
+				]
+			})
 
 
 	# Bg Rendering
