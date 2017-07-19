@@ -7,9 +7,10 @@ class TimelineGrid extends Grid
 	# FYI: the start/end properties have timezones stripped,
 	# even if the calendar/view has a timezone.
 
-	# unzonedRange converted to Moments
-	unzonedStart: null
-	unzonedEnd: null
+	# unzonedRange normalized and converted to Moments
+	normalizedUnzonedRange: null
+	normalizedUnzonedStart: null
+	normalizedUnzonedEnd: null
 
 	slotDates: null # has stripped timezones
 	slotCnt: null
@@ -142,25 +143,26 @@ class TimelineGrid extends Grid
 
 
 	rangeUpdated: ->
+		view = @view
 
-		@timeWindowMs = @view.maxTime - @view.minTime
+		@timeWindowMs = view.maxTime - view.minTime
 
 		# makes sure zone is stripped
-		@unzonedStart = @normalizeGridDate(@unzonedRange.getStart())
-		@unzonedEnd = @normalizeGridDate(@unzonedRange.getEnd())
+		@normalizedUnzonedStart = @normalizeGridDate(view.renderUnzonedRange.getStart())
+		@normalizedUnzonedEnd = @normalizeGridDate(view.renderUnzonedRange.getEnd())
 
 		# apply minTime/maxTime
 		# TODO: move towards .time(), but didn't play well with negatives.
 		# TODO: View should be responsible.
 		if @isTimeScale
-			@unzonedStart.add(@view.minTime)
-			@unzonedEnd.subtract(1, 'day').add(@view.maxTime)
+			@normalizedUnzonedStart.add(@view.minTime)
+			@normalizedUnzonedEnd.subtract(1, 'day').add(@view.maxTime)
 
-		@unzonedRange = new UnzonedRange(@unzonedStart, @unzonedEnd)
+		@normalizedUnzonedRange = new UnzonedRange(@normalizedUnzonedStart, @normalizedUnzonedEnd)
 
 		slotDates = []
-		date = @unzonedStart.clone()
-		while date < @unzonedEnd
+		date = @normalizedUnzonedStart.clone()
+		while date < @normalizedUnzonedEnd
 			if @isValidDate(date)
 				slotDates.push(date.clone())
 			date.add(@slotDuration)
@@ -175,8 +177,8 @@ class TimelineGrid extends Grid
 		snapDiffToIndex = []
 		snapIndexToDiff = []
 
-		date = @unzonedStart.clone()
-		while date < @unzonedEnd
+		date = @normalizedUnzonedStart.clone()
+		while date < @normalizedUnzonedEnd
 			if @isValidDate(date)
 				snapIndex++
 				snapDiffToIndex.push(snapIndex)
@@ -203,7 +205,7 @@ class TimelineGrid extends Grid
 		if @computeDateSnapCoverage(footprintStart) < @computeDateSnapCoverage(footprintEnd)
 
 			# intersect the footprint's range with the grid'd range
-			segRange = normalFootprint.unzonedRange.intersect(@unzonedRange)
+			segRange = normalFootprint.unzonedRange.intersect(@normalizedUnzonedRange)
 
 			if segRange
 				segStart = segRange.getStart()
@@ -289,7 +291,7 @@ class TimelineGrid extends Grid
 	TODO: avoid using moments
 	###
 	getSnapUnzonedRange: (snapIndex) ->
-		start = @unzonedStart.clone()
+		start = @normalizedUnzonedStart.clone()
 		start.add(multiplyDuration(@snapDuration, @snapIndexToDiff[snapIndex]))
 		end = start.clone().add(@snapDuration)
 		new UnzonedRange(start, end)
@@ -419,7 +421,7 @@ class TimelineGrid extends Grid
 					else
 						leadingCell.colspan += 1
 				else
-					if !leadingCell or isInt(divideRangeByDuration(@unzonedStart, date, labelInterval))
+					if !leadingCell or isInt(divideRangeByDuration(@normalizedUnzonedStart, date, labelInterval))
 						text = date.format(format)
 						newCell = @buildCellObject(date, text, rowUnits[row])
 					else
@@ -507,7 +509,7 @@ class TimelineGrid extends Grid
 		if @isTimeScale
 			classes = []
 			classes.push \
-				if isInt(divideRangeByDuration(@unzonedStart, date, @labelInterval))
+				if isInt(divideRangeByDuration(@normalizedUnzonedStart, date, @labelInterval))
 					'fc-major'
 				else
 					'fc-minor'
@@ -560,7 +562,7 @@ class TimelineGrid extends Grid
 		nodes = []
 		date = @normalizeGridDate(date)
 
-		if @unzonedRange.containsDate(date)
+		if @normalizedUnzonedRange.containsDate(date)
 			coord = @dateToCoord(date)
 			css = if @isRTL
 					{ right: -coord }
@@ -676,7 +678,7 @@ class TimelineGrid extends Grid
 
 	# returned value is between 0 and the number of snaps
 	computeDateSnapCoverage: (date) ->
-		snapDiff = divideRangeByDuration(@unzonedStart, date, @snapDuration)
+		snapDiff = divideRangeByDuration(@normalizedUnzonedStart, date, @snapDuration)
 
 		if snapDiff < 0
 			0
