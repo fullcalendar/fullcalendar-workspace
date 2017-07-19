@@ -1,22 +1,22 @@
 
-origGetSegCustomClasses = Grid::getSegCustomClasses
-origGetSegDefaultBackgroundColor = Grid::getSegDefaultBackgroundColor
-origGetSegDefaultBorderColor = Grid::getSegDefaultBorderColor
-origGetSegDefaultTextColor = Grid::getSegDefaultTextColor
+orig_getEventFootprintClasses = Grid::getEventFootprintClasses
+orig_getEventFootprintDefaultBackgroundColor = Grid::getEventFootprintDefaultBackgroundColor
+orig_getEventFootprintDefaultBorderColor = Grid::getEventFootprintDefaultBorderColor
+orig_getEventFootprintDefaultTextColor = Grid::getEventFootprintDefaultTextColor
 
 
-Grid::getSegCustomClasses = (seg) ->
-	classes = origGetSegCustomClasses.apply(this, arguments)
+Grid::getEventFootprintClasses = (eventFootprint) ->
+	classes = orig_getEventFootprintClasses.apply(this, arguments)
 
-	for resource in @getSegResources(seg)
+	for resource in @getEventFootprintResources(eventFootprint)
 		# .concat will process non-arrays and arrays
 		classes = classes.concat(resource.eventClassName or [])
 
 	classes
 
 
-Grid::getSegDefaultBackgroundColor = (seg) ->
-	resources = @getSegResources(seg)
+Grid::getEventFootprintDefaultBackgroundColor = (eventFootprint) ->
+	resources = @getEventFootprintResources(eventFootprint)
 
 	for currentResource in resources
 		while currentResource
@@ -25,11 +25,11 @@ Grid::getSegDefaultBackgroundColor = (seg) ->
 				return val
 			currentResource = currentResource._parent
 
-	origGetSegDefaultBackgroundColor.apply(this, arguments) # super
+	orig_getEventFootprintDefaultBackgroundColor.apply(this, arguments) # super
 
 
-Grid::getSegDefaultBorderColor = (seg) ->
-	resources = @getSegResources(seg)
+Grid::getEventFootprintDefaultBorderColor = (eventFootprint) ->
+	resources = @getEventFootprintResources(eventFootprint)
 
 	for currentResource in resources
 		while currentResource
@@ -38,11 +38,11 @@ Grid::getSegDefaultBorderColor = (seg) ->
 				return val
 			currentResource = currentResource._parent
 
-	origGetSegDefaultBorderColor.apply(this, arguments) # super
+	orig_getEventFootprintDefaultBorderColor.apply(this, arguments) # super
 
 
-Grid::getSegDefaultTextColor = (seg) ->
-	resources = @getSegResources(seg)
+Grid::getEventFootprintDefaultTextColor = (eventFootprint) ->
+	resources = @getEventFootprintResources(eventFootprint)
 
 	for currentResource in resources
 		while currentResource
@@ -51,15 +51,26 @@ Grid::getSegDefaultTextColor = (seg) ->
 				return val
 			currentResource = currentResource._parent
 
-	origGetSegDefaultTextColor.apply(this, arguments) # super
+	orig_getEventFootprintDefaultTextColor.apply(this, arguments) # super
 
 
-Grid::getSegResources = (seg) ->
-	if seg.resource
-		# grid has defined an explicit resource that the seg lives in
-		[ seg.resource ]
+###
+TODO: Grid.coffee should deal with componentFootprint
+ and ResourceGrid.coffee should deal with (resource)ComponentFootprint
+###
+Grid::getEventFootprintResources = (eventFootprint) ->
+	resourceId = eventFootprint.componentFootprint.resourceId
+	resourceIds = []
+	resources = []
+
+	if resourceId?
+		resourceIds.push(resourceId)
 	else
-		# seg does not visually live inside a resource,
-		# so query all resources associated with the seg's event
-		# TODO: move away from legacy!!!
-		@view.calendar.getEventResources(seg.footprint.getEventLegacy())
+		resourceIds = eventFootprint.eventDef.getResourceIds()
+
+	for resourceId in resourceIds
+		resource = @view.calendar.getResourceById(resourceId)
+		if resource
+			resources.push(resource)
+
+	resources
