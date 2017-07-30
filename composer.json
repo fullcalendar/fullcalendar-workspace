@@ -9,6 +9,7 @@
     "jquery-plugin"
   ],
   "homepage": "https://fullcalendar.io/scheduler/",
+  "license": "Commercial or CC BY-NC-ND 4.0 or GPLv3",  
   "authors": [
     {
       "name": "Adam Shaw",
