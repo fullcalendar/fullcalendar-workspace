@@ -70,3 +70,5 @@ EventDef = FC.EventDef
 EventSource = FC.EventSource
 EventFootprint = FC.EventFootprint
 EventDefMutation = FC.EventDefMutation
+
+EventRenderer = FC.EventRenderer

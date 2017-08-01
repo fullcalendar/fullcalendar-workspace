@@ -20,7 +20,8 @@
     "ResourceViewMixin.coffee",
     "VertResourceViewMixin.coffee",
 
-    "component/Grid.coffee",
+    "component/renderers/EventRenderer.coffee",
+    "component/renderers/ResourceEventRenderer.coffee",
     "component/ResourceGridMixin.coffee",
     "component/ResourceDayTableMixin.coffee",
 

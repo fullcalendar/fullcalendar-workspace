@@ -6,7 +6,7 @@ EventRenderer_getDefaultTextColor = EventRenderer::getDefaultTextColor
 
 
 EventRenderer::getClasses = (eventFootprint) ->
-	classes = EventRenderer_getSegClasses.apply(this, arguments)
+	classes = EventRenderer_getClasses.apply(this, arguments)
 	resources = @getEventFootprintResources(eventFootprint)
 
 	for resource in resources
