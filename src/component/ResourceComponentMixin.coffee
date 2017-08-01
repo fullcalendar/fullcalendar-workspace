@@ -1,5 +1,5 @@
 
-ResourceComponentMixin =
+ResourceComponentMixin = # expects a InteractiveDateComponent
 
 	eventRendererClass: ResourceEventRenderer
 	dateSelectingClass: ResourceDateSelecting
@@ -33,6 +33,6 @@ ResourceComponentMixin =
 					eventRange.eventInstance # might not exist
 				)
 		else if eventDef.hasBgRendering() # TODO: it's strange to be relying on this
-			Grid::eventRangeToEventFootprints.apply(this, arguments)
+			InteractiveDateComponent::eventRangeToEventFootprints.apply(this, arguments)
 		else
 			[]

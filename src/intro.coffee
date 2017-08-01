@@ -71,6 +71,7 @@ EventSource = FC.EventSource
 EventFootprint = FC.EventFootprint
 EventDefMutation = FC.EventDefMutation
 
+InteractiveDateComponent = FC.InteractiveDateComponent
 EventRenderer = FC.EventRenderer
 DateSelecting = FC.DateSelecting
 EventDragging = FC.EventDragging
