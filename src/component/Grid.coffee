@@ -1,21 +1,22 @@
 
-orig_getEventFootprintClasses = Grid::getEventFootprintClasses
-orig_getEventFootprintDefaultBackgroundColor = Grid::getEventFootprintDefaultBackgroundColor
-orig_getEventFootprintDefaultBorderColor = Grid::getEventFootprintDefaultBorderColor
-orig_getEventFootprintDefaultTextColor = Grid::getEventFootprintDefaultTextColor
+EventRenderer_getClasses = EventRenderer::getClasses
+EventRenderer_getDefaultBgColor = EventRenderer::getDefaultBgColor
+EventRenderer_getDefaultBorderColor = EventRenderer::getDefaultBorderColor
+EventRenderer_getDefaultTextColor = EventRenderer::getDefaultTextColor
 
 
-Grid::getEventFootprintClasses = (eventFootprint) ->
-	classes = orig_getEventFootprintClasses.apply(this, arguments)
+EventRenderer::getClasses = (eventFootprint) ->
+	classes = EventRenderer_getSegClasses.apply(this, arguments)
+	resources = @getEventFootprintResources(eventFootprint)
 
-	for resource in @getEventFootprintResources(eventFootprint)
+	for resource in resources
 		# .concat will process non-arrays and arrays
 		classes = classes.concat(resource.eventClassName or [])
 
 	classes
 
 
-Grid::getEventFootprintDefaultBackgroundColor = (eventFootprint) ->
+EventRenderer::getDefaultBgColor = (eventFootprint) ->
 	resources = @getEventFootprintResources(eventFootprint)
 
 	for currentResource in resources
@@ -25,10 +26,10 @@ Grid::getEventFootprintDefaultBackgroundColor = (eventFootprint) ->
 				return val
 			currentResource = currentResource._parent
 
-	orig_getEventFootprintDefaultBackgroundColor.apply(this, arguments) # super
+	EventRenderer_getDefaultBgColor.apply(this, arguments)
 
 
-Grid::getEventFootprintDefaultBorderColor = (eventFootprint) ->
+EventRenderer::getDefaultBorderColor = (eventFootprint) ->
 	resources = @getEventFootprintResources(eventFootprint)
 
 	for currentResource in resources
@@ -38,10 +39,10 @@ Grid::getEventFootprintDefaultBorderColor = (eventFootprint) ->
 				return val
 			currentResource = currentResource._parent
 
-	orig_getEventFootprintDefaultBorderColor.apply(this, arguments) # super
+	EventRenderer_getDefaultBorderColor.apply(this, arguments)
 
 
-Grid::getEventFootprintDefaultTextColor = (eventFootprint) ->
+EventRenderer::getDefaultTextColor = (eventFootprint) ->
 	resources = @getEventFootprintResources(eventFootprint)
 
 	for currentResource in resources
@@ -51,26 +52,20 @@ Grid::getEventFootprintDefaultTextColor = (eventFootprint) ->
 				return val
 			currentResource = currentResource._parent
 
-	orig_getEventFootprintDefaultTextColor.apply(this, arguments) # super
+	EventRenderer_getDefaultTextColor.apply(this, arguments)
 
 
-###
-TODO: Grid.coffee should deal with componentFootprint
- and ResourceGrid.coffee should deal with (resource)ComponentFootprint
-###
-Grid::getEventFootprintResources = (eventFootprint) ->
-	resourceId = eventFootprint.componentFootprint.resourceId
-	resourceIds = []
+EventRenderer::getEventFootprintResources = (eventFootprint) ->
+	resourceManager = @view.calendar.resourceManager
+	resourceIds = @getEventFootprintResourceIds(eventFootprint)
 	resources = []
 
-	if resourceId?
-		resourceIds.push(resourceId)
-	else
-		resourceIds = eventFootprint.eventDef.getResourceIds()
-
 	for resourceId in resourceIds
-		resource = @view.calendar.getResourceById(resourceId)
+		resource = resourceManager.getResourceById(resourceId)
 		if resource
 			resources.push(resource)
 
 	resources
+
+EventRenderer::getEventFootprintResourceIds = (eventFootprint) ->
+	eventFootprint.eventDef.getResourceIds()
