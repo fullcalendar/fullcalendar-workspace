@@ -10,24 +10,22 @@
     "util/ScrollFollower.coffee",
     "util/ScrollFollowerSprite.coffee",
 
-    "Calendar.coffee",
-    "View.coffee",
-    "Grid.coffee",
+    "models/EventDef.coffee",
+    "models/EventSource.coffee",
+    "models/EventDefMutation.coffee",
+    "models/Resource.coffee",
+    "models/ResourceManager.coffee",
+    "models/ResourceComponentFootprint.coffee",
 
-    "EventDef.coffee",
-    "EventSource.coffee",
-    "EventDefMutation.coffee",
-
-    "Resource.coffee",
-    "ResourceManager.coffee",
     "ResourceViewMixin.coffee",
     "VertResourceViewMixin.coffee",
-    "ResourceGridMixin.coffee",
 
-    "common/ResourceDayTableMixin.coffee",
-    "common/ResourceDayGrid.coffee",
-    "common/ResourceTimeGrid.coffee",
-    "ResourceComponentFootprint.coffee",
+    "component/Grid.coffee",
+    "component/ResourceGridMixin.coffee",
+    "component/ResourceDayTableMixin.coffee",
+
+    "Calendar.coffee",
+    "View.coffee",
 
     "timeline/TimelineView.coffee",
     "timeline/TimelineGrid.coffee",
@@ -45,9 +43,11 @@
     "resource-timeline/ResourceRow.coffee",
     "resource-timeline/config.coffee",
 
+    "resource-agenda/ResourceTimeGrid.coffee",
     "resource-agenda/ResourceAgendaView.coffee",
     "resource-agenda/config.coffee",
 
+    "resource-basic/ResourceDayGrid.coffee",
     "resource-basic/ResourceBasicView.coffee",
     "resource-basic/ResourceMonthView.coffee",
     "resource-basic/config.coffee",
