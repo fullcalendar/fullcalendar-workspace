@@ -1,6 +1,12 @@
 
 ResourceGridMixin = # expects a Grid
 
+	eventRendererClass: ResourceEventRenderer
+	dateSelectingClass: ResourceDateSelecting
+	eventDraggingClass: ResourceEventDragging
+	eventResizingClass: ResourceEventResizing
+	externalDroppingClass: ResourceExternalDropping
+
 
 	# whether we should attempt to render selections or resizes that span
 	# across different resources
@@ -30,65 +36,3 @@ ResourceGridMixin = # expects a Grid
 			Grid::eventRangeToEventFootprints.apply(this, arguments)
 		else
 			[]
-
-
-	# DnD
-	# ---------------------------------------------------------------------------------
-
-
-	computeEventDropMutation: (startFootprint, endFootprint, eventDef) ->
-
-		if @view.isEventDefStartEditable(eventDef)
-			mutation = Grid::computeEventDropMutation.apply(this, arguments)
-		else
-			mutation = new EventDefMutation()
-
-		if @view.isEventDefResourceEditable(eventDef) and startFootprint.resourceId != endFootprint.resourceId
-			mutation.oldResourceId = startFootprint.resourceId
-			mutation.newResourceId = endFootprint.resourceId
-
-		mutation
-
-
-	computeExternalDrop: (resourceComponentFootprint, meta) ->
-		eventDef = Grid::computeExternalDrop.apply(this, arguments)
-		eventDef.addResourceId(resourceComponentFootprint.resourceId)
-		eventDef
-
-
-	# Resize
-	# ---------------------------------------------------------------------------------
-
-
-	computeEventStartResizeMutation: (startFootprint, endFootprint, eventDef) ->
-
-		if not @allowCrossResource and startFootprint.resourceId != endFootprint.resourceId
-			return
-
-		Grid::computeEventStartResizeMutation.apply(this, arguments)
-
-
-	computeEventEndResizeMutation: (startFootprint, endFootprint, eventDef) ->
-
-		if not @allowCrossResource and startFootprint.resourceId != endFootprint.resourceId
-			return
-
-		Grid::computeEventEndResizeMutation.apply(this, arguments)
-
-
-	# Selection
-	# ---------------------------------------------------------------------------------
-
-
-	computeSelectionFootprint: (startFootprint, endFootprint) ->
-
-		if not @allowCrossResource and startFootprint.resourceId != endFootprint.resourceId
-			return
-
-		plainFootprint = Grid::computeSelectionFootprint.apply(this, arguments)
-
-		new ResourceComponentFootprint(
-			plainFootprint.unzonedRange,
-			plainFootprint.isAllDay,
-			startFootprint.resourceId
-		)

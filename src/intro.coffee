@@ -72,3 +72,7 @@ EventFootprint = FC.EventFootprint
 EventDefMutation = FC.EventDefMutation
 
 EventRenderer = FC.EventRenderer
+DateSelecting = FC.DateSelecting
+EventDragging = FC.EventDragging
+EventResizing = FC.EventResizing
+ExternalDropping = FC.ExternalDropping
