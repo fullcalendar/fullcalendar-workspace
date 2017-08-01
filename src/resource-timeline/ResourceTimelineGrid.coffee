@@ -1,7 +1,7 @@
 
 class ResourceTimelineGrid extends TimelineGrid
 
-	@mixin ResourceGridMixin
+	@mixin ResourceComponentMixin
 
 	eventRows: null
 	shownEventRows: null

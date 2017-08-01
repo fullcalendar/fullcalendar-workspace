@@ -73,7 +73,7 @@ class CalendarExtension extends Calendar
 
 
 	###
-	TODO: somehow more DRY with ResourceGridMixin.eventRangeToEventFootprints
+	TODO: somehow more DRY with ResourceComponentMixin.eventRangeToEventFootprints
 	###
 	eventRangeToEventFootprints: (eventRange) ->
 		eventDef = eventRange.eventDef

@@ -1,7 +1,7 @@
 
 class ResourceTimeGrid extends FC.TimeGrid
 
-	@mixin ResourceGridMixin
+	@mixin ResourceComponentMixin
 	@mixin ResourceDayTableMixin
 
 

@@ -1,7 +1,7 @@
 
 class ResourceDayGrid extends FC.DayGrid
 
-	@mixin ResourceGridMixin
+	@mixin ResourceComponentMixin
 	@mixin ResourceDayTableMixin
 
 

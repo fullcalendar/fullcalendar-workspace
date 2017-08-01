@@ -1,5 +1,5 @@
 
-ResourceGridMixin = # expects a Grid
+ResourceComponentMixin =
 
 	eventRendererClass: ResourceEventRenderer
 	dateSelectingClass: ResourceDateSelecting

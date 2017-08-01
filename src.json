@@ -22,7 +22,7 @@
 
     "component/renderers/EventRenderer.coffee",
     "component/renderers/ResourceEventRenderer.coffee",
-    "component/ResourceGridMixin.coffee",
+    "component/ResourceComponentMixin.coffee",
     "component/ResourceDayTableMixin.coffee",
 
     "Calendar.coffee",
