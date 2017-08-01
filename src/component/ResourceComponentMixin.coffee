@@ -1,7 +1,6 @@
 
 ResourceComponentMixin = # expects a InteractiveDateComponent
 
-	eventRendererClass: ResourceEventRenderer
 	dateSelectingClass: ResourceDateSelecting
 	eventDraggingClass: ResourceEventDragging
 	eventResizingClass: ResourceEventResizing

@@ -21,7 +21,6 @@
     "VertResourceViewMixin.coffee",
 
     "component/renderers/EventRenderer.coffee",
-    "component/renderers/ResourceEventRenderer.coffee",
     "component/ResourceComponentMixin.coffee",
     "component/ResourceDayTableMixin.coffee",
 

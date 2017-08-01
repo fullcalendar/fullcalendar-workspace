@@ -67,5 +67,9 @@ EventRenderer::getEventFootprintResources = (eventFootprint) ->
 
 	resources
 
+
 EventRenderer::getEventFootprintResourceIds = (eventFootprint) ->
-	eventFootprint.eventDef.getResourceIds()
+	if eventFootprint.componentFootprint instanceof ResourceComponentFootprint
+		[ eventFootprint.componentFootprint.resourceId ]
+	else
+		eventFootprint.eventDef.getResourceIds()
