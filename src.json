@@ -21,6 +21,10 @@
     "VertResourceViewMixin.coffee",
 
     "component/renderers/EventRenderer.coffee",
+    "component/interactions/ResourceDateSelecting.coffee",
+    "component/interactions/ResourceEventDragging.coffee",
+    "component/interactions/ResourceEventResizing.coffee",
+    "component/interactions/ResourceExternalDropping.coffee",
     "component/ResourceComponentMixin.coffee",
     "component/ResourceDayTableMixin.coffee",
 
