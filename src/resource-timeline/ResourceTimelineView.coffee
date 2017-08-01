@@ -27,7 +27,7 @@ class ResourceTimelineView extends TimelineView
 	dividerWidth: null
 
 
-	initialize: ->
+	constructor: ->
 		super
 		@processResourceOptions()
 		@resourceGrid = new Spreadsheet(this)
@@ -140,7 +140,7 @@ class ResourceTimelineView extends TimelineView
 		@resourceGrid.el = @el.find('tbody .fc-resource-area')
 		@resourceGrid.headEl = @el.find('thead .fc-resource-area')
 		@resourceGrid.renderSkeleton()
-		# ^ is not a Grid/ChronoComponent
+		# ^ is not a Grid/DateComponent
 
 
 	# Divider moving

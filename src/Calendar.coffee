@@ -6,7 +6,8 @@ class CalendarExtension extends Calendar
 	resourceManager: null
 
 
-	initialize: -> # don't need to call super or anything
+	constructor: ->
+		super
 		@resourceManager = new ResourceManager(this)
 
 

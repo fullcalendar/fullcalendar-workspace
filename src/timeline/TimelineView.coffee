@@ -6,7 +6,8 @@ class TimelineView extends View
 	usesMinMaxTime: true # indicates that minTime/maxTime affects rendering
 
 
-	initialize: ->
+	constructor: ->
+		super
 		@timeGrid = @instantiateGrid()
 		@addChild(@timeGrid)
 
@@ -153,10 +154,10 @@ class TimelineView extends View
 
 	renderEventsPayload: (eventsPayload) ->
 		@timeGrid.renderEventsPayload(eventsPayload)
-		@updateWidth() # could rely on ChronoComponent entirely if not for this line
+		@updateWidth() # could rely on DateComponent entirely if not for this line
 
 
 	unrenderEvents: ->
 		@timeGrid.unrenderEvents()
-		@updateWidth() # could rely on ChronoComponent entirely if not for this line
+		@updateWidth() # could rely on DateComponent entirely if not for this line
 
