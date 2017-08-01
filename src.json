@@ -32,6 +32,11 @@
     "View.coffee",
 
     "timeline/TimelineView.coffee",
+    "timeline/TimelineGridEventRenderer.coffee",
+    "timeline/TimelineGridFillRenderer.coffee",
+    "timeline/TimelineGridHelperRenderer.coffee",
+    "timeline/TimelineGridEventDragging.coffee",
+    "timeline/TimelineGridEventResizing.coffee",
     "timeline/TimelineGrid.coffee",
     "timeline/TimelineGrid.defaults.coffee",
     "timeline/config.coffee",

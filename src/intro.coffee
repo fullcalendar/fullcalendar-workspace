@@ -70,9 +70,13 @@ EventDef = FC.EventDef
 EventSource = FC.EventSource
 EventFootprint = FC.EventFootprint
 EventDefMutation = FC.EventDefMutation
+cssToStr = FC.cssToStr
 
 InteractiveDateComponent = FC.InteractiveDateComponent
 EventRenderer = FC.EventRenderer
+FillRenderer = FC.FillRenderer
+HelperRenderer = FC.HelperRenderer
+StandardInteractionsMixin = FC.StandardInteractionsMixin
 DateSelecting = FC.DateSelecting
 EventDragging = FC.EventDragging
 EventResizing = FC.EventResizing

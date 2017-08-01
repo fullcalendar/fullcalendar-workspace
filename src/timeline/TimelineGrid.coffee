@@ -1,8 +1,13 @@
 
-cssToStr = FC.cssToStr
+class TimelineGrid extends InteractiveDateComponent
 
+	@mixin(StandardInteractionsMixin)
+	@eventRendererClass = TimelineGridEventRenderer
+	@fillRendererClass = TimelineGridFillRenderer
+	@helperRendererClass = TimelineGridHelperRenderer
+	@eventDraggingClass = TimelineGridEventDragging
+	@eventResizingClass = TimelineGridEventResizing
 
-class TimelineGrid extends Grid
 
 	# FYI: the start/end properties have timezones stripped,
 	# even if the calendar/view has a timezone.
@@ -34,7 +39,6 @@ class TimelineGrid extends Grid
 	bodyScroller: null
 	joiner: null
 	follower: null
-	eventTitleFollower: null
 
 	timeWindowMs: null
 	slotDuration: null
@@ -73,19 +77,6 @@ class TimelineGrid extends Grid
 			ms < @timeWindowMs # before the maxTime?
 		else
 			true
-
-
-	computeDisplayEventTime: ->
-		not @isTimeScale # because times should be obvious via axis
-
-
-	computeDisplayEventEnd: ->
-		false
-
-
-	# Computes a default event time formatting string if `timeFormat` is not explicitly defined
-	computeEventTimeFormat: ->
-		@opt('extraSmallTimeFormat')
 
 
 	# Dates
@@ -169,6 +160,7 @@ class TimelineGrid extends Grid
 
 		@slotDates = slotDates
 		@updateGridDates()
+		@eventRenderer.rangeUpdated()
 
 
 	updateGridDates: ->
@@ -336,12 +328,7 @@ class TimelineGrid extends Grid
 			@follower = new ScrollFollower(@headScroller, true) # allowPointerEvents=true
 
 		if true
-			@eventTitleFollower = new ScrollFollower(@bodyScroller)
-			@eventTitleFollower.minTravel = 50
-			if @isRTL
-				@eventTitleFollower.containOnNaturalRight = true
-			else
-				@eventTitleFollower.containOnNaturalLeft = true
+			@eventRenderer.setBodyScroller(@bodyScroller) # creates the scrollfollower
 
 		super
 
@@ -536,12 +523,7 @@ class TimelineGrid extends Grid
 
 	renderBusinessHours: ->
 		if not @largeUnit
-			segs = @businessHourSegs = @buildBusinessHourSegs(not @isTimeScale)
-			@renderFill('businessHours', segs, 'bgevent')
-
-
-	unrenderBusinessHours: ->
-		@unrenderFill('businessHours')
+			super
 
 
 	# Now Indicator
@@ -644,8 +626,7 @@ class TimelineGrid extends Grid
 		if @follower
 			@follower.update()
 
-		if @eventTitleFollower
-			@eventTitleFollower.update()
+		@eventRenderer.updateSize()
 
 
 	computeSlotWidth: -> # compute the *default*
@@ -732,7 +713,10 @@ class TimelineGrid extends Grid
 
 	# this needs to be called if v scrollbars appear on body container. or zooming
 	updateSegPositions: ->
-		segs = (@segs or []).concat(@businessHourSegs or [])
+		segs = [].concat(
+			@eventRenderer.getSegs()
+			@businessHourRenderer.getSegs()
+		)
 
 		for seg in segs
 			coords = @rangeToCoords(seg)
@@ -742,292 +726,23 @@ class TimelineGrid extends Grid
 		return
 
 
-	# Events
+	# Event Resizing
 	# ---------------------------------------------------------------------------------
-
-
-	renderFgSegs: (segs) ->
-		segs = @renderFgSegEls(segs)
-
-		@renderFgSegsInContainers([[ this, segs ]])
-		@updateSegFollowers(segs)
-
-		segs
-
-
-	unrenderFgSegs: ->
-		@clearSegFollowers()
-		@unrenderFgContainers([ this ])
-
-
-	renderFgSegsInContainers: (pairs) ->
-
-		for [ container, segs ] in pairs
-			for seg in segs
-				# TODO: centralize logic (also in updateSegPositions)
-				coords = @rangeToCoords(seg)
-				seg.el.css
-					left: (seg.left = coords.left)
-					right: -(seg.right = coords.right)
-
-		# attach segs
-		for [ container, segs ] in pairs
-			for seg in segs
-				seg.el.appendTo(container.segContainerEl)
-
-		# compute seg verticals
-		for [ container, segs ] in pairs
-			for seg in segs
-				seg.height = seg.el.outerHeight(true) # include margin
-			@buildSegLevels(segs)
-			container.segContainerHeight = computeOffsetForSegs(segs) # returns this value!
-
-		# assign seg verticals
-		for [ container, segs ] in pairs
-			for seg in segs
-				seg.el.css('top', seg.top)
-			container.segContainerEl.height(container.segContainerHeight)
-
-
-	# NOTE: this modifies the order of segs
-	buildSegLevels: (segs) ->
-		segLevels = []
-
-		@sortEventSegs(segs)
-
-		for unplacedSeg in segs
-			unplacedSeg.above = []
-
-			# determine the first level with no collisions
-			level = 0 # level index
-			while level < segLevels.length
-				isLevelCollision = false
-
-				# determine collisions
-				for placedSeg in segLevels[level]
-					if timeRowSegsCollide(unplacedSeg, placedSeg)
-						unplacedSeg.above.push(placedSeg)
-						isLevelCollision = true
-
-				if isLevelCollision
-					level += 1
-				else
-					break
-
-			# insert into the first non-colliding level. create if necessary
-			(segLevels[level] or (segLevels[level] = []))
-				.push(unplacedSeg)
-
-			# record possible colliding segments below (TODO: automated test for this)
-			level += 1
-			while level < segLevels.length
-				for belowSeg in segLevels[level]
-					if timeRowSegsCollide(unplacedSeg, belowSeg)
-						belowSeg.above.push(unplacedSeg)
-				level += 1
-
-		segLevels
-
-
-	unrenderFgContainers: (containers) ->
-		for container in containers
-			container.segContainerEl.empty()
-			container.segContainerEl.height('')
-			container.segContainerHeight = null
-
-
-	fgSegHtml: (seg, disableResizing) ->
-		eventDef = seg.footprint.eventDef
-		isDraggable = @view.isEventDefDraggable(eventDef)
-		isResizableFromStart = seg.isStart and @view.isEventDefResizableFromStart(eventDef)
-		isResizableFromEnd = seg.isEnd and @view.isEventDefResizableFromEnd(eventDef)
-
-		classes = @getSegClasses(seg, isDraggable, isResizableFromStart or isResizableFromEnd)
-		classes.unshift('fc-timeline-event', 'fc-h-event')
-
-		timeText = @getEventTimeText(seg.footprint)
-
-		'<a class="' + classes.join(' ') + '" style="' + cssToStr(@getEventFootprintSkinCss(seg.footprint)) + '"' +
-			(if eventDef.url
-				' href="' + htmlEscape(eventDef.url) + '"'
-			else
-				'') +
-			'>' +
-			'<div class="fc-content">' +
-				(if timeText
-					'<span class="fc-time">' +
-						htmlEscape(timeText) +
-					'</span>'
-				else
-					'') +
-				'<span class="fc-title">' +
-					(if eventDef.title then htmlEscape(eventDef.title) else '&nbsp;') +
-				'</span>' +
-			'</div>' +
-			'<div class="fc-bg" />' +
-			(if isResizableFromStart
-				'<div class="fc-resizer fc-start-resizer"></div>'
-			else
-				'') +
-			(if isResizableFromEnd
-				'<div class="fc-resizer fc-end-resizer"></div>'
-			else
-				'') +
-		'</a>'
-
-
-	updateSegFollowers: (segs) ->
-		if @eventTitleFollower
-			sprites = []
-			for seg in segs
-				titleEl = seg.el.find('.fc-title')
-				if titleEl.length
-					sprites.push(new ScrollFollowerSprite(titleEl))
-			@eventTitleFollower.setSprites(sprites)
-
-
-	clearSegFollowers: ->
-		if @eventTitleFollower
-			@eventTitleFollower.clearSprites()
-
-
-	segDragStart: ->
-		super
-
-		if @eventTitleFollower
-			@eventTitleFollower.forceRelative()
-
-
-	segDragEnd: ->
-		super
-
-		if @eventTitleFollower
-			@eventTitleFollower.clearForce()
-
-
-	segResizeStart: ->
-		super
-
-		if @eventTitleFollower
-			@eventTitleFollower.forceRelative()
-
-
-	segResizeEnd: ->
-		super
-
-		if @eventTitleFollower
-			@eventTitleFollower.clearForce()
-
-
-	# Helper
-	# ---------------------------------------------------------------------------------
-
-
-	renderHelperEventFootprintEls: (eventFootprints, sourceSeg) ->
-		segs = @eventFootprintsToSegs(eventFootprints)
-		segs = @renderFgSegEls(segs)
-		@renderHelperSegsInContainers([[ this, segs ]], sourceSeg)
-
-
-	renderHelperSegsInContainers: (pairs, sourceSeg) ->
-		helperNodes = [] # .fc-event-container
-		segNodes = [] # .fc-event
-
-		for [ containerObj, segs ] in pairs
-			for seg in segs
-
-				# TODO: centralize logic (also in renderFgSegsInContainers)
-				coords = @rangeToCoords(seg)
-				seg.el.css
-					left: (seg.left = coords.left)
-					right: -(seg.right = coords.right)
-
-				# FYI: containerObj is either the Grid or a ResourceRow
-				# TODO: detangle the concept of resources
-				if sourceSeg and sourceSeg.resourceId == containerObj.resource?.id
-					seg.el.css('top', sourceSeg.el.css('top'))
-				else
-					seg.el.css('top', 0)
-
-		for [ containerObj, segs ] in pairs
-
-			helperContainerEl = $('<div class="fc-event-container fc-helper-container"/>')
-				.appendTo(containerObj.innerEl)
-
-			helperNodes.push(helperContainerEl[0])
-
-			for seg in segs
-				helperContainerEl.append(seg.el)
-				segNodes.push(seg.el[0])
-
-		if (@helperEls)
-			@helperEls = @helperEls.add($(helperNodes))
-		else
-			@helperEls = $(helperNodes)
-
-		$(segNodes) # return value
-
-
-	unrenderHelper: ->
-		if @helperEls
-			@helperEls.remove()
-			@helperEls = null
 
 
 	# Renders a visual indication of an event being resized
-	renderEventResize: (eventFootprints, seg) ->
+	renderEventResize: (eventFootprints, seg, isTouch) ->
 
 		for eventFootprint in eventFootprints
 			@renderHighlight(eventFootprint.componentFootprint)
 
-		@renderHelperEventFootprints(eventFootprints, seg) # return value. rendered seg els
+		@helperRenderer.renderEventResizingFootprints(eventFootprints, seg, isTouch)
 
 
 	# Unrenders a visual indication of an event being resized
 	unrenderEventResize: ->
 		@unrenderHighlight()
-		@unrenderHelper()
-
-
-	# Fill
-	# ---------------------------------------------------------------------------------
-	# these functions expect segs to have rendered els (not yet attached to DOM)
-
-
-	renderFill: (type, segs, className) ->
-		segs = @renderFillSegEls(type, segs) # pass in className?
-		@renderFillInContainers(type, [[ this, segs ]], className)
-		segs
-
-
-	renderFillInContainers: (type, pairs, className) ->
-		for [ containerObj, segs ] in pairs
-			@renderFillInContainer(type, containerObj, segs, className)
-
-
-	renderFillInContainer: (type, containerObj, segs, className) ->
-		if segs.length
-
-			className or= type.toLowerCase()
-
-			# making a new container each time is OKAY
-			# all types of segs (background or business hours or whatever) are rendered in one pass
-			containerEl = $('<div class="fc-' + className + '-container" />')
-				.appendTo(containerObj.bgSegContainerEl)
-
-			for seg in segs
-				coords = @rangeToCoords(seg) # TODO: centralize logic
-				seg.el.css
-					left: (seg.left = coords.left)
-					right: -(seg.right = coords.right)
-
-				seg.el.appendTo(containerEl)
-
-			# TODO: better API
-			if @elsByFill[type]
-				@elsByFill[type] = @elsByFill[type].add(containerEl)
-			else
-				@elsByFill[type] = containerEl
+		@helperRenderer.unrender()
 
 
 	# DnD
@@ -1037,38 +752,16 @@ class TimelineGrid extends Grid
 	# TODO: different technique based on scale.
 	#  when dragging, middle of event is the drop.
 	#  should be the edges when isTimeScale.
-	renderDrag: (eventFootprints, seg) ->
+	renderDrag: (eventFootprints, seg, isTouch) ->
 		if seg
-			@renderHelperEventFootprints(eventFootprints) # return value. rendered seg els
+			@helperRenderer.renderEventDraggingFootprints(eventFootprints, seg, isTouch)
+			true # signal helper rendered
 		else
 			for eventFootprint in eventFootprints
 				@renderHighlight(eventFootprint.componentFootprint)
-
-			null # signals no helper els rendered
+			false # signal helper not rendered
 
 
 	unrenderDrag: ->
-		@unrenderHelper()
+		@helperRenderer.unrender()
 		@unrenderHighlight()
-
-
-# Seg Rendering Utils
-# ----------------------------------------------------------------------------------------------------------------------
-# TODO: move
-
-
-computeOffsetForSegs = (segs) ->
-	max = 0
-	for seg in segs
-		max = Math.max(max, computeOffsetForSeg(seg))
-	max
-
-
-computeOffsetForSeg = (seg) ->
-	if not seg.top?
-		seg.top = computeOffsetForSegs(seg.above)
-	seg.top + seg.height
-
-
-timeRowSegsCollide = (seg0, seg1) ->
-	seg0.left < seg1.right and seg0.right > seg1.left
