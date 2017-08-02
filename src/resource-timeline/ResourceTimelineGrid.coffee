@@ -2,6 +2,9 @@
 class ResourceTimelineGrid extends TimelineGrid
 
 	@mixin ResourceComponentMixin
+	eventRendererClass: ResourceTimelineGridEventRenderer
+	fillRendererClass: ResourceTimelineGridFillRenderer
+	helperRendererClass: ResourceTimelineGridHelperRenderer
 
 	eventRows: null
 	shownEventRows: null
@@ -90,49 +93,6 @@ class ResourceTimelineGrid extends TimelineGrid
 		@tbodyEl = rowContainerEl.find('tbody')
 
 
-	renderFgSegs: (segs) -> # TODO: make DRY-er
-		segs = @renderFgSegEls(segs)
-		pairs = @view.pairSegsWithRows(segs)
-
-		visiblePairs = []
-		for pair in pairs
-			[ containerObj, containerSegs ] = pair
-			containerObj.fgSegs = containerSegs
-
-			if containerObj.isShown
-				containerObj.isSegsRendered = true
-				visiblePairs.push(pair)
-
-		@renderFgSegsInContainers(visiblePairs)
-		@updateSegFollowers(segs)
-
-		segs
-
-
-	unrenderFgSegs: ->
-		@clearSegFollowers()
-		eventRows = @view.getEventRows() # need to freshly query. grid might not be built
-
-		# TODO: consolidate with what EventRow does
-		# TODO: triggerEventUnrender
-		for eventRow in eventRows
-			eventRow.fgSegs = null
-			eventRow.isSegsRendered = false
-
-		@unrenderFgContainers(eventRows)
-
-
-	unrenderBgSegs: ->
-		super
-
-		eventRows = @view.getEventRows() # need to freshly query. grid might not be built
-
-		# TODO: consolidate with what EventRow does
-		# TODO: triggerEventUnrender
-		for eventRow in eventRows
-			eventRow.bgSegs = null
-
-
 	# Business Hours
 	# ---------------------------------------------------------------------------------
 	# all of the below `row`s are assumed to be *RESOURCE* rows
@@ -213,51 +173,6 @@ class ResourceTimelineGrid extends TimelineGrid
 			row.resource.businessHours or @opt('businessHours')
 		)
 		businessHourSegs = @eventFootprintsToSegs(businessHourEventFootprints)
-		businessHourSegs = @renderFillSegEls('businessHours', businessHourSegs) # pass in className? # always needs this because EventRow doesnt do it
+		businessHourSegs = @fillRenderer.buildSegEls('businessHours', businessHourSegs) # pass in className? # always needs this because EventRow doesnt do it
 		row.businessHourSegs = businessHourSegs
 		return
-
-
-	# Fill System
-	# ---------------------------------------------------------------------------------
-
-
-	renderFill: (type, segs, className) ->
-		segs = @renderFillSegEls(type, segs)
-		resourceSegs = []
-		nonResourceSegs = []
-
-		for seg in segs
-			if seg.resourceId
-				resourceSegs.push(seg)
-			else
-				nonResourceSegs.push(seg)
-
-		pairs = @view.pairSegsWithRows(resourceSegs)
-		visiblePairs = []
-
-		for pair in pairs
-			[ rowObj, rowSegs ] = pair
-
-			if type == 'bgEvent'
-				rowObj.bgSegs = rowSegs
-
-			if rowObj.isShown
-				visiblePairs.push(pair)
-
-		if nonResourceSegs.length
-			visiblePairs.unshift([ this, nonResourceSegs ])
-
-		@renderFillInContainers(type, visiblePairs, className)
-
-		segs
-
-
-	# TODO: when unrendering fill, update rowObj's bgSegs
-
-
-	renderHelperEventFootprintEls: (eventFootprints, sourceSeg) ->
-		segs = @eventFootprintsToSegs(eventFootprints)
-		segs = @renderFgSegEls(segs) # repeat :(
-		pairs = @view.pairSegsWithRows(segs)
-		@renderHelperSegsInContainers(pairs, sourceSeg)
