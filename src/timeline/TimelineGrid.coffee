@@ -2,11 +2,11 @@
 class TimelineGrid extends InteractiveDateComponent
 
 	@mixin(StandardInteractionsMixin)
-	@eventRendererClass = TimelineGridEventRenderer
-	@fillRendererClass = TimelineGridFillRenderer
-	@helperRendererClass = TimelineGridHelperRenderer
-	@eventDraggingClass = TimelineGridEventDragging
-	@eventResizingClass = TimelineGridEventResizing
+	eventRendererClass: TimelineGridEventRenderer
+	fillRendererClass: TimelineGridFillRenderer
+	helperRendererClass: TimelineGridHelperRenderer
+	eventDraggingClass: TimelineGridEventDragging
+	eventResizingClass: TimelineGridEventResizing
 
 
 	# FYI: the start/end properties have timezones stripped,

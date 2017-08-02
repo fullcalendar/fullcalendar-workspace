@@ -3,7 +3,7 @@ class TimelineGridHelperRenderer extends HelperRenderer
 
 
 	renderSegs: (segs, sourceSeg) ->
-		@renderSegsInContainers([[ this, segs ]], sourceSeg)
+		@renderSegsInContainers([[ @component, segs ]], sourceSeg)
 
 
 	renderSegsInContainers: (pairs, sourceSeg) ->
