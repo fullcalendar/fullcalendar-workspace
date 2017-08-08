@@ -133,21 +133,21 @@ class TimelineGrid extends InteractiveDateComponent
 		)
 
 
-	rangeUpdated: ->
-		view = @view
+	handleDateProfileSet: (dateProfile) ->
+		super
 
-		@timeWindowMs = view.maxTime - view.minTime
+		@timeWindowMs = dateProfile.maxTime - dateProfile.minTime
 
 		# makes sure zone is stripped
-		@normalizedUnzonedStart = @normalizeGridDate(view.renderUnzonedRange.getStart())
-		@normalizedUnzonedEnd = @normalizeGridDate(view.renderUnzonedRange.getEnd())
+		@normalizedUnzonedStart = @normalizeGridDate(dateProfile.renderUnzonedRange.getStart())
+		@normalizedUnzonedEnd = @normalizeGridDate(dateProfile.renderUnzonedRange.getEnd())
 
 		# apply minTime/maxTime
 		# TODO: move towards .time(), but didn't play well with negatives.
 		# TODO: View should be responsible.
 		if @isTimeScale
-			@normalizedUnzonedStart.add(@view.minTime)
-			@normalizedUnzonedEnd.subtract(1, 'day').add(@view.maxTime)
+			@normalizedUnzonedStart.add(dateProfile.minTime)
+			@normalizedUnzonedEnd.subtract(1, 'day').add(dateProfile.maxTime)
 
 		@normalizedUnzonedRange = new UnzonedRange(@normalizedUnzonedStart, @normalizedUnzonedEnd)
 
