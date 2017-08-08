@@ -254,6 +254,9 @@ class ResourceManager extends Class
 		resource = $.extend({}, resourceInput)
 		resource.id = String(resourceInput.id ? '_fc' + ResourceManager.resourceGuid++)
 
+		if resource.businessHours?
+			resource.businessHourGenerator = new BusinessHourGenerator(resource.businessHours, @calendar)
+
 		# TODO: consolidate repeat logic
 		rawClassName = resourceInput.eventClassName
 		resource.eventClassName =

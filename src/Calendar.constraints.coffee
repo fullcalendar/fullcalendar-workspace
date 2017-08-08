@@ -35,37 +35,37 @@ CalendarExtension::isFootprintAllowed = (footprint, peerEventFootprints, constra
 	super
 
 
-CalendarExtension::buildCurrentBusinessFootprints = (wholeDay) ->
+CalendarExtension::buildCurrentBusinessFootprints = (isAllDay) ->
 	flatResources = @resourceManager.getFlatResources()
 	anyCustomBusinessHours = false
 
 	# any per-resource business hours? or will one global businessHours suffice?
 	for resource in flatResources
-		if resource.businessHours
+		if resource.businessHourGenerator
 			anyCustomBusinessHours = true
 
 	# if there are any custom business hours, all business hours must be sliced per-resources
 	if anyCustomBusinessHours
-		footprints = []
+		view = @view
+		generalBusinessHourGenerator = view.get('businessHourGenerator')
+		unzonedRange = view.get('dateProfile').activeUnzonedRange
+		componentFootprints = []
 
 		for resource in flatResources
-			plainFootprints = @_buildCurrentBusinessFootprints(
-				wholeDay
-				resource.businessHours or @opt('businessHours')
-			)
+			businessHourGenerator = resource.businessHourGenerator or generalBusinessHourGenerator
+			eventInstanceGroup = businessHourGenerator.buildEventInstanceGroup(isAllDay, unzonedRange)
 
-			for plainFootprint in plainFootprints
-				footprints.push(
-					new ResourceComponentFootprint(
-						plainFootprint.unzonedRange,
-						plainFootprint.isAllDay,
-						resource.id
+			if eventInstanceGroup
+				for eventRange in eventInstanceGroup.getAllEventRanges()
+					componentFootprints.push(
+						new ResourceComponentFootprint(
+							eventRange.unzonedRange
+							isAllDay # isAllDay
+							resource.id
+						)
 					)
-				)
-
-		footprints
 	else
-		super(wholeDay)
+		super
 
 
 CalendarExtension::footprintContainsFootprint = (outerFootprint, innerFootprint) ->
