@@ -72,6 +72,7 @@ EventFootprint = FC.EventFootprint
 EventDefMutation = FC.EventDefMutation
 cssToStr = FC.cssToStr
 
+DateComponent = FC.DateComponent
 InteractiveDateComponent = FC.InteractiveDateComponent
 EventRenderer = FC.EventRenderer
 FillRenderer = FC.FillRenderer

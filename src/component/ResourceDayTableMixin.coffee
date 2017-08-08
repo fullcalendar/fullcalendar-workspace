@@ -268,37 +268,35 @@ ResourceDayTableMixin =
 	# ----------------------------------------------------------------------------------------------
 
 
-	###
-	If there are no per-resource business hour definitions, returns null.
-	Otherwise, returns a list of business hours segs for *every* resource.
-	TODO: make more DRY with Calendar::buildCurrentBusinessFootprints
-	###
-	buildBusinessHourEventFootprints: (wholeDay) ->
+	renderBusinessHours: (businessHourPayload) ->
 		if @flattenedResources # any resources rendered?
+
+			isAllDay = @hasAllDayBusinessHours
+			generalEventInstanceGroup = businessHourPayload[if isAllDay then 'allDay' else 'timed']
+			unzonedRange = @get('dateProfile').activeUnzonedRange
 			eventFootprints = []
 
 			for resource in @flattenedResources
-				plainEventFootprints = @_buildBusinessHourEventFootprints(
-					wholeDay
-					resource.businessHours or
-						@view.calendar.opt('businessHours')
-						# fallback. access from calendar.
-						# don't access from view. doesn't update with dynamic options
-				)
+				eventInstanceGroup =
+					if resource.businessHourGenerator
+						resource.businessHourGenerator.buildEventInstanceGroup(isAllDay, unzonedRange)
+					else
+						generalEventInstanceGroup
 
-				for plainEventFootprint in plainEventFootprints
-					eventFootprints.push(
-						new EventFootprint(
-							new ResourceComponentFootprint(
-								plainEventFootprint.componentFootprint.unzonedRange,
-								plainEventFootprint.componentFootprint.isAllDay,
-								resource.id
+				if eventInstanceGroup
+					for eventRange in eventInstanceGroup.sliceRenderRanges(unzonedRange)
+						eventFootprints.push(
+							new EventFootprint(
+								new ResourceComponentFootprint(
+									eventRange.unzonedRange
+									isAllDay
+									resource.id
+								)
+								eventRange.eventDef
+								eventRange.eventInstance
 							)
-							plainEventFootprint.eventDef
-							plainEventFootprint.eventInstance
 						)
-					)
 
-			eventFootprints
+			@renderBusinessHourEventFootprints(eventFootprints)
 		else
-			Grid::buildBusinessHourEventFootprints.apply(this, arguments)
+			DateComponent::renderBusinessHours.apply(this, arguments)
