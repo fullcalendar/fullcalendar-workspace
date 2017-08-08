@@ -38,7 +38,6 @@ if FC.internalApiVersion != 9
 Calendar = FC.Calendar
 Class = FC.Class
 View = FC.View
-Grid = FC.Grid
 debounce = FC.debounce
 isInt = FC.isInt
 removeExact = FC.removeExact
