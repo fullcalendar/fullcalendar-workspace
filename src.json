@@ -29,6 +29,7 @@
     "component/ResourceDayTableMixin.coffee",
 
     "Calendar.coffee",
+    "Calendar.constraints.coffee",
     "View.coffee",
 
     "timeline/renderers/TimelineGridEventRenderer.coffee",
