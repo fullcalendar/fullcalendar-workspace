@@ -180,7 +180,7 @@ class ResourceTimelineView extends TimelineView
 
 				@dividerWidth = width
 				@positionDivider(width)
-				@updateWidth() # TODO: only do this at the very end?
+				@updateSize() # TODO: only do this at the very end?
 
 			dragEnd: =>
 				@dividerEls.removeClass('fc-active')
@@ -203,35 +203,29 @@ class ResourceTimelineView extends TimelineView
 	renderEventsPayload: (eventsPayload) ->
 		@timeGrid.renderEventsPayload(eventsPayload)
 		@syncRowHeights()
-		@updateWidth()
 
 
 	unrenderEvents: ->
 		@timeGrid.unrenderEvents()
 		@syncRowHeights()
-		@updateWidth()
 
 
 	# Sizing
 	# ---------------------------------------------------------------------------------
 
 
-	updateWidth: ->
+	updateSize: (totalHeight, isAuto, isResize) ->
 		super
-		@resourceGrid.updateWidth()
+
+		@resourceGrid.updateSize()
 		@joiner.update()
 
 		if @cellFollower
 			@cellFollower.update()
 
-
-	updateHeight: (isResize) ->
-		super
 		if isResize
 			@syncRowHeights()
 
-
-	setHeight: (totalHeight, isAuto) ->
 		headHeight = @syncHeadHeights()
 
 		if isAuto
@@ -526,11 +520,11 @@ class ResourceTimelineView extends TimelineView
 
 	rowsShown: (rows) ->
 		@syncRowHeights(rows)
-		@updateWidth()
+		@updateSize()
 
 
 	rowsHidden: (rows) ->
-		@updateWidth()
+		@updateSize()
 
 
 	syncRowHeights: (visibleRows, safe=false) -> # visibleRows is flat. does not do recursive

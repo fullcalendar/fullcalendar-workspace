@@ -231,7 +231,7 @@ class Spreadsheet
 	# ---------------------------------------------------------------------------------
 
 
-	updateWidth: ->
+	updateSize: ->
 		@headScroller.updateSize()
 		@bodyScroller.updateSize()
 		@joiner.update()
