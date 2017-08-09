@@ -16,12 +16,6 @@ class TimelineView extends View
 		new TimelineGrid(this)
 
 
-	setDateProfileForRendering: (dateProfile) ->
-		super
-		@timeGrid.initScaleProps()
-		@timeGrid.setRange(@renderUnzonedRange)
-
-
 	getFallbackDuration: ->
 		@timeGrid.computeFallbackDuration()
 
@@ -80,14 +74,6 @@ class TimelineView extends View
 		super
 
 
-	renderDates: ->
-		@timeGrid.renderDates()
-
-
-	unrenderDates: ->
-		@timeGrid.unrenderDates()
-
-
 	# Now Indicator
 	# ------------------------------------------------------------------------------------------------------------------
 
@@ -122,12 +108,13 @@ class TimelineView extends View
 
 
 	computeInitialDateScroll: ->
+		unzonedRange = @get('dateProfile').activeUnzonedRange
 		left = 0
 		if @timeGrid.isTimeScale
 			scrollTime = @opt('scrollTime')
 			if scrollTime
 				scrollTime = moment.duration(scrollTime)
-				left = @timeGrid.dateToCoord(@activeUnzonedRange.getStart().time(scrollTime)) # TODO: fix this for RTL
+				left = @timeGrid.dateToCoord(unzonedRange.getStart().time(scrollTime)) # TODO: fix this for RTL
 		{ left }
 
 

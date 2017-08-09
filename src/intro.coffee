@@ -74,6 +74,7 @@ cssToStr = FC.cssToStr
 DateComponent = FC.DateComponent
 InteractiveDateComponent = FC.InteractiveDateComponent
 EventRenderer = FC.EventRenderer
+BusinessHourRenderer = FC.BusinessHourRenderer
 FillRenderer = FC.FillRenderer
 HelperRenderer = FC.HelperRenderer
 StandardInteractionsMixin = FC.StandardInteractionsMixin

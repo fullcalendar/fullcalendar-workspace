@@ -105,10 +105,11 @@ View::unbindResourceChanges = ->
 # --------------------------------------------------------------------------------------------------
 
 
+# TODO: more DRY
 View.watch 'displayingEvents', [ 'displayingDates', 'hasEvents', 'currentResources' ], (deps) ->
-	@requestEventsRender(@get('currentEvents'))
+	@requestRender('event', 'init', @executeEventsRender, [ @get('currentEvents') ])
 , ->
-	@requestEventsUnrender()
+	@requestRender('event', 'destroy', @executeEventsUnrender)
 
 
 # Resource Data

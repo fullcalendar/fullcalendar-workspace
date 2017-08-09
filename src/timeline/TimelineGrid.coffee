@@ -4,10 +4,12 @@ class TimelineGrid extends InteractiveDateComponent
 	@mixin(StandardInteractionsMixin)
 	eventRendererClass: TimelineGridEventRenderer
 	fillRendererClass: TimelineGridFillRenderer
+	businessHourRendererClass: BusinessHourRenderer
 	helperRendererClass: TimelineGridHelperRenderer
 	eventDraggingClass: TimelineGridEventDragging
 	eventResizingClass: TimelineGridEventResizing
 
+	view: null # TODO: make more general and/or remove
 
 	# FYI: the start/end properties have timezones stripped,
 	# even if the calendar/view has a timezone.
@@ -60,10 +62,14 @@ class TimelineGrid extends InteractiveDateComponent
 	innerEl: null
 
 
-	constructor: ->
+	constructor: (@view) ->
 		super
 
 		@slotWidth = @opt('slotWidth')
+
+
+	opt: (name) ->
+		@view.opt(name)
 
 
 	isValidDate: (date) ->
@@ -71,7 +77,8 @@ class TimelineGrid extends InteractiveDateComponent
 			false
 		else if @isTimeScale
 			# determine if the time is within minTime/maxTime, which may have wacky values
-			ms = date.time() - @view.minTime # milliseconds since minTime
+			dateProfile = @get('dateProfile')
+			ms = date.time() - dateProfile.minTime # milliseconds since minTime
 			ms = ((ms % 86400000) + 86400000) % 86400000 # make negative values wrap to 24hr clock
 			ms < @timeWindowMs # before the maxTime?
 		else
@@ -134,6 +141,8 @@ class TimelineGrid extends InteractiveDateComponent
 
 	handleDateProfileSet: (dateProfile) ->
 		super
+
+		@initScaleProps()
 
 		@timeWindowMs = dateProfile.maxTime - dateProfile.minTime
 
@@ -337,7 +346,7 @@ class TimelineGrid extends InteractiveDateComponent
 
 			@on 'all:eventRender', =>
 				sprites = []
-				for seg in @getEventsSegs() # TODO: only retrieve fg segs
+				for seg in @getEventSegs() # TODO: only retrieve fg segs
 					titleEl = seg.el.find('.fc-title')
 					if titleEl.length
 						sprites.push(new ScrollFollowerSprite(titleEl))
