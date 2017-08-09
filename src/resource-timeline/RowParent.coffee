@@ -4,7 +4,7 @@ An abstract node in a row-hierarchy tree.
 May be a self-contained single row, a row with subrows,
 OR a grouping of rows without its own distinct row.
 ###
-class RowParent
+class RowParent extends DateComponent
 
 	view: null # the calendar View object. all nodes have this
 	parent: null # parent node. null if topmost parent
@@ -21,6 +21,8 @@ class RowParent
 	isShown: false # does this node's parent have this node revealed? and is it rendered too?
 
 	constructor: (@view) ->
+		super
+
 		@children = []
 		@trHash = {}
 		@trs = $()

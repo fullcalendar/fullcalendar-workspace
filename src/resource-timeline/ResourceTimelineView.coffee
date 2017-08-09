@@ -1,6 +1,10 @@
 
 class ResourceTimelineView extends TimelineView
 
+	# configuration for DateComponent monkeypatch
+	# means that is takes responsibility for rendering own resources
+	isResourceRenderingEnabled: true
+
 	# configuration for View monkeypatch
 	baseRenderRequiresResources: true
 
@@ -179,7 +183,7 @@ class ResourceTimelineView extends TimelineView
 
 				@dividerWidth = width
 				@positionDivider(width)
-				@updateSize() # TODO: only do this at the very end?
+				@calendar.updateViewSize() # if in render queue, will wait until end
 
 			dragEnd: =>
 				@dividerEls.removeClass('fc-active')
@@ -193,20 +197,6 @@ class ResourceTimelineView extends TimelineView
 
 	positionDivider: (w) ->
 		@el.find('.fc-resource-area').width(w) # TODO: don't we have this cached?
-
-
-	# Events
-	# ---------------------------------------------------------------------------------
-
-
-	renderEventsPayload: (eventsPayload) ->
-		@timeGrid.renderEventsPayload(eventsPayload)
-		@syncRowHeights()
-
-
-	unrenderEvents: ->
-		@timeGrid.unrenderEvents()
-		@syncRowHeights()
 
 
 	# Sizing
@@ -519,11 +509,11 @@ class ResourceTimelineView extends TimelineView
 
 	rowsShown: (rows) ->
 		@syncRowHeights(rows)
-		@updateSize()
+		@calendar.updateViewSize() # if in render queue, will wait until end
 
 
 	rowsHidden: (rows) ->
-		@updateSize()
+		@calendar.updateViewSize() # if in render queue, will wait until end
 
 
 	syncRowHeights: (visibleRows, safe=false) -> # visibleRows is flat. does not do recursive

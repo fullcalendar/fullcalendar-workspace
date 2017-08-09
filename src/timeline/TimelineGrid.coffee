@@ -168,7 +168,9 @@ class TimelineGrid extends InteractiveDateComponent
 
 		@slotDates = slotDates
 		@updateGridDates()
-		@eventRenderer.rangeUpdated()
+
+		if @eventRenderer
+			@eventRenderer.rangeUpdated()
 
 
 	updateGridDates: ->
@@ -736,7 +738,7 @@ class TimelineGrid extends InteractiveDateComponent
 	# this needs to be called if v scrollbars appear on body container. or zooming
 	updateSegPositions: ->
 		segs = [].concat(
-			@eventRenderer.getSegs()
+			@getEventSegs()
 			@businessHourRenderer.getSegs()
 		)
 

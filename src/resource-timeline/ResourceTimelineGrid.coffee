@@ -3,8 +3,8 @@ class ResourceTimelineGrid extends TimelineGrid
 
 	@mixin ResourceInteractionsMixin
 
-	# configuration for DateComponent monkeypatch
-	isResourceRenderingEnabled: true
+	# doesn't do its own event rendering. defers to rows.
+	eventRendererClass: null
 
 	eventRows: null
 	shownEventRows: null
