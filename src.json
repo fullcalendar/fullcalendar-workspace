@@ -43,9 +43,6 @@
     "timeline/TimelineView.coffee",
     "timeline/config.coffee",
 
-    "resource-timeline/renderers/ResourceTimelineGridEventRenderer.coffee",
-    "resource-timeline/renderers/ResourceTimelineGridFillRenderer.coffee",
-    "resource-timeline/renderers/ResourceTimelineGridHelperRenderer.coffee",
     "resource-timeline/ResourceTimelineGrid.coffee",
     "resource-timeline/Spreadsheet.coffee",
     "resource-timeline/RowParent.coffee",
