@@ -1,7 +1,16 @@
 
-CalendarExtension::getPeerEventInstances = (subjectEventDef) ->
+Calendar_getPeerEventInstances = Calendar::getPeerEventInstances
+Calendar_isFootprintAllowed = Calendar::isFootprintAllowed
+Calendar_buildCurrentBusinessFootprints = Calendar::buildCurrentBusinessFootprints
+Calendar_footprintContainsFootprint = Calendar::footprintContainsFootprint
+Calendar_footprintsIntersect = Calendar::footprintsIntersect
+Calendar_eventRangeToEventFootprints = Calendar::eventRangeToEventFootprints
+Calendar_parseFootprints = Calendar::parseFootprints
+
+
+Calendar::getPeerEventInstances = (subjectEventDef) ->
 	subjectResourceIds = subjectEventDef.getResourceIds()
-	peerInstances = super
+	peerInstances = Calendar_getPeerEventInstances.apply(this, arguments)
 
 	if not subjectResourceIds.length
 		peerInstances
@@ -21,7 +30,7 @@ CalendarExtension::getPeerEventInstances = (subjectEventDef) ->
 
 
 # enforce resource ID constraint
-CalendarExtension::isFootprintAllowed = (footprint, peerEventFootprints, constraintVal, overlapVal, subjectEventInstance) ->
+Calendar::isFootprintAllowed = (footprint, peerEventFootprints, constraintVal, overlapVal, subjectEventInstance) ->
 	if typeof constraintVal == 'object'
 
 		constrainToResourceIds = Resource.extractIds(constraintVal, this)
@@ -32,10 +41,10 @@ CalendarExtension::isFootprintAllowed = (footprint, peerEventFootprints, constra
 		)
 			return false
 
-	super
+	Calendar_isFootprintAllowed.apply(this, arguments)
 
 
-CalendarExtension::buildCurrentBusinessFootprints = (isAllDay) ->
+Calendar::buildCurrentBusinessFootprints = (isAllDay) ->
 	flatResources = @resourceManager.getFlatResources()
 	anyCustomBusinessHours = false
 
@@ -65,29 +74,31 @@ CalendarExtension::buildCurrentBusinessFootprints = (isAllDay) ->
 						)
 					)
 	else
-		super
+		Calendar_buildCurrentBusinessFootprints.apply(this, arguments)
 
 
-CalendarExtension::footprintContainsFootprint = (outerFootprint, innerFootprint) ->
+Calendar::footprintContainsFootprint = (outerFootprint, innerFootprint) ->
 	if outerFootprint instanceof ResourceComponentFootprint and
 			(not (innerFootprint instanceof ResourceComponentFootprint) or
 			 innerFootprint.resourceId != outerFootprint.resourceId)
 		return false
-	super
+
+	Calendar_footprintContainsFootprint.apply(this, arguments)
 
 
-CalendarExtension::footprintsIntersect = (footprint0, footprint1) ->
+Calendar::footprintsIntersect = (footprint0, footprint1) ->
 	if footprint0 instanceof ResourceComponentFootprint and
 			footprint1 instanceof ResourceComponentFootprint and
 			footprint0.resourceId != footprint1.resourceId
 		return false
-	super
+
+	Calendar_footprintsIntersect.apply(this, arguments)
 
 
 ###
 TODO: somehow more DRY with ResourceComponentMixin.eventRangeToEventFootprints
 ###
-CalendarExtension::eventRangeToEventFootprints = (eventRange) ->
+Calendar::eventRangeToEventFootprints = (eventRange) ->
 	eventDef = eventRange.eventDef
 	resourceIds = eventDef.getResourceIds()
 
@@ -103,11 +114,11 @@ CalendarExtension::eventRangeToEventFootprints = (eventRange) ->
 				eventRange.eventInstance # might not exist
 			)
 	else
-		super
+		Calendar_eventRangeToEventFootprints.apply(this, arguments)
 
 
-CalendarExtension::parseFootprints = (input) ->
-	plainFootprints = super
+Calendar::parseFootprints = (input) ->
+	plainFootprints = Calendar_parseFootprints.apply(this, arguments)
 	resourceIds = input.resourceIds or []
 
 	if input.resourceId
