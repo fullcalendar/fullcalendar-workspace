@@ -337,14 +337,11 @@ class TimelineGrid extends InteractiveDateComponent
 
 			@on 'all:eventRender', =>
 				sprites = []
-
-				for seg in @getFgEventsSegs()
+				for seg in @getEventsSegs() # TODO: only retrieve fg segs
 					titleEl = seg.el.find('.fc-title')
 					if titleEl.length
 						sprites.push(new ScrollFollowerSprite(titleEl))
-
 				@eventTitleFollower.setSprites(sprites)
-
 
 			@on 'before:all:eventUnrender', =>
 				@eventTitleFollower.clearSprites()
