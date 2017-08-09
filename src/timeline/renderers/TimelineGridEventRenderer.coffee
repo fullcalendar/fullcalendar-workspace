@@ -1,11 +1,12 @@
 
 class TimelineGridEventRenderer extends EventRenderer
 
-	eventTitleFollower: null
+	#component: null # a TimelineView or at least { segContainerEl, segContainerHeight }
+	#view: null # a TimelineView
 
 
 	computeDisplayEventTime: ->
-		not @component.isTimeScale # because times should be obvious via axis
+		not @view.isTimeScale # because times should be obvious via axis
 
 
 	computeDisplayEventEnd: ->
@@ -14,76 +15,33 @@ class TimelineGridEventRenderer extends EventRenderer
 
 	# Computes a default event time formatting string if `timeFormat` is not explicitly defined
 	computeEventTimeFormat: ->
-		@opt('extraSmallTimeFormat')
-
-
-	setBodyScroller: (bodyScroller) ->
-		@eventTitleFollower = new ScrollFollower(bodyScroller)
-		@eventTitleFollower.minTravel = 50
-
-		if @component.isRTL
-			@eventTitleFollower.containOnNaturalRight = true
-		else
-			@eventTitleFollower.containOnNaturalLeft = true
-
-
-	updateSize: ->
-		if @eventTitleFollower
-			@eventTitleFollower.update()
-
-
-	updateFollowers: (segs) ->
-		if @eventTitleFollower
-			sprites = []
-			for seg in segs
-				titleEl = seg.el.find('.fc-title')
-				if titleEl.length
-					sprites.push(new ScrollFollowerSprite(titleEl))
-			@eventTitleFollower.setSprites(sprites)
-
-
-	clearFollowers: ->
-		if @eventTitleFollower
-			@eventTitleFollower.clearSprites()
+		@view.opt('extraSmallTimeFormat')
 
 
 	renderFgSegs: (segs) ->
-		@renderFgSegsInContainers([[ @component, segs ]])
-		@updateFollowers(segs)
-
-
-	unrenderFgSegs: ->
-		@clearFollowers()
-		@unrenderFgContainers([ @component ])
-
-
-	renderFgSegsInContainers: (pairs) ->
-
-		for [ container, segs ] in pairs
-			for seg in segs
-				# TODO: centralize logic (also in updateSegPositions)
-				coords = @component.rangeToCoords(seg)
-				seg.el.css
-					left: (seg.left = coords.left)
-					right: -(seg.right = coords.right)
+		for seg in segs
+			# TODO: centralize logic (also in updateSegPositions)
+			coords = @view.rangeToCoords(seg)
+			seg.el.css
+				left: (seg.left = coords.left)
+				right: -(seg.right = coords.right)
 
 		# attach segs
-		for [ container, segs ] in pairs
-			for seg in segs
-				seg.el.appendTo(container.segContainerEl)
+		for seg in segs
+			seg.el.appendTo(@component.segContainerEl)
 
 		# compute seg verticals
-		for [ container, segs ] in pairs
-			for seg in segs
-				seg.height = seg.el.outerHeight(true) # include margin
-			@buildSegLevels(segs)
-			container.segContainerHeight = computeOffsetForSegs(segs) # returns this value!
+		for seg in segs
+			seg.height = seg.el.outerHeight(true) # include margin
+
+		@buildSegLevels(segs)
+		@component.segContainerHeight = computeOffsetForSegs(segs) # returns this value!
 
 		# assign seg verticals
-		for [ container, segs ] in pairs
-			for seg in segs
-				seg.el.css('top', seg.top)
-			container.segContainerEl.height(container.segContainerHeight)
+		for seg in segs
+			seg.el.css('top', seg.top)
+
+		@component.segContainerEl.height(@component.segContainerHeight)
 
 
 	# NOTE: this modifies the order of segs
@@ -126,18 +84,17 @@ class TimelineGridEventRenderer extends EventRenderer
 		segLevels
 
 
-	unrenderFgContainers: (containers) ->
-		for container in containers
-			container.segContainerEl.empty()
-			container.segContainerEl.height('')
-			container.segContainerHeight = null
+	unrenderFgSegs: ->
+		@component.segContainerEl.empty()
+		@component.segContainerEl.height('')
+		@component.segContainerHeight = null
 
 
 	fgSegHtml: (seg, disableResizing) ->
 		eventDef = seg.footprint.eventDef
-		isDraggable = @component.isEventDefDraggable(eventDef)
-		isResizableFromStart = seg.isStart and @component.isEventDefResizableFromStart(eventDef)
-		isResizableFromEnd = seg.isEnd and @component.isEventDefResizableFromEnd(eventDef)
+		isDraggable = @view.isEventDefDraggable(eventDef)
+		isResizableFromStart = seg.isStart and @view.isEventDefResizableFromStart(eventDef)
+		isResizableFromEnd = seg.isEnd and @view.isEventDefResizableFromEnd(eventDef)
 
 		classes = @getSegClasses(seg, isDraggable, isResizableFromStart or isResizableFromEnd)
 		classes.unshift('fc-timeline-event', 'fc-h-event')

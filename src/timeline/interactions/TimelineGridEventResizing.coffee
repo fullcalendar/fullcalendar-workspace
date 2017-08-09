@@ -8,12 +8,12 @@ class TimelineGridEventResizing extends EventResizing
 	segResizeStart: ->
 		super
 
-		if @component.eventRenderer.eventTitleFollower
-			@component.eventRenderer.eventTitleFollower.forceRelative()
+		if @eventTitleFollower
+			@eventTitleFollower.forceRelative()
 
 
 	segResizeStop: ->
 		super
 
-		if @component.eventRenderer.eventTitleFollower
-			@component.eventRenderer.eventTitleFollower.clearForce()
+		if @eventTitleFollower
+			@eventTitleFollower.clearForce()

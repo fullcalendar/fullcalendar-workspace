@@ -39,6 +39,7 @@ class TimelineGrid extends InteractiveDateComponent
 	bodyScroller: null
 	joiner: null
 	follower: null
+	eventTitleFollower: null
 
 	timeWindowMs: null
 	slotDuration: null
@@ -51,8 +52,6 @@ class TimelineGrid extends InteractiveDateComponent
 	largeUnit: null # if the slots are > a day, the string name of the interval
 
 	emphasizeWeeks: false
-
-	titleFollower: null
 
 	segContainerEl: null
 	segContainerHeight: null
@@ -328,7 +327,27 @@ class TimelineGrid extends InteractiveDateComponent
 			@follower = new ScrollFollower(@headScroller, true) # allowPointerEvents=true
 
 		if true
-			@eventRenderer.setBodyScroller(@bodyScroller) # creates the scrollfollower
+			@eventTitleFollower = new ScrollFollower(@bodyScroller)
+			@eventTitleFollower.minTravel = 50
+
+			if @isRTL
+				@eventTitleFollower.containOnNaturalRight = true
+			else
+				@eventTitleFollower.containOnNaturalLeft = true
+
+			@on 'all:eventRender', =>
+				sprites = []
+
+				for seg in @getFgEventsSegs()
+					titleEl = seg.el.find('.fc-title')
+					if titleEl.length
+						sprites.push(new ScrollFollowerSprite(titleEl))
+
+				@eventTitleFollower.setSprites(sprites)
+
+
+			@on 'before:all:eventUnrender', =>
+				@eventTitleFollower.clearSprites()
 
 		super
 
@@ -518,10 +537,7 @@ class TimelineGrid extends InteractiveDateComponent
 	# ---------------------------------------------------------------------------------
 
 
-	businessHourSegs: null
-
-
-	renderBusinessHours: ->
+	renderBusinessHours: (businessHourPayload) ->
 		if not @largeUnit
 			super
 
@@ -576,8 +592,7 @@ class TimelineGrid extends InteractiveDateComponent
 	defaultSlotWidth: null
 
 
-	# NOTE: not related to Grid. this is TimelineGrid's own method
-	updateWidth: ->
+	updateSize: (totalHeight, isAuto, isResize) ->
 		# reason for this complicated method is that things went wrong when:
 		#  slots/headers didn't fill content area and needed to be stretched
 		#  cells wouldn't align (rounding issues with available width calculated
@@ -617,8 +632,8 @@ class TimelineGrid extends InteractiveDateComponent
 			@buildCoords()
 			@updateSegPositions()
 
-			# this updateWidth method is triggered by callers who don't always subsequently call updateNowIndicator,
-			# and updateWidth always has the risk of changing horizontal spacing which will affect nowIndicator positioning,
+			# this updateSize method is triggered by callers who don't always subsequently call updateNowIndicator,
+			# and updateSize always has the risk of changing horizontal spacing which will affect nowIndicator positioning,
 			# so always call it here too. will often rerender twice unfortunately.
 			# TODO: more closely integrate updateSize with updateNowIndicator
 			@view.updateNowIndicator()
@@ -626,7 +641,8 @@ class TimelineGrid extends InteractiveDateComponent
 		if @follower
 			@follower.update()
 
-		@eventRenderer.updateSize()
+		if @eventTitleFollower
+			@eventTitleFollower.update()
 
 
 	computeSlotWidth: -> # compute the *default*

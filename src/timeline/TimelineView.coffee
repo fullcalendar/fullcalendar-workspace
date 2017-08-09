@@ -100,12 +100,9 @@ class TimelineView extends View
 	# ---------------------------------------------------------------------------------
 
 
-	# NOTE: this is called a lot when "width" doesn't seem directly involved :(
-	updateWidth: ->
-		@timeGrid.updateWidth()
+	updateSize: (totalHeight, isAuto, isResize) ->
+		super # calls children
 
-
-	setHeight: (totalHeight, isAuto) ->
 		if isAuto
 			bodyHeight = 'auto'
 		else
@@ -146,18 +143,3 @@ class TimelineView extends View
 			# Similar code in ResourceTimelineView::setScroll
 			@timeGrid.headScroller.setScrollLeft(scroll.left)
 			@timeGrid.bodyScroller.setScrollLeft(scroll.left)
-
-
-	# Events
-	# ---------------------------------------------------------------------------------
-
-
-	renderEventsPayload: (eventsPayload) ->
-		@timeGrid.renderEventsPayload(eventsPayload)
-		@updateWidth() # could rely on DateComponent entirely if not for this line
-
-
-	unrenderEvents: ->
-		@timeGrid.unrenderEvents()
-		@updateWidth() # could rely on DateComponent entirely if not for this line
-
