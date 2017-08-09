@@ -1,7 +1,8 @@
 
 class ResourceMonthView extends FC.MonthView
 
-	@mixin VertResourceViewMixin
+	# configuration for View monkeypatch
+	baseRenderRequiresResources: true
 
 	dayGridClass: ResourceDayGrid
 

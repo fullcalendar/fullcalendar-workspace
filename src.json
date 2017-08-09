@@ -17,7 +17,6 @@
     "models/ResourceManager.coffee",
     "models/ResourceComponentFootprint.coffee",
 
-    "ResourceViewMixin.coffee",
     "VertResourceViewMixin.coffee",
 
     "component/renderers/EventRenderer.coffee",
@@ -25,7 +24,9 @@
     "component/interactions/ResourceEventDragging.coffee",
     "component/interactions/ResourceEventResizing.coffee",
     "component/interactions/ResourceExternalDropping.coffee",
-    "component/ResourceComponentMixin.coffee",
+    "component/interactions/ResourceInteractionsMixin.coffee",
+    "component/DateComponent.coffee",
+    "component/InteractiveDateComponent.coffee",
     "component/ResourceDayTableMixin.coffee",
 
     "Calendar.coffee",

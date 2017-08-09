@@ -1,10 +1,14 @@
 
 class ResourceTimelineGrid extends TimelineGrid
 
-	@mixin ResourceComponentMixin
+	@mixin ResourceInteractionsMixin
+
 	eventRendererClass: ResourceTimelineGridEventRenderer
 	fillRendererClass: ResourceTimelineGridFillRenderer
 	helperRendererClass: ResourceTimelineGridHelperRenderer
+
+	# configuration for DateComponent monkeypatch
+	isResourceRenderingEnabled: true
 
 	eventRows: null
 	shownEventRows: null

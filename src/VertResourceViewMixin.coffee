@@ -3,7 +3,11 @@
 For vertical resource view.
 For views that rely on grids that render their resources and dates in the same pass.
 ###
-VertResourceViewMixin = $.extend {}, ResourceViewMixin,
+VertResourceViewMixin = $.extend {},
+
+
+	# we killed ResourceViewMixin!
+	# we killed isDestroying!
 
 
 	setElement: ->

@@ -1,8 +1,10 @@
 
 class ResourceTimeGrid extends FC.TimeGrid
 
-	@mixin ResourceComponentMixin
 	@mixin ResourceDayTableMixin
+
+	# configuration for DateComponent monkeypatch
+	isResourceRenderingEnabled: true
 
 
 	# TODO: make DRY with ResourceDayGrid

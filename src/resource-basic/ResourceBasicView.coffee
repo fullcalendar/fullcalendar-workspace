@@ -1,7 +1,8 @@
 
 class ResourceBasicView extends FC.BasicView
 
-	@mixin VertResourceViewMixin
+	# configuration for monkeypatched View
+	baseRenderRequiresResources: true
 
 	dayGridClass: ResourceDayGrid
 

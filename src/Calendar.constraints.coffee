@@ -96,7 +96,7 @@ Calendar::footprintsIntersect = (footprint0, footprint1) ->
 
 
 ###
-TODO: somehow more DRY with ResourceComponentMixin.eventRangeToEventFootprints
+TODO: somehow more DRY with DateComponent::eventRangeToEventFootprints monkeypatch
 ###
 Calendar::eventRangeToEventFootprints = (eventRange) ->
 	eventDef = eventRange.eventDef

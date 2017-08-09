@@ -1,7 +1,8 @@
 
 class ResourceAgendaView extends FC.AgendaView
 
-	@mixin VertResourceViewMixin
+	# configuration for monkeypatched View
+	baseRenderRequiresResources: true
 
 	timeGridClass: ResourceTimeGrid
 	dayGridClass: ResourceDayGrid

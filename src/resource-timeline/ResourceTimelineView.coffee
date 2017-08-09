@@ -1,9 +1,8 @@
 
 class ResourceTimelineView extends TimelineView
 
-	@mixin ResourceViewMixin
-
-	canHandleSpecificResources: true
+	# configuration for View monkeypatch
+	baseRenderRequiresResources: true
 
 	resourceGrid: null # TODO: rename
 	tbodyHash: null # used by RowParent
@@ -283,13 +282,13 @@ class ResourceTimelineView extends TimelineView
 
 	Responsible for rendering the new resource
 	###
-	renderResource: (resource) ->
+	renderResourceAdd: (resource) ->
 		@insertResource(resource)
 		@reinitializeCellFollowers()
 
 
 	# Responsible for unrendering the old resource
-	unrenderResource: (resource) ->
+	renderResourceRemove: (resource) ->
 		row = @getResourceRow(resource.id)
 		if row
 			@batchRows() # because multiple rows might be hidden (empty groups)
