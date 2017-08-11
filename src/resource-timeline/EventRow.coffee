@@ -19,7 +19,7 @@ class EventRow extends RowParent
 		)
 
 
-	renderEventContent: (tr) -> # TODO: rename to renderEventSkeleton
+	renderEventSkeleton: (tr) ->
 		tr.html('
 			<td class="' + @view.widgetContentClass + '">
 				<div>

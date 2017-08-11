@@ -27,7 +27,7 @@ class ResourceRow extends EventRow
 		})
 
 
-	renderEventContent: (tr) ->
+	renderEventSkeleton: (tr) ->
 		super
 		tr.attr('data-resource-id', @resource.id)
 
@@ -35,7 +35,7 @@ class ResourceRow extends EventRow
 	###
 	Populates the TR with cells containing data about the resource
 	###
-	renderSpreadsheetContent: (tr) ->
+	renderSpreadsheetSkeleton: (tr) ->
 		resource = @resource
 
 		for colSpec in @view.colSpecs

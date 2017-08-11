@@ -232,7 +232,7 @@ class RowParent extends DateComponent
 				trNodes.push(tr[0])
 
 				# call the subclass' render method for this row type (if available)
-				renderMethodName = 'render' + capitaliseFirstLetter(type) + 'Content'
+				renderMethodName = 'render' + capitaliseFirstLetter(type) + 'Skeleton'
 				if this[renderMethodName]
 					this[renderMethodName](tr)
 
@@ -262,7 +262,7 @@ class RowParent extends DateComponent
 	removeElement: ->
 		# call the subclass' render method for each row type (if available)
 		for type, tr of @trHash
-			unrenderMethodName = 'unrender' + capitaliseFirstLetter(type) + 'Content'
+			unrenderMethodName = 'unrender' + capitaliseFirstLetter(type) + 'Skeleton'
 			if this[unrenderMethodName]
 				this[unrenderMethodName](tr)
 

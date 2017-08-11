@@ -15,7 +15,7 @@ class HRowGroup extends RowGroup
 	###
 	Renders this row's TR for the "spreadsheet" quadrant, the area with info about each resource
 	###
-	renderSpreadsheetContent: (tr) ->
+	renderSpreadsheetSkeleton: (tr) ->
 		contentEl = @renderGroupContentEl()
 
 		# add an expander icon. binding handlers and updating are done by RowParent
@@ -35,7 +35,7 @@ class HRowGroup extends RowGroup
 	###
 	Renders this row's TR for the quadrant that contains a resource's events
 	###
-	renderEventContent: (tr) ->
+	renderEventSkeleton: (tr) ->
 		# insert a single cell, with a single empty <div> (needed by setTrInnerHeight).
 		# there will be no content
 		tr.append('
