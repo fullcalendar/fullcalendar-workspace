@@ -2,6 +2,7 @@
 # references to pre-monkeypatched methods
 DateComponent_constructed = DateComponent::constructed
 DateComponent_addChild = DateComponent::addChild
+DateComponent_removeChild = DateComponent::removeChild
 DateComponent_eventRangeToEventFootprints = DateComponent::eventRangeToEventFootprints
 
 
@@ -31,6 +32,13 @@ DateComponent::addChild = (child) ->
 
 	if child.isResourceRenderingEnabled
 		@resourceMessageAggregator.addChild(child)
+
+
+DateComponent::removeChild = (child) ->
+	DateComponent_removeChild.apply(this, arguments)
+
+	if child.isResourceRenderingEnabled
+		@resourceMessageAggregator.removeChild(child)
 
 
 # Dependencies for Event / Resource Rendering
