@@ -246,14 +246,14 @@ class ResourceTimelineView extends TimelineView
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	handleResourceAdd: (resource) ->
+	addResource: (resource) ->
 		@insertResource(resource)
 
 		super # send to children and renderqueue. TODO: weird arbitrary ordering here
 
 
 	renderResourceAdd: (resource) ->
-		rowObj = @getResourceRow(resource.id) # TODO: wish could receive handleResourceAdd's rowObj
+		rowObj = @getResourceRow(resource.id) # TODO: wish could receive addResource's rowObj
 
 		if rowObj
 			rowObj.renderSkeleton() # recursive

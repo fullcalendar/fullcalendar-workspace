@@ -73,36 +73,36 @@ DateComponent::watchDisplayingEvents = ->
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-DateComponent::handleResourcesSet = (resources) ->
+DateComponent::setResources = (resources) ->
 	@set('currentResources', resources)
 	@set('hasResources', true)
 	@setResourcesInChildren(resources)
 
 
 DateComponent::setResourcesInChildren = (resources) ->
-	@callChildren('handleResourcesSet', arguments)
+	@callChildren('setResources', arguments)
 
 
-DateComponent::handleResourcesUnset = ->
+DateComponent::unsetResources = ->
 	@unset('hasResources')
 	@unset('currentResources')
 	@unsetResourcesInChildren()
 
 
 DateComponent::unsetResourcesInChildren = ->
-	@callChildren('handleResourcesUnset', arguments)
+	@callChildren('unsetResources', arguments)
 
 
-DateComponent::handleResourcesReset = (resources) ->
+DateComponent::resetResources = (resources) ->
 	@startBatchRender()
-	@handleResourcesUnset()
-	@handleResourcesSet(resources)
+	@unsetResources()
+	@setResources(resources)
 	@stopBatchRender()
 
 
-DateComponent::handleResourceAdd = (resource, allResources) ->
+DateComponent::addResource = (resource, allResources) ->
 	@set('currentResources', allResources)
-	@callChildren('handleResourceAdd', arguments)
+	@callChildren('addResource', arguments)
 
 	if @has('displayingResources')
 		@requestRender(@renderResourceAdd, [ resource ], 'resource', 'add')
