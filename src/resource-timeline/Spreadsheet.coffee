@@ -12,7 +12,7 @@ class Spreadsheet
 
 	headScroller: null
 	bodyScroller: null
-	joiner: null # TODO: rename
+	scrollJoiner: null
 	cellFollower: null
 
 
@@ -51,7 +51,7 @@ class Spreadsheet
 		@tbodyEl = @bodyScroller.canvas.contentEl.find('tbody')
 		@el.append(@bodyScroller.el)
 
-		@joiner = new ScrollJoiner('horizontal', [ @headScroller, @bodyScroller ])
+		@scrollJoiner = new ScrollJoiner('horizontal', [ @headScroller, @bodyScroller ])
 
 		@headTable = @headEl.find('table')
 		@headColEls = @headEl.find('col')
@@ -235,7 +235,7 @@ class Spreadsheet
 	updateSize: ->
 		@headScroller.updateSize()
 		@bodyScroller.updateSize()
-		@joiner.update()
+		@scrollJoiner.update()
 		@updateCellFollower()
 
 
