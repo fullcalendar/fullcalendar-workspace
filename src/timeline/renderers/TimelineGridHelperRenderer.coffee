@@ -5,7 +5,7 @@ class TimelineGridHelperRenderer extends HelperRenderer
 	#component: null # a TimelineGrid
 
 
-	constructor: (timelineGrid, fillRenderer, container) ->
+	constructor: (timelineGrid, eventRenderer, container) ->
 		super
 
 		@container = container or timelineGrid

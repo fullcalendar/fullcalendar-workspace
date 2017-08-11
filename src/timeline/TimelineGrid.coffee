@@ -68,10 +68,6 @@ class TimelineGrid extends InteractiveDateComponent
 		@slotWidth = @opt('slotWidth')
 
 
-	opt: (name) ->
-		@view.opt(name)
-
-
 	isValidDate: (date) ->
 		if @view.isHiddenDay(date)
 			false
@@ -758,7 +754,6 @@ class TimelineGrid extends InteractiveDateComponent
 
 	# Renders a visual indication of an event being resized
 	renderEventResize: (eventFootprints, seg, isTouch) ->
-
 		for eventFootprint in eventFootprints
 			@renderHighlight(eventFootprint.componentFootprint)
 
