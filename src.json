@@ -12,7 +12,7 @@
 
     "models/EventDef.coffee",
     "models/EventSource.coffee",
-    "models/EventDefMutation.coffee",
+    "models/ResourceEventDefMutation.coffee",
     "models/Resource.coffee",
     "models/ResourceManager.coffee",
     "models/ResourceComponentFootprint.coffee",
@@ -21,7 +21,7 @@
 
     "component/renderers/EventRenderer.coffee",
     "component/interactions/ResourceDateSelecting.coffee",
-    "component/interactions/ResourceEventDragging.coffee",
+    "component/interactions/EventDragging.coffee",
     "component/interactions/ResourceEventResizing.coffee",
     "component/interactions/ResourceExternalDropping.coffee",
     "component/interactions/ResourceInteractionsMixin.coffee",
