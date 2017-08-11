@@ -246,7 +246,6 @@ class Spreadsheet
 
 	# completely reninitializes every time there's add/remove
 	# TODO: optimize
-	# TODO: investigate why calling twice
 	updateCellFollower: ->
 		if @cellFollower
 			@cellFollower.clearSprites() # the closest thing to a destroy

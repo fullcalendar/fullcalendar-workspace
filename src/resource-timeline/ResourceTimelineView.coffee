@@ -247,38 +247,25 @@ class ResourceTimelineView extends TimelineView
 
 
 	handleResourceAdd: (resource) ->
-		super
+		@insertResource(resource)
 
-		rowObj = @insertResource(resource)
-
-		# TODO: we aren't using renderResourceAdd,
-		# so prevent empty function from queueing
-		if @has('displayingResources')
-			@requestRender ->
-				rowObj.renderSkeleton() # recursive
-				@updateSpreadsheetCellFollower()
-			, null, 'resource', 'add'
+		super # send to children and renderqueue. TODO: weird arbitrary ordering here
 
 
-	handleResourceRemove: (resource) ->
-		super
+	renderResourceAdd: (resource) ->
+		rowObj = @getResourceRow(resource.id) # TODO: wish could receive handleResourceAdd's rowObj
 
+		if rowObj
+			rowObj.renderSkeleton() # recursive
+
+
+	renderResourceRemove: (resource) -> # does the job of handleResourceRemove too
 		rowObj = @getResourceRow(resource.id)
 
 		if rowObj
-			@timelineGrid.removeChild(rowObj)
+			@timelineGrid.removeChild(rowObj) # remove from DateComponent parent-child relationship
 			delete @resourceRowHash[resource.id]
-
-			# TODO: this is a common post-initial-fetch pattern. generalize somehow.
-			if @has('displayingResources')
-				# TODO: we aren't using renderResourceAdd,
-				# so prevent empty function from queueing
-				@requestRender ->
-					rowObj.removeFromParentAndDom()
-					@updateSpreadsheetCellFollower()
-				, null, 'resource', 'remove'
-			else
-				rowObj.removeFromParentAndDom()
+			rowObj.removeFromParentAndDom() # remove from rowHierarchy and DOM
 
 
 	# High-Level Resource Rendering
