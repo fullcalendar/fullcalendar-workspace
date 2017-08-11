@@ -1,14 +1,9 @@
 
 class TimelineGridHelperRenderer extends HelperRenderer
 
-	container: null # a TimelineGrid or { innerEl, ?resource }
-	#component: null # a TimelineGrid
-
-
-	constructor: (timelineGrid, eventRenderer, container) ->
-		super
-
-		@container = container or timelineGrid
+	###
+	component must be { innerEl, rangeToCoords, ?resource }
+	###
 
 
 	renderSegs: (segs, sourceSeg) ->
@@ -23,13 +18,14 @@ class TimelineGridHelperRenderer extends HelperRenderer
 				right: -(seg.right = coords.right)
 
 			# TODO: detangle the concept of resources
-			if sourceSeg and sourceSeg.resourceId == @container.resource?.id
+			# TODO: how to identify these two segs as the same!?
+			if sourceSeg and sourceSeg.resourceId == @component.resource?.id
 				seg.el.css('top', sourceSeg.el.css('top'))
 			else
 				seg.el.css('top', 0)
 
 		helperContainerEl = $('<div class="fc-event-container fc-helper-container"/>')
-			.appendTo(@container.innerEl)
+			.appendTo(@component.innerEl)
 
 		helperNodes.push(helperContainerEl[0])
 

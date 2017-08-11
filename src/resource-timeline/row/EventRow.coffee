@@ -1,35 +1,16 @@
 
 class EventRow extends RowParent
 
+	fillRendererClass: TimelineGridFillRenderer
+	eventRendererClass: TimelineGridEventRenderer
+	helperRendererClass: TimelineGridHelperRenderer
+
 	hasOwnRow: true
 	segContainerEl: null # for EventRenderer
 	segContainerHeight: null
 
 	innerEl: null
 	bgSegContainerEl: null # for EventRenderer. same el as innerEl :(
-
-
-	constructor: ->
-		super
-
-		# TODO: better way of instantiating these?
-
-		@fillRenderer = new TimelineGridFillRenderer(
-			@view.timelineGrid
-			this # { bgSegContainerEl }
-		)
-
-		@eventRenderer = new TimelineGridEventRenderer(
-			@view.timelineGrid
-			@fillRenderer
-			this # { segContainerEl, segContainerHeight }
-		)
-
-		@helperRenderer = new TimelineGridHelperRenderer(
-			@view.timelineGrid
-			@eventRenderer
-			this
-		)
 
 
 	renderEventSkeleton: (tr) ->
@@ -42,6 +23,14 @@ class EventRow extends RowParent
 		')
 		@segContainerEl = tr.find('.fc-event-container')
 		@innerEl = @bgSegContainerEl = tr.find('td > div')
+
+
+	rangeToCoords: (range) ->
+		@view.timelineGrid.rangeToCoords(range)
+
+
+	componentFootprintToSegs: (componentFootprint) ->
+		@view.timelineGrid.componentFootprintToSegs(componentFootprint)
 
 
 # Watcher Garbage

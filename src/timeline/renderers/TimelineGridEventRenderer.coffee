@@ -1,14 +1,9 @@
 
 class TimelineGridEventRenderer extends EventRenderer
 
-	container: null # a TimelineGrid or { segContainerEl, segContainerHeight }
-	#component: null # a TimelineGrid
-
-
-	constructor: (timelineGrid, fillRenderer, container) ->
-		super
-
-		@container = container or timelineGrid
+	###
+	component must be { segContainerEl, segContainerHeight, rangeToCoords }
+	###
 
 
 	computeDisplayEventTime: ->
@@ -35,20 +30,20 @@ class TimelineGridEventRenderer extends EventRenderer
 
 		# attach segs
 		for seg in segs
-			seg.el.appendTo(@container.segContainerEl)
+			seg.el.appendTo(@component.segContainerEl)
 
 		# compute seg verticals
 		for seg in segs
 			seg.height = seg.el.outerHeight(true) # include margin
 
 		@buildSegLevels(segs)
-		@container.segContainerHeight = computeOffsetForSegs(segs) # returns this value!
+		@component.segContainerHeight = computeOffsetForSegs(segs) # returns this value!
 
 		# assign seg verticals
 		for seg in segs
 			seg.el.css('top', seg.top)
 
-		@container.segContainerEl.height(@container.segContainerHeight)
+		@component.segContainerEl.height(@component.segContainerHeight)
 
 
 	# NOTE: this modifies the order of segs
@@ -92,9 +87,9 @@ class TimelineGridEventRenderer extends EventRenderer
 
 
 	unrenderFgSegs: ->
-		@container.segContainerEl.empty()
-		@container.segContainerEl.height('')
-		@container.segContainerHeight = null
+		@component.segContainerEl.empty()
+		@component.segContainerEl.height('')
+		@component.segContainerHeight = null
 
 
 	fgSegHtml: (seg, disableResizing) ->

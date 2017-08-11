@@ -1,14 +1,9 @@
 
 class TimelineGridFillRenderer extends FillRenderer
 
-	container: null # a TimelineGrid or { bgSegContainerEl }
-	#component: null # a TimelineGrid
-
-
-	constructor: (timelineGrid, container) ->
-		super
-
-		@container = container or timelineGrid
+	###
+	component must be { bgSegContainerEl, rangeToCoords }
+	###
 
 
 	attachSegEls: (type, segs) ->
@@ -22,7 +17,7 @@ class TimelineGridFillRenderer extends FillRenderer
 			# making a new container each time is OKAY
 			# all types of segs (background or business hours or whatever) are rendered in one pass
 			containerEl = $('<div class="fc-' + className + '-container" />')
-				.appendTo(@container.bgSegContainerEl)
+				.appendTo(@component.bgSegContainerEl)
 
 			for seg in segs
 				coords = @component.rangeToCoords(seg) # TODO: make DRY
