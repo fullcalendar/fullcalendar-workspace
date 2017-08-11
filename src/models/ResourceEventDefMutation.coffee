@@ -19,3 +19,5 @@ class ResourceEventDefMutation extends EventDefMutation
 
 				if savedResourceIds
 					eventDef.resourceIds = savedResourceIds
+		else
+			undo
