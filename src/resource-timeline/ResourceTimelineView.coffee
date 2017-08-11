@@ -12,6 +12,7 @@ class ResourceTimelineView extends TimelineView
 	tbodyHash: null # used by RowParent
 	joiner: null
 	dividerEls: null
+	spreadsheetCellFollower: null
 
 	superHeaderText: null
 	isVGrouping: null
@@ -207,8 +208,8 @@ class ResourceTimelineView extends TimelineView
 		@spreadsheet.updateSize()
 		@joiner.update()
 
-		if @cellFollower
-			@cellFollower.update()
+		if @spreadsheetCellFollower
+			@spreadsheetCellFollower.update()
 
 		# TODO: smarter about not doing this every time, if a single resource is added/removed
 		@syncRowHeights()
@@ -259,7 +260,7 @@ class ResourceTimelineView extends TimelineView
 		if @has('displayingResources')
 			@requestRender ->
 				rowObj.renderSkeleton() # recursive
-				@reinitializeCellFollowers()
+				@updateSpreadsheetCellFollower()
 			, null, 'resource', 'add'
 
 
@@ -278,7 +279,7 @@ class ResourceTimelineView extends TimelineView
 				# so prevent empty function from queueing
 				@requestRender ->
 					rowObj.removeFromParentAndDom()
-					@reinitializeCellFollowers()
+					@updateSpreadsheetCellFollower()
 				, null, 'resource', 'remove'
 			else
 				rowObj.removeFromParentAndDom()
@@ -290,12 +291,12 @@ class ResourceTimelineView extends TimelineView
 
 	renderResources: (resources) ->
 		@rowHierarchy.renderSkeleton() # recursive
-		@reinitializeCellFollowers()
+		@updateSpreadsheetCellFollower()
 
 
 	unrenderResources: ->
 		@rowHierarchy.removeElement() # recursive
-		@reinitializeCellFollowers()
+		@updateSpreadsheetCellFollower()
 
 
 	# Row Hierarchy Building
@@ -527,23 +528,15 @@ class ResourceTimelineView extends TimelineView
 				@spreadsheet.bodyScroller.setScrollTop(scrollTop)
 
 
-	# for resource text in columns of row groupings
-	# https://fullcalendar.io/js/fullcalendar-scheduler-1.6.2/demos/column-grouping.html
-	# ------------------------------------------------------------------------------------------------------------------
-	# TODO: optimize this
-	# TODO: destroy all scrollfollowers when the View's skeleton is destroyed
+	# completely reninitializes every time there's add/remove
+	# TODO: optimize
+	updateSpreadsheetCellFollower: ->
+		if @spreadsheetCellFollower
+			@spreadsheetCellFollower.clearSprites() # the closest thing to a destroy
 
-	cellFollower: null
-
-
-	# wrapper for things
-	reinitializeCellFollowers: ->
-		if @cellFollower
-			@cellFollower.clearSprites() # the closest thing to a destroy
-
-		@cellFollower = new ScrollFollower(@spreadsheet.bodyScroller, true) # allowPointerEvents
-		@cellFollower.isHFollowing = false
-		@cellFollower.isVFollowing = true
+		@spreadsheetCellFollower = new ScrollFollower(@spreadsheet.bodyScroller, true) # allowPointerEvents
+		@spreadsheetCellFollower.isHFollowing = false
+		@spreadsheetCellFollower.isVFollowing = true
 
 		nodes = []
 		for row in @rowHierarchy.getNodes()
@@ -553,7 +546,7 @@ class ResourceTimelineView extends TimelineView
 					if cellContent.length
 						nodes.push(cellContent[0])
 
-		@cellFollower.setSprites($(nodes))
+		@spreadsheetCellFollower.setSprites($(nodes))
 
 
 # Watcher Garbage for Rows
