@@ -40,7 +40,7 @@ class TimelineGrid extends InteractiveDateComponent
 	headScroller: null
 	bodyScroller: null
 	scrollJoiner: null
-	follower: null # for the header dates! TODO: rename
+	headDateFollower: null
 	eventTitleFollower: null
 
 	timeWindowMs: null
@@ -335,7 +335,7 @@ class TimelineGrid extends InteractiveDateComponent
 		@scrollJoiner = new ScrollJoiner('horizontal', [ @headScroller, @bodyScroller ])
 
 		if true
-			@follower = new ScrollFollower(@headScroller, true) # allowPointerEvents=true
+			@headDateFollower = new ScrollFollower(@headScroller, true) # allowPointerEvents=true
 
 		if true
 			@eventTitleFollower = new ScrollFollower(@bodyScroller)
@@ -388,13 +388,13 @@ class TimelineGrid extends InteractiveDateComponent
 				args: [ date, @slatEls.eq(i), @view ]
 			})
 
-		if @follower
-			@follower.setSprites(@headEl.find('tr:not(:last-child) .fc-cell-text'))
+		if @headDateFollower
+			@headDateFollower.setSprites(@headEl.find('tr:not(:last-child) .fc-cell-text'))
 
 
 	unrenderDates: ->
-		if @follower
-			@follower.clearSprites()
+		if @headDateFollower
+			@headDateFollower.clearSprites()
 
 		@headScroller.canvas.contentEl.empty()
 		@slatContainerEl.empty()
@@ -648,8 +648,8 @@ class TimelineGrid extends InteractiveDateComponent
 			# TODO: more closely integrate updateSize with updateNowIndicator
 			@view.updateNowIndicator()
 
-		if @follower
-			@follower.update()
+		if @headDateFollower
+			@headDateFollower.update()
 
 		if @eventTitleFollower
 			@eventTitleFollower.update()
