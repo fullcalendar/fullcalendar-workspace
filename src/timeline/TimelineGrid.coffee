@@ -39,7 +39,7 @@ class TimelineGrid extends InteractiveDateComponent
 
 	headScroller: null
 	bodyScroller: null
-	joiner: null
+	scrollJoiner: null
 	follower: null # for the header dates! TODO: rename
 	eventTitleFollower: null
 
@@ -332,7 +332,7 @@ class TimelineGrid extends InteractiveDateComponent
 			isHorizontal: true # we use the left/right for adjusting RTL coordinates
 			isVertical: true
 
-		@joiner = new ScrollJoiner('horizontal', [ @headScroller, @bodyScroller ])
+		@scrollJoiner = new ScrollJoiner('horizontal', [ @headScroller, @bodyScroller ])
 
 		if true
 			@follower = new ScrollFollower(@headScroller, true) # allowPointerEvents=true
@@ -634,7 +634,7 @@ class TimelineGrid extends InteractiveDateComponent
 
 		@headScroller.updateSize()
 		@bodyScroller.updateSize()
-		@joiner.update()
+		@scrollJoiner.update()
 
 		if isDatesRendered
 			@buildCoords()

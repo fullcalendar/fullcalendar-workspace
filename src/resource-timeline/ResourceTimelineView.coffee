@@ -10,7 +10,7 @@ class ResourceTimelineView extends TimelineView
 
 	spreadsheet: null
 	tbodyHash: null # used by RowParent
-	joiner: null
+	scrollJoiner: null
 	dividerEls: null
 
 	superHeaderText: null
@@ -112,7 +112,7 @@ class ResourceTimelineView extends TimelineView
 			event: @timelineGrid.tbodyEl
 		}
 
-		@joiner = new ScrollJoiner('vertical', [
+		@scrollJoiner = new ScrollJoiner('vertical', [
 			@spreadsheet.bodyScroller
 			@timelineGrid.bodyScroller
 		])
@@ -205,7 +205,7 @@ class ResourceTimelineView extends TimelineView
 
 	updateSize: (totalHeight, isAuto, isResize) ->
 		@spreadsheet.updateSize()
-		@joiner.update()
+		@scrollJoiner.update()
 
 		# TODO: smarter about not doing this every time, if a single resource is added/removed
 		@syncRowHeights()
