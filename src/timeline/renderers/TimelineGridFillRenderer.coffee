@@ -5,11 +5,11 @@ class TimelineGridFillRenderer extends FillRenderer
 	component: null # a TimelineGrid
 
 
-	constructor: (timeGrid, container) ->
+	constructor: (timelineGrid, container) ->
 		super
 
-		@container = container or timeGrid
-		@component = timeGrid
+		@container = container or timelineGrid
+		@component = timelineGrid
 
 
 	attachSegEls: (type, segs) ->

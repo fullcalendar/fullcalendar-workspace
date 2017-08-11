@@ -1,15 +1,15 @@
 
 class TimelineView extends View
 
-	timeGrid: null # TODO: rename
+	timelineGrid: null
 	isScrolled: false
 	usesMinMaxTime: true # indicates that minTime/maxTime affects rendering
 
 
 	constructor: ->
 		super
-		@timeGrid = @instantiateGrid()
-		@addChild(@timeGrid)
+		@timelineGrid = @instantiateGrid()
+		@addChild(@timelineGrid)
 
 
 	instantiateGrid: ->
@@ -17,7 +17,7 @@ class TimelineView extends View
 
 
 	getFallbackDuration: ->
-		@timeGrid.computeFallbackDuration()
+		@timelineGrid.computeFallbackDuration()
 
 
 	# Rendering
@@ -50,11 +50,11 @@ class TimelineView extends View
 
 
 	renderTimeGridSkeleton: ->
-		@timeGrid.headEl = @el.find('thead .fc-time-area')
-		@timeGrid.setElement(@el.find('tbody .fc-time-area')) # will renderSkeleton
+		@timelineGrid.headEl = @el.find('thead .fc-time-area')
+		@timelineGrid.setElement(@el.find('tbody .fc-time-area')) # will renderSkeleton
 
 		@isScrolled = false # because if the grid has been rerendered, it will get a zero scroll
-		@timeGrid.bodyScroller.on('scroll', proxy(this, 'handleBodyScroll'))
+		@timelineGrid.bodyScroller.on('scroll', proxy(this, 'handleBodyScroll'))
 
 
 	handleBodyScroll: (top, left) ->
@@ -69,7 +69,7 @@ class TimelineView extends View
 
 
 	unrenderSkeleton: ->
-		@timeGrid.removeElement()
+		@timelineGrid.removeElement()
 		@handleBodyScroll(0)
 		super
 
@@ -79,7 +79,7 @@ class TimelineView extends View
 
 
 	getNowIndicatorUnit: ->
-		@timeGrid.getNowIndicatorUnit()
+		@timelineGrid.getNowIndicatorUnit()
 
 
 	# Sizing
@@ -90,9 +90,9 @@ class TimelineView extends View
 		if isAuto
 			bodyHeight = 'auto'
 		else
-			bodyHeight = totalHeight - @timeGrid.headHeight() - @queryMiscHeight()
+			bodyHeight = totalHeight - @timelineGrid.headHeight() - @queryMiscHeight()
 
-		@timeGrid.bodyScroller.setHeight(bodyHeight)
+		@timelineGrid.bodyScroller.setHeight(bodyHeight)
 
 		# do children AFTER because of ScrollFollowerSprite abs position issues
 		super
@@ -100,8 +100,8 @@ class TimelineView extends View
 
 	queryMiscHeight: ->
 		@el.outerHeight() -
-			@timeGrid.headScroller.el.outerHeight() -
-			@timeGrid.bodyScroller.el.outerHeight()
+			@timelineGrid.headScroller.el.outerHeight() -
+			@timelineGrid.bodyScroller.el.outerHeight()
 
 
 	# Scrolling
@@ -111,16 +111,16 @@ class TimelineView extends View
 	computeInitialDateScroll: ->
 		unzonedRange = @get('dateProfile').activeUnzonedRange
 		left = 0
-		if @timeGrid.isTimeScale
+		if @timelineGrid.isTimeScale
 			scrollTime = @opt('scrollTime')
 			if scrollTime
 				scrollTime = moment.duration(scrollTime)
-				left = @timeGrid.dateToCoord(unzonedRange.getStart().time(scrollTime)) # TODO: fix this for RTL
+				left = @timelineGrid.dateToCoord(unzonedRange.getStart().time(scrollTime)) # TODO: fix this for RTL
 		{ left }
 
 
 	queryDateScroll: ->
-		{ left: @timeGrid.bodyScroller.getScrollLeft() }
+		{ left: @timelineGrid.bodyScroller.getScrollLeft() }
 
 
 	applyDateScroll: (scroll) ->
@@ -129,5 +129,5 @@ class TimelineView extends View
 			# to override the native initial crappy scroll that FF applies.
 			# TODO: have the ScrollJoiner handle this
 			# Similar code in ResourceTimelineView::setScroll
-			@timeGrid.headScroller.setScrollLeft(scroll.left)
-			@timeGrid.bodyScroller.setScrollLeft(scroll.left)
+			@timelineGrid.headScroller.setScrollLeft(scroll.left)
+			@timelineGrid.bodyScroller.setScrollLeft(scroll.left)

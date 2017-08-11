@@ -5,10 +5,10 @@ class TimelineGridEventRenderer extends EventRenderer
 	#component: null # a TimelineGrid
 
 
-	constructor: (timeGrid, fillRenderer, container) ->
+	constructor: (timelineGrid, fillRenderer, container) ->
 		super
 
-		@container = container or timeGrid
+		@container = container or timelineGrid
 
 
 	computeDisplayEventTime: ->

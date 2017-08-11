@@ -109,12 +109,12 @@ class ResourceTimelineView extends TimelineView
 
 		@tbodyHash = { # needed for rows to render
 			spreadsheet: @resourceGrid.tbodyEl
-			event: @timeGrid.tbodyEl
+			event: @timelineGrid.tbodyEl
 		}
 
 		@joiner = new ScrollJoiner('vertical', [
 			@resourceGrid.bodyScroller
-			@timeGrid.bodyScroller
+			@timelineGrid.bodyScroller
 		])
 
 		@initDividerMoving()
@@ -220,7 +220,7 @@ class ResourceTimelineView extends TimelineView
 		else
 			bodyHeight = totalHeight - headHeight - @queryMiscHeight()
 
-		@timeGrid.bodyScroller.setHeight(bodyHeight)
+		@timelineGrid.bodyScroller.setHeight(bodyHeight)
 		@resourceGrid.bodyScroller.setHeight(bodyHeight)
 
 		# do children AFTER because of ScrollFollowerSprite abs position issues
@@ -229,18 +229,18 @@ class ResourceTimelineView extends TimelineView
 
 	queryMiscHeight: ->
 		@el.outerHeight() -
-			Math.max(@resourceGrid.headScroller.el.outerHeight(), @timeGrid.headScroller.el.outerHeight()) -
-			Math.max(@resourceGrid.bodyScroller.el.outerHeight(), @timeGrid.bodyScroller.el.outerHeight())
+			Math.max(@resourceGrid.headScroller.el.outerHeight(), @timelineGrid.headScroller.el.outerHeight()) -
+			Math.max(@resourceGrid.bodyScroller.el.outerHeight(), @timelineGrid.bodyScroller.el.outerHeight())
 
 
 	syncHeadHeights: ->
 		@resourceGrid.headHeight('auto')
-		@timeGrid.headHeight('auto')
+		@timelineGrid.headHeight('auto')
 
-		headHeight = Math.max(@resourceGrid.headHeight(), @timeGrid.headHeight())
+		headHeight = Math.max(@resourceGrid.headHeight(), @timelineGrid.headHeight())
 
 		@resourceGrid.headHeight(headHeight)
-		@timeGrid.headHeight(headHeight)
+		@timelineGrid.headHeight(headHeight)
 
 		headHeight
 
@@ -269,7 +269,7 @@ class ResourceTimelineView extends TimelineView
 		rowObj = @getResourceRow(resource.id)
 
 		if rowObj
-			@timeGrid.removeChild(rowObj)
+			@timelineGrid.removeChild(rowObj)
 			delete @resourceRowHash[resource.id]
 
 			# TODO: this is a common post-initial-fetch pattern. generalize somehow.
@@ -318,7 +318,7 @@ class ResourceTimelineView extends TimelineView
 		else
 			@insertRow(row)
 
-		@timeGrid.addChild(row)
+		@timelineGrid.addChild(row)
 		@resourceRowHash[resource.id] = row
 
 		for childResource in resource.children
@@ -458,7 +458,7 @@ class ResourceTimelineView extends TimelineView
 
 		if not safe
 			h1 = @resourceGrid.tbodyEl.height()
-			h2 = @timeGrid.tbodyEl.height()
+			h2 = @timelineGrid.tbodyEl.height()
 			if Math.abs(h1 - h2) > 1
 				@syncRowHeights(visibleRows, true)
 
@@ -487,7 +487,7 @@ class ResourceTimelineView extends TimelineView
 	queryResourceScroll: ->
 		scroll = {}
 
-		scrollerTop = @timeGrid.bodyScroller.scrollEl.offset().top # TODO: use getClientRect
+		scrollerTop = @timelineGrid.bodyScroller.scrollEl.offset().top # TODO: use getClientRect
 
 		for rowObj in @getVisibleRows()
 			if rowObj.resource
@@ -509,10 +509,10 @@ class ResourceTimelineView extends TimelineView
 			if row
 				el = row.getTr('event')
 				if el
-					innerTop = @timeGrid.bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
+					innerTop = @timelineGrid.bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
 					elBottom = el.offset().top + el.outerHeight()
 					scrollTop = elBottom - scroll.bottom - innerTop
-					@timeGrid.bodyScroller.setScrollTop(scrollTop)
+					@timelineGrid.bodyScroller.setScrollTop(scrollTop)
 					@resourceGrid.bodyScroller.setScrollTop(scrollTop)
 
 
@@ -521,9 +521,9 @@ class ResourceTimelineView extends TimelineView
 		if row
 			el = row.getTr('event')
 			if el
-				innerTop = @timeGrid.bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
+				innerTop = @timelineGrid.bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
 				scrollTop = el.offset().top - innerTop
-				@timeGrid.bodyScroller.setScrollTop(scrollTop)
+				@timelineGrid.bodyScroller.setScrollTop(scrollTop)
 				@resourceGrid.bodyScroller.setScrollTop(scrollTop)
 
 
@@ -571,7 +571,7 @@ ResourceTimelineView.watch 'resourceRows', [ 'hasResources' ], ->
 	return
 , ->
 	@rowHierarchy.removeChildren()
-	@timeGrid.removeChildren()
+	@timelineGrid.removeChildren()
 	@resourceRowHash = {}
 
 

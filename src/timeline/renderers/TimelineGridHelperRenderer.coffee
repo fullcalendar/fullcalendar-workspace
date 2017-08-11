@@ -1,14 +1,14 @@
 
 class TimelineGridHelperRenderer extends HelperRenderer
 
-	container: null # a TimeGrid or { innerEl, ?resource }
+	container: null # a TimelineGrid or { innerEl, ?resource }
 	#component: null # a TimelineGrid
 
 
-	constructor: (timeGrid, fillRenderer, container) ->
+	constructor: (timelineGrid, fillRenderer, container) ->
 		super
 
-		@container = container or timeGrid
+		@container = container or timelineGrid
 
 
 	renderSegs: (segs, sourceSeg) ->

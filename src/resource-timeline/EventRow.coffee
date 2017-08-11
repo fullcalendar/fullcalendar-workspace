@@ -13,7 +13,7 @@ class EventRow extends RowParent
 		super
 
 		@eventRenderer = new TimelineGridEventRenderer(
-			@view.timeGrid
+			@view.timelineGrid
 			null # FillRenderer TODO!
 			this # { segContainerEl, segContainerHeight }
 		)
