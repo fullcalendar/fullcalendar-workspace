@@ -204,16 +204,14 @@ class ResourceTimelineView extends TimelineView
 
 
 	updateSize: (totalHeight, isAuto, isResize) ->
-		super
-
 		@resourceGrid.updateSize()
 		@joiner.update()
 
 		if @cellFollower
 			@cellFollower.update()
 
-		if isResize
-			@syncRowHeights()
+		# TODO: smarter about not doing this every time, if a single resource is added/removed
+		@syncRowHeights()
 
 		headHeight = @syncHeadHeights()
 
@@ -224,6 +222,9 @@ class ResourceTimelineView extends TimelineView
 
 		@timeGrid.bodyScroller.setHeight(bodyHeight)
 		@resourceGrid.bodyScroller.setHeight(bodyHeight)
+
+		# do children AFTER because of ScrollFollowerSprite abs position issues
+		super
 
 
 	queryMiscHeight: ->
@@ -244,72 +245,59 @@ class ResourceTimelineView extends TimelineView
 		headHeight
 
 
-	# Resource Setting / Unsetting
+	# Resource Data
+	# ------------------------------------------------------------------------------------------------------------------
+
+
+	handleResourceAdd: (resource) ->
+		super
+
+		rowObj = @insertResource(resource)
+
+		# TODO: we aren't using renderResourceAdd,
+		# so prevent empty function from queueing
+		if @has('displayingResources')
+			@requestRender 'resource', 'add', ->
+				rowObj.renderSkeleton() # recursive
+				@reinitializeCellFollowers()
+
+
+	handleResourceRemove: (resource) ->
+		super
+
+		rowObj = @getResourceRow(resource.id)
+
+		if rowObj
+			@timeGrid.removeChild(rowObj)
+			delete @resourceRowHash[resource.id]
+
+			if @has('displayingResources')
+				# TODO: we aren't using renderResourceAdd,
+				# so prevent empty function from queueing
+				@requestRender 'resource', 'remove', ->
+					rowObj.removeFromParentAndDom()
+					@reinitializeCellFollowers()
+			else
+				rowObj.removeFromParentAndDom()
+
+
+	# High-Level Resource Rendering
 	# ------------------------------------------------------------------------------------------------------------------
 
 
 	renderResources: (resources) ->
-		@batchRows()
-		for resource in resources
-			@insertResource(resource)
-		@rowHierarchy.show() # will trigger rowShown
-		@unbatchRows()
-
+		@rowHierarchy.renderSkeleton() # recursive
 		@reinitializeCellFollowers()
 
 
 	unrenderResources: ->
-		@batchRows()
-		@rowHierarchy.removeChildren() # will trigger rowHidden
-		@unbatchRows()
-
+		@rowHierarchy.removeElement() # recursive
 		@reinitializeCellFollowers()
 
 
-	###
-	TODO: the scenario where there were previously unassociated events that are now
-	 attached to this resource. should render those events immediately.
-
-	Responsible for rendering the new resource
-	###
-	renderResourceAdd: (resource) ->
-		@insertResource(resource)
-		@reinitializeCellFollowers()
-
-
-	# Responsible for unrendering the old resource
-	renderResourceRemove: (resource) ->
-		row = @getResourceRow(resource.id)
-		if row
-			@batchRows() # because multiple rows might be hidden (empty groups)
-			row.remove()
-			@unbatchRows()
-
-			@reinitializeCellFollowers()
-
-
-	# TODO: optimize this
-	# TODO: destroy all scrollfollowers when the View's skeleton is destroyed
-
-	cellFollower: null
-
-	reinitializeCellFollowers: ->
-		if @cellFollower
-			@cellFollower.clearSprites() # the closest thing to a destroy
-
-		@cellFollower = new ScrollFollower(@resourceGrid.bodyScroller, true) # allowPointerEvents
-		@cellFollower.isHFollowing = false
-		@cellFollower.isVFollowing = true
-
-		nodes = []
-		for row in @rowHierarchy.getNodes()
-			if row instanceof VRowGroup
-				if row.groupTd
-					cellContent = row.groupTd.find('.fc-cell-content')
-					if cellContent.length
-						nodes.push(cellContent[0])
-
-		@cellFollower.setSprites($(nodes))
+	# Row Hierarchy Building
+	# ------------------------------------------------------------------------------------------------------------------
+	# TODO: really bad names for addChild/removeChild (DateComponent!)
 
 
 	# creates a row for the given resource and inserts it into the hierarchy.
@@ -327,12 +315,13 @@ class ResourceTimelineView extends TimelineView
 		else
 			@insertRow(row)
 
+		@timeGrid.addChild(row)
+		@resourceRowHash[resource.id] = row
+
 		for childResource in resource.children
 			@insertResource(childResource, row)
 
-
-	# Row Hierarchy Building
-	# ------------------------------------------------------------------------------------------------------------------
+		row
 
 
 	# inserts the given row into the hierarchy.
@@ -405,121 +394,50 @@ class ResourceTimelineView extends TimelineView
 		group
 
 
-	# Row *Event* Utilities
-	# ------------------------------------------------------------------------------------------------------------------
-
-
-	# produces array of [ rowObj, segs ]
-	# segs that don't have any resourceId won't be paired
-	pairSegsWithRows: (segs) ->
-		pairs = []
-		pairsById = {}
-
-		for seg in segs
-			resourceId = seg.resourceId
-			if resourceId
-				rowObj = @getResourceRow(resourceId)
-				if rowObj
-					pair = pairsById[resourceId]
-					if not pair
-						pair = [ rowObj, [] ]
-						pairs.push(pair)
-						pairsById[resourceId] = pair
-					pair[1].push(seg)
-		pairs
-
-
 	# Row Rendering
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	# this needs to exist even when no adhoc???
-	rowAdded: (row) ->
-		if row instanceof ResourceRow
-			@resourceRowHash[row.resource.id] = row
-			@timeGrid.assignRowBusinessHourSegs(row)
-
-		# TODO: consolidate repeat code
+	descendantAdded: (row) ->
 		wasNesting = @isNesting
 		isNesting = Boolean(
 			@nestingCnt += if row.depth then 1 else 0
 		)
+
 		if wasNesting != isNesting
-			@el.toggleClass('fc-nested', isNesting)
-			@el.toggleClass('fc-flat', not isNesting)
-		@isNesting = isNesting
+
+			@requestRender 'nesting', 'update', => # TODO: allow anon tasks
+				@el.toggleClass('fc-nested', isNesting)
+					.toggleClass('fc-flat', not isNesting)
+
+			@isNesting = isNesting
 
 
-	# this needs to exist even when no adhoc???
-	rowRemoved: (row) ->
-		if row instanceof ResourceRow
-			delete @resourceRowHash[row.resource.id]
-			@timeGrid.destroyRowBusinessHourSegs(row)
-
-		# TODO: consolidate repeat code
+	descendantRemoved: (row) ->
 		wasNesting = @isNesting
 		isNesting = Boolean(
 			@nestingCnt -= if row.depth then 1 else 0
 		)
+
 		if wasNesting != isNesting
-			@el.toggleClass('fc-nested', isNesting)
-			@el.toggleClass('fc-flat', not isNesting)
-		@isNesting = isNesting
+
+			@requestRender 'nesting', 'update', => # TODO: allow anon tasks
+				@el.toggleClass('fc-nested', isNesting)
+					.toggleClass('fc-flat', not isNesting)
+
+			@isNesting = isNesting
 
 
-	batchRowDepth: 0
-	shownRowBatch: null
-	hiddenRowBatch: null
+	descendantShown: (row) ->
+		# RowParent needs this
 
 
-	batchRows: ->
-		if not (@batchRowDepth++) # was zero before incrementing?
-			@shownRowBatch = []
-			@hiddenRowBatch = []
+	descendantHidden: (row) ->
+		# RowParent needs this
 
 
-	unbatchRows: ->
-		if not (--@batchRowDepth) # is zero after decrementing?
-
-			if @hiddenRowBatch.length
-				@rowsHidden(@hiddenRowBatch)
-
-			if @shownRowBatch.length
-				@rowsShown(@shownRowBatch)
-
-			@hiddenRowBatch = null
-			@shownRowBatch = null
-
-
-	# Called when one or more rows that were not rendered or previously hidden become visible
-	rowShown: (row) ->
-		if @shownRowBatch
-			@shownRowBatch.push(row)
-		else
-			@rowsShown([ row ])
-
-
-	# Called when one or more rows that were previously shown become hidden
-	rowHidden: (row) ->
-		if @hiddenRowBatch
-			@hiddenRowBatch.push(row)
-		else
-			@rowsHidden([ row ])
-
-
-	rowsShown: (rows) ->
-		@syncRowHeights(rows)
-		@calendar.updateViewSize() # if in render queue, will wait until end
-
-
-	rowsHidden: (rows) ->
-		@calendar.updateViewSize() # if in render queue, will wait until end
-
-
-	syncRowHeights: (visibleRows, safe=false) -> # visibleRows is flat. does not do recursive
-
-		# TODO: always restore scroll state afterwards
-		# (because it gets unrendered)
+	# visibleRows is flat. does not do recursive
+	syncRowHeights: (visibleRows, safe=false) ->
 
 		visibleRows ?= @getVisibleRows()
 
@@ -604,3 +522,98 @@ class ResourceTimelineView extends TimelineView
 				scrollTop = el.offset().top - innerTop
 				@timeGrid.bodyScroller.setScrollTop(scrollTop)
 				@resourceGrid.bodyScroller.setScrollTop(scrollTop)
+
+
+	# for resource text in columns of row groupings
+	# https://fullcalendar.io/js/fullcalendar-scheduler-1.6.2/demos/column-grouping.html
+	# ------------------------------------------------------------------------------------------------------------------
+	# TODO: optimize this
+	# TODO: destroy all scrollfollowers when the View's skeleton is destroyed
+
+	cellFollower: null
+
+
+	# wrapper for things
+	reinitializeCellFollowers: ->
+		if @cellFollower
+			@cellFollower.clearSprites() # the closest thing to a destroy
+
+		@cellFollower = new ScrollFollower(@resourceGrid.bodyScroller, true) # allowPointerEvents
+		@cellFollower.isHFollowing = false
+		@cellFollower.isVFollowing = true
+
+		nodes = []
+		for row in @rowHierarchy.getNodes()
+			if row instanceof VRowGroup
+				if row.groupTd
+					cellContent = row.groupTd.find('.fc-cell-content')
+					if cellContent.length
+						nodes.push(cellContent[0])
+
+		@cellFollower.setSprites($(nodes))
+
+
+# Watcher Garbage for Rows
+# ---------------------------------------------------------------------------------------------------------------------
+
+
+###
+generates the initial ResourceRows (aka EventRows)
+###
+ResourceTimelineView.watch 'resourceRows', [ 'hasResources' ], ->
+	resources = @get('currentResources')
+
+	for resource in resources
+		@insertResource(resource)
+	return
+, ->
+	@rowHierarchy.removeChildren()
+	@timeGrid.removeChildren()
+	@resourceRowHash = {}
+
+
+###
+assigns a dateProfile to each EventRow
+dateProfiles are needed for event rendering
+###
+ResourceTimelineView.watch 'settingDateProfileInRows', [ 'resourceRows', 'dateProfile' ], (deps) ->
+	for rowObj in @getEventRows()
+		rowObj.set('dateProfile', deps.dateProfile)
+	return
+, ->
+	for rowObj in @getEventRows()
+		rowObj.unset('dateProfile')
+	return
+
+
+###
+assigns a dateProfile to each EventRow
+dateProfiles are needed for event rendering
+###
+ResourceTimelineView.watch 'settingEventsInRows', [ 'resourceRows', 'hasEvents' ], ->
+	eventsPayload = @get('currentEvents')
+	resourcePayloads = {}
+
+	for eventId, eventInstanceGroup of eventsPayload
+		eventDef = eventInstanceGroup.getEventDef()
+
+		for resourceId in eventDef.getResourceIds()
+			resourcePayload = (resourcePayloads[resourceId] or= {})
+			resourcePayload[eventId] = eventInstanceGroup
+
+	for rowObj in @getEventRows()
+		rowObj.handleEventsSet(resourcePayloads[rowObj.resource.id] or [])
+, ->
+	for rowObj in @getEventRows()
+		rowObj.handleEventsUnset()
+
+
+###
+waits to render resources until all rows are created.
+initialized via function. we need to do the same to override.
+###
+ResourceTimelineView::watchDisplayingResources = ->
+	@watch 'displayingResources', [ 'resourceRows' ], =>
+		@requestRender('resource', 'init', @executeResourcesRender, [ @get('currentResources') ])
+	, =>
+		@requestRender('resource', 'destroy', @executeResourcesUnrender)

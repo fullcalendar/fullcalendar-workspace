@@ -87,14 +87,15 @@ class TimelineView extends View
 
 
 	updateSize: (totalHeight, isAuto, isResize) ->
-		super # calls children
-
 		if isAuto
 			bodyHeight = 'auto'
 		else
 			bodyHeight = totalHeight - @timeGrid.headHeight() - @queryMiscHeight()
 
 		@timeGrid.bodyScroller.setHeight(bodyHeight)
+
+		# do children AFTER because of ScrollFollowerSprite abs position issues
+		super
 
 
 	queryMiscHeight: ->

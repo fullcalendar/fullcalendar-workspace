@@ -6,6 +6,12 @@ class HRowGroup extends RowGroup
 
 	hasOwnRow: true # actually renders its own row and takes up height
 
+
+	renderSkeleton: ->
+		super
+
+		@updateExpandingEnabled()
+
 	###
 	Renders this row's TR for the "spreadsheet" quadrant, the area with info about each resource
 	###

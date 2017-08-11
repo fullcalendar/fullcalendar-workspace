@@ -16,13 +16,12 @@ class RowGroup extends RowParent
 	###
 	Called when this row (if it renders a row) or a subrow is removed
 	###
-	rowRemoved: (row) ->
+	descendantRemoved: (row) ->
 		super # bubble up to the view and let the node be fully removed
 
-		# if the row that was removed was a subnode (not *this* node)
 		# and there are no more children in the group, implictly remove this group as well
-		if row != this and not @children.length
-			@remove()
+		if not @children.length
+			@removeFromParentAndDom()
 
 	###
 	Renders the content wrapper element that will be inserted into this row's TD cell

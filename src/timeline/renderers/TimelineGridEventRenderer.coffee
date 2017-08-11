@@ -25,6 +25,7 @@ class TimelineGridEventRenderer extends EventRenderer
 
 
 	renderFgSegs: (segs) ->
+
 		for seg in segs
 			# TODO: centralize logic (also in updateSegPositions)
 			coords = @component.rangeToCoords(seg)

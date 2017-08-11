@@ -9,22 +9,6 @@ class VRowGroup extends RowGroup
 	groupTd: null # the TD that spans vertically
 
 	###
-	Called when a row somewhere within the grouping is shown
-	###
-	rowShown: (row) ->
-		@rowspan += 1
-		@renderRowspan()
-		super # will bubble to parent
-
-	###
-	Called when a row somewhere within the grouping is hidden
-	###
-	rowHidden: (row) ->
-		@rowspan -= 1
-		@renderRowspan()
-		super # will bubble to parent
-
-	###
 	Makes sure the groupTd has the correct rowspan / place in the DOM.
 	PRECONDITION: in the case of multiple group nesting, a child's renderRowspan()
 	will be called before the parent's renderRowspan().
@@ -54,3 +38,19 @@ class VRowGroup extends RowGroup
 				@groupTd = null
 
 			@leadingTr = null
+
+	###
+	Called when a row somewhere within the grouping is shown
+	###
+	descendantShown: (row) ->
+		@rowspan += 1
+		@renderRowspan()
+		super # will bubble to parent
+
+	###
+	Called when a row somewhere within the grouping is hidden
+	###
+	descendantHidden: (row) ->
+		@rowspan -= 1
+		@renderRowspan()
+		super # will bubble to parent

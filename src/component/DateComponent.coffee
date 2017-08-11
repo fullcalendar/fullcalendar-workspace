@@ -1,6 +1,6 @@
 
 # references to pre-monkeypatched methods
-DateComponent_setElement = DateComponent::setElement
+DateComponent_constructed = DateComponent::constructed
 DateComponent_addChild = DateComponent::addChild
 DateComponent_eventRangeToEventFootprints = DateComponent::eventRangeToEventFootprints
 
@@ -14,10 +14,10 @@ DateComponent::isResourcesRendered = false
 DateComponent::resourceMessageAggregator = null
 
 
-DateComponent::setElement = (el) ->
-	DateComponent_setElement.apply(this, arguments)
+DateComponent::constructed = ->
+	DateComponent_constructed.apply(this, arguments)
 
-	@ensureResourceMessageAggregator()
+	@resourceMessageAggregator = buildMessageAggregator(this, 'resourcesRender', 'resourcesUnrender')
 	@watchDisplayingResources()
 	@watchDisplayingEvents()
 
@@ -30,12 +30,7 @@ DateComponent::addChild = (child) ->
 	DateComponent_addChild.apply(this, arguments)
 
 	if child.isResourceRenderingEnabled
-		@ensureResourceMessageAggregator().addChild(child)
-
-
-# lazily create, to allow instantiation early in the process, for addChild
-DateComponent::ensureResourceMessageAggregator = ->
-	@resourceMessageAggregator or= buildMessageAggregator(this, 'resourcesRender', 'resourcesUnrender')
+		@resourceMessageAggregator.addChild(child)
 
 
 # Dependencies for Event / Resource Rendering
@@ -57,7 +52,9 @@ DateComponent::watchDisplayingEvents = ->
 		if @isResourceRenderingEnabled
 			'displayingResources'
 		else
-			'hasResources' # still needs resource data for event coloring
+			# still needs ALL resource data for event coloring.
+			# if this component doesn't care about rendering resources, assumed it will receive ALL resources
+			'hasResources'
 	], =>
 		@requestRender('event', 'init', @executeEventsRender, [ @get('currentEvents') ])
 	, =>
@@ -71,12 +68,20 @@ DateComponent::watchDisplayingEvents = ->
 DateComponent::handleResourcesSet = (resources) ->
 	@set('currentResources', resources)
 	@set('hasResources', true)
+	@setResourcesInChildren(resources)
+
+
+DateComponent::setResourcesInChildren = (resources) ->
 	@callChildren('handleResourcesSet', arguments)
 
 
 DateComponent::handleResourcesUnset = ->
 	@unset('hasResources')
 	@unset('currentResources')
+	@unsetResourcesInChildren()
+
+
+DateComponent::unsetResourcesInChildren = ->
 	@callChildren('handleResourcesUnset', arguments)
 
 

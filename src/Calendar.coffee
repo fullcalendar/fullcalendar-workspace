@@ -1,19 +1,14 @@
 
 # NOTE: for public methods, always be sure of the return value. for chaining
-Calendar_initEventManager = Calendar::initEventManager
+Calendar_constructed = Calendar::constructed
 Calendar_buildSelectFootprint = Calendar::buildSelectFootprint
 
 
 Calendar::resourceManager = null
 
 
-###
-initializes resourceManager
-unrelated to events! but could not hook into Calendar's constructor
-TODO: fix
-###
-Calendar::initEventManager = ->
-	Calendar_initEventManager.apply(this, arguments)
+Calendar::constructed = -> # executed immediately after the constructor
+	Calendar_constructed.apply(this, arguments)
 
 	@resourceManager = new ResourceManager(this)
 

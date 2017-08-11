@@ -40,7 +40,7 @@ class TimelineGrid extends InteractiveDateComponent
 	headScroller: null
 	bodyScroller: null
 	joiner: null
-	follower: null
+	follower: null # for the header dates! TODO: rename
 	eventTitleFollower: null
 
 	timeWindowMs: null
@@ -638,6 +638,8 @@ class TimelineGrid extends InteractiveDateComponent
 
 		if isDatesRendered
 			@buildCoords()
+
+			# TODO: left/right CSS assignment also happens earlier in renderFgSegs
 			@updateSegPositions()
 
 			# this updateSize method is triggered by callers who don't always subsequently call updateNowIndicator,

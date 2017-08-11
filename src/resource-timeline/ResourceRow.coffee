@@ -6,39 +6,15 @@ class ResourceRow extends EventRow
 
 	resource: null
 
+
 	constructor: (view, @resource) ->
 		super
 
-	###
-	Called when a row in the tree has been added
-	###
-	rowAdded: (row) ->
-		super
-		if row != this and @isRendered # there is one new addition subrow
-			if @children.length == 1 # first row was added?
-				# update the expand icon
-				@enableExpanding()
-				if @isExpanded
-					@indicateExpanded()
-				else
-					@indicateCollapsed()
 
-	###
-	Called when a row in the tree has been removed
-	###
-	rowRemoved: (row) ->
-		super
-		if row != this and @isRendered # there is one less subrow
-			if not @children.length # no more rows?
-				@disableExpanding()
-
-	render: ->
+	renderSkeleton: ->
 		super
 
-		if @children.length > 0
-			@enableExpanding()
-		else
-			@disableExpanding()
+		@updateExpandingEnabled()
 
 		@view.publiclyTrigger('resourceRender', {
 			context: @resource

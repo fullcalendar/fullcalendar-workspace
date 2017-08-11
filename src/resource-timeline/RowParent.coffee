@@ -16,9 +16,9 @@ class RowParent extends DateComponent
 	trHash: null # TR jq objects owned by the node. keyed by "type" (parallel row sections in different tbodies)
 	trs: null # single jQuery object of tr elements owned by the node.
 
-	isRendered: false # has this single node been rendered? (possible for it to be hidden after though)
+	isShown: false # rendered in DOM *and* not display:none
 	isExpanded: true # does this node have its child nodes revealed?
-	isShown: false # does this node's parent have this node revealed? and is it rendered too?
+
 
 	constructor: (@view) ->
 		super
@@ -36,7 +36,7 @@ class RowParent extends DateComponent
 	Will be inserted at the `index`. If not given, will be appended to the end.
 	###
 	addChild: (child, index) ->
-		child.remove() # in case it belonged somewhere else previously
+		child.removeFromParentAndDom() # in case it belonged somewhere else previously
 		children = @children
 
 		# insert into the children array
@@ -60,18 +60,12 @@ class RowParent extends DateComponent
 		child.parent = this
 		child.depth = @depth + (if @hasOwnRow then 1 else 0)
 
-		# trigger the "added" callback for all nodes in the subtree
-		for node in child.getNodes()
-			node.added()
+		@descendantAdded(child)
 
-		# if this node is currently displayed and expanded, display the child as well. will trigger shown handlers
-		if @isShown and @isExpanded
-			child.show()
 
 	###
 	Removes the given child from the node. Assumes it is a direct child.
 	If not a direct child, returns false and nothing happens.
-	Unrenders the child and triggers handlers.
 	###
 	removeChild: (child) ->
 		children = @children
@@ -91,41 +85,34 @@ class RowParent extends DateComponent
 				children[i + 1].prevSibling = child.prevSibling
 
 			children.splice(i, 1) # remove node from the array
-			child.recursivelyUnrender() # unrender the subtree. will trigger "hidden" callbacks
-
-			# trigger the "removed" callback for all nodes in the subtree
-			# do this before destroying the parent/child relationship
-			for row in child.getNodes()
-				row.removed()
 
 			# unwire child from the parent/siblings
 			child.parent = null
 			child.prevSibling = null
 
-			child # return on success
+			@descendantRemoved(child)
+
+			child # return on success (needed?)
+
 
 	###
-	Removes all of the node's children from the hierarchy. Unrenders them and triggers callbacks.
-	NOTE: batchRows/unbatchRows should probably be called before this happens :(
+	Removes all of the node's children from the hierarchy.
 	###
 	removeChildren: ->
-
-		# unrender each child's subtree
 		for child in @children
-			child.recursivelyUnrender()
-
-		# trigger "removed" callbacks on all nodes in the subtree
-		for child in @getDescendants()
-			child.removed()
+			@descendantRemoved(child)
 
 		@children = []
 
 	###
 	Removes this node from its parent
 	###
-	remove: ->
+	removeFromParentAndDom: ->
 		if @parent
 			@parent.removeChild(this)
+
+		if @get('isInDom')
+			@removeElement()
 
 	###
 	Gets the last direct child node
@@ -138,7 +125,7 @@ class RowParent extends DateComponent
 	Walks backward in the hierarchy to find the previous row leaf node.
 	When looking at the hierarchy in a flat linear fashion, this is the revealed row just before the current.
 	###
-	getPrevRow: ->
+	getPrevRowInDom: ->
 		node = this
 		while node
 			if node.prevSibling
@@ -151,7 +138,7 @@ class RowParent extends DateComponent
 				node = node.parent
 
 			# return this "previous" node if it has an exposed row
-			if node and node.hasOwnRow and node.isShown
+			if node and node.get('isInDom')
 				return node
 		null
 
@@ -202,17 +189,38 @@ class RowParent extends DateComponent
 	# Rendering
 	# ------------------------------------------------------------------------------------------------------------------
 
+
+	show: ->
+		if not @isShown
+
+			if @get('isInDom')
+				@trs.css('display', '')
+				@isShown = true
+				@thisRowShown()
+			else
+				@renderSkeleton() # will dow iShown/thisRowShown
+
+
+	hide: ->
+		if @isShown
+
+			if @get('isInDom')
+				@trs.hide()
+				@isShown = false
+				@thisRowHidden()
+
+
 	###
 	Builds and populates the TRs for each row type. Inserts them into the DOM.
 	Does this only for this single row. Not recursive. If not a row (hasOwnRow=false), does not render anything.
 	PRECONDITION: assumes the parent has already been rendered.
 	###
-	render: ->
+	renderSkeleton: ->
 		@trHash = {}
 		trNodes = []
 
 		if @hasOwnRow # only bother rendering TRs if we know this node has a real row
-			prevRow = @getPrevRow() # the row before this row, in the overall linear flat list
+			prevRow = @getPrevRowInDom() # the row before this row, in the overall linear flat list
 
 			# let the view's tbody structure determine which TRs should be rendered
 			for type, tbody of @view.tbodyHash
@@ -234,102 +242,47 @@ class RowParent extends DateComponent
 				else
 					tbody.prepend(tr) # belongs in the very first position
 
-		# build a single jQuery object. use event delegation for calling toggleExpanded
-		@trs = $(trNodes)
-			.on('click', '.fc-expander', proxy(this, 'toggleExpanded'))
+			# build a single jQuery object. use event delegation for calling toggleExpanded
+			@trs = $(trNodes)
+				.on('click', '.fc-expander', proxy(this, 'toggleExpanded'))
 
-		@isRendered = true
+			@set('isInDom', true)
+			@isShown = true
+			@thisRowShown()
+
+		for child in @children
+			if child.isExpanded
+				child.renderSkeleton()
+
 
 	###
 	Unpopulates and removes all of this row's TRs from the DOM. Only for this single row. Not recursive.
 	Will trigger "hidden".
 	###
-	unrender: ->
-		if @isRendered
+	removeElement: ->
+		# call the subclass' render method for each row type (if available)
+		for type, tr of @trHash
+			unrenderMethodName = 'unrender' + capitaliseFirstLetter(type) + 'Content'
+			if this[unrenderMethodName]
+				this[unrenderMethodName](tr)
 
-			# call the subclass' render method for each row type (if available)
-			for type, tr of @trHash
-				unrenderMethodName = 'unrender' + capitaliseFirstLetter(type) + 'Content'
-				if this[unrenderMethodName]
-					this[unrenderMethodName](tr)
+		@unset('isInDom')
+		@isShown = false
 
-			@trHash = {}
-			@trs.remove() # remove from DOM
-			@trs = $()
-
-			@isRendered = false
-			@isShown = false # isShown assumes rendering has happened too, so change it to false
-			@hidden() # trigger
-
-	###
-	Like unrender(), but does it for this row AND all descendants.
-	NOTE: batchRows/unbatchRows should probably be called before this happens :(
-	###
-	recursivelyUnrender: ->
-		@unrender()
+		@trHash = {}
+		@trs.remove() # remove from DOM
+		@trs = $()
 
 		for child in @children
-			child.recursivelyUnrender()
+			if child.get('isInDom')
+				child.removeElement()
+
 
 	###
 	A simple getter for retrieving a TR jQuery object of a certain row type
 	###
 	getTr: (type) ->
 		@trHash[type]
-
-
-	# Hiding / Showing
-	# ------------------------------------------------------------------------------------------------------------------
-
-	###
-	Renders this row if not already rendered, making sure it is visible.
-	Also renders descendants of this subtree, based on whether they are expanded or not.
-	NOTE: If called externally, batchRows/unbatchRows should probably be called before this happens :(
-	###
-	show: ->
-		if not @isShown
-
-			if not @isRendered
-				@render()
-			else
-				@trs.css('display', '') # remove display:none
-
-			# TODO: hack specific to EventRow.
-			# the re-display might not have rendered new segs
-			if @ensureSegsRendered
-				@ensureSegsRendered()
-
-			# update the expander icon
-			if @isExpanded
-				@indicateExpanded()
-			else
-				@indicateCollapsed()
-
-			@isShown = true
-			@shown() # trigger
-			
-			# show all children only if we know this node is in an expanded state
-			if @isExpanded
-				for child in @children
-					child.show()
-
-	###
-	Temporarily hides this node's TRs (if applicable) as well as all nodes in the subtree
-	###
-	hide: ->
-		if @isShown
-
-			if @isRendered
-				@trs.hide()
-
-			@isShown = false
-			@hidden() # trigger
-
-			# hide all children only if we know this node was previously expanded.
-			# done so handlers get triggered.
-			if @isExpanded
-				for child in @children
-					child.hide()
 
 
 	# Expanding / Collapsing
@@ -342,16 +295,14 @@ class RowParent extends DateComponent
 	expand: ->
 		if not @isExpanded
 			@isExpanded = true
-			@indicateExpanded()
 
-			# show all the children
-			# one of the only places in this class where we explicitly batch/unbatch :(
-			@view.batchRows()
-			for child in @children
-				child.show()
-			@view.unbatchRows()
+			@requestRender 'expand', 'show', ->
+				@indicateExpanded()
 
-			@animateExpand()
+				for child in @children
+					child.show()
+
+				@animateExpand()
 
 	###
 	Hides this node's children if they are not already hidden. Changes any expander icon.
@@ -359,14 +310,12 @@ class RowParent extends DateComponent
 	collapse: ->
 		if @isExpanded
 			@isExpanded = false
-			@indicateCollapsed()
 
-			# hide all the children
-			# one of the only places in this class where we explicitly batch/unbatch :(
-			@view.batchRows()
-			for child in @children
-				child.hide()
-			@view.unbatchRows()
+			@requestRender 'expand', 'show', ->
+				@indicateCollapsed()
+
+				for child in @children
+					child.hide()
 
 	###
 	Switches between expanded/collapsed states
@@ -393,20 +342,30 @@ class RowParent extends DateComponent
 			.removeClass(@getExpandedIcon())
 			.addClass(@getCollapsedIcon())
 
-	###
-	###
-	enableExpanding: ->
+
+	indicateExpandingEnabled: ->
 		@trs.find('.fc-expander-space')
 			.addClass('fc-expander')
 
-	###
-	###
-	disableExpanding: ->
+		if @isExpanded
+			@indicateExpanded()
+		else
+			@indicateCollapsed()
+
+
+	indicateExpandingDisabled: ->
 		@trs.find('.fc-expander-space')
 			.removeClass('fc-expander')
 			.find('.fc-icon')
 				.removeClass(@getExpandedIcon())
 				.removeClass(@getCollapsedIcon())
+
+
+	updateExpandingEnabled: ->
+		if @hasOwnRow and @children.length
+			@indicateExpandingEnabled()
+		else
+			@indicateExpandingDisabled()
 
 
 	getExpandedIcon: ->
@@ -462,56 +421,32 @@ class RowParent extends DateComponent
 	# Triggering
 	# ------------------------------------------------------------------------------------------------------------------
 
-	###
-	Triggered when the current node has been shown (either freshly rendered or re-shown)
-	when it had previously been unrendered or hidden. `shown` does not bubble up the hierarchy.
-	###
-	shown: ->
-		if @hasOwnRow
-			@rowShown(this)
 
-	###
-	Triggered when the current node has been hidden (either temporarily or permanently)
-	when it had previously been shown. `hidden` does not bubble up the hierarchy.
-	###
-	hidden: ->
-		if @hasOwnRow
-			@rowHidden(this)
+	descendantAdded: (row) ->
+		if @get('isInDom') and @hasOwnRow and @children.length == 1
+			@indicateExpandingEnabled()
 
-	###
-	Just like `shown`, but only triggered for nodes that are actual rows. Bubbles up the hierarchy.
-	###
-	rowShown: (row) ->
-		(@parent or @view).rowShown(row)
+		(@parent or @view).descendantAdded(row)
 
-	###
-	Just like `hidden`, but only triggered for nodes that are actual rows. Bubbles up the hierarchy.
-	###
-	rowHidden: (row) ->
-		(@parent or @view).rowHidden(row)
 
-	###
-	Triggered when the current node has been added to the hierarchy. `added` does not bubble up.
-	###
-	added: ->
-		if @hasOwnRow
-			@rowAdded(this)
+	descendantRemoved: (row) ->
+		if @get('isInDom') and @hasOwnRow and @children.length == 0
+			@indicateExpandingDisabled()
 
-	###
-	Triggered when the current node has been removed from the hierarchy. `removed` does not bubble up.
-	###
-	removed: ->
-		if @hasOwnRow
-			@rowRemoved(this)
+		(@parent or @view).descendantRemoved(row)
 
-	###
-	Just like `added`, but only triggered for nodes that are actual rows. Bubbles up the hierarchy.
-	###
-	rowAdded: (row) ->
-		(@parent or @view).rowAdded(row)
 
-	###
-	Just like `removed`, but only triggered for nodes that are actual rows. Bubbles up the hierarchy.
-	###
-	rowRemoved: (row) ->
-		(@parent or @view).rowRemoved(row)
+	thisRowShown: ->
+		(@parent or @view).descendantShown(this)
+
+
+	thisRowHidden: ->
+		(@parent or @view).descendantHidden(this)
+
+
+	descendantShown: (row) ->
+		(@parent or @view).descendantShown(row)
+
+
+	descendantHidden: (row) ->
+		(@parent or @view).descendantHidden(row)
