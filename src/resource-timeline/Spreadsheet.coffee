@@ -12,7 +12,8 @@ class Spreadsheet
 
 	headScroller: null
 	bodyScroller: null
-	joiner: null
+	joiner: null # TODO: rename
+	cellFollower: null
 
 
 	constructor: (@view) ->
@@ -235,13 +236,33 @@ class Spreadsheet
 		@headScroller.updateSize()
 		@bodyScroller.updateSize()
 		@joiner.update()
-
-		# TODO: do follower.disable(), instead of checking for existence all the time
-		if @follower
-			@follower.update()
+		@updateCellFollower()
 
 
 	headHeight: -> # TODO: route this better
 		table = @headScroller.canvas.contentEl.find('table')
 		table.height.apply(table, arguments)
+
+
+	# completely reninitializes every time there's add/remove
+	# TODO: optimize
+	# TODO: investigate why calling twice
+	updateCellFollower: ->
+		if @cellFollower
+			@cellFollower.clearSprites() # the closest thing to a destroy
+
+		@cellFollower = new ScrollFollower(@bodyScroller, true) # allowPointerEvents
+		@cellFollower.isHFollowing = false
+		@cellFollower.isVFollowing = true
+
+		nodes = []
+		for row in @view.rowHierarchy.getNodes()
+			if row instanceof VRowGroup
+				if row.groupTd
+					cellContent = row.groupTd.find('.fc-cell-content')
+					if cellContent.length
+						nodes.push(cellContent[0])
+
+		@cellFollower.setSprites($(nodes))
+		@cellFollower.update()
 

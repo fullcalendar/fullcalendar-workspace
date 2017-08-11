@@ -12,7 +12,6 @@ class ResourceTimelineView extends TimelineView
 	tbodyHash: null # used by RowParent
 	joiner: null
 	dividerEls: null
-	spreadsheetCellFollower: null
 
 	superHeaderText: null
 	isVGrouping: null
@@ -208,9 +207,6 @@ class ResourceTimelineView extends TimelineView
 		@spreadsheet.updateSize()
 		@joiner.update()
 
-		if @spreadsheetCellFollower
-			@spreadsheetCellFollower.update()
-
 		# TODO: smarter about not doing this every time, if a single resource is added/removed
 		@syncRowHeights()
 
@@ -291,12 +287,10 @@ class ResourceTimelineView extends TimelineView
 
 	renderResources: (resources) ->
 		@rowHierarchy.renderSkeleton() # recursive
-		@updateSpreadsheetCellFollower()
 
 
 	unrenderResources: ->
 		@rowHierarchy.removeElement() # recursive
-		@updateSpreadsheetCellFollower()
 
 
 	# Row Hierarchy Building
@@ -526,27 +520,6 @@ class ResourceTimelineView extends TimelineView
 				scrollTop = el.offset().top - innerTop
 				@timelineGrid.bodyScroller.setScrollTop(scrollTop)
 				@spreadsheet.bodyScroller.setScrollTop(scrollTop)
-
-
-	# completely reninitializes every time there's add/remove
-	# TODO: optimize
-	updateSpreadsheetCellFollower: ->
-		if @spreadsheetCellFollower
-			@spreadsheetCellFollower.clearSprites() # the closest thing to a destroy
-
-		@spreadsheetCellFollower = new ScrollFollower(@spreadsheet.bodyScroller, true) # allowPointerEvents
-		@spreadsheetCellFollower.isHFollowing = false
-		@spreadsheetCellFollower.isVFollowing = true
-
-		nodes = []
-		for row in @rowHierarchy.getNodes()
-			if row instanceof VRowGroup
-				if row.groupTd
-					cellContent = row.groupTd.find('.fc-cell-content')
-					if cellContent.length
-						nodes.push(cellContent[0])
-
-		@spreadsheetCellFollower.setSprites($(nodes))
 
 
 # Watcher Garbage for Rows
