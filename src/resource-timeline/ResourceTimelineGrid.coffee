@@ -27,14 +27,6 @@ class ResourceTimelineGrid extends TimelineGrid
 		# ResourceTimelineView is responsible for this
 
 
-	setResourcesInChildren: ->
-		# ResourceTimelineView is responsible for this
-
-
-	unsetResourcesInChildren: ->
-		# ResourceTimelineView is responsible for this
-
-
 	renderSkeleton: ->
 		super
 

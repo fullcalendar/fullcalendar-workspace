@@ -1,13 +1,6 @@
 
 class ResourceTimelineView extends TimelineView
 
-	# configuration for DateComponent monkeypatch
-	# means that is takes responsibility for rendering own resources
-	isResourceRenderingEnabled: true
-
-	# configuration for View monkeypatch
-	baseRenderRequiresResources: true
-
 	spreadsheet: null
 	tbodyHash: null # used by RowParent
 	scrollJoiner: null

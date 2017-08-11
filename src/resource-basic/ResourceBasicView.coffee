@@ -1,9 +1,6 @@
 
 class ResourceBasicView extends FC.BasicView
 
-	# configuration for monkeypatched View
-	baseRenderRequiresResources: true
-
 	dayGridClass: ResourceDayGrid
 
 

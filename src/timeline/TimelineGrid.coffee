@@ -1,7 +1,11 @@
 
 class TimelineGrid extends InteractiveDateComponent
 
+	# configuration for DateComponent monkeypatch
+	isResourceFootprintsEnabled: true
+
 	@mixin(StandardInteractionsMixin)
+
 	eventRendererClass: TimelineGridEventRenderer
 	fillRendererClass: TimelineGridFillRenderer
 	businessHourRendererClass: BusinessHourRenderer

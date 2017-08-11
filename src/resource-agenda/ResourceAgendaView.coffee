@@ -1,9 +1,6 @@
 
 class ResourceAgendaView extends FC.AgendaView
 
-	# configuration for monkeypatched View
-	baseRenderRequiresResources: true
-
 	timeGridClass: ResourceTimeGrid
 	dayGridClass: ResourceDayGrid
 

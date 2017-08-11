@@ -7,7 +7,7 @@ DateComponent_eventRangeToEventFootprints = DateComponent::eventRangeToEventFoot
 
 
 # configuration for subclasses
-DateComponent::isResourceRenderingEnabled = false
+DateComponent::isResourceFootprintsEnabled = false
 
 
 # new members
@@ -30,39 +30,36 @@ DateComponent::constructed = ->
 DateComponent::addChild = (child) ->
 	DateComponent_addChild.apply(this, arguments)
 
-	if child.isResourceRenderingEnabled
-		@resourceMessageAggregator.addChild(child)
+	@resourceMessageAggregator.addChild(child)
 
 
 DateComponent::removeChild = (child) ->
 	DateComponent_removeChild.apply(this, arguments)
 
-	if child.isResourceRenderingEnabled
-		@resourceMessageAggregator.removeChild(child)
+	@resourceMessageAggregator.removeChild(child)
 
 
 # Dependencies for Event / Resource Rendering
 # ----------------------------------------------------------------------------------------------------------------------
 
 
+# all components will go through resource rendering flow
+# it is up to them if they want to render anything
 DateComponent::watchDisplayingResources = ->
-	if @isResourceRenderingEnabled
-		@watch 'displayingResources', [ 'hasResources' ], =>
-			@requestRender(@executeResourcesRender, [ @get('currentResources') ], 'resource', 'init')
-		, =>
-			@requestRender(@executeResourcesUnrender, null, 'resource', 'destroy')
+	@watch 'displayingResources', [ 'hasResources' ], =>
+		@requestRender(@executeResourcesRender, [ @get('currentResources') ], 'resource', 'init')
+	, =>
+		@requestRender(@executeResourcesUnrender, null, 'resource', 'destroy')
 
 
 DateComponent::watchDisplayingEvents = ->
 	@watch 'displayingEvents', [ # overrides previous 'displayingEvents' definition
 		'displayingDates'
 		'hasEvents'
-		if @isResourceRenderingEnabled
+		if @isResourceFootprintsEnabled
 			'displayingResources'
 		else
-			# still needs ALL resource data for event coloring.
-			# if this component doesn't care about rendering resources, assumed it will receive ALL resources
-			'hasResources'
+			'currentResources' # needed for event coloring
 	], =>
 		@requestRender(@executeEventsRender, [ @get('currentEvents') ], 'event', 'init')
 	, =>
@@ -161,7 +158,7 @@ DateComponent::renderResourceRemove = ->
 
 
 DateComponent::eventRangeToEventFootprints = (eventRange) ->
-	if not @isResourceRenderingEnabled
+	if not @isResourceFootprintsEnabled
 		DateComponent_eventRangeToEventFootprints.apply(this, arguments)
 	else
 		eventDef = eventRange.eventDef

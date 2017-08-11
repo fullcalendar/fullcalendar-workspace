@@ -15,11 +15,6 @@ View_addResource = View::addResource
 View_removeResource = View::removeResource
 
 
-# configuration for subclasses
-# if base is considered rendered ONLY when resources AND dates rendered
-View::baseRenderRequiresResources = false
-
-
 # new members
 View::resourceTextFunc = null
 
@@ -44,13 +39,13 @@ View::removeElement = ->
 
 View::onAllDateRender = ->
 	# base is considered rendered ONLY when resources AND dates rendered
-	if not @baseRenderRequiresResources or @isResourcesRendered
+	if @isResourcesRendered
 		@onBaseRender()
 
 
 View::onAllResourcesRender = ->
 	# base is considered rendered ONLY when resources AND dates rendered
-	if @baseRenderRequiresResources and @isDatesRendered
+	if @isDatesRendered
 		@onBaseRender()
 
 

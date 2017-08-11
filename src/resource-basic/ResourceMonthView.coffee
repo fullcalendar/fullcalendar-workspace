@@ -1,9 +1,6 @@
 
 class ResourceMonthView extends FC.MonthView
 
-	# configuration for View monkeypatch
-	baseRenderRequiresResources: true
-
 	dayGridClass: ResourceDayGrid
 
 
