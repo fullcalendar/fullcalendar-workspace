@@ -8,12 +8,12 @@ class TimelineGridEventDragging extends EventDragging
 	segDragStart: ->
 		super
 
-		if @eventTitleFollower
-			@eventTitleFollower.forceRelative()
+		if @component.eventTitleFollower
+			@component.eventTitleFollower.forceRelative()
 
 
 	segDragStop: ->
 		super
 
-		if @eventTitleFollower
-			@eventTitleFollower.clearForce()
+		if @component.eventTitleFollower
+			@component.eventTitleFollower.clearForce()
