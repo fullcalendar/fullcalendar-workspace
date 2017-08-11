@@ -2,14 +2,13 @@
 class TimelineGridFillRenderer extends FillRenderer
 
 	container: null # a TimelineGrid or { bgSegContainerEl }
-	component: null # a TimelineGrid
+	#component: null # a TimelineGrid
 
 
 	constructor: (timelineGrid, container) ->
 		super
 
 		@container = container or timelineGrid
-		@component = timelineGrid
 
 
 	attachSegEls: (type, segs) ->

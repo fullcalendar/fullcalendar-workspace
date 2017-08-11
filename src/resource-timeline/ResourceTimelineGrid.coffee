@@ -39,28 +39,58 @@ class ResourceTimelineGrid extends TimelineGrid
 		@tbodyEl = rowContainerEl.find('tbody')
 
 
-	# Event Resizing
+	# Event Resizing (route to rows)
 	# ---------------------------------------------------------------------------------
 
 
 	renderEventResize: (eventFootprints, seg, isTouch) ->
-		return # TODO: route to rows
+		map = groupEventFootprintsByResourceId(eventFootprints)
+
+		for resourceId, resourceEventFootprints of map
+			rowObj = @view.getResourceRow(resourceId)
+
+			# render helpers
+			rowObj.helperRenderer.renderEventDraggingFootprints(resourceEventFootprints, seg, isTouch)
+
+			# render highlight
+			for eventFootprint in resourceEventFootprints
+				rowObj.renderHighlight(eventFootprint.componentFootprint)
 
 
 	unrenderEventResize: ->
-		return # TODO: route to rows
+		for rowObj in @view.getEventRows()
+			rowObj.helperRenderer.unrender()
+			rowObj.unrenderHighlight()
 
 
-	# DnD
+	# DnD (route to rows)
 	# ---------------------------------------------------------------------------------
 
 
 	renderDrag: (eventFootprints, seg, isTouch) ->
-		return # TODO: route to rows
+		map = groupEventFootprintsByResourceId(eventFootprints)
+
+		if seg
+			# draw helper
+			for resourceId, resourceEventFootprints of map
+				rowObj = @view.getResourceRow(resourceId)
+				rowObj.helperRenderer.renderEventDraggingFootprints(resourceEventFootprints, seg, isTouch)
+
+			true # signal helper rendered
+		else
+			# draw highlight
+			for resourceId, resourceEventFootprints of map
+				for eventFootprint in resourceEventFootprints
+					rowObj = @view.getResourceRow(resourceId)
+					rowObj.renderHighlight(eventFootprint.componentFootprint)
+
+			false # signal helper not rendered
 
 
 	unrenderDrag: ->
-		return # TODO: route to rows
+		for rowObj in @view.getEventRows()
+			rowObj.helperRenderer.unrender()
+			rowObj.unrenderHighlight()
 
 
 	# Hit System
@@ -117,3 +147,17 @@ class ResourceTimelineGrid extends TimelineGrid
 
 	getHitEl: (hit) ->
 		@getSnapEl(hit.snap)
+
+
+# Utils
+# ---------------------------------------------------------------------------------
+
+
+groupEventFootprintsByResourceId = (eventFootprints) ->
+	map = {}
+
+	for eventFootprint in eventFootprints
+		(map[eventFootprint.componentFootprint.resourceId] or= [])
+			.push(eventFootprint)
+
+	map
