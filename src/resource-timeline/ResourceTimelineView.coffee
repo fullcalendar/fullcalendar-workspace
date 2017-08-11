@@ -8,7 +8,7 @@ class ResourceTimelineView extends TimelineView
 	# configuration for View monkeypatch
 	baseRenderRequiresResources: true
 
-	resourceGrid: null # TODO: rename
+	spreadsheet: null
 	tbodyHash: null # used by RowParent
 	joiner: null
 	dividerEls: null
@@ -33,7 +33,7 @@ class ResourceTimelineView extends TimelineView
 	constructor: ->
 		super
 		@processResourceOptions()
-		@resourceGrid = new Spreadsheet(this)
+		@spreadsheet = new Spreadsheet(this)
 		@rowHierarchy = new RowParent(this)
 		@resourceRowHash = {}
 
@@ -108,12 +108,12 @@ class ResourceTimelineView extends TimelineView
 		@renderResourceGridSkeleton()
 
 		@tbodyHash = { # needed for rows to render
-			spreadsheet: @resourceGrid.tbodyEl
+			spreadsheet: @spreadsheet.tbodyEl
 			event: @timelineGrid.tbodyEl
 		}
 
 		@joiner = new ScrollJoiner('vertical', [
-			@resourceGrid.bodyScroller
+			@spreadsheet.bodyScroller
 			@timelineGrid.bodyScroller
 		])
 
@@ -140,9 +140,9 @@ class ResourceTimelineView extends TimelineView
 
 
 	renderResourceGridSkeleton: ->
-		@resourceGrid.el = @el.find('tbody .fc-resource-area')
-		@resourceGrid.headEl = @el.find('thead .fc-resource-area')
-		@resourceGrid.renderSkeleton()
+		@spreadsheet.el = @el.find('tbody .fc-resource-area')
+		@spreadsheet.headEl = @el.find('thead .fc-resource-area')
+		@spreadsheet.renderSkeleton()
 		# ^ is not a Grid/DateComponent
 
 
@@ -153,7 +153,7 @@ class ResourceTimelineView extends TimelineView
 	initDividerMoving: ->
 		@dividerEls = @el.find('.fc-divider')
 
-		@dividerWidth = @opt('resourceAreaWidth') ? @resourceGrid.tableWidth # tableWidth available after resourceGrid.renderSkeleton
+		@dividerWidth = @opt('resourceAreaWidth') ? @spreadsheet.tableWidth # tableWidth available after spreadsheet.renderSkeleton
 		if @dividerWidth?
 			@positionDivider(@dividerWidth)
 
@@ -204,7 +204,7 @@ class ResourceTimelineView extends TimelineView
 
 
 	updateSize: (totalHeight, isAuto, isResize) ->
-		@resourceGrid.updateSize()
+		@spreadsheet.updateSize()
 		@joiner.update()
 
 		if @cellFollower
@@ -221,7 +221,7 @@ class ResourceTimelineView extends TimelineView
 			bodyHeight = totalHeight - headHeight - @queryMiscHeight()
 
 		@timelineGrid.bodyScroller.setHeight(bodyHeight)
-		@resourceGrid.bodyScroller.setHeight(bodyHeight)
+		@spreadsheet.bodyScroller.setHeight(bodyHeight)
 
 		# do children AFTER because of ScrollFollowerSprite abs position issues
 		super
@@ -229,17 +229,17 @@ class ResourceTimelineView extends TimelineView
 
 	queryMiscHeight: ->
 		@el.outerHeight() -
-			Math.max(@resourceGrid.headScroller.el.outerHeight(), @timelineGrid.headScroller.el.outerHeight()) -
-			Math.max(@resourceGrid.bodyScroller.el.outerHeight(), @timelineGrid.bodyScroller.el.outerHeight())
+			Math.max(@spreadsheet.headScroller.el.outerHeight(), @timelineGrid.headScroller.el.outerHeight()) -
+			Math.max(@spreadsheet.bodyScroller.el.outerHeight(), @timelineGrid.bodyScroller.el.outerHeight())
 
 
 	syncHeadHeights: ->
-		@resourceGrid.headHeight('auto')
+		@spreadsheet.headHeight('auto')
 		@timelineGrid.headHeight('auto')
 
-		headHeight = Math.max(@resourceGrid.headHeight(), @timelineGrid.headHeight())
+		headHeight = Math.max(@spreadsheet.headHeight(), @timelineGrid.headHeight())
 
-		@resourceGrid.headHeight(headHeight)
+		@spreadsheet.headHeight(headHeight)
 		@timelineGrid.headHeight(headHeight)
 
 		headHeight
@@ -457,7 +457,7 @@ class ResourceTimelineView extends TimelineView
 			row.setTrInnerHeight(innerHeights[i])
 
 		if not safe
-			h1 = @resourceGrid.tbodyEl.height()
+			h1 = @spreadsheet.tbodyEl.height()
 			h2 = @timelineGrid.tbodyEl.height()
 			if Math.abs(h1 - h2) > 1
 				@syncRowHeights(visibleRows, true)
@@ -513,7 +513,7 @@ class ResourceTimelineView extends TimelineView
 					elBottom = el.offset().top + el.outerHeight()
 					scrollTop = elBottom - scroll.bottom - innerTop
 					@timelineGrid.bodyScroller.setScrollTop(scrollTop)
-					@resourceGrid.bodyScroller.setScrollTop(scrollTop)
+					@spreadsheet.bodyScroller.setScrollTop(scrollTop)
 
 
 	scrollToResource: (resource) ->
@@ -524,7 +524,7 @@ class ResourceTimelineView extends TimelineView
 				innerTop = @timelineGrid.bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
 				scrollTop = el.offset().top - innerTop
 				@timelineGrid.bodyScroller.setScrollTop(scrollTop)
-				@resourceGrid.bodyScroller.setScrollTop(scrollTop)
+				@spreadsheet.bodyScroller.setScrollTop(scrollTop)
 
 
 	# for resource text in columns of row groupings
@@ -541,7 +541,7 @@ class ResourceTimelineView extends TimelineView
 		if @cellFollower
 			@cellFollower.clearSprites() # the closest thing to a destroy
 
-		@cellFollower = new ScrollFollower(@resourceGrid.bodyScroller, true) # allowPointerEvents
+		@cellFollower = new ScrollFollower(@spreadsheet.bodyScroller, true) # allowPointerEvents
 		@cellFollower.isHFollowing = false
 		@cellFollower.isVFollowing = true
 
