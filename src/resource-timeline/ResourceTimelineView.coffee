@@ -271,6 +271,7 @@ class ResourceTimelineView extends TimelineView
 			@timeGrid.removeChild(rowObj)
 			delete @resourceRowHash[resource.id]
 
+			# TODO: this is a common post-initial-fetch pattern. generalize somehow.
 			if @has('displayingResources')
 				# TODO: we aren't using renderResourceAdd,
 				# so prevent empty function from queueing
@@ -602,10 +603,10 @@ ResourceTimelineView.watch 'settingEventsInRows', [ 'resourceRows', 'hasEvents' 
 			resourcePayload[eventId] = eventInstanceGroup
 
 	for rowObj in @getEventRows()
-		rowObj.handleEventsSet(resourcePayloads[rowObj.resource.id] or [])
+		rowObj.setEvents(resourcePayloads[rowObj.resource.id] or {})
 , ->
 	for rowObj in @getEventRows()
-		rowObj.handleEventsUnset()
+		rowObj.unsetEvents()
 
 
 ###
