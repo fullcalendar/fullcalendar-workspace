@@ -1,10 +1,9 @@
 
 class ResourceTimelineGrid extends TimelineGrid
 
-	@mixin ResourceInteractionsMixin
-
-	# doesn't do its own event rendering. defers to rows.
+	# rows take care of this rendering...
 	eventRendererClass: null
+	helperRendererClass: null
 
 	eventRows: null
 	shownEventRows: null
@@ -34,6 +33,46 @@ class ResourceTimelineGrid extends TimelineGrid
 
 	unsetResourcesInChildren: ->
 		# ResourceTimelineView is responsible for this
+
+
+	renderSkeleton: ->
+		super
+
+		# only non-resource grid needs this, so kill it
+		# TODO: look into better solution
+		@segContainerEl.remove()
+		@segContainerEl = null
+
+		rowContainerEl = $('<div class="fc-rows"><table><tbody/></table></div>').appendTo(@bodyScroller.canvas.contentEl)
+		@tbodyEl = rowContainerEl.find('tbody')
+
+
+	# Event Resizing
+	# ---------------------------------------------------------------------------------
+
+
+	renderEventResize: (eventFootprints, seg, isTouch) ->
+		return # TODO: route to rows
+
+
+	unrenderEventResize: ->
+		return # TODO: route to rows
+
+
+	# DnD
+	# ---------------------------------------------------------------------------------
+
+
+	renderDrag: (eventFootprints, seg, isTouch) ->
+		return # TODO: route to rows
+
+
+	unrenderDrag: ->
+		return # TODO: route to rows
+
+
+	# Hit System
+	# ---------------------------------------------------------------------------------
 
 
 	prepareHits: ->
@@ -86,15 +125,3 @@ class ResourceTimelineGrid extends TimelineGrid
 
 	getHitEl: (hit) ->
 		@getSnapEl(hit.snap)
-
-
-	renderSkeleton: ->
-		super
-
-		# only non-resource grid needs this, so kill it
-		# TODO: look into better solution
-		@segContainerEl.remove()
-		@segContainerEl = null
-
-		rowContainerEl = $('<div class="fc-rows"><table><tbody/></table></div>').appendTo(@bodyScroller.canvas.contentEl)
-		@tbodyEl = rowContainerEl.find('tbody')

@@ -12,10 +12,23 @@ class EventRow extends RowParent
 	constructor: ->
 		super
 
+		# TODO: better way of instantiating these?
+
+		@fillRenderer = new TimelineGridFillRenderer(
+			@view.timelineGrid
+			this # { bgSegContainerEl }
+		)
+
 		@eventRenderer = new TimelineGridEventRenderer(
 			@view.timelineGrid
-			null # FillRenderer TODO!
+			@fillRenderer
 			this # { segContainerEl, segContainerHeight }
+		)
+
+		@helperRenderer = new TimelineGridHelperRenderer(
+			@view.timelineGrid
+			@eventRenderer
+			this
 		)
 
 

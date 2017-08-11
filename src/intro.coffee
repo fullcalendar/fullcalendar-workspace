@@ -79,6 +79,7 @@ FillRenderer = FC.FillRenderer
 HelperRenderer = FC.HelperRenderer
 StandardInteractionsMixin = FC.StandardInteractionsMixin
 DateSelecting = FC.DateSelecting
+EventPointing = FC.EventPointing
 EventDragging = FC.EventDragging
 EventResizing = FC.EventResizing
 ExternalDropping = FC.ExternalDropping
