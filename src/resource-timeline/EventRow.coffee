@@ -43,6 +43,6 @@ EventRow::watchDisplayingEvents = ->
 		'isInDom'
 		'hasEvents'
 	], =>
-		@requestRender('event', 'init', @executeEventsRender, [ @get('currentEvents') ])
+		@requestRender(@executeEventsRender, [ @get('currentEvents') ], 'event', 'init')
 	, =>
-		@requestRender('event', 'destroy', @executeEventsUnrender)
+		@requestRender(@executeEventsUnrender, null, 'event', 'destroy')

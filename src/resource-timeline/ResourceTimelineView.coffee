@@ -257,9 +257,10 @@ class ResourceTimelineView extends TimelineView
 		# TODO: we aren't using renderResourceAdd,
 		# so prevent empty function from queueing
 		if @has('displayingResources')
-			@requestRender 'resource', 'add', ->
+			@requestRender ->
 				rowObj.renderSkeleton() # recursive
 				@reinitializeCellFollowers()
+			, null, 'resource', 'add'
 
 
 	handleResourceRemove: (resource) ->
@@ -275,9 +276,10 @@ class ResourceTimelineView extends TimelineView
 			if @has('displayingResources')
 				# TODO: we aren't using renderResourceAdd,
 				# so prevent empty function from queueing
-				@requestRender 'resource', 'remove', ->
+				@requestRender ->
 					rowObj.removeFromParentAndDom()
 					@reinitializeCellFollowers()
+				, null, 'resource', 'remove'
 			else
 				rowObj.removeFromParentAndDom()
 
@@ -407,7 +409,7 @@ class ResourceTimelineView extends TimelineView
 
 		if wasNesting != isNesting
 
-			@requestRender 'nesting', 'update', => # TODO: allow anon tasks
+			@requestRender =>
 				@el.toggleClass('fc-nested', isNesting)
 					.toggleClass('fc-flat', not isNesting)
 
@@ -422,7 +424,7 @@ class ResourceTimelineView extends TimelineView
 
 		if wasNesting != isNesting
 
-			@requestRender 'nesting', 'update', => # TODO: allow anon tasks
+			@requestRender =>
 				@el.toggleClass('fc-nested', isNesting)
 					.toggleClass('fc-flat', not isNesting)
 
@@ -615,6 +617,6 @@ initialized via function. we need to do the same to override.
 ###
 ResourceTimelineView::watchDisplayingResources = ->
 	@watch 'displayingResources', [ 'resourceRows' ], =>
-		@requestRender('resource', 'init', @executeResourcesRender, [ @get('currentResources') ])
+		@requestRender(@executeResourcesRender, [ @get('currentResources') ], 'resource', 'init')
 	, =>
-		@requestRender('resource', 'destroy', @executeResourcesUnrender)
+		@requestRender(@executeResourcesUnrender, null, 'resource', 'destroy',)

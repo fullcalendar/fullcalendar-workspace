@@ -48,9 +48,9 @@ DateComponent::removeChild = (child) ->
 DateComponent::watchDisplayingResources = ->
 	if @isResourceRenderingEnabled
 		@watch 'displayingResources', [ 'hasResources' ], =>
-			@requestRender('resource', 'init', @executeResourcesRender, [ @get('currentResources') ])
+			@requestRender(@executeResourcesRender, [ @get('currentResources') ], 'resource', 'init')
 		, =>
-			@requestRender('resource', 'destroy', @executeResourcesUnrender)
+			@requestRender(@executeResourcesUnrender, null, 'resource', 'destroy')
 
 
 DateComponent::watchDisplayingEvents = ->
@@ -64,9 +64,9 @@ DateComponent::watchDisplayingEvents = ->
 			# if this component doesn't care about rendering resources, assumed it will receive ALL resources
 			'hasResources'
 	], =>
-		@requestRender('event', 'init', @executeEventsRender, [ @get('currentEvents') ])
+		@requestRender(@executeEventsRender, [ @get('currentEvents') ], 'event', 'init')
 	, =>
-		@requestRender('event', 'destroy', @executeEventsUnrender)
+		@requestRender(@executeEventsUnrender, null, 'event', 'destroy')
 
 
 # Resource Data Handling
@@ -105,7 +105,7 @@ DateComponent::handleResourceAdd = (resource, allResources) ->
 	@callChildren('handleResourceAdd', arguments)
 
 	if @has('displayingResources')
-		@requestRender('resource', 'add', @renderResourceAdd, [ resource ])
+		@requestRender(@renderResourceAdd, [ resource ], 'resource', 'add')
 
 
 DateComponent::handleResourceRemove = (resource, allResources) ->
@@ -113,7 +113,7 @@ DateComponent::handleResourceRemove = (resource, allResources) ->
 	@callChildren('handleResourceRemove', arguments)
 
 	if @has('displayingResources')
-		@requestRender('resource', 'remove', @renderResourceRemove, [ resource ])
+		@requestRender(@renderResourceRemove, [ resource ], 'resource', 'remove')
 
 
 # Resource High-level Rendering

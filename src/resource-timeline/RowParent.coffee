@@ -296,7 +296,7 @@ class RowParent extends DateComponent
 		if not @isExpanded
 			@isExpanded = true
 
-			@requestRender 'expand', 'show', ->
+			@requestRender ->
 				@indicateExpanded()
 
 				for child in @children
@@ -311,7 +311,7 @@ class RowParent extends DateComponent
 		if @isExpanded
 			@isExpanded = false
 
-			@requestRender 'expand', 'show', ->
+			@requestRender ->
 				@indicateCollapsed()
 
 				for child in @children
