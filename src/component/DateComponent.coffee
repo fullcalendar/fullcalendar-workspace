@@ -105,9 +105,9 @@ DateComponent::addResource = (resource, allResources) ->
 		@requestRender(@renderResourceAdd, [ resource ], 'resource', 'add')
 
 
-DateComponent::handleResourceRemove = (resource, allResources) ->
+DateComponent::removeResource = (resource, allResources) ->
 	@set('currentResources', allResources)
-	@callChildren('handleResourceRemove', arguments)
+	@callChildren('removeResource', arguments)
 
 	if @has('displayingResources')
 		@requestRender(@renderResourceRemove, [ resource ], 'resource', 'remove')
