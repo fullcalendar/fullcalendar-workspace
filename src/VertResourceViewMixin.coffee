@@ -43,13 +43,13 @@ VertResourceViewMixin = $.extend {},
 					@setResourcesOnGrids(deps.currentResources) # doesn't unrender
 					@executeDateRender(deps.dateProfile, not needsScroll)
 					needsScroll = false
-					@trigger('resourcesRendered')
+					@trigger('after:entity:render', 'resources')
 				, 'resource', 'init'
 		, =>
 			if isDisplayingBoth
 				isDisplayingBoth = false
 				@renderQueue.queue =>
-					@trigger('before:resourcesUnrendered')
+					@trigger('before:entity:unrender', 'resources')
 					@unsetResourcesOnGrids() # doesn't unrender
 					@executeDateUnrender()
 				, 'resource', 'destroy'

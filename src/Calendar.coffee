@@ -1,7 +1,8 @@
 
 # NOTE: for public methods, always be sure of the return value. for chaining
 Calendar_constructed = Calendar::constructed
-Calendar_buildSelectFootprint = Calendar::buildSelectFootprint
+Calendar_buildSelectFootprint = Calendar::buildSelectFootprint # changed!
+Calendar_onAfterBaseRender = Calendar::onAfterBaseRender
 
 
 Calendar::resourceManager = null
@@ -11,6 +12,8 @@ Calendar::constructed = -> # executed immediately after the constructor
 	Calendar_constructed.apply(this, arguments)
 
 	@resourceManager = new ResourceManager(this)
+
+	@on('after:resources:render', @onAfterResourcesRender)
 
 
 Calendar::instantiateView = (viewType) ->
@@ -147,3 +150,26 @@ Calendar::getEventResources = (idOrEvent) ->
 			if resource
 				resources.push(resource)
 	resources
+
+
+# Handlers
+# ----------------------------------------------------------------------------------------
+
+
+Calendar::onAfterDateRender = ->
+	if @view.isResourcesRendered
+		@onAfterBaseRender()
+
+
+Calendar::onAfterResourcesRender = ->
+	if @view.isDatesRendered
+		@onAfterBaseRender()
+
+
+Calendar::onAfterBaseRender = ->
+	# inject license key before 'viewRender' which is called by super's onBaseRender
+	processLicenseKey(
+		@opt('schedulerLicenseKey')
+		@view.el # container element
+	)
+	Calendar_onAfterBaseRender.apply(this, arguments)

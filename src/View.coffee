@@ -7,7 +7,6 @@ Calendar.defaults.filterResourcesWithEvents = false
 # references to pre-monkeypatched methods
 View_setElement = View::setElement
 View_removeElement = View::removeElement
-View_onBaseRender = View::onBaseRender
 View_queryScroll = View::queryScroll
 View_applyScroll = View::applyScroll
 View_setResources = View::setResources
@@ -24,38 +23,11 @@ View::setElement = ->
 
 	@watchResources() # do after have the el, because might render, which assumes a render skeleton
 
-	@on('all:resourcesRender', @onAllResourcesRender)
-
 
 View::removeElement = ->
 	View_removeElement.apply(this, arguments)
 
 	@unwatchResources()
-
-
-# Modified Base Rendering Behavior
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-View::onAllDateRender = ->
-	# base is considered rendered ONLY when resources AND dates rendered
-	if @isResourcesRendered
-		@onBaseRender()
-
-
-View::onAllResourcesRender = ->
-	# base is considered rendered ONLY when resources AND dates rendered
-	if @isDatesRendered
-		@onBaseRender()
-
-
-View::onBaseRender = ->
-	# inject license key before 'viewRender' which is called by super's onBaseRender
-	processLicenseKey(
-		@calendar.opt('schedulerLicenseKey')
-		@el # container element
-	)
-	View_onBaseRender.apply(this, arguments)
 
 
 # Scrolling

@@ -84,5 +84,3 @@ EventDragging = FC.EventDragging
 EventResizing = FC.EventResizing
 ExternalDropping = FC.ExternalDropping
 BusinessHourGenerator = FC.BusinessHourGenerator
-
-buildMessageAggregator = FC.buildMessageAggregator

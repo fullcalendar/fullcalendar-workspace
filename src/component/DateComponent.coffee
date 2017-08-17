@@ -12,31 +12,13 @@ DateComponent::isResourceFootprintsEnabled = false
 
 # new members
 DateComponent::isResourcesRendered = false
-DateComponent::resourceMessageAggregator = null
 
 
 DateComponent::constructed = ->
 	DateComponent_constructed.apply(this, arguments)
 
-	@resourceMessageAggregator = buildMessageAggregator(this, 'resourcesRender', 'resourcesUnrender')
 	@watchDisplayingResources()
 	@watchDisplayingEvents()
-
-
-# Message Aggregation
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-DateComponent::addChild = (child) ->
-	DateComponent_addChild.apply(this, arguments)
-
-	@resourceMessageAggregator.addChild(child)
-
-
-DateComponent::removeChild = (child) ->
-	DateComponent_removeChild.apply(this, arguments)
-
-	@resourceMessageAggregator.removeChild(child)
 
 
 # Dependencies for Event / Resource Rendering
@@ -119,12 +101,12 @@ DateComponent::removeResource = (resource, allResources) ->
 
 DateComponent::executeResourcesRender = (resources) ->
 	@renderResources(resources)
-	@trigger('resourcesRender')
+	@trigger('after:entity:render', 'resources')
 	@isResourcesRendered = true
 
 
 DateComponent::executeResourcesUnrender = ->
-	@trigger('before:resourceUnrender')
+	@trigger('before:entity:unrender', 'resources')
 	@unrenderResources()
 	@isResourcesRendered = true
 
