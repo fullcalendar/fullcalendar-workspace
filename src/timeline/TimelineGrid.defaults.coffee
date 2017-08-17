@@ -86,7 +86,7 @@ TimelineGrid::queryDurationOption = (name) ->
 
 
 TimelineGrid::validateLabelAndSlot = ->
-	currentUnzonedRange = @view.get('dateProfile').currentUnzonedRange
+	currentUnzonedRange = @view.dateProfile.currentUnzonedRange
 
 	# make sure labelInterval doesn't exceed the max number of cells
 	if @labelInterval
@@ -133,7 +133,7 @@ TimelineGrid::computeFallbackDuration = ->
 
 
 TimelineGrid::ensureLabelInterval = ->
-	currentUnzonedRange = @view.get('dateProfile').currentUnzonedRange
+	currentUnzonedRange = @view.dateProfile.currentUnzonedRange
 	labelInterval = @labelInterval
 
 	if not labelInterval
@@ -167,7 +167,7 @@ TimelineGrid::ensureLabelInterval = ->
 
 
 TimelineGrid::ensureSlotDuration = ->
-	currentUnzonedRange = @view.get('dateProfile').currentUnzonedRange
+	currentUnzonedRange = @view.dateProfile.currentUnzonedRange
 	slotDuration = @slotDuration
 
 	if not slotDuration

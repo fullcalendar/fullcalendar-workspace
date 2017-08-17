@@ -57,7 +57,7 @@ Calendar::buildCurrentBusinessFootprints = (isAllDay) ->
 	if anyCustomBusinessHours
 		view = @view
 		generalBusinessHourGenerator = view.get('businessHourGenerator')
-		unzonedRange = view.get('dateProfile').activeUnzonedRange
+		unzonedRange = view.dateProfile.activeUnzonedRange
 		componentFootprints = []
 
 		for resource in flatResources
