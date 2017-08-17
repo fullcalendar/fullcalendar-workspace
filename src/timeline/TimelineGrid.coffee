@@ -169,9 +169,6 @@ class TimelineGrid extends InteractiveDateComponent
 		@slotDates = slotDates
 		@updateGridDates()
 
-		if @eventRenderer
-			@eventRenderer.rangeUpdated()
-
 
 	updateGridDates: ->
 		snapIndex = -1
