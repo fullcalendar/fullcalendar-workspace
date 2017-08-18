@@ -9,6 +9,7 @@ class ResourceManager extends Class
 		cache: false
 
 	calendar: null
+	eventDataSplitter: null
 	fetchId: 0
 	topLevelResources: null # if null, indicates not fetched
 	resourcesById: null
@@ -20,6 +21,9 @@ class ResourceManager extends Class
 
 	constructor: (@calendar) ->
 		@initializeCache()
+
+		@eventDataSplitter = new EventInstanceDataSourceSplitter (eventInstance) ->
+			eventInstance.def.getResourceIds()
 
 
 	# Resource Data Getting
@@ -215,9 +219,12 @@ class ResourceManager extends Class
 		if @fetching
 			@fetching.then => # wait for initial batch of resources
 				resource = @removeResourceFromIndex(id)
+
 				if resource
 					@removeResourceFromTree(resource)
 					@trigger('remove', resource, @topLevelResources)
+					@eventDataSplitter.releaseSubResource(resource.eventDataSource)
+
 				resource # return value
 		else
 			Promise.reject()
@@ -256,6 +263,8 @@ class ResourceManager extends Class
 
 		if resource.businessHours?
 			resource.businessHourGenerator = new BusinessHourGenerator(resource.businessHours, @calendar)
+
+		resource.eventDataSource = @eventDataSplitter.buildSubSource(resource.id)
 
 		# TODO: consolidate repeat logic
 		rawClassName = resourceInput.eventClassName

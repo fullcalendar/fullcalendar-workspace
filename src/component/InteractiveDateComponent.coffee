@@ -6,6 +6,7 @@ InteractiveDateComponent_isEventDefDraggable = InteractiveDateComponent::isEvent
 # configuration for subclasses
 # whether we should attempt to render selections or resizes that span across different resources
 InteractiveDateComponent::allowCrossResource = true
+# ^ is this worth the complexity?
 
 
 # if an event's dates are not draggable, but it's resource IS, still allow dragging

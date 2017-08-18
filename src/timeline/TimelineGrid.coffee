@@ -71,6 +71,20 @@ class TimelineGrid extends InteractiveDateComponent
 
 		@slotWidth = @opt('slotWidth')
 
+		@on 'after:entity:render', (entityType) =>
+			if entityType == 'events'
+				sprites = []
+				for seg in @getRecursiveEventSegs() # TODO: only retrieve fg segs
+					titleEl = seg.el.find('.fc-title')
+					if titleEl.length
+						sprites.push(new ScrollFollowerSprite(titleEl))
+				@eventTitleFollower.setSprites(sprites)
+
+		@on 'before:entity:unrender', (entityType) =>
+			if entityType == 'events'
+				@eventTitleFollower.clearSprites()
+
+
 
 	isValidDate: (date) ->
 		if @view.isHiddenDay(date)
@@ -342,17 +356,6 @@ class TimelineGrid extends InteractiveDateComponent
 				@eventTitleFollower.containOnNaturalRight = true
 			else
 				@eventTitleFollower.containOnNaturalLeft = true
-
-			@on 'all:eventRender', =>
-				sprites = []
-				for seg in @getEventSegs() # TODO: only retrieve fg segs
-					titleEl = seg.el.find('.fc-title')
-					if titleEl.length
-						sprites.push(new ScrollFollowerSprite(titleEl))
-				@eventTitleFollower.setSprites(sprites)
-
-			@on 'before:all:eventUnrender', =>
-				@eventTitleFollower.clearSprites()
 
 		super
 
@@ -737,7 +740,7 @@ class TimelineGrid extends InteractiveDateComponent
 	# this needs to be called if v scrollbars appear on body container. or zooming
 	updateSegPositions: ->
 		segs = [].concat(
-			@getEventSegs()
+			@getRecursiveEventSegs()
 			@businessHourRenderer.getSegs()
 		)
 

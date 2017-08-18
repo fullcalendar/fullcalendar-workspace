@@ -18,7 +18,6 @@ DateComponent::constructed = ->
 	DateComponent_constructed.apply(this, arguments)
 
 	@watchDisplayingResources()
-	@watchDisplayingEvents()
 
 
 # Dependencies for Event / Resource Rendering
@@ -32,20 +31,6 @@ DateComponent::watchDisplayingResources = ->
 		@requestRender(@executeResourcesRender, [ @get('currentResources') ], 'resource', 'init')
 	, =>
 		@requestRender(@executeResourcesUnrender, null, 'resource', 'destroy')
-
-
-DateComponent::watchDisplayingEvents = ->
-	@watch 'displayingEvents', [ # overrides previous 'displayingEvents' definition
-		'displayingDates'
-		'hasEvents'
-		if @isResourceFootprintsEnabled
-			'displayingResources'
-		else
-			'currentResources' # needed for event coloring
-	], =>
-		@requestRender(@executeEventsRender, [ @get('currentEvents') ], 'event', 'init')
-	, =>
-		@requestRender(@executeEventsUnrender, null, 'event', 'destroy')
 
 
 # Resource Data Handling

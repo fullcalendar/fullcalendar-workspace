@@ -38,13 +38,8 @@ class EventRow extends RowParent
 
 ###
 + isInDom (why isn't already in DOM!?)
-- hasResources / displayingResources (does not render it's own resourceS nor receive them)
 ###
-EventRow::watchDisplayingEvents = ->
-	@watch 'displayingEvents', [ # overrides previous 'displayingEvents' definition
-		'isInDom'
-		'hasEvents'
-	], =>
-		@requestRender(@executeEventsRender, [ @get('currentEvents') ], 'event', 'init')
-	, =>
-		@requestRender(@executeEventsUnrender, null, 'event', 'destroy')
+EventRow.watch 'displayingEvents', [ 'displayingDates', 'eventDataSource', 'isInDom' ], (deps) ->
+	@startDisplayingEvents(deps.eventDataSource)
+, ->
+	@stopDisplayingEvents()

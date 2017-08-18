@@ -1,6 +1,7 @@
 
 # NOTE: for public methods, always be sure of the return value. for chaining
 Calendar_constructed = Calendar::constructed
+Calendar_requestEvents = Calendar::requestEvents
 Calendar_buildSelectFootprint = Calendar::buildSelectFootprint # changed!
 Calendar_onAfterBaseRender = Calendar::onAfterBaseRender
 
@@ -27,6 +28,17 @@ Calendar::instantiateView = (viewType) ->
 			viewClass = spec.resourceClass
 
 	new viewClass(this, spec)
+
+
+Calendar::requestEvents = (start, end) ->
+	oldEventPeriod = @eventManager.currentPeriod
+	newEventPeriod = Calendar_requestEvents.apply(this, arguments)
+
+	if oldEventPeriod
+		@resourceManager.eventDataSplitter.removeSource(oldEventPeriod)
+	@resourceManager.eventDataSplitter.addSource(newEventPeriod)
+
+	newEventPeriod
 
 
 # for the API only

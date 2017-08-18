@@ -10,6 +10,8 @@ class ResourceRow extends EventRow
 	constructor: (view, @resource) ->
 		super
 
+		@set('eventDataSource', @resource.eventDataSource)
+
 
 	renderSkeleton: ->
 		super

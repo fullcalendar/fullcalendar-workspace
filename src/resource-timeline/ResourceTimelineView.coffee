@@ -536,28 +536,6 @@ ResourceTimelineView.watch 'settingDateProfileInRows', [ 'resourceRows', 'datePr
 
 
 ###
-assigns a dateProfile to each EventRow
-dateProfiles are needed for event rendering
-###
-ResourceTimelineView.watch 'settingEventsInRows', [ 'resourceRows', 'hasEvents' ], ->
-	eventsPayload = @get('currentEvents')
-	resourcePayloads = {}
-
-	for eventId, eventInstanceGroup of eventsPayload
-		eventDef = eventInstanceGroup.getEventDef()
-
-		for resourceId in eventDef.getResourceIds()
-			resourcePayload = (resourcePayloads[resourceId] or= {})
-			resourcePayload[eventId] = eventInstanceGroup
-
-	for rowObj in @getEventRows()
-		rowObj.setEvents(resourcePayloads[rowObj.resource.id] or {})
-, ->
-	for rowObj in @getEventRows()
-		rowObj.unsetEvents()
-
-
-###
 waits to render resources until all rows are created.
 initialized via function. we need to do the same to override.
 ###

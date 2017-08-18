@@ -11,14 +11,6 @@ class ResourceTimelineGrid extends TimelineGrid
 	rowCoordCache: null
 
 
-	setEventsInChildren: ->
-		# ResourceTimelineView is responsible for this
-
-
-	unsetEventsInChildren: ->
-		# ResourceTimelineView is responsible for this
-
-
 	setBusinessHoursInChildren: ->
 		# ResourceTimelineView is responsible for this
 
