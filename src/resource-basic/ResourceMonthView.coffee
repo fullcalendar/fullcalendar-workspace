@@ -7,11 +7,3 @@ class ResourceMonthView extends FC.MonthView
 	renderHead: ->
 		super
 		@dayGrid.processHeadResourceEls(@headContainerEl)
-
-
-	setResourcesOnGrids: (resources) ->
-		@dayGrid.setResources(resources)
-
-
-	unsetResourcesOnGrids: ->
-		@dayGrid.unsetResources()

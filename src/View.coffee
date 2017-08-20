@@ -9,9 +9,6 @@ View_setElement = View::setElement
 View_removeElement = View::removeElement
 View_queryScroll = View::queryScroll
 View_applyScroll = View::applyScroll
-View_setResources = View::setResources
-View_addResource = View::addResource
-View_removeResource = View::removeResource
 
 
 # new members
@@ -106,44 +103,31 @@ View::getInitialResources = (dateProfile) ->
 # eventsPayload is optional, for filtering
 View::bindResourceChanges = (eventsPayload) ->
 	@listenTo @calendar.resourceManager,
+
 		set: (resources) =>
-			@setResources(resources, eventsPayload)
+			if eventsPayload
+				resources = filterResourcesWithEvents(resources, eventsPayload)
+			@setResources(resources)
+
 		unset: =>
 			@unsetResources()
+
 		reset: (resources) =>
-			@resetResources(resources, eventsPayload)
+			if eventsPayload
+				resources = filterResourcesWithEvents(resources, eventsPayload)
+			@resetResources(resources)
+
 		add: (resource, allResources) =>
-			@addResource(resource, allResources, eventsPayload)
+			if not eventsPayload or resourceHasEvents(resource, eventsPayload)
+				@addResource(resource, allResources)
+
 		remove: (resource, allResources) =>
-			@removeResource(resource, allResources, eventsPayload)
+			if not eventsPayload or resourceHasEvents(resource, eventsPayload)
+				@removeResource(resource, allResources)
 
 
 View::unbindResourceChanges = ->
 	@stopListeningTo(@calendar.resourceManager)
-
-
-# Resource Handling (with filtering abilities)
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# eventsPayload is optional, for filtering
-View::setResources = (resources, eventsPayload) ->
-	if eventsPayload
-		resources = filterResourcesWithEvents(resources, eventsPayload)
-
-	View_setResources.call(this, resources)
-
-
-# eventsPayload is optional, for filtering
-View::addResource = (resource, allResources, eventsPayload) ->
-	if not eventsPayload or resourceHasEvents(resource, eventsPayload)
-		View_addResource.call(this, resource, allResources)
-
-
-# eventsPayload is optional, for filtering
-View::removeResource = (resource, allResources, eventsPayload) ->
-	if not eventsPayload or resourceHasEvents(resource, eventsPayload)
-		View_removeResource.call(this, resource, allResources)
 
 
 # Resource Filtering Utils
