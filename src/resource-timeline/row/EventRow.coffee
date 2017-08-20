@@ -31,15 +31,3 @@ class EventRow extends RowParent
 
 	componentFootprintToSegs: (componentFootprint) ->
 		@view.timelineGrid.componentFootprintToSegs(componentFootprint)
-
-
-# Watcher Garbage
-# ---------------------------------------------------------------------------------------------------------------------
-
-###
-+ isInDom (why isn't already in DOM!?)
-###
-EventRow.watch 'displayingEvents', [ 'displayingDates', 'eventDataSource', 'isInDom' ], (deps) ->
-	@startDisplayingEvents(deps.eventDataSource)
-, ->
-	@stopDisplayingEvents()

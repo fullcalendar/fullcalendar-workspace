@@ -267,11 +267,16 @@ class ResourceTimelineView extends TimelineView
 
 
 	renderResources: (resources) ->
+		for resource in resources
+			@insertResource(resource)
+
 		@rowHierarchy.renderSkeleton() # recursive
 
 
 	unrenderResources: ->
-		@rowHierarchy.removeElement() # recursive
+		@rowHierarchy.removeChildren() # recursive
+		@timelineGrid.removeChildren()
+		@resourceRowHash = {}
 
 
 	# Row Hierarchy Building
@@ -501,47 +506,3 @@ class ResourceTimelineView extends TimelineView
 				scrollTop = el.offset().top - innerTop
 				@timelineGrid.bodyScroller.setScrollTop(scrollTop)
 				@spreadsheet.bodyScroller.setScrollTop(scrollTop)
-
-
-# Watcher Garbage for Rows
-# ---------------------------------------------------------------------------------------------------------------------
-
-
-###
-generates the initial ResourceRows (aka EventRows)
-###
-ResourceTimelineView.watch 'resourceRows', [ 'hasResources' ], ->
-	resources = @get('currentResources')
-
-	for resource in resources
-		@insertResource(resource)
-	return
-, ->
-	@rowHierarchy.removeChildren()
-	@timelineGrid.removeChildren()
-	@resourceRowHash = {}
-
-
-###
-assigns a dateProfile to each EventRow
-dateProfiles are needed for event rendering
-###
-ResourceTimelineView.watch 'settingDateProfileInRows', [ 'resourceRows', 'dateProfile' ], (deps) ->
-	for rowObj in @getEventRows()
-		rowObj.set('dateProfile', deps.dateProfile)
-	return
-, ->
-	for rowObj in @getEventRows()
-		rowObj.unset('dateProfile')
-	return
-
-
-###
-waits to render resources until all rows are created.
-initialized via function. we need to do the same to override.
-###
-ResourceTimelineView::watchDisplayingResources = ->
-	@watch 'displayingResources', [ 'resourceRows' ], =>
-		@requestRender(@executeResourcesRender, [ @get('currentResources') ], 'resource', 'init')
-	, =>
-		@requestRender(@executeResourcesUnrender, null, 'resource', 'destroy',)
