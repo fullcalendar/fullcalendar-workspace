@@ -9,7 +9,7 @@ ResourceDayTableMixin =
 	flattenedResources: null
 	resourceCnt: 0
 	datesAboveResources: false
-	allowCrossResource: false # change setting in ResourceGrid
+	allowCrossResource: false # change setting for InteractiveDateComponent monkeypatch
 
 
 	# Resource Data
