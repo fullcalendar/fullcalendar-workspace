@@ -741,7 +741,7 @@ class TimelineGrid extends InteractiveDateComponent
 	updateSegPositions: ->
 		segs = [].concat(
 			@getRecursiveEventSegs()
-			@businessHourRenderer.getSegs()
+			@getRecursiveBusinessHourSegs()
 		)
 
 		for seg in segs

@@ -10,21 +10,84 @@ class ResourceTimelineGrid extends TimelineGrid
 	tbodyEl: null
 	rowCoordCache: null
 
+	customBizGenCnt: 0
+	fallbackBizGenForRows: null
+
+
+	###
+	Assumes ResourceTimelineGrid's own businessHourGenerator is set first
+	TODO: better system?
+	###
+	addChild: (rowObj) ->
+		if rowObj.resource.businessHourGenerator # custom generator?
+			rowObj.set('businessHourGenerator', rowObj.resource.businessHourGenerator)
+
+			if (++@customBizGenCnt) == 1 # first row with a custom generator?
+
+				# store existing general business hour generator
+				if @has('businessHourGenerator')
+					@fallbackBizGenForRows = @get('businessHourGenerator')
+					@unset('businessHourGenerator')
+
+					# apply to previously added rows without their own generator
+					for otherRowObj in @view.getEventRows() # does not include rowObj
+						if not otherRowObj.has('businessHourGenerator')
+							otherRowObj.set('businessHourGenerator', @fallbackBizGenForRows)
+		else
+			if @fallbackBizGenForRows
+				rowObj.set('businessHourGenerator', @fallbackBizGenForRows)
+
+		super # add rowObj
+
+
+	###
+	Assumes ResourceTimelineGrid's own businessHourGenerator is set first
+	TODO: better system?
+	###
+	removeChild: (rowObj) ->
+		super # remove rowObj
+
+		if rowObj.resource.businessHourGenerator # had custom generator?
+
+			if (--@customBizGenCnt) == 0 # no more custom generators?
+
+				# reinstall previous general business hour generator
+				if @fallbackBizGenForRows
+
+					for otherRowObj in @view.getEventRows() # does not include rowObj
+						if not otherRowObj.resource.businessHourGenerator # doesn't have custom def
+							otherRowObj.unset('businessHourGenerator')
+
+					@set('businessHourGenerator', @fallbackBizGenForRows)
+					@fallbackBizGenForRows = null
+
+		# remove the row's generator, regardless of how it was received
+		rowObj.unset('businessHourGenerator')
+
+
+	setBusinessHourGeneratorInChild: (businessHourGenerator, child) ->
+		# happens in addChild
+
+
+	unsetBusinessHourGeneratorInChild: (child) ->
+		# happens in removeChild
+
 
 	setEventDataSourceInChildren: ->
-		#
+		# ResourceRow is responsible
 
 
 	unsetEventDataSourceInChildren: ->
-		#
+		# ResourceRow is responsible
 
 
-	setBusinessHoursInChildren: ->
-		# ResourceTimelineView is responsible for this
-
-
-	unsetBusinessHoursInChildren: ->
-		# ResourceTimelineView is responsible for this
+	renderSelectionFootprint: (componentFootprint) ->
+		if componentFootprint.resourceId
+			rowObj = @view.getResourceRow(componentFootprint.resourceId)
+			if rowObj
+				rowObj.renderSelectionFootprint(componentFootprint)
+		else
+			super
 
 
 	renderSkeleton: ->

@@ -34,7 +34,7 @@ like displayingDates, but +currentResources dep
 ###
 DateComponent::watchDisplayingDatesAndResources = ->
 	@unwatch('displayingDates')
-	@watch 'displayingDatesAndResources', [ 'dateProfile', 'currentResources' ], (deps) ->
+	@watch 'displayingDates', [ 'dateProfile', 'currentResources' ], (deps) ->
 		@set('displayingDates', true)
 		@set('displayingResources', true)
 		@requestRender(@executeDateRender, [ deps.dateProfile ], 'dates', 'init')
