@@ -11,37 +11,28 @@ class ResourceTimeGrid extends FC.TimeGrid
 	getHitFootprint: (hit) ->
 		plainFootprint = super
 
-		if @resourceCnt
-			new ResourceComponentFootprint(
-				plainFootprint.unzonedRange,
-				plainFootprint.isAllDay,
-				@getColResource(hit.col).id
-			)
-		else
-			plainFootprint
+		new ResourceComponentFootprint(
+			plainFootprint.unzonedRange,
+			plainFootprint.isAllDay,
+			@getColResource(hit.col).id
+		)
 
 
 	componentFootprintToSegs: (componentFootprint) ->
 		resourceCnt = @resourceCnt
 		genericSegs = @sliceRangeByTimes(componentFootprint.unzonedRange) # no assigned resources
+		resourceSegs = []
 
-		if not resourceCnt
-			for seg in genericSegs
-				seg.col = seg.dayIndex
-			genericSegs
-		else
-			resourceSegs = []
+		for seg in genericSegs
 
-			for seg in genericSegs
+			for resourceIndex in [0...resourceCnt] by 1
+				resourceObj = @flattenedResources[resourceIndex]
 
-				for resourceIndex in [0...resourceCnt] by 1
-					resourceObj = @flattenedResources[resourceIndex]
+				if not (componentFootprint instanceof ResourceComponentFootprint) or
+						componentFootprint.resourceId == resourceObj.id
+					copy = $.extend({}, seg)
+					copy.resource = resourceObj
+					copy.col = @indicesToCol(resourceIndex, seg.dayIndex)
+					resourceSegs.push(copy)
 
-					if not (componentFootprint instanceof ResourceComponentFootprint) or
-							componentFootprint.resourceId == resourceObj.id
-						copy = $.extend({}, seg)
-						copy.resource = resourceObj
-						copy.col = @indicesToCol(resourceIndex, seg.dayIndex)
-						resourceSegs.push(copy)
-
-			resourceSegs
+		resourceSegs

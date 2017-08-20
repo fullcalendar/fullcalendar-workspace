@@ -106,18 +106,15 @@ ResourceDayTableMixin =
 
 
 	renderHeadTrHtml: -> # might return two trs
-		if not @resourceCnt
-			FC.DayTableMixin.renderHeadTrHtml.call(this)
-		else
-			if @daysPerRow > 1
-				# do two levels
-				if @datesAboveResources
-					@renderHeadDateAndResourceHtml()
-				else
-					@renderHeadResourceAndDateHtml()
+		if @daysPerRow > 1
+			# do two levels
+			if @datesAboveResources
+				@renderHeadDateAndResourceHtml()
 			else
-				# do one level
-				@renderHeadResourceHtml()
+				@renderHeadResourceAndDateHtml()
+		else
+			# do one level
+			@renderHeadResourceHtml()
 
 
 	# renders one row of resources header cell
@@ -228,17 +225,14 @@ ResourceDayTableMixin =
 
 
 	renderBgCellsHtml: (row) ->
-		if not @resourceCnt
-			FC.DayTableMixin.renderBgCellsHtml.call(this, row)
-		else
-			htmls = []
+		htmls = []
 
-			for col in [0...@colCnt] by 1
-				date = @getCellDate(row, col)
-				resource = @getColResource(col)
-				htmls.push(@renderResourceBgCellHtml(date, resource))
+		for col in [0...@colCnt] by 1
+			date = @getCellDate(row, col)
+			resource = @getColResource(col)
+			htmls.push(@renderResourceBgCellHtml(date, resource))
 
-			htmls.join('') # already accounted for RTL
+		htmls.join('') # already accounted for RTL
 
 
 	renderResourceBgCellHtml: (date, resource) ->
@@ -269,34 +263,30 @@ ResourceDayTableMixin =
 
 
 	renderBusinessHours: (businessHourPayload) ->
-		if @flattenedResources # any resources rendered?
+		isAllDay = @hasAllDayBusinessHours
+		generalEventInstanceGroup = businessHourPayload[if isAllDay then 'allDay' else 'timed']
+		unzonedRange = @get('dateProfile').activeUnzonedRange
+		eventFootprints = []
 
-			isAllDay = @hasAllDayBusinessHours
-			generalEventInstanceGroup = businessHourPayload[if isAllDay then 'allDay' else 'timed']
-			unzonedRange = @get('dateProfile').activeUnzonedRange
-			eventFootprints = []
+		for resource in @flattenedResources
+			eventInstanceGroup =
+				if resource.businessHourGenerator
+					resource.businessHourGenerator.buildEventInstanceGroup(isAllDay, unzonedRange)
+				else
+					generalEventInstanceGroup
 
-			for resource in @flattenedResources
-				eventInstanceGroup =
-					if resource.businessHourGenerator
-						resource.businessHourGenerator.buildEventInstanceGroup(isAllDay, unzonedRange)
-					else
-						generalEventInstanceGroup
-
-				if eventInstanceGroup
-					for eventRange in eventInstanceGroup.sliceRenderRanges(unzonedRange)
-						eventFootprints.push(
-							new EventFootprint(
-								new ResourceComponentFootprint(
-									eventRange.unzonedRange
-									isAllDay
-									resource.id
-								)
-								eventRange.eventDef
-								eventRange.eventInstance
+			if eventInstanceGroup
+				for eventRange in eventInstanceGroup.sliceRenderRanges(unzonedRange)
+					eventFootprints.push(
+						new EventFootprint(
+							new ResourceComponentFootprint(
+								eventRange.unzonedRange
+								isAllDay
+								resource.id
 							)
+							eventRange.eventDef
+							eventRange.eventInstance
 						)
+					)
 
-			@renderBusinessHourEventFootprints(eventFootprints)
-		else
-			DateComponent::renderBusinessHours.apply(this, arguments)
+		@renderBusinessHourEventFootprints(eventFootprints)
