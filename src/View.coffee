@@ -67,6 +67,7 @@ View::watchResources = ->
 		initialDepNames.push('dateProfile')
 
 	if @opt('filterResourcesWithEvents')
+		@watchCurrentEvents()
 		bindingDepNames.push('currentEvents')
 
 	@watch 'initialResources', initialDepNames, (deps) =>
@@ -74,15 +75,31 @@ View::watchResources = ->
 
 	@watch 'bindingResources', bindingDepNames, (deps) =>
 		@bindResourceChanges(deps.currentEvents)
-		@setResources(deps.initialResources, deps.currentEvents)
+		@setUnfilteredResources(deps.initialResources, deps.currentEvents)
 		return # make sure no return promise
 	, =>
 		@unbindResourceChanges()
-		@unsetResources()
+		@unsetUnfilteredResources()
 		return # make sure no return promise
 
 
+View::watchCurrentEvents = ->
+	@watch 'watchingCurrentEvents', [ 'eventDataSource' ], (deps) ->
+		eventDataSource = deps.eventDataSource
+
+		if eventDataSource.isPopulated
+			@set('currentEvents', eventDataSource.instanceRepo.byDefId)
+
+		@listenTo eventDataSource, 'receive', =>
+			@set('currentEvents', eventDataSource.instanceRepo.byDefId)
+
+	, (deps) ->
+		@stopListeningTo(deps.eventDataSource)
+		@unset('currentEvents')
+
+
 View::unwatchResources = ->
+	@unwatch('watchingCurrentEvents')
 	@unwatch('initialResources')
 	@unwatch('bindingResources')
 
@@ -103,31 +120,46 @@ View::getInitialResources = (dateProfile) ->
 # eventsPayload is optional, for filtering
 View::bindResourceChanges = (eventsPayload) ->
 	@listenTo @calendar.resourceManager,
-
 		set: (resources) =>
-			if eventsPayload
-				resources = filterResourcesWithEvents(resources, eventsPayload)
-			@setResources(resources)
-
+			@setUnfilteredResources(resources, eventsPayload)
 		unset: =>
-			@unsetResources()
-
+			@unsetUnfilteredResources()
 		reset: (resources) =>
-			if eventsPayload
-				resources = filterResourcesWithEvents(resources, eventsPayload)
-			@resetResources(resources)
-
+			@resetUnfilteredResources(resources, eventsPayload)
 		add: (resource, allResources) =>
-			if not eventsPayload or resourceHasEvents(resource, eventsPayload)
-				@addResource(resource, allResources)
-
+			@addUnfilteredResource(resource, allResources, eventsPayload)
 		remove: (resource, allResources) =>
-			if not eventsPayload or resourceHasEvents(resource, eventsPayload)
-				@removeResource(resource, allResources)
+			@removeUnfilteredResource(resource, allResources, eventsPayload)
 
 
 View::unbindResourceChanges = ->
 	@stopListeningTo(@calendar.resourceManager)
+
+
+View::setUnfilteredResources = (resources, eventsPayload) ->
+	if eventsPayload
+		resources = filterResourcesWithEvents(resources, eventsPayload)
+	@setResources(resources)
+
+
+View::unsetUnfilteredResources = ->
+	@unsetResources()
+
+
+View::resetUnfilteredResources = (resources, eventsPayload) ->
+	if eventsPayload
+		resources = filterResourcesWithEvents(resources, eventsPayload)
+	@resetResources(resources)
+
+
+View::addUnfilteredResource = (resource, allResources, eventsPayload) ->
+	if not eventsPayload or resourceHasEvents(resource, eventsPayload)
+		@addResource(resource, allResources)
+
+
+View::removeUnfilteredResource = (resource, allResources, eventsPayload) ->
+	if not eventsPayload or resourceHasEvents(resource, eventsPayload)
+		@removeResource(resource, allResources)
 
 
 # Resource Filtering Utils

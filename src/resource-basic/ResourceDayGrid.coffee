@@ -7,11 +7,6 @@ class ResourceDayGrid extends FC.DayGrid
 	isResourceFootprintsEnabled: true
 
 
-	constructor: ->
-		super
-		@initResourceDayTable()
-
-
 	# TODO: make DRY with ResourceTimeGrid
 	getHitFootprint: (hit) ->
 		plainFootprint = super

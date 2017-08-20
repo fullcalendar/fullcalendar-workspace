@@ -52,10 +52,11 @@
     "resource-timeline/config.coffee",
 
     "resource-agenda/ResourceTimeGrid.coffee",
+    "resource-basic/ResourceDayGrid.coffee",
+
     "resource-agenda/ResourceAgendaView.coffee",
     "resource-agenda/config.coffee",
 
-    "resource-basic/ResourceDayGrid.coffee",
     "resource-basic/ResourceBasicView.coffee",
     "resource-basic/ResourceMonthView.coffee",
     "resource-basic/config.coffee",

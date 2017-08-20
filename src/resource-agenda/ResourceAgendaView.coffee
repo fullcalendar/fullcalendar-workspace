@@ -5,6 +5,11 @@ class ResourceAgendaView extends FC.AgendaView
 	dayGridClass: ResourceDayGrid
 
 
+	constructor: ->
+		super
+		@watchDisplayingDatesAndResources()
+
+
 	renderHead: ->
 		super
 		@timeGrid.processHeadResourceEls(@headContainerEl)

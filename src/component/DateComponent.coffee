@@ -14,14 +14,10 @@ DateComponent::isResourceFootprintsEnabled = false
 DateComponent::isResourcesRendered = false
 
 
-DateComponent::constructed = ->
-	DateComponent_constructed.apply(this, arguments)
-
-	@watchDisplayingResources()
-
 
 # Dependencies for Event / Resource Rendering
 # ----------------------------------------------------------------------------------------------------------------------
+# Components must opt-in to using these!
 
 
 # all components will go through resource rendering flow
@@ -32,6 +28,20 @@ DateComponent::watchDisplayingResources = ->
 	, =>
 		@requestRender(@executeResourcesUnrender, null, 'resource', 'destroy')
 
+
+###
+like displayingDates, but +currentResources dep
+###
+DateComponent::watchDisplayingDatesAndResources = ->
+	@unwatch('displayingDates')
+	@watch 'displayingDatesAndResources', [ 'dateProfile', 'currentResources' ], (deps) ->
+		@set('displayingDates', true)
+		@set('displayingResources', true)
+		@requestRender(@executeDateRender, [ deps.dateProfile ], 'dates', 'init')
+	, ->
+		@unset('displayingDates')
+		@unset('displayingResources')
+		@requestRender(@executeDateUnrender, null, 'dates', 'destroy')
 
 # Resource Data Handling
 # ----------------------------------------------------------------------------------------------------------------------
@@ -122,6 +132,7 @@ DateComponent::renderResourceRemove = ->
 
 # eventRange -> eventFootprint
 # ----------------------------------------------------------------------------------------------------------------------
+# eventually move this to ResourceDayTableMixin?
 
 
 DateComponent::eventRangeToEventFootprints = (eventRange) ->

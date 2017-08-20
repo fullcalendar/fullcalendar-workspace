@@ -25,6 +25,7 @@ class ResourceTimelineView extends TimelineView
 
 	constructor: ->
 		super
+		@watchDisplayingResources()
 		@processResourceOptions()
 		@spreadsheet = new Spreadsheet(this)
 		@rowHierarchy = new RowParent(this)

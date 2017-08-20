@@ -12,16 +12,6 @@ ResourceDayTableMixin =
 	allowCrossResource: false # change setting for InteractiveDateComponent monkeypatch
 
 
-	initResourceDayTable: ->
-		###
-		+ currentResources
-		###
-		@watch 'displayingDates', [ 'dateProfile', 'currentResources' ], (deps) ->
-			@requestRender(@executeDateRender, [ deps.dateProfile ], 'date', 'init')
-		, ->
-			@requestRender(@executeDateUnrender, null, 'date', 'destroy')
-
-
 	# Resource Data
 	# ----------------------------------------------------------------------------------------------
 
