@@ -274,8 +274,10 @@ class ResourceTimelineView extends TimelineView
 
 
 	unrenderResources: ->
+		@rowHierarchy.removeElement() # recursive
 		@rowHierarchy.removeChildren() # recursive
-		@timelineGrid.removeChildren()
+
+		@timelineGrid.removeChildren() # for the DateComponent system
 		@resourceRowHash = {}
 
 

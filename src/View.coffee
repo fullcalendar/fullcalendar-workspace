@@ -68,14 +68,14 @@ View::watchResources = ->
 
 	if @opt('filterResourcesWithEvents')
 		@watchCurrentEvents()
-		bindingDepNames.push('currentEvents')
+		bindingDepNames.push('currentEventRanges')
 
 	@watch 'initialResources', initialDepNames, (deps) =>
 		@getInitialResources(deps.dateProfile) # promise
 
 	@watch 'bindingResources', bindingDepNames, (deps) =>
-		@bindResourceChanges(deps.currentEvents)
-		@setUnfilteredResources(deps.initialResources, deps.currentEvents)
+		@bindResourceChanges(deps.currentEventRanges)
+		@setUnfilteredResources(deps.initialResources, deps.currentEventRanges)
 		return # make sure no return promise
 	, =>
 		@unbindResourceChanges()
@@ -87,15 +87,29 @@ View::watchCurrentEvents = ->
 	@watch 'watchingCurrentEvents', [ 'eventDataSource' ], (deps) ->
 		eventDataSource = deps.eventDataSource
 
+		registerHash = (byDefId) =>
+			# depends on the current view range!
+			unzonedRange = @dateProfile.activeUnzonedRange
+			eventRanges = []
+
+			for id, eventInstances of byDefId
+				eventInstanceGroup = new EventInstanceGroup(eventInstances)
+				eventRanges.push.apply( # append
+					eventRanges,
+					eventInstanceGroup.getAllEventRanges(unzonedRange)
+				)
+
+			@set('currentEventRanges', eventRanges)
+
 		if eventDataSource.isPopulated
-			@set('currentEvents', eventDataSource.instanceRepo.byDefId)
+			registerHash(eventDataSource.instanceRepo.byDefId)
 
 		@listenTo eventDataSource, 'receive', =>
-			@set('currentEvents', eventDataSource.instanceRepo.byDefId)
+			registerHash(eventDataSource.instanceRepo.byDefId)
 
 	, (deps) ->
 		@stopListeningTo(deps.eventDataSource)
-		@unset('currentEvents')
+		@unset('currentEventRanges')
 
 
 View::unwatchResources = ->
@@ -117,28 +131,28 @@ View::getInitialResources = (dateProfile) ->
 		calendar.resourceManager.getResources()
 
 
-# eventsPayload is optional, for filtering
-View::bindResourceChanges = (eventsPayload) ->
+# currentEventRanges is optional, for filtering
+View::bindResourceChanges = (currentEventRanges) ->
 	@listenTo @calendar.resourceManager,
 		set: (resources) =>
-			@setUnfilteredResources(resources, eventsPayload)
+			@setUnfilteredResources(resources, currentEventRanges)
 		unset: =>
 			@unsetUnfilteredResources()
 		reset: (resources) =>
-			@resetUnfilteredResources(resources, eventsPayload)
+			@resetUnfilteredResources(resources, currentEventRanges)
 		add: (resource, allResources) =>
-			@addUnfilteredResource(resource, allResources, eventsPayload)
+			@addUnfilteredResource(resource, allResources, currentEventRanges)
 		remove: (resource, allResources) =>
-			@removeUnfilteredResource(resource, allResources, eventsPayload)
+			@removeUnfilteredResource(resource, allResources, currentEventRanges)
 
 
 View::unbindResourceChanges = ->
 	@stopListeningTo(@calendar.resourceManager)
 
 
-View::setUnfilteredResources = (resources, eventsPayload) ->
-	if eventsPayload
-		resources = filterResourcesWithEvents(resources, eventsPayload)
+View::setUnfilteredResources = (resources, currentEventRanges) ->
+	if currentEventRanges
+		resources = filterResourcesWithEvents(resources, currentEventRanges)
 	@setResources(resources)
 
 
@@ -146,19 +160,19 @@ View::unsetUnfilteredResources = ->
 	@unsetResources()
 
 
-View::resetUnfilteredResources = (resources, eventsPayload) ->
-	if eventsPayload
-		resources = filterResourcesWithEvents(resources, eventsPayload)
+View::resetUnfilteredResources = (resources, currentEventRanges) ->
+	if currentEventRanges
+		resources = filterResourcesWithEvents(resources, currentEventRanges)
 	@resetResources(resources)
 
 
-View::addUnfilteredResource = (resource, allResources, eventsPayload) ->
-	if not eventsPayload or resourceHasEvents(resource, eventsPayload)
+View::addUnfilteredResource = (resource, allResources, currentEventRanges) ->
+	if not currentEventRanges or resourceHasEvents(resource, currentEventRanges)
 		@addResource(resource, allResources)
 
 
-View::removeUnfilteredResource = (resource, allResources, eventsPayload) ->
-	if not eventsPayload or resourceHasEvents(resource, eventsPayload)
+View::removeUnfilteredResource = (resource, allResources, currentEventRanges) ->
+	if not currentEventRanges or resourceHasEvents(resource, currentEventRanges)
 		@removeResource(resource, allResources)
 
 
@@ -166,20 +180,16 @@ View::removeUnfilteredResource = (resource, allResources, eventsPayload) ->
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-resourceHasEvents = (resource, eventsPayload) ->
-	Boolean(filterResourcesWithEvents([ resource ], eventsPayload).length)
+resourceHasEvents = (resource, currentEventRanges) ->
+	Boolean(filterResourcesWithEvents([ resource ], currentEventRanges).length)
 
 
-filterResourcesWithEvents = (resources, eventsPayload) ->
+filterResourcesWithEvents = (resources, currentEventRanges) ->
 	resourceIdHits = {}
 
-	for id of eventsPayload
-		eventInstanceGroup = eventsPayload[id]
-
-		# TODO: not efficient looping over repeat instances
-		for eventInstance in eventInstanceGroup.eventInstances
-			for resourceId in eventInstance.def.getResourceIds()
-				resourceIdHits[resourceId] = true
+	for eventRange in currentEventRanges
+		for resourceId in eventRange.eventDef.getResourceIds()
+			resourceIdHits[resourceId] = true
 
 	_filterResourcesWithEvents(resources, resourceIdHits)
 

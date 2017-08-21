@@ -85,3 +85,4 @@ EventResizing = FC.EventResizing
 ExternalDropping = FC.ExternalDropping
 BusinessHourGenerator = FC.BusinessHourGenerator
 EventInstanceDataSourceSplitter = FC.EventInstanceDataSourceSplitter
+EventInstanceGroup = FC.EventInstanceGroup

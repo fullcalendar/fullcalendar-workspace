@@ -35,13 +35,14 @@ like displayingDates, but +currentResources dep
 DateComponent::watchDisplayingDatesAndResources = ->
 	@unwatch('displayingDates')
 	@watch 'displayingDates', [ 'dateProfile', 'currentResources' ], (deps) ->
+		@requestRender(@executeDateRender, [ deps.dateProfile ], 'dates', 'init')
 		@set('displayingDates', true)
 		@set('displayingResources', true)
-		@requestRender(@executeDateRender, [ deps.dateProfile ], 'dates', 'init')
 	, ->
 		@unset('displayingDates')
 		@unset('displayingResources')
 		@requestRender(@executeDateUnrender, null, 'dates', 'destroy')
+
 
 # Resource Data Handling
 # ----------------------------------------------------------------------------------------------------------------------

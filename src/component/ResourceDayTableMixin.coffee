@@ -18,6 +18,8 @@ ResourceDayTableMixin =
 
 	# doesn't render anything
 	setResources: (resources) ->
+		@set('currentResources', resources)
+		@set('hasResources', true)
 		@flattenedResources = @flattenResources(resources)
 		@resourceCnt = @flattenedResources.length
 		@updateDayTableCols() # will call computeColCnt
@@ -25,6 +27,8 @@ ResourceDayTableMixin =
 
 	# doesn't render anything
 	unsetResources: ->
+		@unset('hasResources')
+		@unset('currentResources')
 		@flattenedResources = null
 		@resourceCnt = 0
 		@updateDayTableCols() # will call computeColCnt
@@ -65,7 +69,7 @@ ResourceDayTableMixin =
 
 
 	computeColCnt: ->
-		(@resourceCnt or 1) * @daysPerRow
+		@resourceCnt * @daysPerRow
 
 
 	getColDayIndex: (col) ->
@@ -125,6 +129,9 @@ ResourceDayTableMixin =
 			resourceHtmls.push \
 				@renderHeadResourceCellHtml(resource)
 
+		if not resourceHtmls.length
+			resourceHtmls.push('<td>&nbsp;</td>')
+
 		@wrapTr(resourceHtmls, 'renderHeadIntroHtml')
 
 
@@ -141,6 +148,12 @@ ResourceDayTableMixin =
 				date = @dayDates[dayIndex].clone()
 				dateHtmls.push \
 					@renderHeadResourceDateCellHtml(date, resource)
+
+		if not resourceHtmls.length
+			resourceHtmls.push('<td>&nbsp;</td>')
+
+		if not dateHtmls.length
+			dateHtmls.push('<td>&nbsp;</td>')
 
 		@wrapTr(resourceHtmls, 'renderHeadIntroHtml') +
 			@wrapTr(dateHtmls, 'renderHeadIntroHtml')
@@ -159,6 +172,12 @@ ResourceDayTableMixin =
 			for resource in @flattenedResources
 				resourceHtmls.push \
 					@renderHeadResourceCellHtml(resource, date)
+
+		if not dateHtmls.length
+			dateHtmls.push('<td>&nbsp;</td>')
+
+		if not resourceHtmls.length
+			resourceHtmls.push('<td>&nbsp;</td>')
 
 		@wrapTr(dateHtmls, 'renderHeadIntroHtml') +
 			@wrapTr(resourceHtmls, 'renderHeadIntroHtml')
@@ -231,6 +250,9 @@ ResourceDayTableMixin =
 			date = @getCellDate(row, col)
 			resource = @getColResource(col)
 			htmls.push(@renderResourceBgCellHtml(date, resource))
+
+		if not htmls.length
+			htmls.push('<td>&nbsp;</td>')
 
 		htmls.join('') # already accounted for RTL
 
