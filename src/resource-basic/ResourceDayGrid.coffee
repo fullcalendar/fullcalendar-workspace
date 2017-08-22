@@ -11,14 +11,11 @@ class ResourceDayGrid extends FC.DayGrid
 	getHitFootprint: (hit) ->
 		plainFootprint = super
 
-		if @resourceCnt
-			new ResourceComponentFootprint(
-				plainFootprint.unzonedRange,
-				plainFootprint.isAllDay,
-				@getColResource(hit.col).id
-			)
-		else
-			plainFootprint
+		new ResourceComponentFootprint(
+			plainFootprint.unzonedRange,
+			plainFootprint.isAllDay,
+			@getColResource(hit.col).id
+		)
 
 
 	componentFootprintToSegs: (componentFootprint) ->
@@ -29,37 +26,27 @@ class ResourceDayGrid extends FC.DayGrid
 			else
 				@sliceRangeByRow(componentFootprint.unzonedRange)
 
-		if not resourceCnt
-			for seg in genericSegs
-				if @isRTL
-					seg.leftCol = seg.lastRowDayIndex
-					seg.rightCol = seg.firstRowDayIndex
-				else
-					seg.leftCol = seg.firstRowDayIndex
-					seg.rightCol = seg.lastRowDayIndex
-			genericSegs
-		else
-			resourceSegs = []
+		resourceSegs = []
 
-			for seg in genericSegs
+		for seg in genericSegs
 
-				for resourceIndex in [0...resourceCnt] by 1
-					resourceObj = @flattenedResources[resourceIndex]
+			for resourceIndex in [0...resourceCnt] by 1
+				resourceObj = @flattenedResources[resourceIndex]
 
-					if not (componentFootprint instanceof ResourceComponentFootprint) or
-							componentFootprint.resourceId == resourceObj.id
-						copy = $.extend({}, seg)
-						copy.resource = resourceObj
+				if not (componentFootprint instanceof ResourceComponentFootprint) or
+						componentFootprint.resourceId == resourceObj.id
+					copy = $.extend({}, seg)
+					copy.resource = resourceObj
 
-						if @isRTL
-							copy.leftCol = @indicesToCol(resourceIndex, seg.lastRowDayIndex)
-							copy.rightCol = @indicesToCol(resourceIndex, seg.firstRowDayIndex)
-						else
-							copy.leftCol = @indicesToCol(resourceIndex, seg.firstRowDayIndex)
-							copy.rightCol = @indicesToCol(resourceIndex, seg.lastRowDayIndex)
+					if @isRTL
+						copy.leftCol = @indicesToCol(resourceIndex, seg.lastRowDayIndex)
+						copy.rightCol = @indicesToCol(resourceIndex, seg.firstRowDayIndex)
+					else
+						copy.leftCol = @indicesToCol(resourceIndex, seg.firstRowDayIndex)
+						copy.rightCol = @indicesToCol(resourceIndex, seg.lastRowDayIndex)
 
-						resourceSegs.push(copy)
-			resourceSegs
+					resourceSegs.push(copy)
+		resourceSegs
 
 
 # Wire up tasks
