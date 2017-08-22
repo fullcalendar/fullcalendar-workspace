@@ -7,11 +7,6 @@ class ResourceDayGrid extends FC.DayGrid
 	isResourceFootprintsEnabled: true
 
 
-	constructor: ->
-		super
-		@watchDisplayingDatesAndResources()
-
-
 	# TODO: make DRY with ResourceTimeGrid
 	getHitFootprint: (hit) ->
 		plainFootprint = super
@@ -52,3 +47,9 @@ class ResourceDayGrid extends FC.DayGrid
 
 					resourceSegs.push(copy)
 		resourceSegs
+
+
+ResourceDayGrid.watch 'displayingResources', [ 'hasResources', 'dateProfile' ], ->
+	@requestRender(@renderGrid, null, 'grid', 'destroy')
+, ->
+	@requestRender(@removeSegPopover)

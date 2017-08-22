@@ -7,11 +7,6 @@ class ResourceTimeGrid extends FC.TimeGrid
 	isResourceFootprintsEnabled: true
 
 
-	constructor: ->
-		super
-		@watchDisplayingDatesAndResources()
-
-
 	# TODO: make DRY with ResourceDayGrid
 	getHitFootprint: (hit) ->
 		plainFootprint = super
@@ -41,3 +36,7 @@ class ResourceTimeGrid extends FC.TimeGrid
 					resourceSegs.push(copy)
 
 		resourceSegs
+
+
+ResourceTimeGrid.watch 'displayingResources', [ 'hasResources', 'dateProfile' ], ->
+	@requestRender(@renderColumns, null, 'columns', 'destroy')

@@ -3,7 +3,6 @@
 Calendar_constructed = Calendar::constructed
 Calendar_requestEvents = Calendar::requestEvents
 Calendar_buildSelectFootprint = Calendar::buildSelectFootprint # changed!
-Calendar_onAfterBaseRender = Calendar::onAfterBaseRender
 
 
 Calendar::resourceManager = null
@@ -13,8 +12,6 @@ Calendar::constructed = -> # executed immediately after the constructor
 	Calendar_constructed.apply(this, arguments)
 
 	@resourceManager = new ResourceManager(this)
-
-	@on('after:resources:render', @onAfterResourcesRender)
 
 
 Calendar::instantiateView = (viewType) ->
@@ -162,20 +159,6 @@ Calendar::getEventResources = (idOrEvent) ->
 			if resource
 				resources.push(resource)
 	resources
-
-
-# Handlers
-# ----------------------------------------------------------------------------------------
-
-
-Calendar::onAfterDateRender = ->
-	if @view.isResourcesRendered
-		@onAfterBaseRender()
-
-
-Calendar::onAfterResourcesRender = ->
-	if @view.isDatesRendered
-		@onAfterBaseRender()
 
 
 Calendar::onAfterBaseRender = ->

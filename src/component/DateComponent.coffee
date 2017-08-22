@@ -14,36 +14,6 @@ DateComponent::isResourceFootprintsEnabled = false
 DateComponent::isResourcesRendered = false
 
 
-
-# Dependencies for Event / Resource Rendering
-# ----------------------------------------------------------------------------------------------------------------------
-# Components must opt-in to using these!
-
-
-# all components will go through resource rendering flow
-# it is up to them if they want to render anything
-DateComponent::watchDisplayingResources = ->
-	@watch 'displayingResources', [ 'hasResources' ], =>
-		@requestRender(@executeResourcesRender, [ @get('currentResources') ], 'resource', 'init')
-	, =>
-		@requestRender(@executeResourcesUnrender, null, 'resource', 'destroy')
-
-
-###
-like displayingDates, but +currentResources dep
-###
-DateComponent::watchDisplayingDatesAndResources = ->
-	@unwatch('displayingDates')
-	@watch 'displayingDates', [ 'dateProfile', 'currentResources' ], (deps) ->
-		@requestRender(@executeDateRender, [ deps.dateProfile ], 'dates', 'init')
-		@set('displayingDates', true)
-		@set('displayingResources', true)
-	, ->
-		@unset('displayingDates')
-		@unset('displayingResources')
-		@requestRender(@executeDateUnrender, null, 'dates', 'destroy')
-
-
 # Resource Data Handling
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -97,12 +67,10 @@ DateComponent::removeResource = (resource, allResources) ->
 
 DateComponent::executeResourcesRender = (resources) ->
 	@renderResources(resources)
-	@trigger('after:entity:render', 'resources')
 	@isResourcesRendered = true
 
 
 DateComponent::executeResourcesUnrender = ->
-	@trigger('before:entity:unrender', 'resources')
 	@unrenderResources()
 	@isResourcesRendered = true
 
@@ -158,3 +126,12 @@ DateComponent::eventRangeToEventFootprints = (eventRange) ->
 			DateComponent_eventRangeToEventFootprints.apply(this, arguments)
 		else
 			[]
+
+
+# Wire up tasks
+# ----------------------------------------------------------------------------------------------------------------------
+
+DateComponent.watch 'displayingResources', [ 'hasResources' ], ->
+	@requestRender(@executeResourcesRender, [ @get('currentResources') ], 'resource', 'init')
+, ->
+	@requestRender(@executeResourcesUnrender, null, 'resource', 'destroy')

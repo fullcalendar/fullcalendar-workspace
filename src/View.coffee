@@ -82,14 +82,16 @@ View::watchResources = ->
 		@unsetUnfilteredResources()
 		return # make sure no return promise
 
-
+###
+HACK, until resources becomes a proper data source,
+in which case we can make a masking data source that uses the events data source.
+###
 View::watchCurrentEvents = ->
-	@watch 'watchingCurrentEvents', [ 'eventDataSource' ], (deps) ->
+	@watch 'watchingCurrentEvents', [ 'eventDataSource', 'dateProfile' ], (deps) ->
 		eventDataSource = deps.eventDataSource
 
 		registerHash = (byDefId) =>
-			# depends on the current view range!
-			unzonedRange = @dateProfile.activeUnzonedRange
+			unzonedRange = deps.dateProfile.activeUnzonedRange
 			eventRanges = []
 
 			for id, eventInstances of byDefId
@@ -299,3 +301,12 @@ View::triggerExternalDrop = (singleEventDef, isEvent, el, ev, ui) ->
 				this
 			]
 		})
+
+
+# Modify "base" tasks
+# ----------------------------------------------------------------------------------------------------------------------
+
+View.watch 'displayingBase', [ 'displayingDates', 'displayingResources' ], (deps) ->
+	@whenSizeUpdated(@triggerBaseRendered)
+, ->
+	@triggerBaseUnrendered()

@@ -71,18 +71,16 @@ class TimelineGrid extends InteractiveDateComponent
 
 		@slotWidth = @opt('slotWidth')
 
-		@on 'after:entity:render', (entityType) =>
-			if entityType == 'events'
-				sprites = []
-				for seg in @getRecursiveEventSegs() # TODO: only retrieve fg segs
-					titleEl = seg.el.find('.fc-title')
-					if titleEl.length
-						sprites.push(new ScrollFollowerSprite(titleEl))
-				@eventTitleFollower.setSprites(sprites)
+		@on 'after:events:render', (entityType) =>
+			sprites = []
+			for seg in @getRecursiveEventSegs() # TODO: only retrieve fg segs
+				titleEl = seg.el.find('.fc-title')
+				if titleEl.length
+					sprites.push(new ScrollFollowerSprite(titleEl))
+			@eventTitleFollower.setSprites(sprites)
 
-		@on 'before:entity:unrender', (entityType) =>
-			if entityType == 'events'
-				@eventTitleFollower.clearSprites()
+		@on 'before:events:unrender', (entityType) => # what?
+			@eventTitleFollower.clearSprites()
 
 
 
