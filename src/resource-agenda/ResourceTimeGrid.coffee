@@ -47,5 +47,14 @@ class ResourceTimeGrid extends FC.TimeGrid
 			resourceSegs
 
 
+# Wire up tasks
+# ----------------------------------------------------------------------------------------------------------------------
+
 ResourceTimeGrid.watch 'displayingResources', [ 'hasResources', 'dateProfile' ], (deps) ->
 	@requestRender(@renderColumns, [ deps.dateProfile ], 'columns', 'destroy')
+
+# for events, must be displaying resource first
+ResourceTimeGrid.watch 'displayingEvents', [ 'displayingDates', 'displayingResources', 'eventDataSource' ], (deps) ->
+	@startDisplayingEvents(deps.eventDataSource)
+, (deps) ->
+	@stopDisplayingEvents(deps.eventDataSource)

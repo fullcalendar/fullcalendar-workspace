@@ -62,7 +62,16 @@ class ResourceDayGrid extends FC.DayGrid
 			resourceSegs
 
 
-ResourceDayGrid.watch 'displayingResources', [ 'hasResources', 'dateProfile' ], (dateProfile) ->
+# Wire up tasks
+# ----------------------------------------------------------------------------------------------------------------------
+
+ResourceDayGrid.watch 'displayingResources', [ 'hasResources', 'dateProfile' ], (deps) ->
 	@requestRender(@renderGrid, [ deps.dateProfile ], 'grid', 'destroy')
 , ->
 	@requestRender(@removeSegPopover)
+
+# for events, must be displaying resource first
+ResourceDayGrid.watch 'displayingEvents', [ 'displayingDates', 'displayingResources', 'eventDataSource' ], (deps) ->
+	@startDisplayingEvents(deps.eventDataSource)
+, (deps) ->
+	@stopDisplayingEvents(deps.eventDataSource)
