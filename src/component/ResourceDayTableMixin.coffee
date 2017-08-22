@@ -69,7 +69,7 @@ ResourceDayTableMixin =
 
 
 	computeColCnt: ->
-		@resourceCnt * @daysPerRow
+		(@resourceCnt or 1) * @daysPerRow
 
 
 	getColDayIndex: (col) ->
@@ -110,15 +110,18 @@ ResourceDayTableMixin =
 
 
 	renderHeadTrHtml: -> # might return two trs
-		if @daysPerRow > 1
-			# do two levels
-			if @datesAboveResources
-				@renderHeadDateAndResourceHtml()
-			else
-				@renderHeadResourceAndDateHtml()
+		if not @resourceCnt
+			FC.DayTableMixin.renderHeadTrHtml.call(this)
 		else
-			# do one level
-			@renderHeadResourceHtml()
+			if @daysPerRow > 1
+				# do two levels
+				if @datesAboveResources
+					@renderHeadDateAndResourceHtml()
+				else
+					@renderHeadResourceAndDateHtml()
+			else
+				# do one level
+				@renderHeadResourceHtml()
 
 
 	# renders one row of resources header cell
@@ -128,9 +131,6 @@ ResourceDayTableMixin =
 		for resource in @flattenedResources
 			resourceHtmls.push \
 				@renderHeadResourceCellHtml(resource)
-
-		if not resourceHtmls.length
-			resourceHtmls.push('<td>&nbsp;</td>')
 
 		@wrapTr(resourceHtmls, 'renderHeadIntroHtml')
 
@@ -149,12 +149,6 @@ ResourceDayTableMixin =
 				dateHtmls.push \
 					@renderHeadResourceDateCellHtml(date, resource)
 
-		if not resourceHtmls.length
-			resourceHtmls.push('<td>&nbsp;</td>')
-
-		if not dateHtmls.length
-			dateHtmls.push('<td>&nbsp;</td>')
-
 		@wrapTr(resourceHtmls, 'renderHeadIntroHtml') +
 			@wrapTr(dateHtmls, 'renderHeadIntroHtml')
 
@@ -172,12 +166,6 @@ ResourceDayTableMixin =
 			for resource in @flattenedResources
 				resourceHtmls.push \
 					@renderHeadResourceCellHtml(resource, date)
-
-		if not dateHtmls.length
-			dateHtmls.push('<td>&nbsp;</td>')
-
-		if not resourceHtmls.length
-			resourceHtmls.push('<td>&nbsp;</td>')
 
 		@wrapTr(dateHtmls, 'renderHeadIntroHtml') +
 			@wrapTr(resourceHtmls, 'renderHeadIntroHtml')
@@ -244,17 +232,17 @@ ResourceDayTableMixin =
 
 
 	renderBgCellsHtml: (row) ->
-		htmls = []
+		if not @resourceCnt
+			FC.DayTableMixin.renderBgCellsHtml.call(this, row)
+		else
+			htmls = []
 
-		for col in [0...@colCnt] by 1
-			date = @getCellDate(row, col)
-			resource = @getColResource(col)
-			htmls.push(@renderResourceBgCellHtml(date, resource))
+			for col in [0...@colCnt] by 1
+				date = @getCellDate(row, col)
+				resource = @getColResource(col)
+				htmls.push(@renderResourceBgCellHtml(date, resource))
 
-		if not htmls.length
-			htmls.push('<td>&nbsp;</td>')
-
-		htmls.join('') # already accounted for RTL
+			htmls.join('') # already accounted for RTL
 
 
 	renderResourceBgCellHtml: (date, resource) ->
@@ -285,30 +273,34 @@ ResourceDayTableMixin =
 
 
 	renderBusinessHours: (businessHourPayload) ->
-		isAllDay = @hasAllDayBusinessHours
-		generalEventInstanceGroup = businessHourPayload[if isAllDay then 'allDay' else 'timed']
-		unzonedRange = @get('dateProfile').activeUnzonedRange
-		eventFootprints = []
+		if @flattenedResources # any resources rendered?
 
-		for resource in @flattenedResources
-			eventInstanceGroup =
-				if resource.businessHourGenerator
-					resource.businessHourGenerator.buildEventInstanceGroup(isAllDay, unzonedRange)
-				else
-					generalEventInstanceGroup
+			isAllDay = @hasAllDayBusinessHours
+			generalEventInstanceGroup = businessHourPayload[if isAllDay then 'allDay' else 'timed']
+			unzonedRange = @get('dateProfile').activeUnzonedRange
+			eventFootprints = []
 
-			if eventInstanceGroup
-				for eventRange in eventInstanceGroup.sliceRenderRanges(unzonedRange)
-					eventFootprints.push(
-						new EventFootprint(
-							new ResourceComponentFootprint(
-								eventRange.unzonedRange
-								isAllDay
-								resource.id
+			for resource in @flattenedResources
+				eventInstanceGroup =
+					if resource.businessHourGenerator
+						resource.businessHourGenerator.buildEventInstanceGroup(isAllDay, unzonedRange)
+					else
+						generalEventInstanceGroup
+
+				if eventInstanceGroup
+					for eventRange in eventInstanceGroup.sliceRenderRanges(unzonedRange)
+						eventFootprints.push(
+							new EventFootprint(
+								new ResourceComponentFootprint(
+									eventRange.unzonedRange
+									isAllDay
+									resource.id
+								)
+								eventRange.eventDef
+								eventRange.eventInstance
 							)
-							eventRange.eventDef
-							eventRange.eventInstance
 						)
-					)
 
-		@renderBusinessHourEventFootprints(eventFootprints)
+			@renderBusinessHourEventFootprints(eventFootprints)
+		else
+			DateComponent::renderBusinessHours.apply(this, arguments)
