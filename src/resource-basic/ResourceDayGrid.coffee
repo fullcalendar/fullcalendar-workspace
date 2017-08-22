@@ -49,7 +49,7 @@ class ResourceDayGrid extends FC.DayGrid
 		resourceSegs
 
 
-ResourceDayGrid.watch 'displayingResources', [ 'hasResources', 'dateProfile' ], ->
-	@requestRender(@renderGrid, null, 'grid', 'destroy')
+ResourceDayGrid.watch 'displayingResources', [ 'hasResources', 'dateProfile' ], (dateProfile) ->
+	@requestRender(@renderGrid, [ deps.dateProfile ], 'grid', 'destroy')
 , ->
 	@requestRender(@removeSegPopover)

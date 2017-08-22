@@ -38,5 +38,5 @@ class ResourceTimeGrid extends FC.TimeGrid
 		resourceSegs
 
 
-ResourceTimeGrid.watch 'displayingResources', [ 'hasResources', 'dateProfile' ], ->
-	@requestRender(@renderColumns, null, 'columns', 'destroy')
+ResourceTimeGrid.watch 'displayingResources', [ 'hasResources', 'dateProfile' ], (deps) ->
+	@requestRender(@renderColumns, [ deps.dateProfile ], 'columns', 'destroy')

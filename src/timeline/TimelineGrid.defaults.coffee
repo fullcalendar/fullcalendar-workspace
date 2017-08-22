@@ -57,7 +57,7 @@ TimelineGrid::initScaleProps = ->
 				slotUnit
 
 	@emphasizeWeeks = @slotDuration.as('days') == 1 and
-		@view.currentRangeAs('weeks') >= 2 and
+		@currentRangeAs('weeks') >= 2 and
 		not @opt('businessHours')
 
 	###
@@ -86,7 +86,7 @@ TimelineGrid::queryDurationOption = (name) ->
 
 
 TimelineGrid::validateLabelAndSlot = ->
-	currentUnzonedRange = @view.dateProfile.currentUnzonedRange
+	currentUnzonedRange = @dateProfile.currentUnzonedRange
 
 	# make sure labelInterval doesn't exceed the max number of cells
 	if @labelInterval
@@ -133,7 +133,7 @@ TimelineGrid::computeFallbackDuration = ->
 
 
 TimelineGrid::ensureLabelInterval = ->
-	currentUnzonedRange = @view.dateProfile.currentUnzonedRange
+	currentUnzonedRange = @dateProfile.currentUnzonedRange
 	labelInterval = @labelInterval
 
 	if not labelInterval
@@ -167,7 +167,7 @@ TimelineGrid::ensureLabelInterval = ->
 
 
 TimelineGrid::ensureSlotDuration = ->
-	currentUnzonedRange = @view.dateProfile.currentUnzonedRange
+	currentUnzonedRange = @dateProfile.currentUnzonedRange
 	slotDuration = @slotDuration
 
 	if not slotDuration
@@ -198,7 +198,6 @@ TimelineGrid::ensureSlotDuration = ->
 
 
 TimelineGrid::computeHeaderFormats = ->
-	view = @view
 	labelInterval = @labelInterval
 	unit = computeGreatestUnit(labelInterval)
 	weekNumbersVisible = @opt('weekNumbers')
@@ -214,21 +213,21 @@ TimelineGrid::computeHeaderFormats = ->
 			format0 = 'YYYY' # '2015'
 
 		when 'month'
-			if view.currentRangeAs('years') > 1
+			if @currentRangeAs('years') > 1
 				format0 = 'YYYY' # '2015'
 
 			format1 = 'MMM' # 'Jan'
 
 		when 'week'
-			if view.currentRangeAs('years') > 1
+			if @currentRangeAs('years') > 1
 				format0 = 'YYYY' # '2015'
 
 			format1 = @opt('shortWeekFormat') # 'Wk4'
 
 		when 'day'
-			if view.currentRangeAs('years') > 1
+			if @currentRangeAs('years') > 1
 				format0 = @opt('monthYearFormat') # 'January 2014'
-			else if view.currentRangeAs('months') > 1
+			else if @currentRangeAs('months') > 1
 				format0 = 'MMMM' # 'January'
 
 			if weekNumbersVisible
@@ -242,7 +241,7 @@ TimelineGrid::computeHeaderFormats = ->
 			if weekNumbersVisible
 				format0 = @opt('weekFormat') # 'Wk 4'
 
-			if view.currentRangeAs('days') > 1
+			if @currentRangeAs('days') > 1
 				format1 = @opt('dayOfMonthFormat') # 'Fri 9/15'
 
 			format2 = @opt('smallTimeFormat') # '6pm'

@@ -89,8 +89,7 @@ class TimelineGrid extends InteractiveDateComponent
 			false
 		else if @isTimeScale
 			# determine if the time is within minTime/maxTime, which may have wacky values
-			dateProfile = @get('dateProfile')
-			ms = date.time() - dateProfile.minTime # milliseconds since minTime
+			ms = date.time() - @dateProfile.minTime # milliseconds since minTime
 			ms = ((ms % 86400000) + 86400000) % 86400000 # make negative values wrap to 24hr clock
 			ms < @timeWindowMs # before the maxTime?
 		else
@@ -149,37 +148,6 @@ class TimelineGrid extends InteractiveDateComponent
 			new UnzonedRange(adjustedStart, adjustedEnd)
 			not @isTimeScale # isAllDay
 		)
-
-
-	handleDateProfileSet: (dateProfile) ->
-		super
-
-		@initScaleProps()
-
-		@timeWindowMs = dateProfile.maxTime - dateProfile.minTime
-
-		# makes sure zone is stripped
-		@normalizedUnzonedStart = @normalizeGridDate(dateProfile.renderUnzonedRange.getStart())
-		@normalizedUnzonedEnd = @normalizeGridDate(dateProfile.renderUnzonedRange.getEnd())
-
-		# apply minTime/maxTime
-		# TODO: move towards .time(), but didn't play well with negatives.
-		# TODO: View should be responsible.
-		if @isTimeScale
-			@normalizedUnzonedStart.add(dateProfile.minTime)
-			@normalizedUnzonedEnd.subtract(1, 'day').add(dateProfile.maxTime)
-
-		@normalizedUnzonedRange = new UnzonedRange(@normalizedUnzonedStart, @normalizedUnzonedEnd)
-
-		slotDates = []
-		date = @normalizedUnzonedStart.clone()
-		while date < @normalizedUnzonedEnd
-			if @isValidDate(date)
-				slotDates.push(date.clone())
-			date.add(@slotDuration)
-
-		@slotDates = slotDates
-		@updateGridDates()
 
 
 	updateGridDates: ->
@@ -362,7 +330,34 @@ class TimelineGrid extends InteractiveDateComponent
 	slatColEls: null
 
 
-	renderDates: ->
+	renderDates: (dateProfile) ->
+		@initScaleProps()
+
+		@timeWindowMs = dateProfile.maxTime - dateProfile.minTime
+
+		# makes sure zone is stripped
+		@normalizedUnzonedStart = @normalizeGridDate(dateProfile.renderUnzonedRange.getStart())
+		@normalizedUnzonedEnd = @normalizeGridDate(dateProfile.renderUnzonedRange.getEnd())
+
+		# apply minTime/maxTime
+		# TODO: move towards .time(), but didn't play well with negatives.
+		# TODO: View should be responsible.
+		if @isTimeScale
+			@normalizedUnzonedStart.add(dateProfile.minTime)
+			@normalizedUnzonedEnd.subtract(1, 'day').add(dateProfile.maxTime)
+
+		@normalizedUnzonedRange = new UnzonedRange(@normalizedUnzonedStart, @normalizedUnzonedEnd)
+
+		slotDates = []
+		date = @normalizedUnzonedStart.clone()
+		while date < @normalizedUnzonedEnd
+			if @isValidDate(date)
+				slotDates.push(date.clone())
+			date.add(@slotDuration)
+
+		@slotDates = slotDates
+		@updateGridDates()
+
 		@headScroller.canvas.contentEl.html(@renderHeadHtml())
 		@headColEls = @headScroller.canvas.contentEl.find('col')
 		@slatContainerEl.html(@renderSlatHtml())
