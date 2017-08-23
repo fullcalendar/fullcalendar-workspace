@@ -131,6 +131,7 @@ DateComponent::eventRangeToEventFootprints = (eventRange) ->
 # Wire up tasks
 # ----------------------------------------------------------------------------------------------------------------------
 
+
 DateComponent.watch 'displayingResources', [ 'hasResources' ], ->
 	@requestRender(@executeResourcesRender, [ @get('currentResources') ], 'resource', 'init')
 , ->

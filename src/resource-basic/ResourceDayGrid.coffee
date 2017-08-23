@@ -64,3 +64,10 @@ ResourceDayGrid.watch 'displayingGrid', [ 'dateProfile', 'currentResources' ], (
 	@requestRender(@renderGrid, [ deps.dateProfile ], 'grid', 'destroy')
 , ->
 	@requestRender(@removeSegPopover)
+
+
+# event rendering depends on resources for color/className data
+FC.DayGrid.watch 'displayingEvents', [ 'displayingDates', 'eventDataSource', 'currentResources' ], (deps) ->
+	@startDisplayingEvents(deps.eventDataSource)
+, (deps) ->
+	@stopDisplayingEvents(deps.eventDataSource)
