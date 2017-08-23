@@ -2,8 +2,3 @@
 class ResourceMonthView extends FC.MonthView
 
 	dayGridClass: ResourceDayGrid
-
-
-	renderHead: ->
-		super
-		@dayGrid.processHeadResourceEls(@headContainerEl)

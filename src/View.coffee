@@ -303,10 +303,20 @@ View::triggerExternalDrop = (singleEventDef, isEvent, el, ev, ui) ->
 		})
 
 
+View::processLicenseKey = ->
+	# inject license key before 'viewRender' which is called by super's onBaseRender
+	processLicenseKey(
+		@opt('schedulerLicenseKey')
+		@el # container element
+	)
+
+
 # Modify "base" tasks
 # ----------------------------------------------------------------------------------------------------------------------
 
-View.watch 'displayingBase', [ 'displayingDates', 'displayingResources' ], (deps) ->
+# fire viewRender/viewDestroy any time there is a resource change
+View.watch 'displayingBase', [ 'dateProfile', 'currentResources' ], (deps) ->
+	@requestRender(@processLicenseKey)
 	@whenSizeUpdated(@triggerBaseRendered)
 , ->
 	@triggerBaseUnrendered()

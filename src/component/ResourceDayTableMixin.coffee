@@ -18,20 +18,34 @@ ResourceDayTableMixin =
 
 	# doesn't render anything
 	setResources: (resources) ->
-		@set('currentResources', resources)
-		@set('hasResources', true)
 		@flattenedResources = @flattenResources(resources)
 		@resourceCnt = @flattenedResources.length
 		@updateDayTableCols() # will call computeColCnt
+		@set('currentResources', resources)
+		@set('hasResources', true)
 
 
 	# doesn't render anything
 	unsetResources: ->
-		@unset('hasResources')
-		@unset('currentResources')
 		@flattenedResources = null
 		@resourceCnt = 0
 		@updateDayTableCols() # will call computeColCnt
+		@unset('hasResources')
+		@unset('currentResources')
+
+
+	addResource: (resource, allResources) ->
+		@flattenedResources = @flattenResources(allResources)
+		@resourceCnt = @flattenedResources.length
+		@updateDayTableCols() # will call computeColCnt
+		@set('currentResources', allResources)
+
+
+	removeResource: (resource, allResources) ->
+		@flattenedResources = @flattenResources(allResources)
+		@resourceCnt = @flattenedResources.length
+		@updateDayTableCols() # will call computeColCnt
+		@set('currentResources', allResources)
 
 
 	# flattens and sorts

@@ -7,6 +7,13 @@ class ResourceTimeGrid extends FC.TimeGrid
 	isResourceFootprintsEnabled: true
 
 
+	renderColumns: (dateProfile) ->
+		super
+
+		if @headContainerEl
+			@processHeadResourceEls(@headContainerEl)
+
+
 	# TODO: make DRY with ResourceDayGrid
 	getHitFootprint: (hit) ->
 		plainFootprint = super
@@ -41,11 +48,6 @@ class ResourceTimeGrid extends FC.TimeGrid
 # Wire up tasks
 # ----------------------------------------------------------------------------------------------------------------------
 
-ResourceTimeGrid.watch 'displayingResources', [ 'hasResources', 'dateProfile' ], (deps) ->
-	@requestRender(@renderColumns, [ deps.dateProfile ], 'columns', 'destroy')
 
-# for events, must be displaying resource first
-ResourceTimeGrid.watch 'displayingEvents', [ 'displayingDates', 'displayingResources', 'eventDataSource' ], (deps) ->
-	@startDisplayingEvents(deps.eventDataSource)
-, (deps) ->
-	@stopDisplayingEvents(deps.eventDataSource)
+ResourceTimeGrid.watch 'displayingColumns', [ 'dateProfile', 'currentResources' ], (deps) ->
+	@requestRender(@renderColumns, [ deps.dateProfile ], 'columns', 'destroy')

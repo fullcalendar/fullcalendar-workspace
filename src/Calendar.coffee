@@ -159,12 +159,3 @@ Calendar::getEventResources = (idOrEvent) ->
 			if resource
 				resources.push(resource)
 	resources
-
-
-Calendar::onAfterBaseRender = ->
-	# inject license key before 'viewRender' which is called by super's onBaseRender
-	processLicenseKey(
-		@opt('schedulerLicenseKey')
-		@view.el # container element
-	)
-	Calendar_onAfterBaseRender.apply(this, arguments)

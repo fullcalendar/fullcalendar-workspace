@@ -7,6 +7,13 @@ class ResourceDayGrid extends FC.DayGrid
 	isResourceFootprintsEnabled: true
 
 
+	renderGrid: (dateProfile) ->
+		super
+
+		if @headContainerEl
+			@processHeadResourceEls(@headContainerEl)
+
+
 	# TODO: make DRY with ResourceTimeGrid
 	getHitFootprint: (hit) ->
 		plainFootprint = super
@@ -52,13 +59,8 @@ class ResourceDayGrid extends FC.DayGrid
 # Wire up tasks
 # ----------------------------------------------------------------------------------------------------------------------
 
-ResourceDayGrid.watch 'displayingResources', [ 'hasResources', 'dateProfile' ], (deps) ->
+
+ResourceDayGrid.watch 'displayingGrid', [ 'dateProfile', 'currentResources' ], (deps) ->
 	@requestRender(@renderGrid, [ deps.dateProfile ], 'grid', 'destroy')
 , ->
 	@requestRender(@removeSegPopover)
-
-# for events, must be displaying resource first
-ResourceDayGrid.watch 'displayingEvents', [ 'displayingDates', 'displayingResources', 'eventDataSource' ], (deps) ->
-	@startDisplayingEvents(deps.eventDataSource)
-, (deps) ->
-	@stopDisplayingEvents(deps.eventDataSource)

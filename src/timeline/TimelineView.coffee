@@ -131,3 +131,15 @@ class TimelineView extends View
 			# Similar code in ResourceTimelineView::setScroll
 			@timelineGrid.headScroller.setScrollLeft(scroll.left)
 			@timelineGrid.bodyScroller.setScrollLeft(scroll.left)
+
+
+# Modify "base" tasks
+# ----------------------------------------------------------------------------------------------------------------------
+
+# fire viewRender/viewDestroy when dates are rendered AND resources have been bound.
+# does NOT refire when resources are dynamically added/removed.
+TimelineView.watch 'displayingBase', [ 'dateProfile', 'hasResources' ], (deps) ->
+	@requestRender(@processLicenseKey)
+	@whenSizeUpdated(@triggerBaseRendered)
+, ->
+	@triggerBaseUnrendered()
