@@ -1,75 +1,36 @@
 
-EventRenderer_getClasses = EventRenderer::getClasses
-EventRenderer_getDefaultBgColor = EventRenderer::getDefaultBgColor
-EventRenderer_getDefaultBorderColor = EventRenderer::getDefaultBorderColor
-EventRenderer_getDefaultTextColor = EventRenderer::getDefaultTextColor
+EventRenderer_getFallbackStylingObjs = EventRenderer::getFallbackStylingObjs
 
 
-EventRenderer::getClasses = (eventFootprint) ->
-	classes = EventRenderer_getClasses.apply(this, arguments)
-	resources = @getEventFootprintResources(eventFootprint)
-
-	for resource in resources
-		# .concat will process non-arrays and arrays
-		classes = classes.concat(resource.eventClassName or [])
-
-	classes
+EventRenderer::designatedResourceObj = null
 
 
-EventRenderer::getDefaultBgColor = (eventFootprint) ->
-	resources = @getEventFootprintResources(eventFootprint)
-
-	for currentResource in resources
-		while currentResource
-			val = currentResource.eventBackgroundColor or currentResource.eventColor
-			if val
-				return val
-			currentResource = currentResource._parent
-
-	EventRenderer_getDefaultBgColor.apply(this, arguments)
+EventRenderer::beforeFgSegHtml = (seg) -> # hack
+	if seg.footprint.componentFootprint.resourceId
+		resourceManager = @view.calendar.resourceManager
+		resource = resourceManager.getResourceById(seg.footprint.componentFootprint.resourceId)
+		if resource
+			@designatedResourceObj = resource
 
 
-EventRenderer::getDefaultBorderColor = (eventFootprint) ->
-	resources = @getEventFootprintResources(eventFootprint)
+EventRenderer::getFallbackStylingObjs = (eventDef) ->
+	objs = EventRenderer_getFallbackStylingObjs.apply(this, arguments)
 
-	for currentResource in resources
-		while currentResource
-			val = currentResource.eventBorderColor or currentResource.eventColor
-			if val
-				return val
-			currentResource = currentResource._parent
+	if @designatedResourceObj
+		objs.unshift(@designatedResourceObj)
+	else
+		objs = @getEventDefResourceObjs(eventDef).concat(objs)
 
-	EventRenderer_getDefaultBorderColor.apply(this, arguments)
+	objs
 
 
-EventRenderer::getDefaultTextColor = (eventFootprint) ->
-	resources = @getEventFootprintResources(eventFootprint)
-
-	for currentResource in resources
-		while currentResource
-			val = currentResource.eventTextColor
-			if val
-				return val
-			currentResource = currentResource._parent
-
-	EventRenderer_getDefaultTextColor.apply(this, arguments)
-
-
-EventRenderer::getEventFootprintResources = (eventFootprint) ->
+EventRenderer::getEventDefResourceObjs = (eventDef) ->
 	resourceManager = @view.calendar.resourceManager
-	resourceIds = @getEventFootprintResourceIds(eventFootprint)
 	resources = []
 
-	for resourceId in resourceIds
+	for resourceId in eventDef.getResourceIds()
 		resource = resourceManager.getResourceById(resourceId)
 		if resource
 			resources.push(resource)
 
 	resources
-
-
-EventRenderer::getEventFootprintResourceIds = (eventFootprint) ->
-	if eventFootprint.componentFootprint instanceof ResourceComponentFootprint
-		[ eventFootprint.componentFootprint.resourceId ]
-	else
-		eventFootprint.eventDef.getResourceIds()

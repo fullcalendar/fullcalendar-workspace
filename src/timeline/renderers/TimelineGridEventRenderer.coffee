@@ -103,7 +103,7 @@ class TimelineGridEventRenderer extends EventRenderer
 
 		timeText = @getTimeText(seg.footprint)
 
-		'<a class="' + classes.join(' ') + '" style="' + cssToStr(@getSkinCss(seg.footprint)) + '"' +
+		'<a class="' + classes.join(' ') + '" style="' + cssToStr(@getSkinCss(seg.footprint.eventDef)) + '"' +
 			(if eventDef.url
 				' href="' + htmlEscape(eventDef.url) + '"'
 			else
