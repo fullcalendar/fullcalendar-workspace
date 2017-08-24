@@ -31,26 +31,54 @@ gulp.task 'modules:clean', ->
 	del('dist/*.{js,css,map}')
 
 # build tasks for coffeescript files that compile to JS
-defineCoffeeTasks = (srcFiles, distFile) ->
+defineJsTasks = (srcFiles, jsDistFile) ->
+	coffeeDistFile = jsDistFile.replace(/.js$/, '.coffee')
 
-	gulp.task 'modules:' + distFile, ->
-		gulp.src(srcFiles, { cwd: 'src/', base: 'src/' })
-			.pipe(plumber()) # affects future streams
-			.pipe(concat(distFile)) # will be renamed
-			.pipe(coffee({ bare: true }))
-			.pipe(template(packageConf))
-			.pipe(gulp.dest('dist/'))
+	coffeeSrcFiles = srcFiles.filter (srcFile) ->
+		/.coffee$/.test(srcFile)
 
-	gulp.task 'modules:dev:' + distFile, ->
-		gulp.src(srcFiles, { cwd: 'src/', base: 'src/' })
+	jsSrcFiles = srcFiles.filter (srcFile) ->
+		/.js$/.test(srcFile)
+
+	jsSrcFiles = jsSrcFiles.map (srcFile) ->
+		'src/' + srcFile
+
+	if coffeeSrcFiles.length
+		jsSrcFiles.push('tmp/compiled-coffee/' + jsDistFile)
+
+	# coffee, with sourcemaps
+	gulp.task 'modules:dev:' + coffeeDistFile, ->
+		gulp.src(coffeeSrcFiles, { cwd: 'src/', base: 'src/' })
 			.pipe(plumber()) # affects future streams
 			.pipe(sourcemaps.init())
-			.pipe(concat(distFile)) # will be renamed
+			.pipe(concat(coffeeDistFile)) # will be renamed
 			.pipe(coffee({ bare: true }))
-			.pipe(sourcemaps.write('.', {
-				includeContent: false,
-				sourceRoot: '../src/' # relative to outputted file in dist
-			}))
+			.pipe(sourcemaps.write()) # writes inline
+			.pipe(gulp.dest('tmp/compiled-coffee/'))
+
+	# coffee
+	gulp.task 'modules:' + coffeeDistFile, ->
+		gulp.src(coffeeSrcFiles, { cwd: 'src/', base: 'src/' })
+			.pipe(plumber()) # affects future streams
+			.pipe(concat(coffeeDistFile)) # will be renamed
+			.pipe(coffee({ bare: true }))
+			.pipe(gulp.dest('tmp/compiled-coffee/'))
+
+	# js, with sourcemaps
+	gulp.task 'modules:dev:' + jsDistFile, [ 'modules:dev:' + coffeeDistFile ], ->
+		gulp.src(jsSrcFiles, { cwd: '.', base: '.' })
+			.pipe(plumber()) # affects future streams
+			.pipe(sourcemaps.init({ loadMaps: true })) # load coffeescript sourcemaps
+			.pipe(concat(jsDistFile, { newLine: '\n;;\n' })) # will be renamed
+			.pipe(sourcemaps.write()) # writes inline
+			.pipe(gulp.dest('dist/'))
+
+	# js
+	gulp.task 'modules:' + jsDistFile, [ 'modules:' + coffeeDistFile ], ->
+		gulp.src(jsSrcFiles, { cwd: '.', base: '.' })
+			.pipe(plumber()) # affects future streams
+			.pipe(concat(jsDistFile, { newLine: '\n;;\n' })) # will be renamed
+			.pipe(template(packageConf))
 			.pipe(gulp.dest('dist/'))
 
 # build tasks for files that are simple concatenations
@@ -68,17 +96,14 @@ defineConcatTasks = (srcFiles, distFile) ->
 			.pipe(plumber()) # affects future streams
 			.pipe(sourcemaps.init())
 			.pipe(concat(distFile))
-			.pipe(sourcemaps.write('.', {
-				includeContent: false,
-				sourceRoot: '../src/' # relative to outputted file in dist
-			}))
+			.pipe(sourcemaps.write())
 			.pipe(gulp.dest('dist/'))
 
 # loop the distFile:srcFiles map
 _.forEach srcConf, (srcFiles, distFile) ->
 
-	if /.coffee$/.test(distFile)
-		defineCoffeeTasks(srcFiles, distFile)
+	if /.js$/.test(distFile)
+		defineJsTasks(srcFiles, distFile)
 	else
 		defineConcatTasks(srcFiles, distFile)
 

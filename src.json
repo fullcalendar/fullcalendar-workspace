@@ -1,6 +1,7 @@
 {
-  "scheduler.coffee": [
-    "intro.coffee",
+  "scheduler.js": [
+    "intro.js",
+    "imports.js",
 
     "util/util.coffee",
     "util/EnhancedScroller.coffee",
