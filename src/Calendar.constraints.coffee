@@ -73,6 +73,8 @@ Calendar::buildCurrentBusinessFootprints = (isAllDay) ->
 							resource.id
 						)
 					)
+
+		componentFootprints
 	else
 		Calendar_buildCurrentBusinessFootprints.apply(this, arguments)
 

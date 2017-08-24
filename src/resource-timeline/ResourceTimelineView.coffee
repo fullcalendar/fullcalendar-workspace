@@ -240,9 +240,10 @@ class ResourceTimelineView extends TimelineView
 
 
 	addResource: (resource) ->
+		@startBatchRender() # don't want date rendering to happen befor rowObj is created via insertResource
+		super # register as DateComponent child, fill render queue for date rendering
 		@insertResource(resource)
-
-		super # send to children and renderqueue. TODO: weird arbitrary ordering here
+		@stopBatchRender()
 
 
 	renderResourceAdd: (resource) ->

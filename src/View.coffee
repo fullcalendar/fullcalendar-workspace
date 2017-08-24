@@ -103,7 +103,7 @@ View::watchCurrentEvents = ->
 
 			@set('currentEventRanges', eventRanges)
 
-		if eventDataSource.isPopulated
+		if eventDataSource.isResolved
 			registerHash(eventDataSource.instanceRepo.byDefId)
 
 		@listenTo eventDataSource, 'receive', =>

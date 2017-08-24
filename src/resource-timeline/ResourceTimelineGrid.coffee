@@ -1,9 +1,11 @@
 
 class ResourceTimelineGrid extends TimelineGrid
 
-	# rows take care of this rendering...
-	eventRendererClass: null
-	helperRendererClass: null
+	# configuration for DateComponent monkeypatch
+	isResourceFootprintsEnabled: true
+
+	# renders non-resource bg events only
+	eventRendererClass: ResourceTimelineGridEventRenderer
 
 	eventRows: null
 	shownEventRows: null

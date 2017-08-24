@@ -46,6 +46,7 @@
     "resource-timeline/row/VRowGroup.coffee",
     "resource-timeline/row/EventRow.coffee",
     "resource-timeline/row/ResourceRow.coffee",
+    "resource-timeline/ResourceTimelineGridEventRenderer.coffee",
     "resource-timeline/ResourceTimelineGrid.coffee",
     "resource-timeline/Spreadsheet.coffee",
     "resource-timeline/ResourceTimelineView.coffee",
