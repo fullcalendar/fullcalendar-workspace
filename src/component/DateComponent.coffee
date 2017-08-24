@@ -19,9 +19,9 @@ DateComponent::isResourcesRendered = false
 
 
 DateComponent::setResources = (resources) ->
+	@setResourcesInChildren(resources)
 	@set('currentResources', resources)
 	@set('hasResources', true)
-	@setResourcesInChildren(resources)
 
 
 DateComponent::setResourcesInChildren = (resources) ->
@@ -29,9 +29,9 @@ DateComponent::setResourcesInChildren = (resources) ->
 
 
 DateComponent::unsetResources = ->
+	@unsetResourcesInChildren()
 	@unset('hasResources')
 	@unset('currentResources')
-	@unsetResourcesInChildren()
 
 
 DateComponent::unsetResourcesInChildren = ->
@@ -46,16 +46,16 @@ DateComponent::resetResources = (resources) ->
 
 
 DateComponent::addResource = (resource, allResources) ->
-	@set('currentResources', allResources)
 	@callChildren('addResource', arguments)
+	@set('currentResources', allResources)
 
 	if @has('displayingResources')
 		@requestRender(@renderResourceAdd, [ resource ], 'resource', 'add')
 
 
 DateComponent::removeResource = (resource, allResources) ->
-	@set('currentResources', allResources)
 	@callChildren('removeResource', arguments)
+	@set('currentResources', allResources)
 
 	if @has('displayingResources')
 		@requestRender(@renderResourceRemove, [ resource ], 'resource', 'remove')
