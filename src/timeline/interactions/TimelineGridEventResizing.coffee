@@ -2,7 +2,7 @@
 ###
 TODO: use pubsub instead?
 ###
-class TimelineGridEventResizing extends EventResizing
+class TimelineEventResizing extends EventResizing
 
 
 	segResizeStart: ->

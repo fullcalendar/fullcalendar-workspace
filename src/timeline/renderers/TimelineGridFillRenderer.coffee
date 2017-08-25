@@ -1,5 +1,5 @@
 
-class TimelineGridFillRenderer extends FillRenderer
+class TimelineFillRenderer extends FillRenderer
 
 	###
 	component must be { bgSegContainerEl, rangeToCoords }

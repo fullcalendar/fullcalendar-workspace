@@ -29,8 +29,7 @@ STOCK_SUB_DURATIONS = [ # from largest to smallest
 ]
 
 
-# assumes the View already has a currentUnzonedRange
-TimelineGrid::initScaleProps = ->
+TimelineView::initScaleProps = ->
 
 	@labelInterval = @queryDurationOption('slotLabelInterval')
 	@slotDuration = @queryDurationOption('slotDuration')
@@ -77,7 +76,7 @@ TimelineGrid::initScaleProps = ->
 	@snapsPerSlot = divideDurationByDuration(@slotDuration, @snapDuration)
 
 
-TimelineGrid::queryDurationOption = (name) ->
+TimelineView::queryDurationOption = (name) ->
 	input = @opt(name)
 	if input?
 		dur = moment.duration(input)
@@ -85,7 +84,7 @@ TimelineGrid::queryDurationOption = (name) ->
 			dur
 
 
-TimelineGrid::validateLabelAndSlot = ->
+TimelineView::validateLabelAndSlot = ->
 	currentUnzonedRange = @dateProfile.currentUnzonedRange
 
 	# make sure labelInterval doesn't exceed the max number of cells
@@ -111,7 +110,7 @@ TimelineGrid::validateLabelAndSlot = ->
 
 
 # has side-effects
-TimelineGrid::computeFallbackDuration = ->
+TimelineView::computeFallbackDuration = ->
 	duration = null
 
 	# no values to compute from. resort to default
@@ -132,7 +131,7 @@ TimelineGrid::computeFallbackDuration = ->
 	duration
 
 
-TimelineGrid::ensureLabelInterval = ->
+TimelineView::ensureLabelInterval = ->
 	currentUnzonedRange = @dateProfile.currentUnzonedRange
 	labelInterval = @labelInterval
 
@@ -166,7 +165,7 @@ TimelineGrid::ensureLabelInterval = ->
 	labelInterval
 
 
-TimelineGrid::ensureSlotDuration = ->
+TimelineView::ensureSlotDuration = ->
 	currentUnzonedRange = @dateProfile.currentUnzonedRange
 	slotDuration = @slotDuration
 
@@ -197,7 +196,7 @@ TimelineGrid::ensureSlotDuration = ->
 	slotDuration
 
 
-TimelineGrid::computeHeaderFormats = ->
+TimelineView::computeHeaderFormats = ->
 	labelInterval = @labelInterval
 	unit = computeGreatestUnit(labelInterval)
 	weekNumbersVisible = @opt('weekNumbers')

@@ -2,7 +2,7 @@
 ###
 TODO: use pubsub instead?
 ###
-class TimelineGridEventDragging extends EventDragging
+class TimelineEventDragging extends EventDragging
 
 
 	segDragStart: ->

@@ -1,5 +1,5 @@
 
-class ResourceTimelineGridEventRenderer extends TimelineGridEventRenderer
+class ResourceTimelineGridEventRenderer extends TimelineEventRenderer
 
 
 	# don't render any fg segs

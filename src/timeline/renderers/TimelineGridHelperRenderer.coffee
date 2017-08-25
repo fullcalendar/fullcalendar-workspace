@@ -1,5 +1,5 @@
 
-class TimelineGridHelperRenderer extends HelperRenderer
+class TimelineHelperRenderer extends HelperRenderer
 
 	###
 	component must be { innerEl, rangeToCoords, ?resource }

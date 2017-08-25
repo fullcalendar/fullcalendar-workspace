@@ -1,9 +1,9 @@
 
 class EventRow extends RowParent
 
-	fillRendererClass: TimelineGridFillRenderer
-	eventRendererClass: TimelineGridEventRenderer
-	helperRendererClass: TimelineGridHelperRenderer
+	fillRendererClass: TimelineFillRenderer
+	eventRendererClass: TimelineEventRenderer
+	helperRendererClass: TimelineHelperRenderer
 	businessHourRendererClass: BusinessHourRenderer
 
 	hasOwnRow: true

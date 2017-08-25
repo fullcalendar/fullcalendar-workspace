@@ -1,5 +1,5 @@
 
-class TimelineGridEventRenderer extends EventRenderer
+class TimelineEventRenderer extends EventRenderer
 
 	###
 	component must be { segContainerEl, segContainerHeight, rangeToCoords }
