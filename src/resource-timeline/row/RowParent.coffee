@@ -34,6 +34,7 @@ class RowParent extends DateComponent
 	###
 	Adds the given node as a child.
 	Will be inserted at the `index`. If not given, will be appended to the end.
+	TERRIBLE NAME!
 	###
 	addChild: (child, index) ->
 		child.removeFromParentAndDom() # in case it belonged somewhere else previously

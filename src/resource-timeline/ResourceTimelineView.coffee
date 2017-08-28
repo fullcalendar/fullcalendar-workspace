@@ -1,26 +1,46 @@
 
 class ResourceTimelineView extends TimelineView
 
-	spreadsheet: null
-	tbodyHash: null # used by RowParent
-	scrollJoiner: null
-	dividerEls: null
+	# configuration for DateComponent monkeypatch
+	isResourceFootprintsEnabled: true
 
+	# renders non-resource bg events only
+	eventRendererClass: ResourceTimelineEventRenderer
+
+	# time area
+	timeBodyTbodyEl: null
+
+	# spreadsheet area
+	spreadsheet: null
+
+	# divider
+	dividerEls: null
+	dividerWidth: null
+
+	# resource rendering options
 	superHeaderText: null
 	isVGrouping: null
 	isHGrouping: null
 	groupSpecs: null
 	colSpecs: null
-	orderSpecs: null # each spec will always have an order
+	orderSpecs: null
 
-	# a "spec" is a name of a resource field, with an optional "order"
-
+	# resource rows
+	tbodyHash: null # used by RowParent
 	rowHierarchy: null
 	resourceRowHash: null
 	nestingCnt: 0
 	isNesting: null
+	eventRows: null
+	shownEventRows: null
+	resourceScrollJoiner: null
 
-	dividerWidth: null
+	# business hours
+	customBizGenCnt: 0
+	fallbackBizGenForRows: null
+
+	# positioning
+	rowCoordCache: null
 
 
 	constructor: ->
@@ -31,8 +51,8 @@ class ResourceTimelineView extends TimelineView
 		@resourceRowHash = {}
 
 
-	instantiateGrid: ->
-		new ResourceTimelineGrid(this)
+	# Resource Options
+	# ------------------------------------------------------------------------------------------------------------------
 
 
 	processResourceOptions: ->
@@ -95,19 +115,34 @@ class ResourceTimelineView extends TimelineView
 		@orderSpecs = plainOrderSpecs
 
 
+	# Skeleton Rendering
+	# ------------------------------------------------------------------------------------------------------------------
+
+
 	renderSkeleton: ->
 		super
 
-		@renderResourceGridSkeleton()
+		@spreadsheet.el = @el.find('tbody .fc-resource-area')
+		@spreadsheet.headEl = @el.find('thead .fc-resource-area')
+		@spreadsheet.renderSkeleton()
+		# ^ is not a Grid/DateComponent
+
+		# only non-resource grid needs this, so kill it
+		# TODO: look into better solution
+		@segContainerEl.remove()
+		@segContainerEl = null
+
+		timeBodyContainerEl = $('<div class="fc-rows"><table><tbody/></table></div>').appendTo(@timeBodyScroller.canvas.contentEl)
+		@timeBodyTbodyEl = timeBodyContainerEl.find('tbody')
 
 		@tbodyHash = { # needed for rows to render
 			spreadsheet: @spreadsheet.tbodyEl
-			event: @timelineGrid.tbodyEl
+			event: @timeBodyTbodyEl
 		}
 
-		@scrollJoiner = new ScrollJoiner('vertical', [
+		@resourceScrollJoiner = new ScrollJoiner('vertical', [
 			@spreadsheet.bodyScroller
-			@timelineGrid.bodyScroller
+			@timeBodyScroller
 		])
 
 		@initDividerMoving()
@@ -132,15 +167,8 @@ class ResourceTimelineView extends TimelineView
 		</table>'
 
 
-	renderResourceGridSkeleton: ->
-		@spreadsheet.el = @el.find('tbody .fc-resource-area')
-		@spreadsheet.headEl = @el.find('thead .fc-resource-area')
-		@spreadsheet.renderSkeleton()
-		# ^ is not a Grid/DateComponent
-
-
-	# Divider moving
-	# ---------------------------------------------------------------------------------
+	# Divider Moving
+	# ------------------------------------------------------------------------------------------------------------------
 
 
 	initDividerMoving: ->
@@ -193,12 +221,12 @@ class ResourceTimelineView extends TimelineView
 
 
 	# Sizing
-	# ---------------------------------------------------------------------------------
+	# ------------------------------------------------------------------------------------------------------------------
 
 
 	updateSize: (totalHeight, isAuto, isResize) ->
 		@spreadsheet.updateSize()
-		@scrollJoiner.update()
+		@resourceScrollJoiner.update()
 
 		# TODO: smarter about not doing this every time, if a single resource is added/removed
 		@syncRowHeights()
@@ -210,7 +238,7 @@ class ResourceTimelineView extends TimelineView
 		else
 			bodyHeight = totalHeight - headHeight - @queryMiscHeight()
 
-		@timelineGrid.bodyScroller.setHeight(bodyHeight)
+		@timeBodyScroller.setHeight(bodyHeight)
 		@spreadsheet.bodyScroller.setHeight(bodyHeight)
 
 		# do children AFTER because of ScrollFollowerSprite abs position issues
@@ -219,66 +247,236 @@ class ResourceTimelineView extends TimelineView
 
 	queryMiscHeight: ->
 		@el.outerHeight() -
-			Math.max(@spreadsheet.headScroller.el.outerHeight(), @timelineGrid.headScroller.el.outerHeight()) -
-			Math.max(@spreadsheet.bodyScroller.el.outerHeight(), @timelineGrid.bodyScroller.el.outerHeight())
+			Math.max(@spreadsheet.headScroller.el.outerHeight(), @timeHeadScroller.el.outerHeight()) -
+			Math.max(@spreadsheet.bodyScroller.el.outerHeight(), @timeBodyScroller.el.outerHeight())
 
 
 	syncHeadHeights: ->
 		@spreadsheet.headHeight('auto')
-		@timelineGrid.headHeight('auto')
+		@headHeight('auto')
 
-		headHeight = Math.max(@spreadsheet.headHeight(), @timelineGrid.headHeight())
+		headHeight = Math.max(@spreadsheet.headHeight(), @headHeight())
 
 		@spreadsheet.headHeight(headHeight)
-		@timelineGrid.headHeight(headHeight)
+		@headHeight(headHeight)
 
 		headHeight
+
+
+	# Scrolling
+	# ------------------------------------------------------------------------------------------------------------------
+	# this is useful for scrolling prev/next dates while resource is scrolled down
+
+
+	queryResourceScroll: ->
+		scroll = {}
+
+		scrollerTop = @timeBodyScroller.scrollEl.offset().top # TODO: use getClientRect
+
+		for rowObj in @getVisibleRows()
+			if rowObj.resource
+				el = rowObj.getTr('event')
+				elBottom = el.offset().top + el.outerHeight()
+
+				if elBottom > scrollerTop
+					scroll.resourceId = rowObj.resource.id
+					scroll.bottom = elBottom - scrollerTop
+					break
+
+		# TODO: what about left scroll state for spreadsheet area?
+		scroll
+
+
+	applyResourceScroll: (scroll) ->
+		if scroll.resourceId
+			row = @getResourceRow(scroll.resourceId)
+			if row
+				el = row.getTr('event')
+				if el
+					innerTop = @timeBodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
+					elBottom = el.offset().top + el.outerHeight()
+					scrollTop = elBottom - scroll.bottom - innerTop
+					@timeBodyScroller.setScrollTop(scrollTop)
+					@spreadsheet.bodyScroller.setScrollTop(scrollTop)
+
+
+	scrollToResource: (resource) ->
+		row = @getResourceRow(resource.id)
+		if row
+			el = row.getTr('event')
+			if el
+				innerTop = @timeBodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
+				scrollTop = el.offset().top - innerTop
+				@timeBodyScroller.setScrollTop(scrollTop)
+				@spreadsheet.bodyScroller.setScrollTop(scrollTop)
+
+
+	# Hit System
+	# ------------------------------------------------------------------------------------------------------------------
+
+
+	prepareHits: ->
+		super
+
+		@eventRows = @getEventRows()
+		@shownEventRows = (row for row in @eventRows when row.isShown)
+
+		trArray =
+			for row in @shownEventRows
+				row.getTr('event')[0]
+
+		@rowCoordCache = new CoordCache
+			els: trArray
+			isVertical: true
+		@rowCoordCache.build()
+
+
+	releaseHits: ->
+		super
+		@eventRows = null
+		@shownEventRows = null
+		@rowCoordCache.clear()
+
+
+	queryHit: (leftOffset, topOffset) ->
+		simpleHit = super
+		if simpleHit
+			rowIndex = @rowCoordCache.getVerticalIndex(topOffset)
+			if rowIndex?
+				{
+					resourceId: @shownEventRows[rowIndex].resource.id
+					snap: simpleHit.snap
+					component: this # need this unfortunately :(
+					left: simpleHit.left
+					right: simpleHit.right
+					top: @rowCoordCache.getTopOffset(rowIndex)
+					bottom: @rowCoordCache.getBottomOffset(rowIndex)
+				}
+
+
+	getHitFootprint: (hit) ->
+		componentFootprint = super
+		new ResourceComponentFootprint(
+			componentFootprint.unzonedRange
+			componentFootprint.isAllDay
+			hit.resourceId
+		)
+
+
+	getHitEl: (hit) ->
+		@getSnapEl(hit.snap)
 
 
 	# Resource Data
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	addResource: (resource) ->
-		@startBatchRender() # don't want date rendering to happen befor rowObj is created via insertResource
-		super # register as DateComponent child, fill render queue for date rendering
-		@insertResource(resource)
-		@stopBatchRender()
+	processResourceChangeset: (changeset) ->
+		console.log('changeset', changeset)
+		changeset.additionsRepo.iterSubtrees (resource) ->
+			console.log('add', resource)
 
 
-	renderResourceAdd: (resource) ->
-		rowObj = @getResourceRow(resource.id) # TODO: wish could receive addResource's rowObj
-
-		if rowObj
-			rowObj.renderSkeleton() # recursive
-
-
-	renderResourceRemove: (resource) -> # does the job of handleResourceRemove too
-		rowObj = @getResourceRow(resource.id)
-
-		if rowObj
-			@timelineGrid.removeChild(rowObj) # remove from DateComponent parent-child relationship
-			delete @resourceRowHash[resource.id]
-			rowObj.removeFromParentAndDom() # remove from rowHierarchy and DOM
+	# addResource: (resource) ->
+	# 	@startBatchRender() # don't want date rendering to happen befor rowObj is created via insertResource
+	# 	super # register as DateComponent child, fill render queue for date rendering
+	# 	@insertResource(resource)
+	# 	@stopBatchRender()
 
 
-	# High-Level Resource Rendering
+	# renderResourceAdd: (resource) ->
+	# 	rowObj = @getResourceRow(resource.id) # TODO: wish could receive addResource's rowObj
+
+	# 	if rowObj
+	# 		rowObj.renderSkeleton() # recursive
+
+
+	# renderResourceRemove: (resource) -> # does the job of handleResourceRemove too
+	# 	rowObj = @getResourceRow(resource.id)
+
+	# 	if rowObj
+	# 		@timelineGrid.removeChild(rowObj) # remove from DateComponent parent-child relationship
+	# 		delete @resourceRowHash[resource.id]
+	# 		rowObj.removeFromParentAndDom() # remove from rowHierarchy and DOM
+
+
+	# Child Components
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	renderResources: (resources) ->
-		for resource in resources
-			@insertResource(resource)
-
-		@rowHierarchy.renderSkeleton() # recursive
+	setBusinessHourGeneratorInChild: (businessHourGenerator, child) ->
+		return # happens in addChild
 
 
-	unrenderResources: ->
-		@rowHierarchy.removeElement() # recursive
-		@rowHierarchy.removeChildren() # recursive
+	unsetBusinessHourGeneratorInChild: (child) ->
+		return # happens in removeChild
 
-		@timelineGrid.removeChildren() # for the DateComponent system
-		@resourceRowHash = {}
+
+	setEventDataSourceInChildren: ->
+		return # ResourceRow is responsible
+
+
+	unsetEventDataSourceInChildren: ->
+		return # ResourceRow is responsible
+
+
+	setResourceDataSourceInChild: ->
+		return
+
+
+	unsetResourceDataSourceInChild: ->
+		return
+
+
+	###
+	Assumes ResourceTimelineView's own businessHourGenerator is set first
+	TODO: better system?
+	###
+	addChild: (rowObj) ->
+		if rowObj.resource.businessHourGenerator # custom generator?
+			rowObj.set('businessHourGenerator', rowObj.resource.businessHourGenerator)
+
+			if (++@customBizGenCnt) == 1 # first row with a custom generator?
+
+				# store existing general business hour generator
+				if @has('businessHourGenerator')
+					@fallbackBizGenForRows = @get('businessHourGenerator')
+					@unset('businessHourGenerator')
+
+					# apply to previously added rows without their own generator
+					for otherRowObj in @getEventRows() # does not include rowObj
+						if not otherRowObj.has('businessHourGenerator')
+							otherRowObj.set('businessHourGenerator', @fallbackBizGenForRows)
+		else
+			if @fallbackBizGenForRows
+				rowObj.set('businessHourGenerator', @fallbackBizGenForRows)
+
+		super # add rowObj
+
+
+	###
+	Assumes ResourceTimelineView's own businessHourGenerator is set first
+	TODO: better system?
+	###
+	removeChild: (rowObj) ->
+		super # remove rowObj
+
+		if rowObj.resource.businessHourGenerator # had custom generator?
+
+			if (--@customBizGenCnt) == 0 # no more custom generators?
+
+				# reinstall previous general business hour generator
+				if @fallbackBizGenForRows
+
+					for otherRowObj in @getEventRows() # does not include rowObj
+						if not otherRowObj.resource.businessHourGenerator # doesn't have custom def
+							otherRowObj.unset('businessHourGenerator')
+
+					@set('businessHourGenerator', @fallbackBizGenForRows)
+					@fallbackBizGenForRows = null
+
+		# remove the row's generator, regardless of how it was received
+		rowObj.unset('businessHourGenerator')
 
 
 	# Row Hierarchy Building
@@ -286,22 +484,38 @@ class ResourceTimelineView extends TimelineView
 	# TODO: really bad names for addChild/removeChild (DateComponent!)
 
 
+	# renderResources: (resources) ->
+	# 	for resource in resources
+	# 		@insertResource(resource)
+
+	# 	@rowHierarchy.renderSkeleton() # recursive
+
+
+	# unrenderResources: ->
+	# 	@rowHierarchy.removeElement() # recursive
+	# 	@rowHierarchy.removeChildren() # recursive
+
+	# 	@timelineGrid.removeChildren() # for the DateComponent system
+	# 	@resourceRowHash = {}
+
+
 	# creates a row for the given resource and inserts it into the hierarchy.
 	# if `parentResourceRow` is given, inserts it as a direct child
-	insertResource: (resource, parentResourceRow) ->
+	insertResource: (resource, parentResourceRow) -> # ?
 		row = new ResourceRow(this, resource)
 
-		if not parentResourceRow?
-			parentId = resource.parentId
-			if parentId
-				parentResourceRow = @getResourceRow(parentId)
+		if not parentResourceRow
+			if resource.parent
+				parentResourceRow = @getResourceRow(resource.parent.parentId)
+			else if resource.parentId
+				parentResourceRow = @getResourceRow(resource.parentId)
 
 		if parentResourceRow
 			@insertRowAsChild(row, parentResourceRow)
 		else
 			@insertRow(row)
 
-		@timelineGrid.addChild(row)
+		@addChild(row) # for DateComponent!
 		@resourceRowHash[resource.id] = row
 
 		for childResource in resource.children
@@ -441,7 +655,7 @@ class ResourceTimelineView extends TimelineView
 
 		if not safe
 			h1 = @spreadsheet.tbodyEl.height()
-			h2 = @timelineGrid.tbodyEl.height()
+			h2 = @timeBodyTbodyEl.height()
 			if Math.abs(h1 - h2) > 1
 				@syncRowHeights(visibleRows, true)
 
@@ -462,49 +676,82 @@ class ResourceTimelineView extends TimelineView
 		@resourceRowHash[resourceId]
 
 
-	# Scrolling
-	# ---------------------------------------------------------------------------------
-	# this is useful for scrolling prev/next dates while resource is scrolled down
+	# Selection
+	# ------------------------------------------------------------------------------------------------------------------
 
 
-	queryResourceScroll: ->
-		scroll = {}
-
-		scrollerTop = @timelineGrid.bodyScroller.scrollEl.offset().top # TODO: use getClientRect
-
-		for rowObj in @getVisibleRows()
-			if rowObj.resource
-				el = rowObj.getTr('event')
-				elBottom = el.offset().top + el.outerHeight()
-
-				if elBottom > scrollerTop
-					scroll.resourceId = rowObj.resource.id
-					scroll.bottom = elBottom - scrollerTop
-					break
-
-		# TODO: what about left scroll state for spreadsheet area?
-		scroll
+	renderSelectionFootprint: (componentFootprint) ->
+		if componentFootprint.resourceId
+			rowObj = @getResourceRow(componentFootprint.resourceId)
+			if rowObj
+				rowObj.renderSelectionFootprint(componentFootprint)
+		else
+			super
 
 
-	applyResourceScroll: (scroll) ->
-		if scroll.resourceId
-			row = @getResourceRow(scroll.resourceId)
-			if row
-				el = row.getTr('event')
-				if el
-					innerTop = @timelineGrid.bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
-					elBottom = el.offset().top + el.outerHeight()
-					scrollTop = elBottom - scroll.bottom - innerTop
-					@timelineGrid.bodyScroller.setScrollTop(scrollTop)
-					@spreadsheet.bodyScroller.setScrollTop(scrollTop)
+	# Event Resizing (route to rows)
+	# ------------------------------------------------------------------------------------------------------------------
 
 
-	scrollToResource: (resource) ->
-		row = @getResourceRow(resource.id)
-		if row
-			el = row.getTr('event')
-			if el
-				innerTop = @timelineGrid.bodyScroller.canvas.el.offset().top # TODO: use -scrollHeight or something
-				scrollTop = el.offset().top - innerTop
-				@timelineGrid.bodyScroller.setScrollTop(scrollTop)
-				@spreadsheet.bodyScroller.setScrollTop(scrollTop)
+	renderEventResize: (eventFootprints, seg, isTouch) ->
+		map = groupEventFootprintsByResourceId(eventFootprints)
+
+		for resourceId, resourceEventFootprints of map
+			rowObj = @getResourceRow(resourceId)
+
+			# render helpers
+			rowObj.helperRenderer.renderEventDraggingFootprints(resourceEventFootprints, seg, isTouch)
+
+			# render highlight
+			for eventFootprint in resourceEventFootprints
+				rowObj.renderHighlight(eventFootprint.componentFootprint)
+
+
+	unrenderEventResize: ->
+		for rowObj in @getEventRows()
+			rowObj.helperRenderer.unrender()
+			rowObj.unrenderHighlight()
+
+
+	# DnD (route to rows)
+	# ------------------------------------------------------------------------------------------------------------------
+
+
+	renderDrag: (eventFootprints, seg, isTouch) ->
+		map = groupEventFootprintsByResourceId(eventFootprints)
+
+		if seg
+			# draw helper
+			for resourceId, resourceEventFootprints of map
+				rowObj = @getResourceRow(resourceId)
+				rowObj.helperRenderer.renderEventDraggingFootprints(resourceEventFootprints, seg, isTouch)
+
+			true # signal helper rendered
+		else
+			# draw highlight
+			for resourceId, resourceEventFootprints of map
+				for eventFootprint in resourceEventFootprints
+					rowObj = @getResourceRow(resourceId)
+					rowObj.renderHighlight(eventFootprint.componentFootprint)
+
+			false # signal helper not rendered
+
+
+	unrenderDrag: ->
+		for rowObj in @getEventRows()
+			rowObj.helperRenderer.unrender()
+			rowObj.unrenderHighlight()
+
+
+# Utils
+# ------------------------------------------------------------------------------------------------------------------
+
+
+groupEventFootprintsByResourceId = (eventFootprints) ->
+	map = {}
+
+	for eventFootprint in eventFootprints
+		(map[eventFootprint.componentFootprint.resourceId] or= [])
+			.push(eventFootprint)
+
+	map

@@ -209,20 +209,7 @@ class TimelineView extends View
 		if @opt('eventOverlap') == false
 			@el.addClass('fc-no-overlap')
 
-		@el.html(
-			'<table>
-				<thead class="fc-head">
-					<tr>
-						<td class="fc-time-area ' + @widgetHeaderClass + '"></td>
-					</tr>
-				</thead>
-				<tbody class="fc-body">
-					<tr>
-						<td class="fc-time-area ' + @widgetContentClass + '"></td>
-					</tr>
-				</tbody>
-			</table>'
-		)
+		@el.html(@renderSkeletonHtml())
 
 		@timeHeadEl = @el.find('thead .fc-time-area')
 		@timeBodyEl = @el.find('tbody .fc-time-area')
@@ -266,6 +253,21 @@ class TimelineView extends View
 				@eventTitleFollower.containOnNaturalLeft = true
 
 		super
+
+
+	renderSkeletonHtml: ->
+		'<table>
+			<thead class="fc-head">
+				<tr>
+					<td class="fc-time-area ' + @widgetHeaderClass + '"></td>
+				</tr>
+			</thead>
+			<tbody class="fc-body">
+				<tr>
+					<td class="fc-time-area ' + @widgetContentClass + '"></td>
+				</tr>
+			</tbody>
+		</table>'
 
 
 	unrenderSkeleton: ->
