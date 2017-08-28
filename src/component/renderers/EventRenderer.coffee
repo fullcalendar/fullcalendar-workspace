@@ -8,9 +8,10 @@ EventRenderer::designatedResourceObj = null
 EventRenderer::beforeFgSegHtml = (seg) -> # hack
 	if seg.footprint.componentFootprint.resourceId
 		resourceManager = @view.calendar.resourceManager
-		resource = resourceManager.getResourceById(seg.footprint.componentFootprint.resourceId)
+		resource = resourceManager.repo.getById(seg.footprint.componentFootprint.resourceId)
 		if resource
 			@designatedResourceObj = resource
+	return
 
 
 EventRenderer::getFallbackStylingObjs = (eventDef) ->
@@ -29,7 +30,7 @@ EventRenderer::getEventDefResourceObjs = (eventDef) ->
 	resources = []
 
 	for resourceId in eventDef.getResourceIds()
-		resource = resourceManager.getResourceById(resourceId)
+		resource = resourceManager.repo.getById(resourceId)
 		if resource
 			resources.push(resource)
 

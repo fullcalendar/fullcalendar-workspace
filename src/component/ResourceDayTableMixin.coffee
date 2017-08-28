@@ -15,37 +15,12 @@ ResourceDayTableMixin =
 	# Resource Data
 	# ----------------------------------------------------------------------------------------------
 
-
-	# doesn't render anything
-	setResources: (resources) ->
-		@flattenedResources = @flattenResources(resources)
-		@resourceCnt = @flattenedResources.length
-		@updateDayTableCols() # will call computeColCnt
-		@set('currentResources', resources)
-		@set('hasResources', true)
-
-
-	# doesn't render anything
-	unsetResources: ->
-		@flattenedResources = null
-		@resourceCnt = 0
-		@updateDayTableCols() # will call computeColCnt
-		@unset('hasResources')
-		@unset('currentResources')
-
-
-	addResource: (resource, allResources) ->
-		@flattenedResources = @flattenResources(allResources)
-		@resourceCnt = @flattenedResources.length
-		@updateDayTableCols() # will call computeColCnt
-		@set('currentResources', allResources)
-
-
-	removeResource: (resource, allResources) ->
-		@flattenedResources = @flattenResources(allResources)
-		@resourceCnt = @flattenedResources.length
-		@updateDayTableCols() # will call computeColCnt
-		@set('currentResources', allResources)
+	###
+	TODO: react to resource changesets
+	@flattenedResources = @flattenResources(allResources)
+	@resourceCnt = @flattenedResources.length
+	@updateDayTableCols() # will call computeColCnt
+	###
 
 
 	# flattens and sorts
@@ -60,6 +35,7 @@ ResourceDayTableMixin =
 		res = []
 		@accumulateResources(resources, sortFunc, res)
 		res
+
 
 	# just flattens
 	accumulateResources: (resources, sortFunc, res) ->

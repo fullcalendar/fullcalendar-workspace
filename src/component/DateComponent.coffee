@@ -2,7 +2,6 @@
 # references to pre-monkeypatched methods
 DateComponent_constructed = DateComponent::constructed
 DateComponent_addChild = DateComponent::addChild
-DateComponent_removeChild = DateComponent::removeChild
 DateComponent_eventRangeToEventFootprints = DateComponent::eventRangeToEventFootprints
 
 
@@ -10,93 +9,62 @@ DateComponent_eventRangeToEventFootprints = DateComponent::eventRangeToEventFoot
 DateComponent::isResourceFootprintsEnabled = false
 
 
-# new members
-DateComponent::isResourcesRendered = false
 
-
-# Resource Data Handling
+# Resource Data In Children
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-DateComponent::setResources = (resources) ->
-	@setResourcesInChildren(resources)
-	@set('currentResources', resources)
-	@set('hasResources', true)
+DateComponent::addChild = (child) ->
+	if DateComponent_addChild.call(this, child) # success?
+		if @has('resourceDataSource')
+			@setResourceDataSourceInChild(@get('resourceDataSource'), child)
 
 
-DateComponent::setResourcesInChildren = (resources) ->
-	@callChildren('setResources', arguments)
+DateComponent::setResourceDataSourceInChildren = (resourceDataSource) ->
+	@iterChildren(@setResourceDataSourceInChild.bind(this, resourceDataSource))
 
 
-DateComponent::unsetResources = ->
-	@unsetResourcesInChildren()
-	@unset('hasResources')
-	@unset('currentResources')
+DateComponent::setResourceDataSourceInChild = (resourceDataSource, child) ->
+	child.set('resourceDataSource', resourceDataSource)
 
 
-DateComponent::unsetResourcesInChildren = ->
-	@callChildren('unsetResources', arguments)
+DateComponent::unsetResourceDataSourceInChildren = ->
+	@iterChildren(@unsetResourceDataSourceInChild.bind(this))
 
 
-DateComponent::resetResources = (resources) ->
-	@startBatchRender()
-	@unsetResources()
-	@setResources(resources)
-	@stopBatchRender()
+DateComponent::unsetResourceDataSourceInChild = (child) ->
+	child.unset('resourceDataSource')
 
 
-DateComponent::addResource = (resource, allResources) ->
-	@callChildren('addResource', arguments)
-	@set('currentResources', allResources)
-
-	if @has('displayingResources')
-		@requestRender(@renderResourceAdd, [ resource ], 'resource', 'add')
+DateComponent.watch 'resourceDataSourceInChildren', [ 'resourceDataSource' ], (deps) ->
+	@setResourceDataSourceInChildren(deps.resourceDataSource)
+, ->
+	@unsetResourceDataSourceInChildren()
 
 
-DateComponent::removeResource = (resource, allResources) ->
-	@callChildren('removeResource', arguments)
-	@set('currentResources', allResources)
-
-	if @has('displayingResources')
-		@requestRender(@renderResourceRemove, [ resource ], 'resource', 'remove')
+DateComponent.watch 'displayingResources', [ 'resourceDataSource' ], (deps) ->
+	@startDisplayingResources(deps.resourceDataSource)
+, (deps) ->
+	@stopDisplayingResources(deps.resourceDataSource)
 
 
-# Resource High-level Rendering
-# ----------------------------------------------------------------------------------------------------------------------
+DateComponent::startDisplayingResources = (resourceDataSource) ->
+	if resourceDataSource.repo.length
+		@processResourceChangeset(new ResourceChangeset(null, resourceDataSource.repo))
+
+	@listenTo resourceDataSource, 'receive', (changeset) =>
+		@processResourceChangeset(changeset)
 
 
-DateComponent::executeResourcesRender = (resources) ->
-	@renderResources(resources)
-	@isResourcesRendered = true
+DateComponent::processResourceChangeset = (changeset) ->
+	console.log('processResourceChangeset', changeset)
+	# TODO: isResourcesRendered is needed for scroll
 
 
-DateComponent::executeResourcesUnrender = ->
-	@unrenderResources()
-	@isResourcesRendered = true
-
-
-# Resource Rendering Implementation
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-DateComponent::renderResources = (resources) ->
-	# subclasses can implement
-
-
-DateComponent::unrenderResources = ->
-	# subclasses can implement
-
-
-DateComponent::renderResourceAdd = ->
-	# rerenders all by default
-	@unrenderResources()
-	@renderResources(@get('currentResources'))
-
-
-DateComponent::renderResourceRemove = ->
-	# rerenders all by default
-	@unrenderResources()
-	@renderResources(@get('currentResources'))
+DateComponent::stopDisplayingResources = (resourceDataSource) ->
+	@stopListeningTo(resourceDataSource)
+	console.log('stopDisplayingResources', resourceDataSource)
+	# TODO: isResourcesRendered is needed for scroll
 
 
 # eventRange -> eventFootprint

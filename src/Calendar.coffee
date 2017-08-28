@@ -27,47 +27,38 @@ Calendar::instantiateView = (viewType) ->
 	new viewClass(this, spec)
 
 
-Calendar::requestEvents = (start, end) ->
-	oldEventPeriod = @eventManager.currentPeriod
-	newEventPeriod = Calendar_requestEvents.apply(this, arguments)
-
-	if oldEventPeriod
-		@resourceManager.eventDataSplitter.removeSource(oldEventPeriod)
-	@resourceManager.eventDataSplitter.addSource(newEventPeriod)
-
-	newEventPeriod
-
-
 # for the API only
 # retrieves what is currently in memory. no fetching
 Calendar::getResources = ->
-	Array.prototype.slice.call( # make a copy
-		@resourceManager.topLevelResources
-	)
+	@resourceManager.repo.getTopLevel()
 
 
 Calendar::addResource = (resourceInput, scroll=false) -> # assumes all resources already loaded
-	promise = @resourceManager.addResource(resourceInput)
+	resource = @resourceManager.addResource(resourceInput)
 
 	if scroll and @view.scrollToResource
-		promise.then (resource) =>
-			@view.scrollToResource(resource)
+		@view.scrollToResource(resource)
 
 	return
 
 
 Calendar::removeResource = (idOrResource) -> # assumes all resources already loaded
-	@resourceManager.removeResource(idOrResource)
+	if typeof idOrResource == 'object'
+		resource = idOrResource
+	else
+		resource = @resourceManager.repo.getById(idOrResource)
+
+	@resourceManager.removeResource(resource)
+	return
 
 
 Calendar::refetchResources = -> # for API
-	@resourceManager.clear()
-	@view.flash('initialResources')
+	@resourceManager.refetch()
 	return
 
 
 Calendar::rerenderResources = -> # for API
-	@resourceManager.resetCurrentResources()
+	@resourceManager.tryReset()
 	return
 
 
@@ -85,7 +76,7 @@ Calendar::buildSelectFootprint = (zonedStartInput, zonedEndInput, resourceId) ->
 
 
 Calendar::getResourceById = (id) ->
-	@resourceManager.getResourceById(id)
+	@resourceManager.repo.getById(id)
 
 
 # Resources + Events

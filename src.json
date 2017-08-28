@@ -3,6 +3,11 @@
     "intro.js",
     "imports.js",
 
+    "models/ResourceRepo.js",
+    "models/ResourceChangeset.js",
+    "models/ResourceDataSource.js",
+    "models/ResourceManager.js",
+
     "util/util.coffee",
     "util/EnhancedScroller.coffee",
     "util/ClippedScroller.coffee",
@@ -15,7 +20,6 @@
     "models/EventSource.coffee",
     "models/ResourceEventDefMutation.coffee",
     "models/Resource.coffee",
-    "models/ResourceManager.coffee",
     "models/ResourceComponentFootprint.coffee",
 
     "component/renderers/EventRenderer.coffee",
