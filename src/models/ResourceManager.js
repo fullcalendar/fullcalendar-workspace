@@ -3,6 +3,7 @@ var ResourceManager = ResourceDataSource.extend({
 
 	calendar: null, // for loading state and options
 	eventDataSplitter: null,
+	pendingCnt: 0,
 
 	currentStart: null,
 	currentEnd: null,
@@ -12,6 +13,14 @@ var ResourceManager = ResourceDataSource.extend({
 		ResourceDataSource.call(this);
 
 		this.calendar = calendar;
+
+		// yuck. same as EventManager
+		this.on('before:receive', function() {
+			calendar.startBatchRender();
+		});
+		this.on('after:receive', function() {
+			calendar.stopBatchRender();
+		});
 
 		this.eventDataSplitter = new EventInstanceDataSourceSplitter(function(eventInstance) {
 			return eventInstance.def.getResourceIds();
@@ -74,6 +83,8 @@ var ResourceManager = ResourceDataSource.extend({
 			source = { url: source };
 		}
 
+		this.pendingCnt++;
+
 		function receive(resourceInputs) {
 			var changeset = new ResourceChangeset();
 			var i;
@@ -83,6 +94,8 @@ var ResourceManager = ResourceDataSource.extend({
 			}
 
 			_this.addChangeset(changeset);
+			_this.pendingCnt--;
+			_this.trySendOutbound();
 		}
 
 		switch ($.type(source)) {
@@ -211,6 +224,12 @@ var ResourceManager = ResourceDataSource.extend({
 		resource.eventClassName = processedClassName;
 
 		return resource;
+	},
+
+
+	canTrigger: function() {
+		return ResourceDataSource.prototype.canTrigger.apply(this, arguments) &&
+			!this.pendingCnt;
 	}
 
 });
