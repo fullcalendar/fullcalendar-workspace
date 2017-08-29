@@ -20,7 +20,7 @@ ResourceDayTableMixin =
 	registerResourceRepo: (repo) ->
 		@flattenedResources = @flattenResources(repo.getTopLevel())
 		@resourceCnt = @flattenedResources.length
-		@updateDayTableCols() # will call computeColCnt
+		@updateDayTable() # will call computeColCnt
 
 
 	# flattens and sorts

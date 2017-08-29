@@ -46,7 +46,7 @@ Calendar::removeResource = (idOrResource) -> # assumes all resources already loa
 	if typeof idOrResource == 'object'
 		resource = idOrResource
 	else
-		resource = @resourceManager.repo.getById(idOrResource)
+		resource = @resourceManager.repo.getById(idOrResource)[0]
 
 	@resourceManager.removeResource(resource)
 	return
@@ -76,7 +76,7 @@ Calendar::buildSelectFootprint = (zonedStartInput, zonedEndInput, resourceId) ->
 
 
 Calendar::getResourceById = (id) ->
-	@resourceManager.repo.getById(id)
+	@resourceManager.repo.getById(id)[0]
 
 
 # Resources + Events

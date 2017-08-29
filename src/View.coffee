@@ -145,7 +145,7 @@ View::triggerDayClick = (footprint, dayEl, ev) ->
 			ev
 			this
 			if footprint.resourceId
-				@calendar.resourceManager.repo.getById(footprint.resourceId)
+				@calendar.resourceManager.repo.getById(footprint.resourceId)[0]
 			else
 				null
 		]
@@ -166,7 +166,7 @@ View::triggerSelect = (footprint, ev) ->
 			ev
 			this
 			if footprint.resourceId
-				@calendar.resourceManager.repo.getById(footprint.resourceId)
+				@calendar.resourceManager.repo.getById(footprint.resourceId)[0]
 			else
 				null
 		]

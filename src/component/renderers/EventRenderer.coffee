@@ -14,7 +14,7 @@ EventRenderer::beforeFgSegHtml = (seg) -> # hack
 	if @designatedResource
 		@currentResource = @designatedResource
 	else if segResourceId
-		@currentResource = @resourceRepo.getById(segResourceId)
+		@currentResource = @resourceRepo.getById(segResourceId)[0]
 	else
 		@currentResource = null
 

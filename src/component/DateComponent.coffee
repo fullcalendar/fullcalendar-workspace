@@ -99,10 +99,10 @@ DateComponent::requestRenderResourceChangeset = (changeset, repo) ->
 				@renderResourceAdd(resource)
 			changeset.removalsRepo.iterSubtrees (resource) =>
 				@renderResourceRemove(resource)
-	else if @renderResourceRepo
+	else if @renderResources
 		@requestRender =>
 			@isResourcesRendered = true
-			@renderResourceRepo(repo)
+			@renderResources(repo)
 		, null, 'resources', 'destroy' # to allow future destroys
 
 
@@ -115,7 +115,7 @@ DateComponent::requestRenderResourceClear = ->
 
 DateComponent::renderResourceAdd = null
 DateComponent::renderResourceRemove = null
-DateComponent::renderResourceRepo = null
+DateComponent::renderResources = null
 DateComponent::renderResourceClear = ->
 	return
 
