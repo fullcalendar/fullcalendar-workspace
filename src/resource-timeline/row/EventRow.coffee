@@ -1,6 +1,8 @@
 
 class EventRow extends RowParent
 
+	eventRenderingNeedsResourceRepo: false
+
 	fillRendererClass: TimelineFillRenderer
 	eventRendererClass: TimelineEventRenderer
 	helperRendererClass: TimelineHelperRenderer
@@ -27,8 +29,8 @@ class EventRow extends RowParent
 
 
 	rangeToCoords: (range) ->
-		@view.timelineGrid.rangeToCoords(range)
+		@view.rangeToCoords(range)
 
 
 	componentFootprintToSegs: (componentFootprint) ->
-		@view.timelineGrid.componentFootprintToSegs(componentFootprint)
+		@view.componentFootprintToSegs(componentFootprint)

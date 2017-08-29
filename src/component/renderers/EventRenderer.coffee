@@ -1,37 +1,36 @@
 
+# references to pre-monkeypatched methods
 EventRenderer_getFallbackStylingObjs = EventRenderer::getFallbackStylingObjs
 
 
-EventRenderer::designatedResourceObj = null
+EventRenderer::resourceRepo = null # set by caller. mandatory if no designatedResource
+EventRenderer::designatedResource = null # optionally set by caller. forces @currentResource
+EventRenderer::currentResource = null # when set, will affect future rendered segs
 
 
 EventRenderer::beforeFgSegHtml = (seg) -> # hack
-	if seg.footprint.componentFootprint.resourceId
-		resourceManager = @view.calendar.resourceManager
-		resource = resourceManager.repo.getById(seg.footprint.componentFootprint.resourceId)
-		if resource
-			@designatedResourceObj = resource
-	return
+	segResourceId = seg.footprint.componentFootprint.resourceId
+
+	if @designatedResource
+		@currentResource = @designatedResource
+	else if segResourceId
+		@currentResource = @resourceRepo.getById(segResourceId)
+	else
+		@currentResource = null
 
 
 EventRenderer::getFallbackStylingObjs = (eventDef) ->
 	objs = EventRenderer_getFallbackStylingObjs.apply(this, arguments)
 
-	if @designatedResourceObj
-		objs.unshift(@designatedResourceObj)
-	else
-		objs = @getEventDefResourceObjs(eventDef).concat(objs)
+	if @currentResource
+		objs.unshift(@currentResource)
+
+	else if @resourceRepo
+		resources = []
+
+		for resourceId in eventDef.getResourceIds()
+			resources.push(@resourceRepo.getById(resourceId)...)
+
+		objs = resources.concat(objs)
 
 	objs
-
-
-EventRenderer::getEventDefResourceObjs = (eventDef) ->
-	resourceManager = @view.calendar.resourceManager
-	resources = []
-
-	for resourceId in eventDef.getResourceIds()
-		resource = resourceManager.repo.getById(resourceId)
-		if resource
-			resources.push(resource)
-
-	resources

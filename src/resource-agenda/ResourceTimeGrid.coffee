@@ -7,8 +7,14 @@ class ResourceTimeGrid extends FC.TimeGrid
 	isResourceFootprintsEnabled: true
 
 
-	renderColumns: (dateProfile) ->
-		super
+	renderDates: (dateProfile) ->
+		@dateProfile = dateProfile
+		@renderSlats()
+
+
+	renderResources: (resourceRepo) ->
+		@registerResourceRepo(resourceRepo)
+		@renderColumns()
 
 		if @headContainerEl
 			@processHeadResourceEls(@headContainerEl)
@@ -43,18 +49,3 @@ class ResourceTimeGrid extends FC.TimeGrid
 					resourceSegs.push(copy)
 
 		resourceSegs
-
-
-# Wire up tasks
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-ResourceTimeGrid.watch 'displayingColumns', [ 'dateProfile', 'currentResources' ], (deps) ->
-	@requestRender(@renderColumns, [ deps.dateProfile ], 'columns', 'destroy')
-
-
-# event rendering depends on resources for color/className data
-FC.TimeGrid.watch 'displayingEvents', [ 'displayingDates', 'eventDataSource', 'currentResources' ], (deps) ->
-	@startDisplayingEvents(deps.eventDataSource)
-, (deps) ->
-	@stopDisplayingEvents(deps.eventDataSource)

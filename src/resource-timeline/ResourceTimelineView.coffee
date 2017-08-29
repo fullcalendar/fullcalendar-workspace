@@ -3,6 +3,7 @@ class ResourceTimelineView extends TimelineView
 
 	# configuration for DateComponent monkeypatch
 	isResourceFootprintsEnabled: true
+	eventRenderingNeedsResourceRepo: false
 
 	# renders non-resource bg events only
 	eventRendererClass: ResourceTimelineEventRenderer
@@ -371,33 +372,24 @@ class ResourceTimelineView extends TimelineView
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	processResourceChangeset: (changeset) ->
-		console.log('changeset', changeset)
-		changeset.additionsRepo.iterSubtrees (resource) ->
-			console.log('add', resource)
+	renderResourceAdd: (resource) ->
+		row = @insertResource(resource)
+		row.renderSkeleton()
 
 
-	# addResource: (resource) ->
-	# 	@startBatchRender() # don't want date rendering to happen befor rowObj is created via insertResource
-	# 	super # register as DateComponent child, fill render queue for date rendering
-	# 	@insertResource(resource)
-	# 	@stopBatchRender()
+	renderResourceRemove: (resource) ->
+		row = @removeResource(resource)
+		row.removeFromParentAndDom()
 
 
-	# renderResourceAdd: (resource) ->
-	# 	rowObj = @getResourceRow(resource.id) # TODO: wish could receive addResource's rowObj
+	renderResourceClear: ->
+		@rowHierarchy.removeElement()
+		@rowHierarchy.removeChildren()
 
-	# 	if rowObj
-	# 		rowObj.renderSkeleton() # recursive
+		for id, row in @resourceRowHash
+			@removeChild(row) # for DateComponent!
 
-
-	# renderResourceRemove: (resource) -> # does the job of handleResourceRemove too
-	# 	rowObj = @getResourceRow(resource.id)
-
-	# 	if rowObj
-	# 		@timelineGrid.removeChild(rowObj) # remove from DateComponent parent-child relationship
-	# 		delete @resourceRowHash[resource.id]
-	# 		rowObj.removeFromParentAndDom() # remove from rowHierarchy and DOM
+		@resourceRowHash = {}
 
 
 	# Child Components
@@ -479,29 +471,10 @@ class ResourceTimelineView extends TimelineView
 		rowObj.unset('businessHourGenerator')
 
 
-	# Row Hierarchy Building
-	# ------------------------------------------------------------------------------------------------------------------
-	# TODO: really bad names for addChild/removeChild (DateComponent!)
-
-
-	# renderResources: (resources) ->
-	# 	for resource in resources
-	# 		@insertResource(resource)
-
-	# 	@rowHierarchy.renderSkeleton() # recursive
-
-
-	# unrenderResources: ->
-	# 	@rowHierarchy.removeElement() # recursive
-	# 	@rowHierarchy.removeChildren() # recursive
-
-	# 	@timelineGrid.removeChildren() # for the DateComponent system
-	# 	@resourceRowHash = {}
-
-
 	# creates a row for the given resource and inserts it into the hierarchy.
 	# if `parentResourceRow` is given, inserts it as a direct child
-	insertResource: (resource, parentResourceRow) -> # ?
+	# does not render
+	insertResource: (resource, parentResourceRow) ->
 		row = new ResourceRow(this, resource)
 
 		if not parentResourceRow
@@ -520,6 +493,20 @@ class ResourceTimelineView extends TimelineView
 
 		for childResource in resource.children
 			@insertResource(childResource, row)
+
+		row
+
+
+	# does not unrender
+	removeResource: (resource) ->
+		row = @resourceRowHash[resource.id]
+
+		if row
+			delete @resourceRowHash[resource.id]
+
+			@removeChild(row) # for DateComponent!
+
+			row.removeFromParentAndDom()
 
 		row
 

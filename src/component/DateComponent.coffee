@@ -1,16 +1,39 @@
 
 # references to pre-monkeypatched methods
-DateComponent_constructed = DateComponent::constructed
 DateComponent_addChild = DateComponent::addChild
 DateComponent_eventRangeToEventFootprints = DateComponent::eventRangeToEventFootprints
 
 
 # configuration for subclasses
 DateComponent::isResourceFootprintsEnabled = false
+DateComponent::eventRenderingNeedsResourceRepo = true
 
 
+# new members
+DateComponent::isResourcesRendered = false
 
-# Resource Data In Children
+
+# Resource Data
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+DateComponent.watch 'watchingResourceRepo', [ 'resourceDataSource' ], (deps) ->
+	resourceDataSource = deps.resourceDataSource
+
+	if resourceDataSource.isResolved
+		@set('resourceRepo', resourceDataSource.repo)
+		@set('hasResources', true)
+
+	@listenTo resourceDataSource, 'receive', ->
+		@set('resourceRepo', resourceDataSource.repo)
+		@set('hasResources', true) # won't re-fire if already true
+, (deps) ->
+	@stopListeningTo(deps.resourceDataSource)
+	@set('hasResources', false)
+	@unset('resourceRepo')
+
+
+# Resource Data *In Children*
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -42,7 +65,11 @@ DateComponent.watch 'resourceDataSourceInChildren', [ 'resourceDataSource' ], (d
 	@unsetResourceDataSourceInChildren()
 
 
-DateComponent.watch 'displayingResources', [ 'resourceDataSource' ], (deps) ->
+# Resource Rendering
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+DateComponent.watch 'displayingResources', [ 'isInDom', 'resourceDataSource' ], (deps) ->
 	@startDisplayingResources(deps.resourceDataSource)
 , (deps) ->
 	@stopDisplayingResources(deps.resourceDataSource)
@@ -50,26 +77,70 @@ DateComponent.watch 'displayingResources', [ 'resourceDataSource' ], (deps) ->
 
 DateComponent::startDisplayingResources = (resourceDataSource) ->
 	if resourceDataSource.repo.length
-		@processResourceChangeset(new ResourceChangeset(null, resourceDataSource.repo))
+		@requestRenderResourceChangeset(
+			new ResourceChangeset(null, resourceDataSource.repo),
+			resourceDataSource.repo
+		)
 
 	@listenTo resourceDataSource, 'receive', (changeset) =>
-		@processResourceChangeset(changeset)
-
-
-DateComponent::processResourceChangeset = (changeset) ->
-	console.log('processResourceChangeset', changeset)
-	# TODO: isResourcesRendered is needed for scroll
+		@requestRenderResourceChangeset(changeset, resourceDataSource.repo)
 
 
 DateComponent::stopDisplayingResources = (resourceDataSource) ->
 	@stopListeningTo(resourceDataSource)
-	console.log('stopDisplayingResources', resourceDataSource)
-	# TODO: isResourcesRendered is needed for scroll
+	@requestRenderResourceClear()
+
+
+DateComponent::requestRenderResourceChangeset = (changeset, repo) ->
+	if @renderResourceAdd or @renderResourceRemove
+		@requestRender =>
+			@isResourcesRendered = true
+			changeset.additionsRepo.iterSubtrees (resource) =>
+				@renderResourceAdd(resource)
+			changeset.removalsRepo.iterSubtrees (resource) =>
+				@renderResourceRemove(resource)
+	else if @renderResourceRepo
+		@requestRender =>
+			@isResourcesRendered = true
+			@renderResourceRepo(repo)
+		, null, 'resources', 'destroy' # to allow future destroys
+
+
+DateComponent::requestRenderResourceClear = ->
+	@requestRender =>
+		@isResourcesRendered = false
+		@renderResourceClear()
+	, null, 'resources', 'destroy'
+
+
+DateComponent::renderResourceAdd = null
+DateComponent::renderResourceRemove = null
+DateComponent::renderResourceRepo = null
+DateComponent::renderResourceClear = ->
+	return
+
+
+# Event Rendering
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+DateComponent::defineDisplayingEvents = ->
+	depNames = [ 'displayingDates', 'eventDataSource' ]
+
+	if @eventRenderingNeedsResourceRepo
+		depNames.push('resourceRepo')
+
+	@watch 'displayingEvents', depNames, (deps) ->
+		if @eventRenderer and deps.resourceRepo
+			@eventRenderer.resourceRepo = deps.resourceRepo
+
+		@startDisplayingEvents(deps.eventDataSource)
+	, (deps) ->
+		@stopDisplayingEvents(deps.eventDataSource)
 
 
 # eventRange -> eventFootprint
 # ----------------------------------------------------------------------------------------------------------------------
-# eventually move this to ResourceDayTableMixin?
 
 
 DateComponent::eventRangeToEventFootprints = (eventRange) ->
@@ -94,13 +165,3 @@ DateComponent::eventRangeToEventFootprints = (eventRange) ->
 			DateComponent_eventRangeToEventFootprints.apply(this, arguments)
 		else
 			[]
-
-
-# Wire up tasks
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-DateComponent.watch 'displayingResources', [ 'hasResources' ], ->
-	@requestRender(@executeResourcesRender, [ @get('currentResources') ], 'resource', 'init')
-, ->
-	@requestRender(@executeResourcesUnrender, null, 'resource', 'destroy')

@@ -15,12 +15,12 @@ ResourceDayTableMixin =
 	# Resource Data
 	# ----------------------------------------------------------------------------------------------
 
-	###
-	TODO: react to resource changesets
-	@flattenedResources = @flattenResources(allResources)
-	@resourceCnt = @flattenedResources.length
-	@updateDayTableCols() # will call computeColCnt
-	###
+
+	# does not do any rendering. rendering is responsibility of host object
+	registerResourceRepo: (repo) ->
+		@flattenedResources = @flattenResources(repo.getTopLevel())
+		@resourceCnt = @flattenedResources.length
+		@updateDayTableCols() # will call computeColCnt
 
 
 	# flattens and sorts

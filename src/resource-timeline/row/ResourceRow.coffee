@@ -10,7 +10,7 @@ class ResourceRow extends EventRow
 	constructor: (view, @resource) ->
 		super
 
-		@eventRenderer.designatedResourceObj = @resource
+		@eventRenderer.designatedResource = @resource
 
 		@set('eventDataSource', @resource.eventDataSource)
 

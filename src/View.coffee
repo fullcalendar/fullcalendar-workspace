@@ -211,8 +211,8 @@ View::processLicenseKey = ->
 # Modify "base" tasks
 # ----------------------------------------------------------------------------------------------------------------------
 
-# fire viewRender/viewDestroy any time there is a resource change
-View.watch 'displayingBase', [ 'dateProfile', 'currentResources' ], (deps) ->
+# fire viewRender/viewDestroy any time date+resources are rendere/unrendered
+View.watch 'displayingBase', [ 'dateProfile', 'hasResources' ], (deps) ->
 	@requestRender(@processLicenseKey)
 	@whenSizeUpdated(@triggerBaseRendered)
 , ->

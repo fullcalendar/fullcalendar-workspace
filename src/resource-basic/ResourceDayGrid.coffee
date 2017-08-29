@@ -5,10 +5,16 @@ class ResourceDayGrid extends FC.DayGrid
 
 	# configuration for DateComponent monkeypatch
 	isResourceFootprintsEnabled: true
+	eventRenderingNeedsResourceRepo: true
 
 
-	renderGrid: (dateProfile) ->
-		super
+	renderDates: (dateProfile) ->
+		@dateProfile = dateProfile
+
+
+	renderResources: (resourceRepo) ->
+		@registerResourceRepo(resourceRepo)
+		@renderGrid()
 
 		if @headContainerEl
 			@processHeadResourceEls(@headContainerEl)
@@ -54,20 +60,3 @@ class ResourceDayGrid extends FC.DayGrid
 
 					resourceSegs.push(copy)
 		resourceSegs
-
-
-# Wire up tasks
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-ResourceDayGrid.watch 'displayingGrid', [ 'dateProfile', 'currentResources' ], (deps) ->
-	@requestRender(@renderGrid, [ deps.dateProfile ], 'grid', 'destroy')
-, ->
-	@requestRender(@removeSegPopover)
-
-
-# event rendering depends on resources for color/className data
-FC.DayGrid.watch 'displayingEvents', [ 'displayingDates', 'eventDataSource', 'currentResources' ], (deps) ->
-	@startDisplayingEvents(deps.eventDataSource)
-, (deps) ->
-	@stopDisplayingEvents(deps.eventDataSource)
