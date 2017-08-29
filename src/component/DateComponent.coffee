@@ -1,12 +1,15 @@
 
 # references to pre-monkeypatched methods
+DateComponent_defineLateWatchers = DateComponent::defineLateWatchers
 DateComponent_addChild = DateComponent::addChild
 DateComponent_eventRangeToEventFootprints = DateComponent::eventRangeToEventFootprints
 
 
 # configuration for subclasses
 DateComponent::isResourceFootprintsEnabled = false
-DateComponent::eventRenderingNeedsResourceRepo = true
+DateComponent::eventRenderingNeedsResourceRepo = true # on by default! turn off to avoid unnecessary event rerenders
+DateComponent::eventRenderingNeedsResourceRendering = false
+DateComponent::resourceRenderingNeedsDateProfile = false
 
 
 # new members
@@ -69,10 +72,22 @@ DateComponent.watch 'resourceDataSourceInChildren', [ 'resourceDataSource' ], (d
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-DateComponent.watch 'displayingResources', [ 'isInDom', 'resourceDataSource' ], (deps) ->
-	@startDisplayingResources(deps.resourceDataSource)
-, (deps) ->
-	@stopDisplayingResources(deps.resourceDataSource)
+DateComponent::defineLateWatchers = ->
+	DateComponent_defineLateWatchers.apply(this, arguments)
+
+	depNames = [ 'isInDom', 'resourceDataSource' ]
+
+	if @resourceRenderingNeedsDateProfile
+		depNames.push('dateProfile')
+
+	@watch 'displayingResources', depNames, (deps) ->
+
+		if deps.dateProfile
+			@dateProfile = deps.dateProfile
+
+		@startDisplayingResources(deps.resourceDataSource)
+	, (deps) ->
+		@stopDisplayingResources(deps.resourceDataSource)
 
 
 DateComponent::startDisplayingResources = (resourceDataSource) ->
@@ -130,7 +145,11 @@ DateComponent::defineDisplayingEvents = ->
 	if @eventRenderingNeedsResourceRepo
 		depNames.push('resourceRepo')
 
+	if @eventRenderingNeedsResourceRendering
+		depNames.push('displayingResources')
+
 	@watch 'displayingEvents', depNames, (deps) ->
+
 		if @eventRenderer and deps.resourceRepo
 			@eventRenderer.resourceRepo = deps.resourceRepo
 

@@ -5,6 +5,8 @@ class ResourceTimeGrid extends FC.TimeGrid
 
 	# configuration for DateComponent monkeypatch
 	isResourceFootprintsEnabled: true
+	eventRenderingNeedsResourceRendering: true
+	resourceRenderingNeedsDateProfile: true
 
 
 	renderDates: (dateProfile) ->
