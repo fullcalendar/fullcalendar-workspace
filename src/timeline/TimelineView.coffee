@@ -40,15 +40,17 @@ class TimelineView extends View
 
 
 	renderSkeletonHtml: ->
-		'<table>
+		theme = @calendar.theme
+
+		'<table class="' + theme.getClass('tableGrid') + '">
 			<thead class="fc-head">
 				<tr>
-					<td class="fc-time-area ' + @widgetHeaderClass + '"></td>
+					<td class="fc-time-area ' + theme.getClass('widgetHeader') + '"></td>
 				</tr>
 			</thead>
 			<tbody class="fc-body">
 				<tr>
-					<td class="fc-time-area ' + @widgetContentClass + '"></td>
+					<td class="fc-time-area ' + theme.getClass('widgetContent') + '"></td>
 				</tr>
 			</tbody>
 		</table>'

@@ -60,6 +60,7 @@ class ResourceRow extends EventRow
 	Populates the TR with cells containing data about the resource
 	###
 	renderSpreadsheetContent: (tr) ->
+		theme = @view.calendar.theme
 		resource = @resource
 
 		for colSpec in @view.colSpecs
@@ -91,7 +92,7 @@ class ResourceRow extends EventRow
 			if typeof colSpec.render == 'function' # a filter function for the element
 				contentEl = colSpec.render(resource, contentEl, input) or contentEl
 
-			td = $('<td class="' + @view.widgetContentClass + '"/>')
+			td = $('<td class="' + theme.getClass('widgetContent') + '"/>')
 				.append(contentEl)
 
 			# the first cell of the row needs to have an inner div for setTrInnerHeight

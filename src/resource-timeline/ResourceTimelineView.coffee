@@ -118,19 +118,21 @@ class ResourceTimelineView extends TimelineView
 
 
 	renderSkeletonHtml: ->
-		'<table>
+		theme = @calendar.theme
+
+		'<table class="' + theme.getClass('tableGrid') + '">
 			<thead class="fc-head">
 				<tr>
-					<td class="fc-resource-area ' + @widgetHeaderClass + '"></td>
-					<td class="fc-divider fc-col-resizer ' + @widgetHeaderClass + '"></td>
-					<td class="fc-time-area ' + @widgetHeaderClass + '"></td>
+					<td class="fc-resource-area ' + theme.getClass('widgetHeader') + '"></td>
+					<td class="fc-divider fc-col-resizer ' + theme.getClass('widgetHeader') + '"></td>
+					<td class="fc-time-area ' + theme.getClass('widgetHeader') + '"></td>
 				</tr>
 			</thead>
 			<tbody class="fc-body">
 				<tr>
-					<td class="fc-resource-area ' + @widgetContentClass + '"></td>
-					<td class="fc-divider fc-col-resizer ' + @widgetHeaderClass + '"></td>
-					<td class="fc-time-area ' + @widgetContentClass + '"></td>
+					<td class="fc-resource-area ' + theme.getClass('widgetContent') + '"></td>
+					<td class="fc-divider fc-col-resizer ' + theme.getClass('widgetHeader') + '"></td>
+					<td class="fc-time-area ' + theme.getClass('widgetContent') + '"></td>
 				</tr>
 			</tbody>
 		</table>'

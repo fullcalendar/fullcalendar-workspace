@@ -16,8 +16,10 @@ class EventRow extends RowParent
 
 
 	renderEventContent: (tr) ->
+		theme = @view.calendar.theme
+
 		tr.html('
-			<td class="' + @view.widgetContentClass + '">
+			<td class="' + theme.getClass('widgetContent') + '">
 				<div>
 					<div class="fc-event-container" />
 				</div>

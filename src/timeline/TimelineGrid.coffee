@@ -390,6 +390,7 @@ class TimelineGrid extends Grid
 
 
 	renderHeadHtml: -> # TODO: misnamed
+		theme = @view.calendar.theme
 		labelInterval = @labelInterval
 		formats = @headerFormats
 		cellRows = ([] for format in formats) # indexed by row,col
@@ -435,7 +436,7 @@ class TimelineGrid extends Grid
 		isChrono = labelInterval > @slotDuration
 		isSingleDay = @slotDuration.as('days') == 1
 
-		html = '<table>'
+		html = '<table class="' + theme.getClass('tableGrid') + '">'
 		html += '<colgroup>'
 		for date in slotDates
 			html += '<col/>'
@@ -446,7 +447,7 @@ class TimelineGrid extends Grid
 			html += '<tr' + (if isChrono and isLast then ' class="fc-chrono"' else '') + '>'
 			for cell in rowCells
 
-				headerCellClassNames = [ @view.widgetHeaderClass ]
+				headerCellClassNames = [ theme.getClass('widgetHeader') ]
 				if cell.weekStart
 					headerCellClassNames.push('fc-em-cell')
 				if isSingleDay
@@ -467,7 +468,7 @@ class TimelineGrid extends Grid
 			html += '</tr>'
 		html += '</tbody></table>'
 
-		slatHtml = '<table>'
+		slatHtml = '<table class="' + theme.getClass('tableGrid') + '">'
 		slatHtml += '<colgroup>'
 		for cell in slotCells
 			slatHtml += '<col/>'
@@ -503,6 +504,7 @@ class TimelineGrid extends Grid
 
 
 	slatCellHtml: (date, isEm) ->
+		theme = @view.calendar.theme
 
 		if @isTimeScale
 			classes = []
@@ -515,7 +517,7 @@ class TimelineGrid extends Grid
 			classes = @getDayClasses(date)
 			classes.push('fc-day')
 
-		classes.unshift(@view.widgetContentClass)
+		classes.unshift(theme.getClass('widgetContent'))
 
 		if isEm
 			classes.push('fc-em-cell')

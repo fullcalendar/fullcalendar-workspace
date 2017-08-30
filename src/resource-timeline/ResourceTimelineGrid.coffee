@@ -81,12 +81,20 @@ class ResourceTimelineGrid extends TimelineGrid
 	renderSkeleton: ->
 		super
 
+		theme = @view.calendar.theme
+
 		# only non-resource grid needs this, so kill it
 		# TODO: look into better solution
 		@segContainerEl.remove()
 		@segContainerEl = null
 
-		rowContainerEl = $('<div class="fc-rows"><table><tbody/></table></div>').appendTo(@bodyScroller.canvas.contentEl)
+		rowContainerEl = $('
+			<div class="fc-rows">
+				<table class="' + theme.getClass('tableGrid') + '">
+					<tbody/>
+				</table>
+			</div>
+		').appendTo(@bodyScroller.canvas.contentEl)
 		@tbodyEl = rowContainerEl.find('tbody')
 
 

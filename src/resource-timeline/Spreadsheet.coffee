@@ -33,6 +33,7 @@ class Spreadsheet
 
 
 	renderSkeleton: ->
+		theme = @view.calendar.theme
 
 		@headScroller = new ClippedScroller
 			overflowX: 'clipped-scroll'
@@ -46,7 +47,13 @@ class Spreadsheet
 			overflowY: 'clipped-scroll'
 		@bodyScroller.canvas = new ScrollerCanvas()
 		@bodyScroller.render()
-		@bodyScroller.canvas.contentEl.html('<div class="fc-rows"><table>' + @colGroupHtml + '<tbody/></table></div>') # colGroupHtml hack
+		@bodyScroller.canvas.contentEl.html(
+			'<div class="fc-rows">
+				<table class="' + theme.getClass('tableGrid') + '">
+					' + @colGroupHtml + '<tbody/>
+				</table>
+			</div>'
+		) # colGroupHtml hack
 		@tbodyEl = @bodyScroller.canvas.contentEl.find('tbody')
 		@el.append(@bodyScroller.el)
 
@@ -64,9 +71,10 @@ class Spreadsheet
 
 
 	renderHeadHtml: ->
+		theme = @view.calendar.theme
 		colSpecs = @view.colSpecs
 		
-		html = '<table>'
+		html = '<table class="' + theme.getClass('tableGrid') + '">'
 
 		colGroupHtml = '<colgroup>'
 		for o in colSpecs
@@ -84,7 +92,7 @@ class Spreadsheet
 		if (@view.superHeaderText)
 			html +=
 				'<tr class="fc-super">' +
-					'<th class="' + @view.widgetHeaderClass + '" colspan="' + colSpecs.length + '">' +
+					'<th class="' + theme.getClass('widgetHeader') + '" colspan="' + colSpecs.length + '">' +
 						'<div class="fc-cell-content">' +
 							'<span class="fc-cell-text">' +
 								htmlEscape(@view.superHeaderText) +
@@ -100,7 +108,7 @@ class Spreadsheet
 			isLast = i == colSpecs.length - 1
 
 			html +=
-				'<th class="' + @view.widgetHeaderClass + '">' +
+				'<th class="' + theme.getClass('widgetHeader') + '">' +
 					'<div>' +
 						'<div class="fc-cell-content">' +
 							(if o.isMain
