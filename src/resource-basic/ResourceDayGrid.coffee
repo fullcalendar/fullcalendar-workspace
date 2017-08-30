@@ -6,6 +6,7 @@ class ResourceDayGrid extends FC.DayGrid
 	# configuration for DateComponent monkeypatch
 	isResourceFootprintsEnabled: true
 	eventRenderingNeedsResourceRendering: true
+	businessHourRenderingNeedsResourceRendering: true
 	resourceRenderingNeedsDateProfile: true
 
 

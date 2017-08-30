@@ -14,7 +14,7 @@ var ResourceDataSource = Class.extend(EmitterMixin, {
 
 	tryReset: function() {
 		if (this.isResolved && this.canTrigger()) {
-			this.triggerChangeset(new EventInstanceChangeset(
+			this.triggerChangeset(new ResourceChangeset(
 				this.repo, // removals
 				this.repo // additions
 			));

@@ -9,6 +9,7 @@ DateComponent_eventRangeToEventFootprints = DateComponent::eventRangeToEventFoot
 DateComponent::isResourceFootprintsEnabled = false
 DateComponent::eventRenderingNeedsResourceRepo = true # on by default! turn off to avoid unnecessary event rerenders
 DateComponent::eventRenderingNeedsResourceRendering = false
+DateComponent::businessHourRenderingNeedsResourceRendering = false
 DateComponent::resourceRenderingNeedsDateProfile = false
 
 
@@ -20,7 +21,7 @@ DateComponent::isResourcesRendered = false
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-DateComponent.watch 'watchingResourceRepo', [ 'resourceDataSource' ], (deps) ->
+DateComponent.watch 'watchingResourceRepo', [ 'resourceDataSource' ], (deps) -> # TODO: better system for this
 	resourceDataSource = deps.resourceDataSource
 
 	if resourceDataSource.isResolved
@@ -110,6 +111,7 @@ DateComponent::requestRenderResourceChangeset = (changeset, repo) ->
 	if @renderResourceAdd or @renderResourceRemove
 		@requestRender =>
 			@isResourcesRendered = true
+			@set('resourcesRendered', true)
 			changeset.additionsRepo.iterSubtrees (resource) =>
 				@renderResourceAdd(resource)
 			changeset.removalsRepo.iterSubtrees (resource) =>
@@ -117,6 +119,7 @@ DateComponent::requestRenderResourceChangeset = (changeset, repo) ->
 	else if @renderResources
 		@requestRender =>
 			@isResourcesRendered = true
+			@set('resourcesRendered', true)
 			@renderResources(repo)
 		, null, 'resources', 'destroy' # to allow future destroys
 
@@ -124,6 +127,7 @@ DateComponent::requestRenderResourceChangeset = (changeset, repo) ->
 DateComponent::requestRenderResourceClear = ->
 	@requestRender =>
 		@isResourcesRendered = false
+		@set('resourcesRendered', false)
 		@renderResourceClear()
 	, null, 'resources', 'destroy'
 
@@ -146,7 +150,7 @@ DateComponent::defineDisplayingEvents = ->
 		depNames.push('resourceRepo')
 
 	if @eventRenderingNeedsResourceRendering
-		depNames.push('displayingResources')
+		depNames.push('resourcesRendered')
 
 	@watch 'displayingEvents', depNames, (deps) ->
 
@@ -156,6 +160,22 @@ DateComponent::defineDisplayingEvents = ->
 		@startDisplayingEvents(deps.eventDataSource)
 	, (deps) ->
 		@stopDisplayingEvents(deps.eventDataSource)
+
+
+# Business Hours Rendering
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+DateComponent::defineDisplayingBusinessHours = ->
+	depNames = [ 'displayingDates', 'businessHours' ]
+
+	if @businessHourRenderingNeedsResourceRendering
+		depNames.push('resourcesRendered')
+
+	@watch 'displayingBusinessHours', depNames, (deps) ->
+		@requestRender(@renderBusinessHours, [ deps.businessHours ], 'businessHours', 'init')
+	, ->
+		@requestRender(@unrenderBusinessHours, null, 'businessHours', 'destroy')
 
 
 # eventRange -> eventFootprint
