@@ -76,8 +76,8 @@ transformDemoPath = (path) ->
 	# reroot dist files to archive root
 	path = path.replace('../dist/', '../')
 
-	# use minified if not already using
-	if !/\.min\.(js|css)$/.test(path)
+	# use minified if not already minified and a not file in demos/ dir
+	if !/\.min\.(js|css)$/.test(path) and !/^\w/.test(path)
 		path = path.replace(/\/([^\/]*)\.(js|css)$/, '/$1.min.$2')
 
 	path
