@@ -18,7 +18,7 @@
 
 			init: function(themeSystem) {
 				$('#calendar').fullCalendar({
-					theme: themeSystem,
+					themeSystem: themeSystem,
 					now: '2017-05-07',
 					editable: true, // enable draggable events
 					aspectRatio: 1.8,
@@ -78,7 +78,7 @@
 			},
 
 			change: function(themeSystem) {
-				$('#calendar').fullCalendar('option', 'theme', themeSystem);
+				$('#calendar').fullCalendar('option', 'themeSystem', themeSystem);
 			}
 
 		});
