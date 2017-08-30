@@ -39,7 +39,7 @@ gulp.task 'archive:misc', ->
 	.pipe(rename({ extname: '.txt' }))
 	.pipe(gulp.dest('tmp/' + packageId + '/'))
 
-gulp.task 'archive:deps', [ 'archive:jqui:theme' ], ->
+gulp.task 'archive:deps', ->
 	gulp.src([
 		'node_modules/moment/min/moment.min.js'
 		'node_modules/jquery/dist/jquery.min.js'
@@ -49,17 +49,6 @@ gulp.task 'archive:deps', [ 'archive:jqui:theme' ], ->
 		'node_modules/fullcalendar/dist/fullcalendar.print.min.css'
 		'node_modules/fullcalendar/dist/gcal.min.js'
 	])
-	.pipe(gulp.dest('tmp/' + packageId + '/lib/'))
-
-# transfers a single jQuery UI theme
-gulp.task 'archive:jqui:theme', ->
-	gulp.src([
-		'jquery-ui.min.css'
-		'images/*'
-	], {
-		cwd: 'node_modules/components-jqueryui/themes/cupertino/'
-		base: 'node_modules/components-jqueryui/themes/'
-	})
 	.pipe(gulp.dest('tmp/' + packageId + '/lib/'))
 
 # transfers demo files, transforming their paths to dependencies
@@ -81,7 +70,6 @@ transformDemoPath = (path) ->
 	# reroot 3rd party libs
 	path = path.replace('../node_modules/moment/', '../lib/')
 	path = path.replace('../node_modules/jquery/dist/', '../lib/')
-	path = path.replace('../node_modules/components-jqueryui/themes/cupertino/', '../lib/cupertino/') # must be first
 	path = path.replace('../node_modules/components-jqueryui/', '../lib/')
 	path = path.replace('../node_modules/fullcalendar/dist/', '../lib/')
 
