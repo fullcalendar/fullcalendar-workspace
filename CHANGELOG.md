@@ -1,4 +1,10 @@
 
+v1.7.1
+------
+
+Composer.json fixes, Packagist now working
+
+
 v1.7.0 (2017-08-30)
 -------------------
 

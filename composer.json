@@ -1,6 +1,6 @@
 {
   "name": "fullcalendar/fullcalendar-scheduler",
-  "type": "library",
+  "type": "component",
   "description": "A premium add-on to FullCalendar for displaying events and resources",
   "keywords": [
     "calendar",
@@ -18,8 +18,23 @@
   ],
   "minimum-stability": "stable",
   "require": {
+    "robloach/component-installer": "*",
     "components/jquery": "2 - 3",
     "moment/moment": "^2.9.0",
     "fullcalendar/fullcalendar": "~3.5.0"
+  },
+  "extra": {
+    "component": {
+      "scripts": [
+        "dist/scheduler.js"
+      ],
+      "styles": [
+        "dist/scheduler.css"
+      ],
+      "files": [
+        "dist/scheduler.min.js",
+        "dist/scheduler.min.css"
+      ]
+    }
   }
 }
