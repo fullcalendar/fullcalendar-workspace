@@ -21,18 +21,18 @@
 			header: {
 				left: 'today prev,next',
 				center: 'title',
-				right: 'timelineDay,timelineThreeDays,agendaWeek,month,listWeek'
+				right: 'timeline20Days,timelineMonth,timelineYear'
 			},
-			defaultView: 'timelineDay',
+			defaultView: 'timelineMonth',
 			views: {
-				timelineThreeDays: {
+				timeline20Days: {
 					type: 'timeline',
-					duration: { days: 3 }
+					duration: { days: 20 }
 				}
 			},
 			resourceLabelText: 'Rooms',
 			resources: [
-				{ id: 'a', title: 'Auditorium A' },
+				{ id: 'a', title: 'Auditorium A', eventColor: ''},
 				{ id: 'b', title: 'Auditorium B', eventColor: 'green' },
 				{ id: 'c', title: 'Auditorium C', eventColor: 'orange' },
 				{ id: 'd', title: 'Auditorium D', children: [
@@ -63,9 +63,9 @@
 				{ id: 'z', title: 'Auditorium Z' }
 			],
 			events: [
-				{ id: '1', resourceId: 'b', start: '2017-09-07T02:00:00', end: '2017-09-07T07:00:00', title: 'event 1' },
+				{ id: '1', resourceId: 'b', start: '2017-09-07T02:00:00', end: '2017-09-07T07:00:00', title: 'event 1', color: 'purple' },
 				{ id: '2', resourceId: 'c', start: '2017-09-07T05:00:00', end: '2017-09-07T22:00:00', title: 'event 2' },
-				{ id: '3', resourceId: 'd', start: '2017-09-06', end: '2017-09-08', title: 'event 3' },
+				{ id: '3', resourceId: 'd', start: '2017-09-06', end: '2017-09-03', title: 'event 3' },
 				{ id: '4', resourceId: 'e', start: '2017-09-07T03:00:00', end: '2017-09-07T08:00:00', title: 'event 4' },
 				{ id: '5', resourceId: 'f', start: '2017-09-07T00:30:00', end: '2017-09-07T02:30:00', title: 'event 5' }
 			]
