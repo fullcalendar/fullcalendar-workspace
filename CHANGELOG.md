@@ -1,9 +1,10 @@
 
-v1.7.0
-------
+v1.7.0 (2017-08-30)
+-------------------
 
-Features:
-- Bootstrap support
+Bootstrap 3 theme support (more info in [core release notes][core-3.5.0])
+
+[core-3.5.0]: https://github.com/fullcalendar/fullcalendar/releases/tag/v3.5.0
 
 
 v1.6.2 (2017-04-27)
