@@ -27,7 +27,7 @@ FC.schedulerVersion = "<%= version %>"
 # also update the .json files with a new minor version requirement.
 # Example: bump ~2.7.2 to ~2.8.0
 # Use a tilde to match future patch-level changes only!
-if FC.internalApiVersion != 9
+if FC.internalApiVersion != 10
 	FC.warn(
 		'v' + FC.schedulerVersion + ' of FullCalendar Scheduler ' +
 		'is incompatible with v' + FC.version + ' of the core.\n' +
