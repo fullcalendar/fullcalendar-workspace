@@ -1,9 +1,13 @@
 
 class ResourceTimelineView extends TimelineView
 
+	@mixin(ResourceViewMixin)
+
+	# configuration for View monkeypatch
+	canHandleSpecificResources: true
+
 	# configuration for DateComponent monkeypatch
 	isResourceFootprintsEnabled: true
-	eventRenderingNeedsResourceRepo: false
 
 	# renders non-resource bg events only
 	eventRendererClass: ResourceTimelineEventRenderer
@@ -35,10 +39,6 @@ class ResourceTimelineView extends TimelineView
 	eventRows: null
 	shownEventRows: null
 	resourceScrollJoiner: null
-
-	# business hours
-	customBizGenCnt: 0
-	fallbackBizGenForRows: null
 
 	# positioning
 	rowCoordCache: null
@@ -372,17 +372,17 @@ class ResourceTimelineView extends TimelineView
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	renderResourceAdd: (resource) ->
+	renderResource: (resource) ->
 		row = @insertResource(resource)
 		row.renderSkeleton()
 
 
-	renderResourceRemove: (resource) ->
+	unrenderResource: (resource) ->
 		row = @removeResource(resource)
 		row.removeFromParentAndDom()
 
 
-	renderResourceClear: ->
+	unrenderResources: ->
 		@rowHierarchy.removeElement()
 		@rowHierarchy.removeChildren()
 
@@ -395,35 +395,13 @@ class ResourceTimelineView extends TimelineView
 	# Child Components
 	# ------------------------------------------------------------------------------------------------------------------
 
+	### TODO: review this...
 
-	setBusinessHourGeneratorInChild: (businessHourGenerator, child) ->
-		return # happens in addChild
-
-
-	unsetBusinessHourGeneratorInChild: (child) ->
-		return # happens in removeChild
+	# business hours
+	customBizGenCnt: 0
+	fallbackBizGenForRows: null
 
 
-	setEventDataSourceInChildren: ->
-		return # ResourceRow is responsible
-
-
-	unsetEventDataSourceInChildren: ->
-		return # ResourceRow is responsible
-
-
-	setResourceDataSourceInChild: ->
-		return
-
-
-	unsetResourceDataSourceInChild: ->
-		return
-
-
-	###
-	Assumes ResourceTimelineView's own businessHourGenerator is set first
-	TODO: better system?
-	###
 	addChild: (rowObj) ->
 		if rowObj.resource.businessHourGenerator # custom generator?
 			rowObj.set('businessHourGenerator', rowObj.resource.businessHourGenerator)
@@ -446,10 +424,6 @@ class ResourceTimelineView extends TimelineView
 		super # add rowObj
 
 
-	###
-	Assumes ResourceTimelineView's own businessHourGenerator is set first
-	TODO: better system?
-	###
 	removeChild: (rowObj) ->
 		super # remove rowObj
 
@@ -469,6 +443,8 @@ class ResourceTimelineView extends TimelineView
 
 		# remove the row's generator, regardless of how it was received
 		rowObj.unset('businessHourGenerator')
+
+	###
 
 
 	# creates a row for the given resource and inserts it into the hierarchy.

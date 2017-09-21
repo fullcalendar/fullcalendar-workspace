@@ -65,16 +65,22 @@ class TimelineView extends View
 
 		@slotWidth = @opt('slotWidth')
 
-		@on 'after:events:render', (entityType) =>
-			sprites = []
-			for seg in @getRecursiveEventSegs() # TODO: only retrieve fg segs
-				titleEl = seg.el.find('.fc-title')
-				if titleEl.length
-					sprites.push(new ScrollFollowerSprite(titleEl))
-			@eventTitleFollower.setSprites(sprites)
 
-		@on 'before:events:unrender', (entityType) => # what?
-			@eventTitleFollower.clearSprites()
+	executeEventRender: ->
+		super
+
+		sprites = []
+		for seg in @getEventSegs() # TODO: only retrieve fg segs
+			titleEl = seg.el.find('.fc-title')
+			if titleEl.length
+				sprites.push(new ScrollFollowerSprite(titleEl))
+		@eventTitleFollower.setSprites(sprites)
+
+
+	executeEventUnrender: ->
+		@eventTitleFollower.clearSprites()
+
+		super
 
 
 	# Footprints
@@ -692,8 +698,8 @@ class TimelineView extends View
 	# this needs to be called if v scrollbars appear on body container. or zooming
 	updateSegPositions: ->
 		segs = [].concat(
-			@getRecursiveEventSegs()
-			@getRecursiveBusinessHourSegs()
+			@getEventSegs()
+			@getBusinessHourSegs()
 		)
 
 		for seg in segs

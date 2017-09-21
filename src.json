@@ -34,6 +34,7 @@
     "Calendar.coffee",
     "Calendar.constraints.coffee",
     "View.coffee",
+    "ResourceViewMixin.coffee",
 
     "timeline/renderers/TimelineEventRenderer.coffee",
     "timeline/renderers/TimelineFillRenderer.coffee",

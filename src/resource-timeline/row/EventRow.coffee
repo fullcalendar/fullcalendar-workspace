@@ -1,8 +1,6 @@
 
 class EventRow extends RowParent
 
-	eventRenderingNeedsResourceRepo: false
-
 	fillRendererClass: TimelineFillRenderer
 	eventRendererClass: TimelineEventRenderer
 	helperRendererClass: TimelineHelperRenderer
