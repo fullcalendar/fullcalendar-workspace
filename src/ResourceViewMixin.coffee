@@ -199,7 +199,7 @@ ResourceViewMixin =
 	###
 	footprint is a ResourceComponentFootprint
 	###
-	triggerDayClick: = (footprint, dayEl, ev) ->
+	triggerDayClick: (footprint, dayEl, ev) ->
 		dateProfile = @calendar.footprintToDateProfile(footprint)
 
 		@publiclyTrigger('dayClick', {
@@ -209,7 +209,7 @@ ResourceViewMixin =
 				ev
 				this
 				if footprint.resourceId
-					@calendar.resourceManager.repo.getById(footprint.resourceId)[0] # TODO: fixup!
+					@calendar.resourceManager.getResourceById(footprint.resourceId)
 				else
 					null
 			]
@@ -230,7 +230,7 @@ ResourceViewMixin =
 				ev
 				this
 				if footprint.resourceId
-					@calendar.resourceManager.repo.getById(footprint.resourceId)[0] # TODO: fixup!
+					@calendar.resourceManager.getResourceById(footprint.resourceId)
 				else
 					null
 			]

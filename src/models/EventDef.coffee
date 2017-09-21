@@ -33,7 +33,10 @@ EventDef::addResourceId = (resourceId) ->
 
 
 EventDef::getResourceIds = ->
-	@resourceIds.slice() # clone
+	if @resourceIds
+		@resourceIds.slice() # clone
+	else
+		[]
 
 
 EventDef::clone = ->

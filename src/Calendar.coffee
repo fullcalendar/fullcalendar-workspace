@@ -30,7 +30,9 @@ Calendar::instantiateView = (viewType) ->
 # for the API only
 # retrieves what is currently in memory. no fetching
 Calendar::getResources = ->
-	@resourceManager.repo.getTopLevel()
+	Array.prototype.slice.call( # make a copy
+		@resourceManager.topLevelResources
+	)
 
 
 Calendar::addResource = (resourceInput, scroll=false) -> # assumes all resources already loaded
@@ -43,22 +45,17 @@ Calendar::addResource = (resourceInput, scroll=false) -> # assumes all resources
 
 
 Calendar::removeResource = (idOrResource) -> # assumes all resources already loaded
-	if typeof idOrResource == 'object'
-		resource = idOrResource
-	else
-		resource = @resourceManager.repo.getById(idOrResource)[0]
-
-	@resourceManager.removeResource(resource)
-	return
+	@resourceManager.removeResource(idOrResource)
 
 
 Calendar::refetchResources = -> # for API
-	@resourceManager.refetch()
+	@resourceManager.clear()
+	@view.flash('initialResources')
 	return
 
 
 Calendar::rerenderResources = -> # for API
-	@resourceManager.tryReset()
+	@resourceManager.resetCurrentResources()
 	return
 
 
@@ -76,7 +73,7 @@ Calendar::buildSelectFootprint = (zonedStartInput, zonedEndInput, resourceId) ->
 
 
 Calendar::getResourceById = (id) ->
-	@resourceManager.repo.getById(id)[0]
+	@resourceManager.getResourceById(id)
 
 
 # Resources + Events

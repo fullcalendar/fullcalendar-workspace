@@ -45,7 +45,7 @@ Calendar::isFootprintAllowed = (footprint, peerEventFootprints, constraintVal, o
 
 
 Calendar::buildCurrentBusinessFootprints = (isAllDay) ->
-	flatResources = @resourceManager.repo.getTopLevel()
+	flatResources = @resourceManager.getFlatResources()
 	anyCustomBusinessHours = false
 
 	# any per-resource business hours? or will one global businessHours suffice?

@@ -372,14 +372,9 @@ class ResourceTimelineView extends TimelineView
 	# ------------------------------------------------------------------------------------------------------------------
 
 
-	renderResource: (resource) ->
-		row = @insertResource(resource)
-		row.renderSkeleton()
-
-
-	unrenderResource: (resource) ->
-		row = @removeResource(resource)
-		row.removeFromParentAndDom()
+	renderResources: (resources) ->
+		for resource in resources
+			@renderResource(resource)
 
 
 	unrenderResources: ->
@@ -390,6 +385,28 @@ class ResourceTimelineView extends TimelineView
 			@removeChild(row) # for DateComponent!
 
 		@resourceRowHash = {}
+
+
+	renderResource: (resource) ->
+		row = @insertResource(resource)
+		row.renderSkeleton()
+
+
+	unrenderResource: (resource) ->
+		row = @removeResource(resource)
+		row.removeFromParentAndDom()
+
+
+	# Event Rendering
+	# ------------------------------------------------------------------------------------------------------------------
+
+
+	executeEventRender: (eventsPayload) ->
+		console.log('split', eventsPayload)
+		# TODO: post-event-render hack
+		# TODO: why so slow?
+		# TODO: after first navigate, row heights scrunch
+		return
 
 
 	# Child Components

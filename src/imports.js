@@ -65,5 +65,4 @@ var EventDragging = FC.EventDragging;
 var EventResizing = FC.EventResizing;
 var ExternalDropping = FC.ExternalDropping;
 var BusinessHourGenerator = FC.BusinessHourGenerator;
-var EventInstanceDataSourceSplitter = FC.EventInstanceDataSourceSplitter;
 var EventInstanceGroup = FC.EventInstanceGroup;
