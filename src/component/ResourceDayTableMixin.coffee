@@ -17,8 +17,8 @@ ResourceDayTableMixin =
 
 
 	# does not do any rendering. rendering is responsibility of host object
-	registerResourceRepo: (repo) ->
-		@flattenedResources = @flattenResources(repo.getTopLevel())
+	registerResources: (resources) ->
+		@flattenedResources = @flattenResources(resources)
 		@resourceCnt = @flattenedResources.length
 		@updateDayTable() # will call computeColCnt
 
@@ -274,10 +274,12 @@ ResourceDayTableMixin =
 	# ----------------------------------------------------------------------------------------------
 
 
+	### TODO: audit this
+
 	renderBusinessHours: (businessHourPayload) ->
 		isAllDay = @hasAllDayBusinessHours
 		generalEventInstanceGroup = businessHourPayload[if isAllDay then 'allDay' else 'timed']
-		unzonedRange = @get('dateProfile').activeUnzonedRange
+		unzonedRange = @dateProfile.activeUnzonedRange
 		eventFootprints = []
 
 		for resource in @flattenedResources
@@ -302,3 +304,5 @@ ResourceDayTableMixin =
 					)
 
 		@renderBusinessHourEventFootprints(eventFootprints)
+
+	###

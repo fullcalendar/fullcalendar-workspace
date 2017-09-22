@@ -12,7 +12,7 @@ class ResourceDayGrid extends FC.DayGrid
 
 
 	renderResources: (resourceRepo) ->
-		@registerResourceRepo(resourceRepo)
+		@registerResources(resourceRepo)
 		@renderGrid()
 
 		if @headContainerEl

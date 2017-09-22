@@ -12,8 +12,8 @@ class ResourceTimeGrid extends FC.TimeGrid
 		@renderSlats()
 
 
-	renderResources: (resourceRepo) ->
-		@registerResourceRepo(resourceRepo)
+	renderResources: (resources) ->
+		@registerResources(resources)
 		@renderColumns()
 
 		if @headContainerEl

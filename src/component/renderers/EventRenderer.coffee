@@ -3,7 +3,6 @@
 EventRenderer_getFallbackStylingObjs = EventRenderer::getFallbackStylingObjs
 
 
-EventRenderer::resourceRepo = null # set by caller. mandatory if no designatedResource
 EventRenderer::designatedResource = null # optionally set by caller. forces @currentResource
 EventRenderer::currentResource = null # when set, will affect future rendered segs
 
@@ -14,7 +13,7 @@ EventRenderer::beforeFgSegHtml = (seg) -> # hack
 	if @designatedResource
 		@currentResource = @designatedResource
 	else if segResourceId
-		@currentResource = @resourceRepo.getById(segResourceId)[0]
+		@currentResource = @queryResourceObject(segResourceId)
 	else
 		@currentResource = null
 
@@ -28,9 +27,15 @@ EventRenderer::getFallbackStylingObjs = (eventDef) ->
 	else if @resourceRepo
 		resources = []
 
-		for resourceId in eventDef.getResourceIds()
-			resources.push(@resourceRepo.getById(resourceId)...)
+		for id in eventDef.getResourceIds()
+			resource = @queryResourceObject(id)
+			if resource
+				resources.push(resource)
 
 		objs = resources.concat(objs)
 
 	objs
+
+
+EventRenderer::queryResourceObject = (id) ->
+	@view.calendar.resourceManager.getResourceById(id)

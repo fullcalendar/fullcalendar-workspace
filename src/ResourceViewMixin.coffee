@@ -9,13 +9,19 @@ ResourceViewMixin =
 		View::setElement.apply(this, arguments)
 
 		# new task
-		@watch 'displayingResources', [ 'hasResources' ], =>
+		@watch 'displayingResources', [ 'displayingDates', 'hasResources' ], =>
 			@requestResourcesRender(@get('currentResources'))
 		, =>
 			@requestResourcesUnrender()
 
+		# start relying on displayingResources
+		@watch 'displayingBusinessHours', [ 'displayingResources', 'businessHourGenerator' ], (deps) =>
+			@requestBusinessHoursRender(deps.businessHourGenerator)
+		, =>
+			@requestBusinessHoursUnrender()
+
 		# start relying on resource displaying rather than just current resources
-		@watch 'displayingEvents', [ 'displayingDates', 'hasEvents', 'displayingResources' ], =>
+		@watch 'displayingEvents', [ 'displayingResources', 'hasEvents' ], =>
 			@requestEventsRender(@get('currentEvents'))
 		, =>
 			@requestEventsUnrender()
@@ -177,19 +183,19 @@ ResourceViewMixin =
 
 
 	renderResources: (resources) ->
-		# abstract
+		@callChildren('renderResources', arguments) # only goes down one level. DateComponent doesn't do this
 
 
 	unrenderResources: ->
-		# abstract
+		@callChildren('unrenderResources', arguments) # only goes down one level. DateComponent doesn't do this
 
 
 	renderResource: (resource) ->
-		# abstract
+		@callChildren('renderResource', arguments) # only goes down one level. DateComponent doesn't do this
 
 
 	unrenderResource: (resource) ->
-		# abstract
+		@callChildren('unrenderResource', arguments) # only goes down one level. DateComponent doesn't do this
 
 
 	# Triggering
