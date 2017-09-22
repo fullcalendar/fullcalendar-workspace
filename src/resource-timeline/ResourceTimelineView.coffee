@@ -409,6 +409,14 @@ class ResourceTimelineView extends TimelineView
 		return
 
 
+	# Business Hours Rendering
+	# ------------------------------------------------------------------------------------------------------------------
+
+	renderBusinessHours: (businessHourGenerator) ->
+		console.log('split business hours', businessHourGenerator)
+		return
+
+
 	# Child Components
 	# ------------------------------------------------------------------------------------------------------------------
 
