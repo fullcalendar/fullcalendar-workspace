@@ -28,3 +28,24 @@ DateComponent::eventRangeToEventFootprints = (eventRange) ->
 			DateComponent_eventRangeToEventFootprints.apply(this, arguments)
 		else
 			[]
+
+
+# Resource Low-level Rendering
+# ----------------------------------------------------------------------------------------------
+# ResourceViewMixin wires these up
+
+
+DateComponent::renderResources = (resources) ->
+	@callChildren('renderResources', arguments)
+
+
+DateComponent::unrenderResources = ->
+	@callChildren('unrenderResources', arguments)
+
+
+DateComponent::renderResource = (resource) ->
+	@callChildren('renderResource', arguments)
+
+
+DateComponent::unrenderResource = (resource) ->
+	@callChildren('unrenderResource', arguments)

@@ -110,14 +110,6 @@ ResourceViewMixin =
 	# ----------------------------------------------------------------------------------------------
 
 
-	handleResourcesSet: (resources) ->
-		# displayingResources does initial rendering
-
-
-	handleResourcesUnset: ->
-		# displayingResources does teardown unrendering
-
-
 	handleResourceAdd: (resource) ->
 		@requestResourceRender(resource)
 
@@ -176,26 +168,6 @@ ResourceViewMixin =
 
 	executeResourceUnrender: (resource) ->
 		@unrenderResource(resource)
-
-
-	# Resource Low-level Rendering
-	# ----------------------------------------------------------------------------------------------
-
-
-	renderResources: (resources) ->
-		@callChildren('renderResources', arguments) # only goes down one level. DateComponent doesn't do this
-
-
-	unrenderResources: ->
-		@callChildren('unrenderResources', arguments) # only goes down one level. DateComponent doesn't do this
-
-
-	renderResource: (resource) ->
-		@callChildren('renderResource', arguments) # only goes down one level. DateComponent doesn't do this
-
-
-	unrenderResource: (resource) ->
-		@callChildren('unrenderResource', arguments) # only goes down one level. DateComponent doesn't do this
 
 
 	# Triggering

@@ -123,13 +123,11 @@ View::setResources = (resources, eventsPayload) ->
 
 	@set('currentResources', resources)
 	@set('hasResources', true)
-	@handleResourcesSet(resources)
 
 
 View::unsetResources = ->
 	@unset('currentResources')
 	@unset('hasResources')
-	@handleResourcesUnset()
 
 
 # eventsPayload is optional
@@ -165,14 +163,8 @@ View::removeResource = (resource, allResources, eventsPayload) ->
 	@handleResourceRemove(resource)
 
 
-# Resource Handling
+# Resource Change Handling
 # --------------------------------------------------------------------------------------------------
-
-
-View::handleResourcesSet = (resources) ->
-
-
-View::handleResourcesUnset = (resources) ->
 
 
 View::handleResourceAdd = (resource) ->
