@@ -586,9 +586,8 @@ class ResourceTimelineView extends TimelineView
 
 		if wasNesting != isNesting
 
-			@requestRender =>
-				@el.toggleClass('fc-nested', isNesting)
-					.toggleClass('fc-flat', not isNesting)
+			@el.toggleClass('fc-nested', isNesting)
+				.toggleClass('fc-flat', not isNesting)
 
 			@isNesting = isNesting
 
@@ -601,9 +600,8 @@ class ResourceTimelineView extends TimelineView
 
 		if wasNesting != isNesting
 
-			@requestRender =>
-				@el.toggleClass('fc-nested', isNesting)
-					.toggleClass('fc-flat', not isNesting)
+			@el.toggleClass('fc-nested', isNesting)
+				.toggleClass('fc-flat', not isNesting)
 
 			@isNesting = isNesting
 

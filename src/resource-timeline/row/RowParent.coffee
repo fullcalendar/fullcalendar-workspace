@@ -297,13 +297,12 @@ class RowParent extends DateComponent
 		if not @isExpanded
 			@isExpanded = true
 
-			@requestRender ->
-				@indicateExpanded()
+			@indicateExpanded()
 
-				for child in @children
-					child.show()
+			for child in @children
+				child.show()
 
-				@animateExpand()
+			@animateExpand()
 
 	###
 	Hides this node's children if they are not already hidden. Changes any expander icon.
@@ -312,11 +311,10 @@ class RowParent extends DateComponent
 		if @isExpanded
 			@isExpanded = false
 
-			@requestRender ->
-				@indicateCollapsed()
+			@indicateCollapsed()
 
-				for child in @children
-					child.hide()
+			for child in @children
+				child.hide()
 
 	###
 	Switches between expanded/collapsed states
