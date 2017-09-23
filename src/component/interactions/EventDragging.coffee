@@ -14,7 +14,7 @@ EventDragging::computeEventDropMutation = (startFootprint, endFootprint, eventDe
 			startFootprint.resourceId != endFootprint.resourceId and
 			@component.isEventDefResourceEditable(eventDef)
 
-		mutation = new ResourceEventDefMutation()
+		mutation = new EventDefMutation()
 		mutation.oldResourceId = startFootprint.resourceId
 		mutation.newResourceId = endFootprint.resourceId
 
