@@ -6,7 +6,7 @@ Calendar.defaults.filterResourcesWithEvents = false
 # pre-monkeypatch methods
 View_setElement = View::setElement
 View_removeElement = View::removeElement
-View_onBaseRender = View::onBaseRender
+View_triggerViewRender = View::triggerViewRender
 
 # new properties
 View::canHandleSpecificResources = false
@@ -27,14 +27,13 @@ View::removeElement = ->
 
 
 # Show the warning even for non-resource views
-View::onBaseRender = ->
-	View_onBaseRender.apply(this, arguments)
-
-	# inject license key before 'viewRender' which is called by super's onBaseRender
+# inject license key before 'viewRender' which is called by super's afterBaseDisplay
+View::triggerViewRender = ->
 	processLicenseKey(
 		@opt('schedulerLicenseKey')
 		@el # container element
 	)
+	View_triggerViewRender.apply(this, arguments)
 
 
 # Resource Binding

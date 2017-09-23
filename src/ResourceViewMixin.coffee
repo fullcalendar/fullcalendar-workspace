@@ -5,14 +5,18 @@ ResourceViewMixin =
 	isResourcesRendered: false
 
 
-	setElement: ->
-		View::setElement.apply(this, arguments)
-
+	initResourceView: ->
 		# new task
 		@watch 'displayingResources', [ 'displayingDates', 'hasResources' ], =>
 			@requestResourcesRender(@get('currentResources'))
 		, =>
 			@requestResourcesUnrender()
+
+		# start relying on displayingResources
+		@watch 'displayingBase', [ 'displayingDates', 'displayingResources' ], =>
+			@afterBaseDisplay()
+		, =>
+			@beforeBaseClear()
 
 		# start relying on displayingResources
 		@watch 'displayingBusinessHours', [ 'displayingResources', 'businessHourGenerator' ], (deps) =>
@@ -25,38 +29,6 @@ ResourceViewMixin =
 			@requestEventsRender(@get('currentEvents'))
 		, =>
 			@requestEventsUnrender()
-
-
-	# "Base" Rendering
-	# ----------------------------------------------------------------------------------------------
-
-
-	# Logic: base render trigger should fire when BOTH the resources and dates have rendered,
-	# but the unrender trigger should fire after ONLY the dates are about to be unrendered.
-	bindBaseRenderHandlers: ->
-		isResourcesRendered = false
-		isDatesRendered = false
-
-		@on 'resourcesRendered', ->
-			if not isResourcesRendered
-				isResourcesRendered = true
-				if isDatesRendered
-					@onBaseRender()
-
-		@on 'datesRendered', ->
-			if not isDatesRendered
-				isDatesRendered = true
-				if isResourcesRendered
-					@onBaseRender()
-
-		@on 'before:resourcesUnrendered', ->
-			if isResourcesRendered
-				isResourcesRendered = false
-
-		@on 'before:datesUnrendered', ->
-			if isDatesRendered
-				isDatesRendered = false
-				@onBeforeBaseUnrender()
 
 
 	# Scroll
@@ -153,11 +125,9 @@ ResourceViewMixin =
 	executeResourcesRender: (resources) ->
 		@renderResources(resources)
 		@isResourcesRendered = true
-		@trigger('resourcesRendered')
 
 
 	executeResourcesUnrender: ->
-		@trigger('before:resourcesUnrendered')
 		@unrenderResources()
 		@isResourcesRendered = false
 
