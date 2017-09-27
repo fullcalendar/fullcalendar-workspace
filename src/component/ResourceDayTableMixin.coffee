@@ -274,20 +274,15 @@ ResourceDayTableMixin =
 	# ----------------------------------------------------------------------------------------------
 
 
-	### TODO: audit this
-
-	renderBusinessHours: (businessHourPayload) ->
+	renderBusinessHours: (businessHourGenerator) ->
 		isAllDay = @hasAllDayBusinessHours
-		generalEventInstanceGroup = businessHourPayload[if isAllDay then 'allDay' else 'timed']
 		unzonedRange = @dateProfile.activeUnzonedRange
 		eventFootprints = []
 
 		for resource in @flattenedResources
-			eventInstanceGroup =
-				if resource.businessHourGenerator
-					resource.businessHourGenerator.buildEventInstanceGroup(isAllDay, unzonedRange)
-				else
-					generalEventInstanceGroup
+
+			eventInstanceGroup = (resource.businessHourGenerator or businessHourGenerator)
+				.buildEventInstanceGroup(isAllDay, unzonedRange)
 
 			if eventInstanceGroup
 				for eventRange in eventInstanceGroup.sliceRenderRanges(unzonedRange)
@@ -303,6 +298,4 @@ ResourceDayTableMixin =
 						)
 					)
 
-		@renderBusinessHourEventFootprints(eventFootprints)
-
-	###
+		@businessHourRenderer.renderEventFootprints(eventFootprints)
