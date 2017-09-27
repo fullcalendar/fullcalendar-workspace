@@ -265,6 +265,9 @@ class ResourceManager extends Class
 				else
 					[]
 
+		if resourceInput.businessHours
+			resource.businessHourGenerator = new BusinessHourGenerator(resourceInput.businessHours, @calendar)
+
 		resource.children =
 			for childInput in resourceInput.children ? []
 				child = @buildResource(childInput)

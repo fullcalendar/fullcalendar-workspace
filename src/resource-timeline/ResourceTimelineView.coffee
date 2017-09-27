@@ -426,64 +426,25 @@ class ResourceTimelineView extends TimelineView
 	# Business Hours Rendering
 	# ------------------------------------------------------------------------------------------------------------------
 
+
 	renderBusinessHours: (businessHourGenerator) ->
-		console.log('split business hours', businessHourGenerator)
-		return
+		rows = @getEventRows()
+		hasIndi = false
 
+		for row in rows
+			if row.resource.businessHourGenerator
+				hasIndi = true
+				break
 
-	# Child Components
-	# ------------------------------------------------------------------------------------------------------------------
-
-	### TODO: review this...
-
-	# business hours
-	customBizGenCnt: 0
-	fallbackBizGenForRows: null
-
-
-	addChild: (rowObj) ->
-		if rowObj.resource.businessHourGenerator # custom generator?
-			rowObj.set('businessHourGenerator', rowObj.resource.businessHourGenerator)
-
-			if (++@customBizGenCnt) == 1 # first row with a custom generator?
-
-				# store existing general business hour generator
-				if @has('businessHourGenerator')
-					@fallbackBizGenForRows = @get('businessHourGenerator')
-					@unset('businessHourGenerator')
-
-					# apply to previously added rows without their own generator
-					for otherRowObj in @getEventRows() # does not include rowObj
-						if not otherRowObj.has('businessHourGenerator')
-							otherRowObj.set('businessHourGenerator', @fallbackBizGenForRows)
+		if hasIndi
+			for row in rows
+				row.renderBusinessHours(row.resource.businessHourGenerator or businessHourGenerator)
 		else
-			if @fallbackBizGenForRows
-				rowObj.set('businessHourGenerator', @fallbackBizGenForRows)
-
-		super # add rowObj
+			@businessHourRenderer.render(businessHourGenerator)
 
 
-	removeChild: (rowObj) ->
-		super # remove rowObj
-
-		if rowObj.resource.businessHourGenerator # had custom generator?
-
-			if (--@customBizGenCnt) == 0 # no more custom generators?
-
-				# reinstall previous general business hour generator
-				if @fallbackBizGenForRows
-
-					for otherRowObj in @getEventRows() # does not include rowObj
-						if not otherRowObj.resource.businessHourGenerator # doesn't have custom def
-							otherRowObj.unset('businessHourGenerator')
-
-					@set('businessHourGenerator', @fallbackBizGenForRows)
-					@fallbackBizGenForRows = null
-
-		# remove the row's generator, regardless of how it was received
-		rowObj.unset('businessHourGenerator')
-
-	###
+	# Row Management
+	# ------------------------------------------------------------------------------------------------------------------
 
 
 	# creates a row for the given resource and inserts it into the hierarchy.

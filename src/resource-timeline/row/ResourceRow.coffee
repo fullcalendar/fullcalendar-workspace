@@ -5,6 +5,8 @@ A row that renders information about a particular resource, as well as it events
 class ResourceRow extends EventRow
 
 	resource: null
+	eventsPayload: null
+	businessHourGenerator: null
 
 
 	constructor: (view, @resource) ->
@@ -12,13 +14,17 @@ class ResourceRow extends EventRow
 
 		@eventRenderer.designatedResource = @resource
 
-		@set('eventDataSource', @resource.eventDataSource)
-
 
 	renderSkeleton: ->
 		super
 
 		@updateExpandingEnabled()
+
+		if @eventsPayload
+			EventRow::executeEventRender.call(this, @eventsPayload)
+
+		if @businessHourGenerator
+			EventRow::renderBusinessHours.call(this, @businessHourGenerator)
 
 		@view.publiclyTrigger('resourceRender', {
 			context: @resource
@@ -34,6 +40,16 @@ class ResourceRow extends EventRow
 	renderEventSkeleton: (tr) ->
 		super
 		tr.attr('data-resource-id', @resource.id)
+
+
+	executeEventRender: (@eventsPayload) ->
+		if @get('isInDom')
+			super(@eventsPayload)
+
+
+	renderBusinessHours: (@businessHourGenerator) ->
+		if @get('isInDom')
+			super(@businessHourGenerator)
 
 
 	###
