@@ -403,10 +403,23 @@ class ResourceTimelineView extends TimelineView
 
 
 	executeEventRender: (eventsPayload) ->
-		console.log('split', eventsPayload)
-		# TODO: post-event-render hack
-		# TODO: why so slow?
-		# TODO: after first navigate, row heights scrunch
+		payloadsByResourceId = {}
+
+		for eventDefId, eventInstanceGroup of eventsPayload
+			eventDef = eventInstanceGroup.getEventDef()
+			resourceIds = eventDef.getResourceIds()
+
+			for resourceId in resourceIds
+				(payloadsByResourceId[resourceId] ?= {})[eventDefId] = eventInstanceGroup
+
+		for resourceId, resourceEventsPayload of payloadsByResourceId
+			row = @getResourceRow(resourceId)
+
+			if row
+				row.executeEventRender(resourceEventsPayload)
+
+		@initEventTitleFollowers()
+
 		return
 
 
