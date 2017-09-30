@@ -28,21 +28,28 @@ ResourceViewMixin =
 	# Logic: base render trigger should fire when BOTH the resources and dates have rendered,
 	# but the unrender trigger should fire after ONLY the dates are about to be unrendered.
 	bindBaseRenderHandlers: ->
-		isBaseRendered = false
+		isResourcesRendered = false
+		isDatesRendered = false
 
-		@on 'resourcesRendered', =>
-			if not isBaseRendered and @isDatesRendered
-				isBaseRendered = true
-				@whenSizeUpdated(@triggerViewRender.bind(this))
+		@on 'resourcesRendered', ->
+			if not isResourcesRendered
+				isResourcesRendered = true
+				if isDatesRendered
+					@whenSizeUpdated(@triggerViewRender.bind(this))
 
-		@on 'datesRendered', =>
-			if not isBaseRendered and @isResourcesRendered
-				isBaseRendered = true
-				@whenSizeUpdated(@triggerViewRender.bind(this))
+		@on 'datesRendered', ->
+			if not isDatesRendered
+				isDatesRendered = true
+				if isResourcesRendered
+					@whenSizeUpdated(@triggerViewRender.bind(this))
+
+		@on 'before:resourcesUnrendered', ->
+			if isResourcesRendered
+				isResourcesRendered = false
 
 		@on 'before:datesUnrendered', ->
-			if isBaseRendered
-				isBaseRendered = false
+			if isDatesRendered
+				isDatesRendered = false
 				@triggerViewDestroy()
 
 
