@@ -24,7 +24,7 @@ EventRenderer::getFallbackStylingObjs = (eventDef) ->
 	if @currentResource
 		objs.unshift(@currentResource)
 
-	else if @resourceRepo
+	else
 		resources = []
 
 		for id in eventDef.getResourceIds()

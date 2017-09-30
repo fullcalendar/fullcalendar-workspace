@@ -11,8 +11,8 @@ class ResourceDayGrid extends FC.DayGrid
 		@dateProfile = dateProfile
 
 
-	renderResources: (resourceRepo) ->
-		@registerResources(resourceRepo)
+	renderResources: (resources) ->
+		@registerResources(resources)
 		@renderGrid()
 
 		if @headContainerEl
