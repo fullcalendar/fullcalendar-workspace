@@ -404,13 +404,20 @@ class ResourceTimelineView extends TimelineView
 
 	executeEventRender: (eventsPayload) ->
 		payloadsByResourceId = {}
+		genericPayload = {}
 
 		for eventDefId, eventInstanceGroup of eventsPayload
 			eventDef = eventInstanceGroup.getEventDef()
 			resourceIds = eventDef.getResourceIds()
 
-			for resourceId in resourceIds
-				(payloadsByResourceId[resourceId] ?= {})[eventDefId] = eventInstanceGroup
+			if resourceIds.length
+				for resourceId in resourceIds
+					(payloadsByResourceId[resourceId] ?= {})[eventDefId] = eventInstanceGroup
+			# only render bg segs that have no resources
+			else if eventDef.hasBgRendering()
+				genericPayload[eventDefId] = eventInstanceGroup
+
+		@eventRenderer.render(genericPayload)
 
 		for resourceId, resourceEventsPayload of payloadsByResourceId
 			row = @getResourceRow(resourceId)
