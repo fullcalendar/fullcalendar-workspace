@@ -143,18 +143,25 @@ describe 'vresource structure', ->
 						, 200
 
 			it 'renders progressively', (callback) ->
-				firstCallbackCalled = false
+				firstCallbackHeight = null
+
 				firstCallback = ->
 					expect(getHeadResourceEls('a').length).toBe(0)
 					expect(getHeadResourceEls('b').length).toBe(0)
-					expect(getHeadDowEls('mon').length).toBe(1)
-					firstCallbackCalled = true
+					firstCallbackHeight = $('.fc-view-container').outerHeight()
+
 				initCalendar
 					viewRender: ->
 						expect(getHeadResourceEls('a').length).toBe(1)
 						expect(getHeadResourceEls('b').length).toBe(1)
-						expect(firstCallbackCalled).toBe(true)
+
+						expect(firstCallbackHeight).toBeGreaterThan(100)
+						expect(Math.abs(
+							firstCallbackHeight - $('.fc-view-container').outerHeight()
+						)).toBeLessThan(1)
+
 						callback()
+
 				setTimeout firstCallback, 100
 
 	describe 'when month view', ->
