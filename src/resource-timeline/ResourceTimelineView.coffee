@@ -433,21 +433,30 @@ class ResourceTimelineView extends TimelineView
 	# Business Hours Rendering
 	# ------------------------------------------------------------------------------------------------------------------
 
+	indiBizCnt: 0 # number of resources with "independent" business hour definition
+	isIndiBizRendered: false # are resources displaying business hours individually?
+	isGenericBizRendered: false # is generic business hours rendered? (means all resources have same)
+	genericBiz: null # generic (non-resource-specific) business hour generator
+
 
 	renderBusinessHours: (businessHourGenerator) ->
-		rows = @getEventRows()
-		hasIndi = false
+		@genericBiz = businessHourGenerator # save for later
+		@isIndiBizRendered = false
+		@isGenericBizRendered = false
 
-		for row in rows
-			if row.resource.businessHourGenerator
-				hasIndi = true
-				break
-
-		if hasIndi
-			for row in rows
+		if @indiBizCnt
+			@isIndiBizRendered = true
+			for row in @getEventRows()
 				row.renderBusinessHours(row.resource.businessHourGenerator or businessHourGenerator)
 		else
+			@isGenericBizRendered = true
 			@businessHourRenderer.render(businessHourGenerator)
+
+
+	updateIndiBiz: ->
+		if (@indiBizCnt and @isGenericBizRendered) or (not @indiBizCnt and @isIndiBizRendered)
+			@unrenderBusinessHours()
+			@renderBusinessHours(@genericBiz)
 
 
 	# Row Management
@@ -474,6 +483,10 @@ class ResourceTimelineView extends TimelineView
 		@addChild(row) # for DateComponent!
 		@resourceRowHash[resource.id] = row
 
+		if resource.businessHourGenerator
+			@indiBizCnt++
+			@updateIndiBiz()
+
 		for childResource in resource.children
 			@insertResource(childResource, row)
 
@@ -490,6 +503,10 @@ class ResourceTimelineView extends TimelineView
 			@removeChild(row) # for DateComponent!
 
 			row.removeFromParentAndDom()
+
+			if resource.businessHourGenerator
+				@indiBizCnt--
+				@updateIndiBiz()
 
 		row
 

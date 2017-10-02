@@ -3,6 +3,7 @@ describe 'timeline businessHours', ->
 	pushOptions
 		defaultView: 'timelineDay'
 		now: '2016-02-15'
+		scrollTime: '00:00'
 
 	describeOptions 'isRTL', {
 		'when LTR': false
