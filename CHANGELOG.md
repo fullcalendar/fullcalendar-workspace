@@ -1,4 +1,20 @@
 
+v1.7.1 (2017-09-06)
+-------------------
+
+- vertical divider in timeline view in bootstrap3 theme ugly (#341)
+- render all helper elements while DnD, an event w/ multiple resourceIds (#155)
+- Composer.json fixes, Packagist now working
+
+
+v1.7.0 (2017-08-30)
+-------------------
+
+- Bootstrap 3 theme support (more info in [core release notes][core-3.5.0])
+
+[core-3.5.0]: https://github.com/fullcalendar/fullcalendar/releases/tag/v3.5.0
+
+
 v1.6.2 (2017-04-27)
 -------------------
 

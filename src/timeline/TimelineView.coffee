@@ -245,15 +245,17 @@ class TimelineView extends View
 
 
 	renderSkeletonHtml: ->
-		'<table>
+		theme = @calendar.theme
+
+		'<table class="' + theme.getClass('tableGrid') + '">
 			<thead class="fc-head">
 				<tr>
-					<td class="fc-time-area ' + @widgetHeaderClass + '"></td>
+					<td class="fc-time-area ' + theme.getClass('widgetHeader') + '"></td>
 				</tr>
 			</thead>
 			<tbody class="fc-body">
 				<tr>
-					<td class="fc-time-area ' + @widgetContentClass + '"></td>
+					<td class="fc-time-area ' + theme.getClass('widgetContent') + '"></td>
 				</tr>
 			</tbody>
 		</table>'
@@ -340,6 +342,7 @@ class TimelineView extends View
 
 
 	renderSlatHtml: ->
+		theme = @calendar.theme
 		labelInterval = @labelInterval
 		formats = @headerFormats
 		cellRows = ([] for format in formats) # indexed by row,col
@@ -385,7 +388,7 @@ class TimelineView extends View
 		isChrono = labelInterval > @slotDuration
 		isSingleDay = @slotDuration.as('days') == 1
 
-		html = '<table>'
+		html = '<table class="' + theme.getClass('tableGrid') + '">'
 		html += '<colgroup>'
 		for date in slotDates
 			html += '<col/>'
@@ -396,7 +399,7 @@ class TimelineView extends View
 			html += '<tr' + (if isChrono and isLast then ' class="fc-chrono"' else '') + '>'
 			for cell in rowCells
 
-				headerCellClassNames = [ @widgetHeaderClass ]
+				headerCellClassNames = [ theme.getClass('widgetHeader') ]
 				if cell.weekStart
 					headerCellClassNames.push('fc-em-cell')
 				if isSingleDay
@@ -417,7 +420,7 @@ class TimelineView extends View
 			html += '</tr>'
 		html += '</tbody></table>'
 
-		slatHtml = '<table>'
+		slatHtml = '<table class="' + theme.getClass('tableGrid') + '">'
 		slatHtml += '<colgroup>'
 		for cell in slotCells
 			slatHtml += '<col/>'
@@ -448,6 +451,7 @@ class TimelineView extends View
 
 
 	slatCellHtml: (date, isEm) ->
+		theme = @calendar.theme
 
 		if @isTimeScale
 			classes = []
@@ -460,7 +464,7 @@ class TimelineView extends View
 			classes = @getDayClasses(date)
 			classes.push('fc-day')
 
-		classes.unshift(@widgetContentClass)
+		classes.unshift(theme.getClass('widgetContent'))
 
 		if isEm
 			classes.push('fc-em-cell')

@@ -14,11 +14,13 @@ class VRowGroup extends RowGroup
 	will be called before the parent's renderRowspan().
 	###
 	renderRowspan: ->
+		theme = @view.calendar.theme
+
 		if @rowspan # takes up at least one row?
 
 			# ensure the TD element
 			if not @groupTd
-				@groupTd = $('<td class="' + @view.widgetContentClass + '"/>')
+				@groupTd = $('<td class="' + theme.getClass('widgetContent') + '"/>')
 					.append(@renderGroupContentEl())
 
 			@groupTd.attr('rowspan', @rowspan)

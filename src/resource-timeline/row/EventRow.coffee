@@ -15,13 +15,16 @@ class EventRow extends RowParent
 
 
 	renderEventSkeleton: (tr) ->
+		theme = @view.calendar.theme
+
 		tr.html('
-			<td class="' + @view.widgetContentClass + '">
+			<td class="' + theme.getClass('widgetContent') + '">
 				<div>
 					<div class="fc-event-container" />
 				</div>
 			</td>
 		')
+
 		@segContainerEl = tr.find('.fc-event-container')
 		@innerEl = @bgSegContainerEl = tr.find('td > div')
 

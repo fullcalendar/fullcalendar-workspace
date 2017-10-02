@@ -124,6 +124,8 @@ class ResourceTimelineView extends TimelineView
 	renderSkeleton: ->
 		super
 
+		theme = @calendar.theme
+
 		@spreadsheet.el = @el.find('tbody .fc-resource-area')
 		@spreadsheet.headEl = @el.find('thead .fc-resource-area')
 		@spreadsheet.renderSkeleton()
@@ -134,7 +136,13 @@ class ResourceTimelineView extends TimelineView
 		@segContainerEl.remove()
 		@segContainerEl = null
 
-		timeBodyContainerEl = $('<div class="fc-rows"><table><tbody/></table></div>').appendTo(@timeBodyScroller.canvas.contentEl)
+		timeBodyContainerEl = $('
+			<div class="fc-rows">
+				<table class="' + theme.getClass('tableGrid') + '">
+					<tbody/>
+				</table>
+			</div>
+		').appendTo(@timeBodyScroller.canvas.contentEl)
 		@timeBodyTbodyEl = timeBodyContainerEl.find('tbody')
 
 		@tbodyHash = { # needed for rows to render
@@ -151,19 +159,21 @@ class ResourceTimelineView extends TimelineView
 
 
 	renderSkeletonHtml: ->
-		'<table>
+		theme = @calendar.theme
+
+		'<table class="' + theme.getClass('tableGrid') + '">
 			<thead class="fc-head">
 				<tr>
-					<td class="fc-resource-area ' + @widgetHeaderClass + '"></td>
-					<td class="fc-divider fc-col-resizer ' + @widgetHeaderClass + '"></td>
-					<td class="fc-time-area ' + @widgetHeaderClass + '"></td>
+					<td class="fc-resource-area ' + theme.getClass('widgetHeader') + '"></td>
+					<td class="fc-divider fc-col-resizer ' + theme.getClass('widgetHeader') + '"></td>
+					<td class="fc-time-area ' + theme.getClass('widgetHeader') + '"></td>
 				</tr>
 			</thead>
 			<tbody class="fc-body">
 				<tr>
-					<td class="fc-resource-area ' + @widgetContentClass + '"></td>
-					<td class="fc-divider fc-col-resizer ' + @widgetHeaderClass + '"></td>
-					<td class="fc-time-area ' + @widgetContentClass + '"></td>
+					<td class="fc-resource-area ' + theme.getClass('widgetContent') + '"></td>
+					<td class="fc-divider fc-col-resizer ' + theme.getClass('widgetHeader') + '"></td>
+					<td class="fc-time-area ' + theme.getClass('widgetContent') + '"></td>
 				</tr>
 			</tbody>
 		</table>'
