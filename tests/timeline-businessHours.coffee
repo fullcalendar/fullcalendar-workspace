@@ -76,6 +76,27 @@ describe 'timeline businessHours', ->
 						expectResourceOverride()
 						done()
 
+		it 'renders dynamically with resource override amidst other custom rows', (done) ->
+			initCalendar
+				resources: [
+					{ id: 'a', title: 'a', businessHours: { start: '03:00', end: '21:00' } }
+				]
+				businessHours: true
+				viewRender: ->
+					expect(isResourceTimelineNonBusinessSegsRendered([
+						{ resourceId: 'a', start: '2016-02-15T00:00', end: '2016-02-15T03:00' }
+						{ resourceId: 'a', start: '2016-02-15T21:00', end: '2016-02-16T00:00' }
+					])).toBe(true)
+					setTimeout ->
+						currentCalendar.addResource({ id: 'b', title: 'b', businessHours: { start: '02:00', end: '22:00' } })
+						expect(isResourceTimelineNonBusinessSegsRendered([
+							{ resourceId: 'a', start: '2016-02-15T00:00', end: '2016-02-15T03:00' }
+							{ resourceId: 'a', start: '2016-02-15T21:00', end: '2016-02-16T00:00' }
+							{ resourceId: 'b', start: '2016-02-15T00:00', end: '2016-02-15T02:00' }
+							{ resourceId: 'b', start: '2016-02-15T22:00', end: '2016-02-16T00:00' }
+						])).toBe(true)
+						done()
+
 	expect9to5 = ->
 		expect(isTimelineNonBusinessSegsRendered([
 			{ start: '2016-02-15T00:00', end: '2016-02-15T09:00' }

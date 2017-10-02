@@ -485,6 +485,11 @@ class ResourceTimelineView extends TimelineView
 
 		if resource.businessHourGenerator
 			@indiBizCnt++
+
+			# hack to get dynamically-added resources with custom business hours to render
+			if @isIndiBizRendered
+				row.businessHourGenerator = resource.businessHourGenerator
+
 			@updateIndiBiz()
 
 		for childResource in resource.children
