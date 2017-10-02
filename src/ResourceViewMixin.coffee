@@ -35,13 +35,13 @@ ResourceViewMixin =
 			if not isResourcesRendered
 				isResourcesRendered = true
 				if isDatesRendered
-					@whenSizeUpdated(@triggerViewRender.bind(this))
+					@whenSizeUpdated(@triggerViewRender)
 
 		@on 'datesRendered', ->
 			if not isDatesRendered
 				isDatesRendered = true
 				if isResourcesRendered
-					@whenSizeUpdated(@triggerViewRender.bind(this))
+					@whenSizeUpdated(@triggerViewRender)
 
 		@on 'before:resourcesUnrendered', ->
 			if isResourcesRendered
