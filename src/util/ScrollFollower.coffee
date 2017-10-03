@@ -31,7 +31,7 @@ class ScrollFollower
 				@isForcedRelative = true # touch devices scroll too quick to make absolute ever look good
 			else
 				@isTouch = false
-				@isForcedRelative = false
+				#@isForcedRelative = false # why
 				@handleScroll()
 
 		# for touch devices
