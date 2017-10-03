@@ -3,14 +3,22 @@
 # --------------------------------------------------------------------------------------------------
 
 
+# fix bug with jQuery 3 returning 0 height for <td> elements in the IE's
+[ 'height', 'outerHeight' ].forEach (methodName) ->
+	orig = $.fn[methodName]
+
+	$.fn[methodName] = ->
+		if !arguments.length && this.is('td')
+			this[0].getBoundingClientRect().height
+		else
+			orig.apply(this, arguments)
+
+
 getBoundingRect = (el) ->
 	el = $(el)
-	expect(el.length).toBe(1)
-	rect = el.offset()
-	rect.right = rect.left + el.outerWidth()
-	rect.bottom = rect.top + el.outerHeight()
-	rect.node = el[0] # very useful for debugging
-	rect
+	$.extend({}, el[0].getBoundingClientRect(), {
+		node: el # very useful for debugging
+	})
 
 
 getJointBoundingRect = (els) ->
