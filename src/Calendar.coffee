@@ -36,11 +36,10 @@ Calendar::getResources = ->
 
 
 Calendar::addResource = (resourceInput, scroll=false) -> # assumes all resources already loaded
-	resource = @resourceManager.addResource(resourceInput)
-
-	if scroll and @view.scrollToResource
-		@view.scrollToResource(resource)
-
+	@resourceManager.addResource(resourceInput)
+		.then (resource) =>
+			if scroll and @view.scrollToResource
+				@view.scrollToResource(resource)
 	return
 
 
