@@ -238,7 +238,6 @@ class ResourceTimelineView extends TimelineView
 
 	updateSize: (totalHeight, isAuto, isResize) ->
 		@spreadsheet.updateSize()
-		@resourceScrollJoiner.update()
 
 		# TODO: smarter about not doing this every time, if a single resource is added/removed
 		@syncRowHeights()
@@ -255,6 +254,9 @@ class ResourceTimelineView extends TimelineView
 
 		# do children AFTER because of ScrollFollowerSprite abs position issues
 		super
+
+		# do once spreadsheet area and event slat area have correct height, for gutters
+		@resourceScrollJoiner.update()
 
 
 	queryMiscHeight: ->
