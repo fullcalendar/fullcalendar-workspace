@@ -757,3 +757,6 @@ groupEventFootprintsByResourceId = (eventFootprints) ->
 			.push(eventFootprint)
 
 	map
+
+
+FC.ResourceTimelineView = ResourceTimelineView

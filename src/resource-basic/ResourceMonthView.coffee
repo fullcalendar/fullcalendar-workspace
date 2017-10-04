@@ -8,3 +8,6 @@ class ResourceMonthView extends FC.MonthView
 	constructor: ->
 		super
 		@initResourceView()
+
+
+FC.ResourceMonthView = ResourceMonthView

@@ -8,3 +8,6 @@ class ResourceBasicView extends FC.BasicView
 	constructor: ->
 		super
 		@initResourceView()
+
+
+FC.ResourceBasicView = ResourceBasicView

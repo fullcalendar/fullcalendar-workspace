@@ -871,3 +871,6 @@ class TimelineView extends View
 	unrenderDrag: ->
 		@helperRenderer.unrender()
 		@unrenderHighlight()
+
+
+FC.TimelineView = TimelineView

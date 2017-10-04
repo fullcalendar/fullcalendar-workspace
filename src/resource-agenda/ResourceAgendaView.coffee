@@ -9,3 +9,6 @@ class ResourceAgendaView extends FC.AgendaView
 	constructor: ->
 		super
 		@initResourceView()
+
+
+FC.ResourceAgendaView = ResourceAgendaView
