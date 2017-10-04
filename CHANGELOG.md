@@ -1,4 +1,14 @@
 
+v1.8.0
+------
+
+Incompatibilities:
+- Vertical resource view (agenda or basic), when waiting to receive asynchronous
+  event sources, previously would render generic date columns as placeholders.
+  Now, empty rectangles will simply be rendered.
+
+
+
 v1.7.1 (2017-09-06)
 -------------------
 
