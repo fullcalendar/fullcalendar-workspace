@@ -4,13 +4,14 @@ origEventDefToLegacy = EventDef::toLegacy
 origApplyManualStandardProps = EventDef::applyManualStandardProps
 origApplyMiscProps = EventDef::applyMiscProps
 
-# defineStandardProps won't work :( ... why? i forget
-EventDef::standardPropMap.resourceId = false # manually handle
-EventDef::standardPropMap.resourceIds = false # manually handle
-EventDef::standardPropMap.resourceEditable = true # automatically transfer
+EventDef.defineStandardProps({
+	resourceId: false # manually handle
+	resourceIds: false # manually handle
+	resourceEditable: true # automatically transfer
+})
 
 ###
-NOTE: will always be populated by applyMiscProps
+new class members
 ###
 EventDef::resourceIds = null
 EventDef::resourceEditable = null # `null` is unspecified state
