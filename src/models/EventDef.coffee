@@ -1,12 +1,9 @@
 
-origEventDefClone = EventDef::clone
-origEventDefToLegacy = EventDef::toLegacy
-origApplyManualStandardProps = EventDef::applyManualStandardProps
-origApplyMiscProps = EventDef::applyMiscProps
+EventDef_applyMiscProps = EventDef::applyMiscProps
+EventDef_clone = EventDef::clone
+EventDef_toLegacy = EventDef::toLegacy
 
 EventDef.defineStandardProps({
-	resourceId: false # manually handle
-	resourceIds: false # manually handle
 	resourceEditable: true # automatically transfer
 })
 
@@ -17,10 +14,30 @@ EventDef::resourceIds = null
 EventDef::resourceEditable = null # `null` is unspecified state
 
 
-EventDef::applyManualStandardProps = (rawProps) ->
-	origApplyManualStandardProps.apply(this, arguments)
+###
+NOTE: we can use defineStandardProps/applyManualStandardProps (example below)
+once we do away with the deprecated eventResourceField.
+###
+EventDef::applyMiscProps = (rawProps) ->
+	rawProps = $.extend({}, rawProps) # clone, because of delete
 
 	@resourceIds = Resource.extractIds(rawProps, @source.calendar)
+
+	delete rawProps.resourceId
+	delete rawProps.resourceIds
+
+	EventDef_applyMiscProps.apply(this, arguments)
+
+
+###
+	EventDef.defineStandardProps({
+		resourceId: false # manually handle
+		resourceIds: false # manually handle
+	})
+	EventDef::applyManualStandardProps = (rawProps) ->
+		origApplyManualStandardProps.apply(this, arguments)
+		@resourceIds = Resource.extractIds(rawProps, @source.calendar)
+###
 
 
 ###
@@ -51,13 +68,13 @@ EventDef::getResourceIds = ->
 
 
 EventDef::clone = ->
-	def = origEventDefClone.apply(this, arguments)
+	def = EventDef_clone.apply(this, arguments)
 	def.resourceIds = @getResourceIds()
 	def
 
 
 EventDef::toLegacy = ->
-	obj = origEventDefToLegacy.apply(this, arguments)
+	obj = EventDef_toLegacy.apply(this, arguments)
 	resourceIds = @getResourceIds()
 
 	obj.resourceId =
