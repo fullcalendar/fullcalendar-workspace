@@ -1,3 +1,3 @@
 
-# allowRawProps won't work :(
+# defineStandardProps won't work :(
 EventSource::standardPropMap.resourceEditable = true # automatically transfer
