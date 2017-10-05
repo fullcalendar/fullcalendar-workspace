@@ -1,9 +1,12 @@
 
 origEventDefClone = EventDef::clone
 origEventDefToLegacy = EventDef::toLegacy
+origApplyManualStandardProps = EventDef::applyManualStandardProps
 origApplyMiscProps = EventDef::applyMiscProps
 
-# defineStandardProps won't work :(
+# defineStandardProps won't work :( ... why? i forget
+EventDef::standardPropMap.resourceId = false # manually handle
+EventDef::standardPropMap.resourceIds = false # manually handle
 EventDef::standardPropMap.resourceEditable = true # automatically transfer
 
 ###
@@ -11,6 +14,13 @@ NOTE: will always be populated by applyMiscProps
 ###
 EventDef::resourceIds = null
 EventDef::resourceEditable = null # `null` is unspecified state
+
+
+EventDef::applyManualStandardProps = (rawProps) ->
+	origApplyManualStandardProps.apply(this, arguments)
+
+	@resourceIds = Resource.extractIds(rawProps, @source.calendar)
+
 
 ###
 resourceId should already be normalized
@@ -65,14 +75,3 @@ EventDef::toLegacy = ->
 		obj.resourceEditable = @resourceEditable
 
 	obj
-
-
-EventDef::applyMiscProps = (rawProps) ->
-	rawProps = $.extend({}, rawProps) # clone, because of delete
-
-	@resourceIds = Resource.extractIds(rawProps, @source.calendar)
-
-	delete rawProps.resourceId
-	delete rawProps.resourceIds
-
-	origApplyMiscProps.apply(this, arguments)
