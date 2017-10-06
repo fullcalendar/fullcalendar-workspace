@@ -102,3 +102,18 @@ describe 'filterResourcesWithEvents', ->
 					{ title: 'event 1', start: '2016-12-04T01:00:00', resourceId: 'b2' }
 				]
 			expect(getTimelineResourceIds()).toEqual([ 'b', 'b2' ])
+
+
+		it 'will filter out resources that might have events in other ranges', ->
+			initCalendar
+				defaultView: 'timelineWeek'
+				defaultDate: '2017-08-09'
+				resources: [
+					{ id: 'f', title: 'Auditorium F', eventColor: 'red' }
+				],
+				events: [
+					{ id: '5', resourceId: 'f', start: '2017-08-06T08:00:00', end: '2017-08-06T18:00:00', title: 'event 5' }
+				]
+
+			currentCalendar.next()
+			expect(getTimelineResourceIds()).toEqual([])

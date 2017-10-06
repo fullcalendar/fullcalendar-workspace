@@ -177,17 +177,27 @@ View::handleResourceRemove = (resource) ->
 
 
 View::filterResourcesWithEvents = (resources, eventsPayload) ->
+	eventRanges = @eventsPayloadToRanges(eventsPayload)
 	resourceIdHits = {}
 
-	for id of eventsPayload
-		eventInstanceGroup = eventsPayload[id]
-
-		# TODO: not efficient looping over repeat instances
-		for eventInstance in eventInstanceGroup.eventInstances
-			for resourceId in eventInstance.def.getResourceIds()
-				resourceIdHits[resourceId] = true
+	for eventRange in eventRanges
+		for resourceId in eventRange.eventDef.getResourceIds()
+			resourceIdHits[resourceId] = true
 
 	_filterResourcesWithEvents(resources, resourceIdHits)
+
+
+View::eventsPayloadToRanges = (eventsPayload) ->
+	dateProfile = @_getDateProfile()
+	allEventRanges = []
+
+	for eventDefId, instanceGroup of eventsPayload
+		eventRanges = instanceGroup.sliceRenderRanges(
+			dateProfile.activeUnzonedRange
+		)
+		allEventRanges.push(eventRanges...)
+
+	allEventRanges
 
 
 # provides a new structure with masked objects
