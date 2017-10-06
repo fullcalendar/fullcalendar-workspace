@@ -587,7 +587,7 @@ class TimelineView extends View
 
 		if isDatesRendered
 			@timeHeadColEls.slice(0, -1).add(@slatColEls.slice(0, -1))
-				.width(nonLastSlotWidth)
+				.css('width', nonLastSlotWidth)
 
 		@timeHeadScroller.updateSize()
 		@timeBodyScroller.updateSize()

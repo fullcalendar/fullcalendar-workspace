@@ -229,7 +229,7 @@ class ResourceTimelineView extends TimelineView
 
 
 	positionDivider: (w) ->
-		@el.find('.fc-resource-area').width(w) # TODO: don't we have this cached?
+		@el.find('.fc-resource-area').css('width', w) # TODO: don't we have this cached?
 
 
 	# Sizing

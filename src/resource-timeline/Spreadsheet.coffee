@@ -213,8 +213,8 @@ class Spreadsheet
 					colMinWidths[i]
 
 		for cssWidth, i in cssWidths
-			@headColEls.eq(i).width(cssWidth)
-			@bodyColEls.eq(i).width(cssWidth)
+			@headColEls.eq(i).css('width', cssWidth)
+			@bodyColEls.eq(i).css('width', cssWidth)
 
 		@headScroller.canvas.setMinWidth(tableMinWidth) # not really a table width anymore
 		@bodyScroller.canvas.setMinWidth(tableMinWidth)
