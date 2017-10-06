@@ -1,6 +1,8 @@
 tmp
 dist
 
+.idea
+
 # npm
 node_modules
 npm-debug.log
