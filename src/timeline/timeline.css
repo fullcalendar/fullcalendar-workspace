@@ -122,7 +122,6 @@ undo previous rule in order to always show last border.
 }
 
 .fc-timeline .fc-cell-text {
-	position: relative;
 	padding-left: 4px;
 	padding-right: 4px;
 }
@@ -243,6 +242,7 @@ tr.fc-collapsed > td > div {
 
 
 .fc-body .fc-resource-area .fc-cell-content { /* might BE the cell */
+	position: relative; /* optimization for ScrollFollower */
 	padding-top: 8px;
 	padding-bottom: 8px;
 }
@@ -447,6 +447,7 @@ tr.fc-collapsed > td > div {
 }
 
 .fc-timeline-event .fc-title {
+	position: relative; /* optimization for ScrollFollower */
 	padding: 0 1px;
 }
 

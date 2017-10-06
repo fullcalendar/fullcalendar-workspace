@@ -42,7 +42,10 @@ class ScrollFollower
 	# TODO: have a destroy method.
 	# View's whose skeletons get destroyed should unregister their scrollfollowers.
 
-
+	###
+	Can specify sprites as a jQuery set of elements.
+	If elements are already position:relative, is a performance benefit.
+	###
 	setSprites: (sprites) ->
 		@clearSprites()
 

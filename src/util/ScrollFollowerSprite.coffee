@@ -18,8 +18,14 @@ class ScrollFollowerSprite
 	naturalWidth: null
 
 
+	###
+	If given el is already position:relative, is a performance gain
+	###
 	constructor: (@el, @follower=null) ->
 		@isBlock = @el.css('display') == 'block'
+
+		if @el.css('position') != 'relative'
+			@el.css('position', 'relative')
 
 
 	disable: ->
