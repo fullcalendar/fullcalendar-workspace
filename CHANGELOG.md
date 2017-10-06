@@ -2,9 +2,13 @@
 v1.8.0
 ------
 
+Features:
+- performance gains with positioning/sizing (#277, #320) thx MartijnWelker
+
 Bugfixes:
 - `updateEvent` makes events disappear (#350)
-- addResource scrollTo param broken (#335)
+- `addResource` scrollTo param broken (#335)
+- `filterResourcesWithEvents` considers current view's range (#334)
 
 Incompatibilities:
 - Vertical resource view (agenda or basic), when waiting to receive asynchronous
