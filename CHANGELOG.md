@@ -2,11 +2,14 @@
 v1.8.0
 ------
 
+Bugfixes:
+- `updateEvent` makes events disappear (#350)
+- addResource scrollTo param broken (#335)
+
 Incompatibilities:
 - Vertical resource view (agenda or basic), when waiting to receive asynchronous
   event sources, previously would render generic date columns as placeholders.
   Now, empty rectangles will simply be rendered.
-
 
 
 v1.7.1 (2017-09-06)
@@ -21,6 +24,8 @@ v1.7.0 (2017-08-30)
 -------------------
 
 - Bootstrap 3 theme support (more info in [core release notes][core-3.5.0])
+- fixed resources businessHours leak in other views (#204)
+- fixed timeline business hours on single day not rendered (#299)
 
 [core-3.5.0]: https://github.com/fullcalendar/fullcalendar/releases/tag/v3.5.0
 
