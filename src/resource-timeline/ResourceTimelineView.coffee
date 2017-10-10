@@ -437,8 +437,6 @@ class ResourceTimelineView extends TimelineView
 			if row
 				row.executeEventRender(resourceEventsPayload)
 
-		@initEventTitleFollowers()
-
 		return
 
 

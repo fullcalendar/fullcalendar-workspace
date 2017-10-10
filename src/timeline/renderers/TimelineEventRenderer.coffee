@@ -20,6 +20,7 @@ class TimelineEventRenderer extends EventRenderer
 
 
 	renderFgSegs: (segs) ->
+		eventTitleFollower = @view.eventTitleFollower
 
 		for seg in segs
 			# TODO: centralize logic (also in updateSegPositions)
@@ -44,6 +45,13 @@ class TimelineEventRenderer extends EventRenderer
 			seg.el.css('top', seg.top)
 
 		@component.segContainerEl.height(@component.segContainerHeight)
+
+		for seg in segs
+			titleEl = seg.el.find('.fc-title')
+
+			if titleEl.length
+				seg.scrollFollowerSprite = new ScrollFollowerSprite(titleEl)
+				eventTitleFollower.addSprite(seg.scrollFollowerSprite)
 
 
 	# NOTE: this modifies the order of segs
@@ -86,7 +94,13 @@ class TimelineEventRenderer extends EventRenderer
 		segLevels
 
 
-	unrenderFgSegs: ->
+	unrenderFgSegs: (segs) ->
+		eventTitleFollower = @view.eventTitleFollower
+
+		for seg in segs
+			if seg.scrollFollowerSprite
+				eventTitleFollower.removeSprite(seg.scrollFollowerSprite)
+
 		@component.segContainerEl.empty()
 		@component.segContainerEl.height('')
 		@component.segContainerHeight = null

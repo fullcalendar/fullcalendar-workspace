@@ -325,7 +325,7 @@ class TimelineView extends View
 			})
 
 		if @headDateFollower
-			@headDateFollower.setSprites(@timeHeadEl.find('tr:not(:last-child) .fc-cell-text'))
+			@headDateFollower.setSpriteEls(@timeHeadEl.find('tr:not(:last-child) .fc-cell-text'))
 
 
 	unrenderDates: ->
@@ -472,29 +472,6 @@ class TimelineView extends View
 		'<td class="' + classes.join(' ') + '"' +
 			' data-date="' + date.format() + '"' +
 			'><div /></td>'
-
-
-	# Event Rendering
-	# ------------------------------------------------------------------------------------------------------------------
-
-
-	executeEventRender: ->
-		super
-		@initEventTitleFollowers()
-
-
-	initEventTitleFollowers: ->
-		sprites = []
-		for seg in @getEventSegs() # TODO: only retrieve fg segs
-			titleEl = seg.el.find('.fc-title')
-			if titleEl.length
-				sprites.push(new ScrollFollowerSprite(titleEl))
-		@eventTitleFollower.setSprites(sprites)
-
-
-	executeEventUnrender: ->
-		@eventTitleFollower.clearSprites()
-		super
 
 
 	# Business Hours

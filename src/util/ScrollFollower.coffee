@@ -43,25 +43,30 @@ class ScrollFollower
 	# View's whose skeletons get destroyed should unregister their scrollfollowers.
 
 	###
-	Can specify sprites as a jQuery set of elements.
+	`els` is as a jQuery set of elements.
 	If elements are already position:relative, is a performance benefit.
 	###
-	setSprites: (sprites) ->
+	setSpriteEls: (els) ->
 		@clearSprites()
 
-		if sprites instanceof $
-			@sprites = for sprite in sprites
-				new ScrollFollowerSprite($(sprite), this)
-		else
-			for sprite in sprites
-				sprite.follower = this
-			@sprites = sprites
+		@sprites = for el in els
+			new ScrollFollowerSprite($(el), this)
 
 
 	clearSprites: ->
 		for sprite in @sprites
 			sprite.clear()
+
 		@sprites = []
+
+
+	addSprite: (sprite) ->
+		sprite.follower = this
+		@sprites.push(sprite)
+
+
+	removeSprite: (sprite) ->
+		removeExact(@sprites, sprite)
 
 
 	handleScroll: ->

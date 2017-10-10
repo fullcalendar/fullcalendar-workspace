@@ -270,6 +270,6 @@ class Spreadsheet
 					if cellContent.length
 						nodes.push(cellContent[0])
 
-		@cellFollower.setSprites($(nodes))
+		@cellFollower.setSpriteEls($(nodes))
 		@cellFollower.update()
 
