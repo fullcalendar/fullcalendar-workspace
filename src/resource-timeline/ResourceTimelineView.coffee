@@ -39,6 +39,7 @@ class ResourceTimelineView extends TimelineView
 	eventRows: null
 	shownEventRows: null
 	resourceScrollJoiner: null
+	rowsNeedingHeightSync: null
 
 	# positioning
 	rowCoordCache: null
@@ -51,6 +52,7 @@ class ResourceTimelineView extends TimelineView
 		@spreadsheet = new Spreadsheet(this)
 		@rowHierarchy = new RowParent(this)
 		@resourceRowHash = {}
+		@rowsNeedingHeightSync = []
 
 
 	# Resource Options
@@ -239,8 +241,11 @@ class ResourceTimelineView extends TimelineView
 	updateSize: (totalHeight, isAuto, isResize) ->
 		@spreadsheet.updateSize()
 
-		# TODO: smarter about not doing this every time, if a single resource is added/removed
-		@syncRowHeights()
+		if isResize
+			@syncRowHeights() # all
+		else
+			@syncRowHeights(@rowsNeedingHeightSync)
+			@rowsNeedingHeightSync = []
 
 		headHeight = @syncHeadHeights()
 
@@ -629,11 +634,12 @@ class ResourceTimelineView extends TimelineView
 
 
 	descendantShown: (row) ->
-		# RowParent needs this
+		@rowsNeedingHeightSync.push(row)
+		return
 
 
 	descendantHidden: (row) ->
-		# RowParent needs this
+		return
 
 
 	# visibleRows is flat. does not do recursive

@@ -303,6 +303,7 @@ class RowParent extends DateComponent
 				child.show()
 
 			@animateExpand()
+			@view.updateSize() # notify view of dimension change
 
 	###
 	Hides this node's children if they are not already hidden. Changes any expander icon.
