@@ -52,7 +52,6 @@ class ResourceTimelineView extends TimelineView
 		@spreadsheet = new Spreadsheet(this)
 		@rowHierarchy = new RowParent(this)
 		@resourceRowHash = {}
-		@rowsNeedingHeightSync = []
 
 
 	# Resource Options
@@ -241,11 +240,11 @@ class ResourceTimelineView extends TimelineView
 	updateSize: (totalHeight, isAuto, isResize) ->
 		@spreadsheet.updateSize()
 
-		if isResize
-			@syncRowHeights() # all
-		else
+		if @rowsNeedingHeightSync
 			@syncRowHeights(@rowsNeedingHeightSync)
-			@rowsNeedingHeightSync = []
+			@rowsNeedingHeightSync = null
+		else # a resize or an event rerender
+			@syncRowHeights() # sync all
 
 		headHeight = @syncHeadHeights()
 
@@ -634,11 +633,12 @@ class ResourceTimelineView extends TimelineView
 
 
 	descendantShown: (row) ->
-		@rowsNeedingHeightSync.push(row)
+		(@rowsNeedingHeightSync or= []).push(row)
 		return
 
 
 	descendantHidden: (row) ->
+		@rowsNeedingHeightSync or= [] # signals to updateSize that specific rows hidden
 		return
 
 
