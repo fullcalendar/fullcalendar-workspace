@@ -192,23 +192,13 @@ class RowParent extends DateComponent
 
 
 	show: ->
-		if not @isShown
-
-			if @get('isInDom')
-				@trs.css('display', '')
-				@isShown = true
-				@thisRowShown()
-			else
-				@renderSkeleton() # will dow iShown/thisRowShown
+		if not @get('isInDom')
+			@renderSkeleton()
 
 
 	hide: ->
-		if @isShown
-
-			if @get('isInDom')
-				@trs.hide()
-				@isShown = false
-				@thisRowHidden()
+		if @get('isInDom')
+			@removeElement()
 
 
 	###
@@ -248,7 +238,6 @@ class RowParent extends DateComponent
 				.on('click', '.fc-expander', proxy(this, 'toggleExpanded'))
 
 			@set('isInDom', true)
-			@isShown = true
 			@thisRowShown()
 
 		for child in @children
@@ -268,7 +257,7 @@ class RowParent extends DateComponent
 				this[unrenderMethodName](tr)
 
 		@unset('isInDom')
-		@isShown = false
+		@thisRowHidden()
 
 		@trHash = {}
 		@trs.remove() # remove from DOM

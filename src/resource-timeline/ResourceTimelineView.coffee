@@ -337,7 +337,7 @@ class ResourceTimelineView extends TimelineView
 		super
 
 		@eventRows = @getEventRows()
-		@shownEventRows = (row for row in @eventRows when row.isShown)
+		@shownEventRows = (row for row in @eventRows when row.get('isInDom'))
 
 		trArray =
 			for row in @shownEventRows
@@ -671,7 +671,7 @@ class ResourceTimelineView extends TimelineView
 
 
 	getVisibleRows: ->
-		row for row in @rowHierarchy.getRows() when row.isShown
+		row for row in @rowHierarchy.getRows() when row.get('isInDom')
 
 
 	getEventRows: ->
