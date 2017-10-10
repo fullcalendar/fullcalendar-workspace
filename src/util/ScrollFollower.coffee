@@ -68,6 +68,7 @@ class ScrollFollower
 
 
 	removeSprite: (sprite) ->
+		sprite.clear()
 		delete @spritesById[sprite.id]
 
 

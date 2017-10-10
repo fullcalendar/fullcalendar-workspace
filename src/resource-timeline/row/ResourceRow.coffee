@@ -37,19 +37,39 @@ class ResourceRow extends EventRow
 		})
 
 
+	removeElement: ->
+		super
+
+		if @eventsPayload
+			EventRow::executeEventUnrender.call(this, @eventsPayload)
+
+		if @businessHourGenerator
+			EventRow::unrenderBusinessHours.call(this, @businessHourGenerator)
+
+
 	renderEventSkeleton: (tr) ->
 		super
 		tr.attr('data-resource-id', @resource.id)
 
 
-	executeEventRender: (@eventsPayload) ->
+	executeEventRender: (@eventsPayload) -> # save the events!
 		if @get('isInDom')
 			super(@eventsPayload)
 
 
-	renderBusinessHours: (@businessHourGenerator) ->
+	executeEventUnrender: ->
+		super
+		@eventsPayload = null
+
+
+	renderBusinessHours: (@businessHourGenerator) -> # save the business hours!
 		if @get('isInDom')
 			super(@businessHourGenerator)
+
+
+	unrenderBusinessHours: ->
+		super
+		@businessHourGenerator = null
 
 
 	###

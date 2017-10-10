@@ -291,8 +291,8 @@ class RowParent extends DateComponent
 			for child in @children
 				child.show()
 
+			@view.calendar.updateViewSize() # notify view of dimension change
 			@animateExpand()
-			@view.updateSize() # notify view of dimension change
 
 	###
 	Hides this node's children if they are not already hidden. Changes any expander icon.
@@ -305,6 +305,8 @@ class RowParent extends DateComponent
 
 			for child in @children
 				child.hide()
+
+			@view.calendar.updateViewSize() # notify view of dimension change
 
 	###
 	Switches between expanded/collapsed states
