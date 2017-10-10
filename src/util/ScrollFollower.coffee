@@ -3,7 +3,7 @@ class ScrollFollower
 
 	scroller: null
 	scrollbarWidths: null
-	sprites: null
+	spritesById: null
 	viewportRect: null # relative to content pane
 	contentOffset: null
 	isHFollowing: true
@@ -22,7 +22,7 @@ class ScrollFollower
 
 	constructor: (scroller, @allowPointerEvents=false) ->
 		@scroller = scroller
-		@sprites = []
+		@spritesById = {}
 
 		scroller.on 'scroll', =>
 			if scroller.isTouchedEver
@@ -49,24 +49,26 @@ class ScrollFollower
 	setSpriteEls: (els) ->
 		@clearSprites()
 
-		@sprites = for el in els
-			new ScrollFollowerSprite($(el), this)
+		for el in els
+			sprite = new ScrollFollowerSprite($(el))
+			@addSprite(sprite)
 
 
 	clearSprites: ->
-		for sprite in @sprites
+		@iterSprites (sprite) ->
 			sprite.clear()
 
-		@sprites = []
+		@spritesById = {}
 
 
 	addSprite: (sprite) ->
 		sprite.follower = this
-		@sprites.push(sprite)
+
+		@spritesById[sprite.id] = sprite
 
 
 	removeSprite: (sprite) ->
-		removeExact(@sprites, sprite)
+		delete @spritesById[sprite.id]
 
 
 	handleScroll: ->
@@ -80,8 +82,9 @@ class ScrollFollower
 		@scrollbarWidths = @scroller.getScrollbarWidths()
 		@contentOffset = @scroller.canvas.el.offset()
 
-		for sprite in @sprites
+		@iterSprites (sprite) ->
 			sprite.cacheDimensions()
+
 		return
 
 
@@ -101,7 +104,8 @@ class ScrollFollower
 	forceRelative: ->
 		if not @isForcedRelative
 			@isForcedRelative = true
-			for sprite in @sprites
+
+			@iterSprites (sprite) ->
 				if sprite.doAbsolute
 					sprite.assignPosition()
 
@@ -109,7 +113,8 @@ class ScrollFollower
 	clearForce: ->
 		if @isForcedRelative and not @isTouch # don't allow touch to ever NOT be relative
 			@isForcedRelative = false
-			for sprite in @sprites
+
+			@iterSprites (sprite) ->
 				sprite.assignPosition()
 
 
@@ -119,8 +124,9 @@ class ScrollFollower
 
 
 	updatePositions: ->
-		for sprite in @sprites
+		@iterSprites (sprite) ->
 			sprite.updatePosition()
+
 		return
 
 
@@ -132,3 +138,8 @@ class ScrollFollower
 	# relative to inner content pane
 	getBoundingRect: (el) ->
 		getOuterRect(el, @contentOffset)
+
+
+	iterSprites: (func) ->
+		for id, sprite of @spritesById
+			func(sprite, id)

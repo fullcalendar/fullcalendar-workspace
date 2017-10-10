@@ -1,7 +1,8 @@
 
 class ScrollFollowerSprite
 
-	follower: null
+	id: null
+	follower: null # must be set by caller
 	el: null
 	absoluteEl: null
 	naturalRect: null
@@ -21,7 +22,8 @@ class ScrollFollowerSprite
 	###
 	If given el is already position:relative, is a performance gain
 	###
-	constructor: (@el, @follower=null) ->
+	constructor: (@el) ->
+		@id = String(ScrollFollowerSprite.uid++)
 		@isBlock = @el.css('display') == 'block'
 
 		if @el.css('position') != 'relative'
@@ -260,3 +262,6 @@ joinRects = (rect1, rect2) ->
 		top: Math.min(rect1.top, rect2.top)
 		bottom: Math.max(rect1.bottom, rect2.bottom)
 	}
+
+
+ScrollFollowerSprite.uid = 0
