@@ -95,15 +95,16 @@ class TimelineEventRenderer extends EventRenderer
 
 
 	unrenderFgSegs: (segs) ->
-		eventTitleFollower = @view.eventTitleFollower
+		if @component.segContainerEl # rendered before?
+			eventTitleFollower = @view.eventTitleFollower
 
-		for seg in segs
-			if seg.scrollFollowerSprite
-				eventTitleFollower.removeSprite(seg.scrollFollowerSprite)
+			for seg in segs
+				if seg.scrollFollowerSprite
+					eventTitleFollower.removeSprite(seg.scrollFollowerSprite)
 
-		@component.segContainerEl.empty()
-		@component.segContainerEl.height('')
-		@component.segContainerHeight = null
+			@component.segContainerEl.empty()
+			@component.segContainerEl.height('')
+			@component.segContainerHeight = null
 
 
 	fgSegHtml: (seg, disableResizing) ->
