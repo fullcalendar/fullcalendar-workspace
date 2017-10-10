@@ -97,6 +97,32 @@ describe 'timeline businessHours', ->
 						])).toBe(true)
 						done()
 
+	describe 'when resource initially contracted', ->
+		pushOptions
+			resourcesInitiallyExpanded: false
+
+		describe 'with a business hour override', ->
+			pushOptions
+				resources: [
+					{ id: 'a', title: 'a', children: [
+						{ id: 'a1', title: 'a1', businessHours: { start: '02:00', end: '22:00' } }
+					] }
+				]
+
+			it 'renders when expanded', (done) ->
+				initCalendar()
+				clickExpander()
+				setTimeout -> # wait for animation to finish
+					expect(isResourceTimelineNonBusinessSegsRendered([
+						{ resourceId: 'a1', start: '2016-02-15T00:00', end: '2016-02-15T02:00' }
+						{ resourceId: 'a1', start: '2016-02-15T22:00', end: '2016-02-16T00:00' }
+					])).toBe(true)
+					done()
+				, 500
+
+	clickExpander = ->
+		$('.fc-expander').simulate('click')
+
 	expect9to5 = ->
 		expect(isTimelineNonBusinessSegsRendered([
 			{ start: '2016-02-15T00:00', end: '2016-02-15T09:00' }

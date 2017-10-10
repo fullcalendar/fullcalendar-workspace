@@ -3,7 +3,8 @@ v1.8.0
 ------
 
 Features:
-- performance gains with positioning/sizing (#277, #320) thx MartijnWelker
+- `resourcesInitiallyExpanded` set to `false` for collapsing by default (#40)
+- performance gains with positioning/sizing (#277, #320) thx @MartijnWelker
 
 Bugfixes:
 - `updateEvent` makes events disappear (#350)
