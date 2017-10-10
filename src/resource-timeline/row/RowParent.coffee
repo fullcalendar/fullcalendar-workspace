@@ -16,13 +16,13 @@ class RowParent extends DateComponent
 	trHash: null # TR jq objects owned by the node. keyed by "type" (parallel row sections in different tbodies)
 	trs: null # single jQuery object of tr elements owned by the node.
 
-	isShown: false # rendered in DOM *and* not display:none
-	isExpanded: true # does this node have its child nodes revealed?
+	isExpanded: false # does this node have its child nodes revealed?
 
 
 	constructor: (@view) ->
 		super
 
+		@isExpanded = @view.opt('resourcesInitiallyExpanded')
 		@children = []
 		@trHash = {}
 		@trs = $()
