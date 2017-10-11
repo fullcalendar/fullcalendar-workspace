@@ -14,8 +14,8 @@
     "moment": "^2.9.0",
     "fullcalendar": "~3.6.0"
   },
-  "version": "0.0.0",
-  "releaseDate": "1970-01-01",
+  "version": "1.8.0",
+  "releaseDate": "2017-10-10",
   "devDependencies": {
     "coffee-script": "^1.9.3",
     "components-jqueryui": "github:components/jqueryui",
