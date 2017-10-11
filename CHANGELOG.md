@@ -1,6 +1,6 @@
 
-v1.8.0
-------
+v1.8.0 (2017-10-10)
+-------------------
 
 Features:
 - `resourcesInitiallyExpanded` set to `false` for collapsing by default (#40)

@@ -238,7 +238,6 @@ class ResourceTimelineView extends TimelineView
 
 
 	updateSize: (totalHeight, isAuto, isResize) ->
-		@spreadsheet.updateSize()
 
 		if @rowsNeedingHeightSync
 			@syncRowHeights(@rowsNeedingHeightSync)
@@ -255,6 +254,7 @@ class ResourceTimelineView extends TimelineView
 
 		@timeBodyScroller.setHeight(bodyHeight)
 		@spreadsheet.bodyScroller.setHeight(bodyHeight)
+		@spreadsheet.updateSize()
 
 		# do children AFTER because of ScrollFollowerSprite abs position issues
 		super
