@@ -43,7 +43,7 @@ describe 'rerender performance for resource timeline', ->
 		expect(executeEventRender.calls.count()).toBe(2) # +1
 		expect(renderResources.calls.count()).toBe(2) # +1
 		expect(renderResource.calls.count()).toBe(2) # +1
-		expect(updateSize.calls.count()).toBe(5) # +2, TODO: get down to +1
+		expect(updateSize.calls.count()).toBe(4)
 
 		currentCalendar.rerenderEvents()
 
@@ -51,7 +51,7 @@ describe 'rerender performance for resource timeline', ->
 		expect(executeEventRender.calls.count()).toBe(3) # +1
 		expect(renderResources.calls.count()).toBe(2)
 		expect(renderResource.calls.count()).toBe(2)
-		expect(updateSize.calls.count()).toBe(7) # +2, TODO: get down to +1
+		expect(updateSize.calls.count()).toBe(6) # +2, TODO: get down to +1
 
 		currentCalendar.addResource({ title: 'Resource B' })
 
@@ -59,7 +59,7 @@ describe 'rerender performance for resource timeline', ->
 		expect(executeEventRender.calls.count()).toBe(3)
 		expect(renderResources.calls.count()).toBe(2)
 		expect(renderResource.calls.count()).toBe(3) # +1
-		expect(updateSize.calls.count()).toBe(8) # +1
+		expect(updateSize.calls.count()).toBe(7) # +1
 
 		$(window).trigger('resize')
 
@@ -69,7 +69,7 @@ describe 'rerender performance for resource timeline', ->
 			expect(executeEventRender.calls.count()).toBe(3)
 			expect(renderResources.calls.count()).toBe(2)
 			expect(renderResource.calls.count()).toBe(3)
-			expect(updateSize.calls.count()).toBe(9) # +1
+			expect(updateSize.calls.count()).toBe(8) # +1
 
 			executeDateRender.restore()
 			executeEventRender.restore()
