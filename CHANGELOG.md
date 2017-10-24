@@ -1,4 +1,14 @@
 
+v1.8.1 (2017-10-23)
+-------------------
+
+Bugfixes:
+- `resourceGroupField` not working (#370)
+- timeline slot headers would not render in localized text (#367)
+- fc-content-skeleton DOM element would repeatedly render on navigation in
+  vertical resource view (#363)
+
+
 v1.8.0 (2017-10-10)
 -------------------
 
