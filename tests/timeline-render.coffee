@@ -11,11 +11,12 @@ describe 'timeline rendering', ->
 	getTimeScrollEl = ->
 		$('.fc-body .fc-time-area .fc-scroller')[0]
 
+
 	it 'has correct vertical scroll and gutters', ->
 		initCalendar
 			defaultView: 'timeline'
 			resources: buildResources(50)
-		
+
 		spreadsheetEl = getSpreadsheetScrollEl()
 		timeEl = getTimeScrollEl()
 
@@ -25,3 +26,15 @@ describe 'timeline rendering', ->
 		gutter = timeEl.clientHeight - spreadsheetEl.clientHeight
 		expect(spreadsheetEl.scrollHeight + gutter)
 			.toEqual(timeEl.scrollHeight)
+
+
+	it 'renders time slots localized', ->
+		initCalendar
+			defaultView: 'timelineWeek'
+			slotDuration: '01:00'
+			scrollTime: 0
+			locale: 'lv'
+
+		expect(
+			$('.fc-head .fc-time-area th:first .fc-cell-text').text()
+		).toBe('P 23.10.2017.')

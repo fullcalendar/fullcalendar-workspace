@@ -290,6 +290,7 @@ class TimelineView extends View
 
 		slotDates = []
 		date = @normalizedUnzonedStart.clone()
+		@calendar.localizeMoment(date)
 		while date < @normalizedUnzonedEnd
 			if @isValidDate(date)
 				slotDates.push(date.clone())
