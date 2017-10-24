@@ -595,7 +595,9 @@ class ResourceTimelineView extends TimelineView
 				group = new VRowGroup(this, spec, groupValue)
 			else
 				group = new HRowGroup(this, spec, groupValue)
+
 			parent.addChild(group, i)
+			group.renderSkeleton() # always immediately render groups
 
 		group
 
