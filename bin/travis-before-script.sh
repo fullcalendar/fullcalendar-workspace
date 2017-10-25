@@ -6,6 +6,10 @@ set -e
 # start in project root
 cd "`dirname $0`/.."
 
+# always get latest dependencies
+# (cached node_modules dir might have old ones)
+npm update
+
 if [[ -f 'fullcalendar-branch.txt' ]]
 then
 	branch=`cat 'fullcalendar-branch.txt'`
