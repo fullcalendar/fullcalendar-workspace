@@ -18,6 +18,7 @@ if (FC.internalApiVersion !== 11) {
 }
 
 var Calendar = FC.Calendar;
+var Constraints = FC.Constraints;
 var Class = FC.Class;
 var View = FC.View;
 var debounce = FC.debounce;

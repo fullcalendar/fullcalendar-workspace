@@ -27,8 +27,8 @@
     "component/InteractiveDateComponent.coffee",
     "component/ResourceDayTableMixin.coffee",
 
+    "Constraints.coffee",
     "Calendar.coffee",
-    "Calendar.constraints.coffee",
     "View.coffee",
     "ResourceViewMixin.coffee",
 

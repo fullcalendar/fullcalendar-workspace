@@ -1,16 +1,16 @@
 
-Calendar_getPeerEventInstances = Calendar::getPeerEventInstances
-Calendar_isFootprintAllowed = Calendar::isFootprintAllowed
-Calendar_buildCurrentBusinessFootprints = Calendar::buildCurrentBusinessFootprints
-Calendar_footprintContainsFootprint = Calendar::footprintContainsFootprint
-Calendar_footprintsIntersect = Calendar::footprintsIntersect
-Calendar_eventRangeToEventFootprints = Calendar::eventRangeToEventFootprints
-Calendar_parseFootprints = Calendar::parseFootprints
+Constraints_getPeerEventInstances = Constraints::getPeerEventInstances
+Constraints_isFootprintAllowed = Constraints::isFootprintAllowed
+Constraints_buildCurrentBusinessFootprints = Constraints::buildCurrentBusinessFootprints
+Constraints_footprintContainsFootprint = Constraints::footprintContainsFootprint
+Constraints_footprintsIntersect = Constraints::footprintsIntersect
+Constraints_eventRangeToEventFootprints = Constraints::eventRangeToEventFootprints
+Constraints_parseFootprints = Constraints::parseFootprints
 
 
-Calendar::getPeerEventInstances = (subjectEventDef) ->
+Constraints::getPeerEventInstances = (subjectEventDef) ->
 	subjectResourceIds = subjectEventDef.getResourceIds()
-	peerInstances = Calendar_getPeerEventInstances.apply(this, arguments)
+	peerInstances = Constraints_getPeerEventInstances.apply(this, arguments)
 
 	if not subjectResourceIds.length
 		peerInstances
@@ -30,7 +30,7 @@ Calendar::getPeerEventInstances = (subjectEventDef) ->
 
 
 # enforce resource ID constraint
-Calendar::isFootprintAllowed = (footprint, peerEventFootprints, constraintVal, overlapVal, subjectEventInstance) ->
+Constraints::isFootprintAllowed = (footprint, peerEventFootprints, constraintVal, overlapVal, subjectEventInstance) ->
 	if typeof constraintVal == 'object'
 
 		constrainToResourceIds = Resource.extractIds(constraintVal, this)
@@ -41,11 +41,11 @@ Calendar::isFootprintAllowed = (footprint, peerEventFootprints, constraintVal, o
 		)
 			return false
 
-	Calendar_isFootprintAllowed.apply(this, arguments)
+	Constraints_isFootprintAllowed.apply(this, arguments)
 
 
-Calendar::buildCurrentBusinessFootprints = (isAllDay) ->
-	flatResources = @resourceManager.getFlatResources()
+Constraints::buildCurrentBusinessFootprints = (isAllDay) ->
+	flatResources = @_calendar.resourceManager.getFlatResources()
 	anyCustomBusinessHours = false
 
 	# any per-resource business hours? or will one global businessHours suffice?
@@ -76,31 +76,31 @@ Calendar::buildCurrentBusinessFootprints = (isAllDay) ->
 
 		componentFootprints
 	else
-		Calendar_buildCurrentBusinessFootprints.apply(this, arguments)
+		Constraints_buildCurrentBusinessFootprints.apply(this, arguments)
 
 
-Calendar::footprintContainsFootprint = (outerFootprint, innerFootprint) ->
+Constraints::footprintContainsFootprint = (outerFootprint, innerFootprint) ->
 	if outerFootprint instanceof ResourceComponentFootprint and
 			(not (innerFootprint instanceof ResourceComponentFootprint) or
 			 innerFootprint.resourceId != outerFootprint.resourceId)
 		return false
 
-	Calendar_footprintContainsFootprint.apply(this, arguments)
+	Constraints_footprintContainsFootprint.apply(this, arguments)
 
 
-Calendar::footprintsIntersect = (footprint0, footprint1) ->
+Constraints::footprintsIntersect = (footprint0, footprint1) ->
 	if footprint0 instanceof ResourceComponentFootprint and
 			footprint1 instanceof ResourceComponentFootprint and
 			footprint0.resourceId != footprint1.resourceId
 		return false
 
-	Calendar_footprintsIntersect.apply(this, arguments)
+	Constraints_footprintsIntersect.apply(this, arguments)
 
 
 ###
 TODO: somehow more DRY with DateComponent::eventRangeToEventFootprints monkeypatch
 ###
-Calendar::eventRangeToEventFootprints = (eventRange) ->
+Constraints::eventRangeToEventFootprints = (eventRange) ->
 	eventDef = eventRange.eventDef
 	resourceIds = eventDef.getResourceIds()
 
@@ -116,11 +116,11 @@ Calendar::eventRangeToEventFootprints = (eventRange) ->
 				eventRange.eventInstance # might not exist
 			)
 	else
-		Calendar_eventRangeToEventFootprints.apply(this, arguments)
+		Constraints_eventRangeToEventFootprints.apply(this, arguments)
 
 
-Calendar::parseFootprints = (input) ->
-	plainFootprints = Calendar_parseFootprints.apply(this, arguments)
+Constraints::parseFootprints = (input) ->
+	plainFootprints = Constraints_parseFootprints.apply(this, arguments)
 	resourceIds = input.resourceIds or []
 
 	if input.resourceId
