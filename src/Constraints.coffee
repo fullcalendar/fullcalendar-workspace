@@ -55,7 +55,7 @@ Constraints::buildCurrentBusinessFootprints = (isAllDay) ->
 
 	# if there are any custom business hours, all business hours must be sliced per-resources
 	if anyCustomBusinessHours
-		view = @view
+		view = @_calendar.view
 		generalBusinessHourGenerator = view.get('businessHourGenerator')
 		unzonedRange = view.dateProfile.activeUnzonedRange
 		componentFootprints = []

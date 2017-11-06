@@ -15,7 +15,7 @@ Calendar::constructed = -> # executed immediately after the constructor
 
 
 Calendar::instantiateView = (viewType) ->
-	spec = @getViewSpec(viewType)
+	spec = @viewSpecManager.getViewSpec(viewType)
 	viewClass = spec['class']
 
 	if @opt('resources') and spec.options.resources != false
