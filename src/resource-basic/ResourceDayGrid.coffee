@@ -1,7 +1,8 @@
 
 class ResourceDayGrid extends FC.DayGrid
 
-	@mixin ResourceDayTableMixin
+	@mixin = Class.mixin
+	@mixin(ResourceDayTableMixin)
 
 	# configuration for DateComponent monkeypatch
 	isResourceFootprintsEnabled: true

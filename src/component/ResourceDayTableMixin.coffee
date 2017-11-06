@@ -55,7 +55,7 @@ ResourceDayTableMixin =
 
 	updateDayTableCols: ->
 		@datesAboveResources = @opt('groupByDateAndResource')
-		FC.DayTableMixin.updateDayTableCols.call(this)
+		FC.DayTableMixin::updateDayTableCols.call(this)
 
 
 	computeColCnt: ->
