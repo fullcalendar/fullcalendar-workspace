@@ -4,6 +4,7 @@ describe 'timeline addResource', ->
 	pushOptions
 		defaultDate: '2016-05-31'
 
+
 	# https://github.com/fullcalendar/fullcalendar-scheduler/issues/179
 	it 'works when switching views', ->
 		initCalendar
@@ -23,6 +24,7 @@ describe 'timeline addResource', ->
 
 		currentCalendar.changeView('timelineDay')
 		expect(getTimelineResourceIds()).toEqual([ 'a', 'b', 'c', 'd' ])
+
 
 	it 'renders new row with correct height', ->
 		initCalendar
@@ -55,3 +57,16 @@ describe 'timeline addResource', ->
 		maxScroll = spreadsheetScrollerEl[0].scrollHeight - spreadsheetScrollerEl[0].clientHeight
 		currentScroll = spreadsheetScrollerEl[0].scrollTop
 		expect(maxScroll).toBe(currentScroll)
+
+
+	it 'can add as a child to another resource', ->
+		initCalendar
+			defaultView: 'timelineDay'
+			resources: [
+				{ id: 'a', title: 'a' }
+			]
+
+		currentCalendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
+
+		# one level of indentation, and one space where an arrow might be
+		expect($('.fc-body .fc-resource-area tr[data-resource-id="a1"] .fc-icon').length).toBe(2)

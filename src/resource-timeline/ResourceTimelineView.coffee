@@ -485,7 +485,7 @@ class ResourceTimelineView extends TimelineView
 
 		if not parentResourceRow
 			if resource.parent
-				parentResourceRow = @getResourceRow(resource.parent.parentId)
+				parentResourceRow = @getResourceRow(resource.parent.id)
 			else if resource.parentId
 				parentResourceRow = @getResourceRow(resource.parentId)
 
