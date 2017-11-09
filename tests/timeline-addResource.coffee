@@ -59,14 +59,30 @@ describe 'timeline addResource', ->
 		expect(maxScroll).toBe(currentScroll)
 
 
-	it 'can add as a child to another resource', ->
-		initCalendar
+	describe 'when adding resource as child of another', ->
+		pushOptions
 			defaultView: 'timelineDay'
 			resources: [
 				{ id: 'a', title: 'a' }
 			]
 
-		currentCalendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
+		it 'correctly adds when parent expanded', ->
+			initCalendar
+				resourcesInitiallyExpanded: true
 
-		# one level of indentation, and one space where an arrow might be
-		expect($('.fc-body .fc-resource-area tr[data-resource-id="a1"] .fc-icon').length).toBe(2)
+			currentCalendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
+
+			# expanded
+			expect($('.fc-body .fc-resource-area tr[data-resource-id="a"] .fc-icon')).toHaveClass('fc-icon-down-triangle')
+
+			# one level of indentation, and one space where an arrow might be
+			expect($('.fc-body .fc-resource-area tr[data-resource-id="a1"] .fc-icon').length).toBe(2)
+
+		it 'correctly adds when parent contracted', ->
+			initCalendar
+				resourcesInitiallyExpanded: false
+
+			currentCalendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
+
+			expect($('.fc-body .fc-resource-area tr[data-resource-id="a"] .fc-icon')).toHaveClass('fc-icon-right-triangle')
+			expect($('.fc-body .fc-resource-area tr[data-resource-id="a1"]')).not.toBeInDOM()

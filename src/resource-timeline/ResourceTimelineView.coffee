@@ -405,13 +405,11 @@ class ResourceTimelineView extends TimelineView
 
 
 	renderResource: (resource) ->
-		row = @insertResource(resource)
-		row.renderSkeleton()
+		@insertResource(resource)
 
 
 	unrenderResource: (resource) ->
-		row = @removeResource(resource)
-		row.removeFromParentAndDom()
+		@removeResource(resource)
 
 
 	# Event Rendering
@@ -482,12 +480,17 @@ class ResourceTimelineView extends TimelineView
 	# does not render
 	insertResource: (resource, parentResourceRow) ->
 		row = new ResourceRow(this, resource)
+		shouldRender = false
 
 		if not parentResourceRow
+
 			if resource.parent
 				parentResourceRow = @getResourceRow(resource.parent.id)
 			else if resource.parentId
 				parentResourceRow = @getResourceRow(resource.parentId)
+
+			# when no specified parent, this whole new subtree probably needs rendering
+			shouldRender = computeIsChildrenVisible(parentResourceRow)
 
 		if parentResourceRow
 			@insertRowAsChild(row, parentResourceRow)
@@ -508,6 +511,9 @@ class ResourceTimelineView extends TimelineView
 
 		for childResource in resource.children
 			@insertResource(childResource, row)
+
+		if shouldRender
+			row.renderSkeleton()
 
 		row
 
@@ -763,6 +769,14 @@ groupEventFootprintsByResourceId = (eventFootprints) ->
 			.push(eventFootprint)
 
 	map
+
+
+computeIsChildrenVisible = (current) ->
+	while current
+		if not current.isExpanded
+			return false
+		current = current.parent
+	return true
 
 
 FC.ResourceTimelineView = ResourceTimelineView
