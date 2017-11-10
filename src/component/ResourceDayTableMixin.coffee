@@ -4,7 +4,7 @@ Requirements:
 - grid must have a view that's a ResourceView
 - DayTableMixin must already be mixed in
 ###
-ResourceDayTableMixin =
+class ResourceDayTableMixin extends Mixin
 
 	flattenedResources: null
 	resourceCnt: 0

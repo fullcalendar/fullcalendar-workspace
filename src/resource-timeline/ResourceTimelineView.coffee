@@ -1,7 +1,7 @@
 
 class ResourceTimelineView extends TimelineView
 
-	@mixin(ResourceViewMixin)
+	ResourceViewMixin.mixOver(this)
 
 	# configuration for View monkeypatch
 	canHandleSpecificResources: true

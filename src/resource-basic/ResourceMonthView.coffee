@@ -1,7 +1,7 @@
 
 class ResourceMonthView extends FC.MonthView
 
-	@mixin(ResourceViewMixin)
+	ResourceViewMixin.mixOver(this)
 
 	dayGridClass: ResourceDayGrid
 
