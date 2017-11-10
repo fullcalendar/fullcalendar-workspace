@@ -1,5 +1,7 @@
 
 describe 'timeline rendering', ->
+	pushOptions
+		defaultDate: '2017-10-27'
 
 	buildResources = (n) ->
 		for i in [0 ... n]
