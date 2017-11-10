@@ -1,7 +1,6 @@
 
 class ResourceTimelineView extends TimelineView
 
-	@mixin = Class.mixin
 	@mixin(ResourceViewMixin)
 
 	# configuration for View monkeypatch
