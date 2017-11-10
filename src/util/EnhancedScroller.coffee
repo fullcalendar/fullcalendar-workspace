@@ -7,8 +7,8 @@ A Scroller with additional functionality:
 ###
 class EnhancedScroller extends FC.Scroller
 
-	@mixin EmitterMixin
-	@mixin ListenerMixin
+	EmitterMixin.mixInto(this)
+	ListenerMixin.mixInto(this)
 
 	canvas: null # an optional ScrollerCanvas
 	isScrolling: false

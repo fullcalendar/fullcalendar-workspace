@@ -1,7 +1,7 @@
 
 class ResourceBasicView extends FC.BasicView
 
-	@mixin(ResourceViewMixin)
+	ResourceViewMixin.mixOver(this)
 
 	dayGridClass: ResourceDayGrid
 

@@ -1,5 +1,5 @@
 
-ResourceViewMixin =
+class ResourceViewMixin extends Mixin
 
 	resourceTextFunc: null
 	isResourcesRendered: false

@@ -1,7 +1,7 @@
 
 class TimelineView extends View
 
-	@mixin(StandardInteractionsMixin)
+	StandardInteractionsMixin.mixInto(this)
 
 	# config
 	usesMinMaxTime: true # for View. indicates that minTime/maxTime affects rendering
