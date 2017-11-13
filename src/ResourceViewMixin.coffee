@@ -6,14 +6,23 @@ class ResourceViewMixin extends Mixin
 
 
 	initResourceView: ->
+
 		# new task
-		@watch 'displayingResources', [ 'displayingDates', 'hasResources' ], =>
+		resourceDeps = [ 'hasResources' ]
+		if not @canHandleSpecificResources
+			resourceDeps.push('displayingDates')
+		# (continued)
+		@watch 'displayingResources', resourceDeps, =>
 			@requestResourcesRender(@get('currentResources'))
 		, =>
 			@requestResourcesUnrender()
 
 		# start relying on displayingResources
-		@watch 'displayingBusinessHours', [ 'displayingResources', 'businessHourGenerator' ], (deps) =>
+		@watch 'displayingBusinessHours', [
+			'businessHourGenerator'
+			'displayingResources'
+			'displayingDates'
+		], (deps) =>
 			@requestBusinessHoursRender(deps.businessHourGenerator)
 		, =>
 			@requestBusinessHoursUnrender()
