@@ -139,7 +139,7 @@ class RowParent extends DateComponent
 				node = node.parent
 
 			# return this "previous" node if it has an exposed row
-			if node and node.get('isInDom')
+			if node and node.get('isInDom') and node.hasOwnRow
 				return node
 		null
 
@@ -237,8 +237,9 @@ class RowParent extends DateComponent
 			@trs = $(trNodes)
 				.on('click', '.fc-expander', proxy(this, 'toggleExpanded'))
 
-			@set('isInDom', true)
 			@thisRowShown()
+
+		@set('isInDom', true)
 
 		for child in @children
 			if child.isExpanded
