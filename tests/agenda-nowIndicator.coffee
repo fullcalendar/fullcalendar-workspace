@@ -22,7 +22,7 @@ describe 'resource agenda now-indicator', ->
 
 	# big compound test
 	# https://github.com/fullcalendar/fullcalendar/issues/3918
-	fit 'plays nice with refetchResourcesOnNavigate and view switching', (done) ->
+	it 'plays nice with refetchResourcesOnNavigate and view switching', (done) ->
 		initCalendar
 			defaultView: 'agendaWeek'
 			defaultDate: '2016-11-04'
