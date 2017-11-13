@@ -62,6 +62,27 @@ describe 'timeline view rerendering', ->
 				title: 'Auditorium D'
 			expect(getOrderedResourceIds()).toEqual([ 'a', 'b', 'c', 'd' ])
 
+		it 'doesnt rerender them when navigating dates', ->
+			resourceRenderCnt = 0
+
+			initCalendar
+				resourceRender: ->
+					resourceRenderCnt++
+
+			firstEls = getOrderedResourceEls()
+			expect(resourceRenderCnt).toBe(3)
+			expect(firstEls.length).toBe(3)
+
+			currentCalendar.next()
+
+			secondEls = getOrderedResourceEls()
+			expect(resourceRenderCnt).toBe(3)
+			expect(secondEls.length).toBe(3)
+
+			expect(firstEls[0]).toBe(secondEls[0])
+			expect(firstEls[1]).toBe(secondEls[1])
+			expect(firstEls[2]).toBe(secondEls[2])
+
 
 	testScroll = (actionFunc, doneFunc) ->
 		renderCalls = 0
@@ -181,8 +202,13 @@ describe 'timeline view rerendering', ->
 			{ id: '5', resourceId: 'f', start: '2015-08-07T00:30:00', end: '2015-08-07T02:30:00', title: 'event 5' }
 		]
 
+
+	getOrderedResourceEls = ->
+		$('.fc-resource-area tr[data-resource-id]')
+
+
 	# TODO: consolidate. also in resourceOrder
 	getOrderedResourceIds = ->
-		$('.fc-resource-area tr[data-resource-id]').map (i, node) ->
+		getOrderedResourceEls().map (i, node) ->
 				$(node).data('resource-id')
 			.get()
