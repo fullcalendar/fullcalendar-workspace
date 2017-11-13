@@ -1,4 +1,17 @@
 
+v1.9.0 (2017-11-13)
+-------------------
+
+Bugfixes:
+- when navigating prev/next using resource column grouping, renders duplicate resources (#380)
+- when navigating prev/next, prevent unnecessary resource rerenders (introduced in v1.8.0)
+- `addResource` with parentId does not render with correct nesting (#379)
+- `resourcesInitiallyExpanded` not compatible with resource groups (#378)
+- switching to view with async resources, nowIndicator causes JS error ([core-3918])
+
+[core-3918]: https://github.com/fullcalendar/fullcalendar/issues/3918
+
+
 v1.8.1 (2017-10-23)
 -------------------
 
