@@ -21,7 +21,7 @@ describe 'resourcesInitiallyExpanded', ->
 			expect(getVisibleResourceIds()).toEqual([ 'a', 'a1', 'a2' ])
 
 
-	describe 'when enabled', ->
+	describe 'when disabled', ->
 		pushOptions
 			resourcesInitiallyExpanded: false
 
@@ -70,6 +70,19 @@ describe 'resourcesInitiallyExpanded', ->
 				expect($('.fc-title.fc-following').length).toBe(1)
 
 
+		describe 'with row grouping', ->
+			pushOptions
+				resourceGroupField: 'customField',
+				resources: [
+					{ title: 'a', id: 'a', customField: 1 }
+				]
+
+			it 'initializes with groups contracted', ->
+				initCalendar();
+				expect(getVisibleResourceIds().length).toBe(0);
+				expect(getHGroupCnt()).toBe(1);
+
+
 		###
 		NOTE: business hours tests are in timeline-businessHours
 		###
@@ -79,6 +92,10 @@ describe 'resourcesInitiallyExpanded', ->
 		$('.fc-body .fc-resource-area tr[data-resource-id]:visible').map (i, node) ->
 			$(node).data('resource-id')
 		.get()
+
+
+	getHGroupCnt = ->
+		$('.fc-body .fc-resource-area .fc-divider').length
 
 
 	clickExpander = ->

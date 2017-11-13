@@ -241,8 +241,8 @@ class RowParent extends DateComponent
 
 		@set('isInDom', true)
 
-		for child in @children
-			if child.isExpanded
+		if @isExpanded
+			for child in @children
 				child.renderSkeleton()
 
 

@@ -51,6 +51,7 @@ class ResourceTimelineView extends TimelineView
 		@processResourceOptions()
 		@spreadsheet = new Spreadsheet(this)
 		@rowHierarchy = new RowParent(this)
+		@rowHierarchy.isExpanded = true # hack to always show, regardless of resourcesInitiallyExpanded
 		@resourceRowHash = {}
 
 
@@ -479,18 +480,15 @@ class ResourceTimelineView extends TimelineView
 	# if `parentResourceRow` is given, inserts it as a direct child
 	# does not render
 	insertResource: (resource, parentResourceRow) ->
+		noExplicitParent = !parentResourceRow
 		row = new ResourceRow(this, resource)
 		shouldRender = false
 
 		if not parentResourceRow
-
 			if resource.parent
 				parentResourceRow = @getResourceRow(resource.parent.id)
 			else if resource.parentId
 				parentResourceRow = @getResourceRow(resource.parentId)
-
-			# when no specified parent, this whole new subtree probably needs rendering
-			shouldRender = computeIsChildrenVisible(parentResourceRow)
 
 		if parentResourceRow
 			@insertRowAsChild(row, parentResourceRow)
@@ -512,7 +510,7 @@ class ResourceTimelineView extends TimelineView
 		for childResource in resource.children
 			@insertResource(childResource, row)
 
-		if shouldRender
+		if noExplicitParent and computeIsChildrenVisible(row.parent)
 			row.renderSkeleton()
 
 		row
@@ -771,6 +769,9 @@ groupEventFootprintsByResourceId = (eventFootprints) ->
 	map
 
 
+###
+if `current` is null, returns true
+###
 computeIsChildrenVisible = (current) ->
 	while current
 		if not current.isExpanded
