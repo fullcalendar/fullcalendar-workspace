@@ -7,7 +7,7 @@ set -e
 cd "`dirname $0`/.."
 
 if [[ -f fullcalendar-branch.txt ]]; then
-  CORE_REF=$(cat fullcalendar-branch.txt)
+  CORE_REF="origin/$(cat fullcalendar-branch.txt)"
 else
   CORE_REF="v$(npm show fullcalendar version)"
 fi
@@ -17,24 +17,25 @@ if [[ -L 'fullcalendar' ]]; then
   rm 'fullcalendar'
 fi
 
-if [[ -d 'fullcalendar' ]]; then
-  # repo already exists? clean for upcoming checkout and rebuild
-  cd fullcalendar
-  echo "NOW IN DIR1:"
-  pwd
-  npm run clean
-else
-  git clone "https://github.com/fullcalendar/fullcalendar.git"
-  cd fullcalendar
+# NOTE: TravisCI will have empty dir populated on first run
+if [[ ! -d 'fullcalendar' ]]; then
+  echo "Creating fullcalendar directory."
+  mkdir "fullcalendar"
 fi
 
-echo "NOW IN DIR2:"
-pwd
+cd "fullcalendar"
+
+if [[ ! -d ".git" ]]; then
+  echo "Cloning fresh fullcalendar repo."
+  git clone "https://github.com/fullcalendar/fullcalendar.git" .
+else
+  echo "Fetching latest from fullcalendar repo."
+  git fetch origin
+fi
 
 # do build tasks within fullcalendar dir
-git fetch origin
-git checkout -q "$CORE_REF"
+git checkout --quiet "$CORE_REF"
 npm install
 npm run dist
 
-echo "Successfully checked out $CORE_REF"
+echo "Successfully built $CORE_REF"
