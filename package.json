@@ -77,7 +77,9 @@
     "CONTRIBUTING.*"
   ],
   "scripts": {
-    "test": "gulp test:single",
-    "lint": "gulp lint"
+    "clean": "gulp clean",
+    "dist": "gulp dist",
+    "lint": "gulp lint",
+    "test": "gulp test:single"
   }
 }

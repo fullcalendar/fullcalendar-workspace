@@ -18,9 +18,9 @@ if [[ -L 'fullcalendar' ]]; then
 fi
 
 if [[ -d 'fullcalendar' ]]; then
-  # already a checked out repo
+  # repo already exists? clean for upcoming checkout and rebuild
   cd fullcalendar
-  gulp clean
+  npm run clean
 else
   git clone "https://github.com/fullcalendar/fullcalendar.git"
   cd fullcalendar
@@ -30,6 +30,6 @@ fi
 git fetch origin
 git checkout -q "$CORE_REF"
 npm install
-gulp dist
+npm run dist
 
 echo "Successfully checked out $CORE_REF"
