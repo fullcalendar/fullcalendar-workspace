@@ -20,11 +20,16 @@ fi
 if [[ -d 'fullcalendar' ]]; then
   # repo already exists? clean for upcoming checkout and rebuild
   cd fullcalendar
+  echo "NOW IN DIR1:"
+  pwd
   npm run clean
 else
   git clone "https://github.com/fullcalendar/fullcalendar.git"
   cd fullcalendar
 fi
+
+echo "NOW IN DIR2:"
+pwd
 
 # do build tasks within fullcalendar dir
 git fetch origin
