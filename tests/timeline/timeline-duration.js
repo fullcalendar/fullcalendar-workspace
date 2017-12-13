@@ -1,0 +1,3 @@
+
+describe('timeline duration', function() {
+})

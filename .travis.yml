@@ -7,7 +7,10 @@ cache:
     - node_modules
     - fullcalendar
 
-before_install: bin/travis-before-install.sh
-before_script: bin/travis-before-script.sh
+before_install: bin/install-core-repo.sh
 
-script: npm run test
+env:
+  - CMD=test
+  - CMD=lint
+
+script: npm run $CMD

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "noUnusedLocals": true,
+    "noImplicitUseStrict": true,
+    "importHelpers": true,
+    "baseUrl": ".",
+    "paths": {
+      "jquery": ["node_modules/@types/jquery/index.d.ts"],
+      "fullcalendar": ["fullcalendar/dist/fullcalendar"]
+    }
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}
