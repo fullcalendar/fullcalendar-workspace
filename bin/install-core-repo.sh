@@ -8,7 +8,7 @@ cd "`dirname $0`/.."
 
 if [[ -f fullcalendar-branch.txt ]]; then
   CORE_REF=$(cat fullcalendar-branch.txt)
-elif
+else
   CORE_REF="v$(npm show fullcalendar version)"
 fi
 
@@ -17,13 +17,19 @@ if [[ -L 'fullcalendar' ]]; then
   rm 'fullcalendar'
 fi
 
-if [[ ! -d 'fullcalendar' ]]; then
+if [[ -d 'fullcalendar' ]]; then
+  # already a checked out repo
+  cd fullcalendar
+  gulp clean
+else
   git clone "https://github.com/fullcalendar/fullcalendar.git"
+  cd fullcalendar
 fi
 
-cd fullcalendar
+# do build tasks within fullcalendar dir
 git fetch origin
 git checkout -q "$CORE_REF"
+npm install
 gulp dist
 
 echo "Successfully checked out $CORE_REF"
