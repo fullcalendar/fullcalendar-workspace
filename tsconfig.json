@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
+    "allowJs": true,
     "noUnusedLocals": true,
     "noImplicitUseStrict": true,
     "importHelpers": true,
@@ -11,7 +12,7 @@
       "fullcalendar": ["fullcalendar/dist/fullcalendar"]
     }
   },
-  "include": [
-    "src/**/*.ts"
+  "files": [
+    "src/main.ts"
   ]
 }

@@ -42,5 +42,7 @@ function createStream(enableSourceMaps, enableWatch) {
         )
       })
     )
-    .pipe(gulp.dest(webpackConfig.output.path))
+    .pipe(
+      gulp.dest(webpackConfig.output.path)
+    )
 }

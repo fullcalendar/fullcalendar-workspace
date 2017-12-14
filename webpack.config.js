@@ -7,10 +7,12 @@ const packageConfig = require('./package.json')
 /*
 NOTE: js and typescript module names shouldn't have a .js extention,
 however, all other types of modules should.
+NOTE: ts entrypoints should be mirrored in tsconfig.json
 */
 const MODULES = {
-  'scheduler': './src/main.ts',
-  'scheduler.css': './src/main.scss'
+  'dist/scheduler': './src/main.ts',
+  'dist/scheduler.css': './src/main.scss',
+  'tmp/compiled-tests': './tests/index.js'
 }
 
 const BANNER =
@@ -50,7 +52,7 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.ts$/,
+        test: /\.(ts|js)$/,
         loader: 'awesome-typescript-loader'
       },
       {
@@ -76,7 +78,7 @@ module.exports = {
   output: {
     libraryTarget: 'umd',
     filename: '[name].js',
-    path: path.resolve(__dirname, 'dist/'),
+    path: __dirname,
     devtoolModuleFilenameTemplate: 'webpack:///' + packageConfig.name + '[resource-path]'
   }
 

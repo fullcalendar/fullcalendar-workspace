@@ -51,8 +51,6 @@
     "karma": "^1.1.1",
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.1",
-    "karma-sourcemap-loader": "^0.3.7",
-    "karma-webpack": "^2.0.6",
     "native-promise-only": "^0.8.1",
     "node-sass": "^4.7.2",
     "phantomjs-prebuilt": "^2.1.7",
