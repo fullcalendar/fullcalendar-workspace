@@ -40,3 +40,11 @@ gulp.task('test:single', [ 'webpack' ], function(done) {
     done(results.exitCode)
   }).start()
 })
+
+// copy files into the main repo in prep for running the main repo's tests
+gulp.task('setup-test-side-effects', [ 'webpack' ], function(done) {
+  gulp.src('dist/*.{js,css}')
+    .pipe(
+      gulp.dest('fullcalendar/tmp/test-side-effects/')
+    )
+});
