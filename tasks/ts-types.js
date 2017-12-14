@@ -6,6 +6,10 @@ gulp.task('ts-types', function() {
     project: '.', // where the tsconfig is
     name: 'fullcalendar-scheduler',
     main: 'fullcalendar-scheduler/src/main',
+    exclude: [
+      'node_modules/**/*',
+      'fullcalendar/**/*' // don't bake in the core defs
+    ],
     out: 'dist/scheduler.d.ts'
   })
 })

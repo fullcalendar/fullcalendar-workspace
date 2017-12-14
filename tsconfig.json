@@ -9,7 +9,7 @@
     "baseUrl": ".",
     "paths": {
       "jquery": ["node_modules/@types/jquery/index.d.ts"],
-      "fullcalendar": ["fullcalendar/dist/fullcalendar"]
+      "fullcalendar": ["fullcalendar/dist/fullcalendar.d.ts"]
     }
   },
   "files": [
