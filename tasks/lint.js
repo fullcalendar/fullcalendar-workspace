@@ -60,7 +60,7 @@ gulp.task('lint:tests', function() {
     .pipe(
       eslint({
         configFile: 'eslint.json',
-        envs: [ 'jasmine', 'jquery' ],
+        envs: [ 'browser', 'jasmine', 'jquery' ],
         globals: [
           'moment',
           'pushOptions',
