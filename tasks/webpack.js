@@ -15,16 +15,16 @@ gulp.task('webpack:dev', function() {
 })
 
 gulp.task('webpack:watch', function() {
-  createStream(true, true)
+  return createStream(true, true)
 })
 
 
-function createStream(enableSourceMaps, enableWatch) {
+function createStream(isDev, isWatch) {
   return gulp.src([]) // don't pass in any files. webpack handles that
     .pipe(
       webpack(Object.assign({}, webpackConfig, {
-        devtool: enableSourceMaps ? 'source-map' : false, // also 'inline-source-map'
-        watch: enableWatch || false
+        devtool: isDev ? 'source-map' : false, // also 'inline-source-map'
+        watch: isWatch || false
       }))
     )
     .pipe(
