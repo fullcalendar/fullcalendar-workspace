@@ -1,22 +1,20 @@
 const gulp = require('gulp')
 const gutil = require('gulp-util')
+const watch = require('gulp-watch') // better than gulp.watch because detects new files
 const generateDts = require('dts-generator').default
 
 gulp.task('ts-types', exec)
 
-gulp.task('ts-types:slow', function() {
-  setTimeout(exec, 5000)
-})
-
 /*
-don't want to compete with and slow down the mission-critical webpack watch task,
-so use the deprioritized version of the task.
+Waits for scheduler.js to be created/modified before computing,
+to avoid competing with and slowing down main build watcher.
 */
-gulp.task('ts-types:watch', [ 'ts-types:slow' ], function() {
-  gulp.watch('src/**/*.ts', ['ts-types:slow'])
+gulp.task('ts-types:watch', function() {
+  watch('dist/scheduler.js', exec)
 })
 
 function exec() {
+  gutil.log('Computing TypeScript definitions file...')
   return generateDts({
     project: '.', // where the tsconfig is
     name: 'fullcalendar-scheduler',
@@ -27,6 +25,6 @@ function exec() {
     ],
     out: 'dist/scheduler.d.ts'
   }).then(function() {
-    gutil.log('wrote TypeScript definitions file')
+    gutil.log('Wrote TypeScript definitions file.')
   })
 }
