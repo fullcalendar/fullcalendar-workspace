@@ -47,4 +47,4 @@ gulp.task('setup-test-side-effects', [ 'webpack' ], function(done) {
     .pipe(
       gulp.dest('fullcalendar/tmp/test-side-effects/')
     )
-});
+})

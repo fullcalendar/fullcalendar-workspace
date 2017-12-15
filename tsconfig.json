@@ -12,7 +12,7 @@
       "fullcalendar": ["fullcalendar/dist/fullcalendar.d.ts"]
     }
   },
-  "files": [
+  "include": [
     "src/main.ts"
   ]
 }
