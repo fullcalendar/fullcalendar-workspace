@@ -1,4 +1,4 @@
-import { getBoundingRect } from './geom'
+import { getBoundingRect } from 'fullcalendar/tests/lib/dom-geom'
 
 
 export function dragResourceTimelineEvent(eventEl, dropInfo) {
@@ -94,15 +94,6 @@ export function getTimelineRect(start, end) {
 }
 
 
-// function getTimelinePoint(date) {
-//   const contentRect = getBoundingRect($('.fc-body .fc-time-area .fc-content'))
-//   return {
-//     left: getTimelineLeft(date),
-//     top: (contentRect.top + contentRect.bottom) / 2
-//   }
-// }
-
-
 export function getTimelineLine(date) {
   const contentRect = getBoundingRect($('.fc-body .fc-time-area .fc-content'))
   const left = getTimelineLeft(date)
@@ -183,7 +174,7 @@ function getTimelineLeft(targetDate) {
   return slatCoord + // last slat's starting edge
     ((slatEndCoord - slatCoord) *
     Math.min(1, (targetDate - slatDate) / slatMsDuration)) // don't go past the last slat
-};
+}
 
 
 function getTimelineRowEl(resourceId) {

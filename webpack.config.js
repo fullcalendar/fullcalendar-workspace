@@ -45,7 +45,8 @@ module.exports = {
     alias: {
       // use our slimmed down version
       // still need to npm-install the original though, for typescript transpiler
-      tslib: path.resolve(__dirname, 'src/tslib-lite.js')
+      'tslib': path.resolve(__dirname, 'src/tslib-lite.js'),
+      'fullcalendar/tests': path.resolve(__dirname, 'fullcalendar/tests')
     }
   },
 

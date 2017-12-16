@@ -69,6 +69,7 @@ gulp.task('lint:tests', function() {
           'describeValues',
           'initCalendar',
           'currentCalendar',
+          'spyOnMethod',
           'spyCall',
           'oneCall'
         ]

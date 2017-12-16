@@ -1,4 +1,3 @@
-import { spyOnMethod } from '../lib/util'
 
 describe('rerender performance for resource timeline', function() {
   const FC = $.fullCalendar

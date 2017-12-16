@@ -1,4 +1,4 @@
-import { doElsMatchSegs } from '../lib/geom'
+import { doElsMatchSegs } from 'fullcalendar/tests/lib/segs'
 import { getResourceDayGridRect } from '../lib/day-grid'
 import { getResourceTimeGridRect } from '../lib/time-grid'
 

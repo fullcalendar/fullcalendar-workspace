@@ -1,4 +1,4 @@
-import { countHandlers } from '../lib/util'
+import { countHandlers } from 'fullcalendar/tests/lib/dom-misc'
 
 describe('destroy', function() {
   pushOptions({

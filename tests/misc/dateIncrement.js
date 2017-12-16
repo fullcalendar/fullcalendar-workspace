@@ -1,6 +1,6 @@
 // KNOWN ISSUE: title is weird ("April - May")
 
-import { expectActiveRange } from '../lib/ViewDateUtils'
+import { expectActiveRange } from 'fullcalendar/tests/view-dates/ViewDateUtils'
 
 describe('dateIncrement', function() {
 

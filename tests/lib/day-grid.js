@@ -1,4 +1,4 @@
-import { getBoundingRect } from './geom'
+import { getBoundingRect } from 'fullcalendar/tests/lib/dom-geom'
 
 
 export function getResourceDayGridRect(resourceId, date) {
@@ -17,16 +17,4 @@ export function getResourceDayGridDayEls(resourceId, date) {
   date = $.fullCalendar.moment.parseZone(date)
   return $(`.fc-day-grid .fc-day[data-date="${date.format('YYYY-MM-DD')}"]` +
     '[data-resource-id="' + resourceId + '"]')
-}
-
-
-export function getDayGridDayEls(date) {
-  date = $.fullCalendar.moment.parseZone(date)
-  return $(`.fc-day-grid .fc-day[data-date="${date.format('YYYY-MM-DD')}"]`)
-}
-
-
-// TODO: discourage use
-export function getDayGridDowEls(dayAbbrev) {
-  return $(`.fc-day-grid .fc-row:first-child td.fc-day.fc-${dayAbbrev}`)
 }

@@ -1,4 +1,4 @@
-import { doElsMatchSegs } from '../lib/geom'
+import { doElsMatchSegs } from 'fullcalendar/tests/lib/segs'
 import { getResourceTimelineRect, getTimelineRect } from '../lib/timeline'
 
 describe('timeline businessHours', function() {

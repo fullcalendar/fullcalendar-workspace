@@ -1,7 +1,7 @@
 
-require('./globals.js')
-require('./moment.js')
-require('./simulate.js')
+require('fullcalendar/tests/globals')
+require('fullcalendar/tests/lib/moment')
+require('fullcalendar/tests/lib/dom-geom')
 
 var context = require.context(
   '.',
