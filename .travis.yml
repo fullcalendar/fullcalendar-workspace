@@ -5,12 +5,13 @@ node_js:
 cache:
   directories:
     - node_modules
-    - fullcalendar
+    - fullcalendar # a checkout of the core repo
 
 before_install: bin/install-core-repo.sh
 
 env:
-  - CMD=test
   - CMD=lint
+  - CMD=test
+  - CMD=test-side-effects
 
 script: npm run $CMD
