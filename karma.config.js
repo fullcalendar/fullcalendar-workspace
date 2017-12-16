@@ -39,6 +39,10 @@ module.exports = function(config) {
       }
     ],
 
+    preprocessors: {
+      '**/*.js': [ 'sourcemap' ]
+    },
+
     customLaunchers: {
       PhantomJS_custom: {
         base: 'PhantomJS',
