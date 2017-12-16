@@ -80,6 +80,6 @@
     "dist": "gulp dist",
     "lint": "gulp lint",
     "test": "gulp test:single",
-    "test-side-effects": "gulp setup-test-side-effects && cd fullcalendar && npm run test"
+    "test-side-effects": "./bin/test-side-effects.sh"
   }
 }
