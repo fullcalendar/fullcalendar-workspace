@@ -43,7 +43,10 @@ gulp.task('test:single', [ 'webpack' ], function(done) {
 
 // copy files into the main repo in prep for running the main repo's tests
 gulp.task('setup-test-side-effects', [ 'webpack' ], function(done) {
-  gulp.src('dist/*.{js,css}')
+  gulp.src([
+    'dist/*.{js,css,map}',
+    'tests/gpl-key.js' // so that the warning message doesn't show up
+  ])
     .pipe(
       gulp.dest('fullcalendar/tmp/test-side-effects/')
     )
