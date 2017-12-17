@@ -11,5 +11,6 @@ gulp test-side-effects:clean
 gulp test-side-effects:install
 
 # run tests within core repo
+# forward all params
 cd fullcalendar
-npm run test
+npm run test -- "$@"
