@@ -21,7 +21,7 @@ then
   exit 1
 fi
 
-read -p "Have you already updated any dependency changes? (y/N): " updated_deps
+read -p "Have you already updated any dependency changes in ALL .json files? (y/N): " updated_deps
 if [[ "$updated_deps" != "y" ]]
 then
   echo "Go do that!"

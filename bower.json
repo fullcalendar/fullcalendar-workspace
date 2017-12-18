@@ -12,7 +12,7 @@
   "dependencies": {
     "jquery": "2 - 3",
     "moment": "^2.9.0",
-    "fullcalendar": "~3.7.0"
+    "fullcalendar": "~3.8.0"
   },
   "main": [
     "dist/scheduler.js",
