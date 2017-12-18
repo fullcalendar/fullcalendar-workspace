@@ -1,26 +1,27 @@
 import * as $ from 'jquery'
-import { Calendar } from 'fullcalendar'
+import { Calendar, EventObjectInput } from 'fullcalendar'
 import Resource from './models/Resource'
 import ResourceManager from './models/ResourceManager'
 import ResourceComponentFootprint from './models/ResourceComponentFootprint'
+import { ResourceInput } from './types/input-types'
 
 declare module 'fullcalendar/Calendar' {
   interface Default {
     resourceManager: any
-    getResources()
-    addResource(resourceInput, scroll?)
-    removeResource(idOrResource)
+    getResources(): ResourceInput[]
+    addResource(resourceInput: ResourceInput, scroll?: boolean)
+    removeResource(idOrResource: string | ResourceInput)
     refetchResources()
     rerenderResources()
-    buildSelectFootprint(zonedStartInput, zonedEndInput, resourceId?)
-    getResourceById(id)
-    getEventResourceId(event)
-    getEventResourceIds(event)
-    setEventResourceId(event, resourceId)
-    setEventResourceIds(event, resourceIds)
-    getResourceEvents(idOrResource)
-    getEventResource(idOrEvent)
-    getEventResources(idOrEvent)
+    buildSelectFootprint(zonedStartInput, zonedEndInput, resourceId?: string)
+    getResourceById(id: string): ResourceInput
+    getEventResourceId(event: EventObjectInput): string
+    getEventResourceIds(event: EventObjectInput): string[]
+    setEventResourceId(event: EventObjectInput, resourceId: string)
+    setEventResourceIds(event: EventObjectInput, resourceIds: string[])
+    getResourceEvents(idOrResource: string | ResourceInput): EventObjectInput[]
+    getEventResource(idOrEvent: string | EventObjectInput): ResourceInput
+    getEventResources(idOrEvent: string | EventObjectInput): ResourceInput[]
   }
 }
 
@@ -64,14 +65,15 @@ Calendar.prototype.instantiateView = function(viewType) {
 
 // for the API only
 // retrieves what is currently in memory. no fetching
-Calendar.prototype.getResources = function() {
+Calendar.prototype.getResources = function(): ResourceInput[] {
   return Array.prototype.slice.call( // make a copy
     this.resourceManager.topLevelResources
   )
 }
 
 
-Calendar.prototype.addResource = function(resourceInput, scroll = false) { // assumes all resources already loaded
+// assumes all resources already loaded
+Calendar.prototype.addResource = function(resourceInput: ResourceInput, scroll: boolean = false) {
   this.resourceManager.addResource(resourceInput)
     .then((resource) => {
       if (scroll && this.view.scrollToResource) {
@@ -81,7 +83,8 @@ Calendar.prototype.addResource = function(resourceInput, scroll = false) { // as
 }
 
 
-Calendar.prototype.removeResource = function(idOrResource) { // assumes all resources already loaded
+// assumes all resources already loaded
+Calendar.prototype.removeResource = function(idOrResource: string | ResourceInput) {
   return this.resourceManager.removeResource(idOrResource)
 }
 
@@ -97,7 +100,7 @@ Calendar.prototype.rerenderResources = function() { // for API
 }
 
 
-Calendar.prototype.buildSelectFootprint = function(zonedStartInput, zonedEndInput, resourceId?) {
+Calendar.prototype.buildSelectFootprint = function(zonedStartInput, zonedEndInput, resourceId?: string) {
   const plainFootprint = origMethods.buildSelectFootprint.apply(this, arguments)
 
   if (resourceId) {
@@ -112,7 +115,7 @@ Calendar.prototype.buildSelectFootprint = function(zonedStartInput, zonedEndInpu
 }
 
 
-Calendar.prototype.getResourceById = function(id) {
+Calendar.prototype.getResourceById = function(id: string): ResourceInput {
   return this.resourceManager.getResourceById(id)
 }
 
@@ -122,12 +125,12 @@ Calendar.prototype.getResourceById = function(id) {
 
 
 // DEPRECATED. for external API backwards compatibility
-Calendar.prototype.getEventResourceId = function(event) {
+Calendar.prototype.getEventResourceId = function(event: EventObjectInput): string {
   return this.getEventResourceIds(event)[0]
 }
 
 
-Calendar.prototype.getEventResourceIds = function(event) {
+Calendar.prototype.getEventResourceIds = function(event: EventObjectInput): string[] {
   const eventDef = this.eventManager.getEventDefByUid(event._id)
 
   if (eventDef) {
@@ -139,7 +142,7 @@ Calendar.prototype.getEventResourceIds = function(event) {
 
 
 // DEPRECATED
-Calendar.prototype.setEventResourceId = function(event, resourceId) {
+Calendar.prototype.setEventResourceId = function(event: EventObjectInput, resourceId: string) {
   this.setEventResourceIds(
     event,
     resourceId ? [ resourceId ] : []
@@ -147,7 +150,7 @@ Calendar.prototype.setEventResourceId = function(event, resourceId) {
 }
 
 
-Calendar.prototype.setEventResourceIds = function(event, resourceIds) {
+Calendar.prototype.setEventResourceIds = function(event: EventObjectInput, resourceIds: string[]) {
   const eventDef = this.eventManager.getEventDefByUid(event._id)
 
   if (eventDef) {
@@ -159,7 +162,7 @@ Calendar.prototype.setEventResourceIds = function(event, resourceIds) {
 
 
 // NOTE: views pair *segments* to resources. that's why there's no code reuse
-Calendar.prototype.getResourceEvents = function(idOrResource) {
+Calendar.prototype.getResourceEvents = function(idOrResource: string | ResourceInput): EventObjectInput[] {
   const resource =
     typeof idOrResource === 'object' ?
       idOrResource :
@@ -178,12 +181,12 @@ Calendar.prototype.getResourceEvents = function(idOrResource) {
 
 
 // DEPRECATED. for external API backwards compatibility
-Calendar.prototype.getEventResource = function(idOrEvent) {
+Calendar.prototype.getEventResource = function(idOrEvent: string | EventObjectInput): ResourceInput {
   return this.getEventResources(idOrEvent)[0]
 }
 
 
-Calendar.prototype.getEventResources = function(idOrEvent) {
+Calendar.prototype.getEventResources = function(idOrEvent: string | EventObjectInput): ResourceInput[] {
   const event =
     typeof idOrEvent === 'object' ?
       idOrEvent :

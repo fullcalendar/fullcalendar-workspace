@@ -5,6 +5,7 @@
     "no-consecutive-blank-lines": false,
     "space-before-function-paren": false,
     "space-within-parens": false,
-    "strict-type-predicates": false
+    "strict-type-predicates": false,
+    "unified-signatures": false
   }
 }
