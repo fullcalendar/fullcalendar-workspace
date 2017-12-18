@@ -40,10 +40,10 @@ gulp.task('archive:deps', function() {
     'node_modules/moment/min/moment.min.js',
     'node_modules/jquery/dist/jquery.min.js',
     'node_modules/components-jqueryui/jquery-ui.min.js',
-    'node_modules/fullcalendar/dist/fullcalendar.min.js',
-    'node_modules/fullcalendar/dist/fullcalendar.min.css',
-    'node_modules/fullcalendar/dist/fullcalendar.print.min.css',
-    'node_modules/fullcalendar/dist/gcal.min.js'
+    'fullcalendar/dist/fullcalendar.min.js',
+    'fullcalendar/dist/fullcalendar.min.css',
+    'fullcalendar/dist/fullcalendar.print.min.css',
+    'fullcalendar/dist/gcal.min.js'
   ])
     .pipe(gulp.dest(`tmp/${packageId}/lib/`))
 })
@@ -72,7 +72,7 @@ const transformDemoPath = function(path) {
   path = path.replace('../node_modules/moment/', '../lib/')
   path = path.replace('../node_modules/jquery/dist/', '../lib/')
   path = path.replace('../node_modules/components-jqueryui/', '../lib/')
-  path = path.replace('../node_modules/fullcalendar/dist/', '../lib/')
+  path = path.replace('../fullcalendar/dist/', '../lib/')
 
   // reroot dist files to archive root
   path = path.replace('../dist/', '../')
