@@ -10,7 +10,7 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "copyright": "2017 Adam Shaw",
   "dependencies": {
-    "fullcalendar": "~3.7.0",
+    "fullcalendar": "~3.8.0",
     "jquery": "2 - 3",
     "moment": "^2.9.0"
   },

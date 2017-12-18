@@ -1,4 +1,13 @@
 
+v1.9.1 (2017-12-18)
+-------------------
+
+- exposed MAX_TIMELINE_SLOTS (#47)
+- TypeScript definition file (scheduler.d.ts) included in npm package (#213)
+- CoffeeScript within codebase converted to TypeScript
+- more robust testing environment
+
+
 v1.9.0 (2017-11-13)
 -------------------
 
