@@ -30,7 +30,7 @@ if [[ ! -d ".git" ]]; then
   git clone "https://github.com/fullcalendar/fullcalendar.git" .
 else
   echo "Fetching latest from fullcalendar repo."
-  git fetch origin
+  git fetch origin --tags
 fi
 
 # do build tasks within fullcalendar dir
