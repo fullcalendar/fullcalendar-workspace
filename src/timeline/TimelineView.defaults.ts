@@ -1,15 +1,12 @@
 import * as $ from 'jquery'
 import * as moment from 'moment'
-import {
-  durationHasTime, computeGreatestUnit, divideDurationByDuration,
-  divideRangeByDuration, warn, isInt
-} from 'fullcalendar'
+import * as core from 'fullcalendar'
 import TimelineView from './TimelineView'
 
 const MIN_AUTO_LABELS = 18 // more than `12` months but less that `24` hours
 const MAX_AUTO_SLOTS_PER_LABEL = 6 // allows 6 10-min slots in an hour
-const MAX_AUTO_CELLS = 200 // allows 4-days to have a :30 slot duration
-const MAX_CELLS = 1000 // TODO: expose this for the poweruser
+const MAX_AUTO_CELLS = 200; // allows 4-days to have a :30 slot duration
+(core as any).MAX_TIMELINE_SLOTS = 1000
 
 // potential nice values for slot-duration and interval-duration
 const STOCK_SUB_DURATIONS = [ // from largest to smallest
@@ -53,11 +50,11 @@ export function initScaleProps(timelineView: TimelineView) {
     :
       computeHeaderFormats(timelineView)
 
-  timelineView.isTimeScale = durationHasTime(timelineView.slotDuration)
+  timelineView.isTimeScale = core.durationHasTime(timelineView.slotDuration)
 
   let largeUnit = null
   if (!timelineView.isTimeScale) {
-    const slotUnit = computeGreatestUnit(timelineView.slotDuration)
+    const slotUnit = core.computeGreatestUnit(timelineView.slotDuration)
     if (/year|month|week/.test(slotUnit)) {
       largeUnit = slotUnit
     }
@@ -82,7 +79,7 @@ export function initScaleProps(timelineView: TimelineView) {
       moment.duration(rawSnapDuration) :
       timelineView.slotDuration
 
-  timelineView.snapsPerSlot = divideDurationByDuration(timelineView.slotDuration, timelineView.snapDuration)
+  timelineView.snapsPerSlot = core.divideDurationByDuration(timelineView.slotDuration, timelineView.snapDuration)
 }
 
 
@@ -102,27 +99,27 @@ function validateLabelAndSlot(timelineView: TimelineView) {
 
   // make sure labelInterval doesn't exceed the max number of cells
   if (timelineView.labelInterval) {
-    const labelCnt = divideRangeByDuration(currentUnzonedRange.getStart(), currentUnzonedRange.getEnd(), timelineView.labelInterval)
-    if (labelCnt > MAX_CELLS) {
-      warn('slotLabelInterval results in too many cells')
+    const labelCnt = core.divideRangeByDuration(currentUnzonedRange.getStart(), currentUnzonedRange.getEnd(), timelineView.labelInterval)
+    if (labelCnt > (core as any).MAX_TIMELINE_SLOTS) {
+      core.warn('slotLabelInterval results in too many cells')
       timelineView.labelInterval = null
     }
   }
 
   // make sure slotDuration doesn't exceed the maximum number of cells
   if (timelineView.slotDuration) {
-    const slotCnt = divideRangeByDuration(currentUnzonedRange.getStart(), currentUnzonedRange.getEnd(), timelineView.slotDuration)
-    if (slotCnt > MAX_CELLS) {
-      warn('slotDuration results in too many cells')
+    const slotCnt = core.divideRangeByDuration(currentUnzonedRange.getStart(), currentUnzonedRange.getEnd(), timelineView.slotDuration)
+    if (slotCnt > (core as any).MAX_TIMELINE_SLOTS) {
+      core.warn('slotDuration results in too many cells')
       timelineView.slotDuration = null
     }
   }
 
   // make sure labelInterval is a multiple of slotDuration
   if (timelineView.labelInterval && timelineView.slotDuration) {
-    const slotsPerLabel = divideDurationByDuration(timelineView.labelInterval, timelineView.slotDuration)
-    if (!isInt(slotsPerLabel) || (slotsPerLabel < 1)) {
-      warn('slotLabelInterval must be a multiple of slotDuration')
+    const slotsPerLabel = core.divideDurationByDuration(timelineView.labelInterval, timelineView.slotDuration)
+    if (!core.isInt(slotsPerLabel) || (slotsPerLabel < 1)) {
+      core.warn('slotLabelInterval must be a multiple of slotDuration')
       return timelineView.slotDuration = null
     }
   }
@@ -141,8 +138,8 @@ function ensureLabelInterval(timelineView: TimelineView) {
     if (timelineView.slotDuration) {
       for (input of STOCK_SUB_DURATIONS) {
         const tryLabelInterval = moment.duration(input)
-        const slotsPerLabel = divideDurationByDuration(tryLabelInterval, timelineView.slotDuration)
-        if (isInt(slotsPerLabel) && (slotsPerLabel <= MAX_AUTO_SLOTS_PER_LABEL)) {
+        const slotsPerLabel = core.divideDurationByDuration(tryLabelInterval, timelineView.slotDuration)
+        if (core.isInt(slotsPerLabel) && (slotsPerLabel <= MAX_AUTO_SLOTS_PER_LABEL)) {
           labelInterval = tryLabelInterval
           break
         }
@@ -158,7 +155,7 @@ function ensureLabelInterval(timelineView: TimelineView) {
     } else {
       for (input of STOCK_SUB_DURATIONS) {
         labelInterval = moment.duration(input)
-        const labelCnt = divideRangeByDuration(currentUnzonedRange.getStart(), currentUnzonedRange.getEnd(), labelInterval)
+        const labelCnt = core.divideRangeByDuration(currentUnzonedRange.getStart(), currentUnzonedRange.getEnd(), labelInterval)
         if (labelCnt >= MIN_AUTO_LABELS) {
           break
         }
@@ -183,8 +180,8 @@ function ensureSlotDuration(timelineView: TimelineView) {
     // find the largest slot duration that is different from labelInterval, but still acceptable
     for (let input of STOCK_SUB_DURATIONS) {
       const trySlotDuration = moment.duration(input)
-      const slotsPerLabel = divideDurationByDuration(labelInterval, trySlotDuration)
-      if (isInt(slotsPerLabel) && (slotsPerLabel > 1) && (slotsPerLabel <= MAX_AUTO_SLOTS_PER_LABEL)) {
+      const slotsPerLabel = core.divideDurationByDuration(labelInterval, trySlotDuration)
+      if (core.isInt(slotsPerLabel) && (slotsPerLabel > 1) && (slotsPerLabel <= MAX_AUTO_SLOTS_PER_LABEL)) {
         slotDuration = trySlotDuration
         break
       }
@@ -192,7 +189,7 @@ function ensureSlotDuration(timelineView: TimelineView) {
 
     // only allow the value if it won't exceed the view's # of slots limit
     if (slotDuration) {
-      const slotCnt = divideRangeByDuration(currentUnzonedRange.getStart(), currentUnzonedRange.getEnd(), slotDuration)
+      const slotCnt = core.divideRangeByDuration(currentUnzonedRange.getStart(), currentUnzonedRange.getEnd(), slotDuration)
       if (slotCnt > MAX_AUTO_CELLS) {
         slotDuration = null
       }
@@ -214,7 +211,7 @@ function computeHeaderFormats(timelineView: TimelineView) {
   let format1
   let format2
   const { labelInterval } = timelineView
-  let unit = computeGreatestUnit(labelInterval)
+  let unit = core.computeGreatestUnit(labelInterval)
   const weekNumbersVisible = timelineView.opt('weekNumbers')
   let format0 = (format1 = (format2 = null))
 
