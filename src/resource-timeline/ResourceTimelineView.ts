@@ -896,6 +896,7 @@ export default class ResourceTimelineView extends TimelineView {
   unrenderEventResize() {
     for (let rowObj of this.getEventRows()) {
       rowObj.helperRenderer.unrender()
+      rowObj.eventRenderer.fillRenderer.unrender('highlight')
     }
   }
 
