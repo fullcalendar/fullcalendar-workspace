@@ -293,6 +293,6 @@ describe('timeline event resizing', function() {
   })
 
   function isAnyHighlight() {
-    return $('.fc-highlight').length > 0;
+    return $('.fc-highlight').length > 0
   }
 })
