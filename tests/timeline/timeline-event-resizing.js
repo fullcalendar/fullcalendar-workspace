@@ -46,6 +46,7 @@ describe('timeline event resizing', function() {
                       end: getTimelineSlatEl('2015-11-28T07:00:00'),
                       callback() {
                         expect(resizeSpy).toHaveBeenCalled()
+                        expect(isAnyHighlight()).toBe(false) // TODO: move to its own test
                         done()
                       }
                     })
@@ -76,6 +77,7 @@ describe('timeline event resizing', function() {
                       end: getResourceTimelinePoint('b', '2015-11-28T07:00:00'),
                       callback() {
                         expect(resizeSpy).toHaveBeenCalled()
+                        expect(isAnyHighlight()).toBe(false) // TODO: move to its own test
                         done()
                       }
                     })
@@ -289,4 +291,8 @@ describe('timeline event resizing', function() {
       })
     })
   })
+
+  function isAnyHighlight() {
+    return $('.fc-highlight').length > 0;
+  }
 })
