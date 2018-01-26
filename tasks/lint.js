@@ -1,16 +1,18 @@
 const gulp = require('gulp')
+const gutil = require('gulp-util')
+const eslint = require('gulp-eslint')
 const tslint = require('gulp-tslint')
 const tsLintLib = require('tslint')
-const eslint = require('gulp-eslint')
+const ts = require('typescript')
 
 const tslintProgram = tsLintLib.Linter.createProgram('./tsconfig.json')
 
 gulp.task('lint', [
   'lint:src',
+  'lint:dts',
   'lint:built',
   'lint:node',
-  'lint:tests',
-  'ts-types' // make sure typescript defs compile without errors
+  'lint:tests'
 ])
 
 gulp.task('lint:src', function() {
@@ -22,6 +24,37 @@ gulp.task('lint:src', function() {
       })
     )
     .pipe(tslint.report())
+})
+
+// lints the TypeScript definitions file
+// from https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API
+gulp.task('lint:dts', [ 'ts-types' ], function(done) {
+  let program = ts.createProgram([ 'dist/scheduler.d.ts' ], {
+    noEmitOnError: true,
+    noImplicitAny: true, // makes sure all types are defined. the whole point!
+    // we need paths for resolving core, but paths requires baseUrl,
+    // and if we make baseUrl the project root, tsc starts compiling ALL .ts files,
+    // so start in a subdir to avoid this.
+    baseUrl: 'dist',
+    paths: {
+      fullcalendar: [ '../fullcalendar/dist/fullcalendar.d.ts' ]
+    }
+  })
+  let emitResult = program.emit()
+  if (emitResult.emitSkipped) { // error?
+    emitResult.diagnostics.forEach(function(diagnostic) {
+      if (diagnostic.file) {
+        let { line, character } = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start)
+        let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n')
+        gutil.log(`${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`)
+      } else {
+        gutil.log(`${ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n')}`)
+      }
+    })
+    done('There are .d.ts linting problems.')
+  } else {
+    done() // success
+  }
 })
 
 gulp.task('lint:built', [ 'webpack' ], function() {
