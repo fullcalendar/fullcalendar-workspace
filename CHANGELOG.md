@@ -1,4 +1,10 @@
 
+v1.9.2
+------
+
+- fix event resize highlight not being unrendered (#406)
+
+
 v1.9.1 (2017-12-18)
 -------------------
 
