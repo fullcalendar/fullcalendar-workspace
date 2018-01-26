@@ -48,8 +48,7 @@ describe('timeline event resizing', function() {
                         expect(resizeSpy).toHaveBeenCalled()
                         done()
                       }
-                    }
-                    )
+                    })
                 }),
                 eventResize:
                   (resizeSpy = spyCall(function(event) {
@@ -79,8 +78,7 @@ describe('timeline event resizing', function() {
                         expect(resizeSpy).toHaveBeenCalled()
                         done()
                       }
-                    }
-                    )
+                    })
                 }),
                 eventResize:
                   (resizeSpy = spyCall(function(event) {
@@ -107,8 +105,7 @@ describe('timeline event resizing', function() {
                         expect(resizeSpy).toHaveBeenCalled()
                         done()
                       }
-                    }
-                    )
+                    })
                 }),
                 eventResize:
                   (resizeSpy = spyCall(function(event) {
@@ -135,8 +132,7 @@ describe('timeline event resizing', function() {
                         expect(resizeSpy).toHaveBeenCalled()
                         done()
                       }
-                    }
-                    )
+                    })
                 }),
                 eventResize:
                   (resizeSpy = spyCall(function(event) {
@@ -172,8 +168,7 @@ describe('timeline event resizing', function() {
                       expect(resizeSpy).toHaveBeenCalled()
                       done()
                     }
-                  }
-                  )
+                  })
               }),
               eventResize:
                 (resizeSpy = spyCall(function(event) {
@@ -247,8 +242,7 @@ describe('timeline event resizing', function() {
                   expect(resizeSpy).toHaveBeenCalled()
                   done()
                 }
-              }
-              )
+              })
           }),
           eventResize:
             (resizeSpy = spyCall(function(event) {
@@ -282,8 +276,7 @@ describe('timeline event resizing', function() {
                   expect(resizeSpy).toHaveBeenCalled()
                   done()
                 }
-              }
-              )
+              })
           }),
           eventResize:
             (resizeSpy = spyCall(function(event) {

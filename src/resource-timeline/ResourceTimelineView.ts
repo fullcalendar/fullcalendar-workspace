@@ -50,7 +50,7 @@ export default class ResourceTimelineView extends TimelineView {
   // resource rows
   tbodyHash: any // used by RowParent
   rowHierarchy: any
-  resourceRowHash: any
+  resourceRowHash: { [resourceId: string]: ResourceRow }
   nestingCnt: number
   isNesting: any
   eventRows: any
@@ -562,7 +562,10 @@ export default class ResourceTimelineView extends TimelineView {
       this.isIndiBizRendered = true
 
       for (let row of this.getEventRows()) {
-        row.renderBusinessHours(row.resource.businessHourGenerator || businessHourGenerator)
+        row.renderBusinessHours(
+          (row as ResourceRow).resource.businessHourGenerator ||
+          businessHourGenerator
+        )
       }
     } else {
       this.isGenericBizRendered = true
@@ -842,7 +845,7 @@ export default class ResourceTimelineView extends TimelineView {
   }
 
 
-  getEventRows() {
+  getEventRows(): EventRow[] {
     return this.rowHierarchy.getRows().filter((row) => (
       row instanceof EventRow
     ))
