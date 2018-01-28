@@ -158,15 +158,15 @@ export default class TimelineView extends View {
   TODO: should maybe be called "normalizeRangeDate".
   */
   normalizeGridDate(date) {
-    let normalDate
+    let normalDate = date.clone()
+    this.calendar.localizeMoment(normalDate) // mostly for startOf
 
     if (this.isTimeScale) {
-      normalDate = date.clone()
       if (!normalDate.hasTime()) {
         normalDate.time(0)
       }
     } else {
-      normalDate = date.clone().stripTime()
+      date = date.clone().stripTime()
       if (this.largeUnit) {
         normalDate.startOf(this.largeUnit)
       }
