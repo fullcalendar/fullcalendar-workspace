@@ -56,6 +56,39 @@ describe('refetchResourcesOnNavigate', function() {
     })
 
 
+    it('refetches async resources on quick navigate', function(done) {
+      let resourceCallCnt = 0
+      let eventRenderingCnt = 0
+
+      initCalendar({
+        resources(callback) {
+          resourceCallCnt += 1
+          setTimeout(function() {
+            callback([
+              { title: `resource a-${resourceCallCnt}`, id: 'a' },
+              { title: `resource b-${resourceCallCnt}`, id: 'b' }
+            ])
+          }, 500)
+        },
+
+        eventAfterAllRender() {
+          eventRenderingCnt += 1
+
+          if (eventRenderingCnt === 1) {
+            currentCalendar.next()
+            setTimeout(function() {
+              currentCalendar.next()
+            }, 100) // before the refetch returns
+
+          } else if (eventRenderingCnt === 2) {
+            expect(resourceCallCnt).toBe(3)
+            done()
+          }
+        }
+      })
+    })
+
+
     it('refetches async resources and waits to render events', function(done) {
       let resourceCallCnt = 0
       let eventRenderingCnt = 0
