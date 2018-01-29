@@ -166,7 +166,7 @@ export default class TimelineView extends View {
         normalDate.time(0)
       }
     } else {
-      date = date.clone().stripTime()
+      normalDate = normalDate.clone().stripTime()
       if (this.largeUnit) {
         normalDate.startOf(this.largeUnit)
       }
