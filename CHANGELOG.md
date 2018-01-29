@@ -2,7 +2,14 @@
 v1.9.2
 ------
 
+Bugfixes:
 - fix event resize highlight not being unrendered (#406)
+- vert resource view fast navigation with refetchResourcesOnNavigate, breaks ([core-4009])
+- long-press touch selecting one event after another, gets confused (#410)
+- firstDay option not considered when slotLabelInterval is days (#408)
+- Typescript definition file not compatible with noImplicitAny (#405)
+
+[core-4009]: https://github.com/fullcalendar/fullcalendar/issues/4009
 
 
 v1.9.1 (2017-12-18)
