@@ -20,7 +20,7 @@ describe('eventConstraint', function() {
     ]
   })
 
-  // FYI: the fact that eventContraint may be specified in Event Source and Event Objects
+  // FYI: the fact that eventConstraint may be specified in Event Source and Event Objects
   // is covered by the core tests.
 
   describe('with one resourceId', function() {
