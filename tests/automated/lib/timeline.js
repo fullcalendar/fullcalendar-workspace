@@ -1,4 +1,4 @@
-import { getBoundingRect } from 'fullcalendar/tests/lib/dom-geom'
+import { getBoundingRect } from 'fullcalendar/tests/automated/lib/dom-geom'
 
 
 export function dragResourceTimelineEvent(eventEl, dropInfo) {

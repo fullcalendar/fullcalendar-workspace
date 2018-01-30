@@ -1,5 +1,5 @@
-import { getLeadingBoundingRect, sortBoundingRects } from 'fullcalendar/tests/lib/dom-geom'
-import { getDayGridDowEls } from 'fullcalendar/tests/lib/day-grid'
+import { getLeadingBoundingRect, sortBoundingRects } from 'fullcalendar/tests/automated/lib/dom-geom'
+import { getDayGridDowEls } from 'fullcalendar/tests/automated/lib/day-grid'
 
 describe('basic-view dayClick', function() {
   pushOptions({

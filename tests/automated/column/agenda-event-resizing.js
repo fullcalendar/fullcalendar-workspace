@@ -1,4 +1,4 @@
-import { getTimeGridPoint } from 'fullcalendar/tests/lib/time-grid'
+import { getTimeGridPoint } from 'fullcalendar/tests/automated/lib/time-grid'
 import { getResourceTimeGridPoint } from '../lib/time-grid'
 
 describe('agenda-view event resizing', function() {

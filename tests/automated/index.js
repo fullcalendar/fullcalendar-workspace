@@ -1,8 +1,8 @@
 
-require('fullcalendar/tests/globals')
-require('fullcalendar/tests/lib/moment')
-require('fullcalendar/tests/lib/dom-geom')
-require('fullcalendar/tests/lib/simulate')
+require('fullcalendar/tests/automated/globals')
+require('fullcalendar/tests/automated/lib/moment')
+require('fullcalendar/tests/automated/lib/dom-geom')
+require('fullcalendar/tests/automated/lib/simulate')
 
 var context = require.context(
   '.',

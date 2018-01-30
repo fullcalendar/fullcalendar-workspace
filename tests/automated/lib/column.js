@@ -1,5 +1,5 @@
-import { getDayGridDowEls } from 'fullcalendar/tests/lib/day-grid'
-import { getTimeGridDowEls } from 'fullcalendar/tests/lib/time-grid'
+import { getDayGridDowEls } from 'fullcalendar/tests/automated/lib/day-grid'
+import { getTimeGridDowEls } from 'fullcalendar/tests/automated/lib/time-grid'
 
 
 // date optional

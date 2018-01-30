@@ -1,5 +1,5 @@
-import { getBoundingRect } from 'fullcalendar/tests/lib/dom-geom'
-import { getTimeGridTop } from 'fullcalendar/tests/lib/time-grid'
+import { getBoundingRect } from 'fullcalendar/tests/automated/lib/dom-geom'
+import { getTimeGridTop } from 'fullcalendar/tests/automated/lib/time-grid'
 
 /*
 for a single segment

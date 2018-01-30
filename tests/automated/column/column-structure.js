@@ -1,5 +1,5 @@
-import { joinRects } from 'fullcalendar/tests/lib/geom'
-import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from 'fullcalendar/tests/lib/dom-geom'
+import { joinRects } from 'fullcalendar/tests/automated/lib/geom'
+import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from 'fullcalendar/tests/automated/lib/dom-geom'
 import { getHeadResourceEls, getHeadDowEls, getBodyDowEls } from '../lib/column'
 
 describe('vresource structure', function() {
