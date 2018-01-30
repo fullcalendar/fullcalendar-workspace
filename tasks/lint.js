@@ -12,7 +12,7 @@ gulp.task('lint', [
   'lint:node',
   'lint:tests',
   'lint:dts',
-  'link:example-repos'
+  'lint:example-repos'
 ])
 
 gulp.task('lint:src', function() {
