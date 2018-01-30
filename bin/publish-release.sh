@@ -40,6 +40,9 @@ git reset --quiet -- dist
 
 if [[ "$success" == "1" ]]
 then
+  echo "Waiting for release to propagate to NPM..."
+  sleep 5
+
   ./bin/verify-npm.sh
   echo "Success."
 else
