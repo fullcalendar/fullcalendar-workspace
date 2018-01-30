@@ -39,6 +39,7 @@
     "gulp-modify-file": "^1.0.0",
     "gulp-plumber": "^1.0.1",
     "gulp-rename": "^1.2.2",
+    "gulp-shell": "^0.6.5",
     "gulp-tslint": "^8.1.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.7",
