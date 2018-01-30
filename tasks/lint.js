@@ -88,8 +88,7 @@ gulp.task('lint:tests', function() {
 // Disable this test for now. But make sure .d.ts generation finishes.
 // Anyway, building the example-repo tests for the same thing.
 gulp.task('lint:dts', [ 'ts-types' ] /* , shell.task(
-  './node_modules/typescript/bin/tsc' +
-  ' --noImplicitAny --strictNullChecks' +
+  './node_modules/typescript/bin/tsc --strict' +
   ' fullcalendar/dist/fullcalendar.d.ts' + // need core's typedefs
   ' dist/scheduler.d.ts' // the file we want to lint
 ) */)
