@@ -99,7 +99,7 @@ describe('event resources', function() {
 
   it('will read resources from a json feed', function(done) {
     initCalendar({
-      resources: '/base/tests/json/two-rooms.json',
+      resources: '/base/tests/automated/json/two-rooms.json',
       resourcesSet(resources) {
         expect(resources.length).toBe(2)
         expect(resources[0].id).toBe('1')

@@ -28,8 +28,8 @@ module.exports = function(config) {
       'node_modules/jquery-simulate/jquery.simulate.js',
       'node_modules/jquery-mockjax/dist/jquery.mockjax.js',
 
-      'tests/base.css',
-      'tmp/compiled-tests.js',
+      'tests/automated/base.css',
+      'tmp/automated-tests.js',
 
       { // serve all other files
         pattern: '**/*',

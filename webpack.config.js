@@ -12,7 +12,7 @@ NOTE: ts entrypoints should be mirrored in tsconfig.json
 const MODULES = {
   'dist/scheduler': './src/main.ts',
   'dist/scheduler.css': './src/main.scss',
-  'tmp/compiled-tests': './tests/index.js'
+  'tmp/automated-tests': './tests/automated/index.js'
 }
 
 const BANNER =
@@ -46,6 +46,8 @@ module.exports = {
       // use our slimmed down version
       // still need to npm-install the original though, for typescript transpiler
       'tslib': path.resolve(__dirname, 'src/tslib-lite.js'),
+
+      // when tests access core test libs, don't use NPM package, use checkout
       'fullcalendar/tests': path.resolve(__dirname, 'fullcalendar/tests')
     }
   },

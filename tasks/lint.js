@@ -89,7 +89,7 @@ gulp.task('lint:node', function() {
 })
 
 gulp.task('lint:tests', function() {
-  return gulp.src('tests/**/*.js')
+  return gulp.src('tests/automated/**/*.js')
     .pipe(
       eslint({
         configFile: 'eslint.json',

@@ -7,7 +7,7 @@ require('fullcalendar/tests/automated/lib/simulate')
 var context = require.context(
   '.',
   true, // recursive?
-  /[^/]+\/[^/]+\.(js|ts)$/ // inside subdirectory
+  /\.(js|ts)$/
 )
 
 context.keys().forEach(context)
