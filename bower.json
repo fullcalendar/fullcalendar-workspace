@@ -8,7 +8,7 @@
     "url": "https://github.com/fullcalendar/fullcalendar-scheduler.git"
   },
   "license": "SEE LICENSE IN LICENSE.md",
-  "copyright": "2017 Adam Shaw",
+  "copyright": "2018 Adam Shaw",
   "dependencies": {
     "jquery": "2 - 3",
     "moment": "^2.9.0",
