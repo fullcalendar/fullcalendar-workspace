@@ -1,67 +1,89 @@
 #!/usr/bin/env bash
-
-# always immediately exit upon error
-set -e
-
-# start in project root
-cd "`dirname $0`/.."
-
 #
 # Give a --recent-release flag to test against the currently live release
 #
+set -e # always immediately exit upon error
+cd "`dirname $0`/.." # start in project root
+
+proj_dir="$PWD"
 
 if [[ "$1" == '--recent-release' ]]
 then
   use_current=0
 else
   use_current=1
-fi
 
-if [[ ! -d 'tests/example-repos/scheduler-typescript-example' ]]
-then
-  echo "Checking out the typescript-example git submodule..."
-  git submodule init
-  git submodule update
-fi
-
-cd 'tests/example-repos/scheduler-typescript-example'
-
-npm install
-
-if [[ "$use_current" == '1' ]]
-then
-  echo "Linking to fullcalendar/scheduler current working directory..."
-  npm link ../../../ # scheduler
-
-  # linking the core library is harder because might be a symlink,
-  # which `npm link` chokes on
-  prev_dir="$PWD"
-  cd ../../../fullcalendar
+  # temporarily make this fullcalendar-scheduler project global
   npm link
-  cd "$prev_dir"
-  npm link fullcalendar
+
+  # temporarily make the fullcalendar core project global
+  cd fullcalendar
+  npm link
+  cd "$proj_dir"
 fi
 
-success=0
+success=1
 
-if npm run build
-then
-  success=1
-fi
+for example_path in tests/example-repos/*
+do
+  # has npm build system? then build
+  if [[ -f "$example_path/package.json" ]]
+  then
+    cd "$example_path"
 
-# undo the link regardless of success/failure.
-# IMPORTANT, otherwise other tasks trip up on infinite directory recursion
+    npm install
+
+    # link to the globally linked fullcalendar
+    if [[ "$use_current" == '1' ]]
+    then
+      npm link fullcalendar
+      npm link fullcalendar-scheduler
+    fi
+
+    if npm run build
+    then
+      echo
+      echo "Successfully built `basename $example_path`"
+      echo
+    else
+      echo
+      echo "Failed to build `basename $example_path`"
+      echo
+      success=0
+    fi
+
+    # unlink from the globally linked fullcalendar
+    # don't use npm-unlink because it will remove entry from package.json
+    if [[ "$use_current" == '1' ]]
+    then
+      rm 'node_modules/fullcalendar'
+      rm 'node_modules/fullcalendar-scheduler'
+    fi
+  fi
+
+  # return to project root, for next iteraion, and for after loop
+  cd "$proj_dir"
+done
+
 if [[ "$use_current" == '1' ]]
 then
-  echo "Unlinking fullcalendar/scheduler..."
-  npm unlink fullcalendar
-  npm unlink fullcalendar-scheduler
+  # unlink global fullcalendar-scheduler
+  npm unlink
+
+  # unlink global fullcalendar
+  cd fullcalendar
+  npm link
+  cd "$proj_dir"
 fi
 
 if [[ "$success" == '1' ]]
 then
-  echo "Success."
+  echo
+  echo "Successfully built all example repos."
+  echo
 else
-  echo "Failure."
+  echo
+  echo "Failed to build all example repos."
+  echo
   exit 1
 fi
