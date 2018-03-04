@@ -12,7 +12,7 @@
   "dependencies": {
     "fullcalendar": "~3.8.1",
     "jquery": "2 - 3",
-    "moment": "^2.9.0"
+    "moment": "^2.20.1"
   },
   "version": "0.0.0",
   "releaseDate": "1970-01-01",
