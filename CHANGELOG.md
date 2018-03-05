@@ -1,4 +1,11 @@
 
+v1.9.3 (2018-03-04)
+-------------------
+- error second time changing to timeline view with resource-specific business hours (#414)
+- typescript definition doesn't expose OptionsInput (#421)
+- expose typescript defs for ResourceInput & ResourceSourceInput
+
+
 v1.9.2 (2018-01-23)
 -------------------
 
