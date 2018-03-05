@@ -27,7 +27,10 @@ export default class ResourceRow extends EventRow {
       EventRow.prototype.executeEventRender.call(this, this.eventsPayload)
     }
 
-    if (this.businessHourGenerator) {
+    if (
+      this.businessHourGenerator &&
+      this.view.dateProfile // hack
+    ) {
       EventRow.prototype.renderBusinessHours.call(this, this.businessHourGenerator)
     }
 

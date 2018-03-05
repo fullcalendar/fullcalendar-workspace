@@ -122,6 +122,31 @@ describe('timeline businessHours', function() {
     })
   })
 
+  // https://github.com/fullcalendar/fullcalendar-scheduler/issues/414
+  it('can switch views with resource override', function(done) {
+    let viewRenderCnt = 0
+    initCalendar({
+      resources: [
+        { id: 'a', title: 'a' },
+        { id: 'b', title: 'b', businessHours: { start: '02:00', end: '22:00' } },
+        { id: 'c', title: 'c' }
+      ],
+      businessHours: true,
+      viewRender() {
+        viewRenderCnt++
+        if (viewRenderCnt === 1) {
+          expectResourceOverride()
+          currentCalendar.changeView('month')
+        } else if (viewRenderCnt === 2) {
+          currentCalendar.changeView('timelineDay')
+        } else if (viewRenderCnt === 3) {
+          expectResourceOverride()
+          done()
+        }
+      }
+    })
+  })
+
   describe('when resource initially contracted', function() {
     pushOptions({
       resourcesInitiallyExpanded: false
