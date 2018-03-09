@@ -1,4 +1,5 @@
 import * as exportHooks from 'fullcalendar'
+import * as schedulerExports from './exports'
 
 // imports solely for side-effects
 import './exports'
@@ -24,6 +25,7 @@ import './types/jquery-hooks'
 
 const schedulerVersion = '<%= version %>';
 (exportHooks as any).schedulerVersion = schedulerVersion
+export = schedulerExports
 
 /*
 When the required internal version is upped,
