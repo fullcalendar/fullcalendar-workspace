@@ -1,4 +1,4 @@
-import { countHandlers } from 'fullcalendar/tests/automated/lib/dom-misc'
+import ListenerCounter from 'fullcalendar/tests/automated/lib/ListenerCounter'
 
 describe('destroy', function() {
   pushOptions({
@@ -21,24 +21,35 @@ describe('destroy', function() {
   }, function() {
     it('unbinds all handlers', function(done) {
       setTimeout(function() { // other tests might still be cleaning up after their callbacks
-        const documentCnt = countHandlers(document)
-        const windowCnt = countHandlers(window)
+        const $el = $('<div />').appendTo('body')
+
+        const windowListenerCounter = new ListenerCounter(window)
+        const docListenerCounter = new ListenerCounter(document)
+        const elListenerCounter = new ListenerCounter($el[0])
+
+        windowListenerCounter.startWatching()
+        docListenerCounter.startWatching()
+        elListenerCounter.startWatching()
+
         initCalendar({
           allDaySlot: false,
           eventAfterAllRender() {
             setTimeout(function() { // wait to render events
               currentCalendar.destroy()
               window.currentCalendar = null // for tests/util.js
-              const $el = $('#calendar')
+
               expect($el.length).toBe(1)
-              expect(countHandlers($el)).toBe(0)
-              expect(countHandlers(document)).toBe(documentCnt)
-              expect(countHandlers(window)).toBe(windowCnt)
               expect($el.attr('class') || '').toBe('')
+
+              expect(windowListenerCounter.stopWatching()).toBe(0)
+              expect(docListenerCounter.stopWatching()).toBe(0)
+              expect(elListenerCounter.stopWatching()).toBe(0)
+
+              $el.remove()
               done()
             }, 100)
           }
-        })
+        }, $el)
       }, 100)
       // needs non-zero waits unfortunately. other tests are probably
       // considered "done()" by karma, but still actually shutting down.
