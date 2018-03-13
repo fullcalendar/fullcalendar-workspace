@@ -26,7 +26,7 @@ export function processLicenseKey(key, containerEl) {
 This decryption is not meant to be bulletproof. Just a way to remind about an upgrade.
 */
 export function isValidKey(key) {
-  if ($.inArray(key, PRESET_LICENSE_KEYS) !== -1) {
+  if (PRESET_LICENSE_KEYS.indexOf(key) !== -1) {
     return true
   }
   const parts = (key || '').match(/^(\d+)\-fcs\-(\d+)$/)

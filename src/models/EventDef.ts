@@ -1,5 +1,4 @@
-import * as $ from 'jquery'
-import { EventDef, removeExact } from 'fullcalendar'
+import { assignTo, removeExact, EventDef } from 'fullcalendar'
 import Resource from './Resource'
 
 declare module 'fullcalendar/EventDef' {
@@ -35,7 +34,7 @@ NOTE: we can use defineStandardProps/applyManualStandardProps (example below)
 once we do away with the deprecated eventResourceField.
 */
 EventDef.prototype.applyMiscProps = function(rawProps) {
-  rawProps = $.extend({}, rawProps) // clone, because of delete
+  rawProps = assignTo({}, rawProps) // clone, because of delete
 
   this.resourceIds = Resource.extractIds(rawProps, this.source.calendar)
 
@@ -62,7 +61,7 @@ EventDef.prototype.applyManualStandardProps = function(rawProps) {
 resourceId should already be normalized
 */
 EventDef.prototype.hasResourceId = function(resourceId) {
-  return $.inArray(resourceId, this.resourceIds) !== -1
+  return this.resourceIds.indexOf(resourceId) !== -1
 }
 
 /*

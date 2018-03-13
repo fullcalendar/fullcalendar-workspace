@@ -1,4 +1,3 @@
-import * as $ from 'jquery'
 import * as moment from 'moment'
 import * as core from 'fullcalendar'
 import TimelineView from './TimelineView'
@@ -41,11 +40,10 @@ export function initScaleProps(timelineView: TimelineView) {
   ensureSlotDuration(timelineView)
 
   let input = timelineView.opt('slotLabelFormat')
-  const type = $.type(input)
   timelineView.headerFormats =
-    type === 'array' ?
+    Array.isArray(input) ?
       input
-    : type === 'string' ?
+    : typeof input === 'string' ?
       [ input ]
     :
       computeHeaderFormats(timelineView)

@@ -1,5 +1,4 @@
-import * as $ from 'jquery'
-import { Mixin, View } from 'fullcalendar'
+import { assignTo, Mixin, View } from 'fullcalendar'
 
 
 export interface ResourceViewInterface {
@@ -115,7 +114,7 @@ export default class ResourceViewMixin extends Mixin implements ResourceViewInte
     const scroll = View.prototype.queryScroll.apply(this, arguments)
 
     if (this.isResourcesRendered) {
-      $.extend(scroll, this.queryResourceScroll())
+      assignTo(scroll, this.queryResourceScroll())
     }
 
     return scroll

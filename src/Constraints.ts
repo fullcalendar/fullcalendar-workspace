@@ -1,4 +1,3 @@
-import * as $ from 'jquery'
 import { Constraints, EventFootprint } from 'fullcalendar'
 import Resource from './models/Resource'
 import ResourceComponentFootprint from './models/ResourceComponentFootprint'
@@ -43,13 +42,13 @@ Constraints.prototype.getPeerEventInstances = function(subjectEventDef) {
 
 // enforce resource ID constraint
 Constraints.prototype.isFootprintAllowed = function(footprint, peerEventFootprints, constraintVal, overlapVal, subjectEventInstance) {
-  if (typeof constraintVal === 'object') {
+  if (typeof constraintVal === 'object' && constraintVal) { // non-null object
 
     const constrainToResourceIds = Resource.extractIds(constraintVal, this)
 
     if (constrainToResourceIds.length && (
       !(footprint instanceof ResourceComponentFootprint) ||
-      $.inArray(footprint.resourceId, constrainToResourceIds) === -1
+      constrainToResourceIds.indexOf(footprint.resourceId) === -1
     )) {
       return false
     }

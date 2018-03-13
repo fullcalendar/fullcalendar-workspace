@@ -473,11 +473,13 @@ export default class RowParent extends DateComponent {
   getMaxTrInnerHeight() {
     let max = 0
 
-    $.each(this.trHash, (type, tr) => {
+    for (let type in this.trHash) {
+      let tr = this.trHash[type]
+
       // exclude multi-rowspans (probably done for row grouping)
       const innerEl = getOwnCells(tr).find('> div:not(.fc-cell-content):first')
       max = Math.max(innerEl.height(), max)
-    })
+    }
 
     return max
   }
@@ -487,10 +489,11 @@ export default class RowParent extends DateComponent {
   */
   setTrInnerHeight(height) {
     // exclude multi-rowspans (probably done for row grouping)
-    $.each(this.trHash, (type, tr) => {
+    for (let type in this.trHash) {
+      let tr = this.trHash[type]
       getOwnCells(tr).find('> div:not(.fc-cell-content):first')
         .height(height)
-    })
+    }
   }
 
 

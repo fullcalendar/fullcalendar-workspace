@@ -1,5 +1,4 @@
-import * as $ from 'jquery'
-import { TimeGrid } from 'fullcalendar'
+import { assignTo, TimeGrid } from 'fullcalendar'
 import { default as ResourceDayTableMixin, ResourceDayTableInterface } from '../component/ResourceDayTableMixin'
 import ResourceComponentFootprint from '../models/ResourceComponentFootprint'
 
@@ -64,7 +63,7 @@ export default class ResourceTimeGrid extends TimeGrid {
           !(componentFootprint instanceof ResourceComponentFootprint) ||
           (componentFootprint.resourceId === resourceObj.id)
         ) {
-          const copy = $.extend({}, seg)
+          const copy = assignTo({}, seg)
           copy.resource = resourceObj
           copy.col = this.indicesToCol(resourceIndex, seg.dayIndex)
           resourceSegs.push(copy)

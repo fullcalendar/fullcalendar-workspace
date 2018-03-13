@@ -1,4 +1,3 @@
-import * as $ from 'jquery'
 import { Calendar, EventObjectInput } from 'fullcalendar'
 import Resource from './models/Resource'
 import ResourceManager from './models/ResourceManager'
@@ -74,18 +73,17 @@ Calendar.prototype.getResources = function(): ResourceInput[] {
 
 // assumes all resources already loaded
 Calendar.prototype.addResource = function(resourceInput: ResourceInput, scroll: boolean = false) {
-  this.resourceManager.addResource(resourceInput)
-    .then((resource) => {
-      if (scroll && this.view.scrollToResource) {
-        return this.view.scrollToResource(resource)
-      }
-    })
+  this.resourceManager.addResource(resourceInput, (resource) => {
+    if (scroll && this.view.scrollToResource) {
+      return this.view.scrollToResource(resource)
+    }
+  })
 }
 
 
 // assumes all resources already loaded
 Calendar.prototype.removeResource = function(idOrResource: string | ResourceInput) {
-  return this.resourceManager.removeResource(idOrResource)
+  this.resourceManager.removeResource(idOrResource)
 }
 
 
@@ -164,7 +162,7 @@ Calendar.prototype.setEventResourceIds = function(event: EventObjectInput, resou
 // NOTE: views pair *segments* to resources. that's why there's no code reuse
 Calendar.prototype.getResourceEvents = function(idOrResource: string | ResourceInput): EventObjectInput[] {
   const resource =
-    typeof idOrResource === 'object' ?
+    (typeof idOrResource === 'object' && idOrResource) ? // non-null object
       idOrResource :
       this.getResourceById(idOrResource)
 
@@ -172,7 +170,7 @@ Calendar.prototype.getResourceEvents = function(idOrResource: string | ResourceI
     // return the event cache, filtered by events assigned to the resource
     // TODO: move away from using clientId
     return this.clientEvents((event) => {
-      return $.inArray(resource.id, this.getEventResourceIds(event)) !== -1
+      return this.getEventResourceIds(event).indexOf(resource.id) !== -1
     })
   } else {
     return []
@@ -188,7 +186,7 @@ Calendar.prototype.getEventResource = function(idOrEvent: string | EventObjectIn
 
 Calendar.prototype.getEventResources = function(idOrEvent: string | EventObjectInput): ResourceInput[] {
   const event =
-    typeof idOrEvent === 'object' ?
+    (typeof idOrEvent === 'object' && idOrEvent) ? // non-null object
       idOrEvent :
       this.clientEvents(idOrEvent)[0]
 

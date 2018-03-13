@@ -1,5 +1,4 @@
-import * as $ from 'jquery'
-import { DayGrid } from 'fullcalendar'
+import { assignTo, DayGrid } from 'fullcalendar'
 import { default as ResourceDayTableMixin, ResourceDayTableInterface } from '../component/ResourceDayTableMixin'
 import ResourceComponentFootprint from '../models/ResourceComponentFootprint'
 
@@ -68,7 +67,7 @@ export default class ResourceDayGrid extends DayGrid {
           !(componentFootprint instanceof ResourceComponentFootprint) ||
           (componentFootprint.resourceId === resourceObj.id)
         ) {
-          const copy = $.extend({}, seg)
+          const copy = assignTo({}, seg)
           copy.resource = resourceObj
 
           if (this.isRTL) {

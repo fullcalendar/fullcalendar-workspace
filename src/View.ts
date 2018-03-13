@@ -6,7 +6,7 @@ declare module 'fullcalendar/View' {
     canHandleSpecificResources: boolean
     watchResources()
     unwatchResources()
-    getInitialResources(dateProfile)
+    getInitialResources(dateProfile, callback)
     bindResourceChanges(eventsPayload)
     unbindResourceChanges()
     setResources(resources, eventsPayload)
@@ -75,9 +75,9 @@ View.prototype.watchResources = function() {
     bindingDepNames.push('currentEvents')
   }
 
-  this.watch('initialResources', initialDepNames, (deps) => {
-    return this.getInitialResources(deps.dateProfile) // promise
-  })
+  this.watch('initialResources', initialDepNames, (deps, callback) => {
+    this.getInitialResources(deps.dateProfile, callback)
+  }, null, true) // async=true
 
   this.watch('bindingResources', bindingDepNames, (deps) => {
     this.bindResourceChanges(deps.currentEvents)
@@ -96,16 +96,17 @@ View.prototype.unwatchResources = function() {
 
 
 // dateProfile is optional
-View.prototype.getInitialResources = function(dateProfile) {
+View.prototype.getInitialResources = function(dateProfile, callback) {
   const { calendar } = this
 
   if (dateProfile) {
-    return calendar.resourceManager.getResources(
+    calendar.resourceManager.getResources(
       calendar.msToMoment(dateProfile.activeUnzonedRange.startMs, dateProfile.isRangeAllDay),
-      calendar.msToMoment(dateProfile.activeUnzonedRange.endMs, dateProfile.isRangeAllDay)
+      calendar.msToMoment(dateProfile.activeUnzonedRange.endMs, dateProfile.isRangeAllDay),
+      callback
     )
   } else {
-    return calendar.resourceManager.getResources()
+    calendar.resourceManager.getResources(null, null, callback)
   }
 }
 

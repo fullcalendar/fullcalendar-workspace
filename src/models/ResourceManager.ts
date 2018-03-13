@@ -1,5 +1,5 @@
 import * as $ from 'jquery'
-import { Class, Promise, EmitterMixin, EmitterInterface, BusinessHourGenerator } from 'fullcalendar'
+import { assignTo, applyAll, Class, EmitterMixin, EmitterInterface, BusinessHourGenerator } from 'fullcalendar'
 
 
 export default class ResourceManager extends Class {
@@ -18,17 +18,18 @@ export default class ResourceManager extends Class {
   hasHandlers: EmitterInterface['hasHandlers']
 
   calendar: any
-  fetchId: number
   topLevelResources: any // if null, indicates not fetched
   resourcesById: any
-  fetching: any // a promise. the last fetch. never cleared afterwards
+  fetchId: number = 0
+  isFetchingInitiated: boolean = false
+  isFetchingResolved: boolean = false
+  fetchingResourcesCallbacks: any
   currentStart: any
   currentEnd: any
 
 
   constructor(calendar) {
     super()
-    this.fetchId = 0
     this.calendar = calendar
     this.initializeCache()
   }
@@ -41,15 +42,15 @@ export default class ResourceManager extends Class {
   /*
   Like fetchResources, but won't refetch if already fetched.
   */
-  getResources(start, end) {
+  getResources(start, end, callback) {
     const isSameRange =
       (!start && !this.currentStart) || // both nonexistent ranges?
       (start && this.currentStart && start.isSame(this.currentStart) && end.isSame(this.currentEnd))
 
-    if (!this.fetching || !isSameRange) { // first time? or is range different?
-      return this.fetchResources(start, end)
+    if (!this.isFetchingInitiated || !isSameRange) { // first time? or is range different?
+      this.fetchResources(start, end, callback)
     } else {
-      return this.fetching
+      this.whenFetchingResolved(callback)
     }
   }
 
@@ -57,22 +58,32 @@ export default class ResourceManager extends Class {
   /*
   Will always fetch, even if done previously.
   Accepts optional chrono-related params to pass on to the raw resource sources.
-  Returns a promise.
   */
-  fetchResources(start, end) {
+  fetchResources(start, end, callback) {
     const currentFetchId = (this.fetchId += 1)
 
-    return this.fetching =
-      Promise.construct((resolve, reject) => {
-        this.fetchResourceInputs(resourceInputs => {
-          if (currentFetchId === this.fetchId) {
-            this.setResources(resourceInputs)
-            return resolve(this.topLevelResources)
-          } else {
-            return reject()
-          }
-        }, start, end)
-      })
+    this.isFetchingInitiated = true
+    this.isFetchingResolved = false
+    let callbacks = this.fetchingResourcesCallbacks = [ callback ]
+
+    this.fetchResourceInputs(resourceInputs => {
+      if (currentFetchId === this.fetchId) {
+        this.setResources(resourceInputs)
+        this.isFetchingResolved = true
+        this.fetchingResourcesCallbacks = null
+
+        applyAll(callbacks, null, [ this.topLevelResources ])
+      }
+    }, start, end)
+  }
+
+
+  whenFetchingResolved(callback) {
+    if (this.isFetchingResolved) {
+      callback(this.topLevelResources)
+    } else {
+      this.fetchingResourcesCallbacks.push(callback)
+    }
   }
 
 
@@ -85,55 +96,48 @@ export default class ResourceManager extends Class {
     let source = calendar.opt('resources')
     const timezone = calendar.opt('timezone')
 
-    if ($.type(source) === 'string') {
+    if (typeof source === 'string') {
       source = { url: source }
     }
 
-    switch ($.type(source)) {
+    if (Array.isArray(source)) {
+      callback(source)
 
-      case 'function':
-        this.calendar.pushLoading()
-        source((resourceInputs) => {
-          this.calendar.popLoading()
-          callback(resourceInputs)
-        }, start, end, calendar.opt('timezone'))
-        break
+    } else if (typeof source === 'function') {
+      this.calendar.pushLoading()
+      source((resourceInputs) => {
+        this.calendar.popLoading()
+        callback(resourceInputs)
+      }, start, end, calendar.opt('timezone'))
 
-      case 'object':
-        calendar.pushLoading()
-        let requestParams = {}
+    } else if (typeof source === 'object' && source) { // non-null object
+      calendar.pushLoading()
+      let requestParams = {}
 
-        if (start && end) {
-          requestParams[calendar.opt('startParam')] = start.format()
-          requestParams[calendar.opt('endParam')] = end.format()
+      if (start && end) {
+        requestParams[calendar.opt('startParam')] = start.format()
+        requestParams[calendar.opt('endParam')] = end.format()
 
-          // mimick what EventManager does
-          // TODO: more DRY
-          if (timezone && (timezone !== 'local')) {
-            requestParams[calendar.opt('timezoneParam')] = timezone
-          }
+        // mimick what EventManager does
+        // TODO: more DRY
+        if (timezone && (timezone !== 'local')) {
+          requestParams[calendar.opt('timezoneParam')] = timezone
         }
+      }
 
-        $.ajax( // TODO: handle failure
-          $.extend(
-            { data: requestParams },
-            ResourceManager.ajaxDefaults,
-            source
-          )
-        ).then(resourceInputs => {
-          calendar.popLoading()
-          callback(resourceInputs)
-        })
+      $.ajax( // TODO: handle failure
+        assignTo(
+          { data: requestParams },
+          ResourceManager.ajaxDefaults,
+          source
+        )
+      ).then(resourceInputs => {
+        calendar.popLoading()
+        callback(resourceInputs)
+      })
 
-        break
-
-      case 'array':
-        callback(source)
-        break
-
-      default:
-        callback([])
-        break
+    } else {
+      callback([])
     }
   }
 
@@ -205,25 +209,24 @@ export default class ResourceManager extends Class {
 
 
   clear() {
+    this.isFetchingInitiated = false
     this.topLevelResources = null
-    this.fetching = null
   }
 
 
-  addResource(resourceInput) { // returns a promise
-    if (this.fetching) {
-      return this.fetching.then(() => { // wait for initial batch of resources
+  addResource(resourceInput, callback?) {
+    if (this.isFetchingInitiated) {
+      this.whenFetchingResolved(() => { // wait for initial batch of resources
         const resource = this.buildResource(resourceInput)
         if (this.addResourceToIndex(resource)) {
           this.addResourceToTree(resource)
           this.trigger('add', resource , this.topLevelResources)
-          return resource
-        } else {
-          return false
+
+          if (callback) {
+            callback(resource)
+          }
         }
       })
-    } else {
-      return Promise.reject()
     }
   }
 
@@ -273,12 +276,12 @@ export default class ResourceManager extends Class {
 
   removeResource(idOrResource) {
     const id =
-      typeof idOrResource === 'object' ?
+      (typeof idOrResource === 'object' && idOrResource) ? // non-null object
         idOrResource.id :
         idOrResource
 
-    if (this.fetching) {
-      return this.fetching.then(() => { // wait for initial batch of resources
+    if (this.isFetchingInitiated) {
+      this.whenFetchingResolved(() => { // wait for initial batch of resources
         const resource = this.removeResourceFromIndex(id)
 
         if (resource) {
@@ -288,8 +291,6 @@ export default class ResourceManager extends Class {
 
         return resource
       })
-    } else {
-      return Promise.reject()
     }
   }
 
@@ -336,7 +337,7 @@ export default class ResourceManager extends Class {
 
 
   buildResource(resourceInput) {
-    const resource = $.extend({}, resourceInput)
+    const resource = assignTo({}, resourceInput)
     const rawClassName = resourceInput.eventClassName
 
     resource.id = String(
@@ -347,13 +348,12 @@ export default class ResourceManager extends Class {
 
     // TODO: consolidate repeat logic
     resource.eventClassName = (function() {
-      switch ($.type(rawClassName)) {
-        case 'string':
-          return rawClassName.split(/\s+/)
-        case 'array':
-          return rawClassName
-        default:
-          return []
+      if (typeof rawClassName === 'string') {
+        return rawClassName.split(/\s+/)
+      } else if (Array.isArray(rawClassName)) {
+        return rawClassName
+      } else {
+        return []
       }
     })()
 

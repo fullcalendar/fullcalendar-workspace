@@ -1,4 +1,5 @@
 import * as $ from 'jquery'
+import { assignTo } from 'fullcalendar'
 
 /*
 A rectangular area of content that lives within a Scroller.
@@ -40,7 +41,7 @@ export default class ScrollerCanvas {
     if (!gutters) {
       this.gutters = {}
     } else {
-      $.extend(this.gutters, gutters)
+      assignTo(this.gutters, gutters)
     }
     this.updateSize()
   }
