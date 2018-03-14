@@ -9,8 +9,8 @@ export default class TimelineEventDragging extends EventDragging {
   segDragStart(seg, ev) {
     super.segDragStart(seg, ev)
 
-    if (this.component.eventTitleFollower) {
-      this.component.eventTitleFollower.forceRelative()
+    if ((this.component as any).eventTitleFollower) {
+      (this.component as any).eventTitleFollower.forceRelative()
     }
   }
 
@@ -18,8 +18,8 @@ export default class TimelineEventDragging extends EventDragging {
   segDragStop(seg, ev) {
     super.segDragStop(seg, ev)
 
-    if (this.component.eventTitleFollower) {
-      this.component.eventTitleFollower.clearForce()
+    if ((this.component as any).eventTitleFollower) {
+      (this.component as any).eventTitleFollower.clearForce()
     }
   }
 
