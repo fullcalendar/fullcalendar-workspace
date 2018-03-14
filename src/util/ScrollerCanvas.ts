@@ -9,9 +9,9 @@ Has a content area that lives above a background area.
 */
 export default class ScrollerCanvas {
 
-  el: any
-  contentEl: any
-  bgEl: any
+  el: JQuery
+  contentEl: JQuery
+  bgEl: JQuery
   gutters: any // an object {top,left,bottom,right}
   width: any
   minWidth: any

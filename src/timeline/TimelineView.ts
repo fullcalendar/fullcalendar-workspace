@@ -41,20 +41,20 @@ export default class TimelineView extends View {
   emphasizeWeeks: boolean
 
   // rendering
-  timeHeadEl: any
-  timeHeadColEls: any
+  timeHeadEl: JQuery
+  timeHeadColEls: JQuery
   timeHeadScroller: any
-  timeBodyEl: any
+  timeBodyEl: JQuery
   timeBodyScroller: any
   timeScrollJoiner: any
   headDateFollower: any
   eventTitleFollower: any
-  segContainerEl: any
+  segContainerEl: JQuery
   segContainerHeight: any
-  bgSegContainerEl: any
-  slatContainerEl: any
-  slatColEls: any
-  slatEls: any // in DOM order
+  bgSegContainerEl: JQuery
+  slatContainerEl: JQuery
+  slatColEls: JQuery
+  slatEls: JQuery // in DOM order
   slotWidth: number
 
   // coordinates
@@ -62,7 +62,7 @@ export default class TimelineView extends View {
   slatCoordCache: any // used for hit detection
   slatInnerCoordCache: any
 
-  nowIndicatorEls: any
+  nowIndicatorEls: JQuery
   isTimeBodyScrolled: boolean
 
 
@@ -697,14 +697,14 @@ export default class TimelineView extends View {
 
     innerEls.each(function(i, node) {
       const innerWidth = $(node).outerWidth()
-      return maxInnerWidth = Math.max(maxInnerWidth, innerWidth)
+      maxInnerWidth = Math.max(maxInnerWidth, innerWidth)
     })
 
     const headerWidth = maxInnerWidth + 1 // assume no padding, and one pixel border
     const slotsPerLabel = divideDurationByDuration(this.labelInterval, this.slotDuration) // TODO: rename labelDuration?
     let slotWidth = Math.ceil(headerWidth / slotsPerLabel)
 
-    let minWidth = this.timeHeadColEls.eq(0).css('min-width')
+    let minWidth: any = this.timeHeadColEls.eq(0).css('min-width')
     if (minWidth) {
       minWidth = parseInt(minWidth, 10)
       if (minWidth) {

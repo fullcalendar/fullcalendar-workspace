@@ -7,10 +7,10 @@ import TimelineHelperRenderer from '../../timeline/renderers/TimelineHelperRende
 
 export default class EventRow extends RowParent {
 
-  segContainerEl: any // for EventRenderer
+  segContainerEl: JQuery // for EventRenderer
   segContainerHeight: any
-  innerEl: any
-  bgSegContainerEl: any // for EventRenderer. same el as innerEl :(
+  innerEl: JQuery
+  bgSegContainerEl: JQuery // for EventRenderer. same el as innerEl :(
 
 
   renderEventSkeleton(tr) {

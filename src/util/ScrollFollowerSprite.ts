@@ -7,8 +7,8 @@ export default class ScrollFollowerSprite {
 
   id: any
   follower: any // must be set by caller
-  el: any
-  absoluteEl: any
+  el: JQuery
+  absoluteEl: JQuery
   naturalRect: any
   parentRect: any
   containerRect: any

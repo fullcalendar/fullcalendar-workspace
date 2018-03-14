@@ -30,13 +30,13 @@ export default class ResourceTimelineView extends TimelineView {
   eventRendererClass: any // initialized after class definition
 
   // time area
-  timeBodyTbodyEl: any
+  timeBodyTbodyEl: JQuery
 
   // spreadsheet area
   spreadsheet: any
 
   // divider
-  dividerEls: any
+  dividerEls: JQuery
   dividerWidth: any
 
   // resource rendering options

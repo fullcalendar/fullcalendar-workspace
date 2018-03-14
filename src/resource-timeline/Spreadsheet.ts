@@ -13,9 +13,9 @@ export default class Spreadsheet {
 
   view: any
   isRTL: boolean
-  headEl: any
-  el: any // for body
-  tbodyEl: any
+  headEl: JQuery
+  el: JQuery // for body
+  tbodyEl: JQuery
   headScroller: any
   bodyScroller: any
   scrollJoiner: any
@@ -24,10 +24,10 @@ export default class Spreadsheet {
   // rendering
   colGroupHtml: string
   headTable: any
-  headColEls: any
-  headCellEls: any
-  bodyColEls: any
-  bodyTable: any
+  headColEls: JQuery
+  headCellEls: JQuery
+  bodyColEls: JQuery
+  bodyTable: JQuery
 
   // column resizing
   givenColWidths: any
@@ -152,8 +152,8 @@ export default class Spreadsheet {
 
 
   initColResizing() {
-    this.headEl.find('th .fc-col-resizer').each((i, resizerEl) => {
-      resizerEl = $(resizerEl)
+    this.headEl.find('th .fc-col-resizer').each((i, resizerNode) => {
+      let resizerEl = $(resizerNode)
       resizerEl.on('mousedown', ev => {
         this.colResizeMousedown(i, ev, resizerEl)
       })

@@ -16,8 +16,8 @@ export default class RowParent extends DateComponent {
   depth: number // number of row-levels deep from top of hierarchy. Nodes without rows aren't counted
 
   hasOwnRow: boolean // is this node responsible for rendering its own distinct row? (initialized after class)
-  trHash: any // TR jq objects owned by the node. keyed by "type" (parallel row sections in different tbodies)
-  trs: any // single jQuery object of tr elements owned by the node.
+  trHash: { [type: string]: JQuery } // TR jq objects owned by the node. keyed by "type" (parallel row sections in different tbodies)
+  trs: JQuery // single jQuery object of tr elements owned by the node.
 
   isExpanded: boolean // does this node have its child nodes revealed?
 

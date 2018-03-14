@@ -7,8 +7,8 @@ A row grouping that renders as a tall multi-cell vertical span in the "spreadshe
 export default class VRowGroup extends RowGroup {
 
   rowspan: number // the number of total rows (subparents included) this group spans
-  leadingTr: any // the first real row's TR in the group
-  groupTd: any
+  leadingTr: JQuery // the first real row's TR in the group
+  groupTd: JQuery
 
 
   constructor(view, groupSpec, groupValue) {
