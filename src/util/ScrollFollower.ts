@@ -1,5 +1,5 @@
 import * as $ from 'jquery'
-import { getContentRect, getOuterRect } from 'fullcalendar'
+import { getContentRect } from 'fullcalendar'
 import ScrollFollowerSprite from './ScrollFollowerSprite'
 
 
@@ -160,7 +160,14 @@ export default class ScrollFollower {
 
   // relative to inner content pane
   getBoundingRect(el) {
-    return getOuterRect(el, this.contentOffset)
+    let { contentOffset } = this
+    let rect = el[0].getBoundingClientRect()
+    return {
+      left: rect.left - contentOffset.left,
+      right: rect.right - contentOffset.left,
+      top: rect.top - contentOffset.top,
+      bottom: rect.bottom - contentOffset.top
+    }
   }
 
 

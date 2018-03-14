@@ -4,6 +4,7 @@ import {
   EmitterMixin, EmitterInterface,
   ListenerMixin, ListenerInterface
 } from 'fullcalendar'
+import ScrollerCanvas from '../util/ScrollerCanvas'
 
 let rtlScrollSystem = null
 
@@ -26,7 +27,7 @@ export default class EnhancedScroller extends Scroller {
   listenTo: ListenerInterface['listenTo']
   stopListeningTo: ListenerInterface['stopListeningTo']
 
-  canvas: any // an optional ScrollerCanvas
+  canvas: ScrollerCanvas // an optional ScrollerCanvas
   isScrolling: boolean
   isTouching: boolean // user currently has finger down?
   isTouchedEver: boolean // user ever initiated with touch? (hack)

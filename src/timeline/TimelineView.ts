@@ -43,12 +43,12 @@ export default class TimelineView extends View {
   // rendering
   timeHeadEl: JQuery
   timeHeadColEls: JQuery
-  timeHeadScroller: any
+  timeHeadScroller: ClippedScroller
   timeBodyEl: JQuery
-  timeBodyScroller: any
-  timeScrollJoiner: any
-  headDateFollower: any
-  eventTitleFollower: any
+  timeBodyScroller: ClippedScroller
+  timeScrollJoiner: ScrollJoiner
+  headDateFollower: ScrollFollower
+  eventTitleFollower: ScrollFollower
   segContainerEl: JQuery
   segContainerHeight: any
   bgSegContainerEl: JQuery
@@ -254,7 +254,7 @@ export default class TimelineView extends View {
     this.bgSegContainerEl = this.timeBodyScroller.canvas.bgEl
 
     this.timeBodyBoundCache = new CoordCache({
-      els: this.timeBodyScroller.canvas.el, // better representative of bounding box, considering annoying negative margins
+      els: this.timeBodyScroller.canvas.el.toArray(), // better representative of bounding box, considering annoying negative margins
       isHorizontal: true, // we use the left/right for adjusting RTL coordinates
       isVertical: true
     })
@@ -346,18 +346,18 @@ export default class TimelineView extends View {
     this.slatEls = this.slatContainerEl.find('td')
 
     this.slatCoordCache = new CoordCache({
-      els: this.slatEls,
+      els: this.slatEls.toArray(),
       isHorizontal: true
     })
 
     // for the inner divs within the slats
     // used for event rendering and scrollTime, to disregard slat border
     this.slatInnerCoordCache = new CoordCache({
-      els: this.slatEls.find('> div'),
+      els: this.slatEls.find('> div').toArray(),
       isHorizontal: true,
       // we use this coord cache for getPosition* for event rendering.
       // workaround for .fc-content's negative margins.
-      offsetParent: this.timeBodyScroller.canvas.el
+      offsetParent: this.timeBodyScroller.canvas.el[0]
     })
 
     for (let i = 0; i < this.slotDates.length; i++) {
