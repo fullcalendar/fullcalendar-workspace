@@ -65,7 +65,7 @@ export default class Spreadsheet {
     this.bodyScroller.canvas.contentEl.html(
       `<div class="fc-rows"> \
 <table class="` + theme.getClass('tableGrid') + `">\
-` + this.colGroupHtml + `<tbody/> \
+` + this.colGroupHtml + `<tbody></tbody> \
 </table> \
 </div>`
     ) // colGroupHtml hack

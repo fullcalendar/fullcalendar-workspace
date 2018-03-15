@@ -161,7 +161,7 @@ export default class TimelineEventRenderer extends EventRenderer {
           (eventDef.title ? htmlEscape(eventDef.title) : '&nbsp;') +
         '</span>' +
       '</div>' +
-      '<div class="fc-bg" />' +
+      '<div class="fc-bg"></div>' +
       (isResizableFromStart ?
         '<div class="fc-resizer fc-start-resizer"></div>' :
         '') +

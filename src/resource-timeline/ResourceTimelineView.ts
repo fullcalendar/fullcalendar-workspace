@@ -185,7 +185,7 @@ export default class ResourceTimelineView extends TimelineView {
     const timeBodyContainerEl = $(`\
 <div class="fc-rows"> \
 <table class="` + theme.getClass('tableGrid') + `"> \
-<tbody/> \
+<tbody></tbody> \
 </table> \
 </div>\
 `).appendTo(this.timeBodyScroller.canvas.contentEl)

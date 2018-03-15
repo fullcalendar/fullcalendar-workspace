@@ -545,7 +545,7 @@ export default class TimelineView extends View {
 
     return '<td class="' + classes.join(' ') + '"' +
       ' data-date="' + date.format() + '"' +
-      '><div /></td>'
+      '><div></div></td>'
   }
 
 

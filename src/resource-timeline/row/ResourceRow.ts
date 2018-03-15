@@ -154,7 +154,7 @@ export default class ResourceRow extends EventRow {
     const { depth } = this
 
     for (let i = 0; i < depth; i++) {
-      html += '<span class="fc-icon"/>'
+      html += '<span class="fc-icon"></span>'
     }
 
     html +=

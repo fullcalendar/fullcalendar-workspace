@@ -51,7 +51,7 @@ export function isImmuneUrl(url) {
 
 export function renderingWarningInContainer(messageHtml, containerEl) {
   return containerEl.append(
-    $('<div class="fc-license-message" />').html(messageHtml)
+    $('<div class="fc-license-message"></div>').html(messageHtml)
   )
 }
 
