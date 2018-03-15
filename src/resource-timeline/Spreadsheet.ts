@@ -16,10 +16,10 @@ export default class Spreadsheet {
   headEl: JQuery
   el: JQuery // for body
   tbodyEl: JQuery
-  headScroller: any
-  bodyScroller: any
-  scrollJoiner: any
-  cellFollower: any
+  headScroller: ClippedScroller
+  bodyScroller: ClippedScroller
+  scrollJoiner: ScrollJoiner
+  cellFollower: ScrollFollower
 
   // rendering
   colGroupHtml: string
@@ -274,7 +274,7 @@ export default class Spreadsheet {
   }
 
 
-  headHeight() { // TODO: route this better
+  headHeight(_height?) { // TODO: route this better
     const table = this.headScroller.canvas.contentEl.find('table')
     return table.height.apply(table, arguments)
   }

@@ -1,5 +1,5 @@
 import * as $ from 'jquery'
-import { getScrollbarWidths } from 'fullcalendar'
+import { assignTo, getScrollbarWidths } from 'fullcalendar'
 import EnhancedScroller from './EnhancedScroller'
 
 /*
@@ -36,13 +36,16 @@ export default class ClippedScroller extends EnhancedScroller {
 
   renderEl() {
     const scrollEl = super.renderEl()
-    return $('<div class="fc-scroller-clip" />').append(scrollEl) // return value
+    const clipEl = document.createElement('div')
+    clipEl.classList.add('fc-scroller-clip')
+    clipEl.appendChild(scrollEl)
+    return clipEl
   }
 
 
   updateSize() {
     const { scrollEl } = this
-    const scrollbarWidths = getScrollbarWidths(scrollEl) // the native ones
+    const scrollbarWidths = getScrollbarWidths($(scrollEl)) // the native ones
     const cssProps = { marginLeft: 0, marginRight: 0, marginTop: 0, marginBottom: 0 }
 
     // give the inner scrolling div negative margins so that its scrollbars
@@ -56,12 +59,11 @@ export default class ClippedScroller extends EnhancedScroller {
       cssProps.marginRight = -scrollbarWidths.right
     }
 
-    scrollEl.css(cssProps)
+    assignTo(scrollEl.style, cssProps)
 
     // if we are attempting to hide the scrollbars offscreen, OSX/iOS will still
     // display the floating scrollbars. attach a className to force-hide them.
-    return scrollEl.toggleClass(
-      'fc-no-scrollbars',
+    if (
       (this.isHScrollbarsClipped || (this.overflowX === 'hidden')) && // should never show?
       (this.isVScrollbarsClipped || (this.overflowY === 'hidden')) && // should never show?
       !( // doesn't have any scrollbar mass
@@ -70,7 +72,11 @@ export default class ClippedScroller extends EnhancedScroller {
         scrollbarWidths.left ||
         scrollbarWidths.right
       )
-    )
+    ) {
+      scrollEl.classList.add('fc-no-scrollbars')
+    } else {
+      scrollEl.classList.remove('fc-no-scrollbars')
+    }
   }
 
 
@@ -78,7 +84,7 @@ export default class ClippedScroller extends EnhancedScroller {
   Accounts for 'clipped' scrollbars
   */
   getScrollbarWidths() {
-    const widths = getScrollbarWidths(this.scrollEl)
+    const widths = getScrollbarWidths($(this.scrollEl))
 
     if (this.isHScrollbarsClipped) {
       widths.top = 0

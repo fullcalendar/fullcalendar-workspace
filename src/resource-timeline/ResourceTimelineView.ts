@@ -33,7 +33,7 @@ export default class ResourceTimelineView extends TimelineView {
   timeBodyTbodyEl: JQuery
 
   // spreadsheet area
-  spreadsheet: any
+  spreadsheet: Spreadsheet
 
   // divider
   dividerEls: JQuery
@@ -328,8 +328,8 @@ export default class ResourceTimelineView extends TimelineView {
 
   queryMiscHeight() {
     return this.el.outerHeight() -
-      Math.max(this.spreadsheet.headScroller.el.outerHeight(), this.timeHeadScroller.el.outerHeight()) -
-      Math.max(this.spreadsheet.bodyScroller.el.outerHeight(), this.timeBodyScroller.el.outerHeight())
+      Math.max(this.spreadsheet.headScroller.el.offsetHeight, this.timeHeadScroller.el.offsetHeight) -
+      Math.max(this.spreadsheet.bodyScroller.el.offsetHeight, this.timeBodyScroller.el.offsetHeight)
   }
 
 
@@ -353,7 +353,7 @@ export default class ResourceTimelineView extends TimelineView {
 
   queryResourceScroll() {
     const scroll = {} as any
-    const scrollerTop = this.timeBodyScroller.scrollEl.offset().top // TODO: use getClientRect
+    const scrollerTop = this.timeBodyScroller.scrollEl.getBoundingClientRect().top
 
     for (let rowObj of this.getVisibleRows()) {
       if (rowObj.resource) {

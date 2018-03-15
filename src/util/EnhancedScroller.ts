@@ -89,14 +89,14 @@ export default class EnhancedScroller extends Scroller {
 
   bindPreventTouchScroll() {
     if (!this.preventTouchScrollHandler) {
-      this.scrollEl.on('touchmove', (this.preventTouchScrollHandler = preventDefault))
+      this.scrollEl.addEventListener('touchmove', (this.preventTouchScrollHandler = preventDefault))
     }
   }
 
 
   unbindPreventTouchScroll() {
     if (this.preventTouchScrollHandler) {
-      this.scrollEl.off('touchmove', this.preventTouchScrollHandler)
+      this.scrollEl.removeEventListener('touchmove', this.preventTouchScrollHandler)
       this.preventTouchScrollHandler = null
     }
   }
@@ -199,8 +199,8 @@ export default class EnhancedScroller extends Scroller {
   If RTL, and scrolled to the left, returns NEGATIVE value (like Firefox)
   */
   getScrollLeft() {
-    const direction = this.scrollEl.css('direction')
-    const node = this.scrollEl[0]
+    const direction = window.getComputedStyle(this.scrollEl).direction
+    const node = this.scrollEl
     let val = node.scrollLeft
 
     if (direction === 'rtl') {
@@ -221,8 +221,8 @@ export default class EnhancedScroller extends Scroller {
   Accepts a NEGATIVE value for when scrolled in RTL
   */
   setScrollLeft(val) {
-    const direction = this.scrollEl.css('direction')
-    const node = this.scrollEl[0]
+    const direction = window.getComputedStyle(this.scrollEl).direction
+    const node = this.scrollEl
 
     if (direction === 'rtl') {
       switch (rtlScrollSystem) {
@@ -243,8 +243,8 @@ export default class EnhancedScroller extends Scroller {
   Always positive.
   */
   getScrollFromLeft() {
-    const direction = this.scrollEl.css('direction')
-    const node = this.scrollEl[0]
+    const direction = window.getComputedStyle(this.scrollEl).direction
+    const node = this.scrollEl
     let val = node.scrollLeft
 
     if (direction === 'rtl') {
@@ -263,12 +263,12 @@ export default class EnhancedScroller extends Scroller {
 
 
   getNativeScrollLeft() {
-    return this.scrollEl[0].scrollLeft
+    return this.scrollEl.scrollLeft
   }
 
 
   setNativeScrollLeft(val) {
-    this.scrollEl[0].scrollLeft = val
+    this.scrollEl.scrollLeft = val
   }
 
 }

@@ -239,12 +239,12 @@ export default class TimelineView extends View {
     })
     this.timeHeadScroller.canvas = new ScrollerCanvas()
     this.timeHeadScroller.render()
-    this.timeHeadScroller.el.appendTo(this.timeHeadEl)
+    this.timeHeadEl.append(this.timeHeadScroller.el)
 
     this.timeBodyScroller = new ClippedScroller()
     this.timeBodyScroller.canvas = new ScrollerCanvas()
     this.timeBodyScroller.render()
-    this.timeBodyScroller.el.appendTo(this.timeBodyEl)
+    this.timeBodyEl.append(this.timeBodyScroller.el)
 
     this.isTimeBodyScrolled = false // because if the grid has been rerendered, it will get a zero scroll
     this.timeBodyScroller.on('scroll', proxy(this, 'handleTimeBodyScrolled'))
@@ -686,8 +686,8 @@ export default class TimelineView extends View {
 
   queryMiscHeight() {
     return this.el.outerHeight() -
-      this.timeHeadScroller.el.outerHeight() -
-      this.timeBodyScroller.el.outerHeight()
+      this.timeHeadScroller.el.offsetHeight -
+      this.timeBodyScroller.el.offsetHeight
   }
 
 

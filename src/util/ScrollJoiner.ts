@@ -1,12 +1,13 @@
+import EnhancedScroller from './EnhancedScroller'
 
 export default class ScrollJoiner {
 
   axis: any
-  scrollers: any
-  masterScroller: any
+  scrollers: EnhancedScroller[]
+  masterScroller: EnhancedScroller
 
 
-  constructor(axis, scrollers) {
+  constructor(axis, scrollers: EnhancedScroller[]) {
     this.axis = axis
     this.scrollers = scrollers
 
@@ -16,12 +17,15 @@ export default class ScrollJoiner {
   }
 
 
-  initScroller(scroller) {
+  initScroller(scroller: EnhancedScroller) {
 
     // when the user scrolls via mousewheel, we know for sure the target
     // scroller should be the master. capture the various x-browser events that fire.
-    scroller.scrollEl.on('wheel mousewheel DomMouseScroll MozMousePixelScroll', () => {
+    const onScroll = () => {
       this.assignMasterScroller(scroller)
+    }
+    'wheel mousewheel DomMouseScroll MozMousePixelScroll'.split(' ').forEach((evName) => {
+      scroller.scrollEl.addEventListener(evName, onScroll)
     })
 
     scroller.on('scrollStart', () => {
