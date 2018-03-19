@@ -7,25 +7,25 @@ import TimelineHelperRenderer from '../../timeline/renderers/TimelineHelperRende
 
 export default class EventRow extends RowParent {
 
-  segContainerEl: JQuery // for EventRenderer
+  segContainerEl: HTMLElement // for EventRenderer
   segContainerHeight: any
-  innerEl: JQuery
-  bgSegContainerEl: JQuery // for EventRenderer. same el as innerEl :(
+  innerEl: HTMLElement
+  bgSegContainerEl: HTMLElement // for EventRenderer. same el as innerEl :(
 
 
-  renderEventSkeleton(tr) {
+  renderEventSkeleton(tr: HTMLElement) {
     const { theme } = this.view.calendar
 
-    tr.html(`\
+    tr.innerHTML = `\
 <td class="` + theme.getClass('widgetContent') + `"> \
 <div> \
 <div class="fc-event-container"></div> \
 </div> \
 </td>\
-`)
+`
 
-    this.segContainerEl = tr.find('.fc-event-container')
-    this.innerEl = (this.bgSegContainerEl = tr.find('td > div'))
+    this.segContainerEl = tr.querySelector('.fc-event-container')
+    this.innerEl = (this.bgSegContainerEl = tr.querySelector('td > div'))
   }
 
 

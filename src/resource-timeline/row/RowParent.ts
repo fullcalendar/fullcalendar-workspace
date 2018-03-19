@@ -1,5 +1,9 @@
 import * as $ from 'jquery'
-import { DateComponent, capitaliseFirstLetter, proxy } from 'fullcalendar'
+import {
+  DateComponent, capitaliseFirstLetter, proxy,
+  insertAfterEl, prependWithinEl, listenViaDelegation, removeElement, findElsWithin
+} from 'fullcalendar'
+import TimelineView from '../ResourceTimelineView'
 import { getOwnCells } from '../../util/util'
 
 /*
@@ -9,15 +13,15 @@ OR a grouping of rows without its own distinct row.
 */
 export default class RowParent extends DateComponent {
 
-  view: any // the calendar View object. all nodes have this
+  view: TimelineView // the calendar View object. all nodes have this
   parent: any // parent node. null if topmost parent
   prevSibling: any // node before this node. null if first sibling
-  children: any // array of child nodes
+  children: RowParent[] // array of child nodes
   depth: number // number of row-levels deep from top of hierarchy. Nodes without rows aren't counted
 
   hasOwnRow: boolean // is this node responsible for rendering its own distinct row? (initialized after class)
-  trHash: { [type: string]: JQuery } // TR jq objects owned by the node. keyed by "type" (parallel row sections in different tbodies)
-  trs: JQuery // single jQuery object of tr elements owned by the node.
+  trHash: { [type: string]: HTMLTableRowElement } // TR jq objects owned by the node. keyed by "type" (parallel row sections in different tbodies)
+  trs: HTMLTableRowElement[] // single jQuery object of tr elements owned by the node.
 
   isExpanded: boolean // does this node have its child nodes revealed?
 
@@ -27,7 +31,7 @@ export default class RowParent extends DateComponent {
     this.children = []
     this.depth = 0
     this.trHash = {}
-    this.trs = $()
+    this.trs = []
     this.isExpanded = this.view.opt('resourcesInitiallyExpanded')
   }
 
@@ -171,7 +175,7 @@ export default class RowParent extends DateComponent {
   /*
   Returns the first node in the subtree that has a revealed row
   */
-  getLeadingRow() {
+  getLeadingRow(): RowParent {
     if (this.hasOwnRow) {
       return this
     } else if (this.isExpanded && this.children.length) {
@@ -247,7 +251,7 @@ export default class RowParent extends DateComponent {
   */
   renderSkeleton() {
     this.trHash = {}
-    const trNodes = []
+    const trs: HTMLTableRowElement[] = []
 
     if (this.hasOwnRow) { // only bother rendering TRs if we know this node has a real row
       const prevRow = this.getPrevRowInDom() // the row before this row, in the overall linear flat list
@@ -258,11 +262,13 @@ export default class RowParent extends DateComponent {
         // build the TR and record it
         // assign before calling the render methods, because they might rely
         const tbody = this.view.tbodyHash[type]
-        const tr = $('<tr/>')
+        const tr = document.createElement('tr') as HTMLTableRowElement
         this.trHash[type] = tr
-        trNodes.push(tr[0])
+        trs.push(tr)
 
         // call the subclass' render method for this row type (if available)
+        // will call renderEventSkeleton
+        // will call renderSpreadsheetSkeleton
         const renderMethodName = 'render' + capitaliseFirstLetter(type) + 'Skeleton'
         if (this[renderMethodName]) {
           this[renderMethodName](tr)
@@ -270,15 +276,18 @@ export default class RowParent extends DateComponent {
 
         // insert the TR into the DOM
         if (prevRow) {
-          prevRow.trHash[type].after(tr)
+          insertAfterEl(prevRow.trHash[type], tr)
         } else {
-          tbody.prepend(tr) // belongs in the very first position
+          prependWithinEl(tbody, tr) // belongs in the very first position
         }
       }
 
       // build a single jQuery object. use event delegation for calling toggleExpanded
-      this.trs = $(trNodes)
-        .on('click', '.fc-expander', proxy(this, 'toggleExpanded'))
+      trs.forEach((tr) => {
+        listenViaDelegation(tr, 'click', 'fc-expander', proxy(this, 'toggleExpanded'))
+      })
+
+      this.trs = trs
 
       this.thisRowShown()
     }
@@ -311,8 +320,8 @@ export default class RowParent extends DateComponent {
     this.thisRowHidden()
 
     this.trHash = {}
-    this.trs.remove() // remove from DOM
-    this.trs = $()
+    this.trs.forEach(removeElement) // remove from DOM
+    this.trs = []
 
     for (let child of this.children) {
       if (child.get('isInDom')) {
@@ -384,24 +393,27 @@ export default class RowParent extends DateComponent {
   Changes the expander icon to the "expanded" state
   */
   indicateExpanded() {
-    this.trs.find('.fc-expander .fc-icon')
-      .removeClass(this.getCollapsedIcon())
-      .addClass(this.getExpandedIcon())
+    findElsWithin(this.trs, '.fc-expander .fc-icon').forEach((iconEl) => {
+      iconEl.classList.remove(this.getCollapsedIcon())
+      iconEl.classList.add(this.getExpandedIcon())
+    })
   }
 
   /*
   Changes the expander icon to the "collapsed" state
   */
   indicateCollapsed() {
-    this.trs.find('.fc-expander .fc-icon')
-      .removeClass(this.getExpandedIcon())
-      .addClass(this.getCollapsedIcon())
+    findElsWithin(this.trs, '.fc-expander .fc-icon').forEach((iconEl) => {
+      iconEl.classList.remove(this.getExpandedIcon())
+      iconEl.classList.add(this.getCollapsedIcon())
+    })
   }
 
 
   indicateExpandingEnabled() {
-    this.trs.find('.fc-expander-space')
-      .addClass('fc-expander')
+    findElsWithin(this.trs, '.fc-expander-space').forEach((spaceEl) => {
+      spaceEl.classList.add('fc-expander')
+    })
 
     if (this.isExpanded) {
       this.indicateExpanded()
@@ -412,11 +424,12 @@ export default class RowParent extends DateComponent {
 
 
   indicateExpandingDisabled() {
-    this.trs.find('.fc-expander-space')
-      .removeClass('fc-expander')
-      .find('.fc-icon')
-        .removeClass(this.getExpandedIcon())
-        .removeClass(this.getCollapsedIcon())
+    findElsWithin(this.trs, '.fc-expander-space').forEach((spaceEl) => {
+      spaceEl.classList.remove('fc-expander')
+      let iconEl = spaceEl.querySelector('.fc-icon')
+      iconEl.classList.remove(this.getExpandedIcon())
+      iconEl.classList.remove(this.getCollapsedIcon())
+    })
   }
 
 
@@ -448,17 +461,42 @@ export default class RowParent extends DateComponent {
     const leadingRow = firstChild && firstChild.getLeadingRow()
     const trs = leadingRow && leadingRow.trs
 
+    function addClass(name) {
+      trs.forEach(function(tr) {
+        tr.classList.add(name)
+      })
+    }
+
+    function removeClass(name) {
+      trs.forEach(function(tr) {
+        tr.classList.remove(name)
+      })
+    }
+
     if (trs) {
-      trs.addClass('fc-collapsed')
+      addClass('fc-collapsed')
 
       setTimeout(() => { // wait for browser to render collapsed state
-        trs.addClass('fc-transitioning') // enable transitioning
-        trs.removeClass('fc-collapsed') // transition back to non-collapsed state
+        addClass('fc-transitioning') // enable transitioning
+        removeClass('fc-collapsed') // transition back to non-collapsed state
       })
 
+      let onTransitionEnd = function(ev: Event) {
+        removeClass('fc-transitioning') // will remove the overflow:hidden
+        ev.currentTarget.removeEventListener('webkitTransitionEnd', onTransitionEnd)
+        ev.currentTarget.removeEventListener('otransitionend', onTransitionEnd)
+        ev.currentTarget.removeEventListener('oTransitionEnd', onTransitionEnd)
+        ev.currentTarget.removeEventListener('msTransitionEnd', onTransitionEnd)
+        ev.currentTarget.removeEventListener('transitionend', onTransitionEnd)
+      }
+
       // cross-browser way to determine when the transition finishes
-      trs.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', () => {
-        trs.removeClass('fc-transitioning') // will remove the overflow:hidden
+      trs.forEach(function(tr) {
+        tr.addEventListener('webkitTransitionEnd', onTransitionEnd)
+        tr.addEventListener('otransitionend', onTransitionEnd)
+        tr.addEventListener('oTransitionEnd', onTransitionEnd)
+        tr.addEventListener('msTransitionEnd', onTransitionEnd)
+        tr.addEventListener('transitionend', onTransitionEnd)
       })
     }
   }
@@ -477,7 +515,7 @@ export default class RowParent extends DateComponent {
       let tr = this.trHash[type]
 
       // exclude multi-rowspans (probably done for row grouping)
-      const innerEl = getOwnCells(tr).find('> div:not(.fc-cell-content):first')
+      const innerEl = getOwnCells($(tr)).find('> div:not(.fc-cell-content):first')
       max = Math.max(innerEl.height(), max)
     }
 
@@ -491,7 +529,7 @@ export default class RowParent extends DateComponent {
     // exclude multi-rowspans (probably done for row grouping)
     for (let type in this.trHash) {
       let tr = this.trHash[type]
-      getOwnCells(tr).find('> div:not(.fc-cell-content):first')
+      getOwnCells($(tr)).find('> div:not(.fc-cell-content):first')
         .height(height)
     }
   }

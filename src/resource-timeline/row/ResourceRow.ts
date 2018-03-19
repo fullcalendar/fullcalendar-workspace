@@ -1,5 +1,5 @@
 import * as $ from 'jquery'
-import { htmlEscape } from 'fullcalendar'
+import { htmlEscape, htmlToElement, makeElement, appendContentTo } from 'fullcalendar'
 import EventRow from './EventRow'
 
 /*
@@ -38,8 +38,8 @@ export default class ResourceRow extends EventRow {
       context: this.resource,
       args: [
         this.resource,
-        this.getTr('spreadsheet').find('> td'), // TODO: optimize
-        this.getTr('event').find('> td'), // TODO: optimize
+        $(this.getTr('spreadsheet').firstChild), // <td>
+        $(this.getTr('event').firstChild), // <td>
         this.view
       ]
     })
@@ -59,9 +59,9 @@ export default class ResourceRow extends EventRow {
   }
 
 
-  renderEventSkeleton(tr) {
+  renderEventSkeleton(tr: HTMLElement) {
     super.renderEventSkeleton(tr)
-    tr.attr('data-resource-id', this.resource.id)
+    tr.setAttribute('data-resource-id', this.resource.id)
   }
 
 
@@ -97,7 +97,7 @@ export default class ResourceRow extends EventRow {
   /*
   Populates the TR with cells containing data about the resource
   */
-  renderSpreadsheetSkeleton(tr) {
+  renderSpreadsheetSkeleton(tr: HTMLElement) {
     const { theme } = this.view.calendar
     const { resource } = this
 
@@ -117,7 +117,7 @@ export default class ResourceRow extends EventRow {
           colSpec.text(resource, input) : // the colspec provided a text filter function
           input
 
-      let contentEl = $(
+      let contentEl = htmlToElement(
         '<div class="fc-cell-content">' +
           (colSpec.isMain ? this.renderGutterHtml() : '') +
           '<span class="fc-cell-text">' +
@@ -127,21 +127,22 @@ export default class ResourceRow extends EventRow {
       )
 
       if (typeof colSpec.render === 'function') { // a filter function for the element
-        contentEl = colSpec.render(resource, contentEl, input) || contentEl
+        contentEl = $(colSpec.render(resource, $(contentEl), input) || contentEl)[0]
       }
 
-      const td = $('<td class="' + theme.getClass('widgetContent') + '"/>')
-        .append(contentEl)
+      const td = makeElement('td', { className: theme.getClass('widgetContent') }, contentEl)
 
       // the first cell of the row needs to have an inner div for setTrInnerHeight
       if (colSpec.isMain) {
-        td.wrapInner('<div/>')
+        td.appendChild(
+          makeElement('div', null, td.childNodes) // inner wrap
+        )
       }
 
-      tr.append(td)
+      tr.appendChild(td)
     }
 
-    tr.attr('data-resource-id', resource.id)
+    tr.setAttribute('data-resource-id', resource.id)
   }
 
 

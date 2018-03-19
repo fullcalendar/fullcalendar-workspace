@@ -1,4 +1,6 @@
-
+/*
+TODO: write tests for text/render functions
+*/
 describe('timeline column grouping', function() {
   pushOptions({
     defaultView: 'timelineDay',

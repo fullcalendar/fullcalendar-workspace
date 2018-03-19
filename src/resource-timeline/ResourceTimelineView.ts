@@ -1,6 +1,6 @@
-import * as $ from 'jquery'
 import {
-  DragListener, CoordCache, parseFieldSpecs, compareByFieldSpecs, flexibleCompare
+  DragListener, CoordCache, parseFieldSpecs, compareByFieldSpecs, flexibleCompare,
+  findElsWithin, htmlToElement
 } from 'fullcalendar'
 import ScrollJoiner from '../util/ScrollJoiner'
 import ResourceComponentFootprint from '../models/ResourceComponentFootprint'
@@ -30,13 +30,13 @@ export default class ResourceTimelineView extends TimelineView {
   eventRendererClass: any // initialized after class definition
 
   // time area
-  timeBodyTbodyEl: JQuery
+  timeBodyTbodyEl: HTMLElement
 
   // spreadsheet area
   spreadsheet: Spreadsheet
 
   // divider
-  dividerEls: JQuery
+  dividerEls: HTMLElement[]
   dividerWidth: any
 
   // resource rendering options
@@ -48,7 +48,7 @@ export default class ResourceTimelineView extends TimelineView {
   orderSpecs: any
 
   // resource rows
-  tbodyHash: any // used by RowParent
+  tbodyHash: { [name: string]: HTMLElement } // used by RowParent
   rowHierarchy: any
   resourceRowHash: { [resourceId: string]: ResourceRow }
   nestingCnt: number
@@ -172,8 +172,8 @@ export default class ResourceTimelineView extends TimelineView {
 
     const { theme } = this.calendar
 
-    this.spreadsheet.el = this.el.find('tbody .fc-resource-area')
-    this.spreadsheet.headEl = this.el.find('thead .fc-resource-area')
+    this.spreadsheet.el = this.el.querySelector('tbody .fc-resource-area')
+    this.spreadsheet.headEl = this.el.querySelector('thead .fc-resource-area')
     this.spreadsheet.renderSkeleton()
     // ^ is not a Grid/DateComponent
 
@@ -182,14 +182,15 @@ export default class ResourceTimelineView extends TimelineView {
     this.segContainerEl.remove()
     this.segContainerEl = null
 
-    const timeBodyContainerEl = $(`\
+    const timeBodyContainerEl = htmlToElement(`\
 <div class="fc-rows"> \
 <table class="` + theme.getClass('tableGrid') + `"> \
 <tbody></tbody> \
 </table> \
 </div>\
-`).appendTo(this.timeBodyScroller.canvas.contentEl)
-    this.timeBodyTbodyEl = timeBodyContainerEl.find('tbody')
+`)
+    this.timeBodyScroller.canvas.contentEl.append(timeBodyContainerEl)
+    this.timeBodyTbodyEl = timeBodyContainerEl.querySelector('tbody')
 
     this.tbodyHash = { // needed for rows to render
       spreadsheet: this.spreadsheet.tbodyEl,
@@ -233,7 +234,7 @@ export default class ResourceTimelineView extends TimelineView {
 
   initDividerMoving() {
     const left = this.opt('resourceAreaWidth')
-    this.dividerEls = this.el.find('.fc-divider')
+    this.dividerEls = findElsWithin(this.el, '.fc-divider')
 
     // tableWidth available after spreadsheet.renderSkeleton
     this.dividerWidth = left != null ? left : this.spreadsheet.tableWidth
@@ -242,8 +243,9 @@ export default class ResourceTimelineView extends TimelineView {
       this.positionDivider(this.dividerWidth)
     }
 
-    this.dividerEls.on('mousedown', (ev) => {
-      this.dividerMousedown(ev)
+    let dividerMousedown = this.dividerMousedown.bind(this)
+    this.dividerEls.forEach(function(dividerEl) {
+      dividerEl.addEventListener('mousedown', dividerMousedown)
     })
   }
 
@@ -251,12 +253,14 @@ export default class ResourceTimelineView extends TimelineView {
   dividerMousedown(ev) {
     const isRTL = this.opt('isRTL')
     const minWidth = 30
-    const maxWidth = this.el.width() - 30
+    const maxWidth = this.el.offsetWidth - 30
     const origWidth = this.getNaturalDividerWidth()
 
     const dragListener = new DragListener({
       dragStart: () => {
-        this.dividerEls.addClass('fc-active')
+        this.dividerEls.forEach(function(dividerEl) {
+          dividerEl.classList.add('fc-active')
+        })
       },
       drag: (dx, dy) => {
         let width
@@ -274,7 +278,9 @@ export default class ResourceTimelineView extends TimelineView {
         this.calendar.updateViewSize()
       }, // if in render queue, will wait until end
       dragEnd: () => {
-        this.dividerEls.removeClass('fc-active')
+        this.dividerEls.forEach(function(dividerEl) {
+          dividerEl.classList.remove('fc-active')
+        })
       }
     })
 
@@ -283,12 +289,13 @@ export default class ResourceTimelineView extends TimelineView {
 
 
   getNaturalDividerWidth() {
-    return this.el.find('.fc-resource-area').width() // TODO: don't we have this cached?
+    return (this.el.querySelector('.fc-resource-area') as HTMLElement).offsetWidth // TODO: don't we have this cached?
   }
 
 
   positionDivider(w) {
-    this.el.find('.fc-resource-area').css('width', w) // TODO: don't we have this cached?
+    (this.el.querySelector('.fc-resource-area') as HTMLElement).style.width = w + 'px'
+    // TODO: don't we have this cached?
   }
 
 
@@ -327,7 +334,7 @@ export default class ResourceTimelineView extends TimelineView {
 
 
   queryMiscHeight() {
-    return this.el.outerHeight() -
+    return this.el.offsetHeight -
       Math.max(this.spreadsheet.headScroller.el.offsetHeight, this.timeHeadScroller.el.offsetHeight) -
       Math.max(this.spreadsheet.bodyScroller.el.offsetHeight, this.timeBodyScroller.el.offsetHeight)
   }
@@ -358,7 +365,7 @@ export default class ResourceTimelineView extends TimelineView {
     for (let rowObj of this.getVisibleRows()) {
       if (rowObj.resource) {
         const el = rowObj.getTr('event')
-        const elBottom = el.offset().top + el.outerHeight()
+        const elBottom = el.getBoundingClientRect().bottom
 
         if (elBottom > scrollerTop) {
           scroll.resourceId = rowObj.resource.id
@@ -380,7 +387,7 @@ export default class ResourceTimelineView extends TimelineView {
         const el = row.getTr('event')
         if (el) {
           const innerTop = this.timeBodyScroller.canvas.el.offset().top // TODO: use -scrollHeight or something
-          const elBottom = el.offset().top + el.outerHeight()
+          const elBottom = el.getBoundingClientRect().bottom
           const scrollTop = elBottom - scroll.bottom - innerTop
           this.timeBodyScroller.setScrollTop(scrollTop)
           this.spreadsheet.bodyScroller.setScrollTop(scrollTop)
@@ -396,7 +403,7 @@ export default class ResourceTimelineView extends TimelineView {
       const el = row.getTr('event')
       if (el) {
         const innerTop = this.timeBodyScroller.canvas.el.offset().top // TODO: use -scrollHeight or something
-        const scrollTop = el.offset().top - innerTop
+        const scrollTop = el.getBoundingClientRect().top - innerTop
         this.timeBodyScroller.setScrollTop(scrollTop)
         this.spreadsheet.bodyScroller.setScrollTop(scrollTop)
       }
@@ -421,7 +428,7 @@ export default class ResourceTimelineView extends TimelineView {
     })
 
     const trArray = shownEventRows.map((row) => (
-      row.getTr('event')[0]
+      row.getTr('event')
     ))
 
     this.shownEventRows = shownEventRows
@@ -755,33 +762,35 @@ export default class ResourceTimelineView extends TimelineView {
 
 
   descendantAdded(row) {
-    const wasNesting = this.isNesting
-    const isNesting = Boolean(
-      this.nestingCnt += row.depth ? 1 : 0
+    this.setIsNesting(
+      Boolean(
+        this.nestingCnt += row.depth ? 1 : 0
+      )
     )
-
-    if (wasNesting !== isNesting) {
-
-      this.el.toggleClass('fc-nested', isNesting)
-        .toggleClass('fc-flat', !isNesting)
-
-      this.isNesting = isNesting
-    }
   }
 
 
   descendantRemoved(row) {
-    const wasNesting = this.isNesting
-    const isNesting = Boolean(
-      this.nestingCnt -= row.depth ? 1 : 0
+    this.setIsNesting(
+      Boolean(
+        this.nestingCnt -= row.depth ? 1 : 0
+      )
     )
+  }
 
-    if (wasNesting !== isNesting) {
 
-      this.el.toggleClass('fc-nested', isNesting)
-        .toggleClass('fc-flat', !isNesting)
+  setIsNesting(newIsNesting) {
+    if (newIsNesting !== this.isNesting) {
 
-      this.isNesting = isNesting
+      if (newIsNesting) {
+        this.el.classList.add('fc-nested')
+        this.el.classList.remove('fc-flat')
+      } else {
+        this.el.classList.add('fc-flat')
+        this.el.classList.remove('fc-nested')
+      }
+
+      this.isNesting = newIsNesting
     }
   }
 
@@ -819,8 +828,8 @@ export default class ResourceTimelineView extends TimelineView {
     }
 
     if (!safe) {
-      const h1 = this.spreadsheet.tbodyEl.height()
-      const h2 = this.timeBodyTbodyEl.height()
+      const h1 = this.spreadsheet.tbodyEl.offsetHeight
+      const h2 = this.timeBodyTbodyEl.offsetHeight
       if (Math.abs(h1 - h2) > 1) {
         this.syncRowHeights(visibleRows, true)
       }

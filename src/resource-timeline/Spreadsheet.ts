@@ -1,5 +1,5 @@
 import * as $ from 'jquery'
-import { htmlEscape, DragListener } from 'fullcalendar'
+import { htmlEscape, DragListener, findElsWithin } from 'fullcalendar'
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
 import ScrollJoiner from '../util/ScrollJoiner'
@@ -13,9 +13,9 @@ export default class Spreadsheet {
 
   view: any
   isRTL: boolean
-  headEl: JQuery
-  el: JQuery // for body
-  tbodyEl: JQuery
+  headEl: HTMLElement
+  el: HTMLElement // for body
+  tbodyEl: HTMLElement
   headScroller: ClippedScroller
   bodyScroller: ClippedScroller
   scrollJoiner: ScrollJoiner
@@ -24,10 +24,10 @@ export default class Spreadsheet {
   // rendering
   colGroupHtml: string
   headTable: any
-  headColEls: JQuery
-  headCellEls: JQuery
-  bodyColEls: JQuery
-  bodyTable: JQuery
+  headColEls: HTMLElement[]
+  headCellEls: HTMLElement[]
+  bodyColEls: HTMLElement[]
+  bodyTable: HTMLElement
 
   // column resizing
   givenColWidths: any
@@ -57,7 +57,7 @@ export default class Spreadsheet {
     this.headScroller.canvas = new ScrollerCanvas()
     this.headScroller.render()
     this.headScroller.canvas.contentEl.html(this.renderHeadHtml())
-    this.headEl.append(this.headScroller.el)
+    this.headEl.appendChild(this.headScroller.el)
 
     this.bodyScroller = new ClippedScroller({ overflowY: 'clipped-scroll' })
     this.bodyScroller.canvas = new ScrollerCanvas()
@@ -69,16 +69,16 @@ export default class Spreadsheet {
 </table> \
 </div>`
     ) // colGroupHtml hack
-    this.tbodyEl = this.bodyScroller.canvas.contentEl.find('tbody')
-    this.el.append(this.bodyScroller.el)
+    this.tbodyEl = this.bodyScroller.canvas.contentEl.find('tbody')[0]
+    this.el.appendChild(this.bodyScroller.el)
 
     this.scrollJoiner = new ScrollJoiner('horizontal', [ this.headScroller, this.bodyScroller ])
 
-    this.headTable = this.headEl.find('table')
-    this.headColEls = this.headEl.find('col')
-    this.headCellEls = this.headScroller.canvas.contentEl.find('tr:last-child th')
-    this.bodyColEls = this.el.find('col')
-    this.bodyTable = this.el.find('table')
+    this.headTable = this.headEl.querySelector('table')
+    this.headColEls = findElsWithin(this.headEl, 'col')
+    this.headCellEls = this.headScroller.canvas.contentEl.find('tr:last-child th').toArray()
+    this.bodyColEls = findElsWithin(this.el, 'col')
+    this.bodyTable = this.el.querySelector('table')
 
     this.colMinWidths = this.computeColMinWidths()
     this.applyColWidths()
@@ -152,7 +152,7 @@ export default class Spreadsheet {
 
 
   initColResizing() {
-    this.headEl.find('th .fc-col-resizer').each((i, resizerNode) => {
+    findElsWithin(this.headEl, 'th .fc-col-resizer').forEach((resizerNode, i) => {
       let resizerEl = $(resizerNode)
       resizerEl.on('mousedown', ev => {
         this.colResizeMousedown(i, ev, resizerEl)
@@ -234,8 +234,8 @@ export default class Spreadsheet {
 
     for (i = 0; i < cssWidths.length; i++) {
       cssWidth = cssWidths[i]
-      this.headColEls.eq(i).css('width', cssWidth)
-      this.bodyColEls.eq(i).css('width', cssWidth)
+      this.headColEls[i].style.width = cssWidth + 'px'
+      this.bodyColEls[i].style.width = cssWidth + 'px'
     }
 
     this.headScroller.canvas.setMinWidth(tableMinWidth) // not really a table width anymore
@@ -250,15 +250,15 @@ export default class Spreadsheet {
     return this.givenColWidths.map((width, i) => (
       typeof width === 'number' ?
         width :
-        parseInt(this.headColEls.eq(i).css('min-width'), 10) || COL_MIN_WIDTH
+        parseInt(window.getComputedStyle(this.headColEls[i]).minWidth, 10) || COL_MIN_WIDTH
     ))
   }
 
 
   queryColWidths() {
-    return this.headCellEls.map((i, node) => (
-      $(node).outerWidth()
-    )).get()
+    return this.headCellEls.map((node) => (
+      node.offsetWidth
+    ))
   }
 
 
@@ -295,9 +295,9 @@ export default class Spreadsheet {
     for (let row of this.view.rowHierarchy.getNodes()) {
       if (row instanceof VRowGroup) {
         if (row.groupTd) {
-          const cellContent = row.groupTd.find('.fc-cell-content')
-          if (cellContent.length) {
-            nodes.push(cellContent[0])
+          const cellContent = row.groupTd.querySelector('.fc-cell-content')
+          if (cellContent) {
+            nodes.push(cellContent)
           }
         }
       }

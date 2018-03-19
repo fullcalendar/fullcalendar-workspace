@@ -1,4 +1,4 @@
-import * as $ from 'jquery'
+import { makeElement, removeElement, prependWithinEl } from 'fullcalendar'
 import RowGroup from './RowGroup'
 
 /*
@@ -6,18 +6,18 @@ A row grouping that renders as a tall multi-cell vertical span in the "spreadshe
 */
 export default class VRowGroup extends RowGroup {
 
-  rowspan: number // the number of total rows (subparents included) this group spans
-  leadingTr: JQuery // the first real row's TR in the group
-  groupTd: JQuery
+  rowSpan: number // the number of total rows (subparents included) this group spans // TODO:rename?
+  leadingTr: HTMLElement // the first real row's TR in the group
+  groupTd: HTMLTableCellElement
 
 
   constructor(view, groupSpec, groupValue) {
     super(view, groupSpec, groupValue)
-    this.rowspan = 0
+    this.rowSpan = 0
   }
 
   /*
-  Makes sure the groupTd has the correct rowspan / place in the DOM.
+  Makes sure the groupTd has the correct rowSpan / place in the DOM.
   PRECONDITION: in the case of multiple group nesting, a child's renderRowspan()
   will be called before the parent's renderRowspan().
   */
@@ -25,21 +25,22 @@ export default class VRowGroup extends RowGroup {
     let leadingTr
     const { theme } = this.view.calendar
 
-    if (this.rowspan) { // takes up at least one row?
+    if (this.rowSpan) { // takes up at least one row?
 
       // ensure the TD element
       if (!this.groupTd) {
-        this.groupTd = $('<td class="' + theme.getClass('widgetContent') + '"/>')
-          .append(this.renderGroupContentEl())
+        this.groupTd =
+          makeElement('td', { className: theme.getClass('widgetContent')  },
+            this.renderGroupContentEl()) as HTMLTableCellElement
       }
 
-      this.groupTd.attr('rowspan', this.rowspan)
+      this.groupTd.rowSpan = this.rowSpan
 
       // (re)insert groupTd if it was never inserted, or the first TR is different
       leadingTr = this.getLeadingRow().getTr('spreadsheet')
       if (leadingTr !== this.leadingTr) {
         if (leadingTr) { // might not exist if child was unrendered before parent
-          leadingTr.prepend(this.groupTd) // parents will later prepend their own
+          prependWithinEl(leadingTr, this.groupTd) // parents will later prepend their own
         }
         this.leadingTr = leadingTr
       }
@@ -48,7 +49,7 @@ export default class VRowGroup extends RowGroup {
 
       // remove the TD element if it was rendered
       if (this.groupTd) {
-        this.groupTd.remove()
+        removeElement(this.groupTd)
         this.groupTd = null
       }
 
@@ -60,7 +61,7 @@ export default class VRowGroup extends RowGroup {
   Called when a row somewhere within the grouping is shown
   */
   descendantShown(row) {
-    this.rowspan += 1
+    this.rowSpan += 1
     this.renderRowspan()
     super.descendantShown(row) // will bubble to parent
   }
@@ -69,7 +70,7 @@ export default class VRowGroup extends RowGroup {
   Called when a row somewhere within the grouping is hidden
   */
   descendantHidden(row) {
-    this.rowspan -= 1
+    this.rowSpan -= 1
     this.renderRowspan()
     super.descendantHidden(row)
   }

@@ -46,17 +46,17 @@ export default class ClippedScroller extends EnhancedScroller {
   updateSize() {
     const { scrollEl } = this
     const scrollbarWidths = getScrollbarWidths($(scrollEl)) // the native ones
-    const cssProps = { marginLeft: 0, marginRight: 0, marginTop: 0, marginBottom: 0 }
+    const cssProps = { marginLeft: '0px', marginRight: '0px', marginTop: '0px', marginBottom: '0px' }
 
     // give the inner scrolling div negative margins so that its scrollbars
     // are nudged outside of the bounding box of the wrapper, which is overflow:hidden
     if (this.isHScrollbarsClipped) {
-      cssProps.marginTop = -scrollbarWidths.top
-      cssProps.marginBottom = -scrollbarWidths.bottom
+      cssProps.marginTop = -scrollbarWidths.top + 'px'
+      cssProps.marginBottom = -scrollbarWidths.bottom + 'px'
     }
     if (this.isVScrollbarsClipped) {
-      cssProps.marginLeft = -scrollbarWidths.left
-      cssProps.marginRight = -scrollbarWidths.right
+      cssProps.marginLeft = -scrollbarWidths.left + 'px'
+      cssProps.marginRight = -scrollbarWidths.right + 'px'
     }
 
     assignTo(scrollEl.style, cssProps)

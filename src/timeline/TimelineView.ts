@@ -5,7 +5,7 @@ import {
   proxy, CoordCache, queryMostGranularFormatUnit,
   isInt, divideRangeByDuration, htmlEscape, computeGreatestUnit,
   divideDurationByDuration, multiplyDuration, StandardInteractionsMixin,
-  BusinessHourRenderer
+  BusinessHourRenderer, makeElement, findElsWithin
 } from 'fullcalendar'
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
@@ -41,20 +41,20 @@ export default class TimelineView extends View {
   emphasizeWeeks: boolean
 
   // rendering
-  timeHeadEl: JQuery
-  timeHeadColEls: JQuery
+  timeHeadEl: HTMLElement
+  timeHeadColEls: HTMLElement[]
   timeHeadScroller: ClippedScroller
-  timeBodyEl: JQuery
+  timeBodyEl: HTMLElement
   timeBodyScroller: ClippedScroller
   timeScrollJoiner: ScrollJoiner
   headDateFollower: ScrollFollower
   eventTitleFollower: ScrollFollower
-  segContainerEl: JQuery
+  segContainerEl: HTMLElement
   segContainerHeight: any
-  bgSegContainerEl: JQuery
-  slatContainerEl: JQuery
-  slatColEls: JQuery
-  slatEls: JQuery // in DOM order
+  bgSegContainerEl: HTMLElement
+  slatContainerEl: HTMLElement
+  slatColEls: HTMLElement[]
+  slatEls: HTMLElement[] // in DOM order
   slotWidth: number
 
   // coordinates
@@ -222,16 +222,16 @@ export default class TimelineView extends View {
 
 
   renderSkeleton() {
-    this.el.addClass('fc-timeline')
+    this.el.classList.add('fc-timeline')
 
     if (this.opt('eventOverlap') === false) {
-      this.el.addClass('fc-no-overlap')
+      this.el.classList.add('fc-no-overlap')
     }
 
-    this.el.html(this.renderSkeletonHtml())
+    this.el.innerHTML = this.renderSkeletonHtml()
 
-    this.timeHeadEl = this.el.find('thead .fc-time-area')
-    this.timeBodyEl = this.el.find('tbody .fc-time-area')
+    this.timeHeadEl = this.el.querySelector('thead .fc-time-area')
+    this.timeBodyEl = this.el.querySelector('tbody .fc-time-area')
 
     this.timeHeadScroller = new ClippedScroller({
       overflowX: 'clipped-scroll',
@@ -239,19 +239,23 @@ export default class TimelineView extends View {
     })
     this.timeHeadScroller.canvas = new ScrollerCanvas()
     this.timeHeadScroller.render()
-    this.timeHeadEl.append(this.timeHeadScroller.el)
+    this.timeHeadEl.appendChild(this.timeHeadScroller.el)
 
     this.timeBodyScroller = new ClippedScroller()
     this.timeBodyScroller.canvas = new ScrollerCanvas()
     this.timeBodyScroller.render()
-    this.timeBodyEl.append(this.timeBodyScroller.el)
+    this.timeBodyEl.appendChild(this.timeBodyScroller.el)
 
     this.isTimeBodyScrolled = false // because if the grid has been rerendered, it will get a zero scroll
     this.timeBodyScroller.on('scroll', proxy(this, 'handleTimeBodyScrolled'))
 
-    this.slatContainerEl = $('<div class="fc-slats"/>').appendTo(this.timeBodyScroller.canvas.bgEl)
-    this.segContainerEl = $('<div class="fc-event-container"/>').appendTo(this.timeBodyScroller.canvas.contentEl)
-    this.bgSegContainerEl = this.timeBodyScroller.canvas.bgEl
+    this.timeBodyScroller.canvas.bgEl.append(
+      this.slatContainerEl = makeElement('div', { className: 'fc-slats' })
+    )
+    this.timeBodyScroller.canvas.contentEl.append(
+      this.segContainerEl = makeElement('div', { className: 'fc-event-container' })
+    )
+    this.bgSegContainerEl = this.timeBodyScroller.canvas.bgEl[0]
 
     this.timeBodyBoundCache = new CoordCache({
       els: this.timeBodyScroller.canvas.el.toArray(), // better representative of bounding box, considering annoying negative margins
@@ -340,20 +344,22 @@ export default class TimelineView extends View {
 
     const slatHtmlRes = this.renderSlatHtml()
     this.timeHeadScroller.canvas.contentEl.html(slatHtmlRes.headHtml)
-    this.timeHeadColEls = this.timeHeadScroller.canvas.contentEl.find('col')
-    this.slatContainerEl.html(slatHtmlRes.bodyHtml)
-    this.slatColEls = this.slatContainerEl.find('col')
-    this.slatEls = this.slatContainerEl.find('td')
+    this.timeHeadColEls = findElsWithin(this.timeHeadScroller.canvas.contentEl[0], 'col')
+    this.slatContainerEl.innerHTML = slatHtmlRes.bodyHtml
+    this.slatColEls = findElsWithin(this.slatContainerEl, 'col')
+    this.slatEls = findElsWithin(this.slatContainerEl, 'td')
 
     this.slatCoordCache = new CoordCache({
-      els: this.slatEls.toArray(),
+      els: this.slatEls,
       isHorizontal: true
     })
 
     // for the inner divs within the slats
     // used for event rendering and scrollTime, to disregard slat border
     this.slatInnerCoordCache = new CoordCache({
-      els: this.slatEls.find('> div').toArray(),
+      els: this.slatEls.map(function(slatEl) {
+        return slatEl.firstChild // the inner <div>
+      }) as HTMLElement[],
       isHorizontal: true,
       // we use this coord cache for getPosition* for event rendering.
       // workaround for .fc-content's negative margins.
@@ -364,12 +370,14 @@ export default class TimelineView extends View {
       date = this.slotDates[i]
       this.publiclyTrigger('dayRender', {
         context: this,
-        args: [ date, this.slatEls.eq(i), this ]
+        args: [ date, $(this.slatEls[i]), this ]
       })
     }
 
     if (this.headDateFollower) {
-      this.headDateFollower.setSpriteEls(this.timeHeadEl.find('tr:not(:last-child) .fc-cell-text'))
+      this.headDateFollower.setSpriteEls(
+        $(findElsWithin(this.timeHeadEl, 'tr:not(:last-child) .fc-cell-text'))
+      )
     }
   }
 
@@ -380,7 +388,7 @@ export default class TimelineView extends View {
     }
 
     this.timeHeadScroller.canvas.contentEl.empty()
-    this.slatContainerEl.empty()
+    this.slatContainerEl.innerHTML = ''
 
     // clear the widths,
     // for no jupiness when navigating
@@ -653,8 +661,11 @@ export default class TimelineView extends View {
     this.timeBodyScroller.canvas.setMinWidth(containerMinWidth)
 
     if (isDatesRendered) {
-      this.timeHeadColEls.slice(0, -1).add(this.slatColEls.slice(0, -1))
-        .css('width', nonLastSlotWidth)
+      this.timeHeadColEls.slice(0, -1).concat(
+        this.slatColEls.slice(0, -1)
+      ).forEach(function(el) {
+        el.style.width = nonLastSlotWidth + 'px'
+      })
     }
 
     this.timeHeadScroller.updateSize()
@@ -685,7 +696,7 @@ export default class TimelineView extends View {
 
 
   queryMiscHeight() {
-    return this.el.outerHeight() -
+    return this.el.offsetHeight -
       this.timeHeadScroller.el.offsetHeight -
       this.timeBodyScroller.el.offsetHeight
   }
@@ -693,18 +704,17 @@ export default class TimelineView extends View {
 
   computeSlotWidth() { // compute the *default*
     let maxInnerWidth = 0 // TODO: harness core's `matchCellWidths` for this
-    const innerEls = this.timeHeadEl.find('tr:last-child th .fc-cell-text') // TODO: cache
+    const innerEls = findElsWithin(this.timeHeadEl, 'tr:last-child th .fc-cell-text') // TODO: cache
 
-    innerEls.each(function(i, node) {
-      const innerWidth = $(node).outerWidth()
-      maxInnerWidth = Math.max(maxInnerWidth, innerWidth)
+    innerEls.forEach(function(innerEl, i) {
+      maxInnerWidth = Math.max(maxInnerWidth, innerEl.offsetWidth)
     })
 
     const headerWidth = maxInnerWidth + 1 // assume no padding, and one pixel border
     const slotsPerLabel = divideDurationByDuration(this.labelInterval, this.slotDuration) // TODO: rename labelDuration?
     let slotWidth = Math.ceil(headerWidth / slotsPerLabel)
 
-    let minWidth: any = this.timeHeadColEls.eq(0).css('min-width')
+    let minWidth: any = window.getComputedStyle(this.timeHeadColEls[0]).minWidth
     if (minWidth) {
       minWidth = parseInt(minWidth, 10)
       if (minWidth) {
@@ -817,12 +827,12 @@ export default class TimelineView extends View {
     if (top) {
       if (!this.isTimeBodyScrolled) {
         this.isTimeBodyScrolled = true
-        this.el.addClass('fc-scrolled')
+        this.el.classList.add('fc-scrolled')
       }
     } else {
       if (this.isTimeBodyScrolled) {
         this.isTimeBodyScrolled = false
-        this.el.removeClass('fc-scrolled')
+        this.el.classList.add('fc-scrolled')
       }
     }
   }
@@ -945,7 +955,7 @@ export default class TimelineView extends View {
 
 
   getSnapEl(snapIndex) {
-    return this.slatEls.eq(Math.floor(snapIndex / this.snapsPerSlot))
+    return $(this.slatEls[Math.floor(snapIndex / this.snapsPerSlot)])
   }
 
 

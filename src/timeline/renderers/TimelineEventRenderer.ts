@@ -1,12 +1,11 @@
 import { EventRenderer, htmlEscape, cssToStr } from 'fullcalendar'
 import ScrollFollowerSprite from '../../util/ScrollFollowerSprite'
+import TimelineView from '../TimelineView'
 
 
 export default class TimelineEventRenderer extends EventRenderer {
 
-  /*
-  component must be { segContainerEl, segContainerHeight, rangeToCoords }
-  */
+  component: TimelineView
 
 
   computeDisplayEventTime() {
@@ -55,7 +54,7 @@ export default class TimelineEventRenderer extends EventRenderer {
       seg.el.css('top', seg.top)
     }
 
-    this.component.segContainerEl.height(this.component.segContainerHeight)
+    this.component.segContainerEl.style.height = this.component.segContainerHeight + 'px'
 
     for (let seg of segs) {
       const titleEl = seg.el.find('.fc-title')
@@ -127,8 +126,8 @@ export default class TimelineEventRenderer extends EventRenderer {
         }
       }
 
-      this.component.segContainerEl.empty()
-      this.component.segContainerEl.height('')
+      this.component.segContainerEl.innerHTML = ''
+      this.component.segContainerEl.style.height = ''
       this.component.segContainerHeight = null
     }
   }
