@@ -1,4 +1,5 @@
-import { intersectRects } from 'fullcalendar'
+import { intersectRects, applyStyle, toggleClassName, removeElement } from 'fullcalendar'
+import ScrollFollower from './ScrollFollower'
 
 
 export default class ScrollFollowerSprite {
@@ -6,9 +7,9 @@ export default class ScrollFollowerSprite {
   static uid = 0
 
   id: any
-  follower: any // must be set by caller
-  el: JQuery
-  absoluteEl: JQuery
+  follower: ScrollFollower // must be set by caller
+  el: HTMLElement
+  absoluteEl: HTMLElement
   naturalRect: any
   parentRect: any
   containerRect: any
@@ -27,6 +28,8 @@ export default class ScrollFollowerSprite {
   If given el is already position:relative, is a performance gain
   */
   constructor(el) {
+    const computedStyles = window.getComputedStyle(el)
+
     this.isEnabled = true
     this.isHFollowing = false
     this.isVFollowing = false
@@ -37,10 +40,10 @@ export default class ScrollFollowerSprite {
 
     this.el = el
     this.id = String(ScrollFollowerSprite.uid++)
-    this.isBlock = this.el.css('display') === 'block'
+    this.isBlock = computedStyles.display === 'block'
 
-    if (this.el.css('position') !== 'relative') {
-      this.el.css('position', 'relative')
+    if (computedStyles.position !== 'relative') {
+      el.style.position = 'relative'
     }
   }
 
@@ -74,12 +77,12 @@ export default class ScrollFollowerSprite {
     let isVFollowing = false
     let isCentered = false
 
-    this.naturalWidth = this.el.width()
+    this.naturalWidth = this.el.offsetWidth
 
     this.resetPosition()
     const { follower } = this
     const naturalRect = (this.naturalRect = follower.getBoundingRect(this.el))
-    const parentEl = this.el.parent()
+    const parentEl = this.el.parentNode as HTMLElement
     this.parentRect = follower.getBoundingRect(parentEl)
     const containerRect = (this.containerRect = joinRects(follower.getContentRect(parentEl), naturalRect))
     const { minTravel } = follower
@@ -94,7 +97,7 @@ export default class ScrollFollowerSprite {
 
     if (follower.isHFollowing) {
       if ((getRectWidth(containerRect) - getRectWidth(naturalRect)) >= minTravel) {
-        isCentered = this.el.css('text-align') === 'center'
+        isCentered = window.getComputedStyle(this.el).textAlign === 'center'
         isHFollowing = true
       }
     }
@@ -118,7 +121,7 @@ export default class ScrollFollowerSprite {
 
 
   resetPosition() {
-    this.el.css({
+    applyStyle(this.el, {
       top: '',
       left: ''
     })
@@ -186,7 +189,7 @@ export default class ScrollFollowerSprite {
         this.unabsolutize()
       } else if (this.doAbsolute && !this.follower.isForcedRelative) {
         this.absolutize()
-        this.absoluteEl.css({
+        applyStyle(this.absoluteEl, {
           top: (this.rect.top - this.follower.viewportRect.top) + this.follower.scrollbarWidths.top,
           left: (this.rect.left - this.follower.viewportRect.left) + this.follower.scrollbarWidths.left,
           width: this.isBlock ? this.naturalWidth : ''
@@ -195,11 +198,11 @@ export default class ScrollFollowerSprite {
         const top = this.rect.top - this.naturalRect.top
         const left = this.rect.left - this.naturalRect.left
         this.unabsolutize()
-        this.el.toggleClass('fc-following', Boolean(top || left))
-          .css({
-            top,
-            left
-          })
+        toggleClassName(this.el, 'fc-following', top || left)
+        applyStyle(this.el, {
+          top,
+          left
+        })
       }
     }
   }
@@ -210,8 +213,8 @@ export default class ScrollFollowerSprite {
       if (!this.absoluteEl) {
         this.absoluteEl = this.buildAbsoluteEl()
       }
-      this.absoluteEl.appendTo(this.follower.scroller.el)
-      this.el.css('visibility', 'hidden')
+      this.follower.scroller.el.appendChild(this.absoluteEl)
+      this.el.style.visibility = 'hidden'
       this.isAbsolute = true
     }
   }
@@ -219,32 +222,35 @@ export default class ScrollFollowerSprite {
 
   unabsolutize() {
     if (this.isAbsolute) {
-      this.absoluteEl.detach()
-      this.el.css('visibility', '')
+      removeElement(this.absoluteEl)
+      this.el.style.visibility = ''
       this.isAbsolute = false
     }
   }
 
 
   buildAbsoluteEl() { // TODO: cache this?
-    const el = this.el.clone().addClass('fc-following')
+    const computedStyles = window.getComputedStyle(this.el)
+    const el = this.el.cloneNode(true) as HTMLElement
 
-    el.css({
-      'position': 'absolute',
-      'z-index': 1000, // bad, but luckily scoped by .fc-content's z-index
-      'font-weight': this.el.css('font-weight'),
-      'font-size': this.el.css('font-size'),
-      'font-family': this.el.css('font-family'),
-      'text-decoration': this.el.css('text-decoration'),
-      'color': this.el.css('color'),
-      'padding-top': this.el.css('padding-top'),
-      'padding-bottom': this.el.css('padding-bottom'),
-      'padding-left': this.el.css('padding-left'),
-      'padding-right': this.el.css('padding-right')
+    el.classList.add('fc-following')
+
+    applyStyle(el, {
+      position: 'absolute',
+      zIndex: 1000, // bad, but luckily scoped by .fc-content's z-index
+      fontWeight: computedStyles.fontWeight,
+      fontSize: computedStyles.fontSize,
+      fontFamily: computedStyles.fontFamily,
+      textDecoration: computedStyles.textDecoration,
+      color: computedStyles.color,
+      paddingTop: computedStyles.paddingTop,
+      paddingBottom: computedStyles.paddingBottom,
+      paddingLeft: computedStyles.paddingLeft,
+      paddingRight: computedStyles.paddingRight
     })
 
     if (!this.follower.allowPointerEvents) {
-      el.css('pointer-events', 'none')
+      el.style.pointerEvents = 'none'
     }
 
     return el

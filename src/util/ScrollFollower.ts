@@ -67,7 +67,7 @@ export default class ScrollFollower {
     this.clearSprites()
     els.forEach((node) => {
       this.addSprite(
-        new ScrollFollowerSprite($(node))
+        new ScrollFollowerSprite(node)
       )
     })
   }
@@ -153,15 +153,15 @@ export default class ScrollFollower {
 
 
   // relative to inner content pane
-  getContentRect(el) {
-    return getContentRect(el, this.contentOffset)
+  getContentRect(el: HTMLElement) {
+    return getContentRect($(el), this.contentOffset)
   }
 
 
   // relative to inner content pane
-  getBoundingRect(el) {
+  getBoundingRect(el: HTMLElement) {
     let { contentOffset } = this
-    let rect = el[0].getBoundingClientRect()
+    let rect = el.getBoundingClientRect()
     return {
       left: rect.left - contentOffset.left,
       right: rect.right - contentOffset.left,

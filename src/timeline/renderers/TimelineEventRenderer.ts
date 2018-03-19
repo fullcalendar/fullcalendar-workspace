@@ -60,7 +60,7 @@ export default class TimelineEventRenderer extends EventRenderer {
       const titleEl = seg.el.find('.fc-title')
 
       if (titleEl.length) {
-        seg.scrollFollowerSprite = new ScrollFollowerSprite(titleEl)
+        seg.scrollFollowerSprite = new ScrollFollowerSprite(titleEl[0])
         eventTitleFollower.addSprite(seg.scrollFollowerSprite)
       }
     }
