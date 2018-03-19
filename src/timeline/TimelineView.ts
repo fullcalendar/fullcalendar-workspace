@@ -5,7 +5,7 @@ import {
   proxy, CoordCache, queryMostGranularFormatUnit,
   isInt, divideRangeByDuration, htmlEscape, computeGreatestUnit,
   divideDurationByDuration, multiplyDuration, StandardInteractionsMixin,
-  BusinessHourRenderer, makeElement, findElsWithin
+  BusinessHourRenderer, makeElement, findElsWithin, applyStyle
 } from 'fullcalendar'
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
@@ -249,16 +249,16 @@ export default class TimelineView extends View {
     this.isTimeBodyScrolled = false // because if the grid has been rerendered, it will get a zero scroll
     this.timeBodyScroller.on('scroll', proxy(this, 'handleTimeBodyScrolled'))
 
-    this.timeBodyScroller.canvas.bgEl.append(
+    this.timeBodyScroller.canvas.bgEl.appendChild(
       this.slatContainerEl = makeElement('div', { className: 'fc-slats' })
     )
-    this.timeBodyScroller.canvas.contentEl.append(
+    this.timeBodyScroller.canvas.contentEl.appendChild(
       this.segContainerEl = makeElement('div', { className: 'fc-event-container' })
     )
-    this.bgSegContainerEl = this.timeBodyScroller.canvas.bgEl[0]
+    this.bgSegContainerEl = this.timeBodyScroller.canvas.bgEl
 
     this.timeBodyBoundCache = new CoordCache({
-      els: this.timeBodyScroller.canvas.el.toArray(), // better representative of bounding box, considering annoying negative margins
+      els: [ this.timeBodyScroller.canvas.el ], // better representative of bounding box, considering annoying negative margins
       isHorizontal: true, // we use the left/right for adjusting RTL coordinates
       isVertical: true
     })
@@ -343,8 +343,8 @@ export default class TimelineView extends View {
     this.updateGridDates()
 
     const slatHtmlRes = this.renderSlatHtml()
-    this.timeHeadScroller.canvas.contentEl.html(slatHtmlRes.headHtml)
-    this.timeHeadColEls = findElsWithin(this.timeHeadScroller.canvas.contentEl[0], 'col')
+    this.timeHeadScroller.canvas.contentEl.innerHTML = slatHtmlRes.headHtml
+    this.timeHeadColEls = findElsWithin(this.timeHeadScroller.canvas.contentEl, 'col')
     this.slatContainerEl.innerHTML = slatHtmlRes.bodyHtml
     this.slatColEls = findElsWithin(this.slatContainerEl, 'col')
     this.slatEls = findElsWithin(this.slatContainerEl, 'td')
@@ -363,7 +363,7 @@ export default class TimelineView extends View {
       isHorizontal: true,
       // we use this coord cache for getPosition* for event rendering.
       // workaround for .fc-content's negative margins.
-      offsetParent: this.timeBodyScroller.canvas.el[0]
+      offsetParent: this.timeBodyScroller.canvas.el
     })
 
     for (let i = 0; i < this.slotDates.length; i++) {
@@ -376,7 +376,7 @@ export default class TimelineView extends View {
 
     if (this.headDateFollower) {
       this.headDateFollower.setSpriteEls(
-        $(findElsWithin(this.timeHeadEl, 'tr:not(:last-child) .fc-cell-text'))
+        findElsWithin(this.timeHeadEl, 'tr:not(:last-child) .fc-cell-text')
       )
     }
   }
@@ -387,7 +387,7 @@ export default class TimelineView extends View {
       this.headDateFollower.clearSprites()
     }
 
-    this.timeHeadScroller.canvas.contentEl.empty()
+    this.timeHeadScroller.canvas.contentEl.innerHTML = ''
     this.slatContainerEl.innerHTML = ''
 
     // clear the widths,
@@ -626,7 +626,7 @@ export default class TimelineView extends View {
     if (isAuto) {
       bodyHeight = 'auto'
     } else {
-      bodyHeight = totalHeight - this.headHeight() - this.queryMiscHeight()
+      bodyHeight = totalHeight - this.getHeadHeight() - this.queryMiscHeight()
     }
 
     this.timeBodyScroller.setHeight(bodyHeight)
@@ -795,10 +795,19 @@ export default class TimelineView extends View {
   }
 
 
-  // a getter / setter
-  headHeight(...args) {
-    const table = this.timeHeadScroller.canvas.contentEl.find('table')
-    return table.height.apply(table, args)
+  getHeadHeight() {
+    // TODO: cache <table>
+    const table = this.timeHeadScroller.canvas.contentEl.querySelector('table')
+    return table ? table.offsetHeight : 0 // why the check?
+  }
+
+
+  setHeadHeight(h: number | 'auto') {
+    // TODO: cache <table>
+    const table = this.timeHeadScroller.canvas.contentEl.querySelector('table')
+    if (table) { // why?
+      applyStyle(table, 'height', h)
+    }
   }
 
 

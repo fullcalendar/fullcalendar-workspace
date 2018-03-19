@@ -1,5 +1,5 @@
 import * as $ from 'jquery'
-import { htmlEscape, DragListener, findElsWithin } from 'fullcalendar'
+import { htmlEscape, DragListener, findElsWithin, applyStyle } from 'fullcalendar'
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
 import ScrollJoiner from '../util/ScrollJoiner'
@@ -56,27 +56,26 @@ export default class Spreadsheet {
     })
     this.headScroller.canvas = new ScrollerCanvas()
     this.headScroller.render()
-    this.headScroller.canvas.contentEl.html(this.renderHeadHtml())
+    this.headScroller.canvas.contentEl.innerHTML = this.renderHeadHtml()
     this.headEl.appendChild(this.headScroller.el)
 
     this.bodyScroller = new ClippedScroller({ overflowY: 'clipped-scroll' })
     this.bodyScroller.canvas = new ScrollerCanvas()
     this.bodyScroller.render()
-    this.bodyScroller.canvas.contentEl.html(
+    this.bodyScroller.canvas.contentEl.innerHTML = // colGroupHtml hack
       `<div class="fc-rows"> \
 <table class="` + theme.getClass('tableGrid') + `">\
 ` + this.colGroupHtml + `<tbody></tbody> \
 </table> \
 </div>`
-    ) // colGroupHtml hack
-    this.tbodyEl = this.bodyScroller.canvas.contentEl.find('tbody')[0]
+    this.tbodyEl = this.bodyScroller.canvas.contentEl.querySelector('tbody')
     this.el.appendChild(this.bodyScroller.el)
 
     this.scrollJoiner = new ScrollJoiner('horizontal', [ this.headScroller, this.bodyScroller ])
 
     this.headTable = this.headEl.querySelector('table')
     this.headColEls = findElsWithin(this.headEl, 'col')
-    this.headCellEls = this.headScroller.canvas.contentEl.find('tr:last-child th').toArray()
+    this.headCellEls = findElsWithin(this.headScroller.canvas.contentEl, 'tr:last-child th')
     this.bodyColEls = findElsWithin(this.el, 'col')
     this.bodyTable = this.el.querySelector('table')
 
@@ -274,9 +273,15 @@ export default class Spreadsheet {
   }
 
 
-  headHeight(_height?) { // TODO: route this better
-    const table = this.headScroller.canvas.contentEl.find('table')
-    return table.height.apply(table, arguments)
+  getHeadHeight() {
+    // TODO: cache <table>
+    return this.headScroller.canvas.contentEl.querySelector('table').offsetHeight
+  }
+
+
+  setHeadHeight(h: number | 'auto') {
+    // TODO: cache <table>
+    applyStyle(this.headScroller.canvas.contentEl.querySelector('table'), 'height', h)
   }
 
 
@@ -303,7 +308,7 @@ export default class Spreadsheet {
       }
     }
 
-    this.cellFollower.setSpriteEls($(nodes))
+    this.cellFollower.setSpriteEls(nodes)
     this.cellFollower.update()
   }
 }

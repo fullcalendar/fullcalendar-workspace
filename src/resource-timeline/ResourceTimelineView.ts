@@ -189,7 +189,7 @@ export default class ResourceTimelineView extends TimelineView {
 </table> \
 </div>\
 `)
-    this.timeBodyScroller.canvas.contentEl.append(timeBodyContainerEl)
+    this.timeBodyScroller.canvas.contentEl.appendChild(timeBodyContainerEl)
     this.timeBodyTbodyEl = timeBodyContainerEl.querySelector('tbody')
 
     this.tbodyHash = { // needed for rows to render
@@ -341,13 +341,13 @@ export default class ResourceTimelineView extends TimelineView {
 
 
   syncHeadHeights() {
-    this.spreadsheet.headHeight('auto')
-    this.headHeight('auto')
+    this.spreadsheet.setHeadHeight('auto')
+    this.setHeadHeight('auto')
 
-    const headHeight = Math.max(this.spreadsheet.headHeight(), this.headHeight())
+    const headHeight = Math.max(this.spreadsheet.getHeadHeight(), this.getHeadHeight())
 
-    this.spreadsheet.headHeight(headHeight)
-    this.headHeight(headHeight)
+    this.spreadsheet.setHeadHeight(headHeight)
+    this.setHeadHeight(headHeight)
 
     return headHeight
   }
@@ -386,7 +386,7 @@ export default class ResourceTimelineView extends TimelineView {
       if (row) {
         const el = row.getTr('event')
         if (el) {
-          const innerTop = this.timeBodyScroller.canvas.el.offset().top // TODO: use -scrollHeight or something
+          const innerTop = this.timeBodyScroller.canvas.el.getBoundingClientRect().top // TODO: use -scrollHeight or something
           const elBottom = el.getBoundingClientRect().bottom
           const scrollTop = elBottom - scroll.bottom - innerTop
           this.timeBodyScroller.setScrollTop(scrollTop)
@@ -402,7 +402,7 @@ export default class ResourceTimelineView extends TimelineView {
     if (row) {
       const el = row.getTr('event')
       if (el) {
-        const innerTop = this.timeBodyScroller.canvas.el.offset().top // TODO: use -scrollHeight or something
+        const innerTop = this.timeBodyScroller.canvas.el.getBoundingClientRect().top // TODO: use -scrollHeight or something
         const scrollTop = el.getBoundingClientRect().top - innerTop
         this.timeBodyScroller.setScrollTop(scrollTop)
         this.spreadsheet.bodyScroller.setScrollTop(scrollTop)

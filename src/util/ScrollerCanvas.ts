@@ -1,5 +1,4 @@
-import * as $ from 'jquery'
-import { assignTo } from 'fullcalendar'
+import { assignTo, htmlToElement, toggleClassName, applyStyle } from 'fullcalendar'
 
 /*
 A rectangular area of content that lives within a Scroller.
@@ -9,9 +8,9 @@ Has a content area that lives above a background area.
 */
 export default class ScrollerCanvas {
 
-  el: JQuery
-  contentEl: JQuery
-  bgEl: JQuery
+  el: HTMLElement
+  contentEl: HTMLElement
+  bgEl: HTMLElement
   gutters: any // an object {top,left,bottom,right}
   width: any
   minWidth: any
@@ -23,14 +22,14 @@ export default class ScrollerCanvas {
 
 
   render() {
-    this.el = $(`\
+    this.el = htmlToElement(`\
 <div class="fc-scroller-canvas"> \
 <div class="fc-content"></div> \
 <div class="fc-bg"></div> \
 </div>\
 `)
-    this.contentEl = this.el.find('.fc-content')
-    this.bgEl = this.el.find('.fc-bg')
+    this.contentEl = this.el.querySelector('.fc-content')
+    this.bgEl = this.el.querySelector('.fc-bg')
   }
 
 
@@ -67,29 +66,30 @@ export default class ScrollerCanvas {
 
 
   updateSize() {
-    const { gutters } = this
+    const { gutters, el } = this
 
-    this.el // is border-box (width includes padding)
-      .toggleClass('fc-gutter-left', Boolean(gutters.left))
-      .toggleClass('fc-gutter-right', Boolean(gutters.right))
-      .toggleClass('fc-gutter-top', Boolean(gutters.top))
-      .toggleClass('fc-gutter-bottom', Boolean(gutters.bottom))
-      .css({
-        paddingLeft: gutters.left || '',
-        paddingRight: gutters.right || '',
-        paddingTop: gutters.top || '',
-        paddingBottom: gutters.bottom || '',
-        width:
-          (this.width != null) ?
-            this.width + (gutters.left || 0) + (gutters.right || 0) :
-            '',
-        minWidth:
-          (this.minWidth != null) ?
-            this.minWidth + (gutters.left || 0) + (gutters.right || 0) :
-            ''
-      })
+    // is border-box (width includes padding)
+    toggleClassName(el, 'fc-gutter-left', gutters.left)
+    toggleClassName(el, 'fc-gutter-right', gutters.right)
+    toggleClassName(el, 'fc-gutter-top', gutters.top)
+    toggleClassName(el, 'fc-gutter-bottom', gutters.bottom)
 
-    this.bgEl.css({
+    applyStyle(el, {
+      paddingLeft: gutters.left || '',
+      paddingRight: gutters.right || '',
+      paddingTop: gutters.top || '',
+      paddingBottom: gutters.bottom || '',
+      width:
+        (this.width != null) ?
+          this.width + (gutters.left || 0) + (gutters.right || 0) :
+          '',
+      minWidth:
+        (this.minWidth != null) ?
+          this.minWidth + (gutters.left || 0) + (gutters.right || 0) :
+          ''
+    })
+
+    applyStyle(this.bgEl, {
       left: gutters.left || '',
       right: gutters.right || '',
       top: gutters.top || '',

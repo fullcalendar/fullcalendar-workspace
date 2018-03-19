@@ -54,7 +54,7 @@ export default class EnhancedScroller extends Scroller {
     super.render()
     if (this.canvas) {
       this.canvas.render()
-      this.canvas.el.appendTo(this.scrollEl)
+      this.scrollEl.appendChild(this.canvas.el)
     }
     this.bindHandlers()
   }

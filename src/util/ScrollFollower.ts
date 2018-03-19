@@ -1,11 +1,12 @@
 import * as $ from 'jquery'
 import { getContentRect } from 'fullcalendar'
+import EnhancedScroller from '../util/EnhancedScroller'
 import ScrollFollowerSprite from './ScrollFollowerSprite'
 
 
 export default class ScrollFollower {
 
-  scroller: any
+  scroller: EnhancedScroller
   scrollbarWidths: any
   spritesById: any
   viewportRect: any // relative to content pane
@@ -60,12 +61,11 @@ export default class ScrollFollower {
   // View's whose skeletons get destroyed should unregister their scrollfollowers.
 
   /*
-  `els` is as a jQuery set of elements.
   If elements are already position:relative, is a performance benefit.
   */
-  setSpriteEls(els) {
+  setSpriteEls(els: HTMLElement[]) {
     this.clearSprites()
-    els.each((i, node) => {
+    els.forEach((node) => {
       this.addSprite(
         new ScrollFollowerSprite($(node))
       )
@@ -100,7 +100,7 @@ export default class ScrollFollower {
   cacheDimensions() {
     this.updateViewport()
     this.scrollbarWidths = this.scroller.getScrollbarWidths()
-    this.contentOffset = this.scroller.canvas.el.offset()
+    this.contentOffset = this.scroller.canvas.el.getBoundingClientRect()
     this.iterSprites((sprite) => sprite.cacheDimensions())
   }
 

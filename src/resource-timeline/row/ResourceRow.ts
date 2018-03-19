@@ -1,5 +1,5 @@
 import * as $ from 'jquery'
-import { htmlEscape, htmlToElement, makeElement, appendContentTo } from 'fullcalendar'
+import { htmlEscape, htmlToElement, makeElement } from 'fullcalendar'
 import EventRow from './EventRow'
 
 /*
