@@ -1,3 +1,4 @@
+import * as $ from 'jquery'
 import { View } from 'fullcalendar'
 import { processLicenseKey } from './license'
 

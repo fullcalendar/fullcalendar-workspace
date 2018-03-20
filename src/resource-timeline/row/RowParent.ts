@@ -262,7 +262,7 @@ export default class RowParent extends DateComponent {
         // build the TR and record it
         // assign before calling the render methods, because they might rely
         const tbody = this.view.tbodyHash[type]
-        const tr = document.createElement('tr') as HTMLTableRowElement
+        const tr = document.createElement('tr')
         this.trHash[type] = tr
         trs.push(tr)
 
