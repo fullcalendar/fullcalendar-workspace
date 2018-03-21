@@ -1,5 +1,4 @@
-import * as $ from 'jquery'
-import { HelperRenderer } from 'fullcalendar'
+import { HelperRenderer, applyStyle, makeElement } from 'fullcalendar'
 
 
 export default class TimelineHelperRenderer extends HelperRenderer {
@@ -12,33 +11,28 @@ export default class TimelineHelperRenderer extends HelperRenderer {
     const helperNodes = [] // .fc-event-container
 
     for (let seg of segs) {
-
       // TODO: centralize logic (also in renderFgSegsInContainers)
       const coords = this.component.rangeToCoords(seg)
-      seg.el.css({
+      applyStyle(seg.el, {
         left: (seg.left = coords.left),
         right: -(seg.right = coords.right)
       })
 
-      // TODO: detangle the concept of resources
-      // TODO: how to identify these two segs as the same!?
-      if (sourceSeg && (sourceSeg.resourceId === (this.component.resource != null ? this.component.resource.id : undefined))) {
-        seg.el.css('top', sourceSeg.el.css('top'))
-      } else {
-        seg.el.css('top', 0)
-      }
+      // TODO: position the top coordinate to match sourceSeg,
+      // but only if the helper seg being dragged is in the same container as the sourceSeg,
+      // which is hard to determine
     }
 
-    const helperContainerEl = $('<div class="fc-event-container fc-helper-container"/>')
-      .appendTo(this.component.innerEl)
+    const helperContainerEl = makeElement('div', { className: 'fc-event-container fc-helper-container' })
+    this.component.innerEl.appendChild(helperContainerEl)
 
-    helperNodes.push(helperContainerEl[0])
+    helperNodes.push(helperContainerEl)
 
     for (let seg of segs) {
-      helperContainerEl.append(seg.el)
+      helperContainerEl.appendChild(seg.el)
     }
 
-    return $(helperNodes) // return value. TODO: need to accumulate across calls?
+    return helperNodes // return value. TODO: need to accumulate across calls?
   }
 
 }

@@ -28,7 +28,7 @@ export default class ScrollFollowerSprite {
   If given el is already position:relative, is a performance gain
   */
   constructor(el) {
-    const computedStyles = window.getComputedStyle(el)
+    const computedStyle = window.getComputedStyle(el)
 
     this.isEnabled = true
     this.isHFollowing = false
@@ -40,9 +40,9 @@ export default class ScrollFollowerSprite {
 
     this.el = el
     this.id = String(ScrollFollowerSprite.uid++)
-    this.isBlock = computedStyles.display === 'block'
+    this.isBlock = computedStyle.display === 'block'
 
-    if (computedStyles.position !== 'relative') {
+    if (computedStyle.position !== 'relative') {
       el.style.position = 'relative'
     }
   }
@@ -230,7 +230,7 @@ export default class ScrollFollowerSprite {
 
 
   buildAbsoluteEl() { // TODO: cache this?
-    const computedStyles = window.getComputedStyle(this.el)
+    const computedStyle = window.getComputedStyle(this.el)
     const el = this.el.cloneNode(true) as HTMLElement
 
     el.classList.add('fc-following')
@@ -238,15 +238,15 @@ export default class ScrollFollowerSprite {
     applyStyle(el, {
       position: 'absolute',
       zIndex: 1000, // bad, but luckily scoped by .fc-content's z-index
-      fontWeight: computedStyles.fontWeight,
-      fontSize: computedStyles.fontSize,
-      fontFamily: computedStyles.fontFamily,
-      textDecoration: computedStyles.textDecoration,
-      color: computedStyles.color,
-      paddingTop: computedStyles.paddingTop,
-      paddingBottom: computedStyles.paddingBottom,
-      paddingLeft: computedStyles.paddingLeft,
-      paddingRight: computedStyles.paddingRight
+      fontWeight: computedStyle.fontWeight,
+      fontSize: computedStyle.fontSize,
+      fontFamily: computedStyle.fontFamily,
+      textDecoration: computedStyle.textDecoration,
+      color: computedStyle.color,
+      paddingTop: computedStyle.paddingTop,
+      paddingBottom: computedStyle.paddingBottom,
+      paddingLeft: computedStyle.paddingLeft,
+      paddingRight: computedStyle.paddingRight
     })
 
     if (!this.follower.allowPointerEvents) {

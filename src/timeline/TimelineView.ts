@@ -51,6 +51,7 @@ export default class TimelineView extends View {
   eventTitleFollower: ScrollFollower
   segContainerEl: HTMLElement
   segContainerHeight: any
+  innerEl: HTMLElement // for TimelineHelperRenderer
   bgSegContainerEl: HTMLElement
   slatContainerEl: HTMLElement
   slatColEls: HTMLElement[]
@@ -252,7 +253,8 @@ export default class TimelineView extends View {
     this.timeBodyScroller.canvas.bgEl.appendChild(
       this.slatContainerEl = makeElement('div', { className: 'fc-slats' })
     )
-    this.timeBodyScroller.canvas.contentEl.appendChild(
+    this.innerEl = this.timeBodyScroller.canvas.contentEl // for TimelineHelperRenderer
+    this.innerEl.appendChild(
       this.segContainerEl = makeElement('div', { className: 'fc-event-container' })
     )
     this.bgSegContainerEl = this.timeBodyScroller.canvas.bgEl
@@ -820,7 +822,7 @@ export default class TimelineView extends View {
 
     for (let seg of segs) {
       const coords = this.rangeToCoords(seg)
-      seg.el.css({
+      applyStyle(seg.el, {
         left: (seg.left = coords.left),
         right: -(seg.right = coords.right)
       })

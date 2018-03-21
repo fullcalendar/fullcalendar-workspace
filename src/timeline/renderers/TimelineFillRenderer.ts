@@ -1,12 +1,11 @@
-import * as $ from 'jquery'
-import { FillRenderer } from 'fullcalendar'
+import { FillRenderer, applyStyle, makeElement } from 'fullcalendar'
+import TimelineView from '../TimelineView'
 
 
 export default class TimelineFillRenderer extends FillRenderer {
 
-  /*
-  component must be { bgSegContainerEl, rangeToCoords }
-  */
+  component: TimelineView
+
 
   attachSegEls(type, segs) {
     if (segs.length) {
@@ -20,21 +19,21 @@ export default class TimelineFillRenderer extends FillRenderer {
 
       // making a new container each time is OKAY
       // all types of segs (background or business hours or whatever) are rendered in one pass
-      const containerEl = $('<div class="fc-' + className + '-container" />')
-        .appendTo(this.component.bgSegContainerEl)
+      const containerEl = makeElement('div', { className: 'fc-' + className + '-container' })
+      this.component.bgSegContainerEl.appendChild(containerEl)
 
       for (let seg of segs) {
         const coords = this.component.rangeToCoords(seg) // TODO: make DRY
 
-        seg.el.css({
+        applyStyle(seg.el, {
           left: (seg.left = coords.left),
           right: -(seg.right = coords.right)
         })
 
-        seg.el.appendTo(containerEl)
+        containerEl.appendChild(seg.el)
       }
 
-      return containerEl // return value
+      return [ containerEl ] // return value
     }
   }
 

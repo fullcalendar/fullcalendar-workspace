@@ -1,4 +1,4 @@
-import { EventRenderer, htmlEscape, cssToStr } from 'fullcalendar'
+import { EventRenderer, htmlEscape, cssToStr, applyStyle, computeHeightAndMargins } from 'fullcalendar'
 import ScrollFollowerSprite from '../../util/ScrollFollowerSprite'
 import TimelineView from '../TimelineView'
 
@@ -30,7 +30,7 @@ export default class TimelineEventRenderer extends EventRenderer {
     for (let seg of segs) {
       // TODO: centralize logic (also in updateSegPositions)
       const coords = this.component.rangeToCoords(seg)
-      seg.el.css({
+      applyStyle(seg.el, {
         left: (seg.left = coords.left),
         right: -(seg.right = coords.right)
       })
@@ -38,12 +38,12 @@ export default class TimelineEventRenderer extends EventRenderer {
 
     // attach segs
     for (let seg of segs) {
-      seg.el.appendTo(this.component.segContainerEl)
+      this.component.segContainerEl.appendChild(seg.el)
     }
 
     // compute seg verticals
     for (let seg of segs) {
-      seg.height = seg.el.outerHeight(true) // include margin
+      seg.height = computeHeightAndMargins(seg.el)
     }
 
     this.buildSegLevels(segs)
@@ -51,16 +51,16 @@ export default class TimelineEventRenderer extends EventRenderer {
 
     // assign seg verticals
     for (let seg of segs) {
-      seg.el.css('top', seg.top)
+      applyStyle(seg.el, 'top', seg.top)
     }
 
     this.component.segContainerEl.style.height = this.component.segContainerHeight + 'px'
 
     for (let seg of segs) {
-      const titleEl = seg.el.find('.fc-title')
+      const titleEl = seg.el.querySelector('.fc-title')
 
-      if (titleEl.length) {
-        seg.scrollFollowerSprite = new ScrollFollowerSprite(titleEl[0])
+      if (titleEl) {
+        seg.scrollFollowerSprite = new ScrollFollowerSprite(titleEl)
         eventTitleFollower.addSprite(seg.scrollFollowerSprite)
       }
     }
