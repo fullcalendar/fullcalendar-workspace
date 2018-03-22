@@ -1,5 +1,4 @@
 const gulp = require('gulp')
-const shell = require('gulp-shell')
 const eslint = require('gulp-eslint')
 const tslint = require('gulp-tslint')
 const tslintLib = require('tslint')
@@ -11,8 +10,7 @@ gulp.task('lint', [
   'lint:built',
   'lint:node',
   'lint:tests',
-  'lint:dts',
-  'lint:example-repos'
+  'lint:dts'
 ])
 
 gulp.task('lint:src', function() {
@@ -92,8 +90,3 @@ gulp.task('lint:dts', [ 'ts-types' ] /* , shell.task(
   ' fullcalendar/dist/fullcalendar.d.ts' + // need core's typedefs
   ' dist/scheduler.d.ts' // the file we want to lint
 ) */)
-
-// try to build example repos
-gulp.task('lint:example-repos', [ 'webpack', 'ts-types' ], shell.task(
-  './bin/build-example-repos.sh'
-))
