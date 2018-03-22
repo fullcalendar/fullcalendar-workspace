@@ -2,7 +2,7 @@ import * as $ from 'jquery'
 import * as moment from 'moment'
 import {
   View, UnzonedRange, ComponentFootprint,
-  proxy, CoordCache, queryMostGranularFormatUnit,
+  CoordCache, queryMostGranularFormatUnit,
   isInt, divideRangeByDuration, htmlEscape, computeGreatestUnit,
   divideDurationByDuration, multiplyDuration, StandardInteractionsMixin,
   BusinessHourRenderer, makeElement, findElsWithin, applyStyle
@@ -248,7 +248,7 @@ export default class TimelineView extends View {
     this.timeBodyEl.appendChild(this.timeBodyScroller.el)
 
     this.isTimeBodyScrolled = false // because if the grid has been rerendered, it will get a zero scroll
-    this.timeBodyScroller.on('scroll', proxy(this, 'handleTimeBodyScrolled'))
+    this.timeBodyScroller.on('scroll', this.handleTimeBodyScrolled.bind(this))
 
     this.timeBodyScroller.canvas.bgEl.appendChild(
       this.slatContainerEl = makeElement('div', { className: 'fc-slats' })

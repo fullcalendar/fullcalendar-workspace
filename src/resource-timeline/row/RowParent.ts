@@ -1,6 +1,6 @@
 import * as $ from 'jquery'
 import {
-  DateComponent, capitaliseFirstLetter, proxy,
+  DateComponent, capitaliseFirstLetter,
   insertAfterEl, prependWithinEl, listenViaDelegation, removeElement, findElsWithin
 } from 'fullcalendar'
 import TimelineView from '../ResourceTimelineView'
@@ -284,7 +284,7 @@ export default class RowParent extends DateComponent {
 
       // build a single jQuery object. use event delegation for calling toggleExpanded
       trs.forEach((tr) => {
-        listenViaDelegation(tr, 'click', 'fc-expander', proxy(this, 'toggleExpanded'))
+        listenViaDelegation(tr, 'click', 'fc-expander', this.toggleExpanded.bind(this))
       })
 
       this.trs = trs
