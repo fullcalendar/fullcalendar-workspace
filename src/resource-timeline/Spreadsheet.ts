@@ -1,4 +1,3 @@
-import * as $ from 'jquery'
 import { htmlEscape, DragListener, findElsWithin, applyStyle } from 'fullcalendar'
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
@@ -151,9 +150,8 @@ export default class Spreadsheet {
 
 
   initColResizing() {
-    findElsWithin(this.headEl, 'th .fc-col-resizer').forEach((resizerNode, i) => {
-      let resizerEl = $(resizerNode)
-      resizerEl.on('mousedown', ev => {
+    findElsWithin(this.headEl, 'th .fc-col-resizer').forEach((resizerEl, i) => {
+      resizerEl.addEventListener('mousedown', ev => {
         this.colResizeMousedown(i, ev, resizerEl)
       })
     })
@@ -170,7 +168,7 @@ export default class Spreadsheet {
 
     const dragListener = new DragListener({
       dragStart: () => {
-        resizerEl.addClass('fc-active')
+        resizerEl.classList.add('fc-active')
       },
       drag: (dx, dy) => {
         let width = origColWidth + (this.isRTL ? -dx : dx)
@@ -179,7 +177,7 @@ export default class Spreadsheet {
         this.applyColWidths()
       },
       dragEnd: () => {
-        resizerEl.removeClass('fc-active')
+        resizerEl.classList.remove('fc-active')
       }
     })
 

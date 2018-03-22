@@ -1,12 +1,10 @@
-import * as $ from 'jquery'
 import {
   Scroller, debounce, preventDefault,
   EmitterMixin, EmitterInterface,
-  ListenerMixin, ListenerInterface
+  ListenerMixin, ListenerInterface, htmlToElement, removeElement
 } from 'fullcalendar'
 import ScrollerCanvas from '../util/ScrollerCanvas'
 
-let rtlScrollSystem = null
 
 /*
 A Scroller with additional functionality:
@@ -205,7 +203,7 @@ export default class EnhancedScroller extends Scroller {
     let val = node.scrollLeft
 
     if (direction === 'rtl') {
-      switch (rtlScrollSystem) {
+      switch (getRtlScrollSystem()) {
         case 'positive':
           val = (val + node.clientWidth) - node.scrollWidth
           break
@@ -226,7 +224,7 @@ export default class EnhancedScroller extends Scroller {
     const node = this.scrollEl
 
     if (direction === 'rtl') {
-      switch (rtlScrollSystem) {
+      switch (getRtlScrollSystem()) {
         case 'positive':
           val = (val - node.clientWidth) + node.scrollWidth
           break
@@ -249,7 +247,7 @@ export default class EnhancedScroller extends Scroller {
     let val = node.scrollLeft
 
     if (direction === 'rtl') {
-      switch (rtlScrollSystem) {
+      switch (getRtlScrollSystem()) {
         case 'negative':
           val = (val - node.clientWidth) + node.scrollWidth
           break
@@ -281,8 +279,14 @@ ListenerMixin.mixInto(EnhancedScroller)
 // Horizontal Scroll System Detection
 // ----------------------------------------------------------------------------------------------
 
+let _rtlScrollSystem
+
+function getRtlScrollSystem() {
+  return _rtlScrollSystem || (_rtlScrollSystem = detectRtlScrollSystem())
+}
+
 function detectRtlScrollSystem() {
-  const el = $(`\
+  const el = htmlToElement(`\
 <div style=" \
 position: absolute; \
 top: -1000px; \
@@ -292,24 +296,21 @@ overflow: scroll; \
 direction: rtl; \
 font-size: 100px; \
 ">A</div>\
-`).appendTo('body')
-  const node = el[0]
-  const system = (function() {
-    if (node.scrollLeft > 0) {
-      return 'positive'
+`)
+  document.body.appendChild(el)
+
+  let system
+  if (el.scrollLeft > 0) {
+    system = 'positive'
+  } else {
+    el.scrollLeft = 1
+    if (el.scrollLeft > 0) {
+      system = 'reverse'
     } else {
-      node.scrollLeft = 1
-      if (node.scrollLeft > 0) {
-        return 'reverse'
-      } else {
-        return 'negative'
-      }
+      system = 'negative'
     }
-  })()
-  el.remove()
+  }
+
+  removeElement(el)
   return system
 }
-
-$(function() {
-  rtlScrollSystem = detectRtlScrollSystem()
-})

@@ -1,11 +1,10 @@
-import * as $ from 'jquery'
 import * as moment from 'moment'
 import {
   View, UnzonedRange, ComponentFootprint,
   CoordCache, queryMostGranularFormatUnit,
   isInt, divideRangeByDuration, htmlEscape, computeGreatestUnit,
   divideDurationByDuration, multiplyDuration, StandardInteractionsMixin,
-  BusinessHourRenderer, makeElement, findElsWithin, applyStyle
+  BusinessHourRenderer, makeElement, findElsWithin, applyStyle, removeElement
 } from 'fullcalendar'
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
@@ -63,7 +62,7 @@ export default class TimelineView extends View {
   slatCoordCache: any // used for hit detection
   slatInnerCoordCache: any
 
-  nowIndicatorEls: JQuery
+  nowIndicatorEls: HTMLElement[]
   isTimeBodyScrolled: boolean
 
 
@@ -372,7 +371,7 @@ export default class TimelineView extends View {
       date = this.slotDates[i]
       this.publiclyTrigger('dayRender', {
         context: this,
-        args: [ date, $(this.slatEls[i]), this ]
+        args: [ date, this.slatEls[i], this ]
       })
     }
 
@@ -584,32 +583,40 @@ export default class TimelineView extends View {
 
   // will only execute if isTimeScale
   renderNowIndicator(date) {
-    const nodes = []
+    const nodes: HTMLElement[] = []
     date = this.normalizeGridDate(date)
 
     if (this.normalizedUnzonedRange.containsDate(date)) {
       const coord = this.dateToCoord(date)
-      const css = this.isRTL ?
+      const styleProps = this.isRTL ?
         { right: -coord } :
         { left: coord }
 
-      nodes.push($("<div class='fc-now-indicator fc-now-indicator-arrow'></div>")
-        .css(css)
-        .appendTo(this.timeHeadScroller.canvas.el)[0])
+      const arrowEl = makeElement('div', {
+        className: 'fc-now-indicator fc-now-indicator-arrow',
+        style: styleProps
+      })
 
-      nodes.push($("<div class='fc-now-indicator fc-now-indicator-line'></div>")
-        .css(css)
-        .appendTo(this.timeBodyScroller.canvas.el)[0])
+      const lineEl = makeElement('div', {
+        className: 'fc-now-indicator fc-now-indicator-line',
+        style: styleProps
+      })
+
+      this.timeHeadScroller.canvas.el.appendChild(arrowEl)
+      this.timeBodyScroller.canvas.el.appendChild(lineEl)
+
+      nodes.push(arrowEl)
+      nodes.push(lineEl)
     }
 
-    this.nowIndicatorEls = $(nodes)
+    this.nowIndicatorEls = nodes
   }
 
 
   // will only execute if isTimeScale
   unrenderNowIndicator() {
     if (this.nowIndicatorEls) {
-      this.nowIndicatorEls.remove()
+      this.nowIndicatorEls.forEach(removeElement)
       this.nowIndicatorEls = null
     }
   }
