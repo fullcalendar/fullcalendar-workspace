@@ -19,7 +19,7 @@ export default class RowParent extends DateComponent {
 
   hasOwnRow: boolean // is this node responsible for rendering its own distinct row? (initialized after class)
   trHash: { [type: string]: HTMLTableRowElement } // TR jq objects owned by the node. keyed by "type" (parallel row sections in different tbodies)
-  trs: HTMLTableRowElement[] // single jQuery object of tr elements owned by the node.
+  trs: HTMLTableRowElement[]
 
   isExpanded: boolean // does this node have its child nodes revealed?
 
