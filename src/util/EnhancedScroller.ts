@@ -194,6 +194,7 @@ export default class EnhancedScroller extends Scroller {
   // Horizontal Scroll Normalization
   // ----------------------------------------------------------------------------------------------
   // http://stackoverflow.com/questions/24276619/better-way-to-get-the-viewport-of-a-scrollable-div-in-rtl-mode/24394376#24394376
+  // TODO: move all this to util functions
 
   /*
   If RTL, and scrolled to the left, returns NEGATIVE value (like Firefox)

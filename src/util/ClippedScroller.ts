@@ -1,5 +1,4 @@
-import * as $ from 'jquery'
-import { assignTo, getScrollbarWidths } from 'fullcalendar'
+import { getEdges, applyStyle } from 'fullcalendar'
 import EnhancedScroller from './EnhancedScroller'
 
 /*
@@ -45,21 +44,20 @@ export default class ClippedScroller extends EnhancedScroller {
 
   updateSize() {
     const { scrollEl } = this
-    const scrollbarWidths = getScrollbarWidths($(scrollEl)) // the native ones
-    const cssProps = { marginLeft: '0px', marginRight: '0px', marginTop: '0px', marginBottom: '0px' }
+    const edges = getEdges(scrollEl)
+    const cssProps = { marginLeft: 0, marginRight: 0, marginTop: 0, marginBottom: 0 }
 
     // give the inner scrolling div negative margins so that its scrollbars
     // are nudged outside of the bounding box of the wrapper, which is overflow:hidden
-    if (this.isHScrollbarsClipped) {
-      cssProps.marginTop = -scrollbarWidths.top + 'px'
-      cssProps.marginBottom = -scrollbarWidths.bottom + 'px'
-    }
     if (this.isVScrollbarsClipped) {
-      cssProps.marginLeft = -scrollbarWidths.left + 'px'
-      cssProps.marginRight = -scrollbarWidths.right + 'px'
+      cssProps.marginLeft = -edges.scrollbarLeft
+      cssProps.marginRight = -edges.scrollbarRight
+    }
+    if (this.isHScrollbarsClipped) {
+      cssProps.marginBottom = -edges.scrollbarBottom
     }
 
-    assignTo(scrollEl.style, cssProps)
+    applyStyle(scrollEl, cssProps)
 
     // if we are attempting to hide the scrollbars offscreen, OSX/iOS will still
     // display the floating scrollbars. attach a className to force-hide them.
@@ -67,10 +65,9 @@ export default class ClippedScroller extends EnhancedScroller {
       (this.isHScrollbarsClipped || (this.overflowX === 'hidden')) && // should never show?
       (this.isVScrollbarsClipped || (this.overflowY === 'hidden')) && // should never show?
       !( // doesn't have any scrollbar mass
-        scrollbarWidths.top ||
-        scrollbarWidths.bottom ||
-        scrollbarWidths.left ||
-        scrollbarWidths.right
+        edges.scrollbarLeft ||
+        edges.scrollbarRight ||
+        edges.scrollbarBottom
       )
     ) {
       scrollEl.classList.add('fc-no-scrollbars')
@@ -84,18 +81,18 @@ export default class ClippedScroller extends EnhancedScroller {
   Accounts for 'clipped' scrollbars
   */
   getScrollbarWidths() {
-    const widths = getScrollbarWidths($(this.scrollEl))
-
-    if (this.isHScrollbarsClipped) {
-      widths.top = 0
-      widths.bottom = 0
-    }
+    const widths = super.getScrollbarWidths()
 
     if (this.isVScrollbarsClipped) {
       widths.left = 0
       widths.right = 0
     }
 
+    if (this.isHScrollbarsClipped) {
+      widths.bottom = 0
+    }
+
     return widths
   }
+
 }
