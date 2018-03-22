@@ -1,4 +1,3 @@
-import * as $ from 'jquery'
 import { View } from 'fullcalendar'
 import { processLicenseKey } from './license'
 
@@ -54,7 +53,7 @@ View.prototype.removeElement = function() {
 View.prototype.triggerViewRender = function() {
   processLicenseKey(
     this.opt('schedulerLicenseKey'),
-    $(this.el) // container element
+    this.el // container element
   )
   origMethods.triggerViewRender.apply(this, arguments)
 }

@@ -154,7 +154,7 @@ describe('timeline view rerendering', function() {
       },
       resourceRender(resource, headTd) {
         if (resource.id === 'e') {
-          headTd.find('.fc-cell-text').text(resource.title + renderCalls)
+          $(headTd).find('.fc-cell-text').text(resource.title + renderCalls)
         }
       },
       eventAfterAllRender() {

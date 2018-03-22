@@ -1,4 +1,3 @@
-import * as $ from 'jquery'
 import { htmlEscape, htmlToElement, makeElement } from 'fullcalendar'
 import EventRow from './EventRow'
 
@@ -38,8 +37,8 @@ export default class ResourceRow extends EventRow {
       context: this.resource,
       args: [
         this.resource,
-        $(this.getTr('spreadsheet').firstChild), // <td>
-        $(this.getTr('event').firstChild), // <td>
+        this.getTr('spreadsheet').firstChild, // <td>
+        this.getTr('event').firstChild, // <td>
         this.view
       ]
     })
@@ -127,7 +126,7 @@ export default class ResourceRow extends EventRow {
       )
 
       if (typeof colSpec.render === 'function') { // a filter function for the element
-        contentEl = $(colSpec.render(resource, $(contentEl), input) || contentEl)[0]
+        contentEl = colSpec.render(resource, contentEl, input) || contentEl
       }
 
       const td = makeElement('td', { className: theme.getClass('widgetContent') }, contentEl)

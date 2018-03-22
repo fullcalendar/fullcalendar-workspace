@@ -62,7 +62,7 @@ describe('rerender performance for resource timeline', function() {
     expect(renderResource.calls.count()).toBe(3) // +1
     expect(updateSize.calls.count()).toBe(7) // +1
 
-    $(window).trigger('resize')
+    $(window).simulate('resize')
 
     setTimeout(function() {
 

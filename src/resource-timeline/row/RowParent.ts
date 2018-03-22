@@ -1,10 +1,8 @@
-import * as $ from 'jquery'
 import {
   DateComponent, capitaliseFirstLetter,
-  insertAfterEl, prependWithinEl, listenViaDelegation, removeElement, findElsWithin
+  insertAfterEl, prependWithinEl, listenViaDelegation, removeElement, findElsWithin, queryChildren, queryChild, applyStyle
 } from 'fullcalendar'
 import TimelineView from '../ResourceTimelineView'
-import { getOwnCells } from '../../util/util'
 
 /*
 An abstract node in a row-hierarchy tree.
@@ -481,6 +479,8 @@ export default class RowParent extends DateComponent {
         removeClass('fc-collapsed') // transition back to non-collapsed state
       })
 
+      // make a util...
+
       let onTransitionEnd = function(ev: Event) {
         removeClass('fc-transitioning') // will remove the overflow:hidden
         ev.currentTarget.removeEventListener('webkitTransitionEnd', onTransitionEnd)
@@ -515,8 +515,8 @@ export default class RowParent extends DateComponent {
       let tr = this.trHash[type]
 
       // exclude multi-rowspans (probably done for row grouping)
-      const innerEl = getOwnCells($(tr)).find('> div:not(.fc-cell-content):first')
-      max = Math.max(innerEl.height(), max)
+      const innerEl = getTrHeightDiv(tr)
+      max = Math.max(innerEl.offsetHeight, max)
     }
 
     return max
@@ -525,12 +525,11 @@ export default class RowParent extends DateComponent {
   /*
   Find each TRs "inner div" and sets all of their heights to the same value.
   */
-  setTrInnerHeight(height) {
+  setTrInnerHeight(height: number | '') {
     // exclude multi-rowspans (probably done for row grouping)
     for (let type in this.trHash) {
       let tr = this.trHash[type]
-      getOwnCells($(tr)).find('> div:not(.fc-cell-content):first')
-        .height(height)
+      applyStyle(getTrHeightDiv(tr), 'height', height)
     }
   }
 
@@ -579,3 +578,14 @@ export default class RowParent extends DateComponent {
 }
 
 RowParent.prototype.hasOwnRow = false
+
+
+function getTrHeightDiv(tr: HTMLTableRowElement) {
+  let tds = queryChildren(tr)
+  for (let i = 0; i < tds.length; i++) {
+    let innerDiv = queryChild(tds[i], 'div:not(.fc-cell-content)')
+    if (innerDiv) {
+      return innerDiv
+    }
+  }
+}

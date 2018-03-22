@@ -1,4 +1,3 @@
-import * as $ from 'jquery'
 import { Mixin, DayTableMixin, EventFootprint, parseFieldSpecs, compareByFieldSpecs, htmlEscape, findElsWithin } from 'fullcalendar'
 import ResourceComponentFootprint from '../models/ResourceComponentFootprint'
 
@@ -303,8 +302,8 @@ export default class ResourceDayTableMixin extends Mixin implements ResourceDayT
         context: resource,
         args: [
           resource,
-          $(node), // head <td>
-          $(), // body <td>'s (we don't compute, but API should stay consistent)
+          node, // head <td>
+          null, // body <td> (we don't compute, but API should stay consistent)
           this.view
         ]
       })

@@ -966,7 +966,7 @@ export default class TimelineView extends View {
 
 
   getSnapEl(snapIndex) {
-    return $(this.slatEls[Math.floor(snapIndex / this.snapsPerSlot)])
+    return this.slatEls[Math.floor(snapIndex / this.snapsPerSlot)]
   }
 
 
