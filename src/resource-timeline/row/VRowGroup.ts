@@ -30,7 +30,7 @@ export default class VRowGroup extends RowGroup {
       // ensure the TD element
       if (!this.groupTd) {
         this.groupTd =
-          makeElement('td', { className: theme.getClass('widgetContent')  },
+          makeElement('td', { className: theme.getClass('widgetContent') },
             this.renderGroupContentEl()) as HTMLTableCellElement
       }
 

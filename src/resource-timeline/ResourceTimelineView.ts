@@ -289,13 +289,14 @@ export default class ResourceTimelineView extends TimelineView {
 
 
   getNaturalDividerWidth() {
-    return (this.el.querySelector('.fc-resource-area') as HTMLElement).offsetWidth // TODO: don't we have this cached?
+    let el: HTMLElement = this.el.querySelector('.fc-resource-area')
+    return el.offsetWidth // TODO: don't we have this cached?
   }
 
 
   positionDivider(w) {
-    (this.el.querySelector('.fc-resource-area') as HTMLElement).style.width = w + 'px'
-    // TODO: don't we have this cached?
+    let el: HTMLElement = this.el.querySelector('.fc-resource-area')
+    el.style.width = w + 'px' // TODO: don't we have this cached?
   }
 
 
