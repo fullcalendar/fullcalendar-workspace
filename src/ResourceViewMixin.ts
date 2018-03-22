@@ -288,7 +288,7 @@ export default class ResourceViewMixin extends Mixin implements ResourceViewInte
 
     // trigger 'drop' regardless of whether element represents an event
     (this as any).publiclyTrigger('drop', {
-      context: el[0],
+      context: el,
       args: [
         singleEventDef.dateProfile.start.clone(),
         ev,

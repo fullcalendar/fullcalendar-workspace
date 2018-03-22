@@ -1,6 +1,6 @@
 import {
   DragListener, CoordCache, parseFieldSpecs, compareByFieldSpecs, flexibleCompare,
-  findElsWithin, htmlToElement
+  findElsWithin, htmlToElement, removeElement
 } from 'fullcalendar'
 import ScrollJoiner from '../util/ScrollJoiner'
 import ResourceComponentFootprint from '../models/ResourceComponentFootprint'
@@ -179,7 +179,7 @@ export default class ResourceTimelineView extends TimelineView {
 
     // only non-resource grid needs this, so kill it
     // TODO: look into better solution
-    this.segContainerEl.remove()
+    removeElement(this.segContainerEl)
     this.segContainerEl = null
 
     const timeBodyContainerEl = htmlToElement(`\
