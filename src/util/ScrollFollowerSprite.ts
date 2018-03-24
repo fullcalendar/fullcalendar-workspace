@@ -1,4 +1,4 @@
-import { intersectRects, applyStyle, toggleClassName, removeElement } from 'fullcalendar'
+import { intersectRects, applyStyle, removeElement } from 'fullcalendar'
 import ScrollFollower from './ScrollFollower'
 
 
@@ -198,7 +198,7 @@ export default class ScrollFollowerSprite {
         const top = this.rect.top - this.naturalRect.top
         const left = this.rect.left - this.naturalRect.left
         this.unabsolutize()
-        toggleClassName(this.el, 'fc-following', top || left)
+        this.el.classList.toggle('fc-following', Boolean(top || left))
         applyStyle(this.el, {
           top,
           left

@@ -4,7 +4,7 @@ import {
   CoordCache, queryMostGranularFormatUnit,
   isInt, divideRangeByDuration, htmlEscape, computeGreatestUnit,
   divideDurationByDuration, multiplyDuration, StandardInteractionsMixin,
-  BusinessHourRenderer, makeElement, findElsWithin, applyStyle, removeElement
+  BusinessHourRenderer, makeElement, findElsWithin, applyStyle, applyStyleProp, removeElement
 } from 'fullcalendar'
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
@@ -815,7 +815,7 @@ export default class TimelineView extends View {
     // TODO: cache <table>
     const table = this.timeHeadScroller.canvas.contentEl.querySelector('table')
     if (table) { // why?
-      applyStyle(table, 'height', h)
+      applyStyleProp(table, 'height', h)
     }
   }
 

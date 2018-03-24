@@ -1,6 +1,6 @@
 import {
   DateComponent, capitaliseFirstLetter,
-  insertAfterEl, prependWithinEl, listenViaDelegation, removeElement, findElsWithin, queryChildren, queryChild, applyStyle
+  insertAfterEl, prependWithinEl, listenBySelector, removeElement, findElsWithin, queryChildren, queryChild, applyStyleProp
 } from 'fullcalendar'
 import TimelineView from '../ResourceTimelineView'
 
@@ -282,7 +282,7 @@ export default class RowParent extends DateComponent {
 
       // build a single jQuery object. use event delegation for calling toggleExpanded
       trs.forEach((tr) => {
-        listenViaDelegation(tr, 'click', 'fc-expander', this.toggleExpanded.bind(this))
+        listenBySelector(tr, 'click', '.fc-expander', this.toggleExpanded.bind(this))
       })
 
       this.trs = trs
@@ -529,7 +529,7 @@ export default class RowParent extends DateComponent {
     // exclude multi-rowspans (probably done for row grouping)
     for (let type in this.trHash) {
       let tr = this.trHash[type]
-      applyStyle(getTrHeightDiv(tr), 'height', height)
+      applyStyleProp(getTrHeightDiv(tr), 'height', height)
     }
   }
 

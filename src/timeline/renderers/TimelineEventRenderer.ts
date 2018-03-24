@@ -1,4 +1,4 @@
-import { EventRenderer, htmlEscape, cssToStr, applyStyle, computeHeightAndMargins } from 'fullcalendar'
+import { EventRenderer, htmlEscape, cssToStr, applyStyle, applyStyleProp, computeHeightAndMargins } from 'fullcalendar'
 import ScrollFollowerSprite from '../../util/ScrollFollowerSprite'
 import TimelineView from '../TimelineView'
 
@@ -51,7 +51,7 @@ export default class TimelineEventRenderer extends EventRenderer {
 
     // assign seg verticals
     for (let seg of segs) {
-      applyStyle(seg.el, 'top', seg.top)
+      applyStyleProp(seg.el, 'top', seg.top)
     }
 
     this.component.segContainerEl.style.height = this.component.segContainerHeight + 'px'

@@ -1,4 +1,4 @@
-import { htmlEscape, DragListener, findElsWithin, applyStyle } from 'fullcalendar'
+import { htmlEscape, DragListener, findElsWithin, applyStyleProp } from 'fullcalendar'
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
 import ScrollJoiner from '../util/ScrollJoiner'
@@ -279,7 +279,7 @@ export default class Spreadsheet {
 
   setHeadHeight(h: number | 'auto') {
     // TODO: cache <table>
-    applyStyle(this.headScroller.canvas.contentEl.querySelector('table'), 'height', h)
+    applyStyleProp(this.headScroller.canvas.contentEl.querySelector('table'), 'height', h)
   }
 
 
