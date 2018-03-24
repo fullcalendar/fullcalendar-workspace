@@ -1,4 +1,4 @@
-import { makeElement, removeElement, prependWithinEl } from 'fullcalendar'
+import { createElement, removeElement, prependToElement } from 'fullcalendar'
 import RowGroup from './RowGroup'
 
 /*
@@ -30,7 +30,7 @@ export default class VRowGroup extends RowGroup {
       // ensure the TD element
       if (!this.groupTd) {
         this.groupTd =
-          makeElement('td', { className: theme.getClass('widgetContent') },
+          createElement('td', { className: theme.getClass('widgetContent') },
             this.renderGroupContentEl()) as HTMLTableCellElement
       }
 
@@ -40,7 +40,7 @@ export default class VRowGroup extends RowGroup {
       leadingTr = this.getLeadingRow().getTr('spreadsheet')
       if (leadingTr !== this.leadingTr) {
         if (leadingTr) { // might not exist if child was unrendered before parent
-          prependWithinEl(leadingTr, this.groupTd) // parents will later prepend their own
+          prependToElement(leadingTr, this.groupTd) // parents will later prepend their own
         }
         this.leadingTr = leadingTr
       }

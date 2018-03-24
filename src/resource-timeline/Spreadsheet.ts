@@ -1,4 +1,4 @@
-import { htmlEscape, DragListener, findElsWithin, applyStyleProp } from 'fullcalendar'
+import { htmlEscape, DragListener, findElements, applyStyleProp } from 'fullcalendar'
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
 import ScrollJoiner from '../util/ScrollJoiner'
@@ -73,9 +73,9 @@ export default class Spreadsheet {
     this.scrollJoiner = new ScrollJoiner('horizontal', [ this.headScroller, this.bodyScroller ])
 
     this.headTable = this.headEl.querySelector('table')
-    this.headColEls = findElsWithin(this.headEl, 'col')
-    this.headCellEls = findElsWithin(this.headScroller.canvas.contentEl, 'tr:last-child th')
-    this.bodyColEls = findElsWithin(this.el, 'col')
+    this.headColEls = findElements(this.headEl, 'col')
+    this.headCellEls = findElements(this.headScroller.canvas.contentEl, 'tr:last-child th')
+    this.bodyColEls = findElements(this.el, 'col')
     this.bodyTable = this.el.querySelector('table')
 
     this.colMinWidths = this.computeColMinWidths()
@@ -150,7 +150,7 @@ export default class Spreadsheet {
 
 
   initColResizing() {
-    findElsWithin(this.headEl, 'th .fc-col-resizer').forEach((resizerEl, i) => {
+    findElements(this.headEl, 'th .fc-col-resizer').forEach((resizerEl, i) => {
       resizerEl.addEventListener('mousedown', ev => {
         this.colResizeMousedown(i, ev, resizerEl)
       })

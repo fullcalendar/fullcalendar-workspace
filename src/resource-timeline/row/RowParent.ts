@@ -1,6 +1,6 @@
 import {
   DateComponent, capitaliseFirstLetter,
-  insertAfterEl, prependWithinEl, listenBySelector, removeElement, findElsWithin, queryChildren, queryChild, applyStyleProp
+  insertAfterElement, prependToElement, listenBySelector, removeElement, findElements, queryChildren, queryChild, applyStyleProp, whenTransitionDone
 } from 'fullcalendar'
 import TimelineView from '../ResourceTimelineView'
 
@@ -274,9 +274,9 @@ export default class RowParent extends DateComponent {
 
         // insert the TR into the DOM
         if (prevRow) {
-          insertAfterEl(prevRow.trHash[type], tr)
+          insertAfterElement(prevRow.trHash[type], tr)
         } else {
-          prependWithinEl(tbody, tr) // belongs in the very first position
+          prependToElement(tbody, tr) // belongs in the very first position
         }
       }
 
@@ -391,7 +391,7 @@ export default class RowParent extends DateComponent {
   Changes the expander icon to the "expanded" state
   */
   indicateExpanded() {
-    findElsWithin(this.trs, '.fc-expander .fc-icon').forEach((iconEl) => {
+    findElements(this.trs, '.fc-expander .fc-icon').forEach((iconEl) => {
       iconEl.classList.remove(this.getCollapsedIcon())
       iconEl.classList.add(this.getExpandedIcon())
     })
@@ -401,7 +401,7 @@ export default class RowParent extends DateComponent {
   Changes the expander icon to the "collapsed" state
   */
   indicateCollapsed() {
-    findElsWithin(this.trs, '.fc-expander .fc-icon').forEach((iconEl) => {
+    findElements(this.trs, '.fc-expander .fc-icon').forEach((iconEl) => {
       iconEl.classList.remove(this.getExpandedIcon())
       iconEl.classList.add(this.getCollapsedIcon())
     })
@@ -409,7 +409,7 @@ export default class RowParent extends DateComponent {
 
 
   indicateExpandingEnabled() {
-    findElsWithin(this.trs, '.fc-expander-space').forEach((spaceEl) => {
+    findElements(this.trs, '.fc-expander-space').forEach((spaceEl) => {
       spaceEl.classList.add('fc-expander')
     })
 
@@ -422,7 +422,7 @@ export default class RowParent extends DateComponent {
 
 
   indicateExpandingDisabled() {
-    findElsWithin(this.trs, '.fc-expander-space').forEach((spaceEl) => {
+    findElements(this.trs, '.fc-expander-space').forEach((spaceEl) => {
       spaceEl.classList.remove('fc-expander')
       let iconEl = spaceEl.querySelector('.fc-icon')
       iconEl.classList.remove(this.getExpandedIcon())
@@ -479,24 +479,10 @@ export default class RowParent extends DateComponent {
         removeClass('fc-collapsed') // transition back to non-collapsed state
       })
 
-      // make a util...
-
-      let onTransitionEnd = function(ev: Event) {
-        removeClass('fc-transitioning') // will remove the overflow:hidden
-        ev.currentTarget.removeEventListener('webkitTransitionEnd', onTransitionEnd)
-        ev.currentTarget.removeEventListener('otransitionend', onTransitionEnd)
-        ev.currentTarget.removeEventListener('oTransitionEnd', onTransitionEnd)
-        ev.currentTarget.removeEventListener('msTransitionEnd', onTransitionEnd)
-        ev.currentTarget.removeEventListener('transitionend', onTransitionEnd)
-      }
-
-      // cross-browser way to determine when the transition finishes
       trs.forEach(function(tr) {
-        tr.addEventListener('webkitTransitionEnd', onTransitionEnd)
-        tr.addEventListener('otransitionend', onTransitionEnd)
-        tr.addEventListener('oTransitionEnd', onTransitionEnd)
-        tr.addEventListener('msTransitionEnd', onTransitionEnd)
-        tr.addEventListener('transitionend', onTransitionEnd)
+        whenTransitionDone(tr, function() {
+          tr.classList.remove('fc-transitioning') // will remove the overflow:hidden
+        })
       })
     }
   }

@@ -1,4 +1,4 @@
-import { appendContentTo, prependWithinEl, makeElement } from 'fullcalendar'
+import { appendToElement, prependToElement, createElement } from 'fullcalendar'
 import RowGroup from './RowGroup'
 
 /*
@@ -18,7 +18,7 @@ export default class HRowGroup extends RowGroup {
     const contentEl = this.renderGroupContentEl()
 
     // add an expander icon. binding handlers and updating are done by RowParent
-    prependWithinEl(
+    prependToElement(
       contentEl,
       '<span class="fc-expander">' +
         '<span class="fc-icon"></span>' +
@@ -26,10 +26,10 @@ export default class HRowGroup extends RowGroup {
     )
 
     tr.appendChild(
-      makeElement('td', {
+      createElement('td', {
         className: 'fc-divider',
         colSpan: this.view.colSpecs.length // span across all columns
-      }, makeElement('div', null, contentEl)) // needed by setTrInnerHeight
+      }, createElement('div', null, contentEl)) // needed by setTrInnerHeight
     )
   }
 
@@ -39,7 +39,7 @@ export default class HRowGroup extends RowGroup {
   renderEventSkeleton(tr: HTMLElement) {
     // insert a single cell, with a single empty <div> (needed by setTrInnerHeight).
     // there will be no content
-    appendContentTo(tr, `\
+    appendToElement(tr, `\
   <td class="fc-divider"> \
   <div></div>\
   </td>\

@@ -4,7 +4,7 @@ import {
   CoordCache, queryMostGranularFormatUnit,
   isInt, divideRangeByDuration, htmlEscape, computeGreatestUnit,
   divideDurationByDuration, multiplyDuration, StandardInteractionsMixin,
-  BusinessHourRenderer, makeElement, findElsWithin, applyStyle, applyStyleProp, removeElement
+  BusinessHourRenderer, createElement, findElements, applyStyle, applyStyleProp, removeElement
 } from 'fullcalendar'
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
@@ -250,11 +250,11 @@ export default class TimelineView extends View {
     this.timeBodyScroller.on('scroll', this.handleTimeBodyScrolled.bind(this))
 
     this.timeBodyScroller.canvas.bgEl.appendChild(
-      this.slatContainerEl = makeElement('div', { className: 'fc-slats' })
+      this.slatContainerEl = createElement('div', { className: 'fc-slats' })
     )
     this.innerEl = this.timeBodyScroller.canvas.contentEl // for TimelineHelperRenderer
     this.innerEl.appendChild(
-      this.segContainerEl = makeElement('div', { className: 'fc-event-container' })
+      this.segContainerEl = createElement('div', { className: 'fc-event-container' })
     )
     this.bgSegContainerEl = this.timeBodyScroller.canvas.bgEl
 
@@ -345,10 +345,10 @@ export default class TimelineView extends View {
 
     const slatHtmlRes = this.renderSlatHtml()
     this.timeHeadScroller.canvas.contentEl.innerHTML = slatHtmlRes.headHtml
-    this.timeHeadColEls = findElsWithin(this.timeHeadScroller.canvas.contentEl, 'col')
+    this.timeHeadColEls = findElements(this.timeHeadScroller.canvas.contentEl, 'col')
     this.slatContainerEl.innerHTML = slatHtmlRes.bodyHtml
-    this.slatColEls = findElsWithin(this.slatContainerEl, 'col')
-    this.slatEls = findElsWithin(this.slatContainerEl, 'td')
+    this.slatColEls = findElements(this.slatContainerEl, 'col')
+    this.slatEls = findElements(this.slatContainerEl, 'td')
 
     this.slatCoordCache = new CoordCache({
       els: this.slatEls,
@@ -377,7 +377,7 @@ export default class TimelineView extends View {
 
     if (this.headDateFollower) {
       this.headDateFollower.setSpriteEls(
-        findElsWithin(this.timeHeadEl, 'tr:not(:last-child) .fc-cell-text')
+        findElements(this.timeHeadEl, 'tr:not(:last-child) .fc-cell-text')
       )
     }
   }
@@ -592,12 +592,12 @@ export default class TimelineView extends View {
         { right: -coord } :
         { left: coord }
 
-      const arrowEl = makeElement('div', {
+      const arrowEl = createElement('div', {
         className: 'fc-now-indicator fc-now-indicator-arrow',
         style: styleProps
       })
 
-      const lineEl = makeElement('div', {
+      const lineEl = createElement('div', {
         className: 'fc-now-indicator fc-now-indicator-line',
         style: styleProps
       })
@@ -713,7 +713,7 @@ export default class TimelineView extends View {
 
   computeSlotWidth() { // compute the *default*
     let maxInnerWidth = 0 // TODO: harness core's `matchCellWidths` for this
-    const innerEls = findElsWithin(this.timeHeadEl, 'tr:last-child th .fc-cell-text') // TODO: cache
+    const innerEls = findElements(this.timeHeadEl, 'tr:last-child th .fc-cell-text') // TODO: cache
 
     innerEls.forEach(function(innerEl, i) {
       maxInnerWidth = Math.max(maxInnerWidth, innerEl.offsetWidth)

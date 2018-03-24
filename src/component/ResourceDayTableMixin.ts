@@ -1,4 +1,4 @@
-import { Mixin, DayTableMixin, EventFootprint, parseFieldSpecs, compareByFieldSpecs, htmlEscape, findElsWithin } from 'fullcalendar'
+import { Mixin, DayTableMixin, EventFootprint, parseFieldSpecs, compareByFieldSpecs, htmlEscape, findElements } from 'fullcalendar'
 import ResourceComponentFootprint from '../models/ResourceComponentFootprint'
 
 export interface ResourceDayTableInterface {
@@ -283,7 +283,7 @@ export default class ResourceDayTableMixin extends Mixin implements ResourceDayT
 
   // given a container with already rendered resource cells
   processHeadResourceEls(containerEl: HTMLElement) {
-    findElsWithin(containerEl, '.fc-resource-cell').forEach((node, col) => {
+    findElements(containerEl, '.fc-resource-cell').forEach((node, col) => {
       let resource
 
       if (this.datesAboveResources) {

@@ -1,4 +1,4 @@
-import { HelperRenderer, applyStyle, makeElement } from 'fullcalendar'
+import { HelperRenderer, applyStyle, createElement } from 'fullcalendar'
 
 
 export default class TimelineHelperRenderer extends HelperRenderer {
@@ -23,7 +23,7 @@ export default class TimelineHelperRenderer extends HelperRenderer {
       // which is hard to determine
     }
 
-    const helperContainerEl = makeElement('div', { className: 'fc-event-container fc-helper-container' })
+    const helperContainerEl = createElement('div', { className: 'fc-event-container fc-helper-container' })
     this.component.innerEl.appendChild(helperContainerEl)
 
     helperNodes.push(helperContainerEl)

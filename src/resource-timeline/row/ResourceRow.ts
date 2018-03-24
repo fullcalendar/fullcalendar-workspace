@@ -1,4 +1,4 @@
-import { htmlEscape, htmlToElement, makeElement } from 'fullcalendar'
+import { htmlEscape, htmlToElement, createElement } from 'fullcalendar'
 import EventRow from './EventRow'
 
 /*
@@ -129,12 +129,12 @@ export default class ResourceRow extends EventRow {
         contentEl = colSpec.render(resource, contentEl, input) || contentEl
       }
 
-      const td = makeElement('td', { className: theme.getClass('widgetContent') }, contentEl)
+      const td = createElement('td', { className: theme.getClass('widgetContent') }, contentEl)
 
       // the first cell of the row needs to have an inner div for setTrInnerHeight
       if (colSpec.isMain) {
         td.appendChild(
-          makeElement('div', null, td.childNodes) // inner wrap
+          createElement('div', null, td.childNodes) // inner wrap
         )
       }
 

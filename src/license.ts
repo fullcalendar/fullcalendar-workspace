@@ -49,7 +49,7 @@ function isImmuneUrl(url) {
 
 
 function renderingWarningInContainer(messageHtml, containerEl: HTMLElement) {
-  core.appendContentTo(containerEl, '<div class="fc-license-message">' + messageHtml + '</div>')
+  core.appendToElement(containerEl, '<div class="fc-license-message">' + messageHtml + '</div>')
 }
 
 

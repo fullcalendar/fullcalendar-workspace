@@ -1,4 +1,4 @@
-import { makeElement } from 'fullcalendar'
+import { createElement } from 'fullcalendar'
 import RowParent from './RowParent'
 
 /*
@@ -34,7 +34,7 @@ export default class RowGroup extends RowParent {
   Renders the content wrapper element that will be inserted into this row's TD cell
   */
   renderGroupContentEl() {
-    let contentEl = makeElement('div', { className: 'fc-cell-content' }, this.renderGroupTextEl())
+    let contentEl = createElement('div', { className: 'fc-cell-content' }, this.renderGroupTextEl())
 
     const filter = this.groupSpec.render
     if (typeof filter === 'function') {
@@ -56,7 +56,7 @@ export default class RowGroup extends RowParent {
       text = filter(text) || text
     }
 
-    let el = makeElement('span', { className: 'fc-cell-text' })
+    let el = createElement('span', { className: 'fc-cell-text' })
     el.innerText = text
     return el
   }

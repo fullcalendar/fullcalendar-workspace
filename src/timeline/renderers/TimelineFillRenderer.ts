@@ -1,4 +1,4 @@
-import { FillRenderer, applyStyle, makeElement } from 'fullcalendar'
+import { FillRenderer, applyStyle, createElement } from 'fullcalendar'
 import TimelineView from '../TimelineView'
 
 
@@ -19,7 +19,7 @@ export default class TimelineFillRenderer extends FillRenderer {
 
       // making a new container each time is OKAY
       // all types of segs (background or business hours or whatever) are rendered in one pass
-      const containerEl = makeElement('div', { className: 'fc-' + className + '-container' })
+      const containerEl = createElement('div', { className: 'fc-' + className + '-container' })
       this.component.bgSegContainerEl.appendChild(containerEl)
 
       for (let seg of segs) {

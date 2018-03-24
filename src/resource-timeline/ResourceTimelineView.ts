@@ -1,6 +1,6 @@
 import {
   DragListener, CoordCache, parseFieldSpecs, compareByFieldSpecs, flexibleCompare,
-  findElsWithin, htmlToElement, removeElement
+  findElements, htmlToElement, removeElement
 } from 'fullcalendar'
 import ScrollJoiner from '../util/ScrollJoiner'
 import ResourceComponentFootprint from '../models/ResourceComponentFootprint'
@@ -234,7 +234,7 @@ export default class ResourceTimelineView extends TimelineView {
 
   initDividerMoving() {
     const left = this.opt('resourceAreaWidth')
-    this.dividerEls = findElsWithin(this.el, '.fc-divider')
+    this.dividerEls = findElements(this.el, '.fc-divider')
 
     // tableWidth available after spreadsheet.renderSkeleton
     this.dividerWidth = left != null ? left : this.spreadsheet.tableWidth
