@@ -190,7 +190,7 @@ export default class ScrollFollowerSprite {
       } else if (this.doAbsolute && !this.follower.isForcedRelative) {
         this.absolutize()
         applyStyle(this.absoluteEl, {
-          top: (this.rect.top - this.follower.viewportRect.top) + this.follower.scrollbarWidths.top,
+          top: (this.rect.top - this.follower.viewportRect.top),
           left: (this.rect.left - this.follower.viewportRect.left) + this.follower.scrollbarWidths.left,
           width: this.isBlock ? this.naturalWidth : ''
         })

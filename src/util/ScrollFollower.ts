@@ -110,7 +110,7 @@ export default class ScrollFollower {
     const top = scroller.getScrollTop()
 
     // TODO: use getViewportRect() for getting this rect
-    return this.viewportRect = {
+    this.viewportRect = {
       left,
       right: left + scroller.getClientWidth(),
       top,
@@ -154,7 +154,7 @@ export default class ScrollFollower {
   // relative to inner content pane
   getInnerRect(el: HTMLElement) {
     let { contentOffset } = this
-    let rect = getInnerRect(el)
+    let rect = getInnerRect(el, true)
     return {
       left: rect.left - contentOffset.left,
       right: rect.right - contentOffset.left,
