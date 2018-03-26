@@ -1,4 +1,4 @@
-import { htmlEscape, htmlToElement, createElement } from 'fullcalendar'
+import { htmlEscape, htmlToElement, createElement, findChildren } from 'fullcalendar'
 import EventRow from './EventRow'
 
 /*
@@ -37,8 +37,8 @@ export default class ResourceRow extends EventRow {
       context: this.resource,
       args: [
         this.resource,
-        this.getTr('spreadsheet').firstChild, // <td>
-        this.getTr('event').firstChild, // <td>
+        findChildren(this.getTr('spreadsheet')), // <td>
+        findChildren( this.getTr('event')), // <td>
         this.view
       ]
     })

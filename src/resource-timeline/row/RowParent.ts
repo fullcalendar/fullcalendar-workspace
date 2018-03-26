@@ -567,11 +567,8 @@ RowParent.prototype.hasOwnRow = false
 
 
 function getTrHeightDiv(tr: HTMLTableRowElement) {
-  let tds = queryChildren(tr)
-  for (let i = 0; i < tds.length; i++) {
-    let innerDiv = queryChild(tds[i], 'div:not(.fc-cell-content)')
-    if (innerDiv) {
-      return innerDiv
-    }
-  }
+  return findChildren(
+    findChildren(tr),
+    'div:not(.fc-cell-content)'
+  )[0]
 }
