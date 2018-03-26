@@ -43,7 +43,7 @@ declare module 'fullcalendar/src/types/input-types' {
     resourcesInitiallyExpanded?: boolean
     filterResourcesWithEvents?: boolean
     resourceText?: (resource: ResourceInput) => string
-    resourceRender?: (resource: ResourceInput, labelTds: HTMLElement, bodyTds: HTMLElement) => void
+    resourceRender?: (resource: ResourceInput, labelTds: HTMLElement[], bodyTds: HTMLElement[]) => void
     eventResourceEditable?: boolean
   }
 

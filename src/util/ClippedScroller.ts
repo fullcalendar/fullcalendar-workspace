@@ -1,4 +1,4 @@
-import { computeEdges, applyStyle } from 'fullcalendar'
+import { computeEdges, applyStyle, createElement } from 'fullcalendar'
 import EnhancedScroller from './EnhancedScroller'
 
 /*
@@ -34,11 +34,9 @@ export default class ClippedScroller extends EnhancedScroller {
 
 
   renderEl() {
-    const scrollEl = super.renderEl()
-    const clipEl = document.createElement('div')
-    clipEl.classList.add('fc-scroller-clip')
-    clipEl.appendChild(scrollEl)
-    return clipEl
+    return createElement('div', {
+      className: 'fc-scroller-clip'
+    }, super.renderEl())
   }
 
 

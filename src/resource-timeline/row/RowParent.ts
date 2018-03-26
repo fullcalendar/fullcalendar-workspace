@@ -1,6 +1,6 @@
 import {
   DateComponent, capitaliseFirstLetter,
-  insertAfterElement, prependToElement, listenBySelector, removeElement, findElements, queryChildren, queryChild, applyStyleProp, whenTransitionDone
+  insertAfterElement, prependToElement, listenBySelector, removeElement, findElements, findChildren, applyStyleProp, whenTransitionDone
 } from 'fullcalendar'
 import TimelineView from '../ResourceTimelineView'
 

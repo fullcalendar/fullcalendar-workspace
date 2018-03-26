@@ -4,7 +4,8 @@ import {
   CoordCache, queryMostGranularFormatUnit,
   isInt, divideRangeByDuration, htmlEscape, computeGreatestUnit,
   divideDurationByDuration, multiplyDuration, StandardInteractionsMixin,
-  BusinessHourRenderer, createElement, findElements, applyStyle, applyStyleProp, removeElement
+  BusinessHourRenderer, createElement, findElements, findChildren,
+  applyStyle, applyStyleProp, removeElement
 } from 'fullcalendar'
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
@@ -358,9 +359,7 @@ export default class TimelineView extends View {
     // for the inner divs within the slats
     // used for event rendering and scrollTime, to disregard slat border
     this.slatInnerCoordCache = new CoordCache({
-      els: this.slatEls.map(function(slatEl) {
-        return slatEl.firstChild // the inner <div>
-      }) as HTMLElement[],
+      els: findChildren(this.slatEls, 'div'),
       isHorizontal: true,
       // we use this coord cache for getPosition* for event rendering.
       // workaround for .fc-content's negative margins.
