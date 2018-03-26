@@ -1,4 +1,4 @@
-import { getInnerRect } from 'fullcalendar'
+import { computeInnerRect } from 'fullcalendar'
 import EnhancedScroller from '../util/EnhancedScroller'
 import ScrollFollowerSprite from './ScrollFollowerSprite'
 
@@ -152,9 +152,9 @@ export default class ScrollFollower {
 
 
   // relative to inner content pane
-  getInnerRect(el: HTMLElement) {
+  computeInnerRect(el: HTMLElement) {
     let { contentOffset } = this
-    let rect = getInnerRect(el, true)
+    let rect = computeInnerRect(el, true)
     return {
       left: rect.left - contentOffset.left,
       right: rect.right - contentOffset.left,

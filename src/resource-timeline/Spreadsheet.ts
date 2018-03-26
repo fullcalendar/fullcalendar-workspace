@@ -231,8 +231,8 @@ export default class Spreadsheet {
 
     for (i = 0; i < cssWidths.length; i++) {
       cssWidth = cssWidths[i]
-      this.headColEls[i].style.width = cssWidth + 'px'
-      this.bodyColEls[i].style.width = cssWidth + 'px'
+      applyStyleProp(this.headColEls[i], 'width', cssWidth)
+      applyStyleProp(this.bodyColEls[i], 'width', cssWidth)
     }
 
     this.headScroller.canvas.setMinWidth(tableMinWidth) // not really a table width anymore

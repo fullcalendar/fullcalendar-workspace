@@ -783,13 +783,8 @@ export default class ResourceTimelineView extends TimelineView {
   setIsNesting(newIsNesting) {
     if (newIsNesting !== this.isNesting) {
 
-      if (newIsNesting) {
-        this.el.classList.add('fc-nested')
-        this.el.classList.remove('fc-flat')
-      } else {
-        this.el.classList.add('fc-flat')
-        this.el.classList.remove('fc-nested')
-      }
+      this.el.classList.toggle('fc-nested', newIsNesting)
+      this.el.classList.toggle('fc-flat', !newIsNesting)
 
       this.isNesting = newIsNesting
     }

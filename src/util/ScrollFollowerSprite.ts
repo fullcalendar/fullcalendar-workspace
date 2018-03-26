@@ -84,7 +84,7 @@ export default class ScrollFollowerSprite {
     const naturalRect = (this.naturalRect = follower.getBoundingRect(this.el))
     const parentEl = this.el.parentNode as HTMLElement
     this.parentRect = follower.getBoundingRect(parentEl)
-    const containerRect = (this.containerRect = joinRects(follower.getInnerRect(parentEl), naturalRect))
+    const containerRect = (this.containerRect = joinRects(follower.computeInnerRect(parentEl), naturalRect))
     const { minTravel } = follower
 
     if (follower.containOnNaturalLeft) {

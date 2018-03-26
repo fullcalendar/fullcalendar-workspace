@@ -1,4 +1,4 @@
-import { getEdges, applyStyle } from 'fullcalendar'
+import { computeEdges, applyStyle } from 'fullcalendar'
 import EnhancedScroller from './EnhancedScroller'
 
 /*
@@ -44,7 +44,7 @@ export default class ClippedScroller extends EnhancedScroller {
 
   updateSize() {
     const { scrollEl } = this
-    const edges = getEdges(scrollEl)
+    const edges = computeEdges(scrollEl)
     const cssProps = { marginLeft: 0, marginRight: 0, marginTop: 0, marginBottom: 0 }
 
     // give the inner scrolling div negative margins so that its scrollbars
