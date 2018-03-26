@@ -1,4 +1,4 @@
-import { assignTo, htmlToElement, applyStyle } from 'fullcalendar'
+import { assignTo, htmlToElement, applyStyle, forceClassName } from 'fullcalendar'
 
 /*
 A rectangular area of content that lives within a Scroller.
@@ -69,10 +69,10 @@ export default class ScrollerCanvas {
     const { gutters, el } = this
 
     // is border-box (width includes padding)
-    el.classList.toggle('fc-gutter-left', gutters.left)
-    el.classList.toggle('fc-gutter-right', gutters.right)
-    el.classList.toggle('fc-gutter-top', gutters.top)
-    el.classList.toggle('fc-gutter-bottom', gutters.bottom)
+    forceClassName(el, 'fc-gutter-left', gutters.left)
+    forceClassName(el, 'fc-gutter-right', gutters.right)
+    forceClassName(el, 'fc-gutter-top', gutters.top)
+    forceClassName(el, 'fc-gutter-bottom', gutters.bottom)
 
     applyStyle(el, {
       paddingLeft: gutters.left || '',

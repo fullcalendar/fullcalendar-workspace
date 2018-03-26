@@ -1,6 +1,6 @@
 import {
   DragListener, CoordCache, parseFieldSpecs, compareByFieldSpecs, flexibleCompare,
-  findElements, htmlToElement, removeElement
+  findElements, htmlToElement, removeElement, forceClassName
 } from 'fullcalendar'
 import ScrollJoiner from '../util/ScrollJoiner'
 import ResourceComponentFootprint from '../models/ResourceComponentFootprint'
@@ -783,8 +783,8 @@ export default class ResourceTimelineView extends TimelineView {
   setIsNesting(newIsNesting) {
     if (newIsNesting !== this.isNesting) {
 
-      this.el.classList.toggle('fc-nested', newIsNesting)
-      this.el.classList.toggle('fc-flat', !newIsNesting)
+      forceClassName(this.el, 'fc-nested', newIsNesting)
+      forceClassName(this.el, 'fc-flat', !newIsNesting)
 
       this.isNesting = newIsNesting
     }
