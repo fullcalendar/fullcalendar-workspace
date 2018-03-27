@@ -49,10 +49,8 @@ then
 fi
 
 read -p "The example repos will update their deps and commit. Is that okay? (y/N): " update_example_repos
-if [[ "$update_example_repos" == "y" ]]
+if [[ "$update_example_repos" != "y" ]]
 then
-  ./bin/update-example-repo-deps.sh "$version"
-else
   echo "Aborting."
   exit 1
 fi
@@ -66,7 +64,9 @@ if {
   gulp bump --version=$version &&
 
   # build all dist files, lint, and run tests
-  gulp release
+  gulp release &&
+
+  ./bin/update-example-repo-deps.sh "$version"
 }
 then
   # save reference to current branch
