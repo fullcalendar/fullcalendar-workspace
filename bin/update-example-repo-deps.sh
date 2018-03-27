@@ -34,12 +34,28 @@ do
     git add "$example_path"
 
     any_updates=1
+
+    echo
+    echo "Committed for `basename $example_path`"
+    echo
+  else
+    echo
+    echo "Nothing to commit for `basename $example_path`"
+    echo
   fi
 
   cd "$proj_dir" # for next iteration
 done
 
-if [[ "$any_updates" ]]
+if [[ "$any_updates" == '1' ]]
 then
   git commit -m 'update example repo deps'
+
+  echo
+  echo 'Committed example-repo submodules'
+  echo
+else
+  echo
+  echo 'Nothing to commit for example-repo dep update'
+  echo
 fi
