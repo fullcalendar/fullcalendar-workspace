@@ -14,7 +14,7 @@ scheduler_version="$1"
 
 if [[ ! "$scheduler_version" ]]
 then
-  echo 'Specify a version'
+  echo 'Specify a fullcalendar-scheduler version'
   exit 1
 fi
 
@@ -37,6 +37,8 @@ do
 
     any_updates=1
   fi
+
+  cd "$proj_dir" # for next iteration
 done
 
 if [[ "$any_updates" ]]
