@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 #
-# Give a --recent-release flag to test against the currently live release
-#
 set -e # always immediately exit upon error
 cd "`dirname $0`/.." # start in project root
 
