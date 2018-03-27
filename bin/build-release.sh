@@ -48,7 +48,7 @@ then
   exit 1
 fi
 
-read -p "The example repos will update their deps and commit. Is that okay?" update_example_repos
+read -p "The example repos will update their deps and commit. Is that okay? (y/N): " update_example_repos
 if [[ "$update_example_repos" == "y" ]]
 then
   ./bin/update-example-repo-deps.sh "$version"
