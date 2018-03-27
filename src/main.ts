@@ -2,7 +2,6 @@ import * as exportHooks from 'fullcalendar'
 import * as schedulerExports from './exports'
 
 // imports solely for side-effects
-import './exports'
 import './Calendar'
 import './Constraints'
 import './View'

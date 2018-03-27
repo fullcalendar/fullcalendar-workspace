@@ -34,7 +34,7 @@ export { default as TimelineEventRenderer } from './timeline/renderers/TimelineE
 export { default as ResourceTimelineView } from './resource-timeline/ResourceTimelineView'
 export { default as ResourceTimeGrid } from './resource-agenda/ResourceTimeGrid'
 export { default as ClippedScroller } from './util/ClippedScroller'
-export { default as EnhancedScroller  } from './util/EnhancedScroller'
+export { default as EnhancedScroller } from './util/EnhancedScroller'
 export { default as ScrollerCanvas } from './util/ScrollerCanvas'
 export { default as ScrollFollower } from './util/ScrollFollower'
 export { default as ScrollFollowerSprite } from './util/ScrollFollowerSprite'
