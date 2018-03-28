@@ -2,7 +2,9 @@
 v1.9.4 (2018-03-27)
 -------------------
 
-Require fullcalendar 3.9.x, solving #4089
+Require fullcalendar 3.9.x, solving [core-4089]
+
+[core-4089]: https://github.com/fullcalendar/fullcalendar/issues/4089
 
 
 v1.9.3 (2018-03-04)
