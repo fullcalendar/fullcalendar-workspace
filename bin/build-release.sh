@@ -48,13 +48,6 @@ then
   exit 1
 fi
 
-read -p "The example repos will update their deps and commit. Is that okay? (y/N): " update_example_repos
-if [[ "$update_example_repos" != "y" ]]
-then
-  echo "Aborting."
-  exit 1
-fi
-
 success=0
 if {
   # ensures stray files stay out of the release
@@ -64,9 +57,7 @@ if {
   gulp bump --version=$version &&
 
   # build all dist files, lint, and run tests
-  gulp release &&
-
-  ./bin/update-example-repo-deps.sh "$version"
+  gulp release
 }
 then
   # save reference to current branch

@@ -72,7 +72,7 @@ then
 
   # unlink global fullcalendar
   cd fullcalendar
-  npm link
+  npm unlink
   cd "$proj_dir"
 fi
 
