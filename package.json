@@ -65,6 +65,7 @@
     "typescript": "^2.7.2",
     "webpack": "^3.11.0",
     "webpack-stream": "^4.0.2",
+    "xhr-mock": "^2.3.1",
     "yargs": "^4.6.0"
   },
   "main": "dist/scheduler.js",
