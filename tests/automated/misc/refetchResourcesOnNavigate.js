@@ -326,20 +326,25 @@ describe('refetchResourcesOnNavigate', function() {
   describe('when calling a JSON feed', function() {
 
     beforeEach(function() {
-      $.mockjax({
-        url: '*',
-        contentType: 'text/json',
-        responseText: []
-      })
-      $.mockjaxSettings.log = function() {} // don't console.log
+      XHRMock.setup()
     })
 
     afterEach(function() {
-      $.mockjax.clear()
+      XHRMock.teardown()
     })
 
 
     it('receives the start/end/timezone GET parameters', function(done) {
+
+      XHRMock.get(/^my-feed\.php/, function(req, res) {
+        expect(req.url().query).toEqual({
+          start: '2017-02-12',
+          end: '2017-02-19',
+          timezone: 'America/Chicago'
+        })
+        done()
+        return res.status(200).header('content-type', 'application/json').body('[]')
+      })
 
       initCalendar({
         defaultView: 'timelineWeek',
@@ -347,18 +352,20 @@ describe('refetchResourcesOnNavigate', function() {
         timezone: 'America/Chicago',
         resources: 'my-feed.php' // will be picked up by mockjax
       })
-
-      setTimeout(function() { // wait for ajax
-        const request = $.mockjax.mockedAjaxCalls()[0]
-        expect(request.data.start).toBe('2017-02-12')
-        expect(request.data.end).toBe('2017-02-19')
-        expect(request.data.timezone).toBe('America/Chicago')
-        done()
-      })
     })
 
 
     it('respects startParam/endParam/timezoneParam', function(done) {
+
+      XHRMock.get(/^my-feed\.php/, function(req, res) {
+        expect(req.url().query).toEqual({
+          mystart: '2017-02-12',
+          myend: '2017-02-19',
+          mytimezone: 'America/Chicago'
+        })
+        done()
+        return res.status(200).header('content-type', 'application/json').body('[]')
+      })
 
       initCalendar({
         defaultView: 'timelineWeek',
@@ -369,18 +376,16 @@ describe('refetchResourcesOnNavigate', function() {
         endParam: 'myend',
         timezoneParam: 'mytimezone'
       })
-
-      setTimeout(function() { // wait for ajax
-        const request = $.mockjax.mockedAjaxCalls()[0]
-        expect(request.data.mystart).toBe('2017-02-12')
-        expect(request.data.myend).toBe('2017-02-19')
-        expect(request.data.mytimezone).toBe('America/Chicago')
-        done()
-      })
     })
 
 
     it('won\'t send start/end/timezone params when off', function(done) {
+
+      XHRMock.get(/^my-feed\.php/, function(req, res) {
+        expect(req.url().query).toEqual({}) // no params
+        done()
+        return res.status(200).header('content-type', 'application/json').body('[]')
+      })
 
       initCalendar({
         defaultView: 'timelineWeek',
@@ -388,14 +393,6 @@ describe('refetchResourcesOnNavigate', function() {
         timezone: 'America/Chicago',
         resources: 'my-feed.php', // will be picked up by mockjax
         refetchResourcesOnNavigate: false
-      })
-
-      setTimeout(function() { // wait for ajax
-        const request = $.mockjax.mockedAjaxCalls()[0]
-        expect(request.data.start).toBeFalsy()
-        expect(request.data.end).toBeFalsy()
-        expect(request.data.timezone).toBeFalsy()
-        done()
       })
     })
   })

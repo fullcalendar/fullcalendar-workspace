@@ -1,4 +1,4 @@
-import * as $ from 'jquery'
+import * as reqwest from 'reqwest'
 import { assignTo, applyAll, Class, EmitterMixin, EmitterInterface, BusinessHourGenerator } from 'fullcalendar'
 
 
@@ -6,8 +6,7 @@ export default class ResourceManager extends Class {
 
   static resourceGuid = 1
   static ajaxDefaults = {
-    dataType: 'json',
-    cache: false
+    method: 'GET'
   }
 
   on: EmitterInterface['on']
@@ -125,13 +124,18 @@ export default class ResourceManager extends Class {
         }
       }
 
-      $.ajax( // TODO: handle failure
+      (reqwest( // TODO: handle failure
         assignTo(
           { data: requestParams },
           ResourceManager.ajaxDefaults,
           source
         )
-      ).then(resourceInputs => {
+      ) as any).then(resourceInputs => {
+
+        if (typeof resourceInputs === 'string') { // needed?
+          resourceInputs = JSON.parse(resourceInputs)
+        }
+
         calendar.popLoading()
         callback(resourceInputs)
       })
