@@ -9,6 +9,7 @@ module.exports = function(config) {
     files: [
       // dependencies for main lib
       'node_modules/moment/moment.js',
+      'node_modules/superagent/superagent.js',
       'node_modules/jquery/dist/jquery.js',
       'node_modules/components-jqueryui/jquery-ui.js',
       'node_modules/components-jqueryui/themes/cupertino/jquery-ui.css',
