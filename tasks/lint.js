@@ -63,6 +63,7 @@ gulp.task('lint:tests', function() {
         configFile: 'eslint.json',
         envs: [ 'browser', 'jasmine', 'jquery' ],
         globals: [
+          'FullCalendar',
           'moment',
           'pushOptions',
           'describeOptions',
