@@ -6,14 +6,14 @@
 <link href='../fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print' />
 <link href='../dist/scheduler.css' rel='stylesheet' />
 <script src='../node_modules/moment/moment.js'></script>
-<script src='../node_modules/jquery/dist/jquery.js'></script>
 <script src='../fullcalendar/dist/fullcalendar.js'></script>
 <script src='../dist/scheduler.js'></script>
 <script>
 
-  $(function() { // document ready
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
 
-    $('#calendar').fullCalendar({
+    var calendar = new FullCalendar.Calendar(calendarEl, {
       now: '2018-03-07',
       editable: true,
       aspectRatio: 1.8,
@@ -72,7 +72,8 @@
         { id: '5', resourceId: 'f', start: '2018-03-07T00:30:00', end: '2018-03-07T02:30:00', title: 'event 5' }
       ]
     });
-  
+
+    calendar.render();
   });
 
 </script>

@@ -6,14 +6,14 @@
 <link href='../fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print' />
 <link href='../dist/scheduler.css' rel='stylesheet' />
 <script src='../node_modules/moment/moment.js'></script>
-<script src='../node_modules/jquery/dist/jquery.js'></script>
 <script src='../fullcalendar/dist/fullcalendar.js'></script>
 <script src='../dist/scheduler.js'></script>
 <script>
 
-  $(function() { // document ready
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
 
-    $('#calendar').fullCalendar({
+    var calendar = new FullCalendar.Calendar(calendarEl, {
       defaultView: 'agendaDay',
       defaultDate: '2018-03-07',
       editable: true,
@@ -71,7 +71,8 @@
         );
       }
     });
-  
+
+    calendar.render();
   });
 
 </script>

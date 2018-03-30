@@ -6,14 +6,14 @@
 <link href='../fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print' />
 <link href='../dist/scheduler.css' rel='stylesheet' />
 <script src='../node_modules/moment/moment.js'></script>
-<script src='../node_modules/jquery/dist/jquery.js'></script>
 <script src='../fullcalendar/dist/fullcalendar.js'></script>
 <script src='../dist/scheduler.js'></script>
 <script>
 
-  $(function() { // document ready
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
 
-    $('#calendar').fullCalendar({
+    var calendar = new FullCalendar.Calendar(calendarEl, {
       now: '2018-03-07',
       selectable: true,
       selectHelper: true,
@@ -88,14 +88,16 @@
       }
     });
 
-    $('#select-G').on('click', function() {
-      $('#calendar').fullCalendar('select', '2018-03-07T02:00:00', '2018-03-07T07:00:00', 'g');
+    calendar.render();
+
+    document.getElementById('select-G').addEventListener('click', function() {
+      calendar.select('2018-03-07T02:00:00', '2018-03-07T07:00:00', 'g');
     });
 
-    $('#select-unspecified').on('click', function() {
-      $('#calendar').fullCalendar('select', '2018-03-07T02:00:00', '2018-03-07T07:00:00');
+    document.getElementById('select-unspecified').addEventListener('click', function() {
+      calendar.select('2018-03-07T02:00:00', '2018-03-07T07:00:00');
     });
-  
+
   });
 
 </script>
