@@ -12,8 +12,8 @@ export function getResourceTimeGridRect(resourceId, start, end) {
     ({ end } = obj)
   }
 
-  start = $.fullCalendar.moment.parseZone(start)
-  end = $.fullCalendar.moment.parseZone(end)
+  start = FullCalendar.moment.parseZone(start)
+  end = FullCalendar.moment.parseZone(end)
 
   const startTime = start.time()
   const endTime =
@@ -37,7 +37,7 @@ export function getResourceTimeGridRect(resourceId, start, end) {
 
 
 export function getResourceTimeGridPoint(resourceId, date) {
-  date = $.fullCalendar.moment.parseZone(date)
+  date = FullCalendar.moment.parseZone(date)
 
   const dayEls = getResourceTimeGridDayEls(resourceId, date)
   if (dayEls.length === 1) {
@@ -53,7 +53,7 @@ export function getResourceTimeGridPoint(resourceId, date) {
 
 
 function getResourceTimeGridDayEls(resourceId, date) {
-  date = $.fullCalendar.moment.parseZone(date)
+  date = FullCalendar.moment.parseZone(date)
   return $(`.fc-time-grid .fc-day[data-date="${date.format('YYYY-MM-DD')}"]` +
     '[data-resource-id="' + resourceId + '"]')
 }

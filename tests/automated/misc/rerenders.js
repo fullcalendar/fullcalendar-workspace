@@ -1,7 +1,6 @@
 
 describe('rerender performance for resource timeline', function() {
-  const FC = $.fullCalendar
-  const { ResourceTimelineView } = FC
+  const { ResourceTimelineView } = FullCalendar
 
   pushOptions({
     defaultDate: '2017-10-04',

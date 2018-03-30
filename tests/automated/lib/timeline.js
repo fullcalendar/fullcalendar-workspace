@@ -51,8 +51,8 @@ export function getResourceTimelineRect(resourceId, start, end) {
     ({ start } = obj);
     ({ end } = obj)
   }
-  start = $.fullCalendar.moment.parseZone(start)
-  end = $.fullCalendar.moment.parseZone(end)
+  start = FullCalendar.moment.parseZone(start)
+  end = FullCalendar.moment.parseZone(end)
   const coord0 = getTimelineLeft(start)
   const coord1 = getTimelineLeft(end)
   const rowRect = getBoundingRect(getTimelineRowEl(resourceId))
@@ -80,8 +80,8 @@ export function getTimelineRect(start, end) {
     ({ start } = obj);
     ({ end } = obj)
   }
-  start = $.fullCalendar.moment.parseZone(start)
-  end = $.fullCalendar.moment.parseZone(end)
+  start = FullCalendar.moment.parseZone(start)
+  end = FullCalendar.moment.parseZone(end)
   const coord0 = getTimelineLeft(start)
   const coord1 = getTimelineLeft(end)
   const canvasRect = getBoundingRect($('.fc-body .fc-time-area .fc-scroller-canvas'))
@@ -110,7 +110,7 @@ targetDate can be in between slat dates
 */
 function getTimelineLeft(targetDate) {
   let slatCoord, slatEl
-  targetDate = $.fullCalendar.moment.parseZone(targetDate)
+  targetDate = FullCalendar.moment.parseZone(targetDate)
   const isRtl = $('.fc').hasClass('fc-rtl')
   const borderWidth = 1
   let slatEls = getTimelineSlatEl(targetDate)
@@ -144,7 +144,7 @@ function getTimelineLeft(targetDate) {
     slatEl = $(slatEl)
 
     prevSlatDate = slatDate
-    slatDate = $.fullCalendar.moment.parseZone(slatEl.data('date'))
+    slatDate = FullCalendar.moment.parseZone(slatEl.data('date'))
 
     // is target time between start of previous slat but before this one?
     if (targetDate < slatDate) {
@@ -183,7 +183,7 @@ function getTimelineRowEl(resourceId) {
 
 
 export function getTimelineSlatEl(date) {
-  date = $.fullCalendar.moment.parseZone(date)
+  date = FullCalendar.moment.parseZone(date)
   return $(`.fc-body .fc-slats td[data-date="${date.format()}"]`)
 }
 

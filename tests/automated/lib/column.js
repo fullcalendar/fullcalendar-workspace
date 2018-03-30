@@ -6,7 +6,7 @@ import { getTimeGridDowEls } from 'fullcalendar/tests/automated/lib/time-grid'
 export function getHeadResourceEls(resourceId, date) {
   let datePart = ''
   if (date) {
-    date = $.fullCalendar.moment.parseZone(date)
+    date = FullCalendar.moment.parseZone(date)
     datePart = `[data-date="${date.format('YYYY-MM-DD')}"]`
   }
   return $('.fc-resource-cell[data-resource-id="' + resourceId + '"]' + datePart)

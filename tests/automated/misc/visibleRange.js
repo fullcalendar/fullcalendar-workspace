@@ -24,7 +24,7 @@ describe('visibleRange', function() {
 
       const dates = $('.fc-head .fc-time-area tr:first-child > th[data-date]')
         .map(function(i, node) {
-          return $.fullCalendar.moment.parseZone($(node).data('date'))
+          return FullCalendar.moment.parseZone($(node).data('date'))
         })
         .get()
 
@@ -50,7 +50,7 @@ describe('visibleRange', function() {
 
       const dates = $('.fc-head .fc-time-area tr:first-child > th[data-date]')
         .map(function(i, node) {
-          return $.fullCalendar.moment.parseZone($(node).data('date'))
+          return FullCalendar.moment.parseZone($(node).data('date'))
         })
         .get()
 
@@ -77,7 +77,7 @@ describe('visibleRange', function() {
 
       const dates = $('.fc-head tr:first-child > th[data-date]')
         .map(function(i, node) {
-          return $.fullCalendar.moment.parseZone($(node).data('date'))
+          return FullCalendar.moment.parseZone($(node).data('date'))
         })
         .get()
 

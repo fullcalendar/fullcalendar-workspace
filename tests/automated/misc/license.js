@@ -2,11 +2,11 @@
 describe('schedulerLicenseKey', function() {
 
   beforeEach(function() {
-    $.fullCalendar.mockSchedulerReleaseDate = '2011-06-06'
+    FullCalendar.mockSchedulerReleaseDate = '2011-06-06'
   })
 
   afterEach(function() {
-    delete $.fullCalendar.mockSchedulerReleaseDate
+    delete FullCalendar.mockSchedulerReleaseDate
   })
 
   // FYI: eventAfterAllRender guarantees that view's skeleton has been rendered and sized
