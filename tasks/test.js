@@ -22,7 +22,7 @@ gulp.task('test', function() {
 gulp.task('test:headless', function() {
   new KarmaServer({
     configFile: karmaConfigPath,
-    browsers: [ 'PhantomJS_custom' ],
+    browsers: [ 'ChromeHeadless_custom' ],
     singleRun: false,
     autoWatch: true
   }, function(exitCode) { // plays best with developing from command line
@@ -34,7 +34,7 @@ gulp.task('test:headless', function() {
 gulp.task('test:single', [ 'webpack' ], function(done) {
   new KarmaServer({
     configFile: karmaConfigPath,
-    browsers: [ 'PhantomJS_custom' ],
+    browsers: [ 'ChromeHeadless_custom' ],
     singleRun: true,
     autoWatch: false
   }).on('run_complete', function(browsers, results) { // plays best with CI and other tasks
