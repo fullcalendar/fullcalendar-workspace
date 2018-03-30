@@ -25,13 +25,8 @@ module.exports = {
   entry: MODULES,
 
   externals: {
-    jquery: {
-      commonjs: 'jquery',
-      commonjs2: 'jquery',
-      amd: 'jquery',
-      root: 'jQuery'
-    },
     moment: 'moment',
+    superagent: 'superagent',
     fullcalendar: {
       commonjs: 'fullcalendar',
       commonjs2: 'fullcalendar',

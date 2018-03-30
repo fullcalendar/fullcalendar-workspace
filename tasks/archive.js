@@ -38,8 +38,9 @@ gulp.task('archive:misc', function() {
 gulp.task('archive:deps', function() {
   return gulp.src([
     'node_modules/moment/min/moment.min.js',
-    'node_modules/jquery/dist/jquery.min.js',
-    'node_modules/components-jqueryui/jquery-ui.min.js',
+    'node_modules/superagent/superagent.js',
+    'node_modules/jquery/dist/jquery.min.js', // only for draggable example
+    'node_modules/components-jqueryui/jquery-ui.min.js', // "
     'fullcalendar/dist/fullcalendar.min.js',
     'fullcalendar/dist/fullcalendar.min.css',
     'fullcalendar/dist/fullcalendar.print.min.css',
@@ -70,6 +71,7 @@ const demoPathModify = modify(function(content) {
 const transformDemoPath = function(path) {
   // reroot 3rd party libs
   path = path.replace('../node_modules/moment/', '../lib/')
+  path = path.replace('../node_modules/superagent/', '../lib/')
   path = path.replace('../node_modules/jquery/dist/', '../lib/')
   path = path.replace('../node_modules/components-jqueryui/', '../lib/')
   path = path.replace('../fullcalendar/dist/', '../lib/')
@@ -77,8 +79,12 @@ const transformDemoPath = function(path) {
   // reroot dist files to archive root
   path = path.replace('../dist/', '../')
 
-  // use minified if not already minified and a not file in demos/ dir
-  if (!/\.min\.(js|css)$/.test(path) && !/^\w/.test(path)) {
+  if (
+    !/\.min\.(js|css)$/.test(path) && // not already minified
+    !/^\w/.test(path) && // reference to demo util js/css file
+    path !== '../lib/superagent.js' // doesn't have a .min.js, but that's okay
+  ) {
+    // use minified
     path = path.replace(/\/([^/]*)\.(js|css)$/, '/$1.min.$2')
   }
 
