@@ -1,6 +1,15 @@
 
+v1.9.4 (2018-03-27)
+-------------------
+
+Require fullcalendar 3.9.x, solving [core-4089]
+
+[core-4089]: https://github.com/fullcalendar/fullcalendar/issues/4089
+
+
 v1.9.3 (2018-03-04)
 -------------------
+
 - error second time changing to timeline view with resource-specific business hours (#414)
 - typescript definition doesn't expose OptionsInput (#421)
 - expose typescript defs for ResourceInput & ResourceSourceInput
