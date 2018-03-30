@@ -11,9 +11,8 @@
   "copyright": "2018 Adam Shaw",
   "dependencies": {
     "fullcalendar": "~3.8.1",
-    "jquery": "2 - 3",
     "moment": "^2.20.1",
-    "reqwest": "^2.0.5"
+    "superagent": "^3.8.2"
   },
   "version": "0.0.0",
   "releaseDate": "1970-01-01",
@@ -49,6 +48,7 @@
     "jasmine-core": "2.5.2",
     "jasmine-fixture": "^2.0.0",
     "jasmine-jquery": "^2.1.1",
+    "jquery": "^3.3.1",
     "jquery-mockjax": "^2.3.0",
     "jquery-simulate": "github:jquery/jquery-simulate",
     "karma": "^1.1.1",

@@ -1,13 +1,10 @@
-import * as reqwest from 'reqwest'
+import * as request from 'superagent'
 import { assignTo, applyAll, Class, EmitterMixin, EmitterInterface, BusinessHourGenerator } from 'fullcalendar'
 
 
 export default class ResourceManager extends Class {
 
   static resourceGuid = 1
-  static ajaxDefaults = {
-    method: 'GET'
-  }
 
   on: EmitterInterface['on']
   one: EmitterInterface['one']
@@ -103,14 +100,16 @@ export default class ResourceManager extends Class {
       callback(source)
 
     } else if (typeof source === 'function') {
-      this.calendar.pushLoading()
+      calendar.pushLoading()
+
       source((resourceInputs) => {
-        this.calendar.popLoading()
+        calendar.popLoading()
         callback(resourceInputs)
       }, start, end, calendar.opt('timezone'))
 
     } else if (typeof source === 'object' && source) { // non-null object
       calendar.pushLoading()
+
       let requestParams = {}
 
       if (start && end) {
@@ -124,22 +123,40 @@ export default class ResourceManager extends Class {
         }
       }
 
-      (reqwest( // TODO: handle failure
-        assignTo(
-          { data: requestParams },
-          ResourceManager.ajaxDefaults,
-          source
-        )
-      ) as any).then(resourceInputs => {
+      let theRequest
+      if (!source.method || source.method.toUpperCase() === 'GET') {
+        theRequest = request.get(source.url).query(requestParams)
+      } else {
+        theRequest = request(source.method, source.url).send(requestParams)
+      }
 
-        if (typeof resourceInputs === 'string') { // needed?
-          resourceInputs = JSON.parse(resourceInputs)
-        }
+      theRequest.end((error, res) => {
+        let resourceInputs
 
         calendar.popLoading()
-        callback(resourceInputs)
-      })
 
+        if (!error) {
+          if (res.body) { // parsed JSON
+            resourceInputs = res.body
+          } else if (res.text) {
+            // if the server doesn't set Content-Type, won't be parsed as JSON. parse anyway.
+            resourceInputs = JSON.parse(res.text)
+          }
+        }
+
+        if (resourceInputs) {
+          let callbackRes = applyAll(source.success, null, [ resourceInputs, res ])
+
+          if (Array.isArray(callbackRes)) {
+            resourceInputs = callbackRes
+          }
+
+          callback(resourceInputs)
+        } else {
+          applyAll(source.error, null, [ error, res ])
+          callback([])
+        }
+      })
     } else {
       callback([])
     }
