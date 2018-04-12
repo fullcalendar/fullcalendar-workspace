@@ -44,7 +44,8 @@ gulp.task('archive:deps', function() {
     'fullcalendar/dist/fullcalendar.min.js',
     'fullcalendar/dist/fullcalendar.min.css',
     'fullcalendar/dist/fullcalendar.print.min.css',
-    'fullcalendar/dist/gcal.min.js'
+    'fullcalendar/dist/gcal.min.js',
+    'fullcalendar/dist/jquery-ui-draggable.min.js'
   ])
     .pipe(gulp.dest(`tmp/${packageId}/lib/`))
 })
