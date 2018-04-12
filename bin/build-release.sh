@@ -8,11 +8,12 @@ cd "`dirname $0`/.."
 
 ./bin/require-clean-working-tree.sh
 
-if [[ -f "fullcalendar-branch.txt" ]]
-then
-  echo "Please delete fullcalendar-branch.txt"
-  exit 1
-fi
+# if [[ -f "fullcalendar-branch.txt" ]]
+# then
+#   echo "Please delete fullcalendar-branch.txt"
+#   exit 1
+# fi
+echo "TODO: eventually delete fullcalendar-branch.txt"
 
 read -p 'Have you already ran `npm update` and committed the package-lock.json? (y/N): ' updated_npm_deps
 if [[ "$updated_npm_deps" != "y" ]]
