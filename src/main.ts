@@ -20,7 +20,6 @@ import './resource-timeline/config'
 import './resource-basic/config'
 import './resource-agenda/config'
 import './types/input-types'
-import './types/jquery-hooks'
 
 const schedulerVersion = '<%= version %>';
 (exportHooks as any).schedulerVersion = schedulerVersion
