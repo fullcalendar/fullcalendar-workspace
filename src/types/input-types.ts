@@ -15,7 +15,11 @@ export interface ResourceInput {
   parent?: ResourceInput
 }
 
-export interface ResourceComplexInput extends EventOptionsBase, JQueryAjaxSettings {
+export interface ResourceComplexInput extends EventOptionsBase {
+  url?: string
+  method?: string
+  success?: (eventDefs: ResourceInput[], ajaxRes) => void
+  error?: (error, ajaxRes) => void
 }
 
 export type ResourceFunctionCallback = (resources: ResourceInput[]) => void
