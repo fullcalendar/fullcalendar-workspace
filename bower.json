@@ -10,8 +10,8 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "copyright": "2018 Adam Shaw",
   "dependencies": {
-    "moment": "^2.20.1",
     "fullcalendar": "4.0.0-alpha",
+    "moment": "^2.20.1",
     "superagent": "^3.8.2"
   },
   "main": [

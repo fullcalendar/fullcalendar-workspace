@@ -19,8 +19,8 @@
   "minimum-stability": "stable",
   "require": {
     "robloach/component-installer": "*",
-    "moment/moment": "^2.20.1",
-    "fullcalendar/fullcalendar": "4.0.0-alpha"
+    "fullcalendar/fullcalendar": "4.0.0-alpha",
+    "moment/moment": "^2.20.1"
   },
   "extra": {
     "component": {
