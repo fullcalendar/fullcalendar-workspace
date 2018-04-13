@@ -17,7 +17,6 @@
   "version": "0.0.0",
   "releaseDate": "1970-01-01",
   "devDependencies": {
-    "@types/jquery": "2.0.47",
     "awesome-typescript-loader": "^3.5.0",
     "components-jqueryui": "github:components/jqueryui",
     "css-loader": "^0.28.11",
