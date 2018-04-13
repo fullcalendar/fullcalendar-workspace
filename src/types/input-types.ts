@@ -18,8 +18,8 @@ export interface ResourceInput {
 export interface ResourceComplexInput extends EventOptionsBase {
   url?: string
   method?: string
-  success?: (eventDefs: ResourceInput[], ajaxRes) => void
-  error?: (error, ajaxRes) => void
+  success?: (eventDefs: ResourceInput[], ajaxRes: any) => void
+  error?: (error: any, ajaxRes: any) => void
 }
 
 export type ResourceFunctionCallback = (resources: ResourceInput[]) => void
