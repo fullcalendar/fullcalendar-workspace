@@ -37,7 +37,7 @@ once we do away with the deprecated eventResourceField.
 EventDef.prototype.applyMiscProps = function(rawProps) {
   rawProps = $.extend({}, rawProps) // clone, because of delete
 
-  this.resourceIds = Resource.extractIds(rawProps, this.source.calendar)
+  this.resourceIds = Resource.extractIds(rawProps, this.source)
 
   delete rawProps.resourceId
   delete rawProps.resourceIds

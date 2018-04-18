@@ -2,8 +2,8 @@
 export default class Resource {
 
 
-  static extractIds(rawProps, calendar) {
-    const resourceField = calendar.opt('eventResourceField') || 'resourceId'
+  static extractIds(rawProps, source) {
+    const resourceField = source.calendar.opt('eventResourceField') || 'resourceId'
     const resourceIds = []
 
     if (rawProps.resourceIds) {
@@ -14,6 +14,10 @@ export default class Resource {
 
     if (rawProps[resourceField] != null) {
       resourceIds.push(Resource.normalizeId(rawProps[resourceField]))
+    }
+
+    if (source[resourceField]) {
+      resourceIds.push(Resource.normalizeId(source[resourceField]))
     }
 
     return resourceIds
