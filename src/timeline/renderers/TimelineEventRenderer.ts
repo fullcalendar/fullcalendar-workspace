@@ -9,7 +9,7 @@ export default class TimelineEventRenderer extends EventRenderer {
 
 
   computeDisplayEventTime() {
-    return !this.view.isTimeScale // because times should be obvious via axis
+    return !(this.view as any).isTimeScale // because times should be obvious via axis
   }
 
 
@@ -30,7 +30,7 @@ export default class TimelineEventRenderer extends EventRenderer {
 
 
   renderFgSegs(segs) {
-    const { eventTitleFollower } = this.view
+    const { eventTitleFollower } = (this.view as any)
 
     for (let seg of segs) {
       // TODO: centralize logic (also in updateSegPositions)
@@ -123,7 +123,7 @@ export default class TimelineEventRenderer extends EventRenderer {
 
   unrenderFgSegs(segs) {
     if (this.component.segContainerEl) { // rendered before?
-      const { eventTitleFollower } = this.view
+      const { eventTitleFollower } = (this.view as any)
 
       for (let seg of segs) {
         if (seg.scrollFollowerSprite) {

@@ -39,13 +39,17 @@ export function initScaleProps(timelineView: TimelineView) {
   ensureSlotDuration(timelineView)
 
   let input = timelineView.opt('slotLabelFormat')
-  timelineView.headerFormats =
+  let rawFormats =
     Array.isArray(input) ?
       input
     : typeof input === 'string' ?
       [ input ]
     :
       computeHeaderFormats(timelineView)
+
+  timelineView.headerFormats = rawFormats.map(function(rawFormat) {
+    return core.createFormatter(rawFormat)
+  })
 
   timelineView.isTimeScale = Boolean(timelineView.slotDuration.time)
 
@@ -86,8 +90,8 @@ export function initScaleProps(timelineView: TimelineView) {
     snapsPerSlot = 1
   }
 
-  this.snapDuration = snapDuration
-  this.snapsPerSlot = snapsPerSlot
+  timelineView.snapDuration = snapDuration
+  timelineView.snapsPerSlot = snapsPerSlot
 }
 
 
