@@ -300,15 +300,14 @@ export default class ResourceDayTableMixin extends Mixin implements ResourceDayT
         ]
       }
 
-      (this as any).publiclyTrigger('resourceRender', {
-        context: resource,
-        args: [
+      (this as any).publiclyTrigger('resourceRender', [
+        {
           resource,
-          node, // head <td>
-          null, // body <td> (we don't compute, but API should stay consistent)
-          this.view
-        ]
-      })
+          labelEl: node, // head <td>
+          bodyEl: null, // body <td> (we don't compute, but API should stay consistent)
+          view: this.view
+        }
+      ])
     })
   }
 

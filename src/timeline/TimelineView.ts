@@ -364,14 +364,14 @@ export default class TimelineView extends View {
 
     for (let i = 0; i < this.slotDates.length; i++) {
       date = this.slotDates[i]
-      this.publiclyTrigger('dayRender', {
-        context: this,
-        args: [
-          dateEnv.toDate(date),
-          this.slatEls[i],
-          this
-        ]
-      })
+      this.publiclyTrigger('dayRender', [
+        {
+          date: dateEnv.toDate(date),
+          isAllDay: !this.isTimeScale,
+          el: this.slatEls[i],
+          view: this
+        }
+      ])
     }
 
     if (this.headDateFollower) {

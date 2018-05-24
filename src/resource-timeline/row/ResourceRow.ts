@@ -33,15 +33,14 @@ export default class ResourceRow extends EventRow {
       EventRow.prototype.renderBusinessHours.call(this, this.businessHourGenerator)
     }
 
-    this.view.publiclyTrigger('resourceRender', {
-      context: this.resource,
-      args: [
-        this.resource,
-        this.getTr('spreadsheet'), // <tr>
-        this.getTr('event'), // <tr>
-        this.view
-      ]
-    })
+    this.view.publiclyTrigger('resourceRender', [
+      {
+        resource: this.resource,
+        labelEl: this.getTr('spreadsheet'), // <tr>
+        bodyEl: this.getTr('event'), // <tr>
+        view: this.view
+      }
+    ])
   }
 
 

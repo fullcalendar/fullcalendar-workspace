@@ -245,19 +245,22 @@ export default class ResourceViewMixin extends Mixin implements ResourceViewInte
   footprint is a ResourceComponentFootprint
   */
   triggerDayClick(footprint, dayEl, ev) {
-    const dateProfile = this.calendar.footprintToDateProfile(footprint);
+    const dateProfile = this.calendar.footprintToDateProfile(footprint)
+    const resource =
+      footprint.resourceId ?
+        this.calendar.resourceManager.getResourceById(footprint.resourceId) :
+        null;
 
-    (this as any).publiclyTrigger('dayClick', {
-      context: dayEl,
-      args: [
-        dateProfile.start,
-        ev,
-        this,
-        footprint.resourceId ?
-          this.calendar.resourceManager.getResourceById(footprint.resourceId) :
-          null
-      ]
-    })
+    (this as any).publiclyTrigger('dayClick', [
+      {
+        el: dayEl,
+        date: dateProfile.start,
+        isAllDay: dateProfile.isAllDay,
+        resource,
+        jsEvent: ev,
+        view: this
+      }
+    ])
   }
 
 
@@ -265,48 +268,55 @@ export default class ResourceViewMixin extends Mixin implements ResourceViewInte
   footprint is a ResourceComponentFootprint
   */
   triggerSelect(footprint, ev) {
-    const dateProfile = this.calendar.footprintToDateProfile(footprint);
+    const dateProfile = this.calendar.footprintToDateProfile(footprint)
+    const resource =
+      footprint.resourceId ?
+        this.calendar.resourceManager.getResourceById(footprint.resourceId) :
+        null;
 
-    (this as any).publiclyTrigger('select', {
-      context: this,
-      args: [
-        dateProfile.start,
-        dateProfile.end,
-        ev,
-        this,
-        footprint.resourceId ?
-          this.calendar.resourceManager.getResourceById(footprint.resourceId) :
-          null
-      ]
-    })
+    (this as any).publiclyTrigger('select', [
+      {
+        start: dateProfile.start,
+        end: dateProfile.end,
+        isAllDay: dateProfile.isAllDay,
+        resource,
+        jsEvent: ev,
+        view: this
+      }
+    ])
   }
 
 
   // override the view's default trigger in order to provide a resourceId to the `drop` event
   // TODO: make more DRY with core
-  triggerExternalDrop(singleEventDef, isEvent, el, ev, ui) {
+  triggerExternalDrop(singleEventDef, isEvent, el, ev) {
+    const { calendar } = this
+    const resourceId = singleEventDef.getResourceIds()[0]
+    const resource =
+      resourceId ?
+        calendar.resourceManager.getResourceById(resourceId) :
+        null;
 
     // trigger 'drop' regardless of whether element represents an event
-    (this as any).publiclyTrigger('drop', {
-      context: el,
-      args: [
-        this.calendar.dateEnv.toDate(singleEventDef.dateProfile.start),
-        ev,
-        ui,
-        singleEventDef.getResourceIds()[0],
-        this
-      ]
-    })
+    (this as any).publiclyTrigger('drop', [
+      {
+        date: calendar.dateEnv.toDate(singleEventDef.dateProfile.start),
+        isAllDay: singleEventDef.dateProfile.isAllDay,
+        resource,
+        el: el,
+        jsEvent: ev,
+        view: this
+      }
+    ])
 
     if (isEvent) {
       // signal an external event landed
-      (this as any).publiclyTrigger('eventReceive', {
-        context: this,
-        args: [
-          singleEventDef.buildInstance().toLegacy(this.calendar),
-          this
-        ]
-      })
+      (this as any).publiclyTrigger('eventReceive', [
+        {
+          event: singleEventDef.buildInstance().toLegacy(this.calendar),
+          view: this
+        }
+      ])
     }
   }
 }
