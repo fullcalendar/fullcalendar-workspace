@@ -1,4 +1,4 @@
-import { View } from 'fullcalendar'
+import { View, DateProfile } from 'fullcalendar'
 import { processLicenseKey } from './license'
 
 declare module 'fullcalendar/View' {
@@ -96,13 +96,13 @@ View.prototype.unwatchResources = function() {
 
 
 // dateProfile is optional
-View.prototype.getInitialResources = function(dateProfile, callback) {
+View.prototype.getInitialResources = function(dateProfile: DateProfile, callback) {
   const { calendar } = this
 
   if (dateProfile) {
     calendar.resourceManager.getResources(
-      calendar.msToMoment(dateProfile.activeUnzonedRange.startMs, dateProfile.isRangeAllDay),
-      calendar.msToMoment(dateProfile.activeUnzonedRange.endMs, dateProfile.isRangeAllDay),
+      dateProfile.activeUnzonedRange.start,
+      dateProfile.activeUnzonedRange.end,
       callback
     )
   } else {

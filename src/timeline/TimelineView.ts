@@ -1,11 +1,10 @@
-import * as moment from 'moment'
 import {
-  View, UnzonedRange, ComponentFootprint,
-  CoordCache, queryMostGranularFormatUnit,
-  isInt, divideRangeByDuration, htmlEscape, computeGreatestUnit,
-  divideDurationByDuration, multiplyDuration, StandardInteractionsMixin,
+  View, UnzonedRange, ComponentFootprint, CoordCache,
+  isInt, htmlEscape, greatestDurationDenominator,
+  wholeDivideDurations, multiplyDuration, StandardInteractionsMixin,
   BusinessHourRenderer, createElement, findElements, findChildren,
-  applyStyle, applyStyleProp, removeElement
+  applyStyle, applyStyleProp, removeElement,
+  DateMarker, isSingleDay, createDuration, startOfDay, addMs, addDays, asRoughMs, DateFormatter
 } from 'fullcalendar'
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
@@ -21,23 +20,22 @@ import { initScaleProps } from './TimelineView.defaults'
 export default class TimelineView extends View {
 
   // date computation
-  normalizedUnzonedRange: any // unzonedRange normalized and converted to Moments
-  normalizedUnzonedStart: any // "
-  normalizedUnzonedEnd: any // "
+  normalizedUnzonedRange: UnzonedRange // unzonedRange normalized and converted to Moments
+  normalizedUnzonedStart: DateMarker // "
+  normalizedUnzonedEnd: DateMarker // "
   slotDates: any // has stripped timezones
   slotCnt: any
   snapCnt: any
   snapsPerSlot: any
   snapDiffToIndex: any // maps number of snaps since the grid's start to the index
   snapIndexToDiff: any // inverse
-  timeWindowMs: any
   slotDuration: any
   snapDuration: any
   duration: any
   labelInterval: any
   isTimeScale: any
   largeUnit: any // if the slots are > a day, the string name of the interval
-  headerFormats: any
+  headerFormats: DateFormatter[]
   emphasizeWeeks: boolean
 
   // rendering
@@ -84,24 +82,25 @@ export default class TimelineView extends View {
   THEN, can have componentFootprintToSegs handle this on its own
   */
   normalizeComponentFootprint(componentFootprint) {
+    const dateEnv = this.calendar.dateEnv
     let adjustedEnd
     let adjustedStart
     const { unzonedRange } = componentFootprint
 
     if (this.isTimeScale) {
-      adjustedStart = this.normalizeGridDate(unzonedRange.getStart())
-      adjustedEnd = this.normalizeGridDate(unzonedRange.getEnd())
+      adjustedStart = this.normalizeGridDate(unzonedRange.start)
+      adjustedEnd = this.normalizeGridDate(unzonedRange.end)
     } else {
       const dayRange = this.computeDayRange(unzonedRange)
 
       if (this.largeUnit) {
-        adjustedStart = dayRange.start.clone().startOf(this.largeUnit)
-        adjustedEnd = dayRange.end.clone().startOf(this.largeUnit)
+        adjustedStart = dateEnv.startOf(dayRange.start, this.largeUnit)
+        adjustedEnd = dateEnv.startOf(dayRange.end, this.largeUnit)
 
         // if date is partially through the interval, or is in the same interval as the start,
         // make the exclusive end be the *next* interval
-        if (!adjustedEnd.isSame(dayRange.end) || !adjustedEnd.isAfter(adjustedStart)) {
-          adjustedEnd.add(this.slotDuration)
+        if (adjustedEnd.valueOf() !== dayRange.end.valueOf() || adjustedEnd.valueOf() !== adjustedStart.valueOf()) {
+          adjustedEnd = dateEnv.add(adjustedEnd, this.slotDuration)
         }
 
       } else {
@@ -118,8 +117,8 @@ export default class TimelineView extends View {
 
 
   componentFootprintToSegs(footprint) {
-    const footprintStart = footprint.unzonedRange.getStart()
-    const footprintEnd = footprint.unzonedRange.getEnd()
+    const footprintStart = footprint.unzonedRange.start
+    const footprintEnd = footprint.unzonedRange.end
     const normalFootprint = this.normalizeComponentFootprint(footprint)
     const segs = []
 
@@ -130,13 +129,13 @@ export default class TimelineView extends View {
       const segRange = normalFootprint.unzonedRange.intersect(this.normalizedUnzonedRange)
 
       if (segRange) {
-        const segStart = segRange.getStart()
-        const segEnd = segRange.getEnd()
+        const segStart = segRange.start
+        const segEnd = segRange.end
         segs.push({
           start: segStart,
           end: segEnd,
           isStart: segRange.isStart && this.isValidDate(segStart),
-          isEnd: segRange.isEnd && this.isValidDate(segEnd.clone().subtract(1))
+          isEnd: segRange.isEnd && this.isValidDate(addMs(segEnd, -1))
         })
       }
     }
@@ -158,18 +157,15 @@ export default class TimelineView extends View {
   Strips all timezones. Returns new copy.
   TODO: should maybe be called "normalizeRangeDate".
   */
-  normalizeGridDate(date) {
-    let normalDate = date.clone()
-    this.calendar.localizeMoment(normalDate) // mostly for startOf
+  normalizeGridDate(date: DateMarker): DateMarker {
+    const dateEnv = this.calendar.dateEnv
+    let normalDate = date
 
-    if (this.isTimeScale) {
-      if (!normalDate.hasTime()) {
-        normalDate.time(0)
-      }
-    } else {
-      normalDate = normalDate.clone().stripTime()
+    if (!this.isTimeScale) {
+      normalDate = startOfDay(normalDate)
+
       if (this.largeUnit) {
-        normalDate.startOf(this.largeUnit)
+        normalDate = dateEnv.startOf(normalDate, this.largeUnit)
       }
     }
 
@@ -177,14 +173,12 @@ export default class TimelineView extends View {
   }
 
 
-  isValidDate(date) {
+  isValidDate(date: DateMarker) {
     if (this.isHiddenDay(date)) {
       return false
     } else if (this.isTimeScale) {
-      // determine if the time is within minTime/maxTime, which may have wacky values
-      let ms = date.time() - this.dateProfile.minTime // milliseconds since minTime
-      ms = ((ms % 86400000) + 86400000) % 86400000 // make negative values wrap to 24hr clock
-      return ms < this.timeWindowMs // before the maxTime?
+      return date >= this.normalizedUnzonedStart &&
+        date < this.normalizedUnzonedEnd
     } else {
       return true
     }
@@ -192,12 +186,13 @@ export default class TimelineView extends View {
 
 
   updateGridDates() {
+    const dateEnv = this.calendar.dateEnv
     let snapIndex = -1
     let snapDiff = 0 // index of the diff :(
     const snapDiffToIndex = []
     const snapIndexToDiff = []
 
-    const date = this.normalizedUnzonedStart.clone()
+    let date = this.normalizedUnzonedStart
     while (date < this.normalizedUnzonedEnd) {
       if (this.isValidDate(date)) {
         snapIndex++
@@ -206,7 +201,7 @@ export default class TimelineView extends View {
       } else {
         snapDiffToIndex.push(snapIndex + 0.5)
       }
-      date.add(this.snapDuration)
+      date = dateEnv.add(date, this.snapDuration)
       snapDiff++
     }
 
@@ -313,32 +308,33 @@ export default class TimelineView extends View {
 
 
   renderDates(dateProfile) {
+    const dateEnv = this.calendar.dateEnv
+
     initScaleProps(this)
 
-    this.timeWindowMs = dateProfile.maxTime - dateProfile.minTime
-
     // makes sure zone is stripped
-    this.normalizedUnzonedStart = this.normalizeGridDate(dateProfile.renderUnzonedRange.getStart())
-    this.normalizedUnzonedEnd = this.normalizeGridDate(dateProfile.renderUnzonedRange.getEnd())
+    this.normalizedUnzonedStart = this.normalizeGridDate(dateProfile.renderUnzonedRange.start)
+    this.normalizedUnzonedEnd = this.normalizeGridDate(dateProfile.renderUnzonedRange.end)
 
     // apply minTime/maxTime
-    // TODO: move towards .time(), but didn't play well with negatives.
     // TODO: View should be responsible.
     if (this.isTimeScale) {
-      this.normalizedUnzonedStart.add(dateProfile.minTime)
-      this.normalizedUnzonedEnd.subtract(1, 'day').add(dateProfile.maxTime)
+      this.normalizedUnzonedStart = dateEnv.add(this.normalizedUnzonedStart, dateProfile.minTime)
+      this.normalizedUnzonedEnd = dateEnv.add(
+        addDays(this.normalizedUnzonedEnd, 1),
+        dateProfile.maxTime
+      )
     }
 
     this.normalizedUnzonedRange = new UnzonedRange(this.normalizedUnzonedStart, this.normalizedUnzonedEnd)
 
     const slotDates = []
-    let date = this.normalizedUnzonedStart.clone()
-    this.calendar.localizeMoment(date)
+    let date = this.normalizedUnzonedStart
     while (date < this.normalizedUnzonedEnd) {
       if (this.isValidDate(date)) {
-        slotDates.push(date.clone())
+        slotDates.push(date)
       }
-      date.add(this.slotDuration)
+      date = dateEnv.add(date, this.slotDuration)
     }
 
     this.slotDates = slotDates
@@ -370,7 +366,11 @@ export default class TimelineView extends View {
       date = this.slotDates[i]
       this.publiclyTrigger('dayRender', {
         context: this,
-        args: [ date, this.slatEls[i], this ]
+        args: [
+          dateEnv.toDate(date),
+          this.slatEls[i],
+          this
+        ]
       })
     }
 
@@ -402,7 +402,7 @@ export default class TimelineView extends View {
     let date
     let rowCells
     let format
-    const { theme } = this.calendar
+    const { theme, dateEnv } = this.calendar
     const { labelInterval } = this
     const formats = this.headerFormats
     const cellRows = formats.map((format) => []) // indexed by row,col
@@ -411,12 +411,13 @@ export default class TimelineView extends View {
     const { slotDates } = this
     const slotCells = [] // meta
 
-    const rowUnits = formats.map((format) => (
-      queryMostGranularFormatUnit(format)
-    ))
+    // specifically for navclicks
+    const rowUnits = formats.map((format) => {
+      return (format as any).getLargestUnit ? (format as any).getLargestUnit() : null
+    })
 
     for (date of slotDates) {
-      const weekNumber = date.week()
+      const weekNumber = dateEnv.computeWeekNumber(date)
       const isWeekStart = this.emphasizeWeeks && (prevWeekNumber !== null) && (prevWeekNumber !== weekNumber)
 
       for (let row = 0; row < formats.length; row++) {
@@ -427,15 +428,22 @@ export default class TimelineView extends View {
         let newCell = null
 
         if (isSuperRow) {
-          let text = date.format(format)
+          let text = dateEnv.format(date, format)
           if (!leadingCell || (leadingCell.text !== text)) {
             newCell = this.buildCellObject(date, text, rowUnits[row])
           } else {
             leadingCell.colspan += 1
           }
         } else {
-          if (!leadingCell || isInt(divideRangeByDuration(this.normalizedUnzonedStart, date, labelInterval))) {
-            let text = date.format(format)
+          if (
+            !leadingCell ||
+            isInt(dateEnv.countDurationsBetween(
+              this.normalizedUnzonedStart,
+              date,
+              labelInterval
+            ))
+          ) {
+            let text = dateEnv.format(date, format)
             newCell = this.buildCellObject(date, text, rowUnits[row])
           } else {
             leadingCell.colspan += 1
@@ -452,8 +460,8 @@ export default class TimelineView extends View {
       prevWeekNumber = weekNumber
     }
 
-    const isChrono = labelInterval > this.slotDuration
-    const isSingleDay = this.slotDuration.as('days') === 1
+    const isChrono = asRoughMs(labelInterval) > asRoughMs(this.slotDuration)
+    const oneDay = isSingleDay(this.slotDuration)
 
     let html = '<table class="' + theme.getClass('tableGrid') + '">'
     html += '<colgroup>'
@@ -473,7 +481,7 @@ export default class TimelineView extends View {
         if (cell.weekStart) {
           headerCellClassNames.push('fc-em-cell')
         }
-        if (isSingleDay) {
+        if (oneDay) {
           headerCellClassNames = headerCellClassNames.concat(
             this.getDayClasses(cell.date, true) // adds "today" class and other day-based classes
           )
@@ -481,7 +489,7 @@ export default class TimelineView extends View {
 
         html +=
           '<th class="' + headerCellClassNames.join(' ') + '"' +
-            ' data-date="' + cell.date.format() + '"' +
+            ' data-date="' + dateEnv.formatIso(cell.date, { omitTime: !this.isTimeScale }) + '"' +
             (cell.colspan > 1 ? ' colspan="' + cell.colspan + '"' : '') +
           '>' +
             '<div class="fc-cell-content">' +
@@ -512,8 +520,7 @@ export default class TimelineView extends View {
   }
 
 
-  buildCellObject(date, text, rowUnit) {
-    date = date.clone() // ensure our own reference
+  buildCellObject(date: DateMarker, text, rowUnit) {
     const spanHtml = this.buildGotoAnchorHtml(
       {
         date,
@@ -531,12 +538,16 @@ export default class TimelineView extends View {
 
   slatCellHtml(date, isEm) {
     let classes
-    const { theme } = this.calendar
+    const { theme, dateEnv } = this.calendar
 
     if (this.isTimeScale) {
       classes = []
       classes.push(
-        isInt(divideRangeByDuration(this.normalizedUnzonedStart, date, this.labelInterval)) ?
+        isInt(dateEnv.countDurationsBetween(
+          this.normalizedUnzonedStart,
+          date,
+          this.labelInterval
+        )) ?
           'fc-major' :
           'fc-minor'
       )
@@ -552,7 +563,7 @@ export default class TimelineView extends View {
     }
 
     return '<td class="' + classes.join(' ') + '"' +
-      ' data-date="' + date.format() + '"' +
+      ' data-date="' + dateEnv.formatIso(date, { omitTime: !this.isTimeScale }) + '"' +
       '><div></div></td>'
   }
 
@@ -575,7 +586,7 @@ export default class TimelineView extends View {
   getNowIndicatorUnit() {
     // TODO: converge with largeUnit. precompute
     if (this.isTimeScale) {
-      return computeGreatestUnit(this.slotDuration)
+      return greatestDurationDenominator(this.slotDuration).unit
     }
   }
 
@@ -719,7 +730,11 @@ export default class TimelineView extends View {
     })
 
     const headerWidth = maxInnerWidth + 1 // assume no padding, and one pixel border
-    const slotsPerLabel = divideDurationByDuration(this.labelInterval, this.slotDuration) // TODO: rename labelDuration?
+
+    // in TimelineView.defaults we ensured that labelInterval is an interval of slotDuration
+    // TODO: rename labelDuration?
+    const slotsPerLabel = wholeDivideDurations(this.labelInterval, this.slotDuration)
+
     let slotWidth = Math.ceil(headerWidth / slotsPerLabel)
 
     let minWidth: any = window.getComputedStyle(this.timeHeadColEls[0]).minWidth
@@ -747,7 +762,12 @@ export default class TimelineView extends View {
 
   // returned value is between 0 and the number of snaps
   computeDateSnapCoverage(date) {
-    const snapDiff = divideRangeByDuration(this.normalizedUnzonedStart, date, this.snapDuration)
+    const dateEnv = this.calendar.dateEnv
+    const snapDiff = dateEnv.countDurationsBetween(
+      this.normalizedUnzonedStart,
+      date,
+      this.snapDuration
+    )
 
     if (snapDiff < 0) {
       return 0
@@ -856,14 +876,20 @@ export default class TimelineView extends View {
 
 
   computeInitialDateScroll() {
+    const dateEnv = this.calendar.dateEnv
     const unzonedRange = this.get('dateProfile').activeUnzonedRange
     let left = 0
 
     if (this.isTimeScale) {
       let scrollTime = this.opt('scrollTime')
       if (scrollTime) {
-        scrollTime = moment.duration(scrollTime)
-        left = this.dateToCoord(unzonedRange.getStart().time(scrollTime)) // TODO: fix this for RTL
+        scrollTime = createDuration(scrollTime)
+        left = this.dateToCoord(
+          dateEnv.add(
+            startOfDay(unzonedRange.start), // needed?
+            scrollTime
+          )
+        )
       }
     }
 
@@ -960,13 +986,17 @@ export default class TimelineView extends View {
   }
 
 
-  /*
-  TODO: avoid using moments
-  */
   getSnapUnzonedRange(snapIndex) {
-    const start = this.normalizedUnzonedStart.clone()
-    start.add(multiplyDuration(this.snapDuration, this.snapIndexToDiff[snapIndex]))
-    const end = start.clone().add(this.snapDuration)
+    const dateEnv = this.calendar.dateEnv
+    let start = this.normalizedUnzonedStart
+
+    start = dateEnv.add(
+      start,
+      multiplyDuration(this.snapDuration, this.snapIndexToDiff[snapIndex])
+    )
+
+    let end = dateEnv.add(start, this.snapDuration)
+
     return new UnzonedRange(start, end)
   }
 

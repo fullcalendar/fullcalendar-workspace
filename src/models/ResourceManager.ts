@@ -1,5 +1,5 @@
 import * as request from 'superagent'
-import { assignTo, applyAll, Class, EmitterMixin, EmitterInterface, BusinessHourGenerator } from 'fullcalendar'
+import { assignTo, applyAll, Class, EmitterMixin, EmitterInterface, BusinessHourGenerator, DateMarker } from 'fullcalendar'
 
 
 export default class ResourceManager extends Class {
@@ -20,8 +20,8 @@ export default class ResourceManager extends Class {
   isFetchingInitiated: boolean = false
   isFetchingResolved: boolean = false
   fetchingResourcesCallbacks: any
-  currentStart: any
-  currentEnd: any
+  currentStart: DateMarker
+  currentEnd: DateMarker
 
 
   constructor(calendar) {
@@ -38,10 +38,11 @@ export default class ResourceManager extends Class {
   /*
   Like fetchResources, but won't refetch if already fetched.
   */
-  getResources(start, end, callback) {
+  getResources(start: DateMarker, end: DateMarker, callback) {
     const isSameRange =
       (!start && !this.currentStart) || // both nonexistent ranges?
-      (start && this.currentStart && start.isSame(this.currentStart) && end.isSame(this.currentEnd))
+      (start && this.currentStart && start.valueOf() === this.currentStart.valueOf()) &&
+      end.valueOf() === this.currentEnd.valueOf()
 
     if (!this.isFetchingInitiated || !isSameRange) { // first time? or is range different?
       this.fetchResources(start, end, callback)
@@ -55,7 +56,7 @@ export default class ResourceManager extends Class {
   Will always fetch, even if done previously.
   Accepts optional chrono-related params to pass on to the raw resource sources.
   */
-  fetchResources(start, end, callback) {
+  fetchResources(start: DateMarker, end: DateMarker, callback) {
     const currentFetchId = (this.fetchId += 1)
 
     this.isFetchingInitiated = true
@@ -87,8 +88,9 @@ export default class ResourceManager extends Class {
   Accepts optional chrono-related params to pass on to the raw resource sources.
   Calls callback when done.
   */
-  fetchResourceInputs(callback, start, end) {
+  fetchResourceInputs(callback, start: DateMarker, end: DateMarker) {
     const { calendar } = this
+    const dateEnv = calendar.dateEnv
     let source = calendar.opt('resources')
     const timezone = calendar.opt('timezone')
 
@@ -102,10 +104,15 @@ export default class ResourceManager extends Class {
     } else if (typeof source === 'function') {
       calendar.pushLoading()
 
-      source((resourceInputs) => {
-        calendar.popLoading()
-        callback(resourceInputs)
-      }, start, end, calendar.opt('timezone'))
+      source(
+        (resourceInputs) => {
+          calendar.popLoading()
+          callback(resourceInputs)
+        },
+        dateEnv.toDate(start),
+        dateEnv.toDate(end),
+        calendar.opt('timezone')
+      )
 
     } else if (typeof source === 'object' && source) { // non-null object
       calendar.pushLoading()
@@ -113,8 +120,8 @@ export default class ResourceManager extends Class {
       let requestParams = {}
 
       if (start && end) {
-        requestParams[calendar.opt('startParam')] = start.format()
-        requestParams[calendar.opt('endParam')] = end.format()
+        requestParams[calendar.opt('startParam')] = dateEnv.formatIso(start)
+        requestParams[calendar.opt('endParam')] = dateEnv.formatIso(end)
 
         // mimick what EventManager does
         // TODO: more DRY

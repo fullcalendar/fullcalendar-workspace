@@ -1,4 +1,4 @@
-import { getViewConfig } from 'fullcalendar'
+import { getViewConfig, isSingleDay } from 'fullcalendar'
 import ResourceAgendaView from './ResourceAgendaView'
 
 /*
@@ -13,7 +13,7 @@ getViewConfig('agenda').queryResourceClass = function(viewSpec) {
   if (explicitGrouping != null) {
     showsResources = explicitGrouping
   } else if (viewSpec.duration) {
-    showsResources = viewSpec.duration.as('days') === 1
+    showsResources = isSingleDay(viewSpec.duration)
   }
 
   if (showsResources) {

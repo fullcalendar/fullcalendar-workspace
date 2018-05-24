@@ -200,7 +200,7 @@ export default class ResourceDayTableMixin extends Mixin implements ResourceDayT
       )
 
       for (let dayIndex = 0; dayIndex < daysPerRow; dayIndex++) {
-        const date = this.dayDates[dayIndex].clone()
+        const date = this.dayDates[dayIndex]
         dateHtmls.push(
           this.renderHeadResourceDateCellHtml(date, resource)
         )
@@ -227,7 +227,7 @@ export default class ResourceDayTableMixin extends Mixin implements ResourceDayT
     const { daysPerRow } = this
 
     for (let dayIndex = 0; dayIndex < daysPerRow; dayIndex++) {
-      const date = this.dayDates[dayIndex].clone()
+      const date = this.dayDates[dayIndex]
 
       dateHtmls.push(
         (this as any).renderHeadDateCellHtml(date, this.resourceCnt) // with colspan
@@ -255,10 +255,12 @@ export default class ResourceDayTableMixin extends Mixin implements ResourceDayT
 
   // given a resource and an optional date
   renderHeadResourceCellHtml(resource, date?, colspan = 1) {
+    const dateEnv = this.view.calendar.dateEnv
+
     return '<th class="fc-resource-cell"' +
       ' data-resource-id="' + resource.id + '"' +
       (date ?
-        ' data-date="' + date.format('YYYY-MM-DD') + '"' :
+        ' data-date="' + dateEnv.formatIso(date, { omitTime: true }) + '"' :
         '') +
       (colspan > 1 ?
         ' colspan="' + colspan + '"' :

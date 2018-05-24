@@ -285,12 +285,13 @@ export default class ResourceViewMixin extends Mixin implements ResourceViewInte
   // override the view's default trigger in order to provide a resourceId to the `drop` event
   // TODO: make more DRY with core
   triggerExternalDrop(singleEventDef, isEvent, el, ev, ui) {
+    let dateEnv = this.calendar.dateEnv
 
     // trigger 'drop' regardless of whether element represents an event
     (this as any).publiclyTrigger('drop', {
       context: el,
       args: [
-        singleEventDef.dateProfile.start.clone(),
+        dateEnv.toDate(singleEventDef.dateProfile.start),
         ev,
         ui,
         singleEventDef.getResourceIds()[0],
@@ -303,7 +304,7 @@ export default class ResourceViewMixin extends Mixin implements ResourceViewInte
       (this as any).publiclyTrigger('eventReceive', {
         context: this,
         args: [
-          singleEventDef.buildInstance().toLegacy(),
+          singleEventDef.buildInstance().toLegacy(this.calendar),
           this
         ]
       })

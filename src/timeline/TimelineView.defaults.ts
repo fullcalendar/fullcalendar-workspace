@@ -1,4 +1,3 @@
-import * as moment from 'moment'
 import * as core from 'fullcalendar'
 import TimelineView from './TimelineView'
 
@@ -48,18 +47,19 @@ export function initScaleProps(timelineView: TimelineView) {
     :
       computeHeaderFormats(timelineView)
 
-  timelineView.isTimeScale = core.durationHasTime(timelineView.slotDuration)
+  timelineView.isTimeScale = Boolean(timelineView.slotDuration.time)
 
   let largeUnit = null
   if (!timelineView.isTimeScale) {
-    const slotUnit = core.computeGreatestUnit(timelineView.slotDuration)
+    const slotUnit = core.greatestDurationDenominator(timelineView.slotDuration).unit
     if (/year|month|week/.test(slotUnit)) {
       largeUnit = slotUnit
     }
   }
   timelineView.largeUnit = largeUnit
 
-  timelineView.emphasizeWeeks = (timelineView.slotDuration.as('days') === 1) &&
+  timelineView.emphasizeWeeks =
+    core.isSingleDay(timelineView.slotDuration) &&
     (timelineView.currentRangeAs('weeks') >= 2) &&
     !timelineView.opt('businessHours')
 
@@ -72,19 +72,29 @@ export function initScaleProps(timelineView: TimelineView) {
   */
 
   let rawSnapDuration = timelineView.opt('snapDuration')
-  timelineView.snapDuration =
-    rawSnapDuration ?
-      moment.duration(rawSnapDuration) :
-      timelineView.slotDuration
+  let snapDuration
+  let snapsPerSlot
 
-  timelineView.snapsPerSlot = core.divideDurationByDuration(timelineView.slotDuration, timelineView.snapDuration)
+  if (rawSnapDuration) {
+    snapDuration = core.createDuration(rawSnapDuration)
+    snapsPerSlot = core.wholeDivideDurations(timelineView.slotDuration, snapDuration)
+    // ^ TODO: warning if not whole?
+  }
+
+  if (snapsPerSlot == null) {
+    snapDuration = timelineView.slotDuration
+    snapsPerSlot = 1
+  }
+
+  this.snapDuration = snapDuration
+  this.snapsPerSlot = snapsPerSlot
 }
 
 
 function queryDurationOption(timelineView: TimelineView, name) {
   const input = timelineView.opt(name)
   if (input != null) {
-    const dur = moment.duration(input)
+    const dur = core.createDuration(input)
     if (+dur) {
       return dur
     }
@@ -94,10 +104,15 @@ function queryDurationOption(timelineView: TimelineView, name) {
 
 function validateLabelAndSlot(timelineView: TimelineView) {
   const { currentUnzonedRange } = timelineView.dateProfile
+  const dateEnv = timelineView.calendar.dateEnv
 
   // make sure labelInterval doesn't exceed the max number of cells
   if (timelineView.labelInterval) {
-    const labelCnt = core.divideRangeByDuration(currentUnzonedRange.getStart(), currentUnzonedRange.getEnd(), timelineView.labelInterval)
+    const labelCnt = dateEnv.countDurationsBetween(
+      currentUnzonedRange.start,
+      currentUnzonedRange.end,
+      timelineView.labelInterval
+    )
     if (labelCnt > (core as any).MAX_TIMELINE_SLOTS) {
       core.warn('slotLabelInterval results in too many cells')
       timelineView.labelInterval = null
@@ -106,7 +121,11 @@ function validateLabelAndSlot(timelineView: TimelineView) {
 
   // make sure slotDuration doesn't exceed the maximum number of cells
   if (timelineView.slotDuration) {
-    const slotCnt = core.divideRangeByDuration(currentUnzonedRange.getStart(), currentUnzonedRange.getEnd(), timelineView.slotDuration)
+    const slotCnt = dateEnv.countDurationsBetween(
+      currentUnzonedRange.start,
+      currentUnzonedRange.end,
+      timelineView.slotDuration
+    )
     if (slotCnt > (core as any).MAX_TIMELINE_SLOTS) {
       core.warn('slotDuration results in too many cells')
       timelineView.slotDuration = null
@@ -115,8 +134,8 @@ function validateLabelAndSlot(timelineView: TimelineView) {
 
   // make sure labelInterval is a multiple of slotDuration
   if (timelineView.labelInterval && timelineView.slotDuration) {
-    const slotsPerLabel = core.divideDurationByDuration(timelineView.labelInterval, timelineView.slotDuration)
-    if (!core.isInt(slotsPerLabel) || (slotsPerLabel < 1)) {
+    const slotsPerLabel = core.wholeDivideDurations(timelineView.labelInterval, timelineView.slotDuration)
+    if (slotsPerLabel === null || slotsPerLabel < 1) {
       core.warn('slotLabelInterval must be a multiple of slotDuration')
       return timelineView.slotDuration = null
     }
@@ -126,6 +145,7 @@ function validateLabelAndSlot(timelineView: TimelineView) {
 
 function ensureLabelInterval(timelineView: TimelineView) {
   const { currentUnzonedRange } = timelineView.dateProfile
+  const dateEnv = timelineView.calendar.dateEnv
   let { labelInterval } = timelineView
 
   if (!labelInterval) {
@@ -135,9 +155,9 @@ function ensureLabelInterval(timelineView: TimelineView) {
     let input
     if (timelineView.slotDuration) {
       for (input of STOCK_SUB_DURATIONS) {
-        const tryLabelInterval = moment.duration(input)
-        const slotsPerLabel = core.divideDurationByDuration(tryLabelInterval, timelineView.slotDuration)
-        if (core.isInt(slotsPerLabel) && (slotsPerLabel <= MAX_AUTO_SLOTS_PER_LABEL)) {
+        const tryLabelInterval = core.createDuration(input)
+        const slotsPerLabel = core.wholeDivideDurations(tryLabelInterval, timelineView.slotDuration)
+        if (slotsPerLabel !== null && slotsPerLabel <= MAX_AUTO_SLOTS_PER_LABEL) {
           labelInterval = tryLabelInterval
           break
         }
@@ -152,8 +172,12 @@ function ensureLabelInterval(timelineView: TimelineView) {
     // find the largest label interval that yields the minimum number of labels
     } else {
       for (input of STOCK_SUB_DURATIONS) {
-        labelInterval = moment.duration(input)
-        const labelCnt = core.divideRangeByDuration(currentUnzonedRange.getStart(), currentUnzonedRange.getEnd(), labelInterval)
+        labelInterval = core.createDuration(input)
+        const labelCnt = dateEnv.countDurationsBetween(
+          currentUnzonedRange.start,
+          currentUnzonedRange.end,
+          labelInterval
+        )
         if (labelCnt >= MIN_AUTO_LABELS) {
           break
         }
@@ -169,6 +193,7 @@ function ensureLabelInterval(timelineView: TimelineView) {
 
 function ensureSlotDuration(timelineView: TimelineView) {
   const { currentUnzonedRange } = timelineView.dateProfile
+  const dateEnv = timelineView.calendar.dateEnv
   let { slotDuration } = timelineView
 
   if (!slotDuration) {
@@ -177,9 +202,9 @@ function ensureSlotDuration(timelineView: TimelineView) {
     // compute based off the label interval
     // find the largest slot duration that is different from labelInterval, but still acceptable
     for (let input of STOCK_SUB_DURATIONS) {
-      const trySlotDuration = moment.duration(input)
-      const slotsPerLabel = core.divideDurationByDuration(labelInterval, trySlotDuration)
-      if (core.isInt(slotsPerLabel) && (slotsPerLabel > 1) && (slotsPerLabel <= MAX_AUTO_SLOTS_PER_LABEL)) {
+      const trySlotDuration = core.createDuration(input)
+      const slotsPerLabel = core.wholeDivideDurations(labelInterval, trySlotDuration)
+      if (slotsPerLabel !== null && slotsPerLabel > 1 && slotsPerLabel <= MAX_AUTO_SLOTS_PER_LABEL) {
         slotDuration = trySlotDuration
         break
       }
@@ -187,7 +212,11 @@ function ensureSlotDuration(timelineView: TimelineView) {
 
     // only allow the value if it won't exceed the view's # of slots limit
     if (slotDuration) {
-      const slotCnt = core.divideRangeByDuration(currentUnzonedRange.getStart(), currentUnzonedRange.getEnd(), slotDuration)
+      const slotCnt = dateEnv.countDurationsBetween(
+        currentUnzonedRange.start,
+        currentUnzonedRange.end,
+        slotDuration
+      )
       if (slotCnt > MAX_AUTO_CELLS) {
         slotDuration = null
       }
@@ -209,7 +238,7 @@ function computeHeaderFormats(timelineView: TimelineView) {
   let format1
   let format2
   const { labelInterval } = timelineView
-  let unit = core.computeGreatestUnit(labelInterval)
+  let unit = core.greatestDurationDenominator(labelInterval).unit
   const weekNumbersVisible = timelineView.opt('weekNumbers')
   let format0 = (format1 = (format2 = null))
 
@@ -219,80 +248,102 @@ function computeHeaderFormats(timelineView: TimelineView) {
     unit = 'day'
   }
 
+  // gahhh
   switch (unit) {
     case 'year':
-      format0 = 'YYYY' // '2015'
+      format0 = { year: 'numeric' } // '2015'
       break
 
     case 'month':
       if (timelineView.currentRangeAs('years') > 1) {
-        format0 = 'YYYY' // '2015'
+        format0 = { year: 'numeric' } // '2015'
       }
 
-      format1 = 'MMM' // 'Jan'
+      format1 = { month: 'short' } // 'Jan'
       break
 
     case 'week':
       if (timelineView.currentRangeAs('years') > 1) {
-        format0 = 'YYYY' // '2015'
+        format0 = { year: 'numeric' } // '2015'
       }
 
-      format1 = timelineView.opt('shortWeekFormat') // 'Wk4'
+      format1 = { week: 'narrow' } // 'Wk4'
       break
 
     case 'day':
       if (timelineView.currentRangeAs('years') > 1) {
-        format0 = timelineView.opt('monthYearFormat') // 'January 2014'
+        format0 = { year: 'numeric', month: 'long' } // 'January 2014'
       } else if (timelineView.currentRangeAs('months') > 1) {
-        format0 = 'MMMM' // 'January'
+        format0 = { month: 'long' } // 'January'
       }
 
       if (weekNumbersVisible) {
-        format1 = timelineView.opt('weekFormat') // 'Wk 4'
+        format1 = { week: 'short' } // 'Wk 4'
       }
 
-      // TODO: would use smallDayDateFormat but the way timeline does RTL,
-      // we don't want the text to be flipped
-      format2 = 'dd D' // @opt('smallDayDateFormat') # 'Su 9'
+      format2 = { weekday: 'narrow', day: 'numeric' } // 'Su 9'
       break
 
     case 'hour':
       if (weekNumbersVisible) {
-        format0 = timelineView.opt('weekFormat') // 'Wk 4'
+        format0 = { week: 'short' } // 'Wk 4'
       }
 
       if (timelineView.currentRangeAs('days') > 1) {
-        format1 = timelineView.opt('dayOfMonthFormat') // 'Fri 9/15'
+        format1 = { weekday: 'short', day: 'numeric', month: 'numeric' }
       }
 
-      format2 = timelineView.opt('smallTimeFormat') // '6pm'
+      format2 = {
+        // like "h(:mm)a" -> "6pm" / "6:30pm"
+        hour: 'numeric',
+        minute: '2-digit',
+        // TODO: omit minute if possible
+      }
       break
 
     case 'minute':
       // sufficiently large number of different minute cells?
-      if ((labelInterval.asMinutes() / 60) >= MAX_AUTO_SLOTS_PER_LABEL) {
-        format0 = timelineView.opt('hourFormat') // '6pm'
-        format1 = '[:]mm' // ':30'
+      // TODO
+      if ((core.asRoughMinutes(labelInterval) / 60) >= MAX_AUTO_SLOTS_PER_LABEL) {
+        format0 = {
+          hour: 'numeric'
+          // TODO: make like '6pm' ... and will omitting the half hour work?
+        }
+        format1 = function(params) {
+          return ':' + pad(params.date.minute) // ':30'
+        }
       } else {
-        format0 = timelineView.opt('mediumTimeFormat') // '6:30pm'
+        format0 = {
+          hour: 'numeric',
+          minute: 'numeric'
+          // TODO: make like '6:30pm'
+        }
       }
       break
 
     case 'second':
       // sufficiently large number of different second cells?
-      if ((labelInterval.asSeconds() / 60) >= MAX_AUTO_SLOTS_PER_LABEL) {
-        format0 = 'LT' // '8:30 PM'
-        format1 = '[:]ss' // ':30'
+      if ((core.asRoughSeconds(labelInterval) / 60) >= MAX_AUTO_SLOTS_PER_LABEL) {
+        format0 = { hour: 'numeric', minute: '2-digit' } // '8:30 PM'
+        format1 = function(params) {
+          return ':' + pad(params.date.second) // ':30'
+        }
       } else {
-        format0 = 'LTS' // '8:30:45 PM'
+        format0 = { hour: 'numeric', minute: '2-digit', second: '2-digit' } // '8:30:45 PM'
       }
       break
 
     case 'millisecond':
-      format0 = 'LTS' // '8:30:45 PM'
-      format1 = '[.]SSS' // '750'
+      format0 = { hour: 'numeric', minute: '2-digit', second: '2-digit' } // '8:30:45 PM'
+      format1 = function(params) {
+        return '.' + params.millisecond // TODO: pad to 3 digits
+      }
       break
   }
 
   return [].concat(format0 || [], format1 || [], format2 || [])
+}
+
+function pad(n) {
+  return n < 10 ? '0' + n : '' + n
 }

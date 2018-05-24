@@ -20,7 +20,12 @@ export default class TimelineEventRenderer extends EventRenderer {
 
   // Computes a default event time formatting string if `timeFormat` is not explicitly defined
   computeEventTimeFormat() {
-    return this.view.opt('extraSmallTimeFormat')
+    return {
+      // like "h(:mm)t" -> "6p" / "6:30p"
+      hour: 'numeric',
+      minute: '2-digit',
+      // TODO a/p
+    }
   }
 
 

@@ -1,8 +1,7 @@
-import * as moment from 'moment'
 import * as core from 'fullcalendar'
 
 const RELEASE_DATE = '<%= releaseDate %>' // for Scheduler
-const UPGRADE_WINDOW = { years: 1, weeks: 1 } // 1 week leeway, for tz shift reasons too
+const UPGRADE_WINDOW = 365 + 7 // days. 1 week leeway, for tz shift reasons too
 const LICENSE_INFO_URL = 'http://fullcalendar.io/scheduler/license/'
 const PRESET_LICENSE_KEYS = [
   'GPL-My-Project-Is-Open-Source',
@@ -30,11 +29,12 @@ function isValidKey(key) {
   }
   const parts = (key || '').match(/^(\d+)\-fcs\-(\d+)$/)
   if (parts && (parts[1].length === 10)) {
-    const purchaseDate = moment.utc(parseInt(parts[2], 10) * 1000)
-    const releaseDate = moment.utc((core as any).mockSchedulerReleaseDate || RELEASE_DATE)
-    if (releaseDate.isValid()) { // token won't be replaced in dev mode
-      const minPurchaseDate = releaseDate.clone().subtract(UPGRADE_WINDOW)
-      if (purchaseDate.isAfter(minPurchaseDate)) {
+    const purchaseDate = new Date(parseInt(parts[2], 10) * 1000)
+    const releaseDate = new Date((core as any).mockSchedulerReleaseDate || RELEASE_DATE)
+
+    if (releaseDate.valueOf() !== NaN) { // token won't be replaced in dev mode
+      const minPurchaseDate = core.addDays(releaseDate, UPGRADE_WINDOW)
+      if (minPurchaseDate < purchaseDate) {
         return true
       }
     }

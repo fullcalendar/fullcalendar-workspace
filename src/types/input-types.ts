@@ -1,4 +1,3 @@
-import * as moment from 'moment'
 import { BusinessHoursInput, EventOptionsBase } from 'fullcalendar'
 
 export interface ResourceInput {
@@ -23,7 +22,7 @@ export interface ResourceComplexInput extends EventOptionsBase {
 }
 
 export type ResourceFunctionCallback = (resources: ResourceInput[]) => void
-export type ResourceFunction = (callback: ResourceFunctionCallback, start: moment.Moment, end: moment.Moment, timezone: string) => void
+export type ResourceFunction = (callback: ResourceFunctionCallback, start: Date, end: Date, timezone: string) => void
 export type ResourceSourceInput = ResourceInput[] | ResourceFunction | ResourceComplexInput
 
 declare module 'fullcalendar/src/types/input-types' {
