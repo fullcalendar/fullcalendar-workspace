@@ -252,7 +252,6 @@ function computeHeaderFormats(timelineView: TimelineView) {
     unit = 'day'
   }
 
-  // gahhh
   switch (unit) {
     case 'year':
       format0 = { year: 'numeric' } // '2015'
@@ -294,24 +293,23 @@ function computeHeaderFormats(timelineView: TimelineView) {
       }
 
       if (timelineView.currentRangeAs('days') > 1) {
-        format1 = { weekday: 'short', day: 'numeric', month: 'numeric' }
+        format1 = { weekday: 'short', day: 'numeric', month: 'numeric', omitCommas: true } // Sat 4/7
       }
 
       format2 = {
-        // like "h(:mm)a" -> "6pm" / "6:30pm"
         hour: 'numeric',
         minute: '2-digit',
-        // TODO: omit minute if possible
+        omitZeroTime: true,
+        meridiem: 'short'
       }
       break
 
     case 'minute':
       // sufficiently large number of different minute cells?
-      // TODO
       if ((core.asRoughMinutes(labelInterval) / 60) >= MAX_AUTO_SLOTS_PER_LABEL) {
         format0 = {
-          hour: 'numeric'
-          // TODO: make like '6pm' ... and will omitting the half hour work?
+          hour: 'numeric',
+          meridiem: 'short'
         }
         format1 = function(params) {
           return ':' + pad(params.date.minute) // ':30'
@@ -319,8 +317,8 @@ function computeHeaderFormats(timelineView: TimelineView) {
       } else {
         format0 = {
           hour: 'numeric',
-          minute: 'numeric'
-          // TODO: make like '6:30pm'
+          minute: 'numeric',
+          meridiem: 'short'
         }
       }
       break
@@ -328,26 +326,22 @@ function computeHeaderFormats(timelineView: TimelineView) {
     case 'second':
       // sufficiently large number of different second cells?
       if ((core.asRoughSeconds(labelInterval) / 60) >= MAX_AUTO_SLOTS_PER_LABEL) {
-        format0 = { hour: 'numeric', minute: '2-digit' } // '8:30 PM'
+        format0 = { hour: 'numeric', minute: '2-digit', meridiem: 'lowercase' } // '8:30 PM'
         format1 = function(params) {
-          return ':' + pad(params.date.second) // ':30'
+          return ':' + core.padStart(params.date.second, 2) // ':30'
         }
       } else {
-        format0 = { hour: 'numeric', minute: '2-digit', second: '2-digit' } // '8:30:45 PM'
+        format0 = { hour: 'numeric', minute: '2-digit', second: '2-digit', meridiem: 'lowercase' } // '8:30:45 PM'
       }
       break
 
     case 'millisecond':
-      format0 = { hour: 'numeric', minute: '2-digit', second: '2-digit' } // '8:30:45 PM'
+      format0 = { hour: 'numeric', minute: '2-digit', second: '2-digit', meridiem: 'lowercase' } // '8:30:45 PM'
       format1 = function(params) {
-        return '.' + params.millisecond // TODO: pad to 3 digits
+        return '.' + core.padStart(params.millisecond, 3)
       }
       break
   }
 
   return [].concat(format0 || [], format1 || [], format2 || [])
-}
-
-function pad(n) {
-  return n < 10 ? '0' + n : '' + n
 }
