@@ -44,8 +44,8 @@ describe('agenda-view event resizing', function() {
         }),
         eventResize:
           (resizeSpy = spyCall(function(event) {
-            expect(event.start).toEqualMoment('2015-11-23T02:00:00')
-            expect(event.end).toEqualMoment('2015-11-23T04:30:00')
+            expect(event.start).toEqualDate('2015-11-23T02:00:00Z')
+            expect(event.end).toEqualDate('2015-11-23T04:30:00Z')
             const resource = currentCalendar.getEventResource(event)
             expect(resource).toBeFalsy()
           }))
@@ -79,8 +79,8 @@ describe('agenda-view event resizing', function() {
         }),
         eventResize:
           (resizeSpy = spyCall(function(event) {
-            expect(event.start).toEqualMoment('2015-11-29T02:00:00')
-            expect(event.end).toEqualMoment('2015-11-29T04:30:00')
+            expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
+            expect(event.end).toEqualDate('2015-11-29T04:30:00Z')
             const resource = currentCalendar.getEventResource(event)
             expect(resource.id).toBe('b')
           }))
@@ -106,8 +106,8 @@ describe('agenda-view event resizing', function() {
         }),
         eventResize:
           (resizeSpy = spyCall(function(event) {
-            expect(event.start).toEqualMoment('2015-11-29T02:00:00')
-            expect(event.end).toEqualMoment('2015-11-30T04:30:00')
+            expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
+            expect(event.end).toEqualDate('2015-11-30T04:30:00Z')
             const resource = currentCalendar.getEventResource(event)
             expect(resource.id).toBe('b')
           }))
@@ -164,8 +164,8 @@ describe('agenda-view event resizing', function() {
         }),
         eventResize:
           (resizeSpy = spyCall(function(event) {
-            expect(event.start).toEqualMoment('2015-11-30T02:00:00')
-            expect(event.end).toEqualMoment('2015-11-30T04:30:00')
+            expect(event.start).toEqualDate('2015-11-30T02:00:00Z')
+            expect(event.end).toEqualDate('2015-11-30T04:30:00Z')
             const resource = currentCalendar.getEventResource(event)
             expect(resource.id).toBe('b')
           }))
@@ -192,8 +192,8 @@ describe('agenda-view event resizing', function() {
         }),
         eventResize:
           (resizeSpy = spyCall(function(event) {
-            expect(event.start).toEqualMoment('2015-11-29T02:00:00')
-            expect(event.end).toEqualMoment('2015-11-30T04:30:00')
+            expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
+            expect(event.end).toEqualDate('2015-11-30T04:30:00Z')
             const resource = currentCalendar.getEventResource(event)
             expect(resource.id).toBe('a')
           }))

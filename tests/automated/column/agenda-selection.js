@@ -39,8 +39,8 @@ describe('agenda-view selection', function() {
         },
         select(start, end, jsEvent, view, resource) {
           selectCalled = true
-          expect(start).toEqualMoment('2015-11-23T02:00:00')
-          expect(end).toEqualMoment('2015-11-23T04:30:00')
+          expect(start).toEqualDate('2015-11-23T02:00:00Z')
+          expect(end).toEqualDate('2015-11-23T04:30:00Z')
           expect(typeof jsEvent).toBe('object')
           expect(typeof view).toBe('object')
           expect(resource).toBeFalsy()
@@ -70,8 +70,8 @@ describe('agenda-view selection', function() {
         },
         select(start, end, jsEvent, view, resource) {
           selectCalled = true
-          expect(start).toEqualMoment('2015-11-29T02:00:00')
-          expect(end).toEqualMoment('2015-11-29T04:30:00')
+          expect(start).toEqualDate('2015-11-29T02:00:00Z')
+          expect(end).toEqualDate('2015-11-29T04:30:00Z')
           expect(typeof jsEvent).toBe('object')
           expect(typeof view).toBe('object')
           expect(resource.id).toBe('b')
@@ -94,8 +94,8 @@ describe('agenda-view selection', function() {
         },
         select(start, end, jsEvent, view, resource) {
           selectCalled = true
-          expect(start).toEqualMoment('2015-11-29T02:00:00')
-          expect(end).toEqualMoment('2015-11-30T04:30:00')
+          expect(start).toEqualDate('2015-11-29T02:00:00Z')
+          expect(end).toEqualDate('2015-11-30T04:30:00Z')
           expect(typeof jsEvent).toBe('object')
           expect(typeof view).toBe('object')
           expect(resource.id).toBe('b')
@@ -144,8 +144,8 @@ describe('agenda-view selection', function() {
         },
         select(start, end, jsEvent, view, resource) {
           selectCalled = true
-          expect(start).toEqualMoment('2015-11-30T02:00:00')
-          expect(end).toEqualMoment('2015-11-30T04:30:00')
+          expect(start).toEqualDate('2015-11-30T02:00:00Z')
+          expect(end).toEqualDate('2015-11-30T04:30:00Z')
           expect(typeof jsEvent).toBe('object')
           expect(typeof view).toBe('object')
           expect(resource.id).toBe('b')
@@ -168,8 +168,8 @@ describe('agenda-view selection', function() {
         },
         select(start, end, jsEvent, view, resource) {
           selectCalled = true
-          expect(start).toEqualMoment('2015-11-29T04:00:00')
-          expect(end).toEqualMoment('2015-11-30T02:30:00')
+          expect(start).toEqualDate('2015-11-29T04:00:00Z')
+          expect(end).toEqualDate('2015-11-30T02:30:00Z')
           expect(typeof jsEvent).toBe('object')
           expect(typeof view).toBe('object')
           expect(resource.id).toBe('b')

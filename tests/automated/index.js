@@ -1,6 +1,6 @@
 
 require('fullcalendar/tests/automated/globals')
-require('fullcalendar/tests/automated/lib/moment')
+require('fullcalendar/tests/automated/lib/date-matchers')
 require('fullcalendar/tests/automated/lib/dom-geom')
 require('fullcalendar/tests/automated/lib/simulate')
 

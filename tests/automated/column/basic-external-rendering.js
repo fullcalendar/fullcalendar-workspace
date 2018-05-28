@@ -47,11 +47,11 @@ describe('basic-view event drag-n-drop', function() {
             (dropSpy = spyCall(function(date) {})),
           // TODO: fix buggy behavior
           // https://github.com/fullcalendar/fullcalendar/issues/2955
-          // expect(date).toEqualMoment('2015-12-01')
+          // expect(date).toEqualDate('2015-12-01')
           eventReceive:
             (receiveSpy = spyCall(function(event) {
               expect(event.title).toBe('my external event')
-              expect(event.start).toEqualMoment(tz.moment('2015-12-01T05:00:00'))
+              expect(event.start).toEqualDate(tz.createDate('2015-12-01T05:00:00'))
               expect(event.end).toBe(null)
               const resource = currentCalendar.getEventResource(event)
               expect(resource.id).toBe('a')

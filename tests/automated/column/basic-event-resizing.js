@@ -49,8 +49,8 @@ describe('basic-view event resizing', function() {
         },
         eventResize(event) {
           resizeCalled = true
-          expect(event.start).toEqualMoment('2015-11-23')
-          expect(event.end).toEqualMoment('2015-11-25')
+          expect(event.start).toEqualDate('2015-11-23')
+          expect(event.end).toEqualDate('2015-11-25')
           const resource = currentCalendar.getEventResource(event)
           expect(resource).toBeFalsy()
         }
@@ -89,8 +89,8 @@ describe('basic-view event resizing', function() {
         },
         eventResize(event) {
           resizeCalled = true
-          expect(event.start).toEqualMoment('2015-11-29')
-          expect(event.end).toEqualMoment('2015-12-01')
+          expect(event.start).toEqualDate('2015-11-29')
+          expect(event.end).toEqualDate('2015-12-01')
           const resource = currentCalendar.getEventResource(event)
           expect(resource.id).toBe('a')
         }
@@ -160,8 +160,8 @@ describe('basic-view event resizing', function() {
         },
         eventResize(event) {
           resizeCalled = true
-          expect(event.start).toEqualMoment('2015-11-28')
-          expect(event.end).toEqualMoment('2015-12-01')
+          expect(event.start).toEqualDate('2015-11-28')
+          expect(event.end).toEqualDate('2015-12-01')
           const resource = currentCalendar.getEventResource(event)
           expect(resource.id).toBe('b')
         }

@@ -46,12 +46,12 @@ describe('agenda-view event drag-n-drop', function() {
           }),
           drop:
             (dropSpy = spyCall(function(date) {
-              return expect(date).toEqualMoment(tz.moment('2015-12-01T05:00:00'))
+              return expect(date).toEqualDate(tz.createDate('2015-12-01T05:00:00'))
             })),
           eventReceive:
             (receiveSpy = spyCall(function(event) {
               expect(event.title).toBe('my external event')
-              expect(event.start).toEqualMoment(tz.moment('2015-12-01T05:00:00'))
+              expect(event.start).toEqualDate(tz.createDate('2015-12-01T05:00:00'))
               expect(event.end).toBe(null)
               const resource = currentCalendar.getEventResource(event)
               expect(resource.id).toBe('a')

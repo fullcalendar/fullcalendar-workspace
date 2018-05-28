@@ -32,7 +32,7 @@ function isValidKey(key) {
     const purchaseDate = new Date(parseInt(parts[2], 10) * 1000)
     const releaseDate = new Date((core as any).mockSchedulerReleaseDate || RELEASE_DATE)
 
-    if (releaseDate.valueOf() !== NaN) { // token won't be replaced in dev mode
+    if (!isNaN(releaseDate.valueOf())) { // token won't be replaced in dev mode
       const minPurchaseDate = core.addDays(releaseDate, UPGRADE_WINDOW)
       if (minPurchaseDate < purchaseDate) {
         return true

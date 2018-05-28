@@ -10,8 +10,10 @@ describe('timeline date range', function() {
     })
     expect(
       // we need to get from DOM! dateProfile was always correct even when DOM wrong
-      $('.fc-head th[data-date]:first').data('date')
-    ).toEqualMoment('2018-01-22') // a Monday
+      new Date(
+        $('.fc-head th[data-date]:first').data('date')
+      )
+    ).toEqualDate('2018-01-22') // a Monday
   })
 
 })

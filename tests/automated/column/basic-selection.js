@@ -43,8 +43,8 @@ describe('basic-view selection', function() {
         },
         select(start, end, jsEvent, view, resource) {
           selectCalled = true
-          expect(start).toEqualMoment('2015-11-23')
-          expect(end).toEqualMoment('2015-11-25')
+          expect(start).toEqualDate('2015-11-23')
+          expect(end).toEqualDate('2015-11-25')
           expect(typeof jsEvent).toBe('object')
           expect(typeof view).toBe('object')
           expect(resource).toBeFalsy()
@@ -76,8 +76,8 @@ describe('basic-view selection', function() {
         },
         select(start, end, jsEvent, view, resource) {
           selectCalled = true
-          expect(start).toEqualMoment('2015-11-29')
-          expect(end).toEqualMoment('2015-12-01')
+          expect(start).toEqualDate('2015-11-29')
+          expect(end).toEqualDate('2015-12-01')
           expect(typeof jsEvent).toBe('object')
           expect(typeof view).toBe('object')
           expect(resource.id).toBe('a')
@@ -130,8 +130,8 @@ describe('basic-view selection', function() {
         },
         select(start, end, jsEvent, view, resource) {
           selectCalled = true
-          expect(start).toEqualMoment('2015-11-28')
-          expect(end).toEqualMoment('2015-12-01')
+          expect(start).toEqualDate('2015-11-28')
+          expect(end).toEqualDate('2015-12-01')
           expect(typeof jsEvent).toBe('object')
           expect(typeof view).toBe('object')
           expect(resource.id).toBe('b')

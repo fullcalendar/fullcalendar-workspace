@@ -31,8 +31,8 @@ describe('timeline-view event drag-n-drop', function() {
         }),
         eventDrop:
           (dropSpy = spyCall(function(event) {
-            expect(event.start).toEqualMoment(tz.moment('2015-11-29T05:00:00'))
-            expect(event.end).toEqualMoment(tz.moment('2015-11-29T06:00:00'))
+            expect(event.start).toEqualDate(tz.createDate('2015-11-29T05:00:00'))
+            expect(event.end).toEqualDate(tz.createDate('2015-11-29T06:00:00'))
             const resource = currentCalendar.getEventResource(event)
             expect(resource.id).toBe('a')
           }))
@@ -50,8 +50,8 @@ describe('timeline-view event drag-n-drop', function() {
       }),
       eventDrop(event, delta, revert) {
         setTimeout(function() { // let the drop rerender
-          expect(event.start).toEqualMoment('2015-11-29T05:00:00')
-          expect(event.end).toEqualMoment('2015-11-29T06:00:00')
+          expect(event.start).toEqualDate('2015-11-29T05:00:00Z')
+          expect(event.end).toEqualDate('2015-11-29T06:00:00Z')
           expect(event.resourceId).toBe(null)
           expect(event.resourceIds).toEqual([ 'b', 'c' ])
           done()
@@ -81,12 +81,12 @@ describe('timeline-view event drag-n-drop', function() {
         setTimeout(function() { // let the drop rerender
           const events = currentCalendar.clientEvents()
 
-          expect(events[0].start).toEqualMoment('2015-11-29T05:00:00')
-          expect(events[0].end).toEqualMoment('2015-11-29T06:00:00')
+          expect(events[0].start).toEqualDate('2015-11-29T05:00:00Z')
+          expect(events[0].end).toEqualDate('2015-11-29T06:00:00Z')
           expect(events[0].resourceId).toBe('c')
 
-          expect(events[1].start).toEqualMoment('2015-11-29T05:00:00')
-          expect(events[1].end).toEqualMoment('2015-11-29T06:00:00')
+          expect(events[1].start).toEqualDate('2015-11-29T05:00:00Z')
+          expect(events[1].end).toEqualDate('2015-11-29T06:00:00Z')
           expect(events[1].resourceId).toBe('b')
 
           done()
@@ -105,8 +105,8 @@ describe('timeline-view event drag-n-drop', function() {
       }),
       eventDrop(event, delta, revert) {
         setTimeout(function() { // let the drop rerender
-          expect(event.start).toEqualMoment('2015-11-29T05:00:00')
-          expect(event.end).toEqualMoment('2015-11-29T06:00:00')
+          expect(event.start).toEqualDate('2015-11-29T05:00:00Z')
+          expect(event.end).toEqualDate('2015-11-29T06:00:00Z')
           expect(event.resourceId).toBe('b')
           expect(event.resourceIds).toEqual(null)
           done()
@@ -131,8 +131,8 @@ describe('timeline-view event drag-n-drop', function() {
       }),
       eventDrop:
         (dropSpy = spyCall(function(event) {
-          expect(event.start).toEqualMoment('2015-11-29T05:00:00')
-          expect(event.end).toEqualMoment('2015-11-29T06:00:00')
+          expect(event.start).toEqualDate('2015-11-29T05:00:00Z')
+          expect(event.end).toEqualDate('2015-11-29T06:00:00Z')
           const resource = currentCalendar.getEventResource(event)
           expect(resource.id).toBe('a')
         }))
@@ -149,13 +149,13 @@ describe('timeline-view event drag-n-drop', function() {
       }),
       eventDrop(event, delta, revert) {
         setTimeout(function() { // let the drop rerender
-          expect(event.start).toEqualMoment('2015-11-29T05:00:00')
-          expect(event.end).toEqualMoment('2015-11-29T06:00:00')
+          expect(event.start).toEqualDate('2015-11-29T05:00:00Z')
+          expect(event.end).toEqualDate('2015-11-29T06:00:00Z')
           expect(event.resourceId).toBe('a')
           revert()
           event = currentCalendar.clientEvents()[0]
-          expect(event.start).toEqualMoment('2015-11-29T02:00:00')
-          expect(event.end).toEqualMoment('2015-11-29T03:00:00')
+          expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
+          expect(event.end).toEqualDate('2015-11-29T03:00:00Z')
           expect(event.resourceId).toBe('b')
           done()
         })
@@ -173,14 +173,14 @@ describe('timeline-view event drag-n-drop', function() {
       }),
       eventDrop(event, delta, revert) {
         setTimeout(function() { // let the drop rerender
-          expect(event.start).toEqualMoment('2015-11-29T05:00:00')
-          expect(event.end).toEqualMoment('2015-11-29T06:00:00')
+          expect(event.start).toEqualDate('2015-11-29T05:00:00Z')
+          expect(event.end).toEqualDate('2015-11-29T06:00:00Z')
           expect(event.resourceId).toBe(null)
           expect(event.resourceIds).toEqual([ 'b', 'c' ])
           revert()
           event = currentCalendar.clientEvents()[0]
-          expect(event.start).toEqualMoment('2015-11-29T02:00:00')
-          expect(event.end).toEqualMoment('2015-11-29T03:00:00')
+          expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
+          expect(event.end).toEqualDate('2015-11-29T03:00:00Z')
           expect(event.resourceId).toBe(null)
           expect(event.resourceIds).toEqual([ 'a', 'b' ])
           done()
@@ -215,8 +215,8 @@ describe('timeline-view event drag-n-drop', function() {
         }),
         eventDrop:
           (dropSpy = spyCall(function(event) {
-            expect(event.start).toEqualMoment('2015-11-27T05:00')
-            expect(event.end).toEqualMoment('2015-11-27T06:00')
+            expect(event.start).toEqualDate('2015-11-27T05:00Z')
+            expect(event.end).toEqualDate('2015-11-27T06:00Z')
             const resource = currentCalendar.getEventResource(event)
             expect(resource.id).toBe('a')
           }))
@@ -242,8 +242,8 @@ describe('timeline-view event drag-n-drop', function() {
         }),
         eventDrop:
           (dropSpy = spyCall(function(event) {
-            expect(event.start).toEqualMoment('2015-11-27T05:00:00')
-            expect(event.end).toEqualMoment('2015-11-27T06:00:00')
+            expect(event.start).toEqualDate('2015-11-27T05:00:00Z')
+            expect(event.end).toEqualDate('2015-11-27T06:00:00Z')
             const resource = currentCalendar.getEventResource(event)
             expect(resource.id).toBe('a')
           }))

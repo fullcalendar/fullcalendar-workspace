@@ -1,3 +1,4 @@
+import { formatIsoDay } from 'fullcalendar/tests/automated/datelib/utils'
 import { getDayGridDowEls } from 'fullcalendar/tests/automated/lib/day-grid'
 import { getTimeGridDowEls } from 'fullcalendar/tests/automated/lib/time-grid'
 
@@ -5,10 +6,14 @@ import { getTimeGridDowEls } from 'fullcalendar/tests/automated/lib/time-grid'
 // date optional
 export function getHeadResourceEls(resourceId, date) {
   let datePart = ''
+
   if (date) {
-    date = FullCalendar.moment.parseZone(date)
-    datePart = `[data-date="${date.format('YYYY-MM-DD')}"]`
+    if (typeof Date === 'string') {
+      date = new Date(date)
+    }
+    datePart = '[data-date="' + formatIsoDay(date) + '"]'
   }
+
   return $('.fc-resource-cell[data-resource-id="' + resourceId + '"]' + datePart)
 }
 

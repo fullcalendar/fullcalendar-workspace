@@ -489,7 +489,7 @@ export default class TimelineView extends View {
 
         html +=
           '<th class="' + headerCellClassNames.join(' ') + '"' +
-            ' data-date="' + dateEnv.formatIso(cell.date, { omitTime: !this.isTimeScale }) + '"' +
+            ' data-date="' + dateEnv.formatIso(cell.date, { omitTime: !this.isTimeScale, omitTimeZoneOffset: true }) + '"' +
             (cell.colspan > 1 ? ' colspan="' + cell.colspan + '"' : '') +
           '>' +
             '<div class="fc-cell-content">' +
@@ -563,7 +563,7 @@ export default class TimelineView extends View {
     }
 
     return '<td class="' + classes.join(' ') + '"' +
-      ' data-date="' + dateEnv.formatIso(date, { omitTime: !this.isTimeScale }) + '"' +
+      ' data-date="' + dateEnv.formatIso(date, { omitTime: !this.isTimeScale, omitTimeZoneOffset: true }) + '"' +
       '><div></div></td>'
   }
 

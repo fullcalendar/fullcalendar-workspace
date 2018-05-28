@@ -48,12 +48,12 @@ describe('timeline-view external element drag-n-drop', function() {
         }),
         drop:
           (dropSpy = spyCall(function(date) {
-            expect(date).toEqualMoment(tz.moment('2015-11-29T05:00:00'))
+            expect(date).toEqualDate(tz.createDate('2015-11-29T05:00:00Z'))
           })),
         eventReceive:
           (receiveSpy = spyCall(function(event) {
             expect(event.title).toBe('my external event')
-            expect(event.start).toEqualMoment(tz.moment('2015-11-29T05:00:00'))
+            expect(event.start).toEqualDate(tz.createDate('2015-11-29T05:00:00Z'))
             expect(event.end).toBe(null)
             const resource = currentCalendar.getEventResource(event)
             expect(resource.id).toBe('b')

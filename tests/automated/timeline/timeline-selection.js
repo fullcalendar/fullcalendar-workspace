@@ -45,8 +45,8 @@ describe('timeline selection', function() {
                 },
                 select(start, end, jsEvent, view, resource) {
                   selectCalled = true
-                  expect(start).toEqualMoment(tz.moment('2015-11-28T04:00:00'))
-                  expect(end).toEqualMoment(tz.moment('2015-11-28T07:30:00'))
+                  expect(start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
+                  expect(end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
                   expect(typeof jsEvent).toBe('object')
                   expect(typeof view).toBe('object')
                   expect(resource).toBeFalsy()
@@ -91,8 +91,8 @@ describe('timeline selection', function() {
                 },
                 select(start, end, jsEvent, view, resource) {
                   selectCalled = true
-                  expect(start).toEqualMoment(tz.moment('2015-11-28T04:00:00'))
-                  expect(end).toEqualMoment(tz.moment('2015-11-28T07:30:00'))
+                  expect(start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
+                  expect(end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
                   expect(typeof jsEvent).toBe('object')
                   expect(typeof view).toBe('object')
                   expect(resource.id).toBe('b')
@@ -115,8 +115,8 @@ describe('timeline selection', function() {
                 },
                 select(start, end, jsEvent, view, resource) {
                   selectCalled = true
-                  expect(start).toEqualMoment(tz.moment('2015-11-28T04:00:00'))
-                  expect(end).toEqualMoment(tz.moment('2015-11-28T07:30:00'))
+                  expect(start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
+                  expect(end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
                   expect(typeof jsEvent).toBe('object')
                   expect(typeof view).toBe('object')
                   expect(resource.id).toBe('b')
@@ -147,8 +147,8 @@ describe('timeline selection', function() {
               },
               select(start, end, jsEvent, view, resource) {
                 selectCalled = true
-                expect(start).toEqualMoment(tz.moment('2015-11-28T04:15:00'))
-                expect(end).toEqualMoment(tz.moment('2015-11-28T07:45:00'))
+                expect(start).toEqualDate(tz.createDate('2015-11-28T04:15:00'))
+                expect(end).toEqualDate(tz.createDate('2015-11-28T07:45:00'))
                 expect(typeof jsEvent).toBe('object')
                 expect(typeof view).toBe('object')
                 expect(resource.id).toBe('b')
@@ -180,8 +180,8 @@ describe('timeline selection', function() {
           },
           select(start, end, jsEvent, view, resource) {
             selectCalled = true
-            expect(start).toEqualMoment('2015-11-03')
-            expect(end).toEqualMoment('2015-11-06')
+            expect(start).toEqualDate('2015-11-03')
+            expect(end).toEqualDate('2015-11-06')
             expect(typeof jsEvent).toBe('object')
             expect(typeof view).toBe('object')
             expect(resource.id).toBe('a')
@@ -211,8 +211,8 @@ describe('timeline selection', function() {
           },
           select(start, end, jsEvent, view, resource) {
             selectCalled = true
-            expect(start).toEqualMoment('2015-01-18')
-            expect(end).toEqualMoment('2015-02-15')
+            expect(start).toEqualDate('2015-01-18')
+            expect(end).toEqualDate('2015-02-15')
             expect(typeof jsEvent).toBe('object')
             expect(typeof view).toBe('object')
             expect(resource.id).toBe('a')
@@ -242,8 +242,8 @@ describe('timeline selection', function() {
       },
       select(start, end, jsEvent, view, resource) {
         selectCalled = true
-        expect(start).toEqualMoment('2015-11-28T04:00:00')
-        expect(end).toEqualMoment('2015-11-28T07:30:00')
+        expect(start).toEqualDate('2015-11-28T04:00:00Z')
+        expect(end).toEqualDate('2015-11-28T07:30:00Z')
         expect(typeof jsEvent).toBe('object')
         expect(typeof view).toBe('object')
         expect(resource.id).toBe('b')

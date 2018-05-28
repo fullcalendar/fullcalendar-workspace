@@ -98,14 +98,14 @@ Calendar.prototype.rerenderResources = function() { // for API
 }
 
 
-Calendar.prototype.buildSelectFootprint = function(zonedStartInput, zonedEndInput, resourceId?: string) {
-  const plainFootprint = origMethods.buildSelectFootprint.apply(this, arguments)
+Calendar.prototype.buildSelectFootprint = function(zonedStartInput, zonedEndInput, otherProps: any = {}) {
+  const plainFootprint = origMethods.buildSelectFootprint.call(this, zonedStartInput, zonedEndInput, otherProps)
 
-  if (resourceId) {
+  if (otherProps.resourceId != null) {
     return new ResourceComponentFootprint(
       plainFootprint.unzonedRange,
       plainFootprint.isAllDay,
-      resourceId
+      otherProps.resourceId
     )
   } else {
     return plainFootprint

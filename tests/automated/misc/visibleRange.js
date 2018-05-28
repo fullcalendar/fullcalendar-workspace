@@ -24,13 +24,13 @@ describe('visibleRange', function() {
 
       const dates = $('.fc-head .fc-time-area tr:first-child > th[data-date]')
         .map(function(i, node) {
-          return FullCalendar.moment.parseZone($(node).data('date'))
+          return new Date($(node).data('date'))
         })
         .get()
 
       expect(dates.length).toBe(2)
-      expect(dates[0]).toEqualMoment('2017-06-07T00:00:00')
-      expect(dates[1]).toEqualMoment('2017-06-08T00:00:00')
+      expect(dates[0]).toEqualDate('2017-06-07T00:00:00Z')
+      expect(dates[1]).toEqualDate('2017-06-08T00:00:00Z')
     })
   })
 
@@ -50,13 +50,13 @@ describe('visibleRange', function() {
 
       const dates = $('.fc-head .fc-time-area tr:first-child > th[data-date]')
         .map(function(i, node) {
-          return FullCalendar.moment.parseZone($(node).data('date'))
+          return new Date($(node).data('date'))
         })
         .get()
 
       expect(dates.length).toBe(2)
-      expect(dates[0]).toEqualMoment('2017-01-01')
-      expect(dates[1]).toEqualMoment('2018-01-01')
+      expect(dates[0]).toEqualDate('2017-01-01')
+      expect(dates[1]).toEqualDate('2018-01-01')
     })
   })
 
@@ -77,13 +77,13 @@ describe('visibleRange', function() {
 
       const dates = $('.fc-head tr:first-child > th[data-date]')
         .map(function(i, node) {
-          return FullCalendar.moment.parseZone($(node).data('date'))
+          return new Date($(node).data('date'))
         })
         .get()
 
       expect(dates.length).toBe(2)
-      expect(dates[0]).toEqualMoment('2017-06-07')
-      expect(dates[1]).toEqualMoment('2017-06-08')
+      expect(dates[0]).toEqualDate('2017-06-07')
+      expect(dates[1]).toEqualDate('2017-06-08')
     })
   })
 })

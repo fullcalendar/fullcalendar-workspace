@@ -98,10 +98,7 @@ export function initScaleProps(timelineView: TimelineView) {
 function queryDurationOption(timelineView: TimelineView, name) {
   const input = timelineView.opt(name)
   if (input != null) {
-    const dur = core.createDuration(input)
-    if (+dur) {
-      return dur
-    }
+    return core.createDuration(input)
   }
 }
 
@@ -312,7 +309,7 @@ function computeHeaderFormats(timelineView: TimelineView) {
           meridiem: 'short'
         }
         format1 = function(params) {
-          return ':' + pad(params.date.minute) // ':30'
+          return ':' + core.padStart(params.date.minute, 2) // ':30'
         }
       } else {
         format0 = {

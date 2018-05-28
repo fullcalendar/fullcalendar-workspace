@@ -37,7 +37,7 @@ describe('basic-view event drag-n-drop', function() {
           }),
           eventDrop:
             (dropSpy = spyCall(function(event) {
-              expect(event.start).toEqualMoment(tz.moment('2015-12-01T12:00:00'))
+              expect(event.start).toEqualDate(tz.createDate('2015-12-01T12:00:00'))
               expect(event.end).toBe(null)
               const resource = currentCalendar.getEventResource(event)
               expect(resource.id).toBe('a')

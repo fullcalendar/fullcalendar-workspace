@@ -245,16 +245,17 @@ export default class ResourceViewMixin extends Mixin implements ResourceViewInte
   footprint is a ResourceComponentFootprint
   */
   triggerDayClick(footprint, dayEl, ev) {
-    const dateProfile = this.calendar.footprintToDateProfile(footprint)
+    const { calendar } = this
+    const dateProfile = calendar.footprintToDateProfile(footprint)
     const resource =
       footprint.resourceId ?
-        this.calendar.resourceManager.getResourceById(footprint.resourceId) :
+        calendar.resourceManager.getResourceById(footprint.resourceId) :
         null;
 
     (this as any).publiclyTrigger('dayClick', [
       {
         el: dayEl,
-        date: dateProfile.start,
+        date: calendar.dateEnv.toDate(dateProfile.unzonedRange.start),
         isAllDay: dateProfile.isAllDay,
         resource,
         jsEvent: ev,
@@ -268,16 +269,17 @@ export default class ResourceViewMixin extends Mixin implements ResourceViewInte
   footprint is a ResourceComponentFootprint
   */
   triggerSelect(footprint, ev) {
-    const dateProfile = this.calendar.footprintToDateProfile(footprint)
+    const { calendar } = this
+    const dateProfile = calendar.footprintToDateProfile(footprint)
     const resource =
       footprint.resourceId ?
-        this.calendar.resourceManager.getResourceById(footprint.resourceId) :
+        calendar.resourceManager.getResourceById(footprint.resourceId) :
         null;
 
     (this as any).publiclyTrigger('select', [
       {
-        start: dateProfile.start,
-        end: dateProfile.end,
+        start: calendar.dateEnv.toDate(dateProfile.unzonedRange.start),
+        end: calendar.dateEnv.toDate(dateProfile.unzonedRange.end),
         isAllDay: dateProfile.isAllDay,
         resource,
         jsEvent: ev,
@@ -300,7 +302,7 @@ export default class ResourceViewMixin extends Mixin implements ResourceViewInte
     // trigger 'drop' regardless of whether element represents an event
     (this as any).publiclyTrigger('drop', [
       {
-        date: calendar.dateEnv.toDate(singleEventDef.dateProfile.start),
+        date: calendar.dateEnv.toDate(singleEventDef.dateProfile.unzonedRange.start),
         isAllDay: singleEventDef.dateProfile.isAllDay,
         resource,
         el: el,

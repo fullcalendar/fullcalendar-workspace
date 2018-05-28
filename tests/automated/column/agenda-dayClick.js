@@ -29,19 +29,19 @@ describe('agenda-view dayClick', function() {
       initCalendar({
         eventAfterAllRender() {
           $.simulateByPoint('drag', {
-            point: getTimeGridPoint('2015-11-23T09:00:00'),
+            point: getTimeGridPoint('2015-11-23T09:00:00Z'),
             callback() {
               expect(dayClickCalled).toBe(true)
               done()
             }
           })
         },
-        dayClick(date, jsEvent, view, resource) {
+        dayClick(arg) {
           dayClickCalled = true
-          expect(date).toEqualMoment('2015-11-23T09:00:00')
-          expect(typeof jsEvent).toBe('object')
-          expect(typeof view).toBe('object')
-          expect(resource).toBeFalsy()
+          expect(arg.date).toEqualDate('2015-11-23T09:00:00Z')
+          expect(typeof arg.jsEvent).toBe('object')
+          expect(typeof arg.view).toBe('object')
+          expect(arg.resource).toBeFalsy()
         }
       })
     })
@@ -58,19 +58,19 @@ describe('agenda-view dayClick', function() {
       initCalendar({
         eventAfterAllRender() {
           $.simulateByPoint('drag', {
-            point: getResourceTimeGridPoint('b', '2015-11-29T09:00:00'),
+            point: getResourceTimeGridPoint('b', '2015-11-29T09:00:00Z'),
             callback() {
               expect(dayClickCalled).toBe(true)
               done()
             }
           })
         },
-        dayClick(date, jsEvent, view, resource) {
+        dayClick(arg) {
           dayClickCalled = true
-          expect(date).toEqualMoment('2015-11-29T09:00:00')
-          expect(typeof jsEvent).toBe('object')
-          expect(typeof view).toBe('object')
-          expect(resource.id).toBe('b')
+          expect(arg.date).toEqualDate('2015-11-29T09:00:00Z')
+          expect(typeof arg.jsEvent).toBe('object')
+          expect(typeof arg.view).toBe('object')
+          expect(arg.resource.id).toBe('b')
         }
       })
     })
@@ -87,19 +87,19 @@ describe('agenda-view dayClick', function() {
       initCalendar({
         eventAfterAllRender() {
           $.simulateByPoint('drag', {
-            point: getResourceTimeGridPoint('b', '2015-11-30T09:30:00'),
+            point: getResourceTimeGridPoint('b', '2015-11-30T09:30:00Z'),
             callback() {
               expect(dayClickCalled).toBe(true)
               done()
             }
           })
         },
-        dayClick(date, jsEvent, view, resource) {
+        dayClick(arg) {
           dayClickCalled = true
-          expect(date).toEqualMoment('2015-11-30T09:30:00')
-          expect(typeof jsEvent).toBe('object')
-          expect(typeof view).toBe('object')
-          expect(resource.id).toBe('b')
+          expect(arg.date).toEqualDate('2015-11-30T09:30:00Z')
+          expect(typeof arg.jsEvent).toBe('object')
+          expect(typeof arg.view).toBe('object')
+          expect(arg.resource.id).toBe('b')
         }
       })
     })

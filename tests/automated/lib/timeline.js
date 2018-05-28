@@ -1,3 +1,4 @@
+import { formatIsoWithoutTz, parseIsoAsUtc } from 'fullcalendar/tests/automated/datelib/utils'
 import { getBoundingRect } from 'fullcalendar/tests/automated/lib/dom-geom'
 
 
@@ -51,8 +52,6 @@ export function getResourceTimelineRect(resourceId, start, end) {
     ({ start } = obj);
     ({ end } = obj)
   }
-  start = FullCalendar.moment.parseZone(start)
-  end = FullCalendar.moment.parseZone(end)
   const coord0 = getTimelineLeft(start)
   const coord1 = getTimelineLeft(end)
   const rowRect = getBoundingRect(getTimelineRowEl(resourceId))
@@ -65,10 +64,10 @@ export function getResourceTimelineRect(resourceId, start, end) {
 }
 
 
-export function getResourceTimelinePoint(resourceId, date) {
+export function getResourceTimelinePoint(resourceId, dateStr) {
   const rowRect = getBoundingRect(getTimelineRowEl(resourceId))
   return {
-    left: getTimelineLeft(date),
+    left: getTimelineLeft(dateStr),
     top: (rowRect.top + rowRect.bottom) / 2
   }
 }
@@ -80,8 +79,6 @@ export function getTimelineRect(start, end) {
     ({ start } = obj);
     ({ end } = obj)
   }
-  start = FullCalendar.moment.parseZone(start)
-  end = FullCalendar.moment.parseZone(end)
   const coord0 = getTimelineLeft(start)
   const coord1 = getTimelineLeft(end)
   const canvasRect = getBoundingRect($('.fc-body .fc-time-area .fc-scroller-canvas'))
@@ -108,12 +105,20 @@ export function getTimelineLine(date) {
 /*
 targetDate can be in between slat dates
 */
-function getTimelineLeft(targetDate) {
+function getTimelineLeft(targetDateStr) {
   let slatCoord, slatEl
-  targetDate = FullCalendar.moment.parseZone(targetDate)
+  let targetDate
+
+  if (targetDateStr instanceof Date) {
+    targetDate = targetDateStr
+    targetDateStr = formatIsoWithoutTz(targetDateStr)
+  } else {
+    targetDate = parseIsoAsUtc(targetDateStr)
+  }
+
   const isRtl = $('.fc').hasClass('fc-rtl')
   const borderWidth = 1
-  let slatEls = getTimelineSlatEl(targetDate)
+  let slatEls = getTimelineSlatEl(targetDateStr)
 
   const getLeadingEdge = function(cellEl) {
     if (isRtl) {
@@ -144,7 +149,7 @@ function getTimelineLeft(targetDate) {
     slatEl = $(slatEl)
 
     prevSlatDate = slatDate
-    slatDate = FullCalendar.moment.parseZone(slatEl.data('date'))
+    slatDate = parseIsoAsUtc(slatEl.data('date'))
 
     // is target time between start of previous slat but before this one?
     if (targetDate < slatDate) {
@@ -182,9 +187,11 @@ function getTimelineRowEl(resourceId) {
 }
 
 
-export function getTimelineSlatEl(date) {
-  date = FullCalendar.moment.parseZone(date)
-  return $(`.fc-body .fc-slats td[data-date="${date.format()}"]`)
+export function getTimelineSlatEl(dateStr) {
+  if (dateStr instanceof Date) {
+    dateStr = formatIsoWithoutTz(date)
+  }
+  return $('.fc-body .fc-slats td[data-date="' + dateStr + '"]')
 }
 
 

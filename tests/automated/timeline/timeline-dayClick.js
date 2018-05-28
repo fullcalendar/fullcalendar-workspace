@@ -41,12 +41,12 @@ describe('timeline dayClick', function() {
                     }
                   })
                 },
-                dayClick(date, jsEvent, view, resource) {
+                dayClick(arg) {
                   dayClickCalled = true
-                  expect(date).toEqualMoment(tz.moment('2015-11-28T04:30:00'))
-                  expect(typeof jsEvent).toBe('object')
-                  expect(typeof view).toBe('object')
-                  expect(resource).toBeFalsy()
+                  expect(arg.date).toEqualDate(tz.createDate('2015-11-28T04:30:00'))
+                  expect(typeof arg.jsEvent).toBe('object')
+                  expect(typeof arg.view).toBe('object')
+                  expect(arg.resource).toBeFalsy()
                 }
               })
             })
@@ -66,7 +66,7 @@ describe('timeline dayClick', function() {
                     }
                   })
                 },
-                dayClick(date, jsEvent, view, resource) {
+                dayClick(arg) {
                   dayClickCalled = true
                 }
               })
@@ -84,12 +84,12 @@ describe('timeline dayClick', function() {
                     }
                   })
                 },
-                dayClick(date, jsEvent, view, resource) {
+                dayClick(arg) {
                   dayClickCalled = true
-                  expect(date).toEqualMoment(tz.moment('2015-11-28T04:30:00'))
-                  expect(typeof jsEvent).toBe('object')
-                  expect(typeof view).toBe('object')
-                  expect(resource.id).toBe('b')
+                  expect(arg.date).toEqualDate(tz.createDate('2015-11-28T04:30:00'))
+                  expect(typeof arg.jsEvent).toBe('object')
+                  expect(typeof arg.view).toBe('object')
+                  expect(arg.resource.id).toBe('b')
                 }
               })
             })
@@ -114,12 +114,12 @@ describe('timeline dayClick', function() {
                   }
                 })
               },
-              dayClick(date, jsEvent, view, resource) {
+              dayClick(arg) {
                 dayClickCalled = true
-                expect(date).toEqualMoment(tz.moment('2015-11-28T04:15:00'))
-                expect(typeof jsEvent).toBe('object')
-                expect(typeof view).toBe('object')
-                expect(resource.id).toBe('b')
+                expect(arg.date).toEqualDate(tz.createDate('2015-11-28T04:15:00'))
+                expect(typeof arg.jsEvent).toBe('object')
+                expect(typeof arg.view).toBe('object')
+                expect(arg.resource.id).toBe('b')
               }
             })
           })
@@ -145,12 +145,12 @@ describe('timeline dayClick', function() {
               }
             })
           },
-          dayClick(date, jsEvent, view, resource) {
+          dayClick(arg) {
             dayClickCalled = true
-            expect(date).toEqualMoment('2015-11-03')
-            expect(typeof jsEvent).toBe('object')
-            expect(typeof view).toBe('object')
-            expect(resource.id).toBe('a')
+            expect(arg.date).toEqualDate('2015-11-03')
+            expect(typeof arg.jsEvent).toBe('object')
+            expect(typeof arg.view).toBe('object')
+            expect(arg.resource.id).toBe('a')
           }
         })
       })
@@ -174,12 +174,12 @@ describe('timeline dayClick', function() {
               }
             })
           },
-          dayClick(date, jsEvent, view, resource) {
+          dayClick(arg) {
             dayClickCalled = true
-            expect(date).toEqualMoment('2015-01-18')
-            expect(typeof jsEvent).toBe('object')
-            expect(typeof view).toBe('object')
-            expect(resource.id).toBe('a')
+            expect(arg.date).toEqualDate('2015-01-18')
+            expect(typeof arg.jsEvent).toBe('object')
+            expect(typeof arg.view).toBe('object')
+            expect(arg.resource.id).toBe('a')
           }
         })
       })
