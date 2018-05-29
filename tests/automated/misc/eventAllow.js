@@ -25,9 +25,9 @@ describe('eventAllow', function() {
 
     initCalendar({
       eventAllow(dropInfo, event) {
-        if (dropInfo.resourceId === 'a') {
+        if (dropInfo.resource.id === 'a') {
           isACalled = true
-        } else if (dropInfo.resourceId === 'b') {
+        } else if (dropInfo.resource.id === 'b') {
           isBCalled = true
         }
         expect(typeof event).toBe('object')
@@ -61,8 +61,9 @@ describe('eventAllow', function() {
       { date: '2016-09-04T03:00:00', resourceId: 'b' }
     ).then(function(modifiedEvent) {
       expect(typeof modifiedEvent).toBe('object')
-      expect(modifiedEvent.start.format()).toBe('2016-09-04T03:00:00')
-      expect(modifiedEvent.resourceId).toBe('b')
+      expect(modifiedEvent.start).toEqualDate('2016-09-04T03:00:00Z')
+      expect(modifiedEvent.resources.length).toBe(1)
+      expect(modifiedEvent.resources[0].id).toBe('b')
       expect(isCalled).toBe(true)
       done()
     })

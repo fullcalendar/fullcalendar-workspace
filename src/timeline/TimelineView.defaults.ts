@@ -42,7 +42,7 @@ export function initScaleProps(timelineView: TimelineView) {
   let rawFormats =
     Array.isArray(input) ?
       input
-    : typeof input === 'string' ?
+    : (input != null) ?
       [ input ]
     :
       computeHeaderFormats(timelineView)

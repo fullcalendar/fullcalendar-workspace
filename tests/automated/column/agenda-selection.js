@@ -37,13 +37,13 @@ describe('agenda-view selection', function() {
             }
           })
         },
-        select(start, end, jsEvent, view, resource) {
+        select(arg) {
           selectCalled = true
-          expect(start).toEqualDate('2015-11-23T02:00:00Z')
-          expect(end).toEqualDate('2015-11-23T04:30:00Z')
-          expect(typeof jsEvent).toBe('object')
-          expect(typeof view).toBe('object')
-          expect(resource).toBeFalsy()
+          expect(arg.start).toEqualDate('2015-11-23T02:00:00Z')
+          expect(arg.end).toEqualDate('2015-11-23T04:30:00Z')
+          expect(typeof arg.jsEvent).toBe('object')
+          expect(typeof arg.view).toBe('object')
+          expect(arg.resource).toBeFalsy()
         }
       })
     })
@@ -68,13 +68,13 @@ describe('agenda-view selection', function() {
             }
           })
         },
-        select(start, end, jsEvent, view, resource) {
+        select(arg) {
           selectCalled = true
-          expect(start).toEqualDate('2015-11-29T02:00:00Z')
-          expect(end).toEqualDate('2015-11-29T04:30:00Z')
-          expect(typeof jsEvent).toBe('object')
-          expect(typeof view).toBe('object')
-          expect(resource.id).toBe('b')
+          expect(arg.start).toEqualDate('2015-11-29T02:00:00Z')
+          expect(arg.end).toEqualDate('2015-11-29T04:30:00Z')
+          expect(typeof arg.jsEvent).toBe('object')
+          expect(typeof arg.view).toBe('object')
+          expect(arg.resource.id).toBe('b')
         }
       })
     })
@@ -92,13 +92,13 @@ describe('agenda-view selection', function() {
             }
           })
         },
-        select(start, end, jsEvent, view, resource) {
+        select(arg) {
           selectCalled = true
-          expect(start).toEqualDate('2015-11-29T02:00:00Z')
-          expect(end).toEqualDate('2015-11-30T04:30:00Z')
-          expect(typeof jsEvent).toBe('object')
-          expect(typeof view).toBe('object')
-          expect(resource.id).toBe('b')
+          expect(arg.start).toEqualDate('2015-11-29T02:00:00Z')
+          expect(arg.end).toEqualDate('2015-11-30T04:30:00Z')
+          expect(typeof arg.jsEvent).toBe('object')
+          expect(typeof arg.view).toBe('object')
+          expect(arg.resource.id).toBe('b')
         }
       })
     })
@@ -116,7 +116,7 @@ describe('agenda-view selection', function() {
             }
           })
         },
-        select(start, end, jsEvent, view, resource) {
+        select(arg) {
           selectCalled = true
         }
       })
@@ -142,13 +142,13 @@ describe('agenda-view selection', function() {
             }
           })
         },
-        select(start, end, jsEvent, view, resource) {
+        select(arg) {
           selectCalled = true
-          expect(start).toEqualDate('2015-11-30T02:00:00Z')
-          expect(end).toEqualDate('2015-11-30T04:30:00Z')
-          expect(typeof jsEvent).toBe('object')
-          expect(typeof view).toBe('object')
-          expect(resource.id).toBe('b')
+          expect(arg.start).toEqualDate('2015-11-30T02:00:00Z')
+          expect(arg.end).toEqualDate('2015-11-30T04:30:00Z')
+          expect(typeof arg.jsEvent).toBe('object')
+          expect(typeof arg.view).toBe('object')
+          expect(arg.resource.id).toBe('b')
         }
       })
     })
@@ -166,13 +166,13 @@ describe('agenda-view selection', function() {
             }
           })
         },
-        select(start, end, jsEvent, view, resource) {
+        select(arg) {
           selectCalled = true
-          expect(start).toEqualDate('2015-11-29T04:00:00Z')
-          expect(end).toEqualDate('2015-11-30T02:30:00Z')
-          expect(typeof jsEvent).toBe('object')
-          expect(typeof view).toBe('object')
-          expect(resource.id).toBe('b')
+          expect(arg.start).toEqualDate('2015-11-29T04:00:00Z')
+          expect(arg.end).toEqualDate('2015-11-30T02:30:00Z')
+          expect(typeof arg.jsEvent).toBe('object')
+          expect(typeof arg.view).toBe('object')
+          expect(arg.resource.id).toBe('b')
         }
       })
     })
@@ -190,7 +190,7 @@ describe('agenda-view selection', function() {
             }
           })
         },
-        select(start, end, jsEvent, view, resource) {
+        select(arg) {
           selectCalled = true
         }
       })

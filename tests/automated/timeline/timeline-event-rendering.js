@@ -6,7 +6,6 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
   })
 
   describeOptions('timezone', {
-    'with no timezone': false,
     'with UTC timezone': 'UTC',
     'with local timezone': 'local'
   }, function(timezone) {
@@ -309,7 +308,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-16', '2015-10-18')
                   ],
                   eventAfterAllRender() {
-                    expectEventSlotSpan('event1', 'Fr 16', 'Sa 17')
+                    expectEventSlotSpan('event1', '16 F', '17 S')
                     expectEventIsStartEnd('event1', true, true)
                     done()
                   }
@@ -322,7 +321,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-10', '2015-10-18')
                   ],
                   eventAfterAllRender() {
-                    expectEventSlotSpan('event1', 'Su 11', 'Sa 17')
+                    expectEventSlotSpan('event1', '11 S', '17 S')
                     expectEventIsStartEnd('event1', false, true)
                     done()
                   }
@@ -335,7 +334,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-18', '2015-11-18')
                   ],
                   eventAfterAllRender() {
-                    expectEventSlotSpan('event1', 'Su 18', 'Sa 31')
+                    expectEventSlotSpan('event1', '18 S', '31 S')
                     expectEventIsStartEnd('event1', true, false)
                     done()
                   }
@@ -348,7 +347,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-09-18', '2015-11-18')
                   ],
                   eventAfterAllRender() {
-                    expectEventSlotSpan('event1', 'Su 11', 'Sa 31')
+                    expectEventSlotSpan('event1', '11 S', '31 S')
                     expectEventIsStartEnd('event1', false, false)
                     done()
                   }
@@ -361,7 +360,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-16T04:00:00', '2015-10-16T05:00:00')
                   ],
                   eventAfterAllRender() {
-                    expectEventSlotSpan('event1', 'Fr 16', 'Fr 16')
+                    expectEventSlotSpan('event1', '16 F', '16 F')
                     expectEventIsStartEnd('event1', true, true)
                     done()
                   }
@@ -375,7 +374,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-16T04:00:00', '2015-10-18T01:00:00')
                   ],
                   eventAfterAllRender() {
-                    expectEventSlotSpan('event1', 'Fr 16', 'Sa 17')
+                    expectEventSlotSpan('event1', '16 F', '17 S')
                     expectEventIsStartEnd('event1', true, true)
                     done()
                   }
@@ -389,7 +388,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-16T04:00:00', '2015-10-18T03:00:00')
                   ],
                   eventAfterAllRender() {
-                    expectEventSlotSpan('event1', 'Fr 16', 'Su 18')
+                    expectEventSlotSpan('event1', '16 F', '18 S')
                     expectEventIsStartEnd('event1', true, true)
                     done()
                   }
@@ -405,7 +404,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-16', '2015-10-18')
                   ],
                   eventAfterAllRender() {
-                    expectEventSlotSpan('event1', 'Fr 16', 'Sa 17')
+                    expectEventSlotSpan('event1', '16 F', '17 S')
                     expectEventIsStartEnd('event1', true, true)
                     done()
                   }
@@ -424,7 +423,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     slotDuration: { weeks: 1 }
                   }
                 },
-                slotLabelFormat: 'M/D'
+                slotLabelFormat: { month: 'numeric', day: 'numeric' }
               })
 
               it('renders correctly when aligns with weeks', function(done) {

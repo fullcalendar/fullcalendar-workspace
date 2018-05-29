@@ -49,11 +49,11 @@ describe('basic-view event drag-n-drop', function() {
           // https://github.com/fullcalendar/fullcalendar/issues/2955
           // expect(date).toEqualDate('2015-12-01')
           eventReceive:
-            (receiveSpy = spyCall(function(event) {
-              expect(event.title).toBe('my external event')
-              expect(event.start).toEqualDate(tz.createDate('2015-12-01T05:00:00'))
-              expect(event.end).toBe(null)
-              const resource = currentCalendar.getEventResource(event)
+            (receiveSpy = spyCall(function(arg) {
+              expect(arg.event.title).toBe('my external event')
+              expect(arg.event.start).toEqualDate(tz.createDate('2015-12-01T05:00:00'))
+              expect(arg.event.end).toBe(null)
+              const resource = currentCalendar.getEventResource(arg.event)
               expect(resource.id).toBe('a')
             }))
         })

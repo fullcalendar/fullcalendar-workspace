@@ -1,4 +1,4 @@
-import { formatIsoWithoutTz, parseIsoAsUtc } from 'fullcalendar/tests/automated/datelib/utils'
+import { formatIsoWithoutTz, ensureDate } from 'fullcalendar/tests/automated/datelib/utils'
 import { getBoundingRect } from 'fullcalendar/tests/automated/lib/dom-geom'
 
 
@@ -12,8 +12,8 @@ export function dragResourceTimelineEvent(eventEl, dropInfo) {
       })
     })
 
-    currentCalendar.on('eventDrop', function(event) {
-      modifiedEvent = event
+    currentCalendar.on('eventDrop', function(arg) {
+      modifiedEvent = arg.event
     })
 
     eventEl.simulate('drag', {
@@ -28,8 +28,8 @@ export function selectResourceTimeline(startInfo, inclusiveEndInfo) {
   return new Promise(function(resolve) {
     let selectInfo = null
 
-    currentCalendar.on('select', function(start, end) {
-      selectInfo = { start, end }
+    currentCalendar.on('select', function(arg) {
+      selectInfo = arg
     })
 
     $('.fc-body .fc-time-area').simulate('drag', {
@@ -64,10 +64,10 @@ export function getResourceTimelineRect(resourceId, start, end) {
 }
 
 
-export function getResourceTimelinePoint(resourceId, dateStr) {
+export function getResourceTimelinePoint(resourceId, date) {
   const rowRect = getBoundingRect(getTimelineRowEl(resourceId))
   return {
-    left: getTimelineLeft(dateStr),
+    left: getTimelineLeft(date),
     top: (rowRect.top + rowRect.bottom) / 2
   }
 }
@@ -105,20 +105,13 @@ export function getTimelineLine(date) {
 /*
 targetDate can be in between slat dates
 */
-function getTimelineLeft(targetDateStr) {
+function getTimelineLeft(targetDate) {
+  targetDate = ensureDate(targetDate)
+
   let slatCoord, slatEl
-  let targetDate
-
-  if (targetDateStr instanceof Date) {
-    targetDate = targetDateStr
-    targetDateStr = formatIsoWithoutTz(targetDateStr)
-  } else {
-    targetDate = parseIsoAsUtc(targetDateStr)
-  }
-
   const isRtl = $('.fc').hasClass('fc-rtl')
   const borderWidth = 1
-  let slatEls = getTimelineSlatEl(targetDateStr)
+  let slatEls = getTimelineSlatEl(targetDate)
 
   const getLeadingEdge = function(cellEl) {
     if (isRtl) {
@@ -149,7 +142,7 @@ function getTimelineLeft(targetDateStr) {
     slatEl = $(slatEl)
 
     prevSlatDate = slatDate
-    slatDate = parseIsoAsUtc(slatEl.data('date'))
+    slatDate = ensureDate(slatEl.data('date'))
 
     // is target time between start of previous slat but before this one?
     if (targetDate < slatDate) {
@@ -187,11 +180,9 @@ function getTimelineRowEl(resourceId) {
 }
 
 
-export function getTimelineSlatEl(dateStr) {
-  if (dateStr instanceof Date) {
-    dateStr = formatIsoWithoutTz(date)
-  }
-  return $('.fc-body .fc-slats td[data-date="' + dateStr + '"]')
+export function getTimelineSlatEl(date) {
+  date = ensureDate(date)
+  return $('.fc-body .fc-slats td[data-date="' + formatIsoWithoutTz(date) + '"]')
 }
 
 

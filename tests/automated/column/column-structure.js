@@ -176,7 +176,7 @@ describe('vresource structure', function() {
     describe('when delay in resource fetching', function() {
       pushOptions({
         defaultView: viewType + 'Day',
-        resources(callback) {
+        resources(arg, callback) {
           setTimeout(function() {
             callback([
               { id: 'a', title: 'Resource A' },

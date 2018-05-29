@@ -47,15 +47,15 @@ describe('timeline-view external element drag-n-drop', function() {
           })
         }),
         drop:
-          (dropSpy = spyCall(function(date) {
-            expect(date).toEqualDate(tz.createDate('2015-11-29T05:00:00Z'))
+          (dropSpy = spyCall(function(arg) {
+            expect(arg.date).toEqualDate(tz.createDate('2015-11-29T05:00:00'))
           })),
         eventReceive:
-          (receiveSpy = spyCall(function(event) {
-            expect(event.title).toBe('my external event')
-            expect(event.start).toEqualDate(tz.createDate('2015-11-29T05:00:00Z'))
-            expect(event.end).toBe(null)
-            const resource = currentCalendar.getEventResource(event)
+          (receiveSpy = spyCall(function(arg) {
+            expect(arg.event.title).toBe('my external event')
+            expect(arg.event.start).toEqualDate(tz.createDate('2015-11-29T05:00:00'))
+            expect(arg.event.end).toBe(null)
+            const resource = currentCalendar.getEventResource(arg.event)
             expect(resource.id).toBe('b')
           }))
       })

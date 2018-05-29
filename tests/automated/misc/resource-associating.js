@@ -99,7 +99,7 @@ describe('associating resources with event', function() {
 
   it('works asynchronously with resource delay', function(done) {
     initCalendar({
-      resources(callback) {
+      resources(arg, callback) {
         setTimeout(function() {
           callback([
             { id: 'a', title: 'room a' },
@@ -107,7 +107,7 @@ describe('associating resources with event', function() {
           ])
         }, 200)
       },
-      events(start, end, timezone, callback) {
+      events(arg, callback) {
         callback([
           { id: '1', title: 'event 1', resourceId: 'a', className: 'event1', start: '2015-07-11T09:00:00' },
           { id: '2', title: 'event 2', resourceId: 'b', className: 'event2', start: '2015-07-11T10:00:00' }
@@ -133,13 +133,13 @@ describe('associating resources with event', function() {
 
   it('works asynchronously with events delay', function(done) {
     initCalendar({
-      resources(callback) {
+      resources(arg, callback) {
         callback([
           { id: 'a', title: 'room a' },
           { id: 'b', title: 'room b' }
         ])
       },
-      events(start, end, timezone, callback) {
+      events(arg, callback) {
         setTimeout(function() {
           callback([
             { id: '1', title: 'event 1', resourceId: 'a', className: 'event1', start: '2015-07-11T09:00:00' },

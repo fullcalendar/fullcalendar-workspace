@@ -36,7 +36,7 @@ describe('refetchResourcesOnNavigate', function() {
       let resourceCallCnt = 0
 
       initCalendar({
-        resources(callback) {
+        resources(arg, callback) {
           resourceCallCnt += 1
           callback([
             { title: `resource a-${resourceCallCnt}`, id: 'a' },
@@ -61,7 +61,7 @@ describe('refetchResourcesOnNavigate', function() {
       let eventRenderingCnt = 0
 
       initCalendar({
-        resources(callback) {
+        resources(arg, callback) {
           resourceCallCnt += 1
           setTimeout(function() {
             callback([
@@ -94,7 +94,7 @@ describe('refetchResourcesOnNavigate', function() {
       let eventRenderingCnt = 0
 
       initCalendar({
-        resources(callback) {
+        resources(arg, callback) {
           resourceCallCnt += 1
           setTimeout(function() {
             callback([
@@ -138,7 +138,7 @@ describe('refetchResourcesOnNavigate', function() {
       let viewRenderCallCnt = 0
 
       initCalendar({
-        resources(callback) {
+        resources(arg, callback) {
           resourceCallCnt += 1
           setTimeout(function() {
             callback([
@@ -177,7 +177,7 @@ describe('refetchResourcesOnNavigate', function() {
           groupByResource: true
         }
       },
-      resources(callback) {
+      resources(arg, callback) {
         resourceCallCnt += 1
         callback([
           { title: `resource a-${resourceCallCnt}`, id: 'a' },
@@ -206,7 +206,7 @@ describe('refetchResourcesOnNavigate', function() {
       groupByResource: false,
       groupByDateAndResource: false,
 
-      resources(callback) {
+      resources(arg, callback) {
         resourceCallCnt += 1
         setTimeout(function() {
           callback([
@@ -250,10 +250,10 @@ describe('refetchResourcesOnNavigate', function() {
       defaultView: 'timelineWeek',
       now: '2017-02-12',
       timezone: 'America/Chicago',
-      resources(callback, start, end, timezone) {
-        expect(start.format()).toBe('2017-02-12')
-        expect(end.format()).toBe('2017-02-19')
-        expect(timezone).toBe('America/Chicago')
+      resources(arg, callback) {
+        expect(arg.start).toEqualDate('2017-02-12')
+        expect(arg.end).toEqualDate('2017-02-19')
+        expect(arg.timeZone).toBe('America/Chicago')
         callback([])
       },
       resourcesSet(resources) {
@@ -272,18 +272,18 @@ describe('refetchResourcesOnNavigate', function() {
       now: '2017-02-12',
       timezone: 'America/Chicago',
 
-      resources(callback, start, end, timezone) {
+      resources(arg, callback) {
         renderCnt += 1
 
         if (renderCnt === 1) {
-          expect(start.format()).toBe('2017-02-12')
-          expect(end.format()).toBe('2017-02-19')
+          expect(arg.start).toEqualDate('2017-02-12')
+          expect(arg.end).toEqualDate('2017-02-19')
         } else if (renderCnt === 2) {
-          expect(start.format()).toBe('2017-02-19')
-          expect(end.format()).toBe('2017-02-26')
+          expect(arg.start).toEqualDate('2017-02-19')
+          expect(arg.end).toEqualDate('2017-02-26')
         }
 
-        expect(timezone).toBe('America/Chicago')
+        expect(arg.timeZone).toBe('America/Chicago')
         callback([])
       },
 
@@ -308,11 +308,11 @@ describe('refetchResourcesOnNavigate', function() {
       now: '2017-02-12',
       timezone: 'America/Chicago',
 
-      resources(callback, start, end, timezone) {
+      resources(arg, callback) {
         requestCnt += 1
-        expect(start.format()).toBe('2017-02-12')
-        expect(end.format()).toBe('2017-02-19')
-        expect(timezone).toBe('America/Chicago')
+        expect(arg.start).toEqualDate('2017-02-12')
+        expect(arg.end).toEqualDate('2017-02-19')
+        expect(arg.timeZone).toBe('America/Chicago')
         callback([])
       }
     })
@@ -338,8 +338,8 @@ describe('refetchResourcesOnNavigate', function() {
 
       XHRMock.get(/^my-feed\.php/, function(req, res) {
         expect(req.url().query).toEqual({
-          start: '2017-02-12',
-          end: '2017-02-19',
+          start: '2017-02-12T00:00:00',
+          end: '2017-02-19T00:00:00',
           timezone: 'America/Chicago'
         })
         done()
@@ -359,8 +359,8 @@ describe('refetchResourcesOnNavigate', function() {
 
       XHRMock.get(/^my-feed\.php/, function(req, res) {
         expect(req.url().query).toEqual({
-          mystart: '2017-02-12',
-          myend: '2017-02-19',
+          mystart: '2017-02-12T00:00:00',
+          myend: '2017-02-19T00:00:00',
           mytimezone: 'America/Chicago'
         })
         done()

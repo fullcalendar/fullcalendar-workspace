@@ -113,7 +113,7 @@ describe('event resources', function() {
 
   it('will read resources from a function', function(done) {
     initCalendar({
-      resources(callback) {
+      resources(arg, callback) {
         callback([
           { id: 1, title: 'room 1' },
           { id: 2, title: 'room 2' }

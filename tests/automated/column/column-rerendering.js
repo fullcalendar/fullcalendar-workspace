@@ -85,7 +85,7 @@ describe('column-based view rerendering', function() {
       now: '2015-08-07',
       scrollTime: '00:00',
       defaultView: 'agendaDay',
-      resources(callback) {
+      resources(arg, callback) {
         setTimeout(function() {
           callback([
             { id: 'a', title: 'Auditorium A' },
@@ -94,7 +94,7 @@ describe('column-based view rerendering', function() {
           ])
         }, 100)
       },
-      events(start, end, timezone, callback) {
+      events(arg, callback) {
         setTimeout(function() {
           callback([
             { id: '1', resourceId: 'b', start: '2015-08-07T02:00:00', end: '2015-08-07T07:00:00', title: 'event 1' },
@@ -103,8 +103,8 @@ describe('column-based view rerendering', function() {
           ])
         }, 100)
       },
-      resourceRender(resource, headTd) {
-        $(headTd).text(resource.title + renderCalls)
+      resourceRender(arg) {
+        $(arg.labelEl).text(arg.resource.title + renderCalls)
       },
       eventAfterAllRender() {
         const cellText = $.trim($('th[data-resource-id="a"]').text())
@@ -127,7 +127,7 @@ describe('column-based view rerendering', function() {
       now: '2015-08-07',
       scrollTime: '00:00',
       defaultView: 'agendaDay',
-      resources(callback) {
+      resources(arg, callback) {
         setTimeout(function() {
           callback([
             { id: 'a', title: `Auditorium A${renderCalls}` },
@@ -136,7 +136,7 @@ describe('column-based view rerendering', function() {
           ])
         }, 100)
       },
-      events(start, end, timezone, callback) {
+      events(arg, callback) {
         setTimeout(function() {
           callback([
             { id: '1', resourceId: 'b', start: '2015-08-07T02:00:00', end: '2015-08-07T07:00:00', title: 'event 1' },
@@ -165,7 +165,7 @@ describe('column-based view rerendering', function() {
       now: '2015-08-07',
       scrollTime: '00:00',
       defaultView: 'agendaDay',
-      resources(callback) {
+      resources(arg, callback) {
         setTimeout(function() {
           callback([
             { id: 'a', title: 'Auditorium A' },
@@ -174,7 +174,7 @@ describe('column-based view rerendering', function() {
           ])
         }, 100)
       },
-      events(start, end, timezone, callback) {
+      events(arg, callback) {
         setTimeout(function() {
           callback([
             { id: '1', resourceId: 'b', start: '2015-08-07T02:00:00', end: '2015-08-07T07:00:00', title: 'event 1' },

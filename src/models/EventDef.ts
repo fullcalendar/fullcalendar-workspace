@@ -38,6 +38,7 @@ EventDef.prototype.applyMiscProps = function(rawProps) {
 
   this.resourceIds = Resource.extractIds(rawProps, this.source.calendar)
 
+  delete rawProps.resources
   delete rawProps.resourceId
   delete rawProps.resourceIds
 
@@ -99,17 +100,16 @@ EventDef.prototype.clone = function() {
 
 EventDef.prototype.toLegacy = function() {
   const obj = origMethods.toLegacy.apply(this, arguments)
-  const resourceIds = this.getResourceIds()
+  const calendar = this.source.calendar
+  const resources = []
 
-  obj.resourceId =
-    resourceIds.length === 1 ?
-      resourceIds[0] :
-      null
-
-  obj.resourceIds =
-    resourceIds.length > 1 ?
-      resourceIds :
-      null
+  this.getResourceIds().map(function(resourceId) {
+    let resource = calendar.getResourceById(resourceId)
+    if (resource) {
+      resources.push(resource)
+    }
+  })
+  obj.resources = resources
 
   if (this.resourceEditable != null) { // allows an unspecified state
     obj.resourceEditable = this.resourceEditable

@@ -1,4 +1,4 @@
-import { formatIsoDay } from 'fullcalendar/tests/automated/datelib/utils'
+import { formatIsoDay, ensureDate } from 'fullcalendar/tests/automated/datelib/utils'
 import { getBoundingRect } from 'fullcalendar/tests/automated/lib/dom-geom'
 
 
@@ -16,9 +16,7 @@ export function getResourceDayGridRect(resourceId, date) {
 
 
 export function getResourceDayGridDayEls(resourceId, date) {
-  if (typeof date === 'string') {
-    date = new Date(date)
-  }
+  date = ensureDate(date)
   return $(
     '.fc-day-grid .fc-day[data-date="' + formatIsoDay(date) + '"]' +
     '[data-resource-id="' + resourceId + '"]'

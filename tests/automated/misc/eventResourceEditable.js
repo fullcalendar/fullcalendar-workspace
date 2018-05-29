@@ -47,8 +47,9 @@ describe('eventResourceEditable', function() {
           $('.fc-event'),
           { date: '2016-09-04T03:00:00', resourceId: 'c' }
         ).then(function(modifiedEvent) {
-          expect(modifiedEvent.start.format()).toBe('2016-09-04T03:00:00')
-          expect(modifiedEvent.resourceId).toBe('b')
+          expect(modifiedEvent.start).toEqualDate('2016-09-04T03:00:00Z')
+          expect(modifiedEvent.resources.length).toBe(1)
+          expect(modifiedEvent.resources[0].id).toBe('b')
           done()
         })
       })
@@ -81,8 +82,9 @@ describe('eventResourceEditable', function() {
           $('.fc-event'),
           { date: '2016-09-04T03:00:00', resourceId: 'c' }
         ).then(function(modifiedEvent) {
-          expect(modifiedEvent.start.format()).toBe('2016-09-04T01:00:00')
-          expect(modifiedEvent.resourceId).toBe('c')
+          expect(modifiedEvent.start).toEqualDate('2016-09-04T01:00:00Z')
+          expect(modifiedEvent.resources.length).toBe(1)
+          expect(modifiedEvent.resources[0].id).toBe('c')
           done()
         })
       })

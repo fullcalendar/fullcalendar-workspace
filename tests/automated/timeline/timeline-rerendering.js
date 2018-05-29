@@ -108,12 +108,12 @@ describe('timeline view rerendering', function() {
       now: '2015-08-07',
       scrollTime: '00:00',
       defaultView: 'timelineDay',
-      events(start, end, timezone, callback) {
+      events(arg, callback) {
         setTimeout(function() {
           callback(getEvents())
         }, 100)
       },
-      resources(callback) {
+      resources(arg, callback) {
         setTimeout(function() {
           callback(getResources())
         }, 100)
@@ -142,19 +142,19 @@ describe('timeline view rerendering', function() {
       now: '2015-08-07',
       scrollTime: '00:00',
       defaultView: 'timelineDay',
-      events(start, end, timezone, callback) {
+      events(arg, callback) {
         setTimeout(function() {
           callback(getEvents())
         }, 100)
       },
-      resources(callback) {
+      resources(arg, callback) {
         setTimeout(function() {
           callback(getResources())
         }, 100)
       },
-      resourceRender(resource, headTd) {
-        if (resource.id === 'e') {
-          $(headTd).find('.fc-cell-text').text(resource.title + renderCalls)
+      resourceRender(arg) {
+        if (arg.resource.id === 'e') {
+          $(arg.labelEl).find('.fc-cell-text').text(arg.resource.title + renderCalls)
         }
       },
       eventAfterAllRender() {
@@ -177,12 +177,12 @@ describe('timeline view rerendering', function() {
       now: '2015-08-07',
       scrollTime: '00:00',
       defaultView: 'timelineDay',
-      events(start, end, timezone, callback) {
+      events(arg, callback) {
         setTimeout(function() {
           callback(getEvents())
         }, 100)
       },
-      resources(callback) {
+      resources(arg, callback) {
         setTimeout(function() {
           callback(getResources(renderCalls)) // renderCalls affects data!
         }, 100)

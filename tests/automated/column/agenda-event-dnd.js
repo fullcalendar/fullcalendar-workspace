@@ -41,10 +41,10 @@ describe('agenda-view event drag-n-drop', function() {
             })
           }),
           eventDrop:
-            (dropSpy = spyCall(function(event) {
-              expect(event.start).toEqualDate(tz.createDate('2015-12-01T05:00:00'))
-              expect(event.end).toEqualDate(tz.createDate('2015-12-01T06:00:00'))
-              const resource = currentCalendar.getEventResource(event)
+            (dropSpy = spyCall(function(arg) {
+              expect(arg.event.start).toEqualDate(tz.createDate('2015-12-01T05:00:00'))
+              expect(arg.event.end).toEqualDate(tz.createDate('2015-12-01T06:00:00'))
+              const resource = currentCalendar.getEventResource(arg.event)
               expect(resource.id).toBe('a')
             }))
         })

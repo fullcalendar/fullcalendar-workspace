@@ -52,10 +52,10 @@ describe('timeline event resizing', function() {
                     })
                 }),
                 eventResize:
-                  (resizeSpy = spyCall(function(event) {
-                    expect(event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
-                    expect(event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
-                    const resource = currentCalendar.getEventResource(event)
+                  (resizeSpy = spyCall(function(arg) {
+                    expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
+                    expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
+                    const resource = currentCalendar.getEventResource(arg.event)
                     expect(resource).toBeFalsy()
                   }))
               })
@@ -83,10 +83,10 @@ describe('timeline event resizing', function() {
                     })
                 }),
                 eventResize:
-                  (resizeSpy = spyCall(function(event) {
-                    expect(event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
-                    expect(event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
-                    const resource = currentCalendar.getEventResource(event)
+                  (resizeSpy = spyCall(function(arg) {
+                    expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
+                    expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
+                    const resource = currentCalendar.getEventResource(arg.event)
                     expect(resource.id).toBe('b')
                   }))
               })
@@ -110,10 +110,10 @@ describe('timeline event resizing', function() {
                     })
                 }),
                 eventResize:
-                  (resizeSpy = spyCall(function(event) {
-                    expect(event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
-                    expect(event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
-                    const resource = currentCalendar.getEventResource(event)
+                  (resizeSpy = spyCall(function(arg) {
+                    expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
+                    expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
+                    const resource = currentCalendar.getEventResource(arg.event)
                     expect(resource.id).toBe('b')
                   }))
               })
@@ -137,12 +137,11 @@ describe('timeline event resizing', function() {
                     })
                 }),
                 eventResize:
-                  (resizeSpy = spyCall(function(event) {
-                    expect(event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
-                    expect(event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
-                    expect(event.resourceId).toBe(null)
-                    // resources stay the same
-                    expect(event.resourceIds).toEqual([ 'a', 'b' ])
+                  (resizeSpy = spyCall(function(arg.event) {
+                    expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
+                    expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
+                    let resourceIds = arg.event.resources.map((resource) => resource.id)
+                    expect(resourceIds).toEqual([ 'a', 'b' ])
                   }))
               })
             })
@@ -173,10 +172,10 @@ describe('timeline event resizing', function() {
                   })
               }),
               eventResize:
-                (resizeSpy = spyCall(function(event) {
-                  expect(event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
-                  expect(event.end).toEqualDate(tz.createDate('2015-11-28T07:45:00'))
-                  const resource = currentCalendar.getEventResource(event)
+                (resizeSpy = spyCall(function(arg) {
+                  expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
+                  expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:45:00'))
+                  const resource = currentCalendar.getEventResource(arg.event)
                   expect(resource.id).toBe('b')
                 }))
             })
@@ -214,10 +213,10 @@ describe('timeline event resizing', function() {
           })
         }),
         eventResize:
-          (resizeSpy = spyCall(function(event) {
-            expect(event.start).toEqualDate('2015-11-28T04:00:00Z')
-            expect(event.end).toEqualDate('2015-11-28T07:30:00Z')
-            const resource = currentCalendar.getEventResource(event)
+          (resizeSpy = spyCall(function(arg) {
+            expect(arg.event.start).toEqualDate('2015-11-28T04:00:00Z')
+            expect(arg.event.end).toEqualDate('2015-11-28T07:30:00Z')
+            const resource = currentCalendar.getEventResource(arg.event)
             expect(resource.id).toBe('b')
           }))
       })
@@ -247,10 +246,10 @@ describe('timeline event resizing', function() {
               })
           }),
           eventResize:
-            (resizeSpy = spyCall(function(event) {
-              expect(event.start).toEqualDate('2015-11-03')
-              expect(event.end).toEqualDate('2015-11-06')
-              const resource = currentCalendar.getEventResource(event)
+            (resizeSpy = spyCall(function(arg) {
+              expect(arg.event.start).toEqualDate('2015-11-03')
+              expect(arg.event.end).toEqualDate('2015-11-06')
+              const resource = currentCalendar.getEventResource(arg.event)
               expect(resource.id).toBe('a')
             }))
         })
@@ -281,10 +280,10 @@ describe('timeline event resizing', function() {
               })
           }),
           eventResize:
-            (resizeSpy = spyCall(function(event) {
-              expect(event.start).toEqualDate('2015-01-18')
-              expect(event.end).toEqualDate('2015-02-15')
-              const resource = currentCalendar.getEventResource(event)
+            (resizeSpy = spyCall(function(arg) {
+              expect(arg.event.start).toEqualDate('2015-01-18')
+              expect(arg.event.end).toEqualDate('2015-02-15')
+              const resource = currentCalendar.getEventResource(arg.event)
               expect(resource.id).toBe('a')
             }))
         })

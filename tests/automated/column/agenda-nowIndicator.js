@@ -35,7 +35,7 @@ describe('resource agenda now-indicator', function() {
       scrollTime: '09:00',
       nowIndicator: true,
       refetchResourcesOnNavigate: true,
-      resources(callback) {
+      resources(arg, callback) {
         setTimeout(function() {
           callback([
             { title: 'resource a', id: 'a' },
@@ -43,7 +43,7 @@ describe('resource agenda now-indicator', function() {
           ])
         }, 10)
       },
-      events(start, end, timezone, callback) {
+      events(arg, callback) {
         setTimeout(function() {
           callback([
             { title: 'event1', start: '2016-12-04T01:00:00', resourceId: 'a' },

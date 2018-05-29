@@ -9,7 +9,7 @@ describe('resource render waiting', function() {
 
     initCalendar({
       defaultView: 'timeline',
-      resources(callback) {
+      resources(arg, callback) {
         callback([
           { id: 'a', title: 'a' },
           { id: 'b', title: 'b' }

@@ -49,6 +49,6 @@ describe('timeline rendering', function() {
 
     expect(
       $('.fc-head .fc-time-area th:first .fc-cell-text').text()
-    ).toBe('P 23.10.2017.')
+    ).toBe('pirmd. 23.10.')
   })
 })

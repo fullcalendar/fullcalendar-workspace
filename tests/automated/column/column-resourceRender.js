@@ -37,10 +37,10 @@ describe('column-view resourceRender trigger', function() {
         it('fires once per resources', function(done) {
           let callCnt = 0
           initCalendar({
-            resourceRender(resource, headTd) {
-              if (resource.id === 'a') {
-                expect(headTd instanceof HTMLTableCellElement).toBe(true)
-                expect(headTd).toContainText('Resource A')
+            resourceRender(arg) {
+              if (arg.resource.id === 'a') {
+                expect(arg.labelEl instanceof HTMLTableCellElement).toBe(true)
+                expect(arg.labelEl).toContainText('Resource A')
                 callCnt++
               }
             },
@@ -66,10 +66,10 @@ describe('column-view resourceRender trigger', function() {
         it('fires onces per day', function(done) {
           let callCnt = 0
           initCalendar({
-            resourceRender(resource, headTd) {
-              if (resource.id === 'a') {
-                expect(headTd instanceof HTMLTableCellElement).toBe(true)
-                expect(headTd).toContainText('Resource A')
+            resourceRender(arg) {
+              if (arg.resource.id === 'a') {
+                expect(arg.labelEl instanceof HTMLTableCellElement).toBe(true)
+                expect(arg.labelEl).toContainText('Resource A')
                 callCnt++
               }
             },
@@ -89,10 +89,10 @@ describe('column-view resourceRender trigger', function() {
         it('fires onces per day', function(done) {
           let callCnt = 0
           initCalendar({
-            resourceRender(resource, headTd) {
-              if (resource.id === 'a') {
-                expect(headTd instanceof HTMLTableCellElement).toBe(true)
-                expect(headTd).toContainText('Resource A')
+            resourceRender(arg) {
+              if (arg.resource.id === 'a') {
+                expect(arg.labelEl instanceof HTMLTableCellElement).toBe(true)
+                expect(arg.labelEl).toContainText('Resource A')
                 callCnt++
               }
             },

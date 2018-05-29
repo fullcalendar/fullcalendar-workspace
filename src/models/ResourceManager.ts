@@ -104,14 +104,17 @@ export default class ResourceManager extends Class {
     } else if (typeof source === 'function') {
       calendar.pushLoading()
 
+      // TODO: unpromisify, and write test for it
       source(
+        {
+          start: start ? dateEnv.toDate(start) : null,
+          end: end ? dateEnv.toDate(end) : null,
+          timeZone: calendar.opt('timezone')
+        },
         (resourceInputs) => {
           calendar.popLoading()
           callback(resourceInputs)
-        },
-        dateEnv.toDate(start),
-        dateEnv.toDate(end),
-        calendar.opt('timezone')
+        }
       )
 
     } else if (typeof source === 'object' && source) { // non-null object

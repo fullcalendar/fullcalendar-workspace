@@ -29,7 +29,7 @@ describe('agenda-view dayClick', function() {
       initCalendar({
         eventAfterAllRender() {
           $.simulateByPoint('drag', {
-            point: getTimeGridPoint('2015-11-23T09:00:00Z'),
+            point: getTimeGridPoint('2015-11-23T09:00:00'),
             callback() {
               expect(dayClickCalled).toBe(true)
               done()

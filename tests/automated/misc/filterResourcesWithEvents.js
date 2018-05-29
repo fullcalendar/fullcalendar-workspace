@@ -22,7 +22,7 @@ describe('filterResourcesWithEvents', function() {
     if (timeout == null) {
       timeout = 100
     }
-    return function(callback) {
+    return function(arg, callback) {
       setTimeout(function() {
         callback(getResourceArray())
       }, timeout)

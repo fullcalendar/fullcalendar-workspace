@@ -36,7 +36,7 @@ describe('eventConstraint', function() {
         $('.fc-event'),
         { date: '2016-09-04T03:00:00', resourceId: 'b' }
       ).then(function(modifiedEvent) {
-        expect(modifiedEvent.start.format()).toBe('2016-09-04T03:00:00')
+        expect(modifiedEvent.start).toEqualDate('2016-09-04T03:00:00Z')
         done()
       })
     })
@@ -66,7 +66,7 @@ describe('eventConstraint', function() {
         $('.fc-event'),
         { date: '2016-09-04T03:00:00', resourceId: 'c' }
       ).then(function(modifiedEvent) {
-        expect(modifiedEvent.start.format()).toBe('2016-09-04T03:00:00')
+        expect(modifiedEvent.start).toEqualDate('2016-09-04T03:00:00Z')
         done()
       })
     })

@@ -1,3 +1,4 @@
+import { parseIsoAsUtc } from 'fullcalendar/tests/automated/datelib/utils'
 
 describe('visibleRange', function() {
   pushOptions({
@@ -24,7 +25,7 @@ describe('visibleRange', function() {
 
       const dates = $('.fc-head .fc-time-area tr:first-child > th[data-date]')
         .map(function(i, node) {
-          return new Date($(node).data('date'))
+          return parseIsoAsUtc($(node).data('date'))
         })
         .get()
 

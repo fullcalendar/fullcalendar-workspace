@@ -41,13 +41,13 @@ describe('basic-view selection', function() {
             }
             )
         },
-        select(start, end, jsEvent, view, resource) {
+        select(arg) {
           selectCalled = true
-          expect(start).toEqualDate('2015-11-23')
-          expect(end).toEqualDate('2015-11-25')
-          expect(typeof jsEvent).toBe('object')
-          expect(typeof view).toBe('object')
-          expect(resource).toBeFalsy()
+          expect(arg.start).toEqualDate('2015-11-23')
+          expect(arg.end).toEqualDate('2015-11-25')
+          expect(typeof arg.jsEvent).toBe('object')
+          expect(typeof arg.view).toBe('object')
+          expect(arg.resource).toBeFalsy()
         }
       })
     })
@@ -74,13 +74,13 @@ describe('basic-view selection', function() {
           }
           )
         },
-        select(start, end, jsEvent, view, resource) {
+        select(arg) {
           selectCalled = true
-          expect(start).toEqualDate('2015-11-29')
-          expect(end).toEqualDate('2015-12-01')
-          expect(typeof jsEvent).toBe('object')
-          expect(typeof view).toBe('object')
-          expect(resource.id).toBe('a')
+          expect(arg.start).toEqualDate('2015-11-29')
+          expect(arg.end).toEqualDate('2015-12-01')
+          expect(typeof arg.jsEvent).toBe('object')
+          expect(typeof arg.view).toBe('object')
+          expect(arg.resource.id).toBe('a')
         }
       })
     })
@@ -99,7 +99,7 @@ describe('basic-view selection', function() {
             }
           })
         },
-        select(start, end, jsEvent, view, resource) {
+        select(arg) {
           selectCalled = true
         }
       })
@@ -128,13 +128,13 @@ describe('basic-view selection', function() {
             }
           })
         },
-        select(start, end, jsEvent, view, resource) {
+        select(arg) {
           selectCalled = true
-          expect(start).toEqualDate('2015-11-28')
-          expect(end).toEqualDate('2015-12-01')
-          expect(typeof jsEvent).toBe('object')
-          expect(typeof view).toBe('object')
-          expect(resource.id).toBe('b')
+          expect(arg.start).toEqualDate('2015-11-28')
+          expect(arg.end).toEqualDate('2015-12-01')
+          expect(typeof arg.jsEvent).toBe('object')
+          expect(typeof arg.view).toBe('object')
+          expect(arg.resource.id).toBe('b')
         }
       })
     })
@@ -155,7 +155,7 @@ describe('basic-view selection', function() {
             }
           })
         },
-        select(start, end, jsEvent, view, resource) {
+        select(arg) {
           selectCalled = true
         }
       })

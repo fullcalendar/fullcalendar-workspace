@@ -14,7 +14,7 @@ export default class ResourceComponentFootprint extends ComponentFootprint {
 
   toLegacy(calendar) {
     const obj = super.toLegacy(calendar);
-    (obj as any).resourceId = this.resourceId
+    (obj as any).resource = calendar.getResourceById(this.resourceId)
     return obj
   }
 

@@ -6,6 +6,12 @@ export default class Resource {
     const resourceField = calendar.opt('eventResourceField') || 'resourceId'
     const resourceIds = []
 
+    if (rawProps.resources) {
+      for (let rawResource of rawProps.resources) {
+        resourceIds.push(Resource.normalizeId(rawResource.id))
+      }
+    }
+
     if (rawProps.resourceIds) {
       for (let rawResourceId of rawProps.resourceIds) {
         resourceIds.push(Resource.normalizeId(rawResourceId))

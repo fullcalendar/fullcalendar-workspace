@@ -29,6 +29,7 @@ export default class TimelineView extends View {
   snapsPerSlot: any
   snapDiffToIndex: any // maps number of snaps since the grid's start to the index
   snapIndexToDiff: any // inverse
+  timeWindowMs: number
   slotDuration: any
   snapDuration: any
   duration: any
@@ -99,7 +100,7 @@ export default class TimelineView extends View {
 
         // if date is partially through the interval, or is in the same interval as the start,
         // make the exclusive end be the *next* interval
-        if (adjustedEnd.valueOf() !== dayRange.end.valueOf() || adjustedEnd.valueOf() !== adjustedStart.valueOf()) {
+        if (adjustedEnd.valueOf() !== dayRange.end.valueOf() || adjustedEnd <= adjustedStart) {
           adjustedEnd = dateEnv.add(adjustedEnd, this.slotDuration)
         }
 
@@ -177,8 +178,12 @@ export default class TimelineView extends View {
     if (this.isHiddenDay(date)) {
       return false
     } else if (this.isTimeScale) {
-      return date >= this.normalizedUnzonedStart &&
-        date < this.normalizedUnzonedEnd
+      // determine if the time is within minTime/maxTime, which may have wacky values
+      let day = startOfDay(date)
+      let timeMs = date.valueOf() - day.valueOf()
+      let ms = timeMs - asRoughMs(this.dateProfile.minTime) // milliseconds since minTime
+      ms = ((ms % 86400000) + 86400000) % 86400000 // make negative values wrap to 24hr clock
+      return ms < this.timeWindowMs // before the maxTime?
     } else {
       return true
     }
@@ -312,6 +317,8 @@ export default class TimelineView extends View {
 
     initScaleProps(this)
 
+    this.timeWindowMs = asRoughMs(dateProfile.maxTime) - asRoughMs(dateProfile.minTime)
+
     // makes sure zone is stripped
     this.normalizedUnzonedStart = this.normalizeGridDate(dateProfile.renderUnzonedRange.start)
     this.normalizedUnzonedEnd = this.normalizeGridDate(dateProfile.renderUnzonedRange.end)
@@ -321,7 +328,7 @@ export default class TimelineView extends View {
     if (this.isTimeScale) {
       this.normalizedUnzonedStart = dateEnv.add(this.normalizedUnzonedStart, dateProfile.minTime)
       this.normalizedUnzonedEnd = dateEnv.add(
-        addDays(this.normalizedUnzonedEnd, 1),
+        addDays(this.normalizedUnzonedEnd, -1),
         dateProfile.maxTime
       )
     }

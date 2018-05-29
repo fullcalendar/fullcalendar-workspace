@@ -165,7 +165,7 @@ describe('resource crudding', function() {
     it('will replace previous resources', function(done) {
       let callCnt = 0
       initCalendar({
-        resources(callback) {
+        resources(arg, callback) {
           const res =
             !callCnt
               ? [
