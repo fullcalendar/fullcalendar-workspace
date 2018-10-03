@@ -13,10 +13,10 @@ describe('vresource businessHours', function() {
     ]
   })
 
-  describeOptions('isRTL', {
-    'when LTR': false,
-    'when RTL': true
-  }, function(isRTL) {
+  describeOptions('dir', {
+    'when LTR': 'ltr',
+    'when RTL': 'rtl'
+  }, function() {
 
     describe('for basicWeek', function() {
       pushOptions({
@@ -29,7 +29,7 @@ describe('vresource businessHours', function() {
 
         it('greys out sat and sun', function(done) {
           initCalendar({
-            viewRender() {
+            datesRender() {
               expect(isDayGridNonBusinessSegsRendered([
                 { resourceId: 'a', date: '2015-11-15' },
                 { resourceId: 'a', date: '2015-11-21' },
@@ -55,7 +55,7 @@ describe('vresource businessHours', function() {
 
         it('greys out sat and sun', function(done) {
           initCalendar({
-            viewRender() {
+            datesRender() {
               expect(isResourceTimeGridNonBusinessSegsRendered([
                 // sun
                 { resourceId: 'a', start: '2015-11-15T00:00:00', end: '2015-11-16T00:00:00' },
@@ -110,7 +110,7 @@ describe('vresource businessHours', function() {
 
       it('renders all with same businessHours', function(done) {
         initCalendar({
-          viewRender() {
+          datesRender() {
             expectDay9to5()
             done()
           }
@@ -123,7 +123,7 @@ describe('vresource businessHours', function() {
             { id: 'a', title: 'Resource A' },
             { id: 'b', title: 'Resource B', businessHours: { start: '02:00', end: '22:00' } }
           ],
-          viewRender() {
+          datesRender() {
             expectResourceOverride()
             done()
           }
@@ -131,22 +131,22 @@ describe('vresource businessHours', function() {
       })
 
       it('renders a resource override dynamically', function(done) {
-        let viewRenderCnt = 0
+        let datesRenderCnt = 0
         const specialResource = { id: 'b', title: 'Resource B', businessHours: { start: '02:00', end: '22:00' } }
         initCalendar({
           resources: [
             { id: 'a', title: 'Resource A' },
             specialResource
           ],
-          viewRender() {
-            viewRenderCnt += 1
-            if (viewRenderCnt === 1) {
+          datesRender() {
+            datesRenderCnt += 1
+            if (datesRenderCnt === 1) {
               expectResourceOverride()
               currentCalendar.removeResource(specialResource)
-            } else if (viewRenderCnt === 2) {
+            } else if (datesRenderCnt === 2) {
               expectLonelyDay9to5()
               currentCalendar.addResource(specialResource)
-            } else if (viewRenderCnt === 3) {
+            } else if (datesRenderCnt === 3) {
               expectResourceOverride()
               done()
             }
@@ -166,7 +166,7 @@ describe('vresource businessHours', function() {
                 { start: '08:00', end: '18:00', dow: [ 1, 2, 3, 4, 5 ] }
               ] }
           ],
-          viewRender() {
+          datesRender() {
             expect(isResourceTimeGridNonBusinessSegsRendered([
               { resourceId: 'b', start: '2016-10-30T00:00', end: '2016-10-31T00:00' }
             ])).toBe(true)

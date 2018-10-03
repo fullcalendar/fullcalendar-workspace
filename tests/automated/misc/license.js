@@ -9,14 +9,14 @@ describe('schedulerLicenseKey', function() {
     delete FullCalendar.mockSchedulerReleaseDate
   })
 
-  // FYI: eventAfterAllRender guarantees that view's skeleton has been rendered and sized
+  // FYI: _eventsPositioned guarantees that view's skeleton has been rendered and sized
 
   function defineTests() {
 
     it('is invalid when crap text', function(done) {
       initCalendar({
         schedulerLicenseKey: '<%= versionReleaseDate %>',
-        eventAfterAllRender() {
+        _eventsPositioned() {
           expectIsValid(false)
           done()
         }
@@ -26,7 +26,7 @@ describe('schedulerLicenseKey', function() {
     it('is invalid when purchased more than a year ago', function(done) {
       initCalendar({
         schedulerLicenseKey: '1234567890-fcs-1273017600', // purchased on 2010-05-05
-        eventAfterAllRender() {
+        _eventsPositioned() {
           expectIsValid(false)
           done()
         }
@@ -36,7 +36,7 @@ describe('schedulerLicenseKey', function() {
     it('is valid when purchased less than a year ago', function(done) {
       initCalendar({
         schedulerLicenseKey: '1234567890-fcs-1275868800', // purchased on 2010-06-07
-        eventAfterAllRender() {
+        _eventsPositioned() {
           expectIsValid(true)
           done()
         }
@@ -46,7 +46,7 @@ describe('schedulerLicenseKey', function() {
     it('is invalid when not 10 digits in random ID', function(done) {
       initCalendar({
         schedulerLicenseKey: '123456789-fcs-1275868800', // purchased on 2010-06-07
-        eventAfterAllRender() {
+        _eventsPositioned() {
           expectIsValid(false)
           done()
         }
@@ -56,7 +56,7 @@ describe('schedulerLicenseKey', function() {
     it('is valid when Creative Commons', function(done) {
       initCalendar({
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-        eventAfterAllRender() {
+        _eventsPositioned() {
           expectIsValid(true)
           done()
         }
@@ -66,7 +66,7 @@ describe('schedulerLicenseKey', function() {
     it('is valid when GPL', function(done) {
       initCalendar({
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-        eventAfterAllRender() {
+        _eventsPositioned() {
           expectIsValid(true)
           done()
         }
@@ -115,7 +115,7 @@ describe('schedulerLicenseKey', function() {
         resources: [
           { id: 'a', title: 'Resource A' }
         ],
-        viewRender() {
+        datesRender() {
           expect($('.fc-license-message').length).toBe(1)
           callCnt++
           if (callCnt === 1) {

@@ -27,7 +27,7 @@ describe('agenda-view selection', function() {
     it('allows non-resource selection', function(done) {
       let selectCalled = false
       initCalendar({
-        eventAfterAllRender() {
+        _eventsPositioned() {
           $.simulateByPoint('drag', {
             point: getTimeGridPoint('2015-11-23T02:00:00'),
             end: getTimeGridPoint('2015-11-23T04:00:00'),
@@ -58,7 +58,7 @@ describe('agenda-view selection', function() {
     it('allows a same-day resource selection', function(done) {
       let selectCalled = false
       initCalendar({
-        eventAfterAllRender() {
+        _eventsPositioned() {
           $.simulateByPoint('drag', {
             point: getResourceTimeGridPoint('b', '2015-11-29T02:00:00'),
             end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
@@ -82,7 +82,7 @@ describe('agenda-view selection', function() {
     it('allows a different-day resource selection', function(done) {
       let selectCalled = false
       initCalendar({
-        eventAfterAllRender() {
+        _eventsPositioned() {
           $.simulateByPoint('drag', {
             point: getResourceTimeGridPoint('b', '2015-11-29T02:00:00'),
             end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
@@ -106,7 +106,7 @@ describe('agenda-view selection', function() {
     it('disallows a selection across resources', function(done) {
       let selectCalled = false
       initCalendar({
-        eventAfterAllRender() {
+        _eventsPositioned() {
           $.simulateByPoint('drag', {
             point: getResourceTimeGridPoint('a', '2015-11-29T02:00:00'),
             end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
@@ -132,7 +132,7 @@ describe('agenda-view selection', function() {
     it('allows a same-day resource selection', function(done) {
       let selectCalled = false
       initCalendar({
-        eventAfterAllRender() {
+        _eventsPositioned() {
           $.simulateByPoint('drag', {
             point: getResourceTimeGridPoint('b', '2015-11-30T02:00:00'),
             end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
@@ -156,7 +156,7 @@ describe('agenda-view selection', function() {
     it('allows a multi-day resource selection', function(done) {
       let selectCalled = false
       initCalendar({
-        eventAfterAllRender() {
+        _eventsPositioned() {
           $.simulateByPoint('drag', {
             point: getResourceTimeGridPoint('b', '2015-11-30T02:00:00'),
             end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
@@ -180,7 +180,7 @@ describe('agenda-view selection', function() {
     it('disallows a selection across resources', function(done) {
       let selectCalled = false
       initCalendar({
-        eventAfterAllRender() {
+        _eventsPositioned() {
           $.simulateByPoint('drag', {
             point: getResourceTimeGridPoint('a', '2015-11-29T02:00:00'),
             end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),

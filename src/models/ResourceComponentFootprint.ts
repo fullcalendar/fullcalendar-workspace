@@ -6,8 +6,8 @@ export default class ResourceComponentFootprint extends ComponentFootprint {
   resourceId: string
 
 
-  constructor(unzonedRange, isAllDay, resourceId) {
-    super(unzonedRange, isAllDay)
+  constructor(unzonedRange, allDay, resourceId) {
+    super(unzonedRange, allDay)
     this.resourceId = resourceId
   }
 

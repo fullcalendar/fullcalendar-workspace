@@ -16,7 +16,7 @@ module.exports = function(config) {
 
       'fullcalendar/dist/fullcalendar.js',
       'fullcalendar/dist/jquery-ui-draggable.js',
-      'fullcalendar/dist/locale-all.js',
+      'fullcalendar/dist/locales-all.js',
       'fullcalendar/dist/fullcalendar.css',
 
       // main lib files

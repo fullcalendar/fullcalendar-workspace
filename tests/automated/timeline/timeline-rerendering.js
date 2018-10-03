@@ -118,7 +118,7 @@ describe('timeline view rerendering', function() {
           callback(getResources())
         }, 100)
       },
-      eventAfterAllRender() {
+      _eventsPositioned() {
         const scrollEl = $('.fc-body .fc-time-area .fc-scroller')
         renderCalls++
         if (renderCalls === 1) {
@@ -157,7 +157,7 @@ describe('timeline view rerendering', function() {
           $(arg.labelEl).find('.fc-cell-text').text(arg.resource.title + renderCalls)
         }
       },
-      eventAfterAllRender() {
+      _eventsPositioned() {
         const cellText = $.trim($('tr[data-resource-id="e"] .fc-cell-text').text())
         renderCalls++
         if (renderCalls === 1) {
@@ -187,7 +187,7 @@ describe('timeline view rerendering', function() {
           callback(getResources(renderCalls)) // renderCalls affects data!
         }, 100)
       },
-      eventAfterAllRender() {
+      _eventsPositioned() {
         const cellText = $.trim($('tr[data-resource-id="e"] .fc-cell-text').text())
         renderCalls++
         if (renderCalls === 1) {

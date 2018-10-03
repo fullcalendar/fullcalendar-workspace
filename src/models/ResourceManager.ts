@@ -1,8 +1,8 @@
 import * as request from 'superagent'
-import { assignTo, applyAll, Class, EmitterMixin, EmitterInterface, BusinessHourGenerator, DateMarker } from 'fullcalendar'
+import { assignTo, applyAll, EmitterMixin, EmitterInterface, BusinessHourGenerator, DateMarker } from 'fullcalendar'
 
 
-export default class ResourceManager extends Class {
+export default class ResourceManager {
 
   static resourceGuid = 1
 
@@ -92,7 +92,7 @@ export default class ResourceManager extends Class {
     const { calendar } = this
     const dateEnv = calendar.dateEnv
     let source = calendar.opt('resources')
-    const timezone = calendar.opt('timezone')
+    const timeZone = calendar.opt('timeZone')
 
     if (typeof source === 'string') {
       source = { url: source }
@@ -128,8 +128,8 @@ export default class ResourceManager extends Class {
 
         // mimick what EventManager does
         // TODO: more DRY
-        if (timezone && (timezone !== 'local')) {
-          requestParams[calendar.opt('timezoneParam')] = timezone
+        if (timeZone && (timeZone !== 'local')) {
+          requestParams[calendar.opt('timeZoneParam')] = timeZone
         }
       }
 

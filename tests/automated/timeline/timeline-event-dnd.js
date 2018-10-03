@@ -1,4 +1,4 @@
-// TODO: test isRTL?
+// TODO: test isRtl?
 
 import { getResourceTimelinePoint } from '../lib/timeline'
 
@@ -15,7 +15,7 @@ describe('timeline-view event drag-n-drop', function() {
     scrollTime: '00:00'
   })
 
-  describeTimezones(function(tz) {
+  describeTimeZones(function(tz) {
 
     it('allows switching date and resource', function(done) {
       let dropSpy
@@ -23,7 +23,7 @@ describe('timeline-view event drag-n-drop', function() {
         events: [
           { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
         ],
-        eventAfterAllRender: oneCall(function() {
+        _eventsPositioned: oneCall(function() {
           dragElTo($('.event0'), 'a', '2015-11-29T05:00:00', function() {
             expect(dropSpy).toHaveBeenCalled()
             done()
@@ -45,7 +45,7 @@ describe('timeline-view event drag-n-drop', function() {
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceIds: [ 'a', 'b' ] }
       ],
-      eventAfterAllRender: oneCall(function() {
+      _eventsPositioned: oneCall(function() {
         dragElTo($('.event0:first'), 'c', '2015-11-29T05:00:00')
       }),
       eventDrop(arg) {
@@ -66,14 +66,14 @@ describe('timeline-view event drag-n-drop', function() {
         { id: '1', title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' },
         { id: '1', title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
       ],
-      eventAfterAllRender: oneCall(function() {
+      _eventsPositioned: oneCall(function() {
         dragElTo(
           $('.event0:first'),
           'c',
           '2015-11-29T05:00:00',
           null, // callback
           function() { // onBeforeRelease (happens BEFORE callback)
-            expect($('.fc-helper-container').length).toBe(2) // rendered two helpers
+            expect($('.fc-mirror-container').length).toBe(2) // rendered two mirrors
           }
         )
       }),
@@ -102,7 +102,7 @@ describe('timeline-view event drag-n-drop', function() {
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceIds: [ 'a', 'b' ] }
       ],
-      eventAfterAllRender: oneCall(function() {
+      _eventsPositioned: oneCall(function() {
         dragElTo($('.event0:first'), 'b', '2015-11-29T05:00:00')
       }),
       eventDrop(arg) {
@@ -125,7 +125,7 @@ describe('timeline-view event drag-n-drop', function() {
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
       ],
-      eventAfterAllRender: oneCall(function() {
+      _eventsPositioned: oneCall(function() {
         touchDragElTo($('.event0'), 200, 'a', '2015-11-29T05:00:00', function() {
           expect(dropSpy).toHaveBeenCalled()
           done()
@@ -146,7 +146,7 @@ describe('timeline-view event drag-n-drop', function() {
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
       ],
-      eventAfterAllRender: oneCall(function() {
+      _eventsPositioned: oneCall(function() {
         dragElTo($('.event0'), 'a', '2015-11-29T05:00:00')
       }),
       eventDrop(arg) {
@@ -155,7 +155,7 @@ describe('timeline-view event drag-n-drop', function() {
           expect(arg.event.end).toEqualDate('2015-11-29T06:00:00Z')
           expect(arg.event.resources.length).toBe(1)
           expect(arg.event.resources[0].id).toBe('a')
-          arg.revertFunc()
+          arg.revert()
 
           let event = currentCalendar.clientEvents()[0]
           expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
@@ -173,7 +173,7 @@ describe('timeline-view event drag-n-drop', function() {
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceIds: [ 'a', 'b' ] }
       ],
-      eventAfterAllRender: oneCall(function() {
+      _eventsPositioned: oneCall(function() {
         dragElTo($('.event0:first'), 'c', '2015-11-29T05:00:00')
       }),
       eventDrop(arg) {
@@ -184,7 +184,7 @@ describe('timeline-view event drag-n-drop', function() {
           expect(arg.event.end).toEqualDate('2015-11-29T06:00:00Z')
           resourceIds = arg.event.resources.map((resource) => resource.id)
           expect(resourceIds).toEqual([ 'b', 'c' ])
-          arg.revertFunc()
+          arg.revert()
 
           let event = currentCalendar.clientEvents()[0]
           expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
@@ -215,7 +215,7 @@ describe('timeline-view event drag-n-drop', function() {
         events: [
           { title: 'event0', className: 'event0', start: '2015-11-27T09:00', end: '2015-11-27T10:00', resourceId: 'b' }
         ],
-        eventAfterAllRender: oneCall(function() {
+        _eventsPositioned: oneCall(function() {
           dragElTo($('.event0'), 'a', '2015-11-27T05:00', function() {
             expect(dropSpy).toHaveBeenCalled()
             done()
@@ -242,7 +242,7 @@ describe('timeline-view event drag-n-drop', function() {
         events: [
           { title: 'event0', className: 'event0', start: '2015-11-27T09:00', end: '2015-11-27T10:00', resourceId: 'b' }
         ],
-        eventAfterAllRender: oneCall(function() {
+        _eventsPositioned: oneCall(function() {
           dragElTo($('.event0'), 'a', '2015-11-27T09:00:00', function() {
             expect(dropSpy).not.toHaveBeenCalled()
             done()

@@ -3,7 +3,6 @@
 <head>
 <meta charset='utf-8' />
 <link href='../fullcalendar/dist/fullcalendar.css' rel='stylesheet' />
-<link href='../fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print' />
 <link href='../dist/scheduler.css' rel='stylesheet' />
 <script src='../node_modules/superagent/superagent.js'></script>
 <script src='../fullcalendar/dist/fullcalendar.js'></script>
@@ -35,14 +34,14 @@
 
       resources: { // you can also specify a plain string like 'json/resources.json'
         url: 'json/resources.json',
-        error: function() {
+        failure: function() {
           document.getElementById('script-warning').style.display = 'block';
         }
       },
 
       events: { // you can also specify a plain string like 'json/events.json'
         url: 'json/events.json',
-        error: function() {
+        failure: function() {
           document.getElementById('script-warning').style.display = 'block';
         }
       }

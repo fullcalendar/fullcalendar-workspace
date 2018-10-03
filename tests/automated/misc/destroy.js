@@ -33,7 +33,7 @@ describe('destroy', function() {
 
         initCalendar({
           allDaySlot: false,
-          eventAfterAllRender() {
+          _eventsPositioned() {
             setTimeout(function() { // wait to render events
               currentCalendar.destroy()
               window.currentCalendar = null // for tests/util.js

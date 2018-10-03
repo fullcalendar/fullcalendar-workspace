@@ -22,10 +22,10 @@ describe('vresource event rendering', function() {
     ]
   })
 
-  describeOptions('isRTL', {
-    'when LTR': false,
-    'when RTL': true
-  }, function(isRTL) {
+  describeOptions('dir', {
+    'when LTR': 'ltr',
+    'when RTL': 'rtl'
+  }, function(dir) {
 
     describeValues({
       'with normal event': null,
@@ -70,8 +70,8 @@ describe('vresource event rendering', function() {
 
             it('renders in the correct column', function(callback) {
               initCalendar({
-                eventAfterAllRender() {
-                  const colRect = getTrailingBoundingRect(getHeadDowEls('tue'), isRTL)
+                _eventsPositioned() {
+                  const colRect = getTrailingBoundingRect(getHeadDowEls('tue'), dir)
                   const eventRect = getBoundingRect('.event1')
                   expect(eventRect).toBeMostlyHBoundedBy(colRect)
                   callback()
@@ -87,8 +87,8 @@ describe('vresource event rendering', function() {
 
             it('renders in the correct column', function(callback) {
               initCalendar({
-                eventAfterAllRender() {
-                  const resourceRect = getLeadingBoundingRect(getHeadResourceEls('c'), isRTL)
+                _eventsPositioned() {
+                  const resourceRect = getLeadingBoundingRect(getHeadResourceEls('c'), dir)
                   const eventRect = getBoundingRect('.event1')
                   expect(eventRect).toBeMostlyHBoundedBy(resourceRect)
                   callback()
@@ -123,17 +123,17 @@ describe('vresource event rendering', function() {
 
             it('renders in the correct columns', function(callback) {
               initCalendar({
-                eventAfterAllRender() {
+                _eventsPositioned() {
                   const eventEls = $('.event1')
                   expect(eventEls.length).toBe(2)
-                  const firstEventRect = getLeadingBoundingRect(eventEls, isRTL)
-                  const lastEventRect = getTrailingBoundingRect(eventEls, isRTL)
+                  const firstEventRect = getLeadingBoundingRect(eventEls, dir)
+                  const lastEventRect = getTrailingBoundingRect(eventEls, dir)
                   if (!renderingType) { // non-background events
                     expect(firstEventRect.node).toHaveClass('fc-start')
                     expect(lastEventRect.node).toHaveClass('fc-end')
                   }
-                  const tueRect = getTrailingBoundingRect(getHeadDowEls('tue'), isRTL)
-                  const wedRect = getTrailingBoundingRect(getHeadDowEls('wed'), isRTL)
+                  const tueRect = getTrailingBoundingRect(getHeadDowEls('tue'), dir)
+                  const wedRect = getTrailingBoundingRect(getHeadDowEls('wed'), dir)
                   expect(firstEventRect).toBeMostlyHBoundedBy(tueRect)
                   expect(lastEventRect).toBeMostlyHBoundedBy(wedRect)
                   callback()
@@ -149,18 +149,18 @@ describe('vresource event rendering', function() {
 
             it('renders in the correct columns', function(callback) {
               initCalendar({
-                eventAfterAllRender() {
+                _eventsPositioned() {
                   const eventEls = $('.event1')
                   expect(eventEls.length).toBe(2)
-                  const firstEventRect = getLeadingBoundingRect(eventEls, isRTL)
-                  const lastEventRect = getTrailingBoundingRect(eventEls, isRTL)
+                  const firstEventRect = getLeadingBoundingRect(eventEls, dir)
+                  const lastEventRect = getTrailingBoundingRect(eventEls, dir)
                   if (!renderingType) { // non-background events
                     expect(firstEventRect.node).toHaveClass('fc-start')
                     expect(lastEventRect.node).toHaveClass('fc-end')
                   }
                   const resourceEls = getHeadResourceEls('c')
-                  const firstResourceRect = getLeadingBoundingRect(resourceEls, isRTL)
-                  const lastResourceRect = getTrailingBoundingRect(resourceEls, isRTL)
+                  const firstResourceRect = getLeadingBoundingRect(resourceEls, dir)
+                  const lastResourceRect = getTrailingBoundingRect(resourceEls, dir)
                   expect(firstEventRect).toBeMostlyHBoundedBy(firstResourceRect)
                   expect(lastEventRect).toBeMostlyHBoundedBy(lastResourceRect)
                   callback()
@@ -192,10 +192,10 @@ describe('vresource event rendering', function() {
 
             it('renders in the correct columns', function(callback) {
               initCalendar({
-                eventAfterAllRender() {
+                _eventsPositioned() {
                   const eventRect = getBoundingRect('.event1')
-                  const tueRect = getTrailingBoundingRect(getHeadDowEls('tue'), isRTL)
-                  const wedRect = getTrailingBoundingRect(getHeadDowEls('wed'), isRTL)
+                  const tueRect = getTrailingBoundingRect(getHeadDowEls('tue'), dir)
+                  const wedRect = getTrailingBoundingRect(getHeadDowEls('wed'), dir)
                   expect(tueRect).toBeMostlyHBoundedBy(eventRect)
                   expect(wedRect).toBeMostlyHBoundedBy(eventRect)
                   callback()
@@ -211,18 +211,18 @@ describe('vresource event rendering', function() {
 
             it('renders in the correct columns', function(callback) {
               initCalendar({
-                eventAfterAllRender() {
+                _eventsPositioned() {
                   const eventEls = $('.event1')
                   expect(eventEls.length).toBe(2)
-                  const firstEventRect = getLeadingBoundingRect(eventEls, isRTL)
-                  const lastEventRect = getTrailingBoundingRect(eventEls, isRTL)
+                  const firstEventRect = getLeadingBoundingRect(eventEls, dir)
+                  const lastEventRect = getTrailingBoundingRect(eventEls, dir)
                   if (!renderingType) { // non-background events
                     expect(firstEventRect.node).toHaveClass('fc-start')
                     expect(lastEventRect.node).toHaveClass('fc-end')
                   }
                   const resourceEls = getHeadResourceEls('c')
-                  const firstResourceRect = getLeadingBoundingRect(resourceEls, isRTL)
-                  const lastResourceRect = getTrailingBoundingRect(resourceEls, isRTL)
+                  const firstResourceRect = getLeadingBoundingRect(resourceEls, dir)
+                  const lastResourceRect = getTrailingBoundingRect(resourceEls, dir)
                   expect(firstEventRect).toBeMostlyHBoundedBy(firstResourceRect)
                   expect(lastEventRect).toBeMostlyHBoundedBy(lastResourceRect)
                   callback()
@@ -275,7 +275,7 @@ describe('vresource event rendering', function() {
 
               it('renders on every resource', function(callback) {
                 initCalendar({
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     const eventEls = $('.event1')
                     expect(eventEls.length).toBe(3)
                     callback()
@@ -286,7 +286,7 @@ describe('vresource event rendering', function() {
 
               it('doesn\'t render at all', function(callback) {
                 initCalendar({
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     const eventEls = $('.event1')
                     expect(eventEls.length).toBe(0)
                     callback()
@@ -314,7 +314,7 @@ describe('vresource event rendering', function() {
     it('renders each event in a separate resource column', function(done) {
       initCalendar({
         defaultView: 'agendaDay',
-        eventAfterAllRender() {
+        _eventsPositioned() {
           expect($('.event1').length).toBe(2)
           done()
         }
@@ -324,7 +324,7 @@ describe('vresource event rendering', function() {
     it('renders a single event when no resource columns', function(done) {
       initCalendar({
         defaultView: 'agendaTwoDay',
-        eventAfterAllRender() {
+        _eventsPositioned() {
           expect($('.event1').length).toBe(1)
           done()
         }

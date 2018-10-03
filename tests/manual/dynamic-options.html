@@ -14,17 +14,17 @@
 
   $(function() { // document ready
     var theme = false;
-    var isRTL = false;
+    var dir = 'ltr';
     var businessHours = false;
 
     $('#change-theme-button').on('click', function() {
-      theme = !theme;
+      theme = theme ? false : 'jquery-ui';
       $('#calendar').fullCalendar('option', 'theme', theme);
     });
 
     $('#change-dir-button').on('click', function() {
-      isRTL = !isRTL;
-      $('#calendar').fullCalendar('option', 'isRTL', isRTL);
+      dir = dir === 'ltr' ? 'rtl' : 'ltr';
+      $('#calendar').fullCalendar('option', 'dir', dir);
     });
 
     $('#change-businessHours-button').on('click', function() {
@@ -33,19 +33,19 @@
     });
 
     $('#change-all-button').on('click', function() {
-      theme = !theme;
-      isRTL = !isRTL;
+      theme = theme ? false : 'jquery-ui';
+      dir = dir === 'ltr' ? 'rtl' : 'ltr';
       businessHours = !businessHours;
       $('#calendar').fullCalendar('option', {
         theme: theme,
-        isRTL: isRTL,
+        dir: dir,
         businessHours: businessHours
       });
     });
 
     $('#calendar').fullCalendar({
       theme: theme,
-      isRTL: isRTL,
+      dir: dir,
       businessHours: businessHours,
       now: '2016-07-11',
       editable: true, // enable draggable events
@@ -103,7 +103,7 @@
         { id: '5', resourceId: 'f', start: '2016-05-07T00:30:00', end: '2016-05-07T02:30:00', title: 'event 5' }
       ]
     });
-  
+
   });
 
 </script>

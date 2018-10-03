@@ -1,8 +1,8 @@
 import {
-  View, UnzonedRange, ComponentFootprint, CoordCache,
+  View, DateRange, intersectRanges, rangeContainsMarker, ComponentFootprint, PositionCache,
   isInt, htmlEscape, greatestDurationDenominator,
   wholeDivideDurations, multiplyDuration, StandardInteractionsMixin,
-  BusinessHourRenderer, createElement, findElements, findChildren,
+  createElement, findElements, findChildren,
   applyStyle, applyStyleProp, removeElement,
   DateMarker, isSingleDay, createDuration, startOfDay, addMs, addDays, asRoughMs, DateFormatter
 } from 'fullcalendar'
@@ -12,17 +12,19 @@ import ScrollJoiner from '../util/ScrollJoiner'
 import ScrollFollower from '../util/ScrollFollower'
 import TimelineEventRenderer from './renderers/TimelineEventRenderer'
 import TimelineFillRenderer from './renderers/TimelineFillRenderer'
-import TimelineHelperRenderer from './renderers/TimelineHelperRenderer'
+import TimelineMirrorRenderer from './renderers/TimelineMirrorRenderer'
 import TimelineEventDragging from './interactions/TimelineEventDragging'
 import TimelineEventResizing from './interactions/TimelineEventResizing'
 import { initScaleProps } from './TimelineView.defaults'
 
 export default class TimelineView extends View {
 
+  isInteractable = true
+
   // date computation
-  normalizedUnzonedRange: UnzonedRange // unzonedRange normalized and converted to Moments
-  normalizedUnzonedStart: DateMarker // "
-  normalizedUnzonedEnd: DateMarker // "
+  normalizedRange: DateRange // unzonedRange normalized and converted to Moments
+  normalizedStart: DateMarker // "
+  normalizedEnd: DateMarker // "
   slotDates: any // has stripped timezones
   slotCnt: any
   snapCnt: any
@@ -50,7 +52,7 @@ export default class TimelineView extends View {
   eventTitleFollower: ScrollFollower
   segContainerEl: HTMLElement
   segContainerHeight: any
-  innerEl: HTMLElement // for TimelineHelperRenderer
+  innerEl: HTMLElement // for TimelineMirrorRenderer
   bgSegContainerEl: HTMLElement
   slatContainerEl: HTMLElement
   slatColEls: HTMLElement[]
@@ -111,8 +113,8 @@ export default class TimelineView extends View {
     }
 
     return new ComponentFootprint(
-      new UnzonedRange(adjustedStart, adjustedEnd),
-      !this.isTimeScale // isAllDay
+      { start: adjustedStart, end: adjustedEnd },
+      !this.isTimeScale // allDay
     )
   }
 
@@ -127,7 +129,8 @@ export default class TimelineView extends View {
     if (this.computeDateSnapCoverage(footprintStart) < this.computeDateSnapCoverage(footprintEnd)) {
 
       // intersect the footprint's range with the grid'd range
-      const segRange = normalFootprint.unzonedRange.intersect(this.normalizedUnzonedRange)
+      const origRange = normalFootprint.unzonedRange
+      const segRange = intersectRanges(origRange, this.normalizedRange)
 
       if (segRange) {
         const segStart = segRange.start
@@ -135,8 +138,8 @@ export default class TimelineView extends View {
         segs.push({
           start: segStart,
           end: segEnd,
-          isStart: segRange.isStart && this.isValidDate(segStart),
-          isEnd: segRange.isEnd && this.isValidDate(addMs(segEnd, -1))
+          isStart: segRange.start.valueOf() === origRange.start.valueOf() && this.isValidDate(segStart),
+          isEnd: segRange.end.valueOf() === origRange.end.valueOf() && this.isValidDate(addMs(segEnd, -1))
         })
       }
     }
@@ -197,8 +200,8 @@ export default class TimelineView extends View {
     const snapDiffToIndex = []
     const snapIndexToDiff = []
 
-    let date = this.normalizedUnzonedStart
-    while (date < this.normalizedUnzonedEnd) {
+    let date = this.normalizedStart
+    while (date < this.normalizedEnd) {
       if (this.isValidDate(date)) {
         snapIndex++
         snapDiffToIndex.push(snapIndex)
@@ -253,13 +256,13 @@ export default class TimelineView extends View {
     this.timeBodyScroller.canvas.bgEl.appendChild(
       this.slatContainerEl = createElement('div', { className: 'fc-slats' })
     )
-    this.innerEl = this.timeBodyScroller.canvas.contentEl // for TimelineHelperRenderer
+    this.innerEl = this.timeBodyScroller.canvas.contentEl // for TimelineMirrorRenderer
     this.innerEl.appendChild(
       this.segContainerEl = createElement('div', { className: 'fc-event-container' })
     )
     this.bgSegContainerEl = this.timeBodyScroller.canvas.bgEl
 
-    this.timeBodyBoundCache = new CoordCache({
+    this.timeBodyBoundCache = new PositionCache({
       els: [ this.timeBodyScroller.canvas.el ], // better representative of bounding box, considering annoying negative margins
       isHorizontal: true, // we use the left/right for adjusting RTL coordinates
       isVertical: true
@@ -274,7 +277,7 @@ export default class TimelineView extends View {
     this.eventTitleFollower = new ScrollFollower(this.timeBodyScroller)
     this.eventTitleFollower.minTravel = 50
     //
-    if (this.isRTL) {
+    if (this.isRtl) {
       this.eventTitleFollower.containOnNaturalRight = true
     } else {
       this.eventTitleFollower.containOnNaturalLeft = true
@@ -320,24 +323,24 @@ export default class TimelineView extends View {
     this.timeWindowMs = asRoughMs(dateProfile.maxTime) - asRoughMs(dateProfile.minTime)
 
     // makes sure zone is stripped
-    this.normalizedUnzonedStart = this.normalizeGridDate(dateProfile.renderUnzonedRange.start)
-    this.normalizedUnzonedEnd = this.normalizeGridDate(dateProfile.renderUnzonedRange.end)
+    this.normalizedStart = this.normalizeGridDate(dateProfile.renderRange.start)
+    this.normalizedEnd = this.normalizeGridDate(dateProfile.renderRange.end)
 
     // apply minTime/maxTime
     // TODO: View should be responsible.
     if (this.isTimeScale) {
-      this.normalizedUnzonedStart = dateEnv.add(this.normalizedUnzonedStart, dateProfile.minTime)
-      this.normalizedUnzonedEnd = dateEnv.add(
-        addDays(this.normalizedUnzonedEnd, -1),
+      this.normalizedStart = dateEnv.add(this.normalizedStart, dateProfile.minTime)
+      this.normalizedEnd = dateEnv.add(
+        addDays(this.normalizedEnd, -1),
         dateProfile.maxTime
       )
     }
 
-    this.normalizedUnzonedRange = new UnzonedRange(this.normalizedUnzonedStart, this.normalizedUnzonedEnd)
+    this.normalizedRange = { start: this.normalizedStart, end: this.normalizedEnd }
 
     const slotDates = []
-    let date = this.normalizedUnzonedStart
-    while (date < this.normalizedUnzonedEnd) {
+    let date = this.normalizedStart
+    while (date < this.normalizedEnd) {
       if (this.isValidDate(date)) {
         slotDates.push(date)
       }
@@ -354,14 +357,14 @@ export default class TimelineView extends View {
     this.slatColEls = findElements(this.slatContainerEl, 'col')
     this.slatEls = findElements(this.slatContainerEl, 'td')
 
-    this.slatCoordCache = new CoordCache({
+    this.slatCoordCache = new PositionCache({
       els: this.slatEls,
       isHorizontal: true
     })
 
     // for the inner divs within the slats
     // used for event rendering and scrollTime, to disregard slat border
-    this.slatInnerCoordCache = new CoordCache({
+    this.slatInnerCoordCache = new PositionCache({
       els: findChildren(this.slatEls, 'div'),
       isHorizontal: true,
       // we use this coord cache for getPosition* for event rendering.
@@ -374,7 +377,7 @@ export default class TimelineView extends View {
       this.publiclyTrigger('dayRender', [
         {
           date: dateEnv.toDate(date),
-          isAllDay: !this.isTimeScale,
+          allDay: !this.isTimeScale,
           el: this.slatEls[i],
           view: this
         }
@@ -445,7 +448,7 @@ export default class TimelineView extends View {
           if (
             !leadingCell ||
             isInt(dateEnv.countDurationsBetween(
-              this.normalizedUnzonedStart,
+              this.normalizedStart,
               date,
               labelInterval
             ))
@@ -551,7 +554,7 @@ export default class TimelineView extends View {
       classes = []
       classes.push(
         isInt(dateEnv.countDurationsBetween(
-          this.normalizedUnzonedStart,
+          this.normalizedStart,
           date,
           this.labelInterval
         )) ?
@@ -603,9 +606,9 @@ export default class TimelineView extends View {
     const nodes: HTMLElement[] = []
     date = this.normalizeGridDate(date)
 
-    if (this.normalizedUnzonedRange.containsDate(date)) {
+    if (rangeContainsMarker(this.normalizedRange, date)) {
       const coord = this.dateToCoord(date)
-      const styleProps = this.isRTL ?
+      const styleProps = this.isRtl ?
         { right: -coord } :
         { left: coord }
 
@@ -643,7 +646,7 @@ export default class TimelineView extends View {
   // ------------------------------------------------------------------------------------------------------------------
 
 
-  updateSize(totalHeight, isAuto, isResize) {
+  updateSize(totalHeight, isAuto) {
     let bodyHeight
     let containerMinWidth
     let containerWidth
@@ -771,7 +774,7 @@ export default class TimelineView extends View {
   computeDateSnapCoverage(date) {
     const dateEnv = this.calendar.dateEnv
     const snapDiff = dateEnv.countDurationsBetween(
-      this.normalizedUnzonedStart,
+      this.normalizedStart,
       date,
       this.snapDuration
     )
@@ -807,14 +810,14 @@ export default class TimelineView extends View {
     const partial = slotCoverage - slotIndex
     const coordCache = this.slatInnerCoordCache
 
-    if (this.isRTL) {
+    if (this.isRtl) {
       return (
-        coordCache.getRightPosition(slotIndex) -
+        coordCache.getRight(slotIndex) -
         (coordCache.getWidth(slotIndex) * partial)
       ) - this.timeBodyBoundCache.getWidth(0)
     } else {
       return (
-        coordCache.getLeftPosition(slotIndex) +
+        coordCache.getLeft(slotIndex) +
         (coordCache.getWidth(slotIndex) * partial)
       )
     }
@@ -822,7 +825,7 @@ export default class TimelineView extends View {
 
 
   rangeToCoords(range) {
-    if (this.isRTL) {
+    if (this.isRtl) {
       return { right: this.dateToCoord(range.start), left: this.dateToCoord(range.end) }
     } else {
       return { left: this.dateToCoord(range.start), right: this.dateToCoord(range.end) }
@@ -849,8 +852,8 @@ export default class TimelineView extends View {
   // this needs to be called if v scrollbars appear on body container. or zooming
   updateSegPositions() {
     const segs = [].concat(
-      this.getEventSegs(),
-      this.getBusinessHourSegs()
+      this.getEventSegs(), // copy and past this old function?
+      this.getBusinessHourSegs() // use businesshourrenderer directly now, errr nooo need it from the rows
     )
 
     for (let seg of segs) {
@@ -884,7 +887,7 @@ export default class TimelineView extends View {
 
   computeInitialDateScroll() {
     const dateEnv = this.calendar.dateEnv
-    const unzonedRange = this.get('dateProfile').activeUnzonedRange
+    const unzonedRange = this.dateProfile.activeRange
     let left = 0
 
     if (this.isTimeScale) {
@@ -951,15 +954,15 @@ export default class TimelineView extends View {
         let snapRight
         const slatWidth = slatCoordCache.getWidth(slatIndex)
 
-        if (this.isRTL) {
-          const slatRight = slatCoordCache.getRightOffset(slatIndex)
+        if (this.isRtl) {
+          const slatRight = slatCoordCache.indexToRightOffset(slatIndex)
           partial = (slatRight - leftOffset) / slatWidth
           localSnapIndex = Math.floor(partial * snapsPerSlot)
           snapIndex = (slatIndex * snapsPerSlot) + localSnapIndex
           snapRight = slatRight - ((localSnapIndex / snapsPerSlot) * slatWidth)
           snapLeft = snapRight - (((localSnapIndex + 1) / snapsPerSlot) * slatWidth)
         } else {
-          const slatLeft = slatCoordCache.getLeftOffset(slatIndex)
+          const slatLeft = slatCoordCache.indexToLeftOffset(slatIndex)
           partial = (leftOffset - slatLeft) / slatWidth
           localSnapIndex = Math.floor(partial * snapsPerSlot)
           snapIndex = (slatIndex * snapsPerSlot) + localSnapIndex
@@ -972,8 +975,8 @@ export default class TimelineView extends View {
           component: this, // needed unfortunately
           left: snapLeft,
           right: snapRight,
-          top: timeBodyBoundCache.getTopOffset(0),
-          bottom: timeBodyBoundCache.getBottomOffset(0)
+          top: timeBodyBoundCache.indexToTopOffset(0),
+          bottom: timeBodyBoundCache.indexToBottomOffset(0)
         }
       }
     }
@@ -983,7 +986,7 @@ export default class TimelineView extends View {
   getHitFootprint(hit) {
     return new ComponentFootprint(
       this.getSnapUnzonedRange(hit.snap),
-      !this.isTimeScale // isAllDay
+      !this.isTimeScale // allDay
     )
   }
 
@@ -995,7 +998,7 @@ export default class TimelineView extends View {
 
   getSnapUnzonedRange(snapIndex) {
     const dateEnv = this.calendar.dateEnv
-    let start = this.normalizedUnzonedStart
+    let start = this.normalizedStart
 
     start = dateEnv.add(
       start,
@@ -1004,7 +1007,7 @@ export default class TimelineView extends View {
 
     let end = dateEnv.add(start, this.snapDuration)
 
-    return new UnzonedRange(start, end)
+    return { start, end }
   }
 
 
@@ -1018,19 +1021,19 @@ export default class TimelineView extends View {
 
 
   // Renders a visual indication of an event being resized
-  renderEventResize(eventFootprints, seg, isTouch) {
+  renderEventResize(eventFootprints, seg) {
     for (let eventFootprint of eventFootprints) {
       this.renderHighlight(eventFootprint.componentFootprint)
     }
 
-    return this.helperRenderer.renderEventResizingFootprints(eventFootprints, seg, isTouch)
+    return this.mirrorRenderer.renderEventResizingFootprints(eventFootprints, seg)
   }
 
 
   // Unrenders a visual indication of an event being resized
   unrenderEventResize() {
     this.unrenderHighlight()
-    return this.helperRenderer.unrender()
+    return this.mirrorRenderer.unrender()
   }
 
 
@@ -1043,19 +1046,19 @@ export default class TimelineView extends View {
   //  should be the edges when isTimeScale.
   renderDrag(eventFootprints, seg, isTouch) {
     if (seg) {
-      this.helperRenderer.renderEventDraggingFootprints(eventFootprints, seg, isTouch)
-      return true // signal helper rendered
+      this.mirrorRenderer.renderEventDraggingFootprints(eventFootprints, seg, isTouch)
+      return true // signal mirror rendered
     } else {
       for (let eventFootprint of eventFootprints) {
         this.renderHighlight(eventFootprint.componentFootprint)
       }
-      return false // signal helper not rendered
+      return false // signal mirror not rendered
     }
   }
 
 
   unrenderDrag() {
-    this.helperRenderer.unrender()
+    this.mirrorRenderer.unrender()
     return this.unrenderHighlight()
   }
 }
@@ -1066,9 +1069,6 @@ TimelineView.prototype.usesMinMaxTime = true // for View. indicates that minTime
 // TODO: rename these
 TimelineView.prototype.eventRendererClass = TimelineEventRenderer
 TimelineView.prototype.fillRendererClass = TimelineFillRenderer
-TimelineView.prototype.businessHourRendererClass = BusinessHourRenderer
-TimelineView.prototype.helperRendererClass = TimelineHelperRenderer
-TimelineView.prototype.eventDraggingClass = TimelineEventDragging
-TimelineView.prototype.eventResizingClass = TimelineEventResizing
+TimelineView.prototype.mirrorRendererClass = TimelineMirrorRenderer
 
 StandardInteractionsMixin.mixInto(TimelineView)

@@ -11,7 +11,7 @@ const COL_MIN_WIDTH = 30
 export default class Spreadsheet {
 
   view: any
-  isRTL: boolean
+  isRtl: boolean
   headEl: HTMLElement
   el: HTMLElement // for body
   tbodyEl: HTMLElement
@@ -39,7 +39,7 @@ export default class Spreadsheet {
   constructor(view) {
     this.colGroupHtml = ''
     this.view = view
-    this.isRTL = this.view.opt('isRTL') // doesn't descend from Grid, so needs to do this
+    this.isRtl = this.view.isRtl // doesn't descend from Grid, so needs to do this
 
     this.givenColWidths = this.colWidths =
       this.view.colSpecs.map((colSpec) => colSpec.width)
@@ -171,7 +171,7 @@ export default class Spreadsheet {
         resizerEl.classList.add('fc-active')
       },
       drag: (dx, dy) => {
-        let width = origColWidth + (this.isRTL ? -dx : dx)
+        let width = origColWidth + (this.isRtl ? -dx : dx)
         width = Math.max(width, minWidth)
         colWidths[i] = width
         this.applyColWidths()

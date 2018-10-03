@@ -67,7 +67,7 @@ gulp.task('lint:tests', function() {
           'moment',
           'pushOptions',
           'describeOptions',
-          'describeTimezones',
+          'describeTimeZones',
           'describeValues',
           'initCalendar',
           'currentCalendar',

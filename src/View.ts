@@ -101,8 +101,8 @@ View.prototype.getInitialResources = function(dateProfile: DateProfile, callback
 
   if (dateProfile) {
     calendar.resourceManager.getResources(
-      dateProfile.activeUnzonedRange.start,
-      dateProfile.activeUnzonedRange.end,
+      dateProfile.activeRange.start,
+      dateProfile.activeRange.end,
       callback
     )
   } else {
@@ -247,13 +247,13 @@ View.prototype.filterResourcesWithEvents = function(resources, eventsPayload) {
 
 
 View.prototype.eventsPayloadToRanges = function(eventsPayload) {
-  const dateProfile = this._getDateProfile()
+  const dateProfile = this.dateProfile
   const allEventRanges = []
 
   for (let eventDefId in eventsPayload) {
     const instanceGroup = eventsPayload[eventDefId]
     const eventRanges = instanceGroup.sliceRenderRanges(
-      dateProfile.activeUnzonedRange
+      dateProfile.activeRange
     )
     allEventRanges.push(...(eventRanges || []))
   }

@@ -22,11 +22,6 @@ export default class ResourceDayGrid extends DayGrid {
   }
 
 
-  renderDates(dateProfile) {
-    this.dateProfile = dateProfile
-  }
-
-
   renderResources(resources) {
     this.registerResources(resources)
     this.renderGrid()
@@ -43,7 +38,7 @@ export default class ResourceDayGrid extends DayGrid {
 
     return new ResourceComponentFootprint(
       plainFootprint.unzonedRange,
-      plainFootprint.isAllDay,
+      plainFootprint.allDay,
       this.getColResource(hit.col).id
     )
   }
@@ -70,7 +65,7 @@ export default class ResourceDayGrid extends DayGrid {
           const copy = assignTo({}, seg)
           copy.resource = resourceObj
 
-          if (this.isRTL) {
+          if (this.isRtl) {
             copy.leftCol = this.indicesToCol(resourceIndex, seg.lastRowDayIndex)
             copy.rightCol = this.indicesToCol(resourceIndex, seg.firstRowDayIndex)
           } else {

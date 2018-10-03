@@ -20,7 +20,7 @@ describe('resource render waiting', function() {
         resourceRenderCnt += 1
       },
 
-      eventAfterAllRender() {
+      _eventsPositioned() {
         eventAllRenderCnt += 1
 
         if (eventAllRenderCnt === 1) {

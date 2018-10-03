@@ -21,8 +21,7 @@ export default class ResourceTimeGrid extends TimeGrid {
   }
 
 
-  renderDates(dateProfile) {
-    this.dateProfile = dateProfile
+  renderDates() {
     this.renderSlats()
   }
 
@@ -43,7 +42,7 @@ export default class ResourceTimeGrid extends TimeGrid {
 
     return new ResourceComponentFootprint(
       plainFootprint.unzonedRange,
-      plainFootprint.isAllDay,
+      plainFootprint.allDay,
       this.getColResource(hit.col).id
     )
   }

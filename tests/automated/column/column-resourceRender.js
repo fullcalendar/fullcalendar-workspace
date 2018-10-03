@@ -18,9 +18,9 @@ describe('column-view resourceRender trigger', function() {
     }
   })
 
-  describeOptions('isRTL', {
-    'when LTR': false,
-    'when RTL': true
+  describeOptions('dir', {
+    'when LTR': 'ltr',
+    'when RTL': 'rtl'
   }, function() {
 
     describe('when resource above dates', function() {
@@ -44,7 +44,7 @@ describe('column-view resourceRender trigger', function() {
                 callCnt++
               }
             },
-            viewRender() {
+            datesRender() {
               expect(callCnt).toBe(1)
               done()
             }
@@ -73,7 +73,7 @@ describe('column-view resourceRender trigger', function() {
                 callCnt++
               }
             },
-            viewRender() {
+            datesRender() {
               expect(callCnt).toBe(3)
               done()
             }
@@ -96,7 +96,7 @@ describe('column-view resourceRender trigger', function() {
                 callCnt++
               }
             },
-            viewRender() {
+            datesRender() {
               expect(callCnt).toBe(7) // 7 days of the week
               done()
             }

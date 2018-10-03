@@ -31,7 +31,7 @@ describe('basic-view event resizing', function() {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-23' }
         ],
-        eventAfterAllRender() {
+        _eventsPositioned() {
           if (afterRenderCalled) {
             return
           }
@@ -71,7 +71,7 @@ describe('basic-view event resizing', function() {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29', resourceId: 'a' }
         ],
-        eventAfterAllRender() {
+        _eventsPositioned() {
           if (afterRenderCalled) {
             return
           }
@@ -104,7 +104,7 @@ describe('basic-view event resizing', function() {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29', resourceId: 'a' }
         ],
-        eventAfterAllRender() {
+        _eventsPositioned() {
           if (afterRenderCalled) {
             return
           }
@@ -141,7 +141,7 @@ describe('basic-view event resizing', function() {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-28', resourceId: 'b' }
         ],
-        eventAfterAllRender() {
+        _eventsPositioned() {
           if (afterRenderCalled) {
             return
           }
@@ -175,7 +175,7 @@ describe('basic-view event resizing', function() {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-28', resourceId: 'a' }
         ],
-        eventAfterAllRender() {
+        _eventsPositioned() {
           if (afterRenderCalled) {
             return
           }

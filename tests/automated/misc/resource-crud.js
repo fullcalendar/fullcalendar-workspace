@@ -22,7 +22,7 @@ describe('resource crudding', function() {
           resources: [
             { id: 'a', title: 'room a' }
           ],
-          viewRender() {
+          datesRender() {
             const resource = currentCalendar.getResourceById('a')
             expect(resource.title).toBe('room a')
             done()
@@ -38,7 +38,7 @@ describe('resource crudding', function() {
           resources: [
             { id: 1, title: 'room 1' }
           ],
-          viewRender() {
+          datesRender() {
             const resource = currentCalendar.getResourceById(1)
             expect(resource.title).toBe('room 1')
             done()
@@ -51,7 +51,7 @@ describe('resource crudding', function() {
           resources: [
             { id: 1, title: 'room 1' }
           ],
-          viewRender() {
+          datesRender() {
             const resource = currentCalendar.getResourceById('1')
             expect(resource.title).toBe('room 1')
             done()
@@ -69,7 +69,7 @@ describe('resource crudding', function() {
           { id: 'a', title: 'room a' },
           { id: 'b', title: 'room b' }
         ],
-        viewRender() {
+        datesRender() {
           const resources = currentCalendar.getResources()
           expect(resources.length).toBe(2)
           expect(resources[0].title).toBe('room a')
@@ -89,7 +89,7 @@ describe('resource crudding', function() {
               { id: 'b1', title: 'room b1' }
             ] }
         ],
-        viewRender() {
+        datesRender() {
           const resources = currentCalendar.getResources()
           expect(resources.length).toBe(2)
           expect(resources[0].title).toBe('room a')
@@ -108,7 +108,7 @@ describe('resource crudding', function() {
         resources: [
           { id: 'a', title: 'room a' }
         ],
-        viewRender() {
+        datesRender() {
           let resources = currentCalendar.getResources()
           expect(resources.length).toBe(1)
           currentCalendar.addResource({ id: 'b', title: 'room b' })
@@ -129,7 +129,7 @@ describe('resource crudding', function() {
           { id: 'a', title: 'room a' },
           { id: 'b', title: 'room b' }
         ],
-        viewRender() {
+        datesRender() {
           let resources = currentCalendar.getResources()
           expect(resources.length).toBe(2)
           currentCalendar.removeResource('a')
@@ -147,7 +147,7 @@ describe('resource crudding', function() {
           { id: 'a', title: 'room a' },
           { id: 'b', title: 'room b' }
         ],
-        viewRender() {
+        datesRender() {
           let resources = currentCalendar.getResources()
           expect(resources.length).toBe(2)
           currentCalendar.removeResource(resources[0])
@@ -178,7 +178,7 @@ describe('resource crudding', function() {
           callCnt += 1
           callback(res)
         },
-        viewRender() {
+        datesRender() {
           let resources = currentCalendar.getResources()
           expect(resources.length).toBe(2)
           expect(resources[0].title).toBe('room a')
@@ -216,7 +216,7 @@ describe('resource crudding', function() {
               resourceId: 'a'
             }
           ],
-          eventAfterAllRender() {
+          _eventsPositioned() {
             const events = currentCalendar.getResourceEvents('a')
             expect(events.length).toBe(1)
             done()
@@ -242,7 +242,7 @@ describe('resource crudding', function() {
               resourceIds: ['a', 'b']
             }
           ],
-          eventAfterAllRender() {
+          _eventsPositioned() {
             const events = currentCalendar.getResourceEvents('a')
             expect(events.length).toBe(1)
             done()

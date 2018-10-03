@@ -26,7 +26,7 @@ describe('basic-view selection', function() {
     it('allows non-resource selects', function(done) {
       let selectCalled = false
       initCalendar({
-        eventAfterAllRender() {
+        _eventsPositioned() {
           const monEls = getDayGridDowEls('mon')
           const tueEls = getDayGridDowEls('tue')
           expect(monEls.length).toBe(1)
@@ -62,7 +62,7 @@ describe('basic-view selection', function() {
     it('allows a resource selects', function(done) {
       let selectCalled = false
       initCalendar({
-        eventAfterAllRender() {
+        _eventsPositioned() {
           const sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
           const monAEl = $(getLeadingBoundingRect(getDayGridDowEls('mon')).node)
           sunAEl.simulate('drag', {
@@ -88,7 +88,7 @@ describe('basic-view selection', function() {
     it('disallows a selection across resources', function(done) {
       let selectCalled = false
       initCalendar({
-        eventAfterAllRender() {
+        _eventsPositioned() {
           const sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
           const monBEl = $(getTrailingBoundingRect(getDayGridDowEls('mon')).node)
           sunAEl.simulate('drag', {
@@ -115,7 +115,7 @@ describe('basic-view selection', function() {
     it('allows a resource selection', function(done) {
       let selectCalled = false
       initCalendar({
-        eventAfterAllRender() {
+        _eventsPositioned() {
           const monRects = sortBoundingRects(getDayGridDowEls('mon'))
           const monBEl = $(monRects[1].node)
           const satRects = sortBoundingRects(getDayGridDowEls('sat'))
@@ -142,7 +142,7 @@ describe('basic-view selection', function() {
     it('disallows a selection across resources', function(done) {
       let selectCalled = false
       initCalendar({
-        eventAfterAllRender() {
+        _eventsPositioned() {
           const monRects = sortBoundingRects(getDayGridDowEls('mon'))
           const monBEl = $(monRects[1].node)
           const satRects = sortBoundingRects(getDayGridDowEls('sat'))

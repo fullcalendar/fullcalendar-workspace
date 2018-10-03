@@ -9,9 +9,9 @@ describe('timeline now-indicator', function() {
     scrollTime: '00:00'
   })
 
-  describeOptions('isRTL', {
-    'when LTR': false
-    // 'when RTL': true # wasn't working with headless. TODO: come back and fix
+  describeOptions('dir', {
+    'when LTR': 'ltr'
+    // 'when RTL': 'rtl' # wasn't working with headless. TODO: come back and fix
   }, function() {
 
     describeOptions('resources', {

@@ -30,7 +30,7 @@ describe('agenda-view event resizing', function() {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-23T02:00:00', end: '2015-11-23T03:00:00' }
         ],
-        eventAfterAllRender: oneCall(function() {
+        _eventsPositioned: oneCall(function() {
           $('.event1').simulate('mouseover') // resizer only shows on hover
           $('.event1 .fc-resizer')
             .simulate('drag', {
@@ -65,7 +65,7 @@ describe('agenda-view event resizing', function() {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
         ],
-        eventAfterAllRender: oneCall(function() { // avoid second call after event rerender
+        _eventsPositioned: oneCall(function() { // avoid second call after event rerender
           $('.event1').simulate('mouseover') // resizer only shows on hover
           $('.event1 .fc-resizer')
             .simulate('drag', {
@@ -93,7 +93,7 @@ describe('agenda-view event resizing', function() {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
         ],
-        eventAfterAllRender: oneCall(function() {
+        _eventsPositioned: oneCall(function() {
           $('.event1').simulate('mouseover') // resizer only shows on hover
           $('.event1 .fc-resizer')
             .simulate('drag', {
@@ -120,7 +120,7 @@ describe('agenda-view event resizing', function() {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' }
         ],
-        eventAfterAllRender: oneCall(function() {
+        _eventsPositioned: oneCall(function() {
           $('.event1').simulate('mouseover') // resizer only shows on hover
           $('.event1 .fc-resizer')
             .simulate('drag', {
@@ -150,7 +150,7 @@ describe('agenda-view event resizing', function() {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-30T02:00:00', end: '2015-11-30T03:00:00', resourceId: 'b' }
         ],
-        eventAfterAllRender: oneCall(function() {
+        _eventsPositioned: oneCall(function() {
           $('.event1').simulate('mouseover') // resizer only shows on hover
           $('.event1 .fc-resizer')
             .simulate('drag', {
@@ -178,7 +178,7 @@ describe('agenda-view event resizing', function() {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' }
         ],
-        eventAfterAllRender: oneCall(function() {
+        _eventsPositioned: oneCall(function() {
           $('.event1').simulate('mouseover') // resizer only shows on hover
           $('.event1 .fc-resizer')
             .simulate('drag', {
@@ -206,7 +206,7 @@ describe('agenda-view event resizing', function() {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' }
         ],
-        eventAfterAllRender: oneCall(function() {
+        _eventsPositioned: oneCall(function() {
           $('.event1').simulate('mouseover') // resizer only shows on hover
           $('.event1 .fc-resizer')
             .simulate('drag', {

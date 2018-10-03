@@ -184,28 +184,28 @@ export default class ResourceViewMixin extends Mixin implements ResourceViewInte
   requestResourcesRender(resources) {
     (this as any).requestRender(() => {
       this.executeResourcesRender(resources)
-    }, 'resource', 'init')
+    })
   }
 
 
   requestResourcesUnrender() {
     (this as any).requestRender(() => {
       this.executeResourcesUnrender()
-    }, 'resource', 'destroy')
+    })
   }
 
 
   requestResourceRender(resource) {
     (this as any).requestRender(() => {
       this.executeResourceRender(resource)
-    }, 'resource', 'add')
+    })
   }
 
 
   requestResourceUnrender(resource) {
     (this as any).requestRender(() => {
       this.executeResourceUnrender(resource)
-    }, 'resource', 'remove')
+    })
   }
 
 
@@ -246,17 +246,16 @@ export default class ResourceViewMixin extends Mixin implements ResourceViewInte
   */
   triggerDayClick(footprint, dayEl, ev) {
     const { calendar } = this
-    const dateProfile = calendar.footprintToDateProfile(footprint)
     const resource =
       footprint.resourceId ?
         calendar.resourceManager.getResourceById(footprint.resourceId) :
         null;
 
-    (this as any).publiclyTrigger('dayClick', [
+    (this as any).publiclyTrigger('dateClick', [
       {
         el: dayEl,
-        date: calendar.dateEnv.toDate(dateProfile.unzonedRange.start),
-        isAllDay: dateProfile.isAllDay,
+        date: calendar.dateEnv.toDate(footprint.unzonedRange.start),
+        allDay: footprint.allDay,
         resource,
         jsEvent: ev,
         view: this
@@ -270,7 +269,6 @@ export default class ResourceViewMixin extends Mixin implements ResourceViewInte
   */
   triggerSelect(footprint, ev) {
     const { calendar } = this
-    const dateProfile = calendar.footprintToDateProfile(footprint)
     const resource =
       footprint.resourceId ?
         calendar.resourceManager.getResourceById(footprint.resourceId) :
@@ -278,9 +276,9 @@ export default class ResourceViewMixin extends Mixin implements ResourceViewInte
 
     (this as any).publiclyTrigger('select', [
       {
-        start: calendar.dateEnv.toDate(dateProfile.unzonedRange.start),
-        end: calendar.dateEnv.toDate(dateProfile.unzonedRange.end),
-        isAllDay: dateProfile.isAllDay,
+        start: calendar.dateEnv.toDate(footprint.unzonedRange.start),
+        end: calendar.dateEnv.toDate(footprint.unzonedRange.end),
+        allDay: footprint.allDay,
         resource,
         jsEvent: ev,
         view: this
@@ -303,7 +301,7 @@ export default class ResourceViewMixin extends Mixin implements ResourceViewInte
     (this as any).publiclyTrigger('drop', [
       {
         date: calendar.dateEnv.toDate(singleEventDef.dateProfile.unzonedRange.start),
-        isAllDay: singleEventDef.dateProfile.isAllDay,
+        allDay: singleEventDef.dateProfile.allDay,
         resource,
         el: el,
         jsEvent: ev,

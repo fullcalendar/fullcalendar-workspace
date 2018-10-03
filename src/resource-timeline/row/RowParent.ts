@@ -446,7 +446,7 @@ export default class RowParent extends DateComponent {
 
 
   getCollapsedIcon() {
-    const dir = this.view.isRTL ? 'left' : 'right'
+    const dir = this.view.isRtl ? 'left' : 'right'
     return 'fc-icon-' + dir + '-triangle'
   }
 

@@ -8,9 +8,9 @@ describe('timeline businessHours', function() {
     scrollTime: '00:00'
   })
 
-  describeOptions('isRTL', {
-    'when LTR': false,
-    'when RTL': true
+  describeOptions('dir', {
+    'when LTR': 'ltr',
+    'when RTL': 'rtl'
   }, function() {
 
     it('renders when on a day with business hours', function(done) {
@@ -20,7 +20,7 @@ describe('timeline businessHours', function() {
           end: '16:00'
         },
         slotDuration: { hours: 1 },
-        viewRender() {
+        datesRender() {
           expect10to4()
           done()
         }
@@ -35,7 +35,7 @@ describe('timeline businessHours', function() {
           end: '16:00'
         },
         slotDuration: { hours: 1 },
-        viewRender() {
+        datesRender() {
           expect(isTimelineNonBusinessSegsRendered([
             { start: '2016-02-14T00:00', end: '2016-02-15T00:00' }
           ])).toBe(true)
@@ -52,7 +52,7 @@ describe('timeline businessHours', function() {
           { id: 'c', title: 'c' }
         ],
         businessHours: true,
-        viewRender() {
+        datesRender() {
           expect9to5()
           done()
         }
@@ -67,7 +67,7 @@ describe('timeline businessHours', function() {
           { id: 'c', title: 'c' }
         ],
         businessHours: true,
-        viewRender() {
+        datesRender() {
           expectResourceOverride()
           done()
         }
@@ -83,7 +83,7 @@ describe('timeline businessHours', function() {
           { id: 'c', title: 'c' }
         ],
         businessHours: true,
-        viewRender() {
+        datesRender() {
           expectResourceOverride()
           setTimeout(function() {
             currentCalendar.removeResource(specialResource)
@@ -102,7 +102,7 @@ describe('timeline businessHours', function() {
           { id: 'a', title: 'a', businessHours: { start: '03:00', end: '21:00' } }
         ],
         businessHours: true,
-        viewRender() {
+        datesRender() {
           expect(isResourceTimelineNonBusinessSegsRendered([
             { resourceId: 'a', start: '2016-02-15T00:00', end: '2016-02-15T03:00' },
             { resourceId: 'a', start: '2016-02-15T21:00', end: '2016-02-16T00:00' }
@@ -124,7 +124,7 @@ describe('timeline businessHours', function() {
 
   // https://github.com/fullcalendar/fullcalendar-scheduler/issues/414
   it('can switch views with resource override', function(done) {
-    let viewRenderCnt = 0
+    let datesRenderCnt = 0
     initCalendar({
       resources: [
         { id: 'a', title: 'a' },
@@ -132,14 +132,14 @@ describe('timeline businessHours', function() {
         { id: 'c', title: 'c' }
       ],
       businessHours: true,
-      viewRender() {
-        viewRenderCnt++
-        if (viewRenderCnt === 1) {
+      datesRender() {
+        datesRenderCnt++
+        if (datesRenderCnt === 1) {
           expectResourceOverride()
           currentCalendar.changeView('month')
-        } else if (viewRenderCnt === 2) {
+        } else if (datesRenderCnt === 2) {
           currentCalendar.changeView('timelineDay')
-        } else if (viewRenderCnt === 3) {
+        } else if (datesRenderCnt === 3) {
           expectResourceOverride()
           done()
         }

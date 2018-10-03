@@ -1,4 +1,4 @@
-import { Mixin, DayTableMixin, EventFootprint, parseFieldSpecs, compareByFieldSpecs, htmlEscape, findElements } from 'fullcalendar'
+import { Mixin, DayTableMixin, parseFieldSpecs, compareByFieldSpecs, htmlEscape, findElements, DateProfile } from 'fullcalendar'
 import ResourceComponentFootprint from '../models/ResourceComponentFootprint'
 
 export interface ResourceDayTableInterface {
@@ -29,12 +29,11 @@ export default class ResourceDayTableMixin extends Mixin implements ResourceDayT
   daysPerRow: number
   dayCnt: number
   colCnt: number
-  isRTL: boolean
+  isRtl: boolean
   dayDates: any
   view: any
   hasAllDayBusinessHours: boolean
-  dateProfile: any
-  businessHourRenderer: any
+  dateProfile: DateProfile
 
 
   static mixInto(destClass) {
@@ -115,7 +114,7 @@ export default class ResourceDayTableMixin extends Mixin implements ResourceDayT
 
 
   getColDayIndex(col) {
-    if (this.isRTL) {
+    if (this.isRtl) {
       col = this.colCnt - 1 - col
     }
     if (this.datesAboveResources) {
@@ -132,7 +131,7 @@ export default class ResourceDayTableMixin extends Mixin implements ResourceDayT
 
 
   getColResourceIndex(col) {
-    if (this.isRTL) {
+    if (this.isRtl) {
       col = this.colCnt - 1 - col
     }
     if (this.datesAboveResources) {
@@ -148,7 +147,7 @@ export default class ResourceDayTableMixin extends Mixin implements ResourceDayT
       this.datesAboveResources ?
         (dayIndex * (this.resourceCnt || 1)) + resourceIndex :
         (resourceIndex * this.daysPerRow) + dayIndex
-    if (this.isRTL) {
+    if (this.isRtl) {
       col = this.colCnt - 1 - col
     }
     return col
@@ -294,7 +293,7 @@ export default class ResourceDayTableMixin extends Mixin implements ResourceDayT
       } else {
         // each resource <td> covers multiple columns of dates
         resource = this.flattenedResources[
-          this.isRTL ?
+          this.isRtl ?
             this.flattenedResources.length - 1 - col :
             col
         ]
@@ -347,7 +346,7 @@ export default class ResourceDayTableMixin extends Mixin implements ResourceDayT
   // mutates cellHtmls
   // TODO: make this a DayTableMixin utility
   wrapTr(cellHtmls, introMethodName) {
-    if (this.isRTL) {
+    if (this.isRtl) {
       cellHtmls.reverse()
       return '<tr>' +
         cellHtmls.join('') +
@@ -366,22 +365,23 @@ export default class ResourceDayTableMixin extends Mixin implements ResourceDayT
 
 
   renderBusinessHours(businessHourGenerator) {
-    const isAllDay = this.hasAllDayBusinessHours
-    const unzonedRange = this.dateProfile.activeUnzonedRange
+    const allDay = this.hasAllDayBusinessHours
+    const dateProfile = this.dateProfile
+    const range = dateProfile.activeRange
     const eventFootprints = []
 
     for (let resource of this.flattenedResources) {
 
       const eventInstanceGroup = (resource.businessHourGenerator || businessHourGenerator)
-        .buildEventInstanceGroup(isAllDay, unzonedRange)
+        .buildEventInstanceGroup(allDay, range)
 
       if (eventInstanceGroup) {
-        for (let eventRange of eventInstanceGroup.sliceRenderRanges(unzonedRange)) {
+        for (let eventRange of eventInstanceGroup.sliceRenderRanges(range)) {
           eventFootprints.push(
             new EventFootprint(
               new ResourceComponentFootprint(
-                eventRange.unzonedRange,
-                isAllDay,
+                eventRange.range,
+                allDay,
                 resource.id
               ),
               eventRange.eventDef,

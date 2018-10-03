@@ -1,4 +1,4 @@
-// TODO: test isRTL?
+// TODO: test isRtl?
 
 import { getResourceTimeGridPoint } from '../lib/time-grid'
 
@@ -14,7 +14,7 @@ describe('agenda-view event drag-n-drop', function() {
     scrollTime: '00:00'
   })
 
-  describeTimezones(function(tz) {
+  describeTimeZones(function(tz) {
 
     describeOptions({
       'resources above dates': { groupByResource: true },
@@ -32,7 +32,7 @@ describe('agenda-view event drag-n-drop', function() {
           .draggable()
 
         initCalendar({
-          eventAfterAllRender: oneCall(function() {
+          _eventsPositioned: oneCall(function() {
             $('.external-event').simulate('drag', {
               localPoint: { left: '50%', top: 0 },
               end: getResourceTimeGridPoint('a', '2015-12-01T05:00:00'),

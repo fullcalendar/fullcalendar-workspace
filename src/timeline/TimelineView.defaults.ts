@@ -104,14 +104,14 @@ function queryDurationOption(timelineView: TimelineView, name) {
 
 
 function validateLabelAndSlot(timelineView: TimelineView) {
-  const { currentUnzonedRange } = timelineView.dateProfile
+  const { currentRange } = timelineView.dateProfile
   const dateEnv = timelineView.calendar.dateEnv
 
   // make sure labelInterval doesn't exceed the max number of cells
   if (timelineView.labelInterval) {
     const labelCnt = dateEnv.countDurationsBetween(
-      currentUnzonedRange.start,
-      currentUnzonedRange.end,
+      currentRange.start,
+      currentRange.end,
       timelineView.labelInterval
     )
     if (labelCnt > (core as any).MAX_TIMELINE_SLOTS) {
@@ -123,8 +123,8 @@ function validateLabelAndSlot(timelineView: TimelineView) {
   // make sure slotDuration doesn't exceed the maximum number of cells
   if (timelineView.slotDuration) {
     const slotCnt = dateEnv.countDurationsBetween(
-      currentUnzonedRange.start,
-      currentUnzonedRange.end,
+      currentRange.start,
+      currentRange.end,
       timelineView.slotDuration
     )
     if (slotCnt > (core as any).MAX_TIMELINE_SLOTS) {
@@ -145,7 +145,7 @@ function validateLabelAndSlot(timelineView: TimelineView) {
 
 
 function ensureLabelInterval(timelineView: TimelineView) {
-  const { currentUnzonedRange } = timelineView.dateProfile
+  const { currentRange } = timelineView.dateProfile
   const dateEnv = timelineView.calendar.dateEnv
   let { labelInterval } = timelineView
 
@@ -175,8 +175,8 @@ function ensureLabelInterval(timelineView: TimelineView) {
       for (input of STOCK_SUB_DURATIONS) {
         labelInterval = core.createDuration(input)
         const labelCnt = dateEnv.countDurationsBetween(
-          currentUnzonedRange.start,
-          currentUnzonedRange.end,
+          currentRange.start,
+          currentRange.end,
           labelInterval
         )
         if (labelCnt >= MIN_AUTO_LABELS) {
@@ -193,7 +193,7 @@ function ensureLabelInterval(timelineView: TimelineView) {
 
 
 function ensureSlotDuration(timelineView: TimelineView) {
-  const { currentUnzonedRange } = timelineView.dateProfile
+  const { currentRange } = timelineView.dateProfile
   const dateEnv = timelineView.calendar.dateEnv
   let { slotDuration } = timelineView
 
@@ -214,8 +214,8 @@ function ensureSlotDuration(timelineView: TimelineView) {
     // only allow the value if it won't exceed the view's # of slots limit
     if (slotDuration) {
       const slotCnt = dateEnv.countDurationsBetween(
-        currentUnzonedRange.start,
-        currentUnzonedRange.end,
+        currentRange.start,
+        currentRange.end,
         slotDuration
       )
       if (slotCnt > MAX_AUTO_CELLS) {
@@ -296,7 +296,7 @@ function computeHeaderFormats(timelineView: TimelineView) {
       format2 = {
         hour: 'numeric',
         minute: '2-digit',
-        omitZeroTime: true,
+        omitZeroMinute: true,
         meridiem: 'short'
       }
       break

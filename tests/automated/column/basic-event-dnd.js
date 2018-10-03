@@ -1,4 +1,4 @@
-// TODO: test isRTL?
+// TODO: test isRtl?
 
 import { getResourceDayGridDayEls } from '../lib/day-grid'
 
@@ -13,7 +13,7 @@ describe('basic-view event drag-n-drop', function() {
     defaultView: 'basicWeek'
   })
 
-  describeTimezones(function(tz) {
+  describeTimeZones(function(tz) {
 
     describeOptions({
       'resources above dates': { groupByResource: true },
@@ -26,7 +26,7 @@ describe('basic-view event drag-n-drop', function() {
           events: [
             { title: 'event0', className: 'event0', start: '2015-11-30T12:00:00', resourceId: 'b' }
           ],
-          eventAfterAllRender: oneCall(function() {
+          _eventsPositioned: oneCall(function() {
             $('.event0').simulate('drag', {
               end: getResourceDayGridDayEls('a', '2015-12-01').eq(0),
               callback() {

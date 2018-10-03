@@ -29,12 +29,12 @@ describe('vresource structure', function() {
 
       describe('when LTR', function() {
         pushOptions({
-          isRTL: false
+          dir: 'ltr'
         })
 
         it('renders cells right-to-left', function(callback) {
           initCalendar({
-            viewRender() {
+            datesRender() {
               const aRect = getBoundingRect(getHeadResourceEls('a'))
               const bRect = getBoundingRect(getHeadResourceEls('b'))
               const cRect = getBoundingRect(getHeadResourceEls('c'))
@@ -51,12 +51,12 @@ describe('vresource structure', function() {
 
       describe('when RTL', function() {
         pushOptions({
-          isRTL: true
+          dir: 'rtl'
         })
 
         it('renders cells left-to-right', function(callback) {
           initCalendar({
-            viewRender() {
+            datesRender() {
               const aRect = getBoundingRect(getHeadResourceEls('a'))
               const bRect = getBoundingRect(getHeadResourceEls('b'))
               const cRect = getBoundingRect(getHeadResourceEls('c'))
@@ -91,7 +91,7 @@ describe('vresource structure', function() {
 
         it('renders cells correctly', function(callback) {
           initCalendar({
-            viewRender() {
+            datesRender() {
               const aEl = getHeadResourceEls('a')
               const aRect = getBoundingRect(aEl)
               const monEls = getHeadDowEls('mon')
@@ -115,7 +115,7 @@ describe('vresource structure', function() {
 
         it('renders cells correctly', function(callback) {
           initCalendar({
-            viewRender() {
+            datesRender() {
               const monEl = getHeadDowEls('mon')
               const monRect = getBoundingRect(monEl)
               expect(monEl.length).toBe(1)
@@ -143,7 +143,7 @@ describe('vresource structure', function() {
 
         it('renders resources columns', function(callback) {
           initCalendar({
-            viewRender() {
+            datesRender() {
               expect(getHeadResourceEls('a').length).toBe(1)
               expect(getHeadResourceEls('b').length).toBe(1)
               expect(getHeadResourceEls('c').length).toBe(1)
@@ -161,7 +161,7 @@ describe('vresource structure', function() {
 
         it('renders resources columns', function(callback) {
           initCalendar({
-            viewRender() {
+            datesRender() {
               expect(getHeadResourceEls('a').length).toBe(0)
               expect(getHeadResourceEls('b').length).toBe(0)
               expect(getHeadResourceEls('c').length).toBe(0)
@@ -196,7 +196,7 @@ describe('vresource structure', function() {
         }
 
         initCalendar({
-          viewRender() {
+          datesRender() {
             expect(getHeadResourceEls('a').length).toBe(1)
             expect(getHeadResourceEls('b').length).toBe(1)
 
@@ -224,27 +224,27 @@ describe('vresource structure', function() {
       ]
     })
 
-    describeOptions('isRTL', {
-      'when LTR': false,
-      'when RTL': true
-    }, function(isRTL) {
+    describeOptions('dir', {
+      'when LTR': 'ltr',
+      'when RTL': 'rtl'
+    }, function(dir) {
 
       it('renders side-by-side months', function(callback) {
         initCalendar({
-          viewRender() {
+          datesRender() {
             expect(getHeadResourceEls('a').length).toBe(1)
             expect(getHeadResourceEls('b').length).toBe(1)
             expect(getHeadDowEls('sun').length).toBe(2)
             expect($('.fc-body .fc-row').length).toBe(6)
-            const firstADayRect = getLeadingBoundingRect('td[data-date="2015-11-01"]', isRTL)
-            const lastADayRect = getLeadingBoundingRect('td[data-date="2015-12-12"]', isRTL)
-            const firstBDayRect = getTrailingBoundingRect('td[data-date="2015-11-01"]', isRTL)
-            const lastBDayRect = getTrailingBoundingRect('td[data-date="2015-12-12"]', isRTL)
+            const firstADayRect = getLeadingBoundingRect('td[data-date="2015-11-01"]', dir)
+            const lastADayRect = getLeadingBoundingRect('td[data-date="2015-12-12"]', dir)
+            const firstBDayRect = getTrailingBoundingRect('td[data-date="2015-11-01"]', dir)
+            const lastBDayRect = getTrailingBoundingRect('td[data-date="2015-12-12"]', dir)
             const aDayRect = joinRects(firstADayRect, lastADayRect)
             aDayRect.right -= 1 // might share a pixel
             aDayRect.left += 1 // ditto, but for rtl
             const bDayRect = joinRects(firstBDayRect, lastBDayRect)
-            if (isRTL) {
+            if (dir === 'rtl') {
               expect(aDayRect).toBeRightOf(bDayRect)
             } else {
               expect(aDayRect).toBeLeftOf(bDayRect)

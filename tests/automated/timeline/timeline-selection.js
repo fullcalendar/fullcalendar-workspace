@@ -11,12 +11,12 @@ describe('timeline selection', function() {
     ]
   })
 
-  describeOptions('isRTL', {
-    'LTR': false,
-    'RTL': true
-  }, function(isRTL) {
+  describeOptions('dir', {
+    'LTR': 'ltr',
+    'RTL': 'rtl'
+  }, function() {
 
-    describeTimezones(function(tz) {
+    describeTimeZones(function(tz) {
 
       describe('when time scale', function() {
         pushOptions({
@@ -33,7 +33,7 @@ describe('timeline selection', function() {
             it('reports selection with no resource', function(done) {
               let selectCalled = false
               initCalendar({
-                eventAfterAllRender() {
+                _eventsPositioned() {
                   const slatEl = getTimelineSlatEl('2015-11-28T04:00:00')
                   slatEl.simulate('drag', {
                     end: getTimelineSlatEl('2015-11-28T07:00:00'),
@@ -60,7 +60,7 @@ describe('timeline selection', function() {
             it('won\'t report anything if not selected on resource', function(done) {
               let selectCalled = false
               initCalendar({
-                eventAfterAllRender() {
+                _eventsPositioned() {
                   const slatEl = getTimelineSlatEl('2015-11-28T04:00:00')
                   slatEl.simulate('drag', {
                     end: getTimelineSlatEl('2015-11-28T07:00:00'),
@@ -79,7 +79,7 @@ describe('timeline selection', function() {
             it('reports selection on a resource', function(done) {
               let selectCalled = false
               initCalendar({
-                eventAfterAllRender() {
+                _eventsPositioned() {
                   $.simulateByPoint('drag', {
                     point: getResourceTimelinePoint('b', '2015-11-28T04:00:00'),
                     end: getResourceTimelinePoint('b', '2015-11-28T07:00:00'),
@@ -103,7 +103,7 @@ describe('timeline selection', function() {
             it('reports selection across resources', function(done) {
               let selectCalled = false
               initCalendar({
-                eventAfterAllRender() {
+                _eventsPositioned() {
                   $.simulateByPoint('drag', {
                     point: getResourceTimelinePoint('b', '2015-11-28T04:00:00'),
                     end: getResourceTimelinePoint('a', '2015-11-28T07:00:00'),
@@ -135,7 +135,7 @@ describe('timeline selection', function() {
           it('reports a smaller granularity', function(done) {
             let selectCalled = false
             initCalendar({
-              eventAfterAllRender() {
+              _eventsPositioned() {
                 $.simulateByPoint('drag', {
                   point: getResourceTimelinePoint('b', '2015-11-28T04:15:00'),
                   end: getResourceTimelinePoint('b', '2015-11-28T07:30:00'),
@@ -168,7 +168,7 @@ describe('timeline selection', function() {
       it('reports untimed dates', function(done) {
         let selectCalled = false
         initCalendar({
-          eventAfterAllRender() {
+          _eventsPositioned() {
             $.simulateByPoint('drag', {
               point: getResourceTimelinePoint('a', '2015-11-03'),
               end: getResourceTimelinePoint('a', '2015-11-05'),
@@ -199,7 +199,7 @@ describe('timeline selection', function() {
       it('reports untimed dates', function(done) {
         let selectCalled = false
         initCalendar({
-          eventAfterAllRender() {
+          _eventsPositioned() {
             $.simulateByPoint('drag', {
               point: getResourceTimelinePoint('a', '2015-01-18'),
               end: getResourceTimelinePoint('a', '2015-02-08'),
@@ -228,7 +228,7 @@ describe('timeline selection', function() {
       isTouch: true,
       longPressDelay: 100,
       defaultView: 'timelineDay',
-      eventAfterAllRender() {
+      _eventsPositioned() {
         $.simulateByPoint('drag', {
           isTouch: true,
           delay: 200,

@@ -104,7 +104,7 @@ Calendar.prototype.buildSelectFootprint = function(zonedStartInput, zonedEndInpu
   if (otherProps.resourceId != null) {
     return new ResourceComponentFootprint(
       plainFootprint.unzonedRange,
-      plainFootprint.isAllDay,
+      plainFootprint.allDay,
       otherProps.resourceId
     )
   } else {

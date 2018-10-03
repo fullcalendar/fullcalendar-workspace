@@ -1,5 +1,5 @@
 import {
-  DragListener, CoordCache, parseFieldSpecs, compareByFieldSpecs, flexibleCompare,
+  DragListener, PositionCache, parseFieldSpecs, compareByFieldSpecs, flexibleCompare,
   findElements, htmlToElement, removeElement, forceClassName
 } from 'fullcalendar'
 import ScrollJoiner from '../util/ScrollJoiner'
@@ -251,7 +251,7 @@ export default class ResourceTimelineView extends TimelineView {
 
 
   dividerMousedown(ev) {
-    const isRTL = this.opt('isRTL')
+    const isRtl = this.isRtl
     const minWidth = 30
     const maxWidth = this.el.offsetWidth - 30
     const origWidth = this.getNaturalDividerWidth()
@@ -264,7 +264,7 @@ export default class ResourceTimelineView extends TimelineView {
       },
       drag: (dx, dy) => {
         let width
-        if (isRTL) {
+        if (isRtl) {
           width = origWidth - dx
         } else {
           width = origWidth + dx
@@ -361,12 +361,12 @@ export default class ResourceTimelineView extends TimelineView {
 
   queryResourceScroll() {
     const scroll = {} as any
-    const scrollerTop = this.timeBodyScroller.scrollEl.getBoundingClientRect().top
+    const scrollerTop = this.timeBodyScroller.scrollEl.getBoundingClientRect().top // fixed position
 
     for (let rowObj of this.getVisibleRows()) {
       if (rowObj.resource) {
         const el = rowObj.getTr('event')
-        const elBottom = el.getBoundingClientRect().bottom
+        const elBottom = el.getBoundingClientRect().bottom // fixed position
 
         if (elBottom > scrollerTop) {
           scroll.resourceId = rowObj.resource.id
@@ -389,7 +389,7 @@ export default class ResourceTimelineView extends TimelineView {
         if (el) {
           const innerTop = this.timeBodyScroller.canvas.el.getBoundingClientRect().top // TODO: use -scrollHeight or something
           const elBottom = el.getBoundingClientRect().bottom
-          const scrollTop = elBottom - scroll.bottom - innerTop
+          const scrollTop = elBottom - scroll.bottom - innerTop // both fixed positions
           this.timeBodyScroller.setScrollTop(scrollTop)
           this.spreadsheet.bodyScroller.setScrollTop(scrollTop)
         }
@@ -404,7 +404,7 @@ export default class ResourceTimelineView extends TimelineView {
       const el = row.getTr('event')
       if (el) {
         const innerTop = this.timeBodyScroller.canvas.el.getBoundingClientRect().top // TODO: use -scrollHeight or something
-        const scrollTop = el.getBoundingClientRect().top - innerTop
+        const scrollTop = el.getBoundingClientRect().top - innerTop // both fixed positions
         this.timeBodyScroller.setScrollTop(scrollTop)
         this.spreadsheet.bodyScroller.setScrollTop(scrollTop)
       }
@@ -434,7 +434,7 @@ export default class ResourceTimelineView extends TimelineView {
 
     this.shownEventRows = shownEventRows
 
-    this.rowCoordCache = new CoordCache({
+    this.rowCoordCache = new PositionCache({
       els: trArray,
       isVertical: true
     })
@@ -461,8 +461,8 @@ export default class ResourceTimelineView extends TimelineView {
           component: this, // need this unfortunately :(
           left: simpleHit.left,
           right: simpleHit.right,
-          top: this.rowCoordCache.getTopOffset(rowIndex),
-          bottom: this.rowCoordCache.getBottomOffset(rowIndex)
+          top: this.rowCoordCache.indexToTopOffset(rowIndex),
+          bottom: this.rowCoordCache.indexToBottomOffset(rowIndex)
         }
       }
     }
@@ -474,7 +474,7 @@ export default class ResourceTimelineView extends TimelineView {
 
     return new ResourceComponentFootprint(
       componentFootprint.unzonedRange,
-      componentFootprint.isAllDay,
+      componentFootprint.allDay,
       hit.resourceId
     )
   }
@@ -891,7 +891,7 @@ export default class ResourceTimelineView extends TimelineView {
       let rowObj = this.getResourceRow(resourceId)
 
       // render helpers
-      rowObj.helperRenderer.renderEventDraggingFootprints(resourceEventFootprints, seg, isTouch)
+      rowObj.mirrorRenderer.renderEventDraggingFootprints(resourceEventFootprints, seg, isTouch)
 
       // render highlight
       for (let eventFootprint of resourceEventFootprints) {
@@ -903,7 +903,7 @@ export default class ResourceTimelineView extends TimelineView {
 
   unrenderEventResize() {
     for (let rowObj of this.getEventRows()) {
-      rowObj.helperRenderer.unrender()
+      rowObj.mirrorRenderer.unrender()
       rowObj.unrenderHighlight()
     }
   }
@@ -924,7 +924,7 @@ export default class ResourceTimelineView extends TimelineView {
       for (resourceId in map) {
         resourceEventFootprints = map[resourceId]
         rowObj = this.getResourceRow(resourceId)
-        rowObj.helperRenderer.renderEventDraggingFootprints(resourceEventFootprints, seg, isTouch)
+        rowObj.mirrorRenderer.renderEventDraggingFootprints(resourceEventFootprints, seg, isTouch)
       }
 
       return true // signal helper rendered
@@ -946,7 +946,7 @@ export default class ResourceTimelineView extends TimelineView {
 
   unrenderDrag() {
     for (let rowObj of this.getEventRows()) {
-      rowObj.helperRenderer.unrender()
+      rowObj.mirrorRenderer.unrender()
       rowObj.unrenderHighlight()
     }
   }

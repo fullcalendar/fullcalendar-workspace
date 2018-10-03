@@ -1,6 +1,6 @@
 import { getResourceTimelinePoint, getTimelineSlatEl } from '../lib/timeline'
 
-describe('timeline dayClick', function() {
+describe('timeline dateClick', function() {
   pushOptions({
     now: '2015-11-28',
     scrollTime: '00:00',
@@ -10,12 +10,12 @@ describe('timeline dayClick', function() {
     ]
   })
 
-  describeOptions('isRTL', {
+  describeOptions('dir', {
     'LTR': false,
     'RTL': true
   }, function() {
 
-    describeTimezones(function(tz) {
+    describeTimeZones(function(tz) {
 
       describe('when time scale', function() {
         pushOptions({
@@ -30,19 +30,19 @@ describe('timeline dayClick', function() {
             })
 
             it('reports date with no resource', function(done) {
-              let dayClickCalled = false
+              let dateClickCalled = false
               initCalendar({
-                eventAfterAllRender() {
+                _eventsPositioned() {
                   const slatEl = getTimelineSlatEl('2015-11-28T04:30:00')
                   slatEl.simulate('drag', {
                     callback() {
-                      expect(dayClickCalled).toBe(true)
+                      expect(dateClickCalled).toBe(true)
                       done()
                     }
                   })
                 },
-                dayClick(arg) {
-                  dayClickCalled = true
+                dateClick(arg) {
+                  dateClickCalled = true
                   expect(arg.date).toEqualDate(tz.createDate('2015-11-28T04:30:00'))
                   expect(typeof arg.jsEvent).toBe('object')
                   expect(typeof arg.view).toBe('object')
@@ -55,37 +55,37 @@ describe('timeline dayClick', function() {
           describe('when resources', function() {
 
             it('won\'t report anything if not clicked on resource', function(done) {
-              let dayClickCalled = false
+              let dateClickCalled = false
               initCalendar({
-                eventAfterAllRender() {
+                _eventsPositioned() {
                   const slatEl = getTimelineSlatEl('2015-11-28T04:30:00')
                   slatEl.simulate('drag', {
                     callback() {
-                      expect(dayClickCalled).toBe(false)
+                      expect(dateClickCalled).toBe(false)
                       done()
                     }
                   })
                 },
-                dayClick(arg) {
-                  dayClickCalled = true
+                dateClick(arg) {
+                  dateClickCalled = true
                 }
               })
             })
 
             it('reports click on a resource', function(done) {
-              let dayClickCalled = false
+              let dateClickCalled = false
               initCalendar({
-                eventAfterAllRender() {
+                _eventsPositioned() {
                   $.simulateByPoint('drag', {
                     point: getResourceTimelinePoint('b', '2015-11-28T04:30:00'),
                     callback() {
-                      expect(dayClickCalled).toBe(true)
+                      expect(dateClickCalled).toBe(true)
                       done()
                     }
                   })
                 },
-                dayClick(arg) {
-                  dayClickCalled = true
+                dateClick(arg) {
+                  dateClickCalled = true
                   expect(arg.date).toEqualDate(tz.createDate('2015-11-28T04:30:00'))
                   expect(typeof arg.jsEvent).toBe('object')
                   expect(typeof arg.view).toBe('object')
@@ -103,19 +103,19 @@ describe('timeline dayClick', function() {
           })
 
           it('reports a smaller granularity', function(done) {
-            let dayClickCalled = false
+            let dateClickCalled = false
             initCalendar({
-              eventAfterAllRender() {
+              _eventsPositioned() {
                 $.simulateByPoint('drag', {
                   point: getResourceTimelinePoint('b', '2015-11-28T04:15:00'),
                   callback() {
-                    expect(dayClickCalled).toBe(true)
+                    expect(dateClickCalled).toBe(true)
                     done()
                   }
                 })
               },
-              dayClick(arg) {
-                dayClickCalled = true
+              dateClick(arg) {
+                dateClickCalled = true
                 expect(arg.date).toEqualDate(tz.createDate('2015-11-28T04:15:00'))
                 expect(typeof arg.jsEvent).toBe('object')
                 expect(typeof arg.view).toBe('object')
@@ -134,19 +134,19 @@ describe('timeline dayClick', function() {
       })
 
       it('reports untimed dates', function(done) {
-        let dayClickCalled = false
+        let dateClickCalled = false
         initCalendar({
-          eventAfterAllRender() {
+          _eventsPositioned() {
             $.simulateByPoint('drag', {
               point: getResourceTimelinePoint('a', '2015-11-03'),
               callback() {
-                expect(dayClickCalled).toBe(true)
+                expect(dateClickCalled).toBe(true)
                 done()
               }
             })
           },
-          dayClick(arg) {
-            dayClickCalled = true
+          dateClick(arg) {
+            dateClickCalled = true
             expect(arg.date).toEqualDate('2015-11-03')
             expect(typeof arg.jsEvent).toBe('object')
             expect(typeof arg.view).toBe('object')
@@ -163,19 +163,19 @@ describe('timeline dayClick', function() {
       })
 
       it('reports untimed dates', function(done) {
-        let dayClickCalled = false
+        let dateClickCalled = false
         initCalendar({
-          eventAfterAllRender() {
+          _eventsPositioned() {
             $.simulateByPoint('drag', {
               point: getResourceTimelinePoint('a', '2015-01-18'),
               callback() {
-                expect(dayClickCalled).toBe(true)
+                expect(dateClickCalled).toBe(true)
                 done()
               }
             })
           },
-          dayClick(arg) {
-            dayClickCalled = true
+          dateClick(arg) {
+            dateClickCalled = true
             expect(arg.date).toEqualDate('2015-01-18')
             expect(typeof arg.jsEvent).toBe('object')
             expect(typeof arg.view).toBe('object')

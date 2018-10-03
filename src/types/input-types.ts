@@ -18,11 +18,11 @@ export interface ResourceComplexInput extends EventOptionsBase {
   url?: string
   method?: string
   success?: (eventDefs: ResourceInput[], ajaxRes: any) => void
-  error?: (error: any, ajaxRes: any) => void
+  failure?: (error: any, ajaxRes: any) => void
 }
 
 export type ResourceFunctionCallback = (resources: ResourceInput[]) => void
-export type ResourceFunction = (callback: ResourceFunctionCallback, start: Date, end: Date, timezone: string) => void
+export type ResourceFunction = (callback: ResourceFunctionCallback, start: Date, end: Date, timeZone: string) => void
 export type ResourceSourceInput = ResourceInput[] | ResourceFunction | ResourceComplexInput
 
 declare module 'fullcalendar/src/types/input-types' {

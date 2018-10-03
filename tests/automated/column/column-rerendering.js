@@ -106,7 +106,7 @@ describe('column-based view rerendering', function() {
       resourceRender(arg) {
         $(arg.labelEl).text(arg.resource.title + renderCalls)
       },
-      eventAfterAllRender() {
+      _eventsPositioned() {
         const cellText = $.trim($('th[data-resource-id="a"]').text())
         renderCalls++
         if (renderCalls === 1) {
@@ -145,7 +145,7 @@ describe('column-based view rerendering', function() {
           ])
         }, 100)
       },
-      eventAfterAllRender() {
+      _eventsPositioned() {
         const cellText = $.trim($('th[data-resource-id="a"]').text())
         renderCalls++
         if (renderCalls === 1) {
@@ -183,7 +183,7 @@ describe('column-based view rerendering', function() {
           ])
         }, 100)
       },
-      eventAfterAllRender() {
+      _eventsPositioned() {
         const scrollEl = $('.fc-time-grid-container.fc-scroller')
         renderCalls++
         if (renderCalls === 1) {

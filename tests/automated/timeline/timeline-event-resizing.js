@@ -14,12 +14,12 @@ describe('timeline event resizing', function() {
     ]
   })
 
-  describeOptions('isRTL', {
-    'LTR': false,
-    'RTL': true
-  }, function(isRTL) {
+  describeOptions('dir', {
+    'LTR': 'ltr',
+    'RTL': 'rtl'
+  }, function(dir) {
 
-    describeTimezones(function(tz) {
+    describeTimeZones(function(tz) {
 
       describe('when time scale', function() {
         pushOptions({
@@ -39,7 +39,7 @@ describe('timeline event resizing', function() {
                 events: [
                   { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00' }
                 ],
-                eventAfterAllRender: oneCall(function() {
+                _eventsPositioned: oneCall(function() {
                   $('.event1').simulate('mouseover') // resizer only shows on hover
                   $('.event1 .fc-end-resizer')
                     .simulate('drag', {
@@ -70,7 +70,7 @@ describe('timeline event resizing', function() {
                 events: [
                   { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
                 ],
-                eventAfterAllRender: oneCall(function() {
+                _eventsPositioned: oneCall(function() {
                   $('.event1').simulate('mouseover') // resizer only shows on hover
                   $('.event1 .fc-end-resizer')
                     .simulate('drag', {
@@ -98,7 +98,7 @@ describe('timeline event resizing', function() {
                 events: [
                   { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
                 ],
-                eventAfterAllRender: oneCall(function() {
+                _eventsPositioned: oneCall(function() {
                   $('.event1').simulate('mouseover') // resizer only shows on hover
                   $('.event1 .fc-end-resizer')
                     .simulate('drag', {
@@ -125,7 +125,7 @@ describe('timeline event resizing', function() {
                 events: [
                   { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceIds: [ 'a', 'b' ] }
                 ],
-                eventAfterAllRender: oneCall(function() {
+                _eventsPositioned: oneCall(function() {
                   $('.event1:first').simulate('mouseover') // resizer only shows on hover
                   $('.event1:first .fc-end-resizer')
                     .simulate('drag', {
@@ -137,7 +137,7 @@ describe('timeline event resizing', function() {
                     })
                 }),
                 eventResize:
-                  (resizeSpy = spyCall(function(arg.event) {
+                  (resizeSpy = spyCall(function(arg) {
                     expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
                     expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
                     let resourceIds = arg.event.resources.map((resource) => resource.id)
@@ -160,7 +160,7 @@ describe('timeline event resizing', function() {
               events: [
                 { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
               ],
-              eventAfterAllRender: oneCall(function() {
+              _eventsPositioned: oneCall(function() {
                 $('.event1').simulate('mouseover') // resizer only shows on hover
                 $('.event1 .fc-end-resizer')
                   .simulate('drag', {
@@ -193,7 +193,7 @@ describe('timeline event resizing', function() {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
         ],
-        eventAfterAllRender: oneCall(function() {
+        _eventsPositioned: oneCall(function() {
           $('.event1').simulate('drag', {
             isTouch: true,
             delay: 200,
@@ -201,7 +201,7 @@ describe('timeline event resizing', function() {
               $('.event1').simulate('mouseover') // resizer only shows on hover
               $('.event1 .fc-end-resizer').simulate('drag', {
                 // hack to make resize start within the bounds of the event
-                localPoint: { top: '50%', left: (isRTL ? '100%' : '0%') },
+                localPoint: { top: '50%', left: (dir === 'rtl' ? '100%' : '0%') },
                 isTouch: true,
                 end: getResourceTimelinePoint('b', '2015-11-28T07:00:00'),
                 callback() {
@@ -234,7 +234,7 @@ describe('timeline event resizing', function() {
           events: [
             { title: 'event1', className: 'event1', start: '2015-11-03', resourceId: 'a' }
           ],
-          eventAfterAllRender: oneCall(function() {
+          _eventsPositioned: oneCall(function() {
             $('.event1').simulate('mouseover') // resizer only shows on hover
             $('.event1 .fc-end-resizer')
               .simulate('drag', {
@@ -268,7 +268,7 @@ describe('timeline event resizing', function() {
           events: [
             { title: 'event1', className: 'event1', start: '2015-01-18', end: '2015-01-25', resourceId: 'a' }
           ],
-          eventAfterAllRender: oneCall(function() {
+          _eventsPositioned: oneCall(function() {
             $('.event1').simulate('mouseover') // resizer only shows on hover
             $('.event1 .fc-end-resizer')
               .simulate('drag', {

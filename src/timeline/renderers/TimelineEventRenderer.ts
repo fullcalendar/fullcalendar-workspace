@@ -23,7 +23,7 @@ export default class TimelineEventRenderer extends EventRenderer {
     return {
       hour: 'numeric',
       minute: '2-digit',
-      omitZeroTime: true,
+      omitZeroMinute: true,
       meridiem: 'narrow'
     }
   }
@@ -138,11 +138,11 @@ export default class TimelineEventRenderer extends EventRenderer {
   }
 
 
-  fgSegHtml(seg, disableResizing) {
+  fgSegHtml(seg) {
     const { eventDef } = seg.footprint
-    const isDraggable = this.view.isEventDefDraggable(eventDef)
-    const isResizableFromStart = seg.isStart && this.view.isEventDefResizableFromStart(eventDef)
-    const isResizableFromEnd = seg.isEnd && this.view.isEventDefResizableFromEnd(eventDef)
+    const isDraggable = this.isEventDefDraggable(eventDef)
+    const isResizableFromStart = seg.isStart && this.isEventDefResizableFromStart(eventDef)
+    const isResizableFromEnd = seg.isEnd && this.isEventDefResizableFromEnd(eventDef)
 
     const classes = this.getSegClasses(seg, isDraggable, isResizableFromStart || isResizableFromEnd)
     classes.unshift('fc-timeline-event', 'fc-h-event')

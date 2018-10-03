@@ -58,7 +58,7 @@ Constraints.prototype.isFootprintAllowed = function(footprint, peerEventFootprin
 }
 
 
-Constraints.prototype.buildCurrentBusinessFootprints = function(isAllDay) {
+Constraints.prototype.buildCurrentBusinessFootprints = function(allDay) {
   const flatResources = this._calendar.resourceManager.getFlatResources()
   let anyCustomBusinessHours = false
 
@@ -73,19 +73,19 @@ Constraints.prototype.buildCurrentBusinessFootprints = function(isAllDay) {
   if (anyCustomBusinessHours) {
     const { view } = this._calendar
     const generalBusinessHourGenerator = view.get('businessHourGenerator')
-    const unzonedRange = view.dateProfile.activeUnzonedRange
+    const range = view.dateProfile.activeRange
     const componentFootprints = []
 
     for (let resource of flatResources) {
       const businessHourGenerator = resource.businessHourGenerator || generalBusinessHourGenerator
-      const eventInstanceGroup = businessHourGenerator.buildEventInstanceGroup(isAllDay, unzonedRange)
+      const eventInstanceGroup = businessHourGenerator.buildEventInstanceGroup(allDay, range)
 
       if (eventInstanceGroup) {
         for (let eventRange of eventInstanceGroup.getAllEventRanges()) {
           componentFootprints.push(
             new ResourceComponentFootprint(
-              eventRange.unzonedRange,
-              isAllDay, // isAllDay
+              eventRange.range,
+              allDay, // allDay
               resource.id
             )
           )
@@ -169,7 +169,7 @@ Constraints.prototype.parseFootprints = function(input) {
         footprints.push(
           new ResourceComponentFootprint(
             plainFootprint.unzonedRange,
-            plainFootprint.isAllDay,
+            plainFootprint.allDay,
             resourceId
           )
         )

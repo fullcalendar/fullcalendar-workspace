@@ -1,17 +1,16 @@
-import { getTimeGridPoint } from 'fullcalendar/tests/automated/lib/time-grid'
-import { getResourceTimeGridPoint } from '../lib/time-grid'
+import { getLeadingBoundingRect, sortBoundingRects } from 'fullcalendar/tests/automated/lib/dom-geom'
+import { getDayGridDowEls } from 'fullcalendar/tests/automated/lib/day-grid'
 
-describe('agenda-view dayClick', function() {
+describe('basic-view dateClick', function() {
   pushOptions({
     now: '2015-11-28',
-    scrollTime: '00:00',
     resources: [
       { id: 'a', title: 'Resource A' },
       { id: 'b', title: 'Resource B' }
     ],
     views: {
-      agendaThreeDay: {
-        type: 'agenda',
+      basicThreeDay: {
+        type: 'basic',
         duration: { days: 3 }
       }
     }
@@ -19,26 +18,26 @@ describe('agenda-view dayClick', function() {
 
   describe('when there are no resource columns', function() {
     pushOptions({
-      defaultView: 'agendaWeek',
+      defaultView: 'basicWeek',
       groupByResource: false
     })
 
     it('allows non-resource clicks', function(done) {
-      let dayClickCalled = false
-
+      let dateClickCalled = false
       initCalendar({
-        eventAfterAllRender() {
-          $.simulateByPoint('drag', {
-            point: getTimeGridPoint('2015-11-23T09:00:00'),
+        _eventsPositioned() {
+          const monEls = getDayGridDowEls('mon')
+          expect(monEls.length).toBe(1)
+          monEls.eq(0).simulate('drag', {
             callback() {
-              expect(dayClickCalled).toBe(true)
+              expect(dateClickCalled).toBe(true)
               done()
             }
           })
         },
-        dayClick(arg) {
-          dayClickCalled = true
-          expect(arg.date).toEqualDate('2015-11-23T09:00:00Z')
+        dateClick(arg) {
+          dateClickCalled = true
+          expect(arg.date).toEqualDate('2015-11-23')
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
           expect(arg.resource).toBeFalsy()
@@ -49,28 +48,28 @@ describe('agenda-view dayClick', function() {
 
   describe('with resource columns above date columns', function() {
     pushOptions({
-      defaultView: 'agendaThreeDay',
+      defaultView: 'basicThreeDay',
       groupByResource: true
     })
 
     it('allows a resource click', function(done) {
-      let dayClickCalled = false
+      let dateClickCalled = false
       initCalendar({
-        eventAfterAllRender() {
-          $.simulateByPoint('drag', {
-            point: getResourceTimeGridPoint('b', '2015-11-29T09:00:00Z'),
+        _eventsPositioned() {
+          const sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
+          sunAEl.simulate('drag', {
             callback() {
-              expect(dayClickCalled).toBe(true)
+              expect(dateClickCalled).toBe(true)
               done()
             }
           })
         },
-        dayClick(arg) {
-          dayClickCalled = true
-          expect(arg.date).toEqualDate('2015-11-29T09:00:00Z')
+        dateClick(arg) {
+          dateClickCalled = true
+          expect(arg.date).toEqualDate('2015-11-29')
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
-          expect(arg.resource.id).toBe('b')
+          expect(arg.resource.id).toBe('a')
         }
       })
     })
@@ -78,25 +77,26 @@ describe('agenda-view dayClick', function() {
 
   describe('with date columns above resource columns', function() {
     pushOptions({
-      defaultView: 'agendaThreeDay',
+      defaultView: 'basicThreeDay',
       groupByDateAndResource: true
     })
 
     it('allows a resource click', function(done) {
-      let dayClickCalled = false
+      let dateClickCalled = false
       initCalendar({
-        eventAfterAllRender() {
-          $.simulateByPoint('drag', {
-            point: getResourceTimeGridPoint('b', '2015-11-30T09:30:00Z'),
+        _eventsPositioned() {
+          const rects = sortBoundingRects(getDayGridDowEls('mon'))
+          const monBEl = $(rects[1].node)
+          monBEl.simulate('drag', {
             callback() {
-              expect(dayClickCalled).toBe(true)
+              expect(dateClickCalled).toBe(true)
               done()
             }
           })
         },
-        dayClick(arg) {
-          dayClickCalled = true
-          expect(arg.date).toEqualDate('2015-11-30T09:30:00Z')
+        dateClick(arg) {
+          dateClickCalled = true
+          expect(arg.date).toEqualDate('2015-11-30')
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
           expect(arg.resource.id).toBe('b')

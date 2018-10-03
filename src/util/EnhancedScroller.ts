@@ -1,7 +1,7 @@
 import {
   Scroller, debounce, preventDefault,
   EmitterMixin, EmitterInterface,
-  ListenerMixin, ListenerInterface, htmlToElement, removeElement
+  htmlToElement, removeElement
 } from 'fullcalendar'
 import ScrollerCanvas from '../util/ScrollerCanvas'
 
@@ -21,9 +21,6 @@ export default class EnhancedScroller extends Scroller {
   trigger: EmitterInterface['trigger']
   triggerWith: EmitterInterface['triggerWith']
   hasHandlers: EmitterInterface['hasHandlers']
-
-  listenTo: ListenerInterface['listenTo']
-  stopListeningTo: ListenerInterface['stopListeningTo']
 
   canvas: ScrollerCanvas // an optional ScrollerCanvas
   isScrolling: boolean
@@ -273,7 +270,6 @@ export default class EnhancedScroller extends Scroller {
 }
 
 EmitterMixin.mixInto(EnhancedScroller)
-ListenerMixin.mixInto(EnhancedScroller)
 
 
 // Horizontal Scroll System Detection

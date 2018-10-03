@@ -7,7 +7,7 @@ A row that renders information about a particular resource, as well as it events
 export default class ResourceRow extends EventRow {
 
   resource: any
-  eventsPayload: any
+  eventRanges: any
   businessHourGenerator: any
 
 
@@ -22,8 +22,8 @@ export default class ResourceRow extends EventRow {
     super.renderSkeleton()
     this.updateExpandingEnabled()
 
-    if (this.eventsPayload) {
-      EventRow.prototype.executeEventRender.call(this, this.eventsPayload)
+    if (this.eventRanges) {
+      EventRow.prototype.renderEventRanges.call(this, this.eventRanges)
     }
 
     if (
@@ -47,8 +47,8 @@ export default class ResourceRow extends EventRow {
   removeElement() {
     super.removeElement()
 
-    if (this.eventsPayload) {
-      EventRow.prototype.executeEventUnrender.call(this, this.eventsPayload)
+    if (this.eventRanges) {
+      EventRow.prototype.executeEventUnrender.call(this, this.eventRanges)
     }
 
     if (this.businessHourGenerator) {
@@ -63,17 +63,17 @@ export default class ResourceRow extends EventRow {
   }
 
 
-  executeEventRender(eventsPayload) { // save the events!
-    this.eventsPayload = eventsPayload
+  renderEventRanges(eventRanges) { // save the events!
+    this.eventRanges = eventRanges
     if (this.get('isInDom')) {
-      super.executeEventRender(this.eventsPayload)
+      super.renderEventRanges(this.eventRanges)
     }
   }
 
 
   executeEventUnrender() {
     super.executeEventUnrender()
-    this.eventsPayload = null
+    this.eventRanges = null
   }
 
 

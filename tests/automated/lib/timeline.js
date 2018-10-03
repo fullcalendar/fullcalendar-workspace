@@ -3,45 +3,47 @@ import { getBoundingRect } from 'fullcalendar/tests/automated/lib/dom-geom'
 
 
 export function dragResourceTimelineEvent(eventEl, dropInfo) {
-  return new Promise(function(resolve) {
-    let modifiedEvent = null
+  let deferred = $.Deferred()
+  let modifiedEvent = null
 
-    currentCalendar.on('eventDragStop', function() {
-      setTimeout(function() { // wait for eventDrop to be called
-        resolve(modifiedEvent)
-      })
-    })
-
-    currentCalendar.on('eventDrop', function(arg) {
-      modifiedEvent = arg.event
-    })
-
-    eventEl.simulate('drag', {
-      localPoint: { left: 2, top: '50%' }, // 2 for zoom
-      end: getResourceTimelinePoint(dropInfo.resourceId, dropInfo.date)
+  currentCalendar.on('eventDragStop', function() {
+    setTimeout(function() { // wait for eventDrop to be called
+      deferred.resolve(modifiedEvent)
     })
   })
+
+  currentCalendar.on('eventDrop', function(arg) {
+    modifiedEvent = arg.event
+  })
+
+  eventEl.simulate('drag', {
+    localPoint: { left: 2, top: '50%' }, // 2 for zoom
+    end: getResourceTimelinePoint(dropInfo.resourceId, dropInfo.date)
+  })
+
+  return deferred.promise()
 }
 
 
 export function selectResourceTimeline(startInfo, inclusiveEndInfo) {
-  return new Promise(function(resolve) {
-    let selectInfo = null
+  let deferred = $.Deferred()
+  let selectInfo = null
 
-    currentCalendar.on('select', function(arg) {
-      selectInfo = arg
-    })
-
-    $('.fc-body .fc-time-area').simulate('drag', {
-      point: getResourceTimelinePoint(startInfo.resourceId, startInfo.date),
-      end: getResourceTimelinePoint(inclusiveEndInfo.resourceId, inclusiveEndInfo.date),
-      onRelease() {
-        setTimeout(function() { // wait for select to fire
-          resolve(selectInfo)
-        })
-      }
-    })
+  currentCalendar.on('select', function(arg) {
+    selectInfo = arg
   })
+
+  $('.fc-body .fc-time-area').simulate('drag', {
+    point: getResourceTimelinePoint(startInfo.resourceId, startInfo.date),
+    end: getResourceTimelinePoint(inclusiveEndInfo.resourceId, inclusiveEndInfo.date),
+    onRelease() {
+      setTimeout(function() { // wait for select to fire
+        deferred.resolve(selectInfo)
+      })
+    }
+  })
+
+  return deferred.promise()
 }
 
 

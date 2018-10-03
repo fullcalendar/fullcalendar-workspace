@@ -100,7 +100,7 @@ describe('column event dragging with constraint', function() {
         let dropped = false
         initCalendar({
           events,
-          eventAfterAllRender:
+          _eventsPositioned:
             oneCall(function() {
               $('.event1').simulate('drag', {
                 localPoint: { left: '50%', top: 0 },

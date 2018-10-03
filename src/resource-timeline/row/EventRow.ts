@@ -1,8 +1,7 @@
-import { BusinessHourRenderer } from 'fullcalendar'
 import RowParent from './RowParent'
 import TimelineFillRenderer from '../../timeline/renderers/TimelineFillRenderer'
 import TimelineEventRenderer from '../../timeline/renderers/TimelineEventRenderer'
-import TimelineHelperRenderer from '../../timeline/renderers/TimelineHelperRenderer'
+import TimelineMirrorRenderer from '../../timeline/renderers/TimelineMirrorRenderer'
 
 
 export default class EventRow extends RowParent {
@@ -42,7 +41,6 @@ export default class EventRow extends RowParent {
 
 EventRow.prototype.fillRendererClass = TimelineFillRenderer
 EventRow.prototype.eventRendererClass = TimelineEventRenderer
-EventRow.prototype.helperRendererClass = TimelineHelperRenderer
-EventRow.prototype.businessHourRendererClass = BusinessHourRenderer
+EventRow.prototype.mirrorRendererClass = TimelineMirrorRenderer
 
 EventRow.prototype.hasOwnRow = true

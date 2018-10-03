@@ -20,7 +20,7 @@ describe('timeline navLinks', function() {
   }, function() {
     it('has at least one navLink', function(done) {
       initCalendar({
-        viewRender() {
+        datesRender() {
           expect($('a[data-goto]').length).toBeGreaterThan(0)
           done()
         }

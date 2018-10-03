@@ -71,7 +71,7 @@ describe('refetchResourcesOnNavigate', function() {
           }, 500)
         },
 
-        eventAfterAllRender() {
+        _eventsPositioned() {
           eventRenderingCnt += 1
 
           if (eventRenderingCnt === 1) {
@@ -104,7 +104,7 @@ describe('refetchResourcesOnNavigate', function() {
           }, 100)
         },
 
-        eventAfterAllRender() {
+        _eventsPositioned() {
           eventRenderingCnt += 1
 
           // step 2
@@ -133,9 +133,9 @@ describe('refetchResourcesOnNavigate', function() {
     })
 
 
-    it('calls viewRender after resources rendered for each navigation', function(done) {
+    it('calls datesRender after resources rendered for each navigation', function(done) {
       let resourceCallCnt = 0
-      let viewRenderCallCnt = 0
+      let datesRenderCallCnt = 0
 
       initCalendar({
         resources(arg, callback) {
@@ -148,14 +148,14 @@ describe('refetchResourcesOnNavigate', function() {
           }, 100)
         },
 
-        viewRender() {
-          viewRenderCallCnt += 1
+        datesRender() {
+          datesRenderCallCnt += 1
 
-          if (viewRenderCallCnt === 1) {
+          if (datesRenderCallCnt === 1) {
             expect(settings.getResourceTitles()).toEqual([ 'resource a-1', 'resource b-1' ])
             currentCalendar.next()
 
-          } else if (viewRenderCallCnt === 2) {
+          } else if (datesRenderCallCnt === 2) {
             expect(settings.getResourceTitles()).toEqual([ 'resource a-2', 'resource b-2' ])
             done()
           }
@@ -216,7 +216,7 @@ describe('refetchResourcesOnNavigate', function() {
         }, 100)
       },
 
-      eventAfterAllRender() {
+      _eventsPositioned() {
         eventRenderingCnt += 1
 
         // step 2
@@ -249,7 +249,7 @@ describe('refetchResourcesOnNavigate', function() {
     initCalendar({
       defaultView: 'timelineWeek',
       now: '2017-02-12',
-      timezone: 'America/Chicago',
+      timeZone: 'America/Chicago',
       resources(arg, callback) {
         expect(arg.start).toEqualDate('2017-02-12')
         expect(arg.end).toEqualDate('2017-02-19')
@@ -270,7 +270,7 @@ describe('refetchResourcesOnNavigate', function() {
     initCalendar({
       defaultView: 'timelineWeek',
       now: '2017-02-12',
-      timezone: 'America/Chicago',
+      timeZone: 'America/Chicago',
 
       resources(arg, callback) {
         renderCnt += 1
@@ -287,7 +287,7 @@ describe('refetchResourcesOnNavigate', function() {
         callback([])
       },
 
-      eventAfterAllRender(resources) {
+      _eventsPositioned(resources) {
         if (renderCnt === 1) {
           setTimeout(function() {
             currentCalendar.next()
@@ -306,7 +306,7 @@ describe('refetchResourcesOnNavigate', function() {
     initCalendar({
       defaultView: 'timelineWeek',
       now: '2017-02-12',
-      timezone: 'America/Chicago',
+      timeZone: 'America/Chicago',
 
       resources(arg, callback) {
         requestCnt += 1
@@ -340,7 +340,7 @@ describe('refetchResourcesOnNavigate', function() {
         expect(req.url().query).toEqual({
           start: '2017-02-12T00:00:00',
           end: '2017-02-19T00:00:00',
-          timezone: 'America/Chicago'
+          timeZone: 'America/Chicago'
         })
         done()
         return res.status(200).header('content-type', 'application/json').body('[]')
@@ -349,19 +349,19 @@ describe('refetchResourcesOnNavigate', function() {
       initCalendar({
         defaultView: 'timelineWeek',
         now: '2017-02-12',
-        timezone: 'America/Chicago',
+        timeZone: 'America/Chicago',
         resources: 'my-feed.php' // will be picked up by mockjax
       })
     })
 
 
-    it('respects startParam/endParam/timezoneParam', function(done) {
+    it('respects startParam/endParam/timeZoneParam', function(done) {
 
       XHRMock.get(/^my-feed\.php/, function(req, res) {
         expect(req.url().query).toEqual({
           mystart: '2017-02-12T00:00:00',
           myend: '2017-02-19T00:00:00',
-          mytimezone: 'America/Chicago'
+          mytimeZone: 'America/Chicago'
         })
         done()
         return res.status(200).header('content-type', 'application/json').body('[]')
@@ -370,11 +370,11 @@ describe('refetchResourcesOnNavigate', function() {
       initCalendar({
         defaultView: 'timelineWeek',
         now: '2017-02-12',
-        timezone: 'America/Chicago',
+        timeZone: 'America/Chicago',
         resources: 'my-feed.php', // will be picked up by mockjax
         startParam: 'mystart',
         endParam: 'myend',
-        timezoneParam: 'mytimezone'
+        timeZoneParam: 'mytimezone'
       })
     })
 
@@ -390,7 +390,7 @@ describe('refetchResourcesOnNavigate', function() {
       initCalendar({
         defaultView: 'timelineWeek',
         now: '2017-02-12',
-        timezone: 'America/Chicago',
+        timeZone: 'America/Chicago',
         resources: 'my-feed.php', // will be picked up by mockjax
         refetchResourcesOnNavigate: false
       })

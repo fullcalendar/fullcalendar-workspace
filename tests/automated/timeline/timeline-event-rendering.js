@@ -5,15 +5,15 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
     scrollTime: '00:00'
   })
 
-  describeOptions('timezone', {
-    'with UTC timezone': 'UTC',
-    'with local timezone': 'local'
-  }, function(timezone) {
+  describeOptions('timeZone', {
+    'with UTC timeZone': 'UTC',
+    'with local timeZone': 'local'
+  }, function(timeZone) {
 
-    describeOptions('isRTL', {
-      'when LTR': false,
-      'when RTL': true
-    }, function(isRTL) {
+    describeOptions('dir', {
+      'when LTR': 'ltr',
+      'when RTL': 'rtl'
+    }, function(dir) {
 
       describeOptions('resources', {
         'with no resources': null,
@@ -43,7 +43,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '2am', '5am')
                     expectEventIsStartEnd('event1', true, true)
                     done()
@@ -56,7 +56,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-10-16T22:00:00', '2015-10-17T06:00:00')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '12am', '5am')
                     expectEventIsStartEnd('event1', false, true)
                     done()
@@ -69,7 +69,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-10-17T02:00:00', '2015-10-18T02:00:00')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '2am', '11pm')
                     expectEventIsStartEnd('event1', true, false)
                     done()
@@ -82,7 +82,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-10-16T22:00:00', '2015-10-18T02:00:00')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '12am', '11pm')
                     expectEventIsStartEnd('event1', false, false)
                     done()
@@ -99,7 +99,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     events: [
                       makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T09:00:00')
                     ],
-                    eventAfterAllRender() {
+                    _eventsPositioned() {
                       expect($('.event1').length).toBe(0)
                       done()
                     }
@@ -112,7 +112,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     events: [
                       makeEvent('event1', '2015-10-16T12:00:00', '2015-10-17T06:00:00')
                     ],
-                    eventAfterAllRender() {
+                    _eventsPositioned() {
                       expectEventSlotSpan('event1', '3am', '5am')
                       expectEventIsStartEnd('event1', false, true)
                       done()
@@ -126,7 +126,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     events: [
                       makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00')
                     ],
-                    eventAfterAllRender() {
+                    _eventsPositioned() {
                       expectEventSlotSpan('event1', '3am', '5am')
                       expectEventIsStartEnd('event1', false, true)
                       done()
@@ -141,7 +141,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     events: [
                       makeEvent('event1', '2015-10-17T18:00:00', '2015-10-17T23:00:00')
                     ],
-                    eventAfterAllRender() {
+                    _eventsPositioned() {
                       expect($('.event1').length).toBe(0)
                       done()
                     }
@@ -155,7 +155,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     events: [
                       makeEvent('event1', '2015-10-17T19:00:00', '2015-10-18T02:00:00')
                     ],
-                    eventAfterAllRender() {
+                    _eventsPositioned() {
                       expectEventSlotSpan('event1', '7pm', '8pm')
                       expectEventIsStartEnd('event1', true, false)
                       done()
@@ -170,7 +170,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     events: [
                       makeEvent('event1', '2015-10-17T12:00:00', '2015-10-17T22:00:00')
                     ],
-                    eventAfterAllRender() {
+                    _eventsPositioned() {
                       expectEventSlotSpan('event1', '12pm', '5pm')
                       expectEventIsStartEnd('event1', true, false)
                       done()
@@ -192,7 +192,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     events: [
                       makeEvent('event1', '2015-10-17T17:00:00', '2015-10-18T09:00:00')
                     ],
-                    eventAfterAllRender() {
+                    _eventsPositioned() {
                       expect($('.event1').length).toBe(0)
                       done()
                     }
@@ -210,7 +210,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-10-17T08:00:00', '2015-10-18T02:00:00')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '9am', '1am')
                     expectEventIsStartEnd('event1', false, true)
                     expect($('tr.fc-chrono th:first')).toHaveText('9am')
@@ -227,7 +227,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-10-17T08:00:00', '2015-10-18T05:00:00')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '9am', '3am')
                     expectEventIsStartEnd('event1', false, false)
                     expect($('tr.fc-chrono th:first')).toHaveText('9am')
@@ -245,7 +245,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00'),
                     makeEvent('event2', '2015-10-17T02:00:00', '2015-10-17T08:00:00')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     const event1El = $('.event1')
                     const event2El = $('.event2')
                     const event2Bottom = event2El.offset().top + event2El.outerHeight()
@@ -269,7 +269,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                       end: '2015-10-17T06:00:00'
                     }
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '2am', '5am')
                     expectEventIsStartEnd('event1', true, true)
                     const eventEl = $('.event1')
@@ -307,7 +307,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-10-16', '2015-10-18')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '16 F', '17 S')
                     expectEventIsStartEnd('event1', true, true)
                     done()
@@ -320,7 +320,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-10-10', '2015-10-18')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '11 S', '17 S')
                     expectEventIsStartEnd('event1', false, true)
                     done()
@@ -333,7 +333,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-10-18', '2015-11-18')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '18 S', '31 S')
                     expectEventIsStartEnd('event1', true, false)
                     done()
@@ -346,7 +346,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-09-18', '2015-11-18')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '11 S', '31 S')
                     expectEventIsStartEnd('event1', false, false)
                     done()
@@ -359,7 +359,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-10-16T04:00:00', '2015-10-16T05:00:00')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '16 F', '16 F')
                     expectEventIsStartEnd('event1', true, true)
                     done()
@@ -373,7 +373,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-10-16T04:00:00', '2015-10-18T01:00:00')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '16 F', '17 S')
                     expectEventIsStartEnd('event1', true, true)
                     done()
@@ -387,7 +387,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-10-16T04:00:00', '2015-10-18T03:00:00')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '16 F', '18 S')
                     expectEventIsStartEnd('event1', true, true)
                     done()
@@ -403,7 +403,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-10-16', '2015-10-18')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '16 F', '17 S')
                     expectEventIsStartEnd('event1', true, true)
                     done()
@@ -431,7 +431,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-10-18', '2015-11-15')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '10/18', '11/8')
                     expectEventIsStartEnd('event1', true, true)
                     done()
@@ -444,7 +444,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-10-19', '2015-11-17')
                   ],
-                  eventAfterAllRender() {
+                  _eventsPositioned() {
                     expectEventSlotSpan('event1', '10/18', '11/15')
                     expectEventIsStartEnd('event1', true, true)
                     done()
@@ -477,7 +477,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
             expect(firstSlotEl.length).toBe(1)
             expect(lastSlotEl.length).toBe(1)
 
-            if (!isRTL) {
+            if (dir === 'ltr') {
               spanLeft = firstSlotEl.offset().left
               spanRight = lastSlotEl.offset().left + lastSlotEl.outerWidth()
             } else {
@@ -509,7 +509,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
             const eventEl = $(`.${eventName}`)
             expect(eventEl.length).toBeLessThan(3)
             if (eventEl.length === 2) {
-              if (!isRTL) {
+              if (dir === 'ltr') {
                 return {
                   left: eventEl.eq(0).offset().left + eventEl.eq(0).outerWidth(),
                   right: eventEl.eq(1).offset().left

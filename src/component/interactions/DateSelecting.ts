@@ -22,7 +22,7 @@ DateSelecting.prototype.computeSelectionFootprint = function(startFootprint, end
       // create a new footprint with resourceId data
       footprint = new ResourceComponentFootprint(
         footprint.unzonedRange,
-        footprint.isAllDay,
+        footprint.allDay,
         startFootprint.resourceId
       )
     }

@@ -1,14 +1,14 @@
-import { HelperRenderer, applyStyle, createElement } from 'fullcalendar'
+import { MirrorRenderer, applyStyle, createElement } from 'fullcalendar'
 
 
-export default class TimelineHelperRenderer extends HelperRenderer {
+export default class TimelineMirrorRenderer extends MirrorRenderer {
 
   /*
   component must be { innerEl, rangeToCoords, ?resource }
   */
 
   renderSegs(segs, sourceSeg) {
-    const helperNodes = [] // .fc-event-container
+    const mirrorNodes = [] // .fc-event-container
 
     for (let seg of segs) {
       // TODO: centralize logic (also in renderFgSegsInContainers)
@@ -19,20 +19,20 @@ export default class TimelineHelperRenderer extends HelperRenderer {
       })
 
       // TODO: position the top coordinate to match sourceSeg,
-      // but only if the helper seg being dragged is in the same container as the sourceSeg,
+      // but only if the mirror seg being dragged is in the same container as the sourceSeg,
       // which is hard to determine
     }
 
-    const helperContainerEl = createElement('div', { className: 'fc-event-container fc-helper-container' })
-    this.component.innerEl.appendChild(helperContainerEl)
+    const mirrorContainerEl = createElement('div', { className: 'fc-event-container fc-mirror-container' })
+    this.component.innerEl.appendChild(mirrorContainerEl)
 
-    helperNodes.push(helperContainerEl)
+    mirrorNodes.push(mirrorContainerEl)
 
     for (let seg of segs) {
-      helperContainerEl.appendChild(seg.el)
+      mirrorContainerEl.appendChild(seg.el)
     }
 
-    return helperNodes // return value. TODO: need to accumulate across calls?
+    return mirrorNodes // return value. TODO: need to accumulate across calls?
   }
 
 }
