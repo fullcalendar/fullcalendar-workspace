@@ -13,6 +13,6 @@
     }
   },
   "include": [
-    "src/main2.ts"
+    "src2/main.ts"
   ]
 }
