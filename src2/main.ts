@@ -5,6 +5,7 @@ import resourcesReducers from './reducers/resources'
 import './resource-sources/resource-array'
 import './resource-sources/resource-func'
 import './resource-sources/resource-json-feed'
+import './timeline/config'
 
 export const ResourcesPlugin = exportHooks.createPlugin({
   reducers: [ resourcesReducers ]
