@@ -1,9 +1,13 @@
-import { View } from 'fullcalendar'
-import HEventLane from './HEventLane'
+import { View, DateComponentRenderState, RenderForceFlags, assignTo } from 'fullcalendar'
 import { buildTimelineDateProfile } from './timeline-date-profile'
+import TimelineHeader from './TimelineHeader'
+import TimelineSlats from './TimelineSlats'
+import HEventLane from './HEventLane'
 
 export default class TimelineView extends View {
 
+  header: TimelineHeader
+  slats: TimelineSlats
   hEventLane: HEventLane
 
   timeHeadEl: HTMLElement
@@ -11,8 +15,16 @@ export default class TimelineView extends View {
 
   constructor(calendar, viewSpec) {
     super(calendar, viewSpec)
-    this.hEventLane = new HEventLane(this.view)
-    this.addChild(this.hEventLane)
+
+    this.addChild(
+      this.header = new TimelineHeader(this.view)
+    )
+    this.addChild(
+      this.slats = new TimelineSlats(this.view)
+    )
+    this.addChild(
+      this.hEventLane = new HEventLane(this.view)
+    )
   }
 
   renderSkeleton() {
@@ -27,7 +39,8 @@ export default class TimelineView extends View {
     this.timeHeadEl = this.el.querySelector('thead .fc-time-area')
     this.timeBodyEl = this.el.querySelector('tbody .fc-time-area')
 
-    this.hEventLane.setElement(this.timeBodyEl)
+    this.header.setElement(this.timeHeadEl)
+    this.slats.setElement(this.timeBodyEl)
   }
 
   renderSkeletonHtml() {
@@ -47,10 +60,15 @@ export default class TimelineView extends View {
 </table>`
   }
 
-  renderDates(dateProfile) {
-    console.log(
-      buildTimelineDateProfile(dateProfile, this.getDateEnv(), this)
-    )
+  renderChildren(renderState: DateComponentRenderState, forceFlags: RenderForceFlags) {
+    let dateEnv = this.getDateEnv()
+    let tDateProfile = buildTimelineDateProfile(renderState.dateProfile, dateEnv, this) // TODO: cache
+    let betterState = assignTo({}, renderState, {
+      tDateProfile
+    })
+
+    this.header.render(betterState, forceFlags)
+    this.slats.render(betterState, forceFlags)
   }
 
 }

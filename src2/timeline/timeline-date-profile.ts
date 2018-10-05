@@ -1,4 +1,4 @@
-import { Duration, View, DateProfile, isSingleDay, addDays, wholeDivideDurations, warn, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange } from 'fullcalendar'
+import { Duration, View, DateProfile, isSingleDay, addDays, wholeDivideDurations, warn, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, htmlEscape } from 'fullcalendar'
 import * as core from 'fullcalendar'
 
 
@@ -11,15 +11,24 @@ export interface TimelineDateProfile {
   emphasizeWeeks: boolean
   snapDuration: Duration
   snapsPerSlot: number
-  normalizedStart: DateProfile
-  normalizedEnd: DateProfile
+  normalizedStart: DateMarker
+  normalizedEnd: DateMarker
   normalizedRange: DateRange // different somehow
   timeWindowMs: number
-  slotDates: DateProfile[]
+  slotDates: DateMarker[]
   snapDiffToIndex: number[]
   snapIndexToDiff: number[]
   snapCnt: number
   slotCnt: number
+  cellRows: TimelineHeaderCell[][]
+}
+
+export interface TimelineHeaderCell {
+  text: string
+  spanHtml: string
+  date: DateMarker
+  colspan: number
+  weekStart: boolean
 }
 
 
@@ -178,6 +187,10 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: Date
 
   tDateProfile.snapCnt = snapIndex + 1 // is always one behind
   tDateProfile.slotCnt = tDateProfile.snapCnt / tDateProfile.snapsPerSlot
+
+  // more...
+
+  tDateProfile.cellRows = buildCellRows(tDateProfile, dateEnv, view)
 
   return tDateProfile
 }
@@ -477,4 +490,79 @@ function currentRangeAs(unit: string, dateProfile: DateProfile, dateEnv: DateEnv
   }
 
   return res || 0
+}
+
+
+function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, view: View) {
+  let slotDates = tDateProfile.slotDates
+  let formats = tDateProfile.headerFormats
+  let cellRows = formats.map((format) => []) // indexed by row,col
+  let prevWeekNumber = null
+
+  // specifically for navclicks
+  let rowUnits = formats.map((format) => {
+    return (format as any).getLargestUnit ? (format as any).getLargestUnit() : null
+  })
+
+  // builds cellRows and slotCells
+  for (let date of slotDates) {
+    let weekNumber = dateEnv.computeWeekNumber(date)
+    let isWeekStart = tDateProfile.emphasizeWeeks && (prevWeekNumber !== null) && (prevWeekNumber !== weekNumber)
+
+    for (let row = 0; row < formats.length; row++) {
+      let format = formats[row]
+      let rowCells = cellRows[row]
+      let leadingCell = rowCells[rowCells.length - 1]
+      let isSuperRow = (formats.length > 1) && (row < (formats.length - 1)) // more than one row and not the last
+      let newCell = null
+
+      if (isSuperRow) {
+        let text = dateEnv.format(date, format)
+        if (!leadingCell || (leadingCell.text !== text)) {
+          newCell = buildCellObject(date, text, rowUnits[row], view)
+        } else {
+          leadingCell.colspan += 1
+        }
+      } else {
+        if (
+          !leadingCell ||
+          isInt(dateEnv.countDurationsBetween(
+            tDateProfile.normalizedStart,
+            date,
+            tDateProfile.labelInterval
+          ))
+        ) {
+          let text = dateEnv.format(date, format)
+          newCell = buildCellObject(date, text, rowUnits[row], view)
+        } else {
+          leadingCell.colspan += 1
+        }
+      }
+
+      if (newCell) {
+        newCell.weekStart = isWeekStart
+        rowCells.push(newCell)
+      }
+    }
+
+    prevWeekNumber = weekNumber
+  }
+
+  return cellRows
+}
+
+
+function buildCellObject(date: DateMarker, text, rowUnit, view: View): TimelineHeaderCell {
+  const spanHtml = view.buildGotoAnchorHtml(
+    {
+      date,
+      type: rowUnit,
+      forceOff: !rowUnit
+    },
+    {
+      'class': 'fc-cell-text'
+    },
+    htmlEscape(text)
+  )
+  return { text, spanHtml, date, colspan: 1, weekStart: false }
 }
