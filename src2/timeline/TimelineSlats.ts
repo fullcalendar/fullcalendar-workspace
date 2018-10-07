@@ -1,7 +1,10 @@
-import { DateComponent, DateComponentRenderState, RenderForceFlags, isInt } from 'fullcalendar'
+import { DateComponent, DateComponentRenderState, RenderForceFlags, isInt, findElements, createElement } from 'fullcalendar'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 export default class TimelineSlats extends DateComponent {
+
+  el: HTMLElement = createElement('div', { className: 'fc-slats' })
+  slatColEls: HTMLElement[]
 
   // TODO: only when tDateProfile change
   render(renderState: DateComponentRenderState, forceFlags: RenderForceFlags) {
@@ -30,6 +33,8 @@ export default class TimelineSlats extends DateComponent {
     html += '</tr></tbody></table>'
 
     this.el.innerHTML = html
+
+    this.slatColEls = findElements(this.el, 'col')
   }
 
   slatCellHtml(date, isEm, tDateProfile: TimelineDateProfile) {

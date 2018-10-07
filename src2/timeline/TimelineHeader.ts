@@ -1,7 +1,10 @@
-import { DateComponent, DateComponentRenderState, RenderForceFlags, asRoughMs, isSingleDay } from 'fullcalendar'
+import { DateComponent, DateComponentRenderState, RenderForceFlags, asRoughMs, isSingleDay, findElements } from 'fullcalendar'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 export default class TimelineHeader extends DateComponent {
+
+  slatColEls: HTMLElement[]
+  innerEls: HTMLElement[]
 
   // TODO: only when tDateProfile change
   render(renderState: DateComponentRenderState, forceFlags: RenderForceFlags) {
@@ -60,6 +63,12 @@ export default class TimelineHeader extends DateComponent {
     html += '</tbody></table>'
 
     this.el.innerHTML = html
+
+    this.slatColEls = findElements(this.el, 'col')
+    this.innerEls = findElements(
+      this.el.querySelector('tr:last-child') as HTMLElement, // compound selector won't work because of query-root problem
+      'th .fc-cell-text'
+    )
   }
 
 }
