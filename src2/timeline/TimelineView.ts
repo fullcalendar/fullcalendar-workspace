@@ -3,15 +3,20 @@ import { buildTimelineDateProfile } from './timeline-date-profile'
 import TimelineHeader from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'
 import HEventLane from './HEventLane'
+import ClippedScroller from '../util/ClippedScroller'
+import ScrollerCanvas from '../util/ScrollerCanvas'
 
 export default class TimelineView extends View {
+
+  timeHeadEl: HTMLElement
+  timeBodyEl: HTMLElement
+
+  headScroller: ClippedScroller
+  bodyScroller: ClippedScroller
 
   header: TimelineHeader
   slats: TimelineSlats
   hEventLane: HEventLane
-
-  timeHeadEl: HTMLElement
-  timeBodyEl: HTMLElement
 
   constructor(calendar, viewSpec) {
     super(calendar, viewSpec)
@@ -35,12 +40,23 @@ export default class TimelineView extends View {
     }
 
     this.el.innerHTML = this.renderSkeletonHtml()
-
     this.timeHeadEl = this.el.querySelector('thead .fc-time-area')
     this.timeBodyEl = this.el.querySelector('tbody .fc-time-area')
 
-    this.header.setElement(this.timeHeadEl)
-    this.slats.setElement(this.timeBodyEl)
+    this.headScroller = new ClippedScroller('clipped-scroll', 'hidden')
+    this.headScroller.enhancedScroll.canvas = new ScrollerCanvas()
+    this.headScroller.render()
+
+    this.bodyScroller = new ClippedScroller('auto', 'auto')
+    this.bodyScroller.enhancedScroll.canvas = new ScrollerCanvas()
+    this.bodyScroller.render()
+
+    this.timeHeadEl.appendChild(this.headScroller.el)
+    this.timeBodyEl.appendChild(this.bodyScroller.el)
+
+    this.header.setElement(this.headScroller.enhancedScroll.canvas.contentEl)
+    this.slats.setElement(this.bodyScroller.enhancedScroll.canvas.bgEl)
+    this.hEventLane.setElement(this.bodyScroller.enhancedScroll.canvas.contentEl)
   }
 
   renderSkeletonHtml() {
@@ -69,6 +85,31 @@ export default class TimelineView extends View {
 
     this.header.render(betterState, forceFlags)
     this.slats.render(betterState, forceFlags)
+    this.hEventLane.render()
+  }
+
+  updateSize(totalHeight, isAuto, force) {
+    let bodyHeight
+
+    if (isAuto) {
+      bodyHeight = 'auto'
+    } else {
+      bodyHeight = totalHeight - this.queryHeadHeight() - this.queryMiscHeight()
+    }
+
+    this.bodyScroller.setHeight(bodyHeight)
+  }
+
+  queryHeadHeight() {
+    // TODO: cache <table>
+    const table = this.headScroller.enhancedScroll.canvas.contentEl.querySelector('table')
+    return table ? table.offsetHeight : 0 // why the check?
+  }
+
+  queryMiscHeight() {
+    return this.el.offsetHeight -
+      this.headScroller.el.offsetHeight -
+      this.bodyScroller.el.offsetHeight
   }
 
 }
