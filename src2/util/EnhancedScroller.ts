@@ -34,6 +34,7 @@ export default class EnhancedScroller extends ScrollComponent {
 
 
   render() {
+    this.applyOverflow()
     if (this.canvas) {
       this.canvas.render()
       this.el.appendChild(this.canvas.el)

@@ -5,6 +5,7 @@ import TimelineSlats from './TimelineSlats'
 import HEventLane from './HEventLane'
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
+import ScrollJoiner from '../util/ScrollJoiner'
 
 export default class TimelineView extends View {
 
@@ -13,6 +14,7 @@ export default class TimelineView extends View {
 
   headScroller: ClippedScroller
   bodyScroller: ClippedScroller
+  scrollJoiner: ScrollJoiner
 
   header: TimelineHeader
   slats: TimelineSlats
@@ -50,6 +52,11 @@ export default class TimelineView extends View {
     this.bodyScroller = new ClippedScroller('auto', 'auto')
     this.bodyScroller.enhancedScroll.canvas = new ScrollerCanvas()
     this.bodyScroller.render()
+
+    this.scrollJoiner = new ScrollJoiner('horizontal', [
+      this.headScroller.enhancedScroll,
+      this.bodyScroller.enhancedScroll
+    ])
 
     this.timeHeadEl.appendChild(this.headScroller.el)
     this.timeBodyEl.appendChild(this.bodyScroller.el)
@@ -97,7 +104,14 @@ export default class TimelineView extends View {
       bodyHeight = totalHeight - this.queryHeadHeight() - this.queryMiscHeight()
     }
 
-    this.bodyScroller.setHeight(bodyHeight)
+    // temp
+    this.headScroller.enhancedScroll.canvas.setWidth(10000)
+    this.bodyScroller.enhancedScroll.canvas.setWidth(10000)
+
+    this.bodyScroller.setHeight(bodyHeight) // do first?
+    this.headScroller.updateSize()
+    this.bodyScroller.updateSize()
+    this.scrollJoiner.update()
   }
 
   queryHeadHeight() {
