@@ -1,18 +1,22 @@
-import { DateComponent, DateComponentRenderState, RenderForceFlags, asRoughMs, isSingleDay, findElements } from 'fullcalendar'
+import { DateComponent, DateComponentRenderState, RenderForceFlags, asRoughMs, isSingleDay, findElements, DateProfile } from 'fullcalendar'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 export default class TimelineHeader extends DateComponent {
 
+  tDateProfile: TimelineDateProfile
+
   slatColEls: HTMLElement[]
   innerEls: HTMLElement[]
 
-  // TODO: only when tDateProfile change
   render(renderState: DateComponentRenderState, forceFlags: RenderForceFlags) {
+    this.tDateProfile = (renderState as any).tDateProfile
     super.render(renderState, forceFlags)
+  }
 
+  renderDates(dateProfile: DateProfile) {
     let dateEnv = this.getDateEnv()
     let theme = this.getTheme()
-    let tDateProfile = (renderState as any).tDateProfile as TimelineDateProfile
+    let { tDateProfile } = this
     let { cellRows } = tDateProfile
     let lastRow = cellRows[cellRows.length - 1]
     let isChrono = asRoughMs(tDateProfile.labelInterval) > asRoughMs(tDateProfile.slotDuration)

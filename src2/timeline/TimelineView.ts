@@ -1,4 +1,4 @@
-import { View, DateComponentRenderState, RenderForceFlags, assignTo, wholeDivideDurations } from 'fullcalendar'
+import { View, DateComponentRenderState, RenderForceFlags, assignTo, wholeDivideDurations, DateMarker, isInt } from 'fullcalendar'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
 import TimelineHeader from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'
@@ -8,6 +8,8 @@ import ScrollerCanvas from '../util/ScrollerCanvas'
 import ScrollJoiner from '../util/ScrollJoiner'
 
 export default class TimelineView extends View {
+
+  tDateProfile: TimelineDateProfile
 
   timeHeadEl: HTMLElement
   timeBodyEl: HTMLElement
@@ -19,8 +21,6 @@ export default class TimelineView extends View {
   header: TimelineHeader
   slats: TimelineSlats
   hEventLane: HEventLane
-
-  tDateProfile: TimelineDateProfile
 
   constructor(calendar, viewSpec) {
     super(calendar, viewSpec)
@@ -87,17 +87,17 @@ export default class TimelineView extends View {
 
   renderChildren(renderState: DateComponentRenderState, forceFlags: RenderForceFlags) {
     let dateEnv = this.getDateEnv()
-    let tDateProfile = buildTimelineDateProfile(renderState.dateProfile, dateEnv, this) // TODO: cache
 
-    this.tDateProfile = tDateProfile
+    let tDateProfile = this.tDateProfile =
+      buildTimelineDateProfile(renderState.dateProfile, dateEnv, this) // TODO: cache
 
-    let betterState = assignTo({}, renderState, {
+    let timelineRenderState = assignTo({}, renderState, {
       tDateProfile
     })
 
-    this.header.render(betterState, forceFlags)
-    this.slats.render(betterState, forceFlags)
-    this.hEventLane.render()
+    this.header.render(timelineRenderState, forceFlags)
+    this.slats.render(timelineRenderState, forceFlags)
+    this.hEventLane.render(timelineRenderState, forceFlags)
   }
 
   updateSize(totalHeight, isAuto, force) {
@@ -117,6 +117,10 @@ export default class TimelineView extends View {
     }
 
     this.applyWidths(idealSlotWidth)
+
+    this.header.updateSize(totalHeight, isAuto, force)
+    this.slats.updateSize(totalHeight, isAuto, force)
+    this.hEventLane.updateSize(totalHeight, isAuto, force)
 
     this.headScroller.updateSize()
     this.bodyScroller.updateSize()
@@ -195,6 +199,60 @@ export default class TimelineView extends View {
       ).forEach(function(el) {
         el.style.width = nonLastSlotWidth + 'px'
       })
+    }
+  }
+
+  // returned value is between 0 and the number of snaps
+  computeDateSnapCoverage(date: DateMarker): number {
+    let dateEnv = this.getDateEnv()
+    let { tDateProfile } = this
+    let snapDiff = dateEnv.countDurationsBetween(
+      tDateProfile.normalizedStart,
+      date,
+      tDateProfile.snapDuration
+    )
+
+    if (snapDiff < 0) {
+      return 0
+    } else if (snapDiff >= tDateProfile.snapDiffToIndex.length) {
+      return tDateProfile.snapCnt
+    } else {
+      let snapDiffInt = Math.floor(snapDiff)
+      let snapCoverage = tDateProfile.snapDiffToIndex[snapDiffInt]
+
+      if (isInt(snapCoverage)) { // not an in-between value
+        snapCoverage += snapDiff - snapDiffInt // add the remainder
+      } else {
+        // a fractional value, meaning the date is not visible
+        // always round up in this case. works for start AND end dates in a range.
+        snapCoverage = Math.ceil(snapCoverage)
+      }
+
+      return snapCoverage
+    }
+  }
+
+  // for LTR, results range from 0 to width of area
+  // for RTL, results range from negative width of area to 0
+  dateToCoord(date) {
+    let { tDateProfile } = this
+    let snapCoverage = this.computeDateSnapCoverage(date)
+    let slotCoverage = snapCoverage / tDateProfile.snapsPerSlot
+    let slotIndex = Math.floor(slotCoverage)
+    slotIndex = Math.min(slotIndex, tDateProfile.slotCnt - 1)
+    let partial = slotCoverage - slotIndex
+    let coordCache = this.slats.innerCoordCache
+
+    if (this.isRtl) {
+      return (
+        coordCache.rights[slotIndex] -
+        (coordCache.getWidth(slotIndex) * partial)
+      ) - coordCache.originClientRect.width
+    } else {
+      return (
+        coordCache.lefts[slotIndex] +
+        (coordCache.getWidth(slotIndex) * partial)
+      )
     }
   }
 

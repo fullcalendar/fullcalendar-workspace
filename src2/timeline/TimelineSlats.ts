@@ -1,17 +1,24 @@
-import { DateComponent, DateComponentRenderState, RenderForceFlags, isInt, findElements, createElement } from 'fullcalendar'
+import { DateComponent, DateComponentRenderState, RenderForceFlags, isInt, findElements, createElement, findChildren, DateProfile, PositionCache } from 'fullcalendar'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 export default class TimelineSlats extends DateComponent {
 
+  tDateProfile: TimelineDateProfile
+
   el: HTMLElement = createElement('div', { className: 'fc-slats' })
   slatColEls: HTMLElement[]
+  slatEls: HTMLElement[]
 
-  // TODO: only when tDateProfile change
+  innerCoordCache: PositionCache
+
   render(renderState: DateComponentRenderState, forceFlags: RenderForceFlags) {
+    this.tDateProfile = (renderState as any).tDateProfile
     super.render(renderState, forceFlags)
+  }
 
+  renderDates(dateProfile: DateProfile) {
     let theme = this.getTheme()
-    let tDateProfile = (renderState as any).tDateProfile as TimelineDateProfile
+    let { tDateProfile } = this
     let { cellRows } = tDateProfile
     let lastRow = cellRows[cellRows.length - 1]
 
@@ -35,6 +42,16 @@ export default class TimelineSlats extends DateComponent {
     this.el.innerHTML = html
 
     this.slatColEls = findElements(this.el, 'col')
+    this.slatEls = findElements(this.el, 'td')
+
+    // for the inner divs within the slats
+    // used for event rendering and scrollTime, to disregard slat border
+    this.innerCoordCache = new PositionCache(
+      this.el,
+      findChildren(this.slatEls, 'div'),
+      true, // isHorizontal
+      false // isVertical
+    )
   }
 
   slatCellHtml(date, isEm, tDateProfile: TimelineDateProfile) {
@@ -67,6 +84,10 @@ export default class TimelineSlats extends DateComponent {
     return '<td class="' + classes.join(' ') + '"' +
       ' data-date="' + dateEnv.formatIso(date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true }) + '"' +
       '><div></div></td>'
+  }
+
+  buildPositionCaches() {
+    this.innerCoordCache.build()
   }
 
 }

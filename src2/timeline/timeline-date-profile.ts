@@ -1,4 +1,4 @@
-import { Duration, View, DateProfile, isSingleDay, addDays, wholeDivideDurations, warn, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, htmlEscape } from 'fullcalendar'
+import { computeVisibleDayRange, Duration, View, DateProfile, isSingleDay, addDays, wholeDivideDurations, warn, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, htmlEscape } from 'fullcalendar'
 import * as core from 'fullcalendar'
 
 
@@ -131,8 +131,9 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: Date
   let timeWindowMs = asRoughMs(dateProfile.maxTime) - asRoughMs(dateProfile.minTime)
 
   // makes sure zone is stripped
-  let normalizedStart = normalizeGridDate(tDateProfile, dateProfile.renderRange.start, dateEnv)
-  let normalizedEnd = normalizeGridDate(tDateProfile, dateProfile.renderRange.end, dateEnv)
+  // TODO: why not use normalizeRange!?
+  let normalizedStart = normalizeDate(dateProfile.renderRange.start, tDateProfile, dateEnv)
+  let normalizedEnd = normalizeDate(dateProfile.renderRange.end, tDateProfile, dateEnv)
 
   // apply minTime/maxTime
   // TODO: View should be responsible.
@@ -196,7 +197,7 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: Date
 }
 
 
-function normalizeGridDate(tDateProfile: TimelineDateProfile, date: DateMarker, dateEnv: DateEnv): DateMarker {
+export function normalizeDate(date: DateMarker, tDateProfile: TimelineDateProfile, dateEnv: DateEnv): DateMarker {
   let normalDate = date
 
   if (!tDateProfile.isTimeScale) {
@@ -211,7 +212,35 @@ function normalizeGridDate(tDateProfile: TimelineDateProfile, date: DateMarker, 
 }
 
 
-function isValidDate(date: DateMarker, tDateProfile: TimelineDateProfile, dateProfile: DateProfile, view: View) {
+export function normalizeRange(range: DateRange, tDateProfile: TimelineDateProfile, dateEnv: DateEnv): DateRange {
+
+  if (!tDateProfile.isTimeScale) {
+    range = computeVisibleDayRange(range, createDuration(0))
+
+    if (tDateProfile.largeUnit) {
+      let dayRange = range // preserve original result
+
+      range = {
+        start: dateEnv.startOf(range.start, tDateProfile.largeUnit),
+        end: dateEnv.startOf(range.end, tDateProfile.largeUnit)
+      }
+
+      // if date is partially through the interval, or is in the same interval as the start,
+      // make the exclusive end be the *next* interval
+      if (range.end.valueOf() !== dayRange.end.valueOf() || range.end <= range.start) {
+        range = {
+          start: range.start,
+          end: dateEnv.add(range.end, tDateProfile.slotDuration)
+        }
+      }
+    }
+  }
+
+  return range
+}
+
+
+export function isValidDate(date: DateMarker, tDateProfile: TimelineDateProfile, dateProfile: DateProfile, view: View) {
   if (view.isHiddenDay(date)) {
     return false
   } else if (tDateProfile.isTimeScale) {
