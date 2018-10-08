@@ -256,4 +256,12 @@ export default class TimelineView extends View {
     }
   }
 
+  rangeToCoords(range) {
+    if (this.isRtl) {
+      return { right: this.dateToCoord(range.start), left: this.dateToCoord(range.end) }
+    } else {
+      return { left: this.dateToCoord(range.start), right: this.dateToCoord(range.end) }
+    }
+  }
+
 }

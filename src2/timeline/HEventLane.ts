@@ -1,4 +1,4 @@
-import { DateComponent, DateComponentRenderState, RenderForceFlags, Seg, DateRange, EventRenderer, intersectRanges, addMs, htmlEscape, cssToStr } from 'fullcalendar'
+import { DateComponent, DateComponentRenderState, RenderForceFlags, Seg, DateRange, EventRenderer, intersectRanges, addMs, htmlEscape, cssToStr, applyStyle } from 'fullcalendar'
 import { TimelineDateProfile, normalizeRange, isValidDate } from './timeline-date-profile'
 import TimelineView from './TimelineView'
 
@@ -38,12 +38,33 @@ export default class HEventLane extends DateComponent {
     return segs
   }
 
+  assignEventsSize() {
+    this.eventRenderer.assignSizes()
+  }
+
 }
 
 class HEventLaneEventRenderer extends EventRenderer {
 
   renderFgSegs(segs: Seg[]) {
     console.log(segs)
+
+    for (let seg of segs) {
+      this.component.el.appendChild(seg.el)
+    }
+  }
+
+  assignSizes() {
+    let view = this.view as TimelineView // BAD!
+
+    for (let seg of this.fgSegs) {
+      // TODO: centralize logic (also in updateSegPositions)
+      const coords = view.rangeToCoords(seg)
+      applyStyle(seg.el, {
+        left: (seg.left = coords.left),
+        right: -(seg.right = coords.right)
+      })
+    }
   }
 
   fgSegHtml(seg) {
