@@ -6,7 +6,6 @@ import TimelineLane from './TimelineLane'
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
 import ScrollJoiner from '../util/ScrollJoiner'
-import TimelineLaneFillRenderer from './TimelineLaneFillRenderer'
 
 export default class TimelineView extends View {
 
@@ -67,6 +66,9 @@ export default class TimelineView extends View {
     this.header.setElement(this.headScroller.enhancedScroll.canvas.contentEl) // TODO: give own root el
     this.bodyScroller.enhancedScroll.canvas.contentEl.appendChild(this.lane.el)
     this.bodyScroller.enhancedScroll.canvas.bgEl.appendChild(this.slats.el)
+
+    // hack. puts the lane's fills within the fc-bg of the view
+    this.lane.fillRenderer.masterContainerEl = this.bodyScroller.enhancedScroll.canvas.bgEl
   }
 
   renderSkeletonHtml() {
@@ -266,5 +268,3 @@ export default class TimelineView extends View {
   }
 
 }
-
-TimelineView.prototype.fillRendererClass = TimelineLaneFillRenderer
