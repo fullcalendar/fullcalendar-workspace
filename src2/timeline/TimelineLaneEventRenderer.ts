@@ -3,6 +3,7 @@ import TimelineView from './TimelineView'
 
 export default class TimelineLaneEventRenderer extends EventRenderer {
 
+  masterContainerEl: HTMLElement // must be set by caller
   el: HTMLElement
 
   fgSegHtml(seg) {
@@ -47,7 +48,7 @@ export default class TimelineLaneEventRenderer extends EventRenderer {
   renderFgSegs(segs: Seg[]) {
     if (!this.el) {
       this.el = createElement('div', { className: 'fc-event-container' })
-      this.component.el.appendChild(this.el) // BAD to access component
+      this.masterContainerEl.appendChild(this.el)
     }
 
     for (let seg of segs) {

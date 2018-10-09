@@ -6,6 +6,7 @@ import TimelineLane from './TimelineLane'
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
 import ScrollJoiner from '../util/ScrollJoiner'
+import TimelineLaneFillRenderer from './TimelineLaneFillRenderer'
 
 export default class TimelineView extends View {
 
@@ -265,3 +266,5 @@ export default class TimelineView extends View {
   }
 
 }
+
+TimelineView.prototype.fillRendererClass = TimelineLaneFillRenderer

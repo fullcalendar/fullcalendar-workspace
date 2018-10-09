@@ -1,14 +1,11 @@
 import { FillRenderer, createElement, applyStyle } from 'fullcalendar'
-import TimelineView from './TimelineView';
-import TimelineLane from './TimelineLane'
+import TimelineView from './TimelineView'
 
 export default class TimelineLaneFillRenderer extends FillRenderer {
 
-  el: HTMLElement
+  masterContainerEl: HTMLElement // must be set by caller
 
   attachSegEls(type, segs) {
-    let component = this.component as TimelineLane // BAD
-
     if (segs.length) {
 
       let className
@@ -21,7 +18,7 @@ export default class TimelineLaneFillRenderer extends FillRenderer {
       // making a new container each time is OKAY
       // all types of segs (background or business hours or whatever) are rendered in one pass
       const containerEl = createElement('div', { className: 'fc-' + className + '-container' })
-      component.el.appendChild(containerEl)
+      this.masterContainerEl.appendChild(containerEl)
 
       for (let seg of segs) {
         containerEl.appendChild(seg.el)

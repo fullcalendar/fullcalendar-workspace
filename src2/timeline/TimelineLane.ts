@@ -10,6 +10,13 @@ export default class TimelineLane extends DateComponent {
 
   el = document.createElement('div')
 
+  constructor(view) {
+    super(view)
+
+    this.fillRenderer.masterContainerEl = this.el
+    this.eventRenderer.masterContainerEl = this.el
+  }
+
   render(renderState: DateComponentRenderState, forceFlags: RenderForceFlags) {
     this.tDateProfile = (renderState as any).tDateProfile as TimelineDateProfile
     this.slicingType = this.tDateProfile.isTimeScale ? 'timed' : 'all-day'
