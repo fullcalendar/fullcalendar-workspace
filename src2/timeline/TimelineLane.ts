@@ -1,13 +1,14 @@
-import { DateComponent, DateComponentRenderState, RenderForceFlags, Seg, DateRange, intersectRanges, addMs, createElement } from 'fullcalendar'
+import { DateComponent, DateComponentRenderState, RenderForceFlags, Seg, DateRange, intersectRanges, addMs } from 'fullcalendar'
 import { TimelineDateProfile, normalizeRange, isValidDate } from './timeline-date-profile'
 import TimelineView from './TimelineView'
 import TimelineLaneEventRenderer from './TimelineLaneEventRenderer'
+import TimelineLaneFillRenderer from './TimelineLaneFillRenderer'
 
 export default class TimelineLane extends DateComponent {
 
   tDateProfile: TimelineDateProfile
 
-  el = createElement('div', { className: 'fc-event-container' })
+  el = document.createElement('div')
 
   render(renderState: DateComponentRenderState, forceFlags: RenderForceFlags) {
     this.tDateProfile = (renderState as any).tDateProfile as TimelineDateProfile
@@ -17,8 +18,8 @@ export default class TimelineLane extends DateComponent {
 
   rangeToSegs(origRange: DateRange, allDay: boolean): Seg[] {
     let { tDateProfile } = this
-    let segs: Seg[] = []
     let view = this.view as TimelineView // BAD!
+    let segs: Seg[] = []
     let range = normalizeRange(origRange, tDateProfile, this.getDateEnv())
 
     // protect against when the span is entirely in an invalid date region
@@ -43,5 +44,5 @@ export default class TimelineLane extends DateComponent {
 
 }
 
+TimelineLane.prototype.fillRendererClass = TimelineLaneFillRenderer
 TimelineLane.prototype.eventRendererClass = TimelineLaneEventRenderer
-// TODO: fill rendering

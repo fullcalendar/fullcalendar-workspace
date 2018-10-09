@@ -1,7 +1,9 @@
-import { EventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp } from 'fullcalendar'
+import { EventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement } from 'fullcalendar'
 import TimelineView from './TimelineView'
 
 export default class TimelineLaneEventRenderer extends EventRenderer {
+
+  el: HTMLElement
 
   fgSegHtml(seg) {
     let eventRange = seg.eventRange
@@ -43,8 +45,13 @@ export default class TimelineLaneEventRenderer extends EventRenderer {
   }
 
   renderFgSegs(segs: Seg[]) {
+    if (!this.el) {
+      this.el = createElement('div', { className: 'fc-event-container' })
+      this.component.el.appendChild(this.el) // BAD to access component
+    }
+
     for (let seg of segs) {
-      this.component.el.appendChild(seg.el)
+      this.el.appendChild(seg.el)
     }
   }
 
