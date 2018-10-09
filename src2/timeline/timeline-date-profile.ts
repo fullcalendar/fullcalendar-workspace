@@ -64,7 +64,7 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: Date
   let tDateProfile = {
     labelInterval: queryDurationOption(view, 'slotLabelInterval'),
     slotDuration: queryDurationOption(view, 'slotDuration')
-  } as any
+  } as TimelineDateProfile
 
   validateLabelAndSlot(tDateProfile, dateProfile, dateEnv) // validate after computed grid duration
   ensureLabelInterval(tDateProfile, dateProfile, dateEnv)
@@ -83,7 +83,7 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: Date
     return createFormatter(rawFormat)
   })
 
-  tDateProfile.isTimeScale = Boolean(tDateProfile.slotDuration.time)
+  tDateProfile.isTimeScale = Boolean(tDateProfile.slotDuration.milliseconds)
 
   let largeUnit = null
   if (!tDateProfile.isTimeScale) {

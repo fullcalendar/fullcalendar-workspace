@@ -64,7 +64,7 @@ export default class TimelineView extends View {
     this.timeBodyEl.appendChild(this.bodyScroller.el)
 
     this.header.setElement(this.headScroller.enhancedScroll.canvas.contentEl)
-    this.hEventLane.setElement(this.bodyScroller.enhancedScroll.canvas.contentEl)
+    this.bodyScroller.enhancedScroll.canvas.contentEl.appendChild(this.hEventLane.el)
     this.bodyScroller.enhancedScroll.canvas.bgEl.appendChild(this.slats.el)
   }
 

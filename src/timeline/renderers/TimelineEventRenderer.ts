@@ -202,6 +202,6 @@ function computeOffsetForSeg(seg) {
 }
 
 
-function timeRowSegsCollide (seg0, seg1) {
+function timeRowSegsCollide(seg0, seg1) {
   return (seg0.left < seg1.right) && (seg0.right > seg1.left)
 }
