@@ -85,7 +85,8 @@ export default class TimelineLaneEventRenderer extends EventRenderer {
     }
 
     this.buildSegLevels(segs) // populates above/below props for computeOffsetForSegs
-    computeOffsetForSegs(segs) // TODO: do something with the returned height!
+    let totalHeight = computeOffsetForSegs(segs) // also assigns seg.top
+    applyStyleProp(this.el, 'height', totalHeight)
 
     // assign seg verticals
     for (let seg of segs) {
