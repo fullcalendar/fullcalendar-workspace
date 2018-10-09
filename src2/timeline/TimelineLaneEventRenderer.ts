@@ -1,7 +1,7 @@
 import { EventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp } from 'fullcalendar'
 import TimelineView from './TimelineView'
 
-export default class HEventLaneEventRenderer extends EventRenderer {
+export default class TimelineLaneEventRenderer extends EventRenderer {
 
   fgSegHtml(seg) {
     let eventRange = seg.eventRange

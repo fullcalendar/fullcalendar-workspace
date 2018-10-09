@@ -1,9 +1,9 @@
 import { DateComponent, DateComponentRenderState, RenderForceFlags, Seg, DateRange, intersectRanges, addMs, createElement } from 'fullcalendar'
 import { TimelineDateProfile, normalizeRange, isValidDate } from './timeline-date-profile'
 import TimelineView from './TimelineView'
-import HEventLaneEventRenderer from './HEventLaneEventRenderer'
+import TimelineLaneEventRenderer from './TimelineLaneEventRenderer'
 
-export default class HEventLane extends DateComponent {
+export default class TimelineLane extends DateComponent {
 
   tDateProfile: TimelineDateProfile
 
@@ -43,5 +43,5 @@ export default class HEventLane extends DateComponent {
 
 }
 
-HEventLane.prototype.eventRendererClass = HEventLaneEventRenderer
+TimelineLane.prototype.eventRendererClass = TimelineLaneEventRenderer
 // TODO: fill rendering

@@ -2,7 +2,7 @@ import { View, DateComponentRenderState, RenderForceFlags, assignTo, wholeDivide
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
 import TimelineHeader from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'
-import HEventLane from './HEventLane'
+import TimelineLane from './TimelineLane'
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
 import ScrollJoiner from '../util/ScrollJoiner'
@@ -20,7 +20,7 @@ export default class TimelineView extends View {
 
   header: TimelineHeader
   slats: TimelineSlats
-  hEventLane: HEventLane
+  lane: TimelineLane
 
   constructor(calendar, viewSpec) {
     super(calendar, viewSpec)
@@ -32,7 +32,7 @@ export default class TimelineView extends View {
       this.slats = new TimelineSlats(this.view)
     )
     this.addChild(
-      this.hEventLane = new HEventLane(this.view)
+      this.lane = new TimelineLane(this.view)
     )
   }
 
@@ -63,8 +63,8 @@ export default class TimelineView extends View {
     this.timeHeadEl.appendChild(this.headScroller.el)
     this.timeBodyEl.appendChild(this.bodyScroller.el)
 
-    this.header.setElement(this.headScroller.enhancedScroll.canvas.contentEl)
-    this.bodyScroller.enhancedScroll.canvas.contentEl.appendChild(this.hEventLane.el)
+    this.header.setElement(this.headScroller.enhancedScroll.canvas.contentEl) // TODO: give own root el
+    this.bodyScroller.enhancedScroll.canvas.contentEl.appendChild(this.lane.el)
     this.bodyScroller.enhancedScroll.canvas.bgEl.appendChild(this.slats.el)
   }
 
@@ -97,7 +97,7 @@ export default class TimelineView extends View {
 
     this.header.render(timelineRenderState, forceFlags)
     this.slats.render(timelineRenderState, forceFlags)
-    this.hEventLane.render(timelineRenderState, forceFlags)
+    this.lane.render(timelineRenderState, forceFlags)
   }
 
   updateSize(totalHeight, isAuto, force) {
@@ -120,7 +120,7 @@ export default class TimelineView extends View {
 
     this.header.updateSize(totalHeight, isAuto, force)
     this.slats.updateSize(totalHeight, isAuto, force)
-    this.hEventLane.updateSize(totalHeight, isAuto, force)
+    this.lane.updateSize(totalHeight, isAuto, force)
 
     this.headScroller.updateSize()
     this.bodyScroller.updateSize()
