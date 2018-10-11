@@ -7,6 +7,7 @@ import ClippedScroller from '../util/ClippedScroller'
 import ScrollerCanvas from '../util/ScrollerCanvas'
 import ScrollJoiner from '../util/ScrollJoiner'
 import AbstractTimelineView from './AbstractTimelineView'
+import { ResourceHash } from '../structs/resource'
 
 export default class TimelineView extends AbstractTimelineView {
 
@@ -90,6 +91,10 @@ export default class TimelineView extends AbstractTimelineView {
 </tr> \
 </tbody> \
 </table>`
+  }
+
+  renderResources(resourceStore: ResourceHash) {
+    console.log('resourceStore', resourceStore)
   }
 
   renderChildren(renderState: DateComponentRenderState, forceFlags: RenderForceFlags) {
