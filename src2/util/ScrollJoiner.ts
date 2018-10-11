@@ -18,7 +18,6 @@ export default class ScrollJoiner {
 
 
   initScroller(scroller: EnhancedScroller) {
-    scroller
 
     // when the user scrolls via mousewheel, we know for sure the target
     // scroller should be the master. capture the various x-browser events that fire.
