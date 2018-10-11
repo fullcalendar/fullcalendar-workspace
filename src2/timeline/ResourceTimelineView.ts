@@ -1,4 +1,4 @@
-import { DateComponentRenderState, RenderForceFlags, assignTo } from 'fullcalendar'
+import { DateComponentRenderState, RenderForceFlags, assignTo, parseFieldSpecs } from 'fullcalendar'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
 import TimelineHeader from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'
@@ -8,6 +8,7 @@ import ScrollerCanvas from '../util/ScrollerCanvas'
 import ScrollJoiner from '../util/ScrollJoiner'
 import AbstractTimelineView from './AbstractTimelineView'
 import { ResourceHash } from '../structs/resource'
+import { buildHierarchy } from './resource-hierarchy'
 
 export default class TimelineView extends AbstractTimelineView {
 
@@ -24,8 +25,18 @@ export default class TimelineView extends AbstractTimelineView {
   slats: TimelineSlats
   lane: TimelineLane
 
+  // resource rendering options
+  superHeaderText: any
+  isVGrouping: any
+  isHGrouping: any
+  groupSpecs: any
+  colSpecs: any
+  orderSpecs: any
+
   constructor(calendar, viewSpec) {
     super(calendar, viewSpec)
+
+    this.processResourceOptions()
 
     this.addChild(
       this.header = new TimelineHeader(this.view)
@@ -36,6 +47,77 @@ export default class TimelineView extends AbstractTimelineView {
     this.addChild(
       this.lane = new TimelineLane(this.view)
     )
+  }
+
+  processResourceOptions() {
+    const allColSpecs = this.opt('resourceColumns') || []
+    const labelText = this.opt('resourceLabelText') // TODO: view.override
+    const defaultLabelText = 'Resources' // TODO: view.defaults
+    let superHeaderText = null
+
+    if (!allColSpecs.length) {
+      allColSpecs.push({
+        labelText: labelText || defaultLabelText,
+        text: 'Resources!' // this.getResourceTextFunc()
+      })
+    } else {
+      superHeaderText = labelText
+    }
+
+    const plainColSpecs = []
+    const groupColSpecs = []
+    let groupSpecs = []
+    let isVGrouping = false
+    let isHGrouping = false
+
+    for (let colSpec of allColSpecs) {
+      if (colSpec.group) {
+        groupColSpecs.push(colSpec)
+      } else {
+        plainColSpecs.push(colSpec)
+      }
+    }
+
+    plainColSpecs[0].isMain = true
+
+    if (groupColSpecs.length) {
+      groupSpecs = groupColSpecs
+      isVGrouping = true
+    } else {
+      const hGroupField = this.opt('resourceGroupField')
+      if (hGroupField) {
+        isHGrouping = true
+        groupSpecs.push({
+          field: hGroupField,
+          text: this.opt('resourceGroupText'),
+          render: this.opt('resourceGroupRender')
+        })
+      }
+    }
+
+    const allOrderSpecs = parseFieldSpecs(this.opt('resourceOrder'))
+    const plainOrderSpecs = []
+
+    for (let orderSpec of allOrderSpecs) {
+      let isGroup = false
+      for (let groupSpec of groupSpecs) {
+        if (groupSpec.field === orderSpec.field) {
+          groupSpec.order = orderSpec.order // -1, 0, 1
+          isGroup = true
+          break
+        }
+      }
+      if (!isGroup) {
+        plainOrderSpecs.push(orderSpec)
+      }
+    }
+
+    this.superHeaderText = superHeaderText
+    this.isVGrouping = isVGrouping
+    this.isHGrouping = isHGrouping
+    this.groupSpecs = groupSpecs
+    this.colSpecs = groupColSpecs.concat(plainColSpecs)
+    this.orderSpecs = plainOrderSpecs
   }
 
   renderSkeleton() {
@@ -94,7 +176,9 @@ export default class TimelineView extends AbstractTimelineView {
   }
 
   renderResources(resourceStore: ResourceHash) {
-    console.log('resourceStore', resourceStore)
+    console.log(
+      buildHierarchy(resourceStore, this.isVGrouping ? -1 : 1, this.groupSpecs, this.orderSpecs)
+    )
   }
 
   renderChildren(renderState: DateComponentRenderState, forceFlags: RenderForceFlags) {
