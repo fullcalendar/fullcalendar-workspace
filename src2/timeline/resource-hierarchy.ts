@@ -1,27 +1,98 @@
 import { ResourceHash, Resource } from "../structs/resource"
 import { flexibleCompare, compareByFieldSpecs, assignTo } from "fullcalendar"
 
-export interface HierarchyNode {
-  children: HierarchyNode[]
+interface ParentNode {
+  children: ParentNode[]
 }
 
-export interface ResourceNode extends HierarchyNode {
+interface ResourceParentNode extends ParentNode {
   resource: Resource
   cmpObj: any
 }
 
-type ResourceNodeHash = { [resourceId: string]: ResourceNode }
+type ResourceNodeHash = { [resourceId: string]: ResourceParentNode }
 
-export interface GroupNode extends HierarchyNode {
-  group: {
-    value: any
-    spec: any
+interface GroupParentNode extends ParentNode {
+  group: Group
+}
+
+export interface Group {
+  value: any
+  spec: any
+}
+
+export interface GroupNode {
+  group: Group
+}
+
+export interface ResourceNode {
+  rowSpans: number[]
+  hasChildren: boolean
+  resource: Resource
+}
+
+export function buildRows(resourceStore: ResourceHash, groupSpecs, orderSpecs, isVGrouping: boolean) {
+  let complexNodes = buildHierarchy(resourceStore, isVGrouping ? -1 : 1, groupSpecs, orderSpecs)
+  let flatNodes = []
+
+  flattenNodes(complexNodes, flatNodes, isVGrouping, [])
+
+  return flatNodes
+}
+
+export function isNodesEqual(node0: (GroupNode | ResourceNode), node1: (GroupNode | ResourceNode)) {
+
+  if ((node0 as ResourceNode).resource && (node1 as ResourceNode).resource) {
+    return (node0 as ResourceNode).resource.resourceId === (node1 as ResourceNode).resource.resourceId
+
+  } else if ((node0 as GroupNode).group && (node1 as GroupNode).group) {
+    return (node0 as GroupNode).group.value === (node1 as GroupNode).group.value
+  }
+
+  return false
+}
+
+function flattenNodes(complexNodes: ParentNode[], res, isVGrouping, rowSpans) {
+
+  for (let i = 0; i < complexNodes.length; i++) {
+    let complexNode = complexNodes[i]
+
+    if ((complexNode as GroupParentNode).group) {
+
+      if (isVGrouping) {
+        let prevLength = res.length
+
+        flattenNodes(complexNode.children, res, isVGrouping, rowSpans.concat(0))
+
+        if (prevLength < res.length) {
+          let firstRow = res[prevLength]
+          let firstRowSpans = firstRow.rowSpans = firstRow.rowSpans.slice()
+
+          firstRowSpans[firstRowSpans.length - 1] = res.length - prevLength
+        }
+      } else {
+        res.push({
+          group: (complexNode as GroupParentNode).group
+        })
+
+        flattenNodes(complexNode.children, res, isVGrouping, rowSpans)
+      }
+
+    } else if ((complexNode as ResourceParentNode).resource) {
+      res.push({
+        rowSpans,
+        hasChildren: Boolean(complexNode.children.length),
+        resource: (complexNode as ResourceParentNode).resource
+      })
+
+      flattenNodes(complexNode.children, res, isVGrouping, rowSpans)
+    }
   }
 }
 
-export function buildHierarchy(resourceStore: ResourceHash, maxDepth: number, groupSpecs, orderSpecs): HierarchyNode[] {
+function buildHierarchy(resourceStore: ResourceHash, maxDepth: number, groupSpecs, orderSpecs): ParentNode[] {
   let resourceNodes = buildResourceNodes(resourceStore, orderSpecs)
-  let builtNodes: HierarchyNode[] = []
+  let builtNodes: ParentNode[] = []
 
   for (let resourceId in resourceNodes) {
     let resourceNode = resourceNodes[resourceId]
@@ -62,7 +133,7 @@ function buildResourceNodes(resourceStore: ResourceHash, orderSpecs): ResourceNo
   return nodeHash
 }
 
-function insertResourceNode(resourceNode: ResourceNode, nodes: HierarchyNode[], groupSpecs, depth: number, maxDepth: number, orderSpecs) {
+function insertResourceNode(resourceNode: ResourceParentNode, nodes: ParentNode[], groupSpecs, depth: number, maxDepth: number, orderSpecs) {
   if (groupSpecs.length && (maxDepth === -1 || depth <= maxDepth)) {
     let groupNode = ensureGroupNodes(resourceNode, nodes, groupSpecs[0])
 
@@ -72,7 +143,7 @@ function insertResourceNode(resourceNode: ResourceNode, nodes: HierarchyNode[], 
   }
 }
 
-function ensureGroupNodes(resourceNode: ResourceNode, nodes: HierarchyNode[], groupSpec): GroupNode {
+function ensureGroupNodes(resourceNode: ResourceParentNode, nodes: ParentNode[], groupSpec): GroupParentNode {
   let groupValue = resourceNode.cmpObj[groupSpec.field]
   let groupNode
   let newGroupIndex
@@ -82,8 +153,8 @@ function ensureGroupNodes(resourceNode: ResourceNode, nodes: HierarchyNode[], gr
     for (let i = 0; i < nodes.length; i++) {
       let node = nodes[i]
 
-      if ((node as GroupNode).group) {
-        let cmp = flexibleCompare(groupValue, (node as GroupNode).group.value) * groupSpec.order
+      if ((node as GroupParentNode).group) {
+        let cmp = flexibleCompare(groupValue, (node as GroupParentNode).group.value) * groupSpec.order
 
         if (cmp === 0) {
           groupNode = node
@@ -98,7 +169,7 @@ function ensureGroupNodes(resourceNode: ResourceNode, nodes: HierarchyNode[], gr
     for (newGroupIndex = 0; newGroupIndex < nodes.length; newGroupIndex++) {
       let node = nodes[newGroupIndex]
 
-      if ((node as GroupNode).group && groupValue === (node as GroupNode).group.value) {
+      if ((node as GroupParentNode).group && groupValue === (node as GroupParentNode).group.value) {
         groupNode = node
         break
       }
