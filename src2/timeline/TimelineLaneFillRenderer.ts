@@ -1,5 +1,5 @@
 import { FillRenderer, createElement, applyStyle } from 'fullcalendar'
-import TimelineView from './TimelineView'
+import TimelineLane from './TimelineLane'
 
 export default class TimelineLaneFillRenderer extends FillRenderer {
 
@@ -29,11 +29,11 @@ export default class TimelineLaneFillRenderer extends FillRenderer {
   }
 
   computeSize(type) {
-    let view = this.component.view as TimelineView // BAD
+    let timeAxis = (this.component as TimelineLane).timeAxis // BAD!
     let segs = this.renderedSegsByType[type] || []
 
     for (let seg of segs) {
-      let coords = view.rangeToCoords(seg)
+      let coords = timeAxis.rangeToCoords(seg)
       seg.left = coords.left
       seg.right = coords.right
     }

@@ -1,24 +1,35 @@
-import { DateComponent, DateComponentRenderState, RenderForceFlags, isInt, findElements, createElement, findChildren, DateProfile, PositionCache } from 'fullcalendar'
+import { RenderForceFlags, isInt, findElements, createElement, findChildren, PositionCache, removeElement } from 'fullcalendar'
 import { TimelineDateProfile } from './timeline-date-profile'
+import SimpleComponent from './SimpleComponent'
 
-export default class TimelineSlats extends DateComponent {
-
+export interface TimelineSlatsProps {
   tDateProfile: TimelineDateProfile
+}
 
-  el: HTMLElement = createElement('div', { className: 'fc-slats' })
+export default class TimelineSlats extends SimpleComponent {
+
+  el: HTMLElement
   slatColEls: HTMLElement[]
   slatEls: HTMLElement[]
 
   innerCoordCache: PositionCache
 
-  render(renderState: DateComponentRenderState, forceFlags: RenderForceFlags) {
-    this.tDateProfile = (renderState as any).tDateProfile
-    super.render(renderState, forceFlags)
+  setParent(parentEl: HTMLElement) {
+    parentEl.appendChild(
+      this.el = createElement('div', { className: 'fc-slats' })
+    )
   }
 
-  renderDates(dateProfile: DateProfile) {
+  removeElement() {
+    removeElement(this.el)
+  }
+
+  render(props: TimelineSlatsProps, forceFlags: RenderForceFlags) {
+    this.renderDates(props.tDateProfile)
+  }
+
+  renderDates(tDateProfile: TimelineDateProfile) {
     let theme = this.getTheme()
-    let { tDateProfile } = this
     let { cellRows } = tDateProfile
     let lastRow = cellRows[cellRows.length - 1]
 

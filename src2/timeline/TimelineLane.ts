@@ -1,36 +1,33 @@
 import { DateComponent, DateComponentRenderState, RenderForceFlags, Seg, DateRange, intersectRanges, addMs } from 'fullcalendar'
 import { TimelineDateProfile, normalizeRange, isValidDate } from './timeline-date-profile'
-import TimelineView from './TimelineView'
 import TimelineLaneEventRenderer from './TimelineLaneEventRenderer'
 import TimelineLaneFillRenderer from './TimelineLaneFillRenderer'
+import TimeAxis from './TimeAxis'
 
 export default class TimelineLane extends DateComponent {
 
   tDateProfile: TimelineDateProfile
+  timeAxis: TimeAxis
 
-  el = document.createElement('div')
-
-  constructor(view) {
-    super(view)
-
-    this.fillRenderer.masterContainerEl = this.el
-    this.eventRenderer.masterContainerEl = this.el
+  setParents(fgContainerEl: HTMLElement, bgContainerEl: HTMLElement, timeAxis: TimeAxis) {
+    this.eventRenderer.masterContainerEl = fgContainerEl
+    this.fillRenderer.masterContainerEl = bgContainerEl
+    this.timeAxis = timeAxis
   }
 
   render(renderState: DateComponentRenderState, forceFlags: RenderForceFlags) {
-    this.tDateProfile = (renderState as any).tDateProfile as TimelineDateProfile
+    this.tDateProfile = this.timeAxis.tDateProfile
     this.slicingType = this.tDateProfile.isTimeScale ? 'timed' : 'all-day'
     super.render(renderState, forceFlags)
   }
 
   rangeToSegs(origRange: DateRange, allDay: boolean): Seg[] {
-    let { tDateProfile } = this
-    let view = this.view as TimelineView // BAD!
+    let { tDateProfile, timeAxis } = this
     let segs: Seg[] = []
     let range = normalizeRange(origRange, tDateProfile, this.getDateEnv())
 
     // protect against when the span is entirely in an invalid date region
-    if (view.computeDateSnapCoverage(range.start) < view.computeDateSnapCoverage(range.end)) {
+    if (timeAxis.computeDateSnapCoverage(range.start) < timeAxis.computeDateSnapCoverage(range.end)) {
 
       // intersect the footprint's range with the grid'd range
       range = intersectRanges(range, tDateProfile.normalizedRange)
@@ -40,8 +37,8 @@ export default class TimelineLane extends DateComponent {
           component: this,
           start: range.start,
           end: range.end,
-          isStart: range.start.valueOf() === origRange.start.valueOf() && isValidDate(range.start, tDateProfile, this.dateProfile, view),
-          isEnd: range.end.valueOf() === origRange.end.valueOf() && isValidDate(addMs(range.end, -1), tDateProfile, this.dateProfile, view)
+          isStart: range.start.valueOf() === origRange.start.valueOf() && isValidDate(range.start, tDateProfile, this.dateProfile, this.view),
+          isEnd: range.end.valueOf() === origRange.end.valueOf() && isValidDate(addMs(range.end, -1), tDateProfile, this.dateProfile, this.view)
         })
       }
     }

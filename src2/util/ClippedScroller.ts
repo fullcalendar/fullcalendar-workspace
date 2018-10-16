@@ -1,4 +1,4 @@
-import { createElement, computeEdges, applyStyle, ScrollbarWidths } from 'fullcalendar'
+import { createElement, computeEdges, applyStyle, ScrollbarWidths, removeElement } from 'fullcalendar'
 import EnhancedScroller from './EnhancedScroller'
 
 /*
@@ -35,12 +35,18 @@ export default class ClippedScroller {
     this.enhancedScroll = new EnhancedScroller(overflowX, overflowY)
   }
 
-  render() {
-    this.el = createElement('div', {
-      className: 'fc-scroller-clip'
-    })
+  setParent(parentEl: HTMLElement) {
+    parentEl.appendChild(
+      this.el = createElement('div', {
+        className: 'fc-scroller-clip'
+      })
+    )
     this.enhancedScroll.render()
     this.el.appendChild(this.enhancedScroll.el)
+  }
+
+  removeElement() {
+    removeElement(this.el)
   }
 
   updateSize() {

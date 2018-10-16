@@ -1,5 +1,5 @@
 import { EventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement } from 'fullcalendar'
-import TimelineView from './TimelineView'
+import TimelineLane from './TimelineLane'
 
 export default class TimelineLaneEventRenderer extends EventRenderer {
 
@@ -64,11 +64,11 @@ export default class TimelineLaneEventRenderer extends EventRenderer {
 
   // computes AND assigns (assigns the left/right at least). bad
   computeFgSize() {
-    let view = this.view as TimelineView // BAD!
+    let timeAxis = (this.component as TimelineLane).timeAxis // BAD!
     let segs = this.fgSegs
 
     for (let seg of segs) {
-      let coords = view.rangeToCoords(seg) // works because Seg has start/end
+      let coords = timeAxis.rangeToCoords(seg) // works because Seg has start/end
 
       applyStyle(seg.el, {
         left: (seg.left = coords.left),

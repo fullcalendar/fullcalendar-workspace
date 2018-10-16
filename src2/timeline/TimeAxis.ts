@@ -1,32 +1,79 @@
-
-import { View, wholeDivideDurations, DateMarker, isInt } from 'fullcalendar'
-import { TimelineDateProfile } from './timeline-date-profile'
+import { DateProfile, DateMarker, wholeDivideDurations, isInt } from 'fullcalendar'
+import HeaderBodyLayout from './HeaderBodyLayout'
+import SimpleComponent from './SimpleComponent'
 import TimelineHeader from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'
-import ClippedScroller from '../util/ClippedScroller'
+import { TimelineDateProfile, buildTimelineDateProfile } from './timeline-date-profile'
 
-export default abstract class AbstractTimelineView extends View {
+export interface TimeAxisProps {
+  dateProfile: DateProfile
+}
 
-  tDateProfile: TimelineDateProfile
+export default class TimeAxis extends SimpleComponent {
 
-  headScroller: ClippedScroller
-  bodyScroller: ClippedScroller
-
+  // child components
+  layout: HeaderBodyLayout
   header: TimelineHeader
   slats: TimelineSlats
 
-  updateWidths() {
-    let idealSlotWidth = this.opt('slotWidth') || ''
+  // internal state
+  tDateProfile: TimelineDateProfile
 
-    if (idealSlotWidth === '' && this.renderedFlags.dates) {
-      idealSlotWidth = this.computeDefaultSlotWidth()
-    }
+  setParents(headerContainerEl, bodyContainerEl) {
+    let layout = this.layout = new HeaderBodyLayout(this.view)
+    this.layout.setParents(headerContainerEl, bodyContainerEl, 'auto')
 
-    this.applyWidths(idealSlotWidth)
+    this.header = new TimelineHeader(this.view)
+    this.header.setParent(
+      layout.headerScroller.enhancedScroll.canvas.contentEl
+    )
+
+    this.slats = new TimelineSlats(this.view)
+    this.slats.setParent(
+      layout.bodyScroller.enhancedScroll.canvas.bgEl
+    )
   }
 
-  computeDefaultSlotWidth() {
-    let { tDateProfile } = this
+  removeElements() {
+    this.layout.removeElements()
+    this.header.removeElement()
+    this.slats.removeElement()
+  }
+
+  render(props: TimeAxisProps, forceFlags) {
+    let tDateProfile = this.tDateProfile =
+      buildTimelineDateProfile(props.dateProfile, this.view) // TODO: cache
+
+    this.header.render({
+      tDateProfile
+    }, forceFlags)
+
+    this.slats.render({
+      tDateProfile
+    }, forceFlags)
+  }
+
+  updateSize(totalHeight, isAuto) {
+    this.layout.updateSize(totalHeight, isAuto)
+
+    this.applySlotWidth(
+      this.computeSlotWidth()
+    )
+
+    this.slats.buildPositionCaches()
+  }
+
+  computeSlotWidth() {
+    let slotWidth = this.opt('slotWidth') || ''
+
+    if (slotWidth === '') {
+      slotWidth = this.computeDefaultSlotWidth(this.tDateProfile)
+    }
+
+    return slotWidth
+  }
+
+  computeDefaultSlotWidth(tDateProfile) {
     let maxInnerWidth = 0 // TODO: harness core's `matchCellWidths` for this
 
     this.header.innerEls.forEach(function(innerEl, i) {
@@ -52,8 +99,8 @@ export default abstract class AbstractTimelineView extends View {
     return slotWidth
   }
 
-  applyWidths(slotWidth: number | string) {
-    let { tDateProfile } = this
+  applySlotWidth(slotWidth: number | string) {
+    let { layout, tDateProfile } = this
     let containerWidth: number | string = ''
     let containerMinWidth: number | string = ''
     let nonLastSlotWidth: number | string = ''
@@ -65,7 +112,7 @@ export default abstract class AbstractTimelineView extends View {
       containerMinWidth = ''
       nonLastSlotWidth = slotWidth
 
-      let availableWidth = this.bodyScroller.enhancedScroll.getClientWidth()
+      let availableWidth = layout.bodyScroller.enhancedScroll.getClientWidth()
 
       if (availableWidth > containerWidth) {
         containerMinWidth = availableWidth
@@ -74,10 +121,10 @@ export default abstract class AbstractTimelineView extends View {
       }
     }
 
-    this.headScroller.enhancedScroll.canvas.setWidth(containerWidth)
-    this.headScroller.enhancedScroll.canvas.setMinWidth(containerMinWidth)
-    this.bodyScroller.enhancedScroll.canvas.setWidth(containerWidth)
-    this.bodyScroller.enhancedScroll.canvas.setMinWidth(containerMinWidth)
+    layout.headerScroller.enhancedScroll.canvas.setWidth(containerWidth)
+    layout.headerScroller.enhancedScroll.canvas.setMinWidth(containerMinWidth)
+    layout.bodyScroller.enhancedScroll.canvas.setWidth(containerWidth)
+    layout.bodyScroller.enhancedScroll.canvas.setMinWidth(containerMinWidth)
 
     if (nonLastSlotWidth !== '') {
       this.header.slatColEls.slice(0, -1).concat(
@@ -87,6 +134,7 @@ export default abstract class AbstractTimelineView extends View {
       })
     }
   }
+
 
   // returned value is between 0 and the number of snaps
   computeDateSnapCoverage(date: DateMarker): number {

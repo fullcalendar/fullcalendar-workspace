@@ -60,7 +60,8 @@ const STOCK_SUB_DURATIONS = [ // from largest to smallest
 ]
 
 
-export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: DateEnv, view: View): TimelineDateProfile {
+export function buildTimelineDateProfile(dateProfile: DateProfile, view: View): TimelineDateProfile {
+  let dateEnv = view.getDateEnv()
   let tDateProfile = {
     labelInterval: queryDurationOption(view, 'slotLabelInterval'),
     slotDuration: queryDurationOption(view, 'slotDuration')

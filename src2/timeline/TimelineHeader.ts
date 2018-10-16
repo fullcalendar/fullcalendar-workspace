@@ -1,30 +1,42 @@
-import { DateComponent, DateComponentRenderState, RenderForceFlags, asRoughMs, isSingleDay, findElements, DateProfile } from 'fullcalendar'
+import { asRoughMs, isSingleDay, findElements, createElement, removeElement } from 'fullcalendar'
+import SimpleComponent from './SimpleComponent'
 import { TimelineDateProfile } from './timeline-date-profile'
 
-export default class TimelineHeader extends DateComponent {
-
+export interface TimelineHeaderProps {
   tDateProfile: TimelineDateProfile
+}
 
+export default class TimelineHeader extends SimpleComponent {
+
+  tableEl: HTMLElement
   slatColEls: HTMLElement[]
   innerEls: HTMLElement[]
 
-  render(renderState: DateComponentRenderState, forceFlags: RenderForceFlags) {
-    this.tDateProfile = (renderState as any).tDateProfile
-    super.render(renderState, forceFlags)
+  setParent(parentEl: HTMLElement) {
+    parentEl.appendChild(
+      this.tableEl = createElement('table', {
+        className: this.getTheme().getClass('tableGrid')
+      })
+    )
   }
 
-  renderDates(dateProfile: DateProfile) {
+  removeElement() {
+    removeElement(this.tableEl)
+  }
+
+  render(props: TimelineHeaderProps, forceFlags) {
+    this.renderDates(props.tDateProfile)
+  }
+
+  renderDates(tDateProfile: TimelineDateProfile) {
     let dateEnv = this.getDateEnv()
     let theme = this.getTheme()
-    let { tDateProfile } = this
     let { cellRows } = tDateProfile
     let lastRow = cellRows[cellRows.length - 1]
     let isChrono = asRoughMs(tDateProfile.labelInterval) > asRoughMs(tDateProfile.slotDuration)
     let oneDay = isSingleDay(tDateProfile.slotDuration)
 
-    let html =
-      '<table class="' + theme.getClass('tableGrid') + '">' +
-      '<colgroup>'
+    let html = '<colgroup>'
 
     for (let _cell of lastRow) {
       html += '<col/>'
@@ -64,13 +76,13 @@ export default class TimelineHeader extends DateComponent {
       html += '</tr>'
     }
 
-    html += '</tbody></table>'
+    html += '</tbody>'
 
-    this.el.innerHTML = html
+    this.tableEl.innerHTML = html // TODO: does this work cross-browser?
 
-    this.slatColEls = findElements(this.el, 'col')
+    this.slatColEls = findElements(this.tableEl, 'col')
     this.innerEls = findElements(
-      this.el.querySelector('tr:last-child') as HTMLElement, // compound selector won't work because of query-root problem
+      this.tableEl.querySelector('tr:last-child') as HTMLElement, // compound selector won't work because of query-root problem
       'th .fc-cell-text'
     )
   }

@@ -1,73 +1,40 @@
-import { DateComponentRenderState, RenderForceFlags, assignTo, parseFieldSpecs, createElement } from 'fullcalendar'
-import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
-import TimelineHeader from './TimelineHeader'
-import TimelineSlats from './TimelineSlats'
-import TimelineLane from './TimelineLane'
-import ClippedScroller from '../util/ClippedScroller'
-import ScrollerCanvas from '../util/ScrollerCanvas'
-import ScrollJoiner from '../util/ScrollJoiner'
-import AbstractTimelineView from './AbstractTimelineView'
+import { View, createElement, parseFieldSpecs } from 'fullcalendar'
+import HeaderBodyLayout from './HeaderBodyLayout'
+import TimeAxis from './TimeAxis'
 import { ResourceHash } from '../structs/resource'
-import { buildRows, isNodesEqual, GroupNode, ResourceNode } from './resource-hierarchy'
+import { buildRowNodes, isNodesEqual, GroupNode, ResourceNode } from './resource-hierarchy'
 import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'
 
 const LOOKAHEAD = 3
 
-export default class TimelineView extends AbstractTimelineView {
+export default class ResourceTimelineView extends View {
 
-  tDateProfile: TimelineDateProfile
+  // child components
+  spreadsheetLayout: HeaderBodyLayout
+  timeAxis: TimeAxis
+  // TODO: lane for background events
 
-  timeHeadEl: HTMLElement
-  timeBodyEl: HTMLElement
-  spreadsheetHeadEl: HTMLElement
-  spreadsheetBodyEl: HTMLElement
-  spreadsheetTbody: HTMLElement // INSIDE the spreadsheetBodyEl
-  timeTbody: HTMLElement // INSIDE the timeBodyEl
+  spreadsheetTbody: HTMLElement
+  timeAxisTbody: HTMLElement
 
-  headScroller: ClippedScroller
-  bodyScroller: ClippedScroller
-  scrollJoiner: ScrollJoiner
-
-  spreadsheetHeadScroller: ClippedScroller
-  spreadsheetBodyScroller: ClippedScroller
-  splitpaneScrollJoiner: ScrollJoiner
-
-  header: TimelineHeader
-  slats: TimelineSlats
-  lane: TimelineLane
-
-  rowNodes: (GroupNode | ResourceNode)[] = []
-  rowComponents: (GroupRow | ResourceRow)[] = []
-
-  // resource rendering options
+  // internal state
   superHeaderText: any
   isVGrouping: any
   isHGrouping: any
   groupSpecs: any
   colSpecs: any
   orderSpecs: any
+  miscHeight: number
+  rowNodes: (GroupNode | ResourceNode)[] = []
+  rowComponents: (GroupRow | ResourceRow)[] = []
 
   constructor(calendar, viewSpec) {
     super(calendar, viewSpec)
 
-    this.processResourceOptions()
-
-    this.addChild(
-      this.header = new TimelineHeader(this.view)
-    )
-    this.addChild(
-      this.slats = new TimelineSlats(this.view)
-    )
-    this.addChild(
-      this.lane = new TimelineLane(this.view)
-    )
-  }
-
-  processResourceOptions() {
-    const allColSpecs = this.opt('resourceColumns') || []
-    const labelText = this.opt('resourceLabelText') // TODO: view.override
-    const defaultLabelText = 'Resources' // TODO: view.defaults
+    let allColSpecs = this.opt('resourceColumns') || []
+    let labelText = this.opt('resourceLabelText') // TODO: view.override
+    let defaultLabelText = 'Resources' // TODO: view.defaults
     let superHeaderText = null
 
     if (!allColSpecs.length) {
@@ -137,66 +104,32 @@ export default class TimelineView extends AbstractTimelineView {
 
   renderSkeleton() {
     this.el.classList.add('fc-timeline')
-
-    if (this.opt('eventOverlap') === false) {
-      this.el.classList.add('fc-no-overlap')
-    }
-
     this.el.innerHTML = this.renderSkeletonHtml()
-    this.timeHeadEl = this.el.querySelector('thead .fc-time-area')
-    this.timeBodyEl = this.el.querySelector('tbody .fc-time-area')
-    this.spreadsheetHeadEl = this.el.querySelector('thead .fc-resource-area')
-    this.spreadsheetBodyEl = this.el.querySelector('tbody .fc-resource-area')
 
-    this.headScroller = new ClippedScroller('clipped-scroll', 'hidden')
-    this.headScroller.enhancedScroll.canvas = new ScrollerCanvas()
-    this.headScroller.render()
+    this.miscHeight = this.el.offsetHeight
 
-    this.bodyScroller = new ClippedScroller('auto', 'auto')
-    this.bodyScroller.enhancedScroll.canvas = new ScrollerCanvas()
-    this.bodyScroller.render()
+    let spreadsheetHeadEl = this.el.querySelector('thead .fc-resource-area')
+    let spreadsheetBodyEl = this.el.querySelector('tbody .fc-resource-area')
+    let timeHeadEl = this.el.querySelector('thead .fc-time-area')
+    let timeBodyEl = this.el.querySelector('tbody .fc-time-area')
 
-    this.scrollJoiner = new ScrollJoiner('horizontal', [
-      this.headScroller.enhancedScroll,
-      this.bodyScroller.enhancedScroll
-    ])
+    this.spreadsheetLayout = new HeaderBodyLayout(this)
+    this.spreadsheetLayout.setParents(spreadsheetHeadEl, spreadsheetBodyEl, 'clipped-auto')
 
-    this.timeHeadEl.appendChild(this.headScroller.el)
-    this.timeBodyEl.appendChild(this.bodyScroller.el)
+    this.timeAxis = new TimeAxis(this)
+    this.timeAxis.setParents(timeHeadEl, timeBodyEl)
 
-    this.header.setElement(this.headScroller.enhancedScroll.canvas.contentEl) // TODO: give own root el
-    this.bodyScroller.enhancedScroll.canvas.bgEl.appendChild(this.slats.el)
+    let spreadsheetRowContainer = createElement('div', { className: 'fc-rows' }, '<table><tbody /></table>')
+    this.spreadsheetLayout.bodyScroller.enhancedScroll.canvas.contentEl.appendChild(spreadsheetRowContainer)
+    this.spreadsheetTbody = spreadsheetRowContainer.querySelector('tbody')
 
-    this.spreadsheetHeadScroller = new ClippedScroller('clipped-scroll', 'hidden')
-    this.spreadsheetHeadScroller.enhancedScroll.canvas = new ScrollerCanvas()
-    this.spreadsheetHeadScroller.render()
-
-    this.spreadsheetBodyScroller = new ClippedScroller('auto', 'clipped-scroll')
-    this.spreadsheetBodyScroller.enhancedScroll.canvas = new ScrollerCanvas()
-    this.spreadsheetBodyScroller.render()
-
-    this.spreadsheetHeadEl.appendChild(this.spreadsheetHeadScroller.el)
-    this.spreadsheetBodyEl.appendChild(this.spreadsheetBodyScroller.el)
-
-    let spreadsheetContainerEl = createElement('div', { className: 'fc-rows' }, '<table><tbody /></table>')
-    this.spreadsheetTbody = spreadsheetContainerEl.querySelector('tbody')
-    this.spreadsheetBodyScroller.enhancedScroll.canvas.contentEl.appendChild(spreadsheetContainerEl)
-
-    let timeContainerEl = createElement('div', { className: 'fc-rows' }, '<table><tbody /></table>')
-    this.timeTbody = timeContainerEl.querySelector('tbody')
-    this.bodyScroller.enhancedScroll.canvas.contentEl.appendChild(timeContainerEl)
-
-    this.splitpaneScrollJoiner = new ScrollJoiner('vertical', [
-      this.spreadsheetHeadScroller.enhancedScroll,
-      this.spreadsheetBodyScroller.enhancedScroll
-    ])
-
-    // hack. puts the lane's fills within the fc-bg of the view
-    this.lane.fillRenderer.masterContainerEl = this.bodyScroller.enhancedScroll.canvas.bgEl
+    let timeAxisRowContainer = createElement('div', { className: 'fc-rows' }, '<table><tbody /></table>')
+    this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.contentEl.appendChild(timeAxisRowContainer)
+    this.timeAxisTbody = timeAxisRowContainer.querySelector('tbody')
   }
 
   renderSkeletonHtml() {
-    const { theme } = this.calendar
+    let theme = this.getTheme()
 
     return `<table class="` + theme.getClass('tableGrid') + `"> \
 <thead class="fc-head"> \
@@ -216,10 +149,19 @@ export default class TimelineView extends AbstractTimelineView {
 </table>`
   }
 
-  renderResources(resourceStore: ResourceHash) { // best way to invoke this? do it thru render()?
+  renderChildren(props, forceFlags) {
+    this.timeAxis.render({
+      dateProfile: props.dateProfile
+    }, forceFlags)
+
+    this.receiveResourceData(props.resourceStore)
+    this.renderRows()
+  }
+
+  receiveResourceData(resourceStore: ResourceHash) {
     let { rowComponents } = this
-    let oldRows = this.rowNodes
-    let newRows = buildRows(
+    let oldRowNodes = this.rowNodes
+    let newRowNodes = buildRowNodes(
       resourceStore,
       this.groupSpecs,
       this.orderSpecs,
@@ -228,20 +170,23 @@ export default class TimelineView extends AbstractTimelineView {
     let oldI = 0
     let newI = 0
 
-    for (newI = 0; newI < newRows.length; newI++) {
-      let newRow = newRows[newI]
+    for (newI = 0; newI < newRowNodes.length; newI++) {
+      let newRow = newRowNodes[newI]
       let oldRowFound = false
 
-      if (oldI < oldRows.length) {
-        let oldRow = oldRows[oldI]
+      if (oldI < oldRowNodes.length) {
+        let oldRow = oldRowNodes[oldI]
 
-        if (!isNodesEqual(oldRow, newRow)) {
+        if (isNodesEqual(oldRow, newRow)) {
+          oldRowFound = true
+          oldI++
+        } else {
 
           for (let oldLookaheadI = oldI; oldLookaheadI < oldI + LOOKAHEAD; oldLookaheadI++) {
-            let oldLookaheadRow = oldRows[oldLookaheadI]
+            let oldLookaheadRow = oldRowNodes[oldLookaheadI]
 
             if (isNodesEqual(oldLookaheadRow, newRow)) {
-              removeChildren(rowComponents, oldI, oldLookaheadI)
+              removeRows(rowComponents, oldI, oldLookaheadI)
               oldI = oldLookaheadI
               oldRowFound = true
               break
@@ -251,47 +196,33 @@ export default class TimelineView extends AbstractTimelineView {
       }
 
       if (!oldRowFound) {
-        addChild(rowComponents, newI, newRow)
+        this.addRow(rowComponents, newI, newRow)
       }
     }
 
-    this.rowNodes = newRows
+    this.rowNodes = newRowNodes
   }
 
-  renderChildren(renderState: DateComponentRenderState, forceFlags: RenderForceFlags) {
-    let dateEnv = this.getDateEnv()
+  addRow(rowComponents, index, rowNode) {
+    let nextComponent = rowComponents[index]
+    let newComponent = buildChildComponent(rowNode)
 
-    let tDateProfile = this.tDateProfile =
-      buildTimelineDateProfile(renderState.dateProfile, dateEnv, this) // TODO: cache
+    newComponent.setParents(
+      this.spreadsheetTbody,
+      nextComponent ? nextComponent.spreadsheetTr : null,
+      this.timeAxisTbody,
+      nextComponent ? nextComponent.timeAxisTr : null
+    )
 
-    let timelineRenderState = assignTo({}, renderState, {
-      tDateProfile
-    })
+    rowComponents.splice(index, 0, newComponent)
+  }
 
-    this.header.render(timelineRenderState, forceFlags)
-    this.slats.render(timelineRenderState, forceFlags)
-    this.lane.render(timelineRenderState, forceFlags)
-
+  renderRows() {
     let { rowNodes, rowComponents } = this
 
     for (let i = 0; i < rowNodes.length; i++) {
       let rowNode = rowNodes[i]
       let rowComponent = rowComponents[i]
-
-      if (!rowComponent.spreadsheetTr) {
-        rowComponent.spreadsheetTr = document.createElement('tr')
-        rowComponent.timeTr = document.createElement('tr')
-
-        this.spreadsheetTbody.insertBefore(
-          rowComponent.spreadsheetTr,
-          i + 1 < rowNodes.length ? (rowComponents[i + 1].spreadsheetTr || null) : null
-        )
-
-        this.timeTbody.insertBefore(
-          rowComponent.timeTr,
-          i + 1 < rowNodes.length ? (rowComponents[i + 1].timeTr || null) : null
-        )
-      }
 
       if ((rowNode as GroupNode).group) {
         (rowComponent as GroupRow).render({
@@ -309,52 +240,25 @@ export default class TimelineView extends AbstractTimelineView {
   }
 
   updateSize(totalHeight, isAuto, force) {
-    let bodyHeight
+    this.timeAxis.updateSize(totalHeight - this.miscHeight, isAuto)
+    this.spreadsheetLayout.updateSize(totalHeight - this.miscHeight, isAuto)
 
-    if (isAuto) {
-      bodyHeight = 'auto'
-    } else {
-      bodyHeight = totalHeight - this.queryHeadHeight() - this.queryMiscHeight()
+    // for (let rowComponent of this.rowComponents) {
+    //   rowComponent.updateSize(totalHeight, isAuto, force)
+    // }
+  }
+
+  removeElement() {
+    for (let rowComponent of this.rowComponents) {
+      rowComponent.removeElement()
     }
 
-    this.bodyScroller.setHeight(bodyHeight)
-    this.spreadsheetBodyScroller.setHeight(bodyHeight)
+    this.spreadsheetLayout.removeElements()
+    this.timeAxis.removeElements()
 
-    this.updateWidths()
-
-    this.header.updateSize(totalHeight, isAuto, force)
-    this.slats.updateSize(totalHeight, isAuto, force)
-    this.lane.updateSize(totalHeight, isAuto, force)
-
-    this.headScroller.updateSize()
-    this.bodyScroller.updateSize()
-    this.scrollJoiner.update()
+    super.removeElement()
   }
 
-  queryHeadHeight() {
-    // TODO: cache <table>
-    let table = this.headScroller.enhancedScroll.canvas.contentEl.querySelector('table')
-    return table ? table.offsetHeight : 0 // why the check?
-  }
-
-  queryMiscHeight() {
-    return this.el.offsetHeight -
-      this.headScroller.el.offsetHeight -
-      this.bodyScroller.el.offsetHeight
-  }
-
-}
-
-function removeChildren(components, startRemoveI, endRemoveI) {
-  for (let i = startRemoveI; i < endRemoveI; i++) {
-    components[i].removeElement()
-  }
-
-  components.splice(startRemoveI, endRemoveI - startRemoveI)
-}
-
-function addChild(components, addIndex, node: (GroupNode | ResourceNode)) {
-  components.splice(addIndex, 0, buildChildComponent(node))
 }
 
 function buildChildComponent(node: (GroupNode | ResourceNode)) {
@@ -363,4 +267,12 @@ function buildChildComponent(node: (GroupNode | ResourceNode)) {
   } else if ((node as ResourceNode).resource) {
     return new ResourceRow()
   }
+}
+
+function removeRows(rowComponents, startRemoveI, endRemoveI) {
+  for (let i = startRemoveI; i < endRemoveI; i++) {
+    rowComponents[i].removeElement()
+  }
+
+  rowComponents.splice(startRemoveI, endRemoveI - startRemoveI)
 }
