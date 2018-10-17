@@ -70,4 +70,7 @@ export default class ResourceRow {
   unrenderResource() {
   }
 
+  updateSize(totalHeight, isAuto, forceFlags) {
+  }
+
 }

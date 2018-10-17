@@ -58,4 +58,7 @@ export default class GroupRow {
 
   }
 
+  updateSize(totalHeight, isAuto, forceFlags) {
+  }
+
 }

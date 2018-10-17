@@ -22,8 +22,8 @@ export default class HeaderBodyLayout extends SimpleComponent {
     this.bodyScroller.setParent(bodyContainerEl)
 
     this.scrollJoiner = new ScrollJoiner('horizontal', [
-      this.headerScroller.enhancedScroll,
-      this.bodyScroller.enhancedScroll
+      this.headerScroller,
+      this.bodyScroller
     ])
   }
 
@@ -41,14 +41,15 @@ export default class HeaderBodyLayout extends SimpleComponent {
       bodyHeight = totalHeight - this.queryHeadHeight()
     }
 
-    this.bodyScroller.setHeight(bodyHeight) // doesn't this double-render?
-    this.headerScroller.updateSize()
-    this.bodyScroller.updateSize()
+    this.bodyScroller.setHeight(bodyHeight)
+
+    this.headerScroller.updateSize() // adjusts gutters and classNames
+    this.bodyScroller.updateSize() // adjusts gutters and classNames
     this.scrollJoiner.update()
   }
 
   queryHeadHeight() {
-    return this.headerScroller.enhancedScroll.canvas.contentEl.offsetHeight // flawed???
+    return this.headerScroller.enhancedScroll.canvas.contentEl.offsetHeight // flawed?
   }
 
 }

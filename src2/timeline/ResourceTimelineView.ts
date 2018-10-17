@@ -5,6 +5,7 @@ import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, isNodesEqual, GroupNode, ResourceNode } from './resource-hierarchy'
 import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'
+import ScrollJoiner from '../util/ScrollJoiner'
 
 const LOOKAHEAD = 3
 
@@ -13,8 +14,10 @@ export default class ResourceTimelineView extends View {
   // child components
   spreadsheetLayout: HeaderBodyLayout
   timeAxis: TimeAxis
+  bodyScrollJoiner: ScrollJoiner
   // TODO: lane for background events
 
+  spreadsheetHeadTable: HTMLElement
   spreadsheetTbody: HTMLElement
   timeAxisTbody: HTMLElement
 
@@ -114,7 +117,10 @@ export default class ResourceTimelineView extends View {
     let timeBodyEl = this.el.querySelector('tbody .fc-time-area')
 
     this.spreadsheetLayout = new HeaderBodyLayout(this)
-    this.spreadsheetLayout.setParents(spreadsheetHeadEl, spreadsheetBodyEl, 'clipped-auto')
+    this.spreadsheetLayout.setParents(spreadsheetHeadEl, spreadsheetBodyEl, 'clipped-scroll')
+
+    this.spreadsheetHeadTable = createElement('table', {}, '<tbody><tr><td>Resources!</tr></tbody>')
+    this.spreadsheetLayout.headerScroller.enhancedScroll.canvas.contentEl.appendChild(this.spreadsheetHeadTable)
 
     this.timeAxis = new TimeAxis(this)
     this.timeAxis.setParents(timeHeadEl, timeBodyEl)
@@ -126,6 +132,11 @@ export default class ResourceTimelineView extends View {
     let timeAxisRowContainer = createElement('div', { className: 'fc-rows' }, '<table><tbody /></table>')
     this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.contentEl.appendChild(timeAxisRowContainer)
     this.timeAxisTbody = timeAxisRowContainer.querySelector('tbody')
+
+    this.bodyScrollJoiner = new ScrollJoiner('vertical', [
+      this.spreadsheetLayout.bodyScroller,
+      this.timeAxis.layout.bodyScroller
+    ])
   }
 
   renderSkeletonHtml() {
@@ -239,19 +250,42 @@ export default class ResourceTimelineView extends View {
     }
   }
 
-  updateSize(totalHeight, isAuto, force) {
+  updateSize(totalHeight, isAuto, forceFlags) {
+    this.synchronizeHeadHeights()
+
     this.timeAxis.updateSize(totalHeight - this.miscHeight, isAuto)
     this.spreadsheetLayout.updateSize(totalHeight - this.miscHeight, isAuto)
 
-    // for (let rowComponent of this.rowComponents) {
-    //   rowComponent.updateSize(totalHeight, isAuto, force)
-    // }
+    this.bodyScrollJoiner.update()
+
+    for (let rowComponent of this.rowComponents) {
+      rowComponent.updateSize(totalHeight, isAuto, forceFlags)
+    }
+  }
+
+  synchronizeHeadHeights() {
+    let spreadsheetHeadEl = this.spreadsheetHeadTable
+    let timeAxisHeadEl = this.timeAxis.header.tableEl
+
+    spreadsheetHeadEl.style.height = ''
+    timeAxisHeadEl.style.height = ''
+
+    let max = Math.max(
+      spreadsheetHeadEl.offsetHeight,
+      timeAxisHeadEl.offsetHeight
+    )
+
+    spreadsheetHeadEl.style.height =
+      timeAxisHeadEl.style.height = max + 'px'
   }
 
   removeElement() {
     for (let rowComponent of this.rowComponents) {
       rowComponent.removeElement()
     }
+
+    this.rowNodes = []
+    this.rowComponents = []
 
     this.spreadsheetLayout.removeElements()
     this.timeAxis.removeElements()
