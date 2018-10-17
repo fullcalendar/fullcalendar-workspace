@@ -27,6 +27,7 @@ export interface GroupNode {
 
 export interface ResourceNode {
   rowSpans: number[]
+  depth: number
   hasChildren: boolean
   resource: Resource
 }
@@ -35,7 +36,7 @@ export function buildRowNodes(resourceStore: ResourceHash, groupSpecs, orderSpec
   let complexNodes = buildHierarchy(resourceStore, isVGrouping ? -1 : 1, groupSpecs, orderSpecs)
   let flatNodes = []
 
-  flattenNodes(complexNodes, flatNodes, isVGrouping, [])
+  flattenNodes(complexNodes, flatNodes, isVGrouping, [], 0)
 
   return flatNodes
 }
@@ -52,7 +53,7 @@ export function isNodesEqual(node0: (GroupNode | ResourceNode), node1: (GroupNod
   return false
 }
 
-function flattenNodes(complexNodes: ParentNode[], res, isVGrouping, rowSpans) {
+function flattenNodes(complexNodes: ParentNode[], res, isVGrouping, rowSpans, depth) {
 
   for (let i = 0; i < complexNodes.length; i++) {
     let complexNode = complexNodes[i]
@@ -62,7 +63,7 @@ function flattenNodes(complexNodes: ParentNode[], res, isVGrouping, rowSpans) {
       if (isVGrouping) {
         let prevLength = res.length
 
-        flattenNodes(complexNode.children, res, isVGrouping, rowSpans.concat(0))
+        flattenNodes(complexNode.children, res, isVGrouping, rowSpans.concat(0), depth + 1)
 
         if (prevLength < res.length) {
           let firstRow = res[prevLength]
@@ -75,17 +76,18 @@ function flattenNodes(complexNodes: ParentNode[], res, isVGrouping, rowSpans) {
           group: (complexNode as GroupParentNode).group
         })
 
-        flattenNodes(complexNode.children, res, isVGrouping, rowSpans)
+        flattenNodes(complexNode.children, res, isVGrouping, rowSpans, depth + 1)
       }
 
     } else if ((complexNode as ResourceParentNode).resource) {
       res.push({
         rowSpans,
+        depth,
         hasChildren: Boolean(complexNode.children.length),
         resource: (complexNode as ResourceParentNode).resource
       })
 
-      flattenNodes(complexNode.children, res, isVGrouping, rowSpans)
+      flattenNodes(complexNode.children, res, isVGrouping, rowSpans, depth + 1)
     }
   }
 }

@@ -6,6 +6,7 @@ import { buildRowNodes, isNodesEqual, GroupNode, ResourceNode } from './resource
 import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'
 import ScrollJoiner from '../util/ScrollJoiner'
+import SpreadsheetHeader from '../timeline/SpreadsheetHeader'
 
 const LOOKAHEAD = 3
 
@@ -13,11 +14,11 @@ export default class ResourceTimelineView extends View {
 
   // child components
   spreadsheetLayout: HeaderBodyLayout
+  spreadsheetHeader: SpreadsheetHeader
   timeAxis: TimeAxis
   bodyScrollJoiner: ScrollJoiner
   // TODO: lane for background events
 
-  spreadsheetHeadTable: HTMLElement
   spreadsheetTbody: HTMLElement
   timeAxisTbody: HTMLElement
 
@@ -119,13 +120,25 @@ export default class ResourceTimelineView extends View {
     this.spreadsheetLayout = new HeaderBodyLayout(this)
     this.spreadsheetLayout.setParents(spreadsheetHeadEl, spreadsheetBodyEl, 'clipped-scroll')
 
-    this.spreadsheetHeadTable = createElement('table', {}, '<tbody><tr><td>Resources!</tr></tbody>')
-    this.spreadsheetLayout.headerScroller.enhancedScroll.canvas.contentEl.appendChild(this.spreadsheetHeadTable)
+    this.spreadsheetHeader = new SpreadsheetHeader(this)
+    this.spreadsheetHeader.setParent(
+      this.spreadsheetLayout.headerScroller.enhancedScroll.canvas.contentEl
+    )
+    this.spreadsheetHeader.render({
+      superHeaderText: this.superHeaderText,
+      colSpecs: this.colSpecs
+    })
 
     this.timeAxis = new TimeAxis(this)
     this.timeAxis.setParents(timeHeadEl, timeBodyEl)
 
-    let spreadsheetRowContainer = createElement('div', { className: 'fc-rows' }, '<table><tbody /></table>')
+    let spreadsheetRowContainer = createElement('div',
+      { className: 'fc-rows' },
+      '<table>' +
+        this.renderSpreadsheetColGroupHtml() +
+        '<tbody />' +
+      '</table>'
+    )
     this.spreadsheetLayout.bodyScroller.enhancedScroll.canvas.contentEl.appendChild(spreadsheetRowContainer)
     this.spreadsheetTbody = spreadsheetRowContainer.querySelector('tbody')
 
@@ -137,6 +150,22 @@ export default class ResourceTimelineView extends View {
       this.spreadsheetLayout.bodyScroller,
       this.timeAxis.layout.bodyScroller
     ])
+  }
+
+  renderSpreadsheetColGroupHtml() {
+    let html = '<colgroup>'
+
+    for (let o of this.colSpecs) {
+      if (o.isMain) {
+        html += '<col class="fc-main-col"/>'
+      } else {
+        html += '<col/>'
+      }
+    }
+
+    html += '</colgroup>'
+
+    return html
   }
 
   renderSkeletonHtml() {
@@ -216,7 +245,7 @@ export default class ResourceTimelineView extends View {
 
   addRow(rowComponents, index, rowNode) {
     let nextComponent = rowComponents[index]
-    let newComponent = buildChildComponent(rowNode)
+    let newComponent = buildChildComponent(rowNode, this)
 
     newComponent.setParents(
       this.spreadsheetTbody,
@@ -243,6 +272,7 @@ export default class ResourceTimelineView extends View {
         (rowComponent as ResourceRow).render({
           resource: (rowNode as ResourceNode).resource,
           rowSpans: (rowNode as ResourceNode).rowSpans,
+          depth: (rowNode as ResourceNode).depth,
           hasChildren: (rowNode as ResourceNode).hasChildren,
           colSpecs: this.colSpecs
         })
@@ -264,7 +294,7 @@ export default class ResourceTimelineView extends View {
   }
 
   synchronizeHeadHeights() {
-    let spreadsheetHeadEl = this.spreadsheetHeadTable
+    let spreadsheetHeadEl = this.spreadsheetHeader.tableEl
     let timeAxisHeadEl = this.timeAxis.header.tableEl
 
     spreadsheetHeadEl.style.height = ''
@@ -295,11 +325,11 @@ export default class ResourceTimelineView extends View {
 
 }
 
-function buildChildComponent(node: (GroupNode | ResourceNode)) {
+function buildChildComponent(node: (GroupNode | ResourceNode), view) {
   if ((node as GroupNode).group) {
-    return new GroupRow()
+    return new GroupRow(view)
   } else if ((node as ResourceNode).resource) {
-    return new ResourceRow()
+    return new ResourceRow(view)
   }
 }
 

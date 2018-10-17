@@ -1,46 +1,31 @@
 import { Resource } from '../structs/resource'
 import Row from './Row'
+import SpreadsheetRow from './SpreadsheetRow'
 
 export interface ResourceRowProps {
   resource: Resource
   rowSpans: number[]
+  depth: number
   hasChildren: boolean
   colSpecs: any
+  // TODO: businesshours, events, selection
 }
 
 export default class ResourceRow extends Row {
 
-  resource: Resource | null = null
-  rowSpans: number[] = []
-  hasChildren: boolean = false
-  colSpecs: any
+  spreadsheetRow: SpreadsheetRow
 
-  render(state: ResourceRowProps) {
-    if (
-      this.resource !== state.resource ||
-      this.rowSpans.join(',') !== state.rowSpans.join(',') ||
-      this.hasChildren !== state.hasChildren ||
-      this.colSpecs !== state.colSpecs
-    ) {
-      if (this.resource) {
-        this.unrenderResource()
-      }
+  setParents(a, b, c, d) {
+    super.setParents(a, b, c, d)
 
-      this.resource = state.resource
-      this.rowSpans = state.rowSpans
-      this.hasChildren = state.hasChildren
-      this.colSpecs = state.colSpecs
-
-      this.renderResource()
-    }
+    this.spreadsheetRow = new SpreadsheetRow(this.view)
+    this.spreadsheetRow.setTr(this.spreadsheetTr)
   }
 
-  renderResource() {
-    this.spreadsheetTr.innerHTML = '<td><div>resource: ' + this.resource.title + '</div></td>'
-    this.timeAxisTr.innerHTML = '<td><div>resource: ' + this.resource.title + '</div></td>'
-  }
+  render(props: ResourceRowProps) {
+    this.spreadsheetRow.render(props)
 
-  unrenderResource() {
+    this.timeAxisTr.innerHTML = '<td><div>resource: ' + props.resource.title + '</div></td>'
   }
 
 }

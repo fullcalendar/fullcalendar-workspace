@@ -1,6 +1,7 @@
 import { removeElement } from 'fullcalendar'
+import SimpleComponent from './SimpleComponent'
 
-export default class Row {
+export default class Row extends SimpleComponent {
 
   spreadsheetTr: HTMLElement
   timeAxisTr: HTMLElement
