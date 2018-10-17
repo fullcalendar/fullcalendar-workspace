@@ -1,40 +1,13 @@
-import { removeElement } from 'fullcalendar'
 import { Group } from './resource-hierarchy'
+import Row from './Row'
 
 export interface GroupRowProps {
   group: Group
 }
 
-export default class GroupRow {
+export default class GroupRow extends Row {
 
   group: Group | null = null // TODO: move to props
-
-  spreadsheetTr: HTMLElement
-  timeAxisTr: HTMLElement
-
-  // TODO: make DRY
-  setParents(
-    spreadsheetParent,
-    spreadsheetNextSibling,
-    timeAxisParent,
-    timeAxisNextSibling
-  ) {
-    spreadsheetParent.insertBefore(
-      this.spreadsheetTr = document.createElement('tr'),
-      spreadsheetNextSibling
-    )
-
-    timeAxisParent.insertBefore(
-      this.timeAxisTr = document.createElement('tr'),
-      timeAxisNextSibling
-    )
-  }
-
-  // TODO: make DRY
-  removeElement() {
-    removeElement(this.spreadsheetTr)
-    removeElement(this.timeAxisTr)
-  }
 
   /*
   TODO: render data-resource-id
@@ -56,9 +29,6 @@ export default class GroupRow {
 
   unrenderGroup() {
 
-  }
-
-  updateSize(totalHeight, isAuto, forceFlags) {
   }
 
 }

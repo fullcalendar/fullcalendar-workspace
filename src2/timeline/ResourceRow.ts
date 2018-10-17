@@ -1,5 +1,5 @@
-import { removeElement } from 'fullcalendar'
 import { Resource } from '../structs/resource'
+import Row from './Row'
 
 export interface ResourceRowProps {
   resource: Resource
@@ -8,39 +8,12 @@ export interface ResourceRowProps {
   colSpecs: any
 }
 
-export default class ResourceRow {
+export default class ResourceRow extends Row {
 
   resource: Resource | null = null
   rowSpans: number[] = []
   hasChildren: boolean = false
   colSpecs: any
-
-  spreadsheetTr: HTMLElement
-  timeAxisTr: HTMLElement
-
-  // TODO: make DRY
-  setParents(
-    spreadsheetParent,
-    spreadsheetNextSibling,
-    timeAxisParent,
-    timeAxisNextSibling
-  ) {
-    spreadsheetParent.insertBefore(
-      this.spreadsheetTr = document.createElement('tr'),
-      spreadsheetNextSibling
-    )
-
-    timeAxisParent.insertBefore(
-      this.timeAxisTr = document.createElement('tr'),
-      timeAxisNextSibling
-    )
-  }
-
-  // TODO: make DRY
-  removeElement() {
-    removeElement(this.spreadsheetTr)
-    removeElement(this.timeAxisTr)
-  }
 
   render(state: ResourceRowProps) {
     if (
@@ -68,9 +41,6 @@ export default class ResourceRow {
   }
 
   unrenderResource() {
-  }
-
-  updateSize(totalHeight, isAuto, forceFlags) {
   }
 
 }
