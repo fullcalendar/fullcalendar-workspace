@@ -26,6 +26,12 @@ export default class ResourceRow extends Row {
     this.spreadsheetRow.setTr(this.spreadsheetTr)
   }
 
+  removeElements() {
+    super.removeElements()
+
+    // TODO: send to lane
+  }
+
   render(props: ResourceRowProps) {
     this.spreadsheetRow.render(props)
 

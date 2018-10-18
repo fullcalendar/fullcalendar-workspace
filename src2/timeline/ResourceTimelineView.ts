@@ -314,7 +314,7 @@ export default class ResourceTimelineView extends View {
 
   removeElement() {
     for (let rowComponent of this.rowComponents) {
-      rowComponent.removeElement()
+      rowComponent.removeElements()
     }
 
     this.rowNodes = []

@@ -23,7 +23,7 @@ export default abstract class Row extends SimpleComponent {
     )
   }
 
-  removeElement() {
+  removeElements() {
     removeElement(this.spreadsheetTr)
     removeElement(this.timeAxisTr)
   }
