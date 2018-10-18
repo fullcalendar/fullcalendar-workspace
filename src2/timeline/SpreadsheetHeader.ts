@@ -4,6 +4,7 @@ import SimpleComponent from './SimpleComponent'
 export interface SpreadsheetHeaderProps {
   superHeaderText: string
   colSpecs: any
+  colTags: string
 }
 
 export default class SpreadsheetHeader extends SimpleComponent {
@@ -23,20 +24,19 @@ export default class SpreadsheetHeader extends SimpleComponent {
   }
 
   render(props: SpreadsheetHeaderProps) { // TODO: forceFlags?
-    this._render(props.superHeaderText, props.colSpecs)
-  }
-
-  _render(superHeaderText, colSpecs) {
+    let { colSpecs } = props
     let theme = this.getTheme()
-    let html = '<tbody>'
+    let html =
+      '<colgroup>' + props.colTags + '</colgroup>' +
+      '<tbody>'
 
-    if (superHeaderText) {
+    if (props.superHeaderText) {
       html +=
         '<tr class="fc-super">' +
           '<th class="' + theme.getClass('widgetHeader') + '" colspan="' + colSpecs.length + '">' +
             '<div class="fc-cell-content">' +
               '<span class="fc-cell-text">' +
-                htmlEscape(superHeaderText) +
+                htmlEscape(props.superHeaderText) +
               '</span>' +
             '</div>' +
           '</th>' +

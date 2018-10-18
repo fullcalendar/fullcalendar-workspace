@@ -1,25 +1,22 @@
 import { View, createElement, parseFieldSpecs } from 'fullcalendar'
-import HeaderBodyLayout from './HeaderBodyLayout'
 import TimeAxis from './TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, isNodesEqual, GroupNode, ResourceNode } from './resource-hierarchy'
 import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'
 import ScrollJoiner from '../util/ScrollJoiner'
-import SpreadsheetHeader from '../timeline/SpreadsheetHeader'
+import Spreadsheet from './Spreadsheet'
 
 const LOOKAHEAD = 3
 
 export default class ResourceTimelineView extends View {
 
   // child components
-  spreadsheetLayout: HeaderBodyLayout
-  spreadsheetHeader: SpreadsheetHeader
+  spreadsheet: Spreadsheet
   timeAxis: TimeAxis
   bodyScrollJoiner: ScrollJoiner
   // TODO: lane for background events
 
-  spreadsheetTbody: HTMLElement
   timeAxisTbody: HTMLElement
 
   // internal state
@@ -112,60 +109,31 @@ export default class ResourceTimelineView extends View {
 
     this.miscHeight = this.el.offsetHeight
 
-    let spreadsheetHeadEl = this.el.querySelector('thead .fc-resource-area')
-    let spreadsheetBodyEl = this.el.querySelector('tbody .fc-resource-area')
-    let timeHeadEl = this.el.querySelector('thead .fc-time-area')
-    let timeBodyEl = this.el.querySelector('tbody .fc-time-area')
-
-    this.spreadsheetLayout = new HeaderBodyLayout(this)
-    this.spreadsheetLayout.setParents(spreadsheetHeadEl, spreadsheetBodyEl, 'clipped-scroll')
-
-    this.spreadsheetHeader = new SpreadsheetHeader(this)
-    this.spreadsheetHeader.setParent(
-      this.spreadsheetLayout.headerScroller.enhancedScroll.canvas.contentEl
+    this.spreadsheet = new Spreadsheet(this)
+    this.spreadsheet.setParents(
+      this.el.querySelector('thead .fc-resource-area'),
+      this.el.querySelector('tbody .fc-resource-area')
     )
-    this.spreadsheetHeader.render({
-      superHeaderText: this.superHeaderText,
-      colSpecs: this.colSpecs
-    })
 
     this.timeAxis = new TimeAxis(this)
-    this.timeAxis.setParents(timeHeadEl, timeBodyEl)
-
-    let spreadsheetRowContainer = createElement('div',
-      { className: 'fc-rows' },
-      '<table>' +
-        this.renderSpreadsheetColGroupHtml() +
-        '<tbody />' +
-      '</table>'
+    this.timeAxis.setParents(
+      this.el.querySelector('thead .fc-time-area'),
+      this.el.querySelector('tbody .fc-time-area')
     )
-    this.spreadsheetLayout.bodyScroller.enhancedScroll.canvas.contentEl.appendChild(spreadsheetRowContainer)
-    this.spreadsheetTbody = spreadsheetRowContainer.querySelector('tbody')
 
     let timeAxisRowContainer = createElement('div', { className: 'fc-rows' }, '<table><tbody /></table>')
     this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.contentEl.appendChild(timeAxisRowContainer)
     this.timeAxisTbody = timeAxisRowContainer.querySelector('tbody')
 
     this.bodyScrollJoiner = new ScrollJoiner('vertical', [
-      this.spreadsheetLayout.bodyScroller,
+      this.spreadsheet.layout.bodyScroller,
       this.timeAxis.layout.bodyScroller
     ])
-  }
 
-  renderSpreadsheetColGroupHtml() {
-    let html = '<colgroup>'
-
-    for (let o of this.colSpecs) {
-      if (o.isMain) {
-        html += '<col class="fc-main-col"/>'
-      } else {
-        html += '<col/>'
-      }
-    }
-
-    html += '</colgroup>'
-
-    return html
+    this.spreadsheet.render({
+      superHeaderText: this.superHeaderText,
+      colSpecs: this.colSpecs
+    })
   }
 
   renderSkeletonHtml() {
@@ -248,7 +216,7 @@ export default class ResourceTimelineView extends View {
     let newComponent = buildChildComponent(rowNode, this)
 
     newComponent.setParents(
-      this.spreadsheetTbody,
+      this.spreadsheet.bodyTbody,
       nextComponent ? nextComponent.spreadsheetTr : null,
       this.timeAxisTbody,
       nextComponent ? nextComponent.timeAxisTr : null
@@ -282,10 +250,10 @@ export default class ResourceTimelineView extends View {
   }
 
   updateSize(totalHeight, isAuto, forceFlags) {
-    this.synchronizeHeadHeights()
+    this.syncHeadHeights()
 
     this.timeAxis.updateSize(totalHeight - this.miscHeight, isAuto)
-    this.spreadsheetLayout.updateSize(totalHeight - this.miscHeight, isAuto)
+    this.spreadsheet.updateSize(totalHeight - this.miscHeight, isAuto)
 
     this.bodyScrollJoiner.update()
 
@@ -294,8 +262,8 @@ export default class ResourceTimelineView extends View {
     }
   }
 
-  synchronizeHeadHeights() {
-    let spreadsheetHeadEl = this.spreadsheetHeader.tableEl
+  syncHeadHeights() {
+    let spreadsheetHeadEl = this.spreadsheet.header.tableEl
     let timeAxisHeadEl = this.timeAxis.header.tableEl
 
     spreadsheetHeadEl.style.height = ''
@@ -318,7 +286,7 @@ export default class ResourceTimelineView extends View {
     this.rowNodes = []
     this.rowComponents = []
 
-    this.spreadsheetLayout.removeElements()
+    this.spreadsheet.removeElements()
     this.timeAxis.removeElements()
 
     super.removeElement()
