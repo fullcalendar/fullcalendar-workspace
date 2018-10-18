@@ -3,7 +3,7 @@ import * as moment from 'moment'
 import {
   View, UnzonedRange, ComponentFootprint,
   proxy, CoordCache, queryMostGranularFormatUnit,
-  isInt, divideRangeByDuration, htmlEscape, computeGreatestUnit,
+  isInt, divideRangeByDuration, computeGreatestUnit,
   divideDurationByDuration, multiplyDuration, StandardInteractionsMixin,
   BusinessHourRenderer
 } from 'fullcalendar'
@@ -419,7 +419,7 @@ export default class TimelineView extends View {
         let newCell = null
 
         if (isSuperRow) {
-          let text = date.format(format)
+          let text = (typeof format === 'function') ? format(date) : date.format(format)
           if (!leadingCell || (leadingCell.text !== text)) {
             newCell = this.buildCellObject(date, text, rowUnits[row])
           } else {
@@ -427,7 +427,7 @@ export default class TimelineView extends View {
           }
         } else {
           if (!leadingCell || isInt(divideRangeByDuration(this.normalizedUnzonedStart, date, labelInterval))) {
-            let text = date.format(format)
+            let text = (typeof format === 'function') ? format(date) : date.format(format)
             newCell = this.buildCellObject(date, text, rowUnits[row])
           } else {
             leadingCell.colspan += 1
@@ -515,7 +515,7 @@ export default class TimelineView extends View {
       {
         'class': 'fc-cell-text'
       },
-      htmlEscape(text)
+      text
     )
     return { text, spanHtml, date, colspan: 1 }
   }

@@ -45,7 +45,7 @@ export function initScaleProps(timelineView: TimelineView) {
   timelineView.headerFormats =
     type === 'array' ?
       input
-    : type === 'string' ?
+    : type === 'string' || type === 'function' ?
       [ input ]
     :
       computeHeaderFormats(timelineView)
