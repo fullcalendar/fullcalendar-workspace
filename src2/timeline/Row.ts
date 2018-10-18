@@ -1,7 +1,7 @@
 import { removeElement } from 'fullcalendar'
 import SimpleComponent from './SimpleComponent'
 
-export default class Row extends SimpleComponent {
+export default abstract class Row extends SimpleComponent {
 
   spreadsheetTr: HTMLElement
   timeAxisTr: HTMLElement
@@ -28,8 +28,9 @@ export default class Row extends SimpleComponent {
     removeElement(this.timeAxisTr)
   }
 
-  updateSize(totalHeight, isAuto, forceFlags) {
-    // TODO: sychronize heights between spreadsheetTr and timeAxisTr
+  abstract getHeightEls(): HTMLElement[]
+
+  updateSize(forceFlags) {
   }
 
 }

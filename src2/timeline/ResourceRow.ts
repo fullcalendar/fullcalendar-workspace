@@ -1,3 +1,4 @@
+import { createElement } from 'fullcalendar'
 import { Resource } from '../structs/resource'
 import Row from './Row'
 import SpreadsheetRow from './SpreadsheetRow'
@@ -14,6 +15,8 @@ export interface ResourceRowProps {
 
 export default class ResourceRow extends Row {
 
+  timeAxisHeightEl: HTMLElement
+
   spreadsheetRow: SpreadsheetRow
 
   setParents(a, b, c, d) {
@@ -26,7 +29,20 @@ export default class ResourceRow extends Row {
   render(props: ResourceRowProps) {
     this.spreadsheetRow.render(props)
 
-    this.timeAxisTr.innerHTML = '<td><div>resource: ' + props.resource.title + '</div></td>'
+    this.timeAxisTr.appendChild(
+      createElement('td',
+        { 'data-resource-id': props.resource.resourceId }, // TODO: use public ID?
+        this.timeAxisHeightEl = document.createElement('div')
+      )
+    )
+  }
+
+  getHeightEls() {
+    return [ this.spreadsheetRow.heightEl, this.timeAxisHeightEl ]
+  }
+
+  updateSize(forceFlags) {
+    // TODO: send to lane
   }
 
 }

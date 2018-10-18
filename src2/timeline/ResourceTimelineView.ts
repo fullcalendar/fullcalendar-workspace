@@ -234,7 +234,8 @@ export default class ResourceTimelineView extends View {
 
       if ((rowNode as GroupNode).group) {
         (rowComponent as GroupRow).render({
-          group: (rowNode as GroupNode).group
+          group: (rowNode as GroupNode).group,
+          spreadsheetColCnt: this.colSpecs.length
         })
       } else {
         (rowComponent as ResourceRow).render({
@@ -251,15 +252,16 @@ export default class ResourceTimelineView extends View {
 
   updateSize(totalHeight, isAuto, forceFlags) {
     this.syncHeadHeights()
+    this.syncRowHeights()
 
     this.timeAxis.updateSize(totalHeight - this.miscHeight, isAuto)
     this.spreadsheet.updateSize(totalHeight - this.miscHeight, isAuto)
 
-    this.bodyScrollJoiner.update()
-
     for (let rowComponent of this.rowComponents) {
-      rowComponent.updateSize(totalHeight, isAuto, forceFlags)
+      rowComponent.updateSize(forceFlags)
     }
+
+    this.bodyScrollJoiner.update()
   }
 
   syncHeadHeights() {
@@ -276,6 +278,38 @@ export default class ResourceTimelineView extends View {
 
     spreadsheetHeadEl.style.height =
       timeAxisHeadEl.style.height = max + 'px'
+  }
+
+  syncRowHeights() {
+    let elArrays = this.rowComponents.map(function(rowComponent) {
+      return rowComponent.getHeightEls()
+    })
+
+    for (let elArray of elArrays) {
+      for (let el of elArray) {
+        el.style.height = ''
+      }
+    }
+
+    let maxHeights = elArrays.map(function(elArray) {
+      let maxHeight = null
+
+      for (let el of elArray) {
+        let height = el.offsetHeight
+
+        if (maxHeight === null || height > maxHeight) {
+          maxHeight = height
+        }
+      }
+
+      return maxHeight
+    })
+
+    for (let i = 0; i < elArrays.length; i++) {
+      for (let el of elArrays[i]) {
+        el.style.height = maxHeights[i] + 'px'
+      }
+    }
   }
 
   removeElement() {

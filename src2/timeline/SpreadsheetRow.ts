@@ -14,6 +14,7 @@ export interface SpreadsheetRowProps {
 export default class SpreadsheetRow extends SimpleComponent {
 
   tr: HTMLElement
+  heightEl: HTMLElement
 
   setTr(tr: HTMLElement) {
     this.tr = tr
@@ -48,7 +49,7 @@ export default class SpreadsheetRow extends SimpleComponent {
         typeof colSpec.text === 'function' ?
           // TODO: pass in REAL resource obj!!!
           colSpec.text(resource, input) : // the colspec provided a text filter function
-          input
+          resource.title // TODO: getResourceTextFunc (which is a util for ALL resource views)
 
       let contentEl = htmlToElement(
         '<div class="fc-cell-content">' +
@@ -71,7 +72,7 @@ export default class SpreadsheetRow extends SimpleComponent {
       // the first cell of the row needs to have an inner div for setTrInnerHeight
       if (colSpec.isMain) {
         td.appendChild(
-          createElement('div', null, td.childNodes) // inner wrap
+          this.heightEl = createElement('div', null, td.childNodes) // inner wrap
         )
       }
 
