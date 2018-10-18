@@ -4,6 +4,7 @@ import { Resource } from '../structs/resource'
 
 export interface SpreadsheetRowProps {
   resource: Resource
+  resourceFields: any
   rowSpans: number[]
   depth: number
   hasChildren: boolean
@@ -23,8 +24,9 @@ export default class SpreadsheetRow extends SimpleComponent {
 
     let { tr } = this
     let theme = this.getTheme()
-    let { resource, rowSpans, colSpecs } = props
+    let { resource, resourceFields, rowSpans, colSpecs } = props
 
+    // TODO: use publicId?
     tr.setAttribute('data-resource-id', resource.resourceId)
 
     for (let i = 0; i < colSpecs.length; i++) {
@@ -39,11 +41,12 @@ export default class SpreadsheetRow extends SimpleComponent {
 
       const input = // the source text, and the main argument for the filter functions
         colSpec.field ?
-          resource[colSpec.field] || null :
+          resourceFields[colSpec.field] || null :
           resource
 
       const text =
         typeof colSpec.text === 'function' ?
+          // TODO: pass in REAL resource obj!!!
           colSpec.text(resource, input) : // the colspec provided a text filter function
           input
 

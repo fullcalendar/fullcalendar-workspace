@@ -271,6 +271,7 @@ export default class ResourceTimelineView extends View {
       } else {
         (rowComponent as ResourceRow).render({
           resource: (rowNode as ResourceNode).resource,
+          resourceFields: (rowNode as ResourceNode).resourceFields,
           rowSpans: (rowNode as ResourceNode).rowSpans,
           depth: (rowNode as ResourceNode).depth,
           hasChildren: (rowNode as ResourceNode).hasChildren,

@@ -4,6 +4,7 @@ import SpreadsheetRow from './SpreadsheetRow'
 
 export interface ResourceRowProps {
   resource: Resource
+  resourceFields: any
   rowSpans: number[]
   depth: number
   hasChildren: boolean

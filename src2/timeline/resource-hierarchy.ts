@@ -7,7 +7,7 @@ interface ParentNode {
 
 interface ResourceParentNode extends ParentNode {
   resource: Resource
-  cmpObj: any
+  resourceFields: any
 }
 
 type ResourceNodeHash = { [resourceId: string]: ResourceParentNode }
@@ -30,6 +30,7 @@ export interface ResourceNode {
   depth: number
   hasChildren: boolean
   resource: Resource
+  resourceFields: any
 }
 
 export function buildRowNodes(resourceStore: ResourceHash, groupSpecs, orderSpecs, isVGrouping: boolean) {
@@ -61,15 +62,16 @@ function flattenNodes(complexNodes: ParentNode[], res, isVGrouping, rowSpans, de
     if ((complexNode as GroupParentNode).group) {
 
       if (isVGrouping) {
-        let prevLength = res.length
+        let firstRowIndex = res.length
+        let rowSpanIndex = rowSpans.length
 
-        flattenNodes(complexNode.children, res, isVGrouping, rowSpans.concat(0), depth + 1)
+        flattenNodes(complexNode.children, res, isVGrouping, rowSpans.concat(0), depth)
 
-        if (prevLength < res.length) {
-          let firstRow = res[prevLength]
+        if (firstRowIndex < res.length) {
+          let firstRow = res[firstRowIndex]
           let firstRowSpans = firstRow.rowSpans = firstRow.rowSpans.slice()
 
-          firstRowSpans[firstRowSpans.length - 1] = res.length - prevLength
+          firstRowSpans[rowSpanIndex] = res.length - firstRowIndex
         }
       } else {
         res.push({
@@ -84,7 +86,8 @@ function flattenNodes(complexNodes: ParentNode[], res, isVGrouping, rowSpans, de
         rowSpans,
         depth,
         hasChildren: Boolean(complexNode.children.length),
-        resource: (complexNode as ResourceParentNode).resource
+        resource: (complexNode as ResourceParentNode).resource,
+        resourceFields: (complexNode as ResourceParentNode).resourceFields,
       })
 
       flattenNodes(complexNode.children, res, isVGrouping, rowSpans, depth + 1)
@@ -115,7 +118,7 @@ function buildResourceNodes(resourceStore: ResourceHash, orderSpecs): ResourceNo
 
     nodeHash[resourceId] = {
       resource,
-      cmpObj: buildResourceCmpObj(resource),
+      resourceFields: buildResourceFields(resource),
       children: []
     }
   }
@@ -146,7 +149,7 @@ function insertResourceNode(resourceNode: ResourceParentNode, nodes: ParentNode[
 }
 
 function ensureGroupNodes(resourceNode: ResourceParentNode, nodes: ParentNode[], groupSpec): GroupParentNode {
-  let groupValue = resourceNode.cmpObj[groupSpec.field]
+  let groupValue = resourceNode.resourceFields[groupSpec.field]
   let groupNode
   let newGroupIndex
 
@@ -197,7 +200,7 @@ function insertResourceNodeInSiblings(resourceNode, siblings, orderSpecs) {
   let i
 
   for (i = 0; i < siblings.length; i++) {
-    let cmp = compareByFieldSpecs(siblings[i].cmpObj, resourceNode.cmpObj, orderSpecs)
+    let cmp = compareByFieldSpecs(siblings[i].resourceFields, resourceNode.resourceFields, orderSpecs)
 
     if (cmp > 0) { // went 1 past. insert at i
       break
@@ -207,8 +210,12 @@ function insertResourceNodeInSiblings(resourceNode, siblings, orderSpecs) {
   siblings.splice(i, 0, resourceNode)
 }
 
-function buildResourceCmpObj(resource) {
-  return assignTo({}, resource.extendedProps, resource, {
+function buildResourceFields(resource) {
+  let obj = assignTo({}, resource.extendedProps, resource, {
     id: resource.publicId
   })
+
+  delete obj.extendedProps
+
+  return obj
 }
