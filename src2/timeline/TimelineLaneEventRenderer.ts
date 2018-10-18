@@ -46,7 +46,8 @@ export default class TimelineLaneEventRenderer extends EventRenderer {
   }
 
   renderFgSegs(segs: Seg[]) {
-    if (!this.el) {
+
+    if (!this.el && this.masterContainerEl) {
       this.el = createElement('div', { className: 'fc-event-container' })
       this.masterContainerEl.appendChild(this.el)
     }

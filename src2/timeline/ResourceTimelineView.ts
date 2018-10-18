@@ -1,4 +1,4 @@
-import { View, createElement, parseFieldSpecs } from 'fullcalendar'
+import { View, createElement, parseFieldSpecs, DateComponentRenderState } from 'fullcalendar'
 import TimeAxis from './TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, isNodesEqual, GroupNode, ResourceNode } from './resource-hierarchy'
@@ -163,7 +163,7 @@ export default class ResourceTimelineView extends View {
     }, forceFlags)
 
     this.receiveResourceData(props.resourceStore)
-    this.renderRows()
+    this.renderRows(props, forceFlags)
   }
 
   receiveResourceData(resourceStore: ResourceHash) {
@@ -219,13 +219,14 @@ export default class ResourceTimelineView extends View {
       this.spreadsheet.bodyTbody,
       nextComponent ? nextComponent.spreadsheetTr : null,
       this.timeAxisTbody,
-      nextComponent ? nextComponent.timeAxisTr : null
+      nextComponent ? nextComponent.timeAxisTr : null,
+      this.timeAxis
     )
 
     rowComponents.splice(index, 0, newComponent)
   }
 
-  renderRows() {
+  renderRows(props: DateComponentRenderState, forceFlags) {
     let { rowNodes, rowComponents } = this
 
     for (let i = 0; i < rowNodes.length; i++) {
@@ -239,28 +240,40 @@ export default class ResourceTimelineView extends View {
         })
       } else {
         (rowComponent as ResourceRow).render({
+          dateProfile: props.dateProfile,
+          businessHours: props.businessHours,
+          eventStore: props.eventStore,
+          eventUis: props.eventUis,
+          dateSelection: props.dateSelection,
+          eventSelection: props.eventSelection,
+          eventDrag: props.eventDrag,
+          eventResize: props.eventResize,
+          resourceStore: null, // gaaaahhhh
+
           resource: (rowNode as ResourceNode).resource,
           resourceFields: (rowNode as ResourceNode).resourceFields,
           rowSpans: (rowNode as ResourceNode).rowSpans,
           depth: (rowNode as ResourceNode).depth,
           hasChildren: (rowNode as ResourceNode).hasChildren,
           colSpecs: this.colSpecs
-        })
+        }, forceFlags)
       }
     }
   }
 
   updateSize(totalHeight, isAuto, forceFlags) {
+    // FYI: this ordering is really important
+
     this.syncHeadHeights()
-    this.syncRowHeights()
 
     this.timeAxis.updateSize(totalHeight - this.miscHeight, isAuto)
     this.spreadsheet.updateSize(totalHeight - this.miscHeight, isAuto)
 
     for (let rowComponent of this.rowComponents) {
-      rowComponent.updateSize(forceFlags)
+      rowComponent.updateSize(totalHeight, isAuto, forceFlags)
     }
 
+    this.syncRowHeights()
     this.bodyScrollJoiner.update()
   }
 

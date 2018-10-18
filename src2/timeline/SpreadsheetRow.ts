@@ -84,7 +84,7 @@ export default class SpreadsheetRow extends SimpleComponent {
   Renders the HTML responsible for the subrow expander area,
   as well as the space before it (used to align expanders of similar depths)
   */
- renderGutterHtml(depth) {
+  renderGutterHtml(depth) {
     let html = ''
 
     for (let i = 0; i < depth; i++) {

@@ -10,7 +10,8 @@ export default abstract class Row extends SimpleComponent {
     spreadsheetParent,
     spreadsheetNextSibling,
     timeAxisParent,
-    timeAxisNextSibling
+    timeAxisNextSibling,
+    timeAxis
   ) {
     spreadsheetParent.insertBefore(
       this.spreadsheetTr = document.createElement('tr'),
@@ -30,7 +31,7 @@ export default abstract class Row extends SimpleComponent {
 
   abstract getHeightEls(): HTMLElement[]
 
-  updateSize(forceFlags) {
+  updateSize(totalHeight, isAuto, force) {
   }
 
 }

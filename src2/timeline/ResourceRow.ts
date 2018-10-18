@@ -1,54 +1,66 @@
-import { createElement } from 'fullcalendar'
+import { createElement, DateComponentRenderState } from 'fullcalendar'
 import { Resource } from '../structs/resource'
 import Row from './Row'
 import SpreadsheetRow from './SpreadsheetRow'
+import TimelineLane from './TimelineLane'
 
-export interface ResourceRowProps {
+export interface ResourceRowProps extends DateComponentRenderState {
   resource: Resource
   resourceFields: any
   rowSpans: number[]
   depth: number
   hasChildren: boolean
   colSpecs: any
-  // TODO: businesshours, events, selection
 }
 
 export default class ResourceRow extends Row {
 
-  timeAxisHeightEl: HTMLElement
+  innerContainerEl: HTMLElement
 
   spreadsheetRow: SpreadsheetRow
+  lane: TimelineLane
 
-  setParents(a, b, c, d) {
-    super.setParents(a, b, c, d)
+  setParents(a, b, c, d, timeAxis) {
+    super.setParents(a, b, c, d, timeAxis)
 
     this.spreadsheetRow = new SpreadsheetRow(this.view)
     this.spreadsheetRow.setTr(this.spreadsheetTr)
-  }
-
-  removeElements() {
-    super.removeElements()
-
-    // TODO: send to lane
-  }
-
-  render(props: ResourceRowProps) {
-    this.spreadsheetRow.render(props)
 
     this.timeAxisTr.appendChild(
-      createElement('td',
-        { 'data-resource-id': props.resource.resourceId }, // TODO: use public ID?
-        this.timeAxisHeightEl = document.createElement('div')
+      createElement('td', null,
+        this.innerContainerEl = document.createElement('div')
       )
+    )
+
+    this.lane = new TimelineLane(this.view)
+    this.lane.setParents(
+      this.innerContainerEl,
+      this.innerContainerEl,
+      timeAxis
     )
   }
 
-  getHeightEls() {
-    return [ this.spreadsheetRow.heightEl, this.timeAxisHeightEl ]
+  removeElements() {
+    this.lane.removeElement()
+
+    super.removeElements()
   }
 
-  updateSize(forceFlags) {
-    // TODO: send to lane
+  render(props: ResourceRowProps, forceFlags) {
+
+    // TODO: use public ID?
+    this.timeAxisTr.setAttribute('data-resource-id', props.resource.resourceId)
+
+    this.spreadsheetRow.render(props)
+    this.lane.render(props, forceFlags)
+  }
+
+  getHeightEls() {
+    return [ this.spreadsheetRow.heightEl, this.innerContainerEl ]
+  }
+
+  updateSize(totalHeight, isAuto, force) {
+    this.lane.updateSize(totalHeight, isAuto, force)
   }
 
 }

@@ -16,13 +16,14 @@ export default class TimelineLane extends DateComponent {
   }
 
   render(renderState: DateComponentRenderState, forceFlags: RenderForceFlags) {
-    this.tDateProfile = this.timeAxis.tDateProfile
-    this.slicingType = this.tDateProfile.isTimeScale ? 'timed' : 'all-day'
+    this.slicingType = this.timeAxis.tDateProfile.isTimeScale ? 'timed' : 'all-day'
+
     super.render(renderState, forceFlags)
   }
 
   rangeToSegs(origRange: DateRange, allDay: boolean): Seg[] {
-    let { tDateProfile, timeAxis } = this
+    let { timeAxis } = this
+    let { tDateProfile } = timeAxis
     let segs: Seg[] = []
     let range = normalizeRange(origRange, tDateProfile, this.getDateEnv())
 
