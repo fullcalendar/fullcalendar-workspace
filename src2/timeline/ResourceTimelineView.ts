@@ -1,4 +1,4 @@
-import { View, createElement, parseFieldSpecs, DateComponentRenderState } from 'fullcalendar'
+import { View, createElement, parseFieldSpecs, DateComponentRenderState, createEmptyEventStore, EventDef, EventStore } from 'fullcalendar'
 import TimeAxis from './TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, isNodesEqual, GroupNode, ResourceNode } from './resource-hierarchy'
@@ -6,6 +6,7 @@ import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'
 import ScrollJoiner from '../util/ScrollJoiner'
 import Spreadsheet from './Spreadsheet'
+import TimelineLane from './TimelineLane'
 
 const LOOKAHEAD = 3
 
@@ -14,10 +15,13 @@ export default class ResourceTimelineView extends View {
   // child components
   spreadsheet: Spreadsheet
   timeAxis: TimeAxis
+  lane: TimelineLane
   bodyScrollJoiner: ScrollJoiner
-  // TODO: lane for background events
 
   timeAxisTbody: HTMLElement
+  miscHeight: number
+  rowNodes: (GroupNode | ResourceNode)[] = []
+  rowComponents: (GroupRow | ResourceRow)[] = []
 
   // internal state
   superHeaderText: any
@@ -26,9 +30,6 @@ export default class ResourceTimelineView extends View {
   groupSpecs: any
   colSpecs: any
   orderSpecs: any
-  miscHeight: number
-  rowNodes: (GroupNode | ResourceNode)[] = []
-  rowComponents: (GroupRow | ResourceRow)[] = []
 
   constructor(calendar, viewSpec) {
     super(calendar, viewSpec)
@@ -125,6 +126,13 @@ export default class ResourceTimelineView extends View {
     this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.contentEl.appendChild(timeAxisRowContainer)
     this.timeAxisTbody = timeAxisRowContainer.querySelector('tbody')
 
+    this.lane = new TimelineLane(this.view)
+    this.lane.setParents(
+      null,
+      this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.bgEl,
+      this.timeAxis
+    )
+
     this.bodyScrollJoiner = new ScrollJoiner('vertical', [
       this.spreadsheet.layout.bodyScroller,
       this.timeAxis.layout.bodyScroller
@@ -157,13 +165,54 @@ export default class ResourceTimelineView extends View {
 </table>`
   }
 
-  renderChildren(props, forceFlags) {
+  renderChildren(props: DateComponentRenderState, forceFlags) {
+
+    // not best place for this
+    // TODO: cache
+    let hasResourceBusinessHours = this.hasResourceBusinessHours(props.resourceStore)
+
+    // TODO: rename. done by PUBLIC ID
+    // TODO: cache
+    let eventStoresByResourceId = splitEventStores(props.eventStore)
+
     this.timeAxis.render({
       dateProfile: props.dateProfile
     }, forceFlags)
 
+    this.lane.render({
+      dateProfile: props.dateProfile,
+      businessHours: hasResourceBusinessHours ? createEmptyEventStore() : props.businessHours, // BAD for caching!?
+      eventStore: eventStoresByResourceId[''] || createEmptyEventStore(), // BAD for caching!?
+      eventUis: props.eventUis,
+      dateSelection: (props.dateSelection && !props.dateSelection.resourceId) ? props.dateSelection : null,
+      eventSelection: props.eventSelection,
+      eventDrag: props.eventDrag,
+      eventResize: props.eventResize,
+
+      // gahhhhh
+      resource: null,
+      resourceStore: null,
+    }, forceFlags)
+
     this.receiveResourceData(props.resourceStore)
-    this.renderRows(props, forceFlags)
+    this.renderRows(
+      props,
+      forceFlags,
+      hasResourceBusinessHours ? props.businessHours : null, // CONFUSING, comment
+      eventStoresByResourceId
+    )
+  }
+
+  hasResourceBusinessHours(resourceStore: ResourceHash) {
+    for (let resourceId in resourceStore) {
+      let resource = resourceStore[resourceId]
+
+      if (resource.businessHours) {
+        return true
+      }
+    }
+
+    return false
   }
 
   receiveResourceData(resourceStore: ResourceHash) {
@@ -226,7 +275,7 @@ export default class ResourceTimelineView extends View {
     rowComponents.splice(index, 0, newComponent)
   }
 
-  renderRows(props: DateComponentRenderState, forceFlags) {
+  renderRows(props: DateComponentRenderState, forceFlags, fallbackBusinessHours, eventStoresByResourceId) {
     let { rowNodes, rowComponents } = this
 
     for (let i = 0; i < rowNodes.length; i++) {
@@ -239,12 +288,15 @@ export default class ResourceTimelineView extends View {
           spreadsheetColCnt: this.colSpecs.length
         })
       } else {
+        let resourceId = (rowNode as ResourceNode).resource.resourceId
+        let resourcePublicId = (rowNode as ResourceNode).resource.publicId;
+
         (rowComponent as ResourceRow).render({
           dateProfile: props.dateProfile,
-          businessHours: props.businessHours,
-          eventStore: props.eventStore,
+          businessHours: props.businessHours || fallbackBusinessHours,
+          eventStore: (resourcePublicId && eventStoresByResourceId[resourcePublicId]) || createEmptyEventStore(), // TODO: bad for caching
           eventUis: props.eventUis,
-          dateSelection: props.dateSelection,
+          dateSelection: (props.dateSelection && props.dateSelection.resourceId === resourceId) ? props.dateSelection : null,
           eventSelection: props.eventSelection,
           eventDrag: props.eventDrag,
           eventResize: props.eventResize,
@@ -274,6 +326,7 @@ export default class ResourceTimelineView extends View {
     }
 
     this.syncRowHeights()
+    this.lane.updateSize(totalHeight, isAuto, forceFlags)
     this.bodyScrollJoiner.update()
   }
 
@@ -355,4 +408,52 @@ function removeRows(rowComponents, startRemoveI, endRemoveI) {
   }
 
   rowComponents.splice(startRemoveI, endRemoveI - startRemoveI)
+}
+
+function splitEventStores(eventStore: EventStore) {
+  let { defs, instances } = eventStore
+  let eventStoresByResourceId = {}
+
+  for (let defId in defs) {
+    let def = defs[defId]
+    let resourceIds = extractEventResourceIds(def)
+
+    if (!resourceIds.length) { // TODO: more DRY
+      resourceIds = [ '' ]
+    }
+
+    for (let resourceId of resourceIds) {
+      (eventStoresByResourceId[resourceId] ||
+        (eventStoresByResourceId[resourceId] = createEmptyEventStore())
+      ).defs[defId] = def
+    }
+  }
+
+  for (let instanceId in instances) {
+    let instance = instances[instanceId]
+    let def = defs[instance.defId]
+    let resourceIds = extractEventResourceIds(def)
+
+    if (!resourceIds.length) { // TODO: more DRY
+      resourceIds = [ '' ]
+    }
+
+    for (let resourceId of resourceIds) {
+      eventStoresByResourceId[resourceId]
+        .instances[instanceId] = instance
+    }
+  }
+
+  return eventStoresByResourceId
+}
+
+function extractEventResourceIds(def: EventDef) {
+  let resourceIds = def.extendedProps.resourceIds || [] /// put in real Def object?
+  let resourceId = def.extendedProps.resourceId
+
+  if (resourceId) {
+    resourceIds.push(resourceId)
+  }
+
+  return resourceIds
 }
