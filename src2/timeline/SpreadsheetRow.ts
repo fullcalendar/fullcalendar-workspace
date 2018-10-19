@@ -49,7 +49,7 @@ export default class SpreadsheetRow extends SimpleComponent {
         typeof colSpec.text === 'function' ?
           // TODO: pass in REAL resource obj!!!
           colSpec.text(resource, input) : // the colspec provided a text filter function
-          resource.title // TODO: getResourceTextFunc (which is a util for ALL resource views)
+          (typeof input === 'object' ? resource.title : input) // TODO: getResourceTextFunc (which is a util for ALL resource views)
 
       let contentEl = htmlToElement(
         '<div class="fc-cell-content">' +
