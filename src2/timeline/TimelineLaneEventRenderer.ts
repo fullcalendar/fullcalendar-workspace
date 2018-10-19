@@ -52,8 +52,10 @@ export default class TimelineLaneEventRenderer extends EventRenderer {
       this.masterContainerEl.appendChild(this.el)
     }
 
-    for (let seg of segs) {
-      this.el.appendChild(seg.el)
+    if (this.el) {
+      for (let seg of segs) {
+        this.el.appendChild(seg.el)
+      }
     }
   }
 
@@ -79,6 +81,10 @@ export default class TimelineLaneEventRenderer extends EventRenderer {
   }
 
   assignFgSize() {
+    if (!this.el) {
+      return
+    }
+
     let segs = this.fgSegs
 
     // compute seg verticals
