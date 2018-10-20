@@ -12,11 +12,11 @@ export default class TimelineView extends View {
     this.el.classList.add('fc-timeline')
     this.el.innerHTML = this.renderSkeletonHtml()
 
-    let headerContainerEl = this.el.querySelector('thead .fc-time-area')
-    let bodyContainerEl = this.el.querySelector('tbody .fc-time-area')
-
-    this.timeAxis = new TimeAxis(this.view)
-    this.timeAxis.setParents(headerContainerEl, bodyContainerEl)
+    this.timeAxis = new TimeAxis(
+      this.view,
+      this.el.querySelector('thead .fc-time-area'),
+      this.el.querySelector('tbody .fc-time-area')
+    )
 
     this.lane = new TimelineLane(this.view)
     this.lane.setParents(
@@ -44,20 +44,20 @@ export default class TimelineView extends View {
   }
 
   renderChildren(props: DateComponentRenderState, forceFlags: RenderForceFlags) {
-    this.timeAxis.render({
+    this.timeAxis.receiveProps({
       dateProfile: props.dateProfile
-    }, forceFlags)
+    })
 
     this.lane.render(props, forceFlags)
   }
 
   updateSize(totalHeight, isAuto, force) {
-    this.timeAxis.updateSize(totalHeight, isAuto)
+    this.timeAxis.updateHeight(totalHeight, isAuto)
     this.lane.updateSize(totalHeight, isAuto, force)
   }
 
   removeElement() {
-    this.timeAxis.removeElements()
+    this.timeAxis.destroy()
     this.lane.removeElement() // TODO: doesn't work with two containers
 
     super.removeElement()

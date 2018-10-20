@@ -1,18 +1,20 @@
-import { removeElement } from 'fullcalendar'
+import { View, removeElement } from 'fullcalendar'
 import SimpleComponent from './SimpleComponent'
 
-export default abstract class Row extends SimpleComponent {
+export default abstract class Row<PropsType> extends SimpleComponent<PropsType> {
 
   spreadsheetTr: HTMLElement
   timeAxisTr: HTMLElement
 
-  setParents(
-    spreadsheetParent,
-    spreadsheetNextSibling,
-    timeAxisParent,
-    timeAxisNextSibling,
-    timeAxis
+  constructor(
+    view: View,
+    spreadsheetParent: HTMLElement,
+    spreadsheetNextSibling: HTMLElement,
+    timeAxisParent: HTMLElement,
+    timeAxisNextSibling: HTMLElement
   ) {
+    super(view)
+
     spreadsheetParent.insertBefore(
       this.spreadsheetTr = document.createElement('tr'),
       spreadsheetNextSibling
@@ -24,14 +26,13 @@ export default abstract class Row extends SimpleComponent {
     )
   }
 
-  removeElements() {
+  destroy() {
     removeElement(this.spreadsheetTr)
     removeElement(this.timeAxisTr)
+
+    super.destroy()
   }
 
   abstract getHeightEls(): HTMLElement[]
-
-  updateSize(totalHeight, isAuto, force) {
-  }
 
 }

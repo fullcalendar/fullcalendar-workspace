@@ -1,4 +1,4 @@
-import { removeElement, createElement, htmlEscape } from 'fullcalendar'
+import { removeElement, createElement, htmlEscape, View } from 'fullcalendar'
 import SimpleComponent from './SimpleComponent'
 
 export interface SpreadsheetHeaderProps {
@@ -7,25 +7,29 @@ export interface SpreadsheetHeaderProps {
   colTags: string
 }
 
-export default class SpreadsheetHeader extends SimpleComponent {
+export default class SpreadsheetHeader extends SimpleComponent<SpreadsheetHeaderProps> {
 
   tableEl: HTMLElement
 
-  setParent(parentEl: HTMLElement) {
+  constructor(view: View, parentEl: HTMLElement) {
+    super(view)
+
     parentEl.appendChild(
       this.tableEl = createElement('table', {
-        className: this.getTheme().getClass('tableGrid')
+        className: this.theme.getClass('tableGrid')
       })
     )
   }
 
-  removeElement() {
+  destroy() {
     removeElement(this.tableEl)
+
+    super.destroy()
   }
 
-  render(props: SpreadsheetHeaderProps) { // TODO: forceFlags?
+  render(props: SpreadsheetHeaderProps) {
+    let { theme } = this
     let { colSpecs } = props
-    let theme = this.getTheme()
     let html =
       '<colgroup>' + props.colTags + '</colgroup>' +
       '<tbody>'

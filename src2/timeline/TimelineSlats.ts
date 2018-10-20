@@ -1,4 +1,4 @@
-import { RenderForceFlags, isInt, findElements, createElement, findChildren, PositionCache, removeElement } from 'fullcalendar'
+import { isInt, findElements, createElement, findChildren, PositionCache, removeElement, View } from 'fullcalendar'
 import { TimelineDateProfile } from './timeline-date-profile'
 import SimpleComponent from './SimpleComponent'
 
@@ -6,7 +6,7 @@ export interface TimelineSlatsProps {
   tDateProfile: TimelineDateProfile
 }
 
-export default class TimelineSlats extends SimpleComponent {
+export default class TimelineSlats extends SimpleComponent<TimelineSlatsProps> {
 
   el: HTMLElement
   slatColEls: HTMLElement[]
@@ -14,22 +14,26 @@ export default class TimelineSlats extends SimpleComponent {
 
   innerCoordCache: PositionCache
 
-  setParent(parentEl: HTMLElement) {
+  constructor(view: View, parentEl: HTMLElement) {
+    super(view)
+
     parentEl.appendChild(
       this.el = createElement('div', { className: 'fc-slats' })
     )
   }
 
-  removeElement() {
+  destroy() {
     removeElement(this.el)
+
+    super.destroy()
   }
 
-  render(props: TimelineSlatsProps, forceFlags: RenderForceFlags) {
+  render(props: TimelineSlatsProps) {
     this.renderDates(props.tDateProfile)
   }
 
   renderDates(tDateProfile: TimelineDateProfile) {
-    let theme = this.getTheme()
+    let { theme } = this
     let { cellRows } = tDateProfile
     let lastRow = cellRows[cellRows.length - 1]
 
@@ -66,8 +70,7 @@ export default class TimelineSlats extends SimpleComponent {
   }
 
   slatCellHtml(date, isEm, tDateProfile: TimelineDateProfile) {
-    let dateEnv = this.getDateEnv()
-    let theme = this.getTheme()
+    let { theme, dateEnv } = this
     let classes
 
     if (tDateProfile.isTimeScale) {
@@ -95,6 +98,10 @@ export default class TimelineSlats extends SimpleComponent {
     return '<td class="' + classes.join(' ') + '"' +
       ' data-date="' + dateEnv.formatIso(date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true }) + '"' +
       '><div></div></td>'
+  }
+
+  updateSize() {
+    this.buildPositionCaches()
   }
 
   buildPositionCaches() {

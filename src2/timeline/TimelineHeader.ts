@@ -1,4 +1,4 @@
-import { asRoughMs, isSingleDay, findElements, createElement, removeElement } from 'fullcalendar'
+import { asRoughMs, isSingleDay, findElements, createElement, removeElement, View } from 'fullcalendar'
 import SimpleComponent from './SimpleComponent'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -6,31 +6,34 @@ export interface TimelineHeaderProps {
   tDateProfile: TimelineDateProfile
 }
 
-export default class TimelineHeader extends SimpleComponent {
+export default class TimelineHeader extends SimpleComponent<TimelineHeaderProps> {
 
   tableEl: HTMLElement
   slatColEls: HTMLElement[]
   innerEls: HTMLElement[]
 
-  setParent(parentEl: HTMLElement) {
+  constructor(view: View, parentEl: HTMLElement) {
+    super(view)
+
     parentEl.appendChild(
       this.tableEl = createElement('table', {
-        className: this.getTheme().getClass('tableGrid')
+        className: this.theme.getClass('tableGrid')
       })
     )
   }
 
-  removeElement() {
+  destroy() {
     removeElement(this.tableEl)
+
+    super.destroy()
   }
 
-  render(props: TimelineHeaderProps, forceFlags) {
+  render(props: TimelineHeaderProps) {
     this.renderDates(props.tDateProfile)
   }
 
   renderDates(tDateProfile: TimelineDateProfile) {
-    let dateEnv = this.getDateEnv()
-    let theme = this.getTheme()
+    let { dateEnv, theme } = this
     let { cellRows } = tDateProfile
     let lastRow = cellRows[cellRows.length - 1]
     let isChrono = asRoughMs(tDateProfile.labelInterval) > asRoughMs(tDateProfile.slotDuration)

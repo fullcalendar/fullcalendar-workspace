@@ -1,4 +1,4 @@
-import { htmlToElement, htmlEscape, createElement } from 'fullcalendar'
+import { htmlToElement, htmlEscape, createElement, View } from 'fullcalendar'
 import SimpleComponent from './SimpleComponent'
 import { Resource } from '../structs/resource'
 
@@ -11,20 +11,19 @@ export interface SpreadsheetRowProps {
   colSpecs: any
 }
 
-export default class SpreadsheetRow extends SimpleComponent {
+export default class SpreadsheetRow extends SimpleComponent<SpreadsheetRowProps> {
 
   tr: HTMLElement
   heightEl: HTMLElement
 
-  setTr(tr: HTMLElement) {
+  constructor(view: View, tr: HTMLElement) {
+    super(view)
+
     this.tr = tr
   }
 
   render(props: SpreadsheetRowProps) {
-    // TODO: put in wrapper func
-
-    let { tr } = this
-    let theme = this.getTheme()
+    let { tr, theme } = this
     let { resource, resourceFields, rowSpans, colSpecs } = props
 
     // TODO: use publicId?
@@ -78,6 +77,10 @@ export default class SpreadsheetRow extends SimpleComponent {
 
       tr.appendChild(td)
     }
+  }
+
+  unrender() {
+    this.tr.innerHTML = ''
   }
 
   /*

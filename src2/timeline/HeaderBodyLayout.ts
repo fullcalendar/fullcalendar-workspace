@@ -1,9 +1,8 @@
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollJoiner from '../util/ScrollJoiner'
 import ScrollerCanvas from '../util/ScrollerCanvas'
-import SimpleComponent from './SimpleComponent'
 
-export default class HeaderBodyLayout extends SimpleComponent {
+export default class HeaderBodyLayout {
 
   headerScroller: ClippedScroller
   bodyScroller: ClippedScroller
@@ -12,7 +11,7 @@ export default class HeaderBodyLayout extends SimpleComponent {
   /*
   verticalScroll = 'auto' | 'clipped-scroll'
   */
-  setParents(headerContainerEl, bodyContainerEl, verticalScroll) {
+  constructor(headerContainerEl, bodyContainerEl, verticalScroll) {
     this.headerScroller = new ClippedScroller('clipped-scroll', 'hidden')
     this.headerScroller.enhancedScroll.canvas = new ScrollerCanvas()
     this.headerScroller.setParent(headerContainerEl)
@@ -27,12 +26,12 @@ export default class HeaderBodyLayout extends SimpleComponent {
     ])
   }
 
-  removeElements() {
+  destroy() {
     this.headerScroller.removeElement()
     this.bodyScroller.removeElement()
   }
 
-  updateSize(totalHeight, isAuto) {
+  setHeight(totalHeight, isAuto) {
     let bodyHeight
 
     if (isAuto) {

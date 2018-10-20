@@ -110,14 +110,14 @@ export default class ResourceTimelineView extends View {
 
     this.miscHeight = this.el.offsetHeight
 
-    this.spreadsheet = new Spreadsheet(this)
-    this.spreadsheet.setParents(
+    this.spreadsheet = new Spreadsheet(
+      this,
       this.el.querySelector('thead .fc-resource-area'),
       this.el.querySelector('tbody .fc-resource-area')
     )
 
-    this.timeAxis = new TimeAxis(this)
-    this.timeAxis.setParents(
+    this.timeAxis = new TimeAxis(
+      this,
       this.el.querySelector('thead .fc-time-area'),
       this.el.querySelector('tbody .fc-time-area')
     )
@@ -138,7 +138,7 @@ export default class ResourceTimelineView extends View {
       this.timeAxis.layout.bodyScroller
     ])
 
-    this.spreadsheet.render({
+    this.spreadsheet.receiveProps({
       superHeaderText: this.superHeaderText,
       colSpecs: this.colSpecs
     })
@@ -175,9 +175,9 @@ export default class ResourceTimelineView extends View {
     // TODO: cache
     let eventStoresByResourceId = splitEventStores(props.eventStore)
 
-    this.timeAxis.render({
+    this.timeAxis.receiveProps({
       dateProfile: props.dateProfile
-    }, forceFlags)
+    })
 
     this.lane.render({
       dateProfile: props.dateProfile,
@@ -262,17 +262,42 @@ export default class ResourceTimelineView extends View {
 
   addRow(rowComponents, index, rowNode) {
     let nextComponent = rowComponents[index]
-    let newComponent = buildChildComponent(rowNode, this)
-
-    newComponent.setParents(
+    let newComponent = this.buildChildComponent(
+      rowNode,
       this.spreadsheet.bodyTbody,
       nextComponent ? nextComponent.spreadsheetTr : null,
       this.timeAxisTbody,
-      nextComponent ? nextComponent.timeAxisTr : null,
-      this.timeAxis
+      nextComponent ? nextComponent.timeAxisTr : null
     )
 
     rowComponents.splice(index, 0, newComponent)
+  }
+
+  buildChildComponent(
+    node: (GroupNode | ResourceNode),
+    spreadsheetTbody: HTMLElement,
+    spreadsheetNext: HTMLElement,
+    timeAxisTbody: HTMLElement,
+    timeAxisNext: HTMLElement
+  ) {
+    if ((node as GroupNode).group) {
+      return new GroupRow(
+        this,
+        spreadsheetTbody,
+        spreadsheetNext,
+        timeAxisTbody,
+        timeAxisNext
+      )
+    } else if ((node as ResourceNode).resource) {
+      return new ResourceRow(
+        this,
+        spreadsheetTbody,
+        spreadsheetNext,
+        timeAxisTbody,
+        timeAxisNext,
+        this.timeAxis
+      )
+    }
   }
 
   renderRows(props: DateComponentRenderState, forceFlags, fallbackBusinessHours, eventStoresByResourceId) {
@@ -283,7 +308,7 @@ export default class ResourceTimelineView extends View {
       let rowComponent = rowComponents[i]
 
       if ((rowNode as GroupNode).group) {
-        (rowComponent as GroupRow).render({
+        (rowComponent as GroupRow).receiveProps({
           group: (rowNode as GroupNode).group,
           spreadsheetColCnt: this.colSpecs.length
         })
@@ -291,7 +316,7 @@ export default class ResourceTimelineView extends View {
         let resourceId = (rowNode as ResourceNode).resource.resourceId
         let resourcePublicId = (rowNode as ResourceNode).resource.publicId;
 
-        (rowComponent as ResourceRow).render({
+        (rowComponent as ResourceRow).receiveProps({
           dateProfile: props.dateProfile,
           businessHours: props.businessHours || fallbackBusinessHours,
           eventStore: (resourcePublicId && eventStoresByResourceId[resourcePublicId]) || createEmptyEventStore(), // TODO: bad for caching
@@ -308,25 +333,25 @@ export default class ResourceTimelineView extends View {
           depth: (rowNode as ResourceNode).depth,
           hasChildren: (rowNode as ResourceNode).hasChildren,
           colSpecs: this.colSpecs
-        }, forceFlags)
+        })
       }
     }
   }
 
-  updateSize(totalHeight, isAuto, forceFlags) {
+  updateSize(totalHeight, isAuto, force) {
     // FYI: this ordering is really important
 
     this.syncHeadHeights()
 
-    this.timeAxis.updateSize(totalHeight - this.miscHeight, isAuto)
-    this.spreadsheet.updateSize(totalHeight - this.miscHeight, isAuto)
+    this.timeAxis.updateHeight(totalHeight - this.miscHeight, isAuto)
+    this.spreadsheet.updateHeight(totalHeight - this.miscHeight, isAuto)
 
     for (let rowComponent of this.rowComponents) {
-      rowComponent.updateSize(totalHeight, isAuto, forceFlags)
+      rowComponent.updateSize()
     }
 
     this.syncRowHeights()
-    this.lane.updateSize(totalHeight, isAuto, forceFlags)
+    this.lane.updateSize(totalHeight, isAuto, force)
     this.bodyScrollJoiner.update()
   }
 
@@ -380,26 +405,18 @@ export default class ResourceTimelineView extends View {
 
   removeElement() {
     for (let rowComponent of this.rowComponents) {
-      rowComponent.removeElements()
+      rowComponent.destroy()
     }
 
     this.rowNodes = []
     this.rowComponents = []
 
-    this.spreadsheet.removeElements()
-    this.timeAxis.removeElements()
+    this.spreadsheet.destroy()
+    this.timeAxis.destroy()
 
     super.removeElement()
   }
 
-}
-
-function buildChildComponent(node: (GroupNode | ResourceNode), view) {
-  if ((node as GroupNode).group) {
-    return new GroupRow(view)
-  } else if ((node as ResourceNode).resource) {
-    return new ResourceRow(view)
-  }
 }
 
 function removeRows(rowComponents, startRemoveI, endRemoveI) {

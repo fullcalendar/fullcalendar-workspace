@@ -1,4 +1,4 @@
-import { createElement } from 'fullcalendar'
+import { createElement, View } from 'fullcalendar'
 import SpreadsheetHeader from './SpreadsheetHeader'
 import SimpleComponent from './SimpleComponent'
 import HeaderBodyLayout from './HeaderBodyLayout'
@@ -8,7 +8,7 @@ export interface SpreadsheetProps {
   colSpecs: any
 }
 
-export default class Spreadsheet extends SimpleComponent {
+export default class Spreadsheet extends SimpleComponent<SpreadsheetProps> {
 
   header: SpreadsheetHeader
   layout: HeaderBodyLayout
@@ -17,13 +17,19 @@ export default class Spreadsheet extends SimpleComponent {
   bodyColGroup: HTMLElement
   bodyTbody: HTMLElement
 
-  setParents(headParentEl: HTMLElement, bodyParentEl: HTMLElement) {
+  constructor(view: View, headParentEl: HTMLElement, bodyParentEl: HTMLElement) {
+    super(view)
 
-    this.layout = new HeaderBodyLayout(this.view)
-    this.layout.setParents(headParentEl, bodyParentEl, 'clipped-scroll')
+    this.layout = new HeaderBodyLayout(
+      headParentEl,
+      bodyParentEl,
+      'clipped-scroll'
+    )
 
-    this.header = new SpreadsheetHeader(this.view)
-    this.header.setParent(this.layout.headerScroller.enhancedScroll.canvas.contentEl)
+    this.header = new SpreadsheetHeader(
+      view,
+      this.layout.headerScroller.enhancedScroll.canvas.contentEl
+    )
 
     this.layout.bodyScroller.enhancedScroll.canvas.contentEl
       .appendChild(
@@ -40,25 +46,23 @@ export default class Spreadsheet extends SimpleComponent {
     this.bodyTbody = this.bodyContainerEl.querySelector('tbody')
   }
 
-  removeElements() {
-    this.header.removeElement()
-    this.layout.removeElements()
+  destroy() {
+    this.header.destroy()
+    this.layout.destroy()
+
+    super.destroy()
   }
 
   render(props: SpreadsheetProps) {
     let colTags = this.renderColTags(props.colSpecs)
 
-    this.header.render({
+    this.header.receiveProps({
       superHeaderText: props.superHeaderText,
       colSpecs: props.colSpecs,
       colTags
     })
 
     this.bodyColGroup.innerHTML = colTags
-  }
-
-  updateSize(totalHeight, isAuto) {
-    this.layout.updateSize(totalHeight, isAuto)
   }
 
   renderColTags(colSpecs) {
@@ -73,6 +77,11 @@ export default class Spreadsheet extends SimpleComponent {
     }
 
     return html
+  }
+
+  updateHeight(totalHeight, isAuto) {
+    this.header.updateSize()
+    this.layout.setHeight(totalHeight, isAuto)
   }
 
 }

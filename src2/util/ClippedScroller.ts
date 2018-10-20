@@ -17,7 +17,7 @@ export default class ClippedScroller {
   Received overflows can be set to 'clipped', meaning scrollbars shouldn't be visible
   to the user, but the area should still scroll.
   */
-  constructor(overflowX: string, overflowY: string) {
+  constructor(overflowX: string, overflowY: string) { // TODO: move to passing els in constructor
 
     this.isHScrollbarsClipped = false
     this.isVScrollbarsClipped = false

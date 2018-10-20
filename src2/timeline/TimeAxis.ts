@@ -1,4 +1,4 @@
-import { DateProfile, DateMarker, wholeDivideDurations, isInt } from 'fullcalendar'
+import { DateProfile, DateMarker, wholeDivideDurations, isInt, View } from 'fullcalendar'
 import HeaderBodyLayout from './HeaderBodyLayout'
 import SimpleComponent from './SimpleComponent'
 import TimelineHeader from './TimelineHeader'
@@ -9,7 +9,7 @@ export interface TimeAxisProps {
   dateProfile: DateProfile
 }
 
-export default class TimeAxis extends SimpleComponent {
+export default class TimeAxis extends SimpleComponent<TimeAxisProps> {
 
   // child components
   layout: HeaderBodyLayout
@@ -19,48 +19,56 @@ export default class TimeAxis extends SimpleComponent {
   // internal state
   tDateProfile: TimelineDateProfile
 
-  setParents(headerContainerEl, bodyContainerEl) {
-    let layout = this.layout = new HeaderBodyLayout(this.view)
-    this.layout.setParents(headerContainerEl, bodyContainerEl, 'auto')
+  constructor(view: View, headerContainerEl, bodyContainerEl) {
+    super(view)
 
-    this.header = new TimelineHeader(this.view)
-    this.header.setParent(
+    let layout = this.layout = new HeaderBodyLayout(
+      headerContainerEl,
+      bodyContainerEl,
+      'auto'
+    )
+
+    this.header = new TimelineHeader(
+      view,
       layout.headerScroller.enhancedScroll.canvas.contentEl
     )
 
-    this.slats = new TimelineSlats(this.view)
-    this.slats.setParent(
+    this.slats = new TimelineSlats(
+      view,
       layout.bodyScroller.enhancedScroll.canvas.bgEl
     )
   }
 
-  removeElements() {
-    this.layout.removeElements()
-    this.header.removeElement()
-    this.slats.removeElement()
+  destroy() {
+    this.layout.destroy()
+    this.header.destroy()
+    this.slats.destroy()
+
+    super.destroy()
   }
 
-  render(props: TimeAxisProps, forceFlags) {
+  render(props: TimeAxisProps) {
     let tDateProfile = this.tDateProfile =
       buildTimelineDateProfile(props.dateProfile, this.view) // TODO: cache
 
-    this.header.render({
+    this.header.receiveProps({
       tDateProfile
-    }, forceFlags)
+    })
 
-    this.slats.render({
+    this.slats.receiveProps({
       tDateProfile
-    }, forceFlags)
+    })
   }
 
-  updateSize(totalHeight, isAuto) {
-    this.layout.updateSize(totalHeight, isAuto)
+  updateHeight(totalHeight, isAuto) { // TODO: call updateSize?
+    this.header.updateSize()
+    this.layout.setHeight(totalHeight, isAuto)
 
     this.applySlotWidth(
       this.computeSlotWidth()
     )
 
-    this.slats.buildPositionCaches()
+    this.slats.updateSize()
   }
 
   computeSlotWidth() {
@@ -138,8 +146,7 @@ export default class TimeAxis extends SimpleComponent {
 
   // returned value is between 0 and the number of snaps
   computeDateSnapCoverage(date: DateMarker): number {
-    let dateEnv = this.getDateEnv()
-    let { tDateProfile } = this
+    let { dateEnv, tDateProfile } = this
     let snapDiff = dateEnv.countDurationsBetween(
       tDateProfile.normalizedStart,
       date,

@@ -7,7 +7,7 @@ export interface GroupRowProps {
   spreadsheetColCnt: number
 }
 
-export default class GroupRow extends Row {
+export default class GroupRow extends Row<GroupRowProps> {
 
   spreadsheetHeightEl: HTMLElement
   timeAxisHeightEl: HTMLElement
