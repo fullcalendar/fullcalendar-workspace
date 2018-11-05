@@ -39,7 +39,7 @@ export default class ClippedScroller {
         className: 'fc-scroller-clip'
       })
     )
-    this.enhancedScroll.render()
+
     this.el.appendChild(this.enhancedScroll.el)
   }
 

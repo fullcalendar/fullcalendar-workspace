@@ -102,9 +102,9 @@ export default class ResourceTimelineView extends View {
     this.groupSpecs = groupSpecs
     this.colSpecs = groupColSpecs.concat(plainColSpecs)
     this.orderSpecs = plainOrderSpecs
-  }
 
-  renderSkeleton() {
+    // START RENDERING...
+
     this.el.classList.add('fc-timeline')
     this.el.innerHTML = this.renderSkeletonHtml()
 
@@ -182,7 +182,7 @@ export default class ResourceTimelineView extends View {
       dateProfile: props.dateProfile
     })
 
-    this.lane.render({
+    this.lane.receiveProps({
       dateProfile: props.dateProfile,
       businessHours: hasResourceBusinessHours ? createEmptyEventStore() : props.businessHours, // BAD for caching!?
       eventStore: eventStoresByResourceId[''] || createEmptyEventStore(), // BAD for caching!?

@@ -30,14 +30,10 @@ export default class EnhancedScroller extends ScrollComponent {
     this.isTouchScrollEnabled = true
 
     this.requestMovingEnd = debounce(this.reportMovingEnd, 500)
-  }
 
-
-  render() {
     this.applyOverflow()
 
     if (this.canvas) {
-      this.canvas.render()
       this.el.appendChild(this.canvas.el)
     }
 
