@@ -1,6 +1,5 @@
-import { DateProfile, DateMarker, wholeDivideDurations, isInt, View } from 'fullcalendar'
+import { DateProfile, DateMarker, wholeDivideDurations, isInt, Component, ComponentContext } from 'fullcalendar'
 import HeaderBodyLayout from './HeaderBodyLayout'
-import SimpleComponent from './SimpleComponent'
 import TimelineHeader from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'
 import { TimelineDateProfile, buildTimelineDateProfile } from './timeline-date-profile'
@@ -9,7 +8,7 @@ export interface TimeAxisProps {
   dateProfile: DateProfile
 }
 
-export default class TimeAxis extends SimpleComponent<TimeAxisProps> {
+export default class TimeAxis extends Component<TimeAxisProps> {
 
   // child components
   layout: HeaderBodyLayout
@@ -19,8 +18,8 @@ export default class TimeAxis extends SimpleComponent<TimeAxisProps> {
   // internal state
   tDateProfile: TimelineDateProfile
 
-  constructor(view: View, headerContainerEl, bodyContainerEl) {
-    super(view)
+  constructor(context: ComponentContext, headerContainerEl, bodyContainerEl) {
+    super(context)
 
     let layout = this.layout = new HeaderBodyLayout(
       headerContainerEl,
@@ -29,12 +28,12 @@ export default class TimeAxis extends SimpleComponent<TimeAxisProps> {
     )
 
     this.header = new TimelineHeader(
-      view,
+      context,
       layout.headerScroller.enhancedScroll.canvas.contentEl
     )
 
     this.slats = new TimelineSlats(
-      view,
+      context,
       layout.bodyScroller.enhancedScroll.canvas.bgEl
     )
   }
@@ -52,16 +51,18 @@ export default class TimeAxis extends SimpleComponent<TimeAxisProps> {
       buildTimelineDateProfile(props.dateProfile, this.view) // TODO: cache
 
     this.header.receiveProps({
+      dateProfile: props.dateProfile,
       tDateProfile
     })
 
     this.slats.receiveProps({
+      dateProfile: props.dateProfile,
       tDateProfile
     })
   }
 
-  updateHeight(totalHeight, isAuto) { // TODO: call updateSize?
-    this.header.updateSize()
+  updateSize(totalHeight, isAuto, isResize) {
+    this.header.updateSize(totalHeight, isAuto, isResize)
     this.layout.setHeight(totalHeight, isAuto)
 
     this.applySlotWidth(

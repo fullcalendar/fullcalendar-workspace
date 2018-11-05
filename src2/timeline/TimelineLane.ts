@@ -1,31 +1,34 @@
-import { DateComponent, DateComponentRenderState, RenderForceFlags, Seg, DateRange, intersectRanges, addMs } from 'fullcalendar'
+import { StandardDateComponent, StandardDateComponentProps, ComponentContext, Seg, DateRange, intersectRanges, addMs } from 'fullcalendar'
 import { TimelineDateProfile, normalizeRange, isValidDate } from './timeline-date-profile'
 import TimelineLaneEventRenderer from './TimelineLaneEventRenderer'
 import TimelineLaneFillRenderer from './TimelineLaneFillRenderer'
 import TimeAxis from './TimeAxis'
 
-export default class TimelineLane extends DateComponent {
+export default class TimelineLane extends StandardDateComponent {
 
   tDateProfile: TimelineDateProfile
   timeAxis: TimeAxis
 
-  setParents(fgContainerEl: HTMLElement, bgContainerEl: HTMLElement, timeAxis: TimeAxis) {
-    this.eventRenderer.masterContainerEl = fgContainerEl
-    this.fillRenderer.masterContainerEl = bgContainerEl
+  constructor(context: ComponentContext, fgContainerEl: HTMLElement, bgContainerEl: HTMLElement, timeAxis: TimeAxis) {
+    super(context, bgContainerEl)
+
+    this.fillRenderer = new TimelineLaneFillRenderer(context, bgContainerEl, timeAxis)
+    this.eventRenderer = new TimelineLaneEventRenderer(context, fgContainerEl, timeAxis)
     this.timeAxis = timeAxis
   }
 
-  render(renderState: DateComponentRenderState, forceFlags: RenderForceFlags) {
+  render(renderState: StandardDateComponentProps) {
     this.slicingType = this.timeAxis.tDateProfile.isTimeScale ? 'timed' : 'all-day'
 
-    super.render(renderState, forceFlags)
+    super.render(renderState)
   }
 
   rangeToSegs(origRange: DateRange, allDay: boolean): Seg[] {
     let { timeAxis } = this
     let { tDateProfile } = timeAxis
+    let dateProfile = this.props.dateProfile
     let segs: Seg[] = []
-    let range = normalizeRange(origRange, tDateProfile, this.getDateEnv())
+    let range = normalizeRange(origRange, tDateProfile, this.dateEnv)
 
     // protect against when the span is entirely in an invalid date region
     if (timeAxis.computeDateSnapCoverage(range.start) < timeAxis.computeDateSnapCoverage(range.end)) {
@@ -38,8 +41,8 @@ export default class TimelineLane extends DateComponent {
           component: this,
           start: range.start,
           end: range.end,
-          isStart: range.start.valueOf() === origRange.start.valueOf() && isValidDate(range.start, tDateProfile, this.dateProfile, this.view),
-          isEnd: range.end.valueOf() === origRange.end.valueOf() && isValidDate(addMs(range.end, -1), tDateProfile, this.dateProfile, this.view)
+          isStart: range.start.valueOf() === origRange.start.valueOf() && isValidDate(range.start, tDateProfile, dateProfile, this.view),
+          isEnd: range.end.valueOf() === origRange.end.valueOf() && isValidDate(addMs(range.end, -1), tDateProfile, dateProfile, this.view)
         })
       }
     }
@@ -48,6 +51,3 @@ export default class TimelineLane extends DateComponent {
   }
 
 }
-
-TimelineLane.prototype.fillRendererClass = TimelineLaneFillRenderer
-TimelineLane.prototype.eventRendererClass = TimelineLaneEventRenderer

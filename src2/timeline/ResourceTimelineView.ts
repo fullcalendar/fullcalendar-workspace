@@ -1,4 +1,4 @@
-import { View, createElement, parseFieldSpecs, DateComponentRenderState, createEmptyEventStore, EventDef, EventStore } from 'fullcalendar'
+import { View, ViewSpec, createElement, parseFieldSpecs, createEmptyEventStore, EventDef, EventStore, ComponentContext, DateProfileGenerator, StandardDateComponentProps } from 'fullcalendar'
 import TimeAxis from './TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, isNodesEqual, GroupNode, ResourceNode } from './resource-hierarchy'
@@ -31,8 +31,8 @@ export default class ResourceTimelineView extends View {
   colSpecs: any
   orderSpecs: any
 
-  constructor(calendar, viewSpec) {
-    super(calendar, viewSpec)
+  constructor(context: ComponentContext, viewSpec: ViewSpec, dateProfileGenerator: DateProfileGenerator, parentEl: HTMLElement) {
+    super(context, viewSpec, dateProfileGenerator, parentEl)
 
     let allColSpecs = this.opt('resourceColumns') || []
     let labelText = this.opt('resourceLabelText') // TODO: view.override
@@ -111,13 +111,13 @@ export default class ResourceTimelineView extends View {
     this.miscHeight = this.el.offsetHeight
 
     this.spreadsheet = new Spreadsheet(
-      this,
+      this.context,
       this.el.querySelector('thead .fc-resource-area'),
       this.el.querySelector('tbody .fc-resource-area')
     )
 
     this.timeAxis = new TimeAxis(
-      this,
+      this.context,
       this.el.querySelector('thead .fc-time-area'),
       this.el.querySelector('tbody .fc-time-area')
     )
@@ -126,8 +126,8 @@ export default class ResourceTimelineView extends View {
     this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.contentEl.appendChild(timeAxisRowContainer)
     this.timeAxisTbody = timeAxisRowContainer.querySelector('tbody')
 
-    this.lane = new TimelineLane(this.view)
-    this.lane.setParents(
+    this.lane = new TimelineLane(
+      this.context,
       null,
       this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.bgEl,
       this.timeAxis
@@ -145,7 +145,7 @@ export default class ResourceTimelineView extends View {
   }
 
   renderSkeletonHtml() {
-    let theme = this.getTheme()
+    let { theme } = this
 
     return `<table class="` + theme.getClass('tableGrid') + `"> \
 <thead class="fc-head"> \
@@ -165,11 +165,14 @@ export default class ResourceTimelineView extends View {
 </table>`
   }
 
-  renderChildren(props: DateComponentRenderState, forceFlags) {
+  render(props: StandardDateComponentProps) {
+    super.render(props)
+
+    let resourceStore = (props as any).resourceStore
 
     // not best place for this
     // TODO: cache
-    let hasResourceBusinessHours = this.hasResourceBusinessHours(props.resourceStore)
+    let hasResourceBusinessHours = this.hasResourceBusinessHours(resourceStore)
 
     // TODO: rename. done by PUBLIC ID
     // TODO: cache
@@ -188,16 +191,12 @@ export default class ResourceTimelineView extends View {
       eventSelection: props.eventSelection,
       eventDrag: props.eventDrag,
       eventResize: props.eventResize,
+      resourceStore
+    } as any) // HACK
 
-      // gahhhhh
-      resource: null,
-      resourceStore: null,
-    }, forceFlags)
-
-    this.receiveResourceData(props.resourceStore)
+    this.receiveResourceData(resourceStore)
     this.renderRows(
       props,
-      forceFlags,
       hasResourceBusinessHours ? props.businessHours : null, // CONFUSING, comment
       eventStoresByResourceId
     )
@@ -282,7 +281,7 @@ export default class ResourceTimelineView extends View {
   ) {
     if ((node as GroupNode).group) {
       return new GroupRow(
-        this,
+        this.context,
         spreadsheetTbody,
         spreadsheetNext,
         timeAxisTbody,
@@ -290,7 +289,7 @@ export default class ResourceTimelineView extends View {
       )
     } else if ((node as ResourceNode).resource) {
       return new ResourceRow(
-        this,
+        this.context,
         spreadsheetTbody,
         spreadsheetNext,
         timeAxisTbody,
@@ -300,7 +299,7 @@ export default class ResourceTimelineView extends View {
     }
   }
 
-  renderRows(props: DateComponentRenderState, forceFlags, fallbackBusinessHours, eventStoresByResourceId) {
+  renderRows(props: StandardDateComponentProps, fallbackBusinessHours, eventStoresByResourceId) {
     let { rowNodes, rowComponents } = this
 
     for (let i = 0; i < rowNodes.length; i++) {
@@ -325,8 +324,6 @@ export default class ResourceTimelineView extends View {
           eventSelection: props.eventSelection,
           eventDrag: props.eventDrag,
           eventResize: props.eventResize,
-          resourceStore: null, // gaaaahhhh
-
           resource: (rowNode as ResourceNode).resource,
           resourceFields: (rowNode as ResourceNode).resourceFields,
           rowSpans: (rowNode as ResourceNode).rowSpans,
@@ -338,20 +335,20 @@ export default class ResourceTimelineView extends View {
     }
   }
 
-  updateSize(totalHeight, isAuto, force) {
+  updateSize(viewHeight, isAuto, isResize) {
     // FYI: this ordering is really important
 
     this.syncHeadHeights()
 
-    this.timeAxis.updateHeight(totalHeight - this.miscHeight, isAuto)
-    this.spreadsheet.updateHeight(totalHeight - this.miscHeight, isAuto)
+    this.timeAxis.updateSize(viewHeight - this.miscHeight, isAuto, isResize)
+    this.spreadsheet.updateSize(viewHeight - this.miscHeight, isAuto, isResize)
 
     for (let rowComponent of this.rowComponents) {
-      rowComponent.updateSize()
+      rowComponent.updateSize(viewHeight, isAuto, isResize)
     }
 
     this.syncRowHeights()
-    this.lane.updateSize(totalHeight, isAuto, force)
+    this.lane.updateSize(viewHeight, isAuto, isResize)
     this.bodyScrollJoiner.update()
   }
 
@@ -403,7 +400,7 @@ export default class ResourceTimelineView extends View {
     }
   }
 
-  removeElement() {
+  destroy() {
     for (let rowComponent of this.rowComponents) {
       rowComponent.destroy()
     }
@@ -414,14 +411,14 @@ export default class ResourceTimelineView extends View {
     this.spreadsheet.destroy()
     this.timeAxis.destroy()
 
-    super.removeElement()
+    super.destroy()
   }
 
 }
 
 function removeRows(rowComponents, startRemoveI, endRemoveI) {
   for (let i = startRemoveI; i < endRemoveI; i++) {
-    rowComponents[i].removeElement()
+    rowComponents[i].destroy()
   }
 
   rowComponents.splice(startRemoveI, endRemoveI - startRemoveI)

@@ -1,12 +1,12 @@
-import { isInt, findElements, createElement, findChildren, PositionCache, removeElement, View } from 'fullcalendar'
+import { isInt, findElements, createElement, findChildren, PositionCache, removeElement, getDayClasses, Component, ComponentContext, DateProfile } from 'fullcalendar'
 import { TimelineDateProfile } from './timeline-date-profile'
-import SimpleComponent from './SimpleComponent'
 
 export interface TimelineSlatsProps {
+  dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
 }
 
-export default class TimelineSlats extends SimpleComponent<TimelineSlatsProps> {
+export default class TimelineSlats extends Component<TimelineSlatsProps> {
 
   el: HTMLElement
   slatColEls: HTMLElement[]
@@ -14,8 +14,8 @@ export default class TimelineSlats extends SimpleComponent<TimelineSlatsProps> {
 
   innerCoordCache: PositionCache
 
-  constructor(view: View, parentEl: HTMLElement) {
-    super(view)
+  constructor(context: ComponentContext, parentEl: HTMLElement) {
+    super(context)
 
     parentEl.appendChild(
       this.el = createElement('div', { className: 'fc-slats' })
@@ -85,7 +85,7 @@ export default class TimelineSlats extends SimpleComponent<TimelineSlatsProps> {
           'fc-minor'
       )
     } else {
-      classes = this.getDayClasses(date)
+      classes = getDayClasses(date, this.props.dateProfile, this.context)
       classes.push('fc-day')
     }
 

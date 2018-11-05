@@ -17,7 +17,7 @@ export default class ClippedScroller {
   Received overflows can be set to 'clipped', meaning scrollbars shouldn't be visible
   to the user, but the area should still scroll.
   */
-  constructor(overflowX: string, overflowY: string) { // TODO: move to passing els in constructor
+  constructor(overflowX: string, overflowY: string, parentEl: HTMLElement) {
 
     this.isHScrollbarsClipped = false
     this.isVScrollbarsClipped = false
@@ -33,9 +33,7 @@ export default class ClippedScroller {
     }
 
     this.enhancedScroll = new EnhancedScroller(overflowX, overflowY)
-  }
 
-  setParent(parentEl: HTMLElement) {
     parentEl.appendChild(
       this.el = createElement('div', {
         className: 'fc-scroller-clip'
@@ -45,7 +43,7 @@ export default class ClippedScroller {
     this.el.appendChild(this.enhancedScroll.el)
   }
 
-  removeElement() {
+  destroy() {
     removeElement(this.el)
   }
 

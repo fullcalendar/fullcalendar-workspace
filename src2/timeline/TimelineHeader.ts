@@ -1,19 +1,19 @@
-import { asRoughMs, isSingleDay, findElements, createElement, removeElement, View } from 'fullcalendar'
-import SimpleComponent from './SimpleComponent'
+import { asRoughMs, isSingleDay, findElements, createElement, removeElement, getDayClasses, Component, ComponentContext, DateProfile } from 'fullcalendar'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 export interface TimelineHeaderProps {
+  dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
 }
 
-export default class TimelineHeader extends SimpleComponent<TimelineHeaderProps> {
+export default class TimelineHeader extends Component<TimelineHeaderProps> {
 
   tableEl: HTMLElement
   slatColEls: HTMLElement[]
   innerEls: HTMLElement[]
 
-  constructor(view: View, parentEl: HTMLElement) {
-    super(view)
+  constructor(context: ComponentContext, parentEl: HTMLElement) {
+    super(context)
 
     parentEl.appendChild(
       this.tableEl = createElement('table', {
@@ -61,7 +61,7 @@ export default class TimelineHeader extends SimpleComponent<TimelineHeaderProps>
         }
         if (oneDay) {
           headerCellClassNames = headerCellClassNames.concat(
-            this.getDayClasses(cell.date, true) // adds "today" class and other day-based classes
+            getDayClasses(cell.date, this.props.dateProfile, this.context, true) // adds "today" class and other day-based classes
           )
         }
 

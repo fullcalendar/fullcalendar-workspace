@@ -42,6 +42,11 @@ export default class GroupRow extends Row<GroupRowProps> {
     )
   }
 
+  unrender() {
+    this.spreadsheetTr.innerHTML = ''
+    this.timeAxisTr.innerHTML = ''
+  }
+
   /*
   Renders the content wrapper element that will be inserted into this row's TD cell
   */

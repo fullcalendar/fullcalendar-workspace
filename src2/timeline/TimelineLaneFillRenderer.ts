@@ -1,11 +1,19 @@
-import { FillRenderer, createElement, applyStyle } from 'fullcalendar'
-import TimelineLane from './TimelineLane'
+import { FillRenderer, createElement, applyStyle, ComponentContext } from 'fullcalendar'
+import TimeAxis from './TimeAxis'
 
 export default class TimelineLaneFillRenderer extends FillRenderer {
 
-  masterContainerEl: HTMLElement // must be set by caller
+  timeAxis: TimeAxis
+  masterContainerEl: HTMLElement
 
-  attachSegEls(type, segs) {
+  constructor(context: ComponentContext, masterContainerEl: HTMLElement, timeAxis: TimeAxis) {
+    super(context)
+
+    this.masterContainerEl = masterContainerEl
+    this.timeAxis = timeAxis
+  }
+
+  attachSegs(type, segs) {
     if (segs.length) {
 
       let className
@@ -28,9 +36,9 @@ export default class TimelineLaneFillRenderer extends FillRenderer {
     }
   }
 
-  computeSize(type) {
-    let timeAxis = (this.component as TimelineLane).timeAxis // BAD!
-    let segs = this.renderedSegsByType[type] || []
+  computeSizes(type) {
+    let { timeAxis } = this
+    let segs = this.segsByType[type] || []
 
     for (let seg of segs) {
       let coords = timeAxis.rangeToCoords(seg)
@@ -39,8 +47,8 @@ export default class TimelineLaneFillRenderer extends FillRenderer {
     }
   }
 
-  assignSize(type) {
-    let segs = this.renderedSegsByType[type] || []
+  assignSizes(type) {
+    let segs = this.segsByType[type] || []
 
     for (let seg of segs) {
       applyStyle(seg.el, {

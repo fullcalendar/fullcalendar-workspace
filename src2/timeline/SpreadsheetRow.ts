@@ -1,5 +1,4 @@
-import { htmlToElement, htmlEscape, createElement, View } from 'fullcalendar'
-import SimpleComponent from './SimpleComponent'
+import { htmlToElement, htmlEscape, createElement, Component, ComponentContext } from 'fullcalendar'
 import { Resource } from '../structs/resource'
 
 export interface SpreadsheetRowProps {
@@ -11,13 +10,13 @@ export interface SpreadsheetRowProps {
   colSpecs: any
 }
 
-export default class SpreadsheetRow extends SimpleComponent<SpreadsheetRowProps> {
+export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
 
   tr: HTMLElement
   heightEl: HTMLElement
 
-  constructor(view: View, tr: HTMLElement) {
-    super(view)
+  constructor(context: ComponentContext, tr: HTMLElement) {
+    super(context)
 
     this.tr = tr
   }

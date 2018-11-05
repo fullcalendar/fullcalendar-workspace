@@ -12,13 +12,11 @@ export default class HeaderBodyLayout {
   verticalScroll = 'auto' | 'clipped-scroll'
   */
   constructor(headerContainerEl, bodyContainerEl, verticalScroll) {
-    this.headerScroller = new ClippedScroller('clipped-scroll', 'hidden')
+    this.headerScroller = new ClippedScroller('clipped-scroll', 'hidden', headerContainerEl)
     this.headerScroller.enhancedScroll.canvas = new ScrollerCanvas()
-    this.headerScroller.setParent(headerContainerEl)
 
-    this.bodyScroller = new ClippedScroller('auto', verticalScroll)
+    this.bodyScroller = new ClippedScroller('auto', verticalScroll, bodyContainerEl)
     this.bodyScroller.enhancedScroll.canvas = new ScrollerCanvas()
-    this.bodyScroller.setParent(bodyContainerEl)
 
     this.scrollJoiner = new ScrollJoiner('horizontal', [
       this.headerScroller,
@@ -27,8 +25,8 @@ export default class HeaderBodyLayout {
   }
 
   destroy() {
-    this.headerScroller.removeElement()
-    this.bodyScroller.removeElement()
+    this.headerScroller.destroy()
+    this.bodyScroller.destroy()
   }
 
   setHeight(totalHeight, isAuto) {

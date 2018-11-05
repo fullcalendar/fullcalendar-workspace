@@ -1,5 +1,6 @@
 import { computeVisibleDayRange, Duration, View, DateProfile, isSingleDay, addDays, wholeDivideDurations, warn, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, htmlEscape } from 'fullcalendar'
 import * as core from 'fullcalendar'
+import { buildGotoAnchorHtml } from 'fullcalendar'
 
 
 export interface TimelineDateProfile {
@@ -61,7 +62,7 @@ const STOCK_SUB_DURATIONS = [ // from largest to smallest
 
 
 export function buildTimelineDateProfile(dateProfile: DateProfile, view: View): TimelineDateProfile {
-  let dateEnv = view.getDateEnv()
+  let dateEnv = view.dateEnv
   let tDateProfile = {
     labelInterval: queryDurationOption(view, 'slotLabelInterval'),
     slotDuration: queryDurationOption(view, 'slotDuration')
@@ -242,7 +243,7 @@ export function normalizeRange(range: DateRange, tDateProfile: TimelineDateProfi
 
 
 export function isValidDate(date: DateMarker, tDateProfile: TimelineDateProfile, dateProfile: DateProfile, view: View) {
-  if (view.isHiddenDay(date)) {
+  if (view.dateProfileGenerator.isHiddenDay(date)) {
     return false
   } else if (tDateProfile.isTimeScale) {
     // determine if the time is within minTime/maxTime, which may have wacky values
@@ -583,7 +584,8 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, view
 
 
 function buildCellObject(date: DateMarker, text, rowUnit, view: View): TimelineHeaderCell {
-  const spanHtml = view.buildGotoAnchorHtml(
+  const spanHtml = buildGotoAnchorHtml(
+    view,
     {
       date,
       type: rowUnit,

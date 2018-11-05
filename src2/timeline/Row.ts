@@ -1,19 +1,18 @@
-import { View, removeElement } from 'fullcalendar'
-import SimpleComponent from './SimpleComponent'
+import { removeElement, Component, ComponentContext } from 'fullcalendar'
 
-export default abstract class Row<PropsType> extends SimpleComponent<PropsType> {
+export default abstract class Row<PropsType> extends Component<PropsType> {
 
   spreadsheetTr: HTMLElement
   timeAxisTr: HTMLElement
 
   constructor(
-    view: View,
+    context: ComponentContext,
     spreadsheetParent: HTMLElement,
     spreadsheetNextSibling: HTMLElement,
     timeAxisParent: HTMLElement,
     timeAxisNextSibling: HTMLElement
   ) {
-    super(view)
+    super(context)
 
     spreadsheetParent.insertBefore(
       this.spreadsheetTr = document.createElement('tr'),

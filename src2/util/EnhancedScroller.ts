@@ -45,8 +45,8 @@ export default class EnhancedScroller extends ScrollComponent {
   }
 
 
-  removeElement() {
-    super.removeElement()
+  destroy() {
+    super.destroy()
     this.unbindHandlers()
   }
 

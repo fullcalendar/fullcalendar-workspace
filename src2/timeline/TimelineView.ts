@@ -1,4 +1,4 @@
-import { View, DateComponentRenderState, RenderForceFlags } from 'fullcalendar'
+import { View, StandardDateComponentProps } from 'fullcalendar'
 import TimeAxis from './TimeAxis'
 import TimelineLane from './TimelineLane'
 
@@ -13,13 +13,13 @@ export default class TimelineView extends View {
     this.el.innerHTML = this.renderSkeletonHtml()
 
     this.timeAxis = new TimeAxis(
-      this.view,
+      this.context,
       this.el.querySelector('thead .fc-time-area'),
       this.el.querySelector('tbody .fc-time-area')
     )
 
-    this.lane = new TimelineLane(this.view)
-    this.lane.setParents(
+    this.lane = new TimelineLane(
+      this.context,
       this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.contentEl,
       this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.bgEl,
       this.timeAxis
@@ -27,7 +27,7 @@ export default class TimelineView extends View {
   }
 
   renderSkeletonHtml() {
-    let theme = this.getTheme()
+    let { theme } = this
 
     return `<table class="` + theme.getClass('tableGrid') + `"> \
 <thead class="fc-head"> \
@@ -43,24 +43,26 @@ export default class TimelineView extends View {
 </table>`
   }
 
-  renderChildren(props: DateComponentRenderState, forceFlags: RenderForceFlags) {
+  render(props: StandardDateComponentProps) {
+    super.render(props)
+
     this.timeAxis.receiveProps({
       dateProfile: props.dateProfile
     })
 
-    this.lane.render(props, forceFlags)
+    this.lane.render(props)
   }
 
-  updateSize(totalHeight, isAuto, force) {
-    this.timeAxis.updateHeight(totalHeight, isAuto)
-    this.lane.updateSize(totalHeight, isAuto, force)
+  updateSize(totalHeight, isAuto, isResize) {
+    this.timeAxis.updateSize(totalHeight, isAuto, isResize)
+    this.lane.updateSize(totalHeight, isAuto, isResize)
   }
 
-  removeElement() {
+  destroy() {
     this.timeAxis.destroy()
-    this.lane.removeElement() // TODO: doesn't work with two containers
+    this.lane.destroy() // TODO: doesn't work with two containers
 
-    super.removeElement()
+    super.destroy()
   }
 
 }

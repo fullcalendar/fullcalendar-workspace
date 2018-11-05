@@ -1,6 +1,5 @@
-import { createElement, View } from 'fullcalendar'
+import { createElement, Component, ComponentContext } from 'fullcalendar'
 import SpreadsheetHeader from './SpreadsheetHeader'
-import SimpleComponent from './SimpleComponent'
 import HeaderBodyLayout from './HeaderBodyLayout'
 
 export interface SpreadsheetProps {
@@ -8,7 +7,7 @@ export interface SpreadsheetProps {
   colSpecs: any
 }
 
-export default class Spreadsheet extends SimpleComponent<SpreadsheetProps> {
+export default class Spreadsheet extends Component<SpreadsheetProps> {
 
   header: SpreadsheetHeader
   layout: HeaderBodyLayout
@@ -17,8 +16,8 @@ export default class Spreadsheet extends SimpleComponent<SpreadsheetProps> {
   bodyColGroup: HTMLElement
   bodyTbody: HTMLElement
 
-  constructor(view: View, headParentEl: HTMLElement, bodyParentEl: HTMLElement) {
-    super(view)
+  constructor(context: ComponentContext, headParentEl: HTMLElement, bodyParentEl: HTMLElement) {
+    super(context)
 
     this.layout = new HeaderBodyLayout(
       headParentEl,
@@ -27,7 +26,7 @@ export default class Spreadsheet extends SimpleComponent<SpreadsheetProps> {
     )
 
     this.header = new SpreadsheetHeader(
-      view,
+      context,
       this.layout.headerScroller.enhancedScroll.canvas.contentEl
     )
 
@@ -54,15 +53,23 @@ export default class Spreadsheet extends SimpleComponent<SpreadsheetProps> {
   }
 
   render(props: SpreadsheetProps) {
-    let colTags = this.renderColTags(props.colSpecs)
+    this.subrender('renderCells', [ props.superHeaderText, props.colSpecs ], 'unrenderCells')
+  }
+
+  renderCells(superHeaderText, colSpecs) {
+    let colTags = this.renderColTags(colSpecs)
 
     this.header.receiveProps({
-      superHeaderText: props.superHeaderText,
-      colSpecs: props.colSpecs,
+      superHeaderText: superHeaderText,
+      colSpecs: colSpecs,
       colTags
     })
 
     this.bodyColGroup.innerHTML = colTags
+  }
+
+  unrenderCells() {
+    this.bodyColGroup.innerHTML = ''
   }
 
   renderColTags(colSpecs) {
@@ -79,8 +86,8 @@ export default class Spreadsheet extends SimpleComponent<SpreadsheetProps> {
     return html
   }
 
-  updateHeight(totalHeight, isAuto) {
-    this.header.updateSize()
+  updateSize(totalHeight, isAuto, isResize) {
+    this.header.updateSize(totalHeight, isAuto, isResize)
     this.layout.setHeight(totalHeight, isAuto)
   }
 

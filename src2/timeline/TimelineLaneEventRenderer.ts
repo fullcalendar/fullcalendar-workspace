@@ -1,20 +1,28 @@
-import { EventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement } from 'fullcalendar'
-import TimelineLane from './TimelineLane'
+import { FgEventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement, ComponentContext } from 'fullcalendar'
+import TimeAxis from './TimeAxis'
 
-export default class TimelineLaneEventRenderer extends EventRenderer {
+export default class TimelineLaneEventRenderer extends FgEventRenderer {
 
-  masterContainerEl: HTMLElement // must be set by caller
+  timeAxis: TimeAxis
+  masterContainerEl: HTMLElement
   el: HTMLElement
 
-  fgSegHtml(seg) {
+  constructor(context: ComponentContext, masterContainerEl: HTMLElement, timeAxis: TimeAxis) {
+    super(context)
+
+    this.masterContainerEl = masterContainerEl
+    this.timeAxis = timeAxis
+  }
+
+  renderSegHtml(seg, mirrorInfo) {
     let eventRange = seg.eventRange
     let eventDef = eventRange.def
     let eventUi = eventRange.ui
     let isDraggable = eventUi.startEditable
-    let isResizableFromStart = seg.isStart && eventUi.durationEditable && this.opt('eventResizableFromStart')
+    let isResizableFromStart = seg.isStart && eventUi.durationEditable && this.context.options.eventResizableFromStart
     let isResizableFromEnd = seg.isEnd && eventUi.durationEditable
 
-    let classes = this.getSegClasses(seg, isDraggable, isResizableFromStart || isResizableFromEnd)
+    let classes = this.getSegClasses(seg, isDraggable, isResizableFromStart || isResizableFromEnd, mirrorInfo)
     classes.unshift('fc-timeline-event', 'fc-h-event')
 
     let timeText = this.getTimeText(eventRange)
@@ -45,7 +53,7 @@ export default class TimelineLaneEventRenderer extends EventRenderer {
     '</a>'
   }
 
-  renderFgSegs(segs: Seg[]) {
+  attachSegs(segs: Seg[]) {
 
     if (!this.el && this.masterContainerEl) {
       this.el = createElement('div', { className: 'fc-event-container' })
@@ -59,16 +67,15 @@ export default class TimelineLaneEventRenderer extends EventRenderer {
     }
   }
 
-  unrenderFgSegs(segs: Seg[]) {
+  detachSegs(segs: Seg[]) {
     for (let seg of segs) {
       removeElement(seg.el)
     }
   }
 
   // computes AND assigns (assigns the left/right at least). bad
-  computeFgSize() {
-    let timeAxis = (this.component as TimelineLane).timeAxis // BAD!
-    let segs = this.fgSegs
+  computeSizes() {
+    let { segs, timeAxis } = this
 
     for (let seg of segs) {
       let coords = timeAxis.rangeToCoords(seg) // works because Seg has start/end
@@ -80,12 +87,12 @@ export default class TimelineLaneEventRenderer extends EventRenderer {
     }
   }
 
-  assignFgSize() {
+  assignSizes() {
     if (!this.el) {
       return
     }
 
-    let segs = this.fgSegs
+    let { segs } = this
 
     // compute seg verticals
     for (let seg of segs) {

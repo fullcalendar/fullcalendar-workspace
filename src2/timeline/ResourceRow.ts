@@ -1,10 +1,10 @@
-import { View, createElement, DateComponentRenderState } from 'fullcalendar'
+import { createElement, ComponentContext, StandardDateComponentProps } from 'fullcalendar'
 import { Resource } from '../structs/resource'
 import Row from './Row'
 import SpreadsheetRow from './SpreadsheetRow'
 import TimelineLane from './TimelineLane'
 
-export interface ResourceRowProps extends DateComponentRenderState {
+export interface ResourceRowProps extends StandardDateComponentProps {
   resource: Resource
   resourceFields: any
   rowSpans: number[]
@@ -20,10 +20,10 @@ export default class ResourceRow extends Row<ResourceRowProps> {
   spreadsheetRow: SpreadsheetRow
   lane: TimelineLane
 
-  constructor(view: View, a, b, c, d, timeAxis) {
-    super(view, a, b, c, d)
+  constructor(context: ComponentContext, a, b, c, d, timeAxis) {
+    super(context, a, b, c, d)
 
-    this.spreadsheetRow = new SpreadsheetRow(view, this.spreadsheetTr)
+    this.spreadsheetRow = new SpreadsheetRow(context, this.spreadsheetTr)
 
     this.timeAxisTr.appendChild(
       createElement('td', null,
@@ -31,8 +31,8 @@ export default class ResourceRow extends Row<ResourceRowProps> {
       )
     )
 
-    this.lane = new TimelineLane(this.view)
-    this.lane.setParents(
+    this.lane = new TimelineLane(
+      context,
       this.innerContainerEl,
       this.innerContainerEl,
       timeAxis
@@ -40,7 +40,7 @@ export default class ResourceRow extends Row<ResourceRowProps> {
   }
 
   destroy() {
-    this.lane.removeElement()
+    this.lane.destroy()
 
     super.destroy()
   }
@@ -51,11 +51,13 @@ export default class ResourceRow extends Row<ResourceRowProps> {
     this.timeAxisTr.setAttribute('data-resource-id', props.resource.resourceId)
 
     this.spreadsheetRow.receiveProps(props)
-    this.lane.render(props, {}) // TODO: kill force flags
+    this.lane.render(props)
   }
 
-  updateSize() {
-    this.lane.updateSize(0, false, false) // TODO: kill these params
+  updateSize(viewHeight: number, isAuto: boolean, isResize: boolean) {
+    super.updateSize(viewHeight, isAuto, isResize)
+
+    this.lane.updateSize(viewHeight, isAuto, isResize)
   }
 
   getHeightEls() {

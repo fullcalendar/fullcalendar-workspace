@@ -1,5 +1,4 @@
-import { removeElement, createElement, htmlEscape, View } from 'fullcalendar'
-import SimpleComponent from './SimpleComponent'
+import { removeElement, createElement, htmlEscape, Component, ComponentContext } from 'fullcalendar'
 
 export interface SpreadsheetHeaderProps {
   superHeaderText: string
@@ -7,12 +6,12 @@ export interface SpreadsheetHeaderProps {
   colTags: string
 }
 
-export default class SpreadsheetHeader extends SimpleComponent<SpreadsheetHeaderProps> {
+export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps> {
 
   tableEl: HTMLElement
 
-  constructor(view: View, parentEl: HTMLElement) {
-    super(view)
+  constructor(context: ComponentContext, parentEl: HTMLElement) {
+    super(context)
 
     parentEl.appendChild(
       this.tableEl = createElement('table', {
