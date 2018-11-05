@@ -10,7 +10,7 @@ export default class TimelineLane extends StandardDateComponent {
   timeAxis: TimeAxis
 
   constructor(context: ComponentContext, fgContainerEl: HTMLElement, bgContainerEl: HTMLElement, timeAxis: TimeAxis) {
-    super(context, bgContainerEl)
+    super(context, bgContainerEl) // should el be bgContainerEl???
 
     this.fillRenderer = new TimelineLaneFillRenderer(context, bgContainerEl, timeAxis)
     this.eventRenderer = new TimelineLaneEventRenderer(context, fgContainerEl, timeAxis)

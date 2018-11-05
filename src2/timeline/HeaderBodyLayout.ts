@@ -1,6 +1,5 @@
 import ClippedScroller from '../util/ClippedScroller'
 import ScrollJoiner from '../util/ScrollJoiner'
-import ScrollerCanvas from '../util/ScrollerCanvas'
 
 export default class HeaderBodyLayout {
 
@@ -12,11 +11,9 @@ export default class HeaderBodyLayout {
   verticalScroll = 'auto' | 'clipped-scroll'
   */
   constructor(headerContainerEl, bodyContainerEl, verticalScroll) {
-    this.headerScroller = new ClippedScroller('clipped-scroll', 'hidden', headerContainerEl)
-    this.headerScroller.enhancedScroll.canvas = new ScrollerCanvas()
 
+    this.headerScroller = new ClippedScroller('clipped-scroll', 'hidden', headerContainerEl)
     this.bodyScroller = new ClippedScroller('auto', verticalScroll, bodyContainerEl)
-    this.bodyScroller.enhancedScroll.canvas = new ScrollerCanvas()
 
     this.scrollJoiner = new ScrollJoiner('horizontal', [
       this.headerScroller,

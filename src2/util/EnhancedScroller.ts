@@ -31,12 +31,10 @@ export default class EnhancedScroller extends ScrollComponent {
 
     this.requestMovingEnd = debounce(this.reportMovingEnd, 500)
 
+    this.canvas = new ScrollerCanvas()
+    this.el.appendChild(this.canvas.el)
+
     this.applyOverflow()
-
-    if (this.canvas) {
-      this.el.appendChild(this.canvas.el)
-    }
-
     this.bindHandlers()
   }
 

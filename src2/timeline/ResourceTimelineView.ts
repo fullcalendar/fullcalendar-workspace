@@ -190,9 +190,8 @@ export default class ResourceTimelineView extends View {
       dateSelection: (props.dateSelection && !props.dateSelection.resourceId) ? props.dateSelection : null,
       eventSelection: props.eventSelection,
       eventDrag: props.eventDrag,
-      eventResize: props.eventResize,
-      resourceStore
-    } as any) // HACK
+      eventResize: props.eventResize
+    })
 
     this.receiveResourceData(resourceStore)
     this.renderRows(
@@ -259,6 +258,9 @@ export default class ResourceTimelineView extends View {
     this.rowNodes = newRowNodes
   }
 
+  /*
+  rowComponents is the in-progress result
+  */
   addRow(rowComponents, index, rowNode) {
     let nextComponent = rowComponents[index]
     let newComponent = this.buildChildComponent(

@@ -51,7 +51,7 @@ export default class ResourceRow extends Row<ResourceRowProps> {
     this.timeAxisTr.setAttribute('data-resource-id', props.resource.resourceId)
 
     this.spreadsheetRow.receiveProps(props)
-    this.lane.render(props)
+    this.lane.receiveProps(props)
   }
 
   updateSize(viewHeight: number, isAuto: boolean, isResize: boolean) {
