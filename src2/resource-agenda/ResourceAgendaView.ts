@@ -1,4 +1,4 @@
-import { AbstractAgendaView, TimeGrid, DayGrid, DateProfile, DateProfileGenerator, ComponentContext, ViewSpec, TimeGridSlicer, DayGridSlicer, reselector, assignTo, StandardDateComponentProps, parseFieldSpecs, compareByFieldSpecs } from 'fullcalendar'
+import { AbstractAgendaView, TimeGrid, DayGrid, DateProfile, DaySeries, DateProfileGenerator, ComponentContext, ViewSpec, TimeGridSlicer, DayGridSlicer, reselector, assignTo, StandardDateComponentProps, parseFieldSpecs } from 'fullcalendar'
 import ResourceDayHeader from '../common/ResourceDayHeader'
 import { ResourceHash, Resource } from '../structs/resource'
 import { buildRowNodes } from '../timeline/resource-hierarchy'
@@ -90,8 +90,7 @@ export default class AgendaView extends AbstractAgendaView {
 
   buildDayGridSlicer = reselector(function(this: AgendaView, dateProfile: DateProfile) {
     return new DayGridSlicer(
-      dateProfile,
-      this.dateProfileGenerator,
+      new DaySeries(dateProfile.renderRange, this.dateProfileGenerator),
       this.isRtl,
       false
     )
@@ -101,7 +100,6 @@ export default class AgendaView extends AbstractAgendaView {
     return new TimeGridSlicer(
       dateProfile,
       this.dateProfileGenerator,
-      this.isRtl,
       this.dateEnv
     )
   })

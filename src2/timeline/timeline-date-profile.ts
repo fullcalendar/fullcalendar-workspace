@@ -217,7 +217,7 @@ export function normalizeDate(date: DateMarker, tDateProfile: TimelineDateProfil
 export function normalizeRange(range: DateRange, tDateProfile: TimelineDateProfile, dateEnv: DateEnv): DateRange {
 
   if (!tDateProfile.isTimeScale) {
-    range = computeVisibleDayRange(range, createDuration(0))
+    range = computeVisibleDayRange(range)
 
     if (tDateProfile.largeUnit) {
       let dayRange = range // preserve original result
