@@ -1,4 +1,4 @@
-import { View, StandardDateComponentProps } from 'fullcalendar'
+import { View, ViewProps, ComponentContext, ViewSpec, DateProfileGenerator } from 'fullcalendar'
 import TimeAxis from './TimeAxis'
 import TimelineLane from './TimelineLane'
 
@@ -8,7 +8,9 @@ export default class TimelineView extends View {
   timeAxis: TimeAxis
   lane: TimelineLane
 
-  renderSkeleton() {
+  constructor(context: ComponentContext, viewSpec: ViewSpec, dateProfileGenerator: DateProfileGenerator, parentEl: HTMLElement) {
+    super(context, viewSpec, dateProfileGenerator, parentEl)
+
     this.el.classList.add('fc-timeline')
     this.el.innerHTML = this.renderSkeletonHtml()
 
@@ -24,6 +26,13 @@ export default class TimelineView extends View {
       this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.bgEl,
       this.timeAxis
     )
+  }
+
+  destroy() {
+    this.timeAxis.destroy()
+    this.lane.destroy()
+
+    super.destroy()
   }
 
   renderSkeletonHtml() {
@@ -43,7 +52,7 @@ export default class TimelineView extends View {
 </table>`
   }
 
-  render(props: StandardDateComponentProps) {
+  render(props: ViewProps) {
     super.render(props)
 
     this.timeAxis.receiveProps({
@@ -56,13 +65,6 @@ export default class TimelineView extends View {
   updateSize(totalHeight, isAuto, isResize) {
     this.timeAxis.updateSize(totalHeight, isAuto, isResize)
     this.lane.updateSize(totalHeight, isAuto, isResize)
-  }
-
-  destroy() {
-    this.timeAxis.destroy()
-    this.lane.destroy() // TODO: doesn't work with two containers
-
-    super.destroy()
   }
 
 }

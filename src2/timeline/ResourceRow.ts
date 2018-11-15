@@ -1,10 +1,18 @@
-import { createElement, ComponentContext, StandardDateComponentProps } from 'fullcalendar'
+import { createElement, ComponentContext, EventInteractionUiState, DateSpan, EventUiHash, EventStore, DateProfile } from 'fullcalendar'
 import { Resource } from '../structs/resource'
 import Row from './Row'
 import SpreadsheetRow from './SpreadsheetRow'
 import TimelineLane from './TimelineLane'
 
-export interface ResourceRowProps extends StandardDateComponentProps {
+export interface ResourceRowProps {
+  dateProfile: DateProfile | null
+  businessHours: EventStore
+  eventStore: EventStore
+  eventUis: EventUiHash
+  dateSelection: DateSpan | null
+  eventSelection: string
+  eventDrag: EventInteractionUiState | null
+  eventResize: EventInteractionUiState | null
   resource: Resource
   resourceFields: any
   rowSpans: number[]

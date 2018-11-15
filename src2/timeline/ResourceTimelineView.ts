@@ -1,4 +1,4 @@
-import { View, ViewSpec, createElement, parseFieldSpecs, createEmptyEventStore, EventDef, EventStore, ComponentContext, DateProfileGenerator, StandardDateComponentProps } from 'fullcalendar'
+import { View, ViewSpec, ViewProps, createElement, parseFieldSpecs, createEmptyEventStore, EventDef, EventStore, ComponentContext, DateProfileGenerator } from 'fullcalendar'
 import TimeAxis from './TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, isNodesEqual, GroupNode, ResourceNode } from './resource-hierarchy'
@@ -165,7 +165,7 @@ export default class ResourceTimelineView extends View {
 </table>`
   }
 
-  render(props: StandardDateComponentProps) {
+  render(props: ViewProps) {
     super.render(props)
 
     let resourceStore = (props as any).resourceStore
@@ -301,7 +301,7 @@ export default class ResourceTimelineView extends View {
     }
   }
 
-  renderRows(props: StandardDateComponentProps, fallbackBusinessHours, eventStoresByResourceId) {
+  renderRows(props: ViewProps, fallbackBusinessHours, eventStoresByResourceId) {
     let { rowNodes, rowComponents } = this
 
     for (let i = 0; i < rowNodes.length; i++) {
