@@ -1,11 +1,19 @@
-import { AbstractAgendaView, TimeGrid, DayGrid, DateProfile, DaySeries, DateProfileGenerator, ComponentContext, ViewSpec, TimeGridSlicer, DayGridSlicer, reselector, assignTo, StandardDateComponentProps, parseFieldSpecs } from 'fullcalendar'
+import { AbstractAgendaView, ComponentContext, ViewSpec, DateProfileGenerator, ViewProps, reselector, parseFieldSpecs, DateProfile, DayTable, DaySeries } from 'fullcalendar'
 import ResourceDayHeader from '../common/ResourceDayHeader'
-import { ResourceHash, Resource } from '../structs/resource'
 import { buildRowNodes } from '../timeline/resource-hierarchy'
+import { ResourceHash, Resource } from '../structs/resource'
+import { ResourceDayTable, DayResourceTable } from './resource-day-table'
+import ResourceTimeGrid from './ResourceTimeGrid'
+import ResourceDayGrid from './ResourceDayGrid'
 
 export default class AgendaView extends AbstractAgendaView {
 
   header: ResourceDayHeader
+  resourceTimeGrid: ResourceTimeGrid
+  resourceDayGrid: ResourceDayGrid
+
+  flattenResources = reselector(flattenResources)
+  buildResourceDayTable = reselector(buildResourceDayTable)
 
   constructor(
     context: ComponentContext,
@@ -13,7 +21,7 @@ export default class AgendaView extends AbstractAgendaView {
     dateProfileGenerator: DateProfileGenerator,
     parentEl: HTMLElement
   ) {
-    super(context, viewSpec, dateProfileGenerator, parentEl, TimeGrid, DayGrid)
+    super(context, viewSpec, dateProfileGenerator, parentEl)
 
     if (this.opt('columnHeader')) {
       this.header = new ResourceDayHeader(
@@ -21,87 +29,85 @@ export default class AgendaView extends AbstractAgendaView {
         this.el.querySelector('.fc-head-container')
       )
     }
-  }
 
-  destroy() {
-    super.destroy()
+    this.resourceTimeGrid = new ResourceTimeGrid(context, this.timeGrid)
 
-    if (this.header) {
-      this.header.destroy()
+    if (this.dayGrid) {
+      this.resourceDayGrid = new ResourceDayGrid(context, this.dayGrid)
     }
   }
 
-  render(props: StandardDateComponentProps) {
-    super.render(props)
+  render(props: ViewProps) {
+    super.render(props) // for flags for updateSize
 
-    let allDaySeletion = null
-    let timedSelection = null
-
-    if (props.dateSelection) {
-      if (props.dateSelection.allDay) {
-        allDaySeletion = props.dateSelection
-      } else {
-        timedSelection = props.dateSelection
-      }
-    }
-
-    let timeGridSlicer = this.buildTimeGridSlicer(props.dateProfile)
+    let resourceStore = (this.props as any).resourceStore
+    let resources = this.flattenResources(resourceStore, this.opt('resourceOrder'))
+    let resourceDayTable = this.buildResourceDayTable(
+      this.props.dateProfile,
+      this.dateProfileGenerator,
+      resources,
+      this.opt('groupByDateAndResource')
+    )
 
     if (this.header) {
       this.header.receiveProps({
-        resources: this.flattenResources((this.props as any).resourceStore, this.opt('resourceOrder')),
-        dates: timeGridSlicer.daySeries.dates,
+        resources,
+        dates: resourceDayTable.dayTable.headerDates,
         dateProfile: props.dateProfile,
         datesRepDistinctDays: true,
         renderIntroHtml: this.renderHeadIntroHtml
       })
     }
 
-    this.timeGrid.receiveProps(
-      assignTo({}, props, {
-        eventStore: this.filterEventsForTimeGrid(props.eventStore, props.eventUis),
-        dateSelection: timedSelection,
-        eventDrag: this.buildEventDragForTimeGrid(props.eventDrag),
-        eventResize: this.buildEventResizeForTimeGrid(props.eventResize),
-        slicer: timeGridSlicer
-      })
-    )
+    this.resourceTimeGrid.receiveProps({
+      dateProfile: props.dateProfile,
+      resourceDayTable,
+      businessHours: props.businessHours,
+      eventStore: props.eventStore,
+      eventUis: props.eventUis,
+      dateSelection: props.dateSelection,
+      eventSelection: props.eventSelection,
+      eventDrag: props.eventDrag,
+      eventResize: props.eventResize
+    })
 
-    if (this.dayGrid) {
-      this.dayGrid.receiveProps(
-        assignTo({}, props, {
-          eventStore: this.filterEventsForDayGrid(props.eventStore, props.eventUis),
-          dateSelection: allDaySeletion,
-          eventDrag: this.buildEventDragForDayGrid(props.eventDrag),
-          eventResize: this.buildEventResizeForDayGrid(props.eventResize),
-          slicer: this.buildDayGridSlicer(props.dateProfile)
-        })
-      )
+    if (this.resourceDayGrid) {
+      this.resourceDayGrid.receiveProps({
+        dateProfile: props.dateProfile,
+        resourceDayTable,
+        businessHours: props.businessHours,
+        eventStore: props.eventStore,
+        eventUis: props.eventUis,
+        dateSelection: props.dateSelection,
+        eventSelection: props.eventSelection,
+        eventDrag: props.eventDrag,
+        eventResize: props.eventResize,
+        isRigid: false,
+        nextDayThreshold: this.nextDayThreshold
+      })
     }
   }
 
-  flattenResources = reselector(function(resourceStore: ResourceHash, orderInput): Resource[] {
-    // NOTE: abusing this util function. don't need grouping for example
-    return buildRowNodes(resourceStore, [], parseFieldSpecs(orderInput), false)
-      .map(function(node) {
-        return node.resource
-      })
-  })
+}
 
-  buildDayGridSlicer = reselector(function(this: AgendaView, dateProfile: DateProfile) {
-    return new DayGridSlicer(
-      new DaySeries(dateProfile.renderRange, this.dateProfileGenerator),
-      this.isRtl,
-      false
-    )
-  })
+function flattenResources(resourceStore: ResourceHash, orderInput): Resource[] {
+  // NOTE: abusing this util function. don't need grouping for example
+  return buildRowNodes(resourceStore, [], parseFieldSpecs(orderInput), false)
+    .map(function(node) {
+      return node.resource
+    })
+}
 
-  buildTimeGridSlicer = reselector(function(this: AgendaView, dateProfile) {
-    return new TimeGridSlicer(
-      dateProfile,
-      this.dateProfileGenerator,
-      this.dateEnv
-    )
-  })
+function buildResourceDayTable(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator, resources: Resource[], groupByDateAndResource: boolean) {
+  let dayTable = buildDayTable(dateProfile, dateProfileGenerator)
 
+  return groupByDateAndResource ?
+    new DayResourceTable(dayTable, resources) :
+    new ResourceDayTable(dayTable, resources)
+}
+
+function buildDayTable(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator): DayTable {
+  let daySeries = new DaySeries(dateProfile.renderRange, dateProfileGenerator)
+
+  return new DayTable(daySeries, false)
 }
