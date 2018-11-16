@@ -25,6 +25,7 @@ export default class ResourceTimeGrid extends Component<ResourceTimeGridProps> {
     super(context)
 
     this.timeGrid = timeGrid
+    this.slicer.component = timeGrid
   }
 
   render(props: ResourceTimeGridProps) {

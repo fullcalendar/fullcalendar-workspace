@@ -20,12 +20,13 @@ export default class ResourceDayGrid extends Component<ResourceDayGridProps> {
 
   dayGrid: DayGrid
 
-  slicer = new ResourceAwareSlicer(sliceSegs)
+  private slicer = new ResourceAwareSlicer(sliceSegs)
 
   constructor(context: ComponentContext, dayGrid: DayGrid) {
     super(context)
 
     this.dayGrid = dayGrid
+    this.slicer.component = dayGrid
   }
 
   render(props: ResourceDayGridProps) {
