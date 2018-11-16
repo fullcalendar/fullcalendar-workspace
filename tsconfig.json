@@ -15,7 +15,8 @@
     "paths": {
       "jquery": ["node_modules/@types/jquery/index.d.ts"],
       "fullcalendar": ["fullcalendar/dist/fullcalendar.d.ts"]
-    }
+    },
+    "sourceMap": true
   },
   "include": [
     "src2/main.ts"
