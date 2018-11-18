@@ -2,9 +2,9 @@ import { AbstractAgendaView, ComponentContext, ViewSpec, DateProfileGenerator, V
 import ResourceDayHeader from '../common/ResourceDayHeader'
 import { buildRowNodes } from '../timeline/resource-hierarchy'
 import { ResourceHash, Resource } from '../structs/resource'
-import { ResourceDayTable, DayResourceTable } from './resource-day-table'
+import { ResourceDayTable, DayResourceTable } from '../common/resource-day-table'
 import ResourceTimeGrid from './ResourceTimeGrid'
-import ResourceDayGrid from './ResourceDayGrid'
+import ResourceDayGrid from '../resource-basic/ResourceDayGrid'
 
 export default class AgendaView extends AbstractAgendaView {
 

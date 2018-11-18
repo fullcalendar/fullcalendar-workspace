@@ -1,6 +1,6 @@
 import { addMs, DateSpan, Component, TimeGrid, DateProfile, EventStore, EventUiHash, EventInteractionUiState, ComponentContext, reselector, buildDayRanges, sliceTimeGridSegs, DateRange, assignTo, TimeGridSeg, sliceBusinessHours, DateMarker } from "fullcalendar"
-import { AbstractResourceDayTable } from './resource-day-table'
-import { ResourceAwareSlicer } from './resource-aware-slicing'
+import { AbstractResourceDayTable } from '../common/resource-day-table'
+import { ResourceAwareSlicer } from '../common/resource-aware-slicing'
 
 export interface ResourceTimeGridProps {
   dateProfile: DateProfile | null
