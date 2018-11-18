@@ -1,4 +1,4 @@
-import { refineProps, assignTo, createEmptyEventStore, EventStore } from 'fullcalendar'
+import { refineProps, assignTo, EventStore, parseBusinessHours, Calendar } from 'fullcalendar'
 
 export interface ResourceInput {
   id?: string
@@ -15,7 +15,7 @@ export interface Resource {
   publicId: string
   parentId: string
   title: string
-  businessHours: EventStore
+  businessHours: EventStore | null
   extendedProps: { [extendedProp: string]: any }
   // TODO: eventprops
 }
@@ -26,26 +26,27 @@ const RESOURCE_PROPS = {
   id: String,
   title: String,
   parentId: String,
+  businessHours: null,
   children: null
 }
 
 let uid = 0
 
-export function parseResource(input: ResourceInput, parentId: string = '', store: ResourceHash = {}): ResourceHash {
+export function parseResource(input: ResourceInput, parentId: string = '', store: ResourceHash = {}, calendar: Calendar): ResourceHash {
   let resourceId = String(uid++)
   let leftovers = {}
   let props = refineProps(input, RESOURCE_PROPS, {}, leftovers)
 
   if (props.children) {
     for (let childInput of props.children) {
-      parseResource(childInput, resourceId, store)
+      parseResource(childInput, resourceId, store, calendar)
     }
   }
 
   props.resourceId = resourceId
   props.parentId = parentId
   props.publicId = props.id
-  props.businessHours = createEmptyEventStore() // TODO
+  props.businessHours = props.businessHours ? parseBusinessHours(props.businessHours, calendar) : null
   props.extendedProps = assignTo({}, leftovers, props.extendedProps)
 
   delete props.id

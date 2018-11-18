@@ -25,7 +25,7 @@ export type ResourceAction = Action |
 
 export default function(state: CalendarState, action: ResourceAction, calendar: Calendar) {
   let resourceSource = reduceResourceSource(state.resourceSource, action, state.dateProfile, calendar)
-  let resourceStore = reduceResourceStore(state.resourceStore, action, resourceSource)
+  let resourceStore = reduceResourceStore(state.resourceStore, action, resourceSource, calendar)
 
   return assignTo({}, state, {
     resourceSource,

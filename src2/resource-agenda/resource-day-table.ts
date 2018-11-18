@@ -115,11 +115,13 @@ export class DayResourceTable extends AbstractResourceDayTable {
 
 export class ResourceIndex {
 
-  indicesByPublicId: { [resourceId: string]: number }
+  indicedByInternalId: { [resourceId: string]: number }
+  indicesByPublicId: { [publicId: string]: number }
   publicIds: string[]
   length: number
 
   constructor(resources: Resource[]) {
+    let indicedByInternalId = {}
     let indicesByPublicId = {}
     let publicIds = []
 
@@ -127,11 +129,13 @@ export class ResourceIndex {
 
       if (resources[i].publicId) {
         publicIds.push(resources[i].publicId)
+        indicedByInternalId[resources[i].resourceId] = i
         indicesByPublicId[resources[i].publicId] = i
       }
     }
 
     this.publicIds = publicIds
+    this.indicedByInternalId = indicedByInternalId
     this.indicesByPublicId = indicesByPublicId
     this.length = resources.length
   }

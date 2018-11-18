@@ -63,12 +63,12 @@ export default class AgendaView extends AbstractAgendaView {
       dateProfile: props.dateProfile,
       resourceDayTable,
       businessHours: props.businessHours,
-      eventStore: props.eventStore,
+      eventStore: this.filterEventsForTimeGrid(props.eventStore, props.eventUis),
       eventUis: props.eventUis,
       dateSelection: props.dateSelection,
       eventSelection: props.eventSelection,
-      eventDrag: props.eventDrag,
-      eventResize: props.eventResize
+      eventDrag: this.buildEventDragForTimeGrid(props.eventDrag),
+      eventResize: this.buildEventResizeForTimeGrid(props.eventResize)
     })
 
     if (this.resourceDayGrid) {
@@ -76,16 +76,20 @@ export default class AgendaView extends AbstractAgendaView {
         dateProfile: props.dateProfile,
         resourceDayTable,
         businessHours: props.businessHours,
-        eventStore: props.eventStore,
+        eventStore: this.filterEventsForDayGrid(props.eventStore, props.eventUis),
         eventUis: props.eventUis,
         dateSelection: props.dateSelection,
         eventSelection: props.eventSelection,
-        eventDrag: props.eventDrag,
-        eventResize: props.eventResize,
+        eventDrag: this.buildEventDragForDayGrid(props.eventDrag),
+        eventResize: this.buildEventResizeForDayGrid(props.eventResize),
         isRigid: false,
         nextDayThreshold: this.nextDayThreshold
       })
     }
+  }
+
+  renderNowIndicator(date) {
+    this.resourceTimeGrid.renderNowIndicator(date)
   }
 
 }
