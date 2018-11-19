@@ -10,9 +10,9 @@ export interface TimelineLaneSeg extends Seg {
 }
 
 export interface TimelineLaneProps {
-  dateProfile: DateProfile | null
-  businessHours: EventStore
-  eventStore: EventStore
+  dateProfile: DateProfile
+  businessHours: EventStore | null
+  eventStore: EventStore | null
   eventUis: EventUiHash
   dateSelection: DateSpan | null
   eventSelection: string
@@ -44,18 +44,22 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
   }
 
   renderEvents(eventStore: EventStore, eventUis: EventUiHash) {
-    this.renderEventSegs(
-      eventStoreToSegs(eventStore, eventUis, this.timeAxis)
-    )
+    if (eventStore) {
+      this.renderEventSegs(
+        eventStoreToSegs(eventStore, eventUis, this.timeAxis)
+      )
+    }
   }
 
   renderBusinessHours(businessHours: EventStore, dateProfile: DateProfile) {
-    this.renderBusinessHourSegs(
-      eventRangesToSegs(
-        sliceBusinessHours(businessHours, dateProfile.activeRange, null, this.calendar),
-        this.timeAxis
+    if (businessHours) {
+      this.renderBusinessHourSegs(
+        eventRangesToSegs(
+          sliceBusinessHours(businessHours, dateProfile.activeRange, null, this.calendar),
+          this.timeAxis
+        )
       )
-    )
+    }
   }
 
   renderDateSelection(selection: DateSpan) {

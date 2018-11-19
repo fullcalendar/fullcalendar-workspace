@@ -1,4 +1,4 @@
-import { View, ViewSpec, ViewProps, createElement, parseFieldSpecs, createEmptyEventStore, EventDef, EventStore, ComponentContext, DateProfileGenerator } from 'fullcalendar'
+import { View, ViewSpec, ViewProps, createElement, parseFieldSpecs, createEmptyEventStore, EventStore, ComponentContext, DateProfileGenerator, reselector } from 'fullcalendar'
 import TimeAxis from './TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, isNodesEqual, GroupNode, ResourceNode } from '../common/resource-hierarchy'
@@ -7,6 +7,7 @@ import ResourceRow from './ResourceRow'
 import ScrollJoiner from '../util/ScrollJoiner'
 import Spreadsheet from './Spreadsheet'
 import TimelineLane from './TimelineLane'
+import { extractEventResourceIds } from '../common/resource-aware-slicing'
 
 const LOOKAHEAD = 3
 
@@ -30,6 +31,9 @@ export default class ResourceTimelineView extends View {
   groupSpecs: any
   colSpecs: any
   orderSpecs: any
+
+  private hasResourceBusinessHours = reselector(hasResourceBusinessHours)
+  private splitEventStores = reselector(splitEventStores)
 
   constructor(context: ComponentContext, viewSpec: ViewSpec, dateProfileGenerator: DateProfileGenerator, parentEl: HTMLElement) {
     super(context, viewSpec, dateProfileGenerator, parentEl)
@@ -170,13 +174,8 @@ export default class ResourceTimelineView extends View {
 
     let resourceStore = (props as any).resourceStore
 
-    // not best place for this
-    // TODO: cache
     let hasResourceBusinessHours = this.hasResourceBusinessHours(resourceStore)
-
-    // TODO: rename. done by PUBLIC ID
-    // TODO: cache
-    let eventStoresByResourceId = splitEventStores(props.eventStore)
+    let eventStoresByResourceId = this.splitEventStores(props.eventStore)
 
     this.timeAxis.receiveProps({
       dateProfile: props.dateProfile
@@ -184,8 +183,8 @@ export default class ResourceTimelineView extends View {
 
     this.lane.receiveProps({
       dateProfile: props.dateProfile,
-      businessHours: hasResourceBusinessHours ? createEmptyEventStore() : props.businessHours, // BAD for caching!?
-      eventStore: eventStoresByResourceId[''] || createEmptyEventStore(), // BAD for caching!?
+      businessHours: hasResourceBusinessHours ? null : props.businessHours,
+      eventStore: eventStoresByResourceId[''] || null,
       eventUis: props.eventUis,
       dateSelection: (props.dateSelection && !props.dateSelection.resourceId) ? props.dateSelection : null,
       eventSelection: props.eventSelection,
@@ -199,18 +198,6 @@ export default class ResourceTimelineView extends View {
       hasResourceBusinessHours ? props.businessHours : null, // CONFUSING, comment
       eventStoresByResourceId
     )
-  }
-
-  hasResourceBusinessHours(resourceStore: ResourceHash) {
-    for (let resourceId in resourceStore) {
-      let resource = resourceStore[resourceId]
-
-      if (resource.businessHours) {
-        return true
-      }
-    }
-
-    return false
   }
 
   receiveResourceData(resourceStore: ResourceHash) {
@@ -301,7 +288,7 @@ export default class ResourceTimelineView extends View {
     }
   }
 
-  renderRows(props: ViewProps, fallbackBusinessHours, eventStoresByResourceId) {
+  renderRows(viewProps: ViewProps, fallbackBusinessHours, eventStoresByResourceId) {
     let { rowNodes, rowComponents } = this
 
     for (let i = 0; i < rowNodes.length; i++) {
@@ -314,19 +301,20 @@ export default class ResourceTimelineView extends View {
           spreadsheetColCnt: this.colSpecs.length
         })
       } else {
+        let resource = (rowNode as ResourceNode).resource
         let resourceId = (rowNode as ResourceNode).resource.resourceId
         let resourcePublicId = (rowNode as ResourceNode).resource.publicId;
 
         (rowComponent as ResourceRow).receiveProps({
-          dateProfile: props.dateProfile,
-          businessHours: props.businessHours || fallbackBusinessHours,
-          eventStore: (resourcePublicId && eventStoresByResourceId[resourcePublicId]) || createEmptyEventStore(), // TODO: bad for caching
-          eventUis: props.eventUis,
-          dateSelection: (props.dateSelection && props.dateSelection.resourceId === resourceId) ? props.dateSelection : null,
-          eventSelection: props.eventSelection,
-          eventDrag: props.eventDrag,
-          eventResize: props.eventResize,
-          resource: (rowNode as ResourceNode).resource,
+          dateProfile: viewProps.dateProfile,
+          businessHours: resource.businessHours || fallbackBusinessHours,
+          eventStore: (resourcePublicId && eventStoresByResourceId[resourcePublicId]) || null,
+          eventUis: viewProps.eventUis,
+          dateSelection: (viewProps.dateSelection && viewProps.dateSelection.resourceId === resourceId) ? viewProps.dateSelection : null,
+          eventSelection: viewProps.eventSelection,
+          eventDrag: viewProps.eventDrag,
+          eventResize: viewProps.eventResize,
+          resource,
           resourceFields: (rowNode as ResourceNode).resourceFields,
           rowSpans: (rowNode as ResourceNode).rowSpans,
           depth: (rowNode as ResourceNode).depth,
@@ -463,13 +451,14 @@ function splitEventStores(eventStore: EventStore) {
   return eventStoresByResourceId
 }
 
-function extractEventResourceIds(def: EventDef) {
-  let resourceIds = def.extendedProps.resourceIds || [] /// put in real Def object?
-  let resourceId = def.extendedProps.resourceId
+function hasResourceBusinessHours(resourceStore: ResourceHash) {
+  for (let resourceId in resourceStore) {
+    let resource = resourceStore[resourceId]
 
-  if (resourceId) {
-    resourceIds.push(resourceId)
+    if (resource.businessHours) {
+      return true
+    }
   }
 
-  return resourceIds
+  return false
 }

@@ -1,4 +1,4 @@
-import { AbstractAgendaView, ComponentContext, ViewSpec, DateProfileGenerator, ViewProps, reselector, parseFieldSpecs, DateProfile, DayTable, DaySeries } from 'fullcalendar'
+import { AbstractAgendaView, ComponentContext, ViewSpec, DateProfileGenerator, ViewProps, reselector, parseFieldSpecs, DateProfile, buildAgendaDayTable } from 'fullcalendar'
 import ResourceDayHeader from '../common/ResourceDayHeader'
 import { flattenResources } from '../common/resource-hierarchy'
 import { Resource } from '../structs/resource'
@@ -106,15 +106,9 @@ export default class ResourceAgendaView extends AbstractAgendaView {
 }
 
 function buildResourceDayTable(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator, resources: Resource[], groupByDateAndResource: boolean) {
-  let dayTable = buildDayTable(dateProfile, dateProfileGenerator)
+  let dayTable = buildAgendaDayTable(dateProfile, dateProfileGenerator)
 
   return groupByDateAndResource ?
     new DayResourceTable(dayTable, resources) :
     new ResourceDayTable(dayTable, resources)
-}
-
-function buildDayTable(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator): DayTable {
-  let daySeries = new DaySeries(dateProfile.renderRange, dateProfileGenerator)
-
-  return new DayTable(daySeries, false)
 }

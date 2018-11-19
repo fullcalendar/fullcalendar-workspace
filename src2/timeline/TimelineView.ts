@@ -59,7 +59,7 @@ export default class TimelineView extends View {
       dateProfile: props.dateProfile
     })
 
-    this.lane.receiveProps(props)
+    this.lane.receiveProps(props) // props definitions match exactly
   }
 
   updateSize(totalHeight, isAuto, isResize) {

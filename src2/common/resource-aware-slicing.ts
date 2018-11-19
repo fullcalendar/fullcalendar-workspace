@@ -30,6 +30,7 @@ export class ResourceAwareSlicer<OtherArgsType extends any[], SegType extends Se
 
 
 // BAD!
+// done by resource PUBLIC id
 export function extractEventResourceIds(def: EventDef) {
   let resourceIds = def.extendedProps.resourceIds || [] /// put in real Def object?
   let resourceId = def.extendedProps.resourceId

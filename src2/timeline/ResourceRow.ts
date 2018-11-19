@@ -5,9 +5,9 @@ import SpreadsheetRow from './SpreadsheetRow'
 import TimelineLane from './TimelineLane'
 
 export interface ResourceRowProps {
-  dateProfile: DateProfile | null
-  businessHours: EventStore
-  eventStore: EventStore
+  dateProfile: DateProfile
+  businessHours: EventStore | null
+  eventStore: EventStore | null
   eventUis: EventUiHash
   dateSelection: DateSpan | null
   eventSelection: string
@@ -48,6 +48,7 @@ export default class ResourceRow extends Row<ResourceRowProps> {
   }
 
   destroy() {
+    this.spreadsheetRow.destroy()
     this.lane.destroy()
 
     super.destroy()
@@ -55,11 +56,30 @@ export default class ResourceRow extends Row<ResourceRowProps> {
 
   render(props: ResourceRowProps) {
 
-    // TODO: use public ID?
-    this.timeAxisTr.setAttribute('data-resource-id', props.resource.resourceId)
+    this.timeAxisTr.setAttribute(
+      'data-resource-id',
+      props.resource.publicId || ''
+    )
 
-    this.spreadsheetRow.receiveProps(props)
-    this.lane.receiveProps(props)
+    this.spreadsheetRow.receiveProps({
+      resource: props.resource,
+      resourceFields: props.resourceFields,
+      rowSpans: props.rowSpans,
+      depth: props.depth,
+      hasChildren: props.hasChildren,
+      colSpecs: props.colSpecs
+    })
+
+    this.lane.receiveProps({
+      dateProfile: props.dateProfile,
+      businessHours: props.businessHours,
+      eventStore: props.eventStore,
+      eventUis: props.eventUis,
+      dateSelection: props.dateSelection,
+      eventSelection: props.eventSelection,
+      eventDrag: props.eventDrag,
+      eventResize: props.eventResize
+    })
   }
 
   updateSize(viewHeight: number, isAuto: boolean, isResize: boolean) {
