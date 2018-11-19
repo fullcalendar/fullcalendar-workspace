@@ -1,5 +1,5 @@
 import { prependToElement, createElement } from 'fullcalendar'
-import { Group } from './resource-hierarchy'
+import { Group } from '../common/resource-hierarchy'
 import Row from './Row'
 
 export interface GroupRowProps {

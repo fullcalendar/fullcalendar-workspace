@@ -1,6 +1,6 @@
 import { AbstractBasicView, ComponentContext, ViewSpec, DateProfileGenerator, ViewProps, reselector, parseFieldSpecs, DateProfile, DayTable, DaySeries } from 'fullcalendar'
 import ResourceDayHeader from '../common/ResourceDayHeader'
-import { buildRowNodes } from '../timeline/resource-hierarchy'
+import { buildRowNodes } from '../common/resource-hierarchy'
 import { ResourceHash, Resource } from '../structs/resource'
 import { ResourceDayTable, DayResourceTable } from '../common/resource-day-table'
 import ResourceDayGrid from './ResourceDayGrid'

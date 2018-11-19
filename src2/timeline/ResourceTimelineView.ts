@@ -1,7 +1,7 @@
 import { View, ViewSpec, ViewProps, createElement, parseFieldSpecs, createEmptyEventStore, EventDef, EventStore, ComponentContext, DateProfileGenerator } from 'fullcalendar'
 import TimeAxis from './TimeAxis'
 import { ResourceHash } from '../structs/resource'
-import { buildRowNodes, isNodesEqual, GroupNode, ResourceNode } from './resource-hierarchy'
+import { buildRowNodes, isNodesEqual, GroupNode, ResourceNode } from '../common/resource-hierarchy'
 import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'
 import ScrollJoiner from '../util/ScrollJoiner'
