@@ -7,6 +7,7 @@ import './resource-sources/resource-func'
 import './resource-sources/resource-json-feed'
 import './timeline/config'
 import './resource-agenda/config'
+import './resource-basic/config'
 
 export const ResourcesPlugin = exportHooks.createPlugin({
   reducers: [ resourcesReducers ]

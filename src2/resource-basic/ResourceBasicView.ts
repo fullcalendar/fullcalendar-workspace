@@ -1,15 +1,13 @@
-import { AbstractAgendaView, ComponentContext, ViewSpec, DateProfileGenerator, ViewProps, reselector, parseFieldSpecs, DateProfile, DayTable, DaySeries } from 'fullcalendar'
+import { AbstractBasicView, ComponentContext, ViewSpec, DateProfileGenerator, ViewProps, reselector, parseFieldSpecs, DateProfile, DayTable, DaySeries } from 'fullcalendar'
 import ResourceDayHeader from '../common/ResourceDayHeader'
 import { buildRowNodes } from '../timeline/resource-hierarchy'
 import { ResourceHash, Resource } from '../structs/resource'
 import { ResourceDayTable, DayResourceTable } from '../common/resource-day-table'
-import ResourceTimeGrid from './ResourceTimeGrid'
-import ResourceDayGrid from '../resource-basic/ResourceDayGrid'
+import ResourceDayGrid from './ResourceDayGrid'
 
-export default class AgendaView extends AbstractAgendaView {
+export default class AgendaView extends AbstractBasicView {
 
   header: ResourceDayHeader
-  resourceTimeGrid: ResourceTimeGrid
   resourceDayGrid: ResourceDayGrid
 
   flattenResources = reselector(flattenResources)
@@ -29,8 +27,6 @@ export default class AgendaView extends AbstractAgendaView {
         this.el.querySelector('.fc-head-container')
       )
     }
-
-    this.resourceTimeGrid = new ResourceTimeGrid(context, this.timeGrid)
 
     if (this.dayGrid) {
       this.resourceDayGrid = new ResourceDayGrid(context, this.dayGrid)
@@ -67,40 +63,25 @@ export default class AgendaView extends AbstractAgendaView {
       })
     }
 
-    this.resourceTimeGrid.receiveProps({
+    this.resourceDayGrid.receiveProps({
       dateProfile: props.dateProfile,
       resourceDayTable,
       businessHours: props.businessHours,
-      eventStore: this.filterEventsForTimeGrid(props.eventStore, props.eventUis),
+      eventStore: props.eventStore,
       eventUis: props.eventUis,
       dateSelection: props.dateSelection,
       eventSelection: props.eventSelection,
-      eventDrag: this.buildEventDragForTimeGrid(props.eventDrag),
-      eventResize: this.buildEventResizeForTimeGrid(props.eventResize)
+      eventDrag: props.eventDrag,
+      eventResize: props.eventResize,
+      isRigid: this.hasRigidRows(),
+      nextDayThreshold: this.nextDayThreshold
     })
-
-    if (this.resourceDayGrid) {
-      this.resourceDayGrid.receiveProps({
-        dateProfile: props.dateProfile,
-        resourceDayTable,
-        businessHours: props.businessHours,
-        eventStore: this.filterEventsForDayGrid(props.eventStore, props.eventUis),
-        eventUis: props.eventUis,
-        dateSelection: props.dateSelection,
-        eventSelection: props.eventSelection,
-        eventDrag: this.buildEventDragForDayGrid(props.eventDrag),
-        eventResize: this.buildEventResizeForDayGrid(props.eventResize),
-        isRigid: false,
-        nextDayThreshold: this.nextDayThreshold
-      })
-    }
-  }
-
-  renderNowIndicator(date) {
-    this.resourceTimeGrid.renderNowIndicator(date)
   }
 
 }
+
+
+// TODO: make utils!!!...
 
 function flattenResources(resourceStore: ResourceHash, orderInput): Resource[] {
   // NOTE: abusing this util function. don't need grouping for example
@@ -121,5 +102,8 @@ function buildResourceDayTable(dateProfile: DateProfile, dateProfileGenerator: D
 function buildDayTable(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator): DayTable {
   let daySeries = new DaySeries(dateProfile.renderRange, dateProfileGenerator)
 
-  return new DayTable(daySeries, false)
+  return new DayTable(
+    daySeries,
+    /year|month|week/.test(dateProfile.currentRangeUnit)
+  )
 }
