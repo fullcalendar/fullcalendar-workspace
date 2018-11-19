@@ -33,6 +33,16 @@ export interface ResourceNode {
   resourceFields: any
 }
 
+/*
+doesn't accept grouping
+*/
+export function flattenResources(resourceStore: ResourceHash, orderSpecs): Resource[] {
+  return buildRowNodes(resourceStore, [], orderSpecs, false)
+    .map(function(node) {
+      return node.resource
+    })
+}
+
 export function buildRowNodes(resourceStore: ResourceHash, groupSpecs, orderSpecs, isVGrouping: boolean) {
   let complexNodes = buildHierarchy(resourceStore, isVGrouping ? -1 : 1, groupSpecs, orderSpecs)
   let flatNodes = []

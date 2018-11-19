@@ -1,19 +1,20 @@
 import { AbstractAgendaView, ComponentContext, ViewSpec, DateProfileGenerator, ViewProps, reselector, parseFieldSpecs, DateProfile, DayTable, DaySeries } from 'fullcalendar'
 import ResourceDayHeader from '../common/ResourceDayHeader'
-import { buildRowNodes } from '../common/resource-hierarchy'
-import { ResourceHash, Resource } from '../structs/resource'
+import { flattenResources } from '../common/resource-hierarchy'
+import { Resource } from '../structs/resource'
 import { ResourceDayTable, DayResourceTable } from '../common/resource-day-table'
 import ResourceTimeGrid from './ResourceTimeGrid'
 import ResourceDayGrid from '../resource-basic/ResourceDayGrid'
 
-export default class AgendaView extends AbstractAgendaView {
+export default class ResourceAgendaView extends AbstractAgendaView {
 
   header: ResourceDayHeader
   resourceTimeGrid: ResourceTimeGrid
   resourceDayGrid: ResourceDayGrid
 
-  flattenResources = reselector(flattenResources)
-  buildResourceDayTable = reselector(buildResourceDayTable)
+  private resourceOrderSpecs: any
+  private flattenResources = reselector(flattenResources)
+  private buildResourceDayTable = reselector(buildResourceDayTable)
 
   constructor(
     context: ComponentContext,
@@ -22,6 +23,8 @@ export default class AgendaView extends AbstractAgendaView {
     parentEl: HTMLElement
   ) {
     super(context, viewSpec, dateProfileGenerator, parentEl)
+
+    this.resourceOrderSpecs = parseFieldSpecs(this.opt('resourceOrder'))
 
     if (this.opt('columnHeader')) {
       this.header = new ResourceDayHeader(
@@ -49,7 +52,7 @@ export default class AgendaView extends AbstractAgendaView {
     super.render(props) // for flags for updateSize
 
     let resourceStore = (this.props as any).resourceStore
-    let resources = this.flattenResources(resourceStore, this.opt('resourceOrder'))
+    let resources = this.flattenResources(resourceStore, this.resourceOrderSpecs)
     let resourceDayTable = this.buildResourceDayTable(
       this.props.dateProfile,
       this.dateProfileGenerator,
@@ -100,14 +103,6 @@ export default class AgendaView extends AbstractAgendaView {
     this.resourceTimeGrid.renderNowIndicator(date)
   }
 
-}
-
-function flattenResources(resourceStore: ResourceHash, orderInput): Resource[] {
-  // NOTE: abusing this util function. don't need grouping for example
-  return buildRowNodes(resourceStore, [], parseFieldSpecs(orderInput), false)
-    .map(function(node) {
-      return node.resource
-    })
 }
 
 function buildResourceDayTable(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator, resources: Resource[], groupByDateAndResource: boolean) {
