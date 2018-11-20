@@ -1,4 +1,4 @@
-import { PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, createEmptyEventStore, EventStore, ComponentContext, DateProfileGenerator, reselector, assignTo, EventInteractionUiState } from 'fullcalendar'
+import { PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, reselector, assignTo, EventInteractionUiState } from 'fullcalendar'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
@@ -7,7 +7,7 @@ import ResourceRow from './ResourceRow'
 import ScrollJoiner from '../util/ScrollJoiner'
 import Spreadsheet from './Spreadsheet'
 import TimelineLane from '../timeline/TimelineLane'
-import { extractEventResourceIds } from '../common/resource-aware-slicing'
+import { splitEventStores, splitEventInteraction } from './event-splitting'
 
 const LOOKAHEAD = 3
 
@@ -582,77 +582,6 @@ export default class ResourceTimelineView extends View {
 
 ResourceTimelineView.prototype.isInteractable = true
 
-
-// TODO: put in separate file...
-
-function splitEventInteraction(interaction: EventInteractionUiState): { [resourceId: string]: EventInteractionUiState } {
-  if (!interaction) {
-    return {}
-  }
-
-  let affectedStores = splitEventStores(interaction.affectedEvents)
-  let mutatedStores = splitEventStores(interaction.mutatedEvents)
-  let res: { [resourceId: string]: EventInteractionUiState } = {}
-
-  function populate(resourceId) {
-    if (!res[resourceId]) {
-      res[resourceId] = {
-        affectedEvents: affectedStores[resourceId] || {},
-        mutatedEvents: mutatedStores[resourceId] || {},
-        eventUis: interaction.eventUis,
-        isEvent: interaction.isEvent,
-        origSeg: interaction.origSeg
-      }
-    }
-  }
-
-  for (let resourceId in affectedStores) {
-    populate(resourceId)
-  }
-
-  for (let resourceId in mutatedStores) {
-    populate(resourceId)
-  }
-
-  return res
-}
-
-function splitEventStores(eventStore: EventStore) {
-  let { defs, instances } = eventStore
-  let eventStoresByResourceId = {}
-
-  for (let defId in defs) {
-    let def = defs[defId]
-    let resourceIds = extractEventResourceIds(def)
-
-    if (!resourceIds.length) { // TODO: more DRY
-      resourceIds = [ '' ]
-    }
-
-    for (let resourceId of resourceIds) {
-      (eventStoresByResourceId[resourceId] ||
-        (eventStoresByResourceId[resourceId] = createEmptyEventStore())
-      ).defs[defId] = def
-    }
-  }
-
-  for (let instanceId in instances) {
-    let instance = instances[instanceId]
-    let def = defs[instance.defId]
-    let resourceIds = extractEventResourceIds(def)
-
-    if (!resourceIds.length) { // TODO: more DRY
-      resourceIds = [ '' ]
-    }
-
-    for (let resourceId of resourceIds) {
-      eventStoresByResourceId[resourceId]
-        .instances[instanceId] = instance
-    }
-  }
-
-  return eventStoresByResourceId
-}
 
 function hasResourceBusinessHours(resourceStore: ResourceHash) {
   for (let resourceId in resourceStore) {
