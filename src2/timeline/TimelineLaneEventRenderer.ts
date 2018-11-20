@@ -53,10 +53,15 @@ export default class TimelineLaneEventRenderer extends FgEventRenderer {
     '</a>'
   }
 
-  attachSegs(segs: Seg[]) {
+  attachSegs(segs: Seg[], mirrorInfo) {
 
     if (!this.el && this.masterContainerEl) {
       this.el = createElement('div', { className: 'fc-event-container' })
+
+      if (mirrorInfo) {
+        this.el.classList.add('fc-mirror-container')
+      }
+
       this.masterContainerEl.appendChild(this.el)
     }
 

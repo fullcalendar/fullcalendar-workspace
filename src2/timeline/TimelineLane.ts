@@ -129,6 +129,9 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
 
 }
 
+TimelineLane.prototype.doesDragMirror = true
+
+
 function eventStoreToSegs(eventStore: EventStore, eventUis: EventUiHash, timeAxis: TimeAxis): TimelineLaneSeg[] {
   return eventRangesToSegs(
     sliceEventStore(eventStore, eventUis, timeAxis.props.dateProfile.activeRange),
