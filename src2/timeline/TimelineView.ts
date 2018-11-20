@@ -1,4 +1,4 @@
-import { View, ViewProps, ComponentContext, ViewSpec, DateProfileGenerator } from 'fullcalendar'
+import { Hit, View, ViewProps, ComponentContext, ViewSpec, DateProfileGenerator, OffsetTracker } from 'fullcalendar'
 import TimeAxis from './TimeAxis'
 import TimelineLane from './TimelineLane'
 
@@ -7,6 +7,8 @@ export default class TimelineView extends View {
   // child components
   timeAxis: TimeAxis
   lane: TimelineLane
+
+  offsetTracker: OffsetTracker
 
   constructor(context: ComponentContext, viewSpec: ViewSpec, dateProfileGenerator: DateProfileGenerator, parentEl: HTMLElement) {
     super(context, viewSpec, dateProfileGenerator, parentEl)
@@ -67,6 +69,10 @@ export default class TimelineView extends View {
     this.lane.updateSize(totalHeight, isAuto, isResize)
   }
 
+
+  // Scroll System
+  // ------------------------------------------------------------------------------------------
+
   computeInitialDateScroll() {
     return this.timeAxis.computeInitialDateScroll()
   }
@@ -84,4 +90,42 @@ export default class TimelineView extends View {
     }
   }
 
+
+  // Hit System
+  // ------------------------------------------------------------------------------------------
+
+  prepareHits() {
+    this.offsetTracker = new OffsetTracker(this.timeAxis.slats.el)
+  }
+
+  releaseHits() {
+    this.offsetTracker.destroy()
+  }
+
+  queryHit(leftOffset, topOffset): Hit {
+    let { offsetTracker } = this
+    let slats = this.timeAxis.slats
+
+    if (offsetTracker.isWithinClipping(leftOffset, topOffset)) {
+      let slatHit = slats.positionToHit(leftOffset - offsetTracker.computeLeft())
+
+      if (slatHit) {
+        return {
+          component: this,
+          dateSpan: slatHit.dateSpan,
+          rect: {
+            left: slatHit.left,
+            right: slatHit.right,
+            top: offsetTracker.origTop,
+            bottom: offsetTracker.origBottom
+          },
+          dayEl: slatHit.dayEl,
+          layer: 0
+        }
+      }
+    }
+  }
+
 }
+
+TimelineView.prototype.isInteractable = true

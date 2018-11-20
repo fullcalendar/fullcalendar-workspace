@@ -1,4 +1,4 @@
-import { View, ViewSpec, ViewProps, createElement, parseFieldSpecs, createEmptyEventStore, EventStore, ComponentContext, DateProfileGenerator, reselector, assignTo } from 'fullcalendar'
+import { PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, createEmptyEventStore, EventStore, ComponentContext, DateProfileGenerator, reselector, assignTo } from 'fullcalendar'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
@@ -32,6 +32,9 @@ export default class ResourceTimelineView extends View {
   groupSpecs: any
   colSpecs: any
   orderSpecs: any
+
+  rowPositions: PositionCache
+  offsetTracker: OffsetTracker
 
   private hasResourceBusinessHours = reselector(hasResourceBusinessHours)
   private splitEventStores = reselector(splitEventStores)
@@ -501,7 +504,71 @@ export default class ResourceTimelineView extends View {
 
   // TODO: scrollToResource
 
+
+  // Hit System
+  // ------------------------------------------------------------------------------------------
+
+  prepareHits() {
+    let originEl = this.timeAxis.slats.el
+
+    this.offsetTracker = new OffsetTracker(originEl)
+
+    this.rowPositions = new PositionCache(
+      originEl,
+      this.rowComponents.map(function(rowComponent) {
+        return rowComponent.timeAxisTr
+      }),
+      false, // isHorizontal
+      true // isVertical
+    )
+    this.rowPositions.build()
+  }
+
+  releaseHits() {
+    this.offsetTracker.destroy()
+    this.rowPositions = null
+  }
+
+  queryHit(leftOffset, topOffset): Hit {
+    let { offsetTracker, rowPositions } = this
+    let slats = this.timeAxis.slats
+    let rowIndex = rowPositions.topToIndex(topOffset - offsetTracker.computeTop())
+
+    if (rowIndex != null) {
+      let resource = (this.rowNodes[rowIndex] as ResourceNode).resource
+
+      if (resource) { // not a group
+
+        if (offsetTracker.isWithinClipping(leftOffset, topOffset)) {
+          let slatHit = slats.positionToHit(leftOffset - offsetTracker.computeLeft())
+
+          if (slatHit) {
+            return {
+              component: this,
+              dateSpan: {
+                range: slatHit.dateSpan.range,
+                allDay: slatHit.dateSpan.allDay,
+                resource // !!! hacked in core
+              },
+              rect: {
+                left: slatHit.left,
+                right: slatHit.right,
+                top: rowPositions.tops[rowIndex],
+                bottom: rowPositions.bottoms[rowIndex]
+              },
+              dayEl: slatHit.dayEl,
+              layer: 0
+            }
+          }
+        }
+      }
+    }
+  }
+
 }
+
+ResourceTimelineView.prototype.isInteractable = true
+
 
 function splitEventStores(eventStore: EventStore) {
   let { defs, instances } = eventStore

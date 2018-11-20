@@ -108,4 +108,27 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
     this.innerCoordCache.build()
   }
 
+  positionToHit(leftPosition) {
+    let { innerCoordCache } = this
+    let { tDateProfile } = this.props
+    let index = innerCoordCache.leftToIndex(leftPosition)
+
+    if (index != null) {
+      let start = tDateProfile.slotDates[index]
+      let end = this.dateEnv.add(start, tDateProfile.slotDuration)
+
+      return {
+        dateSpan: {
+          range: { start, end },
+          allDay: !this.props.tDateProfile.isTimeScale,
+        },
+        dayEl: this.slatColEls[index],
+        left: innerCoordCache.lefts[index],
+        right: innerCoordCache.rights[index]
+      }
+    }
+
+    return null
+  }
+
 }
