@@ -229,6 +229,14 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     return { left }
   }
 
+  queryDateScroll() {
+    let { enhancedScroll } = this.layout.bodyScroller
+
+    return {
+      left: enhancedScroll.getScrollLeft()
+    }
+  }
+
   applyDateScroll(scroll) {
     let { enhancedScroll } = this.layout.bodyScroller
 

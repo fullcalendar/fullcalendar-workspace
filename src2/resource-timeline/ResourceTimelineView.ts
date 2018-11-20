@@ -456,6 +456,10 @@ export default class ResourceTimelineView extends View {
     return this.timeAxis.computeInitialDateScroll()
   }
 
+  queryDateScroll() {
+    return this.timeAxis.queryDateScroll()
+  }
+
   applyDateScroll(scroll) {
     this.timeAxis.applyDateScroll(scroll)
   }
