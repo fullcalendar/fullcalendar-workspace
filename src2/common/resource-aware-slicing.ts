@@ -21,23 +21,9 @@ export class ResourceAwareSlicer<OtherArgsType extends any[], SegType extends Se
   protected eventRangeToSegs(eventRange: EventRenderRange, otherArgs: OtherArgsType): SegType[] {
     return (this.slice as any)(
       eventRange.range,
-      extractEventResourceIds(eventRange.def),
+      eventRange.def.resourceIds,
       ...otherArgs
     )
   }
 
-}
-
-
-// BAD!
-// done by resource PUBLIC id
-export function extractEventResourceIds(def: EventDef) {
-  let resourceIds = def.extendedProps.resourceIds || [] /// put in real Def object?
-  let resourceId = def.extendedProps.resourceId
-
-  if (resourceId) {
-    resourceIds.push(resourceId)
-  }
-
-  return resourceIds
 }

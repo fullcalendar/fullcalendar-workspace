@@ -1,5 +1,4 @@
 import { EventInteractionUiState, EventStore, createEmptyEventStore } from 'fullcalendar'
-import { extractEventResourceIds } from '../common/resource-aware-slicing'
 
 export function splitEventInteraction(interaction: EventInteractionUiState): { [resourceId: string]: EventInteractionUiState } {
   if (!interaction) {
@@ -39,7 +38,7 @@ export function splitEventStores(eventStore: EventStore) {
 
   for (let defId in defs) {
     let def = defs[defId]
-    let resourceIds = extractEventResourceIds(def)
+    let resourceIds = def.resourceIds
 
     if (!resourceIds.length) { // TODO: more DRY
       resourceIds = [ '' ]
@@ -55,7 +54,7 @@ export function splitEventStores(eventStore: EventStore) {
   for (let instanceId in instances) {
     let instance = instances[instanceId]
     let def = defs[instance.defId]
-    let resourceIds = extractEventResourceIds(def)
+    let resourceIds = def.resourceIds
 
     if (!resourceIds.length) { // TODO: more DRY
       resourceIds = [ '' ]
