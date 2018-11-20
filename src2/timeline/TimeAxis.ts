@@ -1,4 +1,4 @@
-import { DateProfile, DateMarker, wholeDivideDurations, isInt, Component, ComponentContext } from 'fullcalendar'
+import { DateProfile, DateMarker, wholeDivideDurations, isInt, Component, ComponentContext, createDuration, startOfDay } from 'fullcalendar'
 import HeaderBodyLayout from './HeaderBodyLayout'
 import TimelineHeader from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'
@@ -204,6 +204,35 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     } else {
       return { left: this.dateToCoord(range.start), right: this.dateToCoord(range.end) }
     }
+  }
+
+  computeInitialDateScroll() {
+    let { dateEnv } = this
+    let { dateProfile } = this.props
+    let left = 0
+
+    if (dateProfile) {
+      let scrollTime = this.opt('scrollTime')
+
+      if (scrollTime) {
+        scrollTime = createDuration(scrollTime)
+
+        left = this.dateToCoord(
+          dateEnv.add(
+            startOfDay(dateProfile.activeRange.start), // startOfDay needed?
+            scrollTime
+          )
+        )
+      }
+    }
+
+    return { left }
+  }
+
+  applyDateScroll(scroll) {
+    let { enhancedScroll } = this.layout.bodyScroller
+
+    enhancedScroll.setScrollLeft(scroll.left || 0)
   }
 
 }

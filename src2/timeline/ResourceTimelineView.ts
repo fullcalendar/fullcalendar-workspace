@@ -1,7 +1,7 @@
-import { View, ViewSpec, ViewProps, createElement, parseFieldSpecs, createEmptyEventStore, EventStore, ComponentContext, DateProfileGenerator, reselector } from 'fullcalendar'
+import { View, ViewSpec, ViewProps, createElement, parseFieldSpecs, createEmptyEventStore, EventStore, ComponentContext, DateProfileGenerator, reselector, assignTo } from 'fullcalendar'
 import TimeAxis from './TimeAxis'
 import { ResourceHash } from '../structs/resource'
-import { buildRowNodes, isNodesEqual, GroupNode, ResourceNode } from '../common/resource-hierarchy'
+import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
 import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'
 import ScrollJoiner from '../util/ScrollJoiner'
@@ -23,6 +23,7 @@ export default class ResourceTimelineView extends View {
   miscHeight: number
   rowNodes: (GroupNode | ResourceNode)[] = []
   rowComponents: (GroupRow | ResourceRow)[] = []
+  rowComponentsById: { [id: string]: (GroupRow | ResourceRow) } = {}
 
   // internal state
   superHeaderText: any
@@ -34,6 +35,7 @@ export default class ResourceTimelineView extends View {
 
   private hasResourceBusinessHours = reselector(hasResourceBusinessHours)
   private splitEventStores = reselector(splitEventStores)
+  private buildRowNodes = reselector(buildRowNodes)
 
   constructor(context: ComponentContext, viewSpec: ViewSpec, dateProfileGenerator: DateProfileGenerator, parentEl: HTMLElement) {
     super(context, viewSpec, dateProfileGenerator, parentEl)
@@ -192,7 +194,14 @@ export default class ResourceTimelineView extends View {
       eventResize: props.eventResize
     })
 
-    this.receiveResourceData(resourceStore)
+    let newRowNodes = this.buildRowNodes(
+      resourceStore,
+      this.groupSpecs,
+      this.orderSpecs,
+      this.isVGrouping
+    )
+
+    this.diffRow(newRowNodes)
     this.renderRows(
       props,
       hasResourceBusinessHours ? props.businessHours : null, // CONFUSING, comment
@@ -200,15 +209,9 @@ export default class ResourceTimelineView extends View {
     )
   }
 
-  receiveResourceData(resourceStore: ResourceHash) {
-    let { rowComponents } = this
+  diffRow(newRowNodes) {
     let oldRowNodes = this.rowNodes
-    let newRowNodes = buildRowNodes(
-      resourceStore,
-      this.groupSpecs,
-      this.orderSpecs,
-      this.isVGrouping
-    )
+    let finalNodes = [] // same as newRowNodes, but with old nodes if equal to the new
     let oldI = 0
     let newI = 0
 
@@ -219,7 +222,8 @@ export default class ResourceTimelineView extends View {
       if (oldI < oldRowNodes.length) {
         let oldRow = oldRowNodes[oldI]
 
-        if (isNodesEqual(oldRow, newRow)) {
+        if (oldRow.id === newRow.id) {
+          finalNodes.push(oldRow)
           oldRowFound = true
           oldI++
         } else {
@@ -227,8 +231,8 @@ export default class ResourceTimelineView extends View {
           for (let oldLookaheadI = oldI; oldLookaheadI < oldI + LOOKAHEAD; oldLookaheadI++) {
             let oldLookaheadRow = oldRowNodes[oldLookaheadI]
 
-            if (isNodesEqual(oldLookaheadRow, newRow)) {
-              removeRows(rowComponents, oldI, oldLookaheadI)
+            if (oldLookaheadRow.id === newRow.id) {
+              this.removeRows(oldI, oldLookaheadI, oldRowNodes)
               oldI = oldLookaheadI
               oldRowFound = true
               break
@@ -238,17 +242,20 @@ export default class ResourceTimelineView extends View {
       }
 
       if (!oldRowFound) {
-        this.addRow(rowComponents, newI, newRow)
+        this.addRow(newI, newRow)
+        finalNodes.push(newRow)
       }
     }
 
-    this.rowNodes = newRowNodes
+    this.rowNodes = finalNodes
   }
 
   /*
   rowComponents is the in-progress result
   */
-  addRow(rowComponents, index, rowNode) {
+  addRow(index, rowNode) {
+    let { rowComponents, rowComponentsById } = this
+
     let nextComponent = rowComponents[index]
     let newComponent = this.buildChildComponent(
       rowNode,
@@ -259,6 +266,21 @@ export default class ResourceTimelineView extends View {
     )
 
     rowComponents.splice(index, 0, newComponent)
+    rowComponentsById[rowNode.id] = newComponent
+  }
+
+  removeRows(startRemoveI, endRemoveI, oldRowNodes) {
+    let { rowComponents, rowComponentsById } = this
+
+    for (let i = startRemoveI; i < endRemoveI; i++) {
+      let rowComponent = rowComponents[i]
+
+      rowComponent.destroy()
+
+      delete rowComponentsById[oldRowNodes[i].id]
+    }
+
+    rowComponents.splice(startRemoveI, endRemoveI - startRemoveI)
   }
 
   buildChildComponent(
@@ -404,14 +426,81 @@ export default class ResourceTimelineView extends View {
     super.destroy()
   }
 
-}
 
-function removeRows(rowComponents, startRemoveI, endRemoveI) {
-  for (let i = startRemoveI; i < endRemoveI; i++) {
-    rowComponents[i].destroy()
+  // Scrolling
+  // ------------------------------------------------------------------------------------------------------------------
+  // this is useful for scrolling prev/next dates while resource is scrolled down
+
+  queryScroll() {
+    let scroll = super.queryScroll()
+
+    if ((this.props as any).resourceStore) {
+      assignTo(scroll, this.queryResourceScroll())
+    }
+
+    return scroll
   }
 
-  rowComponents.splice(startRemoveI, endRemoveI - startRemoveI)
+  applyScroll(scroll) {
+    super.applyScroll(scroll)
+
+    if ((this.props as any).resourceStore) {
+      this.applyResourceScroll(scroll)
+    }
+  }
+
+  computeInitialDateScroll() {
+    return this.timeAxis.computeInitialDateScroll()
+  }
+
+  applyDateScroll(scroll) {
+    this.timeAxis.applyDateScroll(scroll)
+  }
+
+  queryResourceScroll() {
+    let { rowComponents, rowNodes } = this
+    let scroll = {} as any
+    let scrollerTop = this.timeAxis.layout.bodyScroller.el.getBoundingClientRect().top // fixed position
+
+    for (let i = 0; i < rowComponents.length; i++) {
+      let rowComponent = rowComponents[i]
+      let rowNode = rowNodes[i]
+
+      let el = rowComponent.timeAxisTr
+      let elBottom = el.getBoundingClientRect().bottom // fixed position
+
+      if (elBottom > scrollerTop) {
+        scroll.rowId = rowNode.id
+        scroll.bottom = elBottom - scrollerTop
+        break
+      }
+    }
+
+    // TODO: what about left scroll state for spreadsheet area?
+    return scroll
+  }
+
+  applyResourceScroll(scroll) {
+    if (scroll.rowId) {
+      let rowComponent = this.rowComponentsById[scroll.rowId]
+
+      if (rowComponent) {
+        let el = rowComponent.timeAxisTr
+
+        if (el) {
+          let innerTop = this.timeAxis.layout.bodyScroller.el.getBoundingClientRect().top // TODO: use -scrollHeight or something
+          let elBottom = el.getBoundingClientRect().bottom
+          let scrollTop = elBottom - scroll.bottom - innerTop // both fixed positions
+
+          this.timeAxis.layout.bodyScroller.enhancedScroll.setScrollTop(scrollTop)
+          this.spreadsheet.layout.bodyScroller.enhancedScroll.setScrollTop(scrollTop)
+        }
+      }
+    }
+  }
+
+  // TODO: scrollToResource
+
 }
 
 function splitEventStores(eventStore: EventStore) {

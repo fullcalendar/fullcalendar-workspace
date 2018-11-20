@@ -22,10 +22,12 @@ export interface Group {
 }
 
 export interface GroupNode {
+  id: string // 'field:value'
   group: Group
 }
 
 export interface ResourceNode {
+  id: string // 'resourceId' (won't collide with group ID's because has colon)
   rowSpans: number[]
   depth: number
   hasChildren: boolean
@@ -52,24 +54,13 @@ export function buildRowNodes(resourceStore: ResourceHash, groupSpecs, orderSpec
   return flatNodes
 }
 
-export function isNodesEqual(node0: (GroupNode | ResourceNode), node1: (GroupNode | ResourceNode)) {
-
-  if ((node0 as ResourceNode).resource && (node1 as ResourceNode).resource) {
-    return (node0 as ResourceNode).resource.resourceId === (node1 as ResourceNode).resource.resourceId
-
-  } else if ((node0 as GroupNode).group && (node1 as GroupNode).group) {
-    return (node0 as GroupNode).group.value === (node1 as GroupNode).group.value
-  }
-
-  return false
-}
-
 function flattenNodes(complexNodes: ParentNode[], res, isVGrouping, rowSpans, depth) {
 
   for (let i = 0; i < complexNodes.length; i++) {
     let complexNode = complexNodes[i]
+    let group = (complexNode as GroupParentNode).group
 
-    if ((complexNode as GroupParentNode).group) {
+    if (group) {
 
       if (isVGrouping) {
         let firstRowIndex = res.length
@@ -85,7 +76,8 @@ function flattenNodes(complexNodes: ParentNode[], res, isVGrouping, rowSpans, de
         }
       } else {
         res.push({
-          group: (complexNode as GroupParentNode).group
+          id: group.spec.field + ':' + group.value,
+          group
         })
 
         flattenNodes(complexNode.children, res, isVGrouping, rowSpans, depth + 1)
@@ -93,6 +85,7 @@ function flattenNodes(complexNodes: ParentNode[], res, isVGrouping, rowSpans, de
 
     } else if ((complexNode as ResourceParentNode).resource) {
       res.push({
+        id: (complexNode as ResourceParentNode).resource.resourceId,
         rowSpans,
         depth,
         hasChildren: Boolean(complexNode.children.length),

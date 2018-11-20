@@ -53,7 +53,7 @@ export default class TimelineView extends View {
   }
 
   render(props: ViewProps) {
-    super.render(props)
+    super.render(props) // flags for updateSize, addScroll
 
     this.timeAxis.receiveProps({
       dateProfile: props.dateProfile
@@ -65,6 +65,23 @@ export default class TimelineView extends View {
   updateSize(totalHeight, isAuto, isResize) {
     this.timeAxis.updateSize(totalHeight, isAuto, isResize)
     this.lane.updateSize(totalHeight, isAuto, isResize)
+  }
+
+  computeInitialDateScroll() {
+    return this.timeAxis.computeInitialDateScroll()
+  }
+
+  applyDateScroll(scroll) {
+    this.timeAxis.applyDateScroll(scroll)
+  }
+
+  queryScroll() {
+    let { enhancedScroll } = this.timeAxis.layout.bodyScroller
+
+    return {
+      top: enhancedScroll.getScrollTop(),
+      left: enhancedScroll.getScrollLeft()
+    }
   }
 
 }
