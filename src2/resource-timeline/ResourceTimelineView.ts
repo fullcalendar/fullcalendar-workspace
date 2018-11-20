@@ -1,4 +1,4 @@
-import { PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, reselector, assignTo, EventInteractionUiState } from 'fullcalendar'
+import { PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, reselector, assignTo } from 'fullcalendar'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
@@ -561,7 +561,7 @@ export default class ResourceTimelineView extends View {
               dateSpan: {
                 range: slatHit.dateSpan.range,
                 allDay: slatHit.dateSpan.allDay,
-                resource // !!! hacked in core
+                resourceId: resource.id
               },
               rect: {
                 left: slatHit.left,

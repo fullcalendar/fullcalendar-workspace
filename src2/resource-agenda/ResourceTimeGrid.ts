@@ -89,7 +89,7 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
           dateSpan: {
             range: rawHit.dateSpan.range,
             allDay: rawHit.dateSpan.allDay,
-            resource: this.props.resourceDayTable.cells[0][rawHit.col].resource
+            resourceId: this.props.resourceDayTable.cells[0][rawHit.col].resource.id
           },
           dayEl: rawHit.dayEl,
           rect: {

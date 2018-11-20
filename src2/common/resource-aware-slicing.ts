@@ -1,5 +1,5 @@
 
-import { Slicer, DateSpan, Seg, EventRenderRange, DateRange, EventDef } from 'fullcalendar'
+import { Slicer, DateSpan, Seg, EventRenderRange, DateRange } from 'fullcalendar'
 
 
 export class ResourceAwareSlicer<OtherArgsType extends any[], SegType extends Seg> extends Slicer<OtherArgsType, SegType> {
