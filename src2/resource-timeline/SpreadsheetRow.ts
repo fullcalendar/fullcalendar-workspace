@@ -25,8 +25,7 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
     let { tr, theme } = this
     let { resource, resourceFields, rowSpans, colSpecs } = props
 
-    // TODO: use publicId?
-    tr.setAttribute('data-resource-id', resource.resourceId)
+    tr.setAttribute('data-resource-id', resource.id) // TODO: only use public ID?
 
     for (let i = 0; i < colSpecs.length; i++) {
       let colSpec = colSpecs[i]

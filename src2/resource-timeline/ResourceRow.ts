@@ -58,7 +58,7 @@ export default class ResourceRow extends Row<ResourceRowProps> {
 
     this.timeAxisTr.setAttribute(
       'data-resource-id',
-      props.resource.publicId || ''
+      props.resource.id || ''
     )
 
     this.spreadsheetRow.receiveProps({

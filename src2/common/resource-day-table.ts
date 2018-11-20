@@ -34,7 +34,7 @@ export abstract class AbstractResourceDayTable {
     let { resourceIndex } = this
 
     if (!resourceIds.length) {
-      resourceIds = resourceIndex.publicIds
+      resourceIds = resourceIndex.ids
     }
 
     let rawSegs = this.dayTable.sliceRange(range)
@@ -43,7 +43,7 @@ export abstract class AbstractResourceDayTable {
     for (let rawSeg of rawSegs) {
 
       for (let resourceId in resourceIds) {
-        let index = resourceIndex.indicesByPublicId[resourceId]
+        let index = resourceIndex.indicesById[resourceId]
 
         if (index != null) {
           segs.push({
@@ -72,7 +72,7 @@ export abstract class AbstractResourceDayTable {
 
         for (let resourceCol = 0; resourceCol < resources.length; resourceCol++) {
           let resource = resources[resourceCol]
-          let htmlAttrs = resource.publicId ? 'data-resource-id="' + resource.publicId + '"' : ''
+          let htmlAttrs = 'data-resource-id="' + resource.id + '"'
 
           rowCells[
             this.computeCol(dateCol, resourceCol)
@@ -119,28 +119,23 @@ export class DayResourceTable extends AbstractResourceDayTable {
 
 export class ResourceIndex {
 
-  indicedByInternalId: { [resourceId: string]: number }
-  indicesByPublicId: { [publicId: string]: number }
-  publicIds: string[]
+  indicesById: { [resourceId: string]: number }
+  ids: string[]
   length: number
 
   constructor(resources: Resource[]) {
-    let indicedByInternalId = {}
-    let indicesByPublicId = {}
-    let publicIds = []
+    let indicesById = {}
+    let ids = []
 
     for (let i = 0; i < resources.length; i++) {
+      let id = resources[i].id
 
-      if (resources[i].publicId) {
-        publicIds.push(resources[i].publicId)
-        indicedByInternalId[resources[i].resourceId] = i
-        indicesByPublicId[resources[i].publicId] = i
-      }
+      ids.push(id)
+      indicesById[id] = i
     }
 
-    this.publicIds = publicIds
-    this.indicedByInternalId = indicedByInternalId
-    this.indicesByPublicId = indicesByPublicId
+    this.ids = ids
+    this.indicesById = indicesById
     this.length = resources.length
   }
 

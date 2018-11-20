@@ -11,8 +11,7 @@ export interface ResourceInput {
 }
 
 export interface Resource {
-  resourceId: string
-  publicId: string
+  id: string
   parentId: string
   title: string
   businessHours: EventStore | null
@@ -30,29 +29,51 @@ const RESOURCE_PROPS = {
   children: null
 }
 
+const PRIVATE_ID_PREFIX = '_fc:'
 let uid = 0
 
+/*
+needs a full store so that it can populate children too
+*/
 export function parseResource(input: ResourceInput, parentId: string = '', store: ResourceHash = {}, calendar: Calendar): ResourceHash {
-  let resourceId = String(uid++)
   let leftovers = {}
   let props = refineProps(input, RESOURCE_PROPS, {}, leftovers)
 
-  if (props.children) {
-    for (let childInput of props.children) {
-      parseResource(childInput, resourceId, store, calendar)
-    }
+  if (!props.id) {
+    props.id = PRIVATE_ID_PREFIX + (uid++)
   }
 
-  props.resourceId = resourceId
   props.parentId = parentId
-  props.publicId = props.id
   props.businessHours = props.businessHours ? parseBusinessHours(props.businessHours, calendar) : null
   props.extendedProps = assignTo({}, leftovers, props.extendedProps)
 
-  delete props.id
-  delete props.children
+  if (store[props.id]) {
+    console.warn('duplicate resource ID')
 
-  store[resourceId] = props as Resource
+  } else {
+    store[props.id] = props as Resource
+
+    if (props.children) {
+
+      for (let childInput of props.children) {
+        parseResource(childInput, props.id, store, calendar)
+      }
+
+      delete props.children
+    }
+  }
 
   return store
+}
+
+
+/*
+TODO: use this in more places
+*/
+export function getPublicId(id: string): string {
+ if (id.indexOf(PRIVATE_ID_PREFIX) === 0) {
+   return ''
+ }
+
+ return id
 }

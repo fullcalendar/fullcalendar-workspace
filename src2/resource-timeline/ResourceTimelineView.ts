@@ -1,4 +1,4 @@
-import { PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, createEmptyEventStore, EventStore, ComponentContext, DateProfileGenerator, reselector, assignTo } from 'fullcalendar'
+import { PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, createEmptyEventStore, EventStore, ComponentContext, DateProfileGenerator, reselector, assignTo, EventInteractionUiState } from 'fullcalendar'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
@@ -39,6 +39,8 @@ export default class ResourceTimelineView extends View {
   private hasResourceBusinessHours = reselector(hasResourceBusinessHours)
   private splitEventStores = reselector(splitEventStores)
   private buildRowNodes = reselector(buildRowNodes)
+  private splitEventDrag = reselector(splitEventInteraction)
+  private splitEventResize = reselector(splitEventInteraction)
 
   constructor(context: ComponentContext, viewSpec: ViewSpec, dateProfileGenerator: DateProfileGenerator, parentEl: HTMLElement) {
     super(context, viewSpec, dateProfileGenerator, parentEl)
@@ -181,6 +183,8 @@ export default class ResourceTimelineView extends View {
 
     let hasResourceBusinessHours = this.hasResourceBusinessHours(resourceStore)
     let eventStoresByResourceId = this.splitEventStores(props.eventStore)
+    let eventDragsByResourceId = this.splitEventDrag(props.eventDrag)
+    let eventResizesByResourceId = this.splitEventResize(props.eventResize)
 
     this.timeAxis.receiveProps({
       dateProfile: props.dateProfile
@@ -208,7 +212,9 @@ export default class ResourceTimelineView extends View {
     this.renderRows(
       props,
       hasResourceBusinessHours ? props.businessHours : null, // CONFUSING, comment
-      eventStoresByResourceId
+      eventStoresByResourceId,
+      eventDragsByResourceId,
+      eventResizesByResourceId
     )
   }
 
@@ -313,7 +319,13 @@ export default class ResourceTimelineView extends View {
     }
   }
 
-  renderRows(viewProps: ViewProps, fallbackBusinessHours, eventStoresByResourceId) {
+  renderRows(
+    viewProps: ViewProps,
+    fallbackBusinessHours,
+    eventStoresByResourceId,
+    eventDragsByResourceId,
+    eventResizesByResourceId
+  ) {
     let { rowNodes, rowComponents } = this
 
     for (let i = 0; i < rowNodes.length; i++) {
@@ -327,18 +339,17 @@ export default class ResourceTimelineView extends View {
         })
       } else {
         let resource = (rowNode as ResourceNode).resource
-        let resourceId = (rowNode as ResourceNode).resource.resourceId
-        let resourcePublicId = (rowNode as ResourceNode).resource.publicId;
+        let resourceId = (rowNode as ResourceNode).resource.id;
 
         (rowComponent as ResourceRow).receiveProps({
           dateProfile: viewProps.dateProfile,
           businessHours: resource.businessHours || fallbackBusinessHours,
-          eventStore: (resourcePublicId && eventStoresByResourceId[resourcePublicId]) || null,
+          eventStore: eventStoresByResourceId[resourceId] || null,
           eventUis: viewProps.eventUis,
           dateSelection: (viewProps.dateSelection && viewProps.dateSelection.resourceId === resourceId) ? viewProps.dateSelection : null,
           eventSelection: viewProps.eventSelection,
-          eventDrag: viewProps.eventDrag,
-          eventResize: viewProps.eventResize,
+          eventDrag: eventDragsByResourceId[resourceId] || null,
+          eventResize: eventResizesByResourceId[resourceId] || null,
           resource,
           resourceFields: (rowNode as ResourceNode).resourceFields,
           rowSpans: (rowNode as ResourceNode).rowSpans,
@@ -573,6 +584,40 @@ export default class ResourceTimelineView extends View {
 
 ResourceTimelineView.prototype.isInteractable = true
 
+
+// TODO: put in separate file...
+
+function splitEventInteraction(interaction: EventInteractionUiState): { [resourceId: string]: EventInteractionUiState } {
+  if (!interaction) {
+    return {}
+  }
+
+  let affectedStores = splitEventStores(interaction.affectedEvents)
+  let mutatedStores = splitEventStores(interaction.mutatedEvents)
+  let res: { [resourceId: string]: EventInteractionUiState } = {}
+
+  function populate(resourceId) {
+    if (!res[resourceId]) {
+      res[resourceId] = {
+        affectedEvents: affectedStores[resourceId] || {},
+        mutatedEvents: mutatedStores[resourceId] || {},
+        eventUis: interaction.eventUis,
+        isEvent: interaction.isEvent,
+        origSeg: interaction.origSeg
+      }
+    }
+  }
+
+  for (let resourceId in affectedStores) {
+    populate(resourceId)
+  }
+
+  for (let resourceId in mutatedStores) {
+    populate(resourceId)
+  }
+
+  return res
+}
 
 function splitEventStores(eventStore: EventStore) {
   let { defs, instances } = eventStore

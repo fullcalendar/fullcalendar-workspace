@@ -85,7 +85,7 @@ function flattenNodes(complexNodes: ParentNode[], res, isVGrouping, rowSpans, de
 
     } else if ((complexNode as ResourceParentNode).resource) {
       res.push({
-        id: (complexNode as ResourceParentNode).resource.resourceId,
+        id: (complexNode as ResourceParentNode).resource.id,
         rowSpans,
         depth,
         hasChildren: Boolean(complexNode.children.length),
@@ -213,10 +213,8 @@ function insertResourceNodeInSiblings(resourceNode, siblings, orderSpecs) {
   siblings.splice(i, 0, resourceNode)
 }
 
-function buildResourceFields(resource) {
-  let obj = assignTo({}, resource.extendedProps, resource, {
-    id: resource.publicId
-  })
+function buildResourceFields(resource: Resource) {
+  let obj = assignTo({}, resource.extendedProps, resource)
 
   delete obj.extendedProps
 

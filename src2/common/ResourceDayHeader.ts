@@ -1,5 +1,5 @@
 import { Component, ComponentContext, DateMarker, htmlToElement, removeElement, htmlEscape, DateProfile, renderDateCell, findElements, createFormatter, DateFormatter, computeFallbackHeaderFormat } from 'fullcalendar'
-import { Resource } from '../structs/resource'
+import { Resource, getPublicId } from '../structs/resource'
 
 export interface ResourceDayHeaderProps {
   dates: DateMarker[]
@@ -123,9 +123,7 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
     const dateEnv = this.dateEnv
 
     return '<th class="fc-resource-cell"' +
-      (resource.publicId ?
-        ' data-resource-id="' + resource.publicId + '"' :
-        '') +
+      ' data-resource-id="' + resource.id + '"' +
       (date ?
         ' data-date="' + dateEnv.formatIso(date, { omitTime: true }) + '"' :
         '') +
@@ -151,7 +149,7 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
       this.dateFormat,
       this.context,
       colspan,
-      (resource && resource.publicId) ? 'data-resource-id="' + resource.publicId + '"' : ''
+      resource ? 'data-resource-id="' + resource.id + '"' : ''
     )
   }
 
@@ -206,7 +204,7 @@ function buildResourceTextFunc(resourceTextSetting) {
     return resourceTextSetting()
   } else {
     return function(resource: Resource) {
-      return resource.title || resource.publicId
+      return resource.title || getPublicId(resource.id)
     }
   }
 }

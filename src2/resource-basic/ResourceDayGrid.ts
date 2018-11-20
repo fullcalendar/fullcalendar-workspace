@@ -98,7 +98,7 @@ ResourceDayGrid.prototype.isInteractable = true
 function sliceSegs(range: DateRange, resourceIds: string[], resourceDayTable: AbstractResourceDayTable, isRtl: boolean): DayGridSeg[] {
 
   if (!resourceIds.length) {
-    resourceIds = resourceDayTable.resourceIndex.publicIds
+    resourceIds = resourceDayTable.resourceIndex.ids
   }
 
   let rawSegs = sliceDayGridSegs(range, resourceDayTable.dayTable, isRtl)
@@ -107,7 +107,7 @@ function sliceSegs(range: DateRange, resourceIds: string[], resourceDayTable: Ab
   for (let rawSeg of rawSegs) {
 
     for (let resourceId of resourceIds) {
-      let resourceI = resourceDayTable.resourceIndex.indicesByPublicId[resourceId]
+      let resourceI = resourceDayTable.resourceIndex.indicesById[resourceId]
 
       if (resourceI != null) {
         segs.push(
@@ -136,7 +136,7 @@ function sliceResourceBusinessHours(resourceDayTable: AbstractResourceDayTable, 
       component.calendar
     )
 
-    let resourceI = resourceDayTable.resourceIndex.indicedByInternalId[resource.resourceId]
+    let resourceI = resourceDayTable.resourceIndex.indicesById[resource.id]
 
     for (let eventRange of eventRanges) {
       let rawSegs = sliceDayGridSegs(eventRange.range, resourceDayTable.dayTable, component.isRtl)

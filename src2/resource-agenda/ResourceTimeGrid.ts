@@ -112,7 +112,7 @@ ResourceTimeGrid.prototype.isInteractable = true
 function sliceSegs(range: DateRange, resourceIds: string[], resourceDayTable: AbstractResourceDayTable, dayRanges: DateRange[]): TimeGridSeg[] {
 
   if (!resourceIds.length) {
-    resourceIds = resourceDayTable.resourceIndex.publicIds
+    resourceIds = resourceDayTable.resourceIndex.ids
   }
 
   let rawSegs = sliceTimeGridSegs(range, dayRanges)
@@ -121,7 +121,7 @@ function sliceSegs(range: DateRange, resourceIds: string[], resourceDayTable: Ab
   for (let rawSeg of rawSegs) {
 
     for (let resourceId of resourceIds) {
-      let resourceI = resourceDayTable.resourceIndex.indicesByPublicId[resourceId]
+      let resourceI = resourceDayTable.resourceIndex.indicesById[resourceId]
 
       if (resourceI != null) {
         segs.push(
@@ -149,7 +149,7 @@ function sliceResourceBusinessHours(resourceDayTable: AbstractResourceDayTable, 
       component.calendar
     )
 
-    let resourceI = resourceDayTable.resourceIndex.indicedByInternalId[resource.resourceId]
+    let resourceI = resourceDayTable.resourceIndex.indicesById[resource.id]
 
     for (let eventRange of eventRanges) {
       let rawSegs = sliceTimeGridSegs(eventRange.range, dayRanges)
