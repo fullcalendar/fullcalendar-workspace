@@ -1,4 +1,4 @@
-import { addMs, DateSpan, Component, TimeGrid, DateProfile, EventStore, EventUiHash, EventInteractionUiState, ComponentContext, reselector, buildDayRanges, sliceTimeGridSegs, DateRange, assignTo, TimeGridSeg, sliceBusinessHours, DateMarker } from "fullcalendar"
+import { OffsetTracker, addMs, DateSpan, DateComponent, TimeGrid, DateProfile, EventStore, EventUiHash, EventInteractionUiState, ComponentContext, reselector, buildDayRanges, sliceTimeGridSegs, DateRange, assignTo, TimeGridSeg, sliceBusinessHours, DateMarker, Hit } from "fullcalendar"
 import { AbstractResourceDayTable } from '../common/resource-day-table'
 import { ResourceAwareSlicer } from '../common/resource-aware-slicing'
 
@@ -14,9 +14,11 @@ export interface ResourceTimeGridProps {
   eventResize: EventInteractionUiState | null
 }
 
-export default class ResourceTimeGrid extends Component<ResourceTimeGridProps> {
+export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProps> {
 
   timeGrid: TimeGrid
+
+  offsetTracker: OffsetTracker
 
   private buildDayRanges = reselector(buildDayRanges)
   private slicer = new ResourceAwareSlicer(sliceSegs)
@@ -24,7 +26,7 @@ export default class ResourceTimeGrid extends Component<ResourceTimeGridProps> {
   private dayRanges: DateRange[]
 
   constructor(context: ComponentContext, timeGrid: TimeGrid) {
-    super(context)
+    super(context, timeGrid.el)
 
     this.timeGrid = timeGrid
     this.slicer.component = timeGrid
@@ -61,7 +63,50 @@ export default class ResourceTimeGrid extends Component<ResourceTimeGridProps> {
     )
   }
 
+  prepareHits() {
+    this.offsetTracker = new OffsetTracker(this.timeGrid.el)
+  }
+
+  releaseHits() {
+    this.offsetTracker.destroy()
+  }
+
+  queryHit(leftOffset, topOffset): Hit {
+    let { offsetTracker } = this
+
+    if (offsetTracker.isWithinClipping(leftOffset, topOffset)) {
+      let originLeft = offsetTracker.computeLeft()
+      let originTop = offsetTracker.computeTop()
+
+      let rawHit = this.timeGrid.positionToHit(
+        leftOffset - originLeft,
+        topOffset - originTop
+      )
+
+      if (rawHit) {
+        return {
+          component: this.timeGrid,
+          dateSpan: {
+            range: rawHit.dateSpan.range,
+            allDay: rawHit.dateSpan.allDay,
+            resource: this.props.resourceDayTable.cells[0][rawHit.col].resource
+          },
+          dayEl: rawHit.dayEl,
+          rect: {
+            left: rawHit.relativeRect.left + originLeft,
+            right: rawHit.relativeRect.right + originLeft,
+            top: rawHit.relativeRect.top + originTop,
+            bottom: rawHit.relativeRect.bottom + originTop
+          },
+          layer: 0
+        }
+      }
+    }
+  }
+
 }
+
+ResourceTimeGrid.prototype.isInteractable = true
 
 
 function sliceSegs(range: DateRange, resourceIds: string[], resourceDayTable: AbstractResourceDayTable, dayRanges: DateRange[]): TimeGridSeg[] {

@@ -1,10 +1,13 @@
 import { DayTable, DayTableSeg, DayTableCell, DateRange } from 'fullcalendar'
 import { Resource } from '../structs/resource'
 
+export interface ResourceDayTableCell extends DayTableCell {
+  resource: Resource
+}
 
 export abstract class AbstractResourceDayTable {
 
-  cells: DayTableCell[][]
+  cells: ResourceDayTableCell[][]
   rowCnt: number
   colCnt: number
   dayTable: DayTable
@@ -58,12 +61,12 @@ export abstract class AbstractResourceDayTable {
   }
 
 
-  buildCells(): DayTableCell[][] {
+  buildCells(): ResourceDayTableCell[][] {
     let { rowCnt, dayTable, resources } = this
-    let rows: DayTableCell[][] = []
+    let rows: ResourceDayTableCell[][] = []
 
     for (let row = 0; row < rowCnt; row++) {
-      let rowCells: DayTableCell[] = []
+      let rowCells: ResourceDayTableCell[] = []
 
       for (let dateCol = 0; dateCol < dayTable.colCnt; dateCol++) {
 
@@ -75,6 +78,7 @@ export abstract class AbstractResourceDayTable {
             this.computeCol(dateCol, resourceCol)
           ] = {
             date: dayTable.cells[row][dateCol].date,
+            resource,
             htmlAttrs
           }
         }
