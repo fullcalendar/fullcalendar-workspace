@@ -1,12 +1,12 @@
 import { View, ViewSpec, ViewProps, createElement, parseFieldSpecs, createEmptyEventStore, EventStore, ComponentContext, DateProfileGenerator, reselector, assignTo } from 'fullcalendar'
-import TimeAxis from './TimeAxis'
+import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
 import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'
 import ScrollJoiner from '../util/ScrollJoiner'
 import Spreadsheet from './Spreadsheet'
-import TimelineLane from './TimelineLane'
+import TimelineLane from '../timeline/TimelineLane'
 import { extractEventResourceIds } from '../common/resource-aware-slicing'
 
 const LOOKAHEAD = 3

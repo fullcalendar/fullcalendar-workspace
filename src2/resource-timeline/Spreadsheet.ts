@@ -1,6 +1,6 @@
 import { createElement, Component, ComponentContext } from 'fullcalendar'
 import SpreadsheetHeader from './SpreadsheetHeader'
-import HeaderBodyLayout from './HeaderBodyLayout'
+import HeaderBodyLayout from '../timeline/HeaderBodyLayout'
 
 export interface SpreadsheetProps {
   superHeaderText: string

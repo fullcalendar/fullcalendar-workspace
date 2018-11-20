@@ -2,7 +2,7 @@ import { createElement, ComponentContext, EventInteractionUiState, DateSpan, Eve
 import { Resource } from '../structs/resource'
 import Row from './Row'
 import SpreadsheetRow from './SpreadsheetRow'
-import TimelineLane from './TimelineLane'
+import TimelineLane from '../timeline/TimelineLane'
 
 export interface ResourceRowProps {
   dateProfile: DateProfile
