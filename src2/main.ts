@@ -1,8 +1,11 @@
 import * as exportHooks from 'fullcalendar'
+import './Calendar'
 import './View'
 import resourcesReducers from './reducers/resources'
 import { parseEventDef } from './structs/event'
 import { massageEventDragMutation, applyEventDefMutation } from './EventDragging'
+import { transformDateSelection } from './DateSelecting'
+import { transformDateClickApi, transformDateSelectionApi } from './Calendar'
 
 // "plugins"
 import './resource-sources/resource-array'
@@ -17,7 +20,10 @@ export const ResourcesPlugin = exportHooks.createPlugin({
   reducers: [ resourcesReducers ],
   eventDefParsers: [ parseEventDef ],
   eventDragMutationMassagers: [ massageEventDragMutation ],
-  eventDefMutationAppliers: [ applyEventDefMutation ]
+  eventDefMutationAppliers: [ applyEventDefMutation ],
+  dateSelectionTransformers: [ transformDateSelection ],
+  dateClickApiTransformers: [ transformDateClickApi ],
+  dateSelectionApiTransformers: [ transformDateSelectionApi ]
 });
 
 (exportHooks as any).ResourcesPlugin = ResourcesPlugin
