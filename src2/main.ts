@@ -1,4 +1,5 @@
 import * as exportHooks from 'fullcalendar'
+import './View'
 import resourcesReducers from './reducers/resources'
 
 // "plugins"

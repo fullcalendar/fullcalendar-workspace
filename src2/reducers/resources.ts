@@ -4,7 +4,6 @@ import { ResourceHash, ResourceInput } from '../structs/resource'
 import reduceResourceSource from './resourceSource'
 import reduceResourceStore from './resourceStore'
 
-// TODO: fill in DateComponentRenderState too
 declare module 'fullcalendar/src/reducers/types' {
   interface CalendarState {
     resourceSource: ResourceSource | null

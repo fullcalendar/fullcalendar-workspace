@@ -179,9 +179,7 @@ export default class ResourceTimelineView extends View {
   render(props: ViewProps) {
     super.render(props)
 
-    let resourceStore = (props as any).resourceStore
-
-    let hasResourceBusinessHours = this.hasResourceBusinessHours(resourceStore)
+    let hasResourceBusinessHours = this.hasResourceBusinessHours(props.resourceStore)
     let eventStoresByResourceId = this.splitEventStores(props.eventStore)
     let eventDragsByResourceId = this.splitEventDrag(props.eventDrag)
     let eventResizesByResourceId = this.splitEventResize(props.eventResize)
@@ -202,7 +200,7 @@ export default class ResourceTimelineView extends View {
     })
 
     let newRowNodes = this.buildRowNodes(
-      resourceStore,
+      props.resourceStore,
       this.groupSpecs,
       this.orderSpecs,
       this.isVGrouping

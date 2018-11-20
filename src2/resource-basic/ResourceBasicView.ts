@@ -47,8 +47,7 @@ export default class ResourceBasicView extends AbstractBasicView {
   render(props: ViewProps) {
     super.render(props) // for flags for updateSize
 
-    let resourceStore = (this.props as any).resourceStore
-    let resources = this.flattenResources(resourceStore, this.resourceOrderSpecs)
+    let resources = this.flattenResources(props.resourceStore, this.resourceOrderSpecs)
     let resourceDayTable = this.buildResourceDayTable(
       this.props.dateProfile,
       this.dateProfileGenerator,
