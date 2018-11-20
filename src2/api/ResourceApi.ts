@@ -11,4 +11,21 @@ export default class ResourceApi {
     this._resource = rawResource
   }
 
+  setProp(name: string, value: any) {
+    this._calendar.dispatch({
+      type: 'SET_RESOURCE_PROP',
+      resourceId: this._resource.id,
+      propName: name,
+      propValue: value
+    })
+  }
+
+  get id(): string {
+    return this._resource.id
+  }
+
+  get title(): string {
+    return this._resource.title
+  }
+
 }

@@ -20,7 +20,8 @@ declare module 'fullcalendar/Calendar' {
 export type ResourceAction = Action |
   { type: 'FETCH_RESOURCE' } |
   { type: 'RECEIVE_RESOURCES', rawResources: ResourceInput[], fetchId: string, fetchRange: DateRange | null } |
-  { type: 'RECEIVE_RESOURCE_ERROR', error: ResourceSourceError, fetchId: string, fetchRange: DateRange | null }
+  { type: 'RECEIVE_RESOURCE_ERROR', error: ResourceSourceError, fetchId: string, fetchRange: DateRange | null } |
+  { type: 'SET_RESOURCE_PROP', resourceId: string, propName: string, propValue: any }
 
 export default function(state: CalendarState, action: ResourceAction, calendar: Calendar) {
   let resourceSource = reduceResourceSource(state.resourceSource, action, state.dateProfile, calendar)
