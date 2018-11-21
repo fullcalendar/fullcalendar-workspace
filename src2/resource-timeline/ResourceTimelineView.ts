@@ -1,7 +1,7 @@
 import { PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, reselector, assignTo } from 'fullcalendar'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash } from '../structs/resource'
-import { buildRowNodes, GroupNode, ResourceNode, Group } from '../common/resource-hierarchy'
+import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
 import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'
 import ScrollJoiner from '../util/ScrollJoiner'
@@ -346,7 +346,7 @@ export default class ResourceTimelineView extends View {
 
       if ((rowNode as GroupNode).group) {
         (rowComponent as GroupRow).receiveProps({
-          group: (rowNode as GroupNode).group,
+          groupNode: rowNode as GroupNode,
           spreadsheetColCnt: this.colSpecs.length,
           isExpanded: true
         })
@@ -363,12 +363,8 @@ export default class ResourceTimelineView extends View {
           eventSelection: viewProps.eventSelection,
           eventDrag: eventDragsByResourceId[resourceId] || null,
           eventResize: eventResizesByResourceId[resourceId] || null,
-          resource,
-          resourceFields: (rowNode as ResourceNode).resourceFields,
-          rowSpans: (rowNode as ResourceNode).rowSpans,
-          depth: (rowNode as ResourceNode).depth,
+          resourceNode: rowNode as ResourceNode,
           colSpecs: this.colSpecs,
-          hasChildren: (rowNode as ResourceNode).hasChildren,
           isExpanded: true
         })
       }

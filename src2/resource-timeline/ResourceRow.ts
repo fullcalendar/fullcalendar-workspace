@@ -1,8 +1,8 @@
 import { createElement, ComponentContext, EventInteractionUiState, DateSpan, EventUiHash, EventStore, DateProfile } from 'fullcalendar'
-import { Resource } from '../structs/resource'
 import Row from './Row'
 import SpreadsheetRow from './SpreadsheetRow'
 import TimelineLane from '../timeline/TimelineLane'
+import { ResourceNode } from '../common/resource-hierarchy'
 
 export interface ResourceRowProps {
   dateProfile: DateProfile
@@ -13,12 +13,8 @@ export interface ResourceRowProps {
   eventSelection: string
   eventDrag: EventInteractionUiState | null
   eventResize: EventInteractionUiState | null
-  resource: Resource
-  resourceFields: any
-  rowSpans: number[]
-  depth: number
+  resourceNode: ResourceNode
   colSpecs: any
-  hasChildren: boolean
   isExpanded: boolean
 }
 
@@ -56,18 +52,15 @@ export default class ResourceRow extends Row<ResourceRowProps> {
   }
 
   render(props: ResourceRowProps) {
+    let { resourceNode } = props
 
     this.timeAxisTr.setAttribute(
       'data-resource-id',
-      props.resource.id || ''
+      resourceNode.resource.id || ''
     )
 
     this.spreadsheetRow.receiveProps({
-      resource: props.resource,
-      resourceFields: props.resourceFields,
-      rowSpans: props.rowSpans,
-      depth: props.depth,
-      hasChildren: props.hasChildren,
+      resourceNode,
       colSpecs: props.colSpecs,
       isExpanded: props.isExpanded
     })

@@ -2,14 +2,11 @@ import { htmlToElement, htmlEscape, createElement, Component, ComponentContext }
 import { Resource } from '../structs/resource'
 import { updateExpanderIcon, clearExpanderIcon } from './render-utils'
 import ResourceApi from '../api/ResourceApi'
+import { ResourceNode } from '../common/resource-hierarchy'
 
 export interface SpreadsheetRowProps {
-  resource: Resource
-  resourceFields: any
-  rowSpans: number[] // for each cell
-  depth: number
+  resourceNode: ResourceNode
   colSpecs: any
-  hasChildren: boolean
   isExpanded: boolean
 }
 
@@ -26,11 +23,13 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   }
 
   render(props: SpreadsheetRowProps) {
-    let id = this.subrender('renderRow', [ props.resource, props.resourceFields, props.rowSpans, props.colSpecs, props.depth ], 'unrenderRow')
-    this.subrender('updateExpanderIcon', [ props.hasChildren, props.isExpanded, id ])
+    let { resourceNode } = props
+
+    let id = this.subrender('renderRow', [ resourceNode.resource, resourceNode.resourceFields, resourceNode.rowSpans, resourceNode.depth, props.colSpecs ], 'unrenderRow')
+    this.subrender('updateExpanderIcon', [ resourceNode.hasChildren, props.isExpanded, id ])
   }
 
-  renderRow(resource: Resource, resourceFields, rowSpans: number[], colSpecs, depth: number) {
+  renderRow(resource: Resource, resourceFields, rowSpans: number[], depth: number, colSpecs) {
     let { tr, theme, calendar } = this
 
     tr.setAttribute('data-resource-id', resource.id) // TODO: only use public ID?
@@ -118,7 +117,7 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   }
 
   onExpanderClick = (ev: UIEvent) => {
-    alert('expand ' + this.props.resource.title)
+    alert('expand ' + this.props.resourceNode.id)
   }
 
 }

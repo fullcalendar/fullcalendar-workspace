@@ -41,7 +41,7 @@ doesn't accept grouping
 export function flattenResources(resourceStore: ResourceHash, orderSpecs): Resource[] {
   return buildRowNodes(resourceStore, [], orderSpecs, false)
     .map(function(node) {
-      return node.resource
+      return (node as ResourceNode).resource
     })
 }
 
