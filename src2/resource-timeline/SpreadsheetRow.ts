@@ -1,19 +1,23 @@
 import { htmlToElement, htmlEscape, createElement, Component, ComponentContext } from 'fullcalendar'
 import { Resource } from '../structs/resource'
+import { updateExpanderIcon, clearExpanderIcon } from './render-utils'
+import ResourceApi from '../api/ResourceApi'
 
 export interface SpreadsheetRowProps {
   resource: Resource
   resourceFields: any
-  rowSpans: number[]
+  rowSpans: number[] // for each cell
   depth: number
-  hasChildren: boolean
   colSpecs: any
+  hasChildren: boolean
+  isExpanded: boolean
 }
 
 export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
 
   tr: HTMLElement
   heightEl: HTMLElement
+  expanderIconEl: HTMLElement // might not exist
 
   constructor(context: ComponentContext, tr: HTMLElement) {
     super(context)
@@ -22,8 +26,12 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   }
 
   render(props: SpreadsheetRowProps) {
-    let { tr, theme } = this
-    let { resource, resourceFields, rowSpans, colSpecs } = props
+    let id = this.subrender('renderRow', [ props.resource, props.resourceFields, props.rowSpans, props.colSpecs, props.depth ], 'unrenderRow')
+    this.subrender('updateExpanderIcon', [ props.hasChildren, props.isExpanded, id ])
+  }
+
+  renderRow(resource: Resource, resourceFields, rowSpans: number[], colSpecs, depth: number) {
+    let { tr, theme, calendar } = this
 
     tr.setAttribute('data-resource-id', resource.id) // TODO: only use public ID?
 
@@ -37,20 +45,22 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
         rowSpan = 1
       }
 
-      const input = // the source text, and the main argument for the filter functions
+      let input = // the source text, and the main argument for the filter functions
         colSpec.field ?
           resourceFields[colSpec.field] || null :
           resource
 
-      const text =
+      let text =
         typeof colSpec.text === 'function' ?
-          // TODO: pass in REAL resource obj!!!
-          colSpec.text(resource, input) : // the colspec provided a text filter function
+          colSpec.text(
+            new ResourceApi(calendar, resource),
+            input
+          ) :
           (typeof input === 'object' ? resource.title : input) // TODO: getResourceTextFunc (which is a util for ALL resource views)
 
       let contentEl = htmlToElement(
         '<div class="fc-cell-content">' +
-          (colSpec.isMain ? this.renderGutterHtml(props.depth) : '') +
+          (colSpec.isMain ? renderIconHtml(depth) : '') +
           '<span class="fc-cell-text">' +
             (text ? htmlEscape(text) : '&nbsp;') +
           '</span>' +
@@ -58,7 +68,11 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
       )
 
       if (typeof colSpec.render === 'function') { // a filter function for the element
-        contentEl = colSpec.render(resource, contentEl, input) || contentEl
+        contentEl = colSpec.render(
+          new ResourceApi(calendar, resource),
+          contentEl,
+          input
+        ) || contentEl
       }
 
       const td = createElement('td', {
@@ -75,29 +89,45 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
 
       tr.appendChild(td)
     }
+
+    this.expanderIconEl = tr.querySelector('.fc-expander-space .fc-icon')
   }
 
-  unrender() {
+  unrenderRow() {
     this.tr.innerHTML = ''
   }
 
-  /*
-  Renders the HTML responsible for the subrow expander area,
-  as well as the space before it (used to align expanders of similar depths)
-  */
-  renderGutterHtml(depth) {
-    let html = ''
+  updateExpanderIcon(hasChildren: boolean, isExpanded: boolean) {
+    let { expanderIconEl } = this
 
-    for (let i = 0; i < depth; i++) {
-      html += '<span class="fc-icon"></span>'
+    if (expanderIconEl) {
+      if (hasChildren) {
+        expanderIconEl.parentElement.classList.add('fc-expander')
+        updateExpanderIcon(expanderIconEl, isExpanded, this.isRtl)
+      } else {
+        expanderIconEl.parentElement.classList.remove('fc-expander')
+        clearExpanderIcon(expanderIconEl)
+      }
     }
-
-    html +=
-      '<span class="fc-expander-space">' +
-        '<span class="fc-icon"></span>' +
-      '</span>'
-
-    return html
   }
 
+}
+
+/*
+Renders the HTML responsible for the subrow expander area,
+as well as the space before it (used to align expanders of similar depths)
+*/
+function renderIconHtml(depth) {
+  let html = ''
+
+  for (let i = 0; i < depth; i++) {
+    html += '<span class="fc-icon"></span>'
+  }
+
+  html +=
+    '<span class="fc-expander-space">' +
+      '<span class="fc-icon"></span>' +
+    '</span>'
+
+  return html
 }

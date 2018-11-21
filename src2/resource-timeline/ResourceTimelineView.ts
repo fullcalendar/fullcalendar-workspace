@@ -1,7 +1,7 @@
 import { PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, reselector, assignTo } from 'fullcalendar'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash } from '../structs/resource'
-import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
+import { buildRowNodes, GroupNode, ResourceNode, Group } from '../common/resource-hierarchy'
 import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'
 import ScrollJoiner from '../util/ScrollJoiner'
@@ -41,6 +41,7 @@ export default class ResourceTimelineView extends View {
   private buildRowNodes = reselector(buildRowNodes)
   private splitEventDrag = reselector(splitEventInteraction)
   private splitEventResize = reselector(splitEventInteraction)
+  private hasNesting = reselector(hasNesting)
 
   constructor(context: ComponentContext, viewSpec: ViewSpec, dateProfileGenerator: DateProfileGenerator, parentEl: HTMLElement) {
     super(context, viewSpec, dateProfileGenerator, parentEl)
@@ -206,6 +207,9 @@ export default class ResourceTimelineView extends View {
       this.isVGrouping
     )
 
+    let hasNesting = this.hasNesting(newRowNodes)
+    this.subrender('updateHasNesting', [ hasNesting ])
+
     this.diffRow(newRowNodes)
     this.renderRows(
       props,
@@ -214,6 +218,16 @@ export default class ResourceTimelineView extends View {
       eventDragsByResourceId,
       eventResizesByResourceId
     )
+  }
+
+  updateHasNesting(isNesting: boolean) {
+    let { classList } = this.el
+
+    if (isNesting) {
+      classList.remove('fc-flat')
+    } else {
+      classList.add('fc-flat')
+    }
   }
 
   diffRow(newRowNodes) {
@@ -333,7 +347,8 @@ export default class ResourceTimelineView extends View {
       if ((rowNode as GroupNode).group) {
         (rowComponent as GroupRow).receiveProps({
           group: (rowNode as GroupNode).group,
-          spreadsheetColCnt: this.colSpecs.length
+          spreadsheetColCnt: this.colSpecs.length,
+          isExpanded: false
         })
       } else {
         let resource = (rowNode as ResourceNode).resource
@@ -352,8 +367,9 @@ export default class ResourceTimelineView extends View {
           resourceFields: (rowNode as ResourceNode).resourceFields,
           rowSpans: (rowNode as ResourceNode).rowSpans,
           depth: (rowNode as ResourceNode).depth,
+          colSpecs: this.colSpecs,
           hasChildren: (rowNode as ResourceNode).hasChildren,
-          colSpecs: this.colSpecs
+          isExpanded: true
         })
       }
     }
@@ -589,6 +605,20 @@ function hasResourceBusinessHours(resourceStore: ResourceHash) {
 
     if (resource.businessHours) {
       return true
+    }
+  }
+
+  return false
+}
+
+function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
+  for (let node of nodes) {
+    if ((node as GroupNode).group) {
+      return true
+    } else if ((node as ResourceNode).resource) {
+      if ((node as ResourceNode).hasChildren) {
+        return true
+      }
     }
   }
 

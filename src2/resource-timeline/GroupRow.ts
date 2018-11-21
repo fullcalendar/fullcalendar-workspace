@@ -1,37 +1,39 @@
-import { prependToElement, createElement } from 'fullcalendar'
+import { createElement, htmlToElement, htmlEscape } from 'fullcalendar'
 import { Group } from '../common/resource-hierarchy'
 import Row from './Row'
+import { updateExpanderIcon } from './render-utils'
 
 export interface GroupRowProps {
   group: Group
   spreadsheetColCnt: number
+  isExpanded: boolean
 }
 
 export default class GroupRow extends Row<GroupRowProps> {
 
   spreadsheetHeightEl: HTMLElement
   timeAxisHeightEl: HTMLElement
+  expanderIconEl: HTMLElement
 
   render(props: GroupRowProps) {
-    const contentEl = this.renderGroupContentEl(props.group)
+    let id = this.subrender('renderCells', [ props.group, props.spreadsheetColCnt ], 'urenderCells')
+    this.subrender('updateExpanderIcon', [ props.isExpanded, id ])
+  }
 
-    // add an expander icon. binding handlers and updating are done by RowParent
-    prependToElement(
-      contentEl,
-      '<span class="fc-expander">' +
-        '<span class="fc-icon"></span>' +
-      '</span>'
-    )
+  renderCells(group: Group, spreadsheetColCnt: number) {
+    let spreadsheetContentEl = this.renderSpreadsheetContent(group)
 
     this.spreadsheetTr.appendChild(
       createElement('td',
         {
           className: 'fc-divider',
-          colSpan: props.spreadsheetColCnt // span across all columns
+          colSpan: spreadsheetColCnt // span across all columns
         },
-        this.spreadsheetHeightEl = createElement('div', null, contentEl)
+        this.spreadsheetHeightEl = createElement('div', null, spreadsheetContentEl)
       ) // needed by setTrInnerHeight
     )
+
+    this.expanderIconEl = spreadsheetContentEl.querySelector('.fc-icon')
 
     // insert a single cell, with a single empty <div>.
     // there will be no content
@@ -42,16 +44,27 @@ export default class GroupRow extends Row<GroupRowProps> {
     )
   }
 
-  unrender() {
+  unrenderCells() {
     this.spreadsheetTr.innerHTML = ''
     this.timeAxisTr.innerHTML = ''
   }
 
   /*
-  Renders the content wrapper element that will be inserted into this row's TD cell
+  Renders the content wrapper element that will be inserted into this row's TD cell.
   */
-  renderGroupContentEl(group: Group) {
-    let contentEl = createElement('div', { className: 'fc-cell-content' }, this.renderGroupTextEl(group))
+  renderSpreadsheetContent(group: Group) {
+    let text = this.renderCellText(group)
+    let contentEl = htmlToElement(
+      '<div class="fc-cell-content">' +
+        '<span class="fc-expander">' +
+          '<span class="fc-icon"></span>' +
+        '</span>' +
+        '<span class="fc-cell-text">' +
+           (text ? htmlEscape(text) : '&nbsp;') +
+        '</span>' +
+      '</div>'
+    )
+
     let filter = group.spec.render
 
     if (typeof filter === 'function') {
@@ -61,11 +74,7 @@ export default class GroupRow extends Row<GroupRowProps> {
     return contentEl
   }
 
-  /*
-  Renders the text span element that will be inserted into this row's TD cell.
-  Goes within the content element.
-  */
-  renderGroupTextEl(group: Group) {
+  renderCellText(group: Group) {
     let text = group.value || '' // might be null/undefined if an ad-hoc grouping
     let filter = group.spec.text
 
@@ -73,13 +82,15 @@ export default class GroupRow extends Row<GroupRowProps> {
       text = filter(text) || text
     }
 
-    let el = createElement('span', { className: 'fc-cell-text' })
-    el.innerText = text
-    return el
+    return text
   }
 
   getHeightEls() {
     return [ this.spreadsheetHeightEl, this.timeAxisHeightEl ]
+  }
+
+  updateExpanderIcon(isExpanded: boolean) {
+    updateExpanderIcon(this.expanderIconEl, isExpanded, this.isRtl)
   }
 
 }

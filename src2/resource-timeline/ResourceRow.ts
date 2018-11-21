@@ -17,8 +17,9 @@ export interface ResourceRowProps {
   resourceFields: any
   rowSpans: number[]
   depth: number
-  hasChildren: boolean
   colSpecs: any
+  hasChildren: boolean
+  isExpanded: boolean
 }
 
 export default class ResourceRow extends Row<ResourceRowProps> {
@@ -67,7 +68,8 @@ export default class ResourceRow extends Row<ResourceRowProps> {
       rowSpans: props.rowSpans,
       depth: props.depth,
       hasChildren: props.hasChildren,
-      colSpecs: props.colSpecs
+      colSpecs: props.colSpecs,
+      isExpanded: props.isExpanded
     })
 
     this.lane.receiveProps({

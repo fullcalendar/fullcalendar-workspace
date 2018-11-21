@@ -45,7 +45,7 @@ export function flattenResources(resourceStore: ResourceHash, orderSpecs): Resou
     })
 }
 
-export function buildRowNodes(resourceStore: ResourceHash, groupSpecs, orderSpecs, isVGrouping: boolean) {
+export function buildRowNodes(resourceStore: ResourceHash, groupSpecs, orderSpecs, isVGrouping: boolean) : (GroupNode | ResourceNode)[] {
   let complexNodes = buildHierarchy(resourceStore, isVGrouping ? -1 : 1, groupSpecs, orderSpecs)
   let flatNodes = []
 
