@@ -34,6 +34,7 @@ export default class GroupRow extends Row<GroupRowProps> {
     )
 
     this.expanderIconEl = spreadsheetContentEl.querySelector('.fc-icon')
+    this.expanderIconEl.parentElement.addEventListener('click', this.onExpanderClick)
 
     // insert a single cell, with a single empty <div>.
     // there will be no content
@@ -91,6 +92,10 @@ export default class GroupRow extends Row<GroupRowProps> {
 
   updateExpanderIcon(isExpanded: boolean) {
     updateExpanderIcon(this.expanderIconEl, isExpanded, this.isRtl)
+  }
+
+  onExpanderClick = (ev: UIEvent) => {
+    alert('expand group ' + this.props.group.value)
   }
 
 }

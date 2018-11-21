@@ -99,16 +99,26 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
 
   updateExpanderIcon(hasChildren: boolean, isExpanded: boolean) {
     let { expanderIconEl } = this
+    let expanderEl = expanderIconEl.parentElement
 
     if (expanderIconEl) {
+
       if (hasChildren) {
-        expanderIconEl.parentElement.classList.add('fc-expander')
+        expanderEl.addEventListener('click', this.onExpanderClick)
+        expanderEl.classList.add('fc-expander')
+
         updateExpanderIcon(expanderIconEl, isExpanded, this.isRtl)
       } else {
-        expanderIconEl.parentElement.classList.remove('fc-expander')
+        expanderEl.removeEventListener('click', this.onExpanderClick)
+        expanderEl.classList.remove('fc-expander')
+
         clearExpanderIcon(expanderIconEl)
       }
     }
+  }
+
+  onExpanderClick = (ev: UIEvent) => {
+    alert('expand ' + this.props.resource.title)
   }
 
 }

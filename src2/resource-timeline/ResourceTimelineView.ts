@@ -348,7 +348,7 @@ export default class ResourceTimelineView extends View {
         (rowComponent as GroupRow).receiveProps({
           group: (rowNode as GroupNode).group,
           spreadsheetColCnt: this.colSpecs.length,
-          isExpanded: false
+          isExpanded: true
         })
       } else {
         let resource = (rowNode as ResourceNode).resource
