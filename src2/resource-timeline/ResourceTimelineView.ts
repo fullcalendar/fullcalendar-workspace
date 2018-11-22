@@ -9,8 +9,6 @@ import Spreadsheet from './Spreadsheet'
 import TimelineLane from '../timeline/TimelineLane'
 import { splitEventStores, splitEventInteraction } from './event-splitting'
 
-const LOOKAHEAD = 3
-
 export default class ResourceTimelineView extends View {
 
   // child components
@@ -212,7 +210,7 @@ export default class ResourceTimelineView extends View {
     let hasNesting = this.hasNesting(newRowNodes)
     this.subrender('updateHasNesting', [ hasNesting ])
 
-    this.diffRow(newRowNodes)
+    this.diffRows(newRowNodes)
     this.renderRows(
       props,
       hasResourceBusinessHours ? props.businessHours : null, // CONFUSING, comment
@@ -232,45 +230,34 @@ export default class ResourceTimelineView extends View {
     }
   }
 
-  diffRow(newRowNodes) {
-    let oldRowNodes = this.rowNodes
-    let finalNodes = [] // same as newRowNodes, but with old nodes if equal to the new
+  diffRows(newNodes) {
+    let oldNodes = this.rowNodes
+    let oldLen = oldNodes.length
+    let oldIndexHash = {} // id -> index
     let oldI = 0
     let newI = 0
 
-    for (newI = 0; newI < newRowNodes.length; newI++) {
-      let newRow = newRowNodes[newI]
-      let oldRowFound = false
+    for (oldI = 0; oldI < oldLen; oldI++) {
+      oldIndexHash[oldNodes[oldI].id] = oldI
+    }
 
-      if (oldI < oldRowNodes.length) {
-        let oldRow = oldRowNodes[oldI]
+    // iterate new nodes
+    for (oldI = 0, newI = 0; newI < newNodes.length; newI++) {
+      let newNode = newNodes[newI]
+      let oldIFound = oldIndexHash[newNode.id]
 
-        if (oldRow.id === newRow.id) {
-          finalNodes.push(oldRow)
-          oldRowFound = true
-          oldI++
-        } else {
-
-          for (let oldLookaheadI = oldI; oldLookaheadI < oldI + LOOKAHEAD; oldLookaheadI++) {
-            let oldLookaheadRow = oldRowNodes[oldLookaheadI]
-
-            if (oldLookaheadRow.id === newRow.id) {
-              this.removeRows(oldI, oldLookaheadI, oldRowNodes)
-              oldI = oldLookaheadI
-              oldRowFound = true
-              break
-            }
-          }
-        }
-      }
-
-      if (!oldRowFound) {
-        this.addRow(newI, newRow)
-        finalNodes.push(newRow)
+      if (oldIFound != null && oldIFound >= oldI) {
+        this.removeRows(newI, oldIFound - oldI, oldNodes) // won't do anything if same index
+        oldI = oldIFound + 1
+      } else {
+        this.addRow(newI, newNode)
       }
     }
 
-    this.rowNodes = finalNodes
+    // old rows that weren't found need to be removed
+    this.removeRows(newI, oldLen - oldI, oldNodes) // won't do anything if same index
+
+    this.rowNodes = newNodes
   }
 
   /*
@@ -292,18 +279,20 @@ export default class ResourceTimelineView extends View {
     rowComponentsById[rowNode.id] = newComponent
   }
 
-  removeRows(startRemoveI, endRemoveI, oldRowNodes) {
-    let { rowComponents, rowComponentsById } = this
+  removeRows(startIndex, len, oldRowNodes) {
+    if (len) {
+      let { rowComponents, rowComponentsById } = this
 
-    for (let i = startRemoveI; i < endRemoveI; i++) {
-      let rowComponent = rowComponents[i]
+      for (let i = 0; i < len; i++) {
+        let rowComponent = rowComponents[startIndex + i]
 
-      rowComponent.destroy()
+        rowComponent.destroy()
 
-      delete rowComponentsById[oldRowNodes[i].id]
+        delete rowComponentsById[oldRowNodes[i].id]
+      }
+
+      rowComponents.splice(startIndex, len)
     }
-
-    rowComponents.splice(startRemoveI, endRemoveI - startRemoveI)
   }
 
   buildChildComponent(
