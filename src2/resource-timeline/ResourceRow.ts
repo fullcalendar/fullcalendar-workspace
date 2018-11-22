@@ -15,7 +15,6 @@ export interface ResourceRowProps {
   eventResize: EventInteractionUiState | null
   resourceNode: ResourceNode
   colSpecs: any
-  isExpanded: boolean
 }
 
 export default class ResourceRow extends Row<ResourceRowProps> {
@@ -61,8 +60,7 @@ export default class ResourceRow extends Row<ResourceRowProps> {
 
     this.spreadsheetRow.receiveProps({
       resourceNode,
-      colSpecs: props.colSpecs,
-      isExpanded: props.isExpanded
+      colSpecs: props.colSpecs
     })
 
     this.lane.receiveProps({

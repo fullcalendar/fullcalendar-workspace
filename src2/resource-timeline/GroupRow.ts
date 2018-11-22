@@ -6,7 +6,6 @@ import { updateExpanderIcon } from './render-utils'
 export interface GroupRowProps {
   groupNode: GroupNode
   spreadsheetColCnt: number
-  isExpanded: boolean
 }
 
 export default class GroupRow extends Row<GroupRowProps> {
@@ -16,8 +15,8 @@ export default class GroupRow extends Row<GroupRowProps> {
   expanderIconEl: HTMLElement
 
   render(props: GroupRowProps) {
-    let id = this.subrender('renderCells', [ props.groupNode.group, props.spreadsheetColCnt ], 'urenderCells')
-    this.subrender('updateExpanderIcon', [ props.isExpanded, id ])
+    let id = this.subrender('renderCells', [ props.groupNode.group, props.spreadsheetColCnt ], 'unrenderCells')
+    this.subrender('updateExpanderIcon', [ props.groupNode.isExpanded, id ])
   }
 
   renderCells(group: Group, spreadsheetColCnt: number) {
@@ -95,7 +94,13 @@ export default class GroupRow extends Row<GroupRowProps> {
   }
 
   onExpanderClick = (ev: UIEvent) => {
-    alert('expand group ' + this.props.groupNode.id)
+    let { groupNode } = this.props
+
+    this.calendar.dispatch({
+      type: 'SET_RESOURCE_ENTITY_EXPANDED',
+      id: groupNode.id,
+      isExpanded: !groupNode.isExpanded
+    })
   }
 
 }

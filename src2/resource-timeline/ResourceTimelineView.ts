@@ -204,7 +204,9 @@ export default class ResourceTimelineView extends View {
       props.resourceStore,
       this.groupSpecs,
       this.orderSpecs,
-      this.isVGrouping
+      this.isVGrouping,
+      props.resourceEntityExpansions,
+      this.opt('resourcesInitiallyExpanded')
     )
 
     let hasNesting = this.hasNesting(newRowNodes)
@@ -347,8 +349,7 @@ export default class ResourceTimelineView extends View {
       if ((rowNode as GroupNode).group) {
         (rowComponent as GroupRow).receiveProps({
           groupNode: rowNode as GroupNode,
-          spreadsheetColCnt: this.colSpecs.length,
-          isExpanded: true
+          spreadsheetColCnt: this.colSpecs.length
         })
       } else {
         let resource = (rowNode as ResourceNode).resource
@@ -364,8 +365,7 @@ export default class ResourceTimelineView extends View {
           eventDrag: eventDragsByResourceId[resourceId] || null,
           eventResize: eventResizesByResourceId[resourceId] || null,
           resourceNode: rowNode as ResourceNode,
-          colSpecs: this.colSpecs,
-          isExpanded: true
+          colSpecs: this.colSpecs
         })
       }
     }

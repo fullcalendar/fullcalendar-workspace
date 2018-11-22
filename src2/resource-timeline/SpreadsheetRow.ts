@@ -7,7 +7,6 @@ import { ResourceNode } from '../common/resource-hierarchy'
 export interface SpreadsheetRowProps {
   resourceNode: ResourceNode
   colSpecs: any
-  isExpanded: boolean
 }
 
 export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
@@ -26,7 +25,7 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
     let { resourceNode } = props
 
     let id = this.subrender('renderRow', [ resourceNode.resource, resourceNode.resourceFields, resourceNode.rowSpans, resourceNode.depth, props.colSpecs ], 'unrenderRow')
-    this.subrender('updateExpanderIcon', [ resourceNode.hasChildren, props.isExpanded, id ])
+    this.subrender('updateExpanderIcon', [ resourceNode.hasChildren, resourceNode.isExpanded, id ])
   }
 
   renderRow(resource: Resource, resourceFields, rowSpans: number[], depth: number, colSpecs) {
@@ -117,7 +116,13 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   }
 
   onExpanderClick = (ev: UIEvent) => {
-    alert('expand ' + this.props.resourceNode.id)
+    let { resourceNode } = this.props
+
+    this.calendar.dispatch({
+      type: 'SET_RESOURCE_ENTITY_EXPANDED',
+      id: resourceNode.id,
+      isExpanded: !resourceNode.isExpanded
+    })
   }
 
 }

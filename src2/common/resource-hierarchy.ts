@@ -1,5 +1,6 @@
 import { ResourceHash, Resource } from "../structs/resource"
 import { flexibleCompare, compareByFieldSpecs, assignTo } from "fullcalendar"
+import { ResourceEntityExpansions } from '../reducers/resourceEntityExpansions'
 
 interface ParentNode {
   children: ParentNode[]
@@ -23,6 +24,7 @@ export interface Group {
 
 export interface GroupNode {
   id: string // 'field:value'
+  isExpanded: boolean
   group: Group
 }
 
@@ -30,6 +32,7 @@ export interface ResourceNode {
   id: string // 'resourceId' (won't collide with group ID's because has colon)
   rowSpans: number[]
   depth: number
+  isExpanded: boolean
   hasChildren: boolean
   resource: Resource
   resourceFields: any
@@ -39,22 +42,34 @@ export interface ResourceNode {
 doesn't accept grouping
 */
 export function flattenResources(resourceStore: ResourceHash, orderSpecs): Resource[] {
-  return buildRowNodes(resourceStore, [], orderSpecs, false)
+  return buildRowNodes(resourceStore, [], orderSpecs, false, {}, true)
     .map(function(node) {
       return (node as ResourceNode).resource
     })
 }
 
-export function buildRowNodes(resourceStore: ResourceHash, groupSpecs, orderSpecs, isVGrouping: boolean) : (GroupNode | ResourceNode)[] {
+export function buildRowNodes(
+  resourceStore: ResourceHash,
+  groupSpecs,
+  orderSpecs,
+  isVGrouping: boolean,
+  expansions: ResourceEntityExpansions,
+  expansionDefault: boolean
+) : (GroupNode | ResourceNode)[] {
   let complexNodes = buildHierarchy(resourceStore, isVGrouping ? -1 : 1, groupSpecs, orderSpecs)
   let flatNodes = []
 
-  flattenNodes(complexNodes, flatNodes, isVGrouping, [], 0)
+  flattenNodes(complexNodes, flatNodes, isVGrouping, [], 0, expansions, expansionDefault)
 
   return flatNodes
 }
 
-function flattenNodes(complexNodes: ParentNode[], res, isVGrouping, rowSpans, depth) {
+function flattenNodes(
+  complexNodes: ParentNode[],
+  res, isVGrouping, rowSpans, depth,
+  expansions: ResourceEntityExpansions,
+  expansionDefault: boolean
+) {
 
   for (let i = 0; i < complexNodes.length; i++) {
     let complexNode = complexNodes[i]
@@ -66,7 +81,7 @@ function flattenNodes(complexNodes: ParentNode[], res, isVGrouping, rowSpans, de
         let firstRowIndex = res.length
         let rowSpanIndex = rowSpans.length
 
-        flattenNodes(complexNode.children, res, isVGrouping, rowSpans.concat(0), depth)
+        flattenNodes(complexNode.children, res, isVGrouping, rowSpans.concat(0), depth, expansions, expansionDefault)
 
         if (firstRowIndex < res.length) {
           let firstRow = res[firstRowIndex]
@@ -75,25 +90,33 @@ function flattenNodes(complexNodes: ParentNode[], res, isVGrouping, rowSpans, de
           firstRowSpans[rowSpanIndex] = res.length - firstRowIndex
         }
       } else {
-        res.push({
-          id: group.spec.field + ':' + group.value,
-          group
-        })
+        let id = group.spec.field + ':' + group.value
+        let isExpanded = expansions[id] != null ? expansions[id] : expansionDefault
 
-        flattenNodes(complexNode.children, res, isVGrouping, rowSpans, depth + 1)
+        res.push({ id, group, isExpanded })
+
+        if (isExpanded) {
+          flattenNodes(complexNode.children, res, isVGrouping, rowSpans, depth + 1, expansions, expansionDefault)
+        }
       }
 
     } else if ((complexNode as ResourceParentNode).resource) {
+      let id = (complexNode as ResourceParentNode).resource.id
+      let isExpanded = expansions[id] != null ? expansions[id] : expansionDefault
+
       res.push({
-        id: (complexNode as ResourceParentNode).resource.id,
+        id,
         rowSpans,
         depth,
+        isExpanded,
         hasChildren: Boolean(complexNode.children.length),
         resource: (complexNode as ResourceParentNode).resource,
         resourceFields: (complexNode as ResourceParentNode).resourceFields,
       })
 
-      flattenNodes(complexNode.children, res, isVGrouping, rowSpans, depth + 1)
+      if (isExpanded) {
+        flattenNodes(complexNode.children, res, isVGrouping, rowSpans, depth + 1, expansions, expansionDefault)
+      }
     }
   }
 }

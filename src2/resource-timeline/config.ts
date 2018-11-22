@@ -3,6 +3,7 @@ import ResourceTimelineView from './ResourceTimelineView'
 
 defineView('resourceTimeline', {
   class: ResourceTimelineView,
+  resourcesInitiallyExpanded: true,
   eventResizableFromStart: true // how is this consumed for TimelineView tho?
 })
 
