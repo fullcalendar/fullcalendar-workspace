@@ -31,9 +31,7 @@ export default class ResourceBasicView extends AbstractBasicView {
       )
     }
 
-    if (this.dayGrid) {
-      this.resourceDayGrid = new ResourceDayGrid(context, this.dayGrid)
-    }
+    this.resourceDayGrid = new ResourceDayGrid(context, this.dayGrid)
   }
 
   destroy() {
@@ -42,6 +40,8 @@ export default class ResourceBasicView extends AbstractBasicView {
     if (this.header) {
       this.header.destroy()
     }
+
+    this.resourceDayGrid.destroy()
   }
 
   render(props: ViewProps) {

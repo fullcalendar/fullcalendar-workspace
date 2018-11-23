@@ -46,6 +46,12 @@ export default class ResourceAgendaView extends AbstractAgendaView {
     if (this.header) {
       this.header.destroy()
     }
+
+    this.resourceTimeGrid.destroy()
+
+    if (this.resourceDayGrid) {
+      this.resourceDayGrid.destroy()
+    }
   }
 
   render(props: ViewProps) {
