@@ -1,4 +1,4 @@
-import { htmlToElement, htmlEscape, createElement, Component, ComponentContext, reselector } from 'fullcalendar'
+import { htmlToElement, htmlEscape, createElement, Component, ComponentContext, memoizeRendering } from 'fullcalendar'
 import { Resource } from '../structs/resource'
 import { updateExpanderIcon, clearExpanderIcon, updateTrResourceId } from './render-utils'
 import ResourceApi from '../api/ResourceApi'
@@ -20,7 +20,9 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   heightEl: HTMLElement
   expanderIconEl: HTMLElement // might not exist
 
-  private updateTrResourceId = reselector(updateTrResourceId)
+  private _renderRow = memoizeRendering(this.renderRow, this.unrenderRow)
+  private _updateTrResourceId = memoizeRendering(updateTrResourceId, null, [ this._renderRow ])
+  private _updateExpanderIcon = memoizeRendering(this.updateExpanderIcon, null, [ this._renderRow ])
 
   constructor(context: ComponentContext, tr: HTMLElement) {
     super(context)
@@ -29,15 +31,20 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   }
 
   render(props: SpreadsheetRowProps) {
-    let id = this.subrender('renderRow', [ props.resource, props.rowSpans, props.depth, props.colSpecs ], 'unrenderRow')
-    this.subrender('updateExpanderIcon', [ props.hasChildren, props.isExpanded, id ])
+    this._renderRow(props.resource, props.rowSpans, props.depth, props.colSpecs)
+    this._updateTrResourceId(this.tr, props.resource.id) // TODO: only use public ID?
+    this._updateExpanderIcon(props.hasChildren, props.isExpanded)
+  }
+
+  destroy() {
+    super.destroy()
+
+    this._renderRow.unrender() // should unrender everything else
   }
 
   renderRow(resource: Resource, rowSpans: number[], depth: number, colSpecs) {
     let { tr, theme, calendar } = this
     let resourceFields = buildResourceFields(resource) // slightly inefficient. already done up the call stack
-
-    this.updateTrResourceId(tr, resource.id) // TODO: only use public ID?
 
     for (let i = 0; i < colSpecs.length; i++) {
       let colSpec = colSpecs[i]

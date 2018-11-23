@@ -1,4 +1,4 @@
-import { createElement, htmlToElement, htmlEscape } from 'fullcalendar'
+import { createElement, htmlToElement, htmlEscape, memoizeRendering } from 'fullcalendar'
 import { Group } from '../common/resource-hierarchy'
 import Row from './Row'
 import { updateExpanderIcon } from './render-utils'
@@ -16,9 +16,18 @@ export default class GroupRow extends Row<GroupRowProps> {
   timeAxisHeightEl: HTMLElement
   expanderIconEl: HTMLElement
 
+  private _renderCells = memoizeRendering(this.renderCells, this.unrenderCells)
+  private _updateExpanderIcon = memoizeRendering(this.updateExpanderIcon, null, [ this._renderCells ])
+
   render(props: GroupRowProps) {
-    let id = this.subrender('renderCells', [ props.group, props.spreadsheetColCnt ], 'unrenderCells')
-    this.subrender('updateExpanderIcon', [ props.isExpanded, id ])
+    this._renderCells(props.group, props.spreadsheetColCnt)
+    this._updateExpanderIcon(props.isExpanded)
+  }
+
+  destroy() {
+    super.destroy()
+
+    this._renderCells.unrender() // should unrender everything else
   }
 
   renderCells(group: Group, spreadsheetColCnt: number) {

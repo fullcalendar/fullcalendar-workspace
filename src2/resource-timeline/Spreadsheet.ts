@@ -1,4 +1,4 @@
-import { createElement, Component, ComponentContext } from 'fullcalendar'
+import { createElement, Component, ComponentContext, memoizeRendering } from 'fullcalendar'
 import SpreadsheetHeader from './SpreadsheetHeader'
 import HeaderBodyLayout from '../timeline/HeaderBodyLayout'
 
@@ -15,6 +15,8 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
   bodyContainerEl: HTMLElement
   bodyColGroup: HTMLElement
   bodyTbody: HTMLElement
+
+  private _renderCells = memoizeRendering(this.renderCells, this.unrenderCells)
 
   constructor(context: ComponentContext, headParentEl: HTMLElement, bodyParentEl: HTMLElement) {
     super(context)
@@ -49,11 +51,13 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
     this.header.destroy()
     this.layout.destroy()
 
+    this._renderCells.unrender()
+
     super.destroy()
   }
 
   render(props: SpreadsheetProps) {
-    this.subrender('renderCells', [ props.superHeaderText, props.colSpecs ], 'unrenderCells')
+    this._renderCells(props.superHeaderText, props.colSpecs)
   }
 
   renderCells(superHeaderText, colSpecs) {

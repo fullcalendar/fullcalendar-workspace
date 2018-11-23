@@ -1,4 +1,4 @@
-import { EventStore, EventUiHash, DateMarker, DateSpan, EventRenderRange, sliceBusinessHours, sliceEventStore, EventInteractionUiState, DateComponent, ComponentContext, Seg, DateRange, intersectRanges, addMs, DateProfile } from 'fullcalendar'
+import { EventStore, EventUiHash, DateMarker, DateSpan, EventRenderRange, sliceBusinessHours, sliceEventStore, EventInteractionUiState, DateComponent, ComponentContext, Seg, DateRange, intersectRanges, addMs, DateProfile, memoizeRendering } from 'fullcalendar'
 import { TimelineDateProfile, normalizeRange, isValidDate } from './timeline-date-profile'
 import TimelineLaneEventRenderer from './TimelineLaneEventRenderer'
 import TimelineLaneFillRenderer from './TimelineLaneFillRenderer'
@@ -25,6 +25,12 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
   tDateProfile: TimelineDateProfile
   timeAxis: TimeAxis
 
+  private _renderEvents = memoizeRendering(this.renderEvents, this.unrenderEvents)
+  private _renderBusinessHours = memoizeRendering(this.renderBusinessHours, this.unrenderBusinessHours)
+  private _renderDateSelection = memoizeRendering(this.renderDateSelection, this.unrenderDateSelection)
+  private _renderEventDragState = memoizeRendering(this.renderEventDragState, this.unrenderEventDragState)
+  private _renderEventResizeState = memoizeRendering(this.renderEventResizeState, this.unrenderEventResizeState)
+
   constructor(context: ComponentContext, fgContainerEl: HTMLElement, bgContainerEl: HTMLElement, timeAxis: TimeAxis) {
     super(context, bgContainerEl) // should el be bgContainerEl???
 
@@ -36,11 +42,11 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
   }
 
   render(props: TimelineLaneProps) {
-    this.subrender('renderEvents', [ props.eventStore, props.eventUis ], 'unrenderEvents')
-    this.subrender('renderBusinessHours', [ props.businessHours, props.dateProfile ], 'unrenderBusinessHours')
-    this.subrender('renderDateSelection', [ props.dateSelection ], 'unrenderDateSelection')
-    this.subrender('renderEventDragState', [ props.eventDrag ], 'unrenderEventDragState')
-    this.subrender('renderEventResizeState', [ props.eventResize ], 'unrenderEventResizeState')
+    this._renderEvents(props.eventStore, props.eventUis)
+    this._renderBusinessHours(props.businessHours, props.dateProfile)
+    this._renderDateSelection(props.dateSelection)
+    this._renderEventDragState(props.eventDrag)
+    this._renderEventResizeState(props.eventResize)
   }
 
   renderEvents(eventStore: EventStore, eventUis: EventUiHash) {

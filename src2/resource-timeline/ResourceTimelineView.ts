@@ -1,4 +1,4 @@
-import { PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, reselector, assignTo } from 'fullcalendar'
+import { memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, reselector, assignTo } from 'fullcalendar'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
@@ -40,6 +40,9 @@ export default class ResourceTimelineView extends View {
   private splitEventDrag = reselector(splitEventInteraction)
   private splitEventResize = reselector(splitEventInteraction)
   private hasNesting = reselector(hasNesting)
+
+  private _updateHasNesting = memoizeRendering(this.updateHasNesting)
+
 
   constructor(context: ComponentContext, viewSpec: ViewSpec, dateProfileGenerator: DateProfileGenerator, parentEl: HTMLElement) {
     super(context, viewSpec, dateProfileGenerator, parentEl)
@@ -208,7 +211,7 @@ export default class ResourceTimelineView extends View {
     )
 
     let hasNesting = this.hasNesting(newRowNodes)
-    this.subrender('updateHasNesting', [ hasNesting ])
+    this._updateHasNesting(hasNesting)
 
     this.diffRows(newRowNodes)
     this.renderRows(
