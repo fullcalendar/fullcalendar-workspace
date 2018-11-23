@@ -1,5 +1,5 @@
 import { createElement, htmlToElement, htmlEscape, memoizeRendering } from 'fullcalendar'
-import { Group } from '../common/resource-hierarchy'
+import { Group, isGroupsEqual } from '../common/resource-hierarchy'
 import Row from './Row'
 import { updateExpanderIcon } from './render-utils'
 
@@ -16,7 +16,7 @@ export default class GroupRow extends Row<GroupRowProps> {
   timeAxisHeightEl: HTMLElement
   expanderIconEl: HTMLElement
 
-  private _renderCells = memoizeRendering(this.renderCells, this.unrenderCells)
+  private _renderCells = memoizeRendering(this.renderCells, this.unrenderCells, [], [ isGroupsEqual ])
   private _updateExpanderIcon = memoizeRendering(this.updateExpanderIcon, null, [ this._renderCells ])
 
   render(props: GroupRowProps) {
@@ -118,3 +118,7 @@ export default class GroupRow extends Row<GroupRowProps> {
   }
 
 }
+
+GroupRow.addEqualityFuncs({
+  group: isGroupsEqual
+})

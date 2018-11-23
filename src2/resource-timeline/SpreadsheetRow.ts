@@ -1,4 +1,4 @@
-import { htmlToElement, htmlEscape, createElement, Component, ComponentContext, memoizeRendering } from 'fullcalendar'
+import { htmlToElement, htmlEscape, createElement, Component, ComponentContext, memoizeRendering, isArraysEqual } from 'fullcalendar'
 import { Resource } from '../structs/resource'
 import { updateExpanderIcon, clearExpanderIcon, updateTrResourceId } from './render-utils'
 import ResourceApi from '../api/ResourceApi'
@@ -20,7 +20,7 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   heightEl: HTMLElement
   expanderIconEl: HTMLElement // might not exist
 
-  private _renderRow = memoizeRendering(this.renderRow, this.unrenderRow)
+  private _renderRow = memoizeRendering(this.renderRow, this.unrenderRow, [], [ null, isArraysEqual ]) // equality func is for rowSpans
   private _updateTrResourceId = memoizeRendering(updateTrResourceId, null, [ this._renderRow ])
   private _updateExpanderIcon = memoizeRendering(this.updateExpanderIcon, null, [ this._renderRow ])
 
@@ -139,6 +139,11 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   }
 
 }
+
+SpreadsheetRow.addEqualityFuncs({
+  rowSpans: isArraysEqual
+})
+
 
 /*
 Renders the HTML responsible for the subrow expander area,

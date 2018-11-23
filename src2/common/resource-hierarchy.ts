@@ -243,3 +243,7 @@ export function buildResourceFields(resource: Resource) {
 
   return obj
 }
+
+export function isGroupsEqual(group0: Group, group1: Group) {
+  return group0.spec === group1.spec && group0.value === group1.value
+}
