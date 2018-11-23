@@ -1,12 +1,17 @@
-import { htmlToElement, htmlEscape, createElement, Component, ComponentContext } from 'fullcalendar'
+import { htmlToElement, htmlEscape, createElement, Component, ComponentContext, reselector } from 'fullcalendar'
 import { Resource } from '../structs/resource'
-import { updateExpanderIcon, clearExpanderIcon } from './render-utils'
+import { updateExpanderIcon, clearExpanderIcon, updateTrResourceId } from './render-utils'
 import ResourceApi from '../api/ResourceApi'
-import { ResourceNode } from '../common/resource-hierarchy'
+import { buildResourceFields } from '../common/resource-hierarchy'
 
 export interface SpreadsheetRowProps {
-  resourceNode: ResourceNode
   colSpecs: any
+  id: string // 'resourceId' (won't collide with group ID's because has colon)
+  rowSpans: number[]
+  depth: number
+  isExpanded: boolean
+  hasChildren: boolean
+  resource: Resource
 }
 
 export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
@@ -15,6 +20,8 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   heightEl: HTMLElement
   expanderIconEl: HTMLElement // might not exist
 
+  private updateTrResourceId = reselector(updateTrResourceId)
+
   constructor(context: ComponentContext, tr: HTMLElement) {
     super(context)
 
@@ -22,16 +29,15 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   }
 
   render(props: SpreadsheetRowProps) {
-    let { resourceNode } = props
-
-    let id = this.subrender('renderRow', [ resourceNode.resource, resourceNode.resourceFields, resourceNode.rowSpans, resourceNode.depth, props.colSpecs ], 'unrenderRow')
-    this.subrender('updateExpanderIcon', [ resourceNode.hasChildren, resourceNode.isExpanded, id ])
+    let id = this.subrender('renderRow', [ props.resource, props.rowSpans, props.depth, props.colSpecs ], 'unrenderRow')
+    this.subrender('updateExpanderIcon', [ props.hasChildren, props.isExpanded, id ])
   }
 
-  renderRow(resource: Resource, resourceFields, rowSpans: number[], depth: number, colSpecs) {
+  renderRow(resource: Resource, rowSpans: number[], depth: number, colSpecs) {
     let { tr, theme, calendar } = this
+    let resourceFields = buildResourceFields(resource) // slightly inefficient. already done up the call stack
 
-    tr.setAttribute('data-resource-id', resource.id) // TODO: only use public ID?
+    this.updateTrResourceId(tr, resource.id) // TODO: only use public ID?
 
     for (let i = 0; i < colSpecs.length; i++) {
       let colSpec = colSpecs[i]
@@ -116,12 +122,12 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   }
 
   onExpanderClick = (ev: UIEvent) => {
-    let { resourceNode } = this.props
+    let { props } = this
 
     this.calendar.dispatch({
       type: 'SET_RESOURCE_ENTITY_EXPANDED',
-      id: resourceNode.id,
-      isExpanded: !resourceNode.isExpanded
+      id: props.id,
+      isExpanded: !props.isExpanded
     })
   }
 

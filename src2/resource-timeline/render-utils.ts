@@ -23,3 +23,7 @@ export function clearExpanderIcon(el: HTMLElement) {
   classList.remove(RIGHT_TRIANGLE_ICON)
   classList.remove(DOWN_TRIANGLE_ICON)
 }
+
+export function updateTrResourceId(tr: HTMLElement, resourceId: string) {
+  tr.setAttribute('data-resource-id', resourceId)
+}

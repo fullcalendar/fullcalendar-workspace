@@ -1,8 +1,9 @@
-import { createElement, ComponentContext, EventInteractionUiState, DateSpan, EventUiHash, EventStore, DateProfile } from 'fullcalendar'
+import { createElement, ComponentContext, EventInteractionUiState, DateSpan, EventUiHash, EventStore, DateProfile, reselector } from 'fullcalendar'
 import Row from './Row'
 import SpreadsheetRow from './SpreadsheetRow'
 import TimelineLane from '../timeline/TimelineLane'
-import { ResourceNode } from '../common/resource-hierarchy'
+import { Resource } from '../structs/resource'
+import { updateTrResourceId } from './render-utils'
 
 export interface ResourceRowProps {
   dateProfile: DateProfile
@@ -13,8 +14,13 @@ export interface ResourceRowProps {
   eventSelection: string
   eventDrag: EventInteractionUiState | null
   eventResize: EventInteractionUiState | null
-  resourceNode: ResourceNode
   colSpecs: any
+  id: string // 'resourceId' (won't collide with group ID's because has colon)
+  rowSpans: number[]
+  depth: number
+  isExpanded: boolean
+  hasChildren: boolean
+  resource: Resource
 }
 
 export default class ResourceRow extends Row<ResourceRowProps> {
@@ -23,6 +29,8 @@ export default class ResourceRow extends Row<ResourceRowProps> {
 
   spreadsheetRow: SpreadsheetRow
   lane: TimelineLane
+
+  private updateTrResourceId = reselector(updateTrResourceId)
 
   constructor(context: ComponentContext, a, b, c, d, timeAxis) {
     super(context, a, b, c, d)
@@ -51,17 +59,20 @@ export default class ResourceRow extends Row<ResourceRowProps> {
   }
 
   render(props: ResourceRowProps) {
-    let { resourceNode } = props
 
-    this.timeAxisTr.setAttribute(
-      'data-resource-id',
-      resourceNode.resource.id || ''
-    )
+    // spreadsheetRow handles calling updateTrResourceId for spreadsheetTr
 
     this.spreadsheetRow.receiveProps({
-      resourceNode,
-      colSpecs: props.colSpecs
+      colSpecs: props.colSpecs,
+      id: props.id,
+      rowSpans: props.rowSpans,
+      depth: props.depth,
+      isExpanded: props.isExpanded,
+      hasChildren: props.hasChildren,
+      resource: props.resource
     })
+
+    this.updateTrResourceId(this.timeAxisTr, props.resource.id)
 
     this.lane.receiveProps({
       dateProfile: props.dateProfile,

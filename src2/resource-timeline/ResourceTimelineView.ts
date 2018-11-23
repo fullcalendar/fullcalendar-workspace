@@ -337,8 +337,10 @@ export default class ResourceTimelineView extends View {
 
       if ((rowNode as GroupNode).group) {
         (rowComponent as GroupRow).receiveProps({
-          groupNode: rowNode as GroupNode,
-          spreadsheetColCnt: this.colSpecs.length
+          spreadsheetColCnt: this.colSpecs.length,
+          id: rowNode.id,
+          isExpanded: rowNode.isExpanded,
+          group: (rowNode as GroupNode).group
         })
       } else {
         let resource = (rowNode as ResourceNode).resource
@@ -353,8 +355,13 @@ export default class ResourceTimelineView extends View {
           eventSelection: viewProps.eventSelection,
           eventDrag: eventDragsByResourceId[resourceId] || null,
           eventResize: eventResizesByResourceId[resourceId] || null,
-          resourceNode: rowNode as ResourceNode,
-          colSpecs: this.colSpecs
+          colSpecs: this.colSpecs,
+          id: rowNode.id,
+          rowSpans: (rowNode as ResourceNode).rowSpans,
+          depth: (rowNode as ResourceNode).depth,
+          isExpanded: rowNode.isExpanded,
+          hasChildren: (rowNode as ResourceNode).hasChildren,
+          resource: (rowNode as ResourceNode).resource
         })
       }
     }

@@ -1,11 +1,13 @@
 import { createElement, htmlToElement, htmlEscape } from 'fullcalendar'
-import { Group, GroupNode } from '../common/resource-hierarchy'
+import { Group } from '../common/resource-hierarchy'
 import Row from './Row'
 import { updateExpanderIcon } from './render-utils'
 
 export interface GroupRowProps {
-  groupNode: GroupNode
   spreadsheetColCnt: number
+  id: string // 'field:value'
+  isExpanded: boolean
+  group: Group
 }
 
 export default class GroupRow extends Row<GroupRowProps> {
@@ -15,8 +17,8 @@ export default class GroupRow extends Row<GroupRowProps> {
   expanderIconEl: HTMLElement
 
   render(props: GroupRowProps) {
-    let id = this.subrender('renderCells', [ props.groupNode.group, props.spreadsheetColCnt ], 'unrenderCells')
-    this.subrender('updateExpanderIcon', [ props.groupNode.isExpanded, id ])
+    let id = this.subrender('renderCells', [ props.group, props.spreadsheetColCnt ], 'unrenderCells')
+    this.subrender('updateExpanderIcon', [ props.isExpanded, id ])
   }
 
   renderCells(group: Group, spreadsheetColCnt: number) {
@@ -94,12 +96,12 @@ export default class GroupRow extends Row<GroupRowProps> {
   }
 
   onExpanderClick = (ev: UIEvent) => {
-    let { groupNode } = this.props
+    let { props } = this
 
     this.calendar.dispatch({
       type: 'SET_RESOURCE_ENTITY_EXPANDED',
-      id: groupNode.id,
-      isExpanded: !groupNode.isExpanded
+      id: props.id,
+      isExpanded: !props.isExpanded
     })
   }
 
