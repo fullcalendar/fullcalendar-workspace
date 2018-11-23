@@ -1,4 +1,4 @@
-import { createElement, ComponentContext, EventInteractionUiState, DateSpan, EventUiHash, EventStore, DateProfile, reselector } from 'fullcalendar'
+import { createElement, ComponentContext, EventInteractionUiState, DateSpan, EventUiHash, EventStore, DateProfile, memoizeRendering } from 'fullcalendar'
 import Row from './Row'
 import SpreadsheetRow from './SpreadsheetRow'
 import TimelineLane from '../timeline/TimelineLane'
@@ -30,7 +30,7 @@ export default class ResourceRow extends Row<ResourceRowProps> {
   spreadsheetRow: SpreadsheetRow
   lane: TimelineLane
 
-  private updateTrResourceId = reselector(updateTrResourceId)
+  private _updateTrResourceId = memoizeRendering(updateTrResourceId)
 
   constructor(context: ComponentContext, a, b, c, d, timeAxis) {
     super(context, a, b, c, d)
@@ -72,7 +72,7 @@ export default class ResourceRow extends Row<ResourceRowProps> {
       resource: props.resource
     })
 
-    this.updateTrResourceId(this.timeAxisTr, props.resource.id)
+    this._updateTrResourceId(this.timeAxisTr, props.resource.id)
 
     this.lane.receiveProps({
       dateProfile: props.dateProfile,
