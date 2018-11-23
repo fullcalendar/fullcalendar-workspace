@@ -36,11 +36,11 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
   }
 
   render(props: TimelineLaneProps) {
-    this.subrender('renderEvents', [ props.eventStore, props.eventUis ], 'unrenderEvents', true)
-    this.subrender('renderBusinessHours', [ props.businessHours, props.dateProfile ], 'unrenderBusinessHours', true)
-    this.subrender('renderDateSelection', [ props.dateSelection ], 'unrenderDateSelection', true)
-    this.subrender('renderEventDragState', [ props.eventDrag ], 'unrenderEventDragState', true)
-    this.subrender('renderEventResizeState', [ props.eventResize ], 'unrenderEventResizeState', true)
+    this.subrender('renderEvents', [ props.eventStore, props.eventUis ], 'unrenderEvents')
+    this.subrender('renderBusinessHours', [ props.businessHours, props.dateProfile ], 'unrenderBusinessHours')
+    this.subrender('renderDateSelection', [ props.dateSelection ], 'unrenderDateSelection')
+    this.subrender('renderEventDragState', [ props.eventDrag ], 'unrenderEventDragState')
+    this.subrender('renderEventResizeState', [ props.eventResize ], 'unrenderEventResizeState')
   }
 
   renderEvents(eventStore: EventStore, eventUis: EventUiHash) {
@@ -94,37 +94,16 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
     }
   }
 
-  // TODO: kill
   updateSize(viewHeight: number, isAuto: boolean, isResize: boolean) {
-    let map = this.dirtySizeMethodNames
+    let { fillRenderer, eventRenderer, mirrorRenderer } = this
 
-    if (isResize || map.has('renderBusinessHours')) {
-      this.computeBusinessHoursSize()
-    }
+    fillRenderer.computeSizes(isResize)
+    eventRenderer.computeSizes(isResize)
+    mirrorRenderer.computeSizes(isResize)
 
-    if (isResize || map.has('renderDateSelection') || map.has('renderEventDragState') || map.has('renderEventResizeState')) {
-      this.mirrorRenderer.computeSizes()
-      this.fillRenderer.computeSizes('highlight')
-    }
-
-    if (isResize || map.has('renderEvents')) {
-      this.computeEventsSize()
-    }
-
-    if (isResize || map.has('renderBusinessHours')) {
-      this.assignBusinessHoursSize()
-    }
-
-    if (isResize || map.has('renderDateSelection') || map.has('renderEventDragState') || map.has('renderEventResizeState')) {
-      this.mirrorRenderer.assignSizes()
-      this.fillRenderer.assignSizes('highlight')
-    }
-
-    if (isResize || map.has('renderEvents')) {
-      this.assignEventsSize()
-    }
-
-    this.dirtySizeMethodNames = new Map()
+    fillRenderer.assignSizes(isResize)
+    eventRenderer.assignSizes(isResize)
+    mirrorRenderer.assignSizes(isResize)
   }
 
 }

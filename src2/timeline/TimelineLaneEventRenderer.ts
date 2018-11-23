@@ -79,8 +79,8 @@ export default class TimelineLaneEventRenderer extends FgEventRenderer {
   }
 
   // computes AND assigns (assigns the left/right at least). bad
-  computeSizes() {
-    let { segs, timeAxis } = this
+  computeSegSizes(segs: Seg[]) {
+    let { timeAxis } = this
 
     for (let seg of segs) {
       let coords = timeAxis.rangeToCoords(seg) // works because Seg has start/end
@@ -92,12 +92,10 @@ export default class TimelineLaneEventRenderer extends FgEventRenderer {
     }
   }
 
-  assignSizes() {
+  assignSegSizes(segs: Seg[]) {
     if (!this.el) {
       return
     }
-
-    let { segs } = this
 
     // compute seg verticals
     for (let seg of segs) {

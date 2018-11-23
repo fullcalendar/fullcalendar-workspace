@@ -87,6 +87,9 @@ export default class GroupRow extends Row<GroupRowProps> {
     return text
   }
 
+  updateSize(viewHeight: number, isAuto: boolean, isResize: boolean) {
+  }
+
   getHeightEls() {
     return [ this.spreadsheetHeightEl, this.timeAxisHeightEl ]
   }

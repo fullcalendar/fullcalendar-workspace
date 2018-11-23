@@ -87,8 +87,6 @@ export default class ResourceRow extends Row<ResourceRowProps> {
   }
 
   updateSize(viewHeight: number, isAuto: boolean, isResize: boolean) {
-    super.updateSize(viewHeight, isAuto, isResize)
-
     this.lane.updateSize(viewHeight, isAuto, isResize)
   }
 

@@ -1,4 +1,4 @@
-import { FillRenderer, createElement, applyStyle, ComponentContext } from 'fullcalendar'
+import { FillRenderer, createElement, applyStyle, ComponentContext, Seg } from 'fullcalendar'
 import TimeAxis from './TimeAxis'
 
 export default class TimelineLaneFillRenderer extends FillRenderer {
@@ -36,9 +36,8 @@ export default class TimelineLaneFillRenderer extends FillRenderer {
     }
   }
 
-  computeSizes(type) {
+  computeSegSizes(segs: Seg[]) {
     let { timeAxis } = this
-    let segs = this.segsByType[type] || []
 
     for (let seg of segs) {
       let coords = timeAxis.rangeToCoords(seg)
@@ -47,9 +46,7 @@ export default class TimelineLaneFillRenderer extends FillRenderer {
     }
   }
 
-  assignSizes(type) {
-    let segs = this.segsByType[type] || []
-
+  assignSegSizes(segs: Seg[]) {
     for (let seg of segs) {
       applyStyle(seg.el, {
         left: seg.left,
