@@ -120,7 +120,7 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
     }
   }
 
-  updateSize(viewHeight: number, isAuto: boolean, isResize: boolean) {
+  updateSize(isResize: boolean) {
     let { fillRenderer, eventRenderer, mirrorRenderer } = this
 
     fillRenderer.computeSizes(isResize)

@@ -91,7 +91,7 @@ export default class ResourceRow extends Row<ResourceRowProps> {
   updateSize(isResize: boolean) {
     super.updateSize(isResize)
 
-    this.lane.updateSize(0, false, isResize)
+    this.lane.updateSize(isResize)
   }
 
   getHeightEls() {

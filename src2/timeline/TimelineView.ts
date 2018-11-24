@@ -64,9 +64,9 @@ export default class TimelineView extends View {
     this.lane.receiveProps(props) // props definitions match exactly
   }
 
-  updateSize(totalHeight, isAuto, isResize) {
-    this.timeAxis.updateSize(totalHeight, isAuto, isResize)
-    this.lane.updateSize(totalHeight, isAuto, isResize)
+  updateSize(isResize, totalHeight, isAuto) {
+    this.timeAxis.updateSize(isResize, totalHeight, isAuto)
+    this.lane.updateSize(isResize)
   }
 
 

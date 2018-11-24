@@ -370,21 +370,21 @@ export default class ResourceTimelineView extends View {
     }
   }
 
-  updateSize(viewHeight, isAuto, isResize) {
+  updateSize(isResize, viewHeight, isAuto) {
     // FYI: this ordering is really important
 
     let isBaseSizing = isResize || this.isDateSizeDirty || this.isEventSizeDirty
 
     if (isBaseSizing) {
       this.syncHeadHeights()
-      this.timeAxis.updateSize(viewHeight - this.miscHeight, isAuto, isResize)
-      this.spreadsheet.updateSize(viewHeight - this.miscHeight, isAuto, isResize)
+      this.timeAxis.updateSize(isResize, viewHeight - this.miscHeight, isAuto)
+      this.spreadsheet.updateSize(isResize, viewHeight - this.miscHeight, isAuto)
     }
 
     let rowSizingCnt = this.updateRowSizes(isResize)
 
     if (isBaseSizing || rowSizingCnt) {
-      this.lane.updateSize(viewHeight, isAuto, isResize)
+      this.lane.updateSize(isResize)
       this.bodyScrollJoiner.update()
     }
 

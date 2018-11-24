@@ -61,7 +61,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     })
   }
 
-  updateSize(totalHeight, isAuto, isResize) {
+  updateSize(isResize, totalHeight, isAuto) {
     this.layout.setHeight(totalHeight, isAuto)
 
     this.applySlotWidth(

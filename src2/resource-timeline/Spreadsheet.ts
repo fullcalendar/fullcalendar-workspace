@@ -90,7 +90,7 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
     return html
   }
 
-  updateSize(totalHeight, isAuto, isResize) {
+  updateSize(isResize, totalHeight, isAuto) {
     this.layout.setHeight(totalHeight, isAuto)
   }
 
