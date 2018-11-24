@@ -536,7 +536,7 @@ export default class ResourceTimelineView extends View {
         let el = rowComponent.timeAxisTr
 
         if (el) {
-          let innerTop = this.timeAxis.layout.bodyScroller.el.getBoundingClientRect().top // TODO: use -scrollHeight or something
+          let innerTop = this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.el.getBoundingClientRect().top
           let elBottom = el.getBoundingClientRect().bottom
           let scrollTop = elBottom - scroll.bottom - innerTop // both fixed positions
 
