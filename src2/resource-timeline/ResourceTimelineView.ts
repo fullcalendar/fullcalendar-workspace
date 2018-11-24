@@ -190,6 +190,7 @@ export default class ResourceTimelineView extends View {
       dateProfile: props.dateProfile
     })
 
+    // for all-resource bg events / selections / business-hours
     this.lane.receiveProps({
       dateProfile: props.dateProfile,
       businessHours: hasResourceBusinessHours ? null : props.businessHours,
@@ -197,8 +198,8 @@ export default class ResourceTimelineView extends View {
       eventUis: props.eventUis,
       dateSelection: (props.dateSelection && !props.dateSelection.resourceId) ? props.dateSelection : null,
       eventSelection: props.eventSelection,
-      eventDrag: props.eventDrag,
-      eventResize: props.eventResize
+      eventDrag: eventDragsByResourceId[''] || null,
+      eventResize: eventResizesByResourceId[''] || null
     })
 
     let newRowNodes = this.buildRowNodes(
