@@ -5,6 +5,8 @@ export default abstract class Row<PropsType> extends Component<PropsType> {
   spreadsheetTr: HTMLElement
   timeAxisTr: HTMLElement
 
+  isSizeDirty: boolean = false
+
   constructor(
     context: ComponentContext,
     spreadsheetParent: HTMLElement,
@@ -33,5 +35,9 @@ export default abstract class Row<PropsType> extends Component<PropsType> {
   }
 
   abstract getHeightEls(): HTMLElement[]
+
+  updateSize(isResize: boolean) {
+    this.isSizeDirty = false
+  }
 
 }

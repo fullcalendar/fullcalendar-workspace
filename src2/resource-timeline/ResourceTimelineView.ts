@@ -210,8 +210,7 @@ export default class ResourceTimelineView extends View {
       this.opt('resourcesInitiallyExpanded')
     )
 
-    let hasNesting = this.hasNesting(newRowNodes)
-    this._updateHasNesting(hasNesting)
+    this._updateHasNesting(this.hasNesting(newRowNodes))
 
     this.diffRows(newRowNodes)
     this.renderRows(
@@ -373,18 +372,23 @@ export default class ResourceTimelineView extends View {
   updateSize(viewHeight, isAuto, isResize) {
     // FYI: this ordering is really important
 
-    this.syncHeadHeights()
+    let isBaseSizing = isResize || this.isDateSizeDirty || this.isEventSizeDirty
 
-    this.timeAxis.updateSize(viewHeight - this.miscHeight, isAuto, isResize)
-    this.spreadsheet.updateSize(viewHeight - this.miscHeight, isAuto, isResize)
-
-    for (let rowComponent of this.rowComponents) {
-      rowComponent.updateSize(viewHeight, isAuto, isResize)
+    if (isBaseSizing) {
+      this.syncHeadHeights()
+      this.timeAxis.updateSize(viewHeight - this.miscHeight, isAuto, isResize)
+      this.spreadsheet.updateSize(viewHeight - this.miscHeight, isAuto, isResize)
     }
 
-    this.syncRowHeights()
-    this.lane.updateSize(viewHeight, isAuto, isResize)
-    this.bodyScrollJoiner.update()
+    let rowSizingCnt = this.updateRowSizes(isResize)
+
+    if (isBaseSizing || rowSizingCnt) {
+      this.lane.updateSize(viewHeight, isAuto, isResize)
+      this.bodyScrollJoiner.update()
+    }
+
+    this.isDateSizeDirty = false
+    this.isEventSizeDirty = false
   }
 
   syncHeadHeights() {
@@ -403,15 +407,29 @@ export default class ResourceTimelineView extends View {
       timeAxisHeadEl.style.height = max + 'px'
   }
 
-  syncRowHeights() {
-    let elArrays = this.rowComponents.map(function(rowComponent) {
+  updateRowSizes(isResize: boolean): number { // mainly syncs row heights
+    let dirtyRowComponents = this.rowComponents
+
+    if (!isResize) {
+      dirtyRowComponents = dirtyRowComponents.filter(function(rowComponent) {
+        return rowComponent.isSizeDirty
+      })
+    }
+
+    let elArrays = dirtyRowComponents.map(function(rowComponent) {
       return rowComponent.getHeightEls()
     })
 
+    // reset to natural heights
     for (let elArray of elArrays) {
       for (let el of elArray) {
         el.style.height = ''
       }
+    }
+
+    // let rows update their contents' heights
+    for (let rowComponent of dirtyRowComponents) {
+      rowComponent.updateSize(isResize) // will reset isSizeDirty
     }
 
     let maxHeights = elArrays.map(function(elArray) {
@@ -433,6 +451,8 @@ export default class ResourceTimelineView extends View {
         el.style.height = maxHeights[i] + 'px'
       }
     }
+
+    return dirtyRowComponents.length
   }
 
   destroy() {

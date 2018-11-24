@@ -22,6 +22,7 @@ export default class GroupRow extends Row<GroupRowProps> {
   render(props: GroupRowProps) {
     this._renderCells(props.group, props.spreadsheetColCnt)
     this._updateExpanderIcon(props.isExpanded)
+    this.isSizeDirty = true
   }
 
   destroy() {
@@ -94,9 +95,6 @@ export default class GroupRow extends Row<GroupRowProps> {
     }
 
     return text
-  }
-
-  updateSize(viewHeight: number, isAuto: boolean, isResize: boolean) {
   }
 
   getHeightEls() {

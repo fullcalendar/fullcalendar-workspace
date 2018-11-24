@@ -1,4 +1,4 @@
-import { createElement, ComponentContext, EventInteractionUiState, DateSpan, EventUiHash, EventStore, DateProfile, memoizeRendering } from 'fullcalendar'
+import { createElement, ComponentContext, EventInteractionUiState, DateSpan, EventUiHash, EventStore, DateProfile, memoizeRendering, isArraysEqual } from 'fullcalendar'
 import Row from './Row'
 import SpreadsheetRow from './SpreadsheetRow'
 import TimelineLane from '../timeline/TimelineLane'
@@ -84,10 +84,14 @@ export default class ResourceRow extends Row<ResourceRowProps> {
       eventDrag: props.eventDrag,
       eventResize: props.eventResize
     })
+
+    this.isSizeDirty = true
   }
 
-  updateSize(viewHeight: number, isAuto: boolean, isResize: boolean) {
-    this.lane.updateSize(viewHeight, isAuto, isResize)
+  updateSize(isResize: boolean) {
+    super.updateSize(isResize)
+
+    this.lane.updateSize(0, false, isResize)
   }
 
   getHeightEls() {
@@ -95,3 +99,7 @@ export default class ResourceRow extends Row<ResourceRowProps> {
   }
 
 }
+
+ResourceRow.addEqualityFuncs({
+  rowSpans: isArraysEqual // important for isSizeDirty
+})
