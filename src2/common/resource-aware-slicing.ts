@@ -6,8 +6,11 @@ export class ResourceAwareSlicer<OtherArgsType extends any[], SegType extends Se
 
   // was having trouble with TS, this the any-casts
 
-  constructor(slice: (range: DateRange, resourceIds: string[], ...otherArgs: OtherArgsType) => SegType[]) {
-    super(slice as any)
+  constructor(
+    slice: (range: DateRange, resourceIds: string[], ...otherArgs: OtherArgsType) => SegType[],
+    getComponent
+  ) {
+    super(slice as any, getComponent)
   }
 
   protected dateSpanToSegs(dateSpan: DateSpan, otherArgs: OtherArgsType): SegType[] {

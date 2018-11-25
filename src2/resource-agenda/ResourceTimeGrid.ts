@@ -1,4 +1,4 @@
-import { OffsetTracker, addMs, DateSpan, DateComponent, TimeGrid, DateProfile, EventStore, EventUiHash, EventInteractionUiState, ComponentContext, reselector, buildDayRanges, sliceTimeGridSegs, DateRange, assignTo, TimeGridSeg, sliceBusinessHours, DateMarker, Hit } from "fullcalendar"
+import { memoizeSlicer, OffsetTracker, addMs, DateSpan, DateComponent, TimeGrid, DateProfile, EventStore, EventUiHash, EventInteractionUiState, ComponentContext, reselector, buildDayRanges, sliceTimeGridSegs, DateRange, assignTo, TimeGridSeg, sliceBusinessHours, DateMarker, Hit } from "fullcalendar"
 import { AbstractResourceDayTable } from '../common/resource-day-table'
 import { ResourceAwareSlicer } from '../common/resource-aware-slicing'
 
@@ -21,7 +21,7 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
   offsetTracker: OffsetTracker
 
   private buildDayRanges = reselector(buildDayRanges)
-  private slicer = new ResourceAwareSlicer(sliceSegs)
+  private slicer = memoizeSlicer(new ResourceAwareSlicer(sliceSegs, () => { return this.timeGrid }))
   private sliceResourceBusinessHours = reselector(sliceResourceBusinessHours)
   private dayRanges: DateRange[]
 
@@ -29,7 +29,6 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
     super(context, timeGrid.el)
 
     this.timeGrid = timeGrid
-    this.slicer.component = timeGrid
   }
 
   render(props: ResourceTimeGridProps) {
@@ -39,11 +38,14 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
     let dayRanges = this.dayRanges =
       this.buildDayRanges(resourceDayTable.dayTable, dateProfile, this.dateEnv)
 
+    let segRes = slicer.eventStoreToSegs(props.eventStore, props.eventUis, dateProfile, null, resourceDayTable, dayRanges)
+
     this.timeGrid.receiveProps({
       dateProfile: props.dateProfile,
       cells: props.resourceDayTable.cells[0],
       businessHourSegs: this.sliceResourceBusinessHours(resourceDayTable, dateProfile, dayRanges, props.businessHours, this.timeGrid),
-      eventSegs: slicer.eventStoreToSegs(props.eventStore, props.eventUis, dateProfile, null, resourceDayTable, dayRanges),
+      fgEventSegs: segRes.fg,
+      bgEventSegs: segRes.bg,
       dateSelectionSegs: slicer.selectionToSegs(props.dateSelection, resourceDayTable, dayRanges),
       eventSelection: props.eventSelection,
       eventDrag: slicer.buildEventDrag(props.eventDrag, dateProfile, null, resourceDayTable, dayRanges),

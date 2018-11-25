@@ -1,4 +1,4 @@
-import { Hit, OffsetTracker, sliceDayGridSegs, DateSpan, DayGrid, DateComponent, assignTo, DateProfile, EventStore, EventUiHash, EventInteractionUiState, ComponentContext, DayGridSeg, Duration, DateRange, sliceBusinessHours, reselector } from "fullcalendar"
+import { memoizeSlicer, Hit, OffsetTracker, sliceDayGridSegs, DateSpan, DayGrid, DateComponent, assignTo, DateProfile, EventStore, EventUiHash, EventInteractionUiState, ComponentContext, DayGridSeg, Duration, DateRange, sliceBusinessHours, reselector } from "fullcalendar"
 import { AbstractResourceDayTable } from '../common/resource-day-table'
 import { ResourceAwareSlicer } from '../common/resource-aware-slicing'
 
@@ -22,25 +22,27 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
 
   offsetTracker: OffsetTracker
 
-  private slicer = new ResourceAwareSlicer(sliceSegs)
+  private slicer = memoizeSlicer(new ResourceAwareSlicer(sliceSegs, () => { return this.dayGrid }))
   private sliceResourceBusinessHours = reselector(sliceResourceBusinessHours)
 
   constructor(context: ComponentContext, dayGrid: DayGrid) {
     super(context, dayGrid.el)
 
     this.dayGrid = dayGrid
-    this.slicer.component = dayGrid
   }
 
   render(props: ResourceDayGridProps) {
     let { slicer, isRtl } = this
     let { dateProfile, resourceDayTable, nextDayThreshold } = props
 
+    let segRes = slicer.eventStoreToSegs(props.eventStore, props.eventUis, dateProfile, nextDayThreshold, resourceDayTable, isRtl)
+
     this.dayGrid.receiveProps({
       dateProfile: props.dateProfile,
       cells: props.resourceDayTable.cells,
       businessHourSegs: this.sliceResourceBusinessHours(resourceDayTable, dateProfile, nextDayThreshold, props.businessHours, this.dayGrid),
-      eventSegs: slicer.eventStoreToSegs(props.eventStore, props.eventUis, dateProfile, nextDayThreshold, resourceDayTable, isRtl),
+      bgEventSegs: segRes.bg,
+      fgEventSegs: segRes.fg,
       dateSelectionSegs: slicer.selectionToSegs(props.dateSelection, resourceDayTable, isRtl),
       eventSelection: props.eventSelection,
       eventDrag: slicer.buildEventDrag(props.eventDrag, dateProfile, nextDayThreshold, resourceDayTable, isRtl),

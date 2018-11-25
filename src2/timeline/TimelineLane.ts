@@ -1,4 +1,4 @@
-import { EventStore, EventUiHash, DateMarker, DateSpan, MemoizedRendering, EventInteractionUiState, EventSegUiInteractionState, DateComponent, ComponentContext, Seg, DateRange, intersectRanges, addMs, DateProfile, memoizeRendering, Slicer, assignTo } from 'fullcalendar'
+import { EventStore, EventUiHash, DateMarker, DateSpan, MemoizedRendering, EventInteractionUiState, EventSegUiInteractionState, DateComponent, ComponentContext, Seg, DateRange, intersectRanges, addMs, DateProfile, memoizeRendering, Slicer, memoizeSlicer, assignTo } from 'fullcalendar'
 import { TimelineDateProfile, normalizeRange, isValidDate } from './timeline-date-profile'
 import TimelineLaneEventRenderer from './TimelineLaneEventRenderer'
 import TimelineLaneFillRenderer from './TimelineLaneFillRenderer'
@@ -25,10 +25,11 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
   tDateProfile: TimelineDateProfile
   timeAxis: TimeAxis
 
-  private slicer = new Slicer(rangeToSegs)
+  private slicer = memoizeSlicer(new Slicer(rangeToSegs, () => { return this }))
   private renderBusinessHours: MemoizedRendering<[TimelineLaneSeg[]]>
   private renderDateSelection: MemoizedRendering<[TimelineLaneSeg[]]>
-  private renderEvents = memoizeRendering(this._renderEventSegs, this._unrenderEventSegs)
+  private renderBgEvents: MemoizedRendering<[TimelineLaneSeg[]]>
+  private renderFgEvents: MemoizedRendering<[TimelineLaneSeg[]]>
   private renderEventSelection: MemoizedRendering<[string]>
   private renderEventDrag = memoizeRendering(this._renderEventDrag, this._unrenderEventDrag)
   private renderEventResize = memoizeRendering(this._renderEventResize, this._unrenderEventResize)
@@ -36,8 +37,6 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
 
   constructor(context: ComponentContext, fgContainerEl: HTMLElement, bgContainerEl: HTMLElement, timeAxis: TimeAxis) {
     super(context, bgContainerEl) // should el be bgContainerEl???
-
-    this.slicer.component = this.view // ? (just like below)
 
     let fillRenderer = this.fillRenderer = new TimelineLaneFillRenderer(context, bgContainerEl, timeAxis)
     let eventRenderer = this.eventRenderer = new TimelineLaneEventRenderer(context, fgContainerEl, timeAxis)
@@ -53,10 +52,20 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
       fillRenderer.unrender.bind(fillRenderer, 'highlight')
     )
 
+    this.renderBgEvents = memoizeRendering(
+      fillRenderer.renderSegs.bind(fillRenderer, 'bgEvent'),
+      fillRenderer.unrender.bind(fillRenderer, 'bgEvent')
+    )
+
+    this.renderFgEvents = memoizeRendering(
+      eventRenderer.renderSegs.bind(eventRenderer),
+      eventRenderer.unrender.bind(eventRenderer)
+    )
+
     this.renderEventSelection = memoizeRendering(
       eventRenderer.selectByInstanceId.bind(eventRenderer),
       eventRenderer.unselectByInstanceId.bind(eventRenderer),
-      [ this.renderEvents ]
+      [ this.renderFgEvents ]
     )
 
     this.timeAxis = timeAxis
@@ -66,10 +75,13 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
     let { slicer, timeAxis } = this
     let { dateProfile } = props
 
-    this.renderEvents(slicer.eventStoreToSegs(props.eventStore, props.eventUis, dateProfile, null, timeAxis))
-    this.renderEventSelection(props.eventSelection)
+    let segRes = slicer.eventStoreToSegs(props.eventStore, props.eventUis, dateProfile, null, timeAxis)
+
     this.renderBusinessHours(slicer.businessHoursToSegs(props.businessHours, dateProfile, null, timeAxis))
     this.renderDateSelection(slicer.selectionToSegs(props.dateSelection, timeAxis))
+    this.renderBgEvents(segRes.bg)
+    this.renderFgEvents(segRes.fg)
+    this.renderEventSelection(props.eventSelection)
     this.renderEventDrag(slicer.buildEventDrag(props.eventDrag, dateProfile, null, timeAxis))
     this.renderEventResize(slicer.buildEventResize(props.eventResize, dateProfile, null, timeAxis))
   }
@@ -77,10 +89,11 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
   destroy() {
     super.destroy()
 
-    this.renderEvents.unrender()
-    this.renderEventSelection.unrender()
     this.renderBusinessHours.unrender()
     this.renderDateSelection.unrender()
+    this.renderBgEvents.unrender()
+    this.renderFgEvents.unrender()
+    this.renderEventSelection.unrender()
     this.renderEventDrag.unrender()
     this.renderEventResize.unrender()
   }
