@@ -26,4 +26,6 @@ export const ResourcesPlugin = exportHooks.createPlugin({
   dateSelectionApiTransformers: [ transformDateSelectionApi ]
 });
 
+exportHooks.Calendar.defaultPlugins.push(ResourcesPlugin); // TODO: kill
+
 (exportHooks as any).ResourcesPlugin = ResourcesPlugin
