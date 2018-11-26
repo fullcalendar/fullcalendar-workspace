@@ -1,7 +1,6 @@
 import { defineView } from 'fullcalendar'
 import TimelineView from './TimelineView'
 
-
 defineView('timeline', {
   class: TimelineView,
   eventResizableFromStart: true // how is this consumed for TimelineView tho?

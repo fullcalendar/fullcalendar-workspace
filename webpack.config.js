@@ -10,7 +10,7 @@ however, all other types of modules should.
 NOTE: ts entrypoints should be mirrored in tsconfig.json
 */
 const MODULES = {
-  'dist/scheduler': './src2/main.ts',
+  'dist/scheduler': './src/main.ts',
   'dist/scheduler.css': './src/main.scss',
   'tmp/automated-tests': './tests/automated/index.js'
 }

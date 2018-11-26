@@ -1,312 +1,97 @@
-import { htmlEscape, DragListener, findElements, applyStyleProp } from 'fullcalendar'
-import ClippedScroller from '../util/ClippedScroller'
-import ScrollerCanvas from '../util/ScrollerCanvas'
-import ScrollJoiner from '../util/ScrollJoiner'
-import ScrollFollower from '../util/ScrollFollower'
-import VRowGroup from './row/VRowGroup'
+import { createElement, Component, ComponentContext, memoizeRendering } from 'fullcalendar'
+import SpreadsheetHeader from './SpreadsheetHeader'
+import HeaderBodyLayout from '../timeline/HeaderBodyLayout'
 
-const COL_MIN_WIDTH = 30
+export interface SpreadsheetProps {
+  superHeaderText: string
+  colSpecs: any
+}
 
+export default class Spreadsheet extends Component<SpreadsheetProps> {
 
-export default class Spreadsheet {
+  header: SpreadsheetHeader
+  layout: HeaderBodyLayout
 
-  view: any
-  isRtl: boolean
-  headEl: HTMLElement
-  el: HTMLElement // for body
-  tbodyEl: HTMLElement
-  headScroller: ClippedScroller
-  bodyScroller: ClippedScroller
-  scrollJoiner: ScrollJoiner
-  cellFollower: ScrollFollower
+  bodyContainerEl: HTMLElement
+  bodyColGroup: HTMLElement
+  bodyTbody: HTMLElement
 
-  // rendering
-  colGroupHtml: string
-  headTable: any
-  headColEls: HTMLElement[]
-  headCellEls: HTMLElement[]
-  bodyColEls: HTMLElement[]
-  bodyTable: HTMLElement
+  private _renderCells = memoizeRendering(this.renderCells, this.unrenderCells)
 
-  // column resizing
-  givenColWidths: any
-  colWidths: any
-  colMinWidths: any
-  tableWidth: any
-  tableMinWidth: any
+  constructor(context: ComponentContext, headParentEl: HTMLElement, bodyParentEl: HTMLElement) {
+    super(context)
 
+    this.layout = new HeaderBodyLayout(
+      headParentEl,
+      bodyParentEl,
+      'clipped-scroll'
+    )
 
-  constructor(view) {
-    this.colGroupHtml = ''
-    this.view = view
-    this.isRtl = this.view.isRtl // doesn't descend from Grid, so needs to do this
+    this.header = new SpreadsheetHeader(
+      context,
+      this.layout.headerScroller.enhancedScroll.canvas.contentEl
+    )
 
-    this.givenColWidths = this.colWidths =
-      this.view.colSpecs.map((colSpec) => colSpec.width)
+    this.layout.bodyScroller.enhancedScroll.canvas.contentEl
+      .appendChild(
+        this.bodyContainerEl = createElement('div',
+          { className: 'fc-rows' },
+          '<table>' +
+            '<colgroup />' +
+            '<tbody />' +
+          '</table>'
+        )
+      )
+
+    this.bodyColGroup = this.bodyContainerEl.querySelector('colgroup')
+    this.bodyTbody = this.bodyContainerEl.querySelector('tbody')
   }
 
+  destroy() {
+    this.header.destroy()
+    this.layout.destroy()
 
-  renderSkeleton() {
-    const { theme } = this.view.calendar
+    this._renderCells.unrender()
 
-    this.headScroller = new ClippedScroller({
-      overflowX: 'clipped-scroll',
-      overflowY: 'hidden'
+    super.destroy()
+  }
+
+  render(props: SpreadsheetProps) {
+    this._renderCells(props.superHeaderText, props.colSpecs)
+  }
+
+  renderCells(superHeaderText, colSpecs) {
+    let colTags = this.renderColTags(colSpecs)
+
+    this.header.receiveProps({
+      superHeaderText: superHeaderText,
+      colSpecs: colSpecs,
+      colTags
     })
-    this.headScroller.canvas = new ScrollerCanvas()
-    this.headScroller.render()
-    this.headScroller.canvas.contentEl.innerHTML = this.renderHeadHtml()
-    this.headEl.appendChild(this.headScroller.el)
 
-    this.bodyScroller = new ClippedScroller({ overflowY: 'clipped-scroll' })
-    this.bodyScroller.canvas = new ScrollerCanvas()
-    this.bodyScroller.render()
-    this.bodyScroller.canvas.contentEl.innerHTML = // colGroupHtml hack
-      `<div class="fc-rows"> \
-<table class="` + theme.getClass('tableGrid') + `">\
-` + this.colGroupHtml + `<tbody></tbody> \
-</table> \
-</div>`
-    this.tbodyEl = this.bodyScroller.canvas.contentEl.querySelector('tbody')
-    this.el.appendChild(this.bodyScroller.el)
-
-    this.scrollJoiner = new ScrollJoiner('horizontal', [ this.headScroller, this.bodyScroller ])
-
-    this.headTable = this.headEl.querySelector('table')
-    this.headColEls = findElements(this.headEl, 'col')
-    this.headCellEls = findElements(this.headScroller.canvas.contentEl, 'tr:last-child th')
-    this.bodyColEls = findElements(this.el, 'col')
-    this.bodyTable = this.el.querySelector('table')
-
-    this.colMinWidths = this.computeColMinWidths()
-    this.applyColWidths()
-    this.initColResizing()
+    this.bodyColGroup.innerHTML = colTags
   }
 
+  unrenderCells() {
+    this.bodyColGroup.innerHTML = ''
+  }
 
-  renderHeadHtml() {
-    const { theme } = this.view.calendar
-    const { colSpecs } = this.view
+  renderColTags(colSpecs) {
+    let html = ''
 
-    let html = '<table class="' + theme.getClass('tableGrid') + '">'
-
-    let colGroupHtml = '<colgroup>'
     for (let o of colSpecs) {
       if (o.isMain) {
-        colGroupHtml += '<col class="fc-main-col"/>'
+        html += '<col class="fc-main-col"/>'
       } else {
-        colGroupHtml += '<col/>'
+        html += '<col/>'
       }
     }
-
-    colGroupHtml += '</colgroup>'
-    this.colGroupHtml = colGroupHtml
-    html += colGroupHtml
-
-    html += '<tbody>'
-
-    if (this.view.superHeaderText) {
-      html +=
-        '<tr class="fc-super">' +
-          '<th class="' + theme.getClass('widgetHeader') + '" colspan="' + colSpecs.length + '">' +
-            '<div class="fc-cell-content">' +
-              '<span class="fc-cell-text">' +
-                htmlEscape(this.view.superHeaderText) +
-              '</span>' +
-            '</div>' +
-          '</th>' +
-        '</tr>'
-    }
-
-    html += '<tr>'
-
-    for (let i = 0; i < colSpecs.length; i++) {
-      let o = colSpecs[i]
-      const isLast = i === (colSpecs.length - 1)
-
-      html +=
-        `<th class="` + theme.getClass('widgetHeader') + `">` +
-          '<div>' +
-            '<div class="fc-cell-content">' +
-              (o.isMain ?
-                '<span class="fc-expander-space">' +
-                  '<span class="fc-icon"></span>' +
-                '</span>' :
-                '') +
-              '<span class="fc-cell-text">' +
-                htmlEscape(o.labelText || '') + // what about normalizing this value ahead of time?
-              '</span>' +
-            '</div>' +
-            (!isLast ? '<div class="fc-col-resizer"></div>' : '') +
-          '</div>' +
-        '</th>'
-    }
-
-    html += '</tr>'
-    html += '</tbody></table>'
 
     return html
   }
 
-
-  initColResizing() {
-    findElements(this.headEl, 'th .fc-col-resizer').forEach((resizerEl, i) => {
-      resizerEl.addEventListener('mousedown', ev => {
-        this.colResizeMousedown(i, ev, resizerEl)
-      })
-    })
+  updateSize(isResize, totalHeight, isAuto) {
+    this.layout.setHeight(totalHeight, isAuto)
   }
 
-
-  colResizeMousedown(i, ev, resizerEl) {
-    const colWidths = (this.colWidths = this.queryColWidths())
-    colWidths.pop()
-    colWidths.push(null) // will result in 'auto' or ''
-
-    const origColWidth = colWidths[i]
-    const minWidth = Math.min(this.colMinWidths[i], COL_MIN_WIDTH) // if given width is smaller, allow it
-
-    const dragListener = new DragListener({
-      dragStart: () => {
-        resizerEl.classList.add('fc-active')
-      },
-      drag: (dx, dy) => {
-        let width = origColWidth + (this.isRtl ? -dx : dx)
-        width = Math.max(width, minWidth)
-        colWidths[i] = width
-        this.applyColWidths()
-      },
-      dragEnd: () => {
-        resizerEl.classList.remove('fc-active')
-      }
-    })
-
-    dragListener.startInteraction(ev)
-  }
-
-
-  applyColWidths() {
-    let cssWidth
-    let i
-    let colWidth
-    const { colMinWidths } = this
-    const { colWidths } = this
-    let allNumbers = true
-    let anyPercentages = false
-    let total = 0
-
-    for (colWidth of colWidths) {
-      if (typeof colWidth === 'number') {
-        total += colWidth
-      } else {
-        allNumbers = false
-        if (colWidth) {
-          anyPercentages = true
-        }
-      }
-    }
-
-    // percentage widths play better with 'auto' but h-grouped cells don't
-    const defaultCssWidth =
-      anyPercentages && !this.view.isHGrouping ?
-        'auto' :
-        ''
-
-    const cssWidths = colWidths.map((colWidth) => (
-      colWidth != null ? colWidth : defaultCssWidth
-    ))
-
-    // if allNumbers
-    //    cssWidths.pop()
-    //    cssWidths.push('auto')
-
-    let tableMinWidth = 0
-    for (i = 0; i < cssWidths.length; i++) {
-      cssWidth = cssWidths[i]
-      tableMinWidth +=
-        typeof cssWidth === 'number' ?
-          cssWidth :
-          colMinWidths[i]
-    }
-
-    for (i = 0; i < cssWidths.length; i++) {
-      cssWidth = cssWidths[i]
-      applyStyleProp(this.headColEls[i], 'width', cssWidth)
-      applyStyleProp(this.bodyColEls[i], 'width', cssWidth)
-    }
-
-    this.headScroller.canvas.setMinWidth(tableMinWidth) // not really a table width anymore
-    this.bodyScroller.canvas.setMinWidth(tableMinWidth)
-
-    this.tableMinWidth = tableMinWidth
-    this.tableWidth = allNumbers ? total : undefined
-  }
-
-
-  computeColMinWidths() {
-    return this.givenColWidths.map((width, i) => (
-      typeof width === 'number' ?
-        width :
-        parseInt(window.getComputedStyle(this.headColEls[i]).minWidth, 10) || COL_MIN_WIDTH
-    ))
-  }
-
-
-  queryColWidths() {
-    return this.headCellEls.map((node) => (
-      node.offsetWidth
-    ))
-  }
-
-
-  // Sizing
-  // ---------------------------------------------------------------------------------
-
-
-  updateSize() {
-    this.headScroller.updateSize()
-    this.bodyScroller.updateSize()
-    this.scrollJoiner.update()
-    this.updateCellFollower()
-  }
-
-
-  getHeadHeight() {
-    // TODO: cache <table>
-    return this.headScroller.canvas.contentEl.querySelector('table').offsetHeight
-  }
-
-
-  setHeadHeight(h: number | 'auto') {
-    // TODO: cache <table>
-    applyStyleProp(this.headScroller.canvas.contentEl.querySelector('table'), 'height', h)
-  }
-
-
-  // completely reninitializes every time there's add/remove
-  // TODO: optimize
-  updateCellFollower() {
-    if (this.cellFollower) {
-      this.cellFollower.clearSprites() // the closest thing to a destroy
-    }
-
-    this.cellFollower = new ScrollFollower(this.bodyScroller, true) // allowPointerEvents
-    this.cellFollower.isHFollowing = false
-    this.cellFollower.isVFollowing = true
-
-    const nodes = []
-    for (let row of this.view.rowHierarchy.getNodes()) {
-      if (row instanceof VRowGroup) {
-        if (row.groupTd) {
-          const cellContent = row.groupTd.querySelector('.fc-cell-content')
-          if (cellContent) {
-            nodes.push(cellContent)
-          }
-        }
-      }
-    }
-
-    this.cellFollower.setSpriteEls(nodes)
-    this.cellFollower.update()
-  }
 }

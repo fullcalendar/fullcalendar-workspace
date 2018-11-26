@@ -19,6 +19,6 @@
     "sourceMap": true
   },
   "include": [
-    "src2/main.ts"
+    "src/main.ts"
   ]
 }

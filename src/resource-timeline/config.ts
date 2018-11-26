@@ -1,6 +1,28 @@
-import { Calendar, getViewConfig } from 'fullcalendar'
+import { defineView } from 'fullcalendar'
 import ResourceTimelineView from './ResourceTimelineView'
 
-getViewConfig('timeline').resourceClass = ResourceTimelineView
+defineView('resourceTimeline', {
+  class: ResourceTimelineView,
+  resourcesInitiallyExpanded: true,
+  eventResizableFromStart: true // how is this consumed for TimelineView tho?
+})
 
-Calendar.defaults.resourcesInitiallyExpanded = true
+defineView('resourceTimelineDay', {
+  type: 'resourceTimeline',
+  duration: { days: 1 }
+})
+
+defineView('resourceTimelineWeek', {
+  type: 'resourceTimeline',
+  duration: { weeks: 1 }
+})
+
+defineView('resourceTimelineMonth', {
+  type: 'resourceTimeline',
+  duration: { months: 1 }
+})
+
+defineView('resourceTimelineYear', {
+  type: 'resourceTimeline',
+  duration: { years: 1 }
+})

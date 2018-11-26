@@ -1,13 +1,13 @@
-import EnhancedScroller from './EnhancedScroller'
+import ClippedScroller from './ClippedScroller'
 
 export default class ScrollJoiner {
 
   axis: any
-  scrollers: EnhancedScroller[]
-  masterScroller: EnhancedScroller
+  scrollers: ClippedScroller[]
+  masterScroller: ClippedScroller
 
 
-  constructor(axis, scrollers: EnhancedScroller[]) {
+  constructor(axis, scrollers: ClippedScroller[]) {
     this.axis = axis
     this.scrollers = scrollers
 
@@ -17,7 +17,8 @@ export default class ScrollJoiner {
   }
 
 
-  initScroller(scroller: EnhancedScroller) {
+  initScroller(scroller: ClippedScroller) {
+    let enhancedScroll = scroller.enhancedScroll
 
     // when the user scrolls via mousewheel, we know for sure the target
     // scroller should be the master. capture the various x-browser events that fire.
@@ -25,33 +26,36 @@ export default class ScrollJoiner {
       this.assignMasterScroller(scroller)
     }
     'wheel mousewheel DomMouseScroll MozMousePixelScroll'.split(' ').forEach((evName) => {
-      scroller.scrollEl.addEventListener(evName, onScroll)
+      enhancedScroll.el.addEventListener(evName, onScroll)
     })
 
-    scroller.on('scrollStart', () => {
-      if (!this.masterScroller) {
-        this.assignMasterScroller(scroller)
-      }
-    }).on('scroll', () => {
-      if (scroller === this.masterScroller) {
-        for (let otherScroller of this.scrollers) {
-          if (otherScroller !== scroller) {
-            switch (this.axis) {
-              case 'horizontal':
-                otherScroller.setNativeScrollLeft(scroller.getNativeScrollLeft())
-                break
-              case 'vertical':
-                otherScroller.setScrollTop(scroller.getScrollTop())
-                break
+    enhancedScroll
+      .on('scrollStart', () => {
+        if (!this.masterScroller) {
+          this.assignMasterScroller(scroller)
+        }
+      })
+      .on('scroll', () => {
+        if (scroller === this.masterScroller) {
+          for (let otherScroller of this.scrollers) {
+            if (otherScroller !== scroller) {
+              switch (this.axis) {
+                case 'horizontal':
+                  otherScroller.enhancedScroll.el.scrollLeft = enhancedScroll.el.scrollLeft
+                  break
+                case 'vertical':
+                  otherScroller.enhancedScroll.setScrollTop(enhancedScroll.getScrollTop())
+                  break
+              }
             }
           }
         }
-      }
-    }).on('scrollEnd', () => {
-      if (scroller === this.masterScroller) {
-        this.unassignMasterScroller()
-      }
-    })
+      })
+      .on('scrollEnd', () => {
+        if (scroller === this.masterScroller) {
+          this.unassignMasterScroller()
+        }
+      })
   }
 
 
@@ -61,7 +65,7 @@ export default class ScrollJoiner {
 
     for (let otherScroller of this.scrollers) {
       if (otherScroller !== scroller) {
-        otherScroller.disableTouchScroll()
+        otherScroller.enhancedScroll.disableTouchScroll()
       }
     }
   }
@@ -70,7 +74,7 @@ export default class ScrollJoiner {
   unassignMasterScroller() {
     if (this.masterScroller) {
       for (let otherScroller of this.scrollers) {
-        otherScroller.enableTouchScroll()
+        otherScroller.enhancedScroll.enableTouchScroll()
       }
       this.masterScroller = null
     }
@@ -83,7 +87,6 @@ export default class ScrollJoiner {
     let maxRight = 0
     let maxTop = 0
     let maxBottom = 0
-    let scroller
     let widths
     let i
 
@@ -95,9 +98,9 @@ export default class ScrollJoiner {
     }
 
     for (i = 0; i < this.scrollers.length; i++) {
-      scroller = this.scrollers[i]
+      let scroller = this.scrollers[i]
       widths = allWidths[i]
-      scroller.canvas.setGutters(
+      scroller.enhancedScroll.canvas.setGutters(
         this.axis === 'horizontal' ?
           {
             left: maxLeft - widths.left,

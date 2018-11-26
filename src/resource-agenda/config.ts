@@ -1,22 +1,12 @@
-import { getViewConfig, isSingleDay } from 'fullcalendar'
+import { defineView } from 'fullcalendar'
 import ResourceAgendaView from './ResourceAgendaView'
 
-/*
-TODO: make more DRY, with basic's config
-*/
-getViewConfig('agenda').queryResourceClass = function(viewSpec) {
-  const explicitGrouping =
-    viewSpec.options.groupByResource ||
-    viewSpec.options.groupByDateAndResource
-  let showsResources = false
+defineView('resourceAgendaWeek', {
+  class: ResourceAgendaView,
+  duration: { weeks: 1 },
 
-  if (explicitGrouping != null) {
-    showsResources = explicitGrouping
-  } else if (viewSpec.duration) {
-    showsResources = isSingleDay(viewSpec.duration)
-  }
-
-  if (showsResources) {
-    return ResourceAgendaView
-  }
-}
+  // ahhh
+  allDaySlot: true,
+  slotDuration: '00:30:00',
+  slotEventOverlap: true // a bad name. confused with overlap/constraint system
+})

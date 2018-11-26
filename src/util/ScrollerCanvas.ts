@@ -18,10 +18,7 @@ export default class ScrollerCanvas {
 
   constructor() {
     this.gutters = {}
-  }
 
-
-  render() {
     this.el = htmlToElement(`\
 <div class="fc-scroller-canvas"> \
 <div class="fc-content"></div> \

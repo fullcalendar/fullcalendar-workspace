@@ -1,19 +1,7 @@
-import {
-  Scroller, debounce, preventDefault,
-  EmitterMixin, EmitterInterface,
-  htmlToElement, removeElement
-} from 'fullcalendar'
-import ScrollerCanvas from '../util/ScrollerCanvas'
+import { ScrollComponent, EmitterInterface, EmitterMixin, removeElement, htmlToElement, debounce, preventDefault } from 'fullcalendar'
+import ScrollerCanvas from './ScrollerCanvas'
 
-
-/*
-A Scroller with additional functionality:
-- optional ScrollerCanvas for content
-- fired events for scroll start/end
-- cross-browser normalization of horizontal scroll for RTL
-*/
-
-export default class EnhancedScroller extends Scroller {
+export default class EnhancedScroller extends ScrollComponent {
 
   on: EmitterInterface['on']
   one: EmitterInterface['one']
@@ -32,8 +20,8 @@ export default class EnhancedScroller extends Scroller {
   requestMovingEnd: any
 
 
-  constructor(options?) {
-    super(options)
+  constructor(overflowX: string, overflowY: string) {
+    super(overflowX, overflowY)
 
     this.isScrolling = false
     this.isTouching = false
@@ -42,15 +30,11 @@ export default class EnhancedScroller extends Scroller {
     this.isTouchScrollEnabled = true
 
     this.requestMovingEnd = debounce(this.reportMovingEnd, 500)
-  }
 
+    this.canvas = new ScrollerCanvas()
+    this.el.appendChild(this.canvas.el)
 
-  render() {
-    super.render()
-    if (this.canvas) {
-      this.canvas.render()
-      this.scrollEl.appendChild(this.canvas.el)
-    }
+    this.applyOverflow()
     this.bindHandlers()
   }
 
@@ -84,14 +68,14 @@ export default class EnhancedScroller extends Scroller {
 
   bindPreventTouchScroll() {
     if (!this.preventTouchScrollHandler) {
-      this.scrollEl.addEventListener('touchmove', (this.preventTouchScrollHandler = preventDefault))
+      this.el.addEventListener('touchmove', (this.preventTouchScrollHandler = preventDefault))
     }
   }
 
 
   unbindPreventTouchScroll() {
     if (this.preventTouchScrollHandler) {
-      this.scrollEl.removeEventListener('touchmove', this.preventTouchScrollHandler)
+      this.el.removeEventListener('touchmove', this.preventTouchScrollHandler)
       this.preventTouchScrollHandler = null
     }
   }
@@ -102,16 +86,16 @@ export default class EnhancedScroller extends Scroller {
 
 
   bindHandlers() {
-    return this.listenTo(this.scrollEl, {
-      scroll: this.reportScroll,
-      touchstart: this.reportTouchStart,
-      touchend: this.reportTouchEnd
-    })
+    this.el.addEventListener('scroll', this.reportScroll)
+    this.el.addEventListener('touchstart', this.reportTouchStart)
+    this.el.addEventListener('touchend', this.reportTouchEnd)
   }
 
 
   unbindHandlers() {
-    return this.stopListeningTo(this.scrollEl)
+    this.el.removeEventListener('scroll', this.reportScroll)
+    this.el.removeEventListener('touchstart', this.reportTouchStart)
+    this.el.removeEventListener('touchend', this.reportTouchEnd)
   }
 
 
@@ -119,7 +103,7 @@ export default class EnhancedScroller extends Scroller {
   // ----------------------------------------------------------------------------------------------
 
 
-  reportScroll() {
+  reportScroll = () => {
     if (!this.isScrolling) {
       this.reportScrollStart()
     }
@@ -129,7 +113,7 @@ export default class EnhancedScroller extends Scroller {
   }
 
 
-  reportScrollStart() {
+  reportScrollStart = () => {
     if (!this.isScrolling) {
       this.isScrolling = true
       this.trigger('scrollStart', this.isTouching) // created in constructor
@@ -161,13 +145,13 @@ export default class EnhancedScroller extends Scroller {
 
 
   // will fire *before* the scroll event is fired
-  reportTouchStart() {
+  reportTouchStart = () => {
     this.isTouching = true
     this.isTouchedEver = true
   }
 
 
-  reportTouchEnd() {
+  reportTouchEnd = () => {
     if (this.isTouching) {
       this.isTouching = false
 
@@ -195,14 +179,14 @@ export default class EnhancedScroller extends Scroller {
   If RTL, and scrolled to the left, returns NEGATIVE value (like Firefox)
   */
   getScrollLeft() {
-    const direction = window.getComputedStyle(this.scrollEl).direction
-    const node = this.scrollEl
-    let val = node.scrollLeft
+    let { el } = this
+    let direction = window.getComputedStyle(el).direction
+    let val = el.scrollLeft
 
     if (direction === 'rtl') {
       switch (getRtlScrollSystem()) {
         case 'positive':
-          val = (val + node.clientWidth) - node.scrollWidth
+          val = (val + el.clientWidth) - el.scrollWidth
           break
         case 'reverse':
           val = -val
@@ -217,13 +201,13 @@ export default class EnhancedScroller extends Scroller {
   Accepts a NEGATIVE value for when scrolled in RTL
   */
   setScrollLeft(val) {
-    const direction = window.getComputedStyle(this.scrollEl).direction
-    const node = this.scrollEl
+    let { el } = this
+    const direction = window.getComputedStyle(el).direction
 
     if (direction === 'rtl') {
       switch (getRtlScrollSystem()) {
         case 'positive':
-          val = (val - node.clientWidth) + node.scrollWidth
+          val = (val - el.clientWidth) + el.scrollWidth
           break
         case 'reverse':
           val = -val
@@ -231,7 +215,7 @@ export default class EnhancedScroller extends Scroller {
       }
     }
 
-    node.scrollLeft = val
+    el.scrollLeft = val
   }
 
   /*
@@ -239,32 +223,22 @@ export default class EnhancedScroller extends Scroller {
   Always positive.
   */
   getScrollFromLeft() {
-    const direction = window.getComputedStyle(this.scrollEl).direction
-    const node = this.scrollEl
-    let val = node.scrollLeft
+    let { el } = this
+    let direction = window.getComputedStyle(el).direction
+    let val = el.scrollLeft
 
     if (direction === 'rtl') {
       switch (getRtlScrollSystem()) {
         case 'negative':
-          val = (val - node.clientWidth) + node.scrollWidth
+          val = (val - el.clientWidth) + el.scrollWidth
           break
         case 'reverse':
-          val = (-val - node.clientWidth) + node.scrollWidth
+          val = (-val - el.clientWidth) + el.scrollWidth
           break
       }
     }
 
     return val
-  }
-
-
-  getNativeScrollLeft() {
-    return this.scrollEl.scrollLeft
-  }
-
-
-  setNativeScrollLeft(val) {
-    this.scrollEl.scrollLeft = val
   }
 
 }

@@ -1,85 +1,160 @@
-import { assignTo, DayGrid } from 'fullcalendar'
-import { default as ResourceDayTableMixin, ResourceDayTableInterface } from '../component/ResourceDayTableMixin'
-import ResourceComponentFootprint from '../models/ResourceComponentFootprint'
+import { memoizeSlicer, Hit, OffsetTracker, sliceDayGridSegs, DateSpan, DayGrid, DateComponent, assignTo, DateProfile, EventStore, EventUiHash, EventInteractionUiState, ComponentContext, DayGridSeg, Duration, DateRange, sliceBusinessHours, reselector } from "fullcalendar"
+import { AbstractResourceDayTable } from '../common/resource-day-table'
+import { ResourceAwareSlicer } from '../common/resource-aware-slicing'
 
+export interface ResourceDayGridProps {
+  dateProfile: DateProfile | null
+  resourceDayTable: AbstractResourceDayTable
+  businessHours: EventStore
+  eventStore: EventStore
+  eventUis: EventUiHash
+  dateSelection: DateSpan | null
+  eventSelection: string
+  eventDrag: EventInteractionUiState | null
+  eventResize: EventInteractionUiState | null
+  isRigid: boolean
+  nextDayThreshold: Duration
+}
 
-export default class ResourceDayGrid extends DayGrid {
+export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps> {
 
-  datesAboveResources: ResourceDayTableInterface['datesAboveResources']
-  registerResources: ResourceDayTableInterface['registerResources']
-  processHeadResourceEls: ResourceDayTableInterface['processHeadResourceEls']
-  getColResource: ResourceDayTableInterface['getColResource']
-  resourceCnt: ResourceDayTableInterface['resourceCnt']
-  indicesToCol: ResourceDayTableInterface['indicesToCol']
-  flattenedResources: ResourceDayTableInterface['flattenedResources']
+  dayGrid: DayGrid
 
-  isResourceFootprintsEnabled: boolean
+  offsetTracker: OffsetTracker
 
+  private slicer = memoizeSlicer(new ResourceAwareSlicer(sliceSegs, () => { return this.dayGrid }))
+  private sliceResourceBusinessHours = reselector(sliceResourceBusinessHours)
 
-  constructor(view) {
-    super(view)
-    this.isResourceFootprintsEnabled = true
+  constructor(context: ComponentContext, dayGrid: DayGrid) {
+    super(context, dayGrid.el)
+
+    this.dayGrid = dayGrid
   }
 
+  render(props: ResourceDayGridProps) {
+    let { slicer, isRtl } = this
+    let { dateProfile, resourceDayTable, nextDayThreshold } = props
 
-  renderResources(resources) {
-    this.registerResources(resources)
-    this.renderGrid()
+    let segRes = slicer.eventStoreToSegs(props.eventStore, props.eventUis, dateProfile, nextDayThreshold, resourceDayTable, isRtl)
 
-    if (this.headContainerEl) {
-      this.processHeadResourceEls(this.headContainerEl)
-    }
+    this.dayGrid.receiveProps({
+      dateProfile: props.dateProfile,
+      cells: props.resourceDayTable.cells,
+      businessHourSegs: this.sliceResourceBusinessHours(resourceDayTable, dateProfile, nextDayThreshold, props.businessHours, this.dayGrid),
+      bgEventSegs: segRes.bg,
+      fgEventSegs: segRes.fg,
+      dateSelectionSegs: slicer.selectionToSegs(props.dateSelection, resourceDayTable, isRtl),
+      eventSelection: props.eventSelection,
+      eventDrag: slicer.buildEventDrag(props.eventDrag, dateProfile, nextDayThreshold, resourceDayTable, isRtl),
+      eventResize: slicer.buildEventResize(props.eventResize, dateProfile, nextDayThreshold, resourceDayTable, isRtl),
+      isRigid: props.isRigid
+    })
   }
 
-
-  // TODO: make DRY with ResourceTimeGrid
-  getHitFootprint(hit) {
-    const plainFootprint = super.getHitFootprint(hit)
-
-    return new ResourceComponentFootprint(
-      plainFootprint.unzonedRange,
-      plainFootprint.allDay,
-      this.getColResource(hit.col).id
-    )
+  prepareHits() {
+    this.offsetTracker = new OffsetTracker(this.dayGrid.el)
   }
 
+  releaseHits() {
+    this.offsetTracker.destroy()
+  }
 
-  componentFootprintToSegs(componentFootprint) {
-    const { resourceCnt } = this
-    const genericSegs = // no assigned resources
-      this.datesAboveResources ?
-        this.sliceRangeByDay(componentFootprint.unzonedRange) : // each day-per-resource will need its own column
-        this.sliceRangeByRow(componentFootprint.unzonedRange)
+  queryHit(leftOffset, topOffset): Hit {
+    let { offsetTracker } = this
 
-    const resourceSegs = []
+    if (offsetTracker.isWithinClipping(leftOffset, topOffset)) {
+      let originLeft = offsetTracker.computeLeft()
+      let originTop = offsetTracker.computeTop()
 
-    for (let seg of genericSegs) {
+      let rawHit = this.dayGrid.positionToHit(
+        leftOffset - originLeft,
+        topOffset - originTop
+      )
 
-      for (let resourceIndex = 0; resourceIndex < resourceCnt; resourceIndex++) {
-        const resourceObj = this.flattenedResources[resourceIndex]
-
-        if (
-          !(componentFootprint instanceof ResourceComponentFootprint) ||
-          (componentFootprint.resourceId === resourceObj.id)
-        ) {
-          const copy = assignTo({}, seg)
-          copy.resource = resourceObj
-
-          if (this.isRtl) {
-            copy.leftCol = this.indicesToCol(resourceIndex, seg.lastRowDayIndex)
-            copy.rightCol = this.indicesToCol(resourceIndex, seg.firstRowDayIndex)
-          } else {
-            copy.leftCol = this.indicesToCol(resourceIndex, seg.firstRowDayIndex)
-            copy.rightCol = this.indicesToCol(resourceIndex, seg.lastRowDayIndex)
-          }
-
-          resourceSegs.push(copy)
+      if (rawHit) {
+        return {
+          component: this.dayGrid,
+          dateSpan: {
+            range: rawHit.dateSpan.range,
+            allDay: rawHit.dateSpan.allDay,
+            resourceId: this.props.resourceDayTable.cells[rawHit.row][rawHit.col].resource.id
+          },
+          dayEl: rawHit.dayEl,
+          rect: {
+            left: rawHit.relativeRect.left + originLeft,
+            right: rawHit.relativeRect.right + originLeft,
+            top: rawHit.relativeRect.top + originTop,
+            bottom: rawHit.relativeRect.bottom + originTop
+          },
+          layer: 0
         }
       }
     }
-
-    return resourceSegs
   }
+
 }
 
-ResourceDayTableMixin.mixInto(ResourceDayGrid)
+ResourceDayGrid.prototype.isInteractable = true
+
+
+function sliceSegs(range: DateRange, resourceIds: string[], resourceDayTable: AbstractResourceDayTable, isRtl: boolean): DayGridSeg[] {
+
+  if (!resourceIds.length) {
+    resourceIds = resourceDayTable.resourceIndex.ids
+  }
+
+  let rawSegs = sliceDayGridSegs(range, resourceDayTable.dayTable, isRtl)
+  let segs = []
+
+  for (let rawSeg of rawSegs) {
+
+    for (let resourceId of resourceIds) {
+      let resourceI = resourceDayTable.resourceIndex.indicesById[resourceId]
+
+      if (resourceI != null) {
+        segs.push(
+          assignTo({}, rawSeg, {
+            leftCol: resourceDayTable.computeCol(rawSeg.leftCol, resourceI),
+            rightCol: resourceDayTable.computeCol(rawSeg.rightCol, resourceI)
+          })
+        )
+      }
+    }
+  }
+
+  return segs
+}
+
+
+function sliceResourceBusinessHours(resourceDayTable: AbstractResourceDayTable, dateProfile: DateProfile, nextDayThreshold: Duration, fallbackBusinessHours: EventStore, component: DayGrid) {
+  let segs = []
+
+  for (let resource of resourceDayTable.resources) {
+    let businessHours = resource.businessHours || fallbackBusinessHours
+    let eventRanges = sliceBusinessHours(
+      businessHours,
+      dateProfile.activeRange,
+      nextDayThreshold,
+      component.calendar
+    )
+
+    let resourceI = resourceDayTable.resourceIndex.indicesById[resource.id]
+
+    for (let eventRange of eventRanges) {
+      let rawSegs = sliceDayGridSegs(eventRange.range, resourceDayTable.dayTable, component.isRtl)
+
+      for (let rawSeg of rawSegs) {
+        segs.push(
+          assignTo({}, rawSeg, {
+            component,
+            eventRange,
+            leftCol: resourceDayTable.computeCol(rawSeg.leftCol, resourceI),
+            rightCol: resourceDayTable.computeCol(rawSeg.rightCol, resourceI)
+          })
+        )
+      }
+    }
+  }
+
+  return segs
+}
