@@ -34,22 +34,21 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
 
   renderDates(tDateProfile: TimelineDateProfile) {
     let { theme } = this
-    let { cellRows } = tDateProfile
-    let lastRow = cellRows[cellRows.length - 1]
+    let { slotDates, isWeekStarts } = tDateProfile
 
     let html =
       '<table class="' + theme.getClass('tableGrid') + '">' +
       '<colgroup>'
 
-    for (let _cell of lastRow) {
+    for (let i = 0; i < slotDates.length; i++) {
       html += '<col/>'
     }
 
     html += '</colgroup>'
     html += '<tbody><tr>'
 
-    for (let cell of lastRow) {
-      html += this.slatCellHtml(cell.date, cell.weekStart, tDateProfile)
+    for (let i = 0; i < slotDates.length; i++) {
+      html += this.slatCellHtml(slotDates[i], isWeekStarts[i], tDateProfile)
     }
 
     html += '</tr></tbody></table>'

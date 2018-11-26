@@ -56,7 +56,7 @@ export default class TimelineHeader extends Component<TimelineHeaderProps> {
       for (let cell of rowCells) {
         let headerCellClassNames = [ theme.getClass('widgetHeader') ]
 
-        if (cell.weekStart) {
+        if (cell.isWeekStart) {
           headerCellClassNames.push('fc-em-cell')
         }
         if (oneDay) {

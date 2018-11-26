@@ -17,6 +17,7 @@ export interface TimelineDateProfile {
   normalizedRange: DateRange // different somehow
   timeWindowMs: number
   slotDates: DateMarker[]
+  isWeekStarts: boolean[]
   snapDiffToIndex: number[]
   snapIndexToDiff: number[]
   snapCnt: number
@@ -29,7 +30,7 @@ export interface TimelineHeaderCell {
   spanHtml: string
   date: DateMarker
   colspan: number
-  weekStart: boolean
+  isWeekStart: boolean
 }
 
 
@@ -193,6 +194,7 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, view: View): 
 
   // more...
 
+  tDateProfile.isWeekStarts = buildIsWeekStarts(tDateProfile, dateEnv)
   tDateProfile.cellRows = buildCellRows(tDateProfile, dateEnv, view)
 
   return tDateProfile
@@ -524,11 +526,27 @@ function currentRangeAs(unit: string, dateProfile: DateProfile, dateEnv: DateEnv
 }
 
 
+function buildIsWeekStarts(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
+  let { slotDates, emphasizeWeeks } = tDateProfile
+  let prevWeekNumber = null
+  let isWeekStarts: boolean[] = []
+
+  for (let slotDate of slotDates) {
+    let weekNumber = dateEnv.computeWeekNumber(slotDate)
+    let isWeekStart = emphasizeWeeks && (prevWeekNumber !== null) && (prevWeekNumber !== weekNumber)
+    prevWeekNumber = weekNumber
+
+    isWeekStarts.push(isWeekStart)
+  }
+
+  return isWeekStarts
+}
+
+
 function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, view: View) {
   let slotDates = tDateProfile.slotDates
   let formats = tDateProfile.headerFormats
   let cellRows = formats.map((format) => []) // indexed by row,col
-  let prevWeekNumber = null
 
   // specifically for navclicks
   let rowUnits = formats.map((format) => {
@@ -536,9 +554,9 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, view
   })
 
   // builds cellRows and slotCells
-  for (let date of slotDates) {
-    let weekNumber = dateEnv.computeWeekNumber(date)
-    let isWeekStart = tDateProfile.emphasizeWeeks && (prevWeekNumber !== null) && (prevWeekNumber !== weekNumber)
+  for (let i = 0; i < slotDates.length; i++) {
+    let date = slotDates[i]
+    let isWeekStart = tDateProfile.isWeekStarts[i]
 
     for (let row = 0; row < formats.length; row++) {
       let format = formats[row]
@@ -575,8 +593,6 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, view
         rowCells.push(newCell)
       }
     }
-
-    prevWeekNumber = weekNumber
   }
 
   return cellRows
@@ -596,5 +612,5 @@ function buildCellObject(date: DateMarker, text, rowUnit, view: View): TimelineH
     },
     htmlEscape(text)
   )
-  return { text, spanHtml, date, colspan: 1, weekStart: false }
+  return { text, spanHtml, date, colspan: 1, isWeekStart: false }
 }
