@@ -12,6 +12,7 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
   slatColEls: HTMLElement[]
   slatEls: HTMLElement[]
 
+  outerCoordCache: PositionCache
   innerCoordCache: PositionCache
 
   constructor(context: ComponentContext, parentEl: HTMLElement) {
@@ -58,6 +59,13 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
     this.slatColEls = findElements(this.el, 'col')
     this.slatEls = findElements(this.el, 'td')
 
+    this.outerCoordCache = new PositionCache(
+      this.el,
+      this.slatEls,
+      true, // isHorizontal
+      false // isVertical
+    )
+
     // for the inner divs within the slats
     // used for event rendering and scrollTime, to disregard slat border
     this.innerCoordCache = new PositionCache(
@@ -100,17 +108,14 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
   }
 
   updateSize() {
-    this.buildPositionCaches()
-  }
-
-  buildPositionCaches() {
+    this.outerCoordCache.build()
     this.innerCoordCache.build()
   }
 
   positionToHit(leftPosition) {
-    let { innerCoordCache } = this
+    let { outerCoordCache } = this
     let { tDateProfile } = this.props
-    let index = innerCoordCache.leftToIndex(leftPosition)
+    let index = outerCoordCache.leftToIndex(leftPosition)
 
     if (index != null) {
       let start = tDateProfile.slotDates[index]
@@ -122,8 +127,8 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
           allDay: !this.props.tDateProfile.isTimeScale,
         },
         dayEl: this.slatColEls[index],
-        left: innerCoordCache.lefts[index],
-        right: innerCoordCache.rights[index]
+        left: outerCoordCache.lefts[index],
+        right: outerCoordCache.rights[index]
       }
     }
 
