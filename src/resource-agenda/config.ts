@@ -1,12 +1,20 @@
-import { defineView } from 'fullcalendar'
+import { createPlugin, ViewDef, AgendaView } from 'fullcalendar'
 import ResourceAgendaView from './ResourceAgendaView'
 
-defineView('resourceAgendaWeek', {
-  class: ResourceAgendaView,
-  duration: { weeks: 1 },
+function transformViewDef(viewDef: ViewDef, overrides): ViewDef {
 
-  // ahhh
-  allDaySlot: true,
-  slotDuration: '00:30:00',
-  slotEventOverlap: true // a bad name. confused with overlap/constraint system
+  if (viewDef.class === AgendaView && overrides.resources) {
+    return {
+      type: viewDef.type,
+      class: ResourceAgendaView,
+      overrides: viewDef.overrides,
+      defaults: viewDef.defaults
+    }
+  }
+
+  return viewDef
+}
+
+export default createPlugin({
+  viewDefTransformers: [ transformViewDef ]
 })

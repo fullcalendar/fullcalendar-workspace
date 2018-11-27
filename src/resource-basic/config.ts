@@ -1,14 +1,20 @@
-import { defineView } from 'fullcalendar'
+import { createPlugin, ViewDef, BasicView } from 'fullcalendar'
 import ResourceBasicView from './ResourceBasicView'
 
-defineView('resourceMonth', {
-  class: ResourceBasicView,
-  monthMode: true,
-  duration: { months: 1 }, // important for prev/next
-  fixedWeekCount: true
-})
+function transformViewDef(viewDef: ViewDef, overrides): ViewDef {
 
-defineView('resourceBasicWeek', {
-  class: ResourceBasicView,
-  duration: { weeks: 1 },
+  if (viewDef.class === BasicView && overrides.resources) {
+    return {
+      type: viewDef.type,
+      class: ResourceBasicView,
+      overrides: viewDef.overrides,
+      defaults: viewDef.defaults
+    }
+  }
+
+  return viewDef
+}
+
+export default createPlugin({
+  viewDefTransformers: [ transformViewDef ]
 })

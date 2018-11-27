@@ -1,28 +1,26 @@
-import { defineView } from 'fullcalendar'
+import { createPlugin, ViewDef, assignTo } from 'fullcalendar'
 import ResourceTimelineView from './ResourceTimelineView'
+import TimelineView from '../timeline/TimelineView'
 
-defineView('resourceTimeline', {
-  class: ResourceTimelineView,
+const RESOURCE_TIMELINE_DEFAULTS = {
   resourcesInitiallyExpanded: true,
   eventResizableFromStart: true // how is this consumed for TimelineView tho?
-})
+}
 
-defineView('resourceTimelineDay', {
-  type: 'resourceTimeline',
-  duration: { days: 1 }
-})
+function transformViewDef(viewDef: ViewDef, overrides): ViewDef {
 
-defineView('resourceTimelineWeek', {
-  type: 'resourceTimeline',
-  duration: { weeks: 1 }
-})
+  if (viewDef.class === TimelineView && overrides.resources) {
+    return {
+      type: viewDef.type,
+      class: ResourceTimelineView,
+      overrides: viewDef.overrides,
+      defaults: assignTo({}, viewDef.defaults, RESOURCE_TIMELINE_DEFAULTS)
+    }
+  }
 
-defineView('resourceTimelineMonth', {
-  type: 'resourceTimeline',
-  duration: { months: 1 }
-})
+  return viewDef
+}
 
-defineView('resourceTimelineYear', {
-  type: 'resourceTimeline',
-  duration: { years: 1 }
+export default createPlugin({
+  viewDefTransformers: [ transformViewDef ]
 })
