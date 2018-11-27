@@ -27,7 +27,7 @@
           click: function() {
             var title = prompt('Room name');
             if (title) {
-              calendar.addResource({ title: title }, true); // true = scroll to new resource
+              calendar.addResource({ title: title });
             }
           }
         }
@@ -41,10 +41,12 @@
         }
       },
       resourceLabelText: 'Rooms',
-      resourceRender: function(resource, tr) {
-        tr.addEventListener('click', function() {
+      resourceRender: function(arg) {
+        var resource = arg.resource;
+
+        arg.labelEl.addEventListener('click', function() {
           if (confirm('Are you sure you want to delete ' + resource.title + '?')) {
-            calendar.removeResource(resource);
+            resource.remove();
           }
         });
       },

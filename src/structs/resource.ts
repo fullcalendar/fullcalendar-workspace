@@ -35,7 +35,7 @@ let uid = 0
 /*
 needs a full store so that it can populate children too
 */
-export function parseResource(input: ResourceInput, parentId: string = '', store: ResourceHash = {}, calendar: Calendar): ResourceHash {
+export function parseResource(input: ResourceInput, parentId: string = '', store: ResourceHash, calendar: Calendar): Resource {
   let leftovers = {}
   let props = refineProps(input, RESOURCE_PROPS, {}, leftovers)
 
@@ -63,7 +63,7 @@ export function parseResource(input: ResourceInput, parentId: string = '', store
     }
   }
 
-  return store
+  return props as Resource
 }
 
 

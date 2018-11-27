@@ -9,6 +9,10 @@ export default function(store: ResourceHash | undefined, action: ResourceAction,
       return {}
     case 'RECEIVE_RESOURCES':
       return receiveRawResources(store, action.rawResources, action.fetchId, source, calendar)
+    case 'ADD_RESOURCE':
+      return addResource(store, action.resourceHash)
+    case 'REMOVE_RESOURCE':
+      return removeResource(store, action.resourceId)
     case 'SET_RESOURCE_PROP':
       return setResourceProp(store, action.resourceId, action.propName, action.propValue)
     default:
@@ -28,6 +32,29 @@ function receiveRawResources(existingStore: ResourceHash, inputs: ResourceInput[
   } else {
     return existingStore
   }
+}
+
+function addResource(existingStore: ResourceHash, additions: ResourceHash) {
+  // TODO: warn about duplicate IDs
+
+  return assignTo({}, existingStore, additions)
+}
+
+function removeResource(existingStore: ResourceHash, resourceId: string) {
+  let newStore = assignTo({}, existingStore) as ResourceHash
+
+  delete newStore[resourceId]
+
+  // promote children
+  for (let childResourceId in newStore) { // a child, *maybe* but probably not
+    if (newStore[childResourceId].parentId === resourceId) {
+      newStore[childResourceId] = assignTo({}, newStore[childResourceId], {
+        parentId: ''
+      })
+    }
+  }
+
+  return newStore
 }
 
 function setResourceProp(existingStore: ResourceHash, resourceId: string, name: string, value: any): ResourceHash {

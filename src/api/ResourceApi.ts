@@ -20,6 +20,13 @@ export default class ResourceApi {
     })
   }
 
+  remove() {
+    this._calendar.dispatch({
+      type: 'REMOVE_RESOURCE',
+      resourceId: this._resource.id
+    })
+  }
+
   get id(): string {
     return this._resource.id
   }

@@ -478,7 +478,7 @@ export default class ResourceTimelineView extends View {
   queryScroll() {
     let scroll = super.queryScroll()
 
-    if ((this.props as any).resourceStore) {
+    if (this.props.resourceStore) {
       assignTo(scroll, this.queryResourceScroll())
     }
 
@@ -488,7 +488,7 @@ export default class ResourceTimelineView extends View {
   applyScroll(scroll) {
     super.applyScroll(scroll)
 
-    if ((this.props as any).resourceStore) {
+    if (this.props.resourceStore) {
       this.applyResourceScroll(scroll)
     }
   }
@@ -529,16 +529,22 @@ export default class ResourceTimelineView extends View {
   }
 
   applyResourceScroll(scroll) {
-    if (scroll.rowId) {
-      let rowComponent = this.rowComponentsById[scroll.rowId]
+    let rowId = scroll.forcedRowId || scroll.rowId
+
+    if (rowId) {
+      let rowComponent = this.rowComponentsById[rowId]
 
       if (rowComponent) {
         let el = rowComponent.timeAxisTr
 
         if (el) {
           let innerTop = this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.el.getBoundingClientRect().top
-          let elBottom = el.getBoundingClientRect().bottom
-          let scrollTop = elBottom - scroll.bottom - innerTop // both fixed positions
+          let rowRect = el.getBoundingClientRect()
+          let scrollTop =
+            (scroll.forcedRowId ?
+              rowRect.top : // just use top edge
+              rowRect.bottom - scroll.bottom) - // pixels from bottom edge
+            innerTop
 
           this.timeAxis.layout.bodyScroller.enhancedScroll.setScrollTop(scrollTop)
           this.spreadsheet.layout.bodyScroller.enhancedScroll.setScrollTop(scrollTop)

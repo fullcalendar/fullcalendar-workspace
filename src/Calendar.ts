@@ -1,5 +1,6 @@
 import { DateClickApi, DateSelectionApi, DateSpan, Calendar } from 'fullcalendar'
 import ResourceApi from './api/ResourceApi'
+import { ResourceInput, parseResource, ResourceHash } from './structs/resource'
 
 declare module 'fullcalendar/Calendar' {
 
@@ -11,10 +12,28 @@ declare module 'fullcalendar/Calendar' {
     resource?: ResourceApi
   }
 
-  interface Default {
+  interface Default { // the Calendar
+    addResource(input: ResourceInput): ResourceApi
     getResourceById(id: string): ResourceApi | null
   }
 
+}
+
+Calendar.prototype.addResource = function(this: Calendar, input: ResourceInput, scrollTo = true) {
+  let resourceHash: ResourceHash = {}
+  let resource = parseResource(input, '', resourceHash, this)
+
+  // HACK
+  if (scrollTo) {
+    this.component.view.addScroll({ forcedRowId: resource.id })
+  }
+
+  this.dispatch({
+    type: 'ADD_RESOURCE',
+    resourceHash
+  })
+
+  return new ResourceApi(this, resource)
 }
 
 Calendar.prototype.getResourceById = function(this: Calendar, id: string) {

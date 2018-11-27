@@ -1,5 +1,6 @@
 import { Component, ComponentContext, DateMarker, htmlToElement, removeElement, htmlEscape, DateProfile, renderDateCell, findElements, createFormatter, DateFormatter, computeFallbackHeaderFormat } from 'fullcalendar'
 import { Resource, getPublicId } from '../structs/resource'
+import ResourceApi from '../api/ResourceApi'
 
 export interface ResourceDayHeaderProps {
   dates: DateMarker[]
@@ -184,7 +185,7 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
 
       view.publiclyTrigger('resourceRender', [
         {
-          resource,
+          resource: new ResourceApi(this.calendar, resource),
           labelEl: node, // head <td>
           bodyEl: null, // body <td> (we don't compute, but API should stay consistent)
           view
