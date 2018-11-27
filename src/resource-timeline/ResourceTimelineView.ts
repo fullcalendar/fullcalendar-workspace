@@ -159,11 +159,17 @@ export default class ResourceTimelineView extends View {
 
   renderSkeletonHtml() {
     let { theme } = this
+    let width = this.opt('resourceAreaWidth') as any
+    let widthAttr = ''
+
+    if (width) {
+      widthAttr = 'style="width:' + (typeof width === 'number' ? width + 'px' : width) + '"'
+    }
 
     return `<table class="` + theme.getClass('tableGrid') + `"> \
 <thead class="fc-head"> \
 <tr> \
-<td class="fc-resource-area ` + theme.getClass('widgetHeader') + `"></td> \
+<td class="fc-resource-area ` + theme.getClass('widgetHeader') + `" ` + widthAttr + `></td> \
 <td class="fc-divider fc-col-resizer ` + theme.getClass('widgetHeader') + `"></td> \
 <td class="fc-time-area ` + theme.getClass('widgetHeader') + `"></td> \
 </tr> \

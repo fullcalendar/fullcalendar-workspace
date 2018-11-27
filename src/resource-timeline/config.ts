@@ -3,6 +3,7 @@ import ResourceTimelineView from './ResourceTimelineView'
 import TimelineView from '../timeline/TimelineView'
 
 const RESOURCE_TIMELINE_DEFAULTS = {
+  resourceAreaWidth: '30%',
   resourcesInitiallyExpanded: true,
   eventResizableFromStart: true // how is this consumed for TimelineView tho?
 }
