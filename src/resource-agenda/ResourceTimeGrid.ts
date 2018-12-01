@@ -54,9 +54,9 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
   }
 
   renderNowIndicator(date: DateMarker) {
-    this.timeGrid.renderNowIndicator(
+    this.timeGrid.renderNowIndicator( // TODO: have slicer do this?
       // seg system might be overkill, but it handles scenario where line needs to be rendered
-      //  more than once because of columns with the same date (resources columns for example)
+      //  more than once because of columns with the same date (resource columns for example)
       sliceSegs({
         start: date,
         end: addMs(date, 1) // protect against null range
