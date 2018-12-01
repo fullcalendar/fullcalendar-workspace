@@ -65,6 +65,11 @@ export default class ResourceAgendaView extends AbstractAgendaView {
       this.opt('groupByDateAndResource')
     )
 
+    let { splitter } = this
+    let eventStores = splitter.splitEventStore(props.eventStore, props.eventUis)
+    let eventDrags = splitter.splitEventDrag(props.eventDrag, props.eventUis)
+    let eventResizes = splitter.splitEventResize(props.eventResize, props.eventUis)
+
     if (this.header) {
       this.header.receiveProps({
         resources,
@@ -79,12 +84,12 @@ export default class ResourceAgendaView extends AbstractAgendaView {
       dateProfile: props.dateProfile,
       resourceDayTable,
       businessHours: props.businessHours,
-      eventStore: this.filterEventsForTimeGrid(props.eventStore, props.eventUis),
+      eventStore: eventStores.timed,
       eventUis: props.eventUis,
       dateSelection: props.dateSelection,
       eventSelection: props.eventSelection,
-      eventDrag: this.buildEventDragForTimeGrid(props.eventDrag),
-      eventResize: this.buildEventResizeForTimeGrid(props.eventResize)
+      eventDrag: eventDrags.timed,
+      eventResize: eventResizes.timed
     })
 
     if (this.resourceDayGrid) {
@@ -92,12 +97,12 @@ export default class ResourceAgendaView extends AbstractAgendaView {
         dateProfile: props.dateProfile,
         resourceDayTable,
         businessHours: props.businessHours,
-        eventStore: this.filterEventsForDayGrid(props.eventStore, props.eventUis),
+        eventStore: eventStores.allDay,
         eventUis: props.eventUis,
         dateSelection: props.dateSelection,
         eventSelection: props.eventSelection,
-        eventDrag: this.buildEventDragForDayGrid(props.eventDrag),
-        eventResize: this.buildEventResizeForDayGrid(props.eventResize),
+        eventDrag: eventDrags.allDay,
+        eventResize: eventResizes.allDay,
         isRigid: false,
         nextDayThreshold: this.nextDayThreshold
       })
