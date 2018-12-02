@@ -1,4 +1,4 @@
-import { memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, reselector, assignTo } from 'fullcalendar'
+import { memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, reselector, assignTo, memoizeSplitter } from 'fullcalendar'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
@@ -7,7 +7,7 @@ import ResourceRow from './ResourceRow'
 import ScrollJoiner from '../util/ScrollJoiner'
 import Spreadsheet from './Spreadsheet'
 import TimelineLane from '../timeline/TimelineLane'
-import { splitEventStores, splitEventInteraction } from './event-splitting'
+import ResourceEventSplitter from '../common/ResourceEventSplitter'
 
 export default class ResourceTimelineView extends View {
 
@@ -34,11 +34,9 @@ export default class ResourceTimelineView extends View {
   rowPositions: PositionCache
   offsetTracker: OffsetTracker
 
+  private splitter = memoizeSplitter(new ResourceEventSplitter())
   private hasResourceBusinessHours = reselector(hasResourceBusinessHours)
-  private splitEventStores = reselector(splitEventStores)
   private buildRowNodes = reselector(buildRowNodes)
-  private splitEventDrag = reselector(splitEventInteraction)
-  private splitEventResize = reselector(splitEventInteraction)
   private hasNesting = reselector(hasNesting)
 
   private _updateHasNesting = memoizeRendering(this.updateHasNesting)
@@ -187,10 +185,12 @@ export default class ResourceTimelineView extends View {
   render(props: ViewProps) {
     super.render(props)
 
+    let { splitter } = this
+
     let hasResourceBusinessHours = this.hasResourceBusinessHours(props.resourceStore)
-    let eventStoresByResourceId = this.splitEventStores(props.eventStore)
-    let eventDragsByResourceId = this.splitEventDrag(props.eventDrag)
-    let eventResizesByResourceId = this.splitEventResize(props.eventResize)
+    let eventStoresByResourceId = splitter.splitEventStore(props.eventStore, props.eventUis)
+    let eventDragsByResourceId = splitter.splitEventDrag(props.eventDrag, props.eventUis)
+    let eventResizesByResourceId = splitter.splitEventResize(props.eventResize, props.eventUis)
 
     this.timeAxis.receiveProps({
       dateProfile: props.dateProfile
