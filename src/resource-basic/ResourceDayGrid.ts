@@ -1,19 +1,22 @@
-import { memoizeSlicer, Hit, OffsetTracker, sliceDayGridSegs, DateSpan, DayGrid, DateComponent, assignTo, DateProfile, EventStore, EventUiHash, EventInteractionUiState, ComponentContext, DayGridSeg, Duration, DateRange, sliceBusinessHours, reselector } from "fullcalendar"
+import { memoizeSlicer, Hit, OffsetTracker, sliceDayGridSegs, DateSpan, DayGrid, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, DayGridSeg, Duration, DateRange, sliceBusinessHours, reselector, SimpleDayGridSlicerArgs } from "fullcalendar"
 import { AbstractResourceDayTable } from '../common/resource-day-table'
-import { ResourceAwareSlicer } from '../common/resource-aware-slicing'
 
 export interface ResourceDayGridProps {
   dateProfile: DateProfile | null
   resourceDayTable: AbstractResourceDayTable
   businessHours: EventStore
   eventStore: EventStore
-  eventUis: EventUiHash
+  eventUiBases: EventUiHash
   dateSelection: DateSpan | null
   eventSelection: string
-  eventDrag: EventInteractionUiState | null
-  eventResize: EventInteractionUiState | null
+  eventDrag: EventInteractionState | null
+  eventResize: EventInteractionState | null
   isRigid: boolean
   nextDayThreshold: Duration
+}
+
+interface ResourceDayGridSlicerArgs extends SimpleDayGridSlicerArgs {
+  resourceDayTable: AbstractResourceDayTable
 }
 
 export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps> {
@@ -22,8 +25,7 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
 
   offsetTracker: OffsetTracker
 
-  private slicer = memoizeSlicer(new ResourceAwareSlicer(sliceSegs, () => { return this.dayGrid }))
-  private sliceResourceBusinessHours = reselector(sliceResourceBusinessHours)
+  private slicer = memoizeSlicer(new ResourceDayTableSlicer<DayGridSeg, ResourceDayGridSlicerArgs>(sliceDayGridSegs, massageSeg))
 
   constructor(context: ComponentContext, dayGrid: DayGrid) {
     super(context, dayGrid.el)
@@ -35,18 +37,25 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
     let { slicer, isRtl } = this
     let { dateProfile, resourceDayTable, nextDayThreshold } = props
 
-    let segRes = slicer.eventStoreToSegs(props.eventStore, props.eventUis, dateProfile, nextDayThreshold, resourceDayTable, isRtl)
+    let slicerArgs: ResourceDayGridSlicerArgs = {
+      component: this.dayGrid,
+      resourceDayTable,
+      dayTable: resourceDayTable.dayTable,
+      isRtl
+    }
+
+    let segRes = slicer.eventStoreToSegs(props.eventStore, props.eventUiBases, dateProfile, nextDayThreshold, slicerArgs)
 
     this.dayGrid.receiveProps({
       dateProfile: props.dateProfile,
       cells: props.resourceDayTable.cells,
-      businessHourSegs: this.sliceResourceBusinessHours(resourceDayTable, dateProfile, nextDayThreshold, props.businessHours, this.dayGrid),
+      businessHourSegs: slicer.businessHoursToSegs(props.businessHours, dateProfile, nextDayThreshold, slicerArgs),
       bgEventSegs: segRes.bg,
       fgEventSegs: segRes.fg,
-      dateSelectionSegs: slicer.selectionToSegs(props.dateSelection, resourceDayTable, isRtl),
+      dateSelectionSegs: slicer.selectionToSegs(props.dateSelection, props.eventUiBases, slicerArgs),
       eventSelection: props.eventSelection,
-      eventDrag: slicer.buildEventDrag(props.eventDrag, dateProfile, nextDayThreshold, resourceDayTable, isRtl),
-      eventResize: slicer.buildEventResize(props.eventResize, dateProfile, nextDayThreshold, resourceDayTable, isRtl),
+      eventDrag: slicer.buildEventDrag(props.eventDrag, props.eventUiBases, dateProfile, nextDayThreshold, slicerArgs),
+      eventResize: slicer.buildEventResize(props.eventResize, props.eventUiBases, dateProfile, nextDayThreshold, slicerArgs),
       isRigid: props.isRigid
     })
   }
@@ -97,64 +106,13 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
 ResourceDayGrid.prototype.isInteractable = true
 
 
-function sliceSegs(range: DateRange, resourceIds: string[], resourceDayTable: AbstractResourceDayTable, isRtl: boolean): DayGridSeg[] {
+function massageSeg(seg: DayGridSeg, resourceId: string, resourceDayTable: AbstractResourceDayTable) {
+  let resourceI = resourceDayTable.resourceIndex.indicesById[resourceId]
 
-  if (!resourceIds.length) {
-    resourceIds = resourceDayTable.resourceIndex.ids
+  if (resourceI) {
+    seg.leftCol = resourceDayTable.computeCol(seg.leftCol, resourceI),
+    seg.rightCol = resourceDayTable.computeCol(seg.rightCol, resourceI)
+  } else {
+    return false
   }
-
-  let rawSegs = sliceDayGridSegs(range, resourceDayTable.dayTable, isRtl)
-  let segs = []
-
-  for (let rawSeg of rawSegs) {
-
-    for (let resourceId of resourceIds) {
-      let resourceI = resourceDayTable.resourceIndex.indicesById[resourceId]
-
-      if (resourceI != null) {
-        segs.push(
-          assignTo({}, rawSeg, {
-            leftCol: resourceDayTable.computeCol(rawSeg.leftCol, resourceI),
-            rightCol: resourceDayTable.computeCol(rawSeg.rightCol, resourceI)
-          })
-        )
-      }
-    }
-  }
-
-  return segs
-}
-
-
-function sliceResourceBusinessHours(resourceDayTable: AbstractResourceDayTable, dateProfile: DateProfile, nextDayThreshold: Duration, fallbackBusinessHours: EventStore, component: DayGrid) {
-  let segs = []
-
-  for (let resource of resourceDayTable.resources) {
-    let businessHours = resource.businessHours || fallbackBusinessHours
-    let eventRanges = sliceBusinessHours(
-      businessHours,
-      dateProfile.activeRange,
-      nextDayThreshold,
-      component.calendar
-    )
-
-    let resourceI = resourceDayTable.resourceIndex.indicesById[resource.id]
-
-    for (let eventRange of eventRanges) {
-      let rawSegs = sliceDayGridSegs(eventRange.range, resourceDayTable.dayTable, component.isRtl)
-
-      for (let rawSeg of rawSegs) {
-        segs.push(
-          assignTo({}, rawSeg, {
-            component,
-            eventRange,
-            leftCol: resourceDayTable.computeCol(rawSeg.leftCol, resourceI),
-            rightCol: resourceDayTable.computeCol(rawSeg.rightCol, resourceI)
-          })
-        )
-      }
-    }
-  }
-
-  return segs
 }

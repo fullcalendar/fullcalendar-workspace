@@ -1,4 +1,4 @@
-import { EventStore, EventUiHash, DateMarker, DateSpan, MemoizedRendering, EventInteractionUiState, EventSegUiInteractionState, DateComponent, ComponentContext, Seg, DateRange, intersectRanges, addMs, DateProfile, memoizeRendering, Slicer, memoizeSlicer, assignTo } from 'fullcalendar'
+import { EventStore, EventUiHash, DateMarker, DateSpan, MemoizedRendering, EventInteractionState, EventSegUiInteractionState, DateComponent, ComponentContext, Seg, DateRange, intersectRanges, addMs, DateProfile, memoizeRendering, Slicer, memoizeSlicer, assignTo } from 'fullcalendar'
 import { TimelineDateProfile, normalizeRange, isValidDate } from './timeline-date-profile'
 import TimelineLaneEventRenderer from './TimelineLaneEventRenderer'
 import TimelineLaneFillRenderer from './TimelineLaneFillRenderer'
@@ -13,11 +13,16 @@ export interface TimelineLaneProps {
   dateProfile: DateProfile
   businessHours: EventStore | null
   eventStore: EventStore | null
-  eventUis: EventUiHash
+  eventUiBases: EventUiHash
   dateSelection: DateSpan | null
   eventSelection: string
-  eventDrag: EventInteractionUiState | null
-  eventResize: EventInteractionUiState | null
+  eventDrag: EventInteractionState | null
+  eventResize: EventInteractionState | null
+}
+
+interface SlicerArg {
+  timeAxis: TimeAxis
+  component: TimelineLane
 }
 
 export default class TimelineLane extends DateComponent<TimelineLaneProps> {
@@ -25,7 +30,7 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
   tDateProfile: TimelineDateProfile
   timeAxis: TimeAxis
 
-  private slicer = memoizeSlicer(new Slicer(rangeToSegs, () => { return this }))
+  private slicer = memoizeSlicer(new Slicer(rangeToSegs))
   private renderBusinessHours: MemoizedRendering<[TimelineLaneSeg[]]>
   private renderDateSelection: MemoizedRendering<[TimelineLaneSeg[]]>
   private renderBgEvents: MemoizedRendering<[TimelineLaneSeg[]]>
@@ -75,15 +80,16 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
     let { slicer, timeAxis } = this
     let { dateProfile } = props
 
-    let segRes = slicer.eventStoreToSegs(props.eventStore, props.eventUis, dateProfile, null, timeAxis)
+    let slicerArgs = { timeAxis, component: this }
+    let segRes = slicer.eventStoreToSegs(props.eventStore, props.eventUiBases, dateProfile, null, slicerArgs)
 
-    this.renderBusinessHours(slicer.businessHoursToSegs(props.businessHours, dateProfile, null, timeAxis))
-    this.renderDateSelection(slicer.selectionToSegs(props.dateSelection, timeAxis))
+    this.renderBusinessHours(slicer.businessHoursToSegs(props.businessHours, dateProfile, null, slicerArgs))
+    this.renderDateSelection(slicer.selectionToSegs(props.dateSelection, props.eventUiBases, slicerArgs))
     this.renderBgEvents(segRes.bg)
     this.renderFgEvents(segRes.fg)
     this.renderEventSelection(props.eventSelection)
-    this.renderEventDrag(slicer.buildEventDrag(props.eventDrag, dateProfile, null, timeAxis))
-    this.renderEventResize(slicer.buildEventResize(props.eventResize, dateProfile, null, timeAxis))
+    this.renderEventDrag(slicer.buildEventDrag(props.eventDrag, props.eventUiBases, dateProfile, null, slicerArgs))
+    this.renderEventResize(slicer.buildEventResize(props.eventResize, props.eventUiBases, dateProfile, null, slicerArgs))
   }
 
   destroy() {
@@ -147,7 +153,8 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
 
 }
 
-function rangeToSegs(origRange: DateRange, timeAxis: TimeAxis): TimelineLaneSeg[] {
+function rangeToSegs(origRange: DateRange, slicerArg: SlicerArg): TimelineLaneSeg[] {
+  let { timeAxis } = slicerArg
   let { tDateProfile } = timeAxis
   let dateProfile = timeAxis.props.dateProfile
   let range = normalizeRange(origRange, tDateProfile, timeAxis.dateEnv)

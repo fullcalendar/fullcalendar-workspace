@@ -66,9 +66,9 @@ export default class ResourceAgendaView extends AbstractAgendaView {
     )
 
     let { splitter } = this
-    let eventStores = splitter.splitEventStore(props.eventStore, props.eventUis)
-    let eventDrags = splitter.splitEventDrag(props.eventDrag, props.eventUis)
-    let eventResizes = splitter.splitEventResize(props.eventResize, props.eventUis)
+    let eventStores = splitter.splitEventStore(props.eventStore)
+    let eventDrags = splitter.splitEventDrag(props.eventDrag)
+    let eventResizes = splitter.splitEventResize(props.eventResize)
 
     if (this.header) {
       this.header.receiveProps({
@@ -85,7 +85,7 @@ export default class ResourceAgendaView extends AbstractAgendaView {
       resourceDayTable,
       businessHours: props.businessHours,
       eventStore: eventStores.timed,
-      eventUis: props.eventUis,
+      eventUiBases: props.eventUiBases,
       dateSelection: props.dateSelection,
       eventSelection: props.eventSelection,
       eventDrag: eventDrags.timed,
@@ -98,7 +98,7 @@ export default class ResourceAgendaView extends AbstractAgendaView {
         resourceDayTable,
         businessHours: props.businessHours,
         eventStore: eventStores.allDay,
-        eventUis: props.eventUis,
+        eventUiBases: props.eventUiBases,
         dateSelection: props.dateSelection,
         eventSelection: props.eventSelection,
         eventDrag: eventDrags.allDay,

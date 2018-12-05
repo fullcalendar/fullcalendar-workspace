@@ -1,20 +1,18 @@
-import { createPlugin, ViewDef, BasicView } from 'fullcalendar'
+import { createPlugin, ViewSpec, BasicView, assignTo } from 'fullcalendar'
 import ResourceBasicView from './ResourceBasicView'
+import { isVResourceViewEnabled } from '../common/resource-day-table'
 
-function transformViewDef(viewDef: ViewDef, overrides): ViewDef {
+function transformViewSpec(viewSpec: ViewSpec): ViewSpec {
 
-  if (viewDef.class === BasicView && overrides.resources) {
-    return {
-      type: viewDef.type,
-      class: ResourceBasicView,
-      overrides: viewDef.overrides,
-      defaults: viewDef.defaults
-    }
+  if (viewSpec.class === BasicView && isVResourceViewEnabled(viewSpec)) {
+    return assignTo({}, viewSpec, {
+      class: ResourceBasicView
+    })
   }
 
-  return viewDef
+  return viewSpec
 }
 
 export default createPlugin({
-  viewDefTransformers: [ transformViewDef ]
+  viewSpecTransformers: [ transformViewSpec ]
 })

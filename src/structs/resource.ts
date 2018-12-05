@@ -1,13 +1,14 @@
-import { refineProps, assignTo, EventStore, parseBusinessHours, Calendar } from 'fullcalendar'
+import { refineProps, assignTo, EventStore, parseBusinessHours, Calendar, EventUi, processScopedUiProps, BusinessHoursInput, ScopedEventUiInput } from 'fullcalendar'
 
-export interface ResourceInput {
+export interface ResourceInput extends ScopedEventUiInput {
   id?: string
-  title?: string
   parentId?: string
   children?: ResourceInput[]
+  title?: string
+  businessHours?: BusinessHoursInput
+  ui: EventUi
   extendedProps?: { [extendedProp: string]: any }
   [otherProp: string]: any
-  // TODO: eventprops
 }
 
 export interface Resource {
@@ -15,8 +16,8 @@ export interface Resource {
   parentId: string
   title: string
   businessHours: EventStore | null
+  ui: EventUi
   extendedProps: { [extendedProp: string]: any }
-  // TODO: eventprops
 }
 
 export type ResourceHash = { [resourceId: string]: Resource }
@@ -36,8 +37,10 @@ let uid = 0
 needs a full store so that it can populate children too
 */
 export function parseResource(input: ResourceInput, parentId: string = '', store: ResourceHash, calendar: Calendar): Resource {
-  let leftovers = {}
-  let props = refineProps(input, RESOURCE_PROPS, {}, leftovers)
+  let leftovers0 = {}
+  let props = refineProps(input, RESOURCE_PROPS, {}, leftovers0)
+  let leftovers1 = {}
+  let ui = processScopedUiProps(leftovers0, calendar, leftovers1)
 
   if (!props.id) {
     props.id = PRIVATE_ID_PREFIX + (uid++)
@@ -45,7 +48,8 @@ export function parseResource(input: ResourceInput, parentId: string = '', store
 
   props.parentId = parentId
   props.businessHours = props.businessHours ? parseBusinessHours(props.businessHours, calendar) : null
-  props.extendedProps = assignTo({}, leftovers, props.extendedProps)
+  props.ui = ui
+  props.extendedProps = assignTo({}, leftovers1, props.extendedProps)
 
   if (store[props.id]) {
     console.warn('duplicate resource ID')

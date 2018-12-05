@@ -1,4 +1,4 @@
-import { createElement, ComponentContext, EventInteractionUiState, DateSpan, EventUiHash, EventStore, DateProfile, memoizeRendering, isArraysEqual } from 'fullcalendar'
+import { createElement, ComponentContext, EventInteractionState, DateSpan, EventUiHash, EventStore, DateProfile, memoizeRendering, isArraysEqual } from 'fullcalendar'
 import Row from './Row'
 import SpreadsheetRow from './SpreadsheetRow'
 import TimelineLane from '../timeline/TimelineLane'
@@ -6,15 +6,16 @@ import { Resource } from '../structs/resource'
 import { updateTrResourceId } from './render-utils'
 import ResourceApi from '../api/ResourceApi'
 
+
 export interface ResourceRowProps {
   dateProfile: DateProfile
   businessHours: EventStore | null
   eventStore: EventStore | null
-  eventUis: EventUiHash
+  eventUiBases: EventUiHash
   dateSelection: DateSpan | null
   eventSelection: string
-  eventDrag: EventInteractionUiState | null
-  eventResize: EventInteractionUiState | null
+  eventDrag: EventInteractionState | null
+  eventResize: EventInteractionState | null
   colSpecs: any
   id: string // 'resourceId' (won't collide with group ID's because has colon)
   rowSpans: number[]
@@ -80,7 +81,7 @@ export default class ResourceRow extends Row<ResourceRowProps> {
       dateProfile: props.dateProfile,
       businessHours: props.businessHours,
       eventStore: props.eventStore,
-      eventUis: props.eventUis,
+      eventUiBases: props.eventUiBases,
       dateSelection: props.dateSelection,
       eventSelection: props.eventSelection,
       eventDrag: props.eventDrag,

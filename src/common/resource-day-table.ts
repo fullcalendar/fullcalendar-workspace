@@ -1,4 +1,4 @@
-import { DayTable, DayTableSeg, DayTableCell, DateRange } from 'fullcalendar'
+import { DayTable, DayTableSeg, DayTableCell, DateRange, ViewSpec } from 'fullcalendar'
 import { Resource } from '../structs/resource'
 
 export interface ResourceDayTableCell extends DayTableCell {
@@ -139,4 +139,13 @@ export class ResourceIndex {
     this.length = resources.length
   }
 
+}
+
+
+export function isVResourceViewEnabled(viewSpec: ViewSpec) {
+  let { options } = viewSpec
+
+  return (options.resources && viewSpec.singleUnit) ||
+    options.groupByResource ||
+    options.groupByDateAndResource
 }

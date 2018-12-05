@@ -1,17 +1,20 @@
-import { memoizeSlicer, OffsetTracker, addMs, DateSpan, DateComponent, TimeGrid, DateProfile, EventStore, EventUiHash, EventInteractionUiState, ComponentContext, reselector, buildDayRanges, sliceTimeGridSegs, DateRange, assignTo, TimeGridSeg, sliceBusinessHours, DateMarker, Hit } from "fullcalendar"
+import { SimpleTimeGridSlicerArgs, memoizeSlicer, OffsetTracker, DateSpan, DateComponent, TimeGrid, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, reselector, buildDayRanges, sliceTimeGridSegs, DateRange, TimeGridSeg, DateMarker, Hit } from "fullcalendar"
 import { AbstractResourceDayTable } from '../common/resource-day-table'
-import { ResourceAwareSlicer } from '../common/resource-aware-slicing'
 
 export interface ResourceTimeGridProps {
   dateProfile: DateProfile | null
   resourceDayTable: AbstractResourceDayTable
   businessHours: EventStore
   eventStore: EventStore
-  eventUis: EventUiHash
+  eventUiBases: EventUiHash
   dateSelection: DateSpan | null
   eventSelection: string
-  eventDrag: EventInteractionUiState | null
-  eventResize: EventInteractionUiState | null
+  eventDrag: EventInteractionState | null
+  eventResize: EventInteractionState | null
+}
+
+interface ResourceDayGridSlicerArgs extends SimpleTimeGridSlicerArgs {
+  resourceDayTable: AbstractResourceDayTable
 }
 
 export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProps> {
@@ -35,21 +38,24 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
     let { slicer } = this
     let { dateProfile, resourceDayTable } = props
 
-    let dayRanges = this.dayRanges =
-      this.buildDayRanges(resourceDayTable.dayTable, dateProfile, this.dateEnv)
+    let slicerArgs: ResourceDayGridSlicerArgs = {
+      component: this.timeGrid,
+      resourceDayTable,
+      dayRanges: this.buildDayRanges(resourceDayTable.dayTable, dateProfile, this.dateEnv)
+    }
 
-    let segRes = slicer.eventStoreToSegs(props.eventStore, props.eventUis, dateProfile, null, resourceDayTable, dayRanges)
+    let segRes = slicer.eventStoreToSegs(props.eventStore, props.eventUiBases, dateProfile, null, slicerArgs)
 
     this.timeGrid.receiveProps({
       dateProfile: props.dateProfile,
       cells: props.resourceDayTable.cells[0],
-      businessHourSegs: this.sliceResourceBusinessHours(resourceDayTable, dateProfile, dayRanges, props.businessHours, this.timeGrid),
+      businessHourSegs: slicer.businessHoursToSegs(props.businessHours, dateProfile, null, slicerArgs),
       fgEventSegs: segRes.fg,
       bgEventSegs: segRes.bg,
-      dateSelectionSegs: slicer.selectionToSegs(props.dateSelection, resourceDayTable, dayRanges),
+      dateSelectionSegs: slicer.selectionToSegs(props.dateSelection, props.eventUiBases, slicerArgs),
       eventSelection: props.eventSelection,
-      eventDrag: slicer.buildEventDrag(props.eventDrag, dateProfile, null, resourceDayTable, dayRanges),
-      eventResize: slicer.buildEventResize(props.eventResize, dateProfile, null, resourceDayTable, dayRanges)
+      eventDrag: slicer.buildEventDrag(props.eventDrag, props.eventUiBases, dateProfile, null, slicerArgs),
+      eventResize: slicer.buildEventResize(props.eventResize, props.eventUiBases, dateProfile, null, slicerArgs)
     })
   }
 
@@ -111,62 +117,12 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
 ResourceTimeGrid.prototype.isInteractable = true
 
 
-function sliceSegs(range: DateRange, resourceIds: string[], resourceDayTable: AbstractResourceDayTable, dayRanges: DateRange[]): TimeGridSeg[] {
+function massageSeg(seg: TimeGridSeg, resourceId: string, resourceDayTable: AbstractResourceDayTable) {
+  let resourceI = resourceDayTable.resourceIndex.indicesById[resourceId]
 
-  if (!resourceIds.length) {
-    resourceIds = resourceDayTable.resourceIndex.ids
+  if (resourceI) {
+    seg.col = resourceDayTable.computeCol(seg.col, resourceI)
+  } else {
+    return false
   }
-
-  let rawSegs = sliceTimeGridSegs(range, dayRanges)
-  let segs = []
-
-  for (let rawSeg of rawSegs) {
-
-    for (let resourceId of resourceIds) {
-      let resourceI = resourceDayTable.resourceIndex.indicesById[resourceId]
-
-      if (resourceI != null) {
-        segs.push(
-          assignTo({}, rawSeg, {
-            col: resourceDayTable.computeCol(rawSeg.col, resourceI)
-          })
-        )
-      }
-    }
-  }
-
-  return segs
-}
-
-
-function sliceResourceBusinessHours(resourceDayTable: AbstractResourceDayTable, dateProfile: DateProfile, dayRanges: DateRange[], fallbackBusinessHours: EventStore, component: TimeGrid) {
-  let segs = []
-
-  for (let resource of resourceDayTable.resources) {
-    let businessHours = resource.businessHours || fallbackBusinessHours
-    let eventRanges = sliceBusinessHours(
-      businessHours,
-      dateProfile.activeRange,
-      null,
-      component.calendar
-    )
-
-    let resourceI = resourceDayTable.resourceIndex.indicesById[resource.id]
-
-    for (let eventRange of eventRanges) {
-      let rawSegs = sliceTimeGridSegs(eventRange.range, dayRanges)
-
-      for (let rawSeg of rawSegs) {
-        segs.push(
-          assignTo({}, rawSeg, {
-            component,
-            eventRange,
-            col: resourceDayTable.computeCol(rawSeg.col, resourceI)
-          })
-        )
-      }
-    }
-  }
-
-  return segs
 }

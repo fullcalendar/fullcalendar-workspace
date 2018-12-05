@@ -1,13 +1,13 @@
-import { memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, reselector, assignTo, memoizeSplitter } from 'fullcalendar'
+import { mapHash, memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, reselector, assignTo, memoizeSplitter, EventUiHash, isPropsEqual } from 'fullcalendar'
 import TimeAxis from '../timeline/TimeAxis'
-import { ResourceHash } from '../structs/resource'
+import { ResourceHash, Resource } from '../structs/resource'
 import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
 import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'
 import ScrollJoiner from '../util/ScrollJoiner'
 import Spreadsheet from './Spreadsheet'
 import TimelineLane from '../timeline/TimelineLane'
-import ResourceEventSplitter from '../common/ResourceEventSplitter'
+import ResourceEventSplitter, { splitEventUiBases } from '../common/ResourceEventSplitter'
 
 export default class ResourceTimelineView extends View {
 
@@ -38,7 +38,7 @@ export default class ResourceTimelineView extends View {
   private hasResourceBusinessHours = reselector(hasResourceBusinessHours)
   private buildRowNodes = reselector(buildRowNodes)
   private hasNesting = reselector(hasNesting)
-
+  private splitEventUiBases = reselector(splitEventUiBases, [ null, isPropsEqual ])
   private _updateHasNesting = memoizeRendering(this.updateHasNesting)
 
 
@@ -188,9 +188,11 @@ export default class ResourceTimelineView extends View {
     let { splitter } = this
 
     let hasResourceBusinessHours = this.hasResourceBusinessHours(props.resourceStore)
-    let eventStoresByResourceId = splitter.splitEventStore(props.eventStore, props.eventUis)
-    let eventDragsByResourceId = splitter.splitEventDrag(props.eventDrag, props.eventUis)
-    let eventResizesByResourceId = splitter.splitEventResize(props.eventResize, props.eventUis)
+    let eventStoresByResourceId = splitter.splitEventStore(props.eventStore)
+    let eventUiByResource: EventUiHash = mapHash(props.resourceStore, (resource: Resource) => resource.ui) // TODO: reverse memoize?
+    let eventUiBasesSplit = this.splitEventUiBases(props.eventUiBases, eventUiByResource, eventStoresByResourceId)
+    let eventDragsByResourceId = splitter.splitEventDrag(props.eventDrag)
+    let eventResizesByResourceId = splitter.splitEventResize(props.eventResize)
 
     this.timeAxis.receiveProps({
       dateProfile: props.dateProfile
@@ -201,7 +203,7 @@ export default class ResourceTimelineView extends View {
       dateProfile: props.dateProfile,
       businessHours: hasResourceBusinessHours ? null : props.businessHours,
       eventStore: eventStoresByResourceId[''] || null,
-      eventUis: props.eventUis,
+      eventUiBases: eventUiBasesSplit[''],
       dateSelection: (props.dateSelection && !props.dateSelection.resourceId) ? props.dateSelection : null,
       eventSelection: props.eventSelection,
       eventDrag: eventDragsByResourceId[''] || null,
@@ -223,6 +225,7 @@ export default class ResourceTimelineView extends View {
     this.renderRows(
       props,
       hasResourceBusinessHours ? props.businessHours : null, // CONFUSING, comment
+      eventUiBasesSplit,
       eventStoresByResourceId,
       eventDragsByResourceId,
       eventResizesByResourceId
@@ -334,6 +337,7 @@ export default class ResourceTimelineView extends View {
   renderRows(
     viewProps: ViewProps,
     fallbackBusinessHours,
+    eventUiBasesSplit: { [resourceId: string]: EventUiHash },
     eventStoresByResourceId,
     eventDragsByResourceId,
     eventResizesByResourceId
@@ -359,7 +363,7 @@ export default class ResourceTimelineView extends View {
           dateProfile: viewProps.dateProfile,
           businessHours: resource.businessHours || fallbackBusinessHours,
           eventStore: eventStoresByResourceId[resourceId] || null,
-          eventUis: viewProps.eventUis,
+          eventUiBases: eventUiBasesSplit[resourceId],
           dateSelection: (viewProps.dateSelection && viewProps.dateSelection.resourceId === resourceId) ? viewProps.dateSelection : null,
           eventSelection: viewProps.eventSelection,
           eventDrag: eventDragsByResourceId[resourceId] || null,
@@ -379,7 +383,9 @@ export default class ResourceTimelineView extends View {
   updateSize(isResize, viewHeight, isAuto) {
     // FYI: this ordering is really important
 
-    let isBaseSizing = isResize || this.isDateSizeDirty || this.isEventSizeDirty
+    let { calendar } = this
+
+    let isBaseSizing = isResize || calendar.isViewUpdated || calendar.isDatesUpdated || calendar.isEventsUpdated
 
     if (isBaseSizing) {
       this.syncHeadHeights()
@@ -393,9 +399,6 @@ export default class ResourceTimelineView extends View {
       this.lane.updateSize(isResize)
       this.bodyScrollJoiner.update()
     }
-
-    this.isDateSizeDirty = false
-    this.isEventSizeDirty = false
   }
 
   syncHeadHeights() {

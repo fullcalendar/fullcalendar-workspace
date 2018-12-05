@@ -70,7 +70,7 @@ export default class ResourceBasicView extends AbstractBasicView {
       resourceDayTable,
       businessHours: props.businessHours,
       eventStore: props.eventStore,
-      eventUis: props.eventUis,
+      eventUiBases: props.eventUiBases,
       dateSelection: props.dateSelection,
       eventSelection: props.eventSelection,
       eventDrag: props.eventDrag,

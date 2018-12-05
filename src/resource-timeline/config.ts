@@ -1,4 +1,4 @@
-import { createPlugin, ViewDef, assignTo } from 'fullcalendar'
+import { createPlugin, ViewSpec, assignTo } from 'fullcalendar'
 import ResourceTimelineView from './ResourceTimelineView'
 import TimelineView from '../timeline/TimelineView'
 
@@ -8,20 +8,18 @@ const RESOURCE_TIMELINE_DEFAULTS = {
   eventResizableFromStart: true // how is this consumed for TimelineView tho?
 }
 
-function transformViewDef(viewDef: ViewDef, overrides): ViewDef {
+function transformViewSpec(viewSpec: ViewSpec): ViewSpec {
 
-  if (viewDef.class === TimelineView && overrides.resources) {
-    return {
-      type: viewDef.type,
+  if (viewSpec.class === TimelineView && viewSpec.options.resources) {
+    return assignTo({}, viewSpec, {
       class: ResourceTimelineView,
-      overrides: viewDef.overrides,
-      defaults: assignTo({}, viewDef.defaults, RESOURCE_TIMELINE_DEFAULTS)
-    }
+      options: assignTo({}, RESOURCE_TIMELINE_DEFAULTS, viewSpec.options)
+    })
   }
 
-  return viewDef
+  return viewSpec
 }
 
 export default createPlugin({
-  viewDefTransformers: [ transformViewDef ]
+  viewSpecTransformers: [ transformViewSpec ]
 })
