@@ -1,4 +1,4 @@
-import { EventStore, EventUiHash, DateMarker, DateSpan, MemoizedRendering, EventInteractionState, EventSegUiInteractionState, DateComponent, ComponentContext, Seg, DateRange, intersectRanges, addMs, DateProfile, memoizeRendering, Slicer, memoizeSlicer, assignTo } from 'fullcalendar'
+import { EventStore, EventUiHash, DateMarker, DateSpan, MemoizedRendering, EventInteractionState, EventSegUiInteractionState, DateComponent, ComponentContext, Seg, DateRange, intersectRanges, addMs, DateProfile, memoizeRendering, Slicer, assignTo } from 'fullcalendar'
 import { TimelineDateProfile, normalizeRange, isValidDate } from './timeline-date-profile'
 import TimelineLaneEventRenderer from './TimelineLaneEventRenderer'
 import TimelineLaneFillRenderer from './TimelineLaneFillRenderer'
@@ -20,17 +20,12 @@ export interface TimelineLaneProps {
   eventResize: EventInteractionState | null
 }
 
-interface SlicerArg {
-  timeAxis: TimeAxis
-  component: TimelineLane
-}
-
 export default class TimelineLane extends DateComponent<TimelineLaneProps> {
 
   tDateProfile: TimelineDateProfile
   timeAxis: TimeAxis
 
-  private slicer = memoizeSlicer(new Slicer(rangeToSegs))
+  private slicer = new TimelineLaneSlicer()
   private renderBusinessHours: MemoizedRendering<[TimelineLaneSeg[]]>
   private renderDateSelection: MemoizedRendering<[TimelineLaneSeg[]]>
   private renderBgEvents: MemoizedRendering<[TimelineLaneSeg[]]>
@@ -77,19 +72,15 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
   }
 
   render(props: TimelineLaneProps) {
-    let { slicer, timeAxis } = this
-    let { dateProfile } = props
+    let slicedProps = this.slicer.sliceProps(props, props.dateProfile, null, this, this.timeAxis)
 
-    let slicerArgs = { timeAxis, component: this }
-    let segRes = slicer.eventStoreToSegs(props.eventStore, props.eventUiBases, dateProfile, null, slicerArgs)
-
-    this.renderBusinessHours(slicer.businessHoursToSegs(props.businessHours, dateProfile, null, slicerArgs))
-    this.renderDateSelection(slicer.selectionToSegs(props.dateSelection, props.eventUiBases, slicerArgs))
-    this.renderBgEvents(segRes.bg)
-    this.renderFgEvents(segRes.fg)
-    this.renderEventSelection(props.eventSelection)
-    this.renderEventDrag(slicer.buildEventDrag(props.eventDrag, props.eventUiBases, dateProfile, null, slicerArgs))
-    this.renderEventResize(slicer.buildEventResize(props.eventResize, props.eventUiBases, dateProfile, null, slicerArgs))
+    this.renderBusinessHours(slicedProps.businessHourSegs)
+    this.renderDateSelection(slicedProps.dateSelectionSegs)
+    this.renderBgEvents(slicedProps.bgEventSegs)
+    this.renderFgEvents(slicedProps.fgEventSegs)
+    this.renderEventSelection(slicedProps.eventSelection)
+    this.renderEventDrag(slicedProps.eventDrag)
+    this.renderEventResize(slicedProps.eventResize)
   }
 
   destroy() {
@@ -153,29 +144,31 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
 
 }
 
-function rangeToSegs(origRange: DateRange, slicerArg: SlicerArg): TimelineLaneSeg[] {
-  let { timeAxis } = slicerArg
-  let { tDateProfile } = timeAxis
-  let dateProfile = timeAxis.props.dateProfile
-  let range = normalizeRange(origRange, tDateProfile, timeAxis.dateEnv)
-  let segs: TimelineLaneSeg[] = []
+class TimelineLaneSlicer extends Slicer<TimelineLaneSeg, [TimeAxis]> {
 
-  // protect against when the span is entirely in an invalid date region
-  if (timeAxis.computeDateSnapCoverage(range.start) < timeAxis.computeDateSnapCoverage(range.end)) {
+  sliceRange(origRange: DateRange, timeAxis: TimeAxis): TimelineLaneSeg[] {
+    let { tDateProfile } = timeAxis
+    let dateProfile = timeAxis.props.dateProfile
+    let range = normalizeRange(origRange, tDateProfile, timeAxis.dateEnv)
+    let segs: TimelineLaneSeg[] = []
 
-    // intersect the footprint's range with the grid's range
-    range = intersectRanges(range, tDateProfile.normalizedRange)
+    // protect against when the span is entirely in an invalid date region
+    if (timeAxis.computeDateSnapCoverage(range.start) < timeAxis.computeDateSnapCoverage(range.end)) {
 
-    if (range) {
-      segs.push({
-        component: timeAxis.view, // ?
-        start: range.start,
-        end: range.end,
-        isStart: range.start.valueOf() === origRange.start.valueOf() && isValidDate(range.start, tDateProfile, dateProfile, timeAxis.view),
-        isEnd: range.end.valueOf() === origRange.end.valueOf() && isValidDate(addMs(range.end, -1), tDateProfile, dateProfile, timeAxis.view)
-      })
+      // intersect the footprint's range with the grid's range
+      range = intersectRanges(range, tDateProfile.normalizedRange)
+
+      if (range) {
+        segs.push({
+          start: range.start,
+          end: range.end,
+          isStart: range.start.valueOf() === origRange.start.valueOf() && isValidDate(range.start, tDateProfile, dateProfile, timeAxis.view),
+          isEnd: range.end.valueOf() === origRange.end.valueOf() && isValidDate(addMs(range.end, -1), tDateProfile, dateProfile, timeAxis.view)
+        })
+      }
     }
+
+    return segs
   }
 
-  return segs
 }

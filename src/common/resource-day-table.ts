@@ -1,4 +1,4 @@
-import { DayTable, DayTableSeg, DayTableCell, DateRange, ViewSpec } from 'fullcalendar'
+import { SlicedProps, hasBgRendering, EventDef, mapHash, Splitter, DayTable, DayTableCell, ViewSpec, SplittableProps, DateSpan, Seg, reselector, EventSegUiInteractionState } from 'fullcalendar'
 import { Resource } from '../structs/resource'
 
 export interface ResourceDayTableCell extends DayTableCell {
@@ -28,37 +28,6 @@ export abstract class AbstractResourceDayTable {
 
 
   abstract computeCol(dateI, resourceI): number
-
-
-  sliceRange(range: DateRange, resourceIds: string[]): DayTableSeg[] {
-    let { resourceIndex } = this
-
-    if (!resourceIds.length) {
-      resourceIds = resourceIndex.ids
-    }
-
-    let rawSegs = this.dayTable.sliceRange(range)
-    let segs: DayTableSeg[] = []
-
-    for (let rawSeg of rawSegs) {
-
-      for (let resourceId in resourceIds) {
-        let index = resourceIndex.indicesById[resourceId]
-
-        if (index != null) {
-          segs.push({
-            row: rawSeg.row,
-            firstCol: this.computeCol(rawSeg.firstCol, index),
-            lastCol: this.computeCol(rawSeg.lastCol, index),
-            isStart: rawSeg.isStart,
-            isEnd: rawSeg.isEnd
-          })
-        }
-      }
-    }
-
-    return segs
-  }
 
 
   buildCells(): ResourceDayTableCell[][] {
@@ -145,7 +114,140 @@ export class ResourceIndex {
 export function isVResourceViewEnabled(viewSpec: ViewSpec) {
   let { options } = viewSpec
 
-  return (options.resources && viewSpec.singleUnit) ||
+  return (options.resources && viewSpec.singleUnit === 'day') ||
     options.groupByResource ||
     options.groupByDateAndResource
+}
+
+
+// splitter
+
+export interface VResourceProps extends SplittableProps {
+  resourceDayTable: AbstractResourceDayTable
+}
+
+export class VResourceSplitter extends Splitter<VResourceProps> {
+
+  getKeyEventUis(props: VResourceProps) {
+    let { resourceDayTable } = props
+
+    return mapHash(resourceDayTable.resourceIndex.indicesById, function(i) {
+      return resourceDayTable.resources[i].ui
+    })
+  }
+
+  getKeysForDateSpan(dateSpan: DateSpan): string[] {
+    return dateSpan.resourceId ?
+      [ dateSpan.resourceId ] :
+      Object.keys(this.keyEventUiMergers) // HACK. all
+  }
+
+  getKeysForEventDef(eventDef: EventDef): string[] {
+    let resourceIds = eventDef.resourceIds
+
+    if (!resourceIds.length && hasBgRendering(eventDef)) {
+      return Object.keys(this.keyEventUiMergers) // HACK. all
+    }
+
+    return resourceIds
+  }
+
+}
+
+
+// joiner
+
+export abstract class VResourceJoiner<SegType extends Seg> {
+
+  private joinDateSelection = reselector(this.joinSegs)
+  private joinBusinessHours = reselector(this.joinSegs)
+  private joinFgEvents = reselector(this.joinSegs)
+  private joinBgEvents = reselector(this.joinSegs)
+  private joinEventDrags = reselector(this.joinInteractions)
+  private joinEventResizes = reselector(this.joinInteractions)
+
+  /*
+  every resource in resourceDayTable is assumed to be represented in the propSets
+  */
+  joinProps(propSets: { [resourceId: string]: SlicedProps<SegType> }, resourceDayTable: AbstractResourceDayTable): SlicedProps<SegType> {
+    let dateSelectionSets = []
+    let businessHoursSets = []
+    let fgEventSets = []
+    let bgEventSets = []
+    let eventDrags = []
+    let eventResizes = []
+    let eventSelection = ''
+
+    for (let resourceId of resourceDayTable.resourceIndex.ids) {
+      let props = propSets[resourceId]
+
+      if (props) {
+        dateSelectionSets.push(props.dateSelectionSegs)
+        businessHoursSets.push(props.businessHourSegs)
+        fgEventSets.push(props.fgEventSegs)
+        bgEventSets.push(props.bgEventSegs)
+        eventDrags.push(props.eventDrag)
+        eventResizes.push(props.eventResize)
+        eventSelection = eventSelection || props.eventSelection
+      }
+    }
+
+    return {
+      dateSelectionSegs: this.joinDateSelection(resourceDayTable, ...dateSelectionSets),
+      businessHourSegs: this.joinBusinessHours(resourceDayTable, ...businessHoursSets),
+      fgEventSegs: this.joinFgEvents(resourceDayTable, ...fgEventSets),
+      bgEventSegs: this.joinBgEvents(resourceDayTable, ...bgEventSets),
+      eventDrag: this.joinEventDrags(resourceDayTable, ...eventDrags),
+      eventResize: this.joinEventResizes(resourceDayTable, ...eventResizes),
+      eventSelection
+    }
+  }
+
+  joinSegs(resourceDayTable: AbstractResourceDayTable, ...segGroups: SegType[][]): SegType[] {
+    let transformedSegs = []
+
+    for (let i = 0; i < segGroups.length; i++) {
+      for (let seg of segGroups[i]) {
+        transformedSegs.push(
+          this.transformSeg(seg, resourceDayTable, i)
+        )
+      }
+    }
+
+    return transformedSegs
+  }
+
+  joinInteractions(resourceDayTable: AbstractResourceDayTable, ...interactions: EventSegUiInteractionState[]): EventSegUiInteractionState {
+    let affectedInstances = {}
+    let transformedSegs = []
+    let isEvent = false
+    let sourceSeg = null
+
+    for (let i = 0; i < interactions.length; i++) {
+      let interaction = interactions[i]
+
+      if (interaction) {
+
+        for (let seg of interaction.segs) {
+          transformedSegs.push(
+            this.transformSeg(seg as SegType, resourceDayTable, i) // TODO: templateify Interaction::segs
+          )
+        }
+
+        Object.assign(affectedInstances, interaction.affectedInstances)
+        isEvent = isEvent || interaction.isEvent
+        sourceSeg = sourceSeg || interaction.sourceSeg
+      }
+    }
+
+    return {
+      affectedInstances,
+      segs: transformedSegs,
+      isEvent,
+      sourceSeg
+    }
+  }
+
+  abstract transformSeg(seg: SegType, resourceDayTable: AbstractResourceDayTable, resourceI: number)
+
 }

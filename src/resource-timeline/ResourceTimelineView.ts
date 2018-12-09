@@ -1,13 +1,12 @@
-import { mapHash, memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, reselector, assignTo, memoizeSplitter, EventUiHash, isPropsEqual } from 'fullcalendar'
+import { hasBgRendering, EventDef, Splitter, SplittableProps, memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, reselector, assignTo, DateProfile, DateSpan, EMPTY_PROPS, mapHash } from 'fullcalendar'
 import TimeAxis from '../timeline/TimeAxis'
-import { ResourceHash, Resource } from '../structs/resource'
+import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
 import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'
 import ScrollJoiner from '../util/ScrollJoiner'
 import Spreadsheet from './Spreadsheet'
 import TimelineLane from '../timeline/TimelineLane'
-import ResourceEventSplitter, { splitEventUiBases } from '../common/ResourceEventSplitter'
 
 export default class ResourceTimelineView extends View {
 
@@ -34,11 +33,10 @@ export default class ResourceTimelineView extends View {
   rowPositions: PositionCache
   offsetTracker: OffsetTracker
 
-  private splitter = memoizeSplitter(new ResourceEventSplitter())
+  private splitter = new ResourceTimelineSplitter()
   private hasResourceBusinessHours = reselector(hasResourceBusinessHours)
   private buildRowNodes = reselector(buildRowNodes)
   private hasNesting = reselector(hasNesting)
-  private splitEventUiBases = reselector(splitEventUiBases, [ null, isPropsEqual ])
   private _updateHasNesting = memoizeRendering(this.updateHasNesting)
 
 
@@ -185,30 +183,20 @@ export default class ResourceTimelineView extends View {
   render(props: ViewProps) {
     super.render(props)
 
-    let { splitter } = this
-
+    let splitProps = this.splitter.splitProps(props)
     let hasResourceBusinessHours = this.hasResourceBusinessHours(props.resourceStore)
-    let eventStoresByResourceId = splitter.splitEventStore(props.eventStore)
-    let eventUiByResource: EventUiHash = mapHash(props.resourceStore, (resource: Resource) => resource.ui) // TODO: reverse memoize?
-    let eventUiBasesSplit = this.splitEventUiBases(props.eventUiBases, eventUiByResource, eventStoresByResourceId)
-    let eventDragsByResourceId = splitter.splitEventDrag(props.eventDrag)
-    let eventResizesByResourceId = splitter.splitEventResize(props.eventResize)
 
     this.timeAxis.receiveProps({
       dateProfile: props.dateProfile
     })
 
     // for all-resource bg events / selections / business-hours
-    this.lane.receiveProps({
-      dateProfile: props.dateProfile,
-      businessHours: hasResourceBusinessHours ? null : props.businessHours,
-      eventStore: eventStoresByResourceId[''] || null,
-      eventUiBases: eventUiBasesSplit[''],
-      dateSelection: (props.dateSelection && !props.dateSelection.resourceId) ? props.dateSelection : null,
-      eventSelection: props.eventSelection,
-      eventDrag: eventDragsByResourceId[''] || null,
-      eventResize: eventResizesByResourceId[''] || null
-    })
+    this.lane.receiveProps(
+      Object.assign({}, splitProps[''] || EMPTY_PROPS, {
+        dateProfile: props.dateProfile,
+        businessHours: hasResourceBusinessHours ? null : props.businessHours
+      })
+    )
 
     let newRowNodes = this.buildRowNodes(
       props.resourceStore,
@@ -223,12 +211,9 @@ export default class ResourceTimelineView extends View {
 
     this.diffRows(newRowNodes)
     this.renderRows(
-      props,
+      props.dateProfile,
       hasResourceBusinessHours ? props.businessHours : null, // CONFUSING, comment
-      eventUiBasesSplit,
-      eventStoresByResourceId,
-      eventDragsByResourceId,
-      eventResizesByResourceId
+      splitProps
     )
   }
 
@@ -335,12 +320,9 @@ export default class ResourceTimelineView extends View {
   }
 
   renderRows(
-    viewProps: ViewProps,
+    dateProfile: DateProfile,
     fallbackBusinessHours,
-    eventUiBasesSplit: { [resourceId: string]: EventUiHash },
-    eventStoresByResourceId,
-    eventDragsByResourceId,
-    eventResizesByResourceId
+    splitProps: { [resourceId: string]: SplittableProps }
   ) {
     let { rowNodes, rowComponents } = this
 
@@ -356,26 +338,21 @@ export default class ResourceTimelineView extends View {
           group: (rowNode as GroupNode).group
         })
       } else {
-        let resource = (rowNode as ResourceNode).resource
-        let resourceId = (rowNode as ResourceNode).resource.id;
+        let resource = (rowNode as ResourceNode).resource;
 
-        (rowComponent as ResourceRow).receiveProps({
-          dateProfile: viewProps.dateProfile,
-          businessHours: resource.businessHours || fallbackBusinessHours,
-          eventStore: eventStoresByResourceId[resourceId] || null,
-          eventUiBases: eventUiBasesSplit[resourceId],
-          dateSelection: (viewProps.dateSelection && viewProps.dateSelection.resourceId === resourceId) ? viewProps.dateSelection : null,
-          eventSelection: viewProps.eventSelection,
-          eventDrag: eventDragsByResourceId[resourceId] || null,
-          eventResize: eventResizesByResourceId[resourceId] || null,
-          colSpecs: this.colSpecs,
-          id: rowNode.id,
-          rowSpans: (rowNode as ResourceNode).rowSpans,
-          depth: (rowNode as ResourceNode).depth,
-          isExpanded: rowNode.isExpanded,
-          hasChildren: (rowNode as ResourceNode).hasChildren,
-          resource: (rowNode as ResourceNode).resource
-        })
+        (rowComponent as ResourceRow).receiveProps(
+          Object.assign({}, splitProps[resource.id] || EMPTY_PROPS, {
+            dateProfile,
+            businessHours: resource.businessHours || fallbackBusinessHours,
+            colSpecs: this.colSpecs,
+            id: rowNode.id,
+            rowSpans: (rowNode as ResourceNode).rowSpans,
+            depth: (rowNode as ResourceNode).depth,
+            isExpanded: rowNode.isExpanded,
+            hasChildren: (rowNode as ResourceNode).hasChildren,
+            resource: (rowNode as ResourceNode).resource
+          })
+        )
       }
     }
   }
@@ -654,4 +631,28 @@ function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
   }
 
   return false
+}
+
+class ResourceTimelineSplitter extends Splitter<ViewProps> {
+
+  getKeyEventUis(props: ViewProps) {
+    return mapHash(props.resourceStore, function(resource) {
+      return resource.ui
+    })
+  }
+
+  getKeysForDateSpan(dateSpan: DateSpan): string[] {
+    return [ dateSpan.resourceId || '' ]
+  }
+
+  getKeysForEventDef(eventDef: EventDef): string[] {
+    let resourceIds = eventDef.resourceIds
+
+    if (!resourceIds.length && hasBgRendering(eventDef)) {
+      return [ '' ]
+    }
+
+    return resourceIds
+  }
+
 }

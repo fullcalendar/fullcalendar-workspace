@@ -1,5 +1,5 @@
-import { SimpleTimeGridSlicerArgs, memoizeSlicer, OffsetTracker, DateSpan, DateComponent, TimeGrid, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, reselector, buildDayRanges, sliceTimeGridSegs, DateRange, TimeGridSeg, DateMarker, Hit } from "fullcalendar"
-import { AbstractResourceDayTable } from '../common/resource-day-table'
+import { mapHash, OffsetTracker, TimeGridSlicer, DateSpan, DateComponent, TimeGrid, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, reselector, DateRange, TimeGridSeg, DateMarker, Hit, buildDayRanges, EMPTY_PROPS } from "fullcalendar"
+import { AbstractResourceDayTable, VResourceSplitter, VResourceJoiner } from '../common/resource-day-table'
 
 export interface ResourceTimeGridProps {
   dateProfile: DateProfile | null
@@ -13,20 +13,16 @@ export interface ResourceTimeGridProps {
   eventResize: EventInteractionState | null
 }
 
-interface ResourceDayGridSlicerArgs extends SimpleTimeGridSlicerArgs {
-  resourceDayTable: AbstractResourceDayTable
-}
-
 export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProps> {
 
   timeGrid: TimeGrid
-
   offsetTracker: OffsetTracker
 
   private buildDayRanges = reselector(buildDayRanges)
-  private slicer = memoizeSlicer(new ResourceAwareSlicer(sliceSegs, () => { return this.timeGrid }))
-  private sliceResourceBusinessHours = reselector(sliceResourceBusinessHours)
-  private dayRanges: DateRange[]
+  private dayRanges: DateRange[] // for renderNowIndicator
+  private splitter = new VResourceSplitter()
+  private slicers: { [resourceId: string]: TimeGridSlicer } = {}
+  private joiner = new ResourceTimeGridJoiner()
 
   constructor(context: ComponentContext, timeGrid: TimeGrid) {
     super(context, timeGrid.el)
@@ -35,40 +31,45 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
   }
 
   render(props: ResourceTimeGridProps) {
-    let { slicer } = this
-    let { dateProfile, resourceDayTable } = props
+    let { timeGrid } = this
+    let { dateProfile, resourceDayTable, businessHours } = props
 
-    let slicerArgs: ResourceDayGridSlicerArgs = {
-      component: this.timeGrid,
-      resourceDayTable,
-      dayRanges: this.buildDayRanges(resourceDayTable.dayTable, dateProfile, this.dateEnv)
-    }
+    let dayRanges = this.dayRanges = this.buildDayRanges(resourceDayTable.dayTable, dateProfile, this.dateEnv)
+    let splitProps = this.splitter.splitProps(props)
 
-    let segRes = slicer.eventStoreToSegs(props.eventStore, props.eventUiBases, dateProfile, null, slicerArgs)
-
-    this.timeGrid.receiveProps({
-      dateProfile: props.dateProfile,
-      cells: props.resourceDayTable.cells[0],
-      businessHourSegs: slicer.businessHoursToSegs(props.businessHours, dateProfile, null, slicerArgs),
-      fgEventSegs: segRes.fg,
-      bgEventSegs: segRes.bg,
-      dateSelectionSegs: slicer.selectionToSegs(props.dateSelection, props.eventUiBases, slicerArgs),
-      eventSelection: props.eventSelection,
-      eventDrag: slicer.buildEventDrag(props.eventDrag, props.eventUiBases, dateProfile, null, slicerArgs),
-      eventResize: slicer.buildEventResize(props.eventResize, props.eventUiBases, dateProfile, null, slicerArgs)
+    this.slicers = mapHash(resourceDayTable.resourceIndex.indicesById, (index, resourceId) => {
+      return this.slicers[resourceId] || new TimeGridSlicer()
     })
+
+    let slicedProps = mapHash(this.slicers, (slicer, resourceId) => {
+      return slicer.sliceProps(
+        Object.assign({}, splitProps[resourceId] || EMPTY_PROPS, { businessHours }),
+        dateProfile,
+        null,
+        timeGrid,
+        dayRanges
+      )
+    })
+
+    timeGrid.receiveProps(
+      Object.assign({}, this.joiner.joinProps(slicedProps, resourceDayTable), {
+        dateProfile,
+        cells: resourceDayTable.cells[0]
+      })
+    )
   }
 
   renderNowIndicator(date: DateMarker) {
-    this.timeGrid.renderNowIndicator( // TODO: have slicer do this?
-      // seg system might be overkill, but it handles scenario where line needs to be rendered
-      //  more than once because of columns with the same date (resource columns for example)
-      sliceSegs({
-        start: date,
-        end: addMs(date, 1) // protect against null range
-      }, [], this.props.resourceDayTable, this.dayRanges),
-      date
-    )
+    let { timeGrid, dayRanges } = this
+    let { resourceDayTable } = this.props
+
+    let segGroups = resourceDayTable.resources.map((resource) => {
+      return this.slicers[resource.id].sliceNowDate(date, timeGrid, dayRanges)
+    })
+
+    let segs = this.joiner.joinSegs(resourceDayTable, ...segGroups)
+
+    timeGrid.renderNowIndicator(segs, date)
   }
 
   prepareHits() {
@@ -117,12 +118,12 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
 ResourceTimeGrid.prototype.isInteractable = true
 
 
-function massageSeg(seg: TimeGridSeg, resourceId: string, resourceDayTable: AbstractResourceDayTable) {
-  let resourceI = resourceDayTable.resourceIndex.indicesById[resourceId]
+class ResourceTimeGridJoiner extends VResourceJoiner<TimeGridSeg> {
 
-  if (resourceI) {
-    seg.col = resourceDayTable.computeCol(seg.col, resourceI)
-  } else {
-    return false
+  transformSeg(seg: TimeGridSeg, resourceDayTable: AbstractResourceDayTable, resourceI: number) {
+    return Object.assign({}, seg, {
+      col: resourceDayTable.computeCol(seg.col, resourceI)
+    })
   }
+
 }

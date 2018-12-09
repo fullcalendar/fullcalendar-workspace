@@ -1,4 +1,4 @@
-import { AbstractAgendaView, ComponentContext, ViewSpec, DateProfileGenerator, ViewProps, reselector, parseFieldSpecs, DateProfile, buildAgendaDayTable } from 'fullcalendar'
+import { EMPTY_PROPS, AbstractAgendaView, ComponentContext, ViewSpec, DateProfileGenerator, ViewProps, reselector, parseFieldSpecs, DateProfile, buildAgendaDayTable } from 'fullcalendar'
 import ResourceDayHeader from '../common/ResourceDayHeader'
 import { flattenResources } from '../common/resource-hierarchy'
 import { Resource } from '../structs/resource'
@@ -57,6 +57,7 @@ export default class ResourceAgendaView extends AbstractAgendaView {
   render(props: ViewProps) {
     super.render(props) // for flags for updateSize
 
+    let splitProps = this.splitter.splitProps(props)
     let resources = this.flattenResources(props.resourceStore, this.resourceOrderSpecs)
     let resourceDayTable = this.buildResourceDayTable(
       this.props.dateProfile,
@@ -64,11 +65,6 @@ export default class ResourceAgendaView extends AbstractAgendaView {
       resources,
       this.opt('groupByDateAndResource')
     )
-
-    let { splitter } = this
-    let eventStores = splitter.splitEventStore(props.eventStore)
-    let eventDrags = splitter.splitEventDrag(props.eventDrag)
-    let eventResizes = splitter.splitEventResize(props.eventResize)
 
     if (this.header) {
       this.header.receiveProps({
@@ -80,32 +76,24 @@ export default class ResourceAgendaView extends AbstractAgendaView {
       })
     }
 
-    this.resourceTimeGrid.receiveProps({
-      dateProfile: props.dateProfile,
-      resourceDayTable,
-      businessHours: props.businessHours,
-      eventStore: eventStores.timed,
-      eventUiBases: props.eventUiBases,
-      dateSelection: props.dateSelection,
-      eventSelection: props.eventSelection,
-      eventDrag: eventDrags.timed,
-      eventResize: eventResizes.timed
-    })
-
-    if (this.resourceDayGrid) {
-      this.resourceDayGrid.receiveProps({
+    this.resourceTimeGrid.receiveProps(
+      Object.assign({}, splitProps['timed'] || EMPTY_PROPS, {
         dateProfile: props.dateProfile,
         resourceDayTable,
-        businessHours: props.businessHours,
-        eventStore: eventStores.allDay,
-        eventUiBases: props.eventUiBases,
-        dateSelection: props.dateSelection,
-        eventSelection: props.eventSelection,
-        eventDrag: eventDrags.allDay,
-        eventResize: eventResizes.allDay,
-        isRigid: false,
-        nextDayThreshold: this.nextDayThreshold
+        businessHours: props.businessHours
       })
+    )
+
+    if (this.resourceDayGrid) {
+      this.resourceDayGrid.receiveProps(
+        Object.assign({}, splitProps['allDay'] || EMPTY_PROPS, {
+          dateProfile: props.dateProfile,
+          resourceDayTable,
+          businessHours: props.businessHours,
+          isRigid: false,
+          nextDayThreshold: this.nextDayThreshold
+        })
+      )
     }
   }
 
