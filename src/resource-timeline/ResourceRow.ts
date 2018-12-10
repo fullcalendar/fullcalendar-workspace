@@ -120,5 +120,5 @@ export default class ResourceRow extends Row<ResourceRowProps> {
 }
 
 ResourceRow.addEqualityFuncs({
-  rowSpans: isArraysEqual // important for isSizeDirty
+  rowSpans: isArraysEqual // HACK for isSizeDirty, ResourceTimelineView::renderRows
 })

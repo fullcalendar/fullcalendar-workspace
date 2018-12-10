@@ -16,7 +16,7 @@ export default class GroupRow extends Row<GroupRowProps> {
   timeAxisHeightEl: HTMLElement
   expanderIconEl: HTMLElement
 
-  private _renderCells = memoizeRendering(this.renderCells, this.unrenderCells, [], [ isGroupsEqual ])
+  private _renderCells = memoizeRendering(this.renderCells, this.unrenderCells)
   private _updateExpanderIcon = memoizeRendering(this.updateExpanderIcon, null, [ this._renderCells ])
 
   render(props: GroupRowProps) {
@@ -118,5 +118,5 @@ export default class GroupRow extends Row<GroupRowProps> {
 }
 
 GroupRow.addEqualityFuncs({
-  group: isGroupsEqual
+  group: isGroupsEqual // HACK for ResourceTimelineView::renderRows
 })
