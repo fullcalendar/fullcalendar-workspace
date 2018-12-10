@@ -114,9 +114,11 @@ export class ResourceIndex {
 export function isVResourceViewEnabled(viewSpec: ViewSpec) {
   let { options } = viewSpec
 
-  return (options.resources && viewSpec.singleUnit === 'day') ||
+  return options.resources && (
+    viewSpec.singleUnit === 'day' ||
     options.groupByResource ||
     options.groupByDateAndResource
+  )
 }
 
 
