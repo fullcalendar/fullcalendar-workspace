@@ -1,11 +1,15 @@
-import { AbstractBasicView, ComponentContext, ViewSpec, DateProfileGenerator, ViewProps, reselector, parseFieldSpecs, DateProfile, buildBasicDayTable } from 'fullcalendar'
+import { AbstractBasicView, ComponentContext, ViewSpec, DateProfileGenerator, reselector, parseFieldSpecs, DateProfile, buildBasicDayTable } from 'fullcalendar'
 import ResourceDayHeader from '../common/ResourceDayHeader'
 import { flattenResources } from '../common/resource-hierarchy'
 import { Resource } from '../structs/resource'
 import { ResourceDayTable, DayResourceTable } from '../common/resource-day-table'
 import ResourceDayGrid from './ResourceDayGrid'
+import { ResourceViewProps } from '../View'
 
 export default class ResourceBasicView extends AbstractBasicView {
+
+  static needsResourceData = true // for ResourceViewProps
+  props: ResourceViewProps
 
   header: ResourceDayHeader
   resourceDayGrid: ResourceDayGrid
@@ -44,7 +48,7 @@ export default class ResourceBasicView extends AbstractBasicView {
     this.resourceDayGrid.destroy()
   }
 
-  render(props: ViewProps) {
+  render(props: ResourceViewProps) {
     super.render(props) // for flags for updateSize
 
     let resources = this.flattenResources(props.resourceStore, this.resourceOrderSpecs)

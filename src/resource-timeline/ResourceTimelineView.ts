@@ -1,4 +1,4 @@
-import { hasBgRendering, EventDef, Splitter, SplittableProps, memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, ViewProps, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, reselector, assignTo, DateProfile, DateSpan, EMPTY_PROPS, mapHash } from 'fullcalendar'
+import { hasBgRendering, EventDef, Splitter, SplittableProps, memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, reselector, assignTo, DateProfile, DateSpan, EMPTY_PROPS, mapHash } from 'fullcalendar'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
@@ -7,8 +7,12 @@ import ResourceRow from './ResourceRow'
 import ScrollJoiner from '../util/ScrollJoiner'
 import Spreadsheet from './Spreadsheet'
 import TimelineLane from '../timeline/TimelineLane'
+import { ResourceViewProps } from '../View'
 
 export default class ResourceTimelineView extends View {
+
+  static needsResourceData = true // for ResourceViewProps
+  props: ResourceViewProps
 
   // child components
   spreadsheet: Spreadsheet
@@ -180,7 +184,7 @@ export default class ResourceTimelineView extends View {
 </table>`
   }
 
-  render(props: ViewProps) {
+  render(props: ResourceViewProps) {
     super.render(props)
 
     let splitProps = this.splitter.splitProps(props)
@@ -633,9 +637,9 @@ function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
   return false
 }
 
-class ResourceTimelineSplitter extends Splitter<ViewProps> {
+class ResourceTimelineSplitter extends Splitter<ResourceViewProps> {
 
-  getKeyEventUis(props: ViewProps) {
+  getKeyEventUis(props: ResourceViewProps) {
     return mapHash(props.resourceStore, function(resource) {
       return resource.ui
     })

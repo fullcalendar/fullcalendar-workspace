@@ -1,12 +1,16 @@
-import { EMPTY_PROPS, AbstractAgendaView, ComponentContext, ViewSpec, DateProfileGenerator, ViewProps, reselector, parseFieldSpecs, DateProfile, buildAgendaDayTable } from 'fullcalendar'
+import { EMPTY_PROPS, AbstractAgendaView, ComponentContext, ViewSpec, DateProfileGenerator, reselector, parseFieldSpecs, DateProfile, buildAgendaDayTable } from 'fullcalendar'
 import ResourceDayHeader from '../common/ResourceDayHeader'
 import { flattenResources } from '../common/resource-hierarchy'
 import { Resource } from '../structs/resource'
 import { ResourceDayTable, DayResourceTable } from '../common/resource-day-table'
 import ResourceTimeGrid from './ResourceTimeGrid'
 import ResourceDayGrid from '../resource-basic/ResourceDayGrid'
+import { ResourceViewProps } from '../View'
 
 export default class ResourceAgendaView extends AbstractAgendaView {
+
+  static needsResourceData = true // for ResourceViewProps
+  props: ResourceViewProps
 
   header: ResourceDayHeader
   resourceTimeGrid: ResourceTimeGrid
@@ -54,7 +58,7 @@ export default class ResourceAgendaView extends AbstractAgendaView {
     }
   }
 
-  render(props: ViewProps) {
+  render(props: ResourceViewProps) {
     super.render(props) // for flags for updateSize
 
     let splitProps = this.splitter.splitProps(props)

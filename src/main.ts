@@ -1,6 +1,6 @@
 import * as exportHooks from 'fullcalendar'
 import './Calendar'
-import './View'
+import { ResourceDataAdder, ResourceEventConfigAdder } from './View' // TODO: ResourceDataAdder should be own plugin
 import resourcesReducers from './reducers/resources'
 import { parseEventDef } from './structs/event'
 import { massageEventDragMutation, applyEventDefMutation } from './EventDragging'
@@ -24,7 +24,8 @@ export const GeneralPlugin = exportHooks.createPlugin({
   eventDefMutationAppliers: [ applyEventDefMutation ],
   dateSelectionTransformers: [ transformDateSelection ],
   dateClickApiTransformers: [ transformDateClickApi ],
-  dateSelectionApiTransformers: [ transformDateSelectionApi ]
+  dateSelectionApiTransformers: [ transformDateSelectionApi ],
+  viewPropsTransformers: [ ResourceDataAdder, ResourceEventConfigAdder ]
 });
 
 exportHooks.Calendar.defaultPlugins.push( // TODO: kill
