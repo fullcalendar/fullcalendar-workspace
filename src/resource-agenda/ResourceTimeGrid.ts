@@ -1,4 +1,4 @@
-import { mapHash, OffsetTracker, TimeGridSlicer, DateSpan, DateComponent, TimeGrid, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, reselector, DateRange, TimeGridSeg, DateMarker, Hit, buildDayRanges, EMPTY_PROPS } from "fullcalendar"
+import { mapHash, OffsetTracker, TimeGridSlicer, DateSpan, DateComponent, TimeGrid, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, TimeGridSeg, DateMarker, Hit, buildDayRanges, EMPTY_PROPS } from "fullcalendar"
 import { AbstractResourceDayTable, VResourceSplitter, VResourceJoiner } from '../common/resource-day-table'
 
 export interface ResourceTimeGridProps {
@@ -18,7 +18,7 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
   timeGrid: TimeGrid
   offsetTracker: OffsetTracker
 
-  private buildDayRanges = reselector(buildDayRanges)
+  private buildDayRanges = memoize(buildDayRanges)
   private dayRanges: DateRange[] // for renderNowIndicator
   private splitter = new VResourceSplitter()
   private slicers: { [resourceId: string]: TimeGridSlicer } = {}

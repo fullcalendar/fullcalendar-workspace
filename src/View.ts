@@ -1,4 +1,4 @@
-import { ViewProps, ViewSpec, ViewPropsTransformer, CalendarComponentProps, reselector, mapHash, EventUi, isPropsEqual, memoizeOutput, EventUiHash, EventDefHash, EventDef, combineEventUis } from 'fullcalendar'
+import { ViewProps, ViewSpec, ViewPropsTransformer, CalendarComponentProps, memoize, mapHash, EventUi, isPropsEqual, memoizeOutput, EventUiHash, EventDefHash, EventDef, combineEventUis } from 'fullcalendar'
 import { ResourceHash } from './structs/resource'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
 
@@ -29,7 +29,7 @@ export class ResourceDataAdder implements ViewPropsTransformer {
 export class ResourceEventConfigAdder implements ViewPropsTransformer {
 
   buildResourceEventUis = memoizeOutput(buildResourceEventUis, isPropsEqual)
-  injectResourceEventUis = reselector(injectResourceEventUis)
+  injectResourceEventUis = memoize(injectResourceEventUis)
 
   transform(viewProps: ViewProps, viewSpec: ViewSpec, calendarProps: CalendarComponentProps) {
     if (!(viewSpec.class as any).needsResourceData) { // is a non-resource view?

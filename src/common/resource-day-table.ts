@@ -1,4 +1,4 @@
-import { SlicedProps, hasBgRendering, EventDef, mapHash, Splitter, DayTable, DayTableCell, ViewSpec, SplittableProps, DateSpan, Seg, reselector, EventSegUiInteractionState } from 'fullcalendar'
+import { SlicedProps, hasBgRendering, EventDef, mapHash, Splitter, DayTable, DayTableCell, ViewSpec, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from 'fullcalendar'
 import { Resource } from '../structs/resource'
 
 export interface ResourceDayTableCell extends DayTableCell {
@@ -161,12 +161,12 @@ export class VResourceSplitter extends Splitter<VResourceProps> {
 
 export abstract class VResourceJoiner<SegType extends Seg> {
 
-  private joinDateSelection = reselector(this.joinSegs)
-  private joinBusinessHours = reselector(this.joinSegs)
-  private joinFgEvents = reselector(this.joinSegs)
-  private joinBgEvents = reselector(this.joinSegs)
-  private joinEventDrags = reselector(this.joinInteractions)
-  private joinEventResizes = reselector(this.joinInteractions)
+  private joinDateSelection = memoize(this.joinSegs)
+  private joinBusinessHours = memoize(this.joinSegs)
+  private joinFgEvents = memoize(this.joinSegs)
+  private joinBgEvents = memoize(this.joinSegs)
+  private joinEventDrags = memoize(this.joinInteractions)
+  private joinEventResizes = memoize(this.joinInteractions)
 
   /*
   every resource in resourceDayTable is assumed to be represented in the propSets

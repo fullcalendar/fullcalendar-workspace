@@ -1,4 +1,4 @@
-import { EMPTY_PROPS, AbstractAgendaView, ComponentContext, ViewSpec, DateProfileGenerator, reselector, parseFieldSpecs, DateProfile, buildAgendaDayTable } from 'fullcalendar'
+import { EMPTY_PROPS, AbstractAgendaView, ComponentContext, ViewSpec, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, buildAgendaDayTable } from 'fullcalendar'
 import ResourceDayHeader from '../common/ResourceDayHeader'
 import { flattenResources } from '../common/resource-hierarchy'
 import { Resource } from '../structs/resource'
@@ -17,8 +17,8 @@ export default class ResourceAgendaView extends AbstractAgendaView {
   resourceDayGrid: ResourceDayGrid
 
   private resourceOrderSpecs: any
-  private flattenResources = reselector(flattenResources)
-  private buildResourceDayTable = reselector(buildResourceDayTable)
+  private flattenResources = memoize(flattenResources)
+  private buildResourceDayTable = memoize(buildResourceDayTable)
 
   constructor(
     context: ComponentContext,

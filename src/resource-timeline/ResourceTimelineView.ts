@@ -1,4 +1,4 @@
-import { hasBgRendering, EventDef, Splitter, SplittableProps, memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, reselector, assignTo, DateProfile, DateSpan, EMPTY_PROPS, mapHash } from 'fullcalendar'
+import { hasBgRendering, EventDef, Splitter, SplittableProps, memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, assignTo, DateProfile, DateSpan, EMPTY_PROPS, mapHash } from 'fullcalendar'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
@@ -38,9 +38,9 @@ export default class ResourceTimelineView extends View {
   offsetTracker: OffsetTracker
 
   private splitter = new ResourceTimelineSplitter()
-  private hasResourceBusinessHours = reselector(hasResourceBusinessHours)
-  private buildRowNodes = reselector(buildRowNodes)
-  private hasNesting = reselector(hasNesting)
+  private hasResourceBusinessHours = memoize(hasResourceBusinessHours)
+  private buildRowNodes = memoize(buildRowNodes)
+  private hasNesting = memoize(hasNesting)
   private _updateHasNesting = memoizeRendering(this.updateHasNesting)
 
 

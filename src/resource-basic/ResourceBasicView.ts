@@ -1,4 +1,4 @@
-import { AbstractBasicView, ComponentContext, ViewSpec, DateProfileGenerator, reselector, parseFieldSpecs, DateProfile, buildBasicDayTable } from 'fullcalendar'
+import { AbstractBasicView, ComponentContext, ViewSpec, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, buildBasicDayTable } from 'fullcalendar'
 import ResourceDayHeader from '../common/ResourceDayHeader'
 import { flattenResources } from '../common/resource-hierarchy'
 import { Resource } from '../structs/resource'
@@ -15,8 +15,8 @@ export default class ResourceBasicView extends AbstractBasicView {
   resourceDayGrid: ResourceDayGrid
 
   private resourceOrderSpecs: any
-  private flattenResources = reselector(flattenResources)
-  private buildResourceDayTable = reselector(buildResourceDayTable)
+  private flattenResources = memoize(flattenResources)
+  private buildResourceDayTable = memoize(buildResourceDayTable)
 
   constructor(
     context: ComponentContext,
