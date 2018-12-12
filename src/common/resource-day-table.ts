@@ -129,28 +129,20 @@ export interface VResourceProps extends SplittableProps {
 }
 
 /*
-TODO: just use ResourceHash somehow? would help code reuse
+TODO: just use ResourceHash somehow? could then use the generic ResourceSplitter
 */
 export class VResourceSplitter extends Splitter<VResourceProps> {
 
-  getAllKeys(props: VResourceProps) {
-    return props.resourceDayTable.resourceIndex.ids.concat([ '' ])
-  }
-
-  getKeyBusinessHours(props: VResourceProps) {
+  getKeyInfo(props: VResourceProps) {
     let { resourceDayTable } = props
 
-    return mapHash(resourceDayTable.resourceIndex.indicesById, function(i) {
-      return resourceDayTable.resources[i].businessHours
-    })
-  }
+    let hash = mapHash(resourceDayTable.resourceIndex.indicesById, function(i) {
+      return resourceDayTable.resources[i] // has `ui` AND `businessHours` keys!
+    }) as any // :(
 
-  getKeyEventUis(props: VResourceProps) {
-    let { resourceDayTable } = props
+    hash[''] = {}
 
-    return mapHash(resourceDayTable.resourceIndex.indicesById, function(i) {
-      return resourceDayTable.resources[i].ui
-    })
+    return hash
   }
 
   getKeysForDateSpan(dateSpan: DateSpan): string[] {

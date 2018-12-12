@@ -1,4 +1,4 @@
-import { hasBgRendering, EventDef, Splitter, SplittableProps, memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, assignTo, DateProfile, DateSpan, mapHash } from 'fullcalendar'
+import { SplittableProps, memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, assignTo, DateProfile } from 'fullcalendar'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
@@ -8,6 +8,7 @@ import ScrollJoiner from '../util/ScrollJoiner'
 import Spreadsheet from './Spreadsheet'
 import TimelineLane from '../timeline/TimelineLane'
 import { ResourceViewProps } from '../View'
+import ResourceSplitter from '../common/ResourceSplitter'
 
 export default class ResourceTimelineView extends View {
 
@@ -37,7 +38,7 @@ export default class ResourceTimelineView extends View {
   rowPositions: PositionCache
   offsetTracker: OffsetTracker
 
-  private splitter = new ResourceTimelineSplitter()
+  private splitter = new ResourceSplitter() // doesn't let it do businessHours tho
   private hasResourceBusinessHours = memoize(hasResourceBusinessHours)
   private buildRowNodes = memoize(buildRowNodes)
   private hasNesting = memoize(hasNesting)
@@ -635,35 +636,4 @@ function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
   }
 
   return false
-}
-
-class ResourceTimelineSplitter extends Splitter<ResourceViewProps> {
-
-  getAllKeys(props: ResourceViewProps) {
-    return Object.keys(props.resourceStore)
-  }
-
-  // don't route business hours here.
-  // do that in main class because there's complicated rendering optimization logic (hasResourceBusinessHours)
-
-  getKeyEventUis(props: ResourceViewProps) {
-    return mapHash(props.resourceStore, function(resource) {
-      return resource.ui
-    })
-  }
-
-  getKeysForDateSpan(dateSpan: DateSpan): string[] {
-    return [ dateSpan.resourceId || '' ]
-  }
-
-  getKeysForEventDef(eventDef: EventDef): string[] {
-    let resourceIds = eventDef.resourceIds
-
-    if (!resourceIds.length && hasBgRendering(eventDef)) {
-      return [ '' ]
-    }
-
-    return resourceIds
-  }
-
 }
