@@ -1,6 +1,6 @@
-import { refineProps, assignTo, EventStore, parseBusinessHours, Calendar, EventUi, processScopedUiProps, BusinessHoursInput, ScopedEventUiInput } from 'fullcalendar'
+import { refineProps, assignTo, EventStore, parseBusinessHours, Calendar, EventUi, processScopedUiProps, BusinessHoursInput, EventScopedEventUiInput } from 'fullcalendar'
 
-export interface ResourceInput extends ScopedEventUiInput {
+export interface ResourceInput extends EventScopedEventUiInput {
   id?: string
   parentId?: string
   children?: ResourceInput[]
@@ -40,7 +40,7 @@ export function parseResource(input: ResourceInput, parentId: string = '', store
   let leftovers0 = {}
   let props = refineProps(input, RESOURCE_PROPS, {}, leftovers0)
   let leftovers1 = {}
-  let ui = processScopedUiProps(leftovers0, calendar, leftovers1)
+  let ui = processScopedUiProps('event', leftovers0, calendar, leftovers1)
 
   if (!props.id) {
     props.id = PRIVATE_ID_PREFIX + (uid++)
