@@ -1,4 +1,4 @@
-import { hasBgRendering, EventDef, Splitter, SplittableProps, memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, assignTo, DateProfile, DateSpan, EMPTY_PROPS, mapHash } from 'fullcalendar'
+import { hasBgRendering, EventDef, Splitter, SplittableProps, memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, assignTo, DateProfile, DateSpan, mapHash } from 'fullcalendar'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
@@ -196,7 +196,7 @@ export default class ResourceTimelineView extends View {
 
     // for all-resource bg events / selections / business-hours
     this.lane.receiveProps(
-      Object.assign({}, splitProps[''] || EMPTY_PROPS, {
+      Object.assign({}, splitProps[''], {
         dateProfile: props.dateProfile,
         businessHours: hasResourceBusinessHours ? null : props.businessHours
       })
@@ -345,7 +345,7 @@ export default class ResourceTimelineView extends View {
         let resource = (rowNode as ResourceNode).resource;
 
         (rowComponent as ResourceRow).receiveProps(
-          Object.assign({}, splitProps[resource.id] || EMPTY_PROPS, {
+          Object.assign({}, splitProps[resource.id], {
             dateProfile,
             businessHours: resource.businessHours || fallbackBusinessHours,
             colSpecs: this.colSpecs,
@@ -638,6 +638,13 @@ function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
 }
 
 class ResourceTimelineSplitter extends Splitter<ResourceViewProps> {
+
+  getAllKeys(props: ResourceViewProps) {
+    return Object.keys(props.resourceStore)
+  }
+
+  // don't route business hours here.
+  // do that in main class because there's complicated rendering optimization logic (hasResourceBusinessHours)
 
   getKeyEventUis(props: ResourceViewProps) {
     return mapHash(props.resourceStore, function(resource) {

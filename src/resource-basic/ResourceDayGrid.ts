@@ -32,7 +32,7 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
 
   render(props: ResourceDayGridProps) {
     let { dayGrid, isRtl } = this
-    let { dateProfile, businessHours, resourceDayTable, nextDayThreshold } = props
+    let { dateProfile, resourceDayTable, nextDayThreshold } = props
 
     let splitProps = this.splitter.splitProps(props)
 
@@ -42,7 +42,7 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
 
     let slicedProps = mapHash(this.slicers, (slicer, resourceId) => {
       return slicer.sliceProps(
-        Object.assign({}, splitProps[resourceId], { businessHours }),
+        splitProps[resourceId],
         dateProfile,
         nextDayThreshold,
         dayGrid,

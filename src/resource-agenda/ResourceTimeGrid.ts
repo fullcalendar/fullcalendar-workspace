@@ -1,4 +1,4 @@
-import { mapHash, OffsetTracker, TimeGridSlicer, DateSpan, DateComponent, TimeGrid, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, TimeGridSeg, DateMarker, Hit, buildDayRanges, EMPTY_PROPS } from "fullcalendar"
+import { mapHash, OffsetTracker, TimeGridSlicer, DateSpan, DateComponent, TimeGrid, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, TimeGridSeg, DateMarker, Hit, buildDayRanges } from "fullcalendar"
 import { AbstractResourceDayTable, VResourceSplitter, VResourceJoiner } from '../common/resource-day-table'
 
 export interface ResourceTimeGridProps {
@@ -32,7 +32,7 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
 
   render(props: ResourceTimeGridProps) {
     let { timeGrid } = this
-    let { dateProfile, resourceDayTable, businessHours } = props
+    let { dateProfile, resourceDayTable } = props
 
     let dayRanges = this.dayRanges = this.buildDayRanges(resourceDayTable.dayTable, dateProfile, this.dateEnv)
     let splitProps = this.splitter.splitProps(props)
@@ -43,7 +43,7 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
 
     let slicedProps = mapHash(this.slicers, (slicer, resourceId) => {
       return slicer.sliceProps(
-        Object.assign({}, splitProps[resourceId] || EMPTY_PROPS, { businessHours }),
+        splitProps[resourceId],
         dateProfile,
         null,
         timeGrid,

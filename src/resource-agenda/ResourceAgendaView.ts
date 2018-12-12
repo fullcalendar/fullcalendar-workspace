@@ -1,4 +1,4 @@
-import { EMPTY_PROPS, AbstractAgendaView, ComponentContext, ViewSpec, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, buildAgendaDayTable } from 'fullcalendar'
+import { AbstractAgendaView, ComponentContext, ViewSpec, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, buildAgendaDayTable } from 'fullcalendar'
 import ResourceDayHeader from '../common/ResourceDayHeader'
 import { flattenResources } from '../common/resource-hierarchy'
 import { Resource } from '../structs/resource'
@@ -81,19 +81,17 @@ export default class ResourceAgendaView extends AbstractAgendaView {
     }
 
     this.resourceTimeGrid.receiveProps(
-      Object.assign({}, splitProps['timed'] || EMPTY_PROPS, {
+      Object.assign({}, splitProps['timed'], {
         dateProfile: props.dateProfile,
-        resourceDayTable,
-        businessHours: props.businessHours
+        resourceDayTable
       })
     )
 
     if (this.resourceDayGrid) {
       this.resourceDayGrid.receiveProps(
-        Object.assign({}, splitProps['allDay'] || EMPTY_PROPS, {
+        Object.assign({}, splitProps['allDay'], {
           dateProfile: props.dateProfile,
           resourceDayTable,
-          businessHours: props.businessHours,
           isRigid: false,
           nextDayThreshold: this.nextDayThreshold
         })
