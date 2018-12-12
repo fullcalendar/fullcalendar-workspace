@@ -212,10 +212,10 @@ export abstract class VResourceJoiner<SegType extends Seg> {
   }
 
   joinSegs(resourceDayTable: AbstractResourceDayTable, ...segGroups: SegType[][]): SegType[] {
+    let resourceCnt = resourceDayTable.resources.length
     let transformedSegs = []
-    let colCnt = segGroups.length - 1 // because last item is the all-resource
 
-    for (let i = 0; i < colCnt; i++) {
+    for (let i = 0; i < resourceCnt; i++) {
 
       for (let seg of segGroups[i]) {
         transformedSegs.push(
@@ -223,7 +223,29 @@ export abstract class VResourceJoiner<SegType extends Seg> {
         )
       }
 
-      for (let seg of segGroups[colCnt]) { // all-resource
+      for (let seg of segGroups[resourceCnt]) { // one beyond. the all-resource
+        transformedSegs.push(
+          this.transformSeg(seg, resourceDayTable, i)
+        )
+      }
+
+    }
+
+    return transformedSegs
+  }
+
+  /*
+  for expanding non-resource segs to all resources.
+  only for public use.
+  no memoizing.
+  */
+  expandSegs(resourceDayTable: AbstractResourceDayTable, segs: SegType[]) {
+    let resourceCnt = resourceDayTable.resources.length
+    let transformedSegs = []
+
+    for (let i = 0; i < resourceCnt; i++) {
+
+      for (let seg of segs) {
         transformedSegs.push(
           this.transformSeg(seg, resourceDayTable, i)
         )
@@ -235,13 +257,13 @@ export abstract class VResourceJoiner<SegType extends Seg> {
   }
 
   joinInteractions(resourceDayTable: AbstractResourceDayTable, ...interactions: EventSegUiInteractionState[]): EventSegUiInteractionState {
+    let resourceCnt = resourceDayTable.resources.length
     let affectedInstances = {}
     let transformedSegs = []
     let isEvent = false
     let sourceSeg = null
-    let colCnt = interactions.length - 1 // because last item is the all-resource
 
-    for (let i = 0; i < colCnt; i++) {
+    for (let i = 0; i < resourceCnt; i++) {
       let interaction = interactions[i]
 
       if (interaction) {
@@ -257,9 +279,9 @@ export abstract class VResourceJoiner<SegType extends Seg> {
         sourceSeg = sourceSeg || interaction.sourceSeg
       }
 
-      if (interactions[colCnt]) { // all-resource
+      if (interactions[resourceCnt]) { // one beyond. the all-resource
 
-        for (let seg of interactions[colCnt].segs) {
+        for (let seg of interactions[resourceCnt].segs) {
           transformedSegs.push(
             this.transformSeg(seg as SegType, resourceDayTable, i) // TODO: templateify Interaction::segs
           )

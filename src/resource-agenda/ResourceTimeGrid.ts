@@ -60,14 +60,11 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
   }
 
   renderNowIndicator(date: DateMarker) {
-    let { timeGrid, dayRanges } = this
+    let { timeGrid } = this
     let { resourceDayTable } = this.props
 
-    let segGroups = resourceDayTable.resources.map((resource) => {
-      return this.slicers[resource.id].sliceNowDate(date, timeGrid, dayRanges)
-    })
-
-    let segs = this.joiner.joinSegs(resourceDayTable, ...segGroups)
+    let nonResourceSegs = this.slicers[''].sliceNowDate(date, timeGrid, this.dayRanges)
+    let segs = this.joiner.expandSegs(resourceDayTable, nonResourceSegs)
 
     timeGrid.renderNowIndicator(segs, date)
   }
