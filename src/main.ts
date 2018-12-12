@@ -4,7 +4,7 @@ import { ResourceDataAdder, ResourceEventConfigAdder } from './View' // TODO: Re
 import resourcesReducers from './reducers/resources'
 import { parseEventDef } from './structs/event'
 import { massageEventDragMutation, applyEventDefMutation } from './EventDragging'
-import { transformDateSelection } from './DateSelecting'
+import { transformDateSelectionJoin } from './DateSelecting'
 import { transformDateClickApi, transformDateSelectionApi } from './Calendar'
 
 // TODO: plugin-ify
@@ -22,7 +22,7 @@ export const GeneralPlugin = exportHooks.createPlugin({
   eventDefParsers: [ parseEventDef ],
   eventDragMutationMassagers: [ massageEventDragMutation ],
   eventDefMutationAppliers: [ applyEventDefMutation ],
-  dateSelectionTransformers: [ transformDateSelection ],
+  dateSelectionTransformers: [ transformDateSelectionJoin ],
   dateClickApiTransformers: [ transformDateClickApi ],
   dateSelectionApiTransformers: [ transformDateSelectionApi ],
   viewPropsTransformers: [ ResourceDataAdder, ResourceEventConfigAdder ]
