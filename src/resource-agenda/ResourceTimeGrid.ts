@@ -37,7 +37,7 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
     let dayRanges = this.dayRanges = this.buildDayRanges(resourceDayTable.dayTable, dateProfile, this.dateEnv)
     let splitProps = this.splitter.splitProps(props)
 
-    this.slicers = mapHash(resourceDayTable.resourceIndex.indicesById, (index, resourceId) => {
+    this.slicers = mapHash(splitProps, (split, resourceId) => {
       return this.slicers[resourceId] || new TimeGridSlicer()
     })
 

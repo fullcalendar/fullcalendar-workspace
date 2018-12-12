@@ -1,4 +1,4 @@
-import { SlicedProps, hasBgRendering, EventDef, mapHash, Splitter, DayTable, DayTableCell, ViewSpec, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from 'fullcalendar'
+import { SlicedProps, EventDef, mapHash, Splitter, DayTable, DayTableCell, ViewSpec, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from 'fullcalendar'
 import { Resource } from '../structs/resource'
 
 export interface ResourceDayTableCell extends DayTableCell {
@@ -134,7 +134,7 @@ TODO: just use ResourceHash somehow? would help code reuse
 export class VResourceSplitter extends Splitter<VResourceProps> {
 
   getAllKeys(props: VResourceProps) {
-    return props.resourceDayTable.resourceIndex.ids
+    return props.resourceDayTable.resourceIndex.ids.concat([ '' ])
   }
 
   getKeyBusinessHours(props: VResourceProps) {
@@ -154,16 +154,14 @@ export class VResourceSplitter extends Splitter<VResourceProps> {
   }
 
   getKeysForDateSpan(dateSpan: DateSpan): string[] {
-    return dateSpan.resourceId ?
-      [ dateSpan.resourceId ] :
-      Object.keys(this.keyEventUiMergers) // HACK. all
+    return [ dateSpan.resourceId || '' ]
   }
 
   getKeysForEventDef(eventDef: EventDef): string[] {
     let resourceIds = eventDef.resourceIds
 
-    if (!resourceIds.length && hasBgRendering(eventDef)) {
-      return Object.keys(this.keyEventUiMergers) // HACK. all
+    if (!resourceIds.length) {
+      return [ '' ]
     }
 
     return resourceIds
@@ -173,6 +171,8 @@ export class VResourceSplitter extends Splitter<VResourceProps> {
 
 
 // joiner
+
+const NO_SEGS = [] // for memoizing
 
 export abstract class VResourceJoiner<SegType extends Seg> {
 
@@ -184,7 +184,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
   private joinEventResizes = memoize(this.joinInteractions)
 
   /*
-  every resource in resourceDayTable is assumed to be represented in the propSets
+  propSets also has a '' key for things with no resource
   */
   joinProps(propSets: { [resourceId: string]: SlicedProps<SegType> }, resourceDayTable: AbstractResourceDayTable): SlicedProps<SegType> {
     let dateSelectionSets = []
@@ -194,19 +194,18 @@ export abstract class VResourceJoiner<SegType extends Seg> {
     let eventDrags = []
     let eventResizes = []
     let eventSelection = ''
+    let keys = resourceDayTable.resourceIndex.ids.concat([ '' ]) // add in the all-resource key
 
-    for (let resourceId of resourceDayTable.resourceIndex.ids) {
-      let props = propSets[resourceId]
+    for (let key of keys) {
+      let props = propSets[key]
 
-      if (props) {
-        dateSelectionSets.push(props.dateSelectionSegs)
-        businessHoursSets.push(props.businessHourSegs)
-        fgEventSets.push(props.fgEventSegs)
-        bgEventSets.push(props.bgEventSegs)
-        eventDrags.push(props.eventDrag)
-        eventResizes.push(props.eventResize)
-        eventSelection = eventSelection || props.eventSelection
-      }
+      dateSelectionSets.push(props.dateSelectionSegs)
+      businessHoursSets.push(props.businessHourSegs)
+      fgEventSets.push(key ? props.fgEventSegs : NO_SEGS) // don't include fg all-resource segs
+      bgEventSets.push(props.bgEventSegs)
+      eventDrags.push(props.eventDrag)
+      eventResizes.push(props.eventResize)
+      eventSelection = eventSelection || props.eventSelection
     }
 
     return {
@@ -222,13 +221,22 @@ export abstract class VResourceJoiner<SegType extends Seg> {
 
   joinSegs(resourceDayTable: AbstractResourceDayTable, ...segGroups: SegType[][]): SegType[] {
     let transformedSegs = []
+    let colCnt = segGroups.length - 1 // because last item is the all-resource
 
-    for (let i = 0; i < segGroups.length; i++) {
+    for (let i = 0; i < colCnt; i++) {
+
       for (let seg of segGroups[i]) {
         transformedSegs.push(
           this.transformSeg(seg, resourceDayTable, i)
         )
       }
+
+      for (let seg of segGroups[colCnt]) { // all-resource
+        transformedSegs.push(
+          this.transformSeg(seg, resourceDayTable, i)
+        )
+      }
+
     }
 
     return transformedSegs
@@ -239,8 +247,9 @@ export abstract class VResourceJoiner<SegType extends Seg> {
     let transformedSegs = []
     let isEvent = false
     let sourceSeg = null
+    let colCnt = interactions.length - 1 // because last item is the all-resource
 
-    for (let i = 0; i < interactions.length; i++) {
+    for (let i = 0; i < colCnt; i++) {
       let interaction = interactions[i]
 
       if (interaction) {
@@ -255,6 +264,15 @@ export abstract class VResourceJoiner<SegType extends Seg> {
         isEvent = isEvent || interaction.isEvent
         sourceSeg = sourceSeg || interaction.sourceSeg
       }
+
+      if (interactions[colCnt]) { // all-resource
+
+        for (let seg of interactions[colCnt].segs) {
+          transformedSegs.push(
+            this.transformSeg(seg as SegType, resourceDayTable, i) // TODO: templateify Interaction::segs
+          )
+        }
+      }
     }
 
     return {
@@ -265,6 +283,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
     }
   }
 
+  // needs to generate NEW seg obj!!! because of .el
   abstract transformSeg(seg: SegType, resourceDayTable: AbstractResourceDayTable, resourceI: number)
 
 }

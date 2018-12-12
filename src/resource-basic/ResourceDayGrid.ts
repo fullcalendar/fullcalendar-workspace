@@ -36,7 +36,7 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
 
     let splitProps = this.splitter.splitProps(props)
 
-    this.slicers = mapHash(resourceDayTable.resourceIndex.indicesById, (index, resourceId) => {
+    this.slicers = mapHash(splitProps, (split, resourceId) => {
       return this.slicers[resourceId] || new DayGridSlicer()
     })
 
