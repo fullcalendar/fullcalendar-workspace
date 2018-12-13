@@ -1,12 +1,25 @@
-import { refineProps, assignTo, EventStore, parseBusinessHours, Calendar, EventUi, processScopedUiProps, BusinessHoursInput, EventScopedEventUiInput } from 'fullcalendar'
+import { ConstraintInput, AllowFunc, refineProps, assignTo, EventStore, parseBusinessHours, Calendar, EventUi, processScopedUiProps, BusinessHoursInput } from 'fullcalendar'
 
-export interface ResourceInput extends EventScopedEventUiInput {
+export interface ResourceInput {
   id?: string
   parentId?: string
   children?: ResourceInput[]
   title?: string
   businessHours?: BusinessHoursInput
-  ui: EventUi
+
+  eventEditable?: boolean
+  eventStartEditable?: boolean
+  eventDurationEditable?: boolean
+  eventConstraint?: ConstraintInput
+  eventOverlap?: boolean
+  eventAllow?: AllowFunc
+  eventClassName?: string[] | string
+  eventClassNames?: string[] | string
+  eventBackgroundColor?: string
+  eventBorderColor?: string
+  eventTextColor?: string
+  eventColor?: string
+
   extendedProps?: { [extendedProp: string]: any }
   [otherProp: string]: any
 }
