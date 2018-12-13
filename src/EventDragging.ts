@@ -1,4 +1,4 @@
-import { EventMutation, Hit, EventDef } from 'fullcalendar'
+import { EventMutation, Hit, EventDef, Calendar } from 'fullcalendar'
 
 declare module 'fullcalendar/src/structs/event-mutation' {
   interface EventMutation {
@@ -10,7 +10,10 @@ export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit
   let resource0 = hit0.dateSpan.resourceId
   let resource1 = hit1.dateSpan.resourceId
 
-  if (resource0 && resource1 && resource0 !== resource1) {
+  if (
+    resource0 && resource1 &&
+    resource0 !== resource1
+  ) {
     eventMutation.resourceMutation = {
       matchResourceId: resource0,
       setResourceId: resource1
@@ -18,10 +21,10 @@ export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit
   }
 }
 
-export function applyEventDefMutation(eventDef: EventDef, mutation: EventMutation) {
+export function applyEventDefMutation(eventDef: EventDef, mutation: EventMutation, calendar: Calendar) {
   let resourceMutation = mutation.resourceMutation
 
-  if (resourceMutation) {
+  if (resourceMutation && computeResourceEditable(eventDef, calendar)) {
     let index = eventDef.resourceIds.indexOf(resourceMutation.matchResourceId)
 
     if (index !== -1) {
@@ -30,4 +33,21 @@ export function applyEventDefMutation(eventDef: EventDef, mutation: EventMutatio
       eventDef.resourceIds = resourceIds
     }
   }
+}
+
+/*
+TODO: use EventUi system instead of this
+*/
+function computeResourceEditable(eventDef: EventDef, calendar: Calendar): boolean {
+  let { resourceEditable } = eventDef
+
+  if (resourceEditable == null) {
+    resourceEditable = calendar.opt('eventResourceEditable')
+
+    if (resourceEditable == null) {
+      resourceEditable = true // TODO: use defaults system instead
+    }
+  }
+
+  return resourceEditable
 }

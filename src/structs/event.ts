@@ -3,6 +3,7 @@ import { EventDef, refineProps } from 'fullcalendar'
 declare module 'fullcalendar/src/structs/event' {
   interface EventDef {
     resourceIds: string[]
+    resourceEditable: boolean
   }
 }
 
@@ -12,7 +13,8 @@ const RESOURCE_RELATED_PROPS = {
     return (items || []).map(function(item) {
       return String(item)
     })
-  }
+  },
+  resourceEditable: Boolean
 }
 
 export function parseEventDef(def: EventDef, props, leftovers) {
@@ -24,4 +26,5 @@ export function parseEventDef(def: EventDef, props, leftovers) {
   }
 
   def.resourceIds = resourceIds
+  def.resourceEditable = resourceRelatedProps.resourceEditable
 }
