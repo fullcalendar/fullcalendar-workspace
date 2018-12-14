@@ -6,6 +6,7 @@ import { parseEventDef } from './structs/event'
 import { massageEventDragMutation, applyEventDefMutation } from './EventDragging'
 import { transformDateSelectionJoin } from './DateSelecting'
 import { transformDateClickApi, transformDateSelectionApi } from './Calendar'
+import { isPropsValidWithResource } from './validation'
 
 // TODO: plugin-ify
 import './resource-sources/resource-array'
@@ -25,8 +26,9 @@ export const GeneralPlugin = exportHooks.createPlugin({
   dateSelectionTransformers: [ transformDateSelectionJoin ],
   dateClickApiTransformers: [ transformDateClickApi ],
   dateSelectionApiTransformers: [ transformDateSelectionApi ],
-  viewPropsTransformers: [ ResourceDataAdder, ResourceEventConfigAdder ]
-});
+  viewPropsTransformers: [ ResourceDataAdder, ResourceEventConfigAdder ],
+  isPropsValid: isPropsValidWithResource
+})
 
 exportHooks.Calendar.defaultPlugins.push( // TODO: kill
   GeneralPlugin,
