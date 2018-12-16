@@ -1,8 +1,9 @@
-import { DateProfile, DateMarker, wholeDivideDurations, isInt, Component, ComponentContext, createDuration, startOfDay } from 'fullcalendar'
+import { DateProfile, DateMarker, wholeDivideDurations, isInt, Component, ComponentContext, createDuration, startOfDay, greatestDurationDenominator, rangeContainsMarker } from 'fullcalendar'
 import HeaderBodyLayout from './HeaderBodyLayout'
 import TimelineHeader from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'
 import { TimelineDateProfile, buildTimelineDateProfile } from './timeline-date-profile'
+import TimelineNowIndicator from './TimelineNowIndicator'
 
 export interface TimeAxisProps {
   dateProfile: DateProfile
@@ -14,6 +15,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
   layout: HeaderBodyLayout
   header: TimelineHeader
   slats: TimelineSlats
+  nowIndicator: TimelineNowIndicator
 
   // internal state
   tDateProfile: TimelineDateProfile
@@ -36,12 +38,18 @@ export default class TimeAxis extends Component<TimeAxisProps> {
       context,
       layout.bodyScroller.enhancedScroll.canvas.bgEl
     )
+
+    this.nowIndicator = new TimelineNowIndicator(
+      layout.headerScroller.enhancedScroll.canvas.el,
+      layout.bodyScroller.enhancedScroll.canvas.el
+    )
   }
 
   destroy() {
     this.layout.destroy()
     this.header.destroy()
     this.slats.destroy()
+    this.nowIndicator.unrender()
 
     super.destroy()
   }
@@ -60,6 +68,39 @@ export default class TimeAxis extends Component<TimeAxisProps> {
       tDateProfile
     })
   }
+
+
+  // Now Indicator
+  // ------------------------------------------------------------------------------------------
+
+  getNowIndicatorUnit(dateProfile: DateProfile) {
+    // yuck
+    let tDateProfile = this.tDateProfile =
+      buildTimelineDateProfile(dateProfile, this.view) // TODO: cache
+
+    if (tDateProfile.isTimeScale) {
+      return greatestDurationDenominator(tDateProfile.slotDuration).unit
+    }
+  }
+
+  // will only execute if isTimeScale
+  renderNowIndicator(date) {
+    if (rangeContainsMarker(this.tDateProfile.normalizedRange, date)) {
+      this.nowIndicator.render(
+        this.dateToCoord(date),
+        this.isRtl
+      )
+    }
+  }
+
+  // will only execute if isTimeScale
+  unrenderNowIndicator() {
+    this.nowIndicator.unrender()
+  }
+
+
+  // Sizing
+  // ------------------------------------------------------------------------------------------
 
   updateSize(isResize, totalHeight, isAuto) {
     this.layout.setHeight(totalHeight, isAuto)
@@ -143,7 +184,6 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     }
   }
 
-
   // returned value is between 0 and the number of snaps
   computeDateSnapCoverage(date: DateMarker): number {
     let { dateEnv, tDateProfile } = this
@@ -204,6 +244,10 @@ export default class TimeAxis extends Component<TimeAxisProps> {
       return { left: this.dateToCoord(range.start), right: this.dateToCoord(range.end) }
     }
   }
+
+
+  // Scrolling
+  // ------------------------------------------------------------------------------------------
 
   computeInitialDateScroll() {
     let { dateEnv } = this

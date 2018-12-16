@@ -1,4 +1,4 @@
-import { Hit, View, ViewProps, ComponentContext, ViewSpec, DateProfileGenerator, OffsetTracker } from 'fullcalendar'
+import { Hit, View, ViewProps, ComponentContext, ViewSpec, DateProfileGenerator, OffsetTracker, DateProfile } from 'fullcalendar'
 import TimeAxis from './TimeAxis'
 import TimelineLane from './TimelineLane'
 
@@ -67,6 +67,22 @@ export default class TimelineView extends View {
   updateSize(isResize, totalHeight, isAuto) {
     this.timeAxis.updateSize(isResize, totalHeight, isAuto)
     this.lane.updateSize(isResize)
+  }
+
+
+  // Now Indicator
+  // ------------------------------------------------------------------------------------------
+
+  getNowIndicatorUnit(dateProfile: DateProfile) {
+    return this.timeAxis.getNowIndicatorUnit(dateProfile)
+  }
+
+  renderNowIndicator(date) {
+    this.timeAxis.renderNowIndicator(date)
+  }
+
+  unrenderNowIndicator() {
+    this.timeAxis.unrenderNowIndicator()
   }
 
 

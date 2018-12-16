@@ -462,6 +462,22 @@ export default class ResourceTimelineView extends View {
   }
 
 
+  // Now Indicator
+  // ------------------------------------------------------------------------------------------
+
+  getNowIndicatorUnit(dateProfile: DateProfile) {
+    return this.timeAxis.getNowIndicatorUnit(dateProfile)
+  }
+
+  renderNowIndicator(date) {
+    this.timeAxis.renderNowIndicator(date)
+  }
+
+  unrenderNowIndicator() {
+    this.timeAxis.unrenderNowIndicator()
+  }
+
+
   // Scrolling
   // ------------------------------------------------------------------------------------------------------------------
   // this is useful for scrolling prev/next dates while resource is scrolled down
