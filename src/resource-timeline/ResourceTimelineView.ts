@@ -380,6 +380,7 @@ export default class ResourceTimelineView extends View {
     if (isBaseSizing || rowSizingCnt) {
       this.lane.updateSize(isResize)
       this.bodyScrollJoiner.update()
+      this.timeAxis.layout.scrollJoiner.update() // hack
     }
   }
 

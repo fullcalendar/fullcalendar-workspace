@@ -103,12 +103,15 @@ export default class TimeAxis extends Component<TimeAxisProps> {
   // ------------------------------------------------------------------------------------------
 
   updateSize(isResize, totalHeight, isAuto) {
-    this.layout.setHeight(totalHeight, isAuto)
 
     this.applySlotWidth(
       this.computeSlotWidth()
     )
 
+    // adjusts gutters. do after slot widths set
+    this.layout.setHeight(totalHeight, isAuto)
+
+    // pretty much just queries coords. do last
     this.slats.updateSize()
   }
 
