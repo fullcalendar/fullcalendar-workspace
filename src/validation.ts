@@ -1,7 +1,7 @@
-import { SplittableProps, Calendar, EventUi, isPropsValid, Constraint, EventStore } from 'fullcalendar'
+import { SplittableProps, Calendar, EventUi, isPropsValid, Constraint, EventStore, mergeEventStores } from 'fullcalendar'
 import ResourceSplitter from './common/ResourceSplitter'
 
-export function isPropsValidWithResource(props: SplittableProps, calendar: Calendar): boolean {
+export function isPropsValidWithResources(props: SplittableProps, calendar: Calendar): boolean {
   let splitter = new ResourceSplitter()
 
   let sets = splitter.splitProps(
@@ -11,9 +11,17 @@ export function isPropsValidWithResource(props: SplittableProps, calendar: Calen
   )
 
   for (let resourceId in sets) {
-    if (
-      !isPropsValid(sets[resourceId], calendar, { resourceId }, filterConfig.bind(null, resourceId))
-    ) {
+    let props = sets[resourceId]
+
+    // merge in event data from the non-resource segment
+    if (resourceId && sets['']) { // current segment is not the non-resource one, and there IS a non-resource one
+      props = Object.assign({}, props, {
+        eventStore: mergeEventStores(sets[''].eventStore, props.eventStore),
+        eventUiBases: Object.assign({}, sets[''].eventUiBases,  props.eventUiBases)
+      })
+    }
+
+    if (!isPropsValid(props, calendar, { resourceId }, filterConfig.bind(null, resourceId))) {
       return false
     }
   }

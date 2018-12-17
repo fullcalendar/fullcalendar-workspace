@@ -6,7 +6,7 @@ import { parseEventDef } from './structs/event'
 import { massageEventDragMutation, applyEventDefMutation } from './EventDragging'
 import { transformDateSelectionJoin } from './DateSelecting'
 import { transformDatePoint, transformDateSpan } from './Calendar'
-import { isPropsValidWithResource } from './validation'
+import { isPropsValidWithResources } from './validation'
 import { transformExternalDef } from './ExternalElementDragging'
 import { transformEventResizeJoin } from './EventResizing'
 import './api/EventApi'
@@ -30,7 +30,7 @@ export const GeneralPlugin = exportHooks.createPlugin({
   datePointTransforms: [ transformDatePoint ],
   dateSpanTransforms: [ transformDateSpan ],
   viewPropsTransformers: [ ResourceDataAdder, ResourceEventConfigAdder ],
-  isPropsValid: isPropsValidWithResource,
+  isPropsValid: isPropsValidWithResources,
   externalDefTransforms: [ transformExternalDef ],
   eventResizeJoinTransforms: [ transformEventResizeJoin ]
 })

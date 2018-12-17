@@ -1,6 +1,6 @@
 import { Hit } from 'fullcalendar';
 
-export function transformEventResizeJoin(hit0: Hit, hit1: Hit) {
+export function transformEventResizeJoin(hit0: Hit, hit1: Hit): false | object {
   let component = hit0.component
 
   if (

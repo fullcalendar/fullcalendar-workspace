@@ -31,7 +31,7 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
   }
 
   render(props: ResourceDayGridProps) {
-    let { dayGrid, isRtl } = this
+    let { dayGrid } = this
     let { dateProfile, resourceDayTable, nextDayThreshold } = props
 
     let splitProps = this.splitter.splitProps(props)
@@ -46,8 +46,7 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
         dateProfile,
         nextDayThreshold,
         dayGrid,
-        resourceDayTable.dayTable,
-        isRtl
+        resourceDayTable.dayTable
       )
     })
 

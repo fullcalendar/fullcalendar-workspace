@@ -192,7 +192,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
       let props = propSets[key]
 
       dateSelectionSets.push(props.dateSelectionSegs)
-      businessHoursSets.push(props.businessHourSegs)
+      businessHoursSets.push(key ? props.businessHourSegs : NO_SEGS) // don't include redundant all-resource businesshours
       fgEventSets.push(key ? props.fgEventSegs : NO_SEGS) // don't include fg all-resource segs
       bgEventSets.push(props.bgEventSegs)
       eventDrags.push(props.eventDrag)
