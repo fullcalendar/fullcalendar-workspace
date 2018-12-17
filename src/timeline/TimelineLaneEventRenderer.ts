@@ -53,6 +53,24 @@ export default class TimelineLaneEventRenderer extends FgEventRenderer {
     '</a>'
   }
 
+  computeDisplayEventTime() {
+    return !this.timeAxis.tDateProfile.isTimeScale // because times should be obvious via axis
+  }
+
+  computeDisplayEventEnd() {
+    return false
+  }
+
+  // Computes a default event time formatting string if `timeFormat` is not explicitly defined
+  computeEventTimeFormat() {
+    return {
+      hour: 'numeric',
+      minute: '2-digit',
+      omitZeroMinute: true,
+      meridiem: 'narrow'
+    }
+  }
+
   attachSegs(segs: Seg[], mirrorInfo) {
 
     if (!this.el && this.masterContainerEl) {
