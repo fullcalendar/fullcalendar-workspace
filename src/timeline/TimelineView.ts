@@ -14,6 +14,11 @@ export default class TimelineView extends View {
     super(context, viewSpec, dateProfileGenerator, parentEl)
 
     this.el.classList.add('fc-timeline')
+
+    if (this.opt('eventOverlap') === false) {
+      this.el.classList.add('fc-no-overlap')
+    }
+
     this.el.innerHTML = this.renderSkeletonHtml()
 
     this.timeAxis = new TimeAxis(
