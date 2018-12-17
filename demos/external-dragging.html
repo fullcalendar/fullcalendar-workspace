@@ -4,10 +4,7 @@
 <meta charset='utf-8' />
 <link href='../fullcalendar/dist/fullcalendar.css' rel='stylesheet' />
 <link href='../dist/scheduler.css' rel='stylesheet' />
-<script src='../node_modules/jquery/dist/jquery.js'></script>
-<script src='../node_modules/components-jqueryui/jquery-ui.js'></script>
 <script src='../fullcalendar/dist/fullcalendar.js'></script>
-<script src='../fullcalendar/dist/jquery-ui-draggable.min.js'></script>
 <script src='../dist/scheduler.js'></script>
 <script>
 
@@ -17,21 +14,14 @@
     /* initialize the external events
     -----------------------------------------------------------------*/
 
-    $('#external-events .fc-event').each(function() {
-
-      // store data so the calendar knows to render an event upon drop
-      $(this).data('event', {
-        title: $.trim($(this).text()), // use the element's text as the event title
-        stick: true // maintain when user navigates (see docs on the renderEvent method)
-      });
-
-      // make the event draggable using jQuery UI
-      $(this).draggable({
-        zIndex: 999,
-        revert: true,      // will cause the event to go back to its
-        revertDuration: 0  //  original position after the drag
-      });
-
+    var containerEl = document.getElementById('external-events');
+    new FullCalendar.Draggable(containerEl, {
+      itemSelector: '.fc-event',
+      eventData: function(eventEl) {
+        return {
+          title: eventEl.innerText.trim()
+        }
+      }
     });
 
 
@@ -97,20 +87,24 @@
         { id: '4', resourceId: 'e', start: '2018-04-07T03:00:00', end: '2018-04-07T08:00:00', title: 'event 4' },
         { id: '5', resourceId: 'f', start: '2018-04-07T00:30:00', end: '2018-04-07T02:30:00', title: 'event 5' }
       ],
-      drop: function(date, jsEvent, ui, resourceId) {
-        console.log('drop', date.format(), resourceId);
+      drop: function(arg) {
+        console.log('drop date: ' + arg.dateStr)
+
+        if (arg.resource) {
+          console.log('drop resource: ' + arg.resource.id)
+        }
 
         // is the "remove after drop" checkbox checked?
-        if ($('#drop-remove').is(':checked')) {
+        if (document.getElementById('drop-remove').checked) {
           // if so, remove the element from the "Draggable Events" list
-          $(this).remove();
+          arg.draggedEl.parentNode.removeChild(arg.draggedEl);
         }
       },
-      eventReceive: function(event) { // called when a proper external event is dropped
-        console.log('eventReceive', event);
+      eventReceive: function(arg) { // called when a proper external event is dropped
+        console.log('eventReceive', arg.event);
       },
-      eventDrop: function(event) { // called when an event (already on the calendar) is moved
-        console.log('eventDrop', event);
+      eventDrop: function(arg) { // called when an event (already on the calendar) is moved
+        console.log('eventDrop', arg.event);
       }
     });
     calendar.render();
@@ -122,7 +116,6 @@
 
   body {
     margin-top: 40px;
-    text-align: center;
     font-size: 14px;
     font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
   }

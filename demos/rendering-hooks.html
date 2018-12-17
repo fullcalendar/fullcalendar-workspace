@@ -33,10 +33,10 @@
       resourceText: function(resource) {
         return 'Auditorium ' + ('' + resource.id).toUpperCase();
       },
-      resourceRender: function(resource, leftTr, rightTr) {
-        if (resource.id == 'h') {
-          leftTr.style.backgroundColor = 'rgb(255, 243, 206)';
-          rightTr.style.backgroundColor = 'rgba(255, 243, 206, .5)';
+      resourceRender: function(arg) {
+        if (arg.resource.id == 'h') {
+          arg.labelEl.style.backgroundColor = 'rgb(255, 243, 206)';
+          arg.contentEl.style.backgroundColor = 'rgba(255, 243, 206, .5)';
         }
       },
       resources: [
