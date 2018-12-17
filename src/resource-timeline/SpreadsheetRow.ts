@@ -3,6 +3,7 @@ import { Resource } from '../structs/resource'
 import { updateExpanderIcon, clearExpanderIcon, updateTrResourceId } from './render-utils'
 import ResourceApi from '../api/ResourceApi'
 import { buildResourceFields } from '../common/resource-hierarchy'
+import { buildResourceTextFunc } from '../common/resource-rendering'
 
 export interface SpreadsheetRowProps {
   colSpecs: any
@@ -56,18 +57,13 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
         rowSpan = 1
       }
 
-      let input = // the source text, and the main argument for the filter functions
-        colSpec.field ?
-          resourceFields[colSpec.field] || null :
-          resource
+      let text
 
-      let text =
-        typeof colSpec.text === 'function' ?
-          colSpec.text(
-            new ResourceApi(calendar, resource),
-            input
-          ) :
-          (typeof input === 'object' ? resource.title : input) // TODO: getResourceTextFunc (which is a util for ALL resource views)
+      if (colSpec.field) {
+        text = resourceFields[colSpec.field]
+      } else {
+        text = buildResourceTextFunc(colSpec.text, calendar)(resource)
+      }
 
       let contentEl = htmlToElement(
         '<div class="fc-cell-content">' +
@@ -81,8 +77,7 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
       if (typeof colSpec.render === 'function') { // a filter function for the element
         contentEl = colSpec.render(
           new ResourceApi(calendar, resource),
-          contentEl,
-          input
+          contentEl
         ) || contentEl
       }
 

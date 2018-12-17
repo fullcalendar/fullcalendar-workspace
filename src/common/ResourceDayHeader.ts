@@ -1,6 +1,7 @@
 import { Component, ComponentContext, DateMarker, htmlToElement, removeElement, htmlEscape, DateProfile, renderDateCell, findElements, createFormatter, DateFormatter, computeFallbackHeaderFormat } from 'fullcalendar'
-import { Resource, getPublicId } from '../structs/resource'
+import { Resource } from '../structs/resource'
 import ResourceApi from '../api/ResourceApi'
+import { buildResourceTextFunc } from '../common/resource-rendering'
 
 export interface ResourceDayHeaderProps {
   dates: DateMarker[]
@@ -23,7 +24,7 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
     super(context)
 
     this.datesAboveResources = this.opt('groupByDateAndResource')
-    this.resourceTextFunc = buildResourceTextFunc(this.opt('resourceText'))
+    this.resourceTextFunc = buildResourceTextFunc(this.opt('resourceText'), this.calendar)
 
     parentEl.innerHTML = '' // because might be nbsp
     parentEl.appendChild(
@@ -194,18 +195,4 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
     })
   }
 
-}
-
-
-// TODO: make general
-// ----------------------------------------------------------------------------------------------
-
-function buildResourceTextFunc(resourceTextSetting) {
-  if (typeof resourceTextSetting === 'function') {
-    return resourceTextSetting()
-  } else {
-    return function(resource: Resource) {
-      return resource.title || getPublicId(resource.id)
-    }
-  }
 }

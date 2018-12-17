@@ -9,6 +9,7 @@ import Spreadsheet from './Spreadsheet'
 import TimelineLane from '../timeline/TimelineLane'
 import { ResourceViewProps } from '../View'
 import ResourceSplitter from '../common/ResourceSplitter'
+import { buildResourceTextFunc } from '../common/resource-rendering'
 
 export default class ResourceTimelineView extends View {
 
@@ -56,7 +57,7 @@ export default class ResourceTimelineView extends View {
     if (!allColSpecs.length) {
       allColSpecs.push({
         labelText: labelText || defaultLabelText,
-        text: 'Resources!' // this.getResourceTextFunc() ... and SpreadsheetRow too
+        text: buildResourceTextFunc(this.opt('resourceText'), this.calendar)
       })
     } else {
       superHeaderText = labelText
