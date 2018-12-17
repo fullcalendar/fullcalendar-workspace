@@ -8,6 +8,7 @@ import { transformDateSelectionJoin } from './DateSelecting'
 import { transformDatePoint, transformDateSpan } from './Calendar'
 import { isPropsValidWithResource } from './validation'
 import { transformExternalDef } from './ExternalElementDragging'
+import './api/EventApi'
 
 // TODO: plugin-ify
 import './resource-sources/resource-array'
