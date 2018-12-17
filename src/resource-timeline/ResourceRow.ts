@@ -41,7 +41,7 @@ export default class ResourceRow extends Row<ResourceRowProps> {
     this.spreadsheetRow = new SpreadsheetRow(context, this.spreadsheetTr)
 
     this.timeAxisTr.appendChild(
-      createElement('td', null,
+      createElement('td', { className: this.theme.getClass('widgetContent') },
         this.innerContainerEl = document.createElement('div')
       )
     )
