@@ -28,6 +28,12 @@ export abstract class AbstractResourceDayTable {
 
 
   abstract computeCol(dateI, resourceI): number
+  abstract computeColRanges(dateStartI, dateEndI, resourceI): {
+    firstCol: number,
+    lastCol: number,
+    isStart: boolean,
+    isEnd: boolean
+  }[]
 
 
   buildCells(): ResourceDayTableCell[][] {
@@ -71,6 +77,20 @@ export class ResourceDayTable extends AbstractResourceDayTable {
     return resourceI * this.dayTable.colCnt + dateI
   }
 
+  /*
+  all date ranges are intact
+  */
+  computeColRanges(dateStartI, dateEndI, resourceI) {
+    return [
+      {
+        firstCol: this.computeCol(dateStartI, resourceI),
+        lastCol: this.computeCol(dateEndI, resourceI),
+        isStart: true,
+        isEnd: true
+      }
+    ]
+  }
+
 }
 
 
@@ -81,6 +101,26 @@ export class DayResourceTable extends AbstractResourceDayTable {
 
   computeCol(dateI, resourceI) {
     return dateI * this.resources.length + resourceI
+  }
+
+  /*
+  every single day is broken up
+  */
+  computeColRanges(dateStartI, dateEndI, resourceI) {
+    let segs = []
+
+    for (let i = dateStartI; i <= dateEndI; i++) {
+      let col = this.computeCol(i, resourceI)
+
+      segs.push({
+        firstCol: col,
+        lastCol: col,
+        isStart: i === dateStartI,
+        isEnd: i === dateEndI
+      })
+    }
+
+    return segs
   }
 
 }
@@ -219,13 +259,13 @@ export abstract class VResourceJoiner<SegType extends Seg> {
 
       for (let seg of segGroups[i]) {
         transformedSegs.push(
-          this.transformSeg(seg, resourceDayTable, i)
+          ...this.transformSeg(seg, resourceDayTable, i)
         )
       }
 
       for (let seg of segGroups[resourceCnt]) { // one beyond. the all-resource
         transformedSegs.push(
-          this.transformSeg(seg, resourceDayTable, i)
+          ...this.transformSeg(seg, resourceDayTable, i)
         )
       }
 
@@ -247,7 +287,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
 
       for (let seg of segs) {
         transformedSegs.push(
-          this.transformSeg(seg, resourceDayTable, i)
+          ...this.transformSeg(seg, resourceDayTable, i)
         )
       }
 
@@ -270,7 +310,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
 
         for (let seg of interaction.segs) {
           transformedSegs.push(
-            this.transformSeg(seg as SegType, resourceDayTable, i) // TODO: templateify Interaction::segs
+            ...this.transformSeg(seg as SegType, resourceDayTable, i) // TODO: templateify Interaction::segs
           )
         }
 
@@ -283,7 +323,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
 
         for (let seg of interactions[resourceCnt].segs) {
           transformedSegs.push(
-            this.transformSeg(seg as SegType, resourceDayTable, i) // TODO: templateify Interaction::segs
+            ...this.transformSeg(seg as SegType, resourceDayTable, i) // TODO: templateify Interaction::segs
           )
         }
       }
@@ -298,6 +338,6 @@ export abstract class VResourceJoiner<SegType extends Seg> {
   }
 
   // needs to generate NEW seg obj!!! because of .el
-  abstract transformSeg(seg: SegType, resourceDayTable: AbstractResourceDayTable, resourceI: number)
+  abstract transformSeg(seg: SegType, resourceDayTable: AbstractResourceDayTable, resourceI: number): SegType[]
 
 }

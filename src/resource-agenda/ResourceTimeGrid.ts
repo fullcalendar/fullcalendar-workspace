@@ -121,9 +121,11 @@ ResourceTimeGrid.prototype.isInteractable = true
 class ResourceTimeGridJoiner extends VResourceJoiner<TimeGridSeg> {
 
   transformSeg(seg: TimeGridSeg, resourceDayTable: AbstractResourceDayTable, resourceI: number) {
-    return Object.assign({}, seg, {
-      col: resourceDayTable.computeCol(seg.col, resourceI)
-    })
+    return [
+      Object.assign({}, seg, {
+        col: resourceDayTable.computeCol(seg.col, resourceI)
+      })
+    ]
   }
 
 }

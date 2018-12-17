@@ -110,10 +110,14 @@ ResourceDayGrid.prototype.isInteractable = true
 
 class ResourceDayGridJoiner extends VResourceJoiner<DayGridSeg> {
 
-  transformSeg(seg: DayGridSeg, resourceDayTable: AbstractResourceDayTable, resourceI: number) {
-    return Object.assign({}, seg, {
-      leftCol: resourceDayTable.computeCol(seg.leftCol, resourceI),
-      rightCol: resourceDayTable.computeCol(seg.rightCol, resourceI)
+  transformSeg(seg: DayGridSeg, resourceDayTable: AbstractResourceDayTable, resourceI: number): DayGridSeg[] {
+    let colRanges = resourceDayTable.computeColRanges(seg.firstCol, seg.lastCol, resourceI)
+
+    return colRanges.map(function(colRange) {
+      return Object.assign({}, seg, colRange, {
+        isStart: seg.isStart && colRange.isStart,
+        isEnd: seg.isEnd && colRange.isEnd
+      })
     })
   }
 
