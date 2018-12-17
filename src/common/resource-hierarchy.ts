@@ -237,8 +237,9 @@ function insertResourceNodeInSiblings(resourceNode, siblings, orderSpecs) {
 }
 
 export function buildResourceFields(resource: Resource) {
-  let obj = assignTo({}, resource.extendedProps, resource)
+  let obj = assignTo({}, resource.extendedProps, resource.ui, resource)
 
+  delete obj.ui
   delete obj.extendedProps
 
   return obj
