@@ -5,16 +5,25 @@ import { ResourceSource } from '../structs/resource-source'
 
 export default function(store: ResourceHash | undefined, action: ResourceAction, source: ResourceSource, calendar: Calendar): ResourceHash {
   switch(action.type) {
+
     case 'INIT':
       return {}
+
     case 'RECEIVE_RESOURCES':
       return receiveRawResources(store, action.rawResources, action.fetchId, source, calendar)
+
     case 'ADD_RESOURCE':
       return addResource(store, action.resourceHash)
+
     case 'REMOVE_RESOURCE':
       return removeResource(store, action.resourceId)
+
     case 'SET_RESOURCE_PROP':
       return setResourceProp(store, action.resourceId, action.propName, action.propValue)
+
+    case 'RESET_RESOURCES':
+      return Object.assign({}, store) // returns a new object with the same contents
+
     default:
       return store
   }

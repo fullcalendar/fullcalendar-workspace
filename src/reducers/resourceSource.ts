@@ -9,13 +9,20 @@ export default function(
   calendar: Calendar
 ): ResourceSource | null {
   switch(action.type) {
+
     case 'INIT':
       return createInitialSource(calendar)
+
     case 'SET_DATE_PROFILE':
       return handleRange(source, dateProfile.activeRange, calendar)
+
     case 'RECEIVE_RESOURCES':
     case 'RECEIVE_RESOURCE_ERROR':
       return receiveResponse(source, action.fetchId, action.fetchRange)
+
+    case 'REFETCH_RESOURCES':
+      return fetchSource(source, dateProfile.activeRange, calendar)
+
     default:
       return source
   }

@@ -26,7 +26,9 @@ export type ResourceAction = Action |
   { type: 'ADD_RESOURCE', resourceHash: ResourceHash } | // use a hash because needs to accept children
   { type: 'REMOVE_RESOURCE', resourceId: string } |
   { type: 'SET_RESOURCE_PROP', resourceId: string, propName: string, propValue: any } |
-  { type: 'SET_RESOURCE_ENTITY_EXPANDED', id: string, isExpanded: boolean }
+  { type: 'SET_RESOURCE_ENTITY_EXPANDED', id: string, isExpanded: boolean } |
+  { type: 'RESET_RESOURCES' } |
+  { type: 'REFETCH_RESOURCES' }
 
 export default function(state: CalendarState, action: ResourceAction, calendar: Calendar) {
   let resourceSource = reduceResourceSource(state.resourceSource, action, state.dateProfile, calendar)

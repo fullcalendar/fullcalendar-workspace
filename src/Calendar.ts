@@ -15,6 +15,8 @@ declare module 'fullcalendar/Calendar' {
   interface Default { // the Calendar
     addResource(input: ResourceInput): ResourceApi
     getResourceById(id: string): ResourceApi | null
+    rerenderResources(): void
+    refetchResources(): void
   }
 
 }
@@ -48,6 +50,18 @@ Calendar.prototype.getResourceById = function(this: Calendar, id: string) {
   }
 
   return null
+}
+
+Calendar.prototype.rerenderResources = function(this: Calendar) {
+  this.dispatch({
+    type: 'RESET_RESOURCES',
+  })
+}
+
+Calendar.prototype.refetchResources = function(this: Calendar) {
+  this.dispatch({
+    type: 'REFETCH_RESOURCES',
+  })
 }
 
 export function transformDatePoint(dateSpan: DateSpan, calendar: Calendar) {
