@@ -94,14 +94,14 @@ export default class ResourceRow extends Row<ResourceRowProps> {
   }
 
   // purposely does not accept resource obj. if did, would trigger every time data changed
-  triggerResourceRender(labelEl: HTMLElement, bodyEl: HTMLElement) {
+  triggerResourceRender(labelEl: HTMLElement, contentEl: HTMLElement) {
     let { view } = this
 
     view.publiclyTrigger('resourceRender', [
       {
         resource: new ResourceApi(this.calendar, this.props.resource),
         labelEl,
-        bodyEl,
+        contentEl,
         view
       }
     ])
