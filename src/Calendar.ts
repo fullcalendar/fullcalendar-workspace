@@ -1,14 +1,14 @@
-import { DateClickApi, DateSelectionApi, DateSpan, Calendar } from 'fullcalendar'
+import { DateSpan, Calendar } from 'fullcalendar'
 import ResourceApi from './api/ResourceApi'
 import { ResourceInput, parseResource, ResourceHash } from './structs/resource'
 
 declare module 'fullcalendar/Calendar' {
 
-  interface DateClickApi {
+  interface DatePointApi {
     resource?: ResourceApi
   }
 
-  interface DateSelectionApi {
+  interface DateSpanApi {
     resource?: ResourceApi
   }
 
@@ -50,14 +50,14 @@ Calendar.prototype.getResourceById = function(this: Calendar, id: string) {
   return null
 }
 
-export function transformDateClickApi(dateClick: DateClickApi, dateSpan: DateSpan, calendar: Calendar) {
-  if (dateSpan.resourceId) {
-    dateClick.resource = calendar.getResourceById(dateSpan.resourceId)
-  }
+export function transformDatePoint(dateSpan: DateSpan, calendar: Calendar) {
+  return dateSpan.resourceId ?
+    { resource: calendar.getResourceById(dateSpan.resourceId) } :
+    {}
 }
 
-export function transformDateSelectionApi(dateClick: DateSelectionApi, dateSpan: DateSpan, calendar: Calendar) {
-  if (dateSpan.resourceId) {
-    dateClick.resource = calendar.getResourceById(dateSpan.resourceId)
-  }
+export function transformDateSpan(dateSpan: DateSpan, calendar: Calendar) {
+  return dateSpan.resourceId ?
+    { resource: calendar.getResourceById(dateSpan.resourceId) } :
+    {}
 }

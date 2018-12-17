@@ -5,8 +5,9 @@ import resourcesReducers from './reducers/resources'
 import { parseEventDef } from './structs/event'
 import { massageEventDragMutation, applyEventDefMutation } from './EventDragging'
 import { transformDateSelectionJoin } from './DateSelecting'
-import { transformDateClickApi, transformDateSelectionApi } from './Calendar'
+import { transformDatePoint, transformDateSpan } from './Calendar'
 import { isPropsValidWithResource } from './validation'
+import { transformExternalDef } from './ExternalElementDragging'
 
 // TODO: plugin-ify
 import './resource-sources/resource-array'
@@ -24,10 +25,11 @@ export const GeneralPlugin = exportHooks.createPlugin({
   eventDragMutationMassagers: [ massageEventDragMutation ],
   eventDefMutationAppliers: [ applyEventDefMutation ],
   dateSelectionTransformers: [ transformDateSelectionJoin ],
-  dateClickApiTransformers: [ transformDateClickApi ],
-  dateSelectionApiTransformers: [ transformDateSelectionApi ],
+  datePointTransforms: [ transformDatePoint ],
+  dateSpanTransforms: [ transformDateSpan ],
   viewPropsTransformers: [ ResourceDataAdder, ResourceEventConfigAdder ],
-  isPropsValid: isPropsValidWithResource
+  isPropsValid: isPropsValidWithResource,
+  externalDefTransforms: [ transformExternalDef ]
 })
 
 exportHooks.Calendar.defaultPlugins.push( // TODO: kill
