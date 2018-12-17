@@ -8,6 +8,7 @@ import { transformDateSelectionJoin } from './DateSelecting'
 import { transformDatePoint, transformDateSpan } from './Calendar'
 import { isPropsValidWithResource } from './validation'
 import { transformExternalDef } from './ExternalElementDragging'
+import { transformEventResizeJoin } from './EventResizing'
 import './api/EventApi'
 
 // TODO: plugin-ify
@@ -30,7 +31,8 @@ export const GeneralPlugin = exportHooks.createPlugin({
   dateSpanTransforms: [ transformDateSpan ],
   viewPropsTransformers: [ ResourceDataAdder, ResourceEventConfigAdder ],
   isPropsValid: isPropsValidWithResource,
-  externalDefTransforms: [ transformExternalDef ]
+  externalDefTransforms: [ transformExternalDef ],
+  eventResizeJoinTransforms: [ transformEventResizeJoin ]
 })
 
 exportHooks.Calendar.defaultPlugins.push( // TODO: kill
