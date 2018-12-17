@@ -383,8 +383,9 @@ export default class ResourceTimelineView extends View {
 
     let rowSizingCnt = this.updateRowSizes(isResize)
 
+    this.lane.updateSize(isResize) // is efficient. uses flags
+
     if (isBaseSizing || rowSizingCnt) {
-      this.lane.updateSize(isResize)
       this.bodyScrollJoiner.update()
       this.timeAxis.layout.scrollJoiner.update() // hack
     }
