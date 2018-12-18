@@ -12,15 +12,82 @@ export interface ResourceViewProps extends ViewProps {
 
 export class ResourceDataAdder implements ViewPropsTransformer {
 
-  transform(viewProps: ViewProps, viewSpec: ViewSpec, calendarProps: CalendarComponentProps) {
+  filterResources = memoize(filterResources)
+
+  transform(viewProps: ViewProps, viewSpec: ViewSpec, calendarProps: CalendarComponentProps, view: View) {
     if ((viewSpec.class as any).needsResourceData) {
       return {
-        resourceStore: calendarProps.resourceStore,
+        resourceStore: this.filterResources(
+          calendarProps.resourceStore,
+          view.opt('filterResourcesWithEvents'),
+          calendarProps.eventStore,
+          calendarProps.dateProfile.activeRange
+        ),
         resourceEntityExpansions: calendarProps.resourceEntityExpansions
       }
     }
   }
 
+}
+
+function filterResources(resourceStore: ResourceHash, doFilterResourcesWithEvents: boolean, eventStore: EventStore, activeRange: DateRange): ResourceHash {
+  if (doFilterResourcesWithEvents) {
+    let instancesInRange = filterEventInstancesInRange(eventStore.instances, activeRange)
+    let hasEvents = computeHasEvents(instancesInRange, eventStore.defs)
+
+    Object.assign(hasEvents, computeAncestorHasEvents(hasEvents, resourceStore))
+
+    return filterHash(resourceStore, function(resource, resourceId) {
+      return hasEvents[resourceId]
+    })
+
+  } else {
+    return resourceStore
+  }
+}
+
+function filterEventInstancesInRange(eventInstances: EventInstanceHash, activeRange: DateRange) {
+  return filterHash(eventInstances, function(eventInstance) {
+    return rangesIntersect(eventInstance.range, activeRange)
+  })
+}
+
+function computeHasEvents(eventInstances: EventInstanceHash, eventDefs: EventDefHash) {
+  let hasEvents = {}
+
+  for (let instanceId in eventInstances) {
+    let instance = eventInstances[instanceId]
+
+    for (let resourceId of eventDefs[instance.defId].resourceIds) {
+      hasEvents[resourceId] = true
+    }
+  }
+
+  return hasEvents
+}
+
+/*
+mark resources as having events if any of their ancestors have them
+NOTE: resourceStore might not have all the resources that hasEvents{} has keyed
+*/
+function computeAncestorHasEvents(hasEvents: { [resourceId: string]: boolean }, resourceStore: ResourceHash) {
+  let res = {}
+
+  for (let resourceId in hasEvents) {
+    let resource
+
+    while ((resource = resourceStore[resourceId])) {
+      resourceId = resource.parentId // now functioning as the parentId
+
+      if (resourceId) {
+        res[resourceId] = true
+      } else {
+        break
+      }
+    }
+  }
+
+  return res
 }
 
 
