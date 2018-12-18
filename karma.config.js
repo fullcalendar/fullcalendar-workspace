@@ -15,7 +15,6 @@ module.exports = function(config) {
       'node_modules/components-jqueryui/themes/cupertino/jquery-ui.css',
 
       'fullcalendar/dist/fullcalendar.js',
-      'fullcalendar/dist/jquery-ui-draggable.js',
       'fullcalendar/dist/locales-all.js',
       'fullcalendar/dist/fullcalendar.css',
 

@@ -186,7 +186,7 @@ describe('vresource structure', function() {
         }
       })
 
-      it('renders progressively', function(callback) {
+      xit('renders progressively', function(callback) {
         let firstCallbackHeight = null
 
         const firstCallback = function() {

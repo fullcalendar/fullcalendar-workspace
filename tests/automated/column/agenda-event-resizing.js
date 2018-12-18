@@ -39,15 +39,15 @@ describe('agenda-view event resizing', function() {
                 expect(resizeSpy).toHaveBeenCalled()
                 done()
               }
-            }
-            )
+            })
         }),
         eventResize:
           (resizeSpy = spyCall(function(arg) {
             expect(arg.event.start).toEqualDate('2015-11-23T02:00:00Z')
             expect(arg.event.end).toEqualDate('2015-11-23T04:30:00Z')
-            const resource = currentCalendar.getEventResource(arg.event)
-            expect(resource).toBeFalsy()
+
+            let resources = arg.event.resources
+            expect(resources.length).toBe(0)
           }))
       })
     })
@@ -74,15 +74,16 @@ describe('agenda-view event resizing', function() {
                 expect(resizeSpy).toHaveBeenCalled()
                 done()
               }
-            }
-            )
+            })
         }),
         eventResize:
           (resizeSpy = spyCall(function(arg) {
             expect(arg.event.start).toEqualDate('2015-11-29T02:00:00Z')
             expect(arg.event.end).toEqualDate('2015-11-29T04:30:00Z')
-            const resource = currentCalendar.getEventResource(arg.event)
-            expect(resource.id).toBe('b')
+
+            let resources = arg.event.resources
+            expect(resources.length).toBe(1)
+            expect(resources[0].id).toBe('b')
           }))
       })
     })
@@ -108,8 +109,10 @@ describe('agenda-view event resizing', function() {
           (resizeSpy = spyCall(function(arg) {
             expect(arg.event.start).toEqualDate('2015-11-29T02:00:00Z')
             expect(arg.event.end).toEqualDate('2015-11-30T04:30:00Z')
-            const resource = currentCalendar.getEventResource(arg.event)
-            expect(resource.id).toBe('b')
+
+            let resources = arg.event.resources
+            expect(resources.length).toBe(1)
+            expect(resources[0].id).toBe('b')
           }))
       })
     })
@@ -129,8 +132,7 @@ describe('agenda-view event resizing', function() {
                 expect(resizeSpy).not.toHaveBeenCalled()
                 done()
               }
-            }
-            )
+            })
         }),
         eventResize:
           (resizeSpy = spyCall())
@@ -159,15 +161,16 @@ describe('agenda-view event resizing', function() {
                 expect(resizeSpy).toHaveBeenCalled()
                 done()
               }
-            }
-            )
+            })
         }),
         eventResize:
           (resizeSpy = spyCall(function(arg) {
             expect(arg.event.start).toEqualDate('2015-11-30T02:00:00Z')
             expect(arg.event.end).toEqualDate('2015-11-30T04:30:00Z')
-            const resource = currentCalendar.getEventResource(arg.event)
-            expect(resource.id).toBe('b')
+
+            let resources = arg.event.resources
+            expect(resources.length).toBe(1)
+            expect(resources[0].id).toBe('b')
           }))
       })
     })
@@ -187,15 +190,16 @@ describe('agenda-view event resizing', function() {
                 expect(resizeSpy).toHaveBeenCalled()
                 done()
               }
-            }
-            )
+            })
         }),
         eventResize:
           (resizeSpy = spyCall(function(arg) {
             expect(arg.event.start).toEqualDate('2015-11-29T02:00:00Z')
             expect(arg.event.end).toEqualDate('2015-11-30T04:30:00Z')
-            const resource = currentCalendar.getEventResource(arg.event)
-            expect(resource.id).toBe('a')
+
+            let resources = arg.event.resources
+            expect(resources.length).toBe(1)
+            expect(resources[0].id).toBe('a')
           }))
       })
     })
@@ -215,8 +219,7 @@ describe('agenda-view event resizing', function() {
                 expect(resizeSpy).not.toHaveBeenCalled()
                 done()
               }
-            }
-            )
+            })
         }),
         eventResize:
           (resizeSpy = spyCall())

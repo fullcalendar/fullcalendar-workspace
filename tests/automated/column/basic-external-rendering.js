@@ -22,13 +22,18 @@ describe('basic-view event drag-n-drop', function() {
 
       it('allows dropping onto a resource', function(done) {
         let dropSpy, receiveSpy
-        const dragEl = $('<a' +
+        let dragEl = $('<a' +
           ' class="external-event fc-event"' +
           ' style="width:100px"' +
-          ' data-event=\'{"title":"my external event","start":"05:00"}\'' +
           '>external</a>')
           .appendTo('body')
-          .draggable()
+
+        new FullCalendar.Draggable(dragEl[0], {
+          eventData: {
+            title: 'my external event',
+            time: '05:00'
+          }
+        })
 
         initCalendar({
           _eventsPositioned: oneCall(function() {
@@ -53,8 +58,10 @@ describe('basic-view event drag-n-drop', function() {
               expect(arg.event.title).toBe('my external event')
               expect(arg.event.start).toEqualDate(tz.createDate('2015-12-01T05:00:00'))
               expect(arg.event.end).toBe(null)
-              const resource = currentCalendar.getEventResource(arg.event)
-              expect(resource.id).toBe('a')
+
+              let resources = arg.event.resources
+              expect(resources.length).toBe(1)
+              expect(resources[0].id).toBe('a')
             }))
         })
       })

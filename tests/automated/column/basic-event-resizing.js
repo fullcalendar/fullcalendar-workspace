@@ -44,15 +44,15 @@ describe('basic-view event resizing', function() {
                 expect(resizeCalled).toBe(true)
                 done()
               }
-            }
-            )
+            })
         },
         eventResize(arg) {
           resizeCalled = true
           expect(arg.event.start).toEqualDate('2015-11-23')
           expect(arg.event.end).toEqualDate('2015-11-25')
-          const resource = currentCalendar.getEventResource(arg.event)
-          expect(resource).toBeFalsy()
+
+          let resources = arg.event.resources
+          expect(resources.length).toBe(0)
         }
       })
     })
@@ -84,15 +84,16 @@ describe('basic-view event resizing', function() {
                 expect(resizeCalled).toBe(true)
                 done()
               }
-            }
-            )
+            })
         },
         eventResize(arg) {
           resizeCalled = true
           expect(arg.event.start).toEqualDate('2015-11-29')
           expect(arg.event.end).toEqualDate('2015-12-01')
-          const resource = currentCalendar.getEventResource(arg.event)
-          expect(resource.id).toBe('a')
+
+          let resources = arg.event.resources
+          expect(resources.length).toBe(1)
+          expect(resources[0].id).toBe('a')
         }
       })
     })
@@ -118,8 +119,7 @@ describe('basic-view event resizing', function() {
                 expect(resizeCalled).toBe(false)
                 done()
               }
-            }
-            )
+            })
         },
         eventResize(arg) {
           resizeCalled = true
@@ -162,8 +162,10 @@ describe('basic-view event resizing', function() {
           resizeCalled = true
           expect(arg.event.start).toEqualDate('2015-11-28')
           expect(arg.event.end).toEqualDate('2015-12-01')
-          const resource = currentCalendar.getEventResource(arg.event)
-          expect(resource.id).toBe('b')
+
+          let resources = arg.event.resources
+          expect(resources.length).toBe(1)
+          expect(resources[0].id).toBe('b')
         }
       })
     })
@@ -189,8 +191,7 @@ describe('basic-view event resizing', function() {
                 expect(resizeCalled).toBe(false)
                 done()
               }
-            }
-            )
+            })
         },
         eventResize(arg) {
           resizeCalled = true

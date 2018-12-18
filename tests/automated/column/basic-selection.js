@@ -25,6 +25,7 @@ describe('basic-view selection', function() {
 
     it('allows non-resource selects', function(done) {
       let selectCalled = false
+
       initCalendar({
         _eventsPositioned() {
           const monEls = getDayGridDowEls('mon')
@@ -38,8 +39,7 @@ describe('basic-view selection', function() {
                 expect(selectCalled).toBe(true)
                 done()
               }
-            }
-            )
+            })
         },
         select(arg) {
           selectCalled = true
@@ -61,6 +61,7 @@ describe('basic-view selection', function() {
 
     it('allows a resource selects', function(done) {
       let selectCalled = false
+
       initCalendar({
         _eventsPositioned() {
           const sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
@@ -71,8 +72,7 @@ describe('basic-view selection', function() {
               expect(selectCalled).toBe(true)
               done()
             }
-          }
-          )
+          })
         },
         select(arg) {
           selectCalled = true
@@ -87,6 +87,7 @@ describe('basic-view selection', function() {
 
     it('disallows a selection across resources', function(done) {
       let selectCalled = false
+
       initCalendar({
         _eventsPositioned() {
           const sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
@@ -114,6 +115,7 @@ describe('basic-view selection', function() {
 
     it('allows a resource selection', function(done) {
       let selectCalled = false
+
       initCalendar({
         _eventsPositioned() {
           const monRects = sortBoundingRects(getDayGridDowEls('mon'))
@@ -141,6 +143,7 @@ describe('basic-view selection', function() {
 
     it('disallows a selection across resources', function(done) {
       let selectCalled = false
+
       initCalendar({
         _eventsPositioned() {
           const monRects = sortBoundingRects(getDayGridDowEls('mon'))

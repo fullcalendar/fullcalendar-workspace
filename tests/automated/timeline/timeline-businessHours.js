@@ -16,8 +16,8 @@ describe('timeline businessHours', function() {
     it('renders when on a day with business hours', function(done) {
       initCalendar({
         businessHours: {
-          start: '10:00',
-          end: '16:00'
+          startTime: '10:00',
+          endTime: '16:00'
         },
         slotDuration: { hours: 1 },
         datesRender() {
@@ -31,8 +31,8 @@ describe('timeline businessHours', function() {
       initCalendar({
         now: '2016-02-14', // weekend
         businessHours: {
-          start: '10:00',
-          end: '16:00'
+          startTime: '10:00',
+          endTime: '16:00'
         },
         slotDuration: { hours: 1 },
         datesRender() {
@@ -63,7 +63,7 @@ describe('timeline businessHours', function() {
       initCalendar({
         resources: [
           { id: 'a', title: 'a' },
-          { id: 'b', title: 'b', businessHours: { start: '02:00', end: '22:00' } },
+          { id: 'b', title: 'b', businessHours: { startTime: '02:00', endTime: '22:00' } },
           { id: 'c', title: 'c' }
         ],
         businessHours: true,
@@ -75,20 +75,25 @@ describe('timeline businessHours', function() {
     })
 
     it('renders dynamically with resource override', function(done) {
-      const specialResource = { id: 'b', title: 'b', businessHours: { start: '02:00', end: '22:00' } }
+      let specialResourceInput = {
+        id: 'b',
+        title: 'b',
+        businessHours: { startTime: '02:00', endTime: '22:00' }
+      }
+
       initCalendar({
         resources: [
           { id: 'a', title: 'a' },
-          specialResource,
+          specialResourceInput,
           { id: 'c', title: 'c' }
         ],
         businessHours: true,
         datesRender() {
           expectResourceOverride()
           setTimeout(function() {
-            currentCalendar.removeResource(specialResource)
+            currentCalendar.getResourceById(specialResourceInput.id).remove()
             expect9to5()
-            currentCalendar.addResource(specialResource)
+            currentCalendar.addResource(specialResourceInput)
             expectResourceOverride()
             done()
           })
@@ -99,7 +104,11 @@ describe('timeline businessHours', function() {
     it('renders dynamically with resource override amidst other custom rows', function(done) {
       initCalendar({
         resources: [
-          { id: 'a', title: 'a', businessHours: { start: '03:00', end: '21:00' } }
+          {
+            id: 'a',
+            title: 'a',
+            businessHours: { startTime: '03:00', endTime: '21:00' }
+          }
         ],
         businessHours: true,
         datesRender() {
@@ -108,7 +117,7 @@ describe('timeline businessHours', function() {
             { resourceId: 'a', start: '2016-02-15T21:00', end: '2016-02-16T00:00' }
           ])).toBe(true)
           setTimeout(function() {
-            currentCalendar.addResource({ id: 'b', title: 'b', businessHours: { start: '02:00', end: '22:00' } })
+            currentCalendar.addResource({ id: 'b', title: 'b', businessHours: { startTime: '02:00', endTime: '22:00' } })
             expect(isResourceTimelineNonBusinessSegsRendered([
               { resourceId: 'a', start: '2016-02-15T00:00', end: '2016-02-15T03:00' },
               { resourceId: 'a', start: '2016-02-15T21:00', end: '2016-02-16T00:00' },
@@ -128,7 +137,7 @@ describe('timeline businessHours', function() {
     initCalendar({
       resources: [
         { id: 'a', title: 'a' },
-        { id: 'b', title: 'b', businessHours: { start: '02:00', end: '22:00' } },
+        { id: 'b', title: 'b', businessHours: { startTime: '02:00', endTime: '22:00' } },
         { id: 'c', title: 'c' }
       ],
       businessHours: true,
@@ -158,7 +167,7 @@ describe('timeline businessHours', function() {
           { id: 'a',
             title: 'a',
             children: [
-              { id: 'a1', title: 'a1', businessHours: { start: '02:00', end: '22:00' } }
+              { id: 'a1', title: 'a1', businessHours: { startTime: '02:00', endTime: '22:00' } }
             ] }
         ]
       })

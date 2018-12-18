@@ -60,10 +60,10 @@ describe('column-based view rerendering', function() {
       ]
     })
 
-    it('adjusts to removeResource', function() {
+    it('adjusts to Resource::remove', function() {
       initCalendar()
       expect(getOrderedResourceIds()).toEqual([ 'a', 'b', 'c' ])
-      currentCalendar.removeResource('a')
+      currentCalendar.getResourceById('a').remove()
       expect(getOrderedResourceIds()).toEqual([ 'b', 'c' ])
     })
 

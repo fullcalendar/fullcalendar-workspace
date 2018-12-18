@@ -21,7 +21,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
       }, function(resources) {
 
         describeValues({
-          'with non-background rendering': null,
+          'with non-background rendering': '',
           'with background events': 'background',
           'with inverse-background events': 'inverse-background'
         }, function(eventRendering) {
@@ -156,9 +156,11 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                       makeEvent('event1', '2015-10-17T19:00:00', '2015-10-18T02:00:00')
                     ],
                     _eventsPositioned() {
-                      expectEventSlotSpan('event1', '7pm', '8pm')
-                      expectEventIsStartEnd('event1', true, false)
-                      done()
+                      setTimeout(function() { // wait for time axis header to sync its scroll
+                        expectEventSlotSpan('event1', '7pm', '8pm')
+                        expectEventIsStartEnd('event1', true, false)
+                        done()
+                      }, 0)
                     }
                   })
                 })
@@ -171,9 +173,11 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                       makeEvent('event1', '2015-10-17T12:00:00', '2015-10-17T22:00:00')
                     ],
                     _eventsPositioned() {
-                      expectEventSlotSpan('event1', '12pm', '5pm')
-                      expectEventIsStartEnd('event1', true, false)
-                      done()
+                      setTimeout(function() { // wait for time axis header to sync its scroll
+                        expectEventSlotSpan('event1', '12pm', '5pm')
+                        expectEventIsStartEnd('event1', true, false)
+                        done()
+                      }, 0)
                     }
                   })
                 })
@@ -210,12 +214,15 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   events: [
                     makeEvent('event1', '2015-10-17T08:00:00', '2015-10-18T02:00:00')
                   ],
+                  scrollTime: '24:00',
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '9am', '1am')
-                    expectEventIsStartEnd('event1', false, true)
-                    expect($('tr.fc-chrono th:first')).toHaveText('9am')
-                    expect($('tr.fc-chrono th:last')).toHaveText('3am')
-                    done()
+                    setTimeout(function() {
+                      expectEventSlotSpan('event1', '9am', '1am')
+                      expectEventIsStartEnd('event1', false, true)
+                      expect($('tr.fc-chrono th:first')).toHaveText('9am')
+                      expect($('tr.fc-chrono th:last')).toHaveText('3am')
+                      done()
+                    }, 0)
                   }
                 })
               })

@@ -22,6 +22,7 @@ describe('basic-view event drag-n-drop', function() {
 
       it('allows switching date and resource', function(done) {
         let dropSpy
+
         initCalendar({
           events: [
             { title: 'event0', className: 'event0', start: '2015-11-30T12:00:00', resourceId: 'b' }
@@ -39,8 +40,10 @@ describe('basic-view event drag-n-drop', function() {
             (dropSpy = spyCall(function(arg) {
               expect(arg.event.start).toEqualDate(tz.createDate('2015-12-01T12:00:00'))
               expect(arg.event.end).toBe(null)
-              const resource = currentCalendar.getEventResource(arg.event)
-              expect(resource.id).toBe('a')
+
+              let resources = arg.event.resources
+              expect(resources.length).toBe(1)
+              expect(resources[0].id).toBe('a')
             }))
         })
       })

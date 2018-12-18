@@ -20,7 +20,8 @@ describe('vresource businessHours', function() {
 
     describe('for basicWeek', function() {
       pushOptions({
-        defaultView: 'basicWeek'})
+        defaultView: 'basicWeek'
+      })
 
       describeOptions({
         'when resources above dates': { groupByResource: true },
@@ -121,7 +122,7 @@ describe('vresource businessHours', function() {
         initCalendar({
           resources: [
             { id: 'a', title: 'Resource A' },
-            { id: 'b', title: 'Resource B', businessHours: { start: '02:00', end: '22:00' } }
+            { id: 'b', title: 'Resource B', businessHours: { startTime: '02:00', endTime: '22:00' } }
           ],
           datesRender() {
             expectResourceOverride()
@@ -131,25 +132,26 @@ describe('vresource businessHours', function() {
       })
 
       it('renders a resource override dynamically', function(done) {
-        let datesRenderCnt = 0
-        const specialResource = { id: 'b', title: 'Resource B', businessHours: { start: '02:00', end: '22:00' } }
+        let specialResourceInput = { id: 'b', title: 'Resource B', businessHours: { startTime: '02:00', endTime: '22:00' } }
+
         initCalendar({
           resources: [
             { id: 'a', title: 'Resource A' },
-            specialResource
+            specialResourceInput
           ],
           datesRender() {
-            datesRenderCnt += 1
-            if (datesRenderCnt === 1) {
-              expectResourceOverride()
-              currentCalendar.removeResource(specialResource)
-            } else if (datesRenderCnt === 2) {
+            expectResourceOverride()
+            currentCalendar.getResourceById(specialResourceInput.id).remove()
+
+            setTimeout(function() {
               expectLonelyDay9to5()
-              currentCalendar.addResource(specialResource)
-            } else if (datesRenderCnt === 3) {
-              expectResourceOverride()
-              done()
-            }
+              currentCalendar.addResource(specialResourceInput)
+
+              setTimeout(function() {
+                expectResourceOverride()
+                done()
+              }, 0)
+            }, 0)
           }
         })
       })
@@ -163,7 +165,7 @@ describe('vresource businessHours', function() {
             { id: 'b',
               title: 'Resource B',
               businessHours: [
-                { start: '08:00', end: '18:00', dow: [ 1, 2, 3, 4, 5 ] }
+                { startTime: '08:00', endTime: '18:00', daysOfWeek: [ 1, 2, 3, 4, 5 ] }
               ] }
           ],
           datesRender() {

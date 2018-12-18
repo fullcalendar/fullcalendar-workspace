@@ -33,8 +33,10 @@ describe('timeline-view event drag-n-drop', function() {
           (dropSpy = spyCall(function(arg) {
             expect(arg.event.start).toEqualDate(tz.createDate('2015-11-29T05:00:00'))
             expect(arg.event.end).toEqualDate(tz.createDate('2015-11-29T06:00:00'))
-            const resource = currentCalendar.getEventResource(arg.event)
-            expect(resource.id).toBe('a')
+
+            let resources = arg.event.resources
+            expect(resources.length).toBe(1)
+            expect(resources[0].id).toBe('a')
           }))
       })
     })
@@ -52,7 +54,9 @@ describe('timeline-view event drag-n-drop', function() {
         setTimeout(function() { // let the drop rerender
           expect(arg.event.start).toEqualDate('2015-11-29T05:00:00Z')
           expect(arg.event.end).toEqualDate('2015-11-29T06:00:00Z')
+
           let resourceIds = arg.event.resources.map((resource) => resource.id)
+          resourceIds.sort()
           expect(resourceIds).toEqual([ 'b', 'c' ])
           done()
         })
@@ -63,8 +67,8 @@ describe('timeline-view event drag-n-drop', function() {
   it('can drag one of multiple event occurences, linked by same event-IDs', function(done) {
     initCalendar({
       events: [
-        { id: '1', title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' },
-        { id: '1', title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
+        { groupId: '1', title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' },
+        { groupId: '1', title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
       ],
       _eventsPositioned: oneCall(function() {
         dragElTo(
@@ -73,13 +77,13 @@ describe('timeline-view event drag-n-drop', function() {
           '2015-11-29T05:00:00',
           null, // callback
           function() { // onBeforeRelease (happens BEFORE callback)
-            expect($('.fc-mirror-container').length).toBe(2) // rendered two mirrors
+            expect($('.fc-mirror').length).toBe(2) // rendered two mirrors
           }
         )
       }),
       eventDrop(arg) {
         setTimeout(function() { // let the drop rerender
-          const events = currentCalendar.clientEvents()
+          const events = currentCalendar.getEvents()
 
           expect(events[0].start).toEqualDate('2015-11-29T05:00:00Z')
           expect(events[0].end).toEqualDate('2015-11-29T06:00:00Z')
@@ -128,15 +132,17 @@ describe('timeline-view event drag-n-drop', function() {
       _eventsPositioned: oneCall(function() {
         touchDragElTo($('.event0'), 200, 'a', '2015-11-29T05:00:00', function() {
           expect(dropSpy).toHaveBeenCalled()
-          done()
+          setTimeout(done, 1000) // wait, so next tests don't have mousedown ignored :(
         })
       }),
       eventDrop:
         (dropSpy = spyCall(function(arg) {
           expect(arg.event.start).toEqualDate('2015-11-29T05:00:00Z')
           expect(arg.event.end).toEqualDate('2015-11-29T06:00:00Z')
-          const resource = currentCalendar.getEventResource(arg.event)
-          expect(resource.id).toBe('a')
+
+          let resources = arg.event.resources
+          expect(resources.length).toBe(1)
+          expect(resources[0].id).toBe('a')
         }))
     })
   })
@@ -157,7 +163,7 @@ describe('timeline-view event drag-n-drop', function() {
           expect(arg.event.resources[0].id).toBe('a')
           arg.revert()
 
-          let event = currentCalendar.clientEvents()[0]
+          let event = currentCalendar.getEvents()[0]
           expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
           expect(event.end).toEqualDate('2015-11-29T03:00:00Z')
           expect(event.resources.length).toBe(1)
@@ -186,7 +192,7 @@ describe('timeline-view event drag-n-drop', function() {
           expect(resourceIds).toEqual([ 'b', 'c' ])
           arg.revert()
 
-          let event = currentCalendar.clientEvents()[0]
+          let event = currentCalendar.getEvents()[0]
           expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
           expect(event.end).toEqualDate('2015-11-29T03:00:00Z')
           resourceIds = event.resources.map((resource) => resource.id)
@@ -206,9 +212,10 @@ describe('timeline-view event drag-n-drop', function() {
 
     it('allow dragging into custom matching range', function(done) {
       let dropSpy
+
       initCalendar({
         resources: [
-          { id: 'a', title: 'Resource A', businessHours: { start: '02:00', end: '22:00' } },
+          { id: 'a', title: 'Resource A', businessHours: { startTime: '02:00', endTime: '22:00' } },
           { id: 'b', title: 'Resource B' },
           { id: 'c', title: 'Resource C' }
         ],
@@ -225,8 +232,10 @@ describe('timeline-view event drag-n-drop', function() {
           (dropSpy = spyCall(function(arg) {
             expect(arg.event.start).toEqualDate('2015-11-27T05:00Z')
             expect(arg.event.end).toEqualDate('2015-11-27T06:00Z')
-            const resource = currentCalendar.getEventResource(arg.event)
-            expect(resource.id).toBe('a')
+
+            let resources = arg.event.resources
+            expect(resources.length).toBe(1)
+            expect(resources[0].id).toBe('a')
           }))
       })
     })
@@ -235,7 +244,7 @@ describe('timeline-view event drag-n-drop', function() {
       let dropSpy
       initCalendar({
         resources: [
-          { id: 'a', title: 'Resource A', businessHours: { start: '10:00', end: '16:00' } },
+          { id: 'a', title: 'Resource A', businessHours: { startTime: '10:00', endTime: '16:00' } },
           { id: 'b', title: 'Resource B' },
           { id: 'c', title: 'Resource C' }
         ],
@@ -252,8 +261,10 @@ describe('timeline-view event drag-n-drop', function() {
           (dropSpy = spyCall(function(arg) {
             expect(arg.event.start).toEqualDate('2015-11-27T05:00:00Z')
             expect(arg.event.end).toEqualDate('2015-11-27T06:00:00Z')
-            const resource = currentCalendar.getEventResource(arg.event)
-            expect(resource.id).toBe('a')
+
+            let resources = arg.event.resources
+            expect(resources.length).toBe(1)
+            expect(resources[0].id).toBe('a')
           }))
       })
     })
