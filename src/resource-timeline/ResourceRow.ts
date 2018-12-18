@@ -1,4 +1,4 @@
-import { createElement, ComponentContext, EventInteractionState, DateSpan, EventUiHash, EventStore, DateProfile, memoizeRendering, isArraysEqual } from 'fullcalendar'
+import { Duration, createElement, ComponentContext, EventInteractionState, DateSpan, EventUiHash, EventStore, DateProfile, memoizeRendering, isArraysEqual } from 'fullcalendar'
 import Row from './Row'
 import SpreadsheetRow from './SpreadsheetRow'
 import TimelineLane from '../timeline/TimelineLane'
@@ -9,6 +9,7 @@ import ResourceApi from '../api/ResourceApi'
 
 export interface ResourceRowProps {
   dateProfile: DateProfile
+  nextDayThreshold: Duration
   businessHours: EventStore | null
   eventStore: EventStore | null
   eventUiBases: EventUiHash
@@ -79,6 +80,7 @@ export default class ResourceRow extends Row<ResourceRowProps> {
 
     this.lane.receiveProps({
       dateProfile: props.dateProfile,
+      nextDayThreshold: props.nextDayThreshold,
       businessHours: props.businessHours,
       eventStore: props.eventStore,
       eventUiBases: props.eventUiBases,

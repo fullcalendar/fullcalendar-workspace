@@ -191,7 +191,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
   computeDateSnapCoverage(date: DateMarker): number {
     let { dateEnv, tDateProfile } = this
     let snapDiff = dateEnv.countDurationsBetween(
-      tDateProfile.normalizedStart,
+      tDateProfile.normalizedRange.start,
       date,
       tDateProfile.snapDuration
     )

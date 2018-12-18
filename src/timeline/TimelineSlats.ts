@@ -1,4 +1,4 @@
-import { isInt, findElements, createElement, findChildren, PositionCache, removeElement, getDayClasses, Component, ComponentContext, DateProfile } from 'fullcalendar'
+import { isInt, findElements, createElement, findChildren, PositionCache, removeElement, getDayClasses, Component, ComponentContext, DateProfile, multiplyDuration } from 'fullcalendar'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 export interface TimelineSlatsProps {
@@ -84,7 +84,7 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
       classes = []
       classes.push(
         isInt(dateEnv.countDurationsBetween(
-          tDateProfile.normalizedStart,
+          tDateProfile.normalizedRange.start,
           date,
           tDateProfile.labelInterval
         )) ?

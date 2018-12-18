@@ -12,9 +12,7 @@ export interface TimelineDateProfile {
   emphasizeWeeks: boolean
   snapDuration: Duration
   snapsPerSlot: number
-  normalizedStart: DateMarker
-  normalizedEnd: DateMarker
-  normalizedRange: DateRange // different somehow
+  normalizedRange: DateRange // snaps to unit. adds in minTime/maxTime
   timeWindowMs: number
   slotDates: DateMarker[]
   isWeekStarts: boolean[]
@@ -133,7 +131,6 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, view: View): 
 
   let timeWindowMs = asRoughMs(dateProfile.maxTime) - asRoughMs(dateProfile.minTime)
 
-  // makes sure zone is stripped
   // TODO: why not use normalizeRange!?
   let normalizedStart = normalizeDate(dateProfile.renderRange.start, tDateProfile, dateEnv)
   let normalizedEnd = normalizeDate(dateProfile.renderRange.end, tDateProfile, dateEnv)
@@ -148,12 +145,8 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, view: View): 
     )
   }
 
-  let normalizedRange = { start: normalizedStart, end: normalizedEnd }
-
   tDateProfile.timeWindowMs = timeWindowMs
-  tDateProfile.normalizedStart = normalizedStart
-  tDateProfile.normalizedEnd = normalizedEnd
-  tDateProfile.normalizedRange = normalizedRange
+  tDateProfile.normalizedRange = { start: normalizedStart, end: normalizedEnd }
 
   let slotDates = []
   let date = normalizedStart
@@ -201,6 +194,9 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, view: View): 
 }
 
 
+/*
+snaps to appropriate unit
+*/
 export function normalizeDate(date: DateMarker, tDateProfile: TimelineDateProfile, dateEnv: DateEnv): DateMarker {
   let normalDate = date
 
@@ -216,6 +212,9 @@ export function normalizeDate(date: DateMarker, tDateProfile: TimelineDateProfil
 }
 
 
+/*
+snaps to appropriate unit
+*/
 export function normalizeRange(range: DateRange, tDateProfile: TimelineDateProfile, dateEnv: DateEnv): DateRange {
 
   if (!tDateProfile.isTimeScale) {
@@ -576,7 +575,7 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, view
         if (
           !leadingCell ||
           isInt(dateEnv.countDurationsBetween(
-            tDateProfile.normalizedStart,
+            tDateProfile.normalizedRange.start,
             date,
             tDateProfile.labelInterval
           ))

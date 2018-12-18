@@ -205,6 +205,7 @@ export default class ResourceTimelineView extends View {
     this.lane.receiveProps(
       Object.assign({}, splitProps[''], {
         dateProfile: props.dateProfile,
+        nextDayThreshold: this.nextDayThreshold,
         businessHours: hasResourceBusinessHours ? null : props.businessHours
       })
     )
@@ -354,6 +355,7 @@ export default class ResourceTimelineView extends View {
         (rowComponent as ResourceRow).receiveProps(
           Object.assign({}, splitProps[resource.id], {
             dateProfile,
+            nextDayThreshold: this.nextDayThreshold,
             businessHours: resource.businessHours || fallbackBusinessHours,
             colSpecs: this.colSpecs,
             id: rowNode.id,
