@@ -52,7 +52,7 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
     })
 
     // HACK
-    ;(timeGrid as any).allowEventResizeAcrossResources = dayRanges.length === 1
+    ;(timeGrid as any).allowAcrossResources = dayRanges.length === 1
 
     timeGrid.receiveProps(
       Object.assign({}, this.joiner.joinProps(slicedProps, resourceDayTable), {

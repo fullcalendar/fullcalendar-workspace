@@ -51,7 +51,7 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
     })
 
     // HACK
-    ;(dayGrid as any).allowEventResizeAcrossResources = resourceDayTable.dayTable.colCnt === 1
+    ;(dayGrid as any).allowAcrossResources = resourceDayTable.dayTable.colCnt === 1
 
     dayGrid.receiveProps(
       Object.assign({}, this.joiner.joinProps(slicedProps, resourceDayTable), {

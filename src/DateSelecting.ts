@@ -1,17 +1,18 @@
-import { DateSpan } from 'fullcalendar'
+import { Hit } from 'fullcalendar'
 
-export function transformDateSelectionJoin(finalSelection: DateSpan, span0: DateSpan, span1: DateSpan): boolean {
-  let resource0 = span0.resourceId
-  let resource1 = span1.resourceId
+export function transformDateSelectionJoin(hit0: Hit, hit1: Hit) {
+  let resourceId0 = hit0.dateSpan.resourceId
+  let resourceId1 = hit1.dateSpan.resourceId
 
-  if (resource0 && resource1) {
+  if (resourceId0 && resourceId1) {
 
-    if (resource0 !== resource1) {
+    if (
+      (hit0.component as any).allowAcrossResources === false &&
+      resourceId0 !== resourceId1
+    ) {
       return false
+    } else {
+      return { resourceId: resourceId0 }
     }
-
-    finalSelection.resourceId = resource1
   }
-
-  return true
 }
