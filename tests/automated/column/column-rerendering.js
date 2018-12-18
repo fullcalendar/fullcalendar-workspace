@@ -104,7 +104,7 @@ describe('column-based view rerendering', function() {
         }, 100)
       },
       resourceRender(arg) {
-        $(arg.labelEl).text(arg.resource.title + renderCalls)
+        $(arg.el).text(arg.resource.title + renderCalls)
       },
       _eventsPositioned() {
         const cellText = $.trim($('th[data-resource-id="a"]').text())

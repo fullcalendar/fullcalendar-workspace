@@ -4,7 +4,7 @@ describe('timeline view rerendering', function() {
   describe('when using rerenderEvents', function() {
 
     it('maintains scroll', function(done) {
-      testScroll(function() {
+      testScrollForEvents(function() {
         currentCalendar.rerenderEvents()
       }, done)
     })
@@ -13,7 +13,7 @@ describe('timeline view rerendering', function() {
   describe('when using refetchEvents', function() {
 
     it('maintains scroll', function(done) {
-      testScroll(function() {
+      testScrollForEvents(function() {
         currentCalendar.refetchEvents()
       }, done)
     })
@@ -22,13 +22,13 @@ describe('timeline view rerendering', function() {
   describe('when using rerenderResources', function() {
 
     it('rerenders the DOM', function(done) {
-      testRerender(function() {
+      testResourceRerender(function() {
         currentCalendar.rerenderResources()
       }, done)
     })
 
     it('maintains scroll', function(done) {
-      testScroll(function() {
+      testScrollForResources(function() {
         currentCalendar.rerenderResources()
       }, done)
     })
@@ -37,13 +37,13 @@ describe('timeline view rerendering', function() {
   describe('when using refetchResources', function() {
 
     it('rerenders the DOM', function(done) {
-      testRefetch(function() {
+      testResourceRefetch(function() {
         currentCalendar.refetchResources()
       }, done)
     })
 
     it('maintains scroll', function(done) {
-      testRefetch(function() {
+      testResourceRefetch(function() {
         currentCalendar.refetchResources()
       }, done)
     })
@@ -62,7 +62,7 @@ describe('timeline view rerendering', function() {
     it('adjusts to removeResource', function() {
       initCalendar()
       expect(getOrderedResourceIds()).toEqual([ 'a', 'b', 'c' ])
-      currentCalendar.removeResource('a')
+      currentCalendar.getResourceById('a').remove()
       expect(getOrderedResourceIds()).toEqual([ 'b', 'c' ])
     })
 
@@ -102,8 +102,9 @@ describe('timeline view rerendering', function() {
   })
 
 
-  var testScroll = function(actionFunc, doneFunc) {
+  function testScrollForEvents(actionFunc, doneFunc) {
     let renderCalls = 0
+
     initCalendar({
       now: '2015-08-07',
       scrollTime: '00:00',
@@ -119,15 +120,18 @@ describe('timeline view rerendering', function() {
         }, 100)
       },
       _eventsPositioned() {
-        const scrollEl = $('.fc-body .fc-time-area .fc-scroller')
         renderCalls++
+
         if (renderCalls === 1) {
+          const scrollEl = $('.fc-body .fc-time-area .fc-scroller')
           setTimeout(function() {
             scrollEl.scrollTop(100)
             scrollEl.scrollLeft(50)
             setTimeout(actionFunc, 100)
           }, 100)
+
         } else if (renderCalls === 2) {
+          const scrollEl = $('.fc-body .fc-time-area .fc-scroller')
           expect(scrollEl.scrollTop()).toBe(100)
           expect(scrollEl.scrollLeft()).toBe(50)
           doneFunc()
@@ -136,8 +140,9 @@ describe('timeline view rerendering', function() {
     })
   }
 
-  var testRerender = function(actionFunc, doneFunc) {
+  function testScrollForResources(actionFunc, doneFunc) {
     let renderCalls = 0
+
     initCalendar({
       now: '2015-08-07',
       scrollTime: '00:00',
@@ -152,27 +157,31 @@ describe('timeline view rerendering', function() {
           callback(getResources())
         }, 100)
       },
-      resourceRender(arg) {
-        if (arg.resource.id === 'e') {
-          $(arg.labelEl).find('.fc-cell-text').text(arg.resource.title + renderCalls)
-        }
-      },
-      _eventsPositioned() {
-        const cellText = $.trim($('tr[data-resource-id="e"] .fc-cell-text').text())
+      resourceRender() {
         renderCalls++
-        if (renderCalls === 1) {
-          expect(cellText).toBe('Auditorium E0')
-          actionFunc()
-        } else if (renderCalls === 2) {
-          expect(cellText).toBe('Auditorium E1')
+
+        if (renderCalls === RESOURCE_CNT) {
+          const scrollEl = $('.fc-body .fc-time-area .fc-scroller')
+          setTimeout(function() {
+            scrollEl.scrollTop(100)
+            scrollEl.scrollLeft(50)
+            setTimeout(actionFunc, 100)
+          }, 100)
+
+        } else if (renderCalls === RESOURCE_CNT * 2) {
+          const scrollEl = $('.fc-body .fc-time-area .fc-scroller')
+          expect(scrollEl.scrollTop()).toBe(100)
+          expect(scrollEl.scrollLeft()).toBe(50)
           doneFunc()
         }
       }
     })
   }
 
-  function testRefetch(actionFunc, doneFunc) {
+  function testResourceRerender(actionFunc, doneFunc) {
+    let fetchCnt = 0
     let renderCalls = 0
+
     initCalendar({
       now: '2015-08-07',
       scrollTime: '00:00',
@@ -184,22 +193,60 @@ describe('timeline view rerendering', function() {
       },
       resources(arg, callback) {
         setTimeout(function() {
-          callback(getResources(renderCalls)) // renderCalls affects data!
+          callback(getResources(fetchCnt++)) // parameter will affect text
         }, 100)
       },
-      _eventsPositioned() {
-        const cellText = $.trim($('tr[data-resource-id="e"] .fc-cell-text').text())
+      resourceRender(arg) {
         renderCalls++
-        if (renderCalls === 1) {
+
+        if (renderCalls === RESOURCE_CNT) {
+          actionFunc()
+
+        } else if (renderCalls === RESOURCE_CNT * 2) {
+          let cellText = $.trim($('tr[data-resource-id="e"] .fc-cell-text').text())
+          expect(cellText).toBe('Auditorium E0') // didn't request data again
+          doneFunc()
+        }
+      }
+    })
+  }
+
+  function testResourceRefetch(actionFunc, doneFunc) {
+    let fetchCnt = 0
+    let renderCalls = 0
+
+    initCalendar({
+      now: '2015-08-07',
+      scrollTime: '00:00',
+      defaultView: 'timelineDay',
+      events(arg, callback) {
+        setTimeout(function() {
+          callback(getEvents())
+        }, 100)
+      },
+      resources(arg, callback) {
+        setTimeout(function() {
+          callback(getResources(fetchCnt++)) // parameter will affect text
+        }, 100)
+      },
+      resourceRender() {
+        renderCalls++
+
+        if (renderCalls === RESOURCE_CNT) {
+          let cellText = $.trim($('tr[data-resource-id="e"] .fc-cell-text').text())
           expect(cellText).toBe('Auditorium E0')
           actionFunc()
-        } else if (renderCalls === 2) {
+
+        } else if (renderCalls === RESOURCE_CNT * 2) {
+          let cellText = $.trim($('tr[data-resource-id="e"] .fc-cell-text').text())
           expect(cellText).toBe('Auditorium E1')
           doneFunc()
         }
       }
     })
-  };
+  }
+
+  const RESOURCE_CNT = 26
 
   function getResources(cnt) {
     if (cnt == null) { cnt = '' }

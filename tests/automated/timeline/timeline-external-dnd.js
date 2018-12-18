@@ -20,10 +20,14 @@ describe('timeline-view external element drag-n-drop', function() {
     dragEl = $('<a' +
       ' class="external-event fc-event"' +
       ' style="width:100px"' +
-      ' data-event=\'{"title":"my external event"}\'' +
       '>external</a>')
       .appendTo('body')
-      .draggable()
+
+    new FullCalendar.Draggable(dragEl[0], {
+      eventData: {
+        title: 'my external event'
+      }
+    })
   })
 
   afterEach(function() {
@@ -55,8 +59,10 @@ describe('timeline-view external element drag-n-drop', function() {
             expect(arg.event.title).toBe('my external event')
             expect(arg.event.start).toEqualDate(tz.createDate('2015-11-29T05:00:00'))
             expect(arg.event.end).toBe(null)
-            const resource = currentCalendar.getEventResource(arg.event)
-            expect(resource.id).toBe('b')
+
+            let resources = arg.event.resources
+            expect(resources.length).toBe(1)
+            expect(resources[0].id).toBe('b')
           }))
       })
     })

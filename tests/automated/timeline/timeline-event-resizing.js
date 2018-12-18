@@ -55,8 +55,9 @@ describe('timeline event resizing', function() {
                   (resizeSpy = spyCall(function(arg) {
                     expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
                     expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
-                    const resource = currentCalendar.getEventResource(arg.event)
-                    expect(resource).toBeFalsy()
+
+                    let resources = arg.event.resources
+                    expect(resources.length).toBe(0)
                   }))
               })
             })
@@ -86,8 +87,10 @@ describe('timeline event resizing', function() {
                   (resizeSpy = spyCall(function(arg) {
                     expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
                     expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
-                    const resource = currentCalendar.getEventResource(arg.event)
-                    expect(resource.id).toBe('b')
+
+                    let resources = arg.event.resources
+                    expect(resources.length).toBe(1)
+                    expect(resources[0].id).toBe('b')
                   }))
               })
             })
@@ -113,8 +116,10 @@ describe('timeline event resizing', function() {
                   (resizeSpy = spyCall(function(arg) {
                     expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
                     expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
-                    const resource = currentCalendar.getEventResource(arg.event)
-                    expect(resource.id).toBe('b')
+
+                    let resources = arg.event.resources
+                    expect(resources.length).toBe(1)
+                    expect(resources[0].id).toBe('b')
                   }))
               })
             })
@@ -140,7 +145,9 @@ describe('timeline event resizing', function() {
                   (resizeSpy = spyCall(function(arg) {
                     expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
                     expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
+
                     let resourceIds = arg.event.resources.map((resource) => resource.id)
+                    resourceIds.sort()
                     expect(resourceIds).toEqual([ 'a', 'b' ])
                   }))
               })
@@ -175,8 +182,10 @@ describe('timeline event resizing', function() {
                 (resizeSpy = spyCall(function(arg) {
                   expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
                   expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:45:00'))
-                  const resource = currentCalendar.getEventResource(arg.event)
-                  expect(resource.id).toBe('b')
+
+                  let resources = arg.event.resources
+                  expect(resources.length).toBe(1)
+                  expect(resources[0].id).toBe('b')
                 }))
             })
           })
@@ -205,8 +214,10 @@ describe('timeline event resizing', function() {
                 isTouch: true,
                 end: getResourceTimelinePoint('b', '2015-11-28T07:00:00'),
                 callback() {
-                  expect(resizeSpy).toHaveBeenCalled()
-                  done()
+                  setTimeout(function() { // for next test. won't ignore mousedown
+                    expect(resizeSpy).toHaveBeenCalled()
+                    done()
+                  }, 500)
                 }
               })
             }
@@ -216,8 +227,10 @@ describe('timeline event resizing', function() {
           (resizeSpy = spyCall(function(arg) {
             expect(arg.event.start).toEqualDate('2015-11-28T04:00:00Z')
             expect(arg.event.end).toEqualDate('2015-11-28T07:30:00Z')
-            const resource = currentCalendar.getEventResource(arg.event)
-            expect(resource.id).toBe('b')
+
+            let resources = arg.event.resources
+            expect(resources.length).toBe(1)
+            expect(resources[0].id).toBe('b')
           }))
       })
     })
@@ -249,8 +262,10 @@ describe('timeline event resizing', function() {
             (resizeSpy = spyCall(function(arg) {
               expect(arg.event.start).toEqualDate('2015-11-03')
               expect(arg.event.end).toEqualDate('2015-11-06')
-              const resource = currentCalendar.getEventResource(arg.event)
-              expect(resource.id).toBe('a')
+
+              let resources = arg.event.resources
+              expect(resources.length).toBe(1)
+              expect(resources[0].id).toBe('a')
             }))
         })
       })
@@ -283,8 +298,10 @@ describe('timeline event resizing', function() {
             (resizeSpy = spyCall(function(arg) {
               expect(arg.event.start).toEqualDate('2015-01-18')
               expect(arg.event.end).toEqualDate('2015-02-15')
-              const resource = currentCalendar.getEventResource(arg.event)
-              expect(resource.id).toBe('a')
+
+              let resources = arg.event.resources
+              expect(resources.length).toBe(1)
+              expect(resources[0].id).toBe('a')
             }))
         })
       })

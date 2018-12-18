@@ -39,8 +39,8 @@ describe('column-view resourceRender trigger', function() {
           initCalendar({
             resourceRender(arg) {
               if (arg.resource.id === 'a') {
-                expect(arg.labelEl instanceof HTMLTableCellElement).toBe(true)
-                expect(arg.labelEl).toContainText('Resource A')
+                expect(arg.el instanceof HTMLTableCellElement).toBe(true)
+                expect(arg.el).toContainText('Resource A')
                 callCnt++
               }
             },
@@ -68,8 +68,8 @@ describe('column-view resourceRender trigger', function() {
           initCalendar({
             resourceRender(arg) {
               if (arg.resource.id === 'a') {
-                expect(arg.labelEl instanceof HTMLTableCellElement).toBe(true)
-                expect(arg.labelEl).toContainText('Resource A')
+                expect(arg.el instanceof HTMLTableCellElement).toBe(true)
+                expect(arg.el).toContainText('Resource A')
                 callCnt++
               }
             },
@@ -91,8 +91,8 @@ describe('column-view resourceRender trigger', function() {
           initCalendar({
             resourceRender(arg) {
               if (arg.resource.id === 'a') {
-                expect(arg.labelEl instanceof HTMLTableCellElement).toBe(true)
-                expect(arg.labelEl).toContainText('Resource A')
+                expect(arg.el instanceof HTMLTableCellElement).toBe(true)
+                expect(arg.el).toContainText('Resource A')
                 callCnt++
               }
             },
