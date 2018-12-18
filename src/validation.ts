@@ -44,7 +44,7 @@ function filterConstraints(resourceId: string, constraints: Constraint[]) {
       // then this resource is unconditionally prohibited, which is what a `false` value does.
       for (let defId in defs) {
         let resourceIds = defs[defId].resourceIds
-        if (resourceIds.length && resourceIds.indexOf(resourceId) === -1) { // TODO: use a hash?
+        if (resourceIds.length && resourceIds.indexOf(resourceId) === -1) { // TODO: use a hash?!!! (for other reasons too)
           return false
         }
       }

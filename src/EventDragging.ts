@@ -21,6 +21,9 @@ export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit
   }
 }
 
+/*
+TODO: all this would be much easier if we were using a hash!
+*/
 export function applyEventDefMutation(eventDef: EventDef, mutation: EventMutation, calendar: Calendar) {
   let resourceMutation = mutation.resourceMutation
 
@@ -29,7 +32,13 @@ export function applyEventDefMutation(eventDef: EventDef, mutation: EventMutatio
 
     if (index !== -1) {
       let resourceIds = eventDef.resourceIds.slice() // copy
-      resourceIds.splice(index, 1, resourceMutation.setResourceId) // remove and add
+
+      resourceIds.splice(index, 1) // remove
+
+      if (resourceIds.indexOf(resourceMutation.setResourceId) === -1) { // not already in there
+        resourceIds.push(resourceMutation.setResourceId) // add
+      }
+
       eventDef.resourceIds = resourceIds
     }
   }

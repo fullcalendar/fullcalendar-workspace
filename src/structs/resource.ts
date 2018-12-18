@@ -59,7 +59,10 @@ export function parseResource(input: ResourceInput, parentId: string = '', store
     props.id = PRIVATE_ID_PREFIX + (uid++)
   }
 
-  props.parentId = parentId
+  if (!props.parentId) { // give precedence to the parentId property
+    props.parentId = parentId
+  }
+
   props.businessHours = props.businessHours ? parseBusinessHours(props.businessHours, calendar) : null
   props.ui = ui
   props.extendedProps = assignTo({}, leftovers1, props.extendedProps)

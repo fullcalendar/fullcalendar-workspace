@@ -33,7 +33,7 @@ let uid = 0
 function createInitialSource(calendar: Calendar) {
   let input = calendar.opt('resources')
 
-  if (input != null) {
+  if (input) {
     let source = parseResourceSource(input, calendar)
 
     if (!calendar.opt('refetchResourcesOnNavigate')) {

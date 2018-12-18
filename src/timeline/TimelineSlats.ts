@@ -115,20 +115,29 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
   positionToHit(leftPosition) {
     let { outerCoordCache } = this
     let { tDateProfile } = this.props
-    let index = outerCoordCache.leftToIndex(leftPosition)
+    let slatIndex = outerCoordCache.leftToIndex(leftPosition)
 
-    if (index != null) {
-      let start = tDateProfile.slotDates[index]
-      let end = this.dateEnv.add(start, tDateProfile.slotDuration)
+    if (slatIndex != null) {
+      // somewhat similar to what TimeGrid does. consolidate?
+      let slatWidth = outerCoordCache.getWidth(slatIndex)
+      let partial = this.isRtl ?
+        (outerCoordCache.rights[slatIndex] - leftPosition) / slatWidth :
+        (leftPosition - outerCoordCache.lefts[slatIndex]) / slatWidth
+      let localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot)
+      let start = this.dateEnv.add(
+        tDateProfile.slotDates[slatIndex],
+        multiplyDuration(tDateProfile.snapDuration, localSnapIndex)
+      )
+      let end = this.dateEnv.add(start, tDateProfile.snapDuration)
 
       return {
         dateSpan: {
           range: { start, end },
           allDay: !this.props.tDateProfile.isTimeScale,
         },
-        dayEl: this.slatColEls[index],
-        left: outerCoordCache.lefts[index],
-        right: outerCoordCache.rights[index]
+        dayEl: this.slatColEls[slatIndex],
+        left: outerCoordCache.lefts[slatIndex], // TODO: make aware of snaps?
+        right: outerCoordCache.rights[slatIndex]
       }
     }
 

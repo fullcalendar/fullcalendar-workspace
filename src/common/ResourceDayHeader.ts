@@ -181,8 +181,14 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
   processResourceEls(resources: Resource[]) {
     let { view } = this
 
-    findElements(this.thead, '.fc-resource-cell').forEach((node, col) => {
-      let resource = resources[col % resources.length]
+    findElements(this.thead, '.fc-resource-cell').forEach((node, col) => { // does DOM-order
+
+      col = col % resources.length
+      if (this.isRtl) {
+        col = resources.length - 1 - col
+      }
+
+      let resource = resources[col]
 
       view.publiclyTrigger('resourceRender', [
         {
