@@ -4,7 +4,6 @@ import SpreadsheetRow from './SpreadsheetRow'
 import TimelineLane from '../timeline/TimelineLane'
 import { Resource } from '../structs/resource'
 import { updateTrResourceId } from './render-utils'
-import ResourceApi from '../api/ResourceApi'
 
 
 export interface ResourceRowProps {
@@ -34,7 +33,6 @@ export default class ResourceRow extends Row<ResourceRowProps> {
   lane: TimelineLane
 
   private _updateTrResourceId = memoizeRendering(updateTrResourceId)
-  private _triggerResourceRender = memoizeRendering(this.triggerResourceRender)
 
   constructor(context: ComponentContext, a, b, c, d, timeAxis) {
     super(context, a, b, c, d)
@@ -90,23 +88,7 @@ export default class ResourceRow extends Row<ResourceRowProps> {
       eventResize: props.eventResize
     })
 
-    this._triggerResourceRender(this.spreadsheetRow.tr, this.timeAxisTr)
-
     this.isSizeDirty = true
-  }
-
-  // purposely does not accept resource obj. if did, would trigger every time data changed
-  triggerResourceRender(labelEl: HTMLElement, contentEl: HTMLElement) {
-    let { view } = this
-
-    view.publiclyTrigger('resourceRender', [
-      {
-        resource: new ResourceApi(this.calendar, this.props.resource),
-        labelEl,
-        contentEl,
-        view
-      }
-    ])
   }
 
   updateSize(isResize: boolean) {

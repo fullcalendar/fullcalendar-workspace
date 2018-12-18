@@ -44,8 +44,9 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   }
 
   renderRow(resource: Resource, rowSpans: number[], depth: number, colSpecs) {
-    let { tr, theme, calendar } = this
+    let { tr, theme, calendar, view } = this
     let resourceFields = buildResourceFields(resource) // slightly inefficient. already done up the call stack
+    let mainTd
 
     for (let i = 0; i < colSpecs.length; i++) {
       let colSpec = colSpecs[i]
@@ -91,12 +92,22 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
         td.appendChild(
           this.heightEl = createElement('div', null, td.childNodes) // inner wrap
         )
+        mainTd = td
       }
 
       tr.appendChild(td)
     }
 
     this.expanderIconEl = tr.querySelector('.fc-expander-space .fc-icon')
+
+    // wait until very end
+    view.publiclyTrigger('resourceRender', [
+      {
+        resource: new ResourceApi(calendar, resource),
+        el: mainTd,
+        view
+      }
+    ])
   }
 
   unrenderRow() {

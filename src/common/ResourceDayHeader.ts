@@ -193,8 +193,7 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
       view.publiclyTrigger('resourceRender', [
         {
           resource: new ResourceApi(this.calendar, resource),
-          labelEl: node, // head <td>
-          bodyEl: null, // body <td> (we don't compute, but API should stay consistent)
+          el: node, // head <td>
           view
         }
       ])
