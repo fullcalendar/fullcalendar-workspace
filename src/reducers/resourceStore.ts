@@ -1,4 +1,4 @@
-import { Calendar, assignTo } from 'fullcalendar'
+import { Calendar, assignTo, mapHash } from 'fullcalendar'
 import { ResourceAction } from './resources'
 import { ResourceHash, ResourceInput, parseResource } from '../structs/resource'
 import { ResourceSource } from '../structs/resource-source'
@@ -22,7 +22,10 @@ export default function(store: ResourceHash | undefined, action: ResourceAction,
       return setResourceProp(store, action.resourceId, action.propName, action.propValue)
 
     case 'RESET_RESOURCES':
-      return Object.assign({}, store) // returns a new object with the same contents
+      // must make the calendar think each resource is a new object :/
+      return mapHash(store, function(resource) {
+        return Object.assign({}, resource)
+      })
 
     default:
       return store
