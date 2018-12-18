@@ -1,5 +1,6 @@
 import { FgEventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement, ComponentContext } from 'fullcalendar'
 import TimeAxis from './TimeAxis'
+import { computeResourceEditable } from '../EventDragging'
 
 export default class TimelineLaneEventRenderer extends FgEventRenderer {
 
@@ -18,7 +19,7 @@ export default class TimelineLaneEventRenderer extends FgEventRenderer {
     let eventRange = seg.eventRange
     let eventDef = eventRange.def
     let eventUi = eventRange.ui
-    let isDraggable = eventUi.startEditable
+    let isDraggable = eventUi.startEditable || computeResourceEditable(eventDef, this.timeAxis.calendar)
     let isResizableFromStart = seg.isStart && eventUi.durationEditable && this.context.options.eventResizableFromStart
     let isResizableFromEnd = seg.isEnd && eventUi.durationEditable
 

@@ -45,16 +45,25 @@ export function applyEventDefMutation(eventDef: EventDef, mutation: EventMutatio
 }
 
 /*
+HACK
 TODO: use EventUi system instead of this
 */
-function computeResourceEditable(eventDef: EventDef, calendar: Calendar): boolean {
+export function computeResourceEditable(eventDef: EventDef, calendar: Calendar): boolean {
   let { resourceEditable } = eventDef
 
   if (resourceEditable == null) {
-    resourceEditable = calendar.opt('eventResourceEditable')
+    let source = eventDef.sourceId && calendar.state.eventSources[eventDef.sourceId]
+
+    if (source) {
+      resourceEditable = source.extendedProps.resourceEditable // used the Source::extendedProps hack
+    }
 
     if (resourceEditable == null) {
-      resourceEditable = true // TODO: use defaults system instead
+      resourceEditable = calendar.opt('eventResourceEditable')
+
+      if (resourceEditable == null) {
+        resourceEditable = true // TODO: use defaults system instead
+      }
     }
   }
 
