@@ -4,21 +4,21 @@ import ResourceSplitter from './common/ResourceSplitter'
 export function isPropsValidWithResources(props: SplittableProps, calendar: Calendar): boolean {
   let splitter = new ResourceSplitter()
 
-  let sets = splitter.splitProps(
-    Object.assign({}, props, {
-      resourceStore: calendar.state.resourceStore
-    })
-  )
+  let sets = splitter.splitProps({
+    ...props,
+    resourceStore: calendar.state.resourceStore
+  })
 
   for (let resourceId in sets) {
     let props = sets[resourceId]
 
     // merge in event data from the non-resource segment
     if (resourceId && sets['']) { // current segment is not the non-resource one, and there IS a non-resource one
-      props = Object.assign({}, props, {
+      props = {
+        ...props,
         eventStore: mergeEventStores(sets[''].eventStore, props.eventStore),
-        eventUiBases: Object.assign({}, sets[''].eventUiBases,  props.eventUiBases)
-      })
+        eventUiBases: { ...sets[''].eventUiBases,  ...props.eventUiBases }
+      }
     }
 
     if (!isPropsValid(props, calendar, { resourceId }, filterConfig.bind(null, resourceId))) {
@@ -30,9 +30,10 @@ export function isPropsValidWithResources(props: SplittableProps, calendar: Cale
 }
 
 function filterConfig(resourceId, config: EventUi) {
-  return Object.assign({}, config, {
+  return {
+    ...config,
     constraints: filterConstraints(resourceId, config.constraints)
-  })
+  }
 }
 
 function filterConstraints(resourceId: string, constraints: Constraint[]) {

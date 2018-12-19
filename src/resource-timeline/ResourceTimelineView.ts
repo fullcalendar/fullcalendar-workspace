@@ -202,13 +202,12 @@ export default class ResourceTimelineView extends View {
     })
 
     // for all-resource bg events / selections / business-hours
-    this.lane.receiveProps(
-      Object.assign({}, splitProps[''], {
-        dateProfile: props.dateProfile,
-        nextDayThreshold: this.nextDayThreshold,
-        businessHours: hasResourceBusinessHours ? null : props.businessHours
-      })
-    )
+    this.lane.receiveProps({
+      ...splitProps[''],
+      dateProfile: props.dateProfile,
+      nextDayThreshold: this.nextDayThreshold,
+      businessHours: hasResourceBusinessHours ? null : props.businessHours
+    })
 
     let newRowNodes = this.buildRowNodes(
       props.resourceStore,
@@ -352,20 +351,19 @@ export default class ResourceTimelineView extends View {
       } else {
         let resource = (rowNode as ResourceNode).resource;
 
-        (rowComponent as ResourceRow).receiveProps(
-          Object.assign({}, splitProps[resource.id], {
-            dateProfile,
-            nextDayThreshold: this.nextDayThreshold,
-            businessHours: resource.businessHours || fallbackBusinessHours,
-            colSpecs: this.colSpecs,
-            id: rowNode.id,
-            rowSpans: (rowNode as ResourceNode).rowSpans,
-            depth: (rowNode as ResourceNode).depth,
-            isExpanded: rowNode.isExpanded,
-            hasChildren: (rowNode as ResourceNode).hasChildren,
-            resource: (rowNode as ResourceNode).resource
-          })
-        )
+        (rowComponent as ResourceRow).receiveProps({
+          ...splitProps[resource.id],
+          dateProfile,
+          nextDayThreshold: this.nextDayThreshold,
+          businessHours: resource.businessHours || fallbackBusinessHours,
+          colSpecs: this.colSpecs,
+          id: rowNode.id,
+          rowSpans: (rowNode as ResourceNode).rowSpans,
+          depth: (rowNode as ResourceNode).depth,
+          isExpanded: rowNode.isExpanded,
+          hasChildren: (rowNode as ResourceNode).hasChildren,
+          resource: (rowNode as ResourceNode).resource
+        })
       }
     }
   }

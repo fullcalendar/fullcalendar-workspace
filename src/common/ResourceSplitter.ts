@@ -12,10 +12,10 @@ creates a '' entry which is when something has NO resource.
 export default class ResourceSplitter extends Splitter<SplittableResourceProps> {
 
   getKeyInfo(props: SplittableResourceProps) {
-    return Object.assign(
-      { '': {} }, // needed for non-resource
-      props.resourceStore // already has `ui` and `businessHours` keys!
-    )
+    return {
+      '': {}, // needed for non-resource
+      ...props.resourceStore // already has `ui` and `businessHours` keys!
+    }
   }
 
   getKeysForDateSpan(dateSpan: DateSpan): string[] {

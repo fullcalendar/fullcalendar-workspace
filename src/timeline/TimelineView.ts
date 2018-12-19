@@ -66,11 +66,10 @@ export default class TimelineView extends View {
       dateProfile: props.dateProfile
     })
 
-    this.lane.receiveProps(
-      Object.assign({}, props, {
-        nextDayThreshold: this.nextDayThreshold
-      })
-    )
+    this.lane.receiveProps({
+      ...props,
+      nextDayThreshold: this.nextDayThreshold
+    })
   }
 
   updateSize(isResize, totalHeight, isAuto) {

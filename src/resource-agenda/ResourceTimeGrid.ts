@@ -54,12 +54,11 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
     // HACK
     ;(timeGrid as any).allowAcrossResources = dayRanges.length === 1
 
-    timeGrid.receiveProps(
-      Object.assign({}, this.joiner.joinProps(slicedProps, resourceDayTable), {
-        dateProfile,
-        cells: resourceDayTable.cells[0]
-      })
-    )
+    timeGrid.receiveProps({
+      ...this.joiner.joinProps(slicedProps, resourceDayTable),
+      dateProfile,
+      cells: resourceDayTable.cells[0]
+    })
   }
 
   renderNowIndicator(date: DateMarker) {
@@ -122,9 +121,10 @@ class ResourceTimeGridJoiner extends VResourceJoiner<TimeGridSeg> {
 
   transformSeg(seg: TimeGridSeg, resourceDayTable: AbstractResourceDayTable, resourceI: number) {
     return [
-      Object.assign({}, seg, {
+      {
+        ...seg,
         col: resourceDayTable.computeCol(seg.col, resourceI)
-      })
+      }
     ]
   }
 

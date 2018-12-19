@@ -80,22 +80,20 @@ export default class ResourceAgendaView extends AbstractAgendaView {
       })
     }
 
-    this.resourceTimeGrid.receiveProps(
-      Object.assign({}, splitProps['timed'], {
-        dateProfile: props.dateProfile,
-        resourceDayTable
-      })
-    )
+    this.resourceTimeGrid.receiveProps({
+      ...splitProps['timed'],
+      dateProfile: props.dateProfile,
+      resourceDayTable
+    })
 
     if (this.resourceDayGrid) {
-      this.resourceDayGrid.receiveProps(
-        Object.assign({}, splitProps['allDay'], {
-          dateProfile: props.dateProfile,
-          resourceDayTable,
-          isRigid: false,
-          nextDayThreshold: this.nextDayThreshold
-        })
-      )
+      this.resourceDayGrid.receiveProps({
+        ...splitProps['allDay'],
+        dateProfile: props.dateProfile,
+        resourceDayTable,
+        isRigid: false,
+        nextDayThreshold: this.nextDayThreshold
+      })
     }
   }
 

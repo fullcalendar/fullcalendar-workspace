@@ -53,13 +53,12 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
     // HACK
     ;(dayGrid as any).allowAcrossResources = resourceDayTable.dayTable.colCnt === 1
 
-    dayGrid.receiveProps(
-      Object.assign({}, this.joiner.joinProps(slicedProps, resourceDayTable), {
-        dateProfile,
-        cells: resourceDayTable.cells,
-        isRigid: props.isRigid
-      })
-    )
+    dayGrid.receiveProps({
+      ...this.joiner.joinProps(slicedProps, resourceDayTable),
+      dateProfile,
+      cells: resourceDayTable.cells,
+      isRigid: props.isRigid
+    })
   }
 
   prepareHits() {
@@ -114,10 +113,12 @@ class ResourceDayGridJoiner extends VResourceJoiner<DayGridSeg> {
     let colRanges = resourceDayTable.computeColRanges(seg.firstCol, seg.lastCol, resourceI)
 
     return colRanges.map(function(colRange) {
-      return Object.assign({}, seg, colRange, {
+      return {
+        ...seg,
+        ...colRange,
         isStart: seg.isStart && colRange.isStart,
         isEnd: seg.isEnd && colRange.isEnd
-      })
+      }
     })
   }
 

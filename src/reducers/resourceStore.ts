@@ -24,7 +24,7 @@ export default function(store: ResourceHash | undefined, action: ResourceAction,
     case 'RESET_RESOURCES':
       // must make the calendar think each resource is a new object :/
       return mapHash(store, function(resource) {
-        return Object.assign({}, resource)
+        return { ...resource }
       })
 
     default:
