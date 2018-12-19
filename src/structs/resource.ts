@@ -68,7 +68,7 @@ export function parseResource(input: ResourceInput, parentId: string = '', store
   props.extendedProps = assignTo({}, leftovers1, props.extendedProps)
 
   if (store[props.id]) {
-    console.warn('duplicate resource ID')
+    // console.warn('duplicate resource ID')
 
   } else {
     store[props.id] = props as Resource
