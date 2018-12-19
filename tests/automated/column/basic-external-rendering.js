@@ -31,7 +31,7 @@ describe('basic-view event drag-n-drop', function() {
         new FullCalendar.Draggable(dragEl[0], {
           eventData: {
             title: 'my external event',
-            time: '05:00'
+            startTime: '05:00'
           }
         })
 
