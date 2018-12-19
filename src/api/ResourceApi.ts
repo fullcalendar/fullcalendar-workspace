@@ -27,6 +27,23 @@ export default class ResourceApi {
     })
   }
 
+  getChildren(): ResourceApi[] {
+    let thisResourceId = this._resource.id
+    let calendar = this._calendar
+    let { resourceStore } = calendar.state
+    let childApis: ResourceApi[] = []
+
+    for (let resourceId in resourceStore) {
+      if (resourceStore[resourceId].parentId === thisResourceId) {
+        childApis.push(
+          new ResourceApi(calendar, resourceStore[resourceId])
+        )
+      }
+    }
+
+    return childApis
+  }
+
   get id(): string {
     return this._resource.id
   }
@@ -40,8 +57,8 @@ export default class ResourceApi {
   TODO: make EventApi::resourceIds a hash or keep an index in the Calendar's state
   */
   get events(): EventApi[] {
-    let calendar = this._calendar
     let thisResourceId = this._resource.id
+    let calendar = this._calendar
     let { defs, instances } = calendar.state.eventStore
     let eventApis: EventApi[] = []
 
