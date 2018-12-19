@@ -10,6 +10,7 @@ import { isPropsValidWithResources } from './validation'
 import { transformExternalDef } from './ExternalElementDragging'
 import { transformEventResizeJoin } from './EventResizing'
 import './api/EventApi'
+import { injectLicenseWarning } from './license'
 
 import TimelineView from './timeline/TimelineView'
 import ResourceTimelineView from './resource-timeline/ResourceTimelineView'
@@ -37,7 +38,8 @@ export const GeneralPlugin = exportHooks.createPlugin({
   viewPropsTransformers: [ ResourceDataAdder, ResourceEventConfigAdder ],
   isPropsValid: isPropsValidWithResources,
   externalDefTransforms: [ transformExternalDef ],
-  eventResizeJoinTransforms: [ transformEventResizeJoin ]
+  eventResizeJoinTransforms: [ transformEventResizeJoin ],
+  viewContainerModifiers: [ injectLicenseWarning ]
 })
 
 exportHooks.Calendar.defaultPlugins.push( // TODO: kill
