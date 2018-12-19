@@ -10,6 +10,7 @@ import TimelineLane from '../timeline/TimelineLane'
 import { ResourceViewProps } from '../View'
 import ResourceSplitter from '../common/ResourceSplitter'
 import { buildResourceTextFunc } from '../common/resource-rendering'
+import { __assign } from 'tslib'
 
 export default class ResourceTimelineView extends View {
 
@@ -494,7 +495,7 @@ export default class ResourceTimelineView extends View {
     let scroll = super.queryScroll()
 
     if (this.props.resourceStore) {
-      Object.assign(scroll, this.queryResourceScroll())
+      __assign(scroll, this.queryResourceScroll())
     }
 
     return scroll

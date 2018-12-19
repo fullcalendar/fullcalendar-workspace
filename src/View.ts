@@ -1,6 +1,7 @@
 import { View, rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewSpec, ViewPropsTransformer, CalendarComponentProps, memoize, mapHash, EventUi, isPropsEqual, memoizeOutput, EventUiHash, EventDefHash, EventDef, combineEventUis, EventStore, DateRange } from 'fullcalendar'
 import { ResourceHash } from './structs/resource'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
+import { __assign } from 'tslib'
 
 
 // for when resource views need resource data
@@ -35,7 +36,7 @@ function filterResources(resourceStore: ResourceHash, doFilterResourcesWithEvent
     let instancesInRange = filterEventInstancesInRange(eventStore.instances, activeRange)
     let hasEvents = computeHasEvents(instancesInRange, eventStore.defs)
 
-    Object.assign(hasEvents, computeAncestorHasEvents(hasEvents, resourceStore))
+    __assign(hasEvents, computeAncestorHasEvents(hasEvents, resourceStore))
 
     return filterHash(resourceStore, function(resource, resourceId) {
       return hasEvents[resourceId]

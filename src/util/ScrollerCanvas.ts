@@ -1,4 +1,5 @@
 import { htmlToElement, applyStyle, forceClassName } from 'fullcalendar'
+import { __assign } from 'tslib'
 
 /*
 A rectangular area of content that lives within a Scroller.
@@ -37,7 +38,7 @@ export default class ScrollerCanvas {
     if (!gutters) {
       this.gutters = {}
     } else {
-      Object.assign(this.gutters, gutters)
+      __assign(this.gutters, gutters)
     }
     this.updateSize()
   }

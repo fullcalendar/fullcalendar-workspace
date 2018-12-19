@@ -1,5 +1,6 @@
 import { SlicedProps, EventDef, mapHash, Splitter, DayTable, DayTableCell, ViewSpec, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from 'fullcalendar'
 import { Resource } from '../structs/resource'
+import { __assign } from 'tslib'
 
 export interface ResourceDayTableCell extends DayTableCell {
   resource: Resource
@@ -322,7 +323,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
           )
         }
 
-        Object.assign(affectedInstances, interaction.affectedInstances)
+        __assign(affectedInstances, interaction.affectedInstances)
         isEvent = isEvent || interaction.isEvent
         sourceSeg = sourceSeg || interaction.sourceSeg
       }
