@@ -1,4 +1,4 @@
-import { ConstraintInput, AllowFunc, refineProps, assignTo, EventStore, parseBusinessHours, Calendar, EventUi, processScopedUiProps, BusinessHoursInput } from 'fullcalendar'
+import { ConstraintInput, AllowFunc, refineProps, EventStore, parseBusinessHours, Calendar, EventUi, processScopedUiProps, BusinessHoursInput } from 'fullcalendar'
 
 export interface ResourceInput {
   id?: string
@@ -65,7 +65,7 @@ export function parseResource(input: ResourceInput, parentId: string = '', store
 
   props.businessHours = props.businessHours ? parseBusinessHours(props.businessHours, calendar) : null
   props.ui = ui
-  props.extendedProps = assignTo({}, leftovers1, props.extendedProps)
+  props.extendedProps = { ...leftovers1, ...props.extendedProps }
 
   if (store[props.id]) {
     // console.warn('duplicate resource ID')

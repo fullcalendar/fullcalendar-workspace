@@ -1,4 +1,4 @@
-import { Duration, EventStore, EventUiHash, DateMarker, DateSpan, MemoizedRendering, EventInteractionState, EventSegUiInteractionState, DateComponent, ComponentContext, Seg, DateRange, intersectRanges, addMs, DateProfile, memoizeRendering, Slicer, assignTo } from 'fullcalendar'
+import { Duration, EventStore, EventUiHash, DateMarker, DateSpan, MemoizedRendering, EventInteractionState, EventSegUiInteractionState, DateComponent, ComponentContext, Seg, DateRange, intersectRanges, addMs, DateProfile, memoizeRendering, Slicer } from 'fullcalendar'
 import { normalizeRange, isValidDate } from './timeline-date-profile'
 import TimelineLaneEventRenderer from './TimelineLaneEventRenderer'
 import TimelineLaneFillRenderer from './TimelineLaneFillRenderer'
@@ -119,7 +119,7 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
     if (state) {
       // HACK. eventRenderer and fillRenderer both use these segs. would compete over seg.el
       let segsForHighlight = state.segs.map(function(seg) {
-        return assignTo({}, seg)
+        return { ...seg }
       })
 
       this.eventRenderer.hideByHash(state.affectedInstances)

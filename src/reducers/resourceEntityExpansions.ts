@@ -1,5 +1,4 @@
 import { ResourceAction } from './resources'
-import { assignTo } from 'fullcalendar'
 
 export type ResourceEntityExpansions = { [id: string]: boolean }
 
@@ -8,9 +7,10 @@ export function reduceResourceEntityExpansions(expansions: ResourceEntityExpansi
     case 'INIT':
       return {}
     case 'SET_RESOURCE_ENTITY_EXPANDED':
-      return assignTo({}, expansions, {
+      return {
+        ...expansions,
         [action.id]: action.isExpanded
-      })
+      }
     default:
       return expansions
   }

@@ -1,4 +1,4 @@
-import { Calendar, DateProfile, assignTo, rangesEqual, DateRange } from 'fullcalendar'
+import { Calendar, DateProfile, rangesEqual, DateRange } from 'fullcalendar'
 import { ResourceSource, parseResourceSource, getResourceSourceDef, doesSourceIgnoreRange } from '../structs/resource-source'
 import { ResourceAction } from './resources'
 
@@ -93,19 +93,21 @@ function fetchSource(source: ResourceSource, fetchRange: DateRange | null, calen
     }
   )
 
-  return assignTo({}, source, {
+  return {
+    ...source,
     isFetching: true,
     latestFetchId: fetchId
-  })
+  }
 }
 
 function receiveResponse(source: ResourceSource, fetchId: string, fetchRange: DateRange) {
 
   if (fetchId === source.latestFetchId) {
-    return assignTo({}, source, {
+    return {
+      ...source,
       isFetching: false,
       fetchRange
-    })
+    }
   }
 
   return source

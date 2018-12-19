@@ -1,4 +1,4 @@
-import { Calendar, CalendarState, Action, assignTo, DateRange } from 'fullcalendar'
+import { Calendar, CalendarState, Action, DateRange } from 'fullcalendar'
 import { ResourceSource, ResourceSourceError } from '../structs/resource-source'
 import { ResourceHash, ResourceInput } from '../structs/resource'
 import reduceResourceSource from './resourceSource'
@@ -35,9 +35,10 @@ export default function(state: CalendarState, action: ResourceAction, calendar: 
   let resourceStore = reduceResourceStore(state.resourceStore, action, resourceSource, calendar)
   let resourceEntityExpansions = reduceResourceEntityExpansions(state.resourceEntityExpansions, action)
 
-  return assignTo({}, state, {
+  return {
+    ...state,
     resourceSource,
     resourceStore,
     resourceEntityExpansions
-  })
+  }
 }

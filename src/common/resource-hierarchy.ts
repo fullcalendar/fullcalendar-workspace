@@ -1,5 +1,5 @@
 import { ResourceHash, Resource } from "../structs/resource"
-import { flexibleCompare, compareByFieldSpecs, assignTo } from "fullcalendar"
+import { flexibleCompare, compareByFieldSpecs } from "fullcalendar"
 import { ResourceEntityExpansions } from '../reducers/resourceEntityExpansions'
 
 interface ParentNode {
@@ -237,7 +237,7 @@ function insertResourceNodeInSiblings(resourceNode, siblings, orderSpecs) {
 }
 
 export function buildResourceFields(resource: Resource) {
-  let obj = assignTo({}, resource.extendedProps, resource.ui, resource)
+  let obj = { ...resource.extendedProps, ...resource.ui, ...resource }
 
   delete obj.ui
   delete obj.extendedProps

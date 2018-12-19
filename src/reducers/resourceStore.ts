@@ -1,4 +1,4 @@
-import { Calendar, assignTo, mapHash } from 'fullcalendar'
+import { Calendar, mapHash } from 'fullcalendar'
 import { ResourceAction } from './resources'
 import { ResourceHash, ResourceInput, parseResource } from '../structs/resource'
 import { ResourceSource } from '../structs/resource-source'
@@ -49,20 +49,23 @@ function receiveRawResources(existingStore: ResourceHash, inputs: ResourceInput[
 function addResource(existingStore: ResourceHash, additions: ResourceHash) {
   // TODO: warn about duplicate IDs
 
-  return assignTo({}, existingStore, additions)
+  return { ...existingStore, ...additions }
 }
 
 function removeResource(existingStore: ResourceHash, resourceId: string) {
-  let newStore = assignTo({}, existingStore) as ResourceHash
+  let newStore = { ...existingStore } as ResourceHash
 
   delete newStore[resourceId]
 
   // promote children
   for (let childResourceId in newStore) { // a child, *maybe* but probably not
+
     if (newStore[childResourceId].parentId === resourceId) {
-      newStore[childResourceId] = assignTo({}, newStore[childResourceId], {
+
+      newStore[childResourceId] = {
+        ...newStore[childResourceId],
         parentId: ''
-      })
+      }
     }
   }
 
@@ -75,11 +78,13 @@ function setResourceProp(existingStore: ResourceHash, resourceId: string, name: 
   // TODO: sanitization
 
   if (existingResource) {
-    return assignTo({}, existingStore, {
-      [resourceId]: assignTo({}, existingResource, {
+    return {
+      ...existingStore,
+      [resourceId]: {
+        ...existingResource,
         [name]: value
-      })
-    })
+      }
+    }
   } else {
     return existingStore
   }

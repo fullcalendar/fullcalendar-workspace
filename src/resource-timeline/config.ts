@@ -1,4 +1,4 @@
-import { createPlugin, ViewSpec, assignTo } from 'fullcalendar'
+import { createPlugin, ViewSpec } from 'fullcalendar'
 import ResourceTimelineView from './ResourceTimelineView'
 import TimelineView from '../timeline/TimelineView'
 
@@ -11,10 +11,11 @@ const RESOURCE_TIMELINE_DEFAULTS = {
 function transformViewSpec(viewSpec: ViewSpec): ViewSpec {
 
   if (viewSpec.class === TimelineView && viewSpec.options.resources) {
-    return assignTo({}, viewSpec, {
+    return {
+      ...viewSpec,
       class: ResourceTimelineView,
-      options: assignTo({}, RESOURCE_TIMELINE_DEFAULTS, viewSpec.options)
-    })
+      options: { ...RESOURCE_TIMELINE_DEFAULTS, ...viewSpec.options }
+    }
   }
 
   return viewSpec

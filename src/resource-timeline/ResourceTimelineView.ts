@@ -1,4 +1,4 @@
-import { SplittableProps, memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, assignTo, DateProfile } from 'fullcalendar'
+import { SplittableProps, memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, DateProfile } from 'fullcalendar'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash } from '../structs/resource'
 import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
@@ -494,7 +494,7 @@ export default class ResourceTimelineView extends View {
     let scroll = super.queryScroll()
 
     if (this.props.resourceStore) {
-      assignTo(scroll, this.queryResourceScroll())
+      Object.assign(scroll, this.queryResourceScroll())
     }
 
     return scroll

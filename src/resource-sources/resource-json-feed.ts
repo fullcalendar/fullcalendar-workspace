@@ -1,5 +1,5 @@
 import * as request from 'superagent'
-import { assignTo, DateRange, Calendar } from 'fullcalendar'
+import { DateRange, Calendar } from 'fullcalendar'
 import { registerResourceSourceDef, ResourceSourceInput } from '../structs/resource-source'
 
 interface JsonFeedMeta {
@@ -102,7 +102,7 @@ function buildRequestParams(meta: JsonFeedMeta, range: DateRange | null, calenda
     customRequestParams = meta.extraData || {}
   }
 
-  assignTo(params, customRequestParams)
+  Object.assign(params, customRequestParams)
 
   return params
 }
