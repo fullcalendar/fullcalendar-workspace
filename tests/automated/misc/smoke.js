@@ -39,8 +39,8 @@ describe('timeline', function() {
         { id: '4', resourceId: 'a', start: '2016-01-07T03:00:00', end: '2016-01-07T08:00:00', title: 'event 4' },
         { id: '5', resourceId: 'b', start: '2016-01-07T00:30:00', end: '2016-01-07T02:30:00', title: 'event 5' }
       ],
-      _eventsPositioned(arg) {
-        var view = arg.view
+      _eventsPositioned() {
+        var view = currentCalendar.view
 
         switchCnt++
         switch (switchCnt) {

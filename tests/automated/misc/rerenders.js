@@ -15,66 +15,61 @@ describe('rerender performance for resource timeline', function() {
   })
 
   it('calls methods a limited number of times', function(done) {
-    const executeDateRender = spyOnMethod(ResourceTimelineView, 'executeDateRender')
-    const executeEventRender = spyOnMethod(ResourceTimelineView, 'executeEventRender')
-    const renderResources = spyOnMethod(ResourceTimelineView, 'renderResources')
-    const renderResource = spyOnMethod(ResourceTimelineView, 'renderResource')
-    const updateSize = spyOnMethod(ResourceTimelineView, 'updateSize')
+    let settings = {
+      datesRender: function() {},
+      eventRender: function() {},
+      resourceRender: function() {}
+    }
 
-    initCalendar()
+    let updateSize = spyOnMethod(ResourceTimelineView, 'updateSize')
+    spyOn(settings, 'datesRender')
+    spyOn(settings, 'eventRender')
+    spyOn(settings, 'resourceRender')
 
-    expect(executeDateRender.calls.count()).toBe(1)
-    expect(executeEventRender.calls.count()).toBe(1)
-    expect(renderResources.calls.count()).toBe(1)
-    expect(renderResource.calls.count()).toBe(1)
+    initCalendar(settings)
+
+    expect(settings.datesRender.calls.count()).toBe(1)
+    expect(settings.eventRender.calls.count()).toBe(1)
+    expect(settings.resourceRender.calls.count()).toBe(1)
     expect(updateSize.calls.count()).toBe(1)
 
     currentCalendar.changeView('agendaWeek')
 
-    expect(executeDateRender.calls.count()).toBe(1)
-    expect(executeEventRender.calls.count()).toBe(1)
-    expect(renderResources.calls.count()).toBe(1)
-    expect(renderResource.calls.count()).toBe(1)
-    expect(updateSize.calls.count()).toBe(3) // +2, TODO: get down to +1
+    expect(settings.datesRender.calls.count()).toBe(2) // +1
+    expect(settings.eventRender.calls.count()).toBe(2) // +1
+    expect(settings.resourceRender.calls.count()).toBe(1)
+    expect(updateSize.calls.count()).toBe(1) // won't change because moved AWAY from ResourceTimelineView
 
     currentCalendar.changeView('timelineDay')
 
-    expect(executeDateRender.calls.count()).toBe(2) // +1
-    expect(executeEventRender.calls.count()).toBe(2) // +1
-    expect(renderResources.calls.count()).toBe(2) // +1
-    expect(renderResource.calls.count()).toBe(2) // +1
-    expect(updateSize.calls.count()).toBe(4)
+    expect(settings.datesRender.calls.count()).toBe(3) // +1
+    expect(settings.eventRender.calls.count()).toBe(3) // +1
+    expect(settings.resourceRender.calls.count()).toBe(2) // +1
+    expect(updateSize.calls.count()).toBe(2) // +1
 
     currentCalendar.rerenderEvents()
 
-    expect(executeDateRender.calls.count()).toBe(2)
-    expect(executeEventRender.calls.count()).toBe(3) // +1
-    expect(renderResources.calls.count()).toBe(2)
-    expect(renderResource.calls.count()).toBe(2)
-    expect(updateSize.calls.count()).toBe(6) // +2, TODO: get down to +1
+    expect(settings.datesRender.calls.count()).toBe(3)
+    expect(settings.eventRender.calls.count()).toBe(4) // +1
+    expect(settings.resourceRender.calls.count()).toBe(2)
+    expect(updateSize.calls.count()).toBe(3) // +1
 
     currentCalendar.addResource({ title: 'Resource B' })
 
-    expect(executeDateRender.calls.count()).toBe(2)
-    expect(executeEventRender.calls.count()).toBe(3)
-    expect(renderResources.calls.count()).toBe(2)
-    expect(renderResource.calls.count()).toBe(3) // +1
-    expect(updateSize.calls.count()).toBe(7) // +1
+    expect(settings.datesRender.calls.count()).toBe(3)
+    expect(settings.eventRender.calls.count()).toBe(4)
+    expect(settings.resourceRender.calls.count()).toBe(3) // +1
+    expect(updateSize.calls.count()).toBe(4) // +1
 
     $(window).simulate('resize')
 
     setTimeout(function() {
 
-      expect(executeDateRender.calls.count()).toBe(2)
-      expect(executeEventRender.calls.count()).toBe(3)
-      expect(renderResources.calls.count()).toBe(2)
-      expect(renderResource.calls.count()).toBe(3)
-      expect(updateSize.calls.count()).toBe(8) // +1
+      expect(settings.datesRender.calls.count()).toBe(3)
+      expect(settings.eventRender.calls.count()).toBe(4)
+      expect(settings.resourceRender.calls.count()).toBe(3)
+      expect(updateSize.calls.count()).toBe(5) // +1
 
-      executeDateRender.restore()
-      executeEventRender.restore()
-      renderResources.restore()
-      renderResource.restore()
       updateSize.restore()
 
       done()

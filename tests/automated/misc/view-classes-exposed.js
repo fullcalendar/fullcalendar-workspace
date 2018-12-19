@@ -6,6 +6,5 @@ describe('internal View classes', function() {
     expect(typeof FullCalendar.ResourceTimelineView).toBe('function')
     expect(typeof FullCalendar.ResourceAgendaView).toBe('function')
     expect(typeof FullCalendar.ResourceBasicView).toBe('function')
-    expect(typeof FullCalendar.ResourceMonthView).toBe('function')
   })
 })

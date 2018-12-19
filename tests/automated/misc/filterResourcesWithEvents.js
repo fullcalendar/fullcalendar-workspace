@@ -62,7 +62,7 @@ describe('filterResourcesWithEvents', function() {
           { title: 'event 1', start: '2016-12-04T01:00:00', resourceId: 'b' },
           { title: 'event 2', start: '2016-12-04T02:00:00', resourceId: 'd' }
         ],
-        _resourcesReceived() {
+        _resourcesRendered() {
           receiveCnt++
 
           if (receiveCnt == 1) {

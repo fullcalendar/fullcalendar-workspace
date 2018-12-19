@@ -70,7 +70,7 @@ describe('refetchResourcesOnNavigate', function() {
             ])
           }, 500)
         },
-        _resourcesReceived() {
+        _resourcesRendered() {
           receiveCnt++
 
           if (receiveCnt == 1) {
@@ -109,7 +109,7 @@ describe('refetchResourcesOnNavigate', function() {
           }, 100)
         },
 
-        _resourcesReceived() {
+        _resourcesRendered() {
           receiveCnt += 1
 
           // step 2
@@ -158,7 +158,7 @@ describe('refetchResourcesOnNavigate', function() {
           }, 100)
         },
 
-        _resourcesReceived() {
+        _resourcesRendered() {
           receiveCnt += 1
 
           if (receiveCnt === 1) {
@@ -275,7 +275,7 @@ describe('refetchResourcesOnNavigate', function() {
         expect(arg.timeZone).toBe('America/Chicago')
         callback([])
       },
-      _resourcesReceived() {
+      _resourcesRendered() {
         let resources = currentCalendar.getResources()
         expect(resources.length).toBe(0)
         setTimeout(done)
@@ -307,7 +307,7 @@ describe('refetchResourcesOnNavigate', function() {
         callback([])
       },
 
-      _resourcesReceived() {
+      _resourcesRendered() {
         if (fetchCnt === 1) {
           setTimeout(function() {
             currentCalendar.next()

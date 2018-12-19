@@ -2,7 +2,6 @@
 resources as an array
 resources as a json feed
 resources as a function
-resourcesSet (callback)
 */
 
 describe('event resources', function() {
@@ -17,7 +16,8 @@ describe('event resources', function() {
         { id: 1, title: 'room 1' },
         { id: 2, title: 'room 2' }
       ],
-      resourcesSet(resources) {
+      _resourcesRendered() {
+        let resources = currentCalendar.getResources()
         expect(resources.length).toBe(2)
         expect(resources[0].id).toBe('1')
         expect(resources[1].id).toBe('2')
@@ -35,8 +35,9 @@ describe('event resources', function() {
         { id: 2, title: 'room 2' },
         { id: 2, title: 'room 2' }
       ],
-      resourcesSet(resources) {
+      _resourcesRendered() {
         // TODO: expect a console warning
+        let resources = currentCalendar.getResources()
         expect(resources.length).toBe(2)
         expect(resources[0].id).toBe('1')
         expect(resources[1].id).toBe('2')
@@ -53,7 +54,8 @@ describe('event resources', function() {
         { title: 'room 1' },
         { title: 'room 2' }
       ],
-      resourcesSet(resources) {
+      _resourcesRendered() {
+        let resources = currentCalendar.getResources()
         expect(resources.length).toBe(2)
         expect(resources[0].title).toBe('room 1')
         expect(resources[1].title).toBe('room 2')
@@ -71,11 +73,14 @@ describe('event resources', function() {
             { id: 'a1', title: 'room a1' }
           ] }
       ],
-      resourcesSet(resources) {
+      _resourcesRendered() {
+        let resources = currentCalendar.getTopLevelResources()
         expect(resources.length).toBe(1)
-        expect(resources[0].children.length).toBe(1)
         expect(resources[0].title).toBe('room a')
-        expect(resources[0].children[0].title).toBe('room a1')
+
+        let children = resources[0].getChildren()
+        expect(children.length).toBe(1)
+        expect(children[0].title).toBe('room a1')
         setTimeout(done)
       }
     })
@@ -87,11 +92,14 @@ describe('event resources', function() {
         { id: 'a', title: 'room a' },
         { id: 'a1', title: 'room a1', parentId: 'a' }
       ],
-      resourcesSet(resources) {
+      _resourcesRendered() {
+        let resources = currentCalendar.getTopLevelResources()
         expect(resources.length).toBe(1)
-        expect(resources[0].children.length).toBe(1)
         expect(resources[0].title).toBe('room a')
-        expect(resources[0].children[0].title).toBe('room a1')
+
+        let children = resources[0].getChildren()
+        expect(children.length).toBe(1)
+        expect(children[0].title).toBe('room a1')
         setTimeout(done)
       }
     })
@@ -100,7 +108,8 @@ describe('event resources', function() {
   it('will read resources from a json feed', function(done) {
     initCalendar({
       resources: '/base/tests/automated/json/two-rooms.json',
-      resourcesSet(resources) {
+      _resourcesRendered() {
+        let resources = currentCalendar.getResources()
         expect(resources.length).toBe(2)
         expect(resources[0].id).toBe('1')
         expect(resources[1].id).toBe('2')
@@ -119,7 +128,8 @@ describe('event resources', function() {
           { id: 2, title: 'room 2' }
         ])
       },
-      resourcesSet(resources) {
+      _resourcesRendered() {
+        let resources = currentCalendar.getResources()
         expect(resources.length).toBe(2)
         expect(resources[0].id).toBe('1')
         expect(resources[1].id).toBe('2')

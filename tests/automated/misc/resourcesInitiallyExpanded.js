@@ -78,7 +78,7 @@ describe('resourcesInitiallyExpanded', function() {
       })
 
 
-      it('renders scrollfollowers when expanded', function() {
+      xit('renders scrollfollowers when expanded', function() {
         initCalendar()
 
         expect($('.fc-title.fc-following').length).toBe(0)
