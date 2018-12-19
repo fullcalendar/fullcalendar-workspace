@@ -54,16 +54,24 @@ describe('filterResourcesWithEvents', function() {
 
 
     it('whitelists with async-fetched events', function(done) {
+      let receiveCnt = 0
+
       initCalendar({
         resources: getResourceFunc(),
         events: [
           { title: 'event 1', start: '2016-12-04T01:00:00', resourceId: 'b' },
           { title: 'event 2', start: '2016-12-04T02:00:00', resourceId: 'd' }
         ],
-        _eventsPositioned() {
-          expect(settings.getResourceIds()).toEqual([ 'b', 'd' ])
-          expect($('.fc-event').length).toBe(2)
-          done()
+        _resourcesReceived() {
+          receiveCnt++
+
+          if (receiveCnt == 1) {
+            setTimeout(function() {
+              expect(settings.getResourceIds()).toEqual([ 'b', 'd' ])
+              expect($('.fc-event').length).toBe(2)
+              done()
+            }, 0)
+          }
         }
       })
 
@@ -88,7 +96,7 @@ describe('filterResourcesWithEvents', function() {
         ]
       })
       expect(getTimelineResourceIds()).toEqual([ 'b' ])
-      currentCalendar.renderEvent({ title: 'event 2', start: '2016-12-04T02:00:00', resourceId: 'd' })
+      currentCalendar.addEvent({ title: 'event 2', start: '2016-12-04T02:00:00', resourceId: 'd' })
       expect(getTimelineResourceIds()).toEqual([ 'b', 'd' ])
     })
 
@@ -106,7 +114,7 @@ describe('filterResourcesWithEvents', function() {
       currentCalendar.addResource({ id: 'e', title: 'resource e' })
       expect(getTimelineResourceIds()).toEqual([ 'b', 'd' ])
 
-      currentCalendar.renderEvent({ title: 'event 3', start: '2016-12-04T02:00:00', resourceId: 'e' })
+      currentCalendar.addEvent({ title: 'event 3', start: '2016-12-04T02:00:00', resourceId: 'e' })
       expect(getTimelineResourceIds()).toEqual([ 'b', 'd', 'e' ])
     })
 

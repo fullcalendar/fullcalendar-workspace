@@ -1,7 +1,7 @@
 import { getTimeGridResourceIds } from '../lib/time-grid'
 import { getTimelineResourceIds } from '../lib/timeline'
 
-describe('removeResource', function() {
+describe('Resource::remove', function() {
   pushOptions({
     resources: [
       { id: 'a', title: 'a' },
@@ -24,13 +24,13 @@ describe('removeResource', function() {
       initCalendar()
       expect(getResourceIds()).toEqual([ 'a', 'b', 'c' ])
 
-      currentCalendar.removeResource('a')
+      currentCalendar.getResourceById('a').remove()
       expect(getResourceIds()).toEqual([ 'b', 'c' ])
 
-      currentCalendar.removeResource('b')
+      currentCalendar.getResourceById('b').remove()
       expect(getResourceIds()).toEqual([ 'c' ])
 
-      currentCalendar.removeResource('c')
+      currentCalendar.getResourceById('c').remove()
       expect(getResourceIds()).toEqual([])
     })
   })

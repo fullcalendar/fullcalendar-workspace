@@ -12,7 +12,7 @@ describe('getResources', function() {
     initCalendar()
     const resources = currentCalendar.getResources()
     expect(resources.length).toBe(3)
-    currentCalendar.removeResource(resources[0])
+    resources[0].remove()
     expect(resources.length).toBe(3)
   })
 })
