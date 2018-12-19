@@ -14,13 +14,13 @@ describe('Event::setProp', function() {
     })
 
     let event = currentCalendar.getEvents()[0]
-    let resourceIds = event.resources.map((resource) => resource.id)
+    let resourceIds = event.getResources().map((resource) => resource.id)
     expect(resourceIds).toEqual([ 'a', 'b' ])
 
     event.setProp('title', 'cool')
 
     event = currentCalendar.getEvents()[0]
-    resourceIds = event.resources.map((resource) => resource.id)
+    resourceIds = event.getResources().map((resource) => resource.id)
     expect(resourceIds).toEqual([ 'a', 'b' ])
     expect(event.title).toBe('cool')
   })

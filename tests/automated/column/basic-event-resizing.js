@@ -51,7 +51,7 @@ describe('basic-view event resizing', function() {
           expect(arg.event.start).toEqualDate('2015-11-23')
           expect(arg.event.end).toEqualDate('2015-11-25')
 
-          let resources = arg.event.resources
+          let resources = arg.event.getResources()
           expect(resources.length).toBe(0)
         }
       })
@@ -91,7 +91,7 @@ describe('basic-view event resizing', function() {
           expect(arg.event.start).toEqualDate('2015-11-29')
           expect(arg.event.end).toEqualDate('2015-12-01')
 
-          let resources = arg.event.resources
+          let resources = arg.event.getResources()
           expect(resources.length).toBe(1)
           expect(resources[0].id).toBe('a')
         }
@@ -163,7 +163,7 @@ describe('basic-view event resizing', function() {
           expect(arg.event.start).toEqualDate('2015-11-28')
           expect(arg.event.end).toEqualDate('2015-12-01')
 
-          let resources = arg.event.resources
+          let resources = arg.event.getResources()
           expect(resources.length).toBe(1)
           expect(resources[0].id).toBe('b')
         }

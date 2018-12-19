@@ -44,19 +44,11 @@ export default class ResourceApi {
     return childApis
   }
 
-  get id(): string {
-    return this._resource.id
-  }
-
-  get title(): string {
-    return this._resource.title
-  }
-
   /*
   this is really inefficient!
   TODO: make EventApi::resourceIds a hash or keep an index in the Calendar's state
   */
-  get events(): EventApi[] {
+  getEvents(): EventApi[] {
     let thisResourceId = this._resource.id
     let calendar = this._calendar
     let { defs, instances } = calendar.state.eventStore
@@ -73,5 +65,8 @@ export default class ResourceApi {
 
     return eventApis
   }
+
+  get id(): string { return this._resource.id }
+  get title(): string { return this._resource.title }
 
 }

@@ -46,7 +46,7 @@ describe('agenda-view event resizing', function() {
             expect(arg.event.start).toEqualDate('2015-11-23T02:00:00Z')
             expect(arg.event.end).toEqualDate('2015-11-23T04:30:00Z')
 
-            let resources = arg.event.resources
+            let resources = arg.event.getResources()
             expect(resources.length).toBe(0)
           }))
       })
@@ -81,7 +81,7 @@ describe('agenda-view event resizing', function() {
             expect(arg.event.start).toEqualDate('2015-11-29T02:00:00Z')
             expect(arg.event.end).toEqualDate('2015-11-29T04:30:00Z')
 
-            let resources = arg.event.resources
+            let resources = arg.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('b')
           }))
@@ -110,7 +110,7 @@ describe('agenda-view event resizing', function() {
             expect(arg.event.start).toEqualDate('2015-11-29T02:00:00Z')
             expect(arg.event.end).toEqualDate('2015-11-30T04:30:00Z')
 
-            let resources = arg.event.resources
+            let resources = arg.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('b')
           }))
@@ -168,7 +168,7 @@ describe('agenda-view event resizing', function() {
             expect(arg.event.start).toEqualDate('2015-11-30T02:00:00Z')
             expect(arg.event.end).toEqualDate('2015-11-30T04:30:00Z')
 
-            let resources = arg.event.resources
+            let resources = arg.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('b')
           }))
@@ -197,7 +197,7 @@ describe('agenda-view event resizing', function() {
             expect(arg.event.start).toEqualDate('2015-11-29T02:00:00Z')
             expect(arg.event.end).toEqualDate('2015-11-30T04:30:00Z')
 
-            let resources = arg.event.resources
+            let resources = arg.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('a')
           }))

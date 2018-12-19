@@ -214,7 +214,7 @@ describe('resource crudding', function() {
   })
 
 
-  describe('Resource::events', function() {
+  describe('Resource::getEvents', function() {
     pushOptions({
       defaultView: 'timelineMonth',
       now: '2015-11-17'
@@ -238,7 +238,7 @@ describe('resource crudding', function() {
             }
           ],
           _eventsPositioned() {
-            const events = currentCalendar.getResourceById('a').events
+            const events = currentCalendar.getResourceById('a').getEvents()
             expect(events.length).toBe(1)
             done()
           }
@@ -264,7 +264,7 @@ describe('resource crudding', function() {
             }
           ],
           _eventsPositioned() {
-            const events = currentCalendar.getResourceById('a').events
+            const events = currentCalendar.getResourceById('a').getEvents()
             expect(events.length).toBe(1)
             done()
           }

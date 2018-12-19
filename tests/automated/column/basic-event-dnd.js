@@ -41,7 +41,7 @@ describe('basic-view event drag-n-drop', function() {
               expect(arg.event.start).toEqualDate(tz.createDate('2015-12-01T12:00:00'))
               expect(arg.event.end).toBe(null)
 
-              let resources = arg.event.resources
+              let resources = arg.event.getResources()
               expect(resources.length).toBe(1)
               expect(resources[0].id).toBe('a')
             }))

@@ -56,7 +56,7 @@ describe('timeline event resizing', function() {
                     expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
                     expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
 
-                    let resources = arg.event.resources
+                    let resources = arg.event.getResources()
                     expect(resources.length).toBe(0)
                   }))
               })
@@ -88,7 +88,7 @@ describe('timeline event resizing', function() {
                     expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
                     expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
 
-                    let resources = arg.event.resources
+                    let resources = arg.event.getResources()
                     expect(resources.length).toBe(1)
                     expect(resources[0].id).toBe('b')
                   }))
@@ -117,7 +117,7 @@ describe('timeline event resizing', function() {
                     expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
                     expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
 
-                    let resources = arg.event.resources
+                    let resources = arg.event.getResources()
                     expect(resources.length).toBe(1)
                     expect(resources[0].id).toBe('b')
                   }))
@@ -146,7 +146,7 @@ describe('timeline event resizing', function() {
                     expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
                     expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
 
-                    let resourceIds = arg.event.resources.map((resource) => resource.id)
+                    let resourceIds = arg.event.getResources().map((resource) => resource.id)
                     resourceIds.sort()
                     expect(resourceIds).toEqual([ 'a', 'b' ])
                   }))
@@ -183,7 +183,7 @@ describe('timeline event resizing', function() {
                   expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
                   expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:45:00'))
 
-                  let resources = arg.event.resources
+                  let resources = arg.event.getResources()
                   expect(resources.length).toBe(1)
                   expect(resources[0].id).toBe('b')
                 }))
@@ -228,7 +228,7 @@ describe('timeline event resizing', function() {
             expect(arg.event.start).toEqualDate('2015-11-28T04:00:00Z')
             expect(arg.event.end).toEqualDate('2015-11-28T07:30:00Z')
 
-            let resources = arg.event.resources
+            let resources = arg.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('b')
           }))
@@ -263,7 +263,7 @@ describe('timeline event resizing', function() {
               expect(arg.event.start).toEqualDate('2015-11-03')
               expect(arg.event.end).toEqualDate('2015-11-06')
 
-              let resources = arg.event.resources
+              let resources = arg.event.getResources()
               expect(resources.length).toBe(1)
               expect(resources[0].id).toBe('a')
             }))
@@ -299,7 +299,7 @@ describe('timeline event resizing', function() {
               expect(arg.event.start).toEqualDate('2015-01-18')
               expect(arg.event.end).toEqualDate('2015-02-15')
 
-              let resources = arg.event.resources
+              let resources = arg.event.getResources()
               expect(resources.length).toBe(1)
               expect(resources[0].id).toBe('a')
             }))

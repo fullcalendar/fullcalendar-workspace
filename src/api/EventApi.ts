@@ -4,21 +4,15 @@ import ResourceApi from './ResourceApi';
 declare module 'fullcalendar/EventApi' {
 
   interface Default {
-    resources: ResourceApi[]
+    getResources: () => ResourceApi[]
   }
 
 }
 
-// computed property
-Object.defineProperty(EventApi.prototype, 'resources', {
-  get(this: EventApi) {
-    let { calendar } = this
+EventApi.prototype.getResources = function(this: EventApi): ResourceApi[] {
+  let { calendar } = this
 
-    return this.def.resourceIds.map(function(resourceId) {
-      return calendar.getResourceById(resourceId)
-    })
-  },
-  // just copy settings that TS compiler usually outputs. TODO: better solution?
-  enumerable: true,
-  configurable: true
-})
+  return this.def.resourceIds.map(function(resourceId) {
+    return calendar.getResourceById(resourceId)
+  })
+}

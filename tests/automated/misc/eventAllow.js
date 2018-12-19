@@ -62,8 +62,8 @@ describe('eventAllow', function() {
     ).then(function(modifiedEvent) {
       expect(typeof modifiedEvent).toBe('object')
       expect(modifiedEvent.start).toEqualDate('2016-09-04T03:00:00Z')
-      expect(modifiedEvent.resources.length).toBe(1)
-      expect(modifiedEvent.resources[0].id).toBe('b')
+      expect(modifiedEvent.getResources().length).toBe(1)
+      expect(modifiedEvent.getResources()[0].id).toBe('b')
       expect(isCalled).toBe(true)
       done()
     })

@@ -34,7 +34,7 @@ describe('timeline-view event drag-n-drop', function() {
             expect(arg.event.start).toEqualDate(tz.createDate('2015-11-29T05:00:00'))
             expect(arg.event.end).toEqualDate(tz.createDate('2015-11-29T06:00:00'))
 
-            let resources = arg.event.resources
+            let resources = arg.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('a')
           }))
@@ -55,7 +55,7 @@ describe('timeline-view event drag-n-drop', function() {
           expect(arg.event.start).toEqualDate('2015-11-29T05:00:00Z')
           expect(arg.event.end).toEqualDate('2015-11-29T06:00:00Z')
 
-          let resourceIds = arg.event.resources.map((resource) => resource.id)
+          let resourceIds = arg.event.getResources().map((resource) => resource.id)
           resourceIds.sort()
           expect(resourceIds).toEqual([ 'b', 'c' ])
           done()
@@ -87,13 +87,13 @@ describe('timeline-view event drag-n-drop', function() {
 
           expect(events[0].start).toEqualDate('2015-11-29T05:00:00Z')
           expect(events[0].end).toEqualDate('2015-11-29T06:00:00Z')
-          expect(events[0].resources.length).toBe(1)
-          expect(events[0].resources[0].id).toBe('c')
+          expect(events[0].getResources().length).toBe(1)
+          expect(events[0].getResources()[0].id).toBe('c')
 
           expect(events[1].start).toEqualDate('2015-11-29T05:00:00Z')
           expect(events[1].end).toEqualDate('2015-11-29T06:00:00Z')
-          expect(events[1].resources.length).toBe(1)
-          expect(events[1].resources[0].id).toBe('b')
+          expect(events[1].getResources().length).toBe(1)
+          expect(events[1].getResources()[0].id).toBe('b')
 
           done()
         })
@@ -113,8 +113,8 @@ describe('timeline-view event drag-n-drop', function() {
         setTimeout(function() { // let the drop rerender
           expect(arg.event.start).toEqualDate('2015-11-29T05:00:00Z')
           expect(arg.event.end).toEqualDate('2015-11-29T06:00:00Z')
-          expect(arg.event.resources.length).toBe(1)
-          expect(arg.event.resources[0].id).toBe('b')
+          expect(arg.event.getResources().length).toBe(1)
+          expect(arg.event.getResources()[0].id).toBe('b')
           done()
         })
       }
@@ -140,7 +140,7 @@ describe('timeline-view event drag-n-drop', function() {
           expect(arg.event.start).toEqualDate('2015-11-29T05:00:00Z')
           expect(arg.event.end).toEqualDate('2015-11-29T06:00:00Z')
 
-          let resources = arg.event.resources
+          let resources = arg.event.getResources()
           expect(resources.length).toBe(1)
           expect(resources[0].id).toBe('a')
         }))
@@ -159,15 +159,15 @@ describe('timeline-view event drag-n-drop', function() {
         setTimeout(function() { // let the drop rerender
           expect(arg.event.start).toEqualDate('2015-11-29T05:00:00Z')
           expect(arg.event.end).toEqualDate('2015-11-29T06:00:00Z')
-          expect(arg.event.resources.length).toBe(1)
-          expect(arg.event.resources[0].id).toBe('a')
+          expect(arg.event.getResources().length).toBe(1)
+          expect(arg.event.getResources()[0].id).toBe('a')
           arg.revert()
 
           let event = currentCalendar.getEvents()[0]
           expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
           expect(event.end).toEqualDate('2015-11-29T03:00:00Z')
-          expect(event.resources.length).toBe(1)
-          expect(event.resources[0].id).toBe('b')
+          expect(event.getResources().length).toBe(1)
+          expect(event.getResources()[0].id).toBe('b')
           done()
         })
       }
@@ -188,14 +188,14 @@ describe('timeline-view event drag-n-drop', function() {
 
           expect(arg.event.start).toEqualDate('2015-11-29T05:00:00Z')
           expect(arg.event.end).toEqualDate('2015-11-29T06:00:00Z')
-          resourceIds = arg.event.resources.map((resource) => resource.id)
+          resourceIds = arg.event.getResources().map((resource) => resource.id)
           expect(resourceIds).toEqual([ 'b', 'c' ])
           arg.revert()
 
           let event = currentCalendar.getEvents()[0]
           expect(event.start).toEqualDate('2015-11-29T02:00:00Z')
           expect(event.end).toEqualDate('2015-11-29T03:00:00Z')
-          resourceIds = event.resources.map((resource) => resource.id)
+          resourceIds = event.getResources().map((resource) => resource.id)
           expect(resourceIds).toEqual([ 'a', 'b' ])
           done()
         })
@@ -233,7 +233,7 @@ describe('timeline-view event drag-n-drop', function() {
             expect(arg.event.start).toEqualDate('2015-11-27T05:00Z')
             expect(arg.event.end).toEqualDate('2015-11-27T06:00Z')
 
-            let resources = arg.event.resources
+            let resources = arg.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('a')
           }))
@@ -262,7 +262,7 @@ describe('timeline-view event drag-n-drop', function() {
             expect(arg.event.start).toEqualDate('2015-11-27T05:00:00Z')
             expect(arg.event.end).toEqualDate('2015-11-27T06:00:00Z')
 
-            let resources = arg.event.resources
+            let resources = arg.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('a')
           }))
