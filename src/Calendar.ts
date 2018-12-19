@@ -15,6 +15,7 @@ declare module 'fullcalendar/Calendar' {
   interface Default { // the Calendar
     addResource(input: ResourceInput): ResourceApi
     getResourceById(id: string): ResourceApi | null
+    getResources(): ResourceApi[]
     rerenderResources(): void
     refetchResources(): void
   }
@@ -50,6 +51,22 @@ Calendar.prototype.getResourceById = function(this: Calendar, id: string) {
   }
 
   return null
+}
+
+Calendar.prototype.getResources = function(this: Calendar): ResourceApi[] {
+  let { resourceStore } = this.state
+  let resourceApis: ResourceApi[] = []
+
+  if (resourceStore) { // guard against calendar with no resource functionality
+
+    for (let resourceId in resourceStore) {
+      resourceApis.push(
+        new ResourceApi(this, resourceStore[resourceId])
+      )
+    }
+  }
+
+  return resourceApis
 }
 
 Calendar.prototype.rerenderResources = function(this: Calendar) {
