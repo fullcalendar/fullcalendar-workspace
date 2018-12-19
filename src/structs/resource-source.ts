@@ -74,7 +74,7 @@ export function doesSourceIgnoreRange(source: ResourceSource) {
   return Boolean(defs[source.sourceDefId].ignoreRange)
 }
 
-export function parseResourceSource(input: ResourceSourceInput, calendar: Calendar): ResourceSource {
+export function parseResourceSource(input: ResourceSourceInput): ResourceSource {
   for (let i = defs.length - 1; i >= 0; i--) { // later-added plugins take precedence
     let def = defs[i]
     let meta = def.parseMeta(input)
@@ -83,8 +83,7 @@ export function parseResourceSource(input: ResourceSourceInput, calendar: Calend
       return parseResourceSourceProps(
         (typeof input === 'object' && input) ? input : {},
         meta,
-        i,
-        calendar
+        i
       )
     }
   }
@@ -92,7 +91,7 @@ export function parseResourceSource(input: ResourceSourceInput, calendar: Calend
   return null
 }
 
-function parseResourceSourceProps(input: ExtendedResourceSourceInput, meta: object, sourceDefId: number, calendar: Calendar): ResourceSource {
+function parseResourceSourceProps(input: ExtendedResourceSourceInput, meta: object, sourceDefId: number): ResourceSource {
   let props = refineProps(input, RESOURCE_SOURCE_PROPS)
 
   props.sourceId = String(uid++)
@@ -102,8 +101,6 @@ function parseResourceSourceProps(input: ExtendedResourceSourceInput, meta: obje
   props.isFetching = false
   props.latestFetchId = ''
   props.fetchRange = null
-
-  // TODO: use Calendar to parse event constraint
 
   delete props.id
 
