@@ -10,7 +10,11 @@ import { isPropsValidWithResources } from './validation'
 import { transformExternalDef } from './ExternalElementDragging'
 import { transformEventResizeJoin } from './EventResizing'
 import './api/EventApi'
+
+import TimelineView from './timeline/TimelineView'
 import ResourceTimelineView from './resource-timeline/ResourceTimelineView'
+import ResourceAgendaView from './resource-agenda/ResourceAgendaView'
+import ResourceBasicView from './resource-basic/ResourceBasicView'
 
 // TODO: plugin-ify
 import './resource-sources/resource-array'
@@ -44,4 +48,8 @@ exportHooks.Calendar.defaultPlugins.push( // TODO: kill
   ResourceBasicPlugin
 )
 
+;(exportHooks as any).TimelineView = TimelineView
 ;(exportHooks as any).ResourceTimelineView = ResourceTimelineView
+;(exportHooks as any).ResourceTimelineView = ResourceTimelineView
+;(exportHooks as any).ResourceAgendaView = ResourceAgendaView
+;(exportHooks as any).ResourceBasicView = ResourceBasicView
