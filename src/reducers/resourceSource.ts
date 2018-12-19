@@ -77,6 +77,7 @@ function fetchSource(source: ResourceSource, fetchRange: DateRange | null, calen
         fetchRange,
         rawResources: res.rawResources
       })
+      calendar.publiclyTrigger('_resourcesReceived')
     },
     function(error) {
       calendar.dispatch({
