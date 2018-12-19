@@ -13,6 +13,8 @@ export default function(
     case 'INIT':
       return createInitialSource(calendar)
 
+    case 'SET_VIEW_TYPE': // TODO: how do we track all actions that affect dateProfile :(
+    case 'SET_DATE':
     case 'SET_DATE_PROFILE':
       return handleRange(source, dateProfile.activeRange, calendar)
 
