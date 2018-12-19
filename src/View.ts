@@ -129,13 +129,16 @@ function injectResourceEventUis(eventUiBases: EventUiHash, eventDefs: EventDefHa
 }
 
 function injectResourceEventUi(origEventUi: EventUi, eventDef: EventDef, resourceEventUis: EventUiHash) {
-  let parts = [ origEventUi ]
+  let parts = []
 
+  // first resource takes precedence, which fights with the ordering of combineEventUis, thus the unshifts
   for (let resourceId of eventDef.resourceIds) {
     if (resourceEventUis[resourceId]) {
-      parts.push(resourceEventUis[resourceId])
+      parts.unshift(resourceEventUis[resourceId])
     }
   }
+
+  parts.unshift(origEventUi)
 
   return combineEventUis(parts)
 }
