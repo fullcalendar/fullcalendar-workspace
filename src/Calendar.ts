@@ -1,6 +1,6 @@
 import { DateSpan, Calendar } from 'fullcalendar'
 import ResourceApi from './api/ResourceApi'
-import { ResourceInput, parseResource, ResourceHash } from './structs/resource'
+import { ResourceInput, parseResource, ResourceHash, Resource } from './structs/resource'
 
 declare module 'fullcalendar/Calendar' {
 
@@ -23,9 +23,17 @@ declare module 'fullcalendar/Calendar' {
 
 }
 
-Calendar.prototype.addResource = function(this: Calendar, input: ResourceInput, scrollTo = true) {
-  let resourceHash: ResourceHash = {}
-  let resource = parseResource(input, '', resourceHash, this)
+Calendar.prototype.addResource = function(this: Calendar, input: ResourceInput | ResourceApi, scrollTo = true) {
+  let resourceHash: ResourceHash
+  let resource: Resource
+
+  if (input instanceof ResourceApi) {
+    resource = input._resource
+    resourceHash = { [resource.id]: resource }
+  } else {
+    resourceHash = {}
+    resource = parseResource(input, '', resourceHash, this)
+  }
 
   // HACK
   if (scrollTo) {

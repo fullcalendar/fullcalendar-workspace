@@ -3,8 +3,8 @@ import { Resource } from '../structs/resource'
 
 export default class ResourceApi {
 
-  private _calendar: Calendar
-  private _resource: Resource
+  _calendar: Calendar
+  _resource: Resource
 
   constructor(calendar: Calendar, rawResource: Resource) {
     this._calendar = calendar
@@ -82,5 +82,6 @@ export default class ResourceApi {
 
   get id(): string { return this._resource.id }
   get title(): string { return this._resource.title }
+  get extendedProps(): any { return this._resource.extendedProps }
 
 }

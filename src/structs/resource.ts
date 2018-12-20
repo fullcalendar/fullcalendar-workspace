@@ -67,6 +67,9 @@ export function parseResource(input: ResourceInput, parentId: string = '', store
   props.ui = ui
   props.extendedProps = { ...leftovers1, ...props.extendedProps }
 
+  // help out ResourceApi from having user modify props
+  Object.freeze(props.extendedProps)
+
   if (store[props.id]) {
     // console.warn('duplicate resource ID')
 
