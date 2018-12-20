@@ -44,7 +44,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00')
                   ],
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2am', '5am')
+                    expectEventSlotSpan('event1', '2015-10-17T02:00:00', '2015-10-17T05:00:00') // -1hour
                     expectEventIsStartEnd('event1', true, true)
                     done()
                   }
@@ -57,7 +57,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-16T22:00:00', '2015-10-17T06:00:00')
                   ],
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '12am', '5am')
+                    expectEventSlotSpan('event1', '2015-10-17T00:00:00', '2015-10-17T05:00:00') // start-of-day, -1hour
                     expectEventIsStartEnd('event1', false, true)
                     done()
                   }
@@ -70,7 +70,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-17T02:00:00', '2015-10-18T02:00:00')
                   ],
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2am', '11pm')
+                    expectEventSlotSpan('event1', '2015-10-17T02:00:00', '2015-10-17T23:00:00')
                     expectEventIsStartEnd('event1', true, false)
                     done()
                   }
@@ -83,7 +83,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-16T22:00:00', '2015-10-18T02:00:00')
                   ],
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '12am', '11pm')
+                    expectEventSlotSpan('event1', '2015-10-17T00:00:00', '2015-10-17T23:00:00')
                     expectEventIsStartEnd('event1', false, false)
                     done()
                   }
@@ -113,7 +113,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                       makeEvent('event1', '2015-10-16T12:00:00', '2015-10-17T06:00:00')
                     ],
                     _eventsPositioned() {
-                      expectEventSlotSpan('event1', '3am', '5am')
+                      expectEventSlotSpan('event1', '2015-10-17T03:00:00', '2015-10-17T05:00:00')
                       expectEventIsStartEnd('event1', false, true)
                       done()
                     }
@@ -127,7 +127,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                       makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00')
                     ],
                     _eventsPositioned() {
-                      expectEventSlotSpan('event1', '3am', '5am')
+                      expectEventSlotSpan('event1', '2015-10-17T03:00:00', '2015-10-17T05:00:00')
                       expectEventIsStartEnd('event1', false, true)
                       done()
                     }
@@ -157,7 +157,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     ],
                     _eventsPositioned() {
                       setTimeout(function() { // wait for time axis header to sync its scroll
-                        expectEventSlotSpan('event1', '7pm', '8pm')
+                        expectEventSlotSpan('event1', '2015-10-17T19:00:00', '2015-10-17T20:00:00')
                         expectEventIsStartEnd('event1', true, false)
                         done()
                       }, 0)
@@ -174,7 +174,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     ],
                     _eventsPositioned() {
                       setTimeout(function() { // wait for time axis header to sync its scroll
-                        expectEventSlotSpan('event1', '12pm', '5pm')
+                        expectEventSlotSpan('event1', '2015-10-17T12:00:00', '2015-10-17T17:00:00')
                         expectEventIsStartEnd('event1', true, false)
                         done()
                       }, 0)
@@ -217,7 +217,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   scrollTime: '24:00',
                   _eventsPositioned() {
                     setTimeout(function() {
-                      expectEventSlotSpan('event1', '9am', '1am')
+                      expectEventSlotSpan('event1', '2015-10-17T09:00:00', '2015-10-18T01:00:00')
                       expectEventIsStartEnd('event1', false, true)
                       expect($('tr.fc-chrono th:first')).toHaveText('9am')
                       expect($('tr.fc-chrono th:last')).toHaveText('3am')
@@ -235,7 +235,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-17T08:00:00', '2015-10-18T05:00:00')
                   ],
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '9am', '3am')
+                    expectEventSlotSpan('event1', '2015-10-17T09:00:00', '2015-10-18T03:00:00')
                     expectEventIsStartEnd('event1', false, false)
                     expect($('tr.fc-chrono th:first')).toHaveText('9am')
                     expect($('tr.fc-chrono th:last')).toHaveText('3am')
@@ -277,7 +277,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     }
                   ],
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2am', '5am')
+                    expectEventSlotSpan('event1', '2015-10-17T02:00:00', '2015-10-17T05:00:00')
                     expectEventIsStartEnd('event1', true, true)
                     const eventEl = $('.event1')
                     const canvasEl = $('.fc-body .fc-time-area .fc-scroller-canvas')
@@ -315,7 +315,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-16', '2015-10-18')
                   ],
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '16 F', '17 S')
+                    expectEventSlotSpan('event1', '2015-10-16', '2015-10-17')
                     expectEventIsStartEnd('event1', true, true)
                     done()
                   }
@@ -328,7 +328,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-10', '2015-10-18')
                   ],
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '11 S', '17 S')
+                    expectEventSlotSpan('event1', '2015-10-11', '2015-10-17')
                     expectEventIsStartEnd('event1', false, true)
                     done()
                   }
@@ -341,7 +341,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-18', '2015-11-18')
                   ],
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '18 S', '31 S')
+                    expectEventSlotSpan('event1', '2015-10-18', '2015-10-31')
                     expectEventIsStartEnd('event1', true, false)
                     done()
                   }
@@ -354,7 +354,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-09-18', '2015-11-18')
                   ],
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '11 S', '31 S')
+                    expectEventSlotSpan('event1', '2015-10-11', '2015-10-31')
                     expectEventIsStartEnd('event1', false, false)
                     done()
                   }
@@ -367,7 +367,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-16T04:00:00', '2015-10-16T05:00:00')
                   ],
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '16 F', '16 F')
+                    expectEventSlotSpan('event1', '2015-10-16', '2015-10-16')
                     expectEventIsStartEnd('event1', true, true)
                     done()
                   }
@@ -381,7 +381,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-16T04:00:00', '2015-10-18T01:00:00')
                   ],
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '16 F', '17 S')
+                    expectEventSlotSpan('event1', '2015-10-16', '2015-10-17')
                     expectEventIsStartEnd('event1', true, true)
                     done()
                   }
@@ -395,7 +395,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-16T04:00:00', '2015-10-18T03:00:00')
                   ],
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '16 F', '18 S')
+                    expectEventSlotSpan('event1', '2015-10-16', '2015-10-18')
                     expectEventIsStartEnd('event1', true, true)
                     done()
                   }
@@ -411,7 +411,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-16', '2015-10-18')
                   ],
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '16 F', '17 S')
+                    expectEventSlotSpan('event1', '2015-10-16', '2015-10-17')
                     expectEventIsStartEnd('event1', true, true)
                     done()
                   }
@@ -439,7 +439,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-18', '2015-11-15')
                   ],
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '10/18', '11/8')
+                    expectEventSlotSpan('event1', '2015-10-18', '2015-11-08')
                     expectEventIsStartEnd('event1', true, true)
                     done()
                   }
@@ -452,7 +452,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     makeEvent('event1', '2015-10-19', '2015-11-17')
                   ],
                   _eventsPositioned() {
-                    expectEventSlotSpan('event1', '10/18', '11/15')
+                    expectEventSlotSpan('event1', '2015-10-18', '2015-11-15')
                     expectEventIsStartEnd('event1', true, true)
                     done()
                   }
@@ -477,10 +477,10 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
             }
           }
 
-          function expectEventSlotSpan(eventName, firstSlotText, lastSlotText) {
+          function expectEventSlotSpan(eventName, firstSlotDateStr, lastSlotDateStr) {
             let eventEdges, spanLeft, spanRight
-            const firstSlotEl = querySlot(firstSlotText)
-            const lastSlotEl = querySlot(lastSlotText)
+            const firstSlotEl = querySlot(firstSlotDateStr)
+            const lastSlotEl = querySlot(lastSlotDateStr)
             expect(firstSlotEl.length).toBe(1)
             expect(lastSlotEl.length).toBe(1)
 
@@ -565,11 +565,8 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
             }
           }
 
-          function querySlot(slotText) {
-            return $(`.fc-head .fc-time-area th:contains(${slotText})`)
-              .filter(function(i, node) {
-                return $(node).text() === slotText
-              })
+          function querySlot(dateStr) {
+            return $(`.fc-head .fc-time-area th[data-date="${dateStr}"]`)
           }
         })
       })

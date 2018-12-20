@@ -48,7 +48,7 @@ describe('timeline rendering', function() {
     })
 
     expect(
-      $('.fc-head .fc-time-area th:first .fc-cell-text').text()
-    ).toBe('pirmd. 23.10.')
+      $('.fc-head .fc-time-area th:first').attr('data-date')
+    ).toBe('2017-10-23T00:00:00')
   })
 })
