@@ -3,8 +3,8 @@ import { Resource } from '../structs/resource'
 
 export default class ResourceApi {
 
-  _calendar: Calendar
-  _resource: Resource
+  private _calendar: Calendar
+  private _resource: Resource
 
   constructor(calendar: Calendar, rawResource: Resource) {
     this._calendar = calendar
