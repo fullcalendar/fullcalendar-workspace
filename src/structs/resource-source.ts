@@ -27,7 +27,7 @@ export interface ExtendedResourceSourceInput {
   // for json feed. TODO: move to resource-json-feed
   url?: string
   method?: string
-  extraData?: object | (() => object)
+  extraParams?: object | (() => object)
 
   // TODO: event props
   // TODO: startParam/endParam/timeZoneParam

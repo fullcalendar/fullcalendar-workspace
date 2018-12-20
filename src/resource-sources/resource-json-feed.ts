@@ -6,7 +6,7 @@ import { __assign } from 'tslib'
 interface JsonFeedMeta {
   url: string
   method: string
-  extraData?: any
+  extraParams?: any
 }
 
 registerResourceSourceDef({
@@ -21,7 +21,7 @@ registerResourceSourceDef({
     return {
       url: raw.url,
       method: (raw.method || 'GET').toUpperCase(),
-      extraData: raw.extraData
+      extraParams: raw.extraParams
     }
   },
 
@@ -95,12 +95,12 @@ function buildRequestParams(meta: JsonFeedMeta, range: DateRange | null, calenda
   }
 
   // retrieve any outbound GET/POST data from the options
-  if (typeof meta.extraData === 'function') {
+  if (typeof meta.extraParams === 'function') {
     // supplied as a function that returns a key/value object
-    customRequestParams = meta.extraData()
+    customRequestParams = meta.extraParams()
   } else {
     // probably supplied as a straight key/value object
-    customRequestParams = meta.extraData || {}
+    customRequestParams = meta.extraParams || {}
   }
 
   __assign(params, customRequestParams)
