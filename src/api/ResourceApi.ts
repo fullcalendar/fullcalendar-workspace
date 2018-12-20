@@ -27,6 +27,20 @@ export default class ResourceApi {
     })
   }
 
+  getParent(): ResourceApi | null {
+    let calendar = this._calendar
+    let parentId = this._resource.parentId
+
+    if (parentId) {
+      return new ResourceApi(
+        calendar,
+        calendar.state.resourceSource[parentId]
+      )
+    } else {
+      return null
+    }
+  }
+
   getChildren(): ResourceApi[] {
     let thisResourceId = this._resource.id
     let calendar = this._calendar
