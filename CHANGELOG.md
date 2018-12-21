@@ -1,4 +1,27 @@
 
+v4.0.0-alpha.3 (2018-12-21)
+---------------------------
+
+Supports the large internal refactor present since core version v4.0.0-alpha.2.
+
+Compatible with core v4.0.0-alpha.3
+
+Known regressions from v3:
+- #482, #481, #480, #479, [core-4420]
+- In vertical resource view, after initial rendering, but before the resources load,
+  date columns (minus resources) used to be rendered. Now, no columns render.
+
+[core-4420]: https://github.com/fullcalendar/fullcalendar/issues/4420
+
+
+v4.0.0-alpha.2 (2018-04-13)
+---------------------------
+
+See https://fullcalendar.io/blog/2018/04/alpha-release-jquery-removal
+
+Compatible with core v4.0.0-alpha
+
+
 v1.9.4 (2018-03-27)
 -------------------
 
