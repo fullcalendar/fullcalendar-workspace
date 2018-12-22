@@ -5,8 +5,7 @@
   "keywords": [
     "calendar",
     "event",
-    "full-sized",
-    "jquery-plugin"
+    "full-sized"
   ],
   "homepage": "https://fullcalendar.io/scheduler/",
   "authors": [
@@ -19,8 +18,7 @@
   "minimum-stability": "stable",
   "require": {
     "robloach/component-installer": "*",
-    "fullcalendar/fullcalendar": "4.0.0-alpha",
-    "moment/moment": "^2.20.1"
+    "fullcalendar/fullcalendar": "4.0.0-alpha.3"
   },
   "extra": {
     "component": {
