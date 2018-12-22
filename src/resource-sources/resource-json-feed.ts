@@ -73,17 +73,17 @@ function buildRequestParams(meta: JsonFeedMeta, range: DateRange | null, calenda
   if (range) {
     // startParam = meta.startParam
     // if (startParam == null) {
-      startParam = calendar.opt('startParam')
+    startParam = calendar.opt('startParam')
     // }
 
     // endParam = meta.endParam
     // if (endParam == null) {
-      endParam = calendar.opt('endParam')
+    endParam = calendar.opt('endParam')
     // }
 
     // timeZoneParam = meta.timeZoneParam
     // if (timeZoneParam == null) {
-      timeZoneParam = calendar.opt('timeZoneParam')
+    timeZoneParam = calendar.opt('timeZoneParam')
     // }
 
     params[startParam] = dateEnv.formatIso(range.start)

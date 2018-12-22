@@ -133,7 +133,7 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
       return {
         dateSpan: {
           range: { start, end },
-          allDay: !this.props.tDateProfile.isTimeScale,
+          allDay: !this.props.tDateProfile.isTimeScale
         },
         dayEl: this.slatColEls[slatIndex],
         left: outerCoordCache.lefts[slatIndex], // TODO: make aware of snaps?

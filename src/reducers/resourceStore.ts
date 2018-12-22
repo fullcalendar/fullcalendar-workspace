@@ -4,7 +4,7 @@ import { ResourceHash, ResourceInput, parseResource } from '../structs/resource'
 import { ResourceSource } from '../structs/resource-source'
 
 export default function(store: ResourceHash | undefined, action: ResourceAction, source: ResourceSource, calendar: Calendar): ResourceHash {
-  switch(action.type) {
+  switch (action.type) {
 
     case 'INIT':
       return {}

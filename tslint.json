@@ -1,6 +1,7 @@
 {
   "extends": "tslint-config-standard",
   "rules": {
+    "no-use-before-declare": false,
     "no-conditional-assignment": false,
     "no-consecutive-blank-lines": false,
     "space-before-function-paren": false,

@@ -85,7 +85,7 @@ export default class TimelineHeader extends Component<TimelineHeaderProps> {
 
     this.slatColEls = findElements(this.tableEl, 'col')
     this.innerEls = findElements(
-      this.tableEl.querySelector('tr:last-child') as HTMLElement, // compound selector won't work because of query-root problem
+      this.tableEl.querySelector<HTMLElement>('tr:last-child'), // compound selector won't work because of query-root problem
       'th .fc-cell-text'
     )
   }

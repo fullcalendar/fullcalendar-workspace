@@ -65,7 +65,7 @@ describe('filterResourcesWithEvents', function() {
         _resourcesRendered() {
           receiveCnt++
 
-          if (receiveCnt == 1) {
+          if (receiveCnt === 1) {
             setTimeout(function() {
               expect(settings.getResourceIds()).toEqual([ 'b', 'd' ])
               expect($('.fc-event').length).toBe(2)

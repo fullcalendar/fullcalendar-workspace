@@ -167,7 +167,7 @@ export default class ResourceTimelineView extends View {
 
   renderSkeletonHtml() {
     let { theme } = this
-    let width = this.opt('resourceAreaWidth') as any
+    let width = this.opt('resourceAreaWidth')
     let widthAttr = ''
 
     if (width) {

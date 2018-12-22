@@ -10,7 +10,7 @@ export type ResourceFunc = (
   },
   successCallback: (events: ResourceInput[]) => void,
   failureCallback: (errorObj: ResourceSourceError) => void
-) => any; // TODO: promise-like object or nothing
+) => any // TODO: promise-like object or nothing
 
 registerResourceSourceDef({
 

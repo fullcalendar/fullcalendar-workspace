@@ -73,7 +73,7 @@ describe('refetchResourcesOnNavigate', function() {
         _resourcesRendered() {
           receiveCnt++
 
-          if (receiveCnt == 1) {
+          if (receiveCnt === 1) {
             setTimeout(function() {
               currentCalendar.next()
 

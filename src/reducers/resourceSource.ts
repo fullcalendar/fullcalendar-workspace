@@ -8,7 +8,7 @@ export default function(
   dateProfile: DateProfile,
   calendar: Calendar
 ): ResourceSource | null {
-  switch(action.type) {
+  switch (action.type) {
 
     case 'INIT':
       return createInitialSource(calendar)

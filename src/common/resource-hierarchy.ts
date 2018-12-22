@@ -1,5 +1,5 @@
-import { ResourceHash, Resource } from "../structs/resource"
-import { flexibleCompare, compareByFieldSpecs } from "fullcalendar"
+import { flexibleCompare, compareByFieldSpecs } from 'fullcalendar'
+import { ResourceHash, Resource } from '../structs/resource'
 import { ResourceEntityExpansions } from '../reducers/resourceEntityExpansions'
 
 interface ParentNode {
@@ -55,7 +55,7 @@ export function buildRowNodes(
   isVGrouping: boolean,
   expansions: ResourceEntityExpansions,
   expansionDefault: boolean
-) : (GroupNode | ResourceNode)[] {
+): (GroupNode | ResourceNode)[] {
   let complexNodes = buildHierarchy(resourceStore, isVGrouping ? -1 : 1, groupSpecs, orderSpecs)
   let flatNodes = []
 
@@ -111,7 +111,7 @@ function flattenNodes(
         isExpanded,
         hasChildren: Boolean(complexNode.children.length),
         resource: (complexNode as ResourceParentNode).resource,
-        resourceFields: (complexNode as ResourceParentNode).resourceFields,
+        resourceFields: (complexNode as ResourceParentNode).resourceFields
       })
 
       if (isExpanded) {

@@ -188,14 +188,12 @@ describe('resource crudding', function() {
 
       initCalendar({
         resources(arg, callback) {
-          const res = !callCnt ?
-            [
-              { id: 'a', title: 'room a' },
-              { id: 'b', title: 'room b' }
-            ] :
-            [
-              { id: 'c', title: 'room c' }
-            ]
+          let res = !callCnt ? [
+            { id: 'a', title: 'room a' },
+            { id: 'b', title: 'room b' }
+          ] : [
+            { id: 'c', title: 'room c' }
+          ]
           callCnt += 1
           callback(res)
         },

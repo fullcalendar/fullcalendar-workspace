@@ -94,9 +94,9 @@ export function parseResource(input: ResourceInput, parentId: string = '', store
 TODO: use this in more places
 */
 export function getPublicId(id: string): string {
- if (id.indexOf(PRIVATE_ID_PREFIX) === 0) {
-   return ''
- }
+  if (id.indexOf(PRIVATE_ID_PREFIX) === 0) {
+    return ''
+  }
 
- return id
+  return id
 }

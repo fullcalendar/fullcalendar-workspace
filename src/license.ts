@@ -1,5 +1,7 @@
+/* tslint:disable */
 import * as core from 'fullcalendar'
 import { Calendar, appendToElement, isValidDate, addDays } from 'fullcalendar'
+/* tslint:enable */
 
 const RELEASE_DATE = '<%= releaseDate %>' // for Scheduler
 const UPGRADE_WINDOW = 365 + 7 // days. 1 week leeway, for tz shift reasons too

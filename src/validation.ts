@@ -17,7 +17,7 @@ export function isPropsValidWithResources(props: SplittableProps, calendar: Cale
       props = {
         ...props,
         eventStore: mergeEventStores(sets[''].eventStore, props.eventStore),
-        eventUiBases: { ...sets[''].eventUiBases,  ...props.eventUiBases }
+        eventUiBases: { ...sets[''].eventUiBases, ...props.eventUiBases }
       }
     }
 

@@ -23,7 +23,7 @@ export default class TimelineNowIndicator {
     )
 
     this.bodyParent.appendChild(
-      this.lineEl =createElement('div', {
+      this.lineEl = createElement('div', {
         className: 'fc-now-indicator fc-now-indicator-line',
         style: styleProps
       })

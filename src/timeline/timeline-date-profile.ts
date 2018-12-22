@@ -1,7 +1,7 @@
-import { computeVisibleDayRange, Duration, View, DateProfile, isSingleDay, addDays, wholeDivideDurations, warn, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, htmlEscape } from 'fullcalendar'
+/* tslint:disable */
 import * as core from 'fullcalendar'
-import { buildGotoAnchorHtml } from 'fullcalendar'
-
+import { buildGotoAnchorHtml, computeVisibleDayRange, Duration, View, DateProfile, isSingleDay, addDays, wholeDivideDurations, warn, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, htmlEscape } from 'fullcalendar'
+/* tslint:enable */
 
 export interface TimelineDateProfile {
   labelInterval: Duration
@@ -549,7 +549,7 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, view
 
   // specifically for navclicks
   let rowUnits = formats.map((format) => {
-    return (format as any).getLargestUnit ? (format as any).getLargestUnit() : null
+    return format.getLargestUnit ? format.getLargestUnit() : null
   })
 
   // builds cellRows and slotCells

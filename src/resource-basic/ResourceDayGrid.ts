@@ -1,4 +1,4 @@
-import { mapHash, Hit, OffsetTracker, DayGridSlicer, DateSpan, DayGrid, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, DayGridSeg, Duration } from "fullcalendar"
+import { mapHash, Hit, OffsetTracker, DayGridSlicer, DateSpan, DayGrid, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, DayGridSeg, Duration } from 'fullcalendar'
 import { AbstractResourceDayTable, VResourceSplitter, VResourceJoiner } from '../common/resource-day-table'
 
 export interface ResourceDayGridProps {
