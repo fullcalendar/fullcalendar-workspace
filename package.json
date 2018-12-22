@@ -10,7 +10,8 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "copyright": "2018 Adam Shaw",
   "dependencies": {
-    "fullcalendar": "4.0.0-alpha.3"
+    "fullcalendar": "4.0.0-alpha.3",
+    "superagent": "^4.0.0"
   },
   "version": "0.0.0",
   "releaseDate": "1970-01-01",
@@ -52,6 +53,7 @@
     "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^1.1.2",
     "karma-sourcemap-loader": "^0.3.7",
+    "moment": "^2.23.0",
     "native-promise-only": "^0.8.1",
     "node-sass": "^4.11.0",
     "sass-loader": "^6.0.7",
