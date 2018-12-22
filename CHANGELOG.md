@@ -11,6 +11,10 @@ Known regressions from v3:
 - In vertical resource view, after initial rendering, but before the resources load,
   date columns (minus resources) used to be rendered. Now, no columns render.
 
+More info:
+https://fullcalendar.io/blog/2018/12/alpha-release-scheduler-support
+https://fullcalendar.io/docs/v4/release-notes
+
 [core-4420]: https://github.com/fullcalendar/fullcalendar/issues/4420
 
 
