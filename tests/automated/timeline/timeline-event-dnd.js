@@ -34,14 +34,41 @@ describe('timeline-view event drag-n-drop', function() {
             expect(arg.event.start).toEqualDate(tz.createDate('2015-11-29T05:00:00'))
             expect(arg.event.end).toEqualDate(tz.createDate('2015-11-29T06:00:00'))
 
-            expect(arg.prevResource.id).toBe('b')
-            expect(arg.resource.id).toBe('a')
+            expect(arg.oldResource.id).toBe('b')
+            expect(arg.newResource.id).toBe('a')
 
             let resources = arg.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('a')
           }))
       })
+    })
+  })
+
+  it('allows switching date only', function(done) {
+    let dropSpy
+    initCalendar({
+      events: [
+        { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
+      ],
+      _eventsPositioned: oneCall(function() {
+        dragElTo($('.event0'), 'b', '2015-11-29T05:00:00', function() {
+          expect(dropSpy).toHaveBeenCalled()
+          done()
+        })
+      }),
+      eventDrop:
+        (dropSpy = spyCall(function(arg) {
+          expect(arg.event.start).toEqualDate('2015-11-29T05:00:00Z')
+          expect(arg.event.end).toEqualDate('2015-11-29T06:00:00Z')
+
+          expect(arg.oldResource).toBeNull()
+          expect(arg.newResource).toBeNull()
+
+          let resources = arg.event.getResources()
+          expect(resources.length).toBe(1)
+          expect(resources[0].id).toBe('b')
+        }))
     })
   })
 

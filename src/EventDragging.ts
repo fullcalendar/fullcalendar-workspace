@@ -77,10 +77,13 @@ export function transformEventDrop(mutation: EventMutation, calendar: Calendar) 
 
   if (resourceMutation) {
     return {
-      prevResource: calendar.getResourceById(resourceMutation.matchResourceId),
-      resource: calendar.getResourceById(resourceMutation.setResourceId)
+      oldResource: calendar.getResourceById(resourceMutation.matchResourceId),
+      newResource: calendar.getResourceById(resourceMutation.setResourceId)
     }
   } else {
-    return {}
+    return {
+      oldResource: null,
+      newResource: null
+    }
   }
 }
