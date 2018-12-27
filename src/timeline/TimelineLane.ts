@@ -111,7 +111,7 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
   _unrenderEventDrag(state: EventSegUiInteractionState) {
     if (state) {
       this.eventRenderer.showByHash(state.affectedInstances)
-      this.mirrorRenderer.unrender()
+      this.mirrorRenderer.unrender(state.segs, { isDragging: true, sourceSeg: state.sourceSeg })
     }
   }
 
@@ -132,7 +132,7 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
     if (state) {
       this.eventRenderer.showByHash(state.affectedInstances)
       this.fillRenderer.unrender('highlight')
-      this.mirrorRenderer.unrender()
+      this.mirrorRenderer.unrender(state.segs, { isDragging: true, sourceSeg: state.sourceSeg })
     }
   }
 

@@ -308,6 +308,59 @@ describe('timeline event resizing', function() {
     })
   })
 
+  describe('mirror', function() {
+
+    it('gets passed into eventRender/eventDestroy', function(done) {
+      let mirrorRenderCalls = 0
+      let mirrorDestroyCalls = 0
+      let normalRenderCalls = 0
+      let normalDestroyCalls = 0
+
+      initCalendar({
+        defaultView: 'timelineDay',
+        eventDragMinDistance: 0, // so mirror will render immediately upon mousedown
+        slotDuration: '01:00',
+        snapDuration: '01:00',
+        events: [
+          { start: '2015-11-28T01:00:00', end: '2015-11-28T02:00:00', resourceId: 'a' }
+        ],
+        eventRender(info) {
+          if (info.isMirror) {
+            mirrorRenderCalls++
+          } else {
+            normalRenderCalls++
+          }
+        },
+        eventDestroy(info) {
+          if (info.isMirror) {
+            mirrorDestroyCalls++
+          } else {
+            normalDestroyCalls++
+          }
+        }
+      })
+
+      // move two slots
+      let endPoint = getResourceTimelinePoint('a', '2015-11-28T04:00:00')
+      endPoint.left -= 5
+
+      $('.fc-event').simulate('mouseover') // resizer only shows on hover
+      $('.fc-event .fc-end-resizer')
+        .simulate('drag', {
+          end: endPoint,
+          callback() {
+            expect(mirrorRenderCalls).toBe(3)
+            expect(mirrorDestroyCalls).toBe(3)
+
+            expect(normalRenderCalls).toBe(2)
+            expect(normalDestroyCalls).toBe(1)
+
+            done()
+          }
+        })
+    })
+  })
+
   function isAnyHighlight() {
     return $('.fc-highlight').length > 0
   }
