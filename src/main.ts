@@ -2,7 +2,7 @@ import * as exportHooks from 'fullcalendar'
 import { ResourceDataAdder, ResourceEventConfigAdder } from './View' // TODO: ResourceDataAdder should be own plugin
 import resourcesReducers from './reducers/resources'
 import { parseEventDef } from './structs/event'
-import { massageEventDragMutation, applyEventDefMutation } from './EventDragging'
+import { massageEventDragMutation, applyEventDefMutation, transformEventDrop } from './EventDragging'
 import { transformDateSelectionJoin } from './DateSelecting'
 import { transformDatePoint, transformDateSpan } from './Calendar'
 import { isPropsValidWithResources } from './validation'
@@ -38,7 +38,8 @@ export const GeneralPlugin = exportHooks.createPlugin({
   isPropsValid: isPropsValidWithResources,
   externalDefTransforms: [ transformExternalDef ],
   eventResizeJoinTransforms: [ transformEventResizeJoin ],
-  viewContainerModifiers: [ injectLicenseWarning ]
+  viewContainerModifiers: [ injectLicenseWarning ],
+  eventDropTransformers: [ transformEventDrop ]
 })
 
 exportHooks.Calendar.defaultPlugins.push( // TODO: kill

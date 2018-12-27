@@ -34,6 +34,9 @@ describe('timeline-view event drag-n-drop', function() {
             expect(arg.event.start).toEqualDate(tz.createDate('2015-11-29T05:00:00'))
             expect(arg.event.end).toEqualDate(tz.createDate('2015-11-29T06:00:00'))
 
+            expect(arg.prevResource.id).toBe('b')
+            expect(arg.resource.id).toBe('a')
+
             let resources = arg.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('a')

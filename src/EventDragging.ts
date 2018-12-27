@@ -3,6 +3,7 @@ import { EventMutation, Hit, EventDef, Calendar } from 'fullcalendar'
 declare module 'fullcalendar/src/structs/event-mutation' {
   interface EventMutation {
     resourceMutation?: { matchResourceId: string, setResourceId: string }
+    // TODO: rename these to removeResourceId/addResourceId?
   }
 }
 
@@ -68,4 +69,18 @@ export function computeResourceEditable(eventDef: EventDef, calendar: Calendar):
   }
 
   return resourceEditable
+}
+
+
+export function transformEventDrop(mutation: EventMutation, calendar: Calendar) {
+  let { resourceMutation } = mutation
+
+  if (resourceMutation) {
+    return {
+      prevResource: calendar.getResourceById(resourceMutation.matchResourceId),
+      resource: calendar.getResourceById(resourceMutation.setResourceId)
+    }
+  } else {
+    return {}
+  }
 }
