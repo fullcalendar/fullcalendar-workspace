@@ -87,14 +87,14 @@ export default class EnhancedScroller extends ScrollComponent {
 
   bindHandlers() {
     this.el.addEventListener('scroll', this.reportScroll)
-    this.el.addEventListener('touchstart', this.reportTouchStart)
+    this.el.addEventListener('touchstart', this.reportTouchStart, { passive: true })
     this.el.addEventListener('touchend', this.reportTouchEnd)
   }
 
 
   unbindHandlers() {
     this.el.removeEventListener('scroll', this.reportScroll)
-    this.el.removeEventListener('touchstart', this.reportTouchStart)
+    this.el.removeEventListener('touchstart', this.reportTouchStart, { passive: true } as AddEventListenerOptions)
     this.el.removeEventListener('touchend', this.reportTouchEnd)
   }
 
