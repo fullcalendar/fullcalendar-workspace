@@ -18,7 +18,7 @@
   "minimum-stability": "stable",
   "require": {
     "robloach/component-installer": "*",
-    "fullcalendar/fullcalendar": "4.0.0-alpha.3"
+    "fullcalendar/fullcalendar": "4.0.0-alpha.4"
   },
   "extra": {
     "component": {

@@ -10,7 +10,7 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "copyright": "2018 Adam Shaw",
   "dependencies": {
-    "fullcalendar": "4.0.0-alpha.3",
+    "fullcalendar": "4.0.0-alpha.4",
     "superagent": "^4.0.0"
   },
   "version": "0.0.0",
