@@ -59,7 +59,7 @@
     "sass-loader": "^6.0.7",
     "ts-loader": "^3.5.0",
     "tslib": "^1.9.3",
-    "tslint": "^5.12.0",
+    "tslint": "^5.12.1",
     "tslint-config-standard": "^7.1.0",
     "typescript": "^3.2.2",
     "webpack": "^3.12.0",
