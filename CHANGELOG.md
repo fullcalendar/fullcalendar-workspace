@@ -1,4 +1,12 @@
 
+v4.0.0-alpha.4 (2019-01-11)
+---------------------------
+
+- eventDrop callback, access old resource (#39):
+  two new properties available: `oldResource` and `newResource`
+- fixed regression #484
+
+
 v4.0.0-alpha.3 (2018-12-21)
 ---------------------------
 
