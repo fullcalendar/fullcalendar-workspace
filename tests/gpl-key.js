@@ -1,2 +1,2 @@
 
-FullCalendar.Calendar.defaults.schedulerLicenseKey = 'GPL-My-Project-Is-Open-Source'
+FullCalendar.globalDefaults.schedulerLicenseKey = 'GPL-My-Project-Is-Open-Source'
