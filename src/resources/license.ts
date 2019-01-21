@@ -1,7 +1,5 @@
-/* tslint:disable */
-import * as core from 'fullcalendar'
+import { globalHooks } from 'fullcalendar'
 import { Calendar, appendToElement, isValidDate, addDays } from 'fullcalendar'
-/* tslint:enable */
 
 const RELEASE_DATE = '<%= releaseDate %>' // for Scheduler
 const UPGRADE_WINDOW = 365 + 7 // days. 1 week leeway, for tz shift reasons too
@@ -36,7 +34,7 @@ function isValidKey(key) {
   const parts = (key || '').match(/^(\d+)\-fcs\-(\d+)$/)
   if (parts && (parts[1].length === 10)) {
     const purchaseDate = new Date(parseInt(parts[2], 10) * 1000)
-    const releaseDate = new Date((core as any).mockSchedulerReleaseDate || RELEASE_DATE)
+    const releaseDate = new Date(globalHooks.mockSchedulerReleaseDate || RELEASE_DATE)
 
     if (isValidDate(releaseDate)) { // token won't be replaced in dev mode
       const minPurchaseDate = addDays(releaseDate, -UPGRADE_WINDOW)

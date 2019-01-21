@@ -1,6 +1,7 @@
 import { DateSpan, Calendar } from 'fullcalendar'
 import ResourceApi from './api/ResourceApi'
 import { ResourceInput, parseResource, ResourceHash, Resource } from './structs/resource'
+import { ResourceSourceInput } from './structs/resource-source'
 
 declare module 'fullcalendar' {
 
@@ -19,6 +20,10 @@ declare module 'fullcalendar' {
     getTopLevelResources(): ResourceApi[]
     rerenderResources(): void
     refetchResources(): void
+  }
+
+  interface OptionsInput {
+    resources: ResourceSourceInput
   }
 
 }

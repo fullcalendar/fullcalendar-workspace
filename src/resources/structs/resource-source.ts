@@ -35,6 +35,7 @@ export interface ExtendedResourceSourceInput {
 }
 
 export type ResourceSourceInput =
+  ResourceInput[] |
   ExtendedResourceSourceInput |
   ResourceFunc |
   string // url
@@ -81,7 +82,7 @@ export function parseResourceSource(input: ResourceSourceInput): ResourceSource 
 
     if (meta) {
       return parseResourceSourceProps(
-        (typeof input === 'object' && input) ? input : {},
+        (typeof input === 'object' && input) ? (input as ExtendedResourceSourceInput) : {},
         meta,
         i
       )

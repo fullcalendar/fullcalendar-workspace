@@ -1,6 +1,6 @@
 import * as request from 'superagent'
 import { DateRange, Calendar } from 'fullcalendar'
-import { registerResourceSourceDef, ResourceSourceInput } from '../structs/resource-source'
+import { registerResourceSourceDef, ResourceSourceInput, ExtendedResourceSourceInput } from '../structs/resource-source'
 import { __assign } from 'tslib'
 
 interface JsonFeedMeta {
@@ -14,14 +14,14 @@ registerResourceSourceDef({
   parseMeta(raw: ResourceSourceInput): JsonFeedMeta | null {
     if (typeof raw === 'string') {
       raw = { url: raw }
-    } else if (!raw || typeof raw !== 'object' || !raw.url) {
+    } else if (!raw || typeof raw !== 'object' || !(raw as ExtendedResourceSourceInput).url) {
       return null
     }
 
     return {
-      url: raw.url,
-      method: (raw.method || 'GET').toUpperCase(),
-      extraParams: raw.extraParams
+      url: (raw as ExtendedResourceSourceInput).url,
+      method: ((raw as ExtendedResourceSourceInput).method || 'GET').toUpperCase(),
+      extraParams: (raw as ExtendedResourceSourceInput).extraParams
     }
   },
 
