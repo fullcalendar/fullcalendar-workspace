@@ -4,6 +4,8 @@ dist
 # core
 fullcalendar
 
+.sass-cache
+
 # npm
 node_modules
 npm-debug.log
