@@ -18,12 +18,7 @@ let packageGlobals = {
 }
 
 let packagePaths = tsConfig.compilerOptions.paths
-
-// only our own packages. exclude 'fullcalendar' ones
-let packageNames = Object.keys(packagePaths).filter(function(packageName) {
-  let packagePath = packagePaths[packageName][0]
-  return packagePath.match(/^src\//)
-})
+let packageNames = Object.keys(packagePaths)
 
 /*
 KNOWN BUG: when watching test files that don't have any import statements, tsc transpiles ALL files.
@@ -58,8 +53,13 @@ let externalPackageNames = Object.keys(
   )
 )
 
+let ourPackageNames = packageNames.filter(function(packageName) {
+  let packagePath = packagePaths[packageName][0]
+  return packagePath.match(/^src\//)
+})
+
 export default [
-  ...packageNames.map(buildPackageConfig),
+  ...ourPackageNames.map(buildPackageConfig),
   buildTestConfig()
 ]
 
