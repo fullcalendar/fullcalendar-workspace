@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "paths": {
+      "fullcalendar": [ "fullcalendar/dist/fullcalendar/main.d.ts" ],
+      "fullcalendar-agenda": [ "fullcalendar/dist/fullcalendar-agenda/main.d.ts" ]
+    }
+  }
+}

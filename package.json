@@ -79,6 +79,8 @@
     "CONTRIBUTING.*"
   ],
   "scripts": {
+    "tsc": "tsc -p tsconfig.build.json",
+    "tsc-watch": "tsc -p tsconfig.build.json --watch --sourceMap",
     "clean": "gulp clean",
     "dist": "gulp dist",
     "lint": "gulp lint-and-example-repos",
