@@ -1,17 +1,18 @@
-import { AbstractBasicView, ComponentContext, ViewSpec, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, buildBasicDayTable } from 'fullcalendar'
-import ResourceDayHeader from '../common/ResourceDayHeader'
-import { flattenResources } from '../common/resource-hierarchy'
-import { Resource } from '../structs/resource'
-import { ResourceDayTable, DayResourceTable } from '../common/resource-day-table'
-import ResourceDayGrid from './ResourceDayGrid'
-import { ResourceViewProps } from '../View'
+import { ComponentContext, ViewSpec, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile } from 'fullcalendar'
+import { AbstractAgendaView, buildDayTable as buildAgendaDayTable } from 'fullcalendar-agenda'
+import ResourceDayHeader from '../ResourceDayHeader'
+import { ResourceDayTable, DayResourceTable } from '../resource-day-table'
+import ResourceTimeGrid from './ResourceTimeGrid'
+import ResourceDayGrid from '../resource-basic/ResourceDayGrid'
+import { ResourceViewProps, Resource, flattenResources } from 'fullcalendar-resources'
 
-export default class ResourceBasicView extends AbstractBasicView {
+export default class ResourceAgendaView extends AbstractAgendaView {
 
   static needsResourceData = true // for ResourceViewProps
   props: ResourceViewProps
 
   header: ResourceDayHeader
+  resourceTimeGrid: ResourceTimeGrid
   resourceDayGrid: ResourceDayGrid
 
   private resourceOrderSpecs: any
@@ -35,7 +36,11 @@ export default class ResourceBasicView extends AbstractBasicView {
       )
     }
 
-    this.resourceDayGrid = new ResourceDayGrid(context, this.dayGrid)
+    this.resourceTimeGrid = new ResourceTimeGrid(context, this.timeGrid)
+
+    if (this.dayGrid) {
+      this.resourceDayGrid = new ResourceDayGrid(context, this.dayGrid)
+    }
   }
 
   destroy() {
@@ -45,12 +50,17 @@ export default class ResourceBasicView extends AbstractBasicView {
       this.header.destroy()
     }
 
-    this.resourceDayGrid.destroy()
+    this.resourceTimeGrid.destroy()
+
+    if (this.resourceDayGrid) {
+      this.resourceDayGrid.destroy()
+    }
   }
 
   render(props: ResourceViewProps) {
     super.render(props) // for flags for updateSize
 
+    let splitProps = this.splitter.splitProps(props)
     let resources = this.flattenResources(props.resourceStore, this.resourceOrderSpecs)
     let resourceDayTable = this.buildResourceDayTable(
       this.props.dateProfile,
@@ -69,25 +79,31 @@ export default class ResourceBasicView extends AbstractBasicView {
       })
     }
 
-    this.resourceDayGrid.receiveProps({
+    this.resourceTimeGrid.receiveProps({
+      ...splitProps['timed'],
       dateProfile: props.dateProfile,
-      resourceDayTable,
-      businessHours: props.businessHours,
-      eventStore: props.eventStore,
-      eventUiBases: props.eventUiBases,
-      dateSelection: props.dateSelection,
-      eventSelection: props.eventSelection,
-      eventDrag: props.eventDrag,
-      eventResize: props.eventResize,
-      isRigid: this.hasRigidRows(),
-      nextDayThreshold: this.nextDayThreshold
+      resourceDayTable
     })
+
+    if (this.resourceDayGrid) {
+      this.resourceDayGrid.receiveProps({
+        ...splitProps['allDay'],
+        dateProfile: props.dateProfile,
+        resourceDayTable,
+        isRigid: false,
+        nextDayThreshold: this.nextDayThreshold
+      })
+    }
+  }
+
+  renderNowIndicator(date) {
+    this.resourceTimeGrid.renderNowIndicator(date)
   }
 
 }
 
 function buildResourceDayTable(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator, resources: Resource[], groupByDateAndResource: boolean) {
-  let dayTable = buildBasicDayTable(dateProfile, dateProfileGenerator)
+  let dayTable = buildAgendaDayTable(dateProfile, dateProfileGenerator)
 
   return groupByDateAndResource ?
     new DayResourceTable(dayTable, resources) :

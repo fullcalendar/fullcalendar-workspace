@@ -17,11 +17,14 @@
     "baseUrl": ".",
     "paths": {
       "fullcalendar": [ "fullcalendar/src/core/main" ],
-      "fullcalendar-agenda": [ "fullcalendar/src/agenda/main" ]
+      "fullcalendar-agenda": [ "fullcalendar/src/agenda/main" ],
+      "fullcalendar-resources": [ "src/resources/main" ],
+      "fullcalendar-resourcecolumns": [ "src/resourcecolumns/main" ],
+      "fullcalendar-timeline": [ "src/timeline/main" ]
     },
     "outDir": "tmp/tsc-output"
   },
   "include": [
-    "src/main.ts"
+    "src/*/main.ts"
   ]
 }

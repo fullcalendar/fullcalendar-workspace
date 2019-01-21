@@ -1,6 +1,6 @@
 import { FgEventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement, ComponentContext } from 'fullcalendar'
 import TimeAxis from './TimeAxis'
-import { computeResourceEditable } from '../EventDragging'
+import { computeResourceEditable } from 'fullcalendar-resources'
 
 export default class TimelineLaneEventRenderer extends FgEventRenderer {
 

@@ -1,15 +1,11 @@
 import { SplittableProps, memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, DateProfile } from 'fullcalendar'
 import TimeAxis from '../timeline/TimeAxis'
-import { ResourceHash } from '../structs/resource'
-import { buildRowNodes, GroupNode, ResourceNode } from '../common/resource-hierarchy'
+import { ResourceHash, buildRowNodes, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc } from 'fullcalendar-resources'
 import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'
 import ScrollJoiner from '../util/ScrollJoiner'
 import Spreadsheet from './Spreadsheet'
 import TimelineLane from '../timeline/TimelineLane'
-import { ResourceViewProps } from '../View'
-import ResourceSplitter from '../common/ResourceSplitter'
-import { buildResourceTextFunc } from '../common/resource-rendering'
 import { __assign } from 'tslib'
 
 export default class ResourceTimelineView extends View {

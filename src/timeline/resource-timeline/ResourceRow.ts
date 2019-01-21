@@ -2,7 +2,7 @@ import { Duration, createElement, ComponentContext, EventInteractionState, DateS
 import Row from './Row'
 import SpreadsheetRow from './SpreadsheetRow'
 import TimelineLane from '../timeline/TimelineLane'
-import { Resource } from '../structs/resource'
+import { Resource } from 'fullcalendar-resources'
 import { updateTrResourceId } from './render-utils'
 
 

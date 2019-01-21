@@ -11,22 +11,12 @@ import { transformEventResizeJoin } from './EventResizing'
 import './api/EventApi'
 import { injectLicenseWarning } from './license'
 
-import TimelineView from './timeline/TimelineView'
-import ResourceTimelineView from './resource-timeline/ResourceTimelineView'
-import ResourceAgendaView from './resource-agenda/ResourceAgendaView'
-import ResourceBasicView from './resource-basic/ResourceBasicView'
-
 // TODO: plugin-ify
 import './resource-sources/resource-array'
 import './resource-sources/resource-func'
 import './resource-sources/resource-json-feed'
 
-import TimelinePlugin from './timeline/config'
-import ResourceTimelinePlugin from './resource-timeline/config'
-import ResourceAgendaPlugin from './resource-agenda/config'
-import ResourceBasicPlugin from './resource-basic/config'
-
-export const GeneralPlugin = createPlugin({
+export default createPlugin({
   reducers: [ resourcesReducers ],
   eventDefParsers: [ parseEventDef ],
   eventDragMutationMassagers: [ massageEventDragMutation ],
@@ -42,18 +32,10 @@ export const GeneralPlugin = createPlugin({
   eventDropTransformers: [ transformEventDrop ]
 })
 
-console.log( // TODO: kill
-  GeneralPlugin,
-  TimelinePlugin,
-  ResourceTimelinePlugin,
-  ResourceAgendaPlugin,
-  ResourceBasicPlugin
-)
-
-console.log(
-  TimelineView,
-  ResourceTimelineView,
-  ResourceTimelineView,
-  ResourceAgendaView,
-  ResourceBasicView
-)
+export { Resource, ResourceHash } from './structs/resource'
+export { ResourceViewProps } from './View'
+export { flattenResources, Group, isGroupsEqual, GroupNode, ResourceNode, buildRowNodes, buildResourceFields } from './common/resource-hierarchy'
+export { buildResourceTextFunc } from './common/resource-rendering'
+export { default as ResourceApi } from './api/ResourceApi'
+export { computeResourceEditable } from './EventDragging'
+export { default as ResourceSplitter } from './common/ResourceSplitter'

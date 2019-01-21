@@ -1,9 +1,6 @@
 import { htmlToElement, htmlEscape, createElement, Component, ComponentContext, memoizeRendering } from 'fullcalendar'
-import { Resource } from '../structs/resource'
+import { Resource, ResourceApi, buildResourceFields, buildResourceTextFunc } from 'fullcalendar-resources'
 import { updateExpanderIcon, clearExpanderIcon, updateTrResourceId } from './render-utils'
-import ResourceApi from '../api/ResourceApi'
-import { buildResourceFields } from '../common/resource-hierarchy'
-import { buildResourceTextFunc } from '../common/resource-rendering'
 
 export interface SpreadsheetRowProps {
   colSpecs: any
