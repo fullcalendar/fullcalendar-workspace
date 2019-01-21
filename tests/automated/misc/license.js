@@ -1,12 +1,13 @@
+import { globalHooks } from 'fullcalendar'
 
 describe('schedulerLicenseKey', function() {
 
   beforeEach(function() {
-    FullCalendar.mockSchedulerReleaseDate = '2011-06-06'
+    globalHooks.mockSchedulerReleaseDate = '2011-06-06'
   })
 
   afterEach(function() {
-    delete FullCalendar.mockSchedulerReleaseDate
+    delete globalHooks.mockSchedulerReleaseDate
   })
 
   // FYI: _eventsPositioned guarantees that view's skeleton has been rendered and sized

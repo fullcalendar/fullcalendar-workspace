@@ -157,7 +157,7 @@ function getTimelineLeft(targetDate) {
         slatCoord = getLeadingEdge(slatEl)
         return prevSlatCoord +
           ((slatCoord - prevSlatCoord) *
-          ((targetDate - prevSlatDate) / (slatDate - prevSlatDate)))
+          ((targetDate - prevSlatDate.valueOf()) / (slatDate.valueOf() - prevSlatDate.valueOf())))
       }
     }
   }
@@ -166,14 +166,14 @@ function getTimelineLeft(targetDate) {
   // `slatDate` is set to the start date of the last slat
 
   // guess the duration of the last slot, based on previous duration
-  const slatMsDuration = slatDate - prevSlatDate
+  const slatMsDuration = slatDate.valueOf() - prevSlatDate.valueOf()
 
   slatCoord = getLeadingEdge(slatEl)
   const slatEndCoord = getTrailingEdge(slatEl)
 
   return slatCoord + // last slat's starting edge
     ((slatEndCoord - slatCoord) *
-    Math.min(1, (targetDate - slatDate) / slatMsDuration)) // don't go past the last slat
+    Math.min(1, (targetDate - slatDate.valueOf()) / slatMsDuration)) // don't go past the last slat
 }
 
 

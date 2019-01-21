@@ -1,5 +1,6 @@
 // TODO: test isRtl?
 
+import { Draggable } from 'fullcalendar'
 import { getResourceDayGridDayEls } from '../lib/day-grid'
 
 describe('basic-view event drag-n-drop', function() {
@@ -28,7 +29,7 @@ describe('basic-view event drag-n-drop', function() {
           '>external</a>')
           .appendTo('body')
 
-        new FullCalendar.Draggable(dragEl[0], {
+        new Draggable(dragEl[0], {
           eventData: {
             title: 'my external event',
             startTime: '05:00'

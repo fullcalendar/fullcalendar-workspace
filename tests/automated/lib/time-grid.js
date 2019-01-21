@@ -1,3 +1,4 @@
+import { startOfDay } from 'fullcalendar'
 import { formatIsoDay, ensureDate } from 'fullcalendar/tests/automated/datelib/utils'
 import { getBoundingRect } from 'fullcalendar/tests/automated/lib/dom-geom'
 import { getTimeGridTop } from 'fullcalendar/tests/automated/lib/time-grid'
@@ -16,9 +17,9 @@ export function getResourceTimeGridRect(resourceId, start, end) {
   start = ensureDate(start)
   end = ensureDate(end)
 
-  const startDay = FullCalendar.startOfDay(start)
+  const startDay = startOfDay(start)
   const startTimeMs = start.valueOf() - startDay.valueOf()
-  const endDay = FullCalendar.startOfDay(end)
+  const endDay = startOfDay(end)
   const endTimeMs =
     (startDay.valueOf() === endDay.valueOf())
       ? end.valueOf() - endDay.valueOf()
@@ -42,7 +43,7 @@ export function getResourceTimeGridRect(resourceId, start, end) {
 export function getResourceTimeGridPoint(resourceId, date) {
   date = ensureDate(date)
 
-  const day = FullCalendar.startOfDay(date)
+  const day = startOfDay(date)
   const timeMs = date.valueOf() - day.valueOf()
   const dayEls = getResourceTimeGridDayEls(resourceId, date)
 

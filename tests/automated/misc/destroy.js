@@ -35,8 +35,9 @@ describe('destroy', function() {
           allDaySlot: false,
           _eventsPositioned() {
             setTimeout(function() { // wait to render events
-              currentCalendar.destroy()
-              window.currentCalendar = null // for tests/util.js
+
+              window['currentCalendar'].destroy()
+              window['currentCalendar'] = null // for tests/util.js
 
               expect($el.length).toBe(1)
               expect($el.attr('class') || '').toBe('')

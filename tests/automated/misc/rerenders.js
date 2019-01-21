@@ -1,7 +1,6 @@
+import { ResourceTimelineView } from 'fullcalendar-timeline'
 
 describe('rerender performance for resource timeline', function() {
-  const { ResourceTimelineView } = FullCalendar
-
   pushOptions({
     defaultDate: '2017-10-04',
     defaultView: 'timelineDay',

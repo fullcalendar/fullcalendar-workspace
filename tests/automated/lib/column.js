@@ -8,7 +8,7 @@ export function getHeadResourceEls(resourceId, date) {
   let datePart = ''
 
   if (date) {
-    if (typeof Date === 'string') {
+    if (typeof date === 'string') {
       date = new Date(date)
     }
     datePart = '[data-date="' + formatIsoDay(date) + '"]'

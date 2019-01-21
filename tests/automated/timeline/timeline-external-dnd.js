@@ -1,5 +1,6 @@
 // TODO: test isRtl?
 
+import { Draggable } from 'fullcalendar'
 import { getResourceTimelinePoint } from '../lib/timeline'
 
 describe('timeline-view external element drag-n-drop', function() {
@@ -23,7 +24,7 @@ describe('timeline-view external element drag-n-drop', function() {
       '>external</a>')
       .appendTo('body')
 
-    new FullCalendar.Draggable(dragEl[0], {
+    new Draggable(dragEl[0], {
       eventData: {
         title: 'my external event'
       }

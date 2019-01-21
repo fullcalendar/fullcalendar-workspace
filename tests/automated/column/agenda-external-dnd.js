@@ -1,8 +1,10 @@
 // TODO: test isRtl?
 
+import { Draggable } from 'fullcalendar'
 import { getResourceTimeGridPoint } from '../lib/time-grid'
 
 describe('agenda-view event drag-n-drop', function() {
+
   pushOptions({
     droppable: true,
     now: '2015-11-29',
@@ -29,7 +31,7 @@ describe('agenda-view event drag-n-drop', function() {
           '>external</a>')
           .appendTo('body')
 
-        new FullCalendar.Draggable(dragEl[0], {
+        new Draggable(dragEl[0], {
           eventData: {
             title: 'my external event'
           }
