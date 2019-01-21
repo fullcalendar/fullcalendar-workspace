@@ -2,7 +2,7 @@ import { DateSpan, Calendar } from 'fullcalendar'
 import ResourceApi from './api/ResourceApi'
 import { ResourceInput, parseResource, ResourceHash, Resource } from './structs/resource'
 
-declare module 'fullcalendar/Calendar' {
+declare module 'fullcalendar' {
 
   interface DatePointApi {
     resource?: ResourceApi
@@ -12,7 +12,7 @@ declare module 'fullcalendar/Calendar' {
     resource?: ResourceApi
   }
 
-  interface Default { // the Calendar
+  interface Calendar {
     addResource(input: ResourceInput): ResourceApi
     getResourceById(id: string): ResourceApi | null
     getResources(): ResourceApi[]

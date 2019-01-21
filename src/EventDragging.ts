@@ -1,6 +1,6 @@
 import { EventMutation, Hit, EventDef, Calendar } from 'fullcalendar'
 
-declare module 'fullcalendar/src/structs/event-mutation' {
+declare module 'fullcalendar' {
   interface EventMutation {
     resourceMutation?: { matchResourceId: string, setResourceId: string }
     // TODO: rename these to removeResourceId/addResourceId?

@@ -5,16 +5,16 @@ import reduceResourceSource from './resourceSource'
 import reduceResourceStore from './resourceStore'
 import { reduceResourceEntityExpansions, ResourceEntityExpansions } from './resourceEntityExpansions'
 
-declare module 'fullcalendar/src/reducers/types' {
+declare module 'fullcalendar' {
   interface CalendarState {
-    resourceSource: ResourceSource | null
-    resourceStore: ResourceHash
-    resourceEntityExpansions: ResourceEntityExpansions
+    resourceSource?: ResourceSource | null
+    resourceStore?: ResourceHash
+    resourceEntityExpansions?: ResourceEntityExpansions
   }
 }
 
-declare module 'fullcalendar/Calendar' {
-  interface Default {
+declare module 'fullcalendar' {
+  interface Calendar {
     dispatch(action: ResourceAction)
   }
 }

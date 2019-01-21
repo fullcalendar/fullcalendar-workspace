@@ -1,6 +1,6 @@
 import { EventDef, refineProps } from 'fullcalendar'
 
-declare module 'fullcalendar/src/structs/event' {
+declare module 'fullcalendar' {
   interface EventDef {
     resourceIds: string[]
     resourceEditable: boolean

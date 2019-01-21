@@ -1,12 +1,10 @@
 import { EventApi } from 'fullcalendar'
 import ResourceApi from './ResourceApi'
 
-declare module 'fullcalendar/EventApi' {
-
-  interface Default {
+declare module 'fullcalendar' {
+  interface EventApi {
     getResources: () => ResourceApi[]
   }
-
 }
 
 EventApi.prototype.getResources = function(this: EventApi): ResourceApi[] {

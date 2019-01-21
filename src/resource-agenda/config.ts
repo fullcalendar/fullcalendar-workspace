@@ -1,4 +1,5 @@
-import { createPlugin, ViewSpec, AgendaView } from 'fullcalendar'
+import { createPlugin, ViewSpec } from 'fullcalendar'
+import { AgendaView } from 'fullcalendar-agenda'
 import ResourceAgendaView from './ResourceAgendaView'
 import { isVResourceViewEnabled } from '../common/resource-day-table'
 

@@ -42,7 +42,7 @@ export const GeneralPlugin = exportHooks.createPlugin({
   eventDropTransformers: [ transformEventDrop ]
 })
 
-exportHooks.Calendar.defaultPlugins.push( // TODO: kill
+console.log( // TODO: kill
   GeneralPlugin,
   TimelinePlugin,
   ResourceTimelinePlugin,

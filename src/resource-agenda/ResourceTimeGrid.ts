@@ -1,4 +1,5 @@
-import { mapHash, OffsetTracker, TimeGridSlicer, DateSpan, DateComponent, TimeGrid, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, TimeGridSeg, DateMarker, Hit, buildDayRanges } from 'fullcalendar'
+import { mapHash, OffsetTracker, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit } from 'fullcalendar'
+import { TimeGridSlicer, TimeGrid, buildDayRanges, TimeGridSeg } from 'fullcalendar-agenda'
 import { AbstractResourceDayTable, VResourceSplitter, VResourceJoiner } from '../common/resource-day-table'
 
 export interface ResourceTimeGridProps {
