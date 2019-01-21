@@ -9,12 +9,6 @@
   },
   "license": "SEE LICENSE IN LICENSE.md",
   "copyright": "2018 Adam Shaw",
-  "dependencies": {
-    "fullcalendar": "4.0.0-alpha.4",
-    "superagent": "^4.0.0"
-  },
-  "version": "0.0.0",
-  "releaseDate": "1970-01-01",
   "devDependencies": {
     "@types/jasmine": "^3.3.7",
     "@types/jasmine-jquery": "^1.5.33",
@@ -64,6 +58,7 @@
     "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
     "sass-loader": "^6.0.7",
+    "superagent": "^4.0.0",
     "ts-loader": "^3.5.0",
     "tslib": "^1.9.3",
     "tslint": "^5.12.1",
@@ -72,17 +67,6 @@
     "xhr-mock": "^2.4.1",
     "yargs": "^4.6.0"
   },
-  "main": "dist/scheduler.js",
-  "types": "dist/scheduler.d.ts",
-  "files": [
-    "dist/*.js",
-    "dist/*.css",
-    "dist/*.d.ts",
-    "README.*",
-    "LICENSE.*",
-    "CHANGELOG.*",
-    "CONTRIBUTING.*"
-  ],
   "scripts": {
     "clean": "rm -rf dist tmp",
     "build": "npm run tsc && npm run rollup",
