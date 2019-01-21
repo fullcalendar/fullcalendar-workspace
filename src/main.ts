@@ -1,4 +1,4 @@
-import * as exportHooks from 'fullcalendar'
+import { createPlugin } from 'fullcalendar'
 import { ResourceDataAdder, ResourceEventConfigAdder } from './View' // TODO: ResourceDataAdder should be own plugin
 import resourcesReducers from './reducers/resources'
 import { parseEventDef } from './structs/event'
@@ -26,7 +26,7 @@ import ResourceTimelinePlugin from './resource-timeline/config'
 import ResourceAgendaPlugin from './resource-agenda/config'
 import ResourceBasicPlugin from './resource-basic/config'
 
-export const GeneralPlugin = exportHooks.createPlugin({
+export const GeneralPlugin = createPlugin({
   reducers: [ resourcesReducers ],
   eventDefParsers: [ parseEventDef ],
   eventDragMutationMassagers: [ massageEventDragMutation ],
@@ -50,8 +50,10 @@ console.log( // TODO: kill
   ResourceBasicPlugin
 )
 
-;(exportHooks as any).TimelineView = TimelineView
-;(exportHooks as any).ResourceTimelineView = ResourceTimelineView
-;(exportHooks as any).ResourceTimelineView = ResourceTimelineView
-;(exportHooks as any).ResourceAgendaView = ResourceAgendaView
-;(exportHooks as any).ResourceBasicView = ResourceBasicView
+console.log(
+  TimelineView,
+  ResourceTimelineView,
+  ResourceTimelineView,
+  ResourceAgendaView,
+  ResourceBasicView
+)
