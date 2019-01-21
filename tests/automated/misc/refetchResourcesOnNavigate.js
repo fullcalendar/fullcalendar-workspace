@@ -370,7 +370,7 @@ describe('refetchResourcesOnNavigate', function() {
         defaultView: 'timelineWeek',
         now: '2017-02-12',
         timeZone: 'America/Chicago',
-        resources: 'my-feed.php' // will be picked up by mockjax
+        resources: 'my-feed.php' // will be picked up by XHRMock
       })
     })
 
@@ -391,7 +391,7 @@ describe('refetchResourcesOnNavigate', function() {
         defaultView: 'timelineWeek',
         now: '2017-02-12',
         timeZone: 'America/Chicago',
-        resources: 'my-feed.php', // will be picked up by mockjax
+        resources: 'my-feed.php', // will be picked up by XHRMock
         startParam: 'mystart',
         endParam: 'myend',
         timeZoneParam: 'mytimezone'
@@ -411,7 +411,7 @@ describe('refetchResourcesOnNavigate', function() {
         defaultView: 'timelineWeek',
         now: '2017-02-12',
         timeZone: 'America/Chicago',
-        resources: 'my-feed.php', // will be picked up by mockjax
+        resources: 'my-feed.php', // will be picked up by XHRMock
         refetchResourcesOnNavigate: false
       })
     })
