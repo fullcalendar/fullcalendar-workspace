@@ -16,6 +16,9 @@
   "version": "0.0.0",
   "releaseDate": "1970-01-01",
   "devDependencies": {
+    "@types/jasmine": "^3.3.7",
+    "@types/jasmine-jquery": "^1.5.33",
+    "@types/jquery": "^3.3.29",
     "components-jqueryui": "github:components/jqueryui",
     "css-loader": "^0.28.11",
     "del": "^2.2.0",
@@ -81,6 +84,7 @@
   "scripts": {
     "tsc": "tsc -p tsconfig.build.json",
     "tsc-watch": "tsc -p tsconfig.build.json --watch --sourceMap",
+    "rollup": "rollup -c --environment BUILD:production",
     "clean": "gulp clean",
     "dist": "gulp dist",
     "lint": "gulp lint-and-example-repos",

@@ -22,9 +22,16 @@
       "fullcalendar-resourcecolumns": [ "src/resourcecolumns/main" ],
       "fullcalendar-timeline": [ "src/timeline/main" ]
     },
+    "types": [
+      "jquery",
+      "jasmine",
+      "jasmine-jquery"
+    ],
     "outDir": "tmp/tsc-output"
   },
   "include": [
-    "src/*/main.ts"
+    "src/*/main.ts",
+    "fullcalendar/tests/automated/globals.d.ts",
+    "tests/automated/**/*.js"
   ]
 }
