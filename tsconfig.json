@@ -1,22 +1,25 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "module": "es6",
+    "moduleResolution": "node",
     "lib": [
       "dom",
       "es2015",
       "scripthost"
     ],
-    "module": "commonjs",
+    "allowSyntheticDefaultImports": true,
     "allowJs": true,
+    "checkJs": true,
     "noUnusedLocals": true,
     "noImplicitUseStrict": true,
     "importHelpers": true,
     "baseUrl": ".",
     "paths": {
-      "jquery": ["node_modules/@types/jquery/index.d.ts"],
-      "fullcalendar": ["fullcalendar/dist/fullcalendar.d.ts"]
+      "fullcalendar": [ "fullcalendar/src/core/main" ],
+      "fullcalendar-agenda": [ "fullcalendar/src/agenda/main" ]
     },
-    "sourceMap": true
+    "outDir": "tmp/tsc-output"
   },
   "include": [
     "src/main.ts"
