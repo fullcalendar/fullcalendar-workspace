@@ -1,6 +1,7 @@
 import resolve from 'rollup-plugin-node-resolve'
 import multiEntry from 'rollup-plugin-multi-entry'
 import sourcemaps from 'rollup-plugin-sourcemaps'
+import includePaths from 'rollup-plugin-includepaths'
 import rootPackageConfig from './package.json'
 import tsConfig from './tsconfig.json'
 
@@ -86,8 +87,7 @@ function buildTestConfig() {
     onwarn,
     watch: watchOptions,
     input: [
-      'tmp/tsc-output/tests/automated/globals.js', // needs to be first
-      'tmp/tsc-output/tests/automated/hacks.js', // "
+      'fullcalendar/tests/automated/globals.js', // must go first
       'tmp/tsc-output/tests/automated/**/*.js'
     ],
     external: externalPackageNames,
@@ -99,6 +99,9 @@ function buildTestConfig() {
       sourcemap: isDev
     },
     plugins: getDefaultPlugins().concat([
+      includePaths({
+        paths: [ 'tmp/tsc-output' ] // for resolving paths like 'fullcalendar/tests/automated/**'
+      }),
       multiEntry({
         exports: false // otherwise will complain about exported utils
       })
@@ -108,6 +111,6 @@ function buildTestConfig() {
 
 function onwarn(warning, warn) {
   if (warning.code !== 'PLUGIN_WARNING') {
-    // warn(warning)
+    warn(warning)
   }
 }
