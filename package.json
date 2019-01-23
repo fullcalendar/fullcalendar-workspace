@@ -49,6 +49,7 @@
     "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^1.1.2",
     "karma-sourcemap-loader": "^0.3.7",
+    "mkdirp": "^0.5.1",
     "moment": "^2.23.0",
     "native-promise-only": "^0.8.1",
     "node-sass": "^4.11.0",
