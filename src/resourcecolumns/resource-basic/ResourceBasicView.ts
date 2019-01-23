@@ -1,4 +1,5 @@
-import { AbstractBasicView, ComponentContext, ViewSpec, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, buildBasicDayTable } from 'fullcalendar'
+import { ComponentContext, ViewSpec, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile } from 'fullcalendar'
+import { AbstractBasicView, buildBasicDayTable } from 'fullcalendar-basic'
 import ResourceDayHeader from '../ResourceDayHeader'
 import { ResourceDayTable, DayResourceTable } from '../resource-day-table'
 import ResourceDayGrid from './ResourceDayGrid'

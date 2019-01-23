@@ -1,4 +1,5 @@
-import { createPlugin, ViewSpec, BasicView } from 'fullcalendar'
+import { createPlugin, ViewSpec } from 'fullcalendar'
+import { BasicView } from 'fullcalendar-basic'
 import { AgendaView } from 'fullcalendar-agenda'
 import ResourceAgendaView from './resource-agenda/ResourceAgendaView'
 import ResourceBasicView from './resource-basic/ResourceBasicView'

@@ -3,6 +3,7 @@
   "compilerOptions": {
     "paths": {
       "fullcalendar": [ "fullcalendar/dist/fullcalendar/main.d.ts" ],
+      "fullcalendar-basic": [ "fullcalendar/dist/fullcalendar-basic/main.d.ts" ],
       "fullcalendar-agenda": [ "fullcalendar/dist/fullcalendar-agenda/main.d.ts" ],
       "fullcalendar-resources": [ "src/resources/main" ],
       "fullcalendar-resourcecolumns": [ "src/resourcecolumns/main" ],
