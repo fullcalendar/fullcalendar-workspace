@@ -1,5 +1,7 @@
-import { TimelineView, ResourceTimelineView } from 'fullcalendar-timeline'
-import { ResourceAgendaView, ResourceBasicView } from 'fullcalendar-resourcecolumns'
+import { TimelineView } from 'fullcalendar-timeline'
+import { ResourceTimelineView } from 'fullcalendar-resource-timeline'
+import { ResourceAgendaView } from 'fullcalendar-resource-agenda'
+import { ResourceBasicView } from 'fullcalendar-resource-basic'
 
 describe('internal View classes', function() {
 

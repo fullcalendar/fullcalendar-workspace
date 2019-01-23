@@ -1,4 +1,4 @@
-import { ResourceTimelineView } from 'fullcalendar-timeline'
+import { ResourceTimelineView } from 'fullcalendar-resource-timeline'
 
 describe('rerender performance for resource timeline', function() {
   pushOptions({

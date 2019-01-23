@@ -1,5 +1,5 @@
-import ClippedScroller from '../util/ClippedScroller'
-import ScrollJoiner from '../util/ScrollJoiner'
+import ClippedScroller from './util/ClippedScroller'
+import ScrollJoiner from './util/ScrollJoiner'
 
 export default class HeaderBodyLayout {
 

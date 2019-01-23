@@ -5,9 +5,11 @@
       "fullcalendar": [ "fullcalendar/dist/fullcalendar/main.d.ts" ],
       "fullcalendar-basic": [ "fullcalendar/dist/fullcalendar-basic/main.d.ts" ],
       "fullcalendar-agenda": [ "fullcalendar/dist/fullcalendar-agenda/main.d.ts" ],
+      "fullcalendar-timeline": [ "src/timeline/main" ],
       "fullcalendar-resources": [ "src/resources/main" ],
-      "fullcalendar-resourcecolumns": [ "src/resourcecolumns/main" ],
-      "fullcalendar-timeline": [ "src/timeline/main" ]
+      "fullcalendar-resource-basic": [ "src/resource-basic/main" ],
+      "fullcalendar-resource-agenda": [ "src/resource-agenda/main" ],
+      "fullcalendar-resource-timeline": [ "src/resource-timeline/main" ]
     }
   }
 }

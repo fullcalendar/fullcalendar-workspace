@@ -19,9 +19,11 @@
       "fullcalendar": [ "fullcalendar/src/core/main" ],
       "fullcalendar-basic": [ "fullcalendar/src/basic/main" ],
       "fullcalendar-agenda": [ "fullcalendar/src/agenda/main" ],
+      "fullcalendar-timeline": [ "src/timeline/main" ],
       "fullcalendar-resources": [ "src/resources/main" ],
-      "fullcalendar-resourcecolumns": [ "src/resourcecolumns/main" ],
-      "fullcalendar-timeline": [ "src/timeline/main" ]
+      "fullcalendar-resource-basic": [ "src/resource-basic/main" ],
+      "fullcalendar-resource-agenda": [ "src/resource-agenda/main" ],
+      "fullcalendar-resource-timeline": [ "src/resource-timeline/main" ]
     },
     "types": [
       "jquery",

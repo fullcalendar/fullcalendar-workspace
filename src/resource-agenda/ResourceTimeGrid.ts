@@ -1,6 +1,6 @@
 import { mapHash, OffsetTracker, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit } from 'fullcalendar'
 import { TimeGridSlicer, TimeGrid, buildDayRanges, TimeGridSeg } from 'fullcalendar-agenda'
-import { AbstractResourceDayTable, VResourceSplitter, VResourceJoiner } from '../resource-day-table'
+import { AbstractResourceDayTable, VResourceSplitter, VResourceJoiner } from 'fullcalendar-resources'
 
 export interface ResourceTimeGridProps {
   dateProfile: DateProfile | null
