@@ -1,5 +1,4 @@
-import { globalHooks } from 'fullcalendar'
-import { Calendar, appendToElement, isValidDate, addDays } from 'fullcalendar'
+import { globalHooks, Calendar, appendToElement, isValidDate, addDays } from 'fullcalendar'
 
 const RELEASE_DATE = '<%= releaseDate %>' // for Scheduler
 const UPGRADE_WINDOW = 365 + 7 // days. 1 week leeway, for tz shift reasons too
