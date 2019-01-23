@@ -20,6 +20,12 @@ module.exports = function(config) {
       'node_modules/jasmine-fixture/dist/jasmine-fixture.js',
       'node_modules/jquery-simulate/jquery.simulate.js',
 
+      // files from main project
+      'fullcalendar/dist/fullcalendar/main.+(js|css)',
+      'fullcalendar/dist/fullcalendar-basic/main.+(js|css)',
+      'fullcalendar/dist/fullcalendar-agenda/main.+(js|css)',
+      'fullcalendar/dist/fullcalendar-list/main.+(js|css)',
+
       // plugin files (ordering matters because of dependencies)
       'dist/fullcalendar-timeline/main.+(js|css)',
       'dist/fullcalendar-resources/main.+(js|css)',
@@ -29,6 +35,7 @@ module.exports = function(config) {
       { pattern: 'dist/*/*.map', included: false, nocache: true, watched: false },
 
       'tests/automated/base.css',
+      { pattern: 'tests/automated/json/**', included: false, nocache: true, watched: false },
       'tmp/automated-tests.js',
       { pattern: 'tmp/automated-tests.js.map', included: false, nocache: true, watched: false }
     ],

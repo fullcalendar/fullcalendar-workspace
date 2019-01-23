@@ -87,7 +87,7 @@ function buildTestConfig() {
     onwarn,
     watch: watchOptions,
     input: [
-      'fullcalendar/tests/automated/globals.js', // must go first
+      'tmp/tsc-output/tests/automated/globals.js', // needs to be first
       'tmp/tsc-output/tests/automated/**/*.js'
     ],
     external: externalPackageNames,
