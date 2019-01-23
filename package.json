@@ -68,7 +68,7 @@
     "yargs": "^4.6.0"
   },
   "scripts": {
-    "clean": "rm -rf dist tmp",
+    "clean": "rm -rf dist archives tmp",
     "build": "npm run tsc && npm run rollup && npm run sass",
     "watch": "concurrently --raw 'npm run tsc-watch' 'npm run rollup-watch' 'npm run sass-watch'",
     "tsc": "tsc -p tsconfig.build.json",
