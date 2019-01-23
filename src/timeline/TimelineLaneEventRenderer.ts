@@ -1,6 +1,6 @@
-import { FgEventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement, ComponentContext } from 'fullcalendar'
+import { EventDef, Calendar, FgEventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement, ComponentContext } from 'fullcalendar'
 import TimeAxis from './TimeAxis'
-import { computeResourceEditable } from 'fullcalendar-resources'
+// import { computeResourceEditable } from 'fullcalendar-resources' ... CAN'T HAVE THIS DEP! COPIED AND PASTED BELOW!
 
 export default class TimelineLaneEventRenderer extends FgEventRenderer {
 
@@ -202,4 +202,27 @@ function computeOffsetForSeg(seg) {
 
 function timeRowSegsCollide(seg0, seg1) {
   return (seg0.left < seg1.right) && (seg0.right > seg1.left)
+}
+
+// HACK
+function computeResourceEditable(eventDef: EventDef, calendar: Calendar): boolean {
+  let { resourceEditable } = eventDef
+
+  if (resourceEditable == null) {
+    let source = eventDef.sourceId && calendar.state.eventSources[eventDef.sourceId]
+
+    if (source) {
+      resourceEditable = source.extendedProps.resourceEditable // used the Source::extendedProps hack
+    }
+
+    if (resourceEditable == null) {
+      resourceEditable = calendar.opt('eventResourceEditable')
+
+      if (resourceEditable == null) {
+        resourceEditable = true // TODO: use defaults system instead
+      }
+    }
+  }
+
+  return resourceEditable
 }

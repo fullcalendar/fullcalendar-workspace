@@ -12,7 +12,7 @@ export function updateExpanderIcon(el: HTMLElement, isExpanded: boolean, isRtl: 
     classList.add(DOWN_TRIANGLE_ICON)
   } else {
     classList.remove(DOWN_TRIANGLE_ICON)
-    classList.add(this.isRtl ? LEFT_TRIANGLE_ICON : RIGHT_TRIANGLE_ICON)
+    classList.add(isRtl ? LEFT_TRIANGLE_ICON : RIGHT_TRIANGLE_ICON)
   }
 }
 
