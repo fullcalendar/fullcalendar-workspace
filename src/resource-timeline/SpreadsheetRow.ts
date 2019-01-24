@@ -1,5 +1,5 @@
-import { htmlToElement, htmlEscape, createElement, Component, ComponentContext, memoizeRendering } from 'fullcalendar'
-import { Resource, ResourceApi, buildResourceFields, buildResourceTextFunc } from 'fullcalendar-resources'
+import { htmlToElement, htmlEscape, createElement, Component, ComponentContext, memoizeRendering } from '@fullcalendar/core'
+import { Resource, ResourceApi, buildResourceFields, buildResourceTextFunc } from '@fullcalendar/resource-common'
 import { updateExpanderIcon, clearExpanderIcon, updateTrResourceId } from './render-utils'
 
 export interface SpreadsheetRowProps {

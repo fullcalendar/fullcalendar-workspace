@@ -1,4 +1,4 @@
-import { ScrollComponent, EmitterInterface, EmitterMixin, removeElement, htmlToElement, debounce, preventDefault } from 'fullcalendar'
+import { ScrollComponent, EmitterInterface, EmitterMixin, removeElement, htmlToElement, debounce, preventDefault } from '@fullcalendar/core'
 import ScrollerCanvas from './ScrollerCanvas'
 
 export default class EnhancedScroller extends ScrollComponent {

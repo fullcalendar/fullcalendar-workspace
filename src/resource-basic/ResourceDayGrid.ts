@@ -1,6 +1,6 @@
-import { mapHash, Hit, OffsetTracker, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration } from 'fullcalendar'
-import { DayGridSlicer, DayGrid, DayGridSeg } from 'fullcalendar-basic'
-import { AbstractResourceDayTable, VResourceSplitter, VResourceJoiner } from 'fullcalendar-resources'
+import { mapHash, Hit, OffsetTracker, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration } from '@fullcalendar/core'
+import { DayGridSlicer, DayGrid, DayGridSeg } from '@fullcalendar/daygrid'
+import { AbstractResourceDayTable, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
 
 export interface ResourceDayGridProps {
   dateProfile: DateProfile | null

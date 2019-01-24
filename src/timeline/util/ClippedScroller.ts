@@ -1,4 +1,4 @@
-import { createElement, computeEdges, applyStyle, ScrollbarWidths, removeElement } from 'fullcalendar'
+import { createElement, computeEdges, applyStyle, ScrollbarWidths, removeElement } from '@fullcalendar/core'
 import EnhancedScroller from './EnhancedScroller'
 
 /*

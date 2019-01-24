@@ -1,4 +1,4 @@
-import { EventApi } from 'fullcalendar'
+import { EventApi } from '@fullcalendar/core'
 import ResourceApi from './ResourceApi'
 
 declare module 'fullcalendar' {

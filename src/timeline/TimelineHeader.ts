@@ -1,4 +1,4 @@
-import { asRoughMs, isSingleDay, findElements, createElement, removeElement, getDayClasses, Component, ComponentContext, DateProfile } from 'fullcalendar'
+import { asRoughMs, isSingleDay, findElements, createElement, removeElement, getDayClasses, Component, ComponentContext, DateProfile } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 export interface TimelineHeaderProps {

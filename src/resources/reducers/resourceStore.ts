@@ -1,4 +1,4 @@
-import { Calendar, mapHash } from 'fullcalendar'
+import { Calendar, mapHash } from '@fullcalendar/core'
 import { ResourceAction } from './resources'
 import { ResourceHash, ResourceInput, parseResource } from '../structs/resource'
 import { ResourceSource } from '../structs/resource-source'

@@ -1,6 +1,6 @@
-import { EventDef, Calendar, FgEventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement, ComponentContext } from 'fullcalendar'
+import { EventDef, Calendar, FgEventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement, ComponentContext } from '@fullcalendar/core'
 import TimeAxis from './TimeAxis'
-// import { computeResourceEditable } from 'fullcalendar-resources' ... CAN'T HAVE THIS DEP! COPIED AND PASTED BELOW!
+// import { computeResourceEditable } from '@fullcalendar/resource-common' ... CAN'T HAVE THIS DEP! COPIED AND PASTED BELOW!
 
 export default class TimelineLaneEventRenderer extends FgEventRenderer {
 

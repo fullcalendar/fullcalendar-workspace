@@ -1,4 +1,4 @@
-import { Calendar, EventApi } from 'fullcalendar'
+import { Calendar, EventApi } from '@fullcalendar/core'
 import { Resource } from '../structs/resource'
 
 export default class ResourceApi {

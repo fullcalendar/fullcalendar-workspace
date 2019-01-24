@@ -1,5 +1,5 @@
-import { Component, ComponentContext, DateMarker, htmlToElement, removeElement, htmlEscape, DateProfile, renderDateCell, findElements, createFormatter, DateFormatter, computeFallbackHeaderFormat } from 'fullcalendar'
-import { buildResourceTextFunc, ResourceApi, Resource } from 'fullcalendar-resources'
+import { Component, ComponentContext, DateMarker, htmlToElement, removeElement, htmlEscape, DateProfile, renderDateCell, findElements, createFormatter, DateFormatter, computeFallbackHeaderFormat } from '@fullcalendar/core'
+import { buildResourceTextFunc, ResourceApi, Resource } from '@fullcalendar/resource-common'
 
 export interface ResourceDayHeaderProps {
   dates: DateMarker[]

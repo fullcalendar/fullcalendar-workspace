@@ -1,6 +1,6 @@
-import { mapHash, OffsetTracker, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit } from 'fullcalendar'
-import { TimeGridSlicer, TimeGrid, buildDayRanges, TimeGridSeg } from 'fullcalendar-agenda'
-import { AbstractResourceDayTable, VResourceSplitter, VResourceJoiner } from 'fullcalendar-resources'
+import { mapHash, OffsetTracker, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit } from '@fullcalendar/core'
+import { TimeGridSlicer, TimeGrid, buildDayRanges, TimeGridSeg } from '@fullcalendar/timegrid'
+import { AbstractResourceDayTable, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
 
 export interface ResourceTimeGridProps {
   dateProfile: DateProfile | null

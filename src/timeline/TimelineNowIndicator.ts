@@ -1,4 +1,4 @@
-import { removeElement, createElement } from 'fullcalendar'
+import { removeElement, createElement } from '@fullcalendar/core'
 
 export default class TimelineNowIndicator {
 

@@ -1,5 +1,5 @@
-import { createPlugin, ViewSpec } from 'fullcalendar'
-import { TimelineView } from 'fullcalendar-timeline'
+import { createPlugin, ViewSpec } from '@fullcalendar/core'
+import { TimelineView } from '@fullcalendar/timeline'
 import ResourceTimelineView from './ResourceTimelineView'
 
 const RESOURCE_TIMELINE_DEFAULTS = {

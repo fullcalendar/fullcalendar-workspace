@@ -1,4 +1,4 @@
-import { EventDef, refineProps } from 'fullcalendar'
+import { EventDef, refineProps } from '@fullcalendar/core'
 
 declare module 'fullcalendar' {
   interface EventDef {

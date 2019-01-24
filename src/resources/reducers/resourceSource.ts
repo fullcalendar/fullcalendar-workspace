@@ -1,4 +1,4 @@
-import { Calendar, DateProfile, rangesEqual, DateRange } from 'fullcalendar'
+import { Calendar, DateProfile, rangesEqual, DateRange } from '@fullcalendar/core'
 import { ResourceSource, parseResourceSource, getResourceSourceDef, doesSourceIgnoreRange } from '../structs/resource-source'
 import { ResourceAction } from './resources'
 

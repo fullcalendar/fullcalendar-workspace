@@ -1,4 +1,4 @@
-import { removeElement, createElement, htmlEscape, Component, ComponentContext } from 'fullcalendar'
+import { removeElement, createElement, htmlEscape, Component, ComponentContext } from '@fullcalendar/core'
 
 export interface SpreadsheetHeaderProps {
   superHeaderText: string

@@ -1,4 +1,4 @@
-import { flexibleCompare, compareByFieldSpecs } from 'fullcalendar'
+import { flexibleCompare, compareByFieldSpecs } from '@fullcalendar/core'
 import { ResourceHash, Resource } from '../structs/resource'
 import { ResourceEntityExpansions } from '../reducers/resourceEntityExpansions'
 

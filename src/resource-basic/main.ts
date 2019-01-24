@@ -1,6 +1,6 @@
-import { createPlugin, ViewSpec } from 'fullcalendar'
-import { isVResourceViewEnabled } from 'fullcalendar-resources'
-import { BasicView } from 'fullcalendar-basic'
+import { createPlugin, ViewSpec } from '@fullcalendar/core'
+import { isVResourceViewEnabled } from '@fullcalendar/resource-common'
+import { BasicView } from '@fullcalendar/daygrid'
 import ResourceBasicView from './ResourceBasicView'
 
 

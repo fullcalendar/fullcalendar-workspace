@@ -1,4 +1,4 @@
-import { DateRange, Calendar, refineProps } from 'fullcalendar'
+import { DateRange, Calendar, refineProps } from '@fullcalendar/core'
 import { ResourceInput } from '../structs/resource'
 import { ResourceFunc } from '../resource-sources/resource-func'
 

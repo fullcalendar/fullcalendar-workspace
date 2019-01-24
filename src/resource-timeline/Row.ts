@@ -1,4 +1,4 @@
-import { removeElement, Component, ComponentContext } from 'fullcalendar'
+import { removeElement, Component, ComponentContext } from '@fullcalendar/core'
 
 export default abstract class Row<PropsType> extends Component<PropsType> {
 

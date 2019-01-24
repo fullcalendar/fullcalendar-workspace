@@ -1,4 +1,4 @@
-import { DateProfile, DateMarker, wholeDivideDurations, isInt, Component, ComponentContext, createDuration, startOfDay, greatestDurationDenominator, rangeContainsMarker } from 'fullcalendar'
+import { DateProfile, DateMarker, wholeDivideDurations, isInt, Component, ComponentContext, createDuration, startOfDay, greatestDurationDenominator, rangeContainsMarker } from '@fullcalendar/core'
 import HeaderBodyLayout from './HeaderBodyLayout'
 import TimelineHeader from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'

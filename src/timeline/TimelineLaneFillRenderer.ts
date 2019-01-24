@@ -1,4 +1,4 @@
-import { FillRenderer, createElement, applyStyle, ComponentContext, Seg } from 'fullcalendar'
+import { FillRenderer, createElement, applyStyle, ComponentContext, Seg } from '@fullcalendar/core'
 import TimeAxis from './TimeAxis'
 
 export default class TimelineLaneFillRenderer extends FillRenderer {

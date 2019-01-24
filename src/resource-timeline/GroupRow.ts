@@ -1,5 +1,5 @@
-import { createElement, htmlToElement, htmlEscape, memoizeRendering } from 'fullcalendar'
-import { Group, isGroupsEqual } from 'fullcalendar-resources'
+import { createElement, htmlToElement, htmlEscape, memoizeRendering } from '@fullcalendar/core'
+import { Group, isGroupsEqual } from '@fullcalendar/resource-common'
 import Row from './Row'
 import { updateExpanderIcon } from './render-utils'
 

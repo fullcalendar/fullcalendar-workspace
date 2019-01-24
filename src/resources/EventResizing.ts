@@ -1,4 +1,4 @@
-import { Hit } from 'fullcalendar'
+import { Hit } from '@fullcalendar/core'
 
 export function transformEventResizeJoin(hit0: Hit, hit1: Hit): false | object {
   let component = hit0.component

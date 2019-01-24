@@ -1,6 +1,6 @@
-import { createPlugin, ViewSpec } from 'fullcalendar'
-import { isVResourceViewEnabled } from 'fullcalendar-resources'
-import { AgendaView } from 'fullcalendar-agenda'
+import { createPlugin, ViewSpec } from '@fullcalendar/core'
+import { isVResourceViewEnabled } from '@fullcalendar/resource-common'
+import { AgendaView } from '@fullcalendar/timegrid'
 import ResourceAgendaView from './ResourceAgendaView'
 
 

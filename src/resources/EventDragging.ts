@@ -1,4 +1,4 @@
-import { EventMutation, Hit, EventDef, Calendar } from 'fullcalendar'
+import { EventMutation, Hit, EventDef, Calendar } from '@fullcalendar/core'
 
 declare module 'fullcalendar' {
   interface EventMutation {

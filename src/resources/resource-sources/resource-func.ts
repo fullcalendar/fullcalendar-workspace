@@ -1,4 +1,4 @@
-import { unpromisify } from 'fullcalendar'
+import { unpromisify } from '@fullcalendar/core'
 import { registerResourceSourceDef, ExtendedResourceSourceInput, ResourceSourceError } from '../structs/resource-source'
 import { ResourceInput } from '../structs/resource'
 

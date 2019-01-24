@@ -1,4 +1,4 @@
-import { createElement, Component, ComponentContext, memoizeRendering } from 'fullcalendar'
+import { createElement, Component, ComponentContext, memoizeRendering } from '@fullcalendar/core'
 import SpreadsheetHeader from './SpreadsheetHeader'
 import HeaderBodyLayout from '../timeline/HeaderBodyLayout'
 

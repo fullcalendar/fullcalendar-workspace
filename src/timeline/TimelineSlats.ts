@@ -1,4 +1,4 @@
-import { isInt, findElements, createElement, findChildren, PositionCache, removeElement, getDayClasses, Component, ComponentContext, DateProfile, multiplyDuration } from 'fullcalendar'
+import { isInt, findElements, createElement, findChildren, PositionCache, removeElement, getDayClasses, Component, ComponentContext, DateProfile, multiplyDuration } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 export interface TimelineSlatsProps {

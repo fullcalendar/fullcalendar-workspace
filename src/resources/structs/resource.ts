@@ -1,4 +1,4 @@
-import { ConstraintInput, AllowFunc, refineProps, EventStore, parseBusinessHours, Calendar, EventUi, processScopedUiProps, BusinessHoursInput } from 'fullcalendar'
+import { ConstraintInput, AllowFunc, refineProps, EventStore, parseBusinessHours, Calendar, EventUi, processScopedUiProps, BusinessHoursInput } from '@fullcalendar/core'
 
 export interface ResourceInput {
   id?: string

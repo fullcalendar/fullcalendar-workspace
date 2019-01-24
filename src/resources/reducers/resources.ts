@@ -1,4 +1,4 @@
-import { Calendar, CalendarState, Action, DateRange } from 'fullcalendar'
+import { Calendar, CalendarState, Action, DateRange } from '@fullcalendar/core'
 import { ResourceSource, ResourceSourceError } from '../structs/resource-source'
 import { ResourceHash, ResourceInput } from '../structs/resource'
 import reduceResourceSource from './resourceSource'

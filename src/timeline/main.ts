@@ -1,4 +1,4 @@
-import { createPlugin } from 'fullcalendar'
+import { createPlugin } from '@fullcalendar/core'
 import TimelineView from './TimelineView'
 
 let viewConfigs = {

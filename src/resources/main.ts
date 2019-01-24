@@ -1,4 +1,4 @@
-import { createPlugin } from 'fullcalendar'
+import { createPlugin } from '@fullcalendar/core'
 import { ResourceDataAdder, ResourceEventConfigAdder } from './View' // TODO: ResourceDataAdder should be own plugin
 import resourcesReducers from './reducers/resources'
 import { parseEventDef } from './structs/event'

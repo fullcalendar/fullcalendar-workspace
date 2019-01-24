@@ -1,4 +1,4 @@
-import { htmlToElement, applyStyle, forceClassName } from 'fullcalendar'
+import { htmlToElement, applyStyle, forceClassName } from '@fullcalendar/core'
 import { __assign } from 'tslib'
 
 /*

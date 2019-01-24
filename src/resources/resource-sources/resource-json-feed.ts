@@ -1,5 +1,5 @@
 import request from 'superagent'
-import { DateRange, Calendar } from 'fullcalendar'
+import { DateRange, Calendar } from '@fullcalendar/core'
 import { registerResourceSourceDef, ResourceSourceInput, ExtendedResourceSourceInput } from '../structs/resource-source'
 import { __assign } from 'tslib'
 
