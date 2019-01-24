@@ -1,0 +1,6 @@
+{
+  "title": "FullCalendar Basic Plugin",
+  "dependencies": {
+    "fullcalendar-basic": ""
+  }
+}

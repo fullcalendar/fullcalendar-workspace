@@ -1,0 +1,6 @@
+{
+  "title": "FullCalendar Agenda Plugin",
+  "dependencies": {
+    "fullcalendar-agenda": ""
+  }
+}
