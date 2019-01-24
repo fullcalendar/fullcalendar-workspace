@@ -1,6 +1,7 @@
 {
-  "title": "FullCalendar Basic Plugin",
+  "title": "FullCalendar Resource Day Grid Plugin",
   "dependencies": {
-    "fullcalendar-basic": ""
+    "@fullcalendar/resource-common": "",
+    "@fullcalendar/daygrid": ""
   }
 }

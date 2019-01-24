@@ -1,6 +1,7 @@
 {
   "title": "FullCalendar Resource Timeline Plugin",
   "dependencies": {
-    "fullcalendar-timeline": ""
+    "@fullcalendar/resource-common": "",
+    "@fullcalendar/timeline": ""
   }
 }

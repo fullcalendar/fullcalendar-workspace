@@ -1,6 +1,7 @@
 {
-  "title": "FullCalendar Agenda Plugin",
+  "title": "FullCalendar Resource Time Grid Plugin",
   "dependencies": {
-    "fullcalendar-agenda": ""
+    "@fullcalendar/resource-common": "",
+    "@fullcalendar/timegrid": ""
   }
 }

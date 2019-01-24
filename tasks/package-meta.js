@@ -75,11 +75,13 @@ function buildPackageConfig(packageName, overrides) {
 
         if (dependencyPath.match(/^src\//)) {
           dependencies[dependencyName] = rootPackageConfig.version || '0.0.0'
-        } else if (dependencyPath.match(/^fullcalendar\//)) {
+        } else if (dependencyName.match(/^@fullcalendar\//)) {
           dependencies[dependencyName] = coreRootPackageConfig.version || '0.0.0'
+        } else {
+          console.error('Unknown dependency (1)', dependencyName)
         }
       } else {
-        console.error('Unknown dependency', dependencyName)
+        console.error('Unknown dependency (2)', dependencyName)
       }
     }
 
