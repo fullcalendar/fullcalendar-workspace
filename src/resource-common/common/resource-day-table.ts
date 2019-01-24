@@ -1,5 +1,5 @@
 import { SlicedProps, EventDef, mapHash, Splitter, DayTable, DayTableCell, ViewSpec, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/core'
-import { Resource } from '@fullcalendar/resource-common'
+import { Resource } from '../structs/resource'
 import { __assign } from 'tslib'
 
 export interface ResourceDayTableCell extends DayTableCell {

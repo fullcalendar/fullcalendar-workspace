@@ -16,14 +16,14 @@
     "importHelpers": true,
     "baseUrl": ".",
     "paths": {
-      "fullcalendar": [ "fullcalendar/src/core/main" ],
-      "fullcalendar-basic": [ "fullcalendar/src/basic/main" ],
-      "fullcalendar-agenda": [ "fullcalendar/src/agenda/main" ],
-      "fullcalendar-timeline": [ "src/timeline/main" ],
-      "fullcalendar-resources": [ "src/resources/main" ],
-      "fullcalendar-resource-basic": [ "src/resource-basic/main" ],
-      "fullcalendar-resource-agenda": [ "src/resource-agenda/main" ],
-      "fullcalendar-resource-timeline": [ "src/resource-timeline/main" ]
+      "@fullcalendar/core": [ "fullcalendar/src/core/main" ],
+      "@fullcalendar/daygrid": [ "fullcalendar/src/daygrid/main" ],
+      "@fullcalendar/timegrid": [ "fullcalendar/src/timegrid/main" ],
+      "@fullcalendar/timeline": [ "src/timeline/main" ],
+      "@fullcalendar/resource-common": [ "src/resource-common/main" ],
+      "@fullcalendar/resource-daygrid": [ "src/resource-daygrid/main" ],
+      "@fullcalendar/resource-timegrid": [ "src/resource-timegrid/main" ],
+      "@fullcalendar/resource-timeline": [ "src/resource-timeline/main" ]
     },
     "types": [
       "jquery",

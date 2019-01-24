@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 const mkdirp = require('mkdirp')
 const gulp = require('gulp')
 const shell = require('gulp-shell')
@@ -23,7 +24,7 @@ gulp.task('dts:refined', [ 'dts:raw' ], function() {
   let contentByPackage = buildContentByPackage(rawContent)
 
   for (let packageName in contentByPackage) {
-    let dir = 'dist/' + packageName
+    let dir = 'dist/' + path.basename(packageName) // using path utils on normal strings :(
     mkdirp.sync(dir)
 
     fs.writeFileSync(
@@ -72,21 +73,12 @@ function buildChunksByPackage(content) {
 
 
 function transformModuleName(moduleName) {
-  let parts = moduleName.split('/')
-
-  if (parts.length > 1) { // one of our packages
-    let packageName = dirToPackage[parts[0]]
-
-    parts.shift() // remove first item, the dir name
-
-    if (parts.length === 1 && parts[0] === 'main') {
-      parts.shift() // completely empty!
-    }
-
-    parts.unshift(packageName)
+  // modules from main project OR an external dep
+  if (moduleName.match(/^@/) || !moduleName.match(/\//)) {
+    return moduleName
+  } else {
+    return '@fullcalendar/' + moduleName
   }
-
-  return parts.join('/')
 }
 
 

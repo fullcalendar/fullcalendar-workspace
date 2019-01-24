@@ -1,3 +1,4 @@
+import path from 'path'
 import resolve from 'rollup-plugin-node-resolve'
 import multiEntry from 'rollup-plugin-multi-entry'
 import sourcemaps from 'rollup-plugin-sourcemaps'
@@ -15,7 +16,7 @@ if (!/^(development|production)$/.test(process.env.BUILD)) {
 
 let packageGlobals = {
   superagent: 'superagent',
-  fullcalendar: 'FullCalendar'
+  '@fullcalendar/core': 'FullCalendar'
 }
 
 let packagePaths = tsConfig.compilerOptions.paths
@@ -40,8 +41,11 @@ function getDefaultPlugins() { // need to be instantiated each time
 }
 
 for (let packageName of packageNames) {
+  let packagePath = packagePaths[packageName][0]
+  let packageDirName = path.basename(path.dirname(packagePath))
+
   if (!packageGlobals[packageName]) {
-    packageGlobals[packageName] = 'FullCalendarPlugins.' + packageName
+    packageGlobals[packageName] = 'FullCalendarPlugins.' + packageDirName
   }
 }
 
@@ -65,13 +69,16 @@ export default [
 ]
 
 function buildPackageConfig(packageName) {
+  let packagePath = packagePaths[packageName][0]
+  let packageDirName = path.basename(path.dirname(packagePath))
+
   return {
     onwarn,
     watch: watchOptions,
-    input: 'tmp/tsc-output/' + packagePaths[packageName][0] + '.js',
+    input: 'tmp/tsc-output/' + packagePath + '.js',
     external: externalPackageNames,
     output: {
-      file: 'dist/' + packageName + '/main.js',
+      file: 'dist/' + packageDirName + '/main.js',
       globals: packageGlobals,
       exports: 'named',
       name: packageGlobals[packageName],

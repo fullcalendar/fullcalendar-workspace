@@ -2,14 +2,14 @@
   "extends": "./tsconfig",
   "compilerOptions": {
     "paths": {
-      "fullcalendar": [ "fullcalendar/dist/fullcalendar/main.d.ts" ],
-      "fullcalendar-basic": [ "fullcalendar/dist/fullcalendar-basic/main.d.ts" ],
-      "fullcalendar-agenda": [ "fullcalendar/dist/fullcalendar-agenda/main.d.ts" ],
-      "fullcalendar-timeline": [ "src/timeline/main" ],
-      "fullcalendar-resources": [ "src/resources/main" ],
-      "fullcalendar-resource-basic": [ "src/resource-basic/main" ],
-      "fullcalendar-resource-agenda": [ "src/resource-agenda/main" ],
-      "fullcalendar-resource-timeline": [ "src/resource-timeline/main" ]
+      "@fullcalendar/core": [ "fullcalendar/dist/core/main.d.ts" ],
+      "@fullcalendar/daygrid": [ "fullcalendar/dist/daygrid/main.d.ts" ],
+      "@fullcalendar/timegrid": [ "fullcalendar/dist/timegrid/main.d.ts" ],
+      "@fullcalendar/timeline": [ "src/timeline/main" ],
+      "@fullcalendar/resource-common": [ "src/resource-common/main" ],
+      "@fullcalendar/resource-daygrid": [ "src/resource-daygrid/main" ],
+      "@fullcalendar/resource-timegrid": [ "src/resource-timegrid/main" ],
+      "@fullcalendar/resource-timeline": [ "src/resource-timeline/main" ]
     }
   }
 }
