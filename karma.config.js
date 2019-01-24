@@ -21,17 +21,17 @@ module.exports = function(config) {
       'node_modules/jquery-simulate/jquery.simulate.js',
 
       // files from main project
-      'fullcalendar/dist/fullcalendar/main.+(js|css)',
-      'fullcalendar/dist/fullcalendar-basic/main.+(js|css)',
-      'fullcalendar/dist/fullcalendar-agenda/main.+(js|css)',
-      'fullcalendar/dist/fullcalendar-list/main.+(js|css)',
+      'fullcalendar/dist/core/main.+(js|css)',
+      'fullcalendar/dist/daygrid/main.+(js|css)',
+      'fullcalendar/dist/timegrid/main.+(js|css)',
+      'fullcalendar/dist/list/main.+(js|css)',
 
       // plugin files (ordering matters because of dependencies)
-      'dist/fullcalendar-timeline/main.+(js|css)',
-      'dist/fullcalendar-resources/main.+(js|css)',
-      'dist/fullcalendar-resource-basic/main.+(js|css)',
-      'dist/fullcalendar-resource-agenda/main.+(js|css)',
-      'dist/fullcalendar-resource-timeline/main.+(js|css)',
+      'dist/timeline/main.+(js|css)',
+      'dist/resource-common/main.+(js|css)',
+      'dist/resource-daygrid/main.+(js|css)',
+      'dist/resource-timegrid/main.+(js|css)',
+      'dist/resource-timeline/main.+(js|css)',
       { pattern: 'dist/*/*.map', included: false, nocache: true, watched: false },
 
       'tests/automated/base.css',
