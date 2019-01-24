@@ -1,4 +1,4 @@
-import { globalHooks } from 'fullcalendar'
+import { globalHooks } from '@fullcalendar/core'
 
 describe('MAX_TIMELINE_SLOTS hook', function() {
   it('is present', function() {

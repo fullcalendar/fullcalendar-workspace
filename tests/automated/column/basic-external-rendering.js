@@ -1,6 +1,6 @@
 // TODO: test isRtl?
 
-import { Draggable } from 'fullcalendar'
+import { Draggable } from '@fullcalendar/core'
 import { getResourceDayGridDayEls } from '../lib/day-grid'
 
 describe('basic-view event drag-n-drop', function() {

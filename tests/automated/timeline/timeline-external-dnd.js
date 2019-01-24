@@ -1,6 +1,6 @@
 // TODO: test isRtl?
 
-import { Draggable } from 'fullcalendar'
+import { Draggable } from '@fullcalendar/core'
 import { getResourceTimelinePoint } from '../lib/timeline'
 
 describe('timeline-view external element drag-n-drop', function() {

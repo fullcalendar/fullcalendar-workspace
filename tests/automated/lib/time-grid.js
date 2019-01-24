@@ -1,4 +1,4 @@
-import { startOfDay } from 'fullcalendar'
+import { startOfDay } from '@fullcalendar/core'
 import { formatIsoDay, ensureDate } from 'fullcalendar/tests/automated/datelib/utils'
 import { getBoundingRect } from 'fullcalendar/tests/automated/lib/dom-geom'
 import { getTimeGridTop } from 'fullcalendar/tests/automated/lib/time-grid'

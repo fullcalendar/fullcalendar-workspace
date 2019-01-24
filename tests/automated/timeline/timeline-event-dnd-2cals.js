@@ -1,4 +1,4 @@
-import { Calendar } from 'fullcalendar'
+import { Calendar } from '@fullcalendar/core'
 import { getResourceTimelinePoint } from '../lib/timeline'
 
 describe('timeline dragging events between calendars', function() {
