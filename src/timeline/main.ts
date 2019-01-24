@@ -30,6 +30,7 @@ let viewConfigs = {
 
 }
 
+export { default as TimelineLane } from './TimelineLane'
 export { TimelineView }
 export { default as ScrollJoiner } from './util/ScrollJoiner'
 

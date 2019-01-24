@@ -1,8 +1,8 @@
 import { ComponentContext, ViewSpec, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile } from '@fullcalendar/core'
 import { AbstractAgendaView, buildDayTable as buildAgendaDayTable } from '@fullcalendar/timegrid'
 import { ResourceDayHeader, ResourceDayTable, DayResourceTable, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
+import { ResourceDayGrid } from '@fullcalendar/resource-daygrid'
 import ResourceTimeGrid from './ResourceTimeGrid'
-import ResourceDayGrid from '../resource-basic/ResourceDayGrid'
 
 export default class ResourceAgendaView extends AbstractAgendaView {
 

@@ -5,7 +5,7 @@ import reduceResourceSource from './resourceSource'
 import reduceResourceStore from './resourceStore'
 import { reduceResourceEntityExpansions, ResourceEntityExpansions } from './resourceEntityExpansions'
 
-declare module 'fullcalendar' {
+declare module '@fullcalendar/core' {
   interface CalendarState {
     resourceSource?: ResourceSource | null
     resourceStore?: ResourceHash
@@ -13,7 +13,7 @@ declare module 'fullcalendar' {
   }
 }
 
-declare module 'fullcalendar' {
+declare module '@fullcalendar/core' {
   interface Calendar {
     dispatch(action: ResourceAction)
   }

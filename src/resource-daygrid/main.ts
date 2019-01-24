@@ -18,6 +18,7 @@ function transformBasicViewSpec(viewSpec: ViewSpec): ViewSpec {
 
 
 export { ResourceBasicView }
+export { default as ResourceDayGrid } from './ResourceDayGrid'
 
 export default createPlugin({
   viewSpecTransformers: [ transformBasicViewSpec ]

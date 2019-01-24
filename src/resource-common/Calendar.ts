@@ -3,7 +3,7 @@ import ResourceApi from './api/ResourceApi'
 import { ResourceInput, parseResource, ResourceHash, Resource } from './structs/resource'
 import { ResourceSourceInput } from './structs/resource-source'
 
-declare module 'fullcalendar' {
+declare module '@fullcalendar/core' {
 
   interface DatePointApi {
     resource?: ResourceApi

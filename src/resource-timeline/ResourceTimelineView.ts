@@ -1,11 +1,10 @@
 import { SplittableProps, memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, DateProfile } from '@fullcalendar/core'
-import { ScrollJoiner } from '@fullcalendar/timeline'
+import { ScrollJoiner, TimelineLane } from '@fullcalendar/timeline'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash, buildRowNodes, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc } from '@fullcalendar/resource-common'
 import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'
 import Spreadsheet from './Spreadsheet'
-import TimelineLane from '../timeline/TimelineLane'
 import { __assign } from 'tslib'
 
 export default class ResourceTimelineView extends View {

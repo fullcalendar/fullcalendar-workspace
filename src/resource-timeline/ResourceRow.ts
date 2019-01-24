@@ -1,7 +1,7 @@
 import { Duration, createElement, ComponentContext, EventInteractionState, DateSpan, EventUiHash, EventStore, DateProfile, memoizeRendering, isArraysEqual } from '@fullcalendar/core'
+import { TimelineLane } from '@fullcalendar/timeline'
 import Row from './Row'
 import SpreadsheetRow from './SpreadsheetRow'
-import TimelineLane from '../timeline/TimelineLane'
 import { Resource } from '@fullcalendar/resource-common'
 import { updateTrResourceId } from './render-utils'
 

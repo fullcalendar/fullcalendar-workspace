@@ -1,7 +1,7 @@
 import { EventApi } from '@fullcalendar/core'
 import ResourceApi from './ResourceApi'
 
-declare module 'fullcalendar' {
+declare module '@fullcalendar/core' {
   interface EventApi {
     getResources: () => ResourceApi[]
   }
