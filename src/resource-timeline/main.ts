@@ -1,5 +1,5 @@
 import { createPlugin, ViewSpec } from '@fullcalendar/core'
-import { TimelineView } from '@fullcalendar/timeline'
+import TimelinePlugin, { TimelineView } from '@fullcalendar/timeline'
 import ResourceCommonPlugin from '@fullcalendar/resource-common'
 import ResourceTimelineView from './ResourceTimelineView'
 
@@ -25,6 +25,6 @@ function transformViewSpec(viewSpec: ViewSpec): ViewSpec {
 export { ResourceTimelineView }
 
 export default createPlugin({
-  deps: [ ResourceCommonPlugin ],
+  deps: [ ResourceCommonPlugin, TimelinePlugin ],
   viewSpecTransformers: [ transformViewSpec ]
 })

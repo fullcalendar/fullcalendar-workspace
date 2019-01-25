@@ -1,6 +1,6 @@
 import { createPlugin, ViewSpec } from '@fullcalendar/core'
 import ResourceCommonPlugin, { isVResourceViewEnabled } from '@fullcalendar/resource-common'
-import { AgendaView } from '@fullcalendar/timegrid'
+import TimeGridPlugin, { AgendaView } from '@fullcalendar/timegrid'
 import ResourceAgendaView from './ResourceAgendaView'
 
 
@@ -20,6 +20,6 @@ function transformAgendaViewSpec(viewSpec: ViewSpec): ViewSpec {
 export { ResourceAgendaView }
 
 export default createPlugin({
-  deps: [ ResourceCommonPlugin ],
+  deps: [ ResourceCommonPlugin, TimeGridPlugin ],
   viewSpecTransformers: [ transformAgendaViewSpec ]
 })
