@@ -3,7 +3,7 @@ const mkdirp = require('mkdirp')
 const path = require('path')
 const gulp = require('gulp')
 const rootPackageConfig = require('../package.json')
-const coreRootPackageConfig = require('../fullcalendar/package.json')
+const corePackageConfig = require('../fullcalendar/dist/core/package.json')
 const tsConfig = require('../tsconfig')
 
 let packagePaths = tsConfig.compilerOptions.paths
@@ -77,7 +77,7 @@ function buildPackageConfig(packageName, overrides) {
     if (!peerDependencies) {
       peerDependencies = {}
     }
-    peerDependencies['@fullcalendar/core'] = rootPackageConfig.version || '0.0.0'
+    peerDependencies['@fullcalendar/core'] = '^' + (corePackageConfig.version || '0.0.0')
   }
 
   if (peerDependencies) {
@@ -107,9 +107,13 @@ function processDependencyMap(inputMap) {
       let dependencyPath = packagePaths[dependencyName][0]
 
       if (dependencyPath.match(/^src\//)) {
-        outputMap[dependencyName] = rootPackageConfig.version || '0.0.0'
+        outputMap[dependencyName] = '^' + (rootPackageConfig.version || '0.0.0')
+
       } else if (dependencyName.match(/^@fullcalendar\//)) {
-        outputMap[dependencyName] = coreRootPackageConfig.version || '0.0.0'
+        let depMetaPath = dependencyName.replace(/^@fullcalendar\//, '../fullcalendar/dist/') + '/package.json'
+        let depMeta = require(depMetaPath)
+        outputMap[dependencyName] = '^' + (depMeta.version || '0.0.0')
+
       } else {
         console.error('Unknown dependency (1)', dependencyName)
       }
