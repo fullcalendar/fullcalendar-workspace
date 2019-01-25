@@ -75,10 +75,14 @@ function buildChunksByPackage(content) {
 function transformModuleName(moduleName) {
   // modules from main project OR an external dep
   if (moduleName.match(/^@/) || !moduleName.match(/\//)) {
-    return moduleName
+    ;
   } else {
-    return '@fullcalendar/' + moduleName
+    moduleName = '@fullcalendar/' + moduleName
   }
+
+  moduleName = moduleName.replace(/\/main$/, '')
+
+  return moduleName
 }
 
 
