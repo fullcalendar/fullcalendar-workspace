@@ -64,11 +64,11 @@ if {
   # build everything
   gulp lint dist archive &&
 
-  # test in headless browser
-  npm run test-single &&
+  # # test in headless browser
+  # npm run test-single &&
 
   # commit new files
-  git add -f package.json package-lock.json dist &&
+  git add -f dist package.json package-lock.json &&
   git commit --quiet --no-verify -e -m "version $version" &&
   git tag -a "v$version" -m "version $version"
 }
@@ -76,9 +76,9 @@ then
   # return to branch
   git checkout --quiet "$current_branch"
 
-  # keep newly generated dist files around
-  git checkout --quiet "v$version" -- dist
-  git reset --quiet -- dist
+  # keep some newly generated files around
+  git checkout --quiet "v$version" -- dist package-lock.json
+  git reset --quiet -- dist package-lock.json
 
   echo "Success."
 

@@ -62,31 +62,61 @@ function buildPackageConfig(packageName, overrides) {
   delete res.devDependencies
   delete res.scripts
 
-  if (overrides.dependencies) {
-    let dependencies = {}
+  let peerDependencies = overrides.peerDependencies
+  let dependencies = overrides.dependencies
 
-    for (let dependencyName in overrides.dependencies) {
+  if (peerDependencies) {
+    peerDependencies = processDependencyMap(peerDependencies)
+  }
 
-      if (rootPackageConfig.devDependencies[dependencyName]) {
-        dependencies[dependencyName] = rootPackageConfig.devDependencies[dependencyName]
+  if (dependencies) {
+    dependencies = processDependencyMap(dependencies)
+  }
 
-      } else if (dependencyName in packagePaths) {
-        let dependencyPath = packagePaths[dependencyName][0]
-
-        if (dependencyPath.match(/^src\//)) {
-          dependencies[dependencyName] = rootPackageConfig.version || '0.0.0'
-        } else if (dependencyName.match(/^@fullcalendar\//)) {
-          dependencies[dependencyName] = coreRootPackageConfig.version || '0.0.0'
-        } else {
-          console.error('Unknown dependency (1)', dependencyName)
-        }
-      } else {
-        console.error('Unknown dependency (2)', dependencyName)
-      }
+  if (packageName !== '@fullcalendar/core') {
+    if (!peerDependencies) {
+      peerDependencies = {}
     }
+    peerDependencies['@fullcalendar/core'] = rootPackageConfig.version || '0.0.0'
+  }
 
+  if (peerDependencies) {
+    res.peerDependencies = peerDependencies
+  }
+
+  if (dependencies) {
     res.dependencies = dependencies
   }
 
+  res.main = 'main.js'
+  res.types = 'main.d.ts'
+
   return res
+}
+
+
+function processDependencyMap(inputMap) {
+  let outputMap = {}
+
+  for (let dependencyName in inputMap) {
+
+    if (rootPackageConfig.devDependencies[dependencyName]) {
+      outputMap[dependencyName] = rootPackageConfig.devDependencies[dependencyName]
+
+    } else if (dependencyName in packagePaths) {
+      let dependencyPath = packagePaths[dependencyName][0]
+
+      if (dependencyPath.match(/^src\//)) {
+        outputMap[dependencyName] = rootPackageConfig.version || '0.0.0'
+      } else if (dependencyName.match(/^@fullcalendar\//)) {
+        outputMap[dependencyName] = coreRootPackageConfig.version || '0.0.0'
+      } else {
+        console.error('Unknown dependency (1)', dependencyName)
+      }
+    } else {
+      console.error('Unknown dependency (2)', dependencyName)
+    }
+  }
+
+  return outputMap
 }

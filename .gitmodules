@@ -1,6 +1,0 @@
-[submodule "tests/example-repos/scheduler-typescript-example"]
-	path = tests/example-repos/scheduler-typescript-example
-	url = https://github.com/fullcalendar/scheduler-typescript-example.git
-[submodule "tests/example-repos/scheduler-webpack-example"]
-	path = tests/example-repos/scheduler-webpack-example
-	url = https://github.com/fullcalendar/scheduler-webpack-example.git
