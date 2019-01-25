@@ -2,6 +2,7 @@
   "title": "FullCalendar Resource Time Grid Plugin",
   "dependencies": {
     "@fullcalendar/resource-common": "",
-    "@fullcalendar/timegrid": ""
+    "@fullcalendar/timegrid": "",
+    "@fullcalendar/resource-daygrid": ""
   }
 }

@@ -1,8 +1,7 @@
 import { createPlugin, ViewSpec } from '@fullcalendar/core'
-import { isVResourceViewEnabled } from '@fullcalendar/resource-common'
+import ResourceCommonPlugin, { isVResourceViewEnabled } from '@fullcalendar/resource-common'
 import { BasicView } from '@fullcalendar/daygrid'
 import ResourceBasicView from './ResourceBasicView'
-
 
 function transformBasicViewSpec(viewSpec: ViewSpec): ViewSpec {
 
@@ -21,5 +20,6 @@ export { ResourceBasicView }
 export { default as ResourceDayGrid } from './ResourceDayGrid'
 
 export default createPlugin({
+  deps: [ ResourceCommonPlugin ],
   viewSpecTransformers: [ transformBasicViewSpec ]
 })
