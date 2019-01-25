@@ -24,6 +24,21 @@ declare module '@fullcalendar/core' {
 
   interface OptionsInput {
     resources: ResourceSourceInput
+
+    // TODO: make these better
+    resourceLabelText: string
+    resourceOrder: any
+    filterResourcesWithEvents: any
+    resourceText: any
+    resourceRender: any
+    resourceGroupField: any
+    resourceGroupText: any
+    resourceAreaWidth: any
+    resourceColumns: any
+    resourcesInitiallyExpanded: any
+    slotWidth: any
+    groupByResource: any
+    groupByDateAndResource: any
   }
 
 }
