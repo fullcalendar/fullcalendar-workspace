@@ -1,4 +1,4 @@
-import { SplittableProps, memoizeRendering, PositionCache, Hit, OffsetTracker, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, DateProfile } from '@fullcalendar/core'
+import { SplittableProps, memoizeRendering, PositionCache, Hit, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, DateProfile } from '@fullcalendar/core'
 import { ScrollJoiner, TimelineLane } from '@fullcalendar/timeline'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash, buildRowNodes, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc } from '@fullcalendar/resource-common'
@@ -33,7 +33,6 @@ export default class ResourceTimelineView extends View {
   orderSpecs: any
 
   rowPositions: PositionCache
-  offsetTracker: OffsetTracker
 
   private splitter = new ResourceSplitter() // doesn't let it do businessHours tho
   private hasResourceBusinessHours = memoize(hasResourceBusinessHours)
@@ -157,6 +156,12 @@ export default class ResourceTimelineView extends View {
     this.spreadsheet.receiveProps({
       superHeaderText: this.superHeaderText,
       colSpecs: this.colSpecs
+    })
+
+    // Component...
+
+    context.calendar.registerInteractiveComponent(this, {
+      el: this.timeAxis.slats.el
     })
   }
 
@@ -384,6 +389,16 @@ export default class ResourceTimelineView extends View {
     if (isBaseSizing || rowSizingCnt) {
       this.bodyScrollJoiner.update()
       this.timeAxis.layout.scrollJoiner.update() // hack
+
+      this.rowPositions = new PositionCache(
+        this.timeAxis.slats.el,
+        this.rowComponents.map(function(rowComponent) {
+          return rowComponent.timeAxisTr
+        }),
+        false, // isHorizontal
+        true // isVertical
+      )
+      this.rowPositions.build()
     }
   }
 
@@ -463,6 +478,8 @@ export default class ResourceTimelineView extends View {
     this.timeAxis.destroy()
 
     super.destroy()
+
+    this.calendar.unregisterInteractiveComponent(this)
   }
 
 
@@ -570,57 +587,34 @@ export default class ResourceTimelineView extends View {
   // Hit System
   // ------------------------------------------------------------------------------------------
 
-  prepareHits() {
-    let originEl = this.timeAxis.slats.el
 
-    this.offsetTracker = new OffsetTracker(originEl)
-
-    this.rowPositions = new PositionCache(
-      originEl,
-      this.rowComponents.map(function(rowComponent) {
-        return rowComponent.timeAxisTr
-      }),
-      false, // isHorizontal
-      true // isVertical
-    )
-    this.rowPositions.build()
-  }
-
-  releaseHits() {
-    this.offsetTracker.destroy()
-    this.rowPositions = null
-  }
-
-  queryHit(leftOffset, topOffset): Hit {
-    let { offsetTracker, rowPositions } = this
+  queryHit(positionLeft: number, positionTop: number): Hit {
+    let { rowPositions } = this
     let slats = this.timeAxis.slats
-    let rowIndex = rowPositions.topToIndex(topOffset - offsetTracker.computeTop())
+    let rowIndex = rowPositions.topToIndex(positionTop)
 
     if (rowIndex != null) {
       let resource = (this.rowNodes[rowIndex] as ResourceNode).resource
 
       if (resource) { // not a group
+        let slatHit = slats.positionToHit(positionLeft)
 
-        if (offsetTracker.isWithinClipping(leftOffset, topOffset)) {
-          let slatHit = slats.positionToHit(leftOffset - offsetTracker.computeLeft())
-
-          if (slatHit) {
-            return {
-              component: this,
-              dateSpan: {
-                range: slatHit.dateSpan.range,
-                allDay: slatHit.dateSpan.allDay,
-                resourceId: resource.id
-              },
-              rect: {
-                left: slatHit.left,
-                right: slatHit.right,
-                top: rowPositions.tops[rowIndex],
-                bottom: rowPositions.bottoms[rowIndex]
-              },
-              dayEl: slatHit.dayEl,
-              layer: 0
-            }
+        if (slatHit) {
+          return {
+            component: this,
+            dateSpan: {
+              range: slatHit.dateSpan.range,
+              allDay: slatHit.dateSpan.allDay,
+              resourceId: resource.id
+            },
+            rect: {
+              left: slatHit.left,
+              right: slatHit.right,
+              top: rowPositions.tops[rowIndex],
+              bottom: rowPositions.bottoms[rowIndex]
+            },
+            dayEl: slatHit.dayEl,
+            layer: 0
           }
         }
       }
@@ -628,8 +622,6 @@ export default class ResourceTimelineView extends View {
   }
 
 }
-
-ResourceTimelineView.prototype.isInteractable = true
 
 
 function hasResourceBusinessHours(resourceStore: ResourceHash) {

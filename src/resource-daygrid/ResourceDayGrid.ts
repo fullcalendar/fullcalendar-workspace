@@ -1,4 +1,4 @@
-import { mapHash, Hit, OffsetTracker, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration } from '@fullcalendar/core'
+import { mapHash, Hit, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration } from '@fullcalendar/core'
 import { DayGridSlicer, DayGrid, DayGridSeg } from '@fullcalendar/daygrid'
 import { AbstractResourceDayTable, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
 
@@ -19,7 +19,6 @@ export interface ResourceDayGridProps {
 export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps> {
 
   dayGrid: DayGrid
-  offsetTracker: OffsetTracker
 
   private splitter = new VResourceSplitter()
   private slicers: { [resourceId: string]: DayGridSlicer } = {}
@@ -29,6 +28,16 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
     super(context, dayGrid.el)
 
     this.dayGrid = dayGrid
+
+    context.calendar.registerInteractiveComponent(this, {
+      el: this.dayGrid.el
+    })
+  }
+
+  destroy() {
+    super.destroy()
+
+    this.calendar.unregisterInteractiveComponent(this)
   }
 
   render(props: ResourceDayGridProps) {
@@ -62,50 +71,30 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
     })
   }
 
-  prepareHits() {
-    this.offsetTracker = new OffsetTracker(this.dayGrid.el)
-  }
+  queryHit(positionLeft: number, positionTop: number): Hit {
+    let rawHit = this.dayGrid.positionToHit(positionLeft, positionTop)
 
-  releaseHits() {
-    this.offsetTracker.destroy()
-  }
-
-  queryHit(leftOffset, topOffset): Hit {
-    let { offsetTracker } = this
-
-    if (offsetTracker.isWithinClipping(leftOffset, topOffset)) {
-      let originLeft = offsetTracker.computeLeft()
-      let originTop = offsetTracker.computeTop()
-
-      let rawHit = this.dayGrid.positionToHit(
-        leftOffset - originLeft,
-        topOffset - originTop
-      )
-
-      if (rawHit) {
-        return {
-          component: this.dayGrid,
-          dateSpan: {
-            range: rawHit.dateSpan.range,
-            allDay: rawHit.dateSpan.allDay,
-            resourceId: this.props.resourceDayTable.cells[rawHit.row][rawHit.col].resource.id
-          },
-          dayEl: rawHit.dayEl,
-          rect: {
-            left: rawHit.relativeRect.left + originLeft,
-            right: rawHit.relativeRect.right + originLeft,
-            top: rawHit.relativeRect.top + originTop,
-            bottom: rawHit.relativeRect.bottom + originTop
-          },
-          layer: 0
-        }
+    if (rawHit) {
+      return {
+        component: this.dayGrid,
+        dateSpan: {
+          range: rawHit.dateSpan.range,
+          allDay: rawHit.dateSpan.allDay,
+          resourceId: this.props.resourceDayTable.cells[rawHit.row][rawHit.col].resource.id
+        },
+        dayEl: rawHit.dayEl,
+        rect: {
+          left: rawHit.relativeRect.left,
+          right: rawHit.relativeRect.right,
+          top: rawHit.relativeRect.top,
+          bottom: rawHit.relativeRect.bottom
+        },
+        layer: 0
       }
     }
   }
 
 }
-
-ResourceDayGrid.prototype.isInteractable = true
 
 
 class ResourceDayGridJoiner extends VResourceJoiner<DayGridSeg> {

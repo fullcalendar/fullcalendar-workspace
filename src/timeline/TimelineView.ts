@@ -1,4 +1,4 @@
-import { Hit, View, ViewProps, ComponentContext, ViewSpec, DateProfileGenerator, OffsetTracker, DateProfile } from '@fullcalendar/core'
+import { Hit, View, ViewProps, ComponentContext, ViewSpec, DateProfileGenerator, DateProfile } from '@fullcalendar/core'
 import TimeAxis from './TimeAxis'
 import TimelineLane from './TimelineLane'
 
@@ -7,8 +7,6 @@ export default class TimelineView extends View {
   // child components
   timeAxis: TimeAxis
   lane: TimelineLane
-
-  offsetTracker: OffsetTracker
 
   constructor(context: ComponentContext, viewSpec: ViewSpec, dateProfileGenerator: DateProfileGenerator, parentEl: HTMLElement) {
     super(context, viewSpec, dateProfileGenerator, parentEl)
@@ -33,6 +31,10 @@ export default class TimelineView extends View {
       this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.bgEl,
       this.timeAxis
     )
+
+    context.calendar.registerInteractiveComponent(this, {
+      el: this.timeAxis.slats.el
+    })
   }
 
   destroy() {
@@ -40,6 +42,8 @@ export default class TimelineView extends View {
     this.lane.destroy()
 
     super.destroy()
+
+    this.calendar.unregisterInteractiveComponent(this)
   }
 
   renderSkeletonHtml() {
@@ -118,38 +122,24 @@ export default class TimelineView extends View {
   // Hit System
   // ------------------------------------------------------------------------------------------
 
-  prepareHits() {
-    this.offsetTracker = new OffsetTracker(this.timeAxis.slats.el)
-  }
 
-  releaseHits() {
-    this.offsetTracker.destroy()
-  }
+  queryHit(positionLeft: number, positionTop: number, elWidth: number, elHeight: number): Hit {
+    let slatHit = this.timeAxis.slats.positionToHit(positionLeft)
 
-  queryHit(leftOffset, topOffset): Hit {
-    let { offsetTracker } = this
-    let slats = this.timeAxis.slats
-
-    if (offsetTracker.isWithinClipping(leftOffset, topOffset)) {
-      let slatHit = slats.positionToHit(leftOffset - offsetTracker.computeLeft())
-
-      if (slatHit) {
-        return {
-          component: this,
-          dateSpan: slatHit.dateSpan,
-          rect: {
-            left: slatHit.left,
-            right: slatHit.right,
-            top: offsetTracker.origTop,
-            bottom: offsetTracker.origBottom
-          },
-          dayEl: slatHit.dayEl,
-          layer: 0
-        }
+    if (slatHit) {
+      return {
+        component: this,
+        dateSpan: slatHit.dateSpan,
+        rect: {
+          left: slatHit.left,
+          right: slatHit.right,
+          top: 0,
+          bottom: elHeight
+        },
+        dayEl: slatHit.dayEl,
+        layer: 0
       }
     }
   }
 
 }
-
-TimelineView.prototype.isInteractable = true

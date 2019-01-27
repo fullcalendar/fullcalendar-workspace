@@ -1,4 +1,4 @@
-import { mapHash, OffsetTracker, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit } from '@fullcalendar/core'
+import { mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit } from '@fullcalendar/core'
 import { TimeGridSlicer, TimeGrid, buildDayRanges, TimeGridSeg } from '@fullcalendar/timegrid'
 import { AbstractResourceDayTable, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
 
@@ -17,7 +17,6 @@ export interface ResourceTimeGridProps {
 export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProps> {
 
   timeGrid: TimeGrid
-  offsetTracker: OffsetTracker
 
   private buildDayRanges = memoize(buildDayRanges)
   private dayRanges: DateRange[] // for renderNowIndicator
@@ -29,6 +28,14 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
     super(context, timeGrid.el)
 
     this.timeGrid = timeGrid
+
+    context.calendar.registerInteractiveComponent(this, {
+      el: this.timeGrid.el
+    })
+  }
+
+  destroy() {
+    this.calendar.unregisterInteractiveComponent(this)
   }
 
   render(props: ResourceTimeGridProps) {
@@ -72,50 +79,30 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
     timeGrid.renderNowIndicator(segs, date)
   }
 
-  prepareHits() {
-    this.offsetTracker = new OffsetTracker(this.timeGrid.el)
-  }
+  queryHit(positionLeft: number, positionTop: number): Hit {
+    let rawHit = this.timeGrid.positionToHit(positionLeft, positionTop)
 
-  releaseHits() {
-    this.offsetTracker.destroy()
-  }
-
-  queryHit(leftOffset, topOffset): Hit {
-    let { offsetTracker } = this
-
-    if (offsetTracker.isWithinClipping(leftOffset, topOffset)) {
-      let originLeft = offsetTracker.computeLeft()
-      let originTop = offsetTracker.computeTop()
-
-      let rawHit = this.timeGrid.positionToHit(
-        leftOffset - originLeft,
-        topOffset - originTop
-      )
-
-      if (rawHit) {
-        return {
-          component: this.timeGrid,
-          dateSpan: {
-            range: rawHit.dateSpan.range,
-            allDay: rawHit.dateSpan.allDay,
-            resourceId: this.props.resourceDayTable.cells[0][rawHit.col].resource.id
-          },
-          dayEl: rawHit.dayEl,
-          rect: {
-            left: rawHit.relativeRect.left + originLeft,
-            right: rawHit.relativeRect.right + originLeft,
-            top: rawHit.relativeRect.top + originTop,
-            bottom: rawHit.relativeRect.bottom + originTop
-          },
-          layer: 0
-        }
+    if (rawHit) {
+      return {
+        component: this.timeGrid,
+        dateSpan: {
+          range: rawHit.dateSpan.range,
+          allDay: rawHit.dateSpan.allDay,
+          resourceId: this.props.resourceDayTable.cells[0][rawHit.col].resource.id
+        },
+        dayEl: rawHit.dayEl,
+        rect: {
+          left: rawHit.relativeRect.left,
+          right: rawHit.relativeRect.right,
+          top: rawHit.relativeRect.top,
+          bottom: rawHit.relativeRect.bottom
+        },
+        layer: 0
       }
     }
   }
 
 }
-
-ResourceTimeGrid.prototype.isInteractable = true
 
 
 class ResourceTimeGridJoiner extends VResourceJoiner<TimeGridSeg> {
