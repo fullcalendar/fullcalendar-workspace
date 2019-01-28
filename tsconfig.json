@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@fullcalendar/core": [ "fullcalendar/src/core/main" ],
+      "@fullcalendar/interaction": [ "fullcalendar/src/interaction/main" ],
       "@fullcalendar/daygrid": [ "fullcalendar/src/daygrid/main" ],
       "@fullcalendar/timegrid": [ "fullcalendar/src/timegrid/main" ],
       "@fullcalendar/timeline": [ "src/timeline/main" ],

@@ -3,6 +3,7 @@
   "compilerOptions": {
     "paths": {
       "@fullcalendar/core": [ "fullcalendar/dist/core/main.d.ts" ],
+      "@fullcalendar/interaction": [ "fullcalendar/dist/interaction/main.d.ts" ],
       "@fullcalendar/daygrid": [ "fullcalendar/dist/daygrid/main.d.ts" ],
       "@fullcalendar/timegrid": [ "fullcalendar/dist/timegrid/main.d.ts" ],
       "@fullcalendar/timeline": [ "src/timeline/main" ],

@@ -1,6 +1,6 @@
 // TODO: test isRtl?
 
-import { Draggable } from '@fullcalendar/core'
+import { Draggable } from '@fullcalendar/interaction'
 import { getResourceTimeGridPoint } from '../lib/time-grid'
 
 describe('agenda-view event drag-n-drop', function() {

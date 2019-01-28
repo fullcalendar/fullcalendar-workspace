@@ -22,6 +22,7 @@ module.exports = function(config) {
 
       // files from main project
       'fullcalendar/dist/core/main.+(js|css)',
+      'fullcalendar/dist/interaction/main.+(js|css)',
       'fullcalendar/dist/daygrid/main.+(js|css)',
       'fullcalendar/dist/timegrid/main.+(js|css)',
       'fullcalendar/dist/list/main.+(js|css)',
