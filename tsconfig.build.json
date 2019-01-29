@@ -6,6 +6,7 @@
       "@fullcalendar/interaction": [ "fullcalendar/dist/interaction/main.d.ts" ],
       "@fullcalendar/daygrid": [ "fullcalendar/dist/daygrid/main.d.ts" ],
       "@fullcalendar/timegrid": [ "fullcalendar/dist/timegrid/main.d.ts" ],
+      "@fullcalendar/list": [ "fullcalendar/dist/list/main.d.ts" ],
       "@fullcalendar/timeline": [ "src/timeline/main" ],
       "@fullcalendar/resource-common": [ "src/resource-common/main" ],
       "@fullcalendar/resource-daygrid": [ "src/resource-daygrid/main" ],

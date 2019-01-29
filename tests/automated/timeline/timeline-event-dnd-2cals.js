@@ -1,4 +1,6 @@
 import { Calendar } from '@fullcalendar/core'
+import InteractionPlugin from '@fullcalendar/interaction'
+import ResourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import { getResourceTimelinePoint } from '../lib/timeline'
 
 describe('timeline dragging events between calendars', function() {
@@ -35,6 +37,7 @@ describe('timeline dragging events between calendars', function() {
     // calendar we drag the event TO
     // important to have this first in the DOM so that dragElTo works
     calendar0 = new Calendar(el0, {
+      plugins: [ ResourceTimelinePlugin, InteractionPlugin ],
       timeZone: 'UTC',
       scrollTime: '00:00',
       defaultDate: DEFAULT_DATE,
@@ -52,6 +55,7 @@ describe('timeline dragging events between calendars', function() {
 
     // calendar we drag the event FROM
     calendar1 = new Calendar(el1, {
+      plugins: [ ResourceTimelinePlugin, InteractionPlugin ],
       timeZone: 'UTC',
       scrollTime: '00:00',
       defaultDate: DEFAULT_DATE,
@@ -75,7 +79,6 @@ describe('timeline dragging events between calendars', function() {
   // copy and pasted from other DND file :(
   function dragElTo(el, resourceId, date, callback, onBeforeRelease) {
     el.simulate('drag', {
-      debug: true,
       localPoint: { left: 0, top: '50%' },
       end: getResourceTimelinePoint(resourceId, date),
       onBeforeRelease,

@@ -20,6 +20,7 @@
       "@fullcalendar/interaction": [ "fullcalendar/src/interaction/main" ],
       "@fullcalendar/daygrid": [ "fullcalendar/src/daygrid/main" ],
       "@fullcalendar/timegrid": [ "fullcalendar/src/timegrid/main" ],
+      "@fullcalendar/list": [ "fullcalendar/src/list/main" ],
       "@fullcalendar/timeline": [ "src/timeline/main" ],
       "@fullcalendar/resource-common": [ "src/resource-common/main" ],
       "@fullcalendar/resource-daygrid": [ "src/resource-daygrid/main" ],
