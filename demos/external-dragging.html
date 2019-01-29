@@ -6,6 +6,7 @@
 <link href='../fullcalendar/dist/daygrid/main.css' rel='stylesheet' />
 <link href='../fullcalendar/dist/timegrid/main.css' rel='stylesheet' />
 <link href='../dist/timeline/main.css' rel='stylesheet' />
+<link href='../dist/resource-timeline/main.css' rel='stylesheet' />
 <script src='../fullcalendar/dist/core/main.js'></script>
 <script src='../fullcalendar/dist/interaction/main.js'></script>
 <script src='../fullcalendar/dist/daygrid/main.js'></script>
@@ -16,13 +17,14 @@
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
-
+    var Calendar = FullCalendar.Calendar;
+    var Draggable = FullCalendarPlugins.interaction.Draggable;
 
     /* initialize the external events
     -----------------------------------------------------------------*/
 
     var containerEl = document.getElementById('external-events');
-    new FullCalendar.Draggable(containerEl, {
+    new Draggable(containerEl, {
       itemSelector: '.fc-event',
       eventData: function(eventEl) {
         return {
@@ -36,7 +38,7 @@
     -----------------------------------------------------------------*/
 
     var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+    var calendar = new Calendar(calendarEl, {
       now: '2019-01-07',
       editable: true, // enable draggable events
       droppable: true, // this allows things to be dropped onto the calendar
