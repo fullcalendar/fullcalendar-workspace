@@ -1,15 +1,15 @@
 import { createPlugin, ViewSpec } from '@fullcalendar/core'
 import ResourceCommonPlugin, { isVResourceViewEnabled } from '@fullcalendar/resource-common'
-import TimeGridPlugin, { AgendaView } from '@fullcalendar/timegrid'
-import ResourceAgendaView from './ResourceAgendaView'
+import TimeGridPlugin, { TimeGridView } from '@fullcalendar/timegrid'
+import ResourceTimeGridView from './ResourceTimeGridView'
 
 
-function transformAgendaViewSpec(viewSpec: ViewSpec): ViewSpec {
+function transformTimeGridViewSpec(viewSpec: ViewSpec): ViewSpec {
 
-  if (viewSpec.class === AgendaView && isVResourceViewEnabled(viewSpec)) {
+  if (viewSpec.class === TimeGridView && isVResourceViewEnabled(viewSpec)) {
     return {
       ...viewSpec,
-      class: ResourceAgendaView
+      class: ResourceTimeGridView
     }
   }
 
@@ -17,9 +17,9 @@ function transformAgendaViewSpec(viewSpec: ViewSpec): ViewSpec {
 }
 
 
-export { ResourceAgendaView }
+export { ResourceTimeGridView }
 
 export default createPlugin({
   deps: [ ResourceCommonPlugin, TimeGridPlugin ],
-  viewSpecTransformers: [ transformAgendaViewSpec ]
+  viewSpecTransformers: [ transformTimeGridViewSpec ]
 })
