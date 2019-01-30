@@ -1,4 +1,4 @@
-import { globalHooks, Calendar, appendToElement, isValidDate, addDays } from '@fullcalendar/core'
+import { globalHooks, Calendar, appendToElement, isValidDate, addDays, cssToStr, htmlEscape } from '@fullcalendar/core'
 
 const RELEASE_DATE = '<%= releaseDate %>' // for Scheduler
 const UPGRADE_WINDOW = 365 + 7 // days. 1 week leeway, for tz shift reasons too
@@ -7,6 +7,19 @@ const PRESET_LICENSE_KEYS = [
   'GPL-My-Project-Is-Open-Source',
   'CC-Attribution-NonCommercial-NoDerivatives'
 ]
+const CSS = {
+  position: 'absolute',
+  'z-index': 99999,
+  bottom: '1px',
+  left: '1px',
+  background: '#eee',
+  'border-color': '#ddd',
+  'border-style': 'solid',
+  'border-width': '1px 1px 0 0',
+  padding: '2px 4px',
+  'font-size': '12px',
+  'border-top-right-radius': '3px'
+}
 
 
 export function injectLicenseWarning(containerEl: HTMLElement, calendar: Calendar) {
@@ -15,7 +28,7 @@ export function injectLicenseWarning(containerEl: HTMLElement, calendar: Calenda
   if (!isImmuneUrl(window.location.href) && !isValidKey(key)) {
     appendToElement(
       containerEl,
-      '<div class="fc-license-message">' +
+      '<div class="fc-license-message" style="' + htmlEscape(cssToStr(CSS)) + '">' +
       'Please use a valid license key. <a href="' + LICENSE_INFO_URL + '">More Info</a>' +
       '</div>'
     )

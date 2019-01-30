@@ -344,21 +344,3 @@ TODO: figure out better styling
 	border-right: 0;
 	right: 2px;
 }
-
-
-/* License Message
---------------------------------------------------------------------------------------------------*/
-
-.fc-license-message {
-	position: absolute;
-	z-index: 99999;
-	bottom: 1px;
-	left: 1px;
-	background: #eee;
-	border-color: #ddd;
-	border-style: solid;
-	border-width: 1px 1px 0 0;
-	padding: 2px 4px;
-	font-size: 12px;
-	border-top-right-radius: 3px;
-}
