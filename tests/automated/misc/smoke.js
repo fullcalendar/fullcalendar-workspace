@@ -12,7 +12,7 @@ describe('timeline', function() {
       header: {
         left: 'today prev,next',
         center: 'title',
-        right: 'timelineDay,timelineThreeDays,agendaDay,agendaTwoDay,agendaWeek,month'
+        right: 'timelineDay,timelineThreeDays,day,timeGridTwoDay,week,month'
       },
       defaultView: 'timelineDay',
       views: {
@@ -20,8 +20,8 @@ describe('timeline', function() {
           type: 'timeline',
           duration: { days: 3 }
         },
-        agendaTwoDay: {
-          type: 'agenda',
+        timeGridTwoDay: {
+          type: 'timeGrid',
           duration: { days: 2 },
           groupByResource: true
         }
@@ -50,18 +50,18 @@ describe('timeline', function() {
             break
           case 2:
             expect(view.type).toBe('timelineThreeDays')
-            currentCalendar.changeView('agendaDay')
+            currentCalendar.changeView('day')
             break
           case 3:
-            expect(view.type).toBe('agendaDay')
-            currentCalendar.changeView('agendaTwoDay')
+            expect(view.type).toBe('day')
+            currentCalendar.changeView('timeGridTwoDay')
             break
           case 4:
-            expect(view.type).toBe('agendaTwoDay')
-            currentCalendar.changeView('agendaWeek')
+            expect(view.type).toBe('timeGridTwoDay')
+            currentCalendar.changeView('week')
             break
           case 5:
-            expect(view.type).toBe('agendaWeek')
+            expect(view.type).toBe('week')
             currentCalendar.changeView('month')
             break
           case 6:

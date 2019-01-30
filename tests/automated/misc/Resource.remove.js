@@ -12,7 +12,7 @@ describe('Resource::remove', function() {
 
   describeOptions('defaultView', {
     'when in timeline view': 'timelineDay',
-    'when in agenda view': 'agendaDay'
+    'when in timeGrid view': 'day'
   }, function(viewName) {
 
     const getResourceIds =

@@ -1,9 +1,9 @@
 
 describe('resourceOrder', function() {
 
-  describe('when in agenda view', function() {
+  describe('when in timeGrid view', function() {
     pushOptions({
-      defaultView: 'agendaDay',
+      defaultView: 'day',
       resources: [
         { id: 'a', title: 'Auditorium A' },
         { id: 'b', title: 'Auditorium B' },

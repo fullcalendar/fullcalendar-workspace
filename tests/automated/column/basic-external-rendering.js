@@ -3,7 +3,7 @@
 import { Draggable } from '@fullcalendar/interaction'
 import { getResourceDayGridDayEls } from '../lib/day-grid'
 
-describe('basic-view event drag-n-drop', function() {
+describe('dayGrid-view event drag-n-drop', function() {
   pushOptions({
     droppable: true,
     now: '2015-11-29',
@@ -11,7 +11,7 @@ describe('basic-view event drag-n-drop', function() {
       { id: 'a', title: 'Resource A' },
       { id: 'b', title: 'Resource B' }
     ],
-    defaultView: 'basicWeek'
+    defaultView: 'dayGridWeek'
   })
 
   describeTimeZones(function(tz) {

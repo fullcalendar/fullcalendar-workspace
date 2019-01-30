@@ -18,7 +18,7 @@
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-      defaultView: 'agendaDay',
+      defaultView: 'day',
       defaultDate: '2019-01-07',
       editable: true,
       selectable: true,
@@ -26,11 +26,11 @@
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'agendaDay,agendaTwoDay,agendaWeek,month'
+        right: 'day,timeGridTwoDay,week,month'
       },
       views: {
-        agendaTwoDay: {
-          type: 'agenda',
+        timeGridTwoDay: {
+          type: 'timeGrid',
           duration: { days: 2 },
           buttonText: '2 days',
 

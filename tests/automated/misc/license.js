@@ -106,8 +106,8 @@ describe('schedulerLicenseKey', function() {
 
   describeOptions('defaultView', {
     'when timeline view': 'timelineDay',
-    'when resource-agenda view': 'agendaDay',
-    'when resource-basic view': 'basicDay'
+    'when resource-timegrid view': 'day',
+    'when resource-daygrid view': 'dayGridDay'
   }, function() {
     it('only renders one license message when view is rerendered', function(done) {
       let callCnt = 0

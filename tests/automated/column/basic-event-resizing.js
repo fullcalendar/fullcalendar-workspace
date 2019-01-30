@@ -2,7 +2,7 @@ import { getRectCenter } from 'fullcalendar/tests/automated/lib/geom'
 import { getTrailingBoundingRect } from 'fullcalendar/tests/automated/lib/dom-geom'
 import { getDayGridDayEls } from 'fullcalendar/tests/automated/lib/day-grid'
 
-describe('basic-view event resizing', function() {
+describe('dayGrid-view event resizing', function() {
   pushOptions({
     now: '2015-11-28',
     editable: true,
@@ -11,8 +11,8 @@ describe('basic-view event resizing', function() {
       { id: 'b', title: 'Resource B' }
     ],
     views: {
-      basicThreeDay: {
-        type: 'basic',
+      dayGridThreeDay: {
+        type: 'dayGrid',
         duration: { days: 3 }
       }
     }
@@ -20,7 +20,7 @@ describe('basic-view event resizing', function() {
 
   describe('when there are no resource columns', function() {
     pushOptions({
-      defaultView: 'basicWeek',
+      defaultView: 'dayGridWeek',
       groupByResource: false
     })
 
@@ -60,7 +60,7 @@ describe('basic-view event resizing', function() {
 
   describe('with resource columns above date columns', function() {
     pushOptions({
-      defaultView: 'basicThreeDay',
+      defaultView: 'dayGridThreeDay',
       groupByResource: true
     })
 
@@ -130,7 +130,7 @@ describe('basic-view event resizing', function() {
 
   describe('with date columns above resource columns', function() {
     pushOptions({
-      defaultView: 'basicThreeDay',
+      defaultView: 'dayGridThreeDay',
       groupByDateAndResource: true
     })
 

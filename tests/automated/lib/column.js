@@ -40,7 +40,7 @@ export function getHeadDowEls(dayAbbrev) {
 
 // TODO: discourage use
 export function getBodyDowEls(dayAbbrev, viewType) {
-  if (viewType === 'agenda') {
+  if (viewType === 'timeGrid') {
     return getTimeGridDowEls(dayAbbrev)
   } else {
     return getDayGridDowEls(dayAbbrev)

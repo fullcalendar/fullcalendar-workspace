@@ -1,7 +1,7 @@
 
 describe('vresource resource rerendering', function() {
   pushOptions({
-    defaultView: 'agendaDay',
+    defaultView: 'day',
     resources: [
       { id: 'a', title: 'Auditorium A' },
       { id: 'b', title: 'Auditorium B' },

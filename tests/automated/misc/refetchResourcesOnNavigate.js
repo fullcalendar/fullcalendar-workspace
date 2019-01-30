@@ -19,12 +19,12 @@ describe('refetchResourcesOnNavigate', function() {
       view: 'timelineDay',
       getResourceTitles: getTimelineResourceTitles
     },
-    'with resource agenda view': {
-      view: 'agendaDay',
+    'with resource timeGrid view': {
+      view: 'day',
       getResourceTitles: getHeadResourceTitles
     },
-    'with resource basic view': {
-      view: 'basicDay',
+    'with resource daygrid view': {
+      view: 'dayGridDay',
       getResourceTitles: getHeadResourceTitles
     }
   }, function(settings) {
@@ -183,10 +183,10 @@ describe('refetchResourcesOnNavigate', function() {
     let resourceCallCnt = 0
 
     initCalendar({
-      defaultView: 'agendaDay',
+      defaultView: 'day',
       views: {
-        agendaTwoDay: {
-          type: 'agenda',
+        timeGridTwoDay: {
+          type: 'timeGrid',
           duration: { days: 2 },
           groupByResource: true
         }
@@ -203,7 +203,7 @@ describe('refetchResourcesOnNavigate', function() {
     expect(getHeadResourceTitles()).toEqual([ 'resource a-1', 'resource b-1' ])
     expect($('.day1event').length).toBe(2)
 
-    currentCalendar.changeView('agendaTwoDay')
+    currentCalendar.changeView('timeGridTwoDay')
 
     expect(getHeadResourceTitles()).toEqual([ 'resource a-2', 'resource b-2' ])
     expect($('.day1event').length).toBe(2)
@@ -216,7 +216,7 @@ describe('refetchResourcesOnNavigate', function() {
     let renderCnt = 0
 
     initCalendar({
-      defaultView: 'agendaDay',
+      defaultView: 'day',
       groupByResource: false,
       groupByDateAndResource: false,
 

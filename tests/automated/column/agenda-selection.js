@@ -1,7 +1,7 @@
 import { getTimeGridPoint } from 'fullcalendar/tests/automated/lib/time-grid'
 import { getResourceTimeGridPoint } from '../lib/time-grid'
 
-describe('agenda-view selection', function() {
+describe('timeGrid-view selection', function() {
   pushOptions({
     now: '2015-11-28',
     scrollTime: '00:00',
@@ -11,8 +11,8 @@ describe('agenda-view selection', function() {
       { id: 'b', title: 'Resource B' }
     ],
     views: {
-      agendaThreeDay: {
-        type: 'agenda',
+      timeGridThreeDay: {
+        type: 'timeGrid',
         duration: { days: 3 }
       }
     }
@@ -20,7 +20,7 @@ describe('agenda-view selection', function() {
 
   describe('when there are no resource columns', function() {
     pushOptions({
-      defaultView: 'agendaWeek',
+      defaultView: 'week',
       groupByResource: false
     })
 
@@ -51,7 +51,7 @@ describe('agenda-view selection', function() {
 
   describe('with resource columns above date columns', function() {
     pushOptions({
-      defaultView: 'agendaThreeDay',
+      defaultView: 'timeGridThreeDay',
       groupByResource: true
     })
 
@@ -125,7 +125,7 @@ describe('agenda-view selection', function() {
 
   describe('with date columns above resource columns', function() {
     pushOptions({
-      defaultView: 'agendaThreeDay',
+      defaultView: 'timeGridThreeDay',
       groupByDateAndResource: true
     })
 

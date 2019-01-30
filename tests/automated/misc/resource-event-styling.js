@@ -28,7 +28,7 @@ describe('event styling hooks', function() {
   describe('when distinct resources', function() {
 
     describeOptions('defaultView', {
-      'with agenda': 'agendaDay',
+      'with timeGrid': 'day',
       'with timeline': 'timelineDay'
     }, function() {
 
@@ -98,7 +98,7 @@ describe('event styling hooks', function() {
 
   describe('when no distinct resources', function() {
     pushOptions({
-      defaultView: 'agendaWeek'
+      defaultView: 'week'
     })
 
     it('receives colors from resourceId', function(done) {

@@ -70,7 +70,7 @@ function getResourceTimeGridDayEls(resourceId, date) {
 
 
 export function getTimeGridResourceIds() {
-  return $('.fc-agenda-view .fc-head .fc-resource-cell').map(function(i, th) {
+  return $('.fc-timeGrid-view .fc-head .fc-resource-cell').map(function(i, th) {
     return $(th).data('resource-id')
   }).get() // jQuery -> array
 }

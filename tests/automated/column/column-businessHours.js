@@ -18,9 +18,9 @@ describe('vresource businessHours', function() {
     'when RTL': 'rtl'
   }, function() {
 
-    describe('for basicWeek', function() {
+    describe('for dayGridWeek', function() {
       pushOptions({
-        defaultView: 'basicWeek'
+        defaultView: 'dayGridWeek'
       })
 
       describeOptions({
@@ -44,9 +44,9 @@ describe('vresource businessHours', function() {
       })
     })
 
-    describe('for agendaWeek', function() {
+    describe('for week', function() {
       pushOptions({
-        defaultView: 'agendaWeek'
+        defaultView: 'week'
       })
 
       describeOptions({
@@ -104,9 +104,9 @@ describe('vresource businessHours', function() {
       })
     })
 
-    describe('for agendaDay with resources', function() {
+    describe('for day with resources', function() {
       pushOptions({
-        defaultView: 'agendaDay'
+        defaultView: 'day'
       })
 
       it('renders all with same businessHours', function(done) {

@@ -7,12 +7,12 @@ describe('column-view resourceRender trigger', function() {
       { id: 'b', title: 'Resource B' }
     ],
     views: {
-      agendaThreeDay: {
-        type: 'agenda',
+      timeGridThreeDay: {
+        type: 'timeGrid',
         duration: { days: 3 }
       },
-      basicThreeDay: {
-        type: 'basic',
+      dayGridThreeDay: {
+        type: 'dayGrid',
         duration: { days: 3 }
       }
     }
@@ -29,8 +29,8 @@ describe('column-view resourceRender trigger', function() {
       })
 
       describeOptions('defaultView', {
-        'when agenda view': 'agendaThreeDay',
-        'when basic view': 'basicThreeDay',
+        'when timeGrid view': 'timeGridThreeDay',
+        'when dayGrid view': 'dayGridThreeDay',
         'when month view': 'month'
       }, function() {
 
@@ -59,8 +59,8 @@ describe('column-view resourceRender trigger', function() {
       })
 
       describeOptions('defaultView', {
-        'when agenda view': 'agendaThreeDay',
-        'when basic view': 'basicThreeDay'
+        'when timeGrid view': 'timeGridThreeDay',
+        'when dayGrid view': 'dayGridThreeDay'
       }, function() {
 
         it('fires onces per day', function(done) {

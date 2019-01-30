@@ -8,8 +8,8 @@ describe('vresource structure', function() {
   })
 
   describeValues({
-    'with agenda views': 'agenda',
-    'with basic views': 'basic'
+    'with timeGrid views': 'timeGrid',
+    'with dayGrid views': 'dayGrid'
   }, function(viewType) {
 
     pushOptions({

@@ -4,7 +4,7 @@ import { getResourceTimeGridPoint } from '../lib/time-grid'
 describe('column event dragging with constraint', function() {
   pushOptions({
     now: '2016-02-14',
-    defaultView: 'agendaDay',
+    defaultView: 'day',
     scrollTime: '00:00',
     editable: true,
     eventOverlap: false,
@@ -13,8 +13,8 @@ describe('column event dragging with constraint', function() {
       { id: 'b', title: 'Resource B', eventColor: 'red' }
     ],
     views: {
-      agendaNoResource: {
-        type: 'agenda',
+      timeGridNoResource: {
+        type: 'timeGrid',
         resources: false
       }
     }
@@ -23,8 +23,8 @@ describe('column event dragging with constraint', function() {
   describe('when distinct resource columns', function() {
 
     describeOptions('defaultView', {
-      'when resource columns': 'agendaDay',
-      'when no resource columns': 'agendaNoResource'
+      'when resource columns': 'day',
+      'when no resource columns': 'timeGridNoResource'
     }, function(val) {
 
       it('allows drop on same time, different resource', function(done) {
@@ -104,7 +104,7 @@ describe('column event dragging with constraint', function() {
             oneCall(function() {
               $('.event1').simulate('drag', {
                 localPoint: { left: '50%', top: 0 },
-                end: val === 'agendaDay'
+                end: val === 'day'
                   ? getResourceTimeGridPoint('a', '2016-02-14T04:00:00')
                   : getTimeGridPoint('2016-02-14T04:00:00')
               })

@@ -6,12 +6,12 @@ describe('vresource event rendering', function() {
     now: '2015-11-17',
     scrollTime: '00:00',
     views: {
-      agendaTwoDay: {
-        type: 'agenda',
+      timeGridTwoDay: {
+        type: 'timeGrid',
         duration: { days: 2 }
       },
-      basicTwoDay: {
-        type: 'basic',
+      dayGridTwoDay: {
+        type: 'dayGrid',
         duration: { days: 2 }
       }
     },
@@ -35,8 +35,8 @@ describe('vresource event rendering', function() {
       describe('with a single-day event', function() {
 
         describeOptions({
-          'when agendaTwoDay': {
-            defaultView: 'agendaTwoDay',
+          'when timeGridTwoDay': {
+            defaultView: 'timeGridTwoDay',
             events: [
               {
                 title: 'event 1',
@@ -48,8 +48,8 @@ describe('vresource event rendering', function() {
               }
             ]
           },
-          'when basicTwoDay': {
-            defaultView: 'basicTwoDay',
+          'when dayGridTwoDay': {
+            defaultView: 'dayGridTwoDay',
             events: [
               {
                 title: 'event 1',
@@ -101,9 +101,9 @@ describe('vresource event rendering', function() {
 
       describe('when a multi-day event', function() {
 
-        describe('when agendaTwoDay', function() {
+        describe('when timeGridTwoDay', function() {
           pushOptions({
-            defaultView: 'agendaTwoDay',
+            defaultView: 'timeGridTwoDay',
             events: [
               {
                 title: 'event 1',
@@ -170,9 +170,9 @@ describe('vresource event rendering', function() {
           })
         })
 
-        describe('when basicTwoDay', function() {
+        describe('when dayGridTwoDay', function() {
           pushOptions({
-            defaultView: 'basicTwoDay',
+            defaultView: 'dayGridTwoDay',
             events: [
               {
                 title: 'event 1',
@@ -236,8 +236,8 @@ describe('vresource event rendering', function() {
       describe('with an event with no resources', function() {
 
         describeOptions({
-          'when agendaTwoDay': {
-            defaultView: 'agendaTwoDay',
+          'when timeGridTwoDay': {
+            defaultView: 'timeGridTwoDay',
             events: [
               {
                 title: 'event 1',
@@ -248,8 +248,8 @@ describe('vresource event rendering', function() {
               }
             ]
           },
-          'when basicTwoDay': {
-            defaultView: 'basicTwoDay',
+          'when dayGridTwoDay': {
+            defaultView: 'dayGridTwoDay',
             events: [
               {
                 title: 'event 1',
@@ -313,7 +313,7 @@ describe('vresource event rendering', function() {
 
     it('renders each event in a separate resource column', function(done) {
       initCalendar({
-        defaultView: 'agendaDay',
+        defaultView: 'day',
         _eventsPositioned() {
           expect($('.event1').length).toBe(2)
           done()
@@ -323,7 +323,7 @@ describe('vresource event rendering', function() {
 
     it('renders a single event when no resource columns', function(done) {
       initCalendar({
-        defaultView: 'agendaTwoDay',
+        defaultView: 'timeGridTwoDay',
         _eventsPositioned() {
           expect($('.event1').length).toBe(1)
           done()

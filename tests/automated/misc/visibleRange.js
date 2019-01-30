@@ -64,7 +64,7 @@ describe('visibleRange', function() {
 
   describe('in vertical resource view', function() {
     pushOptions({
-      defaultView: 'agenda',
+      defaultView: 'timeGrid',
       groupByDateAndResource: true
     })
 

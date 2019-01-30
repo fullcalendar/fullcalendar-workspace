@@ -1,7 +1,7 @@
 import { getLeadingBoundingRect, sortBoundingRects } from 'fullcalendar/tests/automated/lib/dom-geom'
 import { getDayGridDowEls } from 'fullcalendar/tests/automated/lib/day-grid'
 
-describe('basic-view dateClick', function() {
+describe('dayGrid-view dateClick', function() {
   pushOptions({
     now: '2015-11-28',
     resources: [
@@ -9,8 +9,8 @@ describe('basic-view dateClick', function() {
       { id: 'b', title: 'Resource B' }
     ],
     views: {
-      basicThreeDay: {
-        type: 'basic',
+      dayGridThreeDay: {
+        type: 'dayGrid',
         duration: { days: 3 }
       }
     }
@@ -18,7 +18,7 @@ describe('basic-view dateClick', function() {
 
   describe('when there are no resource columns', function() {
     pushOptions({
-      defaultView: 'basicWeek',
+      defaultView: 'dayGridWeek',
       groupByResource: false
     })
 
@@ -48,7 +48,7 @@ describe('basic-view dateClick', function() {
 
   describe('with resource columns above date columns', function() {
     pushOptions({
-      defaultView: 'basicThreeDay',
+      defaultView: 'dayGridThreeDay',
       groupByResource: true
     })
 
@@ -77,7 +77,7 @@ describe('basic-view dateClick', function() {
 
   describe('with date columns above resource columns', function() {
     pushOptions({
-      defaultView: 'basicThreeDay',
+      defaultView: 'dayGridThreeDay',
       groupByDateAndResource: true
     })
 

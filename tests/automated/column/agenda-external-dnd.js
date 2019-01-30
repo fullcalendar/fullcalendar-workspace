@@ -3,7 +3,7 @@
 import { Draggable } from '@fullcalendar/interaction'
 import { getResourceTimeGridPoint } from '../lib/time-grid'
 
-describe('agenda-view event drag-n-drop', function() {
+describe('timeGrid-view event drag-n-drop', function() {
 
   pushOptions({
     droppable: true,
@@ -12,7 +12,7 @@ describe('agenda-view event drag-n-drop', function() {
       { id: 'a', title: 'Resource A' },
       { id: 'b', title: 'Resource B' }
     ],
-    defaultView: 'agendaWeek',
+    defaultView: 'week',
     scrollTime: '00:00'
   })
 

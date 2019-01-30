@@ -16,8 +16,8 @@ describe('destroy', function() {
 
   describeOptions('defaultView', {
     'when timelineDay view': 'timelineDay',
-    'when vertical resource view': 'agendaDay',
-    'when basic vertical resource view': 'basicDay'
+    'when vertical resource view': 'day',
+    'when dayGrid vertical resource view': 'dayGridDay'
   }, function() {
     it('unbinds all handlers', function(done) {
       setTimeout(function() { // other tests might still be cleaning up after their callbacks

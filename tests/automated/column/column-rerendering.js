@@ -48,8 +48,8 @@ describe('column-based view rerendering', function() {
   })
 
   describeOptions('defaultView', {
-    'when agenda': 'agendaDay',
-    'when basic': 'basicDay'
+    'when timeGrid': 'day',
+    'when dayGrid': 'dayGridDay'
   }, function() {
 
     pushOptions({
@@ -84,7 +84,7 @@ describe('column-based view rerendering', function() {
     initCalendar({
       now: '2015-08-07',
       scrollTime: '00:00',
-      defaultView: 'agendaDay',
+      defaultView: 'day',
       resources(arg, callback) {
         setTimeout(function() {
           callback([
@@ -126,7 +126,7 @@ describe('column-based view rerendering', function() {
     initCalendar({
       now: '2015-08-07',
       scrollTime: '00:00',
-      defaultView: 'agendaDay',
+      defaultView: 'day',
       resources(arg, callback) {
         setTimeout(function() {
           callback([
@@ -164,7 +164,7 @@ describe('column-based view rerendering', function() {
     initCalendar({
       now: '2015-08-07',
       scrollTime: '00:00',
-      defaultView: 'agendaDay',
+      defaultView: 'day',
       resources(arg, callback) {
         setTimeout(function() {
           callback([

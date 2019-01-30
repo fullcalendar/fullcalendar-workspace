@@ -32,7 +32,7 @@ describe('rerender performance for resource timeline', function() {
     expect(settings.resourceRender.calls.count()).toBe(1)
     expect(updateSize.calls.count()).toBe(1)
 
-    currentCalendar.changeView('agendaWeek')
+    currentCalendar.changeView('week')
 
     expect(settings.datesRender.calls.count()).toBe(2) // +1
     expect(settings.eventRender.calls.count()).toBe(2) // +1
