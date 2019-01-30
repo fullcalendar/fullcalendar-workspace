@@ -97,10 +97,6 @@ undo previous rule in order to always show last border.
 	padding-right: 4px;
 }
 
-.fc-timeline .fc-col-resizer {
-	cursor: col-resize;
-}
-
 /*
 Cells at the start of a week
 TODO: figure out better styling
@@ -224,6 +220,36 @@ TODO: figure out better styling
 	margin: 0 -1px; /* counteract scroller's negative margins */
 	bottom: 0;
 	border-left-width: 1px;
+}
+
+
+/* Event Container
+--------------------------------------------------------------------------------------------------*/
+
+.fc-time-area .fc-event-container {
+	position: relative;
+	z-index: 2; /* above bgevent and highlight */
+	width: 0; /* for event positioning. will end up on correct side based on dir */
+}
+
+.fc-time-area .fc-mirror-container { /* also an fc-event-container */
+	position: absolute;
+	z-index: 3;
+	top: 0;
+}
+
+.fc-time-area .fc-event-container {
+	padding-bottom: 8px;
+	top: -1px;
+}
+
+.fc-time-area tr:first-child .fc-event-container {
+	top: 0;
+}
+
+.fc-no-overlap .fc-time-area .fc-event-container {
+	padding-bottom: 0;
+	top: 0;
 }
 
 

@@ -73,6 +73,10 @@
 	width: 5px;
 }
 
+.fc-timeline .fc-col-resizer {
+	cursor: col-resize;
+}
+
 .fc-ltr .fc-resource-area th .fc-col-resizer {
 	right: -3px;
 }
@@ -133,30 +137,4 @@ tr.fc-collapsed > td > div {
 .fc-time-area .fc-rows .fc-bgevent-container,
 .fc-time-area .fc-rows .fc-highlight-container {
 	z-index: 1;
-}
-
-.fc-time-area .fc-event-container {
-	position: relative;
-	z-index: 2; /* above bgevent and highlight */
-	width: 0; /* for event positioning. will end up on correct side based on dir */
-}
-
-.fc-time-area .fc-mirror-container { /* also an fc-event-container */
-	position: absolute;
-	z-index: 3;
-	top: 0;
-}
-
-.fc-time-area .fc-event-container {
-	padding-bottom: 8px;
-	top: -1px;
-}
-
-.fc-time-area tr:first-child .fc-event-container {
-	top: 0;
-}
-
-.fc-no-overlap .fc-time-area .fc-event-container {
-	padding-bottom: 0;
-	top: 0;
 }
