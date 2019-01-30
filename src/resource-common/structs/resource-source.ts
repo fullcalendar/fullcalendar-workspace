@@ -4,7 +4,7 @@ import { ResourceFunc } from '../resource-sources/resource-func'
 
 export type ResourceSourceError = { // TODO: converge with EventSourceError
   message: string
-  response?: any // an XHR or something like it
+  xhr?: XMLHttpRequest
   [otherProp: string]: any
 }
 
@@ -14,7 +14,7 @@ export type ResourceFetcher = (
     calendar: Calendar
     range: DateRange | null
   },
-  success: (res: { rawResources: ResourceInput[], response?: any }) => void,
+  success: (res: { rawResources: ResourceInput[], xhr?: XMLHttpRequest }) => void,
   failure: (error: ResourceSourceError) => void
 ) => void // what about Promise?
 

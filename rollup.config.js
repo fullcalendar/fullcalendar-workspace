@@ -15,7 +15,6 @@ if (!/^(development|production)$/.test(process.env.BUILD)) {
 }
 
 let packageGlobals = {
-  superagent: 'superagent',
   '@fullcalendar/core': 'FullCalendar'
 }
 
