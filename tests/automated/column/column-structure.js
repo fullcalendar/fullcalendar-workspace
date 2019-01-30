@@ -10,9 +10,14 @@ describe('vresource structure', function() {
   describeValues({
     'with timeGrid views': 'timeGrid',
     'with dayGrid views': 'dayGrid'
-  }, function(viewType) {
+  }, function(baseViewType) {
 
     pushOptions({
+      views: {
+        oneDay: { type: baseViewType, duration: { days: 1 } },
+        twoDay: { type: baseViewType, duration: { days: 2 } },
+        oneWeek: { type: baseViewType, duration: { weeks: 1 } },
+      },
       scrollTime: '00:00',
       resources: [
         { id: 'a', title: 'Resource A' },
@@ -24,7 +29,7 @@ describe('vresource structure', function() {
 
     describe('when one-day', function() {
       pushOptions({
-        defaultView: viewType + 'Day'
+        defaultView: 'oneDay'
       })
 
       describe('when LTR', function() {
@@ -42,7 +47,7 @@ describe('vresource structure', function() {
               expect(aRect).toBeMostlyLeftOf(bRect)
               expect(bRect).toBeMostlyLeftOf(cRect)
               expect(cRect).toBeMostlyLeftOf(dRect)
-              expect(getBodyDowEls('mon', viewType).length).toBe(4)
+              expect(getBodyDowEls('mon', baseViewType).length).toBe(4)
               callback()
             }
           })
@@ -64,7 +69,7 @@ describe('vresource structure', function() {
               expect(aRect).toBeMostlyRightOf(bRect)
               expect(bRect).toBeMostlyRightOf(cRect)
               expect(cRect).toBeMostlyRightOf(dRect)
-              expect(getBodyDowEls('mon', viewType).length).toBe(4)
+              expect(getBodyDowEls('mon', baseViewType).length).toBe(4)
               callback()
             }
           })
@@ -74,12 +79,6 @@ describe('vresource structure', function() {
 
     describe('with two-day', function() {
       pushOptions({
-        views: {
-          twoDay: {
-            type: viewType,
-            duration: { days: 2 }
-          }
-        },
         defaultView: 'twoDay'
       })
 
@@ -100,8 +99,8 @@ describe('vresource structure', function() {
               expect(tuesEls.length).toBe(4)
               const monRect = getBoundingRect(monEls.eq(0))
               expect(aRect).toBeMostlyAbove(monRect)
-              expect(getBodyDowEls('mon', viewType).length).toBe(4)
-              expect(getBodyDowEls('tue', viewType).length).toBe(4)
+              expect(getBodyDowEls('mon', baseViewType).length).toBe(4)
+              expect(getBodyDowEls('tue', baseViewType).length).toBe(4)
               callback()
             }
           })
@@ -125,8 +124,8 @@ describe('vresource structure', function() {
               expect(bEls.length).toBe(2)
               const aRect = getBoundingRect(aEls.eq(0))
               expect(monRect).toBeMostlyAbove(aRect)
-              expect(getBodyDowEls('mon', viewType).length).toBe(4)
-              expect(getBodyDowEls('tue', viewType).length).toBe(4)
+              expect(getBodyDowEls('mon', baseViewType).length).toBe(4)
+              expect(getBodyDowEls('tue', baseViewType).length).toBe(4)
               callback()
             }
           })
@@ -138,7 +137,7 @@ describe('vresource structure', function() {
 
       describe('when one-day', function() {
         pushOptions({
-          defaultView: viewType + 'Day'
+          defaultView: 'oneDay'
         })
 
         it('renders resources columns', function(callback) {
@@ -156,7 +155,7 @@ describe('vresource structure', function() {
 
       describe('when one-week', function() {
         pushOptions({
-          defaultView: viewType + 'Week'
+          defaultView: 'oneWeek'
         })
 
         it('renders resources columns', function(callback) {
@@ -175,7 +174,7 @@ describe('vresource structure', function() {
 
     describe('when delay in resource fetching', function() {
       pushOptions({
-        defaultView: viewType + 'Day',
+        defaultView: 'oneDay',
         resources(arg, callback) {
           setTimeout(function() {
             callback([
