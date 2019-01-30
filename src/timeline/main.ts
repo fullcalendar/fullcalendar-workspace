@@ -35,5 +35,6 @@ export { TimelineView }
 export { default as ScrollJoiner } from './util/ScrollJoiner'
 
 export default createPlugin({
+  defaultView: 'timelineDay',
   viewConfigs
 })
