@@ -1,4 +1,4 @@
-import { globalHooks, Calendar, appendToElement, isValidDate, addDays, cssToStr, htmlEscape } from '@fullcalendar/core'
+import { config, Calendar, appendToElement, isValidDate, addDays, cssToStr, htmlEscape } from '@fullcalendar/core'
 
 const RELEASE_DATE = '<%= releaseDate %>' // for Scheduler
 const UPGRADE_WINDOW = 365 + 7 // days. 1 week leeway, for tz shift reasons too
@@ -46,7 +46,7 @@ function isValidKey(key) {
   const parts = (key || '').match(/^(\d+)\-fcs\-(\d+)$/)
   if (parts && (parts[1].length === 10)) {
     const purchaseDate = new Date(parseInt(parts[2], 10) * 1000)
-    const releaseDate = new Date(globalHooks.mockSchedulerReleaseDate || RELEASE_DATE)
+    const releaseDate = new Date(config.mockSchedulerReleaseDate || RELEASE_DATE)
 
     if (isValidDate(releaseDate)) { // token won't be replaced in dev mode
       const minPurchaseDate = addDays(releaseDate, -UPGRADE_WINDOW)

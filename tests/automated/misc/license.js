@@ -1,13 +1,13 @@
-import { globalHooks } from '@fullcalendar/core'
+import { config } from '@fullcalendar/core'
 
 describe('schedulerLicenseKey', function() {
 
   beforeEach(function() {
-    globalHooks.mockSchedulerReleaseDate = '2011-06-06'
+    config.mockSchedulerReleaseDate = '2011-06-06'
   })
 
   afterEach(function() {
-    delete globalHooks.mockSchedulerReleaseDate
+    delete config.mockSchedulerReleaseDate
   })
 
   // FYI: _eventsPositioned guarantees that view's skeleton has been rendered and sized

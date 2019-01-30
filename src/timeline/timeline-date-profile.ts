@@ -1,4 +1,4 @@
-import { globalHooks, buildGotoAnchorHtml, computeVisibleDayRange, Duration, View, DateProfile, isSingleDay, addDays, wholeDivideDurations, warn, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, htmlEscape } from '@fullcalendar/core'
+import { config, buildGotoAnchorHtml, computeVisibleDayRange, Duration, View, DateProfile, isSingleDay, addDays, wholeDivideDurations, warn, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, htmlEscape } from '@fullcalendar/core'
 
 export interface TimelineDateProfile {
   labelInterval: Duration
@@ -32,7 +32,7 @@ export interface TimelineHeaderCell {
 const MIN_AUTO_LABELS = 18 // more than `12` months but less that `24` hours
 const MAX_AUTO_SLOTS_PER_LABEL = 6 // allows 6 10-min slots in an hour
 const MAX_AUTO_CELLS = 200 // allows 4-days to have a :30 slot duration
-globalHooks.MAX_TIMELINE_SLOTS = 1000
+config.MAX_TIMELINE_SLOTS = 1000
 
 // potential nice values for slot-duration and interval-duration
 const STOCK_SUB_DURATIONS = [ // from largest to smallest
@@ -274,7 +274,7 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
       currentRange.end,
       tDateProfile.labelInterval
     )
-    if (labelCnt > globalHooks.MAX_TIMELINE_SLOTS) {
+    if (labelCnt > config.MAX_TIMELINE_SLOTS) {
       warn('slotLabelInterval results in too many cells')
       tDateProfile.labelInterval = null
     }
@@ -287,7 +287,7 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
       currentRange.end,
       tDateProfile.slotDuration
     )
-    if (slotCnt > globalHooks.MAX_TIMELINE_SLOTS) {
+    if (slotCnt > config.MAX_TIMELINE_SLOTS) {
       warn('slotDuration results in too many cells')
       tDateProfile.slotDuration = null
     }
