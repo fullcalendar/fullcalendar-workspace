@@ -30,6 +30,7 @@
 
       init: function(themeSystem) {
         calendar = new FullCalendar.Calendar(calendarEl, {
+          plugins: [ 'bootstrap', 'interaction', 'daygrid', 'timegrid', 'list', 'resource-timeline' ],
           themeSystem: themeSystem,
           now: '2019-01-07',
           editable: true, // enable draggable events

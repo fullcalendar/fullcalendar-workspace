@@ -39,6 +39,7 @@
 
     var calendarEl = document.getElementById('calendar');
     var calendar = new Calendar(calendarEl, {
+      plugins: [ 'interaction', 'daygrid', 'timegrid', 'resource-timeline' ],
       now: '2019-01-07',
       editable: true, // enable draggable events
       droppable: true, // this allows things to be dropped onto the calendar
