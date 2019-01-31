@@ -16,7 +16,7 @@ describe('vresource structure', function() {
       views: {
         oneDay: { type: baseViewType, duration: { days: 1 } },
         twoDay: { type: baseViewType, duration: { days: 2 } },
-        oneWeek: { type: baseViewType, duration: { weeks: 1 } },
+        oneWeek: { type: baseViewType, duration: { weeks: 1 } }
       },
       scrollTime: '00:00',
       resources: [
