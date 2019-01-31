@@ -1,4 +1,4 @@
-import { config, buildGotoAnchorHtml, computeVisibleDayRange, Duration, View, DateProfile, isSingleDay, addDays, wholeDivideDurations, warn, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, htmlEscape } from '@fullcalendar/core'
+import { config, buildGotoAnchorHtml, computeVisibleDayRange, Duration, View, DateProfile, isSingleDay, addDays, wholeDivideDurations, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, htmlEscape } from '@fullcalendar/core'
 
 export interface TimelineDateProfile {
   labelInterval: Duration
@@ -275,7 +275,7 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
       tDateProfile.labelInterval
     )
     if (labelCnt > config.MAX_TIMELINE_SLOTS) {
-      warn('slotLabelInterval results in too many cells')
+      console.warn('slotLabelInterval results in too many cells')
       tDateProfile.labelInterval = null
     }
   }
@@ -288,7 +288,7 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
       tDateProfile.slotDuration
     )
     if (slotCnt > config.MAX_TIMELINE_SLOTS) {
-      warn('slotDuration results in too many cells')
+      console.warn('slotDuration results in too many cells')
       tDateProfile.slotDuration = null
     }
   }
@@ -297,7 +297,7 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
   if (tDateProfile.labelInterval && tDateProfile.slotDuration) {
     const slotsPerLabel = wholeDivideDurations(tDateProfile.labelInterval, tDateProfile.slotDuration)
     if (slotsPerLabel === null || slotsPerLabel < 1) {
-      warn('slotLabelInterval must be a multiple of slotDuration')
+      console.warn('slotLabelInterval must be a multiple of slotDuration')
       tDateProfile.slotDuration = null
     }
   }
