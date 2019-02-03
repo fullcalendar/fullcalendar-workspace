@@ -104,7 +104,7 @@ describe('column event dragging with constraint', function() {
             oneCall(function() {
               $('.event1').simulate('drag', {
                 localPoint: { left: '50%', top: 0 },
-                end: val === 'day'
+                end: val === 'timeGridDay' // otherwise 'timeGridNoResource'
                   ? getResourceTimeGridPoint('a', '2016-02-14T04:00:00')
                   : getTimeGridPoint('2016-02-14T04:00:00')
               })
