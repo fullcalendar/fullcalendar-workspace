@@ -4,7 +4,7 @@ import { getResourceTimeGridPoint } from '../lib/time-grid'
 describe('column event dragging with constraint', function() {
   pushOptions({
     now: '2016-02-14',
-    defaultView: 'day',
+    defaultView: 'timeGridDay',
     scrollTime: '00:00',
     editable: true,
     eventOverlap: false,
@@ -23,7 +23,7 @@ describe('column event dragging with constraint', function() {
   describe('when distinct resource columns', function() {
 
     describeOptions('defaultView', {
-      'when resource columns': 'day',
+      'when resource columns': 'timeGridDay',
       'when no resource columns': 'timeGridNoResource'
     }, function(val) {
 

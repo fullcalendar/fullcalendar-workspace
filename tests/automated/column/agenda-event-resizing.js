@@ -20,7 +20,7 @@ describe('timeGrid-view event resizing', function() {
 
   describe('when there are no resource columns', function() {
     pushOptions({
-      defaultView: 'week',
+      defaultView: 'timeGridWeek',
       groupByResource: false
     })
 

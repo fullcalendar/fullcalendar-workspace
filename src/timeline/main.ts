@@ -1,7 +1,7 @@
 import { createPlugin } from '@fullcalendar/core'
 import TimelineView from './TimelineView'
 
-let viewConfigs = {
+let views = {
 
   timeline: {
     class: TimelineView,
@@ -36,5 +36,5 @@ export { default as ScrollJoiner } from './util/ScrollJoiner'
 
 export default createPlugin({
   defaultView: 'timelineDay',
-  viewConfigs
+  views
 })

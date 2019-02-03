@@ -20,7 +20,7 @@ describe('refetchResourcesOnNavigate', function() {
       getResourceTitles: getTimelineResourceTitles
     },
     'with resource timeGrid view': {
-      view: 'day',
+      view: 'timeGridDay',
       getResourceTitles: getHeadResourceTitles
     },
     'with resource daygrid view': {
@@ -183,7 +183,7 @@ describe('refetchResourcesOnNavigate', function() {
     let resourceCallCnt = 0
 
     initCalendar({
-      defaultView: 'day',
+      defaultView: 'timeGridDay',
       views: {
         timeGridTwoDay: {
           type: 'timeGrid',
@@ -216,7 +216,7 @@ describe('refetchResourcesOnNavigate', function() {
     let renderCnt = 0
 
     initCalendar({
-      defaultView: 'day',
+      defaultView: 'timeGridDay',
       groupByResource: false,
       groupByDateAndResource: false,
 

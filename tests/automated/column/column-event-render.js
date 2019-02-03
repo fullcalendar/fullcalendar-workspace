@@ -313,7 +313,7 @@ describe('vresource event rendering', function() {
 
     it('renders each event in a separate resource column', function(done) {
       initCalendar({
-        defaultView: 'day',
+        defaultView: 'timeGridDay',
         _eventsPositioned() {
           expect($('.event1').length).toBe(2)
           done()

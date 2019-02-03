@@ -98,7 +98,7 @@ describe('schedulerLicenseKey', function() {
 
   describe('when in a month view', function() {
     pushOptions({
-      defaultView: 'month'
+      defaultView: 'dayGridMonth'
     })
     defineTests()
   })
@@ -106,7 +106,7 @@ describe('schedulerLicenseKey', function() {
 
   describeOptions('defaultView', {
     'when timeline view': 'timelineDay',
-    'when resource-timegrid view': 'day',
+    'when resource-timegrid view': 'timeGridDay',
     'when resource-daygrid view': 'dayGridDay'
   }, function() {
     it('only renders one license message when view is rerendered', function(done) {

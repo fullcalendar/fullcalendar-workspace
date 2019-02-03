@@ -32,7 +32,7 @@ describe('filterResourcesWithEvents', function() {
 
   describeValues({
     'when timeline view': { view: 'timelineDay', getResourceIds: getTimelineResourceIds },
-    'when timeGrid view': { view: 'day', getResourceIds: getHeadResourceIds }
+    'when timeGrid view': { view: 'timeGridDay', getResourceIds: getHeadResourceIds }
   }, function(settings) {
     pushOptions({
       defaultView: settings.view

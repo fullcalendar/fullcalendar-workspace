@@ -12,7 +12,7 @@ describe('timeline', function() {
       header: {
         left: 'today prev,next',
         center: 'title',
-        right: 'timelineDay,timelineThreeDays,day,timeGridTwoDay,week,month'
+        right: 'timelineDay,timelineThreeDays,timeGridDay,timeGridTwoDay,timeGridWeek,dayGridMonth'
       },
       defaultView: 'timelineDay',
       views: {
@@ -50,22 +50,22 @@ describe('timeline', function() {
             break
           case 2:
             expect(view.type).toBe('timelineThreeDays')
-            currentCalendar.changeView('day')
+            currentCalendar.changeView('timeGridDay')
             break
           case 3:
-            expect(view.type).toBe('day')
+            expect(view.type).toBe('timeGridDay')
             currentCalendar.changeView('timeGridTwoDay')
             break
           case 4:
             expect(view.type).toBe('timeGridTwoDay')
-            currentCalendar.changeView('week')
+            currentCalendar.changeView('timeGridWeek')
             break
           case 5:
-            expect(view.type).toBe('week')
-            currentCalendar.changeView('month')
+            expect(view.type).toBe('timeGridWeek')
+            currentCalendar.changeView('dayGridMonth')
             break
           case 6:
-            expect(view.type).toBe('month')
+            expect(view.type).toBe('dayGridMonth')
             currentCalendar.changeView('timelineDay')
             break
           case 7:

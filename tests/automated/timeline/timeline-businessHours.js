@@ -145,7 +145,7 @@ describe('timeline businessHours', function() {
         datesRenderCnt++
         if (datesRenderCnt === 1) {
           expectResourceOverride()
-          currentCalendar.changeView('month')
+          currentCalendar.changeView('dayGridMonth')
         } else if (datesRenderCnt === 2) {
           currentCalendar.changeView('timelineDay')
         } else if (datesRenderCnt === 3) {

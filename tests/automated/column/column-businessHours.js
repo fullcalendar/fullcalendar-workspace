@@ -46,7 +46,7 @@ describe('vresource businessHours', function() {
 
     describe('for week', function() {
       pushOptions({
-        defaultView: 'week'
+        defaultView: 'timeGridWeek'
       })
 
       describeOptions({
@@ -106,7 +106,7 @@ describe('vresource businessHours', function() {
 
     describe('for day with resources', function() {
       pushOptions({
-        defaultView: 'day'
+        defaultView: 'timeGridDay'
       })
 
       it('renders all with same businessHours', function(done) {

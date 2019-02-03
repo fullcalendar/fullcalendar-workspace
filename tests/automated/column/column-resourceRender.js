@@ -31,7 +31,7 @@ describe('column-view resourceRender trigger', function() {
       describeOptions('defaultView', {
         'when timeGrid view': 'timeGridThreeDay',
         'when dayGrid view': 'dayGridThreeDay',
-        'when month view': 'month'
+        'when month view': 'dayGridMonth'
       }, function() {
 
         it('fires once per resources', function(done) {
@@ -83,7 +83,7 @@ describe('column-view resourceRender trigger', function() {
 
       describe('when month view', function() {
         pushOptions({
-          defaultView: 'month'
+          defaultView: 'dayGridMonth'
         })
 
         it('fires onces per day', function(done) {

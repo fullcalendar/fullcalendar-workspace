@@ -16,7 +16,7 @@ describe('destroy', function() {
 
   describeOptions('defaultView', {
     'when timelineDay view': 'timelineDay',
-    'when vertical resource view': 'day',
+    'when vertical resource view': 'timeGridDay',
     'when dayGrid vertical resource view': 'dayGridDay'
   }, function() {
     it('unbinds all handlers', function(done) {

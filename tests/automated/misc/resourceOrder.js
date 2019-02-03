@@ -3,7 +3,7 @@ describe('resourceOrder', function() {
 
   describe('when in timeGrid view', function() {
     pushOptions({
-      defaultView: 'day',
+      defaultView: 'timeGridDay',
       resources: [
         { id: 'a', title: 'Auditorium A' },
         { id: 'b', title: 'Auditorium B' },

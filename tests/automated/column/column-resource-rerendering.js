@@ -1,7 +1,7 @@
 
 describe('vresource resource rerendering', function() {
   pushOptions({
-    defaultView: 'day',
+    defaultView: 'timeGridDay',
     resources: [
       { id: 'a', title: 'Auditorium A' },
       { id: 'b', title: 'Auditorium B' },
