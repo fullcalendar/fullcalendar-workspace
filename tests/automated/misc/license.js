@@ -90,7 +90,7 @@ describe('schedulerLicenseKey', function() {
 
   describe('when in a timeline view no resource', function() {
     pushOptions({
-      defaultView: 'timelineDay',
+      defaultView: 'timelineDay'
     })
     defineTests()
   })
