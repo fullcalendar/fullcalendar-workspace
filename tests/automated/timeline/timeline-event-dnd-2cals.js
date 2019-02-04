@@ -41,7 +41,7 @@ describe('timeline dragging events between calendars', function() {
       timeZone: 'UTC',
       scrollTime: '00:00',
       defaultDate: DEFAULT_DATE,
-      defaultView: 'timelineDay',
+      defaultView: 'resourceTimelineDay',
       editable: true,
       droppable: true,
       resources: [
@@ -59,7 +59,7 @@ describe('timeline dragging events between calendars', function() {
       timeZone: 'UTC',
       scrollTime: '00:00',
       defaultDate: DEFAULT_DATE,
-      defaultView: 'timelineDay',
+      defaultView: 'resourceTimelineDay',
       editable: true,
       resources: [
         { id: 'a' }

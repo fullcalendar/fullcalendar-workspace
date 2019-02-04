@@ -4,7 +4,7 @@ describe('timeline column resizing', function() {
   it('works with resourceGroupField', function(done) {
     initCalendar({
       resourceAreaWidth: 230,
-      defaultView: 'timelineDay',
+      defaultView: 'resourceTimelineDay',
       resourceColumns: [
         {
           labelText: 'Room',

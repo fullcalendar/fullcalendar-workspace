@@ -7,12 +7,12 @@ describe('column-view resourceRender trigger', function() {
       { id: 'b', title: 'Resource B' }
     ],
     views: {
-      timeGridThreeDay: {
-        type: 'timeGrid',
+      resourceTimeGridThreeDay: {
+        type: 'resourceTimeGrid',
         duration: { days: 3 }
       },
-      dayGridThreeDay: {
-        type: 'dayGrid',
+      resourceDayGridThreeDay: {
+        type: 'resourceDayGrid',
         duration: { days: 3 }
       }
     }
@@ -29,9 +29,9 @@ describe('column-view resourceRender trigger', function() {
       })
 
       describeOptions('defaultView', {
-        'when timeGrid view': 'timeGridThreeDay',
-        'when dayGrid view': 'dayGridThreeDay',
-        'when month view': 'dayGridMonth'
+        'when timeGrid view': 'resourceTimeGridThreeDay',
+        'when dayGrid view': 'resourceDayGridThreeDay',
+        'when month view': 'resourceDayGridMonth'
       }, function() {
 
         it('fires once per resources', function(done) {
@@ -59,8 +59,8 @@ describe('column-view resourceRender trigger', function() {
       })
 
       describeOptions('defaultView', {
-        'when timeGrid view': 'timeGridThreeDay',
-        'when dayGrid view': 'dayGridThreeDay'
+        'when timeGrid view': 'resourceTimeGridThreeDay',
+        'when dayGrid view': 'resourceDayGridThreeDay'
       }, function() {
 
         it('fires onces per day', function(done) {
@@ -83,7 +83,7 @@ describe('column-view resourceRender trigger', function() {
 
       describe('when month view', function() {
         pushOptions({
-          defaultView: 'dayGridMonth'
+          defaultView: 'resourceDayGridMonth'
         })
 
         it('fires onces per day', function(done) {

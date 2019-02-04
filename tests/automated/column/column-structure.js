@@ -215,7 +215,7 @@ describe('vresource structure', function() {
 
   describe('when month view', function() {
     pushOptions({
-      defaultView: 'dayGridMonth',
+      defaultView: 'resourceDayGridMonth',
       groupByResource: true,
       resources: [
         { id: 'a', title: 'Resource A' },

@@ -5,7 +5,7 @@ describe('timeline background events', function() {
     initCalendar({
       now: '2017-03-07',
       scrollTime: '00:00',
-      defaultView: 'timelineDay',
+      defaultView: 'resourceTimelineDay',
       resources: [{
         id: 'root',
         children: [{

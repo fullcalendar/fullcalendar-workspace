@@ -46,6 +46,7 @@ describe('timeline businessHours', function() {
 
     it('renders once even with resources', function(done) {
       initCalendar({
+        defaultView: 'resourceTimelineDay',
         resources: [
           { id: 'a', title: 'a' },
           { id: 'b', title: 'b' },
@@ -61,6 +62,7 @@ describe('timeline businessHours', function() {
 
     it('render differently with resource override', function(done) {
       initCalendar({
+        defaultView: 'resourceTimelineDay',
         resources: [
           { id: 'a', title: 'a' },
           { id: 'b', title: 'b', businessHours: { startTime: '02:00', endTime: '22:00' } },
@@ -82,6 +84,7 @@ describe('timeline businessHours', function() {
       }
 
       initCalendar({
+        defaultView: 'resourceTimelineDay',
         resources: [
           { id: 'a', title: 'a' },
           specialResourceInput,
@@ -103,6 +106,7 @@ describe('timeline businessHours', function() {
 
     it('renders dynamically with resource override amidst other custom rows', function(done) {
       initCalendar({
+        defaultView: 'resourceTimelineDay',
         resources: [
           {
             id: 'a',
@@ -135,6 +139,7 @@ describe('timeline businessHours', function() {
   it('can switch views with resource override', function(done) {
     let datesRenderCnt = 0
     initCalendar({
+      defaultView: 'resourceTimelineDay',
       resources: [
         { id: 'a', title: 'a' },
         { id: 'b', title: 'b', businessHours: { startTime: '02:00', endTime: '22:00' } },
@@ -147,7 +152,7 @@ describe('timeline businessHours', function() {
           expectResourceOverride()
           currentCalendar.changeView('dayGridMonth')
         } else if (datesRenderCnt === 2) {
-          currentCalendar.changeView('timelineDay')
+          currentCalendar.changeView('resourceTimelineDay')
         } else if (datesRenderCnt === 3) {
           expectResourceOverride()
           done()
@@ -163,6 +168,7 @@ describe('timeline businessHours', function() {
 
     describe('with a business hour override', function() {
       pushOptions({
+        defaultView: 'resourceTimelineDay',
         resources: [
           { id: 'a',
             title: 'a',

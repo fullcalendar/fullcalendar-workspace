@@ -12,16 +12,16 @@ describe('timeline', function() {
       header: {
         left: 'today prev,next',
         center: 'title',
-        right: 'timelineDay,timelineThreeDays,timeGridDay,timeGridTwoDay,timeGridWeek,dayGridMonth'
+        right: 'resourceTimelineDay,resourceTimelineThreeDays,resourceTimeGridDay,resourceTimeGridTwoDay,timeGridWeek,dayGridMonth'
       },
-      defaultView: 'timelineDay',
+      defaultView: 'resourceTimelineDay',
       views: {
-        timelineThreeDays: {
-          type: 'timeline',
+        resourceTimelineThreeDays: {
+          type: 'resourceTimeline',
           duration: { days: 3 }
         },
-        timeGridTwoDay: {
-          type: 'timeGrid',
+        resourceTimeGridTwoDay: {
+          type: 'resourceTimeGrid',
           duration: { days: 2 },
           groupByResource: true
         }
@@ -45,19 +45,19 @@ describe('timeline', function() {
         switchCnt++
         switch (switchCnt) {
           case 1:
-            expect(view.type).toBe('timelineDay')
-            currentCalendar.changeView('timelineThreeDays')
+            expect(view.type).toBe('resourceTimelineDay')
+            currentCalendar.changeView('resourceTimelineThreeDays')
             break
           case 2:
-            expect(view.type).toBe('timelineThreeDays')
-            currentCalendar.changeView('timeGridDay')
+            expect(view.type).toBe('resourceTimelineThreeDays')
+            currentCalendar.changeView('resourceTimeGridDay')
             break
           case 3:
-            expect(view.type).toBe('timeGridDay')
-            currentCalendar.changeView('timeGridTwoDay')
+            expect(view.type).toBe('resourceTimeGridDay')
+            currentCalendar.changeView('resourceTimeGridTwoDay')
             break
           case 4:
-            expect(view.type).toBe('timeGridTwoDay')
+            expect(view.type).toBe('resourceTimeGridTwoDay')
             currentCalendar.changeView('timeGridWeek')
             break
           case 5:
@@ -66,10 +66,10 @@ describe('timeline', function() {
             break
           case 6:
             expect(view.type).toBe('dayGridMonth')
-            currentCalendar.changeView('timelineDay')
+            currentCalendar.changeView('resourceTimelineDay')
             break
           case 7:
-            expect(view.type).toBe('timelineDay')
+            expect(view.type).toBe('resourceTimelineDay')
             done()
             break
         }

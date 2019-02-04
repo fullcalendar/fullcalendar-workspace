@@ -10,8 +10,8 @@ describe('timeGrid-view dateClick', function() {
       { id: 'b', title: 'Resource B' }
     ],
     views: {
-      timeGridThreeDay: {
-        type: 'timeGrid',
+      resourceTimeGridThreeDay: {
+        type: 'resourceTimeGrid',
         duration: { days: 3 }
       }
     }
@@ -49,7 +49,7 @@ describe('timeGrid-view dateClick', function() {
 
   describe('with resource columns above date columns', function() {
     pushOptions({
-      defaultView: 'timeGridThreeDay',
+      defaultView: 'resourceTimeGridThreeDay',
       groupByResource: true
     })
 
@@ -78,7 +78,7 @@ describe('timeGrid-view dateClick', function() {
 
   describe('with date columns above resource columns', function() {
     pushOptions({
-      defaultView: 'timeGridThreeDay',
+      defaultView: 'resourceTimeGridThreeDay',
       groupByDateAndResource: true
     })
 

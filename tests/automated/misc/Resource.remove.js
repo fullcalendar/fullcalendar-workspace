@@ -11,12 +11,12 @@ describe('Resource::remove', function() {
   })
 
   describeOptions('defaultView', {
-    'when in timeline view': 'timelineDay',
-    'when in timeGrid view': 'timeGridDay'
+    'when in timeline view': 'resourceTimelineDay',
+    'when in timeGrid view': 'resourceTimeGridDay'
   }, function(viewName) {
 
     const getResourceIds =
-      viewName === 'timelineDay'
+      viewName === 'resourceTimelineDay'
         ? getTimelineResourceIds
         : getTimeGridResourceIds
 

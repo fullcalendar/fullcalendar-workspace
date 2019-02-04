@@ -11,7 +11,7 @@ describe('timeline-view event drag-n-drop', function() {
       { id: 'b', title: 'Resource B' },
       { id: 'c', title: 'Resource C' }
     ],
-    defaultView: 'timelineDay',
+    defaultView: 'resourceTimelineDay',
     scrollTime: '00:00'
   })
 

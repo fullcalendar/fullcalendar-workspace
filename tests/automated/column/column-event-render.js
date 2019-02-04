@@ -6,12 +6,12 @@ describe('vresource event rendering', function() {
     now: '2015-11-17',
     scrollTime: '00:00',
     views: {
-      timeGridTwoDay: {
-        type: 'timeGrid',
+      resourceTimeGridTwoDay: {
+        type: 'resourceTimeGrid',
         duration: { days: 2 }
       },
-      dayGridTwoDay: {
-        type: 'dayGrid',
+      resourceDayGridTwoDay: {
+        type: 'resourceDayGrid',
         duration: { days: 2 }
       }
     },
@@ -35,8 +35,8 @@ describe('vresource event rendering', function() {
       describe('with a single-day event', function() {
 
         describeOptions({
-          'when timeGridTwoDay': {
-            defaultView: 'timeGridTwoDay',
+          'when resourceTimeGridTwoDay': {
+            defaultView: 'resourceTimeGridTwoDay',
             events: [
               {
                 title: 'event 1',
@@ -48,8 +48,8 @@ describe('vresource event rendering', function() {
               }
             ]
           },
-          'when dayGridTwoDay': {
-            defaultView: 'dayGridTwoDay',
+          'when resourceDayGridTwoDay': {
+            defaultView: 'resourceDayGridTwoDay',
             events: [
               {
                 title: 'event 1',
@@ -101,9 +101,9 @@ describe('vresource event rendering', function() {
 
       describe('when a multi-day event', function() {
 
-        describe('when timeGridTwoDay', function() {
+        describe('when resourceTimeGridTwoDay', function() {
           pushOptions({
-            defaultView: 'timeGridTwoDay',
+            defaultView: 'resourceTimeGridTwoDay',
             events: [
               {
                 title: 'event 1',
@@ -170,9 +170,9 @@ describe('vresource event rendering', function() {
           })
         })
 
-        describe('when dayGridTwoDay', function() {
+        describe('when resourceDayGridTwoDay', function() {
           pushOptions({
-            defaultView: 'dayGridTwoDay',
+            defaultView: 'resourceDayGridTwoDay',
             events: [
               {
                 title: 'event 1',
@@ -236,8 +236,8 @@ describe('vresource event rendering', function() {
       describe('with an event with no resources', function() {
 
         describeOptions({
-          'when timeGridTwoDay': {
-            defaultView: 'timeGridTwoDay',
+          'when resourceTimeGridTwoDay': {
+            defaultView: 'resourceTimeGridTwoDay',
             events: [
               {
                 title: 'event 1',
@@ -248,8 +248,8 @@ describe('vresource event rendering', function() {
               }
             ]
           },
-          'when dayGridTwoDay': {
-            defaultView: 'dayGridTwoDay',
+          'when resourceDayGridTwoDay': {
+            defaultView: 'resourceDayGridTwoDay',
             events: [
               {
                 title: 'event 1',
@@ -313,7 +313,7 @@ describe('vresource event rendering', function() {
 
     it('renders each event in a separate resource column', function(done) {
       initCalendar({
-        defaultView: 'timeGridDay',
+        defaultView: 'resourceTimeGridDay',
         _eventsPositioned() {
           expect($('.event1').length).toBe(2)
           done()
@@ -323,7 +323,7 @@ describe('vresource event rendering', function() {
 
     it('renders a single event when no resource columns', function(done) {
       initCalendar({
-        defaultView: 'timeGridTwoDay',
+        defaultView: 'resourceTimeGridTwoDay',
         _eventsPositioned() {
           expect($('.event1').length).toBe(1)
           done()

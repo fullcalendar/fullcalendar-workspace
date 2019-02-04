@@ -2,7 +2,7 @@
 describe('resource crudding', function() {
 
   pushOptions({
-    defaultView: 'timelineDay'
+    defaultView: 'resourceTimelineDay'
   })
 
   describe('getResourceById', function() {
@@ -214,7 +214,7 @@ describe('resource crudding', function() {
 
   describe('Resource::getEvents', function() {
     pushOptions({
-      defaultView: 'timelineMonth',
+      defaultView: 'resourceTimelineMonth',
       now: '2015-11-17'
     })
 

@@ -11,7 +11,7 @@ describe('dayGrid-view event drag-n-drop', function() {
       { id: 'a', title: 'Resource A' },
       { id: 'b', title: 'Resource B' }
     ],
-    defaultView: 'dayGridWeek'
+    defaultView: 'resourceDayGridWeek'
   })
 
   describeTimeZones(function(tz) {

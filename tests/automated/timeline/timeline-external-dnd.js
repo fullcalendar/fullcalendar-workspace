@@ -11,7 +11,7 @@ describe('timeline-view external element drag-n-drop', function() {
       { id: 'a', title: 'Resource A' },
       { id: 'b', title: 'Resource B' }
     ],
-    defaultView: 'timelineDay',
+    defaultView: 'resourceTimelineDay',
     scrollTime: '00:00'
   })
 
@@ -143,7 +143,7 @@ describe('timeline-view external element drag-n-drop', function() {
       datesRender() {
         renderCnt++
         if (renderCnt === 1) {
-          currentCalendar.changeView('timelineWeek')
+          currentCalendar.changeView('resourceTimelineWeek')
         } else if (renderCnt === 2) {
           $('.external-event').simulate('drag', {
             localPoint: { left: 0, top: '50%' },

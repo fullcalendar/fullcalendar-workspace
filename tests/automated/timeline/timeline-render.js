@@ -23,7 +23,7 @@ describe('timeline rendering', function() {
 
   it('has correct vertical scroll and gutters', function() {
     initCalendar({
-      defaultView: 'timeline',
+      defaultView: 'resourceTimeline',
       resources: buildResources(50)
     })
 

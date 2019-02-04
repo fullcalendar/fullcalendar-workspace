@@ -48,8 +48,8 @@ describe('column-based view rerendering', function() {
   })
 
   describeOptions('defaultView', {
-    'when timeGrid': 'timeGridDay',
-    'when dayGrid': 'dayGridDay'
+    'when timeGrid': 'resourceTimeGridDay',
+    'when dayGrid': 'resourceDayGridDay'
   }, function() {
 
     pushOptions({
@@ -84,7 +84,7 @@ describe('column-based view rerendering', function() {
     initCalendar({
       now: '2015-08-07',
       scrollTime: '00:00',
-      defaultView: 'timeGridDay',
+      defaultView: 'resourceTimeGridDay',
       resources(arg, callback) {
         setTimeout(function() {
           callback([
@@ -126,7 +126,7 @@ describe('column-based view rerendering', function() {
     initCalendar({
       now: '2015-08-07',
       scrollTime: '00:00',
-      defaultView: 'timeGridDay',
+      defaultView: 'resourceTimeGridDay',
       resources(arg, callback) {
         setTimeout(function() {
           callback([
@@ -164,7 +164,7 @@ describe('column-based view rerendering', function() {
     initCalendar({
       now: '2015-08-07',
       scrollTime: '00:00',
-      defaultView: 'timeGridDay',
+      defaultView: 'resourceTimeGridDay',
       resources(arg, callback) {
         setTimeout(function() {
           callback([

@@ -7,7 +7,7 @@ resources as a function
 describe('event resources', function() {
 
   pushOptions({
-    defaultView: 'timelineDay'
+    defaultView: 'resourceTimelineDay'
   })
 
   it('processes multiple resources', function(done) {

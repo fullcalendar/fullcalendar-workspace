@@ -29,7 +29,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
           describe('when time scale', function() {
 
             pushOptions({
-              defaultView: 'timelineDay',
+              defaultView: resources ? 'resourceTimelineDay' : 'timelineDay',
               slotDuration: { minutes: 30 }
             })
 
@@ -189,7 +189,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     defaultView: 'timelineTwoDay',
                     views: {
                       timelineTwoDay: {
-                        type: 'timeline',
+                        type: resources ? 'resourceTimeline' : 'timeline',
                         duration: { days: 2 }
                       }
                     },
@@ -302,7 +302,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                 defaultView: 'timeline3Week',
                 views: {
                   timeline3Week: {
-                    type: 'timeline',
+                    type: resources ? 'resourceTimeline' : 'timeline',
                     duration: { weeks: 3 },
                     slotDuration: { days: 1 }
                   }
@@ -425,7 +425,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                 defaultView: 'timeline52Weeks',
                 views: {
                   timeline52Weeks: {
-                    type: 'timeline',
+                    type: resources ? 'resourceTimeline' : 'timeline',
                     duration: { weeks: 52 },
                     slotDuration: { weeks: 1 }
                   }

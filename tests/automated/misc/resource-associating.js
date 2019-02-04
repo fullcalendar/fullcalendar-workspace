@@ -2,7 +2,7 @@
 describe('associating resources with event', function() {
 
   pushOptions({
-    defaultView: 'timelineDay',
+    defaultView: 'resourceTimelineDay',
     defaultDate: '2015-07-11'
   })
 

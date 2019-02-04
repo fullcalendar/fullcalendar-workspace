@@ -82,7 +82,7 @@ describe('schedulerLicenseKey', function() {
 
   describe('when in a timeline view with resource', function() {
     pushOptions({
-      defaultView: 'timeline',
+      defaultView: 'resourceTimelineDay',
       resources: [ { id: 'a', title: 'Resource A' } ]
     })
     defineTests()
@@ -90,8 +90,7 @@ describe('schedulerLicenseKey', function() {
 
   describe('when in a timeline view no resource', function() {
     pushOptions({
-      defaultView: 'timeline',
-      resource: false
+      defaultView: 'timelineDay',
     })
     defineTests()
   })
@@ -105,9 +104,9 @@ describe('schedulerLicenseKey', function() {
 
 
   describeOptions('defaultView', {
-    'when timeline view': 'timelineDay',
-    'when resource-timegrid view': 'timeGridDay',
-    'when resource-daygrid view': 'dayGridDay'
+    'when timeline view': 'resourceTimelineDay',
+    'when resource-timegrid view': 'resourceTimeGridDay',
+    'when resource-daygrid view': 'resourceDayGridDay'
   }, function() {
     it('only renders one license message when view is rerendered', function(done) {
       let callCnt = 0

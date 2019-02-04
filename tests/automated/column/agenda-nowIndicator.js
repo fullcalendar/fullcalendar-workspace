@@ -4,8 +4,8 @@ describe('resource timeGrid now-indicator', function() {
     now: '2015-12-26T02:30:00',
     scrollTime: '00:00',
     views: {
-      timeGridThreeDay: {
-        type: 'timeGrid',
+      resourceTimeGridThreeDay: {
+        type: 'resourceTimeGrid',
         duration: { days: 3 }
       }
     }
@@ -13,7 +13,7 @@ describe('resource timeGrid now-indicator', function() {
 
   it('renders once for each resource', function() {
     initCalendar({
-      defaultView: 'timeGridThreeDay',
+      defaultView: 'resourceTimeGridThreeDay',
       nowIndicator: true,
       groupByResource: true,
       resources: [
@@ -29,7 +29,7 @@ describe('resource timeGrid now-indicator', function() {
   // https://github.com/fullcalendar/fullcalendar/issues/3918
   it('plays nice with refetchResourcesOnNavigate and view switching', function(done) {
     initCalendar({
-      defaultView: 'timeGridWeek',
+      defaultView: 'resourceTimeGridWeek',
       defaultDate: '2016-11-04',
       now: '2016-12-04T10:00',
       scrollTime: '09:00',
@@ -55,16 +55,16 @@ describe('resource timeGrid now-indicator', function() {
     })
 
     setTimeout(function() {
-      currentCalendar.changeView('timeGridDay')
+      currentCalendar.changeView('resourceTimeGridDay')
 
       setTimeout(function() {
         currentCalendar.today()
 
         setTimeout(function() {
-          currentCalendar.changeView('timeGridWeek')
+          currentCalendar.changeView('resourceTimeGridWeek')
 
           setTimeout(function() {
-            currentCalendar.changeView('timeGridDay')
+            currentCalendar.changeView('resourceTimeGridDay')
 
             setTimeout(done, 100)
           }, 100)

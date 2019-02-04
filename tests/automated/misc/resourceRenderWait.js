@@ -8,7 +8,7 @@ describe('resource render waiting', function() {
     let eventAllRenderCnt = 0
 
     initCalendar({
-      defaultView: 'timeline',
+      defaultView: 'resourceTimeline',
       resources(arg, callback) {
         callback([
           { id: 'a', title: 'a' },

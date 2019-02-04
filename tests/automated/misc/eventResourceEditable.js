@@ -3,7 +3,7 @@ import { dragResourceTimelineEvent } from '../lib/timeline'
 describe('eventResourceEditable', function() {
   pushOptions({
     now: '2016-09-04',
-    defaultView: 'timelineWeek',
+    defaultView: 'resourceTimelineWeek',
     scrollTime: '00:00',
     resources: [
       { id: 'a', title: 'Resource A' },

@@ -20,10 +20,11 @@ describe('timeline now-indicator', function() {
         { id: 'a', title: 'Resource A' },
         { id: 'b', title: 'Resource B' }
       ]
-    }, function() {
+    }, function(resources) {
 
       it('doesn\'t render when out of view', function(done) {
         initCalendar({
+          defaultView: resources ? 'resourceTimelineDay' : 'timelineDay',
           defaultDate: '2015-12-27T02:30:00' // next day
         })
         setTimeout(function() { // wait for scroll

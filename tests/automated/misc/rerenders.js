@@ -3,7 +3,7 @@ import { ResourceTimelineView } from '@fullcalendar/resource-timeline'
 describe('rerender performance for resource timeline', function() {
   pushOptions({
     defaultDate: '2017-10-04',
-    defaultView: 'timelineDay',
+    defaultView: 'resourceTimelineDay',
     resources: [
       { id: 'a', title: 'Resource A' }
     ],
@@ -32,14 +32,14 @@ describe('rerender performance for resource timeline', function() {
     expect(settings.resourceRender.calls.count()).toBe(1)
     expect(updateSize.calls.count()).toBe(1)
 
-    currentCalendar.changeView('timeGridWeek')
+    currentCalendar.changeView('resourceTimeGridWeek')
 
     expect(settings.datesRender.calls.count()).toBe(2) // +1
     expect(settings.eventRender.calls.count()).toBe(2) // +1
     expect(settings.resourceRender.calls.count()).toBe(1)
     expect(updateSize.calls.count()).toBe(1) // won't change because moved AWAY from ResourceTimelineView
 
-    currentCalendar.changeView('timelineDay')
+    currentCalendar.changeView('resourceTimelineDay')
 
     expect(settings.datesRender.calls.count()).toBe(3) // +1
     expect(settings.eventRender.calls.count()).toBe(3) // +1

@@ -20,14 +20,14 @@ describe('timeline selection', function() {
 
       describe('when time scale', function() {
         pushOptions({
-          defaultView: 'timelineDay'
+          defaultView: 'resourceTimelineDay'
         })
 
         describe('when snap matches slots', function() {
 
           describe('when no resources', function() {
             pushOptions({
-              resources: false
+              defaultView: 'timelineDay'
             })
 
             it('reports selection with no resource', function(done) {
@@ -161,7 +161,7 @@ describe('timeline selection', function() {
 
     describe('when day scale', function() {
       pushOptions({
-        defaultView: 'timelineMonth',
+        defaultView: 'resourceTimelineMonth',
         slotDuration: { days: 1 }
       })
 
@@ -192,7 +192,7 @@ describe('timeline selection', function() {
 
     describe('when week scale', function() {
       pushOptions({
-        defaultView: 'timelineYear',
+        defaultView: 'resourceTimelineYear',
         slotDuration: { weeks: 1 }
       })
 
@@ -227,7 +227,7 @@ describe('timeline selection', function() {
     initCalendar({
       isTouch: true,
       longPressDelay: 100,
-      defaultView: 'timelineDay',
+      defaultView: 'resourceTimelineDay',
       _eventsPositioned() {
         $.simulateByPoint('drag', {
           isTouch: true,

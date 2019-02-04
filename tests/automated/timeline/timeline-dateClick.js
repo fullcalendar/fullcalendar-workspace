@@ -19,14 +19,14 @@ describe('timeline dateClick', function() {
 
       describe('when time scale', function() {
         pushOptions({
-          defaultView: 'timelineDay'
+          defaultView: 'resourceTimelineDay'
         })
 
         describe('when snap matches slots', function() {
 
           describe('when no resources', function() {
             pushOptions({
-              resources: false
+              defaultView: 'timelineDay'
             })
 
             it('reports date with no resource', function(done) {
@@ -129,7 +129,7 @@ describe('timeline dateClick', function() {
 
     describe('when day scale', function() {
       pushOptions({
-        defaultView: 'timelineMonth',
+        defaultView: 'resourceTimelineMonth',
         slotDuration: { days: 1 }
       })
 
@@ -158,7 +158,7 @@ describe('timeline dateClick', function() {
 
     describe('when week scale', function() {
       pushOptions({
-        defaultView: 'timelineYear',
+        defaultView: 'resourceTimelineYear',
         slotDuration: { weeks: 1 }
       })
 

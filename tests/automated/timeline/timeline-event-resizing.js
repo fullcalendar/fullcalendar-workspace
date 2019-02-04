@@ -23,14 +23,14 @@ describe('timeline event resizing', function() {
 
       describe('when time scale', function() {
         pushOptions({
-          defaultView: 'timelineDay'
+          defaultView: 'resourceTimelineDay'
         })
 
         describe('when snap matches slots', function() {
 
           describe('when no resources', function() {
             pushOptions({
-              resources: false
+              defaultView: 'timelineDay'
             })
 
             it('reports resize with no resource', function(done) {
@@ -198,7 +198,7 @@ describe('timeline event resizing', function() {
       initCalendar({
         isTouch: true,
         longPressDelay: 100,
-        defaultView: 'timelineDay',
+        defaultView: 'resourceTimelineDay',
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
         ],
@@ -237,7 +237,7 @@ describe('timeline event resizing', function() {
 
     describe('when day scale', function() {
       pushOptions({
-        defaultView: 'timelineMonth',
+        defaultView: 'resourceTimelineMonth',
         slotDuration: { days: 1 }
       })
 
@@ -273,7 +273,7 @@ describe('timeline event resizing', function() {
 
     describe('when week scale', function() {
       pushOptions({
-        defaultView: 'timelineYear',
+        defaultView: 'resourceTimelineYear',
         slotDuration: { weeks: 1 }
       })
 
@@ -317,7 +317,7 @@ describe('timeline event resizing', function() {
       let normalDestroyCalls = 0
 
       initCalendar({
-        defaultView: 'timelineDay',
+        defaultView: 'resourceTimelineDay',
         eventDragMinDistance: 0, // so mirror will render immediately upon mousedown
         slotDuration: '01:00',
         snapDuration: '01:00',

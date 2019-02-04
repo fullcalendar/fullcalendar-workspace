@@ -11,8 +11,8 @@ describe('dayGrid-view event resizing', function() {
       { id: 'b', title: 'Resource B' }
     ],
     views: {
-      dayGridThreeDay: {
-        type: 'dayGrid',
+      resourceDayGridThreeDay: {
+        type: 'resourceDayGrid',
         duration: { days: 3 }
       }
     }
@@ -20,8 +20,7 @@ describe('dayGrid-view event resizing', function() {
 
   describe('when there are no resource columns', function() {
     pushOptions({
-      defaultView: 'dayGridWeek',
-      groupByResource: false
+      defaultView: 'dayGridWeek'
     })
 
     it('allows non-resource resizing', function(done) {
@@ -60,7 +59,7 @@ describe('dayGrid-view event resizing', function() {
 
   describe('with resource columns above date columns', function() {
     pushOptions({
-      defaultView: 'dayGridThreeDay',
+      defaultView: 'resourceDayGridThreeDay',
       groupByResource: true
     })
 
@@ -130,7 +129,7 @@ describe('dayGrid-view event resizing', function() {
 
   describe('with date columns above resource columns', function() {
     pushOptions({
-      defaultView: 'dayGridThreeDay',
+      defaultView: 'resourceDayGridThreeDay',
       groupByDateAndResource: true
     })
 

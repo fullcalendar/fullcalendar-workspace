@@ -1,7 +1,7 @@
 
 describe('resourcesInitiallyExpanded', function() {
   pushOptions({
-    defaultView: 'timelineDay',
+    defaultView: 'resourceTimelineDay',
     defaultDate: '2017-10-10',
     scrollTime: '09:00',
     resources: [

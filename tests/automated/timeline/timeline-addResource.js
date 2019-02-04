@@ -9,7 +9,7 @@ describe('timeline addResource', function() {
   // https://github.com/fullcalendar/fullcalendar-scheduler/issues/179
   it('works when switching views', function() {
     initCalendar({
-      defaultView: 'timelineDay',
+      defaultView: 'resourceTimelineDay',
       resources: [
         { id: 'a', title: 'Auditorium A' },
         { id: 'b', title: 'Auditorium B' },
@@ -19,20 +19,20 @@ describe('timeline addResource', function() {
 
     expect(getTimelineResourceIds()).toEqual([ 'a', 'b', 'c' ])
 
-    currentCalendar.changeView('timelineWeek')
+    currentCalendar.changeView('resourceTimelineWeek')
     expect(getTimelineResourceIds()).toEqual([ 'a', 'b', 'c' ])
 
     currentCalendar.addResource({ id: 'd', title: 'Auditorium D' })
     expect(getTimelineResourceIds()).toEqual([ 'a', 'b', 'c', 'd' ])
 
-    currentCalendar.changeView('timelineDay')
+    currentCalendar.changeView('resourceTimelineDay')
     expect(getTimelineResourceIds()).toEqual([ 'a', 'b', 'c', 'd' ])
   })
 
 
   it('renders new row with correct height', function() {
     initCalendar({
-      defaultView: 'timelineDay',
+      defaultView: 'resourceTimelineDay',
       resources: buildResources(50)
     })
 
@@ -50,7 +50,7 @@ describe('timeline addResource', function() {
 
   it('scrolls correctly with scroll param', function() {
     initCalendar({
-      defaultView: 'timelineDay',
+      defaultView: 'resourceTimelineDay',
       resources: buildResources(50)
     })
 
@@ -65,7 +65,7 @@ describe('timeline addResource', function() {
 
   describe('when adding resource as child of another', function() {
     pushOptions({
-      defaultView: 'timelineDay',
+      defaultView: 'resourceTimelineDay',
       resources: [
         { id: 'a', title: 'a' }
       ]

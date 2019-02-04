@@ -15,16 +15,16 @@ describe('refetchResourcesOnNavigate', function() {
   })
 
   describeValues({
-    'with timeline view': {
-      view: 'timelineDay',
+    'with resourceTimeline view': {
+      view: 'resourceTimelineDay',
       getResourceTitles: getTimelineResourceTitles
     },
-    'with resource timeGrid view': {
-      view: 'timeGridDay',
+    'with resourceTimeGrid view': {
+      view: 'resourceTimeGrid',
       getResourceTitles: getHeadResourceTitles
     },
-    'with resource daygrid view': {
-      view: 'dayGridDay',
+    'with resourceDayGrid view': {
+      view: 'resourceDayGrid',
       getResourceTitles: getHeadResourceTitles
     }
   }, function(settings) {
@@ -183,10 +183,10 @@ describe('refetchResourcesOnNavigate', function() {
     let resourceCallCnt = 0
 
     initCalendar({
-      defaultView: 'timeGridDay',
+      defaultView: 'resourceTimeGridDay',
       views: {
-        timeGridTwoDay: {
-          type: 'timeGrid',
+        resourceTimeGridTwoDay: {
+          type: 'resourceTimeGrid',
           duration: { days: 2 },
           groupByResource: true
         }
@@ -203,7 +203,7 @@ describe('refetchResourcesOnNavigate', function() {
     expect(getHeadResourceTitles()).toEqual([ 'resource a-1', 'resource b-1' ])
     expect($('.day1event').length).toBe(2)
 
-    currentCalendar.changeView('timeGridTwoDay')
+    currentCalendar.changeView('resourceTimeGridTwoDay')
 
     expect(getHeadResourceTitles()).toEqual([ 'resource a-2', 'resource b-2' ])
     expect($('.day1event').length).toBe(2)
@@ -216,7 +216,7 @@ describe('refetchResourcesOnNavigate', function() {
     let renderCnt = 0
 
     initCalendar({
-      defaultView: 'timeGridDay',
+      defaultView: 'resourceTimeGridDay',
       groupByResource: false,
       groupByDateAndResource: false,
 
@@ -266,7 +266,7 @@ describe('refetchResourcesOnNavigate', function() {
 
   it('resources function will receive view start/end/timezone', function(done) {
     initCalendar({
-      defaultView: 'timelineWeek',
+      defaultView: 'resourceTimelineWeek',
       now: '2017-02-12',
       timeZone: 'America/Chicago',
       resources(arg, callback) {
@@ -288,7 +288,7 @@ describe('refetchResourcesOnNavigate', function() {
     let fetchCnt = 0
 
     initCalendar({
-      defaultView: 'timelineWeek',
+      defaultView: 'resourceTimelineWeek',
       now: '2017-02-12',
       timeZone: 'America/Chicago',
 
@@ -324,7 +324,7 @@ describe('refetchResourcesOnNavigate', function() {
     let requestCnt = 0
 
     initCalendar({
-      defaultView: 'timelineWeek',
+      defaultView: 'resourceTimelineWeek',
       now: '2017-02-12',
       timeZone: 'America/Chicago',
 
@@ -367,7 +367,7 @@ describe('refetchResourcesOnNavigate', function() {
       })
 
       initCalendar({
-        defaultView: 'timelineWeek',
+        defaultView: 'resourceTimelineWeek',
         now: '2017-02-12',
         timeZone: 'America/Chicago',
         resources: 'my-feed.php' // will be picked up by XHRMock
@@ -388,7 +388,7 @@ describe('refetchResourcesOnNavigate', function() {
       })
 
       initCalendar({
-        defaultView: 'timelineWeek',
+        defaultView: 'resourceTimelineWeek',
         now: '2017-02-12',
         timeZone: 'America/Chicago',
         resources: 'my-feed.php', // will be picked up by XHRMock
@@ -408,7 +408,7 @@ describe('refetchResourcesOnNavigate', function() {
       })
 
       initCalendar({
-        defaultView: 'timelineWeek',
+        defaultView: 'resourceTimelineWeek',
         now: '2017-02-12',
         timeZone: 'America/Chicago',
         resources: 'my-feed.php', // will be picked up by XHRMock

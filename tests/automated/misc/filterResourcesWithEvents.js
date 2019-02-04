@@ -31,8 +31,8 @@ describe('filterResourcesWithEvents', function() {
 
 
   describeValues({
-    'when timeline view': { view: 'timelineDay', getResourceIds: getTimelineResourceIds },
-    'when timeGrid view': { view: 'timeGridDay', getResourceIds: getHeadResourceIds }
+    'when timeline view': { view: 'resourceTimelineDay', getResourceIds: getTimelineResourceIds },
+    'when timeGrid view': { view: 'resourceTimeGridDay', getResourceIds: getHeadResourceIds }
   }, function(settings) {
     pushOptions({
       defaultView: settings.view
@@ -84,7 +84,7 @@ describe('filterResourcesWithEvents', function() {
 
   describe('when timeline view', function() {
     pushOptions({
-      defaultView: 'timelineDay'
+      defaultView: 'resourceTimelineDay'
     })
 
 
@@ -140,7 +140,7 @@ describe('filterResourcesWithEvents', function() {
 
     it('will filter out resources that might have events in other ranges', function() {
       initCalendar({
-        defaultView: 'timelineWeek',
+        defaultView: 'resourceTimelineWeek',
         defaultDate: '2017-08-09',
         resources: [
           { id: 'f', title: 'Auditorium F', eventColor: 'red' }
