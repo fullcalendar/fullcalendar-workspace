@@ -1,3 +1,4 @@
 {
-  "title": "FullCalendar Resources Common Plugin"
+  "title": "FullCalendar Resources Common Plugin",
+  "browserGlobal": "FullCalendarResourcesCommon"
 }

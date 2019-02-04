@@ -1,5 +1,6 @@
 {
   "title": "FullCalendar Resource Day Grid Plugin",
+  "browserGlobal": "FullCalendarResourceDayGrid",
   "dependencies": {
     "@fullcalendar/resource-common": "",
     "@fullcalendar/daygrid": ""

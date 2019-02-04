@@ -1,3 +1,4 @@
 {
-  "title": "FullCalendar Timeline Plugin"
+  "title": "FullCalendar Timeline Plugin",
+  "browserGlobal": "FullCalendarTimeline"
 }

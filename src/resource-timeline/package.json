@@ -1,5 +1,6 @@
 {
   "title": "FullCalendar Resource Timeline Plugin",
+  "browserGlobal": "FullCalendarResourceTimeline",
   "dependencies": {
     "@fullcalendar/resource-common": "",
     "@fullcalendar/timeline": ""
