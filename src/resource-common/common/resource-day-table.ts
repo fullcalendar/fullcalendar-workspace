@@ -1,4 +1,4 @@
-import { SlicedProps, EventDef, mapHash, Splitter, DayTable, DayTableCell, ViewSpec, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/core'
+import { SlicedProps, EventDef, mapHash, Splitter, DayTable, DayTableCell, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/core'
 import { Resource } from '../structs/resource'
 import { __assign } from 'tslib'
 
