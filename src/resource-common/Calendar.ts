@@ -37,8 +37,7 @@ declare module '@fullcalendar/core' {
     resourceColumns?: any
     resourcesInitiallyExpanded?: any
     slotWidth?: any
-    groupByResource?: any
-    groupByDateAndResource?: any
+    datesAboveResources?: any
   }
 
 }

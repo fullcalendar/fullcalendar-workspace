@@ -23,7 +23,7 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
   constructor(context: ComponentContext, parentEl: HTMLElement) {
     super(context)
 
-    this.datesAboveResources = this.opt('groupByDateAndResource')
+    this.datesAboveResources = this.opt('datesAboveResources')
     this.resourceTextFunc = buildResourceTextFunc(this.opt('resourceText'), this.calendar)
 
     parentEl.innerHTML = '' // because might be nbsp

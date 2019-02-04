@@ -53,7 +53,7 @@ export default class ResourceDayGridView extends AbstractDayGridView {
       this.props.dateProfile,
       this.dateProfileGenerator,
       resources,
-      this.opt('groupByDateAndResource')
+      this.opt('datesAboveResources')
     )
 
     if (this.header) {
@@ -83,10 +83,10 @@ export default class ResourceDayGridView extends AbstractDayGridView {
 
 }
 
-function buildResourceDayTable(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator, resources: Resource[], groupByDateAndResource: boolean) {
+function buildResourceDayTable(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator, resources: Resource[], datesAboveResources: boolean) {
   let dayTable = buildBasicDayTable(dateProfile, dateProfileGenerator)
 
-  return groupByDateAndResource ?
+  return datesAboveResources ?
     new DayResourceTable(dayTable, resources) :
     new ResourceDayTable(dayTable, resources)
 }
