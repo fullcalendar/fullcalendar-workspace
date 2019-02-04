@@ -28,7 +28,7 @@
       header: {
         left: 'promptResource today prev,next',
         center: 'title',
-        right: 'timelineDay,timelineThreeDays,timeGridWeek,dayGridMonth'
+        right: 'resourceTimelineDay,resourceTimelineThreeDays,timeGridWeek,dayGridMonth'
       },
       customButtons: {
         promptResource: {
@@ -41,10 +41,10 @@
           }
         }
       },
-      defaultView: 'timelineDay',
+      defaultView: 'resourceTimelineDay',
       views: {
-        timelineThreeDays: {
-          type: 'timeline',
+        resourceTimelineThreeDays: {
+          type: 'resourceTimeline',
           duration: { days: 3 },
           buttonText: '3 days'
         }

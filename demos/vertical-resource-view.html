@@ -19,7 +19,7 @@
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
       plugins: [ 'interaction', 'resource-daygrid', 'resource-timegrid' ],
-      defaultView: 'timeGridDay',
+      defaultView: 'resourceTimeGridDay',
       defaultDate: '2019-01-07',
       editable: true,
       selectable: true,
@@ -27,20 +27,13 @@
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'day,timeGridTwoDay,timeGridWeek,dayGridMonth'
+        right: 'resourceTimeGridDay,resourceTimeGridTwoDay,timeGridWeek,dayGridMonth'
       },
       views: {
-        timeGridTwoDay: {
-          type: 'timeGrid',
+        resourceTimeGridTwoDay: {
+          type: 'resourceTimeGrid',
           duration: { days: 2 },
           buttonText: '2 days',
-
-          // views that are more than a day will NOT do this behavior by default
-          // so, we need to explicitly enable it
-          groupByResource: true
-
-          //// uncomment this line to group by day FIRST with resources underneath
-          //groupByDateAndResource: true
         }
       },
 

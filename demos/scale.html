@@ -24,16 +24,16 @@
       header: {
         left: 'today prev,next',
         center: 'title',
-        right: 'timelineDay,timelineTenDay,timelineMonth,timelineYear'
+        right: 'resourceTimelineDay,resourceTimelineTenDay,resourceTimelineMonth,resourceTimelineYear'
       },
-      defaultView: 'timelineDay',
+      defaultView: 'resourceTimelineDay',
       views: {
-        timelineDay: {
+        resourceTimelineDay: {
           buttonText: ':15 slots',
           slotDuration: '00:15'
         },
-        timelineTenDay: {
-          type: 'timeline',
+        resourceTimelineTenDay: {
+          type: 'resourceTimeline',
           duration: { days: 10 },
           buttonText: '10 days'
         }
