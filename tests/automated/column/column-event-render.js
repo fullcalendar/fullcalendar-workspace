@@ -323,7 +323,13 @@ describe('vresource event rendering', function() {
 
     it('renders a single event when no resource columns', function(done) {
       initCalendar({
-        defaultView: 'resourceTimeGridTwoDay',
+        defaultView: 'timeGridTwoDay',
+        views: {
+          timeGridTwoDay: {
+            type: 'timeGrid',
+            duration: { days: 2 }
+          }
+        },
         _eventsPositioned() {
           expect($('.event1').length).toBe(1)
           done()

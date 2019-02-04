@@ -18,7 +18,7 @@ describe('dayGrid-view dateClick', function() {
 
   describe('when there are no resource columns', function() {
     pushOptions({
-      defaultView: 'resourceDayGridWeek'
+      defaultView: 'dayGridWeek'
     })
 
     it('allows non-resource clicks', function(done) {

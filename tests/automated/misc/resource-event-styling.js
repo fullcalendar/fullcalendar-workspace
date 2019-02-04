@@ -98,7 +98,7 @@ describe('event styling hooks', function() {
 
   describe('when no distinct resources', function() {
     pushOptions({
-      defaultView: 'resourceTimeGridWeek'
+      defaultView: 'timeGridWeek'
     })
 
     it('receives colors from resourceId', function(done) {

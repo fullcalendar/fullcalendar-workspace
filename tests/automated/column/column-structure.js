@@ -8,15 +8,14 @@ describe('vresource structure', function() {
   })
 
   describeValues({
-    'with timeGrid views': 'timeGrid',
-    'with dayGrid views': 'dayGrid'
+    'with resourceTimeGrid views': 'resourceTimeGrid',
+    'with resourceDayGrid views': 'resourceDayGrid'
   }, function(baseViewType) {
 
     pushOptions({
       views: {
         oneDay: { type: baseViewType, duration: { days: 1 } },
-        twoDay: { type: baseViewType, duration: { days: 2 } },
-        oneWeek: { type: baseViewType, duration: { weeks: 1 } }
+        twoDay: { type: baseViewType, duration: { days: 2 } }
       },
       scrollTime: '00:00',
       resources: [
@@ -147,24 +146,6 @@ describe('vresource structure', function() {
               expect(getHeadResourceEls('b').length).toBe(1)
               expect(getHeadResourceEls('c').length).toBe(1)
               expect(getHeadResourceEls('d').length).toBe(1)
-              callback()
-            }
-          })
-        })
-      })
-
-      describe('when one-week', function() {
-        pushOptions({
-          defaultView: 'oneWeek'
-        })
-
-        it('renders resources columns', function(callback) {
-          initCalendar({
-            datesRender() {
-              expect(getHeadResourceEls('a').length).toBe(0)
-              expect(getHeadResourceEls('b').length).toBe(0)
-              expect(getHeadResourceEls('c').length).toBe(0)
-              expect(getHeadResourceEls('d').length).toBe(0)
               callback()
             }
           })

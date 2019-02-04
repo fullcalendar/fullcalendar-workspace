@@ -1,7 +1,7 @@
 
 describe('timeline resource grouping', function() {
   pushOptions({
-    defaultView: 'timeline',
+    defaultView: 'resourceTimeline',
     resourceGroupField: 'groupId',
     resources: [
       {
