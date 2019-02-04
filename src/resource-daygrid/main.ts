@@ -1,25 +1,36 @@
-import { createPlugin, ViewSpec } from '@fullcalendar/core'
-import ResourceCommonPlugin, { isVResourceViewEnabled } from '@fullcalendar/resource-common'
-import DayGridPlugin, { DayGridView } from '@fullcalendar/daygrid'
+import { createPlugin } from '@fullcalendar/core'
+import ResourceCommonPlugin from '@fullcalendar/resource-common'
+import DayGridPlugin from '@fullcalendar/daygrid'
 import ResourceDayGridView from './ResourceDayGridView'
-
-function transformDayGridViewSpec(viewSpec: ViewSpec): ViewSpec {
-
-  if (viewSpec.class === DayGridView && isVResourceViewEnabled(viewSpec)) {
-    return {
-      ...viewSpec,
-      class: ResourceDayGridView
-    }
-  }
-
-  return viewSpec
-}
-
 
 export { ResourceDayGridView }
 export { default as ResourceDayGrid } from './ResourceDayGrid'
 
 export default createPlugin({
   deps: [ ResourceCommonPlugin, DayGridPlugin ],
-  viewSpecTransformers: [ transformDayGridViewSpec ]
+  defaultView: 'resourceDayGridDay',
+  views: {
+
+    resourceDayGrid: ResourceDayGridView,
+
+    resourceDayGridDay: {
+      type: 'resourceDayGrid',
+      duration: { days: 1 }
+    },
+
+    resourceDayGridWeek: {
+      type: 'resourceDayGrid',
+      duration: { weeks: 1 }
+    },
+
+    resourceDayGridMonth: {
+      type: 'resourceDayGrid',
+      duration: { months: 1 },
+
+      // TODO: wish we didn't have to C&P from dayGrid's file
+      monthMode: true,
+      fixedWeekCount: true
+    }
+
+  }
 })

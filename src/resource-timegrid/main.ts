@@ -1,25 +1,34 @@
-import { createPlugin, ViewSpec } from '@fullcalendar/core'
-import ResourceCommonPlugin, { isVResourceViewEnabled } from '@fullcalendar/resource-common'
-import TimeGridPlugin, { TimeGridView } from '@fullcalendar/timegrid'
+import { createPlugin } from '@fullcalendar/core'
+import ResourceCommonPlugin from '@fullcalendar/resource-common'
+import TimeGridPlugin from '@fullcalendar/timegrid'
 import ResourceTimeGridView from './ResourceTimeGridView'
 
-
-function transformTimeGridViewSpec(viewSpec: ViewSpec): ViewSpec {
-
-  if (viewSpec.class === TimeGridView && isVResourceViewEnabled(viewSpec)) {
-    return {
-      ...viewSpec,
-      class: ResourceTimeGridView
-    }
-  }
-
-  return viewSpec
-}
-
-
 export { ResourceTimeGridView }
+export { default as ResourceTimeGrid } from './ResourceTimeGrid'
 
 export default createPlugin({
   deps: [ ResourceCommonPlugin, TimeGridPlugin ],
-  viewSpecTransformers: [ transformTimeGridViewSpec ]
+  defaultView: 'resourceTimeGridDay',
+  views: {
+
+    resourceTimeGrid: {
+      class: ResourceTimeGridView,
+
+      // TODO: wish we didn't have to C&P from timeGrid's file
+      allDaySlot: true,
+      slotDuration: '00:30:00',
+      slotEventOverlap: true // a bad name. confused with overlap/constraint system
+    },
+
+    resourceTimeGridDay: {
+      type: 'resourceTimeGrid',
+      duration: { days: 1 }
+    },
+
+    resourceTimeGridWeek: {
+      type: 'resourceTimeGrid',
+      duration: { weeks: 1 }
+    }
+
+  }
 })

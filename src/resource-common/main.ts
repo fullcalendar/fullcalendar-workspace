@@ -33,7 +33,7 @@ export default createPlugin({
 })
 
 export { default as ResourceDayHeader } from './common/ResourceDayHeader'
-export { isVResourceViewEnabled, VResourceJoiner, AbstractResourceDayTable, ResourceDayTable, DayResourceTable, VResourceSplitter } from './common/resource-day-table'
+export { VResourceJoiner, AbstractResourceDayTable, ResourceDayTable, DayResourceTable, VResourceSplitter } from './common/resource-day-table'
 export { Resource, ResourceHash } from './structs/resource'
 export { ResourceViewProps } from './View'
 export { flattenResources, Group, isGroupsEqual, GroupNode, ResourceNode, buildRowNodes, buildResourceFields } from './common/resource-hierarchy'

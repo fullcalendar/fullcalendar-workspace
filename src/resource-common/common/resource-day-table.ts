@@ -152,25 +152,6 @@ export class ResourceIndex {
 }
 
 
-export function isVResourceViewEnabled(viewSpec: ViewSpec) {
-  let { options } = viewSpec
-
-  if (!options.resources) {
-    return false
-  }
-
-  if (options.groupByResource || options.groupByDateAndResource) {
-    return true
-  }
-
-  if (options.groupByResource === false || options.groupByDateAndResource === false) {
-    return false
-  }
-
-  return viewSpec.singleUnit === 'day'
-}
-
-
 // splitter
 
 export interface VResourceProps extends SplittableProps {
