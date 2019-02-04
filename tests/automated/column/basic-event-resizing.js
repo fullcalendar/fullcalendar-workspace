@@ -59,8 +59,7 @@ describe('dayGrid-view event resizing', function() {
 
   describe('with resource columns above date columns', function() {
     pushOptions({
-      defaultView: 'resourceDayGridThreeDay',
-      groupByResource: true
+      defaultView: 'resourceDayGridThreeDay'
     })
 
     it('allows resizing', function(done) {
@@ -130,7 +129,7 @@ describe('dayGrid-view event resizing', function() {
   describe('with date columns above resource columns', function() {
     pushOptions({
       defaultView: 'resourceDayGridThreeDay',
-      groupByDateAndResource: true
+      datesAboveResources: true
     })
 
     it('allows resizing', function(done) {

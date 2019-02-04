@@ -17,8 +17,8 @@ describe('timeGrid-view event drag-n-drop', function() {
   describeTimeZones(function(tz) {
 
     describeOptions({
-      'resources above dates': { groupByResource: true },
-      'dates above resources': { groupByDateAndResource: true }
+      'resources above dates': { datesAboveResources: false },
+      'dates above resources': { datesAboveResources: true }
     }, function() {
 
       it('allows switching date and resource', function(done) {

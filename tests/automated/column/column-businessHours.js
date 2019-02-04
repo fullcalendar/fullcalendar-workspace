@@ -24,8 +24,8 @@ describe('vresource businessHours', function() {
       })
 
       describeOptions({
-        'when resources above dates': { groupByResource: true },
-        'when dates above resources': { groupByDateAndResource: true }
+        'when resources above dates': { datesAboveResources: false },
+        'when dates above resources': { datesAboveResources: true }
       }, function() {
 
         it('greys out sat and sun', function(done) {
@@ -50,8 +50,8 @@ describe('vresource businessHours', function() {
       })
 
       describeOptions({
-        'when resources above dates': { groupByResource: true },
-        'when dates above resources': { groupByDateAndResource: true }
+        'when resources above dates': { datesAboveResources: false },
+        'when dates above resources': { datesAboveResources: true }
       }, function() {
 
         it('greys out sat and sun', function(done) {

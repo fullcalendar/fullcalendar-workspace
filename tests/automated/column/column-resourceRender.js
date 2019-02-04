@@ -25,7 +25,7 @@ describe('column-view resourceRender trigger', function() {
 
     describe('when resource above dates', function() {
       pushOptions({
-        groupByResource: true
+        datesAboveResources: false
       })
 
       describeOptions('defaultView', {
@@ -55,7 +55,7 @@ describe('column-view resourceRender trigger', function() {
 
     describe('when dates above resource', function() {
       pushOptions({
-        groupByDateAndResource: true
+        datesAboveResources: true
       })
 
       describeOptions('defaultView', {

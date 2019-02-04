@@ -19,8 +19,7 @@ describe('timeGrid-view dateClick', function() {
 
   describe('when there are no resource columns', function() {
     pushOptions({
-      defaultView: 'timeGridWeek',
-      groupByResource: false
+      defaultView: 'timeGridWeek'
     })
 
     it('allows non-resource clicks', function(done) {
@@ -49,8 +48,7 @@ describe('timeGrid-view dateClick', function() {
 
   describe('with resource columns above date columns', function() {
     pushOptions({
-      defaultView: 'resourceTimeGridThreeDay',
-      groupByResource: true
+      defaultView: 'resourceTimeGridThreeDay'
     })
 
     it('allows a resource click', function(done) {
@@ -79,7 +77,7 @@ describe('timeGrid-view dateClick', function() {
   describe('with date columns above resource columns', function() {
     pushOptions({
       defaultView: 'resourceTimeGridThreeDay',
-      groupByDateAndResource: true
+      datesAboveResources: true
     })
 
     it('allows a resource click', function(done) {

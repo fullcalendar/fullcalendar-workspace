@@ -15,7 +15,6 @@ describe('resource timeGrid now-indicator', function() {
     initCalendar({
       defaultView: 'resourceTimeGridThreeDay',
       nowIndicator: true,
-      groupByResource: true,
       resources: [
         { id: 'a', title: 'Resource A' },
         { id: 'b', title: 'Resource B' }

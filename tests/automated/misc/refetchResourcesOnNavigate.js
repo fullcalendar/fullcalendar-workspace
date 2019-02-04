@@ -187,8 +187,7 @@ describe('refetchResourcesOnNavigate', function() {
       views: {
         resourceTimeGridTwoDay: {
           type: 'resourceTimeGrid',
-          duration: { days: 2 },
-          groupByResource: true
+          duration: { days: 2 }
         }
       },
       resources(arg, callback) {
@@ -216,9 +215,7 @@ describe('refetchResourcesOnNavigate', function() {
     let renderCnt = 0
 
     initCalendar({
-      defaultView: 'resourceTimeGridDay',
-      groupByResource: false,
-      groupByDateAndResource: false,
+      defaultView: 'timeGridDay',
 
       resources(arg, callback) {
         fetchCnt += 1

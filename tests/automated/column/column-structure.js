@@ -83,8 +83,7 @@ describe('vresource structure', function() {
 
       describe('when resources are above dates', function() {
         pushOptions({
-          groupByResource: true,
-          groupByDateAndResource: false // should be default
+          datesAboveResources: false
         })
 
         it('renders cells correctly', function(callback) {
@@ -108,7 +107,7 @@ describe('vresource structure', function() {
 
       describe('when dates are above resources', function() {
         pushOptions({
-          groupByDateAndResource: true
+          datesAboveResources: true
         })
 
         it('renders cells correctly', function(callback) {
@@ -197,7 +196,6 @@ describe('vresource structure', function() {
   describe('when month view', function() {
     pushOptions({
       defaultView: 'resourceDayGridMonth',
-      groupByResource: true,
       resources: [
         { id: 'a', title: 'Resource A' },
         { id: 'b', title: 'Resource B' }

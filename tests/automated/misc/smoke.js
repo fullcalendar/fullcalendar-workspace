@@ -22,8 +22,7 @@ describe('timeline', function() {
         },
         resourceTimeGridTwoDay: {
           type: 'resourceTimeGrid',
-          duration: { days: 2 },
-          groupByResource: true
+          duration: { days: 2 }
         }
       },
       resourceLabelText: 'Rooms',

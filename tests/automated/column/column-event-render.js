@@ -65,7 +65,7 @@ describe('vresource event rendering', function() {
 
           describe('when resources above dates', function() {
             pushOptions({
-              groupByResource: true
+              datesAboveResources: false
             })
 
             it('renders in the correct column', function(callback) {
@@ -82,7 +82,7 @@ describe('vresource event rendering', function() {
 
           describe('when dates above resources', function() {
             pushOptions({
-              groupByDateAndResource: true
+              datesAboveResources: true
             })
 
             it('renders in the correct column', function(callback) {
@@ -118,7 +118,7 @@ describe('vresource event rendering', function() {
 
           describe('when resources above dates', function() {
             pushOptions({
-              groupByResource: true
+              datesAboveResources: false
             })
 
             it('renders in the correct columns', function(callback) {
@@ -144,7 +144,7 @@ describe('vresource event rendering', function() {
 
           describe('when dates above resources', function() {
             pushOptions({
-              groupByDateAndResource: true
+              datesAboveResources: true
             })
 
             it('renders in the correct columns', function(callback) {
@@ -187,7 +187,7 @@ describe('vresource event rendering', function() {
 
           describe('when resources above dates', function() {
             pushOptions({
-              groupByResource: true
+              datesAboveResources: false
             })
 
             it('renders in the correct columns', function(callback) {
@@ -206,7 +206,7 @@ describe('vresource event rendering', function() {
 
           describe('when dates above resources', function() {
             pushOptions({
-              groupByDateAndResource: true
+              datesAboveResources: true
             })
 
             it('renders in the correct columns', function(callback) {
@@ -264,10 +264,10 @@ describe('vresource event rendering', function() {
 
           describeOptions({
             'when resources above dates': {
-              groupByResource: true
+              datesAboveResources: false
             },
             'when dates above resources': {
-              groupByDateAndResource: true
+              datesAboveResources: true
             }
           }, function() {
 

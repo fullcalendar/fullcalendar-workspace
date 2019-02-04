@@ -47,8 +47,7 @@ describe('dayGrid-view dateClick', function() {
 
   describe('with resource columns above date columns', function() {
     pushOptions({
-      defaultView: 'resourceDayGridThreeDay',
-      groupByResource: true
+      defaultView: 'resourceDayGridThreeDay'
     })
 
     it('allows a resource click', function(done) {
@@ -77,7 +76,7 @@ describe('dayGrid-view dateClick', function() {
   describe('with date columns above resource columns', function() {
     pushOptions({
       defaultView: 'resourceDayGridThreeDay',
-      groupByDateAndResource: true
+      datesAboveResources: true
     })
 
     it('allows a resource click', function(done) {
