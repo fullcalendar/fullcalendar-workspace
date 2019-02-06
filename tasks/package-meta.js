@@ -8,6 +8,13 @@ const tsConfig = require('../tsconfig')
 
 let packagePaths = tsConfig.compilerOptions.paths
 
+const VERSION_PRECISION = '' // '^'
+if (!VERSION_PRECISION) {
+  console.log('TODO')
+  console.log('TODO: for official release, change VERSION_PRECISION')
+  console.log('TODO')
+}
+
 gulp.task('package-meta', [ 'package-meta:text', 'package-meta:json' ])
 
 gulp.task('package-meta:text', function() {
@@ -61,6 +68,7 @@ function buildPackageConfig(packageName, overrides) {
 
   delete res.devDependencies
   delete res.scripts
+  delete res.browserGlobal
 
   let peerDependencies = overrides.peerDependencies
   let dependencies = overrides.dependencies
@@ -77,7 +85,7 @@ function buildPackageConfig(packageName, overrides) {
     if (!peerDependencies) {
       peerDependencies = {}
     }
-    peerDependencies['@fullcalendar/core'] = '^' + (corePackageConfig.version || '0.0.0')
+    peerDependencies['@fullcalendar/core'] = VERSION_PRECISION + (corePackageConfig.version || '0.0.0')
   }
 
   if (peerDependencies) {
@@ -107,12 +115,12 @@ function processDependencyMap(inputMap) {
       let dependencyPath = packagePaths[dependencyName][0]
 
       if (dependencyPath.match(/^src\//)) {
-        outputMap[dependencyName] = '^' + (rootPackageConfig.version || '0.0.0')
+        outputMap[dependencyName] = VERSION_PRECISION + (rootPackageConfig.version || '0.0.0')
 
       } else if (dependencyName.match(/^@fullcalendar\//)) {
         let depMetaPath = dependencyName.replace(/^@fullcalendar\//, '../fullcalendar/dist/') + '/package.json'
         let depMeta = require(depMetaPath)
-        outputMap[dependencyName] = '^' + (depMeta.version || '0.0.0')
+        outputMap[dependencyName] = VERSION_PRECISION + (depMeta.version || '0.0.0')
 
       } else {
         console.error('Unknown dependency (1)', dependencyName)
