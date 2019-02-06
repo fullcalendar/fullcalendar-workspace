@@ -8,12 +8,11 @@ cd "`dirname $0`/.."
 
 ./bin/require-clean-working-tree.sh
 
-# if [[ -f "fullcalendar-branch.txt" ]]
-# then
-#   echo "Please delete fullcalendar-branch.txt"
-#   exit 1
-# fi
-echo "TODO: eventually delete fullcalendar-branch.txt"
+if [[ -f "fullcalendar-branch.txt" ]]
+then
+  echo "Please delete fullcalendar-branch.txt"
+  exit 1
+fi
 
 if [[ ! -f 'package-lock.json' ]]
 then
