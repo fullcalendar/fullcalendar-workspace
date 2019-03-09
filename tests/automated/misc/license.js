@@ -1,4 +1,4 @@
-import { config } from '@fullcalendar/core'
+import { config, Calendar } from '@fullcalendar/core'
 
 describe('schedulerLicenseKey', function() {
 
@@ -22,6 +22,12 @@ describe('schedulerLicenseKey', function() {
           done()
         }
       })
+
+      // just to see if it compiles with schedulerLicenseKey
+      let calendar = new Calendar(document.getElementById('cal'), {
+        schedulerLicenseKey: '<%= versionReleaseDate %>'
+      })
+      expect(calendar).toBeTruthy()
     })
 
     it('is invalid when purchased more than a year ago', function(done) {

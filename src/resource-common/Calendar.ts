@@ -23,6 +23,7 @@ declare module '@fullcalendar/core' {
   }
 
   interface OptionsInput {
+    schedulerLicenseKey?: string
     resources?: ResourceSourceInput
 
     // TODO: make these better
