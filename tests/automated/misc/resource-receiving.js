@@ -139,4 +139,18 @@ describe('event resources', function() {
       }
     })
   })
+
+  it('will put misc properties in extendedProps', function() {
+    initCalendar({
+      resources: [
+        { id: 1, title: 'room 1', something: 'cool' }
+      ]
+    })
+
+    let resources = currentCalendar.getResources()
+    expect(resources.length).toBe(1)
+    expect(typeof resources[0].extendedProps).toBe('object')
+    expect(resources[0].extendedProps.something).toBe('cool')
+  })
+
 })
