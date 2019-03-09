@@ -140,6 +140,25 @@ describe('event resources', function() {
     })
   })
 
+  it('will parse event style props', function() {
+    initCalendar({
+      resources: [ {
+        id: 1,
+        title: 'room 1',
+        eventClassNames: 'niceevents',
+        eventColor: 'red',
+        eventTextColor: 'green'
+      } ]
+    })
+
+    let resources = currentCalendar.getResources()
+    expect(resources.length).toBe(1)
+    expect(resources[0].eventClassNames).toEqual([ 'niceevents' ])
+    expect(resources[0].eventBackgroundColor).toBe('red')
+    expect(resources[0].eventBorderColor).toBe('red')
+    expect(resources[0].eventTextColor).toBe('green')
+  })
+
   it('will put misc properties in extendedProps', function() {
     initCalendar({
       resources: [
