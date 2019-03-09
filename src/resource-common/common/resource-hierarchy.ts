@@ -181,8 +181,8 @@ function ensureGroupNodes(resourceNode: ResourceParentNode, nodes: ParentNode[],
 
   // find an existing group that matches, or determine the position for a new group
   if (groupSpec.order) {
-    for (let i = 0; i < nodes.length; i++) {
-      let node = nodes[i]
+    for (newGroupIndex = 0; newGroupIndex < nodes.length; newGroupIndex++) {
+      let node = nodes[newGroupIndex]
 
       if ((node as GroupParentNode).group) {
         let cmp = flexibleCompare(groupValue, (node as GroupParentNode).group.value) * groupSpec.order
@@ -190,8 +190,7 @@ function ensureGroupNodes(resourceNode: ResourceParentNode, nodes: ParentNode[],
         if (cmp === 0) {
           groupNode = node
           break
-        } else if (cmp > 0) {
-          newGroupIndex = i
+        } else if (cmp < 0) {
           break
         }
       }
