@@ -4,6 +4,7 @@ import TimelineView from './TimelineView'
 export { TimelineView }
 export { default as TimelineLane } from './TimelineLane'
 export { default as ScrollJoiner } from './util/ScrollJoiner'
+export { default as StickyScroller } from './util/StickyScroller'
 
 export default createPlugin({
   defaultView: 'timelineDay',

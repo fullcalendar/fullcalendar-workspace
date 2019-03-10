@@ -1,5 +1,6 @@
 import { asRoughMs, isSingleDay, findElements, createElement, removeElement, getDayClasses, Component, ComponentContext, DateProfile } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
+import StickyScroller from './util/StickyScroller'
 
 export interface TimelineHeaderProps {
   dateProfile: DateProfile
@@ -11,8 +12,9 @@ export default class TimelineHeader extends Component<TimelineHeaderProps> {
   tableEl: HTMLElement
   slatColEls: HTMLElement[]
   innerEls: HTMLElement[]
+  stickyScroller: StickyScroller
 
-  constructor(context: ComponentContext, parentEl: HTMLElement) {
+  constructor(context: ComponentContext, parentEl: HTMLElement, stickyScroller: StickyScroller) {
     super(context)
 
     parentEl.appendChild(
@@ -20,6 +22,8 @@ export default class TimelineHeader extends Component<TimelineHeaderProps> {
         className: this.theme.getClass('tableGrid')
       })
     )
+
+    this.stickyScroller = stickyScroller
   }
 
   destroy() {
@@ -87,6 +91,12 @@ export default class TimelineHeader extends Component<TimelineHeaderProps> {
     this.innerEls = findElements(
       this.tableEl.querySelector<HTMLElement>('tr:last-child'), // compound selector won't work because of query-root problem
       'th .fc-cell-text'
+    )
+
+    this.stickyScroller.resetEls(
+      Array.prototype.slice.call(
+        this.tableEl.querySelectorAll('tr:not(:last-child) .fc-cell-text')
+      )
     )
   }
 

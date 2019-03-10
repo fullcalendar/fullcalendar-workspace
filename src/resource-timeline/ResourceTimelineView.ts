@@ -1,5 +1,5 @@
 import { SplittableProps, memoizeRendering, PositionCache, Hit, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, DateProfile, applyStyleProp, PointerDragEvent } from '@fullcalendar/core'
-import { ScrollJoiner, TimelineLane } from '@fullcalendar/timeline'
+import { ScrollJoiner, TimelineLane, StickyScroller } from '@fullcalendar/timeline'
 import { FeaturefulElementDragging } from '@fullcalendar/interaction'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash, buildRowNodes, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc } from '@fullcalendar/resource-common'
@@ -20,6 +20,7 @@ export default class ResourceTimelineView extends View {
   timeAxis: TimeAxis
   lane: TimelineLane
   bodyScrollJoiner: ScrollJoiner
+  stickyScroller: StickyScroller // for the spreadsheet body area only
 
   timeAxisTbody: HTMLElement
   miscHeight: number
@@ -140,6 +141,10 @@ export default class ResourceTimelineView extends View {
       this.context,
       this.resourceAreaHeadEl,
       this.el.querySelector('tbody .fc-resource-area')
+    )
+
+    this.stickyScroller = new StickyScroller(
+      this.spreadsheet.layout.bodyScroller.enhancedScroll
     )
 
     this.timeAxis = new TimeAxis(
@@ -331,7 +336,8 @@ export default class ResourceTimelineView extends View {
         spreadsheetNext,
         timeAxisTbody,
         timeAxisNext,
-        this.timeAxis
+        this.timeAxis,
+        this.stickyScroller
       )
     }
   }
@@ -385,6 +391,7 @@ export default class ResourceTimelineView extends View {
       this.syncHeadHeights()
       this.timeAxis.updateSize(isResize, viewHeight - this.miscHeight, isAuto)
       this.spreadsheet.updateSize(isResize, viewHeight - this.miscHeight, isAuto)
+      this.stickyScroller.updateSize()
     }
 
     let rowSizingCnt = this.updateRowSizes(isResize)

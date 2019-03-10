@@ -1,5 +1,6 @@
 import { htmlToElement, htmlEscape, createElement, Component, ComponentContext, memoizeRendering } from '@fullcalendar/core'
 import { Resource, ResourceApi, buildResourceFields, buildResourceTextFunc } from '@fullcalendar/resource-common'
+import { StickyScroller } from '@fullcalendar/timeline'
 import { updateExpanderIcon, clearExpanderIcon, updateTrResourceId } from './render-utils'
 
 export interface SpreadsheetRowProps {
@@ -17,15 +18,18 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   tr: HTMLElement
   heightEl: HTMLElement
   expanderIconEl: HTMLElement // might not exist
+  groupContentEls: HTMLElement[]
+  stickyScroller: StickyScroller
 
   private _renderRow = memoizeRendering(this.renderRow, this.unrenderRow)
   private _updateTrResourceId = memoizeRendering(updateTrResourceId, null, [ this._renderRow ])
   private _updateExpanderIcon = memoizeRendering(this.updateExpanderIcon, null, [ this._renderRow ])
 
-  constructor(context: ComponentContext, tr: HTMLElement) {
+  constructor(context: ComponentContext, tr: HTMLElement, stickyScroller: StickyScroller) {
     super(context)
 
     this.tr = tr
+    this.stickyScroller = stickyScroller
   }
 
   render(props: SpreadsheetRowProps) {
@@ -44,6 +48,7 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
     let { tr, theme, calendar, view } = this
     let resourceFields = buildResourceFields(resource) // slightly inefficient. already done up the call stack
     let mainTd
+    let groupContentEls = []
 
     for (let i = 0; i < colSpecs.length; i++) {
       let colSpec = colSpecs[i]
@@ -79,6 +84,10 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
         ) || contentEl
       }
 
+      if (rowSpan > 1) {
+        groupContentEls.push(contentEl)
+      }
+
       let td = createElement('td', {
         className: theme.getClass('widgetContent'),
         rowspan: rowSpan
@@ -97,6 +106,9 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
 
     this.expanderIconEl = tr.querySelector('.fc-expander-space .fc-icon')
 
+    this.groupContentEls = groupContentEls
+    this.stickyScroller.addEls(groupContentEls)
+
     // wait until very end
     view.publiclyTrigger('resourceRender', [
       {
@@ -108,6 +120,7 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   }
 
   unrenderRow() {
+    this.stickyScroller.removeEls(this.groupContentEls)
     this.tr.innerHTML = ''
   }
 

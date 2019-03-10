@@ -4,6 +4,7 @@ import TimelineHeader from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'
 import { TimelineDateProfile, buildTimelineDateProfile } from './timeline-date-profile'
 import TimelineNowIndicator from './TimelineNowIndicator'
+import StickyScroller from './util/StickyScroller'
 
 export interface TimeAxisProps {
   dateProfile: DateProfile
@@ -16,6 +17,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
   header: TimelineHeader
   slats: TimelineSlats
   nowIndicator: TimelineNowIndicator
+  stickyScroller: StickyScroller
 
   // internal state
   tDateProfile: TimelineDateProfile
@@ -29,23 +31,30 @@ export default class TimeAxis extends Component<TimeAxisProps> {
       'auto'
     )
 
+    let headerEnhancedScroller = layout.headerScroller.enhancedScroll
+    let bodyEnhancedScroller = layout.bodyScroller.enhancedScroll
+
+    this.stickyScroller = new StickyScroller(headerEnhancedScroller)
+
     this.header = new TimelineHeader(
       context,
-      layout.headerScroller.enhancedScroll.canvas.contentEl
+      headerEnhancedScroller.canvas.contentEl,
+      this.stickyScroller
     )
 
     this.slats = new TimelineSlats(
       context,
-      layout.bodyScroller.enhancedScroll.canvas.bgEl
+      bodyEnhancedScroller.canvas.bgEl
     )
 
     this.nowIndicator = new TimelineNowIndicator(
-      layout.headerScroller.enhancedScroll.canvas.el,
-      layout.bodyScroller.enhancedScroll.canvas.el
+      headerEnhancedScroller.canvas.el,
+      bodyEnhancedScroller.canvas.el
     )
   }
 
   destroy() {
+    this.stickyScroller.destroy()
     this.layout.destroy()
     this.header.destroy()
     this.slats.destroy()
@@ -113,6 +122,8 @@ export default class TimeAxis extends Component<TimeAxisProps> {
 
     // pretty much just queries coords. do last
     this.slats.updateSize()
+
+    this.stickyScroller.updateSize()
   }
 
   computeSlotWidth() {
