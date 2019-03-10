@@ -1,11 +1,14 @@
-import { SplittableProps, memoizeRendering, PositionCache, Hit, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, DateProfile } from '@fullcalendar/core'
+import { SplittableProps, memoizeRendering, PositionCache, Hit, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, DateProfile, applyStyleProp, PointerDragEvent } from '@fullcalendar/core'
 import { ScrollJoiner, TimelineLane } from '@fullcalendar/timeline'
+import { FeaturefulElementDragging } from '@fullcalendar/interaction'
 import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash, buildRowNodes, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc } from '@fullcalendar/resource-common'
 import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'
 import Spreadsheet from './Spreadsheet'
 import { __assign } from 'tslib'
+
+const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
 
 export default class ResourceTimelineView extends View {
 
@@ -23,6 +26,10 @@ export default class ResourceTimelineView extends View {
   rowNodes: (GroupNode | ResourceNode)[] = []
   rowComponents: (GroupRow | ResourceRow)[] = []
   rowComponentsById: { [id: string]: (GroupRow | ResourceRow) } = {}
+
+  resourceAreaHeadEl: HTMLElement
+  resourceAreaWidth?: number
+  resourceAreaWidthDraggings: FeaturefulElementDragging[]
 
   // internal state
   superHeaderText: any
@@ -123,11 +130,15 @@ export default class ResourceTimelineView extends View {
 
     this.el.innerHTML = this.renderSkeletonHtml()
 
+    this.resourceAreaHeadEl = this.el.querySelector('thead .fc-resource-area')
+    this.setResourceAreaWidth(this.opt('resourceAreaWidth'))
+    this.initResourceAreaWidthDragging()
+
     this.miscHeight = this.el.offsetHeight
 
     this.spreadsheet = new Spreadsheet(
       this.context,
-      this.el.querySelector('thead .fc-resource-area'),
+      this.resourceAreaHeadEl,
       this.el.querySelector('tbody .fc-resource-area')
     )
 
@@ -167,17 +178,11 @@ export default class ResourceTimelineView extends View {
 
   renderSkeletonHtml() {
     let { theme } = this
-    let width = this.opt('resourceAreaWidth')
-    let widthAttr = ''
-
-    if (width) {
-      widthAttr = 'style="width:' + (typeof width === 'number' ? width + 'px' : width) + '"'
-    }
 
     return `<table class="` + theme.getClass('tableGrid') + `"> \
 <thead class="fc-head"> \
 <tr> \
-<td class="fc-resource-area ` + theme.getClass('widgetHeader') + `" ` + widthAttr + `></td> \
+<td class="fc-resource-area ` + theme.getClass('widgetHeader') + `"></td> \
 <td class="fc-divider fc-col-resizer ` + theme.getClass('widgetHeader') + `"></td> \
 <td class="fc-time-area ` + theme.getClass('widgetHeader') + `"></td> \
 </tr> \
@@ -477,6 +482,10 @@ export default class ResourceTimelineView extends View {
     this.spreadsheet.destroy()
     this.timeAxis.destroy()
 
+    for (let resourceAreaWidthDragging of this.resourceAreaWidthDraggings) {
+      resourceAreaWidthDragging.destroy()
+    }
+
     super.destroy()
 
     this.calendar.unregisterInteractiveComponent(this)
@@ -619,6 +628,46 @@ export default class ResourceTimelineView extends View {
         }
       }
     }
+  }
+
+
+  // Resource Area
+  // ------------------------------------------------------------------------------------------------------------------
+
+  setResourceAreaWidth(widthVal) {
+    this.resourceAreaWidth = widthVal
+    applyStyleProp(this.resourceAreaHeadEl, 'width', widthVal || '')
+  }
+
+  initResourceAreaWidthDragging() {
+    let resourceAreaDividerEls = Array.prototype.slice.call(
+      this.el.querySelectorAll('.fc-col-resizer')
+    )
+
+    this.resourceAreaWidthDraggings = resourceAreaDividerEls.map((el: HTMLElement) => {
+      let dragging = new FeaturefulElementDragging(el)
+      let dragStartWidth
+      let viewWidth
+
+      dragging.emitter.on('dragstart', () => {
+        dragStartWidth = this.resourceAreaWidth
+        if (typeof dragStartWidth !== 'number') {
+          dragStartWidth = this.resourceAreaHeadEl.getBoundingClientRect().width
+        }
+        viewWidth = this.el.getBoundingClientRect().width
+      })
+
+      dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
+        let newWidth = dragStartWidth + pev.deltaX
+        newWidth = Math.max(newWidth, MIN_RESOURCE_AREA_WIDTH)
+        newWidth = Math.min(newWidth, viewWidth - MIN_RESOURCE_AREA_WIDTH)
+        this.setResourceAreaWidth(newWidth)
+      })
+
+      dragging.autoScroller.isEnabled = false // because gets weird with auto-scrolling time area
+
+      return dragging
+    })
   }
 
 }

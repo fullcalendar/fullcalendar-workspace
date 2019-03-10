@@ -1,4 +1,5 @@
-import { removeElement, createElement, htmlEscape, Component, ComponentContext } from '@fullcalendar/core'
+import { removeElement, createElement, htmlEscape, Component, ComponentContext, PointerDragEvent, EmitterMixin } from '@fullcalendar/core'
+import { FeaturefulElementDragging } from '@fullcalendar/interaction'
 
 export interface SpreadsheetHeaderProps {
   superHeaderText: string
@@ -6,9 +7,17 @@ export interface SpreadsheetHeaderProps {
   colTags: string
 }
 
+const COL_MIN_WIDTH = 30
+
 export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps> {
 
   tableEl: HTMLElement
+  resizerEls: HTMLElement[]
+  resizables: FeaturefulElementDragging[]
+  thEls: HTMLElement[]
+  colEls: HTMLElement[]
+  colWidths: number[] = []
+  emitter: EmitterMixin = new EmitterMixin()
 
   constructor(context: ComponentContext, parentEl: HTMLElement) {
     super(context)
@@ -21,6 +30,10 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
   }
 
   destroy() {
+    for (let resizable of this.resizables) {
+      resizable.destroy()
+    }
+
     removeElement(this.tableEl)
 
     super.destroy()
@@ -74,6 +87,52 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
     html += '</tbody>'
 
     this.tableEl.innerHTML = html
+
+    this.thEls = Array.prototype.slice.call(
+      this.tableEl.querySelectorAll('th')
+    )
+
+    this.colEls = Array.prototype.slice.call(
+      this.tableEl.querySelectorAll('col')
+    )
+
+    this.resizerEls = Array.prototype.slice.call(
+      this.tableEl.querySelectorAll('.fc-col-resizer')
+    )
+
+    this.initColResizing()
+  }
+
+  initColResizing() {
+    this.resizables = this.resizerEls.map((handleEl: HTMLElement, colIndex) => {
+      let dragging = new FeaturefulElementDragging(handleEl)
+      let startWidth
+
+      dragging.emitter.on('dragstart', () => {
+        startWidth = this.colWidths[colIndex]
+        if (typeof startWidth !== 'number') {
+          startWidth = this.thEls[colIndex].getBoundingClientRect().width
+        }
+      })
+
+      dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
+        this.colWidths[colIndex] = Math.max(startWidth + pev.deltaX, COL_MIN_WIDTH)
+        this.applyColWidths()
+        this.emitter.trigger('colwidthchange', this.colWidths)
+      })
+
+      dragging.autoScroller.isEnabled = false // because gets weird with auto-scrolling time area
+
+      return dragging
+    })
+  }
+
+  applyColWidths() {
+    this.colWidths.forEach((width, colIndex) => {
+      if (typeof width === 'number') {
+        this.colEls[colIndex].style.width = width + 'px'
+      }
+    })
   }
 
 }

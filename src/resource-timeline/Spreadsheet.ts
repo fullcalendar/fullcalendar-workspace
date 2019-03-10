@@ -15,6 +15,7 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
   bodyContainerEl: HTMLElement
   bodyColGroup: HTMLElement
   bodyTbody: HTMLElement
+  bodyColEls: HTMLElement[]
 
   private _renderCells = memoizeRendering(this.renderCells, this.unrenderCells)
 
@@ -31,6 +32,9 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
       context,
       this.layout.headerScroller.enhancedScroll.canvas.contentEl
     )
+    this.header.emitter.on('colwidthchange', (colWidths: number[]) => {
+      this.applyBodyColWidths(colWidths)
+    })
 
     this.layout.bodyScroller.enhancedScroll.canvas.contentEl
       .appendChild(
@@ -70,6 +74,10 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
     })
 
     this.bodyColGroup.innerHTML = colTags
+
+    this.bodyColEls = Array.prototype.slice.call(
+      this.bodyColGroup.querySelectorAll('col')
+    )
   }
 
   unrenderCells() {
@@ -92,6 +100,14 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
 
   updateSize(isResize, totalHeight, isAuto) {
     this.layout.setHeight(totalHeight, isAuto)
+  }
+
+  applyBodyColWidths(colWidths: number[]) {
+    colWidths.forEach((colWidth, colIndex) => {
+      if (typeof colWidth === 'number') {
+        this.bodyColEls[colIndex].style.width = colWidth + 'px'
+      }
+    })
   }
 
 }
