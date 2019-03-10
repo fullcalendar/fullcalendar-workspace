@@ -355,9 +355,9 @@ export default class ResourceTimelineView extends View {
           group: (rowNode as GroupNode).group
         })
       } else {
-        let resource = (rowNode as ResourceNode).resource;
+        let resource = (rowNode as ResourceNode).resource
 
-        (rowComponent as ResourceRow).receiveProps({
+        ;(rowComponent as ResourceRow).receiveProps({
           ...splitProps[resource.id],
           dateProfile,
           nextDayThreshold: this.nextDayThreshold,

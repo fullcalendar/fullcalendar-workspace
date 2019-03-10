@@ -28,15 +28,18 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
       'clipped-scroll'
     )
 
+    let headerEnhancedScroller = this.layout.headerScroller.enhancedScroll
+    let bodyEnhancedScroller = this.layout.bodyScroller.enhancedScroll
+
     this.header = new SpreadsheetHeader(
       context,
-      this.layout.headerScroller.enhancedScroll.canvas.contentEl
+      headerEnhancedScroller.canvas.contentEl
     )
     this.header.emitter.on('colwidthchange', (colWidths: number[]) => {
       this.applyBodyColWidths(colWidths)
     })
 
-    this.layout.bodyScroller.enhancedScroll.canvas.contentEl
+    bodyEnhancedScroller.canvas.contentEl
       .appendChild(
         this.bodyContainerEl = createElement('div',
           { className: 'fc-rows' },

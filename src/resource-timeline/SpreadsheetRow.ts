@@ -79,7 +79,7 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
         ) || contentEl
       }
 
-      const td = createElement('td', {
+      let td = createElement('td', {
         className: theme.getClass('widgetContent'),
         rowspan: rowSpan
       }, contentEl)
