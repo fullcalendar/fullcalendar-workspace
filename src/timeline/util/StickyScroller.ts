@@ -10,11 +10,17 @@ interface ElementGeom {
 }
 
 const SUPPORTS_STICKY = computeSupportsSticky()
-const STICKY_SELECTOR = '.fc-sticky'
+const STICKY_CLASSNAME = 'fc-sticky'
+const STICKY_ACTIVE_CLASSNAME = 'fc-sticky-active'
 
 /*
 TEST a lot x-browser
 TEST a lot with removing resource rows
+
+useful beyond the native position:sticky for these reasons:
+- className when active
+- support in IE11
+- nice centering support
 */
 export default class StickyScroller {
 
@@ -30,7 +36,7 @@ export default class StickyScroller {
   }
 
   updateSize = () => {
-    let els = Array.prototype.slice.call(this.scroller.canvas.el.querySelectorAll(STICKY_SELECTOR))
+    let els = Array.prototype.slice.call(this.scroller.canvas.el.querySelectorAll('.' + STICKY_CLASSNAME))
     let elGeoms = this.queryElGeom(els)
     let viewportBound = this.scroller.el.getBoundingClientRect()
     this.assignPositions(els, elGeoms, viewportBound.width, viewportBound.height)
@@ -64,8 +70,11 @@ export default class StickyScroller {
   }
 
   assignPositions(els: HTMLElement[], elGeoms: ElementGeom[], viewportWidth: number, viewportHeight: number) {
-    let scrollLeft = this.scroller.getScrollLeft()
+
+    // an intense read operation. do this in updateSize instead
+    let scrollLeft = this.scroller.getScrollFromLeft()
     let scrollTop = this.scroller.getScrollTop()
+
     let viewportRect: Rect = { // relative to the topleft corner of the canvas
       left: scrollLeft,
       right: scrollLeft + viewportWidth,
@@ -102,9 +111,9 @@ export default class StickyScroller {
       let relLeft = destLeft - parentBound.left
       let relTop = destTop - parentBound.top
 
-      if (geom.actualTextAlign === 'center') {
+      if (geom.actualTextAlign !== 'left') {
         ;(el.parentNode as HTMLElement).style.textAlign = 'left'
-        el.setAttribute('data-sticky-align', 'center') // for next time
+        el.setAttribute('data-sticky-align', geom.intendedTextAlign) // for next time
       }
 
       applyStyle(el, {

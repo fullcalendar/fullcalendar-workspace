@@ -318,12 +318,12 @@ TODO: figure out better styling
 }
 
 .fc-timeline-event.fc-not-start .fc-title,
-.fc-body .fc-time-area .fc-following {
+.fc-body .fc-time-area .fc-sticky-active {
   position: relative;
 }
 
 .fc-timeline-event.fc-not-start .fc-title:before,
-.fc-body .fc-time-area .fc-following:before { /* generic arrow */
+.fc-body .fc-time-area .fc-sticky-active:before { /* generic arrow */
   content: "";
   position: absolute;
   top: 50%;
@@ -335,13 +335,13 @@ TODO: figure out better styling
 }
 
 .fc-ltr .fc-timeline-event.fc-not-start .fc-title:before,
-.fc-ltr .fc-body .fc-time-area .fc-following:before { /* LTR. left pointing arrow */
+.fc-ltr .fc-body .fc-time-area .fc-sticky-active:before { /* LTR. left pointing arrow */
   border-left: 0;
   left: 2px;
 }
 
 .fc-rtl .fc-timeline-event.fc-not-start .fc-title:before,
-.fc-rtl .fc-body .fc-time-area .fc-following:before { /* RTL. right pointing arrow */
+.fc-rtl .fc-body .fc-time-area .fc-sticky-active:before { /* RTL. right pointing arrow */
   border-right: 0;
   right: 2px;
 }
