@@ -13,7 +13,6 @@ export default class EnhancedScroller extends ScrollComponent {
   canvas: ScrollerCanvas // an optional ScrollerCanvas
   isScrolling: boolean
   isTouching: boolean // user currently has finger down?
-  isTouchedEver: boolean // user ever initiated with touch? (hack)
   isMoving: boolean // whether a scroll event has happened recently
   isTouchScrollEnabled: boolean
   preventTouchScrollHandler: any
@@ -25,7 +24,6 @@ export default class EnhancedScroller extends ScrollComponent {
 
     this.isScrolling = false
     this.isTouching = false
-    this.isTouchedEver = false
     this.isMoving = false
     this.isTouchScrollEnabled = true
 
@@ -147,7 +145,6 @@ export default class EnhancedScroller extends ScrollComponent {
   // will fire *before* the scroll event is fired
   reportTouchStart = () => {
     this.isTouching = true
-    this.isTouchedEver = true
   }
 
 
