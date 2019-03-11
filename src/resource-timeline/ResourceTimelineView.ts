@@ -1,7 +1,6 @@
 import { SplittableProps, memoizeRendering, PositionCache, Hit, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, DateProfile, applyStyleProp, PointerDragEvent } from '@fullcalendar/core'
-import { ScrollJoiner, TimelineLane, StickyScroller } from '@fullcalendar/timeline'
+import { ScrollJoiner, TimelineLane, StickyScroller, TimeAxis } from '@fullcalendar/timeline'
 import { FeaturefulElementDragging } from '@fullcalendar/interaction'
-import TimeAxis from '../timeline/TimeAxis'
 import { ResourceHash, buildRowNodes, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc } from '@fullcalendar/resource-common'
 import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'

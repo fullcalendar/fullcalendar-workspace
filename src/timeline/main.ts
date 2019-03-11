@@ -5,6 +5,8 @@ export { TimelineView }
 export { default as TimelineLane } from './TimelineLane'
 export { default as ScrollJoiner } from './util/ScrollJoiner'
 export { default as StickyScroller } from './util/StickyScroller'
+export { default as TimeAxis } from './TimeAxis'
+export { default as HeaderBodyLayout } from './HeaderBodyLayout'
 
 export default createPlugin({
   defaultView: 'timelineDay',

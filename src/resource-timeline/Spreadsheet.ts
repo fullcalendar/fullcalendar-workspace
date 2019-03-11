@@ -1,6 +1,6 @@
 import { createElement, Component, ComponentContext, memoizeRendering } from '@fullcalendar/core'
+import { HeaderBodyLayout } from '@fullcalendar/timeline'
 import SpreadsheetHeader from './SpreadsheetHeader'
-import HeaderBodyLayout from '../timeline/HeaderBodyLayout'
 
 export interface SpreadsheetProps {
   superHeaderText: string

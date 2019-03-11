@@ -1,10 +1,9 @@
 import { Duration, createElement, ComponentContext, EventInteractionState, DateSpan, EventUiHash, EventStore, DateProfile, memoizeRendering, isArraysEqual } from '@fullcalendar/core'
-import { TimelineLane, StickyScroller } from '@fullcalendar/timeline'
+import { TimelineLane, StickyScroller, TimeAxis } from '@fullcalendar/timeline'
 import Row from './Row'
 import SpreadsheetRow from './SpreadsheetRow'
 import { Resource } from '@fullcalendar/resource-common'
 import { updateTrResourceId } from './render-utils'
-import TimeAxis from '../timeline/TimeAxis'
 
 
 export interface ResourceRowProps {
