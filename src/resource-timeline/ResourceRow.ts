@@ -1,5 +1,5 @@
 import { Duration, createElement, ComponentContext, EventInteractionState, DateSpan, EventUiHash, EventStore, DateProfile, memoizeRendering, isArraysEqual } from '@fullcalendar/core'
-import { TimelineLane, StickyScroller, TimeAxis } from '@fullcalendar/timeline'
+import { TimelineLane, TimeAxis } from '@fullcalendar/timeline'
 import Row from './Row'
 import SpreadsheetRow from './SpreadsheetRow'
 import { Resource } from '@fullcalendar/resource-common'
@@ -34,10 +34,10 @@ export default class ResourceRow extends Row<ResourceRowProps> {
 
   private _updateTrResourceId = memoizeRendering(updateTrResourceId)
 
-  constructor(context: ComponentContext, a, b, c, d, timeAxis: TimeAxis, stickyScroller: StickyScroller) {
+  constructor(context: ComponentContext, a, b, c, d, timeAxis: TimeAxis) {
     super(context, a, b, c, d)
 
-    this.spreadsheetRow = new SpreadsheetRow(context, this.spreadsheetTr, stickyScroller)
+    this.spreadsheetRow = new SpreadsheetRow(context, this.spreadsheetTr)
 
     this.timeAxisTr.appendChild(
       createElement('td', { className: this.theme.getClass('widgetContent') },

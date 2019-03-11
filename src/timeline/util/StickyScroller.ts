@@ -8,6 +8,7 @@ interface ElementGeom {
 }
 
 const SUPPORTS_STICKY = computeSupportsSticky()
+const STICKY_SELECTOR = '.fc-sticky'
 
 /*
 TEST a lot x-browser
@@ -16,51 +17,28 @@ TEST a lot with removing resource rows
 export default class StickyScroller {
 
   scroller: EnhancedScroller
-  els: HTMLElement[] = []
-  elGeoms: ElementGeom[]
-  viewportWidth: number
-  viewportHeight: number
 
   constructor(scroller: EnhancedScroller) {
     this.scroller = scroller
-    scroller.on('scrollEnd', this.assignPositions)
+    scroller.on('scrollEnd', this.updateSize)
   }
 
   destroy() {
-    this.scroller.off('scrollEnd', this.assignPositions)
+    this.scroller.off('scrollEnd', this.updateSize)
   }
 
-  addEls(els: HTMLElement[]) {
-    this.els.push(...els)
+  updateSize = () => {
+    let els = Array.prototype.slice.call(this.scroller.canvas.el.querySelectorAll(STICKY_SELECTOR))
+    let elGeoms = this.queryElGeom(els)
+    let viewportBound = this.scroller.el.getBoundingClientRect()
+    this.assignPositions(els, elGeoms, viewportBound.width, viewportBound.height)
   }
 
-  resetEls(els: HTMLElement[]) { // TODO: deprecate. use removeEls/addEls instead
-    this.els = els
-  }
-
-  removeEls(removeEls: HTMLElement[]) {
-    let { els, elGeoms } = this
-
-    for (let removalEl of removeEls) {
-      let index = els.indexOf(removalEl)
-
-      if (index !== -1) {
-        els.splice(index, 1) // remove
-        elGeoms.splice(index, 1) // remove
-      }
-    }
-  }
-
-  updateSize() {
-    this.queryDom()
-    this.assignPositions()
-  }
-
-  queryDom() {
+  queryElGeom(els: HTMLElement[]): ElementGeom[] {
     let canvasOrigin = this.scroller.canvas.el.getBoundingClientRect()
     let elGeoms: ElementGeom[] = []
 
-    for (let el of this.els) {
+    for (let el of els) {
       let computedStyles = window.getComputedStyle(el)
 
       let parentBound = translateRect(
@@ -82,25 +60,21 @@ export default class StickyScroller {
       })
     }
 
-    this.elGeoms = elGeoms
-
-    let viewportBound = this.scroller.el.getBoundingClientRect()
-    this.viewportWidth = viewportBound.width
-    this.viewportHeight = viewportBound.height
+    return elGeoms
   }
 
-  assignPositions = () => {
+  assignPositions(els: HTMLElement[], elGeoms: ElementGeom[], viewportWidth: number, viewportHeight: number) {
     let scrollLeft = this.scroller.getScrollLeft()
     let scrollTop = this.scroller.getScrollTop()
     let viewportRect: Rect = { // relative to the topleft corner of the canvas
       left: scrollLeft,
-      right: scrollLeft + this.viewportWidth,
+      right: scrollLeft + viewportWidth,
       top: scrollTop,
-      bottom: scrollTop + this.viewportHeight
+      bottom: scrollTop + viewportHeight
     }
 
-    this.els.forEach((el, i) => {
-      let geom = this.elGeoms[i]
+    els.forEach((el, i) => {
+      let geom = elGeoms[i]
       let { elBound, parentBound } = geom
       let clippedParentBound = intersectRects(parentBound, viewportRect) || viewportRect // OR for when completely offscreen
       let elWidth = elBound.right - elBound.left

@@ -38,8 +38,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
 
     this.header = new TimelineHeader(
       context,
-      headerEnhancedScroller.canvas.contentEl,
-      this.stickyScroller
+      headerEnhancedScroller.canvas.contentEl
     )
 
     this.slats = new TimelineSlats(
@@ -54,7 +53,6 @@ export default class TimeAxis extends Component<TimeAxisProps> {
   }
 
   destroy() {
-    this.stickyScroller.destroy()
     this.layout.destroy()
     this.header.destroy()
     this.slats.destroy()

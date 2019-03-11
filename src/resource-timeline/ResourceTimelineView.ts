@@ -335,8 +335,7 @@ export default class ResourceTimelineView extends View {
         spreadsheetNext,
         timeAxisTbody,
         timeAxisNext,
-        this.timeAxis,
-        this.stickyScroller
+        this.timeAxis
       )
     }
   }
