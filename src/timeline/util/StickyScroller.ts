@@ -1,10 +1,12 @@
-import { translateRect, Rect, intersectRects, applyStyle } from '@fullcalendar/core'
+import { translateRect, Rect, applyStyle } from '@fullcalendar/core'
 import EnhancedScroller from './EnhancedScroller'
 
 interface ElementGeom {
-  elBound: Rect // relative to the canvas origin
   parentBound: Rect // relative to the canvas origin
-  textAlign: string // 'left' | 'center' | 'right'
+  elWidth: number
+  elHeight: number
+  intendedTextAlign: string
+  actualTextAlign: string
 }
 
 const SUPPORTS_STICKY = computeSupportsSticky()
@@ -39,7 +41,6 @@ export default class StickyScroller {
     let elGeoms: ElementGeom[] = []
 
     for (let el of els) {
-      let computedStyles = window.getComputedStyle(el)
 
       let parentBound = translateRect(
         (el.parentNode as HTMLElement).getBoundingClientRect(),
@@ -47,16 +48,15 @@ export default class StickyScroller {
         -canvasOrigin.top
       )
 
-      let elBound = translateRect(
-        el.getBoundingClientRect(),
-        -canvasOrigin.left - (parseFloat(computedStyles.left) || 0), // might be 'auto'
-        -canvasOrigin.top - (parseFloat(computedStyles.top) || 0)
-      )
+      let elRect = el.getBoundingClientRect()
+      let computedTextAlign = window.getComputedStyle(el.parentNode as HTMLElement).textAlign
 
       elGeoms.push({
         parentBound,
-        elBound,
-        textAlign: computedStyles.textAlign
+        elWidth: elRect.width,
+        elHeight: elRect.height,
+        actualTextAlign: computedTextAlign,
+        intendedTextAlign: el.getAttribute('data-sticky-align') || computedTextAlign
       })
     }
 
@@ -75,48 +75,43 @@ export default class StickyScroller {
 
     els.forEach((el, i) => {
       let geom = elGeoms[i]
-      let { elBound, parentBound } = geom
-      let clippedParentBound = intersectRects(parentBound, viewportRect) || viewportRect // OR for when completely offscreen
-      let elWidth = elBound.right - elBound.left
-      let elHeight = elBound.bottom - elBound.top
-      let destLeft
-      let destTop
+      let { elWidth, elHeight, parentBound } = geom
+      let destLeft // relative to canvas topleft
+      let destTop // "
 
-      switch (geom.textAlign) {
+      switch (geom.intendedTextAlign) {
         case 'left':
-          destLeft = clippedParentBound.left
+          destLeft = viewportRect.left
           break
         case 'right':
-          destLeft = clippedParentBound.right - elWidth
+          destLeft = viewportRect.right - elWidth
           break
         case 'center':
-          destLeft = (clippedParentBound.left + clippedParentBound.right) / 2 - elWidth / 2
+          destLeft = (viewportRect.left + viewportRect.right) / 2 - elWidth / 2
           break
       }
 
-      destLeft = Math.min(destLeft, parentBound.right - elWidth)
       destLeft = Math.max(destLeft, parentBound.left)
+      destLeft = Math.min(destLeft, parentBound.right - elWidth)
 
-      destTop = clippedParentBound.top
-      destTop = Math.max(destTop, elBound.top) // the natural top of the element. better than parentBound.top
+      destTop = viewportRect.top
+      destTop = Math.max(destTop, parentBound.top)
       destTop = Math.min(destTop, parentBound.bottom - elHeight)
 
-      let relLeft = destLeft - elBound.left
-      let relTop = destTop - elBound.top
+      // relative to parent
+      let relLeft = destLeft - parentBound.left
+      let relTop = destTop - parentBound.top
 
-      if (relTop || relLeft) {
-        applyStyle(el, {
-          position: 'relative',
-          left: relLeft,
-          top: relTop
-        })
-      } else {
-        applyStyle(el, {
-          position: '',
-          left: '',
-          top: ''
-        })
+      if (geom.actualTextAlign === 'center') {
+        ;(el.parentNode as HTMLElement).style.textAlign = 'left'
+        el.setAttribute('data-sticky-align', 'center') // for next time
       }
+
+      applyStyle(el, {
+        position: 'relative',
+        left: Math.max(relLeft, 0), // in case off-by-one because of border
+        top: Math.max(relTop, 0) // "
+      })
     })
   }
 
