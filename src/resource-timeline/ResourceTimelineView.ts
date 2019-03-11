@@ -390,7 +390,6 @@ export default class ResourceTimelineView extends View {
       this.syncHeadHeights()
       this.timeAxis.updateSize(isResize, viewHeight - this.miscHeight, isAuto)
       this.spreadsheet.updateSize(isResize, viewHeight - this.miscHeight, isAuto)
-      this.stickyScroller.updateSize()
     }
 
     let rowSizingCnt = this.updateRowSizes(isResize)
@@ -411,6 +410,8 @@ export default class ResourceTimelineView extends View {
       )
       this.rowPositions.build()
     }
+
+    this.stickyScroller.updateSize()
   }
 
   syncHeadHeights() {

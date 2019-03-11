@@ -7,6 +7,8 @@ interface ElementGeom {
   textAlign: string // 'left' | 'center' | 'right'
 }
 
+const SUPPORTS_STICKY = computeSupportsSticky()
+
 /*
 TEST a lot x-browser
 TEST a lot with removing resource rows
@@ -144,4 +146,10 @@ export default class StickyScroller {
     })
   }
 
+}
+
+function computeSupportsSticky() {
+  let div = document.createElement('div')
+  div.style.position = 'sticky'
+  return div.style.position === 'sticky'
 }
