@@ -77,15 +77,6 @@ describe('resourcesInitiallyExpanded', function() {
         expect($('.event1').length).toBe(1)
       })
 
-
-      xit('renders scrollfollowers when expanded', function() {
-        initCalendar()
-
-        expect($('.fc-title.fc-sticky-active').length).toBe(0)
-
-        clickExpander()
-        expect($('.fc-title.fc-sticky-active').length).toBe(1)
-      })
     })
 
 

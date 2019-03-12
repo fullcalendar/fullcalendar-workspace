@@ -273,12 +273,6 @@ TODO: figure out better styling
 .fc-ltr .fc-timeline-event { margin-right: 1px }
 .fc-rtl .fc-timeline-event { margin-left: 1px }
 
-.fc-timeline-event .fc-content {
-  padding: 0 1px;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
 .fc-timeline-event .fc-time {
   font-weight: bold;
   padding: 0 1px;
@@ -289,43 +283,25 @@ TODO: figure out better styling
 }
 
 .fc-timeline-event .fc-title {
-  position: relative; /* optimization for ScrollFollower */
-  padding: 0 1px;
+  padding: 0 3px;
+  display: inline-block;
+  vertical-align: top;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  max-width: 100%; // thus the border-box
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .fc-timeline-event.fc-selected .fc-bg {
   display: none; /* hide semi-white background, to appear darker */
 }
 
-
-/* follower logic */
-
-
-.fc-ltr .fc-timeline-event .fc-title {
-  padding-left: 10px;
-  margin-left: -8px;
-}
-.fc-rtl .fc-timeline-event .fc-title {
-  padding-right: 10px;
-  margin-right: -8px;
-}
-
-.fc-ltr .fc-timeline-event.fc-not-start .fc-title {
-  margin-left: -2px;
-}
-.fc-rtl .fc-timeline-event.fc-not-start .fc-title {
-  margin-right: -2px;
-}
-
-.fc-timeline-event.fc-not-start .fc-title,
-.fc-body .fc-time-area .fc-sticky-active {
-  position: relative;
-}
-
-.fc-timeline-event.fc-not-start .fc-title:before,
-.fc-body .fc-time-area .fc-sticky-active:before { /* generic arrow */
+.fc-timeline-event.fc-not-start:before {
   content: "";
   position: absolute;
+  z-index: 3; // above content
   top: 50%;
   margin-top: -5px;
   border: 5px solid #000;
@@ -334,14 +310,20 @@ TODO: figure out better styling
   opacity: .5;
 }
 
-.fc-ltr .fc-timeline-event.fc-not-start .fc-title:before,
-.fc-ltr .fc-body .fc-time-area .fc-sticky-active:before { /* LTR. left pointing arrow */
+.fc-ltr .fc-timeline-event.fc-not-start {
+  padding-left: 8px;
+}
+
+.fc-rtl .fc-timeline-event.fc-not-start {
+  padding-right: 8px;
+}
+
+.fc-ltr .fc-timeline-event.fc-not-start:before {
   border-left: 0;
   left: 2px;
 }
 
-.fc-rtl .fc-timeline-event.fc-not-start .fc-title:before,
-.fc-rtl .fc-body .fc-time-area .fc-sticky-active:before { /* RTL. right pointing arrow */
+.fc-rtl .fc-timeline-event.fc-not-start:before {
   border-right: 0;
   right: 2px;
 }
