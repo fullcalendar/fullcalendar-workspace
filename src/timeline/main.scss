@@ -93,6 +93,7 @@ undo previous rule in order to always show last border.
 }
 
 .fc-timeline .fc-cell-text {
+  display: inline-block; // for stickiness
   padding-left: 4px;
   padding-right: 4px;
 }
@@ -119,7 +120,7 @@ TODO: figure out better styling
 .fc-timeline .fc-head .fc-cell-content {
   padding-top: 3px;
   padding-bottom: 3px;
-  overflow: visible; // undo previous rule for stickyness
+  overflow: visible; // undo previous rule for stickiness
 }
 
 

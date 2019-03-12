@@ -143,7 +143,9 @@ export default class ResourceTimelineView extends View {
     )
 
     this.stickyScroller = new StickyScroller(
-      this.spreadsheet.layout.bodyScroller.enhancedScroll
+      this.spreadsheet.layout.bodyScroller.enhancedScroll,
+      this.isRtl,
+      true // isVertical
     )
 
     this.timeAxis = new TimeAxis(
@@ -491,6 +493,8 @@ export default class ResourceTimelineView extends View {
     for (let resourceAreaWidthDragging of this.resourceAreaWidthDraggings) {
       resourceAreaWidthDragging.destroy()
     }
+
+    this.stickyScroller.destroy()
 
     super.destroy()
 

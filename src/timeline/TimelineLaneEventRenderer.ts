@@ -40,7 +40,7 @@ export default class TimelineLaneEventRenderer extends FgEventRenderer {
           '</span>'
         :
           '') +
-        '<span class="fc-title">' +
+        '<span class="fc-title fc-sticky">' +
           (eventDef.title ? htmlEscape(eventDef.title) : '&nbsp;') +
         '</span>' +
       '</div>' +

@@ -91,7 +91,7 @@ export default class TimelineHeader extends Component<TimelineHeaderProps> {
     )
 
     findElements(
-      this.tableEl.querySelector<HTMLElement>('tr:not(:last-child)'), // compound selector won't work because of query-root problem
+      this.tableEl.querySelectorAll('tr:not(:last-child)'), // compound selector won't work because of query-root problem
       'th .fc-cell-text'
     ).forEach(function(innerEl) {
       innerEl.classList.add('fc-sticky')

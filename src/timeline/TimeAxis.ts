@@ -17,7 +17,8 @@ export default class TimeAxis extends Component<TimeAxisProps> {
   header: TimelineHeader
   slats: TimelineSlats
   nowIndicator: TimelineNowIndicator
-  stickyScroller: StickyScroller
+  headStickyScroller: StickyScroller
+  bodyStickyScroller: StickyScroller
 
   // internal state
   tDateProfile: TimelineDateProfile
@@ -34,7 +35,8 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     let headerEnhancedScroller = layout.headerScroller.enhancedScroll
     let bodyEnhancedScroller = layout.bodyScroller.enhancedScroll
 
-    this.stickyScroller = new StickyScroller(headerEnhancedScroller)
+    this.headStickyScroller = new StickyScroller(headerEnhancedScroller, this.isRtl, false) // isVertical=false
+    this.bodyStickyScroller = new StickyScroller(bodyEnhancedScroller, this.isRtl, false) // isVertical=false
 
     this.header = new TimelineHeader(
       context,
@@ -57,6 +59,9 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     this.header.destroy()
     this.slats.destroy()
     this.nowIndicator.unrender()
+
+    this.headStickyScroller.destroy()
+    this.bodyStickyScroller.destroy()
 
     super.destroy()
   }
@@ -121,7 +126,8 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     // pretty much just queries coords. do last
     this.slats.updateSize()
 
-    this.stickyScroller.updateSize()
+    this.headStickyScroller.updateSize()
+    this.bodyStickyScroller.updateSize()
   }
 
   computeSlotWidth() {

@@ -1,4 +1,4 @@
-import { translateRect, Rect, applyStyle } from '@fullcalendar/core'
+import { translateRect, Rect, applyStyle, Point } from '@fullcalendar/core'
 import EnhancedScroller from './EnhancedScroller'
 
 interface ElementGeom {
@@ -9,26 +9,32 @@ interface ElementGeom {
   actualTextAlign: string
 }
 
-const SUPPORTS_STICKY = computeSupportsSticky()
+const STICKY_SUPPORTED = computeSupportsSticky()
+const IS_MS_EDGE = /Edge/.test(navigator.userAgent)
 const STICKY_CLASSNAME = 'fc-sticky'
-const STICKY_ACTIVE_CLASSNAME = 'fc-sticky-active'
 
 /*
 TEST a lot x-browser
-TEST a lot with removing resource rows
 
 useful beyond the native position:sticky for these reasons:
-- className when active
 - support in IE11
 - nice centering support
 */
 export default class StickyScroller {
 
+  usingRelative: boolean
   scroller: EnhancedScroller
 
-  constructor(scroller: EnhancedScroller) {
+  constructor(scroller: EnhancedScroller, isRtl: boolean, isVertical: boolean) {
     this.scroller = scroller
-    scroller.on('scrollEnd', this.updateSize)
+
+    this.usingRelative =
+      !STICKY_SUPPORTED ||
+      (IS_MS_EDGE && (isRtl || isVertical))
+
+    if (this.usingRelative) {
+      scroller.on('scrollEnd', this.updateSize)
+    }
   }
 
   destroy() {
@@ -37,12 +43,20 @@ export default class StickyScroller {
 
   updateSize = () => {
     let els = Array.prototype.slice.call(this.scroller.canvas.el.querySelectorAll('.' + STICKY_CLASSNAME))
-    let elGeoms = this.queryElGeom(els)
-    let viewportBound = this.scroller.el.getBoundingClientRect()
-    this.assignPositions(els, elGeoms, viewportBound.width, viewportBound.height)
+    let elGeoms = this.queryElGeoms(els)
+    let viewportWidth = this.scroller.el.getBoundingClientRect().width
+
+    if (this.usingRelative) {
+      let elDestinations = this.computeElDestinations(elGeoms, viewportWidth) // read before prepPositioning
+      this.prepPositioning(els, elGeoms, true) // forceLeft for relative positioning
+      this.assignRelativePositions(els, elGeoms, elDestinations)
+    } else {
+      this.prepPositioning(els, elGeoms)
+      this.assignStickyPositions(els, elGeoms, viewportWidth)
+    }
   }
 
-  queryElGeom(els: HTMLElement[]): ElementGeom[] {
+  queryElGeoms(els: HTMLElement[]): ElementGeom[] {
     let canvasOrigin = this.scroller.canvas.el.getBoundingClientRect()
     let elGeoms: ElementGeom[] = []
 
@@ -69,73 +83,76 @@ export default class StickyScroller {
     return elGeoms
   }
 
-  assignPositions(els: HTMLElement[], elGeoms: ElementGeom[], viewportWidth: number, viewportHeight: number) {
+  computeElDestinations(elGeoms: ElementGeom[], viewportWidth: number): Point[] {
+    let viewportLeft = this.scroller.getScrollFromLeft()
+    let viewportTop = this.scroller.getScrollTop()
+    let viewportRight = viewportLeft + viewportWidth
 
-    // an intense read operation. do this in updateSize instead
-    let scrollLeft = this.scroller.getScrollFromLeft()
-    let scrollTop = this.scroller.getScrollTop()
-
-    let viewportRect: Rect = { // relative to the topleft corner of the canvas
-      left: scrollLeft,
-      right: scrollLeft + viewportWidth,
-      top: scrollTop,
-      bottom: scrollTop + viewportHeight
-    }
-
-    els.forEach((el, i) => {
-      let geom = elGeoms[i]
-      let { elWidth, elHeight, parentBound } = geom
+    return elGeoms.map(function(elGeom) {
+      let { elWidth, elHeight, parentBound } = elGeom
       let destLeft // relative to canvas topleft
       let destTop // "
-      let naturalLeft
 
-      switch (geom.intendedTextAlign) {
+      switch (elGeom.intendedTextAlign) {
         case 'left':
-          destLeft = viewportRect.left
-          naturalLeft = parentBound.left
+          destLeft = viewportLeft
           break
         case 'right':
-          destLeft = viewportRect.right - elWidth
-          naturalLeft = parentBound.left - elWidth
+          destLeft = viewportRight - elWidth
           break
         case 'center':
-          destLeft = (viewportRect.left + viewportRect.right) / 2 - elWidth / 2
-          naturalLeft = destLeft // ?
+          destLeft = (viewportLeft + viewportRight) / 2 - elWidth / 2
           break
       }
 
       destLeft = Math.max(destLeft, parentBound.left)
       destLeft = Math.min(destLeft, parentBound.right - elWidth)
 
-      destTop = viewportRect.top
+      destTop = viewportTop
       destTop = Math.max(destTop, parentBound.top)
       destTop = Math.min(destTop, parentBound.bottom - elHeight)
 
-      let isStickyActive =
-        naturalLeft < viewportRect.left ||
-        naturalLeft + elWidth >= viewportRect.right ||
-        parentBound.top < viewportRect.top
+      return { left: destLeft, top: destTop }
+    })
+  }
 
-      // relative to parent
-      let relLeft = destLeft - parentBound.left
-      let relTop = destTop - parentBound.top
+  prepPositioning(els: HTMLElement[], elGeoms: ElementGeom[], forceLeft?: boolean) {
+    els.forEach(function(el, i) {
+      let elGeom = elGeoms[i]
 
-      if (geom.actualTextAlign !== 'left') {
+      if (forceLeft || elGeom.actualTextAlign === 'center') {
         ;(el.parentNode as HTMLElement).style.textAlign = 'left'
-        el.setAttribute('data-sticky-align', geom.intendedTextAlign) // for next time
+        el.setAttribute('data-sticky-align', elGeom.intendedTextAlign) // for next time
       }
+    })
+  }
+
+  assignRelativePositions(els: HTMLElement[], elGeoms: ElementGeom[], elDestinations: Point[]) {
+    els.forEach(function(el, i) {
+      let { parentBound } = elGeoms[i]
 
       applyStyle(el, {
         position: 'relative',
-        left: Math.max(relLeft, 0), // in case off-by-one because of border
-        top: Math.max(relTop, 0) // "
+        left: elDestinations[i].left - parentBound.left,
+        top: elDestinations[i].top - parentBound.top
       })
+    })
+  }
 
-      if (isStickyActive) {
-        el.classList.add(STICKY_ACTIVE_CLASSNAME)
-      } else {
-        el.classList.remove(STICKY_ACTIVE_CLASSNAME)
+  assignStickyPositions(els: HTMLElement[], elGeoms: ElementGeom[], viewportWidth: number) {
+    els.forEach(function(el, i) {
+      let stickyLeft = 0
+
+      if (elGeoms[i].intendedTextAlign === 'center') {
+        stickyLeft = (viewportWidth - elGeoms[i].elWidth) / 2
       }
+
+      applyStyle(el, {
+        position: 'sticky',
+        left: stickyLeft,
+        right: 0,
+        top: 0
+      })
     })
   }
 
