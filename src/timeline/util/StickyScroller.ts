@@ -87,16 +87,20 @@ export default class StickyScroller {
       let { elWidth, elHeight, parentBound } = geom
       let destLeft // relative to canvas topleft
       let destTop // "
+      let naturalLeft
 
       switch (geom.intendedTextAlign) {
         case 'left':
           destLeft = viewportRect.left
+          naturalLeft = parentBound.left
           break
         case 'right':
           destLeft = viewportRect.right - elWidth
+          naturalLeft = parentBound.left - elWidth
           break
         case 'center':
           destLeft = (viewportRect.left + viewportRect.right) / 2 - elWidth / 2
+          naturalLeft = destLeft // ?
           break
       }
 
@@ -106,6 +110,11 @@ export default class StickyScroller {
       destTop = viewportRect.top
       destTop = Math.max(destTop, parentBound.top)
       destTop = Math.min(destTop, parentBound.bottom - elHeight)
+
+      let isStickyActive =
+        naturalLeft < viewportRect.left ||
+        naturalLeft + elWidth >= viewportRect.right ||
+        parentBound.top < viewportRect.top
 
       // relative to parent
       let relLeft = destLeft - parentBound.left
@@ -121,6 +130,12 @@ export default class StickyScroller {
         left: Math.max(relLeft, 0), // in case off-by-one because of border
         top: Math.max(relTop, 0) // "
       })
+
+      if (isStickyActive) {
+        el.classList.add(STICKY_ACTIVE_CLASSNAME)
+      } else {
+        el.classList.remove(STICKY_ACTIVE_CLASSNAME)
+      }
     })
   }
 
