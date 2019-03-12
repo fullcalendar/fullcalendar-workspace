@@ -1,4 +1,4 @@
-import { translateRect, Rect, applyStyle, Point } from '@fullcalendar/core'
+import { translateRect, Rect, applyStyle, Point, htmlToElement } from '@fullcalendar/core'
 import EnhancedScroller from './EnhancedScroller'
 
 interface ElementGeom {
@@ -10,7 +10,7 @@ interface ElementGeom {
   intendedTextAlign: string
 }
 
-const STICKY_SUPPORTED = computeSupportsSticky()
+const STICKY_PROP_VAL = computeStickyPropVal() // if null, means not supported at all
 const IS_MS_EDGE = /Edge/.test(navigator.userAgent)
 const STICKY_CLASSNAME = 'fc-sticky'
 
@@ -21,14 +21,14 @@ useful beyond the native position:sticky for these reasons:
 */
 export default class StickyScroller {
 
-  usingRelative: boolean
   scroller: EnhancedScroller
+  usingRelative: boolean | null = null
 
   constructor(scroller: EnhancedScroller, isRtl: boolean, isVertical: boolean) {
     this.scroller = scroller
 
     this.usingRelative =
-      !STICKY_SUPPORTED || // IE11
+      !STICKY_PROP_VAL || // IE11
       (IS_MS_EDGE && ( // bugs for MSEdge...
         isRtl || // because https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/18883305/
         isVertical // because doesn't work with rowspan in tables, our only vertial use
@@ -164,7 +164,7 @@ function assignStickyPositions(els: HTMLElement[], elGeoms: ElementGeom[], viewp
     }
 
     applyStyle(el, {
-      position: 'sticky',
+      position: STICKY_PROP_VAL,
       left: stickyLeft,
       right: 0,
       top: 0
@@ -172,8 +172,13 @@ function assignStickyPositions(els: HTMLElement[], elGeoms: ElementGeom[], viewp
   })
 }
 
-function computeSupportsSticky() {
-  let div = document.createElement('div')
-  div.style.position = 'sticky'
-  return div.style.position === 'sticky'
+function computeStickyPropVal() {
+  let el = htmlToElement('<div style="position:-webkit-sticky;position:sticky"></div>')
+  let val = el.style.position
+
+  if (val.indexOf('sticky') !== -1) {
+    return val
+  } else {
+    return null
+  }
 }
