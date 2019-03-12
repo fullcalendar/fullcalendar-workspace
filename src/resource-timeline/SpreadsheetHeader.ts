@@ -116,7 +116,7 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
       })
 
       dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
-        this.colWidths[colIndex] = Math.max(startWidth + pev.deltaX, COL_MIN_WIDTH)
+        this.colWidths[colIndex] = Math.max(startWidth + pev.deltaX * (this.isRtl ? -1 : 1), COL_MIN_WIDTH)
         this.applyColWidths()
         this.emitter.trigger('colwidthchange', this.colWidths)
       })

@@ -670,7 +670,7 @@ export default class ResourceTimelineView extends View {
       })
 
       dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
-        let newWidth = dragStartWidth + pev.deltaX
+        let newWidth = dragStartWidth + pev.deltaX * (this.isRtl ? -1 : 1)
         newWidth = Math.max(newWidth, MIN_RESOURCE_AREA_WIDTH)
         newWidth = Math.min(newWidth, viewWidth - MIN_RESOURCE_AREA_WIDTH)
         this.setResourceAreaWidth(newWidth)
