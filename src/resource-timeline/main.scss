@@ -86,20 +86,6 @@
 
 /* body */
 
-tr.fc-collapsed > td, /* before the transition (prevents initial flicker) */
-tr.fc-transitioning > td { /* during the transition */
-  overflow: hidden; /* prevents absolutely-positioned events from bleeding out */
-}
-
-tr.fc-transitioning > td > div {
-  transition: margin-top 0.2s;
-}
-
-tr.fc-collapsed > td > div {
-  margin-top: -10px;
-}
-
-
 .fc-body .fc-resource-area .fc-cell-content { /* might BE the cell */
   padding-top: 8px;
   padding-bottom: 8px;
