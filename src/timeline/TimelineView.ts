@@ -107,6 +107,7 @@ export default class TimelineView extends View {
 
   applyDateScroll(scroll) {
     this.timeAxis.applyDateScroll(scroll)
+    this.timeAxis.updateStickyScrollers()
   }
 
   queryScroll() {

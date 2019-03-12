@@ -35,6 +35,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     let headerEnhancedScroller = layout.headerScroller.enhancedScroll
     let bodyEnhancedScroller = layout.bodyScroller.enhancedScroll
 
+    // needs to go after layout, which has ScrollJoiner
     this.headStickyScroller = new StickyScroller(headerEnhancedScroller, this.isRtl, false) // isVertical=false
     this.bodyStickyScroller = new StickyScroller(bodyEnhancedScroller, this.isRtl, false) // isVertical=false
 
@@ -125,7 +126,9 @@ export default class TimeAxis extends Component<TimeAxisProps> {
 
     // pretty much just queries coords. do last
     this.slats.updateSize()
+  }
 
+  updateStickyScrollers() {
     this.headStickyScroller.updateSize()
     this.bodyStickyScroller.updateSize()
   }
@@ -299,9 +302,9 @@ export default class TimeAxis extends Component<TimeAxisProps> {
   }
 
   applyDateScroll(scroll) {
-    let { enhancedScroll } = this.layout.bodyScroller
-
-    enhancedScroll.setScrollLeft(scroll.left || 0)
+    // TODO: lame we have to update both. use the scrolljoiner instead maybe
+    this.layout.bodyScroller.enhancedScroll.setScrollLeft(scroll.left || 0)
+    this.layout.headerScroller.enhancedScroll.setScrollLeft(scroll.left || 0)
   }
 
 }

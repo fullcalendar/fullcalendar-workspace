@@ -19,7 +19,7 @@ export default class ResourceTimelineView extends View {
   timeAxis: TimeAxis
   lane: TimelineLane
   bodyScrollJoiner: ScrollJoiner
-  stickyScroller: StickyScroller // for the spreadsheet body area only
+  spreadsheetBodyStickyScroller: StickyScroller
 
   timeAxisTbody: HTMLElement
   miscHeight: number
@@ -142,12 +142,6 @@ export default class ResourceTimelineView extends View {
       this.el.querySelector('tbody .fc-resource-area')
     )
 
-    this.stickyScroller = new StickyScroller(
-      this.spreadsheet.layout.bodyScroller.enhancedScroll,
-      this.isRtl,
-      true // isVertical
-    )
-
     this.timeAxis = new TimeAxis(
       this.context,
       this.el.querySelector('thead .fc-time-area'),
@@ -169,6 +163,13 @@ export default class ResourceTimelineView extends View {
       this.spreadsheet.layout.bodyScroller,
       this.timeAxis.layout.bodyScroller
     ])
+
+    // after scrolljoiner
+    this.spreadsheetBodyStickyScroller = new StickyScroller(
+      this.spreadsheet.layout.bodyScroller.enhancedScroll,
+      this.isRtl,
+      true // isVertical
+    )
 
     this.spreadsheet.receiveProps({
       superHeaderText: this.superHeaderText,
@@ -411,8 +412,6 @@ export default class ResourceTimelineView extends View {
       )
       this.rowPositions.build()
     }
-
-    this.stickyScroller.updateSize()
   }
 
   syncHeadHeights() {
@@ -494,7 +493,7 @@ export default class ResourceTimelineView extends View {
       resourceAreaWidthDragging.destroy()
     }
 
-    this.stickyScroller.destroy()
+    this.spreadsheetBodyStickyScroller.destroy()
 
     super.destroy()
 
@@ -538,6 +537,9 @@ export default class ResourceTimelineView extends View {
     if (this.props.resourceStore) {
       this.applyResourceScroll(scroll)
     }
+
+    this.spreadsheetBodyStickyScroller.updateSize()
+    this.timeAxis.updateStickyScrollers()
   }
 
   computeInitialDateScroll() {

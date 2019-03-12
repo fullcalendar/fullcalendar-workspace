@@ -42,10 +42,13 @@ export default class StickyScroller {
     this.scroller.off('scrollEnd', this.updateSize)
   }
 
+  /*
+  known bug: called twice on init. problem when mixing with ScrollJoiner
+  */
   updateSize = () => {
     let els = Array.prototype.slice.call(this.scroller.canvas.el.querySelectorAll('.' + STICKY_CLASSNAME))
     let elGeoms = this.queryElGeoms(els)
-    let viewportWidth = this.scroller.el.getBoundingClientRect().width
+    let viewportWidth = this.scroller.el.clientWidth
 
     if (this.usingRelative) {
       let elDestinations = this.computeElDestinations(elGeoms, viewportWidth) // read before prepPositioning
@@ -106,12 +109,12 @@ export default class StickyScroller {
           break
       }
 
-      destLeft = Math.max(destLeft, parentBound.left)
       destLeft = Math.min(destLeft, parentBound.right - elWidth)
+      destLeft = Math.max(destLeft, parentBound.left)
 
       destTop = viewportTop
-      destTop = Math.max(destTop, parentBound.top)
       destTop = Math.min(destTop, parentBound.bottom - elHeight)
+      destTop = Math.max(destTop, parentBound.top)
 
       return { left: destLeft, top: destTop }
     })
@@ -123,6 +126,7 @@ export default class StickyScroller {
 
       if (forceLeft || elGeom.actualTextAlign === 'center') {
         ;(el.parentNode as HTMLElement).style.textAlign = 'left'
+        el.style.textAlign = elGeom.intendedTextAlign // if nesting
         el.setAttribute('data-sticky-align', elGeom.intendedTextAlign) // for next time
       }
     })
