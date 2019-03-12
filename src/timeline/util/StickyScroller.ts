@@ -14,8 +14,6 @@ const IS_MS_EDGE = /Edge/.test(navigator.userAgent)
 const STICKY_CLASSNAME = 'fc-sticky'
 
 /*
-TEST a lot x-browser
-
 useful beyond the native position:sticky for these reasons:
 - support in IE11
 - nice centering support
@@ -29,8 +27,11 @@ export default class StickyScroller {
     this.scroller = scroller
 
     this.usingRelative =
-      !STICKY_SUPPORTED ||
-      (IS_MS_EDGE && (isRtl || isVertical))
+      !STICKY_SUPPORTED || // IE11
+      (IS_MS_EDGE && ( // bugs for MSEdge...
+        isRtl || // because https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/18883305/
+        isVertical // because doesn't work with rowspan in tables, our only vertial use
+      ))
 
     if (this.usingRelative) {
       scroller.on('scrollEnd', this.updateSize)
