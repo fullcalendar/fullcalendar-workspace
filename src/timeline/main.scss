@@ -299,7 +299,8 @@ TODO: figure out better styling
   display: none; /* hide semi-white background, to appear darker */
 }
 
-.fc-timeline-event.fc-not-start:before {
+.fc-timeline-event.fc-not-start:before,
+.fc-timeline-event.fc-not-end:after {
   content: "";
   position: absolute;
   z-index: 3; // above content
@@ -311,20 +312,24 @@ TODO: figure out better styling
   opacity: .5;
 }
 
-.fc-ltr .fc-timeline-event.fc-not-start {
+.fc-ltr .fc-timeline-event.fc-not-start,
+.fc-rtl .fc-timeline-event.fc-not-end {
   padding-left: 8px;
 }
 
-.fc-rtl .fc-timeline-event.fc-not-start {
+.fc-rtl .fc-timeline-event.fc-not-start,
+.fc-ltr .fc-timeline-event.fc-not-end {
   padding-right: 8px;
 }
 
-.fc-ltr .fc-timeline-event.fc-not-start:before {
+.fc-ltr .fc-timeline-event.fc-not-start:before,
+.fc-rtl .fc-timeline-event.fc-not-end:after {
   border-left: 0;
   left: 2px;
 }
 
-.fc-rtl .fc-timeline-event.fc-not-start:before {
+.fc-rtl .fc-timeline-event.fc-not-start:before,
+.fc-ltr .fc-timeline-event.fc-not-end:after {
   border-right: 0;
   right: 2px;
 }
