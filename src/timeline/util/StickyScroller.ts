@@ -12,6 +12,7 @@ interface ElementGeom {
 
 const STICKY_PROP_VAL = computeStickyPropVal() // if null, means not supported at all
 const IS_MS_EDGE = /Edge/.test(navigator.userAgent)
+const IS_SAFARI = STICKY_PROP_VAL === '-webkit-sticky' // good b/c doesn't confuse chrome
 const STICKY_CLASSNAME = 'fc-sticky'
 
 /*
@@ -29,10 +30,8 @@ export default class StickyScroller {
 
     this.usingRelative =
       !STICKY_PROP_VAL || // IE11
-      (IS_MS_EDGE && ( // bugs for MSEdge...
-        isRtl || // because https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/18883305/
-        isVertical // because doesn't work with rowspan in tables, our only vertial use
-      ))
+      (IS_MS_EDGE && isRtl) || // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/18883305/
+      ((IS_MS_EDGE || IS_SAFARI) && isVertical) // because doesn't work with rowspan in tables, our only vertial use
 
     if (this.usingRelative) {
       scroller.on('scrollEnd', this.updateSize)
