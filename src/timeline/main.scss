@@ -301,12 +301,12 @@ TODO: figure out better styling
 
 .fc-ltr .fc-timeline-event.fc-not-start .fc-content,
 .fc-rtl .fc-timeline-event.fc-not-end .fc-content {
-  padding-left: 8px;
+  margin-left: 8px;
 }
 
 .fc-rtl .fc-timeline-event.fc-not-start .fc-content,
 .fc-ltr .fc-timeline-event.fc-not-end .fc-content {
-  padding-right: 8px;
+  margin-right: 8px;
 }
 
 .fc-timeline-event.fc-not-start .fc-content:before,
@@ -324,11 +324,11 @@ TODO: figure out better styling
 .fc-ltr .fc-timeline-event.fc-not-start .fc-content:before,
 .fc-rtl .fc-timeline-event.fc-not-end .fc-content:after {
   border-left: 0;
-  left: 2px;
+  left: -6px; // 2 from edge. can't use padding because of StickyScroller
 }
 
 .fc-rtl .fc-timeline-event.fc-not-start .fc-content:before,
 .fc-ltr .fc-timeline-event.fc-not-end .fc-content:after {
   border-right: 0;
-  right: 2px;
+  right: -6px; // 2 from edge
 }
