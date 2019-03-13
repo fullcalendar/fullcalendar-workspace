@@ -97,9 +97,9 @@
 }
 
 .fc-resource-area .fc-icon { /* the expander and spacers before the expander */
+  display: inline-block;
   width: 1em; /* ensure constant width, esp for empty icons */
-  height: 1em;
-  margin: 0;
+  text-align: center;
 }
 
 .fc-resource-area .fc-expander {
