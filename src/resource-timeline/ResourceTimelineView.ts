@@ -531,15 +531,21 @@ export default class ResourceTimelineView extends View {
     return scroll
   }
 
-  applyScroll(scroll) {
-    super.applyScroll(scroll)
+  applyScroll(scroll, isResize) {
+    super.applyScroll(scroll, isResize)
 
     if (this.props.resourceStore) {
       this.applyResourceScroll(scroll)
     }
 
-    this.spreadsheetBodyStickyScroller.updateSize()
-    this.timeAxis.updateStickyScrollers()
+    // avoid updating stickyscroll too often
+    // TODO: repeat code as updateSize
+    let { calendar } = this
+    if (isResize || calendar.isViewUpdated || calendar.isDatesUpdated || calendar.isEventsUpdated) {
+
+      this.spreadsheetBodyStickyScroller.updateSize()
+      this.timeAxis.updateStickyScrollers()
+    }
   }
 
   computeInitialDateScroll() {

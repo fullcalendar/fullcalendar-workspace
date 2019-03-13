@@ -105,9 +105,20 @@ export default class TimelineView extends View {
     return this.timeAxis.computeInitialDateScroll()
   }
 
+  applyScroll(scroll, isResize) {
+    super.applyScroll(scroll, isResize) // will call applyDateScroll
+
+    // avoid updating stickyscroll too often
+    // TODO: repeat code as ResourceTimelineView::updateSize
+    let { calendar } = this
+    if (isResize || calendar.isViewUpdated || calendar.isDatesUpdated || calendar.isEventsUpdated) {
+
+      this.timeAxis.updateStickyScrollers()
+    }
+  }
+
   applyDateScroll(scroll) {
     this.timeAxis.applyDateScroll(scroll)
-    this.timeAxis.updateStickyScrollers()
   }
 
   queryScroll() {
