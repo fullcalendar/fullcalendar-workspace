@@ -125,7 +125,7 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
         expanderEl.addEventListener('click', this.onExpanderClick)
         expanderEl.classList.add('fc-expander')
 
-        updateExpanderIcon(expanderIconEl, isExpanded, this.isRtl)
+        updateExpanderIcon(expanderIconEl, isExpanded)
       } else {
         expanderEl.removeEventListener('click', this.onExpanderClick)
         expanderEl.classList.remove('fc-expander')

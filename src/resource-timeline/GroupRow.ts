@@ -102,7 +102,7 @@ export default class GroupRow extends Row<GroupRowProps> {
   }
 
   updateExpanderIcon(isExpanded: boolean) {
-    updateExpanderIcon(this.expanderIconEl, isExpanded, this.isRtl)
+    updateExpanderIcon(this.expanderIconEl, isExpanded)
   }
 
   onExpanderClick = (ev: UIEvent) => {

@@ -79,7 +79,7 @@ describe('timeline addResource', function() {
       currentCalendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
 
       // expanded
-      expect($('.fc-body .fc-resource-area tr[data-resource-id="a"] .fc-icon')).toHaveClass('fc-icon-down-triangle')
+      expect($('.fc-body .fc-resource-area tr[data-resource-id="a"] .fc-icon')).toHaveClass('fc-icon-contract')
 
       // one level of indentation, and one space where an arrow might be
       expect($('.fc-body .fc-resource-area tr[data-resource-id="a1"] .fc-icon').length).toBe(2)
@@ -92,7 +92,7 @@ describe('timeline addResource', function() {
 
       currentCalendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
 
-      expect($('.fc-body .fc-resource-area tr[data-resource-id="a"] .fc-icon')).toHaveClass('fc-icon-right-triangle')
+      expect($('.fc-body .fc-resource-area tr[data-resource-id="a"] .fc-icon')).toHaveClass('fc-icon-expand')
       expect($('.fc-body .fc-resource-area tr[data-resource-id="a1"]')).not.toBeInDOM()
     })
   })
