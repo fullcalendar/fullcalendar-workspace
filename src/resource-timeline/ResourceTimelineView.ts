@@ -459,7 +459,7 @@ export default class ResourceTimelineView extends View {
       let maxHeight = null
 
       for (let el of elArray) {
-        let height = el.offsetHeight
+        let height = el.getBoundingClientRect().height
 
         if (maxHeight === null || height > maxHeight) {
           maxHeight = height
