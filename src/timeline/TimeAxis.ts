@@ -243,17 +243,17 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     let slotIndex = Math.floor(slotCoverage)
     slotIndex = Math.min(slotIndex, tDateProfile.slotCnt - 1)
     let partial = slotCoverage - slotIndex
-    let coordCache = this.slats.innerCoordCache
+    let { innerCoordCache, outerCoordCache } = this.slats
 
     if (this.isRtl) {
       return (
-        coordCache.rights[slotIndex] -
-        (coordCache.getWidth(slotIndex) * partial)
-      ) - coordCache.originClientRect.width
+        outerCoordCache.rights[slotIndex] -
+        (innerCoordCache.getWidth(slotIndex) * partial)
+      ) - outerCoordCache.originClientRect.width
     } else {
       return (
-        coordCache.lefts[slotIndex] +
-        (coordCache.getWidth(slotIndex) * partial)
+        outerCoordCache.lefts[slotIndex] +
+        (innerCoordCache.getWidth(slotIndex) * partial)
       )
     }
   }
