@@ -295,10 +295,6 @@ TODO: figure out better styling
   overflow: hidden;
 }
 
-.fc-timeline-event.fc-selected .fc-bg {
-  display: none; /* hide semi-white background, to appear darker */
-}
-
 .fc-ltr .fc-timeline-event.fc-not-start .fc-content,
 .fc-rtl .fc-timeline-event.fc-not-end .fc-content {
   margin-left: 8px;
