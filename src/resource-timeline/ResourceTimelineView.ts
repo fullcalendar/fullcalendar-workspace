@@ -20,6 +20,7 @@ export default class ResourceTimelineView extends View {
   lane: TimelineLane
   bodyScrollJoiner: ScrollJoiner
   spreadsheetBodyStickyScroller: StickyScroller
+  isStickyScrollDirty = false
 
   timeAxisTbody: HTMLElement
   miscHeight: number
@@ -411,6 +412,8 @@ export default class ResourceTimelineView extends View {
         true // isVertical
       )
       this.rowPositions.build()
+
+      this.isStickyScrollDirty = true
     }
   }
 
@@ -539,10 +542,8 @@ export default class ResourceTimelineView extends View {
     }
 
     // avoid updating stickyscroll too often
-    // TODO: repeat code as updateSize
-    let { calendar } = this
-    if (isResize || calendar.isViewUpdated || calendar.isDatesUpdated || calendar.isEventsUpdated) {
-
+    if (isResize || this.isStickyScrollDirty) {
+      this.isStickyScrollDirty = false
       this.spreadsheetBodyStickyScroller.updateSize()
       this.timeAxis.updateStickyScrollers()
     }
