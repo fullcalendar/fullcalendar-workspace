@@ -1,6 +1,5 @@
-import { SplittableProps, memoizeRendering, PositionCache, Hit, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, DateProfile, applyStyleProp, PointerDragEvent } from '@fullcalendar/core'
+import { ElementDragging, SplittableProps, memoizeRendering, PositionCache, Hit, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, DateProfile, applyStyleProp, PointerDragEvent } from '@fullcalendar/core'
 import { ScrollJoiner, TimelineLane, StickyScroller, TimeAxis } from '@fullcalendar/timeline'
-import { FeaturefulElementDragging } from '@fullcalendar/interaction'
 import { ResourceHash, buildRowNodes, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc } from '@fullcalendar/resource-common'
 import GroupRow from './GroupRow'
 import ResourceRow from './ResourceRow'
@@ -30,7 +29,7 @@ export default class ResourceTimelineView extends View {
 
   resourceAreaHeadEl: HTMLElement
   resourceAreaWidth?: number
-  resourceAreaWidthDraggings: FeaturefulElementDragging[]
+  resourceAreaWidthDraggings: ElementDragging[] = []
 
   // internal state
   superHeaderText: any
@@ -663,30 +662,34 @@ export default class ResourceTimelineView extends View {
       this.el.querySelectorAll('.fc-col-resizer')
     )
 
-    this.resourceAreaWidthDraggings = resourceAreaDividerEls.map((el: HTMLElement) => {
-      let dragging = new FeaturefulElementDragging(el)
-      let dragStartWidth
-      let viewWidth
+    let ElementDraggingImpl = this.calendar.pluginSystem.hooks.elementDraggingImpl
 
-      dragging.emitter.on('dragstart', () => {
-        dragStartWidth = this.resourceAreaWidth
-        if (typeof dragStartWidth !== 'number') {
-          dragStartWidth = this.resourceAreaHeadEl.getBoundingClientRect().width
-        }
-        viewWidth = this.el.getBoundingClientRect().width
+    if (ElementDraggingImpl) {
+      this.resourceAreaWidthDraggings = resourceAreaDividerEls.map((el: HTMLElement) => {
+        let dragging = new ElementDraggingImpl(el)
+        let dragStartWidth
+        let viewWidth
+
+        dragging.emitter.on('dragstart', () => {
+          dragStartWidth = this.resourceAreaWidth
+          if (typeof dragStartWidth !== 'number') {
+            dragStartWidth = this.resourceAreaHeadEl.getBoundingClientRect().width
+          }
+          viewWidth = this.el.getBoundingClientRect().width
+        })
+
+        dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
+          let newWidth = dragStartWidth + pev.deltaX * (this.isRtl ? -1 : 1)
+          newWidth = Math.max(newWidth, MIN_RESOURCE_AREA_WIDTH)
+          newWidth = Math.min(newWidth, viewWidth - MIN_RESOURCE_AREA_WIDTH)
+          this.setResourceAreaWidth(newWidth)
+        })
+
+        dragging.setAutoScrollEnabled(false) // because gets weird with auto-scrolling time area
+
+        return dragging
       })
-
-      dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
-        let newWidth = dragStartWidth + pev.deltaX * (this.isRtl ? -1 : 1)
-        newWidth = Math.max(newWidth, MIN_RESOURCE_AREA_WIDTH)
-        newWidth = Math.min(newWidth, viewWidth - MIN_RESOURCE_AREA_WIDTH)
-        this.setResourceAreaWidth(newWidth)
-      })
-
-      dragging.autoScroller.isEnabled = false // because gets weird with auto-scrolling time area
-
-      return dragging
-    })
+    }
   }
 
 }

@@ -1,5 +1,4 @@
-import { removeElement, createElement, htmlEscape, Component, ComponentContext, PointerDragEvent, EmitterMixin } from '@fullcalendar/core'
-import { FeaturefulElementDragging } from '@fullcalendar/interaction'
+import { ElementDragging, removeElement, createElement, htmlEscape, Component, ComponentContext, PointerDragEvent, EmitterMixin } from '@fullcalendar/core'
 
 export interface SpreadsheetHeaderProps {
   superHeaderText: string
@@ -13,7 +12,7 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
 
   tableEl: HTMLElement
   resizerEls: HTMLElement[]
-  resizables: FeaturefulElementDragging[]
+  resizables: ElementDragging[] = []
   thEls: HTMLElement[]
   colEls: HTMLElement[]
   colWidths: number[] = []
@@ -104,27 +103,31 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
   }
 
   initColResizing() {
-    this.resizables = this.resizerEls.map((handleEl: HTMLElement, colIndex) => {
-      let dragging = new FeaturefulElementDragging(handleEl)
-      let startWidth
+    let ElementDraggingImpl = this.calendar.pluginSystem.hooks.elementDraggingImpl
 
-      dragging.emitter.on('dragstart', () => {
-        startWidth = this.colWidths[colIndex]
-        if (typeof startWidth !== 'number') {
-          startWidth = this.thEls[colIndex].getBoundingClientRect().width
-        }
+    if (ElementDraggingImpl) {
+      this.resizables = this.resizerEls.map((handleEl: HTMLElement, colIndex) => {
+        let dragging = new ElementDraggingImpl(handleEl)
+        let startWidth
+
+        dragging.emitter.on('dragstart', () => {
+          startWidth = this.colWidths[colIndex]
+          if (typeof startWidth !== 'number') {
+            startWidth = this.thEls[colIndex].getBoundingClientRect().width
+          }
+        })
+
+        dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
+          this.colWidths[colIndex] = Math.max(startWidth + pev.deltaX * (this.isRtl ? -1 : 1), COL_MIN_WIDTH)
+          this.applyColWidths()
+          this.emitter.trigger('colwidthchange', this.colWidths)
+        })
+
+        dragging.setAutoScrollEnabled(false) // because gets weird with auto-scrolling time area
+
+        return dragging
       })
-
-      dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
-        this.colWidths[colIndex] = Math.max(startWidth + pev.deltaX * (this.isRtl ? -1 : 1), COL_MIN_WIDTH)
-        this.applyColWidths()
-        this.emitter.trigger('colwidthchange', this.colWidths)
-      })
-
-      dragging.autoScroller.isEnabled = false // because gets weird with auto-scrolling time area
-
-      return dragging
-    })
+    }
   }
 
   applyColWidths() {
