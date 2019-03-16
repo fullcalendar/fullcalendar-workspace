@@ -92,8 +92,8 @@
 }
 
 .fc-no-overlap .fc-body .fc-resource-area .fc-cell-content { /* might BE the cell */
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 .fc-resource-area .fc-icon { /* the expander and spacers before the expander */
@@ -104,7 +104,7 @@
 
 .fc-resource-area .fc-expander {
   cursor: pointer;
-  color: #666; /* for the icon within */
+  opacity: 0.65;
 }
 
 /* body resource rows */
