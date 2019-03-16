@@ -9,7 +9,7 @@ cd "`dirname $0`/.."
 if [[ -f fullcalendar-branch.txt ]]; then
   CORE_REF="origin/$(cat fullcalendar-branch.txt)"
 else
-  CORE_REF="v$(npm show fullcalendar version)"
+  CORE_REF="origin/master"
 fi
 
 if [[ -L 'fullcalendar' ]]; then
