@@ -120,7 +120,10 @@ TODO: figure out better styling
 .fc-timeline .fc-head .fc-cell-content {
   padding-top: 3px;
   padding-bottom: 3px;
-  overflow: visible; // undo previous rule for stickiness
+}
+
+.fc-timeline .fc-head .fc-time-area .fc-cell-content {
+  overflow: visible; // undo previous rule, for stickiness
 }
 
 
