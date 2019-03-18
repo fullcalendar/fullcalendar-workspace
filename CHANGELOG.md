@@ -5,7 +5,7 @@ v4.0.1 (2019-03-18)
 Read about all the changes in v4:
 https://fullcalendar.io/docs/upgrading-from-v3
 
-Obscure breaking change from v3->v4 not mentioned elsewhere:
+Obscure breaking change from v1->v4 not mentioned elsewhere:
 `MAX_TIMELINE_SLOTS` moved to `(packageRoot).config.MAX_TIMELINE_SLOTS`
 
 Advancements since latest prerelease:
