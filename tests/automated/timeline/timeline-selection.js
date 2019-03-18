@@ -45,8 +45,8 @@ describe('timeline selection', function() {
                 },
                 select(arg) {
                   selectCalled = true
-                  expect(arg.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
-                  expect(arg.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
+                  expect(arg.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
+                  expect(arg.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
                   expect(typeof arg.jsEvent).toBe('object')
                   expect(typeof arg.view).toBe('object')
                   expect(arg.resource).toBeFalsy()
@@ -91,8 +91,8 @@ describe('timeline selection', function() {
                 },
                 select(arg) {
                   selectCalled = true
-                  expect(arg.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
-                  expect(arg.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
+                  expect(arg.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
+                  expect(arg.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
                   expect(typeof arg.jsEvent).toBe('object')
                   expect(typeof arg.view).toBe('object')
                   expect(arg.resource.id).toBe('b')
@@ -115,8 +115,8 @@ describe('timeline selection', function() {
                 },
                 select(arg) {
                   selectCalled = true
-                  expect(arg.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
-                  expect(arg.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
+                  expect(arg.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
+                  expect(arg.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
                   expect(typeof arg.jsEvent).toBe('object')
                   expect(typeof arg.view).toBe('object')
                   expect(arg.resource.id).toBe('b')
@@ -147,8 +147,8 @@ describe('timeline selection', function() {
               },
               select(arg) {
                 selectCalled = true
-                expect(arg.start).toEqualDate(tz.createDate('2015-11-28T04:15:00'))
-                expect(arg.end).toEqualDate(tz.createDate('2015-11-28T07:45:00'))
+                expect(arg.start).toEqualDate(tz.parseDate('2015-11-28T04:15:00'))
+                expect(arg.end).toEqualDate(tz.parseDate('2015-11-28T07:45:00'))
                 expect(typeof arg.jsEvent).toBe('object')
                 expect(typeof arg.view).toBe('object')
                 expect(arg.resource.id).toBe('b')

@@ -38,7 +38,7 @@ describe('dayGrid-view event drag-n-drop', function() {
           }),
           eventDrop:
             (dropSpy = spyCall(function(arg) {
-              expect(arg.event.start).toEqualDate(tz.createDate('2015-12-01T12:00:00'))
+              expect(arg.event.start).toEqualDate(tz.parseDate('2015-12-01T12:00:00'))
               expect(arg.event.end).toBe(null)
 
               let resources = arg.event.getResources()

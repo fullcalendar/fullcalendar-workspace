@@ -42,8 +42,8 @@ describe('timeGrid-view event drag-n-drop', function() {
           }),
           eventDrop:
             (dropSpy = spyCall(function(arg) {
-              expect(arg.event.start).toEqualDate(tz.createDate('2015-12-01T05:00:00'))
-              expect(arg.event.end).toEqualDate(tz.createDate('2015-12-01T06:00:00'))
+              expect(arg.event.start).toEqualDate(tz.parseDate('2015-12-01T05:00:00'))
+              expect(arg.event.end).toEqualDate(tz.parseDate('2015-12-01T06:00:00'))
 
               let resources = arg.event.getResources()
               expect(resources.length).toBe(1)

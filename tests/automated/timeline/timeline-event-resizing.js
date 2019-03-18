@@ -53,8 +53,8 @@ describe('timeline event resizing', function() {
                 }),
                 eventResize:
                   (resizeSpy = spyCall(function(arg) {
-                    expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
-                    expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
+                    expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
+                    expect(arg.event.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
 
                     let resources = arg.event.getResources()
                     expect(resources.length).toBe(0)
@@ -85,8 +85,8 @@ describe('timeline event resizing', function() {
                 }),
                 eventResize:
                   (resizeSpy = spyCall(function(arg) {
-                    expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
-                    expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
+                    expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
+                    expect(arg.event.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
 
                     let resources = arg.event.getResources()
                     expect(resources.length).toBe(1)
@@ -114,8 +114,8 @@ describe('timeline event resizing', function() {
                 }),
                 eventResize:
                   (resizeSpy = spyCall(function(arg) {
-                    expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
-                    expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
+                    expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
+                    expect(arg.event.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
 
                     let resources = arg.event.getResources()
                     expect(resources.length).toBe(1)
@@ -143,8 +143,8 @@ describe('timeline event resizing', function() {
                 }),
                 eventResize:
                   (resizeSpy = spyCall(function(arg) {
-                    expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
-                    expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:30:00'))
+                    expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
+                    expect(arg.event.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
 
                     let resourceIds = arg.event.getResources().map((resource) => resource.id)
                     resourceIds.sort()
@@ -180,8 +180,8 @@ describe('timeline event resizing', function() {
               }),
               eventResize:
                 (resizeSpy = spyCall(function(arg) {
-                  expect(arg.event.start).toEqualDate(tz.createDate('2015-11-28T04:00:00'))
-                  expect(arg.event.end).toEqualDate(tz.createDate('2015-11-28T07:45:00'))
+                  expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
+                  expect(arg.event.end).toEqualDate(tz.parseDate('2015-11-28T07:45:00'))
 
                   let resources = arg.event.getResources()
                   expect(resources.length).toBe(1)

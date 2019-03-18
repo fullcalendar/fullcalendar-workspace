@@ -31,8 +31,8 @@ describe('timeline-view event drag-n-drop', function() {
         }),
         eventDrop:
           (dropSpy = spyCall(function(arg) {
-            expect(arg.event.start).toEqualDate(tz.createDate('2015-11-29T05:00:00'))
-            expect(arg.event.end).toEqualDate(tz.createDate('2015-11-29T06:00:00'))
+            expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-29T05:00:00'))
+            expect(arg.event.end).toEqualDate(tz.parseDate('2015-11-29T06:00:00'))
 
             expect(arg.oldResource.id).toBe('b')
             expect(arg.newResource.id).toBe('a')

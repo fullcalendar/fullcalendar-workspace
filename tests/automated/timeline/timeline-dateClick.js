@@ -43,7 +43,7 @@ describe('timeline dateClick', function() {
                 },
                 dateClick(arg) {
                   dateClickCalled = true
-                  expect(arg.date).toEqualDate(tz.createDate('2015-11-28T04:30:00'))
+                  expect(arg.date).toEqualDate(tz.parseDate('2015-11-28T04:30:00'))
                   expect(typeof arg.jsEvent).toBe('object')
                   expect(typeof arg.view).toBe('object')
                   expect(arg.resource).toBeFalsy()
@@ -86,7 +86,7 @@ describe('timeline dateClick', function() {
                 },
                 dateClick(arg) {
                   dateClickCalled = true
-                  expect(arg.date).toEqualDate(tz.createDate('2015-11-28T04:30:00'))
+                  expect(arg.date).toEqualDate(tz.parseDate('2015-11-28T04:30:00'))
                   expect(typeof arg.jsEvent).toBe('object')
                   expect(typeof arg.view).toBe('object')
                   expect(arg.resource.id).toBe('b')
@@ -116,7 +116,7 @@ describe('timeline dateClick', function() {
               },
               dateClick(arg) {
                 dateClickCalled = true
-                expect(arg.date).toEqualDate(tz.createDate('2015-11-28T04:15:00'))
+                expect(arg.date).toEqualDate(tz.parseDate('2015-11-28T04:15:00'))
                 expect(typeof arg.jsEvent).toBe('object')
                 expect(typeof arg.view).toBe('object')
                 expect(arg.resource.id).toBe('b')
