@@ -302,7 +302,7 @@ describe('timeline-view event drag-n-drop', function() {
 
   function dragElTo(el, resourceId, date, callback, onBeforeRelease) {
     el.simulate('drag', {
-      localPoint: { left: 0, top: '50%' },
+      localPoint: { left: 1, top: '50%' },
       end: getResourceTimelinePoint(resourceId, date),
       onBeforeRelease,
       callback
@@ -313,7 +313,7 @@ describe('timeline-view event drag-n-drop', function() {
     $('.event0').simulate('drag', {
       isTouch: true,
       delay,
-      localPoint: { left: 0, top: '50%' },
+      localPoint: { left: 1, top: '50%' },
       end: getResourceTimelinePoint(resourceId, date),
       callback
     })

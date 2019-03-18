@@ -5,7 +5,7 @@ import { getTimelineLine } from '../lib/timeline'
 RIDICULOUSLY BIG THRESHOLD, because IE/Edge have setInterval issues.
 TODO: make a more bulletproof way
 */
-const PIXEL_THRESHOLD = 20
+const PIXEL_THRESHOLD = 30
 
 describe('timeline now-indicator', function() {
   pushOptions({

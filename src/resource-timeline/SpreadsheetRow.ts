@@ -119,7 +119,10 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
     let { expanderIconEl } = this
     let expanderEl = expanderIconEl.parentElement
 
-    if (expanderIconEl) {
+    if (
+      expanderIconEl &&
+      expanderEl // why would this be null?? was the case in IE11
+    ) {
 
       if (hasChildren) {
         expanderEl.addEventListener('click', this.onExpanderClick)

@@ -132,7 +132,7 @@ describe('timeline view rerendering', function() {
 
         } else if (renderCalls === 2) {
           const scrollEl = $('.fc-body .fc-time-area .fc-scroller')
-          expect(scrollEl.scrollTop()).toBe(100)
+          expect(Math.abs(scrollEl.scrollTop() - 100)).toBeLessThanOrEqual(1) // IE :(
           expect(scrollEl.scrollLeft()).toBe(50)
           doneFunc()
         }
