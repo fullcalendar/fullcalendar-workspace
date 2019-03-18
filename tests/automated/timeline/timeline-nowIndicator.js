@@ -1,6 +1,12 @@
 import { getBoundingRect } from 'fullcalendar/tests/automated/lib/dom-geom'
 import { getTimelineLine } from '../lib/timeline'
 
+/*
+RIDICULOUSLY BIG THRESHOLD, because IE/Edge have setInterval issues.
+TODO: make a more bulletproof way
+*/
+const PIXEL_THRESHOLD = 20
+
 describe('timeline now-indicator', function() {
   pushOptions({
     defaultView: 'timelineDay',
@@ -92,7 +98,7 @@ describe('timeline now-indicator', function() {
 
   function nowIndicatorRendersAt(date, thresh) {
     // wish threshold could do a smaller default threshold, but RTL messing up
-    if (thresh == null) { thresh = 3 }
+    if (thresh == null) { thresh = PIXEL_THRESHOLD }
     const line = getTimelineLine(date)
     const arrowRect = getBoundingRect('.fc-timeline .fc-now-indicator-arrow')
     const lineRect = getBoundingRect('.fc-timeline .fc-now-indicator-line')
