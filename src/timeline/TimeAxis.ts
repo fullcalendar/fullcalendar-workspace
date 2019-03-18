@@ -287,6 +287,11 @@ export default class TimeAxis extends Component<TimeAxisProps> {
             scrollTime
           )
         )
+
+        // hack to overcome the left borders of non-first slat
+        if (!this.isRtl && left) {
+          left += 1
+        }
       }
     }
 
