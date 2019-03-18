@@ -5,80 +5,12 @@ v4.0.1 (2019-03-18)
 Read about all the changes in v4:
 https://fullcalendar.io/docs/upgrading-from-v3
 
+Obscure breaking change from v3->v4 not mentioned elsewhere:
+`MAX_TIMELINE_SLOTS` moved to `(packageRoot).config.MAX_TIMELINE_SLOTS`
+
 Issues addressed since latest prerelease: #480, #479, #482, #497, #490
 
 NOTE: version "4.0.0" was skipped because of an NPM publishing error
-
-
-v4.0.0-beta.3/4 (2019-02-06)
-----------------------------
-NPM problems. Had to push another release. No code changes.
-
-
-v4.0.0-beta.2 (2019-02-06)
---------------------------
-
-BIG changes since last alpha release:
-(see https://fullcalendar.io/docs/v4/release-notes for more info)
-- all functionality is broken up into plugins
-- changed the names of many views (ex: agendaWeek -> timeGridWeek)
-- changed the names of the npm packages (ex: @fullcalendar/core)
-- technique for initializing a calendar (and using plugins) has changed
-- SuperAgent is no longer needed
-- Bootstrap 3 theme support dropped
-- jQuery UI theme support dropped
-- Bower support dropped
-- Composer support *temporarily* dropped
-- a new npm-run based dev workflow
-- bundled via Rollup (instead of Webpack)
-
-Smaller changes since last alpha release:
-- no need to specify `timeZoneImpl` setting. simply use luxon or moment-timezone plugin instead
-- `agendaEventMinHeight` renamed to `timeGridEventMinHeight`
-- for registering a custom view use `createPlugin` instead of `defineView`
-- `groupByDatesAndResources` and `groupByResources` removed. Use `datesAboveResources` instead
-- removed the deprecated `theme` settings. use `themeSystem` instead
-- for Boostrap 4 theme support, specify `themeSystem: 'boostrap'` instead of (`'bootstrap4'`)
-
-Really obscure changes (TODO: move these to final changelog):
-- `MAX_TIMELINE_SLOTS` moved to `(packageRoot).config.MAX_TIMELINE_SLOTS`
-- `touchMouseIgnoreWait` moved to `(packageRoot).config.touchMouseIgnoreWait`
-- `dataAttrPrefix` moved to `(packageRoot).config.dataAttrPrefix`
-
-
-v4.0.0-alpha.4 (2019-01-11)
----------------------------
-
-- eventDrop callback, access old resource (#39):
-  two new properties available: `oldResource` and `newResource`
-- fixed regression #484
-
-
-v4.0.0-alpha.3 (2018-12-21)
----------------------------
-
-Supports the large internal refactor present since core version v4.0.0-alpha.2.
-
-Compatible with core v4.0.0-alpha.3
-
-Known regressions from v3:
-- #482, #481, #480, #479, [core-4420]
-- In vertical resource view, after initial rendering, but before the resources load,
-  date columns (minus resources) used to be rendered. Now, no columns render.
-
-More info:
-https://fullcalendar.io/blog/2018/12/alpha-release-scheduler-support
-https://fullcalendar.io/docs/v4/release-notes
-
-[core-4420]: https://github.com/fullcalendar/fullcalendar/issues/4420
-
-
-v4.0.0-alpha.2 (2018-04-13)
----------------------------
-
-See https://fullcalendar.io/blog/2018/04/alpha-release-jquery-removal
-
-Compatible with core v4.0.0-alpha
 
 
 v1.9.4 (2018-03-27)
