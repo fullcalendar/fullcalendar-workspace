@@ -63,7 +63,7 @@ export function computeResourceEditable(eventDef: EventDef, calendar: Calendar):
       resourceEditable = calendar.opt('eventResourceEditable')
 
       if (resourceEditable == null) {
-        resourceEditable = true // TODO: use defaults system instead
+        resourceEditable = calendar.opt('editable') // TODO: use defaults system instead
       }
     }
   }
