@@ -8,7 +8,9 @@ https://fullcalendar.io/docs/upgrading-from-v3
 Obscure breaking change from v3->v4 not mentioned elsewhere:
 `MAX_TIMELINE_SLOTS` moved to `(packageRoot).config.MAX_TIMELINE_SLOTS`
 
-Issues addressed since latest prerelease: #480, #479, #482, #497, #490
+Advancements since latest prerelease:
+- Sticky elements while scrolling done with built-in `position:sticky`
+- Bugfixes: #480, #479, #482, #497, #490
 
 NOTE: version "4.0.0" was skipped because of an NPM publishing error
 
