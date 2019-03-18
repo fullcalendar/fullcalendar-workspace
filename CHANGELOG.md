@@ -1,4 +1,15 @@
 
+v4.0.1 (2019-03-18)
+-------------------
+
+Read about all the changes in v4:
+https://fullcalendar.io/docs/upgrading-from-v3
+
+Issues addressed since latest prerelease: #480, #479, #482, #497, #490
+
+NOTE: version "4.0.0" was skipped because of an NPM publishing error
+
+
 v4.0.0-beta.3/4 (2019-02-06)
 ----------------------------
 NPM problems. Had to push another release. No code changes.
