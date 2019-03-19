@@ -1,5 +1,7 @@
 {
   "title": "FullCalendar Resource Timeline Plugin",
+  "description": "Display events and resources on a horizontal time axis",
+  "homepage": "https://fullcalendar.io/docs/timeline-view",
   "browserGlobal": "FullCalendarResourceTimeline",
   "dependencies": {
     "@fullcalendar/resource-common": "",

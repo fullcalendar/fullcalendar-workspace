@@ -1,5 +1,7 @@
 {
   "title": "FullCalendar Resource Day Grid Plugin",
+  "description": "Displays events in individual columns for days and resources",
+  "homepage": "https://fullcalendar.io/docs/resource-daygrid-view",
   "browserGlobal": "FullCalendarResourceDayGrid",
   "dependencies": {
     "@fullcalendar/resource-common": "",

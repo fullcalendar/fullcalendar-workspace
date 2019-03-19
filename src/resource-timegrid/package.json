@@ -1,5 +1,7 @@
 {
   "title": "FullCalendar Resource Time Grid Plugin",
+  "description": "Displays events on a vertical resource view with time slots",
+  "homepage": "https://fullcalendar.io/docs/vertical-resource-view",
   "browserGlobal": "FullCalendarResourceTimeGrid",
   "dependencies": {
     "@fullcalendar/resource-common": "",
