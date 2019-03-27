@@ -39,7 +39,7 @@ function createInitialSource(calendar: Calendar) {
   if (input) {
     let source = parseResourceSource(input)
 
-    if (!calendar.opt('refetchResourcesOnNavigate')) {
+    if (!calendar.opt('refetchResourcesOnNavigate')) { // because assumes handleRange will do it later
       source = fetchSource(source, null, calendar)
     }
 
