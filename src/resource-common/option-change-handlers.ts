@@ -1,9 +1,16 @@
-import { Calendar } from '@fullcalendar/core'
+import { Calendar, isValuesSimilar } from '@fullcalendar/core'
 
 export default {
   resources: handleResources
 }
 
-function handleResources(resourcesInput, calendar: Calendar) {
-  console.log('resources', resourcesInput, calendar)
+function handleResources(newSourceInput, calendar: Calendar) {
+  let oldSourceInput = calendar.state.resourceSource._raw
+
+  if (!isValuesSimilar(oldSourceInput, newSourceInput, 2)) {
+    calendar.dispatch({
+      type: 'RESET_RESOURCE_SOURCE',
+      resourceSourceInput: newSourceInput
+    })
+  }
 }
