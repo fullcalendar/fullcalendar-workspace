@@ -41,6 +41,7 @@ export type ResourceSourceInput =
   string // url
 
 export interface ResourceSource {
+  _raw: any
   sourceId: string
   sourceDefId: number // one of the few IDs that's a NUMBER not a string
   meta: any
@@ -81,11 +82,14 @@ export function parseResourceSource(input: ResourceSourceInput): ResourceSource 
     let meta = def.parseMeta(input)
 
     if (meta) {
-      return parseResourceSourceProps(
+      let res = parseResourceSourceProps(
         (typeof input === 'object' && input) ? (input as ExtendedResourceSourceInput) : {},
         meta,
         i
       )
+
+      res._raw = input
+      return res
     }
   }
 
