@@ -10,6 +10,7 @@ import { transformExternalDef } from './ExternalElementDragging'
 import { transformEventResizeJoin } from './EventResizing'
 import './api/EventApi'
 import { injectLicenseWarning } from './license'
+import optionChangeHandlers from './option-change-handlers'
 
 // TODO: plugin-ify
 import './resource-sources/resource-array'
@@ -29,7 +30,8 @@ export default createPlugin({
   externalDefTransforms: [ transformExternalDef ],
   eventResizeJoinTransforms: [ transformEventResizeJoin ],
   viewContainerModifiers: [ injectLicenseWarning ],
-  eventDropTransformers: [ transformEventDrop ]
+  eventDropTransformers: [ transformEventDrop ],
+  optionChangeHandlers
 })
 
 export { default as ResourceDayHeader } from './common/ResourceDayHeader'
