@@ -1,4 +1,4 @@
-import { View, rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewSpec, ViewPropsTransformer, CalendarComponentProps, memoize, mapHash, EventUi, isPropsEqual, memoizeOutput, EventUiHash, EventDefHash, EventDef, combineEventUis, EventStore, DateRange } from '@fullcalendar/core'
+import { View, rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewSpec, ViewPropsTransformer, CalendarComponentProps, memoize, mapHash, EventUi, isObjectsSimilar, memoizeOutput, EventUiHash, EventDefHash, EventDef, combineEventUis, EventStore, DateRange } from '@fullcalendar/core'
 import { ResourceHash } from './structs/resource'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
 import { __assign } from 'tslib'
@@ -96,7 +96,7 @@ function computeAncestorHasEvents(hasEvents: { [resourceId: string]: boolean }, 
 
 export class ResourceEventConfigAdder implements ViewPropsTransformer {
 
-  buildResourceEventUis = memoizeOutput(buildResourceEventUis, isPropsEqual)
+  buildResourceEventUis = memoizeOutput(buildResourceEventUis, isObjectsSimilar)
   injectResourceEventUis = memoize(injectResourceEventUis)
 
   transform(viewProps: ViewProps, viewSpec: ViewSpec, calendarProps: CalendarComponentProps) {
