@@ -11,7 +11,10 @@ export default function(
   switch (action.type) {
 
     case 'INIT':
-      return createInitialSource(calendar)
+      return createSource(calendar.opt('resources'), calendar)
+
+    case 'RESET_RESOURCE_SOURCE':
+      return createSource(action.resourceSourceInput, calendar, true)
 
     case 'PREV': // TODO: how do we track all actions that affect dateProfile :(
     case 'NEXT':
@@ -33,13 +36,12 @@ export default function(
 
 let uid = 0
 
-function createInitialSource(calendar: Calendar) {
-  let input = calendar.opt('resources')
+function createSource(input, calendar: Calendar, forceFetch?: boolean) {
 
   if (input) {
     let source = parseResourceSource(input)
 
-    if (!calendar.opt('refetchResourcesOnNavigate')) { // because assumes handleRange will do it later
+    if (forceFetch || !calendar.opt('refetchResourcesOnNavigate')) { // because assumes handleRange will do it later
       source = fetchSource(source, null, calendar)
     }
 

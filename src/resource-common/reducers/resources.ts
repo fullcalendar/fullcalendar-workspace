@@ -28,6 +28,7 @@ export type ResourceAction = Action |
   { type: 'SET_RESOURCE_PROP', resourceId: string, propName: string, propValue: any } |
   { type: 'SET_RESOURCE_ENTITY_EXPANDED', id: string, isExpanded: boolean } |
   { type: 'RESET_RESOURCES' } |
+  { type: 'RESET_RESOURCE_SOURCE', resourceSourceInput: any } |
   { type: 'REFETCH_RESOURCES' }
 
 export default function(state: CalendarState, action: ResourceAction, calendar: Calendar) {
