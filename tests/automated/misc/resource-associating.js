@@ -144,7 +144,7 @@ describe('associating resources with event', function() {
       resources: [
         { id: 'a', title: 'room a' },
         { id: 'b', title: 'room b' },
-        { id: 'c', title: 'room c' },
+        { id: 'c', title: 'room c' }
       ],
       events: [
         { id: '1', title: 'event 1', resourceId: 'a', className: 'event1', start: '2015-07-11T09:00:00' }
