@@ -1,4 +1,4 @@
-import { DateRange, Calendar, refineProps } from '@fullcalendar/core'
+import { DateRange, Calendar, refineProps, freezeRaw } from '@fullcalendar/core'
 import { ResourceInput } from '../structs/resource'
 import { ResourceFunc } from '../resource-sources/resource-func'
 
@@ -88,7 +88,7 @@ export function parseResourceSource(input: ResourceSourceInput): ResourceSource 
         i
       )
 
-      res._raw = input
+      res._raw = freezeRaw(input)
       return res
     }
   }

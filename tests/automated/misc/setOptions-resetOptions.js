@@ -46,6 +46,18 @@ describeValues({
     expect(getFirstDateEl()).toBe(dateEl)
   })
 
+  it('rerenders resources when mutating same array', function() {
+    let options = buildOptions()
+    let { resources } = options
+
+    calendar = new Calendar($calendarEl[0], options)
+    calendar.render()
+
+    resources.push({ id: 'c', title: 'Resource C' })
+    mutateOptions(calendar, { resources })
+    expect(calendar.getResources().length).toBe(resources.length)
+  })
+
 })
 
 function mutateOptionsViaChange(calendar, changedOptions) {
