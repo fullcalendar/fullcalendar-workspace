@@ -23,6 +23,7 @@ module.exports = function(config) {
       'fullcalendar/dist/daygrid/main.+(js|css)',
       'fullcalendar/dist/timegrid/main.+(js|css)',
       'fullcalendar/dist/list/main.+(js|css)',
+      { pattern: 'fullcalendar/dist/*/*.map', included: false, nocache: true, watched: false },
 
       // plugin files (ordering matters because of dependencies)
       'dist/timeline/main.+(js|css)',
