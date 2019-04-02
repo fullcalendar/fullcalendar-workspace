@@ -138,4 +138,44 @@ describe('associating resources with event', function() {
       }
     })
   })
+
+  describe('setResources on an Event obj', function() {
+    pushOptions({
+      resources: [
+        { id: 'a', title: 'room a' },
+        { id: 'b', title: 'room b' },
+        { id: 'c', title: 'room c' },
+      ],
+      events: [
+        { id: '1', title: 'event 1', resourceId: 'a', className: 'event1', start: '2015-07-11T09:00:00' }
+      ]
+    })
+
+    it('works when receiving string IDs', function() {
+      initCalendar()
+
+      let event = currentCalendar.getEventById('1')
+      event.setResources([ 'b', 'c' ])
+
+      let newResources = event.getResources()
+      expect(newResources.length).toBe(2)
+      expect(newResources[0].id).toBe('b')
+      expect(newResources[1].id).toBe('c')
+    })
+
+    it('works when receiving Resource objs', function() {
+      initCalendar()
+
+      let event = currentCalendar.getEventById('1')
+      let resourceB = currentCalendar.getResourceById('b')
+      let resourceC = currentCalendar.getResourceById('c')
+      event.setResources([ resourceB, resourceC ])
+
+      let newResources = event.getResources()
+      expect(newResources.length).toBe(2)
+      expect(newResources[0].id).toBe('b')
+      expect(newResources[1].id).toBe('c')
+    })
+  })
+
 })
