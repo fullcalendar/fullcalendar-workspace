@@ -36,7 +36,7 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
       headerEnhancedScroller.canvas.contentEl
     )
     this.header.emitter.on('colwidthchange', (colWidths: number[]) => {
-      this.applyBodyColWidths(colWidths)
+      this.applyColWidths(colWidths)
     })
 
     bodyEnhancedScroller.canvas.contentEl
@@ -72,7 +72,7 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
 
     this.header.receiveProps({
       superHeaderText: superHeaderText,
-      colSpecs: colSpecs,
+      colSpecs,
       colTags
     })
 
@@ -80,6 +80,10 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
 
     this.bodyColEls = Array.prototype.slice.call(
       this.bodyColGroup.querySelectorAll('col')
+    )
+
+    this.applyColWidths(
+      colSpecs.map((colSpec) => colSpec.width)
     )
   }
 
@@ -105,11 +109,19 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
     this.layout.setHeight(totalHeight, isAuto)
   }
 
-  applyBodyColWidths(colWidths: number[]) {
+  applyColWidths(colWidths: (number | string)[]) {
     colWidths.forEach((colWidth, colIndex) => {
+      let headEl = this.header.colEls[colIndex] // bad to access child
+      let bodyEl = this.bodyColEls[colIndex]
+      let styleVal: string
+
       if (typeof colWidth === 'number') {
-        this.bodyColEls[colIndex].style.width = colWidth + 'px'
+        styleVal = colWidth + 'px'
+      } else if (typeof colWidth == null) {
+        styleVal = ''
       }
+
+      headEl.style.width = bodyEl.style.width = styleVal
     })
   }
 

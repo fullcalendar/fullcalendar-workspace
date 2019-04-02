@@ -13,7 +13,6 @@ describe('timeline column resizing', function() { // better renamed to 'sizing'
         field: 'occupancy'
       }
     ],
-    resourceGroupField: 'building',
     resources: [
       { id: 'a', occupancy: 40, building: '460 Bryant', title: 'Auditorium A' },
       { id: 'b', occupancy: 40, building: '460 Bryant', title: 'Auditorium B', eventColor: 'green' }
@@ -22,7 +21,9 @@ describe('timeline column resizing', function() { // better renamed to 'sizing'
 
 
   it('works with resourceGroupField', function(done) {
-    initCalendar()
+    initCalendar({
+      resourceGroupField: 'building'
+    })
 
     function expectColWidthsToMatch() {
       const headCellWidths = getHeadCellWidths()
@@ -41,6 +42,30 @@ describe('timeline column resizing', function() { // better renamed to 'sizing'
         done()
       }
     })
+  })
+
+
+  it('is affected by resourceColumng[].width settings', function() {
+    initCalendar()
+    let initialHeadWidths = getHeadCellWidths()
+
+    currentCalendar.setOption('resourceColumns', [
+      {
+        labelText: 'Room',
+        field: 'title',
+        width: 350
+      },
+      {
+        labelText: 'Occupancy',
+        field: 'occupancy',
+        width: 50
+      }
+    ])
+
+    // *any* sort of change? easier to do this than guess how tables distribute width
+    let updatedHeadWidths = getHeadCellWidths()
+    expect(updatedHeadWidths).not.toEqual(initialHeadWidths)
+    expect(updatedHeadWidths).toEqual(getBodyCellWidths()) // they are in sync?
   })
 
 

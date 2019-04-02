@@ -119,7 +119,6 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
 
         dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
           this.colWidths[colIndex] = Math.max(startWidth + pev.deltaX * (this.isRtl ? -1 : 1), COL_MIN_WIDTH)
-          this.applyColWidths()
           this.emitter.trigger('colwidthchange', this.colWidths)
         })
 
@@ -128,14 +127,6 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
         return dragging
       })
     }
-  }
-
-  applyColWidths() {
-    this.colWidths.forEach((width, colIndex) => {
-      if (typeof width === 'number') {
-        this.colEls[colIndex].style.width = width + 'px'
-      }
-    })
   }
 
 }
