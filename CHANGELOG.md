@@ -1,4 +1,12 @@
 
+v4.0.2 (2019-04-03)
+-------------------
+
+- eventAllow and constraints not respected when dragging event between calendars (#512, #513)
+- Event::setResources, for setting an event's resources dynamically (#514)
+- setting width on resourceColumns does nothing (#511)
+
+
 v4.0.1 (2019-03-18)
 -------------------
 
