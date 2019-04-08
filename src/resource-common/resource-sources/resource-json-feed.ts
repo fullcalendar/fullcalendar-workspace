@@ -28,7 +28,7 @@ registerResourceSourceDef({
     let meta: JsonFeedMeta = arg.resourceSource.meta
     let requestParams = buildRequestParams(meta, arg.range, arg.calendar)
 
-    requestJson('GET', meta.url, requestParams, function(rawResources, xhr) {
+    requestJson(meta.method, meta.url, requestParams, function(rawResources, xhr) {
       successCallback({ rawResources, xhr })
     }, function(message, xhr) {
       failureCallback({ message, xhr })
