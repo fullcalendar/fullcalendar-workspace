@@ -5,9 +5,9 @@ export default {
 }
 
 function handleResources(newSourceInput, calendar: Calendar) {
-  let oldSourceInput = calendar.state.resourceSource._raw
+  const oldSourceInput = calendar.state.resourceSource
 
-  if (!isValuesSimilar(oldSourceInput, newSourceInput, 2)) {
+  if (!oldSourceInput || !isValuesSimilar(oldSourceInput._raw, newSourceInput, 2)) {
     calendar.dispatch({
       type: 'RESET_RESOURCE_SOURCE',
       resourceSourceInput: newSourceInput

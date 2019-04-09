@@ -58,6 +58,17 @@ describeValues({
     expect(calendar.getResources().length).toBe(resources.length)
   })
 
+  it('rerenders resources when there were no resources before', function() {
+    let options = buildOptions()
+    options.resources = null
+
+    calendar = new Calendar($calendarEl[0], options)
+    calendar.render()
+
+    mutateOptions(calendar, { resources: [{ id: 'c', title: 'Resource C' }] })
+    expect(calendar.getResources().length).toBe(1)
+  })
+
 })
 
 function mutateOptionsViaChange(calendar, changedOptions) {
