@@ -40,7 +40,8 @@ const RESOURCE_PROPS = {
   title: String,
   parentId: String,
   businessHours: null,
-  children: null
+  children: null,
+  extendedProps: null
 }
 
 const PRIVATE_ID_PREFIX = '_fc:'
