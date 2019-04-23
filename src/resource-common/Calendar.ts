@@ -31,7 +31,6 @@ declare module '@fullcalendar/core' {
     resourceOrder?: any
     filterResourcesWithEvents?: any
     resourceText?: any
-    resourceRender?: any
     resourceGroupField?: any
     resourceGroupText?: any
     resourceAreaWidth?: any
@@ -39,6 +38,8 @@ declare module '@fullcalendar/core' {
     resourcesInitiallyExpanded?: any
     slotWidth?: any
     datesAboveResources?: any
+    // callbacks...
+    resourceRender?: any
   }
 
 }
