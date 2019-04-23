@@ -41,7 +41,8 @@ export default class TimelineHeader extends Component<TimelineHeaderProps> {
 
     let html = '<colgroup>'
 
-    for (let _cell of lastRow) {
+    // needs to be a col for each body slat. header cells will have colspans
+    for (let i = tDateProfile.slotCnt - 1; i >= 0; i--) {
       html += '<col/>'
     }
 

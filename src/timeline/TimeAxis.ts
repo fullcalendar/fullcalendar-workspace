@@ -147,16 +147,16 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     let maxInnerWidth = 0 // TODO: harness core's `matchCellWidths` for this
 
     this.header.innerEls.forEach(function(innerEl, i) {
-      maxInnerWidth = Math.max(maxInnerWidth, innerEl.offsetWidth)
+      maxInnerWidth = Math.max(maxInnerWidth, innerEl.getBoundingClientRect().width)
     })
 
-    let headerWidth = maxInnerWidth + 1 // assume no padding, and one pixel border
+    let headingCellWidth = Math.ceil(maxInnerWidth) + 1 // assume no padding, and one pixel border
 
     // in TimelineView.defaults we ensured that labelInterval is an interval of slotDuration
     // TODO: rename labelDuration?
     let slotsPerLabel = wholeDivideDurations(tDateProfile.labelInterval, tDateProfile.slotDuration)
 
-    let slotWidth = Math.ceil(headerWidth / slotsPerLabel)
+    let slotWidth = Math.ceil(headingCellWidth / slotsPerLabel)
 
     let minWidth: any = window.getComputedStyle(this.header.slatColEls[0]).minWidth
     if (minWidth) {
