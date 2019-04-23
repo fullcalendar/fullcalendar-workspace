@@ -107,7 +107,7 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
       '><div></div></td>'
   }
 
-  updateSize() {
+  updateSize() { // just updates position caches
     this.outerCoordCache.build()
     this.innerCoordCache.build()
   }

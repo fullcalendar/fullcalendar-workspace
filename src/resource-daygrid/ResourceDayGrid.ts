@@ -71,6 +71,10 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
     })
   }
 
+  buildPositionCaches() {
+    this.dayGrid.buildPositionCaches()
+  }
+
   queryHit(positionLeft: number, positionTop: number): Hit {
     let rawHit = this.dayGrid.positionToHit(positionLeft, positionTop)
 

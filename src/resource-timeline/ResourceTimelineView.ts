@@ -615,6 +615,12 @@ export default class ResourceTimelineView extends View {
   // ------------------------------------------------------------------------------------------
 
 
+  buildPositionCaches() {
+    this.timeAxis.slats.updateSize()
+    this.rowPositions.build()
+  }
+
+
   queryHit(positionLeft: number, positionTop: number): Hit {
     let { rowPositions } = this
     let slats = this.timeAxis.slats

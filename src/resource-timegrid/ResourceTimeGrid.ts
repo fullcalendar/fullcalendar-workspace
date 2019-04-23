@@ -79,6 +79,10 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
     timeGrid.renderNowIndicator(segs, date)
   }
 
+  buildPositionCaches() {
+    this.timeGrid.buildPositionCaches()
+  }
+
   queryHit(positionLeft: number, positionTop: number): Hit {
     let rawHit = this.timeGrid.positionToHit(positionLeft, positionTop)
 

@@ -135,6 +135,11 @@ export default class TimelineView extends View {
   // ------------------------------------------------------------------------------------------
 
 
+  buildPositionCaches() {
+    this.timeAxis.slats.updateSize()
+  }
+
+
   queryHit(positionLeft: number, positionTop: number, elWidth: number, elHeight: number): Hit {
     let slatHit = this.timeAxis.slats.positionToHit(positionLeft)
 
