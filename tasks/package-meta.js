@@ -21,7 +21,7 @@ if (rootPackageVersion.indexOf('-') !== -1) {
   console.log('Prerelease detected. Using exact version precision.')
   versionPrecision = ''
 } else {
-  versionPrecision = '^'
+  versionPrecision = '~'
 }
 
 
