@@ -1,4 +1,14 @@
 
+v4.1.0 (2019-04-24)
+-------------------
+
+- scrollToTime method
+- explicit Resource extendedProps gets nested under extendedProps (#483)
+- "method" setting is ignored for resource loading (#521)
+- dayRender is not called in timeline view (#530)
+- timeline view slats don't line up on wide screens (#505)
+
+
 v4.0.2 (2019-04-03)
 -------------------
 
