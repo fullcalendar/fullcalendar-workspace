@@ -270,28 +270,22 @@ export default class TimeAxis extends Component<TimeAxisProps> {
   // Scrolling
   // ------------------------------------------------------------------------------------------
 
-  computeInitialDateScroll() {
+  computeDateScroll(timeMs) {
     let { dateEnv } = this
     let { dateProfile } = this.props
     let left = 0
 
     if (dateProfile) {
-      let scrollTime = this.opt('scrollTime')
-
-      if (scrollTime) {
-        scrollTime = createDuration(scrollTime)
-
-        left = this.dateToCoord(
-          dateEnv.add(
-            startOfDay(dateProfile.activeRange.start), // startOfDay needed?
-            scrollTime
-          )
+      left = this.dateToCoord(
+        dateEnv.add(
+          startOfDay(dateProfile.activeRange.start), // startOfDay needed?
+          createDuration(timeMs)
         )
+      )
 
-        // hack to overcome the left borders of non-first slat
-        if (!this.isRtl && left) {
-          left += 1
-        }
+      // hack to overcome the left borders of non-first slat
+      if (!this.isRtl && left) {
+        left += 1
       }
     }
 

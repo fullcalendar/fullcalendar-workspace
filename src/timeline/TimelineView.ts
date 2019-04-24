@@ -101,8 +101,8 @@ export default class TimelineView extends View {
   // Scroll System
   // ------------------------------------------------------------------------------------------
 
-  computeInitialDateScroll() {
-    return this.timeAxis.computeInitialDateScroll()
+  computeDateScroll(timeMs: number) {
+    return this.timeAxis.computeDateScroll(timeMs)
   }
 
   applyScroll(scroll, isResize) {

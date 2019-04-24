@@ -548,8 +548,8 @@ export default class ResourceTimelineView extends View {
     }
   }
 
-  computeInitialDateScroll() {
-    return this.timeAxis.computeInitialDateScroll()
+  computeDateScroll(timeMs: number) {
+    return this.timeAxis.computeDateScroll(timeMs)
   }
 
   queryDateScroll() {
