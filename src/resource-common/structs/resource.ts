@@ -30,7 +30,8 @@ export interface Resource {
   title: string
   businessHours: EventStore | null
   ui: EventUi
-  extendedProps: { [extendedProp: string]: any }
+  extendedProps: { [extendedProp: string]: any },
+  businessHoursProps?: any
 }
 
 export type ResourceHash = { [resourceId: string]: Resource }
@@ -63,7 +64,7 @@ export function parseResource(input: ResourceInput, parentId: string = '', store
   if (!props.parentId) { // give precedence to the parentId property
     props.parentId = parentId
   }
-
+  props['businessHoursProps'] = props.businessHours ? props.businessHours : null
   props.businessHours = props.businessHours ? parseBusinessHours(props.businessHours, calendar) : null
   props.ui = ui
   props.extendedProps = { ...leftovers1, ...props.extendedProps }
@@ -71,6 +72,7 @@ export function parseResource(input: ResourceInput, parentId: string = '', store
   // help out ResourceApi from having user modify props
   Object.freeze(ui.classNames)
   Object.freeze(props.extendedProps)
+  Object.freeze(props['businessHoursProps'])
 
   if (store[props.id]) {
     // console.warn('duplicate resource ID')
