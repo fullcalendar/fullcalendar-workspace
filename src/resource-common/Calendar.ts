@@ -38,6 +38,8 @@ declare module '@fullcalendar/core' {
     resourcesInitiallyExpanded?: any
     slotWidth?: any
     datesAboveResources?: any
+    eventResourceEditable?: boolean
+    refetchResourcesOnNavigate?: boolean
     // callbacks...
     resourceRender?: any
   }
