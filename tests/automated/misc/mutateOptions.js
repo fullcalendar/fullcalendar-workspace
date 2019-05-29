@@ -1,3 +1,4 @@
+import { default as deepEquals } from 'fast-deep-equal'
 import { Calendar } from '@fullcalendar/core'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import { getFirstDateEl } from 'fullcalendar/tests/automated/lib/ViewUtils'
@@ -15,12 +16,13 @@ function buildOptions() {
   }
 }
 
-describeValues({
-  setOptions: mutateOptionsViaChange,
-  resetOptions: mutateOptionsViaReset
-}, function(mutateOptions) {
+describe('mutateOptions', function() {
   let $calendarEl
   let calendar
+
+  function mutateOptions(updates) {
+    calendar.mutateOptions(updates, [], false, deepEquals)
+  }
 
   beforeEach(function() {
     $calendarEl = $('<div>').appendTo('body')
@@ -36,7 +38,7 @@ describeValues({
     calendar.render()
     let dateEl = getFirstDateEl()
 
-    mutateOptions(calendar, {
+    mutateOptions({
       resources: [
         { id: 'a', title: 'Resource A' }
       ]
@@ -54,16 +56,8 @@ describeValues({
     calendar.render()
 
     resources.push({ id: 'c', title: 'Resource C' })
-    mutateOptions(calendar, { resources })
+    mutateOptions({ resources })
     expect(calendar.getResources().length).toBe(resources.length)
   })
 
 })
-
-function mutateOptionsViaChange(calendar, changedOptions) {
-  calendar.setOptions(changedOptions)
-}
-
-function mutateOptionsViaReset(calendar, changedOptions) {
-  calendar.resetOptions({ ...buildOptions(), ...changedOptions })
-}
