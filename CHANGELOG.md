@@ -1,4 +1,9 @@
 
+v4.2.0 (2019-06-02)
+-------------------
+adjustments to internal options-mutation API for plugins
+
+
 v4.1.0 (2019-04-24)
 -------------------
 
