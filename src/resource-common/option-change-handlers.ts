@@ -4,10 +4,10 @@ export default {
   resources: handleResources
 }
 
-function handleResources(newSourceInput, calendar: Calendar, deepEquals) {
+function handleResources(newSourceInput, calendar: Calendar, deepEqual) {
   let oldSourceInput = calendar.state.resourceSource._raw
 
-  if (!deepEquals(oldSourceInput, newSourceInput)) {
+  if (!deepEqual(oldSourceInput, newSourceInput)) {
     calendar.dispatch({
       type: 'RESET_RESOURCE_SOURCE',
       resourceSourceInput: newSourceInput

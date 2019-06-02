@@ -1,4 +1,4 @@
-import { default as deepEquals } from 'fast-deep-equal'
+import deepEqual from 'fast-deep-equal'
 import { Calendar } from '@fullcalendar/core'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import { getFirstDateEl } from 'fullcalendar/tests/automated/lib/ViewUtils'
@@ -21,7 +21,7 @@ describe('mutateOptions', function() {
   let calendar
 
   function mutateOptions(updates) {
-    calendar.mutateOptions(updates, [], false, deepEquals)
+    calendar.mutateOptions(updates, [], false, deepEqual)
   }
 
   beforeEach(function() {
