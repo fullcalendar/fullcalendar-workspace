@@ -1,4 +1,4 @@
-import { DateSpan, Calendar } from '@fullcalendar/core'
+import { DateSpan, Calendar, View } from '@fullcalendar/core'
 import ResourceApi from './api/ResourceApi'
 import { ResourceInput, parseResource, ResourceHash, Resource } from './structs/resource'
 import { ResourceSourceInput } from './structs/resource-source'
@@ -40,8 +40,7 @@ declare module '@fullcalendar/core' {
     datesAboveResources?: any
     eventResourceEditable?: boolean
     refetchResourcesOnNavigate?: boolean
-    // callbacks...
-    resourceRender?: any
+    resourceRender?(arg: { resource: ResourceApi, el: HTMLElement, view: View }): void // BAD: also defined in core
   }
 
 }
