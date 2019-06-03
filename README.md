@@ -1,4 +1,4 @@
-# FullCalendar Scheduler [![Build Status](https://travis-ci.org/fullcalendar/fullcalendar-scheduler.svg?branch=master)](https://travis-ci.org/fullcalendar/fullcalendar-scheduler)
+# FullCalendar Scheduler [![Build Status](https://travis-ci.com/fullcalendar/fullcalendar-scheduler.svg?branch=master)](https://travis-ci.com/fullcalendar/fullcalendar-scheduler)
 
 A premium add-on to [FullCalendar](http://fullcalendar.io/) for displaying events and resources.
 
