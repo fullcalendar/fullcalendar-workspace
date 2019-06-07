@@ -92,5 +92,6 @@ export default class ResourceApi {
   // NOTE: user can't modify these because Object.freeze was called in event-def parsing
   get eventClassNames(): string[] { return this._resource.ui.classNames }
   get extendedProps(): any { return this._resource.extendedProps }
+  get businessHours(): any { return this._resource.businessHoursProps }
 
 }
