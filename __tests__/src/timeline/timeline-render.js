@@ -1,4 +1,5 @@
 import { startOfDay } from '@fullcalendar/core'
+import lvLocale from '@fullcalendar/core/locales/lv'
 
 describe('timeline rendering', function() {
   pushOptions({
@@ -45,12 +46,12 @@ describe('timeline rendering', function() {
       defaultView: 'timelineWeek',
       slotDuration: '01:00',
       scrollTime: 0,
-      locale: 'lv'
+      locale: lvLocale
     })
 
     expect(
       $('.fc-head .fc-time-area th:first').attr('data-date')
-    ).toBe('2017-10-22T00:00:00')
+    ).toBe('2017-10-23T00:00:00') // start-of-week is a Monday, lv
   })
 
   it('call dayRender for each day', function() {

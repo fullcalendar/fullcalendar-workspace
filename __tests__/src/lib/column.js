@@ -1,6 +1,6 @@
-import { formatIsoDay } from 'fullcalendar/tests/automated/datelib/utils'
-import { getDayGridDowEls } from 'fullcalendar/tests/automated/lib/day-grid'
-import { getTimeGridDowEls } from 'fullcalendar/tests/automated/lib/time-grid'
+import { formatIsoDay } from 'package-tests/datelib/utils'
+import { getDayGridDowEls } from 'package-tests/lib/day-grid'
+import { getTimeGridDowEls } from 'package-tests/lib/time-grid'
 
 
 // date optional

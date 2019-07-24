@@ -1,4 +1,4 @@
-import { expectRenderRange } from 'fullcalendar/tests/automated/view-dates/ViewDateUtils'
+import { expectRenderRange } from 'package-tests/view-dates/ViewDateUtils'
 
 describe('timeline date range', function() {
 

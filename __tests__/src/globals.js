@@ -1,18 +1,13 @@
-import 'fullcalendar/tests/automated/globals'
-import InteractionPlugin from '@fullcalendar/interaction'
-import DayGridPlugin from '@fullcalendar/daygrid'
-import TimeGridPlugin from '@fullcalendar/timegrid'
-import ListPlugin from '@fullcalendar/list'
+
+import { DEFAULT_PLUGINS } from 'package-tests/globals'
+import './gpl-key'
+
 import TimelinePlugin from '@fullcalendar/timeline'
 import ResourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import ResourceDayGridPlugin from '@fullcalendar/resource-daygrid'
 import ResourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 
-const DEFAULT_PLUGINS = [
-  InteractionPlugin,
-  DayGridPlugin,
-  TimeGridPlugin,
-  ListPlugin,
+const MORE_DEFAULT_PLUGINS = [
   TimelinePlugin,
   ResourceTimelinePlugin,
   ResourceDayGridPlugin,
@@ -20,5 +15,5 @@ const DEFAULT_PLUGINS = [
 ]
 
 pushOptions({
-  plugins: DEFAULT_PLUGINS
+  plugins: DEFAULT_PLUGINS.concat(MORE_DEFAULT_PLUGINS)
 })

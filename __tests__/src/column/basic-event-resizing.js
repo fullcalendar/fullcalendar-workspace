@@ -1,6 +1,6 @@
-import { getRectCenter } from 'fullcalendar/tests/automated/lib/geom'
-import { getTrailingBoundingRect } from 'fullcalendar/tests/automated/lib/dom-geom'
-import { getDayGridDayEls } from 'fullcalendar/tests/automated/lib/day-grid'
+import { getRectCenter } from 'package-tests/lib/geom'
+import { getTrailingBoundingRect } from 'package-tests/lib/dom-geom'
+import { getDayGridDayEls } from 'package-tests/lib/day-grid'
 
 describe('dayGrid-view event resizing', function() {
   pushOptions({

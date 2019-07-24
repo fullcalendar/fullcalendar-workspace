@@ -1,5 +1,5 @@
-import { formatIsoWithoutTz, ensureDate } from 'fullcalendar/tests/automated/datelib/utils'
-import { getBoundingRect } from 'fullcalendar/tests/automated/lib/dom-geom'
+import { formatIsoWithoutTz, ensureDate } from 'package-tests/datelib/utils'
+import { getBoundingRect } from 'package-tests/lib/dom-geom'
 
 
 export function dragResourceTimelineEvent(eventEl, dropInfo) {

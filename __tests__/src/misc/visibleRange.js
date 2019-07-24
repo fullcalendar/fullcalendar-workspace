@@ -1,4 +1,4 @@
-import { parseIsoAsUtc } from 'fullcalendar/tests/automated/datelib/utils'
+import { parseIsoAsUtc } from 'package-tests/datelib/utils'
 
 describe('visibleRange', function() {
   pushOptions({

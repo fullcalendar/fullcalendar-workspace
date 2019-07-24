@@ -107,7 +107,7 @@ describe('timeline-view external element drag-n-drop', function() {
     let isDropCalled = false
 
     // get dragEl to the right of the calendar, parallel with body slots
-    const wrapEl = $('<div style="float:left;position:relative;width:500px">').appendTo('body')
+    const wrapEl = $('<div style="float:left;position:relative;width:900px">').appendTo('body')
     const calEl = $('<div>').appendTo(wrapEl)
     dragEl.appendTo(wrapEl)
       .css({

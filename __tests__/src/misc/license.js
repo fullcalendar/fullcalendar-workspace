@@ -22,11 +22,16 @@ describe('schedulerLicenseKey', function() {
           done()
         }
       })
+    })
+
+    it('is invalid when crap text when directly instantiating', function() {
 
       // just to see if it compiles with schedulerLicenseKey
       let calendar = new Calendar(document.getElementById('cal'), {
+        ...getCurrentOptions(),
         schedulerLicenseKey: '<%= versionReleaseDate %>'
       })
+
       expect(calendar).toBeTruthy()
     })
 
