@@ -1,0 +1,12 @@
+{
+  "title": "FullCalendar Scheduler",
+  "description": "A premium add-on to FullCalendar for displaying events and resources",
+  "homepage": "https://fullcalendar.io/scheduler",
+  "docs": "https://fullcalendar.io/docs/scheduler",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fullcalendar/fullcalendar-scheduler.git",
+    "homepage": "https://github.com/fullcalendar/fullcalendar-scheduler"
+  },
+  "license": "SEE LICENSE IN LICENSE.md"
+}
