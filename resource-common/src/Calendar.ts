@@ -1,49 +1,7 @@
-import { DateSpan, Calendar, View } from '@fullcalendar/core'
+import { DateSpan, Calendar } from '@fullcalendar/core'
 import ResourceApi from './api/ResourceApi'
 import { ResourceInput, parseResource, ResourceHash, Resource } from './structs/resource'
-import { ResourceSourceInput } from './structs/resource-source'
 
-declare module '@fullcalendar/core' {
-
-  interface DatePointApi {
-    resource?: ResourceApi
-  }
-
-  interface DateSpanApi {
-    resource?: ResourceApi
-  }
-
-  interface Calendar {
-    addResource(input: ResourceInput): ResourceApi
-    getResourceById(id: string): ResourceApi | null
-    getResources(): ResourceApi[]
-    getTopLevelResources(): ResourceApi[]
-    rerenderResources(): void
-    refetchResources(): void
-  }
-
-  interface OptionsInput {
-    schedulerLicenseKey?: string
-    resources?: ResourceSourceInput
-
-    // TODO: make these better
-    resourceLabelText?: string
-    resourceOrder?: any
-    filterResourcesWithEvents?: any
-    resourceText?: any
-    resourceGroupField?: any
-    resourceGroupText?: any
-    resourceAreaWidth?: any
-    resourceColumns?: any
-    resourcesInitiallyExpanded?: any
-    slotWidth?: any
-    datesAboveResources?: any
-    eventResourceEditable?: boolean
-    refetchResourcesOnNavigate?: boolean
-    resourceRender?(arg: { resource: ResourceApi, el: HTMLElement, view: View }): void // BAD: also defined in core
-  }
-
-}
 
 Calendar.prototype.addResource = function(this: Calendar, input: ResourceInput | ResourceApi, scrollTo = true) {
   let resourceHash: ResourceHash

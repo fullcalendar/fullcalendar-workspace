@@ -1,23 +1,10 @@
 import { Calendar, CalendarState, Action, DateRange } from '@fullcalendar/core'
-import { ResourceSource, ResourceSourceError } from '../structs/resource-source'
+import { ResourceSourceError } from '../structs/resource-source'
 import { ResourceHash, ResourceInput } from '../structs/resource'
 import reduceResourceSource from './resourceSource'
 import reduceResourceStore from './resourceStore'
-import { reduceResourceEntityExpansions, ResourceEntityExpansions } from './resourceEntityExpansions'
+import { reduceResourceEntityExpansions } from './resourceEntityExpansions'
 
-declare module '@fullcalendar/core' {
-  interface CalendarState {
-    resourceSource?: ResourceSource | null
-    resourceStore?: ResourceHash
-    resourceEntityExpansions?: ResourceEntityExpansions
-  }
-}
-
-declare module '@fullcalendar/core' {
-  interface Calendar {
-    dispatch(action: ResourceAction)
-  }
-}
 
 export type ResourceAction = Action |
   { type: 'FETCH_RESOURCE' } |

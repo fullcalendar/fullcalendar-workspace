@@ -1,12 +1,7 @@
 import { EventApi } from '@fullcalendar/core'
 import ResourceApi from './ResourceApi'
+import '../ambient'
 
-declare module '@fullcalendar/core' {
-  interface EventApi {
-    getResources: () => ResourceApi[]
-    setResources: (resources: (string | ResourceApi)[]) => void
-  }
-}
 
 EventApi.prototype.getResources = function(this: EventApi): ResourceApi[] {
   let calendar = this._calendar

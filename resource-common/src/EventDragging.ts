@@ -1,11 +1,5 @@
 import { EventMutation, Hit, EventDef, Calendar } from '@fullcalendar/core'
 
-declare module '@fullcalendar/core' {
-  interface EventMutation {
-    resourceMutation?: { matchResourceId: string, setResourceId: string }
-    // TODO: rename these to removeResourceId/addResourceId?
-  }
-}
 
 export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit, hit1: Hit) {
   let resource0 = hit0.dateSpan.resourceId

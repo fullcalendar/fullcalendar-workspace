@@ -1,11 +1,6 @@
 import { EventDef, refineProps } from '@fullcalendar/core'
+import '../ambient'
 
-declare module '@fullcalendar/core' {
-  interface EventDef {
-    resourceIds: string[]
-    resourceEditable: boolean
-  }
-}
 
 const RESOURCE_RELATED_PROPS = {
   resourceId: String,
