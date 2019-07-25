@@ -1,4 +1,6 @@
 {
+  "private": true,
+  "name": "fullcalendar-scheduler",
   "title": "FullCalendar Scheduler",
   "description": "A premium add-on to FullCalendar for displaying events and resources",
   "homepage": "https://fullcalendar.io/scheduler",
