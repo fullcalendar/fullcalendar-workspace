@@ -24,9 +24,14 @@ In the description of your [Pull Request][Using Pull Requests], please include r
 [Read about other ways to contribute &raquo;](http://fullcalendar.io/wiki/Contributing/)
 
 
-## What to edit
+## Development Setup
 
-When modifying files, please do not edit the generated or minified files in the `dist/` directory. Please edit the original `src/` files.
+This repo is not capable of building dist files on its own. You must develop in the [main fullcalendar repo](https://github.com/fullcalendar/fullcalendar), which is a monorepo that references this one via git submodules.
+
+
+## What to Edit
+
+When modifying files, please do not edit generated files in the `dist/` directories. Please edit the original files in the `src/` directories.
 
 
 [Codepen/JSFiddle]: http://fullcalendar.io/wiki/Reporting-Bugs/
