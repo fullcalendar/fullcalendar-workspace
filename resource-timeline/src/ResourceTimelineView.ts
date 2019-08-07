@@ -1,4 +1,4 @@
-import { ElementDragging, SplittableProps, memoizeRendering, PositionCache, Hit, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, DateProfile, applyStyleProp, PointerDragEvent } from '@fullcalendar/core'
+import { ElementDragging, SplittableProps, memoizeRendering, PositionCache, Hit, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, DateProfile, applyStyleProp, PointerDragEvent, Duration } from '@fullcalendar/core'
 import { ScrollJoiner, TimelineLane, StickyScroller, TimeAxis } from '@fullcalendar/timeline'
 import { ResourceHash, buildRowNodes, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc } from '@fullcalendar/resource-common'
 import GroupRow from './GroupRow'
@@ -548,8 +548,8 @@ export default class ResourceTimelineView extends View {
     }
   }
 
-  computeDateScroll(timeMs: number) {
-    return this.timeAxis.computeDateScroll(timeMs)
+  computeDateScroll(duration: Duration) {
+    return this.timeAxis.computeDateScroll(duration)
   }
 
   queryDateScroll() {

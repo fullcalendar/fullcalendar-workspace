@@ -1,4 +1,4 @@
-import { DateProfile, DateMarker, wholeDivideDurations, isInt, Component, ComponentContext, createDuration, startOfDay, greatestDurationDenominator, rangeContainsMarker } from '@fullcalendar/core'
+import { DateProfile, DateMarker, wholeDivideDurations, isInt, Component, ComponentContext, createDuration, startOfDay, greatestDurationDenominator, rangeContainsMarker, Duration } from '@fullcalendar/core'
 import HeaderBodyLayout from './HeaderBodyLayout'
 import TimelineHeader from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'
@@ -270,7 +270,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
   // Scrolling
   // ------------------------------------------------------------------------------------------
 
-  computeDateScroll(timeMs) {
+  computeDateScroll(duration: Duration) {
     let { dateEnv } = this
     let { dateProfile } = this.props
     let left = 0
@@ -279,7 +279,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
       left = this.dateToCoord(
         dateEnv.add(
           startOfDay(dateProfile.activeRange.start), // startOfDay needed?
-          createDuration(timeMs)
+          duration
         )
       )
 

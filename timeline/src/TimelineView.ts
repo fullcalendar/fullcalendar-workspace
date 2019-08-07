@@ -1,4 +1,4 @@
-import { Hit, View, ViewProps, ComponentContext, ViewSpec, DateProfileGenerator, DateProfile } from '@fullcalendar/core'
+import { Hit, View, ViewProps, ComponentContext, ViewSpec, DateProfileGenerator, DateProfile, Duration } from '@fullcalendar/core'
 import TimeAxis from './TimeAxis'
 import TimelineLane from './TimelineLane'
 
@@ -101,8 +101,8 @@ export default class TimelineView extends View {
   // Scroll System
   // ------------------------------------------------------------------------------------------
 
-  computeDateScroll(timeMs: number) {
-    return this.timeAxis.computeDateScroll(timeMs)
+  computeDateScroll(duration: Duration) {
+    return this.timeAxis.computeDateScroll(duration)
   }
 
   applyScroll(scroll, isResize) {
