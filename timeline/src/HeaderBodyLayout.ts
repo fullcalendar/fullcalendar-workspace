@@ -43,7 +43,7 @@ export default class HeaderBodyLayout {
   }
 
   queryHeadHeight() {
-    return this.headerScroller.enhancedScroll.canvas.contentEl.offsetHeight // flawed?
+    return this.headerScroller.enhancedScroll.canvas.contentEl.getBoundingClientRect().height
   }
 
 }

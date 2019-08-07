@@ -60,5 +60,5 @@ function isValidKey(key) {
 
 
 function isImmuneUrl(url) {
-  return /\w+\:\/\/fullcalendar\.io\/|\/demos\/[\w-]+\.html$/.test(url)
+  return /\w+\:\/\/fullcalendar\.io\/|\/examples\/[\w-]+\.html$/.test(url)
 }

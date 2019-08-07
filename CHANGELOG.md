@@ -1,4 +1,10 @@
 
+ALL FUTURE RELEASES
+-------------------
+The fullcalendar-scheduler changelog has been merged with the main changelog.
+Visit: https://github.com/fullcalendar/fullcalendar/blob/master/CHANGELOG.md
+
+
 v4.2.0 (2019-06-02)
 -------------------
 adjustments to internal options-mutation API for plugins

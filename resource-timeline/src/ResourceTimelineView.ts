@@ -134,7 +134,7 @@ export default class ResourceTimelineView extends View {
     this.setResourceAreaWidth(this.opt('resourceAreaWidth'))
     this.initResourceAreaWidthDragging()
 
-    this.miscHeight = this.el.offsetHeight
+    this.miscHeight = this.el.getBoundingClientRect().height
 
     this.spreadsheet = new Spreadsheet(
       this.context,
@@ -424,8 +424,8 @@ export default class ResourceTimelineView extends View {
     timeAxisHeadEl.style.height = ''
 
     let max = Math.max(
-      spreadsheetHeadEl.offsetHeight,
-      timeAxisHeadEl.offsetHeight
+      spreadsheetHeadEl.getBoundingClientRect().height,
+      timeAxisHeadEl.getBoundingClientRect().height
     )
 
     spreadsheetHeadEl.style.height =
