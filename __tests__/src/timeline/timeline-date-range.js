@@ -18,6 +18,22 @@ describe('timeline date range', function() {
     ).toEqualDate('2018-01-22') // a Monday
   })
 
+  // https://github.com/fullcalendar/fullcalendar/issues/4937
+  xit('can do day slotDuration when slotLabel is month', function() {
+    initCalendar({
+      defaultDate: '2019-05-16',
+      defaultView: 'timelineYear',
+      slotDuration: { days: 1 },
+      slotLabelInterval: { months: 1 }
+    })
+
+    let labelEls = $('.fc-head th[data-date]')
+    let slotEls = $('.fc-body .fc-slats td[data-date]')
+
+    expect(labelEls.length).toBe(12)
+    expect(slotEls.length).toBe(365)
+  })
+
   // https://github.com/fullcalendar/fullcalendar-scheduler/issues/525
   xit('can go back by a month', function() {
     initCalendar({
