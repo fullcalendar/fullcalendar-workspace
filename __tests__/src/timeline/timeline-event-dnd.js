@@ -45,6 +45,29 @@ describe('timeline-view event drag-n-drop', function() {
     })
   })
 
+  it('receives correct eventAllow args when switching date and resource', function(done) {
+    let calledEventAllow = false
+
+    initCalendar({
+      events: [
+        { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
+      ],
+      _eventsPositioned: oneCall(function() {
+        dragElTo($('.event0'), 'a', '2015-11-29T05:00:00', function() {
+          expect(calledEventAllow).toBe(true)
+          done()
+        })
+      }),
+      eventAllow(dropLocation, draggedEvent) {
+        calledEventAllow = true
+        if (!draggedEvent.start) {
+          debugger
+        }
+        expect(draggedEvent.start instanceof Date).toBe(true)
+      }
+    })
+  })
+
   it('allows switching date only', function(done) {
     let dropSpy
     initCalendar({
