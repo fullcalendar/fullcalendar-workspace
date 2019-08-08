@@ -33,17 +33,19 @@ export default class TimelineLaneEventRenderer extends FgEventRenderer {
         ' href="' + htmlEscape(eventDef.url) + '"' :
         '') +
       '>' +
-      '<div class="fc-content">' +
-        (timeText ?
+      (timeText ?
+        '<span class="fc-time-wrap">' +
           '<span class="fc-time">' +
             htmlEscape(timeText) +
-          '</span>'
-        :
-          '') +
+          '</span>' +
+        '</span>'
+      :
+        '') +
+      '<span class="fc-title-wrap">' +
         '<span class="fc-title fc-sticky">' +
           (eventDef.title ? htmlEscape(eventDef.title) : '&nbsp;') +
         '</span>' +
-      '</div>' +
+      '</span>' +
       (isResizableFromStart ?
         '<div class="fc-resizer fc-start-resizer"></div>' :
         '') +

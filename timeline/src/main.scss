@@ -263,71 +263,76 @@ TODO: figure out better styling
 
 .fc-timeline-event {
   position: absolute;
+  display: flex;
   border-radius: 0;
-  padding: 2px 0;
+  padding: 2px 1px;
   margin-bottom: 1px;
 }
 
 .fc-no-overlap .fc-timeline-event {
-  padding: 5px 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
   margin-bottom: 0;
 }
 
-/* don't overlap grid lines at the event's end */
-.fc-ltr .fc-timeline-event { margin-right: 1px }
-.fc-rtl .fc-timeline-event { margin-left: 1px }
-
-.fc-timeline-event .fc-time {
-  font-weight: bold;
-  padding: 0 1px;
+.fc-ltr .fc-timeline-event {
+  flex-direction: row;
+  margin-right: 1px; // don't overlap grid lines at the event's end
 }
 
-.fc-rtl .fc-timeline-event .fc-time {
-  display: inline-block; /* will force it on the other side */
+.fc-rtl .fc-timeline-event {
+  // inherits direction:rtl, which flex row respects
+  margin-left: 1px; // don't overlap grid lines at the event's end
 }
 
+.fc-timeline-event .fc-time-wrap {
+  flex-shrink: 0; // makes the title shrink instead
+  min-width: 0; // makes it okay to shrink past content
+}
+
+.fc-timeline-event .fc-title-wrap { // contains the sticky title
+  flex-grow: 1; // will fill available space
+  min-width: 0; // makes it okay to shrink past content
+}
+
+.fc-timeline-event .fc-time,
 .fc-timeline-event .fc-title {
-  padding: 0 3px;
-  display: inline-block;
+  display: inline-block; // necesssary for max-width
   vertical-align: top;
+  max-width: 100%; // constrain to available space
+  padding: 0 2px; // good for sticky
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
-          box-sizing: border-box;
-  max-width: 100%; // thus the border-box
+          box-sizing: border-box; // so that max-width includes padding
   white-space: nowrap;
   overflow: hidden;
 }
 
-.fc-ltr .fc-timeline-event.fc-not-start .fc-content,
-.fc-rtl .fc-timeline-event.fc-not-end .fc-content {
-  margin-left: 8px;
+.fc-timeline-event .fc-time {
+  font-weight: bold;
 }
 
-.fc-rtl .fc-timeline-event.fc-not-start .fc-content,
-.fc-ltr .fc-timeline-event.fc-not-end .fc-content {
-  margin-right: 8px;
-}
-
-.fc-timeline-event.fc-not-start .fc-content:before,
-.fc-timeline-event.fc-not-end .fc-content:after {
+.fc-timeline-event.fc-not-start:before,
+.fc-timeline-event.fc-not-end:after {
   content: "";
-  position: absolute;
-  top: 50%;
-  margin-top: -5px;
+  align-self: center;
+  width: 0;
+  height: 0;
+  margin: 0 1px;
   border: 5px solid #000;
   border-top-color: transparent;
   border-bottom-color: transparent;
   opacity: .5;
 }
 
-.fc-ltr .fc-timeline-event.fc-not-start .fc-content:before,
-.fc-rtl .fc-timeline-event.fc-not-end .fc-content:after {
+// pointing left
+.fc-ltr .fc-timeline-event.fc-not-start:before,
+.fc-rtl .fc-timeline-event.fc-not-end:after {
   border-left: 0;
-  left: -6px; // 2 from edge. can't use padding because of StickyScroller
 }
 
-.fc-rtl .fc-timeline-event.fc-not-start .fc-content:before,
-.fc-ltr .fc-timeline-event.fc-not-end .fc-content:after {
+// pointing right
+.fc-ltr .fc-timeline-event.fc-not-end:after,
+.fc-rtl .fc-timeline-event.fc-not-start:before {
   border-right: 0;
-  right: -6px; // 2 from edge
 }
