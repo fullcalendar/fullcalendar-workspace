@@ -1,6 +1,6 @@
 import { createPlugin } from '@fullcalendar/core'
 import './ambient'
-import { ResourceDataAdder, ResourceEventConfigAdder } from './View' // TODO: ResourceDataAdder should be own plugin
+import { ResourceDataAdder, ResourceEventConfigAdder, transformIsDraggable } from './View' // TODO: ResourceDataAdder should be own plugin
 import resourcesReducers from './reducers/resources'
 import { parseEventDef } from './structs/event'
 import { massageEventDragMutation, applyEventDefMutation, transformEventDrop } from './EventDragging'
@@ -21,6 +21,7 @@ import './resource-sources/resource-json-feed'
 export default createPlugin({
   reducers: [ resourcesReducers ],
   eventDefParsers: [ parseEventDef ],
+  isDraggableTransformers: [ transformIsDraggable ],
   eventDragMutationMassagers: [ massageEventDragMutation ],
   eventDefMutationAppliers: [ applyEventDefMutation ],
   dateSelectionTransformers: [ transformDateSelectionJoin ],

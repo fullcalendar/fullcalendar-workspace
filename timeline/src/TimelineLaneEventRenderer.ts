@@ -1,6 +1,6 @@
-import { EventDef, Calendar, FgEventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement, ComponentContext } from '@fullcalendar/core'
+import { FgEventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement, ComponentContext } from '@fullcalendar/core'
 import TimeAxis from './TimeAxis'
-// import { computeResourceEditable } from '@fullcalendar/resource-common' ... CAN'T HAVE THIS DEP! COPIED AND PASTED BELOW!
+
 
 export default class TimelineLaneEventRenderer extends FgEventRenderer {
 
@@ -16,12 +16,13 @@ export default class TimelineLaneEventRenderer extends FgEventRenderer {
   }
 
   renderSegHtml(seg, mirrorInfo) {
+    let { view } = this.context
     let eventRange = seg.eventRange
     let eventDef = eventRange.def
     let eventUi = eventRange.ui
-    let isDraggable = eventUi.startEditable || computeResourceEditable(eventDef, this.timeAxis.calendar)
-    let isResizableFromStart = seg.isStart && eventUi.durationEditable && this.context.options.eventResizableFromStart
-    let isResizableFromEnd = seg.isEnd && eventUi.durationEditable
+    let isDraggable = view.computeEventDraggable(eventDef, eventUi)
+    let isResizableFromStart = seg.isStart && view.computeEventStartResizable(eventDef, eventUi)
+    let isResizableFromEnd = seg.isEnd && view.computeEventEndResizable(eventDef, eventUi)
 
     let classes = this.getSegClasses(seg, isDraggable, isResizableFromStart || isResizableFromEnd, mirrorInfo)
     classes.unshift('fc-timeline-event', 'fc-h-event')
@@ -203,27 +204,4 @@ function computeOffsetForSeg(seg) {
 
 function timeRowSegsCollide(seg0, seg1) {
   return (seg0.left < seg1.right) && (seg0.right > seg1.left)
-}
-
-// HACK
-function computeResourceEditable(eventDef: EventDef, calendar: Calendar): boolean {
-  let { resourceEditable } = eventDef
-
-  if (resourceEditable == null) {
-    let source = eventDef.sourceId && calendar.state.eventSources[eventDef.sourceId]
-
-    if (source) {
-      resourceEditable = source.extendedProps.resourceEditable // used the Source::extendedProps hack
-    }
-
-    if (resourceEditable == null) {
-      resourceEditable = calendar.opt('eventResourceEditable')
-
-      if (resourceEditable == null) {
-        resourceEditable = true // TODO: use defaults system instead
-      }
-    }
-  }
-
-  return resourceEditable
 }

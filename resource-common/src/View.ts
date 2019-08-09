@@ -2,6 +2,7 @@ import { View, rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewSp
 import { ResourceHash } from './structs/resource'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
 import { __assign } from 'tslib'
+import { computeResourceEditable } from './EventDragging'
 
 
 // for when resource views need resource data
@@ -142,4 +143,20 @@ function injectResourceEventUi(origEventUi: EventUi, eventDef: EventDef, resourc
   parts.unshift(origEventUi)
 
   return combineEventUis(parts)
+}
+
+
+// for making sure events that have editable resources are always draggable in resource views
+
+export function transformIsDraggable(val: boolean, eventDef: EventDef, eventUi: EventUi, view: View) {
+
+  if (!val) {
+    if ((view.viewSpec.class as any).needsResourceData) {
+      if (computeResourceEditable(eventDef, view.calendar)) {
+        return true
+      }
+    }
+  }
+
+  return val
 }
