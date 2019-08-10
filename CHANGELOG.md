@@ -1,4 +1,16 @@
 
+v1.10.0 (2019-08-10)
+--------------------
+
+Compatible with FullCalendar 1.10.x.
+
+Moves jQuery and Moment to *peerDependencies*, meaning you must install them yourself:
+
+```
+npm install jquery moment
+```
+
+
 v1.9.4 (2018-03-27)
 -------------------
 
