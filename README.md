@@ -1,8 +1,14 @@
-# FullCalendar Scheduler [![Build Status](https://travis-ci.org/fullcalendar/fullcalendar-scheduler.svg?branch=master)](https://travis-ci.org/fullcalendar/fullcalendar-scheduler)
+
+# FullCalendar Scheduler
 
 A premium add-on to [FullCalendar](http://fullcalendar.io/) for displaying events and resources.
 
-- [Project website and demos](http://fullcalendar.io/scheduler)
-- [License](http://fullcalendar.io/scheduler/license)
-- [Changelog](CHANGELOG.md)
-- [Contributing](CONTRIBUTING.md)
+**This package is the 1.x version of Scheduler** (compatible with core 3.x). 4.x has since been released. It removes jquery/moment as dependencies, revamps the API, and breaks Scheduler's functionality into separate packages:
+
+- [@fullcalendar/resource-timeline](https://www.npmjs.com/package/@fullcalendar/resource-timeline)
+- [@fullcalendar/resource-timgrid](https://www.npmjs.com/package/@fullcalendar/resource-timegrid)
+- [@fullcalendar/resource-daygrid](https://www.npmjs.com/package/@fullcalendar/resource-daygrid)
+- [@fullcalendar/resource-common](https://www.npmjs.com/package/@fullcalendar/resource-common)
+- [@fullcalendar/timeline](https://www.npmjs.com/package/@fullcalendar/timeline)
+
+For more info [view the upgrade guide &raquo;](https://fullcalendar.io/docs/upgrading-from-v3)

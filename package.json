@@ -8,11 +8,13 @@
     "url": "https://github.com/fullcalendar/fullcalendar-scheduler.git"
   },
   "license": "SEE LICENSE IN LICENSE.md",
-  "copyright": "2018 Adam Shaw",
-  "dependencies": {
-    "fullcalendar": "~3.9.0",
+  "copyright": "2019 Adam Shaw",
+  "peerDependencies": {
     "jquery": "2 - 3",
     "moment": "^2.20.1"
+  },
+  "dependencies": {
+    "fullcalendar": "~3.10.0"
   },
   "version": "0.0.0",
   "releaseDate": "1970-01-01",
@@ -48,6 +50,7 @@
     "jasmine-core": "2.5.2",
     "jasmine-fixture": "^2.0.0",
     "jasmine-jquery": "^2.1.1",
+    "jquery": "2 - 3",
     "jquery-mockjax": "^2.3.0",
     "jquery-simulate": "github:jquery/jquery-simulate",
     "karma": "^1.1.1",
@@ -55,6 +58,7 @@
     "karma-phantomjs-launcher": "^1.0.1",
     "karma-sourcemap-loader": "^0.3.7",
     "native-promise-only": "^0.8.1",
+    "moment": "^2.20.1",
     "node-sass": "^4.8.3",
     "phantomjs-prebuilt": "^2.1.7",
     "sass-loader": "^6.0.7",
