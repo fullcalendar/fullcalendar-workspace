@@ -1,4 +1,4 @@
-import { Hit, View, ViewProps, ComponentContext, ViewSpec, DateProfileGenerator, DateProfile, Duration } from '@fullcalendar/core'
+import { Hit, View, ViewProps, ComponentContext, DateProfile, Duration } from '@fullcalendar/core'
 import TimeAxis from './TimeAxis'
 import TimelineLane from './TimelineLane'
 
@@ -8,29 +8,29 @@ export default class TimelineView extends View {
   timeAxis: TimeAxis
   lane: TimelineLane
 
-  constructor(context: ComponentContext, viewSpec: ViewSpec, dateProfileGenerator: DateProfileGenerator, parentEl: HTMLElement) {
-    super(context, viewSpec, dateProfileGenerator, parentEl)
+  setContext(context: ComponentContext) {
+    super.setContext(context)
 
     this.el.classList.add('fc-timeline')
 
-    if (this.opt('eventOverlap') === false) {
+    if (context.options.eventOverlap === false) {
       this.el.classList.add('fc-no-overlap')
     }
 
     this.el.innerHTML = this.renderSkeletonHtml()
 
     this.timeAxis = new TimeAxis(
-      this.context,
       this.el.querySelector('thead .fc-time-area'),
       this.el.querySelector('tbody .fc-time-area')
     )
+    this.timeAxis.setContext(context)
 
     this.lane = new TimelineLane(
-      this.context,
       this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.contentEl,
       this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.bgEl,
       this.timeAxis
     )
+    this.lane.setContext(context)
 
     context.calendar.registerInteractiveComponent(this, {
       el: this.timeAxis.slats.el
@@ -43,11 +43,11 @@ export default class TimelineView extends View {
 
     super.destroy()
 
-    this.calendar.unregisterInteractiveComponent(this)
+    this.context.calendar.unregisterInteractiveComponent(this)
   }
 
   renderSkeletonHtml() {
-    let { theme } = this
+    let { theme } = this.context
 
     return `<table class="` + theme.getClass('tableGrid') + `"> \
 <thead class="fc-head"> \
@@ -67,12 +67,13 @@ export default class TimelineView extends View {
     super.render(props) // flags for updateSize, addScroll
 
     this.timeAxis.receiveProps({
+      dateProfileGenerator: props.dateProfileGenerator,
       dateProfile: props.dateProfile
     })
 
     this.lane.receiveProps({
       ...props,
-      nextDayThreshold: this.nextDayThreshold
+      nextDayThreshold: this.context.nextDayThreshold
     })
   }
 
@@ -108,9 +109,10 @@ export default class TimelineView extends View {
   applyScroll(scroll, isResize) {
     super.applyScroll(scroll, isResize) // will call applyDateScroll
 
+    let { calendar } = this.context
+
     // avoid updating stickyscroll too often
     // TODO: repeat code as ResourceTimelineView::updateSize
-    let { calendar } = this
     if (isResize || calendar.isViewUpdated || calendar.isDatesUpdated || calendar.isEventsUpdated) {
 
       this.timeAxis.updateStickyScrollers()

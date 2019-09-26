@@ -1,4 +1,4 @@
-import { config, buildGotoAnchorHtml, computeVisibleDayRange, Duration, View, DateProfile, isSingleDay, addDays, wholeDivideDurations, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, htmlEscape } from '@fullcalendar/core'
+import { config, buildGotoAnchorHtml, computeVisibleDayRange, Duration, DateProfile, isSingleDay, addDays, wholeDivideDurations, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, htmlEscape, DateProfileGenerator } from '@fullcalendar/core'
 
 export interface TimelineDateProfile {
   labelInterval: Duration
@@ -57,25 +57,24 @@ const STOCK_SUB_DURATIONS = [ // from largest to smallest
 ]
 
 
-export function buildTimelineDateProfile(dateProfile: DateProfile, view: View): TimelineDateProfile {
-  let dateEnv = view.dateEnv
+export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: DateEnv, allOptions: any, dateProfileGenerator: DateProfileGenerator): TimelineDateProfile {
   let tDateProfile = {
-    labelInterval: queryDurationOption(view, 'slotLabelInterval'),
-    slotDuration: queryDurationOption(view, 'slotDuration')
+    labelInterval: queryDurationOption(allOptions, 'slotLabelInterval'),
+    slotDuration: queryDurationOption(allOptions, 'slotDuration')
   } as TimelineDateProfile
 
   validateLabelAndSlot(tDateProfile, dateProfile, dateEnv) // validate after computed grid duration
   ensureLabelInterval(tDateProfile, dateProfile, dateEnv)
   ensureSlotDuration(tDateProfile, dateProfile, dateEnv)
 
-  let input = view.opt('slotLabelFormat')
+  let input = allOptions.slotLabelFormat
   let rawFormats =
     Array.isArray(input) ?
       input
     : (input != null) ?
       [ input ]
     :
-      computeHeaderFormats(tDateProfile, dateProfile, dateEnv, view)
+      computeHeaderFormats(tDateProfile, dateProfile, dateEnv, allOptions)
 
   tDateProfile.headerFormats = rawFormats.map(function(rawFormat) {
     return createFormatter(rawFormat)
@@ -96,7 +95,7 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, view: View): 
   tDateProfile.emphasizeWeeks =
     isSingleDay(tDateProfile.slotDuration) &&
     currentRangeAs('weeks', dateProfile, dateEnv) >= 2 &&
-    !view.opt('businessHours')
+    !allOptions.businessHours
 
   /*
   console.log('label interval =', timelineView.labelInterval.humanize())
@@ -106,7 +105,7 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, view: View): 
   console.log('largeUnit', timelineView.largeUnit)
   */
 
-  let rawSnapDuration = view.opt('snapDuration')
+  let rawSnapDuration = allOptions.snapDuration
   let snapDuration
   let snapsPerSlot
 
@@ -148,7 +147,7 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, view: View): 
   let slotDates = []
   let date = normalizedStart
   while (date < normalizedEnd) {
-    if (isValidDate(date, tDateProfile, dateProfile, view)) {
+    if (isValidDate(date, tDateProfile, dateProfile, dateProfileGenerator)) {
       slotDates.push(date)
     }
     date = dateEnv.add(date, tDateProfile.slotDuration)
@@ -165,7 +164,7 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, view: View): 
 
   date = normalizedStart
   while (date < normalizedEnd) {
-    if (isValidDate(date, tDateProfile, dateProfile, view)) {
+    if (isValidDate(date, tDateProfile, dateProfile, dateProfileGenerator)) {
       snapIndex++
       snapDiffToIndex.push(snapIndex)
       snapIndexToDiff.push(snapDiff)
@@ -185,7 +184,7 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, view: View): 
   // more...
 
   tDateProfile.isWeekStarts = buildIsWeekStarts(tDateProfile, dateEnv)
-  tDateProfile.cellRows = buildCellRows(tDateProfile, dateEnv, view)
+  tDateProfile.cellRows = buildCellRows(tDateProfile, dateEnv, allOptions)
 
   return tDateProfile
 }
@@ -240,8 +239,8 @@ export function normalizeRange(range: DateRange, tDateProfile: TimelineDateProfi
 }
 
 
-export function isValidDate(date: DateMarker, tDateProfile: TimelineDateProfile, dateProfile: DateProfile, view: View) {
-  if (view.dateProfileGenerator.isHiddenDay(date)) {
+export function isValidDate(date: DateMarker, tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
+  if (dateProfileGenerator.isHiddenDay(date)) {
     return false
   } else if (tDateProfile.isTimeScale) {
     // determine if the time is within minTime/maxTime, which may have wacky values
@@ -256,8 +255,8 @@ export function isValidDate(date: DateMarker, tDateProfile: TimelineDateProfile,
 }
 
 
-function queryDurationOption(view: View, name) {
-  const input = view.opt(name)
+function queryDurationOption(allOptions: any, name: string) {
+  const input = allOptions[name]
   if (input != null) {
     return createDuration(input)
   }
@@ -393,12 +392,12 @@ function ensureSlotDuration(tDateProfile: TimelineDateProfile, dateProfile: Date
 }
 
 
-function computeHeaderFormats(tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateEnv: DateEnv, view: View) {
+function computeHeaderFormats(tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateEnv: DateEnv, allOptions: any) {
   let format1
   let format2
   const { labelInterval } = tDateProfile
   let unit = greatestDurationDenominator(labelInterval).unit
-  const weekNumbersVisible = view.opt('weekNumbers')
+  const weekNumbersVisible = allOptions.weekNumbers
   let format0 = (format1 = (format2 = null))
 
   // NOTE: weekNumber computation function wont work
@@ -539,7 +538,7 @@ function buildIsWeekStarts(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) 
 }
 
 
-function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, view: View) {
+function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, allOptions: any) {
   let slotDates = tDateProfile.slotDates
   let formats = tDateProfile.headerFormats
   let cellRows = formats.map((format) => []) // indexed by row,col
@@ -564,7 +563,7 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, view
       if (isSuperRow) {
         let text = dateEnv.format(date, format)
         if (!leadingCell || (leadingCell.text !== text)) {
-          newCell = buildCellObject(date, text, rowUnits[row], view)
+          newCell = buildCellObject(date, text, rowUnits[row], allOptions, dateEnv)
         } else {
           leadingCell.colspan += 1
         }
@@ -578,7 +577,7 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, view
           ))
         ) {
           let text = dateEnv.format(date, format)
-          newCell = buildCellObject(date, text, rowUnits[row], view)
+          newCell = buildCellObject(date, text, rowUnits[row], allOptions, dateEnv)
         } else {
           leadingCell.colspan += 1
         }
@@ -595,9 +594,10 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, view
 }
 
 
-function buildCellObject(date: DateMarker, text, rowUnit, view: View): TimelineHeaderCell {
+function buildCellObject(date: DateMarker, text, rowUnit, allOptions: any, dateEnv: DateEnv): TimelineHeaderCell {
   const spanHtml = buildGotoAnchorHtml(
-    view,
+    allOptions,
+    dateEnv,
     {
       date,
       type: rowUnit,

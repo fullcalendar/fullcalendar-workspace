@@ -19,8 +19,8 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
 
   private _renderCells = memoizeRendering(this.renderCells, this.unrenderCells)
 
-  constructor(context: ComponentContext, headParentEl: HTMLElement, bodyParentEl: HTMLElement) {
-    super(context)
+  constructor(headParentEl: HTMLElement, bodyParentEl: HTMLElement) {
+    super()
 
     this.layout = new HeaderBodyLayout(
       headParentEl,
@@ -28,16 +28,7 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
       'clipped-scroll'
     )
 
-    let headerEnhancedScroller = this.layout.headerScroller.enhancedScroll
     let bodyEnhancedScroller = this.layout.bodyScroller.enhancedScroll
-
-    this.header = new SpreadsheetHeader(
-      context,
-      headerEnhancedScroller.canvas.contentEl
-    )
-    this.header.emitter.on('colwidthchange', (colWidths: number[]) => {
-      this.applyColWidths(colWidths)
-    })
 
     bodyEnhancedScroller.canvas.contentEl
       .appendChild(
@@ -52,6 +43,20 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
 
     this.bodyColGroup = this.bodyContainerEl.querySelector('colgroup')
     this.bodyTbody = this.bodyContainerEl.querySelector('tbody')
+  }
+
+  setContext(context: ComponentContext) {
+    super.setContext(context)
+
+    let headerEnhancedScroller = this.layout.headerScroller.enhancedScroll
+
+    this.header = new SpreadsheetHeader(
+      headerEnhancedScroller.canvas.contentEl
+    )
+    this.header.setContext(context)
+    this.header.emitter.on('colwidthchange', (colWidths: number[]) => {
+      this.applyColWidths(colWidths)
+    })
   }
 
   destroy() {

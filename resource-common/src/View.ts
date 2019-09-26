@@ -16,12 +16,12 @@ export class ResourceDataAdder implements ViewPropsTransformer {
 
   filterResources = memoize(filterResources)
 
-  transform(viewProps: ViewProps, viewSpec: ViewSpec, calendarProps: CalendarComponentProps, view: View) {
+  transform(viewProps: ViewProps, viewSpec: ViewSpec, calendarProps: CalendarComponentProps, allOptions: any) {
     if ((viewSpec.class as any).needsResourceData) {
       return {
         resourceStore: this.filterResources(
           calendarProps.resourceStore,
-          view.opt('filterResourcesWithEvents'),
+          allOptions.filterResourcesWithEvents,
           calendarProps.eventStore,
           calendarProps.dateProfile.activeRange
         ),
@@ -152,7 +152,7 @@ export function transformIsDraggable(val: boolean, eventDef: EventDef, eventUi: 
 
   if (!val) {
     if ((view.viewSpec.class as any).needsResourceData) {
-      if (computeResourceEditable(eventDef, view.calendar)) {
+      if (computeResourceEditable(eventDef, view.context.calendar)) { // yuck
         return true
       }
     }

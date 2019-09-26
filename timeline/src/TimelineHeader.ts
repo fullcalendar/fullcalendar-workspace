@@ -8,16 +8,23 @@ export interface TimelineHeaderProps {
 
 export default class TimelineHeader extends Component<TimelineHeaderProps> {
 
+  parentEl: HTMLElement
   tableEl: HTMLElement
   slatColEls: HTMLElement[]
   innerEls: HTMLElement[]
 
-  constructor(context: ComponentContext, parentEl: HTMLElement) {
-    super(context)
+  constructor(parentEl: HTMLElement) {
+    super()
 
-    parentEl.appendChild(
+    this.parentEl = parentEl
+  }
+
+  setContext(context: ComponentContext) {
+    super.setContext(context)
+
+    this.parentEl.appendChild(
       this.tableEl = createElement('table', {
-        className: this.theme.getClass('tableGrid')
+        className: context.theme.getClass('tableGrid')
       })
     )
   }
@@ -33,7 +40,7 @@ export default class TimelineHeader extends Component<TimelineHeaderProps> {
   }
 
   renderDates(tDateProfile: TimelineDateProfile) {
-    let { dateEnv, theme } = this
+    let { dateEnv, theme } = this.context
     let { cellRows } = tDateProfile
     let lastRow = cellRows[cellRows.length - 1]
     let isChrono = asRoughMs(tDateProfile.labelInterval) > asRoughMs(tDateProfile.slotDuration)

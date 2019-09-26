@@ -1,4 +1,4 @@
-import { ElementDragging, SplittableProps, memoizeRendering, PositionCache, Hit, View, ViewSpec, createElement, parseFieldSpecs, ComponentContext, DateProfileGenerator, memoize, DateProfile, applyStyleProp, PointerDragEvent, Duration } from '@fullcalendar/core'
+import { ElementDragging, SplittableProps, memoizeRendering, PositionCache, Hit, View, createElement, parseFieldSpecs, ComponentContext, memoize, DateProfile, applyStyleProp, PointerDragEvent, Duration } from '@fullcalendar/core'
 import { ScrollJoiner, TimelineLane, StickyScroller, TimeAxis } from '@fullcalendar/timeline'
 import { ResourceHash, buildRowNodes, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc } from '@fullcalendar/resource-common'
 import GroupRow from './GroupRow'
@@ -48,18 +48,19 @@ export default class ResourceTimelineView extends View {
   private _updateHasNesting = memoizeRendering(this.updateHasNesting)
 
 
-  constructor(context: ComponentContext, viewSpec: ViewSpec, dateProfileGenerator: DateProfileGenerator, parentEl: HTMLElement) {
-    super(context, viewSpec, dateProfileGenerator, parentEl)
+  setContext(context: ComponentContext) {
+    super.setContext(context)
 
-    let allColSpecs = this.opt('resourceColumns') || []
-    let labelText = this.opt('resourceLabelText') // TODO: view.override
+    let { options, calendar } = context
+    let allColSpecs = options.resourceColumns || []
+    let labelText = options.resourceLabelText // TODO: view.override
     let defaultLabelText = 'Resources' // TODO: view.defaults
     let superHeaderText = null
 
     if (!allColSpecs.length) {
       allColSpecs.push({
         labelText: labelText || defaultLabelText,
-        text: buildResourceTextFunc(this.opt('resourceText'), this.calendar)
+        text: buildResourceTextFunc(options.resourceText, calendar)
       })
     } else {
       superHeaderText = labelText
@@ -85,18 +86,18 @@ export default class ResourceTimelineView extends View {
       groupSpecs = groupColSpecs
       isVGrouping = true
     } else {
-      const hGroupField = this.opt('resourceGroupField')
+      const hGroupField = options.resourceGroupField
       if (hGroupField) {
         isHGrouping = true
         groupSpecs.push({
           field: hGroupField,
-          text: this.opt('resourceGroupText'),
-          render: this.opt('resourceGroupRender')
+          text: options.resourceGroupText,
+          render: options.resourceGroupRender
         })
       }
     }
 
-    const allOrderSpecs = parseFieldSpecs(this.opt('resourceOrder'))
+    const allOrderSpecs = parseFieldSpecs(options.resourceOrder)
     const plainOrderSpecs = []
 
     for (let orderSpec of allOrderSpecs) {
@@ -124,40 +125,40 @@ export default class ResourceTimelineView extends View {
 
     this.el.classList.add('fc-timeline')
 
-    if (this.opt('eventOverlap') === false) {
+    if (options.eventOverlap === false) {
       this.el.classList.add('fc-no-overlap')
     }
 
     this.el.innerHTML = this.renderSkeletonHtml()
 
     this.resourceAreaHeadEl = this.el.querySelector('thead .fc-resource-area')
-    this.setResourceAreaWidth(this.opt('resourceAreaWidth'))
+    this.setResourceAreaWidth(options.resourceAreaWidth)
     this.initResourceAreaWidthDragging()
 
     this.miscHeight = this.el.getBoundingClientRect().height
 
     this.spreadsheet = new Spreadsheet(
-      this.context,
       this.resourceAreaHeadEl,
       this.el.querySelector('tbody .fc-resource-area')
     )
+    this.spreadsheet.setContext(context)
 
     this.timeAxis = new TimeAxis(
-      this.context,
       this.el.querySelector('thead .fc-time-area'),
       this.el.querySelector('tbody .fc-time-area')
     )
+    this.timeAxis.setContext(context)
 
     let timeAxisRowContainer = createElement('div', { className: 'fc-rows' }, '<table><tbody /></table>')
     this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.contentEl.appendChild(timeAxisRowContainer)
     this.timeAxisTbody = timeAxisRowContainer.querySelector('tbody')
 
     this.lane = new TimelineLane(
-      this.context,
       null,
       this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.bgEl,
       this.timeAxis
     )
+    this.lane.setContext(context)
 
     this.bodyScrollJoiner = new ScrollJoiner('vertical', [
       this.spreadsheet.layout.bodyScroller,
@@ -167,7 +168,7 @@ export default class ResourceTimelineView extends View {
     // after scrolljoiner
     this.spreadsheetBodyStickyScroller = new StickyScroller(
       this.spreadsheet.layout.bodyScroller.enhancedScroll,
-      this.isRtl,
+      context.isRtl,
       true // isVertical
     )
 
@@ -178,13 +179,14 @@ export default class ResourceTimelineView extends View {
 
     // Component...
 
-    context.calendar.registerInteractiveComponent(this, {
+    calendar.registerInteractiveComponent(this, {
       el: this.timeAxis.slats.el
     })
   }
 
+
   renderSkeletonHtml() {
-    let { theme } = this
+    let { theme } = this.context
 
     return `<table class="` + theme.getClass('tableGrid') + `"> \
 <thead class="fc-head"> \
@@ -207,10 +209,12 @@ export default class ResourceTimelineView extends View {
   render(props: ResourceViewProps) {
     super.render(props)
 
+    let { context } = this
     let splitProps = this.splitter.splitProps(props)
     let hasResourceBusinessHours = this.hasResourceBusinessHours(props.resourceStore)
 
     this.timeAxis.receiveProps({
+      dateProfileGenerator: props.dateProfileGenerator,
       dateProfile: props.dateProfile
     })
 
@@ -218,7 +222,7 @@ export default class ResourceTimelineView extends View {
     this.lane.receiveProps({
       ...splitProps[''],
       dateProfile: props.dateProfile,
-      nextDayThreshold: this.nextDayThreshold,
+      nextDayThreshold: context.nextDayThreshold,
       businessHours: hasResourceBusinessHours ? null : props.businessHours
     })
 
@@ -228,7 +232,7 @@ export default class ResourceTimelineView extends View {
       this.orderSpecs,
       this.isVGrouping,
       props.resourceEntityExpansions,
-      this.opt('resourcesInitiallyExpanded')
+      context.options.resourcesInitiallyExpanded
     )
 
     this._updateHasNesting(this.hasNesting(newRowNodes))
@@ -324,22 +328,28 @@ export default class ResourceTimelineView extends View {
     timeAxisNext: HTMLElement
   ) {
     if ((node as GroupNode).group) {
-      return new GroupRow(
-        this.context,
+
+      let groupRow = new GroupRow(
         spreadsheetTbody,
         spreadsheetNext,
         timeAxisTbody,
         timeAxisNext
       )
+      groupRow.setContext(this.context)
+      return groupRow
+
     } else if ((node as ResourceNode).resource) {
-      return new ResourceRow(
-        this.context,
+
+      let groupRow = new ResourceRow(
         spreadsheetTbody,
         spreadsheetNext,
         timeAxisTbody,
         timeAxisNext,
         this.timeAxis
       )
+      groupRow.setContext(this.context)
+      return groupRow
+
     }
   }
 
@@ -348,7 +358,7 @@ export default class ResourceTimelineView extends View {
     fallbackBusinessHours,
     splitProps: { [resourceId: string]: SplittableProps }
   ) {
-    let { rowNodes, rowComponents } = this
+    let { rowNodes, rowComponents, context } = this
 
     for (let i = 0; i < rowNodes.length; i++) {
       let rowNode = rowNodes[i]
@@ -367,7 +377,7 @@ export default class ResourceTimelineView extends View {
         ;(rowComponent as ResourceRow).receiveProps({
           ...splitProps[resource.id],
           dateProfile,
-          nextDayThreshold: this.nextDayThreshold,
+          nextDayThreshold: context.nextDayThreshold,
           businessHours: resource.businessHours || fallbackBusinessHours,
           colSpecs: this.colSpecs,
           id: rowNode.id,
@@ -384,7 +394,7 @@ export default class ResourceTimelineView extends View {
   updateSize(isResize, viewHeight, isAuto) {
     // FYI: this ordering is really important
 
-    let { calendar } = this
+    let { calendar } = this.context
 
     let isBaseSizing = isResize || calendar.isViewUpdated || calendar.isDatesUpdated || calendar.isEventsUpdated
 
@@ -499,7 +509,7 @@ export default class ResourceTimelineView extends View {
 
     super.destroy()
 
-    this.calendar.unregisterInteractiveComponent(this)
+    this.context.calendar.unregisterInteractiveComponent(this)
   }
 
 
@@ -664,11 +674,13 @@ export default class ResourceTimelineView extends View {
   }
 
   initResourceAreaWidthDragging() {
+    let { calendar, isRtl } = this.context
+
     let resourceAreaDividerEls = Array.prototype.slice.call(
       this.el.querySelectorAll('.fc-col-resizer')
     )
 
-    let ElementDraggingImpl = this.calendar.pluginSystem.hooks.elementDraggingImpl
+    let ElementDraggingImpl = calendar.pluginSystem.hooks.elementDraggingImpl
 
     if (ElementDraggingImpl) {
       this.resourceAreaWidthDraggings = resourceAreaDividerEls.map((el: HTMLElement) => {
@@ -685,7 +697,7 @@ export default class ResourceTimelineView extends View {
         })
 
         dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
-          let newWidth = dragStartWidth + pev.deltaX * (this.isRtl ? -1 : 1)
+          let newWidth = dragStartWidth + pev.deltaX * (isRtl ? -1 : 1)
           newWidth = Math.max(newWidth, MIN_RESOURCE_AREA_WIDTH)
           newWidth = Math.min(newWidth, viewWidth - MIN_RESOURCE_AREA_WIDTH)
           this.setResourceAreaWidth(newWidth)

@@ -1,4 +1,7 @@
-import { FgEventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement, ComponentContext } from '@fullcalendar/core'
+import {
+  FgEventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement, ComponentContext,
+  computeEventDraggable, computeEventStartResizable, computeEventEndResizable
+} from '@fullcalendar/core'
 import TimeAxis from './TimeAxis'
 
 
@@ -16,13 +19,13 @@ export default class TimelineLaneEventRenderer extends FgEventRenderer {
   }
 
   renderSegHtml(seg, mirrorInfo) {
-    let { view } = this.context
+    let { context } = this
     let eventRange = seg.eventRange
     let eventDef = eventRange.def
     let eventUi = eventRange.ui
-    let isDraggable = view.computeEventDraggable(eventDef, eventUi)
-    let isResizableFromStart = seg.isStart && view.computeEventStartResizable(eventDef, eventUi)
-    let isResizableFromEnd = seg.isEnd && view.computeEventEndResizable(eventDef, eventUi)
+    let isDraggable = computeEventDraggable(context, eventDef, eventUi)
+    let isResizableFromStart = seg.isStart && computeEventStartResizable(context, eventDef, eventUi)
+    let isResizableFromEnd = seg.isEnd && computeEventEndResizable(context, eventDef, eventUi)
 
     let classes = this.getSegClasses(seg, isDraggable, isResizableFromStart || isResizableFromEnd, mirrorInfo)
     classes.unshift('fc-timeline-event', 'fc-h-event')

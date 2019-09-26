@@ -1,4 +1,4 @@
-import { ComponentContext, ViewSpec, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile } from '@fullcalendar/core'
+import { ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile } from '@fullcalendar/core'
 import { AbstractDayGridView, buildBasicDayTable } from '@fullcalendar/daygrid'
 import { ResourceDayHeader, ResourceDayTable, DayResourceTable, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
 import ResourceDayGrid from './ResourceDayGrid'
@@ -15,24 +15,20 @@ export default class ResourceDayGridView extends AbstractDayGridView {
   private flattenResources = memoize(flattenResources)
   private buildResourceDayTable = memoize(buildResourceDayTable)
 
-  constructor(
-    context: ComponentContext,
-    viewSpec: ViewSpec,
-    dateProfileGenerator: DateProfileGenerator,
-    parentEl: HTMLElement
-  ) {
-    super(context, viewSpec, dateProfileGenerator, parentEl)
+  setContext(context: ComponentContext) {
+    super.setContext(context)
 
-    this.resourceOrderSpecs = parseFieldSpecs(this.opt('resourceOrder'))
+    this.resourceOrderSpecs = parseFieldSpecs(context.options.resourceOrder)
 
-    if (this.opt('columnHeader')) {
+    if (context.options.columnHeader) {
       this.header = new ResourceDayHeader(
-        this.context,
         this.el.querySelector('.fc-head-container')
       )
+      this.header.setContext(context)
     }
 
-    this.resourceDayGrid = new ResourceDayGrid(context, this.dayGrid)
+    this.resourceDayGrid = new ResourceDayGrid(this.dayGrid)
+    this.resourceDayGrid.setContext(context)
   }
 
   destroy() {
@@ -48,12 +44,14 @@ export default class ResourceDayGridView extends AbstractDayGridView {
   render(props: ResourceViewProps) {
     super.render(props) // for flags for updateSize
 
+    let { options, nextDayThreshold } = this.context
+
     let resources = this.flattenResources(props.resourceStore, this.resourceOrderSpecs)
     let resourceDayTable = this.buildResourceDayTable(
-      this.props.dateProfile,
-      this.dateProfileGenerator,
+      props.dateProfile,
+      props.dateProfileGenerator,
       resources,
-      this.opt('datesAboveResources')
+      options.datesAboveResources
     )
 
     if (this.header) {
@@ -77,7 +75,7 @@ export default class ResourceDayGridView extends AbstractDayGridView {
       eventDrag: props.eventDrag,
       eventResize: props.eventResize,
       isRigid: this.hasRigidRows(),
-      nextDayThreshold: this.nextDayThreshold
+      nextDayThreshold
     })
   }
 

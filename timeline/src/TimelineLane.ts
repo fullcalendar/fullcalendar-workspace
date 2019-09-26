@@ -23,6 +23,7 @@ export interface TimelineLaneProps {
 
 export default class TimelineLane extends DateComponent<TimelineLaneProps> {
 
+  fgContainerEl: HTMLElement
   timeAxis: TimeAxis
 
   private slicer = new TimelineLaneSlicer()
@@ -35,8 +36,18 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
   private renderEventResize = memoizeRendering(this._renderEventResize, this._unrenderEventResize)
 
 
-  constructor(context: ComponentContext, fgContainerEl: HTMLElement, bgContainerEl: HTMLElement, timeAxis: TimeAxis) {
-    super(context, bgContainerEl) // should el be bgContainerEl???
+  constructor(fgContainerEl: HTMLElement, bgContainerEl: HTMLElement, timeAxis: TimeAxis) {
+    super(bgContainerEl)
+
+    this.fgContainerEl = fgContainerEl
+    this.timeAxis = timeAxis
+  }
+
+  setContext(context: ComponentContext) {
+    super.setContext(context)
+
+    let bgContainerEl = this.el
+    let { timeAxis, fgContainerEl } = this
 
     let fillRenderer = this.fillRenderer = new TimelineLaneFillRenderer(context, bgContainerEl, timeAxis)
     let eventRenderer = this.eventRenderer = new TimelineLaneEventRenderer(context, fgContainerEl, timeAxis)
@@ -67,8 +78,6 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
       eventRenderer.unselectByInstanceId.bind(eventRenderer),
       [ this.renderFgEvents ]
     )
-
-    this.timeAxis = timeAxis
   }
 
   render(props: TimelineLaneProps) {
@@ -154,8 +163,9 @@ class TimelineLaneSlicer extends Slicer<TimelineLaneSeg, [TimeAxis]> {
 
   sliceRange(origRange: DateRange, timeAxis: TimeAxis): TimelineLaneSeg[] {
     let { tDateProfile } = timeAxis
-    let dateProfile = timeAxis.props.dateProfile
-    let normalRange = normalizeRange(origRange, tDateProfile, timeAxis.dateEnv)
+    let { dateProfile, dateProfileGenerator } = timeAxis.props
+    let { dateEnv } = timeAxis.context
+    let normalRange = normalizeRange(origRange, tDateProfile, dateEnv)
     let segs: TimelineLaneSeg[] = []
 
     // protect against when the span is entirely in an invalid date region
@@ -168,8 +178,8 @@ class TimelineLaneSlicer extends Slicer<TimelineLaneSeg, [TimeAxis]> {
         segs.push({
           start: slicedRange.start,
           end: slicedRange.end,
-          isStart: slicedRange.start.valueOf() === normalRange.start.valueOf() && isValidDate(slicedRange.start, tDateProfile, dateProfile, timeAxis.view),
-          isEnd: slicedRange.end.valueOf() === normalRange.end.valueOf() && isValidDate(addMs(slicedRange.end, -1), tDateProfile, dateProfile, timeAxis.view)
+          isStart: slicedRange.start.valueOf() === normalRange.start.valueOf() && isValidDate(slicedRange.start, tDateProfile, dateProfile, dateProfileGenerator),
+          isEnd: slicedRange.end.valueOf() === normalRange.end.valueOf() && isValidDate(addMs(slicedRange.end, -1), tDateProfile, dateProfile, dateProfileGenerator)
         })
       }
     }

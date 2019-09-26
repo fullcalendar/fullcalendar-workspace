@@ -1,4 +1,4 @@
-import { isInt, findElements, createElement, findChildren, PositionCache, removeElement, getDayClasses, Component, ComponentContext, DateProfile, multiplyDuration } from '@fullcalendar/core'
+import { isInt, findElements, createElement, findChildren, PositionCache, removeElement, getDayClasses, Component, DateProfile, multiplyDuration } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 export interface TimelineSlatsProps {
@@ -15,8 +15,8 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
   outerCoordCache: PositionCache
   innerCoordCache: PositionCache
 
-  constructor(context: ComponentContext, parentEl: HTMLElement) {
-    super(context)
+  constructor(parentEl: HTMLElement) {
+    super()
 
     parentEl.appendChild(
       this.el = createElement('div', { className: 'fc-slats' })
@@ -34,7 +34,7 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
   }
 
   renderDates(tDateProfile: TimelineDateProfile) {
-    let { theme, view, dateEnv } = this
+    let { calendar, view, theme, dateEnv } = this.context
     let { slotDates, isWeekStarts } = tDateProfile
 
     let html =
@@ -60,7 +60,7 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
     this.slatEls = findElements(this.el, 'td')
 
     for (let i = 0; i < slotDates.length; i++) {
-      view.publiclyTrigger('dayRender', [
+      calendar.publiclyTrigger('dayRender', [
         {
           date: dateEnv.toDate(slotDates[i]),
           el: this.slatEls[i],
@@ -87,7 +87,7 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
   }
 
   slatCellHtml(date, isEm, tDateProfile: TimelineDateProfile) {
-    let { theme, dateEnv } = this
+    let { theme, dateEnv } = this.context
     let classes
 
     if (tDateProfile.isTimeScale) {
@@ -124,21 +124,22 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
 
   positionToHit(leftPosition) {
     let { outerCoordCache } = this
+    let { dateEnv, isRtl } = this.context
     let { tDateProfile } = this.props
     let slatIndex = outerCoordCache.leftToIndex(leftPosition)
 
     if (slatIndex != null) {
       // somewhat similar to what TimeGrid does. consolidate?
       let slatWidth = outerCoordCache.getWidth(slatIndex)
-      let partial = this.isRtl ?
+      let partial = isRtl ?
         (outerCoordCache.rights[slatIndex] - leftPosition) / slatWidth :
         (leftPosition - outerCoordCache.lefts[slatIndex]) / slatWidth
       let localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot)
-      let start = this.dateEnv.add(
+      let start = dateEnv.add(
         tDateProfile.slotDates[slatIndex],
         multiplyDuration(tDateProfile.snapDuration, localSnapIndex)
       )
-      let end = this.dateEnv.add(start, tDateProfile.snapDuration)
+      let end = dateEnv.add(start, tDateProfile.snapDuration)
 
       return {
         dateSpan: {

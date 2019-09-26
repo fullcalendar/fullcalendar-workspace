@@ -1,4 +1,4 @@
-import { removeElement, Component, ComponentContext } from '@fullcalendar/core'
+import { removeElement, Component } from '@fullcalendar/core'
 
 export default abstract class Row<PropsType> extends Component<PropsType> {
 
@@ -8,13 +8,12 @@ export default abstract class Row<PropsType> extends Component<PropsType> {
   isSizeDirty: boolean = false
 
   constructor(
-    context: ComponentContext,
     spreadsheetParent: HTMLElement,
     spreadsheetNextSibling: HTMLElement,
     timeAxisParent: HTMLElement,
     timeAxisNextSibling: HTMLElement
   ) {
-    super(context)
+    super()
 
     spreadsheetParent.insertBefore(
       this.spreadsheetTr = document.createElement('tr'),

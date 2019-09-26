@@ -108,7 +108,7 @@ export default class GroupRow extends Row<GroupRowProps> {
   onExpanderClick = (ev: UIEvent) => {
     let { props } = this
 
-    this.calendar.dispatch({
+    this.context.calendar.dispatch({
       type: 'SET_RESOURCE_ENTITY_EXPANDED',
       id: props.id,
       isExpanded: !props.isExpanded

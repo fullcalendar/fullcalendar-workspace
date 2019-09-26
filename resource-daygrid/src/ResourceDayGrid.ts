@@ -24,10 +24,14 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
   private slicers: { [resourceId: string]: DayGridSlicer } = {}
   private joiner = new ResourceDayGridJoiner()
 
-  constructor(context: ComponentContext, dayGrid: DayGrid) {
-    super(context, dayGrid.el)
+  constructor(dayGrid: DayGrid) {
+    super(dayGrid.el)
 
     this.dayGrid = dayGrid
+  }
+
+  setContext(context: ComponentContext) {
+    super.setContext(context)
 
     context.calendar.registerInteractiveComponent(this, {
       el: this.dayGrid.el
@@ -37,7 +41,7 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
   destroy() {
     super.destroy()
 
-    this.calendar.unregisterInteractiveComponent(this)
+    this.context.calendar.unregisterInteractiveComponent(this)
   }
 
   render(props: ResourceDayGridProps) {

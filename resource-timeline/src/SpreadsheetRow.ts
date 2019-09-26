@@ -1,4 +1,4 @@
-import { htmlToElement, htmlEscape, createElement, Component, ComponentContext, memoizeRendering } from '@fullcalendar/core'
+import { htmlToElement, htmlEscape, createElement, Component, memoizeRendering } from '@fullcalendar/core'
 import { Resource, ResourceApi, buildResourceFields, buildResourceTextFunc } from '@fullcalendar/resource-common'
 import { updateExpanderIcon, clearExpanderIcon, updateTrResourceId } from './render-utils'
 
@@ -22,8 +22,8 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   private _updateTrResourceId = memoizeRendering(updateTrResourceId, null, [ this._renderRow ])
   private _updateExpanderIcon = memoizeRendering(this.updateExpanderIcon, null, [ this._renderRow ])
 
-  constructor(context: ComponentContext, tr: HTMLElement) {
-    super(context)
+  constructor(tr: HTMLElement) {
+    super()
 
     this.tr = tr
   }
@@ -41,7 +41,8 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   }
 
   renderRow(resource: Resource, rowSpans: number[], depth: number, colSpecs) {
-    let { tr, theme, calendar, view } = this
+    let { calendar, view, theme } = this.context
+    let { tr } = this
     let resourceFields = buildResourceFields(resource) // slightly inefficient. already done up the call stack
     let mainTd
 
@@ -102,7 +103,7 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
     this.expanderIconEl = tr.querySelector('.fc-expander-space .fc-icon')
 
     // wait until very end
-    view.publiclyTrigger('resourceRender', [
+    calendar.publiclyTrigger('resourceRender', [
       {
         resource: new ResourceApi(calendar, resource),
         el: mainTd,
@@ -141,7 +142,7 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
   onExpanderClick = (ev: UIEvent) => {
     let { props } = this
 
-    this.calendar.dispatch({
+    this.context.calendar.dispatch({
       type: 'SET_RESOURCE_ENTITY_EXPANDED',
       id: props.id,
       isExpanded: !props.isExpanded

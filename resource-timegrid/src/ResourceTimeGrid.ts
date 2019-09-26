@@ -24,10 +24,14 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
   private slicers: { [resourceId: string]: TimeGridSlicer } = {}
   private joiner = new ResourceTimeGridJoiner()
 
-  constructor(context: ComponentContext, timeGrid: TimeGrid) {
-    super(context, timeGrid.el)
+  constructor(timeGrid: TimeGrid) {
+    super(timeGrid.el)
 
     this.timeGrid = timeGrid
+  }
+
+  setContext(context: ComponentContext) {
+    super.setContext(context)
 
     context.calendar.registerInteractiveComponent(this, {
       el: this.timeGrid.el
@@ -35,14 +39,15 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
   }
 
   destroy() {
-    this.calendar.unregisterInteractiveComponent(this)
+    this.context.calendar.unregisterInteractiveComponent(this)
   }
 
   render(props: ResourceTimeGridProps) {
     let { timeGrid } = this
+    let { dateEnv } = this.context
     let { dateProfile, resourceDayTable } = props
 
-    let dayRanges = this.dayRanges = this.buildDayRanges(resourceDayTable.dayTable, dateProfile, this.dateEnv)
+    let dayRanges = this.dayRanges = this.buildDayRanges(resourceDayTable.dayTable, dateProfile, dateEnv)
     let splitProps = this.splitter.splitProps(props)
 
     this.slicers = mapHash(splitProps, (split, resourceId) => {

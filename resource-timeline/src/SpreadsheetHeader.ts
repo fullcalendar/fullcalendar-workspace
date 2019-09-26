@@ -10,6 +10,7 @@ const COL_MIN_WIDTH = 30
 
 export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps> {
 
+  parentEl: HTMLElement
   tableEl: HTMLElement
   resizerEls: HTMLElement[]
   resizables: ElementDragging[] = []
@@ -18,12 +19,18 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
   colWidths: number[] = []
   emitter: EmitterMixin = new EmitterMixin()
 
-  constructor(context: ComponentContext, parentEl: HTMLElement) {
-    super(context)
+  constructor(parentEl: HTMLElement) {
+    super()
 
-    parentEl.appendChild(
+    this.parentEl = parentEl
+  }
+
+  setContext(context: ComponentContext) {
+    super.setContext(context)
+
+    this.parentEl.appendChild(
       this.tableEl = createElement('table', {
-        className: this.theme.getClass('tableGrid')
+        className: context.theme.getClass('tableGrid')
       })
     )
   }
@@ -39,7 +46,7 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
   }
 
   render(props: SpreadsheetHeaderProps) {
-    let { theme } = this
+    let { theme } = this.context
     let { colSpecs } = props
     let html =
       '<colgroup>' + props.colTags + '</colgroup>' +
@@ -103,7 +110,8 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
   }
 
   initColResizing() {
-    let ElementDraggingImpl = this.calendar.pluginSystem.hooks.elementDraggingImpl
+    let { calendar, isRtl } = this.context
+    let ElementDraggingImpl = calendar.pluginSystem.hooks.elementDraggingImpl
 
     if (ElementDraggingImpl) {
       this.resizables = this.resizerEls.map((handleEl: HTMLElement, colIndex) => {
@@ -118,7 +126,7 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
         })
 
         dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
-          this.colWidths[colIndex] = Math.max(startWidth + pev.deltaX * (this.isRtl ? -1 : 1), COL_MIN_WIDTH)
+          this.colWidths[colIndex] = Math.max(startWidth + pev.deltaX * (isRtl ? -1 : 1), COL_MIN_WIDTH)
           this.emitter.trigger('colwidthchange', this.colWidths)
         })
 

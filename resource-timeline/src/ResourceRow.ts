@@ -29,28 +29,36 @@ export default class ResourceRow extends Row<ResourceRowProps> {
 
   innerContainerEl: HTMLElement
 
+  timeAxis: TimeAxis
   spreadsheetRow: SpreadsheetRow
   lane: TimelineLane
 
   private _updateTrResourceId = memoizeRendering(updateTrResourceId)
 
-  constructor(context: ComponentContext, a, b, c, d, timeAxis: TimeAxis) {
-    super(context, a, b, c, d)
+  constructor(a, b, c, d, timeAxis: TimeAxis) {
+    super(a, b, c, d)
 
-    this.spreadsheetRow = new SpreadsheetRow(context, this.spreadsheetTr)
+    this.timeAxis = timeAxis
+  }
+
+  setContext(context: ComponentContext) {
+    super.setContext(context)
+
+    this.spreadsheetRow = new SpreadsheetRow(this.spreadsheetTr)
+    this.spreadsheetRow.setContext(context)
 
     this.timeAxisTr.appendChild(
-      createElement('td', { className: this.theme.getClass('widgetContent') },
+      createElement('td', { className: context.theme.getClass('widgetContent') },
         this.innerContainerEl = document.createElement('div')
       )
     )
 
     this.lane = new TimelineLane(
-      context,
       this.innerContainerEl,
       this.innerContainerEl,
-      timeAxis
+      this.timeAxis
     )
+    this.lane.setContext(context)
   }
 
   destroy() {

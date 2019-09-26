@@ -17,20 +17,29 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
   resourceTextFunc: (resource: Resource) => string
   dateFormat: DateFormatter
 
+  parentEl: HTMLElement
   el: HTMLElement
   thead: HTMLElement
 
-  constructor(context: ComponentContext, parentEl: HTMLElement) {
-    super(context)
+  constructor(parentEl: HTMLElement) {
+    super()
 
-    this.datesAboveResources = this.opt('datesAboveResources')
-    this.resourceTextFunc = buildResourceTextFunc(this.opt('resourceText'), this.calendar)
+    this.parentEl = parentEl
+  }
 
-    parentEl.innerHTML = '' // because might be nbsp
-    parentEl.appendChild(
+  setContext(context: ComponentContext) {
+    super.setContext(context)
+
+    let { theme } = context
+
+    this.datesAboveResources = context.options.datesAboveResources
+    this.resourceTextFunc = buildResourceTextFunc(context.options.resourceText, context.calendar)
+
+    this.parentEl.innerHTML = '' // because might be nbsp
+    this.parentEl.appendChild(
       this.el = htmlToElement(
-        '<div class="fc-row ' + this.theme.getClass('headerRow') + '">' +
-          '<table class="' + this.theme.getClass('tableGrid') + '">' +
+        '<div class="fc-row ' + theme.getClass('headerRow') + '">' +
+          '<table class="' + theme.getClass('tableGrid') + '">' +
             '<thead></thead>' +
           '</table>' +
         '</div>'
@@ -48,7 +57,7 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
     let html
 
     this.dateFormat = createFormatter(
-      this.opt('columnHeaderFormat') ||
+      this.context.options.columnHeaderFormat ||
       computeFallbackHeaderFormat(props.datesRepDistinctDays, props.dates.length)
     )
 
@@ -122,7 +131,7 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
 
   // a cell with the resource name. might be associated with a specific day
   renderResourceCell(resource: Resource, colspan: number, date?: DateMarker) {
-    const dateEnv = this.dateEnv
+    const { dateEnv } = this.context
 
     return '<th class="fc-resource-cell"' +
       ' data-resource-id="' + resource.id + '"' +
@@ -164,7 +173,7 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
       cellHtmls = [ this.props.renderIntroHtml() ].concat(cellHtmls)
     }
 
-    if (this.isRtl) {
+    if (this.context.isRtl) {
       cellHtmls.reverse()
     }
 
@@ -179,20 +188,20 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
 
   // given a container with already rendered resource cells
   processResourceEls(resources: Resource[]) {
-    let { view } = this
+    let { calendar, isRtl, view } = this.context
 
     findElements(this.thead, '.fc-resource-cell').forEach((node, col) => { // does DOM-order
 
       col = col % resources.length
-      if (this.isRtl) {
+      if (isRtl) {
         col = resources.length - 1 - col
       }
 
       let resource = resources[col]
 
-      view.publiclyTrigger('resourceRender', [
+      calendar.publiclyTrigger('resourceRender', [
         {
-          resource: new ResourceApi(this.calendar, resource),
+          resource: new ResourceApi(calendar, resource),
           el: node, // head <td>
           view
         }
