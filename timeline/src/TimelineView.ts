@@ -1,4 +1,4 @@
-import { Hit, View, ViewProps, ComponentContext, DateProfile, Duration } from '@fullcalendar/core'
+import { Hit, View, ViewProps, ComponentContext, DateProfile, Duration, DateProfileGenerator } from '@fullcalendar/core'
 import TimeAxis from './TimeAxis'
 import TimelineLane from './TimelineLane'
 
@@ -86,8 +86,8 @@ export default class TimelineView extends View {
   // Now Indicator
   // ------------------------------------------------------------------------------------------
 
-  getNowIndicatorUnit(dateProfile: DateProfile) {
-    return this.timeAxis.getNowIndicatorUnit(dateProfile)
+  getNowIndicatorUnit(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
+    return this.timeAxis.getNowIndicatorUnit(dateProfile, dateProfileGenerator)
   }
 
   renderNowIndicator(date) {

@@ -1,4 +1,4 @@
-import { ElementDragging, SplittableProps, memoizeRendering, PositionCache, Hit, View, createElement, parseFieldSpecs, ComponentContext, memoize, DateProfile, applyStyleProp, PointerDragEvent, Duration } from '@fullcalendar/core'
+import { ElementDragging, SplittableProps, memoizeRendering, PositionCache, Hit, View, createElement, parseFieldSpecs, ComponentContext, memoize, DateProfile, applyStyleProp, PointerDragEvent, Duration, DateProfileGenerator } from '@fullcalendar/core'
 import { ScrollJoiner, TimelineLane, StickyScroller, TimeAxis } from '@fullcalendar/timeline'
 import { ResourceHash, buildRowNodes, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc } from '@fullcalendar/resource-common'
 import GroupRow from './GroupRow'
@@ -516,8 +516,8 @@ export default class ResourceTimelineView extends View {
   // Now Indicator
   // ------------------------------------------------------------------------------------------
 
-  getNowIndicatorUnit(dateProfile: DateProfile) {
-    return this.timeAxis.getNowIndicatorUnit(dateProfile)
+  getNowIndicatorUnit(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
+    return this.timeAxis.getNowIndicatorUnit(dateProfile, dateProfileGenerator)
   }
 
   renderNowIndicator(date) {

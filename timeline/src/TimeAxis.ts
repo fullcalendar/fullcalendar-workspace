@@ -35,6 +35,8 @@ export default class TimeAxis extends Component<TimeAxisProps> {
   }
 
   setContext(context: ComponentContext) {
+    super.setContext(context)
+
     let { layout } = this
     let headerEnhancedScroller = layout.headerScroller.enhancedScroll
     let bodyEnhancedScroller = layout.bodyScroller.enhancedScroll
@@ -92,12 +94,12 @@ export default class TimeAxis extends Component<TimeAxisProps> {
   // Now Indicator
   // ------------------------------------------------------------------------------------------
 
-  getNowIndicatorUnit(dateProfile: DateProfile) {
+  getNowIndicatorUnit(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
     let { context } = this
 
     // yuck
     let tDateProfile = this.tDateProfile =
-      buildTimelineDateProfile(dateProfile, context.dateEnv, context.options, this.props.dateProfileGenerator) // TODO: cache
+      buildTimelineDateProfile(dateProfile, context.dateEnv, context.options, dateProfileGenerator) // TODO: cache
 
     if (tDateProfile.isTimeScale) {
       return greatestDurationDenominator(tDateProfile.slotDuration).unit
