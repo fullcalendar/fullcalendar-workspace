@@ -14,50 +14,22 @@ export default class ResourceTimeGridView extends AbstractTimeGridView {
   resourceDayGrid: ResourceDayGrid
 
   private resourceOrderSpecs: any
+  private processOptions = memoize(this._processOptions)
   private flattenResources = memoize(flattenResources)
   private buildResourceDayTable = memoize(buildResourceDayTable)
 
 
-  setContext(context: ComponentContext) {
-    super.setContext(context)
-
-    this.resourceOrderSpecs = parseFieldSpecs(context.options.resourceOrder)
-
-    if (context.options.columnHeader) {
-      this.header = new ResourceDayHeader(
-        this.el.querySelector('.fc-head-container')
-      )
-      this.header.setContext(context)
-    }
-
-    this.resourceTimeGrid = new ResourceTimeGrid(this.timeGrid)
-    this.resourceTimeGrid.setContext(context)
-
-    if (this.dayGrid) {
-      this.resourceDayGrid = new ResourceDayGrid(this.dayGrid)
-      this.resourceDayGrid.setContext(context)
-    }
+  _processOptions(options) {
+    this.resourceOrderSpecs = parseFieldSpecs(options.resourceOrder)
   }
 
 
-  destroy() {
-    super.destroy()
+  render(props: ResourceViewProps, context: ComponentContext) {
+    super.render(props, context) // for flags for updateSize. and will call _renderSkeleton/_unrenderSkeleton
 
-    if (this.header) {
-      this.header.destroy()
-    }
+    let { options, nextDayThreshold } = context
 
-    this.resourceTimeGrid.destroy()
-
-    if (this.resourceDayGrid) {
-      this.resourceDayGrid.destroy()
-    }
-  }
-
-  render(props: ResourceViewProps) {
-    super.render(props) // for flags for updateSize
-
-    let { options, nextDayThreshold } = this.context
+    this.processOptions(options)
 
     let splitProps = this.splitter.splitProps(props)
     let resources = this.flattenResources(props.resourceStore, this.resourceOrderSpecs)
@@ -75,14 +47,14 @@ export default class ResourceTimeGridView extends AbstractTimeGridView {
         dateProfile: props.dateProfile,
         datesRepDistinctDays: true,
         renderIntroHtml: this.renderHeadIntroHtml
-      })
+      }, context)
     }
 
     this.resourceTimeGrid.receiveProps({
       ...splitProps['timed'],
       dateProfile: props.dateProfile,
       resourceDayTable
-    })
+    }, context)
 
     if (this.resourceDayGrid) {
       this.resourceDayGrid.receiveProps({
@@ -91,15 +63,49 @@ export default class ResourceTimeGridView extends AbstractTimeGridView {
         resourceDayTable,
         isRigid: false,
         nextDayThreshold
-      })
+      }, context)
     }
   }
+
+
+  _renderSkeleton(context: ComponentContext) {
+    super._renderSkeleton(context)
+
+    if (context.options.columnHeader) {
+      this.header = new ResourceDayHeader(
+        this.el.querySelector('.fc-head-container')
+      )
+    }
+
+    this.resourceTimeGrid = new ResourceTimeGrid(this.timeGrid)
+
+    if (this.dayGrid) {
+      this.resourceDayGrid = new ResourceDayGrid(this.dayGrid)
+    }
+  }
+
+
+  _unrenderSkeleton() {
+    super._unrenderSkeleton()
+
+    if (this.header) {
+      this.header.destroy()
+    }
+
+    this.resourceTimeGrid.destroy()
+
+    if (this.resourceDayGrid) {
+      this.resourceDayGrid.destroy()
+    }
+  }
+
 
   renderNowIndicator(date) {
     this.resourceTimeGrid.renderNowIndicator(date)
   }
 
 }
+
 
 function buildResourceDayTable(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator, resources: Resource[], datesAboveResources: boolean) {
   let dayTable = buildAgendaDayTable(dateProfile, dateProfileGenerator)

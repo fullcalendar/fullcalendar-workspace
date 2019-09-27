@@ -19,9 +19,7 @@ export default class TimelineHeader extends Component<TimelineHeaderProps> {
     this.parentEl = parentEl
   }
 
-  setContext(context: ComponentContext) {
-    super.setContext(context)
-
+  firstContext(context: ComponentContext) {
     this.parentEl.appendChild(
       this.tableEl = createElement('table', {
         className: context.theme.getClass('tableGrid')

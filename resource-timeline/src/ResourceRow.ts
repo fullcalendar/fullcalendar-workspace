@@ -1,4 +1,4 @@
-import { Duration, createElement, ComponentContext, EventInteractionState, DateSpan, EventUiHash, EventStore, DateProfile, memoizeRendering, isArraysEqual } from '@fullcalendar/core'
+import { Duration, createElement, ComponentContext, EventInteractionState, DateSpan, EventUiHash, EventStore, DateProfile, memoizeRendering, isArraysEqual, removeElement } from '@fullcalendar/core'
 import { TimelineLane, TimeAxis } from '@fullcalendar/timeline'
 import Row from './Row'
 import SpreadsheetRow from './SpreadsheetRow'
@@ -27,13 +27,16 @@ export interface ResourceRowProps {
 
 export default class ResourceRow extends Row<ResourceRowProps> {
 
+  cellEl: HTMLElement
   innerContainerEl: HTMLElement
 
   timeAxis: TimeAxis
   spreadsheetRow: SpreadsheetRow
   lane: TimelineLane
 
-  private _updateTrResourceId = memoizeRendering(updateTrResourceId)
+  private renderSkeleton = memoizeRendering(this._renderSkeleton, this._unrenderSkeleton)
+  private updateTrResourceId = memoizeRendering(updateTrResourceId)
+
 
   constructor(a, b, c, d, timeAxis: TimeAxis) {
     super(a, b, c, d)
@@ -41,34 +44,10 @@ export default class ResourceRow extends Row<ResourceRowProps> {
     this.timeAxis = timeAxis
   }
 
-  setContext(context: ComponentContext) {
-    super.setContext(context)
 
-    this.spreadsheetRow = new SpreadsheetRow(this.spreadsheetTr)
-    this.spreadsheetRow.setContext(context)
+  render(props: ResourceRowProps, context: ComponentContext) {
 
-    this.timeAxisTr.appendChild(
-      createElement('td', { className: context.theme.getClass('widgetContent') },
-        this.innerContainerEl = document.createElement('div')
-      )
-    )
-
-    this.lane = new TimelineLane(
-      this.innerContainerEl,
-      this.innerContainerEl,
-      this.timeAxis
-    )
-    this.lane.setContext(context)
-  }
-
-  destroy() {
-    this.spreadsheetRow.destroy()
-    this.lane.destroy()
-
-    super.destroy()
-  }
-
-  render(props: ResourceRowProps) {
+    this.renderSkeleton(context)
 
     // spreadsheetRow handles calling updateTrResourceId for spreadsheetTr
 
@@ -80,9 +59,9 @@ export default class ResourceRow extends Row<ResourceRowProps> {
       isExpanded: props.isExpanded,
       hasChildren: props.hasChildren,
       resource: props.resource
-    })
+    }, context)
 
-    this._updateTrResourceId(this.timeAxisTr, props.resource.id)
+    this.updateTrResourceId(this.timeAxisTr, props.resource.id)
 
     this.lane.receiveProps({
       dateProfile: props.dateProfile,
@@ -94,16 +73,50 @@ export default class ResourceRow extends Row<ResourceRowProps> {
       eventSelection: props.eventSelection,
       eventDrag: props.eventDrag,
       eventResize: props.eventResize
-    })
+    }, context)
 
     this.isSizeDirty = true
   }
+
+
+  destroy() {
+    this.renderSkeleton.unrender()
+
+    super.destroy()
+  }
+
+
+  _renderSkeleton(context: ComponentContext) {
+    this.timeAxisTr.appendChild(
+      this.cellEl = createElement('td', { className: context.theme.getClass('widgetContent') },
+        this.innerContainerEl = document.createElement('div')
+      )
+    )
+
+    this.spreadsheetRow = new SpreadsheetRow(this.spreadsheetTr)
+
+    this.lane = new TimelineLane(
+      this.innerContainerEl,
+      this.innerContainerEl,
+      this.timeAxis
+    )
+  }
+
+
+  _unrenderSkeleton() {
+    this.spreadsheetRow.destroy()
+    this.lane.destroy()
+
+    removeElement(this.cellEl)
+  }
+
 
   updateSize(isResize: boolean) {
     super.updateSize(isResize)
 
     this.lane.updateSize(isResize)
   }
+
 
   getHeightEls() {
     return [ this.spreadsheetRow.heightEl, this.innerContainerEl ]

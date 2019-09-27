@@ -1,4 +1,4 @@
-import { Hit, View, ViewProps, ComponentContext, DateProfile, Duration, DateProfileGenerator } from '@fullcalendar/core'
+import { memoizeRendering, Hit, View, ViewProps, ComponentContext, DateProfile, Duration, DateProfileGenerator } from '@fullcalendar/core'
 import TimeAxis from './TimeAxis'
 import TimelineLane from './TimelineLane'
 
@@ -8,11 +8,45 @@ export default class TimelineView extends View {
   timeAxis: TimeAxis
   lane: TimelineLane
 
-  setContext(context: ComponentContext) {
-    super.setContext(context)
+  private renderSkeleton = memoizeRendering(this._renderSkeleton, this._unrenderSkeleton)
+
+
+  firstContext(context: ComponentContext) {
+    context.calendar.registerInteractiveComponent(this, {
+      el: this.timeAxis.slats.el
+    })
+  }
+
+
+  render(props: ViewProps, context: ComponentContext) {
+    super.render(props, context) // flags for updateSize, addScroll. and _renderSkeleton/_unrenderSkeleton
+
+    this.renderSkeleton(this.context)
+
+    this.timeAxis.receiveProps({
+      dateProfileGenerator: props.dateProfileGenerator,
+      dateProfile: props.dateProfile
+    }, context)
+
+    this.lane.receiveProps({
+      ...props,
+      nextDayThreshold: this.context.nextDayThreshold
+    }, context)
+  }
+
+
+  destroy() {
+    this.renderSkeleton.unrender()
+
+    super.destroy()
+
+    this.context.calendar.unregisterInteractiveComponent(this)
+  }
+
+
+  _renderSkeleton(context: ComponentContext) {
 
     this.el.classList.add('fc-timeline')
-
     if (context.options.eventOverlap === false) {
       this.el.classList.add('fc-no-overlap')
     }
@@ -23,28 +57,23 @@ export default class TimelineView extends View {
       this.el.querySelector('thead .fc-time-area'),
       this.el.querySelector('tbody .fc-time-area')
     )
-    this.timeAxis.setContext(context)
 
     this.lane = new TimelineLane(
       this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.contentEl,
       this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.bgEl,
       this.timeAxis
     )
-    this.lane.setContext(context)
-
-    context.calendar.registerInteractiveComponent(this, {
-      el: this.timeAxis.slats.el
-    })
   }
 
-  destroy() {
+
+  _unrenderSkeleton() {
+    this.el.classList.remove('fc-timeline')
+    this.el.classList.remove('fc-no-overlap')
+
     this.timeAxis.destroy()
     this.lane.destroy()
-
-    super.destroy()
-
-    this.context.calendar.unregisterInteractiveComponent(this)
   }
+
 
   renderSkeletonHtml() {
     let { theme } = this.context
@@ -63,19 +92,6 @@ export default class TimelineView extends View {
 </table>`
   }
 
-  render(props: ViewProps) {
-    super.render(props) // flags for updateSize, addScroll
-
-    this.timeAxis.receiveProps({
-      dateProfileGenerator: props.dateProfileGenerator,
-      dateProfile: props.dateProfile
-    })
-
-    this.lane.receiveProps({
-      ...props,
-      nextDayThreshold: this.context.nextDayThreshold
-    })
-  }
 
   updateSize(isResize, totalHeight, isAuto) {
     this.timeAxis.updateSize(isResize, totalHeight, isAuto)
@@ -86,13 +102,16 @@ export default class TimelineView extends View {
   // Now Indicator
   // ------------------------------------------------------------------------------------------
 
+
   getNowIndicatorUnit(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
     return this.timeAxis.getNowIndicatorUnit(dateProfile, dateProfileGenerator)
   }
 
+
   renderNowIndicator(date) {
     this.timeAxis.renderNowIndicator(date)
   }
+
 
   unrenderNowIndicator() {
     this.timeAxis.unrenderNowIndicator()
@@ -102,9 +121,11 @@ export default class TimelineView extends View {
   // Scroll System
   // ------------------------------------------------------------------------------------------
 
+
   computeDateScroll(duration: Duration) {
     return this.timeAxis.computeDateScroll(duration)
   }
+
 
   applyScroll(scroll, isResize) {
     super.applyScroll(scroll, isResize) // will call applyDateScroll
@@ -119,9 +140,11 @@ export default class TimelineView extends View {
     }
   }
 
+
   applyDateScroll(scroll) {
     this.timeAxis.applyDateScroll(scroll)
   }
+
 
   queryScroll() {
     let { enhancedScroll } = this.timeAxis.layout.bodyScroller

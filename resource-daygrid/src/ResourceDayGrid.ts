@@ -30,9 +30,7 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
     this.dayGrid = dayGrid
   }
 
-  setContext(context: ComponentContext) {
-    super.setContext(context)
-
+  firstContext(context: ComponentContext) {
     context.calendar.registerInteractiveComponent(this, {
       el: this.dayGrid.el
     })
@@ -44,7 +42,7 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
     this.context.calendar.unregisterInteractiveComponent(this)
   }
 
-  render(props: ResourceDayGridProps) {
+  render(props: ResourceDayGridProps, context: ComponentContext) {
     let { dayGrid } = this
     let { dateProfile, resourceDayTable, nextDayThreshold } = props
 
@@ -72,7 +70,7 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
       dateProfile,
       cells: resourceDayTable.cells,
       isRigid: props.isRigid
-    })
+    }, context)
   }
 
   buildPositionCaches() {

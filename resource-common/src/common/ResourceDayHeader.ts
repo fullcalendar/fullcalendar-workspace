@@ -1,4 +1,4 @@
-import { Component, ComponentContext, DateMarker, htmlToElement, removeElement, htmlEscape, DateProfile, renderDateCell, findElements, createFormatter, DateFormatter, computeFallbackHeaderFormat } from '@fullcalendar/core'
+import { memoize, Calendar, Component, DateMarker, htmlToElement, removeElement, htmlEscape, DateProfile, renderDateCell, findElements, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext } from '@fullcalendar/core'
 import { buildResourceTextFunc } from '../common/resource-rendering'
 import { Resource } from '../structs/resource'
 import ResourceApi from '../api/ResourceApi'
@@ -21,19 +21,26 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
   el: HTMLElement
   thead: HTMLElement
 
+  private processOptions = memoize(this._processOptions)
+
+
   constructor(parentEl: HTMLElement) {
     super()
 
     this.parentEl = parentEl
   }
 
-  setContext(context: ComponentContext) {
-    super.setContext(context)
 
-    let { theme } = context
+  _processOptions(options, calendar: Calendar) {
+    this.datesAboveResources = options.datesAboveResources
+    this.resourceTextFunc = buildResourceTextFunc(options.resourceText, calendar)
+  }
 
-    this.datesAboveResources = context.options.datesAboveResources
-    this.resourceTextFunc = buildResourceTextFunc(context.options.resourceText, context.calendar)
+
+  render(props: ResourceDayHeaderProps, context: ComponentContext) {
+    let { options, calendar, theme } = context
+
+    this.processOptions(options, calendar)
 
     this.parentEl.innerHTML = '' // because might be nbsp
     this.parentEl.appendChild(
@@ -47,17 +54,11 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
     )
 
     this.thead = this.el.querySelector('thead')
-  }
 
-  destroy() {
-    removeElement(this.el)
-  }
-
-  render(props: ResourceDayHeaderProps) {
     let html
 
     this.dateFormat = createFormatter(
-      this.context.options.columnHeaderFormat ||
+      options.columnHeaderFormat ||
       computeFallbackHeaderFormat(props.datesRepDistinctDays, props.dates.length)
     )
 
@@ -75,6 +76,12 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
     this.processResourceEls(props.resources)
   }
 
+
+  destroy() {
+    removeElement(this.el)
+  }
+
+
   renderResourceRow(resources: Resource[]): string {
     let cellHtmls = resources.map((resource) => {
       return this.renderResourceCell(resource, 1)
@@ -82,6 +89,7 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
 
     return this.buildTr(cellHtmls)
   }
+
 
   renderDayAndResourceRows(dates: DateMarker[], resources: Resource[]) {
     let dateHtmls = []
@@ -103,6 +111,7 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
     return this.buildTr(dateHtmls) +
       this.buildTr(resourceHtmls)
   }
+
 
   renderResourceAndDayRows(resources: Resource[], dates: DateMarker[]) {
     let resourceHtmls = []
@@ -126,8 +135,10 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
   }
 
 
+
   // Cell Rendering Utils
   // ----------------------------------------------------------------------------------------------
+
 
   // a cell with the resource name. might be associated with a specific day
   renderResourceCell(resource: Resource, colspan: number, date?: DateMarker) {
@@ -148,6 +159,7 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
     '</th>'
   }
 
+
   // a cell with date text. might have a resource associated with it
   renderDateCell(date: DateMarker, colspan: number, resource?: Resource) {
     let { props } = this
@@ -163,6 +175,7 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
       resource ? 'data-resource-id="' + resource.id + '"' : ''
     )
   }
+
 
   buildTr(cellHtmls: string[]) {
     if (!cellHtmls.length) {
@@ -185,6 +198,7 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
 
   // Post-rendering
   // ----------------------------------------------------------------------------------------------
+
 
   // given a container with already rendered resource cells
   processResourceEls(resources: Resource[]) {

@@ -41,13 +41,6 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
 
     this.fgContainerEl = fgContainerEl
     this.timeAxis = timeAxis
-  }
-
-  setContext(context: ComponentContext) {
-    super.setContext(context)
-
-    let bgContainerEl = this.el
-    let { timeAxis, fgContainerEl } = this
 
     let fillRenderer = this.fillRenderer = new TimelineLaneFillRenderer(bgContainerEl, timeAxis)
     let eventRenderer = this.eventRenderer = new TimelineLaneEventRenderer(fgContainerEl, timeAxis)
@@ -80,15 +73,16 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
     )
   }
 
-  render(props: TimelineLaneProps) {
-    let { context } = this
+
+  render(props: TimelineLaneProps, context: ComponentContext) {
+    let { timeAxis } = this
 
     let slicedProps = this.slicer.sliceProps(
       props,
       props.dateProfile,
-      this.timeAxis.tDateProfile.isTimeScale ? null : props.nextDayThreshold,
+      timeAxis.tDateProfile.isTimeScale ? null : props.nextDayThreshold,
       this,
-      this.timeAxis
+      timeAxis
     )
 
     this.renderBusinessHours(context, slicedProps.businessHourSegs)
@@ -99,6 +93,7 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
     this.renderEventDrag(slicedProps.eventDrag)
     this.renderEventResize(slicedProps.eventResize)
   }
+
 
   destroy() {
     super.destroy()
@@ -112,6 +107,7 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
     this.renderEventResize.unrender()
   }
 
+
   _renderEventDrag(state: EventSegUiInteractionState) {
     if (state) {
       this.eventRenderer.hideByHash(state.affectedInstances)
@@ -119,12 +115,14 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
     }
   }
 
+
   _unrenderEventDrag(state: EventSegUiInteractionState) {
     if (state) {
       this.eventRenderer.showByHash(state.affectedInstances)
       this.mirrorRenderer.unrender(this.context, state.segs, { isDragging: true, sourceSeg: state.sourceSeg })
     }
   }
+
 
   _renderEventResize(state: EventSegUiInteractionState) {
     if (state) {
@@ -139,6 +137,7 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
     }
   }
 
+
   _unrenderEventResize(state: EventSegUiInteractionState) {
     if (state) {
       this.eventRenderer.showByHash(state.affectedInstances)
@@ -146,6 +145,7 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
       this.mirrorRenderer.unrender(this.context, state.segs, { isDragging: true, sourceSeg: state.sourceSeg })
     }
   }
+
 
   updateSize(isResize: boolean) {
     let { fillRenderer, eventRenderer, mirrorRenderer } = this
@@ -160,6 +160,7 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
   }
 
 }
+
 
 class TimelineLaneSlicer extends Slicer<TimelineLaneSeg, [TimeAxis]> {
 

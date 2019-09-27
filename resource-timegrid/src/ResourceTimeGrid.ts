@@ -30,9 +30,7 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
     this.timeGrid = timeGrid
   }
 
-  setContext(context: ComponentContext) {
-    super.setContext(context)
-
+  firstContext(context: ComponentContext) {
     context.calendar.registerInteractiveComponent(this, {
       el: this.timeGrid.el
     })
@@ -42,9 +40,9 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
     this.context.calendar.unregisterInteractiveComponent(this)
   }
 
-  render(props: ResourceTimeGridProps) {
+  render(props: ResourceTimeGridProps, context: ComponentContext) {
     let { timeGrid } = this
-    let { dateEnv } = this.context
+    let { dateEnv } = context
     let { dateProfile, resourceDayTable } = props
 
     let dayRanges = this.dayRanges = this.buildDayRanges(resourceDayTable.dayTable, dateProfile, dateEnv)
@@ -71,7 +69,7 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
       ...this.joiner.joinProps(slicedProps, resourceDayTable),
       dateProfile,
       cells: resourceDayTable.cells[0]
-    })
+    }, context)
   }
 
   renderNowIndicator(date: DateMarker) {

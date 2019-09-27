@@ -1,4 +1,4 @@
-import { ElementDragging, removeElement, createElement, htmlEscape, Component, ComponentContext, PointerDragEvent, EmitterMixin } from '@fullcalendar/core'
+import { ElementDragging, removeElement, createElement, htmlEscape, Component, ComponentContext, PointerDragEvent, EmitterMixin, memoizeRendering } from '@fullcalendar/core'
 
 export interface SpreadsheetHeaderProps {
   superHeaderText: string
@@ -19,34 +19,21 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
   colWidths: number[] = []
   emitter: EmitterMixin = new EmitterMixin()
 
+  private renderSkeleton = memoizeRendering(this._renderSkeleton, this._unrenderSkeleton)
+
+
   constructor(parentEl: HTMLElement) {
     super()
 
     this.parentEl = parentEl
   }
 
-  setContext(context: ComponentContext) {
-    super.setContext(context)
 
-    this.parentEl.appendChild(
-      this.tableEl = createElement('table', {
-        className: context.theme.getClass('tableGrid')
-      })
-    )
-  }
+  render(props: SpreadsheetHeaderProps, context: ComponentContext) {
 
-  destroy() {
-    for (let resizable of this.resizables) {
-      resizable.destroy()
-    }
+    this.renderSkeleton(context)
 
-    removeElement(this.tableEl)
-
-    super.destroy()
-  }
-
-  render(props: SpreadsheetHeaderProps) {
-    let { theme } = this.context
+    let { theme } = context
     let { colSpecs } = props
     let html =
       '<colgroup>' + props.colTags + '</colgroup>' +
@@ -108,6 +95,32 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
 
     this.initColResizing()
   }
+
+
+  destroy() {
+    for (let resizable of this.resizables) {
+      resizable.destroy()
+    }
+
+    this.renderSkeleton.unrender()
+
+    super.destroy()
+  }
+
+
+  _renderSkeleton(context: ComponentContext) {
+    this.parentEl.appendChild(
+      this.tableEl = createElement('table', {
+        className: context.theme.getClass('tableGrid')
+      })
+    )
+  }
+
+
+  _unrenderSkeleton() {
+    removeElement(this.tableEl)
+  }
+
 
   initColResizing() {
     let { calendar, isRtl } = this.context

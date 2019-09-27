@@ -17,7 +17,9 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
   bodyTbody: HTMLElement
   bodyColEls: HTMLElement[]
 
-  private _renderCells = memoizeRendering(this.renderCells, this.unrenderCells)
+  private renderSkeleton = memoizeRendering(this._renderSkeleton, this._unrenderSkeleton)
+  private renderCells = memoizeRendering(this._renderCells, this._unrenderCells, [ this.renderSkeleton ])
+
 
   constructor(headParentEl: HTMLElement, bodyParentEl: HTMLElement) {
     super()
@@ -27,7 +29,25 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
       bodyParentEl,
       'clipped-scroll'
     )
+  }
 
+
+  render(props: SpreadsheetProps, context: ComponentContext) {
+    this.renderSkeleton(context)
+    this.renderCells(props.superHeaderText, props.colSpecs)
+  }
+
+
+  destroy() {
+    this.renderCells.unrender()
+    this.renderSkeleton.unrender()
+    this.layout.destroy()
+
+    super.destroy()
+  }
+
+
+  _renderSkeleton(context: ComponentContext) {
     let bodyEnhancedScroller = this.layout.bodyScroller.enhancedScroll
 
     bodyEnhancedScroller.canvas.contentEl
@@ -43,43 +63,31 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
 
     this.bodyColGroup = this.bodyContainerEl.querySelector('colgroup')
     this.bodyTbody = this.bodyContainerEl.querySelector('tbody')
-  }
-
-  setContext(context: ComponentContext) {
-    super.setContext(context)
 
     let headerEnhancedScroller = this.layout.headerScroller.enhancedScroll
 
     this.header = new SpreadsheetHeader(
       headerEnhancedScroller.canvas.contentEl
     )
-    this.header.setContext(context)
     this.header.emitter.on('colwidthchange', (colWidths: number[]) => {
       this.applyColWidths(colWidths)
     })
   }
 
-  destroy() {
+
+  _unrenderSkeleton() {
     this.header.destroy()
-    this.layout.destroy()
-
-    this._renderCells.unrender()
-
-    super.destroy()
   }
 
-  render(props: SpreadsheetProps) {
-    this._renderCells(props.superHeaderText, props.colSpecs)
-  }
 
-  renderCells(superHeaderText, colSpecs) {
+  _renderCells(superHeaderText, colSpecs) {
     let colTags = this.renderColTags(colSpecs)
 
     this.header.receiveProps({
       superHeaderText: superHeaderText,
       colSpecs,
       colTags
-    })
+    }, this.context)
 
     this.bodyColGroup.innerHTML = colTags
 
@@ -92,9 +100,11 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
     )
   }
 
-  unrenderCells() {
+
+  _unrenderCells() {
     this.bodyColGroup.innerHTML = ''
   }
+
 
   renderColTags(colSpecs) {
     let html = ''
@@ -110,9 +120,11 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
     return html
   }
 
+
   updateSize(isResize, totalHeight, isAuto) {
     this.layout.setHeight(totalHeight, isAuto)
   }
+
 
   applyColWidths(colWidths: (number | string)[]) {
     colWidths.forEach((colWidth, colIndex) => {

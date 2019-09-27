@@ -3,6 +3,7 @@ import { AbstractDayGridView, buildBasicDayTable } from '@fullcalendar/daygrid'
 import { ResourceDayHeader, ResourceDayTable, DayResourceTable, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
 import ResourceDayGrid from './ResourceDayGrid'
 
+
 export default class ResourceDayGridView extends AbstractDayGridView {
 
   static needsResourceData = true // for ResourceViewProps
@@ -15,36 +16,18 @@ export default class ResourceDayGridView extends AbstractDayGridView {
   private flattenResources = memoize(flattenResources)
   private buildResourceDayTable = memoize(buildResourceDayTable)
 
-  setContext(context: ComponentContext) {
-    super.setContext(context)
 
-    this.resourceOrderSpecs = parseFieldSpecs(context.options.resourceOrder)
+  _processOptions(options) {
+    super._processOptions(options)
 
-    if (context.options.columnHeader) {
-      this.header = new ResourceDayHeader(
-        this.el.querySelector('.fc-head-container')
-      )
-      this.header.setContext(context)
-    }
-
-    this.resourceDayGrid = new ResourceDayGrid(this.dayGrid)
-    this.resourceDayGrid.setContext(context)
+    this.resourceOrderSpecs = parseFieldSpecs(options.resourceOrder)
   }
 
-  destroy() {
-    super.destroy()
 
-    if (this.header) {
-      this.header.destroy()
-    }
+  render(props: ResourceViewProps, context: ComponentContext) {
+    super.render(props, context) // for flags for updateSize. also _renderSkeleton/_unrenderSkeleton
 
-    this.resourceDayGrid.destroy()
-  }
-
-  render(props: ResourceViewProps) {
-    super.render(props) // for flags for updateSize
-
-    let { options, nextDayThreshold } = this.context
+    let { options, nextDayThreshold } = context
 
     let resources = this.flattenResources(props.resourceStore, this.resourceOrderSpecs)
     let resourceDayTable = this.buildResourceDayTable(
@@ -61,7 +44,7 @@ export default class ResourceDayGridView extends AbstractDayGridView {
         dateProfile: props.dateProfile,
         datesRepDistinctDays: true,
         renderIntroHtml: this.renderHeadIntroHtml
-      })
+      }, context)
     }
 
     this.resourceDayGrid.receiveProps({
@@ -76,7 +59,31 @@ export default class ResourceDayGridView extends AbstractDayGridView {
       eventResize: props.eventResize,
       isRigid: this.hasRigidRows(),
       nextDayThreshold
-    })
+    }, context)
+  }
+
+
+  _renderSkeleton(context: ComponentContext) {
+    super._renderSkeleton(context)
+
+    if (context.options.columnHeader) {
+      this.header = new ResourceDayHeader(
+        this.el.querySelector('.fc-head-container')
+      )
+    }
+
+    this.resourceDayGrid = new ResourceDayGrid(this.dayGrid)
+  }
+
+
+  _unrenderSkeleton() {
+    super._unrenderSkeleton()
+
+    if (this.header) {
+      this.header.destroy()
+    }
+
+    this.resourceDayGrid.destroy()
   }
 
 }

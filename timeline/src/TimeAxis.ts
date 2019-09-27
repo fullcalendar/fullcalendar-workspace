@@ -1,4 +1,4 @@
-import { DateProfile, DateMarker, wholeDivideDurations, isInt, Component, ComponentContext, startOfDay, greatestDurationDenominator, rangeContainsMarker, Duration, DateProfileGenerator } from '@fullcalendar/core'
+import { memoizeRendering, DateProfile, DateMarker, wholeDivideDurations, isInt, Component, ComponentContext, startOfDay, greatestDurationDenominator, rangeContainsMarker, Duration, DateProfileGenerator } from '@fullcalendar/core'
 import HeaderBodyLayout from './HeaderBodyLayout'
 import TimelineHeader from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'
@@ -24,6 +24,9 @@ export default class TimeAxis extends Component<TimeAxisProps> {
   // internal state
   tDateProfile: TimelineDateProfile
 
+  private renderSkeleton = memoizeRendering(this._renderSkeleton, this._unrenderSkeleton)
+
+
   constructor(headerContainerEl, bodyContainerEl) {
     super()
 
@@ -34,9 +37,35 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     )
   }
 
-  setContext(context: ComponentContext) {
-    super.setContext(context)
 
+  render(props: TimeAxisProps, context: ComponentContext) {
+
+    let tDateProfile = this.tDateProfile =
+      buildTimelineDateProfile(props.dateProfile, context.dateEnv, context.options, props.dateProfileGenerator) // TODO: cache
+
+    this.renderSkeleton(context)
+
+    this.header.receiveProps({
+      dateProfile: props.dateProfile,
+      tDateProfile
+    }, context)
+
+    this.slats.receiveProps({
+      dateProfile: props.dateProfile,
+      tDateProfile
+    }, context)
+  }
+
+
+  destroy() {
+    this.renderSkeleton.unrender()
+    this.layout.destroy()
+
+    super.destroy()
+  }
+
+
+  _renderSkeleton(context: ComponentContext) {
     let { layout } = this
     let headerEnhancedScroller = layout.headerScroller.enhancedScroll
     let bodyEnhancedScroller = layout.bodyScroller.enhancedScroll
@@ -48,12 +77,10 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     this.header = new TimelineHeader(
       headerEnhancedScroller.canvas.contentEl
     )
-    this.header.setContext(context)
 
     this.slats = new TimelineSlats(
       bodyEnhancedScroller.canvas.bgEl
     )
-    this.slats.setContext(context)
 
     this.nowIndicator = new TimelineNowIndicator(
       headerEnhancedScroller.canvas.el,
@@ -61,38 +88,19 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     )
   }
 
-  destroy() {
-    this.layout.destroy()
+
+  _unrenderSkeleton() {
     this.header.destroy()
     this.slats.destroy()
     this.nowIndicator.unrender()
-
     this.headStickyScroller.destroy()
     this.bodyStickyScroller.destroy()
-
-    super.destroy()
-  }
-
-  render(props: TimeAxisProps) {
-    let { context } = this
-
-    let tDateProfile = this.tDateProfile =
-      buildTimelineDateProfile(props.dateProfile, context.dateEnv, context.options, props.dateProfileGenerator) // TODO: cache
-
-    this.header.receiveProps({
-      dateProfile: props.dateProfile,
-      tDateProfile
-    })
-
-    this.slats.receiveProps({
-      dateProfile: props.dateProfile,
-      tDateProfile
-    })
   }
 
 
   // Now Indicator
   // ------------------------------------------------------------------------------------------
+
 
   getNowIndicatorUnit(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
     let { context } = this
@@ -106,6 +114,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     }
   }
 
+
   // will only execute if isTimeScale
   renderNowIndicator(date) {
     if (rangeContainsMarker(this.tDateProfile.normalizedRange, date)) {
@@ -116,6 +125,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     }
   }
 
+
   // will only execute if isTimeScale
   unrenderNowIndicator() {
     this.nowIndicator.unrender()
@@ -124,6 +134,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
 
   // Sizing
   // ------------------------------------------------------------------------------------------
+
 
   updateSize(isResize, totalHeight, isAuto) {
 
@@ -138,10 +149,12 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     this.slats.updateSize()
   }
 
+
   updateStickyScrollers() {
     this.headStickyScroller.updateSize()
     this.bodyStickyScroller.updateSize()
   }
+
 
   computeSlotWidth() {
     let slotWidth = this.context.options.slotWidth || ''
@@ -152,6 +165,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
 
     return slotWidth
   }
+
 
   computeDefaultSlotWidth(tDateProfile) {
     let maxInnerWidth = 0 // TODO: harness core's `matchCellWidths` for this
@@ -178,6 +192,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
 
     return slotWidth
   }
+
 
   applySlotWidth(slotWidth: number | string) {
     let { layout, tDateProfile } = this
@@ -215,6 +230,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     }
   }
 
+
   // returned value is between 0 and the number of snaps
   computeDateSnapCoverage(date: DateMarker): number {
     let { tDateProfile } = this
@@ -245,6 +261,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     }
   }
 
+
   // for LTR, results range from 0 to width of area
   // for RTL, results range from negative width of area to 0
   dateToCoord(date) {
@@ -269,6 +286,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     }
   }
 
+
   rangeToCoords(range) {
     if (this.context.isRtl) {
       return { right: this.dateToCoord(range.start), left: this.dateToCoord(range.end) }
@@ -280,6 +298,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
 
   // Scrolling
   // ------------------------------------------------------------------------------------------
+
 
   computeDateScroll(duration: Duration) {
     let { dateEnv, isRtl } = this.context
@@ -303,6 +322,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     return { left }
   }
 
+
   queryDateScroll() {
     let { enhancedScroll } = this.layout.bodyScroller
 
@@ -310,6 +330,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
       left: enhancedScroll.getScrollLeft()
     }
   }
+
 
   applyDateScroll(scroll) {
     // TODO: lame we have to update both. use the scrolljoiner instead maybe
