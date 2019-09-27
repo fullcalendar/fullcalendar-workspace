@@ -1,5 +1,5 @@
 import {
-  FgEventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement, ComponentContext,
+  FgEventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement,
   computeEventDraggable, computeEventStartResizable, computeEventEndResizable
 } from '@fullcalendar/core'
 import TimeAxis from './TimeAxis'
@@ -11,8 +11,8 @@ export default class TimelineLaneEventRenderer extends FgEventRenderer {
   masterContainerEl: HTMLElement
   el: HTMLElement
 
-  constructor(context: ComponentContext, masterContainerEl: HTMLElement, timeAxis: TimeAxis) {
-    super(context)
+  constructor(masterContainerEl: HTMLElement, timeAxis: TimeAxis) {
+    super()
 
     this.masterContainerEl = masterContainerEl
     this.timeAxis = timeAxis

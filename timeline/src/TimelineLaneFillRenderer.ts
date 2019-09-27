@@ -1,4 +1,4 @@
-import { FillRenderer, createElement, applyStyle, ComponentContext, Seg } from '@fullcalendar/core'
+import { FillRenderer, createElement, applyStyle, Seg } from '@fullcalendar/core'
 import TimeAxis from './TimeAxis'
 
 export default class TimelineLaneFillRenderer extends FillRenderer {
@@ -6,8 +6,8 @@ export default class TimelineLaneFillRenderer extends FillRenderer {
   timeAxis: TimeAxis
   masterContainerEl: HTMLElement
 
-  constructor(context: ComponentContext, masterContainerEl: HTMLElement, timeAxis: TimeAxis) {
-    super(context)
+  constructor(masterContainerEl: HTMLElement, timeAxis: TimeAxis) {
+    super()
 
     this.masterContainerEl = masterContainerEl
     this.timeAxis = timeAxis

@@ -27,10 +27,10 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
   timeAxis: TimeAxis
 
   private slicer = new TimelineLaneSlicer()
-  private renderBusinessHours: MemoizedRendering<[TimelineLaneSeg[]]>
-  private renderDateSelection: MemoizedRendering<[TimelineLaneSeg[]]>
-  private renderBgEvents: MemoizedRendering<[TimelineLaneSeg[]]>
-  private renderFgEvents: MemoizedRendering<[TimelineLaneSeg[]]>
+  private renderBusinessHours: MemoizedRendering<[ComponentContext, TimelineLaneSeg[]]>
+  private renderDateSelection: MemoizedRendering<[ComponentContext, TimelineLaneSeg[]]>
+  private renderBgEvents: MemoizedRendering<[ComponentContext, TimelineLaneSeg[]]>
+  private renderFgEvents: MemoizedRendering<[ComponentContext, TimelineLaneSeg[]]>
   private renderEventSelection: MemoizedRendering<[string]>
   private renderEventDrag = memoizeRendering(this._renderEventDrag, this._unrenderEventDrag)
   private renderEventResize = memoizeRendering(this._renderEventResize, this._unrenderEventResize)
@@ -49,9 +49,9 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
     let bgContainerEl = this.el
     let { timeAxis, fgContainerEl } = this
 
-    let fillRenderer = this.fillRenderer = new TimelineLaneFillRenderer(context, bgContainerEl, timeAxis)
-    let eventRenderer = this.eventRenderer = new TimelineLaneEventRenderer(context, fgContainerEl, timeAxis)
-    this.mirrorRenderer = new TimelineLaneEventRenderer(context, fgContainerEl, timeAxis)
+    let fillRenderer = this.fillRenderer = new TimelineLaneFillRenderer(bgContainerEl, timeAxis)
+    let eventRenderer = this.eventRenderer = new TimelineLaneEventRenderer(fgContainerEl, timeAxis)
+    this.mirrorRenderer = new TimelineLaneEventRenderer(fgContainerEl, timeAxis)
 
     this.renderBusinessHours = memoizeRendering(
       fillRenderer.renderSegs.bind(fillRenderer, 'businessHours'),
@@ -81,6 +81,8 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
   }
 
   render(props: TimelineLaneProps) {
+    let { context } = this
+
     let slicedProps = this.slicer.sliceProps(
       props,
       props.dateProfile,
@@ -89,10 +91,10 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
       this.timeAxis
     )
 
-    this.renderBusinessHours(slicedProps.businessHourSegs)
-    this.renderDateSelection(slicedProps.dateSelectionSegs)
-    this.renderBgEvents(slicedProps.bgEventSegs)
-    this.renderFgEvents(slicedProps.fgEventSegs)
+    this.renderBusinessHours(context, slicedProps.businessHourSegs)
+    this.renderDateSelection(context, slicedProps.dateSelectionSegs)
+    this.renderBgEvents(context, slicedProps.bgEventSegs)
+    this.renderFgEvents(context, slicedProps.fgEventSegs)
     this.renderEventSelection(slicedProps.eventSelection)
     this.renderEventDrag(slicedProps.eventDrag)
     this.renderEventResize(slicedProps.eventResize)
@@ -113,14 +115,14 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
   _renderEventDrag(state: EventSegUiInteractionState) {
     if (state) {
       this.eventRenderer.hideByHash(state.affectedInstances)
-      this.mirrorRenderer.renderSegs(state.segs, { isDragging: true, sourceSeg: state.sourceSeg })
+      this.mirrorRenderer.renderSegs(this.context, state.segs, { isDragging: true, sourceSeg: state.sourceSeg })
     }
   }
 
   _unrenderEventDrag(state: EventSegUiInteractionState) {
     if (state) {
       this.eventRenderer.showByHash(state.affectedInstances)
-      this.mirrorRenderer.unrender(state.segs, { isDragging: true, sourceSeg: state.sourceSeg })
+      this.mirrorRenderer.unrender(this.context, state.segs, { isDragging: true, sourceSeg: state.sourceSeg })
     }
   }
 
@@ -132,16 +134,16 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
       })
 
       this.eventRenderer.hideByHash(state.affectedInstances)
-      this.fillRenderer.renderSegs('highlight', segsForHighlight)
-      this.mirrorRenderer.renderSegs(state.segs, { isDragging: true, sourceSeg: state.sourceSeg })
+      this.fillRenderer.renderSegs('highlight', this.context, segsForHighlight)
+      this.mirrorRenderer.renderSegs(this.context, state.segs, { isDragging: true, sourceSeg: state.sourceSeg })
     }
   }
 
   _unrenderEventResize(state: EventSegUiInteractionState) {
     if (state) {
       this.eventRenderer.showByHash(state.affectedInstances)
-      this.fillRenderer.unrender('highlight')
-      this.mirrorRenderer.unrender(state.segs, { isDragging: true, sourceSeg: state.sourceSeg })
+      this.fillRenderer.unrender('highlight', this.context)
+      this.mirrorRenderer.unrender(this.context, state.segs, { isDragging: true, sourceSeg: state.sourceSeg })
     }
   }
 
