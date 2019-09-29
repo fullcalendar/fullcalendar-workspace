@@ -47,22 +47,26 @@ export default class ResourceTimelineView extends View {
   private buildRowNodes = memoize(buildRowNodes)
   private hasNesting = memoize(hasNesting)
   private updateHasNesting = memoizeRendering(this._updateHasNesting)
+  private startInteractive = memoizeRendering(this._startInteractive, this._stopInteractive)
 
 
-  firstContext(context: ComponentContext) {
-    context.calendar.registerInteractiveComponent(this, {
-      el: this.timeAxis.slats.el
-    })
+  _startInteractive(timeAxisEl: HTMLElement) {
+    this.context.calendar.registerInteractiveComponent(this, { el: timeAxisEl })
+  }
+
+
+  _stopInteractive() {
+    this.context.calendar.unregisterInteractiveComponent(this)
   }
 
 
   render(props: ResourceViewProps, context: ComponentContext) {
     super.render(props, context)
 
+    this.renderSkeleton(context)
+
     let splitProps = this.splitter.splitProps(props)
     let hasResourceBusinessHours = this.hasResourceBusinessHours(props.resourceStore)
-
-    this.renderSkeleton(context)
 
     this.spreadsheet.receiveProps({
       superHeaderText: this.superHeaderText,
@@ -73,6 +77,8 @@ export default class ResourceTimelineView extends View {
       dateProfileGenerator: props.dateProfileGenerator,
       dateProfile: props.dateProfile
     }, context)
+
+    this.startInteractive(this.timeAxis.slats.el)
 
     // for all-resource bg events / selections / business-hours
     this.lane.receiveProps({
@@ -99,6 +105,8 @@ export default class ResourceTimelineView extends View {
       hasResourceBusinessHours ? props.businessHours : null, // CONFUSING, comment
       splitProps
     )
+
+    this.startNowIndicator(props.dateProfile, props.dateProfileGenerator)
   }
 
 
@@ -224,6 +232,7 @@ export default class ResourceTimelineView extends View {
 
 
   _unrenderSkeleton(context: ComponentContext) {
+    this.startInteractive.unrender() // "unrender" bad name
 
     this.destroyRows() // wierd to call this here
 
@@ -412,9 +421,11 @@ export default class ResourceTimelineView extends View {
 
     if (isBaseSizing) {
       this.syncHeadHeights()
-      this.timeAxis.updateSize(isResize, viewHeight - this.miscHeight, isAuto)
-      this.spreadsheet.updateSize(isResize, viewHeight - this.miscHeight, isAuto)
     }
+
+    // TODO: don't always call these (but guarding behind isBaseSizing was unreliable)
+    this.timeAxis.updateSize(isResize, viewHeight - this.miscHeight, isAuto)
+    this.spreadsheet.updateSize(isResize, viewHeight - this.miscHeight, isAuto)
 
     let rowSizingCnt = this.updateRowSizes(isResize)
 
@@ -522,7 +533,6 @@ export default class ResourceTimelineView extends View {
     }
 
     this.renderSkeleton.unrender() // will call destroyRows
-    this.context.calendar.unregisterInteractiveComponent(this)
 
     super.destroy()
   }

@@ -65,6 +65,8 @@ export default class ResourceTimeGridView extends AbstractTimeGridView {
         nextDayThreshold
       }, context)
     }
+
+    this.startNowIndicator(props.dateProfile, props.dateProfileGenerator)
   }
 
 

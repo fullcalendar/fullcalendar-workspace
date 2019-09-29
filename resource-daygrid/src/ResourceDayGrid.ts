@@ -57,6 +57,7 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
         splitProps[resourceId],
         dateProfile,
         nextDayThreshold,
+        context.calendar,
         dayGrid,
         resourceDayTable.dayTable
       )

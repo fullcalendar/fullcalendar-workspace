@@ -57,6 +57,7 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
         splitProps[resourceId],
         dateProfile,
         null,
+        context.calendar,
         timeGrid,
         dayRanges
       )

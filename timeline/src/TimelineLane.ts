@@ -81,6 +81,7 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
       props,
       props.dateProfile,
       timeAxis.tDateProfile.isTimeScale ? null : props.nextDayThreshold,
+      context.calendar,
       this,
       timeAxis
     )

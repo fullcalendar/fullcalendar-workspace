@@ -9,12 +9,18 @@ export default class TimelineView extends View {
   lane: TimelineLane
 
   private renderSkeleton = memoizeRendering(this._renderSkeleton, this._unrenderSkeleton)
+  private startInteractive = memoizeRendering(this._startInteractive, this._stopInteractive)
 
 
-  firstContext(context: ComponentContext) {
-    context.calendar.registerInteractiveComponent(this, {
-      el: this.timeAxis.slats.el
+  _startInteractive(timeAxisEl: HTMLElement) {
+    this.context.calendar.registerInteractiveComponent(this, {
+      el: timeAxisEl
     })
+  }
+
+
+  _stopInteractive() {
+    this.context.calendar.unregisterInteractiveComponent(this)
   }
 
 
@@ -28,19 +34,22 @@ export default class TimelineView extends View {
       dateProfile: props.dateProfile
     }, context)
 
+    this.startInteractive(this.timeAxis.slats.el)
+
     this.lane.receiveProps({
       ...props,
       nextDayThreshold: this.context.nextDayThreshold
     }, context)
+
+    this.startNowIndicator(props.dateProfile, props.dateProfileGenerator)
   }
 
 
   destroy() {
+    this.startInteractive.unrender() // "unrender" a weird name
     this.renderSkeleton.unrender()
 
     super.destroy()
-
-    this.context.calendar.unregisterInteractiveComponent(this)
   }
 
 
