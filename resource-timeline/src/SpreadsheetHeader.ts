@@ -123,8 +123,8 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
 
 
   initColResizing() {
-    let { calendar, isRtl } = this.context
-    let ElementDraggingImpl = calendar.pluginSystem.hooks.elementDraggingImpl
+    let { pluginHooks, isRtl } = this.context
+    let ElementDraggingImpl = pluginHooks.elementDraggingImpl
 
     if (ElementDraggingImpl) {
       this.resizables = this.resizerEls.map((handleEl: HTMLElement, colIndex) => {

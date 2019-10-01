@@ -711,13 +711,13 @@ export default class ResourceTimelineView extends View {
 
 
   initResourceAreaWidthDragging() {
-    let { calendar, isRtl } = this.context
+    let { isRtl, pluginHooks } = this.context
 
     let resourceAreaDividerEls = Array.prototype.slice.call(
       this.el.querySelectorAll('.fc-col-resizer')
     )
 
-    let ElementDraggingImpl = calendar.pluginSystem.hooks.elementDraggingImpl
+    let ElementDraggingImpl = pluginHooks.elementDraggingImpl
 
     if (ElementDraggingImpl) {
       this.resourceAreaWidthDraggings = resourceAreaDividerEls.map((el: HTMLElement) => {
