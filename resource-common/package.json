@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "@fullcalendar/resource-common",
+  "version": "4.3.1",
+  "title": "FullCalendar Resources Common Plugin",
+  "description": "Offers base support for resources. Required for all resource-related plugins.",
+  "browserGlobal": "FullCalendarResourceCommon",
+  "peerDependencies": {
+    "@fullcalendar/core": "~4.3.0"
+  },
+  "devDependencies": {
+    "@fullcalendar/core": "~4.3.0"
+  }
+}

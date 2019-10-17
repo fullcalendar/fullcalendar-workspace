@@ -1,11 +1,5 @@
-tmp
-archives
+
 dist
-
-# core
-fullcalendar
-
-.sass-cache
 
 # npm
 node_modules

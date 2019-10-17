@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "dependencies": {
+    "@fullcalendar/timeline": "*",
+    "@fullcalendar/resource-common": "*",
+    "@fullcalendar/resource-timeline": "*",
+    "@fullcalendar/resource-daygrid": "*",
+    "@fullcalendar/resource-timegrid": "*"
+  }
+}
