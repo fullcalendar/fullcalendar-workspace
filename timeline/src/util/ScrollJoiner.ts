@@ -5,6 +5,7 @@ export default class ScrollJoiner {
   axis: any
   scrollers: ClippedScroller[]
   masterScroller: ClippedScroller
+  destroys: (() => void)[] = []
 
 
   constructor(axis, scrollers: ClippedScroller[]) {
@@ -18,44 +19,65 @@ export default class ScrollJoiner {
 
 
   initScroller(scroller: ClippedScroller) {
-    let enhancedScroll = scroller.enhancedScroll
+    let enhancedScroller = scroller.enhancedScroller
 
     // when the user scrolls via mousewheel, we know for sure the target
     // scroller should be the master. capture the various x-browser events that fire.
-    const onScroll = () => {
+    const onWheel = () => {
       this.assignMasterScroller(scroller)
     }
     'wheel mousewheel DomMouseScroll MozMousePixelScroll'.split(' ').forEach((evName) => {
-      enhancedScroll.el.addEventListener(evName, onScroll)
+      enhancedScroller.getEl().addEventListener(evName, onWheel)
     })
 
-    enhancedScroll
-      .on('scrollStart', () => {
-        if (!this.masterScroller) {
-          this.assignMasterScroller(scroller)
-        }
-      })
-      .on('scroll', () => {
-        if (scroller === this.masterScroller) {
-          for (let otherScroller of this.scrollers) {
-            if (otherScroller !== scroller) {
-              switch (this.axis) {
-                case 'horizontal':
-                  otherScroller.enhancedScroll.el.scrollLeft = enhancedScroll.el.scrollLeft
-                  break
-                case 'vertical':
-                  otherScroller.enhancedScroll.setScrollTop(enhancedScroll.getScrollTop())
-                  break
-              }
+    const onScrollStart = () => {
+      if (!this.masterScroller) {
+        this.assignMasterScroller(scroller)
+      }
+    }
+
+    const onScroll = () => {
+      if (scroller === this.masterScroller) {
+        for (let otherScroller of this.scrollers) {
+          if (otherScroller !== scroller) {
+            switch (this.axis) {
+              case 'horizontal':
+                otherScroller.enhancedScroller.getEl().scrollLeft = enhancedScroller.getEl().scrollLeft
+                break
+              case 'vertical':
+                otherScroller.enhancedScroller.scroller.controller.setScrollTop(enhancedScroller.scroller.controller.getScrollTop())
+                break
             }
           }
         }
-      })
-      .on('scrollEnd', () => {
-        if (scroller === this.masterScroller) {
-          this.unassignMasterScroller()
-        }
-      })
+      }
+    }
+
+    const onScrollEnd = () => {
+      if (scroller === this.masterScroller) {
+        this.unassignMasterScroller()
+      }
+    }
+
+    enhancedScroller
+      .on('scrollStart', onScrollStart)
+      .on('scroll', onScroll)
+      .on('scrollEnd', onScrollEnd)
+
+    this.destroys.push(() => {
+      enhancedScroller
+        .off('scrollStart', onScrollStart)
+        .off('scroll', onScroll)
+        .off('scrollEnd', onScrollEnd)
+    })
+  }
+
+
+  destroy() {
+    for (let destroy of this.destroys) {
+      destroy()
+    }
+    this.destroys = []
   }
 
 
@@ -65,7 +87,7 @@ export default class ScrollJoiner {
 
     for (let otherScroller of this.scrollers) {
       if (otherScroller !== scroller) {
-        otherScroller.enhancedScroll.disableTouchScroll()
+        otherScroller.enhancedScroller.disableTouchScroll()
       }
     }
   }
@@ -74,7 +96,7 @@ export default class ScrollJoiner {
   unassignMasterScroller() {
     if (this.masterScroller) {
       for (let otherScroller of this.scrollers) {
-        otherScroller.enhancedScroll.enableTouchScroll()
+        otherScroller.enhancedScroller.enableTouchScroll()
       }
       this.masterScroller = null
     }
@@ -100,7 +122,7 @@ export default class ScrollJoiner {
     for (i = 0; i < this.scrollers.length; i++) {
       let scroller = this.scrollers[i]
       widths = allWidths[i]
-      scroller.enhancedScroll.canvas.setGutters(
+      scroller.enhancedScroller.canvas.setGutters(
         this.axis === 'horizontal' ?
           {
             left: maxLeft - widths.left,

@@ -1,8 +1,8 @@
-import { Duration, EventStore, EventUiHash, DateMarker, DateSpan, MemoizedRendering, EventInteractionState, EventSegUiInteractionState, DateComponent, ComponentContext, Seg, DateRange, intersectRanges, addMs, DateProfile, memoizeRendering, Slicer } from '@fullcalendar/core'
-import { normalizeRange, isValidDate } from './timeline-date-profile'
-import TimelineLaneEventRenderer from './TimelineLaneEventRenderer'
-import TimelineLaneFillRenderer from './TimelineLaneFillRenderer'
-import TimeAxis from './TimeAxis'
+import { Duration, EventStore, EventUiHash, DateMarker, DateSpan, EventInteractionState, DateComponent, ComponentContext, Seg, DateRange, intersectRanges, addMs, DateProfile, Slicer, DateProfileGenerator, DateEnv, removeElement, renderer } from '@fullcalendar/core'
+import { normalizeRange, isValidDate, TimelineDateProfile } from './timeline-date-profile'
+import TimelineLaneEvents from './TimelineLaneEvents'
+import TimelineLaneFills from './TimelineLaneFills'
+import TimeAxis, { computeDateSnapCoverage } from './TimeAxis'
 
 export interface TimelineLaneSeg extends Seg {
   start: DateMarker
@@ -10,7 +10,11 @@ export interface TimelineLaneSeg extends Seg {
 }
 
 export interface TimelineLaneProps {
+  fgContainerEl: HTMLElement | null
+  bgContainerEl: HTMLElement
   dateProfile: DateProfile
+  dateProfileGenerator: DateProfileGenerator
+  tDateProfile: TimelineDateProfile
   nextDayThreshold: Duration
   businessHours: EventStore | null
   eventStore: EventStore | null
@@ -23,157 +27,149 @@ export interface TimelineLaneProps {
 
 export default class TimelineLane extends DateComponent<TimelineLaneProps> {
 
-  fgContainerEl: HTMLElement
-  timeAxis: TimeAxis
+  private renderFgEvents = renderer(TimelineLaneEvents)
+  private renderMirror = renderer(TimelineLaneEvents)
+  private renderBgEvents = renderer(TimelineLaneFills)
+  private renderHighlight = renderer(TimelineLaneFills)
+  private renderBusinessHours = renderer(TimelineLaneFills)
 
+  private segRenderers: (TimelineLaneFills | TimelineLaneEvents)[] = []
   private slicer = new TimelineLaneSlicer()
-  private renderBusinessHours: MemoizedRendering<[ComponentContext, TimelineLaneSeg[]]>
-  private renderDateSelection: MemoizedRendering<[ComponentContext, TimelineLaneSeg[]]>
-  private renderBgEvents: MemoizedRendering<[ComponentContext, TimelineLaneSeg[]]>
-  private renderFgEvents: MemoizedRendering<[ComponentContext, TimelineLaneSeg[]]>
-  private renderEventSelection: MemoizedRendering<[string]>
-  private renderEventDrag = memoizeRendering(this._renderEventDrag, this._unrenderEventDrag)
-  private renderEventResize = memoizeRendering(this._renderEventResize, this._unrenderEventResize)
-
-
-  constructor(fgContainerEl: HTMLElement, bgContainerEl: HTMLElement, timeAxis: TimeAxis) {
-    super(bgContainerEl)
-
-    this.fgContainerEl = fgContainerEl
-    this.timeAxis = timeAxis
-
-    let fillRenderer = this.fillRenderer = new TimelineLaneFillRenderer(bgContainerEl, timeAxis)
-    let eventRenderer = this.eventRenderer = new TimelineLaneEventRenderer(fgContainerEl, timeAxis)
-    this.mirrorRenderer = new TimelineLaneEventRenderer(fgContainerEl, timeAxis)
-
-    this.renderBusinessHours = memoizeRendering(
-      fillRenderer.renderSegs.bind(fillRenderer, 'businessHours'),
-      fillRenderer.unrender.bind(fillRenderer, 'businessHours')
-    )
-
-    this.renderDateSelection = memoizeRendering(
-      fillRenderer.renderSegs.bind(fillRenderer, 'highlight'),
-      fillRenderer.unrender.bind(fillRenderer, 'highlight')
-    )
-
-    this.renderBgEvents = memoizeRendering(
-      fillRenderer.renderSegs.bind(fillRenderer, 'bgEvent'),
-      fillRenderer.unrender.bind(fillRenderer, 'bgEvent')
-    )
-
-    this.renderFgEvents = memoizeRendering(
-      eventRenderer.renderSegs.bind(eventRenderer),
-      eventRenderer.unrender.bind(eventRenderer)
-    )
-
-    this.renderEventSelection = memoizeRendering(
-      eventRenderer.selectByInstanceId.bind(eventRenderer),
-      eventRenderer.unselectByInstanceId.bind(eventRenderer),
-      [ this.renderFgEvents ]
-    )
-  }
 
 
   render(props: TimelineLaneProps, context: ComponentContext) {
-    let { timeAxis } = this
+    let { tDateProfile } = props
 
     let slicedProps = this.slicer.sliceProps(
       props,
       props.dateProfile,
-      timeAxis.tDateProfile.isTimeScale ? null : props.nextDayThreshold,
+      tDateProfile.isTimeScale ? null : props.nextDayThreshold,
       context.calendar,
-      this,
-      timeAxis
+      props.dateProfile,
+      props.dateProfileGenerator,
+      tDateProfile,
+      context.dateEnv
     )
 
-    this.renderBusinessHours(context, slicedProps.businessHourSegs)
-    this.renderDateSelection(context, slicedProps.dateSelectionSegs)
-    this.renderBgEvents(context, slicedProps.bgEventSegs)
-    this.renderFgEvents(context, slicedProps.fgEventSegs)
-    this.renderEventSelection(slicedProps.eventSelection)
-    this.renderEventDrag(slicedProps.eventDrag)
-    this.renderEventResize(slicedProps.eventResize)
-  }
+    let segRenderers: (TimelineLaneFills | TimelineLaneEvents)[] = []
 
+    // ordering matters? for z-index?
 
-  destroy() {
-    super.destroy()
-
-    this.renderBusinessHours.unrender()
-    this.renderDateSelection.unrender()
-    this.renderBgEvents.unrender()
-    this.renderFgEvents.unrender()
-    this.renderEventSelection.unrender()
-    this.renderEventDrag.unrender()
-    this.renderEventResize.unrender()
-  }
-
-
-  _renderEventDrag(state: EventSegUiInteractionState) {
-    if (state) {
-      this.eventRenderer.hideByHash(state.affectedInstances)
-      this.mirrorRenderer.renderSegs(this.context, state.segs, { isDragging: true, sourceSeg: state.sourceSeg })
-    }
-  }
-
-
-  _unrenderEventDrag(state: EventSegUiInteractionState) {
-    if (state) {
-      this.eventRenderer.showByHash(state.affectedInstances)
-      this.mirrorRenderer.unrender(this.context, state.segs, { isDragging: true, sourceSeg: state.sourceSeg })
-    }
-  }
-
-
-  _renderEventResize(state: EventSegUiInteractionState) {
-    if (state) {
-      // HACK. eventRenderer and fillRenderer both use these segs. would compete over seg.el
-      let segsForHighlight = state.segs.map(function(seg) {
-        return { ...seg }
+    segRenderers.push(
+      this.renderBusinessHours(props.bgContainerEl, {
+        type: 'businessHours',
+        segs: slicedProps.businessHourSegs
       })
+    )
 
-      this.eventRenderer.hideByHash(state.affectedInstances)
-      this.fillRenderer.renderSegs('highlight', this.context, segsForHighlight)
-      this.mirrorRenderer.renderSegs(this.context, state.segs, { isDragging: true, sourceSeg: state.sourceSeg })
+    if (slicedProps.eventResize) {
+      segRenderers.push(
+        this.renderHighlight(props.bgContainerEl, {
+          type: 'highlight',
+          // HACK. eventRenderer and fillRenderer both use these segs. would compete over seg.el
+          segs: slicedProps.eventResize.segs.map(function(seg) {
+            return { ...seg }
+          })
+        })
+      )
+
+    } else {
+      segRenderers.push(
+        this.renderHighlight(props.bgContainerEl, {
+          type: 'highlight',
+          segs: slicedProps.dateSelectionSegs
+        })
+      )
     }
+
+    segRenderers.push(
+      this.renderBgEvents(props.bgContainerEl, {
+        type: 'bgEvent',
+        segs: slicedProps.bgEventSegs
+      })
+    )
+
+    segRenderers.push(
+      this.renderFgEvents(props.fgContainerEl, {
+        tDateProfile,
+        segs: slicedProps.fgEventSegs,
+        selectedInstanceId: props.eventSelection, // TODO: rename
+        hiddenInstances: // TODO: more convenient
+          (slicedProps.eventDrag ? slicedProps.eventDrag.affectedInstances : null) ||
+          (slicedProps.eventResize ? slicedProps.eventResize.affectedInstances : null)
+      })
+    )
+
+    if (slicedProps.eventDrag) {
+      segRenderers.push(
+        this.renderMirror(props.fgContainerEl, {
+          tDateProfile,
+          segs: slicedProps.eventDrag.segs,
+          mirrorInfo: { isDragging: true, sourceSeg: slicedProps.eventDrag.sourceSeg }
+        })
+      )
+
+    } else if (slicedProps.eventResize) {
+      segRenderers.push(
+        this.renderMirror(props.fgContainerEl, {
+          tDateProfile,
+          segs: slicedProps.eventResize.segs,
+          mirrorInfo: { isDragging: true, sourceSeg: slicedProps.eventResize.sourceSeg }
+        })
+      )
+
+    } else {
+      this.renderMirror(false)
+    }
+
+    this.segRenderers = segRenderers
   }
 
 
-  _unrenderEventResize(state: EventSegUiInteractionState) {
-    if (state) {
-      this.eventRenderer.showByHash(state.affectedInstances)
-      this.fillRenderer.unrender('highlight', this.context)
-      this.mirrorRenderer.unrender(this.context, state.segs, { isDragging: true, sourceSeg: state.sourceSeg })
+  updateSize(isResize: boolean, timeAxis: TimeAxis) {
+
+    for (let segRenderer of this.segRenderers) {
+      segRenderer.computeSizes(isResize, timeAxis)
     }
-  }
 
-
-  updateSize(isResize: boolean) {
-    let { fillRenderer, eventRenderer, mirrorRenderer } = this
-
-    fillRenderer.computeSizes(isResize)
-    eventRenderer.computeSizes(isResize)
-    mirrorRenderer.computeSizes(isResize)
-
-    fillRenderer.assignSizes(isResize)
-    eventRenderer.assignSizes(isResize)
-    mirrorRenderer.assignSizes(isResize)
+    for (let segRenderer of this.segRenderers) {
+      segRenderer.assignSizes(isResize, timeAxis)
+    }
   }
 
 }
 
 
-class TimelineLaneSlicer extends Slicer<TimelineLaneSeg, [TimeAxis]> {
+export function attachSegs({ segs, containerEl }: { segs: Seg[], containerEl: HTMLElement }) {
+  for (let seg of segs) {
+    containerEl.appendChild(seg.el)
+  }
 
-  sliceRange(origRange: DateRange, timeAxis: TimeAxis): TimelineLaneSeg[] {
-    let { tDateProfile } = timeAxis
-    let { dateProfile, dateProfileGenerator } = timeAxis.props
-    let { dateEnv } = timeAxis.context
+  return segs
+}
+
+
+export function detachSegs(segs: Seg[]) {
+  for (let seg of segs) {
+    removeElement(seg.el)
+  }
+}
+
+
+class TimelineLaneSlicer extends Slicer<TimelineLaneSeg, [DateProfile, DateProfileGenerator, TimelineDateProfile, DateEnv]> {
+
+  sliceRange(
+    origRange: DateRange,
+    dateProfile: DateProfile,
+    dateProfileGenerator: DateProfileGenerator,
+    tDateProfile: TimelineDateProfile,
+    dateEnv: DateEnv
+  ): TimelineLaneSeg[] {
     let normalRange = normalizeRange(origRange, tDateProfile, dateEnv)
     let segs: TimelineLaneSeg[] = []
 
     // protect against when the span is entirely in an invalid date region
-    if (timeAxis.computeDateSnapCoverage(normalRange.start) < timeAxis.computeDateSnapCoverage(normalRange.end)) {
+    if (computeDateSnapCoverage(normalRange.start, tDateProfile, dateEnv) < computeDateSnapCoverage(normalRange.end, tDateProfile, dateEnv)) {
 
       // intersect the footprint's range with the grid's range
       let slicedRange = intersectRanges(normalRange, tDateProfile.normalizedRange)

@@ -1,4 +1,4 @@
-import { isInt, findElements, createElement, findChildren, PositionCache, removeElement, getDayClasses, Component, DateProfile, multiplyDuration } from '@fullcalendar/core'
+import { isInt, findElements, createElement, findDirectChildren, PositionCache, getDayClasses, Component, DateProfile, multiplyDuration, ComponentContext } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 export interface TimelineSlatsProps {
@@ -8,33 +8,16 @@ export interface TimelineSlatsProps {
 
 export default class TimelineSlats extends Component<TimelineSlatsProps> {
 
-  el: HTMLElement
   slatColEls: HTMLElement[]
   slatEls: HTMLElement[]
 
   outerCoordCache: PositionCache
   innerCoordCache: PositionCache
 
-  constructor(parentEl: HTMLElement) {
-    super()
 
-    parentEl.appendChild(
-      this.el = createElement('div', { className: 'fc-slats' })
-    )
-  }
-
-  destroy() {
-    removeElement(this.el)
-
-    super.destroy()
-  }
-
-  render(props: TimelineSlatsProps) {
-    this.renderDates(props.tDateProfile)
-  }
-
-  renderDates(tDateProfile: TimelineDateProfile) {
-    let { calendar, view, theme, dateEnv } = this.context
+  render(props: TimelineSlatsProps, context: ComponentContext) {
+    let { dateProfile, tDateProfile } = props
+    let { calendar, view, theme, dateEnv } = context
     let { slotDates, isWeekStarts } = tDateProfile
 
     let html =
@@ -49,29 +32,31 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
     html += '<tbody><tr>'
 
     for (let i = 0; i < slotDates.length; i++) {
-      html += this.slatCellHtml(slotDates[i], isWeekStarts[i], tDateProfile)
+      html += slatCellHtml(slotDates[i], isWeekStarts[i], dateProfile, tDateProfile, context)
     }
 
     html += '</tr></tbody></table>'
 
-    this.el.innerHTML = html
-
-    this.slatColEls = findElements(this.el, 'col')
-    this.slatEls = findElements(this.el, 'td')
+    let el = createElement('div', { className: 'fc-slats' }, html)
+    let slatColEls = findElements(el, 'col')
+    let slatEls = findElements(el, 'td')
 
     for (let i = 0; i < slotDates.length; i++) {
       calendar.publiclyTrigger('dayRender', [
         {
           date: dateEnv.toDate(slotDates[i]),
-          el: this.slatEls[i],
+          el: slatEls[i],
           view
         }
       ])
     }
 
+    this.slatColEls = slatColEls
+    this.slatEls = slatEls
+
     this.outerCoordCache = new PositionCache(
-      this.el,
-      this.slatEls,
+      el,
+      slatEls,
       true, // isHorizontal
       false // isVertical
     )
@@ -79,48 +64,21 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
     // for the inner divs within the slats
     // used for event rendering and scrollTime, to disregard slat border
     this.innerCoordCache = new PositionCache(
-      this.el,
-      findChildren(this.slatEls, 'div'),
+      el,
+      findDirectChildren(slatEls, 'div'),
       true, // isHorizontal
       false // isVertical
     )
+
+    return el
   }
 
-  slatCellHtml(date, isEm, tDateProfile: TimelineDateProfile) {
-    let { theme, dateEnv } = this.context
-    let classes
-
-    if (tDateProfile.isTimeScale) {
-      classes = []
-      classes.push(
-        isInt(dateEnv.countDurationsBetween(
-          tDateProfile.normalizedRange.start,
-          date,
-          tDateProfile.labelInterval
-        )) ?
-          'fc-major' :
-          'fc-minor'
-      )
-    } else {
-      classes = getDayClasses(date, this.props.dateProfile, this.context)
-      classes.push('fc-day')
-    }
-
-    classes.unshift(theme.getClass('widgetContent'))
-
-    if (isEm) {
-      classes.push('fc-em-cell')
-    }
-
-    return '<td class="' + classes.join(' ') + '"' +
-      ' data-date="' + dateEnv.formatIso(date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true }) + '"' +
-      '><div></div></td>'
-  }
 
   updateSize() { // just updates position caches
     this.outerCoordCache.build()
     this.innerCoordCache.build()
   }
+
 
   positionToHit(leftPosition) {
     let { outerCoordCache } = this
@@ -155,4 +113,36 @@ export default class TimelineSlats extends Component<TimelineSlatsProps> {
     return null
   }
 
+}
+
+
+function slatCellHtml(date, isEm, dateProfile: DateProfile, tDateProfile: TimelineDateProfile, context: ComponentContext) {
+  let { theme, dateEnv } = context
+  let classes
+
+  if (tDateProfile.isTimeScale) {
+    classes = []
+    classes.push(
+      isInt(dateEnv.countDurationsBetween(
+        tDateProfile.normalizedRange.start,
+        date,
+        tDateProfile.labelInterval
+      )) ?
+        'fc-major' :
+        'fc-minor'
+    )
+  } else {
+    classes = getDayClasses(date, dateProfile, this.context)
+    classes.push('fc-day')
+  }
+
+  classes.unshift(theme.getClass('widgetContent'))
+
+  if (isEm) {
+    classes.push('fc-em-cell')
+  }
+
+  return '<td class="' + classes.join(' ') + '"' +
+    ' data-date="' + dateEnv.formatIso(date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true }) + '"' +
+    '><div></div></td>'
 }

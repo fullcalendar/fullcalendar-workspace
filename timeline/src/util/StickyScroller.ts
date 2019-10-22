@@ -10,7 +10,7 @@ interface ElementGeom {
   intendedTextAlign: string
 }
 
-const STICKY_PROP_VAL = computeStickyPropVal() // if null, means not supported at all
+const STICKY_PROP_VAL = computeStickyPropVal() // if null, means no supported at all
 const IS_MS_EDGE = /Edge/.test(navigator.userAgent)
 const IS_SAFARI = STICKY_PROP_VAL === '-webkit-sticky' // good b/c doesn't confuse chrome
 const STICKY_CLASSNAME = 'fc-sticky'
@@ -20,13 +20,13 @@ useful beyond the native position:sticky for these reasons:
 - support in IE11
 - nice centering support
 */
-export default class StickyScroller {
+export default class StickyScroller { // more of a wrapper around an existing scroller than a component
 
-  scroller: EnhancedScroller
+  enhancedScroller: EnhancedScroller
   usingRelative: boolean | null = null
 
-  constructor(scroller: EnhancedScroller, isRtl: boolean, isVertical: boolean) {
-    this.scroller = scroller
+  constructor(enhancedScroller: EnhancedScroller, isRtl: boolean, isVertical: boolean) {
+    this.enhancedScroller = enhancedScroller
 
     this.usingRelative =
       !STICKY_PROP_VAL || // IE11
@@ -34,21 +34,21 @@ export default class StickyScroller {
       ((IS_MS_EDGE || IS_SAFARI) && isVertical) // because doesn't work with rowspan in tables, our only vertial use
 
     if (this.usingRelative) {
-      scroller.on('scrollEnd', this.updateSize)
+      enhancedScroller.on('scrollEnd', this.updateSize)
     }
   }
 
   destroy() {
-    this.scroller.off('scrollEnd', this.updateSize)
+    this.enhancedScroller.off('scrollEnd', this.updateSize)
   }
 
   /*
   known bug: called twice on init. problem when mixing with ScrollJoiner
   */
   updateSize = () => {
-    let els = Array.prototype.slice.call(this.scroller.canvas.el.querySelectorAll('.' + STICKY_CLASSNAME))
+    let els = Array.prototype.slice.call(this.enhancedScroller.canvas.el.querySelectorAll('.' + STICKY_CLASSNAME))
     let elGeoms = this.queryElGeoms(els)
-    let viewportWidth = this.scroller.el.clientWidth
+    let viewportWidth = this.enhancedScroller.getEl().clientWidth
 
     if (this.usingRelative) {
       let elDestinations = this.computeElDestinations(elGeoms, viewportWidth) // read before prepPositioning
@@ -59,7 +59,7 @@ export default class StickyScroller {
   }
 
   queryElGeoms(els: HTMLElement[]): ElementGeom[] {
-    let canvasOrigin = this.scroller.canvas.el.getBoundingClientRect()
+    let canvasOrigin = this.enhancedScroller.canvas.el.getBoundingClientRect()
     let elGeoms: ElementGeom[] = []
 
     for (let el of els) {
@@ -102,8 +102,8 @@ export default class StickyScroller {
   }
 
   computeElDestinations(elGeoms: ElementGeom[], viewportWidth: number): Point[] {
-    let viewportLeft = this.scroller.getScrollFromLeft()
-    let viewportTop = this.scroller.getScrollTop()
+    let viewportLeft = this.enhancedScroller.getScrollFromLeft()
+    let viewportTop = this.enhancedScroller.scroller.controller.getScrollTop()
     let viewportRight = viewportLeft + viewportWidth
 
     return elGeoms.map(function(elGeom) {

@@ -1,30 +1,55 @@
+import { Component, renderer } from '@fullcalendar/core'
 import ClippedScroller from './util/ClippedScroller'
 import ScrollJoiner from './util/ScrollJoiner'
 
-export default class HeaderBodyLayout {
+export interface HeaderBodyLayoutProps {
+  headerContainerEl: HTMLElement
+  bodyContainerEl: HTMLElement
+  verticalScroll: 'auto' | 'clipped-scroll'
+}
+
+export default class HeaderBodyLayout extends Component<HeaderBodyLayoutProps> {
+
+  renderHeaderScroller = renderer(ClippedScroller)
+  renderBodyScroller = renderer(ClippedScroller)
+  buildScrollJoiner = renderer(this._buildScrollJoiner, this._clearScrollerJoiner)
 
   headerScroller: ClippedScroller
   bodyScroller: ClippedScroller
   scrollJoiner: ScrollJoiner
 
-  /*
-  verticalScroll = 'auto' | 'clipped-scroll'
-  */
-  constructor(headerContainerEl, bodyContainerEl, verticalScroll) {
 
-    this.headerScroller = new ClippedScroller('clipped-scroll', 'hidden', headerContainerEl)
-    this.bodyScroller = new ClippedScroller('auto', verticalScroll, bodyContainerEl)
+  render(props: HeaderBodyLayoutProps) {
+    let headerScroller = this.renderHeaderScroller(props.headerContainerEl, {
+      overflowX: 'clipped-scroll',
+      overflowY: 'hidden'
+    })
 
-    this.scrollJoiner = new ScrollJoiner('horizontal', [
-      this.headerScroller,
-      this.bodyScroller
+    let bodyScroller = this.renderBodyScroller(props.bodyContainerEl, {
+      overflowX: 'auto',
+      overflowY: props.verticalScroll
+    })
+
+    let scrollJoiner = this.buildScrollJoiner(true, { headerScroller, bodyScroller })
+
+    this.headerScroller = headerScroller
+    this.bodyScroller = bodyScroller
+    this.scrollJoiner = scrollJoiner
+  }
+
+
+  _buildScrollJoiner(props: { headerScroller: ClippedScroller, bodyScroller: ClippedScroller }) {
+    return new ScrollJoiner('horizontal', [
+      props.headerScroller,
+      props.bodyScroller
     ])
   }
 
-  destroy() {
-    this.headerScroller.destroy()
-    this.bodyScroller.destroy()
+
+  _clearScrollerJoiner(scrollJoiner: ScrollJoiner) {
+    scrollJoiner.destroy()
   }
+
 
   setHeight(totalHeight, isAuto) {
     let bodyHeight
@@ -42,8 +67,9 @@ export default class HeaderBodyLayout {
     this.scrollJoiner.update()
   }
 
+
   queryHeadHeight() {
-    return this.headerScroller.enhancedScroll.canvas.contentEl.getBoundingClientRect().height
+    return this.headerScroller.enhancedScroller.canvas.contentEl.getBoundingClientRect().height
   }
 
 }

@@ -1,93 +1,72 @@
-import { memoizeRendering, Hit, View, ViewProps, ComponentContext, DateProfile, Duration, DateProfileGenerator } from '@fullcalendar/core'
+import { Hit, View, ViewProps, ComponentContext, DateProfile, Duration, DateProfileGenerator, renderViewEl, renderer, memoize } from '@fullcalendar/core'
 import TimeAxis from './TimeAxis'
 import TimelineLane from './TimelineLane'
+import { buildTimelineDateProfile } from './timeline-date-profile'
 
 export default class TimelineView extends View {
+
+  private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
+  private renderSkeleton = renderer(this._renderSkeleton)
+  private startInteractive = renderer(this._startInteractive, this._stopInteractive)
+  private renderTimeAxis = renderer(TimeAxis)
+  private renderLane = renderer(TimelineLane)
 
   // child components
   timeAxis: TimeAxis
   lane: TimelineLane
 
-  private renderSkeleton = memoizeRendering(this._renderSkeleton, this._unrenderSkeleton)
-  private startInteractive = memoizeRendering(this._startInteractive, this._stopInteractive)
-
-
-  _startInteractive(timeAxisEl: HTMLElement) {
-    this.context.calendar.registerInteractiveComponent(this, {
-      el: timeAxisEl
-    })
-  }
-
-
-  _stopInteractive() {
-    this.context.calendar.unregisterInteractiveComponent(this)
-  }
-
 
   render(props: ViewProps, context: ComponentContext) {
-    super.render(props, context) // flags for updateSize, addScroll. and _renderSkeleton/_unrenderSkeleton
+    let tDateProfile = this.buildTimelineDateProfile(
+      props.dateProfile,
+      context.dateEnv,
+      context.options,
+      props.dateProfileGenerator
+    )
 
-    this.renderSkeleton(this.context)
+    let {
+      rootEl,
+      headerContainerEl,
+      bodyContainerEl
+    } = this.renderSkeleton(true, { type: props.viewSpec.type })
 
-    this.timeAxis.receiveProps({
-      dateProfileGenerator: props.dateProfileGenerator,
+    let timeAxis = this.renderTimeAxis(true, {
+      tDateProfile,
+      headerContainerEl,
+      bodyContainerEl,
       dateProfile: props.dateProfile
-    }, context)
+    })
 
-    this.startInteractive(this.timeAxis.slats.el)
-
-    this.lane.receiveProps({
+    let laneCanvas = timeAxis.layout.bodyScroller.enhancedScroller.canvas
+    let lane = this.renderLane(true, {
       ...props,
-      nextDayThreshold: this.context.nextDayThreshold
-    }, context)
+      tDateProfile,
+      nextDayThreshold: this.context.nextDayThreshold,
+      fgContainerEl: laneCanvas.contentEl,
+      bgContainerEl: laneCanvas.bgEl
+    })
 
+    this.startInteractive(true, { timeAxisEl: timeAxis.slats.rootEl })
     this.startNowIndicator(props.dateProfile, props.dateProfileGenerator)
+
+    this.timeAxis = timeAxis
+    this.lane = lane
+
+    return rootEl
   }
 
 
-  destroy() {
-    this.startInteractive.unrender() // "unrender" a weird name
-    this.renderSkeleton.unrender()
+  _renderSkeleton(props: { type: string }, context: ComponentContext) {
+    let { options, theme } = context
 
-    super.destroy()
-  }
+    let rootEl = renderViewEl(props.type)
+    rootEl.classList.add('fc-timeline')
 
-
-  _renderSkeleton(context: ComponentContext) {
-
-    this.el.classList.add('fc-timeline')
-    if (context.options.eventOverlap === false) {
-      this.el.classList.add('fc-no-overlap')
+    if (options.eventOverlap === false) {
+      rootEl.classList.add('fc-no-overlap')
     }
 
-    this.el.innerHTML = this.renderSkeletonHtml()
-
-    this.timeAxis = new TimeAxis(
-      this.el.querySelector('thead .fc-time-area'),
-      this.el.querySelector('tbody .fc-time-area')
-    )
-
-    this.lane = new TimelineLane(
-      this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.contentEl,
-      this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.bgEl,
-      this.timeAxis
-    )
-  }
-
-
-  _unrenderSkeleton() {
-    this.el.classList.remove('fc-timeline')
-    this.el.classList.remove('fc-no-overlap')
-
-    this.timeAxis.destroy()
-    this.lane.destroy()
-  }
-
-
-  renderSkeletonHtml() {
-    let { theme } = this.context
-
-    return `<table class="` + theme.getClass('tableGrid') + `"> \
+    rootEl.innerHTML = `<table class="` + theme.getClass('tableGrid') + `"> \
 <thead class="fc-head"> \
 <tr> \
 <td class="fc-time-area ` + theme.getClass('widgetHeader') + `"></td> \
@@ -99,12 +78,30 @@ export default class TimelineView extends View {
 </tr> \
 </tbody> \
 </table>`
+
+    return {
+      rootEl,
+      headerContainerEl: rootEl.querySelector('thead .fc-time-area') as HTMLElement,
+      bodyContainerEl: rootEl.querySelector('tbody .fc-time-area') as HTMLElement
+    }
+  }
+
+
+  _startInteractive(props: { timeAxisEl: HTMLElement }, context: ComponentContext) {
+    context.calendar.registerInteractiveComponent(this, {
+      el: props.timeAxisEl
+    })
+  }
+
+
+  _stopInteractive(funcState: void, context: ComponentContext) {
+    context.calendar.unregisterInteractiveComponent(this)
   }
 
 
   updateSize(isResize, totalHeight, isAuto) {
     this.timeAxis.updateSize(isResize, totalHeight, isAuto)
-    this.lane.updateSize(isResize)
+    this.lane.updateSize(isResize, this.timeAxis)
   }
 
 
@@ -156,11 +153,11 @@ export default class TimelineView extends View {
 
 
   queryScroll() {
-    let { enhancedScroll } = this.timeAxis.layout.bodyScroller
+    let { enhancedScroller } = this.timeAxis.layout.bodyScroller
 
     return {
-      top: enhancedScroll.getScrollTop(),
-      left: enhancedScroll.getScrollLeft()
+      top: enhancedScroller.scroller.controller.getScrollTop(),
+      left: enhancedScroller.getScrollLeft()
     }
   }
 

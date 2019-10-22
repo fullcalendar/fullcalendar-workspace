@@ -1,22 +1,39 @@
 import {
-  FgEventRenderer, htmlEscape, cssToStr, Seg, removeElement, applyStyle, computeHeightAndMargins, applyStyleProp, createElement,
-  computeEventDraggable, computeEventStartResizable, computeEventEndResizable
+  FgEventRenderer, htmlEscape, cssToStr, Seg, applyStyle, computeHeightAndMargins, applyStyleProp, createElement,
+  computeEventDraggable, computeEventStartResizable, computeEventEndResizable, BaseFgEventRendererProps, sortEventSegs, renderer, ComponentContext
 } from '@fullcalendar/core'
-import TimeAxis from './TimeAxis'
+import { TimelineDateProfile } from './timeline-date-profile'
+import { TimeAxis } from './main'
+import { attachSegs, detachSegs } from './TimelineLane'
+
+export interface TimelineLaneEventsProps extends BaseFgEventRendererProps {
+  tDateProfile: TimelineDateProfile
+}
+
+export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEventsProps> {
+
+  private renderContainer = renderer(renderContainer)
+  private attachSegs = renderer(attachSegs, detachSegs)
+
+  private containerEl: HTMLElement
 
 
-export default class TimelineLaneEventRenderer extends FgEventRenderer {
+  render(props: TimelineLaneEventsProps, context: ComponentContext) {
+    let containerEl = this.renderContainer(true, { isMirror: Boolean(props.mirrorInfo) })
 
-  timeAxis: TimeAxis
-  masterContainerEl: HTMLElement
-  el: HTMLElement
+    let segs = this.renderSegs({
+      segs: props.segs,
+      mirrorInfo: props.mirrorInfo,
+      selectedInstanceId: props.selectedInstanceId,
+      hiddenInstances: props.hiddenInstances
+    }, context)
 
-  constructor(masterContainerEl: HTMLElement, timeAxis: TimeAxis) {
-    super()
+    this.attachSegs(true, { segs, containerEl })
 
-    this.masterContainerEl = masterContainerEl
-    this.timeAxis = timeAxis
+    this.containerEl = containerEl
+    return containerEl
   }
+
 
   renderSegHtml(seg, mirrorInfo) {
     let { context } = this
@@ -59,13 +76,16 @@ export default class TimelineLaneEventRenderer extends FgEventRenderer {
     '</a>'
   }
 
+
   computeDisplayEventTime() {
-    return !this.timeAxis.tDateProfile.isTimeScale // because times should be obvious via axis
+    return !this.props.tDateProfile.isTimeScale // because times should be obvious via axis
   }
+
 
   computeDisplayEventEnd() {
     return false
   }
+
 
   // Computes a default event time formatting string if `timeFormat` is not explicitly defined
   computeEventTimeFormat() {
@@ -77,35 +97,9 @@ export default class TimelineLaneEventRenderer extends FgEventRenderer {
     }
   }
 
-  attachSegs(segs: Seg[], mirrorInfo) {
-
-    if (!this.el && this.masterContainerEl) {
-      this.el = createElement('div', { className: 'fc-event-container' })
-
-      if (mirrorInfo) {
-        this.el.classList.add('fc-mirror-container')
-      }
-
-      this.masterContainerEl.appendChild(this.el)
-    }
-
-    if (this.el) {
-      for (let seg of segs) {
-        this.el.appendChild(seg.el)
-      }
-    }
-  }
-
-  detachSegs(segs: Seg[]) {
-    for (let seg of segs) {
-      removeElement(seg.el)
-    }
-  }
 
   // computes AND assigns (assigns the left/right at least). bad
-  computeSegSizes(segs: Seg[]) {
-    let { timeAxis } = this
-
+  computeSegSizes(segs: Seg[], timeAxis: TimeAxis) {
     for (let seg of segs) {
       let coords = timeAxis.rangeToCoords(seg) // works because Seg has start/end
 
@@ -116,10 +110,8 @@ export default class TimelineLaneEventRenderer extends FgEventRenderer {
     }
   }
 
+
   assignSegSizes(segs: Seg[]) {
-    if (!this.el) {
-      return
-    }
 
     // compute seg verticals
     for (let seg of segs) {
@@ -128,7 +120,7 @@ export default class TimelineLaneEventRenderer extends FgEventRenderer {
 
     this.buildSegLevels(segs) // populates above/below props for computeOffsetForSegs
     let totalHeight = computeOffsetForSegs(segs) // also assigns seg.top
-    applyStyleProp(this.el, 'height', totalHeight)
+    applyStyleProp(this.containerEl, 'height', totalHeight)
 
     // assign seg verticals
     for (let seg of segs) {
@@ -136,10 +128,11 @@ export default class TimelineLaneEventRenderer extends FgEventRenderer {
     }
   }
 
+
   buildSegLevels(segs) {
     let segLevels = []
 
-    segs = this.sortEventSegs(segs)
+    segs = sortEventSegs(segs, this.context.eventOrderSpecs)
 
     for (let unplacedSeg of segs) {
       unplacedSeg.above = []
@@ -185,14 +178,11 @@ export default class TimelineLaneEventRenderer extends FgEventRenderer {
 
 }
 
-function computeOffsetForSegs(segs) {
-  let max = 0
 
-  for (let seg of segs) {
-    max = Math.max(max, computeOffsetForSeg(seg))
-  }
-
-  return max
+function renderContainer(props: { isMirror: boolean }) {
+  return createElement('div', {
+    className: 'fc-event-container' + (props.isMirror ? ' fc-mirror-container' : '')
+  })
 }
 
 
@@ -202,6 +192,17 @@ function computeOffsetForSeg(seg) {
   }
 
   return seg.top + seg.height
+}
+
+
+function computeOffsetForSegs(segs) {
+  let max = 0
+
+  for (let seg of segs) {
+    max = Math.max(max, computeOffsetForSeg(seg))
+  }
+
+  return max
 }
 
 

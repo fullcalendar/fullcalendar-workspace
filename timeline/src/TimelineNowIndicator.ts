@@ -1,43 +1,43 @@
-import { removeElement, createElement } from '@fullcalendar/core'
+import { removeElement, createElement, Component, ComponentContext, applyStyle } from '@fullcalendar/core'
 
-export default class TimelineNowIndicator {
-
+export interface TimelineNowIndicatorProps {
   headParent: HTMLElement
   bodyParent: HTMLElement
+}
+
+export default class TimelineNowIndicator extends Component<TimelineNowIndicatorProps> {
+
   arrowEl: HTMLElement
   lineEl: HTMLElement
 
-  constructor(headParent: HTMLElement, bodyParent: HTMLElement) {
-    this.headParent = headParent
-    this.bodyParent = bodyParent
-  }
 
-  render(coord: number, isRtl: boolean) {
-    let styleProps = isRtl ? { right: -coord } : { left: coord }
+  render(props: TimelineNowIndicatorProps, context: ComponentContext) {
 
-    this.headParent.appendChild(
+    props.headParent.appendChild(
       this.arrowEl = createElement('div', {
-        className: 'fc-now-indicator fc-now-indicator-arrow',
-        style: styleProps
+        className: 'fc-now-indicator fc-now-indicator-arrow'
       })
     )
 
-    this.bodyParent.appendChild(
+    props.bodyParent.appendChild(
       this.lineEl = createElement('div', {
-        className: 'fc-now-indicator fc-now-indicator-line',
-        style: styleProps
+        className: 'fc-now-indicator fc-now-indicator-line'
       })
     )
   }
+
 
   unrender() {
-    if (this.arrowEl) {
-      removeElement(this.arrowEl)
-    }
+    removeElement(this.arrowEl)
+    removeElement(this.lineEl)
+  }
 
-    if (this.lineEl) {
-      removeElement(this.lineEl)
-    }
+
+  updateCoord(coord: number) {
+    let styleProps = this.context.isRtl ? { right: -coord } : { left: coord }
+
+    applyStyle(this.arrowEl, styleProps)
+    applyStyle(this.lineEl, styleProps)
   }
 
 }

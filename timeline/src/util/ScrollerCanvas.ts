@@ -1,4 +1,4 @@
-import { htmlToElement, applyStyle, forceClassName } from '@fullcalendar/core'
+import { htmlToElement, applyStyle, forceClassName, Component } from '@fullcalendar/core'
 import { __assign } from 'tslib'
 
 /*
@@ -7,27 +7,28 @@ Can have "gutters", areas of dead spacing around the perimeter.
 Also very useful for forcing a width, which a Scroller cannot do alone.
 Has a content area that lives above a background area.
 */
-export default class ScrollerCanvas {
+export default class ScrollerCanvas extends Component<{}> {
 
   el: HTMLElement
   contentEl: HTMLElement
   bgEl: HTMLElement
-  gutters: any // an object {top,left,bottom,right}
+  gutters = {} as any // an object {top,left,bottom,right}
   width: any
   minWidth: any
 
 
-  constructor() {
-    this.gutters = {}
-
-    this.el = htmlToElement(`\
+  render() {
+    if (!this.el) {
+      this.el = htmlToElement(`\
 <div class="fc-scroller-canvas"> \
 <div class="fc-content"></div> \
 <div class="fc-bg"></div> \
 </div>\
 `)
-    this.contentEl = this.el.querySelector('.fc-content')
-    this.bgEl = this.el.querySelector('.fc-bg')
+      this.contentEl = this.el.querySelector('.fc-content')
+      this.bgEl = this.el.querySelector('.fc-bg')
+    }
+    return this.el
   }
 
 

@@ -1,100 +1,61 @@
-import { memoizeRendering, DateProfile, DateMarker, wholeDivideDurations, isInt, Component, ComponentContext, startOfDay, greatestDurationDenominator, rangeContainsMarker, Duration, DateProfileGenerator } from '@fullcalendar/core'
+import { DateProfile, DateMarker, wholeDivideDurations, isInt, Component, ComponentContext, startOfDay, greatestDurationDenominator, rangeContainsMarker, Duration, DateProfileGenerator, renderer, DateEnv } from '@fullcalendar/core'
 import HeaderBodyLayout from './HeaderBodyLayout'
 import TimelineHeader from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'
-import { TimelineDateProfile, buildTimelineDateProfile } from './timeline-date-profile'
+import { TimelineDateProfile } from './timeline-date-profile'
 import TimelineNowIndicator from './TimelineNowIndicator'
 import StickyScroller from './util/StickyScroller'
+import EnhancedScroller from './util/EnhancedScroller'
 
 export interface TimeAxisProps {
-  dateProfileGenerator: DateProfileGenerator
+  tDateProfile: TimelineDateProfile
   dateProfile: DateProfile
+  headerContainerEl: HTMLElement
+  bodyContainerEl: HTMLElement
 }
 
 export default class TimeAxis extends Component<TimeAxisProps> {
+
+  renderLayout = renderer(HeaderBodyLayout)
+  renderHeader = renderer(TimelineHeader)
+  renderSlats = renderer(TimelineSlats)
+  renderNowIndicatorComponent = renderer(TimelineNowIndicator)
+  buildHeadStickyScroller = renderer(buildHStickyScroller, clearHStickyScroller)
+  buildBodyStickyScroller = renderer(buildHStickyScroller, clearHStickyScroller)
 
   // child components
   layout: HeaderBodyLayout
   header: TimelineHeader
   slats: TimelineSlats
-  nowIndicator: TimelineNowIndicator
   headStickyScroller: StickyScroller
   bodyStickyScroller: StickyScroller
 
-  // internal state
-  tDateProfile: TimelineDateProfile
 
-  private renderSkeleton = memoizeRendering(this._renderSkeleton, this._unrenderSkeleton)
+  render(props: TimeAxisProps) {
 
+    let layout = this.renderLayout(true, {
+      headerContainerEl: props.headerContainerEl,
+      bodyContainerEl: props.bodyContainerEl,
+      verticalScroll: 'auto'
+    })
+    let headerEnhancedScroller = layout.headerScroller.enhancedScroller
+    let bodyEnhancedScroller = layout.bodyScroller.enhancedScroller
 
-  constructor(headerContainerEl, bodyContainerEl) {
-    super()
-
-    this.layout = new HeaderBodyLayout(
-      headerContainerEl,
-      bodyContainerEl,
-      'auto'
-    )
-  }
-
-
-  render(props: TimeAxisProps, context: ComponentContext) {
-
-    let tDateProfile = this.tDateProfile =
-      buildTimelineDateProfile(props.dateProfile, context.dateEnv, context.options, props.dateProfileGenerator) // TODO: cache
-
-    this.renderSkeleton(context)
-
-    this.header.receiveProps({
+    let header = this.renderHeader(headerEnhancedScroller.canvas.contentEl, {
       dateProfile: props.dateProfile,
-      tDateProfile
-    }, context)
+      tDateProfile: props.tDateProfile
+    })
 
-    this.slats.receiveProps({
+    let slats = this.renderSlats(bodyEnhancedScroller.canvas.bgEl, {
       dateProfile: props.dateProfile,
-      tDateProfile
-    }, context)
-  }
+      tDateProfile: props.tDateProfile
+    })
 
-
-  destroy() {
-    this.renderSkeleton.unrender()
-    this.layout.destroy()
-
-    super.destroy()
-  }
-
-
-  _renderSkeleton(context: ComponentContext) {
-    let { layout } = this
-    let headerEnhancedScroller = layout.headerScroller.enhancedScroll
-    let bodyEnhancedScroller = layout.bodyScroller.enhancedScroll
-
-    // needs to go after layout, which has ScrollJoiner
-    this.headStickyScroller = new StickyScroller(headerEnhancedScroller, context.isRtl, false) // isVertical=false
-    this.bodyStickyScroller = new StickyScroller(bodyEnhancedScroller, context.isRtl, false) // isVertical=false
-
-    this.header = new TimelineHeader(
-      headerEnhancedScroller.canvas.contentEl
-    )
-
-    this.slats = new TimelineSlats(
-      bodyEnhancedScroller.canvas.bgEl
-    )
-
-    this.nowIndicator = new TimelineNowIndicator(
-      headerEnhancedScroller.canvas.el,
-      bodyEnhancedScroller.canvas.el
-    )
-  }
-
-
-  _unrenderSkeleton() {
-    this.header.destroy()
-    this.slats.destroy()
-    this.nowIndicator.unrender()
-    this.headStickyScroller.destroy()
-    this.bodyStickyScroller.destroy()
+    this.headStickyScroller = this.buildHeadStickyScroller(true, { enhancedScroller: headerEnhancedScroller })
+    this.bodyStickyScroller = this.buildBodyStickyScroller(true, { enhancedScroller: bodyEnhancedScroller })
+    this.layout = layout
+    this.header = header
+    this.slats = slats
   }
 
 
@@ -103,11 +64,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
 
 
   getNowIndicatorUnit(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
-    let { context } = this
-
-    // yuck
-    let tDateProfile = this.tDateProfile =
-      buildTimelineDateProfile(dateProfile, context.dateEnv, context.options, dateProfileGenerator) // TODO: cache
+    let { tDateProfile } = this.props
 
     if (tDateProfile.isTimeScale) {
       return greatestDurationDenominator(tDateProfile.slotDuration).unit
@@ -117,18 +74,28 @@ export default class TimeAxis extends Component<TimeAxisProps> {
 
   // will only execute if isTimeScale
   renderNowIndicator(date) {
-    if (rangeContainsMarker(this.tDateProfile.normalizedRange, date)) {
-      this.nowIndicator.render(
-        this.dateToCoord(date),
-        this.context.isRtl
+    if (rangeContainsMarker(this.props.tDateProfile.normalizedRange, date)) {
+
+      let headerEnhancedScroller = this.layout.headerScroller.enhancedScroller
+      let bodyEnhancedScroller = this.layout.bodyScroller.enhancedScroller
+
+      let nowIndicator = this.renderNowIndicatorComponent(true, {
+        headParent: headerEnhancedScroller.canvas.el,
+        bodyParent: bodyEnhancedScroller.canvas.el
+      })
+
+      nowIndicator.updateCoord(
+        this.dateToCoord(date)
       )
+
+    } else {
+      this.renderNowIndicatorComponent(false)
     }
   }
 
 
-  // will only execute if isTimeScale
   unrenderNowIndicator() {
-    this.nowIndicator.unrender()
+    this.renderNowIndicatorComponent(false)
   }
 
 
@@ -160,7 +127,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     let slotWidth = this.context.options.slotWidth || ''
 
     if (slotWidth === '') {
-      slotWidth = this.computeDefaultSlotWidth(this.tDateProfile)
+      slotWidth = this.computeDefaultSlotWidth(this.props.tDateProfile)
     }
 
     return slotWidth
@@ -195,7 +162,8 @@ export default class TimeAxis extends Component<TimeAxisProps> {
 
 
   applySlotWidth(slotWidth: number | string) {
-    let { layout, tDateProfile } = this
+    let { layout } = this
+    let { tDateProfile } = this.props
     let containerWidth: number | string = ''
     let containerMinWidth: number | string = ''
     let nonLastSlotWidth: number | string = ''
@@ -207,7 +175,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
       containerMinWidth = ''
       nonLastSlotWidth = slotWidth
 
-      let availableWidth = layout.bodyScroller.enhancedScroll.getClientWidth()
+      let availableWidth = layout.bodyScroller.enhancedScroller.scroller.controller.getClientWidth()
 
       if (availableWidth > containerWidth) {
         containerMinWidth = availableWidth
@@ -216,10 +184,10 @@ export default class TimeAxis extends Component<TimeAxisProps> {
       }
     }
 
-    layout.headerScroller.enhancedScroll.canvas.setWidth(containerWidth)
-    layout.headerScroller.enhancedScroll.canvas.setMinWidth(containerMinWidth)
-    layout.bodyScroller.enhancedScroll.canvas.setWidth(containerWidth)
-    layout.bodyScroller.enhancedScroll.canvas.setMinWidth(containerMinWidth)
+    layout.headerScroller.enhancedScroller.canvas.setWidth(containerWidth)
+    layout.headerScroller.enhancedScroller.canvas.setMinWidth(containerMinWidth)
+    layout.bodyScroller.enhancedScroller.canvas.setWidth(containerWidth)
+    layout.bodyScroller.enhancedScroller.canvas.setMinWidth(containerMinWidth)
 
     if (nonLastSlotWidth !== '') {
       this.header.slatColEls.slice(0, -1).concat(
@@ -233,39 +201,14 @@ export default class TimeAxis extends Component<TimeAxisProps> {
 
   // returned value is between 0 and the number of snaps
   computeDateSnapCoverage(date: DateMarker): number {
-    let { tDateProfile } = this
-    let { dateEnv } = this.context
-    let snapDiff = dateEnv.countDurationsBetween(
-      tDateProfile.normalizedRange.start,
-      date,
-      tDateProfile.snapDuration
-    )
-
-    if (snapDiff < 0) {
-      return 0
-    } else if (snapDiff >= tDateProfile.snapDiffToIndex.length) {
-      return tDateProfile.snapCnt
-    } else {
-      let snapDiffInt = Math.floor(snapDiff)
-      let snapCoverage = tDateProfile.snapDiffToIndex[snapDiffInt]
-
-      if (isInt(snapCoverage)) { // not an in-between value
-        snapCoverage += snapDiff - snapDiffInt // add the remainder
-      } else {
-        // a fractional value, meaning the date is not visible
-        // always round up in this case. works for start AND end dates in a range.
-        snapCoverage = Math.ceil(snapCoverage)
-      }
-
-      return snapCoverage
-    }
+    return computeDateSnapCoverage(date, this.props.tDateProfile, this.context.dateEnv)
   }
 
 
   // for LTR, results range from 0 to width of area
   // for RTL, results range from negative width of area to 0
   dateToCoord(date) {
-    let { tDateProfile } = this
+    let { tDateProfile } = this.props
     let snapCoverage = this.computeDateSnapCoverage(date)
     let slotCoverage = snapCoverage / tDateProfile.snapsPerSlot
     let slotIndex = Math.floor(slotCoverage)
@@ -324,18 +267,57 @@ export default class TimeAxis extends Component<TimeAxisProps> {
 
 
   queryDateScroll() {
-    let { enhancedScroll } = this.layout.bodyScroller
+    let { enhancedScroller } = this.layout.bodyScroller
 
     return {
-      left: enhancedScroll.getScrollLeft()
+      left: enhancedScroller.getScrollLeft()
     }
   }
 
 
   applyDateScroll(scroll) {
     // TODO: lame we have to update both. use the scrolljoiner instead maybe
-    this.layout.bodyScroller.enhancedScroll.setScrollLeft(scroll.left || 0)
-    this.layout.headerScroller.enhancedScroll.setScrollLeft(scroll.left || 0)
+    this.layout.bodyScroller.enhancedScroller.setScrollLeft(scroll.left || 0)
+    this.layout.headerScroller.enhancedScroller.setScrollLeft(scroll.left || 0)
   }
 
+}
+
+
+function buildHStickyScroller(props: { enhancedScroller: EnhancedScroller }, context: ComponentContext) {
+  return new StickyScroller(props.enhancedScroller, context.isRtl, false) // isVertical=false
+}
+
+
+function clearHStickyScroller(stickyScroller: StickyScroller) {
+  stickyScroller.destroy()
+}
+
+
+// returned value is between 0 and the number of snaps
+export function computeDateSnapCoverage(date: DateMarker, tDateProfile: TimelineDateProfile, dateEnv: DateEnv): number {
+  let snapDiff = dateEnv.countDurationsBetween(
+    tDateProfile.normalizedRange.start,
+    date,
+    tDateProfile.snapDuration
+  )
+
+  if (snapDiff < 0) {
+    return 0
+  } else if (snapDiff >= tDateProfile.snapDiffToIndex.length) {
+    return tDateProfile.snapCnt
+  } else {
+    let snapDiffInt = Math.floor(snapDiff)
+    let snapCoverage = tDateProfile.snapDiffToIndex[snapDiffInt]
+
+    if (isInt(snapCoverage)) { // not an in-between value
+      snapCoverage += snapDiff - snapDiffInt // add the remainder
+    } else {
+      // a fractional value, meaning the date is not visible
+      // always round up in this case. works for start AND end dates in a range.
+      snapCoverage = Math.ceil(snapCoverage)
+    }
+
+    return snapCoverage
+  }
 }
