@@ -1,4 +1,4 @@
-import { memoize, Calendar, Component, DateMarker, htmlToElement, removeElement, htmlEscape, DateProfile, renderDateCell, findElements, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext } from '@fullcalendar/core'
+import { memoize, Calendar, Component, DateMarker, htmlToElement, htmlEscape, DateProfile, renderDateCell, findElements, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext } from '@fullcalendar/core'
 import { buildResourceTextFunc } from '../common/resource-rendering'
 import { Resource } from '../structs/resource'
 import ResourceApi from '../api/ResourceApi'
@@ -13,22 +13,12 @@ export interface ResourceDayHeaderProps {
 
 export default class ResourceDayHeader extends Component<ResourceDayHeaderProps> {
 
+  private buildDateFormatter = memoize(this._buildDateFormatter)
+  private processOptions = memoize(this._processOptions)
+
   datesAboveResources: boolean
   resourceTextFunc: (resource: Resource) => string
   dateFormat: DateFormatter
-
-  parentEl: HTMLElement
-  el: HTMLElement
-  thead: HTMLElement
-
-  private processOptions = memoize(this._processOptions)
-
-
-  constructor(parentEl: HTMLElement) {
-    super()
-
-    this.parentEl = parentEl
-  }
 
 
   _processOptions(options, calendar: Calendar) {
@@ -37,30 +27,25 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
   }
 
 
+  _buildDateFormatter(columnHeaderFormat, datesRepDistinctDays, dayCnt) {
+    return createFormatter(
+      columnHeaderFormat ||
+      computeFallbackHeaderFormat(datesRepDistinctDays, dayCnt)
+    )
+  }
+
+
   render(props: ResourceDayHeaderProps, context: ComponentContext) {
     let { options, calendar, theme } = context
 
     this.processOptions(options, calendar)
-
-    this.parentEl.innerHTML = '' // because might be nbsp
-    this.parentEl.appendChild(
-      this.el = htmlToElement(
-        '<div class="fc-row ' + theme.getClass('headerRow') + '">' +
-          '<table class="' + theme.getClass('tableGrid') + '">' +
-            '<thead></thead>' +
-          '</table>' +
-        '</div>'
-      )
+    this.dateFormat = this.buildDateFormatter(
+      options.columnHeaderFormat,
+      props.datesRepDistinctDays,
+      props.dates.length
     )
-
-    this.thead = this.el.querySelector('thead')
 
     let html
-
-    this.dateFormat = createFormatter(
-      options.columnHeaderFormat ||
-      computeFallbackHeaderFormat(props.datesRepDistinctDays, props.dates.length)
-    )
 
     if (props.dates.length === 1) {
       html = this.renderResourceRow(props.resources)
@@ -72,13 +57,18 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
       }
     }
 
-    this.thead.innerHTML = html
-    this.processResourceEls(props.resources)
-  }
+    let el = htmlToElement(
+      '<div class="fc-row ' + theme.getClass('headerRow') + '">' +
+        '<table class="' + theme.getClass('tableGrid') + '">' +
+          '<thead>' + html + '</thead>' +
+        '</table>' +
+      '</div>'
+    )
+    let theadEl = el.querySelector('thead')
 
+    this.processResourceEls(theadEl, props.resources)
 
-  destroy() {
-    removeElement(this.el)
+    return el
   }
 
 
@@ -201,10 +191,10 @@ export default class ResourceDayHeader extends Component<ResourceDayHeaderProps>
 
 
   // given a container with already rendered resource cells
-  processResourceEls(resources: Resource[]) {
+  processResourceEls(theadEl: HTMLElement, resources: Resource[]) {
     let { calendar, isRtl, view } = this.context
 
-    findElements(this.thead, '.fc-resource-cell').forEach((node, col) => { // does DOM-order
+    findElements(theadEl, '.fc-resource-cell').forEach((node, col) => { // does DOM-order
 
       col = col % resources.length
       if (isRtl) {

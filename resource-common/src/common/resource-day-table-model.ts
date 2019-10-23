@@ -1,4 +1,4 @@
-import { SlicedProps, EventDef, mapHash, Splitter, DayTable, DayTableCell, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/core'
+import { SlicedProps, EventDef, mapHash, Splitter, DayTableModel, DayTableCell, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/core'
 import { Resource } from '../structs/resource'
 import { __assign } from 'tslib'
 
@@ -6,23 +6,23 @@ export interface ResourceDayTableCell extends DayTableCell {
   resource: Resource
 }
 
-export abstract class AbstractResourceDayTable {
+export abstract class AbstractResourceDayTableModel {
 
   cells: ResourceDayTableCell[][]
   rowCnt: number
   colCnt: number
-  dayTable: DayTable
+  dayTableModel: DayTableModel
   resources: Resource[]
   resourceIndex: ResourceIndex
 
 
-  constructor(dayTable: DayTable, resources: Resource[]) {
-    this.dayTable = dayTable
+  constructor(dayTableModel: DayTableModel, resources: Resource[]) {
+    this.dayTableModel = dayTableModel
     this.resources = resources
     this.resourceIndex = new ResourceIndex(resources)
 
-    this.rowCnt = dayTable.rowCnt
-    this.colCnt = dayTable.colCnt * resources.length
+    this.rowCnt = dayTableModel.rowCnt
+    this.colCnt = dayTableModel.colCnt * resources.length
 
     this.cells = this.buildCells()
   }
@@ -38,13 +38,13 @@ export abstract class AbstractResourceDayTable {
 
 
   buildCells(): ResourceDayTableCell[][] {
-    let { rowCnt, dayTable, resources } = this
+    let { rowCnt, dayTableModel, resources } = this
     let rows: ResourceDayTableCell[][] = []
 
     for (let row = 0; row < rowCnt; row++) {
       let rowCells: ResourceDayTableCell[] = []
 
-      for (let dateCol = 0; dateCol < dayTable.colCnt; dateCol++) {
+      for (let dateCol = 0; dateCol < dayTableModel.colCnt; dateCol++) {
 
         for (let resourceCol = 0; resourceCol < resources.length; resourceCol++) {
           let resource = resources[resourceCol]
@@ -53,7 +53,7 @@ export abstract class AbstractResourceDayTable {
           rowCells[
             this.computeCol(dateCol, resourceCol)
           ] = {
-            date: dayTable.cells[row][dateCol].date,
+            date: dayTableModel.cells[row][dateCol].date,
             resource,
             htmlAttrs
           }
@@ -72,10 +72,10 @@ export abstract class AbstractResourceDayTable {
 /*
 resources over dates
 */
-export class ResourceDayTable extends AbstractResourceDayTable {
+export class ResourceDayTableModel extends AbstractResourceDayTableModel {
 
   computeCol(dateI, resourceI) {
-    return resourceI * this.dayTable.colCnt + dateI
+    return resourceI * this.dayTableModel.colCnt + dateI
   }
 
   /*
@@ -98,7 +98,7 @@ export class ResourceDayTable extends AbstractResourceDayTable {
 /*
 dates over resources
 */
-export class DayResourceTable extends AbstractResourceDayTable {
+export class DayResourceTableModel extends AbstractResourceDayTableModel {
 
   computeCol(dateI, resourceI) {
     return dateI * this.resources.length + resourceI
@@ -155,7 +155,7 @@ export class ResourceIndex {
 // splitter
 
 export interface VResourceProps extends SplittableProps {
-  resourceDayTable: AbstractResourceDayTable
+  resourceDayTableModel: AbstractResourceDayTableModel
 }
 
 /*
@@ -164,10 +164,10 @@ TODO: just use ResourceHash somehow? could then use the generic ResourceSplitter
 export class VResourceSplitter extends Splitter<VResourceProps> {
 
   getKeyInfo(props: VResourceProps) {
-    let { resourceDayTable } = props
+    let { resourceDayTableModel } = props
 
-    let hash = mapHash(resourceDayTable.resourceIndex.indicesById, function(i) {
-      return resourceDayTable.resources[i] // has `ui` AND `businessHours` keys!
+    let hash = mapHash(resourceDayTableModel.resourceIndex.indicesById, function(i) {
+      return resourceDayTableModel.resources[i] // has `ui` AND `businessHours` keys!
     }) as any // :(
 
     hash[''] = {}
@@ -208,7 +208,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
   /*
   propSets also has a '' key for things with no resource
   */
-  joinProps(propSets: { [resourceId: string]: SlicedProps<SegType> }, resourceDayTable: AbstractResourceDayTable): SlicedProps<SegType> {
+  joinProps(propSets: { [resourceId: string]: SlicedProps<SegType> }, resourceDayTable: AbstractResourceDayTableModel): SlicedProps<SegType> {
     let dateSelectionSets = []
     let businessHoursSets = []
     let fgEventSets = []
@@ -241,7 +241,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
     }
   }
 
-  joinSegs(resourceDayTable: AbstractResourceDayTable, ...segGroups: SegType[][]): SegType[] {
+  joinSegs(resourceDayTable: AbstractResourceDayTableModel, ...segGroups: SegType[][]): SegType[] {
     let resourceCnt = resourceDayTable.resources.length
     let transformedSegs = []
 
@@ -269,7 +269,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
   only for public use.
   no memoizing.
   */
-  expandSegs(resourceDayTable: AbstractResourceDayTable, segs: SegType[]) {
+  expandSegs(resourceDayTable: AbstractResourceDayTableModel, segs: SegType[]) {
     let resourceCnt = resourceDayTable.resources.length
     let transformedSegs = []
 
@@ -286,7 +286,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
     return transformedSegs
   }
 
-  joinInteractions(resourceDayTable: AbstractResourceDayTable, ...interactions: EventSegUiInteractionState[]): EventSegUiInteractionState {
+  joinInteractions(resourceDayTable: AbstractResourceDayTableModel, ...interactions: EventSegUiInteractionState[]): EventSegUiInteractionState {
     let resourceCnt = resourceDayTable.resources.length
     let affectedInstances = {}
     let transformedSegs = []
@@ -328,6 +328,6 @@ export abstract class VResourceJoiner<SegType extends Seg> {
   }
 
   // needs to generate NEW seg obj!!! because of .el
-  abstract transformSeg(seg: SegType, resourceDayTable: AbstractResourceDayTable, resourceI: number): SegType[]
+  abstract transformSeg(seg: SegType, resourceDayTable: AbstractResourceDayTableModel, resourceI: number): SegType[]
 
 }

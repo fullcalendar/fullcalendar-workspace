@@ -17,7 +17,7 @@ Calendar.prototype.addResource = function(this: Calendar, input: ResourceInput |
 
   // HACK
   if (scrollTo) {
-    this.component.view.addScroll({ forcedRowId: resource.id })
+    this.component.view.applyScroll({ forcedRowId: resource.id }, false)
   }
 
   this.dispatch({
