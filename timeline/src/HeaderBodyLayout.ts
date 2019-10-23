@@ -72,4 +72,10 @@ export default class HeaderBodyLayout extends Component<HeaderBodyLayoutProps> {
     return this.headerScroller.enhancedScroller.canvas.contentEl.getBoundingClientRect().height
   }
 
+
+  queryTotalHeight() {
+    return this.queryHeadHeight() +
+      this.bodyScroller.enhancedScroller.canvas.contentEl.getBoundingClientRect().height
+  }
+
 }

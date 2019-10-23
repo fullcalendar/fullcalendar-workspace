@@ -1,94 +1,74 @@
-import { ElementDragging, SplittableProps, memoizeRendering, PositionCache, Hit, View, createElement, parseFieldSpecs, ComponentContext, memoize, DateProfile, applyStyleProp, PointerDragEvent, Duration, DateProfileGenerator } from '@fullcalendar/core'
-import { ScrollJoiner, TimelineLane, StickyScroller, TimeAxis } from '@fullcalendar/timeline'
-import { ResourceHash, buildRowNodes, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc } from '@fullcalendar/resource-common'
-import GroupRow from './GroupRow'
-import ResourceRow from './ResourceRow'
+import { renderer, Calendar, ElementDragging, PositionCache, Hit, View, parseFieldSpecs, ComponentContext, memoize, DateProfile, applyStyleProp, PointerDragEvent, Duration, DateProfileGenerator, renderViewEl, findElements, createElement, SplittableProps } from '@fullcalendar/core'
+import { ScrollJoiner, TimelineLane, TimeAxis, ClippedScroller, buildTimelineDateProfile, TimelineDateProfile } from '@fullcalendar/timeline'
+import { ResourceHash, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc, buildRowNodes } from '@fullcalendar/resource-common'
 import Spreadsheet from './Spreadsheet'
 import { __assign } from 'tslib'
+import SpreadsheetRow, { SpreadsheetRowProps } from './SpreadsheetRow'
+import SpreadsheetGroupRow, { SpreadsheetGroupRowProps } from './SpreadsheetGroupRow'
+import ResourceTimelineLaneRow, { ResourceTimelineLaneRowProps } from './ResourceTimelineLaneRow'
+import DividerRow from './DividerRow'
 
 const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
 
 export default class ResourceTimelineView extends View {
 
+  private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
+  private processOptions = memoize(this._processOptions)
+  private renderSkeleton = renderer(renderSkeleton)
+  private renderTimeAxisTableWrap = renderer(renderTimeAxisTableWrap)
+  private startInteractive = renderer(this._startInteractive, this._stopInteractive)
+  private initResourceAreaResizing = renderer(this._initResourceAreaResizing, this._destroyResourceAreaResizing)
+  private initBodyScrollJoiner = renderer(this._initBodyScrollJoiner, this._destroyBodyScrollJoiner)
+  private hasNesting = memoize(hasNesting)
+  private updateElHasNesting = memoize(updateElHasNesting)
+  private hasResourceBusinessHours = memoize(hasResourceBusinessHours)
+  private renderBgLane = renderer(TimelineLane)
+  private renderTimeAxis = renderer(TimeAxis)
+  private renderSpreadsheet = renderer(Spreadsheet)
+  private buildRowNodes = memoize(buildRowNodes)
+  private buildRowIdToIndex = memoize(buildRowIdToIndex)
+  private buildSpreadsheetRowList = memoize(buildSpreadsheetRowList)
+  private buildTimeAxisRowList = memoize(buildTimeAxisRowList)
+  private renderSpreadsheetRows = listRenderer()
+  private renderTimeAxisRows = listRenderer()
+
   static needsResourceData = true // for ResourceViewProps
   props: ResourceViewProps
 
-  // child components
-  spreadsheet: Spreadsheet
-  timeAxis: TimeAxis
-  lane: TimelineLane
-  bodyScrollJoiner: ScrollJoiner
-  spreadsheetBodyStickyScroller: StickyScroller
-  isStickyScrollDirty = false
+  private spreadsheet: Spreadsheet
+  private timeAxis: TimeAxis
+  private bgLane: TimelineLane // only for BG!!!!
+  private bodyScrollJoiner: ScrollJoiner
+  private isStickyScrollDirty = false
+  private miscHeight: number
+  private resourceAreaHeadEl: HTMLElement
+  private resourceAreaWidth?: number
+  private resourceSplitter = new ResourceSplitter() // doesn't let it do businessHours tho
+  private spreadsheetRows: (SpreadsheetRow | SpreadsheetGroupRow)[]
+  private timeAxisRows: (ResourceTimelineLaneRow | DividerRow)[]
+  private rowIdToIndex: { [rowId: string]: number } = {}
+  private rowNodes: (GroupNode | ResourceNode)[]
+  private rowPositions: PositionCache
 
-  timeAxisTbody: HTMLElement
-  miscHeight: number
-  rowNodes: (GroupNode | ResourceNode)[] = []
-  rowComponents: (GroupRow | ResourceRow)[] = []
-  rowComponentsById: { [id: string]: (GroupRow | ResourceRow) } = {}
-
-  resourceAreaHeadEl: HTMLElement
-  resourceAreaWidth?: number
-  resourceAreaWidthDraggings: ElementDragging[] = []
-
-  // internal state
-  superHeaderText: any
-  isVGrouping: any
-  isHGrouping: any
-  groupSpecs: any
-  colSpecs: any
-  orderSpecs: any
-
-  rowPositions: PositionCache
-
-  private splitter = new ResourceSplitter() // doesn't let it do businessHours tho
-  private renderSkeleton = memoizeRendering(this._renderSkeleton, this._unrenderSkeleton)
-  private hasResourceBusinessHours = memoize(hasResourceBusinessHours)
-  private buildRowNodes = memoize(buildRowNodes)
-  private hasNesting = memoize(hasNesting)
-  private updateHasNesting = memoizeRendering(this._updateHasNesting)
-  private startInteractive = memoizeRendering(this._startInteractive, this._stopInteractive)
-
-
-  _startInteractive(timeAxisEl: HTMLElement) {
-    this.context.calendar.registerInteractiveComponent(this, { el: timeAxisEl })
-  }
-
-
-  _stopInteractive() {
-    this.context.calendar.unregisterInteractiveComponent(this)
-  }
+  // computed options
+  private superHeaderText: any
+  private isVGrouping: any // used by row generation
+  private groupSpecs: any // used by row generation
+  private colSpecs: any
+  private orderSpecs: any // used by row generation
 
 
   render(props: ResourceViewProps, context: ComponentContext) {
-    super.render(props, context)
+    this.processOptions(context.options, context.calendar)
 
-    this.renderSkeleton(context)
+    let tDateProfile = this.buildTimelineDateProfile(
+      props.dateProfile,
+      context.dateEnv,
+      context.options,
+      props.dateProfileGenerator
+    )
 
-    let splitProps = this.splitter.splitProps(props)
-    let hasResourceBusinessHours = this.hasResourceBusinessHours(props.resourceStore)
-
-    this.spreadsheet.receiveProps({
-      superHeaderText: this.superHeaderText,
-      colSpecs: this.colSpecs
-    }, context)
-
-    this.timeAxis.receiveProps({
-      dateProfileGenerator: props.dateProfileGenerator,
-      dateProfile: props.dateProfile
-    }, context)
-
-    this.startInteractive(this.timeAxis.slats.el)
-
-    // for all-resource bg events / selections / business-hours
-    this.lane.receiveProps({
-      ...splitProps[''],
-      dateProfile: props.dateProfile,
-      nextDayThreshold: context.nextDayThreshold,
-      businessHours: hasResourceBusinessHours ? null : props.businessHours
-    }, context)
-
-    let newRowNodes = this.buildRowNodes(
+    let rowNodes = this.buildRowNodes(
       props.resourceStore,
       this.groupSpecs,
       this.orderSpecs,
@@ -97,21 +77,89 @@ export default class ResourceTimelineView extends View {
       context.options.resourcesInitiallyExpanded
     )
 
-    this.updateHasNesting(this.hasNesting(newRowNodes))
+    let {
+      rootEl,
+      resourceAreaHeadEl,
+      resourceAreaBodyEl,
+      resourceAreaResizerEls,
+      timeAreaHeadEl,
+      timeAreaBodyEl
+    } = this.renderSkeleton(true, { type: props.viewSpec.type })
 
-    this.diffRows(newRowNodes)
-    this.updateRowProps(
+    let splitProps = this.resourceSplitter.splitProps(props)
+    let hasResourceBusinessHours = this.hasResourceBusinessHours(props.resourceStore)
+
+    let spreadsheet = this.renderSpreadsheet(true, {
+      headerContainerEl: resourceAreaHeadEl,
+      bodyContainerEl: resourceAreaBodyEl,
+      superHeaderText: this.superHeaderText,
+      colSpecs: this.colSpecs
+    })
+
+    let timeAxis = this.renderTimeAxis(true, {
+      headerContainerEl: timeAreaHeadEl,
+      bodyContainerEl: timeAreaBodyEl,
+      dateProfile: props.dateProfile,
+      tDateProfile
+    })
+
+    let timeAxisBodyScroller = timeAxis.layout.bodyScroller
+    let spreadsheetBodyScroller = spreadsheet.layout.bodyScroller
+
+    // for all-resource bg events / selections / business-hours
+    let bgLane = this.renderBgLane(true, {
+      ...splitProps[''],
+      dateProfile: props.dateProfile,
+      nextDayThreshold: context.nextDayThreshold,
+      businessHours: hasResourceBusinessHours ? null : props.businessHours,
+      fgContainerEl: null, // will render no fg events
+      bgContainerEl: timeAxisBodyScroller.enhancedScroller.canvas.bgEl,
+      dateProfileGenerator: props.dateProfileGenerator,
+      tDateProfile
+    })
+
+    let timeAxisTableWrapRes = this.renderTimeAxisTableWrap(timeAxisBodyScroller.enhancedScroller.canvas.contentEl)
+
+    this.rowIdToIndex = this.buildRowIdToIndex(rowNodes)
+
+    let spreadsheetRowList = this.buildSpreadsheetRowList(rowNodes, this.colSpecs)
+    let timeAxisRowList = this.buildTimeAxisRowList(
+      rowNodes,
       props.dateProfile,
+      props.dateProfileGenerator,
+      tDateProfile,
+      context.nextDayThreshold,
       hasResourceBusinessHours ? props.businessHours : null, // CONFUSING, comment
       splitProps
     )
 
+    this.spreadsheetRows = this.renderSpreadsheetRows(spreadsheet.bodyTbody, spreadsheetRowList)
+    this.timeAxisRows = this.renderTimeAxisRows(timeAxisTableWrapRes.tbodyEl, timeAxisRowList)
+
+    this.spreadsheet = spreadsheet
+    this.timeAxis = timeAxis
+    this.bgLane = bgLane
+    this.rowNodes = rowNodes
+
+    this.updateElHasNesting({ el: rootEl, isNesting: this.hasNesting(rowNodes) })
     this.startNowIndicator(props.dateProfile, props.dateProfileGenerator)
+    this.startInteractive(this.timeAxis.slats.rootEl)
+    this.initResourceAreaResizing(true, { resourceAreaResizerEls })
+    this.initBodyScrollJoiner(true, { spreadsheetBodyScroller, timeAxisBodyScroller })
+
+    return rootEl
   }
 
 
-  _renderSkeleton(context: ComponentContext) {
-    let { options, calendar } = context
+  componentDidMount() {
+    this.miscHeight = this.rootEl.getBoundingClientRect().height - Math.max(
+      this.spreadsheet.layout.queryTotalHeight(),
+      this.timeAxis.layout.queryTotalHeight()
+    )
+  }
+
+
+  _processOptions(options, calendar: Calendar) {
     let allColSpecs = options.resourceColumns || []
     let labelText = options.resourceLabelText // TODO: view.override
     let defaultLabelText = 'Resources' // TODO: view.defaults
@@ -130,7 +178,6 @@ export default class ResourceTimelineView extends View {
     const groupColSpecs = []
     let groupSpecs = []
     let isVGrouping = false
-    let isHGrouping = false
 
     for (let colSpec of allColSpecs) {
       if (colSpec.group) {
@@ -148,7 +195,6 @@ export default class ResourceTimelineView extends View {
     } else {
       const hGroupField = options.resourceGroupField
       if (hGroupField) {
-        isHGrouping = true
         groupSpecs.push({
           field: hGroupField,
           text: options.resourceGroupText,
@@ -176,248 +222,39 @@ export default class ResourceTimelineView extends View {
 
     this.superHeaderText = superHeaderText
     this.isVGrouping = isVGrouping
-    this.isHGrouping = isHGrouping
     this.groupSpecs = groupSpecs
     this.colSpecs = groupColSpecs.concat(plainColSpecs)
     this.orderSpecs = plainOrderSpecs
+  }
 
-    // START RENDERING...
 
-    this.el.classList.add('fc-timeline')
+  _startInteractive(props: { timeAxisEl: HTMLElement }, context: ComponentContext) {
+    context.calendar.registerInteractiveComponent(this, { el: props. timeAxisEl })
+  }
 
-    if (options.eventOverlap === false) {
-      this.el.classList.add('fc-no-overlap')
-    }
 
-    this.el.innerHTML = this.renderSkeletonHtml()
+  _stopInteractive(funcState: void, context: ComponentContext) {
+    context.calendar.unregisterInteractiveComponent(this)
+  }
 
-    this.resourceAreaHeadEl = this.el.querySelector('thead .fc-resource-area')
-    this.setResourceAreaWidth(options.resourceAreaWidth)
-    this.initResourceAreaWidthDragging()
 
-    this.miscHeight = this.el.getBoundingClientRect().height
-
-    this.spreadsheet = new Spreadsheet(
-      this.resourceAreaHeadEl,
-      this.el.querySelector('tbody .fc-resource-area')
-    )
-
-    this.timeAxis = new TimeAxis(
-      this.el.querySelector('thead .fc-time-area'),
-      this.el.querySelector('tbody .fc-time-area')
-    )
-
-    let timeAxisRowContainer = createElement('div', { className: 'fc-rows' }, '<table><tbody /></table>')
-    this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.contentEl.appendChild(timeAxisRowContainer)
-    this.timeAxisTbody = timeAxisRowContainer.querySelector('tbody')
-
-    this.lane = new TimelineLane(
-      null,
-      this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.bgEl,
-      this.timeAxis
-    )
-
+  _initBodyScrollJoiner(props: { spreadsheetBodyScroller: ClippedScroller, timeAxisBodyScroller: ClippedScroller }) {
     this.bodyScrollJoiner = new ScrollJoiner('vertical', [
-      this.spreadsheet.layout.bodyScroller,
-      this.timeAxis.layout.bodyScroller
+      props.spreadsheetBodyScroller,
+      props.timeAxisBodyScroller
     ])
-
-    // after scrolljoiner
-    this.spreadsheetBodyStickyScroller = new StickyScroller(
-      this.spreadsheet.layout.bodyScroller.enhancedScroll,
-      context.isRtl,
-      true // isVertical
-    )
   }
 
 
-  _unrenderSkeleton(context: ComponentContext) {
-    this.startInteractive.unrender() // "unrender" bad name
-
-    this.destroyRows() // wierd to call this here
-
-    this.spreadsheet.destroy()
-    this.timeAxis.destroy()
-    this.lane.destroy()
-    this.spreadsheetBodyStickyScroller.destroy()
-
-    this.el.classList.remove('fc-timeline')
-    this.el.classList.remove('fc-no-overlap')
-  }
-
-
-  renderSkeletonHtml() {
-    let { theme } = this.context
-
-    return `<table class="` + theme.getClass('tableGrid') + `"> \
-<thead class="fc-head"> \
-<tr> \
-<td class="fc-resource-area ` + theme.getClass('widgetHeader') + `"></td> \
-<td class="fc-divider fc-col-resizer ` + theme.getClass('widgetHeader') + `"></td> \
-<td class="fc-time-area ` + theme.getClass('widgetHeader') + `"></td> \
-</tr> \
-</thead> \
-<tbody class="fc-body"> \
-<tr> \
-<td class="fc-resource-area ` + theme.getClass('widgetContent') + `"></td> \
-<td class="fc-divider fc-col-resizer ` + theme.getClass('widgetHeader') + `"></td> \
-<td class="fc-time-area ` + theme.getClass('widgetContent') + `"></td> \
-</tr> \
-</tbody> \
-</table>`
-  }
-
-
-  _updateHasNesting(isNesting: boolean) {
-    let { classList } = this.el
-
-    if (isNesting) {
-      classList.remove('fc-flat')
-    } else {
-      classList.add('fc-flat')
-    }
-  }
-
-
-  diffRows(newNodes) {
-    let oldNodes = this.rowNodes
-    let oldLen = oldNodes.length
-    let oldIndexHash = {} // id -> index
-    let oldI = 0
-    let newI = 0
-
-    for (oldI = 0; oldI < oldLen; oldI++) {
-      oldIndexHash[oldNodes[oldI].id] = oldI
-    }
-
-    // iterate new nodes
-    for (oldI = 0, newI = 0; newI < newNodes.length; newI++) {
-      let newNode = newNodes[newI]
-      let oldIFound = oldIndexHash[newNode.id]
-
-      if (oldIFound != null && oldIFound >= oldI) {
-        this.removeRows(newI, oldIFound - oldI, oldNodes) // won't do anything if same index
-        oldI = oldIFound + 1
-      } else {
-        this.addRow(newI, newNode)
-      }
-    }
-
-    // old rows that weren't found need to be removed
-    this.removeRows(newI, oldLen - oldI, oldNodes) // won't do anything if same index
-
-    this.rowNodes = newNodes
-  }
-
-
-  /*
-  rowComponents is the in-progress result
-  */
-  addRow(index, rowNode) {
-    let { rowComponents, rowComponentsById } = this
-
-    let nextComponent = rowComponents[index]
-    let newComponent = this.buildChildComponent(
-      rowNode,
-      this.spreadsheet.bodyTbody,
-      nextComponent ? nextComponent.spreadsheetTr : null,
-      this.timeAxisTbody,
-      nextComponent ? nextComponent.timeAxisTr : null
-    )
-
-    rowComponents.splice(index, 0, newComponent)
-    rowComponentsById[rowNode.id] = newComponent
-  }
-
-
-  removeRows(startIndex, len, oldRowNodes) {
-    if (len) {
-      let { rowComponents, rowComponentsById } = this
-
-      for (let i = 0; i < len; i++) {
-        let rowComponent = rowComponents[startIndex + i]
-
-        rowComponent.destroy()
-
-        delete rowComponentsById[oldRowNodes[i].id]
-      }
-
-      rowComponents.splice(startIndex, len)
-    }
-  }
-
-
-  buildChildComponent(
-    node: (GroupNode | ResourceNode),
-    spreadsheetTbody: HTMLElement,
-    spreadsheetNext: HTMLElement,
-    timeAxisTbody: HTMLElement,
-    timeAxisNext: HTMLElement
-  ) {
-    if ((node as GroupNode).group) {
-      return new GroupRow(
-        spreadsheetTbody,
-        spreadsheetNext,
-        timeAxisTbody,
-        timeAxisNext
-      )
-    } else if ((node as ResourceNode).resource) {
-      return new ResourceRow(
-        spreadsheetTbody,
-        spreadsheetNext,
-        timeAxisTbody,
-        timeAxisNext,
-        this.timeAxis
-      )
-    }
-  }
-
-
-  updateRowProps(
-    dateProfile: DateProfile,
-    fallbackBusinessHours,
-    splitProps: { [resourceId: string]: SplittableProps }
-  ) {
-    let { rowNodes, rowComponents, context } = this
-
-    for (let i = 0; i < rowNodes.length; i++) {
-      let rowNode = rowNodes[i]
-      let rowComponent = rowComponents[i]
-
-      if ((rowNode as GroupNode).group) {
-        (rowComponent as GroupRow).receiveProps({
-          spreadsheetColCnt: this.colSpecs.length,
-          id: rowNode.id,
-          isExpanded: rowNode.isExpanded,
-          group: (rowNode as GroupNode).group
-        }, context)
-      } else {
-        let resource = (rowNode as ResourceNode).resource
-
-        ;(rowComponent as ResourceRow).receiveProps({
-          ...splitProps[resource.id],
-          dateProfile,
-          nextDayThreshold: context.nextDayThreshold,
-          businessHours: resource.businessHours || fallbackBusinessHours,
-          colSpecs: this.colSpecs,
-          id: rowNode.id,
-          rowSpans: (rowNode as ResourceNode).rowSpans,
-          depth: (rowNode as ResourceNode).depth,
-          isExpanded: rowNode.isExpanded,
-          hasChildren: (rowNode as ResourceNode).hasChildren,
-          resource: (rowNode as ResourceNode).resource
-        }, context)
-      }
-    }
+  _destroyBodyScrollJoiner() {
+    this.bodyScrollJoiner.destroy()
   }
 
 
   updateSize(isResize, viewHeight, isAuto) {
     // FYI: this ordering is really important
 
-    let { calendar } = this.context
-
-    let isBaseSizing = isResize || calendar.isViewUpdated || calendar.isDatesUpdated || calendar.isEventsUpdated
+    let isBaseSizing = isResize || this.isLayoutSizeDirty()
 
     if (isBaseSizing) {
       this.syncHeadHeights()
@@ -429,16 +266,16 @@ export default class ResourceTimelineView extends View {
 
     let rowSizingCnt = this.updateRowSizes(isResize)
 
-    this.lane.updateSize(isResize) // is efficient. uses flags
+    this.bgLane.updateSize(isResize, this.timeAxis) // is efficient. uses flags
 
     if (isBaseSizing || rowSizingCnt) {
       this.bodyScrollJoiner.update()
       this.timeAxis.layout.scrollJoiner.update() // hack
 
       this.rowPositions = new PositionCache(
-        this.timeAxis.slats.el,
-        this.rowComponents.map(function(rowComponent) {
-          return rowComponent.timeAxisTr
+        this.timeAxis.slats.rootEl,
+        this.timeAxisRows.map(function(rowComponent) {
+          return rowComponent.rootEl
         }),
         false, // isHorizontal
         true // isVertical
@@ -451,8 +288,8 @@ export default class ResourceTimelineView extends View {
 
 
   syncHeadHeights() {
-    let spreadsheetHeadEl = this.spreadsheet.header.tableEl
-    let timeAxisHeadEl = this.timeAxis.header.tableEl
+    let spreadsheetHeadEl = this.spreadsheet.header.rootEl
+    let timeAxisHeadEl = this.timeAxis.header.rootEl
 
     spreadsheetHeadEl.style.height = ''
     timeAxisHeadEl.style.height = ''
@@ -468,16 +305,21 @@ export default class ResourceTimelineView extends View {
 
 
   updateRowSizes(isResize: boolean): number { // mainly syncs row heights
-    let dirtyRowComponents = this.rowComponents
+    let { spreadsheetRows, timeAxisRows, timeAxis } = this
+    let rowCnt = spreadsheetRows.length
+    let dirtyIndices: number[] = []
 
-    if (!isResize) {
-      dirtyRowComponents = dirtyRowComponents.filter(function(rowComponent) {
-        return rowComponent.isSizeDirty
-      })
+    for (let i = 0; i < rowCnt; i++) {
+      if (isResize || spreadsheetRows[i].isSizeDirty || (timeAxisRows[i] as ResourceTimelineLaneRow).isSizeDirty) {
+        dirtyIndices.push(i)
+      }
     }
 
-    let elArrays = dirtyRowComponents.map(function(rowComponent) {
-      return rowComponent.getHeightEls()
+    let elArrays = dirtyIndices.map(function(i) {
+      return [
+        spreadsheetRows[i].heightEl,
+        timeAxisRows[i].heightEl
+      ]
     })
 
     // reset to natural heights
@@ -488,8 +330,13 @@ export default class ResourceTimelineView extends View {
     }
 
     // let rows update their contents' heights
-    for (let rowComponent of dirtyRowComponents) {
-      rowComponent.updateSize(isResize) // will reset isSizeDirty
+    for (let i of dirtyIndices) {
+      spreadsheetRows[i].isSizeDirty = false
+
+      let timeAxisRow = timeAxisRows[i]
+      if (timeAxisRow instanceof ResourceTimelineLaneRow) {
+        timeAxisRow.updateSize(isResize, timeAxis) // will reset isSizeDirty
+      }
     }
 
     let maxHeights = elArrays.map(function(elArray) {
@@ -512,29 +359,7 @@ export default class ResourceTimelineView extends View {
       }
     }
 
-    return dirtyRowComponents.length
-  }
-
-
-  destroyRows() {
-    for (let rowComponent of this.rowComponents) {
-      rowComponent.destroy()
-    }
-
-    this.rowNodes = []
-    this.rowComponents = []
-  }
-
-
-  destroy() {
-
-    for (let resourceAreaWidthDragging of this.resourceAreaWidthDraggings) {
-      resourceAreaWidthDragging.destroy()
-    }
-
-    this.renderSkeleton.unrender() // will call destroyRows
-
-    super.destroy()
+    return dirtyIndices.length
   }
 
 
@@ -583,7 +408,7 @@ export default class ResourceTimelineView extends View {
     // avoid updating stickyscroll too often
     if (isResize || this.isStickyScrollDirty) {
       this.isStickyScrollDirty = false
-      this.spreadsheetBodyStickyScroller.updateSize()
+      this.spreadsheet.updateStickyScrollers()
       this.timeAxis.updateStickyScrollers()
     }
   }
@@ -605,15 +430,15 @@ export default class ResourceTimelineView extends View {
 
 
   queryResourceScroll() {
-    let { rowComponents, rowNodes } = this
+    let { timeAxisRows, rowNodes } = this
     let scroll = {} as any
-    let scrollerTop = this.timeAxis.layout.bodyScroller.el.getBoundingClientRect().top // fixed position
+    let scrollerTop = this.timeAxis.layout.bodyScroller.rootEl.getBoundingClientRect().top // fixed position
 
-    for (let i = 0; i < rowComponents.length; i++) {
-      let rowComponent = rowComponents[i]
+    for (let i = 0; i < timeAxisRows.length; i++) {
+      let timeAxisRow = timeAxisRows[i]
       let rowNode = rowNodes[i]
 
-      let el = rowComponent.timeAxisTr
+      let el = timeAxisRow.rootEl
       let elBottom = el.getBoundingClientRect().bottom // fixed position
 
       if (elBottom > scrollerTop) {
@@ -632,22 +457,26 @@ export default class ResourceTimelineView extends View {
     let rowId = scroll.forcedRowId || scroll.rowId
 
     if (rowId) {
-      let rowComponent = this.rowComponentsById[rowId]
+      let index = this.rowIdToIndex[rowId]
 
-      if (rowComponent) {
-        let el = rowComponent.timeAxisTr
+      if (index != null) {
+        let timeAxisRow = this.timeAxisRows[index]
 
-        if (el) {
-          let innerTop = this.timeAxis.layout.bodyScroller.enhancedScroll.canvas.el.getBoundingClientRect().top
-          let rowRect = el.getBoundingClientRect()
-          let scrollTop =
-            (scroll.forcedRowId ?
-              rowRect.top : // just use top edge
-              rowRect.bottom - scroll.bottom) - // pixels from bottom edge
-            innerTop
+        if (timeAxisRow) {
+          let el = timeAxisRow.rootEl
 
-          this.timeAxis.layout.bodyScroller.enhancedScroll.setScrollTop(scrollTop)
-          this.spreadsheet.layout.bodyScroller.enhancedScroll.setScrollTop(scrollTop)
+          if (el) {
+            let innerTop = this.timeAxis.layout.bodyScroller.enhancedScroller.canvas.el.getBoundingClientRect().top
+            let rowRect = el.getBoundingClientRect()
+            let scrollTop =
+              (scroll.forcedRowId ?
+                rowRect.top : // just use top edge
+                rowRect.bottom - scroll.bottom) - // pixels from bottom edge
+              innerTop
+
+            this.timeAxis.layout.bodyScroller.enhancedScroller.scroller.controller.setScrollTop(scrollTop)
+            this.spreadsheet.layout.bodyScroller.enhancedScroller.scroller.controller.setScrollTop(scrollTop)
+          }
         }
       }
     }
@@ -706,21 +535,18 @@ export default class ResourceTimelineView extends View {
 
   setResourceAreaWidth(widthVal) {
     this.resourceAreaWidth = widthVal
+
     applyStyleProp(this.resourceAreaHeadEl, 'width', widthVal || '')
   }
 
 
-  initResourceAreaWidthDragging() {
-    let { isRtl, pluginHooks } = this.context
-
-    let resourceAreaDividerEls = Array.prototype.slice.call(
-      this.el.querySelectorAll('.fc-col-resizer')
-    )
+  _initResourceAreaResizing({ resourceAreaResizerEls }: { resourceAreaResizerEls: HTMLElement[] }, context: ComponentContext) {
+    let { isRtl, pluginHooks } = context
 
     let ElementDraggingImpl = pluginHooks.elementDraggingImpl
 
     if (ElementDraggingImpl) {
-      this.resourceAreaWidthDraggings = resourceAreaDividerEls.map((el: HTMLElement) => {
+      return resourceAreaResizerEls.map((el: HTMLElement) => {
         let dragging = new ElementDraggingImpl(el)
         let dragStartWidth
         let viewWidth
@@ -730,7 +556,7 @@ export default class ResourceTimelineView extends View {
           if (typeof dragStartWidth !== 'number') {
             dragStartWidth = this.resourceAreaHeadEl.getBoundingClientRect().width
           }
-          viewWidth = this.el.getBoundingClientRect().width
+          viewWidth = this.rootEl.getBoundingClientRect().width
         })
 
         dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
@@ -744,9 +570,67 @@ export default class ResourceTimelineView extends View {
 
         return dragging
       })
+
+    } else {
+      return []
     }
   }
 
+
+  _destroyResourceAreaResizing(draggings: ElementDragging[]) {
+    for (let dragging of draggings) {
+      dragging.destroy()
+    }
+  }
+
+}
+
+
+function renderSkeleton(props: { type: string }, context: ComponentContext) {
+  let { options, theme } = context
+
+  let el = renderViewEl(props.type)
+
+  el.classList.add('fc-timeline')
+  if (options.eventOverlap === false) {
+    el.classList.add('fc-no-overlap')
+  }
+
+  el.innerHTML = `<table class="` + theme.getClass('tableGrid') + `"> \
+<thead class="fc-head"> \
+<tr> \
+<td class="fc-resource-area ` + theme.getClass('widgetHeader') + `"></td> \
+<td class="fc-divider fc-col-resizer ` + theme.getClass('widgetHeader') + `"></td> \
+<td class="fc-time-area ` + theme.getClass('widgetHeader') + `"></td> \
+</tr> \
+</thead> \
+<tbody class="fc-body"> \
+<tr> \
+<td class="fc-resource-area ` + theme.getClass('widgetContent') + `"></td> \
+<td class="fc-divider fc-col-resizer ` + theme.getClass('widgetHeader') + `"></td> \
+<td class="fc-time-area ` + theme.getClass('widgetContent') + `"></td> \
+</tr> \
+</tbody> \
+</table>`
+
+  return {
+    rootEl: el,
+    resourceAreaHeadEl: el.querySelector('thead .fc-resource-area') as HTMLElement,
+    resourceAreaBodyEl: el.querySelector('tbody .fc-resource-area') as HTMLElement,
+    timeAreaHeadEl: el.querySelector('thead .fc-time-area') as HTMLElement,
+    timeAreaBodyEl: el.querySelector('tbody .fc-time-area') as HTMLElement,
+    resourceAreaResizerEls: findElements(el, '.fc-col-resizer')
+  }
+}
+
+
+function renderTimeAxisTableWrap() {
+  let wrapEl = createElement('div', { className: 'fc-rows' }, '<table><tbody /></table>')
+
+  return {
+    rootEl: wrapEl,
+    tbodyEl: wrapEl.querySelector('tbody') as HTMLElement
+  }
 }
 
 
@@ -775,4 +659,95 @@ function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
   }
 
   return false
+}
+
+
+function updateElHasNesting(props: { el: HTMLElement, isNesting: boolean }) {
+  let { classList } = props.el
+
+  if (props.isNesting) {
+    classList.remove('fc-flat')
+  } else {
+    classList.add('fc-flat')
+  }
+}
+
+
+function buildRowIdToIndex(nodes: (ResourceNode | GroupNode)[]) {
+  let hash: { [rowId: string]: number } = {}
+
+  for (let i = 0; i < nodes.length; i++) {
+    hash[nodes[i].id] = i
+  }
+
+  return hash
+}
+
+
+function buildSpreadsheetRowList(nodes: (ResourceNode | GroupNode)[], colSpecs) {
+  return nodes.map((node) => {
+    if ((node as GroupNode).group) {
+      return {
+        id: node.id,
+        componentClass: SpreadsheetGroupRow,
+        props: {
+          spreadsheetColCnt: colSpecs.length,
+          id: node.id,
+          isExpanded: node.isExpanded,
+          group: (node as GroupNode).group
+        } as SpreadsheetGroupRowProps
+      }
+    } else if ((node as ResourceNode).resource) {
+      return {
+        id: node.id,
+        componentClass: SpreadsheetRow,
+        props: {
+          colSpecs,
+          id: node.id,
+          rowSpans: (node as ResourceNode).rowSpans,
+          depth: (node as ResourceNode).depth,
+          isExpanded: node.isExpanded,
+          hasChildren: (node as ResourceNode).hasChildren,
+          resource: (node as ResourceNode).resource
+        } as SpreadsheetRowProps
+      }
+    }
+  })
+}
+
+
+function buildTimeAxisRowList(
+  nodes: (ResourceNode | GroupNode)[],
+  dateProfile: DateProfile,
+  dateProfileGenerator: DateProfileGenerator,
+  tDateProfile: TimelineDateProfile,
+  nextDayThreshold: Duration,
+  fallbackBusinessHours,
+  splitProps: { [resourceId: string]: SplittableProps }
+) {
+  return nodes.map((node) => {
+    if ((node as GroupNode).group) {
+      return {
+        id: node.id,
+        componentClass: DividerRow,
+        props: {}
+      }
+    } else if ((node as ResourceNode).resource) {
+      let resource = (node as ResourceNode).resource
+
+      return {
+        id: node.id,
+        componentClass: ResourceTimelineLaneRow,
+        props: {
+          ...splitProps[resource.id],
+          resourceId: resource.id,
+          dateProfile,
+          dateProfileGenerator,
+          tDateProfile,
+          nextDayThreshold,
+          businessHours: resource.businessHours || fallbackBusinessHours
+        } as ResourceTimelineLaneRowProps
+      }
+    }
+  })
 }

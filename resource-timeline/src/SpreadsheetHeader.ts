@@ -1,42 +1,27 @@
-import { ElementDragging, removeElement, createElement, htmlEscape, Component, ComponentContext, PointerDragEvent, EmitterMixin, memoizeRendering } from '@fullcalendar/core'
+import { ElementDragging, createElement, htmlEscape, Component, ComponentContext, PointerDragEvent, EmitterMixin, renderer, findElements } from '@fullcalendar/core'
 
 export interface SpreadsheetHeaderProps {
   superHeaderText: string
   colSpecs: any
-  colTags: string
+  colTagHtml: string
 }
 
 const COL_MIN_WIDTH = 30
 
 export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps> {
 
-  parentEl: HTMLElement
-  tableEl: HTMLElement
-  resizerEls: HTMLElement[]
-  resizables: ElementDragging[] = []
-  thEls: HTMLElement[]
-  colEls: HTMLElement[]
-  colWidths: number[] = []
+  private initColResizing = renderer(this._initColResizing, this._destroyColResizing)
+
+  private colWidths: number[] = []
   emitter: EmitterMixin = new EmitterMixin()
-
-  private renderSkeleton = memoizeRendering(this._renderSkeleton, this._unrenderSkeleton)
-
-
-  constructor(parentEl: HTMLElement) {
-    super()
-
-    this.parentEl = parentEl
-  }
+  colEls: HTMLElement[]
 
 
   render(props: SpreadsheetHeaderProps, context: ComponentContext) {
-
-    this.renderSkeleton(context)
-
     let { theme } = context
     let { colSpecs } = props
     let html =
-      '<colgroup>' + props.colTags + '</colgroup>' +
+      '<colgroup>' + props.colTagHtml + '</colgroup>' +
       '<tbody>'
 
     if (props.superHeaderText) {
@@ -79,62 +64,34 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
     html += '</tr>'
     html += '</tbody>'
 
-    this.tableEl.innerHTML = html
+    let tableEl = createElement('table', {
+      className: theme.getClass('tableGrid')
+    }, html)
 
-    this.thEls = Array.prototype.slice.call(
-      this.tableEl.querySelectorAll('th')
-    )
+    let colEls = findElements(tableEl, 'col')
+    let thEls = findElements(tableEl, 'th')
+    let resizerEls = findElements(tableEl, '.fc-col-resizer')
 
-    this.colEls = Array.prototype.slice.call(
-      this.tableEl.querySelectorAll('col')
-    )
+    this.colEls = colEls
+    this.initColResizing(true, { thEls, resizerEls })
 
-    this.resizerEls = Array.prototype.slice.call(
-      this.tableEl.querySelectorAll('.fc-col-resizer')
-    )
-
-    this.initColResizing()
+    return tableEl
   }
 
 
-  destroy() {
-    for (let resizable of this.resizables) {
-      resizable.destroy()
-    }
-
-    this.renderSkeleton.unrender()
-
-    super.destroy()
-  }
-
-
-  _renderSkeleton(context: ComponentContext) {
-    this.parentEl.appendChild(
-      this.tableEl = createElement('table', {
-        className: context.theme.getClass('tableGrid')
-      })
-    )
-  }
-
-
-  _unrenderSkeleton() {
-    removeElement(this.tableEl)
-  }
-
-
-  initColResizing() {
-    let { pluginHooks, isRtl } = this.context
+  _initColResizing({ thEls, resizerEls }: { thEls: HTMLElement[], resizerEls: HTMLElement[] }, context: ComponentContext): ElementDragging[] {
+    let { pluginHooks, isRtl } = context
     let ElementDraggingImpl = pluginHooks.elementDraggingImpl
 
     if (ElementDraggingImpl) {
-      this.resizables = this.resizerEls.map((handleEl: HTMLElement, colIndex) => {
+      return resizerEls.map((handleEl: HTMLElement, colIndex) => {
         let dragging = new ElementDraggingImpl(handleEl)
         let startWidth
 
         dragging.emitter.on('dragstart', () => {
           startWidth = this.colWidths[colIndex]
           if (typeof startWidth !== 'number') {
-            startWidth = this.thEls[colIndex].getBoundingClientRect().width
+            startWidth = thEls[colIndex].getBoundingClientRect().width
           }
         })
 
@@ -147,6 +104,16 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
 
         return dragging
       })
+
+    } else {
+      return []
+    }
+  }
+
+
+  _destroyColResizing(resizables: ElementDragging[]) {
+    for (let resizable of resizables) {
+      resizable.destroy()
     }
   }
 

@@ -1,128 +1,91 @@
-import { createElement, Component, ComponentContext, memoizeRendering } from '@fullcalendar/core'
-import { HeaderBodyLayout } from '@fullcalendar/timeline'
+import { Component, ComponentContext, renderer, memoize, findElements, htmlToElement } from '@fullcalendar/core'
+import { HeaderBodyLayout, StickyScroller } from '@fullcalendar/timeline'
 import SpreadsheetHeader from './SpreadsheetHeader'
+import EnhancedScroller from 'packages-premium/timeline/src/util/EnhancedScroller'
 
 export interface SpreadsheetProps {
+  headerContainerEl: HTMLElement
+  bodyContainerEl: HTMLElement
   superHeaderText: string
   colSpecs: any
 }
 
 export default class Spreadsheet extends Component<SpreadsheetProps> {
 
-  header: SpreadsheetHeader
+  private renderLayout = renderer(HeaderBodyLayout)
+  private renderHeader = renderer(SpreadsheetHeader)
+  private renderBodyTable = renderer(this._renderBodyTable)
+  private initColWidthSyncing = renderer(this._initColWidthSyncing)
+  private initStickyScroller = renderer(this._initStickyScroller, this._destroyStickyScroller)
+  private renderColTagHtml = memoize(renderColTagHtml)
+
   layout: HeaderBodyLayout
-
-  bodyContainerEl: HTMLElement
-  bodyColGroup: HTMLElement
+  header: SpreadsheetHeader
+  private bodyColEls: HTMLElement[]
   bodyTbody: HTMLElement
-  bodyColEls: HTMLElement[]
-
-  private renderSkeleton = memoizeRendering(this._renderSkeleton, this._unrenderSkeleton)
-  private renderCells = memoizeRendering(this._renderCells, this._unrenderCells, [ this.renderSkeleton ])
-
-
-  constructor(headParentEl: HTMLElement, bodyParentEl: HTMLElement) {
-    super()
-
-    this.layout = new HeaderBodyLayout(
-      headParentEl,
-      bodyParentEl,
-      'clipped-scroll'
-    )
-  }
+  private stickyScroller: StickyScroller
 
 
   render(props: SpreadsheetProps, context: ComponentContext) {
-    this.renderSkeleton(context)
-    this.renderCells(props.superHeaderText, props.colSpecs)
-  }
+    let { colSpecs } = props
 
-
-  destroy() {
-    this.renderCells.unrender()
-    this.renderSkeleton.unrender()
-    this.layout.destroy()
-
-    super.destroy()
-  }
-
-
-  _renderSkeleton(context: ComponentContext) {
-    let bodyEnhancedScroller = this.layout.bodyScroller.enhancedScroll
-
-    bodyEnhancedScroller.canvas.contentEl
-      .appendChild(
-        this.bodyContainerEl = createElement('div',
-          { className: 'fc-rows' },
-          '<table>' +
-            '<colgroup />' +
-            '<tbody />' +
-          '</table>'
-        )
-      )
-
-    this.bodyColGroup = this.bodyContainerEl.querySelector('colgroup')
-    this.bodyTbody = this.bodyContainerEl.querySelector('tbody')
-
-    let headerEnhancedScroller = this.layout.headerScroller.enhancedScroll
-
-    this.header = new SpreadsheetHeader(
-      headerEnhancedScroller.canvas.contentEl
-    )
-    this.header.emitter.on('colwidthchange', (colWidths: number[]) => {
-      this.applyColWidths(colWidths)
+    let layout = this.renderLayout(true, {
+      headerContainerEl: props.headerContainerEl,
+      bodyContainerEl: props.bodyContainerEl,
+      verticalScroll: 'clipped-scroll'
     })
-  }
 
+    let headerContentEl = layout.headerScroller.enhancedScroller.canvas.contentEl
+    let bodyContentEl = layout.bodyScroller.enhancedScroller.canvas.contentEl
 
-  _unrenderSkeleton() {
-    this.header.destroy()
-  }
+    let colTagHtml = this.renderColTagHtml(colSpecs)
 
-
-  _renderCells(superHeaderText, colSpecs) {
-    let colTags = this.renderColTags(colSpecs)
-
-    this.header.receiveProps({
-      superHeaderText: superHeaderText,
+    let header = this.renderHeader(headerContentEl, {
+      superHeaderText: props.superHeaderText,
       colSpecs,
-      colTags
-    }, this.context)
+      colTagHtml
+    })
 
-    this.bodyColGroup.innerHTML = colTags
+    this.initColWidthSyncing(true, { header })
 
-    this.bodyColEls = Array.prototype.slice.call(
-      this.bodyColGroup.querySelectorAll('col')
-    )
+    let { bodyTbody, bodyColEls } = this.renderBodyTable(bodyContentEl, {
+      colTagHtml
+    })
+
+    this.header = header
+    this.bodyTbody = bodyTbody
+    this.bodyColEls = bodyColEls
 
     this.applyColWidths(
       colSpecs.map((colSpec) => colSpec.width)
     )
+
+    this.initStickyScroller(true, { enhancedBodyScroller: layout.bodyScroller.enhancedScroller })
   }
 
 
-  _unrenderCells() {
-    this.bodyColGroup.innerHTML = ''
-  }
+  _renderBodyTable({ colTagHtml }: { colTagHtml: string }, context: ComponentContext) {
+    let rootEl = htmlToElement(
+      '<div class="fc-rows">' +
+        '<table>' +
+          '<colgroup>' + colTagHtml + '</colgroup>' +
+          '<tbody />' +
+        '</table>' +
+      '</div>'
+    )
 
-
-  renderColTags(colSpecs) {
-    let html = ''
-
-    for (let o of colSpecs) {
-      if (o.isMain) {
-        html += '<col class="fc-main-col"/>'
-      } else {
-        html += '<col/>'
-      }
+    return {
+      rootEl,
+      bodyTbody: rootEl.querySelector('tbody'),
+      bodyColEls: findElements(rootEl, 'col')
     }
-
-    return html
   }
 
 
-  updateSize(isResize, totalHeight, isAuto) {
-    this.layout.setHeight(totalHeight, isAuto)
+  _initColWidthSyncing({ header }: { header: SpreadsheetHeader }) {
+    header.emitter.on('colwidthchange', (colWidths: number[]) => {
+      this.applyColWidths(colWidths)
+    })
   }
 
 
@@ -142,4 +105,44 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
     })
   }
 
+
+  _initStickyScroller(props: { enhancedBodyScroller: EnhancedScroller }, context: ComponentContext) {
+    this.stickyScroller = new StickyScroller(
+      props.enhancedBodyScroller,
+      context.isRtl,
+      true // isVertical
+    )
+  }
+
+
+  _destroyStickyScroller() {
+    this.stickyScroller.destroy()
+  }
+
+
+  updateSize(isResize, totalHeight, isAuto) {
+    this.layout.setHeight(totalHeight, isAuto)
+    this.updateStickyScrollers()
+  }
+
+
+  updateStickyScrollers() {
+    this.stickyScroller.updateSize()
+  }
+
+}
+
+
+function renderColTagHtml(colSpecs) {
+  let html = ''
+
+  for (let o of colSpecs) {
+    if (o.isMain) {
+      html += '<col class="fc-main-col"/>'
+    } else {
+      html += '<col/>'
+    }
+  }
+
+  return html
 }
