@@ -1,10 +1,10 @@
 import { createPlugin } from '@fullcalendar/core'
 import ResourceCommonPlugin from '@fullcalendar/resource-common'
 import TimeGridPlugin from '@fullcalendar/timegrid'
-import ResourceTimeGridView from './ResourceTimeGridView'
+import ResourceTimeTimeColsView from './ResourceDayTimeColsView'
 
-export { ResourceTimeGridView }
-export { default as ResourceTimeGrid } from './ResourceTimeGrid'
+export { ResourceTimeTimeColsView }
+export { default as ResourceDayTimeCols } from './ResourceDayTimeCols'
 
 export default createPlugin({
   deps: [ ResourceCommonPlugin, TimeGridPlugin ],
@@ -12,7 +12,7 @@ export default createPlugin({
   views: {
 
     resourceTimeGrid: {
-      class: ResourceTimeGridView,
+      class: ResourceTimeTimeColsView,
 
       // TODO: wish we didn't have to C&P from timeGrid's file
       allDaySlot: true,
