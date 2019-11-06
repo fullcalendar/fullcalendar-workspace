@@ -69,8 +69,6 @@ export default class ResourceTimelineLaneRow extends Component<ResourceTimelineL
 
 }
 
-ResourceTimelineLaneRow.addEqualityFuncs({
-  props: {
-    rowSpans: isArraysEqual // HACK for isSizeDirty, ResourceTimelineView::renderRows
-  }
+ResourceTimelineLaneRow.addPropEquality({
+  rowSpans: isArraysEqual // HACK for isSizeDirty, ResourceTimelineView::renderRows
 })

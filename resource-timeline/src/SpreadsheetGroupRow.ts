@@ -78,10 +78,8 @@ export default class SpreadsheetGroupRow extends Component<SpreadsheetGroupRowPr
 
 }
 
-SpreadsheetGroupRow.addEqualityFuncs({
-  props: {
-    group: isGroupsEqual // HACK for ResourceTimelineView::renderRows
-  }
+SpreadsheetGroupRow.addPropEquality({
+  group: isGroupsEqual // HACK for ResourceTimelineView::renderRows
 })
 
 
