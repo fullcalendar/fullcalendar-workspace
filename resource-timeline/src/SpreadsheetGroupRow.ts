@@ -1,15 +1,15 @@
-import { createElement, htmlToElement, htmlEscape, Component, renderer } from '@fullcalendar/core'
+import { createElement, htmlToElement, htmlEscape, Component, renderer, ComponentContext, DomLocation } from '@fullcalendar/core'
 import { Group, isGroupsEqual } from '@fullcalendar/resource-common'
 import { updateExpanderEl, clearExpanderEl } from './render-utils'
 
-export interface SpreadsheetGroupRowProps {
+export interface SpreadsheetGroupRowProps extends DomLocation {
   spreadsheetColCnt: number
   id: string // 'field:value'
   isExpanded: boolean
   group: Group
 }
 
-export default class SpreadsheetGroupRow extends Component<SpreadsheetGroupRowProps> {
+export default class SpreadsheetGroupRow extends Component<SpreadsheetGroupRowProps, ComponentContext> {
 
   private renderCells = renderer(this._renderCells)
   private updateExpanderEl = renderer(updateExpanderEl, clearExpanderEl)
@@ -19,12 +19,12 @@ export default class SpreadsheetGroupRow extends Component<SpreadsheetGroupRowPr
 
 
   render(props: SpreadsheetGroupRowProps) {
-    let { rootEl, expanderWrapEl, expanderIconEl, heightEl } = this.renderCells(true, {
+    let { rootEl, expanderWrapEl, expanderIconEl, heightEl } = this.renderCells({
       group: props.group,
       spreadsheetColCnt: props.spreadsheetColCnt
     })
 
-    this.updateExpanderEl(true, {
+    this.updateExpanderEl({
       expanderWrapEl,
       expanderIconEl,
       isVisible: true,
@@ -38,7 +38,7 @@ export default class SpreadsheetGroupRow extends Component<SpreadsheetGroupRowPr
   }
 
 
-  _renderCells({ group, spreadsheetColCnt }: { group: Group, spreadsheetColCnt: number }) {
+  _renderCells({ group, spreadsheetColCnt }: { group: Group, spreadsheetColCnt: number } & DomLocation) {
     let spreadsheetContentEl = renderSpreadsheetContent(group)
     let tr = document.createElement('tr')
     let heightEl = createElement('div', null, spreadsheetContentEl)

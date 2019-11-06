@@ -1,25 +1,29 @@
-import { FillRenderer, createElement, applyStyle, Seg, renderer, BaseFillRendererProps } from '@fullcalendar/core'
+import { FillRenderer, createElement, applyStyle, Seg, renderer, BaseFillRendererProps, DomLocation } from '@fullcalendar/core'
 import TimeAxis from './TimeAxis'
 import { attachSegs, detachSegs } from './TimelineLane'
 
 
-export default class TimelineLaneFillRenderer extends FillRenderer<BaseFillRendererProps> {
+export type TimelineLaneFillRendererProps = BaseFillRendererProps & DomLocation
+
+
+export default class TimelineLaneFillRenderer extends FillRenderer<TimelineLaneFillRendererProps> {
 
   private renderContainer = renderer(renderContainer)
   private attachSegs = renderer(attachSegs, detachSegs)
 
 
-  render(props: BaseFillRendererProps) {
-    let segs = this.renderSegs(true, props)
+  render(props: TimelineLaneFillRendererProps) {
+    let segs = this.renderSegs(props)
 
     if (segs.length) {
-      let containerEl = this.renderContainer(true, { type: props.type })
-      this.attachSegs(true, { segs, containerEl })
-      return containerEl
+      let containerEl = this.renderContainer({ type: props.type })
+      this.attachSegs({ segs, containerEl })
+      return [ containerEl ]
 
     } else {
       this.renderContainer(false)
       this.attachSegs(false)
+      return []
     }
   }
 
@@ -45,7 +49,7 @@ export default class TimelineLaneFillRenderer extends FillRenderer<BaseFillRende
 }
 
 
-function renderContainer({ type }: { type: string }) {
+function renderContainer({ type }: { type: string } & DomLocation) {
   let className = type === 'businessHours'
     ? 'bgevent'
     : type.toLowerCase()

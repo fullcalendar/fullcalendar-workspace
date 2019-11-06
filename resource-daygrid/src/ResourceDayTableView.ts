@@ -44,7 +44,8 @@ export default class ResourceDayTableView extends TableView {
       contentWrapEl
     } = this.renderLayout({ type: props.viewSpec.type }, context)
 
-    let header = this.renderHeader(headerWrapEl, { // might be null!
+    let header = this.renderHeader({
+      parentEl: headerWrapEl, // might be null!
       resources,
       dates: resourceDayTableModel.dayTableModel.headerDates,
       dateProfile: props.dateProfile,
@@ -52,7 +53,8 @@ export default class ResourceDayTableView extends TableView {
       renderIntroHtml: this.renderHeadIntroHtml
     })
 
-    let table = this.renderTable(contentWrapEl, {
+    let table = this.renderTable({
+      parentEl: contentWrapEl,
       dateProfile: props.dateProfile,
       resourceDayTableModel,
       businessHours: props.businessHours,

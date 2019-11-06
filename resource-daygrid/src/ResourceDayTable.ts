@@ -1,9 +1,9 @@
-import { mapHash, Hit, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration, renderer } from '@fullcalendar/core'
+import { mapHash, Hit, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration, renderer, DomLocation } from '@fullcalendar/core'
 import { DayTableSlicer, Table, TableSeg } from '@fullcalendar/daygrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
 import { TableRenderProps } from 'packages/daygrid/src/Table'
 
-export interface ResourceDayTableProps {
+export interface ResourceDayTableProps extends DomLocation {
   dateProfile: DateProfile | null
   resourceDayTableModel: AbstractResourceDayTableModel
   businessHours: EventStore
@@ -49,7 +49,7 @@ export default class ResourceDayTable extends DateComponent<ResourceDayTableProp
       )
     })
 
-    let table = this.renderTable(true, {
+    let table = this.renderTable({
       ...this.joiner.joinProps(slicedProps, resourceDayTableModel),
       dateProfile,
       cells: resourceDayTableModel.cells,
@@ -57,7 +57,7 @@ export default class ResourceDayTable extends DateComponent<ResourceDayTableProp
       renderProps: props.renderProps
     })
 
-    this.registerInteractive(true, {
+    this.registerInteractive({
       el: table.rootEl
     })
 

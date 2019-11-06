@@ -1,4 +1,4 @@
-import { Component, ComponentContext, renderer, memoize, findElements, htmlToElement } from '@fullcalendar/core'
+import { Component, ComponentContext, renderer, memoize, findElements, htmlToElement, DomLocation } from '@fullcalendar/core'
 import { HeaderBodyLayout, StickyScroller } from '@fullcalendar/timeline'
 import SpreadsheetHeader from './SpreadsheetHeader'
 import EnhancedScroller from 'packages-premium/timeline/src/util/EnhancedScroller'
@@ -19,17 +19,17 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
   private initStickyScroller = renderer(this._initStickyScroller, this._destroyStickyScroller)
   private renderColTagHtml = memoize(renderColTagHtml)
 
-  layout: HeaderBodyLayout
-  header: SpreadsheetHeader
   private bodyColEls: HTMLElement[]
   bodyTbody: HTMLElement
   private stickyScroller: StickyScroller
+  layout: HeaderBodyLayout
+  header: SpreadsheetHeader
 
 
   render(props: SpreadsheetProps, context: ComponentContext) {
     let { colSpecs } = props
 
-    let layout = this.renderLayout(true, {
+    let layout = this.layout = this.renderLayout({
       headerContainerEl: props.headerContainerEl,
       bodyContainerEl: props.bodyContainerEl,
       verticalScroll: 'clipped-scroll'
@@ -40,19 +40,20 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
 
     let colTagHtml = this.renderColTagHtml(colSpecs)
 
-    let header = this.renderHeader(headerContentEl, {
+    let header = this.header = this.renderHeader({
+      parentEl: headerContentEl,
       superHeaderText: props.superHeaderText,
       colSpecs,
       colTagHtml
     })
 
-    this.initColWidthSyncing(true, { header })
+    this.initColWidthSyncing({ header })
 
-    let { bodyTbody, bodyColEls } = this.renderBodyTable(bodyContentEl, {
+    let { bodyTbody, bodyColEls } = this.renderBodyTable({
+      parentEl: bodyContentEl,
       colTagHtml
     })
 
-    this.header = header
     this.bodyTbody = bodyTbody
     this.bodyColEls = bodyColEls
 
@@ -60,11 +61,11 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
       colSpecs.map((colSpec) => colSpec.width)
     )
 
-    this.initStickyScroller(true, { enhancedBodyScroller: layout.bodyScroller.enhancedScroller })
+    this.initStickyScroller({ enhancedBodyScroller: layout.bodyScroller.enhancedScroller })
   }
 
 
-  _renderBodyTable({ colTagHtml }: { colTagHtml: string }, context: ComponentContext) {
+  _renderBodyTable({ colTagHtml }: { colTagHtml: string } & DomLocation, context: ComponentContext) {
     let rootEl = htmlToElement(
       '<div class="fc-rows">' +
         '<table>' +
@@ -91,7 +92,8 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
 
   applyColWidths(colWidths: (number | string)[]) {
     colWidths.forEach((colWidth, colIndex) => {
-      let headEl = this.header.colEls[colIndex] // bad to access child
+      let header = this.renderHeader.current
+      let headEl = header.colEls[colIndex] // bad to access child
       let bodyEl = this.bodyColEls[colIndex]
       let styleVal: string
 
@@ -121,7 +123,8 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
 
 
   updateSize(isResize, totalHeight, isAuto) {
-    this.layout.setHeight(totalHeight, isAuto)
+    let layout = this.renderLayout.current
+    layout.setHeight(totalHeight, isAuto)
     this.updateStickyScrollers()
   }
 

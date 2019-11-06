@@ -24,10 +24,12 @@ export default class EnhancedScroller extends Component<ScrollerProps> {
 
 
   render(props: ScrollerProps) {
-    let scroller = this.renderScroller(true, props)
-    let canvas = this.renderCanvas(scroller.el, {})
+    let scroller = this.renderScroller(props)
+    let canvas = this.renderCanvas({
+      parentEl: scroller.el
+    })
 
-    this.bindHandlers(true, { el: scroller.rootEl })
+    this.bindHandlers({ el: scroller.rootEl })
 
     this.scroller = scroller
     this.canvas = canvas

@@ -5,7 +5,7 @@ export interface TimelineNowIndicatorProps {
   bodyParent: HTMLElement
 }
 
-export default class TimelineNowIndicator extends Component<TimelineNowIndicatorProps> {
+export default class TimelineNowIndicator extends Component<TimelineNowIndicatorProps, ComponentContext> {
 
   arrowEl: HTMLElement
   lineEl: HTMLElement

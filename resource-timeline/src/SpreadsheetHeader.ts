@@ -1,6 +1,6 @@
-import { ElementDragging, createElement, htmlEscape, Component, ComponentContext, PointerDragEvent, EmitterMixin, renderer, findElements } from '@fullcalendar/core'
+import { ElementDragging, createElement, htmlEscape, Component, ComponentContext, PointerDragEvent, EmitterMixin, renderer, findElements, DomLocation } from '@fullcalendar/core'
 
-export interface SpreadsheetHeaderProps {
+export interface SpreadsheetHeaderProps extends DomLocation {
   superHeaderText: string
   colSpecs: any
   colTagHtml: string
@@ -73,7 +73,7 @@ export default class SpreadsheetHeader extends Component<SpreadsheetHeaderProps>
     let resizerEls = findElements(tableEl, '.fc-col-resizer')
 
     this.colEls = colEls
-    this.initColResizing(true, { thEls, resizerEls })
+    this.initColResizing({ thEls, resizerEls })
 
     return tableEl
   }

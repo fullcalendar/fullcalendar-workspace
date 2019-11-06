@@ -1,4 +1,4 @@
-import { Hit, View, ViewProps, ComponentContext, DateProfile, Duration, DateProfileGenerator, renderViewEl, renderer, memoize } from '@fullcalendar/core'
+import { Hit, View, ViewProps, ComponentContext, Duration, renderViewEl, renderer, memoize } from '@fullcalendar/core'
 import TimeAxis from './TimeAxis'
 import TimelineLane from './TimelineLane'
 import { buildTimelineDateProfile } from './timeline-date-profile'
@@ -7,7 +7,7 @@ export default class TimelineView extends View {
 
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private renderSkeleton = renderer(this._renderSkeleton)
-  private startInteractive = renderer(this._startInteractive, this._stopInteractive)
+  private registerInteractive = renderer(this._registerInteractive, this._unregisterInteractive)
   private renderTimeAxis = renderer(TimeAxis)
   private renderLane = renderer(TimelineLane)
 
@@ -28,9 +28,9 @@ export default class TimelineView extends View {
       rootEl,
       headerContainerEl,
       bodyContainerEl
-    } = this.renderSkeleton(true, { type: props.viewSpec.type })
+    } = this.renderSkeleton({ type: props.viewSpec.type })
 
-    let timeAxis = this.renderTimeAxis(true, {
+    let timeAxis = this.renderTimeAxis({
       tDateProfile,
       headerContainerEl,
       bodyContainerEl,
@@ -38,7 +38,7 @@ export default class TimelineView extends View {
     })
 
     let laneCanvas = timeAxis.layout.bodyScroller.enhancedScroller.canvas
-    let lane = this.renderLane(true, {
+    let lane = this.renderLane({
       ...props,
       tDateProfile,
       nextDayThreshold: this.context.nextDayThreshold,
@@ -46,8 +46,8 @@ export default class TimelineView extends View {
       bgContainerEl: laneCanvas.bgEl
     })
 
-    this.startInteractive(true, { timeAxisEl: timeAxis.slats.rootEl })
-    this.startNowIndicator(props.dateProfile, props.dateProfileGenerator)
+    this.registerInteractive({ timeAxisEl: timeAxis.slats.rootEl })
+    this.startNowIndicator()
 
     this.timeAxis = timeAxis
     this.lane = lane
@@ -87,14 +87,14 @@ export default class TimelineView extends View {
   }
 
 
-  _startInteractive(props: { timeAxisEl: HTMLElement }, context: ComponentContext) {
+  _registerInteractive(props: { timeAxisEl: HTMLElement }, context: ComponentContext) {
     context.calendar.registerInteractiveComponent(this, {
       el: props.timeAxisEl
     })
   }
 
 
-  _stopInteractive(funcState: void, context: ComponentContext) {
+  _unregisterInteractive(funcState: void, context: ComponentContext) {
     context.calendar.unregisterInteractiveComponent(this)
   }
 
@@ -109,8 +109,8 @@ export default class TimelineView extends View {
   // ------------------------------------------------------------------------------------------
 
 
-  getNowIndicatorUnit(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
-    return this.timeAxis.getNowIndicatorUnit(dateProfile, dateProfileGenerator)
+  getNowIndicatorUnit() {
+    return this.timeAxis.getNowIndicatorUnit()
   }
 
 
@@ -136,12 +136,8 @@ export default class TimelineView extends View {
   applyScroll(scroll, isResize) {
     super.applyScroll(scroll, isResize) // will call applyDateScroll
 
-    let { calendar } = this.context
-
     // avoid updating stickyscroll too often
-    // TODO: repeat code as ResourceTimelineView::updateSize
-    if (isResize || calendar.isViewUpdated || calendar.isDatesUpdated || calendar.isEventsUpdated) {
-
+    if (isResize || this.isLayoutSizeDirty()) {
       this.timeAxis.updateStickyScrollers()
     }
   }

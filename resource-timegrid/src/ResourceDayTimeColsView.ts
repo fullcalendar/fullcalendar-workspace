@@ -39,9 +39,10 @@ export default class ResourceDayTimeColsView extends TimeColsView {
       rootEl,
       headerWrapEl,
       contentWrapEl
-    } = this.renderLayout({ type: props.viewSpec.type }, context)
+    } = this.renderLayout({ type: props.viewSpec.type })
 
-    this.renderHeader(headerWrapEl, { // might be null
+    this.renderHeader({
+      parentEl: headerWrapEl, // might be null
       resources,
       dates: resourceDayTableModel.dayTableModel.headerDates,
       dateProfile: props.dateProfile,
@@ -49,7 +50,9 @@ export default class ResourceDayTimeColsView extends TimeColsView {
       renderIntroHtml: this.renderHeadIntroHtml
     })
 
-    let allDayTable = this.renderTable({ parent: contentWrapEl, prepend: true }, { // might be null
+    let allDayTable = this.renderTable({
+      parentEl: contentWrapEl, // might be null
+      prepend: true,
       ...splitProps['allDay'],
       dateProfile: props.dateProfile,
       resourceDayTableModel,
@@ -58,14 +61,15 @@ export default class ResourceDayTimeColsView extends TimeColsView {
       renderProps: this.tableRenderProps
     })
 
-    let timeCols = this.renderTimeCols(contentWrapEl, {
+    let timeCols = this.renderTimeCols({
+      parentEl: contentWrapEl,
       ...splitProps['timed'],
       dateProfile: props.dateProfile,
       resourceDayTableModel,
       renderProps: this.timeColsRenderProps
     })
 
-    this.startNowIndicator(props.dateProfile, props.dateProfileGenerator)
+    this.startNowIndicator()
 
     this.allDayTable = allDayTable
     this.timeCols = timeCols

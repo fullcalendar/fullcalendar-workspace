@@ -1,8 +1,8 @@
-import { htmlToElement, htmlEscape, createElement, Component, renderer, ComponentContext } from '@fullcalendar/core'
+import { htmlToElement, htmlEscape, createElement, Component, renderer, ComponentContext, DomLocation } from '@fullcalendar/core'
 import { Resource, ResourceApi, buildResourceFields, buildResourceTextFunc } from '@fullcalendar/resource-common'
 import { updateExpanderEl, clearExpanderEl, updateTrResourceId } from './render-utils'
 
-export interface SpreadsheetRowProps {
+export interface SpreadsheetRowProps extends DomLocation {
   colSpecs: any
   rowSpans: number[]
   depth: number
@@ -11,7 +11,7 @@ export interface SpreadsheetRowProps {
   resource: Resource
 }
 
-export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
+export default class SpreadsheetRow extends Component<SpreadsheetRowProps, ComponentContext> {
 
   private renderSkeleton = renderer(this._renderSkeleton)
   private updateExpanderEl = renderer(updateExpanderEl, clearExpanderEl)
@@ -21,14 +21,14 @@ export default class SpreadsheetRow extends Component<SpreadsheetRowProps> {
 
 
   render(props: SpreadsheetRowProps) {
-    let { rootEl, heightEl, expanderWrapEl, expanderIconEl } = this.renderSkeleton(true, {
+    let { rootEl, heightEl, expanderWrapEl, expanderIconEl } = this.renderSkeleton({
       colSpecs: props.colSpecs,
       rowSpans: props.rowSpans,
       depth: props.depth,
       resource: props.resource
     })
 
-    this.updateExpanderEl(true, {
+    this.updateExpanderEl({
       expanderWrapEl,
       expanderIconEl,
       isVisible: props.hasChildren,

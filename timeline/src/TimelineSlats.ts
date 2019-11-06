@@ -1,12 +1,12 @@
-import { isInt, findElements, createElement, findDirectChildren, PositionCache, getDayClasses, Component, DateProfile, multiplyDuration, ComponentContext } from '@fullcalendar/core'
+import { isInt, findElements, createElement, findDirectChildren, PositionCache, getDayClasses, Component, DateProfile, multiplyDuration, ComponentContext, DomLocation } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
-export interface TimelineSlatsProps {
+export interface TimelineSlatsProps extends DomLocation {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
 }
 
-export default class TimelineSlats extends Component<TimelineSlatsProps> {
+export default class TimelineSlats extends Component<TimelineSlatsProps, ComponentContext> {
 
   slatColEls: HTMLElement[]
   slatEls: HTMLElement[]

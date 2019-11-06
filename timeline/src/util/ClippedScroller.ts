@@ -9,8 +9,8 @@ export default class ClippedScroller extends Component<ScrollerProps> {
 
   clipEl = createElement('div', { className: 'fc-scroller-clip' })
   renderEnhancedScroller = renderer(EnhancedScroller)
-
   enhancedScroller: EnhancedScroller
+
   isHScrollbarsClipped: boolean
   isVScrollbarsClipped: boolean
 
@@ -36,7 +36,8 @@ export default class ClippedScroller extends Component<ScrollerProps> {
       this.isVScrollbarsClipped = true
     }
 
-    this.enhancedScroller = this.renderEnhancedScroller(this.clipEl, {
+    this.enhancedScroller = this.renderEnhancedScroller({
+      parentEl: this.clipEl,
       overflowX,
       overflowY
     })
@@ -46,10 +47,10 @@ export default class ClippedScroller extends Component<ScrollerProps> {
 
 
   updateSize() {
-    const { enhancedScroller } = this
-    const scrollEl = enhancedScroller.getEl()
-    const edges = computeEdges(scrollEl)
-    const cssProps = { marginLeft: 0, marginRight: 0, marginTop: 0, marginBottom: 0 }
+    let enhancedScroller = this.renderEnhancedScroller.current
+    let scrollEl = enhancedScroller.getEl()
+    let edges = computeEdges(scrollEl)
+    let cssProps = { marginLeft: 0, marginRight: 0, marginTop: 0, marginBottom: 0 }
 
     // give the inner scrolling div negative margins so that its scrollbars
     // are nudged outside of the bounding box of the wrapper, which is overflow:hidden
@@ -81,14 +82,16 @@ export default class ClippedScroller extends Component<ScrollerProps> {
   }
 
   setHeight(height: number | string) {
-    this.enhancedScroller.scroller.setHeight(height)
+    let enhancedScroller = this.renderEnhancedScroller.current
+    enhancedScroller.scroller.setHeight(height)
   }
 
   /*
   Accounts for 'clipped' scrollbars
   */
   getScrollbarWidths(): ScrollbarWidths {
-    const widths = this.enhancedScroller.scroller.getScrollbarWidths()
+    let enhancedScroller = this.renderEnhancedScroller.current
+    let widths = enhancedScroller.scroller.getScrollbarWidths()
 
     if (this.isVScrollbarsClipped) {
       widths.left = 0

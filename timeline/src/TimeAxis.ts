@@ -1,4 +1,4 @@
-import { DateProfile, DateMarker, wholeDivideDurations, isInt, Component, ComponentContext, startOfDay, greatestDurationDenominator, rangeContainsMarker, Duration, DateProfileGenerator, renderer, DateEnv } from '@fullcalendar/core'
+import { DateProfile, DateMarker, wholeDivideDurations, isInt, Component, ComponentContext, startOfDay, greatestDurationDenominator, rangeContainsMarker, Duration, renderer, DateEnv } from '@fullcalendar/core'
 import HeaderBodyLayout from './HeaderBodyLayout'
 import TimelineHeader from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'
@@ -8,13 +8,13 @@ import StickyScroller from './util/StickyScroller'
 import EnhancedScroller from './util/EnhancedScroller'
 
 export interface TimeAxisProps {
-  tDateProfile: TimelineDateProfile
-  dateProfile: DateProfile
   headerContainerEl: HTMLElement
   bodyContainerEl: HTMLElement
+  tDateProfile: TimelineDateProfile
+  dateProfile: DateProfile
 }
 
-export default class TimeAxis extends Component<TimeAxisProps> {
+export default class TimeAxis extends Component<TimeAxisProps, ComponentContext> {
 
   renderLayout = renderer(HeaderBodyLayout)
   renderHeader = renderer(TimelineHeader)
@@ -23,39 +23,36 @@ export default class TimeAxis extends Component<TimeAxisProps> {
   buildHeadStickyScroller = renderer(buildHStickyScroller, clearHStickyScroller)
   buildBodyStickyScroller = renderer(buildHStickyScroller, clearHStickyScroller)
 
-  // child components
   layout: HeaderBodyLayout
-  header: TimelineHeader
   slats: TimelineSlats
-  headStickyScroller: StickyScroller
-  bodyStickyScroller: StickyScroller
+  header: TimelineHeader
 
 
   render(props: TimeAxisProps) {
 
-    let layout = this.renderLayout(true, {
+    let layout = this.layout = this.renderLayout({
       headerContainerEl: props.headerContainerEl,
       bodyContainerEl: props.bodyContainerEl,
       verticalScroll: 'auto'
     })
+
     let headerEnhancedScroller = layout.headerScroller.enhancedScroller
     let bodyEnhancedScroller = layout.bodyScroller.enhancedScroller
 
-    let header = this.renderHeader(headerEnhancedScroller.canvas.contentEl, {
+    this.header = this.renderHeader({
+      parentEl: headerEnhancedScroller.canvas.contentEl,
       dateProfile: props.dateProfile,
       tDateProfile: props.tDateProfile
     })
 
-    let slats = this.renderSlats(bodyEnhancedScroller.canvas.bgEl, {
+    this.slats = this.renderSlats({
+      parentEl: bodyEnhancedScroller.canvas.bgEl,
       dateProfile: props.dateProfile,
       tDateProfile: props.tDateProfile
     })
 
-    this.headStickyScroller = this.buildHeadStickyScroller(true, { enhancedScroller: headerEnhancedScroller })
-    this.bodyStickyScroller = this.buildBodyStickyScroller(true, { enhancedScroller: bodyEnhancedScroller })
-    this.layout = layout
-    this.header = header
-    this.slats = slats
+    this.buildHeadStickyScroller({ enhancedScroller: headerEnhancedScroller })
+    this.buildBodyStickyScroller({ enhancedScroller: bodyEnhancedScroller })
   }
 
 
@@ -63,7 +60,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
   // ------------------------------------------------------------------------------------------
 
 
-  getNowIndicatorUnit(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
+  getNowIndicatorUnit() {
     let { tDateProfile } = this.props
 
     if (tDateProfile.isTimeScale) {
@@ -79,7 +76,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
       let headerEnhancedScroller = this.layout.headerScroller.enhancedScroller
       let bodyEnhancedScroller = this.layout.bodyScroller.enhancedScroller
 
-      let nowIndicator = this.renderNowIndicatorComponent(true, {
+      let nowIndicator = this.renderNowIndicatorComponent({
         headParent: headerEnhancedScroller.canvas.el,
         bodyParent: bodyEnhancedScroller.canvas.el
       })
@@ -118,8 +115,8 @@ export default class TimeAxis extends Component<TimeAxisProps> {
 
 
   updateStickyScrollers() {
-    this.headStickyScroller.updateSize()
-    this.bodyStickyScroller.updateSize()
+    this.buildHeadStickyScroller.current.updateSize()
+    this.buildBodyStickyScroller.current.updateSize()
   }
 
 
@@ -135,9 +132,11 @@ export default class TimeAxis extends Component<TimeAxisProps> {
 
 
   computeDefaultSlotWidth(tDateProfile) {
+    let { header } = this
+
     let maxInnerWidth = 0 // TODO: harness core's `matchCellWidths` for this
 
-    this.header.innerEls.forEach(function(innerEl, i) {
+    header.innerEls.forEach(function(innerEl, i) {
       maxInnerWidth = Math.max(maxInnerWidth, innerEl.getBoundingClientRect().width)
     })
 
@@ -149,7 +148,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
 
     let slotWidth = Math.ceil(headingCellWidth / slotsPerLabel)
 
-    let minWidth: any = window.getComputedStyle(this.header.slatColEls[0]).minWidth
+    let minWidth: any = window.getComputedStyle(header.slatColEls[0]).minWidth
     if (minWidth) {
       minWidth = parseInt(minWidth, 10)
       if (minWidth) {
@@ -162,7 +161,7 @@ export default class TimeAxis extends Component<TimeAxisProps> {
 
 
   applySlotWidth(slotWidth: number | string) {
-    let { layout } = this
+    let { layout, header, slats } = this
     let { tDateProfile } = this.props
     let containerWidth: number | string = ''
     let containerMinWidth: number | string = ''
@@ -190,8 +189,8 @@ export default class TimeAxis extends Component<TimeAxisProps> {
     layout.bodyScroller.enhancedScroller.canvas.setMinWidth(containerMinWidth)
 
     if (nonLastSlotWidth !== '') {
-      this.header.slatColEls.slice(0, -1).concat(
-        this.slats.slatColEls.slice(0, -1)
+      header.slatColEls.slice(0, -1).concat(
+        slats.slatColEls.slice(0, -1)
       ).forEach(function(el) {
         el.style.width = nonLastSlotWidth + 'px'
       })

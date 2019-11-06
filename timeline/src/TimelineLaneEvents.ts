@@ -1,12 +1,12 @@
 import {
   FgEventRenderer, htmlEscape, cssToStr, Seg, applyStyle, computeHeightAndMargins, applyStyleProp, createElement,
-  computeEventDraggable, computeEventStartResizable, computeEventEndResizable, BaseFgEventRendererProps, sortEventSegs, renderer, ComponentContext
+  computeEventDraggable, computeEventStartResizable, computeEventEndResizable, BaseFgEventRendererProps, sortEventSegs, renderer, ComponentContext, DomLocation
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { TimeAxis } from './main'
 import { attachSegs, detachSegs } from './TimelineLane'
 
-export interface TimelineLaneEventsProps extends BaseFgEventRendererProps {
+export type TimelineLaneEventsProps = DomLocation & BaseFgEventRendererProps & {
   tDateProfile: TimelineDateProfile
 }
 
@@ -19,7 +19,7 @@ export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEven
 
 
   render(props: TimelineLaneEventsProps, context: ComponentContext) {
-    let containerEl = this.renderContainer(true, { isMirror: Boolean(props.mirrorInfo) })
+    let containerEl = this.renderContainer({ isMirror: Boolean(props.mirrorInfo) })
 
     let segs = this.renderSegs({
       segs: props.segs,
@@ -28,7 +28,7 @@ export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEven
       hiddenInstances: props.hiddenInstances
     }, context)
 
-    this.attachSegs(true, { segs, containerEl })
+    this.attachSegs({ segs, containerEl })
 
     this.containerEl = containerEl
     return containerEl

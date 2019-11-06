@@ -16,25 +16,25 @@ export default class HeaderBodyLayout extends Component<HeaderBodyLayoutProps> {
 
   headerScroller: ClippedScroller
   bodyScroller: ClippedScroller
-  scrollJoiner: ScrollJoiner
 
 
   render(props: HeaderBodyLayoutProps) {
-    let headerScroller = this.renderHeaderScroller(props.headerContainerEl, {
+    let headerScroller = this.renderHeaderScroller({
+      parentEl: props.headerContainerEl,
       overflowX: 'clipped-scroll',
       overflowY: 'hidden'
     })
 
-    let bodyScroller = this.renderBodyScroller(props.bodyContainerEl, {
+    let bodyScroller = this.renderBodyScroller({
+      parentEl: props.bodyContainerEl,
       overflowX: 'auto',
       overflowY: props.verticalScroll
     })
 
-    let scrollJoiner = this.buildScrollJoiner(true, { headerScroller, bodyScroller })
+    this.buildScrollJoiner({ headerScroller, bodyScroller })
 
     this.headerScroller = headerScroller
     this.bodyScroller = bodyScroller
-    this.scrollJoiner = scrollJoiner
   }
 
 
@@ -52,6 +52,8 @@ export default class HeaderBodyLayout extends Component<HeaderBodyLayoutProps> {
 
 
   setHeight(totalHeight, isAuto) {
+    let { headerScroller, bodyScroller } = this
+    let scrollJoiner = this.buildScrollJoiner.current
     let bodyHeight
 
     if (isAuto) {
@@ -60,22 +62,21 @@ export default class HeaderBodyLayout extends Component<HeaderBodyLayoutProps> {
       bodyHeight = totalHeight - this.queryHeadHeight()
     }
 
-    this.bodyScroller.setHeight(bodyHeight)
-
-    this.headerScroller.updateSize() // adjusts gutters and classNames
-    this.bodyScroller.updateSize() // adjusts gutters and classNames
-    this.scrollJoiner.update()
+    bodyScroller.setHeight(bodyHeight)
+    headerScroller.updateSize() // adjusts gutters and classNames
+    bodyScroller.updateSize() // adjusts gutters and classNames
+    scrollJoiner.update()
   }
 
 
   queryHeadHeight() {
-    return this.headerScroller.enhancedScroller.canvas.contentEl.getBoundingClientRect().height
+    return this.headerScroller.rootEl.getBoundingClientRect().height
   }
 
 
   queryTotalHeight() {
     return this.queryHeadHeight() +
-      this.bodyScroller.enhancedScroller.canvas.contentEl.getBoundingClientRect().height
+      this.bodyScroller.rootEl.getBoundingClientRect().height
   }
 
 }

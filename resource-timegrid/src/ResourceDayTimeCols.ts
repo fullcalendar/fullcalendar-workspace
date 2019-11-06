@@ -1,8 +1,8 @@
-import { renderer, mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit } from '@fullcalendar/core'
+import { renderer, mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit, DomLocation } from '@fullcalendar/core'
 import { DayTimeColsSlicer, TimeCols, TimeColsRenderProps, buildDayRanges, TimeColsSeg } from '@fullcalendar/timegrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
 
-export interface ResourceTimeGridProps {
+export interface ResourceTimeGridProps extends DomLocation {
   dateProfile: DateProfile | null
   resourceDayTableModel: AbstractResourceDayTableModel
   businessHours: EventStore
@@ -53,14 +53,14 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
 
     this.allowAcrossResources = dayRanges.length === 1
 
-    let timeCols = this.renderTimeCols(true, {
+    let timeCols = this.renderTimeCols({
       ...this.joiner.joinProps(slicedProps, resourceDayTableModel),
       dateProfile,
       cells: resourceDayTableModel.cells[0],
       renderProps: props.renderProps
     })
 
-    this.registerInteractive(true, { el: timeCols.rootEl })
+    this.registerInteractive({ el: timeCols.rootEl })
 
     this.timeCols = timeCols
 

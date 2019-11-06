@@ -1,4 +1,4 @@
-import { htmlToElement, applyStyle, forceClassName, Component } from '@fullcalendar/core'
+import { htmlToElement, applyStyle, forceClassName, Component, DomLocation } from '@fullcalendar/core'
 import { __assign } from 'tslib'
 
 /*
@@ -7,7 +7,7 @@ Can have "gutters", areas of dead spacing around the perimeter.
 Also very useful for forcing a width, which a Scroller cannot do alone.
 Has a content area that lives above a background area.
 */
-export default class ScrollerCanvas extends Component<{}> {
+export default class ScrollerCanvas extends Component<DomLocation> {
 
   el: HTMLElement
   contentEl: HTMLElement
@@ -28,6 +28,7 @@ export default class ScrollerCanvas extends Component<{}> {
       this.contentEl = this.el.querySelector('.fc-content')
       this.bgEl = this.el.querySelector('.fc-bg')
     }
+
     return this.el
   }
 

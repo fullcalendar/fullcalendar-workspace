@@ -1,9 +1,9 @@
-import { memoize, Calendar, Component, DateMarker, htmlToElement, htmlEscape, DateProfile, renderDateCell, findElements, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext } from '@fullcalendar/core'
+import { memoize, Calendar, Component, DateMarker, htmlToElement, htmlEscape, DateProfile, renderDateCell, findElements, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext, DomLocation } from '@fullcalendar/core'
 import { buildResourceTextFunc } from '../common/resource-rendering'
 import { Resource } from '../structs/resource'
 import ResourceApi from '../api/ResourceApi'
 
-export interface ResourceDayHeaderProps {
+export interface ResourceDayHeaderProps extends DomLocation {
   dates: DateMarker[]
   dateProfile: DateProfile
   datesRepDistinctDays: boolean
@@ -11,7 +11,7 @@ export interface ResourceDayHeaderProps {
   renderIntroHtml?: () => string
 }
 
-export default class ResourceDayHeader extends Component<ResourceDayHeaderProps> {
+export default class ResourceDayHeader extends Component<ResourceDayHeaderProps, ComponentContext> {
 
   private buildDateFormatter = memoize(this._buildDateFormatter)
   private processOptions = memoize(this._processOptions)

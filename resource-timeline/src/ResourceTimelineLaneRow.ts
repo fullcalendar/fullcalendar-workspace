@@ -1,8 +1,8 @@
-import { Component, ComponentContext, isArraysEqual, renderer, htmlToElement, DateProfile, DateProfileGenerator, Duration, EventStore, EventUiHash, DateSpan, EventInteractionState } from '@fullcalendar/core'
+import { Component, ComponentContext, isArraysEqual, renderer, htmlToElement, DateProfile, DateProfileGenerator, Duration, EventStore, EventUiHash, DateSpan, EventInteractionState, DomLocation } from '@fullcalendar/core'
 import { TimelineLane, TimeAxis, TimelineDateProfile } from '@fullcalendar/timeline'
 import { updateTrResourceId } from './render-utils'
 
-export interface ResourceTimelineLaneRowProps {
+export interface ResourceTimelineLaneRowProps extends DomLocation {
   resourceId: string
   dateProfile: DateProfile
   dateProfileGenerator: DateProfileGenerator
@@ -22,22 +22,19 @@ export default class ResourceTimelineLaneRow extends Component<ResourceTimelineL
   private renderSkeleton = renderer(this._renderSkeleton)
   private renderLane = renderer(TimelineLane)
 
-  private lane: TimelineLane
-
   heightEl: HTMLElement
   isSizeDirty = false
 
 
   render(props: ResourceTimelineLaneRowProps) {
-    let { rootEl, heightEl } = this.renderSkeleton(true, { resourceId: props.resourceId })
+    let { rootEl, heightEl } = this.renderSkeleton({ resourceId: props.resourceId })
 
-    let lane = this.renderLane(true, {
+    this.renderLane({
       ...props,
       fgContainerEl: heightEl,
       bgContainerEl: heightEl
     })
 
-    this.lane = lane
     this.heightEl = heightEl
     this.isSizeDirty = true
 
@@ -64,7 +61,9 @@ export default class ResourceTimelineLaneRow extends Component<ResourceTimelineL
 
 
   updateSize(isResize: boolean, timeAxis: TimeAxis) {
-    this.lane.updateSize(isResize, timeAxis)
+    let lane = this.renderLane.current
+
+    lane.updateSize(isResize, timeAxis)
     this.isSizeDirty = false
   }
 

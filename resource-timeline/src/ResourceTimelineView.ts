@@ -1,9 +1,10 @@
-import { renderer, Calendar, ElementDragging, PositionCache, Hit, View, parseFieldSpecs, ComponentContext, memoize, DateProfile, applyStyleProp, PointerDragEvent, Duration, DateProfileGenerator, renderViewEl, findElements, createElement, SplittableProps } from '@fullcalendar/core'
+import { renderer, Calendar, ElementDragging, PositionCache, Hit, View, parseFieldSpecs, ComponentContext, memoize, DateProfile, applyStyleProp, PointerDragEvent,
+  Duration, DateProfileGenerator, renderViewEl, findElements, createElement, SplittableProps, listRenderer, ListRendererItem, DomLocation } from '@fullcalendar/core'
 import { ScrollJoiner, TimelineLane, TimeAxis, ClippedScroller, buildTimelineDateProfile, TimelineDateProfile } from '@fullcalendar/timeline'
 import { ResourceHash, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc, buildRowNodes } from '@fullcalendar/resource-common'
 import Spreadsheet from './Spreadsheet'
 import { __assign } from 'tslib'
-import SpreadsheetRow, { SpreadsheetRowProps } from './SpreadsheetRow'
+import SpreadsheetRow from './SpreadsheetRow'
 import SpreadsheetGroupRow, { SpreadsheetGroupRowProps } from './SpreadsheetGroupRow'
 import ResourceTimelineLaneRow, { ResourceTimelineLaneRowProps } from './ResourceTimelineLaneRow'
 import DividerRow from './DividerRow'
@@ -16,7 +17,7 @@ export default class ResourceTimelineView extends View {
   private processOptions = memoize(this._processOptions)
   private renderSkeleton = renderer(renderSkeleton)
   private renderTimeAxisTableWrap = renderer(renderTimeAxisTableWrap)
-  private startInteractive = renderer(this._startInteractive, this._stopInteractive)
+  private registerInteractive = renderer(this._registerInteractive, this._unregisterInteractive)
   private initResourceAreaResizing = renderer(this._initResourceAreaResizing, this._destroyResourceAreaResizing)
   private initBodyScrollJoiner = renderer(this._initBodyScrollJoiner, this._destroyBodyScrollJoiner)
   private hasNesting = memoize(hasNesting)
@@ -84,19 +85,19 @@ export default class ResourceTimelineView extends View {
       resourceAreaResizerEls,
       timeAreaHeadEl,
       timeAreaBodyEl
-    } = this.renderSkeleton(true, { type: props.viewSpec.type })
+    } = this.renderSkeleton({ type: props.viewSpec.type })
 
     let splitProps = this.resourceSplitter.splitProps(props)
     let hasResourceBusinessHours = this.hasResourceBusinessHours(props.resourceStore)
 
-    let spreadsheet = this.renderSpreadsheet(true, {
+    let spreadsheet = this.renderSpreadsheet({
       headerContainerEl: resourceAreaHeadEl,
       bodyContainerEl: resourceAreaBodyEl,
       superHeaderText: this.superHeaderText,
       colSpecs: this.colSpecs
     })
 
-    let timeAxis = this.renderTimeAxis(true, {
+    let timeAxis = this.renderTimeAxis({
       headerContainerEl: timeAreaHeadEl,
       bodyContainerEl: timeAreaBodyEl,
       dateProfile: props.dateProfile,
@@ -107,7 +108,7 @@ export default class ResourceTimelineView extends View {
     let spreadsheetBodyScroller = spreadsheet.layout.bodyScroller
 
     // for all-resource bg events / selections / business-hours
-    let bgLane = this.renderBgLane(true, {
+    let bgLane = this.renderBgLane({
       ...splitProps[''],
       dateProfile: props.dateProfile,
       nextDayThreshold: context.nextDayThreshold,
@@ -118,7 +119,7 @@ export default class ResourceTimelineView extends View {
       tDateProfile
     })
 
-    let timeAxisTableWrapRes = this.renderTimeAxisTableWrap(timeAxisBodyScroller.enhancedScroller.canvas.contentEl)
+    let timeAxisTableWrapRes = this.renderTimeAxisTableWrap({ parentEl: timeAxisBodyScroller.enhancedScroller.canvas.contentEl })
 
     this.rowIdToIndex = this.buildRowIdToIndex(rowNodes)
 
@@ -133,8 +134,8 @@ export default class ResourceTimelineView extends View {
       splitProps
     )
 
-    this.spreadsheetRows = this.renderSpreadsheetRows(spreadsheet.bodyTbody, spreadsheetRowList)
-    this.timeAxisRows = this.renderTimeAxisRows(timeAxisTableWrapRes.tbodyEl, timeAxisRowList)
+    this.spreadsheetRows = this.renderSpreadsheetRows({ parentEl: spreadsheet.bodyTbody }, spreadsheetRowList) as any
+    this.timeAxisRows = this.renderTimeAxisRows({ parentEl: timeAxisTableWrapRes.tbodyEl }, timeAxisRowList) as any
 
     this.spreadsheet = spreadsheet
     this.timeAxis = timeAxis
@@ -142,10 +143,10 @@ export default class ResourceTimelineView extends View {
     this.rowNodes = rowNodes
 
     this.updateElHasNesting({ el: rootEl, isNesting: this.hasNesting(rowNodes) })
-    this.startNowIndicator(props.dateProfile, props.dateProfileGenerator)
-    this.startInteractive(this.timeAxis.slats.rootEl)
-    this.initResourceAreaResizing(true, { resourceAreaResizerEls })
-    this.initBodyScrollJoiner(true, { spreadsheetBodyScroller, timeAxisBodyScroller })
+    this.startNowIndicator()
+    this.registerInteractive({ timeAxisEl: timeAxis.slats.rootEl })
+    this.initResourceAreaResizing({ resourceAreaResizerEls })
+    this.initBodyScrollJoiner({ spreadsheetBodyScroller, timeAxisBodyScroller })
 
     return rootEl
   }
@@ -228,12 +229,12 @@ export default class ResourceTimelineView extends View {
   }
 
 
-  _startInteractive(props: { timeAxisEl: HTMLElement }, context: ComponentContext) {
-    context.calendar.registerInteractiveComponent(this, { el: props. timeAxisEl })
+  _registerInteractive(props: { timeAxisEl: HTMLElement }, context: ComponentContext) {
+    context.calendar.registerInteractiveComponent(this, { el: props.timeAxisEl })
   }
 
 
-  _stopInteractive(funcState: void, context: ComponentContext) {
+  _unregisterInteractive(funcState: void, context: ComponentContext) {
     context.calendar.unregisterInteractiveComponent(this)
   }
 
@@ -270,7 +271,7 @@ export default class ResourceTimelineView extends View {
 
     if (isBaseSizing || rowSizingCnt) {
       this.bodyScrollJoiner.update()
-      this.timeAxis.layout.scrollJoiner.update() // hack
+      this.timeAxis.layout.buildScrollJoiner.current.update() // hack
 
       this.rowPositions = new PositionCache(
         this.timeAxis.slats.rootEl,
@@ -367,8 +368,8 @@ export default class ResourceTimelineView extends View {
   // ------------------------------------------------------------------------------------------
 
 
-  getNowIndicatorUnit(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
-    return this.timeAxis.getNowIndicatorUnit(dateProfile, dateProfileGenerator)
+  getNowIndicatorUnit() {
+    return this.timeAxis.getNowIndicatorUnit()
   }
 
 
@@ -624,7 +625,7 @@ function renderSkeleton(props: { type: string }, context: ComponentContext) {
 }
 
 
-function renderTimeAxisTableWrap() {
+function renderTimeAxisTableWrap(funcProps: DomLocation) {
   let wrapEl = createElement('div', { className: 'fc-rows' }, '<table><tbody /></table>')
 
   return {
@@ -709,8 +710,8 @@ function buildSpreadsheetRowList(nodes: (ResourceNode | GroupNode)[], colSpecs) 
           isExpanded: node.isExpanded,
           hasChildren: (node as ResourceNode).hasChildren,
           resource: (node as ResourceNode).resource
-        } as SpreadsheetRowProps
-      }
+        }
+      } as ListRendererItem<SpreadsheetRow>
     }
   })
 }

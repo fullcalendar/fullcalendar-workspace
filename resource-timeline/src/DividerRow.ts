@@ -1,6 +1,6 @@
-import { Component, createElement } from '@fullcalendar/core'
+import { Component, createElement, DomLocation } from '@fullcalendar/core'
 
-export default class DividerRow extends Component<{}> {
+export default class DividerRow extends Component<DomLocation> {
 
   heightEl: HTMLElement
 

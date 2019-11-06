@@ -56,7 +56,8 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
     // ordering matters? for z-index?
 
     segRenderers.push(
-      this.renderBusinessHours(props.bgContainerEl, {
+      this.renderBusinessHours({
+        parentEl: props.bgContainerEl,
         type: 'businessHours',
         segs: slicedProps.businessHourSegs
       })
@@ -64,7 +65,8 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
 
     if (slicedProps.eventResize) {
       segRenderers.push(
-        this.renderHighlight(props.bgContainerEl, {
+        this.renderHighlight({
+          parentEl: props.bgContainerEl,
           type: 'highlight',
           // HACK. eventRenderer and fillRenderer both use these segs. would compete over seg.el
           segs: slicedProps.eventResize.segs.map(function(seg) {
@@ -75,7 +77,8 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
 
     } else {
       segRenderers.push(
-        this.renderHighlight(props.bgContainerEl, {
+        this.renderHighlight({
+          parentEl: props.bgContainerEl,
           type: 'highlight',
           segs: slicedProps.dateSelectionSegs
         })
@@ -83,14 +86,16 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
     }
 
     segRenderers.push(
-      this.renderBgEvents(props.bgContainerEl, {
+      this.renderBgEvents({
+        parentEl: props.bgContainerEl,
         type: 'bgEvent',
         segs: slicedProps.bgEventSegs
       })
     )
 
     segRenderers.push(
-      this.renderFgEvents(props.fgContainerEl, {
+      this.renderFgEvents({
+        parentEl: props.fgContainerEl,
         tDateProfile,
         segs: slicedProps.fgEventSegs,
         selectedInstanceId: props.eventSelection, // TODO: rename
@@ -102,7 +107,8 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
 
     if (slicedProps.eventDrag) {
       segRenderers.push(
-        this.renderMirror(props.fgContainerEl, {
+        this.renderMirror({
+          parentEl: props.fgContainerEl,
           tDateProfile,
           segs: slicedProps.eventDrag.segs,
           mirrorInfo: { isDragging: true, sourceSeg: slicedProps.eventDrag.sourceSeg }
@@ -111,7 +117,8 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
 
     } else if (slicedProps.eventResize) {
       segRenderers.push(
-        this.renderMirror(props.fgContainerEl, {
+        this.renderMirror({
+          parentEl: props.fgContainerEl,
           tDateProfile,
           segs: slicedProps.eventResize.segs,
           mirrorInfo: { isDragging: true, sourceSeg: slicedProps.eventResize.sourceSeg }
