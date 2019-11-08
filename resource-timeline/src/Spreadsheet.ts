@@ -1,4 +1,4 @@
-import { Component, ComponentContext, renderer, memoize, findElements, htmlToElement, DomLocation } from '@fullcalendar/core'
+import { Component, ComponentContext, renderer, memoize, findElements, htmlToElement } from '@fullcalendar/core'
 import { HeaderBodyLayout, StickyScroller } from '@fullcalendar/timeline'
 import SpreadsheetHeader from './SpreadsheetHeader'
 import EnhancedScroller from 'packages-premium/timeline/src/util/EnhancedScroller'
@@ -65,7 +65,7 @@ export default class Spreadsheet extends Component<SpreadsheetProps> {
   }
 
 
-  _renderBodyTable({ colTagHtml }: { colTagHtml: string } & DomLocation, context: ComponentContext) {
+  _renderBodyTable({ colTagHtml }: { colTagHtml: string }, context: ComponentContext) {
     let rootEl = htmlToElement(
       '<div class="fc-rows">' +
         '<table>' +

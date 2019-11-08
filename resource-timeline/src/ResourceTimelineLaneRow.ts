@@ -1,8 +1,8 @@
-import { Component, ComponentContext, isArraysEqual, renderer, htmlToElement, DateProfile, DateProfileGenerator, Duration, EventStore, EventUiHash, DateSpan, EventInteractionState, DomLocation } from '@fullcalendar/core'
+import { Component, ComponentContext, isArraysEqual, renderer, htmlToElement, DateProfile, DateProfileGenerator, Duration, EventStore, EventUiHash, DateSpan, EventInteractionState } from '@fullcalendar/core'
 import { TimelineLane, TimeAxis, TimelineDateProfile } from '@fullcalendar/timeline'
 import { updateTrResourceId } from './render-utils'
 
-export interface ResourceTimelineLaneRowProps extends DomLocation {
+export interface ResourceTimelineLaneRowProps {
   resourceId: string
   dateProfile: DateProfile
   dateProfileGenerator: DateProfileGenerator
@@ -69,6 +69,6 @@ export default class ResourceTimelineLaneRow extends Component<ResourceTimelineL
 
 }
 
-ResourceTimelineLaneRow.addPropEquality({
+(ResourceTimelineLaneRow as any).addPropEquality({
   rowSpans: isArraysEqual // HACK for isSizeDirty, ResourceTimelineView::renderRows
 })

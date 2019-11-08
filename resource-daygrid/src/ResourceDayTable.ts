@@ -1,9 +1,9 @@
-import { mapHash, Hit, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration, renderer, DomLocation } from '@fullcalendar/core'
+import { mapHash, Hit, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration, renderer } from '@fullcalendar/core'
 import { DayTableSlicer, Table, TableSeg } from '@fullcalendar/daygrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
 import { TableRenderProps } from 'packages/daygrid/src/Table'
 
-export interface ResourceDayTableProps extends DomLocation {
+export interface ResourceDayTableProps {
   dateProfile: DateProfile | null
   resourceDayTableModel: AbstractResourceDayTableModel
   businessHours: EventStore

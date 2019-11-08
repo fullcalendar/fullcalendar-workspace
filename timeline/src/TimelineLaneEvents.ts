@@ -1,12 +1,12 @@
 import {
   FgEventRenderer, htmlEscape, cssToStr, Seg, applyStyle, computeHeightAndMargins, applyStyleProp, createElement,
-  computeEventDraggable, computeEventStartResizable, computeEventEndResizable, BaseFgEventRendererProps, sortEventSegs, renderer, ComponentContext, DomLocation
+  computeEventDraggable, computeEventStartResizable, computeEventEndResizable, BaseFgEventRendererProps, sortEventSegs, renderer, ComponentContext
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { TimeAxis } from './main'
 import { attachSegs, detachSegs } from './TimelineLane'
 
-export type TimelineLaneEventsProps = DomLocation & BaseFgEventRendererProps & {
+export type TimelineLaneEventsProps = BaseFgEventRendererProps & {
   tDateProfile: TimelineDateProfile
 }
 

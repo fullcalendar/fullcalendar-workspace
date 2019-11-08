@@ -1,6 +1,6 @@
-import { ElementDragging, createElement, htmlEscape, Component, ComponentContext, PointerDragEvent, EmitterMixin, renderer, findElements, DomLocation } from '@fullcalendar/core'
+import { ElementDragging, createElement, htmlEscape, Component, ComponentContext, PointerDragEvent, EmitterMixin, renderer, findElements } from '@fullcalendar/core'
 
-export interface SpreadsheetHeaderProps extends DomLocation {
+export interface SpreadsheetHeaderProps {
   superHeaderText: string
   colSpecs: any
   colTagHtml: string

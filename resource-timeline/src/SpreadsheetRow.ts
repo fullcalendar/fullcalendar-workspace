@@ -1,8 +1,8 @@
-import { htmlToElement, htmlEscape, createElement, Component, renderer, ComponentContext, DomLocation } from '@fullcalendar/core'
+import { htmlToElement, htmlEscape, createElement, Component, renderer, ComponentContext } from '@fullcalendar/core'
 import { Resource, ResourceApi, buildResourceFields, buildResourceTextFunc } from '@fullcalendar/resource-common'
 import { updateExpanderEl, clearExpanderEl, updateTrResourceId } from './render-utils'
 
-export interface SpreadsheetRowProps extends DomLocation {
+export interface SpreadsheetRowProps {
   colSpecs: any
   rowSpans: number[]
   depth: number

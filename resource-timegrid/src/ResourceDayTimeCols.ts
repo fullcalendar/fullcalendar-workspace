@@ -1,8 +1,8 @@
-import { renderer, mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit, DomLocation } from '@fullcalendar/core'
+import { renderer, mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit } from '@fullcalendar/core'
 import { DayTimeColsSlicer, TimeCols, TimeColsRenderProps, buildDayRanges, TimeColsSeg } from '@fullcalendar/timegrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
 
-export interface ResourceTimeGridProps extends DomLocation {
+export interface ResourceTimeGridProps {
   dateProfile: DateProfile | null
   resourceDayTableModel: AbstractResourceDayTableModel
   businessHours: EventStore

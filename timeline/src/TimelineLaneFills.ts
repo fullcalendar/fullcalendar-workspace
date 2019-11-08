@@ -1,9 +1,9 @@
-import { FillRenderer, createElement, applyStyle, Seg, renderer, BaseFillRendererProps, DomLocation } from '@fullcalendar/core'
+import { FillRenderer, createElement, applyStyle, Seg, renderer, BaseFillRendererProps } from '@fullcalendar/core'
 import TimeAxis from './TimeAxis'
 import { attachSegs, detachSegs } from './TimelineLane'
 
 
-export type TimelineLaneFillRendererProps = BaseFillRendererProps & DomLocation
+export type TimelineLaneFillRendererProps = BaseFillRendererProps
 
 
 export default class TimelineLaneFillRenderer extends FillRenderer<TimelineLaneFillRendererProps> {
@@ -49,7 +49,7 @@ export default class TimelineLaneFillRenderer extends FillRenderer<TimelineLaneF
 }
 
 
-function renderContainer({ type }: { type: string } & DomLocation) {
+function renderContainer({ type }: { type: string }) {
   let className = type === 'businessHours'
     ? 'bgevent'
     : type.toLowerCase()
