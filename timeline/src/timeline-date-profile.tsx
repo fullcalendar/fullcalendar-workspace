@@ -1,4 +1,5 @@
-import { config, buildGotoAnchorHtml, computeVisibleDayRange, Duration, DateProfile, isSingleDay, addDays, wholeDivideDurations, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, htmlEscape, DateProfileGenerator } from '@fullcalendar/core'
+import { config, computeVisibleDayRange, Duration, DateProfile, isSingleDay, addDays, wholeDivideDurations, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator, GotoAnchor } from '@fullcalendar/core'
+import { VNode, h } from 'preact'
 
 export interface TimelineDateProfile {
   labelInterval: Duration
@@ -22,7 +23,7 @@ export interface TimelineDateProfile {
 
 export interface TimelineHeaderCell {
   text: string
-  spanHtml: string
+  spanNode: VNode
   date: DateMarker
   colspan: number
   isWeekStart: boolean
@@ -563,7 +564,7 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, allO
       if (isSuperRow) {
         let text = dateEnv.format(date, format)
         if (!leadingCell || (leadingCell.text !== text)) {
-          newCell = buildCellObject(date, text, rowUnits[row], allOptions, dateEnv)
+          newCell = buildCellObject(date, text, rowUnits[row], allOptions)
         } else {
           leadingCell.colspan += 1
         }
@@ -577,7 +578,7 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, allO
           ))
         ) {
           let text = dateEnv.format(date, format)
-          newCell = buildCellObject(date, text, rowUnits[row], allOptions, dateEnv)
+          newCell = buildCellObject(date, text, rowUnits[row], allOptions)
         } else {
           leadingCell.colspan += 1
         }
@@ -594,19 +595,20 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, allO
 }
 
 
-function buildCellObject(date: DateMarker, text, rowUnit, allOptions: any, dateEnv: DateEnv): TimelineHeaderCell {
-  const spanHtml = buildGotoAnchorHtml(
-    allOptions,
-    dateEnv,
-    {
-      date,
-      type: rowUnit,
-      forceOff: !rowUnit
-    },
-    {
-      'class': 'fc-cell-text'
-    },
-    htmlEscape(text)
+function buildCellObject(date: DateMarker, text, rowUnit, allOptions: any): TimelineHeaderCell {
+  let spanNode = (
+    <GotoAnchor
+      navLinks={allOptions.navLinks}
+      gotoOptions={{
+        date,
+        type: rowUnit,
+        forceOff: !rowUnit
+      }}
+      extraAttrs={{
+        'class': 'fc-cell-text'
+      }}
+    >{text}</GotoAnchor>
   )
-  return { text, spanHtml, date, colspan: 1, isWeekStart: false }
+
+  return { text, spanNode, date, colspan: 1, isWeekStart: false }
 }

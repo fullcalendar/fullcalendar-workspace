@@ -1,7 +1,7 @@
-import { mapHash, Hit, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration, renderer } from '@fullcalendar/core'
+import { mapHash, Hit, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration } from '@fullcalendar/core'
 import { DayTableSlicer, Table, TableSeg } from '@fullcalendar/daygrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
-import { TableRenderProps } from 'packages/daygrid/src/Table'
+import { h, createRef, VNode } from 'preact'
 
 export interface ResourceDayTableProps {
   dateProfile: DateProfile | null
@@ -15,22 +15,26 @@ export interface ResourceDayTableProps {
   eventResize: EventInteractionState | null
   isRigid: boolean
   nextDayThreshold: Duration
-  renderProps: TableRenderProps
+  renderNumberIntro: (row: number, cells: any) => VNode[]
+  renderBgIntro: () => VNode[]
+  renderIntro: () => VNode[]
+  colWeekNumbersVisible: boolean // week numbers render in own column? (caller does HTML via intro)
+  cellWeekNumbersVisible: boolean // display week numbers in day cell?
 }
 
 export default class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
 
   allowAcrossResources = false
-  private renderTable = renderer(Table)
-  private registerInteractive = renderer(this._registerInteractive, this._unregisterInteractive)
 
   private splitter = new VResourceSplitter()
   private slicers: { [resourceId: string]: DayTableSlicer } = {}
   private joiner = new ResourceDayTableJoiner()
-  table: Table
+  private tableRef = createRef<Table>()
+
+  get table() { return this.tableRef.current }
 
 
-  render(props: ResourceDayTableProps, context: ComponentContext) {
+  render(props: ResourceDayTableProps, state: {}, context: ComponentContext) {
     let { dateProfile, resourceDayTableModel, nextDayThreshold } = props
 
     let splitProps = this.splitter.splitProps(props)
@@ -49,37 +53,39 @@ export default class ResourceDayTable extends DateComponent<ResourceDayTableProp
       )
     })
 
-    let table = this.renderTable({
-      ...this.joiner.joinProps(slicedProps, resourceDayTableModel),
-      dateProfile,
-      cells: resourceDayTableModel.cells,
-      isRigid: props.isRigid,
-      renderProps: props.renderProps
-    })
-
-    this.registerInteractive({
-      el: table.rootEl
-    })
-
-    this.table = table
     this.allowAcrossResources = resourceDayTableModel.dayTableModel.colCnt === 1 // hack for EventResizing
 
-    return table
+    return (
+      <Table
+        ref={this.tableRef}
+        rootElRef={this.handleRootEl}
+        {...this.joiner.joinProps(slicedProps, resourceDayTableModel)}
+        dateProfile={dateProfile}
+        cells={resourceDayTableModel.cells}
+        isRigid={props.isRigid}
+        renderNumberIntro={props.renderNumberIntro}
+        renderBgIntro={props.renderBgIntro}
+        renderIntro={props.renderIntro}
+        colWeekNumbersVisible={props.colWeekNumbersVisible}
+        cellWeekNumbersVisible={props.cellWeekNumbersVisible}
+      />
+    )
+  }
+
+
+  handleRootEl = (rootEl: HTMLElement | null) => {
+    let { calendar } = this.context
+
+    if (rootEl) {
+      calendar.registerInteractiveComponent(this, { el: rootEl })
+    } else {
+      calendar.unregisterInteractiveComponent(this)
+    }
   }
 
 
   updateSize(isResize: boolean) {
     this.table.updateSize(isResize)
-  }
-
-
-  _registerInteractive({ el }: { el: HTMLElement }, context: ComponentContext) {
-    context.calendar.registerInteractiveComponent(this, { el })
-  }
-
-
-  _unregisterInteractive(funcState: void, context: ComponentContext) {
-    context.calendar.unregisterInteractiveComponent(this)
   }
 
 

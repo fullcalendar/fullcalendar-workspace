@@ -1,8 +1,8 @@
-import { Duration, EventStore, EventUiHash, DateMarker, DateSpan, EventInteractionState, DateComponent, ComponentContext, Seg, DateRange, intersectRanges, addMs, DateProfile, Slicer, DateProfileGenerator, DateEnv, removeElement, renderer } from '@fullcalendar/core'
+import { Duration, EventStore, EventUiHash, DateMarker, DateSpan, EventInteractionState, SubRenderer, ComponentContext, Seg, DateRange, intersectRanges, addMs, DateProfile, Slicer, DateProfileGenerator, DateEnv, removeElement, subrenderer } from '@fullcalendar/core'
 import { normalizeRange, isValidDate, TimelineDateProfile } from './timeline-date-profile'
 import TimelineLaneEvents from './TimelineLaneEvents'
 import TimelineLaneFills from './TimelineLaneFills'
-import TimeAxis, { computeDateSnapCoverage } from './TimeAxis'
+import TimelineSlats, { computeDateSnapCoverage } from './TimelineSlats'
 
 export interface TimelineLaneSeg extends Seg {
   start: DateMarker
@@ -10,7 +10,7 @@ export interface TimelineLaneSeg extends Seg {
 }
 
 export interface TimelineLaneProps {
-  fgContainerEl: HTMLElement | null
+  fgContainerEl: HTMLElement | null // there might not be an fc container
   bgContainerEl: HTMLElement
   dateProfile: DateProfile
   dateProfileGenerator: DateProfileGenerator
@@ -25,13 +25,13 @@ export interface TimelineLaneProps {
   eventResize: EventInteractionState | null
 }
 
-export default class TimelineLane extends DateComponent<TimelineLaneProps> {
+export default class TimelineLane extends SubRenderer<TimelineLaneProps> {
 
-  private renderFgEvents = renderer(TimelineLaneEvents)
-  private renderMirror = renderer(TimelineLaneEvents)
-  private renderBgEvents = renderer(TimelineLaneFills)
-  private renderHighlight = renderer(TimelineLaneFills)
-  private renderBusinessHours = renderer(TimelineLaneFills)
+  private renderFgEvents = subrenderer(TimelineLaneEvents)
+  private renderMirror = subrenderer(TimelineLaneEvents)
+  private renderBgEvents = subrenderer(TimelineLaneFills)
+  private renderHighlight = subrenderer(TimelineLaneFills)
+  private renderBusinessHours = subrenderer(TimelineLaneFills)
 
   private segRenderers: (TimelineLaneFills | TimelineLaneEvents)[] = []
   private slicer = new TimelineLaneSlicer()
@@ -57,7 +57,7 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
 
     segRenderers.push(
       this.renderBusinessHours({
-        parentEl: props.bgContainerEl,
+        containerParentEl: props.bgContainerEl,
         type: 'businessHours',
         segs: slicedProps.businessHourSegs
       })
@@ -66,7 +66,7 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
     if (slicedProps.eventResize) {
       segRenderers.push(
         this.renderHighlight({
-          parentEl: props.bgContainerEl,
+          containerParentEl: props.bgContainerEl,
           type: 'highlight',
           // HACK. eventRenderer and fillRenderer both use these segs. would compete over seg.el
           segs: slicedProps.eventResize.segs.map(function(seg) {
@@ -78,7 +78,7 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
     } else {
       segRenderers.push(
         this.renderHighlight({
-          parentEl: props.bgContainerEl,
+          containerParentEl: props.bgContainerEl,
           type: 'highlight',
           segs: slicedProps.dateSelectionSegs
         })
@@ -87,38 +87,42 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
 
     segRenderers.push(
       this.renderBgEvents({
-        parentEl: props.bgContainerEl,
+        containerParentEl: props.bgContainerEl,
         type: 'bgEvent',
         segs: slicedProps.bgEventSegs
       })
     )
 
-    segRenderers.push(
-      this.renderFgEvents({
-        parentEl: props.fgContainerEl,
-        tDateProfile,
-        segs: slicedProps.fgEventSegs,
-        selectedInstanceId: props.eventSelection, // TODO: rename
-        hiddenInstances: // TODO: more convenient
-          (slicedProps.eventDrag ? slicedProps.eventDrag.affectedInstances : null) ||
-          (slicedProps.eventResize ? slicedProps.eventResize.affectedInstances : null)
-      })
-    )
+    if (props.fgContainerEl) {
+      segRenderers.push(
+        this.renderFgEvents({
+          containerParentEl: props.fgContainerEl,
+          tDateProfile,
+          segs: slicedProps.fgEventSegs,
+          selectedInstanceId: props.eventSelection, // TODO: rename
+          hiddenInstances: // TODO: more convenient
+            (slicedProps.eventDrag ? slicedProps.eventDrag.affectedInstances : null) ||
+            (slicedProps.eventResize ? slicedProps.eventResize.affectedInstances : null)
+        })
+      )
+    } else {
+      this.renderFgEvents(false)
+    }
 
-    if (slicedProps.eventDrag) {
+    if (slicedProps.eventDrag && props.fgContainerEl) {
       segRenderers.push(
         this.renderMirror({
-          parentEl: props.fgContainerEl,
+          containerParentEl: props.fgContainerEl,
           tDateProfile,
           segs: slicedProps.eventDrag.segs,
           mirrorInfo: { isDragging: true, sourceSeg: slicedProps.eventDrag.sourceSeg }
         })
       )
 
-    } else if (slicedProps.eventResize) {
+    } else if (slicedProps.eventResize && props.fgContainerEl) {
       segRenderers.push(
         this.renderMirror({
-          parentEl: props.fgContainerEl,
+          containerParentEl: props.fgContainerEl,
           tDateProfile,
           segs: slicedProps.eventResize.segs,
           mirrorInfo: { isDragging: true, sourceSeg: slicedProps.eventResize.sourceSeg }
@@ -133,14 +137,16 @@ export default class TimelineLane extends DateComponent<TimelineLaneProps> {
   }
 
 
-  updateSize(isResize: boolean, timeAxis: TimeAxis) {
-
+  computeSizes(isResize: boolean, slats: TimelineSlats) {
     for (let segRenderer of this.segRenderers) {
-      segRenderer.computeSizes(isResize, timeAxis)
+      segRenderer.computeSizes(isResize, slats)
     }
+  }
 
+
+  assignSizes(isResize: boolean, slats: TimelineSlats) {
     for (let segRenderer of this.segRenderers) {
-      segRenderer.assignSizes(isResize, timeAxis)
+      segRenderer.assignSizes(isResize, slats)
     }
   }
 

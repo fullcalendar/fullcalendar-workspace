@@ -1,7 +1,15 @@
-import { Scroller, ScrollerProps, EmitterInterface, EmitterMixin, removeElement, htmlToElement, debounce, preventDefault, Component, renderer } from '@fullcalendar/core'
-import ScrollerCanvas from './ScrollerCanvas'
+import { Scroller, EmitterInterface, EmitterMixin, removeElement, htmlToElement, preventDefault, BaseComponent, subrenderer, DelayedRunner } from '@fullcalendar/core'
+import StickyScrolling from './StickyScrolling'
+import { h, createRef, ComponentChildren } from 'preact'
 
-export default class EnhancedScroller extends Component<ScrollerProps> {
+export interface EnhancedScrollerProps {
+  overflowX: string
+  overflowY: string
+  isVerticalStickyScrolling?: boolean
+  children?: ComponentChildren
+}
+
+export default class EnhancedScroller extends BaseComponent<EnhancedScrollerProps> {
 
   on: EmitterInterface['on']
   one: EmitterInterface['one']
@@ -10,36 +18,54 @@ export default class EnhancedScroller extends Component<ScrollerProps> {
   triggerWith: EmitterInterface['triggerWith']
   hasHandlers: EmitterInterface['hasHandlers']
 
-  scroller: Scroller
-  canvas: ScrollerCanvas // an optional ScrollerCanvas
-  isScrolling = false
-  isTouching = false // user currently has finger down?
-  isMoving = false // whether a scroll event has happened recently
-  isTouchScrollEnabled = false
-  preventTouchScrollHandler: any
-  requestMovingEnd = debounce(this._reportMovingEnd, 500)
-  bindHandlers = renderer(this._bindHandlers, this._unbindHandlers)
-  renderScroller = renderer(Scroller)
-  renderCanvas = renderer(ScrollerCanvas)
+  private isScrolling = false
+  private isTouching = false // user currently has finger down?
+  private isMoving = false // whether a scroll event has happened recently
+  private isTouchScrollEnabled = false
+  private preventTouchScrollHandler: any
+  private moveEndReporter = new DelayedRunner(this._reportMovingEnd.bind(this))
+  private scrollerRef = createRef<Scroller>()
+  private bindHandlers = subrenderer(this._bindHandlers, this._unbindHandlers)
+  private getStickyScrolling = subrenderer(StickyScrolling)
+
+  get scroller() { return this.scrollerRef.current }
+  get rootEl() { return this.scroller.rootEl }
 
 
-  render(props: ScrollerProps) {
-    let scroller = this.renderScroller(props)
-    let canvas = this.renderCanvas({
-      parentEl: scroller.el
-    })
-
-    this.bindHandlers({ el: scroller.rootEl })
-
-    this.scroller = scroller
-    this.canvas = canvas
-
-    return scroller
+  render(props: EnhancedScrollerProps) {
+    return (
+      <Scroller {...props} ref={this.scrollerRef}>
+        {props.children}
+      </Scroller>
+    )
   }
 
 
-  getEl() {
-    return this.scroller.rootEl
+  componentDidMount() {
+    this.subrender()
+  }
+
+
+  componentDidUpdate() {
+    this.subrender()
+  }
+
+
+  componentWillMount() {
+    this.subrenderDestroy()
+  }
+
+
+  subrender() {
+    this.bindHandlers({ el: this.rootEl })
+  }
+
+
+  updateStickyScrolling() {
+    this.getStickyScrolling({
+      enhancedScroller: this,
+      isVertical: this.props.isVerticalStickyScrolling || false
+    }).updateSize()
   }
 
 
@@ -66,14 +92,14 @@ export default class EnhancedScroller extends Component<ScrollerProps> {
 
   bindPreventTouchScroll() {
     if (!this.preventTouchScrollHandler) {
-      this.getEl().addEventListener('touchmove', (this.preventTouchScrollHandler = preventDefault))
+      this.rootEl.addEventListener('touchmove', (this.preventTouchScrollHandler = preventDefault))
     }
   }
 
 
   unbindPreventTouchScroll() {
     if (this.preventTouchScrollHandler) {
-      this.getEl().removeEventListener('touchmove', this.preventTouchScrollHandler)
+      this.rootEl.removeEventListener('touchmove', this.preventTouchScrollHandler)
       this.preventTouchScrollHandler = null
     }
   }
@@ -109,7 +135,7 @@ export default class EnhancedScroller extends Component<ScrollerProps> {
     }
     this.trigger('scroll')
     this.isMoving = true
-    this.requestMovingEnd()
+    this.moveEndReporter.request(500)
   }
 
 
@@ -178,7 +204,7 @@ export default class EnhancedScroller extends Component<ScrollerProps> {
   If RTL, and scrolled to the left, returns NEGATIVE value (like Firefox)
   */
   getScrollLeft() {
-    let el = this.getEl()
+    let el = this.rootEl
     let direction = window.getComputedStyle(el).direction
     let val = el.scrollLeft
 
@@ -200,7 +226,7 @@ export default class EnhancedScroller extends Component<ScrollerProps> {
   Accepts a NEGATIVE value for when scrolled in RTL
   */
   setScrollLeft(val) {
-    let el = this.getEl()
+    let el = this.rootEl
     const direction = window.getComputedStyle(el).direction
 
     if (direction === 'rtl') {
@@ -222,7 +248,7 @@ export default class EnhancedScroller extends Component<ScrollerProps> {
   Always positive.
   */
   getScrollFromLeft() {
-    let el = this.getEl()
+    let el = this.rootEl
     let direction = window.getComputedStyle(el).direction
     let val = el.scrollLeft
 

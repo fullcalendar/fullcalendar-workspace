@@ -1,4 +1,4 @@
-import { translateRect, Rect, applyStyle, Point, htmlToElement } from '@fullcalendar/core'
+import { translateRect, Rect, applyStyle, Point, htmlToElement, SubRenderer, ComponentContext, subrenderer } from '@fullcalendar/core'
 import EnhancedScroller from './EnhancedScroller'
 
 interface ElementGeom {
@@ -15,40 +15,57 @@ const IS_MS_EDGE = /Edge/.test(navigator.userAgent)
 const IS_SAFARI = STICKY_PROP_VAL === '-webkit-sticky' // good b/c doesn't confuse chrome
 const STICKY_CLASSNAME = 'fc-sticky'
 
+export interface StickyScrollingProps {
+  enhancedScroller: EnhancedScroller
+  isVertical: boolean
+}
+
 /*
 useful beyond the native position:sticky for these reasons:
 - support in IE11
 - nice centering support
 */
-export default class StickyScroller { // more of a wrapper around an existing scroller than a component
+export default class StickyScrolling extends SubRenderer<StickyScrollingProps> { // more of a wrapper around an existing scroller than a component
 
-  enhancedScroller: EnhancedScroller
+  updateHandlers = subrenderer(this._initHandlers, this._destroyHandlers)
   usingRelative: boolean | null = null
 
-  constructor(enhancedScroller: EnhancedScroller, isRtl: boolean, isVertical: boolean) {
-    this.enhancedScroller = enhancedScroller
 
+  render(props: StickyScrollingProps) {
+    this.updateHandlers({
+      enhancedScroller: props.enhancedScroller,
+      isVertical: props.isVertical
+    })
+  }
+
+
+  _initHandlers(props: { enhancedScroller: EnhancedScroller, isVertical: boolean }, context: ComponentContext) {
     this.usingRelative =
       !STICKY_PROP_VAL || // IE11
-      (IS_MS_EDGE && isRtl) || // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/18883305/
-      ((IS_MS_EDGE || IS_SAFARI) && isVertical) // because doesn't work with rowspan in tables, our only vertial use
+      (IS_MS_EDGE && context.isRtl) || // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/18883305/
+      ((IS_MS_EDGE || IS_SAFARI) && props.isVertical) // because doesn't work with rowspan in tables, our only vertial use
 
     if (this.usingRelative) {
-      enhancedScroller.on('scrollEnd', this.updateSize)
+      props.enhancedScroller.on('scrollEnd', this.updateSize)
     }
+
+    return props.enhancedScroller
   }
 
-  destroy() {
-    this.enhancedScroller.off('scrollEnd', this.updateSize)
+
+  _destroyHandlers(enhancedScroller: EnhancedScroller) {
+    enhancedScroller.off('scrollEnd', this.updateSize)
   }
+
 
   /*
   known bug: called twice on init. problem when mixing with ScrollJoiner
   */
   updateSize = () => {
-    let els = Array.prototype.slice.call(this.enhancedScroller.canvas.el.querySelectorAll('.' + STICKY_CLASSNAME))
+    let { enhancedScroller } = this.props
+    let els = Array.prototype.slice.call(enhancedScroller.rootEl.querySelectorAll('.' + STICKY_CLASSNAME))
     let elGeoms = this.queryElGeoms(els)
-    let viewportWidth = this.enhancedScroller.getEl().clientWidth
+    let viewportWidth = enhancedScroller.rootEl.clientWidth
 
     if (this.usingRelative) {
       let elDestinations = this.computeElDestinations(elGeoms, viewportWidth) // read before prepPositioning
@@ -59,7 +76,8 @@ export default class StickyScroller { // more of a wrapper around an existing sc
   }
 
   queryElGeoms(els: HTMLElement[]): ElementGeom[] {
-    let canvasOrigin = this.enhancedScroller.canvas.el.getBoundingClientRect()
+    let { enhancedScroller } = this.props
+    let canvasOrigin = (enhancedScroller.rootEl.firstChild as HTMLElement).getBoundingClientRect() // expects a root child!
     let elGeoms: ElementGeom[] = []
 
     for (let el of els) {
@@ -102,8 +120,9 @@ export default class StickyScroller { // more of a wrapper around an existing sc
   }
 
   computeElDestinations(elGeoms: ElementGeom[], viewportWidth: number): Point[] {
-    let viewportLeft = this.enhancedScroller.getScrollFromLeft()
-    let viewportTop = this.enhancedScroller.scroller.controller.getScrollTop()
+    let { enhancedScroller } = this.props
+    let viewportLeft = enhancedScroller.getScrollFromLeft()
+    let viewportTop = enhancedScroller.scroller.controller.getScrollTop()
     let viewportRight = viewportLeft + viewportWidth
 
     return elGeoms.map(function(elGeom) {

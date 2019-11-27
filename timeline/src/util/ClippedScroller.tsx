@@ -1,25 +1,39 @@
-import { createElement, computeEdges, applyStyle, ScrollbarWidths, ScrollerProps, Component, renderer } from '@fullcalendar/core'
+import { computeEdges, applyStyle, ScrollbarWidths, BaseComponent } from '@fullcalendar/core'
 import EnhancedScroller from './EnhancedScroller'
+import { h, createRef, ComponentChildren } from 'preact'
+import ScrollerCanvas from './ScrollerCanvas'
+
+
+export interface ClippedScrollerProps {
+  overflowX: string
+  overflowY: string
+  isVerticalStickyScrolling?: boolean
+  fgContent?: ComponentChildren
+  bgContent?: ComponentChildren
+}
 
 /*
 A Scroller, but with a wrapping div that allows "clipping" away of native scrollbars,
 giving the appearance that there are no scrollbars.
 */
-export default class ClippedScroller extends Component<ScrollerProps> {
+export default class ClippedScroller extends BaseComponent<ClippedScrollerProps> {
 
-  clipEl = createElement('div', { className: 'fc-scroller-clip' })
-  renderEnhancedScroller = renderer(EnhancedScroller)
-  enhancedScroller: EnhancedScroller
+  private isHScrollbarsClipped: boolean
+  private isVScrollbarsClipped: boolean
+  private clipElRef = createRef<HTMLDivElement>()
+  private enhancedScrollerRef = createRef<EnhancedScroller>()
+  private canvasRef = createRef<ScrollerCanvas>()
 
-  isHScrollbarsClipped: boolean
-  isVScrollbarsClipped: boolean
+  get clipEl() { return this.clipElRef.current }
+  get enhancedScroller() { return this.enhancedScrollerRef.current }
+  get canvas() { return this.canvasRef.current }
 
 
   /*
   Received overflows can be set to 'clipped', meaning scrollbars shouldn't be visible
   to the user, but the area should still scroll.
   */
-  render(props: ScrollerProps) {
+  render(props: ClippedScrollerProps) {
     let overflowX = props.overflowX
     let overflowY = props.overflowY
 
@@ -36,19 +50,27 @@ export default class ClippedScroller extends Component<ScrollerProps> {
       this.isVScrollbarsClipped = true
     }
 
-    this.enhancedScroller = this.renderEnhancedScroller({
-      parentEl: this.clipEl,
-      overflowX,
-      overflowY
-    })
-
-    return this.clipEl
+    return (
+      <div class='fc-scroller-clip' ref={this.clipElRef}>
+        <EnhancedScroller
+          ref={this.enhancedScrollerRef}
+          overflowX={overflowX}
+          overflowY={overflowY}
+        >
+          <ScrollerCanvas
+            ref={this.canvasRef}
+            fgContent={props.fgContent}
+            bgContent={props.bgContent}
+          />
+        </EnhancedScroller>
+      </div>
+    )
   }
 
 
   updateSize() {
-    let enhancedScroller = this.renderEnhancedScroller.current
-    let scrollEl = enhancedScroller.getEl()
+    let { enhancedScroller } = this
+    let scrollEl = enhancedScroller.rootEl
     let edges = computeEdges(scrollEl)
     let cssProps = { marginLeft: 0, marginRight: 0, marginTop: 0, marginBottom: 0 }
 
@@ -82,16 +104,14 @@ export default class ClippedScroller extends Component<ScrollerProps> {
   }
 
   setHeight(height: number | string) {
-    let enhancedScroller = this.renderEnhancedScroller.current
-    enhancedScroller.scroller.setHeight(height)
+    this.enhancedScroller.scroller.setHeight(height)
   }
 
   /*
   Accounts for 'clipped' scrollbars
   */
   getScrollbarWidths(): ScrollbarWidths {
-    let enhancedScroller = this.renderEnhancedScroller.current
-    let widths = enhancedScroller.scroller.getScrollbarWidths()
+    let widths = this.enhancedScroller.scroller.getScrollbarWidths()
 
     if (this.isVScrollbarsClipped) {
       widths.left = 0

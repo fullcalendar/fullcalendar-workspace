@@ -1,8 +1,10 @@
-import { renderer, mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit } from '@fullcalendar/core'
-import { DayTimeColsSlicer, TimeCols, TimeColsRenderProps, buildDayRanges, TimeColsSeg } from '@fullcalendar/timegrid'
+import { mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit } from '@fullcalendar/core'
+import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg } from '@fullcalendar/timegrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
+import { h, createRef, VNode } from 'preact'
 
-export interface ResourceTimeGridProps {
+
+export interface ResourceDayTimeColsProps {
   dateProfile: DateProfile | null
   resourceDayTableModel: AbstractResourceDayTableModel
   businessHours: EventStore
@@ -12,25 +14,26 @@ export interface ResourceTimeGridProps {
   eventSelection: string
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
-  renderProps: TimeColsRenderProps
+  renderBgIntro: () => VNode[]
+  renderIntro: () => VNode[]
 }
 
-export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProps> {
+
+export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps> {
 
   allowAcrossResources = false
 
   private buildDayRanges = memoize(buildDayRanges)
-  private registerInteractive = renderer(this._registerInteractive, this._unregisterInteractive)
-  private renderTimeCols = renderer(TimeCols)
-
   private dayRanges: DateRange[] // for renderNowIndicator
   private splitter = new VResourceSplitter()
   private slicers: { [resourceId: string]: DayTimeColsSlicer } = {}
-  private joiner = new ResourceTimeGridJoiner()
-  timeCols: TimeCols
+  private joiner = new ResourceDayTimeColsJoiner()
+  private timeColsRef = createRef<TimeCols>()
+
+  get timeCols() { return this.timeColsRef.current }
 
 
-  render(props: ResourceTimeGridProps, context: ComponentContext) {
+  render(props: ResourceDayTimeColsProps, state: {}, context: ComponentContext) {
     let { dateEnv } = context
     let { dateProfile, resourceDayTableModel } = props
 
@@ -53,28 +56,28 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
 
     this.allowAcrossResources = dayRanges.length === 1
 
-    let timeCols = this.renderTimeCols({
-      ...this.joiner.joinProps(slicedProps, resourceDayTableModel),
-      dateProfile,
-      cells: resourceDayTableModel.cells[0],
-      renderProps: props.renderProps
-    })
-
-    this.registerInteractive({ el: timeCols.rootEl })
-
-    this.timeCols = timeCols
-
-    return timeCols
+    return (
+      <TimeCols
+        ref={this.timeColsRef}
+        rootElRef={this.handleRootEl}
+        {...this.joiner.joinProps(slicedProps, resourceDayTableModel)}
+        dateProfile={dateProfile}
+        cells={resourceDayTableModel.cells[0]}
+        renderBgIntro={props.renderBgIntro}
+        renderIntro={props.renderIntro}
+      />
+    )
   }
 
 
-  _registerInteractive({ el }: { el: HTMLElement }, context: ComponentContext) {
-    context.calendar.registerInteractiveComponent(this, { el })
-  }
+  handleRootEl = (rootEl: HTMLElement | null) => {
+    let { calendar } = this.context
 
-
-  _unregisterInteractive(funcProps: void, context: ComponentContext) {
-    context.calendar.unregisterInteractiveComponent(this)
+    if (rootEl) {
+      calendar.registerInteractiveComponent(this, { el: rootEl })
+    } else {
+      calendar.unregisterInteractiveComponent(this)
+    }
   }
 
 
@@ -135,7 +138,7 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
 }
 
 
-class ResourceTimeGridJoiner extends VResourceJoiner<TimeColsSeg> {
+class ResourceDayTimeColsJoiner extends VResourceJoiner<TimeColsSeg> {
 
   transformSeg(seg: TimeColsSeg, resourceDayTable: AbstractResourceDayTableModel, resourceI: number) {
     return [

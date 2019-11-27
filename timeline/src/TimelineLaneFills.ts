@@ -1,36 +1,38 @@
-import { FillRenderer, createElement, applyStyle, Seg, renderer, BaseFillRendererProps } from '@fullcalendar/core'
-import TimeAxis from './TimeAxis'
+import { FillRenderer, applyStyle, Seg, subrenderer, BaseFillRendererProps } from '@fullcalendar/core'
 import { attachSegs, detachSegs } from './TimelineLane'
+import TimelineSlats from './TimelineSlats'
 
 
-export type TimelineLaneFillRendererProps = BaseFillRendererProps
+export interface TimelineLaneFillsProps extends BaseFillRendererProps {
+  containerParentEl: HTMLElement
+}
+
+export default class TimelineLaneFills extends FillRenderer<TimelineLaneFillsProps> {
+
+  private renderContainer = subrenderer(renderContainer)
+  private attachSegs = subrenderer(attachSegs, detachSegs)
 
 
-export default class TimelineLaneFillRenderer extends FillRenderer<TimelineLaneFillRendererProps> {
-
-  private renderContainer = renderer(renderContainer)
-  private attachSegs = renderer(attachSegs, detachSegs)
-
-
-  render(props: TimelineLaneFillRendererProps) {
+  render(props: TimelineLaneFillsProps) {
     let segs = this.renderSegs(props)
 
     if (segs.length) {
-      let containerEl = this.renderContainer({ type: props.type })
+      let containerEl = this.renderContainer({
+        type: props.type,
+        parentEl: props.containerParentEl
+      })
       this.attachSegs({ segs, containerEl })
-      return [ containerEl ]
 
     } else {
-      this.renderContainer(false)
       this.attachSegs(false)
-      return []
+      this.renderContainer(false) // don't have a container if there's no segs
     }
   }
 
 
-  computeSegSizes(segs: Seg[], timeAxis: TimeAxis) {
+  computeSegSizes(segs: Seg[], slats: TimelineSlats) {
     for (let seg of segs) {
-      let coords = timeAxis.rangeToCoords(seg)
+      let coords = slats.rangeToCoords(seg)
       seg.left = coords.left
       seg.right = coords.right
     }
@@ -49,10 +51,15 @@ export default class TimelineLaneFillRenderer extends FillRenderer<TimelineLaneF
 }
 
 
-function renderContainer({ type }: { type: string }) {
+function renderContainer({ type, parentEl }: { type: string, parentEl: HTMLElement }) {
   let className = type === 'businessHours'
     ? 'bgevent'
     : type.toLowerCase()
 
-  return createElement('div', { className: 'fc-' + className + '-container' })
+  let containerEl = document.createElement('div')
+  containerEl.className = 'fc-' + className + '-container'
+
+  parentEl.appendChild(containerEl)
+
+  return containerEl
 }

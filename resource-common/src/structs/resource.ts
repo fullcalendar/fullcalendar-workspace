@@ -1,4 +1,4 @@
-import { ConstraintInput, AllowFunc, refineProps, EventStore, parseBusinessHours, Calendar, EventUi, processScopedUiProps, BusinessHoursInput } from '@fullcalendar/core'
+import { ConstraintInput, AllowFunc, refineProps, EventStore, parseBusinessHours, Calendar, EventUi, processScopedUiProps, BusinessHoursInput, guid } from '@fullcalendar/core'
 
 export interface ResourceInput {
   id?: string
@@ -45,7 +45,6 @@ const RESOURCE_PROPS = {
 }
 
 const PRIVATE_ID_PREFIX = '_fc:'
-let uid = 0
 
 /*
 needs a full store so that it can populate children too
@@ -57,7 +56,7 @@ export function parseResource(input: ResourceInput, parentId: string = '', store
   let ui = processScopedUiProps('event', leftovers0, calendar, leftovers1)
 
   if (!props.id) {
-    props.id = PRIVATE_ID_PREFIX + (uid++)
+    props.id = PRIVATE_ID_PREFIX + guid()
   }
 
   if (!props.parentId) { // give precedence to the parentId property

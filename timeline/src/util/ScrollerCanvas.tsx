@@ -1,5 +1,11 @@
-import { htmlToElement, applyStyle, forceClassName, Component, DomLocation } from '@fullcalendar/core'
+import { applyStyle, forceClassName, BaseComponent } from '@fullcalendar/core'
 import { __assign } from 'tslib'
+import { h, createRef, ComponentChildren } from 'preact'
+
+export interface ScrollerCanvasProps {
+  fgContent: ComponentChildren
+  bgContent: ComponentChildren
+}
 
 /*
 A rectangular area of content that lives within a Scroller.
@@ -7,29 +13,31 @@ Can have "gutters", areas of dead spacing around the perimeter.
 Also very useful for forcing a width, which a Scroller cannot do alone.
 Has a content area that lives above a background area.
 */
-export default class ScrollerCanvas extends Component<DomLocation> {
+export default class ScrollerCanvas extends BaseComponent<ScrollerCanvasProps> {
 
-  el: HTMLElement
-  contentEl: HTMLElement
-  bgEl: HTMLElement
-  gutters = {} as any // an object {top,left,bottom,right}
-  width: any
-  minWidth: any
+  private gutters = {} as any // an object {top,left,bottom,right}
+  private width: any
+  private minWidth: any
+  private rootElRef = createRef<HTMLDivElement>()
+  private contentElRef = createRef<HTMLDivElement>()
+  private bgElRef = createRef<HTMLDivElement>()
+
+  get rootEl() { return this.rootElRef.current }
+  get fgEl() { return this.contentElRef.current }
+  get bgEl() { return this.bgElRef.current }
 
 
-  render() {
-    if (!this.el) {
-      this.el = htmlToElement(`\
-<div class="fc-scroller-canvas"> \
-<div class="fc-content"></div> \
-<div class="fc-bg"></div> \
-</div>\
-`)
-      this.contentEl = this.el.querySelector('.fc-content')
-      this.bgEl = this.el.querySelector('.fc-bg')
-    }
-
-    return this.el
+  render(props: ScrollerCanvasProps) {
+    return (
+      <div class='fc-scroller-canvas' ref={this.rootElRef}>
+        <div class='fc-content' ref={this.contentElRef}>
+          {props.fgContent}
+        </div>
+        <div class='fc-bg' ref={this.bgElRef}>
+          {props.bgContent}
+        </div>
+      </div>
+    )
   }
 
 
@@ -66,15 +74,15 @@ export default class ScrollerCanvas extends Component<DomLocation> {
 
 
   updateSize() {
-    const { gutters, el } = this
+    let { gutters, rootEl } = this
 
     // is border-box (width includes padding)
-    forceClassName(el, 'fc-gutter-left', gutters.left)
-    forceClassName(el, 'fc-gutter-right', gutters.right)
-    forceClassName(el, 'fc-gutter-top', gutters.top)
-    forceClassName(el, 'fc-gutter-bottom', gutters.bottom)
+    forceClassName(rootEl, 'fc-gutter-left', gutters.left)
+    forceClassName(rootEl, 'fc-gutter-right', gutters.right)
+    forceClassName(rootEl, 'fc-gutter-top', gutters.top)
+    forceClassName(rootEl, 'fc-gutter-bottom', gutters.bottom)
 
-    applyStyle(el, {
+    applyStyle(rootEl, {
       paddingLeft: gutters.left || '',
       paddingRight: gutters.right || '',
       paddingTop: gutters.top || '',

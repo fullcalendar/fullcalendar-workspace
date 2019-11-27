@@ -1,4 +1,4 @@
-import { Calendar, DateProfile, rangesEqual, DateRange } from '@fullcalendar/core'
+import { Calendar, DateProfile, rangesEqual, DateRange, guid } from '@fullcalendar/core'
 import { ResourceSource, parseResourceSource, getResourceSourceDef, doesSourceIgnoreRange } from '../structs/resource-source'
 import { ResourceAction } from './resources'
 
@@ -34,8 +34,6 @@ export default function(
   }
 }
 
-let uid = 0
-
 function createSource(input, calendar: Calendar, forceFetch?: boolean) {
 
   if (input) {
@@ -65,7 +63,7 @@ function handleRange(source: ResourceSource, activeRange: DateRange, calendar: C
 
 function fetchSource(source: ResourceSource, fetchRange: DateRange | null, calendar: Calendar): ResourceSource {
   let sourceDef = getResourceSourceDef(source.sourceDefId)
-  let fetchId = String(uid++)
+  let fetchId = guid()
 
   sourceDef.fetch(
     {

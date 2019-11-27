@@ -1,4 +1,4 @@
-import { DateRange, Calendar, refineProps } from '@fullcalendar/core'
+import { DateRange, Calendar, refineProps, guid } from '@fullcalendar/core'
 import { ResourceInput } from '../structs/resource'
 import { ResourceFunc } from '../resource-sources/resource-func'
 
@@ -62,7 +62,6 @@ const RESOURCE_SOURCE_PROPS = {
 }
 
 let defs: ResourceSourceDef[] = []
-let uid = 0
 
 export function registerResourceSourceDef(def: ResourceSourceDef) {
   defs.push(def)
@@ -99,7 +98,7 @@ export function parseResourceSource(input: ResourceSourceInput): ResourceSource 
 function parseResourceSourceProps(input: ExtendedResourceSourceInput, meta: object, sourceDefId: number): ResourceSource {
   let props = refineProps(input, RESOURCE_SOURCE_PROPS)
 
-  props.sourceId = String(uid++)
+  props.sourceId = guid()
   props.sourceDefId = sourceDefId
   props.meta = meta
   props.publicId = props.id

@@ -48,7 +48,7 @@ export abstract class AbstractResourceDayTableModel {
 
         for (let resourceCol = 0; resourceCol < resources.length; resourceCol++) {
           let resource = resources[resourceCol]
-          let htmlAttrs = 'data-resource-id="' + resource.id + '"'
+          let htmlAttrs = { 'data-resource-id': resource.id }
 
           rowCells[
             this.computeCol(dateCol, resourceCol)

@@ -1,20 +1,30 @@
+import { SubRenderer, isArraysEqual } from '@fullcalendar/core'
 import ClippedScroller from './ClippedScroller'
 
-export default class ScrollJoiner {
-
+export interface ScrollJoinerProps {
   axis: any
   scrollers: ClippedScroller[]
-  masterScroller: ClippedScroller
-  destroys: (() => void)[] = []
+}
+
+export default class ScrollJoiner extends SubRenderer<ScrollJoinerProps> {
+
+  private masterScroller: ClippedScroller
+  private destroys: (() => void)[] = []
 
 
-  constructor(axis, scrollers: ClippedScroller[]) {
-    this.axis = axis
-    this.scrollers = scrollers
-
-    for (let scroller of this.scrollers) {
+  render(props: ScrollJoinerProps) {
+    for (let scroller of props.scrollers) {
       this.initScroller(scroller)
     }
+  }
+
+
+  unrender() {
+    for (let destroy of this.destroys) {
+      destroy()
+    }
+
+    this.destroys = []
   }
 
 
@@ -27,7 +37,7 @@ export default class ScrollJoiner {
       this.assignMasterScroller(scroller)
     }
     'wheel mousewheel DomMouseScroll MozMousePixelScroll'.split(' ').forEach((evName) => {
-      enhancedScroller.getEl().addEventListener(evName, onWheel)
+      enhancedScroller.rootEl.addEventListener(evName, onWheel)
     })
 
     const onScrollStart = () => {
@@ -38,11 +48,11 @@ export default class ScrollJoiner {
 
     const onScroll = () => {
       if (scroller === this.masterScroller) {
-        for (let otherScroller of this.scrollers) {
+        for (let otherScroller of this.props.scrollers) {
           if (otherScroller !== scroller) {
-            switch (this.axis) {
+            switch (this.props.axis) {
               case 'horizontal':
-                otherScroller.enhancedScroller.getEl().scrollLeft = enhancedScroller.getEl().scrollLeft
+                otherScroller.enhancedScroller.rootEl.scrollLeft = enhancedScroller.rootEl.scrollLeft
                 break
               case 'vertical':
                 otherScroller.enhancedScroller.scroller.controller.setScrollTop(enhancedScroller.scroller.controller.getScrollTop())
@@ -73,19 +83,11 @@ export default class ScrollJoiner {
   }
 
 
-  destroy() {
-    for (let destroy of this.destroys) {
-      destroy()
-    }
-    this.destroys = []
-  }
-
-
   assignMasterScroller(scroller) {
     this.unassignMasterScroller()
     this.masterScroller = scroller
 
-    for (let otherScroller of this.scrollers) {
+    for (let otherScroller of this.props.scrollers) {
       if (otherScroller !== scroller) {
         otherScroller.enhancedScroller.disableTouchScroll()
       }
@@ -95,7 +97,7 @@ export default class ScrollJoiner {
 
   unassignMasterScroller() {
     if (this.masterScroller) {
-      for (let otherScroller of this.scrollers) {
+      for (let otherScroller of this.props.scrollers) {
         otherScroller.enhancedScroller.enableTouchScroll()
       }
       this.masterScroller = null
@@ -103,8 +105,9 @@ export default class ScrollJoiner {
   }
 
 
-  update() {
-    const allWidths = this.scrollers.map((scroller) => scroller.getScrollbarWidths())
+  updateSize() {
+    let { scrollers, axis } = this.props
+    let allWidths = scrollers.map((scroller) => scroller.getScrollbarWidths())
     let maxLeft = 0
     let maxRight = 0
     let maxTop = 0
@@ -119,11 +122,11 @@ export default class ScrollJoiner {
       maxBottom = Math.max(maxBottom, widths.bottom)
     }
 
-    for (i = 0; i < this.scrollers.length; i++) {
-      let scroller = this.scrollers[i]
+    for (i = 0; i < scrollers.length; i++) {
+      let scroller = scrollers[i]
       widths = allWidths[i]
-      scroller.enhancedScroller.canvas.setGutters(
-        this.axis === 'horizontal' ?
+      scroller.canvas.setGutters(
+        axis === 'horizontal' ?
           {
             left: maxLeft - widths.left,
             right: maxRight - widths.right
@@ -137,3 +140,7 @@ export default class ScrollJoiner {
   }
 
 }
+
+ScrollJoiner.addPropsEquality({
+  scrollers: isArraysEqual
+})

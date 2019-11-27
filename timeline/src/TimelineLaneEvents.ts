@@ -1,37 +1,38 @@
 import {
-  FgEventRenderer, htmlEscape, cssToStr, Seg, applyStyle, computeHeightAndMargins, applyStyleProp, createElement,
-  computeEventDraggable, computeEventStartResizable, computeEventEndResizable, BaseFgEventRendererProps, sortEventSegs, renderer, ComponentContext
+  FgEventRenderer, htmlEscape, cssToStr, Seg, applyStyle, computeHeightAndMargins, applyStyleProp,
+  computeEventDraggable, computeEventStartResizable, computeEventEndResizable, BaseFgEventRendererProps, sortEventSegs, subrenderer, removeElement
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
-import { TimeAxis } from './main'
 import { attachSegs, detachSegs } from './TimelineLane'
+import TimelineSlats from './TimelineSlats'
 
-export type TimelineLaneEventsProps = BaseFgEventRendererProps & {
+
+export interface TimelineLaneEventsProps extends BaseFgEventRendererProps {
   tDateProfile: TimelineDateProfile
+  containerParentEl: HTMLElement
 }
 
 export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEventsProps> {
 
-  private renderContainer = renderer(renderContainer)
-  private attachSegs = renderer(attachSegs, detachSegs)
-
+  private renderContainer = subrenderer(renderContainer, removeElement)
+  private attachSegs = subrenderer(attachSegs, detachSegs)
   private containerEl: HTMLElement
 
 
-  render(props: TimelineLaneEventsProps, context: ComponentContext) {
-    let containerEl = this.renderContainer({ isMirror: Boolean(props.mirrorInfo) })
+  render(props: TimelineLaneEventsProps) {
+    let containerEl = this.containerEl = this.renderContainer({
+      isMirror: Boolean(props.mirrorInfo),
+      parentEl: props.containerParentEl
+    })
 
     let segs = this.renderSegs({
       segs: props.segs,
       mirrorInfo: props.mirrorInfo,
       selectedInstanceId: props.selectedInstanceId,
       hiddenInstances: props.hiddenInstances
-    }, context)
+    })
 
     this.attachSegs({ segs, containerEl })
-
-    this.containerEl = containerEl
-    return containerEl
   }
 
 
@@ -44,12 +45,12 @@ export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEven
     let isResizableFromStart = seg.isStart && computeEventStartResizable(context, eventDef, eventUi)
     let isResizableFromEnd = seg.isEnd && computeEventEndResizable(context, eventDef, eventUi)
 
-    let classes = this.getSegClasses(seg, isDraggable, isResizableFromStart || isResizableFromEnd, mirrorInfo)
-    classes.unshift('fc-timeline-event', 'fc-h-event')
+    let classNames = this.getSegClasses(seg, isDraggable, isResizableFromStart || isResizableFromEnd, mirrorInfo)
+    classNames.unshift('fc-timeline-event', 'fc-h-event')
 
     let timeText = this.getTimeText(eventRange)
 
-    return '<a class="' + classes.join(' ') + '" style="' + cssToStr(this.getSkinCss(eventUi)) + '"' +
+    return '<a class="' + classNames.join(' ') + '" style="' + cssToStr(this.getSkinCss(eventUi)) + '"' +
       (eventDef.url ?
         ' href="' + htmlEscape(eventDef.url) + '"' :
         '') +
@@ -99,9 +100,9 @@ export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEven
 
 
   // computes AND assigns (assigns the left/right at least). bad
-  computeSegSizes(segs: Seg[], timeAxis: TimeAxis) {
+  computeSegSizes(segs: Seg[], slats: TimelineSlats) {
     for (let seg of segs) {
-      let coords = timeAxis.rangeToCoords(seg) // works because Seg has start/end
+      let coords = slats.rangeToCoords(seg) // works because Seg has start/end
 
       applyStyle(seg.el, {
         left: (seg.left = coords.left),
@@ -179,10 +180,13 @@ export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEven
 }
 
 
-function renderContainer(props: { isMirror: boolean }) {
-  return createElement('div', {
-    className: 'fc-event-container' + (props.isMirror ? ' fc-mirror-container' : '')
-  })
+function renderContainer(props: { isMirror: boolean, parentEl: HTMLElement }) {
+  let containerEl = document.createElement('div')
+  containerEl.className = 'fc-event-container' + (props.isMirror ? ' fc-mirror-container' : '')
+
+  props.parentEl.appendChild(containerEl)
+
+  return containerEl
 }
 
 
