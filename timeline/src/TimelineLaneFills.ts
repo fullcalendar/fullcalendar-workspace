@@ -1,4 +1,4 @@
-import { FillRenderer, applyStyle, Seg, subrenderer, BaseFillRendererProps } from '@fullcalendar/core'
+import { FillRenderer, applyStyle, Seg, subrenderer, BaseFillRendererProps, removeElement } from '@fullcalendar/core'
 import { attachSegs, detachSegs } from './TimelineLane'
 import TimelineSlats from './TimelineSlats'
 
@@ -9,7 +9,7 @@ export interface TimelineLaneFillsProps extends BaseFillRendererProps {
 
 export default class TimelineLaneFills extends FillRenderer<TimelineLaneFillsProps> {
 
-  private renderContainer = subrenderer(renderContainer)
+  private renderContainer = subrenderer(renderContainer, removeElement)
   private attachSegs = subrenderer(attachSegs, detachSegs)
 
 
