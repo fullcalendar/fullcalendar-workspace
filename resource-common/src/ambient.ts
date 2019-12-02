@@ -22,6 +22,10 @@ declare module '@fullcalendar/core' {
     dispatch(action: ResourceAction)
   }
 
+  interface View {
+    scrollToResource(resourceId: string): void // not guaranteed to be implemented
+  }
+
   interface CalendarState {
     resourceSource?: ResourceSource | null
     resourceStore?: ResourceHash

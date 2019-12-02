@@ -185,11 +185,46 @@ export default class ResourceTimelineView extends View {
   componentDidMount() {
     this.subrender()
     this.startNowIndicator()
+    this.scrollToInitialTime()
   }
 
 
-  componentDidUpdate() {
+  getSnapshotBeforeUpdate(prevProps: ResourceViewProps) {
+    let layout = this.layoutRef.current
+    let resourceScroll
+    let dateScroll
+
+    if (prevProps.resourceStore !== this.props.resourceStore) {
+      resourceScroll = this.queryResourceScroll()
+
+    } else {
+      resourceScroll = { top: layout.timeBodyScroller.enhancedScroller.scroller.controller.getScrollTop() }
+    }
+
+    dateScroll = { left: layout.timeBodyScroller.enhancedScroller.getScrollLeft() }
+
+    return { resourceScroll, dateScroll }
+  }
+
+
+  componentDidUpdate(prevProps: ResourceViewProps, prevState: {}, snapshot) {
     this.subrender()
+
+    let { resourceScroll, dateScroll } = snapshot
+
+    if (prevProps.dateProfile !== this.props.dateProfile) {
+      this.scrollToInitialTime()
+
+    } else if (dateScroll) {
+      this.scrollLeft(dateScroll.left)
+    }
+
+    if (resourceScroll.rowId) {
+      this.scrollToResource(resourceScroll.rowId, resourceScroll.fromBottom)
+
+    } else if (resourceScroll.top) {
+      this.scrollTop(resourceScroll.top)
+    }
   }
 
 
@@ -370,60 +405,66 @@ export default class ResourceTimelineView extends View {
   // Scrolling
   // ------------------------------------------------------------------------------------------------------------------
   // this is useful for scrolling prev/next dates while resource is scrolled down
+  // TODO: what about left scroll state for spreadsheet area?
 
 
-  queryScroll() {
-    let scroll = super.queryScroll()
+  scrollToTime(duration: Duration) {
+    this.afterSizing(() => { // hack
+      let slats = this.slatsRef.current
+      let left = slats.computeDurationLeft(duration)
 
-    if (this.props.resourceStore) {
-      __assign(scroll, this.queryResourceScroll())
-    }
-
-    return scroll
+      this.scrollLeft(left)
+    })
   }
 
 
-  applyScroll(scroll, isResize) {
-    super.applyScroll(scroll, isResize)
+  scrollLeft(left: number) {
+    this.afterSizing(() => { // hack
+      let layout = this.layoutRef.current
 
-    if (this.props.resourceStore) {
-      this.applyResourceScroll(scroll)
-    }
+      // TODO: lame we have to update both. use the scrolljoiner instead maybe
+      layout.timeBodyScroller.enhancedScroller.setScrollLeft(left)
+      layout.timeHeadScroller.enhancedScroller.setScrollLeft(left)
 
-    // TODO: avoid updating stickyscroll too often
-    this.layoutRef.current.updateStickyScrolling()
+      layout.updateStickyScrolling() // done too often!?
+    })
   }
 
 
-  computeDateScroll(duration: Duration) {
-    let slats = this.slatsRef.current
+  scrollToResource(resourceId: string, fromBottom?: number) {
+    this.afterSizing(() => { // hack
+      let layout = this.layoutRef.current
+      let trs = layout.bodyRowSyncer.hContainersTrs[1] // 1 = time axis. TODO: use for position as well?
+      let index = this.rowIdToIndex[resourceId]
 
-    return {
-      left: slats.computeDurationLeft(duration)
-    }
+      if (index != null) {
+        let tr = trs[index]
+        let innerTop = layout.timeBodyScroller.canvas.rootEl.getBoundingClientRect().top
+        let rowRect = tr.getBoundingClientRect()
+        let scrollTop =
+          (fromBottom == null ?
+            rowRect.top : // just use top edge
+            rowRect.bottom - fromBottom) - // pixels from bottom edge
+          innerTop
+
+        this.scrollTop(scrollTop)
+      }
+    })
   }
 
 
-  // REPEAT, in TimelineView
-  queryDateScroll() {
-    let layout = this.layoutRef.current
-    let { enhancedScroller } = layout.timeBodyScroller
+  scrollTop(top: number) {
+    this.afterSizing(() => { // hack
+      let layout = this.layoutRef.current
 
-    return enhancedScroller.getScrollLeft()
+      // TODO: lame we have to update both. use the scrolljoiner instead maybe
+      layout.timeBodyScroller.enhancedScroller.scroller.controller.setScrollTop(top)
+      layout.spreadsheetBodyScroller.enhancedScroller.scroller.controller.setScrollTop(top)
+    })
   }
 
 
-  // REPEAT, in TimelineView
-  applyDateScroll(scroll) {
-    let layout = this.layoutRef.current
-
-    // TODO: lame we have to update both. use the scrolljoiner instead maybe
-    layout.timeBodyScroller.enhancedScroller.setScrollLeft(scroll.left || 0)
-    layout.timeHeadScroller.enhancedScroller.setScrollLeft(scroll.left || 0)
-  }
-
-
-  queryResourceScroll() {
+  queryResourceScroll(): { rowId: string, fromBottom: number } {
     let { rowNodes } = this
     let scroll = {} as any
     let layout = this.layoutRef.current
@@ -437,38 +478,12 @@ export default class ResourceTimelineView extends View {
 
       if (elBottom > scrollerTop) {
         scroll.rowId = rowNode.id
-        scroll.bottom = elBottom - scrollerTop
+        scroll.fromBottom = elBottom - scrollerTop
         break
       }
     }
 
-    // TODO: what about left scroll state for spreadsheet area?
     return scroll
-  }
-
-
-  applyResourceScroll(scroll) {
-    let layout = this.layoutRef.current
-    let trs = layout.bodyRowSyncer.hContainersTrs[1] // 1 = time axis. TODO: use for position as well?
-    let rowId = scroll.forcedRowId || scroll.rowId
-
-    if (rowId) {
-      let index = this.rowIdToIndex[rowId]
-
-      if (index != null) {
-        let tr = trs[index]
-        let innerTop = layout.timeBodyScroller.canvas.rootEl.getBoundingClientRect().top
-        let rowRect = tr.getBoundingClientRect()
-        let scrollTop =
-          (scroll.forcedRowId ?
-            rowRect.top : // just use top edge
-            rowRect.bottom - scroll.bottom) - // pixels from bottom edge
-          innerTop
-
-        layout.timeBodyScroller.enhancedScroller.scroller.controller.setScrollTop(scrollTop)
-        layout.spreadsheetBodyScroller.enhancedScroller.scroller.controller.setScrollTop(scrollTop)
-      }
-    }
   }
 
 

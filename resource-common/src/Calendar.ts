@@ -15,15 +15,19 @@ Calendar.prototype.addResource = function(this: Calendar, input: ResourceInput |
     resource = parseResource(input, '', resourceHash, this)
   }
 
-  // HACK
-  if (scrollTo) {
-    this.component.view.applyScroll({ forcedRowId: resource.id }, false)
-  }
-
   this.dispatch({
     type: 'ADD_RESOURCE',
     resourceHash
   })
+
+  if (scrollTo) {
+    let view = this.component.view
+
+    if (view.scrollToResource) {
+      view.scrollToResource(resource.id)
+      this.drainAfterSizingCallbacks() // hack
+    }
+  }
 
   return new ResourceApi(this, resource)
 }

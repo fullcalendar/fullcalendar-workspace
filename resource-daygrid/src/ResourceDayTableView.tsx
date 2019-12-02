@@ -19,6 +19,7 @@ export default class ResourceDayTableView extends TableView {
 
   render(props: ResourceViewProps, state: {}, context: ComponentContext) {
     let { options, nextDayThreshold } = context
+    let { colWeekNumbersVisible, cellWeekNumbersVisible } = this.processOptions(context.options)
 
     let resourceOrderSpecs = this.parseResourceOrder(options.resourceOrder)
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
@@ -54,8 +55,8 @@ export default class ResourceDayTableView extends TableView {
         renderNumberIntro={this.renderNumberIntro}
         renderBgIntro={this.renderBgIntro}
         renderIntro={this.renderIntro}
-        colWeekNumbersVisible={this.colWeekNumbersVisible}
-        cellWeekNumbersVisible={this.cellWeekNumbersVisible}
+        colWeekNumbersVisible={colWeekNumbersVisible}
+        cellWeekNumbersVisible={cellWeekNumbersVisible}
       />
     )
   }
@@ -70,8 +71,7 @@ export default class ResourceDayTableView extends TableView {
         header ? header.rootEl : null,
         table.table,
         viewHeight,
-        isAuto,
-        this.context.options
+        isAuto
       )
     }
 

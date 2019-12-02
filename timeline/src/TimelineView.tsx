@@ -65,11 +65,28 @@ export default class TimelineView extends View {
   componentDidMount() {
     this.subrender()
     this.startNowIndicator()
+    this.scrollToInitialTime()
   }
 
 
-  componentDidUpdate() {
+  getSnapshotBeforeUpdate() {
+    let layout = this.layoutRef.current
+
+    return {
+      scrollLeft: layout.bodyClippedScroller.enhancedScroller.getScrollLeft()
+    }
+  }
+
+
+  componentDidUpdate(prevProps: ViewProps, prevState: {}, snapshot) {
     this.subrender()
+
+    if (prevProps.dateProfile !== this.props.dateProfile) {
+      this.scrollToInitialTime()
+
+    } else {
+      this.scrollLeft(snapshot.scrollLeft)
+    }
   }
 
 
@@ -164,44 +181,26 @@ export default class TimelineView extends View {
   // ------------------------------------------------------------------------------------------
 
 
-  computeDateScroll(duration: Duration) {
-    let slats = this.slatsRef.current
+  scrollToTime(duration: Duration) {
+    this.afterSizing(() => { // hack
+      let slats = this.slatsRef.current
+      let left = slats.computeDurationLeft(duration)
 
-    return {
-      left: slats.computeDurationLeft(duration)
-    }
+      this.scrollLeft(left)
+    })
   }
 
 
-  applyScroll(scroll, isResize) {
-    let layout = this.layoutRef.current
+  scrollLeft(left: number) {
+    this.afterSizing(() => { // hack
+      let layout = this.layoutRef.current
 
-    super.applyScroll(scroll, isResize) // will call applyDateScroll
+      // TODO: lame we have to update both. use the scrolljoiner instead maybe
+      layout.bodyClippedScroller.enhancedScroller.setScrollLeft(left)
+      layout.headClippedScroller.enhancedScroller.setScrollLeft(left)
 
-    // avoid updating stickyscroll too often
-    if (isResize || this.isLayoutSizeDirty()) {
-      layout.updateStickyScrolling()
-    }
-  }
-
-
-  applyDateScroll(scroll) {
-    let layout = this.layoutRef.current
-
-    // TODO: lame we have to update both. use the scrolljoiner instead maybe
-    layout.bodyClippedScroller.enhancedScroller.setScrollLeft(scroll.left || 0)
-    layout.headClippedScroller.enhancedScroller.setScrollLeft(scroll.left || 0)
-  }
-
-
-  queryScroll() {
-    let layout = this.layoutRef.current
-    let { enhancedScroller } = layout.bodyClippedScroller
-
-    return {
-      top: enhancedScroller.scroller.controller.getScrollTop(),
-      left: enhancedScroller.getScrollLeft()
-    }
+      layout.updateStickyScrolling() // done too often!?
+    })
   }
 
 
