@@ -149,6 +149,10 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
     let { spreadsheetBodyScroller } = this
     let bodyHeight
 
+    // do before calling queryNonBodyHeight
+    timeHeadScroller.updateSize()
+    spreadsheetHeadScroller.updateSize()
+
     if (isAuto) {
       bodyHeight = 'auto'
     } else {
@@ -158,9 +162,6 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
     timeBodyScroller.setHeight(bodyHeight)
     spreadsheetBodyScroller.setHeight(bodyHeight)
 
-    // adjusts gutters and classNames
-    timeHeadScroller.updateSize()
-    spreadsheetHeadScroller.updateSize()
     timeBodyScroller.updateSize()
     spreadsheetBodyScroller.updateSize()
 
@@ -180,12 +181,15 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
   }
 
 
-  syncRowHeights() {
+  syncHeadRowHeights() {
     this.headRowSyncer.sync([
       this.spreadsheetHeadScrollerRef.current.canvas.fgEl,
       this.timeHeadScrollerRef.current.canvas.fgEl
     ])
+  }
 
+
+  syncBodyRowHeights() {
     this.bodyRowSyncer.sync([
       this.spreadsheetBodyScroller.canvas.fgEl,
       this.timeBodyScrollerRef.current.canvas.fgEl

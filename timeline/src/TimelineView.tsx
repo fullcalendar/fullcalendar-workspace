@@ -127,26 +127,31 @@ export default class TimelineView extends View {
 
 
   updateSize(isResize, viewHeight, isAuto) {
-    let layout = this.layoutRef.current
-    let slats = this.slatsRef.current
-    let header = this.headerRef.current
     let { lane } = this
+    let layout = this.layoutRef.current
+    let header = this.headerRef.current
+    let slats = this.slatsRef.current
 
-    let availableWidth = layout.getAvailableWidth()
-    let { containerWidth, containerMinWidth } = this.timeColsWidthSyncer.updateSize({
-      availableWidth,
-      dateProfile: this.props.dateProfile,
-      tDateProfile: this.tDateProfile,
-      header,
-      slats
-    }, this.context)
+    if (isResize || this.isLayoutSizeDirty()) {
+      let availableWidth = layout.getAvailableWidth()
+      let { containerWidth, containerMinWidth } = this.timeColsWidthSyncer.updateSize({
+        availableWidth,
+        dateProfile: this.props.dateProfile,
+        tDateProfile: this.tDateProfile,
+        header,
+        slats
+      }, this.context)
 
-    layout.setWidths(containerWidth, containerMinWidth)
-    layout.setHeight(viewHeight, isAuto)
-    slats.buildPositionCaches()
+      layout.setWidths(containerWidth, containerMinWidth)
+      layout.setHeight(viewHeight, isAuto)
+
+      // needs to happen after layout adjusted, so last cell isn't stretched
+      slats.buildPositionCaches()
+    }
+
+    // efficient. uses caches
     lane.computeSizes(isResize, slats)
     lane.assignSizes(isResize, slats)
-    layout.updateStickyScrolling()
   }
 
 
@@ -199,7 +204,7 @@ export default class TimelineView extends View {
       layout.bodyClippedScroller.enhancedScroller.setScrollLeft(left)
       layout.headClippedScroller.enhancedScroller.setScrollLeft(left)
 
-      layout.updateStickyScrolling() // done too often!?
+      layout.updateStickyScrolling() // strange place to do this. but guaranteed to be last
     })
   }
 

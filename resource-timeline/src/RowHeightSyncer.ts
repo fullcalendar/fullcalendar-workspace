@@ -28,17 +28,29 @@ export default class RowHeightSyncer {
     let rowHeights: number[] = []
 
     for (let row = 0; row < rowCnt; row++) {
+      let isRowFirst = row === 0
+      let isRowLast = row === rowCnt - 1
       let bestHeight = 0
 
       for (let i = 0; i < hContainersTrs.length; i++) {
         let tr = hContainersTrs[i][row]
 
         if (tr) { // in case an uneven number
-          let trTop = tr.getBoundingClientRect().top
-          let innerDivs = findElements(tr, 'td > *, th > *')
+          let cellEls = findElements(tr, 'td, th')
 
-          for (let innerDiv of innerDivs) {
-            let tryHeight = innerDiv.getBoundingClientRect().bottom - trTop
+          for (let cellEl of cellEls) {
+            let cellElStyles = window.getComputedStyle(cellEl)
+            let innerEl = cellEl.firstChild as HTMLElement
+
+            // HACK: need to exclude top and bottom border
+            // when <table> has border-style:hidden
+
+            let tryHeight =
+              innerEl.getBoundingClientRect().height +
+              (isRowFirst ? 0 : (parseInt(cellElStyles.borderTopWidth, 10) || 0)) +
+              (parseInt(cellElStyles.paddingTop, 10) || 0) +
+              (parseInt(cellElStyles.paddingBottom, 10) || 0) +
+              (isRowLast ? (parseInt(cellElStyles.borderBottomWidth, 10) || 0) : 0)
 
             if (tryHeight > bestHeight) {
               bestHeight = tryHeight

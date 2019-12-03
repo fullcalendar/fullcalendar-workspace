@@ -343,35 +343,38 @@ export default class ResourceTimelineView extends View {
 
 
   updateSize(isResize, viewHeight, isAuto) {
-    // FYI: this ordering is really important
-    // let isBaseSizing = isResize || this.isLayoutSizeDirty()
-
-    let layout = this.layoutRef.current
     let { bgLane } = this
+    let layout = this.layoutRef.current
+    let header = this.timeHeaderRef.current
     let slats = this.slatsRef.current
 
-    let availableWidth = layout.getTimeAvailableWidth()
-    let { containerWidth, containerMinWidth } = this.timeColsWidthSyncer.updateSize({
-      availableWidth,
-      header: this.timeHeaderRef.current,
-      slats: this.slatsRef.current,
-      tDateProfile: this.tDateProfile,
-      dateProfile: this.props.dateProfile
-    }, this.context)
+    if (isResize || this.isLayoutSizeDirty()) {
+      let availableWidth = layout.getTimeAvailableWidth()
+      let { containerWidth, containerMinWidth } = this.timeColsWidthSyncer.updateSize({
+        availableWidth,
+        header,
+        slats,
+        tDateProfile: this.tDateProfile,
+        dateProfile: this.props.dateProfile
+      }, this.context)
 
-    slats.buildPositionCaches()
-    layout.setTimeWidths(containerWidth, containerMinWidth)
-    layout.setHeight(viewHeight, isAuto)
+      layout.setTimeWidths(containerWidth, containerMinWidth)
+      layout.syncHeadRowHeights()
+      layout.setHeight(viewHeight, isAuto) // needs to happen after syncHeadRowHeights
+
+      // needs to happen after layout adjusted, so last cell isn't stretched
+      slats.buildPositionCaches()
+    }
 
     let resourceRows = this.getResourceRows()
 
+    // these methods are all efficient, use flags
     for (let resourceRow of resourceRows) { resourceRow.computeSizes(isResize, slats) }
     bgLane.computeSizes(isResize, slats)
     for (let resourceRow of resourceRows) { resourceRow.assignSizes(isResize, slats) }
     bgLane.assignSizes(isResize, slats)
 
-    layout.syncRowHeights() // does row height syncing ... DO THIS HIGHER UP????
-    layout.updateStickyScrolling()
+    layout.syncBodyRowHeights()
   }
 
 
@@ -425,8 +428,6 @@ export default class ResourceTimelineView extends View {
       // TODO: lame we have to update both. use the scrolljoiner instead maybe
       layout.timeBodyScroller.enhancedScroller.setScrollLeft(left)
       layout.timeHeadScroller.enhancedScroller.setScrollLeft(left)
-
-      layout.updateStickyScrolling() // done too often!?
     })
   }
 
@@ -460,6 +461,8 @@ export default class ResourceTimelineView extends View {
       // TODO: lame we have to update both. use the scrolljoiner instead maybe
       layout.timeBodyScroller.enhancedScroller.scroller.controller.setScrollTop(top)
       layout.spreadsheetBodyScroller.enhancedScroller.scroller.controller.setScrollTop(top)
+
+      layout.updateStickyScrolling() // strange place to do this. but guaranteed to be last
     })
   }
 

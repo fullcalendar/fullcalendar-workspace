@@ -82,6 +82,8 @@ export default class TimelineViewLayout extends BaseComponent<TimelineViewLayout
     let bodyScroller = this.bodyClippedScrollerRef.current
     let bodyHeight
 
+    headScroller.updateSize() // do before calling queryNonBodyHeight
+
     if (isAuto) {
       bodyHeight = 'auto'
     } else {
@@ -89,9 +91,6 @@ export default class TimelineViewLayout extends BaseComponent<TimelineViewLayout
     }
 
     bodyScroller.setHeight(bodyHeight)
-
-    // adjusts gutters and classNames
-    headScroller.updateSize()
     bodyScroller.updateSize()
 
     this.getScrollJoiner({
