@@ -27,7 +27,6 @@ export default class ResourceTimelineView extends View {
   private renderSpreadsheetColWidths = subrenderer(SpreadsheetColWidths)
   private timeColsWidthSyncer = new TimeColsWidthSyncer()
   private renderNowIndicatorMarkers = subrenderer(TimelineNowIndicator)
-  private rootElRef = createRef<HTMLDivElement>()
   private layoutRef = createRef<ResourceTimelineViewLayout>()
   private slatsRef = createRef<TimelineSlats>()
   private timeHeaderRef = createRef<TimelineHeader>()
@@ -51,8 +50,6 @@ export default class ResourceTimelineView extends View {
   private groupSpecs: any // used by row generation
   private colSpecs: any
   private orderSpecs: any // used by row generation
-
-  getRootEl() { return this.rootElRef.current }
 
 
   render(props: ResourceViewProps, state: {}, context: ComponentContext) {
@@ -92,7 +89,7 @@ export default class ResourceTimelineView extends View {
     let colGroupNodes = renderColGroupNodes(this.colSpecs)
 
     return (
-      <div class={classNames.join(' ')} ref={this.rootElRef}>
+      <div class={classNames.join(' ')}>
         <ResourceTimelineViewLayout
           ref={this.layoutRef}
           spreadsheetHeadContent={
@@ -191,32 +188,24 @@ export default class ResourceTimelineView extends View {
 
   getSnapshotBeforeUpdate(prevProps: ResourceViewProps) {
     let layout = this.layoutRef.current
-    let resourceScroll
-    let dateScroll
 
-    if (prevProps.resourceStore !== this.props.resourceStore) {
-      resourceScroll = this.queryResourceScroll()
-
-    } else {
-      resourceScroll = { top: layout.timeBodyScroller.enhancedScroller.scroller.controller.getScrollTop() }
+    return {
+      resourceScroll: this.queryResourceScroll(),
+      dateScrollLeft: layout.timeBodyScroller.enhancedScroller.getScrollLeft()
     }
-
-    dateScroll = { left: layout.timeBodyScroller.enhancedScroller.getScrollLeft() }
-
-    return { resourceScroll, dateScroll }
   }
 
 
   componentDidUpdate(prevProps: ResourceViewProps, prevState: {}, snapshot) {
     this.subrender()
 
-    let { resourceScroll, dateScroll } = snapshot
+    let { resourceScroll, dateScrollLeft } = snapshot
 
     if (prevProps.dateProfile !== this.props.dateProfile) {
       this.scrollToInitialTime()
 
-    } else if (dateScroll) {
-      this.scrollLeft(dateScroll.left)
+    } else {
+      this.scrollLeft(dateScrollLeft)
     }
 
     if (resourceScroll.rowId) {

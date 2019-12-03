@@ -16,14 +16,11 @@ export default class TimelineView extends View {
   private renderLane = subrenderer(TimelineLane)
   private timeColsWidthSyncer = new TimeColsWidthSyncer()
   private renderNowIndicatorMarkers = subrenderer(TimelineNowIndicator)
-  private rootElRef = createRef<HTMLDivElement>()
   private layoutRef = createRef<TimelineViewLayout>()
   private headerRef = createRef<TimelineHeader>()
   private slatsRef = createRef<TimelineSlats>()
   private lane: TimelineLane
   private tDateProfile: TimelineDateProfile
-
-  getRootEl() { return this.rootElRef.current }
 
 
   render(props: ViewProps, state: {}, context: ComponentContext) {
@@ -40,7 +37,7 @@ export default class TimelineView extends View {
     let classNames = getTimelineViewClassNames(props.viewSpec, options.eventOverlap)
 
     return (
-      <div class={classNames.join(' ')} ref={this.rootElRef}>
+      <div class={classNames.join(' ')}>
         <TimelineViewLayout ref={this.layoutRef}
           headContent={
             <TimelineHeader
