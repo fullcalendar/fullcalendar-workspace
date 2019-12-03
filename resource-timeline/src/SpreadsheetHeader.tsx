@@ -1,11 +1,11 @@
 import { ElementDragging, BaseComponent, ComponentContext, PointerDragEvent, EmitterMixin, findElements, subrenderer, guid } from '@fullcalendar/core'
 import { VNode, h } from 'preact'
+import { renderColGroupNodes } from './SpreadsheetColWidths'
 
 
 export interface SpreadsheetHeaderProps {
   superHeaderText: string
   colSpecs: any
-  colGroupNodes: VNode[]
 }
 
 const COL_MIN_WIDTH = 30
@@ -18,6 +18,11 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
 
   emitter: EmitterMixin = new EmitterMixin()
   colEls: HTMLElement[]
+
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    return super.shouldComponentUpdate(nextProps, nextState, nextContext)
+  }
 
 
   render(props: SpreadsheetHeaderProps, state: {}, context: ComponentContext) {
@@ -70,7 +75,7 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
 
     return ( // guid rerenders whole DOM every time
       <table class={theme.getClass('tableGrid')} ref={this.handleRootEl} key={guid()}>
-        <colgroup>{props.colGroupNodes}</colgroup>
+        <colgroup>{renderColGroupNodes(props.colSpecs)}</colgroup>
         <tbody>{rowNodes}</tbody>
       </table>
     )

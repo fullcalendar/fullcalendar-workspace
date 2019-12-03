@@ -1,8 +1,9 @@
 import { BaseComponent, guid, findElements } from '@fullcalendar/core'
-import { h, ComponentChildren, VNode } from 'preact'
+import { h, ComponentChildren } from 'preact'
+import { renderColGroupNodes } from './SpreadsheetColWidths'
 
 export interface SpreadsheetBodyProps {
-  colGroupNodes: VNode[]
+  colSpecs: any
   children?: ComponentChildren
 }
 
@@ -16,7 +17,7 @@ export default class SpreadsheetBody extends BaseComponent<SpreadsheetBodyProps>
       <div class='fc-rows'>
         <table>
           <colgroup key={guid()} ref={this.handleColGroupEl}>
-            {props.colGroupNodes}
+            {renderColGroupNodes(props.colSpecs)}
           </colgroup>
           <tbody>
             {props.children}

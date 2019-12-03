@@ -2,7 +2,7 @@ import { subrenderer, Calendar, Hit, View, parseFieldSpecs, ComponentContext, me
   Duration, DateProfileGenerator, SplittableProps } from '@fullcalendar/core'
 import { TimelineLane, TimeColsWidthSyncer, buildTimelineDateProfile, TimelineDateProfile, TimelineHeader, TimelineSlats, TimelineNowIndicator, getTimelineNowIndicatorUnit, getTimelineViewClassNames } from '@fullcalendar/timeline'
 import { ResourceHash, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc, buildRowNodes } from '@fullcalendar/resource-common'
-import SpreadsheetColWidths, { renderColGroupNodes } from './SpreadsheetColWidths'
+import SpreadsheetColWidths from './SpreadsheetColWidths'
 import { __assign } from 'tslib'
 import SpreadsheetRow from './SpreadsheetRow'
 import SpreadsheetGroupRow from './SpreadsheetGroupRow'
@@ -86,8 +86,6 @@ export default class ResourceTimelineView extends View {
       classNames.push('fc-flat')
     }
 
-    let colGroupNodes = renderColGroupNodes(this.colSpecs)
-
     return (
       <div class={classNames.join(' ')}>
         <ResourceTimelineViewLayout
@@ -97,11 +95,10 @@ export default class ResourceTimelineView extends View {
               ref={this.spreadsheetHeaderRef}
               superHeaderText={this.superHeaderText}
               colSpecs={this.colSpecs}
-              colGroupNodes={colGroupNodes}
             />
           }
           spreadsheetBodyContent={
-            <SpreadsheetBody colGroupNodes={colGroupNodes} ref={this.spreadsheetBodyRef}>
+            <SpreadsheetBody colSpecs={this.colSpecs} ref={this.spreadsheetBodyRef}>
               {renderSpreadsheetRows(rowNodes, this.colSpecs)}
             </SpreadsheetBody>
           }
