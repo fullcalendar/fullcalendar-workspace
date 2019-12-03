@@ -1,6 +1,8 @@
-import { BaseComponent, ComponentContext, subrenderer, DateProfile, DateProfileGenerator, Duration, EventStore, EventUiHash, DateSpan, EventInteractionState } from '@fullcalendar/core'
+import {
+  h, createRef,
+  BaseComponent, ComponentContext, subrenderer, DateProfile, DateProfileGenerator, Duration, EventStore, EventUiHash, DateSpan, EventInteractionState
+} from '@fullcalendar/core'
 import { TimelineLane, TimelineDateProfile, TimelineSlats } from '@fullcalendar/timeline'
-import { h, createRef } from 'preact'
 
 
 export interface ResourceTimelineLaneRowProps {

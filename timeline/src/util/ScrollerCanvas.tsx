@@ -1,6 +1,8 @@
-import { applyStyle, forceClassName, BaseComponent } from '@fullcalendar/core'
+import {
+  h, createRef, ComponentChildren,
+  applyStyle, forceClassName, BaseComponent
+} from '@fullcalendar/core'
 import { __assign } from 'tslib'
-import { h, createRef, ComponentChildren } from 'preact'
 
 export interface ScrollerCanvasProps {
   fgContent: ComponentChildren

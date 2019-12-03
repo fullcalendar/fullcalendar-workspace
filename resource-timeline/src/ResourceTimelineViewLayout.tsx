@@ -1,7 +1,9 @@
-import { BaseComponent, ComponentContext, subrenderer, ElementDragging, PointerDragEvent, applyStyleProp } from '@fullcalendar/core'
+import {
+  h, ComponentChildren, createRef,
+  BaseComponent, ComponentContext, subrenderer, ElementDragging, PointerDragEvent, applyStyleProp
+} from '@fullcalendar/core'
 import { ClippedScroller, ScrollJoiner } from '@fullcalendar/timeline'
 import RowHeightSyncer from './RowHeightSyncer'
-import { h, ComponentChildren, createRef } from 'preact'
 
 
 export interface ResourceTimelineViewLayoutProps {

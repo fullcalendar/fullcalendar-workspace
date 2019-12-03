@@ -1,6 +1,8 @@
-import { BaseComponent, ComponentContext, findElements, isArraysEqual } from '@fullcalendar/core'
+import {
+  h, Fragment,
+  BaseComponent, ComponentContext, findElements, isArraysEqual
+} from '@fullcalendar/core'
 import { Resource, buildResourceFields, buildResourceTextFunc, ResourceApi } from '@fullcalendar/resource-common'
-import { h, Fragment } from 'preact'
 import ExpanderIcon from './ExpanderIcon'
 
 export interface SpreadsheetRowProps {

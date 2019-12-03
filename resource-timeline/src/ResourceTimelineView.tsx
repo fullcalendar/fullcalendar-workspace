@@ -1,5 +1,8 @@
-import { subrenderer, Calendar, Hit, View, parseFieldSpecs, ComponentContext, memoize, DateProfile,
-  Duration, DateProfileGenerator, SplittableProps } from '@fullcalendar/core'
+import {
+  h, createRef,
+  subrenderer, Calendar, Hit, View, parseFieldSpecs, ComponentContext, memoize, DateProfile,
+  Duration, DateProfileGenerator, SplittableProps
+} from '@fullcalendar/core'
 import { TimelineLane, TimeColsWidthSyncer, buildTimelineDateProfile, TimelineDateProfile, TimelineHeader, TimelineSlats, TimelineNowIndicator, getTimelineNowIndicatorUnit, getTimelineViewClassNames } from '@fullcalendar/timeline'
 import { ResourceHash, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc, buildRowNodes } from '@fullcalendar/resource-common'
 import SpreadsheetColWidths from './SpreadsheetColWidths'
@@ -9,7 +12,6 @@ import SpreadsheetGroupRow from './SpreadsheetGroupRow'
 import ResourceTimelineLaneRow from './ResourceTimelineLaneRow'
 import DividerRow from './DividerRow'
 import ResourceTimelineViewLayout from './ResourceTimelineViewLayout'
-import { h, createRef } from 'preact'
 import SpreadsheetHeader from './SpreadsheetHeader'
 import SpreadsheetBody from './SpreadsheetBody'
 

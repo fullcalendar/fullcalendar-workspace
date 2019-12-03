@@ -1,7 +1,9 @@
-import { mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit } from '@fullcalendar/core'
+import {
+  h, createRef, VNode,
+  mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit
+} from '@fullcalendar/core'
 import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg } from '@fullcalendar/timegrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
-import { h, createRef, VNode } from 'preact'
 
 
 export interface ResourceDayTimeColsProps {

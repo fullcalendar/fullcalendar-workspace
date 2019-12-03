@@ -1,8 +1,10 @@
-import { ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile } from '@fullcalendar/core'
+import {
+  h, createRef,
+  ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile
+} from '@fullcalendar/core'
 import { TableView, buildDayTableModel, hasRigidRows } from '@fullcalendar/daygrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
 import ResourceDayTable from './ResourceDayTable'
-import { h, createRef } from 'preact'
 
 
 export default class ResourceDayTableView extends TableView {

@@ -1,6 +1,8 @@
-import { computeEdges, applyStyle, ScrollbarWidths, BaseComponent } from '@fullcalendar/core'
+import {
+  h, createRef, ComponentChildren,
+  computeEdges, applyStyle, ScrollbarWidths, BaseComponent
+} from '@fullcalendar/core'
 import EnhancedScroller from './EnhancedScroller'
-import { h, createRef, ComponentChildren } from 'preact'
 import ScrollerCanvas from './ScrollerCanvas'
 
 

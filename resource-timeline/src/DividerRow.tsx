@@ -1,5 +1,4 @@
-import { BaseComponent } from '@fullcalendar/core'
-import { h } from 'preact'
+import { h, BaseComponent } from '@fullcalendar/core'
 
 
 export default class DividerRow extends BaseComponent {

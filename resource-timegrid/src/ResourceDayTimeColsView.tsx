@@ -1,9 +1,11 @@
-import { ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile } from '@fullcalendar/core'
+import {
+  h, createRef,
+  ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile
+} from '@fullcalendar/core'
 import { TimeColsView, buildDayTableModel as buildAgendaDayTableModel } from '@fullcalendar/timegrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
 import { ResourceDayTable } from '@fullcalendar/resource-daygrid'
 import ResourceDayTimeCols from './ResourceDayTimeCols'
-import { h, createRef } from 'preact'
 
 
 export default class ResourceDayTimeColsView extends TimeColsView {

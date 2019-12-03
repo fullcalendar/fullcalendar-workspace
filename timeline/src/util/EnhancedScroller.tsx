@@ -1,6 +1,8 @@
-import { Scroller, EmitterInterface, EmitterMixin, removeElement, htmlToElement, preventDefault, BaseComponent, subrenderer, DelayedRunner } from '@fullcalendar/core'
+import {
+  h, createRef, ComponentChildren,
+  Scroller, EmitterInterface, EmitterMixin, removeElement, htmlToElement, preventDefault, BaseComponent, subrenderer, DelayedRunner
+} from '@fullcalendar/core'
 import StickyScrolling from './StickyScrolling'
-import { h, createRef, ComponentChildren } from 'preact'
 
 export interface EnhancedScrollerProps {
   overflowX: string

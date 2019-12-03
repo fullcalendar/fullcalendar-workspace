@@ -1,6 +1,5 @@
-import { BaseComponent, ComponentContext } from '@fullcalendar/core'
+import { h, Fragment, BaseComponent, ComponentContext } from '@fullcalendar/core'
 import { Group, isGroupsEqual } from '@fullcalendar/resource-common'
-import { h, Fragment } from 'preact'
 import ExpanderIcon from './ExpanderIcon'
 
 

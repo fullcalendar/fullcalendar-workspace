@@ -1,8 +1,10 @@
-import { memoize, Calendar, BaseComponent, DateMarker, DateProfile, findElements, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext, TableDateCell, guid } from '@fullcalendar/core'
+import {
+  VNode, h,
+  memoize, Calendar, BaseComponent, DateMarker, DateProfile, findElements, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext, TableDateCell, guid
+} from '@fullcalendar/core'
 import { buildResourceTextFunc } from '../common/resource-rendering'
 import { Resource } from '../structs/resource'
 import ResourceApi from '../api/ResourceApi'
-import { VNode, h } from 'preact'
 
 
 export interface ResourceDayHeaderProps {

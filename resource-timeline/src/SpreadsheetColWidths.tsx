@@ -1,7 +1,6 @@
-import { SubRenderer, subrenderer } from '@fullcalendar/core'
+import { h, SubRenderer, subrenderer } from '@fullcalendar/core'
 import SpreadsheetHeader from './SpreadsheetHeader'
 import SpreadsheetBody from './SpreadsheetBody'
-import { h } from 'preact'
 
 export interface SpreadsheetColWidthsProps {
   header: SpreadsheetHeader

@@ -1,6 +1,8 @@
-import { asRoughMs, isSingleDay, findElements, getDayClasses, BaseComponent, ComponentContext, DateProfile, guid } from '@fullcalendar/core'
+import {
+  h, VNode,
+  asRoughMs, isSingleDay, findElements, getDayClasses, BaseComponent, ComponentContext, DateProfile, guid
+} from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
-import { h, VNode } from 'preact'
 
 
 export interface TimelineHeaderProps {

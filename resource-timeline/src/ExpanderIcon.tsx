@@ -1,4 +1,4 @@
-import { h, VNode, Fragment } from 'preact'
+import { h, VNode, Fragment } from '@fullcalendar/core'
 
 
 /*

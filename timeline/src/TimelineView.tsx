@@ -1,9 +1,11 @@
-import { Hit, View, ViewProps, ComponentContext, Duration, memoize, subrenderer, ViewSpec, getViewClassNames } from '@fullcalendar/core'
+import {
+  h, createRef,
+  Hit, View, ViewProps, ComponentContext, Duration, memoize, subrenderer, ViewSpec, getViewClassNames
+} from '@fullcalendar/core'
 import TimeColsWidthSyncer from './TimeColsWidthSyncer'
 import TimelineLane from './TimelineLane'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
 import TimelineViewLayout from './TimelineViewLayout'
-import { h, createRef } from 'preact'
 import TimelineHeader from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'
 import TimelineNowIndicator, { getTimelineNowIndicatorUnit } from './TimelineNowIndicator'

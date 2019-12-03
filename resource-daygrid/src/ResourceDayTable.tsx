@@ -1,7 +1,9 @@
-import { mapHash, Hit, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration } from '@fullcalendar/core'
+import {
+  h, createRef, VNode,
+  mapHash, Hit, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration
+} from '@fullcalendar/core'
 import { DayTableSlicer, Table, TableSeg } from '@fullcalendar/daygrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
-import { h, createRef, VNode } from 'preact'
 
 export interface ResourceDayTableProps {
   dateProfile: DateProfile | null

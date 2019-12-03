@@ -1,5 +1,7 @@
-import { ElementDragging, BaseComponent, ComponentContext, PointerDragEvent, EmitterMixin, findElements, subrenderer, guid } from '@fullcalendar/core'
-import { VNode, h } from 'preact'
+import {
+  VNode, h,
+  ElementDragging, BaseComponent, ComponentContext, PointerDragEvent, EmitterMixin, findElements, subrenderer, guid
+} from '@fullcalendar/core'
 import { renderColGroupNodes } from './SpreadsheetColWidths'
 
 

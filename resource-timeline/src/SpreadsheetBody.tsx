@@ -1,5 +1,7 @@
-import { BaseComponent, guid, findElements } from '@fullcalendar/core'
-import { h, ComponentChildren } from 'preact'
+import {
+  h, ComponentChildren,
+  BaseComponent, guid, findElements
+} from '@fullcalendar/core'
 import { renderColGroupNodes } from './SpreadsheetColWidths'
 
 export interface SpreadsheetBodyProps {

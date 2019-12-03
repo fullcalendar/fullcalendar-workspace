@@ -1,5 +1,7 @@
-import { BaseComponent, ComponentContext, subrenderer } from '@fullcalendar/core'
-import { h, ComponentChildren, createRef } from 'preact'
+import {
+  h, ComponentChildren, createRef,
+  BaseComponent, ComponentContext, subrenderer
+} from '@fullcalendar/core'
 import ClippedScroller from './util/ClippedScroller'
 import ScrollJoiner from './util/ScrollJoiner'
 

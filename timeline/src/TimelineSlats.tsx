@@ -1,6 +1,9 @@
-import { isInt, findElements, findDirectChildren, PositionCache, getDayClasses, BaseComponent, DateProfile, multiplyDuration, ComponentContext, DateMarker, DateEnv, guid, Duration, startOfDay } from '@fullcalendar/core'
+import {
+  h, VNode,
+  isInt, findElements, findDirectChildren, PositionCache, getDayClasses, BaseComponent, DateProfile, multiplyDuration,
+  ComponentContext, DateMarker, DateEnv, guid, Duration, startOfDay
+} from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
-import { h, VNode } from 'preact'
 
 
 export interface TimelineSlatsProps {
