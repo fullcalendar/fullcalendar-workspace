@@ -102,7 +102,10 @@ export default class TimelineLane extends SubRenderer<TimelineLaneProps> {
           selectedInstanceId: props.eventSelection, // TODO: rename
           hiddenInstances: // TODO: more convenient
             (slicedProps.eventDrag ? slicedProps.eventDrag.affectedInstances : null) ||
-            (slicedProps.eventResize ? slicedProps.eventResize.affectedInstances : null)
+            (slicedProps.eventResize ? slicedProps.eventResize.affectedInstances : null),
+          isDragging: false,
+          isResizing: false,
+          isSelecting: false
         })
       )
     } else {
@@ -115,7 +118,10 @@ export default class TimelineLane extends SubRenderer<TimelineLaneProps> {
           containerParentEl: props.fgContainerEl,
           tDateProfile,
           segs: slicedProps.eventDrag.segs,
-          mirrorInfo: { isDragging: true, sourceSeg: slicedProps.eventDrag.sourceSeg }
+          isDragging: true,
+          isResizing: false,
+          isSelecting: false,
+          interactingSeg: slicedProps.eventDrag.interactingSeg
         })
       )
 
@@ -125,7 +131,10 @@ export default class TimelineLane extends SubRenderer<TimelineLaneProps> {
           containerParentEl: props.fgContainerEl,
           tDateProfile,
           segs: slicedProps.eventResize.segs,
-          mirrorInfo: { isDragging: true, sourceSeg: slicedProps.eventResize.sourceSeg }
+          isDragging: true,
+          isResizing: false,
+          isSelecting: false,
+          interactingSeg: slicedProps.eventResize.interactingSeg
         })
       )
 

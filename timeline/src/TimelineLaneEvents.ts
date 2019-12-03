@@ -21,22 +21,24 @@ export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEven
 
   render(props: TimelineLaneEventsProps) {
     let containerEl = this.containerEl = this.renderContainer({
-      isMirror: Boolean(props.mirrorInfo),
+      isMirror: props.isDragging || props.isResizing,
       parentEl: props.containerParentEl
     })
 
     let segs = this.renderSegs({
       segs: props.segs,
-      mirrorInfo: props.mirrorInfo,
       selectedInstanceId: props.selectedInstanceId,
-      hiddenInstances: props.hiddenInstances
+      hiddenInstances: props.hiddenInstances,
+      isDragging: props.isDragging,
+      isResizing: props.isResizing,
+      isSelecting: props.isSelecting
     })
 
     this.attachSegs({ segs, containerEl })
   }
 
 
-  renderSegHtml(seg, mirrorInfo) {
+  renderSegHtml(seg, isDragging: boolean, isResizing: boolean) {
     let { context } = this
     let eventRange = seg.eventRange
     let eventDef = eventRange.def
@@ -45,7 +47,7 @@ export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEven
     let isResizableFromStart = seg.isStart && computeEventStartResizable(context, eventDef, eventUi)
     let isResizableFromEnd = seg.isEnd && computeEventEndResizable(context, eventDef, eventUi)
 
-    let classNames = this.getSegClasses(seg, isDraggable, isResizableFromStart || isResizableFromEnd, mirrorInfo)
+    let classNames = this.getSegClasses(seg, isDraggable, isResizableFromStart || isResizableFromEnd, isDragging, isResizing)
     classNames.unshift('fc-timeline-event', 'fc-h-event')
 
     let timeText = this.getTimeText(eventRange)
