@@ -38,7 +38,7 @@ export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEven
   }
 
 
-  renderSegHtml(seg, isDragging: boolean, isResizing: boolean) {
+  renderSegHtml(seg, isDragging: boolean, isResizing: boolean, isSelecting: boolean) {
     let { context } = this
     let eventRange = seg.eventRange
     let eventDef = eventRange.def
@@ -47,7 +47,7 @@ export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEven
     let isResizableFromStart = seg.isStart && computeEventStartResizable(context, eventDef, eventUi)
     let isResizableFromEnd = seg.isEnd && computeEventEndResizable(context, eventDef, eventUi)
 
-    let classNames = this.getSegClasses(seg, isDraggable, isResizableFromStart || isResizableFromEnd, isDragging, isResizing)
+    let classNames = this.getSegClasses(seg, isDraggable, isResizableFromStart || isResizableFromEnd, isDragging, isResizing, isSelecting)
     classNames.unshift('fc-timeline-event', 'fc-h-event')
 
     let timeText = this.getTimeText(eventRange)
