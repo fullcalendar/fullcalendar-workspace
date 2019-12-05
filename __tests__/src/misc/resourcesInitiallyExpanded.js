@@ -38,7 +38,7 @@ describe('resourcesInitiallyExpanded', function() {
     })
 
 
-    it('renders background events when expanded', function() {
+    it('renders background events when expanded', function(done) {
       initCalendar({
         events: [
           { resourceId: 'a1',
@@ -52,7 +52,10 @@ describe('resourcesInitiallyExpanded', function() {
       expect($('.event1.fc-bgevent').length).toBe(0)
 
       clickExpander()
-      expect($('.event1.fc-bgevent').length).toBe(1)
+      setTimeout(function() {
+        expect($('.event1.fc-bgevent').length).toBe(1)
+        done()
+      })
     })
 
 
@@ -68,13 +71,16 @@ describe('resourcesInitiallyExpanded', function() {
       })
 
 
-      it('renders when expanded', function() {
+      it('renders when expanded', function(done) {
         initCalendar()
 
         expect($('.event1').length).toBe(0)
 
         clickExpander()
-        expect($('.event1').length).toBe(1)
+        setTimeout(function() {
+          expect($('.event1').length).toBe(1)
+          done()
+        })
       })
 
     })

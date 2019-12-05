@@ -16,7 +16,7 @@ describe('resource render waiting', function() {
         ])
       },
 
-      resourceRender(resource) {
+      resourceRender(arg) {
         resourceRenderCnt += 1
       },
 

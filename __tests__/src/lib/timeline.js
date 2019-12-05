@@ -33,7 +33,7 @@ export function selectResourceTimeline(startInfo, inclusiveEndInfo) {
     selectInfo = arg
   })
 
-  $('.fc-body .fc-time-area').simulate('drag', {
+  $.simulateByPoint('drag', {
     point: getResourceTimelinePoint(startInfo.resourceId, startInfo.date),
     end: getResourceTimelinePoint(inclusiveEndInfo.resourceId, inclusiveEndInfo.date),
     onRelease() {
