@@ -35,6 +35,7 @@ export default class ResourceTimelineView extends View {
   private spreadsheetHeaderRef = createRef<SpreadsheetHeader>()
   private spreadsheetBodyRef = createRef<SpreadsheetBody>()
   private rowNodes: (GroupNode | ResourceNode)[] = []
+  private renderedRowNodes: (GroupNode | ResourceNode)[] = [] // made it to DOM
   private rowIdToIndex: { [id: string]: number } = {}
   private rowIdToComponent: { [id: string]: ResourceTimelineLaneRow } = {} // ONLY ResourceTimelineLaneRow instances
 
@@ -200,18 +201,17 @@ export default class ResourceTimelineView extends View {
 
     let { resourceScroll, dateScrollLeft } = snapshot
 
-    if (prevProps.dateProfile !== this.props.dateProfile) {
-      this.scrollToInitialTime()
-
-    } else {
-      this.scrollLeft(dateScrollLeft)
-    }
-
     if (resourceScroll.rowId) {
       this.scrollToResource(resourceScroll.rowId, resourceScroll.fromBottom)
-
     } else if (resourceScroll.top) {
       this.scrollTop(resourceScroll.top)
+    }
+
+    // do after scrollToResource/scrollTop, for updateStickyScrolling
+    if (prevProps.dateProfile !== this.props.dateProfile) {
+      this.scrollToInitialTime()
+    } else {
+      this.scrollLeft(dateScrollLeft)
     }
   }
 
@@ -248,6 +248,8 @@ export default class ResourceTimelineView extends View {
       body: this.spreadsheetBodyRef.current,
       colSpecs: this.colSpecs
     })
+
+    this.renderedRowNodes = this.rowNodes
   }
 
 
@@ -399,27 +401,6 @@ export default class ResourceTimelineView extends View {
   // TODO: what about left scroll state for spreadsheet area?
 
 
-  scrollToTime(duration: Duration) {
-    this.afterSizing(() => { // hack
-      let slats = this.slatsRef.current
-      let left = slats.computeDurationLeft(duration)
-
-      this.scrollLeft(left)
-    })
-  }
-
-
-  scrollLeft(left: number) {
-    this.afterSizing(() => { // hack
-      let layout = this.layoutRef.current
-
-      // TODO: lame we have to update both. use the scrolljoiner instead maybe
-      layout.timeBodyScroller.enhancedScroller.setScrollLeft(left)
-      layout.timeHeadScroller.enhancedScroller.setScrollLeft(left)
-    })
-  }
-
-
   scrollToResource(resourceId: string, fromBottom?: number) {
     this.afterSizing(() => { // hack
       let layout = this.layoutRef.current
@@ -449,21 +430,19 @@ export default class ResourceTimelineView extends View {
       // TODO: lame we have to update both. use the scrolljoiner instead maybe
       layout.timeBodyScroller.enhancedScroller.scroller.controller.setScrollTop(top)
       layout.spreadsheetBodyScroller.enhancedScroller.scroller.controller.setScrollTop(top)
-
-      layout.updateStickyScrolling() // strange place to do this. but guaranteed to be last
     })
   }
 
 
   queryResourceScroll(): { rowId: string, fromBottom: number } {
-    let { rowNodes } = this
+    let { renderedRowNodes } = this
     let scroll = {} as any
     let layout = this.layoutRef.current
     let trs = layout.bodyRowSyncer.hContainersTrs[1] // 1 = time axis ... TODO: use for position as well?
     let scrollerTop = layout.timeBodyScroller.clipEl.getBoundingClientRect().top // fixed position
 
     for (let i = 0; i < trs.length; i++) {
-      let rowNode = rowNodes[i]
+      let rowNode = renderedRowNodes[i]
       let el = trs[i]
       let elBottom = el.getBoundingClientRect().bottom // fixed position
 
@@ -475,6 +454,29 @@ export default class ResourceTimelineView extends View {
     }
 
     return scroll
+  }
+
+
+  scrollToTime(duration: Duration) {
+    this.afterSizing(() => { // hack
+      let slats = this.slatsRef.current
+      let left = slats.computeDurationLeft(duration)
+
+      this.scrollLeft(left)
+    })
+  }
+
+
+  scrollLeft(left: number) {
+    this.afterSizing(() => { // hack
+      let layout = this.layoutRef.current
+
+      // TODO: lame we have to update both. use the scrolljoiner instead maybe
+      layout.timeBodyScroller.enhancedScroller.setScrollLeft(left)
+      layout.timeHeadScroller.enhancedScroller.setScrollLeft(left)
+
+      layout.updateStickyScrolling() // strange place to do this. but guaranteed to be last
+    })
   }
 
 

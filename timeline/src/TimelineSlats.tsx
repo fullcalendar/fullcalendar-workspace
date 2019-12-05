@@ -213,7 +213,7 @@ function renderSlatCell(date, isEm, dateProfile: DateProfile, tDateProfile: Time
         'fc-minor'
     )
   } else {
-    classes = getDayClasses(date, dateProfile, this.context)
+    classes = getDayClasses(date, dateProfile, context)
     classes.push('fc-day')
   }
 

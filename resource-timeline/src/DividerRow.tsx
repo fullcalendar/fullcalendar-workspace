@@ -6,7 +6,9 @@ export default class DividerRow extends BaseComponent {
   render() {
     return (
       <tr>
-        <td class='fc-divider' />
+        <td class='fc-divider'>
+          <div />
+        </td>
       </tr>
     )
   }
