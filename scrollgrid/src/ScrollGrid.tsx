@@ -9,9 +9,10 @@ import {
   Scroller,
   RefMap,
   SectionConfig, ColCss, ChunkConfig, CssDimValue, doSizingHacks, hasShrinkWidth, renderMicroColGroup,
-  getScrollGridClassNames, getSectionClassNames, getChunkVGrow, getNeedsYScrolling, renderChunkContent, getForceScrollbars, getShrinkWidth, getChunkClassNames,
+  getScrollGridClassNames, getSectionClassNames, getChunkVGrow, getNeedsYScrolling, renderChunkContent, computeForceScrollbars, computeShrinkWidth, getChunkClassNames,
   getIsRtlScrollbarOnLeft,
-  setRef
+  setRef,
+  componentNeedsResize
 } from '@fullcalendar/core'
 import StickyScrolling from './StickyScrolling'
 import ClippedScroller, { ClippedOverflowValue } from './ClippedScroller'
@@ -23,6 +24,7 @@ export interface ScrollGridProps {
   sections: ScrollGridSectionConfig[]
   vGrow?: boolean
   forPrint?: boolean
+  needsSizing?: boolean
 }
 
 export interface ScrollGridSectionConfig extends SectionConfig {
@@ -35,19 +37,26 @@ export interface ColGroupConfig {
   cols: ColCss[]
 }
 
+interface ScrollGridState {
+  forceYScrollbars: boolean
+  forceXScrollbars: boolean
+  shrinkWidths: number[] // for only one col within each vertical stack of chunks
+  isSizingReady: boolean
+}
+
+const STATE_IS_SIZING = {
+  forceYScrollbars: true,
+  forceXScrollbars: true,
+  shrinkWidths: true,
+  isSizingReady: true
+}
+
 interface ColGroupStat {
   hasShrinkCol: boolean
   totalColWidth: number
   totalColMinWidth: number
   needsXScrolling: boolean
   config: ColGroupConfig
-}
-
-interface ScrollGridState {
-  forceYScrollbars: boolean
-  forceXScrollbars: boolean
-  shrinkWidths: number[] // for only one col within each vertical stack of chunks
-  isSizingReady: boolean
 }
 
 
@@ -61,6 +70,9 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   private updateStickyScrollingSubRenderers = buildMapSubRenderer(StickyScrolling)
   private updateScrollSyncersBySection = buildMapSubRenderer(ScrollSyncer)
   private updateScrollSyncersByColumn = buildMapSubRenderer(ScrollSyncer)
+  private scrollSyncersBySection: { [sectionI: string]: ScrollSyncer } = {}
+  private scrollSyncersByColumn: { [columnI: string]: ScrollSyncer } = {}
+  sectionRowSets: HTMLElement[][][] = []
 
   state = {
     forceYScrollbars: false,
@@ -169,58 +181,37 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
 
   componentDidMount() {
-    let colGroupStats = this.compileColGroupStats(this.props.colGroups)
-
-    // do all of these??? maybe just do the second time around?
     this.updateScrollSyncers()
-    doSizingHacks(this.base as HTMLElement)
-    this.updateShrinkWidths(colGroupStats)
-    this.syncRowHeights()
-    this.syncScrollbarWidths()
-    this.updateStickyScrolling()
-
-    window.addEventListener('resize', this.handleWindowResize)
 
     if (this.props.forPrint) {
       this.fillPrintContainer()
+    } else {
+      this.handleSizing()
     }
+
+    this.context.addResizeHandler(this.handleSizing)
   }
 
 
-  componentDidUpdate() {
-    let colGroupStats = this.compileColGroupStats(this.props.colGroups)
-
+  componentDidUpdate(prevProps: ScrollGridProps, prevState: ScrollGridState) {
     this.updateScrollSyncers()
-    doSizingHacks(this.base as HTMLElement)
-    this.updateShrinkWidths(colGroupStats)
-    this.syncRowHeights()
-    this.syncScrollbarWidths()
-    this.updateStickyScrolling()
-
-    if (!this.state.isSizingReady && this.anyChunksNeedSizing()) {
-      this.setState({ isSizingReady: true })
-    }
 
     if (this.props.forPrint) {
       this.fillPrintContainer()
+
+    } else {
+      if (componentNeedsResize(prevProps, this.props, prevState, this.state, STATE_IS_SIZING)) { // non-sizing stuff changed...
+        this.handleSizing()
+
+      } else if (this.props.needsSizing && !this.state.isSizingReady) { // ONLY sizing state was updated...
+        this.setState({ isSizingReady: true })
+      }
     }
-  }
-
-
-  handleWindowResize = () => {
-    let colGroupStats = this.compileColGroupStats(this.props.colGroups)
-
-    doSizingHacks(this.base as HTMLElement)
-    this.updateScrollSyncers()
-    this.updateShrinkWidths(colGroupStats)
-    this.syncRowHeights()
-    this.syncScrollbarWidths()
-    this.updateStickyScrolling()
   }
 
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleWindowResize)
+    this.context.removeResizeHandler(this.handleSizing)
 
     this.updateScrollSyncersByColumn(false)
     this.updateScrollSyncersBySection(false)
@@ -228,44 +219,23 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   }
 
 
-  syncScrollbarWidths() {
-    this.syncYScrollbarWidths()
-    this.syncXScrollbarWidths()
-  }
-
-
-  syncYScrollbarWidths() {
-    let [ sectionCnt, chunksPerSection ] = this.getDims()
-    let sideScrollIndex = (!this.context.isRtl || getIsRtlScrollbarOnLeft()) ? chunksPerSection - 1 : 0
-    let sideClippedScrollers = collectReferences(this.clippedScrollerRefs, sideScrollIndex, sectionCnt * chunksPerSection, chunksPerSection)
+  handleSizing = () => {
+    doSizingHacks(this.base as HTMLElement)
+    this.syncRowHeights()
 
     this.setState({
-      forceYScrollbars: getForceScrollbars(sideClippedScrollers, 'Y')
+      isSizingReady: false,
+      shrinkWidths: this.computeShrinkWidths(),
+      forceXScrollbars: this.computeForceXScrollbars(),
+      forceYScrollbars: this.computeForceYScrollbars()
+    }, () => {
+      this.updateStickyScrolling() // needs to happen AFTER final positioning committed to DOM
     })
   }
 
 
-  syncXScrollbarWidths() {
-    let [ sectionCnt, chunksPerSection ] = this.getDims()
-    let endIndex = sectionCnt * chunksPerSection
-    let startIndex = endIndex - chunksPerSection
-    let lastRowClippedScrollers = collectReferences(this.clippedScrollerRefs, startIndex, endIndex)
-
-    this.setState({
-      forceXScrollbars: getForceScrollbars(lastRowClippedScrollers, 'X')
-    })
-  }
-
-
-  getDims() {
-    let sectionCnt = this.props.sections.length
-    let chunksPerSection = sectionCnt ? this.props.sections[0].chunks.length : 0
-
-    return [ sectionCnt, chunksPerSection ]
-  }
-
-
-  updateShrinkWidths(colGroupStats: ColGroupStat[]) {
+  computeShrinkWidths() {
+    let colGroupStats = this.compileColGroupStats(this.props.colGroups)
     let [ sectionCnt, chunksPerSection ] = this.getDims()
     let cnt = sectionCnt * chunksPerSection
     let shrinkWidths: number[] = []
@@ -273,11 +243,30 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     colGroupStats.forEach((colGroupStat, i) => {
       if (colGroupStat.hasShrinkCol) {
         let chunkEls = collectReferences(this.chunkElRefs, i, cnt, chunksPerSection) // in one col
-        shrinkWidths[i] = getShrinkWidth(chunkEls)
+        shrinkWidths[i] = computeShrinkWidth(chunkEls)
       }
     })
 
-    this.setState({ shrinkWidths })
+    return shrinkWidths
+  }
+
+
+  computeForceYScrollbars() {
+    let [ sectionCnt, chunksPerSection ] = this.getDims()
+    let sideScrollIndex = (!this.context.isRtl || getIsRtlScrollbarOnLeft()) ? chunksPerSection - 1 : 0
+    let sideClippedScrollers = collectReferences(this.clippedScrollerRefs, sideScrollIndex, sectionCnt * chunksPerSection, chunksPerSection)
+
+    return computeForceScrollbars(sideClippedScrollers, 'Y')
+  }
+
+
+  computeForceXScrollbars() {
+    let [ sectionCnt, chunksPerSection ] = this.getDims()
+    let endIndex = sectionCnt * chunksPerSection
+    let startIndex = endIndex - chunksPerSection
+    let lastRowClippedScrollers = collectReferences(this.clippedScrollerRefs, startIndex, endIndex)
+
+    return computeForceScrollbars(lastRowClippedScrollers, 'X')
   }
 
 
@@ -321,8 +310,8 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
       }
     }
 
-    this.updateScrollSyncersBySection(propsBySection)
-    this.updateScrollSyncersByColumn(propsByColumn)
+    this.scrollSyncersBySection = this.updateScrollSyncersBySection(propsBySection)
+    this.scrollSyncersByColumn = this.updateScrollSyncersByColumn(propsByColumn)
   }
 
 
@@ -346,20 +335,6 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     this.sectionRowSets = sectionRowSets
   }
 
-  sectionRowSets: HTMLElement[][][] = []
-
-
-  anyChunksNeedSizing() {
-    for (let sectionConfig of this.props.sections) {
-      for (let chunkConfig of sectionConfig.chunks) {
-        if (chunkConfig.needsSizing) {
-          return true
-        }
-      }
-    }
-    return false
-  }
-
 
   fillPrintContainer() {
     const handleTableEl = (el: HTMLTableElement | null) => {
@@ -377,28 +352,34 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   }
 
 
-  getColScrollLeft(col: number): number {
-    return 0 // TODO: implement, use setScrollFromLeadingEdge
+  forceScrollLeft(col: number, scrollLeft: number) {
+    let scrollSyncer = this.scrollSyncersByColumn[col]
+
+    if (scrollSyncer) {
+      scrollSyncer.forceScrollLeft(scrollLeft)
+    }
   }
 
 
-  setColScrollLeft(col: number, scrollLeft: number) {
-    // TODO: implement
-  }
+  forceScrollTop(sectionI: number, scrollTop: number) {
+    let scrollSyncer = this.scrollSyncersBySection[sectionI]
 
-
-  getSectionScrollTop(sectionI: number): number {
-    return 0 // TODO: implement
-  }
-
-
-  setSectionScrollTop(sectionI: number, scrollTop: number) {
-    // TODO: implement
+    if (scrollSyncer) {
+      scrollSyncer.forceScrollTop(scrollTop)
+    }
   }
 
 
   _handleChunkEl(chunkEl: HTMLTableCellElement | null, key: string, chunkConfig?: ChunkConfig) {
     setRef(chunkConfig.elRef, chunkEl)
+  }
+
+
+  getDims() {
+    let sectionCnt = this.props.sections.length
+    let chunksPerSection = sectionCnt ? this.props.sections[0].chunks.length : 0
+
+    return [ sectionCnt, chunksPerSection ]
   }
 
 }

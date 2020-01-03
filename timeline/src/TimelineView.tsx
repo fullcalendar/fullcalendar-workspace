@@ -1,6 +1,6 @@
 import {
   h, createRef,
-  Hit, View, ViewProps, ComponentContext, Duration, memoize, subrenderer, ViewSpec, getViewClassNames, ChunkContentCallbackArgs
+  Hit, View, ViewProps, ComponentContext, Duration, memoize, subrenderer, ViewSpec, getViewClassNames, ChunkContentCallbackArgs, componentNeedsResize
 } from '@fullcalendar/core'
 import TimelineLane from './TimelineLane'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
@@ -13,6 +13,11 @@ import { ScrollGrid } from '@fullcalendar/scrollgrid'
 interface TimelineViewState {
   slotMinWidth: number
 }
+
+const STATE_IS_SIZING = {
+  slotMinWidth: true
+}
+
 
 export default class TimelineView extends View<TimelineViewState> {
 
@@ -30,7 +35,7 @@ export default class TimelineView extends View<TimelineViewState> {
   private tDateProfile: TimelineDateProfile
 
 
-  render(props: ViewProps, state: {}, context: ComponentContext) {
+  render(props: ViewProps, state: TimelineViewState, context: ComponentContext) {
     let { options } = context
     let { dateProfile } = props
 
@@ -98,23 +103,29 @@ export default class TimelineView extends View<TimelineViewState> {
 
   componentDidMount() {
     this.subrender()
-    this.resize()
+    this.handleSizing(false)
+    this.context.addResizeHandler(this.handleSizing)
     this.startNowIndicator()
     this.scrollToInitialTime()
   }
 
 
-  componentDidUpdate(prevProps: ViewProps, prevState: {}, snapshot) {
+  componentDidUpdate(prevProps: ViewProps, prevState: TimelineViewState) {
     this.subrender()
-    this.resize()
 
-    if (prevProps.dateProfile !== this.props.dateProfile) {
-      this.scrollToInitialTime()
+    if (componentNeedsResize(prevProps, this.props, prevState, this.state, STATE_IS_SIZING)) {
+      this.handleSizing(false)
+
+    } else {
+      if (prevProps.dateProfile !== this.props.dateProfile) {
+        this.scrollToInitialTime()
+      }
     }
   }
 
 
   componentWillUnmount() {
+    this.context.removeResizeHandler(this.handleSizing)
     this.stopNowIndicator()
     this.subrenderDestroy()
   }
@@ -147,16 +158,11 @@ export default class TimelineView extends View<TimelineViewState> {
   }
 
 
-  resize(isResize?: boolean) { // !!!!!
-    let { lane } = this
-    let slats = this.slatsRef.current
-
-    slats.buildPositionCaches()
-    lane.computeSizes(isResize, slats)
-    lane.assignSizes(isResize, slats)
-
+  handleSizing = (forced: boolean) => {
     this.setState({
       slotMinWidth: this.computeSlotMinWidth()
+    }, () => {
+      this.updateLaneSizing(forced) // needs to happen after slats positioned
     })
   }
 
@@ -169,6 +175,16 @@ export default class TimelineView extends View<TimelineViewState> {
     }
 
     return slotWidth
+  }
+
+
+  updateLaneSizing(forced: boolean) {
+    let { lane } = this
+    let slats = this.slatsRef.current
+
+    slats.buildPositionCaches()
+    lane.computeSizes(forced, slats)
+    lane.assignSizes(forced, slats)
   }
 
 
@@ -202,19 +218,11 @@ export default class TimelineView extends View<TimelineViewState> {
 
 
   scrollToTime(duration: Duration) {
-    this.afterSizing(() => { // hack
-      let slats = this.slatsRef.current
-      let left = slats.computeDurationLeft(duration) // WONT WORK WITH RTL I DONT THINK
+    let slats = this.slatsRef.current
+    let scrollLeft = slats.computeDurationLeft(duration)
+    let scrollGrid = this.scrollGridRef.current
 
-      this.scrollLeft(left)
-    })
-  }
-
-
-  scrollLeft(left: number) {
-    this.afterSizing(() => { // hack
-      this.scrollGridRef.current.setColScrollLeft(0, left)
-    })
+    scrollGrid.forceScrollLeft(0, scrollLeft)
   }
 
 

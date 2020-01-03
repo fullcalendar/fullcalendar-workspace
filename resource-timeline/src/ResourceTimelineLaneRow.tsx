@@ -18,7 +18,6 @@ export interface ResourceTimelineLaneRowProps {
   eventSelection: string
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
-  willUnmount?: (resourceId: string) => void
 }
 
 export default class ResourceTimelineLaneRow extends BaseComponent<ResourceTimelineLaneRowProps> {
@@ -50,9 +49,6 @@ export default class ResourceTimelineLaneRow extends BaseComponent<ResourceTimel
 
 
   componentWillUnmount() {
-    if (this.props.willUnmount) {
-      this.props.willUnmount(this.props.resourceId)
-    }
     this.subrenderDestroy()
   }
 

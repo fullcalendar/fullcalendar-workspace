@@ -1,7 +1,7 @@
 import {
   h, createRef,
   subrenderer, Calendar, Hit, View, parseFieldSpecs, ComponentContext, memoize, DateProfile,
-  Duration, DateProfileGenerator, SplittableProps, PositionCache, Fragment, CssDimValue, ChunkContentCallbackArgs, ElementDragging, PointerDragEvent, isArraysEqual
+  Duration, DateProfileGenerator, SplittableProps, PositionCache, Fragment, CssDimValue, ChunkContentCallbackArgs, ElementDragging, PointerDragEvent, isArraysEqual, componentNeedsResize, RefMap
 } from '@fullcalendar/core'
 import { TimelineLane, buildTimelineDateProfile, TimelineDateProfile, TimelineHeader, TimelineSlats, TimelineNowIndicator, getTimelineNowIndicatorUnit, getTimelineViewClassNames, buildSlatCols, computeDefaultSlotWidth } from '@fullcalendar/timeline'
 import { ResourceHash, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc, buildRowNodes } from '@fullcalendar/resource-common'
@@ -20,6 +20,21 @@ interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
   spreadsheetColWidths: number[]
   slotMinWidth?: number
+}
+
+interface ResourceTimelineViewSnapshot {
+  resourceScroll: ResourceScrollState
+}
+
+interface ResourceScrollState {
+  rowId: string
+  fromBottom: number
+}
+
+const STATE_IS_SIZING = {
+  resourceAreaWidth: true,
+  spreadsheetColWidths: true,
+  slotMinWidth: true
 }
 
 
@@ -43,7 +58,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   private rowNodes: (GroupNode | ResourceNode)[] = []
   private renderedRowNodes: (GroupNode | ResourceNode)[] = [] // made it to DOM
   private rowIdToIndex: { [id: string]: number } = {}
-  private rowIdToComponent: { [id: string]: ResourceTimelineLaneRow } = {} // ONLY ResourceTimelineLaneRow instances
+  private rowComponentRefs = new RefMap<ResourceTimelineLaneRow>() // ONLY ResourceTimelineLaneRow refs, not dividers
   private rowPositions: PositionCache
   private spreadsheetHeaderChunkElRef = createRef<HTMLTableCellElement>()
   private spreadsheetResizerDragging: ElementDragging
@@ -217,6 +232,8 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
     fallbackBusinessHours,
     splitProps: { [resourceId: string]: SplittableProps }
   ) {
+    let { rowComponentRefs } = this
+
     return nodes.map((node) => {
       if ((node as GroupNode).group) {
         return (
@@ -229,8 +246,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
         return (
           <ResourceTimelineLaneRow
             key={node.id}
-            ref={this.handleResourceRow}
-            willUnmount={this.willUnmountResourceRow}
+            ref={rowComponentRefs.createRef(resource.id)}
             {...splitProps[resource.id]}
             resourceId={resource.id}
             dateProfile={dateProfile}
@@ -247,44 +263,39 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
   componentDidMount() {
     this.subrender()
-    this.resize()
+    this.handleSizing(false)
+    this.context.addResizeHandler(this.handleSizing)
     this.startNowIndicator()
     this.scrollToInitialTime()
   }
 
 
-  getSnapshotBeforeUpdate(prevProps: ResourceViewProps) {
-    let scrollGrid = this.scrollGridRef.current
-
+  getSnapshotBeforeUpdate(): ResourceTimelineViewSnapshot {
     return {
-      resourceScroll: this.queryResourceScroll(),
-      dateScrollLeft: scrollGrid.getColScrollLeft(1)
+      resourceScroll: this.queryResourceScroll()
     }
   }
 
 
-  componentDidUpdate(prevProps: ResourceViewProps, prevState: {}, snapshot) {
+  componentDidUpdate(prevProps: ResourceViewProps, prevState: ResourceTimelineViewState, snapshot: ResourceTimelineViewSnapshot) {
     this.subrender()
-    this.resize()
 
-    let { resourceScroll, dateScrollLeft } = snapshot
+    if (componentNeedsResize(prevProps, this.props, prevState, this.state, STATE_IS_SIZING)) {
+      this.handleSizing(false)
 
-    if (resourceScroll.rowId) {
+    } else { // sizing is ready...
+      let { resourceScroll } = snapshot
       this.scrollToResource(resourceScroll.rowId, resourceScroll.fromBottom)
-    } else if (resourceScroll.top) {
-      this.scrollTop(resourceScroll.top)
-    }
 
-    // do after scrollToResource/scrollTop, for updateStickyScrolling
-    if (prevProps.dateProfile !== this.props.dateProfile) {
-      this.scrollToInitialTime()
-    } else {
-      this.scrollLeft(dateScrollLeft)
+      if (prevProps.dateProfile !== this.props.dateProfile) {
+        this.scrollToInitialTime()
+      }
     }
   }
 
 
   componentWillUnmount() {
+    this.context.removeResizeHandler(this.handleSizing)
     this.stopNowIndicator()
     this.subrenderDestroy()
   }
@@ -393,19 +404,11 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   }
 
 
-  resize(isResize?: boolean) {
-    let { bgLane } = this
-    let slats = this.slatsRef.current
-    let resourceRows = this.getResourceRows()
-
-    // these methods are all efficient, use flags
-    for (let resourceRow of resourceRows) { resourceRow.computeSizes(isResize, slats) }
-    bgLane.computeSizes(isResize, slats)
-    for (let resourceRow of resourceRows) { resourceRow.assignSizes(isResize, slats) }
-    bgLane.assignSizes(isResize, slats)
-
+  handleSizing = (forced: boolean) => {
     this.setState({
       slotMinWidth: this.computeSlotMinWidth()
+    }, () => {
+      this.updateLaneSizing(forced) // needs slots to be positioned first
     })
   }
 
@@ -418,6 +421,19 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
     }
 
     return slotWidth
+  }
+
+
+  updateLaneSizing(force: boolean) {
+    let { bgLane } = this
+    let slats = this.slatsRef.current
+    let resourceRows = this.getResourceRows()
+
+    // these methods are all efficient, use flags
+    for (let resourceRow of resourceRows) { resourceRow.computeSizes(force, slats) }
+    bgLane.computeSizes(force, slats)
+    for (let resourceRow of resourceRows) { resourceRow.assignSizes(force, slats) }
+    bgLane.assignSizes(force, slats)
   }
 
 
@@ -449,40 +465,38 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   // Scrolling
   // ------------------------------------------------------------------------------------------------------------------
   // this is useful for scrolling prev/next dates while resource is scrolled down
-  // TODO: what about left scroll state for spreadsheet area?
+
+
+  scrollToTime(duration: Duration) {
+    let slats = this.slatsRef.current
+    let scrollLeft = slats.computeDurationLeft(duration)
+    let scrollGrid = this.scrollGridRef.current
+
+    scrollGrid.forceScrollLeft(1, scrollLeft) // 1 = the time area
+  }
 
 
   scrollToResource(resourceId: string, fromBottom?: number) {
-    this.afterSizing(() => { // hack
-      let scrollGrid = this.scrollGridRef.current
-      let trs = scrollGrid.sectionRowSets[1][1] // the timeline body rows
-      let index = this.rowIdToIndex[resourceId]
+    let scrollGrid = this.scrollGridRef.current
+    let trs = scrollGrid.sectionRowSets[1][1] // the timeline body rows
+    let index = this.rowIdToIndex[resourceId]
 
-      if (index != null) {
-        let tr = trs[index]
-        let innerTop = this.laneRootElRef.current.getBoundingClientRect().top
-        let rowRect = tr.getBoundingClientRect()
-        let scrollTop =
-          (fromBottom == null ?
-            rowRect.top : // just use top edge
-            rowRect.bottom - fromBottom) - // pixels from bottom edge
-          innerTop
+    if (index != null) {
+      let tr = trs[index]
+      let innerTop = this.laneRootElRef.current.getBoundingClientRect().top
+      let rowRect = tr.getBoundingClientRect()
+      let scrollTop =
+        (fromBottom == null ?
+          rowRect.top : // just use top edge
+          rowRect.bottom - fromBottom) - // pixels from bottom edge
+        innerTop
 
-        this.scrollTop(scrollTop)
-      }
-    })
+      scrollGrid.forceScrollTop(1, scrollTop) // 1 = the body
+    }
   }
 
 
-  scrollTop(top: number) {
-    this.afterSizing(() => { // hack
-      let scrollGrid = this.scrollGridRef.current
-      scrollGrid.setSectionScrollTop(1, top)
-    })
-  }
-
-
-  queryResourceScroll(): { rowId: string, fromBottom: number } {
+  queryResourceScroll(): ResourceScrollState {
     let { renderedRowNodes } = this
     let scroll = {} as any
     let scrollGrid = this.scrollGridRef.current
@@ -502,24 +516,6 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
     }
 
     return scroll
-  }
-
-
-  scrollToTime(duration: Duration) {
-    this.afterSizing(() => { // hack
-      let slats = this.slatsRef.current
-      let left = slats.computeDurationLeft(duration)
-
-      this.scrollLeft(left)
-    })
-  }
-
-
-  scrollLeft(left: number) {
-    this.afterSizing(() => { // hack
-      let scrollGrid = this.scrollGridRef.current
-      scrollGrid.setColScrollLeft(1, left)
-    })
   }
 
 
@@ -579,27 +575,14 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   // ------------------------------------------------------------------------------------------
 
 
-  handleResourceRow = (component: ResourceTimelineLaneRow) => {
-    if (component) {
-      let { resourceId } = component.props
-      this.rowIdToComponent[resourceId] = component
-    }
-  }
-
-
-  willUnmountResourceRow = (resourceId: string) => {
-    delete this.rowIdToComponent[resourceId]
-  }
-
-
   getResourceRows() {
-    let { rowIdToComponent } = this
+    let { rowComponentRefs } = this
     let components: ResourceTimelineLaneRow[] = []
 
     for (let rowNode of this.rowNodes) {
       if ((rowNode as ResourceNode).resource) {
         components.push(
-          rowIdToComponent[(rowNode as ResourceNode).resource.id]
+          rowComponentRefs.currentMap[(rowNode as ResourceNode).resource.id]
         )
       }
     }

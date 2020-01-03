@@ -1,5 +1,6 @@
 import { SubRenderer, isArraysEqual } from '@fullcalendar/core'
 import ScrollListener from './ScrollListener'
+import { setScrollFromStartingEdge } from './scroll-left-norm'
 
 
 export interface ScrollSyncerProps {
@@ -12,6 +13,7 @@ export default class ScrollSyncer extends SubRenderer<ScrollSyncerProps> {
 
   private masterEl: HTMLElement
   private scrollListeners: ScrollListener[]
+  private isPaused: boolean = false
 
 
   render(props: ScrollSyncerProps) {
@@ -30,13 +32,13 @@ export default class ScrollSyncer extends SubRenderer<ScrollSyncerProps> {
     let scrollListener = new ScrollListener(el)
 
     const onScrollStart = () => {
-      if (!this.masterEl) {
+      if (!this.isPaused && !this.masterEl) {
         this.assignMaster(el)
       }
     }
 
     const onScroll = () => {
-      if (el === this.masterEl) {
+      if (!this.isPaused && el === this.masterEl) {
         for (let otherEl of this.props.scrollEls) {
           if (otherEl !== el) {
             if (this.props.isVertical) {
@@ -50,7 +52,7 @@ export default class ScrollSyncer extends SubRenderer<ScrollSyncerProps> {
     }
 
     const onScrollEnd = () => {
-      if (el === this.masterEl) {
+      if (!this.isPaused && el === this.masterEl) {
         this.unassignMaster()
       }
     }
@@ -58,7 +60,9 @@ export default class ScrollSyncer extends SubRenderer<ScrollSyncerProps> {
     // when the user scrolls via mousewheel, we know for sure the target
     // scroller should be the master. capture the various x-browser events that fire.
     const onWheel = () => {
-      this.assignMaster(el)
+      if (!this.isPaused) {
+        this.assignMaster(el)
+      }
     }
 
     scrollListener.emitter
@@ -92,6 +96,31 @@ export default class ScrollSyncer extends SubRenderer<ScrollSyncerProps> {
 
       this.masterEl = null
     }
+  }
+
+
+  /*
+  will normalize the scrollLeft value
+  */
+  forceScrollLeft(scrollLeft: number) {
+    this.isPaused = true
+
+    for (let listener of this.scrollListeners) {
+      setScrollFromStartingEdge(listener.el, scrollLeft)
+    }
+
+    this.isPaused = false
+  }
+
+
+  forceScrollTop(top: number) {
+    this.isPaused = true
+
+    for (let listener of this.scrollListeners) {
+      listener.el.scrollTop = top
+    }
+
+    this.isPaused = false
   }
 
 }

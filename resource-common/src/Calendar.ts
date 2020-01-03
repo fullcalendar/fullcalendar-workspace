@@ -25,7 +25,6 @@ Calendar.prototype.addResource = function(this: Calendar, input: ResourceInput |
 
     if (view.scrollToResource) {
       view.scrollToResource(resource.id)
-      this.drainAfterSizingCallbacks() // hack
     }
   }
 

@@ -32,34 +32,18 @@ export function getScrollFromLeftEdge(el: HTMLElement) {
 }
 
 
-export function getScrollFromLeadingEdge(el: HTMLElement) { // TODO: rename to "starting" edge ... more complient with W3C
-  let val = el.scrollLeft
+/*
+will use the "negative" scheme
+*/
+export function setScrollFromStartingEdge(el: HTMLElement, val: number) {
   let computedStyles = window.getComputedStyle(el) // TODO: pass in isRtl?
 
   if (computedStyles.direction === 'rtl') {
     switch (getRtlScrollSystem()) {
       case 'positive':
-        val = el.scrollWidth - el.clientWidth - val // maxScrollDistance - val
+        val = val - (el.scrollWidth - el.clientWidth) // val - maxScrollDistance
         break
-      case 'negative':
-        val = -val
-        break
-    }
-  }
-
-  return val
-}
-
-
-export function setScrollFromLeadingEdge(el: HTMLElement, val: number) {
-  let computedStyles = window.getComputedStyle(el) // TODO: pass in isRtl?
-
-  if (computedStyles.direction === 'rtl') {
-    switch (getRtlScrollSystem()) {
-      case 'positive':
-        val = el.scrollWidth - el.clientWidth - val // maxScrollDistance - val
-        break
-      case 'negative':
+      case 'reverse':
         val = -val
         break
     }
