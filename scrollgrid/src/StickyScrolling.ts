@@ -1,98 +1,102 @@
-import { translateRect, Rect, applyStyle, Point, htmlToElement, SubRenderer, ComponentContext, subrenderer } from '@fullcalendar/core'
-import EnhancedScroller from './EnhancedScroller'
+import {
+  applyStyle, htmlToElement,
+  translateRect, Rect, Point,
+  findElements,
+  computeInnerRect,
+  SubRenderer,
+  ComponentContext
+} from '@fullcalendar/core'
+import ScrollListener from './ScrollListener'
+import { getScrollCanvasOrigin, getScrollFromLeftEdge } from './scroll-left-norm'
+
+export interface StickyScrollerProps {
+  scrollEl: HTMLElement
+}
 
 interface ElementGeom {
   parentBound: Rect // relative to the canvas origin
   naturalBound: Rect | null // of the el itself
   elWidth: number
   elHeight: number
-  computedTextAlign: string
-  intendedTextAlign: string
+  textAlign: string
 }
 
-const STICKY_PROP_VAL = computeStickyPropVal() // if null, means no supported at all
+const STICKY_PROP_VAL = computeStickyPropVal() // if null, means not supported at all
 const IS_MS_EDGE = /Edge/.test(navigator.userAgent)
-const IS_SAFARI = STICKY_PROP_VAL === '-webkit-sticky' // good b/c doesn't confuse chrome
-const STICKY_CLASSNAME = 'fc-sticky'
+const STICKY_SELECTOR = '.fc-sticky'
 
-export interface StickyScrollingProps {
-  enhancedScroller: EnhancedScroller
-  isVertical: boolean
-}
 
 /*
 useful beyond the native position:sticky for these reasons:
 - support in IE11
 - nice centering support
 */
-export default class StickyScrolling extends SubRenderer<StickyScrollingProps> { // more of a wrapper around an existing scroller than a component
+export default class StickyScroller extends SubRenderer<StickyScrollerProps> {
 
-  updateHandlers = subrenderer(this._initHandlers, this._destroyHandlers)
+  listener?: ScrollListener
   usingRelative: boolean | null = null
 
 
-  render(props: StickyScrollingProps) {
-    this.updateHandlers({
-      enhancedScroller: props.enhancedScroller,
-      isVertical: props.isVertical
-    })
-  }
-
-
-  _initHandlers(props: { enhancedScroller: EnhancedScroller, isVertical: boolean }, context: ComponentContext) {
+  render(props: StickyScrollerProps, context: ComponentContext) {
     this.usingRelative =
       !STICKY_PROP_VAL || // IE11
-      (IS_MS_EDGE && context.isRtl) || // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/18883305/
-      ((IS_MS_EDGE || IS_SAFARI) && props.isVertical) // because doesn't work with rowspan in tables, our only vertial use
+      (IS_MS_EDGE && context.isRtl) // https://stackoverflow.com/questions/56835658/in-microsoft-edge-sticky-positioning-doesnt-work-when-combined-with-dir-rtl
 
     if (this.usingRelative) {
-      props.enhancedScroller.on('scrollEnd', this.updateSize)
+      this.listener = new ScrollListener(props.scrollEl)
+      this.listener.emitter.on('scrollEnd', this.updateSize)
     }
-
-    return props.enhancedScroller
   }
 
 
-  _destroyHandlers(enhancedScroller: EnhancedScroller) {
-    enhancedScroller.off('scrollEnd', this.updateSize)
+  unrender() {
+    if (this.listener) {
+      this.listener.destroy()
+      this.listener = null
+    }
   }
 
 
-  /*
-  known bug: called twice on init. problem when mixing with ScrollJoiner
-  */
-  updateSize = () => {
-    let { enhancedScroller } = this.props
-    let els = Array.prototype.slice.call(enhancedScroller.rootEl.querySelectorAll('.' + STICKY_CLASSNAME))
+  updateSize = () => { // called A LOT!!!
+    let { scrollEl } = this.props
+    let els = findElements(scrollEl, STICKY_SELECTOR)
     let elGeoms = this.queryElGeoms(els)
-    let viewportWidth = enhancedScroller.rootEl.clientWidth
+    let viewportWidth = scrollEl.clientWidth
 
     if (this.usingRelative) {
       let elDestinations = this.computeElDestinations(elGeoms, viewportWidth) // read before prepPositioning
+
       assignRelativePositions(els, elGeoms, elDestinations)
     } else {
       assignStickyPositions(els, elGeoms, viewportWidth)
     }
   }
 
+
   queryElGeoms(els: HTMLElement[]): ElementGeom[] {
-    let { enhancedScroller } = this.props
-    let canvasOrigin = (enhancedScroller.rootEl.firstChild as HTMLElement).getBoundingClientRect() // expects a root child!
+    let { isRtl } = this.context
+    let { scrollEl } = this.props
+    let canvasOrigin = getScrollCanvasOrigin(scrollEl)
     let elGeoms: ElementGeom[] = []
 
     for (let el of els) {
 
       let parentBound = translateRect(
-        (el.parentNode as HTMLElement).getBoundingClientRect(),
+        computeInnerRect(el.parentNode as HTMLElement, true, true), // weird way to call this!!!
         -canvasOrigin.left,
         -canvasOrigin.top
       )
 
       let elRect = el.getBoundingClientRect()
       let computedStyles = window.getComputedStyle(el)
-      let computedTextAlign = window.getComputedStyle(el.parentNode as HTMLElement).textAlign // ask the parent
-      let intendedTextAlign = computedTextAlign
+      let textAlign = window.getComputedStyle(el.parentNode as HTMLElement).textAlign // ask the parent
       let naturalBound = null
+
+      if (textAlign === 'start') {
+        textAlign = isRtl ? 'right' : 'left'
+      } else if (textAlign === 'end') {
+        textAlign = isRtl ? 'left' : 'right'
+      }
 
       if (computedStyles.position !== 'sticky') {
         naturalBound = translateRect(
@@ -102,27 +106,23 @@ export default class StickyScrolling extends SubRenderer<StickyScrollingProps> {
         )
       }
 
-      if (el.hasAttribute('data-sticky-center')) {
-        intendedTextAlign = 'center'
-      }
-
       elGeoms.push({
         parentBound,
         naturalBound,
         elWidth: elRect.width,
         elHeight: elRect.height,
-        computedTextAlign,
-        intendedTextAlign
+        textAlign
       })
     }
 
     return elGeoms
   }
 
+
   computeElDestinations(elGeoms: ElementGeom[], viewportWidth: number): Point[] {
-    let { enhancedScroller } = this.props
-    let viewportLeft = enhancedScroller.getScrollFromLeft()
-    let viewportTop = enhancedScroller.scroller.controller.getScrollTop()
+    let { scrollEl } = this.props
+    let viewportTop = scrollEl.scrollTop
+    let viewportLeft = getScrollFromLeftEdge(scrollEl)
     let viewportRight = viewportLeft + viewportWidth
 
     return elGeoms.map(function(elGeom) {
@@ -130,7 +130,7 @@ export default class StickyScrolling extends SubRenderer<StickyScrollingProps> {
       let destLeft // relative to canvas topleft
       let destTop // "
 
-      switch (elGeom.intendedTextAlign) {
+      switch (elGeom.textAlign) {
         case 'left':
           destLeft = viewportLeft
           break
@@ -138,7 +138,7 @@ export default class StickyScrolling extends SubRenderer<StickyScrollingProps> {
           destLeft = viewportRight - elWidth
           break
         case 'center':
-          destLeft = (viewportLeft + viewportRight) / 2 - elWidth / 2
+          destLeft = (viewportLeft + viewportRight) / 2 - elWidth / 2 /// noooo, use half-width insteadddddddd
           break
       }
 
@@ -155,40 +155,40 @@ export default class StickyScrolling extends SubRenderer<StickyScrollingProps> {
 
 }
 
+
 function assignRelativePositions(els: HTMLElement[], elGeoms: ElementGeom[], elDestinations: Point[]) {
   els.forEach(function(el, i) {
     let { naturalBound } = elGeoms[i]
+    let left = elDestinations[i].left - naturalBound.left
+    let top = elDestinations[i].top - naturalBound.top
 
     applyStyle(el, {
       position: 'relative',
-      left: elDestinations[i].left - naturalBound.left,
-      top: elDestinations[i].top - naturalBound.top
+      left: left,
+      right: -left, // for rtl
+      top: top
     })
   })
 }
+
 
 function assignStickyPositions(els: HTMLElement[], elGeoms: ElementGeom[], viewportWidth: number) {
   els.forEach(function(el, i) {
     let stickyLeft = 0
 
-    if (elGeoms[i].intendedTextAlign === 'center') {
+    if (elGeoms[i].textAlign === 'center') {
       stickyLeft = (viewportWidth - elGeoms[i].elWidth) / 2
-
-      // needs to be forced to left?
-      if (elGeoms[i].computedTextAlign === 'center') {
-        el.setAttribute('data-sticky-center', '') // remember for next queryElGeoms
-        ;(el.parentNode as HTMLElement).style.textAlign = 'left'
-      }
     }
 
     applyStyle(el, {
       position: STICKY_PROP_VAL,
       left: stickyLeft,
-      right: 0,
+      right: stickyLeft, // for when centered
       top: 0
     })
   })
 }
+
 
 function computeStickyPropVal() {
   let el = htmlToElement('<div style="position:-webkit-sticky;position:sticky"></div>')

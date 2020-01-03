@@ -16,6 +16,7 @@ export interface ResourceDayTimeColsProps {
   eventSelection: string
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
+  colGroupNode: VNode
   renderBgIntro: () => VNode[]
   renderIntro: () => VNode[]
 }
@@ -65,6 +66,7 @@ export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeCo
         {...this.joiner.joinProps(slicedProps, resourceDayTableModel)}
         dateProfile={dateProfile}
         cells={resourceDayTableModel.cells[0]}
+        colGroupNode={props.colGroupNode}
         renderBgIntro={props.renderBgIntro}
         renderIntro={props.renderIntro}
       />
@@ -80,11 +82,6 @@ export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeCo
     } else {
       calendar.unregisterInteractiveComponent(this)
     }
-  }
-
-
-  updateSize(isResize: boolean) {
-    this.timeCols.updateSize(isResize)
   }
 
 

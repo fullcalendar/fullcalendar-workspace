@@ -1,6 +1,6 @@
 import {
   h, createRef,
-  ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile
+  ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs
 } from '@fullcalendar/core'
 import { TimeColsView, buildDayTableModel as buildAgendaDayTableModel } from '@fullcalendar/timegrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
@@ -42,7 +42,7 @@ export default class ResourceDayTimeColsView extends TimeColsView {
           datesRepDistinctDays={true}
           renderIntro={this.renderHeadIntro}
         />,
-      options.allDaySlot &&
+      options.allDaySlot && ((contentArg: ChunkContentCallbackArgs) => (
         <ResourceDayTable
           ref={this.dayTableRef}
           {...splitProps['allDay']}
@@ -50,42 +50,26 @@ export default class ResourceDayTimeColsView extends TimeColsView {
           resourceDayTableModel={resourceDayTableModel}
           isRigid={false}
           nextDayThreshold={nextDayThreshold}
+          colGroupNode={contentArg.colGroupNode}
           renderNumberIntro={this.renderTableIntro}
           renderBgIntro={this.renderTableBgIntro}
           renderIntro={this.renderTableIntro}
           colWeekNumbersVisible={false}
           cellWeekNumbersVisible={false}
-        />,
-      <ResourceDayTimeCols
-        ref={this.timeColsRef}
-        {...splitProps['timed']}
-        dateProfile={props.dateProfile}
-        resourceDayTableModel={resourceDayTableModel}
-        renderBgIntro={this.renderTimeColsBgIntro}
-        renderIntro={this.renderTimeColsIntro}
-      />
-    )
-  }
-
-
-  updateSize(isResize: boolean, viewHeight: number, isAuto: boolean) {
-    let dayTable = this.dayTableRef.current
-    let timeCols = this.timeColsRef.current
-
-    if (isResize || this.isLayoutSizeDirty()) {
-      this.updateLayoutSize(
-        timeCols.timeCols,
-        dayTable ? dayTable.table : null,
-        viewHeight,
-        isAuto
+        />
+      )),
+      (contentArg: ChunkContentCallbackArgs) => (
+        <ResourceDayTimeCols
+          ref={this.timeColsRef}
+          {...splitProps['timed']}
+          dateProfile={props.dateProfile}
+          resourceDayTableModel={resourceDayTableModel}
+          colGroupNode={contentArg.colGroupNode}
+          renderBgIntro={this.renderTimeColsBgIntro}
+          renderIntro={this.renderTimeColsIntro}
+        />
       )
-    }
-
-    if (dayTable) {
-      dayTable.updateSize(isResize)
-    }
-
-    timeCols.updateSize(isResize)
+    )
   }
 
 

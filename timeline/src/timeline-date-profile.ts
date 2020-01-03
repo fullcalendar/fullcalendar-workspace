@@ -1,7 +1,6 @@
 import {
-  VNode, h,
   config, computeVisibleDayRange, Duration, DateProfile, isSingleDay, addDays, wholeDivideDurations, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs,
-  createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator, GotoAnchor
+  createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator
 } from '@fullcalendar/core'
 
 export interface TimelineDateProfile {
@@ -25,9 +24,9 @@ export interface TimelineDateProfile {
 }
 
 export interface TimelineHeaderCell {
-  text: string
-  spanNode: VNode
   date: DateMarker
+  text: string
+  rowUnit: string
   colspan: number
   isWeekStart: boolean
 }
@@ -188,7 +187,7 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: Date
   // more...
 
   tDateProfile.isWeekStarts = buildIsWeekStarts(tDateProfile, dateEnv)
-  tDateProfile.cellRows = buildCellRows(tDateProfile, dateEnv, allOptions)
+  tDateProfile.cellRows = buildCellRows(tDateProfile, dateEnv)
 
   return tDateProfile
 }
@@ -542,7 +541,7 @@ function buildIsWeekStarts(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) 
 }
 
 
-function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, allOptions: any) {
+function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
   let slotDates = tDateProfile.slotDates
   let formats = tDateProfile.headerFormats
   let cellRows = formats.map((format) => []) // indexed by row,col
@@ -567,7 +566,7 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, allO
       if (isSuperRow) {
         let text = dateEnv.format(date, format)
         if (!leadingCell || (leadingCell.text !== text)) {
-          newCell = buildCellObject(date, text, rowUnits[row], allOptions)
+          newCell = buildCellObject(date, text, rowUnits[row])
         } else {
           leadingCell.colspan += 1
         }
@@ -581,7 +580,7 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, allO
           ))
         ) {
           let text = dateEnv.format(date, format)
-          newCell = buildCellObject(date, text, rowUnits[row], allOptions)
+          newCell = buildCellObject(date, text, rowUnits[row])
         } else {
           leadingCell.colspan += 1
         }
@@ -598,20 +597,6 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv, allO
 }
 
 
-function buildCellObject(date: DateMarker, text, rowUnit, allOptions: any): TimelineHeaderCell {
-  let spanNode = (
-    <GotoAnchor
-      navLinks={allOptions.navLinks}
-      gotoOptions={{
-        date,
-        type: rowUnit,
-        forceOff: !rowUnit
-      }}
-      extraAttrs={{
-        'class': 'fc-cell-text'
-      }}
-    >{text}</GotoAnchor>
-  )
-
-  return { text, spanNode, date, colspan: 1, isWeekStart: false }
+function buildCellObject(date: DateMarker, text, rowUnit): TimelineHeaderCell {
+  return { date, text, rowUnit, colspan: 1, isWeekStart: false }
 }

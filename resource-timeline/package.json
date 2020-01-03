@@ -8,6 +8,7 @@
   "browserGlobal": "FullCalendarResourceTimeline",
   "dependencies": {
     "@fullcalendar/resource-common": "~4.3.0",
+    "@fullcalendar/scrollgrid": "~4.3.0",
     "@fullcalendar/timeline": "~4.3.0"
   },
   "peerDependencies": {

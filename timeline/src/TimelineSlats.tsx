@@ -1,7 +1,7 @@
 import {
   h, VNode,
   isInt, findElements, findDirectChildren, PositionCache, getDayClasses, BaseComponent, DateProfile, multiplyDuration,
-  ComponentContext, DateMarker, DateEnv, guid, Duration, startOfDay
+  ComponentContext, DateMarker, DateEnv, guid, Duration, startOfDay, CssDimValue
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -9,12 +9,13 @@ import { TimelineDateProfile } from './timeline-date-profile'
 export interface TimelineSlatsProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
+  colGroupNode: VNode
+  minWidth: CssDimValue
 }
 
 export default class TimelineSlats extends BaseComponent<TimelineSlatsProps, ComponentContext> {
 
   rootEl: HTMLElement
-  slatColEls: HTMLElement[]
   slatEls: HTMLElement[]
 
   private outerCoordCache: PositionCache
@@ -25,18 +26,11 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps, Com
     let { dateProfile, tDateProfile } = props
     let { theme } = context
     let { slotDates, isWeekStarts } = tDateProfile
-    let colGroupNodes: VNode[] = []
-
-    for (let i = 0; i < slotDates.length; i++) {
-      colGroupNodes.push(<col/>)
-    }
 
     return ( // guid rerenders whole DOM every time
       <div class='fc-slats' ref={this.handleRootEl} key={guid()}>
-        <table class={theme.getClass('tableGrid')}>
-          <colgroup>
-            {colGroupNodes}
-          </colgroup>
+        <table class={theme.getClass('tableGrid')} style={{ minWidth: props.minWidth }}>
+          {props.colGroupNode}
           <tbody>
             <tr>
               {slotDates.map((slotDate, i) =>
@@ -57,8 +51,7 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps, Com
     if (rootEl) {
       this.rootEl = rootEl
 
-      let slatColEls = findElements(rootEl, 'col')
-      let slatEls = findElements(rootEl, 'td')
+      let slatEls = this.slatEls = findElements(rootEl, 'td')
 
       for (let i = 0; i < slotDates.length; i++) {
         calendar.publiclyTrigger('dayRender', [
@@ -69,9 +62,6 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps, Com
           }
         ])
       }
-
-      this.slatColEls = slatColEls
-      this.slatEls = slatEls
 
       this.outerCoordCache = new PositionCache(
         rootEl,
@@ -122,7 +112,7 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps, Com
           range: { start, end },
           allDay: !this.props.tDateProfile.isTimeScale
         },
-        dayEl: this.slatColEls[slatIndex],
+        dayEl: this.slatEls[slatIndex],
         left: outerCoordCache.lefts[slatIndex], // TODO: make aware of snaps?
         right: outerCoordCache.rights[slatIndex]
       }

@@ -17,6 +17,7 @@ export interface ResourceDayTableProps {
   eventResize: EventInteractionState | null
   isRigid: boolean
   nextDayThreshold: Duration
+  colGroupNode: VNode
   renderNumberIntro: (row: number, cells: any) => VNode[]
   renderBgIntro: () => VNode[]
   renderIntro: () => VNode[]
@@ -65,6 +66,7 @@ export default class ResourceDayTable extends DateComponent<ResourceDayTableProp
         dateProfile={dateProfile}
         cells={resourceDayTableModel.cells}
         isRigid={props.isRigid}
+        colGroupNode={props.colGroupNode}
         renderNumberIntro={props.renderNumberIntro}
         renderBgIntro={props.renderBgIntro}
         renderIntro={props.renderIntro}
@@ -83,11 +85,6 @@ export default class ResourceDayTable extends DateComponent<ResourceDayTableProp
     } else {
       calendar.unregisterInteractiveComponent(this)
     }
-  }
-
-
-  updateSize(isResize: boolean) {
-    this.table.updateSize(isResize)
   }
 
 

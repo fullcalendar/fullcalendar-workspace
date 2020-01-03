@@ -1,6 +1,5 @@
 import {
-  h, VNode,
-  asRoughMs, isSingleDay, findElements, getDayClasses, BaseComponent, ComponentContext, DateProfile, guid
+  h, asRoughMs, isSingleDay, getDayClasses, BaseComponent, ComponentContext, DateProfile, GotoAnchor, wholeDivideDurations, findElements, Fragment
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -12,86 +11,90 @@ export interface TimelineHeaderProps {
 
 export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
 
-  slatColEls: HTMLElement[]
-  innerEls: HTMLElement[]
-
 
   render(props: TimelineHeaderProps, state: {}, context: ComponentContext) {
-    let { dateEnv, theme } = context
+    let { dateEnv, theme, options } = context
     let { tDateProfile, dateProfile } = props
     let { cellRows } = tDateProfile
     let isChrono = asRoughMs(tDateProfile.labelInterval) > asRoughMs(tDateProfile.slotDuration)
     let oneDay = isSingleDay(tDateProfile.slotDuration)
-    let colGroupNodes: VNode[] = []
 
-    // needs to be a col for each body slat. header cells will have colspans
-    for (let i = tDateProfile.slotCnt - 1; i >= 0; i--) {
-      colGroupNodes.push(<col />)
-    }
+    return (
+      <Fragment>
+        {cellRows.map((rowCells, i) => {
+          let isLast = i === cellRows.length - 1
 
-    return ( // guid rerenders whole DOM every time
-      <table class={context.theme.getClass('tableGrid')} key={guid()} ref={this.handleRootEl}>
-        <colgroup>
-          {colGroupNodes}
-        </colgroup>
-        <tbody>
-          {cellRows.map((rowCells, i) => {
-            let isLast = i === cellRows.length - 1
+          return (
+            <tr class={isChrono && isLast ? 'fc-chrono' : ''}>
+              {rowCells.map((cell) => {
+                let headerCellClassNames = [ theme.getClass('widgetHeader') ]
 
-            return (
-              <tr class={isChrono && isLast ? 'fc-chrono' : ''}>
-                {rowCells.map((cell) => {
-                  let headerCellClassNames = [ theme.getClass('widgetHeader') ]
+                if (cell.isWeekStart) {
+                  headerCellClassNames.push('fc-em-cell')
+                }
 
-                  if (cell.isWeekStart) {
-                    headerCellClassNames.push('fc-em-cell')
-                  }
-
-                  if (oneDay) {
-                    headerCellClassNames = headerCellClassNames.concat(
-                      getDayClasses(cell.date, dateProfile, context, true) // adds "today" class and other day-based classes
-                    )
-                  }
-
-                  return (
-                    <th class={headerCellClassNames.join(' ')}
-                      data-date={dateEnv.formatIso(cell.date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true })}
-                      colSpan={cell.colspan}
-                    >
-                      <div class="fc-cell-content">
-                        {cell.spanNode}
-                      </div>
-                    </th>
+                if (oneDay) {
+                  headerCellClassNames = headerCellClassNames.concat(
+                    getDayClasses(cell.date, dateProfile, context, true) // adds "today" class and other day-based classes
                   )
-                })}
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+                }
+
+                return (
+                  <th class={headerCellClassNames.join(' ')}
+                    data-date={dateEnv.formatIso(cell.date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true })}
+                    colSpan={cell.colspan}
+                  >
+                    <div class="fc-cell-content">
+                      <GotoAnchor
+                        navLinks={options.navLinks}
+                        gotoOptions={{
+                          date: cell.date,
+                          type: cell.rowUnit,
+                          forceOff: !cell.rowUnit
+                        }}
+                        extraAttrs={{
+                          'class': 'fc-cell-text' + (isLast ? '' : ' fc-sticky')
+                        }}
+                      >{cell.text}</GotoAnchor>
+                    </div>
+                  </th>
+                )
+              })}
+            </tr>
+          )
+        })}
+      </Fragment>
     )
   }
 
+}
 
-  handleRootEl = (rootEl: HTMLElement | null) => {
-    if (rootEl) {
-      let slatColEls = findElements(rootEl, 'col')
 
-      let innerEls = findElements(
-        rootEl.querySelector<HTMLElement>('tr:last-child'), // compound selector won't work because of query-root problem
-        'th .fc-cell-text'
-      )
+export function computeDefaultSlotWidth(containerEl: HTMLElement, tDateProfile: TimelineDateProfile) {
+  let maxInnerWidth = 0
 
-      findElements(
-        rootEl.querySelectorAll('tr:not(:last-child)'), // compound selector won't work because of query-root problem
-        'th .fc-cell-text'
-      ).forEach(function(innerEl) {
-        innerEl.classList.add('fc-sticky')
-      })
+  // TODO: !!!!!!!!!!!!!!!!!!!!!!
+  // use cells somehow. uses the inner span currently
+  let innerEls = findElements(containerEl, '.fc-cell-text')
+  innerEls.forEach(function(innerEl, i) {
+    maxInnerWidth = Math.max(maxInnerWidth, innerEl.getBoundingClientRect().width)
+  })
 
-      this.slatColEls = slatColEls
-      this.innerEls = innerEls
+  let headingCellWidth = Math.ceil(maxInnerWidth) + 1 // assume no padding, and one pixel border
+
+  // in TimelineView.defaults we ensured that labelInterval is an interval of slotDuration
+  // TODO: rename labelDuration?
+  let slotsPerLabel = wholeDivideDurations(tDateProfile.labelInterval, tDateProfile.slotDuration)
+
+  let slotWidth = Math.ceil(headingCellWidth / slotsPerLabel)
+
+  let minWidth: any = window.getComputedStyle(innerEls[0].parentNode as HTMLElement).minWidth
+  if (minWidth) {
+    minWidth = parseInt(minWidth, 10)
+    if (minWidth) {
+      slotWidth = Math.max(slotWidth, minWidth)
     }
   }
 
+  return slotWidth
 }

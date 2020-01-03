@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "@fullcalendar/scrollgrid",
+  "version": "4.3.0",
+  "title": "FullCalendar ScrollGrid Plugin",
+  "description": "internal package",
+  "browserGlobal": "FullCalendarScrollGrid",
+  "peerDependencies": {
+    "@fullcalendar/core": "~4.3.0"
+  },
+  "devDependencies": {
+    "@fullcalendar/core": "~4.3.0"
+  }
+}

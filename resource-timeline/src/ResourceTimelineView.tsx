@@ -1,22 +1,29 @@
 import {
   h, createRef,
   subrenderer, Calendar, Hit, View, parseFieldSpecs, ComponentContext, memoize, DateProfile,
-  Duration, DateProfileGenerator, SplittableProps
+  Duration, DateProfileGenerator, SplittableProps, PositionCache, Fragment, CssDimValue, ChunkContentCallbackArgs, ElementDragging, PointerDragEvent, isArraysEqual
 } from '@fullcalendar/core'
-import { TimelineLane, TimeColsWidthSyncer, buildTimelineDateProfile, TimelineDateProfile, TimelineHeader, TimelineSlats, TimelineNowIndicator, getTimelineNowIndicatorUnit, getTimelineViewClassNames } from '@fullcalendar/timeline'
+import { TimelineLane, buildTimelineDateProfile, TimelineDateProfile, TimelineHeader, TimelineSlats, TimelineNowIndicator, getTimelineNowIndicatorUnit, getTimelineViewClassNames, buildSlatCols, computeDefaultSlotWidth } from '@fullcalendar/timeline'
 import { ResourceHash, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc, buildRowNodes } from '@fullcalendar/resource-common'
-import SpreadsheetColWidths from './SpreadsheetColWidths'
 import { __assign } from 'tslib'
 import SpreadsheetRow from './SpreadsheetRow'
 import SpreadsheetGroupRow from './SpreadsheetGroupRow'
 import ResourceTimelineLaneRow from './ResourceTimelineLaneRow'
 import DividerRow from './DividerRow'
-import ResourceTimelineViewLayout from './ResourceTimelineViewLayout'
-import SpreadsheetHeader from './SpreadsheetHeader'
-import SpreadsheetBody from './SpreadsheetBody'
+import SpreadsheetHeader, { SPREADSHEET_COL_MIN_WIDTH } from './SpreadsheetHeader'
+import { ScrollGrid } from '@fullcalendar/scrollgrid'
 
 
-export default class ResourceTimelineView extends View {
+const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
+
+interface ResourceTimelineViewState {
+  resourceAreaWidth: CssDimValue
+  spreadsheetColWidths: number[]
+  slotMinWidth?: number
+}
+
+
+export default class ResourceTimelineView extends View<ResourceTimelineViewState> {
 
   private processOptions = memoize(this._processOptions)
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
@@ -26,18 +33,20 @@ export default class ResourceTimelineView extends View {
   private buildRowIndex = memoize(buildRowIndex)
   private registerInteractive = subrenderer(this._registerInteractive, this._unregisterInteractive)
   private renderBgLane = subrenderer(TimelineLane)
-  private renderSpreadsheetColWidths = subrenderer(SpreadsheetColWidths)
-  private timeColsWidthSyncer = new TimeColsWidthSyncer()
   private renderNowIndicatorMarkers = subrenderer(TimelineNowIndicator)
-  private layoutRef = createRef<ResourceTimelineViewLayout>()
+  private scrollGridRef = createRef<ScrollGrid>()
+  private timeHeaderScrollerElRef = createRef<HTMLDivElement>()
+  private timeBodyScrollerElRef = createRef<HTMLDivElement>()
   private slatsRef = createRef<TimelineSlats>()
-  private timeHeaderRef = createRef<TimelineHeader>()
-  private spreadsheetHeaderRef = createRef<SpreadsheetHeader>()
-  private spreadsheetBodyRef = createRef<SpreadsheetBody>()
+  private laneRootElRef = createRef<HTMLDivElement>()
+  private laneBgElRef = createRef<HTMLDivElement>()
   private rowNodes: (GroupNode | ResourceNode)[] = []
   private renderedRowNodes: (GroupNode | ResourceNode)[] = [] // made it to DOM
   private rowIdToIndex: { [id: string]: number } = {}
   private rowIdToComponent: { [id: string]: ResourceTimelineLaneRow } = {} // ONLY ResourceTimelineLaneRow instances
+  private rowPositions: PositionCache
+  private spreadsheetHeaderChunkElRef = createRef<HTMLTableCellElement>()
+  private spreadsheetResizerDragging: ElementDragging
 
   static needsResourceData = true // for ResourceViewProps
   props: ResourceViewProps
@@ -55,8 +64,18 @@ export default class ResourceTimelineView extends View {
   private orderSpecs: any // used by row generation
 
 
-  render(props: ResourceViewProps, state: {}, context: ComponentContext) {
-    let { options } = context
+  constructor(props: ResourceViewProps, context: ComponentContext) {
+    super(props, context)
+
+    this.state = {
+      resourceAreaWidth: context.options.resourceAreaWidth,
+      spreadsheetColWidths: []
+    }
+  }
+
+
+  render(props: ResourceViewProps, state: ResourceTimelineViewState, context: ComponentContext) {
+    let { options, theme } = context
     let { dateProfile } = props
 
     this.processOptions(context.options, context.calendar)
@@ -91,51 +110,98 @@ export default class ResourceTimelineView extends View {
 
     return (
       <div class={classNames.join(' ')}>
-        <ResourceTimelineViewLayout
-          ref={this.layoutRef}
-          spreadsheetHeadContent={
-            <SpreadsheetHeader
-              ref={this.spreadsheetHeaderRef}
-              superHeaderText={this.superHeaderText}
-              colSpecs={this.colSpecs}
-            />
-          }
-          spreadsheetBodyContent={
-            <SpreadsheetBody colSpecs={this.colSpecs} ref={this.spreadsheetBodyRef}>
-              {renderSpreadsheetRows(rowNodes, this.colSpecs)}
-            </SpreadsheetBody>
-          }
-          timeHeadContent={
-            <TimelineHeader
-              ref={this.timeHeaderRef}
-              dateProfile={dateProfile}
-              tDateProfile={tDateProfile}
-            />
-          }
-          timeBodyFgContent={
-            <div class='fc-rows'>
-              <table>
-                <tbody>
-                  {this.renderTimeAxisRows(
-                    rowNodes,
-                    props.dateProfile,
-                    props.dateProfileGenerator,
-                    tDateProfile,
-                    context.nextDayThreshold,
-                    hasResourceBusinessHours ? props.businessHours : null, // CONFUSING, comment
-                    splitProps
-                  )}
-                </tbody>
-              </table>
-            </div>
-          }
-          timeBodyBgContent={
-            <TimelineSlats
-              ref={this.slatsRef}
-              dateProfile={dateProfile}
-              tDateProfile={tDateProfile}
-            />
-          }
+        <ScrollGrid
+          ref={this.scrollGridRef}
+          colGroups={[
+            {
+              width: this.state.resourceAreaWidth,
+              cols: buildSpreadsheetCols(this.colSpecs, this.state.spreadsheetColWidths)
+            },
+            {
+              cols: buildSlatCols(tDateProfile, this.state.slotMinWidth)
+            }
+          ]}
+          sections={[
+            {
+              type: 'head',
+              className: 'fc-head',
+              chunks: [
+                {
+                  vGrowRows: true,
+                  elRef: this.spreadsheetHeaderChunkElRef,
+                  rowContent: (
+                    <SpreadsheetHeader
+                      superHeaderText={this.superHeaderText}
+                      colSpecs={this.colSpecs}
+                      onColWidthChange={this.handleColWidthChange}
+                    />
+                  )
+                },
+                { outerContent: (
+                  <td rowSpan={2} class={'fc-divider fc-col-resizer ' + theme.getClass('widgetHeader')} />
+                ) },
+                {
+                  scrollerElRef: this.timeHeaderScrollerElRef,
+                  rowContent: (
+                    <TimelineHeader
+                      dateProfile={dateProfile}
+                      tDateProfile={tDateProfile}
+                    />
+                  )
+                }
+              ]
+            },
+            {
+              type: 'body',
+              className: 'fc-body',
+              syncRowHeights: true,
+              chunks: [
+                {
+                  rowContent: ( // TODO: used to have fc-rows class wrapping it
+                    <Fragment>
+                      {renderSpreadsheetRows(rowNodes, this.colSpecs)}
+                    </Fragment>
+                  )
+                },
+                { outerContent: null },
+                {
+                  scrollerElRef: this.timeBodyScrollerElRef,
+                  content: (stuff: ChunkContentCallbackArgs) => {
+                    return (
+                      <div class='fc-scroller-canvas' ref={this.laneRootElRef}>
+                        <div class='fc-content'>
+                          <div class='fc-rows'>
+                            <table style={{ minWidth: stuff.minWidth }}>
+                              <tbody>
+                                {this.renderTimeAxisRows(
+                                  rowNodes,
+                                  props.dateProfile,
+                                  props.dateProfileGenerator,
+                                  tDateProfile,
+                                  context.nextDayThreshold,
+                                  hasResourceBusinessHours ? props.businessHours : null, // CONFUSING, comment
+                                  splitProps
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div class='fc-bg' ref={this.laneBgElRef}>
+                          <TimelineSlats
+                            ref={this.slatsRef}
+                            dateProfile={dateProfile}
+                            tDateProfile={tDateProfile}
+                            minWidth={stuff.minWidth}
+                            colGroupNode={stuff.colGroupNode}
+                          />
+                        </div>
+                      </div>
+                    )
+                  }
+                }
+              ]
+            }
+          ]}
         />
       </div>
     )
@@ -181,23 +247,25 @@ export default class ResourceTimelineView extends View {
 
   componentDidMount() {
     this.subrender()
+    this.resize()
     this.startNowIndicator()
     this.scrollToInitialTime()
   }
 
 
   getSnapshotBeforeUpdate(prevProps: ResourceViewProps) {
-    let layout = this.layoutRef.current
+    let scrollGrid = this.scrollGridRef.current
 
     return {
       resourceScroll: this.queryResourceScroll(),
-      dateScrollLeft: layout.timeBodyScroller.enhancedScroller.getScrollLeft()
+      dateScrollLeft: scrollGrid.getColScrollLeft(1)
     }
   }
 
 
   componentDidUpdate(prevProps: ResourceViewProps, prevState: {}, snapshot) {
     this.subrender()
+    this.resize()
 
     let { resourceScroll, dateScrollLeft } = snapshot
 
@@ -225,7 +293,6 @@ export default class ResourceTimelineView extends View {
   subrender() {
     let { props, context } = this
     let hasResourceBusinessHours = this.hasResourceBusinessHours(props.resourceStore)
-    let layout = this.layoutRef.current
 
     // for all-resource bg events / selections / business-hours
     this.bgLane = this.renderBgLane({
@@ -234,19 +301,13 @@ export default class ResourceTimelineView extends View {
       nextDayThreshold: context.nextDayThreshold,
       businessHours: hasResourceBusinessHours ? null : props.businessHours,
       fgContainerEl: null, // will render no fg events
-      bgContainerEl: layout.timeBodyScroller.canvas.bgEl,
+      bgContainerEl: this.laneBgElRef.current,
       dateProfileGenerator: props.dateProfileGenerator,
       tDateProfile: this.tDateProfile
     })
 
     this.registerInteractive({
-      timeBodyEl: layout.timeBodyScroller.canvas.rootEl
-    })
-
-    this.renderSpreadsheetColWidths({
-      header: this.spreadsheetHeaderRef.current,
-      body: this.spreadsheetBodyRef.current,
-      colSpecs: this.colSpecs
+      timeBodyEl: this.laneRootElRef.current
     })
 
     this.renderedRowNodes = this.rowNodes
@@ -332,30 +393,9 @@ export default class ResourceTimelineView extends View {
   }
 
 
-  updateSize(isResize, viewHeight, isAuto) {
+  resize(isResize?: boolean) {
     let { bgLane } = this
-    let layout = this.layoutRef.current
-    let header = this.timeHeaderRef.current
     let slats = this.slatsRef.current
-
-    if (isResize || this.isLayoutSizeDirty()) {
-      let availableWidth = layout.getTimeAvailableWidth()
-      let { containerWidth, containerMinWidth } = this.timeColsWidthSyncer.updateSize({
-        availableWidth,
-        header,
-        slats,
-        tDateProfile: this.tDateProfile,
-        dateProfile: this.props.dateProfile
-      }, this.context)
-
-      layout.setTimeWidths(containerWidth, containerMinWidth)
-      layout.syncHeadRowHeights()
-      layout.setHeight(viewHeight, isAuto) // needs to happen after syncHeadRowHeights
-
-      // needs to happen after layout adjusted, so last cell isn't stretched
-      slats.buildPositionCaches()
-    }
-
     let resourceRows = this.getResourceRows()
 
     // these methods are all efficient, use flags
@@ -364,7 +404,20 @@ export default class ResourceTimelineView extends View {
     for (let resourceRow of resourceRows) { resourceRow.assignSizes(isResize, slats) }
     bgLane.assignSizes(isResize, slats)
 
-    layout.syncBodyRowHeights()
+    this.setState({
+      slotMinWidth: this.computeSlotMinWidth()
+    })
+  }
+
+
+  computeSlotMinWidth() {
+    let slotWidth = this.context.options.slotWidth || ''
+
+    if (slotWidth === '') {
+      slotWidth = computeDefaultSlotWidth(this.timeHeaderScrollerElRef.current, this.tDateProfile)
+    }
+
+    return slotWidth
   }
 
 
@@ -378,11 +431,9 @@ export default class ResourceTimelineView extends View {
 
 
   renderNowIndicator(date) {
-    let layout = this.layoutRef.current
-
     this.renderNowIndicatorMarkers({
-      headParentEl: layout.timeHeadScroller.canvas.rootEl,
-      bodyParentEl: layout.timeBodyScroller.canvas.rootEl,
+      headParentEl: this.timeHeaderScrollerElRef.current,
+      bodyParentEl: this.laneRootElRef.current,
       tDateProfile: this.tDateProfile,
       slats: this.slatsRef.current,
       date
@@ -403,13 +454,13 @@ export default class ResourceTimelineView extends View {
 
   scrollToResource(resourceId: string, fromBottom?: number) {
     this.afterSizing(() => { // hack
-      let layout = this.layoutRef.current
-      let trs = layout.bodyRowSyncer.hContainersTrs[1] // 1 = time axis. TODO: use for position as well?
+      let scrollGrid = this.scrollGridRef.current
+      let trs = scrollGrid.sectionRowSets[1][1] // the timeline body rows
       let index = this.rowIdToIndex[resourceId]
 
       if (index != null) {
         let tr = trs[index]
-        let innerTop = layout.timeBodyScroller.canvas.rootEl.getBoundingClientRect().top
+        let innerTop = this.laneRootElRef.current.getBoundingClientRect().top
         let rowRect = tr.getBoundingClientRect()
         let scrollTop =
           (fromBottom == null ?
@@ -425,11 +476,8 @@ export default class ResourceTimelineView extends View {
 
   scrollTop(top: number) {
     this.afterSizing(() => { // hack
-      let layout = this.layoutRef.current
-
-      // TODO: lame we have to update both. use the scrolljoiner instead maybe
-      layout.timeBodyScroller.enhancedScroller.scroller.controller.setScrollTop(top)
-      layout.spreadsheetBodyScroller.enhancedScroller.scroller.controller.setScrollTop(top)
+      let scrollGrid = this.scrollGridRef.current
+      scrollGrid.setSectionScrollTop(1, top)
     })
   }
 
@@ -437,9 +485,9 @@ export default class ResourceTimelineView extends View {
   queryResourceScroll(): { rowId: string, fromBottom: number } {
     let { renderedRowNodes } = this
     let scroll = {} as any
-    let layout = this.layoutRef.current
-    let trs = layout.bodyRowSyncer.hContainersTrs[1] // 1 = time axis ... TODO: use for position as well?
-    let scrollerTop = layout.timeBodyScroller.clipEl.getBoundingClientRect().top // fixed position
+    let scrollGrid = this.scrollGridRef.current
+    let trs = scrollGrid.sectionRowSets[1][1] // the timeline body rows
+    let scrollerTop = this.timeBodyScrollerElRef.current.getBoundingClientRect().top // fixed position
 
     for (let i = 0; i < trs.length; i++) {
       let rowNode = renderedRowNodes[i]
@@ -469,13 +517,8 @@ export default class ResourceTimelineView extends View {
 
   scrollLeft(left: number) {
     this.afterSizing(() => { // hack
-      let layout = this.layoutRef.current
-
-      // TODO: lame we have to update both. use the scrolljoiner instead maybe
-      layout.timeBodyScroller.enhancedScroller.setScrollLeft(left)
-      layout.timeHeadScroller.enhancedScroller.setScrollLeft(left)
-
-      layout.updateStickyScrolling() // strange place to do this. but guaranteed to be last
+      let scrollGrid = this.scrollGridRef.current
+      scrollGrid.setColScrollLeft(1, left)
     })
   }
 
@@ -485,14 +528,21 @@ export default class ResourceTimelineView extends View {
 
 
   buildPositionCaches() {
+    let scrollGrid = this.scrollGridRef.current
+
+    this.rowPositions = new PositionCache(
+      this.laneRootElRef.current,
+      scrollGrid.sectionRowSets[1][1], // the timeline body trs
+      false,
+      true // isVertical
+    )
+
     this.slatsRef.current.buildPositionCaches()
-    // NOTE: the layout's rowHeightSyncer updates all the time :)
   }
 
 
   queryHit(positionLeft: number, positionTop: number): Hit {
-    let layout = this.layoutRef.current
-    let rowPositions = layout.bodyRowSyncer.rowPositions
+    let rowPositions = this.rowPositions
     let slats = this.slatsRef.current
     let rowIndex = rowPositions.topToIndex(positionTop)
 
@@ -558,6 +608,85 @@ export default class ResourceTimelineView extends View {
   }
 
 
+  // Resource Area Resizing
+  // ------------------------------------------------------------------------------------------
+
+
+  handleSpreadsheetResizerEl = (resizerEl: HTMLElement | null) => {
+    if (resizerEl) {
+      this.initSpreadsheetResizing(resizerEl)
+    } else {
+      this.destroySpreadsheetResizing()
+    }
+  }
+
+
+  initSpreadsheetResizing(resizerEl: HTMLElement) {
+    let { isRtl, pluginHooks } = this.context
+    let ElementDraggingImpl = pluginHooks.elementDraggingImpl
+    let spreadsheetHeadEl = this.spreadsheetHeaderChunkElRef.current
+
+    if (ElementDraggingImpl) {
+      let dragging = this.spreadsheetResizerDragging = new ElementDraggingImpl(resizerEl)
+      let dragStartWidth
+      let viewWidth
+
+      dragging.emitter.on('dragstart', () => {
+        dragStartWidth = this.state.resourceAreaWidth
+        if (typeof dragStartWidth !== 'number') {
+          dragStartWidth = spreadsheetHeadEl.getBoundingClientRect().width
+        }
+        viewWidth = (this.base as HTMLElement).getBoundingClientRect().width
+      })
+
+      dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
+        let newWidth = dragStartWidth + pev.deltaX * (isRtl ? -1 : 1)
+        newWidth = Math.max(newWidth, MIN_RESOURCE_AREA_WIDTH)
+        newWidth = Math.min(newWidth, viewWidth - MIN_RESOURCE_AREA_WIDTH)
+
+        this.setState({ // TODO: debounce?
+          resourceAreaWidth: newWidth
+        })
+      })
+
+      dragging.setAutoScrollEnabled(false) // because gets weird with auto-scrolling time area
+    }
+  }
+
+
+  destroySpreadsheetResizing() {
+    this.spreadsheetResizerDragging.destroy()
+  }
+
+
+  // Resource INDIVIDUAL-Column Area Resizing
+  // ------------------------------------------------------------------------------------------
+
+
+  handleColWidthChange = (colIndex: number, colWidth: number) => {
+    let widths = this.state.spreadsheetColWidths.concat([]) // copy! TODO: use util?
+    widths[colIndex] = colWidth
+
+    this.setState({
+      spreadsheetColWidths: widths
+    })
+  }
+
+}
+
+ResourceTimelineView.addStateEquality({
+  spreadsheetColWidths: isArraysEqual
+})
+
+
+function buildSpreadsheetCols(colSpecs, forcedWidths: number[]) {
+  return colSpecs.map((colSpec, i) => {
+    return {
+      className: colSpec.isMain ? 'fc-main-col' : '',
+      minWidth: SPREADSHEET_COL_MIN_WIDTH,
+      width: forcedWidths[i] || ''
+    }
+  })
 }
 
 

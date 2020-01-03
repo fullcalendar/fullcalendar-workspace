@@ -28,7 +28,7 @@ export default createPlugin({
       duration: { months: 1 },
 
       // TODO: wish we didn't have to C&P from dayGrid's file
-      monthMode: true,
+      monthMode: true, // a hidden option!?
       fixedWeekCount: true
     }
 

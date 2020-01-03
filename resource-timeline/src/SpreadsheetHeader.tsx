@@ -1,30 +1,22 @@
 import {
-  VNode, h,
-  ElementDragging, BaseComponent, ComponentContext, PointerDragEvent, EmitterMixin, findElements, subrenderer, guid
+  VNode, h, Fragment,
+  BaseComponent, ComponentContext, ElementDragging, elementClosest, PointerDragEvent, RefMap,
 } from '@fullcalendar/core'
-import { renderColGroupNodes } from './SpreadsheetColWidths'
 
 
 export interface SpreadsheetHeaderProps {
   superHeaderText: string
   colSpecs: any
+  onColWidthChange?: (colIndex: number, colWidth: number) => void
 }
 
-const COL_MIN_WIDTH = 30
+export const SPREADSHEET_COL_MIN_WIDTH = 30
 
 
 export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
 
-  private updateColResizing = subrenderer(this._initColResizing, this._destroyColResizing)
-  private colWidths: number[] = []
-
-  emitter: EmitterMixin = new EmitterMixin()
-  colEls: HTMLElement[]
-
-
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    return super.shouldComponentUpdate(nextProps, nextState, nextContext)
-  }
+  private resizerElRefs = new RefMap<HTMLElement>(this._handleColResizerEl.bind(this))
+  private colDraggings: { [index: string]: ElementDragging } = {}
 
 
   render(props: SpreadsheetHeaderProps, state: {}, context: ComponentContext) {
@@ -66,7 +58,7 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
                   </span>
                 </div>
                 {!isLast &&
-                  <div class='fc-col-resizer'></div>
+                  <div class='fc-col-resizer' ref={this.resizerElRefs.createRef(i)}></div>
                 }
               </div>
             </th>
@@ -75,67 +67,57 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
       </tr>
     )
 
-    return ( // guid rerenders whole DOM every time
-      <table class={theme.getClass('tableGrid')} ref={this.handleRootEl} key={guid()}>
-        <colgroup>{renderColGroupNodes(props.colSpecs)}</colgroup>
-        <tbody>{rowNodes}</tbody>
-      </table>
-    )
+    return (<Fragment>{rowNodes}</Fragment>)
   }
 
 
-  handleRootEl = (rootEl: HTMLElement | null) => {
-    if (rootEl) {
-      let colEls = findElements(rootEl, 'col')
-      let thEls = findElements(rootEl, 'th')
-      let resizerEls = findElements(rootEl, '.fc-col-resizer')
+  _handleColResizerEl(resizerEl: HTMLElement | null, index: string) {
+    let { colDraggings } = this
 
-      this.colEls = colEls
-      this.updateColResizing({ thEls, resizerEls })
+    if (!resizerEl) {
+      let dragging = colDraggings[index]
+
+      if (dragging) {
+        dragging.destroy()
+        delete colDraggings[index]
+      }
+
+    } else {
+      let dragging = this.initColResizing(resizerEl, parseInt(index, 10))
+
+      if (dragging) {
+        colDraggings[index] = dragging
+      }
     }
   }
 
 
-  componentWillUnmount() {
-    this.subrenderDestroy()
-  }
-
-
-  _initColResizing({ thEls, resizerEls }: { thEls: HTMLElement[], resizerEls: HTMLElement[] }, context: ComponentContext): ElementDragging[] {
-    let { pluginHooks, isRtl } = context
+  initColResizing(resizerEl: HTMLElement, index: number) {
+    let { pluginHooks, isRtl } = this.context
+    let { onColWidthChange } = this.props
     let ElementDraggingImpl = pluginHooks.elementDraggingImpl
 
     if (ElementDraggingImpl) {
-      return resizerEls.map((handleEl: HTMLElement, colIndex) => {
-        let dragging = new ElementDraggingImpl(handleEl)
-        let startWidth
+      let dragging = new ElementDraggingImpl(resizerEl)
+      let startWidth
 
-        dragging.emitter.on('dragstart', () => {
-          startWidth = this.colWidths[colIndex]
-          if (typeof startWidth !== 'number') {
-            startWidth = thEls[colIndex].getBoundingClientRect().width
-          }
-        })
+      dragging.emitter.on('dragstart', () => {
+        let cellEl = elementClosest(resizerEl, 'td')
 
-        dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
-          this.colWidths[colIndex] = Math.max(startWidth + pev.deltaX * (isRtl ? -1 : 1), COL_MIN_WIDTH)
-          this.emitter.trigger('colwidthchange', this.colWidths)
-        })
-
-        dragging.setAutoScrollEnabled(false) // because gets weird with auto-scrolling time area
-
-        return dragging
+        startWidth = cellEl.getBoundingClientRect().width
       })
 
-    } else {
-      return []
-    }
-  }
+      dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
+        let newWidth = Math.max(startWidth + pev.deltaX * (isRtl ? -1 : 1), SPREADSHEET_COL_MIN_WIDTH)
 
+        if (onColWidthChange) {
+          onColWidthChange(index, newWidth)
+        }
+      })
 
-  _destroyColResizing(resizables: ElementDragging[]) {
-    for (let resizable of resizables) {
-      resizable.destroy()
+      dragging.setAutoScrollEnabled(false) // because gets weird with auto-scrolling time area
+
+      return dragging
     }
   }
 

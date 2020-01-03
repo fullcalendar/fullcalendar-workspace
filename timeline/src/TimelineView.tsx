@@ -1,26 +1,31 @@
 import {
   h, createRef,
-  Hit, View, ViewProps, ComponentContext, Duration, memoize, subrenderer, ViewSpec, getViewClassNames
+  Hit, View, ViewProps, ComponentContext, Duration, memoize, subrenderer, ViewSpec, getViewClassNames, ChunkContentCallbackArgs
 } from '@fullcalendar/core'
-import TimeColsWidthSyncer from './TimeColsWidthSyncer'
 import TimelineLane from './TimelineLane'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
-import TimelineViewLayout from './TimelineViewLayout'
-import TimelineHeader from './TimelineHeader'
+import TimelineHeader, { computeDefaultSlotWidth } from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'
 import TimelineNowIndicator, { getTimelineNowIndicatorUnit } from './TimelineNowIndicator'
+import { ScrollGrid } from '@fullcalendar/scrollgrid'
 
 
-export default class TimelineView extends View {
+interface TimelineViewState {
+  slotMinWidth: number
+}
+
+export default class TimelineView extends View<TimelineViewState> {
 
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private registerInteractive = subrenderer(this._registerInteractive, this._unregisterInteractive)
   private renderLane = subrenderer(TimelineLane)
-  private timeColsWidthSyncer = new TimeColsWidthSyncer()
   private renderNowIndicatorMarkers = subrenderer(TimelineNowIndicator)
-  private layoutRef = createRef<TimelineViewLayout>()
-  private headerRef = createRef<TimelineHeader>()
+  private scrollGridRef = createRef<ScrollGrid>()
+  private headerScrollerElRef = createRef<HTMLDivElement>()
   private slatsRef = createRef<TimelineSlats>()
+  private laneRootElRef = createRef<HTMLDivElement>()
+  private laneFgElRef = createRef<HTMLDivElement>()
+  private laneBgElRef = createRef<HTMLDivElement>()
   private lane: TimelineLane
   private tDateProfile: TimelineDateProfile
 
@@ -37,24 +42,54 @@ export default class TimelineView extends View {
     )
 
     let classNames = getTimelineViewClassNames(props.viewSpec, options.eventOverlap)
+    let slatCols = buildSlatCols(tDateProfile, this.state.slotMinWidth)
 
     return (
       <div class={classNames.join(' ')}>
-        <TimelineViewLayout ref={this.layoutRef}
-          headContent={
-            <TimelineHeader
-              ref={this.headerRef}
-              dateProfile={dateProfile}
-              tDateProfile={tDateProfile}
-            />
-          }
-          bodyBgContent={
-            <TimelineSlats
-              ref={this.slatsRef}
-              dateProfile={dateProfile}
-              tDateProfile={tDateProfile}
-            />
-          }
+        <ScrollGrid
+          ref={this.scrollGridRef}
+          colGroups={[
+            { cols: slatCols }
+          ]}
+          sections={[
+            {
+              type: 'head',
+              className: 'fc-head',
+              chunks: [{
+                scrollerElRef: this.headerScrollerElRef,
+                scrollerClassName: 'fc-time-area',
+                rowContent: (
+                  <TimelineHeader
+                    dateProfile={dateProfile}
+                    tDateProfile={tDateProfile}
+                  />
+                )
+              }]
+            },
+            {
+              type: 'body',
+              className: 'fc-body',
+              chunks: [{
+                scrollerClassName: 'fc-time-area',
+                content: (contentArg: ChunkContentCallbackArgs) => {
+                  return (
+                    <div class='fc-scroller-canvas' ref={this.laneRootElRef}>
+                      <div class='fc-content' ref={this.laneFgElRef} />
+                      <div class='fc-bg' ref={this.laneBgElRef}>
+                        <TimelineSlats
+                          ref={this.slatsRef}
+                          dateProfile={dateProfile}
+                          tDateProfile={tDateProfile}
+                          colGroupNode={contentArg.colGroupNode}
+                          minWidth={contentArg.minWidth}
+                        />
+                      </div>
+                    </div>
+                  )
+                }
+              }]
+            }
+          ]}
         />
       </div>
     )
@@ -63,28 +98,18 @@ export default class TimelineView extends View {
 
   componentDidMount() {
     this.subrender()
+    this.resize()
     this.startNowIndicator()
     this.scrollToInitialTime()
   }
 
 
-  getSnapshotBeforeUpdate() {
-    let layout = this.layoutRef.current
-
-    return {
-      scrollLeft: layout.bodyClippedScroller.enhancedScroller.getScrollLeft()
-    }
-  }
-
-
   componentDidUpdate(prevProps: ViewProps, prevState: {}, snapshot) {
     this.subrender()
+    this.resize()
 
     if (prevProps.dateProfile !== this.props.dateProfile) {
       this.scrollToInitialTime()
-
-    } else {
-      this.scrollLeft(snapshot.scrollLeft)
     }
   }
 
@@ -96,19 +121,16 @@ export default class TimelineView extends View {
 
 
   subrender() {
-    let layout = this.layoutRef.current
-    let laneCanvas = layout.bodyClippedScroller.canvas
-
     this.lane = this.renderLane({
       ...this.props,
       tDateProfile: this.tDateProfile,
       nextDayThreshold: this.context.nextDayThreshold,
-      fgContainerEl: laneCanvas.fgEl,
-      bgContainerEl: laneCanvas.bgEl
+      fgContainerEl: this.laneFgElRef.current,
+      bgContainerEl: this.laneBgElRef.current
     })
 
     this.registerInteractive({
-      canvasRoot: laneCanvas.rootEl
+      canvasRoot: this.laneRootElRef.current
     })
   }
 
@@ -125,32 +147,28 @@ export default class TimelineView extends View {
   }
 
 
-  updateSize(isResize, viewHeight, isAuto) {
+  resize(isResize?: boolean) { // !!!!!
     let { lane } = this
-    let layout = this.layoutRef.current
-    let header = this.headerRef.current
     let slats = this.slatsRef.current
 
-    if (isResize || this.isLayoutSizeDirty()) {
-      let availableWidth = layout.getAvailableWidth()
-      let { containerWidth, containerMinWidth } = this.timeColsWidthSyncer.updateSize({
-        availableWidth,
-        dateProfile: this.props.dateProfile,
-        tDateProfile: this.tDateProfile,
-        header,
-        slats
-      }, this.context)
-
-      layout.setWidths(containerWidth, containerMinWidth)
-      layout.setHeight(viewHeight, isAuto)
-
-      // needs to happen after layout adjusted, so last cell isn't stretched
-      slats.buildPositionCaches()
-    }
-
-    // efficient. uses caches
+    slats.buildPositionCaches()
     lane.computeSizes(isResize, slats)
     lane.assignSizes(isResize, slats)
+
+    this.setState({
+      slotMinWidth: this.computeSlotMinWidth()
+    })
+  }
+
+
+  computeSlotMinWidth() {
+    let slotWidth = this.context.options.slotWidth || ''
+
+    if (slotWidth === '') {
+      slotWidth = computeDefaultSlotWidth(this.headerScrollerElRef.current, this.tDateProfile)
+    }
+
+    return slotWidth
   }
 
 
@@ -164,11 +182,9 @@ export default class TimelineView extends View {
 
 
   renderNowIndicator(date) {
-    let layout = this.layoutRef.current
-
     this.renderNowIndicatorMarkers({
-      headParentEl: layout.headClippedScroller.canvas.rootEl,
-      bodyParentEl: layout.bodyClippedScroller.canvas.rootEl,
+      headParentEl: this.headerScrollerElRef.current,
+      bodyParentEl: this.laneRootElRef.current,
       tDateProfile: this.tDateProfile,
       slats: this.slatsRef.current,
       date
@@ -188,7 +204,7 @@ export default class TimelineView extends View {
   scrollToTime(duration: Duration) {
     this.afterSizing(() => { // hack
       let slats = this.slatsRef.current
-      let left = slats.computeDurationLeft(duration)
+      let left = slats.computeDurationLeft(duration) // WONT WORK WITH RTL I DONT THINK
 
       this.scrollLeft(left)
     })
@@ -197,13 +213,7 @@ export default class TimelineView extends View {
 
   scrollLeft(left: number) {
     this.afterSizing(() => { // hack
-      let layout = this.layoutRef.current
-
-      // TODO: lame we have to update both. use the scrolljoiner instead maybe
-      layout.bodyClippedScroller.enhancedScroller.setScrollLeft(left)
-      layout.headClippedScroller.enhancedScroller.setScrollLeft(left)
-
-      layout.updateStickyScrolling() // strange place to do this. but guaranteed to be last
+      this.scrollGridRef.current.setColScrollLeft(0, left)
     })
   }
 
@@ -250,4 +260,18 @@ export function getTimelineViewClassNames(viewSpec: ViewSpec, eventOverlap) {
   }
 
   return classNames
+}
+
+
+export function buildSlatCols(tDateProfile: TimelineDateProfile, slotMinWidth?: number) {
+  let colCnt = tDateProfile.slotCnt
+  let cols = []
+
+  for (let i = 0; i < colCnt; i++) {
+    cols.push({
+      minWidth: slotMinWidth || ''
+    })
+  }
+
+  return cols
 }

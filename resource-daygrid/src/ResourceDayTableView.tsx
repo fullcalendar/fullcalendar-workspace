@@ -1,6 +1,6 @@
 import {
   h, createRef,
-  ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile
+  ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs
 } from '@fullcalendar/core'
 import { TableView, buildDayTableModel, hasRigidRows } from '@fullcalendar/daygrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
@@ -33,51 +33,38 @@ export default class ResourceDayTableView extends TableView {
     )
 
     return this.renderLayout(
-      <ResourceDayHeader
-        ref={this.headerRef}
-        resources={resources}
-        dates={resourceDayTableModel.dayTableModel.headerDates}
-        dateProfile={props.dateProfile}
-        datesRepDistinctDays={true}
-        renderIntro={this.renderHeadIntro}
-      />,
-      <ResourceDayTable
-        ref={this.tableRef}
-        dateProfile={props.dateProfile}
-        resourceDayTableModel={resourceDayTableModel}
-        businessHours={props.businessHours}
-        eventStore={props.eventStore}
-        eventUiBases={props.eventUiBases}
-        dateSelection={props.dateSelection}
-        eventSelection={props.eventSelection}
-        eventDrag={props.eventDrag}
-        eventResize={props.eventResize}
-        isRigid={hasRigidRows(options)}
-        nextDayThreshold={nextDayThreshold}
-        renderNumberIntro={this.renderNumberIntro}
-        renderBgIntro={this.renderBgIntro}
-        renderIntro={this.renderIntro}
-        colWeekNumbersVisible={colWeekNumbersVisible}
-        cellWeekNumbersVisible={cellWeekNumbersVisible}
-      />
-    )
-  }
-
-
-  updateSize(isResize: boolean, viewHeight: number, isAuto: boolean) {
-    let header = this.headerRef.current
-    let table = this.tableRef.current
-
-    if (isResize || this.isLayoutSizeDirty()) {
-      this.updateLayoutHeight(
-        header ? header.rootEl : null,
-        table.table,
-        viewHeight,
-        isAuto
+      options.columnHeader &&
+        <ResourceDayHeader
+          ref={this.headerRef}
+          resources={resources}
+          dates={resourceDayTableModel.dayTableModel.headerDates}
+          dateProfile={props.dateProfile}
+          datesRepDistinctDays={true}
+          renderIntro={this.renderHeadIntro}
+        />,
+      (contentArg: ChunkContentCallbackArgs) => (
+        <ResourceDayTable
+          ref={this.tableRef}
+          dateProfile={props.dateProfile}
+          resourceDayTableModel={resourceDayTableModel}
+          businessHours={props.businessHours}
+          eventStore={props.eventStore}
+          eventUiBases={props.eventUiBases}
+          dateSelection={props.dateSelection}
+          eventSelection={props.eventSelection}
+          eventDrag={props.eventDrag}
+          eventResize={props.eventResize}
+          isRigid={hasRigidRows(options)}
+          nextDayThreshold={nextDayThreshold}
+          colGroupNode={contentArg.colGroupNode}
+          renderNumberIntro={this.renderNumberIntro}
+          renderBgIntro={this.renderBgIntro}
+          renderIntro={this.renderIntro}
+          colWeekNumbersVisible={colWeekNumbersVisible}
+          cellWeekNumbersVisible={cellWeekNumbersVisible}
+        />
       )
-    }
-
-    table.updateSize(isResize)
+    )
   }
 
 }

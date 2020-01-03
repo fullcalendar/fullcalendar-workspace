@@ -1,6 +1,7 @@
 import {
   VNode, h,
-  memoize, Calendar, BaseComponent, DateMarker, DateProfile, findElements, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext, TableDateCell, guid
+  memoize, Calendar, BaseComponent, DateMarker, DateProfile, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext, TableDateCell, Fragment,
+  RefMap
 } from '@fullcalendar/core'
 import { buildResourceTextFunc } from '../common/resource-rendering'
 import { Resource } from '../structs/resource'
@@ -15,20 +16,18 @@ export interface ResourceDayHeaderProps {
   renderIntro?: () => VNode[]
 }
 
-export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> {
+export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { // TODO: rename to ResourceDayHeaderTrs?
 
   private buildDateFormatter = memoize(this._buildDateFormatter)
   private processOptions = memoize(this._processOptions)
-
+  private resourceCellRefs = new RefMap<HTMLTableCellElement, [Resource]>(this._handleResourceCellEl.bind(this))
   private datesAboveResources: boolean
   private resourceTextFunc: (resource: Resource) => string
   private dateFormat: DateFormatter
 
-  rootEl: HTMLElement
-
 
   render(props: ResourceDayHeaderProps, state: {}, context: ComponentContext) {
-    let { options, calendar, theme } = context
+    let { options, calendar } = context
 
     this.processOptions(options, calendar)
     this.dateFormat = this.buildDateFormatter(
@@ -37,25 +36,15 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
       props.dates.length
     )
 
-    let thead: VNode
-
     if (props.dates.length === 1) {
-      thead = this.renderResourceRow(props.resources)
+      return this.renderResourceRow(props.resources)
     } else {
       if (this.datesAboveResources) {
-        thead = this.renderDayAndResourceRows(props.dates, props.resources)
+        return this.renderDayAndResourceRows(props.dates, props.resources)
       } else {
-        thead = this.renderResourceAndDayRows(props.resources, props.dates)
+        return this.renderResourceAndDayRows(props.resources, props.dates)
       }
     }
-
-    return ( // guid rerenders whole DOM every time
-      <div class={'fc-row ' + theme.getClass('headerRow')} key={guid()} ref={this.handleRootEl}>
-        <table class={theme.getClass('tableGrid')}>
-          {thead}
-        </table>
-      </div>
-    )
   }
 
 
@@ -78,11 +67,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
       return this.renderResourceCell(resource, 1)
     })
 
-    return (
-      <thead>
-        {this.buildTr(resourceCells)}
-      </thead>
-    )
+    return this.buildTr(resourceCells)
   }
 
 
@@ -104,10 +89,10 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
     }
 
     return (
-      <thead>
+      <Fragment>
         {this.buildTr(dateCells)}
         {this.buildTr(resourceCells)}
-      </thead>
+      </Fragment>
     )
   }
 
@@ -130,10 +115,10 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
     }
 
     return (
-      <thead>
+      <Fragment>
         {this.buildTr(resourceCells)}
         {this.buildTr(dateCells)}
-      </thead>
+      </Fragment>
     )
   }
 
@@ -158,6 +143,8 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
     if (colSpan > 1) {
       attrs.colSpan = colSpan
     }
+
+    attrs.ref = this.resourceCellRefs.createRef(resource.id, resource)
 
     return (
       <th {...attrs}>{this.resourceTextFunc(resource)}</th>
@@ -209,32 +196,16 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
   // ----------------------------------------------------------------------------------------------
 
 
-  // given a container with already rendered resource cells
-  handleRootEl = (rootEl: HTMLElement | null) => {
-    let { calendar, isRtl, view } = this.context
-    let { resources } = this.props
+  _handleResourceCellEl(resourceCellEl: HTMLTableCellElement | null, key: string, resource?: Resource) {
+    let { calendar, view } = this.context
 
-    this.rootEl = rootEl
-
-    if (rootEl) {
-      findElements(rootEl, '.fc-resource-cell').forEach((node, col) => { // does DOM-order
-
-        col = col % resources.length
-        if (isRtl) {
-          col = resources.length - 1 - col
-        }
-
-        let resource = resources[col]
-
-        calendar.publiclyTrigger('resourceRender', [
-          {
-            resource: new ResourceApi(calendar, resource),
-            el: node, // head <td>
-            view
-          }
-        ])
-      })
-    }
+    calendar.publiclyTrigger('resourceRender', [
+      {
+        resource: new ResourceApi(calendar, resource),
+        el: resourceCellEl, // head <td>
+        view
+      }
+    ])
   }
 
 }
