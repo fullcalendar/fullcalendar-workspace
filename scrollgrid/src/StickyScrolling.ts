@@ -57,7 +57,7 @@ export default class StickyScroller extends SubRenderer<StickyScrollerProps> {
   }
 
 
-  updateSize = () => { // called A LOT!!!
+  updateSize = () => {
     let { scrollEl } = this.props
     let els = findElements(scrollEl, STICKY_SELECTOR)
     let elGeoms = this.queryElGeoms(els)
