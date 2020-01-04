@@ -1,8 +1,8 @@
 import {
   h, createRef, VNode,
-  mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit
+  mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit, NowTimer
 } from '@fullcalendar/core'
-import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg } from '@fullcalendar/timegrid'
+import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg, TIME_COLS_NOW_INDICATOR_UNIT } from '@fullcalendar/timegrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
 
 
@@ -21,22 +21,28 @@ export interface ResourceDayTimeColsProps {
   renderIntro: () => VNode[]
 }
 
+interface ResourceDayTimeColsState {
+  nowIndicatorDate: DateMarker
+  nowIndicatorSegs: TimeColsSeg[]
+}
 
-export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps> {
+
+export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps, ResourceDayTimeColsState> {
 
   allowAcrossResources = false
 
   private buildDayRanges = memoize(buildDayRanges)
-  private dayRanges: DateRange[] // for renderNowIndicator
+  private dayRanges: DateRange[] // for now indicator
   private splitter = new VResourceSplitter()
   private slicers: { [resourceId: string]: DayTimeColsSlicer } = {}
   private joiner = new ResourceDayTimeColsJoiner()
   private timeColsRef = createRef<TimeCols>()
+  private nowTimer: NowTimer
 
-  get timeCols() { return this.timeColsRef.current }
+  get timeCols() { return this.timeColsRef.current } // used for view's computeDateScroll :(
 
 
-  render(props: ResourceDayTimeColsProps, state: {}, context: ComponentContext) {
+  render(props: ResourceDayTimeColsProps, state: ResourceDayTimeColsState, context: ComponentContext) {
     let { dateEnv } = context
     let { dateProfile, resourceDayTableModel } = props
 
@@ -69,6 +75,8 @@ export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeCo
         colGroupNode={props.colGroupNode}
         renderBgIntro={props.renderBgIntro}
         renderIntro={props.renderIntro}
+        nowIndicatorDate={state.nowIndicatorDate}
+        nowIndicatorSegs={state.nowIndicatorSegs}
       />
     )
   }
@@ -85,24 +93,23 @@ export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeCo
   }
 
 
-  getNowIndicatorUnit() {
-    return this.timeCols.getNowIndicatorUnit()
+  componentDidMount() {
+    this.nowTimer = this.context.createNowIndicatorTimer(TIME_COLS_NOW_INDICATOR_UNIT, (dateMarker: DateMarker) => {
+      let nonResourceSegs = this.slicers[''].sliceNowDate(dateMarker, this.context.calendar, this.dayRanges)
+      let segs = this.joiner.expandSegs(this.props.resourceDayTableModel, nonResourceSegs)
+
+      this.setState({
+        nowIndicatorDate: dateMarker,
+        nowIndicatorSegs: segs
+      })
+    })
   }
 
 
-  renderNowIndicator(date: DateMarker) {
-    let { timeCols } = this
-    let { resourceDayTableModel } = this.props
-
-    let nonResourceSegs = this.slicers[''].sliceNowDate(date, this.context.calendar, this.dayRanges)
-    let segs = this.joiner.expandSegs(resourceDayTableModel, nonResourceSegs)
-
-    timeCols.renderNowIndicator(segs, date)
-  }
-
-
-  unrenderNowIndicator() {
-    this.timeCols.unrenderNowIndicator()
+  componentWillUnmount() {
+    if (this.nowTimer) {
+      this.nowTimer.destroy()
+    }
   }
 
 

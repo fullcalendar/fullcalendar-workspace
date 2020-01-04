@@ -1,7 +1,7 @@
 import {
   h, createRef,
   subrenderer, Calendar, Hit, View, parseFieldSpecs, ComponentContext, memoize, DateProfile,
-  Duration, DateProfileGenerator, SplittableProps, PositionCache, Fragment, CssDimValue, ChunkContentCallbackArgs, ElementDragging, PointerDragEvent, isArraysEqual, componentNeedsResize, RefMap
+  Duration, DateProfileGenerator, SplittableProps, PositionCache, Fragment, CssDimValue, ChunkContentCallbackArgs, ElementDragging, PointerDragEvent, isArraysEqual, componentNeedsResize, RefMap, NowTimer, DateMarker
 } from '@fullcalendar/core'
 import { TimelineLane, buildTimelineDateProfile, TimelineDateProfile, TimelineHeader, TimelineSlats, TimelineNowIndicator, getTimelineNowIndicatorUnit, getTimelineViewClassNames, buildSlatCols, computeDefaultSlotWidth } from '@fullcalendar/timeline'
 import { ResourceHash, GroupNode, ResourceNode, ResourceViewProps, ResourceSplitter, buildResourceTextFunc, buildRowNodes } from '@fullcalendar/resource-common'
@@ -48,7 +48,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   private buildRowIndex = memoize(buildRowIndex)
   private registerInteractive = subrenderer(this._registerInteractive, this._unregisterInteractive)
   private renderBgLane = subrenderer(TimelineLane)
-  private renderNowIndicatorMarkers = subrenderer(TimelineNowIndicator)
+  private renderNowIndicator = subrenderer(TimelineNowIndicator)
   private scrollGridRef = createRef<ScrollGrid>()
   private timeHeaderScrollerElRef = createRef<HTMLDivElement>()
   private timeBodyScrollerElRef = createRef<HTMLDivElement>()
@@ -62,6 +62,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   private rowPositions: PositionCache
   private spreadsheetHeaderChunkElRef = createRef<HTMLTableCellElement>()
   private spreadsheetResizerDragging: ElementDragging
+  private nowTimer: NowTimer
 
   static needsResourceData = true // for ResourceViewProps
   props: ResourceViewProps
@@ -265,8 +266,20 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
     this.subrender()
     this.handleSizing(false)
     this.context.addResizeHandler(this.handleSizing)
-    this.startNowIndicator()
     this.scrollToInitialTime()
+
+    this.nowTimer = this.context.createNowIndicatorTimer(
+      getTimelineNowIndicatorUnit(this.tDateProfile), // TODO: what if it changes!?
+      (date: DateMarker) => {
+        this.renderNowIndicator({
+          headParentEl: this.timeHeaderScrollerElRef.current,
+          bodyParentEl: this.laneRootElRef.current,
+          tDateProfile: this.tDateProfile,
+          slats: this.slatsRef.current,
+          date
+        })
+      }
+    )
   }
 
 
@@ -296,8 +309,11 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
   componentWillUnmount() {
     this.context.removeResizeHandler(this.handleSizing)
-    this.stopNowIndicator()
     this.subrenderDestroy()
+
+    if (this.nowTimer) {
+      this.nowTimer.destroy()
+    }
   }
 
 
@@ -434,31 +450,6 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
     bgLane.computeSizes(force, slats)
     for (let resourceRow of resourceRows) { resourceRow.assignSizes(force, slats) }
     bgLane.assignSizes(force, slats)
-  }
-
-
-  // Now Indicator
-  // ------------------------------------------------------------------------------------------
-
-
-  getNowIndicatorUnit() {
-    return getTimelineNowIndicatorUnit(this.tDateProfile)
-  }
-
-
-  renderNowIndicator(date) {
-    this.renderNowIndicatorMarkers({
-      headParentEl: this.timeHeaderScrollerElRef.current,
-      bodyParentEl: this.laneRootElRef.current,
-      tDateProfile: this.tDateProfile,
-      slats: this.slatsRef.current,
-      date
-    })
-  }
-
-
-  unrenderNowIndicator() {
-    this.renderNowIndicatorMarkers(false)
   }
 
 
