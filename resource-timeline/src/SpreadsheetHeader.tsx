@@ -27,7 +27,7 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
     if (superHeaderText) {
       rowNodes.push(
         <tr class='fc-super'>
-          <th class={theme.getClass('widgetHeader')} colSpan={colSpecs.length}>
+          <th class={theme.getClass('tableCellHeader')} colSpan={colSpecs.length}>
             <div class='fc-cell-content'>
               <span class='fc-cell-text'>
                 {superHeaderText}
@@ -45,7 +45,7 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
 
           // need empty inner div for abs positioning for resizer
           return (
-            <th class={theme.getClass('widgetHeader')}>
+            <th class={theme.getClass('tableCellHeader')}>
               <div>
                 <div class='fc-cell-content'>
                   {o.isMain &&

@@ -30,7 +30,7 @@ export default class ResourceTimelineLaneRow extends BaseComponent<ResourceTimel
   render(props: ResourceTimelineLaneRowProps, state: {}, context: ComponentContext) {
     return (
       <tr data-resource-id={props.resourceId}>
-        <td class={context.theme.getClass('widgetContent')}>
+        <td class={context.theme.getClass('tableCellNormal')}>
           <div ref={this.innerElRef} />
         </td>
       </tr>

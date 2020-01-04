@@ -29,7 +29,7 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps, Com
 
     return ( // guid rerenders whole DOM every time
       <div class='fc-slats' ref={this.handleRootEl} key={guid()}>
-        <table class={theme.getClass('tableGrid')} style={{ minWidth: props.minWidth }}>
+        <table class={theme.getClass('table')} style={{ minWidth: props.minWidth }}>
           {props.colGroupNode}
           <tbody>
             <tr>
@@ -207,7 +207,7 @@ function renderSlatCell(date, isEm, dateProfile: DateProfile, tDateProfile: Time
     classes.push('fc-day')
   }
 
-  classes.unshift(theme.getClass('widgetContent'))
+  classes.unshift(theme.getClass('tableCellNormal'))
 
   if (isEm) {
     classes.push('fc-em-cell')

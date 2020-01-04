@@ -27,7 +27,7 @@ export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
           return (
             <tr class={isChrono && isLast ? 'fc-chrono' : ''}>
               {rowCells.map((cell) => {
-                let headerCellClassNames = [ theme.getClass('widgetHeader') ]
+                let headerCellClassNames = [ theme.getClass('tableCellHeader') ]
 
                 if (cell.isWeekStart) {
                   headerCellClassNames.push('fc-em-cell')

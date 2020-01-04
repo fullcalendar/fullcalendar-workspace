@@ -154,7 +154,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                   )
                 },
                 { outerContent: (
-                  <td rowSpan={2} class={'fc-divider fc-col-resizer ' + theme.getClass('widgetHeader')} />
+                  <td rowSpan={2} class={'fc-divider fc-col-resizer ' + theme.getClass('tableCellHeader')} />
                 ) },
                 {
                   scrollerElRef: this.timeHeaderScrollerElRef,
