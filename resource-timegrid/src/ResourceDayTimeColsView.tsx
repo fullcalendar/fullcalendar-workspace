@@ -2,7 +2,7 @@ import {
   h, createRef,
   ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs
 } from '@fullcalendar/core'
-import { TimeColsView, buildDayTableModel as buildAgendaDayTableModel } from '@fullcalendar/timegrid'
+import { TimeColsView, buildTimeColsModel } from '@fullcalendar/timegrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
 import { ResourceDayTable } from '@fullcalendar/resource-daygrid'
 import ResourceDayTimeCols from './ResourceDayTimeCols'
@@ -14,7 +14,7 @@ export default class ResourceDayTimeColsView extends TimeColsView {
   props: ResourceViewProps
 
   private flattenResources = memoize(flattenResources)
-  private buildResourceDayTableModel = memoize(buildResourceDayTableModel)
+  private buildResourceTimeColsModel = memoize(buildResourceTimeColsModel)
   private parseResourceOrder = memoize(parseFieldSpecs)
   private dayTableRef = createRef<ResourceDayTable>()
   private timeColsRef = createRef<ResourceDayTimeCols>()
@@ -26,7 +26,7 @@ export default class ResourceDayTimeColsView extends TimeColsView {
     let splitProps = this.allDaySplitter.splitProps(props)
     let resourceOrderSpecs = this.parseResourceOrder(options.resourceOrder)
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
-    let resourceDayTableModel = this.buildResourceDayTableModel(
+    let resourceDayTableModel = this.buildResourceTimeColsModel(
       props.dateProfile,
       props.dateProfileGenerator,
       resources,
@@ -85,8 +85,8 @@ export default class ResourceDayTimeColsView extends TimeColsView {
 }
 
 
-function buildResourceDayTableModel(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator, resources: Resource[], datesAboveResources: boolean) {
-  let dayTable = buildAgendaDayTableModel(dateProfile, dateProfileGenerator)
+function buildResourceTimeColsModel(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator, resources: Resource[], datesAboveResources: boolean) {
+  let dayTable = buildTimeColsModel(dateProfile, dateProfileGenerator)
 
   return datesAboveResources ?
     new DayResourceTableModel(dayTable, resources) :
