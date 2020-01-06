@@ -5,7 +5,6 @@
   "title": "FullCalendar Timeline Plugin",
   "description": "Display events on a horizontal time axis (without resources)",
   "docs": "https://fullcalendar.io/docs/timeline-view-no-resources",
-  "browserGlobal": "FullCalendarTimeline",
   "dependencies": {
     "@fullcalendar/scrollgrid": "~4.3.0"
   },
