@@ -9,6 +9,7 @@
     "@fullcalendar/daygrid": "4.3.0",
     "@fullcalendar/timegrid": "4.3.0",
     "@fullcalendar/list": "4.3.0",
+    "@fullcalendar/scrollgrid": "4.3.0",
     "@fullcalendar/timeline": "4.3.0",
     "@fullcalendar/resource-common": "4.3.1",
     "@fullcalendar/resource-daygrid": "4.3.0",

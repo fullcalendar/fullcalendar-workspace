@@ -1,6 +1,7 @@
 {
   "private": true,
   "dependencies": {
+    "@fullcalendar/scrollgrid": "*",
     "@fullcalendar/timeline": "*",
     "@fullcalendar/resource-common": "*",
     "@fullcalendar/resource-timeline": "*",
