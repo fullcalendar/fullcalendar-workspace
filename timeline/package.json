@@ -6,6 +6,7 @@
   "description": "Display events on a horizontal time axis (without resources)",
   "docs": "https://fullcalendar.io/docs/timeline-view-no-resources",
   "dependencies": {
+    "tslib": "^1.9.3",
     "@fullcalendar/scrollgrid": "~4.3.0"
   },
   "peerDependencies": {

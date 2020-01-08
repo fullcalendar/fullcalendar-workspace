@@ -6,6 +6,7 @@
   "description": "Displays events on a vertical resource view with time slots",
   "docs": "https://fullcalendar.io/docs/vertical-resource-view",
   "dependencies": {
+    "tslib": "^1.9.3",
     "@fullcalendar/resource-common": "~4.3.0",
     "@fullcalendar/timegrid": "~4.3.0",
     "@fullcalendar/resource-daygrid": "~4.3.0"
