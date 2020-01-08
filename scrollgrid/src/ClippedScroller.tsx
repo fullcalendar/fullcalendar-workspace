@@ -3,7 +3,8 @@ import {
   CssDimValue, ScrollerLike,
   Scroller, OverflowValue,
   getScrollbarWidths,
-  getIsRtlScrollbarOnLeft
+  getIsRtlScrollbarOnLeft,
+  componentNeedsResize
 } from '@fullcalendar/core'
 
 
@@ -22,6 +23,11 @@ export interface ClippedScrollerProps {
 interface ClippedScrollerState {
   yScrollbarWidth?: number
   xScrollbarWidth?: number
+}
+
+const STATE_IS_SIZING = {
+  yScrollbarWidth: true,
+  xScrollbarWidth: true
 }
 
 
@@ -57,14 +63,10 @@ export default class ClippedScroller extends BaseComponent<ClippedScrollerProps,
     }
 
     if (props.overflowX === 'scroll-hidden') {
-      if (state.xScrollbarWidth == null) { // WONT HAPPEN!!!
-        ;
+      if (props.vGrow) {
+        positionBottom = -state.xScrollbarWidth
       } else {
-        if (props.vGrow) {
-          positionBottom = -state.xScrollbarWidth
-        } else {
-          marginBottom = -state.xScrollbarWidth
-        }
+        marginBottom = -state.xScrollbarWidth
       }
     }
 
@@ -114,17 +116,31 @@ export default class ClippedScroller extends BaseComponent<ClippedScrollerProps,
   }
 
 
+  handleScroller = (scroller: Scroller) => {
+    this.scroller = scroller
+    setRef(this.props.scrollerRef, scroller)
+  }
+
+
   componentDidMount() {
-    this.postRender()
+    this.handleSizing()
+    this.context.addResizeHandler(this.handleSizing)
   }
 
 
-  componentDidUpdate() {
-    this.postRender()
+  componentDidUpdate(prevProps: ClippedScrollerProps, prevState: ClippedScrollerState) {
+    if (componentNeedsResize(prevProps, this.props, prevState, this.state, STATE_IS_SIZING)) {
+      this.handleSizing()
+    }
   }
 
 
-  postRender() {
+  componentWillUnmount() {
+    this.context.removeResizeHandler(this.handleSizing)
+  }
+
+
+  handleSizing = () => {
     let { props } = this
 
     if (props.overflowY === 'scroll-hidden') {
@@ -144,12 +160,6 @@ export default class ClippedScroller extends BaseComponent<ClippedScrollerProps,
 
   needsYScrolling() {
     return this.scroller.needsYScrolling()
-  }
-
-
-  handleScroller = (scroller: Scroller) => {
-    this.scroller = scroller
-    setRef(this.props.scrollerRef, scroller)
   }
 
 }
