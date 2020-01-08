@@ -10,7 +10,7 @@ export * from '@fullcalendar/resource-daygrid'
 export * from '@fullcalendar/resource-timegrid'
 export * from '@fullcalendar/resource-timeline'
 
-import { addDefaultPlugins } from '@fullcalendar/core'
+import { globalPlugins } from '@fullcalendar/core'
 import interactionPlugin from '@fullcalendar/interaction'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -21,7 +21,7 @@ import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 
-addDefaultPlugins([
+globalPlugins.push(
   interactionPlugin,
   dayGridPlugin,
   timeGridPlugin,
@@ -31,4 +31,4 @@ addDefaultPlugins([
   resourceDayGridPlugin,
   resourceTimeGridPlugin,
   resourceTimelinePlugin
-])
+)
