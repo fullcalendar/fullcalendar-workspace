@@ -144,7 +144,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
     let chunkVGrow = getChunkVGrow(this.props, sectionConfig, chunkConfig)
     let tableMinWidth = (colGroupStat && colGroupStat.totalColMinWidth) || ''
-    let content = renderChunkContent(sectionConfig, chunkConfig, microColGroupNode, tableMinWidth)
+    let content = renderChunkContent(sectionConfig, chunkConfig, microColGroupNode, tableMinWidth, this.state.isSizingReady)
 
     if (needsYScrolling || needsXScrolling) {
       let overflowX: ClippedOverflowValue = forceX ? 'scroll' : !needsXScrolling ? 'hidden' : isLastSection ? 'auto' : 'scroll-hidden'
