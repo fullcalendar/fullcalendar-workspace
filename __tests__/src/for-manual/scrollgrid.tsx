@@ -6,14 +6,16 @@ printing bugs:
 BROKEN: doVGrow=false, horizontal scrolling
 TEST in other browsers now that we don't doHacks
 IMPLEMENT forPrint in SimpleScrollGrid
-
-NOTE: cell-content-wrap can't contain a sticky (creates new bounding). sticky should be on tr>.cell-content.sticky
-  fine because sticky always happens in a rowSpan td, which we dont want to control height
 FREEZING happens sometimes, window resize
-sometimes scroll joining just dies
+BUG sometimes scroll joining just dies
+
+NOTES:
+  cell-content-wrap can't contain a sticky (creates new bounding)
+  shrink should be on .cell-content.shrink
+  fine because sticky always happens in a rowSpan td, which we dont want to control height
 */
 
-import { render, h, Fragment, ComponentContextType, Calendar, ScrollGrid, OptionsInput } from 'fullcalendar-scheduler'
+import { render, h, Fragment, ComponentContextType, Calendar, ScrollGrid, SimpleScrollGrid, OptionsInput } from 'fullcalendar-scheduler'
 
 let doSimple = false
 let doVGrow = true
@@ -209,6 +211,52 @@ function handleScrollerEl(scrollerEl: HTMLElement) {
 }
 
 
-function renderSimpleScrollGrid(doVGrow: boolean, isPrint: boolean) {
-  return null
+function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
+  return (
+    <SimpleScrollGrid
+      vGrow={vGrow}
+      forPrint={forPrint}
+      cols={[
+        {},
+        { width: 'shrink' }
+      ]}
+      sections={[
+        {
+          type: 'head',
+          chunk: {
+            rowContent: (
+              <tr>
+                <th><div class='cell-content'>this is cool</div></th>
+                <th><div class='cell-content shrink'>yup</div></th>
+              </tr>
+            )
+          }
+        },
+        {
+          type: 'body',
+          vGrow: true,
+          vGrowRows: true,
+          chunk: {
+            rowContent: (
+              <Fragment>
+                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
+                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yuuup</div></td></tr>
+                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
+                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
+                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
+                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
+                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
+                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
+                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
+                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
+                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
+                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
+                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
+              </Fragment>
+            )
+          }
+        }
+      ]}
+    />
+  )
 }
