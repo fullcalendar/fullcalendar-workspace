@@ -128,6 +128,8 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
       <div class={classNames.join(' ')}>
         <ScrollGrid
           ref={this.scrollGridRef}
+          forPrint={props.forPrint}
+          vGrow={!props.isHeightAuto}
           colGroups={[
             {
               width: this.state.resourceAreaWidth,

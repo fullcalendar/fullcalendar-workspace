@@ -54,6 +54,8 @@ export default class TimelineView extends View<TimelineViewState> {
       <div class={classNames.join(' ')}>
         <ScrollGrid
           ref={this.scrollGridRef}
+          forPrint={props.forPrint}
+          vGrow={!props.isHeightAuto}
           colGroups={[
             { cols: slatCols }
           ]}
