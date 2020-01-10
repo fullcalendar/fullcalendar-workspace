@@ -142,7 +142,6 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
           sections={[
             {
               type: 'head',
-              className: 'fc-head',
               chunks: [
                 {
                   vGrowRows: true,
@@ -171,7 +170,6 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
             },
             {
               type: 'body',
-              className: 'fc-body',
               syncRowHeights: true,
               chunks: [
                 {

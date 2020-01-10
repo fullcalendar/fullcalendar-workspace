@@ -184,7 +184,7 @@ describe('column-based view rerendering', function() {
         }, 100)
       },
       _eventsPositioned() {
-        const scrollEl = $('.fc-time-grid-container.fc-scroller')
+        const scrollEl = $('.fc-scrollgrid .fc-body:last-child .fc-scroller')
         renderCalls++
         if (renderCalls === 1) {
           setTimeout(function() {

@@ -173,7 +173,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     }
 
     return (
-      <td ref={this.chunkElRefs.createRef(index, chunkConfig)} class={getChunkClassNames(sectionConfig, this.context)}>
+      <td ref={this.chunkElRefs.createRef(index, chunkConfig)} class={getChunkClassNames(sectionConfig, chunkConfig, this.context)}>
         {content}
       </td>
     )

@@ -62,10 +62,9 @@ export default class TimelineView extends View<TimelineViewState> {
           sections={[
             {
               type: 'head',
-              className: 'fc-head',
               chunks: [{
                 scrollerElRef: this.headerScrollerElRef,
-                scrollerClassName: 'fc-time-area',
+                className: 'fc-time-area',
                 rowContent: (
                   <TimelineHeader
                     dateProfile={dateProfile}
@@ -76,9 +75,8 @@ export default class TimelineView extends View<TimelineViewState> {
             },
             {
               type: 'body',
-              className: 'fc-body',
               chunks: [{
-                scrollerClassName: 'fc-time-area',
+                className: 'fc-time-area',
                 content: (contentArg: ChunkContentCallbackArgs) => {
                   return (
                     <div class='fc-scroller-canvas' ref={this.laneRootElRef}>
