@@ -432,13 +432,13 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
 
   computeSlotMinWidth() {
-    let slotWidth = this.context.options.slotWidth || ''
+    let slotMinWidth = this.context.options.slotWidth || '' // the option is called `slotWidth` but is actually a css min-width
 
-    if (slotWidth === '') {
-      slotWidth = computeDefaultSlotWidth(this.timeHeaderScrollerElRef.current, this.tDateProfile)
+    if (slotMinWidth === '') {
+      slotMinWidth = computeDefaultSlotWidth(this.timeHeaderScrollerElRef.current, this.tDateProfile)
     }
 
-    return slotWidth
+    return slotMinWidth
   }
 
 

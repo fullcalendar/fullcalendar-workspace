@@ -268,7 +268,7 @@ export function buildSlatCols(tDateProfile: TimelineDateProfile, slotMinWidth?: 
 
   for (let i = 0; i < colCnt; i++) {
     cols.push({
-      minWidth: slotMinWidth || ''
+      minWidth: slotMinWidth || 1 // needs to be a non-zero number to trigger horizontal scrollbars!
     })
   }
 

@@ -13,7 +13,7 @@ export interface TimelineSlatsProps {
   minWidth: CssDimValue
 }
 
-export default class TimelineSlats extends BaseComponent<TimelineSlatsProps, ComponentContext> {
+export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
 
   rootEl: HTMLElement
   slatEls: HTMLElement[]

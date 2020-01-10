@@ -65,7 +65,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   private compileColGroupStats = memoize(compileColGroupStats)
   private printContainerRef = createRef<HTMLDivElement>()
   private clippedScrollerRefs = new RefMap<ClippedScroller>()
-  private scrollerElRefs = new RefMap<HTMLElement, [ChunkConfig]>() // doesn't hold non-scrolling els used just for padding
+  private scrollerElRefs = new RefMap<HTMLElement, [ChunkConfig]>(this._handleScrollerEl.bind(this)) // doesn't hold non-scrolling els used just for padding
   private chunkElRefs = new RefMap<HTMLTableCellElement, [ChunkConfig]>(this._handleChunkEl.bind(this))
   private updateStickyScrollingSubRenderers = buildMapSubRenderer(StickyScrolling)
   private updateScrollSyncersBySection = buildMapSubRenderer(ScrollSyncer)
@@ -407,6 +407,11 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
   _handleChunkEl(chunkEl: HTMLTableCellElement | null, key: string, chunkConfig?: ChunkConfig) {
     setRef(chunkConfig.elRef, chunkEl)
+  }
+
+
+  _handleScrollerEl(scrollerEl: HTMLElement | null, key: string, chunkConfig: ChunkConfig) {
+    setRef(chunkConfig.scrollerElRef, scrollerEl)
   }
 
 
