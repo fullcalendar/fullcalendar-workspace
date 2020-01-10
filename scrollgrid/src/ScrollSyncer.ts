@@ -57,19 +57,19 @@ export default class ScrollSyncer extends SubRenderer<ScrollSyncerProps> {
       }
     }
 
-    // when the user scrolls via mousewheel, we know for sure the target
-    // scroller should be the master. capture the various x-browser events that fire.
-    const onWheel = () => {
-      if (!this.isPaused) {
-        this.assignMaster(el)
-      }
-    }
+    // // when the user scrolls via mousewheel, we know for sure the target
+    // // scroller should be the master. capture the various x-browser events that fire.
+    // const onWheel = () => {
+    //   if (!this.isPaused) {
+    //     this.assignMaster(el)
+    //   }
+    // }
 
     scrollListener.emitter
       .on('scrollStart', onScrollStart)
       .on('scroll', onScroll)
       .on('scrollEnd', onScrollEnd)
-      .on('wheel', onWheel)
+      // .on('wheel', onWheel) // TODO: revive?
 
     return scrollListener
   }

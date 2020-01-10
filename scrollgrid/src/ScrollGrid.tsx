@@ -8,7 +8,7 @@ import {
   mapHash,
   Scroller,
   RefMap,
-  SectionConfig, ColCss, ChunkConfig, CssDimValue, doSizingHacks, hasShrinkWidth, renderMicroColGroup,
+  SectionConfig, ColCss, ChunkConfig, CssDimValue, hasShrinkWidth, renderMicroColGroup,
   getScrollGridClassNames, getSectionClassNames, getChunkVGrow, getNeedsYScrolling, renderChunkContent, computeForceScrollbars, computeShrinkWidth, getChunkClassNames,
   getIsRtlScrollbarOnLeft,
   setRef,
@@ -65,7 +65,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   private compileColGroupStats = memoize(compileColGroupStats)
   private printContainerRef = createRef<HTMLDivElement>()
   private clippedScrollerRefs = new RefMap<ClippedScroller>()
-  private scrollerElRefs = new RefMap<HTMLElement, [ChunkConfig]>()
+  private scrollerElRefs = new RefMap<HTMLElement, [ChunkConfig]>() // doesn't hold non-scrolling els used just for padding
   private chunkElRefs = new RefMap<HTMLTableCellElement, [ChunkConfig]>(this._handleChunkEl.bind(this))
   private updateStickyScrollingSubRenderers = buildMapSubRenderer(StickyScrolling)
   private updateScrollSyncersBySection = buildMapSubRenderer(ScrollSyncer)
@@ -213,14 +213,14 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   componentWillUnmount() {
     this.context.removeResizeHandler(this.handleSizing)
 
-    this.updateScrollSyncersByColumn(false)
-    this.updateScrollSyncersBySection(false)
+    this.updateScrollSyncersByColumn(false) // TODO: make destroyScrollSyncers method?
+    this.updateScrollSyncersBySection(false) //
     this.updateStickyScrollingSubRenderers(false)
   }
 
 
   handleSizing = () => {
-    doSizingHacks(this.base as HTMLElement)
+    this.sizingHacks()
     this.syncRowHeights()
 
     this.setState({
@@ -231,6 +231,41 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     }, () => {
       this.updateStickyScrolling() // needs to happen AFTER final positioning committed to DOM
     })
+  }
+
+
+  sizingHacks() {
+    let scrollerElMap = this.scrollerElRefs.currentMap
+
+    // for FF for vGrowRows with a section maxHeight. didn't expand...
+
+    for (let index in scrollerElMap) {
+      let scrollerEl = scrollerElMap[index]
+
+      if (!scrollerEl.clientHeight) {
+        let clipperEl = scrollerEl.parentNode as HTMLElement
+        let cellEl = clipperEl.parentNode as HTMLElement
+
+        cellEl.style.position = 'relative'
+        clipperEl.classList.add('vgrow--absolute')
+      }
+    }
+
+    // for FF sticky els in cells with rowspan...
+
+    let stickyEls = findElements(this.base as HTMLElement, '.vgrow > .fc-sticky')
+
+    for (let stickyEl of stickyEls) {
+      let growEl = stickyEl.parentNode as HTMLElement
+      let cellEl = growEl.parentNode as HTMLElement
+
+      // too intense to compute padding, so hardcode 10 might not make the fix when there's
+      // a small difference in height, but stickiness isn't valuable in that scenario
+      if (growEl.offsetWidth < cellEl.offsetHeight - 10) {
+        cellEl.style.position = 'relative'
+        growEl.classList.add('vgrow--absolute')
+      }
+    }
   }
 
 

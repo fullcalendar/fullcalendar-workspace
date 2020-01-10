@@ -3,11 +3,9 @@ printing bugs:
    - FF switches back to non-print too quickly
    - IE11 doesn't work at all
 
-BROKEN: doVGrow=false, horizontal scrolling
 TEST in other browsers now that we don't doHacks
 IMPLEMENT forPrint in SimpleScrollGrid
 FREEZING happens sometimes, window resize
-BUG sometimes scroll joining just dies
 
 NOTES:
   cell-content-wrap can't contain a sticky (creates new bounding)
