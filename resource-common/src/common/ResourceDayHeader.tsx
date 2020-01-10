@@ -171,7 +171,6 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
 
 
   buildTr(cells: VNode[]) {
-    let { isRtl } = this.context
     let { renderIntro } = this.props
 
     if (!cells.length) {
@@ -180,10 +179,6 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
 
     if (renderIntro) {
       cells = renderIntro().concat(cells)
-    }
-
-    if (isRtl) {
-      cells.reverse()
     }
 
     return (

@@ -37,7 +37,7 @@ export default class TimelineView extends View<TimelineViewState> {
 
 
   render(props: ViewProps, state: TimelineViewState, context: ComponentContext) {
-    let { options } = context
+    let { options, theme } = context
     let { dateProfile } = props
 
     let tDateProfile = this.tDateProfile = this.buildTimelineDateProfile(
@@ -82,13 +82,18 @@ export default class TimelineView extends View<TimelineViewState> {
                     <div class='fc-scroller-canvas' ref={this.laneRootElRef}>
                       <div class='fc-content' ref={this.laneFgElRef} />
                       <div class='fc-bg' ref={this.laneBgElRef}>
-                        <TimelineSlats
-                          ref={this.slatsRef}
-                          dateProfile={dateProfile}
-                          tDateProfile={tDateProfile}
-                          colGroupNode={contentArg.colGroupNode}
-                          minWidth={contentArg.minWidth}
-                        />
+                        <div class='fc-slats'>
+                          <table class={theme.getClass('table')} style={{ minWidth: contentArg.minWidth }}>
+                            {contentArg.colGroupNode}
+                            <tbody>
+                              <TimelineSlats
+                                ref={this.slatsRef}
+                                dateProfile={dateProfile}
+                                tDateProfile={tDateProfile}
+                              />
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     </div>
                   )

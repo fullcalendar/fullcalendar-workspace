@@ -186,11 +186,11 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                 {
                   className: 'fc-time-area',
                   scrollerElRef: this.timeBodyScrollerElRef,
-                  content: (stuff: ChunkContentCallbackArgs) => {
+                  content: (contentArg: ChunkContentCallbackArgs) => {
                     return (
                       <div class='fc-scroller-canvas' ref={this.laneRootElRef}>
                         <div class='fc-content'>
-                          <table style={{ minWidth: stuff.minWidth }}>
+                          <table style={{ minWidth: contentArg.minWidth }}>
                             <tbody>
                               {this.renderTimeAxisRows(
                                 rowNodes,
@@ -205,13 +205,18 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                           </table>
                         </div>
                         <div class='fc-bg' ref={this.laneBgElRef}>
-                          <TimelineSlats
-                            ref={this.slatsRef}
-                            dateProfile={dateProfile}
-                            tDateProfile={tDateProfile}
-                            minWidth={stuff.minWidth}
-                            colGroupNode={stuff.colGroupNode}
-                          />
+                          <div class='fc-slats'>
+                            <table class={theme.getClass('table')} style={{ minWidth: contentArg.minWidth }}>
+                              {contentArg.colGroupNode}
+                              <tbody>
+                                <TimelineSlats
+                                  ref={this.slatsRef}
+                                  dateProfile={dateProfile}
+                                  tDateProfile={tDateProfile}
+                                />
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                       </div>
                     )

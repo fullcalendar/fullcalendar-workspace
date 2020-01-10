@@ -277,7 +277,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
     colGroupStats.forEach((colGroupStat, i) => {
       if (colGroupStat.hasShrinkCol) {
-        let chunkEls = collectReferences(this.chunkElRefs, i, cnt, chunksPerSection) // in one col
+        let chunkEls = this.chunkElRefs.collect(i, cnt, chunksPerSection) // in one col
         shrinkWidths[i] = computeShrinkWidth(chunkEls)
       }
     })
@@ -289,7 +289,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   computeForceYScrollbars() {
     let [ sectionCnt, chunksPerSection ] = this.getDims()
     let sideScrollIndex = (!this.context.isRtl || getIsRtlScrollbarOnLeft()) ? chunksPerSection - 1 : 0
-    let sideClippedScrollers = collectReferences(this.clippedScrollerRefs, sideScrollIndex, sectionCnt * chunksPerSection, chunksPerSection)
+    let sideClippedScrollers = this.clippedScrollerRefs.collect(sideScrollIndex, sectionCnt * chunksPerSection, chunksPerSection)
 
     return computeForceScrollbars(sideClippedScrollers, 'Y')
   }
@@ -299,7 +299,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     let [ sectionCnt, chunksPerSection ] = this.getDims()
     let endIndex = sectionCnt * chunksPerSection
     let startIndex = endIndex - chunksPerSection
-    let lastRowClippedScrollers = collectReferences(this.clippedScrollerRefs, startIndex, endIndex)
+    let lastRowClippedScrollers = this.clippedScrollerRefs.collect(startIndex, endIndex)
 
     return computeForceScrollbars(lastRowClippedScrollers, 'X')
   }
@@ -331,8 +331,8 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
       propsBySection[sectionI] = {
         isVertical: true,
-        scrollEls: collectReferences(
-          this.scrollerElRefs, startIndex, endIndex, 1,
+        scrollEls: this.scrollerElRefs.collect(
+          startIndex, endIndex, 1,
           (scroller, i, chunkConfig) => !chunkConfig.vGrowRows
         )
       }
@@ -341,7 +341,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     for (let col = 0; col < chunksPerSection; col++) {
       propsByColumn[col] = {
         isVertical: false,
-        scrollEls: collectReferences(this.scrollerElRefs, col, cnt, chunksPerSection)
+        scrollEls: this.scrollerElRefs.collect(col, cnt, chunksPerSection)
       }
     }
 
@@ -361,7 +361,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
       if (sectionConfig.syncRowHeights === true) {
         let sectionStart = sectionI * chunksPerSection
         let sectionEnd = sectionStart + chunksPerSection
-        let chunkEls = collectReferences(this.chunkElRefs, sectionStart, sectionEnd)
+        let chunkEls = this.chunkElRefs.collect(sectionStart, sectionEnd)
 
         sectionRowSets[sectionI] = syncSectionRowHeights(chunkEls) // TODO: should accept a selector!!!!, containing the rows
       }
@@ -464,7 +464,7 @@ function renderPrintTrs(sectionConfigs: ScrollGridSectionConfig[], chunkElRefs: 
     let trSets: HTMLElement[][] = []
     let sectionStart = sectionI * chunksPerSection
     let sectionEnd = sectionStart + chunksPerSection
-    let chunkEls = collectReferences(chunkElRefs, sectionStart, sectionEnd)
+    let chunkEls = chunkElRefs.collect(sectionStart, sectionEnd)
 
     for (let chunkEl of chunkEls) {
       trSets.push(findElements(chunkEl, 'tr'))
@@ -575,29 +575,6 @@ function compileColGroupStat(colGroupConfig: ColGroupConfig): ColGroupStat {
     needsXScrolling,
     config: colGroupConfig
   }
-}
-
-
-function collectReferences<T, OtherArgs extends any[] = []>(
-  refMap: RefMap<T, OtherArgs>,
-  startIndex: number,
-  endIndex: number,
-  step: number = 1,
-  filterFunc?: (val: T, index: number, ...otherArgs: OtherArgs) => boolean
-): T[] {
-  let res: T[] = []
-
-  for (let i = startIndex; i < endIndex; i += step) {
-    let val = refMap.currentMap[i]
-
-    if (val !== undefined) { // will disregard undefined for sparse arrays
-      if (!filterFunc || filterFunc(val, i, ...refMap.otherArgsMap[i])) {
-        res.push(val)
-      }
-    }
-  }
-
-  return res
 }
 
 
