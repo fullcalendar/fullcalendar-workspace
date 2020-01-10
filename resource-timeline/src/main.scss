@@ -109,16 +109,16 @@
 
 /* body resource rows */
 
-.fc-time-area .fc-rows {
+.fc-time-area .fc-content {
   position: relative;
   z-index: 3;
 }
 
-.fc-time-area .fc-rows td > div {
+.fc-time-area .fc-content td > div {
   position: relative;
 }
 
-.fc-time-area .fc-rows .fc-bgevent-container,
-.fc-time-area .fc-rows .fc-highlight-container {
+.fc-time-area .fc-content .fc-bgevent-container,
+.fc-time-area .fc-content .fc-highlight-container {
   z-index: 1;
 }

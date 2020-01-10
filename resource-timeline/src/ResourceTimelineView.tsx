@@ -146,6 +146,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                 {
                   vGrowRows: true,
                   elRef: this.spreadsheetHeaderChunkElRef,
+                  className: 'fc-resource-area',
                   rowContent: (
                     <SpreadsheetHeader
                       superHeaderText={this.superHeaderText}
@@ -158,6 +159,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                   <td rowSpan={2} class={'fc-divider fc-col-resizer ' + theme.getClass('tableCellHeader')} />
                 ) },
                 {
+                  className: 'fc-time-area',
                   scrollerElRef: this.timeHeaderScrollerElRef,
                   rowContent: (
                     <TimelineHeader
@@ -173,7 +175,8 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
               syncRowHeights: true,
               chunks: [
                 {
-                  rowContent: ( // TODO: used to have fc-rows class wrapping it
+                  className: 'fc-resource-area',
+                  rowContent: (
                     <Fragment>
                       {renderSpreadsheetRows(rowNodes, this.colSpecs)}
                     </Fragment>
@@ -181,26 +184,25 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                 },
                 { outerContent: null },
                 {
+                  className: 'fc-time-area',
                   scrollerElRef: this.timeBodyScrollerElRef,
                   content: (stuff: ChunkContentCallbackArgs) => {
                     return (
                       <div class='fc-scroller-canvas' ref={this.laneRootElRef}>
                         <div class='fc-content'>
-                          <div class='fc-rows'>
-                            <table style={{ minWidth: stuff.minWidth }}>
-                              <tbody>
-                                {this.renderTimeAxisRows(
-                                  rowNodes,
-                                  props.dateProfile,
-                                  props.dateProfileGenerator,
-                                  tDateProfile,
-                                  context.nextDayThreshold,
-                                  hasResourceBusinessHours ? props.businessHours : null, // CONFUSING, comment
-                                  splitProps
-                                )}
-                              </tbody>
-                            </table>
-                          </div>
+                          <table style={{ minWidth: stuff.minWidth }}>
+                            <tbody>
+                              {this.renderTimeAxisRows(
+                                rowNodes,
+                                props.dateProfile,
+                                props.dateProfileGenerator,
+                                tDateProfile,
+                                context.nextDayThreshold,
+                                hasResourceBusinessHours ? props.businessHours : null, // CONFUSING, comment
+                                splitProps
+                              )}
+                            </tbody>
+                          </table>
                         </div>
                         <div class='fc-bg' ref={this.laneBgElRef}>
                           <TimelineSlats

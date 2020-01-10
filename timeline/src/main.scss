@@ -75,7 +75,7 @@ example tables:
 for resource rows (in both the spreadsheet and timeline areas),
 undo previous rule in order to always show last border.
 */
-.fc-timeline .fc-scroller-canvas > .fc-content > .fc-rows > table {
+.fc-timeline .fc-scroller-canvas > .fc-content table {
   border-bottom-style: none;
 }
 
