@@ -34,6 +34,7 @@ export default class TimelineView extends View<TimelineViewState> {
   private lane: TimelineLane
   private tDateProfile: TimelineDateProfile
   private nowTimer: NowTimer
+  private needsInitialScroll = false // bad to keep internal state here
 
 
   render(props: ViewProps, state: TimelineViewState, context: ComponentContext) {
@@ -75,6 +76,7 @@ export default class TimelineView extends View<TimelineViewState> {
             },
             {
               type: 'body',
+              vGrow: true,
               chunks: [{
                 className: 'fc-time-area',
                 content: (contentArg: ChunkContentCallbackArgs) => {
@@ -109,9 +111,9 @@ export default class TimelineView extends View<TimelineViewState> {
 
   componentDidMount() {
     this.subrender()
+    this.needsInitialScroll = true
     this.handleSizing(false)
     this.context.addResizeHandler(this.handleSizing)
-    this.scrollToInitialTime()
 
     this.nowTimer = this.context.createNowIndicatorTimer(
       getTimelineNowIndicatorUnit(this.tDateProfile), // TODO: what if it changes!?
@@ -131,13 +133,16 @@ export default class TimelineView extends View<TimelineViewState> {
   componentDidUpdate(prevProps: ViewProps, prevState: TimelineViewState) {
     this.subrender()
 
+    if (prevProps.dateProfile !== this.props.dateProfile) {
+      this.needsInitialScroll = true
+    }
+
     if (componentNeedsResize(prevProps, this.props, prevState, this.state, STATE_IS_SIZING)) {
       this.handleSizing(false)
 
-    } else {
-      if (prevProps.dateProfile !== this.props.dateProfile) {
-        this.scrollToInitialTime()
-      }
+    } else if (this.needsInitialScroll) {
+      this.scrollToInitialTime()
+      this.needsInitialScroll = false
     }
   }
 
@@ -183,7 +188,11 @@ export default class TimelineView extends View<TimelineViewState> {
     this.setState({
       slotMinWidth: this.computeSlotMinWidth()
     }, () => {
-      this.updateLaneSizing(forced) // needs to happen after slats positioned
+      let slats = this.slatsRef.current
+      slats.buildPositionCaches()
+
+      this.lane.computeSizes(forced, slats) // needs slat positions
+      this.lane.assignSizes(forced, slats) // "
     })
   }
 
@@ -196,16 +205,6 @@ export default class TimelineView extends View<TimelineViewState> {
     }
 
     return slotWidth
-  }
-
-
-  updateLaneSizing(forced: boolean) {
-    let { lane } = this
-    let slats = this.slatsRef.current
-
-    slats.buildPositionCaches()
-    lane.computeSizes(forced, slats)
-    lane.assignSizes(forced, slats)
   }
 
 

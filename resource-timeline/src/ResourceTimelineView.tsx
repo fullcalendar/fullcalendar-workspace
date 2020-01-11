@@ -63,6 +63,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   private spreadsheetHeaderChunkElRef = createRef<HTMLTableCellElement>()
   private spreadsheetResizerDragging: ElementDragging
   private nowTimer: NowTimer
+  private needsInitialScroll = false // bad to keep internal state here
 
   static needsResourceData = true // for ResourceViewProps
   props: ResourceViewProps
@@ -135,6 +136,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
               width: this.state.resourceAreaWidth,
               cols: buildSpreadsheetCols(this.colSpecs, this.state.spreadsheetColWidths)
             },
+            { cols: [] }, // for the divider
             {
               cols: buildSlatCols(tDateProfile, this.state.slotMinWidth)
             }
@@ -172,6 +174,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
             },
             {
               type: 'body',
+              vGrow: true,
               syncRowHeights: true,
               chunks: [
                 {
@@ -271,9 +274,9 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
   componentDidMount() {
     this.subrender()
+    this.needsInitialScroll = true
     this.handleSizing(false)
     this.context.addResizeHandler(this.handleSizing)
-    this.scrollToInitialTime()
 
     this.nowTimer = this.context.createNowIndicatorTimer(
       getTimelineNowIndicatorUnit(this.tDateProfile), // TODO: what if it changes!?
@@ -300,6 +303,10 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   componentDidUpdate(prevProps: ResourceViewProps, prevState: ResourceTimelineViewState, snapshot: ResourceTimelineViewSnapshot) {
     this.subrender()
 
+    if (prevProps.dateProfile !== this.props.dateProfile) {
+      this.needsInitialScroll = true
+    }
+
     if (componentNeedsResize(prevProps, this.props, prevState, this.state, STATE_IS_SIZING)) {
       this.handleSizing(false)
 
@@ -307,8 +314,9 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
       let { resourceScroll } = snapshot
       this.scrollToResource(resourceScroll.rowId, resourceScroll.fromBottom)
 
-      if (prevProps.dateProfile !== this.props.dateProfile) {
+      if (this.needsInitialScroll) {
         this.scrollToInitialTime()
+        this.needsInitialScroll = false
       }
     }
   }
@@ -431,7 +439,15 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
     this.setState({
       slotMinWidth: this.computeSlotMinWidth()
     }, () => {
-      this.updateLaneSizing(forced) // needs slots to be positioned first
+      let slats = this.slatsRef.current
+      slats.buildPositionCaches()
+
+      // these methods are all efficient, use flags
+      let resourceRows = this.getResourceRows()
+      for (let resourceRow of resourceRows) { resourceRow.computeSizes(forced, slats) }
+      this.bgLane.computeSizes(forced, slats)
+      for (let resourceRow of resourceRows) { resourceRow.assignSizes(forced, slats) }
+      this.bgLane.assignSizes(forced, slats)
     })
   }
 
@@ -444,19 +460,6 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
     }
 
     return slotMinWidth
-  }
-
-
-  updateLaneSizing(force: boolean) {
-    let { bgLane } = this
-    let slats = this.slatsRef.current
-    let resourceRows = this.getResourceRows()
-
-    // these methods are all efficient, use flags
-    for (let resourceRow of resourceRows) { resourceRow.computeSizes(force, slats) }
-    bgLane.computeSizes(force, slats)
-    for (let resourceRow of resourceRows) { resourceRow.assignSizes(force, slats) }
-    bgLane.assignSizes(force, slats)
   }
 
 

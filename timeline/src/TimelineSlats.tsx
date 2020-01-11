@@ -52,6 +52,8 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     let slatEls = this.cellElRefs.collect()
     let slatRootEl = slatEls[0].parentNode as HTMLElement
 
+    // BAD: firing when coords aren't ready yet
+
     this.outerCoordCache = new PositionCache(
       slatRootEl,
       slatEls,

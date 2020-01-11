@@ -17,7 +17,7 @@ export interface TimelineSlatCellProps {
 export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
 
 
-  render(props: TimelineSlatCellProps, context: ComponentContext) {
+  render(props: TimelineSlatCellProps, state: {}, context: ComponentContext) {
     let { theme, dateEnv } = context
     let { date, dateProfile, tDateProfile, isEm } = props // TODO: destructure in signature! do elsewhere!
     let classes
@@ -52,7 +52,7 @@ export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProp
         key={dateStr /* fresh rerender for new date, mostly because of dayRender */}
         data-date={dateStr}
         class={classes.join(' ')}
-      ><div></div></td>
+      ><div /></td>
     )
   }
 

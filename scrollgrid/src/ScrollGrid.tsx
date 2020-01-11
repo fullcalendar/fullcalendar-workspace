@@ -105,7 +105,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
   renderSection(sectionConfig: ScrollGridSectionConfig, sectionIndex: number, colGroupStats: ColGroupStat[], microColGroupNodes: VNode[]): VNode {
 
-    if (sectionConfig.outerContent) {
+    if ('outerContent' in sectionConfig) {
       return sectionConfig.outerContent
     }
 
@@ -127,7 +127,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     chunkIndex: number
   ): VNode {
 
-    if (chunkConfig.outerContent) {
+    if ('outerContent' in chunkConfig) {
       return chunkConfig.outerContent
     }
 

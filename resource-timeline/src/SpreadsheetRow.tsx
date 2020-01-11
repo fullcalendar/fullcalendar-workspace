@@ -33,30 +33,45 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
             rowSpan = 1
           }
 
-          let text
+          let innerText
           if (colSpec.field) {
-            text = resourceFields[colSpec.field]
+            innerText = resourceFields[colSpec.field]
           } else {
-            text = buildResourceTextFunc(colSpec.text, calendar)(resource)
+            innerText = buildResourceTextFunc(colSpec.text, calendar)(resource)
           }
+          let innerContent = innerText || <Fragment>&nbsp;</Fragment>
 
-          return (
-            <td rowSpan={rowSpan}>
-              <div class={'fc-cell-content' + (rowSpan > 1 ? ' fc-sticky' : '')}>
-                { colSpec.isMain &&
-                  <ExpanderIcon
-                    depth={depth}
-                    hasChildren={props.hasChildren}
-                    isExpanded={props.isExpanded}
-                    onExpanderClick={this.onExpanderClick}
-                  />
-                }
-                <span class='fc-cell-text'>
-                  {text || <Fragment>&nbsp;</Fragment>}
-                </span>
-              </div>
-            </td>
-          )
+          if (rowSpan > 1) {
+            return (
+              <td rowSpan={rowSpan}>
+                <div class='fc-cell-content vgrow'>
+                  <span class='fc-sticky'>
+                    {innerContent}
+                  </span>
+                </div>
+              </td>
+            )
+          } else {
+            return (
+              <td rowSpan={rowSpan}>
+                <div class='cell-content-wrap'>
+                  <div class='fc-cell-content cell-content'>
+                    { colSpec.isMain &&
+                      <ExpanderIcon
+                        depth={depth}
+                        hasChildren={props.hasChildren}
+                        isExpanded={props.isExpanded}
+                        onExpanderClick={this.onExpanderClick}
+                      />
+                    }
+                    <span class='fc-cell-text'>
+                      {innerContent}
+                    </span>
+                  </div>
+                </div>
+              </td>
+            )
+          }
         })}
       </tr>
     )

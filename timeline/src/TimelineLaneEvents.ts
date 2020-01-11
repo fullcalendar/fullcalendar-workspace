@@ -184,7 +184,11 @@ export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEven
 
 function renderContainer(props: { isMirror: boolean, parentEl: HTMLElement }) {
   let containerEl = document.createElement('div')
-  containerEl.className = 'fc-event-container' + (props.isMirror ? ' fc-mirror-container' : '')
+  containerEl.className = [
+    'cell-content',
+    'fc-event-container',
+    (props.isMirror ? 'fc-mirror-container' : '')
+  ].join(' ')
 
   props.parentEl.appendChild(containerEl)
 
