@@ -23,7 +23,6 @@ export interface ResourceDayTimeColsProps {
 
 interface ResourceDayTimeColsState {
   nowIndicatorDate: DateMarker
-  nowIndicatorSegs: TimeColsSeg[]
 }
 
 
@@ -76,7 +75,7 @@ export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeCo
         renderBgIntro={props.renderBgIntro}
         renderIntro={props.renderIntro}
         nowIndicatorDate={state.nowIndicatorDate}
-        nowIndicatorSegs={state.nowIndicatorSegs}
+        nowIndicatorSegs={state.nowIndicatorDate && this.buildNowIndicatorSegs(state.nowIndicatorDate)}
       />
     )
   }
@@ -118,13 +117,15 @@ export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeCo
 
 
   handleNowDate = (date: DateMarker) => {
-    let nonResourceSegs = this.slicers[''].sliceNowDate(date, this.context.calendar, this.dayRanges)
-    let segs = this.joiner.expandSegs(this.props.resourceDayTableModel, nonResourceSegs)
-
     this.setState({
-      nowIndicatorDate: date,
-      nowIndicatorSegs: segs
+      nowIndicatorDate: date
     })
+  }
+
+
+  buildNowIndicatorSegs(date: DateMarker) {
+    let nonResourceSegs = this.slicers[''].sliceNowDate(date, this.context.calendar, this.dayRanges)
+    return this.joiner.expandSegs(this.props.resourceDayTableModel, nonResourceSegs)
   }
 
 

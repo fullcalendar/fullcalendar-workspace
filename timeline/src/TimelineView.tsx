@@ -12,6 +12,7 @@ import { ScrollGrid } from '@fullcalendar/scrollgrid'
 
 interface TimelineViewState {
   slotMinWidth: number
+  nowIndicatorDate: DateMarker
 }
 
 const STATE_IS_SIZING = {
@@ -182,6 +183,14 @@ export default class TimelineView extends View<TimelineViewState> {
 
       this.lane.computeSizes(forced, slats) // needs slat positions
       this.lane.assignSizes(forced, slats) // "
+
+      this.renderNowIndicator({
+        headParentEl: this.headerScrollerElRef.current,
+        bodyParentEl: this.laneRootElRef.current,
+        tDateProfile: this.tDateProfile,
+        slats: this.slatsRef.current,
+        date: this.state.nowIndicatorDate
+      })
     })
   }
 
@@ -202,12 +211,8 @@ export default class TimelineView extends View<TimelineViewState> {
 
 
   handleNowDate = (date: DateMarker) => {
-    this.renderNowIndicator({
-      headParentEl: this.headerScrollerElRef.current,
-      bodyParentEl: this.laneRootElRef.current,
-      tDateProfile: this.tDateProfile,
-      slats: this.slatsRef.current,
-      date
+    this.setState({
+      nowIndicatorDate: date
     })
   }
 

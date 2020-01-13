@@ -18,7 +18,7 @@ export default class TimelineNowIndicator extends SubRenderer<TimelineNowIndicat
 
   render(props: TimelineNowIndicatorProps) {
 
-    if (rangeContainsMarker(props.tDateProfile.normalizedRange, props.date)) {
+    if (props.date && rangeContainsMarker(props.tDateProfile.normalizedRange, props.date)) {
       let { arrowEl, lineEl } = this.renderMarkers({
         headParentEl: props.headParentEl,
         bodyParentEl: props.bodyParentEl

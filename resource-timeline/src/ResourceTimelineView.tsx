@@ -20,6 +20,7 @@ interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
   spreadsheetColWidths: number[]
   slotMinWidth?: number
+  nowIndicatorDate?: DateMarker
 }
 
 interface ResourceTimelineViewSnapshot {
@@ -437,6 +438,14 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
       this.bgLane.computeSizes(forced, slats)
       for (let resourceRow of resourceRows) { resourceRow.assignSizes(forced, slats) }
       this.bgLane.assignSizes(forced, slats)
+
+      this.renderNowIndicator({
+        headParentEl: this.timeHeaderScrollerElRef.current,
+        bodyParentEl: this.laneRootElRef.current,
+        tDateProfile: this.tDateProfile,
+        slats: this.slatsRef.current,
+        date: this.state.nowIndicatorDate
+      })
     })
   }
 
@@ -453,12 +462,8 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
 
   handleNowDate = (date: DateMarker) => {
-    this.renderNowIndicator({
-      headParentEl: this.timeHeaderScrollerElRef.current,
-      bodyParentEl: this.laneRootElRef.current,
-      tDateProfile: this.tDateProfile,
-      slats: this.slatsRef.current,
-      date
+    this.setState({
+      nowIndicatorDate: date
     })
   }
 
