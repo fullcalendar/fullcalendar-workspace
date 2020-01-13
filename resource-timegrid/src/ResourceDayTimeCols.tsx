@@ -1,5 +1,5 @@
 import {
-  h, createRef, VNode,
+  h, createRef, VNode, subrenderer,
   mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit, NowTimer
 } from '@fullcalendar/core'
 import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg, TIME_COLS_NOW_INDICATOR_UNIT } from '@fullcalendar/timegrid'
@@ -32,12 +32,12 @@ export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeCo
   allowAcrossResources = false
 
   private buildDayRanges = memoize(buildDayRanges)
+  private updateNowTimer = subrenderer(NowTimer)
   private dayRanges: DateRange[] // for now indicator
   private splitter = new VResourceSplitter()
   private slicers: { [resourceId: string]: DayTimeColsSlicer } = {}
   private joiner = new ResourceDayTimeColsJoiner()
   private timeColsRef = createRef<TimeCols>()
-  private nowTimer: NowTimer
 
   get timeCols() { return this.timeColsRef.current } // used for view's computeDateScroll :(
 
@@ -94,22 +94,37 @@ export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeCo
 
 
   componentDidMount() {
-    this.nowTimer = this.context.createNowIndicatorTimer(TIME_COLS_NOW_INDICATOR_UNIT, (dateMarker: DateMarker) => {
-      let nonResourceSegs = this.slicers[''].sliceNowDate(dateMarker, this.context.calendar, this.dayRanges)
-      let segs = this.joiner.expandSegs(this.props.resourceDayTableModel, nonResourceSegs)
+    this.subrender()
+  }
 
-      this.setState({
-        nowIndicatorDate: dateMarker,
-        nowIndicatorSegs: segs
-      })
-    })
+
+  componentDidUpdate() {
+    this.subrender()
   }
 
 
   componentWillUnmount() {
-    if (this.nowTimer) {
-      this.nowTimer.destroy()
-    }
+    this.subrenderDestroy()
+  }
+
+
+  subrender() {
+    this.updateNowTimer({
+      enabled: this.context.options.nowIndicator,
+      unit: TIME_COLS_NOW_INDICATOR_UNIT,
+      callback: this.handleNowDate
+    })
+  }
+
+
+  handleNowDate = (date: DateMarker) => {
+    let nonResourceSegs = this.slicers[''].sliceNowDate(date, this.context.calendar, this.dayRanges)
+    let segs = this.joiner.expandSegs(this.props.resourceDayTableModel, nonResourceSegs)
+
+    this.setState({
+      nowIndicatorDate: date,
+      nowIndicatorSegs: segs
+    })
   }
 
 

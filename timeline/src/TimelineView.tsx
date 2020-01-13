@@ -1,6 +1,6 @@
 import {
   h, createRef,
-  Hit, View, ViewProps, ComponentContext, Duration, memoize, subrenderer, ViewSpec, getViewClassNames, ChunkContentCallbackArgs, componentNeedsResize, NowTimer, DateMarker
+  Hit, View, ViewProps, ComponentContext, Duration, memoize, subrenderer, ViewSpec, getViewClassNames, ChunkContentCallbackArgs, componentNeedsResize, DateMarker, NowTimer
 } from '@fullcalendar/core'
 import TimelineLane from './TimelineLane'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
@@ -24,6 +24,7 @@ export default class TimelineView extends View<TimelineViewState> {
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private registerInteractive = subrenderer(this._registerInteractive, this._unregisterInteractive)
   private renderLane = subrenderer(TimelineLane)
+  private updateNowTimer = subrenderer(NowTimer)
   private renderNowIndicator = subrenderer(TimelineNowIndicator)
   private scrollGridRef = createRef<ScrollGrid>()
   private headerScrollerElRef = createRef<HTMLDivElement>()
@@ -33,7 +34,6 @@ export default class TimelineView extends View<TimelineViewState> {
   private laneBgElRef = createRef<HTMLDivElement>()
   private lane: TimelineLane
   private tDateProfile: TimelineDateProfile
-  private nowTimer: NowTimer
   private needsInitialScroll = false // bad to keep internal state here
 
 
@@ -114,19 +114,6 @@ export default class TimelineView extends View<TimelineViewState> {
     this.needsInitialScroll = true
     this.handleSizing(false)
     this.context.addResizeHandler(this.handleSizing)
-
-    this.nowTimer = this.context.createNowIndicatorTimer(
-      getTimelineNowIndicatorUnit(this.tDateProfile), // TODO: what if it changes!?
-      (date: DateMarker) => {
-        this.renderNowIndicator({
-          headParentEl: this.headerScrollerElRef.current,
-          bodyParentEl: this.laneRootElRef.current,
-          tDateProfile: this.tDateProfile,
-          slats: this.slatsRef.current,
-          date
-        })
-      }
-    )
   }
 
 
@@ -150,10 +137,6 @@ export default class TimelineView extends View<TimelineViewState> {
   componentWillUnmount() {
     this.context.removeResizeHandler(this.handleSizing)
     this.subrenderDestroy()
-
-    if (this.nowTimer) {
-      this.nowTimer.destroy()
-    }
   }
 
 
@@ -164,6 +147,12 @@ export default class TimelineView extends View<TimelineViewState> {
       nextDayThreshold: this.context.nextDayThreshold,
       fgContainerEl: this.laneFgElRef.current,
       bgContainerEl: this.laneBgElRef.current
+    })
+
+    this.updateNowTimer({
+      enabled: this.context.options.nowIndicator,
+      unit: getTimelineNowIndicatorUnit(this.tDateProfile), // expensive operation?
+      callback: this.handleNowDate
     })
 
     this.registerInteractive({
@@ -205,6 +194,21 @@ export default class TimelineView extends View<TimelineViewState> {
     }
 
     return slotWidth
+  }
+
+
+  // Now Indicator
+  // ------------------------------------------------------------------------------------------
+
+
+  handleNowDate = (date: DateMarker) => {
+    this.renderNowIndicator({
+      headParentEl: this.headerScrollerElRef.current,
+      bodyParentEl: this.laneRootElRef.current,
+      tDateProfile: this.tDateProfile,
+      slats: this.slatsRef.current,
+      date
+    })
   }
 
 
