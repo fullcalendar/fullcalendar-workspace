@@ -8,7 +8,7 @@ import {
   mapHash,
   Scroller,
   RefMap,
-  SectionConfig, ColCss, ChunkConfig, CssDimValue, hasShrinkWidth, renderMicroColGroup,
+  SectionConfig, ColProps, ChunkConfig, CssDimValue, hasShrinkWidth, renderMicroColGroup,
   getScrollGridClassNames, getSectionClassNames, getChunkVGrow, getNeedsYScrolling, renderChunkContent, computeForceScrollbars, computeShrinkWidth, getChunkClassNames,
   getIsRtlScrollbarOnLeft,
   setRef,
@@ -34,7 +34,7 @@ export interface ScrollGridSectionConfig extends SectionConfig {
 
 export interface ColGroupConfig {
   width?: CssDimValue
-  cols: ColCss[]
+  cols: ColProps[]
 }
 
 interface ScrollGridState {
@@ -434,17 +434,16 @@ function renderPrintCols(colGroups: ColGroupConfig[]) {
   let colVNodes: VNode[] = []
 
   for (let colGroup of colGroups) {
-    for (let colCss of colGroup.cols) {
-
-      if (colCss.width == null) { // fall back to colGroup...
-        if (colGroup.width != null && colGroup.width !== 'shrink') {
-          colCss = { ...colCss, width: colGroup.width }
-        }
-      } else if (colCss.width === 'shrink') {
-        colCss = { ...colCss, width: 1 }
-      }
-
-      colVNodes.push(<col style={colCss}/>)
+    for (let colProps of colGroup.cols) {
+      colVNodes.push(
+        <col
+          span={colProps.span}
+          style={{
+            width: colProps.width === 'shrink' ? 0 : colProps.width || '',
+            minWidth: colProps.minWidth || ''
+          }}
+        />
+      )
     }
   }
 
@@ -563,8 +562,8 @@ function compileColGroupStats(colGroupConfigs: ColGroupConfig[]) {
 
 
 function compileColGroupStat(colGroupConfig: ColGroupConfig): ColGroupStat {
-  let totalColWidth = sumProps(colGroupConfig.cols, 'width') // excludes "shrink"
-  let totalColMinWidth = sumProps(colGroupConfig.cols, 'minWidth')
+  let totalColWidth = sumColProp(colGroupConfig.cols, 'width') // excludes "shrink"
+  let totalColMinWidth = sumColProp(colGroupConfig.cols, 'minWidth')
   let hasShrinkCol = hasShrinkWidth(colGroupConfig.cols)
   let needsXScrolling = colGroupConfig.width !== 'shrink' && Boolean(totalColWidth || totalColMinWidth || hasShrinkCol)
 
@@ -578,14 +577,14 @@ function compileColGroupStat(colGroupConfig: ColGroupConfig): ColGroupStat {
 }
 
 
-function sumProps(cols: ColCss[], propName: string) {
+function sumColProp(cols: ColProps[], propName: string) {
   let total = 0
 
   for (let col of cols) {
     let val = col[propName]
 
     if (typeof val === 'number') {
-      total += val
+      total += val * (col.span || 1)
     }
   }
 

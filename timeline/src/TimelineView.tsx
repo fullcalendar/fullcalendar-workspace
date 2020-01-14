@@ -276,14 +276,8 @@ export function getTimelineViewClassNames(viewSpec: ViewSpec, eventOverlap) {
 
 
 export function buildSlatCols(tDateProfile: TimelineDateProfile, slotMinWidth?: number) {
-  let colCnt = tDateProfile.slotCnt
-  let cols = []
-
-  for (let i = 0; i < colCnt; i++) {
-    cols.push({
-      minWidth: slotMinWidth || 1 // needs to be a non-zero number to trigger horizontal scrollbars!
-    })
-  }
-
-  return cols
+  return [ {
+    span: tDateProfile.slotCnt,
+    minWidth: slotMinWidth || 1 // needs to be a non-zero number to trigger horizontal scrollbars!
+  } ]
 }
