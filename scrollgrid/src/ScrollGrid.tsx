@@ -63,6 +63,7 @@ interface ColGroupStat {
 export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> {
 
   private compileColGroupStats = memoize(compileColGroupStats)
+  private renderMicroColGroups = memoize(renderMicroColGroups, [ null, isArraysEqual ]) // yucky to memoize VNodes, but much more efficient for consumers
   private printContainerRef = createRef<HTMLDivElement>()
   private clippedScrollerRefs = new RefMap<ClippedScroller>()
   private scrollerElRefs = new RefMap<HTMLElement, [ChunkConfig]>(this._handleScrollerEl.bind(this)) // doesn't hold non-scrolling els used just for padding
@@ -85,7 +86,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   render(props: ScrollGridProps, state: ScrollGridState, context: ComponentContext) {
     let colGroups = props.colGroups
     let colGroupStats = this.compileColGroupStats(colGroups)
-    let microColGroupNodes = colGroups.map((colGroup, i) => renderMicroColGroup(colGroup.cols, state.shrinkWidths[i]))
+    let microColGroupNodes = this.renderMicroColGroups(colGroups, state.shrinkWidths)
 
     return (
       <Fragment>
@@ -503,6 +504,11 @@ function renderMacroCol(colGroupStat: ColGroupStat, shrinkWidth: number) {
   return (
     <col style={{ width }} />
   )
+}
+
+
+function renderMicroColGroups(colConfigs: ColGroupConfig[], shrinkWidths: number[]) {
+  return colConfigs.map((colConfig, i) => renderMicroColGroup(colConfig.cols, shrinkWidths[i]))
 }
 
 
