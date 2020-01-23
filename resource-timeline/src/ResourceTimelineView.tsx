@@ -64,7 +64,6 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   private rowPositions: PositionCache
   private spreadsheetHeaderChunkElRef = createRef<HTMLTableCellElement>()
   private spreadsheetResizerDragging: ElementDragging
-  private needsInitialScroll = false // bad to keep internal state here
 
   static needsResourceData = true // for ResourceViewProps
   props: ResourceViewProps
@@ -275,8 +274,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
   componentDidMount() {
     this.subrender()
-    this.needsInitialScroll = true
-    this.handleSizing(false)
+    this.handleSizing(false, true)
     this.context.addResizeHandler(this.handleSizing)
   }
 
@@ -291,21 +289,8 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   componentDidUpdate(prevProps: ResourceViewProps, prevState: ResourceTimelineViewState, snapshot: ResourceTimelineViewSnapshot) {
     this.subrender()
 
-    if (prevProps.dateProfile !== this.props.dateProfile) {
-      this.needsInitialScroll = true
-    }
-
     if (componentNeedsResize(prevProps, this.props, prevState, this.state, STATE_IS_SIZING)) {
-      this.handleSizing(false)
-
-    } else { // sizing is ready...
-      let { resourceScroll } = snapshot
-      this.scrollToResource(resourceScroll.rowId, resourceScroll.fromBottom)
-
-      if (this.needsInitialScroll) {
-        this.scrollToInitialTime()
-        this.needsInitialScroll = false
-      }
+      this.handleSizing(false, prevProps.dateProfile !== this.props.dateProfile, snapshot.resourceScroll)
     }
   }
 
@@ -425,12 +410,13 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   }
 
 
-  handleSizing = (forced: boolean) => {
+  handleSizing = (forced: boolean, hasNewDates?: boolean, resourceScroll?: ResourceScrollState) => {
     this.setState({
       slotMinWidth: this.computeSlotMinWidth()
-    }, () => {
+    }, () => { // TODO: find a way to not execute callback if not updated
+
+      this.buildPositionCaches()
       let slats = this.slatsRef.current
-      slats.buildPositionCaches()
 
       // these methods are all efficient, use flags
       let resourceRows = this.getResourceRows()
@@ -446,6 +432,14 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
         slats: this.slatsRef.current,
         date: this.state.nowIndicatorDate
       })
+
+      if (hasNewDates) {
+        this.scrollToInitialTime()
+      }
+
+      if (resourceScroll) {
+        this.scrollToResource(resourceScroll.rowId, resourceScroll.fromBottom)
+      }
     })
   }
 
@@ -478,7 +472,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
     let scrollLeft = slats.computeDurationLeft(duration)
     let scrollGrid = this.scrollGridRef.current
 
-    scrollGrid.forceScrollLeft(1, scrollLeft) // 1 = the time area
+    scrollGrid.forceScrollLeft(2, scrollLeft) // 1 = the time area
   }
 
 
@@ -538,6 +532,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
       false,
       true // isVertical
     )
+    this.rowPositions.build()
 
     this.slatsRef.current.buildPositionCaches()
   }

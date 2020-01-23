@@ -203,9 +203,6 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     } else {
       if (componentNeedsResize(prevProps, this.props, prevState, this.state, STATE_IS_SIZING)) { // non-sizing stuff changed...
         this.handleSizing()
-
-      } else if (this.props.needsSizing && !this.state.isSizingReady) { // ONLY sizing state was updated...
-        this.setState({ isSizingReady: true })
       }
     }
   }
@@ -231,6 +228,10 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
       forceYScrollbars: this.computeForceYScrollbars()
     }, () => {
       this.updateStickyScrolling() // needs to happen AFTER final positioning committed to DOM
+
+      if (this.props.needsSizing && !this.state.isSizingReady) { // ONLY sizing state was updated...
+        this.setState({ isSizingReady: true })
+      }
     })
   }
 

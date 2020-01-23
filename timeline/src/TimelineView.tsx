@@ -35,7 +35,6 @@ export default class TimelineView extends View<TimelineViewState> {
   private laneBgElRef = createRef<HTMLDivElement>()
   private lane: TimelineLane
   private tDateProfile: TimelineDateProfile
-  private needsInitialScroll = false // bad to keep internal state here
 
 
   render(props: ViewProps, state: TimelineViewState, context: ComponentContext) {
@@ -112,8 +111,7 @@ export default class TimelineView extends View<TimelineViewState> {
 
   componentDidMount() {
     this.subrender()
-    this.needsInitialScroll = true
-    this.handleSizing(false)
+    this.handleSizing(false, true)
     this.context.addResizeHandler(this.handleSizing)
   }
 
@@ -121,16 +119,8 @@ export default class TimelineView extends View<TimelineViewState> {
   componentDidUpdate(prevProps: ViewProps, prevState: TimelineViewState) {
     this.subrender()
 
-    if (prevProps.dateProfile !== this.props.dateProfile) {
-      this.needsInitialScroll = true
-    }
-
     if (componentNeedsResize(prevProps, this.props, prevState, this.state, STATE_IS_SIZING)) {
-      this.handleSizing(false)
-
-    } else if (this.needsInitialScroll) {
-      this.scrollToInitialTime()
-      this.needsInitialScroll = false
+      this.handleSizing(false, prevProps.dateProfile !== this.props.dateProfile)
     }
   }
 
@@ -174,10 +164,11 @@ export default class TimelineView extends View<TimelineViewState> {
   }
 
 
-  handleSizing = (forced: boolean) => {
+  handleSizing = (forced: boolean, hasNewDates?: boolean) => {
     this.setState({
       slotMinWidth: this.computeSlotMinWidth()
-    }, () => {
+    }, () => { // TODO: find a way to not execute callback if not updated
+
       let slats = this.slatsRef.current
       slats.buildPositionCaches()
 
@@ -191,6 +182,10 @@ export default class TimelineView extends View<TimelineViewState> {
         slats: this.slatsRef.current,
         date: this.state.nowIndicatorDate
       })
+
+      if (hasNewDates) {
+        this.scrollToInitialTime()
+      }
     })
   }
 
