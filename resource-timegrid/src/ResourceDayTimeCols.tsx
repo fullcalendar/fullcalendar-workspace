@@ -19,6 +19,7 @@ export interface ResourceDayTimeColsProps {
   colGroupNode: VNode
   renderBgIntro: () => VNode[]
   renderIntro: () => VNode[]
+  forPrint: boolean
 }
 
 interface ResourceDayTimeColsState {
@@ -76,6 +77,7 @@ export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeCo
         renderIntro={props.renderIntro}
         nowIndicatorDate={state.nowIndicatorDate}
         nowIndicatorSegs={state.nowIndicatorDate && this.buildNowIndicatorSegs(state.nowIndicatorDate)}
+        forPrint={props.forPrint}
       />
     )
   }

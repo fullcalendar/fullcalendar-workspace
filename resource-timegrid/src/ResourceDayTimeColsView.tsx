@@ -69,6 +69,7 @@ export default class ResourceDayTimeColsView extends TimeColsView {
           colGroupNode={contentArg.colGroupNode}
           renderBgIntro={this.renderTimeColsBgIntro}
           renderIntro={this.renderTimeColsIntro}
+          forPrint={props.forPrint}
         />
       )
     )
