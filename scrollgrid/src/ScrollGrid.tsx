@@ -498,7 +498,7 @@ function renderMacroCol(colGroupStat: ColGroupStat, shrinkWidth: number) {
   let width = colGroupStat.config.width
 
   if (width === 'shrink') {
-    width = colGroupStat.totalColWidth + shrinkWidth + 1 // AHHHHH BORDER
+    width = colGroupStat.totalColWidth + shrinkWidth
   }
 
   return (
@@ -527,8 +527,8 @@ function syncSectionRowHeights(chunkEls: HTMLTableCellElement[]) {
       let tr = trSets[chunkI][row]
 
       if (tr) {
-        heightContainerEls.push(...findElements(tr, '.cell-content-wrap'))
-        let heightCreatorEls = findElements(tr, '.cell-content')
+        heightContainerEls.push(...findElements(tr, '[data-fc-height-control]'))
+        let heightCreatorEls = findElements(tr, '[data-fc-height-measure]')
 
         for (let heightCreatorEl of heightCreatorEls) {
           maxInnerHeight = Math.max(maxInnerHeight, heightCreatorEl.getBoundingClientRect().height)
@@ -554,7 +554,7 @@ function syncSectionRowHeights(chunkEls: HTMLTableCellElement[]) {
 
 
 function clearRowHeights(containerEl: HTMLElement) {
-  let heightSyncedEls = findElements(containerEl, '.cell-content-wrap')
+  let heightSyncedEls = findElements(containerEl, '[data-fc-height-control]')
 
   for (let el of heightSyncedEls) {
     el.style.height = ''

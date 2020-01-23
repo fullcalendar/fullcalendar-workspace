@@ -54,8 +54,8 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
           } else {
             return (
               <td rowSpan={rowSpan}>
-                <div class='cell-content-wrap'>
-                  <div class='fc-cell-content cell-content'>
+                <div data-fc-height-control={1}>
+                  <div class='fc-cell-content' data-fc-height-measure={1}>
                     { colSpec.isMain &&
                       <ExpanderIcon
                         depth={depth}

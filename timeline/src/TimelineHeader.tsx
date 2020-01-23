@@ -1,5 +1,6 @@
 import {
-  h, asRoughMs, isSingleDay, getDayClasses, BaseComponent, ComponentContext, DateProfile, GotoAnchor, wholeDivideDurations, findElements, Fragment
+  h, asRoughMs, isSingleDay, getDayClasses, BaseComponent, ComponentContext, DateProfile, GotoAnchor, wholeDivideDurations, findElements, Fragment,
+  computeSmallestCellWidth
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -44,7 +45,7 @@ export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
                     data-date={dateEnv.formatIso(cell.date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true })}
                     colSpan={cell.colspan}
                   >
-                    <div class="fc-cell-content">
+                    <div class="fc-cell-content" data-fc-width-all={1}>
                       <GotoAnchor
                         navLinks={options.navLinks}
                         gotoOptions={{
@@ -53,7 +54,8 @@ export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
                           forceOff: !cell.rowUnit
                         }}
                         extraAttrs={{
-                          'class': 'fc-cell-text' + (isLast ? '' : ' fc-sticky')
+                          'class': 'fc-cell-text' + (isLast ? '' : ' fc-sticky'),
+                          'data-fc-width-content': 1
                         }}
                       >{cell.text}</GotoAnchor>
                     </div>
@@ -73,14 +75,15 @@ export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
 export function computeDefaultSlotWidth(containerEl: HTMLElement, tDateProfile: TimelineDateProfile) {
   let maxInnerWidth = 0
 
-  // TODO: !!!!!!!!!!!!!!!!!!!!!!
-  // use cells somehow. uses the inner span currently
-  let innerEls = findElements(containerEl, '.fc-cell-text')
-  innerEls.forEach(function(innerEl, i) {
-    maxInnerWidth = Math.max(maxInnerWidth, innerEl.getBoundingClientRect().width)
+  let cellEls = findElements(containerEl, 'th')
+  cellEls.forEach(function(cellEl) {
+    maxInnerWidth = Math.max(
+      maxInnerWidth,
+      computeSmallestCellWidth(cellEl)
+    )
   })
 
-  let headingCellWidth = Math.ceil(maxInnerWidth) + 1 // assume no padding, and one pixel border
+  let headingCellWidth = Math.ceil(maxInnerWidth)
 
   // in TimelineView.defaults we ensured that labelInterval is an interval of slotDuration
   // TODO: rename labelDuration?
@@ -88,7 +91,7 @@ export function computeDefaultSlotWidth(containerEl: HTMLElement, tDateProfile: 
 
   let slotWidth = Math.ceil(headingCellWidth / slotsPerLabel)
 
-  let minWidth: any = window.getComputedStyle(innerEls[0].parentNode as HTMLElement).minWidth
+  let minWidth: any = window.getComputedStyle(cellEls[0] as HTMLElement).minWidth
   if (minWidth) {
     minWidth = parseInt(minWidth, 10)
     if (minWidth) {

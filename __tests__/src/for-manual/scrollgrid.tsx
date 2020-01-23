@@ -67,13 +67,28 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
           chunks: [
             { vGrowRows: true, rowContent: (
               <Fragment>
-                <tr><th><div class='cell-content shrink'>All-Dayyyy</div></th><th><div class='cell-content'>su</div></th></tr>
+                <tr>
+                  <th class='shrink'>
+                    <div data-fc-width-all={1}>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>All-Dayyyy</div>
+                    </div>
+                  </th>
+                  <th>
+                    <div class='cell-padding'>su</div>
+                  </th>
+                </tr>
               </Fragment>
             ) },
             { rowContent: (
               <Fragment>
-                <tr><th><div class='cell-content'><span class='fc-sticky' style='display:inline-block'>Monday</span></div></th><th><div class='cell-content'><span class='fc-sticky' style='display:inline-block'>Tuesday</span></div></th></tr>
-                <tr><th><div class='cell-content'><span class='fc-sticky' style='display:inline-block'>Monday</span></div></th><th><div class='cell-content'><span class='fc-sticky' style='display:inline-block'>Tuesday</span></div></th></tr>
+                <tr>
+                  <th><div class='cell-padding'><span class='fc-sticky' style='display:inline-block'>Monday</span></div></th>
+                  <th><div class='cell-padding'><span class='fc-sticky' style='display:inline-block'>Tuesday</span></div></th>
+                </tr>
+                <tr>
+                  <th><div class='cell-padding'><span class='fc-sticky' style='display:inline-block'>Monday</span></div></th>
+                  <th><div class='cell-padding'><span class='fc-sticky' style='display:inline-block'>Tuesday</span></div></th>
+                </tr>
               </Fragment>
             ) }
           ]
@@ -84,13 +99,22 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
           chunks: [
             { vGrowRows: true, rowContent: (
               <Fragment>
-                <tr><td><div class='cell-content shrink'>hai</div></td><td><div class='cell-content'>su</div></td></tr>
+                <tr>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1}>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>haaii</div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class='cell-padding'>su</div>
+                  </td>
+                </tr>
               </Fragment>
             ) },
             { rowContent: (
               <Fragment>
                 <tr><td>
-                  <div class='cell-content'>
+                  <div class='cell-padding'>
                     yo<br />
                     yo<br />
                     yo<br />
@@ -104,7 +128,7 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                     yo<br />
                   </div>
                 </td><td>
-                  <div class='cell-content'>
+                  <div class='cell-padding'>
                     yo<br />
                     yo<br />
                     yo<br />
@@ -130,34 +154,230 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
           chunks: [
             { rowContent: (
               <Fragment>
-                <tr><td><div class='cell-content-wrap'><div class='cell-content shrink'>whatev</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>su</div></div></td></tr>
-                <tr><td><div class='cell-content-wrap'><div class='cell-content shrink'>whatev</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>su</div></div></td></tr>
                 <tr>
-                  <td>
-                    <div class='cell-content-wrap'>
-                      <div class='cell-content shrink'>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        whatev
+                      </div>
+                    </div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        su
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        whatev
+                      </div>
+                    </div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        su
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
                         whatev<br />whatev<br />whatever<br />whatever<br />whatever<br />what
                       </div>
                     </div>
                   </td>
                   <td rowSpan={3}>
                     <div class='vgrow'>{/* for cells with rowspan, cant use cell-content wrap (used for row height syncing). always use an inner vgrow */}
-                      <div class='cell-content fc-sticky'>su</div>
+                      <div class='cell-padding fc-sticky'>su</div>
                     </div>
                   </td>
                 </tr>
-                <tr><td><div class='cell-content-wrap'><div class='cell-content shrink'>whatev</div></div></td></tr>
-                <tr><td><div class='cell-content-wrap'><div class='cell-content shrink'>whatev</div></div></td></tr>
-                <tr><td><div class='cell-content-wrap'><div class='cell-content shrink'>whatev</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>su</div></div></td></tr>
-                <tr><td><div class='cell-content-wrap'><div class='cell-content shrink'>whatev</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>su</div></div></td></tr>
-                <tr><td><div class='cell-content-wrap'><div class='cell-content shrink'>whatev</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>su</div></div></td></tr>
-                <tr><td><div class='cell-content-wrap'><div class='cell-content shrink'>whatev</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>su</div></div></td></tr>
-                <tr><td><div class='cell-content-wrap'><div class='cell-content shrink'>whatev</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>su</div></div></td></tr>
-                <tr><td><div class='cell-content-wrap'><div class='cell-content shrink'>whatev</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>su</div></div></td></tr>
-                <tr><td><div class='cell-content-wrap'><div class='cell-content shrink'>whatev</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>su</div></div></td></tr>
-                <tr><td><div class='cell-content-wrap'><div class='cell-content shrink'>whatev</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>su</div></div></td></tr>
-                <tr><td><div class='cell-content-wrap'><div class='cell-content shrink'>whatev</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>su</div></div></td></tr>
-                <tr><td><div class='cell-content-wrap'><div class='cell-content shrink'>whatev</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>su</div></div></td></tr>
+                <tr>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        su
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        su
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        whatev
+                      </div>
+                    </div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        su
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        whatev
+                      </div>
+                    </div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        su
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        whatev
+                      </div>
+                    </div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        su
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        whatev
+                      </div>
+                    </div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        su
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        whatev
+                      </div>
+                    </div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        su
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        whatev
+                      </div>
+                    </div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        su
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        whatev
+                      </div>
+                    </div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        su
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        whatev
+                      </div>
+                    </div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        su
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        whatev
+                      </div>
+                    </div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        su
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        whatev
+                      </div>
+                    </div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1} data-fc-height-control={1}>
+                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                        su
+                      </div>
+                    </div>
+                  </td>
+                </tr>
               </Fragment>
             ) },
             {
@@ -169,21 +389,186 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                   <table class='vgrow' style={{ minWidth: stuff.minWidth }}>
                     {stuff.colGroupNode}
                     <tbody>
-                      <tr><td><div class='cell-content-wrap'><div class='cell-content'><span class='fc-sticky' style='display:inline-block'>event1</span></div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>event2</div></div></td></tr>
-                      <tr><td><div class='cell-content-wrap'><div class='cell-content'>event1<br />event1<br />event1</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>event2</div></div></td></tr>
-                      <tr><td><div class='cell-content-wrap'><div class='cell-content'>event1</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>event2</div></div></td></tr>
-                      <tr><td><div class='cell-content-wrap'><div class='cell-content'>event1</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>event2</div></div></td></tr>
-                      <tr><td><div class='cell-content-wrap'><div class='cell-content'>event1</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>event2</div></div></td></tr>
-                      <tr><td><div class='cell-content-wrap'><div class='cell-content'>event1</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>event2</div></div></td></tr>
-                      <tr><td><div class='cell-content-wrap'><div class='cell-content'>event1</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>event2</div></div></td></tr>
-                      <tr><td><div class='cell-content-wrap'><div class='cell-content'>event1</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>event2</div></div></td></tr>
-                      <tr><td><div class='cell-content-wrap'><div class='cell-content'>event1</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>event2</div></div></td></tr>
-                      <tr><td><div class='cell-content-wrap'><div class='cell-content'>event1</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>event2</div></div></td></tr>
-                      <tr><td><div class='cell-content-wrap'><div class='cell-content'>event1</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>event2</div></div></td></tr>
-                      <tr><td><div class='cell-content-wrap'><div class='cell-content'>event1</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>event2</div></div></td></tr>
-                      <tr><td><div class='cell-content-wrap'><div class='cell-content'>event1</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>event2</div></div></td></tr>
-                      <tr><td><div class='cell-content-wrap'><div class='cell-content'>event1</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>event2</div></div></td></tr>
-                      <tr><td><div class='cell-content-wrap'><div class='cell-content'>event1</div></div></td><td><div class='cell-content-wrap'><div class='cell-content'>event2</div></div></td></tr>
+                      <tr>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'><span class='fc-sticky' style='display:inline-block'>event1</span></div>
+                          </div>
+                        </td>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event1<br />event1<br />event1</div>
+                          </div>
+                        </td>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                          </div>
+                        </td>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                          </div>
+                        </td>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                          </div>
+                        </td>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                          </div>
+                        </td>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                          </div>
+                        </td>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                          </div>
+                        </td>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                          </div>
+                        </td>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                          </div>
+                        </td>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                          </div>
+                        </td>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                          </div>
+                        </td>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                          </div>
+                        </td>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                          </div>
+                        </td>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                          </div>
+                        </td>
+                        <td>
+                          <div data-fc-height-control={1}>
+                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                          </div>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 )
@@ -194,8 +579,30 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
         {
           type: 'foot',
           chunks: [
-            { rowContent: <Fragment><tr><td><div class='cell-content shrink'>All-Day</div></td><td><div class='cell-content'>su</div></td></tr></Fragment> },
-            { rowContent: <Fragment><tr><td><div class='cell-content'>Monday</div></td><td><div class='cell-content'>Tuesday</div></td></tr></Fragment> }
+            { rowContent: (
+              <Fragment>
+                <tr>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1}>
+                      <div data-fc-width-content={1} class='cell-padding'>
+                        All-Day
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class='cell-padding'>su</div>
+                  </td>
+                </tr>
+              </Fragment>
+            ) },
+            { rowContent: (
+              <Fragment>
+                <tr>
+                  <td><div class='cell-padding'>Monday</div></td>
+                  <td><div class='cell-padding'>Tuesday</div></td>
+                </tr>
+              </Fragment>
+             ) }
           ]
         }
       ]}
@@ -224,8 +631,14 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
           chunk: {
             rowContent: (
               <tr>
-                <th><div class='cell-content'>this is cool</div></th>
-                <th><div class='cell-content shrink'>yup</div></th>
+                <th>
+                  <div class='cell-padding'>this is cool</div>
+                </th>
+                <th class='shrink'>
+                  <div data-fc-width-all={1}>
+                    <div data-fc-width-content={1} class='cell-padding'>yup</div>
+                  </div>
+                </th>
               </tr>
             )
           }
@@ -237,19 +650,136 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
           chunk: {
             rowContent: (
               <Fragment>
-                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
-                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yuuup</div></td></tr>
-                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
-                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
-                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
-                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
-                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
-                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
-                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
-                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
-                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
-                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
-                <tr><td><div class='cell-content'>this is cool</div></td><td><div class='cell-content shrink'>yup</div></td></tr>
+                <tr>
+                  <td>
+                    <div class='cell-padding'>this is cool</div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1}>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>yup</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class='cell-padding'>this is cool</div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1}>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>yuuuuup</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class='cell-padding'>this is cool</div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1}>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>yup</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class='cell-padding'>this is cool</div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1}>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>yup</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class='cell-padding'>this is cool</div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1}>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>yup</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class='cell-padding'>this is cool</div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1}>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>yup</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class='cell-padding'>this is cool</div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1}>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>yup</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class='cell-padding'>this is cool</div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1}>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>yup</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class='cell-padding'>this is cool</div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1}>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>yup</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class='cell-padding'>this is cool</div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1}>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>yup</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class='cell-padding'>this is cool</div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1}>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>yup</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class='cell-padding'>this is cool</div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1}>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>yup</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class='cell-padding'>this is cool</div>
+                  </td>
+                  <td class='shrink'>
+                    <div data-fc-width-all={1}>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>yup</div>
+                    </div>
+                  </td>
+                </tr>
               </Fragment>
             )
           }

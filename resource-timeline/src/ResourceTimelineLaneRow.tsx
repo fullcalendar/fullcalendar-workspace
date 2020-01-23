@@ -31,7 +31,7 @@ export default class ResourceTimelineLaneRow extends BaseComponent<ResourceTimel
     return (
       <tr data-resource-id={props.resourceId}>
         <td class={context.theme.getClass('tableCellNormal')}>
-          <div ref={this.innerElRef} class='cell-content-wrap' />
+          <div ref={this.innerElRef} data-fc-height-control={1} />
         </td>
       </tr>
     )

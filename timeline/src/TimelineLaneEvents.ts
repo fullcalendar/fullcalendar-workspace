@@ -184,8 +184,8 @@ export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEven
 
 function renderContainer(props: { isMirror: boolean, parentEl: HTMLElement }) {
   let containerEl = document.createElement('div')
+  containerEl.setAttribute('data-fc-height-measure', '1')
   containerEl.className = [
-    'cell-content',
     'fc-event-container',
     (props.isMirror ? 'fc-mirror-container' : '')
   ].join(' ')
