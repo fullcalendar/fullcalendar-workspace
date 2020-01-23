@@ -56,6 +56,8 @@ export default class ResourceDayTimeColsView extends TimeColsView {
           renderIntro={this.renderTableIntro}
           colWeekNumbersVisible={false}
           cellWeekNumbersVisible={false}
+          eventLimit={this.getAllDayEventLimit()}
+          vGrow={false}
         />
       )),
       (contentArg: ChunkContentCallbackArgs) => (

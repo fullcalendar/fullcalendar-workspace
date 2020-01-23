@@ -23,6 +23,8 @@ export interface ResourceDayTableProps {
   renderIntro: () => VNode[]
   colWeekNumbersVisible: boolean // week numbers render in own column? (caller does HTML via intro)
   cellWeekNumbersVisible: boolean // display week numbers in day cell?
+  eventLimit: boolean | number
+  vGrow: boolean
 }
 
 export default class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
@@ -72,6 +74,8 @@ export default class ResourceDayTable extends DateComponent<ResourceDayTableProp
         renderIntro={props.renderIntro}
         colWeekNumbersVisible={props.colWeekNumbersVisible}
         cellWeekNumbersVisible={props.cellWeekNumbersVisible}
+        eventLimit={props.eventLimit}
+        vGrow={props.vGrow}
       />
     )
   }

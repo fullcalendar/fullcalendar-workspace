@@ -2,7 +2,7 @@ import {
   h, createRef,
   ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs
 } from '@fullcalendar/core'
-import { TableView, buildDayTableModel, hasRigidRows } from '@fullcalendar/daygrid'
+import { TableView, buildDayTableModel, isEventLimitAuto } from '@fullcalendar/daygrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
 import ResourceDayTable from './ResourceDayTable'
 
@@ -54,7 +54,7 @@ export default class ResourceDayTableView extends TableView {
           eventSelection={props.eventSelection}
           eventDrag={props.eventDrag}
           eventResize={props.eventResize}
-          isRigid={hasRigidRows(options)}
+          isRigid={isEventLimitAuto(options) && !props.isHeightAuto}
           nextDayThreshold={nextDayThreshold}
           colGroupNode={contentArg.colGroupNode}
           renderNumberIntro={this.renderNumberIntro}
@@ -62,6 +62,8 @@ export default class ResourceDayTableView extends TableView {
           renderIntro={this.renderIntro}
           colWeekNumbersVisible={colWeekNumbersVisible}
           cellWeekNumbersVisible={cellWeekNumbersVisible}
+          eventLimit={options.eventLimit}
+          vGrow={!props.isHeightAuto}
         />
       )
     )
