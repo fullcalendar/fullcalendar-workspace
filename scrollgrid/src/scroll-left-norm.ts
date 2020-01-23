@@ -33,7 +33,7 @@ export function getScrollFromLeftEdge(el: HTMLElement) {
 
 
 /*
-will use the "negative" scheme
+`val` is in the "negative" scheme
 */
 export function setScrollFromStartingEdge(el: HTMLElement, val: number) {
   let computedStyles = window.getComputedStyle(el) // TODO: pass in isRtl?
@@ -41,7 +41,7 @@ export function setScrollFromStartingEdge(el: HTMLElement, val: number) {
   if (computedStyles.direction === 'rtl') {
     switch (getRtlScrollSystem()) {
       case 'positive':
-        val = val - (el.scrollWidth - el.clientWidth) // val - maxScrollDistance
+        val = (el.scrollWidth - el.clientWidth) + val // maxScrollDistance + val
         break
       case 'reverse':
         val = -val

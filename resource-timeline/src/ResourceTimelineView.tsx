@@ -191,7 +191,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                   scrollerElRef: this.timeBodyScrollerElRef,
                   content: (contentArg: ChunkContentCallbackArgs) => {
                     return (
-                      <div class='fc-scroller-canvas' ref={this.laneRootElRef}>
+                      <div class='fc-scroller-canvas' ref={this.laneRootElRef} style={{ minWidth: contentArg.minWidth }}>
                         <div class='fc-content'>
                           <table style={{ minWidth: contentArg.minWidth }}>
                             <tbody>

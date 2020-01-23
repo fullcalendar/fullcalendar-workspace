@@ -81,7 +81,7 @@ export default class TimelineView extends View<TimelineViewState> {
                 className: 'fc-time-area',
                 content: (contentArg: ChunkContentCallbackArgs) => {
                   return (
-                    <div class='fc-scroller-canvas' ref={this.laneRootElRef}>
+                    <div class='fc-scroller-canvas' ref={this.laneRootElRef} style={{ minWidth: contentArg.minWidth }}>
                       <div class='fc-content' ref={this.laneFgElRef} />
                       <div class='fc-bg' ref={this.laneBgElRef}>
                         <div class='fc-slats'>
