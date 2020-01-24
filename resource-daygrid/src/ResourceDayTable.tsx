@@ -63,7 +63,7 @@ export default class ResourceDayTable extends DateComponent<ResourceDayTableProp
     return (
       <Table
         ref={this.tableRef}
-        rootElRef={this.handleRootEl}
+        elRef={this.handleRootEl}
         {...this.joiner.joinProps(slicedProps, resourceDayTableModel)}
         dateProfile={dateProfile}
         cells={resourceDayTableModel.cells}
