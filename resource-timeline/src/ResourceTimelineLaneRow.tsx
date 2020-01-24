@@ -1,6 +1,6 @@
 import {
   h, createRef,
-  BaseComponent, ComponentContext, subrenderer, DateProfile, DateProfileGenerator, Duration, EventStore, EventUiHash, DateSpan, EventInteractionState
+  BaseComponent, subrenderer, DateProfile, DateProfileGenerator, Duration, EventStore, EventUiHash, DateSpan, EventInteractionState
 } from '@fullcalendar/core'
 import { TimelineLane, TimelineDateProfile, TimelineSlats } from '@fullcalendar/timeline'
 
@@ -27,10 +27,10 @@ export default class ResourceTimelineLaneRow extends BaseComponent<ResourceTimel
   private innerElRef = createRef<HTMLDivElement>()
 
 
-  render(props: ResourceTimelineLaneRowProps, state: {}, context: ComponentContext) {
+  render(props: ResourceTimelineLaneRowProps) {
     return (
       <tr data-resource-id={props.resourceId}>
-        <td class={context.theme.getClass('tableCellNormal')}>
+        <td>
           <div ref={this.innerElRef} data-fc-height-control={1} />
         </td>
       </tr>

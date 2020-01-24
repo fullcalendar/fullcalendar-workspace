@@ -13,12 +13,12 @@ export interface SpreadsheetGroupRowProps {
 export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps, ComponentContext> {
 
 
-  render(props: SpreadsheetGroupRowProps) {
+  render(props: SpreadsheetGroupRowProps, state: {}, context: ComponentContext) {
     let text = renderCellText(props.group)
 
     return (
       <tr>
-        <td class='fc-divider' colSpan={props.spreadsheetColCnt}>
+        <td class={'fc-divider ' + context.theme.getClass('tableCellShaded')} colSpan={props.spreadsheetColCnt}>
           <div class='fc-cell-content'>
             <ExpanderIcon
               depth={0}

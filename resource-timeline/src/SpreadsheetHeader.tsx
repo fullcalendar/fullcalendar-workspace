@@ -1,6 +1,6 @@
 import {
   VNode, h, Fragment,
-  BaseComponent, ComponentContext, ElementDragging, elementClosest, PointerDragEvent, RefMap,
+  BaseComponent, ElementDragging, elementClosest, PointerDragEvent, RefMap,
 } from '@fullcalendar/core'
 
 
@@ -19,15 +19,14 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
   private colDraggings: { [index: string]: ElementDragging } = {}
 
 
-  render(props: SpreadsheetHeaderProps, state: {}, context: ComponentContext) {
-    let { theme } = context
+  render(props: SpreadsheetHeaderProps) {
     let { colSpecs, superHeaderText } = props
     let rowNodes: VNode[] = []
 
     if (superHeaderText) {
       rowNodes.push(
         <tr class='fc-super'>
-          <th class={theme.getClass('tableCellHeader')} colSpan={colSpecs.length}>
+          <th colSpan={colSpecs.length}>
             <div class='fc-cell-content'>
               <span class='fc-cell-text'>
                 {superHeaderText}
@@ -45,7 +44,7 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
 
           // need empty inner div for abs positioning for resizer
           return (
-            <th class={theme.getClass('tableCellHeader')}>
+            <th>
               <div>
                 <div class='fc-cell-content'>
                   {o.isMain &&
@@ -102,7 +101,7 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
       let startWidth
 
       dragging.emitter.on('dragstart', () => {
-        let cellEl = elementClosest(resizerEl, 'td')
+        let cellEl = elementClosest(resizerEl, 'th')
 
         startWidth = cellEl.getBoundingClientRect().width
       })

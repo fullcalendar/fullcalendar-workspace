@@ -158,7 +158,11 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                   )
                 },
                 { outerContent: (
-                  <td rowSpan={2} class={'fc-divider fc-col-resizer ' + theme.getClass('tableCellHeader')} />
+                  <td
+                    ref={this.handleSpreadsheetResizerEl}
+                    rowSpan={2}
+                    class={'fc-divider fc-col-resizer ' + theme.getClass('tableCellShaded')}
+                  />
                 ) },
                 {
                   className: 'fc-time-area',

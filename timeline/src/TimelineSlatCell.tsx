@@ -18,7 +18,7 @@ export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProp
 
 
   render(props: TimelineSlatCellProps, state: {}, context: ComponentContext) {
-    let { theme, dateEnv } = context
+    let { dateEnv } = context
     let { date, dateProfile, tDateProfile, isEm } = props // TODO: destructure in signature! do elsewhere!
     let classes
 
@@ -37,8 +37,6 @@ export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProp
       classes = getDayClasses(date, dateProfile, context)
       classes.push('fc-day')
     }
-
-    classes.unshift(theme.getClass('tableCellNormal'))
 
     if (isEm) {
       classes.push('fc-em-cell')

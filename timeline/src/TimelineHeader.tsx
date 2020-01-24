@@ -14,7 +14,7 @@ export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
 
 
   render(props: TimelineHeaderProps, state: {}, context: ComponentContext) {
-    let { dateEnv, theme, options } = context
+    let { dateEnv, options } = context
     let { tDateProfile, dateProfile } = props
     let { cellRows } = tDateProfile
     let isChrono = asRoughMs(tDateProfile.labelInterval) > asRoughMs(tDateProfile.slotDuration)
@@ -28,7 +28,7 @@ export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
           return (
             <tr class={isChrono && isLast ? 'fc-chrono' : ''}>
               {rowCells.map((cell) => {
-                let headerCellClassNames = [ theme.getClass('tableCellHeader') ]
+                let headerCellClassNames = []
 
                 if (cell.isWeekStart) {
                   headerCellClassNames.push('fc-em-cell')

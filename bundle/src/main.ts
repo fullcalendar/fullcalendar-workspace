@@ -4,6 +4,7 @@ export * from '@fullcalendar/interaction'
 export * from '@fullcalendar/daygrid'
 export * from '@fullcalendar/timegrid'
 export * from '@fullcalendar/list'
+export * from '@fullcalendar/bootstrap'
 export * from '@fullcalendar/scrollgrid'
 export * from '@fullcalendar/timeline'
 export * from '@fullcalendar/resource-common'
@@ -16,6 +17,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
+import bootstrapPlugin from '@fullcalendar/bootstrap'
 import timelinePlugin from '@fullcalendar/timeline'
 import resourceCommonPlugin from '@fullcalendar/resource-common'
 import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
@@ -27,6 +29,7 @@ globalPlugins.push(
   dayGridPlugin,
   timeGridPlugin,
   listPlugin,
+  bootstrapPlugin,
   timelinePlugin,
   resourceCommonPlugin,
   resourceDayGridPlugin,
