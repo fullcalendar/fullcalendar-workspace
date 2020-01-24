@@ -1,4 +1,7 @@
-import { ResourceTimelineView } from '@fullcalendar/resource-timeline'
+import { ResourceTimelineLaneRow, SpreadsheetRow  } from '@fullcalendar/resource-timeline'
+import { TimelineHeader } from '@fullcalendar/timeline'
+import ComponentSpy from 'package-tests/lib/ComponentSpy'
+
 
 describe('rerender performance for resource timeline', function() {
   pushOptions({
@@ -14,62 +17,88 @@ describe('rerender performance for resource timeline', function() {
   })
 
   it('calls methods a limited number of times', function(done) {
-    let settings = {
-      datesRender: function() {},
-      eventRender: function() {},
-      resourceRender: function() {}
+    let timelineHeaderSpy = new ComponentSpy(TimelineHeader)
+    let timelineRowSpy = new ComponentSpy(ResourceTimelineLaneRow)
+    let spreadsheetRowSpy = new ComponentSpy(SpreadsheetRow)
+    let eventRenderCnt = 0
+
+    initCalendar({
+      eventRender() {
+        eventRenderCnt++
+      }
+    })
+
+    function resetCounts() {
+      timelineHeaderSpy.resetCounts()
+      timelineRowSpy.resetCounts()
+      spreadsheetRowSpy.resetCounts()
+      eventRenderCnt = 0
     }
 
-    let updateSize = spyOnMethod(ResourceTimelineView, 'updateSize')
-    spyOn(settings, 'datesRender')
-    spyOn(settings, 'eventRender')
-    spyOn(settings, 'resourceRender')
+    expect(timelineHeaderSpy.renderCount).toBeLessThanOrEqual(2)
+    expect(timelineHeaderSpy.sizingCount).toBeLessThanOrEqual(2)
+    expect(timelineRowSpy.renderCount).toBeLessThanOrEqual(2)
+    expect(timelineRowSpy.sizingCount).toBeLessThanOrEqual(2)
+    expect(spreadsheetRowSpy.renderCount).toBeLessThanOrEqual(2)
+    expect(spreadsheetRowSpy.sizingCount).toBeLessThanOrEqual(2)
+    expect(eventRenderCnt).toBe(1)
 
-    initCalendar(settings)
+    resetCounts()
+    currentCalendar.next() // event will be out of view
+    expect(timelineHeaderSpy.renderCount).toBeLessThanOrEqual(2)
+    expect(timelineHeaderSpy.sizingCount).toBeLessThanOrEqual(2)
+    expect(timelineRowSpy.renderCount).toBeLessThanOrEqual(2) // events are removed
+    expect(timelineRowSpy.sizingCount).toBeLessThanOrEqual(2) // events are removed
+    expect(spreadsheetRowSpy.renderCount).toBe(0)
+    expect(spreadsheetRowSpy.sizingCount).toBe(0)
+    expect(eventRenderCnt).toBe(0)
 
-    expect(settings.datesRender.calls.count()).toBe(1)
-    expect(settings.eventRender.calls.count()).toBe(1)
-    expect(settings.resourceRender.calls.count()).toBe(1)
-    expect(updateSize.calls.count()).toBe(1)
+    resetCounts()
+    currentCalendar.changeView('listDay') // switch to different view
+    expect(timelineHeaderSpy.renderCount).toBe(0)
+    expect(timelineHeaderSpy.sizingCount).toBe(0)
+    expect(timelineRowSpy.renderCount).toBe(0)
+    expect(timelineRowSpy.sizingCount).toBe(0)
+    expect(spreadsheetRowSpy.renderCount).toBe(0)
+    expect(spreadsheetRowSpy.sizingCount).toBe(0)
+    expect(eventRenderCnt).toBe(0)
 
-    currentCalendar.changeView('timeGridWeek')
+    resetCounts()
+    currentCalendar.changeView('resourceTimelineDay') // switch back to orig view
+    expect(timelineHeaderSpy.renderCount).toBeLessThanOrEqual(2)
+    expect(timelineHeaderSpy.sizingCount).toBeLessThanOrEqual(2)
+    expect(timelineRowSpy.renderCount).toBeLessThanOrEqual(2)
+    expect(timelineRowSpy.sizingCount).toBeLessThanOrEqual(2)
+    expect(spreadsheetRowSpy.renderCount).toBeLessThanOrEqual(2)
+    expect(spreadsheetRowSpy.sizingCount).toBeLessThanOrEqual(2)
+    expect(eventRenderCnt).toBe(0) // event is now out of view
 
-    expect(settings.datesRender.calls.count()).toBe(2) // +1
-    expect(settings.eventRender.calls.count()).toBe(2) // +1
-    expect(settings.resourceRender.calls.count()).toBe(1)
-    expect(updateSize.calls.count()).toBe(1) // won't change because moved AWAY from ResourceTimelineView
-
-    currentCalendar.changeView('resourceTimelineDay')
-
-    expect(settings.datesRender.calls.count()).toBe(3) // +1
-    expect(settings.eventRender.calls.count()).toBe(3) // +1
-    expect(settings.resourceRender.calls.count()).toBe(2) // +1
-    expect(updateSize.calls.count()).toBe(2) // +1
-
-    currentCalendar.rerenderEvents()
-
-    expect(settings.datesRender.calls.count()).toBe(3)
-    expect(settings.eventRender.calls.count()).toBe(4) // +1
-    expect(settings.resourceRender.calls.count()).toBe(2)
-    expect(updateSize.calls.count()).toBe(3) // +1
-
+    resetCounts()
     currentCalendar.addResource({ title: 'Resource B' })
+    expect(timelineHeaderSpy.renderCount).toBe(0)
+    expect(timelineHeaderSpy.sizingCount).toBe(0)
+    expect(timelineRowSpy.renderCount).toBeLessThanOrEqual(2) // new row
+    expect(timelineRowSpy.sizingCount).toBeLessThanOrEqual(2) // new row
+    expect(spreadsheetRowSpy.renderCount).toBeLessThanOrEqual(2) // new row
+    expect(spreadsheetRowSpy.sizingCount).toBeLessThanOrEqual(2) // new row
+    expect(eventRenderCnt).toBe(0)
 
-    expect(settings.datesRender.calls.count()).toBe(3)
-    expect(settings.eventRender.calls.count()).toBe(4)
-    expect(settings.resourceRender.calls.count()).toBe(3) // +1
-    expect(updateSize.calls.count()).toBe(4) // +1
-
+    resetCounts()
     $(window).simulate('resize')
-
     setTimeout(function() {
 
-      expect(settings.datesRender.calls.count()).toBe(3)
-      expect(settings.eventRender.calls.count()).toBe(4)
-      expect(settings.resourceRender.calls.count()).toBe(3)
-      expect(updateSize.calls.count()).toBe(5) // +1
+      // allow some rerendering as a result of handleSizing, but that's it
+      expect(timelineHeaderSpy.renderCount).toBeLessThanOrEqual(1)
+      expect(timelineHeaderSpy.sizingCount).toBeLessThanOrEqual(2)
+      expect(timelineRowSpy.renderCount).toBeLessThanOrEqual(1)
+      expect(timelineRowSpy.sizingCount).toBeLessThanOrEqual(2)
+      expect(spreadsheetRowSpy.renderCount).toBeLessThanOrEqual(1)
+      expect(spreadsheetRowSpy.sizingCount).toBeLessThanOrEqual(2)
+      expect(eventRenderCnt).toBe(0)
 
-      updateSize.restore()
+      timelineHeaderSpy.detach()
+      timelineRowSpy.detach()
+      spreadsheetRowSpy.detach()
 
       done()
     }, 1) // more than windowResizeDelay
