@@ -50,7 +50,7 @@ export default class ResourceDayTimeColsView extends TimeColsView {
           resourceDayTableModel={resourceDayTableModel}
           isRigid={false}
           nextDayThreshold={nextDayThreshold}
-          colGroupNode={contentArg.colGroupNode}
+          colGroupNode={contentArg.tableColGroupNode}
           renderNumberIntro={this.renderTableIntro}
           renderBgIntro={this.renderTableBgIntro}
           renderIntro={this.renderTableIntro}
@@ -66,10 +66,13 @@ export default class ResourceDayTimeColsView extends TimeColsView {
           {...splitProps['timed']}
           dateProfile={props.dateProfile}
           resourceDayTableModel={resourceDayTableModel}
-          colGroupNode={contentArg.colGroupNode}
+          tableColGroupNode={contentArg.tableColGroupNode}
+          tableWidth={contentArg.tableWidth}
+          tableHeight={contentArg.tableHeight}
           renderBgIntro={this.renderTimeColsBgIntro}
           renderIntro={this.renderTimeColsIntro}
           forPrint={props.forPrint}
+          allowSizing={contentArg.isSizingReady}
         />
       )
     )

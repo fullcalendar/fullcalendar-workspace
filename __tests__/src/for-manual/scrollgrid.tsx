@@ -50,7 +50,6 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
     <ScrollGrid
       vGrow={vGrow}
       forPrint={forPrint}
-      needsSizing={false}
       colGroups={[
         { width: 150, cols: [
           { width: 'shrink' },
@@ -382,12 +381,11 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
             ) },
             {
               scrollerElRef: handleScrollerEl,
-              // needsSizing: true,
-              content: (stuff) => {
-                // console.log('isSizingReady', stuff.isSizingReady)
+              content: (sizingArg) => {
+                // console.log('isSizingReady', sizingArg.isSizingReady)
                 return (
-                  <table class='vgrow' style={{ minWidth: stuff.minWidth }}>
-                    {stuff.colGroupNode}
+                  <table class='vgrow' style={{ minWidth: sizingArg.tableMinWidth, width: sizingArg.tableWidth, height: sizingArg.tableHeight }}>
+                    {sizingArg.tableColGroupNode}
                     <tbody>
                       <tr>
                         <td>

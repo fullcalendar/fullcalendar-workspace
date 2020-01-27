@@ -24,7 +24,7 @@ interface ResourceTimelineViewState {
 }
 
 interface ResourceTimelineViewSnapshot {
-  resourceScroll: ResourceScrollState
+  resourceScroll?: ResourceScrollState
 }
 
 interface ResourceScrollState {
@@ -179,6 +179,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
             {
               type: 'body',
               vGrow: true,
+              vGrowRows: Boolean(context.options.expandRows),
               syncRowHeights: true,
               chunks: [
                 {
@@ -195,9 +196,21 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                   scrollerElRef: this.timeBodyScrollerElRef,
                   content: (contentArg: ChunkContentCallbackArgs) => {
                     return (
-                      <div class='fc-scroller-canvas' ref={this.laneRootElRef} style={{ minWidth: contentArg.minWidth }}>
+                      <div ref={this.laneRootElRef} style={{
+                        // weird. TODO: give an actual classname
+                        position: 'relative',
+                        minWidth: contentArg.tableMinWidth,
+                        minHeight: '100%'
+                      }}>
                         <div class='fc-content'>
-                          <table style={{ minWidth: contentArg.minWidth }}>
+                          <table
+                            class={theme.getClass('table')}
+                            style={{
+                              minWidth: contentArg.tableMinWidth,
+                              width: contentArg.tableWidth,
+                              height: contentArg.tableHeight
+                            }}
+                          >
                             <tbody>
                               {this.renderTimeAxisRows(
                                 rowNodes,
@@ -213,8 +226,11 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                         </div>
                         <div class='fc-bg' ref={this.laneBgElRef}>
                           <div class='fc-slats'>
-                            <table class={theme.getClass('table')} style={{ minWidth: contentArg.minWidth }}>
-                              {contentArg.colGroupNode}
+                            <table class={theme.getClass('table')} style={{
+                              minWidth: contentArg.tableMinWidth,
+                              width: contentArg.tableWidth
+                            }}>
+                              {contentArg.tableColGroupNode}
                               <tbody>
                                 <TimelineSlats
                                   ref={this.slatsRef}
@@ -284,8 +300,12 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
 
   getSnapshotBeforeUpdate(): ResourceTimelineViewSnapshot {
-    return {
-      resourceScroll: this.queryResourceScroll()
+    if (!this.props.forPrint) {
+      return {
+        resourceScroll: this.queryResourceScroll()
+      }
+    } else {
+      return {}
     }
   }
 
@@ -321,6 +341,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
       tDateProfile: this.tDateProfile
     })
 
+    // TODO: do BEFORE subrender, so we dont trigger another render
     this.updateNowTimer({
       enabled: this.context.options.nowIndicator,
       unit: getTimelineNowIndicatorUnit(this.tDateProfile), // expensive?
@@ -415,36 +436,38 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
 
   handleSizing = (forced: boolean, hasNewDates?: boolean, resourceScroll?: ResourceScrollState) => {
-    this.setState({
-      slotMinWidth: this.computeSlotMinWidth()
-    }, () => { // TODO: find a way to not execute callback if not updated
+    if (!this.props.forPrint) {
+      this.setState({
+        slotMinWidth: this.computeSlotMinWidth()
+      }, () => { // TODO: find a way to not execute callback if not updated
 
-      this.buildPositionCaches()
-      let slats = this.slatsRef.current
+        this.buildPositionCaches()
+        let slats = this.slatsRef.current
 
-      // these methods are all efficient, use flags
-      let resourceRows = this.getResourceRows()
-      for (let resourceRow of resourceRows) { resourceRow.computeSizes(forced, slats) }
-      this.bgLane.computeSizes(forced, slats)
-      for (let resourceRow of resourceRows) { resourceRow.assignSizes(forced, slats) }
-      this.bgLane.assignSizes(forced, slats)
+        // these methods are all efficient, use flags
+        let resourceRows = this.getResourceRows()
+        for (let resourceRow of resourceRows) { resourceRow.computeSizes(forced, slats) }
+        this.bgLane.computeSizes(forced, slats)
+        for (let resourceRow of resourceRows) { resourceRow.assignSizes(forced, slats) }
+        this.bgLane.assignSizes(forced, slats)
 
-      this.renderNowIndicator({
-        headParentEl: this.timeHeaderScrollerElRef.current,
-        bodyParentEl: this.laneRootElRef.current,
-        tDateProfile: this.tDateProfile,
-        slats: this.slatsRef.current,
-        date: this.state.nowIndicatorDate
+        this.renderNowIndicator({
+          headParentEl: this.timeHeaderScrollerElRef.current,
+          bodyParentEl: this.laneRootElRef.current,
+          tDateProfile: this.tDateProfile,
+          slats: this.slatsRef.current,
+          date: this.state.nowIndicatorDate
+        })
+
+        if (hasNewDates) {
+          this.scrollToInitialTime()
+        }
+
+        if (resourceScroll) {
+          this.scrollToResource(resourceScroll.rowId, resourceScroll.fromBottom)
+        }
       })
-
-      if (hasNewDates) {
-        this.scrollToInitialTime()
-      }
-
-      if (resourceScroll) {
-        this.scrollToResource(resourceScroll.rowId, resourceScroll.fromBottom)
-      }
-    })
+    }
   }
 
 

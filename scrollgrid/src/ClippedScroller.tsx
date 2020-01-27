@@ -15,7 +15,7 @@ export interface ClippedScrollerProps {
   overflowY: ClippedOverflowValue
   vGrow: boolean
   maxHeight?: number // incompatible with vGrow
-  children: ComponentChildren
+  children?: ComponentChildren
   scrollerRef?: Ref<Scroller>
   scrollerElRef?: Ref<HTMLElement>
 }
@@ -25,7 +25,7 @@ interface ClippedScrollerState {
   xScrollbarWidth?: number
 }
 
-const STATE_IS_SIZING = {
+const STATE_IS_SIZING = { // TODO: kill componentNeedsResize and use our new tricks?
   yScrollbarWidth: true,
   xScrollbarWidth: true
 }

@@ -1,6 +1,6 @@
 import {
   h, createRef, VNode, subrenderer,
-  mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit, NowTimer
+  mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit, NowTimer, CssDimValue
 } from '@fullcalendar/core'
 import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg, TIME_COLS_NOW_INDICATOR_UNIT } from '@fullcalendar/timegrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
@@ -16,10 +16,13 @@ export interface ResourceDayTimeColsProps {
   eventSelection: string
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
-  colGroupNode: VNode
+  tableColGroupNode: VNode
+  tableWidth: CssDimValue
+  tableHeight: CssDimValue
   renderBgIntro: () => VNode[]
   renderIntro: () => VNode[]
   forPrint: boolean
+  allowSizing: boolean
 }
 
 interface ResourceDayTimeColsState {
@@ -72,12 +75,15 @@ export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeCo
         {...this.joiner.joinProps(slicedProps, resourceDayTableModel)}
         dateProfile={dateProfile}
         cells={resourceDayTableModel.cells[0]}
-        colGroupNode={props.colGroupNode}
+        tableColGroupNode={props.tableColGroupNode}
+        tableWidth={props.tableWidth}
+        tableHeight={props.tableHeight}
         renderBgIntro={props.renderBgIntro}
         renderIntro={props.renderIntro}
         nowIndicatorDate={state.nowIndicatorDate}
         nowIndicatorSegs={state.nowIndicatorDate && this.buildNowIndicatorSegs(state.nowIndicatorDate)}
         forPrint={props.forPrint}
+        allowSizing={props.allowSizing}
       />
     )
   }

@@ -56,7 +56,7 @@ export default class ResourceDayTableView extends TableView {
           eventResize={props.eventResize}
           isRigid={isEventLimitAuto(options) && !props.isHeightAuto}
           nextDayThreshold={nextDayThreshold}
-          colGroupNode={contentArg.colGroupNode}
+          colGroupNode={contentArg.tableColGroupNode}
           renderNumberIntro={this.renderNumberIntro}
           renderBgIntro={this.renderBgIntro}
           renderIntro={this.renderIntro}
