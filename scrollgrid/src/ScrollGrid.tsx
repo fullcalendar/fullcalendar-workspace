@@ -84,7 +84,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
 
   static getDerivedStateFromProps(props: ScrollGridProps, state: ScrollGridState) {
-    if (state.isSizingReady) { // from a prop change
+    if (state.isSizingReady) { // means non-sizing prop/state has changed that will affect sizing
       return INITIAL_SIZING_STATE
     } else if (state.scrollerClientWidths) { // the last sizing-state was just set
       return { isSizingReady: true }
@@ -202,22 +202,20 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
 
   componentDidMount() {
-    this.updateScrollSyncers()
-
-    if (this.props.forPrint) {
-      this.fillPrintContainer()
-    } else {
-      this.adjustSizing()
-    }
-
+    this.rendered()
     this.context.addResizeHandler(this.handleResize)
   }
 
 
   componentDidUpdate(prevProps: ScrollGridProps, prevState: ScrollGridState) {
+    this.rendered()
+  }
+
+
+  rendered() {
     this.updateScrollSyncers()
 
-    if (this.props.forPrint) { // repeat code
+    if (this.props.forPrint) {
       this.fillPrintContainer()
     } else {
       this.adjustSizing()
@@ -239,13 +237,12 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
     if (!state.shrinkWidths) {
       this.sizingHacks() // needs to happen first step
-      this.syncRowHeights() // needs to happen first step
-
       this.setState({
         shrinkWidths: this.computeShrinkWidths()
       })
 
     } else if (state.forceXScrollbars == null) {
+      this.syncRowHeights() // should happen after shrinkWidths. might affect scrollbars
       this.setState({
         forceXScrollbars: this.computeForceXScrollbars(),
         forceYScrollbars: this.computeForceYScrollbars()
@@ -270,7 +267,9 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   }
 
 
-  sizingHacks() { // still need these?
+  // still need these?
+  // can do them as part of computeScrollerClientHeights(this.scrollerElRefs) ?
+  sizingHacks() {
 
     // for FF for vGrowRows with a section maxHeight. didn't expand...
 
