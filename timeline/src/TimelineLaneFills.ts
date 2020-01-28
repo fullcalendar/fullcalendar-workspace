@@ -1,10 +1,11 @@
 import { FillRenderer, applyStyle, Seg, subrenderer, BaseFillRendererProps, removeElement } from '@fullcalendar/core'
 import { attachSegs, detachSegs } from './TimelineLane'
-import TimelineSlats from './TimelineSlats'
+import TimelineCoords from './TimelineCoords'
 
 
 export interface TimelineLaneFillsProps extends BaseFillRendererProps {
   containerParentEl: HTMLElement
+  timelineCoords?: TimelineCoords
 }
 
 export default class TimelineLaneFills extends FillRenderer<TimelineLaneFillsProps> {
@@ -27,18 +28,25 @@ export default class TimelineLaneFills extends FillRenderer<TimelineLaneFillsPro
       this.attachSegs(false)
       this.renderContainer(false) // don't have a container if there's no segs
     }
+
+    if (props.timelineCoords) {
+      this.computeSegSizes(segs, props.timelineCoords)
+      this.assignSegSizes(segs)
+    }
   }
 
 
-  computeSegSizes(segs: Seg[], slats: TimelineSlats) {
+  // NOT CALLED FROM OUTSIDE
+  computeSegSizes(segs: Seg[], timelineCoords: TimelineCoords) {
     for (let seg of segs) {
-      let coords = slats.rangeToCoords(seg)
+      let coords = timelineCoords.rangeToCoords(seg)
       seg.left = coords.left
       seg.right = coords.right
     }
   }
 
 
+  // NOT CALLED FROM OUTSIDE
   assignSegSizes(segs: Seg[]) {
     for (let seg of segs) {
       applyStyle(seg.el, {

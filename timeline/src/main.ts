@@ -9,6 +9,7 @@ export { default as TimelineHeader, computeDefaultSlotWidth } from './TimelineHe
 export { default as TimelineSlats } from './TimelineSlats'
 export { TimelineDateProfile, buildTimelineDateProfile } from './timeline-date-profile'
 export { default as TimelineNowIndicator, getTimelineNowIndicatorUnit } from './TimelineNowIndicator'
+export { default as TimelineCoords } from './TimelineCoords'
 
 export default createPlugin({
   defaultView: 'timelineDay',

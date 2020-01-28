@@ -1,21 +1,23 @@
 import {
-  h, isInt, findDirectChildren, PositionCache, BaseComponent, DateProfile, multiplyDuration,
-  ComponentContext, DateMarker, DateEnv, Duration, startOfDay, RefMap
+  h, BaseComponent, DateProfile, multiplyDuration,
+  ComponentContext, RefMap
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 import TimelineSlatCell from './TimelineSlatCell'
+import TimelineCoords from './TimelineCoords'
 
 
 export interface TimelineSlatsProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
+  onCoords?: (coord: TimelineCoords) => void
+  allowSizing?: boolean
 }
 
 export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
 
   private cellElRefs = new RefMap<HTMLTableCellElement>()
-  private outerCoordCache: PositionCache
-  private innerCoordCache: PositionCache
+  private coords: TimelineCoords
 
 
   render(props: TimelineSlatsProps, state: {}, context: ComponentContext) {
@@ -39,47 +41,44 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
 
 
   componentDidMount() {
-    this.receivedDom()
+    this.handleSizing()
+    this.context.addResizeHandler(this.handleSizing)
   }
 
 
-  componentDidUpdate() {
-    this.receivedDom()
+  componentDidUpdate(prevProps) {
+    this.handleSizing()
   }
 
 
-  receivedDom() {
-    let slatEls = this.cellElRefs.collect()
-    let slatRootEl = slatEls[0].parentNode as HTMLElement
-
-    // BAD: firing when coords aren't ready yet
-
-    this.outerCoordCache = new PositionCache(
-      slatRootEl,
-      slatEls,
-      true, // isHorizontal
-      false // isVertical
-    )
-
-    // for the inner divs within the slats
-    // used for event rendering and scrollTime, to disregard slat border
-    this.innerCoordCache = new PositionCache(
-      slatRootEl,
-      findDirectChildren(slatEls, 'div'),
-      true, // isHorizontal
-      false // isVertical
-    )
+  componentWillUnmount() {
+    this.context.removeResizeHandler(this.handleSizing)
   }
 
 
-  buildPositionCaches() {
-    this.outerCoordCache.build()
-    this.innerCoordCache.build()
+  handleSizing = () => {
+    if (this.props.allowSizing) {
+      let slatEls = this.cellElRefs.collect()
+      let slatRootEl = slatEls[0].parentNode as HTMLElement
+
+      this.coords = new TimelineCoords(
+        slatRootEl,
+        slatEls,
+        this.props.dateProfile,
+        this.props.tDateProfile,
+        this.context.dateEnv,
+        this.context.isRtl
+      )
+
+      if (this.props.onCoords) {
+        this.props.onCoords(this.coords)
+      }
+    }
   }
 
 
   positionToHit(leftPosition) {
-    let { outerCoordCache } = this
+    let { outerCoordCache } = this.coords
     let { dateEnv, isRtl } = this.context
     let { tDateProfile } = this.props
     let slatIndex = outerCoordCache.leftToIndex(leftPosition)
@@ -111,96 +110,4 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     return null
   }
 
-
-  rangeToCoords(range) {
-    if (this.context.isRtl) {
-      return { right: this.dateToCoord(range.start), left: this.dateToCoord(range.end) }
-    } else {
-      return { left: this.dateToCoord(range.start), right: this.dateToCoord(range.end) }
-    }
-  }
-
-
-  // for LTR, results range from 0 to width of area
-  // for RTL, results range from negative width of area to 0
-  dateToCoord(date) {
-    let { tDateProfile } = this.props
-    let snapCoverage = this.computeDateSnapCoverage(date)
-    let slotCoverage = snapCoverage / tDateProfile.snapsPerSlot
-    let slotIndex = Math.floor(slotCoverage)
-    slotIndex = Math.min(slotIndex, tDateProfile.slotCnt - 1)
-    let partial = slotCoverage - slotIndex
-    let { innerCoordCache, outerCoordCache } = this
-
-    if (this.context.isRtl) {
-      return (
-        outerCoordCache.rights[slotIndex] -
-        (innerCoordCache.getWidth(slotIndex) * partial)
-      ) - outerCoordCache.originClientRect.width
-    } else {
-      return (
-        outerCoordCache.lefts[slotIndex] +
-        (innerCoordCache.getWidth(slotIndex) * partial)
-      )
-    }
-  }
-
-
-  // returned value is between 0 and the number of snaps
-  computeDateSnapCoverage(date: DateMarker): number {
-    return computeDateSnapCoverage(date, this.props.tDateProfile, this.context.dateEnv)
-  }
-
-
-  computeDurationLeft(duration: Duration) {
-    let { dateEnv, isRtl } = this.context
-    let { dateProfile } = this.props
-    let left = 0
-
-    if (dateProfile) {
-      left = this.dateToCoord(
-        dateEnv.add(
-          startOfDay(dateProfile.activeRange.start), // startOfDay needed?
-          duration
-        )
-      )
-
-      // hack to overcome the left borders of non-first slat
-      if (!isRtl && left) {
-        left += 1
-      }
-    }
-
-    return left
-  }
-
-}
-
-
-// returned value is between 0 and the number of snaps
-export function computeDateSnapCoverage(date: DateMarker, tDateProfile: TimelineDateProfile, dateEnv: DateEnv): number {
-  let snapDiff = dateEnv.countDurationsBetween(
-    tDateProfile.normalizedRange.start,
-    date,
-    tDateProfile.snapDuration
-  )
-
-  if (snapDiff < 0) {
-    return 0
-  } else if (snapDiff >= tDateProfile.snapDiffToIndex.length) {
-    return tDateProfile.snapCnt
-  } else {
-    let snapDiffInt = Math.floor(snapDiff)
-    let snapCoverage = tDateProfile.snapDiffToIndex[snapDiffInt]
-
-    if (isInt(snapCoverage)) { // not an in-between value
-      snapCoverage += snapDiff - snapDiffInt // add the remainder
-    } else {
-      // a fractional value, meaning the date is not visible
-      // always round up in this case. works for start AND end dates in a range.
-      snapCoverage = Math.ceil(snapCoverage)
-    }
-
-    return snapCoverage
-  }
 }

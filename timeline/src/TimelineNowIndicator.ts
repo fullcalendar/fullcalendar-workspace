@@ -1,5 +1,5 @@
 import { removeElement, SubRenderer, ComponentContext, applyStyle, DateMarker, subrenderer, rangeContainsMarker, greatestDurationDenominator } from '@fullcalendar/core'
-import TimelineSlats from './TimelineSlats'
+import TimelineCoords from './TimelineCoords'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 export interface TimelineNowIndicatorProps {
@@ -7,7 +7,7 @@ export interface TimelineNowIndicatorProps {
   bodyParentEl: HTMLElement
   tDateProfile: TimelineDateProfile
   date: DateMarker
-  slats: TimelineSlats
+  coords: TimelineCoords
 }
 
 export default class TimelineNowIndicator extends SubRenderer<TimelineNowIndicatorProps> {
@@ -27,7 +27,7 @@ export default class TimelineNowIndicator extends SubRenderer<TimelineNowIndicat
       this.updateMarkerCoords({
         arrowEl,
         lineEl,
-        slats: props.slats,
+        coords: props.coords,
         date: props.date
       })
 
@@ -59,8 +59,8 @@ function unrenderMarkers(props: { arrowEl: HTMLElement, lineEl: HTMLElement }) {
 }
 
 
-function updateMarkerCoords(props: { arrowEl: HTMLElement, lineEl: HTMLElement, slats: TimelineSlats, date: DateMarker }, context: ComponentContext) {
-  let coord = props.slats.dateToCoord(props.date)
+function updateMarkerCoords(props: { arrowEl: HTMLElement, lineEl: HTMLElement, coords: TimelineCoords, date: DateMarker }, context: ComponentContext) {
+  let coord = props.coords.dateToCoord(props.date)
   let styleProps = context.isRtl ? { right: -coord } : { left: coord }
 
   applyStyle(props.arrowEl, styleProps)

@@ -2,7 +2,8 @@ import { Duration, EventStore, EventUiHash, DateMarker, DateSpan, EventInteracti
 import { normalizeRange, isValidDate, TimelineDateProfile } from './timeline-date-profile'
 import TimelineLaneEvents from './TimelineLaneEvents'
 import TimelineLaneFills from './TimelineLaneFills'
-import TimelineSlats, { computeDateSnapCoverage } from './TimelineSlats'
+import TimelineCoords from './TimelineCoords'
+import { computeDateSnapCoverage } from './TimelineCoords'
 
 export interface TimelineLaneSeg extends Seg {
   start: DateMarker
@@ -146,14 +147,14 @@ export default class TimelineLane extends SubRenderer<TimelineLaneProps> {
   }
 
 
-  computeSizes(isResize: boolean, slats: TimelineSlats) {
+  computeSizes(isResize: boolean, slats: TimelineCoords) {
     for (let segRenderer of this.segRenderers) {
       segRenderer.computeSizes(isResize, slats)
     }
   }
 
 
-  assignSizes(isResize: boolean, slats: TimelineSlats) {
+  assignSizes(isResize: boolean, slats: TimelineCoords) {
     for (let segRenderer of this.segRenderers) {
       segRenderer.assignSizes(isResize, slats)
     }

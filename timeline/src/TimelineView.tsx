@@ -8,11 +8,13 @@ import TimelineHeader, { computeDefaultSlotWidth } from './TimelineHeader'
 import TimelineSlats from './TimelineSlats'
 import TimelineNowIndicator, { getTimelineNowIndicatorUnit } from './TimelineNowIndicator'
 import { ScrollGrid } from '@fullcalendar/scrollgrid'
+import TimelineCoords from './TimelineCoords'
 
 
 interface TimelineViewState {
   slotMinWidth: number
   nowIndicatorDate: DateMarker
+  coords: TimelineCoords
 }
 
 const STATE_IS_SIZING = {
@@ -99,6 +101,8 @@ export default class TimelineView extends View<TimelineViewState> {
                                 ref={this.slatsRef}
                                 dateProfile={dateProfile}
                                 tDateProfile={tDateProfile}
+                                allowSizing={contentArg.isSizingReady}
+                                onCoords={this.handleCoords}
                               />
                             </tbody>
                           </table>
@@ -113,6 +117,11 @@ export default class TimelineView extends View<TimelineViewState> {
         />
       </div>
     )
+  }
+
+
+  handleCoords = (coords: TimelineCoords) => {
+    this.setState({ coords })
   }
 
 
@@ -176,17 +185,16 @@ export default class TimelineView extends View<TimelineViewState> {
       slotMinWidth: this.computeSlotMinWidth()
     }, () => { // TODO: find a way to not execute callback if not updated
 
-      let slats = this.slatsRef.current
-      slats.buildPositionCaches()
+      let { coords } = this.state
 
-      this.lane.computeSizes(forced, slats) // needs slat positions
-      this.lane.assignSizes(forced, slats) // "
+      this.lane.computeSizes(forced, coords) // needs slat positions
+      this.lane.assignSizes(forced, coords) // "
 
       this.renderNowIndicator({
         headParentEl: this.headerScrollerElRef.current,
         bodyParentEl: this.laneRootElRef.current,
         tDateProfile: this.tDateProfile,
-        slats: this.slatsRef.current,
+        coords,
         date: this.state.nowIndicatorDate
       })
 
@@ -224,8 +232,7 @@ export default class TimelineView extends View<TimelineViewState> {
 
 
   scrollToTime(duration: Duration) {
-    let slats = this.slatsRef.current
-    let scrollLeft = slats.computeDurationLeft(duration)
+    let scrollLeft = this.state.coords.computeDurationLeft(duration)
     let scrollGrid = this.scrollGridRef.current
 
     scrollGrid.forceScrollLeft(0, scrollLeft)
@@ -234,13 +241,6 @@ export default class TimelineView extends View<TimelineViewState> {
 
   // Hit System
   // ------------------------------------------------------------------------------------------
-
-
-  buildPositionCaches() {
-    let slats = this.slatsRef.current
-
-    slats.buildPositionCaches()
-  }
 
 
   queryHit(positionLeft: number, positionTop: number, elWidth: number, elHeight: number): Hit {

@@ -4,12 +4,13 @@ import {
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { attachSegs, detachSegs } from './TimelineLane'
-import TimelineSlats from './TimelineSlats'
+import { TimelineCoords } from './main'
 
 
 export interface TimelineLaneEventsProps extends BaseFgEventRendererProps {
   tDateProfile: TimelineDateProfile
   containerParentEl: HTMLElement
+  timelineCoords?: TimelineCoords
 }
 
 export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEventsProps> {
@@ -35,6 +36,11 @@ export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEven
     })
 
     this.attachSegs({ segs, containerEl })
+
+    if (props.timelineCoords) {
+      this.computeSegSizes(segs, props.timelineCoords)
+      this.assignSegSizes(segs)
+    }
   }
 
 
@@ -101,10 +107,11 @@ export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEven
   }
 
 
+  // NOT CALLED FROM OUTSIDE
   // computes AND assigns (assigns the left/right at least). bad
-  computeSegSizes(segs: Seg[], slats: TimelineSlats) {
+  computeSegSizes(segs: Seg[], timelineCoords: TimelineCoords) {
     for (let seg of segs) {
-      let coords = slats.rangeToCoords(seg) // works because Seg has start/end
+      let coords = timelineCoords.rangeToCoords(seg) // works because Seg has start/end
 
       applyStyle(seg.el, {
         left: (seg.left = coords.left),
@@ -114,6 +121,7 @@ export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEven
   }
 
 
+  // NOT CALLED FROM OUTSIDE
   assignSegSizes(segs: Seg[]) {
 
     // compute seg verticals
