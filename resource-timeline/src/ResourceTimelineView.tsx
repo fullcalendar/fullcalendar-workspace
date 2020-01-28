@@ -300,7 +300,10 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
 
   getSnapshotBeforeUpdate(): ResourceTimelineViewSnapshot {
-    if (!this.props.forPrint) {
+    if (
+      !this.props.forPrint &&
+      this.scrollGridRef.current.sectionRowSets.length // hack
+    ) {
       return { resourceScroll: this.queryResourceScroll() }
     } else {
       return {}
