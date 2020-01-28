@@ -7,20 +7,20 @@ import { attachSegs, detachSegs } from './TimelineLane'
 import { TimelineCoords } from './main'
 
 
-export interface TimelineLaneEventsProps extends BaseFgEventRendererProps {
+export interface TimelineEventRendererProps extends BaseFgEventRendererProps {
   tDateProfile: TimelineDateProfile
   containerParentEl: HTMLElement
   timelineCoords?: TimelineCoords
 }
 
-export default class TimelineLaneEvents extends FgEventRenderer<TimelineLaneEventsProps> {
+export default class TimelineEventRenderer extends FgEventRenderer<TimelineEventRendererProps> {
 
   private renderContainer = subrenderer(renderContainer, removeElement)
   private attachSegs = subrenderer(attachSegs, detachSegs)
   private containerEl: HTMLElement
 
 
-  render(props: TimelineLaneEventsProps) {
+  render(props: TimelineEventRendererProps) {
     let containerEl = this.containerEl = this.renderContainer({
       isMirror: props.isDragging || props.isResizing,
       parentEl: props.containerParentEl

@@ -3,18 +3,18 @@ import { attachSegs, detachSegs } from './TimelineLane'
 import TimelineCoords from './TimelineCoords'
 
 
-export interface TimelineLaneFillsProps extends BaseFillRendererProps {
+export interface TimelineFillRendererProps extends BaseFillRendererProps {
   containerParentEl: HTMLElement
   timelineCoords?: TimelineCoords
 }
 
-export default class TimelineLaneFills extends FillRenderer<TimelineLaneFillsProps> {
+export default class TimelineFillRenderer extends FillRenderer<TimelineFillRendererProps> {
 
   private renderContainer = subrenderer(renderContainer, removeElement)
   private attachSegs = subrenderer(attachSegs, detachSegs)
 
 
-  render(props: TimelineLaneFillsProps) {
+  render(props: TimelineFillRendererProps) {
     let segs = this.renderSegs(props)
 
     if (segs.length) {

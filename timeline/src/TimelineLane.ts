@@ -1,7 +1,7 @@
 import { Duration, EventStore, EventUiHash, DateMarker, DateSpan, EventInteractionState, SubRenderer, ComponentContext, Seg, DateRange, intersectRanges, addMs, DateProfile, Slicer, DateProfileGenerator, DateEnv, removeElement, subrenderer } from '@fullcalendar/core'
 import { normalizeRange, isValidDate, TimelineDateProfile } from './timeline-date-profile'
-import TimelineLaneEvents from './TimelineLaneEvents'
-import TimelineLaneFills from './TimelineLaneFills'
+import TimelineEventRenderer from './TimelineEventRenderer'
+import TimelineFillRenderer from './TimelineFillRenderer'
 import TimelineCoords from './TimelineCoords'
 import { computeDateSnapCoverage } from './TimelineCoords'
 
@@ -28,13 +28,13 @@ export interface TimelineLaneProps {
 
 export default class TimelineLane extends SubRenderer<TimelineLaneProps> {
 
-  private renderFgEvents = subrenderer(TimelineLaneEvents)
-  private renderMirror = subrenderer(TimelineLaneEvents)
-  private renderBgEvents = subrenderer(TimelineLaneFills)
-  private renderHighlight = subrenderer(TimelineLaneFills)
-  private renderBusinessHours = subrenderer(TimelineLaneFills)
+  private renderFgEvents = subrenderer(TimelineEventRenderer)
+  private renderMirror = subrenderer(TimelineEventRenderer)
+  private renderBgEvents = subrenderer(TimelineFillRenderer)
+  private renderHighlight = subrenderer(TimelineFillRenderer)
+  private renderBusinessHours = subrenderer(TimelineFillRenderer)
 
-  private segRenderers: (TimelineLaneFills | TimelineLaneEvents)[] = []
+  private segRenderers: (TimelineFillRenderer | TimelineEventRenderer)[] = []
   private slicer = new TimelineLaneSlicer()
 
 
@@ -52,7 +52,7 @@ export default class TimelineLane extends SubRenderer<TimelineLaneProps> {
       context.dateEnv
     )
 
-    let segRenderers: (TimelineLaneFills | TimelineLaneEvents)[] = []
+    let segRenderers: (TimelineFillRenderer | TimelineEventRenderer)[] = []
 
     // ordering matters? for z-index?
 
