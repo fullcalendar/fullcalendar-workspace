@@ -26,6 +26,7 @@ export interface ScrollGridProps {
   sections: ScrollGridSectionConfig[]
   vGrow?: boolean
   forPrint?: boolean
+  forceSizingReady?: boolean
 }
 
 export interface ScrollGridSectionConfig extends SectionConfig {
@@ -84,10 +85,12 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
 
   static getDerivedStateFromProps(props: ScrollGridProps, state: ScrollGridState) {
-    if (state.isSizingReady) { // means non-sizing prop/state has changed that will affect sizing
-      return INITIAL_SIZING_STATE
-    } else if (state.scrollerClientWidths) { // the last sizing-state was just set
-      return { isSizingReady: true }
+    if (!props.forceSizingReady) {
+      if (state.isSizingReady) { // means non-sizing prop/state has changed that will affect sizing
+        return INITIAL_SIZING_STATE
+      } else if (state.scrollerClientWidths) { // the last sizing-state was just set
+        return { isSizingReady: true }
+      }
     }
   }
 

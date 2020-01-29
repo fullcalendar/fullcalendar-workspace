@@ -5,10 +5,10 @@ import './main.scss'
 export { TimelineView }
 export { getTimelineViewClassNames, buildSlatCols } from './TimelineView'
 export { default as TimelineLane, TimelineLaneProps } from './TimelineLane'
-export { default as TimelineHeader, computeDefaultSlotWidth } from './TimelineHeader'
+export { default as TimelineHeader } from './TimelineHeader'
 export { default as TimelineSlats } from './TimelineSlats'
 export { TimelineDateProfile, buildTimelineDateProfile } from './timeline-date-profile'
-export { default as TimelineNowIndicator, getTimelineNowIndicatorUnit } from './TimelineNowIndicator'
+export { getTimelineNowIndicatorUnit } from './util'
 export { default as TimelineCoords } from './TimelineCoords'
 
 export default createPlugin({

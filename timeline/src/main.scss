@@ -1,24 +1,4 @@
 
-/* View Structure
---------------------------------------------------------------------------------------------------*/
-
-.fc-rtl .fc-timeline {
-  direction: rtl;
-}
-
-.fc-scrolled .fc-head .fc-scroller {
-  z-index: 2; /* so drop shadow will go above body panes */
-}
-
-.fc-timeline.fc-scrolled .fc-head .fc-scroller {
-  box-shadow: 0 3px 4px rgba(0,0,0,0.075);
-}
-
-.fc-timeline .fc-body .fc-scroller {
-  z-index: 1;
-}
-
-
 /* Table Cell Common
 --------------------------------------------------------------------------------------------------*/
 
@@ -65,8 +45,13 @@ TODO: figure out better styling
 /* Time Area
 --------------------------------------------------------------------------------------------------*/
 
+.fc-timeline-grid {
+  min-height: 100%;
+  position: relative;
+}
+
 .fc-time-area col {
-  min-width: 2.2em; /* detected by JS */
+  min-width: 2.2em; // can remove hardcoded 30 in JS?
 }
 
 /* head */
@@ -121,12 +106,12 @@ TODO: figure out better styling
   width: 0;
 }
 
-.fc-ltr .fc-time-area .fc-mirror-container, /* only within row */
+.fc-ltr .fc-time-area .fc-mirror-container,
 .fc-ltr .fc-time-area .fc-bgevent-container,
 .fc-ltr .fc-time-area .fc-highlight-container {
   left: 0;
 }
-.fc-rtl .fc-time-area .fc-mirror-container, /* only within row */
+.fc-rtl .fc-time-area .fc-mirror-container,
 .fc-rtl .fc-time-area .fc-bgevent-container,
 .fc-rtl .fc-time-area .fc-highlight-container {
   right: 0;

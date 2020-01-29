@@ -1,31 +1,27 @@
 import {
   FgEventRenderer, htmlEscape, cssToStr, Seg, applyStyle, computeHeightAndMargins, applyStyleProp,
-  computeEventDraggable, computeEventStartResizable, computeEventEndResizable, BaseFgEventRendererProps, sortEventSegs, subrenderer, removeElement
+  computeEventDraggable, computeEventStartResizable, computeEventEndResizable, BaseFgEventRendererProps, sortEventSegs, subrenderer
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { attachSegs, detachSegs } from './TimelineLane'
 import { TimelineCoords } from './main'
 
 
-export interface TimelineEventRendererProps extends BaseFgEventRendererProps {
+export interface TimelineEventRendererProps extends TimelineEventEssentialProps {
+  containerEl: HTMLElement
+}
+
+export interface TimelineEventEssentialProps extends BaseFgEventRendererProps {
   tDateProfile: TimelineDateProfile
-  containerParentEl: HTMLElement
   timelineCoords?: TimelineCoords
 }
 
 export default class TimelineEventRenderer extends FgEventRenderer<TimelineEventRendererProps> {
 
-  private renderContainer = subrenderer(renderContainer, removeElement)
   private attachSegs = subrenderer(attachSegs, detachSegs)
-  private containerEl: HTMLElement
 
 
   render(props: TimelineEventRendererProps) {
-    let containerEl = this.containerEl = this.renderContainer({
-      isMirror: props.isDragging || props.isResizing,
-      parentEl: props.containerParentEl
-    })
-
     let segs = this.renderSegs({
       segs: props.segs,
       selectedInstanceId: props.selectedInstanceId,
@@ -35,7 +31,10 @@ export default class TimelineEventRenderer extends FgEventRenderer<TimelineEvent
       isSelecting: props.isSelecting
     })
 
-    this.attachSegs({ segs, containerEl })
+    this.attachSegs({
+      segs,
+      containerEl: props.containerEl
+    })
 
     if (props.timelineCoords) {
       this.computeSegSizes(segs, props.timelineCoords)
@@ -131,7 +130,7 @@ export default class TimelineEventRenderer extends FgEventRenderer<TimelineEvent
 
     this.buildSegLevels(segs) // populates above/below props for computeOffsetForSegs
     let totalHeight = computeOffsetForSegs(segs) // also assigns seg.top
-    applyStyleProp(this.containerEl, 'height', totalHeight)
+    applyStyleProp(this.props.containerEl, 'height', totalHeight)
 
     // assign seg verticals
     for (let seg of segs) {
@@ -190,24 +189,8 @@ export default class TimelineEventRenderer extends FgEventRenderer<TimelineEvent
 }
 
 
-function renderContainer(props: { isMirror: boolean, parentEl: HTMLElement }) {
-  let containerEl = document.createElement('div')
-  containerEl.setAttribute('data-fc-height-measure', '1')
-  containerEl.className = [
-    'fc-event-container',
-    (props.isMirror ? 'fc-mirror-container' : '')
-  ].join(' ')
-
-  props.parentEl.appendChild(containerEl)
-
-  return containerEl
-}
-
-
 function computeOffsetForSeg(seg) {
-  if ((seg.top == null)) {
-    seg.top = computeOffsetForSegs(seg.above)
-  }
+  seg.top = computeOffsetForSegs(seg.above)
 
   return seg.top + seg.height
 }

@@ -1,33 +1,32 @@
-import { FillRenderer, applyStyle, Seg, subrenderer, BaseFillRendererProps, removeElement } from '@fullcalendar/core'
+import { FillRenderer, applyStyle, Seg, subrenderer, BaseFillRendererProps } from '@fullcalendar/core'
 import { attachSegs, detachSegs } from './TimelineLane'
 import TimelineCoords from './TimelineCoords'
 
 
-export interface TimelineFillRendererProps extends BaseFillRendererProps {
-  containerParentEl: HTMLElement
+export interface TimelineFillRendererProps extends TimelineFillEssentialProps {
+  containerEl: HTMLElement
+}
+
+export interface TimelineFillEssentialProps extends BaseFillRendererProps {
   timelineCoords?: TimelineCoords
 }
 
+
 export default class TimelineFillRenderer extends FillRenderer<TimelineFillRendererProps> {
 
-  private renderContainer = subrenderer(renderContainer, removeElement)
   private attachSegs = subrenderer(attachSegs, detachSegs)
 
 
   render(props: TimelineFillRendererProps) {
-    let segs = this.renderSegs(props)
+    let segs = this.renderSegs({
+      segs: props.segs,
+      type: props.type
+    })
 
-    if (segs.length) {
-      let containerEl = this.renderContainer({
-        type: props.type,
-        parentEl: props.containerParentEl
-      })
-      this.attachSegs({ segs, containerEl })
-
-    } else {
-      this.attachSegs(false)
-      this.renderContainer(false) // don't have a container if there's no segs
-    }
+    this.attachSegs({
+      segs,
+      containerEl: props.containerEl
+    })
 
     if (props.timelineCoords) {
       this.computeSegSizes(segs, props.timelineCoords)
@@ -56,18 +55,4 @@ export default class TimelineFillRenderer extends FillRenderer<TimelineFillRende
     }
   }
 
-}
-
-
-function renderContainer({ type, parentEl }: { type: string, parentEl: HTMLElement }) {
-  let className = type === 'businessHours'
-    ? 'bgevent'
-    : type.toLowerCase()
-
-  let containerEl = document.createElement('div')
-  containerEl.className = 'fc-' + className + '-container'
-
-  parentEl.appendChild(containerEl)
-
-  return containerEl
 }

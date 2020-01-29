@@ -1,46 +1,31 @@
 import {
-  h, createRef,
-  Hit, View, ViewProps, ComponentContext, Duration, memoize, subrenderer, ViewSpec, getViewClassNames, ChunkContentCallbackArgs, componentNeedsResize, DateMarker, NowTimer
+  h, View, ViewProps, ComponentContext, Duration, memoize, subrenderer, ViewSpec, getViewClassNames, ChunkContentCallbackArgs, DateMarker, NowTimer, createRef, rangeContainsMarker
 } from '@fullcalendar/core'
-import TimelineLane from './TimelineLane'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
-import TimelineHeader, { computeDefaultSlotWidth } from './TimelineHeader'
-import TimelineSlats from './TimelineSlats'
-import TimelineNowIndicator, { getTimelineNowIndicatorUnit } from './TimelineNowIndicator'
+import TimelineHeader from './TimelineHeader'
+import { getTimelineNowIndicatorUnit } from './util'
 import { ScrollGrid } from '@fullcalendar/scrollgrid'
+import TimelineGrid from './TimelineGrid'
 import TimelineCoords from './TimelineCoords'
 
 
 interface TimelineViewState {
-  slotMinWidth: number
   nowIndicatorDate: DateMarker
-  coords: TimelineCoords
-}
-
-const STATE_IS_SIZING = {
-  slotMinWidth: true
+  coords?: TimelineCoords
 }
 
 
 export default class TimelineView extends View<TimelineViewState> {
 
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
-  private registerInteractive = subrenderer(this._registerInteractive, this._unregisterInteractive)
-  private renderLane = subrenderer(TimelineLane)
-  private updateNowTimer = subrenderer(NowTimer)
-  private renderNowIndicator = subrenderer(TimelineNowIndicator)
   private scrollGridRef = createRef<ScrollGrid>()
-  private headerScrollerElRef = createRef<HTMLDivElement>()
-  private slatsRef = createRef<TimelineSlats>()
-  private laneRootElRef = createRef<HTMLDivElement>()
-  private laneFgElRef = createRef<HTMLDivElement>()
-  private laneBgElRef = createRef<HTMLDivElement>()
-  private lane: TimelineLane
   private tDateProfile: TimelineDateProfile
+  private updateNowTimer = subrenderer(NowTimer)
+  private queuedScrollDuration?: Duration
 
 
   render(props: ViewProps, state: TimelineViewState, context: ComponentContext) {
-    let { options, theme } = context
+    let { options } = context
     let { dateProfile } = props
 
     let tDateProfile = this.tDateProfile = this.buildTimelineDateProfile(
@@ -51,12 +36,21 @@ export default class TimelineView extends View<TimelineViewState> {
     )
 
     let classNames = getTimelineViewClassNames(props.viewSpec, options.eventOverlap)
-    let slatCols = buildSlatCols(tDateProfile, this.state.slotMinWidth)
+    let slatCols = buildSlatCols(tDateProfile, context.options.slotWidth || 30) // TODO: more DRY
+
+    let nowCoords = (
+      state.nowIndicatorDate &&
+      rangeContainsMarker(dateProfile.currentRange, state.nowIndicatorDate) &&
+      state.coords
+    ) ?
+      state.coords.dateToCoord(state.nowIndicatorDate) :
+      null
 
     return (
       <div class={classNames.join(' ')}>
         <ScrollGrid
           ref={this.scrollGridRef}
+          forceSizingReady={Boolean(state.coords)}
           forPrint={props.forPrint}
           vGrow={!props.isHeightAuto}
           colGroups={[
@@ -66,12 +60,13 @@ export default class TimelineView extends View<TimelineViewState> {
             {
               type: 'head',
               chunks: [{
-                scrollerElRef: this.headerScrollerElRef,
                 className: 'fc-time-area',
-                rowContent: (
+                content: (contentArg: ChunkContentCallbackArgs) => (
                   <TimelineHeader
+                    {...contentArg}
                     dateProfile={dateProfile}
                     tDateProfile={tDateProfile}
+                    nowCoord={nowCoords}
                   />
                 )
               }]
@@ -79,38 +74,18 @@ export default class TimelineView extends View<TimelineViewState> {
             {
               type: 'body',
               vGrow: true,
+              vGrowRows: true, // activates tableHeight :(
               chunks: [{
                 className: 'fc-time-area',
-                content: (contentArg: ChunkContentCallbackArgs) => {
-                  return (
-                    <div ref={this.laneRootElRef} style={{ minWidth: contentArg.tableMinWidth }}>
-                      <div class='fc-content' ref={this.laneFgElRef} />
-                      <div class='fc-bg' ref={this.laneBgElRef}>
-                        <div class='fc-slats'>
-                          <table
-                            class={theme.getClass('table')}
-                            style={{
-                              minWidth: contentArg.tableMinWidth,
-                              width: contentArg.tableWidth,
-                              height: contentArg.tableHeight
-                            }}
-                          >
-                            {contentArg.tableColGroupNode}
-                            <tbody>
-                              <TimelineSlats
-                                ref={this.slatsRef}
-                                dateProfile={dateProfile}
-                                tDateProfile={tDateProfile}
-                                allowSizing={contentArg.isSizingReady}
-                                onCoords={this.handleCoords}
-                              />
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                }
+                content: (contentArg: ChunkContentCallbackArgs) => (
+                  <TimelineGrid
+                    {...props}
+                    {...contentArg}
+                    tDateProfile={tDateProfile}
+                    nowCoord={nowCoords}
+                    onCoords={this.handleCoords}
+                  />
+                )
               }]
             }
           ]}
@@ -120,104 +95,41 @@ export default class TimelineView extends View<TimelineViewState> {
   }
 
 
-  handleCoords = (coords: TimelineCoords) => {
+  handleCoords = (coords: TimelineCoords | null) => {
     this.setState({ coords })
   }
 
 
   componentDidMount() {
     this.subrender()
-    this.handleSizing(false, true)
-    this.context.addResizeHandler(this.handleSizing)
+    this.scrollToInitialTime() // a REQUEST, goes to scrollToTime
+    this.drainScroll()
   }
 
 
   componentDidUpdate(prevProps: ViewProps, prevState: TimelineViewState) {
     this.subrender()
 
-    if (componentNeedsResize(prevProps, this.props, prevState, this.state, STATE_IS_SIZING)) {
-      this.handleSizing(false, prevProps.dateProfile !== this.props.dateProfile)
+    if (this.props.dateProfile !== prevProps.dateProfile) {
+      this.scrollToInitialTime() // a REQUEST, goes to scrollToTime
     }
+
+    this.drainScroll()
   }
 
 
   componentWillUnmount() {
-    this.context.removeResizeHandler(this.handleSizing)
     this.subrenderDestroy()
   }
 
 
   subrender() {
-    this.lane = this.renderLane({
-      ...this.props,
-      tDateProfile: this.tDateProfile,
-      nextDayThreshold: this.context.nextDayThreshold,
-      fgContainerEl: this.laneFgElRef.current,
-      bgContainerEl: this.laneBgElRef.current
-    })
-
-    this.updateNowTimer({
+    this.updateNowTimer({ // TODO: componentize
       enabled: this.context.options.nowIndicator,
       unit: getTimelineNowIndicatorUnit(this.tDateProfile), // expensive operation?
       callback: this.handleNowDate
     })
-
-    this.registerInteractive({
-      canvasRoot: this.laneRootElRef.current
-    })
   }
-
-
-  _registerInteractive(props: { canvasRoot: HTMLElement }, context: ComponentContext) {
-    context.calendar.registerInteractiveComponent(this, {
-      el: props.canvasRoot
-    })
-  }
-
-
-  _unregisterInteractive(funcState: void, context: ComponentContext) {
-    context.calendar.unregisterInteractiveComponent(this)
-  }
-
-
-  handleSizing = (forced: boolean, hasNewDates?: boolean) => {
-    this.setState({
-      slotMinWidth: this.computeSlotMinWidth()
-    }, () => { // TODO: find a way to not execute callback if not updated
-
-      let { coords } = this.state
-
-      this.lane.computeSizes(forced, coords) // needs slat positions
-      this.lane.assignSizes(forced, coords) // "
-
-      this.renderNowIndicator({
-        headParentEl: this.headerScrollerElRef.current,
-        bodyParentEl: this.laneRootElRef.current,
-        tDateProfile: this.tDateProfile,
-        coords,
-        date: this.state.nowIndicatorDate
-      })
-
-      if (hasNewDates) {
-        this.scrollToInitialTime()
-      }
-    })
-  }
-
-
-  computeSlotMinWidth() {
-    let slotWidth = this.context.options.slotWidth || ''
-
-    if (slotWidth === '') {
-      slotWidth = computeDefaultSlotWidth(this.headerScrollerElRef.current, this.tDateProfile)
-    }
-
-    return slotWidth
-  }
-
-
-  // Now Indicator
-  // ------------------------------------------------------------------------------------------
 
 
   handleNowDate = (date: DateMarker) => {
@@ -227,39 +139,20 @@ export default class TimelineView extends View<TimelineViewState> {
   }
 
 
-  // Scroll System
-  // ------------------------------------------------------------------------------------------
-
-
-  scrollToTime(duration: Duration) {
-    let scrollLeft = this.state.coords.computeDurationLeft(duration)
-    let scrollGrid = this.scrollGridRef.current
-
-    scrollGrid.forceScrollLeft(0, scrollLeft)
+  scrollToTime(duration: Duration) { // API for caller
+    this.queuedScrollDuration = duration
+    this.drainScroll()
   }
 
 
-  // Hit System
-  // ------------------------------------------------------------------------------------------
+  drainScroll() { // assumes scrollGridRef
+    let { queuedScrollDuration } = this
+    let { coords } = this.state
 
-
-  queryHit(positionLeft: number, positionTop: number, elWidth: number, elHeight: number): Hit {
-    let slats = this.slatsRef.current
-    let slatHit = slats.positionToHit(positionLeft)
-
-    if (slatHit) {
-      return {
-        component: this,
-        dateSpan: slatHit.dateSpan,
-        rect: {
-          left: slatHit.left,
-          right: slatHit.right,
-          top: 0,
-          bottom: elHeight
-        },
-        dayEl: slatHit.dayEl,
-        layer: 0
-      }
+    if (queuedScrollDuration && coords) {
+      let scrollLeft = coords.computeDurationLeft(queuedScrollDuration)
+      this.scrollGridRef.current.forceScrollLeft(0, scrollLeft)
+      this.queuedScrollDuration = null
     }
   }
 
@@ -280,6 +173,6 @@ export function getTimelineViewClassNames(viewSpec: ViewSpec, eventOverlap) {
 export function buildSlatCols(tDateProfile: TimelineDateProfile, slotMinWidth?: number) {
   return [ {
     span: tDateProfile.slotCnt,
-    minWidth: slotMinWidth || 1 // needs to be a non-zero number to trigger horizontal scrollbars!
+    minWidth: slotMinWidth || 1 // needs to be a non-zero number to trigger horizontal scrollbars!??????
   } ]
 }

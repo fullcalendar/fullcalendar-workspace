@@ -10,8 +10,8 @@ import TimelineCoords from './TimelineCoords'
 export interface TimelineSlatsProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
-  onCoords?: (coord: TimelineCoords) => void
-  allowSizing?: boolean
+  onCoords?: (coord: TimelineCoords | null) => void
+  allowSizing: boolean
 }
 
 export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
@@ -56,8 +56,9 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
   }
 
 
-  handleSizing = () => {
-    if (this.props.allowSizing) {
+  handleSizing = (forced?: boolean) => {
+
+    if (this.props.allowSizing && !forced) {
       let slatEls = this.cellElRefs.collect()
       let slatRootEl = slatEls[0].parentNode as HTMLElement
 
@@ -70,9 +71,12 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
         this.context.isRtl
       )
 
-      if (this.props.onCoords) {
-        this.props.onCoords(this.coords)
-      }
+    } else {
+      this.coords = null
+    }
+
+    if (this.props.onCoords) {
+      this.props.onCoords(this.coords)
     }
   }
 
