@@ -25,11 +25,12 @@ export interface ResourceTimelineGridProps {
   clientHeight: CssDimValue
   tableMinWidth: CssDimValue
   tableColGroupNode: VNode
+  vGrowRows: boolean
   rowInnerHeights: number[]
   nowIndicatorDate: DateMarker | null
   onSlatCoords?: (slatCoords: TimelineCoords) => void
   onRowCoords?: (rowCoords: PositionCache) => void
-  onScrollLeft?: (scrollLeft: number) => void
+  onScrollLeftRequest?: (scrollLeft: number) => void
 }
 
 interface ResourceTimelineGridState {
@@ -78,7 +79,7 @@ export default class ResourceTimelineGrid extends DateComponent<ResourceTimeline
           tableColGroupNode={props.tableColGroupNode}
           tableMinWidth={props.tableMinWidth}
           onCoords={this.handleSlatCoords}
-          onScrollLeft={props.onScrollLeft}
+          onScrollLeftRequest={props.onScrollLeftRequest}
         />
         <TimelineLaneBg
           businessHourSegs={bgSlicedProps.businessHourSegs}
@@ -95,7 +96,7 @@ export default class ResourceTimelineGrid extends DateComponent<ResourceTimeline
           splitProps={splitProps}
           businessHours={props.businessHours}
           clientWidth={props.clientWidth}
-          clientHeight={props.clientHeight}
+          minHeight={props.vGrowRows ? props.clientHeight : ''}
           tableMinWidth={props.tableMinWidth}
           innerHeights={props.rowInnerHeights}
           slatCoords={state.slatCoords}

@@ -12,7 +12,7 @@ export interface TimelineSlatsProps extends TimelineSlatsContentProps {
   tableMinWidth: CssDimValue
   tableColGroupNode: VNode
   onCoords?: (coord: TimelineCoords | null) => void
-  onScrollLeft?: (scrollLeft: number) => void
+  onScrollLeftRequest?: (scrollLeft: number) => void
 }
 
 interface TimelineSlatsContentProps {
@@ -100,13 +100,13 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
 
 
   handleScrollRequest = (request: ScrollRequest) => {
-    let { onScrollLeft } = this.props
+    let { onScrollLeftRequest } = this.props
     let { coords } = this
 
-    if (onScrollLeft && coords) {
+    if (onScrollLeftRequest && coords) {
       if (request.time) {
         let scrollLeft = coords.computeDurationLeft(request.time)
-        onScrollLeft(scrollLeft)
+        onScrollLeftRequest(scrollLeft)
       }
       return true
     }

@@ -155,6 +155,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
       tableMinWidth,
       clientWidth: state.scrollerClientWidths[index] || '',
       clientHeight: state.scrollerClientHeights[index] || '',
+      vGrowRows: sectionConfig.vGrowRows || chunkConfig.vGrowRows,
       rowSyncHeights: state.rowSyncHeightSets[sectionIndex] || []
     })
 

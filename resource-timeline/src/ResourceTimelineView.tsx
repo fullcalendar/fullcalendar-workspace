@@ -126,6 +126,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
               clientHeight={contentArg.clientHeight}
               tableMinWidth={contentArg.tableMinWidth}
               tableColGroupNode={contentArg.tableColGroupNode}
+              vGrowRows={contentArg.vGrowRows}
               tDateProfile={tDateProfile}
               dateProfile={dateProfile}
               dateProfileGenerator={props.dateProfileGenerator}
@@ -143,7 +144,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
               onSlatCoords={this.handleSlatCoords}
               onRowCoords={this.handleRowCoords}
               nowIndicatorDate={state.nowIndicatorDate}
-              onScrollLeft={this.handleScrollLeft}
+              onScrollLeftRequest={this.handleScrollLeftRequest}
             />
           )}
         />
@@ -216,7 +217,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   // this is useful for scrolling prev/next dates while resource is scrolled down
 
 
-  handleScrollLeft = (scrollLeft: number) => { // for ResourceTimelineGrid
+  handleScrollLeftRequest = (scrollLeft: number) => { // for ResourceTimelineGrid
     let layout = this.layoutRef.current
     layout.forceTimeScroll(scrollLeft)
   }

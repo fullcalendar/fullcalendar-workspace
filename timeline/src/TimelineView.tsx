@@ -68,7 +68,6 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
             {
               type: 'body',
               vGrow: true,
-              vGrowRows: true, // activates tableHeight :(
               chunks: [{
                 className: 'fc-time-area',
                 content: (contentArg: ChunkContentCallbackArgs) => (
@@ -81,7 +80,7 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
                     tDateProfile={tDateProfile}
                     nowIndicatorDate={state.nowIndicatorDate}
                     onSlatCoords={this.handleSlatCoords}
-                    onScrollLeft={this.handleScrollLeft}
+                    onScrollLeftRequest={this.handleScrollLeftRequest}
                   />
                 )
               }]
@@ -129,7 +128,7 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
   }
 
 
-  handleScrollLeft = (scrollLeft: number) => {
+  handleScrollLeftRequest = (scrollLeft: number) => {
     let scrollGrid = this.scrollGridRef.current
     scrollGrid.forceScrollLeft(0, scrollLeft)
   }

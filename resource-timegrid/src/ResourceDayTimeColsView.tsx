@@ -65,10 +65,11 @@ export default class ResourceDayTimeColsView extends TimeColsView {
           tableMinWidth={contentArg.tableMinWidth}
           clientWidth={contentArg.clientWidth}
           clientHeight={contentArg.clientHeight}
+          vGrowRows={contentArg.vGrowRows}
           renderBgIntro={this.renderTimeColsBgIntro}
           renderIntro={this.renderTimeColsIntro}
           forPrint={props.forPrint}
-          onScrollTop={this.handleScrollTop}
+          onScrollTopRequest={this.handleScrollTopRequest}
         />
       )
     )

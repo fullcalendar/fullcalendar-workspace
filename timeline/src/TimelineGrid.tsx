@@ -13,7 +13,7 @@ export interface TimelinGridProps extends ViewProps {
   tableColGroupNode: VNode
   nowIndicatorDate: DateMarker | null
   onSlatCoords?: (coords: TimelineCoords) => void
-  onScrollLeft?: (scrollLeft: number) => void
+  onScrollLeftRequest?: (scrollLeft: number) => void
 }
 
 interface TimelineGridState {
@@ -42,7 +42,7 @@ export default class TimelineGrid extends DateComponent<TimelinGridProps, Timeli
           tableColGroupNode={props.tableColGroupNode}
           tableMinWidth={props.tableMinWidth}
           onCoords={this.handleCoords}
-          onScrollLeft={props.onScrollLeft}
+          onScrollLeftRequest={props.onScrollLeftRequest}
         />
         <TimelineLane
           dateProfile={props.dateProfile}

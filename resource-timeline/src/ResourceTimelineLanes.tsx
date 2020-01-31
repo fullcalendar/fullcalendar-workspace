@@ -9,8 +9,8 @@ import DividerRow from './DividerRow'
 
 
 export interface ResourceTimelineLanesProps extends ResourceTimelineLanesContentProps {
+  minHeight: CssDimValue
   clientWidth: CssDimValue
-  clientHeight: CssDimValue
   tableMinWidth: CssDimValue
   onRowCoords?: (rowCoords: PositionCache) => void
 }
@@ -41,7 +41,7 @@ export default class ResourceTimelineLanes extends BaseComponent<ResourceTimelin
         style={{
           minWidth: props.tableMinWidth,
           width: props.clientWidth,
-          height: props.clientHeight
+          height: props.minHeight
         }}
       >
         <ResourceTimelineLanesBody
@@ -83,7 +83,7 @@ export default class ResourceTimelineLanes extends BaseComponent<ResourceTimelin
   handleSizing = () => {
     let { props } = this
 
-    if (props.onRowCoords && props.clientHeight) {
+    if (props.onRowCoords && props.clientWidth) { // a populated clientWidth means sizing has stabilized
       this.props.onRowCoords(
         new PositionCache(
           this.rootElRef.current,
