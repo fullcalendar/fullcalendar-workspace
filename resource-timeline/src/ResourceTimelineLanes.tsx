@@ -37,7 +37,7 @@ export default class ResourceTimelineLanes extends BaseComponent<ResourceTimelin
     return (
       <table
         ref={this.rootElRef}
-        class={context.theme.getClass('table')}
+        class={'fc-resource-timeline-lanes ' + context.theme.getClass('table')}
         style={{
           minWidth: props.tableMinWidth,
           width: props.clientWidth,
@@ -126,6 +126,7 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
               <DividerRow
                 key={node.id}
                 elRef={rowElRefs.createRef(index)}
+                innerHeight={innerHeights[index] || ''}
               />
             )
 

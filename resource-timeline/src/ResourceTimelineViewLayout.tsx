@@ -91,7 +91,8 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
               {
                 className: 'fc-time-area',
                 scrollerElRef: this.timeBodyScrollerElRef,
-                content: props.timeBodyContent
+                content: props.timeBodyContent,
+                rowSelector: '.fc-resource-timeline-lanes tr' // for syncRowHeights
               }
             ]
           }

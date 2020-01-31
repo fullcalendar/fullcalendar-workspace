@@ -20,16 +20,18 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
     return (
       <tr>
         <td class={'fc-divider ' + context.theme.getClass('tableCellShaded')} colSpan={props.spreadsheetColCnt}>
-          <div class='fc-cell-content' style={{ height: props.innerHeight }}>
-            <ExpanderIcon
-              depth={0}
-              hasChildren={true}
-              isExpanded={props.isExpanded}
-              onExpanderClick={this.onExpanderClick}
-            />
-            <span class='fc-cell-text'>
-              { text || <Fragment>&nbsp;</Fragment> }
-            </span>
+          <div style={{ height: props.innerHeight }}>
+            <div class='fc-cell-content ' data-fc-height-measure={1}>
+              <ExpanderIcon
+                depth={0}
+                hasChildren={true}
+                isExpanded={props.isExpanded}
+                onExpanderClick={this.onExpanderClick}
+              />
+              <span class='fc-cell-text'>
+                { text || <Fragment>&nbsp;</Fragment> }
+              </span>
+            </div>
           </div>
         </td>
       </tr>

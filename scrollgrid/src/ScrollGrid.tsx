@@ -395,9 +395,14 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
       if (sectionConfig.syncRowHeights === true) {
         let sectionStart = sectionI * chunksPerSection
         let sectionEnd = sectionStart + chunksPerSection
-        let chunkEls = this.chunkElRefs.collect(sectionStart, sectionEnd)
 
-        maxInnerHeights = computeMaxInnerHeights(chunkEls) // TODO: should accept a selector!!!!, containing the rows
+        let trSets: HTMLElement[][] = []
+        this.chunkElRefs.collect(sectionStart, sectionEnd, 1, (cellEL: HTMLElement, key: number, chunkConfig: ChunkConfig) => { // abuse!
+          trSets.push(findElements(cellEL, chunkConfig.rowSelector || 'tr'))
+          return true
+        })
+
+        maxInnerHeights = computeMaxInnerHeights(trSets)
       } else {
         maxInnerHeights = []
       }
@@ -505,6 +510,7 @@ function renderPrintTrs(sectionConfigs: ScrollGridSectionConfig[], chunkElRefs: 
     let chunkEls = chunkElRefs.collect(sectionStart, sectionEnd)
 
     let tableBodyEl = document.createElement('t' + sectionConfig.type)
+    tableBodyEl.className = sectionConfig.className || ''
     tableEl.appendChild(tableBodyEl)
 
     for (let chunkEl of chunkEls) {
@@ -551,8 +557,7 @@ function renderMicroColGroups(colConfigs: ColGroupConfig[], shrinkWidths: number
 }
 
 
-function computeMaxInnerHeights(chunkEls: HTMLTableCellElement[]) {
-  let trSets = chunkEls.map((chunkEl) => findElements(chunkEl, 'tr[data-resource-id]')) // hack!!!!!!!!!!!!!!!!!!!!!!!!!!!
+function computeMaxInnerHeights(trSets: HTMLElement[][]) {
   let maxInnerHeights: number[] = []
   let row = 0
   let processedTrs
