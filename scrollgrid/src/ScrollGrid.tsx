@@ -47,7 +47,7 @@ interface ScrollGridState {
   scrollerClientWidths: { [index: string]: number }
   scrollerClientHeights: { [index: string]: number }
   rowSyncHeightSets: number[][]
-  sizingUid: string
+  sizingId: string
 }
 
 interface ColGroupStat {
@@ -80,7 +80,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     scrollerClientWidths: {},
     scrollerClientHeights: {},
     rowSyncHeightSets: [],
-    sizingUid: ''
+    sizingId: ''
   }
 
 
@@ -228,27 +228,27 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
   handleSizing = (isExternalChange: boolean) => {
     if (isExternalChange && !this.props.forPrint) {
-      let sizingUid = guid()
+      let sizingId = guid()
       this.sizingHacks() // needs to happen first step
       this.setState({
-        sizingUid,
+        sizingId,
         shrinkWidths: this.computeShrinkWidths()
       }, () => {
-        if (sizingUid === this.state.sizingUid) {
+        if (sizingId === this.state.sizingId) {
           this.setState({
             rowSyncHeightSets: this.computeRowSyncHeightSets() // should happen after shrinkWidths. might affect scrollbars
           }, () => {
-            if (sizingUid === this.state.sizingUid) {
+            if (sizingId === this.state.sizingId) {
               this.setState({
                 forceXScrollbars: this.computeForceXScrollbars(),
                 forceYScrollbars: this.computeForceYScrollbars()
               }, () => {
-                if (sizingUid === this.state.sizingUid) {
+                if (sizingId === this.state.sizingId) {
                   this.setState({
                     scrollerClientWidths: computeScrollerClientWidths(this.scrollerElRefs),
                     scrollerClientHeights: computeScrollerClientHeights(this.scrollerElRefs),
                   }, () => {
-                    if (sizingUid === this.state.sizingUid) {
+                    if (sizingId === this.state.sizingId) {
                       this.updateStickyScrolling() // needs to happen AFTER final positioning committed to DOM
                     }
                   })
@@ -467,7 +467,7 @@ ScrollGrid.addStateEquality({
   scrollerClientWidths: isPropsEqual,
   scrollerClientHeights: isPropsEqual,
   rowSyncHeightSets: isArraysEqual,
-  sizingUid: true // never update base on this
+  sizingId: true // never update base on this
 })
 
 
