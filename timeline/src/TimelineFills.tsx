@@ -22,7 +22,6 @@ export default class TimelineEvents extends BaseComponent<TimelineEventProps> {
       <div
         ref={this.elRef}
         class={'fc-' + type.toLocaleLowerCase() + '-container'}
-        data-fc-height-measure={1}
       />
     )
   }

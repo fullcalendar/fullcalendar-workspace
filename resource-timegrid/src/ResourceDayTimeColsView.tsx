@@ -1,6 +1,5 @@
 import {
-  h, createRef,
-  ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs
+  h, ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs
 } from '@fullcalendar/core'
 import { TimeColsView, buildTimeColsModel } from '@fullcalendar/timegrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
@@ -16,8 +15,6 @@ export default class ResourceDayTimeColsView extends TimeColsView {
   private flattenResources = memoize(flattenResources)
   private buildResourceTimeColsModel = memoize(buildResourceTimeColsModel)
   private parseResourceOrder = memoize(parseFieldSpecs)
-  private dayTableRef = createRef<ResourceDayTable>()
-  private timeColsRef = createRef<ResourceDayTimeCols>()
 
 
   render(props: ResourceViewProps, state: {}, context: ComponentContext) {
@@ -44,7 +41,6 @@ export default class ResourceDayTimeColsView extends TimeColsView {
         />,
       options.allDaySlot && ((contentArg: ChunkContentCallbackArgs) => (
         <ResourceDayTable
-          ref={this.dayTableRef}
           {...splitProps['allDay']}
           dateProfile={props.dateProfile}
           resourceDayTableModel={resourceDayTableModel}
@@ -62,30 +58,20 @@ export default class ResourceDayTimeColsView extends TimeColsView {
       )),
       (contentArg: ChunkContentCallbackArgs) => (
         <ResourceDayTimeCols
-          ref={this.timeColsRef}
           {...splitProps['timed']}
           dateProfile={props.dateProfile}
           resourceDayTableModel={resourceDayTableModel}
           tableColGroupNode={contentArg.tableColGroupNode}
-          tableWidth={contentArg.tableWidth}
-          tableHeight={contentArg.tableHeight}
+          tableMinWidth={contentArg.tableMinWidth}
+          clientWidth={contentArg.clientWidth}
+          clientHeight={contentArg.clientHeight}
           renderBgIntro={this.renderTimeColsBgIntro}
           renderIntro={this.renderTimeColsIntro}
           forPrint={props.forPrint}
-          allowSizing={contentArg.isSizingReady}
+          onScrollTop={this.handleScrollTop}
         />
       )
     )
-  }
-
-
-  getAllDayTableObj() {
-    return this.dayTableRef.current
-  }
-
-
-  getTimeColsObj() {
-    return this.timeColsRef.current
   }
 
 }

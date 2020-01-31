@@ -36,8 +36,6 @@ export default class ResourceDayTable extends DateComponent<ResourceDayTableProp
   private joiner = new ResourceDayTableJoiner()
   private tableRef = createRef<Table>()
 
-  get table() { return this.tableRef.current }
-
 
   render(props: ResourceDayTableProps, state: {}, context: ComponentContext) {
     let { dateProfile, resourceDayTableModel, nextDayThreshold } = props
@@ -63,7 +61,7 @@ export default class ResourceDayTable extends DateComponent<ResourceDayTableProp
     return (
       <Table
         ref={this.tableRef}
-        elRef={this.handleRootEl}
+        rootElRef={this.handleRootEl}
         {...this.joiner.joinProps(slicedProps, resourceDayTableModel)}
         dateProfile={dateProfile}
         cells={resourceDayTableModel.cells}
@@ -92,13 +90,8 @@ export default class ResourceDayTable extends DateComponent<ResourceDayTableProp
   }
 
 
-  buildPositionCaches() {
-    this.table.buildPositionCaches()
-  }
-
-
   queryHit(positionLeft: number, positionTop: number): Hit {
-    let rawHit = this.table.positionToHit(positionLeft, positionTop)
+    let rawHit = this.tableRef.current.positionToHit(positionLeft, positionTop)
 
     if (rawHit) {
       return {

@@ -21,11 +21,7 @@ Calendar.prototype.addResource = function(this: Calendar, input: ResourceInput |
   })
 
   if (scrollTo) {
-    let view = this.component.view
-
-    if (view.scrollToResource) {
-      view.scrollToResource(resource.id)
-    }
+    this.trigger('scrollRequest', { resourceId: resource.id })
   }
 
   return new ResourceApi(this, resource)

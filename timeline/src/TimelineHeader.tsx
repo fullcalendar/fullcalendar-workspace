@@ -1,9 +1,15 @@
-import { h, BaseComponent, ChunkContentCallbackArgs } from '@fullcalendar/core'
+import { h, BaseComponent, CssDimValue, VNode, DateMarker } from '@fullcalendar/core'
 import TimelineHeaderRows, { TimelineHeaderRowsProps } from './TimelineHeaderRows'
+import TimelineCoords from './TimelineCoords'
 
 
-export type TimelineHeaderProps = TimelineHeaderRowsProps & ChunkContentCallbackArgs & {
-  nowCoord?: number
+export interface TimelineHeaderProps extends TimelineHeaderRowsProps {
+  clientWidth: CssDimValue
+  clientHeight: CssDimValue
+  tableMinWidth: CssDimValue
+  tableColGroupNode: VNode
+  nowIndicatorDate: DateMarker | null
+  slatCoords: TimelineCoords
 }
 
 
@@ -11,15 +17,11 @@ export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
 
 
   render(props: TimelineHeaderProps) {
+    let nowIndicatorLeft = props.slatCoords && props.slatCoords.safeDateToCoord(props.nowIndicatorDate)
+
     return (
       <div class='fc-timeline-header'>
-        {props.nowCoord != null &&
-          <div
-            class='fc-now-indicator fc-now-indicator-arrow'
-            style={{ left: props.nowCoord }}
-          />
-        }
-        <table style={{ minWidth: props.tableMinWidth, width: props.tableWidth }}>
+        <table style={{ minWidth: props.tableMinWidth, width: props.clientWidth }}>
           {props.tableColGroupNode}
           <tbody>
             <TimelineHeaderRows
@@ -28,6 +30,12 @@ export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
             />
           </tbody>
         </table>
+        {nowIndicatorLeft != null &&
+          <div
+            class='fc-now-indicator fc-now-indicator-arrow'
+            style={{ left: nowIndicatorLeft }}
+          />
+        }
       </div>
     )
   }

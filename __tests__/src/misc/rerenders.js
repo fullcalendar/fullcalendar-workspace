@@ -1,4 +1,4 @@
-import { ResourceTimelineLaneRow, SpreadsheetRow  } from '@fullcalendar/resource-timeline'
+import { ResourceTimelineLane, SpreadsheetRow  } from '@fullcalendar/resource-timeline'
 import { TimelineHeader } from '@fullcalendar/timeline'
 import ComponentSpy from 'package-tests/lib/ComponentSpy'
 
@@ -18,7 +18,7 @@ describe('rerender performance for resource timeline', function() {
 
   it('calls methods a limited number of times', function(done) {
     let timelineHeaderSpy = new ComponentSpy(TimelineHeader)
-    let timelineRowSpy = new ComponentSpy(ResourceTimelineLaneRow)
+    let timelineRowSpy = new ComponentSpy(ResourceTimelineLane)
     let spreadsheetRowSpy = new ComponentSpy(SpreadsheetRow)
     let eventRenderCnt = 0
 

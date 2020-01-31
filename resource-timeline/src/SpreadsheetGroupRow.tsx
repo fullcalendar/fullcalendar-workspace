@@ -1,4 +1,4 @@
-import { h, Fragment, BaseComponent, ComponentContext } from '@fullcalendar/core'
+import { h, Fragment, BaseComponent, ComponentContext, CssDimValue } from '@fullcalendar/core'
 import { Group, isGroupsEqual } from '@fullcalendar/resource-common'
 import ExpanderIcon from './ExpanderIcon'
 
@@ -8,6 +8,7 @@ export interface SpreadsheetGroupRowProps {
   id: string // 'field:value'
   isExpanded: boolean
   group: Group
+  innerHeight: CssDimValue
 }
 
 export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps, ComponentContext> {
@@ -19,7 +20,7 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
     return (
       <tr>
         <td class={'fc-divider ' + context.theme.getClass('tableCellShaded')} colSpan={props.spreadsheetColCnt}>
-          <div class='fc-cell-content'>
+          <div class='fc-cell-content' style={{ height: props.innerHeight }}>
             <ExpanderIcon
               depth={0}
               hasChildren={true}

@@ -1,7 +1,7 @@
 import {
   PositionCache, findDirectChildren,
   isInt, DateProfile,
-  DateMarker, DateEnv, Duration, startOfDay
+  DateMarker, DateEnv, Duration, startOfDay, rangeContainsMarker
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -25,7 +25,6 @@ export default class TimelineCoords {
       true, // isHorizontal
       false // isVertical
     )
-    this.outerCoordCache.build()
 
     // for the inner divs within the slats
     // used for event rendering and scrollTime, to disregard slat border
@@ -35,7 +34,6 @@ export default class TimelineCoords {
       true, // isHorizontal
       false // isVertical
     )
-    this.innerCoordCache.build()
   }
 
 
@@ -44,6 +42,13 @@ export default class TimelineCoords {
       return { right: this.dateToCoord(range.start), left: this.dateToCoord(range.end) }
     } else {
       return { left: this.dateToCoord(range.start), right: this.dateToCoord(range.end) }
+    }
+  }
+
+
+  safeDateToCoord(date: DateMarker | null) {
+    if (date != null && rangeContainsMarker(this.dateProfile.currentRange, date)) {
+      return this.dateToCoord(date)
     }
   }
 

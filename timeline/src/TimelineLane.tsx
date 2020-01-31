@@ -1,13 +1,13 @@
 import {
-  Duration, EventStore, EventUiHash, DateMarker, DateSpan, EventInteractionState, ComponentContext, Seg, DateRange,
-  intersectRanges, addMs, DateProfile, Slicer, DateProfileGenerator, DateEnv, removeElement,
+  Duration, EventStore, EventUiHash, DateSpan, EventInteractionState, ComponentContext, Seg,
+  DateProfile, DateProfileGenerator, removeElement,
   BaseComponent, SlicedProps, h, CssDimValue
 } from '@fullcalendar/core'
-import { normalizeRange, isValidDate, TimelineDateProfile } from './timeline-date-profile'
-import { computeDateSnapCoverage } from './TimelineCoords'
+import {TimelineDateProfile } from './timeline-date-profile'
 import TimelineEvents from './TimelineEvents'
-import TimelineFills from './TimelineFills'
 import TimelineCoords from './TimelineCoords'
+import TimelineLaneBg from './TimelineLaneBg'
+import TimelineLaneSlicer, { TimelineLaneSeg } from './TimelineLaneSlicer'
 
 
 export interface TimelineLaneProps {
@@ -22,13 +22,8 @@ export interface TimelineLaneProps {
   eventSelection: string
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
-  timelineCoords?: TimelineCoords // TODO: do null instead of undefined?
   minHeight?: CssDimValue
-}
-
-export interface TimelineLaneSeg extends Seg {
-  start: DateMarker
-  end: DateMarker
+  timelineCoords?: TimelineCoords // TODO: do null instead of undefined?
 }
 
 
@@ -53,17 +48,19 @@ export default class TimelineLane extends BaseComponent<TimelineLaneProps> {
 
     return (
       <div class='fc-timeline-lane' style={{ minHeight: props.minHeight }}>
-        <TimelineFills
-          type='businessHours'
-          segs={slicedProps.businessHourSegs}
+        <TimelineLaneBg
+          businessHourSegs={slicedProps.businessHourSegs}
+          bgEventSegs={slicedProps.bgEventSegs}
           timelineCoords={props.timelineCoords}
+          dateSelectionSegs={slicedProps.dateSelectionSegs}
+          eventResizeSegs={
+            // HACK. eventRenderer and fillRenderer both use these segs. would compete over seg.el
+            // WON'T THIS CAUSE A RERENDER EVERY TIME?
+            ((slicedProps.eventResize ? slicedProps.eventResize.segs : []) as TimelineLaneSeg[]).map(function(seg) {
+              return { ...seg }
+            })
+          }
         />
-        <TimelineFills
-          type='bgEvent'
-          segs={slicedProps.bgEventSegs}
-          timelineCoords={props.timelineCoords}
-        />
-        {this.renderHighlight(slicedProps)}
         <TimelineEvents
           tDateProfile={tDateProfile}
           segs={slicedProps.fgEventSegs}
@@ -80,29 +77,6 @@ export default class TimelineLane extends BaseComponent<TimelineLaneProps> {
         {this.renderMirror(slicedProps)}
       </div>
     )
-  }
-
-
-  renderHighlight(slicedProps: SlicedProps<TimelineLaneSeg>) {
-    if (slicedProps.eventResize) {
-      return (
-        <TimelineFills
-          type='highlight'
-          segs={slicedProps.eventResize.segs.map(function(seg) { // HACK. eventRenderer and fillRenderer both use these segs. would compete over seg.el
-            return { ...seg }
-          })}
-          timelineCoords={this.props.timelineCoords}
-        />
-      )
-    } else {
-      return (
-        <TimelineFills
-          type='highlight'
-          segs={slicedProps.dateSelectionSegs}
-          timelineCoords={this.props.timelineCoords}
-        />
-      )
-    }
   }
 
 
@@ -150,38 +124,4 @@ export function detachSegs(segs: Seg[]) {
   for (let seg of segs) {
     removeElement(seg.el)
   }
-}
-
-
-class TimelineLaneSlicer extends Slicer<TimelineLaneSeg, [DateProfile, DateProfileGenerator, TimelineDateProfile, DateEnv]> {
-
-  sliceRange(
-    origRange: DateRange,
-    dateProfile: DateProfile,
-    dateProfileGenerator: DateProfileGenerator,
-    tDateProfile: TimelineDateProfile,
-    dateEnv: DateEnv
-  ): TimelineLaneSeg[] {
-    let normalRange = normalizeRange(origRange, tDateProfile, dateEnv)
-    let segs: TimelineLaneSeg[] = []
-
-    // protect against when the span is entirely in an invalid date region
-    if (computeDateSnapCoverage(normalRange.start, tDateProfile, dateEnv) < computeDateSnapCoverage(normalRange.end, tDateProfile, dateEnv)) {
-
-      // intersect the footprint's range with the grid's range
-      let slicedRange = intersectRanges(normalRange, tDateProfile.normalizedRange)
-
-      if (slicedRange) {
-        segs.push({
-          start: slicedRange.start,
-          end: slicedRange.end,
-          isStart: slicedRange.start.valueOf() === normalRange.start.valueOf() && isValidDate(slicedRange.start, tDateProfile, dateProfile, dateProfileGenerator),
-          isEnd: slicedRange.end.valueOf() === normalRange.end.valueOf() && isValidDate(addMs(slicedRange.end, -1), tDateProfile, dateProfile, dateProfileGenerator)
-        })
-      }
-    }
-
-    return segs
-  }
-
 }

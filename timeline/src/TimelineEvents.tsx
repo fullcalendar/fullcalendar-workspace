@@ -14,12 +14,13 @@ export default class TimelineEvents extends BaseComponent<TimelineEventEssential
       'fc-event-container',
       isMirror ? 'fc-mirror-container' : ''
     ]
+    let otherAttrs = isMirror ? {} : { 'data-fc-height-measure': 1 }
 
     return (
       <div
         ref={this.elRef}
         class={classNames.join(' ')}
-        data-fc-height-measure={1}
+        {...otherAttrs}
       />
     )
   }

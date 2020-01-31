@@ -5,7 +5,7 @@ import ResourceTimelineView from './ResourceTimelineView'
 import './main.scss'
 
 export { ResourceTimelineView }
-export { default as ResourceTimelineLaneRow } from './ResourceTimelineLaneRow'
+export { default as ResourceTimelineLane } from './ResourceTimelineLane'
 export { default as SpreadsheetRow } from './SpreadsheetRow'
 
 export default createPlugin({

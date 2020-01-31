@@ -1,6 +1,6 @@
 import {
   h, Fragment,
-  BaseComponent, ComponentContext, findElements, isArraysEqual
+  BaseComponent, ComponentContext, findElements, isArraysEqual, CssDimValue
 } from '@fullcalendar/core'
 import { Resource, buildResourceFields, buildResourceTextFunc, ResourceApi } from '@fullcalendar/resource-common'
 import ExpanderIcon from './ExpanderIcon'
@@ -12,6 +12,7 @@ export interface SpreadsheetRowProps {
   isExpanded: boolean
   hasChildren: boolean
   resource: Resource
+  innerHeight: CssDimValue
 }
 
 export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ComponentContext> {
@@ -54,7 +55,7 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
           } else {
             return (
               <td rowSpan={rowSpan}>
-                <div data-fc-height-control={1}>
+                <div style={{ height: props.innerHeight }}>
                   <div class='fc-cell-content' data-fc-height-measure={1}>
                     { colSpec.isMain &&
                       <ExpanderIcon

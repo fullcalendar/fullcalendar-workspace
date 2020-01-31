@@ -1,14 +1,19 @@
-import { h, ChunkContentCallbackArgs, ComponentContext, createRef, ViewProps, Hit, DateComponent } from '@fullcalendar/core'
+import { h, ComponentContext, createRef, ViewProps, Hit, DateComponent, CssDimValue, VNode, DateMarker } from '@fullcalendar/core'
 import TimelineCoords from './TimelineCoords'
 import TimelineSlats from './TimelineSlats'
 import TimelineLane from './TimelineLane'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 
-export type TimelinGridProps = ChunkContentCallbackArgs & ViewProps & {
+export interface TimelinGridProps extends ViewProps {
   tDateProfile: TimelineDateProfile
-  nowCoord?: number
-  onCoords?: (coords: TimelineCoords) => void
+  clientWidth: CssDimValue
+  clientHeight: CssDimValue
+  tableMinWidth: CssDimValue
+  tableColGroupNode: VNode
+  nowIndicatorDate: DateMarker | null
+  onSlatCoords?: (coords: TimelineCoords) => void
+  onScrollLeft?: (scrollLeft: number) => void
 }
 
 interface TimelineGridState {
@@ -22,39 +27,23 @@ export default class TimelineGrid extends DateComponent<TimelinGridProps, Timeli
 
 
   render(props: TimelinGridProps, state: TimelineGridState, context: ComponentContext) {
-    let { theme } = context
     let { dateProfile, tDateProfile } = props
+    let nowIndicatorLeft = state.coords && state.coords.safeDateToCoord(props.nowIndicatorDate)
 
     return (
       <div class='fc-timeline-grid' ref={this.handeEl} style={{
         minWidth: props.tableMinWidth
       }}>
-        {props.nowCoord != null &&
-          <div
-            class='fc-now-indicator fc-now-indicator-line'
-            style={{ left: props.nowCoord }}
-          />
-        }
-        <div class='fc-slats'>
-          <table
-            class={theme.getClass('table')}
-            style={{
-              minWidth: props.tableMinWidth,
-              width: props.tableWidth
-            }}
-          >
-            {props.tableColGroupNode}
-            <tbody>
-              <TimelineSlats
-                ref={this.slatsRef}
-                dateProfile={dateProfile}
-                tDateProfile={tDateProfile}
-                allowSizing={props.isSizingReady}
-                onCoords={this.handleCoords}
-              />
-            </tbody>
-          </table>
-        </div>
+        <TimelineSlats
+          ref={this.slatsRef}
+          dateProfile={dateProfile}
+          tDateProfile={tDateProfile}
+          clientWidth={props.clientWidth}
+          tableColGroupNode={props.tableColGroupNode}
+          tableMinWidth={props.tableMinWidth}
+          onCoords={this.handleCoords}
+          onScrollLeft={props.onScrollLeft}
+        />
         <TimelineLane
           dateProfile={props.dateProfile}
           dateProfileGenerator={props.dateProfileGenerator}
@@ -68,8 +57,14 @@ export default class TimelineGrid extends DateComponent<TimelinGridProps, Timeli
           eventDrag={props.eventDrag}
           eventResize={props.eventResize}
           timelineCoords={state.coords}
-          minHeight={props.tableHeight}
+          minHeight={props.clientHeight}
         />
+        {nowIndicatorLeft != null &&
+          <div
+            class='fc-now-indicator fc-now-indicator-line'
+            style={{ left: nowIndicatorLeft }}
+          />
+        }
       </div>
     )
   }
@@ -87,8 +82,8 @@ export default class TimelineGrid extends DateComponent<TimelinGridProps, Timeli
   handleCoords = (coords: TimelineCoords) => {
     this.setState({ coords })
 
-    if (this.props.onCoords) {
-      this.props.onCoords(coords)
+    if (this.props.onSlatCoords) {
+      this.props.onSlatCoords(coords)
     }
   }
 

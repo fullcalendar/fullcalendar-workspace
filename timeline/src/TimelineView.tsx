@@ -1,5 +1,5 @@
 import {
-  h, View, ViewProps, ComponentContext, Duration, memoize, subrenderer, ViewSpec, getViewClassNames, ChunkContentCallbackArgs, DateMarker, NowTimer, createRef, rangeContainsMarker
+  h, View, ViewProps, ComponentContext, memoize, subrenderer, ViewSpec, getViewClassNames, ChunkContentCallbackArgs, DateMarker, NowTimer, createRef
 } from '@fullcalendar/core'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
 import TimelineHeader from './TimelineHeader'
@@ -11,17 +11,16 @@ import TimelineCoords from './TimelineCoords'
 
 interface TimelineViewState {
   nowIndicatorDate: DateMarker
-  coords?: TimelineCoords
+  slatCoords?: TimelineCoords
 }
 
 
-export default class TimelineView extends View<TimelineViewState> {
+export default class TimelineView extends View<TimelineViewState> { // would make this abstract, but TS complains
 
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private scrollGridRef = createRef<ScrollGrid>()
   private tDateProfile: TimelineDateProfile
   private updateNowTimer = subrenderer(NowTimer)
-  private queuedScrollDuration?: Duration
 
 
   render(props: ViewProps, state: TimelineViewState, context: ComponentContext) {
@@ -38,19 +37,10 @@ export default class TimelineView extends View<TimelineViewState> {
     let classNames = getTimelineViewClassNames(props.viewSpec, options.eventOverlap)
     let slatCols = buildSlatCols(tDateProfile, context.options.slotWidth || 30) // TODO: more DRY
 
-    let nowCoords = (
-      state.nowIndicatorDate &&
-      rangeContainsMarker(dateProfile.currentRange, state.nowIndicatorDate) &&
-      state.coords
-    ) ?
-      state.coords.dateToCoord(state.nowIndicatorDate) :
-      null
-
     return (
       <div class={classNames.join(' ')}>
         <ScrollGrid
           ref={this.scrollGridRef}
-          forceSizingReady={Boolean(state.coords)}
           forPrint={props.forPrint}
           vGrow={!props.isHeightAuto}
           colGroups={[
@@ -63,10 +53,14 @@ export default class TimelineView extends View<TimelineViewState> {
                 className: 'fc-time-area',
                 content: (contentArg: ChunkContentCallbackArgs) => (
                   <TimelineHeader
-                    {...contentArg}
+                    clientWidth={contentArg.clientWidth}
+                    clientHeight={contentArg.clientHeight}
+                    tableMinWidth={contentArg.tableMinWidth}
+                    tableColGroupNode={contentArg.tableColGroupNode}
                     dateProfile={dateProfile}
                     tDateProfile={tDateProfile}
-                    nowCoord={nowCoords}
+                    nowIndicatorDate={state.nowIndicatorDate}
+                    slatCoords={state.slatCoords}
                   />
                 )
               }]
@@ -80,10 +74,14 @@ export default class TimelineView extends View<TimelineViewState> {
                 content: (contentArg: ChunkContentCallbackArgs) => (
                   <TimelineGrid
                     {...props}
-                    {...contentArg}
+                    clientWidth={contentArg.clientWidth}
+                    clientHeight={contentArg.clientHeight}
+                    tableMinWidth={contentArg.tableMinWidth}
+                    tableColGroupNode={contentArg.tableColGroupNode}
                     tDateProfile={tDateProfile}
-                    nowCoord={nowCoords}
-                    onCoords={this.handleCoords}
+                    nowIndicatorDate={state.nowIndicatorDate}
+                    onSlatCoords={this.handleSlatCoords}
+                    onScrollLeft={this.handleScrollLeft}
                   />
                 )
               }]
@@ -95,26 +93,18 @@ export default class TimelineView extends View<TimelineViewState> {
   }
 
 
-  handleCoords = (coords: TimelineCoords | null) => {
-    this.setState({ coords })
+  handleSlatCoords = (slatCoords: TimelineCoords | null) => {
+    this.setState({ slatCoords })
   }
 
 
   componentDidMount() {
     this.subrender()
-    this.scrollToInitialTime() // a REQUEST, goes to scrollToTime
-    this.drainScroll()
   }
 
 
-  componentDidUpdate(prevProps: ViewProps, prevState: TimelineViewState) {
+  componentDidUpdate() {
     this.subrender()
-
-    if (this.props.dateProfile !== prevProps.dateProfile) {
-      this.scrollToInitialTime() // a REQUEST, goes to scrollToTime
-    }
-
-    this.drainScroll()
   }
 
 
@@ -139,21 +129,9 @@ export default class TimelineView extends View<TimelineViewState> {
   }
 
 
-  scrollToTime(duration: Duration) { // API for caller
-    this.queuedScrollDuration = duration
-    this.drainScroll()
-  }
-
-
-  drainScroll() { // assumes scrollGridRef
-    let { queuedScrollDuration } = this
-    let { coords } = this.state
-
-    if (queuedScrollDuration && coords) {
-      let scrollLeft = coords.computeDurationLeft(queuedScrollDuration)
-      this.scrollGridRef.current.forceScrollLeft(0, scrollLeft)
-      this.queuedScrollDuration = null
-    }
+  handleScrollLeft = (scrollLeft: number) => {
+    let scrollGrid = this.scrollGridRef.current
+    scrollGrid.forceScrollLeft(0, scrollLeft)
   }
 
 }
