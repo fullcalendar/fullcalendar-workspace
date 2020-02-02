@@ -45,10 +45,12 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
           if (rowSpan > 1) {
             return (
               <td rowSpan={rowSpan}>
-                <div class='fc-cell-content vgrow'>
-                  <span class='fc-sticky'>
-                    {innerContent}
-                  </span>
+                <div class='vgrow'> {/* needed for stickiness in some browsers */}
+                  <div class='fc-cell-content fc-sticky'>
+                    <span class='fc-cell-text'> {/* can we get rid of fc-cell-text class? */}
+                      {innerContent}
+                    </span>
+                  </div>
                 </div>
               </td>
             )

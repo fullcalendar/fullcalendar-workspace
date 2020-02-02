@@ -7,10 +7,30 @@
   white-space: nowrap;
 }
 
+.fc-timeline th {
+  vertical-align: middle;
+}
+
+.fc-timeline .fc-cell-content {
+  overflow: hidden;
+}
+
 .fc-timeline .fc-cell-text {
-  display: inline-block; // for stickiness
   padding-left: 4px;
   padding-right: 4px;
+}
+
+.fc-timeline .fc-head .fc-cell-content {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.fc-timeline .fc-head .fc-cell-text {
+  display: inline-block; // for stickiness
+}
+
+.fc-timeline-header .fc-cell-content { // contains sticky children
+  overflow: visible; // undo previous rule
 }
 
 /*
@@ -25,21 +45,6 @@ TODO: figure out better styling
   border-right-width: 3px;
 }
 */
-
-/* head */
-
-.fc-timeline th {
-  vertical-align: middle;
-}
-
-.fc-timeline .fc-head .fc-cell-content {
-  padding-top: 3px;
-  padding-bottom: 3px;
-}
-
-.fc-timeline .fc-head .fc-time-area .fc-cell-content {
-  overflow: visible; // undo previous rule, for stickiness
-}
 
 
 /* Time Area
@@ -150,6 +155,16 @@ TODO: figure out better styling
 
 /* Event Container
 --------------------------------------------------------------------------------------------------*/
+
+.fc-timeline-lane {
+  position: relative;
+}
+
+.fc-scrollgrid-vgrow-cell-hack td > .fc-timeline-lane {
+  // when the lane isn't able to grow to fill the height, we want the <td> to become the
+  // offset parent instead of the lane, for background event absolute positioning.
+  position: static;
+}
 
 .fc-time-area .fc-event-container {
   position: relative;

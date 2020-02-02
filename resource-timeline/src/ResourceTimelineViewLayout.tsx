@@ -50,7 +50,7 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
         forPrint={props.forPrint}
         vGrow={!props.isHeightAuto}
         colGroups={[
-          { cols: props.spreadsheetCols, width: this.state.resourceAreaWidth },
+          { cols: props.spreadsheetCols, width: state.resourceAreaWidth },
           { cols: [] }, // for the divider
           { cols: props.timeCols }
         ]}

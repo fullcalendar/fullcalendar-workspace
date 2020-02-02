@@ -3,7 +3,6 @@ import {
   BaseComponent, buildMapSubRenderer,
   isArraysEqual,
   findElements,
-  memoize,
   ComponentContext,
   mapHash,
   Scroller,
@@ -16,7 +15,9 @@ import {
   computeScrollerClientHeights,
   sanitizeShrinkWidth,
   isPropsEqual,
-  guid
+  guid,
+  memoizeParallel,
+  compareObjs
 } from '@fullcalendar/core'
 import StickyScrolling from './StickyScrolling'
 import ClippedScroller, { ClippedOverflowValue } from './ClippedScroller'
@@ -56,14 +57,15 @@ interface ColGroupStat {
   totalColWidth: number
   totalColMinWidth: number
   needsXScrolling: boolean
-  config: ColGroupConfig
+  width?: CssDimValue
+  cols: ColProps[]
 }
 
 
 export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> {
 
-  private compileColGroupStats = memoize(compileColGroupStats)
-  private renderMicroColGroups = memoize(renderMicroColGroups, [ true, isArraysEqual ]) // yucky to memoize VNodes, but much more efficient for consumers
+  private compileColGroupStats = memoizeParallel(compileColGroupStat, isColGroupStatsEqual)
+  private renderMicroColGroups = memoizeParallel(renderMicroColGroup) // yucky to memoize VNodes, but much more efficient for consumers
   private printContainerRef = createRef<HTMLDivElement>()
   private clippedScrollerRefs = new RefMap<ClippedScroller>()
   private scrollerElRefs = new RefMap<HTMLElement, [ChunkConfig]>(this._handleScrollerEl.bind(this)) // doesn't hold non-scrolling els used just for padding
@@ -86,10 +88,10 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
 
   render(props: ScrollGridProps, state: ScrollGridState, context: ComponentContext) {
-    let colGroups = props.colGroups
+    let { colGroups } = props
+    let { shrinkWidths } = state
     let colGroupStats = this.compileColGroupStats(colGroups)
-    let shrinkWidths = state.shrinkWidths || []
-    let microColGroupNodes = this.renderMicroColGroups(colGroups, shrinkWidths)
+    let microColGroupNodes = this.renderMicroColGroups(colGroupStats.map((stat) => stat.cols), shrinkWidths)
     let classNames = getScrollGridClassNames(props.vGrow, context)
 
     if (!getCanVGrowWithinCell()) {
@@ -242,7 +244,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
       }, () => {
         if (sizingId === this.state.sizingId) {
           this.setState({
-            rowSyncHeightSets: this.computeRowSyncHeightSets() // should happen after shrinkWidths. might affect scrollbars
+            rowSyncHeightSets: this.computeRowSyncHeightSets() // should happen after shrinkWidths. also, might affect scrollbars
           }, () => {
             if (sizingId === this.state.sizingId) {
               this.setState({
@@ -268,7 +270,6 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   }
 
 
-  // TODO: optimize with hasShrinkWidth like SimpleScrollGrid?
   computeShrinkWidths() {
     let colGroupStats = this.compileColGroupStats(this.props.colGroups)
     let [ sectionCnt, chunksPerSection ] = this.getDims()
@@ -507,7 +508,7 @@ function renderPrintTrs(sectionConfigs: ScrollGridSectionConfig[], chunkElRefs: 
 
 
 function renderMacroCol(colGroupStat: ColGroupStat, shrinkWidth?: number) {
-  let width = colGroupStat.config.width
+  let width = colGroupStat.width
 
   if (width === 'shrink') {
     width = colGroupStat.totalColWidth + sanitizeShrinkWidth(shrinkWidth)
@@ -516,11 +517,6 @@ function renderMacroCol(colGroupStat: ColGroupStat, shrinkWidth?: number) {
   return (
     <col style={{ width }} />
   )
-}
-
-
-function renderMicroColGroups(colConfigs: ColGroupConfig[], shrinkWidths: number[]) {
-  return colConfigs.map((colConfig, i) => renderMicroColGroup(colConfig.cols, shrinkWidths[i]))
 }
 
 
@@ -555,11 +551,6 @@ function computeMaxInnerHeights(trSets: HTMLElement[][]) {
 }
 
 
-function compileColGroupStats(colGroupConfigs: ColGroupConfig[]) {
-  return colGroupConfigs.map(compileColGroupStat)
-}
-
-
 function compileColGroupStat(colGroupConfig: ColGroupConfig): ColGroupStat {
   let totalColWidth = sumColProp(colGroupConfig.cols, 'width') // excludes "shrink"
   let totalColMinWidth = sumColProp(colGroupConfig.cols, 'minWidth')
@@ -571,7 +562,8 @@ function compileColGroupStat(colGroupConfig: ColGroupConfig): ColGroupStat {
     totalColWidth,
     totalColMinWidth,
     needsXScrolling,
-    config: colGroupConfig
+    cols: colGroupConfig.cols,
+    width: colGroupConfig.width
   }
 }
 
@@ -588,4 +580,15 @@ function sumColProp(cols: ColProps[], propName: string) {
   }
 
   return total
+}
+
+
+const COL_GROUP_STAT_EQUALITY = {
+  cols(cols0: ColProps[], cols1: ColProps[]) {
+    return isArraysEqual(cols0, cols1, isPropsEqual)
+  }
+}
+
+function isColGroupStatsEqual(stat0: ColGroupStat, stat1: ColGroupStat): boolean {
+  return compareObjs(stat0, stat1, COL_GROUP_STAT_EQUALITY)
 }

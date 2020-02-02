@@ -4,7 +4,7 @@ import {
   Scroller, OverflowValue,
   getScrollbarWidths,
   getIsRtlScrollbarOnLeft,
-  componentNeedsResize
+  isPropsEqual
 } from '@fullcalendar/core'
 
 
@@ -23,11 +23,6 @@ export interface ClippedScrollerProps {
 interface ClippedScrollerState {
   yScrollbarWidth?: number
   xScrollbarWidth?: number
-}
-
-const STATE_IS_SIZING = { // TODO: kill componentNeedsResize and use our new tricks?
-  yScrollbarWidth: true,
-  xScrollbarWidth: true
 }
 
 
@@ -128,8 +123,8 @@ export default class ClippedScroller extends BaseComponent<ClippedScrollerProps,
   }
 
 
-  componentDidUpdate(prevProps: ClippedScrollerProps, prevState: ClippedScrollerState) {
-    if (componentNeedsResize(prevProps, this.props, prevState, this.state, STATE_IS_SIZING)) {
+  componentDidUpdate(prevProps: ClippedScrollerProps) {
+    if (!isPropsEqual(prevProps, this.props)) { // an external change?
       this.handleSizing()
     }
   }

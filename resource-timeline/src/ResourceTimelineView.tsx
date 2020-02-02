@@ -94,7 +94,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
           ref={this.layoutRef}
           forPrint={props.forPrint}
           isHeightAuto={props.isHeightAuto}
-          spreadsheetCols={buildSpreadsheetCols(colSpecs, this.state.spreadsheetColWidths)}
+          spreadsheetCols={buildSpreadsheetCols(colSpecs, state.spreadsheetColWidths)}
           spreadsheetHeaderRows={
             <SpreadsheetHeader // TODO: rename to SpreadsheetHeaderRows
               superHeaderText={superHeaderText}
