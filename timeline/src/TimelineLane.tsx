@@ -23,6 +23,7 @@ export interface TimelineLaneProps {
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
   minHeight?: CssDimValue
+  height?: CssDimValue
   timelineCoords?: TimelineCoords // TODO: do null instead of undefined?
 }
 
@@ -47,7 +48,7 @@ export default class TimelineLane extends BaseComponent<TimelineLaneProps> {
     )
 
     return (
-      <div class='fc-timeline-lane' style={{ minHeight: props.minHeight }}>
+      <div class='fc-timeline-lane' style={{ height: props.height, minHeight: props.minHeight }}>
         <TimelineLaneBg
           businessHourSegs={slicedProps.businessHourSegs}
           bgEventSegs={slicedProps.bgEventSegs}

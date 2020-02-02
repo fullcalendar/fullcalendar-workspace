@@ -21,6 +21,7 @@ import {
 import StickyScrolling from './StickyScrolling'
 import ClippedScroller, { ClippedOverflowValue } from './ClippedScroller'
 import ScrollSyncer, { ScrollSyncerProps } from './ScrollSyncer'
+import { getCanVGrowWithinCell } from './table-styling'
 
 
 export interface ScrollGridProps {
@@ -89,10 +90,15 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     let colGroupStats = this.compileColGroupStats(colGroups)
     let shrinkWidths = state.shrinkWidths || []
     let microColGroupNodes = this.renderMicroColGroups(colGroups, shrinkWidths)
+    let classNames = getScrollGridClassNames(props.vGrow, context)
+
+    if (!getCanVGrowWithinCell()) {
+      classNames.push('fc-scrollgrid-vgrow-cell-hack')
+    }
 
     return (
       <Fragment>
-        <table class={getScrollGridClassNames(props.vGrow, context).join(' ')} style={{ display: props.forPrint ? 'none' : '' }}>
+        <table class={classNames.join(' ')} style={{ display: props.forPrint ? 'none' : '' }}>
           <colgroup>
             {colGroupStats.map((colGroupStat, i) => renderMacroCol(colGroupStat, shrinkWidths[i]))}
           </colgroup>
@@ -230,7 +236,6 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   handleSizing = (isExternalChange: boolean) => {
     if (isExternalChange && !this.props.forPrint) {
       let sizingId = guid()
-      this.sizingHacks() // needs to happen first step
       this.setState({
         sizingId,
         shrinkWidths: this.computeShrinkWidths()
@@ -259,44 +264,6 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
           })
         }
       })
-    }
-  }
-
-
-  // still need these?
-  // can do them as part of computeScrollerClientHeights(this.scrollerElRefs) ?
-  sizingHacks() {
-
-    // for FF for vGrowRows with a section maxHeight. didn't expand...
-
-    let scrollerElMap = this.scrollerElRefs.currentMap
-
-    for (let index in scrollerElMap) {
-      let scrollerEl = scrollerElMap[index]
-
-      if (!scrollerEl.clientHeight) {
-        let clipperEl = scrollerEl.parentNode as HTMLElement
-        let cellEl = clipperEl.parentNode as HTMLElement
-
-        cellEl.style.position = 'relative'
-        clipperEl.classList.add('vgrow--absolute')
-      }
-    }
-
-    // for FF sticky els in cells with rowspan...
-
-    let stickyEls = findElements(this.base as HTMLElement, '.vgrow > .fc-sticky')
-
-    for (let stickyEl of stickyEls) {
-      let growEl = stickyEl.parentNode as HTMLElement
-      let cellEl = growEl.parentNode as HTMLElement
-
-      // too intense to compute padding, so hardcode 10 might not make the fix when there's
-      // a small difference in height, but stickiness isn't valuable in that scenario
-      if (growEl.offsetWidth < cellEl.offsetHeight - 10) {
-        cellEl.style.position = 'relative'
-        growEl.classList.add('vgrow--absolute')
-      }
     }
   }
 

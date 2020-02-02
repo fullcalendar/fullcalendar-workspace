@@ -16,25 +16,25 @@ export default class ResourceTimelineLane extends BaseComponent<ResourceTimeline
     return (
       <tr ref={props.elRef} data-resource-id={props.resourceId}>
         <td>
-          <div style={{ height: props.innerHeight }}>
-            <TimelineLane
-              dateProfile={props.dateProfile}
-              dateProfileGenerator={props.dateProfileGenerator}
-              tDateProfile={props.tDateProfile}
-              nextDayThreshold={props.nextDayThreshold}
-              businessHours={props.businessHours}
-              eventStore={props.eventStore}
-              eventUiBases={props.eventUiBases}
-              dateSelection={props.dateSelection}
-              eventSelection={props.eventSelection}
-              eventDrag={props.eventDrag}
-              eventResize={props.eventResize}
-              timelineCoords={props.timelineCoords}
-            />
-          </div>
+          <TimelineLane
+            dateProfile={props.dateProfile}
+            dateProfileGenerator={props.dateProfileGenerator}
+            tDateProfile={props.tDateProfile}
+            nextDayThreshold={props.nextDayThreshold}
+            businessHours={props.businessHours}
+            eventStore={props.eventStore}
+            eventUiBases={props.eventUiBases}
+            dateSelection={props.dateSelection}
+            eventSelection={props.eventSelection}
+            eventDrag={props.eventDrag}
+            eventResize={props.eventResize}
+            timelineCoords={props.timelineCoords}
+            height={props.innerHeight}
+            minHeight='100%'
+          />
         </td>
       </tr>
-    )
+    ) // important NOT to do vgrow. dont want to shrink height smaller than content
   }
 
 }
