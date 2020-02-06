@@ -17,7 +17,8 @@ import {
   isPropsEqual,
   guid,
   memoizeParallel,
-  compareObjs
+  compareObjs,
+  isColPropsEqual
 } from '@fullcalendar/core'
 import StickyScrolling from './StickyScrolling'
 import ClippedScroller, { ClippedOverflowValue } from './ClippedScroller'
@@ -584,9 +585,7 @@ function sumColProp(cols: ColProps[], propName: string) {
 
 
 const COL_GROUP_STAT_EQUALITY = {
-  cols(cols0: ColProps[], cols1: ColProps[]) {
-    return isArraysEqual(cols0, cols1, isPropsEqual)
-  }
+  cols: isColPropsEqual
 }
 
 function isColGroupStatsEqual(stat0: ColGroupStat, stat1: ColGroupStat): boolean {

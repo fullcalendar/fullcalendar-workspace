@@ -26,16 +26,6 @@ describe('timeGrid-view selection', function() {
     it('allows non-resource selection', function(done) {
       let selectCalled = false
       initCalendar({
-        _eventsPositioned() {
-          $.simulateByPoint('drag', {
-            point: getTimeGridPoint('2015-11-23T02:00:00'),
-            end: getTimeGridPoint('2015-11-23T04:00:00'),
-            callback() {
-              expect(selectCalled).toBe(true)
-              done()
-            }
-          })
-        },
         select(arg) {
           selectCalled = true
           expect(arg.start).toEqualDate('2015-11-23T02:00:00Z')
@@ -43,6 +33,14 @@ describe('timeGrid-view selection', function() {
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
           expect(arg.resource).toBeFalsy()
+        }
+      })
+      $.simulateByPoint('drag', {
+        point: getTimeGridPoint('2015-11-23T02:00:00'),
+        end: getTimeGridPoint('2015-11-23T04:00:00'),
+        callback() {
+          expect(selectCalled).toBe(true)
+          done()
         }
       })
     })
@@ -56,16 +54,6 @@ describe('timeGrid-view selection', function() {
     it('allows a same-day resource selection', function(done) {
       let selectCalled = false
       initCalendar({
-        _eventsPositioned() {
-          $.simulateByPoint('drag', {
-            point: getResourceTimeGridPoint('b', '2015-11-29T02:00:00'),
-            end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
-            callback() {
-              expect(selectCalled).toBe(true)
-              done()
-            }
-          })
-        },
         select(arg) {
           selectCalled = true
           expect(arg.start).toEqualDate('2015-11-29T02:00:00Z')
@@ -75,21 +63,19 @@ describe('timeGrid-view selection', function() {
           expect(arg.resource.id).toBe('b')
         }
       })
+      $.simulateByPoint('drag', {
+        point: getResourceTimeGridPoint('b', '2015-11-29T02:00:00'),
+        end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
+        callback() {
+          expect(selectCalled).toBe(true)
+          done()
+        }
+      })
     })
 
     it('allows a different-day resource selection', function(done) {
       let selectCalled = false
       initCalendar({
-        _eventsPositioned() {
-          $.simulateByPoint('drag', {
-            point: getResourceTimeGridPoint('b', '2015-11-29T02:00:00'),
-            end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
-            callback() {
-              expect(selectCalled).toBe(true)
-              done()
-            }
-          })
-        },
         select(arg) {
           selectCalled = true
           expect(arg.start).toEqualDate('2015-11-29T02:00:00Z')
@@ -99,23 +85,29 @@ describe('timeGrid-view selection', function() {
           expect(arg.resource.id).toBe('b')
         }
       })
+      $.simulateByPoint('drag', {
+        point: getResourceTimeGridPoint('b', '2015-11-29T02:00:00'),
+        end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
+        callback() {
+          expect(selectCalled).toBe(true)
+          done()
+        }
+      })
     })
 
     it('disallows a selection across resources', function(done) {
       let selectCalled = false
       initCalendar({
-        _eventsPositioned() {
-          $.simulateByPoint('drag', {
-            point: getResourceTimeGridPoint('a', '2015-11-29T02:00:00'),
-            end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
-            callback() {
-              expect(selectCalled).toBe(false)
-              done()
-            }
-          })
-        },
         select(arg) {
           selectCalled = true
+        }
+      })
+      $.simulateByPoint('drag', {
+        point: getResourceTimeGridPoint('a', '2015-11-29T02:00:00'),
+        end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
+        callback() {
+          expect(selectCalled).toBe(false)
+          done()
         }
       })
     })
@@ -130,16 +122,6 @@ describe('timeGrid-view selection', function() {
     it('allows a same-day resource selection', function(done) {
       let selectCalled = false
       initCalendar({
-        _eventsPositioned() {
-          $.simulateByPoint('drag', {
-            point: getResourceTimeGridPoint('b', '2015-11-30T02:00:00'),
-            end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
-            callback() {
-              expect(selectCalled).toBe(true)
-              done()
-            }
-          })
-        },
         select(arg) {
           selectCalled = true
           expect(arg.start).toEqualDate('2015-11-30T02:00:00Z')
@@ -149,21 +131,19 @@ describe('timeGrid-view selection', function() {
           expect(arg.resource.id).toBe('b')
         }
       })
+      $.simulateByPoint('drag', {
+        point: getResourceTimeGridPoint('b', '2015-11-30T02:00:00'),
+        end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
+        callback() {
+          expect(selectCalled).toBe(true)
+          done()
+        }
+      })
     })
 
     it('allows a multi-day resource selection', function(done) {
       let selectCalled = false
       initCalendar({
-        _eventsPositioned() {
-          $.simulateByPoint('drag', {
-            point: getResourceTimeGridPoint('b', '2015-11-30T02:00:00'),
-            end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
-            callback() {
-              expect(selectCalled).toBe(true)
-              done()
-            }
-          })
-        },
         select(arg) {
           selectCalled = true
           expect(arg.start).toEqualDate('2015-11-29T04:00:00Z')
@@ -173,23 +153,29 @@ describe('timeGrid-view selection', function() {
           expect(arg.resource.id).toBe('b')
         }
       })
+      $.simulateByPoint('drag', {
+        point: getResourceTimeGridPoint('b', '2015-11-30T02:00:00'),
+        end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
+        callback() {
+          expect(selectCalled).toBe(true)
+          done()
+        }
+      })
     })
 
     it('disallows a selection across resources', function(done) {
       let selectCalled = false
       initCalendar({
-        _eventsPositioned() {
-          $.simulateByPoint('drag', {
-            point: getResourceTimeGridPoint('a', '2015-11-29T02:00:00'),
-            end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
-            callback() {
-              expect(selectCalled).toBe(false)
-              done()
-            }
-          })
-        },
         select(arg) {
           selectCalled = true
+        }
+      })
+      $.simulateByPoint('drag', {
+        point: getResourceTimeGridPoint('a', '2015-11-29T02:00:00'),
+        end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
+        callback() {
+          expect(selectCalled).toBe(false)
+          done()
         }
       })
     })
