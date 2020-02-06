@@ -96,7 +96,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     let classNames = getScrollGridClassNames(props.vGrow, context)
 
     if (!getCanVGrowWithinCell()) {
-      classNames.push('fc-scrollgrid-vgrow-cell-hack')
+      classNames.push('scrollgrid-vgrow-cell-hack')
     }
 
     return (

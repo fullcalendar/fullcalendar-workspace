@@ -34,7 +34,7 @@ describe('column-view resourceRender trigger', function() {
         'when month view': 'resourceDayGridMonth'
       }, function() {
 
-        it('fires once per resources', function(done) {
+        it('fires once per resources', function() {
           let callCnt = 0
           initCalendar({
             resourceRender(arg) {
@@ -43,12 +43,9 @@ describe('column-view resourceRender trigger', function() {
                 expect(arg.el).toContainText('Resource A')
                 callCnt++
               }
-            },
-            datesRender() {
-              expect(callCnt).toBe(1)
-              done()
             }
           })
+          expect(callCnt).toBe(1)
         })
       })
     })
@@ -63,7 +60,7 @@ describe('column-view resourceRender trigger', function() {
         'when dayGrid view': 'resourceDayGridThreeDay'
       }, function() {
 
-        it('fires onces per day', function(done) {
+        it('fires onces per day', function() {
           let callCnt = 0
           initCalendar({
             resourceRender(arg) {
@@ -72,12 +69,9 @@ describe('column-view resourceRender trigger', function() {
                 expect(arg.el).toContainText('Resource A')
                 callCnt++
               }
-            },
-            datesRender() {
-              expect(callCnt).toBe(3)
-              done()
             }
           })
+          expect(callCnt).toBe(3)
         })
       })
 
@@ -86,7 +80,7 @@ describe('column-view resourceRender trigger', function() {
           defaultView: 'resourceDayGridMonth'
         })
 
-        it('fires onces per day', function(done) {
+        it('fires onces per day', function() {
           let callCnt = 0
           initCalendar({
             resourceRender(arg) {
@@ -95,12 +89,9 @@ describe('column-view resourceRender trigger', function() {
                 expect(arg.el).toContainText('Resource A')
                 callCnt++
               }
-            },
-            datesRender() {
-              expect(callCnt).toBe(7) // 7 days of the week
-              done()
             }
           })
+          expect(callCnt).toBe(7) // 7 days of the week
         })
       })
     })

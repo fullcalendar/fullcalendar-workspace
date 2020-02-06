@@ -194,13 +194,15 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
   _handleResourceCellEl(resourceCellEl: HTMLTableCellElement | null, key: string, resource?: Resource) {
     let { calendar, view } = this.context
 
-    calendar.publiclyTrigger('resourceRender', [
-      {
-        resource: new ResourceApi(calendar, resource),
-        el: resourceCellEl, // head <td>
-        view
-      }
-    ])
+    if (resourceCellEl) {
+      calendar.publiclyTrigger('resourceRender', [
+        {
+          resource: new ResourceApi(calendar, resource),
+          el: resourceCellEl, // head <td>
+          view
+        }
+      ])
+    }
   }
 
 }

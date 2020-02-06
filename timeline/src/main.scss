@@ -160,7 +160,7 @@ TODO: figure out better styling
   position: relative;
 }
 
-.fc-scrollgrid-vgrow-cell-hack td > .fc-timeline-lane {
+.scrollgrid-vgrow-cell-hack td > .fc-timeline-lane {
   // when the lane isn't able to grow to fill the height, we want the <td> to become the
   // offset parent instead of the lane, for background event absolute positioning.
   position: static;
