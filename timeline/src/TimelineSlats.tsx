@@ -54,21 +54,19 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
 
 
   componentDidMount() {
-    this.handleSizing()
+    this.updateCoords()
     this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
-    this.context.addResizeHandler(this.handleSizing)
   }
 
 
   componentDidUpdate(prevProps: TimelineSlatsProps) {
-    this.handleSizing()
+    this.updateCoords()
     this.scrollResponder.update(this.props.dateProfile !== prevProps.dateProfile)
   }
 
 
   componentWillUnmount() {
     this.scrollResponder.detach()
-    this.context.removeResizeHandler(this.handleSizing)
 
     if (this.props.onCoords) {
       this.props.onCoords(null)
@@ -76,10 +74,10 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
   }
 
 
-  handleSizing = () => {
+  updateCoords() {
     let { props, context } = this
 
-    if (props.clientWidth && props.tableColGroupNode) {
+    if (props.clientWidth) { // is sizing stable?
 
       this.coords = new TimelineCoords(
         this.rootElRef.current,

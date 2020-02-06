@@ -280,7 +280,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     expectEventSlotSpan('event1', '2015-10-17T02:00:00', '2015-10-17T05:00:00')
                     expectEventIsStartEnd('event1', true, true)
                     const eventEl = $('.event1')
-                    const canvasEl = $('.fc-body .fc-time-area .fc-scroller-canvas')
+                    const canvasEl = $('.fc-body .fc-time-area .fc-timeline-grid')
                     expect(Math.abs(eventEl.outerHeight() - canvasEl.height())).toBeLessThan(3)
                     done()
                   }
@@ -528,7 +528,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                 }
               }
             } else {
-              const canvasEl = $('.fc-body .fc-time-area .fc-scroller-canvas > .fc-content')
+              const canvasEl = $('.fc-body .fc-time-area .fc-timeline-grid')
               const canvasLeft = canvasEl.offset().left
               const canvasRight = canvasLeft + canvasEl.outerWidth()
               if (eventEl.length === 1) {

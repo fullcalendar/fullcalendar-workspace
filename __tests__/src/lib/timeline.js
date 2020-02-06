@@ -83,7 +83,7 @@ export function getTimelineRect(start, end) {
   }
   const coord0 = getTimelineLeft(start)
   const coord1 = getTimelineLeft(end)
-  const canvasRect = getBoundingRect($('.fc-body .fc-time-area .fc-scroller-canvas'))
+  const canvasRect = getBoundingRect($('.fc-body .fc-time-area .fc-timeline-grid'))
   return {
     left: Math.min(coord0, coord1),
     right: Math.max(coord0, coord1),
@@ -94,7 +94,7 @@ export function getTimelineRect(start, end) {
 
 
 export function getTimelineLine(date) {
-  const contentRect = getBoundingRect($('.fc-body .fc-time-area .fc-content'))
+  const contentRect = getBoundingRect($('.fc-body .fc-time-area .fc-timeline-grid'))
   const left = getTimelineLeft(date)
   return {
     left,

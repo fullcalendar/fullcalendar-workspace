@@ -1,5 +1,5 @@
 import { ResourceTimelineLane, SpreadsheetRow  } from '@fullcalendar/resource-timeline'
-import { TimelineHeader } from '@fullcalendar/timeline'
+import { TimelineHeaderRows } from '@fullcalendar/timeline'
 import ComponentSpy from 'package-tests/lib/ComponentSpy'
 
 
@@ -17,7 +17,7 @@ describe('rerender performance for resource timeline', function() {
   })
 
   it('calls methods a limited number of times', function(done) {
-    let timelineHeaderSpy = new ComponentSpy(TimelineHeader)
+    let timelineHeaderSpy = new ComponentSpy(TimelineHeaderRows)
     let timelineRowSpy = new ComponentSpy(ResourceTimelineLane)
     let spreadsheetRowSpy = new ComponentSpy(SpreadsheetRow)
     let eventRenderCnt = 0
@@ -35,65 +35,60 @@ describe('rerender performance for resource timeline', function() {
       eventRenderCnt = 0
     }
 
-    expect(timelineHeaderSpy.renderCount).toBeLessThanOrEqual(2)
-    expect(timelineHeaderSpy.sizingCount).toBeLessThanOrEqual(2)
-    expect(timelineRowSpy.renderCount).toBeLessThanOrEqual(2)
-    expect(timelineRowSpy.sizingCount).toBeLessThanOrEqual(2)
-    expect(spreadsheetRowSpy.renderCount).toBeLessThanOrEqual(2)
-    expect(spreadsheetRowSpy.sizingCount).toBeLessThanOrEqual(2)
+    function expectTimelineHeaderRendered(bool) {
+      expect(timelineHeaderSpy.renderCount).toBe(bool ? 1 : 0)
+    }
+
+    function expectTimelineRowRendered(bool) {
+      // 2nd render is for height sync, 3rd for receiving slat coords
+      expect(timelineRowSpy.renderCount).toBeLessThanOrEqual(bool ? 3 : 0)
+    }
+
+    function expectSpreadsheetRowRendered(bool) {
+      // 2nd render is for height sync
+      expect(spreadsheetRowSpy.renderCount).toBeLessThanOrEqual(bool ? 2 : 0)
+    }
+
+    expectTimelineHeaderRendered(true)
+    expectTimelineRowRendered(true)
+    expectSpreadsheetRowRendered(true)
     expect(eventRenderCnt).toBe(1)
 
     resetCounts()
     currentCalendar.next() // event will be out of view
-    expect(timelineHeaderSpy.renderCount).toBeLessThanOrEqual(2)
-    expect(timelineHeaderSpy.sizingCount).toBeLessThanOrEqual(2)
-    expect(timelineRowSpy.renderCount).toBeLessThanOrEqual(2) // events are removed
-    expect(timelineRowSpy.sizingCount).toBeLessThanOrEqual(2) // events are removed
-    expect(spreadsheetRowSpy.renderCount).toBe(0)
-    expect(spreadsheetRowSpy.sizingCount).toBe(0)
+    expectTimelineHeaderRendered(true)
+    expectTimelineRowRendered(true)
+    expectSpreadsheetRowRendered(false) // height sync doesn't cause a change. no rerender
     expect(eventRenderCnt).toBe(0)
 
     resetCounts()
     currentCalendar.changeView('listDay') // switch to different view
-    expect(timelineHeaderSpy.renderCount).toBe(0)
-    expect(timelineHeaderSpy.sizingCount).toBe(0)
-    expect(timelineRowSpy.renderCount).toBe(0)
-    expect(timelineRowSpy.sizingCount).toBe(0)
-    expect(spreadsheetRowSpy.renderCount).toBe(0)
-    expect(spreadsheetRowSpy.sizingCount).toBe(0)
+    expectTimelineHeaderRendered(false)
+    expectTimelineRowRendered(false)
+    expectSpreadsheetRowRendered(false)
     expect(eventRenderCnt).toBe(0)
 
     resetCounts()
     currentCalendar.changeView('resourceTimelineDay') // switch back to orig view
-    expect(timelineHeaderSpy.renderCount).toBeLessThanOrEqual(2)
-    expect(timelineHeaderSpy.sizingCount).toBeLessThanOrEqual(2)
-    expect(timelineRowSpy.renderCount).toBeLessThanOrEqual(2)
-    expect(timelineRowSpy.sizingCount).toBeLessThanOrEqual(2)
-    expect(spreadsheetRowSpy.renderCount).toBeLessThanOrEqual(2)
-    expect(spreadsheetRowSpy.sizingCount).toBeLessThanOrEqual(2)
+    expectTimelineHeaderRendered(true)
+    expectTimelineRowRendered(true)
+    expectSpreadsheetRowRendered(true)
     expect(eventRenderCnt).toBe(0) // event is now out of view
 
     resetCounts()
     currentCalendar.addResource({ title: 'Resource B' })
-    expect(timelineHeaderSpy.renderCount).toBe(0)
-    expect(timelineHeaderSpy.sizingCount).toBe(0)
-    expect(timelineRowSpy.renderCount).toBeLessThanOrEqual(2) // new row
-    expect(timelineRowSpy.sizingCount).toBeLessThanOrEqual(2) // new row
-    expect(spreadsheetRowSpy.renderCount).toBeLessThanOrEqual(2) // new row
-    expect(spreadsheetRowSpy.sizingCount).toBeLessThanOrEqual(2) // new row
+    expectTimelineHeaderRendered(false)
+    expectTimelineRowRendered(true) // new row
+    expectSpreadsheetRowRendered(true) // new row
     expect(eventRenderCnt).toBe(0)
 
     resetCounts()
     $(window).simulate('resize')
     setTimeout(function() {
 
-      // allow some rerendering as a result of handleSizing, but that's it
-      expect(timelineHeaderSpy.renderCount).toBeLessThanOrEqual(1)
-      expect(timelineHeaderSpy.sizingCount).toBeLessThanOrEqual(2)
-      expect(timelineRowSpy.renderCount).toBeLessThanOrEqual(1)
-      expect(timelineRowSpy.sizingCount).toBeLessThanOrEqual(2)
-      expect(spreadsheetRowSpy.renderCount).toBeLessThanOrEqual(1)
-      expect(spreadsheetRowSpy.sizingCount).toBeLessThanOrEqual(2)
+      expectTimelineHeaderRendered(false)
+      expectTimelineRowRendered(true) // receives new slat coords
+      expectSpreadsheetRowRendered(false)
       expect(eventRenderCnt).toBe(0)
 
       timelineHeaderSpy.detach()

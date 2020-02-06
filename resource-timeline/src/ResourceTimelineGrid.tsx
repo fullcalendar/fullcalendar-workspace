@@ -65,11 +65,8 @@ export default class ResourceTimelineGrid extends DateComponent<ResourceTimeline
     let nowIndicatorLeft = state.slatCoords && state.slatCoords.safeDateToCoord(props.nowIndicatorDate)
 
     return (
-      <div ref={this.handleEl} style={{
-        // weird. TODO: give an actual classname
-        position: 'relative',
-        minWidth: props.tableMinWidth,
-        minHeight: '100%'
+      <div ref={this.handleEl} class='fc-timeline-grid' style={{
+        minWidth: props.tableMinWidth
       }}>
         <TimelineSlats
           ref={this.slatsRef}

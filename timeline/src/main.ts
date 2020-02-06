@@ -12,6 +12,7 @@ export { TimelineDateProfile, buildTimelineDateProfile } from './timeline-date-p
 export { getTimelineNowIndicatorUnit } from './util'
 export { default as TimelineCoords } from './TimelineCoords'
 export { default as TimelineLaneSlicer, TimelineLaneSeg } from './TimelineLaneSlicer'
+export { default as TimelineHeaderRows } from './TimelineHeaderRows'
 
 export default createPlugin({
   defaultView: 'timelineDay',

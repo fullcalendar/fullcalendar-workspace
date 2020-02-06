@@ -61,26 +61,23 @@ export default class ResourceTimelineLanes extends BaseComponent<ResourceTimelin
 
 
   componentDidMount() {
-    this.handleSizing()
-    this.context.addResizeHandler(this.handleSizing)
+    this.updateCoords()
   }
 
 
   componentDidUpdate() {
-    this.handleSizing()
+    this.updateCoords()
   }
 
 
   componentWillUnmount() {
-    this.context.removeResizeHandler(this.handleSizing)
-
     if (this.props.onRowCoords) {
       this.props.onRowCoords(null)
     }
   }
 
 
-  handleSizing = () => {
+  updateCoords() {
     let { props } = this
 
     if (props.onRowCoords && props.clientWidth) { // a populated clientWidth means sizing has stabilized
