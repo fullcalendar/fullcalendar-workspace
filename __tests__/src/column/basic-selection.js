@@ -26,20 +26,6 @@ describe('dayGrid-view selection', function() {
       let selectCalled = false
 
       initCalendar({
-        _eventsPositioned() {
-          const monEls = getDayGridDowEls('mon')
-          const tueEls = getDayGridDowEls('tue')
-          expect(monEls.length).toBe(1)
-          expect(tueEls.length).toBe(1)
-          monEls.eq(0)
-            .simulate('drag', {
-              end: tueEls.eq(0),
-              callback() {
-                expect(selectCalled).toBe(true)
-                done()
-              }
-            })
-        },
         select(arg) {
           selectCalled = true
           expect(arg.start).toEqualDate('2015-11-23')
@@ -49,6 +35,19 @@ describe('dayGrid-view selection', function() {
           expect(arg.resource).toBeFalsy()
         }
       })
+
+      const monEls = getDayGridDowEls('mon')
+      const tueEls = getDayGridDowEls('tue')
+      expect(monEls.length).toBe(1)
+      expect(tueEls.length).toBe(1)
+      monEls.eq(0)
+        .simulate('drag', {
+          end: tueEls.eq(0),
+          callback() {
+            expect(selectCalled).toBe(true)
+            done()
+          }
+        })
     })
   })
 
@@ -61,17 +60,6 @@ describe('dayGrid-view selection', function() {
       let selectCalled = false
 
       initCalendar({
-        _eventsPositioned() {
-          const sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
-          const monAEl = $(getLeadingBoundingRect(getDayGridDowEls('mon')).node)
-          sunAEl.simulate('drag', {
-            end: monAEl,
-            callback() {
-              expect(selectCalled).toBe(true)
-              done()
-            }
-          })
-        },
         select(arg) {
           selectCalled = true
           expect(arg.start).toEqualDate('2015-11-29')
@@ -81,25 +69,34 @@ describe('dayGrid-view selection', function() {
           expect(arg.resource.id).toBe('a')
         }
       })
+
+      const sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
+      const monAEl = $(getLeadingBoundingRect(getDayGridDowEls('mon')).node)
+      sunAEl.simulate('drag', {
+        end: monAEl,
+        callback() {
+          expect(selectCalled).toBe(true)
+          done()
+        }
+      })
     })
 
     it('disallows a selection across resources', function(done) {
       let selectCalled = false
 
       initCalendar({
-        _eventsPositioned() {
-          const sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
-          const monBEl = $(getTrailingBoundingRect(getDayGridDowEls('mon')).node)
-          sunAEl.simulate('drag', {
-            end: monBEl,
-            callback() {
-              expect(selectCalled).toBe(false)
-              done()
-            }
-          })
-        },
-        select(arg) {
+        select() {
           selectCalled = true
+        }
+      })
+
+      const sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
+      const monBEl = $(getTrailingBoundingRect(getDayGridDowEls('mon')).node)
+      sunAEl.simulate('drag', {
+        end: monBEl,
+        callback() {
+          expect(selectCalled).toBe(false)
+          done()
         }
       })
     })
@@ -115,19 +112,6 @@ describe('dayGrid-view selection', function() {
       let selectCalled = false
 
       initCalendar({
-        _eventsPositioned() {
-          const monRects = sortBoundingRects(getDayGridDowEls('mon'))
-          const monBEl = $(monRects[1].node)
-          const satRects = sortBoundingRects(getDayGridDowEls('sat'))
-          const satBEl = $(satRects[1].node)
-          monBEl.simulate('drag', {
-            end: satBEl,
-            callback() {
-              expect(selectCalled).toBe(true)
-              done()
-            }
-          })
-        },
         select(arg) {
           selectCalled = true
           expect(arg.start).toEqualDate('2015-11-28')
@@ -137,27 +121,38 @@ describe('dayGrid-view selection', function() {
           expect(arg.resource.id).toBe('b')
         }
       })
+
+      const monRects = sortBoundingRects(getDayGridDowEls('mon'))
+      const monBEl = $(monRects[1].node)
+      const satRects = sortBoundingRects(getDayGridDowEls('sat'))
+      const satBEl = $(satRects[1].node)
+      monBEl.simulate('drag', {
+        end: satBEl,
+        callback() {
+          expect(selectCalled).toBe(true)
+          done()
+        }
+      })
     })
 
     it('disallows a selection across resources', function(done) {
       let selectCalled = false
 
       initCalendar({
-        _eventsPositioned() {
-          const monRects = sortBoundingRects(getDayGridDowEls('mon'))
-          const monBEl = $(monRects[1].node)
-          const satRects = sortBoundingRects(getDayGridDowEls('sat'))
-          const satAEl = $(satRects[0].node)
-          monBEl.simulate('drag', {
-            end: satAEl,
-            callback() {
-              expect(selectCalled).toBe(false)
-              done()
-            }
-          })
-        },
-        select(arg) {
+        select() {
           selectCalled = true
+        }
+      })
+
+      const monRects = sortBoundingRects(getDayGridDowEls('mon'))
+      const monBEl = $(monRects[1].node)
+      const satRects = sortBoundingRects(getDayGridDowEls('sat'))
+      const satAEl = $(satRects[0].node)
+      monBEl.simulate('drag', {
+        end: satAEl,
+        callback() {
+          expect(selectCalled).toBe(false)
+          done()
         }
       })
     })
