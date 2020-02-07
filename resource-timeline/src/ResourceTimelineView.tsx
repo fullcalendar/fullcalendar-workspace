@@ -47,6 +47,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   private updateNowTimer = subrenderer(NowTimer)
   private layoutRef = createRef<ResourceTimelineViewLayout>()
   private rowNodes: (GroupNode | ResourceNode)[] = []
+  private renderedRowNodes: (GroupNode | ResourceNode)[] = []
   private buildRowIndex = memoize(buildRowIndex)
   private rowCoords: PositionCache
   private scrollResponder: ScrollResponder
@@ -155,6 +156,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
 
   componentDidMount() {
+    this.renderedRowNodes = this.rowNodes
     this.subrender()
     this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
   }
@@ -170,6 +172,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
 
   componentDidUpdate(prevProps: ResourceViewProps, prevState: ResourceTimelineViewState, snapshot: ResourceTimelineViewSnapshot) {
+    this.renderedRowNodes = this.rowNodes
     this.subrender()
     this.scrollResponder.update(this.props.dateProfile !== prevProps.dateProfile)
 
@@ -230,7 +233,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
     if (rowCoords) {
       if (rowId) {
-        let rowIdToIndex = this.buildRowIndex(this.rowNodes)
+        let rowIdToIndex = this.buildRowIndex(this.renderedRowNodes)
         let index = rowIdToIndex[rowId]
 
         if (index != null) {
@@ -249,7 +252,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
 
   queryResourceScroll(): ResourceScrollState {
-    let { rowCoords, rowNodes } = this
+    let { rowCoords, renderedRowNodes } = this
 
     if (rowCoords) {
       let layout = this.layoutRef.current
@@ -258,7 +261,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
       let scroll = {} as any
 
       for (let i = 0; i < trBottoms.length; i++) {
-        let rowNode = rowNodes[i]
+        let rowNode = renderedRowNodes[i]
         let elBottom = trBottoms[i] - scrollTop // from the top of the scroller
 
         if (elBottom > 0) {
