@@ -1,16 +1,16 @@
 import {
   VNode, h, Fragment,
-  BaseComponent, ElementDragging, elementClosest, PointerDragEvent, RefMap,
+  BaseComponent, ElementDragging, elementClosest, PointerDragEvent, RefMap, findElements,
 } from '@fullcalendar/core'
 
 
 export interface SpreadsheetHeaderProps {
   superHeaderText: string
   colSpecs: any
-  onColWidthChange?: (colIndex: number, colWidth: number) => void
+  onColWidthChange?: (colWidths: number[]) => void
 }
 
-export const SPREADSHEET_COL_MIN_WIDTH = 30
+const SPREADSHEET_COL_MIN_WIDTH = 20
 
 
 export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
@@ -40,7 +40,7 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
     rowNodes.push(
       <tr>
         {colSpecs.map((o, i) => {
-          let isLast = i === (colSpecs.length - 1)
+          let isLastCol = i === (colSpecs.length - 1)
 
           // need empty inner div for abs positioning for resizer
           return (
@@ -56,7 +56,7 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
                     {o.labelText || '' /* what about normalizing this value ahead of time? */ }
                   </span>
                 </div>
-                {!isLast &&
+                {!isLastCol &&
                   <div class='fc-col-resizer' ref={this.resizerElRefs.createRef(i)}></div>
                 }
               </div>
@@ -98,19 +98,23 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
 
     if (ElementDraggingImpl) {
       let dragging = new ElementDraggingImpl(resizerEl)
-      let startWidth
+      let startWidth: number // of just the single column
+      let currentWidths: number[] // of all columns
 
       dragging.emitter.on('dragstart', () => {
-        let cellEl = elementClosest(resizerEl, 'th')
+        let allCells = findElements(elementClosest(resizerEl, 'tr'), 'th')
 
-        startWidth = cellEl.getBoundingClientRect().width
+        currentWidths = allCells.map((resizerEl) => (
+          elementClosest(resizerEl, 'th').getBoundingClientRect().width
+        ))
+        startWidth = currentWidths[index]
       })
 
       dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
-        let newWidth = Math.max(startWidth + pev.deltaX * (isRtl ? -1 : 1), SPREADSHEET_COL_MIN_WIDTH)
+        currentWidths[index] = Math.max(startWidth + pev.deltaX * (isRtl ? -1 : 1), SPREADSHEET_COL_MIN_WIDTH)
 
         if (onColWidthChange) {
-          onColWidthChange(index, newWidth)
+          onColWidthChange(currentWidths.slice()) // send a copy since currentWidths continues to be mutated
         }
       })
 

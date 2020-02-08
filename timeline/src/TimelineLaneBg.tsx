@@ -6,7 +6,7 @@ import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
 export interface TimelineLaneBgProps {
   businessHourSegs: TimelineLaneSeg[]
-  bgEventSegs: TimelineLaneSeg[]
+  bgEventSegs: TimelineLaneSeg[] | null
   timelineCoords?: TimelineCoords
   dateSelectionSegs: TimelineLaneSeg[]
   eventResizeSegs: TimelineLaneSeg[]

@@ -64,6 +64,7 @@ export default class ResourceDayTableView extends TableView {
           cellWeekNumbersVisible={cellWeekNumbersVisible}
           eventLimit={options.eventLimit}
           vGrow={!props.isHeightAuto}
+          headerAlignElRef={this.headerElRef}
         />
       )
     )

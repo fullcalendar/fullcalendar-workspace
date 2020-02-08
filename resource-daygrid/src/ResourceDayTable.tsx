@@ -1,6 +1,6 @@
 import {
   h, createRef, VNode,
-  mapHash, Hit, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration
+  mapHash, Hit, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration, RefObject
 } from '@fullcalendar/core'
 import { DayTableSlicer, Table, TableSeg } from '@fullcalendar/daygrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
@@ -25,6 +25,7 @@ export interface ResourceDayTableProps {
   cellWeekNumbersVisible: boolean // display week numbers in day cell?
   eventLimit: boolean | number
   vGrow: boolean
+  headerAlignElRef?: RefObject<HTMLElement> // for more popover alignment
 }
 
 export default class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
@@ -74,6 +75,7 @@ export default class ResourceDayTable extends DateComponent<ResourceDayTableProp
         cellWeekNumbersVisible={props.cellWeekNumbersVisible}
         eventLimit={props.eventLimit}
         vGrow={props.vGrow}
+        headerAlignElRef={props.headerAlignElRef}
       />
     )
   }

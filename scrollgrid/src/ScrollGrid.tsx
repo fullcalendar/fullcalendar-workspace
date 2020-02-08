@@ -34,6 +34,7 @@ export interface ScrollGridProps {
 }
 
 export interface ScrollGridSectionConfig extends SectionConfig {
+  key?: string
   chunks: ChunkConfig[]
   syncRowHeights?: boolean
 }
@@ -122,7 +123,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     }
 
     return (
-      <tr class={getSectionClassNames(sectionConfig, this.props.vGrow).join(' ')}>
+      <tr key={sectionConfig.key} class={getSectionClassNames(sectionConfig, this.props.vGrow).join(' ')}>
         {sectionConfig.chunks.map((chunkConfig, i) =>
           this.renderChunk(sectionConfig, sectionIndex, colGroupStats[i], microColGroupNodes[i], chunkConfig, i))}
       </tr>

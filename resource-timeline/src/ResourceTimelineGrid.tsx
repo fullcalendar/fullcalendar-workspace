@@ -1,6 +1,6 @@
 import {
   h, ComponentContext, DateProfileGenerator, DateProfile, PositionCache,
-  Duration, EventStore, DateSpan, EventUiHash, EventInteractionState, DateComponent, Hit, createRef, CssDimValue, VNode, DateMarker
+  Duration, EventStore, DateSpan, EventUiHash, EventInteractionState, DateComponent, Hit, createRef, CssDimValue, VNode, DateMarker, memoize
 } from '@fullcalendar/core'
 import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource-common'
 import { TimelineDateProfile, TimelineCoords, TimelineSlats, TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg } from '@fullcalendar/timeline'
@@ -40,6 +40,7 @@ interface ResourceTimelineGridState {
 
 export default class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProps, ResourceTimelineGridState> {
 
+  private computeHasResourceBusinessHours = memoize(computeHasResourceBusinessHours)
   private resourceSplitter = new ResourceSplitter() // doesn't let it do businessHours tho
   private bgSlicer = new TimelineLaneSlicer()
   private slatsRef = createRef<TimelineSlats>() // needed for Hit creation :(
@@ -48,6 +49,7 @@ export default class ResourceTimelineGrid extends DateComponent<ResourceTimeline
 
   render(props: ResourceTimelineGridProps, state: ResourceTimelineGridState, context: ComponentContext) {
     let { dateProfile, tDateProfile } = props
+    let hasResourceBusinessHours = this.computeHasResourceBusinessHours(props.rowNodes)
 
     let splitProps = this.resourceSplitter.splitProps(props)
     let bgLaneProps = splitProps['']
@@ -79,7 +81,7 @@ export default class ResourceTimelineGrid extends DateComponent<ResourceTimeline
           onScrollLeftRequest={props.onScrollLeftRequest}
         />
         <TimelineLaneBg
-          businessHourSegs={bgSlicedProps.businessHourSegs}
+          businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
           bgEventSegs={bgSlicedProps.bgEventSegs}
           timelineCoords={state.slatCoords}
           dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
@@ -91,7 +93,7 @@ export default class ResourceTimelineGrid extends DateComponent<ResourceTimeline
           dateProfileGenerator={props.dateProfileGenerator}
           tDateProfile={props.tDateProfile}
           splitProps={splitProps}
-          businessHours={props.businessHours}
+          fallbackBusinessHours={hasResourceBusinessHours ? props.businessHours : null}
           clientWidth={props.clientWidth}
           minHeight={props.vGrowRows ? props.clientHeight : ''}
           tableMinWidth={props.tableMinWidth}
@@ -173,4 +175,18 @@ export default class ResourceTimelineGrid extends DateComponent<ResourceTimeline
     }
   }
 
+}
+
+
+function computeHasResourceBusinessHours(rowNodes: (GroupNode | ResourceNode)[]) {
+
+  for (let node of rowNodes) {
+    let resource = (node as ResourceNode).resource
+
+    if (resource && resource.businessHours) {
+      return true
+    }
+  }
+
+  return false
 }

@@ -12,7 +12,7 @@ import { GroupNode, ResourceNode, ResourceViewProps, buildResourceTextFunc, buil
 import { __assign } from 'tslib'
 import SpreadsheetRow from './SpreadsheetRow'
 import SpreadsheetGroupRow from './SpreadsheetGroupRow'
-import SpreadsheetHeader, { SPREADSHEET_COL_MIN_WIDTH } from './SpreadsheetHeader'
+import SpreadsheetHeader from './SpreadsheetHeader'
 import ResourceTimelineGrid from './ResourceTimelineGrid'
 import ResourceTimelineViewLayout from './ResourceTimelineViewLayout'
 
@@ -280,12 +280,9 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   // ------------------------------------------------------------------------------------------
 
 
-  handleColWidthChange = (colIndex: number, colWidth: number) => {
-    let widths = this.state.spreadsheetColWidths.concat([]) // copy! TODO: use util?
-    widths[colIndex] = colWidth
-
+  handleColWidthChange = (colWidths: number[]) => {
     this.setState({
-      spreadsheetColWidths: widths
+      spreadsheetColWidths: colWidths
     })
   }
 
@@ -311,8 +308,7 @@ function buildSpreadsheetCols(colSpecs, forcedWidths: number[]) {
   return colSpecs.map((colSpec, i) => {
     return {
       className: colSpec.isMain ? 'fc-main-col' : '',
-      minWidth: SPREADSHEET_COL_MIN_WIDTH,
-      width: forcedWidths[i] || ''
+      width: forcedWidths[i] || colSpec.width || ''
     }
   })
 }

@@ -19,7 +19,7 @@ export default class TimelineFillRenderer extends FillRenderer<TimelineFillRende
 
   render(props: TimelineFillRendererProps) {
     let segs = this.renderSegs({
-      segs: props.segs,
+      segs: props.segs || [],
       type: props.type
     })
 

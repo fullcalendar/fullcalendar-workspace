@@ -1,5 +1,5 @@
 import {
-  h, ComponentContext, DateProfileGenerator, DateProfile, memoize, PositionCache,
+  h, ComponentContext, DateProfileGenerator, DateProfile, PositionCache,
   SplittableProps, EventStore, createRef, BaseComponent, CssDimValue, RefMap, isArraysEqual
 } from '@fullcalendar/core'
 import {  GroupNode, ResourceNode } from '@fullcalendar/resource-common'
@@ -21,7 +21,7 @@ interface ResourceTimelineLanesContentProps {
   tDateProfile: TimelineDateProfile
   dateProfile: DateProfile
   dateProfileGenerator: DateProfileGenerator
-  businessHours: EventStore | null
+  fallbackBusinessHours: EventStore | null
   innerHeights: number[]
   slatCoords: TimelineCoords | null
 }
@@ -51,7 +51,7 @@ export default class ResourceTimelineLanes extends BaseComponent<ResourceTimelin
           dateProfileGenerator={props.dateProfileGenerator}
           tDateProfile={props.tDateProfile}
           splitProps={props.splitProps}
-          businessHours={props.businessHours}
+          fallbackBusinessHours={props.fallbackBusinessHours}
           slatCoords={props.slatCoords}
           innerHeights={props.innerHeights}
         />
@@ -106,13 +106,8 @@ interface ResourceTimelineLanesBodyProps extends ResourceTimelineLanesContentPro
 
 class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyProps> {
 
-  private computeHasResourceBusinessHours = memoize(computeHasResourceBusinessHours)
-
-
   render(props: ResourceTimelineLanesBodyProps, state: {}, context: ComponentContext) {
     let { rowElRefs, innerHeights } = props
-    let hasResourceBusinessHours = this.computeHasResourceBusinessHours(props.rowNodes)
-    let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null // CONFUSING, comment
 
     return (
       <tbody>
@@ -140,7 +135,7 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
                 dateProfileGenerator={props.dateProfileGenerator}
                 tDateProfile={props.tDateProfile}
                 nextDayThreshold={context.nextDayThreshold}
-                businessHours={resource.businessHours || fallbackBusinessHours}
+                businessHours={resource.businessHours || props.fallbackBusinessHours}
                 innerHeight={innerHeights[index] || ''}
                 timelineCoords={props.slatCoords}
               />
@@ -151,18 +146,4 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
     )
   }
 
-}
-
-
-function computeHasResourceBusinessHours(rowNodes: (GroupNode | ResourceNode)[]) {
-
-  for (let node of rowNodes) {
-    let resource = (node as ResourceNode).resource
-
-    if (resource && resource.businessHours) {
-      return true
-    }
-  }
-
-  return false
 }
