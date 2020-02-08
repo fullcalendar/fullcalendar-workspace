@@ -35,22 +35,11 @@ describe('timeline event resizing', function() {
 
             it('reports resize with no resource', function(done) {
               let resizeSpy
+
               initCalendar({
                 events: [
                   { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00' }
                 ],
-                _eventsPositioned: oneCall(function() {
-                  $('.event1').simulate('mouseover') // resizer only shows on hover
-                  $('.event1 .fc-end-resizer')
-                    .simulate('drag', {
-                      end: getTimelineSlatEl('2015-11-28T07:00:00'),
-                      callback() {
-                        expect(resizeSpy).toHaveBeenCalled()
-                        expect(isAnyHighlight()).toBe(false) // TODO: move to its own test
-                        done()
-                      }
-                    })
-                }),
                 eventResize:
                   (resizeSpy = spyCall(function(arg) {
                     expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
@@ -60,6 +49,17 @@ describe('timeline event resizing', function() {
                     expect(resources.length).toBe(0)
                   }))
               })
+
+              $('.event1').simulate('mouseover') // resizer only shows on hover
+              $('.event1 .fc-end-resizer')
+                .simulate('drag', {
+                  end: getTimelineSlatEl('2015-11-28T07:00:00'),
+                  callback() {
+                    expect(resizeSpy).toHaveBeenCalled()
+                    expect(isAnyHighlight()).toBe(false) // TODO: move to its own test
+                    done()
+                  }
+                })
             })
           })
 
@@ -67,22 +67,11 @@ describe('timeline event resizing', function() {
 
             it('reports resize on a resource', function(done) {
               let resizeSpy
+
               initCalendar({
                 events: [
                   { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
                 ],
-                _eventsPositioned: oneCall(function() {
-                  $('.event1').simulate('mouseover') // resizer only shows on hover
-                  $('.event1 .fc-end-resizer')
-                    .simulate('drag', {
-                      end: getResourceTimelinePoint('b', '2015-11-28T07:00:00'),
-                      callback() {
-                        expect(resizeSpy).toHaveBeenCalled()
-                        expect(isAnyHighlight()).toBe(false) // TODO: move to its own test
-                        done()
-                      }
-                    })
-                }),
                 eventResize:
                   (resizeSpy = spyCall(function(arg) {
                     expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
@@ -93,25 +82,26 @@ describe('timeline event resizing', function() {
                     expect(resources[0].id).toBe('b')
                   }))
               })
+
+              $('.event1').simulate('mouseover') // resizer only shows on hover
+              $('.event1 .fc-end-resizer')
+                .simulate('drag', {
+                  end: getResourceTimelinePoint('b', '2015-11-28T07:00:00'),
+                  callback() {
+                    expect(resizeSpy).toHaveBeenCalled()
+                    expect(isAnyHighlight()).toBe(false) // TODO: move to its own test
+                    done()
+                  }
+                })
             })
 
             it('reports resize across resources', function(done) {
               let resizeSpy
+
               initCalendar({
                 events: [
                   { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
                 ],
-                _eventsPositioned: oneCall(function() {
-                  $('.event1').simulate('mouseover') // resizer only shows on hover
-                  $('.event1 .fc-end-resizer')
-                    .simulate('drag', {
-                      end: getResourceTimelinePoint('a', '2015-11-28T07:00:00'),
-                      callback() {
-                        expect(resizeSpy).toHaveBeenCalled()
-                        done()
-                      }
-                    })
-                }),
                 eventResize:
                   (resizeSpy = spyCall(function(arg) {
                     expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
@@ -122,25 +112,25 @@ describe('timeline event resizing', function() {
                     expect(resources[0].id).toBe('b')
                   }))
               })
+
+              $('.event1').simulate('mouseover') // resizer only shows on hover
+              $('.event1 .fc-end-resizer')
+                .simulate('drag', {
+                  end: getResourceTimelinePoint('a', '2015-11-28T07:00:00'),
+                  callback() {
+                    expect(resizeSpy).toHaveBeenCalled()
+                    done()
+                  }
+                })
             })
 
             it('reports resize on one event of multiple resources', function(done) {
               let resizeSpy
+
               initCalendar({
                 events: [
                   { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceIds: [ 'a', 'b' ] }
                 ],
-                _eventsPositioned: oneCall(function() {
-                  $('.event1:first').simulate('mouseover') // resizer only shows on hover
-                  $('.event1:first .fc-end-resizer')
-                    .simulate('drag', {
-                      end: getResourceTimelinePoint('a', '2015-11-28T07:00:00'),
-                      callback() {
-                        expect(resizeSpy).toHaveBeenCalled()
-                        done()
-                      }
-                    })
-                }),
                 eventResize:
                   (resizeSpy = spyCall(function(arg) {
                     expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
@@ -151,6 +141,16 @@ describe('timeline event resizing', function() {
                     expect(resourceIds).toEqual([ 'a', 'b' ])
                   }))
               })
+
+              $('.event1:first').simulate('mouseover') // resizer only shows on hover
+              $('.event1:first .fc-end-resizer')
+                .simulate('drag', {
+                  end: getResourceTimelinePoint('a', '2015-11-28T07:00:00'),
+                  callback() {
+                    expect(resizeSpy).toHaveBeenCalled()
+                    done()
+                  }
+                })
             })
           })
         })
@@ -163,21 +163,11 @@ describe('timeline event resizing', function() {
 
           it('reports a smaller granularity', function(done) {
             let resizeSpy
+
             initCalendar({
               events: [
                 { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
               ],
-              _eventsPositioned: oneCall(function() {
-                $('.event1').simulate('mouseover') // resizer only shows on hover
-                $('.event1 .fc-end-resizer')
-                  .simulate('drag', {
-                    end: getResourceTimelinePoint('b', '2015-11-28T07:30:00'),
-                    callback() {
-                      expect(resizeSpy).toHaveBeenCalled()
-                      done()
-                    }
-                  })
-              }),
               eventResize:
                 (resizeSpy = spyCall(function(arg) {
                   expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
@@ -188,6 +178,16 @@ describe('timeline event resizing', function() {
                   expect(resources[0].id).toBe('b')
                 }))
             })
+
+            $('.event1').simulate('mouseover') // resizer only shows on hover
+            $('.event1 .fc-end-resizer')
+              .simulate('drag', {
+                end: getResourceTimelinePoint('b', '2015-11-28T07:30:00'),
+                callback() {
+                  expect(resizeSpy).toHaveBeenCalled()
+                  done()
+                }
+              })
           })
         })
       })
@@ -195,6 +195,7 @@ describe('timeline event resizing', function() {
 
     it('works with touch', function(done) {
       let resizeSpy
+
       initCalendar({
         isTouch: true,
         longPressDelay: 100,
@@ -202,27 +203,6 @@ describe('timeline event resizing', function() {
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
         ],
-        _eventsPositioned: oneCall(function() {
-          $('.event1').simulate('drag', {
-            isTouch: true,
-            delay: 200,
-            callback() {
-              $('.event1').simulate('mouseover') // resizer only shows on hover
-              $('.event1 .fc-end-resizer').simulate('drag', {
-                // hack to make resize start within the bounds of the event
-                localPoint: { top: '50%', left: (dir === 'rtl' ? '100%' : '0%') },
-                isTouch: true,
-                end: getResourceTimelinePoint('b', '2015-11-28T07:00:00'),
-                callback() {
-                  setTimeout(function() { // for next test. won't ignore mousedown
-                    expect(resizeSpy).toHaveBeenCalled()
-                    done()
-                  }, 500)
-                }
-              })
-            }
-          })
-        }),
         eventResize:
           (resizeSpy = spyCall(function(arg) {
             expect(arg.event.start).toEqualDate('2015-11-28T04:00:00Z')
@@ -232,6 +212,26 @@ describe('timeline event resizing', function() {
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('b')
           }))
+      })
+
+      $('.event1').simulate('drag', {
+        isTouch: true,
+        delay: 200,
+        callback() {
+          $('.event1').simulate('mouseover') // resizer only shows on hover
+          $('.event1 .fc-end-resizer').simulate('drag', {
+            // hack to make resize start within the bounds of the event
+            localPoint: { top: '50%', left: (dir === 'rtl' ? '100%' : '0%') },
+            isTouch: true,
+            end: getResourceTimelinePoint('b', '2015-11-28T07:00:00'),
+            callback() {
+              setTimeout(function() { // for next test. won't ignore mousedown
+                expect(resizeSpy).toHaveBeenCalled()
+                done()
+              }, 500)
+            }
+          })
+        }
       })
     })
 
@@ -243,21 +243,11 @@ describe('timeline event resizing', function() {
 
       it('reports untimed dates', function(done) {
         let resizeSpy
+
         initCalendar({
           events: [
             { title: 'event1', className: 'event1', start: '2015-11-03', resourceId: 'a' }
           ],
-          _eventsPositioned: oneCall(function() {
-            $('.event1').simulate('mouseover') // resizer only shows on hover
-            $('.event1 .fc-end-resizer')
-              .simulate('drag', {
-                end: getResourceTimelinePoint('a', '2015-11-05'),
-                callback() {
-                  expect(resizeSpy).toHaveBeenCalled()
-                  done()
-                }
-              })
-          }),
           eventResize:
             (resizeSpy = spyCall(function(arg) {
               expect(arg.event.start).toEqualDate('2015-11-03')
@@ -268,32 +258,33 @@ describe('timeline event resizing', function() {
               expect(resources[0].id).toBe('a')
             }))
         })
+
+        $('.event1').simulate('mouseover') // resizer only shows on hover
+        $('.event1 .fc-end-resizer')
+          .simulate('drag', {
+            end: getResourceTimelinePoint('a', '2015-11-05'),
+            callback() {
+              expect(resizeSpy).toHaveBeenCalled()
+              done()
+            }
+          })
       })
     })
 
     describe('when week scale', function() {
       pushOptions({
         defaultView: 'resourceTimelineYear',
-        slotDuration: { weeks: 1 }
+        slotDuration: { weeks: 1 },
+        slotWidth: 50
       })
 
       it('reports untimed dates', function(done) { // TODO: this is desired behavior when no end???
         let resizeSpy
+
         initCalendar({
           events: [
             { title: 'event1', className: 'event1', start: '2015-01-18', end: '2015-01-25', resourceId: 'a' }
           ],
-          _eventsPositioned: oneCall(function() {
-            $('.event1').simulate('mouseover') // resizer only shows on hover
-            $('.event1 .fc-end-resizer')
-              .simulate('drag', {
-                end: getResourceTimelinePoint('a', '2015-02-08'),
-                callback() {
-                  expect(resizeSpy).toHaveBeenCalled()
-                  done()
-                }
-              })
-          }),
           eventResize:
             (resizeSpy = spyCall(function(arg) {
               expect(arg.event.start).toEqualDate('2015-01-18')
@@ -304,6 +295,16 @@ describe('timeline event resizing', function() {
               expect(resources[0].id).toBe('a')
             }))
         })
+
+        $('.event1').simulate('mouseover') // resizer only shows on hover
+        $('.event1 .fc-end-resizer')
+          .simulate('drag', {
+            end: getResourceTimelinePoint('a', '2015-02-08'),
+            callback() {
+              expect(resizeSpy).toHaveBeenCalled()
+              done()
+            }
+          })
       })
     })
   })

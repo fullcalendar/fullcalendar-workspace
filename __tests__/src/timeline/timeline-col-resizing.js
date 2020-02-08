@@ -45,7 +45,7 @@ describe('timeline column resizing', function() { // better renamed to 'sizing'
   })
 
 
-  it('is affected by resourceColumng[].width settings', function() {
+  it('is affected by resourceColumn[].width settings', function() {
     initCalendar()
     let initialHeadWidths = getHeadCellWidths()
 

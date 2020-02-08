@@ -32,17 +32,8 @@ describe('timeline selection', function() {
 
             it('reports selection with no resource', function(done) {
               let selectCalled = false
+
               initCalendar({
-                _eventsPositioned() {
-                  const slatEl = getTimelineSlatEl('2015-11-28T04:00:00')
-                  slatEl.simulate('drag', {
-                    end: getTimelineSlatEl('2015-11-28T07:00:00'),
-                    callback() {
-                      expect(selectCalled).toBe(true)
-                      done()
-                    }
-                  })
-                },
                 select(arg) {
                   selectCalled = true
                   expect(arg.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
@@ -52,6 +43,15 @@ describe('timeline selection', function() {
                   expect(arg.resource).toBeFalsy()
                 }
               })
+
+              const slatEl = getTimelineSlatEl('2015-11-28T04:00:00')
+              slatEl.simulate('drag', {
+                end: getTimelineSlatEl('2015-11-28T07:00:00'),
+                callback() {
+                  expect(selectCalled).toBe(true)
+                  done()
+                }
+              })
             })
           })
 
@@ -59,36 +59,27 @@ describe('timeline selection', function() {
 
             it('won\'t report anything if not selected on resource', function(done) {
               let selectCalled = false
+
               initCalendar({
-                _eventsPositioned() {
-                  const slatEl = getTimelineSlatEl('2015-11-28T04:00:00')
-                  slatEl.simulate('drag', {
-                    end: getTimelineSlatEl('2015-11-28T07:00:00'),
-                    callback() {
-                      expect(selectCalled).toBe(false)
-                      done()
-                    }
-                  })
-                },
                 select(arg) {
                   selectCalled = true
+                }
+              })
+
+              const slatEl = getTimelineSlatEl('2015-11-28T04:00:00')
+              slatEl.simulate('drag', {
+                end: getTimelineSlatEl('2015-11-28T07:00:00'),
+                callback() {
+                  expect(selectCalled).toBe(false)
+                  done()
                 }
               })
             })
 
             it('reports selection on a resource', function(done) {
               let selectCalled = false
+
               initCalendar({
-                _eventsPositioned() {
-                  $.simulateByPoint('drag', {
-                    point: getResourceTimelinePoint('b', '2015-11-28T04:00:00'),
-                    end: getResourceTimelinePoint('b', '2015-11-28T07:00:00'),
-                    callback() {
-                      expect(selectCalled).toBe(true)
-                      done()
-                    }
-                  })
-                },
                 select(arg) {
                   selectCalled = true
                   expect(arg.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
@@ -98,21 +89,21 @@ describe('timeline selection', function() {
                   expect(arg.resource.id).toBe('b')
                 }
               })
+
+              $.simulateByPoint('drag', {
+                point: getResourceTimelinePoint('b', '2015-11-28T04:00:00'),
+                end: getResourceTimelinePoint('b', '2015-11-28T07:00:00'),
+                callback() {
+                  expect(selectCalled).toBe(true)
+                  done()
+                }
+              })
             })
 
             it('reports selection across resources', function(done) {
               let selectCalled = false
+
               initCalendar({
-                _eventsPositioned() {
-                  $.simulateByPoint('drag', {
-                    point: getResourceTimelinePoint('b', '2015-11-28T04:00:00'),
-                    end: getResourceTimelinePoint('a', '2015-11-28T07:00:00'),
-                    callback() {
-                      expect(selectCalled).toBe(true)
-                      done()
-                    }
-                  })
-                },
                 select(arg) {
                   selectCalled = true
                   expect(arg.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
@@ -120,6 +111,15 @@ describe('timeline selection', function() {
                   expect(typeof arg.jsEvent).toBe('object')
                   expect(typeof arg.view).toBe('object')
                   expect(arg.resource.id).toBe('b')
+                }
+              })
+
+              $.simulateByPoint('drag', {
+                point: getResourceTimelinePoint('b', '2015-11-28T04:00:00'),
+                end: getResourceTimelinePoint('a', '2015-11-28T07:00:00'),
+                callback() {
+                  expect(selectCalled).toBe(true)
+                  done()
                 }
               })
             })
@@ -134,17 +134,8 @@ describe('timeline selection', function() {
 
           it('reports a smaller granularity', function(done) {
             let selectCalled = false
+
             initCalendar({
-              _eventsPositioned() {
-                $.simulateByPoint('drag', {
-                  point: getResourceTimelinePoint('b', '2015-11-28T04:15:00'),
-                  end: getResourceTimelinePoint('b', '2015-11-28T07:30:00'),
-                  callback() {
-                    expect(selectCalled).toBe(true)
-                    done()
-                  }
-                })
-              },
               select(arg) {
                 selectCalled = true
                 expect(arg.start).toEqualDate(tz.parseDate('2015-11-28T04:15:00'))
@@ -152,6 +143,15 @@ describe('timeline selection', function() {
                 expect(typeof arg.jsEvent).toBe('object')
                 expect(typeof arg.view).toBe('object')
                 expect(arg.resource.id).toBe('b')
+              }
+            })
+
+            $.simulateByPoint('drag', {
+              point: getResourceTimelinePoint('b', '2015-11-28T04:15:00'),
+              end: getResourceTimelinePoint('b', '2015-11-28T07:30:00'),
+              callback() {
+                expect(selectCalled).toBe(true)
+                done()
               }
             })
           })
@@ -167,17 +167,8 @@ describe('timeline selection', function() {
 
       it('reports untimed dates', function(done) {
         let selectCalled = false
+
         initCalendar({
-          _eventsPositioned() {
-            $.simulateByPoint('drag', {
-              point: getResourceTimelinePoint('a', '2015-11-03'),
-              end: getResourceTimelinePoint('a', '2015-11-05'),
-              callback() {
-                expect(selectCalled).toBe(true)
-                done()
-              }
-            })
-          },
           select(arg) {
             selectCalled = true
             expect(arg.start).toEqualDate('2015-11-03')
@@ -187,28 +178,29 @@ describe('timeline selection', function() {
             expect(arg.resource.id).toBe('a')
           }
         })
+
+        $.simulateByPoint('drag', {
+          point: getResourceTimelinePoint('a', '2015-11-03'),
+          end: getResourceTimelinePoint('a', '2015-11-05'),
+          callback() {
+            expect(selectCalled).toBe(true)
+            done()
+          }
+        })
       })
     })
 
     describe('when week scale', function() {
       pushOptions({
         defaultView: 'resourceTimelineYear',
-        slotDuration: { weeks: 1 }
+        slotDuration: { weeks: 1 },
+        slotWidth: 50
       })
 
       it('reports untimed dates', function(done) {
         let selectCalled = false
+
         initCalendar({
-          _eventsPositioned() {
-            $.simulateByPoint('drag', {
-              point: getResourceTimelinePoint('a', '2015-01-18'),
-              end: getResourceTimelinePoint('a', '2015-02-08'),
-              callback() {
-                expect(selectCalled).toBe(true)
-                done()
-              }
-            })
-          },
           select(arg) {
             selectCalled = true
             expect(arg.start).toEqualDate('2015-01-18')
@@ -218,28 +210,26 @@ describe('timeline selection', function() {
             expect(arg.resource.id).toBe('a')
           }
         })
+
+        $.simulateByPoint('drag', {
+          point: getResourceTimelinePoint('a', '2015-01-18'),
+          end: getResourceTimelinePoint('a', '2015-02-08'),
+          callback() {
+            expect(selectCalled).toBe(true)
+            done()
+          }
+        })
       })
     })
   })
 
   it('reports selection on a resource via touch', function(done) {
     let selectCalled = false
+
     initCalendar({
       isTouch: true,
       longPressDelay: 100,
       defaultView: 'resourceTimelineDay',
-      _eventsPositioned() {
-        $.simulateByPoint('drag', {
-          isTouch: true,
-          delay: 200,
-          point: getResourceTimelinePoint('b', '2015-11-28T04:00:00'),
-          end: getResourceTimelinePoint('b', '2015-11-28T07:00:00'),
-          callback() {
-            expect(selectCalled).toBe(true)
-            done()
-          }
-        })
-      },
       select(arg) {
         selectCalled = true
         expect(arg.start).toEqualDate('2015-11-28T04:00:00Z')
@@ -247,6 +237,17 @@ describe('timeline selection', function() {
         expect(typeof arg.jsEvent).toBe('object')
         expect(typeof arg.view).toBe('object')
         expect(arg.resource.id).toBe('b')
+      }
+    })
+
+    $.simulateByPoint('drag', {
+      isTouch: true,
+      delay: 200,
+      point: getResourceTimelinePoint('b', '2015-11-28T04:00:00'),
+      end: getResourceTimelinePoint('b', '2015-11-28T07:00:00'),
+      callback() {
+        expect(selectCalled).toBe(true)
+        done()
       }
     })
   })

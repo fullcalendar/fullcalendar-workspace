@@ -144,7 +144,7 @@ function getTimelineLeft(targetDate) {
     slatEl = $(slatEl)
 
     prevSlatDate = slatDate
-    slatDate = ensureDate(slatEl.data('date'))
+    slatDate = ensureDate(slatEl[0].getAttribute('data-date'))
 
     // is target time between start of previous slat but before this one?
     if (targetDate < slatDate) {
@@ -190,7 +190,7 @@ export function getTimelineSlatEl(date) {
 
 export function getTimelineResourceIds() {
   return $('.fc-body .fc-resource-area tr[data-resource-id]').map(function(i, tr) {
-    return $(tr).data('resource-id')
+    return tr.getAttribute('data-resource-id')
   }).get() // jquery -> array
 }
 
