@@ -154,7 +154,6 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   }
 
 
-
   componentDidMount() {
     this.renderedRowNodes = this.rowNodes
     this.subrender()

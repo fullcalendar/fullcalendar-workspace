@@ -67,7 +67,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
       return this.renderResourceCell(resource, 1)
     })
 
-    return this.buildTr(resourceCells)
+    return this.buildTr(resourceCells, 'resources')
   }
 
 
@@ -90,8 +90,8 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
 
     return (
       <Fragment>
-        {this.buildTr(dateCells)}
-        {this.buildTr(resourceCells)}
+        {this.buildTr(dateCells, 'day')}
+        {this.buildTr(resourceCells, 'resources')}
       </Fragment>
     )
   }
@@ -116,8 +116,8 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
 
     return (
       <Fragment>
-        {this.buildTr(resourceCells)}
-        {this.buildTr(dateCells)}
+        {this.buildTr(resourceCells, 'day')}
+        {this.buildTr(dateCells, 'resources')}
       </Fragment>
     )
   }
@@ -154,13 +154,16 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
 
   // a cell with date text. might have a resource associated with it
   renderDateCell(date: DateMarker, colSpan: number, resource?: Resource) {
+    let { dateEnv } = this.context
     let { props } = this
+    let distinctDateStr = props.datesRepDistinctDays ? dateEnv.formatIso(date, { omitTime: true }) : ''
 
     return (
       <TableDateCell
+        key={distinctDateStr || date.getDay()}
+        distinctDateStr={distinctDateStr}
         dateMarker={date}
         dateProfile={props.dateProfile}
-        datesRepDistinctDays={props.datesRepDistinctDays}
         colCnt={props.dates.length * props.resources.length}
         colHeadFormat={this.dateFormat}
         colSpan={colSpan}
@@ -170,7 +173,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
   }
 
 
-  buildTr(cells: VNode[]) {
+  buildTr(cells: VNode[], key: string) {
     let { renderIntro } = this.props
 
     if (!cells.length) {
@@ -182,7 +185,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
     }
 
     return (
-      <tr>{cells}</tr>
+      <tr key={key}>{cells}</tr>
     )
   }
 

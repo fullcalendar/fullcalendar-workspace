@@ -14,7 +14,6 @@ declare module '@fullcalendar/core' {
     getResourceById(id: string): ResourceApi | null
     getResources(): ResourceApi[]
     getTopLevelResources(): ResourceApi[]
-    rerenderResources(): void
     refetchResources(): void
   }
 

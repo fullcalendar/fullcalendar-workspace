@@ -1,4 +1,4 @@
-import { Calendar, mapHash } from '@fullcalendar/core'
+import { Calendar } from '@fullcalendar/core'
 import { ResourceAction } from './resources'
 import { ResourceHash, ResourceInput, parseResource } from '../structs/resource'
 import { ResourceSource } from '../structs/resource-source'
@@ -20,12 +20,6 @@ export default function(store: ResourceHash | undefined, action: ResourceAction,
 
     case 'SET_RESOURCE_PROP':
       return setResourceProp(store, action.resourceId, action.propName, action.propValue)
-
-    case 'RESET_RESOURCES':
-      // must make the calendar think each resource is a new object :/
-      return mapHash(store, function(resource) {
-        return { ...resource }
-      })
 
     default:
       return store

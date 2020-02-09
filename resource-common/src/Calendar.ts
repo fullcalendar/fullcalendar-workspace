@@ -73,12 +73,6 @@ Calendar.prototype.getTopLevelResources = function(this: Calendar): ResourceApi[
   return resourceApis
 }
 
-Calendar.prototype.rerenderResources = function(this: Calendar) {
-  this.dispatch({
-    type: 'RESET_RESOURCES'
-  })
-}
-
 Calendar.prototype.refetchResources = function(this: Calendar) {
   this.dispatch({
     type: 'REFETCH_RESOURCES'
