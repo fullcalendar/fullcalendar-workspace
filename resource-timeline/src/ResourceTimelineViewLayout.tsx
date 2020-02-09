@@ -124,11 +124,18 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
   // ------------------------------------------------------------------------------------------
 
 
+  // HACK: Preact wasn't call handleSpreadsheetResizerEl(null) when ScrollGrid was being unmounted :(
+  // additionally, handleSpreadsheetResizerEl was being called TWICE with an element.
+  // destroySpreadsheetResizing needs to be recallable for this hack.
+  componentWillUnmount() {
+    this.destroySpreadsheetResizing()
+  }
+
+
   handleSpreadsheetResizerEl = (resizerEl: HTMLElement | null) => {
     if (resizerEl) {
-      this.initSpreadsheetResizing(resizerEl)
-    } else {
       this.destroySpreadsheetResizing()
+      this.initSpreadsheetResizing(resizerEl)
     }
   }
 
@@ -167,7 +174,10 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
 
 
   destroySpreadsheetResizing() {
-    this.spreadsheetResizerDragging.destroy()
+    if (this.spreadsheetResizerDragging) {
+      this.spreadsheetResizerDragging.destroy()
+      this.spreadsheetResizerDragging = null
+    }
   }
 
 }
