@@ -38,151 +38,117 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
               'with halved snapDuration': { minutes: 15 }
             }, function() {
 
-              it('renders correctly when event completely fits', function(done) {
+              it('renders correctly when event completely fits', function() {
                 initCalendar({
                   events: [
                     makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00')
-                  ],
-                  _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2015-10-17T02:00:00', '2015-10-17T05:00:00') // -1hour
-                    expectEventIsStartEnd('event1', true, true)
-                    done()
-                  }
+                  ]
                 })
+                expectEventSlotSpan('event1', '2015-10-17T02:00:00', '2015-10-17T05:00:00') // -1hour
+                expectEventIsStartEnd('event1', true, true)
               })
 
-              it('renders correctly when event starts early', function(done) {
+              it('renders correctly when event starts early', function() {
                 initCalendar({
                   events: [
                     makeEvent('event1', '2015-10-16T22:00:00', '2015-10-17T06:00:00')
-                  ],
-                  _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2015-10-17T00:00:00', '2015-10-17T05:00:00') // start-of-day, -1hour
-                    expectEventIsStartEnd('event1', false, true)
-                    done()
-                  }
+                  ]
                 })
+                expectEventSlotSpan('event1', '2015-10-17T00:00:00', '2015-10-17T05:00:00') // start-of-day, -1hour
+                expectEventIsStartEnd('event1', false, true)
               })
 
-              it('renders correctly when event ends late', function(done) {
+              it('renders correctly when event ends late', function() {
                 initCalendar({
                   events: [
                     makeEvent('event1', '2015-10-17T02:00:00', '2015-10-18T02:00:00')
-                  ],
-                  _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2015-10-17T02:00:00', '2015-10-17T23:00:00')
-                    expectEventIsStartEnd('event1', true, false)
-                    done()
-                  }
+                  ]
                 })
+                expectEventSlotSpan('event1', '2015-10-17T02:00:00', '2015-10-17T23:00:00')
+                expectEventIsStartEnd('event1', true, false)
               })
 
-              it('renders correctly when event starts/ends outside', function(done) {
+              it('renders correctly when event starts/ends outside', function() {
                 initCalendar({
                   events: [
                     makeEvent('event1', '2015-10-16T22:00:00', '2015-10-18T02:00:00')
-                  ],
-                  _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2015-10-17T00:00:00', '2015-10-17T23:00:00')
-                    expectEventIsStartEnd('event1', false, false)
-                    done()
-                  }
+                  ]
                 })
+                expectEventSlotSpan('event1', '2015-10-17T00:00:00', '2015-10-17T23:00:00')
+                expectEventIsStartEnd('event1', false, false)
               })
 
               // minTime/maxTime
               if (!eventRendering) { // non-background, for faster tests
 
-                it('doesn\'t render when on same day before minTime', function(done) {
+                it('doesn\'t render when on same day before minTime', function() {
                   initCalendar({
                     minTime: '09:00',
                     events: [
                       makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T09:00:00')
-                    ],
-                    _eventsPositioned() {
-                      expect($('.event1').length).toBe(0)
-                      done()
-                    }
+                    ]
                   })
+                  expect($('.event1').length).toBe(0)
                 })
 
-                it('renders correctly when on different day, cropped by minTime', function(done) {
+                it('renders correctly when on different day, cropped by minTime', function() {
                   initCalendar({
                     minTime: '03:00',
                     events: [
                       makeEvent('event1', '2015-10-16T12:00:00', '2015-10-17T06:00:00')
-                    ],
-                    _eventsPositioned() {
-                      expectEventSlotSpan('event1', '2015-10-17T03:00:00', '2015-10-17T05:00:00')
-                      expectEventIsStartEnd('event1', false, true)
-                      done()
-                    }
+                    ]
                   })
+                  expectEventSlotSpan('event1', '2015-10-17T03:00:00', '2015-10-17T05:00:00')
+                  expectEventIsStartEnd('event1', false, true)
                 })
 
-                it('renders correctly when on same day, cropped by minTime', function(done) {
+                it('renders correctly when on same day, cropped by minTime', function() {
                   initCalendar({
                     minTime: '03:00',
                     events: [
                       makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00')
-                    ],
-                    _eventsPositioned() {
-                      expectEventSlotSpan('event1', '2015-10-17T03:00:00', '2015-10-17T05:00:00')
-                      expectEventIsStartEnd('event1', false, true)
-                      done()
-                    }
+                    ]
                   })
+                  expectEventSlotSpan('event1', '2015-10-17T03:00:00', '2015-10-17T05:00:00')
+                  expectEventIsStartEnd('event1', false, true)
                 })
 
-                it('doesn\'t render when on same day after maxTime', function(done) {
+                it('doesn\'t render when on same day after maxTime', function() {
                   initCalendar({
                     scrollTime: '24:00', // the most possible
                     maxTime: '18:00',
                     events: [
                       makeEvent('event1', '2015-10-17T18:00:00', '2015-10-17T23:00:00')
-                    ],
-                    _eventsPositioned() {
-                      expect($('.event1').length).toBe(0)
-                      done()
-                    }
+                    ]
                   })
+                  expect($('.event1').length).toBe(0)
                 })
 
-                it('renders correctly when end on different day, cropped by maxTime', function(done) {
+                it('renders correctly when end on different day, cropped by maxTime', function() {
                   initCalendar({
                     scrollTime: '24:00', // the most possible
                     maxTime: '21:00', // last slot will be 8pm-9pm
                     events: [
                       makeEvent('event1', '2015-10-17T19:00:00', '2015-10-18T02:00:00')
-                    ],
-                    _eventsPositioned() {
-                      setTimeout(function() { // wait for time axis header to sync its scroll
-                        expectEventSlotSpan('event1', '2015-10-17T19:00:00', '2015-10-17T20:00:00')
-                        expectEventIsStartEnd('event1', true, false)
-                        done()
-                      }, 0)
-                    }
+                    ]
                   })
+                  expectEventSlotSpan('event1', '2015-10-17T19:00:00', '2015-10-17T20:00:00')
+                  expectEventIsStartEnd('event1', true, false)
                 })
 
-                it('renders correctly when end on same day, cropped by maxTime', function(done) {
+                it('renders correctly when end on same day, cropped by maxTime', function() {
                   initCalendar({
                     scrollTime: '24:00', // the most possible
                     maxTime: '18:00', // last slot will be 5pm-6pm
                     events: [
                       makeEvent('event1', '2015-10-17T12:00:00', '2015-10-17T22:00:00')
-                    ],
-                    _eventsPositioned() {
-                      setTimeout(function() { // wait for time axis header to sync its scroll
-                        expectEventSlotSpan('event1', '2015-10-17T12:00:00', '2015-10-17T17:00:00')
-                        expectEventIsStartEnd('event1', true, false)
-                        done()
-                      }, 0)
-                    }
+                    ]
                   })
+                  expectEventSlotSpan('event1', '2015-10-17T12:00:00', '2015-10-17T17:00:00')
+                  expectEventIsStartEnd('event1', true, false)
                 })
 
-                it('doesn\'t render when on dead zone between two days', function(done) {
+                it('doesn\'t render when on dead zone between two days', function() {
                   initCalendar({
                     minTime: '09:00',
                     maxTime: '17:00', // on the 17th
@@ -195,77 +161,63 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     },
                     events: [
                       makeEvent('event1', '2015-10-17T17:00:00', '2015-10-18T09:00:00')
-                    ],
-                    _eventsPositioned() {
-                      expect($('.event1').length).toBe(0)
-                      done()
-                    }
+                    ]
                   })
+                  expect($('.event1').length).toBe(0)
                 })
               }
             })
 
             if (resources && !eventRendering) { // speedup
 
-              it('renders events within exaggerated maxTime', function(done) {
+              it('renders events within exaggerated maxTime', function() {
                 initCalendar({
                   minTime: '09:00',
                   maxTime: '28:00',
                   events: [
                     makeEvent('event1', '2015-10-17T08:00:00', '2015-10-18T02:00:00')
                   ],
-                  scrollTime: '24:00',
-                  _eventsPositioned() {
-                    setTimeout(function() {
-                      expectEventSlotSpan('event1', '2015-10-17T09:00:00', '2015-10-18T01:00:00')
-                      expectEventIsStartEnd('event1', false, true)
-                      expect($('tr.fc-chrono th:first')).toHaveText('9am')
-                      expect($('tr.fc-chrono th:last')).toHaveText('3am')
-                      done()
-                    }, 0)
-                  }
+                  scrollTime: '24:00'
                 })
+                expectEventSlotSpan('event1', '2015-10-17T09:00:00', '2015-10-18T01:00:00')
+                expectEventIsStartEnd('event1', false, true)
+                expect($('tr.fc-chrono th:first')).toHaveText('9am')
+                expect($('tr.fc-chrono th:last')).toHaveText('3am')
               })
 
-              it('renders events past an exaggerated maxTime', function(done) {
+              it('renders events past an exaggerated maxTime', function() {
                 initCalendar({
                   minTime: '09:00',
                   maxTime: '28:00',
                   events: [
                     makeEvent('event1', '2015-10-17T08:00:00', '2015-10-18T05:00:00')
-                  ],
-                  _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2015-10-17T09:00:00', '2015-10-18T03:00:00')
-                    expectEventIsStartEnd('event1', false, false)
-                    expect($('tr.fc-chrono th:first')).toHaveText('9am')
-                    expect($('tr.fc-chrono th:last')).toHaveText('3am')
-                    done()
-                  }
+                  ]
                 })
+                expectEventSlotSpan('event1', '2015-10-17T09:00:00', '2015-10-18T03:00:00')
+                expectEventIsStartEnd('event1', false, false)
+                expect($('tr.fc-chrono th:first')).toHaveText('9am')
+                expect($('tr.fc-chrono th:last')).toHaveText('3am')
               })
             }
 
             if (!eventRendering) { // non-background
-              it('render stacked events by duration', function(done) {
+              it('render stacked events by duration', function() {
                 initCalendar({
                   events: [
                     makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00'),
                     makeEvent('event2', '2015-10-17T02:00:00', '2015-10-17T08:00:00')
-                  ],
-                  _eventsPositioned() {
-                    const event1El = $('.event1')
-                    const event2El = $('.event2')
-                    const event2Bottom = event2El.offset().top + event2El.outerHeight()
-                    const event1Top = event1El.offset().top
-                    expect(event2Bottom).toBeLessThan(event1Top)
-                    done()
-                  }
+                  ]
                 })
+                const event1El = $('.event1')
+                const event2El = $('.event2')
+                const event2Bottom = event2El.offset().top + event2El.outerHeight()
+                const event1Top = event1El.offset().top
+                expect(event2Bottom).toBeLessThan(event1Top)
               })
             }
 
             if (resources && (eventRendering === 'background')) {
-              it('renders background events with no resource', function(done) {
+              it('renders background events with no resource', function() {
                 initCalendar({
                   events: [
                     {
@@ -275,16 +227,13 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                       start: '2015-10-17T02:00:00',
                       end: '2015-10-17T06:00:00'
                     }
-                  ],
-                  _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2015-10-17T02:00:00', '2015-10-17T05:00:00')
-                    expectEventIsStartEnd('event1', true, true)
-                    const eventEl = $('.event1')
-                    const canvasEl = $('.fc-body .fc-time-area .fc-timeline-grid')
-                    expect(Math.abs(eventEl.outerHeight() - canvasEl.height())).toBeLessThan(3)
-                    done()
-                  }
+                  ]
                 })
+                expectEventSlotSpan('event1', '2015-10-17T02:00:00', '2015-10-17T05:00:00')
+                expectEventIsStartEnd('event1', true, true)
+                const eventEl = $('.event1')
+                const canvasEl = $('.fc-body .fc-time-area .fc-timeline-grid')
+                expect(Math.abs(eventEl.outerHeight() - canvasEl.height())).toBeLessThan(3)
               })
             }
           })
@@ -309,113 +258,89 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                 }
               })
 
-              it('renders correctly when event fits completely', function(done) {
+              it('renders correctly when event fits completely', function() {
                 initCalendar({
                   events: [
                     makeEvent('event1', '2015-10-16', '2015-10-18')
-                  ],
-                  _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2015-10-16', '2015-10-17')
-                    expectEventIsStartEnd('event1', true, true)
-                    done()
-                  }
+                  ]
                 })
+                expectEventSlotSpan('event1', '2015-10-16', '2015-10-17')
+                expectEventIsStartEnd('event1', true, true)
               })
 
-              it('renders correctly when event starts is before', function(done) {
+              it('renders correctly when event starts is before', function() {
                 initCalendar({
                   events: [
                     makeEvent('event1', '2015-10-10', '2015-10-18')
-                  ],
-                  _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2015-10-11', '2015-10-17')
-                    expectEventIsStartEnd('event1', false, true)
-                    done()
-                  }
+                  ]
                 })
+                expectEventSlotSpan('event1', '2015-10-11', '2015-10-17')
+                expectEventIsStartEnd('event1', false, true)
               })
 
-              it('renders correctly when event end is after', function(done) {
+              it('renders correctly when event end is after', function() {
                 initCalendar({
                   events: [
                     makeEvent('event1', '2015-10-18', '2015-11-18')
-                  ],
-                  _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2015-10-18', '2015-10-31')
-                    expectEventIsStartEnd('event1', true, false)
-                    done()
-                  }
+                  ]
                 })
+                expectEventSlotSpan('event1', '2015-10-18', '2015-10-31')
+                expectEventIsStartEnd('event1', true, false)
               })
 
-              it('renders correctly when start/end is outside', function(done) {
+              it('renders correctly when start/end is outside', function() {
                 initCalendar({
                   events: [
                     makeEvent('event1', '2015-09-18', '2015-11-18')
-                  ],
-                  _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2015-10-11', '2015-10-31')
-                    expectEventIsStartEnd('event1', false, false)
-                    done()
-                  }
+                  ]
                 })
+                expectEventSlotSpan('event1', '2015-10-11', '2015-10-31')
+                expectEventIsStartEnd('event1', false, false)
               })
 
-              it('renders correctly when start/end is timed on same day', function(done) {
+              it('renders correctly when start/end is timed on same day', function() {
                 initCalendar({
                   events: [
                     makeEvent('event1', '2015-10-16T04:00:00', '2015-10-16T05:00:00')
-                  ],
-                  _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2015-10-16', '2015-10-16')
-                    expectEventIsStartEnd('event1', true, true)
-                    done()
-                  }
+                  ]
                 })
+                expectEventSlotSpan('event1', '2015-10-16', '2015-10-16')
+                expectEventIsStartEnd('event1', true, true)
               })
 
-              it('renders correctly when end time is before nextDayThreshold', function(done) {
+              it('renders correctly when end time is before nextDayThreshold', function() {
                 initCalendar({
                   nextDayThreshold: '02:00', // 2am
                   events: [
                     makeEvent('event1', '2015-10-16T04:00:00', '2015-10-18T01:00:00')
-                  ],
-                  _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2015-10-16', '2015-10-17')
-                    expectEventIsStartEnd('event1', true, true)
-                    done()
-                  }
+                  ]
                 })
+                expectEventSlotSpan('event1', '2015-10-16', '2015-10-17')
+                expectEventIsStartEnd('event1', true, true)
               })
 
-              it('renders correctly when end time is after nextDayThreshold', function(done) {
+              it('renders correctly when end time is after nextDayThreshold', function() {
                 initCalendar({
                   nextDayThreshold: '02:00', // 2am
                   events: [
                     makeEvent('event1', '2015-10-16T04:00:00', '2015-10-18T03:00:00')
-                  ],
-                  _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2015-10-16', '2015-10-18')
-                    expectEventIsStartEnd('event1', true, true)
-                    done()
-                  }
+                  ]
                 })
+                expectEventSlotSpan('event1', '2015-10-16', '2015-10-18')
+                expectEventIsStartEnd('event1', true, true)
               })
 
               // https://github.com/fullcalendar/fullcalendar-scheduler/issues/151
-              it('renders correctly when minTime/maxTime', function(done) {
+              it('renders correctly when minTime/maxTime', function() {
                 initCalendar({
                   minTime: '09:00',
                   maxTime: '17:00',
                   events: [
                     makeEvent('event1', '2015-10-16', '2015-10-18')
-                  ],
-                  _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2015-10-16', '2015-10-17')
-                    expectEventIsStartEnd('event1', true, true)
-                    done()
-                  }
+                  ]
                 })
+                expectEventSlotSpan('event1', '2015-10-16', '2015-10-17')
+                expectEventIsStartEnd('event1', true, true)
               })
             })
 
@@ -433,30 +358,24 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                 slotLabelFormat: { month: 'numeric', day: 'numeric' }
               })
 
-              it('renders correctly when aligns with weeks', function(done) {
+              it('renders correctly when aligns with weeks', function() {
                 initCalendar({
                   events: [
                     makeEvent('event1', '2015-10-18', '2015-11-15')
-                  ],
-                  _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2015-10-18', '2015-11-08')
-                    expectEventIsStartEnd('event1', true, true)
-                    done()
-                  }
+                  ]
                 })
+                expectEventSlotSpan('event1', '2015-10-18', '2015-11-08')
+                expectEventIsStartEnd('event1', true, true)
               })
 
-              it('renders correctly when mis-aligned with weeks', function(done) {
+              it('renders correctly when mis-aligned with weeks', function() {
                 initCalendar({
                   events: [
                     makeEvent('event1', '2015-10-19', '2015-11-17')
-                  ],
-                  _eventsPositioned() {
-                    expectEventSlotSpan('event1', '2015-10-18', '2015-11-15')
-                    expectEventIsStartEnd('event1', true, true)
-                    done()
-                  }
+                  ]
                 })
+                expectEventSlotSpan('event1', '2015-10-18', '2015-11-15')
+                expectEventIsStartEnd('event1', true, true)
               })
             })
           }

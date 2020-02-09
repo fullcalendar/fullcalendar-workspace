@@ -25,21 +25,11 @@ describe('timeGrid-view event resizing', function() {
 
     it('allows non-resource resize', function(done) {
       let resizeSpy
+
       initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-23T02:00:00', end: '2015-11-23T03:00:00' }
         ],
-        _eventsPositioned: oneCall(function() {
-          $('.event1').simulate('mouseover') // resizer only shows on hover
-          $('.event1 .fc-resizer')
-            .simulate('drag', {
-              end: getTimeGridPoint('2015-11-23T04:00:00'),
-              callback() {
-                expect(resizeSpy).toHaveBeenCalled()
-                done()
-              }
-            })
-        }),
         eventResize:
           (resizeSpy = spyCall(function(arg) {
             expect(arg.event.start).toEqualDate('2015-11-23T02:00:00Z')
@@ -49,6 +39,16 @@ describe('timeGrid-view event resizing', function() {
             expect(resources.length).toBe(0)
           }))
       })
+
+      $('.event1').simulate('mouseover') // resizer only shows on hover
+      $('.event1 .fc-resizer')
+        .simulate('drag', {
+          end: getTimeGridPoint('2015-11-23T04:00:00'),
+          callback() {
+            expect(resizeSpy).toHaveBeenCalled()
+            done()
+          }
+        })
     })
   })
 
@@ -59,21 +59,11 @@ describe('timeGrid-view event resizing', function() {
 
     it('allows a same-day resize', function(done) {
       let resizeSpy
+
       initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
         ],
-        _eventsPositioned: oneCall(function() { // avoid second call after event rerender
-          $('.event1').simulate('mouseover') // resizer only shows on hover
-          $('.event1 .fc-resizer')
-            .simulate('drag', {
-              end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
-              callback() {
-                expect(resizeSpy).toHaveBeenCalled()
-                done()
-              }
-            })
-        }),
         eventResize:
           (resizeSpy = spyCall(function(arg) {
             expect(arg.event.start).toEqualDate('2015-11-29T02:00:00Z')
@@ -84,25 +74,25 @@ describe('timeGrid-view event resizing', function() {
             expect(resources[0].id).toBe('b')
           }))
       })
+
+      $('.event1').simulate('mouseover') // resizer only shows on hover
+      $('.event1 .fc-resizer')
+        .simulate('drag', {
+          end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
+          callback() {
+            expect(resizeSpy).toHaveBeenCalled()
+            done()
+          }
+        })
     })
 
     it('allows a different-day resize', function(done) {
       let resizeSpy
+
       initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
         ],
-        _eventsPositioned: oneCall(function() {
-          $('.event1').simulate('mouseover') // resizer only shows on hover
-          $('.event1 .fc-resizer')
-            .simulate('drag', {
-              end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
-              callback() {
-                expect(resizeSpy).toHaveBeenCalled()
-                done()
-              }
-            })
-        }),
         eventResize:
           (resizeSpy = spyCall(function(arg) {
             expect(arg.event.start).toEqualDate('2015-11-29T02:00:00Z')
@@ -113,28 +103,38 @@ describe('timeGrid-view event resizing', function() {
             expect(resources[0].id).toBe('b')
           }))
       })
+
+      $('.event1').simulate('mouseover') // resizer only shows on hover
+      $('.event1 .fc-resizer')
+        .simulate('drag', {
+          end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
+          callback() {
+            expect(resizeSpy).toHaveBeenCalled()
+            done()
+          }
+        })
     })
 
     it('disallows a resize across resources', function(done) {
       let resizeSpy
+
       initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' }
         ],
-        _eventsPositioned: oneCall(function() {
-          $('.event1').simulate('mouseover') // resizer only shows on hover
-          $('.event1 .fc-resizer')
-            .simulate('drag', {
-              end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
-              callback() {
-                expect(resizeSpy).not.toHaveBeenCalled()
-                done()
-              }
-            })
-        }),
         eventResize:
           (resizeSpy = spyCall())
       })
+
+      $('.event1').simulate('mouseover') // resizer only shows on hover
+      $('.event1 .fc-resizer')
+        .simulate('drag', {
+          end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
+          callback() {
+            expect(resizeSpy).not.toHaveBeenCalled()
+            done()
+          }
+        })
     })
   })
 
@@ -146,21 +146,11 @@ describe('timeGrid-view event resizing', function() {
 
     it('allows a same-day resize', function(done) {
       let resizeSpy
+
       initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-30T02:00:00', end: '2015-11-30T03:00:00', resourceId: 'b' }
         ],
-        _eventsPositioned: oneCall(function() {
-          $('.event1').simulate('mouseover') // resizer only shows on hover
-          $('.event1 .fc-resizer')
-            .simulate('drag', {
-              end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
-              callback() {
-                expect(resizeSpy).toHaveBeenCalled()
-                done()
-              }
-            })
-        }),
         eventResize:
           (resizeSpy = spyCall(function(arg) {
             expect(arg.event.start).toEqualDate('2015-11-30T02:00:00Z')
@@ -171,25 +161,25 @@ describe('timeGrid-view event resizing', function() {
             expect(resources[0].id).toBe('b')
           }))
       })
+
+      $('.event1').simulate('mouseover') // resizer only shows on hover
+      $('.event1 .fc-resizer')
+        .simulate('drag', {
+          end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
+          callback() {
+            expect(resizeSpy).toHaveBeenCalled()
+            done()
+          }
+        })
     })
 
     it('allows a multi-day resize', function(done) {
       let resizeSpy
+
       initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' }
         ],
-        _eventsPositioned: oneCall(function() {
-          $('.event1').simulate('mouseover') // resizer only shows on hover
-          $('.event1 .fc-resizer')
-            .simulate('drag', {
-              end: getResourceTimeGridPoint('a', '2015-11-30T04:00:00'),
-              callback() {
-                expect(resizeSpy).toHaveBeenCalled()
-                done()
-              }
-            })
-        }),
         eventResize:
           (resizeSpy = spyCall(function(arg) {
             expect(arg.event.start).toEqualDate('2015-11-29T02:00:00Z')
@@ -200,28 +190,38 @@ describe('timeGrid-view event resizing', function() {
             expect(resources[0].id).toBe('a')
           }))
       })
+
+      $('.event1').simulate('mouseover') // resizer only shows on hover
+      $('.event1 .fc-resizer')
+        .simulate('drag', {
+          end: getResourceTimeGridPoint('a', '2015-11-30T04:00:00'),
+          callback() {
+            expect(resizeSpy).toHaveBeenCalled()
+            done()
+          }
+        })
     })
 
     it('disallows a resize across resources', function(done) {
       let resizeSpy
+
       initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' }
         ],
-        _eventsPositioned: oneCall(function() {
-          $('.event1').simulate('mouseover') // resizer only shows on hover
-          $('.event1 .fc-resizer')
-            .simulate('drag', {
-              end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
-              callback() {
-                expect(resizeSpy).not.toHaveBeenCalled()
-                done()
-              }
-            })
-        }),
         eventResize:
           (resizeSpy = spyCall())
       })
+
+      $('.event1').simulate('mouseover') // resizer only shows on hover
+      $('.event1 .fc-resizer')
+        .simulate('drag', {
+          end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
+          callback() {
+            expect(resizeSpy).not.toHaveBeenCalled()
+            done()
+          }
+        })
     })
   })
 })

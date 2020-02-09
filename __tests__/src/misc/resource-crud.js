@@ -220,7 +220,7 @@ describe('resource crudding', function() {
 
     describe('when given a resourceId', function() {
 
-      it('returns the associated events', function(done) {
+      it('returns the associated events', function() {
         initCalendar({
           resources: [
             { id: 'a', title: 'room a' },
@@ -234,19 +234,17 @@ describe('resource crudding', function() {
               end: '2015-11-18',
               resourceId: 'a'
             }
-          ],
-          _eventsPositioned() {
-            const events = currentCalendar.getResourceById('a').getEvents()
-            expect(events.length).toBe(1)
-            done()
-          }
+          ]
         })
+
+        const events = currentCalendar.getResourceById('a').getEvents()
+        expect(events.length).toBe(1)
       })
     })
 
     describe('when given a resourceId and event has multiple resources', function() {
 
-      it('returns the associated events', function(done) {
+      it('returns the associated events', function() {
         initCalendar({
           resources: [
             { id: 'a', title: 'room a' },
@@ -260,13 +258,11 @@ describe('resource crudding', function() {
               end: '2015-11-18',
               resourceIds: ['a', 'b']
             }
-          ],
-          _eventsPositioned() {
-            const events = currentCalendar.getResourceById('a').getEvents()
-            expect(events.length).toBe(1)
-            done()
-          }
+          ]
         })
+
+        const events = currentCalendar.getResourceById('a').getEvents()
+        expect(events.length).toBe(1)
       })
     })
   })

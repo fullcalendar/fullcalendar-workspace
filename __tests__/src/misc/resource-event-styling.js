@@ -32,66 +32,54 @@ describe('event styling hooks', function() {
       'with timeline': 'resourceTimelineDay'
     }, function() {
 
-      it('receives colors from resourceId', function(done) {
+      it('receives colors from resourceId', function() {
         initCalendar({
           events: [
             { id: '1', title: 'event 1', className: 'event1', resourceId: 'a', start: '2016-02-14T01:00:00' }
-          ],
-          _eventsPositioned() {
-            expect($('.event1').css('background-color')).toMatch(RED_RE)
-            done()
-          }
+          ]
         })
+        expect($('.event1').css('background-color')).toMatch(RED_RE)
       })
 
-      it('receives colors from resourceIds', function(done) {
+      it('receives colors from resourceIds', function() {
         initCalendar({
           events: [
             { id: '1', title: 'event 1', className: 'event1', resourceIds: [ 'a', 'b' ], start: '2016-02-14T01:00:00' }
-          ],
-          _eventsPositioned() {
-            const els = $('.event1')
-            expect(els.length).toBe(2)
-            expect(els.eq(0).css('background-color')).toMatch(RED_RE)
-            expect(els.eq(1).css('background-color')).toMatch(GREEN_RE)
-            done()
-          }
+          ]
         })
+        const els = $('.event1')
+        expect(els.length).toBe(2)
+        expect(els.eq(0).css('background-color')).toMatch(RED_RE)
+        expect(els.eq(1).css('background-color')).toMatch(GREEN_RE)
       })
 
-      it('receives eventClassName from resourceId', function(done) {
+      it('receives eventClassName from resourceId', function() {
         initCalendar({
           events: [
             { id: '1', title: 'event 1', className: 'event1', resourceId: 'a', start: '2016-02-14T01:00:00' }
-          ],
-          _eventsPositioned() {
-            const el = $('.event1')
-            expect(el.length).toBe(1)
-            expect(el).toHaveClass('re1')
-            expect(el).not.toHaveClass('re2')
-            expect(el).not.toHaveClass('re3')
-            done()
-          }
+          ]
         })
+        const el = $('.event1')
+        expect(el.length).toBe(1)
+        expect(el).toHaveClass('re1')
+        expect(el).not.toHaveClass('re2')
+        expect(el).not.toHaveClass('re3')
       })
 
-      it('receives eventClassName from resourceIds', function(done) {
+      it('receives eventClassName from resourceIds', function() {
         initCalendar({
           events: [
             { id: '1', title: 'event 1', className: 'event1', resourceIds: [ 'a', 'b' ], start: '2016-02-14T01:00:00' }
-          ],
-          _eventsPositioned() {
-            const els = $('.event1')
-            expect(els.length).toBe(2)
-            expect(els.eq(0)).toHaveClass('re1')
-            expect(els.eq(0)).not.toHaveClass('re2')
-            expect(els.eq(0)).not.toHaveClass('re3')
-            expect(els.eq(1)).not.toHaveClass('re1')
-            expect(els.eq(1)).toHaveClass('re2')
-            expect(els.eq(1)).toHaveClass('re3')
-            done()
-          }
+          ]
         })
+        const els = $('.event1')
+        expect(els.length).toBe(2)
+        expect(els.eq(0)).toHaveClass('re1')
+        expect(els.eq(0)).not.toHaveClass('re2')
+        expect(els.eq(0)).not.toHaveClass('re3')
+        expect(els.eq(1)).not.toHaveClass('re1')
+        expect(els.eq(1)).toHaveClass('re2')
+        expect(els.eq(1)).toHaveClass('re3')
       })
     })
   })
@@ -101,63 +89,51 @@ describe('event styling hooks', function() {
       defaultView: 'timeGridWeek'
     })
 
-    it('receives colors from resourceId', function(done) {
+    it('receives colors from resourceId', function() {
       initCalendar({
         events: [
           { id: '1', title: 'event 1', className: 'event1', resourceId: 'a', start: '2016-02-14T01:00:00' }
-        ],
-        _eventsPositioned() {
-          expect($('.event1').css('background-color')).toMatch(RED_RE) // x-browser
-          done()
-        }
+        ]
       })
+      expect($('.event1').css('background-color')).toMatch(RED_RE) // x-browser
     })
 
-    it('receives colors from resourceIds', function(done) {
+    it('receives colors from resourceIds', function() {
       initCalendar({
         events: [
           { id: '1', title: 'event 1', className: 'event1', resourceIds: [ 'a', 'b' ], start: '2016-02-14T01:00:00' }
-        ],
-        _eventsPositioned() {
-          const el = $('.event1')
-          expect(el.length).toBe(1)
-          expect(el.css('border-left-color')).toMatch(BLUE_RE)
-          expect(el.css('color')).toMatch(BLUE_RE) // text color
-          done()
-        }
+        ]
       })
+      const el = $('.event1')
+      expect(el.length).toBe(1)
+      expect(el.css('border-left-color')).toMatch(BLUE_RE)
+      expect(el.css('color')).toMatch(BLUE_RE) // text color
     })
 
-    it('receives eventClassName from resourceId', function(done) {
+    it('receives eventClassName from resourceId', function() {
       initCalendar({
         events: [
           { id: '1', title: 'event 1', className: 'event1', resourceId: 'a', start: '2016-02-14T01:00:00' }
-        ],
-        _eventsPositioned() {
-          const el = $('.event1')
-          expect(el.length).toBe(1)
-          expect(el).toHaveClass('re1')
-          expect(el).not.toHaveClass('re2')
-          expect(el).not.toHaveClass('re3')
-          done()
-        }
+        ]
       })
+      const el = $('.event1')
+      expect(el.length).toBe(1)
+      expect(el).toHaveClass('re1')
+      expect(el).not.toHaveClass('re2')
+      expect(el).not.toHaveClass('re3')
     })
 
-    it('receives eventClassName from resourceIds', function(done) {
+    it('receives eventClassName from resourceIds', function() {
       initCalendar({
         events: [
           { id: '1', title: 'event 1', className: 'event1', resourceIds: [ 'a', 'b' ], start: '2016-02-14T01:00:00' }
-        ],
-        _eventsPositioned() {
-          const el = $('.event1')
-          expect(el.length).toBe(1)
-          expect(el).toHaveClass('re1')
-          expect(el).toHaveClass('re2')
-          expect(el).toHaveClass('re3')
-          done()
-        }
+        ]
       })
+      const el = $('.event1')
+      expect(el.length).toBe(1)
+      expect(el).toHaveClass('re1')
+      expect(el).toHaveClass('re2')
+      expect(el).toHaveClass('re3')
     })
   })
 })

@@ -32,25 +32,23 @@ describe('destroy', function() {
         elListenerCounter.startWatching()
 
         initCalendar({
-          allDaySlot: false,
-          _eventsPositioned() {
-            setTimeout(function() { // wait to render events
-
-              window['currentCalendar'].destroy()
-              window['currentCalendar'] = null // for tests/util.js
-
-              expect($el.length).toBe(1)
-              expect($el.attr('class') || '').toBe('')
-
-              expect(windowListenerCounter.stopWatching()).toBe(0)
-              expect(docListenerCounter.stopWatching()).toBe(0)
-              expect(elListenerCounter.stopWatching()).toBe(0)
-
-              $el.remove()
-              done()
-            }, 100)
-          }
+          allDaySlot: false
         }, $el)
+
+        setTimeout(function() {
+          window['currentCalendar'].destroy()
+          window['currentCalendar'] = null // for tests/util.js
+
+          expect($el.length).toBe(1)
+          expect($el.attr('class') || '').toBe('')
+
+          expect(windowListenerCounter.stopWatching()).toBe(0)
+          expect(docListenerCounter.stopWatching()).toBe(0)
+          expect(elListenerCounter.stopWatching()).toBe(0)
+
+          $el.remove()
+          done()
+        }, 100)
       }, 100)
       // needs non-zero waits unfortunately. other tests are probably
       // considered "done()" by karma, but still actually shutting down.

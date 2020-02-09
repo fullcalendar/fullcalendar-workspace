@@ -37,18 +37,6 @@ describe('dayGrid-view event drag-n-drop', function() {
         })
 
         initCalendar({
-          _eventsPositioned: oneCall(function() {
-            $('.external-event').simulate('drag', {
-              localPoint: { left: '50%', top: 0 },
-              end: getResourceDayGridDayEls('a', '2015-12-01').eq(0),
-              callback() {
-                expect(dropSpy).toHaveBeenCalled()
-                expect(receiveSpy).toHaveBeenCalled()
-                dragEl.remove()
-                done()
-              }
-            })
-          }),
           drop:
             (dropSpy = spyCall(function(date) {})),
           // TODO: fix buggy behavior
@@ -64,6 +52,17 @@ describe('dayGrid-view event drag-n-drop', function() {
               expect(resources.length).toBe(1)
               expect(resources[0].id).toBe('a')
             }))
+        })
+
+        $('.external-event').simulate('drag', {
+          localPoint: { left: '50%', top: 0 },
+          end: getResourceDayGridDayEls('a', '2015-12-01').eq(0),
+          callback() {
+            expect(dropSpy).toHaveBeenCalled()
+            expect(receiveSpy).toHaveBeenCalled()
+            dragEl.remove()
+            done()
+          }
         })
       })
     })

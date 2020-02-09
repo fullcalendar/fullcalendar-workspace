@@ -1,9 +1,7 @@
 
 describe('timeline', function() {
 
-  it('can switch views', function(done) {
-    let switchCnt = 0
-
+  it('can switch views', function() {
     initCalendar({
       now: '2016-01-07',
       editable: true,
@@ -37,42 +35,27 @@ describe('timeline', function() {
         { id: '3', resourceId: 'c', start: '2016-01-06', end: '2016-01-08', title: 'event 3' },
         { id: '4', resourceId: 'a', start: '2016-01-07T03:00:00', end: '2016-01-07T08:00:00', title: 'event 4' },
         { id: '5', resourceId: 'b', start: '2016-01-07T00:30:00', end: '2016-01-07T02:30:00', title: 'event 5' }
-      ],
-      _eventsPositioned() {
-        var view = currentCalendar.view
-
-        switchCnt++
-        switch (switchCnt) {
-          case 1:
-            expect(view.type).toBe('resourceTimelineDay')
-            currentCalendar.changeView('resourceTimelineThreeDays')
-            break
-          case 2:
-            expect(view.type).toBe('resourceTimelineThreeDays')
-            currentCalendar.changeView('resourceTimeGridDay')
-            break
-          case 3:
-            expect(view.type).toBe('resourceTimeGridDay')
-            currentCalendar.changeView('resourceTimeGridTwoDay')
-            break
-          case 4:
-            expect(view.type).toBe('resourceTimeGridTwoDay')
-            currentCalendar.changeView('timeGridWeek')
-            break
-          case 5:
-            expect(view.type).toBe('timeGridWeek')
-            currentCalendar.changeView('dayGridMonth')
-            break
-          case 6:
-            expect(view.type).toBe('dayGridMonth')
-            currentCalendar.changeView('resourceTimelineDay')
-            break
-          case 7:
-            expect(view.type).toBe('resourceTimelineDay')
-            done()
-            break
-        }
-      }
+      ]
     })
+
+    expect(currentCalendar.view.type).toBe('resourceTimelineDay')
+    currentCalendar.changeView('resourceTimelineThreeDays')
+
+    expect(currentCalendar.view.type).toBe('resourceTimelineThreeDays')
+    currentCalendar.changeView('resourceTimeGridDay')
+
+    expect(currentCalendar.view.type).toBe('resourceTimeGridDay')
+    currentCalendar.changeView('resourceTimeGridTwoDay')
+
+    expect(currentCalendar.view.type).toBe('resourceTimeGridTwoDay')
+    currentCalendar.changeView('timeGridWeek')
+
+    expect(currentCalendar.view.type).toBe('timeGridWeek')
+    currentCalendar.changeView('dayGridMonth')
+
+    expect(currentCalendar.view.type).toBe('dayGridMonth')
+    currentCalendar.changeView('resourceTimelineDay')
+
+    expect(currentCalendar.view.type).toBe('resourceTimelineDay')
   })
 })

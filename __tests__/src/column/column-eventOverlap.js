@@ -92,17 +92,9 @@ describe('column event dragging with constraint', function() {
       // util
       function expectDropToBe(bool, events, done) {
         let dropped = false
+
         initCalendar({
           events,
-          _eventsPositioned:
-            oneCall(function() {
-              $('.event1').simulate('drag', {
-                localPoint: { left: '50%', top: 0 },
-                end: val === 'resourceTimeGridDay' // otherwise 'timeGrid'
-                  ? getResourceTimeGridPoint('a', '2016-02-14T04:00:00')
-                  : getTimeGridPoint('2016-02-14T04:00:00')
-              })
-            }),
           eventDrop() {
             dropped = true
           },
@@ -113,7 +105,15 @@ describe('column event dragging with constraint', function() {
             })
           }
         })
-      };
+
+        $('.event1').simulate('drag', {
+          localPoint: { left: '50%', top: 0 },
+          end: val === 'resourceTimeGridDay' // otherwise 'timeGrid'
+            ? getResourceTimeGridPoint('a', '2016-02-14T04:00:00')
+            : getTimeGridPoint('2016-02-14T04:00:00')
+        })
+      }
+
     })
   })
 })

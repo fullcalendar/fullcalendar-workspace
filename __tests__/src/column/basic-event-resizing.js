@@ -25,26 +25,11 @@ describe('dayGrid-view event resizing', function() {
 
     it('allows non-resource resizing', function(done) {
       let resizeCalled = false
-      let afterRenderCalled = false
+
       initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-23' }
         ],
-        _eventsPositioned() {
-          if (afterRenderCalled) {
-            return
-          }
-          afterRenderCalled = true
-          $('.event1').simulate('mouseover') // resizer only shows on hover
-          $('.event1 .fc-resizer')
-            .simulate('drag', {
-              end: getDayGridDayEls('2015-11-24').eq(0),
-              callback() {
-                expect(resizeCalled).toBe(true)
-                done()
-              }
-            })
-        },
         eventResize(arg) {
           resizeCalled = true
           expect(arg.event.start).toEqualDate('2015-11-23')
@@ -54,6 +39,16 @@ describe('dayGrid-view event resizing', function() {
           expect(resources.length).toBe(0)
         }
       })
+
+      $('.event1').simulate('mouseover') // resizer only shows on hover
+      $('.event1 .fc-resizer')
+        .simulate('drag', {
+          end: getDayGridDayEls('2015-11-24').eq(0),
+          callback() {
+            expect(resizeCalled).toBe(true)
+            done()
+          }
+        })
     })
   })
 
@@ -64,26 +59,11 @@ describe('dayGrid-view event resizing', function() {
 
     it('allows resizing', function(done) {
       let resizeCalled = false
-      let afterRenderCalled = false
+
       initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29', resourceId: 'a' }
         ],
-        _eventsPositioned() {
-          if (afterRenderCalled) {
-            return
-          }
-          afterRenderCalled = true
-          $('.event1').simulate('mouseover') // resizer only shows on hover
-          $('.event1 .fc-resizer')
-            .simulate('drag', {
-              end: getDayGridDayEls('2015-11-30').eq(0),
-              callback() {
-                expect(resizeCalled).toBe(true)
-                done()
-              }
-            })
-        },
         eventResize(arg) {
           resizeCalled = true
           expect(arg.event.start).toEqualDate('2015-11-29')
@@ -94,35 +74,40 @@ describe('dayGrid-view event resizing', function() {
           expect(resources[0].id).toBe('a')
         }
       })
+
+      $('.event1').simulate('mouseover') // resizer only shows on hover
+      $('.event1 .fc-resizer')
+        .simulate('drag', {
+          end: getDayGridDayEls('2015-11-30').eq(0),
+          callback() {
+            expect(resizeCalled).toBe(true)
+            done()
+          }
+        })
     })
 
     it('disallows resizing across resources', function(done) {
       let resizeCalled = false
-      let afterRenderCalled = false
+
       initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29', resourceId: 'a' }
         ],
-        _eventsPositioned() {
-          if (afterRenderCalled) {
-            return
-          }
-          afterRenderCalled = true
-          const bMonRect = getTrailingBoundingRect(getDayGridDayEls('2015-11-30'))
-          $('.event1').simulate('mouseover') // resizer only shows on hover
-          $('.event1 .fc-resizer')
-            .simulate('drag', {
-              end: getRectCenter(bMonRect),
-              callback() {
-                expect(resizeCalled).toBe(false)
-                done()
-              }
-            })
-        },
         eventResize(arg) {
           resizeCalled = true
         }
       })
+
+      const bMonRect = getTrailingBoundingRect(getDayGridDayEls('2015-11-30'))
+      $('.event1').simulate('mouseover') // resizer only shows on hover
+      $('.event1 .fc-resizer')
+        .simulate('drag', {
+          end: getRectCenter(bMonRect),
+          callback() {
+            expect(resizeCalled).toBe(false)
+            done()
+          }
+        })
     })
   })
 
@@ -134,28 +119,11 @@ describe('dayGrid-view event resizing', function() {
 
     it('allows resizing', function(done) {
       let resizeCalled = false
-      let afterRenderCalled = false
+
       initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-28', resourceId: 'b' }
         ],
-        _eventsPositioned() {
-          if (afterRenderCalled) {
-            return
-          }
-          afterRenderCalled = true
-          const bMonRect = getTrailingBoundingRect(getDayGridDayEls('2015-11-30'))
-          $('.event1').simulate('mouseover') // resizer only shows on hover
-          $('.event1 .fc-resizer')
-            .simulate('drag', {
-              end: getRectCenter(bMonRect),
-              callback() {
-                expect(resizeCalled).toBe(true)
-                done()
-              }
-            }
-            )
-        },
         eventResize(arg) {
           resizeCalled = true
           expect(arg.event.start).toEqualDate('2015-11-28')
@@ -166,35 +134,41 @@ describe('dayGrid-view event resizing', function() {
           expect(resources[0].id).toBe('b')
         }
       })
+
+      const bMonRect = getTrailingBoundingRect(getDayGridDayEls('2015-11-30'))
+      $('.event1').simulate('mouseover') // resizer only shows on hover
+      $('.event1 .fc-resizer')
+        .simulate('drag', {
+          end: getRectCenter(bMonRect),
+          callback() {
+            expect(resizeCalled).toBe(true)
+            done()
+          }
+        })
     })
 
     it('disallows resizing across resources', function(done) {
       let resizeCalled = false
-      let afterRenderCalled = false
+
       initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-28', resourceId: 'a' }
         ],
-        _eventsPositioned() {
-          if (afterRenderCalled) {
-            return
-          }
-          afterRenderCalled = true
-          const bMonRect = getTrailingBoundingRect(getDayGridDayEls('2015-11-30'))
-          $('.event1').simulate('mouseover') // resizer only shows on hover
-          $('.event1 .fc-resizer')
-            .simulate('drag', {
-              end: getRectCenter(bMonRect),
-              callback() {
-                expect(resizeCalled).toBe(false)
-                done()
-              }
-            })
-        },
-        eventResize(arg) {
+        eventResize() {
           resizeCalled = true
         }
       })
+
+      const bMonRect = getTrailingBoundingRect(getDayGridDayEls('2015-11-30'))
+      $('.event1').simulate('mouseover') // resizer only shows on hover
+      $('.event1 .fc-resizer')
+        .simulate('drag', {
+          end: getRectCenter(bMonRect),
+          callback() {
+            expect(resizeCalled).toBe(false)
+            done()
+          }
+        })
     })
   })
 })

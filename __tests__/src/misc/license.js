@@ -10,18 +10,13 @@ describe('schedulerLicenseKey', function() {
     delete config.mockSchedulerReleaseDate
   })
 
-  // FYI: _eventsPositioned guarantees that view's skeleton has been rendered and sized
-
   function defineTests() {
 
-    it('is invalid when crap text', function(done) {
+    it('is invalid when crap text', function() {
       initCalendar({
-        schedulerLicenseKey: '<%= versionReleaseDate %>',
-        _eventsPositioned() {
-          expectIsValid(false)
-          done()
-        }
+        schedulerLicenseKey: '<%= versionReleaseDate %>'
       })
+      expectIsValid(false)
     })
 
     it('is invalid when crap text when directly instantiating', function() {
@@ -35,54 +30,39 @@ describe('schedulerLicenseKey', function() {
       expect(calendar).toBeTruthy()
     })
 
-    it('is invalid when purchased more than a year ago', function(done) {
+    it('is invalid when purchased more than a year ago', function() {
       initCalendar({
-        schedulerLicenseKey: '1234567890-fcs-1273017600', // purchased on 2010-05-05
-        _eventsPositioned() {
-          expectIsValid(false)
-          done()
-        }
+        schedulerLicenseKey: '1234567890-fcs-1273017600' // purchased on 2010-05-05
       })
+      expectIsValid(false)
     })
 
-    it('is valid when purchased less than a year ago', function(done) {
+    it('is valid when purchased less than a year ago', function() {
       initCalendar({
-        schedulerLicenseKey: '1234567890-fcs-1275868800', // purchased on 2010-06-07
-        _eventsPositioned() {
-          expectIsValid(true)
-          done()
-        }
+        schedulerLicenseKey: '1234567890-fcs-1275868800' // purchased on 2010-06-07
       })
+      expectIsValid(true)
     })
 
-    it('is invalid when not 10 digits in random ID', function(done) {
+    it('is invalid when not 10 digits in random ID', function() {
       initCalendar({
-        schedulerLicenseKey: '123456789-fcs-1275868800', // purchased on 2010-06-07
-        _eventsPositioned() {
-          expectIsValid(false)
-          done()
-        }
+        schedulerLicenseKey: '123456789-fcs-1275868800' // purchased on 2010-06-07
       })
+      expectIsValid(false)
     })
 
-    it('is valid when Creative Commons', function(done) {
+    it('is valid when Creative Commons', function() {
       initCalendar({
-        schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-        _eventsPositioned() {
-          expectIsValid(true)
-          done()
-        }
+        schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives'
       })
+      expectIsValid(true)
     })
 
-    it('is valid when GPL', function(done) {
+    it('is valid when GPL', function() {
       initCalendar({
-        schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-        _eventsPositioned() {
-          expectIsValid(true)
-          done()
-        }
+        schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source'
       })
+      expectIsValid(true)
     })
   };
 

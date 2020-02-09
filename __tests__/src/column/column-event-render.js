@@ -68,15 +68,11 @@ describe('vresource event rendering', function() {
               datesAboveResources: false
             })
 
-            it('renders in the correct column', function(callback) {
-              initCalendar({
-                _eventsPositioned() {
-                  const colRect = getTrailingBoundingRect(getHeadDowEls('tue'), dir)
-                  const eventRect = getBoundingRect('.event1')
-                  expect(eventRect).toBeMostlyHBoundedBy(colRect)
-                  callback()
-                }
-              })
+            it('renders in the correct column', function() {
+              initCalendar()
+              const colRect = getTrailingBoundingRect(getHeadDowEls('tue'), dir)
+              const eventRect = getBoundingRect('.event1')
+              expect(eventRect).toBeMostlyHBoundedBy(colRect)
             })
           })
 
@@ -85,15 +81,11 @@ describe('vresource event rendering', function() {
               datesAboveResources: true
             })
 
-            it('renders in the correct column', function(callback) {
-              initCalendar({
-                _eventsPositioned() {
-                  const resourceRect = getLeadingBoundingRect(getHeadResourceEls('c'), dir)
-                  const eventRect = getBoundingRect('.event1')
-                  expect(eventRect).toBeMostlyHBoundedBy(resourceRect)
-                  callback()
-                }
-              })
+            it('renders in the correct column', function() {
+              initCalendar()
+              const resourceRect = getLeadingBoundingRect(getHeadResourceEls('c'), dir)
+              const eventRect = getBoundingRect('.event1')
+              expect(eventRect).toBeMostlyHBoundedBy(resourceRect)
             })
           })
         })
@@ -121,24 +113,20 @@ describe('vresource event rendering', function() {
               datesAboveResources: false
             })
 
-            it('renders in the correct columns', function(callback) {
-              initCalendar({
-                _eventsPositioned() {
-                  const eventEls = $('.event1')
-                  expect(eventEls.length).toBe(2)
-                  const firstEventRect = getLeadingBoundingRect(eventEls, dir)
-                  const lastEventRect = getTrailingBoundingRect(eventEls, dir)
-                  if (!renderingType) { // non-background events
-                    expect(firstEventRect.node).toHaveClass('fc-start')
-                    expect(lastEventRect.node).toHaveClass('fc-end')
-                  }
-                  const tueRect = getTrailingBoundingRect(getHeadDowEls('tue'), dir)
-                  const wedRect = getTrailingBoundingRect(getHeadDowEls('wed'), dir)
-                  expect(firstEventRect).toBeMostlyHBoundedBy(tueRect)
-                  expect(lastEventRect).toBeMostlyHBoundedBy(wedRect)
-                  callback()
-                }
-              })
+            it('renders in the correct columns', function() {
+              initCalendar()
+              const eventEls = $('.event1')
+              expect(eventEls.length).toBe(2)
+              const firstEventRect = getLeadingBoundingRect(eventEls, dir)
+              const lastEventRect = getTrailingBoundingRect(eventEls, dir)
+              if (!renderingType) { // non-background events
+                expect(firstEventRect.node).toHaveClass('fc-start')
+                expect(lastEventRect.node).toHaveClass('fc-end')
+              }
+              const tueRect = getTrailingBoundingRect(getHeadDowEls('tue'), dir)
+              const wedRect = getTrailingBoundingRect(getHeadDowEls('wed'), dir)
+              expect(firstEventRect).toBeMostlyHBoundedBy(tueRect)
+              expect(lastEventRect).toBeMostlyHBoundedBy(wedRect)
             })
           })
 
@@ -147,25 +135,21 @@ describe('vresource event rendering', function() {
               datesAboveResources: true
             })
 
-            it('renders in the correct columns', function(callback) {
-              initCalendar({
-                _eventsPositioned() {
-                  const eventEls = $('.event1')
-                  expect(eventEls.length).toBe(2)
-                  const firstEventRect = getLeadingBoundingRect(eventEls, dir)
-                  const lastEventRect = getTrailingBoundingRect(eventEls, dir)
-                  if (!renderingType) { // non-background events
-                    expect(firstEventRect.node).toHaveClass('fc-start')
-                    expect(lastEventRect.node).toHaveClass('fc-end')
-                  }
-                  const resourceEls = getHeadResourceEls('c')
-                  const firstResourceRect = getLeadingBoundingRect(resourceEls, dir)
-                  const lastResourceRect = getTrailingBoundingRect(resourceEls, dir)
-                  expect(firstEventRect).toBeMostlyHBoundedBy(firstResourceRect)
-                  expect(lastEventRect).toBeMostlyHBoundedBy(lastResourceRect)
-                  callback()
-                }
-              })
+            it('renders in the correct columns', function() {
+              initCalendar()
+              const eventEls = $('.event1')
+              expect(eventEls.length).toBe(2)
+              const firstEventRect = getLeadingBoundingRect(eventEls, dir)
+              const lastEventRect = getTrailingBoundingRect(eventEls, dir)
+              if (!renderingType) { // non-background events
+                expect(firstEventRect.node).toHaveClass('fc-start')
+                expect(lastEventRect.node).toHaveClass('fc-end')
+              }
+              const resourceEls = getHeadResourceEls('c')
+              const firstResourceRect = getLeadingBoundingRect(resourceEls, dir)
+              const lastResourceRect = getTrailingBoundingRect(resourceEls, dir)
+              expect(firstEventRect).toBeMostlyHBoundedBy(firstResourceRect)
+              expect(lastEventRect).toBeMostlyHBoundedBy(lastResourceRect)
             })
           })
         })
@@ -190,17 +174,13 @@ describe('vresource event rendering', function() {
               datesAboveResources: false
             })
 
-            it('renders in the correct columns', function(callback) {
-              initCalendar({
-                _eventsPositioned() {
-                  const eventRect = getBoundingRect('.event1')
-                  const tueRect = getTrailingBoundingRect(getHeadDowEls('tue'), dir)
-                  const wedRect = getTrailingBoundingRect(getHeadDowEls('wed'), dir)
-                  expect(tueRect).toBeMostlyHBoundedBy(eventRect)
-                  expect(wedRect).toBeMostlyHBoundedBy(eventRect)
-                  callback()
-                }
-              })
+            it('renders in the correct columns', function() {
+              initCalendar()
+              const eventRect = getBoundingRect('.event1')
+              const tueRect = getTrailingBoundingRect(getHeadDowEls('tue'), dir)
+              const wedRect = getTrailingBoundingRect(getHeadDowEls('wed'), dir)
+              expect(tueRect).toBeMostlyHBoundedBy(eventRect)
+              expect(wedRect).toBeMostlyHBoundedBy(eventRect)
             })
           })
 
@@ -209,25 +189,21 @@ describe('vresource event rendering', function() {
               datesAboveResources: true
             })
 
-            it('renders in the correct columns', function(callback) {
-              initCalendar({
-                _eventsPositioned() {
-                  const eventEls = $('.event1')
-                  expect(eventEls.length).toBe(2)
-                  const firstEventRect = getLeadingBoundingRect(eventEls, dir)
-                  const lastEventRect = getTrailingBoundingRect(eventEls, dir)
-                  if (!renderingType) { // non-background events
-                    expect(firstEventRect.node).toHaveClass('fc-start')
-                    expect(lastEventRect.node).toHaveClass('fc-end')
-                  }
-                  const resourceEls = getHeadResourceEls('c')
-                  const firstResourceRect = getLeadingBoundingRect(resourceEls, dir)
-                  const lastResourceRect = getTrailingBoundingRect(resourceEls, dir)
-                  expect(firstEventRect).toBeMostlyHBoundedBy(firstResourceRect)
-                  expect(lastEventRect).toBeMostlyHBoundedBy(lastResourceRect)
-                  callback()
-                }
-              })
+            it('renders in the correct columns', function() {
+              initCalendar()
+              const eventEls = $('.event1')
+              expect(eventEls.length).toBe(2)
+              const firstEventRect = getLeadingBoundingRect(eventEls, dir)
+              const lastEventRect = getTrailingBoundingRect(eventEls, dir)
+              if (!renderingType) { // non-background events
+                expect(firstEventRect.node).toHaveClass('fc-start')
+                expect(lastEventRect.node).toHaveClass('fc-end')
+              }
+              const resourceEls = getHeadResourceEls('c')
+              const firstResourceRect = getLeadingBoundingRect(resourceEls, dir)
+              const lastResourceRect = getTrailingBoundingRect(resourceEls, dir)
+              expect(firstEventRect).toBeMostlyHBoundedBy(firstResourceRect)
+              expect(lastEventRect).toBeMostlyHBoundedBy(lastResourceRect)
             })
           })
         })
@@ -273,25 +249,17 @@ describe('vresource event rendering', function() {
 
             if (renderingType === 'background') {
 
-              it('renders on every resource', function(callback) {
-                initCalendar({
-                  _eventsPositioned() {
-                    const eventEls = $('.event1')
-                    expect(eventEls.length).toBe(3)
-                    callback()
-                  }
-                })
+              it('renders on every resource', function() {
+                initCalendar()
+                const eventEls = $('.event1')
+                expect(eventEls.length).toBe(3)
               })
             } else {
 
-              it('doesn\'t render at all', function(callback) {
-                initCalendar({
-                  _eventsPositioned() {
-                    const eventEls = $('.event1')
-                    expect(eventEls.length).toBe(0)
-                    callback()
-                  }
-                })
+              it('doesn\'t render at all', function() {
+                initCalendar()
+                const eventEls = $('.event1')
+                expect(eventEls.length).toBe(0)
               })
             }
           })
@@ -311,17 +279,14 @@ describe('vresource event rendering', function() {
       }]
     })
 
-    it('renders each event in a separate resource column', function(done) {
+    it('renders each event in a separate resource column', function() {
       initCalendar({
-        defaultView: 'resourceTimeGridDay',
-        _eventsPositioned() {
-          expect($('.event1').length).toBe(2)
-          done()
-        }
+        defaultView: 'resourceTimeGridDay'
       })
+      expect($('.event1').length).toBe(2)
     })
 
-    it('renders a single event when no resource columns', function(done) {
+    it('renders a single event when no resource columns', function() {
       initCalendar({
         defaultView: 'timeGridTwoDay',
         views: {
@@ -329,12 +294,9 @@ describe('vresource event rendering', function() {
             type: 'timeGrid',
             duration: { days: 2 }
           }
-        },
-        _eventsPositioned() {
-          expect($('.event1').length).toBe(1)
-          done()
         }
       })
+      expect($('.event1').length).toBe(1)
     })
   })
 })

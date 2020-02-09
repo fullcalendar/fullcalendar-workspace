@@ -27,15 +27,6 @@ describe('dayGrid-view event drag-n-drop', function() {
           events: [
             { title: 'event0', className: 'event0', start: '2015-11-30T12:00:00', resourceId: 'b' }
           ],
-          _eventsPositioned: oneCall(function() {
-            $('.event0').simulate('drag', {
-              end: getResourceDayGridDayEls('a', '2015-12-01').eq(0),
-              callback() {
-                expect(dropSpy).toHaveBeenCalled()
-                done()
-              }
-            })
-          }),
           eventDrop:
             (dropSpy = spyCall(function(arg) {
               expect(arg.event.start).toEqualDate(tz.parseDate('2015-12-01T12:00:00'))
@@ -45,6 +36,14 @@ describe('dayGrid-view event drag-n-drop', function() {
               expect(resources.length).toBe(1)
               expect(resources[0].id).toBe('a')
             }))
+        })
+
+        $('.event0').simulate('drag', {
+          end: getResourceDayGridDayEls('a', '2015-12-01').eq(0),
+          callback() {
+            expect(dropSpy).toHaveBeenCalled()
+            done()
+          }
         })
       })
     })

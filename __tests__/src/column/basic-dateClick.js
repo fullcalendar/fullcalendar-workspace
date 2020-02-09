@@ -23,23 +23,23 @@ describe('dayGrid-view dateClick', function() {
 
     it('allows non-resource clicks', function(done) {
       let dateClickCalled = false
+
       initCalendar({
-        _eventsPositioned() {
-          const monEls = getDayGridDowEls('mon')
-          expect(monEls.length).toBe(1)
-          monEls.eq(0).simulate('drag', {
-            callback() {
-              expect(dateClickCalled).toBe(true)
-              done()
-            }
-          })
-        },
         dateClick(arg) {
           dateClickCalled = true
           expect(arg.date).toEqualDate('2015-11-23')
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
           expect(arg.resource).toBeFalsy()
+        }
+      })
+
+      const monEls = getDayGridDowEls('mon')
+      expect(monEls.length).toBe(1)
+      monEls.eq(0).simulate('drag', {
+        callback() {
+          expect(dateClickCalled).toBe(true)
+          done()
         }
       })
     })
@@ -52,22 +52,22 @@ describe('dayGrid-view dateClick', function() {
 
     it('allows a resource click', function(done) {
       let dateClickCalled = false
+
       initCalendar({
-        _eventsPositioned() {
-          const sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
-          sunAEl.simulate('drag', {
-            callback() {
-              expect(dateClickCalled).toBe(true)
-              done()
-            }
-          })
-        },
         dateClick(arg) {
           dateClickCalled = true
           expect(arg.date).toEqualDate('2015-11-29')
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
           expect(arg.resource.id).toBe('a')
+        }
+      })
+
+      const sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
+      sunAEl.simulate('drag', {
+        callback() {
+          expect(dateClickCalled).toBe(true)
+          done()
         }
       })
     })
@@ -81,23 +81,23 @@ describe('dayGrid-view dateClick', function() {
 
     it('allows a resource click', function(done) {
       let dateClickCalled = false
+
       initCalendar({
-        _eventsPositioned() {
-          const rects = sortBoundingRects(getDayGridDowEls('mon'))
-          const monBEl = $(rects[1].node)
-          monBEl.simulate('drag', {
-            callback() {
-              expect(dateClickCalled).toBe(true)
-              done()
-            }
-          })
-        },
         dateClick(arg) {
           dateClickCalled = true
           expect(arg.date).toEqualDate('2015-11-30')
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
           expect(arg.resource.id).toBe('b')
+        }
+      })
+
+      const rects = sortBoundingRects(getDayGridDowEls('mon'))
+      const monBEl = $(rects[1].node)
+      monBEl.simulate('drag', {
+        callback() {
+          expect(dateClickCalled).toBe(true)
+          done()
         }
       })
     })

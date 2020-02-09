@@ -20,19 +20,6 @@ describe('eventResourceEditable in vertical resource view', function() {
       events: [
         { start: '2019-08-01T01:00:00', resourceId: 'a' }
       ],
-      _eventsPositioned: oneCall(function() {
-        $('.fc-event').simulate('drag', {
-          localPoint: {
-            top: 1, // fudge for IE10 :(
-            left: '50%'
-          },
-          end: getResourceTimeGridPoint('b', '2019-08-01T05:00:00'),
-          callback() {
-            expect(dropSpy).toHaveBeenCalled()
-            done()
-          }
-        })
-      }),
       eventDrop: (dropSpy = spyCall(function(arg) {
         expect(arg.event.start).toEqualDate(parseUtcDate('2019-08-01T01:00:00'))
         expect(arg.event.end).toEqual(null)
@@ -41,6 +28,18 @@ describe('eventResourceEditable in vertical resource view', function() {
         expect(resources.length).toBe(1)
         expect(resources[0].id).toBe('b')
       }))
+    })
+
+    $('.fc-event').simulate('drag', {
+      localPoint: {
+        top: 1, // fudge for IE10 :(
+        left: '50%'
+      },
+      end: getResourceTimeGridPoint('b', '2019-08-01T05:00:00'),
+      callback() {
+        expect(dropSpy).toHaveBeenCalled()
+        done()
+      }
     })
   })
 

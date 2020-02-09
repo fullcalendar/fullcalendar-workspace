@@ -39,18 +39,8 @@ describe('timeline-view external element drag-n-drop', function() {
 
     it('allows dropping onto a resource', function(done) {
       let dropSpy, receiveSpy
+
       initCalendar({
-        _eventsPositioned: oneCall(function() {
-          $('.external-event').simulate('drag', {
-            localPoint: { left: 0, top: '50%' },
-            end: getResourceTimelinePoint('b', '2015-11-29T05:00:00'),
-            callback() {
-              expect(dropSpy).toHaveBeenCalled()
-              expect(receiveSpy).toHaveBeenCalled()
-              done()
-            }
-          })
-        }),
         drop:
           (dropSpy = spyCall(function(arg) {
             expect(arg.date).toEqualDate(tz.parseDate('2015-11-29T05:00:00'))
@@ -65,6 +55,16 @@ describe('timeline-view external element drag-n-drop', function() {
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('b')
           }))
+      })
+
+      $('.external-event').simulate('drag', {
+        localPoint: { left: 0, top: '50%' },
+        end: getResourceTimelinePoint('b', '2015-11-29T05:00:00'),
+        callback() {
+          expect(dropSpy).toHaveBeenCalled()
+          expect(receiveSpy).toHaveBeenCalled()
+          done()
+        }
       })
     })
   })
@@ -84,20 +84,20 @@ describe('timeline-view external element drag-n-drop', function() {
 
     it('doesn\'t allow the drop on an event', function(done) {
       let dropSpy, receiveSpy
+
       initCalendar({
-        _eventsPositioned: oneCall(function() {
-          $('.external-event').simulate('drag', {
-            localPoint: { left: 0, top: '50%' },
-            end: getResourceTimelinePoint('a', '2015-11-29T02:00:00'),
-            callback() {
-              expect(dropSpy).not.toHaveBeenCalled()
-              expect(receiveSpy).not.toHaveBeenCalled()
-              done()
-            }
-          })
-        }),
         drop: (dropSpy = jasmine.createSpy('drop')),
         eventReceive: (receiveSpy = jasmine.createSpy('receive'))
+      })
+
+      $('.external-event').simulate('drag', {
+        localPoint: { left: 0, top: '50%' },
+        end: getResourceTimelinePoint('a', '2015-11-29T02:00:00'),
+        callback() {
+          expect(dropSpy).not.toHaveBeenCalled()
+          expect(receiveSpy).not.toHaveBeenCalled()
+          done()
+        }
       })
     })
   })
@@ -118,61 +118,50 @@ describe('timeline-view external element drag-n-drop', function() {
 
     initCalendar({
       header: false, // better guarantee that dragEl is parallel with body slots
-      datesRender() {
-        dragEl.simulate('drag', {
-          dy: 10, // some movement
-          callback() {
-            setTimeout(function() { // wait for potential `drop`
-              expect(isDropCalled).toBe(false)
-              calEl.remove()
-              done()
-            }
-              , 100)
-          }
-        })
-      },
       drop() {
         isDropCalled = true
       }
     }, calEl) // will render calendar within this el
+
+    dragEl.simulate('drag', {
+      dy: 10, // some movement
+      callback() {
+        setTimeout(function() { // wait for potential `drop`
+          expect(isDropCalled).toBe(false)
+          calEl.remove()
+          done()
+        }, 100)
+      }
+    })
   })
 
   it('works after a view switch', function(done) {
-    let renderCnt = 0
-    initCalendar({
-      datesRender() {
-        renderCnt++
-        if (renderCnt === 1) {
-          currentCalendar.changeView('resourceTimelineWeek')
-        } else if (renderCnt === 2) {
-          $('.external-event').simulate('drag', {
-            localPoint: { left: 0, top: '50%' },
-            end: getResourceTimelinePoint('b', '2015-11-29T05:00:00'),
-            callback() {
-              // all we care about is no JS errors
-              done()
-            }
-          })
-        }
+    initCalendar()
+    currentCalendar.changeView('resourceTimelineWeek')
+
+    $('.external-event').simulate('drag', {
+      localPoint: { left: 0, top: '50%' },
+      end: getResourceTimelinePoint('b', '2015-11-29T05:00:00'),
+      callback() {
+        // all we care about is no JS errors
+        done()
       }
     })
   })
 
   it('works after calling destroy', function(done) {
-    initCalendar({
-      datesRender() {
-        setTimeout(function() { // problems with destroy otherwise
-          currentCalendar.destroy()
-          $('.external-event').simulate('drag', {
-            dx: 100,
-            dy: 100,
-            callback() {
-              // all we care about is no JS errors
-              done()
-            }
-          })
-        })
-      }
+    initCalendar()
+
+    setTimeout(function() { // problems with destroy otherwise
+      currentCalendar.destroy()
+      $('.external-event').simulate('drag', {
+        dx: 100,
+        dy: 100,
+        callback() {
+          // all we care about is no JS errors
+          done()
+        }
+      })
     })
   })
 })

@@ -38,18 +38,6 @@ describe('timeGrid-view event drag-n-drop', function() {
         })
 
         initCalendar({
-          _eventsPositioned: oneCall(function() {
-            $('.external-event').simulate('drag', {
-              localPoint: { left: '50%', top: 0 },
-              end: getResourceTimeGridPoint('a', '2015-12-01T05:00:00'),
-              callback() {
-                expect(dropSpy).toHaveBeenCalled()
-                expect(receiveSpy).toHaveBeenCalled()
-                dragEl.remove()
-                done()
-              }
-            })
-          }),
           drop:
             (dropSpy = spyCall(function(arg) {
               return expect(arg.date).toEqualDate(tz.parseDate('2015-12-01T05:00:00'))
@@ -64,6 +52,17 @@ describe('timeGrid-view event drag-n-drop', function() {
               expect(resources.length).toBe(1)
               expect(resources[0].id).toBe('a')
             }))
+        })
+
+        $('.external-event').simulate('drag', {
+          localPoint: { left: '50%', top: 0 },
+          end: getResourceTimeGridPoint('a', '2015-12-01T05:00:00'),
+          callback() {
+            expect(dropSpy).toHaveBeenCalled()
+            expect(receiveSpy).toHaveBeenCalled()
+            dragEl.remove()
+            done()
+          }
         })
       })
     })
