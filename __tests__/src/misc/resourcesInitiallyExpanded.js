@@ -110,7 +110,7 @@ describe('resourcesInitiallyExpanded', function() {
 
   function getVisibleResourceIds() {
     return $('.fc-body .fc-resource-area tr[data-resource-id]:visible').map(function(i, node) {
-      return $(node).data('resource-id')
+      return node.getAttribute('resource-id')
     }).get()
   }
 

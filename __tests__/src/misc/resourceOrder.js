@@ -38,7 +38,7 @@ describe('resourceOrder', function() {
 
     function getOrderedResourceIds() {
       return $('th.fc-resource-cell').map(function(i, node) {
-        return $(node).data('resource-id')
+        return node.getAttribute('data-resource-id')
       }).get()
     }
   })
@@ -80,7 +80,7 @@ describe('resourceOrder', function() {
 
     function getOrderedResourceIds() {
       return $('.fc-resource-area tr[data-resource-id]').map(function(i, node) {
-        return $(node).data('resource-id')
+        return node.getAttribute('data-resource-id')
       }).get()
     }
   })

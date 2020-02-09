@@ -303,7 +303,7 @@ describe('timeline view rerendering', function() {
   // TODO: consolidate. also in resourceOrder
   function getOrderedResourceIds() {
     return getOrderedResourceEls().map(function(i, node) {
-      return $(node).data('resource-id')
+      return node.getAttribute('data-resource-id')
     }).get()
   }
 })

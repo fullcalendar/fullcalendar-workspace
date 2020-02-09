@@ -20,7 +20,7 @@ export function getHeadResourceEls(resourceId, date) {
 
 export function getHeadResourceIds() {
   return $('th.fc-resource-cell').map(function(i, th) {
-    return $(th).data('resource-id')
+    return th.getAttribute('data-resource-id')
   }).get() // jQuery -> Array
 }
 

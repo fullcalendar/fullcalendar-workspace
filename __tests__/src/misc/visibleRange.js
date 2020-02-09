@@ -25,7 +25,7 @@ describe('visibleRange', function() {
 
       const dates = $('.fc-head .fc-time-area tr:first-child > th[data-date]')
         .map(function(i, node) {
-          return parseIsoAsUtc($(node).data('date'))
+          return parseIsoAsUtc(node.getAttribute('data-date'))
         })
         .get()
 
@@ -51,7 +51,7 @@ describe('visibleRange', function() {
 
       const dates = $('.fc-head .fc-time-area tr:first-child > th[data-date]')
         .map(function(i, node) {
-          return new Date($(node).data('date'))
+          return new Date(node.getAttribute('data-date'))
         })
         .get()
 
@@ -78,7 +78,7 @@ describe('visibleRange', function() {
 
       const dates = $('.fc-head tr:first-child > th[data-date]')
         .map(function(i, node) {
-          return new Date($(node).data('date'))
+          return new Date(node.getAttribute('data-date'))
         })
         .get()
 

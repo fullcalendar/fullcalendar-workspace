@@ -26,7 +26,7 @@ describe('timeline resource grouping', function() {
   function getRows() { // TODO: consolidate with getVisibleResourceIds
     return $('.fc-body .fc-resource-area tr').map(function(i, node) {
       const $tr = $(node)
-      const resourceId = $tr.data('resource-id')
+      const resourceId = node.getAttribute('data-resource-id')
       const text = $tr.find('.fc-cell-text').text()
 
       if (resourceId) {
