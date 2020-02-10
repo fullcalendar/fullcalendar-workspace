@@ -55,6 +55,7 @@ export default class ResourceDayTimeColsView extends TimeColsView {
           eventLimit={this.getAllDayEventLimit()}
           vGrow={false}
           headerAlignElRef={this.headerElRef}
+          clientWidth={contentArg.clientWidth}
         />
       )),
       (contentArg: ChunkContentCallbackArgs) => (

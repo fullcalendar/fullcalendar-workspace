@@ -1,6 +1,6 @@
 import {
   h, createRef, VNode,
-  mapHash, Hit, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration, RefObject
+  mapHash, Hit, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration, RefObject, CssDimValue
 } from '@fullcalendar/core'
 import { DayTableSlicer, Table, TableSeg } from '@fullcalendar/daygrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
@@ -26,6 +26,7 @@ export interface ResourceDayTableProps {
   eventLimit: boolean | number
   vGrow: boolean
   headerAlignElRef?: RefObject<HTMLElement> // for more popover alignment
+  clientWidth: CssDimValue
 }
 
 export default class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
@@ -76,6 +77,7 @@ export default class ResourceDayTable extends DateComponent<ResourceDayTableProp
         eventLimit={props.eventLimit}
         vGrow={props.vGrow}
         headerAlignElRef={props.headerAlignElRef}
+        clientWidth={props.clientWidth}
       />
     )
   }

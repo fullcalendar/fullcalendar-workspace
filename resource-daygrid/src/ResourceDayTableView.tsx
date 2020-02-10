@@ -65,6 +65,7 @@ export default class ResourceDayTableView extends TableView {
           eventLimit={options.eventLimit}
           vGrow={!props.isHeightAuto}
           headerAlignElRef={this.headerElRef}
+          clientWidth={contentArg.clientWidth}
         />
       )
     )

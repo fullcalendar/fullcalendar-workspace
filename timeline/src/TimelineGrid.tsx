@@ -32,7 +32,9 @@ export default class TimelineGrid extends DateComponent<TimelinGridProps, Timeli
 
     return (
       <div class='fc-timeline-grid' ref={this.handeEl} style={{
-        minWidth: props.tableMinWidth
+        minWidth: props.tableMinWidth,
+        height: props.clientHeight,
+        width: props.clientWidth
       }}>
         <TimelineSlats
           ref={this.slatsRef}
