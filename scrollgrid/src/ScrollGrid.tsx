@@ -8,7 +8,7 @@ import {
   Scroller,
   RefMap,
   SectionConfig, ColProps, ChunkConfig, CssDimValue, hasShrinkWidth, renderMicroColGroup,
-  getScrollGridClassNames, getSectionClassNames, getChunkVGrow, getNeedsYScrolling, renderChunkContent, computeForceScrollbars, computeShrinkWidth, getChunkClassNames,
+  getScrollGridClassNames, getSectionClassNames, getChunkVGrow, getAllowYScrolling, renderChunkContent, computeForceScrollbars, computeShrinkWidth, getChunkClassNames,
   getIsRtlScrollbarOnLeft,
   setRef,
   computeScrollerClientWidths,
@@ -58,7 +58,7 @@ interface ColGroupStat {
   hasShrinkCol: boolean
   totalColWidth: number
   totalColMinWidth: number
-  needsXScrolling: boolean
+  allowXScrolling: boolean
   width?: CssDimValue
   cols: ColProps[]
 }
@@ -557,13 +557,13 @@ function compileColGroupStat(colGroupConfig: ColGroupConfig): ColGroupStat {
   let totalColWidth = sumColProp(colGroupConfig.cols, 'width') // excludes "shrink"
   let totalColMinWidth = sumColProp(colGroupConfig.cols, 'minWidth')
   let hasShrinkCol = hasShrinkWidth(colGroupConfig.cols)
-  let needsXScrolling = colGroupConfig.width !== 'shrink' && Boolean(totalColWidth || totalColMinWidth || hasShrinkCol)
+  let allowXScrolling = colGroupConfig.width !== 'shrink' && Boolean(totalColWidth || totalColMinWidth || hasShrinkCol)
 
   return {
     hasShrinkCol,
     totalColWidth,
     totalColMinWidth,
-    needsXScrolling,
+    allowXScrolling,
     cols: colGroupConfig.cols,
     width: colGroupConfig.width
   }
