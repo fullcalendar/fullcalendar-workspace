@@ -46,8 +46,8 @@ export interface ColGroupConfig {
 
 interface ScrollGridState {
   shrinkWidths: number[] // for only one col within each vertical stack of chunks
-  forceYScrollbars: boolean
-  forceXScrollbars: boolean
+  forceYScrollbars: null | boolean // null means not computed yet
+  forceXScrollbars: null | boolean // "
   scrollerClientWidths: { [index: string]: number }
   scrollerClientHeights: { [index: string]: number }
   rowSyncHeightSets: number[][]
@@ -78,10 +78,10 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   private scrollSyncersBySection: { [sectionI: string]: ScrollSyncer } = {}
   private scrollSyncersByColumn: { [columnI: string]: ScrollSyncer } = {}
 
-  state = {
+  state: ScrollGridState = {
     shrinkWidths: [],
-    forceYScrollbars: false,
-    forceXScrollbars: false,
+    forceYScrollbars: null,
+    forceXScrollbars: null,
     scrollerClientWidths: {},
     scrollerClientHeights: {},
     rowSyncHeightSets: [],
@@ -151,11 +151,12 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     let sideScrollIndex = (!this.context.isRtl || getIsRtlScrollbarOnLeft()) ? chunksPerSection - 1 : 0
     let isVScrollSide = chunkIndex === sideScrollIndex
     let isLastSection = sectionIndex === sectionCnt - 1
-    let forceY = isVScrollSide && state.forceYScrollbars
-    let forceX = isLastSection && state.forceXScrollbars
 
-    let needsYScrolling = getNeedsYScrolling(this.props, sectionConfig, chunkConfig)
-    let needsXScrolling = colGroupStat && colGroupStat.needsXScrolling
+    let forceXScrollbars = isLastSection && state.forceXScrollbars // can result in `null`
+    let forceYScrollbars = isVScrollSide && state.forceYScrollbars // can result in `null`
+
+    let allowXScrolling = colGroupStat && colGroupStat.allowXScrolling // rename?
+    let allowYScrolling = getAllowYScrolling(this.props, sectionConfig, chunkConfig) // rename?
 
     let chunkVGrow = getChunkVGrow(this.props, sectionConfig, chunkConfig)
     let tableMinWidth = (colGroupStat && colGroupStat.totalColMinWidth) || ''
@@ -169,9 +170,16 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
       rowSyncHeights: state.rowSyncHeightSets[sectionIndex] || []
     })
 
-    if (needsYScrolling || needsXScrolling) {
-      let overflowX: ClippedOverflowValue = forceX ? 'scroll' : !needsXScrolling ? 'hidden' : isLastSection ? 'auto' : 'scroll-hidden'
-      let overflowY: ClippedOverflowValue = forceY ? 'scroll' : !needsYScrolling ? 'hidden' : isVScrollSide ? 'auto' : 'scroll-hidden'
+    if (allowYScrolling || allowXScrolling) {
+      let overflowX: ClippedOverflowValue =
+        forceXScrollbars === true ? (isLastSection ? 'scroll' : 'scroll-hidden') :
+        (forceXScrollbars === false || !allowXScrolling) ? 'hidden' :
+        (isLastSection ? 'auto' : 'scroll-hidden')
+
+      let overflowY: ClippedOverflowValue =
+        forceYScrollbars === true ? (isVScrollSide ? 'scroll' : 'scroll-hidden') :
+        (forceYScrollbars === false || !allowYScrolling) ? 'hidden' :
+        (isVScrollSide ? 'auto' : 'scroll-hidden')
 
       content = (
         <ClippedScroller
@@ -185,10 +193,10 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
       )
 
     } else {
-      content = (
+      content = ( // TODO: need scrollerharness too?
         <Scroller
-          overflowX={forceX ? 'scroll' : 'hidden'}
-          overflowY={forceY ? 'scroll' : 'hidden'}
+          overflowX={forceXScrollbars ? 'scroll' : 'hidden'}
+          overflowY={forceYScrollbars ? 'scroll' : 'hidden'}
           vGrow={chunkVGrow}
           maxHeight={sectionConfig.maxHeight}
         >{content}</Scroller>
@@ -256,7 +264,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
                 if (sizingId === this.state.sizingId) {
                   this.setState({
                     scrollerClientWidths: computeScrollerClientWidths(this.scrollerElRefs),
-                    scrollerClientHeights: computeScrollerClientHeights(this.scrollerElRefs),
+                    scrollerClientHeights: computeScrollerClientHeights(this.scrollerElRefs)
                   }, () => {
                     if (sizingId === this.state.sizingId) {
                       this.updateStickyScrolling() // needs to happen AFTER final positioning committed to DOM
@@ -442,8 +450,7 @@ ScrollGrid.addStateEquality({
   shrinkWidths: isArraysEqual,
   scrollerClientWidths: isPropsEqual,
   scrollerClientHeights: isPropsEqual,
-  rowSyncHeightSets: isArraysEqual,
-  sizingId: true // never update base on this
+  sizingId: false // don't update if only this changed
 })
 
 
