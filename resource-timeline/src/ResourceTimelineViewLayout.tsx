@@ -29,6 +29,7 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
   private scrollGridRef = createRef<ScrollGrid>()
   private timeBodyScrollerElRef = createRef<HTMLDivElement>()
   private spreadsheetHeaderChunkElRef = createRef<HTMLTableCellElement>()
+  private spreadsheetResizerElRef = createRef<HTMLTableCellElement>()
   private spreadsheetResizerDragging: ElementDragging
 
 
@@ -66,7 +67,7 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
               },
               { outerContent: (
                 <td
-                  ref={this.handleSpreadsheetResizerEl}
+                  ref={this.spreadsheetResizerElRef}
                   rowSpan={2}
                   class={'fc-divider fc-col-resizer ' + theme.getClass('tableCellShaded')}
                 />
@@ -122,21 +123,17 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
 
   // Resource Area Resizing
   // ------------------------------------------------------------------------------------------
+  // NOTE: a callback Ref for the resizer was firing multiple times with same elements (Preact)
+  // that's why we use spreadsheetResizerElRef instead
 
 
-  // HACK: Preact wasn't call handleSpreadsheetResizerEl(null) when ScrollGrid was being unmounted :(
-  // additionally, handleSpreadsheetResizerEl was being called TWICE with an element.
-  // destroySpreadsheetResizing needs to be recallable for this hack.
-  componentWillUnmount() {
-    this.destroySpreadsheetResizing()
+  componentDidMount() {
+    this.initSpreadsheetResizing(this.spreadsheetResizerElRef.current)
   }
 
 
-  handleSpreadsheetResizerEl = (resizerEl: HTMLElement | null) => {
-    if (resizerEl) {
-      this.destroySpreadsheetResizing()
-      this.initSpreadsheetResizing(resizerEl)
-    }
+  componentWillUnmount() {
+    this.destroySpreadsheetResizing()
   }
 
 
@@ -176,7 +173,6 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
   destroySpreadsheetResizing() {
     if (this.spreadsheetResizerDragging) {
       this.spreadsheetResizerDragging.destroy()
-      this.spreadsheetResizerDragging = null
     }
   }
 
