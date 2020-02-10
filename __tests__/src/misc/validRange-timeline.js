@@ -21,4 +21,5 @@ describe('validRange with timeline', function() {
     expect($('th[data-date="2017-03-25"]')).toHaveClass('fc-disabled-day')
     // TODO: strip date data?
   })
+
 })

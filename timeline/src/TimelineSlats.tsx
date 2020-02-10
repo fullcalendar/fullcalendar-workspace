@@ -54,13 +54,13 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
 
 
   componentDidMount() {
-    this.updateCoords()
+    this.updateSizing()
     this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
   }
 
 
   componentDidUpdate(prevProps: TimelineSlatsProps) {
-    this.updateCoords()
+    this.updateSizing()
     this.scrollResponder.update(this.props.dateProfile !== prevProps.dateProfile)
   }
 
@@ -74,7 +74,7 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
   }
 
 
-  updateCoords() {
+  updateSizing() {
     let { props, context } = this
 
     if (props.clientWidth) { // is sizing stable?
