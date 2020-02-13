@@ -1,6 +1,11 @@
 {
   "private": true,
   "dependencies": {
+    "@fullcalendar/core": "*",
+    "@fullcalendar/interaction": "*",
+    "@fullcalendar/daygrid": "*",
+    "@fullcalendar/timegrid": "*",
+    "@fullcalendar/list": "*",
     "@fullcalendar/scrollgrid": "*",
     "@fullcalendar/timeline": "*",
     "@fullcalendar/resource-common": "*",
