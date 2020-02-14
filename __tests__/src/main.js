@@ -1,13 +1,14 @@
 
-import defaultPlugins from 'test-lib/default-plugins'
+import 'test-lib/globals'
 import './lib/gpl-key'
+import DEFAULT_PLUGINS from 'test-lib/install-plugins'
 
 import TimelinePlugin from '@fullcalendar/timeline'
 import ResourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import ResourceDayGridPlugin from '@fullcalendar/resource-daygrid'
 import ResourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 
-const moreDefaultPlugins = [
+const MORE_DEFAULT_PLUGINS = [
   TimelinePlugin,
   ResourceTimelinePlugin,
   ResourceDayGridPlugin,
@@ -15,7 +16,7 @@ const moreDefaultPlugins = [
 ]
 
 pushOptions({
-  plugins: defaultPlugins.concat(moreDefaultPlugins)
+  plugins: DEFAULT_PLUGINS.concat(MORE_DEFAULT_PLUGINS)
 })
 
 // all of the non-lib .js files within subdirectories will be automatically included...
