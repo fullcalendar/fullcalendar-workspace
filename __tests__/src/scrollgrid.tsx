@@ -13,13 +13,16 @@ NOTES:
   fine because sticky always happens in a rowSpan td, which we dont want to control height
 */
 
-import { render, h, Fragment, ComponentContextType, Calendar, ScrollGrid, SimpleScrollGrid, OptionsInput } from 'fullcalendar-scheduler'
+import { render, h, Fragment, ComponentContextType, Calendar, SimpleScrollGrid, OptionsInput } from '@fullcalendar/core'
+import { ScrollGrid } from '@fullcalendar/scrollgrid'
+import dayGridPlugin from '@fullcalendar/daygrid' // we don't use. initializing Calendar requires one view plugin
 
 let doSimple = false
 let doVGrow = true
 let options: OptionsInput = {
   dir: 'ltr',
-  themeSystem: 'standard'
+  themeSystem: 'standard',
+  plugins: [ dayGridPlugin ]
 }
 
 document.addEventListener('DOMContentLoaded', function() {

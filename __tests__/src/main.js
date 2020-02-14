@@ -1,6 +1,6 @@
 
-import { DEFAULT_PLUGINS } from 'package-tests/globals'
-import './gpl-key'
+import { DEFAULT_PLUGINS } from 'package-tests/main'
+import './lib/gpl-key'
 
 import TimelinePlugin from '@fullcalendar/timeline'
 import ResourceTimelinePlugin from '@fullcalendar/resource-timeline'
@@ -17,3 +17,5 @@ const MORE_DEFAULT_PLUGINS = [
 pushOptions({
   plugins: DEFAULT_PLUGINS.concat(MORE_DEFAULT_PLUGINS)
 })
+
+// all of the non-lib .js files within subdirectories will be automatically included...
