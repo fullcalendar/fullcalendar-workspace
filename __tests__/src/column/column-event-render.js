@@ -1,4 +1,4 @@
-import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from 'package-tests/lib/dom-geom'
+import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from 'test-lib/dom-geom'
 import { getHeadResourceEls, getHeadDowEls } from '../lib/column'
 
 describe('vresource event rendering', function() {

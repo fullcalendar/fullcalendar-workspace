@@ -1,7 +1,7 @@
 import deepEqual from 'fast-deep-equal'
 import { Calendar } from '@fullcalendar/core'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
-import { getFirstDateEl } from 'package-tests/lib/ViewUtils'
+import { getFirstDateEl } from 'test-lib/ViewUtils'
 import { getTimelineResourceIds } from '../lib/timeline'
 
 function buildOptions() {

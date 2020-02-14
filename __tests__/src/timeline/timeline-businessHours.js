@@ -1,4 +1,4 @@
-import { doElsMatchSegs } from 'package-tests/lib/segs'
+import { doElsMatchSegs } from 'test-lib/segs'
 import { getResourceTimelineRect, getTimelineRect } from '../lib/timeline'
 
 describe('timeline businessHours', function() {

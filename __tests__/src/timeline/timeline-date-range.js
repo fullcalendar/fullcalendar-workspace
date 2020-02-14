@@ -1,4 +1,4 @@
-import { expectRenderRange } from 'package-tests/lib/ViewDateUtils'
+import { expectRenderRange } from 'test-lib/ViewDateUtils'
 
 describe('timeline date range', function() {
 

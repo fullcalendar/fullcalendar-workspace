@@ -1,4 +1,4 @@
-import { getBoundingRect } from 'package-tests/lib/dom-geom'
+import { getBoundingRect } from 'test-lib/dom-geom'
 import { getTimelineLine } from '../lib/timeline'
 
 /*

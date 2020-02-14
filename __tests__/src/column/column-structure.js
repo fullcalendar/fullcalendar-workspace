@@ -1,5 +1,5 @@
-import { joinRects } from 'package-tests/lib/geom'
-import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from 'package-tests/lib/dom-geom'
+import { joinRects } from 'test-lib/geom'
+import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from 'test-lib/dom-geom'
 import { getHeadResourceEls, getHeadDowEls, getBodyDowEls } from '../lib/column'
 
 describe('vresource structure', function() {

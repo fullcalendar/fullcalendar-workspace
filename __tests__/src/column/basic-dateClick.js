@@ -1,5 +1,5 @@
-import { getLeadingBoundingRect, sortBoundingRects } from 'package-tests/lib/dom-geom'
-import { getDayGridDowEls } from 'package-tests/lib/day-grid'
+import { getLeadingBoundingRect, sortBoundingRects } from 'test-lib/dom-geom'
+import { getDayGridDowEls } from 'test-lib/day-grid'
 
 describe('dayGrid-view dateClick', function() {
   pushOptions({
