@@ -1,5 +1,5 @@
 import { startOfDay } from '@fullcalendar/core'
-import { formatIsoDay, ensureDate } from 'package-tests/datelib/utils'
+import { formatIsoDay, ensureDate } from 'package-tests/lib/datelib-utils'
 import { getBoundingRect } from 'package-tests/lib/dom-geom'
 import { getTimeGridTop } from 'package-tests/lib/time-grid'
 

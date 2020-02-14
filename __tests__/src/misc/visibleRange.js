@@ -1,4 +1,4 @@
-import { parseIsoAsUtc } from 'package-tests/datelib/utils'
+import { parseIsoAsUtc } from 'package-tests/lib/datelib-utils'
 
 describe('visibleRange', function() {
   pushOptions({

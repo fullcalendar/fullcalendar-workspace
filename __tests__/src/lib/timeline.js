@@ -1,4 +1,4 @@
-import { formatIsoWithoutTz, ensureDate } from 'package-tests/datelib/utils'
+import { formatIsoWithoutTz, ensureDate } from 'package-tests/lib/datelib-utils'
 import { getBoundingRect } from 'package-tests/lib/dom-geom'
 
 

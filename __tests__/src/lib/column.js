@@ -1,4 +1,4 @@
-import { formatIsoDay } from 'package-tests/datelib/utils'
+import { formatIsoDay } from 'package-tests/lib/datelib-utils'
 import { getDayGridDowEls } from 'package-tests/lib/day-grid'
 import { getTimeGridDowEls } from 'package-tests/lib/time-grid'
 
