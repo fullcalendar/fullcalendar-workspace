@@ -1,3 +1,4 @@
+import XHRMock from 'xhr-mock'
 import { getHeadResourceTitles } from '../lib/column'
 import { getTimelineResourceTitles } from '../lib/timeline'
 

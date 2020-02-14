@@ -1,3 +1,5 @@
+import XHRMock from 'xhr-mock'
+
 /*
 resources as an array
 resources as a json feed

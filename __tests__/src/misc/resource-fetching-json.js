@@ -1,3 +1,4 @@
+import XHRMock from 'xhr-mock'
 
 describe('fetching resources from a JSON feed', function() {
 
