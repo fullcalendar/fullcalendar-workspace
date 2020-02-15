@@ -1,7 +1,7 @@
 import { startOfDay } from '@fullcalendar/core'
-import { formatIsoDay, ensureDate } from 'test-lib/datelib-utils'
-import { getBoundingRect } from 'test-lib/dom-geom'
-import { getTimeGridTop } from 'test-lib/time-grid'
+import { formatIsoDay, ensureDate } from 'standard-tests/src/lib/datelib-utils'
+import { getBoundingRect } from 'standard-tests/src/lib/dom-geom'
+import { getTimeGridTop } from 'standard-tests/src/lib/time-grid'
 
 /*
 for a single segment

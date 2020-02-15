@@ -1,6 +1,6 @@
-import { formatIsoDay } from 'test-lib/datelib-utils'
-import { getDayGridDowEls } from 'test-lib/day-grid'
-import { getTimeGridDowEls } from 'test-lib/time-grid'
+import { formatIsoDay } from 'standard-tests/src/lib/datelib-utils'
+import { getDayGridDowEls } from 'standard-tests/src/lib/day-grid'
+import { getTimeGridDowEls } from 'standard-tests/src/lib/time-grid'
 
 
 // date optional

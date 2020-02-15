@@ -1,4 +1,4 @@
-import { getTimeGridPoint } from 'test-lib/time-grid'
+import { getTimeGridPoint } from 'standard-tests/src/lib/time-grid'
 import { getResourceTimeGridPoint } from '../lib/time-grid'
 
 describe('timeGrid-view event resizing', function() {

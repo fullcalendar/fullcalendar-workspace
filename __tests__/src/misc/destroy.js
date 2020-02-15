@@ -1,4 +1,4 @@
-import ListenerCounter from 'test-lib/ListenerCounter'
+import ListenerCounter from 'standard-tests/src/lib/ListenerCounter'
 
 describe('destroy', function() {
   pushOptions({

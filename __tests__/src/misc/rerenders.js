@@ -1,6 +1,6 @@
 import { ResourceTimelineLane, SpreadsheetRow  } from '@fullcalendar/resource-timeline'
 import { TimelineHeaderRows } from '@fullcalendar/timeline'
-import ComponentSpy from 'test-lib/ComponentSpy'
+import ComponentSpy from 'standard-tests/src/lib/ComponentSpy'
 
 
 describe('rerender performance for resource timeline', function() {

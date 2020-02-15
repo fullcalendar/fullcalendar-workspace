@@ -1,6 +1,6 @@
 // KNOWN ISSUE: title is weird ("April - May")
 
-import { expectActiveRange } from 'test-lib/ViewDateUtils'
+import { expectActiveRange } from 'standard-tests/src/lib/ViewDateUtils'
 
 describe('dateIncrement', function() {
 

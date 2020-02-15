@@ -1,4 +1,4 @@
-import { doElsMatchSegs } from 'test-lib/segs'
+import { doElsMatchSegs } from 'standard-tests/src/lib/segs'
 import { getResourceDayGridRect } from '../lib/day-grid'
 import { getResourceTimeGridRect } from '../lib/time-grid'
 

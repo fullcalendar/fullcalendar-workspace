@@ -1,4 +1,4 @@
-import { parseUtcDate } from 'test-lib/date-parsing'
+import { parseUtcDate } from 'standard-tests/src/lib/date-parsing'
 import { getResourceTimeGridPoint } from '../lib/time-grid'
 
 describe('eventResourceEditable in vertical resource view', function() {

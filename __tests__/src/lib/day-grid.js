@@ -1,5 +1,5 @@
-import { formatIsoDay, ensureDate } from 'test-lib/datelib-utils'
-import { getBoundingRect } from 'test-lib/dom-geom'
+import { formatIsoDay, ensureDate } from 'standard-tests/src/lib/datelib-utils'
+import { getBoundingRect } from 'standard-tests/src/lib/dom-geom'
 
 
 export function getResourceDayGridRect(resourceId, date) {
