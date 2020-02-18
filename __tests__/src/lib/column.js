@@ -1,5 +1,4 @@
 import { formatIsoDay } from 'standard-tests/src/lib/datelib-utils'
-import { getDayGridDowEls } from 'standard-tests/src/lib/day-grid'
 import { getTimeGridDowEls } from 'standard-tests/src/lib/time-grid'
 
 
@@ -45,4 +44,9 @@ export function getBodyDowEls(dayAbbrev, viewType) {
   } else {
     return getDayGridDowEls(dayAbbrev)
   }
+}
+
+
+function getDayGridDowEls(dayAbbrev) {
+  return $(`.fc-day-grid .fc-row:first-child td.fc-day.fc-${dayAbbrev}`)
 }

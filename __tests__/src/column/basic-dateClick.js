@@ -1,5 +1,5 @@
 import { getLeadingBoundingRect, sortBoundingRects } from 'standard-tests/src/lib/dom-geom'
-import { getDayGridDowEls } from 'standard-tests/src/lib/day-grid'
+import DayGridViewWrapper from 'standard-tests/src/lib/wrappers/DayGridViewWrapper'
 
 describe('dayGrid-view dateClick', function() {
   pushOptions({
@@ -23,8 +23,7 @@ describe('dayGrid-view dateClick', function() {
 
     it('allows non-resource clicks', function(done) {
       let dateClickCalled = false
-
-      initCalendar({
+      let calendar = initCalendar({
         dateClick(arg) {
           dateClickCalled = true
           expect(arg.date).toEqualDate('2015-11-23')
@@ -34,9 +33,11 @@ describe('dayGrid-view dateClick', function() {
         }
       })
 
-      const monEls = getDayGridDowEls('mon')
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      let monEls = dayGridWrapper.getDowEls('mon')
+
       expect(monEls.length).toBe(1)
-      monEls.eq(0).simulate('drag', {
+      $(monEls[0]).simulate('drag', {
         callback() {
           expect(dateClickCalled).toBe(true)
           done()
@@ -52,8 +53,7 @@ describe('dayGrid-view dateClick', function() {
 
     it('allows a resource click', function(done) {
       let dateClickCalled = false
-
-      initCalendar({
+      let calendar = initCalendar({
         dateClick(arg) {
           dateClickCalled = true
           expect(arg.date).toEqualDate('2015-11-29')
@@ -63,7 +63,9 @@ describe('dayGrid-view dateClick', function() {
         }
       })
 
-      const sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      let sunAEl = $(getLeadingBoundingRect(dayGridWrapper.getDowEls('sun')).node)
+
       sunAEl.simulate('drag', {
         callback() {
           expect(dateClickCalled).toBe(true)
@@ -81,8 +83,7 @@ describe('dayGrid-view dateClick', function() {
 
     it('allows a resource click', function(done) {
       let dateClickCalled = false
-
-      initCalendar({
+      let calendar = initCalendar({
         dateClick(arg) {
           dateClickCalled = true
           expect(arg.date).toEqualDate('2015-11-30')
@@ -92,8 +93,10 @@ describe('dayGrid-view dateClick', function() {
         }
       })
 
-      const rects = sortBoundingRects(getDayGridDowEls('mon'))
-      const monBEl = $(rects[1].node)
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      let rects = sortBoundingRects(dayGridWrapper.getDowEls('mon'))
+
+      let monBEl = $(rects[1].node)
       monBEl.simulate('drag', {
         callback() {
           expect(dateClickCalled).toBe(true)

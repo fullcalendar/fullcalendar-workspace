@@ -1,5 +1,5 @@
 import { getLeadingBoundingRect, getTrailingBoundingRect, sortBoundingRects } from 'standard-tests/src/lib/dom-geom'
-import { getDayGridDowEls } from 'standard-tests/src/lib/day-grid'
+import DayGridViewWrapper from 'standard-tests/src/lib/wrappers/DayGridViewWrapper'
 
 describe('dayGrid-view selection', function() {
   pushOptions({
@@ -24,8 +24,7 @@ describe('dayGrid-view selection', function() {
 
     it('allows non-resource selects', function(done) {
       let selectCalled = false
-
-      initCalendar({
+      let calendar = initCalendar({
         select(arg) {
           selectCalled = true
           expect(arg.start).toEqualDate('2015-11-23')
@@ -36,18 +35,19 @@ describe('dayGrid-view selection', function() {
         }
       })
 
-      const monEls = getDayGridDowEls('mon')
-      const tueEls = getDayGridDowEls('tue')
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      let monEls = dayGridWrapper.getDowEls('mon')
+      let tueEls = dayGridWrapper.getDowEls('tue')
+
       expect(monEls.length).toBe(1)
       expect(tueEls.length).toBe(1)
-      monEls.eq(0)
-        .simulate('drag', {
-          end: tueEls.eq(0),
-          callback() {
-            expect(selectCalled).toBe(true)
-            done()
-          }
-        })
+      $(monEls[0]).simulate('drag', {
+        end: tueEls[0],
+        callback() {
+          expect(selectCalled).toBe(true)
+          done()
+        }
+      })
     })
   })
 
@@ -58,8 +58,7 @@ describe('dayGrid-view selection', function() {
 
     it('allows a resource selects', function(done) {
       let selectCalled = false
-
-      initCalendar({
+      let calendar = initCalendar({
         select(arg) {
           selectCalled = true
           expect(arg.start).toEqualDate('2015-11-29')
@@ -70,8 +69,10 @@ describe('dayGrid-view selection', function() {
         }
       })
 
-      const sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
-      const monAEl = $(getLeadingBoundingRect(getDayGridDowEls('mon')).node)
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      let sunAEl = $(getLeadingBoundingRect(dayGridWrapper.getDowEls('sun')).node)
+      let monAEl = $(getLeadingBoundingRect(dayGridWrapper.getDowEls('mon')).node)
+
       sunAEl.simulate('drag', {
         end: monAEl,
         callback() {
@@ -83,15 +84,16 @@ describe('dayGrid-view selection', function() {
 
     it('disallows a selection across resources', function(done) {
       let selectCalled = false
-
-      initCalendar({
+      let calendar = initCalendar({
         select() {
           selectCalled = true
         }
       })
 
-      const sunAEl = $(getLeadingBoundingRect(getDayGridDowEls('sun')).node)
-      const monBEl = $(getTrailingBoundingRect(getDayGridDowEls('mon')).node)
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      let sunAEl = $(getLeadingBoundingRect(dayGridWrapper.getDowEls('sun')).node)
+      let monBEl = $(getTrailingBoundingRect(dayGridWrapper.getDowEls('mon')).node)
+
       sunAEl.simulate('drag', {
         end: monBEl,
         callback() {
@@ -110,8 +112,7 @@ describe('dayGrid-view selection', function() {
 
     it('allows a resource selection', function(done) {
       let selectCalled = false
-
-      initCalendar({
+      let calendar = initCalendar({
         select(arg) {
           selectCalled = true
           expect(arg.start).toEqualDate('2015-11-28')
@@ -122,10 +123,12 @@ describe('dayGrid-view selection', function() {
         }
       })
 
-      const monRects = sortBoundingRects(getDayGridDowEls('mon'))
-      const monBEl = $(monRects[1].node)
-      const satRects = sortBoundingRects(getDayGridDowEls('sat'))
-      const satBEl = $(satRects[1].node)
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      let monRects = sortBoundingRects(dayGridWrapper.getDowEls('mon'))
+      let monBEl = $(monRects[1].node)
+      let satRects = sortBoundingRects(dayGridWrapper.getDowEls('sat'))
+      let satBEl = $(satRects[1].node)
+
       monBEl.simulate('drag', {
         end: satBEl,
         callback() {
@@ -137,17 +140,18 @@ describe('dayGrid-view selection', function() {
 
     it('disallows a selection across resources', function(done) {
       let selectCalled = false
-
-      initCalendar({
+      let calendar = initCalendar({
         select() {
           selectCalled = true
         }
       })
 
-      const monRects = sortBoundingRects(getDayGridDowEls('mon'))
-      const monBEl = $(monRects[1].node)
-      const satRects = sortBoundingRects(getDayGridDowEls('sat'))
-      const satAEl = $(satRects[0].node)
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      let monRects = sortBoundingRects(dayGridWrapper.getDowEls('mon'))
+      let monBEl = $(monRects[1].node)
+      let satRects = sortBoundingRects(dayGridWrapper.getDowEls('sat'))
+      let satAEl = $(satRects[0].node)
+
       monBEl.simulate('drag', {
         end: satAEl,
         callback() {
