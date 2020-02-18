@@ -1,5 +1,7 @@
-import { getTimeGridPoint } from 'standard-tests/src/lib/time-grid'
 import { getResourceTimeGridPoint } from '../lib/time-grid'
+import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
+import TimeGridViewWrapper from 'standard-tests/src/lib/wrappers/TimeGridViewWrapper'
+import { waitEventResize } from 'standard-tests/src/lib/wrappers/interaction-util'
 
 describe('timeGrid-view event resizing', function() {
   pushOptions({
@@ -24,31 +26,28 @@ describe('timeGrid-view event resizing', function() {
     })
 
     it('allows non-resource resize', function(done) {
-      let resizeSpy
-
-      initCalendar({
+      let calendar = initCalendar({
         events: [
-          { title: 'event1', className: 'event1', start: '2015-11-23T02:00:00', end: '2015-11-23T03:00:00' }
-        ],
-        eventResize:
-          (resizeSpy = spyCall(function(arg) {
-            expect(arg.event.start).toEqualDate('2015-11-23T02:00:00Z')
-            expect(arg.event.end).toEqualDate('2015-11-23T04:30:00Z')
-
-            let resources = arg.event.getResources()
-            expect(resources.length).toBe(0)
-          }))
+          { title: 'event1', start: '2015-11-23T02:00:00', end: '2015-11-23T03:00:00' }
+        ]
       })
 
-      $('.event1').simulate('mouseover') // resizer only shows on hover
-      $('.event1 .fc-resizer')
-        .simulate('drag', {
-          end: getTimeGridPoint('2015-11-23T04:00:00'),
-          callback() {
-            expect(resizeSpy).toHaveBeenCalled()
-            done()
-          }
-        })
+      let calendarWrapper = new CalendarWrapper(calendar)
+      let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
+      let resizing = timeGridWrapper.resizeEvent(
+        calendarWrapper.getFirstEventEl(),
+        '2015-11-23T04:00:00'
+      )
+
+      waitEventResize(calendar, resizing).then((modifiedEvent) => {
+        expect(modifiedEvent.start).toEqualDate('2015-11-23T02:00:00Z')
+        expect(modifiedEvent.end).toEqualDate('2015-11-23T04:30:00Z')
+
+        let resources = modifiedEvent.getResources()
+        expect(resources.length).toBe(0)
+
+        done()
+      })
     })
   })
 

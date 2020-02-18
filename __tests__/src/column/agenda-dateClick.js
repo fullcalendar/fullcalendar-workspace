@@ -1,5 +1,6 @@
-import { getTimeGridPoint } from 'standard-tests/src/lib/time-grid'
 import { getResourceTimeGridPoint } from '../lib/time-grid'
+import { waitDateClick } from 'standard-tests/src/lib/wrappers/interaction-util'
+import TimeGridViewWrapper from 'standard-tests/src/lib/wrappers/TimeGridViewWrapper'
 
 describe('timeGrid-view dateClick', function() {
   pushOptions({
@@ -23,24 +24,17 @@ describe('timeGrid-view dateClick', function() {
     })
 
     it('allows non-resource clicks', function(done) {
-      let dateClickCalled = false
+      let calendar = initCalendar()
 
-      initCalendar({
-        dateClick(arg) {
-          dateClickCalled = true
-          expect(arg.date).toEqualDate('2015-11-23T09:00:00Z')
-          expect(typeof arg.jsEvent).toBe('object')
-          expect(typeof arg.view).toBe('object')
-          expect(arg.resource).toBeFalsy()
-        }
-      })
+      let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
+      let clicking = timeGridWrapper.clickDate('2015-11-23T09:00:00')
 
-      $.simulateByPoint('drag', {
-        point: getTimeGridPoint('2015-11-23T09:00:00'),
-        callback() {
-          expect(dateClickCalled).toBe(true)
-          done()
-        }
+      waitDateClick(calendar, clicking).then((dateClickArg) => {
+        expect(dateClickArg.date).toEqualDate('2015-11-23T09:00:00Z')
+        expect(typeof dateClickArg.jsEvent).toBe('object')
+        expect(typeof dateClickArg.view).toBe('object')
+        expect(dateClickArg.resource).toBeFalsy()
+        done()
       })
     })
   })

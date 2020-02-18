@@ -1,5 +1,5 @@
 import { formatIsoDay } from 'standard-tests/src/lib/datelib-utils'
-import { getTimeGridDowEls } from 'standard-tests/src/lib/time-grid'
+import TimeGridViewWrapper from 'standard-tests/src/lib/wrappers/TimeGridViewWrapper'
 
 
 // date optional
@@ -40,7 +40,7 @@ export function getHeadDowEls(dayAbbrev) {
 // TODO: discourage use
 export function getBodyDowEls(dayAbbrev, viewType) {
   if (viewType === 'timeGrid') {
-    return getTimeGridDowEls(dayAbbrev)
+    return new TimeGridViewWrapper(currentCalendar).timeGrid.getDowEls(dayAbbrev)
   } else {
     return getDayGridDowEls(dayAbbrev)
   }

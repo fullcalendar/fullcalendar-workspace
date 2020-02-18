@@ -1,5 +1,5 @@
-import { getTimeGridPoint } from 'standard-tests/src/lib/time-grid'
 import { getResourceTimeGridPoint } from '../lib/time-grid'
+import TimeGridViewWrapper from 'standard-tests/src/lib/wrappers/TimeGridViewWrapper'
 
 describe('column event dragging with constraint', function() {
   pushOptions({
@@ -93,7 +93,7 @@ describe('column event dragging with constraint', function() {
       function expectDropToBe(bool, events, done) {
         let dropped = false
 
-        initCalendar({
+        let calendar = initCalendar({
           events,
           eventDrop() {
             dropped = true
@@ -106,11 +106,13 @@ describe('column event dragging with constraint', function() {
           }
         })
 
+        let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
+
         $('.event1').simulate('drag', {
           localPoint: { left: '50%', top: 0 },
           end: val === 'resourceTimeGridDay' // otherwise 'timeGrid'
             ? getResourceTimeGridPoint('a', '2016-02-14T04:00:00')
-            : getTimeGridPoint('2016-02-14T04:00:00')
+            : timeGridWrapper.getPoint('2016-02-14T04:00:00')
         })
       }
 

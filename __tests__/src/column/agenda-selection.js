@@ -1,5 +1,6 @@
-import { getTimeGridPoint } from 'standard-tests/src/lib/time-grid'
 import { getResourceTimeGridPoint } from '../lib/time-grid'
+import TimeGridViewWrapper from 'standard-tests/src/lib/wrappers/TimeGridViewWrapper'
+import { waitDateSelect } from 'standard-tests/src/lib/wrappers/interaction-util'
 
 describe('timeGrid-view selection', function() {
   pushOptions({
@@ -24,24 +25,17 @@ describe('timeGrid-view selection', function() {
     })
 
     it('allows non-resource selection', function(done) {
-      let selectCalled = false
-      initCalendar({
-        select(arg) {
-          selectCalled = true
-          expect(arg.start).toEqualDate('2015-11-23T02:00:00Z')
-          expect(arg.end).toEqualDate('2015-11-23T04:30:00Z')
-          expect(typeof arg.jsEvent).toBe('object')
-          expect(typeof arg.view).toBe('object')
-          expect(arg.resource).toBeFalsy()
-        }
-      })
-      $.simulateByPoint('drag', {
-        point: getTimeGridPoint('2015-11-23T02:00:00'),
-        end: getTimeGridPoint('2015-11-23T04:00:00'),
-        callback() {
-          expect(selectCalled).toBe(true)
-          done()
-        }
+      let calendar = initCalendar()
+      let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
+      let selecting = timeGridWrapper.selectDates('2015-11-23T02:00:00', '2015-11-23T04:00:00')
+
+      waitDateSelect(calendar, selecting).then((selectInfo) => {
+        expect(selectInfo.start).toEqualDate('2015-11-23T02:00:00Z')
+        expect(selectInfo.end).toEqualDate('2015-11-23T04:30:00Z')
+        expect(typeof selectInfo.jsEvent).toBe('object')
+        expect(typeof selectInfo.view).toBe('object')
+        expect(selectInfo.resource).toBeFalsy()
+        done()
       })
     })
   })
