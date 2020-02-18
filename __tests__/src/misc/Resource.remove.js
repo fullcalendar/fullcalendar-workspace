@@ -1,5 +1,6 @@
-import { getTimeGridResourceIds } from '../lib/time-grid'
 import { getTimelineResourceIds } from '../lib/timeline'
+import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
+
 
 describe('Resource::remove', function() {
   pushOptions({
@@ -15,23 +16,28 @@ describe('Resource::remove', function() {
     'when in timeGrid view': 'resourceTimeGridDay'
   }, function(viewName) {
 
-    const getResourceIds =
-      viewName === 'resourceTimelineDay'
-        ? getTimelineResourceIds
-        : getTimeGridResourceIds
-
     it('works when called quick succession', function() {
-      initCalendar()
-      expect(getResourceIds()).toEqual([ 'a', 'b', 'c' ])
+      let calendar = initCalendar()
+
+      expect(getResourceIds(calendar)).toEqual([ 'a', 'b', 'c' ])
 
       currentCalendar.getResourceById('a').remove()
-      expect(getResourceIds()).toEqual([ 'b', 'c' ])
+      expect(getResourceIds(calendar)).toEqual([ 'b', 'c' ])
 
       currentCalendar.getResourceById('b').remove()
-      expect(getResourceIds()).toEqual([ 'c' ])
+      expect(getResourceIds(calendar)).toEqual([ 'c' ])
 
       currentCalendar.getResourceById('c').remove()
-      expect(getResourceIds()).toEqual([])
+      expect(getResourceIds(calendar)).toEqual([])
     })
+
+    function getResourceIds(calendar) {
+      if (viewName === 'resourceTimelineDay') {
+        return getTimelineResourceIds()
+      } else {
+        return new ResourceTimeGridViewWrapper(calendar).timeGrid.getResourceIds()
+      }
+    }
+
   })
 })

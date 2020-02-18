@@ -1,12 +1,11 @@
 import { parseUtcDate } from 'standard-tests/src/lib/date-parsing'
-import { getResourceTimeGridPoint } from '../lib/time-grid'
+import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('eventResourceEditable in vertical resource view', function() {
 
   it('allows resource dragging while start-date-dragging is disabled', function(done) {
     let dropSpy
-
-    initCalendar({
+    let calendar = initCalendar({
       defaultView: 'resourceTimeGridDay',
       now: '2019-08-01',
       scrollTime: '00:00',
@@ -29,13 +28,14 @@ describe('eventResourceEditable in vertical resource view', function() {
         expect(resources[0].id).toBe('b')
       }))
     })
+    let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
     $('.fc-event').simulate('drag', {
       localPoint: {
         top: 1, // fudge for IE10 :(
         left: '50%'
       },
-      end: getResourceTimeGridPoint('b', '2019-08-01T05:00:00'),
+      end: resourceTimeGridWrapper.getPoint('b', '2019-08-01T05:00:00'),
       callback() {
         expect(dropSpy).toHaveBeenCalled()
         done()

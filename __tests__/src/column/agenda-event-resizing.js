@@ -1,7 +1,9 @@
-import { getResourceTimeGridPoint } from '../lib/time-grid'
+
 import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 import TimeGridViewWrapper from 'standard-tests/src/lib/wrappers/TimeGridViewWrapper'
 import { waitEventResize } from 'standard-tests/src/lib/wrappers/interaction-util'
+import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
+
 
 describe('timeGrid-view event resizing', function() {
   pushOptions({
@@ -58,8 +60,7 @@ describe('timeGrid-view event resizing', function() {
 
     it('allows a same-day resize', function(done) {
       let resizeSpy
-
-      initCalendar({
+      let calendar = initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
         ],
@@ -73,11 +74,12 @@ describe('timeGrid-view event resizing', function() {
             expect(resources[0].id).toBe('b')
           }))
       })
+      let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
       $('.event1').simulate('mouseover') // resizer only shows on hover
       $('.event1 .fc-resizer')
         .simulate('drag', {
-          end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
+          end: resourceTimeGridWrapper.getPoint('b', '2015-11-29T04:00:00'),
           callback() {
             expect(resizeSpy).toHaveBeenCalled()
             done()
@@ -87,8 +89,7 @@ describe('timeGrid-view event resizing', function() {
 
     it('allows a different-day resize', function(done) {
       let resizeSpy
-
-      initCalendar({
+      let calendar = initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
         ],
@@ -102,11 +103,12 @@ describe('timeGrid-view event resizing', function() {
             expect(resources[0].id).toBe('b')
           }))
       })
+      let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
       $('.event1').simulate('mouseover') // resizer only shows on hover
       $('.event1 .fc-resizer')
         .simulate('drag', {
-          end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
+          end: resourceTimeGridWrapper.getPoint('b', '2015-11-30T04:00:00'),
           callback() {
             expect(resizeSpy).toHaveBeenCalled()
             done()
@@ -116,19 +118,19 @@ describe('timeGrid-view event resizing', function() {
 
     it('disallows a resize across resources', function(done) {
       let resizeSpy
-
-      initCalendar({
+      let calendar = initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' }
         ],
         eventResize:
           (resizeSpy = spyCall())
       })
+      let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
       $('.event1').simulate('mouseover') // resizer only shows on hover
       $('.event1 .fc-resizer')
         .simulate('drag', {
-          end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
+          end: resourceTimeGridWrapper.getPoint('b', '2015-11-30T04:00:00'),
           callback() {
             expect(resizeSpy).not.toHaveBeenCalled()
             done()
@@ -145,8 +147,7 @@ describe('timeGrid-view event resizing', function() {
 
     it('allows a same-day resize', function(done) {
       let resizeSpy
-
-      initCalendar({
+      let calendar = initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-30T02:00:00', end: '2015-11-30T03:00:00', resourceId: 'b' }
         ],
@@ -160,11 +161,12 @@ describe('timeGrid-view event resizing', function() {
             expect(resources[0].id).toBe('b')
           }))
       })
+      let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
       $('.event1').simulate('mouseover') // resizer only shows on hover
       $('.event1 .fc-resizer')
         .simulate('drag', {
-          end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
+          end: resourceTimeGridWrapper.getPoint('b', '2015-11-30T04:00:00'),
           callback() {
             expect(resizeSpy).toHaveBeenCalled()
             done()
@@ -174,8 +176,7 @@ describe('timeGrid-view event resizing', function() {
 
     it('allows a multi-day resize', function(done) {
       let resizeSpy
-
-      initCalendar({
+      let calendar = initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' }
         ],
@@ -189,11 +190,12 @@ describe('timeGrid-view event resizing', function() {
             expect(resources[0].id).toBe('a')
           }))
       })
+      let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
       $('.event1').simulate('mouseover') // resizer only shows on hover
       $('.event1 .fc-resizer')
         .simulate('drag', {
-          end: getResourceTimeGridPoint('a', '2015-11-30T04:00:00'),
+          end: resourceTimeGridWrapper.getPoint('a', '2015-11-30T04:00:00'),
           callback() {
             expect(resizeSpy).toHaveBeenCalled()
             done()
@@ -203,19 +205,19 @@ describe('timeGrid-view event resizing', function() {
 
     it('disallows a resize across resources', function(done) {
       let resizeSpy
-
-      initCalendar({
+      let calendar = initCalendar({
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' }
         ],
         eventResize:
           (resizeSpy = spyCall())
       })
+      let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
       $('.event1').simulate('mouseover') // resizer only shows on hover
       $('.event1 .fc-resizer')
         .simulate('drag', {
-          end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
+          end: resourceTimeGridWrapper.getPoint('b', '2015-11-29T04:00:00'),
           callback() {
             expect(resizeSpy).not.toHaveBeenCalled()
             done()

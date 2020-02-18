@@ -1,6 +1,6 @@
-import { getResourceTimeGridPoint } from '../lib/time-grid'
 import { waitDateClick } from 'standard-tests/src/lib/wrappers/interaction-util'
 import TimeGridViewWrapper from 'standard-tests/src/lib/wrappers/TimeGridViewWrapper'
+import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('timeGrid-view dateClick', function() {
   pushOptions({
@@ -46,8 +46,7 @@ describe('timeGrid-view dateClick', function() {
 
     it('allows a resource click', function(done) {
       let dateClickCalled = false
-
-      initCalendar({
+      let calendar = initCalendar({
         dateClick(arg) {
           dateClickCalled = true
           expect(arg.date).toEqualDate('2015-11-29T09:00:00Z')
@@ -56,9 +55,10 @@ describe('timeGrid-view dateClick', function() {
           expect(arg.resource.id).toBe('b')
         }
       })
+      let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
       $.simulateByPoint('drag', {
-        point: getResourceTimeGridPoint('b', '2015-11-29T09:00:00Z'),
+        point: resourceTimeGridWrapper.getPoint('b', '2015-11-29T09:00:00Z'),
         callback() {
           expect(dateClickCalled).toBe(true)
           done()
@@ -75,8 +75,7 @@ describe('timeGrid-view dateClick', function() {
 
     it('allows a resource click', function(done) {
       let dateClickCalled = false
-
-      initCalendar({
+      let calendar = initCalendar({
         dateClick(arg) {
           dateClickCalled = true
           expect(arg.date).toEqualDate('2015-11-30T09:30:00Z')
@@ -85,9 +84,10 @@ describe('timeGrid-view dateClick', function() {
           expect(arg.resource.id).toBe('b')
         }
       })
+      let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
       $.simulateByPoint('drag', {
-        point: getResourceTimeGridPoint('b', '2015-11-30T09:30:00Z'),
+        point: resourceTimeGridWrapper.getPoint('b', '2015-11-30T09:30:00Z'),
         callback() {
           expect(dateClickCalled).toBe(true)
           done()

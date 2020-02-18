@@ -1,7 +1,7 @@
 // TODO: test isRtl?
 
 import { Draggable } from '@fullcalendar/interaction'
-import { getResourceTimeGridPoint } from '../lib/time-grid'
+import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('timeGrid-view event drag-n-drop', function() {
 
@@ -37,7 +37,7 @@ describe('timeGrid-view event drag-n-drop', function() {
           }
         })
 
-        initCalendar({
+        let calendar = initCalendar({
           drop:
             (dropSpy = spyCall(function(arg) {
               return expect(arg.date).toEqualDate(tz.parseDate('2015-12-01T05:00:00'))
@@ -53,10 +53,11 @@ describe('timeGrid-view event drag-n-drop', function() {
               expect(resources[0].id).toBe('a')
             }))
         })
+        let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
         $('.external-event').simulate('drag', {
           localPoint: { left: '50%', top: 0 },
-          end: getResourceTimeGridPoint('a', '2015-12-01T05:00:00'),
+          end: resourceTimeGridWrapper.getPoint('a', '2015-12-01T05:00:00'),
           callback() {
             expect(dropSpy).toHaveBeenCalled()
             expect(receiveSpy).toHaveBeenCalled()

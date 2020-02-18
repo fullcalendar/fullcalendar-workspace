@@ -1,6 +1,6 @@
-import { getResourceTimeGridPoint } from '../lib/time-grid'
 import TimeGridViewWrapper from 'standard-tests/src/lib/wrappers/TimeGridViewWrapper'
 import { waitDateSelect } from 'standard-tests/src/lib/wrappers/interaction-util'
+import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('timeGrid-view selection', function() {
   pushOptions({
@@ -47,7 +47,7 @@ describe('timeGrid-view selection', function() {
 
     it('allows a same-day resource selection', function(done) {
       let selectCalled = false
-      initCalendar({
+      let calendar = initCalendar({
         select(arg) {
           selectCalled = true
           expect(arg.start).toEqualDate('2015-11-29T02:00:00Z')
@@ -57,9 +57,11 @@ describe('timeGrid-view selection', function() {
           expect(arg.resource.id).toBe('b')
         }
       })
+      let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
+
       $.simulateByPoint('drag', {
-        point: getResourceTimeGridPoint('b', '2015-11-29T02:00:00'),
-        end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
+        point: resourceTimeGridWrapper.getPoint('b', '2015-11-29T02:00:00'),
+        end: resourceTimeGridWrapper.getPoint('b', '2015-11-29T04:00:00'),
         callback() {
           expect(selectCalled).toBe(true)
           done()
@@ -69,7 +71,7 @@ describe('timeGrid-view selection', function() {
 
     it('allows a different-day resource selection', function(done) {
       let selectCalled = false
-      initCalendar({
+      let calendar = initCalendar({
         select(arg) {
           selectCalled = true
           expect(arg.start).toEqualDate('2015-11-29T02:00:00Z')
@@ -79,9 +81,11 @@ describe('timeGrid-view selection', function() {
           expect(arg.resource.id).toBe('b')
         }
       })
+      let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
+
       $.simulateByPoint('drag', {
-        point: getResourceTimeGridPoint('b', '2015-11-29T02:00:00'),
-        end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
+        point: resourceTimeGridWrapper.getPoint('b', '2015-11-29T02:00:00'),
+        end: resourceTimeGridWrapper.getPoint('b', '2015-11-30T04:00:00'),
         callback() {
           expect(selectCalled).toBe(true)
           done()
@@ -91,14 +95,16 @@ describe('timeGrid-view selection', function() {
 
     it('disallows a selection across resources', function(done) {
       let selectCalled = false
-      initCalendar({
-        select(arg) {
+      let calendar = initCalendar({
+        select() {
           selectCalled = true
         }
       })
+      let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
+
       $.simulateByPoint('drag', {
-        point: getResourceTimeGridPoint('a', '2015-11-29T02:00:00'),
-        end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
+        point: resourceTimeGridWrapper.getPoint('a', '2015-11-29T02:00:00'),
+        end: resourceTimeGridWrapper.getPoint('b', '2015-11-30T04:00:00'),
         callback() {
           expect(selectCalled).toBe(false)
           done()
@@ -115,7 +121,7 @@ describe('timeGrid-view selection', function() {
 
     it('allows a same-day resource selection', function(done) {
       let selectCalled = false
-      initCalendar({
+      let calendar = initCalendar({
         select(arg) {
           selectCalled = true
           expect(arg.start).toEqualDate('2015-11-30T02:00:00Z')
@@ -125,9 +131,11 @@ describe('timeGrid-view selection', function() {
           expect(arg.resource.id).toBe('b')
         }
       })
+      let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
+
       $.simulateByPoint('drag', {
-        point: getResourceTimeGridPoint('b', '2015-11-30T02:00:00'),
-        end: getResourceTimeGridPoint('b', '2015-11-30T04:00:00'),
+        point: resourceTimeGridWrapper.getPoint('b', '2015-11-30T02:00:00'),
+        end: resourceTimeGridWrapper.getPoint('b', '2015-11-30T04:00:00'),
         callback() {
           expect(selectCalled).toBe(true)
           done()
@@ -137,7 +145,7 @@ describe('timeGrid-view selection', function() {
 
     it('allows a multi-day resource selection', function(done) {
       let selectCalled = false
-      initCalendar({
+      let calendar = initCalendar({
         select(arg) {
           selectCalled = true
           expect(arg.start).toEqualDate('2015-11-29T04:00:00Z')
@@ -147,9 +155,11 @@ describe('timeGrid-view selection', function() {
           expect(arg.resource.id).toBe('b')
         }
       })
+      let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
+
       $.simulateByPoint('drag', {
-        point: getResourceTimeGridPoint('b', '2015-11-30T02:00:00'),
-        end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
+        point: resourceTimeGridWrapper.getPoint('b', '2015-11-30T02:00:00'),
+        end: resourceTimeGridWrapper.getPoint('b', '2015-11-29T04:00:00'),
         callback() {
           expect(selectCalled).toBe(true)
           done()
@@ -159,14 +169,16 @@ describe('timeGrid-view selection', function() {
 
     it('disallows a selection across resources', function(done) {
       let selectCalled = false
-      initCalendar({
+      let calendar = initCalendar({
         select(arg) {
           selectCalled = true
         }
       })
+      let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
+
       $.simulateByPoint('drag', {
-        point: getResourceTimeGridPoint('a', '2015-11-29T02:00:00'),
-        end: getResourceTimeGridPoint('b', '2015-11-29T04:00:00'),
+        point: resourceTimeGridWrapper.getPoint('a', '2015-11-29T02:00:00'),
+        end: resourceTimeGridWrapper.getPoint('b', '2015-11-29T04:00:00'),
         callback() {
           expect(selectCalled).toBe(false)
           done()

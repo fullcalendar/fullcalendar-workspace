@@ -1,6 +1,7 @@
 // TODO: test isRtl?
 
-import { getResourceTimeGridPoint } from '../lib/time-grid'
+import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
+
 
 describe('timeGrid-view event drag-n-drop', function() {
   pushOptions({
@@ -23,8 +24,7 @@ describe('timeGrid-view event drag-n-drop', function() {
 
       it('allows switching date and resource', function(done) {
         let dropSpy
-
-        initCalendar({
+        let calendar = initCalendar({
           events: [
             { title: 'event0', className: 'event0', start: '2015-11-30T02:00:00', end: '2015-11-30T03:00:00', resourceId: 'b' }
           ],
@@ -38,13 +38,14 @@ describe('timeGrid-view event drag-n-drop', function() {
               expect(resources[0].id).toBe('a')
             }))
         })
+        let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
         $('.event0').simulate('drag', {
           localPoint: {
             top: 1, // fudge for IE10 :(
             left: '50%'
           },
-          end: getResourceTimeGridPoint('a', '2015-12-01T05:00:00'),
+          end: resourceTimeGridWrapper.getPoint('a', '2015-12-01T05:00:00'),
           callback() {
             expect(dropSpy).toHaveBeenCalled()
             done()

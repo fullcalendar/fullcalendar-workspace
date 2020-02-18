@@ -1,6 +1,6 @@
 import { doElsMatchSegs } from 'standard-tests/src/lib/segs'
 import { getResourceDayGridRect } from '../lib/day-grid'
-import { getResourceTimeGridRect } from '../lib/time-grid'
+import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('vresource businessHours', function() {
   pushOptions({
@@ -209,6 +209,11 @@ describe('vresource businessHours', function() {
   }
 
   function isResourceTimeGridNonBusinessSegsRendered(segs) {
-    return doElsMatchSegs($('.fc-time-grid .fc-nonbusiness'), segs, getResourceTimeGridRect)
+    let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(currentCalendar).timeGrid
+    return doElsMatchSegs(
+      $('.fc-time-grid .fc-nonbusiness'),
+      segs,
+      resourceTimeGridWrapper.getRect.bind(resourceTimeGridWrapper)
+    )
   }
 })
