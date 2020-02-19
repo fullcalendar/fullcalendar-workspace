@@ -1,6 +1,6 @@
 // TODO: test isRtl?
 
-import { getResourceDayGridDayEls } from '../lib/day-grid'
+import ResourceDayGridViewWrapper from '../lib/wrappers/ResourceDayGridViewWrapper'
 
 describe('dayGrid-view event drag-n-drop', function() {
   pushOptions({
@@ -22,8 +22,7 @@ describe('dayGrid-view event drag-n-drop', function() {
 
       it('allows switching date and resource', function(done) {
         let dropSpy
-
-        initCalendar({
+        let calendar = initCalendar({
           events: [
             { title: 'event0', className: 'event0', start: '2015-11-30T12:00:00', resourceId: 'b' }
           ],
@@ -38,8 +37,10 @@ describe('dayGrid-view event drag-n-drop', function() {
             }))
         })
 
+        let resourceDayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
+
         $('.event0').simulate('drag', {
-          end: getResourceDayGridDayEls('a', '2015-12-01').eq(0),
+          end: resourceDayGridWrapper.getDayEl('a', '2015-12-01'),
           callback() {
             expect(dropSpy).toHaveBeenCalled()
             done()

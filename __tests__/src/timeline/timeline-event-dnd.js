@@ -1,6 +1,6 @@
-// TODO: test isRtl?
+import ResourceTimelineViewWrapper from "../lib/wrappers/ResourceTimelineViewWrapper"
 
-import { getResourceTimelinePoint } from '../lib/timeline'
+// TODO: test isRtl?
 
 describe('timeline-view event drag-n-drop', function() {
   pushOptions({
@@ -316,22 +316,29 @@ describe('timeline-view event drag-n-drop', function() {
     })
   })
 
+
   function dragElTo(el, resourceId, date, callback, onBeforeRelease) {
+    let timelineGrid = new ResourceTimelineViewWrapper(currentCalendar).timelineGrid
+
     el.simulate('drag', {
       localPoint: { left: 1, top: '50%' },
-      end: getResourceTimelinePoint(resourceId, date),
+      end: timelineGrid.getPoint(resourceId, date),
       onBeforeRelease,
       callback
     })
   }
 
+
   function touchDragElTo(el, delay, resourceId, date, callback) {
+    let timelineGrid = new ResourceTimelineViewWrapper(currentCalendar).timelineGrid
+
     $('.event0').simulate('drag', {
       isTouch: true,
       delay,
       localPoint: { left: 1, top: '50%' },
-      end: getResourceTimelinePoint(resourceId, date),
+      end: timelineGrid.getPoint(resourceId, date),
       callback
     })
   }
+
 })

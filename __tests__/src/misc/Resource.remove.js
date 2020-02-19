@@ -1,5 +1,5 @@
-import { getTimelineResourceIds } from '../lib/timeline'
 import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 
 describe('Resource::remove', function() {
@@ -31,9 +31,10 @@ describe('Resource::remove', function() {
       expect(getResourceIds(calendar)).toEqual([])
     })
 
+
     function getResourceIds(calendar) {
       if (viewName === 'resourceTimelineDay') {
-        return getTimelineResourceIds()
+        return new ResourceTimelineViewWrapper(calendar).timelineGrid.getResourceIds()
       } else {
         return new ResourceTimeGridViewWrapper(calendar).timeGrid.getResourceIds()
       }

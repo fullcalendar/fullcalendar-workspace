@@ -1,6 +1,7 @@
 import XHRMock from 'xhr-mock'
-import { getHeadResourceTitles } from '../lib/column'
-import { getTimelineResourceTitles } from '../lib/timeline'
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
+import ResourceDayGridViewWrapper from '../lib/wrappers/ResourceDayGridViewWrapper'
 
 describe('refetchResourcesOnNavigate', function() {
   pushOptions({
@@ -18,15 +19,15 @@ describe('refetchResourcesOnNavigate', function() {
   describeValues({
     'with resourceTimeline view': {
       view: 'resourceTimelineDay',
-      getResourceTitles: getTimelineResourceTitles
+      getResourceTitles: (calendar) => extractTitles(new ResourceTimelineViewWrapper(calendar).dataGrid.getResourceInfo())
     },
     'with resourceTimeGrid view': {
       view: 'resourceTimeGrid',
-      getResourceTitles: getHeadResourceTitles
+      getResourceTitles: (calendar) => extractTitles(new ResourceTimeGridViewWrapper(calendar).header.getResourceInfo())
     },
     'with resourceDayGrid view': {
       view: 'resourceDayGrid',
-      getResourceTitles: getHeadResourceTitles
+      getResourceTitles: (calendar) => extractTitles(new ResourceDayGridViewWrapper(calendar).header.getResourceInfo())
     }
   }, function(settings) {
     pushOptions({
@@ -35,8 +36,7 @@ describe('refetchResourcesOnNavigate', function() {
 
     it('refetches resources when navigating', function() {
       let resourceCallCnt = 0
-
-      initCalendar({
+      let calendar = initCalendar({
         resources(arg, callback) {
           resourceCallCnt += 1
           callback([
@@ -46,12 +46,12 @@ describe('refetchResourcesOnNavigate', function() {
         }
       })
 
-      expect(settings.getResourceTitles()).toEqual([ 'resource a-1', 'resource b-1' ])
+      expect(settings.getResourceTitles(calendar)).toEqual([ 'resource a-1', 'resource b-1' ])
       expect($('.day1event').length).toBe(2)
 
       currentCalendar.next()
 
-      expect(settings.getResourceTitles()).toEqual([ 'resource a-2', 'resource b-2' ])
+      expect(settings.getResourceTitles(calendar)).toEqual([ 'resource a-2', 'resource b-2' ])
       expect($('.day1event').length).toBe(0)
       expect($('.day2event').length).toBe(2)
     })
@@ -97,8 +97,7 @@ describe('refetchResourcesOnNavigate', function() {
     it('refetches async resources and waits to render events', function(done) {
       let fetchCnt = 0
       let receiveCnt = 0
-
-      initCalendar({
+      let calendar = initCalendar({
 
         resources(arg, callback) {
           fetchCnt += 1
@@ -116,7 +115,7 @@ describe('refetchResourcesOnNavigate', function() {
           // step 2
           if (receiveCnt === 1) {
             setTimeout(function() {
-              expect(settings.getResourceTitles()).toEqual([ 'resource a-1', 'resource b-1' ])
+              expect(settings.getResourceTitles(calendar)).toEqual([ 'resource a-1', 'resource b-1' ])
               expect($('.day1event').length).toBe(2)
               currentCalendar.next()
             }, 0)
@@ -127,7 +126,7 @@ describe('refetchResourcesOnNavigate', function() {
             // then you'd still have resource a-1 and b-1
 
             setTimeout(function() {
-              expect(settings.getResourceTitles()).toEqual([ 'resource a-2', 'resource b-2' ])
+              expect(settings.getResourceTitles(calendar)).toEqual([ 'resource a-2', 'resource b-2' ])
               expect($('.day1event').length).toBe(0)
               expect($('.day2event').length).toBe(2)
               done()
@@ -138,7 +137,7 @@ describe('refetchResourcesOnNavigate', function() {
 
       // step 1 (nothing rendered initially)
       expect(fetchCnt).toBe(1)
-      expect(settings.getResourceTitles()).toEqual([ ])
+      expect(settings.getResourceTitles(calendar)).toEqual([ ])
       expect($('.day1event').length).toBe(0)
     })
 
@@ -146,8 +145,7 @@ describe('refetchResourcesOnNavigate', function() {
     it('calls datesRender after resources rendered for each navigation', function(done) {
       let fetchCnt = 0
       let receiveCnt = 0
-
-      initCalendar({
+      let calendar = initCalendar({
 
         resources(arg, callback) {
           fetchCnt += 1
@@ -164,13 +162,13 @@ describe('refetchResourcesOnNavigate', function() {
 
           if (receiveCnt === 1) {
             setTimeout(function() {
-              expect(settings.getResourceTitles()).toEqual([ 'resource a-1', 'resource b-1' ])
+              expect(settings.getResourceTitles(calendar)).toEqual([ 'resource a-1', 'resource b-1' ])
               currentCalendar.next()
             }, 0)
 
           } else if (receiveCnt === 2) {
             setTimeout(function() {
-              expect(settings.getResourceTitles()).toEqual([ 'resource a-2', 'resource b-2' ])
+              expect(settings.getResourceTitles(calendar)).toEqual([ 'resource a-2', 'resource b-2' ])
               done()
             }, 0)
           }
@@ -182,8 +180,7 @@ describe('refetchResourcesOnNavigate', function() {
 
   it('refetches resources on view switch', function() {
     let resourceCallCnt = 0
-
-    initCalendar({
+    let calendar = initCalendar({
       defaultView: 'resourceTimeGridDay',
       views: {
         resourceTimeGridTwoDay: {
@@ -200,12 +197,18 @@ describe('refetchResourcesOnNavigate', function() {
       }
     })
 
-    expect(getHeadResourceTitles()).toEqual([ 'resource a-1', 'resource b-1' ])
+    let headerWrapper = new ResourceTimeGridViewWrapper(calendar).header
+
+    function getResourceTitles() {
+      return extractTitles(headerWrapper.getResourceInfo())
+    }
+
+    expect(getResourceTitles()).toEqual([ 'resource a-1', 'resource b-1' ])
     expect($('.day1event').length).toBe(2)
 
     currentCalendar.changeView('resourceTimeGridTwoDay')
 
-    expect(getHeadResourceTitles()).toEqual([ 'resource a-2', 'resource b-2' ])
+    expect(getResourceTitles()).toEqual([ 'resource a-2', 'resource b-2' ])
     expect($('.day1event').length).toBe(2)
     expect($('.day2event').length).toBe(2)
   })
@@ -414,4 +417,10 @@ describe('refetchResourcesOnNavigate', function() {
       })
     })
   })
+
+
+  function extractTitles(a) {
+    return a.map((item) => item.title)
+  }
+
 })

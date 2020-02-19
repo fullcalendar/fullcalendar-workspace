@@ -1,8 +1,8 @@
 import deepEqual from 'fast-deep-equal'
 import { Calendar } from '@fullcalendar/core'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
-import { getTimelineResourceIds } from '../lib/timeline'
 import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 function buildOptions() {
   return {
@@ -38,6 +38,7 @@ describe('mutateOptions', function() {
     calendar.render()
 
     let calendarWrapper = new CalendarWrapper(calendar)
+    let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
     let dateEl = calendarWrapper.getFirstDateEl()
 
     mutateOptions({
@@ -46,7 +47,7 @@ describe('mutateOptions', function() {
       ]
     })
 
-    expect(getTimelineResourceIds()).toEqual([ 'a' ])
+    expect(timelineGridWrapper.getResourceIds()).toEqual([ 'a' ])
     expect(calendarWrapper.getFirstDateEl()).toBe(dateEl)
   })
 

@@ -1,6 +1,8 @@
 import { Calendar } from '@fullcalendar/core'
 import ViewWrapper from 'standard-tests/src/lib/wrappers/ViewWrapper'
 import ResourceTimeGridWrapper from './ResourceTimeGridWrapper'
+import ResourceDayHeaderWrapper from './ResourceDayHeaderWrapper'
+import ResourceDayGridWrapper from './ResourceDayGridWrapper'
 
 
 export default class ResourceTimeGridViewWrapper extends ViewWrapper {
@@ -9,8 +11,21 @@ export default class ResourceTimeGridViewWrapper extends ViewWrapper {
     super(calendar, 'fc-timeGrid-view')
   }
 
+
+  get header() {
+    let headerEl = this.el.querySelector('.fc-head .fc-scroller > table') as HTMLElement
+    return headerEl ? new ResourceDayHeaderWrapper(headerEl) : null
+  }
+
+
   get timeGrid() {
     return new ResourceTimeGridWrapper(this.el.querySelector('.fc-time-grid'))
+  }
+
+
+  get dayGrid() {
+    let dayGridEl = this.el.querySelector('.fc-day-grid') as HTMLElement
+    return dayGridEl ? new ResourceDayGridWrapper(dayGridEl) : null
   }
 
 }

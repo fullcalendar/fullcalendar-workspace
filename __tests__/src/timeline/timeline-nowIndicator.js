@@ -1,5 +1,5 @@
 import { getBoundingRect } from 'standard-tests/src/lib/dom-geom'
-import { getTimelineLine } from '../lib/timeline'
+import TimelineViewWrapper from '../lib/wrappers/TimelineViewWrapper'
 
 /*
 RIDICULOUSLY BIG THRESHOLD, because IE/Edge have setInterval issues.
@@ -96,19 +96,25 @@ describe('timeline now-indicator', function() {
     return $('.fc-timeline .fc-now-indicator').length > 0
   }
 
+
   function nowIndicatorRendersAt(date, thresh) {
     // wish threshold could do a smaller default threshold, but RTL messing up
     if (thresh == null) { thresh = PIXEL_THRESHOLD }
-    const line = getTimelineLine(date)
-    const arrowRect = getBoundingRect('.fc-timeline .fc-now-indicator-arrow')
-    const lineRect = getBoundingRect('.fc-timeline .fc-now-indicator-line')
+
+    let timelineGrid = new TimelineViewWrapper(currentCalendar).timelineGrid
+    let line = timelineGrid.getLine(date)
+    let arrowRect = getBoundingRect('.fc-timeline .fc-now-indicator-arrow')
+    let lineRect = getBoundingRect('.fc-timeline .fc-now-indicator-line')
+
     expect(Math.abs(
       ((arrowRect.left + arrowRect.right) / 2) -
       line.left
     )).toBeLessThan(thresh)
+
     expect(Math.abs(
       ((lineRect.left + lineRect.right) / 2) -
       line.left
     )).toBeLessThan(thresh)
   }
+
 })

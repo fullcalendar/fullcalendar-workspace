@@ -1,4 +1,5 @@
-import { dragResourceTimelineEvent } from '../lib/timeline'
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { waitEventDrag } from 'standard-tests/src/lib/wrappers/interaction-util'
 
 describe('eventConstraint', function() {
   pushOptions({
@@ -31,22 +32,26 @@ describe('eventConstraint', function() {
     })
 
     it('allows dragging to the resource', function(done) {
-      initCalendar()
-      dragResourceTimelineEvent(
-        $('.fc-event'),
-        { date: '2016-09-04T03:00:00', resourceId: 'b' }
-      ).then(function(modifiedEvent) {
+      let calendar = initCalendar()
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+      let dragging = timelineGridWrapper.dragEventTo(
+        $('.fc-event')[0], 'b', '2016-09-04T03:00:00'
+      )
+
+      waitEventDrag(calendar, dragging).then((modifiedEvent) => {
         expect(modifiedEvent.start).toEqualDate('2016-09-04T03:00:00Z')
         done()
       })
     })
 
     it('disallows dragging to other resources', function(done) {
-      initCalendar()
-      dragResourceTimelineEvent(
-        $('.fc-event'),
-        { date: '2016-09-04T03:00:00', resourceId: 'c' }
-      ).then(function(modifiedEvent) {
+      let calendar = initCalendar()
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+      let dragging = timelineGridWrapper.dragEventTo(
+        $('.fc-event')[0], 'c', '2016-09-04T03:00:00'
+      )
+
+      waitEventDrag(calendar, dragging).then((modifiedEvent) => {
         expect(modifiedEvent).toBeFalsy() // failure
         done()
       })
@@ -61,22 +66,26 @@ describe('eventConstraint', function() {
     })
 
     it('allows dragging to whitelisted resource', function(done) {
-      initCalendar()
-      dragResourceTimelineEvent(
-        $('.fc-event'),
-        { date: '2016-09-04T03:00:00', resourceId: 'c' }
-      ).then(function(modifiedEvent) {
+      let calendar = initCalendar()
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+      let dragging = timelineGridWrapper.dragEventTo(
+        $('.fc-event')[0], 'c', '2016-09-04T03:00:00'
+      )
+
+      waitEventDrag(calendar, dragging).then((modifiedEvent) => {
         expect(modifiedEvent.start).toEqualDate('2016-09-04T03:00:00Z')
         done()
       })
     })
 
     it('disallows dragging to non-whitelisted resources', function(done) {
-      initCalendar()
-      dragResourceTimelineEvent(
-        $('.fc-event'),
-        { date: '2016-09-04T03:00:00', resourceId: 'a' }
-      ).then(function(modifiedEvent) {
+      let calendar = initCalendar()
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+      let dragging = timelineGridWrapper.dragEventTo(
+        $('.fc-event')[0], 'a', '2016-09-04T03:00:00'
+      )
+
+      waitEventDrag(calendar, dragging).then((modifiedEvent) => {
         expect(modifiedEvent).toBeFalsy() // failure
         done()
       })

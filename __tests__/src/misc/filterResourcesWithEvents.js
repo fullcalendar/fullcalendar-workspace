@@ -1,5 +1,5 @@
-import { getHeadResourceIds } from '../lib/column'
-import { getTimelineResourceIds } from '../lib/timeline'
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('filterResourcesWithEvents', function() {
   pushOptions({
@@ -31,8 +31,14 @@ describe('filterResourcesWithEvents', function() {
 
 
   describeValues({
-    'when timeline view': { view: 'resourceTimelineDay', getResourceIds: getTimelineResourceIds },
-    'when timeGrid view': { view: 'resourceTimeGridDay', getResourceIds: getHeadResourceIds }
+    'when timeline view': {
+      view: 'resourceTimelineDay',
+      getResourceIds: (calendar) => new ResourceTimelineViewWrapper(calendar).dataGrid.getResourceIds()
+    },
+    'when timeGrid view': {
+      view: 'resourceTimeGridDay',
+      getResourceIds: (calendar) => new ResourceTimeGridViewWrapper(calendar).header.getResourceIds()
+    }
   }, function(settings) {
     pushOptions({
       defaultView: settings.view
@@ -40,7 +46,7 @@ describe('filterResourcesWithEvents', function() {
 
 
     it('whitelists with immediately fetched events', function() {
-      initCalendar({
+      let calendar = initCalendar({
         resources: getResourceArray(),
         events: [
           { title: 'event 1', start: '2016-12-04T01:00:00', resourceId: 'b' },
@@ -48,15 +54,14 @@ describe('filterResourcesWithEvents', function() {
         ]
       })
 
-      expect(settings.getResourceIds()).toEqual([ 'b', 'd' ])
+      expect(settings.getResourceIds(calendar)).toEqual([ 'b', 'd' ])
       expect($('.fc-event').length).toBe(2)
     })
 
 
     it('whitelists with async-fetched events', function(done) {
       let receiveCnt = 0
-
-      initCalendar({
+      let calendar = initCalendar({
         resources: getResourceFunc(),
         events: [
           { title: 'event 1', start: '2016-12-04T01:00:00', resourceId: 'b' },
@@ -67,7 +72,7 @@ describe('filterResourcesWithEvents', function() {
 
           if (receiveCnt === 1) {
             setTimeout(function() {
-              expect(settings.getResourceIds()).toEqual([ 'b', 'd' ])
+              expect(settings.getResourceIds(calendar)).toEqual([ 'b', 'd' ])
               expect($('.fc-event').length).toBe(2)
               done()
             }, 0)
@@ -76,7 +81,7 @@ describe('filterResourcesWithEvents', function() {
       })
 
       // no resources/events initially
-      expect(settings.getResourceIds()).toEqual([ ])
+      expect(settings.getResourceIds(calendar)).toEqual([ ])
       expect($('.fc-event').length).toBe(0)
     })
   })
@@ -89,38 +94,42 @@ describe('filterResourcesWithEvents', function() {
 
 
     it('adjusts when given new events', function() {
-      initCalendar({
+      let calendar = initCalendar({
         resources: getResourceArray(),
         events: [
           { title: 'event 1', start: '2016-12-04T01:00:00', resourceId: 'b' }
         ]
       })
-      expect(getTimelineResourceIds()).toEqual([ 'b' ])
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+
+      expect(timelineGridWrapper.getResourceIds()).toEqual([ 'b' ])
       currentCalendar.addEvent({ title: 'event 2', start: '2016-12-04T02:00:00', resourceId: 'd' })
-      expect(getTimelineResourceIds()).toEqual([ 'b', 'd' ])
+      expect(timelineGridWrapper.getResourceIds()).toEqual([ 'b', 'd' ])
     })
 
 
     it('filters addResource calls', function() {
-      initCalendar({
+      let calendar = initCalendar({
         resources: getResourceArray(),
         events: [
           { title: 'event 1', start: '2016-12-04T01:00:00', resourceId: 'b' },
           { title: 'event 2', start: '2016-12-04T02:00:00', resourceId: 'd' }
         ]
       })
-      expect(getTimelineResourceIds()).toEqual([ 'b', 'd' ])
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+
+      expect(timelineGridWrapper.getResourceIds()).toEqual([ 'b', 'd' ])
 
       currentCalendar.addResource({ id: 'e', title: 'resource e' })
-      expect(getTimelineResourceIds()).toEqual([ 'b', 'd' ])
+      expect(timelineGridWrapper.getResourceIds()).toEqual([ 'b', 'd' ])
 
       currentCalendar.addEvent({ title: 'event 3', start: '2016-12-04T02:00:00', resourceId: 'e' })
-      expect(getTimelineResourceIds()).toEqual([ 'b', 'd', 'e' ])
+      expect(timelineGridWrapper.getResourceIds()).toEqual([ 'b', 'd', 'e' ])
     })
 
 
     it('displays empty parents if children have events', function() {
-      initCalendar({
+      let calendar = initCalendar({
         resources: [
           { id: 'a', title: 'resource a' },
           { id: 'b',
@@ -134,12 +143,14 @@ describe('filterResourcesWithEvents', function() {
           { title: 'event 1', start: '2016-12-04T01:00:00', resourceId: 'b2' }
         ]
       })
-      expect(getTimelineResourceIds()).toEqual([ 'b', 'b2' ])
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+
+      expect(timelineGridWrapper.getResourceIds()).toEqual([ 'b', 'b2' ])
     })
 
 
     it('will filter out resources that might have events in other ranges', function() {
-      initCalendar({
+      let calendar = initCalendar({
         defaultView: 'resourceTimelineWeek',
         defaultDate: '2017-08-09',
         resources: [
@@ -149,8 +160,10 @@ describe('filterResourcesWithEvents', function() {
           { id: '5', resourceId: 'f', start: '2017-08-06T08:00:00', end: '2017-08-06T18:00:00', title: 'event 5' }
         ]
       })
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+
       currentCalendar.next()
-      expect(getTimelineResourceIds()).toEqual([])
+      expect(timelineGridWrapper.getResourceIds()).toEqual([])
     })
   })
 })

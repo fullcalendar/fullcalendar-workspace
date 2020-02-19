@@ -1,7 +1,7 @@
 // TODO: test isRtl?
 
 import { Draggable } from '@fullcalendar/interaction'
-import { getResourceTimelinePoint } from '../lib/timeline'
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline-view external element drag-n-drop', function() {
   pushOptions({
@@ -39,8 +39,7 @@ describe('timeline-view external element drag-n-drop', function() {
 
     it('allows dropping onto a resource', function(done) {
       let dropSpy, receiveSpy
-
-      initCalendar({
+      let calendar = initCalendar({
         drop:
           (dropSpy = spyCall(function(arg) {
             expect(arg.date).toEqualDate(tz.parseDate('2015-11-29T05:00:00'))
@@ -57,14 +56,13 @@ describe('timeline-view external element drag-n-drop', function() {
           }))
       })
 
-      $('.external-event').simulate('drag', {
-        localPoint: { left: 0, top: '50%' },
-        end: getResourceTimelinePoint('b', '2015-11-29T05:00:00'),
-        callback() {
-          expect(dropSpy).toHaveBeenCalled()
-          expect(receiveSpy).toHaveBeenCalled()
-          done()
-        }
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+      timelineGridWrapper.dragEventTo(
+        $('.external-event')[0], 'b', '2015-11-29T05:00:00'
+      ).then(() => {
+        expect(dropSpy).toHaveBeenCalled()
+        expect(receiveSpy).toHaveBeenCalled()
+        done()
       })
     })
   })
@@ -84,20 +82,18 @@ describe('timeline-view external element drag-n-drop', function() {
 
     it('doesn\'t allow the drop on an event', function(done) {
       let dropSpy, receiveSpy
-
-      initCalendar({
+      let calendar = initCalendar({
         drop: (dropSpy = jasmine.createSpy('drop')),
         eventReceive: (receiveSpy = jasmine.createSpy('receive'))
       })
 
-      $('.external-event').simulate('drag', {
-        localPoint: { left: 0, top: '50%' },
-        end: getResourceTimelinePoint('a', '2015-11-29T02:00:00'),
-        callback() {
-          expect(dropSpy).not.toHaveBeenCalled()
-          expect(receiveSpy).not.toHaveBeenCalled()
-          done()
-        }
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+      timelineGridWrapper.dragEventTo(
+        $('.external-event')[0], 'a', '2015-11-29T02:00:00'
+      ).then(() => {
+        expect(dropSpy).not.toHaveBeenCalled()
+        expect(receiveSpy).not.toHaveBeenCalled()
+        done()
       })
     })
   })
@@ -136,16 +132,15 @@ describe('timeline-view external element drag-n-drop', function() {
   })
 
   it('works after a view switch', function(done) {
-    initCalendar()
+    let calendar = initCalendar()
     currentCalendar.changeView('resourceTimelineWeek')
 
-    $('.external-event').simulate('drag', {
-      localPoint: { left: 0, top: '50%' },
-      end: getResourceTimelinePoint('b', '2015-11-29T05:00:00'),
-      callback() {
-        // all we care about is no JS errors
-        done()
-      }
+    let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+    timelineGridWrapper.dragEventTo(
+      $('.external-event')[0], 'b', '2015-11-29T05:00:00'
+    ).then(() => {
+      // all we care about is no JS errors
+      done()
     })
   })
 

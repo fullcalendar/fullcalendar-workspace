@@ -1,4 +1,4 @@
-import { getTimelineResourceIds } from '../lib/timeline'
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline addResource', function() {
   pushOptions({
@@ -8,7 +8,7 @@ describe('timeline addResource', function() {
 
   // https://github.com/fullcalendar/fullcalendar-scheduler/issues/179
   it('works when switching views', function() {
-    initCalendar({
+    let calendar = initCalendar({
       defaultView: 'resourceTimelineDay',
       resources: [
         { id: 'a', title: 'Auditorium A' },
@@ -17,16 +17,20 @@ describe('timeline addResource', function() {
       ]
     })
 
-    expect(getTimelineResourceIds()).toEqual([ 'a', 'b', 'c' ])
+    function getResourceIds() {
+      return new ResourceTimelineViewWrapper(calendar).timelineGrid.getResourceIds()
+    }
+
+    expect(getResourceIds()).toEqual([ 'a', 'b', 'c' ])
 
     currentCalendar.changeView('resourceTimelineWeek')
-    expect(getTimelineResourceIds()).toEqual([ 'a', 'b', 'c' ])
+    expect(getResourceIds()).toEqual([ 'a', 'b', 'c' ])
 
     currentCalendar.addResource({ id: 'd', title: 'Auditorium D' })
-    expect(getTimelineResourceIds()).toEqual([ 'a', 'b', 'c', 'd' ])
+    expect(getResourceIds()).toEqual([ 'a', 'b', 'c', 'd' ])
 
     currentCalendar.changeView('resourceTimelineDay')
-    expect(getTimelineResourceIds()).toEqual([ 'a', 'b', 'c', 'd' ])
+    expect(getResourceIds()).toEqual([ 'a', 'b', 'c', 'd' ])
   })
 
 
@@ -96,14 +100,16 @@ describe('timeline addResource', function() {
       expect($('.fc-body .fc-resource-area tr[data-resource-id="a1"]')).not.toBeInDOM()
     })
   })
-})
 
-function buildResources(cnt) {
-  var resources = []
 
-  for (var i = 0; i < cnt; i++) {
-    resources.push({ title: `resource ${i}` })
+  function buildResources(cnt) {
+    var resources = []
+
+    for (var i = 0; i < cnt; i++) {
+      resources.push({ title: `resource ${i}` })
+    }
+
+    return resources
   }
 
-  return resources
-}
+})

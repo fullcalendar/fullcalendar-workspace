@@ -1,4 +1,5 @@
-import { dragResourceTimelineEvent } from '../lib/timeline'
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { waitEventDrag } from 'standard-tests/src/lib/wrappers/interaction-util'
 
 describe('eventAllow', function() {
   pushOptions({
@@ -22,8 +23,7 @@ describe('eventAllow', function() {
   it('disallows dragging when returning false', function(done) { // and given correct params
     let isACalled = false
     let isBCalled = false
-
-    initCalendar({
+    let calendar = initCalendar({
       eventAllow(dropInfo, event) {
         if (dropInfo.resource.id === 'a') {
           isACalled = true
@@ -35,10 +35,12 @@ describe('eventAllow', function() {
       }
     })
 
-    dragResourceTimelineEvent(
-      $('.fc-event'),
-      { date: '2016-09-04T03:00:00', resourceId: 'b' }
-    ).then(function(modifiedEvent) {
+    let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+    let dragging = timelineGridWrapper.dragEventTo(
+      $('.fc-event')[0], 'b', '2016-09-04T03:00:00'
+    )
+
+    waitEventDrag(calendar, dragging).then((modifiedEvent) => {
       expect(modifiedEvent).toBeFalsy() // drop failure?
       expect(isACalled).toBe(true)
       expect(isBCalled).toBe(true)
@@ -48,18 +50,19 @@ describe('eventAllow', function() {
 
   it('allows dragging when returning true', function(done) {
     let isCalled = false
-
-    initCalendar({
-      eventAllow(dropInfo, event) {
+    let calendar = initCalendar({
+      eventAllow() {
         isCalled = true
         return true
       }
     })
 
-    dragResourceTimelineEvent(
-      $('.fc-event'),
-      { date: '2016-09-04T03:00:00', resourceId: 'b' }
-    ).then(function(modifiedEvent) {
+    let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+    let dragging = timelineGridWrapper.dragEventTo(
+      $('.fc-event')[0], 'b', '2016-09-04T03:00:00'
+    )
+
+    waitEventDrag(calendar, dragging).then((modifiedEvent) => {
       expect(typeof modifiedEvent).toBe('object')
       expect(modifiedEvent.start).toEqualDate('2016-09-04T03:00:00Z')
       expect(modifiedEvent.getResources().length).toBe(1)

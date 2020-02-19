@@ -1,5 +1,7 @@
 import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from 'standard-tests/src/lib/dom-geom'
-import { getHeadResourceEls, getHeadDowEls } from '../lib/column'
+import ResourceDayGridViewWrapper from '../lib/wrappers/ResourceDayGridViewWrapper'
+import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
+
 
 describe('vresource event rendering', function() {
   pushOptions({
@@ -61,7 +63,10 @@ describe('vresource event rendering', function() {
               }
             ]
           }
-        }, function() {
+        }, function(optionsSet) {
+          let ViewWrapper = optionsSet.defaultView.match(/^resourceDayGrid/) ?
+            ResourceDayGridViewWrapper :
+            ResourceTimeGridViewWrapper
 
           describe('when resources above dates', function() {
             pushOptions({
@@ -69,8 +74,10 @@ describe('vresource event rendering', function() {
             })
 
             it('renders in the correct column', function() {
-              initCalendar()
-              const colRect = getTrailingBoundingRect(getHeadDowEls('tue'), dir)
+              let calendar = initCalendar()
+              let headerWrapper = new ViewWrapper(calendar).header
+
+              const colRect = getTrailingBoundingRect(headerWrapper.getDowEls('tue'), dir)
               const eventRect = getBoundingRect('.event1')
               expect(eventRect).toBeMostlyHBoundedBy(colRect)
             })
@@ -82,8 +89,10 @@ describe('vresource event rendering', function() {
             })
 
             it('renders in the correct column', function() {
-              initCalendar()
-              const resourceRect = getLeadingBoundingRect(getHeadResourceEls('c'), dir)
+              let calendar = initCalendar()
+              let headerWrapper = new ViewWrapper(calendar).header
+
+              const resourceRect = getLeadingBoundingRect(headerWrapper.getResourceEls('c'), dir)
               const eventRect = getBoundingRect('.event1')
               expect(eventRect).toBeMostlyHBoundedBy(resourceRect)
             })
@@ -114,7 +123,9 @@ describe('vresource event rendering', function() {
             })
 
             it('renders in the correct columns', function() {
-              initCalendar()
+              let calendar = initCalendar()
+              let headerWrapper = new ResourceTimeGridViewWrapper(calendar).header
+
               const eventEls = $('.event1')
               expect(eventEls.length).toBe(2)
               const firstEventRect = getLeadingBoundingRect(eventEls, dir)
@@ -123,8 +134,8 @@ describe('vresource event rendering', function() {
                 expect(firstEventRect.node).toHaveClass('fc-start')
                 expect(lastEventRect.node).toHaveClass('fc-end')
               }
-              const tueRect = getTrailingBoundingRect(getHeadDowEls('tue'), dir)
-              const wedRect = getTrailingBoundingRect(getHeadDowEls('wed'), dir)
+              const tueRect = getTrailingBoundingRect(headerWrapper.getDowEls('tue'), dir)
+              const wedRect = getTrailingBoundingRect(headerWrapper.getDowEls('wed'), dir)
               expect(firstEventRect).toBeMostlyHBoundedBy(tueRect)
               expect(lastEventRect).toBeMostlyHBoundedBy(wedRect)
             })
@@ -136,7 +147,9 @@ describe('vresource event rendering', function() {
             })
 
             it('renders in the correct columns', function() {
-              initCalendar()
+              let calendar = initCalendar()
+              let headerWrapper = new ResourceTimeGridViewWrapper(calendar).header
+
               const eventEls = $('.event1')
               expect(eventEls.length).toBe(2)
               const firstEventRect = getLeadingBoundingRect(eventEls, dir)
@@ -145,7 +158,7 @@ describe('vresource event rendering', function() {
                 expect(firstEventRect.node).toHaveClass('fc-start')
                 expect(lastEventRect.node).toHaveClass('fc-end')
               }
-              const resourceEls = getHeadResourceEls('c')
+              const resourceEls = headerWrapper.getResourceEls('c')
               const firstResourceRect = getLeadingBoundingRect(resourceEls, dir)
               const lastResourceRect = getTrailingBoundingRect(resourceEls, dir)
               expect(firstEventRect).toBeMostlyHBoundedBy(firstResourceRect)
@@ -175,10 +188,12 @@ describe('vresource event rendering', function() {
             })
 
             it('renders in the correct columns', function() {
-              initCalendar()
+              let calendar = initCalendar()
+              let headerWrapper = new ResourceDayGridViewWrapper(calendar).header
+
               const eventRect = getBoundingRect('.event1')
-              const tueRect = getTrailingBoundingRect(getHeadDowEls('tue'), dir)
-              const wedRect = getTrailingBoundingRect(getHeadDowEls('wed'), dir)
+              const tueRect = getTrailingBoundingRect(headerWrapper.getDowEls('tue'), dir)
+              const wedRect = getTrailingBoundingRect(headerWrapper.getDowEls('wed'), dir)
               expect(tueRect).toBeMostlyHBoundedBy(eventRect)
               expect(wedRect).toBeMostlyHBoundedBy(eventRect)
             })
@@ -190,7 +205,9 @@ describe('vresource event rendering', function() {
             })
 
             it('renders in the correct columns', function() {
-              initCalendar()
+              let calendar = initCalendar()
+              let headerWrapper = new ResourceDayGridViewWrapper(calendar).header
+
               const eventEls = $('.event1')
               expect(eventEls.length).toBe(2)
               const firstEventRect = getLeadingBoundingRect(eventEls, dir)
@@ -199,7 +216,7 @@ describe('vresource event rendering', function() {
                 expect(firstEventRect.node).toHaveClass('fc-start')
                 expect(lastEventRect.node).toHaveClass('fc-end')
               }
-              const resourceEls = getHeadResourceEls('c')
+              const resourceEls = headerWrapper.getResourceEls('c')
               const firstResourceRect = getLeadingBoundingRect(resourceEls, dir)
               const lastResourceRect = getTrailingBoundingRect(resourceEls, dir)
               expect(firstEventRect).toBeMostlyHBoundedBy(firstResourceRect)

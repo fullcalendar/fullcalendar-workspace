@@ -1,4 +1,5 @@
-import { getResourceTimelinePoint, getTimelineSlatEl } from '../lib/timeline'
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+import TimelineViewWrapper from '../lib/wrappers/TimelineViewWrapper'
 
 describe('timeline dateClick', function() {
   pushOptions({
@@ -31,8 +32,7 @@ describe('timeline dateClick', function() {
 
             it('reports date with no resource', function(done) {
               let dateClickCalled = false
-
-              initCalendar({
+              let calendar = initCalendar({
                 dateClick(arg) {
                   dateClickCalled = true
                   expect(arg.date).toEqualDate(tz.parseDate('2015-11-28T04:30:00'))
@@ -42,12 +42,10 @@ describe('timeline dateClick', function() {
                 }
               })
 
-              const slatEl = getTimelineSlatEl('2015-11-28T04:30:00')
-              slatEl.simulate('drag', {
-                callback() {
-                  expect(dateClickCalled).toBe(true)
-                  done()
-                }
+              let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
+              timelineGrid.clickDate('2015-11-28T04:30:00').then(() => {
+                expect(dateClickCalled).toBe(true)
+                done()
               })
             })
           })
@@ -56,15 +54,15 @@ describe('timeline dateClick', function() {
 
             it('won\'t report anything if not clicked on resource', function(done) {
               let dateClickCalled = false
-
-              initCalendar({
+              let calendar = initCalendar({
                 dateClick(arg) {
                   dateClickCalled = true
                 }
               })
 
-              const slatEl = getTimelineSlatEl('2015-11-28T04:30:00')
-              slatEl.simulate('drag', {
+              let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
+              let slatEl = timelineGrid.getSlatElByDate('2015-11-28T04:30:00')
+              $(slatEl).simulate('drag', {
                 callback() {
                   expect(dateClickCalled).toBe(false)
                   done()
@@ -74,8 +72,7 @@ describe('timeline dateClick', function() {
 
             it('reports click on a resource', function(done) {
               let dateClickCalled = false
-
-              initCalendar({
+              let calendar = initCalendar({
                 dateClick(arg) {
                   dateClickCalled = true
                   expect(arg.date).toEqualDate(tz.parseDate('2015-11-28T04:30:00'))
@@ -85,12 +82,10 @@ describe('timeline dateClick', function() {
                 }
               })
 
-              $.simulateByPoint('drag', {
-                point: getResourceTimelinePoint('b', '2015-11-28T04:30:00'),
-                callback() {
-                  expect(dateClickCalled).toBe(true)
-                  done()
-                }
+              let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
+              timelineGrid.click('b', '2015-11-28T04:30:00').then(() => {
+                expect(dateClickCalled).toBe(true)
+                done()
               })
             })
           })
@@ -104,8 +99,7 @@ describe('timeline dateClick', function() {
 
           it('reports a smaller granularity', function(done) {
             let dateClickCalled = false
-
-            initCalendar({
+            let calendar = initCalendar({
               dateClick(arg) {
                 dateClickCalled = true
                 expect(arg.date).toEqualDate(tz.parseDate('2015-11-28T04:15:00'))
@@ -115,12 +109,10 @@ describe('timeline dateClick', function() {
               }
             })
 
-            $.simulateByPoint('drag', {
-              point: getResourceTimelinePoint('b', '2015-11-28T04:15:00'),
-              callback() {
-                expect(dateClickCalled).toBe(true)
-                done()
-              }
+            let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
+            timelineGrid.click('b', '2015-11-28T04:15:00').then(() => {
+              expect(dateClickCalled).toBe(true)
+              done()
             })
           })
         })
@@ -135,8 +127,7 @@ describe('timeline dateClick', function() {
 
       it('reports untimed dates', function(done) {
         let dateClickCalled = false
-
-        initCalendar({
+        let calendar = initCalendar({
           dateClick(arg) {
             dateClickCalled = true
             expect(arg.date).toEqualDate('2015-11-03')
@@ -146,12 +137,10 @@ describe('timeline dateClick', function() {
           }
         })
 
-        $.simulateByPoint('drag', {
-          point: getResourceTimelinePoint('a', '2015-11-03'),
-          callback() {
-            expect(dateClickCalled).toBe(true)
-            done()
-          }
+        let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
+        timelineGrid.click('a', '2015-11-03').then(() => {
+          expect(dateClickCalled).toBe(true)
+          done()
         })
       })
     })
@@ -164,8 +153,7 @@ describe('timeline dateClick', function() {
 
       it('reports untimed dates', function(done) {
         let dateClickCalled = false
-
-        initCalendar({
+        let calendar = initCalendar({
           dateClick(arg) {
             dateClickCalled = true
             expect(arg.date).toEqualDate('2015-01-18')
@@ -175,12 +163,10 @@ describe('timeline dateClick', function() {
           }
         })
 
-        $.simulateByPoint('drag', {
-          point: getResourceTimelinePoint('a', '2015-01-18'),
-          callback() {
-            expect(dateClickCalled).toBe(true)
-            done()
-          }
+        let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
+        timelineGrid.click('a', '2015-01-18').then(() => {
+          expect(dateClickCalled).toBe(true)
+          done()
         })
       })
     })

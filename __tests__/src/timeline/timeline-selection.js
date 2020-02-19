@@ -1,4 +1,4 @@
-import { getResourceTimelinePoint, getTimelineSlatEl } from '../lib/timeline'
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline selection', function() {
   pushOptions({
@@ -32,8 +32,7 @@ describe('timeline selection', function() {
 
             it('reports selection with no resource', function(done) {
               let selectCalled = false
-
-              initCalendar({
+              let calendar = initCalendar({
                 select(arg) {
                   selectCalled = true
                   expect(arg.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
@@ -44,9 +43,11 @@ describe('timeline selection', function() {
                 }
               })
 
-              const slatEl = getTimelineSlatEl('2015-11-28T04:00:00')
-              slatEl.simulate('drag', {
-                end: getTimelineSlatEl('2015-11-28T07:00:00'),
+              let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+              let slatEl = timelineGridWrapper.getSlatElByDate('2015-11-28T04:00:00')
+
+              $(slatEl).simulate('drag', {
+                end: timelineGridWrapper.getSlatElByDate('2015-11-28T07:00:00'),
                 callback() {
                   expect(selectCalled).toBe(true)
                   done()
@@ -59,16 +60,17 @@ describe('timeline selection', function() {
 
             it('won\'t report anything if not selected on resource', function(done) {
               let selectCalled = false
-
-              initCalendar({
+              let calendar = initCalendar({
                 select(arg) {
                   selectCalled = true
                 }
               })
 
-              const slatEl = getTimelineSlatEl('2015-11-28T04:00:00')
-              slatEl.simulate('drag', {
-                end: getTimelineSlatEl('2015-11-28T07:00:00'),
+              let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+              let slatEl = timelineGridWrapper.getSlatElByDate('2015-11-28T04:00:00')
+
+              $(slatEl).simulate('drag', {
+                end: timelineGridWrapper.getSlatElByDate('2015-11-28T07:00:00'),
                 callback() {
                   expect(selectCalled).toBe(false)
                   done()
@@ -78,8 +80,7 @@ describe('timeline selection', function() {
 
             it('reports selection on a resource', function(done) {
               let selectCalled = false
-
-              initCalendar({
+              let calendar = initCalendar({
                 select(arg) {
                   selectCalled = true
                   expect(arg.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
@@ -90,20 +91,19 @@ describe('timeline selection', function() {
                 }
               })
 
-              $.simulateByPoint('drag', {
-                point: getResourceTimelinePoint('b', '2015-11-28T04:00:00'),
-                end: getResourceTimelinePoint('b', '2015-11-28T07:00:00'),
-                callback() {
-                  expect(selectCalled).toBe(true)
-                  done()
-                }
+              let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+              timelineGridWrapper.selectDates(
+                { resourceId: 'b', date: '2015-11-28T04:00:00' },
+                { resourceId: 'b', date: '2015-11-28T07:00:00' }
+              ).then(() => {
+                expect(selectCalled).toBe(true)
+                done()
               })
             })
 
             it('reports selection across resources', function(done) {
               let selectCalled = false
-
-              initCalendar({
+              let calendar = initCalendar({
                 select(arg) {
                   selectCalled = true
                   expect(arg.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
@@ -114,13 +114,13 @@ describe('timeline selection', function() {
                 }
               })
 
-              $.simulateByPoint('drag', {
-                point: getResourceTimelinePoint('b', '2015-11-28T04:00:00'),
-                end: getResourceTimelinePoint('a', '2015-11-28T07:00:00'),
-                callback() {
-                  expect(selectCalled).toBe(true)
-                  done()
-                }
+              let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+              timelineGridWrapper.selectDates(
+                { resourceId: 'b', date: '2015-11-28T04:00:00' },
+                { resourceId: 'a', date: '2015-11-28T07:00:00' }
+              ).then(() => {
+                expect(selectCalled).toBe(true)
+                done()
               })
             })
           })
@@ -134,8 +134,7 @@ describe('timeline selection', function() {
 
           it('reports a smaller granularity', function(done) {
             let selectCalled = false
-
-            initCalendar({
+            let calendar = initCalendar({
               select(arg) {
                 selectCalled = true
                 expect(arg.start).toEqualDate(tz.parseDate('2015-11-28T04:15:00'))
@@ -146,13 +145,13 @@ describe('timeline selection', function() {
               }
             })
 
-            $.simulateByPoint('drag', {
-              point: getResourceTimelinePoint('b', '2015-11-28T04:15:00'),
-              end: getResourceTimelinePoint('b', '2015-11-28T07:30:00'),
-              callback() {
-                expect(selectCalled).toBe(true)
-                done()
-              }
+            let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+            timelineGridWrapper.selectDates(
+              { resourceId: 'b', date: '2015-11-28T04:15:00' },
+              { resourceId: 'b', date: '2015-11-28T07:30:00' }
+            ).then(() => {
+              expect(selectCalled).toBe(true)
+              done()
             })
           })
         })
@@ -167,8 +166,7 @@ describe('timeline selection', function() {
 
       it('reports untimed dates', function(done) {
         let selectCalled = false
-
-        initCalendar({
+        let calendar = initCalendar({
           select(arg) {
             selectCalled = true
             expect(arg.start).toEqualDate('2015-11-03')
@@ -179,13 +177,13 @@ describe('timeline selection', function() {
           }
         })
 
-        $.simulateByPoint('drag', {
-          point: getResourceTimelinePoint('a', '2015-11-03'),
-          end: getResourceTimelinePoint('a', '2015-11-05'),
-          callback() {
-            expect(selectCalled).toBe(true)
-            done()
-          }
+        let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+        timelineGridWrapper.selectDates(
+          { resourceId: 'a', date: '2015-11-03' },
+          { resourceId: 'a', date: '2015-11-05' }
+        ).then(() => {
+          expect(selectCalled).toBe(true)
+          done()
         })
       })
     })
@@ -199,8 +197,7 @@ describe('timeline selection', function() {
 
       it('reports untimed dates', function(done) {
         let selectCalled = false
-
-        initCalendar({
+        let calendar = initCalendar({
           select(arg) {
             selectCalled = true
             expect(arg.start).toEqualDate('2015-01-18')
@@ -211,13 +208,13 @@ describe('timeline selection', function() {
           }
         })
 
-        $.simulateByPoint('drag', {
-          point: getResourceTimelinePoint('a', '2015-01-18'),
-          end: getResourceTimelinePoint('a', '2015-02-08'),
-          callback() {
-            expect(selectCalled).toBe(true)
-            done()
-          }
+        let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+        timelineGridWrapper.selectDates(
+          { resourceId: 'a', date: '2015-01-18' },
+          { resourceId: 'a', date: '2015-02-08' }
+        ).then(() => {
+          expect(selectCalled).toBe(true)
+          done()
         })
       })
     })
@@ -225,8 +222,7 @@ describe('timeline selection', function() {
 
   it('reports selection on a resource via touch', function(done) {
     let selectCalled = false
-
-    initCalendar({
+    let calendar = initCalendar({
       isTouch: true,
       longPressDelay: 100,
       defaultView: 'resourceTimelineDay',
@@ -240,11 +236,12 @@ describe('timeline selection', function() {
       }
     })
 
+    let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
     $.simulateByPoint('drag', {
       isTouch: true,
       delay: 200,
-      point: getResourceTimelinePoint('b', '2015-11-28T04:00:00'),
-      end: getResourceTimelinePoint('b', '2015-11-28T07:00:00'),
+      point: timelineGridWrapper.getPoint('b', '2015-11-28T04:00:00'),
+      end: timelineGridWrapper.getPoint('b', '2015-11-28T07:00:00'),
       callback() {
         expect(selectCalled).toBe(true)
         done()

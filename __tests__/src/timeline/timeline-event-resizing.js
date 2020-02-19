@@ -1,7 +1,8 @@
+import TimelineViewWrapper from "../lib/wrappers/TimelineViewWrapper"
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+
 // TODO: do resizing from the start
 // TODO: more tests when slotDuration=1week, no event end. resize behavior?
-
-import { getResourceTimelinePoint, getTimelineSlatEl } from '../lib/timeline'
 
 describe('timeline event resizing', function() {
   pushOptions({
@@ -35,8 +36,7 @@ describe('timeline event resizing', function() {
 
             it('reports resize with no resource', function(done) {
               let resizeSpy
-
-              initCalendar({
+              let calendar = initCalendar({
                 events: [
                   { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00' }
                 ],
@@ -50,10 +50,12 @@ describe('timeline event resizing', function() {
                   }))
               })
 
+              let timelineGridWrapper = new TimelineViewWrapper(calendar).timelineGrid
+
               $('.event1').simulate('mouseover') // resizer only shows on hover
               $('.event1 .fc-end-resizer')
                 .simulate('drag', {
-                  end: getTimelineSlatEl('2015-11-28T07:00:00'),
+                  end: timelineGridWrapper.getSlatElByDate('2015-11-28T07:00:00'),
                   callback() {
                     expect(resizeSpy).toHaveBeenCalled()
                     expect(isAnyHighlight()).toBe(false) // TODO: move to its own test
@@ -67,8 +69,7 @@ describe('timeline event resizing', function() {
 
             it('reports resize on a resource', function(done) {
               let resizeSpy
-
-              initCalendar({
+              let calendar = initCalendar({
                 events: [
                   { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
                 ],
@@ -83,10 +84,12 @@ describe('timeline event resizing', function() {
                   }))
               })
 
+              let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+
               $('.event1').simulate('mouseover') // resizer only shows on hover
               $('.event1 .fc-end-resizer')
                 .simulate('drag', {
-                  end: getResourceTimelinePoint('b', '2015-11-28T07:00:00'),
+                  end: timelineGridWrapper.getPoint('b', '2015-11-28T07:00:00'),
                   callback() {
                     expect(resizeSpy).toHaveBeenCalled()
                     expect(isAnyHighlight()).toBe(false) // TODO: move to its own test
@@ -97,8 +100,7 @@ describe('timeline event resizing', function() {
 
             it('reports resize across resources', function(done) {
               let resizeSpy
-
-              initCalendar({
+              let calendar = initCalendar({
                 events: [
                   { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
                 ],
@@ -113,10 +115,12 @@ describe('timeline event resizing', function() {
                   }))
               })
 
+              let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+
               $('.event1').simulate('mouseover') // resizer only shows on hover
               $('.event1 .fc-end-resizer')
                 .simulate('drag', {
-                  end: getResourceTimelinePoint('a', '2015-11-28T07:00:00'),
+                  end: timelineGridWrapper.getPoint('a', '2015-11-28T07:00:00'),
                   callback() {
                     expect(resizeSpy).toHaveBeenCalled()
                     done()
@@ -126,8 +130,7 @@ describe('timeline event resizing', function() {
 
             it('reports resize on one event of multiple resources', function(done) {
               let resizeSpy
-
-              initCalendar({
+              let calendar = initCalendar({
                 events: [
                   { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceIds: [ 'a', 'b' ] }
                 ],
@@ -142,10 +145,12 @@ describe('timeline event resizing', function() {
                   }))
               })
 
+              let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+
               $('.event1:first').simulate('mouseover') // resizer only shows on hover
               $('.event1:first .fc-end-resizer')
                 .simulate('drag', {
-                  end: getResourceTimelinePoint('a', '2015-11-28T07:00:00'),
+                  end: timelineGridWrapper.getPoint('a', '2015-11-28T07:00:00'),
                   callback() {
                     expect(resizeSpy).toHaveBeenCalled()
                     done()
@@ -163,8 +168,7 @@ describe('timeline event resizing', function() {
 
           it('reports a smaller granularity', function(done) {
             let resizeSpy
-
-            initCalendar({
+            let calendar = initCalendar({
               events: [
                 { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
               ],
@@ -179,10 +183,12 @@ describe('timeline event resizing', function() {
                 }))
             })
 
+            let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+
             $('.event1').simulate('mouseover') // resizer only shows on hover
             $('.event1 .fc-end-resizer')
               .simulate('drag', {
-                end: getResourceTimelinePoint('b', '2015-11-28T07:30:00'),
+                end: timelineGridWrapper.getPoint('b', '2015-11-28T07:30:00'),
                 callback() {
                   expect(resizeSpy).toHaveBeenCalled()
                   done()
@@ -195,8 +201,7 @@ describe('timeline event resizing', function() {
 
     it('works with touch', function(done) {
       let resizeSpy
-
-      initCalendar({
+      let calendar = initCalendar({
         isTouch: true,
         longPressDelay: 100,
         defaultView: 'resourceTimelineDay',
@@ -214,6 +219,8 @@ describe('timeline event resizing', function() {
           }))
       })
 
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+
       $('.event1').simulate('drag', {
         isTouch: true,
         delay: 200,
@@ -223,7 +230,7 @@ describe('timeline event resizing', function() {
             // hack to make resize start within the bounds of the event
             localPoint: { top: '50%', left: (dir === 'rtl' ? '100%' : '0%') },
             isTouch: true,
-            end: getResourceTimelinePoint('b', '2015-11-28T07:00:00'),
+            end: timelineGridWrapper.getPoint('b', '2015-11-28T07:00:00'),
             callback() {
               setTimeout(function() { // for next test. won't ignore mousedown
                 expect(resizeSpy).toHaveBeenCalled()
@@ -243,8 +250,7 @@ describe('timeline event resizing', function() {
 
       it('reports untimed dates', function(done) {
         let resizeSpy
-
-        initCalendar({
+        let calendar = initCalendar({
           events: [
             { title: 'event1', className: 'event1', start: '2015-11-03', resourceId: 'a' }
           ],
@@ -259,10 +265,12 @@ describe('timeline event resizing', function() {
             }))
         })
 
+        let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+
         $('.event1').simulate('mouseover') // resizer only shows on hover
         $('.event1 .fc-end-resizer')
           .simulate('drag', {
-            end: getResourceTimelinePoint('a', '2015-11-05'),
+            end: timelineGridWrapper.getPoint('a', '2015-11-05'),
             callback() {
               expect(resizeSpy).toHaveBeenCalled()
               done()
@@ -280,8 +288,7 @@ describe('timeline event resizing', function() {
 
       it('reports untimed dates', function(done) { // TODO: this is desired behavior when no end???
         let resizeSpy
-
-        initCalendar({
+        let calendar = initCalendar({
           events: [
             { title: 'event1', className: 'event1', start: '2015-01-18', end: '2015-01-25', resourceId: 'a' }
           ],
@@ -296,10 +303,12 @@ describe('timeline event resizing', function() {
             }))
         })
 
+        let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+
         $('.event1').simulate('mouseover') // resizer only shows on hover
         $('.event1 .fc-end-resizer')
           .simulate('drag', {
-            end: getResourceTimelinePoint('a', '2015-02-08'),
+            end: timelineGridWrapper.getPoint('a', '2015-02-08'),
             callback() {
               expect(resizeSpy).toHaveBeenCalled()
               done()
@@ -316,8 +325,7 @@ describe('timeline event resizing', function() {
       let mirrorDestroyCalls = 0
       let normalRenderCalls = 0
       let normalDestroyCalls = 0
-
-      initCalendar({
+      let calendar = initCalendar({
         defaultView: 'resourceTimelineDay',
         eventDragMinDistance: 0, // so mirror will render immediately upon mousedown
         slotDuration: '01:00',
@@ -342,7 +350,8 @@ describe('timeline event resizing', function() {
       })
 
       // move two slots
-      let endPoint = getResourceTimelinePoint('a', '2015-11-28T04:00:00')
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+      let endPoint = timelineGridWrapper.getPoint('a', '2015-11-28T04:00:00')
       endPoint.left -= 5
 
       $('.fc-event').simulate('mouseover') // resizer only shows on hover
@@ -362,7 +371,9 @@ describe('timeline event resizing', function() {
     })
   })
 
+
   function isAnyHighlight() {
     return $('.fc-highlight').length > 0
   }
+
 })

@@ -92,4 +92,9 @@ export default class ResourceTimeGridWrapper {
     })
   }
 
+
+  getDowEls(dayAbbrev) {
+    return this.base.getDowEls(dayAbbrev)
+  }
+
 }

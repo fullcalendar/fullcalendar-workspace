@@ -1,7 +1,7 @@
 // TODO: test isRtl?
 
 import { Draggable } from '@fullcalendar/interaction'
-import { getResourceDayGridDayEls } from '../lib/day-grid'
+import ResourceDayGridViewWrapper from '../lib/wrappers/ResourceDayGridViewWrapper'
 
 describe('dayGrid-view event drag-n-drop', function() {
   pushOptions({
@@ -36,7 +36,7 @@ describe('dayGrid-view event drag-n-drop', function() {
           }
         })
 
-        initCalendar({
+        let calendar = initCalendar({
           drop:
             (dropSpy = spyCall(function(date) {})),
           // TODO: fix buggy behavior
@@ -54,9 +54,11 @@ describe('dayGrid-view event drag-n-drop', function() {
             }))
         })
 
+        let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
+
         $('.external-event').simulate('drag', {
           localPoint: { left: '50%', top: 0 },
-          end: getResourceDayGridDayEls('a', '2015-12-01').eq(0),
+          end: dayGridWrapper.getDayEl('a', '2015-12-01'),
           callback() {
             expect(dropSpy).toHaveBeenCalled()
             expect(receiveSpy).toHaveBeenCalled()

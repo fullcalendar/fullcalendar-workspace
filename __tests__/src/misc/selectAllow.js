@@ -1,4 +1,5 @@
-import { selectResourceTimeline } from '../lib/timeline'
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { waitDateSelect } from 'standard-tests/src/lib/wrappers/interaction-util'
 
 describe('selectAllow', function() {
   pushOptions({
@@ -14,8 +15,7 @@ describe('selectAllow', function() {
 
   it('disallows selecting when returning false', function(done) { // and given correct params
     let isCalled = false
-
-    initCalendar({
+    let calendar = initCalendar({
       selectAllow(selectInfo) {
         expect(selectInfo.resource.id).toBe('b')
         isCalled = true
@@ -23,10 +23,13 @@ describe('selectAllow', function() {
       }
     })
 
-    selectResourceTimeline(
+    let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+    let selecting = timelineGridWrapper.selectDates(
       { resourceId: 'b', date: '2016-09-04T03:00:00' },
       { resourceId: 'b', date: '2016-09-04T06:00:00' }
-    ).then(function(selectInfo) {
+    )
+
+    waitDateSelect(calendar, selecting).then((selectInfo) => {
       expect(selectInfo).toBeFalsy() // drop failure?
       expect(isCalled).toBe(true)
       done()
@@ -35,18 +38,20 @@ describe('selectAllow', function() {
 
   it('allows selecting when returning false', function(done) {
     let isCalled = false
-
-    initCalendar({
-      selectAllow(selectInfo) {
+    let calendar = initCalendar({
+      selectAllow() {
         isCalled = true
         return true
       }
     })
 
-    selectResourceTimeline(
+    let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+    let selecting = timelineGridWrapper.selectDates(
       { resourceId: 'b', date: '2016-09-04T03:00:00' },
       { resourceId: 'b', date: '2016-09-04T06:00:00' }
-    ).then(function(selectInfo) {
+    )
+
+    waitDateSelect(calendar, selecting).then((selectInfo) => {
       expect(typeof selectInfo).toBe('object')
       expect(selectInfo.start).toEqualDate('2016-09-04T03:00:00Z')
       expect(selectInfo.end).toEqualDate('2016-09-04T07:00:00Z') // because hour slots

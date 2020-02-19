@@ -1,7 +1,7 @@
 import { Calendar } from '@fullcalendar/core'
 import InteractionPlugin from '@fullcalendar/interaction'
 import ResourceTimelinePlugin from '@fullcalendar/resource-timeline'
-import { getResourceTimelinePoint } from '../lib/timeline'
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline dragging events between calendars', function() {
   let DEFAULT_DATE = '2019-01-01'
@@ -72,18 +72,10 @@ describe('timeline dragging events between calendars', function() {
     calendar0.render()
     calendar1.render()
 
-    dragElTo($('.fc-event'), 'b', DEFAULT_DATE + 'T00:00:00')
+    let timelineGrid = new ResourceTimelineViewWrapper(calendar0).timelineGrid
+    timelineGrid.dragEventTo(
+      $('.fc-event')[0], 'b', DEFAULT_DATE + 'T00:00:00'
+    )
   })
-
-
-  // copy and pasted from other DND file :(
-  function dragElTo(el, resourceId, date, callback, onBeforeRelease) {
-    el.simulate('drag', {
-      localPoint: { left: 0, top: '50%' },
-      end: getResourceTimelinePoint(resourceId, date),
-      onBeforeRelease,
-      callback
-    })
-  }
 
 })

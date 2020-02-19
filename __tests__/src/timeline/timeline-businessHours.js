@@ -1,5 +1,6 @@
 import { doElsMatchSegs } from 'standard-tests/src/lib/segs'
-import { getResourceTimelineRect, getTimelineRect } from '../lib/timeline'
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+import TimelineViewWrapper from '../lib/wrappers/TimelineViewWrapper'
 
 describe('timeline businessHours', function() {
   pushOptions({
@@ -192,9 +193,11 @@ describe('timeline businessHours', function() {
     })
   })
 
+
   function clickExpander() {
     return $('.fc-expander').simulate('click')
   }
+
 
   function expect9to5() {
     expect(isTimelineNonBusinessSegsRendered([
@@ -203,12 +206,14 @@ describe('timeline businessHours', function() {
     ])).toBe(true)
   }
 
+
   function expect10to4() {
     expect(isTimelineNonBusinessSegsRendered([
       { start: '2016-02-15T00:00', end: '2016-02-15T10:00' },
       { start: '2016-02-15T16:00', end: '2016-02-16T00:00' }
     ])).toBe(true)
   }
+
 
   function expectResourceOverride() {
     expect(isResourceTimelineNonBusinessSegsRendered([
@@ -221,11 +226,21 @@ describe('timeline businessHours', function() {
     ])).toBe(true)
   }
 
+
   function isTimelineNonBusinessSegsRendered(segs) {
-    return doElsMatchSegs($('.fc-timeline .fc-nonbusiness'), segs, getTimelineRect)
+    let timelineGridWrapper = new TimelineViewWrapper(currentCalendar).timelineGrid
+
+    return doElsMatchSegs($('.fc-timeline .fc-nonbusiness'), segs, (seg) => {
+      return timelineGridWrapper.getRect(seg.start, seg.end)
+    })
   }
 
+
   function isResourceTimelineNonBusinessSegsRendered(segs) {
-    return doElsMatchSegs($('.fc-timeline .fc-nonbusiness'), segs, getResourceTimelineRect)
+    let timelineGridWrapper = new ResourceTimelineViewWrapper(currentCalendar).timelineGrid
+
+    return doElsMatchSegs($('.fc-timeline .fc-nonbusiness'), segs, (seg) => {
+      return timelineGridWrapper.getRect(seg.resourceId, seg.start, seg.end)
+    })
   }
 })

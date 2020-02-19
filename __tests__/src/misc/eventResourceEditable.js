@@ -1,4 +1,5 @@
-import { dragResourceTimelineEvent } from '../lib/timeline'
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { waitEventDrag } from 'standard-tests/src/lib/wrappers/interaction-util'
 
 describe('eventResourceEditable', function() {
   pushOptions({
@@ -41,12 +42,15 @@ describe('eventResourceEditable', function() {
         events: [ buildEvent({ resourceEditable: false }) ]
       }
     }, function() {
+
       it('keeps within resource while dragging', function(done) {
-        initCalendar()
-        dragResourceTimelineEvent(
-          $('.fc-event'),
-          { date: '2016-09-04T03:00:00', resourceId: 'c' }
-        ).then(function(modifiedEvent) {
+        let calendar = initCalendar()
+        let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+        let dragging = timelineGridWrapper.dragEventTo(
+          $('.fc-event')[0], 'c', '2016-09-04T03:00:00'
+        )
+
+        waitEventDrag(calendar, dragging).then((modifiedEvent) => {
           expect(modifiedEvent.start).toEqualDate('2016-09-04T03:00:00Z')
           expect(modifiedEvent.getResources().length).toBe(1)
           expect(modifiedEvent.getResources()[0].id).toBe('b')
@@ -76,12 +80,15 @@ describe('eventResourceEditable', function() {
         events: [ buildEvent({ resourceEditable: true }) ]
       }
     }, function() {
+
       it('keeps within resource while dragging', function(done) {
-        initCalendar()
-        dragResourceTimelineEvent(
-          $('.fc-event'),
-          { date: '2016-09-04T03:00:00', resourceId: 'c' }
-        ).then(function(modifiedEvent) {
+        let calendar = initCalendar()
+        let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+        let dragging = timelineGridWrapper.dragEventTo(
+          $('.fc-event')[0], 'c', '2016-09-04T03:00:00'
+        )
+
+        waitEventDrag(calendar, dragging).then((modifiedEvent) => {
           expect(modifiedEvent.start).toEqualDate('2016-09-04T01:00:00Z')
           expect(modifiedEvent.getResources().length).toBe(1)
           expect(modifiedEvent.getResources()[0].id).toBe('c')

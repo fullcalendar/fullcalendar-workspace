@@ -1,6 +1,7 @@
 import { joinRects } from 'standard-tests/src/lib/geom'
 import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from 'standard-tests/src/lib/dom-geom'
-import { getHeadResourceEls, getHeadDowEls, getBodyDowEls } from '../lib/column'
+import ResourceDayGridViewWrapper from '../lib/wrappers/ResourceDayGridViewWrapper'
+import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('vresource structure', function() {
   pushOptions({
@@ -11,6 +12,7 @@ describe('vresource structure', function() {
     'with resourceTimeGrid views': 'resourceTimeGrid',
     'with resourceDayGrid views': 'resourceDayGrid'
   }, function(baseViewType) {
+    let ViewWrapper = baseViewType.match(/^resourceDayGrid/) ? ResourceDayGridViewWrapper : ResourceTimeGridViewWrapper
 
     pushOptions({
       views: {
@@ -36,20 +38,20 @@ describe('vresource structure', function() {
           dir: 'ltr'
         })
 
-        it('renders cells right-to-left', function(callback) {
-          initCalendar({
-            datesRender() {
-              const aRect = getBoundingRect(getHeadResourceEls('a'))
-              const bRect = getBoundingRect(getHeadResourceEls('b'))
-              const cRect = getBoundingRect(getHeadResourceEls('c'))
-              const dRect = getBoundingRect(getHeadResourceEls('d'))
-              expect(aRect).toBeMostlyLeftOf(bRect)
-              expect(bRect).toBeMostlyLeftOf(cRect)
-              expect(cRect).toBeMostlyLeftOf(dRect)
-              expect(getBodyDowEls('mon', baseViewType).length).toBe(4)
-              callback()
-            }
-          })
+        it('renders cells right-to-left', function() {
+          let calendar = initCalendar()
+          let viewWrapper = new ViewWrapper(calendar)
+          let headerWrapper = viewWrapper.header
+          let dayGridWrapper = viewWrapper.dayGrid // TODO: test timeGrid too
+
+          const aRect = getBoundingRect(headerWrapper.getResourceEls('a'))
+          const bRect = getBoundingRect(headerWrapper.getResourceEls('b'))
+          const cRect = getBoundingRect(headerWrapper.getResourceEls('c'))
+          const dRect = getBoundingRect(headerWrapper.getResourceEls('d'))
+          expect(aRect).toBeMostlyLeftOf(bRect)
+          expect(bRect).toBeMostlyLeftOf(cRect)
+          expect(cRect).toBeMostlyLeftOf(dRect)
+          expect(dayGridWrapper.getDowEls('mon').length).toBe(4)
         })
       })
 
@@ -58,20 +60,20 @@ describe('vresource structure', function() {
           dir: 'rtl'
         })
 
-        it('renders cells left-to-right', function(callback) {
-          initCalendar({
-            datesRender() {
-              const aRect = getBoundingRect(getHeadResourceEls('a'))
-              const bRect = getBoundingRect(getHeadResourceEls('b'))
-              const cRect = getBoundingRect(getHeadResourceEls('c'))
-              const dRect = getBoundingRect(getHeadResourceEls('d'))
-              expect(aRect).toBeMostlyRightOf(bRect)
-              expect(bRect).toBeMostlyRightOf(cRect)
-              expect(cRect).toBeMostlyRightOf(dRect)
-              expect(getBodyDowEls('mon', baseViewType).length).toBe(4)
-              callback()
-            }
-          })
+        it('renders cells left-to-right', function() {
+          let calendar = initCalendar()
+          let viewWrapper = new ViewWrapper(calendar)
+          let headerWrapper = viewWrapper.header
+          let dayGridWrapper = viewWrapper.dayGrid // TODO: test timeGrid too
+
+          const aRect = getBoundingRect(headerWrapper.getResourceEls('a'))
+          const bRect = getBoundingRect(headerWrapper.getResourceEls('b'))
+          const cRect = getBoundingRect(headerWrapper.getResourceEls('c'))
+          const dRect = getBoundingRect(headerWrapper.getResourceEls('d'))
+          expect(aRect).toBeMostlyRightOf(bRect)
+          expect(bRect).toBeMostlyRightOf(cRect)
+          expect(cRect).toBeMostlyRightOf(dRect)
+          expect(dayGridWrapper.getDowEls('mon').length).toBe(4)
         })
       })
     })
@@ -86,22 +88,22 @@ describe('vresource structure', function() {
           datesAboveResources: false
         })
 
-        it('renders cells correctly', function(callback) {
-          initCalendar({
-            datesRender() {
-              const aEl = getHeadResourceEls('a')
-              const aRect = getBoundingRect(aEl)
-              const monEls = getHeadDowEls('mon')
-              const tuesEls = getHeadDowEls('tue')
-              expect(monEls.length).toBe(4)
-              expect(tuesEls.length).toBe(4)
-              const monRect = getBoundingRect(monEls.eq(0))
-              expect(aRect).toBeMostlyAbove(monRect)
-              expect(getBodyDowEls('mon', baseViewType).length).toBe(4)
-              expect(getBodyDowEls('tue', baseViewType).length).toBe(4)
-              callback()
-            }
-          })
+        it('renders cells correctly', function() {
+          let calendar = initCalendar()
+          let viewWrapper = new ViewWrapper(calendar)
+          let headerWrapper = viewWrapper.header
+          let dayGridWrapper = viewWrapper.dayGrid // TODO: test timeGrid too
+
+          const aEl = headerWrapper.getResourceEls('a')
+          const aRect = getBoundingRect(aEl)
+          const monEls = headerWrapper.getDowEls('mon')
+          const tuesEls = headerWrapper.getDowEls('tue')
+          expect(monEls.length).toBe(4)
+          expect(tuesEls.length).toBe(4)
+          const monRect = getBoundingRect(monEls[0])
+          expect(aRect).toBeMostlyAbove(monRect)
+          expect(dayGridWrapper.getDowEls('mon').length).toBe(4)
+          expect(dayGridWrapper.getDowEls('tue').length).toBe(4)
         })
       })
 
@@ -110,23 +112,23 @@ describe('vresource structure', function() {
           datesAboveResources: true
         })
 
-        it('renders cells correctly', function(callback) {
-          initCalendar({
-            datesRender() {
-              const monEl = getHeadDowEls('mon')
-              const monRect = getBoundingRect(monEl)
-              expect(monEl.length).toBe(1)
-              const aEls = getHeadResourceEls('a')
-              const bEls = getHeadResourceEls('b')
-              expect(aEls.length).toBe(2)
-              expect(bEls.length).toBe(2)
-              const aRect = getBoundingRect(aEls.eq(0))
-              expect(monRect).toBeMostlyAbove(aRect)
-              expect(getBodyDowEls('mon', baseViewType).length).toBe(4)
-              expect(getBodyDowEls('tue', baseViewType).length).toBe(4)
-              callback()
-            }
-          })
+        it('renders cells correctly', function() {
+          let calendar = initCalendar()
+          let viewWrapper = new ViewWrapper(calendar)
+          let headerWrapper = viewWrapper.header
+          let dayGridWrapper = viewWrapper.dayGrid // TODO: test timeGrid too
+
+          const monEl = headerWrapper.getDowEls('mon')
+          const monRect = getBoundingRect(monEl)
+          expect(monEl.length).toBe(1)
+          const aEls = headerWrapper.getResourceEls('a')
+          const bEls = headerWrapper.getResourceEls('b')
+          expect(aEls.length).toBe(2)
+          expect(bEls.length).toBe(2)
+          const aRect = getBoundingRect(aEls[0])
+          expect(monRect).toBeMostlyAbove(aRect)
+          expect(dayGridWrapper.getDowEls('mon').length).toBe(4)
+          expect(dayGridWrapper.getDowEls('tue').length).toBe(4)
         })
       })
     })
@@ -138,16 +140,14 @@ describe('vresource structure', function() {
           defaultView: 'oneDay'
         })
 
-        it('renders resources columns', function(callback) {
-          initCalendar({
-            datesRender() {
-              expect(getHeadResourceEls('a').length).toBe(1)
-              expect(getHeadResourceEls('b').length).toBe(1)
-              expect(getHeadResourceEls('c').length).toBe(1)
-              expect(getHeadResourceEls('d').length).toBe(1)
-              callback()
-            }
-          })
+        it('renders resources columns', function() {
+          let calendar = initCalendar()
+          let headerWrapper = new ViewWrapper(calendar).header
+
+          expect(headerWrapper.getResourceEls('a').length).toBe(1)
+          expect(headerWrapper.getResourceEls('b').length).toBe(1)
+          expect(headerWrapper.getResourceEls('c').length).toBe(1)
+          expect(headerWrapper.getResourceEls('d').length).toBe(1)
         })
       })
     })
@@ -163,32 +163,6 @@ describe('vresource structure', function() {
             ])
           }, 200)
         }
-      })
-
-      xit('renders progressively', function(callback) {
-        let firstCallbackHeight = null
-
-        const firstCallback = function() {
-          expect(getHeadResourceEls('a').length).toBe(0)
-          expect(getHeadResourceEls('b').length).toBe(0)
-          firstCallbackHeight = $('.fc-view-container').outerHeight()
-        }
-
-        initCalendar({
-          datesRender() {
-            expect(getHeadResourceEls('a').length).toBe(1)
-            expect(getHeadResourceEls('b').length).toBe(1)
-
-            expect(firstCallbackHeight).toBeGreaterThan(100)
-            expect(Math.abs(
-              firstCallbackHeight - $('.fc-view-container').outerHeight()
-            )).toBeLessThan(1)
-
-            callback()
-          }
-        })
-
-        setTimeout(firstCallback, 100)
       })
     })
   })
@@ -207,29 +181,28 @@ describe('vresource structure', function() {
       'when RTL': 'rtl'
     }, function(dir) {
 
-      it('renders side-by-side months', function(callback) {
-        initCalendar({
-          datesRender() {
-            expect(getHeadResourceEls('a').length).toBe(1)
-            expect(getHeadResourceEls('b').length).toBe(1)
-            expect(getHeadDowEls('sun').length).toBe(2)
-            expect($('.fc-body .fc-row').length).toBe(6)
-            const firstADayRect = getLeadingBoundingRect('td[data-date="2015-11-01"]', dir)
-            const lastADayRect = getLeadingBoundingRect('td[data-date="2015-12-12"]', dir)
-            const firstBDayRect = getTrailingBoundingRect('td[data-date="2015-11-01"]', dir)
-            const lastBDayRect = getTrailingBoundingRect('td[data-date="2015-12-12"]', dir)
-            const aDayRect = joinRects(firstADayRect, lastADayRect)
-            aDayRect.right -= 1 // might share a pixel
-            aDayRect.left += 1 // ditto, but for rtl
-            const bDayRect = joinRects(firstBDayRect, lastBDayRect)
-            if (dir === 'rtl') {
-              expect(aDayRect).toBeRightOf(bDayRect)
-            } else {
-              expect(aDayRect).toBeLeftOf(bDayRect)
-            }
-            callback()
-          }
-        })
+      it('renders side-by-side months', function() {
+        let calendar = initCalendar()
+        let headerWrapper = new ResourceDayGridViewWrapper(calendar).header
+
+        expect(headerWrapper.getResourceEls('a').length).toBe(1)
+        expect(headerWrapper.getResourceEls('b').length).toBe(1)
+        expect(headerWrapper.getDowEls('sun').length).toBe(2)
+        expect($('.fc-body .fc-row').length).toBe(6)
+        const firstADayRect = getLeadingBoundingRect('td[data-date="2015-11-01"]', dir)
+        const lastADayRect = getLeadingBoundingRect('td[data-date="2015-12-12"]', dir)
+        const firstBDayRect = getTrailingBoundingRect('td[data-date="2015-11-01"]', dir)
+        const lastBDayRect = getTrailingBoundingRect('td[data-date="2015-12-12"]', dir)
+        const aDayRect = joinRects(firstADayRect, lastADayRect)
+        aDayRect.right -= 1 // might share a pixel
+        aDayRect.left += 1 // ditto, but for rtl
+        const bDayRect = joinRects(firstBDayRect, lastBDayRect)
+
+        if (dir === 'rtl') {
+          expect(aDayRect).toBeRightOf(bDayRect)
+        } else {
+          expect(aDayRect).toBeLeftOf(bDayRect)
+        }
       })
     })
   })
