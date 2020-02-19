@@ -38,7 +38,8 @@ describe('timeGrid-view event resizing', function() {
       let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
       let resizing = timeGridWrapper.resizeEvent(
         calendarWrapper.getFirstEventEl(),
-        '2015-11-23T04:00:00'
+        '2015-11-23T03:00:00',
+        '2015-11-23T04:30:00'
       )
 
       waitEventResize(calendar, resizing).then((modifiedEvent) => {
