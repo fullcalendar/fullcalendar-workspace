@@ -1,5 +1,6 @@
 import TimelineViewWrapper from "../lib/wrappers/TimelineViewWrapper"
 import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 
 // TODO: do resizing from the start
 // TODO: more tests when slotDuration=1week, no event end. resize behavior?
@@ -51,17 +52,14 @@ describe('timeline event resizing', function() {
               })
 
               let timelineGridWrapper = new TimelineViewWrapper(calendar).timelineGrid
-
-              $('.event1').simulate('mouseover') // resizer only shows on hover
-              $('.event1 .fc-end-resizer')
-                .simulate('drag', {
-                  end: timelineGridWrapper.getSlatElByDate('2015-11-28T07:00:00'),
-                  callback() {
-                    expect(resizeSpy).toHaveBeenCalled()
-                    expect(isAnyHighlight()).toBe(false) // TODO: move to its own test
-                    done()
-                  }
-                })
+              timelineGridWrapper.resizeEvent(
+                $('.event1')[0],
+                '2015-11-28T07:30:00'
+              ).then(() => {
+                expect(resizeSpy).toHaveBeenCalled()
+                expect(timelineGridWrapper.getHighlightEls().length).toBe(0) // TODO: move to its own test
+                done()
+              })
             })
           })
 
@@ -85,17 +83,13 @@ describe('timeline event resizing', function() {
               })
 
               let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-
-              $('.event1').simulate('mouseover') // resizer only shows on hover
-              $('.event1 .fc-end-resizer')
-                .simulate('drag', {
-                  end: timelineGridWrapper.getPoint('b', '2015-11-28T07:00:00'),
-                  callback() {
-                    expect(resizeSpy).toHaveBeenCalled()
-                    expect(isAnyHighlight()).toBe(false) // TODO: move to its own test
-                    done()
-                  }
-                })
+              timelineGridWrapper.resizeEvent(
+                $('.event1')[0], 'b', '2015-11-28T07:30:00'
+              ).then(() => {
+                expect(resizeSpy).toHaveBeenCalled()
+                expect(timelineGridWrapper.getHighlightEls().length).toBe(0) // TODO: move to its own test
+                done()
+              })
             })
 
             it('reports resize across resources', function(done) {
@@ -116,16 +110,12 @@ describe('timeline event resizing', function() {
               })
 
               let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-
-              $('.event1').simulate('mouseover') // resizer only shows on hover
-              $('.event1 .fc-end-resizer')
-                .simulate('drag', {
-                  end: timelineGridWrapper.getPoint('a', '2015-11-28T07:00:00'),
-                  callback() {
-                    expect(resizeSpy).toHaveBeenCalled()
-                    done()
-                  }
-                })
+              timelineGridWrapper.resizeEvent(
+                $('.event1')[0], 'a', '2015-11-28T07:30:00'
+              ).then(() => {
+                expect(resizeSpy).toHaveBeenCalled()
+                done()
+              })
             })
 
             it('reports resize on one event of multiple resources', function(done) {
@@ -146,16 +136,12 @@ describe('timeline event resizing', function() {
               })
 
               let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-
-              $('.event1:first').simulate('mouseover') // resizer only shows on hover
-              $('.event1:first .fc-end-resizer')
-                .simulate('drag', {
-                  end: timelineGridWrapper.getPoint('a', '2015-11-28T07:00:00'),
-                  callback() {
-                    expect(resizeSpy).toHaveBeenCalled()
-                    done()
-                  }
-                })
+              timelineGridWrapper.resizeEvent(
+                $('.event1:first')[0], 'a', '2015-11-28T07:30:00'
+              ).then(() => {
+                expect(resizeSpy).toHaveBeenCalled()
+                done()
+              })
             })
           })
         })
@@ -184,16 +170,12 @@ describe('timeline event resizing', function() {
             })
 
             let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-
-            $('.event1').simulate('mouseover') // resizer only shows on hover
-            $('.event1 .fc-end-resizer')
-              .simulate('drag', {
-                end: timelineGridWrapper.getPoint('b', '2015-11-28T07:30:00'),
-                callback() {
-                  expect(resizeSpy).toHaveBeenCalled()
-                  done()
-                }
-              })
+            timelineGridWrapper.resizeEvent(
+              $('.event1')[0], 'b', '2015-11-28T07:45:00'
+            ).then(() => {
+              expect(resizeSpy).toHaveBeenCalled()
+              done()
+            })
           })
         })
       })
@@ -226,7 +208,7 @@ describe('timeline event resizing', function() {
         delay: 200,
         callback() {
           $('.event1').simulate('mouseover') // resizer only shows on hover
-          $('.event1 .fc-end-resizer').simulate('drag', {
+          $(`.event1 .${CalendarWrapper.EVENT_END_RESIZER_CLASSNAME}`).simulate('drag', {
             // hack to make resize start within the bounds of the event
             localPoint: { top: '50%', left: (dir === 'rtl' ? '100%' : '0%') },
             isTouch: true,
@@ -266,16 +248,12 @@ describe('timeline event resizing', function() {
         })
 
         let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-
-        $('.event1').simulate('mouseover') // resizer only shows on hover
-        $('.event1 .fc-end-resizer')
-          .simulate('drag', {
-            end: timelineGridWrapper.getPoint('a', '2015-11-05'),
-            callback() {
-              expect(resizeSpy).toHaveBeenCalled()
-              done()
-            }
-          })
+        timelineGridWrapper.resizeEvent(
+          $('.event1')[0], 'a', '2015-11-06'
+        ).then(() => {
+          expect(resizeSpy).toHaveBeenCalled()
+          done()
+        })
       })
     })
 
@@ -304,16 +282,12 @@ describe('timeline event resizing', function() {
         })
 
         let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-
-        $('.event1').simulate('mouseover') // resizer only shows on hover
-        $('.event1 .fc-end-resizer')
-          .simulate('drag', {
-            end: timelineGridWrapper.getPoint('a', '2015-02-08'),
-            callback() {
-              expect(resizeSpy).toHaveBeenCalled()
-              done()
-            }
-          })
+        timelineGridWrapper.resizeEvent(
+          $('.event1')[0], 'a', '2015-02-15'
+        ).then(() => {
+          expect(resizeSpy).toHaveBeenCalled()
+          done()
+        })
       })
     })
   })
@@ -351,29 +325,18 @@ describe('timeline event resizing', function() {
 
       // move two slots
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
-      let endPoint = timelineGridWrapper.getPoint('a', '2015-11-28T04:00:00')
-      endPoint.left -= 5
+      timelineGridWrapper.resizeEvent(
+        timelineGridWrapper.getFirstEventEl(), 'a', '2015-11-28T04:00:00'
+      ).then(() => {
+        expect(mirrorRenderCalls).toBe(3)
+        expect(mirrorDestroyCalls).toBe(3)
 
-      $('.fc-event').simulate('mouseover') // resizer only shows on hover
-      $('.fc-event .fc-end-resizer')
-        .simulate('drag', {
-          end: endPoint,
-          callback() {
-            expect(mirrorRenderCalls).toBe(3)
-            expect(mirrorDestroyCalls).toBe(3)
+        expect(normalRenderCalls).toBe(2)
+        expect(normalDestroyCalls).toBe(1)
 
-            expect(normalRenderCalls).toBe(2)
-            expect(normalDestroyCalls).toBe(1)
-
-            done()
-          }
-        })
+        done()
+      })
     })
   })
-
-
-  function isAnyHighlight() {
-    return $('.fc-highlight').length > 0
-  }
 
 })

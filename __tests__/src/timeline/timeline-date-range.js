@@ -1,34 +1,35 @@
 import { expectRenderRange } from 'standard-tests/src/lib/ViewDateUtils'
+import TimelineViewWrapper from '../lib/wrappers/TimelineViewWrapper'
 
 describe('timeline date range', function() {
 
   it('respects firstDay with auto-detected alignment with 7-days', function() {
-    initCalendar({
+    let calendar = initCalendar({
       defaultDate: '2018-01-22',
       defaultView: 'timeline',
       duration: { days: 183 },
       slotLabelInterval: { days: 7 },
       firstDay: 1 // Monday
     })
-    expect(
-      // we need to get from DOM! dateProfile was always correct even when DOM wrong
-      new Date(
-        $('.fc-head th[data-date]:first')[0].getAttribute('data-date')
-      )
-    ).toEqualDate('2018-01-22') // a Monday
+
+    let viewWrapper = new TimelineViewWrapper(calendar)
+    let firstCell = viewWrapper.header.getCellInfo()[0]
+
+    expect(firstCell.date).toEqualDate('2018-01-22') // a Monday
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/4937
   xit('can do day slotDuration when slotLabel is month', function() {
-    initCalendar({
+    let calendar = initCalendar({
       defaultDate: '2019-05-16',
       defaultView: 'timelineYear',
       slotDuration: { days: 1 },
       slotLabelInterval: { months: 1 }
     })
 
-    let labelEls = $('.fc-head th[data-date]')
-    let slotEls = $('.fc-body .fc-slats td[data-date]')
+    let viewWrapper = new TimelineViewWrapper(calendar)
+    let labelEls = viewWrapper.header.getDateEls()
+    let slotEls = viewWrapper.timelineGrid.getSlatEls()
 
     expect(labelEls.length).toBe(12)
     expect(slotEls.length).toBe(365)

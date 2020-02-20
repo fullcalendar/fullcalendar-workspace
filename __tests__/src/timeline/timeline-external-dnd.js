@@ -2,6 +2,7 @@
 
 import { Draggable } from '@fullcalendar/interaction'
 import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 
 describe('timeline-view external element drag-n-drop', function() {
   pushOptions({
@@ -19,7 +20,7 @@ describe('timeline-view external element drag-n-drop', function() {
 
   beforeEach(function() {
     dragEl = $('<a' +
-      ' class="external-event fc-event"' +
+      ` class="external-event ${CalendarWrapper.EVENT_CLASSNAME}"` +
       ' style="width:100px"' +
       '>external</a>')
       .appendTo('body')

@@ -1,6 +1,7 @@
 import TimelineGridWrapper from './TimelineGridWrapper'
 import { getBoundingRect } from 'standard-tests/src/lib/dom-geom'
 import { findElements } from '@fullcalendar/core'
+import { getRectCenter, addPoints } from 'standard-tests/src/lib/geom'
 
 
 export default class ResourceTimelineGridWrapper {
@@ -8,7 +9,7 @@ export default class ResourceTimelineGridWrapper {
   base: TimelineGridWrapper
 
 
-  constructor(private el: HTMLElement) {
+  constructor(public el: HTMLElement) {
     this.base = new TimelineGridWrapper(el)
   }
 
@@ -28,6 +29,27 @@ export default class ResourceTimelineGridWrapper {
       $(eventEl).simulate('drag', {
         localPoint: { left: 2, top: '50%' }, // 2 for zoom
         end: this.getPoint(resourceId, date),
+        onRelease: () => resolve()
+      })
+    })
+  }
+
+
+  resizeEvent(eventEl: HTMLElement, newResourceId, newEndDate, fromStart?) {
+    return new Promise((resolve) => {
+      let $eventEl = $(eventEl)
+      $eventEl.simulate('mouseover') // resizer only shows on hover
+
+      let eventRect = eventEl.getBoundingClientRect()
+      let isRtl = $eventEl.css('direction') === 'rtl'
+      let resizerEl = eventEl.querySelector(fromStart ? '.fc-start-resizer' : '.fc-end-resizer')
+      let resizerPoint = getRectCenter(resizerEl.getBoundingClientRect())
+      let xCorrect = resizerPoint.left - (isRtl ? eventRect.left : eventRect.right)
+      let destPoint = this.getPoint(newResourceId, newEndDate)
+      destPoint = addPoints(destPoint, { left: xCorrect, top: 0 })
+
+      $(resizerEl).simulate('drag', {
+        end: destPoint,
         onRelease: () => resolve()
       })
     })
@@ -87,6 +109,11 @@ export default class ResourceTimelineGridWrapper {
   }
 
 
+  getLeft(targetDate) {
+    return this.base.getLeft(targetDate)
+  }
+
+
   getSlatElByDate(date) {
     return this.base.getSlatElByDate(date)
   }
@@ -119,6 +146,16 @@ export default class ResourceTimelineGridWrapper {
 
   getMirrorEventEls() {
     return this.base.getMirrorEventEls()
+  }
+
+
+  getNonBusinessDayEls() {
+    return this.base.getNonBusinessDayEls()
+  }
+
+
+  getHighlightEls() {
+    return this.base.getHighlightEls()
   }
 
 }

@@ -37,12 +37,12 @@ export default class ResourceTimelineViewWrapper extends ViewWrapper {
 
 
   getDataScrollEl() {
-    return this.el.querySelector('.fc-resource-area .fc-scroller')
+    return this.el.querySelector('.fc-body .fc-resource-area .fc-scroller')
   }
 
 
   getTimeScrollEl() {
-    return this.el.querySelector('.fc-time-area .fc-scroller')
+    return this.el.querySelector('.fc-body .fc-time-area .fc-scroller')
   }
 
 
@@ -55,6 +55,18 @@ export default class ResourceTimelineViewWrapper extends ViewWrapper {
     } else {
       return inHeader
     }
+  }
+
+
+  getResourceCnt() { // TODO: use this in more places
+    let dataResourceCnt = this.dataGrid.getResourceRowEls().length
+    let timeResourceCnt = this.timelineGrid.getResourceRowEls().length
+
+    if (dataResourceCnt !== timeResourceCnt) {
+      throw new Error('Mismatch in number of rows')
+    }
+
+    return dataResourceCnt
   }
 
 }

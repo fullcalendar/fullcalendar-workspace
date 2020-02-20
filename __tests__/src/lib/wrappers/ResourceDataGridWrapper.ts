@@ -7,26 +7,12 @@ export default class ResourceDataGridWrapper {
 
 
   getRowInfo() {
-    return findElements(this.el, 'tr').map(function(tr) {
-      let $tr = $(tr)
-      let resourceId = tr.getAttribute('data-resource-id')
-      let text = $tr.find('.fc-cell-text').text()
+    return findElements(this.el, 'tr').map((tr) => buildInfoForRowEl(tr))
+  }
 
-      if (resourceId) {
-        return {
-          type: 'resource',
-          resourceId,
-          text
-        }
-      } else if ($tr.find('.fc-divider').length) {
-        return {
-          type: 'divider',
-          text
-        }
-      } else {
-        return {}
-      }
-    })
+
+  getSpecificRowInfo(resourceId) {
+    return buildInfoForRowEl(this.getResourceRowEl(resourceId))
   }
 
 
@@ -92,4 +78,26 @@ export default class ResourceDataGridWrapper {
     return findElements(this.getResourceRowEl(resourceId), 'td')
   }
 
+}
+
+
+function buildInfoForRowEl(tr) {
+  let $tr = $(tr)
+  let resourceId = tr.getAttribute('data-resource-id')
+  let text = $tr.find('.fc-cell-text').text()
+
+  if (resourceId) {
+    return {
+      type: 'resource',
+      resourceId,
+      text
+    }
+  } else if ($tr.find('.fc-divider').length) {
+    return {
+      type: 'divider',
+      text
+    }
+  } else {
+    return {}
+  }
 }

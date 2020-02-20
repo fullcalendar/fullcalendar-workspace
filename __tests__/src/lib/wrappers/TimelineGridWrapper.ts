@@ -1,11 +1,12 @@
 import { findElements } from '@fullcalendar/core'
 import { ensureDate, formatIsoWithoutTz } from 'standard-tests/src/lib/datelib-utils'
 import { getBoundingRect } from 'standard-tests/src/lib/dom-geom'
+import { getRectCenter, addPoints } from 'standard-tests/src/lib/geom'
 
 
 export default class TimelineGridWrapper {
 
-  constructor(private el: HTMLElement) {
+  constructor(public el: HTMLElement) {
   }
 
 
@@ -16,6 +17,32 @@ export default class TimelineGridWrapper {
         onRelease: () => resolve()
       })
     })
+  }
+
+
+  resizeEvent(eventEl: HTMLElement, newEndDate, fromStart?) {
+    return new Promise((resolve) => {
+      let $eventEl = $(eventEl)
+      $eventEl.simulate('mouseover') // resizer only shows on hover
+
+      let eventRect = eventEl.getBoundingClientRect()
+      let isRtl = $eventEl.css('direction') === 'rtl'
+      let resizerEl = eventEl.querySelector(fromStart ? '.fc-start-resizer' : '.fc-end-resizer')
+      let resizerPoint = getRectCenter(resizerEl.getBoundingClientRect())
+      let xCorrect = resizerPoint.left - (isRtl ? eventRect.left : eventRect.right)
+      let destPoint = this.getPoint(newEndDate)
+      destPoint = addPoints(destPoint, { left: xCorrect, top: 0 })
+
+      $(resizerEl).simulate('drag', {
+        end: destPoint,
+        onRelease: () => resolve()
+      })
+    })
+  }
+
+
+  getHighlightEls() {
+    return findElements(this.el, '.fc-highlight')
   }
 
 
@@ -31,6 +58,11 @@ export default class TimelineGridWrapper {
 
   getMirrorEventEls() {
     return findElements(this.el, '.fc-mirror')
+  }
+
+
+  getNonBusinessDayEls() {
+    return findElements(this.el, '.fc-nonbusiness')
   }
 
 
@@ -90,27 +122,16 @@ export default class TimelineGridWrapper {
 
     let slatCoord
     let isRtl = $(this.el).css('direction') === 'rtl'
-    let borderWidth = 1
     let slatEl = this.getSlatElByDate(targetDate)
 
     const getLeadingEdge = function(cellEl) {
-      let $cellEl = $(cellEl)
-
-      if (isRtl) {
-        return ($cellEl.offset().left + $cellEl.outerWidth()) - borderWidth
-      } else {
-        return $cellEl.offset().left + borderWidth
-      }
+      let cellRect = cellEl.getBoundingClientRect()
+      return isRtl ? cellRect.right : cellRect.left
     }
 
     const getTrailingEdge = function(cellEl) {
-      let $cellEl = $(cellEl)
-
-      if (isRtl) {
-        return $cellEl.offset().left - borderWidth
-      } else {
-        return $cellEl.offset().left + borderWidth + $cellEl.outerWidth()
-      }
+      let cellRect = cellEl.getBoundingClientRect()
+      return isRtl ? cellRect.left : cellRect.right
     }
 
     if (slatEl) {

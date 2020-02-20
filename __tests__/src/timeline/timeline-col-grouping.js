@@ -58,13 +58,12 @@ describe('timeline column grouping', function() {
   })
 
   it('doesnt render twice when date nav', function() {
-    initCalendar()
-    expect(getResourceCnt()).toBe(6)
+    let calendar = initCalendar()
+    let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+
+    expect(viewWrapper.getResourceCnt()).toBe(6)
     currentCalendar.next()
-    expect(getResourceCnt()).toBe(6)
+    expect(viewWrapper.getResourceCnt()).toBe(6)
   })
 })
 
-function getResourceCnt() {
-  return $('.fc-body .fc-time-area tr[data-resource-id]').length
-}

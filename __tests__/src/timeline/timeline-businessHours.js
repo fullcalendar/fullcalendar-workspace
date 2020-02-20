@@ -180,8 +180,11 @@ describe('timeline businessHours', function() {
       })
 
       it('renders when expanded', function(done) {
-        initCalendar()
-        clickExpander()
+        let calendar = initCalendar()
+        let viewModel = new ResourceTimelineViewWrapper(calendar)
+
+        viewModel.dataGrid.clickFirstExpander()
+
         setTimeout(function() { // wait for animation to finish
           expect(isResourceTimelineNonBusinessSegsRendered([
             { resourceId: 'a1', start: '2016-02-15T00:00', end: '2016-02-15T02:00' },
@@ -192,11 +195,6 @@ describe('timeline businessHours', function() {
       })
     })
   })
-
-
-  function clickExpander() {
-    return $('.fc-expander').simulate('click')
-  }
 
 
   function expect9to5() {
@@ -230,17 +228,26 @@ describe('timeline businessHours', function() {
   function isTimelineNonBusinessSegsRendered(segs) {
     let timelineGridWrapper = new TimelineViewWrapper(currentCalendar).timelineGrid
 
-    return doElsMatchSegs($('.fc-timeline .fc-nonbusiness'), segs, (seg) => {
-      return timelineGridWrapper.getRect(seg.start, seg.end)
-    })
+    return doElsMatchSegs(
+      timelineGridWrapper.getNonBusinessDayEls(),
+      segs,
+      (seg) => {
+        return timelineGridWrapper.getRect(seg.start, seg.end)
+      }
+    )
   }
 
 
   function isResourceTimelineNonBusinessSegsRendered(segs) {
     let timelineGridWrapper = new ResourceTimelineViewWrapper(currentCalendar).timelineGrid
 
-    return doElsMatchSegs($('.fc-timeline .fc-nonbusiness'), segs, (seg) => {
-      return timelineGridWrapper.getRect(seg.resourceId, seg.start, seg.end)
-    })
+    return doElsMatchSegs(
+      timelineGridWrapper.getNonBusinessDayEls(),
+      segs,
+      (seg) => {
+        return timelineGridWrapper.getRect(seg.resourceId, seg.start, seg.end)
+      }
+    )
   }
+
 })
