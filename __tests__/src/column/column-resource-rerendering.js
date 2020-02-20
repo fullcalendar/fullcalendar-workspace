@@ -1,3 +1,5 @@
+import ResourceTimeGridViewWrapper from "../lib/wrappers/ResourceTimeGridViewWrapper"
+
 
 describe('vresource resource rerendering', function() {
   pushOptions({
@@ -9,27 +11,29 @@ describe('vresource resource rerendering', function() {
     ]
   })
 
+
   it('adjusts to Resource::remove', function() {
-    initCalendar()
-    expect(getOrderedResourceIds()).toEqual([ 'a', 'b', 'c' ])
+    let calendar = initCalendar()
+    let headerWrapper = new ResourceTimeGridViewWrapper(calendar).header
+
+    expect(headerWrapper.getResourceIds()).toEqual([ 'a', 'b', 'c' ])
     currentCalendar.getResourceById('a').remove()
-    expect(getOrderedResourceIds()).toEqual([ 'b', 'c' ])
+    expect(headerWrapper.getResourceIds()).toEqual([ 'b', 'c' ])
   })
 
+
   it('adjusts to addResource', function() {
-    initCalendar()
-    expect(getOrderedResourceIds()).toEqual([ 'a', 'b', 'c' ])
+    let calendar = initCalendar()
+    let headerWrapper = new ResourceTimeGridViewWrapper(calendar).header
+
+    expect(headerWrapper.getResourceIds()).toEqual([ 'a', 'b', 'c' ])
+
     currentCalendar.addResource({
       id: 'd',
       title: 'Auditorium D'
     })
-    expect(getOrderedResourceIds()).toEqual([ 'a', 'b', 'c', 'd' ])
+
+    expect(headerWrapper.getResourceIds()).toEqual([ 'a', 'b', 'c', 'd' ])
   })
 
-  // TODO: consolidate. also in resourceOrder
-  function getOrderedResourceIds() {
-    return $('th.fc-resource-cell').map(function(i, node) {
-      return node.getAttribute('data-resource-id')
-    }).get()
-  }
 })

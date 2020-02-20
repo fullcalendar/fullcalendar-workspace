@@ -183,12 +183,15 @@ describe('vresource structure', function() {
 
       it('renders side-by-side months', function() {
         let calendar = initCalendar()
-        let headerWrapper = new ResourceDayGridViewWrapper(calendar).header
+        let viewWrapper = new ResourceDayGridViewWrapper(calendar)
+        let headerWrapper = viewWrapper.header
+        let dayGridWrapper = viewWrapper.dayGrid
 
         expect(headerWrapper.getResourceEls('a').length).toBe(1)
         expect(headerWrapper.getResourceEls('b').length).toBe(1)
         expect(headerWrapper.getDowEls('sun').length).toBe(2)
-        expect($('.fc-body .fc-row').length).toBe(6)
+        expect(dayGridWrapper.getRowEls().length).toBe(6)
+
         const firstADayRect = getLeadingBoundingRect('td[data-date="2015-11-01"]', dir)
         const lastADayRect = getLeadingBoundingRect('td[data-date="2015-12-12"]', dir)
         const firstBDayRect = getTrailingBoundingRect('td[data-date="2015-11-01"]', dir)

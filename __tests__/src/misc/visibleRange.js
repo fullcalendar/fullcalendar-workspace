@@ -1,4 +1,5 @@
-import { parseIsoAsUtc } from 'standard-tests/src/lib/datelib-utils'
+import TimelineViewWrapper from '../lib/wrappers/TimelineViewWrapper'
+import TimeGridViewWrapper from 'standard-tests/src/lib/wrappers/TimeGridViewWrapper'
 
 describe('visibleRange', function() {
   pushOptions({
@@ -16,18 +17,15 @@ describe('visibleRange', function() {
     })
 
     it('renders the range correctly', function() {
-      initCalendar({
+      let calendar = initCalendar({
         visibleRange: {
           start: '2017-06-07',
           end: '2017-06-09'
         }
       })
 
-      const dates = $('.fc-head .fc-time-area tr:first-child > th[data-date]')
-        .map(function(i, node) {
-          return parseIsoAsUtc(node.getAttribute('data-date'))
-        })
-        .get()
+      let headerWrapper = new TimelineViewWrapper(calendar).header
+      let dates = headerWrapper.getDates()
 
       expect(dates.length).toBe(2)
       expect(dates[0]).toEqualDate('2017-06-07T00:00:00Z')
@@ -42,18 +40,15 @@ describe('visibleRange', function() {
     })
 
     it('renders the range correctly', function() {
-      initCalendar({
+      let calendar = initCalendar({
         visibleRange: {
           start: '2017-01',
           end: '2019-01'
         }
       })
 
-      const dates = $('.fc-head .fc-time-area tr:first-child > th[data-date]')
-        .map(function(i, node) {
-          return new Date(node.getAttribute('data-date'))
-        })
-        .get()
+      let headerWrapper = new TimelineViewWrapper(calendar).header
+      let dates = headerWrapper.getDates()
 
       expect(dates.length).toBe(2)
       expect(dates[0]).toEqualDate('2017-01-01')
@@ -69,18 +64,15 @@ describe('visibleRange', function() {
     })
 
     it('renders range correctly', function() {
-      initCalendar({
+      let calendar = initCalendar({
         visibleRange: {
           start: '2017-06-07',
           end: '2017-06-09'
         }
       })
 
-      const dates = $('.fc-head tr:first-child > th[data-date]')
-        .map(function(i, node) {
-          return new Date(node.getAttribute('data-date'))
-        })
-        .get()
+      let headerWrapper = new TimeGridViewWrapper(calendar).header
+      let dates = headerWrapper.getDates()
 
       expect(dates.length).toBe(2)
       expect(dates[0]).toEqualDate('2017-06-07')

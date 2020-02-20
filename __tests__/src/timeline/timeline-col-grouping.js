@@ -1,3 +1,5 @@
+import ResourceTimelineViewWrapper from "../lib/wrappers/ResourceTimelineViewWrapper"
+
 /*
 TODO: write tests for text/render functions
 */
@@ -31,19 +33,22 @@ describe('timeline column grouping', function() {
   })
 
   it('renders row heights correctly when grouping columns', function() {
-    initCalendar()
-    const resourceTrs = $('.fc-body .fc-resource-area tr[data-resource-id]')
-    const eventTrs = $('.fc-body .fc-time-area tr[data-resource-id]')
+    let calendar = initCalendar()
+    let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+
+    let resourceTrs = viewWrapper.dataGrid.getResourceRowEls()
+    let eventTrs = viewWrapper.timelineGrid.getResourceRowEls()
     expect(resourceTrs.length).toBe(6)
     expect(eventTrs.length).toBe(6)
 
     for (let i = 0; i < resourceTrs.length; i++) {
-      const resourceTr = resourceTrs[i]
-      const eventTr = eventTrs[i]
-      const resourceTd = $(resourceTr).find('td').filter(function() {
+      let resourceTr = resourceTrs[i]
+      let eventTr = eventTrs[i]
+      let resourceTd = $(resourceTr).find('td').filter(function() {
         return parseInt($(this).attr('rowspan') || '1') === 1
       })
-      const eventTd = $(eventTr).find('td')
+      let eventTd = $(eventTr).find('td')
+
       expect(
         Math.round(resourceTd.height())
       ).toBe(

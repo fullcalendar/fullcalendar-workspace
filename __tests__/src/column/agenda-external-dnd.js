@@ -2,6 +2,7 @@
 
 import { Draggable } from '@fullcalendar/interaction'
 import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
+import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 
 describe('timeGrid-view event drag-n-drop', function() {
 
@@ -26,7 +27,7 @@ describe('timeGrid-view event drag-n-drop', function() {
       it('allows dropping onto a resource', function(done) {
         let dropSpy, receiveSpy
         let dragEl = $('<a' +
-          ' class="external-event fc-event"' +
+          ` class="external-event ${CalendarWrapper.EVENT_CLASSNAME}"` +
           ' style="width:100px"' +
           '>external</a>')
           .appendTo('body')

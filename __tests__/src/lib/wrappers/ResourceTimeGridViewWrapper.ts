@@ -28,4 +28,9 @@ export default class ResourceTimeGridViewWrapper extends ViewWrapper {
     return dayGridEl ? new ResourceDayGridWrapper(dayGridEl) : null
   }
 
+
+  getScrollEl() {
+    return this.el.querySelector('.scrollgrid .fc-body:last-child .fc-scroller')
+  }
+
 }

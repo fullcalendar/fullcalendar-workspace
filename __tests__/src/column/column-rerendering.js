@@ -1,3 +1,5 @@
+import ResourceTimeGridViewWrapper from "../lib/wrappers/ResourceTimeGridViewWrapper"
+import ResourceDayGridViewWrapper from '../lib/wrappers/ResourceDayGridViewWrapper'
 
 // !!! = tests dont work because the resourceRender hook only fires when a brand new element is created
 
@@ -46,7 +48,8 @@ describe('column-based view rerendering', function() {
   describeOptions('defaultView', {
     'when timeGrid': 'resourceTimeGridDay',
     'when dayGrid': 'resourceDayGridDay'
-  }, function() {
+  }, function(viewName) {
+    let ViewWrapper = viewName.match(/^resourceDayGrid/) ? ResourceDayGridViewWrapper : ResourceTimeGridViewWrapper
 
     pushOptions({
       resources: [
@@ -57,20 +60,26 @@ describe('column-based view rerendering', function() {
     })
 
     it('adjusts to Resource::remove', function() {
-      initCalendar()
-      expect(getOrderedResourceIds()).toEqual([ 'a', 'b', 'c' ])
+      let calendar = initCalendar()
+      let headerWrapper = new ViewWrapper(calendar).header
+
+      expect(headerWrapper.getResourceIds()).toEqual([ 'a', 'b', 'c' ])
+
       currentCalendar.getResourceById('a').remove()
-      expect(getOrderedResourceIds()).toEqual([ 'b', 'c' ])
+      expect(headerWrapper.getResourceIds()).toEqual([ 'b', 'c' ])
     })
 
     it('adjusts to addResource', function() {
-      initCalendar()
-      expect(getOrderedResourceIds()).toEqual([ 'a', 'b', 'c' ])
+      let calendar = initCalendar()
+      let headerWrapper = new ViewWrapper(calendar).header
+
+      expect(headerWrapper.getResourceIds()).toEqual([ 'a', 'b', 'c' ])
+
       currentCalendar.addResource({
         id: 'd',
         title: 'Auditorium D'
       })
-      expect(getOrderedResourceIds()).toEqual([ 'a', 'b', 'c', 'd' ])
+      expect(headerWrapper.getResourceIds()).toEqual([ 'a', 'b', 'c', 'd' ])
     })
   })
 
@@ -180,25 +189,21 @@ describe('column-based view rerendering', function() {
         }, 100)
       },
       _eventsPositioned() {
-        const scrollEl = $('.scrollgrid .fc-body:last-child .fc-scroller')
+        let viewWrapper = new ResourceTimeGridViewWrapper(this)
+        let scrollEl = viewWrapper.getScrollEl()
+
         renderCalls++
         if (renderCalls === 1) {
           setTimeout(function() {
-            scrollEl.scrollTop(100)
+            scrollEl.scrollTop = 100
             setTimeout(actionFunc, 100)
           }, 100)
         } else if (renderCalls === 2) {
-          expect(scrollEl.scrollTop()).toBe(100)
+          expect(scrollEl.scrollTop).toBe(100)
           doneFunc()
         }
       }
     })
   }
 
-  // TODO: consolidate. also in resourceOrder
-  function getOrderedResourceIds() {
-    return $('th.fc-resource-cell').map(function(i, node) {
-      return node.getAttribute('data-resource-id')
-    }).get()
-  }
 })

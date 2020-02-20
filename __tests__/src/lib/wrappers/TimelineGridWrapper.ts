@@ -19,14 +19,31 @@ export default class TimelineGridWrapper {
   }
 
 
+  getEventEls() { // FG events
+    return findElements(this.el, '.fc-event')
+  }
+
+
+  getFirstEventEl() {
+    return this.el.querySelector('.fc-event') as HTMLElement
+  }
+
+
+  getMirrorEventEls() {
+    return findElements(this.el, '.fc-mirror')
+  }
+
+
   getSlatEls() {
     return findElements(this.el, '.fc-slats td')
   }
 
 
-  getSlatElByDate(date) {
-    date = ensureDate(date)
-    return this.el.querySelector('.fc-slats td[data-date="' + formatIsoWithoutTz(date) + '"]')
+  getSlatElByDate(dateOrStr) { // prefers string. we do this because all-day doesnt have 00:00:00
+    if (typeof dateOrStr !== 'string') {
+      dateOrStr = formatIsoWithoutTz(ensureDate(dateOrStr))
+    }
+    return this.el.querySelector('.fc-slats td[data-date="' + dateOrStr + '"]')
   }
 
 
@@ -138,6 +155,21 @@ export default class TimelineGridWrapper {
     return slatCoord + // last slat's starting edge
       ((slatEndCoord - slatCoord) *
       Math.min(1, (targetDate - slatDate.valueOf()) / slatMsDuration)) // don't go past the last slat
+  }
+
+
+  hasNowIndicator() {
+    return Boolean(this.getNowIndicatorEl())
+  }
+
+
+  getNowIndicatorEl() {
+    return this.el.querySelector('.fc-now-indicator-line')
+  }
+
+
+  getBgEventEls() {
+    return findElements(this.el, '.fc-bgevent')
   }
 
 }

@@ -1,6 +1,5 @@
-import { getRectCenter } from 'standard-tests/src/lib/geom'
-import { getTrailingBoundingRect } from 'standard-tests/src/lib/dom-geom'
 import DayGridViewWrapper from 'standard-tests/src/lib/wrappers/DayGridViewWrapper'
+import ResourceDayGridViewWrapper from '../lib/wrappers/ResourceDayGridViewWrapper'
 
 describe('dayGrid-view event resizing', function() {
   pushOptions({
@@ -38,17 +37,14 @@ describe('dayGrid-view event resizing', function() {
           expect(resources.length).toBe(0)
         }
       })
-      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-      $('.event1').simulate('mouseover') // resizer only shows on hover
-      $('.event1 .fc-resizer')
-        .simulate('drag', {
-          end: dayGridWrapper.getDayEls('2015-11-24')[0],
-          callback() {
-            expect(resizeCalled).toBe(true)
-            done()
-          }
-        })
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      dayGridWrapper.resizeEvent(
+        $('.event1')[0], '2015-11-23', '2015-11-24'
+      ).then(() => {
+        expect(resizeCalled).toBe(true)
+        done()
+      })
     })
   })
 
@@ -73,17 +69,16 @@ describe('dayGrid-view event resizing', function() {
           expect(resources[0].id).toBe('a')
         }
       })
-      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-      $('.event1').simulate('mouseover') // resizer only shows on hover
-      $('.event1 .fc-resizer')
-        .simulate('drag', {
-          end: dayGridWrapper.getDayEls('2015-11-30')[0],
-          callback() {
-            expect(resizeCalled).toBe(true)
-            done()
-          }
-        })
+      let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
+      dayGridWrapper.resizeEvent(
+        $('.event1')[0],
+        { resourceId: 'a', date: '2015-11-29' },
+        { resourceId: 'a', date: '2015-11-30' }
+      ).then(() => {
+        expect(resizeCalled).toBe(true)
+        done()
+      })
     })
 
     it('disallows resizing across resources', function(done) {
@@ -96,18 +91,16 @@ describe('dayGrid-view event resizing', function() {
           resizeCalled = true
         }
       })
-      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-      const bMonRect = getTrailingBoundingRect(dayGridWrapper.getDayEls('2015-11-30'))
-      $('.event1').simulate('mouseover') // resizer only shows on hover
-      $('.event1 .fc-resizer')
-        .simulate('drag', {
-          end: getRectCenter(bMonRect),
-          callback() {
-            expect(resizeCalled).toBe(false)
-            done()
-          }
-        })
+      let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
+      dayGridWrapper.resizeEvent(
+        $('.event1')[0],
+        { resourceId: 'a', date: '2015-11-29' },
+        { resourceId: 'b', date: '2015-11-30' }
+      ).then(() => {
+        expect(resizeCalled).toBe(false)
+        done()
+      })
     })
   })
 
@@ -133,18 +126,16 @@ describe('dayGrid-view event resizing', function() {
           expect(resources[0].id).toBe('b')
         }
       })
-      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-      const bMonRect = getTrailingBoundingRect(dayGridWrapper.getDayEls('2015-11-30'))
-      $('.event1').simulate('mouseover') // resizer only shows on hover
-      $('.event1 .fc-resizer')
-        .simulate('drag', {
-          end: getRectCenter(bMonRect),
-          callback() {
-            expect(resizeCalled).toBe(true)
-            done()
-          }
-        })
+      let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
+      dayGridWrapper.resizeEvent(
+        $('.event1')[0],
+        { resourceId: 'b', date: '2015-11-28' },
+        { resourceId: 'b', date: '2015-11-30' }
+      ).then(() => {
+        expect(resizeCalled).toBe(true)
+        done()
+      })
     })
 
     it('disallows resizing across resources', function(done) {
@@ -157,18 +148,16 @@ describe('dayGrid-view event resizing', function() {
           resizeCalled = true
         }
       })
-      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
-      const bMonRect = getTrailingBoundingRect(dayGridWrapper.getDayEls('2015-11-30'))
-      $('.event1').simulate('mouseover') // resizer only shows on hover
-      $('.event1 .fc-resizer')
-        .simulate('drag', {
-          end: getRectCenter(bMonRect),
-          callback() {
-            expect(resizeCalled).toBe(false)
-            done()
-          }
-        })
+      let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
+      dayGridWrapper.resizeEvent(
+        $('.event1')[0],
+        { resourceId: 'a', date: '2015-11-28' },
+        { resourceId: 'b', date: '2015-11-30' }
+      ).then(() => {
+        expect(resizeCalled).toBe(false)
+        done()
+      })
     })
   })
 })

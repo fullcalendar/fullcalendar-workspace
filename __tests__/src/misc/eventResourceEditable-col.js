@@ -30,7 +30,7 @@ describe('eventResourceEditable in vertical resource view', function() {
     })
     let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
-    $('.fc-event').simulate('drag', {
+    $(resourceTimeGridWrapper.getFirstEventEl()).simulate('drag', {
       localPoint: {
         top: 1, // fudge for IE10 :(
         left: '50%'

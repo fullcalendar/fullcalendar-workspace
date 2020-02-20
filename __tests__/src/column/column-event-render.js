@@ -1,4 +1,5 @@
 import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from 'standard-tests/src/lib/dom-geom'
+import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 import ResourceDayGridViewWrapper from '../lib/wrappers/ResourceDayGridViewWrapper'
 import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
@@ -131,8 +132,8 @@ describe('vresource event rendering', function() {
               const firstEventRect = getLeadingBoundingRect(eventEls, dir)
               const lastEventRect = getTrailingBoundingRect(eventEls, dir)
               if (!renderingType) { // non-background events
-                expect(firstEventRect.node).toHaveClass('fc-start')
-                expect(lastEventRect.node).toHaveClass('fc-end')
+                expect(firstEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_START_CLASSNAME)
+                expect(lastEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_END_CLASSNAME)
               }
               const tueRect = getTrailingBoundingRect(headerWrapper.getDowEls('tue'), dir)
               const wedRect = getTrailingBoundingRect(headerWrapper.getDowEls('wed'), dir)
@@ -155,8 +156,8 @@ describe('vresource event rendering', function() {
               const firstEventRect = getLeadingBoundingRect(eventEls, dir)
               const lastEventRect = getTrailingBoundingRect(eventEls, dir)
               if (!renderingType) { // non-background events
-                expect(firstEventRect.node).toHaveClass('fc-start')
-                expect(lastEventRect.node).toHaveClass('fc-end')
+                expect(firstEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_START_CLASSNAME)
+                expect(lastEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_END_CLASSNAME)
               }
               const resourceEls = headerWrapper.getResourceEls('c')
               const firstResourceRect = getLeadingBoundingRect(resourceEls, dir)
@@ -213,8 +214,8 @@ describe('vresource event rendering', function() {
               const firstEventRect = getLeadingBoundingRect(eventEls, dir)
               const lastEventRect = getTrailingBoundingRect(eventEls, dir)
               if (!renderingType) { // non-background events
-                expect(firstEventRect.node).toHaveClass('fc-start')
-                expect(lastEventRect.node).toHaveClass('fc-end')
+                expect(firstEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_START_CLASSNAME)
+                expect(lastEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_END_CLASSNAME)
               }
               const resourceEls = headerWrapper.getResourceEls('c')
               const firstResourceRect = getLeadingBoundingRect(resourceEls, dir)

@@ -179,6 +179,7 @@ describe('vresource businessHours', function() {
     })
   })
 
+
   function expectDay9to5() {
     expect(isResourceTimeGridNonBusinessSegsRendered([
       { resourceId: 'a', start: '2015-11-18T00:00', end: '2015-11-18T09:00' },
@@ -187,6 +188,7 @@ describe('vresource businessHours', function() {
       { resourceId: 'b', start: '2015-11-18T17:00', end: '2015-11-19T00:00' }
     ])).toBe(true)
   }
+
 
   function expectResourceOverride() { // one resource 2am - 10pm, the rest 9am - 5pm
     expect(isResourceTimeGridNonBusinessSegsRendered([
@@ -197,6 +199,7 @@ describe('vresource businessHours', function() {
     ])).toBe(true)
   }
 
+
   function expectLonelyDay9to5() { // only one resource 9am - 5pm
     expect(isResourceTimeGridNonBusinessSegsRendered([
       { resourceId: 'a', start: '2015-11-18T00:00', end: '2015-11-18T09:00' },
@@ -204,20 +207,29 @@ describe('vresource businessHours', function() {
     ])).toBe(true)
   }
 
+
   function isDayGridNonBusinessSegsRendered(segs) {
-    return doElsMatchSegs($('.fc-day-grid .fc-nonbusiness'), segs, (seg) => {
-      let resourceDayGridWrapper = new ResourceDayGridViewWrapper(currentCalendar).dayGrid
-      let dayEl = resourceDayGridWrapper.getDayEl(seg.resourceId, seg.date)
-      return dayEl.getBoundingClientRect()
-    })
+    let resourceDayGridWrapper = new ResourceDayGridViewWrapper(currentCalendar).dayGrid
+
+    return doElsMatchSegs(
+      resourceDayGridWrapper.getNonBusinessDayEls(),
+      segs,
+      (seg) => {
+        let dayEl = resourceDayGridWrapper.getDayEl(seg.resourceId, seg.date)
+        return dayEl.getBoundingClientRect()
+      }
+    )
   }
+
 
   function isResourceTimeGridNonBusinessSegsRendered(segs) {
     let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(currentCalendar).timeGrid
+
     return doElsMatchSegs(
-      $('.fc-time-grid .fc-nonbusiness'),
+      resourceTimeGridWrapper.getNonBusinessDayEls(),
       segs,
       resourceTimeGridWrapper.getRect.bind(resourceTimeGridWrapper)
     )
   }
+
 })

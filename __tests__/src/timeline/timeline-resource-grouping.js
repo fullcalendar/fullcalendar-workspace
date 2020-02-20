@@ -1,3 +1,4 @@
+import ResourceTimelineViewWrapper from "../lib/wrappers/ResourceTimelineViewWrapper"
 
 describe('timeline resource grouping', function() {
   pushOptions({
@@ -22,33 +23,11 @@ describe('timeline resource grouping', function() {
     ]
   })
 
-
-  function getRows() { // TODO: consolidate with getVisibleResourceIds
-    return $('.fc-body .fc-resource-area tr').map(function(i, node) {
-      const $tr = $(node)
-      const resourceId = node.getAttribute('data-resource-id')
-      const text = $tr.find('.fc-cell-text').text()
-
-      if (resourceId) {
-        return {
-          type: 'resource',
-          resourceId,
-          text
-        }
-      } else if ($tr.find('.fc-divider').length) {
-        return {
-          type: 'divider',
-          text
-        }
-      } else {
-        return {}
-      }
-    }).get()
-  }
-
   it('renders the hierarchy correctly', function() {
-    initCalendar()
-    const rows = getRows()
+    let calendar = initCalendar()
+    let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
+    let rows = dataGridWrapper.getRowInfo()
+
     expect(rows.length).toBe(5)
     expect(rows[0].type).toBe('divider')
     expect(rows[0].text).toBe('1')
@@ -61,7 +40,7 @@ describe('timeline resource grouping', function() {
 
   // https://github.com/fullcalendar/fullcalendar-scheduler/issues/490
   it('works with resourceOrder', function() {
-    initCalendar({
+    let calendar = initCalendar({
       defaultView: 'resourceTimelineDay',
       resourceOrder: 'building',
       resourceGroupField: 'building',
@@ -97,7 +76,10 @@ describe('timeline resource grouping', function() {
       ]
     })
 
-    let groupTexts = getRows().map(function(row) {
+    let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
+    let rows = dataGridWrapper.getRowInfo()
+
+    let groupTexts = rows.map(function(row) {
       return row.text
     })
 
@@ -107,13 +89,15 @@ describe('timeline resource grouping', function() {
   })
 
   it('renders base off resourceGroupText function', function() {
-    initCalendar({
+    let calendar = initCalendar({
       resourceGroupText(groupId) {
         return `Group ${groupId}`
       }
     })
 
-    const rows = getRows()
+    let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
+    let rows = dataGridWrapper.getRowInfo()
+
     expect(rows.length).toBe(5)
     expect(rows[0].type).toBe('divider')
     expect(rows[0].text).toBe('Group 1')

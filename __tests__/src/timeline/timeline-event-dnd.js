@@ -116,12 +116,12 @@ describe('timeline-view event drag-n-drop', function() {
   })
 
   it('can drag one of multiple event occurences, linked by same event-IDs', function(done) {
-    initCalendar({
+    let calendar = initCalendar({
       events: [
         { groupId: '1', title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'a' },
         { groupId: '1', title: 'event1', className: 'event1', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }
       ],
-      eventDrop(arg) {
+      eventDrop() {
         setTimeout(function() { // let the drop rerender
           const events = currentCalendar.getEvents()
 
@@ -140,13 +140,15 @@ describe('timeline-view event drag-n-drop', function() {
       }
     })
 
+    let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+
     dragElTo(
       $('.event0:first'),
       'c',
       '2015-11-29T05:00:00',
       null, // callback
       function() { // onBeforeRelease (happens BEFORE callback)
-        expect($('.fc-mirror').length).toBe(2) // rendered two mirrors
+        expect(timelineGridWrapper.getMirrorEventEls().length).toBe(2) // rendered two mirrors
       }
     )
   })

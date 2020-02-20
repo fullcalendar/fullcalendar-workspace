@@ -1,4 +1,5 @@
 import { config, Calendar } from '@fullcalendar/core'
+import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 
 describe('schedulerLicenseKey', function() {
 
@@ -13,10 +14,10 @@ describe('schedulerLicenseKey', function() {
   function defineTests() {
 
     it('is invalid when crap text', function() {
-      initCalendar({
+      let calendar = initCalendar({
         schedulerLicenseKey: '<%= versionReleaseDate %>'
       })
-      expectIsValid(false)
+      expectIsValid(calendar, false)
     })
 
     it('is invalid when crap text when directly instantiating', function() {
@@ -31,43 +32,44 @@ describe('schedulerLicenseKey', function() {
     })
 
     it('is invalid when purchased more than a year ago', function() {
-      initCalendar({
+      let calendar = initCalendar({
         schedulerLicenseKey: '1234567890-fcs-1273017600' // purchased on 2010-05-05
       })
-      expectIsValid(false)
+      expectIsValid(calendar, false)
     })
 
     it('is valid when purchased less than a year ago', function() {
-      initCalendar({
+      let calendar = initCalendar({
         schedulerLicenseKey: '1234567890-fcs-1275868800' // purchased on 2010-06-07
       })
-      expectIsValid(true)
+      expectIsValid(calendar, true)
     })
 
     it('is invalid when not 10 digits in random ID', function() {
-      initCalendar({
+      let calendar = initCalendar({
         schedulerLicenseKey: '123456789-fcs-1275868800' // purchased on 2010-06-07
       })
-      expectIsValid(false)
+      expectIsValid(calendar, false)
     })
 
     it('is valid when Creative Commons', function() {
-      initCalendar({
+      let calendar = initCalendar({
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives'
       })
-      expectIsValid(true)
+      expectIsValid(calendar, true)
     })
 
     it('is valid when GPL', function() {
-      initCalendar({
+      let calendar = initCalendar({
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source'
       })
-      expectIsValid(true)
+      expectIsValid(calendar, true)
     })
-  };
+  }
 
-  function expectIsValid(bool) {
-    expect(!$('.fc-license-message').is(':visible')).toBe(bool)
+  function expectIsValid(calendar, bool) {
+    let calendarWrapper = new CalendarWrapper(calendar)
+    return expect(!calendarWrapper.hasLicenseMessage()).toBe(bool)
   }
 
 
@@ -107,7 +109,8 @@ describe('schedulerLicenseKey', function() {
           { id: 'a', title: 'Resource A' }
         ],
         datesRender() {
-          expect($('.fc-license-message').length).toBe(1)
+          let calendarWrapper = new CalendarWrapper(this)
+          expect(calendarWrapper.hasLicenseMessage()).toBe(true)
           callCnt++
           if (callCnt === 1) {
             currentCalendar.next()

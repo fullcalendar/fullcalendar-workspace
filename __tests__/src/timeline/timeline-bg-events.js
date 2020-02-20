@@ -1,8 +1,9 @@
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline background events', function() {
 
   it('does not rerender a removed event when toggling collapse state', function(done) {
-    initCalendar({
+    let calendar = initCalendar({
       now: '2017-03-07',
       scrollTime: '00:00',
       defaultView: 'resourceTimelineDay',
@@ -22,27 +23,26 @@ describe('timeline background events', function() {
       }]
     })
 
-    expect(getBgEventCnt()).toBe(1)
+    let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+    let timelineGridWrapper = viewWrapper.timelineGrid
+
+    expect(timelineGridWrapper.getBgEventEls().length).toBe(1)
 
     currentCalendar.getEventById('1').remove()
-    expect(getBgEventCnt()).toBe(0)
+    expect(timelineGridWrapper.getBgEventEls().length).toBe(0)
 
-    const toggleEl = $('.fc-expander-space')
-    toggleEl.simulate('click') // close
+    viewWrapper.dataGrid.clickFirstExpander() // close
 
     setTimeout(function() {
-      expect(getBgEventCnt()).toBe(0)
-      toggleEl.simulate('click') // open again
+      expect(timelineGridWrapper.getBgEventEls().length).toBe(0)
+      viewWrapper.dataGrid.clickFirstExpander() // open again
 
       setTimeout(function() {
         // should stay at zero
-        expect(getBgEventCnt()).toBe(0)
+        expect(timelineGridWrapper.getBgEventEls().length).toBe(0)
         done()
       }, 100)
     }, 100)
   })
 
-  function getBgEventCnt() {
-    return $('.fc-bgevent').length
-  }
 })

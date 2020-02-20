@@ -1,8 +1,9 @@
+import TimelineViewWrapper from "../lib/wrappers/TimelineViewWrapper"
 
 describe('validRange with timeline', function() {
 
   it('works', function() {
-    initCalendar({
+    let calendar = initCalendar({
       defaultView: 'timelineWeek',
       defaultDate: '2017-03-23',
       slotDuration: { days: 1 },
@@ -12,14 +13,19 @@ describe('validRange with timeline', function() {
       }
     })
 
-    expect($('th[data-date="2017-03-19"]')).toHaveClass('fc-disabled-day') // TODO: strip date data?
-    expect($('th[data-date="2017-03-20"]')).toBeInDOM()
-    expect($('th[data-date="2017-03-21"]')).toBeInDOM()
-    expect($('th[data-date="2017-03-22"]')).toBeInDOM()
-    expect($('th[data-date="2017-03-23"]')).toBeInDOM()
-    expect($('th[data-date="2017-03-24"]')).toBeInDOM()
-    expect($('th[data-date="2017-03-25"]')).toHaveClass('fc-disabled-day')
-    // TODO: strip date data?
+    let headerWrapper = new TimelineViewWrapper(calendar).header
+    let cellInfo = headerWrapper.getCellInfo()
+
+    expect(cellInfo.length).toBe(7)
+    expect(cellInfo[0].isDisabled).toBe(true)
+    expect(cellInfo[0].date).toEqualDate('2017-03-19')
+    expect(cellInfo[1].date).toEqualDate('2017-03-20')
+    expect(cellInfo[2].date).toEqualDate('2017-03-21')
+    expect(cellInfo[3].date).toEqualDate('2017-03-22')
+    expect(cellInfo[4].date).toEqualDate('2017-03-23')
+    expect(cellInfo[5].date).toEqualDate('2017-03-24')
+    expect(cellInfo[6].date).toEqualDate('2017-03-25')
+    expect(cellInfo[6].isDisabled).toBe(true)
   })
 
 })

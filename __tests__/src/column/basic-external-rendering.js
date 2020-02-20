@@ -2,6 +2,7 @@
 
 import { Draggable } from '@fullcalendar/interaction'
 import ResourceDayGridViewWrapper from '../lib/wrappers/ResourceDayGridViewWrapper'
+import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 
 describe('dayGrid-view event drag-n-drop', function() {
   pushOptions({
@@ -24,7 +25,7 @@ describe('dayGrid-view event drag-n-drop', function() {
       it('allows dropping onto a resource', function(done) {
         let dropSpy, receiveSpy
         let dragEl = $('<a' +
-          ' class="external-event fc-event"' +
+          ` class="external-event ${CalendarWrapper.EVENT_CLASSNAME}"` +
           ' style="width:100px"' +
           '>external</a>')
           .appendTo('body')

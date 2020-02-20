@@ -1,5 +1,6 @@
 import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
 import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
+import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 
 describe('filterResourcesWithEvents', function() {
   pushOptions({
@@ -53,9 +54,10 @@ describe('filterResourcesWithEvents', function() {
           { title: 'event 2', start: '2016-12-04T02:00:00', resourceId: 'd' }
         ]
       })
+      let calendarWrapper = new CalendarWrapper(calendar)
 
       expect(settings.getResourceIds(calendar)).toEqual([ 'b', 'd' ])
-      expect($('.fc-event').length).toBe(2)
+      expect(calendarWrapper.getEventEls().length).toBe(2)
     })
 
 
@@ -73,16 +75,17 @@ describe('filterResourcesWithEvents', function() {
           if (receiveCnt === 1) {
             setTimeout(function() {
               expect(settings.getResourceIds(calendar)).toEqual([ 'b', 'd' ])
-              expect($('.fc-event').length).toBe(2)
+              expect(calendarWrapper.getEventEls().length).toBe(2)
               done()
             }, 0)
           }
         }
       })
+      let calendarWrapper = new CalendarWrapper(calendar)
 
       // no resources/events initially
       expect(settings.getResourceIds(calendar)).toEqual([ ])
-      expect($('.fc-event').length).toBe(0)
+      expect(calendarWrapper.getEventEls().length).toBe(0)
     })
   })
 

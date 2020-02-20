@@ -72,9 +72,11 @@ describe('timeline dragging events between calendars', function() {
     calendar0.render()
     calendar1.render()
 
-    let timelineGrid = new ResourceTimelineViewWrapper(calendar0).timelineGrid
-    timelineGrid.dragEventTo(
-      $('.fc-event')[0], 'b', DEFAULT_DATE + 'T00:00:00'
+    let timelineGrid0 = new ResourceTimelineViewWrapper(calendar0).timelineGrid
+    let timelineGrid1 = new ResourceTimelineViewWrapper(calendar1).timelineGrid
+
+    timelineGrid0.dragEventTo(
+      timelineGrid1.getFirstEventEl(), 'b', DEFAULT_DATE + 'T00:00:00'
     )
   })
 

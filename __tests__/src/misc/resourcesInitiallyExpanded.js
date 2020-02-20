@@ -1,3 +1,5 @@
+import CalendarWrapper from "standard-tests/src/lib/wrappers/CalendarWrapper"
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('resourcesInitiallyExpanded', function() {
   pushOptions({
@@ -20,8 +22,9 @@ describe('resourcesInitiallyExpanded', function() {
     })
 
     it('renders resources expanded', function() {
-      initCalendar()
-      expect(getVisibleResourceIds()).toEqual([ 'a', 'a1', 'a2' ])
+      let calendar = initCalendar()
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+      expect(timelineGridWrapper.getResourceIds()).toEqual([ 'a', 'a1', 'a2' ])
     })
   })
 
@@ -33,13 +36,14 @@ describe('resourcesInitiallyExpanded', function() {
 
 
     it('renders child resources contracted', function() {
-      initCalendar()
-      expect(getVisibleResourceIds()).toEqual([ 'a' ])
+      let calendar = initCalendar()
+      let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+      expect(timelineGridWrapper.getResourceIds()).toEqual([ 'a' ])
     })
 
 
     it('renders background events when expanded', function(done) {
-      initCalendar({
+      let calendar = initCalendar({
         events: [
           { resourceId: 'a1',
             title: 'event1',
@@ -48,12 +52,18 @@ describe('resourcesInitiallyExpanded', function() {
             start: '2017-10-10T10:00:00' }
         ]
       })
+      let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
 
-      expect($('.event1.fc-bgevent').length).toBe(0)
+      let $eventEl = $('.event1')
+      expect($eventEl.length).toBe(0)
 
-      clickExpander()
+      dataGridWrapper.clickFirstExpander()
       setTimeout(function() {
-        expect($('.event1.fc-bgevent').length).toBe(1)
+
+        let $eventEl = $('.event1')
+        expect($eventEl.length).toBe(1)
+        expect($eventEl).toHaveClass(CalendarWrapper.BG_EVENT_CLASSNAME)
+
         done()
       })
     })
@@ -72,12 +82,14 @@ describe('resourcesInitiallyExpanded', function() {
 
 
       it('renders when expanded', function(done) {
-        initCalendar()
+        let calendar = initCalendar()
+        let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
 
         expect($('.event1').length).toBe(0)
 
-        clickExpander()
+        dataGridWrapper.clickFirstExpander()
         setTimeout(function() {
+
           expect($('.event1').length).toBe(1)
           done()
         })
@@ -95,30 +107,13 @@ describe('resourcesInitiallyExpanded', function() {
       })
 
       it('initializes with groups contracted', function() {
-        initCalendar()
-        expect(getVisibleResourceIds().length).toBe(0)
-        expect(getHGroupCnt()).toBe(1)
+        let calendar = initCalendar()
+        let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+        expect(timelineGridWrapper.getResourceIds().length).toBe(0)
+        expect(timelineGridWrapper.getHGroupCnt()).toBe(1)
       })
     })
 
-
-    /*
-    NOTE: business hours tests are in timeline-businessHours
-    */
   })
 
-
-  function getVisibleResourceIds() {
-    return $('.fc-body .fc-resource-area tr[data-resource-id]:visible').map(function(i, node) {
-      return node.getAttribute('data-resource-id')
-    }).get()
-  }
-
-  function getHGroupCnt() {
-    return $('.fc-body .fc-resource-area .fc-divider').length
-  }
-
-  function clickExpander() {
-    return $('.fc-expander').simulate('click')
-  }
 })

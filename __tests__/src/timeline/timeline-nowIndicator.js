@@ -1,5 +1,6 @@
 import { getBoundingRect } from 'standard-tests/src/lib/dom-geom'
 import TimelineViewWrapper from '../lib/wrappers/TimelineViewWrapper'
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 /*
 RIDICULOUSLY BIG THRESHOLD, because IE/Edge have setInterval issues.
@@ -27,24 +28,20 @@ describe('timeline now-indicator', function() {
         { id: 'b', title: 'Resource B' }
       ]
     }, function(resources) {
+      let ViewWrapper = resources ? ResourceTimelineViewWrapper : TimelineViewWrapper
 
-      it('doesn\'t render when out of view', function(done) {
-        initCalendar({
+      it('doesn\'t render when out of view', function() {
+        let calendar = initCalendar({
           defaultView: resources ? 'resourceTimelineDay' : 'timelineDay',
           defaultDate: '2015-12-27T02:30:00' // next day
         })
-        setTimeout(function() { // wait for scroll
-          expect(getNowIndicatorRenders()).toBe(false)
-          done()
-        })
+        let hasNowIndicator = new ViewWrapper(calendar).hasNowIndicator()
+        expect(hasNowIndicator).toBe(false)
       })
 
-      it('renders when in view', function(done) {
+      it('renders when in view', function() {
         initCalendar()
-        setTimeout(function() { // wait for scroll
-          nowIndicatorRendersAt('2015-12-26T02:30:00')
-          done()
-        })
+        nowIndicatorRendersAt('2015-12-26T02:30:00')
       })
     })
   })
@@ -92,19 +89,14 @@ describe('timeline now-indicator', function() {
   })
 
 
-  function getNowIndicatorRenders() {
-    return $('.fc-timeline .fc-now-indicator').length > 0
-  }
-
-
   function nowIndicatorRendersAt(date, thresh) {
     // wish threshold could do a smaller default threshold, but RTL messing up
     if (thresh == null) { thresh = PIXEL_THRESHOLD }
 
-    let timelineGrid = new TimelineViewWrapper(currentCalendar).timelineGrid
-    let line = timelineGrid.getLine(date)
-    let arrowRect = getBoundingRect('.fc-timeline .fc-now-indicator-arrow')
-    let lineRect = getBoundingRect('.fc-timeline .fc-now-indicator-line')
+    let viewWrapper = new TimelineViewWrapper(currentCalendar)
+    let line = viewWrapper.timelineGrid.getLine(date)
+    let arrowRect = getBoundingRect(viewWrapper.header.getNowIndicatorEl())
+    let lineRect = getBoundingRect(viewWrapper.timelineGrid.getNowIndicatorEl())
 
     expect(Math.abs(
       ((arrowRect.left + arrowRect.right) / 2) -

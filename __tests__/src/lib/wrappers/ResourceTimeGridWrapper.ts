@@ -2,6 +2,7 @@ import { startOfDay, findElements } from '@fullcalendar/core'
 import { ensureDate, formatIsoDay } from 'standard-tests/src/lib/datelib-utils'
 import { getBoundingRect } from 'standard-tests/src/lib/dom-geom'
 import TimeGridWrapper from 'standard-tests/src/lib/wrappers/TimeGridWrapper'
+import { getRectCenter, addPoints } from 'standard-tests/src/lib/geom'
 
 
 export default class ResourceTimeGridWrapper {
@@ -95,6 +96,45 @@ export default class ResourceTimeGridWrapper {
 
   getDowEls(dayAbbrev) {
     return this.base.getDowEls(dayAbbrev)
+  }
+
+
+  getEventEls() { // FG events
+    return findElements(this.el, '.fc-event')
+  }
+
+
+  getFirstEventEl() {
+    return this.el.querySelector('.fc-event') as HTMLElement
+  }
+
+
+  getNonBusinessDayEls() {
+    return this.base.getNonBusinessDayEls()
+  }
+
+
+  resizeEvent(eventEl: HTMLElement, resourceId, origEndDate, newEndDate) {
+    return new Promise((resolve) => {
+      $(eventEl).simulate('mouseover') // resizer only shows on hover
+
+      let resizerEl = eventEl.querySelector('.fc-resizer')
+      let resizerPoint = getRectCenter(resizerEl.getBoundingClientRect())
+      let origPoint = this.getPoint(resourceId, origEndDate)
+      let yCorrect = resizerPoint.top - origPoint.top
+      let destPoint = this.getPoint(resourceId, newEndDate)
+      destPoint = addPoints(destPoint, { left: 0, top: yCorrect })
+
+      $(resizerEl).simulate('drag', {
+        end: destPoint,
+        onRelease: () => resolve()
+      })
+    })
+  }
+
+
+  hasNowIndicator() {
+    return this.base.hasNowIndicator()
   }
 
 }

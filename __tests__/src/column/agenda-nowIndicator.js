@@ -1,3 +1,4 @@
+import ResourceTimeGridViewWrapper from "../lib/wrappers/ResourceTimeGridViewWrapper"
 
 describe('resource timeGrid now-indicator', function() {
   pushOptions({
@@ -12,7 +13,7 @@ describe('resource timeGrid now-indicator', function() {
   })
 
   it('renders once for each resource', function() {
-    initCalendar({
+    let calendar = initCalendar({
       defaultView: 'resourceTimeGridThreeDay',
       nowIndicator: true,
       resources: [
@@ -20,8 +21,9 @@ describe('resource timeGrid now-indicator', function() {
         { id: 'b', title: 'Resource B' }
       ]
     })
-    expect($('.fc-now-indicator-arrow').length).toBe(1)
-    expect($('.fc-now-indicator-line').length).toBe(2)
+
+    let timeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
+    expect(timeGridWrapper.hasNowIndicator()).toBe(true)
   })
 
   // big compound test

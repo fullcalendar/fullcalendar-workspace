@@ -1,3 +1,4 @@
+import ResourceTimelineViewWrapper from "../lib/wrappers/ResourceTimelineViewWrapper"
 
 describe('timeline column resizing', function() { // better renamed to 'sizing'
   pushOptions({
@@ -21,13 +22,17 @@ describe('timeline column resizing', function() { // better renamed to 'sizing'
 
 
   it('works with resourceGroupField', function(done) {
-    initCalendar({
+    let calendar = initCalendar({
       resourceGroupField: 'building'
     })
+    let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+    let dataHeaderWrapper = viewWrapper.dataHeader
+    let dataGridWrapper = viewWrapper.dataGrid
 
     function expectColWidthsToMatch() {
-      const headCellWidths = getHeadCellWidths()
-      const bodyCellWidths = getBodyCellWidths()
+      let headCellWidths = getHeadCellWidths(dataHeaderWrapper)
+      let bodyCellWidths = getBodyCellWidths(dataGridWrapper)
+
       expect(headCellWidths.length).toBe(2)
       expect(bodyCellWidths.length).toBe(2)
       expect(headCellWidths).toEqual(bodyCellWidths)
@@ -35,7 +40,7 @@ describe('timeline column resizing', function() { // better renamed to 'sizing'
 
     expectColWidthsToMatch()
 
-    $('.fc-head .fc-resource-area .fc-col-resizer:first').simulate('drag', {
+    $(dataHeaderWrapper.getColResizerEls()[0]).simulate('drag', {
       dx: 20,
       callback() {
         expectColWidthsToMatch()
@@ -46,10 +51,14 @@ describe('timeline column resizing', function() { // better renamed to 'sizing'
 
 
   it('is affected by resourceColumn[].width settings', function() {
-    initCalendar()
-    let initialHeadWidths = getHeadCellWidths()
+    let calendar = initCalendar()
+    let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+    let dataHeaderWrapper = viewWrapper.dataHeader
+    let dataGridWrapper = viewWrapper.dataGrid
 
-    currentCalendar.setOption('resourceColumns', [
+    let initialHeadWidths = getHeadCellWidths(dataHeaderWrapper)
+
+    calendar.setOption('resourceColumns', [
       {
         labelText: 'Room',
         field: 'title',
@@ -62,23 +71,21 @@ describe('timeline column resizing', function() { // better renamed to 'sizing'
       }
     ])
 
+    let updatedHeadWidths = getHeadCellWidths(dataHeaderWrapper)
+
     // *any* sort of change? easier to do this than guess how tables distribute width
-    let updatedHeadWidths = getHeadCellWidths()
     expect(updatedHeadWidths).not.toEqual(initialHeadWidths)
-    expect(updatedHeadWidths).toEqual(getBodyCellWidths()) // they are in sync?
+    expect(updatedHeadWidths).toEqual(getBodyCellWidths(dataGridWrapper)) // they are in sync?
   })
 
 
-  function getHeadCellWidths() { // rounded (inadvertently by jquery)
-    return $('.fc-head .fc-resource-area th').get().map(function(el) {
-      return $(el).width()
-    })
+  function getHeadCellWidths(dataHeaderWrapper) {
+    return dataHeaderWrapper.getCellEls().map((el) => el.offsetWidth)
   }
 
-  function getBodyCellWidths() { // rounded (inadvertently by jquery)
-    return $('.fc-body .fc-resource-area tr[data-resource-id="a"] td').get().map(function(el) {
-      return $(el).width()
-    })
+
+  function getBodyCellWidths(dataGridWrapper) {
+    return dataGridWrapper.getRowCellEls('a').map((el) => el.offsetWidth)
   }
 
 })

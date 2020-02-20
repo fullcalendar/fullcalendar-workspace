@@ -1,3 +1,5 @@
+import TimelineViewWrapper from "../lib/wrappers/TimelineViewWrapper"
+
 describe('scrollToTime method', function() {
 
   describe('when in timeline', function() {
@@ -7,14 +9,18 @@ describe('scrollToTime method', function() {
     })
 
     it('can scroll to a date', function() {
-      initCalendar()
+      let calendar = initCalendar()
       currentCalendar.scrollToTime({ days: 2 })
 
-      var slotCell = $('.fc-body .fc-slats td:eq(4)') // day 3 slot
-      var slotLeft = slotCell.position().left
-      var scrollContainer = $('.fc-body .fc-time-area .fc-scroller')
-      var scrollLeft = scrollContainer.scrollLeft()
-      var diff = Math.abs(scrollLeft - slotLeft)
+      let viewWrapper = new TimelineViewWrapper(calendar)
+      let timelineGridWrapper = viewWrapper.timelineGrid
+
+      let slotCell = timelineGridWrapper.getSlatEls()[4] // day 3 slot
+      let slotLeft = $(slotCell).position().left
+      let scrollContainer = viewWrapper.getHeaderScrollEl()
+      let scrollLeft = scrollContainer.scrollLeft
+      let diff = Math.abs(scrollLeft - slotLeft)
+
       expect(slotLeft).toBeGreaterThan(0)
       expect(scrollLeft).toBeGreaterThan(0)
       expect(diff).toBeLessThan(3)

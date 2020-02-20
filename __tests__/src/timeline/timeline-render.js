@@ -1,5 +1,7 @@
 import { startOfDay } from '@fullcalendar/core'
 import lvLocale from '@fullcalendar/core/locales/lv'
+import TimelineViewWrapper from '../lib/wrappers/TimelineViewWrapper'
+import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline rendering', function() {
   pushOptions({
@@ -7,51 +9,45 @@ describe('timeline rendering', function() {
   })
 
   function buildResources(cnt) {
-    const resources = []
+    let resources = []
     for (let i = 0; i < cnt; i++) {
       resources.push({ title: `resource${i}` })
     }
     return resources
   }
 
-  function getSpreadsheetScrollEl() {
-    return $('.fc-body .fc-resource-area .fc-scroller')[0]
-  }
-
-  function getTimeScrollEl() {
-    return $('.fc-body .fc-time-area .fc-scroller')[0]
-  }
-
 
   it('has correct vertical scroll and gutters', function() {
-    initCalendar({
+    let calendar = initCalendar({
       defaultView: 'resourceTimeline',
       resources: buildResources(50)
     })
+    let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
-    const spreadsheetEl = getSpreadsheetScrollEl()
-    const timeEl = getTimeScrollEl()
+    let spreadsheetEl = viewWrapper.getDataScrollEl()
+    let timeEl = viewWrapper.getTimeScrollEl()
 
     expect(spreadsheetEl.scrollHeight).toBeGreaterThan(0)
     expect(timeEl.scrollHeight).toBeGreaterThan(0)
 
-    const gutter = timeEl.clientHeight - spreadsheetEl.clientHeight
+    let gutter = timeEl.clientHeight - spreadsheetEl.clientHeight
     expect(spreadsheetEl.scrollHeight + gutter)
       .toEqual(timeEl.scrollHeight)
   })
 
 
   it('renders time slots localized', function() {
-    initCalendar({
+    let calendar = initCalendar({
       defaultView: 'timelineWeek',
       slotDuration: '01:00',
       scrollTime: 0,
       locale: lvLocale
     })
+    let headerWrapper = new TimelineViewWrapper(calendar).header
 
     expect(
-      $('.fc-head .fc-time-area th:first').attr('data-date')
-    ).toBe('2017-10-23T00:00:00') // start-of-week is a Monday, lv
+      headerWrapper.getCellInfo()[0].date
+    ).toEqualDate('2017-10-23T00:00:00') // start-of-week is a Monday, lv
   })
 
   it('call dayRender for each day', function() {

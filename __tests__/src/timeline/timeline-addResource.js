@@ -35,34 +35,37 @@ describe('timeline addResource', function() {
 
 
   it('renders new row with correct height', function() {
-    initCalendar({
+    let calendar = initCalendar({
       defaultView: 'resourceTimelineDay',
       resources: buildResources(50)
     })
+    let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+    let dataGridWrapper = viewWrapper.dataGrid
+    let timelineGridWrapper = viewWrapper.timelineGrid
 
-    currentCalendar.addResource({ id: 'last', title: 'last resource' }, true)
+    calendar.addResource({ id: 'last', title: 'last resource' }, true)
 
-    const spreadsheetRowEl = $('.fc-resource-area [data-resource-id="last"]')
-    const spreadsheetRowHeight = spreadsheetRowEl[0].getBoundingClientRect().height
-    const timeRowEl = $('.fc-time-area [data-resource-id="last"]')
-    const timeRowHeight = timeRowEl[0].getBoundingClientRect().height
+    const spreadsheetRowEl = dataGridWrapper.getResourceRowEl('last')
+    const spreadsheetRowHeight = spreadsheetRowEl.offsetHeight
+    const timeRowEl = timelineGridWrapper.getResourceRowEl('last')
+    const timeRowHeight = timeRowEl.offsetHeight
 
-    expect(spreadsheetRowEl.length).toBe(1)
     expect(spreadsheetRowHeight).toEqual(timeRowHeight)
   })
 
 
   it('scrolls correctly with scroll param', function() {
-    initCalendar({
+    let calendar = initCalendar({
       defaultView: 'resourceTimelineDay',
       resources: buildResources(50)
     })
+    let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
     currentCalendar.addResource({ id: 'last', title: 'last resource' }, true)
 
-    const spreadsheetScrollerEl = $('.fc-body .fc-resource-area .fc-scroller')
-    const maxScroll = spreadsheetScrollerEl[0].scrollHeight - spreadsheetScrollerEl[0].clientHeight
-    const currentScroll = spreadsheetScrollerEl[0].scrollTop
+    const spreadsheetScrollerEl = viewWrapper.getDataScrollEl()
+    const maxScroll = spreadsheetScrollerEl.scrollHeight - spreadsheetScrollerEl.clientHeight
+    const currentScroll = spreadsheetScrollerEl.scrollTop
     expect(maxScroll).toBe(currentScroll)
   })
 
@@ -76,28 +79,30 @@ describe('timeline addResource', function() {
     })
 
     it('correctly adds when parent expanded', function() {
-      initCalendar({
+      let calendar = initCalendar({
         resourcesInitiallyExpanded: true
       })
+      let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
 
       currentCalendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
 
       // expanded
-      expect($('.fc-body .fc-resource-area tr[data-resource-id="a"] .fc-icon')).toHaveClass('fc-icon-minus-square')
+      expect(dataGridWrapper.isRowExpanded('a')).toBe(true)
 
       // one level of indentation, and one space where an arrow might be
-      expect($('.fc-body .fc-resource-area tr[data-resource-id="a1"] .fc-icon').length).toBe(2)
+      expect(dataGridWrapper.getRowIndentation('a1')).toBe(2)
     })
 
     it('correctly adds when parent contracted', function() {
-      initCalendar({
+      let calendar = initCalendar({
         resourcesInitiallyExpanded: false
       })
+      let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
 
       currentCalendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
 
-      expect($('.fc-body .fc-resource-area tr[data-resource-id="a"] .fc-icon')).toHaveClass('fc-icon-plus-square')
-      expect($('.fc-body .fc-resource-area tr[data-resource-id="a1"]')).not.toBeInDOM()
+      expect(dataGridWrapper.isRowExpanded('a')).toBe(false)
+      expect(dataGridWrapper.getResourceRowEl('a1')).toBeFalsy()
     })
   })
 

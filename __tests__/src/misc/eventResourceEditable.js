@@ -47,7 +47,7 @@ describe('eventResourceEditable', function() {
         let calendar = initCalendar()
         let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
         let dragging = timelineGridWrapper.dragEventTo(
-          $('.fc-event')[0], 'c', '2016-09-04T03:00:00'
+          timelineGridWrapper.getFirstEventEl(), 'c', '2016-09-04T03:00:00'
         )
 
         waitEventDrag(calendar, dragging).then((modifiedEvent) => {
@@ -85,7 +85,7 @@ describe('eventResourceEditable', function() {
         let calendar = initCalendar()
         let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
         let dragging = timelineGridWrapper.dragEventTo(
-          $('.fc-event')[0], 'c', '2016-09-04T03:00:00'
+          timelineGridWrapper.getFirstEventEl(), 'c', '2016-09-04T03:00:00'
         )
 
         waitEventDrag(calendar, dragging).then((modifiedEvent) => {

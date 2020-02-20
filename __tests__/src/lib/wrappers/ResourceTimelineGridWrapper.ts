@@ -78,7 +78,7 @@ export default class ResourceTimelineGridWrapper {
 
 
   getResourceRowEl(resourceId) {
-    return this.el.querySelector(`tr[data-resource-id="${resourceId}"]`)
+    return this.el.querySelector(`tr[data-resource-id="${resourceId}"]`) as HTMLElement
   }
 
 
@@ -89,6 +89,36 @@ export default class ResourceTimelineGridWrapper {
 
   getSlatElByDate(date) {
     return this.base.getSlatElByDate(date)
+  }
+
+
+  getEventEls() { // FG events
+    return this.base.getEventEls()
+  }
+
+
+  getFirstEventEl() {
+    return this.base.getFirstEventEl()
+  }
+
+
+  getHGroupCnt() {
+    return this.el.querySelectorAll('.fc-divider').length
+  }
+
+
+  hasNowIndicator() {
+    return this.base.hasNowIndicator()
+  }
+
+
+  getBgEventEls() {
+    return this.base.getBgEventEls()
+  }
+
+
+  getMirrorEventEls() {
+    return this.base.getMirrorEventEls()
   }
 
 }
