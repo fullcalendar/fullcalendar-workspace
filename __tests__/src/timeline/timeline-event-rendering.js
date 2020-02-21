@@ -487,7 +487,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
             let viewWrapper = new ViewWrapper(calendar)
             let timelineGridWrapper = viewWrapper.timelineGrid
             let $eventEls = $('.' + eventClassName, viewWrapper.el)
-            let eventEdges = getEventEdges($eventEls)
+            let eventEdges = getEventEdges($eventEls, timelineGridWrapper.el)
             let isBg = Boolean(eventRendering)
 
             let startDiff = Math.abs(eventEdges.start - timelineGridWrapper.getLeft(options.startDate))
@@ -505,12 +505,12 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
           }
 
 
-          function getEventEdges($eventEls) { // gives start/end. fake-fills trailing gap
+          function getEventEdges($eventEls, canvasEl) { // gives start/end. fake-fills trailing gap
             let isBg = Boolean(eventRendering)
             let edges
 
             if (eventRendering === 'inverse-background') {
-              edges = getInverseBackgroundEventEdges($eventEls)
+              edges = getInverseBackgroundEventEdges($eventEls, canvasEl)
             } else {
               edges = getNormalEventEdges($eventEls)
             }
@@ -532,7 +532,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
           }
 
 
-          function getInverseBackgroundEventEdges($eventEls) {
+          function getInverseBackgroundEventEdges($eventEls, canvasEl) {
             expect($eventEls.length).toBeLessThan(3)
             if ($eventEls.length === 2) {
               if (dir === 'ltr') {
@@ -547,14 +547,16 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                 }
               }
             } else {
-              const canvasEl = $('.fc-body .fc-time-area .fc-timeline-grid') // TDODODODODODODOD
-              const canvasLeft = canvasEl.offset().left
-              const canvasRight = canvasLeft + canvasEl.outerWidth()
+              let $canvasEl = $(canvasEl)
+              let canvasLeft = $canvasEl.offset().left
+              let canvasRight = canvasLeft + $canvasEl.outerWidth()
+
               if ($eventEls.length === 1) {
-                const eventLeft = $eventEls.offset().left
-                const eventRight = eventLeft + $eventEls.outerWidth()
-                const leftGap = eventLeft - canvasLeft
-                const rightGap = canvasRight - eventRight
+                let eventLeft = $eventEls.offset().left
+                let eventRight = eventLeft + $eventEls.outerWidth()
+                let leftGap = eventLeft - canvasLeft
+                let rightGap = canvasRight - eventRight
+
                 if (leftGap > rightGap) {
                   return {
                     left: canvasLeft,
