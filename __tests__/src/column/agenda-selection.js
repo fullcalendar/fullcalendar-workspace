@@ -27,7 +27,7 @@ describe('timeGrid-view selection', function() {
     it('allows non-resource selection', function(done) {
       let calendar = initCalendar()
       let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
-      let selecting = timeGridWrapper.selectDates('2015-11-23T02:00:00', '2015-11-23T04:00:00')
+      let selecting = timeGridWrapper.selectDates('2015-11-23T02:00:00', '2015-11-23T04:30:00')
 
       waitDateSelect(calendar, selecting).then((selectInfo) => {
         expect(selectInfo.start).toEqualDate('2015-11-23T02:00:00Z')
