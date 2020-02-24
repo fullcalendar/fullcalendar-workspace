@@ -58,10 +58,21 @@ export default class ResourceTimelineGridWrapper {
 
   // TODO: util for selecting NOT on resource (mousedown on the slats underneath)
   selectDates(startInfo, inclusiveEndInfo) {
+    let point0 = this.getPoint(startInfo.resourceId, startInfo.date)
+    let point1 = this.getPoint(inclusiveEndInfo.resourceId, inclusiveEndInfo.date)
+
+    if ($(this.el).css('direction') === 'rtl') {
+      point0.left -= 2
+      point1.left += 2
+    } else {
+      point0.left += 2
+      point1.left -= 2
+    }
+
     return new Promise((resolve) => {
       $.simulateByPoint('drag', {
-        point: this.getPoint(startInfo.resourceId, startInfo.date),
-        end: this.getPoint(inclusiveEndInfo.resourceId, inclusiveEndInfo.date),
+        point: point0,
+        end: point1,
         onRelease: () => resolve()
       })
     })

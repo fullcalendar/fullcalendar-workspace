@@ -54,7 +54,7 @@ describe('selectAllow', function() {
     waitDateSelect(calendar, selecting).then((selectInfo) => {
       expect(typeof selectInfo).toBe('object')
       expect(selectInfo.start).toEqualDate('2016-09-04T03:00:00Z')
-      expect(selectInfo.end).toEqualDate('2016-09-04T07:00:00Z') // because hour slots
+      expect(selectInfo.end).toEqualDate('2016-09-04T06:00:00Z') // because hour slots
       expect(isCalled).toBe(true)
       done()
     })
