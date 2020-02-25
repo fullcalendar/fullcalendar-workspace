@@ -15,9 +15,17 @@ export default class ResourceTimelineGridWrapper {
 
 
   click(resourceId: string, date) { // not JUST a date. a resource too
+    let point = this.getPoint(resourceId, date)
+
+    if ($(this.el).css('direction') === 'ltr') {
+      point.left += 1
+    } else {
+      point.left -= 1
+    }
+
     return new Promise((resolve) => {
       $.simulateByPoint('drag', {
-        point: this.getPoint(resourceId, date),
+        point,
         onRelease: () => resolve()
       })
     })
@@ -25,10 +33,16 @@ export default class ResourceTimelineGridWrapper {
 
 
   dragEventTo(eventEl: HTMLElement, resourceId: string, date) {
+    const MOVEOVER = 2
+    let moveover = $(eventEl).css('direction') === 'ltr' ? MOVEOVER : -MOVEOVER
+    let point = this.getPoint(resourceId, date)
+
+    point.left += moveover
+
     return new Promise((resolve) => {
       $(eventEl).simulate('drag', {
-        localPoint: { left: 2, top: '50%' }, // 2 for zoom
-        end: this.getPoint(resourceId, date),
+        localPoint: { left: moveover, top: '50%' }, // 2 for zoom
+        end: point,
         onRelease: () => resolve()
       })
     })

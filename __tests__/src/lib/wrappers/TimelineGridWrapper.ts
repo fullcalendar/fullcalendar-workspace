@@ -11,9 +11,17 @@ export default class TimelineGridWrapper {
 
 
   clickDate(date) { // not JUST a date. a resource too
+    let point = this.getPoint(date)
+
+    if ($(this.el).css('direction') === 'ltr') {
+      point.left += 1
+    } else {
+      point.left -= 1
+    }
+
     return new Promise((resolve) => {
       $.simulateByPoint('drag', {
-        point: this.getPoint(date),
+        point,
         onRelease: () => resolve()
       })
     })

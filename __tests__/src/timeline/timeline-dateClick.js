@@ -55,7 +55,7 @@ describe('timeline dateClick', function() {
             it('won\'t report anything if not clicked on resource', function(done) {
               let dateClickCalled = false
               let calendar = initCalendar({
-                dateClick(arg) {
+                dateClick() {
                   dateClickCalled = true
                 }
               })
