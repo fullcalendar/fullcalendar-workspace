@@ -1,14 +1,17 @@
 import {
   h, createRef, VNode,
-  mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit, CssDimValue, NowTimer
+  mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit, CssDimValue, NowTimer, Duration
 } from '@fullcalendar/core'
-import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg } from '@fullcalendar/timegrid'
+import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg, TimeSlatMeta } from '@fullcalendar/timegrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
 
 
 export interface ResourceDayTimeColsProps {
   dateProfile: DateProfile | null
   resourceDayTableModel: AbstractResourceDayTableModel
+  axis: boolean
+  slotDuration: Duration
+  slatMetas: TimeSlatMeta[]
   businessHours: EventStore
   eventStore: EventStore
   eventUiBases: EventUiHash
@@ -70,6 +73,9 @@ export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeCo
             rootElRef={this.handleRootEl}
             {...this.joiner.joinProps(slicedProps, resourceDayTableModel)}
             dateProfile={dateProfile}
+            axis={props.axis}
+            slotDuration={props.slotDuration}
+            slatMetas={props.slatMetas}
             cells={resourceDayTableModel.cells[0]}
             tableColGroupNode={props.tableColGroupNode}
             tableMinWidth={props.tableMinWidth}
