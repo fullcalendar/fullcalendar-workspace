@@ -31,7 +31,7 @@ export default class ResourceDayTableView extends TableView {
       options.datesAboveResources
     )
 
-    return this.renderLayout(
+    return this.renderSimpleLayout(
       options.columnHeader &&
         <ResourceDayHeader
           ref={this.headerRef}

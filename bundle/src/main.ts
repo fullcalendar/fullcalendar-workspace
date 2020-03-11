@@ -18,6 +18,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import bootstrapPlugin from '@fullcalendar/bootstrap'
+import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import timelinePlugin from '@fullcalendar/timeline'
 import resourceCommonPlugin from '@fullcalendar/resource-common'
 import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
@@ -30,6 +31,7 @@ globalPlugins.push(
   timeGridPlugin,
   listPlugin,
   bootstrapPlugin,
+  scrollGridPlugin,
   timelinePlugin,
   resourceCommonPlugin,
   resourceDayGridPlugin,

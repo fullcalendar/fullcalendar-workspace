@@ -34,51 +34,54 @@ export default class ResourceDayTimeColsView extends TimeColsView {
 
     let slotDuration = this.parseSlotDuration(options.slotDuration)
     let slatMetas = this.buildSlatMetas(props.dateProfile, options.slotLabelInterval, slotDuration, dateEnv)
-    let axis = true
+    let { columnMinWidth } = options
 
-    return this.renderLayout(
-      axis,
-      options.columnHeader &&
-        <ResourceDayHeader
-          resources={resources}
-          dates={resourceDayTableModel.dayTableModel.headerDates}
-          dateProfile={props.dateProfile}
-          datesRepDistinctDays={true}
-          renderIntro={axis ? this.renderHeadAxis : null}
-        />,
-      options.allDaySlot && ((contentArg: ChunkContentCallbackArgs) => (
-        <ResourceDayTable
-          {...splitProps['allDay']}
-          dateProfile={props.dateProfile}
-          resourceDayTableModel={resourceDayTableModel}
-          nextDayThreshold={nextDayThreshold}
-          colGroupNode={contentArg.tableColGroupNode}
-          renderRowIntro={axis ? this.renderTableRowAxis : null}
-          eventLimit={this.getAllDayEventLimit()}
-          vGrowRows={false}
-          headerAlignElRef={this.headerElRef}
-          clientWidth={contentArg.clientWidth}
-          clientHeight={contentArg.clientHeight}
-        />
-      )),
-      (contentArg: ChunkContentCallbackArgs) => (
-        <ResourceDayTimeCols
-          {...splitProps['timed']}
-          dateProfile={props.dateProfile}
-          axis={axis}
-          slotDuration={slotDuration}
-          slatMetas={slatMetas}
-          resourceDayTableModel={resourceDayTableModel}
-          tableColGroupNode={contentArg.tableColGroupNode}
-          tableMinWidth={contentArg.tableMinWidth}
-          clientWidth={contentArg.clientWidth}
-          clientHeight={contentArg.clientHeight}
-          vGrowRows={contentArg.vGrowRows}
-          forPrint={props.forPrint}
-          onScrollTopRequest={this.handleScrollTopRequest}
-        />
-      )
+    let headerContent = options.columnHeader &&
+      <ResourceDayHeader
+        resources={resources}
+        dates={resourceDayTableModel.dayTableModel.headerDates}
+        dateProfile={props.dateProfile}
+        datesRepDistinctDays={true}
+        renderIntro={columnMinWidth ? null : this.renderHeadAxis}
+      />
+
+    let allDayContent = options.allDaySlot && ((contentArg: ChunkContentCallbackArgs) => (
+      <ResourceDayTable
+        {...splitProps['allDay']}
+        dateProfile={props.dateProfile}
+        resourceDayTableModel={resourceDayTableModel}
+        nextDayThreshold={nextDayThreshold}
+        colGroupNode={contentArg.tableColGroupNode}
+        renderRowIntro={columnMinWidth ? null : this.renderTableRowAxis}
+        eventLimit={this.getAllDayEventLimit()}
+        vGrowRows={false}
+        headerAlignElRef={this.headerElRef}
+        clientWidth={contentArg.clientWidth}
+        clientHeight={contentArg.clientHeight}
+      />
+    ))
+
+    let timeGridContent = (contentArg: ChunkContentCallbackArgs) => (
+      <ResourceDayTimeCols
+        {...splitProps['timed']}
+        dateProfile={props.dateProfile}
+        axis={!columnMinWidth}
+        slotDuration={slotDuration}
+        slatMetas={slatMetas}
+        resourceDayTableModel={resourceDayTableModel}
+        tableColGroupNode={contentArg.tableColGroupNode}
+        tableMinWidth={contentArg.tableMinWidth}
+        clientWidth={contentArg.clientWidth}
+        clientHeight={contentArg.clientHeight}
+        vGrowRows={contentArg.vGrowRows}
+        forPrint={props.forPrint}
+        onScrollTopRequest={this.handleScrollTopRequest}
+      />
     )
+
+    return columnMinWidth
+      ? this.renderHScrollLayout(headerContent, allDayContent, timeGridContent, columnMinWidth)
+      : this.renderSimpleLayout(headerContent, allDayContent, timeGridContent)
   }
 
 }
