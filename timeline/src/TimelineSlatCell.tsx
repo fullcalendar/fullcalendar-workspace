@@ -1,6 +1,6 @@
 import {
-  h, isInt, getDayClasses, BaseComponent, DateProfile,
-  ComponentContext, DateMarker, Ref, setRef
+  h, isInt, BaseComponent,
+  ComponentContext, DateMarker, Ref, setRef, getDayClassNames, getSlatClassNames, DateRange, getDateMeta, getDayMeta, DateProfile
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -9,6 +9,8 @@ export interface TimelineSlatCellProps {
   date: DateMarker
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
+  nowDate: DateMarker
+  todayRange: DateRange
   isEm: boolean
   elRef?: Ref<HTMLTableCellElement>
 }
@@ -19,12 +21,16 @@ export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProp
 
   render(props: TimelineSlatCellProps, state: {}, context: ComponentContext) {
     let { dateEnv } = context
-    let { date, dateProfile, tDateProfile, isEm } = props // TODO: destructure in signature! do elsewhere!
-    let classes
+    let { date, tDateProfile, isEm } = props // TODO: destructure in signature! do elsewhere!
+    let classNames: string[]
 
     if (tDateProfile.isTimeScale) {
-      classes = []
-      classes.push(
+      classNames = getSlatClassNames(
+        getDateMeta(date, props.todayRange, props.nowDate),
+        context.theme
+      )
+
+      classNames.push(
         isInt(dateEnv.countDurationsBetween(
           tDateProfile.normalizedRange.start,
           date,
@@ -33,13 +39,16 @@ export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProp
           'fc-major' :
           'fc-minor'
       )
+
     } else {
-      classes = getDayClasses(date, dateProfile, context)
-      classes.push('fc-day')
+      classNames = getDayClassNames(
+        getDayMeta(date, props.todayRange, props.dateProfile),
+        context.theme
+      )
     }
 
     if (isEm) {
-      classes.push('fc-em-cell')
+      classNames.push('fc-em-cell')
     }
 
     let dateStr = dateEnv.formatIso(date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true })
@@ -49,7 +58,7 @@ export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProp
         ref={this.handleEl}
         key={dateStr /* fresh rerender for new date, mostly because of dayRender */}
         data-date={dateStr}
-        class={classes.join(' ')}
+        class={classNames.join(' ')}
       ><div /></td>
     )
   }

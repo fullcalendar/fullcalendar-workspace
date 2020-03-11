@@ -1,6 +1,6 @@
 import {
   h, BaseComponent, DateProfile, multiplyDuration,
-  ComponentContext, RefMap, CssDimValue, VNode, createRef, ScrollResponder, ScrollRequest
+  ComponentContext, RefMap, CssDimValue, VNode, createRef, ScrollResponder, ScrollRequest, DateMarker, DateRange
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 import TimelineSlatCell from './TimelineSlatCell'
@@ -18,6 +18,8 @@ export interface TimelineSlatsProps extends TimelineSlatsContentProps {
 interface TimelineSlatsContentProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
+  nowDate: DateMarker
+  todayRange: DateRange
 }
 
 
@@ -46,6 +48,8 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
             cellElRefs={this.cellElRefs}
             dateProfile={props.dateProfile}
             tDateProfile={props.tDateProfile}
+            nowDate={props.nowDate}
+            todayRange={props.todayRange}
           />
         </table>
       </div>
@@ -156,7 +160,7 @@ class TimelineSlatsBody extends BaseComponent<TimelineSlatsBodyProps> {
 
 
   render(props: TimelineSlatsBodyProps) {
-    let { tDateProfile, dateProfile, cellElRefs } = props
+    let { tDateProfile, cellElRefs } = props
     let { slotDates, isWeekStarts } = tDateProfile
 
     return (
@@ -165,8 +169,10 @@ class TimelineSlatsBody extends BaseComponent<TimelineSlatsBodyProps> {
           {slotDates.map((slotDate, i) => (
             <TimelineSlatCell
               date={slotDate}
-              dateProfile={dateProfile}
+              dateProfile={props.dateProfile}
               tDateProfile={tDateProfile}
+              nowDate={props.nowDate}
+              todayRange={props.todayRange}
               isEm={isWeekStarts[i]}
               elRef={cellElRefs.createRef(i)}
             />

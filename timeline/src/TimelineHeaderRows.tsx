@@ -1,5 +1,5 @@
 import {
-  h, asRoughMs, isSingleDay, getDayClasses, BaseComponent, ComponentContext, DateProfile, GotoAnchor, Fragment
+  h, asRoughMs, isSingleDay, BaseComponent, ComponentContext, DateProfile, GotoAnchor, Fragment, DateRange, DateMarker, getDayMeta, getDayClassNames, getDateMeta, getSlatClassNames
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -7,6 +7,8 @@ import { TimelineDateProfile } from './timeline-date-profile'
 export interface TimelineHeaderRowsProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
+  nowDate: DateMarker
+  todayRange: DateRange
 }
 
 export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
@@ -14,10 +16,10 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
 
   render(props: TimelineHeaderRowsProps, state: {}, context: ComponentContext) {
     let { dateEnv, options } = context
-    let { tDateProfile, dateProfile } = props
+    let { tDateProfile } = props
     let { cellRows } = tDateProfile
     let isChrono = asRoughMs(tDateProfile.labelInterval) > asRoughMs(tDateProfile.slotDuration)
-    let oneDay = isSingleDay(tDateProfile.slotDuration)
+    let isSlotOneDay = isSingleDay(tDateProfile.slotDuration)
 
     return (
       <Fragment>
@@ -27,16 +29,23 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
           return (
             <tr class={isChrono && isLast ? 'fc-chrono' : ''}>
               {rowCells.map((cell) => {
-                let headerCellClassNames = []
+                let headerCellClassNames: string[]
+
+                if (isSlotOneDay) {
+                  headerCellClassNames = getDayClassNames(
+                    getDayMeta(cell.date, props.todayRange),
+                    context.theme
+                  )
+
+                } else {
+                  headerCellClassNames = getSlatClassNames(
+                    getDateMeta(cell.date, props.todayRange, props.nowDate),
+                    context.theme
+                  )
+                }
 
                 if (cell.isWeekStart) {
                   headerCellClassNames.push('fc-em-cell')
-                }
-
-                if (oneDay) {
-                  headerCellClassNames = headerCellClassNames.concat(
-                    getDayClasses(cell.date, dateProfile, context, true) // adds "today" class and other day-based classes
-                  )
                 }
 
                 return (

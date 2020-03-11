@@ -1,16 +1,14 @@
 import {
-  h, View, ViewProps, ComponentContext, memoize, subrenderer, ViewSpec, getViewClassNames, ChunkContentCallbackArgs, DateMarker, NowTimer, createRef
+  h, View, ViewProps, ComponentContext, memoize, ViewSpec, getViewClassNames, ChunkContentCallbackArgs, createRef
 } from '@fullcalendar/core'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
 import TimelineHeader from './TimelineHeader'
-import { getTimelineNowIndicatorUnit } from './util'
 import { ScrollGrid } from '@fullcalendar/scrollgrid'
 import TimelineGrid from './TimelineGrid'
 import TimelineCoords from './TimelineCoords'
 
 
 interface TimelineViewState {
-  nowIndicatorDate: DateMarker
   slatCoords?: TimelineCoords
 }
 
@@ -19,15 +17,13 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
 
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private scrollGridRef = createRef<ScrollGrid>()
-  private tDateProfile: TimelineDateProfile
-  private updateNowTimer = subrenderer(NowTimer)
 
 
   render(props: ViewProps, state: TimelineViewState, context: ComponentContext) {
     let { options } = context
     let { dateProfile } = props
 
-    let tDateProfile = this.tDateProfile = this.buildTimelineDateProfile(
+    let tDateProfile = this.buildTimelineDateProfile(
       dateProfile,
       context.dateEnv,
       options,
@@ -59,7 +55,6 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
                     tableColGroupNode={contentArg.tableColGroupNode}
                     dateProfile={dateProfile}
                     tDateProfile={tDateProfile}
-                    nowIndicatorDate={state.nowIndicatorDate}
                     slatCoords={state.slatCoords}
                   />
                 )
@@ -78,7 +73,6 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
                     tableMinWidth={contentArg.tableMinWidth}
                     tableColGroupNode={contentArg.tableColGroupNode}
                     tDateProfile={tDateProfile}
-                    nowIndicatorDate={state.nowIndicatorDate}
                     onSlatCoords={this.handleSlatCoords}
                     onScrollLeftRequest={this.handleScrollLeftRequest}
                   />
@@ -94,37 +88,6 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
 
   handleSlatCoords = (slatCoords: TimelineCoords | null) => {
     this.setState({ slatCoords })
-  }
-
-
-  componentDidMount() {
-    this.subrender()
-  }
-
-
-  componentDidUpdate() {
-    this.subrender()
-  }
-
-
-  componentWillUnmount() {
-    this.subrenderDestroy()
-  }
-
-
-  subrender() {
-    this.updateNowTimer({ // TODO: componentize
-      enabled: this.context.options.nowIndicator,
-      unit: getTimelineNowIndicatorUnit(this.tDateProfile), // expensive operation?
-      callback: this.handleNowDate
-    })
-  }
-
-
-  handleNowDate = (date: DateMarker) => {
-    this.setState({
-      nowIndicatorDate: date
-    })
   }
 
 

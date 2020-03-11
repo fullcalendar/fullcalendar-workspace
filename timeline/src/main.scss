@@ -166,42 +166,41 @@ TODO: figure out better styling
   position: static;
 }
 
-.fc-time-area .fc-event-container {
+.fc-timeline-events {
   position: relative;
   z-index: 2; /* above bgevent and highlight */
   width: 0; /* for event positioning. will end up on correct side based on dir */
 }
 
-.fc-time-area .fc-mirror-container { /* also an fc-event-container */
+.fc-timeline-event-harness {
   position: absolute;
-  z-index: 3;
-  top: 0;
+  top: 0; // default
 }
 
-.fc-time-area .fc-event-container {
-  padding-bottom: 8px;
-  top: -1px;
-}
-
-.fc-time-area tr:first-child .fc-event-container {
+.fc-timeline-bgcontent {
+  position: absolute;
   top: 0;
-}
-
-.fc-no-overlap .fc-time-area .fc-event-container {
-  padding-bottom: 0;
-  top: 0;
+  bottom: 0;
+  width: 0;
+  left: 0; // will take precedence when LTR
+  right: 0; // will take precedence when RTL
 }
 
 
 /* Time Grid Events
 --------------------------------------------------------------------------------------------------*/
 
+// TODO: flexbox to allow for stickyness
+
 .fc-timeline-event {
-  position: absolute;
   display: flex;
   border-radius: 0;
   padding: 2px 1px;
   margin-bottom: 1px;
+}
+
+.fc-timeline-event:not(.fc-event-mirror) {
+  // min-width: 100px;
 }
 
 .fc-no-overlap .fc-timeline-event {
@@ -210,45 +209,8 @@ TODO: figure out better styling
   margin-bottom: 0;
 }
 
-.fc-ltr .fc-timeline-event {
-  flex-direction: row;
-  margin-right: 1px; // don't overlap grid lines at the event's end
-}
-
-.fc-rtl .fc-timeline-event {
-  // inherits direction:rtl, which flex row respects
-  margin-left: 1px; // don't overlap grid lines at the event's end
-}
-
-.fc-timeline-event .fc-time-wrap {
-  flex-shrink: 0; // makes the title shrink instead
-  min-width: 0; // makes it okay to shrink past content
-}
-
-.fc-timeline-event .fc-title-wrap { // contains the sticky title
-  flex-grow: 1; // will fill available space
-  min-width: 0; // makes it okay to shrink past content
-}
-
-.fc-timeline-event .fc-time,
-.fc-timeline-event .fc-title {
-  display: inline-block; // necesssary for max-width
-  vertical-align: top;
-  max-width: 100%; // constrain to available space
-  padding: 0 2px; // good for sticky
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box; // so that max-width includes padding
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.fc-timeline-event .fc-time {
-  font-weight: bold;
-}
-
-.fc-timeline-event.fc-not-start:before,
-.fc-timeline-event.fc-not-end:after {
+.fc-timeline-event:not(.fc-event-start):before,
+.fc-timeline-event:not(.fc-event-end):after {
   content: "";
   align-self: center;
   width: 0;
@@ -261,13 +223,13 @@ TODO: figure out better styling
 }
 
 // pointing left
-.fc-ltr .fc-timeline-event.fc-not-start:before,
-.fc-rtl .fc-timeline-event.fc-not-end:after {
+.fc-ltr .fc-timeline-event:not(.fc-event-start):before,
+.fc-rtl .fc-timeline-event:not(.fc-event-end):after {
   border-left: 0;
 }
 
 // pointing right
-.fc-ltr .fc-timeline-event.fc-not-end:after,
-.fc-rtl .fc-timeline-event.fc-not-start:before {
+.fc-ltr .fc-timeline-event:not(.fc-event-end):after,
+.fc-rtl .fc-timeline-event:not(.fc-event-start):before {
   border-right: 0;
 }

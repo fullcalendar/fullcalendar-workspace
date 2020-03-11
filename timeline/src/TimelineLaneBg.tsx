@@ -1,5 +1,4 @@
-import { BaseComponent, h, Fragment } from '@fullcalendar/core'
-import TimelineFills from './TimelineFills'
+import { BaseComponent, h } from '@fullcalendar/core'
 import TimelineCoords from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
@@ -7,9 +6,9 @@ import { TimelineLaneSeg } from './TimelineLaneSlicer'
 export interface TimelineLaneBgProps {
   businessHourSegs: TimelineLaneSeg[]
   bgEventSegs: TimelineLaneSeg[] | null
-  timelineCoords?: TimelineCoords
   dateSelectionSegs: TimelineLaneSeg[]
   eventResizeSegs: TimelineLaneSeg[]
+  timelineCoords?: TimelineCoords
 }
 
 
@@ -17,44 +16,28 @@ export default class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
 
 
   render(props: TimelineLaneBgProps) {
-    return (
-      <Fragment>
-        <TimelineFills
-          type='businessHours'
-          segs={props.businessHourSegs}
-          timelineCoords={props.timelineCoords}
-        />
-        <TimelineFills
-          type='bgEvent'
-          segs={props.bgEventSegs}
-          timelineCoords={props.timelineCoords}
-        />
-        {this.renderHighlight()}
-      </Fragment>
-    )
+    let highlightSeg = [].concat(props.eventResizeSegs, props.dateSelectionSegs)
+
+    return props.timelineCoords && // TODO: use this technique elsewhere: dont render at all if no coords?
+      <div class='fc-timeline-bgcontent'>
+        {this.renderSegs(props.businessHourSegs, props.timelineCoords, 'fc-nonbusiness')}
+        {this.renderSegs(props.bgEventSegs, props.timelineCoords, 'fc-bgevent')}
+        {this.renderSegs(highlightSeg, props.timelineCoords, 'fc-highlight')}
+      </div>
   }
 
 
-  renderHighlight() {
-    let { props } = this
+  renderSegs(segs: TimelineLaneSeg[], timelineCoords: TimelineCoords, className: string) {
+    return segs.map((seg) => {
+      let coords = timelineCoords.rangeToCoords(seg.eventRange.range)
 
-    if (props.eventResizeSegs && props.eventResizeSegs.length) {
       return (
-        <TimelineFills
-          type='highlight'
-          segs={props.eventResizeSegs}
-          timelineCoords={props.timelineCoords}
-        />
+        <div className={className} style={{
+          left: coords.left,
+          right: -coords.right // outwards from right edge (which is same as left edge)
+        }} />
       )
-    } else {
-      return (
-        <TimelineFills
-          type='highlight'
-          segs={props.dateSelectionSegs}
-          timelineCoords={props.timelineCoords}
-        />
-      )
-    }
+    })
   }
 
 }

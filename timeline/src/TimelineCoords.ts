@@ -5,19 +5,20 @@ import {
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
-export default class TimelineCoords {
+
+export default class TimelineCoords { // TODO: rename to "slat" coords?
 
   outerCoordCache: PositionCache
   innerCoordCache: PositionCache
 
 
   constructor(
-    slatRootEl: HTMLElement,
+    public slatRootEl: HTMLElement, // okay to expose?
     slatEls: HTMLElement[],
     private dateProfile: DateProfile,
     private tDateProfile: TimelineDateProfile,
     private dateEnv: DateEnv,
-    private isRtl: boolean
+    public isRtl: boolean
   ) {
     this.outerCoordCache = new PositionCache(
       slatRootEl,

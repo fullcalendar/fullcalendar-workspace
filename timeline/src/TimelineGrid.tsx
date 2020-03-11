@@ -1,4 +1,4 @@
-import { h, ComponentContext, createRef, ViewProps, Hit, DateComponent, CssDimValue, VNode, DateMarker } from '@fullcalendar/core'
+import { h, ComponentContext, createRef, ViewProps, Hit, DateComponent, CssDimValue, VNode, DateMarker, NowTimer, greatestDurationDenominator, DateRange } from '@fullcalendar/core'
 import TimelineCoords from './TimelineCoords'
 import TimelineSlats from './TimelineSlats'
 import TimelineLane from './TimelineLane'
@@ -11,7 +11,6 @@ export interface TimelinGridProps extends ViewProps {
   clientHeight: CssDimValue
   tableMinWidth: CssDimValue
   tableColGroupNode: VNode
-  nowIndicatorDate: DateMarker | null
   onSlatCoords?: (coords: TimelineCoords) => void
   onScrollLeftRequest?: (scrollLeft: number) => void
 }
@@ -28,7 +27,7 @@ export default class TimelineGrid extends DateComponent<TimelinGridProps, Timeli
 
   render(props: TimelinGridProps, state: TimelineGridState, context: ComponentContext) {
     let { dateProfile, tDateProfile } = props
-    let nowIndicatorLeft = state.coords && state.coords.safeDateToCoord(props.nowIndicatorDate)
+    let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
 
     return (
       <div class='fc-timeline-grid' ref={this.handeEl} style={{
@@ -36,37 +35,42 @@ export default class TimelineGrid extends DateComponent<TimelinGridProps, Timeli
         height: props.clientHeight,
         width: props.clientWidth
       }}>
-        <TimelineSlats
-          ref={this.slatsRef}
-          dateProfile={dateProfile}
-          tDateProfile={tDateProfile}
-          clientWidth={props.clientWidth}
-          tableColGroupNode={props.tableColGroupNode}
-          tableMinWidth={props.tableMinWidth}
-          onCoords={this.handleCoords}
-          onScrollLeftRequest={props.onScrollLeftRequest}
-        />
-        <TimelineLane
-          dateProfile={props.dateProfile}
-          dateProfileGenerator={props.dateProfileGenerator}
-          tDateProfile={props.tDateProfile}
-          nextDayThreshold={context.nextDayThreshold}
-          businessHours={props.businessHours}
-          eventStore={props.eventStore}
-          eventUiBases={props.eventUiBases}
-          dateSelection={props.dateSelection}
-          eventSelection={props.eventSelection}
-          eventDrag={props.eventDrag}
-          eventResize={props.eventResize}
-          timelineCoords={state.coords}
-          minHeight={props.clientHeight}
-        />
-        {nowIndicatorLeft != null &&
-          <div
-            class='fc-now-indicator fc-now-indicator-line'
-            style={{ left: nowIndicatorLeft }}
-          />
-        }
+        <NowTimer unit={timerUnit} content={(nowDate: DateMarker, todayRange: DateRange) => [
+          <TimelineSlats
+            ref={this.slatsRef}
+            dateProfile={dateProfile}
+            tDateProfile={tDateProfile}
+            nowDate={nowDate}
+            todayRange={todayRange}
+            clientWidth={props.clientWidth}
+            tableColGroupNode={props.tableColGroupNode}
+            tableMinWidth={props.tableMinWidth}
+            onCoords={this.handleCoords}
+            onScrollLeftRequest={props.onScrollLeftRequest}
+          />,
+          <TimelineLane
+            dateProfile={props.dateProfile}
+            dateProfileGenerator={props.dateProfileGenerator}
+            tDateProfile={props.tDateProfile}
+            nowDate={nowDate}
+            todayRange={todayRange}
+            nextDayThreshold={context.nextDayThreshold}
+            businessHours={props.businessHours}
+            eventStore={props.eventStore}
+            eventUiBases={props.eventUiBases}
+            dateSelection={props.dateSelection}
+            eventSelection={props.eventSelection}
+            eventDrag={props.eventDrag}
+            eventResize={props.eventResize}
+            timelineCoords={state.coords}
+            minHeight={props.clientHeight}
+          />,
+          (context.options.nowIndicator && state.coords) &&
+            <div
+              class='fc-now-indicator fc-now-indicator-line'
+              style={{ left: state.coords.safeDateToCoord(nowDate) }}
+            />
+        ]} />
       </div>
     )
   }
