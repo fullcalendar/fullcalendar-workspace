@@ -1,8 +1,8 @@
 import {
-  h, createRef, VNode, subrenderer,
-  mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit, NowTimer, CssDimValue
+  h, createRef, VNode,
+  mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit, CssDimValue, NowTimer
 } from '@fullcalendar/core'
-import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg, TIME_COLS_NOW_INDICATOR_UNIT } from '@fullcalendar/timegrid'
+import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg } from '@fullcalendar/timegrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
 
 
@@ -21,23 +21,16 @@ export interface ResourceDayTimeColsProps {
   clientWidth: CssDimValue
   clientHeight: CssDimValue
   vGrowRows: boolean
-  renderBgIntro: () => VNode[]
-  renderIntro: () => VNode[]
   onScrollTopRequest?: (scrollTop: number) => void
   forPrint: boolean
 }
 
-interface ResourceDayTimeColsState {
-  nowIndicatorDate: DateMarker
-}
 
-
-export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps, ResourceDayTimeColsState> {
+export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps> {
 
   allowAcrossResources = false
 
   private buildDayRanges = memoize(buildDayRanges)
-  private updateNowTimer = subrenderer(NowTimer)
   private dayRanges: DateRange[] // for now indicator
   private splitter = new VResourceSplitter()
   private slicers: { [resourceId: string]: DayTimeColsSlicer } = {}
@@ -45,8 +38,8 @@ export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeCo
   private timeColsRef = createRef<TimeCols>()
 
 
-  render(props: ResourceDayTimeColsProps, state: ResourceDayTimeColsState, context: ComponentContext) {
-    let { dateEnv } = context
+  render(props: ResourceDayTimeColsProps, state: {}, context: ComponentContext) {
+    let { dateEnv, options } = context
     let { dateProfile, resourceDayTableModel } = props
 
     let dayRanges = this.dayRanges = this.buildDayRanges(resourceDayTableModel.dayTableModel, dateProfile, dateEnv)
@@ -69,23 +62,27 @@ export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeCo
     this.allowAcrossResources = dayRanges.length === 1
 
     return (
-      <TimeCols
-        ref={this.timeColsRef}
-        rootElRef={this.handleRootEl}
-        {...this.joiner.joinProps(slicedProps, resourceDayTableModel)}
-        dateProfile={dateProfile}
-        cells={resourceDayTableModel.cells[0]}
-        tableColGroupNode={props.tableColGroupNode}
-        tableMinWidth={props.tableMinWidth}
-        clientWidth={props.clientWidth}
-        clientHeight={props.clientHeight}
-        vGrowRows={props.vGrowRows}
-        renderBgIntro={props.renderBgIntro}
-        renderIntro={props.renderIntro}
-        nowIndicatorDate={state.nowIndicatorDate}
-        nowIndicatorSegs={state.nowIndicatorDate && this.buildNowIndicatorSegs(state.nowIndicatorDate)}
-        onScrollTopRequest={props.onScrollTopRequest}
-        forPrint={props.forPrint}
+      <NowTimer // TODO: would move this further down hierarchy, but sliceNowDate needs it
+        unit={options.nowIndicator ? 'minute' : 'day'}
+        content={(nowDate: DateMarker, todayRange: DateRange) => (
+          <TimeCols
+            ref={this.timeColsRef}
+            rootElRef={this.handleRootEl}
+            {...this.joiner.joinProps(slicedProps, resourceDayTableModel)}
+            dateProfile={dateProfile}
+            cells={resourceDayTableModel.cells[0]}
+            tableColGroupNode={props.tableColGroupNode}
+            tableMinWidth={props.tableMinWidth}
+            clientWidth={props.clientWidth}
+            clientHeight={props.clientHeight}
+            vGrowRows={props.vGrowRows}
+            nowDate={nowDate}
+            nowIndicatorSegs={options.nowIndicator && this.buildNowIndicatorSegs(nowDate)}
+            todayRange={todayRange}
+            onScrollTopRequest={props.onScrollTopRequest}
+            forPrint={props.forPrint}
+          />
+        )}
       />
     )
   }
@@ -99,37 +96,6 @@ export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeCo
     } else {
       calendar.unregisterInteractiveComponent(this)
     }
-  }
-
-
-  componentDidMount() {
-    this.subrender()
-  }
-
-
-  componentDidUpdate() {
-    this.subrender()
-  }
-
-
-  componentWillUnmount() {
-    this.subrenderDestroy()
-  }
-
-
-  subrender() {
-    this.updateNowTimer({
-      enabled: this.context.options.nowIndicator,
-      unit: TIME_COLS_NOW_INDICATOR_UNIT,
-      callback: this.handleNowDate
-    })
-  }
-
-
-  handleNowDate = (date: DateMarker) => {
-    this.setState({
-      nowIndicatorDate: date
-    })
   }
 
 

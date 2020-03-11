@@ -15,18 +15,14 @@ export interface ResourceDayTableProps {
   eventSelection: string
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
-  isRigid: boolean
   nextDayThreshold: Duration
   colGroupNode: VNode
-  renderNumberIntro: (row: number, cells: any) => VNode[]
-  renderBgIntro: () => VNode[]
-  renderIntro: () => VNode[]
-  colWeekNumbersVisible: boolean // week numbers render in own column? (caller does HTML via intro)
-  cellWeekNumbersVisible: boolean // display week numbers in day cell?
+  renderRowIntro?: () => VNode
   eventLimit: boolean | number
-  vGrow: boolean
+  vGrowRows: boolean
   headerAlignElRef?: RefObject<HTMLElement> // for more popover alignment
   clientWidth: CssDimValue
+  clientHeight: CssDimValue
 }
 
 export default class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
@@ -63,21 +59,17 @@ export default class ResourceDayTable extends DateComponent<ResourceDayTableProp
     return (
       <Table
         ref={this.tableRef}
-        rootElRef={this.handleRootEl}
+        elRef={this.handleRootEl}
         {...this.joiner.joinProps(slicedProps, resourceDayTableModel)}
-        dateProfile={dateProfile}
         cells={resourceDayTableModel.cells}
-        isRigid={props.isRigid}
+        dateProfile={dateProfile}
         colGroupNode={props.colGroupNode}
-        renderNumberIntro={props.renderNumberIntro}
-        renderBgIntro={props.renderBgIntro}
-        renderIntro={props.renderIntro}
-        colWeekNumbersVisible={props.colWeekNumbersVisible}
-        cellWeekNumbersVisible={props.cellWeekNumbersVisible}
+        renderRowIntro={props.renderRowIntro}
         eventLimit={props.eventLimit}
-        vGrow={props.vGrow}
+        vGrowRows={props.vGrowRows}
         headerAlignElRef={props.headerAlignElRef}
         clientWidth={props.clientWidth}
+        clientHeight={props.clientHeight}
       />
     )
   }

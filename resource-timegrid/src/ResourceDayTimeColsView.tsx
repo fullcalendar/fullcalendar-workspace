@@ -44,18 +44,14 @@ export default class ResourceDayTimeColsView extends TimeColsView {
           {...splitProps['allDay']}
           dateProfile={props.dateProfile}
           resourceDayTableModel={resourceDayTableModel}
-          isRigid={false}
           nextDayThreshold={nextDayThreshold}
           colGroupNode={contentArg.tableColGroupNode}
-          renderNumberIntro={this.renderTableIntro}
-          renderBgIntro={this.renderTableBgIntro}
-          renderIntro={this.renderTableIntro}
-          colWeekNumbersVisible={false}
-          cellWeekNumbersVisible={false}
+          renderRowIntro={this.renderTableRowIntro}
           eventLimit={this.getAllDayEventLimit()}
-          vGrow={false}
+          vGrowRows={false}
           headerAlignElRef={this.headerElRef}
           clientWidth={contentArg.clientWidth}
+          clientHeight={contentArg.clientHeight}
         />
       )),
       (contentArg: ChunkContentCallbackArgs) => (
@@ -68,8 +64,6 @@ export default class ResourceDayTimeColsView extends TimeColsView {
           clientWidth={contentArg.clientWidth}
           clientHeight={contentArg.clientHeight}
           vGrowRows={contentArg.vGrowRows}
-          renderBgIntro={this.renderTimeColsBgIntro}
-          renderIntro={this.renderTimeColsIntro}
           forPrint={props.forPrint}
           onScrollTopRequest={this.handleScrollTopRequest}
         />

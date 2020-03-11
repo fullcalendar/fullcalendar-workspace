@@ -2,7 +2,7 @@ import {
   h, createRef,
   ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs
 } from '@fullcalendar/core'
-import { TableView, buildDayTableModel, isEventLimitAuto } from '@fullcalendar/daygrid'
+import { TableView, buildDayTableModel } from '@fullcalendar/daygrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
 import ResourceDayTable from './ResourceDayTable'
 
@@ -21,7 +21,6 @@ export default class ResourceDayTableView extends TableView {
 
   render(props: ResourceViewProps, state: {}, context: ComponentContext) {
     let { options, nextDayThreshold } = context
-    let { colWeekNumbersVisible, cellWeekNumbersVisible } = this.processOptions(context.options)
 
     let resourceOrderSpecs = this.parseResourceOrder(options.resourceOrder)
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
@@ -40,7 +39,6 @@ export default class ResourceDayTableView extends TableView {
           dates={resourceDayTableModel.dayTableModel.headerDates}
           dateProfile={props.dateProfile}
           datesRepDistinctDays={true}
-          renderIntro={this.renderHeadIntro}
         />,
       (contentArg: ChunkContentCallbackArgs) => (
         <ResourceDayTable
@@ -54,18 +52,13 @@ export default class ResourceDayTableView extends TableView {
           eventSelection={props.eventSelection}
           eventDrag={props.eventDrag}
           eventResize={props.eventResize}
-          isRigid={isEventLimitAuto(options) && !props.isHeightAuto}
           nextDayThreshold={nextDayThreshold}
           colGroupNode={contentArg.tableColGroupNode}
-          renderNumberIntro={this.renderNumberIntro}
-          renderBgIntro={this.renderBgIntro}
-          renderIntro={this.renderIntro}
-          colWeekNumbersVisible={colWeekNumbersVisible}
-          cellWeekNumbersVisible={cellWeekNumbersVisible}
           eventLimit={options.eventLimit}
-          vGrow={!props.isHeightAuto}
+          vGrowRows={!props.isHeightAuto}
           headerAlignElRef={this.headerElRef}
           clientWidth={contentArg.clientWidth}
+          clientHeight={contentArg.clientHeight}
         />
       )
     )
