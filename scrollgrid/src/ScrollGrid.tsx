@@ -21,11 +21,11 @@ import {
   filterHash,
   collectFromHash,
   memoizeHashlike,
+  getCanVGrowWithinCell
 } from '@fullcalendar/core'
 import StickyScrolling from './StickyScrolling'
 import ClippedScroller, { ClippedOverflowValue } from './ClippedScroller'
 import ScrollSyncer from './ScrollSyncer'
-import { getCanVGrowWithinCell } from './table-styling'
 
 
 export interface ScrollGridProps {

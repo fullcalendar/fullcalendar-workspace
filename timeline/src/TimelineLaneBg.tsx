@@ -1,4 +1,4 @@
-import { BaseComponent, h } from '@fullcalendar/core'
+import { BaseComponent, h, Fragment } from '@fullcalendar/core'
 import TimelineCoords from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
@@ -18,12 +18,14 @@ export default class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
   render(props: TimelineLaneBgProps) {
     let highlightSeg = [].concat(props.eventResizeSegs, props.dateSelectionSegs)
 
-    return props.timelineCoords && // TODO: use this technique elsewhere: dont render at all if no coords?
+    return props.timelineCoords && (
       <div class='fc-timeline-bgcontent'>
-        {this.renderSegs(props.businessHourSegs, props.timelineCoords, 'fc-nonbusiness')}
-        {this.renderSegs(props.bgEventSegs, props.timelineCoords, 'fc-bgevent')}
-        {this.renderSegs(highlightSeg, props.timelineCoords, 'fc-highlight')}
+        {/* Fragments contain the keys */}
+        <Fragment>{this.renderSegs(props.businessHourSegs, props.timelineCoords, 'fc-nonbusiness')}</Fragment>
+        <Fragment>{this.renderSegs(props.bgEventSegs, props.timelineCoords, 'fc-bgevent')}</Fragment>
+        <Fragment>{this.renderSegs(highlightSeg, props.timelineCoords, 'fc-highlight')}</Fragment>
       </div>
+    )
   }
 
 
