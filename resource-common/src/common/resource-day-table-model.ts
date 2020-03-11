@@ -291,7 +291,6 @@ export abstract class VResourceJoiner<SegType extends Seg> {
     let affectedInstances = {}
     let transformedSegs = []
     let isEvent = false
-    let interactingSeg = null
 
     for (let i = 0; i < resourceCnt; i++) {
       let interaction = interactions[i]
@@ -306,7 +305,6 @@ export abstract class VResourceJoiner<SegType extends Seg> {
 
         __assign(affectedInstances, interaction.affectedInstances)
         isEvent = isEvent || interaction.isEvent
-        interactingSeg = interactingSeg || interaction.interactingSeg
       }
 
       if (interactions[resourceCnt]) { // one beyond. the all-resource
@@ -322,8 +320,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
     return {
       affectedInstances,
       segs: transformedSegs,
-      isEvent,
-      interactingSeg
+      isEvent
     }
   }
 
