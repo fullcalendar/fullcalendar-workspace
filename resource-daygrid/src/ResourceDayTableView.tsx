@@ -21,7 +21,6 @@ export default class ResourceDayTableView extends TableView {
 
   render(props: ResourceViewProps, state: {}, context: ComponentContext) {
     let { options, nextDayThreshold } = context
-
     let resourceOrderSpecs = this.parseResourceOrder(options.resourceOrder)
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
     let resourceDayTableModel = this.buildResourceDayTableModel(
@@ -31,37 +30,40 @@ export default class ResourceDayTableView extends TableView {
       options.datesAboveResources
     )
 
-    return this.renderSimpleLayout(
-      options.columnHeader &&
-        <ResourceDayHeader
-          ref={this.headerRef}
-          resources={resources}
-          dates={resourceDayTableModel.dayTableModel.headerDates}
-          dateProfile={props.dateProfile}
-          datesRepDistinctDays={true}
-        />,
-      (contentArg: ChunkContentCallbackArgs) => (
-        <ResourceDayTable
-          ref={this.tableRef}
-          dateProfile={props.dateProfile}
-          resourceDayTableModel={resourceDayTableModel}
-          businessHours={props.businessHours}
-          eventStore={props.eventStore}
-          eventUiBases={props.eventUiBases}
-          dateSelection={props.dateSelection}
-          eventSelection={props.eventSelection}
-          eventDrag={props.eventDrag}
-          eventResize={props.eventResize}
-          nextDayThreshold={nextDayThreshold}
-          colGroupNode={contentArg.tableColGroupNode}
-          eventLimit={options.eventLimit}
-          vGrowRows={!props.isHeightAuto}
-          headerAlignElRef={this.headerElRef}
-          clientWidth={contentArg.clientWidth}
-          clientHeight={contentArg.clientHeight}
-        />
-      )
+    let headerContent = options.columnHeader &&
+      <ResourceDayHeader
+        ref={this.headerRef}
+        resources={resources}
+        dates={resourceDayTableModel.dayTableModel.headerDates}
+        dateProfile={props.dateProfile}
+        datesRepDistinctDays={true}
+      />
+
+    let bodyContent = (contentArg: ChunkContentCallbackArgs) => (
+      <ResourceDayTable
+        ref={this.tableRef}
+        dateProfile={props.dateProfile}
+        resourceDayTableModel={resourceDayTableModel}
+        businessHours={props.businessHours}
+        eventStore={props.eventStore}
+        eventUiBases={props.eventUiBases}
+        dateSelection={props.dateSelection}
+        eventSelection={props.eventSelection}
+        eventDrag={props.eventDrag}
+        eventResize={props.eventResize}
+        nextDayThreshold={nextDayThreshold}
+        colGroupNode={contentArg.tableColGroupNode}
+        eventLimit={options.eventLimit}
+        vGrowRows={!props.isHeightAuto}
+        headerAlignElRef={this.headerElRef}
+        clientWidth={contentArg.clientWidth}
+        clientHeight={contentArg.clientHeight}
+      />
     )
+
+    return options.columnMinWidth
+      ? this.renderHScrollLayout(headerContent, bodyContent, options.columnMinWidth)
+      : this.renderSimpleLayout(headerContent, bodyContent)
   }
 
 }
