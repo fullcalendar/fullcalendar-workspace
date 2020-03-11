@@ -7,7 +7,8 @@ import {
   mapHash,
   Scroller,
   RefMap,
-  SectionConfig, ColProps, ChunkConfig, CssDimValue, hasShrinkWidth, renderMicroColGroup,
+  ColProps, ChunkConfig, CssDimValue, hasShrinkWidth, renderMicroColGroup,
+  ScrollGridProps, ScrollGridSectionConfig, ColGroupConfig,
   getScrollGridClassNames, getSectionClassNames, getChunkVGrow, getAllowYScrolling, renderChunkContent, computeShrinkWidth, getChunkClassNames,
   getIsRtlScrollbarOnLeft,
   setRef,
@@ -27,23 +28,6 @@ import StickyScrolling from './StickyScrolling'
 import ClippedScroller, { ClippedOverflowValue } from './ClippedScroller'
 import ScrollSyncer from './ScrollSyncer'
 
-
-export interface ScrollGridProps {
-  colGroups?: ColGroupConfig[]
-  sections: ScrollGridSectionConfig[]
-  vGrow?: boolean
-  forPrint?: boolean
-}
-
-export interface ScrollGridSectionConfig extends SectionConfig {
-  key?: string
-  chunks: ChunkConfig[]
-}
-
-export interface ColGroupConfig {
-  width?: CssDimValue
-  cols: ColProps[]
-}
 
 interface ScrollGridState {
   shrinkWidths: number[] // for only one col within each vertical stack of chunks
