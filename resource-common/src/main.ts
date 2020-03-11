@@ -10,7 +10,7 @@ import { isPropsValidWithResources } from './validation'
 import { transformExternalDef } from './ExternalElementDragging'
 import { transformEventResizeJoin } from './EventResizing'
 import './api/EventApi'
-import { injectLicenseWarning } from './license'
+import { buildLicenseWarning } from './license'
 import optionChangeHandlers from './option-change-handlers'
 
 // TODO: plugin-ify
@@ -31,7 +31,7 @@ export default createPlugin({
   isPropsValid: isPropsValidWithResources,
   externalDefTransforms: [ transformExternalDef ],
   eventResizeJoinTransforms: [ transformEventResizeJoin ],
-  viewContainerModifiers: [ injectLicenseWarning ],
+  viewContainerAppends: [ buildLicenseWarning ],
   eventDropTransformers: [ transformEventDrop ],
   optionChangeHandlers
 })
