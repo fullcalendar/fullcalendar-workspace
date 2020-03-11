@@ -1,6 +1,6 @@
 import {
   h, Fragment,
-  BaseComponent, ComponentContext, findElements, isArraysEqual, CssDimValue
+  BaseComponent, ComponentContext, findElements, isArraysEqual, CssDimValue, createRef
 } from '@fullcalendar/core'
 import { Resource, buildResourceFields, buildResourceTextFunc, ResourceApi } from '@fullcalendar/resource-common'
 import ExpanderIcon from './ExpanderIcon'
@@ -12,10 +12,14 @@ export interface SpreadsheetRowProps {
   isExpanded: boolean
   hasChildren: boolean
   resource: Resource
-  innerHeight: CssDimValue
+  innerHeight: CssDimValue // bad name! inner vs innerinner
+  onRowHeight?: (innerEl: HTMLElement | null) => void
 }
 
+
 export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ComponentContext> {
+
+  innerInnerRef = createRef<HTMLDivElement>()
 
 
   render(props: SpreadsheetRowProps, state: {}, context: ComponentContext) {
@@ -58,7 +62,7 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
             return (
               <td rowSpan={rowSpan}>
                 <div style={{ height: props.innerHeight }}>
-                  <div class='fc-cell-content' data-fc-height-measure={1}>
+                  <div class='fc-cell-content' ref={this.innerInnerRef}>
                     { colSpec.isMain &&
                       <ExpanderIcon
                         depth={depth}
@@ -78,6 +82,30 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
         })}
       </tr>
     )
+  }
+
+
+  componentDidMount() {
+    this.transmitHeight()
+  }
+
+
+  componentDidUpdate() {
+    this.transmitHeight()
+  }
+
+
+  componentWillUnmount() {
+    if (this.props.onRowHeight) {
+      this.props.onRowHeight(null)
+    }
+  }
+
+
+  transmitHeight() {
+    if (this.props.onRowHeight) {
+      this.props.onRowHeight(this.innerInnerRef.current)
+    }
   }
 
 

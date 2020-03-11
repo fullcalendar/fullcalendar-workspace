@@ -11,7 +11,6 @@ export interface ResourceTimelineLaneProps extends TimelineLaneProps {
 
 export default class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProps> {
 
-
   render(props: ResourceTimelineLaneProps) {
     return (
       <tr ref={props.elRef} data-resource-id={props.resourceId}>
@@ -20,6 +19,8 @@ export default class ResourceTimelineLane extends BaseComponent<ResourceTimeline
             dateProfile={props.dateProfile}
             dateProfileGenerator={props.dateProfileGenerator}
             tDateProfile={props.tDateProfile}
+            nowDate={props.nowDate}
+            todayRange={props.todayRange}
             nextDayThreshold={props.nextDayThreshold}
             businessHours={props.businessHours}
             eventStore={props.eventStore}
@@ -31,6 +32,7 @@ export default class ResourceTimelineLane extends BaseComponent<ResourceTimeline
             timelineCoords={props.timelineCoords}
             height={props.innerHeight}
             minHeight='100%'
+            onHeight={props.onHeight}
           />
         </td>
       </tr>

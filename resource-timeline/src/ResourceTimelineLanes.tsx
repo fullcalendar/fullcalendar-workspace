@@ -1,6 +1,10 @@
 import {
   h, ComponentContext, DateProfileGenerator, DateProfile, PositionCache,
-  SplittableProps, EventStore, createRef, BaseComponent, CssDimValue, RefMap, isArraysEqual
+  SplittableProps, EventStore, createRef, BaseComponent, CssDimValue, RefMap,
+  memoizeHashlike,
+  buildHashFromArray,
+  DateMarker,
+  DateRange
 } from '@fullcalendar/core'
 import {  GroupNode, ResourceNode } from '@fullcalendar/resource-common'
 import { TimelineDateProfile, TimelineCoords } from '@fullcalendar/timeline'
@@ -15,16 +19,21 @@ export interface ResourceTimelineLanesProps extends ResourceTimelineLanesContent
   onRowCoords?: (rowCoords: PositionCache) => void
 }
 
-interface ResourceTimelineLanesContentProps {
+export interface ResourceTimelineLanesContentProps {
   rowNodes: (GroupNode | ResourceNode)[]
   splitProps: { [resourceId: string]: SplittableProps }
   tDateProfile: TimelineDateProfile
   dateProfile: DateProfile
   dateProfileGenerator: DateProfileGenerator
+  nowDate: DateMarker
+  todayRange: DateRange
   fallbackBusinessHours: EventStore | null
-  innerHeights: number[]
+  innerHeights: { [rowKey: string]: number }
   slatCoords: TimelineCoords | null
+  onRowHeight: OnRowHeightHandler
 }
+
+export type OnRowHeightHandler = (rowKey: string, innerEl: HTMLElement | null) => void
 
 
 export default class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesProps> {
@@ -50,10 +59,13 @@ export default class ResourceTimelineLanes extends BaseComponent<ResourceTimelin
           dateProfile={props.dateProfile}
           dateProfileGenerator={props.dateProfileGenerator}
           tDateProfile={props.tDateProfile}
+          nowDate={props.nowDate}
+          todayRange={props.todayRange}
           splitProps={props.splitProps}
           fallbackBusinessHours={props.fallbackBusinessHours}
           slatCoords={props.slatCoords}
           innerHeights={props.innerHeights}
+          onRowHeight={props.onRowHeight}
         />
       </table>
     )
@@ -94,20 +106,26 @@ export default class ResourceTimelineLanes extends BaseComponent<ResourceTimelin
 
 }
 
-ResourceTimelineLanes.addPropsEquality({
-  innerHeights: isArraysEqual
-})
-
 
 interface ResourceTimelineLanesBodyProps extends ResourceTimelineLanesContentProps {
-  rowElRefs: RefMap<HTMLElement>
+  rowElRefs: RefMap<HTMLElement> // indexed by NUMERICAL INDEX, not node.id
 }
 
 
-class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyProps> {
+class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyProps> { // TODO: this technique more
+
+  getOnRowHeights = memoizeHashlike((onRowHeight: OnRowHeightHandler, rowId: string) => onRowHeight.bind(null, rowId))
+
 
   render(props: ResourceTimelineLanesBodyProps, state: {}, context: ComponentContext) {
     let { rowElRefs, innerHeights } = props
+
+    let onRowHeights = this.getOnRowHeights(
+      buildHashFromArray(props.rowNodes, (rowNode) => [
+        rowNode.id,
+        [ props.onRowHeight, rowNode.id ]
+      ])
+    )
 
     return (
       <tbody>
@@ -118,7 +136,7 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
               <DividerRow
                 key={node.id}
                 elRef={rowElRefs.createRef(index)}
-                innerHeight={innerHeights[index] || ''}
+                innerHeight={innerHeights[node.id] || ''}
               />
             )
 
@@ -134,9 +152,12 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
                 dateProfile={props.dateProfile}
                 dateProfileGenerator={props.dateProfileGenerator}
                 tDateProfile={props.tDateProfile}
+                nowDate={props.nowDate}
+                todayRange={props.todayRange}
                 nextDayThreshold={context.nextDayThreshold}
                 businessHours={resource.businessHours || props.fallbackBusinessHours}
-                innerHeight={innerHeights[index] || ''}
+                innerHeight={innerHeights[node.id] || ''}
+                onHeight={onRowHeights[node.id]}
                 timelineCoords={props.slatCoords}
               />
             )

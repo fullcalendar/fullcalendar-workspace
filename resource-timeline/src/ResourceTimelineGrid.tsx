@@ -1,10 +1,10 @@
 import {
   h, ComponentContext, DateProfileGenerator, DateProfile, PositionCache,
-  Duration, EventStore, DateSpan, EventUiHash, EventInteractionState, DateComponent, Hit, createRef, CssDimValue, VNode, DateMarker, memoize
+  Duration, EventStore, DateSpan, EventUiHash, EventInteractionState, DateComponent, Hit, createRef, CssDimValue, VNode, memoize, NowTimer, greatestDurationDenominator, DateMarker, DateRange
 } from '@fullcalendar/core'
 import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource-common'
 import { TimelineDateProfile, TimelineCoords, TimelineSlats, TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg } from '@fullcalendar/timeline'
-import ResourceTimelineLanes from './ResourceTimelineLanes'
+import ResourceTimelineLanes, { OnRowHeightHandler } from './ResourceTimelineLanes'
 
 
 export interface ResourceTimelineGridProps {
@@ -26,11 +26,11 @@ export interface ResourceTimelineGridProps {
   tableMinWidth: CssDimValue
   tableColGroupNode: VNode
   vGrowRows: boolean
-  rowInnerHeights: number[]
-  nowIndicatorDate: DateMarker | null
+  rowInnerHeights: { [rowKey: string]: number }
   onSlatCoords?: (slatCoords: TimelineCoords) => void
   onRowCoords?: (rowCoords: PositionCache) => void
   onScrollLeftRequest?: (scrollLeft: number) => void
+  onRowHeight: OnRowHeightHandler
 }
 
 interface ResourceTimelineGridState {
@@ -49,6 +49,7 @@ export default class ResourceTimelineGrid extends DateComponent<ResourceTimeline
 
   render(props: ResourceTimelineGridProps, state: ResourceTimelineGridState, context: ComponentContext) {
     let { dateProfile, tDateProfile } = props
+    let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
     let hasResourceBusinessHours = this.computeHasResourceBusinessHours(props.rowNodes)
 
     let splitProps = this.resourceSplitter.splitProps(props)
@@ -64,49 +65,53 @@ export default class ResourceTimelineGrid extends DateComponent<ResourceTimeline
       context.dateEnv
     )
 
-    let nowIndicatorLeft = state.slatCoords && state.slatCoords.safeDateToCoord(props.nowIndicatorDate)
-
     return (
       <div ref={this.handleEl} class='fc-timeline-grid' style={{
         minWidth: props.tableMinWidth
       }}>
-        <TimelineSlats
-          ref={this.slatsRef}
-          dateProfile={dateProfile}
-          tDateProfile={tDateProfile}
-          clientWidth={props.clientWidth}
-          tableColGroupNode={props.tableColGroupNode}
-          tableMinWidth={props.tableMinWidth}
-          onCoords={this.handleSlatCoords}
-          onScrollLeftRequest={props.onScrollLeftRequest}
-        />
-        <TimelineLaneBg
-          businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
-          bgEventSegs={bgSlicedProps.bgEventSegs}
-          timelineCoords={state.slatCoords}
-          dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
-          eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs : []) as TimelineLaneSeg[]}
-        />
-        <ResourceTimelineLanes
-          rowNodes={props.rowNodes}
-          dateProfile={props.dateProfile}
-          dateProfileGenerator={props.dateProfileGenerator}
-          tDateProfile={props.tDateProfile}
-          splitProps={splitProps}
-          fallbackBusinessHours={hasResourceBusinessHours ? props.businessHours : null}
-          clientWidth={props.clientWidth}
-          minHeight={props.vGrowRows ? props.clientHeight : ''}
-          tableMinWidth={props.tableMinWidth}
-          innerHeights={props.rowInnerHeights}
-          slatCoords={state.slatCoords}
-          onRowCoords={this.handleRowCoords}
-        />
-        {nowIndicatorLeft != null &&
-          <div
-            class='fc-now-indicator fc-now-indicator-line'
-            style={{ left: nowIndicatorLeft }}
-          />
-        }
+        <NowTimer unit={timerUnit} content={(nowDate: DateMarker, todayRange: DateRange) => [
+          <TimelineSlats
+            ref={this.slatsRef}
+            dateProfile={dateProfile}
+            tDateProfile={tDateProfile}
+            nowDate={nowDate}
+            todayRange={todayRange}
+            clientWidth={props.clientWidth}
+            tableColGroupNode={props.tableColGroupNode}
+            tableMinWidth={props.tableMinWidth}
+            onCoords={this.handleSlatCoords}
+            onScrollLeftRequest={props.onScrollLeftRequest}
+          />,
+          <TimelineLaneBg
+            businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
+            bgEventSegs={bgSlicedProps.bgEventSegs}
+            timelineCoords={state.slatCoords}
+            eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs as TimelineLaneSeg[] : []) /* empty array will result in unnecessary rerenders? */}
+            dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
+          />,
+          <ResourceTimelineLanes
+            rowNodes={props.rowNodes}
+            dateProfile={props.dateProfile}
+            dateProfileGenerator={props.dateProfileGenerator}
+            tDateProfile={props.tDateProfile}
+            nowDate={nowDate}
+            todayRange={todayRange}
+            splitProps={splitProps}
+            fallbackBusinessHours={hasResourceBusinessHours ? props.businessHours : null}
+            clientWidth={props.clientWidth}
+            minHeight={props.vGrowRows ? props.clientHeight : ''}
+            tableMinWidth={props.tableMinWidth}
+            innerHeights={props.rowInnerHeights}
+            slatCoords={state.slatCoords}
+            onRowCoords={this.handleRowCoords}
+            onRowHeight={props.onRowHeight}
+          />,
+          (context.options.nowIndicator && state.slatCoords) &&
+            <div
+              class='fc-now-indicator fc-now-indicator-line'
+              style={{ left: state.slatCoords.safeDateToCoord(nowDate) }}
+            />
+        ]} />
       </div>
     )
   }

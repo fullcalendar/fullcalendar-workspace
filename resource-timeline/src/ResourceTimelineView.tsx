@@ -1,11 +1,11 @@
 import {
   h, createRef,
-  subrenderer, Calendar, View, parseFieldSpecs, ComponentContext, memoize,
-  Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, DateMarker, NowTimer, PositionCache, ScrollRequest, ScrollResponder,
+  Calendar, View, parseFieldSpecs, ComponentContext, memoize,
+  Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache, ScrollRequest, ScrollResponder, buildHashFromArray, memoizeHashlike,
 } from '@fullcalendar/core'
 import {
-  buildTimelineDateProfile, TimelineDateProfile, TimelineHeader,
-  getTimelineNowIndicatorUnit, getTimelineViewClassNames, buildSlatCols,
+  buildTimelineDateProfile, TimelineHeader,
+  getTimelineViewClassNames, buildSlatCols,
   TimelineCoords
 } from '@fullcalendar/timeline'
 import { GroupNode, ResourceNode, ResourceViewProps, buildResourceTextFunc, buildRowNodes } from '@fullcalendar/resource-common'
@@ -20,7 +20,6 @@ import ResourceTimelineViewLayout from './ResourceTimelineViewLayout'
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
   spreadsheetColWidths: number[]
-  nowIndicatorDate?: DateMarker
   slatCoords?: TimelineCoords
 }
 
@@ -41,10 +40,9 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
   private processColOptions = memoize(processColOptions)
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
-  private tDateProfile: TimelineDateProfile
   private hasNesting = memoize(hasNesting)
   private buildRowNodes = memoize(buildRowNodes)
-  private updateNowTimer = subrenderer(NowTimer)
+  private getReportRowHeights = memoizeHashlike((reportRowHeight, rowId) => reportRowHeight.bind(null, rowId))
   private layoutRef = createRef<ResourceTimelineViewLayout>()
   private rowNodes: (GroupNode | ResourceNode)[] = []
   private renderedRowNodes: (GroupNode | ResourceNode)[] = []
@@ -68,7 +66,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
     let { dateProfile } = props
     let { superHeaderText, groupSpecs, orderSpecs, isVGrouping, colSpecs } = this.processColOptions(context.options, context.calendar)
 
-    let tDateProfile = this.tDateProfile = this.buildTimelineDateProfile(
+    let tDateProfile = this.buildTimelineDateProfile(
       dateProfile,
       context.dateEnv,
       context.options,
@@ -103,11 +101,20 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
               onColWidthChange={this.handleColWidthChange}
             />
           }
-          spreadsheetBodyRows={(contentArg: ChunkContentCallbackArgs) => (
-            <Fragment>
-              {renderSpreadsheetRows(rowNodes, colSpecs, contentArg.rowSyncHeights)}
-            </Fragment>
-          )}
+          spreadsheetBodyRows={(contentArg: ChunkContentCallbackArgs) => {
+            let reportRowHeights = this.getReportRowHeights(
+              buildHashFromArray(rowNodes, (rowNode) => [
+                rowNode.id,
+                [ contentArg.reportRowHeight, rowNode.id ]
+              ])
+            )
+
+            return (
+              <Fragment>
+                {this.renderSpreadsheetRows(rowNodes, colSpecs, contentArg.rowSyncHeights, reportRowHeights)}
+              </Fragment>
+            )
+          }}
           timeCols={buildSlatCols(tDateProfile, this.context.options.slotWidth || 30)}
           timeHeaderContent={(contentArg: ChunkContentCallbackArgs) => (
             <TimelineHeader
@@ -117,7 +124,6 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
               tableColGroupNode={contentArg.tableColGroupNode}
               dateProfile={dateProfile}
               tDateProfile={tDateProfile}
-              nowIndicatorDate={state.nowIndicatorDate}
               slatCoords={state.slatCoords}
             />
           )}
@@ -144,8 +150,8 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
               rowInnerHeights={contentArg.rowSyncHeights}
               onSlatCoords={this.handleSlatCoords}
               onRowCoords={this.handleRowCoords}
-              nowIndicatorDate={state.nowIndicatorDate}
               onScrollLeftRequest={this.handleScrollLeftRequest}
+              onRowHeight={contentArg.reportRowHeight}
             />
           )}
         />
@@ -154,9 +160,41 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   }
 
 
+  renderSpreadsheetRows(nodes: (ResourceNode | GroupNode)[], colSpecs, rowSyncHeights: { [rowKey: string]: number }, reportRowHeights) {
+    return nodes.map((node) => {
+      if ((node as GroupNode).group) {
+        return (
+          <SpreadsheetGroupRow
+            key={node.id}
+            id={node.id}
+            spreadsheetColCnt={colSpecs.length}
+            isExpanded={node.isExpanded}
+            group={(node as GroupNode).group}
+            innerHeight={rowSyncHeights[node.id] || ''}
+            onRowHeight={reportRowHeights[node.id]}
+          />
+        )
+      } else if ((node as ResourceNode).resource) {
+        return (
+          <SpreadsheetRow
+            key={node.id}
+            colSpecs={colSpecs}
+            rowSpans={(node as ResourceNode).rowSpans}
+            depth={(node as ResourceNode).depth}
+            isExpanded={node.isExpanded}
+            hasChildren={(node as ResourceNode).hasChildren}
+            resource={(node as ResourceNode).resource}
+            innerHeight={rowSyncHeights[node.id] || ''}
+            onRowHeight={reportRowHeights[node.id]}
+          />
+        )
+      }
+    })
+  }
+
+
   componentDidMount() {
     this.renderedRowNodes = this.rowNodes
-    this.subrender()
     this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
   }
 
@@ -172,7 +210,6 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
   componentDidUpdate(prevProps: ResourceViewProps, prevState: ResourceTimelineViewState, snapshot: ResourceTimelineViewSnapshot) {
     this.renderedRowNodes = this.rowNodes
-    this.subrender()
     this.scrollResponder.update(this.props.dateProfile !== prevProps.dateProfile)
 
     if (snapshot.resourceScroll) {
@@ -182,17 +219,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
 
   componentWillUnmount() {
-    this.subrenderDestroy()
     this.scrollResponder.detach()
-  }
-
-
-  subrender() {
-    this.updateNowTimer({ // TODO: do BEFORE subrender, so we dont trigger another render
-      enabled: this.context.options.nowIndicator,
-      unit: getTimelineNowIndicatorUnit(this.tDateProfile), // expensive?
-      callback: this.handleNowDate
-    })
   }
 
 
@@ -204,13 +231,6 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   handleRowCoords = (rowCoords: PositionCache) => {
     this.rowCoords = rowCoords
     this.scrollResponder.update(false) // TODO: could eliminate this if rowCoords lived in state
-  }
-
-
-  handleNowDate = (date: DateMarker) => {
-    this.setState({
-      nowIndicatorDate: date
-    })
   }
 
 
@@ -308,38 +328,6 @@ function buildSpreadsheetCols(colSpecs, forcedWidths: number[]) {
     return {
       className: colSpec.isMain ? 'fc-main-col' : '',
       width: forcedWidths[i] || colSpec.width || ''
-    }
-  })
-}
-
-
-// TODO: make this a table maybe?!!!
-function renderSpreadsheetRows(nodes: (ResourceNode | GroupNode)[], colSpecs, rowSyncHeights: number[]) {
-  return nodes.map((node, index) => {
-    if ((node as GroupNode).group) {
-      return (
-        <SpreadsheetGroupRow
-          key={node.id}
-          id={node.id}
-          spreadsheetColCnt={colSpecs.length}
-          isExpanded={node.isExpanded}
-          group={(node as GroupNode).group}
-          innerHeight={rowSyncHeights[index] || ''}
-        />
-      )
-    } else if ((node as ResourceNode).resource) {
-      return (
-        <SpreadsheetRow
-          key={node.id}
-          colSpecs={colSpecs}
-          rowSpans={(node as ResourceNode).rowSpans}
-          depth={(node as ResourceNode).depth}
-          isExpanded={node.isExpanded}
-          hasChildren={(node as ResourceNode).hasChildren}
-          resource={(node as ResourceNode).resource}
-          innerHeight={rowSyncHeights[index] || ''}
-        />
-      )
     }
   })
 }

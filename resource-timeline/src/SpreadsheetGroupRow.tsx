@@ -1,4 +1,4 @@
-import { h, Fragment, BaseComponent, ComponentContext, CssDimValue } from '@fullcalendar/core'
+import { h, Fragment, BaseComponent, ComponentContext, CssDimValue, createRef } from '@fullcalendar/core'
 import { Group, isGroupsEqual } from '@fullcalendar/resource-common'
 import ExpanderIcon from './ExpanderIcon'
 
@@ -9,9 +9,13 @@ export interface SpreadsheetGroupRowProps {
   isExpanded: boolean
   group: Group
   innerHeight: CssDimValue
+  onRowHeight?: (innerEl: HTMLElement) => void // dumb name, dont need row in it
 }
 
+
 export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps, ComponentContext> {
+
+  innerInnerRef = createRef<HTMLDivElement>()
 
 
   render(props: SpreadsheetGroupRowProps, state: {}, context: ComponentContext) {
@@ -21,7 +25,7 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
       <tr>
         <td class={'fc-divider ' + context.theme.getClass('tableCellShaded')} colSpan={props.spreadsheetColCnt}>
           <div style={{ height: props.innerHeight }}>
-            <div class='fc-cell-content ' data-fc-height-measure={1}>
+            <div class='fc-cell-content' ref={this.innerInnerRef}>
               <ExpanderIcon
                 depth={0}
                 hasChildren={true}
@@ -47,6 +51,30 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
       id: props.id,
       isExpanded: !props.isExpanded
     })
+  }
+
+
+  componentDidMount() {
+    this.transmitHeight()
+  }
+
+
+  componentDidUpdate() {
+    this.transmitHeight()
+  }
+
+
+  componentWillUnmount() {
+    if (this.props.onRowHeight) {
+      this.props.onRowHeight(null)
+    }
+  }
+
+
+  transmitHeight() {
+    if (this.props.onRowHeight) {
+      this.props.onRowHeight(this.innerInnerRef.current)
+    }
   }
 
 }

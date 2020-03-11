@@ -82,7 +82,6 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
             type: 'body',
             vGrow: true,
             vGrowRows: Boolean(context.options.expandRows),
-            syncRowHeights: true,
             chunks: [
               {
                 className: 'fc-resource-area',
@@ -92,8 +91,7 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
               {
                 className: 'fc-time-area',
                 scrollerElRef: this.timeBodyScrollerElRef,
-                content: props.timeBodyContent,
-                rowSelector: '.fc-resource-timeline-lanes tr' // for syncRowHeights
+                content: props.timeBodyContent
               }
             ]
           }
