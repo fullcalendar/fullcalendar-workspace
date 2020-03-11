@@ -157,7 +157,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
     }
 
     if (renderIntro) {
-      cells.push(renderIntro())
+      cells.unshift(renderIntro())
     }
 
     return (
