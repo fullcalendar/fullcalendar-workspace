@@ -48,6 +48,9 @@ document.addEventListener('DOMContentLoaded', function() {
 })
 
 
+// TODO: revive height syncing
+
+
 function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
   return (
     <ScrollGrid
@@ -152,21 +155,20 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
           type: 'body',
           vGrow: true,
           vGrowRows: true,
-          syncRowHeights: true,
           chunks: [
             { rowContent: (contentArg) => (
               <Fragment>
                 <tr>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[0] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[0] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         su
                       </div>
                     </div>
@@ -175,14 +177,14 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 <tr>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[1] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[1] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         su
                       </div>
                     </div>
@@ -191,7 +193,7 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 <tr>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[2] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         whatev<br />whatev<br />whatever<br />whatever<br />whatever<br />what
                       </div>
                     </div>
@@ -205,7 +207,7 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 <tr>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[3] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         su
                       </div>
                     </div>
@@ -214,7 +216,7 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 <tr>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[4] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         su
                       </div>
                     </div>
@@ -223,14 +225,14 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 <tr>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[5] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[5] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         su
                       </div>
                     </div>
@@ -239,14 +241,14 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 <tr>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[6] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[6] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         su
                       </div>
                     </div>
@@ -255,14 +257,14 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 <tr>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[7] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[7] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         su
                       </div>
                     </div>
@@ -271,14 +273,14 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 <tr>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[8] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[8] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         su
                       </div>
                     </div>
@@ -287,14 +289,14 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 <tr>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[9] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[9] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         su
                       </div>
                     </div>
@@ -303,14 +305,14 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 <tr>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[10] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[10] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         su
                       </div>
                     </div>
@@ -319,14 +321,14 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 <tr>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[11] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[11] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         su
                       </div>
                     </div>
@@ -335,14 +337,14 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 <tr>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[12] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[12] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         su
                       </div>
                     </div>
@@ -351,14 +353,14 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 <tr>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[13] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[13] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         su
                       </div>
                     </div>
@@ -367,14 +369,14 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 <tr>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[14] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='shrink'>
                     <div data-fc-width-all={1} style={{ height: contentArg.rowSyncHeights[14] }}>
-                      <div data-fc-width-content={1} data-fc-height-measure={1} class='cell-padding shrink-content'>
+                      <div data-fc-width-content={1} class='cell-padding shrink-content'>
                         su
                       </div>
                     </div>
@@ -392,180 +394,180 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                       <tr>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[0] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'><span class='fc-sticky' style='display:inline-block'>event1</span></div>
+                            <div class='cell-padding'><span class='fc-sticky' style='display:inline-block'>event1</span></div>
                           </div>
                         </td>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[0] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                            <div class='cell-padding'>event2</div>
                           </div>
                         </td>
                       </tr>
                       <tr>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[1] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event1<br />event1<br />event1</div>
+                            <div class='cell-padding'>event1<br />event1<br />event1</div>
                           </div>
                         </td>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[1] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                            <div class='cell-padding'>event2</div>
                           </div>
                         </td>
                       </tr>
                       <tr>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[2] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                            <div class='cell-padding'>event1</div>
                           </div>
                         </td>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[2] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                            <div class='cell-padding'>event2</div>
                           </div>
                         </td>
                       </tr>
                       <tr>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[3] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                            <div class='cell-padding'>event1</div>
                           </div>
                         </td>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[3] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                            <div class='cell-padding'>event2</div>
                           </div>
                         </td>
                       </tr>
                       <tr>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[4] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                            <div class='cell-padding'>event1</div>
                           </div>
                         </td>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[4] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                            <div class='cell-padding'>event2</div>
                           </div>
                         </td>
                       </tr>
                       <tr>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[5] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                            <div class='cell-padding'>event1</div>
                           </div>
                         </td>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[5] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                            <div class='cell-padding'>event2</div>
                           </div>
                         </td>
                       </tr>
                       <tr>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[6] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                            <div class='cell-padding'>event1</div>
                           </div>
                         </td>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[6] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                            <div class='cell-padding'>event2</div>
                           </div>
                         </td>
                       </tr>
                       <tr>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[7] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                            <div class='cell-padding'>event1</div>
                           </div>
                         </td>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[7] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                            <div class='cell-padding'>event2</div>
                           </div>
                         </td>
                       </tr>
                       <tr>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[8] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                            <div class='cell-padding'>event1</div>
                           </div>
                         </td>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[8] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                            <div class='cell-padding'>event2</div>
                           </div>
                         </td>
                       </tr>
                       <tr>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[9] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                            <div class='cell-padding'>event1</div>
                           </div>
                         </td>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[9] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                            <div class='cell-padding'>event2</div>
                           </div>
                         </td>
                       </tr>
                       <tr>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[10] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                            <div class='cell-padding'>event1</div>
                           </div>
                         </td>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[10] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                            <div class='cell-padding'>event2</div>
                           </div>
                         </td>
                       </tr>
                       <tr>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[11] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                            <div class='cell-padding'>event1</div>
                           </div>
                         </td>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[11] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                            <div class='cell-padding'>event2</div>
                           </div>
                         </td>
                       </tr>
                       <tr>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[12] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                            <div class='cell-padding'>event1</div>
                           </div>
                         </td>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[12] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                            <div class='cell-padding'>event2</div>
                           </div>
                         </td>
                       </tr>
                       <tr>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[13] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                            <div class='cell-padding'>event1</div>
                           </div>
                         </td>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[13] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                            <div class='cell-padding'>event2</div>
                           </div>
                         </td>
                       </tr>
                       <tr>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[14] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event1</div>
+                            <div class='cell-padding'>event1</div>
                           </div>
                         </td>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[14] }}>
-                            <div data-fc-height-measure={1} class='cell-padding'>event2</div>
+                            <div class='cell-padding'>event2</div>
                           </div>
                         </td>
                       </tr>

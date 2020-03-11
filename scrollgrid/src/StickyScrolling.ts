@@ -2,16 +2,11 @@ import {
   applyStyle, htmlToElement,
   translateRect, Rect, Point,
   findElements,
-  computeInnerRect,
-  SubRenderer,
-  ComponentContext
+  computeInnerRect
 } from '@fullcalendar/core'
 import ScrollListener from './ScrollListener'
 import { getScrollCanvasOrigin, getScrollFromLeftEdge } from './scroll-left-norm'
 
-export interface StickyScrollerProps {
-  scrollEl: HTMLElement
-}
 
 interface ElementGeom {
   parentBound: Rect // relative to the canvas origin
@@ -22,7 +17,7 @@ interface ElementGeom {
 }
 
 const STICKY_PROP_VAL = computeStickyPropVal() // if null, means not supported at all
-const IS_MS_EDGE = /Edge/.test(navigator.userAgent)
+const IS_MS_EDGE = /Edge/.test(navigator.userAgent) // TODO: what about Chromeum-based Edge?
 const STICKY_SELECTOR = '.fc-sticky'
 
 
@@ -31,34 +26,36 @@ useful beyond the native position:sticky for these reasons:
 - support in IE11
 - nice centering support
 */
-export default class StickyScroller extends SubRenderer<StickyScrollerProps> {
+export default class StickyScroller {
 
   listener?: ScrollListener
   usingRelative: boolean | null = null
 
 
-  render(props: StickyScrollerProps, context: ComponentContext) {
+  constructor(
+    private scrollEl: HTMLElement,
+    private isRtl: boolean
+  ) {
     this.usingRelative =
       !STICKY_PROP_VAL || // IE11
-      (IS_MS_EDGE && context.isRtl) // https://stackoverflow.com/questions/56835658/in-microsoft-edge-sticky-positioning-doesnt-work-when-combined-with-dir-rtl
+      (IS_MS_EDGE && isRtl) // https://stackoverflow.com/questions/56835658/in-microsoft-edge-sticky-positioning-doesnt-work-when-combined-with-dir-rtl
 
     if (this.usingRelative) {
-      this.listener = new ScrollListener(props.scrollEl)
+      this.listener = new ScrollListener(scrollEl)
       this.listener.emitter.on('scrollEnd', this.updateSize)
     }
   }
 
 
-  unrender() {
+  destroy() {
     if (this.listener) {
       this.listener.destroy()
-      this.listener = null
     }
   }
 
 
   updateSize = () => {
-    let { scrollEl } = this.props
+    let { scrollEl } = this
     let els = findElements(scrollEl, STICKY_SELECTOR)
     let elGeoms = this.queryElGeoms(els)
     let viewportWidth = scrollEl.clientWidth
@@ -74,8 +71,7 @@ export default class StickyScroller extends SubRenderer<StickyScrollerProps> {
 
 
   queryElGeoms(els: HTMLElement[]): ElementGeom[] {
-    let { isRtl } = this.context
-    let { scrollEl } = this.props
+    let { scrollEl, isRtl } = this
     let canvasOrigin = getScrollCanvasOrigin(scrollEl)
     let elGeoms: ElementGeom[] = []
 
@@ -120,7 +116,7 @@ export default class StickyScroller extends SubRenderer<StickyScrollerProps> {
 
 
   computeElDestinations(elGeoms: ElementGeom[], viewportWidth: number): Point[] {
-    let { scrollEl } = this.props
+    let { scrollEl } = this
     let viewportTop = scrollEl.scrollTop
     let viewportLeft = getScrollFromLeftEdge(scrollEl)
     let viewportRight = viewportLeft + viewportWidth
