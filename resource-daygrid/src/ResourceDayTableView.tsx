@@ -52,6 +52,7 @@ export default class ResourceDayTableView extends TableView {
         eventDrag={props.eventDrag}
         eventResize={props.eventResize}
         nextDayThreshold={nextDayThreshold}
+        tableMinWidth={contentArg.tableMinWidth}
         colGroupNode={contentArg.tableColGroupNode}
         eventLimit={options.eventLimit}
         vGrowRows={!props.isHeightAuto}
@@ -62,7 +63,7 @@ export default class ResourceDayTableView extends TableView {
     )
 
     return options.columnMinWidth
-      ? this.renderHScrollLayout(headerContent, bodyContent, options.columnMinWidth)
+      ? this.renderHScrollLayout(headerContent, bodyContent, resourceDayTableModel.colCnt, options.columnMinWidth)
       : this.renderSimpleLayout(headerContent, bodyContent)
   }
 

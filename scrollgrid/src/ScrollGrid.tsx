@@ -178,13 +178,14 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
     let chunkVGrow = getChunkVGrow(this.props, sectionConfig, chunkConfig)
     let tableMinWidth = (colGroupStat && colGroupStat.totalColMinWidth) || ''
+    let vGrowRows = sectionConfig.vGrowRows || chunkConfig.vGrowRows
 
     let content = renderChunkContent(sectionConfig, chunkConfig, {
       tableColGroupNode: microColGroupNode,
       tableMinWidth,
       clientWidth: state.scrollerClientWidths[index] || '',
       clientHeight: state.scrollerClientHeights[index] || '',
-      vGrowRows: sectionConfig.vGrowRows || chunkConfig.vGrowRows,
+      vGrowRows,
       rowSyncHeights: rowHeights,
       reportRowHeight: reportRowHeight
     })
@@ -214,6 +215,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     } else {
       content = ( // TODO: need scrollerharness too?
         <Scroller
+          elRef={vGrowRows ? this.scrollerElRefs.createRef(index) : null}
           overflowX={forceXScrollbars ? 'scroll' : 'hidden'}
           overflowY={forceYScrollbars ? 'scroll' : 'hidden'}
           vGrow={chunkVGrow}
@@ -576,7 +578,7 @@ function renderMacroCol(colGroupStat: ColGroupStat, shrinkWidth?: number) {
   let width = colGroupStat.width
 
   if (width === 'shrink') {
-    width = colGroupStat.totalColWidth + sanitizeShrinkWidth(shrinkWidth)
+    width = colGroupStat.totalColWidth + sanitizeShrinkWidth(shrinkWidth) + 1 // +1 for border :(
   }
 
   return (

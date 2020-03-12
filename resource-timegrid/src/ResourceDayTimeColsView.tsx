@@ -51,6 +51,7 @@ export default class ResourceDayTimeColsView extends TimeColsView {
         dateProfile={props.dateProfile}
         resourceDayTableModel={resourceDayTableModel}
         nextDayThreshold={nextDayThreshold}
+        tableMinWidth={contentArg.tableMinWidth}
         colGroupNode={contentArg.tableColGroupNode}
         renderRowIntro={columnMinWidth ? null : this.renderTableRowAxis}
         eventLimit={this.getAllDayEventLimit()}
@@ -80,7 +81,7 @@ export default class ResourceDayTimeColsView extends TimeColsView {
     )
 
     return columnMinWidth
-      ? this.renderHScrollLayout(headerContent, allDayContent, timeGridContent, columnMinWidth)
+      ? this.renderHScrollLayout(headerContent, allDayContent, timeGridContent, resourceDayTableModel.colCnt, columnMinWidth, slatMetas)
       : this.renderSimpleLayout(headerContent, allDayContent, timeGridContent)
   }
 

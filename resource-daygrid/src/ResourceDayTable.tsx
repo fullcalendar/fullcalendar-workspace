@@ -16,6 +16,7 @@ export interface ResourceDayTableProps {
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
   nextDayThreshold: Duration
+  tableMinWidth: CssDimValue
   colGroupNode: VNode
   renderRowIntro?: () => VNode
   eventLimit: boolean | number
@@ -64,6 +65,7 @@ export default class ResourceDayTable extends DateComponent<ResourceDayTableProp
         cells={resourceDayTableModel.cells}
         dateProfile={dateProfile}
         colGroupNode={props.colGroupNode}
+        tableMinWidth={props.tableMinWidth}
         renderRowIntro={props.renderRowIntro}
         eventLimit={props.eventLimit}
         vGrowRows={props.vGrowRows}
