@@ -79,6 +79,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
       for (let resource of resources) {
         resourceCells.push(
           <ResourceCell
+            key={resource.id + ':' + date.toISOString()}
             resource={resource}
             resourceTextFunc={resourceTextFunc}
             colSpan={1}
@@ -105,6 +106,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
 
       resourceCells.push(
         <ResourceCell
+          key={resource.id}
           resource={resource}
           resourceTextFunc={resourceTextFunc}
           colSpan={dates.length}
@@ -135,7 +137,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
 
     return (
       <TableDateCell
-        key={distinctDateStr || date.getDay()}
+        key={(distinctDateStr || date.getDay()) + (resource ? `:${resource.id}` : '')}
         distinctDateStr={distinctDateStr}
         date={date}
         todayRange={todayRange}
