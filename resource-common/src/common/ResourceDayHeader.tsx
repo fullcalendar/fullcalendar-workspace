@@ -1,6 +1,6 @@
 import {
   VNode, h,
-  memoize, BaseComponent, DateMarker, DateProfile, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext, TableDateCell, Fragment, DateRange, NowTimer
+  memoize, BaseComponent, DateMarker, DateProfile, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext, TableDateCell, Fragment, DateRange, NowTimer, formatDayString
 } from '@fullcalendar/core'
 import { buildResourceTextFunc } from '../common/resource-rendering'
 import { Resource } from '../structs/resource'
@@ -131,9 +131,8 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
 
   // a cell with date text. might have a resource associated with it
   renderDateCell(date: DateMarker, dateFormat: DateFormatter, todayRange: DateRange, colSpan: number, resource?: Resource) {
-    let { dateEnv } = this.context
     let { props } = this
-    let distinctDateStr = props.datesRepDistinctDays ? dateEnv.formatIso(date, { omitTime: true }) : ''
+    let distinctDateStr = props.datesRepDistinctDays ? formatDayString(date) : ''
 
     return (
       <TableDateCell
@@ -189,15 +188,13 @@ class ResourceCell extends BaseComponent<ResourceCellProps> {
 
 
   render(props: ResourceCellProps) {
-    let { dateEnv } = this.context
-
     let attrs = {
       'class': 'fc-resource-cell',
       'data-resource-id': props.resource.id
     } as any
 
     if (props.date) {
-      attrs['data-date'] = dateEnv.formatIso(props.date, { omitTime: true })
+      attrs['data-date'] = formatDayString(props.date)
     }
 
     if (props.colSpan > 1) {
