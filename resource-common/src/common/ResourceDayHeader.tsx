@@ -132,12 +132,14 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
   // a cell with date text. might have a resource associated with it
   renderDateCell(date: DateMarker, dateFormat: DateFormatter, todayRange: DateRange, colSpan: number, resource?: Resource) {
     let { props } = this
-    let distinctDateStr = props.datesRepDistinctDays ? formatDayString(date) : ''
+    let key =
+      (props.datesRepDistinctDays ? date.toISOString() : date.getUTCDay()) +
+      (resource ? `:${resource.id}` : '')
 
     return (
       <TableDateCell
-        key={(distinctDateStr || date.getDay()) + (resource ? `:${resource.id}` : '')}
-        distinctDateStr={distinctDateStr}
+        key={key}
+        isDateDistinct={props.datesRepDistinctDays}
         date={date}
         todayRange={todayRange}
         dateProfile={props.dateProfile}
