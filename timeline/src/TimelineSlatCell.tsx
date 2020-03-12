@@ -1,6 +1,6 @@
 import {
   h, isInt, BaseComponent,
-  ComponentContext, DateMarker, Ref, setRef, getDayClassNames, getSlatClassNames, DateRange, getDateMeta, getDayMeta, DateProfile, MountHook, ClassNamesHook, InnerContentHook
+  ComponentContext, DateMarker, Ref, setRef, getDayClassNames, getSlatClassNames, DateRange, getDateMeta, getDayMeta, DateProfile, DateHook, DateInnerContentHook
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -59,35 +59,25 @@ export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProp
     }
 
     return (
-      <MountHook
-        name='dateCell'
-        handlerProps={staticProps}
-        content={(rootElRef: Ref<HTMLTableCellElement>) => (
-          <ClassNamesHook
-            name='dateCell'
-            handlerProps={dynamicProps}
-            content={(customClassNames) => (
-              <td
-                ref={(el: HTMLElement | null) => {
-                  setRef(this.handleEl, el)
-                  setRef(rootElRef, el)
-                }}
-                key={dateStr /* fresh rerender for new date, mostly because of dayRender */}
-                data-date={dateStr}
-                class={standardClassNames.concat(customClassNames).join(' ')}
-              >
-                <InnerContentHook
-                  name='dateCell'
-                  innerProps={dynamicProps}
-                  outerContent={(innerContentParentRef, innerContent) => (
-                    <div ref={innerContentParentRef}>{innerContent}</div>
-                  )}
-                />
-              </td>
-            )}
-          />
+      <DateHook staticProps={staticProps} dynamicProps={dynamicProps}>
+        {(rootElRef: Ref<HTMLTableCellElement>, customClassNames: string[]) => (
+          <td
+            ref={(el: HTMLElement | null) => {
+              setRef(this.handleEl, el)
+              setRef(rootElRef, el)
+            }}
+            key={dateStr /* fresh rerender for new date, mostly because of dayRender */}
+            data-date={dateStr}
+            class={standardClassNames.concat(customClassNames).join(' ')}
+          >
+            <DateInnerContentHook dynamicProps={dynamicProps}>
+              {(innerContentParentRef, innerContent) => (
+                <div ref={innerContentParentRef}>{innerContent}</div>
+              )}
+            </DateInnerContentHook>
+          </td>
         )}
-      />
+      </DateHook>
     )
   }
 
