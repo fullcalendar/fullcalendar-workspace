@@ -1,6 +1,6 @@
 import {
   h, isInt, BaseComponent,
-  ComponentContext, DateMarker, Ref, setRef, getDayClassNames, getSlatClassNames, DateRange, getDateMeta, getDayMeta, DateProfile
+  ComponentContext, DateMarker, Ref, setRef, getDayClassNames, getSlatClassNames, DateRange, getDateMeta, getDayMeta, DateProfile, MountHook, ClassNamesHook, InnerContentHook
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -22,15 +22,14 @@ export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProp
   render(props: TimelineSlatCellProps, state: {}, context: ComponentContext) {
     let { dateEnv } = context
     let { date, tDateProfile, isEm } = props // TODO: destructure in signature! do elsewhere!
-    let classNames: string[]
+    let dateMeta
+    let standardClassNames: string[]
 
     if (tDateProfile.isTimeScale) {
-      classNames = getSlatClassNames(
-        getDateMeta(date, props.todayRange, props.nowDate),
-        context.theme
-      )
+      dateMeta = getDateMeta(date, props.todayRange, props.nowDate)
+      standardClassNames = getSlatClassNames(dateMeta, context.theme)
 
-      classNames.push(
+      standardClassNames.push(
         isInt(dateEnv.countDurationsBetween(
           tDateProfile.normalizedRange.start,
           date,
@@ -41,25 +40,54 @@ export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProp
       )
 
     } else {
-      classNames = getDayClassNames(
-        getDayMeta(date, props.todayRange, props.dateProfile),
-        context.theme
-      )
+      dateMeta = getDayMeta(date, props.todayRange, props.dateProfile)
+      standardClassNames = getDayClassNames(dateMeta, context.theme)
     }
 
     if (isEm) {
-      classNames.push('fc-em-cell')
+      standardClassNames.push('fc-em-cell')
     }
 
     let dateStr = dateEnv.formatIso(date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true })
+    let staticProps = {
+      date,
+      view: context.view
+    }
+    let dynamicProps = {
+      ...staticProps,
+      ...dateMeta
+    }
 
     return (
-      <td
-        ref={this.handleEl}
-        key={dateStr /* fresh rerender for new date, mostly because of dayRender */}
-        data-date={dateStr}
-        class={classNames.join(' ')}
-      ><div /></td>
+      <MountHook
+        name='dateCell'
+        handlerProps={staticProps}
+        content={(rootElRef: Ref<HTMLTableCellElement>) => (
+          <ClassNamesHook
+            name='dateCell'
+            handlerProps={dynamicProps}
+            content={(customClassNames) => (
+              <td
+                ref={(el: HTMLElement | null) => {
+                  setRef(this.handleEl, el)
+                  setRef(rootElRef, el)
+                }}
+                key={dateStr /* fresh rerender for new date, mostly because of dayRender */}
+                data-date={dateStr}
+                class={standardClassNames.concat(customClassNames).join(' ')}
+              >
+                <InnerContentHook
+                  name='dateCell'
+                  innerProps={dynamicProps}
+                  outerContent={(innerContentParentRef, innerContent) => (
+                    <div ref={innerContentParentRef}>{innerContent}</div>
+                  )}
+                />
+              </td>
+            )}
+          />
+        )}
+      />
     )
   }
 
