@@ -1,6 +1,6 @@
 import {
   h, isInt, BaseComponent,
-  ComponentContext, DateMarker, Ref, setRef, getDayClassNames, getSlatClassNames, DateRange, getDateMeta, getDayMeta, DateProfile, DateHook, DateInnerContentHook
+  ComponentContext, DateMarker, Ref, DateRange, DateProfile, DayRoot, DateTimeRoot
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -21,83 +21,46 @@ export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProp
 
   render(props: TimelineSlatCellProps, state: {}, context: ComponentContext) {
     let { dateEnv } = context
-    let { date, tDateProfile, isEm } = props // TODO: destructure in signature! do elsewhere!
-    let dateMeta
-    let standardClassNames: string[]
+    let { date, tDateProfile, isEm } = props
+    let extraClassNames: string[] = []
+
+    const doRender = (rootElRef, classNames, dataAttrs, innerElRef, innerContent) => (
+      <td
+        ref={rootElRef}
+        className={classNames.concat(extraClassNames).join(' ')}
+        {...dataAttrs}
+      >
+        <div ref={innerElRef}>{innerContent}</div>
+      </td>
+    )
+
+    if (isEm) {
+      extraClassNames.push('fc-em-cell')
+    }
 
     if (tDateProfile.isTimeScale) {
-      dateMeta = getDateMeta(date, props.todayRange, props.nowDate)
-      standardClassNames = getSlatClassNames(dateMeta, context.theme)
-
-      standardClassNames.push(
+      extraClassNames.push(
         isInt(dateEnv.countDurationsBetween(
           tDateProfile.normalizedRange.start,
-          date,
+          props.date,
           tDateProfile.labelInterval
         )) ?
           'fc-major' :
           'fc-minor'
       )
 
+      return (
+        <DateTimeRoot date={date} nowDate={props.nowDate} classNameScope='fc-slat' elRef={props.elRef}>
+          {doRender}
+        </DateTimeRoot>
+      )
     } else {
-      dateMeta = getDayMeta(date, props.todayRange, props.dateProfile)
-      standardClassNames = getDayClassNames(dateMeta, context.theme)
+      return (
+        <DayRoot date={date} todayRange={props.todayRange} elRef={props.elRef}>
+          {doRender}
+        </DayRoot>
+      )
     }
-
-    if (isEm) {
-      standardClassNames.push('fc-em-cell')
-    }
-
-    let dateStr = dateEnv.formatIso(date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true })
-    let staticProps = {
-      date,
-      view: context.view
-    }
-    let dynamicProps = {
-      ...staticProps,
-      ...dateMeta
-    }
-
-    return (
-      <DateHook staticProps={staticProps} dynamicProps={dynamicProps}>
-        {(rootElRef: Ref<HTMLTableCellElement>, customClassNames: string[]) => (
-          <td
-            ref={(el: HTMLElement | null) => {
-              setRef(this.handleEl, el)
-              setRef(rootElRef, el)
-            }}
-            key={dateStr /* fresh rerender for new date, mostly because of dayRender */}
-            data-date={dateStr}
-            class={standardClassNames.concat(customClassNames).join(' ')}
-          >
-            <DateInnerContentHook dynamicProps={dynamicProps}>
-              {(innerContentParentRef, innerContent) => (
-                <div ref={innerContentParentRef}>{innerContent}</div>
-              )}
-            </DateInnerContentHook>
-          </td>
-        )}
-      </DateHook>
-    )
-  }
-
-
-  handleEl = (el: HTMLElement | null) => {
-    let { props } = this
-
-    if (el) {
-      let { calendar, view, dateEnv } = this.context
-
-      calendar.publiclyTrigger('dayRender', [
-        {
-          date: dateEnv.toDate(props.date),
-          el,
-          view
-        }
-      ])
-    }
-
-    setRef(props.elRef, el)
   }
 
 }

@@ -3,7 +3,7 @@ import {
   memoize, BaseComponent, DateMarker, DateProfile, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext, TableDateCell, Fragment, DateRange, NowTimer, formatDayString, Ref, ComponentChildren
 } from '@fullcalendar/core'
 import { Resource } from '../structs/resource'
-import ResourceLabelHook from './ResourceLabelHook'
+import ResourceRoot from './ResourceRoot'
 
 
 export interface ResourceDayHeaderProps {
@@ -178,8 +178,8 @@ class ResourceCell extends BaseComponent<ResourceCellProps> {
 
   render(props: ResourceCellProps) {
     return (
-      <ResourceLabelHook resource={props.resource} date={props.date}>
-        {(elRef: Ref<HTMLTableCellElement>, customClassNames: string[], innerContent: ComponentChildren) => (
+      <ResourceRoot resource={props.resource} date={props.date}>
+        {(elRef: Ref<HTMLTableCellElement>, customClassNames: string[], innerElRef, innerContent: ComponentChildren) => (
           <th
             ref={elRef}
             className={[ 'fc-resource-cell' ].concat(customClassNames).join(' ')}
@@ -188,7 +188,7 @@ class ResourceCell extends BaseComponent<ResourceCellProps> {
             colSpan={props.colSpan > 1 ? props.colSpan : null}
           >{innerContent}</th>
         )}
-      </ResourceLabelHook>
+      </ResourceRoot>
     )
   }
 
