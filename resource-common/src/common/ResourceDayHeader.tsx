@@ -1,10 +1,9 @@
 import {
   VNode, h,
-  memoize, BaseComponent, DateMarker, DateProfile, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext, TableDateCell, Fragment, DateRange, NowTimer, formatDayString
+  memoize, BaseComponent, DateMarker, DateProfile, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext, TableDateCell, Fragment, DateRange, NowTimer, formatDayString, Ref, ComponentChildren
 } from '@fullcalendar/core'
-import { buildResourceTextFunc } from '../common/resource-rendering'
 import { Resource } from '../structs/resource'
-import ResourceApi from '../api/ResourceApi'
+import ResourceLabelHook from './ResourceLabelHook'
 
 
 export interface ResourceDayHeaderProps {
@@ -18,11 +17,10 @@ export interface ResourceDayHeaderProps {
 export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { // TODO: rename to ResourceDayHeaderTrs?
 
   private buildDateFormat = memoize(buildDateFormat)
-  private buildResourceTextFunc = memoize(buildResourceTextFunc)
 
 
   render(props: ResourceDayHeaderProps, state: {}, context: ComponentContext) {
-    let { options, calendar } = context
+    let { options } = context
 
     let dateFormat = this.buildDateFormat(
       options.columnHeaderFormat,
@@ -30,20 +28,15 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
       props.dates.length
     )
 
-    let resourceTextFunc = this.buildResourceTextFunc(
-      options.resourceText,
-      calendar
-    )
-
     return (
       <NowTimer unit='day' content={(nowDate: DateMarker, todayRange: DateRange) => {
         if (props.dates.length === 1) {
-          return this.renderResourceRow(props.resources, resourceTextFunc)
+          return this.renderResourceRow(props.resources)
         } else {
           if (options.datesAboveResources) {
-            return this.renderDayAndResourceRows(props.dates, dateFormat, todayRange, props.resources, resourceTextFunc)
+            return this.renderDayAndResourceRows(props.dates, dateFormat, todayRange, props.resources)
           } else {
-            return this.renderResourceAndDayRows(props.resources, resourceTextFunc, props.dates, dateFormat, todayRange)
+            return this.renderResourceAndDayRows(props.resources, props.dates, dateFormat, todayRange)
           }
         }
       }} />
@@ -51,12 +44,11 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
   }
 
 
-  renderResourceRow(resources: Resource[], resourceTextFunc) {
+  renderResourceRow(resources: Resource[]) {
     let resourceCells = resources.map((resource) => {
       return (
         <ResourceCell
           resource={resource}
-          resourceTextFunc={resourceTextFunc}
           colSpan={1}
         />
       )
@@ -66,7 +58,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
   }
 
 
-  renderDayAndResourceRows(dates: DateMarker[], dateFormat: DateFormatter, todayRange: DateRange, resources: Resource[], resourceTextFunc) {
+  renderDayAndResourceRows(dates: DateMarker[], dateFormat: DateFormatter, todayRange: DateRange, resources: Resource[]) {
     let dateCells: VNode[] = []
     let resourceCells: VNode[] = []
 
@@ -81,7 +73,6 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
           <ResourceCell
             key={resource.id + ':' + date.toISOString()}
             resource={resource}
-            resourceTextFunc={resourceTextFunc}
             colSpan={1}
             date={date}
           />
@@ -98,7 +89,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
   }
 
 
-  renderResourceAndDayRows(resources: Resource[], resourceTextFunc, dates: DateMarker[], dateFormat: DateFormatter, todayRange: DateRange) {
+  renderResourceAndDayRows(resources: Resource[], dates: DateMarker[], dateFormat: DateFormatter, todayRange: DateRange) {
     let resourceCells: VNode[] = []
     let dateCells: VNode[] = []
 
@@ -108,7 +99,6 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
         <ResourceCell
           key={resource.id}
           resource={resource}
-          resourceTextFunc={resourceTextFunc}
           colSpan={dates.length}
         />
       )
@@ -159,12 +149,11 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
       cells = [ <td>&nbsp;</td> ]
     }
 
-    if (renderIntro) {
-      cells.unshift(renderIntro())
-    }
-
     return (
-      <tr key={key}>{cells}</tr>
+      <tr key={key}>
+        {renderIntro && renderIntro()}
+        {cells}
+      </tr>
     )
   }
 
@@ -181,46 +170,26 @@ function buildDateFormat(columnHeaderFormat, datesRepDistinctDays, dayCnt) {
 
 interface ResourceCellProps {
   resource: Resource
-  resourceTextFunc: (resource: Resource) => string
   colSpan: number
   date?: DateMarker
 }
 
 class ResourceCell extends BaseComponent<ResourceCellProps> {
 
-
   render(props: ResourceCellProps) {
-    let attrs = {
-      'class': 'fc-resource-cell',
-      'data-resource-id': props.resource.id
-    } as any
-
-    if (props.date) {
-      attrs['data-date'] = formatDayString(props.date)
-    }
-
-    if (props.colSpan > 1) {
-      attrs.colSpan = props.colSpan
-    }
-
     return (
-      <th {...attrs}>{props.resourceTextFunc(props.resource)}</th>
+      <ResourceLabelHook resource={props.resource} date={props.date}>
+        {(elRef: Ref<HTMLTableCellElement>, customClassNames: string[], innerContent: ComponentChildren) => (
+          <th
+            ref={elRef}
+            className={[ 'fc-resource-cell' ].concat(customClassNames).join(' ')}
+            data-resource-id={props.resource.id}
+            data-date={props.date ? formatDayString(props.date) : null}
+            colSpan={props.colSpan > 1 ? props.colSpan : null}
+          >{innerContent}</th>
+        )}
+      </ResourceLabelHook>
     )
-  }
-
-
-  handleCellEl = (cellEl: HTMLTableCellElement | null) => {
-    let { calendar, view } = this.context
-
-    if (cellEl) {
-      calendar.publiclyTrigger('resourceRender', [
-        {
-          resource: new ResourceApi(calendar, this.props.resource),
-          el: cellEl, // head <td>
-          view
-        }
-      ])
-    }
   }
 
 }

@@ -44,3 +44,5 @@ export { flattenResources, Group, isGroupsEqual, GroupNode, ResourceNode, buildR
 export { buildResourceTextFunc } from './common/resource-rendering'
 export { default as ResourceApi } from './api/ResourceApi'
 export { default as ResourceSplitter } from './common/ResourceSplitter'
+
+export { default as ResourceLabelHook, ResourceLabelHookProps } from './common/ResourceLabelHook'

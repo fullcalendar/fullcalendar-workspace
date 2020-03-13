@@ -35,7 +35,6 @@ declare module '@fullcalendar/core' {
     resourceLabelText?: string
     resourceOrder?: any
     filterResourcesWithEvents?: any
-    resourceText?: any
     resourceGroupField?: any
     resourceGroupText?: any
     resourceAreaWidth?: any

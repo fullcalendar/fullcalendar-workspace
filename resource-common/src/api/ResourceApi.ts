@@ -1,5 +1,5 @@
 import { Calendar, EventApi } from '@fullcalendar/core'
-import { Resource } from '../structs/resource'
+import { Resource, getPublicId } from '../structs/resource'
 
 export default class ResourceApi {
 
@@ -80,7 +80,7 @@ export default class ResourceApi {
     return eventApis
   }
 
-  get id(): string { return this._resource.id }
+  get id(): string { return getPublicId(this._resource.id) }
   get title(): string { return this._resource.title }
   get eventConstraint(): any { return this._resource.ui.constraints[0] || null }
   get eventOverlap(): any { return this._resource.ui.overlap }
