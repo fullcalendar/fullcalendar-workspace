@@ -1,5 +1,5 @@
 import {
-  h, asRoughMs, isSingleDay, BaseComponent, ComponentContext, DateProfile, GotoAnchor, Fragment, DateRange, DateMarker, getDayMeta, getDayClassNames, getDateMeta, getSlatClassNames
+  h, asRoughMs, isSingleDay, BaseComponent, ComponentContext, DateProfile, Fragment, DateRange, DateMarker, getDayMeta, getDayClassNames, getDateMeta, getSlatClassNames, buildNavLinkData
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -48,24 +48,19 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
                   headerCellClassNames.push('fc-em-cell')
                 }
 
+                let navLinkData = (options.navLinks && cell.rowUnit)
+                  ? buildNavLinkData(cell.date, cell.rowUnit)
+                  : null
+
                 return (
                   <th class={headerCellClassNames.join(' ')}
                     data-date={dateEnv.formatIso(cell.date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true })}
                     colSpan={cell.colspan}
                   >
                     <div class="fc-cell-content" data-fc-width-all={1}>
-                      <GotoAnchor
-                        navLinks={options.navLinks}
-                        gotoOptions={{
-                          date: cell.date,
-                          type: cell.rowUnit,
-                          forceOff: !cell.rowUnit
-                        }}
-                        extraAttrs={{
-                          'class': 'fc-cell-text' + (isLast ? '' : ' fc-sticky'),
-                          'data-fc-width-content': 1
-                        }}
-                      >{cell.text}</GotoAnchor>
+                      <a data-navlink={navLinkData} className={'fc-cell-text' + (isLast ? '' : ' fc-sticky')} data-fc-width-content={1}>
+                        {cell.text}
+                      </a>
                     </div>
                   </th>
                 )
