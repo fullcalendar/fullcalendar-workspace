@@ -37,7 +37,7 @@ export default class ResourceDayTimeColsView extends TimeColsView {
     let slatMetas = this.buildSlatMetas(props.dateProfile, options.slotLabelInterval, slotDuration, dateEnv)
     let { columnMinWidth } = options
 
-    let headerContent = options.columnHeader &&
+    let headerContent = options.dayLabels &&
       <ResourceDayHeader
         resources={resources}
         dates={resourceDayTableModel.dayTableModel.headerDates}
