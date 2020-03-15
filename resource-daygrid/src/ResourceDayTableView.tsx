@@ -1,6 +1,6 @@
 import {
   h, createRef,
-  ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs
+  ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs, Calendar
 } from '@fullcalendar/core'
 import { TableView, buildDayTableModel } from '@fullcalendar/daygrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
@@ -27,7 +27,8 @@ export default class ResourceDayTableView extends TableView {
       props.dateProfile,
       props.dateProfileGenerator,
       resources,
-      options.datesAboveResources
+      options.datesAboveResources,
+      context.calendar
     )
 
     let headerContent = options.columnHeader &&
@@ -70,10 +71,16 @@ export default class ResourceDayTableView extends TableView {
 }
 
 
-function buildResourceDayTableModel(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator, resources: Resource[], datesAboveResources: boolean) {
+function buildResourceDayTableModel(
+  dateProfile: DateProfile,
+  dateProfileGenerator: DateProfileGenerator,
+  resources: Resource[],
+  datesAboveResources: boolean,
+  calendar: Calendar
+) {
   let dayTable = buildDayTableModel(dateProfile, dateProfileGenerator)
 
   return datesAboveResources ?
-    new DayResourceTableModel(dayTable, resources) :
-    new ResourceDayTableModel(dayTable, resources)
+    new DayResourceTableModel(dayTable, resources, calendar) :
+    new ResourceDayTableModel(dayTable, resources, calendar)
 }

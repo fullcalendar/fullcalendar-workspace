@@ -1,5 +1,5 @@
 import {
-  h, ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs, createDuration
+  h, ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs, createDuration, Calendar
 } from '@fullcalendar/core'
 import { TimeColsView, buildTimeColsModel, buildSlatMetas } from '@fullcalendar/timegrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
@@ -29,7 +29,8 @@ export default class ResourceDayTimeColsView extends TimeColsView {
       props.dateProfile,
       props.dateProfileGenerator,
       resources,
-      options.datesAboveResources
+      options.datesAboveResources,
+      context.calendar
     )
 
     let slotDuration = this.parseSlotDuration(options.slotDuration)
@@ -88,10 +89,16 @@ export default class ResourceDayTimeColsView extends TimeColsView {
 }
 
 
-function buildResourceTimeColsModel(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator, resources: Resource[], datesAboveResources: boolean) {
+function buildResourceTimeColsModel(
+  dateProfile: DateProfile,
+  dateProfileGenerator: DateProfileGenerator,
+  resources: Resource[],
+  datesAboveResources: boolean,
+  calendar: Calendar
+) {
   let dayTable = buildTimeColsModel(dateProfile, dateProfileGenerator)
 
   return datesAboveResources ?
-    new DayResourceTableModel(dayTable, resources) :
-    new ResourceDayTableModel(dayTable, resources)
+    new DayResourceTableModel(dayTable, resources, calendar) :
+    new ResourceDayTableModel(dayTable, resources, calendar)
 }

@@ -1,6 +1,7 @@
-import { SlicedProps, EventDef, mapHash, Splitter, DayTableModel, DayTableCell, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/core'
+import { Calendar, SlicedProps, EventDef, mapHash, Splitter, DayTableModel, DayTableCell, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/core'
 import { Resource } from '../structs/resource'
 import { __assign } from 'tslib'
+import ResourceApi from '../api/ResourceApi'
 
 export interface ResourceDayTableCell extends DayTableCell {
   resource: Resource
@@ -11,14 +12,14 @@ export abstract class AbstractResourceDayTableModel {
   cells: ResourceDayTableCell[][]
   rowCnt: number
   colCnt: number
-  dayTableModel: DayTableModel
-  resources: Resource[]
   resourceIndex: ResourceIndex
 
 
-  constructor(dayTableModel: DayTableModel, resources: Resource[]) {
-    this.dayTableModel = dayTableModel
-    this.resources = resources
+  constructor(
+    public dayTableModel: DayTableModel,
+    public resources: Resource[],
+    private calendar: Calendar
+  ) {
     this.resourceIndex = new ResourceIndex(resources)
 
     this.rowCnt = dayTableModel.rowCnt
@@ -48,14 +49,16 @@ export abstract class AbstractResourceDayTableModel {
 
         for (let resourceCol = 0; resourceCol < resources.length; resourceCol++) {
           let resource = resources[resourceCol]
-          let htmlAttrs = { 'data-resource-id': resource.id }
+          let extraMountProps = { resource: new ResourceApi(this.calendar, resource) }
+          let extraDataAttrs = { 'data-resource-id': resource.id }
 
           rowCells[
             this.computeCol(dateCol, resourceCol)
           ] = {
             date: dayTableModel.cells[row][dateCol].date,
             resource,
-            htmlAttrs
+            extraMountProps,
+            extraDataAttrs
           }
         }
       }

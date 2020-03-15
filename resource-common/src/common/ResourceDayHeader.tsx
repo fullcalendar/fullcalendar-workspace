@@ -4,6 +4,7 @@ import {
 } from '@fullcalendar/core'
 import { Resource } from '../structs/resource'
 import ResourceRoot from './ResourceRoot'
+import ResourceApi from '../api/ResourceApi'
 
 
 export interface ResourceDayHeaderProps {
@@ -31,7 +32,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
     return (
       <NowTimer unit='day' content={(nowDate: DateMarker, todayRange: DateRange) => {
         if (props.dates.length === 1) {
-          return this.renderResourceRow(props.resources)
+          return this.renderResourceRow(props.resources, props.dates[0])
         } else {
           if (options.datesAboveResources) {
             return this.renderDayAndResourceRows(props.dates, dateFormat, todayRange, props.resources)
@@ -44,12 +45,13 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
   }
 
 
-  renderResourceRow(resources: Resource[]) {
+  renderResourceRow(resources: Resource[], date: DateMarker) {
     let resourceCells = resources.map((resource) => {
       return (
         <ResourceCell
           resource={resource}
           colSpan={1}
+          date={date}
         />
       )
     })
@@ -136,7 +138,8 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
         colCnt={props.dates.length * props.resources.length}
         colHeadFormat={dateFormat}
         colSpan={colSpan}
-        otherAttrs={resource ? { 'data-resource-id' : resource.id } : {}}
+        extraMountProps={resource ? { resource: new ResourceApi(this.context.calendar, resource) } : {}}
+        extraDataAttrs={resource ? { 'data-resource-id' : resource.id } : {}}
       />
     )
   }
