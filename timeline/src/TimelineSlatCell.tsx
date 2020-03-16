@@ -1,6 +1,6 @@
 import {
   h, isInt, BaseComponent,
-  ComponentContext, DateMarker, Ref, DateRange, DateProfile, DayRoot, DateTimeRoot
+  ComponentContext, DateMarker, Ref, DateRange, DateProfile, DayCellRoot, DateTimeRoot
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -56,9 +56,9 @@ export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProp
       )
     } else {
       return (
-        <DayRoot date={date} todayRange={props.todayRange} elRef={props.elRef}>
+        <DayCellRoot date={date} todayRange={props.todayRange} elRef={props.elRef}>
           {doRender}
-        </DayRoot>
+        </DayCellRoot>
       )
     }
   }
