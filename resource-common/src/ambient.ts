@@ -40,7 +40,7 @@ declare module '@fullcalendar/core' {
     resourceAreaWidth?: any
     resourceColumns?: any
     resourcesInitiallyExpanded?: any
-    slotWidth?: any
+    slotMinWidth?: any
     datesAboveResources?: any
     eventResourceEditable?: boolean
     refetchResourcesOnNavigate?: boolean

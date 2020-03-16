@@ -117,7 +117,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                   </Fragment>
                 )
               }}
-              timeCols={buildSlatCols(tDateProfile, this.context.options.slotWidth || 30)}
+              timeCols={buildSlatCols(tDateProfile, this.context.options.slotMinWidth || 30)}
               timeHeaderContent={(contentArg: ChunkContentCallbackArgs) => (
                 <TimelineHeader
                   clientWidth={contentArg.clientWidth}

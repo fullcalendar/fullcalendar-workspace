@@ -261,7 +261,7 @@ describe('timeline event resizing', function() {
       pushOptions({
         defaultView: 'resourceTimelineYear',
         slotDuration: { weeks: 1 },
-        slotWidth: 50
+        slotMinWidth: 50
       })
 
       it('reports untimed dates', function(done) { // TODO: this is desired behavior when no end???

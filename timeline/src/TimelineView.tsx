@@ -31,7 +31,7 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
     )
 
     let extraClassNames = getTimelineViewClassNames(options.eventOverlap)
-    let slatCols = buildSlatCols(tDateProfile, context.options.slotWidth || 30) // TODO: more DRY
+    let slatCols = buildSlatCols(tDateProfile, context.options.slotMinWidth || 30) // TODO: more DRY
 
     return (
       <ViewRoot viewSpec={props.viewSpec}>
