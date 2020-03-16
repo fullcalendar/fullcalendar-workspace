@@ -12,7 +12,7 @@ export interface TimelineDateProfile {
   emphasizeWeeks: boolean
   snapDuration: Duration
   snapsPerSlot: number
-  normalizedRange: DateRange // snaps to unit. adds in minTime/maxTime
+  normalizedRange: DateRange // snaps to unit. adds in slotMinTime/slotMaxTime
   timeWindowMs: number
   slotDates: DateMarker[]
   isWeekStarts: boolean[]
@@ -128,19 +128,19 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: Date
 
   // more...
 
-  let timeWindowMs = asRoughMs(dateProfile.maxTime) - asRoughMs(dateProfile.minTime)
+  let timeWindowMs = asRoughMs(dateProfile.slotMaxTime) - asRoughMs(dateProfile.slotMinTime)
 
   // TODO: why not use normalizeRange!?
   let normalizedStart = normalizeDate(dateProfile.renderRange.start, tDateProfile, dateEnv)
   let normalizedEnd = normalizeDate(dateProfile.renderRange.end, tDateProfile, dateEnv)
 
-  // apply minTime/maxTime
+  // apply slotMinTime/slotMaxTime
   // TODO: View should be responsible.
   if (tDateProfile.isTimeScale) {
-    normalizedStart = dateEnv.add(normalizedStart, dateProfile.minTime)
+    normalizedStart = dateEnv.add(normalizedStart, dateProfile.slotMinTime)
     normalizedEnd = dateEnv.add(
       addDays(normalizedEnd, -1),
-      dateProfile.maxTime
+      dateProfile.slotMaxTime
     )
   }
 
@@ -246,12 +246,12 @@ export function isValidDate(date: DateMarker, tDateProfile: TimelineDateProfile,
   if (dateProfileGenerator.isHiddenDay(date)) {
     return false
   } else if (tDateProfile.isTimeScale) {
-    // determine if the time is within minTime/maxTime, which may have wacky values
+    // determine if the time is within slotMinTime/slotMaxTime, which may have wacky values
     let day = startOfDay(date)
     let timeMs = date.valueOf() - day.valueOf()
-    let ms = timeMs - asRoughMs(dateProfile.minTime) // milliseconds since minTime
+    let ms = timeMs - asRoughMs(dateProfile.slotMinTime) // milliseconds since slotMinTime
     ms = ((ms % 86400000) + 86400000) % 86400000 // make negative values wrap to 24hr clock
-    return ms < tDateProfile.timeWindowMs // before the maxTime?
+    return ms < tDateProfile.timeWindowMs // before the slotMaxTime?
   } else {
     return true
   }

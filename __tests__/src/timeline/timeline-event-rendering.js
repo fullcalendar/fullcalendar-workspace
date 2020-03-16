@@ -97,12 +97,12 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                 })
               })
 
-              // minTime/maxTime
+              // slotMinTime/slotMaxTime
               if (!eventRendering) { // non-background, for faster tests
 
-                it('doesn\'t render when on same day before minTime', function() {
+                it('doesn\'t render when on same day before slotMinTime', function() {
                   initCalendar({
-                    minTime: '09:00',
+                    slotMinTime: '09:00',
                     events: [
                       makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T09:00:00')
                     ]
@@ -110,9 +110,9 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   expect($('.event1').length).toBe(0)
                 })
 
-                it('renders correctly when on different day, cropped by minTime', function() {
+                it('renders correctly when on different day, cropped by slotMinTime', function() {
                   let calendar = initCalendar({
-                    minTime: '03:00',
+                    slotMinTime: '03:00',
                     events: [
                       makeEvent('event1', '2015-10-16T12:00:00', '2015-10-17T06:00:00')
                     ]
@@ -125,9 +125,9 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   })
                 })
 
-                it('renders correctly when on same day, cropped by minTime', function() {
+                it('renders correctly when on same day, cropped by slotMinTime', function() {
                   let calendar = initCalendar({
-                    minTime: '03:00',
+                    slotMinTime: '03:00',
                     events: [
                       makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00')
                     ]
@@ -140,10 +140,10 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   })
                 })
 
-                it('doesn\'t render when on same day after maxTime', function() {
+                it('doesn\'t render when on same day after slotMaxTime', function() {
                   initCalendar({
                     scrollTime: '24:00', // the most possible
-                    maxTime: '18:00',
+                    slotMaxTime: '18:00',
                     events: [
                       makeEvent('event1', '2015-10-17T18:00:00', '2015-10-17T23:00:00')
                     ]
@@ -151,10 +151,10 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   expect($('.event1').length).toBe(0)
                 })
 
-                it('renders correctly when end on different day, cropped by maxTime', function() {
+                it('renders correctly when end on different day, cropped by slotMaxTime', function() {
                   let calendar = initCalendar({
                     scrollTime: '24:00', // the most possible
-                    maxTime: '21:00', // last slot will be 8pm-9pm
+                    slotMaxTime: '21:00', // last slot will be 8pm-9pm
                     events: [
                       makeEvent('event1', '2015-10-17T19:00:00', '2015-10-18T02:00:00')
                     ]
@@ -167,10 +167,10 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   })
                 })
 
-                it('renders correctly when end on same day, cropped by maxTime', function() {
+                it('renders correctly when end on same day, cropped by slotMaxTime', function() {
                   let calendar = initCalendar({
                     scrollTime: '24:00', // the most possible
-                    maxTime: '18:00', // last slot will be 5pm-6pm
+                    slotMaxTime: '18:00', // last slot will be 5pm-6pm
                     events: [
                       makeEvent('event1', '2015-10-17T12:00:00', '2015-10-17T22:00:00')
                     ]
@@ -185,8 +185,8 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
 
                 it('doesn\'t render when on dead zone between two days', function() {
                   initCalendar({
-                    minTime: '09:00',
-                    maxTime: '17:00', // on the 17th
+                    slotMinTime: '09:00',
+                    slotMaxTime: '17:00', // on the 17th
                     defaultView: 'timelineTwoDay',
                     views: {
                       timelineTwoDay: {
@@ -205,10 +205,10 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
 
             if (resources && !eventRendering) { // speedup
 
-              it('renders events within exaggerated maxTime', function() {
+              it('renders events within exaggerated slotMaxTime', function() {
                 let calendar = initCalendar({
-                  minTime: '09:00',
-                  maxTime: '28:00',
+                  slotMinTime: '09:00',
+                  slotMaxTime: '28:00',
                   events: [
                     makeEvent('event1', '2015-10-17T08:00:00', '2015-10-18T02:00:00')
                   ],
@@ -222,10 +222,10 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                 })
               })
 
-              it('renders events past an exaggerated maxTime', function() {
+              it('renders events past an exaggerated slotMaxTime', function() {
                 let calendar = initCalendar({
-                  minTime: '09:00',
-                  maxTime: '28:00',
+                  slotMinTime: '09:00',
+                  slotMaxTime: '28:00',
                   events: [
                     makeEvent('event1', '2015-10-17T08:00:00', '2015-10-18T05:00:00')
                   ]
@@ -404,10 +404,10 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
               })
 
               // https://github.com/fullcalendar/fullcalendar-scheduler/issues/151
-              it('renders correctly when minTime/maxTime', function() {
+              it('renders correctly when slotMinTime/slotMaxTime', function() {
                 let calendar = initCalendar({
-                  minTime: '09:00',
-                  maxTime: '17:00',
+                  slotMinTime: '09:00',
+                  slotMaxTime: '17:00',
                   events: [
                     makeEvent('event1', '2015-10-16', '2015-10-18')
                   ]
