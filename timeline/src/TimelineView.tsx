@@ -1,5 +1,5 @@
 import {
-  h, View, ViewProps, ComponentContext, memoize, ViewSpec, getViewClassNames, ChunkContentCallbackArgs, createRef
+  h, View, ViewProps, ComponentContext, memoize, ChunkContentCallbackArgs, createRef, ViewRoot
 } from '@fullcalendar/core'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
 import TimelineHeader from './TimelineHeader'
@@ -30,58 +30,62 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
       props.dateProfileGenerator
     )
 
-    let classNames = getTimelineViewClassNames(props.viewSpec, options.eventOverlap)
+    let extraClassNames = getTimelineViewClassNames(options.eventOverlap)
     let slatCols = buildSlatCols(tDateProfile, context.options.slotWidth || 30) // TODO: more DRY
 
     return (
-      <div class={classNames.join(' ')}>
-        <ScrollGrid
-          ref={this.scrollGridRef}
-          forPrint={props.forPrint}
-          vGrow={!props.isHeightAuto}
-          colGroups={[
-            { cols: slatCols }
-          ]}
-          sections={[
-            {
-              type: 'head',
-              chunks: [{
-                className: 'fc-time-area',
-                content: (contentArg: ChunkContentCallbackArgs) => (
-                  <TimelineHeader
-                    clientWidth={contentArg.clientWidth}
-                    clientHeight={contentArg.clientHeight}
-                    tableMinWidth={contentArg.tableMinWidth}
-                    tableColGroupNode={contentArg.tableColGroupNode}
-                    dateProfile={dateProfile}
-                    tDateProfile={tDateProfile}
-                    slatCoords={state.slatCoords}
-                  />
-                )
-              }]
-            },
-            {
-              type: 'body',
-              vGrow: true,
-              chunks: [{
-                className: 'fc-time-area',
-                content: (contentArg: ChunkContentCallbackArgs) => (
-                  <TimelineGrid
-                    {...props}
-                    clientWidth={contentArg.clientWidth}
-                    clientHeight={contentArg.clientHeight}
-                    tableMinWidth={contentArg.tableMinWidth}
-                    tableColGroupNode={contentArg.tableColGroupNode}
-                    tDateProfile={tDateProfile}
-                    onSlatCoords={this.handleSlatCoords}
-                    onScrollLeftRequest={this.handleScrollLeftRequest}
-                  />
-                )
-              }]
-            }
-          ]}
-        />
-      </div>
+      <ViewRoot viewSpec={props.viewSpec}>
+        {(rootElRef, classNames) => (
+          <div ref={rootElRef} class={extraClassNames.concat(classNames).join(' ')}>
+            <ScrollGrid
+              ref={this.scrollGridRef}
+              forPrint={props.forPrint}
+              vGrow={!props.isHeightAuto}
+              colGroups={[
+                { cols: slatCols }
+              ]}
+              sections={[
+                {
+                  type: 'head',
+                  chunks: [{
+                    className: 'fc-time-area',
+                    content: (contentArg: ChunkContentCallbackArgs) => (
+                      <TimelineHeader
+                        clientWidth={contentArg.clientWidth}
+                        clientHeight={contentArg.clientHeight}
+                        tableMinWidth={contentArg.tableMinWidth}
+                        tableColGroupNode={contentArg.tableColGroupNode}
+                        dateProfile={dateProfile}
+                        tDateProfile={tDateProfile}
+                        slatCoords={state.slatCoords}
+                      />
+                    )
+                  }]
+                },
+                {
+                  type: 'body',
+                  vGrow: true,
+                  chunks: [{
+                    className: 'fc-time-area',
+                    content: (contentArg: ChunkContentCallbackArgs) => (
+                      <TimelineGrid
+                        {...props}
+                        clientWidth={contentArg.clientWidth}
+                        clientHeight={contentArg.clientHeight}
+                        tableMinWidth={contentArg.tableMinWidth}
+                        tableColGroupNode={contentArg.tableColGroupNode}
+                        tDateProfile={tDateProfile}
+                        onSlatCoords={this.handleSlatCoords}
+                        onScrollLeftRequest={this.handleScrollLeftRequest}
+                      />
+                    )
+                  }]
+                }
+              ]}
+            />
+          </div>
+        )}
+      </ViewRoot>
     )
   }
 
@@ -99,8 +103,8 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
 }
 
 
-export function getTimelineViewClassNames(viewSpec: ViewSpec, eventOverlap) {
-  let classNames = getViewClassNames(viewSpec).concat('fc-timeline')
+export function getTimelineViewClassNames(eventOverlap) {
+  let classNames = [ 'fc-timeline' ]
 
   if (eventOverlap === false) {
     classNames.push('fc-no-overlap')

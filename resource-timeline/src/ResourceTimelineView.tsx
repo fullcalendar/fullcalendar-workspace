@@ -1,7 +1,7 @@
 import {
   h, createRef,
   Calendar, View, parseFieldSpecs, ComponentContext, memoize,
-  Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache, ScrollRequest, ScrollResponder, buildHashFromArray, memoizeHashlike,
+  Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache, ScrollRequest, ScrollResponder, buildHashFromArray, memoizeHashlike, ViewRoot,
 } from '@fullcalendar/core'
 import {
   buildTimelineDateProfile, TimelineHeader,
@@ -82,80 +82,84 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
       context.options.resourcesInitiallyExpanded
     )
 
-    let classNames = getTimelineViewClassNames(props.viewSpec, options.eventOverlap)
+    let extraClassNames = getTimelineViewClassNames(options.eventOverlap)
     if (!this.hasNesting(rowNodes)) {
-      classNames.push('fc-flat')
+      extraClassNames.push('fc-flat')
     }
 
     return (
-      <div class={classNames.join(' ')}>
-        <ResourceTimelineViewLayout
-          ref={this.layoutRef}
-          forPrint={props.forPrint}
-          isHeightAuto={props.isHeightAuto}
-          spreadsheetCols={buildSpreadsheetCols(colSpecs, state.spreadsheetColWidths)}
-          spreadsheetHeaderRows={
-            <SpreadsheetHeader // TODO: rename to SpreadsheetHeaderRows
-              superHeaderText={superHeaderText}
-              colSpecs={colSpecs}
-              onColWidthChange={this.handleColWidthChange}
-            />
-          }
-          spreadsheetBodyRows={(contentArg: ChunkContentCallbackArgs) => {
-            let reportRowHeights = this.getReportRowHeights(
-              buildHashFromArray(rowNodes, (rowNode) => [
-                rowNode.id,
-                [ contentArg.reportRowHeight, rowNode.id ]
-              ])
-            )
+      <ViewRoot viewSpec={props.viewSpec}>
+        {(rootElRef, classNames) => (
+          <div ref={rootElRef} class={extraClassNames.concat(classNames).join(' ')}>
+            <ResourceTimelineViewLayout
+              ref={this.layoutRef}
+              forPrint={props.forPrint}
+              isHeightAuto={props.isHeightAuto}
+              spreadsheetCols={buildSpreadsheetCols(colSpecs, state.spreadsheetColWidths)}
+              spreadsheetHeaderRows={
+                <SpreadsheetHeader // TODO: rename to SpreadsheetHeaderRows
+                  superHeaderText={superHeaderText}
+                  colSpecs={colSpecs}
+                  onColWidthChange={this.handleColWidthChange}
+                />
+              }
+              spreadsheetBodyRows={(contentArg: ChunkContentCallbackArgs) => {
+                let reportRowHeights = this.getReportRowHeights(
+                  buildHashFromArray(rowNodes, (rowNode) => [
+                    rowNode.id,
+                    [ contentArg.reportRowHeight, rowNode.id ]
+                  ])
+                )
 
-            return (
-              <Fragment>
-                {this.renderSpreadsheetRows(rowNodes, colSpecs, contentArg.rowSyncHeights, reportRowHeights)}
-              </Fragment>
-            )
-          }}
-          timeCols={buildSlatCols(tDateProfile, this.context.options.slotWidth || 30)}
-          timeHeaderContent={(contentArg: ChunkContentCallbackArgs) => (
-            <TimelineHeader
-              clientWidth={contentArg.clientWidth}
-              clientHeight={contentArg.clientHeight}
-              tableMinWidth={contentArg.tableMinWidth}
-              tableColGroupNode={contentArg.tableColGroupNode}
-              dateProfile={dateProfile}
-              tDateProfile={tDateProfile}
-              slatCoords={state.slatCoords}
+                return (
+                  <Fragment>
+                    {this.renderSpreadsheetRows(rowNodes, colSpecs, contentArg.rowSyncHeights, reportRowHeights)}
+                  </Fragment>
+                )
+              }}
+              timeCols={buildSlatCols(tDateProfile, this.context.options.slotWidth || 30)}
+              timeHeaderContent={(contentArg: ChunkContentCallbackArgs) => (
+                <TimelineHeader
+                  clientWidth={contentArg.clientWidth}
+                  clientHeight={contentArg.clientHeight}
+                  tableMinWidth={contentArg.tableMinWidth}
+                  tableColGroupNode={contentArg.tableColGroupNode}
+                  dateProfile={dateProfile}
+                  tDateProfile={tDateProfile}
+                  slatCoords={state.slatCoords}
+                />
+              )}
+              timeBodyContent={(contentArg: ChunkContentCallbackArgs) => (
+                <ResourceTimelineGrid
+                  clientWidth={contentArg.clientWidth}
+                  clientHeight={contentArg.clientHeight}
+                  tableMinWidth={contentArg.tableMinWidth}
+                  tableColGroupNode={contentArg.tableColGroupNode}
+                  vGrowRows={contentArg.vGrowRows}
+                  tDateProfile={tDateProfile}
+                  dateProfile={dateProfile}
+                  dateProfileGenerator={props.dateProfileGenerator}
+                  rowNodes={rowNodes}
+                  businessHours={props.businessHours}
+                  dateSelection={props.dateSelection}
+                  eventStore={props.eventStore}
+                  eventUiBases={props.eventUiBases}
+                  eventSelection={props.eventSelection}
+                  eventDrag={props.eventDrag}
+                  eventResize={props.eventResize}
+                  resourceStore={props.resourceStore}
+                  nextDayThreshold={context.nextDayThreshold}
+                  rowInnerHeights={contentArg.rowSyncHeights}
+                  onSlatCoords={this.handleSlatCoords}
+                  onRowCoords={this.handleRowCoords}
+                  onScrollLeftRequest={this.handleScrollLeftRequest}
+                  onRowHeight={contentArg.reportRowHeight}
+                />
+              )}
             />
-          )}
-          timeBodyContent={(contentArg: ChunkContentCallbackArgs) => (
-            <ResourceTimelineGrid
-              clientWidth={contentArg.clientWidth}
-              clientHeight={contentArg.clientHeight}
-              tableMinWidth={contentArg.tableMinWidth}
-              tableColGroupNode={contentArg.tableColGroupNode}
-              vGrowRows={contentArg.vGrowRows}
-              tDateProfile={tDateProfile}
-              dateProfile={dateProfile}
-              dateProfileGenerator={props.dateProfileGenerator}
-              rowNodes={rowNodes}
-              businessHours={props.businessHours}
-              dateSelection={props.dateSelection}
-              eventStore={props.eventStore}
-              eventUiBases={props.eventUiBases}
-              eventSelection={props.eventSelection}
-              eventDrag={props.eventDrag}
-              eventResize={props.eventResize}
-              resourceStore={props.resourceStore}
-              nextDayThreshold={context.nextDayThreshold}
-              rowInnerHeights={contentArg.rowSyncHeights}
-              onSlatCoords={this.handleSlatCoords}
-              onRowCoords={this.handleRowCoords}
-              onScrollLeftRequest={this.handleScrollLeftRequest}
-              onRowHeight={contentArg.reportRowHeight}
-            />
-          )}
-        />
-      </div>
+          </div>
+        )}
+      </ViewRoot>
     )
   }
 
