@@ -14,38 +14,33 @@ describe('timeline businessHours', function() {
     'when RTL': 'rtl'
   }, function() {
 
-    it('renders when on a day with business hours', function(done) {
+    it('renders when on a day with business hours', function() {
       initCalendar({
         businessHours: {
           startTime: '10:00',
           endTime: '16:00'
         },
-        slotDuration: { hours: 1 },
-        datesRender() {
-          expect10to4()
-          done()
-        }
+        slotDuration: { hours: 1 }
       })
+      expect10to4()
     })
 
-    it('renders all-day on a day completely outside of business hours', function(done) {
+    it('renders all-day on a day completely outside of business hours', function() {
       initCalendar({
         now: '2016-02-14', // weekend
         businessHours: {
           startTime: '10:00',
           endTime: '16:00'
         },
-        slotDuration: { hours: 1 },
-        datesRender() {
-          expect(isTimelineNonBusinessSegsRendered([
-            { start: '2016-02-14T00:00', end: '2016-02-15T00:00' }
-          ])).toBe(true)
-          done()
-        }
+        slotDuration: { hours: 1 }
       })
+
+      expect(isTimelineNonBusinessSegsRendered([
+        { start: '2016-02-14T00:00', end: '2016-02-15T00:00' }
+      ])).toBe(true)
     })
 
-    it('renders once even with resources', function(done) {
+    it('renders once even with resources', function() {
       initCalendar({
         defaultView: 'resourceTimelineDay',
         resources: [
@@ -53,15 +48,13 @@ describe('timeline businessHours', function() {
           { id: 'b', title: 'b' },
           { id: 'c', title: 'c' }
         ],
-        businessHours: true,
-        datesRender() {
-          expect9to5()
-          done()
-        }
+        businessHours: true
       })
+
+      expect9to5()
     })
 
-    it('render differently with resource override', function(done) {
+    it('render differently with resource override', function() {
       initCalendar({
         defaultView: 'resourceTimelineDay',
         resources: [
@@ -70,14 +63,12 @@ describe('timeline businessHours', function() {
           { id: 'c', title: 'c' }
         ],
         businessHours: true,
-        datesRender() {
-          expectResourceOverride()
-          done()
-        }
       })
+
+      expectResourceOverride()
     })
 
-    it('renders dynamically with resource override', function(done) {
+    it('renders dynamically with resource override', function() {
       let specialResourceInput = {
         id: 'b',
         title: 'b',
@@ -91,17 +82,15 @@ describe('timeline businessHours', function() {
           specialResourceInput,
           { id: 'c', title: 'c' }
         ],
-        businessHours: true,
-        datesRender() {
-          expectResourceOverride()
-          setTimeout(function() {
-            currentCalendar.getResourceById(specialResourceInput.id).remove()
-            expect9to5()
-            currentCalendar.addResource(specialResourceInput)
-            expectResourceOverride()
-            done()
-          })
-        }
+        businessHours: true
+      })
+
+      expectResourceOverride()
+      setTimeout(function() {
+        currentCalendar.getResourceById(specialResourceInput.id).remove()
+        expect9to5()
+        currentCalendar.addResource(specialResourceInput)
+        expectResourceOverride()
       })
     })
 
@@ -115,23 +104,23 @@ describe('timeline businessHours', function() {
             businessHours: { startTime: '03:00', endTime: '21:00' }
           }
         ],
-        businessHours: true,
-        datesRender() {
-          expect(isResourceTimelineNonBusinessSegsRendered([
-            { resourceId: 'a', start: '2016-02-15T00:00', end: '2016-02-15T03:00' },
-            { resourceId: 'a', start: '2016-02-15T21:00', end: '2016-02-16T00:00' }
-          ])).toBe(true)
-          setTimeout(function() {
-            currentCalendar.addResource({ id: 'b', title: 'b', businessHours: { startTime: '02:00', endTime: '22:00' } })
-            expect(isResourceTimelineNonBusinessSegsRendered([
-              { resourceId: 'a', start: '2016-02-15T00:00', end: '2016-02-15T03:00' },
-              { resourceId: 'a', start: '2016-02-15T21:00', end: '2016-02-16T00:00' },
-              { resourceId: 'b', start: '2016-02-15T00:00', end: '2016-02-15T02:00' },
-              { resourceId: 'b', start: '2016-02-15T22:00', end: '2016-02-16T00:00' }
-            ])).toBe(true)
-            done()
-          })
-        }
+        businessHours: true
+      })
+
+      expect(isResourceTimelineNonBusinessSegsRendered([
+        { resourceId: 'a', start: '2016-02-15T00:00', end: '2016-02-15T03:00' },
+        { resourceId: 'a', start: '2016-02-15T21:00', end: '2016-02-16T00:00' }
+      ])).toBe(true)
+
+      setTimeout(function() {
+        currentCalendar.addResource({ id: 'b', title: 'b', businessHours: { startTime: '02:00', endTime: '22:00' } })
+        expect(isResourceTimelineNonBusinessSegsRendered([
+          { resourceId: 'a', start: '2016-02-15T00:00', end: '2016-02-15T03:00' },
+          { resourceId: 'a', start: '2016-02-15T21:00', end: '2016-02-16T00:00' },
+          { resourceId: 'b', start: '2016-02-15T00:00', end: '2016-02-15T02:00' },
+          { resourceId: 'b', start: '2016-02-15T22:00', end: '2016-02-16T00:00' }
+        ])).toBe(true)
+        done()
       })
     })
   })

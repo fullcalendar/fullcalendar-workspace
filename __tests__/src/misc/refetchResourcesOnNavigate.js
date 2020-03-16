@@ -142,11 +142,10 @@ describe('refetchResourcesOnNavigate', function() {
     })
 
 
-    it('calls datesRender after resources rendered for each navigation', function(done) {
+    it('does resources-function re-call for each navigation', function(done) {
       let fetchCnt = 0
       let receiveCnt = 0
       let calendar = initCalendar({
-
         resources(arg, callback) {
           fetchCnt += 1
           setTimeout(function() {
@@ -156,7 +155,6 @@ describe('refetchResourcesOnNavigate', function() {
             ])
           }, 100)
         },
-
         _resourcesRendered() {
           receiveCnt += 1
 

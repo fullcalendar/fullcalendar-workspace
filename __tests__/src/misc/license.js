@@ -101,24 +101,18 @@ describe('schedulerLicenseKey', function() {
     'when resource-timegrid view': 'resourceTimeGridDay',
     'when resource-daygrid view': 'resourceDayGridDay'
   }, function() {
-    it('only renders one license message when view is rerendered', function(done) {
-      let callCnt = 0
+    it('only renders one license message when view is rerendered', function() {
       initCalendar({
         schedulerLicenseKey: '1234567890-fcs-1273017600', // purchased on 2010-05-05
         resources: [
           { id: 'a', title: 'Resource A' }
-        ],
-        datesRender() {
-          let calendarWrapper = new CalendarWrapper(this)
-          expect(calendarWrapper.hasLicenseMessage()).toBe(true)
-          callCnt++
-          if (callCnt === 1) {
-            currentCalendar.next()
-          } else if (callCnt === 2) {
-            done()
-          }
-        }
+        ]
       })
+
+      let calendarWrapper = new CalendarWrapper(this)
+      expect(calendarWrapper.hasLicenseMessage()).toBe(true)
+      currentCalendar.next()
+      expect(calendarWrapper.hasLicenseMessage()).toBe(true)
     })
   })
 })

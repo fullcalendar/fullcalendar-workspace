@@ -28,18 +28,14 @@ describe('vresource businessHours', function() {
         'when dates above resources': { datesAboveResources: true }
       }, function() {
 
-        it('greys out sat and sun', function(done) {
-          initCalendar({
-            datesRender() {
-              expect(isDayGridNonBusinessSegsRendered([
-                { resourceId: 'a', date: '2015-11-15' },
-                { resourceId: 'a', date: '2015-11-21' },
-                { resourceId: 'b', date: '2015-11-15' },
-                { resourceId: 'b', date: '2015-11-21' }
-              ])).toBe(true)
-              done()
-            }
-          })
+        it('greys out sat and sun', function() {
+          initCalendar()
+          expect(isDayGridNonBusinessSegsRendered([
+            { resourceId: 'a', date: '2015-11-15' },
+            { resourceId: 'a', date: '2015-11-21' },
+            { resourceId: 'b', date: '2015-11-15' },
+            { resourceId: 'b', date: '2015-11-21' }
+          ])).toBe(true)
         })
       })
     })
@@ -54,52 +50,48 @@ describe('vresource businessHours', function() {
         'when dates above resources': { datesAboveResources: true }
       }, function() {
 
-        it('greys out sat and sun', function(done) {
-          initCalendar({
-            datesRender() {
-              expect(isResourceTimeGridNonBusinessSegsRendered([
-                // sun
-                { resourceId: 'a', start: '2015-11-15T00:00:00', end: '2015-11-16T00:00:00' },
-                // mon
-                { resourceId: 'a', start: '2015-11-16T00:00:00', end: '2015-11-16T09:00:00' },
-                { resourceId: 'a', start: '2015-11-16T17:00:00', end: '2015-11-17T00:00:00' },
-                // tue
-                { resourceId: 'a', start: '2015-11-17T00:00:00', end: '2015-11-17T09:00:00' },
-                { resourceId: 'a', start: '2015-11-17T17:00:00', end: '2015-11-18T00:00:00' },
-                // wed
-                { resourceId: 'a', start: '2015-11-18T00:00:00', end: '2015-11-18T09:00:00' },
-                { resourceId: 'a', start: '2015-11-18T17:00:00', end: '2015-11-19T00:00:00' },
-                // thu
-                { resourceId: 'a', start: '2015-11-19T00:00:00', end: '2015-11-19T09:00:00' },
-                { resourceId: 'a', start: '2015-11-19T17:00:00', end: '2015-11-20T00:00:00' },
-                // fru
-                { resourceId: 'a', start: '2015-11-20T00:00:00', end: '2015-11-20T09:00:00' },
-                { resourceId: 'a', start: '2015-11-20T17:00:00', end: '2015-11-21T00:00:00' },
-                // sat
-                { resourceId: 'a', start: '2015-11-21T00:00:00', end: '2015-11-22T00:00:00' },
-                // sun
-                { resourceId: 'b', start: '2015-11-15T00:00:00', end: '2015-11-16T00:00:00' },
-                // mon
-                { resourceId: 'b', start: '2015-11-16T00:00:00', end: '2015-11-16T09:00:00' },
-                { resourceId: 'b', start: '2015-11-16T17:00:00', end: '2015-11-17T00:00:00' },
-                // tue
-                { resourceId: 'b', start: '2015-11-17T00:00:00', end: '2015-11-17T09:00:00' },
-                { resourceId: 'b', start: '2015-11-17T17:00:00', end: '2015-11-18T00:00:00' },
-                // wed
-                { resourceId: 'b', start: '2015-11-18T00:00:00', end: '2015-11-18T09:00:00' },
-                { resourceId: 'b', start: '2015-11-18T17:00:00', end: '2015-11-19T00:00:00' },
-                // thu
-                { resourceId: 'b', start: '2015-11-19T00:00:00', end: '2015-11-19T09:00:00' },
-                { resourceId: 'b', start: '2015-11-19T17:00:00', end: '2015-11-20T00:00:00' },
-                // fri
-                { resourceId: 'b', start: '2015-11-20T00:00:00', end: '2015-11-20T09:00:00' },
-                { resourceId: 'b', start: '2015-11-20T17:00:00', end: '2015-11-21T00:00:00' },
-                // sat
-                { resourceId: 'b', start: '2015-11-21T00:00:00', end: '2015-11-22T00:00:00' }
-              ])).toBe(true)
-              done()
-            }
-          })
+        it('greys out sat and sun', function() {
+          initCalendar()
+          expect(isResourceTimeGridNonBusinessSegsRendered([
+            // sun
+            { resourceId: 'a', start: '2015-11-15T00:00:00', end: '2015-11-16T00:00:00' },
+            // mon
+            { resourceId: 'a', start: '2015-11-16T00:00:00', end: '2015-11-16T09:00:00' },
+            { resourceId: 'a', start: '2015-11-16T17:00:00', end: '2015-11-17T00:00:00' },
+            // tue
+            { resourceId: 'a', start: '2015-11-17T00:00:00', end: '2015-11-17T09:00:00' },
+            { resourceId: 'a', start: '2015-11-17T17:00:00', end: '2015-11-18T00:00:00' },
+            // wed
+            { resourceId: 'a', start: '2015-11-18T00:00:00', end: '2015-11-18T09:00:00' },
+            { resourceId: 'a', start: '2015-11-18T17:00:00', end: '2015-11-19T00:00:00' },
+            // thu
+            { resourceId: 'a', start: '2015-11-19T00:00:00', end: '2015-11-19T09:00:00' },
+            { resourceId: 'a', start: '2015-11-19T17:00:00', end: '2015-11-20T00:00:00' },
+            // fru
+            { resourceId: 'a', start: '2015-11-20T00:00:00', end: '2015-11-20T09:00:00' },
+            { resourceId: 'a', start: '2015-11-20T17:00:00', end: '2015-11-21T00:00:00' },
+            // sat
+            { resourceId: 'a', start: '2015-11-21T00:00:00', end: '2015-11-22T00:00:00' },
+            // sun
+            { resourceId: 'b', start: '2015-11-15T00:00:00', end: '2015-11-16T00:00:00' },
+            // mon
+            { resourceId: 'b', start: '2015-11-16T00:00:00', end: '2015-11-16T09:00:00' },
+            { resourceId: 'b', start: '2015-11-16T17:00:00', end: '2015-11-17T00:00:00' },
+            // tue
+            { resourceId: 'b', start: '2015-11-17T00:00:00', end: '2015-11-17T09:00:00' },
+            { resourceId: 'b', start: '2015-11-17T17:00:00', end: '2015-11-18T00:00:00' },
+            // wed
+            { resourceId: 'b', start: '2015-11-18T00:00:00', end: '2015-11-18T09:00:00' },
+            { resourceId: 'b', start: '2015-11-18T17:00:00', end: '2015-11-19T00:00:00' },
+            // thu
+            { resourceId: 'b', start: '2015-11-19T00:00:00', end: '2015-11-19T09:00:00' },
+            { resourceId: 'b', start: '2015-11-19T17:00:00', end: '2015-11-20T00:00:00' },
+            // fri
+            { resourceId: 'b', start: '2015-11-20T00:00:00', end: '2015-11-20T09:00:00' },
+            { resourceId: 'b', start: '2015-11-20T17:00:00', end: '2015-11-21T00:00:00' },
+            // sat
+            { resourceId: 'b', start: '2015-11-21T00:00:00', end: '2015-11-22T00:00:00' }
+          ])).toBe(true)
         })
       })
     })
@@ -109,26 +101,19 @@ describe('vresource businessHours', function() {
         defaultView: 'resourceTimeGridDay'
       })
 
-      it('renders all with same businessHours', function(done) {
-        initCalendar({
-          datesRender() {
-            expectDay9to5()
-            done()
-          }
-        })
+      it('renders all with same businessHours', function() {
+        initCalendar()
+        expectDay9to5()
       })
 
-      it('renders a resource override', function(done) {
+      it('renders a resource override', function() {
         initCalendar({
           resources: [
             { id: 'a', title: 'Resource A' },
             { id: 'b', title: 'Resource B', businessHours: { startTime: '02:00', endTime: '22:00' } }
-          ],
-          datesRender() {
-            expectResourceOverride()
-            done()
-          }
+          ]
         })
+        expectResourceOverride()
       })
 
       it('renders a resource override dynamically', function(done) {
@@ -138,25 +123,24 @@ describe('vresource businessHours', function() {
           resources: [
             { id: 'a', title: 'Resource A' },
             specialResourceInput
-          ],
-          datesRender() {
-            expectResourceOverride()
-            currentCalendar.getResourceById(specialResourceInput.id).remove()
-
-            setTimeout(function() {
-              expectLonelyDay9to5()
-              currentCalendar.addResource(specialResourceInput)
-
-              setTimeout(function() {
-                expectResourceOverride()
-                done()
-              }, 0)
-            }, 0)
-          }
+          ]
         })
+
+        expectResourceOverride()
+        currentCalendar.getResourceById(specialResourceInput.id).remove()
+
+        setTimeout(function() {
+          expectLonelyDay9to5()
+          currentCalendar.addResource(specialResourceInput)
+
+          setTimeout(function() {
+            expectResourceOverride()
+            done()
+          }, 0)
+        }, 0)
       })
 
-      it('greys out whole day for single resource', function(done) {
+      it('greys out whole day for single resource', function() {
         initCalendar({
           defaultDate: '2016-10-30', // a Sunday
           businessHours: false,
@@ -167,14 +151,11 @@ describe('vresource businessHours', function() {
               businessHours: [
                 { startTime: '08:00', endTime: '18:00', daysOfWeek: [ 1, 2, 3, 4, 5 ] }
               ] }
-          ],
-          datesRender() {
-            expect(isResourceTimeGridNonBusinessSegsRendered([
-              { resourceId: 'b', start: '2016-10-30T00:00', end: '2016-10-31T00:00' }
-            ])).toBe(true)
-            done()
-          }
+          ]
         })
+        expect(isResourceTimeGridNonBusinessSegsRendered([
+          { resourceId: 'b', start: '2016-10-30T00:00', end: '2016-10-31T00:00' }
+        ])).toBe(true)
       })
     })
   })
