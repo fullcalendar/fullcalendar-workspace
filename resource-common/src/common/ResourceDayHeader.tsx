@@ -24,7 +24,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
     let { options } = context
 
     let dateFormat = this.buildDateFormat(
-      options.columnHeaderFormat,
+      options.dayLabelFormat,
       props.datesRepDistinctDays,
       props.dates.length
     )
@@ -163,9 +163,9 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
 }
 
 
-function buildDateFormat(columnHeaderFormat, datesRepDistinctDays, dayCnt) {
+function buildDateFormat(dayLabelFormat, datesRepDistinctDays, dayCnt) {
   return createFormatter(
-    columnHeaderFormat ||
+    dayLabelFormat ||
     computeFallbackHeaderFormat(datesRepDistinctDays, dayCnt)
   )
 }
