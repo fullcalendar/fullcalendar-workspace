@@ -35,7 +35,7 @@ export default class ResourceDayTimeColsView extends TimeColsView {
 
     let slotDuration = this.parseSlotDuration(options.slotDuration)
     let slatMetas = this.buildSlatMetas(props.dateProfile, options.slotLabelInterval, slotDuration, dateEnv)
-    let { columnMinWidth } = options
+    let { dayMinWidth } = options
 
     let headerContent = options.dayLabels &&
       <ResourceDayHeader
@@ -43,7 +43,7 @@ export default class ResourceDayTimeColsView extends TimeColsView {
         dates={resourceDayTableModel.dayTableModel.headerDates}
         dateProfile={props.dateProfile}
         datesRepDistinctDays={true}
-        renderIntro={columnMinWidth ? null : this.renderHeadAxis}
+        renderIntro={dayMinWidth ? null : this.renderHeadAxis}
       />
 
     let allDayContent = options.allDaySlot && ((contentArg: ChunkContentCallbackArgs) => (
@@ -54,7 +54,7 @@ export default class ResourceDayTimeColsView extends TimeColsView {
         nextDayThreshold={nextDayThreshold}
         tableMinWidth={contentArg.tableMinWidth}
         colGroupNode={contentArg.tableColGroupNode}
-        renderRowIntro={columnMinWidth ? null : this.renderTableRowAxis}
+        renderRowIntro={dayMinWidth ? null : this.renderTableRowAxis}
         eventLimit={this.getAllDayEventLimit()}
         vGrowRows={false}
         headerAlignElRef={this.headerElRef}
@@ -67,7 +67,7 @@ export default class ResourceDayTimeColsView extends TimeColsView {
       <ResourceDayTimeCols
         {...splitProps['timed']}
         dateProfile={props.dateProfile}
-        axis={!columnMinWidth}
+        axis={!dayMinWidth}
         slotDuration={slotDuration}
         slatMetas={slatMetas}
         resourceDayTableModel={resourceDayTableModel}
@@ -81,8 +81,8 @@ export default class ResourceDayTimeColsView extends TimeColsView {
       />
     )
 
-    return columnMinWidth
-      ? this.renderHScrollLayout(headerContent, allDayContent, timeGridContent, resourceDayTableModel.colCnt, columnMinWidth, slatMetas)
+    return dayMinWidth
+      ? this.renderHScrollLayout(headerContent, allDayContent, timeGridContent, resourceDayTableModel.colCnt, dayMinWidth, slatMetas)
       : this.renderSimpleLayout(headerContent, allDayContent, timeGridContent)
   }
 
