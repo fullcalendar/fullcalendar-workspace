@@ -1,6 +1,6 @@
 import {
   h, isInt, BaseComponent,
-  ComponentContext, DateMarker, Ref, DateRange, DateProfile, DayCellRoot, DateTimeRoot
+  ComponentContext, DateMarker, Ref, DateRange, DateProfile, getDateMeta, getSlotClassNames, RenderHook
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -18,28 +18,21 @@ export interface TimelineSlatCellProps {
 
 export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
 
-
   render(props: TimelineSlatCellProps, state: {}, context: ComponentContext) {
     let { dateEnv } = context
     let { date, tDateProfile, isEm } = props
-    let extraClassNames: string[] = []
-
-    const doRender = (rootElRef, classNames, dataAttrs, innerElRef, innerContent) => (
-      <td
-        ref={rootElRef}
-        className={classNames.concat(extraClassNames).join(' ')}
-        {...dataAttrs}
-      >
-        <div ref={innerElRef}>{innerContent}</div>
-      </td>
-    )
+    let dateMeta = getDateMeta(props.date, props.todayRange, props.nowDate)
+    let classNames = getSlotClassNames(dateMeta, context.theme)
+    let dataAttrs = { 'data-date': dateEnv.formatIso(date, { omitTimeZoneOffset: true }) }
+    let mountProps = { date: dateEnv.toDate(props.date), view: context.view }
+    let dynamicProps = { ...mountProps, ...dateMeta }
 
     if (isEm) {
-      extraClassNames.push('fc-em-cell')
+      classNames.push('fc-em-cell')
     }
 
     if (tDateProfile.isTimeScale) {
-      extraClassNames.push(
+      classNames.push(
         isInt(dateEnv.countDurationsBetween(
           tDateProfile.normalizedRange.start,
           props.date,
@@ -48,19 +41,21 @@ export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProp
           'fc-major' :
           'fc-minor'
       )
-
-      return (
-        <DateTimeRoot date={date} nowDate={props.nowDate} classNameScope='fc-slat' elRef={props.elRef}>
-          {doRender}
-        </DateTimeRoot>
-      )
-    } else {
-      return (
-        <DayCellRoot date={date} todayRange={props.todayRange} elRef={props.elRef}>
-          {doRender}
-        </DayCellRoot>
-      )
     }
+
+    return (
+      <RenderHook name='slotLane' mountProps={mountProps} dynamicProps={dynamicProps} elRef={props.elRef}>
+        {(rootElRef, customClassNames, innerElRef, innerContent) => (
+          <td
+            ref={rootElRef}
+            className={classNames.concat(customClassNames).join(' ')}
+            {...dataAttrs}
+          >
+            <div ref={innerElRef}>{innerContent}</div>
+          </td>
+        )}
+      </RenderHook>
+    )
   }
 
 }

@@ -1,5 +1,5 @@
 import {
-  h, asRoughMs, isSingleDay, BaseComponent, ComponentContext, DateProfile, Fragment, DateRange, DateMarker, getDayMeta, getDayClassNames, getDateMeta, getSlatClassNames, buildNavLinkData
+  h, asRoughMs, BaseComponent, ComponentContext, DateProfile, Fragment, DateRange, DateMarker, getDateMeta, getSlotClassNames, buildNavLinkData, RenderHook
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -19,7 +19,6 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
     let { tDateProfile } = props
     let { cellRows } = tDateProfile
     let isChrono = asRoughMs(tDateProfile.labelInterval) > asRoughMs(tDateProfile.slotDuration)
-    let isSlotOneDay = isSingleDay(tDateProfile.slotDuration)
 
     return (
       <Fragment>
@@ -29,40 +28,44 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
           return (
             <tr class={isChrono && isLast ? 'fc-chrono' : ''}>
               {rowCells.map((cell) => {
-                let headerCellClassNames: string[]
-
-                if (isSlotOneDay) {
-                  headerCellClassNames = getDayClassNames(
-                    getDayMeta(cell.date, props.todayRange),
-                    context.theme
-                  )
-
-                } else {
-                  headerCellClassNames = getSlatClassNames(
-                    getDateMeta(cell.date, props.todayRange, props.nowDate),
-                    context.theme
-                  )
-                }
+                let classNames = getSlotClassNames(
+                  getDateMeta(cell.date, props.todayRange, props.nowDate),
+                  context.theme
+                )
 
                 if (cell.isWeekStart) {
-                  headerCellClassNames.push('fc-em-cell')
+                  classNames.push('fc-em-cell')
                 }
 
-                let navLinkData = (options.navLinks && cell.rowUnit)
+                let navLinkData = (options.navLinks && cell.rowUnit && cell.rowUnit !== 'time')
                   ? buildNavLinkData(cell.date, cell.rowUnit)
                   : null
 
+                let mountProps = {
+                  date: dateEnv.toDate(cell.date),
+                  view: context.view
+                }
+                let dynamicProps = {
+                  ...mountProps,
+                  text: cell.text,
+                  navLinkData
+                }
+
                 return (
-                  <th class={headerCellClassNames.join(' ')}
-                    data-date={dateEnv.formatIso(cell.date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true })}
-                    colSpan={cell.colspan}
-                  >
-                    <div class="fc-cell-content" data-fc-width-all={1}>
-                      <a data-navlink={navLinkData} className={'fc-cell-text' + (isLast ? '' : ' fc-sticky')} data-fc-width-content={1}>
-                        {cell.text}
-                      </a>
-                    </div>
-                  </th>
+                  <RenderHook name='slotLabel' mountProps={mountProps} dynamicProps={dynamicProps} defaultInnerContent={renderInnerContent}>
+                    {(rootElRef, customClassNames, innerElRef, innerContent) => (
+                      <th ref={rootElRef} class={classNames.concat(customClassNames).join(' ')}
+                        data-date={dateEnv.formatIso(cell.date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true })}
+                        colSpan={cell.colspan}
+                      >
+                        <div class="fc-cell-content" data-fc-width-all={1}>
+                          <span class='fc-sticky' className={'fc-cell-text' + (isLast ? '' : ' fc-sticky')} data-fc-width-content={1} ref={innerElRef}>
+                            {innerContent}
+                          </span>
+                        </div>
+                      </th>
+                    )}
+                  </RenderHook>
                 )
               })}
             </tr>
@@ -72,4 +75,12 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
     )
   }
 
+}
+
+function renderInnerContent(props) { // TODO: add types
+  return (
+    <a data-navlink={props.navLinkData}>
+      {props.text}
+    </a>
+  )
 }
