@@ -1,14 +1,15 @@
-import { h, Ref, ComponentChildren, ComponentContextType, ComponentContext, RenderHook, ViewApi } from '@fullcalendar/core'
+import { h, Ref, ComponentChildren, ComponentContextType, ComponentContext, RenderHook, ViewApi, formatDayString } from '@fullcalendar/core'
 import { Resource } from '../structs/resource'
 import ResourceApi from '../api/ResourceApi'
 
 
-export interface ResourceRootProps {
+export interface ResourceLabelRootProps {
   resource: Resource
   date?: Date
   children: (
     rootElRef: Ref<HTMLElement>,
     classNames: string[],
+    dataAttrs: object,
     innerElRef: Ref<HTMLElement>,
     innerContent: ComponentChildren
   ) => ComponentChildren
@@ -21,7 +22,7 @@ interface ResourceInnerProps {
 }
 
 
-export default function ResourceRoot(props: ResourceRootProps) {
+export default function ResourceLabelRoot(props: ResourceLabelRootProps) {
   return (
     <ComponentContextType.Consumer>
       {(context: ComponentContext) => {
@@ -31,9 +32,20 @@ export default function ResourceRoot(props: ResourceRootProps) {
           view: context.view
         }
 
+        let dataAttrs = {
+          'data-resource': props.resource.id,
+          'data-date': props.date ? formatDayString(props.date) : undefined
+        }
+
         return (
-          <RenderHook name='resource' mountProps={innerProps} dynamicProps={innerProps} defaultInnerContent={renderInnerContent}>
-            {props.children}
+          <RenderHook name='resourceLabel' mountProps={innerProps} dynamicProps={innerProps} defaultInnerContent={renderInnerContent}>
+            {(rootElRef, classNames, innerElRef, innerContent) => props.children(
+              rootElRef,
+              classNames, // TODO: pass in 'fc-resource' ?
+              dataAttrs,
+              innerElRef,
+              innerContent
+            )}
           </RenderHook>
         )
       }}

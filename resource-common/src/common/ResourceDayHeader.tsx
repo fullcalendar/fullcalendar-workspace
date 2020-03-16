@@ -1,9 +1,9 @@
 import {
   VNode, h,
-  memoize, BaseComponent, DateMarker, DateProfile, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext, TableDateCell, Fragment, DateRange, NowTimer, formatDayString, Ref, ComponentChildren
+  memoize, BaseComponent, DateMarker, DateProfile, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext, TableDateCell, Fragment, DateRange, NowTimer, Ref, ComponentChildren
 } from '@fullcalendar/core'
 import { Resource } from '../structs/resource'
-import ResourceRoot from './ResourceRoot'
+import ResourceRoot from './ResourceLabelRoot'
 import ResourceApi from '../api/ResourceApi'
 
 
@@ -182,13 +182,12 @@ class ResourceCell extends BaseComponent<ResourceCellProps> {
   render(props: ResourceCellProps) {
     return (
       <ResourceRoot resource={props.resource} date={props.date}>
-        {(elRef: Ref<HTMLTableCellElement>, customClassNames: string[], innerElRef, innerContent: ComponentChildren) => (
+        {(elRef: Ref<HTMLTableCellElement>, customClassNames: string[], dataAttrs, innerElRef, innerContent: ComponentChildren) => (
           <th
             ref={elRef}
             className={[ 'fc-resource-cell' ].concat(customClassNames).join(' ')}
-            data-resource-id={props.resource.id}
-            data-date={props.date ? formatDayString(props.date) : null}
             colSpan={props.colSpan > 1 ? props.colSpan : null}
+            {...dataAttrs}
           >{innerContent}</th>
         )}
       </ResourceRoot>
