@@ -199,6 +199,9 @@ TODO: figure out better styling
   margin-bottom: 1px;
 }
 
+.fc-ltr .fc-timeline-event { margin-right: 1px }
+.fc-rtl .fc-timeline-event { margin-left: 1px }
+
 .fc-timeline-event:not(.fc-event-mirror) {
   // min-width: 100px;
 }
