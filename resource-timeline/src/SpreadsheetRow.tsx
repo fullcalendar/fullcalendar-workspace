@@ -1,12 +1,13 @@
 import {
-  h, Fragment,
-  BaseComponent, ComponentContext, findElements, isArraysEqual, CssDimValue, createRef
+  h, BaseComponent, ComponentContext, isArraysEqual, CssDimValue, createRef, Fragment
 } from '@fullcalendar/core'
-import { Resource, buildResourceFields, buildResourceTextFunc, ResourceApi } from '@fullcalendar/resource-common'
+import { Resource, buildResourceFields, ColSpec } from '@fullcalendar/resource-common'
 import ExpanderIcon from './ExpanderIcon'
+import { getPublicId } from 'packages-premium/resource-common/src/structs/resource'
+
 
 export interface SpreadsheetRowProps {
-  colSpecs: any
+  colSpecs: ColSpec[]
   rowSpans: number[]
   depth: number
   isExpanded: boolean
@@ -23,12 +24,11 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
 
 
   render(props: SpreadsheetRowProps, state: {}, context: ComponentContext) {
-    let { calendar } = context
     let { resource, rowSpans, depth } = props
     let resourceFields = buildResourceFields(resource) // slightly inefficient. already done up the call stack
 
     return (
-      <tr data-resource-id={resource.id} ref={this.handleTrEl}>
+      <tr data-resource-id={resource.id}>
         {props.colSpecs.map((colSpec, i) => {
           let rowSpan = rowSpans[i]
 
@@ -38,26 +38,28 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
             rowSpan = 1
           }
 
-          let innerText
-          if (colSpec.field) {
-            innerText = resourceFields[colSpec.field]
-          } else {
-            innerText = buildResourceTextFunc(colSpec.text, calendar)(resource)
-          }
-          let innerContent = innerText || <Fragment>&nbsp;</Fragment>
+
+          let fieldValue = colSpec.field ? resourceFields[colSpec.field] :
+            (resource.title || getPublicId(resource.id))
+
+          // TODO: add render hooks
+          // console.log('fieldValue', fieldValue, colSpec.render)
 
           if (rowSpan > 1) {
+
+            // a grouped cell. no data that is specific to this specific resource
             return (
               <td rowSpan={rowSpan}>
                 <div class='vgrow'> {/* needed for stickiness in some browsers */}
                   <div class='fc-cell-content fc-sticky'>
                     <span class='fc-cell-text'> {/* can we get rid of fc-cell-text class? */}
-                      {innerContent}
+                      {fieldValue}
                     </span>
                   </div>
                 </div>
               </td>
             )
+
           } else {
             return (
               <td rowSpan={rowSpan}>
@@ -72,7 +74,7 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
                       />
                     }
                     <span class='fc-cell-text'>
-                      {innerContent}
+                      {fieldValue || <Fragment>&nbsp;</Fragment>}
                     </span>
                   </div>
                 </div>
@@ -105,38 +107,6 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
   transmitHeight() {
     if (this.props.onRowHeight) {
       this.props.onRowHeight(this.innerInnerRef.current)
-    }
-  }
-
-
-  handleTrEl = (trEl: HTMLElement | null) => {
-    let { calendar, view } = this.context
-    let { colSpecs, resource } = this.props
-
-    if (trEl) {
-      let tdEls = findElements(trEl, 'td')
-
-      for (let i = 0; i < colSpecs.length; i++) {
-        let colSpec = colSpecs[i]
-        let tdEl = tdEls[i]
-
-        if (typeof colSpec.render === 'function') {
-          colSpec.render(
-            new ResourceApi(calendar, resource),
-            tdEl.querySelector('.fc-cell-content')
-          )
-        }
-
-        if (colSpec.isMain) {
-          calendar.publiclyTrigger('resourceRender', [
-            {
-              resource: new ResourceApi(calendar, resource),
-              el: tdEl,
-              view
-            }
-          ])
-        }
-      }
     }
   }
 

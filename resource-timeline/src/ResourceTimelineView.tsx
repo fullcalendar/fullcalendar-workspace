@@ -1,6 +1,6 @@
 import {
   h, createRef,
-  Calendar, View, parseFieldSpecs, ComponentContext, memoize,
+  View, parseFieldSpecs, ComponentContext, memoize,
   Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache, ScrollRequest, ScrollResponder, buildHashFromArray, memoizeHashlike, ViewRoot,
 } from '@fullcalendar/core'
 import {
@@ -8,7 +8,7 @@ import {
   getTimelineViewClassNames, buildSlatCols,
   TimelineCoords
 } from '@fullcalendar/timeline'
-import { GroupNode, ResourceNode, ResourceViewProps, buildResourceTextFunc, buildRowNodes } from '@fullcalendar/resource-common'
+import { GroupNode, ResourceNode, ResourceViewProps, buildRowNodes, ColSpec, GroupSpec } from '@fullcalendar/resource-common'
 import { __assign } from 'tslib'
 import SpreadsheetRow from './SpreadsheetRow'
 import SpreadsheetGroupRow from './SpreadsheetGroupRow'
@@ -64,7 +64,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   render(props: ResourceViewProps, state: ResourceTimelineViewState, context: ComponentContext) {
     let { options } = context
     let { dateProfile } = props
-    let { superHeaderText, groupSpecs, orderSpecs, isVGrouping, colSpecs } = this.processColOptions(context.options, context.calendar)
+    let { superHeaderText, groupSpecs, orderSpecs, isVGrouping, colSpecs } = this.processColOptions(context.options)
 
     let tDateProfile = this.buildTimelineDateProfile(
       dateProfile,
@@ -164,7 +164,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   }
 
 
-  renderSpreadsheetRows(nodes: (ResourceNode | GroupNode)[], colSpecs, rowSyncHeights: { [rowKey: string]: number }, reportRowHeights) {
+  renderSpreadsheetRows(nodes: (ResourceNode | GroupNode)[], colSpecs: ColSpec[], rowSyncHeights: { [rowKey: string]: number }, reportRowHeights) {
     return nodes.map((node) => {
       if ((node as GroupNode).group) {
         return (
@@ -327,7 +327,7 @@ function buildRowIndex(rowNodes: (GroupNode | ResourceNode)[]) {
 }
 
 
-function buildSpreadsheetCols(colSpecs, forcedWidths: number[]) {
+function buildSpreadsheetCols(colSpecs: ColSpec[], forcedWidths: number[]) {
   return colSpecs.map((colSpec, i) => {
     return {
       className: colSpec.isMain ? 'fc-main-col' : '',
@@ -352,8 +352,8 @@ function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
 }
 
 
-function processColOptions(options, calendar: Calendar) {
-  let allColSpecs = options.resourceColumns || []
+function processColOptions(options) {
+  let allColSpecs: ColSpec[] = options.resourceColumns || []
   let labelText = options.resourceLabelText // TODO: view.override
   let defaultLabelText = 'Resources' // TODO: view.defaults
   let superHeaderText = null
@@ -361,15 +361,15 @@ function processColOptions(options, calendar: Calendar) {
   if (!allColSpecs.length) {
     allColSpecs.push({
       labelText: labelText || defaultLabelText,
-      text: buildResourceTextFunc(options.resourceText, calendar)
+      render: options.resourceRender
     })
   } else {
     superHeaderText = labelText
   }
 
-  let plainColSpecs = []
-  let groupColSpecs = []
-  let groupSpecs = []
+  let plainColSpecs: ColSpec[] = []
+  let groupColSpecs: ColSpec[] = [] // part of the colSpecs, but filtered out in order to put first
+  let groupSpecs: GroupSpec[] = []
   let isVGrouping = false
 
   for (let colSpec of allColSpecs) {
@@ -390,7 +390,6 @@ function processColOptions(options, calendar: Calendar) {
     if (hGroupField) {
       groupSpecs.push({
         field: hGroupField,
-        text: options.resourceGroupText,
         render: options.resourceGroupRender
       })
     }

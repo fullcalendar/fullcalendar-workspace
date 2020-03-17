@@ -41,7 +41,7 @@ export { VResourceJoiner, AbstractResourceDayTableModel, ResourceDayTableModel, 
 export { Resource, ResourceHash } from './structs/resource'
 export { ResourceViewProps } from './View'
 export { flattenResources, Group, isGroupsEqual, GroupNode, ResourceNode, buildRowNodes, buildResourceFields } from './common/resource-hierarchy'
-export { buildResourceTextFunc } from './common/resource-rendering'
+export { ColSpec, GroupSpec } from './common/resource-spec'
 export { default as ResourceApi } from './api/ResourceApi'
 export { default as ResourceSplitter } from './common/ResourceSplitter'
 

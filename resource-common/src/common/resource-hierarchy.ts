@@ -1,6 +1,7 @@
-import { flexibleCompare, compareByFieldSpecs } from '@fullcalendar/core'
+import { flexibleCompare, compareByFieldSpecs, OrderSpec } from '@fullcalendar/core'
 import { ResourceHash, Resource } from '../structs/resource'
 import { ResourceEntityExpansions } from '../reducers/resourceEntityExpansions'
+import { GroupSpec } from './resource-spec'
 
 interface ParentNode {
   children: ParentNode[]
@@ -19,7 +20,7 @@ interface GroupParentNode extends ParentNode {
 
 export interface Group {
   value: any
-  spec: any
+  spec: GroupSpec
 }
 
 export interface GroupNode {
@@ -50,8 +51,8 @@ export function flattenResources(resourceStore: ResourceHash, orderSpecs): Resou
 
 export function buildRowNodes(
   resourceStore: ResourceHash,
-  groupSpecs,
-  orderSpecs,
+  groupSpecs: GroupSpec[],
+  orderSpecs: OrderSpec[],
   isVGrouping: boolean,
   expansions: ResourceEntityExpansions,
   expansionDefault: boolean
@@ -121,7 +122,7 @@ function flattenNodes(
   }
 }
 
-function buildHierarchy(resourceStore: ResourceHash, maxDepth: number, groupSpecs, orderSpecs): ParentNode[] {
+function buildHierarchy(resourceStore: ResourceHash, maxDepth: number, groupSpecs: GroupSpec[], orderSpecs: OrderSpec[]): ParentNode[] {
   let resourceNodes = buildResourceNodes(resourceStore, orderSpecs)
   let builtNodes: ParentNode[] = []
 
@@ -136,7 +137,7 @@ function buildHierarchy(resourceStore: ResourceHash, maxDepth: number, groupSpec
   return builtNodes
 }
 
-function buildResourceNodes(resourceStore: ResourceHash, orderSpecs): ResourceNodeHash {
+function buildResourceNodes(resourceStore: ResourceHash, orderSpecs: OrderSpec[]): ResourceNodeHash {
   let nodeHash: ResourceNodeHash = {}
 
   for (let resourceId in resourceStore) {
@@ -164,7 +165,7 @@ function buildResourceNodes(resourceStore: ResourceHash, orderSpecs): ResourceNo
   return nodeHash
 }
 
-function insertResourceNode(resourceNode: ResourceParentNode, nodes: ParentNode[], groupSpecs, depth: number, maxDepth: number, orderSpecs) {
+function insertResourceNode(resourceNode: ResourceParentNode, nodes: ParentNode[], groupSpecs: GroupSpec[], depth: number, maxDepth: number, orderSpecs: OrderSpec[]) {
   if (groupSpecs.length && (maxDepth === -1 || depth <= maxDepth)) {
     let groupNode = ensureGroupNodes(resourceNode, nodes, groupSpecs[0])
 
@@ -174,7 +175,7 @@ function insertResourceNode(resourceNode: ResourceParentNode, nodes: ParentNode[
   }
 }
 
-function ensureGroupNodes(resourceNode: ResourceParentNode, nodes: ParentNode[], groupSpec): GroupParentNode {
+function ensureGroupNodes(resourceNode: ResourceParentNode, nodes: ParentNode[], groupSpec: GroupSpec): GroupParentNode {
   let groupValue = resourceNode.resourceFields[groupSpec.field]
   let groupNode
   let newGroupIndex
@@ -221,7 +222,7 @@ function ensureGroupNodes(resourceNode: ResourceParentNode, nodes: ParentNode[],
   return groupNode
 }
 
-function insertResourceNodeInSiblings(resourceNode, siblings, orderSpecs) {
+function insertResourceNodeInSiblings(resourceNode, siblings, orderSpecs: OrderSpec[]) {
   let i
 
   for (i = 0; i < siblings.length; i++) {

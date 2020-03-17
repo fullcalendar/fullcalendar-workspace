@@ -2,11 +2,12 @@ import {
   VNode, h, Fragment,
   BaseComponent, ElementDragging, elementClosest, PointerDragEvent, RefMap, findElements,
 } from '@fullcalendar/core'
+import { ColSpec } from '@fullcalendar/resource-common'
 
 
 export interface SpreadsheetHeaderProps {
   superHeaderText: string
-  colSpecs: any
+  colSpecs: ColSpec[]
   onColWidthChange?: (colWidths: number[]) => void
 }
 

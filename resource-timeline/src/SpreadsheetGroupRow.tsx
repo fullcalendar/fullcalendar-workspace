@@ -19,7 +19,10 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
 
 
   render(props: SpreadsheetGroupRowProps, state: {}, context: ComponentContext) {
-    let text = renderCellText(props.group)
+    let groupValue = props.group.value
+
+    // TODO: add render hooks
+    // console.log('groupValue', groupValue, props.group.spec.render)
 
     return (
       <tr>
@@ -33,7 +36,7 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
                 onExpanderClick={this.onExpanderClick}
               />
               <span class='fc-cell-text'>
-                { text || <Fragment>&nbsp;</Fragment> }
+                { groupValue || <Fragment>&nbsp;</Fragment> }
               </span>
             </div>
           </div>
@@ -82,15 +85,3 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
 SpreadsheetGroupRow.addPropsEquality({
   group: isGroupsEqual
 })
-
-
-function renderCellText(group: Group) {
-  let text = group.value || '' // might be null/undefined if an ad-hoc grouping
-  let filter = group.spec.text
-
-  if (typeof filter === 'function') {
-    text = filter(text) || text
-  }
-
-  return text
-}
