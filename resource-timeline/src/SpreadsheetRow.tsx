@@ -1,9 +1,8 @@
 import {
-  h, BaseComponent, ComponentContext, isArraysEqual, CssDimValue, createRef, Fragment
+  h, BaseComponent, ComponentContext, isArraysEqual, CssDimValue, createRef, Fragment, RenderHook
 } from '@fullcalendar/core'
-import { Resource, buildResourceFields, ColSpec } from '@fullcalendar/resource-common'
+import { Resource, buildResourceFields, ColSpec, ResourceApi, getPublicId } from '@fullcalendar/resource-common'
 import ExpanderIcon from './ExpanderIcon'
-import { getPublicId } from 'packages-premium/resource-common/src/structs/resource'
 
 
 export interface SpreadsheetRowProps {
@@ -38,47 +37,62 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
             rowSpan = 1
           }
 
-
           let fieldValue = colSpec.field ? resourceFields[colSpec.field] :
             (resource.title || getPublicId(resource.id))
 
-          // TODO: add render hooks
-          // console.log('fieldValue', fieldValue, colSpec.render)
-
           if (rowSpan > 1) {
+            let innerProps = {
+              groupValue: fieldValue,
+              view: context.view
+            }
 
             // a grouped cell. no data that is specific to this specific resource
+            // `colSpec` is for the group. a GroupSpec :(
             return (
-              <td rowSpan={rowSpan}>
-                <div class='vgrow'> {/* needed for stickiness in some browsers */}
-                  <div class='fc-cell-content fc-sticky'>
-                    <span class='fc-cell-text'> {/* can we get rid of fc-cell-text class? */}
-                      {fieldValue}
-                    </span>
-                  </div>
-                </div>
-              </td>
+              <RenderHook name='cell' options={colSpec} mountProps={innerProps} dynamicProps={innerProps} defaultInnerContent={renderGroupInner}>
+                {(rootElRef, classNames, innerElRef, innerContent) => (
+                  <td rowSpan={rowSpan} ref={rootElRef} className={classNames.join(' ')}>
+                    <div class='vgrow'> {/* needed for stickiness in some browsers */}
+                      <div class='fc-cell-content fc-sticky'>
+                        <span class='fc-cell-text' ref={innerElRef}> {/* can we get rid of fc-cell-text class? */}
+                          {innerContent}
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                )}
+              </RenderHook>
             )
 
           } else {
+            let innerProps = {
+              resource: new ResourceApi(context.calendar, resource),
+              fieldValue,
+              view: context.view
+            }
+
             return (
-              <td rowSpan={rowSpan}>
-                <div style={{ height: props.innerHeight }}>
-                  <div class='fc-cell-content' ref={this.innerInnerRef}>
-                    { colSpec.isMain &&
-                      <ExpanderIcon
-                        depth={depth}
-                        hasChildren={props.hasChildren}
-                        isExpanded={props.isExpanded}
-                        onExpanderClick={this.onExpanderClick}
-                      />
-                    }
-                    <span class='fc-cell-text'>
-                      {fieldValue || <Fragment>&nbsp;</Fragment>}
-                    </span>
-                  </div>
-                </div>
-              </td>
+              <RenderHook name='cell' options={colSpec} mountProps={innerProps} dynamicProps={innerProps} defaultInnerContent={renderResourceInner}>
+                {(rootElRef, classNames, innerElRef, innerContent) => (
+                  <td rowSpan={rowSpan} ref={rootElRef} className={classNames.join(' ')}>
+                    <div style={{ height: props.innerHeight }}>
+                      <div class='fc-cell-content' ref={this.innerInnerRef}>
+                        { colSpec.isMain &&
+                          <ExpanderIcon
+                            depth={depth}
+                            hasChildren={props.hasChildren}
+                            isExpanded={props.isExpanded}
+                            onExpanderClick={this.onExpanderClick}
+                          />
+                        }
+                        <span class='fc-cell-text' ref={innerElRef}>
+                          {innerContent}
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                )}
+              </RenderHook>
             )
           }
         })}
@@ -128,3 +142,13 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
 SpreadsheetRow.addPropsEquality({
   rowSpans: isArraysEqual
 })
+
+
+function renderGroupInner(innerProps) {
+  return innerProps.groupValue || <Fragment>&nbsp;</Fragment>
+}
+
+
+function renderResourceInner(innerProps) {
+  return innerProps.fieldValue || <Fragment>&nbsp;</Fragment>
+}

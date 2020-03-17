@@ -1,12 +1,12 @@
 import {
   VNode, h, Fragment,
-  BaseComponent, ElementDragging, elementClosest, PointerDragEvent, RefMap, findElements,
+  BaseComponent, ElementDragging, elementClosest, PointerDragEvent, RefMap, findElements, RenderHook,
 } from '@fullcalendar/core'
 import { ColSpec } from '@fullcalendar/resource-common'
 
 
 export interface SpreadsheetHeaderProps {
-  superHeaderText: string
+  superHeaderRendering: { labelClassNames?, labelContent?, labelDidMount?, labelWillUnmount? }
   colSpecs: ColSpec[]
   onColWidthChange?: (colWidths: number[]) => void
 }
@@ -21,47 +21,55 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
 
 
   render(props: SpreadsheetHeaderProps) {
-    let { colSpecs, superHeaderText } = props
+    let { colSpecs, superHeaderRendering } = props
     let rowNodes: VNode[] = []
 
-    if (superHeaderText) {
+    if (superHeaderRendering) {
       rowNodes.push(
         <tr class='fc-super'>
-          <th colSpan={colSpecs.length}>
-            <div class='fc-cell-content'>
-              <span class='fc-cell-text'>
-                {superHeaderText}
-              </span>
-            </div>
-          </th>
+          <RenderHook name='label' mountProps={{}} dynamicProps={{}} options={superHeaderRendering}>
+            {(rootElRef, classNames, innerElRef, innerContent) => (
+              <th colSpan={colSpecs.length} className={classNames.join(' ')} ref={rootElRef}>
+                <div class='fc-cell-content'>
+                  <span class='fc-cell-text' ref={innerElRef}>
+                    {innerContent}
+                  </span>
+                </div>
+              </th>
+            )}
+          </RenderHook>
         </tr>
       )
     }
 
     rowNodes.push(
       <tr>
-        {colSpecs.map((o, i) => {
+        {colSpecs.map((colSpec, i) => {
           let isLastCol = i === (colSpecs.length - 1)
 
           // need empty inner div for abs positioning for resizer
           return (
-            <th>
-              <div>
-                <div class='fc-cell-content'>
-                  {o.isMain &&
-                    <span class='fc-expander-space'>
-                      <span class='fc-icon'></span>
-                    </span>
-                  }
-                  <span class='fc-cell-text'>
-                    {o.labelText || '' /* what about normalizing this value ahead of time? */ }
-                  </span>
-                </div>
-                {!isLastCol &&
-                  <div class='fc-col-resizer' ref={this.resizerElRefs.createRef(i)}></div>
-                }
-              </div>
-            </th>
+            <RenderHook name='label' mountProps={{}} dynamicProps={{}} options={colSpec}>
+              {(rootElRef, classNames, innerElRef, innerContent) => (
+                <th ref={rootElRef} className={classNames.join(' ')}>
+                  <div>
+                    <div class='fc-cell-content'>
+                      {colSpec.isMain &&
+                        <span class='fc-expander-space'>
+                          <span class='fc-icon'></span>
+                        </span>
+                      }
+                      <span class='fc-cell-text' ref={innerElRef}>
+                        {innerContent}
+                      </span>
+                    </div>
+                    {!isLastCol &&
+                      <div class='fc-col-resizer' ref={this.resizerElRefs.createRef(i)}></div>
+                    }
+                  </div>
+                </th>
+              )}
+            </RenderHook>
           )
         })}
       </tr>

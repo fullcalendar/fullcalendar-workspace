@@ -64,7 +64,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   render(props: ResourceViewProps, state: ResourceTimelineViewState, context: ComponentContext) {
     let { options } = context
     let { dateProfile } = props
-    let { superHeaderText, groupSpecs, orderSpecs, isVGrouping, colSpecs } = this.processColOptions(context.options)
+    let { superHeaderRendering, groupSpecs, orderSpecs, isVGrouping, colSpecs } = this.processColOptions(context.options)
 
     let tDateProfile = this.buildTimelineDateProfile(
       dateProfile,
@@ -98,7 +98,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
               spreadsheetCols={buildSpreadsheetCols(colSpecs, state.spreadsheetColWidths)}
               spreadsheetHeaderRows={
                 <SpreadsheetHeader // TODO: rename to SpreadsheetHeaderRows
-                  superHeaderText={superHeaderText}
+                  superHeaderRendering={superHeaderRendering}
                   colSpecs={colSpecs}
                   onColWidthChange={this.handleColWidthChange}
                 />
@@ -354,17 +354,23 @@ function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
 
 function processColOptions(options) {
   let allColSpecs: ColSpec[] = options.resourceColumns || []
-  let labelText = options.resourceLabelText // TODO: view.override
-  let defaultLabelText = 'Resources' // TODO: view.defaults
-  let superHeaderText = null
+  let superHeaderRendering = null
 
   if (!allColSpecs.length) {
     allColSpecs.push({
-      labelText: labelText || defaultLabelText,
-      render: options.resourceRender
+      labelClassNames: options.resourceAreaLabelClassNames,
+      labelContent: options.resourceAreaLabelContent || 'Resources', // TODO: view.defaults
+      labelDidMount: options.resourceAreaLabelDidMount,
+      labelWillUnmount: options.resourceAreaLabelWillUnmount
     })
-  } else {
-    superHeaderText = labelText
+
+  } else if (options.resourceAreaLabelContent) { // weird way to determine if content
+    superHeaderRendering = {
+      labelClassNames: options.resourceAreaLabelClassNames,
+      labelContent: options.resourceAreaLabelContent,
+      labelDidMount: options.resourceAreaLabelDidMount,
+      labelWillUnmount: options.resourceAreaLabelWillUnmount
+    }
   }
 
   let plainColSpecs: ColSpec[] = []
@@ -374,13 +380,27 @@ function processColOptions(options) {
 
   for (let colSpec of allColSpecs) {
     if (colSpec.group) {
-      groupColSpecs.push(colSpec)
+      groupColSpecs.push({
+        ...colSpec,
+        cellClassNames: colSpec.cellClassNames || options.resourceGroupLabelClassNames,
+        cellContent: colSpec.cellContent || options.resourceGroupLabelContent,
+        cellDidMount: colSpec.cellDidMount || options.resourceGroupLabelDidMount,
+        cellWillUnmount: colSpec.cellWillUnmount || options.resourceGroupLaneWillUnmount
+      })
     } else {
       plainColSpecs.push(colSpec)
     }
   }
 
-  plainColSpecs[0].isMain = true
+  // BAD: mutates a user-supplied option
+  // the "label" for the resource is the "cell" for the spreadsheet :(
+  // TODO: revive "header" terminology instead?
+  let mainColSpec = plainColSpecs[0]
+  mainColSpec.isMain = true
+  mainColSpec.cellClassNames = mainColSpec.cellClassNames || options.resourceLabelClassNames
+  mainColSpec.cellContent = mainColSpec.cellContent || options.resourceLabelContent
+  mainColSpec.cellDidMount = mainColSpec.cellDidMount || options.resourceLabelDidMount
+  mainColSpec.cellWillUnmount = mainColSpec.cellWillUnmount || options.resourceLabelWillUnmount
 
   if (groupColSpecs.length) {
     groupSpecs = groupColSpecs
@@ -390,7 +410,16 @@ function processColOptions(options) {
     if (hGroupField) {
       groupSpecs.push({
         field: hGroupField,
-        render: options.resourceGroupRender
+
+        labelClassNames: options.resourceGroupLabelClassNames,
+        labelContent: options.resourceGroupLabelContent,
+        labelDidMount: options.resourceGroupLabelDidMount,
+        labelWillUnmount: options.resourceGroupLabelWillUnmount,
+
+        laneClassNames: options.resourceGroupLaneClassNames,
+        laneContent: options.resourceGroupLaneContent,
+        laneDidMount: options.resourceGroupLaneDidMount,
+        laneWillUnmount: options.resourceGroupLaneWillUnmount
       })
     }
   }
@@ -413,7 +442,7 @@ function processColOptions(options) {
   }
 
   return {
-    superHeaderText,
+    superHeaderRendering,
     isVGrouping,
     groupSpecs,
     colSpecs: groupColSpecs.concat(plainColSpecs),

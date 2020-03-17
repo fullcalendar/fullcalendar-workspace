@@ -22,6 +22,9 @@ interface ResourceInnerProps {
 }
 
 
+// TODO: not used for Spreadsheet. START USING. difficult because of col-specific rendering props
+
+
 export default function ResourceLabelRoot(props: ResourceLabelRootProps) {
   return (
     <ComponentContextType.Consumer>

@@ -136,6 +136,8 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
               <DividerRow
                 key={node.id}
                 elRef={rowElRefs.createRef(index)}
+                groupValue={(node as GroupNode).group.value}
+                renderingHooks={(node as GroupNode).group.spec}
                 innerHeight={innerHeights[node.id] || ''}
               />
             )
@@ -148,7 +150,7 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
                 key={node.id}
                 elRef={rowElRefs.createRef(index)}
                 {...props.splitProps[resource.id]}
-                resourceId={resource.id}
+                resource={resource}
                 dateProfile={props.dateProfile}
                 dateProfileGenerator={props.dateProfileGenerator}
                 tDateProfile={props.tDateProfile}

@@ -1,4 +1,4 @@
-import { h, Fragment, BaseComponent, ComponentContext, CssDimValue, createRef } from '@fullcalendar/core'
+import { h, Fragment, BaseComponent, ComponentContext, CssDimValue, createRef, RenderHook } from '@fullcalendar/core'
 import { Group, isGroupsEqual } from '@fullcalendar/resource-common'
 import ExpanderIcon from './ExpanderIcon'
 
@@ -19,28 +19,31 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
 
 
   render(props: SpreadsheetGroupRowProps, state: {}, context: ComponentContext) {
-    let groupValue = props.group.value
-
-    // TODO: add render hooks
-    // console.log('groupValue', groupValue, props.group.spec.render)
+    let innerProps = {
+      groupValue: props.group.value
+    }
 
     return (
       <tr>
-        <td class={'fc-divider ' + context.theme.getClass('tableCellShaded')} colSpan={props.spreadsheetColCnt}>
-          <div style={{ height: props.innerHeight }}>
-            <div class='fc-cell-content' ref={this.innerInnerRef}>
-              <ExpanderIcon
-                depth={0}
-                hasChildren={true}
-                isExpanded={props.isExpanded}
-                onExpanderClick={this.onExpanderClick}
-              />
-              <span class='fc-cell-text'>
-                { groupValue || <Fragment>&nbsp;</Fragment> }
-              </span>
-            </div>
-          </div>
-        </td>
+        <RenderHook name='label' options={props.group.spec} mountProps={innerProps} dynamicProps={innerProps} defaultInnerContent={renderCellInner}>
+          {(rootElRef, classNames, innerElRef, innerContent) => (
+            <td ref={rootElRef} class={[ 'fc-divider', context.theme.getClass('tableCellShaded') ].concat(classNames).join(' ')} colSpan={props.spreadsheetColCnt}>
+              <div style={{ height: props.innerHeight }}>
+                <div class='fc-cell-content' ref={this.innerInnerRef}>
+                  <ExpanderIcon
+                    depth={0}
+                    hasChildren={true}
+                    isExpanded={props.isExpanded}
+                    onExpanderClick={this.onExpanderClick}
+                  />
+                  <span class='fc-cell-text' ref={innerElRef}>
+                    {innerContent}
+                  </span>
+                </div>
+              </div>
+            </td>
+          )}
+        </RenderHook>
       </tr>
     )
   }
@@ -85,3 +88,8 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
 SpreadsheetGroupRow.addPropsEquality({
   group: isGroupsEqual
 })
+
+
+function renderCellInner(innerProps) {
+  return innerProps.groupValue || <Fragment>&nbsp;</Fragment>
+}
