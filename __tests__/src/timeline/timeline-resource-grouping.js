@@ -45,7 +45,7 @@ describe('timeline resource grouping', function() {
       resourceOrder: 'building',
       resourceGroupField: 'building',
       resourcesInitiallyExpanded: false,
-      resourceLabelText: 'Rooms',
+      resourceAreaLabelContent: 'Rooms',
       resources: [
         { id: 'a', title: 'Room A', building: 'Delta' },
         { id: 'b', title: 'Room B', building: 'Delta' },
@@ -88,9 +88,9 @@ describe('timeline resource grouping', function() {
     ])
   })
 
-  it('renders base off resourceGroupText function', function() {
+  it('renders base off resourceGroupLabelContent function', function() {
     let calendar = initCalendar({
-      resourceGroupText(groupId) {
+      resourceGroupLabelContent(groupId) {
         return `Group ${groupId}`
       }
     })

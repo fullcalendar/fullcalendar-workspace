@@ -353,7 +353,7 @@ function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
 
 
 function processColOptions(options) {
-  let allColSpecs: ColSpec[] = options.resourceColumns || []
+  let allColSpecs: ColSpec[] = options.resourceAreaColumns || []
   let superHeaderRendering = null
 
   if (!allColSpecs.length) {

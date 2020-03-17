@@ -32,13 +32,11 @@ declare module '@fullcalendar/core' {
     resources?: ResourceSourceInput
 
     // TODO: make these better
-    resourceLabelText?: string
     resourceOrder?: any
     filterResourcesWithEvents?: any
     resourceGroupField?: any
-    resourceGroupText?: any
     resourceAreaWidth?: any
-    resourceColumns?: any
+    resourceAreaColumns?: any
     resourcesInitiallyExpanded?: any
     slotMinWidth?: any
     datesAboveResources?: any

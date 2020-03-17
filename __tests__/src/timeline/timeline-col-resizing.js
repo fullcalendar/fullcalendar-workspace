@@ -4,7 +4,7 @@ describe('timeline column resizing', function() { // better renamed to 'sizing'
   pushOptions({
     resourceAreaWidth: 230,
     defaultView: 'resourceTimelineDay',
-    resourceColumns: [
+    resourceAreaColumns: [
       {
         labelText: 'Room',
         field: 'title'
@@ -58,7 +58,7 @@ describe('timeline column resizing', function() { // better renamed to 'sizing'
 
     let initialHeadWidths = getHeadCellWidths(dataHeaderWrapper)
 
-    calendar.setOption('resourceColumns', [
+    calendar.setOption('resourceAreaColumns', [
       {
         labelText: 'Room',
         field: 'title',
