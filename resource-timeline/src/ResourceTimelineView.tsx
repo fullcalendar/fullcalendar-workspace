@@ -358,18 +358,18 @@ function processColOptions(options) {
 
   if (!allColSpecs.length) {
     allColSpecs.push({
-      labelClassNames: options.resourceAreaLabelClassNames,
-      labelContent: options.resourceAreaLabelContent || 'Resources', // TODO: view.defaults
-      labelDidMount: options.resourceAreaLabelDidMount,
-      labelWillUnmount: options.resourceAreaLabelWillUnmount
+      headerClassNames: options.resourceAreaHeaderClassNames,
+      headerContent: options.resourceAreaHeaderContent || 'Resources', // TODO: view.defaults
+      headerDidMount: options.resourceAreaHeaderDidMount,
+      headerWillUnmount: options.resourceAreaHeaderWillUnmount
     })
 
-  } else if (options.resourceAreaLabelContent) { // weird way to determine if content
+  } else if (options.resourceAreaHeaderContent) { // weird way to determine if content
     superHeaderRendering = {
-      labelClassNames: options.resourceAreaLabelClassNames,
-      labelContent: options.resourceAreaLabelContent,
-      labelDidMount: options.resourceAreaLabelDidMount,
-      labelWillUnmount: options.resourceAreaLabelWillUnmount
+      headerClassNames: options.resourceAreaHeaderClassNames,
+      headerContent: options.resourceAreaHeaderContent,
+      headerDidMount: options.resourceAreaHeaderDidMount,
+      headerWillUnmount: options.resourceAreaHeaderWillUnmount
     }
   }
 
@@ -411,10 +411,10 @@ function processColOptions(options) {
       groupSpecs.push({
         field: hGroupField,
 
-        labelClassNames: options.resourceGroupLabelClassNames,
-        labelContent: options.resourceGroupLabelContent,
-        labelDidMount: options.resourceGroupLabelDidMount,
-        labelWillUnmount: options.resourceGroupLabelWillUnmount,
+        headerClassNames: options.resourceGroupLabelClassNames,
+        headerContent: options.resourceGroupLabelContent,
+        headerDidMount: options.resourceGroupLabelDidMount,
+        headerWillUnmount: options.resourceGroupLabelWillUnmount,
 
         laneClassNames: options.resourceGroupLaneClassNames,
         laneContent: options.resourceGroupLaneContent,

@@ -6,7 +6,7 @@ import { ColSpec } from '@fullcalendar/resource-common'
 
 
 export interface SpreadsheetHeaderProps {
-  superHeaderRendering: { labelClassNames?, labelContent?, labelDidMount?, labelWillUnmount? }
+  superHeaderRendering: { headerClassNames?, headerContent?, headerDidMount?, headerWillUnmount? }
   colSpecs: ColSpec[]
   onColWidthChange?: (colWidths: number[]) => void
 }

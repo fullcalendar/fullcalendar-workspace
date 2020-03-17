@@ -45,7 +45,7 @@ describe('timeline resource grouping', function() {
       resourceOrder: 'building',
       resourceGroupField: 'building',
       resourcesInitiallyExpanded: false,
-      resourceAreaLabelContent: 'Rooms',
+      resourceAreaHeaderContent: 'Rooms',
       resources: [
         { id: 'a', title: 'Room A', building: 'Delta' },
         { id: 'b', title: 'Room B', building: 'Delta' },

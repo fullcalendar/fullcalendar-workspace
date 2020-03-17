@@ -6,11 +6,11 @@ describe('timeline column resizing', function() { // better renamed to 'sizing'
     defaultView: 'resourceTimelineDay',
     resourceAreaColumns: [
       {
-        labelText: 'Room',
+        headerContent: 'Room',
         field: 'title'
       },
       {
-        labelText: 'Occupancy',
+        headerContent: 'Occupancy',
         field: 'occupancy'
       }
     ],
@@ -60,12 +60,12 @@ describe('timeline column resizing', function() { // better renamed to 'sizing'
 
     calendar.setOption('resourceAreaColumns', [
       {
-        labelText: 'Room',
+        headerContent: 'Room',
         field: 'title',
         width: 350
       },
       {
-        labelText: 'Occupancy',
+        headerContent: 'Occupancy',
         field: 'occupancy',
         width: 50
       }

@@ -23,7 +23,7 @@ describe('timeline', function() {
           duration: { days: 2 }
         }
       },
-      resourceAreaLabelContent: 'Rooms',
+      resourceAreaHeaderContent: 'Rooms',
       resources: [
         { id: 'a', title: 'Auditorium A' },
         { id: 'b', title: 'Auditorium B', eventColor: 'green' },

@@ -9,16 +9,16 @@ describe('timeline column grouping', function() {
     resourceAreaColumns: [
       {
         group: true,
-        labelText: 'col1',
+        headerContent: 'col1',
         field: 'col1'
       },
       {
         group: true,
-        labelText: 'col2',
+        headerContent: 'col2',
         field: 'col2'
       },
       {
-        labelText: 'col3',
+        headerContent: 'col3',
         field: 'col3'
       }
     ],
