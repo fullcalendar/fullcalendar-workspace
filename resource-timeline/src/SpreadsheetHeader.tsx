@@ -1,6 +1,6 @@
 import {
   VNode, h, Fragment,
-  BaseComponent, ElementDragging, elementClosest, PointerDragEvent, RefMap, findElements, RenderHook,
+  BaseComponent, ElementDragging, elementClosest, PointerDragEvent, RefMap, findElements, RenderHook, ComponentContext,
 } from '@fullcalendar/core'
 import { ColSpec } from '@fullcalendar/resource-common'
 
@@ -20,14 +20,15 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
   private colDraggings: { [index: string]: ElementDragging } = {}
 
 
-  render(props: SpreadsheetHeaderProps) {
+  render(props: SpreadsheetHeaderProps, context: ComponentContext) {
     let { colSpecs, superHeaderRendering } = props
+    let innerProps = { view: context.view }
     let rowNodes: VNode[] = []
 
     if (superHeaderRendering) {
       rowNodes.push(
         <tr class='fc-super'>
-          <RenderHook name='label' mountProps={{}} dynamicProps={{}} options={superHeaderRendering}>
+          <RenderHook name='label' mountProps={innerProps} dynamicProps={innerProps} options={superHeaderRendering}>
             {(rootElRef, classNames, innerElRef, innerContent) => (
               <th colSpan={colSpecs.length} className={classNames.join(' ')} ref={rootElRef}>
                 <div class='fc-cell-content'>
@@ -49,7 +50,7 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
 
           // need empty inner div for abs positioning for resizer
           return (
-            <RenderHook name='label' mountProps={{}} dynamicProps={{}} options={colSpec}>
+            <RenderHook name='label' mountProps={innerProps} dynamicProps={innerProps} options={colSpec}>
               {(rootElRef, classNames, innerElRef, innerContent) => (
                 <th ref={rootElRef} className={classNames.join(' ')}>
                   <div>
