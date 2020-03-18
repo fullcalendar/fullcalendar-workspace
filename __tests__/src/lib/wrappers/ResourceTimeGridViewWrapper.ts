@@ -8,7 +8,7 @@ import ResourceDayGridWrapper from './ResourceDayGridWrapper'
 export default class ResourceTimeGridViewWrapper extends ViewWrapper {
 
   constructor(calendar: Calendar) {
-    super(calendar, 'fc-timeGrid-view')
+    super(calendar, 'fc-timegrid-view')
   }
 
 

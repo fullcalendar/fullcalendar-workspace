@@ -18,12 +18,12 @@ export default class ResourceDayHeaderWrapper {
       datePart = '[data-date="' + formatIsoDay(date) + '"]'
     }
 
-    return findElements(this.el, '.fc-resource-cell[data-resource-id="' + resourceId + '"]' + datePart)
+    return findElements(this.el, '.fc-resource-header[data-resource-id="' + resourceId + '"]' + datePart)
   }
 
 
   getAllResourceEls() {
-    return findElements(this.el, '.fc-resource-cell[data-resource-id]')
+    return findElements(this.el, '.fc-resource-header[data-resource-id]')
   }
 
 

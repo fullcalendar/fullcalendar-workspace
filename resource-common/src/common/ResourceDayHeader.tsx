@@ -185,7 +185,7 @@ class ResourceCell extends BaseComponent<ResourceCellProps> {
         {(elRef: Ref<HTMLTableCellElement>, customClassNames: string[], dataAttrs, innerElRef, innerContent: ComponentChildren) => (
           <th
             ref={elRef}
-            className={[ 'fc-resource-cell' ].concat(customClassNames).join(' ')}
+            className={[ 'fc-resource-header' ].concat(customClassNames).join(' ')}
             colSpan={props.colSpan > 1 ? props.colSpan : null}
             {...dataAttrs}
           >{innerContent}</th>
