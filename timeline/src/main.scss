@@ -70,7 +70,7 @@ TODO: figure out better styling
 
 /* body slats (vertical lines) */
 
-.fc-time-area .fc-slats { /* fc-bg is responsible for a lot of this now! */
+.fc-timeline-slots { /* fc-bg is responsible for a lot of this now! */
   position: absolute;
   z-index: 1;
   top: 0;
@@ -79,23 +79,12 @@ TODO: figure out better styling
   bottom: 0;
 }
 
-.fc-time-area .fc-slats table {
-  height: 100%;
-}
-
-.fc-time-area .fc-slats .fc-minor {
-  border-style: dotted;
-}
-
-.fc-time-area .fc-slats td {
+.fc-timeline-slot {
   border-width: 0 1px; /* need to do this. sometimes -1 margin wouldn't hide the dotted */
 }
 
-.fc-ltr .fc-time-area .fc-slats td {
-  border-right-width: 0;
-}
-.fc-rtl .fc-time-area .fc-slats td {
-  border-left-width: 0;
+.fc-timeline-slot-minor {
+  border-style: dotted;
 }
 
 /* body content containers
