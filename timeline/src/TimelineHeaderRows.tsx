@@ -1,5 +1,5 @@
 import {
-  h, asRoughMs, BaseComponent, ComponentContext, DateProfile, Fragment, DateRange, DateMarker, getDateMeta, getSlotClassNames, buildNavLinkData, RenderHook
+  h, BaseComponent, ComponentContext, DateProfile, Fragment, DateRange, DateMarker, getDateMeta, getSlotClassNames, buildNavLinkData, RenderHook
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -18,15 +18,15 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
     let { dateEnv, options } = context
     let { tDateProfile } = props
     let { cellRows } = tDateProfile
-    let isChrono = asRoughMs(tDateProfile.labelInterval) > asRoughMs(tDateProfile.slotDuration) // displays times? (i think?)
 
     return (
       <Fragment>
         {cellRows.map((rowCells, i) => {
           let isLast = i === cellRows.length - 1
+          let isChrono = tDateProfile.isTimeScale && isLast // the final row, with times?
 
           return (
-            <tr class={'fc-timeline-header-row' + ((isChrono && isLast) ? ' fc-timeline-header-row-chrono' : '')}>
+            <tr class={(isChrono ? 'fc-timeline-header-row-chrono' : '')}>
               {rowCells.map((cell) => {
                 let classNames = [ 'fc-timeline-slot', 'fc-timeline-slot-label' ].concat(getSlotClassNames(
                   getDateMeta(cell.date, props.todayRange, props.nowDate),
@@ -54,12 +54,15 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
                 return (
                   <RenderHook name='slotLabel' mountProps={mountProps} dynamicProps={dynamicProps} defaultInnerContent={renderInnerContent}>
                     {(rootElRef, customClassNames, innerElRef, innerContent) => (
-                      <th ref={rootElRef} class={classNames.concat(customClassNames).join(' ')}
+                      <th
+                        ref={rootElRef}
+                        class={classNames.concat(customClassNames).join(' ')}
+                        key={cell.date.toISOString()}
                         data-date={dateEnv.formatIso(cell.date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true })}
                         colSpan={cell.colspan}
                       >
                         <div class='fc-scrollgrid-shrink-block'>
-                          <span class='fc-sticky' className={'fc-timeline-slot-span fc-scrollgrid-shrink-span ' + (isLast ? '' : ' fc-sticky')} ref={innerElRef}>
+                          <span className={'fc-timeline-slot-span fc-scrollgrid-shrink-span ' + (isLast ? '' : ' fc-sticky')} ref={innerElRef}>
                             {innerContent}
                           </span>
                         </div>

@@ -25,6 +25,9 @@ const STICKY_SELECTOR = '.fc-sticky'
 useful beyond the native position:sticky for these reasons:
 - support in IE11
 - nice centering support
+
+REQUIREMENT: fc-sticky elements, if the fc-sticky className is taken away, should NOT have relative or absolute positioning.
+This is because we attach the coords with JS, and the VDOM might take away the fc-sticky class but doesn't know kill the positioning.
 */
 export default class StickyScroller {
 
@@ -176,8 +179,7 @@ function assignStickyPositions(els: HTMLElement[], elGeoms: ElementGeom[], viewp
       stickyLeft = (viewportWidth - elGeoms[i].elWidth) / 2
     }
 
-    applyStyle(el, {
-      position: STICKY_PROP_VAL,
+    applyStyle(el, { // will already have fc-sticky class which makes it sticky
       left: stickyLeft,
       right: stickyLeft, // for when centered
       top: 0
@@ -186,6 +188,8 @@ function assignStickyPositions(els: HTMLElement[], elGeoms: ElementGeom[], viewp
 }
 
 
+// overkill now that we use the stylesheet to set it!
+// just test that the 'position' value of a div with the fc-sticky classname has the word 'sticky' in it
 function computeStickyPropVal() {
   let el = htmlToElement('<div style="position:-webkit-sticky;position:sticky"></div>')
   let val = el.style.position
