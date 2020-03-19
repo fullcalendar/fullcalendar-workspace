@@ -27,7 +27,7 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
     let resourceFields = buildResourceFields(resource) // slightly inefficient. already done up the call stack
 
     return (
-      <tr data-resource-id={resource.id}>
+      <tr>
         {props.colSpecs.map((colSpec, i) => {
           let rowSpan = rowSpans[i]
 
@@ -51,12 +51,11 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
             return (
               <RenderHook name='cell' options={colSpec} mountProps={innerProps} dynamicProps={innerProps} defaultInnerContent={renderGroupInner}>
                 {(rootElRef, classNames, innerElRef, innerContent) => (
-                  <td rowSpan={rowSpan} ref={rootElRef} className={classNames.join(' ')}>
+                  // TODO: make data-attr with group value?
+                  <td className={[ 'fc-datagrid-cell', 'fc-datagrid-group' ].concat(classNames).join(' ')} rowSpan={rowSpan} ref={rootElRef}>
                     <div class='vgrow'> {/* needed for stickiness in some browsers */}
-                      <div class='fc-cell-content fc-sticky'>
-                        <span class='fc-cell-text' ref={innerElRef}> {/* can we get rid of fc-cell-text class? */}
-                          {innerContent}
-                        </span>
+                      <div class='fc-datagrid-cell-inner fc-sticky' ref={innerElRef}>
+                        {innerContent}
                       </div>
                     </div>
                   </td>
@@ -74,9 +73,9 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
             return (
               <RenderHook name='cell' options={colSpec} mountProps={innerProps} dynamicProps={innerProps} defaultInnerContent={renderResourceInner}>
                 {(rootElRef, classNames, innerElRef, innerContent) => (
-                  <td rowSpan={rowSpan} ref={rootElRef} className={classNames.join(' ')}>
+                  <td className={[ 'fc-datagrid-cell', 'fc-datagrid-resource' ].concat(classNames).join(' ')} data-resource-id={resource.id} rowSpan={rowSpan} ref={rootElRef}>
                     <div style={{ height: props.innerHeight }}>
-                      <div class='fc-cell-content' ref={this.innerInnerRef}>
+                      <div class='fc-datagrid-cell-inner' ref={this.innerInnerRef}>
                         { colSpec.isMain &&
                           <ExpanderIcon
                             depth={depth}
@@ -85,7 +84,7 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
                             onExpanderClick={this.onExpanderClick}
                           />
                         }
-                        <span class='fc-cell-text' ref={innerElRef}>
+                        <span ref={innerElRef}>
                           {innerContent}
                         </span>
                       </div>

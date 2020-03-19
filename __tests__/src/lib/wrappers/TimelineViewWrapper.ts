@@ -6,7 +6,7 @@ import TimelineHeaderWrapper from './TimelineHeaderWrapper'
 export default class TimelineViewWrapper extends ViewWrapper {
 
   constructor(calendar: Calendar) {
-    super(calendar, 'fc-timeline')
+    super(calendar, 'fc-timeline-view')
   }
 
 
@@ -23,7 +23,7 @@ export default class TimelineViewWrapper extends ViewWrapper {
 
 
   getHeaderScrollEl() {
-    return this.el.querySelector('.fc-body .fc-time-area .fc-scroller')
+    return this.el.querySelector('.fc-timeline-header').parentElement // TODO: use closest with .fc-scroller
   }
 
 

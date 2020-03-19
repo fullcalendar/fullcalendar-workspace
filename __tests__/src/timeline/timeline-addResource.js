@@ -45,10 +45,10 @@ describe('timeline addResource', function() {
 
     calendar.addResource({ id: 'last', title: 'last resource' }, true)
 
-    const spreadsheetRowEl = dataGridWrapper.getResourceRowEl('last')
-    const spreadsheetRowHeight = spreadsheetRowEl.offsetHeight
-    const timeRowEl = timelineGridWrapper.getResourceRowEl('last')
-    const timeRowHeight = timeRowEl.offsetHeight
+    const spreadsheetCellEl = dataGridWrapper.getResourceCellEl('last')
+    const spreadsheetRowHeight = spreadsheetCellEl.offsetHeight
+    const timeCellEl = timelineGridWrapper.getResourceLaneEl('last')
+    const timeRowHeight = timeCellEl.offsetHeight
 
     expect(spreadsheetRowHeight).toEqual(timeRowHeight)
   })
@@ -102,7 +102,7 @@ describe('timeline addResource', function() {
       currentCalendar.addResource({ id: 'a1', title: 'a1', parentId: 'a' })
 
       expect(dataGridWrapper.isRowExpanded('a')).toBe(false)
-      expect(dataGridWrapper.getResourceRowEl('a1')).toBeFalsy()
+      expect(dataGridWrapper.getResourceCellEl('a1')).toBeFalsy()
     })
   })
 

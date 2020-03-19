@@ -62,18 +62,17 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
               {
                 vGrowRows: true,
                 elRef: this.spreadsheetHeaderChunkElRef,
-                className: 'fc-resource-area',
+                // className: 'fc-resource-area',
                 rowContent: props.spreadsheetHeaderRows
               },
               { outerContent: (
                 <td
                   ref={this.spreadsheetResizerElRef}
                   rowSpan={2}
-                  class={'fc-divider fc-col-resizer ' + theme.getClass('tableCellShaded')}
+                  class={'fc-resource-timeline-view-divider fc-divider ' + theme.getClass('tableCellShaded')}
                 />
               ) },
               {
-                className: 'fc-time-area',
                 content: props.timeHeaderContent
               }
             ]
@@ -84,12 +83,11 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
             vGrowRows: Boolean(context.options.expandRows),
             chunks: [
               {
-                className: 'fc-resource-area',
+                // className: 'fc-resource-area', // TODO: kill
                 rowContent: props.spreadsheetBodyRows
               },
               { outerContent: null },
               {
-                className: 'fc-time-area',
                 scrollerElRef: this.timeBodyScrollerElRef,
                 content: props.timeBodyContent
               }

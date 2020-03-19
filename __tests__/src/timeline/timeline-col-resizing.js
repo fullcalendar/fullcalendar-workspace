@@ -85,7 +85,7 @@ describe('timeline column resizing', function() { // better renamed to 'sizing'
 
 
   function getBodyCellWidths(dataGridWrapper) {
-    return dataGridWrapper.getRowCellEls('a').map((el) => el.offsetWidth)
+    return dataGridWrapper.getResourceCellEl('a').map((el) => el.offsetWidth)
   }
 
 })

@@ -36,23 +36,19 @@ describe('timeline column grouping', function() {
     let calendar = initCalendar()
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
-    let resourceTrs = viewWrapper.dataGrid.getResourceRowEls()
-    let eventTrs = viewWrapper.timelineGrid.getResourceRowEls()
-    expect(resourceTrs.length).toBe(6)
-    expect(eventTrs.length).toBe(6)
+    let resourceDataCells = viewWrapper.dataGrid.getResourceInfo().map((info) => info.cellEl)
+    let resourceLaneCells = viewWrapper.timelineGrid.getResourceLaneEls()
+    expect(resourceDataCells.length).toBe(6)
+    expect(resourceLaneCells.length).toBe(6)
 
-    for (let i = 0; i < resourceTrs.length; i++) {
-      let resourceTr = resourceTrs[i]
-      let eventTr = eventTrs[i]
-      let resourceTd = $(resourceTr).find('td').filter(function() {
-        return parseInt($(this).attr('rowspan') || '1') === 1
-      })
-      let eventTd = $(eventTr).find('td')
+    for (let i = 0; i < resourceDataCells.length; i++) {
+      let resourceDataCell = resourceDataCells[i]
+      let resourceLaneCell = resourceLaneCells[i]
 
       expect(
-        Math.round(resourceTd.height())
+        Math.round(resourceDataCell.offsetHeight)
       ).toBe(
-        Math.round(eventTd.height())
+        Math.round(resourceLaneCell.offsetHeight)
       )
     }
   })

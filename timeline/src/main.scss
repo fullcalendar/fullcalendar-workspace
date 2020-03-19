@@ -38,10 +38,6 @@ TODO: figure out better styling
   z-index: 1; // scope z-index's inside
 }
 
-.fc-time-area col {
-  min-width: 2.2em; // can remove hardcoded 30 in JS?
-}
-
 /* head */
 
 .fc-timeline-slot-label {
@@ -90,7 +86,7 @@ TODO: figure out better styling
   top: 0;
 }
 
-.fc-time-area .fc-now-indicator-arrow {
+.fc-timeline-now-indicator-arrow {
   margin: 0 -6px; /* 5, then one more to counteract scroller's negative margins */
   /* triangle pointing down... */
   border-width: 6px 5px 0 5px;
@@ -98,7 +94,7 @@ TODO: figure out better styling
   border-right-color: transparent;
 }
 
-.fc-time-area .fc-now-indicator-line {
+.fc-timeline-now-indicator-line {
   margin: 0 -1px; /* counteract scroller's negative margins */
   bottom: 0;
   border-left-width: 1px;

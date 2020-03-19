@@ -66,7 +66,7 @@ export default class TimelineGrid extends DateComponent<TimelinGridProps, Timeli
           />,
           (context.options.nowIndicator && state.coords) &&
             <div
-              class='fc-now-indicator fc-now-indicator-line'
+              class='fc-timeline-now-indicator-line fc-now-indicator-line fc-now-indicator'
               style={{ left: state.coords.safeDateToCoord(nowDate) }}
             />
         ]} />

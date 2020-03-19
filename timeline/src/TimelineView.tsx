@@ -30,7 +30,10 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
       props.dateProfileGenerator
     )
 
-    let extraClassNames = getTimelineViewClassNames(options.eventOverlap)
+    let extraClassNames = [
+      'fc-timeline-view',
+      options.eventOverlap === false ? 'fc-no-overlap' : ''
+    ]
     let slatCols = buildSlatCols(tDateProfile, context.options.slotMinWidth || 30) // TODO: more DRY
 
     return (
@@ -48,7 +51,6 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
                 {
                   type: 'head',
                   chunks: [{
-                    className: 'fc-time-area',
                     content: (contentArg: ChunkContentCallbackArgs) => (
                       <TimelineHeader
                         clientWidth={contentArg.clientWidth}
@@ -66,7 +68,6 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
                   type: 'body',
                   vGrow: true,
                   chunks: [{
-                    className: 'fc-time-area',
                     content: (contentArg: ChunkContentCallbackArgs) => (
                       <TimelineGrid
                         {...props}
@@ -100,17 +101,6 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
     scrollGrid.forceScrollLeft(0, scrollLeft)
   }
 
-}
-
-
-export function getTimelineViewClassNames(eventOverlap) {
-  let classNames = [ 'fc-timeline' ]
-
-  if (eventOverlap === false) {
-    classNames.push('fc-no-overlap')
-  }
-
-  return classNames
 }
 
 

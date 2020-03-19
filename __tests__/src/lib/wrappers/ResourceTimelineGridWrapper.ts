@@ -96,7 +96,7 @@ export default class ResourceTimelineGridWrapper {
   getRect(resourceId, start, end) {
     let coord0 = this.base.getLeft(start)
     let coord1 = this.base.getLeft(end)
-    let rowRect = getBoundingRect(this.getResourceRowEl(resourceId))
+    let rowRect = getBoundingRect(this.getResourceLaneEl(resourceId))
 
     return {
       left: Math.min(coord0, coord1),
@@ -108,7 +108,7 @@ export default class ResourceTimelineGridWrapper {
 
 
   getPoint(resourceId, date) {
-    let rowRect = getBoundingRect(this.getResourceRowEl(resourceId))
+    let rowRect = getBoundingRect(this.getResourceLaneEl(resourceId))
 
     return {
       left: this.base.getLeft(date),
@@ -118,19 +118,19 @@ export default class ResourceTimelineGridWrapper {
 
 
   getResourceIds() {
-    return this.getResourceRowEls().map((rowEl) => (
+    return this.getResourceLaneEls().map((rowEl) => (
       rowEl.getAttribute('data-resource-id')
     ))
   }
 
 
-  getResourceRowEl(resourceId) {
-    return this.el.querySelector(`tr[data-resource-id="${resourceId}"]`) as HTMLElement
+  getResourceLaneEl(resourceId) {
+    return this.el.querySelector(`.fc-timeline-resource[data-resource-id="${resourceId}"]`) as HTMLElement
   }
 
 
-  getResourceRowEls() {
-    return findElements(this.el, 'tr[data-resource-id]')
+  getResourceLaneEls() {
+    return findElements(this.el, '.fc-timeline-resource[data-resource-id]')
   }
 
 

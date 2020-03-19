@@ -25,7 +25,7 @@ export default function ExpanderIcon({ depth, hasChildren, isExpanded, onExpande
 
   nodes.push(
     <span
-      class={'fc-expander-space' + (hasChildren ? ' fc-expander' : '')}
+      class={'fc-datagrid-expander' + (hasChildren ? '' : ' fc-datagrid-expander-placeholder')}
       onClick={onExpanderClick}
     >
       <span class={iconClassNames.join(' ')}></span>

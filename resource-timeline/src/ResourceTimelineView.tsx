@@ -5,7 +5,7 @@ import {
 } from '@fullcalendar/core'
 import {
   buildTimelineDateProfile, TimelineHeader,
-  getTimelineViewClassNames, buildSlatCols,
+  buildSlatCols,
   TimelineCoords
 } from '@fullcalendar/timeline'
 import { GroupNode, ResourceNode, ResourceViewProps, buildRowNodes, ColSpec, GroupSpec } from '@fullcalendar/resource-common'
@@ -82,7 +82,11 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
       context.options.resourcesInitiallyExpanded
     )
 
-    let extraClassNames = getTimelineViewClassNames(options.eventOverlap)
+    let extraClassNames = [
+      'fc-resource-timeline-view',
+      'fc-timeline-view',
+      options.eventOverlap === false ? 'fc-no-overlap' : ''
+    ]
     if (!this.hasNesting(rowNodes)) {
       extraClassNames.push('fc-flat')
     }

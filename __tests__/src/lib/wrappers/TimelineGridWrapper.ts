@@ -90,7 +90,7 @@ export default class TimelineGridWrapper {
   getRect(start, end) {
     let coord0 = this.getLeft(start)
     let coord1 = this.getLeft(end)
-    let canvasRect = getBoundingRect($('.fc-body .fc-time-area .fc-timeline-body'))
+    let canvasRect = getBoundingRect(this.el.querySelector('.fc-timeline-body'))
 
     return {
       left: Math.min(coord0, coord1),

@@ -27,16 +27,16 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
       <tr>
         <RenderHook name='label' options={props.group.spec} mountProps={innerProps} dynamicProps={innerProps} defaultInnerContent={renderCellInner}>
           {(rootElRef, classNames, innerElRef, innerContent) => (
-            <td ref={rootElRef} class={[ 'fc-divider', context.theme.getClass('tableCellShaded') ].concat(classNames).join(' ')} colSpan={props.spreadsheetColCnt}>
+            <td class={[ 'fc-datagrid-cell', 'fc-datagrid-group', 'fc-divider', context.theme.getClass('tableCellShaded') ].concat(classNames).join(' ')} colSpan={props.spreadsheetColCnt} ref={rootElRef}>
               <div style={{ height: props.innerHeight }}>
-                <div class='fc-cell-content' ref={this.innerInnerRef}>
+                <div class='fc-datagrid-cell-inner' ref={this.innerInnerRef}>
                   <ExpanderIcon
                     depth={0}
                     hasChildren={true}
                     isExpanded={props.isExpanded}
                     onExpanderClick={this.onExpanderClick}
                   />
-                  <span class='fc-cell-text' ref={innerElRef}>
+                  <span ref={innerElRef}>
                     {innerContent}
                   </span>
                 </div>

@@ -8,7 +8,7 @@ import ResourceDataHeaderWrapper from './ResourceDataHeaderWrapper'
 export default class ResourceTimelineViewWrapper extends ViewWrapper {
 
   constructor(calendar: Calendar) {
-    super(calendar, 'fc-timeline')
+    super(calendar, 'fc-resource-timeline-view')
   }
 
 
@@ -26,23 +26,23 @@ export default class ResourceTimelineViewWrapper extends ViewWrapper {
 
   get dataGrid() {
     return new ResourceDataGridWrapper(
-      this.el.querySelector('.fc-body .fc-resource-area .fc-scroller > table')
+      this.el.querySelector('.fc-datagrid-body')
     )
   }
 
 
   get dataHeader() { // rename `header` now?
-    return new ResourceDataHeaderWrapper(this.el.querySelector('.fc-head .fc-resource-area'))
+    return new ResourceDataHeaderWrapper(this.el.querySelector('.fc-datagrid-header'))
   }
 
 
   getDataScrollEl() {
-    return this.el.querySelector('.fc-body .fc-resource-area .fc-scroller')
+    return this.el.querySelector('.fc-datagrid-body').parentElement // TODO: use closest with .fc-scroller
   }
 
 
   getTimeScrollEl() {
-    return this.el.querySelector('.fc-body .fc-time-area .fc-scroller')
+    return this.el.querySelector('.fc-timeline-body').parentElement // TODO: use closest with .fc-scroller
   }
 
 
@@ -59,8 +59,8 @@ export default class ResourceTimelineViewWrapper extends ViewWrapper {
 
 
   getResourceCnt() { // TODO: use this in more places
-    let dataResourceCnt = this.dataGrid.getResourceRowEls().length
-    let timeResourceCnt = this.timelineGrid.getResourceRowEls().length
+    let dataResourceCnt = this.dataGrid.getResourceInfo().length
+    let timeResourceCnt = this.timelineGrid.getResourceLaneEls().length
 
     if (dataResourceCnt !== timeResourceCnt) {
       throw new Error('Mismatch in number of rows')

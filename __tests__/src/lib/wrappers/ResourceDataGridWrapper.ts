@@ -7,42 +7,58 @@ export default class ResourceDataGridWrapper {
 
 
   getRowInfo() {
-    return findElements(this.el, 'tr').map((tr) => buildInfoForRowEl(tr))
-  }
+    let trs = findElements(this.el, 'tr')
+    let infos = []
 
+    for (let tr of trs) {
+      let resourceCell = tr.querySelector('.fc-datagrid-resource')
 
-  getSpecificRowInfo(resourceId) {
-    return buildInfoForRowEl(this.getResourceRowEl(resourceId))
-  }
+      if (resourceCell) {
+        infos.push(buildResourceInfoFromCell(resourceCell))
+      } else {
+        let groupCell = tr.querySelector('.fc-datagrid-group')
 
+        if (groupCell) {
+          infos.push(buildGroupInfoFromCell(groupCell))
+        }
+      }
+    }
 
-  getResourceIds() {
-    return this.getResourceRowEls().map((rowEl) => (
-      rowEl.getAttribute('data-resource-id')
-    ))
+    return infos
   }
 
 
   getResourceInfo() {
-    return this.getResourceRowEls().map((rowEl) => ({
-      id: rowEl.getAttribute('data-resource-id'),
-      title: $(rowEl).find('.fc-cell-text').text()
-    }))
+    return this.getRowInfo().filter((rowInfo) => rowInfo.type === 'resource')
   }
 
 
-  getResourceRowEl(resourceId) {
-    return this.el.querySelector(`tr[data-resource-id="${resourceId}"]`) as HTMLElement
+  getResourceIds() {
+    return this.getResourceInfo().map((info) => info.resourceId)
   }
 
 
-  getResourceRowEls() {
-    return findElements(this.el, 'tr[data-resource-id]')
+  getSpecificResourceInfo(resourceId) {
+    let cellEl = this.getResourceCellEl(resourceId)
+
+    if (cellEl) {
+      return buildResourceInfoFromCell(cellEl)
+    }
+  }
+
+
+  getResourceCellEl(resourceId) {
+    return this.el.querySelector(`.fc-datagrid-cell[data-resource-id="${resourceId}"]`) as HTMLElement
+  }
+
+
+  getAllRows() {
+    return findElements(this.el, 'tr')
   }
 
 
   clickFirstExpander() {
-    $(this.el.querySelector('.fc-expander')).simulate('click')
+    $(this.el.querySelector('.fc-datagrid-expander')).simulate('click')
   }
 
 
@@ -52,7 +68,7 @@ export default class ResourceDataGridWrapper {
 
 
   getExpanderEl(resourceId) {
-    return this.el.querySelector(`tr[data-resource-id="${resourceId}"] .fc-expander`)
+    return this.el.querySelector(`tr[data-resource-id="${resourceId}"] .fc-datagrid-expander`)
   }
 
 
@@ -70,34 +86,28 @@ export default class ResourceDataGridWrapper {
 
 
   getRowIndentation(resourceId) {
-    return this.getResourceRowEl(resourceId).querySelectorAll('.fc-icon').length
-  }
-
-
-  getRowCellEls(resourceId) {
-    return findElements(this.getResourceRowEl(resourceId), 'td')
+    return this.getResourceCellEl(resourceId).querySelectorAll('.fc-icon').length
   }
 
 }
 
 
-function buildInfoForRowEl(tr) {
-  let $tr = $(tr)
-  let resourceId = tr.getAttribute('data-resource-id')
-  let text = $tr.find('.fc-cell-text').text()
+function buildResourceInfoFromCell(cellEl) {
+  return {
+    type: 'resource',
+    resourceId: cellEl.getAttribute('data-resource-id'),
+    text: $(cellEl.querySelector('span:not(.fc-datagrid-expander)')).text(),
+    cellEl,
+    rowEl: cellEl.parentNode
+  }
+}
 
-  if (resourceId) {
-    return {
-      type: 'resource',
-      resourceId,
-      text
-    }
-  } else if ($tr.find('.fc-divider').length) {
-    return {
-      type: 'divider',
-      text
-    }
-  } else {
-    return {}
+
+function buildGroupInfoFromCell(cellEl) {
+  return {
+    type: 'group',
+    text: $(cellEl.querySelector('span:not(.fc-datagrid-expander)')).text(),
+    cellEl,
+    rowEl: cellEl.parentNode
   }
 }

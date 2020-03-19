@@ -27,14 +27,12 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
 
     if (superHeaderRendering) {
       rowNodes.push(
-        <tr class='fc-super'>
+        <tr>
           <RenderHook name='header' mountProps={innerProps} dynamicProps={innerProps} options={superHeaderRendering}>
             {(rootElRef, classNames, innerElRef, innerContent) => (
-              <th colSpan={colSpecs.length} className={classNames.join(' ')} ref={rootElRef}>
-                <div class='fc-cell-content'>
-                  <span class='fc-cell-text' ref={innerElRef}>
-                    {innerContent}
-                  </span>
+              <th colSpan={colSpecs.length} className={[ 'fc-datagrid-header', 'fc-datagrid-header-super' ].concat(classNames).join(' ')} ref={rootElRef}>
+                <div class='fc-datagrid-header-inner' ref={innerElRef}>
+                  {innerContent}
                 </div>
               </th>
             )}
@@ -52,20 +50,20 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
           return (
             <RenderHook name='header' mountProps={innerProps} dynamicProps={innerProps} options={colSpec}>
               {(rootElRef, classNames, innerElRef, innerContent) => (
-                <th ref={rootElRef} className={classNames.join(' ')}>
-                  <div>
-                    <div class='fc-cell-content'>
+                <th ref={rootElRef} className={[ 'fc-datagrid-header' ].concat(classNames).join(' ')}>
+                  <div class='fc-datagrid-header-origin'>
+                    <div class='fc-datagrid-header-inner'>
                       {colSpec.isMain &&
-                        <span class='fc-expander-space'>
+                        <span class='fc-datagrid-expander fc-datagrid-expander-placeholder'>
                           <span class='fc-icon'></span>
                         </span>
                       }
-                      <span class='fc-cell-text' ref={innerElRef}>
+                      <span ref={innerElRef}>
                         {innerContent}
                       </span>
                     </div>
                     {!isLastCol &&
-                      <div class='fc-col-resizer' ref={this.resizerElRefs.createRef(i)}></div>
+                      <div class='fc-datagrid-header-resizer' ref={this.resizerElRefs.createRef(i)}></div>
                     }
                   </div>
                 </th>

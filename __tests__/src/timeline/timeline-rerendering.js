@@ -100,20 +100,20 @@ describe('timeline view rerendering', function() {
         }
       })
       let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
-      let initialRowEls = dataGridWrapper.getResourceRowEls()
+      let initialInfos = dataGridWrapper.getResourceInfo()
 
       expect(resourceRenderCnt).toBe(3)
-      expect(initialRowEls.length).toBe(3)
+      expect(initialInfos.length).toBe(3)
 
       currentCalendar.next()
-      const secondaryEls = dataGridWrapper.getResourceRowEls()
+      const secondaryInfos = dataGridWrapper.getResourceInfo()
 
       expect(resourceRenderCnt).toBe(3)
-      expect(secondaryEls.length).toBe(3)
+      expect(secondaryInfos.length).toBe(3)
 
-      expect(initialRowEls[0]).toBe(secondaryEls[0])
-      expect(initialRowEls[1]).toBe(secondaryEls[1])
-      expect(initialRowEls[2]).toBe(secondaryEls[2])
+      expect(initialInfos[0].rowEl).toBe(secondaryInfos[0].rowEl)
+      expect(initialInfos[1].rowEl).toBe(secondaryInfos[1].rowEl)
+      expect(initialInfos[2].rowEl).toBe(secondaryInfos[2].rowEl)
     })
 
   })
@@ -216,7 +216,7 @@ describe('timeline view rerendering', function() {
       actionFunc()
       setTimeout(function() {
 
-        let cellText = dataGridWrapper.getSpecificRowInfo('e').text
+        let cellText = dataGridWrapper.getSpecificResourceInfo('e').text
         expect(cellText).toBe('Auditorium E0') // didn't request data again
         doneFunc()
 
@@ -247,13 +247,13 @@ describe('timeline view rerendering', function() {
 
     setTimeout(function() {
 
-      let cellText = dataGridWrapper.getSpecificRowInfo('e').text
+      let cellText = dataGridWrapper.getSpecificResourceInfo('e').text
       expect(cellText).toBe('Auditorium E0')
       actionFunc()
 
       setTimeout(function() {
 
-        let cellText = dataGridWrapper.getSpecificRowInfo('e').text
+        let cellText = dataGridWrapper.getSpecificResourceInfo('e').text
         expect(cellText).toBe('Auditorium E1')
         doneFunc()
 

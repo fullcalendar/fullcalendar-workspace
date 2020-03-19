@@ -418,7 +418,7 @@ describe('refetchResourcesOnNavigate', function() {
 
 
   function extractTitles(a) {
-    return a.map((item) => item.title)
+    return a.map((item) => item.text)
   }
 
 })

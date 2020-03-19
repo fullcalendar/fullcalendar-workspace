@@ -40,7 +40,7 @@ export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
           </table>
           {(context.options.nowIndicator && props.slatCoords) &&
             <div
-              class='fc-now-indicator fc-now-indicator-arrow'
+              class='fc-timeline-now-indicator-arrow fc-now-indicator-arrow fc-now-indicator'
               style={{ left: props.slatCoords.safeDateToCoord(nowDate) }}
             />
           }

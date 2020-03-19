@@ -12,7 +12,7 @@ export default class ResourceDataHeaderWrapper {
 
 
   getColResizerEls() {
-    return findElements(this.el, '.fc-col-resizer')
+    return findElements(this.el, '.fc-datagrid-header-resizer')
   }
 
 }

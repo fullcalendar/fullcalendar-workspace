@@ -3,7 +3,7 @@ import TimelineView from './TimelineView'
 import './main.scss'
 
 export { TimelineView }
-export { getTimelineViewClassNames, buildSlatCols } from './TimelineView'
+export { buildSlatCols } from './TimelineView'
 export { default as TimelineLane, TimelineLaneProps } from './TimelineLane'
 export { default as TimelineLaneBg } from './TimelineLaneBg'
 export { default as TimelineHeader } from './TimelineHeader'
