@@ -1,7 +1,7 @@
 import {
   Duration, EventStore, EventUiHash, DateSpan, EventInteractionState, ComponentContext,
   DateProfile, DateProfileGenerator,
-  BaseComponent, h, CssDimValue, memoize, Fragment, RefMap, mapHash, createRef, getSegMeta, DateMarker, DateRange
+  BaseComponent, h, memoize, Fragment, RefMap, mapHash, createRef, getSegMeta, DateMarker, DateRange
 } from '@fullcalendar/core'
 import {TimelineDateProfile } from './timeline-date-profile'
 import TimelineCoords from './TimelineCoords'
@@ -25,8 +25,6 @@ export interface TimelineLaneProps {
   eventSelection: string
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
-  minHeight?: CssDimValue
-  height?: CssDimValue
   timelineCoords?: TimelineCoords // TODO: do null instead of undefined? .. SLAT coords
   onHeight?: (innerEl: HTMLElement | null) => void
 }
@@ -73,7 +71,7 @@ export default class TimelineLane extends BaseComponent<TimelineLaneProps, Timel
       {}
 
     return (
-      <div class='fc-timeline-lane' style={{ height: props.height, minHeight: props.minHeight }}>
+      <Fragment>
         <TimelineLaneBg
           businessHourSegs={slicedProps.businessHourSegs}
           bgEventSegs={slicedProps.bgEventSegs}
@@ -101,7 +99,7 @@ export default class TimelineLane extends BaseComponent<TimelineLaneProps, Timel
             false // because mirror is never drawn for date selection
           )}
         </div>
-      </div>
+      </Fragment>
     )
   }
 

@@ -22,13 +22,13 @@ export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProp
     let { dateEnv } = context
     let { date, tDateProfile, isEm } = props
     let dateMeta = getDateMeta(props.date, props.todayRange, props.nowDate)
-    let classNames = getSlotClassNames(dateMeta, context.theme)
+    let classNames = [ 'fc-timeline-slot', 'fc-timeline-slot-lane' ]
     let dataAttrs = { 'data-date': dateEnv.formatIso(date, { omitTimeZoneOffset: true }) }
     let mountProps = { date: dateEnv.toDate(props.date), view: context.view }
     let dynamicProps = { ...mountProps, ...dateMeta }
 
     if (isEm) {
-      classNames.push('fc-em-cell')
+      classNames.push('fc-timeline-slot-em')
     }
 
     if (tDateProfile.isTimeScale) {
@@ -38,10 +38,12 @@ export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProp
           props.date,
           tDateProfile.labelInterval
         )) ?
-          'fc-major' :
-          'fc-minor'
+          'fc-timeline-slot-major' :
+          'fc-timeline-slot-minor'
       )
     }
+
+    classNames.push(...getSlotClassNames(dateMeta, context.theme))
 
     return (
       <RenderHook name='slotLane' mountProps={mountProps} dynamicProps={dynamicProps} elRef={props.elRef}>

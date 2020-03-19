@@ -11,48 +11,31 @@
   vertical-align: middle;
 }
 
-.fc-timeline .fc-cell-content {
-  overflow: hidden;
-}
-
-.fc-timeline .fc-cell-text {
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-.fc-timeline .fc-head .fc-cell-content {
-  padding-top: 3px;
-  padding-bottom: 3px;
-}
-
-.fc-timeline .fc-head .fc-cell-text {
-  display: inline-block; // for stickiness
-}
-
-.fc-timeline-header .fc-cell-content { // contains sticky children
-  overflow: visible; // undo previous rule
-}
-
 /*
 Cells at the start of a week
 TODO: figure out better styling
 
-.fc-ltr .fc-timeline .fc-em-cell div {
+.fc-ltr .fc-timeline-slot-em div {
   border-left: 3px solid #eee;
   height: 100%;
 }
-.fc-rtl .fc-timeline .fc-em-cell {
+.fc-rtl .fc-timeline-slot-em {
   border-right-width: 3px;
 }
 */
 
+.fc-ltr .fc-timeline-header-row-chrono th {
+  text-align: left;
+}
 
-/* Time Area
---------------------------------------------------------------------------------------------------*/
+.fc-rtl .fc-timeline-header-row-chrono th {
+  text-align: right;
+}
 
-.fc-timeline-grid {
+.fc-timeline-body {
   min-height: 100%;
   position: relative;
+  z-index: 1; // scope z-index's inside
 }
 
 .fc-time-area col {
@@ -61,14 +44,17 @@ TODO: figure out better styling
 
 /* head */
 
-.fc-ltr .fc-time-area .fc-chrono th {
-  text-align: left;
-}
-.fc-rtl .fc-time-area .fc-chrono th {
-  text-align: right;
+.fc-timeline-slot-label {
+  vertical-align: middle;
+  padding: 3px 0 !important;
 }
 
-/* body slats (vertical lines) */
+.fc-timeline-slot-span {
+  display: inline-block; // for stickiness
+  padding: 0 4px;
+}
+
+/* body slots (vertical lines) */
 
 .fc-timeline-slots { /* fc-bg is responsible for a lot of this now! */
   position: absolute;
@@ -79,43 +65,20 @@ TODO: figure out better styling
   bottom: 0;
 }
 
-.fc-timeline-slot {
-  border-width: 0 1px; /* need to do this. sometimes -1 margin wouldn't hide the dotted */
+.fc-timeline-slots table.vgrow {
+  height: 100%; // hack
+}
+
+.fc-ltr .fc-timeline-slot {
+  border-right: 0;
+}
+
+.fc-rtl .fc-timeline-slot {
+  border-left: 0;
 }
 
 .fc-timeline-slot-minor {
-  border-style: dotted;
-}
-
-/* body content containers
-   can be within rows or directly within the pane's content
-*/
-
-.fc-time-area .fc-bgevent-container,
-.fc-time-area .fc-highlight-container {
-  position: absolute;
-  z-index: 2; /* only for directly within pane. not for row. overridden later */
-  top: 0;
-  bottom: 0;
-  width: 0;
-}
-
-.fc-ltr .fc-time-area .fc-mirror-container,
-.fc-ltr .fc-time-area .fc-bgevent-container,
-.fc-ltr .fc-time-area .fc-highlight-container {
-  left: 0;
-}
-.fc-rtl .fc-time-area .fc-mirror-container,
-.fc-rtl .fc-time-area .fc-bgevent-container,
-.fc-rtl .fc-time-area .fc-highlight-container {
-  right: 0;
-}
-
-.fc-time-area .fc-bgevent,
-.fc-time-area .fc-highlight {
-  position: absolute;
-  top: 0;
-  bottom: 0;
+  border-style: dotted !important; // why need important?
 }
 
 
@@ -142,14 +105,19 @@ TODO: figure out better styling
 }
 
 
-/* Event Container
+/* Content Containers
 --------------------------------------------------------------------------------------------------*/
 
-.fc-timeline-lane {
+.fc-timeline-resource {
   position: relative;
 }
 
-.scrollgrid-vgrow-cell-hack td > .fc-timeline-lane {
+.fc-timeline-resource-inner {
+  position: relative; // contains bg
+  min-height: 100%;
+}
+
+.scrollgrid-vgrow-cell-hack td > .fc-timeline-resource-inner {
   // when the lane isn't able to grow to fill the height, we want the <td> to become the
   // offset parent instead of the lane, for background event absolute positioning.
   position: static;
@@ -157,7 +125,7 @@ TODO: figure out better styling
 
 .fc-timeline-events {
   position: relative;
-  z-index: 2; /* above bgevent and highlight */
+  z-index: 3; /* above bgevent and highlight */
   width: 0; /* for event positioning. will end up on correct side based on dir */
 }
 
@@ -166,13 +134,20 @@ TODO: figure out better styling
   top: 0; // default
 }
 
-.fc-timeline-bgcontent {
+.fc-timeline-bg {
   position: absolute;
+  z-index: 2; // TODO: do z-index ordering of fills WITHIN this container
   top: 0;
   bottom: 0;
   width: 0;
   left: 0; // will take precedence when LTR
   right: 0; // will take precedence when RTL
+}
+
+.fc-timeline-bg-harness {
+  position: absolute;
+  top: 0;
+  bottom: 0;
 }
 
 

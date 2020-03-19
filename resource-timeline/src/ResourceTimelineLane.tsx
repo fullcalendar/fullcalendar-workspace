@@ -18,32 +18,32 @@ export default class ResourceTimelineLane extends BaseComponent<ResourceTimeline
     }
 
     return (
-      <tr ref={props.elRef} data-resource-id={props.resource.id}>
+      <tr ref={props.elRef}>
         <RenderHook name='resourceLane' mountProps={innerProps} dynamicProps={innerProps}>
-          {(rootElRef, classNames, innerElRef, innerContent) => (
-            <td ref={rootElRef} className={classNames.join(' ')}>
-              {innerContent && // TODO: test
-                <div ref={innerElRef}>{innerContent}</div>
-              }
-              <TimelineLane
-                dateProfile={props.dateProfile}
-                dateProfileGenerator={props.dateProfileGenerator}
-                tDateProfile={props.tDateProfile}
-                nowDate={props.nowDate}
-                todayRange={props.todayRange}
-                nextDayThreshold={props.nextDayThreshold}
-                businessHours={props.businessHours}
-                eventStore={props.eventStore}
-                eventUiBases={props.eventUiBases}
-                dateSelection={props.dateSelection}
-                eventSelection={props.eventSelection}
-                eventDrag={props.eventDrag}
-                eventResize={props.eventResize}
-                timelineCoords={props.timelineCoords}
-                height={props.innerHeight}
-                minHeight='100%'
-                onHeight={props.onHeight}
-              />
+          {(rootElRef, customClassNames, innerElRef, innerContent) => (
+            <td ref={rootElRef} className={[ 'fc-timeline-resource' ].concat(customClassNames).join(' ')} data-resource-id={props.resource.id}>
+              <div class='fc-timeline-resource-inner' style={{ height: props.innerHeight }}>
+                {innerContent && // TODO: test
+                  <div class='fc-timeline-resource-misc' ref={innerElRef}>{innerContent}</div>
+                }
+                <TimelineLane
+                  dateProfile={props.dateProfile}
+                  dateProfileGenerator={props.dateProfileGenerator}
+                  tDateProfile={props.tDateProfile}
+                  nowDate={props.nowDate}
+                  todayRange={props.todayRange}
+                  nextDayThreshold={props.nextDayThreshold}
+                  businessHours={props.businessHours}
+                  eventStore={props.eventStore}
+                  eventUiBases={props.eventUiBases}
+                  dateSelection={props.dateSelection}
+                  eventSelection={props.eventSelection}
+                  eventDrag={props.eventDrag}
+                  eventResize={props.eventResize}
+                  timelineCoords={props.timelineCoords}
+                  onHeight={props.onHeight}
+                />
+              </div>
             </td>
           )}
         </RenderHook>

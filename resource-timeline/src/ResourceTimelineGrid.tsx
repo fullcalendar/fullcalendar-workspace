@@ -66,7 +66,7 @@ export default class ResourceTimelineGrid extends DateComponent<ResourceTimeline
     )
 
     return (
-      <div ref={this.handleEl} class='fc-timeline-grid' style={{
+      <div ref={this.handleEl} class='fc-timeline-body' style={{
         minWidth: props.tableMinWidth
       }}>
         <NowTimer unit={timerUnit} content={(nowDate: DateMarker, todayRange: DateRange) => [

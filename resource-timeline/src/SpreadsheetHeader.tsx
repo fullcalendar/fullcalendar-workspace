@@ -28,7 +28,7 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
     if (superHeaderRendering) {
       rowNodes.push(
         <tr class='fc-super'>
-          <RenderHook name='label' mountProps={innerProps} dynamicProps={innerProps} options={superHeaderRendering}>
+          <RenderHook name='header' mountProps={innerProps} dynamicProps={innerProps} options={superHeaderRendering}>
             {(rootElRef, classNames, innerElRef, innerContent) => (
               <th colSpan={colSpecs.length} className={classNames.join(' ')} ref={rootElRef}>
                 <div class='fc-cell-content'>
@@ -50,7 +50,7 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
 
           // need empty inner div for abs positioning for resizer
           return (
-            <RenderHook name='label' mountProps={innerProps} dynamicProps={innerProps} options={colSpec}>
+            <RenderHook name='header' mountProps={innerProps} dynamicProps={innerProps} options={colSpec}>
               {(rootElRef, classNames, innerElRef, innerContent) => (
                 <th ref={rootElRef} className={classNames.join(' ')}>
                   <div>

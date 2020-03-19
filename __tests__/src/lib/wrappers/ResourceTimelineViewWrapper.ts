@@ -19,7 +19,7 @@ export default class ResourceTimelineViewWrapper extends ViewWrapper {
 
   get timelineGrid() {
     return new ResourceTimelineGridWrapper(
-      this.el.querySelector('.fc-timeline-grid')
+      this.el.querySelector('.fc-timeline-body')
     )
   }
 

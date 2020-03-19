@@ -18,7 +18,7 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
     let { dateEnv, options } = context
     let { tDateProfile } = props
     let { cellRows } = tDateProfile
-    let isChrono = asRoughMs(tDateProfile.labelInterval) > asRoughMs(tDateProfile.slotDuration)
+    let isChrono = asRoughMs(tDateProfile.labelInterval) > asRoughMs(tDateProfile.slotDuration) // displays times? (i think?)
 
     return (
       <Fragment>
@@ -26,15 +26,15 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
           let isLast = i === cellRows.length - 1
 
           return (
-            <tr class={isChrono && isLast ? 'fc-chrono' : ''}>
+            <tr class={'fc-timeline-header-row' + ((isChrono && isLast) ? ' fc-timeline-header-row-chrono' : '')}>
               {rowCells.map((cell) => {
-                let classNames = getSlotClassNames(
+                let classNames = [ 'fc-timeline-slot', 'fc-timeline-slot-label' ].concat(getSlotClassNames(
                   getDateMeta(cell.date, props.todayRange, props.nowDate),
                   context.theme
-                )
+                ))
 
                 if (cell.isWeekStart) {
-                  classNames.push('fc-em-cell')
+                  classNames.push('fc-timeline-slot-em')
                 }
 
                 let navLinkData = (options.navLinks && cell.rowUnit && cell.rowUnit !== 'time')
@@ -58,8 +58,8 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
                         data-date={dateEnv.formatIso(cell.date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true })}
                         colSpan={cell.colspan}
                       >
-                        <div class='fc-cell-content fc-scrollgrid-shrink-block'>
-                          <span class='fc-sticky' className={'fc-scrollgrid-shrink-span fc-cell-text' + (isLast ? '' : ' fc-sticky')} ref={innerElRef}>
+                        <div class='fc-scrollgrid-shrink-block'>
+                          <span class='fc-sticky' className={'fc-timeline-slot-span fc-scrollgrid-shrink-span ' + (isLast ? '' : ' fc-sticky')} ref={innerElRef}>
                             {innerContent}
                           </span>
                         </div>

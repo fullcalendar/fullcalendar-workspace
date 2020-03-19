@@ -17,7 +17,7 @@ export default class TimelineViewWrapper extends ViewWrapper {
 
   get timelineGrid() {
     return new TimelineGridWrapper(
-      this.el.querySelector('.fc-timeline-grid')
+      this.el.querySelector('.fc-timeline-body')
     )
   }
 
