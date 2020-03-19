@@ -70,7 +70,7 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
         {
           type: 'head',
           chunks: [
-            { vGrowRows: true, rowContent: (
+            { rowContent: (
               <Fragment>
                 <tr>
                   <th class='fc-scrollgrid-shrink'>
@@ -102,7 +102,7 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
           type: 'body',
           maxHeight: 100,
           chunks: [
-            { vGrowRows: true, rowContent: (
+            { rowContent: (
               <Fragment>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>

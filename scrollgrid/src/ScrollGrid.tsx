@@ -9,7 +9,7 @@ import {
   RefMap,
   ColProps, ChunkConfig, CssDimValue, hasShrinkWidth, renderMicroColGroup,
   ScrollGridProps, ScrollGridSectionConfig, ColGroupConfig,
-  getScrollGridClassNames, getSectionClassNames, getChunkVGrow, getAllowYScrolling, renderChunkContent, computeShrinkWidth, getChunkClassNames,
+  getScrollGridClassNames, getSectionClassNames, getDoesSectionVGrow, getAllowYScrolling, renderChunkContent, computeShrinkWidth, getChunkClassNames,
   getIsRtlScrollbarOnLeft,
   setRef,
   sanitizeShrinkWidth,
@@ -19,7 +19,6 @@ import {
   getScrollbarWidths,
   memoizeArraylike,
   CLIENT_HEIGHT_WIGGLE,
-  filterHash,
   collectFromHash,
   memoizeHashlike,
   getCanVGrowWithinCell
@@ -174,11 +173,15 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     let forceYScrollbars = isVScrollSide && state.forceYScrollbars // NOOOO can result in `null`
 
     let allowXScrolling = colGroupStat && colGroupStat.allowXScrolling // rename?
-    let allowYScrolling = getAllowYScrolling(this.props, sectionConfig, chunkConfig) // rename?
+    let allowYScrolling = getAllowYScrolling(this.props, sectionConfig) // rename? do in section func?
 
-    let chunkVGrow = getChunkVGrow(this.props, sectionConfig, chunkConfig)
+    let chunkVGrow = getDoesSectionVGrow(this.props, sectionConfig) // do in section func?
+    let vGrowRows = sectionConfig.vGrowRows
     let tableMinWidth = (colGroupStat && colGroupStat.totalColMinWidth) || ''
-    let vGrowRows = sectionConfig.vGrowRows || chunkConfig.vGrowRows
+
+    if (vGrowRows && !chunkVGrow) {
+      throw new Error('invalid use of vGrowRows')
+    }
 
     let content = renderChunkContent(sectionConfig, chunkConfig, {
       tableColGroupNode: microColGroupNode,
@@ -215,7 +218,6 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     } else {
       content = ( // TODO: need scrollerharness too?
         <Scroller
-          elRef={vGrowRows ? this.scrollerElRefs.createRef(index) : null}
           overflowX={forceXScrollbars ? 'scroll' : 'hidden'}
           overflowY={forceYScrollbars ? 'scroll' : 'hidden'}
           vGrow={chunkVGrow}
@@ -232,6 +234,8 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   }
 
 
+  // TODO: what about when more than one cell in a row, like with datgrid!!??
+  //
   _reportRowHeight(sectionI: number, chunkI: number, rowKey: string, el: HTMLElement | null) {
     let { sectionRowHeights } = this
 
@@ -411,9 +415,9 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     let scrollElsByColumn: { [colI: string]: HTMLElement[] } = {}
     let scrollElMap = this.scrollerElRefs.currentMap
 
-    scrollElMap = filterHash(scrollElMap, (scrollEl: HTMLElement, index: number) => {
-      return !this.getChunkConfigByIndex(index).vGrowRows
-    })
+    // scrollElMap = filterHash(scrollElMap, (scrollEl: HTMLElement, index: number) => {
+    //   return !this.getChunkConfigByIndex(index).vGrowRows
+    // })
 
     for (let sectionI = 0; sectionI < sectionCnt; sectionI++) {
       let startIndex = sectionI * chunksPerSection

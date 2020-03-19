@@ -60,9 +60,7 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
             type: 'head',
             chunks: [
               {
-                vGrowRows: true,
                 elRef: this.spreadsheetHeaderChunkElRef,
-                // className: 'fc-resource-area',
                 rowContent: props.spreadsheetHeaderRows
               },
               { outerContent: (
@@ -83,7 +81,6 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
             vGrowRows: Boolean(context.options.expandRows),
             chunks: [
               {
-                // className: 'fc-resource-area', // TODO: kill
                 rowContent: props.spreadsheetBodyRows
               },
               { outerContent: null },
