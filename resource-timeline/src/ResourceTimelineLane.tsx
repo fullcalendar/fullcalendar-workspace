@@ -7,6 +7,7 @@ export interface ResourceTimelineLaneProps extends TimelineLaneProps {
   elRef: Ref<HTMLTableRowElement>
   resource: Resource
   innerHeight: CssDimValue
+  onHeightFlush?: () => void
 }
 
 
@@ -18,7 +19,7 @@ export default class ResourceTimelineLane extends BaseComponent<ResourceTimeline
     }
 
     return (
-      <tr ref={props.elRef}>
+      <tr ref={props.elRef} class='fc-scrollgrid-row'>
         <RenderHook name='resourceLane' mountProps={innerProps} dynamicProps={innerProps}>
           {(rootElRef, customClassNames, innerElRef, innerContent) => (
             <td ref={rootElRef} className={[ 'fc-timeline-resource' ].concat(customClassNames).join(' ')} data-resource-id={props.resource.id}>
@@ -41,7 +42,7 @@ export default class ResourceTimelineLane extends BaseComponent<ResourceTimeline
                   eventDrag={props.eventDrag}
                   eventResize={props.eventResize}
                   timelineCoords={props.timelineCoords}
-                  onHeight={props.onHeight}
+                  onHeightFlush={props.onHeightFlush}
                 />
               </div>
             </td>

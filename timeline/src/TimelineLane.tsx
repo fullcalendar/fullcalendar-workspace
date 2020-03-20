@@ -26,7 +26,7 @@ export interface TimelineLaneProps {
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
   timelineCoords?: TimelineCoords // TODO: do null instead of undefined? .. SLAT coords
-  onHeight?: (innerEl: HTMLElement | null) => void
+  onHeightFlush?: () => void
 }
 
 interface TimelineLaneState {
@@ -79,7 +79,7 @@ export default class TimelineLane extends BaseComponent<TimelineLaneProps, Timel
           eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs as TimelineLaneSeg[] : [] /* bad new empty array? */}
           dateSelectionSegs={slicedProps.dateSelectionSegs}
         />
-        <div class='fc-timeline-events' ref={this.innerElRef} style={{ height /* computed by computeSegVerticals */ }}>
+        <div class='fc-timeline-events fc-scrollgrid-row-height' ref={this.innerElRef} style={{ height /* computed by computeSegVerticals */ }}>
           {this.renderFgSegs(
             slicedProps.fgEventSegs,
             segHorizontals,
@@ -119,13 +119,6 @@ export default class TimelineLane extends BaseComponent<TimelineLaneProps, Timel
   }
 
 
-  componentWillUnmount() {
-    if (this.props.onHeight) {
-      this.props.onHeight(null)
-    }
-  }
-
-
   updateSize() {
     let { timelineCoords } = this.props
 
@@ -143,10 +136,15 @@ export default class TimelineLane extends BaseComponent<TimelineLaneProps, Timel
           }
         })
       }, () => {
-        if (this.props.onHeight) {
-          this.props.onHeight(this.innerElRef.current)
-        }
+        this.flushHeight()
       })
+    }
+  }
+
+
+  flushHeight() {
+    if (this.props.onHeightFlush) {
+      this.props.onHeightFlush()
     }
   }
 

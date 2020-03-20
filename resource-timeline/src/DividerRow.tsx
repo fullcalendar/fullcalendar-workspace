@@ -6,6 +6,7 @@ export interface DividerRowProps {
   innerHeight: CssDimValue
   groupValue: any
   renderingHooks: { laneClassNames?, laneContent?, laneDidMount?, laneWillUnmount? }
+  onHeightFlush?: () => void
 }
 
 
@@ -30,6 +31,23 @@ export default class DividerRow extends BaseComponent<DividerRowProps> {
         </RenderHook>
       </tr>
     )
+  }
+
+
+  componentDidMount() {
+    this.flushHeight()
+  }
+
+
+  componentDidUpdate() {
+    this.flushHeight()
+  }
+
+
+  flushHeight() {
+    if (this.props.onHeightFlush) {
+      this.props.onHeightFlush()
+    }
   }
 
 }

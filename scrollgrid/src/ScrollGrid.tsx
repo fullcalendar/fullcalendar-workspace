@@ -21,7 +21,8 @@ import {
   CLIENT_HEIGHT_WIGGLE,
   collectFromHash,
   memoizeHashlike,
-  getCanVGrowWithinCell
+  getCanVGrowWithinCell,
+  memoize
 } from '@fullcalendar/core'
 import StickyScrolling from './StickyScrolling'
 import ClippedScroller, { ClippedOverflowValue } from './ClippedScroller'
@@ -34,6 +35,7 @@ interface ScrollGridState {
   forceXScrollbars: boolean // "
   scrollerClientWidths: { [index: string]: number } // why not use array?
   scrollerClientHeights: { [index: string]: number }
+  heightSyncRequestId: number
 }
 
 interface ColGroupStat {
@@ -60,23 +62,25 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   private stickyScrollings: StickyScrolling[] = []
   private scrollSyncersBySection: { [sectionI: string]: ScrollSyncer } = {}
   private scrollSyncersByColumn: { [columnI: string]: ScrollSyncer } = {}
-  private getReportRowHeightFuncs = memoizeArraylike(
-    (sectionI: number, chunkI: number) => this._reportRowHeight.bind(this, sectionI, chunkI)
-  )
+  private computeSectionRowMaxHeights = memoize(this._computeSectionRowMaxHeights)
+
 
   state: ScrollGridState = {
     shrinkWidths: [],
     forceYScrollbars: false,
     forceXScrollbars: false,
     scrollerClientWidths: {},
-    scrollerClientHeights: {}
+    scrollerClientHeights: {},
+    heightSyncRequestId: 0
   }
-
-  sectionRowHeights: { [rowKey: string]: number }[][] = []
 
 
   render(props: ScrollGridProps, state: ScrollGridState, context: ComponentContext) {
     let { shrinkWidths } = state
+
+    let sectionRowMaxHeights = state.heightSyncRequestId > 0
+      ? this.computeSectionRowMaxHeights(state.heightSyncRequestId)
+      : []
 
     let colGroupStats = this.compileColGroupStats(props.colGroups.map((colGroup) => [ colGroup ]))
     let microColGroupNodes = this.renderMicroColGroups(colGroupStats.map((stat, i) => [ stat.cols, shrinkWidths[i] ]))
@@ -90,7 +94,6 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
         indices.push([ sectionI, chunkI ])
       }
     }
-    let reportRowHeightFuncs = this.getReportRowHeightFuncs(indices)
 
     if (!getCanVGrowWithinCell()) {
       classNames.push('scrollgrid-vgrow-cell-hack')
@@ -102,7 +105,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
           <colgroup>
             {colGroupStats.map((colGroupStat, i) => renderMacroCol(colGroupStat, shrinkWidths[i]))}
           </colgroup>
-          {props.sections.map((sectionConfig, i) => this.renderSection(sectionConfig, i, colGroupStats, microColGroupNodes, reportRowHeightFuncs))}
+          {props.sections.map((sectionConfig, i) => this.renderSection(sectionConfig, i, colGroupStats, microColGroupNodes, sectionRowMaxHeights))}
         </table>
         {props.forPrint &&
           <div ref={this.printContainerRef}></div>
@@ -117,15 +120,12 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     sectionIndex: number,
     colGroupStats: ColGroupStat[],
     microColGroupNodes: VNode[],
-    reportRowHeightFuncs: ((rowId: string, innerEl: HTMLElement) => void)[]
+    sectionRowMaxHeights: number[][]
   ): VNode {
 
     if ('outerContent' in sectionConfig) {
       return sectionConfig.outerContent
     }
-
-    let rowHeights = this.computeSectionRowHeights(sectionIndex) // TODO: memoize somehow?
-    let chunksPerSection = this.getDims()[1]
 
     return (
       <tr key={sectionConfig.key} class={getSectionClassNames(sectionConfig, this.props.vGrow).join(' ')}>
@@ -137,8 +137,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
             microColGroupNodes[i],
             chunkConfig,
             i,
-            rowHeights,
-            reportRowHeightFuncs[sectionIndex * chunksPerSection + i]
+            sectionRowMaxHeights[sectionIndex] || []
           )
         })}
       </tr>
@@ -153,8 +152,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     microColGroupNode: VNode | undefined,
     chunkConfig: ChunkConfig,
     chunkIndex: number,
-    rowHeights: { [rowKey: string]: number },
-    reportRowHeight: (rowId: string, innerEl: HTMLElement) => void
+    rowHeights: number[]
   ): VNode {
 
     if ('outerContent' in chunkConfig) {
@@ -190,7 +188,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
       clientHeight: state.scrollerClientHeights[index] || '',
       vGrowRows,
       rowSyncHeights: rowHeights,
-      reportRowHeight: reportRowHeight
+      requestHeightSync: this.requestHeightSync
     })
 
     if (allowYScrolling || allowXScrolling) {
@@ -231,48 +229,6 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
         {content}
       </td>
     )
-  }
-
-
-  // TODO: what about when more than one cell in a row, like with datgrid!!??
-  //
-  _reportRowHeight(sectionI: number, chunkI: number, rowKey: string, el: HTMLElement | null) {
-    let { sectionRowHeights } = this
-
-    // TODO: reclaim memory when a chunk is killed, for sectionRowHeights
-    // TODO: use 1-dim `index` for sectionRowHeights?
-
-    if (el) {
-      if (!sectionRowHeights[sectionI]) sectionRowHeights[sectionI] = []
-      if (!sectionRowHeights[sectionI][chunkI]) sectionRowHeights[sectionI][chunkI] = {}
-      sectionRowHeights[sectionI][chunkI][rowKey] = el.getBoundingClientRect().height
-
-    } else if (
-      sectionRowHeights[sectionI] &&
-      sectionRowHeights[sectionI][chunkI]
-    ) {
-      delete sectionRowHeights[sectionI][chunkI][rowKey]
-    }
-
-    this.forceUpdate()
-  }
-
-
-  computeSectionRowHeights(sectionI) { // bad name
-    let maxes: { [rowKey: string]: number } = {}
-    let sectionRowHeights = this.sectionRowHeights[sectionI] || []
-
-    for (let chunkRowHeights of sectionRowHeights) {
-      for (let rowKey in chunkRowHeights) {
-        if (maxes[rowKey] === undefined) {
-          maxes[rowKey] = chunkRowHeights[rowKey]
-        } else {
-          maxes[rowKey] = Math.max(maxes[rowKey], chunkRowHeights[rowKey])
-        }
-      }
-    }
-
-    return maxes
   }
 
 
@@ -319,6 +275,13 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   }
 
 
+  requestHeightSync = () => {
+    this.setState({
+      heightSyncRequestId: this.state.heightSyncRequestId + 1
+    })
+  }
+
+
   computeShrinkWidths() {
     let colGroupStats = this.compileColGroupStats(this.props.colGroups.map((colGroup) => [ colGroup ]))
     let [ sectionCnt, chunksPerSection ] = this.getDims()
@@ -333,6 +296,55 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     })
 
     return shrinkWidths
+  }
+
+
+  _computeSectionRowMaxHeights(buster: number) {
+    let [ sectionCnt, chunksPerSection ] = this.getDims()
+    let sectionRowMaxHeights: number[][] = []
+
+    for (let sectionI = 0; sectionI < sectionCnt; sectionI++) {
+      let rowHeightsByChunk: number[][] = []
+
+      for (let chunkI = 0; chunkI < chunksPerSection; chunkI++) {
+        let index = sectionI * chunksPerSection + chunkI
+        let rowHeights: number[] = []
+
+        let chunkEl = this.chunkElRefs.currentMap[index]
+        if (chunkEl) {
+          rowHeights = findElements(chunkEl, '.fc-scrollgrid-row').map(getRowInnerMaxHeight)
+        } else {
+          rowHeights = []
+        }
+
+        rowHeightsByChunk.push(rowHeights)
+      }
+
+      let rowIndex = 0
+      let maxHeights = []
+
+      while (true) {
+        let rowHeightsAcrossChunks: number[] = []
+
+        for (let chunkI = 0; chunkI < chunksPerSection; chunkI++) {
+          let height = rowHeightsByChunk[chunkI][rowIndex]
+          if (height !== undefined) {
+            rowHeightsAcrossChunks.push(height)
+          }
+        }
+
+        if (rowHeightsAcrossChunks.length) {
+          maxHeights.push(Math.max(...rowHeightsAcrossChunks))
+          rowIndex++
+        } else {
+          break
+        }
+      }
+
+      sectionRowMaxHeights.push(maxHeights)
+    }
+
+    return sectionRowMaxHeights
   }
 
 
@@ -414,10 +426,6 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     let scrollElsBySection: { [sectionI: string]: HTMLElement[] } = {}
     let scrollElsByColumn: { [colI: string]: HTMLElement[] } = {}
     let scrollElMap = this.scrollerElRefs.currentMap
-
-    // scrollElMap = filterHash(scrollElMap, (scrollEl: HTMLElement, index: number) => {
-    //   return !this.getChunkConfigByIndex(index).vGrowRows
-    // })
 
     for (let sectionI = 0; sectionI < sectionCnt; sectionI++) {
       let startIndex = sectionI * chunksPerSection
@@ -514,6 +522,17 @@ ScrollGrid.addStateEquality({
   scrollerClientWidths: isPropsEqual,
   scrollerClientHeights: isPropsEqual
 })
+
+
+function getRowInnerMaxHeight(rowEl: HTMLElement) {
+  let innerHeights = findElements(rowEl, '.fc-scrollgrid-row-height').map(getElHeight)
+  return Math.max(...innerHeights)
+}
+
+
+function getElHeight(el: HTMLElement) {
+  return el.offsetHeight // better to deal with integers, for rounding, for PureComponent
+}
 
 
 function renderPrintCols(colGroups: ColGroupConfig[]) {

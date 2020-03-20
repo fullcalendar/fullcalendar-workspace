@@ -4,7 +4,7 @@ import {
 } from '@fullcalendar/core'
 import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource-common'
 import { TimelineDateProfile, TimelineCoords, TimelineSlats, TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg } from '@fullcalendar/timeline'
-import ResourceTimelineLanes, { OnRowHeightHandler } from './ResourceTimelineLanes'
+import ResourceTimelineLanes from './ResourceTimelineLanes'
 
 
 export interface ResourceTimelineGridProps {
@@ -26,11 +26,11 @@ export interface ResourceTimelineGridProps {
   tableMinWidth: CssDimValue
   tableColGroupNode: VNode
   vGrowRows: boolean
-  rowInnerHeights: { [rowKey: string]: number }
+  rowInnerHeights: number[]
   onSlatCoords?: (slatCoords: TimelineCoords) => void
   onRowCoords?: (rowCoords: PositionCache) => void
   onScrollLeftRequest?: (scrollLeft: number) => void
-  onRowHeight: OnRowHeightHandler
+  onHeightFlush?: () => void
 }
 
 interface ResourceTimelineGridState {
@@ -104,7 +104,7 @@ export default class ResourceTimelineGrid extends DateComponent<ResourceTimeline
             innerHeights={props.rowInnerHeights}
             slatCoords={state.slatCoords}
             onRowCoords={this.handleRowCoords}
-            onRowHeight={props.onRowHeight}
+            onHeightFlush={props.onHeightFlush}
           />,
           (context.options.nowIndicator && state.slatCoords) &&
             <div

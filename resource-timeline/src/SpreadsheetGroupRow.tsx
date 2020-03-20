@@ -9,7 +9,7 @@ export interface SpreadsheetGroupRowProps {
   isExpanded: boolean
   group: Group
   innerHeight: CssDimValue
-  onRowHeight?: (innerEl: HTMLElement) => void // dumb name, dont need row in it
+  onHeightFlush?: () => void
 }
 
 
@@ -49,6 +49,23 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
   }
 
 
+  componentDidMount() {
+    this.flushHeight()
+  }
+
+
+  componentDidUpdate() {
+    this.flushHeight()
+  }
+
+
+  flushHeight() {
+    if (this.props.onHeightFlush) {
+      this.props.onHeightFlush()
+    }
+  }
+
+
   onExpanderClick = () => {
     let { props } = this
 
@@ -57,30 +74,6 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
       id: props.id,
       isExpanded: !props.isExpanded
     })
-  }
-
-
-  componentDidMount() {
-    this.transmitHeight()
-  }
-
-
-  componentDidUpdate() {
-    this.transmitHeight()
-  }
-
-
-  componentWillUnmount() {
-    if (this.props.onRowHeight) {
-      this.props.onRowHeight(null)
-    }
-  }
-
-
-  transmitHeight() {
-    if (this.props.onRowHeight) {
-      this.props.onRowHeight(this.innerInnerRef.current)
-    }
   }
 
 }

@@ -13,7 +13,7 @@ export interface SpreadsheetRowProps {
   hasChildren: boolean
   resource: Resource
   innerHeight: CssDimValue // bad name! inner vs innerinner
-  onRowHeight?: (innerEl: HTMLElement | null) => void
+  onHeightFlush?: () => void
 }
 
 
@@ -27,7 +27,7 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
     let resourceFields = buildResourceFields(resource) // slightly inefficient. already done up the call stack
 
     return (
-      <tr>
+      <tr class='fc-scrollgrid-row'>
         {props.colSpecs.map((colSpec, i) => {
           let rowSpan = rowSpans[i]
 
@@ -75,7 +75,7 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
                 {(rootElRef, classNames, innerElRef, innerContent) => (
                   <td className={[ 'fc-datagrid-cell', 'fc-datagrid-resource' ].concat(classNames).join(' ')} data-resource-id={resource.id} rowSpan={rowSpan} ref={rootElRef}>
                     <div style={{ height: props.innerHeight }}>
-                      <div class='fc-datagrid-cell-inner' ref={this.innerInnerRef}>
+                      <div class='fc-datagrid-cell-inner fc-scrollgrid-row-height' ref={this.innerInnerRef}>
                         { colSpec.isMain &&
                           <ExpanderIcon
                             depth={depth}
@@ -101,25 +101,18 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
 
 
   componentDidMount() {
-    this.transmitHeight()
+    this.flushHeight()
   }
 
 
   componentDidUpdate() {
-    this.transmitHeight()
+    this.flushHeight()
   }
 
 
-  componentWillUnmount() {
-    if (this.props.onRowHeight) {
-      this.props.onRowHeight(null)
-    }
-  }
-
-
-  transmitHeight() {
-    if (this.props.onRowHeight) {
-      this.props.onRowHeight(this.innerInnerRef.current)
+  flushHeight() {
+    if (this.props.onHeightFlush) {
+      this.props.onHeightFlush()
     }
   }
 

@@ -1,7 +1,7 @@
 import {
   h, createRef,
   View, parseFieldSpecs, ComponentContext, memoize,
-  Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache, ScrollRequest, ScrollResponder, buildHashFromArray, memoizeHashlike, ViewRoot,
+  Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache, ScrollRequest, ScrollResponder, ViewRoot,
 } from '@fullcalendar/core'
 import {
   buildTimelineDateProfile, TimelineHeader,
@@ -42,7 +42,6 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private hasNesting = memoize(hasNesting)
   private buildRowNodes = memoize(buildRowNodes)
-  private getReportRowHeights = memoizeHashlike((reportRowHeight, rowId) => reportRowHeight.bind(null, rowId))
   private layoutRef = createRef<ResourceTimelineViewLayout>()
   private rowNodes: (GroupNode | ResourceNode)[] = []
   private renderedRowNodes: (GroupNode | ResourceNode)[] = []
@@ -107,20 +106,11 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                   onColWidthChange={this.handleColWidthChange}
                 />
               }
-              spreadsheetBodyRows={(contentArg: ChunkContentCallbackArgs) => {
-                let reportRowHeights = this.getReportRowHeights(
-                  buildHashFromArray(rowNodes, (rowNode) => [
-                    rowNode.id,
-                    [ contentArg.reportRowHeight, rowNode.id ]
-                  ])
-                )
-
-                return (
-                  <Fragment>
-                    {this.renderSpreadsheetRows(rowNodes, colSpecs, contentArg.rowSyncHeights, reportRowHeights)}
-                  </Fragment>
-                )
-              }}
+              spreadsheetBodyRows={(contentArg: ChunkContentCallbackArgs) => (
+                <Fragment>
+                  {this.renderSpreadsheetRows(rowNodes, colSpecs, contentArg.rowSyncHeights, contentArg.requestHeightSync)}
+                </Fragment>
+              )}
               timeCols={buildSlatCols(tDateProfile, this.context.options.slotMinWidth || 30)}
               timeHeaderContent={(contentArg: ChunkContentCallbackArgs) => (
                 <TimelineHeader
@@ -157,7 +147,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                   onSlatCoords={this.handleSlatCoords}
                   onRowCoords={this.handleRowCoords}
                   onScrollLeftRequest={this.handleScrollLeftRequest}
-                  onRowHeight={contentArg.reportRowHeight}
+                  onHeightFlush={contentArg.requestHeightSync}
                 />
               )}
             />
@@ -168,8 +158,8 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   }
 
 
-  renderSpreadsheetRows(nodes: (ResourceNode | GroupNode)[], colSpecs: ColSpec[], rowSyncHeights: { [rowKey: string]: number }, reportRowHeights) {
-    return nodes.map((node) => {
+  renderSpreadsheetRows(nodes: (ResourceNode | GroupNode)[], colSpecs: ColSpec[], rowSyncHeights: number[], requestHeightSync: () => void) {
+    return nodes.map((node, index) => {
       if ((node as GroupNode).group) {
         return (
           <SpreadsheetGroupRow
@@ -178,8 +168,8 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
             spreadsheetColCnt={colSpecs.length}
             isExpanded={node.isExpanded}
             group={(node as GroupNode).group}
-            innerHeight={rowSyncHeights[node.id] || ''}
-            onRowHeight={reportRowHeights[node.id]}
+            innerHeight={rowSyncHeights[index] || ''}
+            onHeightFlush={requestHeightSync}
           />
         )
       } else if ((node as ResourceNode).resource) {
@@ -192,8 +182,8 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
             isExpanded={node.isExpanded}
             hasChildren={(node as ResourceNode).hasChildren}
             resource={(node as ResourceNode).resource}
-            innerHeight={rowSyncHeights[node.id] || ''}
-            onRowHeight={reportRowHeights[node.id]}
+            innerHeight={rowSyncHeights[index] || ''}
+            onHeightFlush={requestHeightSync}
           />
         )
       }

@@ -1,8 +1,6 @@
 import {
   h, ComponentContext, DateProfileGenerator, DateProfile, PositionCache,
   SplittableProps, EventStore, createRef, BaseComponent, CssDimValue, RefMap,
-  memoizeHashlike,
-  buildHashFromArray,
   DateMarker,
   DateRange
 } from '@fullcalendar/core'
@@ -28,12 +26,10 @@ export interface ResourceTimelineLanesContentProps {
   nowDate: DateMarker
   todayRange: DateRange
   fallbackBusinessHours: EventStore | null
-  innerHeights: { [rowKey: string]: number }
+  innerHeights: number[]
   slatCoords: TimelineCoords | null
-  onRowHeight: OnRowHeightHandler
+  onHeightFlush?: () => void
 }
-
-export type OnRowHeightHandler = (rowKey: string, innerEl: HTMLElement | null) => void
 
 
 export default class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesProps> {
@@ -65,7 +61,7 @@ export default class ResourceTimelineLanes extends BaseComponent<ResourceTimelin
           fallbackBusinessHours={props.fallbackBusinessHours}
           slatCoords={props.slatCoords}
           innerHeights={props.innerHeights}
-          onRowHeight={props.onRowHeight}
+          onHeightFlush={props.onHeightFlush}
         />
       </table>
     )
@@ -114,18 +110,9 @@ interface ResourceTimelineLanesBodyProps extends ResourceTimelineLanesContentPro
 
 class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyProps> { // TODO: this technique more
 
-  getOnRowHeights = memoizeHashlike((onRowHeight: OnRowHeightHandler, rowId: string) => onRowHeight.bind(null, rowId))
-
 
   render(props: ResourceTimelineLanesBodyProps, state: {}, context: ComponentContext) {
     let { rowElRefs, innerHeights } = props
-
-    let onRowHeights = this.getOnRowHeights(
-      buildHashFromArray(props.rowNodes, (rowNode) => [
-        rowNode.id,
-        [ props.onRowHeight, rowNode.id ]
-      ])
-    )
 
     return (
       <tbody>
@@ -138,7 +125,8 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
                 elRef={rowElRefs.createRef(index)}
                 groupValue={(node as GroupNode).group.value}
                 renderingHooks={(node as GroupNode).group.spec}
-                innerHeight={innerHeights[node.id] || ''}
+                innerHeight={innerHeights[index] || ''}
+                onHeightFlush={props.onHeightFlush}
               />
             )
 
@@ -158,9 +146,9 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
                 todayRange={props.todayRange}
                 nextDayThreshold={context.nextDayThreshold}
                 businessHours={resource.businessHours || props.fallbackBusinessHours}
-                innerHeight={innerHeights[node.id] || ''}
-                onHeight={onRowHeights[node.id]}
+                innerHeight={innerHeights[index] || ''}
                 timelineCoords={props.slatCoords}
+                onHeightFlush={props.onHeightFlush}
               />
             )
           }
