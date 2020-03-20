@@ -34,7 +34,7 @@ interface ScrollGridState {
   forceXScrollbars: boolean // "
   scrollerClientWidths: { [index: string]: number } // why not use array?
   scrollerClientHeights: { [index: string]: number }
-  sectionRowMaxHeights: number[][]
+  sectionRowMaxHeights: number[][][]
 }
 
 interface ColGroupStat {
@@ -119,7 +119,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     sectionIndex: number,
     colGroupStats: ColGroupStat[],
     microColGroupNodes: VNode[],
-    sectionRowMaxHeights: number[][]
+    sectionRowMaxHeights: number[][][]
   ): VNode {
 
     if ('outerContent' in sectionConfig) {
@@ -136,7 +136,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
             microColGroupNodes[i],
             chunkConfig,
             i,
-            sectionRowMaxHeights[sectionIndex] || []
+            (sectionRowMaxHeights[sectionIndex] || [])[i] || []
           )
         })}
       </tr>
@@ -266,6 +266,11 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
 
   handleSizing = (sectionRowMaxHeightsChanged?: boolean) => {
+
+    if (!sectionRowMaxHeightsChanged) { // something else changed, probably external
+      this.anyRowHeightsChanged = true
+    }
+
     this.setState({
       shrinkWidths: this.computeShrinkWidths(),
       ...this.computeScrollerDims(),
@@ -331,11 +336,11 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     let newHeightMap = new Map<HTMLTableRowElement, number>()
 
     let [ sectionCnt, chunksPerSection ] = this.getDims()
-    let sectionRowMaxHeights: number[][] = []
+    let sectionRowMaxHeights: number[][][] = []
 
     for (let sectionI = 0; sectionI < sectionCnt; sectionI++) {
       let sectionConfig = this.props.sections[sectionI] || {}
-      let maxHeights = []
+      let assignableHeights: number[][] = [] // chunk, row
 
       if (sectionConfig.syncRowHeights) {
         let rowHeightsByChunk: number[][] = []
@@ -361,28 +366,67 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
           rowHeightsByChunk.push(rowHeights)
         }
 
-        let rowIndex = 0
+        let rowCnt = rowHeightsByChunk[0].length
+        let isEqualRowCnt = true
 
-        while (true) {
-          let rowHeightsAcrossChunks: number[] = []
+        for (let chunkI = 1; chunkI < chunksPerSection; chunkI++) {
+          let isOuterContent = sectionConfig.chunks[chunkI] && sectionConfig.chunks[chunkI].outerContent !== undefined // can be null
 
+          if (!isOuterContent && rowHeightsByChunk[chunkI].length !== rowCnt) { // skip outer content
+            isEqualRowCnt = false
+            break
+          }
+        }
+
+        if (!isEqualRowCnt) {
+
+          let chunkHeightSums: number[] = []
           for (let chunkI = 0; chunkI < chunksPerSection; chunkI++) {
-            let height = rowHeightsByChunk[chunkI][rowIndex]
-            if (height !== undefined) {
-              rowHeightsAcrossChunks.push(height)
-            }
+            chunkHeightSums.push(
+              sumNumbers(rowHeightsByChunk[chunkI]) + rowHeightsByChunk[chunkI].length // add in border
+            )
           }
 
-          if (rowHeightsAcrossChunks.length) {
-            maxHeights.push(Math.max(...rowHeightsAcrossChunks))
-            rowIndex++
-          } else {
-            break
+          let maxTotalSum = Math.max(...chunkHeightSums)
+
+          for (let chunkI = 0; chunkI < chunksPerSection; chunkI++) {
+            let rowInChunkCnt = rowHeightsByChunk[chunkI].length
+            let rowInChunkHeight = (maxTotalSum - rowInChunkCnt) / rowInChunkCnt // subtract border
+            let rowInChunkHeights: number[] = []
+
+            for (let row = 0; row < rowInChunkCnt; row++) {
+              rowInChunkHeights.push(rowInChunkHeight)
+            }
+
+            assignableHeights.push(rowInChunkHeights)
+          }
+
+        } else {
+
+          for (let chunkI = 0; chunkI < chunksPerSection; chunkI++) {
+            assignableHeights.push([])
+          }
+
+          for (let row = 0; row < rowCnt; row++) {
+            let rowHeightsAcrossChunks: number[] = []
+
+            for (let chunkI = 0; chunkI < chunksPerSection; chunkI++) {
+              let h = rowHeightsByChunk[chunkI][row]
+              if (h != null) { // protect against outerContent
+                rowHeightsAcrossChunks.push(h)
+              }
+            }
+
+            let maxHeight = Math.max(...rowHeightsAcrossChunks)
+
+            for (let chunkI = 0; chunkI < chunksPerSection; chunkI++) {
+              assignableHeights[chunkI].push(maxHeight)
+            }
           }
         }
       }
 
-      sectionRowMaxHeights.push(maxHeights)
+      sectionRowMaxHeights.push(assignableHeights)
     }
 
     this.rowInnerMaxHeightMap = newHeightMap
@@ -567,9 +611,25 @@ ScrollGrid.addStateEquality({
 })
 
 
+function sumNumbers(numbers: number[]) { // TODO: general util
+  let sum = 0
+
+  for (let n of numbers) {
+    sum += n
+  }
+
+  return sum
+}
+
+
 function getRowInnerMaxHeight(rowEl: HTMLElement) {
   let innerHeights = findElements(rowEl, '.fc-scrollgrid-row-height').map(getElHeight)
-  return Math.max(...innerHeights)
+
+  if (innerHeights.length) {
+    return Math.max(...innerHeights)
+  }
+
+  return 0
 }
 
 

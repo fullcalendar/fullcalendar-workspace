@@ -8,6 +8,7 @@ import { ColSpec } from '@fullcalendar/resource-common'
 export interface SpreadsheetHeaderProps {
   superHeaderRendering: { headerClassNames?, headerContent?, headerDidMount?, headerWillUnmount? }
   colSpecs: ColSpec[]
+  rowInnerHeights: number[]
   onColWidthChange?: (colWidths: number[]) => void
 }
 
@@ -24,15 +25,19 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
     let { colSpecs, superHeaderRendering } = props
     let innerProps = { view: context.view }
     let rowNodes: VNode[] = []
+    let rowInnerHeights = props.rowInnerHeights.slice() // copy, because we're gonna pop
 
     if (superHeaderRendering) {
+      let rowInnerHeight = rowInnerHeights.shift()
       rowNodes.push(
         <tr>
           <RenderHook name='header' mountProps={innerProps} dynamicProps={innerProps} options={superHeaderRendering}>
             {(rootElRef, classNames, innerElRef, innerContent) => (
               <th colSpan={colSpecs.length} className={[ 'fc-datagrid-header', 'fc-datagrid-header-super' ].concat(classNames).join(' ')} ref={rootElRef}>
-                <div class='fc-datagrid-header-inner' ref={innerElRef}>
-                  {innerContent}
+                <div style={{ height: rowInnerHeight }}>
+                  <div class='fc-datagrid-header-inner fc-scrollgrid-row-height' ref={innerElRef}>
+                    {innerContent}
+                  </div>
                 </div>
               </th>
             )}
@@ -41,6 +46,7 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
       )
     }
 
+    let rowInnerHeight = rowInnerHeights.shift()
     rowNodes.push(
       <tr>
         {colSpecs.map((colSpec, i) => {
@@ -51,8 +57,8 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
             <RenderHook name='header' mountProps={innerProps} dynamicProps={innerProps} options={colSpec}>
               {(rootElRef, classNames, innerElRef, innerContent) => (
                 <th ref={rootElRef} className={[ 'fc-datagrid-header' ].concat(classNames).join(' ')}>
-                  <div class='fc-datagrid-header-origin'>
-                    <div class='fc-datagrid-header-inner'>
+                  <div class='fc-datagrid-header-origin' style={{ height: rowInnerHeight }}>
+                    <div class='fc-datagrid-header-inner fc-scrollgrid-row-height'>
                       {colSpec.isMain &&
                         <span class='fc-datagrid-expander fc-datagrid-expander-placeholder'>
                           <span class='fc-icon'></span>

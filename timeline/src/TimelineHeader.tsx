@@ -12,6 +12,7 @@ export interface TimelineHeaderProps {
   tableMinWidth: CssDimValue
   tableColGroupNode: VNode
   slatCoords: TimelineCoords
+  rowInnerHeights?: number[]
 }
 
 
@@ -27,7 +28,10 @@ export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
     return (
       <NowTimer unit={timerUnit} content={(nowDate: DateMarker, todayRange: DateRange) => (
         <div class='fc-timeline-header'>
-          <table style={{ minWidth: props.tableMinWidth, width: props.clientWidth }}>
+          <table
+            className='fc-scrollgrid-height-sync'
+            style={{ minWidth: props.tableMinWidth, width: props.clientWidth }}
+          >
             {props.tableColGroupNode}
             <tbody>
               <TimelineHeaderRows
@@ -35,6 +39,7 @@ export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
                 tDateProfile={props.tDateProfile}
                 nowDate={nowDate}
                 todayRange={todayRange}
+                rowInnerHeights={props.rowInnerHeights}
               />
             </tbody>
           </table>

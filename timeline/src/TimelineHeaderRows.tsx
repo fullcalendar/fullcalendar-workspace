@@ -9,6 +9,7 @@ export interface TimelineHeaderRowsProps {
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
+  rowInnerHeights?: number[]
 }
 
 export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
@@ -16,7 +17,7 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
 
   render(props: TimelineHeaderRowsProps, state: {}, context: ComponentContext) {
     let { dateEnv, options } = context
-    let { tDateProfile } = props
+    let { tDateProfile, rowInnerHeights } = props
     let { cellRows } = tDateProfile
 
     return (
@@ -61,8 +62,8 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
                         data-date={dateEnv.formatIso(cell.date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true })}
                         colSpan={cell.colspan}
                       >
-                        <div>
-                          <div className={'fc-timeline-slot-inner ' + (isLast ? '' : ' fc-sticky')} ref={innerElRef}>
+                        <div className='fc-timeline-slot-origin' style={{ height: rowInnerHeights[i] }}>
+                          <div className={'fc-timeline-slot-inner fc-scrollgrid-row-height' + (isLast ? '' : ' fc-sticky')} ref={innerElRef}>
                             {innerContent}
                           </div>
                         </div>

@@ -28,7 +28,12 @@ TODO: figure out better styling
   vertical-align: middle;
 }
 
-.fc-timeline-slot-inner { // within the label
+.fc-timeline-slot-origin { // weird name
+  display: flex;
+  align-items: center;
+}
+
+.fc-timeline-slot-inner { // within the label ... for timegrid AND timeline?
   padding: 3px 4px;
   display: inline-block;
 }

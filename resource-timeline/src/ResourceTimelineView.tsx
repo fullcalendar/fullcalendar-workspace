@@ -99,13 +99,14 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
               forPrint={props.forPrint}
               isHeightAuto={props.isHeightAuto}
               spreadsheetCols={buildSpreadsheetCols(colSpecs, state.spreadsheetColWidths)}
-              spreadsheetHeaderRows={
+              spreadsheetHeaderRows={(contentArg: ChunkContentCallbackArgs) => (
                 <SpreadsheetHeader // TODO: rename to SpreadsheetHeaderRows
                   superHeaderRendering={superHeaderRendering}
                   colSpecs={colSpecs}
                   onColWidthChange={this.handleColWidthChange}
+                  rowInnerHeights={contentArg.rowSyncHeights}
                 />
-              }
+              )}
               spreadsheetBodyRows={(contentArg: ChunkContentCallbackArgs) => (
                 <Fragment>
                   {this.renderSpreadsheetRows(rowNodes, colSpecs, contentArg.rowSyncHeights)}
@@ -121,6 +122,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                   dateProfile={dateProfile}
                   tDateProfile={tDateProfile}
                   slatCoords={state.slatCoords}
+                  rowInnerHeights={contentArg.rowSyncHeights}
                 />
               )}
               timeBodyContent={(contentArg: ChunkContentCallbackArgs) => (

@@ -23,8 +23,10 @@
   vertical-align: middle !important;
 }
 
-.fc-datagrid-header-origin {
+.fc-datagrid-header-origin { // bad name now because does height for row-height-syncing
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .fc-datagrid-header-inner {

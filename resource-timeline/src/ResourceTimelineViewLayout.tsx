@@ -58,6 +58,7 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
         sections={[
           {
             type: 'head',
+            syncRowHeights: true,
             chunks: [
               {
                 elRef: this.spreadsheetHeaderChunkElRef,
