@@ -24,11 +24,20 @@ TODO: figure out better styling
 }
 */
 
-.fc-ltr .fc-timeline-header-row-chrono th {
+.fc-timeline-slot-label {
+  vertical-align: middle;
+}
+
+.fc-timeline-slot-inner { // within the label
+  padding: 3px 4px;
+  display: inline-block;
+}
+
+.fc-ltr .fc-timeline-header-row-chrono .fc-timeline-slot {
   text-align: left;
 }
 
-.fc-rtl .fc-timeline-header-row-chrono th {
+.fc-rtl .fc-timeline-header-row-chrono .fc-timeline-slot {
   text-align: right;
 }
 
@@ -38,17 +47,7 @@ TODO: figure out better styling
   z-index: 1; // scope z-index's inside
 }
 
-/* head */
 
-.fc-timeline-slot-label {
-  vertical-align: middle;
-  padding: 3px 0 !important;
-}
-
-.fc-timeline-slot-span {
-  display: inline-block; // for stickiness
-  padding: 0 4px;
-}
 
 /* body slots (vertical lines) */
 

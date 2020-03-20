@@ -61,10 +61,10 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
                         data-date={dateEnv.formatIso(cell.date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true })}
                         colSpan={cell.colspan}
                       >
-                        <div class='fc-scrollgrid-shrink-block'>
-                          <span className={'fc-timeline-slot-span fc-scrollgrid-shrink-span ' + (isLast ? '' : ' fc-sticky')} ref={innerElRef}>
+                        <div>
+                          <div className={'fc-timeline-slot-inner ' + (isLast ? '' : ' fc-sticky')} ref={innerElRef}>
                             {innerContent}
-                          </span>
+                          </div>
                         </div>
                       </th>
                     )}
