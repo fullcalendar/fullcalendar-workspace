@@ -30,7 +30,7 @@ export interface ResourceTimelineGridProps {
   onSlatCoords?: (slatCoords: TimelineCoords) => void
   onRowCoords?: (rowCoords: PositionCache) => void
   onScrollLeftRequest?: (scrollLeft: number) => void
-  onHeightFlush?: () => void
+  onRowHeightChange?: (rowEl: HTMLTableRowElement, isStable: boolean) => void
 }
 
 interface ResourceTimelineGridState {
@@ -104,7 +104,7 @@ export default class ResourceTimelineGrid extends DateComponent<ResourceTimeline
             innerHeights={props.rowInnerHeights}
             slatCoords={state.slatCoords}
             onRowCoords={this.handleRowCoords}
-            onHeightFlush={props.onHeightFlush}
+            onRowHeightChange={props.onRowHeightChange}
           />,
           (context.options.nowIndicator && state.slatCoords) &&
             <div

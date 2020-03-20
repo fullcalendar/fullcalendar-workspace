@@ -1,17 +1,20 @@
-import { h, Ref, BaseComponent, CssDimValue, RenderHook, ComponentContext } from '@fullcalendar/core'
+import { h, Ref, BaseComponent, CssDimValue, RenderHook, ComponentContext, setRef } from '@fullcalendar/core'
 import { Resource, ResourceApi } from '@fullcalendar/resource-common'
-import { TimelineLane, TimelineLaneProps } from '@fullcalendar/timeline'
+import { TimelineLane, TimelineLaneCoreProps } from '@fullcalendar/timeline'
 
 
-export interface ResourceTimelineLaneProps extends TimelineLaneProps {
+export interface ResourceTimelineLaneProps extends TimelineLaneCoreProps {
   elRef: Ref<HTMLTableRowElement>
   resource: Resource
   innerHeight: CssDimValue
-  onHeightFlush?: () => void
+  onHeightChange?: (rowEl: HTMLTableRowElement, isStable: boolean) => void
 }
 
 
 export default class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProps> {
+
+  rootEl: HTMLTableRowElement
+
 
   render(props: ResourceTimelineLaneProps, state: {}, context: ComponentContext) {
     let innerProps = {
@@ -19,7 +22,7 @@ export default class ResourceTimelineLane extends BaseComponent<ResourceTimeline
     }
 
     return (
-      <tr ref={props.elRef} class='fc-scrollgrid-row'>
+      <tr ref={this.handleRootEl}>
         <RenderHook name='resourceLane' mountProps={innerProps} dynamicProps={innerProps}>
           {(rootElRef, customClassNames, innerElRef, innerContent) => (
             <td ref={rootElRef} className={[ 'fc-timeline-resource' ].concat(customClassNames).join(' ')} data-resource-id={props.resource.id}>
@@ -42,7 +45,7 @@ export default class ResourceTimelineLane extends BaseComponent<ResourceTimeline
                   eventDrag={props.eventDrag}
                   eventResize={props.eventResize}
                   timelineCoords={props.timelineCoords}
-                  onHeightFlush={props.onHeightFlush}
+                  onHeightChange={this.handleHeightChange}
                 />
               </div>
             </td>
@@ -50,6 +53,22 @@ export default class ResourceTimelineLane extends BaseComponent<ResourceTimeline
         </RenderHook>
       </tr>
     ) // important NOT to do vgrow. dont want to shrink height smaller than content
+  }
+
+
+  handleRootEl = (el: HTMLTableRowElement) => {
+    this.rootEl = el
+
+    if (this.props.elRef) {
+      setRef(this.props.elRef, el)
+    }
+  }
+
+
+  handleHeightChange = (isStable: boolean) => {
+    if (this.props.onHeightChange) {
+      this.props.onHeightChange(this.rootEl, isStable)
+    }
   }
 
 }

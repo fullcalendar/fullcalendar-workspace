@@ -108,7 +108,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
               }
               spreadsheetBodyRows={(contentArg: ChunkContentCallbackArgs) => (
                 <Fragment>
-                  {this.renderSpreadsheetRows(rowNodes, colSpecs, contentArg.rowSyncHeights, contentArg.requestHeightSync)}
+                  {this.renderSpreadsheetRows(rowNodes, colSpecs, contentArg.rowSyncHeights)}
                 </Fragment>
               )}
               timeCols={buildSlatCols(tDateProfile, this.context.options.slotMinWidth || 30)}
@@ -147,7 +147,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                   onSlatCoords={this.handleSlatCoords}
                   onRowCoords={this.handleRowCoords}
                   onScrollLeftRequest={this.handleScrollLeftRequest}
-                  onHeightFlush={contentArg.requestHeightSync}
+                  onRowHeightChange={contentArg.reportRowHeightChange}
                 />
               )}
             />
@@ -158,7 +158,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   }
 
 
-  renderSpreadsheetRows(nodes: (ResourceNode | GroupNode)[], colSpecs: ColSpec[], rowSyncHeights: number[], requestHeightSync: () => void) {
+  renderSpreadsheetRows(nodes: (ResourceNode | GroupNode)[], colSpecs: ColSpec[], rowSyncHeights: number[]) {
     return nodes.map((node, index) => {
       if ((node as GroupNode).group) {
         return (
@@ -169,7 +169,6 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
             isExpanded={node.isExpanded}
             group={(node as GroupNode).group}
             innerHeight={rowSyncHeights[index] || ''}
-            onHeightFlush={requestHeightSync}
           />
         )
       } else if ((node as ResourceNode).resource) {
@@ -183,7 +182,6 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
             hasChildren={(node as ResourceNode).hasChildren}
             resource={(node as ResourceNode).resource}
             innerHeight={rowSyncHeights[index] || ''}
-            onHeightFlush={requestHeightSync}
           />
         )
       }

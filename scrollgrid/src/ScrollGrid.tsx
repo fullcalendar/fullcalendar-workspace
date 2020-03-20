@@ -21,8 +21,7 @@ import {
   CLIENT_HEIGHT_WIGGLE,
   collectFromHash,
   memoizeHashlike,
-  getCanVGrowWithinCell,
-  memoize
+  getCanVGrowWithinCell
 } from '@fullcalendar/core'
 import StickyScrolling from './StickyScrolling'
 import ClippedScroller, { ClippedOverflowValue } from './ClippedScroller'
@@ -35,7 +34,7 @@ interface ScrollGridState {
   forceXScrollbars: boolean // "
   scrollerClientWidths: { [index: string]: number } // why not use array?
   scrollerClientHeights: { [index: string]: number }
-  heightSyncRequestId: number
+  sectionRowMaxHeights: number[][]
 }
 
 interface ColGroupStat {
@@ -62,7 +61,11 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   private stickyScrollings: StickyScrolling[] = []
   private scrollSyncersBySection: { [sectionI: string]: ScrollSyncer } = {}
   private scrollSyncersByColumn: { [columnI: string]: ScrollSyncer } = {}
-  private computeSectionRowMaxHeights = memoize(this._computeSectionRowMaxHeights)
+
+  // for row-height-syncing
+  private rowUnstableMap = new Map<HTMLTableRowElement, boolean>() // no need to groom. always self-cancels
+  private rowInnerMaxHeightMap = new Map<HTMLTableRowElement, number>()
+  private anyRowHeightsChanged = false
 
 
   state: ScrollGridState = {
@@ -71,16 +74,12 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     forceXScrollbars: false,
     scrollerClientWidths: {},
     scrollerClientHeights: {},
-    heightSyncRequestId: 0
+    sectionRowMaxHeights: []
   }
 
 
   render(props: ScrollGridProps, state: ScrollGridState, context: ComponentContext) {
     let { shrinkWidths } = state
-
-    let sectionRowMaxHeights = state.heightSyncRequestId > 0
-      ? this.computeSectionRowMaxHeights(state.heightSyncRequestId)
-      : []
 
     let colGroupStats = this.compileColGroupStats(props.colGroups.map((colGroup) => [ colGroup ]))
     let microColGroupNodes = this.renderMicroColGroups(colGroupStats.map((stat, i) => [ stat.cols, shrinkWidths[i] ]))
@@ -105,7 +104,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
           <colgroup>
             {colGroupStats.map((colGroupStat, i) => renderMacroCol(colGroupStat, shrinkWidths[i]))}
           </colgroup>
-          {props.sections.map((sectionConfig, i) => this.renderSection(sectionConfig, i, colGroupStats, microColGroupNodes, sectionRowMaxHeights))}
+          {props.sections.map((sectionConfig, i) => this.renderSection(sectionConfig, i, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights))}
         </table>
         {props.forPrint &&
           <div ref={this.printContainerRef}></div>
@@ -187,8 +186,9 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
       clientWidth: state.scrollerClientWidths[index] || '',
       clientHeight: state.scrollerClientHeights[index] || '',
       vGrowRows,
+      syncRowHeights: Boolean(sectionConfig.syncRowHeights),
       rowSyncHeights: rowHeights,
-      requestHeightSync: this.requestHeightSync
+      reportRowHeightChange: this.handleRowHeightChange
     })
 
     if (allowYScrolling || allowXScrolling) {
@@ -245,14 +245,14 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   }
 
 
-  componentDidUpdate(prevProps: ScrollGridProps) {
+  componentDidUpdate(prevProps: ScrollGridProps, prevState: ScrollGridState) {
     this.updateScrollSyncers()
 
     if (this.props.forPrint) {
       this.fillPrintContainer()
     } else {
       // TODO: need better solution when state contains non-sizing things
-      this.handleSizing()
+      this.handleSizing(prevState.sectionRowMaxHeights !== this.state.sectionRowMaxHeights)
     }
   }
 
@@ -265,20 +265,45 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   }
 
 
-  handleSizing = () => {
+  handleSizing = (sectionRowMaxHeightsChanged?: boolean) => {
     this.setState({
       shrinkWidths: this.computeShrinkWidths(),
-      ...this.computeScrollerDims()
+      ...this.computeScrollerDims(),
+      ...(
+        // if reacting to self-change of sectionRowMaxHeightsChanged, or not stable, don't do anything
+        (sectionRowMaxHeightsChanged || this.rowUnstableMap.size) ? {} : {
+          sectionRowMaxHeights: this.computeSectionRowMaxHeights()
+        }
+      )
     }, () => {
-      this.updateStickyScrolling() // needs to happen AFTER final positioning committed to DOM
+      if (!this.rowUnstableMap.size) {
+        this.updateStickyScrolling() // needs to happen AFTER final positioning committed to DOM
+      }
     })
   }
 
 
-  requestHeightSync = () => {
-    this.setState({
-      heightSyncRequestId: this.state.heightSyncRequestId + 1
-    })
+  handleRowHeightChange = (rowEl: HTMLTableRowElement, isStable: boolean) => {
+    let { rowUnstableMap, rowInnerMaxHeightMap } = this
+
+    if (!isStable) {
+      rowUnstableMap.set(rowEl, true)
+    } else {
+      rowUnstableMap.delete(rowEl)
+
+      let innerMaxHeight = getRowInnerMaxHeight(rowEl)
+      if (!rowInnerMaxHeightMap.has(rowEl) || rowInnerMaxHeightMap.get(rowEl) !== innerMaxHeight) {
+        rowInnerMaxHeightMap.set(rowEl, innerMaxHeight)
+        this.anyRowHeightsChanged = true
+      }
+
+      if (!rowUnstableMap.size && this.anyRowHeightsChanged) {
+        this.anyRowHeightsChanged = false
+        this.setState({
+          sectionRowMaxHeights: this.computeSectionRowMaxHeights()
+        })
+      }
+    }
   }
 
 
@@ -299,50 +324,68 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
   }
 
 
-  _computeSectionRowMaxHeights(buster: number) {
+  // has the side effect of grooming rowInnerMaxHeightMap
+  // TODO: somehow short-circuit if there are no new height changes
+  private computeSectionRowMaxHeights() {
+    let oldHeightMap = this.rowInnerMaxHeightMap
+    let newHeightMap = new Map<HTMLTableRowElement, number>()
+
     let [ sectionCnt, chunksPerSection ] = this.getDims()
     let sectionRowMaxHeights: number[][] = []
 
     for (let sectionI = 0; sectionI < sectionCnt; sectionI++) {
-      let rowHeightsByChunk: number[][] = []
-
-      for (let chunkI = 0; chunkI < chunksPerSection; chunkI++) {
-        let index = sectionI * chunksPerSection + chunkI
-        let rowHeights: number[] = []
-
-        let chunkEl = this.chunkElRefs.currentMap[index]
-        if (chunkEl) {
-          rowHeights = findElements(chunkEl, '.fc-scrollgrid-row').map(getRowInnerMaxHeight)
-        } else {
-          rowHeights = []
-        }
-
-        rowHeightsByChunk.push(rowHeights)
-      }
-
-      let rowIndex = 0
+      let sectionConfig = this.props.sections[sectionI] || {}
       let maxHeights = []
 
-      while (true) {
-        let rowHeightsAcrossChunks: number[] = []
+      if (sectionConfig.syncRowHeights) {
+        let rowHeightsByChunk: number[][] = []
 
         for (let chunkI = 0; chunkI < chunksPerSection; chunkI++) {
-          let height = rowHeightsByChunk[chunkI][rowIndex]
-          if (height !== undefined) {
-            rowHeightsAcrossChunks.push(height)
+          let index = sectionI * chunksPerSection + chunkI
+          let rowHeights: number[] = []
+
+          let chunkEl = this.chunkElRefs.currentMap[index]
+          if (chunkEl) {
+            rowHeights = findElements(chunkEl, '.fc-scrollgrid-height-sync tr').map(function(rowEl: HTMLTableRowElement) {
+              let max = oldHeightMap.get(rowEl)
+              if (max == null) {
+                max = getRowInnerMaxHeight(rowEl)
+              }
+              newHeightMap.set(rowEl, max)
+              return max
+            })
+          } else {
+            rowHeights = []
           }
+
+          rowHeightsByChunk.push(rowHeights)
         }
 
-        if (rowHeightsAcrossChunks.length) {
-          maxHeights.push(Math.max(...rowHeightsAcrossChunks))
-          rowIndex++
-        } else {
-          break
+        let rowIndex = 0
+
+        while (true) {
+          let rowHeightsAcrossChunks: number[] = []
+
+          for (let chunkI = 0; chunkI < chunksPerSection; chunkI++) {
+            let height = rowHeightsByChunk[chunkI][rowIndex]
+            if (height !== undefined) {
+              rowHeightsAcrossChunks.push(height)
+            }
+          }
+
+          if (rowHeightsAcrossChunks.length) {
+            maxHeights.push(Math.max(...rowHeightsAcrossChunks))
+            rowIndex++
+          } else {
+            break
+          }
         }
       }
 
       sectionRowMaxHeights.push(maxHeights)
     }
+
+    this.rowInnerMaxHeightMap = newHeightMap
 
     return sectionRowMaxHeights
   }

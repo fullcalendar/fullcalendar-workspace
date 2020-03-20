@@ -28,7 +28,7 @@ export interface ResourceTimelineLanesContentProps {
   fallbackBusinessHours: EventStore | null
   innerHeights: number[]
   slatCoords: TimelineCoords | null
-  onHeightFlush?: () => void
+  onRowHeightChange?: (rowEl: HTMLTableRowElement, isStable: boolean) => void
 }
 
 
@@ -42,7 +42,7 @@ export default class ResourceTimelineLanes extends BaseComponent<ResourceTimelin
     return (
       <table
         ref={this.rootElRef}
-        class={context.theme.getClass('table')}
+        class={'fc-scrollgrid-height-sync ' + context.theme.getClass('table')}
         style={{
           minWidth: props.tableMinWidth,
           width: props.clientWidth,
@@ -61,7 +61,7 @@ export default class ResourceTimelineLanes extends BaseComponent<ResourceTimelin
           fallbackBusinessHours={props.fallbackBusinessHours}
           slatCoords={props.slatCoords}
           innerHeights={props.innerHeights}
-          onHeightFlush={props.onHeightFlush}
+          onRowHeightChange={props.onRowHeightChange}
         />
       </table>
     )
@@ -126,7 +126,6 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
                 groupValue={(node as GroupNode).group.value}
                 renderingHooks={(node as GroupNode).group.spec}
                 innerHeight={innerHeights[index] || ''}
-                onHeightFlush={props.onHeightFlush}
               />
             )
 
@@ -148,7 +147,7 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
                 businessHours={resource.businessHours || props.fallbackBusinessHours}
                 innerHeight={innerHeights[index] || ''}
                 timelineCoords={props.slatCoords}
-                onHeightFlush={props.onHeightFlush}
+                onHeightChange={props.onRowHeightChange}
               />
             )
           }

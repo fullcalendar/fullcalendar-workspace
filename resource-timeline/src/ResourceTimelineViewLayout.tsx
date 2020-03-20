@@ -77,6 +77,7 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
           },
           {
             type: 'body',
+            syncRowHeights: true,
             vGrow: true,
             vGrowRows: Boolean(context.options.expandRows),
             chunks: [

@@ -9,7 +9,6 @@ export interface SpreadsheetGroupRowProps {
   isExpanded: boolean
   group: Group
   innerHeight: CssDimValue
-  onHeightFlush?: () => void
 }
 
 
@@ -46,23 +45,6 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
         </RenderHook>
       </tr>
     )
-  }
-
-
-  componentDidMount() {
-    this.flushHeight()
-  }
-
-
-  componentDidUpdate() {
-    this.flushHeight()
-  }
-
-
-  flushHeight() {
-    if (this.props.onHeightFlush) {
-      this.props.onHeightFlush()
-    }
   }
 
 

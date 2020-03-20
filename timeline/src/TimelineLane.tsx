@@ -11,7 +11,11 @@ import TimelineEvent from './TimelineEvent'
 import { computeSegHorizontals, computeSegVerticals, TimelineSegDims } from './event-placement'
 
 
-export interface TimelineLaneProps {
+export interface TimelineLaneProps extends TimelineLaneCoreProps {
+  onHeightChange?: (isStable: boolean) => void
+}
+
+export interface TimelineLaneCoreProps {
   dateProfile: DateProfile
   dateProfileGenerator: DateProfileGenerator
   nowDate: DateMarker
@@ -26,7 +30,6 @@ export interface TimelineLaneProps {
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
   timelineCoords?: TimelineCoords // TODO: do null instead of undefined? .. SLAT coords
-  onHeightFlush?: () => void
 }
 
 interface TimelineLaneState {
@@ -122,6 +125,10 @@ export default class TimelineLane extends BaseComponent<TimelineLaneProps, Timel
   updateSize() {
     let { timelineCoords } = this.props
 
+    if (this.props.onHeightChange) {
+      this.props.onHeightChange(false)
+    }
+
     if (timelineCoords) {
       let originRect = timelineCoords.slatRootEl.getBoundingClientRect()
 
@@ -136,15 +143,10 @@ export default class TimelineLane extends BaseComponent<TimelineLaneProps, Timel
           }
         })
       }, () => {
-        this.flushHeight()
+        if (this.props.onHeightChange) {
+          this.props.onHeightChange(true)
+        }
       })
-    }
-  }
-
-
-  flushHeight() {
-    if (this.props.onHeightFlush) {
-      this.props.onHeightFlush()
     }
   }
 
