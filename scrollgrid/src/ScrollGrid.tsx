@@ -9,7 +9,7 @@ import {
   RefMap,
   ColProps, ChunkConfig, CssDimValue, hasShrinkWidth, renderMicroColGroup,
   ScrollGridProps, ScrollGridSectionConfig, ColGroupConfig,
-  getScrollGridClassNames, getSectionClassNames, getDoesSectionVGrow, getAllowYScrolling, renderChunkContent, computeShrinkWidth, getChunkClassNames,
+  getScrollGridClassNames, getSectionClassNames, getDoesSectionVGrow, getAllowYScrolling, renderChunkContent, computeShrinkWidth,
   getIsRtlScrollbarOnLeft,
   setRef,
   sanitizeShrinkWidth,
@@ -95,7 +95,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     }
 
     if (!getCanVGrowWithinCell()) {
-      classNames.push('scrollgrid-vgrow-cell-hack')
+      classNames.push('fc-scrollgrid-vgrow-cell-hack')
     }
 
     return (
@@ -214,7 +214,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
       )
 
     } else {
-      content = ( // TODO: need scrollerharness too?
+      content = ( // TODO: need fc-scroller-harness too?
         <Scroller
           overflowX={forceXScrollbars ? 'scroll' : 'hidden'}
           overflowY={forceYScrollbars ? 'scroll' : 'hidden'}
@@ -225,7 +225,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     }
 
     return (
-      <td ref={this.chunkElRefs.createRef(index)} class={getChunkClassNames(sectionConfig, chunkConfig, this.context)}>
+      <td ref={this.chunkElRefs.createRef(index)}>
         {content}
       </td>
     )
@@ -548,7 +548,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
   fillPrintContainer() {
     render( // TODO: change CSS to be layout:normal
-      <table ref={this.handlePrintTableEl} class='scrollgrid scrollgrid--forprint'>
+      <table ref={this.handlePrintTableEl} class='fc-scrollgrid fc-scrollgrid--forprint'>
         <colgroup>{renderPrintCols(this.props.colGroups)}</colgroup>
       </table>,
       this.printContainerRef.current

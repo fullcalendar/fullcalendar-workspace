@@ -43,7 +43,7 @@ export default class ResourceDayHeaderWrapper {
 
 
   getDowEls(dayAbbrev) {
-    return findElements(this.el, `.fc-day-header.fc-${dayAbbrev}`)
+    return findElements(this.el, `.fc-col-header-cell.fc-${dayAbbrev}`)
   }
 
 }

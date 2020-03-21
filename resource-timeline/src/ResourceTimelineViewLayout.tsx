@@ -62,13 +62,14 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
             chunks: [
               {
                 elRef: this.spreadsheetHeaderChunkElRef,
+                tableClassName: 'fc-datagrid-header', // TODO: allow the content to specify this. have general-purpose 'content' with obj with keys
                 rowContent: props.spreadsheetHeaderRows
               },
               { outerContent: (
                 <td
                   ref={this.spreadsheetResizerElRef}
                   rowSpan={2}
-                  class={'fc-resource-timeline-view-divider fc-divider ' + theme.getClass('tableCellShaded')}
+                  class={'fc-resource-timeline-divider fc-divider ' + theme.getClass('tableCellShaded')}
                 />
               ) },
               {
@@ -83,6 +84,7 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
             vGrowRows: Boolean(context.options.expandRows),
             chunks: [
               {
+                tableClassName: 'fc-datagrid-body',
                 rowContent: props.spreadsheetBodyRows
               },
               { outerContent: null },

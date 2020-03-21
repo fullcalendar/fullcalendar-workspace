@@ -86,7 +86,7 @@ export default class ClippedScroller extends BaseComponent<ClippedScrollerProps,
     return (
       <div
         ref={this.elRef}
-        class={'clippedscroller' + (props.vGrow ? ' vgrow' : '')}
+        class={'fc-scroller-harness' + (props.vGrow ? ' vgrow' : '')}
       >
         <Scroller
           ref={this.handleScroller}

@@ -8,7 +8,7 @@ import ResourceDataHeaderWrapper from './ResourceDataHeaderWrapper'
 export default class ResourceTimelineViewWrapper extends ViewWrapper {
 
   constructor(calendar: Calendar) {
-    super(calendar, 'fc-resource-timeline-view')
+    super(calendar, 'fc-resource-timeline')
   }
 
 
@@ -32,7 +32,7 @@ export default class ResourceTimelineViewWrapper extends ViewWrapper {
 
 
   get dataHeader() { // rename `header` now?
-    return new ResourceDataHeaderWrapper(this.el.querySelector('.fc-datagrid-header'))
+    return new ResourceDataHeaderWrapper(this.el.querySelector('.fc-datagrid-header')) // doesnt exist yet. also, delete one other one by mistake
   }
 
 

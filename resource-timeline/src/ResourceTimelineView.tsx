@@ -82,8 +82,8 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
     )
 
     let extraClassNames = [
-      'fc-resource-timeline-view',
-      'fc-timeline-view',
+      'fc-resource-timeline',
+      'fc-timeline',
       options.eventOverlap === false ? 'fc-no-overlap' : ''
     ]
     if (!this.hasNesting(rowNodes)) {

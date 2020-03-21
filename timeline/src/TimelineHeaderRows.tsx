@@ -62,7 +62,7 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
                         data-date={dateEnv.formatIso(cell.date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true })}
                         colSpan={cell.colspan}
                       >
-                        <div className='fc-timeline-slot-frame' style={{ height: rowInnerHeights[i] }}>
+                        <div className='fc-timeline-slot-frame' style={{ height: rowInnerHeights && rowInnerHeights[i] }}>
                           <div className={'fc-timeline-slot-cushion fc-scrollgrid-sync-inner' + (isLast ? '' : ' fc-sticky')} ref={innerElRef}>
                             {innerContent}
                           </div>

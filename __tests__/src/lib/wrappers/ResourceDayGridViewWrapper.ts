@@ -7,12 +7,12 @@ import ResourceDayHeaderWrapper from './ResourceDayHeaderWrapper'
 export default class ResourceDayGridViewWrapper extends ViewWrapper {
 
   constructor(calendar: Calendar) {
-    super(calendar, 'fc-daygrid-view')
+    super(calendar, 'fc-daygrid')
   }
 
 
   get header() {
-    let headerEl = this.el.querySelector('.fc-head .fc-scroller > table') as HTMLElement
+    let headerEl = this.el.querySelector('.fc-col-header') as HTMLElement
     return headerEl ? new ResourceDayHeaderWrapper(headerEl) : null
   }
 
