@@ -28,14 +28,13 @@ TODO: figure out better styling
   vertical-align: middle;
 }
 
-.fc-timeline-slot-origin { // weird name
-  display: flex;
-  align-items: center;
+.fc-timeline-slot-frame {
+  display: flex; // useful for vertical align
+  align-items: center; // vertical align
 }
 
-.fc-timeline-slot-inner { // within the label ... for timegrid AND timeline?
+.fc-timeline-slot-cushion { // within the label ... for timegrid AND timeline?
   padding: 3px 4px;
-  display: inline-block;
 }
 
 .fc-ltr .fc-timeline-header-row-chrono .fc-timeline-slot {

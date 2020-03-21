@@ -28,7 +28,7 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
           {(rootElRef, classNames, innerElRef, innerContent) => (
             <td class={[ 'fc-datagrid-cell', 'fc-datagrid-group', 'fc-divider', context.theme.getClass('tableCellShaded') ].concat(classNames).join(' ')} colSpan={props.spreadsheetColCnt} ref={rootElRef}>
               <div style={{ height: props.innerHeight }}>
-                <div class='fc-datagrid-cell-inner' ref={this.innerInnerRef}>
+                <div class='fc-datagrid-cell-cushion' ref={this.innerInnerRef}>
                   <ExpanderIcon
                     depth={0}
                     hasChildren={true}

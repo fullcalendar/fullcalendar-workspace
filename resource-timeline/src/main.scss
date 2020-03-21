@@ -8,12 +8,8 @@
   cursor: col-resize;
 }
 
-
 /* Resource Area
 --------------------------------------------------------------------------------------------------*/
-
-
-
 
 .fc-flat .fc-datagrid-expander-placeholder { /* fc-flat is opposite of fc-nested */
   display: none;
@@ -23,19 +19,24 @@
   vertical-align: middle !important;
 }
 
-.fc-datagrid-header-origin { // bad name now because does height for row-height-syncing
-  position: relative;
-  display: flex;
-  align-items: center;
+.fc-datagrid-header-frame {
+  position: relative; // because contains the absolutely-positioned resizer
+  display: flex; // really useful for vertical align (TODO: do for timeline header as well)
+  align-items: center; // vertical align
+  // justify-content: flex-start; // horizontal align (implicit)
 }
 
-.fc-datagrid-header-inner {
+.fc-datagrid-header-super .fc-datagrid-header-frame {
+  justify-content: center; // horizontal align
+}
+
+.fc-datagrid-header-cushion {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-.fc-datagrid-header-inner,
-.fc-datagrid-cell-inner {
+.fc-datagrid-header-cushion,
+.fc-datagrid-cell-cushion {
   padding-left: 4px;
   padding-right: 4px;
   white-space: nowrap;
@@ -43,10 +44,6 @@
 }
 
 /* head */
-
-.fc-ltr .fc-datagrid-header { text-align: left; }
-.fc-rtl .fc-datagrid-header { text-align: right; }
-.fc .fc-datagrid-header-super { text-align: center; }
 
 .fc-datagrid-header-resizer { // doesnt expand vertically all the way :(
   position: absolute;
@@ -63,12 +60,12 @@
 
 /* body */
 
-.fc-datagrid-cell-inner {
+.fc-datagrid-cell-cushion {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.fc-no-overlap .fc-datagrid-cell-inner {
+.fc-no-overlap .fc-datagrid-cell-cushion {
   padding-top: 6px;
   padding-bottom: 6px;
 }
