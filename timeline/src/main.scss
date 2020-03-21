@@ -37,13 +37,8 @@ TODO: figure out better styling
   padding: 3px 4px;
 }
 
-.fc-ltr .fc-timeline-header-row-chrono .fc-timeline-slot {
-  text-align: left;
-}
-
-.fc-rtl .fc-timeline-header-row-chrono .fc-timeline-slot {
-  text-align: right;
-}
+// for the non-chrono-row, the fc-sticky system looks for text-align center,
+// and it's a fluke that the default browser stylesheet already does this
 
 .fc-timeline-body {
   min-height: 100%;

@@ -63,7 +63,7 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
                         colSpan={cell.colspan}
                       >
                         <div className='fc-timeline-slot-frame' style={{ height: rowInnerHeights[i] }}>
-                          <div className={'fc-timeline-slot-cushion fc-scrollgrid-row-height' + (isLast ? '' : ' fc-sticky')} ref={innerElRef}>
+                          <div className={'fc-timeline-slot-cushion fc-scrollgrid-sync-inner' + (isLast ? '' : ' fc-sticky')} ref={innerElRef}>
                             {innerContent}
                           </div>
                         </div>

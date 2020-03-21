@@ -82,7 +82,7 @@ export default class TimelineLane extends BaseComponent<TimelineLaneProps, Timel
           eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs as TimelineLaneSeg[] : [] /* bad new empty array? */}
           dateSelectionSegs={slicedProps.dateSelectionSegs}
         />
-        <div class='fc-timeline-events fc-scrollgrid-row-height' ref={this.innerElRef} style={{ height /* computed by computeSegVerticals */ }}>
+        <div class='fc-timeline-events fc-scrollgrid-sync-inner' ref={this.innerElRef} style={{ height /* computed by computeSegVerticals */ }}>
           {this.renderFgSegs(
             slicedProps.fgEventSegs,
             segHorizontals,

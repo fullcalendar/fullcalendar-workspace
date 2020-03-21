@@ -42,7 +42,7 @@ export default class ResourceTimelineLanes extends BaseComponent<ResourceTimelin
     return (
       <table
         ref={this.rootElRef}
-        class={'fc-scrollgrid-height-sync ' + context.theme.getClass('table')}
+        class={'fc-scrollgrid-sync-table ' + context.theme.getClass('table')}
         style={{
           minWidth: props.tableMinWidth,
           width: props.clientWidth,

@@ -351,7 +351,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
           let chunkEl = this.chunkElRefs.currentMap[index]
           if (chunkEl) {
-            rowHeights = findElements(chunkEl, '.fc-scrollgrid-height-sync tr').map(function(rowEl: HTMLTableRowElement) {
+            rowHeights = findElements(chunkEl, '.fc-scrollgrid-sync-table tr').map(function(rowEl: HTMLTableRowElement) {
               let max = oldHeightMap.get(rowEl)
               if (max == null) {
                 max = getRowInnerMaxHeight(rowEl)
@@ -623,7 +623,7 @@ function sumNumbers(numbers: number[]) { // TODO: general util
 
 
 function getRowInnerMaxHeight(rowEl: HTMLElement) {
-  let innerHeights = findElements(rowEl, '.fc-scrollgrid-row-height').map(getElHeight)
+  let innerHeights = findElements(rowEl, '.fc-scrollgrid-sync-inner').map(getElHeight)
 
   if (innerHeights.length) {
     return Math.max(...innerHeights)

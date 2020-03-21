@@ -74,8 +74,8 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
               <Fragment>
                 <tr>
                   <th class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block'>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>All-Dayyyy</div>
+                    <div class='fc-scrollgrid-shrink-frame'>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>All-Dayyyy</div>
                     </div>
                   </th>
                   <th>
@@ -106,8 +106,8 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
               <Fragment>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block'>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>haaii</div>
+                    <div class='fc-scrollgrid-shrink-frame'>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>haaii</div>
                     </div>
                   </td>
                   <td>
@@ -160,15 +160,15 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
               <Fragment>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[0] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[0] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[0] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[0] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         su
                       </div>
                     </div>
@@ -176,15 +176,15 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 </tr>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[1] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[1] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[1] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[1] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         su
                       </div>
                     </div>
@@ -192,8 +192,8 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 </tr>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[2] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[2] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         whatev<br />whatev<br />whatever<br />whatever<br />whatever<br />what
                       </div>
                     </div>
@@ -206,8 +206,8 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 </tr>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[3] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[3] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         su
                       </div>
                     </div>
@@ -215,8 +215,8 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 </tr>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[4] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[4] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         su
                       </div>
                     </div>
@@ -224,15 +224,15 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 </tr>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[5] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[5] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[5] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[5] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         su
                       </div>
                     </div>
@@ -240,15 +240,15 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 </tr>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[6] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[6] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[6] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[6] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         su
                       </div>
                     </div>
@@ -256,15 +256,15 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 </tr>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[7] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[7] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[7] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[7] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         su
                       </div>
                     </div>
@@ -272,15 +272,15 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 </tr>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[8] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[8] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[8] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[8] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         su
                       </div>
                     </div>
@@ -288,15 +288,15 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 </tr>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[9] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[9] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[9] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[9] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         su
                       </div>
                     </div>
@@ -304,15 +304,15 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 </tr>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[10] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[10] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[10] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[10] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         su
                       </div>
                     </div>
@@ -320,15 +320,15 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 </tr>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[11] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[11] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[11] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[11] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         su
                       </div>
                     </div>
@@ -336,15 +336,15 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 </tr>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[12] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[12] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[12] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[12] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         su
                       </div>
                     </div>
@@ -352,15 +352,15 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 </tr>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[13] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[13] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[13] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[13] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         su
                       </div>
                     </div>
@@ -368,15 +368,15 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
                 </tr>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[14] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[14] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         whatev
                       </div>
                     </div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block' style={{ height: contentArg.rowSyncHeights[14] }}>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame' style={{ height: contentArg.rowSyncHeights[14] }}>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         su
                       </div>
                     </div>
@@ -585,8 +585,8 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
               <Fragment>
                 <tr>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block'>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>
+                    <div class='fc-scrollgrid-shrink-frame'>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>
                         All-Day
                       </div>
                     </div>
@@ -637,8 +637,8 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
                   <div class='cell-padding'>this is cool</div>
                 </th>
                 <th class='fc-scrollgrid-shrink'>
-                  <div class='fc-scrollgrid-shrink-block'>
-                    <div class='fc-scrollgrid-shrink-span cell-padding'>yup</div>
+                  <div class='fc-scrollgrid-shrink-frame'>
+                    <div class='fc-scrollgrid-shrink-cushion cell-padding'>yup</div>
                   </div>
                 </th>
               </tr>
@@ -657,8 +657,8 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
                     <div class='cell-padding'>this is cool</div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block'>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>yup</div>
+                    <div class='fc-scrollgrid-shrink-frame'>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>yup</div>
                     </div>
                   </td>
                 </tr>
@@ -667,8 +667,8 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
                     <div class='cell-padding'>this is cool</div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block'>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>yuuuuup</div>
+                    <div class='fc-scrollgrid-shrink-frame'>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>yuuuuup</div>
                     </div>
                   </td>
                 </tr>
@@ -677,8 +677,8 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
                     <div class='cell-padding'>this is cool</div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block'>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>yup</div>
+                    <div class='fc-scrollgrid-shrink-frame'>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>yup</div>
                     </div>
                   </td>
                 </tr>
@@ -687,8 +687,8 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
                     <div class='cell-padding'>this is cool</div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block'>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>yup</div>
+                    <div class='fc-scrollgrid-shrink-frame'>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>yup</div>
                     </div>
                   </td>
                 </tr>
@@ -697,8 +697,8 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
                     <div class='cell-padding'>this is cool</div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block'>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>yup</div>
+                    <div class='fc-scrollgrid-shrink-frame'>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>yup</div>
                     </div>
                   </td>
                 </tr>
@@ -707,8 +707,8 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
                     <div class='cell-padding'>this is cool</div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block'>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>yup</div>
+                    <div class='fc-scrollgrid-shrink-frame'>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>yup</div>
                     </div>
                   </td>
                 </tr>
@@ -717,8 +717,8 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
                     <div class='cell-padding'>this is cool</div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block'>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>yup</div>
+                    <div class='fc-scrollgrid-shrink-frame'>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>yup</div>
                     </div>
                   </td>
                 </tr>
@@ -727,8 +727,8 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
                     <div class='cell-padding'>this is cool</div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block'>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>yup</div>
+                    <div class='fc-scrollgrid-shrink-frame'>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>yup</div>
                     </div>
                   </td>
                 </tr>
@@ -737,8 +737,8 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
                     <div class='cell-padding'>this is cool</div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block'>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>yup</div>
+                    <div class='fc-scrollgrid-shrink-frame'>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>yup</div>
                     </div>
                   </td>
                 </tr>
@@ -747,8 +747,8 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
                     <div class='cell-padding'>this is cool</div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block'>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>yup</div>
+                    <div class='fc-scrollgrid-shrink-frame'>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>yup</div>
                     </div>
                   </td>
                 </tr>
@@ -757,8 +757,8 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
                     <div class='cell-padding'>this is cool</div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block'>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>yup</div>
+                    <div class='fc-scrollgrid-shrink-frame'>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>yup</div>
                     </div>
                   </td>
                 </tr>
@@ -767,8 +767,8 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
                     <div class='cell-padding'>this is cool</div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block'>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>yup</div>
+                    <div class='fc-scrollgrid-shrink-frame'>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>yup</div>
                     </div>
                   </td>
                 </tr>
@@ -777,8 +777,8 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
                     <div class='cell-padding'>this is cool</div>
                   </td>
                   <td class='fc-scrollgrid-shrink'>
-                    <div class='fc-scrollgrid-shrink-block'>
-                      <div class='fc-scrollgrid-shrink-span cell-padding'>yup</div>
+                    <div class='fc-scrollgrid-shrink-frame'>
+                      <div class='fc-scrollgrid-shrink-cushion cell-padding'>yup</div>
                     </div>
                   </td>
                 </tr>

@@ -52,7 +52,7 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
                 {(rootElRef, classNames, innerElRef, innerContent) => (
                   // TODO: make data-attr with group value?
                   <td className={[ 'fc-datagrid-cell', 'fc-datagrid-group' ].concat(classNames).join(' ')} rowSpan={rowSpan} ref={rootElRef}>
-                    <div class='vgrow'> {/* needed for stickiness in some browsers */}
+                    <div class='fc-datagrid-cell-frame vgrow'> {/* needed for stickiness in some browsers */}
                       <div class='fc-datagrid-cell-cushion fc-sticky' ref={innerElRef}>
                         {innerContent}
                       </div>
@@ -73,8 +73,8 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
               <RenderHook name='cell' options={colSpec} mountProps={innerProps} dynamicProps={innerProps} defaultInnerContent={renderResourceInner}>
                 {(rootElRef, classNames, innerElRef, innerContent) => (
                   <td className={[ 'fc-datagrid-cell', 'fc-datagrid-resource' ].concat(classNames).join(' ')} data-resource-id={resource.id} rowSpan={rowSpan} ref={rootElRef}>
-                    <div style={{ height: props.innerHeight }}>
-                      <div class='fc-datagrid-cell-cushion fc-scrollgrid-row-height' ref={this.innerInnerRef}>
+                    <div class='fc-datagrid-cell-frame' style={{ height: props.innerHeight }}>
+                      <div class='fc-datagrid-cell-cushion fc-scrollgrid-sync-inner' ref={this.innerInnerRef}>
                         { colSpec.isMain &&
                           <ExpanderIcon
                             depth={depth}
