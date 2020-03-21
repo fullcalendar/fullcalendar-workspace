@@ -1,0 +1,75 @@
+
+.fc-timeline-resource {
+  position: relative;
+}
+
+.fc-timeline-resource-inner {
+  position: relative; // contains bg
+  min-height: 100%;
+}
+
+.fc-scrollgrid-vgrow-cell-hack td > .fc-timeline-resource-inner {
+  // when the lane isn't able to grow to fill the height, we want the <td> to become the
+  // offset parent instead of the lane, for background event absolute positioning.
+  position: static;
+}
+
+.fc-timeline-events {
+  position: relative;
+  z-index: 3; /* above bgevent and highlight */
+  width: 0; /* for event positioning. will end up on correct side based on dir */
+}
+
+.fc-timeline-event-harness {
+  position: absolute;
+  top: 0; // default
+}
+
+
+
+
+
+.fc-timeline-event {
+  display: flex;
+  border-radius: 0;
+  padding: 2px 1px;
+  margin-bottom: 1px;
+}
+
+.fc-ltr .fc-timeline-event { margin-right: 1px }
+.fc-rtl .fc-timeline-event { margin-left: 1px }
+
+.fc-timeline-event:not(.fc-event-mirror) {
+  // min-width: 100px;
+}
+
+.fc-no-overlap .fc-timeline-event {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 0;
+}
+
+.fc-timeline-event:not(.fc-event-start):before,
+.fc-timeline-event:not(.fc-event-end):after {
+  content: "";
+  align-self: center;
+  width: 0;
+  height: 0;
+  margin: 0 1px;
+  border: 5px solid #000;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  opacity: .5;
+}
+
+// pointing left
+.fc-ltr .fc-timeline-event:not(.fc-event-start):before,
+.fc-rtl .fc-timeline-event:not(.fc-event-end):after {
+  border-left: 0;
+}
+
+// pointing right
+.fc-ltr .fc-timeline-event:not(.fc-event-end):after,
+.fc-rtl .fc-timeline-event:not(.fc-event-start):before {
+  border-right: 0;
+}

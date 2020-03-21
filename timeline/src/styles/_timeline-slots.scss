@@ -1,0 +1,44 @@
+
+// takes care of footer AND body
+
+
+
+.fc-timeline-slots { /* fc-bg is responsible for a lot of this now! */
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.fc-timeline-slots table.vgrow {
+  height: 100%; // hack
+}
+
+.fc-ltr .fc-timeline-slot {
+  border-right: 0;
+}
+
+.fc-rtl .fc-timeline-slot {
+  border-left: 0;
+}
+
+.fc-timeline-slot-minor {
+  border-style: dotted !important; // why need important?
+}
+
+
+
+.fc-timeline-slot-label {
+  vertical-align: middle;
+}
+
+.fc-timeline-slot-frame {
+  display: flex; // useful for vertical align
+  align-items: center; // vertical align
+}
+
+.fc-timeline-slot-cushion { // within the label ... for timegrid AND timeline?
+  padding: 3px 4px;
+}

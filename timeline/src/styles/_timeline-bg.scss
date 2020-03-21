@@ -1,0 +1,17 @@
+
+
+.fc-timeline-bg {
+  position: absolute;
+  z-index: 2; // TODO: do z-index ordering of fills WITHIN this container
+  top: 0;
+  bottom: 0;
+  width: 0;
+  left: 0; // will take precedence when LTR
+  right: 0; // will take precedence when RTL
+}
+
+.fc-timeline-bg-harness {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}

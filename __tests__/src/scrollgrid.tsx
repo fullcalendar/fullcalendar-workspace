@@ -6,11 +6,6 @@ printing bugs:
 TEST in other browsers now that we don't doHacks
 IMPLEMENT forPrint in SimpleScrollGrid
 FREEZING happens sometimes, window resize
-
-NOTES:
-  cell-content-wrap can't contain a sticky (creates new bounding)
-  shrink should be on .cell-content.shrink
-  fine because sticky always happens in a rowSpan td, which we dont want to control height
 */
 
 import { render, h, Fragment, ComponentContextType, Calendar, SimpleScrollGrid, OptionsInput } from '@fullcalendar/core'

@@ -1,0 +1,70 @@
+
+.fc-datagrid-cell-frame {
+  display: flex;
+  justify-content: flex-start; // horizontal align
+}
+
+.fc-datagrid-cell-super .fc-datagrid-cell-frame {
+  justify-content: center; // horizontal align
+}
+
+.fc-datagrid-cell-cushion {
+  padding: 8px;
+  white-space: nowrap;
+  overflow: hidden; // problem for col resizer :(
+}
+
+.fc-no-overlap {
+
+  .fc-datagrid-cell-cushion {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+}
+
+.fc-datagrid-cell-resizer { // doesnt expand vertically all the way :(
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  cursor: col-resize;
+}
+
+.fc-ltr .fc-datagrid-cell-resizer { right: -3px }
+.fc-rtl .fc-datagrid-cell-resizer { left: -3px }
+
+.fc-datagrid-header {
+
+  .fc-datagrid-cell-frame {
+    position: relative; // for resizer
+    align-items: center; // vertical align
+  }
+
+  .fc-datagrid-cell-cushion {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+}
+
+
+
+.fc-datagrid-expander {
+  cursor: pointer;
+  opacity: 0.65;
+}
+
+.fc-ltr .fc-datagrid-expander { margin-right: 3px }
+.fc-rtl .fc-datagrid-expander { margin-left: 3px }
+
+.fc-datagrid-expander .fc-icon { /* the expander and spacers before the expander */
+  display: inline-block;
+  width: 1em; /* ensure constant width, esp for empty icons */
+  text-align: center;
+}
+
+.fc-flat .fc-datagrid-expander-placeholder { /* fc-flat is opposite of fc-nested */
+  display: none;
+}
