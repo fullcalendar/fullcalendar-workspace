@@ -1,6 +1,6 @@
 import {
   h, ComponentContext, DateProfileGenerator, DateProfile, PositionCache,
-  Duration, EventStore, DateSpan, EventUiHash, EventInteractionState, DateComponent, Hit, createRef, CssDimValue, VNode, memoize, NowTimer, greatestDurationDenominator, DateMarker, DateRange
+  Duration, EventStore, DateSpan, EventUiHash, EventInteractionState, DateComponent, Hit, createRef, CssDimValue, VNode, memoize, NowTimer, greatestDurationDenominator, DateMarker, DateRange, NowIndicatorRoot
 } from '@fullcalendar/core'
 import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource-common'
 import { TimelineDateProfile, TimelineCoords, TimelineSlats, TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg } from '@fullcalendar/timeline'
@@ -107,10 +107,15 @@ export default class ResourceTimelineGrid extends DateComponent<ResourceTimeline
             onRowHeightChange={props.onRowHeightChange}
           />,
           (context.options.nowIndicator && state.slatCoords) &&
-            <div
-              class='fc-now-indicator fc-now-indicator-line'
-              style={{ left: state.slatCoords.safeDateToCoord(nowDate) }}
-            />
+            <NowIndicatorRoot isAxis={false} date={nowDate}>
+              {(rootElRef, classNames, innerElRef, innerContent) => (
+                <div
+                  ref={rootElRef}
+                  class={[ 'fc-timeline-now-indicator-line' ].concat(classNames).join(' ')}
+                  style={{ left: state.slatCoords.safeDateToCoord(nowDate) }}
+                >{innerContent}</div>
+              )}
+            </NowIndicatorRoot>
         ]} />
       </div>
     )

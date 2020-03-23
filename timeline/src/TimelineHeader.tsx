@@ -1,4 +1,4 @@
-import { h, BaseComponent, CssDimValue, VNode, DateMarker, ComponentContext, NowTimer, greatestDurationDenominator, DateRange, DateProfile } from '@fullcalendar/core'
+import { h, BaseComponent, CssDimValue, VNode, DateMarker, ComponentContext, NowTimer, greatestDurationDenominator, DateRange, DateProfile, NowIndicatorRoot } from '@fullcalendar/core'
 import TimelineHeaderRows from './TimelineHeaderRows'
 import TimelineCoords from './TimelineCoords'
 import { TimelineDateProfile } from './timeline-date-profile'
@@ -44,10 +44,15 @@ export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
             </tbody>
           </table>
           {(context.options.nowIndicator && props.slatCoords) &&
-            <div
-              class='fc-timeline-now-indicator-arrow fc-now-indicator-arrow fc-now-indicator'
-              style={{ left: props.slatCoords.safeDateToCoord(nowDate) }}
-            />
+            <NowIndicatorRoot isAxis={true} date={nowDate}>
+              {(rootElRef, classNames, innerElRef, innerContent) => (
+                <div
+                  ref={rootElRef}
+                  className={[ 'fc-timeline-now-indicator-arrow' ].concat(classNames).join(' ')}
+                  style={{ left: props.slatCoords.safeDateToCoord(nowDate) }}
+                >{innerContent}</div>
+              )}
+            </NowIndicatorRoot>
           }
         </div>
       )} />

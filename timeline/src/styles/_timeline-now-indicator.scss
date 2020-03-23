@@ -1,6 +1,6 @@
 
-
-.fc-timeline .fc-now-indicator { /* both the arrow and the line */
+.fc-timeline-now-indicator-arrow,
+.fc-timeline-now-indicator-line {
   z-index: 3; /* one above scroller's fc-content */
   top: 0;
 }

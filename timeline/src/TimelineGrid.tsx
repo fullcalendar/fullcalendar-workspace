@@ -1,4 +1,4 @@
-import { h, ComponentContext, createRef, ViewProps, Hit, DateComponent, CssDimValue, VNode, DateMarker, NowTimer, greatestDurationDenominator, DateRange } from '@fullcalendar/core'
+import { h, ComponentContext, createRef, ViewProps, Hit, DateComponent, CssDimValue, VNode, DateMarker, NowTimer, greatestDurationDenominator, DateRange, NowIndicatorRoot } from '@fullcalendar/core'
 import TimelineCoords from './TimelineCoords'
 import TimelineSlats from './TimelineSlats'
 import TimelineLane from './TimelineLane'
@@ -65,10 +65,15 @@ export default class TimelineGrid extends DateComponent<TimelinGridProps, Timeli
             timelineCoords={state.coords}
           />,
           (context.options.nowIndicator && state.coords) &&
-            <div
-              class='fc-timeline-now-indicator-line fc-now-indicator-line fc-now-indicator'
-              style={{ left: state.coords.safeDateToCoord(nowDate) }}
-            />
+            <NowIndicatorRoot isAxis={false} date={nowDate}>
+              {(rootElRef, classNames, innerElRef, innerContent) => (
+                <div
+                  ref={rootElRef}
+                  className={[ 'fc-timeline-now-indicator-line' ].concat(classNames).join(' ')}
+                  style={{ left: state.coords.safeDateToCoord(nowDate) }}
+                >{innerContent}</div>
+              )}
+            </NowIndicatorRoot>
         ]} />
       </div>
     )
