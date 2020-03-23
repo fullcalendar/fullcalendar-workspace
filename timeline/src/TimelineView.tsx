@@ -32,7 +32,7 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
 
     let extraClassNames = [
       'fc-timeline',
-      options.eventOverlap === false ? 'fc-no-overlap' : ''
+      options.eventOverlap === false ? 'fc-timeline-overlap-disabled' : ''
     ]
     let slatCols = buildSlatCols(tDateProfile, context.options.slotMinWidth || 30) // TODO: more DRY
 

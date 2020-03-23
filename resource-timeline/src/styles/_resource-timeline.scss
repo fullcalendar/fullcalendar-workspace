@@ -4,3 +4,8 @@
   border-style: double; /* overcome neighboring borders... needed? */
   cursor: col-resize;
 }
+
+.fc-resource-timeline .fc-resource-group:not([rowspan]) {
+  background: $fc-theme-standard-muted-bg-color;
+  background: var(--fc-theme-standard-muted-bg-color, $fc-theme-standard-muted-bg-color);
+}

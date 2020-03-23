@@ -11,12 +11,12 @@ export default class ResourceDataGridWrapper {
     let infos = []
 
     for (let tr of trs) {
-      let resourceCell = tr.querySelector('.fc-datagrid-resource')
+      let resourceCell = tr.querySelector('.fc-datagrid-cell.fc-resource')
 
       if (resourceCell) {
         infos.push(buildResourceInfoFromCell(resourceCell))
       } else {
-        let groupCell = tr.querySelector('.fc-datagrid-group')
+        let groupCell = tr.querySelector('.fc-datagrid-cell.fc-resource-group')
 
         if (groupCell) {
           infos.push(buildGroupInfoFromCell(groupCell))

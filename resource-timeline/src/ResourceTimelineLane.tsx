@@ -25,10 +25,10 @@ export default class ResourceTimelineLane extends BaseComponent<ResourceTimeline
       <tr ref={this.handleRootEl}>
         <RenderHook name='resourceLane' mountProps={innerProps} dynamicProps={innerProps}>
           {(rootElRef, customClassNames, innerElRef, innerContent) => (
-            <td ref={rootElRef} className={[ 'fc-timeline-resource' ].concat(customClassNames).join(' ')} data-resource-id={props.resource.id}>
-              <div class='fc-timeline-resource-inner' style={{ height: props.innerHeight }}>
+            <td ref={rootElRef} className={[ 'fc-timeline-lane', 'fc-resource' ].concat(customClassNames).join(' ')} data-resource-id={props.resource.id}>
+              <div class='fc-timeline-lane-frame' style={{ height: props.innerHeight }}>
                 {innerContent && // TODO: test
-                  <div class='fc-timeline-resource-misc' ref={innerElRef}>{innerContent}</div>
+                  <div class='fc-timeline-lane-misc' ref={innerElRef}>{innerContent}</div>
                 }
                 <TimelineLane
                   dateProfile={props.dateProfile}

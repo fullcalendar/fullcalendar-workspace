@@ -16,11 +16,11 @@
   height: 100%; // hack
 }
 
-.fc-ltr .fc-timeline-slot {
+.fc-dir-ltr .fc-timeline-slot {
   border-right: 0;
 }
 
-.fc-rtl .fc-timeline-slot {
+.fc-dir-rtl .fc-timeline-slot {
   border-left: 0;
 }
 

@@ -139,6 +139,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
         dayLabelFormat={dateFormat}
         colSpan={colSpan}
         extraMountProps={resource ? { resource: new ResourceApi(this.context.calendar, resource) } : {}}
+        extraClassNames={[ 'fc-resource' ]}
         extraDataAttrs={resource ? { 'data-resource-id' : resource.id } : {}}
       />
     )
@@ -185,7 +186,7 @@ class ResourceCell extends BaseComponent<ResourceCellProps> {
         {(elRef: Ref<HTMLTableCellElement>, customClassNames: string[], dataAttrs, innerElRef, innerContent: ComponentChildren) => (
           <th
             ref={elRef}
-            className={[ 'fc-resource-header' ].concat(customClassNames).join(' ')}
+            className={[ 'fc-col-header-cell', 'fc-resource' ].concat(customClassNames).join(' ')}
             colSpan={props.colSpan > 1 ? props.colSpan : null}
             {...dataAttrs}
           >{innerContent}</th>

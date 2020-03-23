@@ -21,7 +21,7 @@ export default class DividerRow extends BaseComponent<DividerRowProps> {
       <tr ref={props.elRef}>
         <RenderHook name='lane' mountProps={innerProps} dynamicProps={innerProps} options={props.renderingHooks}>
           {(rootElRef, classNames, innerElRef, innerContent) => (
-            <td class={[ 'fc-timeline-group', 'fc-divider', this.context.theme.getClass('tableCellShaded')].concat(classNames).join(' ')} ref={rootElRef}>
+            <td class={[ 'fc-timeline-lane', 'fc-resource-group', this.context.theme.getClass('tableCellShaded')].concat(classNames).join(' ')} ref={rootElRef}>
               <div style={{ height: props.innerHeight }} ref={innerElRef}>
                 {innerContent}
               </div>

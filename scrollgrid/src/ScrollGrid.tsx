@@ -548,7 +548,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
   fillPrintContainer() {
     render( // TODO: change CSS to be layout:normal
-      <table ref={this.handlePrintTableEl} class='fc-scrollgrid fc-scrollgrid--forprint'>
+      <table ref={this.handlePrintTableEl} class='fc-scrollgrid'>
         <colgroup>{renderPrintCols(this.props.colGroups)}</colgroup>
       </table>,
       this.printContainerRef.current

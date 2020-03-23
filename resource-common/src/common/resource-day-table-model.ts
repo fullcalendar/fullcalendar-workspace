@@ -51,6 +51,7 @@ export abstract class AbstractResourceDayTableModel {
           let resource = resources[resourceCol]
           let extraMountProps = { resource: new ResourceApi(this.calendar, resource) }
           let extraDataAttrs = { 'data-resource-id': resource.id }
+          let extraClassNames = [ 'fc-resource' ]
 
           rowCells[
             this.computeCol(dateCol, resourceCol)
@@ -58,7 +59,8 @@ export abstract class AbstractResourceDayTableModel {
             date: dayTableModel.cells[row][dateCol].date,
             resource,
             extraMountProps,
-            extraDataAttrs
+            extraDataAttrs,
+            extraClassNames
           }
         }
       }

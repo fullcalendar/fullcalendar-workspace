@@ -125,12 +125,12 @@ export default class ResourceTimelineGridWrapper {
 
 
   getResourceLaneEl(resourceId) {
-    return this.el.querySelector(`.fc-timeline-resource[data-resource-id="${resourceId}"]`) as HTMLElement
+    return this.el.querySelector(`.fc-timeline-lane[data-resource-id="${resourceId}"]`) as HTMLElement
   }
 
 
   getResourceLaneEls() {
-    return findElements(this.el, '.fc-timeline-resource[data-resource-id]')
+    return findElements(this.el, '.fc-timeline-lane[data-resource-id]')
   }
 
 
@@ -155,7 +155,7 @@ export default class ResourceTimelineGridWrapper {
 
 
   getHGroupCnt() {
-    return this.el.querySelectorAll('.fc-divider').length
+    return this.el.querySelectorAll('.fc-timeline-lane.fc-resource-group').length
   }
 
 

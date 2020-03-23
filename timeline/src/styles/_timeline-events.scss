@@ -1,14 +1,14 @@
 
-.fc-timeline-resource {
+.fc-timeline-lane {
   position: relative;
 }
 
-.fc-timeline-resource-inner {
+.fc-timeline-lane-frame {
   position: relative; // contains bg
   min-height: 100%;
 }
 
-.fc-scrollgrid-vgrow-cell-hack td > .fc-timeline-resource-inner {
+.fc-scrollgrid-vgrow-cell-hack td > .fc-timeline-lane-frame {
   // when the lane isn't able to grow to fill the height, we want the <td> to become the
   // offset parent instead of the lane, for background event absolute positioning.
   position: static;
@@ -36,14 +36,14 @@
   margin-bottom: 1px;
 }
 
-.fc-ltr .fc-timeline-event { margin-right: 1px }
-.fc-rtl .fc-timeline-event { margin-left: 1px }
+.fc-dir-ltr .fc-timeline-event { margin-right: 1px }
+.fc-dir-rtl .fc-timeline-event { margin-left: 1px }
 
 .fc-timeline-event:not(.fc-event-mirror) {
   // min-width: 100px;
 }
 
-.fc-no-overlap .fc-timeline-event {
+.fc-timeline-overlap-disabled .fc-timeline-event {
   padding-top: 5px;
   padding-bottom: 5px;
   margin-bottom: 0;
@@ -63,13 +63,13 @@
 }
 
 // pointing left
-.fc-ltr .fc-timeline-event:not(.fc-event-start):before,
-.fc-rtl .fc-timeline-event:not(.fc-event-end):after {
+.fc-dir-ltr .fc-timeline-event:not(.fc-event-start):before,
+.fc-dir-rtl .fc-timeline-event:not(.fc-event-end):after {
   border-left: 0;
 }
 
 // pointing right
-.fc-ltr .fc-timeline-event:not(.fc-event-end):after,
-.fc-rtl .fc-timeline-event:not(.fc-event-start):before {
+.fc-dir-ltr .fc-timeline-event:not(.fc-event-end):after,
+.fc-dir-rtl .fc-timeline-event:not(.fc-event-start):before {
   border-right: 0;
 }

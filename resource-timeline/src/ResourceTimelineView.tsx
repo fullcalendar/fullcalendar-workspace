@@ -83,12 +83,10 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
 
     let extraClassNames = [
       'fc-resource-timeline',
+      this.hasNesting(rowNodes) ? '' : 'fc-resource-timeline-flat', // flat means there's no nesting
       'fc-timeline',
-      options.eventOverlap === false ? 'fc-no-overlap' : ''
+      options.eventOverlap === false ? 'fc-timeline-overlap-disabled' : 'fc-timeline-overlap-enabled'
     ]
-    if (!this.hasNesting(rowNodes)) {
-      extraClassNames.push('fc-flat')
-    }
 
     return (
       <ViewRoot viewSpec={props.viewSpec}>
