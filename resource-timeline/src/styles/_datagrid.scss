@@ -1,13 +1,4 @@
 
-.fc-datagrid-cell-frame {
-  display: flex;
-  justify-content: flex-start; // horizontal align
-}
-
-.fc-datagrid-cell-super .fc-datagrid-cell-frame {
-  justify-content: center; // horizontal align
-}
-
 .fc-datagrid-cell-cushion {
   padding: 8px;
   white-space: nowrap;
@@ -21,6 +12,16 @@
     padding-bottom: 10px;
   }
 
+}
+
+.fc-datagrid-cell-frame-liquid {
+  height: 100%;
+}
+
+.fc-liquid-hack {
+  .fc-datagrid-cell-frame-liquid {
+    @include liquid-hack-cell-inner;
+  }
 }
 
 .fc-datagrid-cell-resizer { // doesnt expand vertically all the way :(
@@ -39,7 +40,13 @@
 
   .fc-datagrid-cell-frame {
     position: relative; // for resizer
+    display: flex;
+    justify-content: flex-start; // horizontal align
     align-items: center; // vertical align
+  }
+
+  .fc-datagrid-cell-super .fc-datagrid-cell-frame {
+    justify-content: center; // horizontal align
   }
 
   .fc-datagrid-cell-cushion {

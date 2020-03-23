@@ -9,7 +9,7 @@ import {
   RefMap,
   ColProps, ChunkConfig, CssDimValue, hasShrinkWidth, renderMicroColGroup,
   ScrollGridProps, ScrollGridSectionConfig, ColGroupConfig,
-  getScrollGridClassNames, getSectionClassNames, getDoesSectionVGrow, getAllowYScrolling, renderChunkContent, computeShrinkWidth,
+  getScrollGridClassNames, getSectionClassNames, getSectionHasLiquidHeight, getAllowYScrolling, renderChunkContent, computeShrinkWidth,
   getIsRtlScrollbarOnLeft,
   setRef,
   sanitizeShrinkWidth,
@@ -20,8 +20,7 @@ import {
   memoizeArraylike,
   CLIENT_HEIGHT_WIGGLE,
   collectFromHash,
-  memoizeHashlike,
-  getCanVGrowWithinCell
+  memoizeHashlike
 } from '@fullcalendar/core'
 import StickyScrolling from './StickyScrolling'
 import ClippedScroller, { ClippedOverflowValue } from './ClippedScroller'
@@ -83,7 +82,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
 
     let colGroupStats = this.compileColGroupStats(props.colGroups.map((colGroup) => [ colGroup ]))
     let microColGroupNodes = this.renderMicroColGroups(colGroupStats.map((stat, i) => [ stat.cols, shrinkWidths[i] ]))
-    let classNames = getScrollGridClassNames(props.vGrow, context)
+    let classNames = getScrollGridClassNames(props.liquid, context)
 
     // yuck
     let indices: [ number, number ][] = []
@@ -92,10 +91,6 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
       for (let chunkI = 0; chunkI < chunksPerSection; chunkI++) {
         indices.push([ sectionI, chunkI ])
       }
-    }
-
-    if (!getCanVGrowWithinCell()) {
-      classNames.push('fc-scrollgrid-vgrow-cell-hack')
     }
 
     return (
@@ -127,7 +122,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     }
 
     return (
-      <tr key={sectionConfig.key} class={getSectionClassNames(sectionConfig, this.props.vGrow).join(' ')}>
+      <tr key={sectionConfig.key} class={getSectionClassNames(sectionConfig, this.props.liquid).join(' ')}>
         {sectionConfig.chunks.map((chunkConfig, i) => {
           return this.renderChunk(
             sectionConfig,
@@ -172,12 +167,12 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     let allowXScrolling = colGroupStat && colGroupStat.allowXScrolling // rename?
     let allowYScrolling = getAllowYScrolling(this.props, sectionConfig) // rename? do in section func?
 
-    let chunkVGrow = getDoesSectionVGrow(this.props, sectionConfig) // do in section func?
-    let vGrowRows = sectionConfig.vGrowRows
+    let chunkVGrow = getSectionHasLiquidHeight(this.props, sectionConfig) // do in section func?
+    let expandRows = sectionConfig.expandRows
     let tableMinWidth = (colGroupStat && colGroupStat.totalColMinWidth) || ''
 
-    if (vGrowRows && !chunkVGrow) {
-      throw new Error('invalid use of vGrowRows')
+    if (expandRows && !chunkVGrow) {
+      throw new Error('invalid use of expandRows')
     }
 
     let content = renderChunkContent(sectionConfig, chunkConfig, {
@@ -185,7 +180,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
       tableMinWidth,
       clientWidth: state.scrollerClientWidths[index] || '',
       clientHeight: state.scrollerClientHeights[index] || '',
-      vGrowRows,
+      expandRows,
       syncRowHeights: Boolean(sectionConfig.syncRowHeights),
       rowSyncHeights: rowHeights,
       reportRowHeightChange: this.handleRowHeightChange
@@ -208,17 +203,17 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
           scrollerElRef={this.scrollerElRefs.createRef(index)}
           overflowX={overflowX}
           overflowY={overflowY}
-          vGrow={chunkVGrow}
+          liquid={chunkVGrow}
           maxHeight={sectionConfig.maxHeight}
         >{content}</ClippedScroller>
       )
 
     } else {
-      content = ( // TODO: need fc-scroller-harness too?
+      content = ( // TODO: need fc-scroller-harness too? if so, use liquidIsAbsolute
         <Scroller
           overflowX={forceXScrollbars ? 'scroll' : 'hidden'}
           overflowY={forceYScrollbars ? 'scroll' : 'hidden'}
-          vGrow={chunkVGrow}
+          liquid={chunkVGrow}
           maxHeight={sectionConfig.maxHeight}
         >{content}</Scroller>
       )

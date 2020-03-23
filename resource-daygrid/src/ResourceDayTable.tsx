@@ -20,7 +20,7 @@ export interface ResourceDayTableProps {
   colGroupNode: VNode
   renderRowIntro?: () => VNode
   eventLimit: boolean | number
-  vGrowRows: boolean
+  expandRows: boolean
   headerAlignElRef?: RefObject<HTMLElement> // for more popover alignment
   clientWidth: CssDimValue
   clientHeight: CssDimValue
@@ -68,7 +68,7 @@ export default class ResourceDayTable extends DateComponent<ResourceDayTableProp
         tableMinWidth={props.tableMinWidth}
         renderRowIntro={props.renderRowIntro}
         eventLimit={props.eventLimit}
-        vGrowRows={props.vGrowRows}
+        expandRows={props.expandRows}
         headerAlignElRef={props.headerAlignElRef}
         clientWidth={props.clientWidth}
         clientHeight={props.clientHeight}

@@ -10,10 +10,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-}
 
-.fc-timeline-slots table.vgrow {
-  height: 100%; // hack
+  > table {
+    height: 100% !important;
+  }
 }
 
 .fc-dir-ltr .fc-timeline-slot {

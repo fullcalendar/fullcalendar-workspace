@@ -25,7 +25,7 @@ export interface ResourceTimelineGridProps {
   clientHeight: CssDimValue
   tableMinWidth: CssDimValue
   tableColGroupNode: VNode
-  vGrowRows: boolean
+  expandRows: boolean
   rowInnerHeights: number[]
   onSlatCoords?: (slatCoords: TimelineCoords) => void
   onRowCoords?: (rowCoords: PositionCache) => void
@@ -99,7 +99,7 @@ export default class ResourceTimelineGrid extends DateComponent<ResourceTimeline
             splitProps={splitProps}
             fallbackBusinessHours={hasResourceBusinessHours ? props.businessHours : null}
             clientWidth={props.clientWidth}
-            minHeight={props.vGrowRows ? props.clientHeight : ''}
+            minHeight={props.expandRows ? props.clientHeight : ''}
             tableMinWidth={props.tableMinWidth}
             innerHeights={props.rowInnerHeights}
             slatCoords={state.slatCoords}

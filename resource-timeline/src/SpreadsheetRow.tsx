@@ -52,7 +52,7 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
                 {(rootElRef, classNames, innerElRef, innerContent) => (
                   // TODO: make data-attr with group value?
                   <td className={[ 'fc-datagrid-cell', 'fc-resource-group' ].concat(classNames).join(' ')} rowSpan={rowSpan} ref={rootElRef}>
-                    <div class='fc-datagrid-cell-frame vgrow'> {/* needed for stickiness in some browsers */}
+                    <div class='fc-datagrid-cell-frame fc-datagrid-cell-frame-liquid'> {/* needed for stickiness in some browsers */}
                       <div class='fc-datagrid-cell-cushion fc-sticky' ref={innerElRef}>
                         {innerContent}
                       </div>

@@ -49,7 +49,7 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
       <ScrollGrid
         ref={this.scrollGridRef}
         forPrint={props.forPrint}
-        vGrow={!props.isHeightAuto}
+        liquid={!props.isHeightAuto}
         colGroups={[
           { cols: props.spreadsheetCols, width: state.resourceAreaWidth },
           { cols: [] }, // for the divider
@@ -80,8 +80,8 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
           {
             type: 'body',
             syncRowHeights: true,
-            vGrow: true,
-            vGrowRows: Boolean(context.options.expandRows),
+            liquid: true,
+            expandRows: Boolean(context.options.expandRows),
             chunks: [
               {
                 tableClassName: 'fc-datagrid-body',

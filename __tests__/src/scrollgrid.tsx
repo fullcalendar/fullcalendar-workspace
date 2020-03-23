@@ -44,12 +44,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // TODO: revive height syncing
+// TODO: kill obsolete vgrow
 
 
-function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
+function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
   return (
     <ScrollGrid
-      vGrow={vGrow}
+      liquid={isLiquid}
       forPrint={forPrint}
       colGroups={[
         { width: 150, cols: [
@@ -148,8 +149,8 @@ function renderScrollGrid(vGrow: boolean, forPrint: boolean) {
         },
         {
           type: 'body',
-          vGrow: true,
-          vGrowRows: true,
+          liquid: true,
+          expandRows: true,
           chunks: [
             { rowContent: (contentArg) => (
               <Fragment>
@@ -613,10 +614,10 @@ function handleScrollerEl(scrollerEl: HTMLElement) {
 }
 
 
-function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
+function renderSimpleScrollGrid(isLiquid: boolean, forPrint: boolean) {
   return (
     <SimpleScrollGrid
-      vGrow={vGrow}
+      liquid={isLiquid}
       forPrint={forPrint}
       cols={[
         {},
@@ -642,8 +643,8 @@ function renderSimpleScrollGrid(vGrow: boolean, forPrint: boolean) {
         },
         {
           type: 'body',
-          vGrow: true,
-          vGrowRows: true,
+          liquid: true,
+          expandRows: true,
           chunk: {
             rowContent: (
               <Fragment>

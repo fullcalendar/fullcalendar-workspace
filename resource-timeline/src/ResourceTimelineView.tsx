@@ -129,7 +129,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                   clientHeight={contentArg.clientHeight}
                   tableMinWidth={contentArg.tableMinWidth}
                   tableColGroupNode={contentArg.tableColGroupNode}
-                  vGrowRows={contentArg.vGrowRows}
+                  expandRows={contentArg.expandRows}
                   tDateProfile={tDateProfile}
                   dateProfile={dateProfile}
                   dateProfileGenerator={props.dateProfileGenerator}

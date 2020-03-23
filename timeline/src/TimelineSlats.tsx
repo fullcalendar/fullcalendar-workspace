@@ -37,7 +37,7 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     return (
       <div class='fc-timeline-slots' ref={this.rootElRef}>
         <table
-          class={'vgrow ' + theme.getClass('table')}
+          class={theme.getClass('table')}
           style={{
             minWidth: props.tableMinWidth,
             width: props.clientWidth

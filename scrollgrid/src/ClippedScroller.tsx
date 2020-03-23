@@ -1,6 +1,6 @@
 import {
   h, ComponentChildren, createRef, Ref, BaseComponent, setRef, ComponentContext,
-  CssDimValue, ScrollerLike,
+  ScrollerLike,
   Scroller, OverflowValue,
   getScrollbarWidths,
   getIsRtlScrollbarOnLeft,
@@ -13,8 +13,8 @@ export type ClippedOverflowValue = OverflowValue | 'scroll-hidden'
 export interface ClippedScrollerProps {
   overflowX: ClippedOverflowValue
   overflowY: ClippedOverflowValue
-  vGrow: boolean
-  maxHeight?: number // incompatible with vGrow
+  liquid: boolean
+  maxHeight?: number // incompatible with liquid
   children?: ComponentChildren
   scrollerRef?: Ref<Scroller>
   scrollerElRef?: Ref<HTMLElement>
@@ -39,46 +39,20 @@ export default class ClippedScroller extends BaseComponent<ClippedScrollerProps,
 
   render(props: ClippedScrollerProps, state: ClippedScrollerState, context: ComponentContext) {
     let isScrollbarOnLeft = context.isRtl && getIsRtlScrollbarOnLeft()
-
-    // for normal scroller div
-    let position: string = props.vGrow ? 'absolute' : ''
-    let positionTop: CssDimValue = ''
-    let positionLeft: CssDimValue = ''
-    let positionRight: CssDimValue = ''
-    let positionBottom: CssDimValue = ''
-    let marginLeft: CssDimValue = ''
-    let marginRight: CssDimValue = ''
-    let marginBottom: CssDimValue = ''
-
-    if (props.vGrow) {
-      positionTop = 0
-      positionLeft = 0
-      positionRight = 0
-      positionBottom = 0
-    }
+    let overcomeLeft = 0
+    let overcomeRight = 0
+    let overcomeBottom = 0
 
     if (props.overflowX === 'scroll-hidden') {
-      if (props.vGrow) {
-        positionBottom = -state.xScrollbarWidth
-      } else {
-        marginBottom = -state.xScrollbarWidth
-      }
+      overcomeBottom = state.xScrollbarWidth
     }
 
     if (props.overflowY === 'scroll-hidden') {
       if (state.yScrollbarWidth != null) {
         if (isScrollbarOnLeft) {
-          if (props.vGrow) {
-            positionLeft = -state.yScrollbarWidth
-          } else {
-            marginLeft = -state.yScrollbarWidth
-          }
+          overcomeLeft = state.yScrollbarWidth
         } else {
-          if (props.vGrow) {
-            positionRight = -state.yScrollbarWidth
-          } else {
-            marginRight = -state.yScrollbarWidth
-          }
+          overcomeRight = state.yScrollbarWidth
         }
       }
     }
@@ -86,25 +60,19 @@ export default class ClippedScroller extends BaseComponent<ClippedScrollerProps,
     return (
       <div
         ref={this.elRef}
-        class={'fc-scroller-harness' + (props.vGrow ? ' vgrow' : '')}
+        class={'fc-scroller-harness' + (props.liquid ? ' fc-scroller-harness-liquid' : '')}
       >
         <Scroller
           ref={this.handleScroller}
           elRef={this.props.scrollerElRef}
           overflowX={props.overflowX === 'scroll-hidden' ? 'scroll' : props.overflowX}
           overflowY={props.overflowY === 'scroll-hidden' ? 'scroll' : props.overflowY}
+          overcomeLeft={overcomeLeft}
+          overcomeRight={overcomeRight}
+          overcomeBottom={overcomeBottom}
           maxHeight={typeof props.maxHeight === 'number' ? (props.maxHeight + (props.overflowX === 'scroll-hidden' ? state.xScrollbarWidth : 0)) : ''}
-          style={{
-            maxHeight: typeof props.maxHeight === 'number' ? (props.maxHeight + (props.overflowX === 'scroll-hidden' ? state.xScrollbarWidth : 0)) : '',
-            position,
-            top: positionTop,
-            left: positionLeft,
-            right: positionRight,
-            bottom: positionBottom,
-            marginLeft,
-            marginRight,
-            marginBottom
-          }}
+          liquid={props.liquid}
+          liquidIsAbsolute={true}
         >{props.children}</Scroller>
       </div>
     )

@@ -43,7 +43,7 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
             <ScrollGrid
               ref={this.scrollGridRef}
               forPrint={props.forPrint}
-              vGrow={!props.isHeightAuto}
+              liquid={!props.isHeightAuto}
               colGroups={[
                 { cols: slatCols }
               ]}
@@ -66,7 +66,7 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
                 },
                 {
                   type: 'body',
-                  vGrow: true,
+                  liquid: true,
                   chunks: [{
                     content: (contentArg: ChunkContentCallbackArgs) => (
                       <TimelineGrid

@@ -52,7 +52,7 @@ export default class ResourceTimelineLane extends BaseComponent<ResourceTimeline
           )}
         </RenderHook>
       </tr>
-    ) // important NOT to do vgrow. dont want to shrink height smaller than content
+    ) // important NOT to do liquid-height. dont want to shrink height smaller than content
   }
 
 
