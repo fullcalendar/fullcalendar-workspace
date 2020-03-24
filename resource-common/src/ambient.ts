@@ -1,6 +1,5 @@
 import ResourceApi from './api/ResourceApi'
 import { ResourceSourceInput, ResourceSource } from './structs/resource-source'
-import { ViewApi } from '@fullcalendar/core'
 import { ResourceHash } from './structs/resource'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
 import { ResourceAction } from './reducers/resources'
@@ -42,7 +41,6 @@ declare module '@fullcalendar/core' {
     datesAboveResources?: any
     eventResourceEditable?: boolean
     refetchResourcesOnNavigate?: boolean
-    resourceRender?(arg: { resource: ResourceApi, el: HTMLElement, view: ViewApi }): void // BAD: also defined in core
   }
 
   interface DatePointApi {
