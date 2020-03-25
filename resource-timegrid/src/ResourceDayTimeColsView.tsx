@@ -34,7 +34,7 @@ export default class ResourceDayTimeColsView extends TimeColsView {
     )
 
     let slotDuration = this.parseSlotDuration(options.slotDuration)
-    let slatMetas = this.buildSlatMetas(props.dateProfile, options.slotLabelInterval, slotDuration, dateEnv)
+    let slatMetas = this.buildSlatMetas(props.dateProfile.slotMinTime, props.dateProfile.slotMaxTime, options.slotLabelInterval, slotDuration, dateEnv)
     let { dayMinWidth } = options
 
     let headerContent = options.dayLabels &&
