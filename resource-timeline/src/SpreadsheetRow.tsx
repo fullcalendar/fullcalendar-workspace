@@ -48,7 +48,7 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
             // a grouped cell. no data that is specific to this specific resource
             // `colSpec` is for the group. a GroupSpec :(
             return (
-              <RenderHook name='cell' options={colSpec} hookProps={hookProps} defaultInnerContent={renderGroupInner}>
+              <RenderHook name='cell' options={colSpec} hookProps={hookProps} defaultContent={renderGroupInner}>
                 {(rootElRef, classNames, innerElRef, innerContent) => (
                   // TODO: make data-attr with group value?
                   <td className={[ 'fc-datagrid-cell', 'fc-resource-group' ].concat(classNames).join(' ')} rowSpan={rowSpan} ref={rootElRef}>
@@ -70,7 +70,7 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
             }
 
             return (
-              <RenderHook name='cell' options={colSpec} hookProps={hookProps} defaultInnerContent={renderResourceInner}>
+              <RenderHook name='cell' options={colSpec} hookProps={hookProps} defaultContent={renderResourceInner}>
                 {(rootElRef, classNames, innerElRef, innerContent) => (
                   <td className={[ 'fc-datagrid-cell', 'fc-resource' ].concat(classNames).join(' ')} data-resource-id={resource.id} rowSpan={rowSpan} ref={rootElRef}>
                     <div class='fc-datagrid-cell-frame' style={{ height: props.innerHeight }}>

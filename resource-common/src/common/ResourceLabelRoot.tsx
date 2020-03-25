@@ -41,7 +41,7 @@ export default function ResourceLabelRoot(props: ResourceLabelRootProps) {
         }
 
         return (
-          <RenderHook name='resourceLabel' hookProps={hookProps} defaultInnerContent={renderInnerContent}>
+          <RenderHook name='resourceLabel' hookProps={hookProps} defaultContent={renderInnerContent}>
             {(rootElRef, classNames, innerElRef, innerContent) => props.children(
               rootElRef,
               classNames, // TODO: pass in 'fc-resource' ?

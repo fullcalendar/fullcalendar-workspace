@@ -50,7 +50,7 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
                 }
 
                 return (
-                  <RenderHook name='slotLabel' hookProps={hookProps} defaultInnerContent={renderInnerContent}>
+                  <RenderHook name='slotLabel' hookProps={hookProps} defaultContent={renderInnerContent}>
                     {(rootElRef, customClassNames, innerElRef, innerContent) => (
                       <th
                         ref={rootElRef}
