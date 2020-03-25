@@ -1,5 +1,5 @@
 import {
-  VNode, h,
+  VNode, h, TableDowCell,
   memoize, BaseComponent, DateMarker, DateProfile, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext, TableDateCell, Fragment, DateRange, NowTimer, Ref, ComponentChildren
 } from '@fullcalendar/core'
 import { Resource } from '../structs/resource'
@@ -124,25 +124,33 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
   // a cell with date text. might have a resource associated with it
   renderDateCell(date: DateMarker, dateFormat: DateFormatter, todayRange: DateRange, colSpan: number, resource?: Resource) {
     let { props } = this
-    let key =
-      (props.datesRepDistinctDays ? date.toISOString() : date.getUTCDay()) +
-      (resource ? `:${resource.id}` : '')
+    let keyPostfix = resource ? `:${resource.id}` : ''
+    let extraHookProps = resource ? { resource: new ResourceApi(this.context.calendar, resource) } : {}
+    let extraClassNames = [ 'fc-resource' ]
+    let extraDataAttrs = resource ? { 'data-resource-id' : resource.id } : {}
 
-    return (
+    return props.datesRepDistinctDays ?
       <TableDateCell
-        key={key}
-        isDateDistinct={props.datesRepDistinctDays}
+        key={date.toISOString() + keyPostfix}
         date={date}
         todayRange={todayRange}
         dateProfile={props.dateProfile}
         colCnt={props.dates.length * props.resources.length}
         dayLabelFormat={dateFormat}
         colSpan={colSpan}
-        extraHookProps={resource ? { resource: new ResourceApi(this.context.calendar, resource) } : {}}
-        extraClassNames={[ 'fc-resource' ]}
-        extraDataAttrs={resource ? { 'data-resource-id' : resource.id } : {}}
+        extraHookProps={extraHookProps}
+        extraClassNames={extraClassNames}
+        extraDataAttrs={extraDataAttrs}
+      /> :
+      <TableDowCell // we can't leverage the pure-componentness becausae the extra* props are new every time :(
+        key={date.getUTCDay() + keyPostfix}
+        dow={date.getUTCDay()}
+        dayLabelFormat={dateFormat}
+        colSpan={colSpan}
+        extraHookProps={extraHookProps}
+        extraClassNames={extraClassNames}
+        extraDataAttrs={extraDataAttrs}
       />
-    )
   }
 
 
