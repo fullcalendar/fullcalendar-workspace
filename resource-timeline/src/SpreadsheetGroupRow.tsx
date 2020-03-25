@@ -18,13 +18,13 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
 
 
   render(props: SpreadsheetGroupRowProps, state: {}, context: ComponentContext) {
-    let innerProps = {
+    let hookProps = {
       groupValue: props.group.value
     }
 
     return (
       <tr>
-        <RenderHook name='label' options={props.group.spec} mountProps={innerProps} dynamicProps={innerProps} defaultInnerContent={renderCellInner}>
+        <RenderHook name='label' options={props.group.spec} hookProps={hookProps} defaultInnerContent={renderCellInner}>
           {(rootElRef, classNames, innerElRef, innerContent) => (
             <td class={[ 'fc-datagrid-cell', 'fc-resource-group', context.theme.getClass('tableCellShaded') ].concat(classNames).join(' ')} colSpan={props.spreadsheetColCnt} ref={rootElRef}>
               <div class='fc-datagrid-cell-frame' style={{ height: props.innerHeight }}>
@@ -65,6 +65,6 @@ SpreadsheetGroupRow.addPropsEquality({
 })
 
 
-function renderCellInner(innerProps) {
-  return innerProps.groupValue || <Fragment>&nbsp;</Fragment>
+function renderCellInner(hookProps) {
+  return hookProps.groupValue || <Fragment>&nbsp;</Fragment>
 }

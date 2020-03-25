@@ -138,7 +138,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
         colCnt={props.dates.length * props.resources.length}
         dayLabelFormat={dateFormat}
         colSpan={colSpan}
-        extraMountProps={resource ? { resource: new ResourceApi(this.context.calendar, resource) } : {}}
+        extraHookProps={resource ? { resource: new ResourceApi(this.context.calendar, resource) } : {}}
         extraClassNames={[ 'fc-resource' ]}
         extraDataAttrs={resource ? { 'data-resource-id' : resource.id } : {}}
       />

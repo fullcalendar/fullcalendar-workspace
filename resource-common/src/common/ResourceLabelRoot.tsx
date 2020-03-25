@@ -29,7 +29,7 @@ export default function ResourceLabelRoot(props: ResourceLabelRootProps) {
   return (
     <ComponentContextType.Consumer>
       {(context: ComponentContext) => {
-        let innerProps: ResourceInnerProps = {
+        let hookProps: ResourceInnerProps = {
           resource: new ResourceApi(context.calendar, props.resource),
           date: props.date ? context.dateEnv.toDate(props.date) : null,
           view: context.view
@@ -41,7 +41,7 @@ export default function ResourceLabelRoot(props: ResourceLabelRootProps) {
         }
 
         return (
-          <RenderHook name='resourceLabel' mountProps={innerProps} dynamicProps={innerProps} defaultInnerContent={renderInnerContent}>
+          <RenderHook name='resourceLabel' hookProps={hookProps} defaultInnerContent={renderInnerContent}>
             {(rootElRef, classNames, innerElRef, innerContent) => props.children(
               rootElRef,
               classNames, // TODO: pass in 'fc-resource' ?

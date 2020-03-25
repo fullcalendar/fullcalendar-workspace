@@ -40,7 +40,7 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
             (resource.title || getPublicId(resource.id))
 
           if (rowSpan > 1) {
-            let innerProps = {
+            let hookProps = {
               groupValue: fieldValue,
               view: context.view
             }
@@ -48,7 +48,7 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
             // a grouped cell. no data that is specific to this specific resource
             // `colSpec` is for the group. a GroupSpec :(
             return (
-              <RenderHook name='cell' options={colSpec} mountProps={innerProps} dynamicProps={innerProps} defaultInnerContent={renderGroupInner}>
+              <RenderHook name='cell' options={colSpec} hookProps={hookProps} defaultInnerContent={renderGroupInner}>
                 {(rootElRef, classNames, innerElRef, innerContent) => (
                   // TODO: make data-attr with group value?
                   <td className={[ 'fc-datagrid-cell', 'fc-resource-group' ].concat(classNames).join(' ')} rowSpan={rowSpan} ref={rootElRef}>
@@ -63,14 +63,14 @@ export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, C
             )
 
           } else {
-            let innerProps = {
+            let hookProps = {
               resource: new ResourceApi(context.calendar, resource),
               fieldValue,
               view: context.view
             }
 
             return (
-              <RenderHook name='cell' options={colSpec} mountProps={innerProps} dynamicProps={innerProps} defaultInnerContent={renderResourceInner}>
+              <RenderHook name='cell' options={colSpec} hookProps={hookProps} defaultInnerContent={renderResourceInner}>
                 {(rootElRef, classNames, innerElRef, innerContent) => (
                   <td className={[ 'fc-datagrid-cell', 'fc-resource' ].concat(classNames).join(' ')} data-resource-id={resource.id} rowSpan={rowSpan} ref={rootElRef}>
                     <div class='fc-datagrid-cell-frame' style={{ height: props.innerHeight }}>
@@ -118,11 +118,11 @@ SpreadsheetRow.addPropsEquality({
 })
 
 
-function renderGroupInner(innerProps) {
-  return innerProps.groupValue || <Fragment>&nbsp;</Fragment>
+function renderGroupInner(hookProps) {
+  return hookProps.groupValue || <Fragment>&nbsp;</Fragment>
 }
 
 
-function renderResourceInner(innerProps) {
-  return innerProps.fieldValue || <Fragment>&nbsp;</Fragment>
+function renderResourceInner(hookProps) {
+  return hookProps.fieldValue || <Fragment>&nbsp;</Fragment>
 }

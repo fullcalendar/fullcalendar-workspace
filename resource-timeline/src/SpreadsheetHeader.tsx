@@ -23,7 +23,7 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
 
   render(props: SpreadsheetHeaderProps, context: ComponentContext) {
     let { colSpecs, superHeaderRendering } = props
-    let innerProps = { view: context.view }
+    let hookProps = { view: context.view }
     let rowNodes: VNode[] = []
     let rowInnerHeights = props.rowInnerHeights.slice() // copy, because we're gonna pop
 
@@ -31,7 +31,7 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
       let rowInnerHeight = rowInnerHeights.shift()
       rowNodes.push(
         <tr>
-          <RenderHook name='header' mountProps={innerProps} dynamicProps={innerProps} options={superHeaderRendering}>
+          <RenderHook name='header' hookProps={hookProps} options={superHeaderRendering}>
             {(rootElRef, classNames, innerElRef, innerContent) => (
               <th colSpan={colSpecs.length} className={[ 'fc-datagrid-cell', 'fc-datagrid-cell-super' ].concat(classNames).join(' ')} ref={rootElRef}>
                 <div class='fc-datagrid-cell-frame' style={{ height: rowInnerHeight }}>
@@ -54,7 +54,7 @@ export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderPr
 
           // need empty inner div for abs positioning for resizer
           return (
-            <RenderHook name='header' mountProps={innerProps} dynamicProps={innerProps} options={colSpec}>
+            <RenderHook name='header' hookProps={hookProps} options={colSpec}>
               {(rootElRef, classNames, innerElRef, innerContent) => (
                 <th ref={rootElRef} className={[ 'fc-datagrid-cell' ].concat(classNames).join(' ')}>
                   <div class='fc-datagrid-cell-frame' style={{ height: rowInnerHeight }}>

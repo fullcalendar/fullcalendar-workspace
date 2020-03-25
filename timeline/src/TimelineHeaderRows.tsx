@@ -42,18 +42,15 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
                   ? buildNavLinkData(cell.date, cell.rowUnit)
                   : null
 
-                let mountProps = {
+                let hookProps = {
                   date: dateEnv.toDate(cell.date),
-                  view: context.view
-                }
-                let dynamicProps = {
-                  ...mountProps,
+                  view: context.view,
                   text: cell.text,
                   navLinkData
                 }
 
                 return (
-                  <RenderHook name='slotLabel' mountProps={mountProps} dynamicProps={dynamicProps} defaultInnerContent={renderInnerContent}>
+                  <RenderHook name='slotLabel' hookProps={hookProps} defaultInnerContent={renderInnerContent}>
                     {(rootElRef, customClassNames, innerElRef, innerContent) => (
                       <th
                         ref={rootElRef}
