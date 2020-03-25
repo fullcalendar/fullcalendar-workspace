@@ -1,4 +1,4 @@
-import { h, Ref, BaseComponent, CssDimValue, RenderHook, ComponentContext, setRef } from '@fullcalendar/core'
+import { h, Ref, BaseComponent, CssDimValue, ComponentContext, setRef, buildHookClassNameGenerator, ContentHook, MountHook } from '@fullcalendar/core'
 import { Resource, ResourceApi } from '@fullcalendar/resource-common'
 import { TimelineLane, TimelineLaneCoreProps } from '@fullcalendar/timeline'
 
@@ -13,23 +13,22 @@ export interface ResourceTimelineLaneProps extends TimelineLaneCoreProps {
 
 export default class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProps> {
 
+  buildClassNames = buildHookClassNameGenerator('resourceLane')
   rootEl: HTMLTableRowElement
 
 
   render(props: ResourceTimelineLaneProps, state: {}, context: ComponentContext) {
-    let hookProps = {
-      resource: new ResourceApi(context.calendar, props.resource)
-    }
+    let hookPropOrigin = { resource: props.resource }
+    let hookProps = { resource: new ResourceApi(context.calendar, props.resource) }
+    let customClassNames = this.buildClassNames(hookProps, context, null, hookPropOrigin)
 
     return (
       <tr ref={this.handleRootEl}>
-        <RenderHook name='resourceLane' hookProps={hookProps}>
-          {(rootElRef, customClassNames, innerElRef, innerContent) => (
+        <MountHook name='resourceLane' hookProps={hookProps}>
+          {(rootElRef) => (
             <td ref={rootElRef} className={[ 'fc-timeline-lane', 'fc-resource' ].concat(customClassNames).join(' ')} data-resource-id={props.resource.id}>
               <div class='fc-timeline-lane-frame' style={{ height: props.innerHeight }}>
-                {innerContent && // TODO: test
-                  <div class='fc-timeline-lane-misc' ref={innerElRef}>{innerContent}</div>
-                }
+                <ResourceTimelineLaneMisc resource={props.resource} />
                 <TimelineLane
                   dateProfile={props.dateProfile}
                   dateProfileGenerator={props.dateProfileGenerator}
@@ -50,7 +49,7 @@ export default class ResourceTimelineLane extends BaseComponent<ResourceTimeline
               </div>
             </td>
           )}
-        </RenderHook>
+        </MountHook>
       </tr>
     ) // important NOT to do liquid-height. dont want to shrink height smaller than content
   }
@@ -69,6 +68,28 @@ export default class ResourceTimelineLane extends BaseComponent<ResourceTimeline
     if (this.props.onHeightChange) {
       this.props.onHeightChange(this.rootEl, isStable)
     }
+  }
+
+}
+
+
+interface ResourceTimelineLaneMiscProps {
+  resource: Resource
+}
+
+class ResourceTimelineLaneMisc extends BaseComponent<ResourceTimelineLaneMiscProps> {
+
+  render(props: ResourceTimelineLaneMiscProps, state: {}, context: ComponentContext) {
+    let hookProps = { resource: new ResourceApi(context.calendar, props.resource) }
+
+    return (
+      <ContentHook name='resourceLane' hookProps={hookProps}>
+        {(innerElRef, innerContent) => (
+          innerContent && // TODO: test how this would interfere with height
+            <div class='fc-timeline-lane-misc' ref={innerElRef}>{innerContent}</div>
+        )}
+      </ContentHook>
+    )
   }
 
 }

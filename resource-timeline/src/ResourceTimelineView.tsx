@@ -385,8 +385,6 @@ function processColOptions(options) {
   }
 
   // BAD: mutates a user-supplied option
-  // the "label" for the resource is the "cell" for the spreadsheet :(
-  // TODO: revive "header" terminology instead?
   let mainColSpec = plainColSpecs[0]
   mainColSpec.isMain = true
   mainColSpec.cellClassNames = mainColSpec.cellClassNames || options.resourceLabelClassNames
