@@ -88,6 +88,8 @@ export default class ResourceTimelineGrid extends DateComponent<ResourceTimeline
             timelineCoords={state.slatCoords}
             eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs as TimelineLaneSeg[] : []) /* empty array will result in unnecessary rerenders? */}
             dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
+            nowDate={nowDate}
+            todayRange={todayRange}
           />,
           <ResourceTimelineLanes
             rowNodes={props.rowNodes}

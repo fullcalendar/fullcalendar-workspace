@@ -1,4 +1,4 @@
-import { BaseComponent, h, Fragment } from '@fullcalendar/core'
+import { BaseComponent, h, Fragment, BgEvent, renderFill, getSegMeta, DateRange, DateMarker } from '@fullcalendar/core'
 import TimelineCoords from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
@@ -9,6 +9,8 @@ export interface TimelineLaneBgProps {
   dateSelectionSegs: TimelineLaneSeg[]
   eventResizeSegs: TimelineLaneSeg[]
   timelineCoords?: TimelineCoords
+  todayRange: DateRange
+  nowDate: DateMarker
 }
 
 
@@ -30,6 +32,8 @@ export default class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
 
 
   renderSegs(segs: TimelineLaneSeg[], timelineCoords: TimelineCoords, fillType: string) {
+    let { todayRange, nowDate } = this.props
+
     return segs.map((seg) => {
       let coords = timelineCoords.rangeToCoords(seg.eventRange.range)
 
@@ -38,7 +42,13 @@ export default class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
           left: coords.left,
           right: -coords.right // outwards from right edge (which is same as left edge)
         }}>
-          <div className={`fc-timeline-${fillType} fc-${fillType}`} />
+          {fillType === 'bgevent' ?
+            <BgEvent
+              seg={seg}
+              {...getSegMeta(seg, todayRange, nowDate)}
+            /> :
+            renderFill(fillType, [ `fc-timeline-${fillType}` ])
+          }
         </div>
       )
     })
