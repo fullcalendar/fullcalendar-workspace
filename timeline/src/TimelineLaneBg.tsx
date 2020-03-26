@@ -44,6 +44,7 @@ export default class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
         }}>
           {fillType === 'bgevent' ?
             <BgEvent
+              key={seg.eventRange.instance.instanceId}
               seg={seg}
               {...getSegMeta(seg, todayRange, nowDate)}
             /> :
