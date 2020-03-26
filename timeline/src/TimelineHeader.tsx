@@ -1,4 +1,4 @@
-import { h, BaseComponent, CssDimValue, VNode, DateMarker, ComponentContext, NowTimer, greatestDurationDenominator, DateRange, DateProfile, NowIndicatorRoot } from '@fullcalendar/core'
+import { h, BaseComponent, CssDimValue, VNode, DateMarker, ComponentContext, NowTimer, greatestDurationDenominator, DateRange, DateProfile, NowIndicatorRoot, createRef, findElements } from '@fullcalendar/core'
 import TimelineHeaderRows from './TimelineHeaderRows'
 import TimelineCoords from './TimelineCoords'
 import { TimelineDateProfile } from './timeline-date-profile'
@@ -13,10 +13,13 @@ export interface TimelineHeaderProps {
   tableColGroupNode: VNode
   slatCoords: TimelineCoords
   rowInnerHeights?: number[]
+  onMaxCushionWidth?: (number) => void
 }
 
 
 export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
+
+  rootElRef = createRef<HTMLDivElement>()
 
 
   render(props: TimelineHeaderProps, state: {}, context: ComponentContext) {
@@ -27,7 +30,7 @@ export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
 
     return (
       <NowTimer unit={timerUnit} content={(nowDate: DateMarker, todayRange: DateRange) => (
-        <div class='fc-timeline-header'>
+        <div class='fc-timeline-header' ref={this.rootElRef}>
           <table
             className='fc-scrollgrid-sync-table'
             style={{ minWidth: props.tableMinWidth, width: props.clientWidth }}
@@ -56,6 +59,32 @@ export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
           }
         </div>
       )} />
+    )
+  }
+
+
+  componentDidMount() {
+    this.updateSize()
+  }
+
+
+  componentDidUpdate() {
+    this.updateSize()
+  }
+
+
+  updateSize() {
+    if (this.props.onMaxCushionWidth) {
+      this.props.onMaxCushionWidth(this.computeMaxCushionWidth())
+    }
+  }
+
+
+  computeMaxCushionWidth() {
+    return Math.max(
+      ...findElements(this.rootElRef.current, '.fc-timeline-slot-cushion').map(
+        (el) => el.getBoundingClientRect().width
+      )
     )
   }
 

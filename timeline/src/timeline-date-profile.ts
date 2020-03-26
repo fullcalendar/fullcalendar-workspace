@@ -6,6 +6,7 @@ import {
 export interface TimelineDateProfile {
   labelInterval: Duration
   slotDuration: Duration
+  slotsPerLabel: number
   headerFormats: any
   isTimeScale: boolean
   largeUnit: string
@@ -188,6 +189,7 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: Date
 
   tDateProfile.isWeekStarts = buildIsWeekStarts(tDateProfile, dateEnv)
   tDateProfile.cellRows = buildCellRows(tDateProfile, dateEnv)
+  tDateProfile.slotsPerLabel = wholeDivideDurations(tDateProfile.labelInterval, tDateProfile.slotDuration)
 
   return tDateProfile
 }

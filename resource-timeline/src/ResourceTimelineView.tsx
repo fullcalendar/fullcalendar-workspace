@@ -6,7 +6,8 @@ import {
 import {
   buildTimelineDateProfile, TimelineHeader,
   buildSlatCols,
-  TimelineCoords
+  TimelineCoords,
+  TimelineDateProfile
 } from '@fullcalendar/timeline'
 import { GroupNode, ResourceNode, ResourceViewProps, buildRowNodes, ColSpec, GroupSpec } from '@fullcalendar/resource-common'
 import { __assign } from 'tslib'
@@ -21,6 +22,7 @@ interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
   spreadsheetColWidths: number[]
   slatCoords?: TimelineCoords
+  slotCushionMaxWidth?: number
 }
 
 interface ResourceTimelineViewSnapshot {
@@ -88,6 +90,9 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
       options.eventOverlap === false ? 'fc-timeline-overlap-disabled' : 'fc-timeline-overlap-enabled'
     ]
 
+    let { slotMinWidth } = context.options
+    let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
+
     return (
       <ViewRoot viewSpec={props.viewSpec}>
         {(rootElRef, classNames) => (
@@ -110,7 +115,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                   {this.renderSpreadsheetRows(rowNodes, colSpecs, contentArg.rowSyncHeights)}
                 </Fragment>
               )}
-              timeCols={buildSlatCols(tDateProfile, this.context.options.slotMinWidth || 30)}
+              timeCols={slatCols}
               timeHeaderContent={(contentArg: ChunkContentCallbackArgs) => (
                 <TimelineHeader
                   clientWidth={contentArg.clientWidth}
@@ -121,6 +126,7 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
                   tDateProfile={tDateProfile}
                   slatCoords={state.slatCoords}
                   rowInnerHeights={contentArg.rowSyncHeights}
+                  onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
                 />
               )}
               timeBodyContent={(contentArg: ChunkContentCallbackArgs) => (
@@ -227,6 +233,18 @@ export default class ResourceTimelineView extends View<ResourceTimelineViewState
   handleRowCoords = (rowCoords: PositionCache) => {
     this.rowCoords = rowCoords
     this.scrollResponder.update(false) // TODO: could eliminate this if rowCoords lived in state
+  }
+
+
+  handleMaxCushionWidth = (slotCushionMaxWidth) => {
+    this.setState({
+      slotCushionMaxWidth: Math.ceil(slotCushionMaxWidth) // for less rerendering TODO: DRY
+    })
+  }
+
+
+  computeFallbackSlotMinWidth(tDateProfile: TimelineDateProfile) { // TODO: duplicate definition
+    return Math.max(30, ((this.state.slotCushionMaxWidth || 0) / tDateProfile.slotsPerLabel))
   }
 
 

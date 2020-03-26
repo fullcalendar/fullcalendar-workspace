@@ -10,6 +10,7 @@ import TimelineCoords from './TimelineCoords'
 
 interface TimelineViewState {
   slatCoords?: TimelineCoords
+  slotCushionMaxWidth?: number
 }
 
 
@@ -34,7 +35,9 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
       'fc-timeline',
       options.eventOverlap === false ? 'fc-timeline-overlap-disabled' : ''
     ]
-    let slatCols = buildSlatCols(tDateProfile, context.options.slotMinWidth || 30) // TODO: more DRY
+
+    let { slotMinWidth } = context.options
+    let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
 
     return (
       <ViewRoot viewSpec={props.viewSpec}>
@@ -60,6 +63,7 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
                         dateProfile={dateProfile}
                         tDateProfile={tDateProfile}
                         slatCoords={state.slatCoords}
+                        onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
                       />
                     )
                   }]
@@ -99,6 +103,18 @@ export default class TimelineView extends View<TimelineViewState> { // would mak
   handleScrollLeftRequest = (scrollLeft: number) => {
     let scrollGrid = this.scrollGridRef.current
     scrollGrid.forceScrollLeft(0, scrollLeft)
+  }
+
+
+  handleMaxCushionWidth = (slotCushionMaxWidth) => {
+    this.setState({
+      slotCushionMaxWidth: Math.ceil(slotCushionMaxWidth) // for less rerendering TODO: DRY
+    })
+  }
+
+
+  computeFallbackSlotMinWidth(tDateProfile: TimelineDateProfile) { // TODO: duplicate definition
+    return Math.max(30, ((this.state.slotCushionMaxWidth || 0) / tDateProfile.slotsPerLabel))
   }
 
 }
