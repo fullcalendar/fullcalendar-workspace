@@ -5,7 +5,6 @@ import {
   findElements,
   ComponentContext,
   mapHash,
-  Scroller,
   RefMap,
   ColProps, ChunkConfig, CssDimValue, hasShrinkWidth, renderMicroColGroup,
   ScrollGridProps, ScrollGridSectionConfig, ColGroupConfig,
@@ -186,38 +185,28 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
       reportRowHeightChange: this.handleRowHeightChange
     })
 
-    if (allowYScrolling || allowXScrolling) {
-      let overflowX: ClippedOverflowValue =
-        forceXScrollbars ? (isLastSection ? 'scroll' : 'scroll-hidden') :
-        !allowXScrolling ? 'hidden' :
-        (isLastSection ? 'auto' : 'scroll-hidden')
+    let overflowX: ClippedOverflowValue =
+      forceXScrollbars ? (isLastSection ? 'scroll' : 'scroll-hidden') :
+      !allowXScrolling ? 'hidden' :
+      (isLastSection ? 'auto' : 'scroll-hidden')
 
-      let overflowY: ClippedOverflowValue =
-        forceYScrollbars ? (isVScrollSide ? 'scroll' : 'scroll-hidden') :
-        !allowYScrolling ? 'hidden' :
-        (isVScrollSide ? 'auto' : 'scroll-hidden')
+    let overflowY: ClippedOverflowValue =
+      forceYScrollbars ? (isVScrollSide ? 'scroll' : 'scroll-hidden') :
+      !allowYScrolling ? 'hidden' :
+      (isVScrollSide ? 'auto' : 'scroll-hidden')
 
-      content = (
-        <ClippedScroller
-          ref={this.clippedScrollerRefs.createRef(index)}
-          scrollerElRef={this.scrollerElRefs.createRef(index)}
-          overflowX={overflowX}
-          overflowY={overflowY}
-          liquid={chunkVGrow}
-          maxHeight={sectionConfig.maxHeight}
-        >{content}</ClippedScroller>
-      )
-
-    } else {
-      content = ( // TODO: need fc-scroller-harness too? if so, use liquidIsAbsolute
-        <Scroller
-          overflowX={forceXScrollbars ? 'scroll' : 'hidden'}
-          overflowY={forceYScrollbars ? 'scroll' : 'hidden'}
-          liquid={chunkVGrow}
-          maxHeight={sectionConfig.maxHeight}
-        >{content}</Scroller>
-      )
-    }
+    // it *could* be possible to reduce DOM wrappers by only doing a ClippedScroller when allowXScrolling or allowYScrolling,
+    // but if these values were to change, the inner components would be unmounted/remounted because of the parent change.
+    content = (
+      <ClippedScroller
+        ref={this.clippedScrollerRefs.createRef(index)}
+        scrollerElRef={this.scrollerElRefs.createRef(index)}
+        overflowX={overflowX}
+        overflowY={overflowY}
+        liquid={chunkVGrow}
+        maxHeight={sectionConfig.maxHeight}
+      >{content}</ClippedScroller>
+    )
 
     return (
       <td ref={this.chunkElRefs.createRef(index)}>
