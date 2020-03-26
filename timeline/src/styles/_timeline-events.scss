@@ -30,11 +30,11 @@
 
 
 .fc-timeline-event {
-  display: flex;
   border-radius: 0;
   padding: 2px 1px;
   margin-bottom: 1px;
 }
+
 
 .fc-dir-ltr .fc-timeline-event { margin-right: 1px }
 .fc-dir-rtl .fc-timeline-event { margin-left: 1px }
@@ -49,8 +49,30 @@
   margin-bottom: 0;
 }
 
-.fc-timeline-event:not(.fc-event-start):before,
-.fc-timeline-event:not(.fc-event-end):after {
+.fc-timeline-event .fc-event-main {
+  display: flex;
+}
+
+.fc-timeline-event .fc-event-time,
+.fc-timeline-event .fc-event-title {
+  white-space: nowrap; // TODO: do globally?
+}
+
+.fc-timeline-event .fc-event-title {
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0; // important for allowing to shrink all the way
+}
+
+.fc-timeline-event .fc-event-title-inner {
+  display: inline-block;
+  vertical-align: top; // need this for not affecting line-height
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.fc-timeline-event:not(.fc-event-start) .fc-event-main:before,
+.fc-timeline-event:not(.fc-event-end) .fc-event-main:after {
   content: "";
   align-self: center;
   width: 0;
@@ -63,13 +85,13 @@
 }
 
 // pointing left
-.fc-dir-ltr .fc-timeline-event:not(.fc-event-start):before,
-.fc-dir-rtl .fc-timeline-event:not(.fc-event-end):after {
+.fc-dir-ltr .fc-timeline-event:not(.fc-event-start) .fc-event-main:before,
+.fc-dir-rtl .fc-timeline-event:not(.fc-event-end) .fc-event-main:after {
   border-left: 0;
 }
 
 // pointing right
-.fc-dir-ltr .fc-timeline-event:not(.fc-event-end):after,
-.fc-dir-rtl .fc-timeline-event:not(.fc-event-start):before {
+.fc-dir-ltr .fc-timeline-event:not(.fc-event-end) .fc-event-main:after,
+.fc-dir-rtl .fc-timeline-event:not(.fc-event-start) .fc-event-main:before {
   border-right: 0;
 }

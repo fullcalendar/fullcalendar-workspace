@@ -1,4 +1,4 @@
-import { StandardEvent, MinimalEventProps, h, BaseComponent } from '@fullcalendar/core'
+import { StandardEvent, MinimalEventProps, h, BaseComponent, EventMeta, Fragment } from '@fullcalendar/core'
 
 
 export interface TimelineEventProps extends MinimalEventProps {
@@ -23,8 +23,23 @@ export default class TimelineEvent extends BaseComponent<TimelineEventProps> {
         extraClassNames={[ 'fc-timeline-event', 'fc-h-event' ]}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
         defaultDisplayEventTime={!props.isTimeScale}
+        defaultContent={renderInnerContent}
       />
     )
   }
 
+}
+
+
+function renderInnerContent(innerProps: EventMeta) {
+  return [
+    innerProps.timeText &&
+      <div class='fc-event-time'>{innerProps.timeText}</div>
+    ,
+    <div class='fc-event-title'>
+      <div class='fc-event-title-inner fc-sticky'>
+        {innerProps.event.title || <Fragment>&nbsp;</Fragment>}
+      </div>
+    </div>
+  ]
 }
