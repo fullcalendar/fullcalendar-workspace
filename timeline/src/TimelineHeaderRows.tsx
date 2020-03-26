@@ -128,18 +128,6 @@ class TimelineHeaderThInner extends BaseComponent<TimelineHeaderThInnerProps> {
     )
   }
 
-  // componentDidMount() {
-  //   console.log('didmount')
-  // }
-
-  // componentDidUpdate() {
-  //   console.log('didupdate')
-  // }
-
-  // componentWillUnmount() {
-  //   console.log('willunmount')
-  // }
-
 }
 
 function renderInnerContent(props) { // TODO: add types
