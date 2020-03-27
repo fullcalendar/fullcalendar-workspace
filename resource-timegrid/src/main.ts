@@ -12,12 +12,8 @@ export default createPlugin({
   views: {
 
     resourceTimeGrid: {
-      component: ResourceDayTimeColsView,
-
-      // TODO: wish we didn't have to C&P from timeGrid's file
-      allDaySlot: true,
-      slotDuration: '00:30:00',
-      slotEventOverlap: true // a bad name. confused with overlap/constraint system
+      type: 'timeGrid', // will inherit this configuration
+      component: ResourceDayTimeColsView
     },
 
     resourceTimeGridDay: {
