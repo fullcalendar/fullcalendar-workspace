@@ -35,7 +35,12 @@ export default class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
     let { todayRange, nowDate } = this.props
 
     return segs.map((seg) => {
-      let coords = timelineCoords.rangeToCoords(seg.eventRange.range)
+      let { eventRange } = seg
+      let coords = timelineCoords.rangeToCoords(eventRange.range)
+
+      // inverse-background events don't have specific instances
+      // TODO: might be a key collision. better solution
+      let key = eventRange.instance ? eventRange.instance.instanceId : eventRange.def.defId
 
       return (
         <div class='fc-timeline-bg-harness' style={{
@@ -44,7 +49,7 @@ export default class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
         }}>
           {fillType === 'bgevent' ?
             <BgEvent
-              key={seg.eventRange.instance.instanceId}
+              key={key}
               seg={seg}
               {...getSegMeta(seg, todayRange, nowDate)}
             /> :
