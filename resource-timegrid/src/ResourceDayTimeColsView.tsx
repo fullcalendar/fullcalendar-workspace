@@ -9,7 +9,6 @@ import ResourceDayTimeCols from './ResourceDayTimeCols'
 
 export default class ResourceDayTimeColsView extends TimeColsView {
 
-  static needsResourceData = true // for ResourceViewProps
   props: ResourceViewProps
 
   private flattenResources = memoize(flattenResources)

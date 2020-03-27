@@ -13,7 +13,8 @@ export default createPlugin({
 
     resourceDayGrid: {
       type: 'dayGrid', // will inherit this configuration
-      component: ResourceDayTableView
+      component: ResourceDayTableView,
+      needsResourceData: true
     },
 
     resourceDayGridDay: {

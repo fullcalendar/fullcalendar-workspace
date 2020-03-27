@@ -17,7 +17,7 @@ export class ResourceDataAdder implements ViewPropsTransformer {
   filterResources = memoize(filterResources)
 
   transform(viewProps: ViewProps, viewSpec: ViewSpec, calendarProps: CalendarComponentProps, allOptions: any) {
-    if ((viewSpec.component as any).needsResourceData) { // static member
+    if (viewSpec.options.needsResourceData) {
       return {
         resourceStore: this.filterResources(
           calendarProps.resourceStore,
@@ -101,7 +101,7 @@ export class ResourceEventConfigAdder implements ViewPropsTransformer {
   injectResourceEventUis = memoize(injectResourceEventUis)
 
   transform(viewProps: ViewProps, viewSpec: ViewSpec, calendarProps: CalendarComponentProps) {
-    if (!(viewSpec.component as any).needsResourceData) { // access static member. is a non-resource view?
+    if (!viewSpec.options.needsResourceData) {
       return {
         eventUiBases: this.injectResourceEventUis(
           viewProps.eventUiBases,
@@ -153,7 +153,7 @@ export function transformIsDraggable(val: boolean, eventDef: EventDef, eventUi: 
   if (!val) {
     let viewSpec = calendar.viewSpecs[calendar.state.viewType] // yuck
 
-    if ((viewSpec.component as any).needsResourceData) { // static member
+    if (viewSpec.options.needsResourceData) {
       if (computeResourceEditable(eventDef, calendar)) {
         return true
       }

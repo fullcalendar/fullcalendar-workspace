@@ -9,7 +9,6 @@ import ResourceDayTable from './ResourceDayTable'
 
 export default class ResourceDayTableView extends TableView {
 
-  static needsResourceData = true // for ResourceViewProps
   props: ResourceViewProps
 
   private flattenResources = memoize(flattenResources)

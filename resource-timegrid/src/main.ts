@@ -13,7 +13,8 @@ export default createPlugin({
 
     resourceTimeGrid: {
       type: 'timeGrid', // will inherit this configuration
-      component: ResourceDayTimeColsView
+      component: ResourceDayTimeColsView,
+      needsResourceData: true
     },
 
     resourceTimeGridDay: {

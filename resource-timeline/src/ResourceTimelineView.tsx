@@ -37,8 +37,6 @@ interface ResourceScrollState {
 
 export default class ResourceTimelineView extends BaseComponent<ResourceViewProps, ResourceTimelineViewState> {
 
-  static needsResourceData = true // for ResourceViewProps
-
   private processColOptions = memoize(processColOptions)
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private hasNesting = memoize(hasNesting)
