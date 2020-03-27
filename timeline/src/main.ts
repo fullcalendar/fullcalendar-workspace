@@ -18,7 +18,7 @@ export default createPlugin({
   views: {
 
     timeline: {
-      class: TimelineView,
+      component: TimelineView,
       eventResizableFromStart: true // how is this consumed for TimelineView tho?
     },
 

@@ -14,7 +14,7 @@ export default createPlugin({
   views: {
 
     resourceTimeline: {
-      class: ResourceTimelineView,
+      component: ResourceTimelineView,
       resourceAreaWidth: '30%',
       resourcesInitiallyExpanded: true,
       eventResizableFromStart: true // TODO: not DRY with this same setting in the main timeline config

@@ -12,7 +12,7 @@ export default createPlugin({
   views: {
 
     resourceTimeGrid: {
-      class: ResourceDayTimeColsView,
+      component: ResourceDayTimeColsView,
 
       // TODO: wish we didn't have to C&P from timeGrid's file
       allDaySlot: true,

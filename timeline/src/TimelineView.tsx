@@ -1,5 +1,5 @@
 import {
-  h, View, ViewProps, ComponentContext, memoize, ChunkContentCallbackArgs, createRef, ViewRoot
+  h, ViewProps, ComponentContext, memoize, ChunkContentCallbackArgs, createRef, ViewRoot, DateComponent
 } from '@fullcalendar/core'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
 import TimelineHeader from './TimelineHeader'
@@ -14,7 +14,7 @@ interface TimelineViewState {
 }
 
 
-export default class TimelineView extends View<TimelineViewState> { // would make this abstract, but TS complains
+export default class TimelineView extends DateComponent<ViewProps, TimelineViewState> { // would make this abstract, but TS complains
 
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private scrollGridRef = createRef<ScrollGrid>()

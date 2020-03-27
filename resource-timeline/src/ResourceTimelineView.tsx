@@ -1,7 +1,7 @@
 import {
   h, createRef,
-  View, parseFieldSpecs, ComponentContext, memoize,
-  Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache, ScrollRequest, ScrollResponder, ViewRoot,
+  parseFieldSpecs, ComponentContext, memoize,
+  Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache, ScrollRequest, ScrollResponder, ViewRoot, BaseComponent,
 } from '@fullcalendar/core'
 import {
   buildTimelineDateProfile, TimelineHeader,
@@ -35,10 +35,9 @@ interface ResourceScrollState {
 }
 
 
-export default class ResourceTimelineView extends View<ResourceTimelineViewState> {
+export default class ResourceTimelineView extends BaseComponent<ResourceViewProps, ResourceTimelineViewState> {
 
   static needsResourceData = true // for ResourceViewProps
-  props: ResourceViewProps
 
   private processColOptions = memoize(processColOptions)
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
