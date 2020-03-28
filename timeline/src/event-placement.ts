@@ -9,7 +9,7 @@ export function computeSegHorizontals(segs: TimelineLaneSeg[], timelineCoords?: 
   if (timelineCoords) {
     for (let seg of segs) {
       let instanceId = seg.eventRange.instance.instanceId
-      horizontals[instanceId] = timelineCoords.rangeToCoords(seg.eventRange.range)
+      horizontals[instanceId] = timelineCoords.rangeToCoords(seg) // seg has { start, end }
     }
   }
 

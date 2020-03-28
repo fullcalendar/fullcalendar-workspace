@@ -4,6 +4,8 @@ import { computeDateSnapCoverage } from './TimelineCoords'
 
 
 export interface TimelineLaneSeg extends Seg {
+  // the point of this range is because it might be different than seg.eventRange.range
+  // because the date might have been rounded to the start of a week or a month
   start: DateMarker
   end: DateMarker
 }

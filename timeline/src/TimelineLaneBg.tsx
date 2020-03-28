@@ -36,7 +36,7 @@ export default class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
 
     return segs.map((seg) => {
       let { eventRange } = seg
-      let coords = timelineCoords.rangeToCoords(eventRange.range)
+      let coords = timelineCoords.rangeToCoords(seg) // seg has { start, end }
 
       // inverse-background events don't have specific instances
       // TODO: might be a key collision. better solution
