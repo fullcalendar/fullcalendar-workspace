@@ -126,7 +126,6 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
     let { props } = this
     let keyPostfix = resource ? `:${resource.id}` : ''
     let extraHookProps = resource ? { resource: new ResourceApi(this.context.calendar, resource) } : {}
-    let extraClassNames = [ 'fc-resource' ]
     let extraDataAttrs = resource ? { 'data-resource-id' : resource.id } : {}
 
     return props.datesRepDistinctDays ?
@@ -139,7 +138,6 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
         dayLabelFormat={dateFormat}
         colSpan={colSpan}
         extraHookProps={extraHookProps}
-        extraClassNames={extraClassNames}
         extraDataAttrs={extraDataAttrs}
       /> :
       <TableDowCell // we can't leverage the pure-componentness becausae the extra* props are new every time :(
@@ -148,7 +146,6 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
         dayLabelFormat={dateFormat}
         colSpan={colSpan}
         extraHookProps={extraHookProps}
-        extraClassNames={extraClassNames}
         extraDataAttrs={extraDataAttrs}
       />
   }
