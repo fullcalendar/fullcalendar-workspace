@@ -23,7 +23,7 @@ export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProp
     let { date, tDateProfile, isEm } = props
     let dateMeta = getDateMeta(props.date, props.todayRange, props.nowDate)
     let classNames = [ 'fc-timeline-slot', 'fc-timeline-slot-lane' ]
-    let dataAttrs = { 'data-date': dateEnv.formatIso(date, { omitTimeZoneOffset: true }) }
+    let dataAttrs = { 'data-date': dateEnv.formatIso(date, { omitTimeZoneOffset: true, omitTime: !tDateProfile.isTimeScale }) }
     let hookProps = {
       date: dateEnv.toDate(props.date),
       ...dateMeta,
