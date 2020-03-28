@@ -88,6 +88,11 @@ export default class ResourceDayTable extends DateComponent<ResourceDayTableProp
   }
 
 
+  prepareHits() {
+    this.tableRef.current.prepareHits()
+  }
+
+
   queryHit(positionLeft: number, positionTop: number): Hit {
     let rawHit = this.tableRef.current.positionToHit(positionLeft, positionTop)
 
