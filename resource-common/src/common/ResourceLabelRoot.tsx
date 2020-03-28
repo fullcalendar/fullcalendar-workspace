@@ -36,7 +36,7 @@ export default function ResourceLabelRoot(props: ResourceLabelRootProps) {
         }
 
         let dataAttrs = {
-          'data-resource': props.resource.id,
+          'data-resource-id': props.resource.id, // TODO: only do public-facing one?
           'data-date': props.date ? formatDayString(props.date) : undefined
         }
 

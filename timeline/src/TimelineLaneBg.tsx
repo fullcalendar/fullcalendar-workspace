@@ -4,8 +4,8 @@ import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
 
 export interface TimelineLaneBgProps {
-  businessHourSegs: TimelineLaneSeg[]
-  bgEventSegs: TimelineLaneSeg[] | null
+  businessHourSegs: TimelineLaneSeg[] | null // can be null :(
+  bgEventSegs: TimelineLaneSeg[] | null // can be null :(
   dateSelectionSegs: TimelineLaneSeg[]
   eventResizeSegs: TimelineLaneSeg[]
   timelineCoords?: TimelineCoords
@@ -23,8 +23,8 @@ export default class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
     return props.timelineCoords && (
       <div class='fc-timeline-bg'>
         {/* Fragments contain the keys */}
-        <Fragment>{this.renderSegs(props.businessHourSegs, props.timelineCoords, 'nonbusiness')}</Fragment>
-        <Fragment>{this.renderSegs(props.bgEventSegs, props.timelineCoords, 'bgevent')}</Fragment>
+        <Fragment>{this.renderSegs(props.businessHourSegs || [], props.timelineCoords, 'nonbusiness')}</Fragment>
+        <Fragment>{this.renderSegs(props.bgEventSegs || [], props.timelineCoords, 'bgevent')}</Fragment>
         <Fragment>{this.renderSegs(highlightSeg, props.timelineCoords, 'highlight')}</Fragment>
       </div>
     )

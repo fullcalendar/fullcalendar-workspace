@@ -72,11 +72,6 @@ function fetchSource(source: ResourceSource, fetchRange: DateRange | null, calen
       range: fetchRange
     },
     function(res) {
-
-      // HACK
-      // do before calling dispatch in case dispatch renders synchronously
-      calendar.afterSizingTriggers._resourcesRendered = [ null ] // fire once
-
       calendar.dispatch({
         type: 'RECEIVE_RESOURCES',
         fetchId,
