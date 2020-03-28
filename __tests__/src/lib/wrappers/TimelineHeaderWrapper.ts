@@ -29,7 +29,7 @@ export default class TimelineHeaderWrapper {
   getCellInfo(dateRow = 0) {
     return this.getDateEls(dateRow).map((cell) => ({
       date: parseUtcDate(cell.getAttribute('data-date')),
-      isDisabled: cell.classList.contains('fc-day-disabled')
+      isDisabled: cell.classList.contains('fc-slot-disabled')
     }))
   }
 

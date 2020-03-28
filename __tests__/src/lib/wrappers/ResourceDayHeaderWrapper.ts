@@ -18,12 +18,12 @@ export default class ResourceDayHeaderWrapper {
       datePart = '[data-date="' + formatIsoDay(date) + '"]'
     }
 
-    return findElements(this.el, '.fc-col-header-cell[data-resource-id="' + resourceId + '"]' + datePart)
+    return findElements(this.el, '.fc-col-header-cell.fc-resource[data-resource-id="' + resourceId + '"]' + datePart)
   }
 
 
   getAllResourceEls() {
-    return findElements(this.el, '.fc-col-header-cell[data-resource-id]')
+    return findElements(this.el, '.fc-col-header-cell.fc-resource')
   }
 
 
@@ -45,7 +45,7 @@ export default class ResourceDayHeaderWrapper {
 
 
   getDowEls(dayAbbrev) {
-    return findElements(this.el, `.fc-col-header-cell.fc-${dayAbbrev}`)
+    return findElements(this.el, `.fc-col-header-cell.fc-day-${dayAbbrev}`)
   }
 
 }

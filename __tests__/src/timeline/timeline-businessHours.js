@@ -15,18 +15,19 @@ describe('timeline businessHours', function() {
   }, function() {
 
     it('renders when on a day with business hours', function() {
-      initCalendar({
+      let calendar = initCalendar({
         businessHours: {
           startTime: '10:00',
           endTime: '16:00'
         },
         slotDuration: { hours: 1 }
       })
-      expect10to4()
+      let viewWrapper = new TimelineViewWrapper(calendar)
+      expect10to4(viewWrapper)
     })
 
     it('renders all-day on a day completely outside of business hours', function() {
-      initCalendar({
+      let calendar = initCalendar({
         now: '2016-02-14', // weekend
         businessHours: {
           startTime: '10:00',
@@ -34,14 +35,15 @@ describe('timeline businessHours', function() {
         },
         slotDuration: { hours: 1 }
       })
+      let viewWrapper = new TimelineViewWrapper(calendar)
 
-      expect(isTimelineNonBusinessSegsRendered([
+      expect(isTimelineNonBusinessSegsRendered(viewWrapper, [
         { start: '2016-02-14T00:00', end: '2016-02-15T00:00' }
       ])).toBe(true)
     })
 
     it('renders once even with resources', function() {
-      initCalendar({
+      let calendar = initCalendar({
         defaultView: 'resourceTimelineDay',
         resources: [
           { id: 'a', title: 'a' },
@@ -50,12 +52,12 @@ describe('timeline businessHours', function() {
         ],
         businessHours: true
       })
-
-      expect9to5()
+      let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+      expect9to5(viewWrapper)
     })
 
     it('render differently with resource override', function() {
-      initCalendar({
+      let calendar = initCalendar({
         defaultView: 'resourceTimelineDay',
         resources: [
           { id: 'a', title: 'a' },
@@ -64,18 +66,18 @@ describe('timeline businessHours', function() {
         ],
         businessHours: true,
       })
-
-      expectResourceOverride()
+      let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+      expectResourceOverride(viewWrapper)
     })
 
-    it('renders dynamically with resource override', function() {
+    it('renders dynamically with resource override', function(done) {
       let specialResourceInput = {
         id: 'b',
         title: 'b',
         businessHours: { startTime: '02:00', endTime: '22:00' }
       }
 
-      initCalendar({
+      let calendar = initCalendar({
         defaultView: 'resourceTimelineDay',
         resources: [
           { id: 'a', title: 'a' },
@@ -84,18 +86,20 @@ describe('timeline businessHours', function() {
         ],
         businessHours: true
       })
+      let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
-      expectResourceOverride()
+      expectResourceOverride(viewWrapper)
       setTimeout(function() {
-        currentCalendar.getResourceById(specialResourceInput.id).remove()
-        expect9to5()
-        currentCalendar.addResource(specialResourceInput)
-        expectResourceOverride()
+        calendar.getResourceById(specialResourceInput.id).remove()
+        expect9to5(viewWrapper)
+        calendar.addResource(specialResourceInput)
+        expectResourceOverride(viewWrapper)
+        done()
       })
     })
 
     it('renders dynamically with resource override amidst other custom rows', function(done) {
-      initCalendar({
+      let calendar = initCalendar({
         defaultView: 'resourceTimelineDay',
         resources: [
           {
@@ -106,15 +110,16 @@ describe('timeline businessHours', function() {
         ],
         businessHours: true
       })
+      let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
-      expect(isResourceTimelineNonBusinessSegsRendered([
+      expect(isResourceTimelineNonBusinessSegsRendered(viewWrapper, [
         { resourceId: 'a', start: '2016-02-15T00:00', end: '2016-02-15T03:00' },
         { resourceId: 'a', start: '2016-02-15T21:00', end: '2016-02-16T00:00' }
       ])).toBe(true)
 
       setTimeout(function() {
-        currentCalendar.addResource({ id: 'b', title: 'b', businessHours: { startTime: '02:00', endTime: '22:00' } })
-        expect(isResourceTimelineNonBusinessSegsRendered([
+        calendar.addResource({ id: 'b', title: 'b', businessHours: { startTime: '02:00', endTime: '22:00' } })
+        expect(isResourceTimelineNonBusinessSegsRendered(viewWrapper, [
           { resourceId: 'a', start: '2016-02-15T00:00', end: '2016-02-15T03:00' },
           { resourceId: 'a', start: '2016-02-15T21:00', end: '2016-02-16T00:00' },
           { resourceId: 'b', start: '2016-02-15T00:00', end: '2016-02-15T02:00' },
@@ -136,12 +141,13 @@ describe('timeline businessHours', function() {
       ],
       businessHours: true
     })
+    let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
-    expectResourceOverride()
+    expectResourceOverride(viewWrapper)
     calendar.changeView('dayGridMonth')
 
     calendar.changeView('resourceTimelineDay')
-    expectResourceOverride()
+    expectResourceOverride(viewWrapper)
   })
 
   describe('when resource initially contracted', function() {
@@ -163,12 +169,12 @@ describe('timeline businessHours', function() {
 
       it('renders when expanded', function(done) {
         let calendar = initCalendar()
-        let viewModel = new ResourceTimelineViewWrapper(calendar)
+        let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
-        viewModel.dataGrid.clickFirstExpander()
+        viewWrapper.dataGrid.clickFirstExpander()
 
         setTimeout(function() { // wait for animation to finish
-          expect(isResourceTimelineNonBusinessSegsRendered([
+          expect(isResourceTimelineNonBusinessSegsRendered(viewWrapper, [
             { resourceId: 'a1', start: '2016-02-15T00:00', end: '2016-02-15T02:00' },
             { resourceId: 'a1', start: '2016-02-15T22:00', end: '2016-02-16T00:00' }
           ])).toBe(true)
@@ -179,24 +185,24 @@ describe('timeline businessHours', function() {
   })
 
 
-  function expect9to5() {
-    expect(isTimelineNonBusinessSegsRendered([
+  function expect9to5(viewWrapper) {
+    expect(isTimelineNonBusinessSegsRendered(viewWrapper, [
       { start: '2016-02-15T00:00', end: '2016-02-15T09:00' },
       { start: '2016-02-15T17:00', end: '2016-02-16T00:00' }
     ])).toBe(true)
   }
 
 
-  function expect10to4() {
-    expect(isTimelineNonBusinessSegsRendered([
+  function expect10to4(viewWrapper) {
+    expect(isTimelineNonBusinessSegsRendered(viewWrapper, [
       { start: '2016-02-15T00:00', end: '2016-02-15T10:00' },
       { start: '2016-02-15T16:00', end: '2016-02-16T00:00' }
     ])).toBe(true)
   }
 
 
-  function expectResourceOverride() {
-    expect(isResourceTimelineNonBusinessSegsRendered([
+  function expectResourceOverride(viewWrapper) {
+    expect(isResourceTimelineNonBusinessSegsRendered(viewWrapper, [
       { resourceId: 'a', start: '2016-02-15T00:00', end: '2016-02-15T09:00' },
       { resourceId: 'a', start: '2016-02-15T17:00', end: '2016-02-16T00:00' },
       { resourceId: 'b', start: '2016-02-15T00:00', end: '2016-02-15T02:00' },
@@ -207,27 +213,28 @@ describe('timeline businessHours', function() {
   }
 
 
-  function isTimelineNonBusinessSegsRendered(segs) {
-    let timelineGridWrapper = new TimelineViewWrapper(currentCalendar).timelineGrid
+  function isTimelineNonBusinessSegsRendered(viewWrapper, segs) {
+    let timelineGridWrapper = viewWrapper.timelineGrid
+    let baseGrid = timelineGridWrapper.base || timelineGridWrapper // :(
 
     return doElsMatchSegs(
-      timelineGridWrapper.getNonBusinessDayEls(),
+      baseGrid.getNonBusinessDayEls(),
       segs,
       (seg) => {
-        return timelineGridWrapper.getRect(seg.start, seg.end)
+        return baseGrid.getRect(seg.start, seg.end)
       }
     )
   }
 
 
-  function isResourceTimelineNonBusinessSegsRendered(segs) {
-    let timelineGridWrapper = new ResourceTimelineViewWrapper(currentCalendar).timelineGrid
+  function isResourceTimelineNonBusinessSegsRendered(viewWrapper, segs) {
+    let resourceTimelineGridWrapper = viewWrapper.timelineGrid
 
     return doElsMatchSegs(
-      timelineGridWrapper.getNonBusinessDayEls(),
+      resourceTimelineGridWrapper.getNonBusinessDayEls(),
       segs,
       (seg) => {
-        return timelineGridWrapper.getRect(seg.resourceId, seg.start, seg.end)
+        return resourceTimelineGridWrapper.getRect(seg.resourceId, seg.start, seg.end) // needs resource
       }
     )
   }

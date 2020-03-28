@@ -29,11 +29,11 @@ describe('timeline resource grouping', function() {
     let rows = dataGridWrapper.getRowInfo()
 
     expect(rows.length).toBe(5)
-    expect(rows[0].type).toBe('divider')
+    expect(rows[0].type).toBe('group')
     expect(rows[0].text).toBe('1')
     expect(rows[1].resourceId).toBe('A')
     expect(rows[2].resourceId).toBe('B')
-    expect(rows[3].type).toBe('divider')
+    expect(rows[3].type).toBe('group')
     expect(rows[3].text).toBe('2')
     expect(rows[4].resourceId).toBe('C')
   })
@@ -90,8 +90,8 @@ describe('timeline resource grouping', function() {
 
   it('renders base off resourceGroupLabelContent function', function() {
     let calendar = initCalendar({
-      resourceGroupLabelContent(groupId) {
-        return `Group ${groupId}`
+      resourceGroupLabelContent(arg) {
+        return `Group ${arg.groupValue}`
       }
     })
 
@@ -99,9 +99,9 @@ describe('timeline resource grouping', function() {
     let rows = dataGridWrapper.getRowInfo()
 
     expect(rows.length).toBe(5)
-    expect(rows[0].type).toBe('divider')
+    expect(rows[0].type).toBe('group')
     expect(rows[0].text).toBe('Group 1')
-    expect(rows[3].type).toBe('divider')
+    expect(rows[3].type).toBe('group')
     expect(rows[3].text).toBe('Group 2')
   })
 

@@ -14,8 +14,8 @@ describe('timeline whole days', function() {
     let calendar = initCalendar()
     let viewWrapper = new TimelineViewWrapper(calendar)
 
-    expect(viewWrapper.header.getDateElByDate('2016-11-05')).toHaveClass(CalendarWrapper.DOW_CLASSNAMES[6])
-    expect(viewWrapper.timelineGrid.getSlatElByDate('2016-11-05')).toHaveClass(CalendarWrapper.DOW_CLASSNAMES[6])
+    expect(viewWrapper.header.getDateElByDate('2016-11-05')).toHaveClass(CalendarWrapper.DOW_SLOT_CLASSNAMES[6])
+    expect(viewWrapper.timelineGrid.getSlatElByDate('2016-11-05')).toHaveClass(CalendarWrapper.DOW_SLOT_CLASSNAMES[6])
   })
 
 
@@ -23,8 +23,8 @@ describe('timeline whole days', function() {
     let calendar = initCalendar()
     let viewWrapper = new TimelineViewWrapper(calendar)
 
-    expect(viewWrapper.header.getDateElByDate('2016-11-05')).toHaveClass(CalendarWrapper.TODAY_CLASSNAME)
-    expect(viewWrapper.timelineGrid.getSlatElByDate('2016-11-05')).toHaveClass(CalendarWrapper.TODAY_CLASSNAME)
+    expect(viewWrapper.header.getDateElByDate('2016-11-05')).toHaveClass(CalendarWrapper.SLOT_TODAY_CLASSNAME)
+    expect(viewWrapper.timelineGrid.getSlatElByDate('2016-11-05')).toHaveClass(CalendarWrapper.SLOT_TODAY_CLASSNAME)
   })
 
 
@@ -32,8 +32,8 @@ describe('timeline whole days', function() {
     let calendar = initCalendar()
     let viewWrapper = new TimelineViewWrapper(calendar)
 
-    expect(viewWrapper.header.getDateElByDate('2016-11-04')).toHaveClass(CalendarWrapper.DAY_PAST_CLASSNAME)
-    expect(viewWrapper.timelineGrid.getSlatElByDate('2016-11-04')).toHaveClass(CalendarWrapper.DAY_PAST_CLASSNAME)
+    expect(viewWrapper.header.getDateElByDate('2016-11-04')).toHaveClass(CalendarWrapper.SLOT_PAST_CLASSNAME)
+    expect(viewWrapper.timelineGrid.getSlatElByDate('2016-11-04')).toHaveClass(CalendarWrapper.SLOT_PAST_CLASSNAME)
   })
 
 
@@ -41,8 +41,8 @@ describe('timeline whole days', function() {
     let calendar = initCalendar()
     let viewWrapper = new TimelineViewWrapper(calendar)
 
-    expect(viewWrapper.header.getDateElByDate('2016-11-07')).toHaveClass(CalendarWrapper.DAY_FUTURE_CLASSNAME)
-    expect(viewWrapper.timelineGrid.getSlatElByDate('2016-11-07')).toHaveClass(CalendarWrapper.DAY_FUTURE_CLASSNAME)
+    expect(viewWrapper.header.getDateElByDate('2016-11-07')).toHaveClass(CalendarWrapper.SLOT_FUTURE_CLASSNAME)
+    expect(viewWrapper.timelineGrid.getSlatElByDate('2016-11-07')).toHaveClass(CalendarWrapper.SLOT_FUTURE_CLASSNAME)
   })
 
 })

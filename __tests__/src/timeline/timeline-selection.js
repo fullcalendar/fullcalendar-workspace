@@ -1,4 +1,5 @@
 import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+import TimelineViewWrapper from '../lib/wrappers/TimelineViewWrapper'
 
 describe('timeline selection', function() {
   pushOptions({
@@ -43,7 +44,7 @@ describe('timeline selection', function() {
                 }
               })
 
-              let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
+              let timelineGridWrapper = new TimelineViewWrapper(calendar).timelineGrid
               let slatEl = timelineGridWrapper.getSlatElByDate('2015-11-28T04:00:00')
 
               $(slatEl).simulate('drag', {

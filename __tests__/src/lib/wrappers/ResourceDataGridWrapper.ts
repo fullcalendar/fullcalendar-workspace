@@ -52,6 +52,17 @@ export default class ResourceDataGridWrapper {
   }
 
 
+  getResourceCellEls(resourceId) {
+    let selector = '.fc-datagrid-cell.fc-resource'
+
+    if (resourceId) {
+      selector += `[data-resource-id="${resourceId}"]`
+    }
+
+    return findElements(this.el, selector)
+  }
+
+
   getAllRows() {
     return findElements(this.el, 'tr')
   }
@@ -68,7 +79,7 @@ export default class ResourceDataGridWrapper {
 
 
   getExpanderEl(resourceId) {
-    return this.el.querySelector(`tr[data-resource-id="${resourceId}"] .fc-datagrid-expander`)
+    return this.getResourceCellEl(resourceId).querySelector('.fc-datagrid-expander')
   }
 
 
