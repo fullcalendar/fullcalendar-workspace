@@ -47,10 +47,8 @@ export default class TimelineCoords { // TODO: rename to "slat" coords?
   }
 
 
-  safeDateToCoord(date: DateMarker | null) {
-    if (date != null && rangeContainsMarker(this.dateProfile.currentRange, date)) {
-      return this.dateToCoord(date)
-    }
+  isDateInRange(date: DateMarker) {
+    return rangeContainsMarker(this.dateProfile.currentRange, date)
   }
 
 

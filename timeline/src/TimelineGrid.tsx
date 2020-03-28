@@ -64,13 +64,13 @@ export default class TimelineGrid extends DateComponent<TimelinGridProps, Timeli
             eventResize={props.eventResize}
             timelineCoords={state.coords}
           />,
-          (context.options.nowIndicator && state.coords) &&
+          (context.options.nowIndicator && state.coords && state.coords.isDateInRange(nowDate)) &&
             <NowIndicatorRoot isAxis={false} date={nowDate}>
               {(rootElRef, classNames, innerElRef, innerContent) => (
                 <div
                   ref={rootElRef}
                   className={[ 'fc-timeline-now-indicator-line' ].concat(classNames).join(' ')}
-                  style={{ left: state.coords.safeDateToCoord(nowDate) }}
+                  style={{ left: state.coords.dateToCoord(nowDate) }}
                 >{innerContent}</div>
               )}
             </NowIndicatorRoot>

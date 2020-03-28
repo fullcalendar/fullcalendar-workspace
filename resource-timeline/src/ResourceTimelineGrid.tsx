@@ -108,13 +108,13 @@ export default class ResourceTimelineGrid extends DateComponent<ResourceTimeline
             onRowCoords={this.handleRowCoords}
             onRowHeightChange={props.onRowHeightChange}
           />,
-          (context.options.nowIndicator && state.slatCoords) &&
+          (context.options.nowIndicator && state.slatCoords && state.slatCoords.isDateInRange(nowDate)) &&
             <NowIndicatorRoot isAxis={false} date={nowDate}>
               {(rootElRef, classNames, innerElRef, innerContent) => (
                 <div
                   ref={rootElRef}
                   class={[ 'fc-timeline-now-indicator-line' ].concat(classNames).join(' ')}
-                  style={{ left: state.slatCoords.safeDateToCoord(nowDate) }}
+                  style={{ left: state.slatCoords.dateToCoord(nowDate) }}
                 >{innerContent}</div>
               )}
             </NowIndicatorRoot>

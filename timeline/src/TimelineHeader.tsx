@@ -46,13 +46,13 @@ export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
               />
             </tbody>
           </table>
-          {(context.options.nowIndicator && props.slatCoords) &&
+          {(context.options.nowIndicator && props.slatCoords && props.slatCoords.isDateInRange(nowDate)) &&
             <NowIndicatorRoot isAxis={true} date={nowDate}>
               {(rootElRef, classNames, innerElRef, innerContent) => (
                 <div
                   ref={rootElRef}
                   className={[ 'fc-timeline-now-indicator-arrow' ].concat(classNames).join(' ')}
-                  style={{ left: props.slatCoords.safeDateToCoord(nowDate) }}
+                  style={{ left: props.slatCoords.dateToCoord(nowDate) }}
                 >{innerContent}</div>
               )}
             </NowIndicatorRoot>
