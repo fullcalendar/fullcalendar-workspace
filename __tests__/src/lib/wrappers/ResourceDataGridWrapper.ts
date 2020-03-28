@@ -96,7 +96,7 @@ function buildResourceInfoFromCell(cellEl) {
   return {
     type: 'resource',
     resourceId: cellEl.getAttribute('data-resource-id'),
-    text: $(cellEl.querySelector('span:not(.fc-datagrid-expander)')).text(),
+    text: $(cellEl.querySelector('.fc-datagrid-cell-main')).text(),
     cellEl,
     rowEl: cellEl.parentNode
   }
@@ -106,7 +106,7 @@ function buildResourceInfoFromCell(cellEl) {
 function buildGroupInfoFromCell(cellEl) {
   return {
     type: 'group',
-    text: $(cellEl.querySelector('span:not(.fc-datagrid-expander)')).text(),
+    text: $(cellEl.querySelector('.fc-datagrid-cell-main')).text(),
     cellEl,
     rowEl: cellEl.parentNode
   }

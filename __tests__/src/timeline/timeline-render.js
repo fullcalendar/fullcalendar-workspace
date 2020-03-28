@@ -50,13 +50,13 @@ describe('timeline rendering', function() {
     ).toEqualDate('2017-10-23T00:00:00') // start-of-week is a Monday, lv
   })
 
-  it('call dayRender for each day', function() {
+  it('call slotLabelDidMount for each day', function() {
     let callCnt = 0
 
     initCalendar({
       defaultView: 'timelineWeek',
       slotDuration: { days: 1 },
-      dayRender(arg) {
+      slotLabelDidMount(arg) {
         expect(arg.date instanceof Date).toBe(true)
         expect(arg.el instanceof HTMLElement).toBe(true)
         expect(typeof arg.view).toBe('object')
@@ -67,13 +67,13 @@ describe('timeline rendering', function() {
     expect(callCnt).toBe(7)
   })
 
-  it('call dayRender for each hour', function() {
+  it('call slotLabelDidMount for each hour', function() {
     let callCnt = 0
 
     initCalendar({
       defaultView: 'timelineDay',
       slotDuration: { hours: 1 },
-      dayRender(arg) {
+      slotLabelDidMount(arg) {
         expect(startOfDay(arg.date)).toEqualDate('2017-10-27')
         callCnt++
       }

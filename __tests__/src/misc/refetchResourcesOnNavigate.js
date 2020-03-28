@@ -49,7 +49,7 @@ describe('refetchResourcesOnNavigate', function() {
       expect(settings.getResourceTitles(calendar)).toEqual([ 'resource a-1', 'resource b-1' ])
       expect($('.day1event').length).toBe(2)
 
-      currentCalendar.next()
+      calendar.next()
 
       expect(settings.getResourceTitles(calendar)).toEqual([ 'resource a-2', 'resource b-2' ])
       expect($('.day1event').length).toBe(0)
@@ -59,46 +59,8 @@ describe('refetchResourcesOnNavigate', function() {
 
     it('refetches async resources on quick navigate', function(done) {
       let fetchCnt = 0
-      let receiveCnt = 0
 
-      initCalendar({
-        resources(arg, callback) {
-          fetchCnt += 1
-          setTimeout(function() {
-            callback([
-              { title: `resource a-${fetchCnt}`, id: 'a' },
-              { title: `resource b-${fetchCnt}`, id: 'b' }
-            ])
-          }, 500)
-        },
-        _resourcesRendered() {
-          receiveCnt++
-
-          if (receiveCnt === 1) {
-            setTimeout(function() {
-              currentCalendar.next()
-
-              setTimeout(function() {
-                currentCalendar.next()
-              }, 100) // before the refetch returns
-            }, 0)
-
-          } else if (receiveCnt === 2) {
-            setTimeout(function() {
-              expect(fetchCnt).toBe(3)
-              done()
-            }, 0)
-          }
-        }
-      })
-    })
-
-
-    it('refetches async resources and waits to render events', function(done) {
-      let fetchCnt = 0
-      let receiveCnt = 0
       let calendar = initCalendar({
-
         resources(arg, callback) {
           fetchCnt += 1
           setTimeout(function() {
@@ -107,31 +69,33 @@ describe('refetchResourcesOnNavigate', function() {
               { title: `resource b-${fetchCnt}`, id: 'b' }
             ])
           }, 100)
-        },
+        }
+      })
 
-        _resourcesRendered() {
-          receiveCnt += 1
+      calendar.next()
+      setTimeout(function() {
 
-          // step 2
-          if (receiveCnt === 1) {
-            setTimeout(function() {
-              expect(settings.getResourceTitles(calendar)).toEqual([ 'resource a-1', 'resource b-1' ])
-              expect($('.day1event').length).toBe(2)
-              currentCalendar.next()
-            }, 0)
+        calendar.next()
+        setTimeout(function() {
+          expect(fetchCnt).toBe(3)
+          done()
 
-          // step 3
-          } else if (receiveCnt === 2) {
-            // if the 2nd day's events rendered without waiting for the new resources,
-            // then you'd still have resource a-1 and b-1
+        }, 200) // after everything
+      }, 50) // before the refetch returns
+    })
 
-            setTimeout(function() {
-              expect(settings.getResourceTitles(calendar)).toEqual([ 'resource a-2', 'resource b-2' ])
-              expect($('.day1event').length).toBe(0)
-              expect($('.day2event').length).toBe(2)
-              done()
-            }, 0)
-          }
+
+    it('refetches async resources and waits to render events', function(done) {
+      let fetchCnt = 0
+      let calendar = initCalendar({
+        resources(arg, callback) {
+          fetchCnt += 1
+          setTimeout(function() {
+            callback([
+              { title: `resource a-${fetchCnt}`, id: 'a' },
+              { title: `resource b-${fetchCnt}`, id: 'b' }
+            ])
+          }, 100)
         }
       })
 
@@ -139,12 +103,28 @@ describe('refetchResourcesOnNavigate', function() {
       expect(fetchCnt).toBe(1)
       expect(settings.getResourceTitles(calendar)).toEqual([ ])
       expect($('.day1event').length).toBe(0)
+
+      // step 2 (wait for initial fetch to finish)
+      setTimeout(function() {
+        expect(settings.getResourceTitles(calendar)).toEqual([ 'resource a-1', 'resource b-1' ])
+        expect($('.day1event').length).toBe(2)
+
+        // step 3
+        calendar.next()
+        setTimeout(function() {
+
+          expect(settings.getResourceTitles(calendar)).toEqual([ 'resource a-2', 'resource b-2' ])
+          expect($('.day1event').length).toBe(0)
+          expect($('.day2event').length).toBe(2)
+          done()
+
+        }, 101)
+      }, 101)
     })
 
 
     it('does resources-function re-call for each navigation', function(done) {
       let fetchCnt = 0
-      let receiveCnt = 0
       let calendar = initCalendar({
         resources(arg, callback) {
           fetchCnt += 1
@@ -154,24 +134,20 @@ describe('refetchResourcesOnNavigate', function() {
               { title: `resource b-${fetchCnt}`, id: 'b' }
             ])
           }, 100)
-        },
-        _resourcesRendered() {
-          receiveCnt += 1
-
-          if (receiveCnt === 1) {
-            setTimeout(function() {
-              expect(settings.getResourceTitles(calendar)).toEqual([ 'resource a-1', 'resource b-1' ])
-              currentCalendar.next()
-            }, 0)
-
-          } else if (receiveCnt === 2) {
-            setTimeout(function() {
-              expect(settings.getResourceTitles(calendar)).toEqual([ 'resource a-2', 'resource b-2' ])
-              done()
-            }, 0)
-          }
         }
       })
+
+      setTimeout(function() {
+        expect(settings.getResourceTitles(calendar)).toEqual([ 'resource a-1', 'resource b-1' ])
+
+        currentCalendar.next()
+        setTimeout(function() {
+
+          expect(settings.getResourceTitles(calendar)).toEqual([ 'resource a-2', 'resource b-2' ])
+          done()
+
+        }, 101)
+      }, 101)
     })
   })
 
@@ -214,7 +190,6 @@ describe('refetchResourcesOnNavigate', function() {
 
   it('affects event rendering in non-resource views', function(done) {
     let fetchCnt = 0
-    let renderCnt = 0
 
     initCalendar({
       defaultView: 'timeGridDay',
@@ -227,44 +202,39 @@ describe('refetchResourcesOnNavigate', function() {
             { id: 'b', eventClassName: `resource-b-${fetchCnt}` }
           ])
         }, 100)
-      },
-
-      _eventsPositioned() {
-        renderCnt += 1
-
-        // step 1 (events don't know about resource classNames yet)
-        if (renderCnt === 1) {
-          expect(fetchCnt).toBe(1)
-          expect($('.resource-a-1').length).toBe(0)
-          expect($('.resource-b-1').length).toBe(0)
-
-        // step 2 (after resource fetch happens)
-        } else if (renderCnt === 2) {
-          setTimeout(function() {
-            expect(fetchCnt).toBe(1)
-            expect($('.resource-a-1').length).toBe(1)
-            expect($('.resource-b-1').length).toBe(1)
-            currentCalendar.next()
-          }, 200) // after the first fetch
-
-        // step 3
-        } else if (renderCnt === 3) {
-          setTimeout(function() {
-            expect(fetchCnt).toBe(2)
-            expect($('.resource-a-1').length).toBe(0)
-            expect($('.resource-b-1').length).toBe(0)
-            expect($('.resource-a-2').length).toBe(1)
-            expect($('.resource-b-2').length).toBe(1)
-            done()
-          }, 200) // after the second fetch
-        }
       }
     })
+
+    // step 1 (events don't know about resource classNames yet)
+    expect(fetchCnt).toBe(1)
+    expect($('.resource-a-1').length).toBe(0)
+    expect($('.resource-b-1').length).toBe(0)
+
+    // step 2 (after resource fetch happens)
+    setTimeout(function() {
+
+      expect(fetchCnt).toBe(1)
+      expect($('.resource-a-1').length).toBe(1)
+      expect($('.resource-b-1').length).toBe(1)
+      currentCalendar.next()
+
+      // step 3 (after fetch from next() happens)
+      setTimeout(function() {
+
+        expect(fetchCnt).toBe(2)
+        expect($('.resource-a-1').length).toBe(0)
+        expect($('.resource-b-1').length).toBe(0)
+        expect($('.resource-a-2').length).toBe(1)
+        expect($('.resource-b-2').length).toBe(1)
+        done()
+
+      }, 101)
+    }, 101)
   })
 
 
   it('resources function will receive view start/end/timezone', function(done) {
-    initCalendar({
+    let calendar = initCalendar({
       defaultView: 'resourceTimelineWeek',
       now: '2017-02-12',
       timeZone: 'America/Chicago',
@@ -273,24 +243,21 @@ describe('refetchResourcesOnNavigate', function() {
         expect(arg.end).toEqualDate('2017-02-19')
         expect(arg.timeZone).toBe('America/Chicago')
         callback([])
-      },
-      _resourcesRendered() {
-        let resources = currentCalendar.getResources()
-        expect(resources.length).toBe(0)
-        setTimeout(done)
       }
     })
+
+    let resources = calendar.getResources()
+    expect(resources.length).toBe(0)
+    setTimeout(done)
   })
 
 
-  it('will cause a resource function to receive start/end/timezone after navigate', function(done) {
+  it('will cause a resource function to receive start/end/timezone after navigate', function() {
     let fetchCnt = 0
-
-    initCalendar({
+    let calendar = initCalendar({
       defaultView: 'resourceTimelineWeek',
       now: '2017-02-12',
       timeZone: 'America/Chicago',
-
       resources(arg, callback) {
         fetchCnt += 1
 
@@ -304,18 +271,11 @@ describe('refetchResourcesOnNavigate', function() {
 
         expect(arg.timeZone).toBe('America/Chicago')
         callback([])
-      },
-
-      _resourcesRendered() {
-        if (fetchCnt === 1) {
-          setTimeout(function() {
-            currentCalendar.next()
-          })
-        } else if (fetchCnt === 2) {
-          setTimeout(done)
-        }
       }
     })
+
+    calendar.next()
+    expect(fetchCnt).toBe(2)
   })
 
 

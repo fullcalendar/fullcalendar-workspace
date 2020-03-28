@@ -13,98 +13,94 @@ describe('event resources', function() {
   })
 
   it('processes multiple resources', function(done) {
-    initCalendar({
+    let calendar = initCalendar({
       resources: [
         { id: 1, title: 'room 1' },
         { id: 2, title: 'room 2' }
-      ],
-      _resourcesRendered() {
-        let resources = currentCalendar.getResources()
-        expect(resources.length).toBe(2)
-        expect(resources[0].id).toBe('1')
-        expect(resources[1].id).toBe('2')
-        expect(resources[0].title).toBe('room 1')
-        expect(resources[1].title).toBe('room 2')
-        setTimeout(done)
-      }
+      ]
     })
+
+    let resources = calendar.getResources()
+    expect(resources.length).toBe(2)
+    expect(resources[0].id).toBe('1')
+    expect(resources[1].id).toBe('2')
+    expect(resources[0].title).toBe('room 1')
+    expect(resources[1].title).toBe('room 2')
+    setTimeout(done)
   })
 
   it('will not process colliding IDs', function(done) {
-    initCalendar({
+    let calendar = initCalendar({
       resources: [
         { id: 1, title: 'room 1' },
         { id: 2, title: 'room 2' },
         { id: 2, title: 'room 2' }
-      ],
-      _resourcesRendered() {
-        // TODO: expect a console warning
-        let resources = currentCalendar.getResources()
-        expect(resources.length).toBe(2)
-        expect(resources[0].id).toBe('1')
-        expect(resources[1].id).toBe('2')
-        expect(resources[0].title).toBe('room 1')
-        expect(resources[1].title).toBe('room 2')
-        setTimeout(done)
-      }
+      ]
     })
+
+    // TODO: expect a console warning
+    let resources = calendar.getResources()
+    expect(resources.length).toBe(2)
+    expect(resources[0].id).toBe('1')
+    expect(resources[1].id).toBe('2')
+    expect(resources[0].title).toBe('room 1')
+    expect(resources[1].title).toBe('room 2')
+    setTimeout(done)
   })
 
   it('will process resources without IDs', function(done) {
-    initCalendar({
+    let calendar = initCalendar({
       resources: [
         { title: 'room 1' },
         { title: 'room 2' }
-      ],
-      _resourcesRendered() {
-        let resources = currentCalendar.getResources()
-        expect(resources.length).toBe(2)
-        expect(resources[0].title).toBe('room 1')
-        expect(resources[1].title).toBe('room 2')
-        setTimeout(done)
-      }
+      ]
     })
+
+    let resources = calendar.getResources()
+    expect(resources.length).toBe(2)
+    expect(resources[0].title).toBe('room 1')
+    expect(resources[1].title).toBe('room 2')
+    setTimeout(done)
   })
 
   it('will allow nested children', function(done) {
-    initCalendar({
+    let calendar = initCalendar({
       resources: [
         { id: 'a',
           title: 'room a',
           children: [
             { id: 'a1', title: 'room a1' }
-          ] }
-      ],
-      _resourcesRendered() {
-        let resources = currentCalendar.getTopLevelResources()
-        expect(resources.length).toBe(1)
-        expect(resources[0].title).toBe('room a')
-
-        let children = resources[0].getChildren()
-        expect(children.length).toBe(1)
-        expect(children[0].title).toBe('room a1')
-        setTimeout(done)
-      }
+          ]
+        }
+      ]
     })
+
+    let resources = calendar.getTopLevelResources()
+    expect(resources.length).toBe(1)
+    expect(resources[0].title).toBe('room a')
+
+    let children = resources[0].getChildren()
+    expect(children.length).toBe(1)
+    expect(children[0].title).toBe('room a1')
+    setTimeout(done)
   })
 
   it('will allow flat children', function(done) {
-    initCalendar({
+    let calendar = initCalendar({
       resources: [
         { id: 'a', title: 'room a' },
         { id: 'a1', title: 'room a1', parentId: 'a' }
-      ],
-      _resourcesRendered() {
-        let resources = currentCalendar.getTopLevelResources()
-        expect(resources.length).toBe(1)
-        expect(resources[0].title).toBe('room a')
-
-        let children = resources[0].getChildren()
-        expect(children.length).toBe(1)
-        expect(children[0].title).toBe('room a1')
-        setTimeout(done)
-      }
+      ]
     })
+
+    let resources = calendar.getTopLevelResources()
+    expect(resources.length).toBe(1)
+    expect(resources[0].title).toBe('room a')
+
+    let children = resources[0].getChildren()
+    expect(children.length).toBe(1)
+    expect(children[0].title).toBe('room a1')
+    setTimeout(done)
   })
 
   describe('when using a JSON feed', function() {
@@ -129,39 +125,39 @@ describe('event resources', function() {
           ]))
       })
 
-      initCalendar({
-        resources: 'my-feed.json',
-        _resourcesRendered() {
-          let resources = currentCalendar.getResources()
-          expect(resources.length).toBe(2)
-          expect(resources[0].id).toBe('1')
-          expect(resources[1].id).toBe('2')
-          expect(resources[0].title).toBe('room 1')
-          expect(resources[1].title).toBe('room 2')
-          setTimeout(done)
-        }
+      let calendar = initCalendar({
+        resources: 'my-feed.json'
       })
-    })
-  })
 
-  it('will read resources from a function', function(done) {
-    initCalendar({
-      resources(arg, callback) {
-        callback([
-          { id: 1, title: 'room 1' },
-          { id: 2, title: 'room 2' }
-        ])
-      },
-      _resourcesRendered() {
-        let resources = currentCalendar.getResources()
+      setTimeout(function() {
+        let resources = calendar.getResources()
         expect(resources.length).toBe(2)
         expect(resources[0].id).toBe('1')
         expect(resources[1].id).toBe('2')
         expect(resources[0].title).toBe('room 1')
         expect(resources[1].title).toBe('room 2')
         setTimeout(done)
+      }, 0)
+    })
+  })
+
+  it('will read resources from a function', function(done) {
+    let calendar = initCalendar({
+      resources(arg, callback) {
+        callback([
+          { id: 1, title: 'room 1' },
+          { id: 2, title: 'room 2' }
+        ])
       }
     })
+
+    let resources = calendar.getResources()
+    expect(resources.length).toBe(2)
+    expect(resources[0].id).toBe('1')
+    expect(resources[1].id).toBe('2')
+    expect(resources[0].title).toBe('room 1')
+    expect(resources[1].title).toBe('room 2')
+    setTimeout(done)
   })
 
   it('will parse event style props', function() {

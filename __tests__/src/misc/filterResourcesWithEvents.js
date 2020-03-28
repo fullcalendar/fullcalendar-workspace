@@ -20,9 +20,6 @@ describe('filterResourcesWithEvents', function() {
   }
 
   function getResourceFunc(timeout) {
-    if (timeout == null) {
-      timeout = 100
-    }
     return function(arg, callback) {
       setTimeout(function() {
         callback(getResourceArray())
@@ -62,30 +59,24 @@ describe('filterResourcesWithEvents', function() {
 
 
     it('whitelists with async-fetched events', function(done) {
-      let receiveCnt = 0
       let calendar = initCalendar({
-        resources: getResourceFunc(),
+        resources: getResourceFunc(100),
         events: [
           { title: 'event 1', start: '2016-12-04T01:00:00', resourceId: 'b' },
           { title: 'event 2', start: '2016-12-04T02:00:00', resourceId: 'd' }
-        ],
-        _resourcesRendered() {
-          receiveCnt++
-
-          if (receiveCnt === 1) {
-            setTimeout(function() {
-              expect(settings.getResourceIds(calendar)).toEqual([ 'b', 'd' ])
-              expect(calendarWrapper.getEventEls().length).toBe(2)
-              done()
-            }, 0)
-          }
-        }
+        ]
       })
       let calendarWrapper = new CalendarWrapper(calendar)
 
       // no resources/events initially
       expect(settings.getResourceIds(calendar)).toEqual([ ])
       expect(calendarWrapper.getEventEls().length).toBe(0)
+
+      setTimeout(function() {
+        expect(settings.getResourceIds(calendar)).toEqual([ 'b', 'd' ])
+        expect(calendarWrapper.getEventEls().length).toBe(2)
+        done()
+      }, 101)
     })
   })
 

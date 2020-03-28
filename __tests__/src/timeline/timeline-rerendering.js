@@ -1,7 +1,5 @@
 import ResourceTimelineViewWrapper from "../lib/wrappers/ResourceTimelineViewWrapper"
 
-// !!! = tests dont work because the resourceRender hook only fires when a brand new element is created
-
 describe('timeline view rerendering', function() {
 
   describe('events, when rerendering', function() {
@@ -23,16 +21,7 @@ describe('timeline view rerendering', function() {
   })
 
   describe('resources, when rerendering', function() {
-
-    // !!!
-    xit('rerenders the DOM', function(done) {
-      testResourceRerender(function() {
-        currentCalendar.render()
-      }, done)
-    })
-
-    // !!!
-    xit('maintains scroll', function(done) {
+    it('maintains scroll', function(done) {
       testScrollForResources(function() {
         currentCalendar.render()
       }, done)
@@ -40,16 +29,13 @@ describe('timeline view rerendering', function() {
   })
 
   describe('resource, when using refetchResources', function() {
-
-    // !!!
-    xit('rerenders the DOM', function(done) {
+    it('rerenders the DOM', function(done) {
       testResourceRefetch(function() {
         currentCalendar.refetchResources()
       }, done)
     })
 
-    // !!!
-    xit('maintains scroll', function(done) {
+    it('maintains scroll', function(done) {
       testResourceRefetch(function() {
         currentCalendar.refetchResources()
       }, done)
@@ -95,7 +81,7 @@ describe('timeline view rerendering', function() {
     it('doesnt rerender them when navigating dates', function() {
       let resourceRenderCnt = 0
       let calendar = initCalendar({
-        resourceRender() {
+        resourceLabelContent() {
           resourceRenderCnt++
         }
       })
@@ -184,40 +170,6 @@ describe('timeline view rerendering', function() {
 
         expect(scrollEl.scrollTop).toBe(100)
         expect(scrollEl.scrollLeft).toBe(50)
-        doneFunc()
-
-      }, 200) // after fetching
-    }, 200) // after fetching
-  }
-
-
-  function testResourceRerender(actionFunc, doneFunc) {
-    let resourceFetchCnt = 0
-    let calendar = initCalendar({
-      now: '2015-08-07',
-      scrollTime: '00:00',
-      defaultView: 'resourceTimelineDay',
-      events(arg, callback) {
-        setTimeout(function() {
-          callback(getEvents())
-        }, 100)
-      },
-      resources(arg, callback) {
-        setTimeout(function() {
-          callback(getResources(resourceFetchCnt++)) // parameter will affect text
-        }, 100)
-      }
-    })
-
-    let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
-
-    setTimeout(function() {
-
-      actionFunc()
-      setTimeout(function() {
-
-        let cellText = dataGridWrapper.getSpecificResourceInfo('e').text
-        expect(cellText).toBe('Auditorium E0') // didn't request data again
         doneFunc()
 
       }, 200) // after fetching

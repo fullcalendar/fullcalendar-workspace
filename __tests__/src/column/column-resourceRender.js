@@ -1,5 +1,5 @@
 
-describe('column-view resourceRender trigger', function() {
+describe('column-view resourceLabelDidMount trigger', function() { // TODO: rename the file
   pushOptions({
     now: '2016-02-13',
     resources: [
@@ -37,7 +37,7 @@ describe('column-view resourceRender trigger', function() {
         it('fires once per resources', function() {
           let callCnt = 0
           initCalendar({
-            resourceRender(arg) {
+            resourceLabelDidMount(arg) {
               if (arg.resource.id === 'a') {
                 expect(arg.el instanceof HTMLTableCellElement).toBe(true)
                 expect(arg.el).toContainText('Resource A')
@@ -63,7 +63,7 @@ describe('column-view resourceRender trigger', function() {
         it('fires onces per day', function() {
           let callCnt = 0
           initCalendar({
-            resourceRender(arg) {
+            resourceLabelDidMount(arg) {
               if (arg.resource.id === 'a') {
                 expect(arg.el instanceof HTMLTableCellElement).toBe(true)
                 expect(arg.el).toContainText('Resource A')
@@ -83,7 +83,7 @@ describe('column-view resourceRender trigger', function() {
         it('fires onces per day', function() {
           let callCnt = 0
           initCalendar({
-            resourceRender(arg) {
+            resourceLabelDidMount(arg) {
               if (arg.resource.id === 'a') {
                 expect(arg.el instanceof HTMLTableCellElement).toBe(true)
                 expect(arg.el).toContainText('Resource A')

@@ -294,11 +294,11 @@ describe('timeline event resizing', function() {
 
   describe('mirror', function() {
 
-    it('gets passed into eventRender/eventDestroy', function(done) {
-      let mirrorRenderCalls = 0
-      let mirrorDestroyCalls = 0
-      let normalRenderCalls = 0
-      let normalDestroyCalls = 0
+    it('gets passed into render hooks', function(done) {
+      let mirrorMountCnt = 0
+      let mirrorContentCnt = 0
+      let mirrorUnmountCnt = 0
+
       let calendar = initCalendar({
         defaultView: 'resourceTimelineDay',
         eventDragMinDistance: 0, // so mirror will render immediately upon mousedown
@@ -307,18 +307,19 @@ describe('timeline event resizing', function() {
         events: [
           { start: '2015-11-28T01:00:00', end: '2015-11-28T02:00:00', resourceId: 'a' }
         ],
-        eventRender(info) {
+        eventDidMount(info) {
           if (info.isMirror) {
-            mirrorRenderCalls++
-          } else {
-            normalRenderCalls++
+            mirrorMountCnt++
           }
         },
-        eventDestroy(info) {
+        eventContent(info) {
           if (info.isMirror) {
-            mirrorDestroyCalls++
-          } else {
-            normalDestroyCalls++
+            mirrorContentCnt++
+          }
+        },
+        eventWillUnmount(info) {
+          if (info.isMirror) {
+            mirrorUnmountCnt++
           }
         }
       })
@@ -328,11 +329,10 @@ describe('timeline event resizing', function() {
       timelineGridWrapper.resizeEvent(
         timelineGridWrapper.getFirstEventEl(), 'a', '2015-11-28T04:00:00'
       ).then(() => {
-        expect(mirrorRenderCalls).toBe(3)
-        expect(mirrorDestroyCalls).toBe(3)
 
-        expect(normalRenderCalls).toBe(2)
-        expect(normalDestroyCalls).toBe(1)
+        expect(mirrorMountCnt).toBe(1)
+        expect(mirrorContentCnt).toBe(3)
+        expect(mirrorUnmountCnt).toBe(1)
 
         done()
       })

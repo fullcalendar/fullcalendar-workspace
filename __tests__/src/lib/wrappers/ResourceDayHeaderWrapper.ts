@@ -34,10 +34,12 @@ export default class ResourceDayHeaderWrapper {
   }
 
 
+  // TODO: make new func to query a specific resource
+  // some places are abusing this via getResourceInfo()[0]
   getResourceInfo() {
     return this.getAllResourceEls().map((th) => ({
       id: th.getAttribute('data-resource-id'),
-      title: $(th).text()
+      text: $(th).text()
     }))
   }
 

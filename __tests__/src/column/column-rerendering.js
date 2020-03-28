@@ -1,47 +1,127 @@
 import ResourceTimeGridViewWrapper from "../lib/wrappers/ResourceTimeGridViewWrapper"
 import ResourceDayGridViewWrapper from '../lib/wrappers/ResourceDayGridViewWrapper'
 
-// !!! = tests dont work because the resourceRender hook only fires when a brand new element is created
-
 describe('column-based view rerendering', function() {
+  pushOptions({
+    now: '2015-08-07',
+    scrollTime: '00:00',
+    defaultView: 'resourceTimeGridDay',
+  })
+
+  const STOCK_RESOURCES = [
+    { id: 'a', title: 'Auditorium A' },
+    { id: 'b', title: 'Auditorium B' },
+    { id: 'c', title: 'Auditorium C' }
+  ]
+
+  const STOCK_EVENTS = [
+    { id: '1', resourceId: 'b', start: '2015-08-07T02:00:00', end: '2015-08-07T07:00:00', title: 'event 1' },
+    { id: '2', resourceId: 'c', start: '2015-08-07T05:00:00', end: '2015-08-07T22:00:00', title: 'event 2' },
+    { id: '3', resourceId: 'd', start: '2015-08-06', end: '2015-08-08', title: 'event 3' }
+  ]
 
   describe('resource, when rerendering', function() {
-
-    // !!!
-    xit('rerenders the DOM', function(done) {
-      testRerender(function() {
-        currentCalendar.render()
-      }, done)
-    })
-
     it('maintains scroll', function(done) {
-      testScroll(function() {
-        currentCalendar.render()
-      }, done)
+      let calendar = initCalendar({
+        now: '2015-08-07',
+        scrollTime: '00:00',
+        defaultView: 'resourceTimeGridDay',
+        resources(arg, callback) {
+          setTimeout(function() {
+            callback(STOCK_EVENTS)
+          }, 100)
+        },
+        events(arg, callback) {
+          setTimeout(function() {
+            callback(STOCK_RESOURCES)
+          }, 100)
+        }
+      })
+
+      setTimeout(function() {
+        let viewWrapper = new ResourceTimeGridViewWrapper(calendar)
+        let scrollEl = viewWrapper.getScrollEl()
+        scrollEl.scrollTop = 100
+
+        calendar.render() // rerender!
+        expect(scrollEl.scrollTop).toBe(100)
+        done()
+      }, 101)
     })
   })
 
   describe('resource, when using refetchEvents', function() {
-
     it('maintains scroll', function(done) {
-      testScroll(function() {
-        currentCalendar.refetchEvents()
-      }, done)
+      let calendar = initCalendar({
+        now: '2015-08-07',
+        scrollTime: '00:00',
+        defaultView: 'resourceTimeGridDay',
+        resources(arg, callback) {
+          setTimeout(function() {
+            callback(STOCK_RESOURCES)
+          }, 100)
+        },
+        events(arg, callback) {
+          setTimeout(function() {
+            callback(STOCK_EVENTS)
+          }, 100)
+        }
+      })
+
+      setTimeout(function() {
+        let viewWrapper = new ResourceTimeGridViewWrapper(calendar)
+        let scrollEl = viewWrapper.getScrollEl()
+        scrollEl.scrollTop = 100
+
+        calendar.refetchEvents()
+        setTimeout(function() {
+
+          expect(scrollEl.scrollTop).toBe(100)
+          done()
+        }, 101)
+      }, 101)
     })
   })
 
   describe('when using refetchResources', function() {
 
     it('rerenders the DOM', function(done) {
-      testRefetch(function() {
-        currentCalendar.refetchResources()
-      }, done)
-    })
+      let fetchCalls = 0
+      let calendar = initCalendar({
+        now: '2015-08-07',
+        scrollTime: '00:00',
+        defaultView: 'resourceTimeGridDay',
+        resources(arg, callback) {
+          setTimeout(function() {
+            callback([
+              { id: 'a', title: `Auditorium A${fetchCalls++}` },
+              { id: 'b', title: 'Auditorium B' },
+              { id: 'c', title: 'Auditorium C' }
+            ])
+          }, 100)
+        },
+        events(arg, callback) {
+          setTimeout(function() {
+            callback([
+              { id: '1', resourceId: 'b', start: '2015-08-07T02:00:00', end: '2015-08-07T07:00:00', title: 'event 1' },
+              { id: '2', resourceId: 'c', start: '2015-08-07T05:00:00', end: '2015-08-07T22:00:00', title: 'event 2' },
+              { id: '3', resourceId: 'd', start: '2015-08-06', end: '2015-08-08', title: 'event 3' }
+            ])
+          }, 100)
+        }
+      })
 
-    it('maintains scroll', function(done) {
-      testScroll(function() {
-        currentCalendar.refetchResources()
-      }, done)
+      setTimeout(function() {
+        let headerWrapper = new ResourceTimeGridViewWrapper(calendar).header
+        expect(headerWrapper.getResourceInfo()[0].text).toBe('Auditorium A0')
+
+        calendar.refetchResources()
+        setTimeout(function() {
+
+          expect(headerWrapper.getResourceInfo()[0].text).toBe('Auditorium A1')
+          done()
+        }, 101)
+      }, 101)
     })
   })
 
@@ -52,11 +132,7 @@ describe('column-based view rerendering', function() {
     let ViewWrapper = viewName.match(/^resourceDayGrid/) ? ResourceDayGridViewWrapper : ResourceTimeGridViewWrapper
 
     pushOptions({
-      resources: [
-        { id: 'a', title: 'Auditorium A' },
-        { id: 'b', title: 'Auditorium B' },
-        { id: 'c', title: 'Auditorium C' }
-      ]
+      resources: STOCK_RESOURCES
     })
 
     it('adjusts to Resource::remove', function() {
@@ -65,7 +141,7 @@ describe('column-based view rerendering', function() {
 
       expect(headerWrapper.getResourceIds()).toEqual([ 'a', 'b', 'c' ])
 
-      currentCalendar.getResourceById('a').remove()
+      calendar.getResourceById('a').remove()
       expect(headerWrapper.getResourceIds()).toEqual([ 'b', 'c' ])
     })
 
@@ -75,135 +151,12 @@ describe('column-based view rerendering', function() {
 
       expect(headerWrapper.getResourceIds()).toEqual([ 'a', 'b', 'c' ])
 
-      currentCalendar.addResource({
+      calendar.addResource({
         id: 'd',
         title: 'Auditorium D'
       })
       expect(headerWrapper.getResourceIds()).toEqual([ 'a', 'b', 'c', 'd' ])
     })
   })
-
-
-  function testRerender(actionFunc, doneFunc) {
-    let renderCalls = 0
-    initCalendar({
-      now: '2015-08-07',
-      scrollTime: '00:00',
-      defaultView: 'resourceTimeGridDay',
-      resources(arg, callback) {
-        setTimeout(function() {
-          callback([
-            { id: 'a', title: 'Auditorium A' },
-            { id: 'b', title: 'Auditorium B' },
-            { id: 'c', title: 'Auditorium C' }
-          ])
-        }, 100)
-      },
-      events(arg, callback) {
-        setTimeout(function() {
-          callback([
-            { id: '1', resourceId: 'b', start: '2015-08-07T02:00:00', end: '2015-08-07T07:00:00', title: 'event 1' },
-            { id: '2', resourceId: 'c', start: '2015-08-07T05:00:00', end: '2015-08-07T22:00:00', title: 'event 2' },
-            { id: '3', resourceId: 'd', start: '2015-08-06', end: '2015-08-08', title: 'event 3' }
-          ])
-        }, 100)
-      },
-      resourceRender(arg) {
-        $(arg.el).text(arg.resource.title + renderCalls)
-      },
-      _eventsPositioned() {
-        const cellText = $.trim($('th[data-resource-id="a"]').text())
-        renderCalls++
-        if (renderCalls === 1) {
-          expect(cellText).toBe('Auditorium A0')
-          actionFunc()
-        } else if (renderCalls === 2) {
-          expect(cellText).toBe('Auditorium A1')
-          doneFunc()
-        }
-      }
-    })
-  }
-
-
-  function testRefetch(actionFunc, doneFunc) {
-    let renderCalls = 0
-    initCalendar({
-      now: '2015-08-07',
-      scrollTime: '00:00',
-      defaultView: 'resourceTimeGridDay',
-      resources(arg, callback) {
-        setTimeout(function() {
-          callback([
-            { id: 'a', title: `Auditorium A${renderCalls}` },
-            { id: 'b', title: 'Auditorium B' },
-            { id: 'c', title: 'Auditorium C' }
-          ])
-        }, 100)
-      },
-      events(arg, callback) {
-        setTimeout(function() {
-          callback([
-            { id: '1', resourceId: 'b', start: '2015-08-07T02:00:00', end: '2015-08-07T07:00:00', title: 'event 1' },
-            { id: '2', resourceId: 'c', start: '2015-08-07T05:00:00', end: '2015-08-07T22:00:00', title: 'event 2' },
-            { id: '3', resourceId: 'd', start: '2015-08-06', end: '2015-08-08', title: 'event 3' }
-          ])
-        }, 100)
-      },
-      _eventsPositioned() {
-        const cellText = $.trim($('th[data-resource-id="a"]').text())
-        renderCalls++
-        if (renderCalls === 1) {
-          expect(cellText).toBe('Auditorium A0')
-          actionFunc()
-        } else if (renderCalls === 2) {
-          expect(cellText).toBe('Auditorium A1')
-          doneFunc()
-        }
-      }
-    })
-  }
-
-  function testScroll(actionFunc, doneFunc) {
-    let renderCalls = 0
-    initCalendar({
-      now: '2015-08-07',
-      scrollTime: '00:00',
-      defaultView: 'resourceTimeGridDay',
-      resources(arg, callback) {
-        setTimeout(function() {
-          callback([
-            { id: 'a', title: 'Auditorium A' },
-            { id: 'b', title: 'Auditorium B' },
-            { id: 'c', title: 'Auditorium C' }
-          ])
-        }, 100)
-      },
-      events(arg, callback) {
-        setTimeout(function() {
-          callback([
-            { id: '1', resourceId: 'b', start: '2015-08-07T02:00:00', end: '2015-08-07T07:00:00', title: 'event 1' },
-            { id: '2', resourceId: 'c', start: '2015-08-07T05:00:00', end: '2015-08-07T22:00:00', title: 'event 2' },
-            { id: '3', resourceId: 'd', start: '2015-08-06', end: '2015-08-08', title: 'event 3' }
-          ])
-        }, 100)
-      },
-      _eventsPositioned() {
-        let viewWrapper = new ResourceTimeGridViewWrapper(this)
-        let scrollEl = viewWrapper.getScrollEl()
-
-        renderCalls++
-        if (renderCalls === 1) {
-          setTimeout(function() {
-            scrollEl.scrollTop = 100
-            setTimeout(actionFunc, 100)
-          }, 100)
-        } else if (renderCalls === 2) {
-          expect(scrollEl.scrollTop).toBe(100)
-          doneFunc()
-        }
-      }
-    })
-  }
 
 })

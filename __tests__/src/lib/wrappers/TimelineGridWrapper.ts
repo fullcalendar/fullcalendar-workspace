@@ -66,7 +66,7 @@ export default class TimelineGridWrapper {
 
 
   getMirrorEventEls() {
-    return findElements(this.el, '.fc-mirror')
+    return findElements(this.el, '.fc-event-mirror')
   }
 
 
@@ -76,7 +76,7 @@ export default class TimelineGridWrapper {
 
 
   getSlatEls() { // TODO: rename to "slot label"
-    return findElements(this.el, '.fc-timeline-slot-label')
+    return findElements(this.el, '.fc-timeline-slot-lane')
   }
 
 
@@ -84,7 +84,7 @@ export default class TimelineGridWrapper {
     if (typeof dateOrStr !== 'string') {
       dateOrStr = formatIsoWithoutTz(ensureDate(dateOrStr))
     }
-    return this.el.querySelector('.fc-timeline-slot-label[data-date="' + dateOrStr + '"]')
+    return this.el.querySelector('.fc-timeline-slot-lane[data-date="' + dateOrStr + '"]')
   }
 
 
