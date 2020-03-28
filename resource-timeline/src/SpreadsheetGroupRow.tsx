@@ -24,7 +24,8 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
 
     return (
       <tr>
-        <RenderHook name='label' options={props.group.spec} hookProps={hookProps} defaultContent={renderCellInner}>
+        {/* 'header' is a bad name. should be 'label' instead. needed to do this because of GroupSpec */}
+        <RenderHook name='header' options={props.group.spec} hookProps={hookProps} defaultContent={renderCellInner}>
           {(rootElRef, classNames, innerElRef, innerContent) => (
             <td class={[ 'fc-datagrid-cell', 'fc-resource-group', context.theme.getClass('tableCellShaded') ].concat(classNames).join(' ')} colSpan={props.spreadsheetColCnt} ref={rootElRef}>
               <div class='fc-datagrid-cell-frame' style={{ height: props.innerHeight }}>

@@ -25,6 +25,7 @@ export interface GroupSpec { // best place for this?
   field?: string
   order?: number
 
+  // BAD name, for when horizontal. called label instead
   headerClassNames?: ((groupValue: any) => string[] | string) | string[] | string // TODO: unnecessary OR-ing, but needs to be compat with ColSpec
   headerContent?: ((groupValue: any) => any) | any // TODO: the "any" args are Content. SAME^
   headerDidMount?: (arg: { groupValue: any, el: HTMLElement }) => void
