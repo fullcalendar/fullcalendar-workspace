@@ -35,7 +35,7 @@ export default class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupR
                     isExpanded={props.isExpanded}
                     onExpanderClick={this.onExpanderClick}
                   />
-                  <span ref={innerElRef}>
+                  <span className='fc-datagrid-cell-main' ref={innerElRef}>
                     {innerContent}
                   </span>
                 </div>

@@ -184,7 +184,7 @@ class SpreadsheetIndividualCellInner extends BaseComponent<SpreadsheetIndividual
     return (
       <ContentHook name='cell' hookProps={hookProps} options={props.colSpec} defaultContent={renderResourceInner}>
         {(innerElRef, innerContent) => (
-          <span ref={innerElRef}>
+          <span className='fc-datagrid-cell-main' ref={innerElRef}>
             {innerContent}
           </span>
         )}
