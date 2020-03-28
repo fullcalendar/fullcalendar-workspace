@@ -3,6 +3,7 @@ import { ensureDate, formatIsoDay } from 'standard-tests/src/lib/datelib-utils'
 import { getBoundingRect } from 'standard-tests/src/lib/dom-geom'
 import TimeGridWrapper from 'standard-tests/src/lib/wrappers/TimeGridWrapper'
 import { getRectCenter, addPoints } from 'standard-tests/src/lib/geom'
+import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 
 
 export default class ResourceTimeGridWrapper {
@@ -76,14 +77,14 @@ export default class ResourceTimeGridWrapper {
 
     return findElements(
       this.el,
-      '.fc-time-grid .fc-day[data-date="' + formatIsoDay(date) + '"]' +
+      '.fc-timegrid-body .fc-day[data-date="' + formatIsoDay(date) + '"]' +
       '[data-resource-id="' + resourceId + '"]'
     )
   }
 
 
   getAllDayEls() { // TODO: rename
-    return findElements(this.el, '.fc-time-grid .fc-day[data-resource-id]')
+    return findElements(this.el, '.fc-timegrid-body .fc-day[data-resource-id]')
   }
 
 
@@ -118,7 +119,7 @@ export default class ResourceTimeGridWrapper {
     return new Promise((resolve) => {
       $(eventEl).simulate('mouseover') // resizer only shows on hover
 
-      let resizerEl = eventEl.querySelector('.fc-resizer')
+      let resizerEl = eventEl.querySelector('.' + CalendarWrapper.EVENT_RESIZER_CLASSNAME)
       let resizerPoint = getRectCenter(resizerEl.getBoundingClientRect())
       let origPoint = this.getPoint(resourceId, origEndDate)
       let yCorrect = resizerPoint.top - origPoint.top

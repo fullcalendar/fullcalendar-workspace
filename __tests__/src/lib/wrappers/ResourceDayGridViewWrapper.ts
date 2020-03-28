@@ -18,7 +18,7 @@ export default class ResourceDayGridViewWrapper extends ViewWrapper {
 
 
   get dayGrid() {
-    return new ResourceDayGridWrapper(this.el.querySelector('.fc-day-grid'))
+    return new ResourceDayGridWrapper(this.el.querySelector('.fc-daygrid-body'))
   }
 
 }

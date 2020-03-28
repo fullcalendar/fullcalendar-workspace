@@ -24,7 +24,7 @@ export default class ResourceTimeGridViewWrapper extends ViewWrapper {
 
 
   get dayGrid() {
-    let dayGridEl = this.el.querySelector('.fc-day-grid') as HTMLElement
+    let dayGridEl = this.el.querySelector('.fc-daygrid-body') as HTMLElement
     return dayGridEl ? new ResourceDayGridWrapper(dayGridEl) : null
   }
 

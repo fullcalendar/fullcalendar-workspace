@@ -32,8 +32,8 @@ describe('timeline whole days', function() {
     let calendar = initCalendar()
     let viewWrapper = new TimelineViewWrapper(calendar)
 
-    expect(viewWrapper.header.getDateElByDate('2016-11-04')).toHaveClass(CalendarWrapper.PAST_CLASSNAME)
-    expect(viewWrapper.timelineGrid.getSlatElByDate('2016-11-04')).toHaveClass(CalendarWrapper.PAST_CLASSNAME)
+    expect(viewWrapper.header.getDateElByDate('2016-11-04')).toHaveClass(CalendarWrapper.DAY_PAST_CLASSNAME)
+    expect(viewWrapper.timelineGrid.getSlatElByDate('2016-11-04')).toHaveClass(CalendarWrapper.DAY_PAST_CLASSNAME)
   })
 
 
@@ -41,8 +41,8 @@ describe('timeline whole days', function() {
     let calendar = initCalendar()
     let viewWrapper = new TimelineViewWrapper(calendar)
 
-    expect(viewWrapper.header.getDateElByDate('2016-11-07')).toHaveClass(CalendarWrapper.FUTURE_CLASSNAME)
-    expect(viewWrapper.timelineGrid.getSlatElByDate('2016-11-07')).toHaveClass(CalendarWrapper.FUTURE_CLASSNAME)
+    expect(viewWrapper.header.getDateElByDate('2016-11-07')).toHaveClass(CalendarWrapper.DAY_FUTURE_CLASSNAME)
+    expect(viewWrapper.timelineGrid.getSlatElByDate('2016-11-07')).toHaveClass(CalendarWrapper.DAY_FUTURE_CLASSNAME)
   })
 
 })

@@ -29,7 +29,7 @@ export default class TimelineHeaderWrapper {
   getCellInfo(dateRow = 0) {
     return this.getDateEls(dateRow).map((cell) => ({
       date: parseUtcDate(cell.getAttribute('data-date')),
-      isDisabled: cell.classList.contains('fc-disabled-day')
+      isDisabled: cell.classList.contains('fc-day-disabled')
     }))
   }
 
@@ -40,7 +40,7 @@ export default class TimelineHeaderWrapper {
 
 
   getNowIndicatorEl() {
-    return this.el.querySelector('.fc-now-indicator-arrow')
+    return this.el.querySelector('.fc-timeline-now-indicator-arrow')
   }
 
 }

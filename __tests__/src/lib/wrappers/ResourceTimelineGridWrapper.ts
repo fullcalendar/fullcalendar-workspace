@@ -2,6 +2,7 @@ import TimelineGridWrapper from './TimelineGridWrapper'
 import { getBoundingRect } from 'standard-tests/src/lib/dom-geom'
 import { findElements } from '@fullcalendar/core'
 import { getRectCenter, addPoints } from 'standard-tests/src/lib/geom'
+import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 
 
 export default class ResourceTimelineGridWrapper {
@@ -56,7 +57,7 @@ export default class ResourceTimelineGridWrapper {
 
       let eventRect = eventEl.getBoundingClientRect()
       let isRtl = $eventEl.css('direction') === 'rtl'
-      let resizerEl = eventEl.querySelector(fromStart ? '.fc-start-resizer' : '.fc-end-resizer')
+      let resizerEl = eventEl.querySelector('.' + (fromStart ? CalendarWrapper.EVENT_START_RESIZER_CLASSNAME : CalendarWrapper.EVENT_END_RESIZER_CLASSNAME))
       let resizerPoint = getRectCenter(resizerEl.getBoundingClientRect())
       let xCorrect = resizerPoint.left - (isRtl ? eventRect.left : eventRect.right)
       let destPoint = this.getPoint(newResourceId, newEndDate)

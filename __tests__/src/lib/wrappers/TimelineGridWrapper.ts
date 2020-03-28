@@ -2,6 +2,7 @@ import { findElements } from '@fullcalendar/core'
 import { ensureDate, formatIsoWithoutTz } from 'standard-tests/src/lib/datelib-utils'
 import { getBoundingRect } from 'standard-tests/src/lib/dom-geom'
 import { getRectCenter, addPoints } from 'standard-tests/src/lib/geom'
+import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 
 
 export default class TimelineGridWrapper {
@@ -35,7 +36,7 @@ export default class TimelineGridWrapper {
 
       let eventRect = eventEl.getBoundingClientRect()
       let isRtl = $eventEl.css('direction') === 'rtl'
-      let resizerEl = eventEl.querySelector(fromStart ? '.fc-start-resizer' : '.fc-end-resizer')
+      let resizerEl = eventEl.querySelector('.' + (fromStart ? CalendarWrapper.EVENT_START_RESIZER_CLASSNAME : CalendarWrapper.EVENT_END_RESIZER_CLASSNAME))
       let resizerPoint = getRectCenter(resizerEl.getBoundingClientRect())
       let xCorrect = resizerPoint.left - (isRtl ? eventRect.left : eventRect.right)
       let destPoint = this.getPoint(newEndDate)
@@ -74,16 +75,16 @@ export default class TimelineGridWrapper {
   }
 
 
-  getSlatEls() {
-    return findElements(this.el, '.fc-slats td')
+  getSlatEls() { // TODO: rename to "slot label"
+    return findElements(this.el, '.fc-timeline-slot-label')
   }
 
 
-  getSlatElByDate(dateOrStr) { // prefers string. we do this because all-day doesnt have 00:00:00
+  getSlatElByDate(dateOrStr) { // prefers string. we do this because all-day doesnt have 00:00:00. TODO: rename to "slot label"
     if (typeof dateOrStr !== 'string') {
       dateOrStr = formatIsoWithoutTz(ensureDate(dateOrStr))
     }
-    return this.el.querySelector('.fc-slats td[data-date="' + dateOrStr + '"]')
+    return this.el.querySelector('.fc-timeline-slot-label[data-date="' + dateOrStr + '"]')
   }
 
 
@@ -193,7 +194,7 @@ export default class TimelineGridWrapper {
 
 
   getNowIndicatorEl() {
-    return this.el.querySelector('.fc-now-indicator-line')
+    return this.el.querySelector('.fc-timeline-now-indicator-line')
   }
 
 
