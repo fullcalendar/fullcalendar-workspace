@@ -30,6 +30,7 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
                 <TimelineHeaderTh
                   key={cell.date.toISOString()}
                   cell={cell}
+                  dateProfile={props.dateProfile}
                   tDateProfile={tDateProfile}
                   todayRange={props.todayRange}
                   nowDate={props.nowDate}
@@ -48,6 +49,7 @@ export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRows
 
 
 interface TimelineHeaderThProps {
+  dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   cell: TimelineHeaderCell
   todayRange: DateRange
@@ -66,7 +68,7 @@ class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
     let { cell, tDateProfile } = props
 
     let classNames = [ 'fc-timeline-slot', 'fc-timeline-slot-label' ].concat(getSlotClassNames(
-      getDateMeta(cell.date, props.todayRange, props.nowDate),
+      getDateMeta(cell.date, props.todayRange, props.nowDate, props.dateProfile),
       context.theme
     ))
 
