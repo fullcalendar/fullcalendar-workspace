@@ -54,11 +54,11 @@ export default class ResourceDayTimeColsView extends TimeColsView {
         tableMinWidth={contentArg.tableMinWidth}
         colGroupNode={contentArg.tableColGroupNode}
         renderRowIntro={dayMinWidth ? null : this.renderTableRowAxis}
-        eventLimit={this.getAllDayEventLimit()}
         expandRows={false}
         headerAlignElRef={this.headerElRef}
         clientWidth={contentArg.clientWidth}
         clientHeight={contentArg.clientHeight}
+        {...this.getAllDayMaxEventProps()}
       />
     ))
 
