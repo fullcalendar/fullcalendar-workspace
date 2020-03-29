@@ -7,8 +7,8 @@ import { TimelineDateProfile } from './timeline-date-profile'
 export interface TimelineHeaderProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
-  clientWidth: CssDimValue
-  clientHeight: CssDimValue
+  clientWidth: number | null
+  clientHeight: number | null
   tableMinWidth: CssDimValue
   tableColGroupNode: VNode
   slatCoords: TimelineCoords

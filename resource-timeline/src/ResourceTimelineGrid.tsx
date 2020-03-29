@@ -21,8 +21,8 @@ export interface ResourceTimelineGridProps {
   eventResize: EventInteractionState | null
   resourceStore: ResourceHash
   nextDayThreshold: Duration
-  clientWidth: CssDimValue
-  clientHeight: CssDimValue
+  clientWidth: number | null
+  clientHeight: number | null
   tableMinWidth: CssDimValue
   tableColGroupNode: VNode
   expandRows: boolean

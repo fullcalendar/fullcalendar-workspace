@@ -8,7 +8,7 @@ import TimelineCoords from './TimelineCoords'
 
 
 export interface TimelineSlatsProps extends TimelineSlatsContentProps {
-  clientWidth: CssDimValue
+  clientWidth: number | null
   tableMinWidth: CssDimValue
   tableColGroupNode: VNode
   onCoords?: (coord: TimelineCoords | null) => void
@@ -81,7 +81,7 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
   updateSizing() {
     let { props, context } = this
 
-    if (props.clientWidth) { // is sizing stable?
+    if (props.clientWidth !== null) { // is sizing stable?
 
       this.coords = new TimelineCoords(
         this.rootElRef.current,

@@ -153,6 +153,7 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     }
 
     let { state } = this
+    let { scrollerClientWidths, scrollerClientHeights } = state
 
     let [ sectionCnt, chunksPerSection ] = this.getDims()
     let index = sectionIndex * chunksPerSection + chunkIndex
@@ -177,8 +178,8 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     let content = renderChunkContent(sectionConfig, chunkConfig, {
       tableColGroupNode: microColGroupNode,
       tableMinWidth,
-      clientWidth: state.scrollerClientWidths[index] || '',
-      clientHeight: state.scrollerClientHeights[index] || '',
+      clientWidth: scrollerClientWidths[index] !== undefined ? scrollerClientWidths[index] : null,
+      clientHeight: scrollerClientHeights[index] !== undefined ? scrollerClientHeights[index] : null,
       expandRows,
       syncRowHeights: Boolean(sectionConfig.syncRowHeights),
       rowSyncHeights: rowHeights,

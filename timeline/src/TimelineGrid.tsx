@@ -7,8 +7,8 @@ import { TimelineDateProfile } from './timeline-date-profile'
 
 export interface TimelinGridProps extends ViewProps {
   tDateProfile: TimelineDateProfile
-  clientWidth: CssDimValue
-  clientHeight: CssDimValue
+  clientWidth: number | null
+  clientHeight: number | null
   tableMinWidth: CssDimValue
   tableColGroupNode: VNode
   onSlatCoords?: (coords: TimelineCoords) => void

@@ -23,8 +23,8 @@ export interface ResourceDayTableProps {
   dayMaxEventRows: boolean | number
   expandRows: boolean
   headerAlignElRef?: RefObject<HTMLElement> // for more popover alignment
-  clientWidth: CssDimValue
-  clientHeight: CssDimValue
+  clientWidth: number | null
+  clientHeight: number | null
 }
 
 export default class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
