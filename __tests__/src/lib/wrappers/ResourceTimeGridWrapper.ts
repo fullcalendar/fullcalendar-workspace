@@ -101,12 +101,12 @@ export default class ResourceTimeGridWrapper {
 
 
   getEventEls() { // FG events
-    return findElements(this.el, '.fc-event')
+    return findElements(this.el, '.fc-timegrid-event')
   }
 
 
   getFirstEventEl() {
-    return this.el.querySelector('.fc-event') as HTMLElement
+    return this.el.querySelector('.fc-timegrid-event') as HTMLElement
   }
 
 

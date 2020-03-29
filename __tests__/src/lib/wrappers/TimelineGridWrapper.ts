@@ -56,12 +56,12 @@ export default class TimelineGridWrapper {
 
 
   getEventEls() { // FG events
-    return findElements(this.el, '.fc-event')
+    return findElements(this.el, '.fc-timeline-event')
   }
 
 
   getFirstEventEl() {
-    return this.el.querySelector('.fc-event') as HTMLElement
+    return this.el.querySelector('.fc-timeline-event') as HTMLElement
   }
 
 
