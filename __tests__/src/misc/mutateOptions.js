@@ -1,4 +1,3 @@
-import deepEqual from 'fast-deep-equal'
 import { Calendar } from '@fullcalendar/core'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
@@ -20,10 +19,6 @@ describe('mutateOptions', function() {
   let $calendarEl
   let calendar
 
-  function mutateOptions(updates) {
-    calendar.mutateOptions(updates, [], false, deepEqual)
-  }
-
   beforeEach(function() {
     $calendarEl = $('<div>').appendTo('body')
   })
@@ -41,7 +36,7 @@ describe('mutateOptions', function() {
     let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
     let dateEl = calendarWrapper.getFirstDateEl()
 
-    mutateOptions({
+    calendar.mutateOptions({
       resources: [
         { id: 'a', title: 'Resource A' }
       ]
