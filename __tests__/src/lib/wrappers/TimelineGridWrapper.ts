@@ -199,7 +199,7 @@ export default class TimelineGridWrapper {
 
 
   getBgEventEls() {
-    return findElements(this.el, '.fc-bgevent')
+    return findElements(this.el, '.fc-bg-event')
   }
 
 }
