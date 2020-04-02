@@ -24,7 +24,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
     let { options } = context
 
     let dateFormat = this.buildDateFormat(
-      options.dayLabelFormat,
+      options.dayHeaderFormat,
       props.datesRepDistinctDays,
       props.dates.length
     )
@@ -135,7 +135,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
         todayRange={todayRange}
         dateProfile={props.dateProfile}
         colCnt={props.dates.length * props.resources.length}
-        dayLabelFormat={dateFormat}
+        dayHeaderFormat={dateFormat}
         colSpan={colSpan}
         extraHookProps={extraHookProps}
         extraDataAttrs={extraDataAttrs}
@@ -143,7 +143,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
       <TableDowCell // we can't leverage the pure-componentness becausae the extra* props are new every time :(
         key={date.getUTCDay() + keyPostfix}
         dow={date.getUTCDay()}
-        dayLabelFormat={dateFormat}
+        dayHeaderFormat={dateFormat}
         colSpan={colSpan}
         extraHookProps={extraHookProps}
         extraDataAttrs={extraDataAttrs}
@@ -169,9 +169,9 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
 }
 
 
-function buildDateFormat(dayLabelFormat, datesRepDistinctDays, dayCnt) {
+function buildDateFormat(dayHeaderFormat, datesRepDistinctDays, dayCnt) {
   return createFormatter(
-    dayLabelFormat ||
+    dayHeaderFormat ||
     computeFallbackHeaderFormat(datesRepDistinctDays, dayCnt)
   )
 }

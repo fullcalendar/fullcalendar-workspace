@@ -30,7 +30,7 @@ export default class ResourceDayTableView extends TableView {
       context.calendar
     )
 
-    let headerContent = options.dayLabels &&
+    let headerContent = options.dayHeaders &&
       <ResourceDayHeader
         ref={this.headerRef}
         resources={resources}
