@@ -56,6 +56,7 @@ export default class ResourceDayTableView extends TableView {
         colGroupNode={contentArg.tableColGroupNode}
         dayMaxEvents={options.dayMaxEvents}
         dayMaxEventRows={options.dayMaxEventRows}
+        showWeekNumbers={options.weekNumbers}
         expandRows={!props.isHeightAuto}
         headerAlignElRef={this.headerElRef}
         clientWidth={contentArg.clientWidth}
