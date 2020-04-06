@@ -23,8 +23,8 @@ export default class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
     return props.timelineCoords && (
       <div class='fc-timeline-bg'>
         {/* Fragments contain the keys */}
-        <Fragment>{this.renderSegs(props.businessHourSegs || [], props.timelineCoords, 'nonbusiness')}</Fragment>
-        <Fragment>{this.renderSegs(props.bgEventSegs || [], props.timelineCoords, 'bgevent')}</Fragment>
+        <Fragment>{this.renderSegs(props.businessHourSegs || [], props.timelineCoords, 'non-business')}</Fragment>
+        <Fragment>{this.renderSegs(props.bgEventSegs || [], props.timelineCoords, 'bg-event')}</Fragment>
         <Fragment>{this.renderSegs(highlightSeg, props.timelineCoords, 'highlight')}</Fragment>
       </div>
     )
@@ -47,13 +47,13 @@ export default class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
           left: coords.left,
           right: -coords.right // outwards from right edge (which is same as left edge)
         }}>
-          {fillType === 'bgevent' ?
+          {fillType === 'bg-event' ?
             <BgEvent
               key={key}
               seg={seg}
               {...getSegMeta(seg, todayRange, nowDate)}
             /> :
-            renderFill(fillType, [ `fc-timeline-${fillType}` ])
+            renderFill(fillType)
           }
         </div>
       )

@@ -1,30 +1,41 @@
 
-.fc-datagrid-cell-cushion {
-  padding: 8px;
-  white-space: nowrap;
-  overflow: hidden; // problem for col resizer :(
-}
 
-.fc-timeline-overlap-disabled {
-
-  .fc-datagrid-cell-cushion {
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-
-}
+// the "frame"
 
 .fc-datagrid-cell-frame-liquid {
-  height: 100%;
+  height: 100%; // needs liquid hack
 }
 
 .fc-liquid-hack {
   .fc-datagrid-cell-frame-liquid {
-    @include liquid-hack-cell-inner;
+    @include liquid-absolute-override;
   }
 }
 
-.fc-datagrid-cell-resizer { // doesnt expand vertically all the way :(
+
+// the "frame" in a HEADER
+// needs to position the column resizer
+// needs to vertically center content
+
+.fc-datagrid-header {
+
+  .fc-datagrid-cell-frame {
+    position: relative; // for resizer
+    display: flex;
+    justify-content: flex-start; // horizontal align (natural left/right)
+    align-items: center; // vertical align
+  }
+
+  .fc-datagrid-cell-super .fc-datagrid-cell-frame {
+    justify-content: center; // horizontal align
+  }
+
+}
+
+
+// the column resizer (only in HEADER)
+
+.fc-datagrid-cell-resizer {
   position: absolute;
   z-index: 1;
   top: 0;
@@ -36,27 +47,17 @@
 .fc-dir-ltr .fc-datagrid-cell-resizer { right: -3px }
 .fc-dir-rtl .fc-datagrid-cell-resizer { left: -3px }
 
-.fc-datagrid-header {
 
-  .fc-datagrid-cell-frame {
-    position: relative; // for resizer
-    display: flex;
-    justify-content: flex-start; // horizontal align
-    align-items: center; // vertical align
-  }
+// the cushion
 
-  .fc-datagrid-cell-super .fc-datagrid-cell-frame {
-    justify-content: center; // horizontal align
-  }
-
-  .fc-datagrid-cell-cushion {
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-
+.fc-datagrid-cell-cushion {
+  padding: 8px;
+  white-space: nowrap;
+  overflow: hidden; // problem for col resizer :(
 }
 
 
+// expander icons
 
 .fc-datagrid-expander {
   cursor: pointer;
@@ -72,6 +73,8 @@
   text-align: center;
 }
 
-.fc-resource-timeline-flat .fc-datagrid-expander-placeholder {
-  display: none;
+.fc-resource-timeline-flat {
+  .fc-datagrid-expander-placeholder {
+    display: none;
+  }
 }

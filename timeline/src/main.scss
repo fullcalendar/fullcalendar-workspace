@@ -1,4 +1,8 @@
 
+@import '../../../packages/core/src/styles/vars';
+@import '../../../packages/core/src/styles/mixins';
+@import './styles/vars';
+
 @import './styles/timeline-body';
 @import './styles/timeline-slots';
 @import './styles/timeline-now-indicator';

@@ -37,7 +37,7 @@ function renderInnerContent(innerProps: EventMeta) {
       <div class='fc-event-time'>{innerProps.timeText}</div>
     ,
     <div class='fc-event-title'>
-      <div class='fc-event-title-inner fc-sticky'>
+      <div class='fc-timeline-event-title-cushion fc-sticky'>
         {innerProps.event.title || <Fragment>&nbsp;</Fragment>}
       </div>
     </div>

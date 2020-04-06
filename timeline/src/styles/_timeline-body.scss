@@ -1,9 +1,6 @@
 
-// for the non-chrono-row, the fc-sticky system looks for text-align center,
-// and it's a fluke that the default browser stylesheet already does this
-
 .fc-timeline-body {
   min-height: 100%;
   position: relative;
-  z-index: 1; // scope z-index's inside
+  z-index: 1; // scope slots, bg, etc
 }

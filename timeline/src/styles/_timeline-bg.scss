@@ -1,13 +1,15 @@
 
 
-.fc-timeline-bg {
+.fc-timeline-bg { // a container for bg content
   position: absolute;
-  z-index: 2; // TODO: do z-index ordering of fills WITHIN this container
+  z-index: $timeline-bg-z;
   top: 0;
   bottom: 0;
   width: 0;
   left: 0; // will take precedence when LTR
   right: 0; // will take precedence when RTL
+
+  @include bg-z-indexes;
 }
 
 .fc-timeline-bg-harness {

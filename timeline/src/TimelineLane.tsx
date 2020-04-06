@@ -84,7 +84,11 @@ export default class TimelineLane extends BaseComponent<TimelineLaneProps, Timel
           nowDate={props.nowDate}
           todayRange={props.todayRange}
         />
-        <div class='fc-timeline-events fc-scrollgrid-sync-inner' ref={this.innerElRef} style={{ height /* computed by computeSegVerticals */ }}>
+        <div
+          class='fc-timeline-events fc-scrollgrid-sync-inner'
+          ref={this.innerElRef}
+          style={{ height /* computed by computeSegVerticals */ }}
+        >
           {this.renderFgSegs(
             slicedProps.fgEventSegs,
             segHorizontals,

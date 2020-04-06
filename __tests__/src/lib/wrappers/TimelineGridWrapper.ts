@@ -71,7 +71,7 @@ export default class TimelineGridWrapper {
 
 
   getNonBusinessDayEls() {
-    return findElements(this.el, '.fc-nonbusiness')
+    return findElements(this.el, '.fc-non-business')
   }
 
 

@@ -1,61 +1,52 @@
 
-.fc-timeline-lane {
-  position: relative;
-}
-
-.fc-timeline-lane-frame {
-  position: relative; // contains bg
-  min-height: 100%;
-}
-
-.fc-liquid-hack td > .fc-timeline-lane-frame {
-  // when the lane isn't able to grow to fill the height, we want the <td> to become the
-  // offset parent instead of the lane, for background event absolute positioning.
-  position: static;
-}
-
+// container
 .fc-timeline-events {
   position: relative;
-  z-index: 3; /* above bgevent and highlight */
-  width: 0; /* for event positioning. will end up on correct side based on dir */
+  z-index: $timeline-fg-z;
+  width: 0; // for event positioning. will end up on correct side based on dir
 }
 
+// harness
 .fc-timeline-event-harness {
   position: absolute;
-  top: 0; // default
+  top: 0; // default when not specified
+  // JS will set tht left/right
 }
 
 
-
-
+// root
+// ----------------------------------------------------------------------------------------------------
 
 .fc-timeline-event {
+  position: relative; // contains things. TODO: make part of fc-h-event and fc-v-event
   border-radius: 0;
   padding: 2px 1px;
   margin-bottom: 1px;
+
+  // TODO: make vars
+  font-size: .85em;
+  border: 1px solid #3788d8;
+  background-color: #3788d8;
+  color: #fff;
 }
 
-
+// move 1px away from slot line
 .fc-dir-ltr .fc-timeline-event { margin-right: 1px }
 .fc-dir-rtl .fc-timeline-event { margin-left: 1px }
 
-.fc-timeline-event:not(.fc-event-mirror) {
-  // min-width: 100px;
-}
-
+// make event beefier when overlap not allowed
 .fc-timeline-overlap-disabled .fc-timeline-event {
   padding-top: 5px;
   padding-bottom: 5px;
   margin-bottom: 0;
 }
 
+
+// time and title spacing
+// ----------------------------------------------------------------------------------------------------
+
 .fc-timeline-event .fc-event-main {
   display: flex;
-}
-
-.fc-timeline-event .fc-event-time,
-.fc-timeline-event .fc-event-title {
-  white-space: nowrap; // TODO: do globally?
 }
 
 .fc-timeline-event .fc-event-title {
@@ -64,24 +55,44 @@
   min-width: 0; // important for allowing to shrink all the way
 }
 
-.fc-timeline-event .fc-event-title-inner {
-  display: inline-block;
+.fc-timeline-event .fc-event-time {
+  font-weight: bold;
+}
+
+.fc-timeline-event .fc-event-time,
+.fc-timeline-event-title-cushion {
+  white-space: nowrap;
+  padding: 0 2px;
+}
+
+.fc-timeline-event-title-cushion { // sticky within fc-event-title container
+  display: inline-block; // need this to be sticky cross-browser
   vertical-align: top; // need this for not affecting line-height
+  padding: 0 2px;
+
+  // clip overflow on this element
   max-width: 100%;
   overflow: hidden;
 }
 
+
+// arrows indicating the event continues into past/future
+// ----------------------------------------------------------------------------------------------------
+
+// part of the flexbox flow
 .fc-timeline-event:not(.fc-event-start) .fc-event-main:before,
 .fc-timeline-event:not(.fc-event-end) .fc-event-main:after {
   content: "";
   align-self: center;
+  opacity: .5;
+
+  // triangle. TODO: mixin
   width: 0;
   height: 0;
   margin: 0 1px;
   border: 5px solid #000;
   border-top-color: transparent;
   border-bottom-color: transparent;
-  opacity: .5;
 }
 
 // pointing left
