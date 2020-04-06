@@ -1,4 +1,4 @@
-import { h, BaseComponent, CssDimValue, VNode, DateMarker, ComponentContext, NowTimer, greatestDurationDenominator, DateRange, DateProfile, NowIndicatorRoot, createRef, findElements } from '@fullcalendar/core'
+import { h, BaseComponent, CssDimValue, VNode, DateMarker, ComponentContext, NowTimer, greatestDurationDenominator, DateRange, DateProfile, NowIndicatorRoot, createRef, findElements, RefObject } from '@fullcalendar/core'
 import TimelineHeaderRows from './TimelineHeaderRows'
 import TimelineCoords from './TimelineCoords'
 import { TimelineDateProfile } from './timeline-date-profile'
@@ -19,7 +19,7 @@ export interface TimelineHeaderProps {
 
 export default class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
 
-  rootElRef = createRef<HTMLDivElement>()
+  rootElRef: RefObject<HTMLDivElement> = createRef<HTMLDivElement>()
 
 
   render(props: TimelineHeaderProps, state: {}, context: ComponentContext) {
