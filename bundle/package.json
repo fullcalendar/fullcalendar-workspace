@@ -1,17 +1,17 @@
 {
   "private": true,
   "devDependencies": {
-    "@fullcalendar/core": "5.0.0-beta",
-    "@fullcalendar/interaction": "5.0.0-beta",
-    "@fullcalendar/daygrid": "5.0.0-beta",
-    "@fullcalendar/timegrid": "5.0.0-beta",
-    "@fullcalendar/list": "5.0.0-beta",
-    "@fullcalendar/bootstrap": "5.0.0-beta",
-    "@fullcalendar/scrollgrid": "5.0.0-beta",
-    "@fullcalendar/timeline": "5.0.0-beta",
-    "@fullcalendar/resource-common": "5.0.0-beta",
-    "@fullcalendar/resource-daygrid": "5.0.0-beta",
-    "@fullcalendar/resource-timegrid": "5.0.0-beta",
-    "@fullcalendar/resource-timeline": "5.0.0-beta"
+    "@fullcalendar/core": "5.0.0-beta.1",
+    "@fullcalendar/interaction": "5.0.0-beta.1",
+    "@fullcalendar/daygrid": "5.0.0-beta.1",
+    "@fullcalendar/timegrid": "5.0.0-beta.1",
+    "@fullcalendar/list": "5.0.0-beta.1",
+    "@fullcalendar/bootstrap": "5.0.0-beta.1",
+    "@fullcalendar/scrollgrid": "5.0.0-beta.1",
+    "@fullcalendar/timeline": "5.0.0-beta.1",
+    "@fullcalendar/resource-common": "5.0.0-beta.1",
+    "@fullcalendar/resource-daygrid": "5.0.0-beta.1",
+    "@fullcalendar/resource-timegrid": "5.0.0-beta.1",
+    "@fullcalendar/resource-timeline": "5.0.0-beta.1"
   }
 }
