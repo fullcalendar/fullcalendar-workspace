@@ -162,6 +162,7 @@ class TimelineSlatsBody extends BaseComponent<TimelineSlatsBodyProps> {
   render(props: TimelineSlatsBodyProps) {
     let { tDateProfile, cellElRefs } = props
     let { slotDates, isWeekStarts } = tDateProfile
+    let isDay = !tDateProfile.isTimeScale && !tDateProfile.largeUnit
 
     return (
       <tbody>
@@ -174,6 +175,7 @@ class TimelineSlatsBody extends BaseComponent<TimelineSlatsBodyProps> {
               nowDate={props.nowDate}
               todayRange={props.todayRange}
               isEm={isWeekStarts[i]}
+              isDay={isDay}
               elRef={cellElRefs.createRef(i)}
             />
           ))}

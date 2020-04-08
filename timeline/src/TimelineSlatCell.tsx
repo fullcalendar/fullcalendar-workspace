@@ -1,6 +1,6 @@
 import {
   h, isInt, BaseComponent,
-  ComponentContext, DateMarker, Ref, DateRange, DateProfile, getDateMeta, getSlotClassNames, RenderHook
+  ComponentContext, DateMarker, Ref, DateRange, DateProfile, getDateMeta, getSlotClassNames, RenderHook, getDayClassNames
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -11,6 +11,7 @@ export interface TimelineSlatCellProps {
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
+  isDay: boolean
   isEm: boolean
   elRef?: Ref<HTMLTableCellElement>
 }
@@ -46,7 +47,11 @@ export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProp
       )
     }
 
-    classNames.push(...getSlotClassNames(dateMeta, context.theme))
+    classNames.push(...(
+      props.isDay
+        ? getDayClassNames(dateMeta, context.theme)
+        : getSlotClassNames(dateMeta, context.theme)
+    ))
 
     return (
       <RenderHook name='slotLane' hookProps={hookProps} elRef={props.elRef}>

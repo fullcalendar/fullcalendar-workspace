@@ -1,5 +1,5 @@
 import {
-  h, BaseComponent, ComponentContext, DateProfile, Fragment, DateRange, DateMarker, getDateMeta, getSlotClassNames, buildNavLinkData, buildHookClassNameGenerator, MountHook, ContentHook, ViewApi
+  h, BaseComponent, ComponentContext, DateProfile, Fragment, DateRange, DateMarker, getDateMeta, getSlotClassNames, buildNavLinkData, buildHookClassNameGenerator, MountHook, ContentHook, ViewApi, getDayClassNames
 } from '@fullcalendar/core'
 import { TimelineDateProfile, TimelineHeaderCell } from './timeline-date-profile'
 
@@ -67,10 +67,17 @@ class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
     let { dateEnv, options } = context
     let { cell, tDateProfile } = props
 
-    let classNames = [ 'fc-timeline-slot', 'fc-timeline-slot-label' ].concat(getSlotClassNames(
-      getDateMeta(cell.date, props.todayRange, props.nowDate, props.dateProfile),
-      context.theme
-    ))
+    // the cell.rowUnit is f'd
+    // giving 'month' for a 3-day view
+    // workaround: to infer day, do NOT time
+
+    let dateMeta = getDateMeta(cell.date, props.todayRange, props.nowDate, props.dateProfile)
+
+    let classNames = [ 'fc-timeline-slot', 'fc-timeline-slot-label' ].concat(
+      cell.rowUnit === 'time' // TODO: so slot classnames for week/month/bigger. see note above about rowUnit
+        ? getSlotClassNames(dateMeta, context.theme)
+        : getDayClassNames(dateMeta, context.theme)
+    )
 
     if (cell.isWeekStart) {
       classNames.push('fc-timeline-slot-em')
