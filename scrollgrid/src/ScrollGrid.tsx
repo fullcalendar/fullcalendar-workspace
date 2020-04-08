@@ -97,7 +97,9 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
           <colgroup>
             {colGroupStats.map((colGroupStat, i) => renderMacroCol(colGroupStat, shrinkWidths[i]))}
           </colgroup>
-          {props.sections.map((sectionConfig, i) => this.renderSection(sectionConfig, i, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights))}
+          <tbody>
+            {props.sections.map((sectionConfig, i) => this.renderSection(sectionConfig, i, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights))}
+          </tbody>
         </table>
         {props.forPrint &&
           <div ref={this.printContainerRef}></div>
