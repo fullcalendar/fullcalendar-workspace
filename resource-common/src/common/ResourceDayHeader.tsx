@@ -67,7 +67,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
     for (let date of dates) {
 
       dateCells.push(
-        this.renderDateCell(date, dateFormat, todayRange, resources.length)
+        this.renderDateCell(date, dateFormat, todayRange, resources.length, null, true)
       )
 
       for (let resource of resources) {
@@ -102,6 +102,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
           key={resource.id}
           resource={resource}
           colSpan={dates.length}
+          isSticky={true}
         />
       )
 
@@ -122,7 +123,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
 
 
   // a cell with date text. might have a resource associated with it
-  renderDateCell(date: DateMarker, dateFormat: DateFormatter, todayRange: DateRange, colSpan: number, resource?: Resource) {
+  renderDateCell(date: DateMarker, dateFormat: DateFormatter, todayRange: DateRange, colSpan: number, resource?: Resource, isSticky?: boolean) {
     let { props } = this
     let keyPostfix = resource ? `:${resource.id}` : ''
     let extraHookProps = resource ? { resource: new ResourceApi(this.context.calendar, resource) } : {}
@@ -137,6 +138,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
         colCnt={props.dates.length * props.resources.length}
         dayHeaderFormat={dateFormat}
         colSpan={colSpan}
+        isSticky={isSticky}
         extraHookProps={extraHookProps}
         extraDataAttrs={extraDataAttrs}
       /> :
@@ -145,6 +147,7 @@ export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderPr
         dow={date.getUTCDay()}
         dayHeaderFormat={dateFormat}
         colSpan={colSpan}
+        isSticky={isSticky}
         extraHookProps={extraHookProps}
         extraDataAttrs={extraDataAttrs}
       />
@@ -181,6 +184,7 @@ interface ResourceCellProps {
   resource: Resource
   colSpan: number
   date?: DateMarker
+  isSticky?: boolean
 }
 
 class ResourceCell extends BaseComponent<ResourceCellProps> {
@@ -194,7 +198,17 @@ class ResourceCell extends BaseComponent<ResourceCellProps> {
             className={[ 'fc-col-header-cell', 'fc-resource' ].concat(customClassNames).join(' ')}
             colSpan={props.colSpan > 1 ? props.colSpan : null}
             {...dataAttrs}
-          >{innerContent}</th>
+          >
+            <span
+              class={[
+                'fc-col-header-cell-cushion',
+                props.isSticky ? 'fc-sticky' : ''
+              ].join(' ')}
+              ref={innerElRef}
+            >
+              {innerContent}
+            </span>
+          </th>
         )}
       </ResourceLabelRoot>
     )
