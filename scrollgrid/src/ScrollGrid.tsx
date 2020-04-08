@@ -17,7 +17,6 @@ import {
   isColPropsEqual,
   getScrollbarWidths,
   memoizeArraylike,
-  CLIENT_HEIGHT_WIGGLE,
   collectFromHash,
   memoizeHashlike
 } from '@fullcalendar/core'
@@ -426,14 +425,15 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     let sideScrollI = (!this.context.isRtl || getIsRtlScrollbarOnLeft()) ? chunksPerSection - 1 : 0
     let lastSectionI = sectionCnt - 1
     let currentScrollers = this.clippedScrollerRefs.currentMap
-    let currentScrollerEls = this.scrollerElRefs.currentMap
+    let scrollerEls = this.scrollerElRefs.currentMap
     let forceYScrollbars = false
     let forceXScrollbars = false
     let scrollerClientWidths: { [index: string]: number } = {}
     let scrollerClientHeights: { [index: string]: number } = {}
 
     for (let sectionI = 0; sectionI < sectionCnt; sectionI++) { // along edge
-      let scroller = currentScrollers[sectionI * chunksPerSection + sideScrollI]
+      let index = sectionI * chunksPerSection + sideScrollI
+      let scroller = currentScrollers[index]
 
       if (scroller && scroller.needsYScrolling()) {
         forceYScrollbars = true
@@ -442,7 +442,8 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     }
 
     for (let chunkI = 0; chunkI < chunksPerSection; chunkI++) { // along last row
-      let scroller = currentScrollers[lastSectionI * chunksPerSection + chunkI]
+      let index = lastSectionI * chunksPerSection + chunkI
+      let scroller = currentScrollers[index]
 
       if (scroller && scroller.needsXScrolling()) {
         forceXScrollbars = true
@@ -453,16 +454,26 @@ export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGri
     for (let sectionI = 0; sectionI < sectionCnt; sectionI++) {
       for (let chunkI = 0; chunkI < chunksPerSection; chunkI++) {
         let index = sectionI * chunksPerSection + chunkI
-        let scrollerEl = currentScrollerEls[index]
+        let scrollerEl = scrollerEls[index]
 
         if (scrollerEl) {
-          scrollerClientWidths[index] = (chunkI === sideScrollI && forceYScrollbars) // TODO: problem with border/padding maybe?
-            ? scrollerEl.offsetWidth - scrollbarWidth.y
-            : scrollerEl.clientWidth // will be doing hidden-scroll
+          let harnessEl = scrollerEl.parentNode as HTMLElement // TODO: weird way to get this. need harness b/c doesn't include table borders
 
-          scrollerClientHeights[index] = (sectionI === lastSectionI && forceXScrollbars)
-            ? scrollerEl.offsetHeight - scrollbarWidth.x
-            : scrollerEl.clientHeight - CLIENT_HEIGHT_WIGGLE // will be doing hidden-scroll
+          scrollerClientWidths[index] = Math.floor(
+            harnessEl.getBoundingClientRect().width - (
+              (chunkI === sideScrollI && forceYScrollbars)
+                ? scrollbarWidth.y // use global because scroller might not have scrollbars yet but will need them in future
+                : 0
+            )
+          )
+
+          scrollerClientHeights[index] = Math.floor(
+            harnessEl.getBoundingClientRect().height - (
+              (sectionI === lastSectionI && forceXScrollbars)
+                ? scrollbarWidth.x // use global because scroller might not have scrollbars yet but will need them in future
+                : 0
+              )
+          )
         }
       }
     }
