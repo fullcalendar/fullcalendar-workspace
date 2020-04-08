@@ -52,11 +52,13 @@ export abstract class AbstractResourceDayTableModel {
           let extraHookProps = { resource: new ResourceApi(this.calendar, resource) }
           let extraDataAttrs = { 'data-resource-id': resource.id }
           let extraClassNames = [ 'fc-resource' ]
+          let date = dayTableModel.cells[row][dateCol].date
 
           rowCells[
             this.computeCol(dateCol, resourceCol)
           ] = {
-            date: dayTableModel.cells[row][dateCol].date,
+            key: resource.id + ':' + date.toISOString(),
+            date,
             resource,
             extraHookProps,
             extraDataAttrs,
