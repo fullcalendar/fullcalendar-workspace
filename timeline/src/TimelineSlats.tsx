@@ -85,7 +85,7 @@ export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
 
       this.coords = new TimelineCoords(
         this.rootElRef.current,
-        this.cellElRefs.collect(),
+        collectCellEls(this.cellElRefs.currentMap, props.tDateProfile.slotDates),
         props.dateProfile,
         props.tDateProfile,
         context.dateEnv,
@@ -167,21 +167,34 @@ class TimelineSlatsBody extends BaseComponent<TimelineSlatsBodyProps> {
     return (
       <tbody>
         <tr>
-          {slotDates.map((slotDate, i) => (
-            <TimelineSlatCell
-              date={slotDate}
-              dateProfile={props.dateProfile}
-              tDateProfile={tDateProfile}
-              nowDate={props.nowDate}
-              todayRange={props.todayRange}
-              isEm={isWeekStarts[i]}
-              isDay={isDay}
-              elRef={cellElRefs.createRef(i)}
-            />
-          ))}
+          {slotDates.map((slotDate, i) => {
+            let key = slotDate.toISOString()
+
+            return (
+              <TimelineSlatCell
+                key={key}
+                elRef={cellElRefs.createRef(key)}
+                date={slotDate}
+                dateProfile={props.dateProfile}
+                tDateProfile={tDateProfile}
+                nowDate={props.nowDate}
+                todayRange={props.todayRange}
+                isEm={isWeekStarts[i]}
+                isDay={isDay}
+              />
+            )
+          })}
         </tr>
       </tbody>
     )
   }
 
+}
+
+
+function collectCellEls(elMap: { [key: string]: HTMLElement }, slotDates: DateMarker[]) {
+  return slotDates.map((slotDate) => {
+    let key = slotDate.toISOString()
+    return elMap[key]
+  })
 }

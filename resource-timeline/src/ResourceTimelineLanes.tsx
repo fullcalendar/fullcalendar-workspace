@@ -92,7 +92,7 @@ export default class ResourceTimelineLanes extends BaseComponent<ResourceTimelin
       this.props.onRowCoords(
         new PositionCache(
           this.rootElRef.current,
-          this.rowElRefs.collect(),
+          collectRowEls(this.rowElRefs.currentMap, props.rowNodes),
           false,
           true // isVertical
         )
@@ -100,6 +100,11 @@ export default class ResourceTimelineLanes extends BaseComponent<ResourceTimelin
     }
   }
 
+}
+
+
+function collectRowEls(elMap: { [key: string]: HTMLElement }, rowNodes: (GroupNode | ResourceNode)[]) {
+  return rowNodes.map((rowNode) => elMap[rowNode.id])
 }
 
 
@@ -122,7 +127,7 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
             return (
               <DividerRow
                 key={node.id}
-                elRef={rowElRefs.createRef(index)}
+                elRef={rowElRefs.createRef(node.id)}
                 groupValue={(node as GroupNode).group.value}
                 renderingHooks={(node as GroupNode).group.spec}
                 innerHeight={innerHeights[index] || ''}
@@ -135,7 +140,7 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
             return (
               <ResourceTimelineLane
                 key={node.id}
-                elRef={rowElRefs.createRef(index)}
+                elRef={rowElRefs.createRef(node.id)}
                 {...props.splitProps[resource.id]}
                 resource={resource}
                 dateProfile={props.dateProfile}
