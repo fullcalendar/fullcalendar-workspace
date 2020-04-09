@@ -35,6 +35,7 @@ vertical slots in both the header AND the body
 .fc-timeline-slot-frame {
   display: flex;
   align-items: center; // vertical align
+  justify-content: center; // horizontal align
 }
 
 .fc-timeline-slot-cushion {
@@ -44,3 +45,4 @@ vertical slots in both the header AND the body
 // NOTE: how does the top row of cells get horizontally centered?
 // for the non-chrono-row, the fc-sticky system looks for text-align center,
 // and it's a fluke that the default browser stylesheet already does this for <th>
+// TODO: have StickyScrolling look at natural left coord to detect centeredness.

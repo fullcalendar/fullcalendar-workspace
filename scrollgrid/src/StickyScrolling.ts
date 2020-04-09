@@ -2,7 +2,8 @@ import {
   applyStyle, htmlToElement,
   translateRect, Rect, Point,
   findElements,
-  computeInnerRect
+  computeInnerRect,
+  CssDimValue
 } from '@fullcalendar/core'
 import ScrollListener from './ScrollListener'
 import { getScrollCanvasOrigin, getScrollFromLeftEdge } from './scroll-left-norm'
@@ -28,6 +29,8 @@ useful beyond the native position:sticky for these reasons:
 
 REQUIREMENT: fc-sticky elements, if the fc-sticky className is taken away, should NOT have relative or absolute positioning.
 This is because we attach the coords with JS, and the VDOM might take away the fc-sticky class but doesn't know kill the positioning.
+
+TODO: don't query text-align:center. isn't compatible with flexbox centering. instead, check natural X coord within parent container
 */
 export default class StickyScroller {
 
@@ -62,11 +65,12 @@ export default class StickyScroller {
     let els = findElements(scrollEl, STICKY_SELECTOR)
     let elGeoms = this.queryElGeoms(els)
     let viewportWidth = scrollEl.clientWidth
+    let viewportHeight = scrollEl.clientHeight
 
     if (this.usingRelative) {
       let elDestinations = this.computeElDestinations(elGeoms, viewportWidth) // read before prepPositioning
 
-      assignRelativePositions(els, elGeoms, elDestinations)
+      assignRelativePositions(els, elGeoms, elDestinations, viewportWidth, viewportHeight)
     } else {
       assignStickyPositions(els, elGeoms, viewportWidth)
     }
@@ -118,6 +122,7 @@ export default class StickyScroller {
   }
 
 
+  // only for IE
   computeElDestinations(elGeoms: ElementGeom[], viewportWidth: number): Point[] {
     let { scrollEl } = this
     let viewportTop = scrollEl.scrollTop
@@ -155,11 +160,24 @@ export default class StickyScroller {
 }
 
 
-function assignRelativePositions(els: HTMLElement[], elGeoms: ElementGeom[], elDestinations: Point[]) {
+function assignRelativePositions(els: HTMLElement[], elGeoms: ElementGeom[], elDestinations: Point[], viewportWidth: number, viewportHeight: number) {
   els.forEach(function(el, i) {
-    let { naturalBound } = elGeoms[i]
-    let left = elDestinations[i].left - naturalBound.left
-    let top = elDestinations[i].top - naturalBound.top
+    let { naturalBound, parentBound } = elGeoms[i]
+    let parentWidth = parentBound.right - parentBound.left
+    let parentHeight = parentBound.bottom - parentBound.bottom
+    let left: CssDimValue
+    let top: CssDimValue
+
+    if (
+      parentWidth > viewportWidth ||
+      parentHeight > viewportHeight
+    ) {
+      left = elDestinations[i].left - naturalBound.left
+      top = elDestinations[i].top - naturalBound.top
+    } else { // if parent container can be completely in view, we don't need stickiness
+      left = ''
+      top = ''
+    }
 
     applyStyle(el, {
       position: 'relative',
@@ -173,15 +191,22 @@ function assignRelativePositions(els: HTMLElement[], elGeoms: ElementGeom[], elD
 
 function assignStickyPositions(els: HTMLElement[], elGeoms: ElementGeom[], viewportWidth: number) {
   els.forEach(function(el, i) {
-    let stickyLeft = 0
+    let { textAlign, elWidth, parentBound } = elGeoms[i]
+    let parentWidth = parentBound.right - parentBound.left
+    let left: CssDimValue
 
-    if (elGeoms[i].textAlign === 'center') {
-      stickyLeft = (viewportWidth - elGeoms[i].elWidth) / 2
+    if (
+      textAlign === 'center' &&
+      parentWidth > viewportWidth
+    ) {
+      left = (viewportWidth - elWidth) / 2
+    } else { // if parent container can be completely in view, we don't need stickiness
+      left = ''
     }
 
     applyStyle(el, { // will already have fc-sticky class which makes it sticky
-      left: stickyLeft,
-      right: stickyLeft, // for when centered
+      left: left,
+      right: left, // for when centered
       top: 0
     })
   })
