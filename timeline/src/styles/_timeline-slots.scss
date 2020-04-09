@@ -17,14 +17,6 @@ vertical slots in both the header AND the body
 
 // border for both header AND body cells
 
-.fc-dir-ltr .fc-timeline-slot {
-  border-right: 0;
-}
-
-.fc-dir-rtl .fc-timeline-slot {
-  border-left: 0;
-}
-
 .fc .fc-timeline-slot-minor { // OVERCOME RESET
   border-style: dotted;
 }
