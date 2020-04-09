@@ -1,7 +1,8 @@
 import {
   h, createRef, ComponentContext,
   CssDimValue, ElementDragging, PointerDragEvent, BaseComponent, ColProps,
-  ChunkConfigRowContent, ChunkConfigContent
+  ChunkConfigRowContent, ChunkConfigContent, ScrollGridSectionConfig,
+  renderScrollShim
 } from '@fullcalendar/core'
 import { ScrollGrid } from '@fullcalendar/scrollgrid'
 
@@ -43,7 +44,62 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
 
 
   render(props: ResourceTimelineViewLayoutProps, state: ResourceTimelineViewLayoutState, context: ComponentContext) {
-    let { theme } = context
+    let { theme, options } = context
+    let { viewHeaderSticky } = options
+
+    let sections: ScrollGridSectionConfig[] = [
+      {
+        type: 'head',
+        syncRowHeights: true,
+        isSticky: viewHeaderSticky,
+        chunks: [
+          {
+            elRef: this.spreadsheetHeaderChunkElRef,
+            tableClassName: 'fc-datagrid-header', // TODO: allow the content to specify this. have general-purpose 'content' with obj with keys
+            rowContent: props.spreadsheetHeaderRows
+          },
+          { outerContent: (
+            <td
+              ref={this.spreadsheetResizerElRef}
+              rowSpan={viewHeaderSticky ? 3 : 2}
+              class={'fc-resource-timeline-divider fc-divider ' + theme.getClass('tableCellShaded')}
+            />
+          ) },
+          {
+            content: props.timeHeaderContent
+          }
+        ]
+      },
+      {
+        type: 'body',
+        syncRowHeights: true,
+        liquid: true,
+        expandRows: Boolean(options.expandRows),
+        chunks: [
+          {
+            tableClassName: 'fc-datagrid-body',
+            rowContent: props.spreadsheetBodyRows
+          },
+          { outerContent: null },
+          {
+            scrollerElRef: this.timeBodyScrollerElRef,
+            content: props.timeBodyContent
+          }
+        ]
+      }
+    ]
+
+    if (viewHeaderSticky) {
+      sections.push({
+        type: 'foot',
+        isSticky: true,
+        chunks: [
+          { content: renderScrollShim },
+          { outerContent: null },
+          { content: renderScrollShim }
+        ]
+      })
+    }
 
     return (
       <ScrollGrid
@@ -55,46 +111,7 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
           { cols: [] }, // for the divider
           { cols: props.timeCols }
         ]}
-        sections={[
-          {
-            type: 'head',
-            syncRowHeights: true,
-            chunks: [
-              {
-                elRef: this.spreadsheetHeaderChunkElRef,
-                tableClassName: 'fc-datagrid-header', // TODO: allow the content to specify this. have general-purpose 'content' with obj with keys
-                rowContent: props.spreadsheetHeaderRows
-              },
-              { outerContent: (
-                <td
-                  ref={this.spreadsheetResizerElRef}
-                  rowSpan={2}
-                  class={'fc-resource-timeline-divider fc-divider ' + theme.getClass('tableCellShaded')}
-                />
-              ) },
-              {
-                content: props.timeHeaderContent
-              }
-            ]
-          },
-          {
-            type: 'body',
-            syncRowHeights: true,
-            liquid: true,
-            expandRows: Boolean(context.options.expandRows),
-            chunks: [
-              {
-                tableClassName: 'fc-datagrid-body',
-                rowContent: props.spreadsheetBodyRows
-              },
-              { outerContent: null },
-              {
-                scrollerElRef: this.timeBodyScrollerElRef,
-                content: props.timeBodyContent
-              }
-            ]
-          }
-        ]}
+        sections={sections}
       />
     )
   }

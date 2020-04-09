@@ -1,5 +1,5 @@
 import {
-  h, ViewProps, ComponentContext, memoize, ChunkContentCallbackArgs, createRef, ViewRoot, DateComponent
+  h, ViewProps, ComponentContext, memoize, ChunkContentCallbackArgs, createRef, ViewRoot, DateComponent, ScrollGridSectionConfig, renderScrollShim
 } from '@fullcalendar/core'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
 import TimelineHeader from './TimelineHeader'
@@ -22,6 +22,7 @@ export default class TimelineView extends DateComponent<ViewProps, TimelineViewS
 
   render(props: ViewProps, state: TimelineViewState, context: ComponentContext) {
     let { options } = context
+    let { viewHeaderSticky } = options
     let { dateProfile } = props
 
     let tDateProfile = this.buildTimelineDateProfile(
@@ -36,8 +37,55 @@ export default class TimelineView extends DateComponent<ViewProps, TimelineViewS
       options.eventOverlap === false ? 'fc-timeline-overlap-disabled' : ''
     ]
 
-    let { slotMinWidth } = context.options
+    let { slotMinWidth } = options
     let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
+
+    let sections: ScrollGridSectionConfig[] = [
+      {
+        type: 'head',
+        isSticky: viewHeaderSticky,
+        chunks: [{
+          content: (contentArg: ChunkContentCallbackArgs) => (
+            <TimelineHeader
+              clientWidth={contentArg.clientWidth}
+              clientHeight={contentArg.clientHeight}
+              tableMinWidth={contentArg.tableMinWidth}
+              tableColGroupNode={contentArg.tableColGroupNode}
+              dateProfile={dateProfile}
+              tDateProfile={tDateProfile}
+              slatCoords={state.slatCoords}
+              onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
+            />
+          )
+        }]
+      },
+      {
+        type: 'body',
+        liquid: true,
+        chunks: [{
+          content: (contentArg: ChunkContentCallbackArgs) => (
+            <TimelineGrid
+              {...props}
+              clientWidth={contentArg.clientWidth}
+              clientHeight={contentArg.clientHeight}
+              tableMinWidth={contentArg.tableMinWidth}
+              tableColGroupNode={contentArg.tableColGroupNode}
+              tDateProfile={tDateProfile}
+              onSlatCoords={this.handleSlatCoords}
+              onScrollLeftRequest={this.handleScrollLeftRequest}
+            />
+          )
+        }]
+      }
+    ]
+
+    if (viewHeaderSticky) {
+      sections.push({
+        type: 'foot',
+        isSticky: true,
+        chunks: [{ content: renderScrollShim }]
+      })
+    }
 
     return (
       <ViewRoot viewSpec={props.viewSpec}>
@@ -50,43 +98,7 @@ export default class TimelineView extends DateComponent<ViewProps, TimelineViewS
               colGroups={[
                 { cols: slatCols }
               ]}
-              sections={[
-                {
-                  type: 'head',
-                  chunks: [{
-                    content: (contentArg: ChunkContentCallbackArgs) => (
-                      <TimelineHeader
-                        clientWidth={contentArg.clientWidth}
-                        clientHeight={contentArg.clientHeight}
-                        tableMinWidth={contentArg.tableMinWidth}
-                        tableColGroupNode={contentArg.tableColGroupNode}
-                        dateProfile={dateProfile}
-                        tDateProfile={tDateProfile}
-                        slatCoords={state.slatCoords}
-                        onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
-                      />
-                    )
-                  }]
-                },
-                {
-                  type: 'body',
-                  liquid: true,
-                  chunks: [{
-                    content: (contentArg: ChunkContentCallbackArgs) => (
-                      <TimelineGrid
-                        {...props}
-                        clientWidth={contentArg.clientWidth}
-                        clientHeight={contentArg.clientHeight}
-                        tableMinWidth={contentArg.tableMinWidth}
-                        tableColGroupNode={contentArg.tableColGroupNode}
-                        tDateProfile={tDateProfile}
-                        onSlatCoords={this.handleSlatCoords}
-                        onScrollLeftRequest={this.handleScrollLeftRequest}
-                      />
-                    )
-                  }]
-                }
-              ]}
+              sections={sections}
             />
           </div>
         )}
