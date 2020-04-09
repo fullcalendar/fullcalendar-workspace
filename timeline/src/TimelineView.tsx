@@ -1,5 +1,5 @@
 import {
-  h, ViewProps, ComponentContext, memoize, ChunkContentCallbackArgs, createRef, ViewRoot, DateComponent, ScrollGridSectionConfig, renderScrollShim
+  h, ViewProps, ComponentContext, memoize, ChunkContentCallbackArgs, createRef, ViewRoot, DateComponent, ScrollGridSectionConfig, renderScrollShim, getStickyHeader, getStickyFooter
 } from '@fullcalendar/core'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
 import TimelineHeader from './TimelineHeader'
@@ -22,7 +22,8 @@ export default class TimelineView extends DateComponent<ViewProps, TimelineViewS
 
   render(props: ViewProps, state: TimelineViewState, context: ComponentContext) {
     let { options } = context
-    let { viewHeaderSticky } = options
+    let stickyHeader = getStickyHeader(options)
+    let stickyFooter = getStickyFooter(options)
     let { dateProfile } = props
 
     let tDateProfile = this.buildTimelineDateProfile(
@@ -43,7 +44,7 @@ export default class TimelineView extends DateComponent<ViewProps, TimelineViewS
     let sections: ScrollGridSectionConfig[] = [
       {
         type: 'head',
-        isSticky: viewHeaderSticky,
+        isSticky: stickyHeader,
         chunks: [{
           content: (contentArg: ChunkContentCallbackArgs) => (
             <TimelineHeader
@@ -79,7 +80,7 @@ export default class TimelineView extends DateComponent<ViewProps, TimelineViewS
       }
     ]
 
-    if (viewHeaderSticky) {
+    if (stickyFooter) {
       sections.push({
         type: 'foot',
         isSticky: true,
