@@ -3,8 +3,8 @@ import {
   CssDimValue, ElementDragging, PointerDragEvent, BaseComponent, ColProps,
   ChunkConfigRowContent, ChunkConfigContent, ScrollGridSectionConfig,
   renderScrollShim,
-  getStickyHeader,
-  getStickyFooter
+  getStickyHeaderDates,
+  getStickyFooterScrollbar
 } from '@fullcalendar/core'
 import { ScrollGrid } from '@fullcalendar/scrollgrid'
 
@@ -47,14 +47,14 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
 
   render(props: ResourceTimelineViewLayoutProps, state: ResourceTimelineViewLayoutState, context: ComponentContext) {
     let { theme, options } = context
-    let stickyHeader = getStickyHeader(options)
-    let stickyFooter = getStickyFooter(options)
+    let stickyHeaderDates = getStickyHeaderDates(options)
+    let stickyFooterScrollbar = getStickyFooterScrollbar(options)
 
     let sections: ScrollGridSectionConfig[] = [
       {
         type: 'head',
         syncRowHeights: true,
-        isSticky: stickyHeader,
+        isSticky: stickyHeaderDates,
         chunks: [
           {
             elRef: this.spreadsheetHeaderChunkElRef,
@@ -64,7 +64,7 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
           { outerContent: (
             <td
               ref={this.spreadsheetResizerElRef}
-              rowSpan={stickyFooter ? 3 : 2}
+              rowSpan={stickyFooterScrollbar ? 3 : 2}
               class={'fc-resource-timeline-divider fc-divider ' + theme.getClass('tableCellShaded')}
             />
           ) },
@@ -92,7 +92,7 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
       }
     ]
 
-    if (stickyFooter) {
+    if (stickyFooterScrollbar) {
       sections.push({
         type: 'foot',
         isSticky: true,
