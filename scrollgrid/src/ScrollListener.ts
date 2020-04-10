@@ -1,4 +1,4 @@
-import { EmitterMixin, DelayedRunner, preventDefault } from '@fullcalendar/core'
+import { EmitterMixin, DelayedRunner } from '@fullcalendar/core'
 
 
 const WHEEL_EVENT_NAMES = 'wheel mousewheel DomMouseScroll MozMousePixelScroll'.split(' ')
@@ -12,142 +12,105 @@ export default class ScrollListener {
   emitter = new EmitterMixin()
   private isScrolling = false
   private isTouching = false // user currently has finger down?
-  private isMoving = false // whether a scroll event has happened recently
-  private isTouchScrollEnabled = false
-  private preventTouchScrollHandler: any
-  private moveEndReporter = new DelayedRunner(this._reportMovingEnd.bind(this))
+  private isRecentlyWheeled = false
+  private isRecentlyScrolled = false
+  private wheelWaiter = new DelayedRunner(this._handleWheelWaited.bind(this))
+  private scrollWaiter = new DelayedRunner(this._handleScrollWaited.bind(this))
 
 
   constructor(public el: HTMLElement) {
-    el.addEventListener('scroll', this.reportScroll)
-    el.addEventListener('touchstart', this.reportTouchStart, { passive: true })
-    el.addEventListener('touchend', this.reportTouchEnd)
+    el.addEventListener('scroll', this.handleScroll)
+    el.addEventListener('touchstart', this.handleTouchStart, { passive: true })
+    el.addEventListener('touchend', this.handleTouchEnd)
 
     for (let eventName of WHEEL_EVENT_NAMES) {
-      el.addEventListener(eventName, this.reportWheel)
+      el.addEventListener(eventName, this.handleWheel)
     }
   }
 
 
   destroy() {
     let { el } = this
-    el.removeEventListener('scroll', this.reportScroll)
-    el.removeEventListener('touchstart', this.reportTouchStart, { passive: true } as AddEventListenerOptions)
-    el.removeEventListener('touchend', this.reportTouchEnd)
+    el.removeEventListener('scroll', this.handleScroll)
+    el.removeEventListener('touchstart', this.handleTouchStart, { passive: true } as AddEventListenerOptions)
+    el.removeEventListener('touchend', this.handleTouchEnd)
 
     for (let eventName of WHEEL_EVENT_NAMES) {
-      el.removeEventListener(eventName, this.reportWheel)
+      el.removeEventListener(eventName, this.handleWheel)
     }
   }
 
 
-  // Touch scroll prevention
+  // Start / Stop
   // ----------------------------------------------------------------------------------------------
 
 
-  disableTouchScroll() {
-    this.isTouchScrollEnabled = false
-    this.bindPreventTouchScroll() // will be unbound in enableTouchScroll or reportTouchEnd
-  }
-
-
-  enableTouchScroll() {
-    this.isTouchScrollEnabled = true
-
-    // only immediately unbind if a touch event is NOT in progress.
-    // otherwise, it will be handled by reportTouchEnd.
-    if (!this.isTouching) {
-      this.unbindPreventTouchScroll()
-    }
-  }
-
-
-  bindPreventTouchScroll() {
-    if (!this.preventTouchScrollHandler) {
-      this.el.addEventListener('touchmove', (this.preventTouchScrollHandler = preventDefault))
-    }
-  }
-
-
-  unbindPreventTouchScroll() {
-    if (this.preventTouchScrollHandler) {
-      this.el.removeEventListener('touchmove', this.preventTouchScrollHandler)
-      this.preventTouchScrollHandler = null
-    }
-  }
-
-
-  // Scroll Events
-  // ----------------------------------------------------------------------------------------------
-
-
-  reportScroll = () => {
-    if (!this.isScrolling) {
-      this.reportScrollStart()
-    }
-    this.emitter.trigger('scroll')
-    this.isMoving = true
-    this.moveEndReporter.request(500)
-  }
-
-
-  reportScrollStart = () => {
+  private startScroll() {
     if (!this.isScrolling) {
       this.isScrolling = true
-      this.emitter.trigger('scrollStart', this.isTouching) // created in constructor
+      this.emitter.trigger('scrollStart', this.isRecentlyWheeled, this.isTouching)
     }
   }
 
 
-  _reportMovingEnd() {
-    this.isMoving = false
+  endScroll() {
+    if (this.isScrolling) {
+      this.emitter.trigger('scrollEnd')
+      this.isScrolling = false
+      this.isRecentlyScrolled = true
+      this.isRecentlyWheeled = false
+    }
+  }
+
+
+  // Handlers
+  // ----------------------------------------------------------------------------------------------
+
+
+  handleScroll = () => {
+    this.startScroll()
+    this.emitter.trigger('scroll', this.isRecentlyWheeled, this.isTouching)
+    this.isRecentlyScrolled = true
+    this.scrollWaiter.request(500)
+  }
+
+
+  _handleScrollWaited() {
+    this.isRecentlyScrolled = false
 
     // only end the scroll if not currently touching.
     // if touching, the scrolling will end later, on touchend.
     if (!this.isTouching) {
-      this.reportScrollEnd()
+      this.endScroll() // won't fire if already ended
     }
   }
 
 
-  reportScrollEnd() {
-    if (this.isScrolling) {
-      this.emitter.trigger('scrollEnd')
-      this.isScrolling = false
-    }
+  // will fire *before* the scroll event is fired (might not cause a scroll)
+  handleWheel = () => {
+    this.isRecentlyWheeled = true
+    this.wheelWaiter.request(500)
   }
 
 
-  reportWheel = (ev) => {
-    this.emitter.trigger('wheel')
+  _handleWheelWaited() {
+    this.isRecentlyWheeled = false
   }
 
 
-  // Touch Events
-  // ----------------------------------------------------------------------------------------------
-
-
-  // will fire *before* the scroll event is fired
-  reportTouchStart = () => {
+  // will fire *before* the scroll event is fired (might not cause a scroll)
+  handleTouchStart = () => {
     this.isTouching = true
   }
 
 
-  reportTouchEnd = () => {
-    if (this.isTouching) {
-      this.isTouching = false
+  handleTouchEnd = () => {
+    this.isTouching = false
 
-      // if touch scrolling was re-enabled during a recent touch scroll
-      // then unbind the handlers that are preventing it from happening.
-      if (this.isTouchScrollEnabled) {
-        this.unbindPreventTouchScroll() // won't do anything if not bound
-      }
-
-      // if the user ended their touch, and the scroll area wasn't moving,
-      // we consider this to be the end of the scroll.
-      if (!this.isMoving) {
-        this.reportScrollEnd() // won't fire if already ended
-      }
+    // if the user ended their touch, and the scroll area wasn't moving,
+    // we consider this to be the end of the scroll.
+    if (!this.isRecentlyScrolled) {
+      this.endScroll() // won't fire if already ended
     }
   }
 
