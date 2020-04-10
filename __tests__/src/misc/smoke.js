@@ -7,7 +7,7 @@ describe('timeline', function() {
       editable: true,
       aspectRatio: 1.8,
       scrollTime: '00:00',
-      header: {
+      headerToolbar: {
         left: 'today prev,next',
         center: 'title',
         right: 'resourceTimelineDay,resourceTimelineThreeDays,resourceTimeGridDay,resourceTimeGridTwoDay,timeGridWeek,dayGridMonth'

@@ -114,7 +114,7 @@ describe('timeline-view external element drag-n-drop', function() {
       })
 
     initCalendar({
-      header: false, // better guarantee that dragEl is parallel with body slots
+      headerToolbar: false, // better guarantee that dragEl is parallel with body slots
       drop() {
         isDropCalled = true
       }
