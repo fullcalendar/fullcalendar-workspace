@@ -59,6 +59,8 @@ export default class ScrollListener {
       this.isScrolling = false
       this.isRecentlyScrolled = true
       this.isRecentlyWheeled = false
+      this.scrollWaiter.clear()
+      this.wheelWaiter.clear()
     }
   }
 

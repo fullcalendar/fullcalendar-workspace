@@ -67,7 +67,7 @@ export default class ScrollSyncer {
 
     for (let scrollListener of this.scrollListeners) {
       if (scrollListener.el !== el) {
-        scrollListener.endScroll()
+        scrollListener.endScroll() // to prevent residual scrolls from reclaiming master
       }
     }
   }
