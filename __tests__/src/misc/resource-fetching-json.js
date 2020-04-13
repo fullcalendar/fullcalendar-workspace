@@ -17,7 +17,7 @@ describe('fetching resources from a JSON feed', function() {
     })
 
     initCalendar({
-      defaultView: 'resourceTimelineWeek',
+      initialView: 'resourceTimelineWeek',
       resources: {
         url: 'my-feed.php', // will be picked up by XHRMock
         method: 'POST'

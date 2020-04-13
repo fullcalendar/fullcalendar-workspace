@@ -5,7 +5,7 @@ describe('resourceOrder', function() {
 
   describe('when in timeGrid view', function() {
     pushOptions({
-      defaultView: 'resourceTimeGridDay',
+      initialView: 'resourceTimeGridDay',
       resources: [
         { id: 'a', title: 'Auditorium A' },
         { id: 'b', title: 'Auditorium B' },
@@ -48,7 +48,7 @@ describe('resourceOrder', function() {
 
   describe('when in timeline view', function() {
     pushOptions({
-      defaultView: 'resourceTimelineDay',
+      initialView: 'resourceTimelineDay',
       resources: [
         { id: 'a', title: 'Auditorium A' },
         { id: 'b', title: 'Auditorium B' },

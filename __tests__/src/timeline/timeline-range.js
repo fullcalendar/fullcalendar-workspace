@@ -3,7 +3,7 @@ import TimelineViewWrapper from "../lib/wrappers/TimelineViewWrapper"
 describe('timeline range', function() {
   pushOptions({
     now: '2016-02-17',
-    defaultView: 'timelineTwoDay',
+    initialView: 'timelineTwoDay',
     slotLabelInterval: '01:00',
     views: {
       timelineTwoDay: {

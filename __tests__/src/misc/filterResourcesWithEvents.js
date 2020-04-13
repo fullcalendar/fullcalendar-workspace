@@ -39,7 +39,7 @@ describe('filterResourcesWithEvents', function() {
     }
   }, function(settings) {
     pushOptions({
-      defaultView: settings.view
+      initialView: settings.view
     })
 
 
@@ -83,7 +83,7 @@ describe('filterResourcesWithEvents', function() {
 
   describe('when timeline view', function() {
     pushOptions({
-      defaultView: 'resourceTimelineDay'
+      initialView: 'resourceTimelineDay'
     })
 
 
@@ -145,8 +145,8 @@ describe('filterResourcesWithEvents', function() {
 
     it('will filter out resources that might have events in other ranges', function() {
       let calendar = initCalendar({
-        defaultView: 'resourceTimelineWeek',
-        defaultDate: '2017-08-09',
+        initialView: 'resourceTimelineWeek',
+        initialDate: '2017-08-09',
         resources: [
           { id: 'f', title: 'Auditorium F', eventColor: 'red' }
         ],

@@ -6,7 +6,7 @@ describe('eventResourceEditable in vertical resource view', function() {
   it('allows resource dragging while start-date-dragging is disabled', function(done) {
     let dropSpy
     let calendar = initCalendar({
-      defaultView: 'resourceTimeGridDay',
+      initialView: 'resourceTimeGridDay',
       now: '2019-08-01',
       scrollTime: '00:00',
       editable: true,

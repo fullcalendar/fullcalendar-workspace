@@ -15,8 +15,8 @@ describe('timeline navLinks', function() {
   })
 
   describeOptions({
-    'when multi-day': { defaultView: 'timelineThreeDay' },
-    'when multi-month': { defaultView: 'timelineTwoMonth' }
+    'when multi-day': { initialView: 'timelineThreeDay' },
+    'when multi-month': { initialView: 'timelineTwoMonth' }
   }, function() {
     it('has at least one navLink', function() {
       initCalendar()

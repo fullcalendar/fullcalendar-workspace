@@ -1,8 +1,8 @@
 
 describe('rerender performance for resource timeline', function() {
   pushOptions({
-    defaultDate: '2017-10-04',
-    defaultView: 'resourceTimelineDay',
+    initialDate: '2017-10-04',
+    initialView: 'resourceTimelineDay',
     resources: [
       { id: 'a', title: 'Resource A' }
     ],

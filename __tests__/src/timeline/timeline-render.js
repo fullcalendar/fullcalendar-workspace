@@ -5,7 +5,7 @@ import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWra
 
 describe('timeline rendering', function() {
   pushOptions({
-    defaultDate: '2017-10-27'
+    initialDate: '2017-10-27'
   })
 
   function buildResources(cnt) {
@@ -19,7 +19,7 @@ describe('timeline rendering', function() {
 
   it('has correct vertical scroll and gutters', function() {
     let calendar = initCalendar({
-      defaultView: 'resourceTimeline',
+      initialView: 'resourceTimeline',
       resources: buildResources(50)
     })
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
@@ -38,7 +38,7 @@ describe('timeline rendering', function() {
 
   it('renders time slots localized', function() {
     let calendar = initCalendar({
-      defaultView: 'timelineWeek',
+      initialView: 'timelineWeek',
       slotDuration: '01:00',
       scrollTime: 0,
       locale: lvLocale
@@ -54,7 +54,7 @@ describe('timeline rendering', function() {
     let callCnt = 0
 
     initCalendar({
-      defaultView: 'timelineWeek',
+      initialView: 'timelineWeek',
       slotDuration: { days: 1 },
       slotLabelDidMount(arg) {
         expect(arg.date instanceof Date).toBe(true)
@@ -71,7 +71,7 @@ describe('timeline rendering', function() {
     let callCnt = 0
 
     initCalendar({
-      defaultView: 'timelineDay',
+      initialView: 'timelineDay',
       slotDuration: { hours: 1 },
       slotLabelDidMount(arg) {
         expect(startOfDay(arg.date)).toEqualDate('2017-10-27')

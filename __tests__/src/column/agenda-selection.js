@@ -21,7 +21,7 @@ describe('timeGrid-view selection', function() {
 
   describe('when there are no resource columns', function() {
     pushOptions({
-      defaultView: 'timeGridWeek'
+      initialView: 'timeGridWeek'
     })
 
     it('allows non-resource selection', function(done) {
@@ -42,7 +42,7 @@ describe('timeGrid-view selection', function() {
 
   describe('with resource columns above date columns', function() {
     pushOptions({
-      defaultView: 'resourceTimeGridThreeDay'
+      initialView: 'resourceTimeGridThreeDay'
     })
 
     it('allows a same-day resource selection', function(done) {
@@ -115,7 +115,7 @@ describe('timeGrid-view selection', function() {
 
   describe('with date columns above resource columns', function() {
     pushOptions({
-      defaultView: 'resourceTimeGridThreeDay',
+      initialView: 'resourceTimeGridThreeDay',
       datesAboveResources: true
     })
 

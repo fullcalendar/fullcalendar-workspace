@@ -12,7 +12,7 @@ describe('timeline', function() {
         center: 'title',
         right: 'resourceTimelineDay,resourceTimelineThreeDays,resourceTimeGridDay,resourceTimeGridTwoDay,timeGridWeek,dayGridMonth'
       },
-      defaultView: 'resourceTimelineDay',
+      initialView: 'resourceTimelineDay',
       views: {
         resourceTimelineThreeDays: {
           type: 'resourceTimeline',

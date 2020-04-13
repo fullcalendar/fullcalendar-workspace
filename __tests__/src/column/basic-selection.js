@@ -19,7 +19,7 @@ describe('dayGrid-view selection', function() {
 
   describe('when there are no resource columns', function() {
     pushOptions({
-      defaultView: 'dayGridWeek'
+      initialView: 'dayGridWeek'
     })
 
     it('allows non-resource selects', function(done) {
@@ -53,7 +53,7 @@ describe('dayGrid-view selection', function() {
 
   describe('with resource columns above date columns', function() {
     pushOptions({
-      defaultView: 'resourceDayGridThreeDay'
+      initialView: 'resourceDayGridThreeDay'
     })
 
     it('allows a resource selects', function(done) {
@@ -106,7 +106,7 @@ describe('dayGrid-view selection', function() {
 
   describe('with date columns above resource columns', function() {
     pushOptions({
-      defaultView: 'resourceDayGridThreeDay',
+      initialView: 'resourceDayGridThreeDay',
       datesAboveResources: true
     })
 

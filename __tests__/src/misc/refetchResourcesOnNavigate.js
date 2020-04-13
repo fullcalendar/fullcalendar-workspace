@@ -31,7 +31,7 @@ describe('refetchResourcesOnNavigate', function() {
     }
   }, function(settings) {
     pushOptions({
-      defaultView: settings.view
+      initialView: settings.view
     })
 
     it('refetches resources when navigating', function() {
@@ -155,7 +155,7 @@ describe('refetchResourcesOnNavigate', function() {
   it('refetches resources on view switch', function() {
     let resourceCallCnt = 0
     let calendar = initCalendar({
-      defaultView: 'resourceTimeGridDay',
+      initialView: 'resourceTimeGridDay',
       views: {
         resourceTimeGridTwoDay: {
           type: 'resourceTimeGrid',
@@ -192,7 +192,7 @@ describe('refetchResourcesOnNavigate', function() {
     let fetchCnt = 0
 
     initCalendar({
-      defaultView: 'timeGridDay',
+      initialView: 'timeGridDay',
 
       resources(arg, callback) {
         fetchCnt += 1
@@ -235,7 +235,7 @@ describe('refetchResourcesOnNavigate', function() {
 
   it('resources function will receive view start/end/timezone', function(done) {
     let calendar = initCalendar({
-      defaultView: 'resourceTimelineWeek',
+      initialView: 'resourceTimelineWeek',
       now: '2017-02-12',
       timeZone: 'America/Chicago',
       resources(arg, callback) {
@@ -255,7 +255,7 @@ describe('refetchResourcesOnNavigate', function() {
   it('will cause a resource function to receive start/end/timezone after navigate', function() {
     let fetchCnt = 0
     let calendar = initCalendar({
-      defaultView: 'resourceTimelineWeek',
+      initialView: 'resourceTimelineWeek',
       now: '2017-02-12',
       timeZone: 'America/Chicago',
       resources(arg, callback) {
@@ -283,7 +283,7 @@ describe('refetchResourcesOnNavigate', function() {
     let requestCnt = 0
 
     initCalendar({
-      defaultView: 'resourceTimelineWeek',
+      initialView: 'resourceTimelineWeek',
       now: '2017-02-12',
       timeZone: 'America/Chicago',
 
@@ -326,7 +326,7 @@ describe('refetchResourcesOnNavigate', function() {
       })
 
       initCalendar({
-        defaultView: 'resourceTimelineWeek',
+        initialView: 'resourceTimelineWeek',
         now: '2017-02-12',
         timeZone: 'America/Chicago',
         resources: 'my-feed.php' // will be picked up by XHRMock
@@ -347,7 +347,7 @@ describe('refetchResourcesOnNavigate', function() {
       })
 
       initCalendar({
-        defaultView: 'resourceTimelineWeek',
+        initialView: 'resourceTimelineWeek',
         now: '2017-02-12',
         timeZone: 'America/Chicago',
         resources: 'my-feed.php', // will be picked up by XHRMock
@@ -367,7 +367,7 @@ describe('refetchResourcesOnNavigate', function() {
       })
 
       initCalendar({
-        defaultView: 'resourceTimelineWeek',
+        initialView: 'resourceTimelineWeek',
         now: '2017-02-12',
         timeZone: 'America/Chicago',
         resources: 'my-feed.php', // will be picked up by XHRMock

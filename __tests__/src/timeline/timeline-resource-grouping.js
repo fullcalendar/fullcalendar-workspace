@@ -2,7 +2,7 @@ import ResourceTimelineViewWrapper from "../lib/wrappers/ResourceTimelineViewWra
 
 describe('timeline resource grouping', function() {
   pushOptions({
-    defaultView: 'resourceTimeline',
+    initialView: 'resourceTimeline',
     resourceGroupField: 'groupId',
     resources: [
       {
@@ -41,7 +41,7 @@ describe('timeline resource grouping', function() {
   // https://github.com/fullcalendar/fullcalendar-scheduler/issues/490
   it('works with resourceOrder', function() {
     let calendar = initCalendar({
-      defaultView: 'resourceTimelineDay',
+      initialView: 'resourceTimelineDay',
       resourceOrder: 'building',
       resourceGroupField: 'building',
       resourcesInitiallyExpanded: false,

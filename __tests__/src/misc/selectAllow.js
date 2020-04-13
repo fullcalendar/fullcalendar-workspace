@@ -4,7 +4,7 @@ import { waitDateSelect } from 'standard-tests/src/lib/wrappers/interaction-util
 describe('selectAllow', function() {
   pushOptions({
     now: '2016-09-04',
-    defaultView: 'resourceTimelineWeek',
+    initialView: 'resourceTimelineWeek',
     scrollTime: '00:00',
     selectable: true,
     resources: [

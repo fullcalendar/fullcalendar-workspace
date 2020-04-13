@@ -40,8 +40,8 @@ describe('timeline dragging events between calendars', function() {
       plugins: [ ResourceTimelinePlugin, InteractionPlugin ],
       timeZone: 'UTC',
       scrollTime: '00:00',
-      defaultDate: DEFAULT_DATE,
-      defaultView: 'resourceTimelineDay',
+      initialDate: DEFAULT_DATE,
+      initialView: 'resourceTimelineDay',
       editable: true,
       droppable: true,
       resources: [
@@ -58,8 +58,8 @@ describe('timeline dragging events between calendars', function() {
       plugins: [ ResourceTimelinePlugin, InteractionPlugin ],
       timeZone: 'UTC',
       scrollTime: '00:00',
-      defaultDate: DEFAULT_DATE,
-      defaultView: 'resourceTimelineDay',
+      initialDate: DEFAULT_DATE,
+      initialView: 'resourceTimelineDay',
       editable: true,
       resources: [
         { id: 'a' }

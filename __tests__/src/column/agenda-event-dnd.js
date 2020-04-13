@@ -11,7 +11,7 @@ describe('timeGrid-view event drag-n-drop', function() {
       { id: 'a', title: 'Resource A' },
       { id: 'b', title: 'Resource B' }
     ],
-    defaultView: 'resourceTimeGridWeek',
+    initialView: 'resourceTimeGridWeek',
     scrollTime: '00:00'
   })
 

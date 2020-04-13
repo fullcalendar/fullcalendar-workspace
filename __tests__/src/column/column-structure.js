@@ -30,7 +30,7 @@ describe('vresource structure', function() {
 
     describe('when one-day', function() {
       pushOptions({
-        defaultView: 'oneDay'
+        initialView: 'oneDay'
       })
 
       describe('when LTR', function() {
@@ -80,7 +80,7 @@ describe('vresource structure', function() {
 
     describe('with two-day', function() {
       pushOptions({
-        defaultView: 'twoDay'
+        initialView: 'twoDay'
       })
 
       describe('when resources are above dates', function() {
@@ -137,7 +137,7 @@ describe('vresource structure', function() {
 
       describe('when one-day', function() {
         pushOptions({
-          defaultView: 'oneDay'
+          initialView: 'oneDay'
         })
 
         it('renders resources columns', function() {
@@ -154,7 +154,7 @@ describe('vresource structure', function() {
 
     describe('when delay in resource fetching', function() {
       pushOptions({
-        defaultView: 'oneDay',
+        initialView: 'oneDay',
         resources(arg, callback) {
           setTimeout(function() {
             callback([
@@ -169,7 +169,7 @@ describe('vresource structure', function() {
 
   describe('when month view', function() {
     pushOptions({
-      defaultView: 'resourceDayGridMonth',
+      initialView: 'resourceDayGridMonth',
       resources: [
         { id: 'a', title: 'Resource A' },
         { id: 'b', title: 'Resource B' }

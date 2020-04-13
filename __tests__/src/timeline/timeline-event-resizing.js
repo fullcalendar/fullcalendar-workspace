@@ -25,14 +25,14 @@ describe('timeline event resizing', function() {
 
       describe('when time scale', function() {
         pushOptions({
-          defaultView: 'resourceTimelineDay'
+          initialView: 'resourceTimelineDay'
         })
 
         describe('when snap matches slots', function() {
 
           describe('when no resources', function() {
             pushOptions({
-              defaultView: 'timelineDay'
+              initialView: 'timelineDay'
             })
 
             it('reports resize with no resource', function(done) {
@@ -186,7 +186,7 @@ describe('timeline event resizing', function() {
       let calendar = initCalendar({
         isTouch: true,
         longPressDelay: 100,
-        defaultView: 'resourceTimelineDay',
+        initialView: 'resourceTimelineDay',
         events: [
           { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
         ],
@@ -226,7 +226,7 @@ describe('timeline event resizing', function() {
 
     describe('when day scale', function() {
       pushOptions({
-        defaultView: 'resourceTimelineMonth',
+        initialView: 'resourceTimelineMonth',
         slotDuration: { days: 1 }
       })
 
@@ -259,7 +259,7 @@ describe('timeline event resizing', function() {
 
     describe('when week scale', function() {
       pushOptions({
-        defaultView: 'resourceTimelineYear',
+        initialView: 'resourceTimelineYear',
         slotDuration: { weeks: 1 },
         slotMinWidth: 50
       })
@@ -300,7 +300,7 @@ describe('timeline event resizing', function() {
       let mirrorUnmountCnt = 0
 
       let calendar = initCalendar({
-        defaultView: 'resourceTimelineDay',
+        initialView: 'resourceTimelineDay',
         eventDragMinDistance: 0, // so mirror will render immediately upon mousedown
         slotDuration: '01:00',
         snapDuration: '01:00',

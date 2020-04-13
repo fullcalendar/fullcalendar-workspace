@@ -2,7 +2,7 @@ import ListenerCounter from 'standard-tests/src/lib/ListenerCounter'
 
 describe('destroy', function() {
   pushOptions({
-    defaultDate: '2016-06-01',
+    initialDate: '2016-06-01',
     droppable: true, // high chance of attaching global handlers
     editable: true, // same
     resources: [
@@ -14,7 +14,7 @@ describe('destroy', function() {
     ]
   })
 
-  describeOptions('defaultView', {
+  describeOptions('initialView', {
     'when resourceTimelineDay view': 'resourceTimelineDay',
     'when vertical resource view': 'resourceTimeGridDay',
     'when dayGrid vertical resource view': 'resourceDayGridDay'

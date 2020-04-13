@@ -44,7 +44,7 @@ describe('timeline view rerendering', function() {
 
   describe('when only a few resources', function() {
     pushOptions({
-      defaultView: 'resourceTimelineDay',
+      initialView: 'resourceTimelineDay',
       resources: [
         { id: 'a', title: 'Auditorium A' },
         { id: 'b', title: 'Auditorium B' },
@@ -109,7 +109,7 @@ describe('timeline view rerendering', function() {
     let calendar = initCalendar({
       now: '2015-08-07',
       scrollTime: '00:00',
-      defaultView: 'resourceTimelineDay',
+      initialView: 'resourceTimelineDay',
       events(arg, callback) {
         setTimeout(function() {
           callback(getEvents())
@@ -145,7 +145,7 @@ describe('timeline view rerendering', function() {
     let calendar = initCalendar({
       now: '2015-08-07',
       scrollTime: '00:00',
-      defaultView: 'resourceTimelineDay',
+      initialView: 'resourceTimelineDay',
       events(arg, callback) {
         setTimeout(function() {
           callback(getEvents())
@@ -182,7 +182,7 @@ describe('timeline view rerendering', function() {
     let calendar = initCalendar({
       now: '2015-08-07',
       scrollTime: '00:00',
-      defaultView: 'resourceTimelineDay',
+      initialView: 'resourceTimelineDay',
       events(arg, callback) {
         setTimeout(function() {
           callback(getEvents())

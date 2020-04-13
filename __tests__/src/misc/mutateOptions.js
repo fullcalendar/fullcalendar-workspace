@@ -6,8 +6,8 @@ import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWra
 function buildOptions() {
   return {
     plugins: [ resourceTimelinePlugin ],
-    defaultView: 'resourceTimelineDay',
-    defaultDate: '2019-04-01',
+    initialView: 'resourceTimelineDay',
+    initialDate: '2019-04-01',
     resources: [
       { id: 'a', title: 'Resource A' },
       { id: 'b', title: 'Resource B' }

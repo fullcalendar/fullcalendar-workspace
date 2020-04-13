@@ -3,7 +3,7 @@ import ResourceTimeGridViewWrapper from "../lib/wrappers/ResourceTimeGridViewWra
 
 describe('vresource resource rerendering', function() {
   pushOptions({
-    defaultView: 'resourceTimeGridDay',
+    initialView: 'resourceTimeGridDay',
     resources: [
       { id: 'a', title: 'Auditorium A' },
       { id: 'b', title: 'Auditorium B' },

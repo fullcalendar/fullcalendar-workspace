@@ -11,7 +11,7 @@ describe('Resource::remove', function() {
     ]
   })
 
-  describeOptions('defaultView', {
+  describeOptions('initialView', {
     'when in timeline view': 'resourceTimelineDay',
     'when in timeGrid view': 'resourceTimeGridDay'
   }, function(viewName) {

@@ -5,7 +5,7 @@ describe('column-based view rerendering', function() {
   pushOptions({
     now: '2015-08-07',
     scrollTime: '00:00',
-    defaultView: 'resourceTimeGridDay',
+    initialView: 'resourceTimeGridDay',
   })
 
   const STOCK_RESOURCES = [
@@ -25,7 +25,7 @@ describe('column-based view rerendering', function() {
       let calendar = initCalendar({
         now: '2015-08-07',
         scrollTime: '00:00',
-        defaultView: 'resourceTimeGridDay',
+        initialView: 'resourceTimeGridDay',
         resources(arg, callback) {
           setTimeout(function() {
             callback(STOCK_EVENTS)
@@ -55,7 +55,7 @@ describe('column-based view rerendering', function() {
       let calendar = initCalendar({
         now: '2015-08-07',
         scrollTime: '00:00',
-        defaultView: 'resourceTimeGridDay',
+        initialView: 'resourceTimeGridDay',
         resources(arg, callback) {
           setTimeout(function() {
             callback(STOCK_RESOURCES)
@@ -90,7 +90,7 @@ describe('column-based view rerendering', function() {
       let calendar = initCalendar({
         now: '2015-08-07',
         scrollTime: '00:00',
-        defaultView: 'resourceTimeGridDay',
+        initialView: 'resourceTimeGridDay',
         resources(arg, callback) {
           setTimeout(function() {
             callback([
@@ -125,7 +125,7 @@ describe('column-based view rerendering', function() {
     })
   })
 
-  describeOptions('defaultView', {
+  describeOptions('initialView', {
     'when timeGrid': 'resourceTimeGridDay',
     'when dayGrid': 'resourceDayGridDay'
   }, function(viewName) {

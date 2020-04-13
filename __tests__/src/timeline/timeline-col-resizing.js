@@ -3,7 +3,7 @@ import ResourceTimelineViewWrapper from "../lib/wrappers/ResourceTimelineViewWra
 describe('timeline column resizing', function() { // better renamed to 'sizing'
   pushOptions({
     resourceAreaWidth: 230,
-    defaultView: 'resourceTimelineDay',
+    initialView: 'resourceTimelineDay',
     resourceAreaColumns: [
       {
         headerContent: 'Room',

@@ -12,7 +12,7 @@ describe('timeline-view external element drag-n-drop', function() {
       { id: 'a', title: 'Resource A' },
       { id: 'b', title: 'Resource B' }
     ],
-    defaultView: 'resourceTimelineDay',
+    initialView: 'resourceTimelineDay',
     scrollTime: '00:00'
   })
 

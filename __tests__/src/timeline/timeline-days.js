@@ -5,7 +5,7 @@ import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 describe('timeline whole days', function() {
   pushOptions({
     now: '2016-11-05',
-    defaultView: 'timelineMonth',
+    initialView: 'timelineMonth',
     slotDuration: { days: 1 }
   })
 

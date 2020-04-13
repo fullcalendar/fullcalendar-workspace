@@ -5,7 +5,7 @@ import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWra
 describe('column event dragging with constraint', function() {
   pushOptions({
     now: '2016-02-14',
-    defaultView: 'resourceTimeGridDay',
+    initialView: 'resourceTimeGridDay',
     scrollTime: '00:00',
     editable: true,
     eventOverlap: false,
@@ -17,7 +17,7 @@ describe('column event dragging with constraint', function() {
 
   describe('when distinct resource columns', function() {
 
-    describeOptions('defaultView', {
+    describeOptions('initialView', {
       'when resource columns': 'resourceTimeGridDay',
       'when no resource columns': 'timeGrid'
     }, function(val) {

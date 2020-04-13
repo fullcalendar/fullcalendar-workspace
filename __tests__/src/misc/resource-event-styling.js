@@ -27,7 +27,7 @@ describe('event styling hooks', function() {
 
   describe('when distinct resources', function() {
 
-    describeOptions('defaultView', {
+    describeOptions('initialView', {
       'with timeGrid': 'resourceTimeGridDay',
       'with timeline': 'resourceTimelineDay'
     }, function() {
@@ -86,7 +86,7 @@ describe('event styling hooks', function() {
 
   describe('when no distinct resources', function() {
     pushOptions({
-      defaultView: 'timeGridWeek'
+      initialView: 'timeGridWeek'
     })
 
     it('receives colors from resourceId', function() {

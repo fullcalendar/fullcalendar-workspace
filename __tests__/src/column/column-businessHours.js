@@ -20,7 +20,7 @@ describe('vresource businessHours', function() {
 
     describe('for resourceDayGridWeek', function() {
       pushOptions({
-        defaultView: 'resourceDayGridWeek'
+        initialView: 'resourceDayGridWeek'
       })
 
       describeOptions({
@@ -42,7 +42,7 @@ describe('vresource businessHours', function() {
 
     describe('for week', function() {
       pushOptions({
-        defaultView: 'resourceTimeGridWeek'
+        initialView: 'resourceTimeGridWeek'
       })
 
       describeOptions({
@@ -98,7 +98,7 @@ describe('vresource businessHours', function() {
 
     describe('for day with resources', function() {
       pushOptions({
-        defaultView: 'resourceTimeGridDay'
+        initialView: 'resourceTimeGridDay'
       })
 
       it('renders all with same businessHours', function() {
@@ -142,7 +142,7 @@ describe('vresource businessHours', function() {
 
       it('greys out whole day for single resource', function() {
         initCalendar({
-          defaultDate: '2016-10-30', // a Sunday
+          initialDate: '2016-10-30', // a Sunday
           businessHours: false,
           resources: [
             { id: 'a', title: 'Resource A' },

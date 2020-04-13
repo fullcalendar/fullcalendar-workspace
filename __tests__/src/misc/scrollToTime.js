@@ -4,7 +4,7 @@ describe('scrollToTime method', function() {
 
   describe('when in timeline', function() {
     pushOptions({
-      defaultView: 'timelineMonth',
+      initialView: 'timelineMonth',
       slotDuration: { hours: 12 }
     })
 

@@ -3,8 +3,8 @@ import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWra
 
 describe('resourcesInitiallyExpanded', function() {
   pushOptions({
-    defaultView: 'resourceTimelineDay',
-    defaultDate: '2017-10-10',
+    initialView: 'resourceTimelineDay',
+    initialDate: '2017-10-10',
     scrollTime: '09:00',
     resources: [
       { id: 'a',

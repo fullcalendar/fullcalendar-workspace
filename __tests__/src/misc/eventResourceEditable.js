@@ -4,7 +4,7 @@ import { waitEventDrag } from 'standard-tests/src/lib/wrappers/interaction-util'
 describe('eventResourceEditable', function() {
   pushOptions({
     now: '2016-09-04',
-    defaultView: 'resourceTimelineWeek',
+    initialView: 'resourceTimelineWeek',
     scrollTime: '00:00',
     resources: [
       { id: 'a', title: 'Resource A' },

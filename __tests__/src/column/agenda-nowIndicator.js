@@ -14,7 +14,7 @@ describe('resource timeGrid now-indicator', function() {
 
   it('renders once for each resource', function() {
     let calendar = initCalendar({
-      defaultView: 'resourceTimeGridThreeDay',
+      initialView: 'resourceTimeGridThreeDay',
       nowIndicator: true,
       resources: [
         { id: 'a', title: 'Resource A' },
@@ -30,8 +30,8 @@ describe('resource timeGrid now-indicator', function() {
   // https://github.com/fullcalendar/fullcalendar/issues/3918
   it('plays nice with refetchResourcesOnNavigate and view switching', function(done) {
     initCalendar({
-      defaultView: 'resourceTimeGridWeek',
-      defaultDate: '2016-11-04',
+      initialView: 'resourceTimeGridWeek',
+      initialDate: '2016-11-04',
       now: '2016-12-04T10:00',
       scrollTime: '09:00',
       nowIndicator: true,

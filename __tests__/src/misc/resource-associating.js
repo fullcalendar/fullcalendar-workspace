@@ -2,8 +2,8 @@
 describe('associating resources with event', function() {
 
   pushOptions({
-    defaultView: 'resourceTimelineDay',
-    defaultDate: '2015-07-11'
+    initialView: 'resourceTimelineDay',
+    initialDate: '2015-07-11'
   })
 
   it('works with an Event object\'s resourceId', function() {

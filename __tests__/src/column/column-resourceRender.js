@@ -28,7 +28,7 @@ describe('column-view resourceLabelDidMount trigger', function() { // TODO: rena
         datesAboveResources: false
       })
 
-      describeOptions('defaultView', {
+      describeOptions('initialView', {
         'when timeGrid view': 'resourceTimeGridThreeDay',
         'when dayGrid view': 'resourceDayGridThreeDay',
         'when month view': 'resourceDayGridMonth'
@@ -55,7 +55,7 @@ describe('column-view resourceLabelDidMount trigger', function() { // TODO: rena
         datesAboveResources: true
       })
 
-      describeOptions('defaultView', {
+      describeOptions('initialView', {
         'when timeGrid view': 'resourceTimeGridThreeDay',
         'when dayGrid view': 'resourceDayGridThreeDay'
       }, function() {
@@ -77,7 +77,7 @@ describe('column-view resourceLabelDidMount trigger', function() { // TODO: rena
 
       describe('when month view', function() {
         pushOptions({
-          defaultView: 'resourceDayGridMonth'
+          initialView: 'resourceDayGridMonth'
         })
 
         it('fires onces per day', function() {

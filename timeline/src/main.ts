@@ -14,7 +14,7 @@ export { default as TimelineLaneSlicer, TimelineLaneSeg } from './TimelineLaneSl
 export { default as TimelineHeaderRows } from './TimelineHeaderRows'
 
 export default createPlugin({
-  defaultView: 'timelineDay',
+  initialView: 'timelineDay',
   views: {
 
     timeline: {

@@ -2,14 +2,14 @@ import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWra
 
 describe('timeline addResource', function() {
   pushOptions({
-    defaultDate: '2016-05-31'
+    initialDate: '2016-05-31'
   })
 
 
   // https://github.com/fullcalendar/fullcalendar-scheduler/issues/179
   it('works when switching views', function() {
     let calendar = initCalendar({
-      defaultView: 'resourceTimelineDay',
+      initialView: 'resourceTimelineDay',
       resources: [
         { id: 'a', title: 'Auditorium A' },
         { id: 'b', title: 'Auditorium B' },
@@ -36,7 +36,7 @@ describe('timeline addResource', function() {
 
   it('renders new row with correct height', function() {
     let calendar = initCalendar({
-      defaultView: 'resourceTimelineDay',
+      initialView: 'resourceTimelineDay',
       resources: buildResources(50)
     })
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
@@ -56,7 +56,7 @@ describe('timeline addResource', function() {
 
   it('scrolls correctly with scroll param', function() {
     let calendar = initCalendar({
-      defaultView: 'resourceTimelineDay',
+      initialView: 'resourceTimelineDay',
       resources: buildResources(50)
     })
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
@@ -72,7 +72,7 @@ describe('timeline addResource', function() {
 
   describe('when adding resource as child of another', function() {
     pushOptions({
-      defaultView: 'resourceTimelineDay',
+      initialView: 'resourceTimelineDay',
       resources: [
         { id: 'a', title: 'a' }
       ]

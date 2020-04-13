@@ -4,7 +4,7 @@ import TimelineViewWrapper from '../lib/wrappers/TimelineViewWrapper'
 
 describe('timeline businessHours', function() {
   pushOptions({
-    defaultView: 'timelineDay',
+    initialView: 'timelineDay',
     now: '2016-02-15',
     scrollTime: '00:00'
   })
@@ -44,7 +44,7 @@ describe('timeline businessHours', function() {
 
     it('renders once even with resources', function() {
       let calendar = initCalendar({
-        defaultView: 'resourceTimelineDay',
+        initialView: 'resourceTimelineDay',
         resources: [
           { id: 'a', title: 'a' },
           { id: 'b', title: 'b' },
@@ -58,7 +58,7 @@ describe('timeline businessHours', function() {
 
     it('render differently with resource override', function() {
       let calendar = initCalendar({
-        defaultView: 'resourceTimelineDay',
+        initialView: 'resourceTimelineDay',
         resources: [
           { id: 'a', title: 'a' },
           { id: 'b', title: 'b', businessHours: { startTime: '02:00', endTime: '22:00' } },
@@ -78,7 +78,7 @@ describe('timeline businessHours', function() {
       }
 
       let calendar = initCalendar({
-        defaultView: 'resourceTimelineDay',
+        initialView: 'resourceTimelineDay',
         resources: [
           { id: 'a', title: 'a' },
           specialResourceInput,
@@ -100,7 +100,7 @@ describe('timeline businessHours', function() {
 
     it('renders dynamically with resource override amidst other custom rows', function(done) {
       let calendar = initCalendar({
-        defaultView: 'resourceTimelineDay',
+        initialView: 'resourceTimelineDay',
         resources: [
           {
             id: 'a',
@@ -133,7 +133,7 @@ describe('timeline businessHours', function() {
   // https://github.com/fullcalendar/fullcalendar-scheduler/issues/414
   it('can switch views with resource override', function() {
     let calendar = initCalendar({
-      defaultView: 'resourceTimelineDay',
+      initialView: 'resourceTimelineDay',
       resources: [
         { id: 'a', title: 'a' },
         { id: 'b', title: 'b', businessHours: { startTime: '02:00', endTime: '22:00' } },
@@ -157,7 +157,7 @@ describe('timeline businessHours', function() {
 
     describe('with a business hour override', function() {
       pushOptions({
-        defaultView: 'resourceTimelineDay',
+        initialView: 'resourceTimelineDay',
         resources: [
           { id: 'a',
             title: 'a',

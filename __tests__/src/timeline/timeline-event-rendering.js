@@ -32,7 +32,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
 
           describe('when time scale', function() {
             pushOptions({
-              defaultView: resources ? 'resourceTimelineDay' : 'timelineDay',
+              initialView: resources ? 'resourceTimelineDay' : 'timelineDay',
               slotDuration: { minutes: 30 }
             })
 
@@ -187,7 +187,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                   initCalendar({
                     slotMinTime: '09:00',
                     slotMaxTime: '17:00', // on the 17th
-                    defaultView: 'timelineTwoDay',
+                    initialView: 'timelineTwoDay',
                     views: {
                       timelineTwoDay: {
                         type: resources ? 'resourceTimeline' : 'timeline',
@@ -293,7 +293,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
             describe('when day scale', function() {
 
               pushOptions({
-                defaultView: 'timeline3Week',
+                initialView: 'timeline3Week',
                 views: {
                   timeline3Week: {
                     type: resources ? 'resourceTimeline' : 'timeline',
@@ -424,7 +424,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
             describe('when week scale', function() {
 
               pushOptions({
-                defaultView: 'timeline52Weeks',
+                initialView: 'timeline52Weeks',
                 views: {
                   timeline52Weeks: {
                     type: resources ? 'resourceTimeline' : 'timeline',

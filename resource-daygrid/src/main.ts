@@ -8,7 +8,7 @@ export { default as ResourceDayTable } from './ResourceDayTable'
 
 export default createPlugin({
   deps: [ ResourceCommonPlugin, DayGridPlugin ],
-  defaultView: 'resourceDayGridDay',
+  initialView: 'resourceDayGridDay',
   views: {
 
     resourceDayGrid: {

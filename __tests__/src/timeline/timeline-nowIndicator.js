@@ -10,7 +10,7 @@ const PIXEL_THRESHOLD = 30
 
 describe('timeline now-indicator', function() {
   pushOptions({
-    defaultView: 'timelineDay',
+    initialView: 'timelineDay',
     now: '2015-12-26T02:30:00',
     nowIndicator: true,
     scrollTime: '00:00'
@@ -32,8 +32,8 @@ describe('timeline now-indicator', function() {
 
       it('doesn\'t render when out of view', function() {
         let calendar = initCalendar({
-          defaultView: resources ? 'resourceTimelineDay' : 'timelineDay',
-          defaultDate: '2015-12-27T02:30:00' // next day
+          initialView: resources ? 'resourceTimelineDay' : 'timelineDay',
+          initialDate: '2015-12-27T02:30:00' // next day
         })
         let hasNowIndicator = new ViewWrapper(calendar).hasNowIndicator()
         expect(hasNowIndicator).toBe(false)
@@ -49,7 +49,7 @@ describe('timeline now-indicator', function() {
   it('refreshes at intervals', function(done) {
     initCalendar({
       now: '2015-12-26T00:00:00',
-      defaultView: 'timelineOneMinute',
+      initialView: 'timelineOneMinute',
       views: {
         timelineOneMinute: {
           type: 'timeline',
@@ -69,7 +69,7 @@ describe('timeline now-indicator', function() {
 
   it('refreshes on resize when slot width changes', function(done) {
     initCalendar({
-      defaultView: 'timeline6hour',
+      initialView: 'timeline6hour',
       views: {
         timeline6hour: {
           type: 'timeline',

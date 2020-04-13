@@ -4,8 +4,8 @@ describe('validRange with timeline', function() {
 
   it('works', function() {
     let calendar = initCalendar({
-      defaultView: 'timelineWeek',
-      defaultDate: '2017-03-23',
+      initialView: 'timelineWeek',
+      initialDate: '2017-03-23',
       slotDuration: { days: 1 },
       validRange: {
         start: '2017-03-20',

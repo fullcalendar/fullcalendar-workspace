@@ -10,7 +10,7 @@ export { default as SpreadsheetRow } from './SpreadsheetRow'
 
 export default createPlugin({
   deps: [ ResourceCommonPlugin, TimelinePlugin ],
-  defaultView: 'resourceTimelineDay',
+  initialView: 'resourceTimelineDay',
   views: {
 
     resourceTimeline: {

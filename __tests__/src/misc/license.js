@@ -75,7 +75,7 @@ describe('schedulerLicenseKey', function() {
 
   describe('when in a timeline view with resource', function() {
     pushOptions({
-      defaultView: 'resourceTimelineDay',
+      initialView: 'resourceTimelineDay',
       resources: [ { id: 'a', title: 'Resource A' } ]
     })
     defineTests()
@@ -83,20 +83,20 @@ describe('schedulerLicenseKey', function() {
 
   describe('when in a timeline view no resource', function() {
     pushOptions({
-      defaultView: 'timelineDay'
+      initialView: 'timelineDay'
     })
     defineTests()
   })
 
   describe('when in a month view', function() {
     pushOptions({
-      defaultView: 'dayGridMonth'
+      initialView: 'dayGridMonth'
     })
     defineTests()
   })
 
 
-  describeOptions('defaultView', {
+  describeOptions('initialView', {
     'when timeline view': 'resourceTimelineDay',
     'when resource-timegrid view': 'resourceTimeGridDay',
     'when resource-daygrid view': 'resourceDayGridDay'

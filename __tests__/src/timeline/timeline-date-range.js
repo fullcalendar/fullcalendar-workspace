@@ -5,8 +5,8 @@ describe('timeline date range', function() {
 
   it('respects firstDay with auto-detected alignment with 7-days', function() {
     let calendar = initCalendar({
-      defaultDate: '2018-01-22',
-      defaultView: 'timeline',
+      initialDate: '2018-01-22',
+      initialView: 'timeline',
       duration: { days: 183 },
       slotLabelInterval: { days: 7 },
       firstDay: 1 // Monday
@@ -21,8 +21,8 @@ describe('timeline date range', function() {
   // https://github.com/fullcalendar/fullcalendar/issues/4937
   xit('can do day slotDuration when slotLabel is month', function() {
     let calendar = initCalendar({
-      defaultDate: '2019-05-16',
-      defaultView: 'timelineYear',
+      initialDate: '2019-05-16',
+      initialView: 'timelineYear',
       slotDuration: { days: 1 },
       slotLabelInterval: { months: 1 }
     })
@@ -38,8 +38,8 @@ describe('timeline date range', function() {
   // https://github.com/fullcalendar/fullcalendar-scheduler/issues/525
   xit('can go back by a month', function() {
     initCalendar({
-      defaultDate: '2019-04-23',
-      defaultView: 'timelineSpecial',
+      initialDate: '2019-04-23',
+      initialView: 'timelineSpecial',
       views: {
         timelineSpecial: {
           type: 'timeline',

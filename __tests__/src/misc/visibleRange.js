@@ -13,7 +13,7 @@ describe('visibleRange', function() {
 
   describe('in timeline view for a few days', function() {
     pushOptions({
-      defaultView: 'timeline'
+      initialView: 'timeline'
     })
 
     it('renders the range correctly', function() {
@@ -36,7 +36,7 @@ describe('visibleRange', function() {
 
   describe('in timeline view for years', function() {
     pushOptions({
-      defaultView: 'timeline'
+      initialView: 'timeline'
     })
 
     it('renders the range correctly', function() {
@@ -59,7 +59,7 @@ describe('visibleRange', function() {
 
   describe('in vertical resource view', function() {
     pushOptions({
-      defaultView: 'timeGrid',
+      initialView: 'timeGrid',
       datesAboveResources: true
     })
 
