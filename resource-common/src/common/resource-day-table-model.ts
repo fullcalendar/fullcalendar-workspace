@@ -293,16 +293,18 @@ export abstract class VResourceJoiner<SegType extends Seg> {
     return transformedSegs
   }
 
-  joinInteractions(resourceDayTable: AbstractResourceDayTableModel, ...interactions: EventSegUiInteractionState[]): EventSegUiInteractionState {
+  joinInteractions(resourceDayTable: AbstractResourceDayTableModel, ...interactions: EventSegUiInteractionState[]): EventSegUiInteractionState | null {
     let resourceCnt = resourceDayTable.resources.length
     let affectedInstances = {}
     let transformedSegs = []
+    let anyInteractions = false
     let isEvent = false
 
     for (let i = 0; i < resourceCnt; i++) {
       let interaction = interactions[i]
 
       if (interaction) {
+        anyInteractions = true
 
         for (let seg of interaction.segs) {
           transformedSegs.push(
@@ -324,10 +326,14 @@ export abstract class VResourceJoiner<SegType extends Seg> {
       }
     }
 
-    return {
-      affectedInstances,
-      segs: transformedSegs,
-      isEvent
+    if (anyInteractions) {
+      return {
+        affectedInstances,
+        segs: transformedSegs,
+        isEvent
+      }
+    } else {
+      return null
     }
   }
 
