@@ -119,9 +119,10 @@ export default class TimelineLane extends BaseComponent<TimelineLaneProps, Timel
 
 
   componentDidUpdate(prevProps: TimelineLaneProps, prevState: TimelineLaneState) {
-    if ( // TODO: use this technique more often
+    if (
       prevProps.eventStore !== this.props.eventStore ||
       prevProps.timelineCoords !== this.props.timelineCoords
+      // won't trigger on a segDims change
     ) {
       this.updateSize()
     }
