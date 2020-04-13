@@ -52,7 +52,7 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
 
     let sections: ScrollGridSectionConfig[] = [
       {
-        type: 'head',
+        type: 'header',
         syncRowHeights: true,
         isSticky: stickyHeaderDates,
         chunks: [
@@ -94,7 +94,7 @@ export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTi
 
     if (stickyFooterScrollbar) {
       sections.push({
-        type: 'foot',
+        type: 'footer',
         isSticky: true,
         chunks: [
           { content: renderScrollShim },

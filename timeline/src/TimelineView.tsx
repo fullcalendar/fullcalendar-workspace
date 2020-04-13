@@ -43,7 +43,7 @@ export default class TimelineView extends DateComponent<ViewProps, TimelineViewS
 
     let sections: ScrollGridSectionConfig[] = [
       {
-        type: 'head',
+        type: 'header',
         isSticky: stickyHeaderDates,
         chunks: [{
           content: (contentArg: ChunkContentCallbackArgs) => (
@@ -82,7 +82,7 @@ export default class TimelineView extends DateComponent<ViewProps, TimelineViewS
 
     if (stickyFooterScrollbar) {
       sections.push({
-        type: 'foot',
+        type: 'footer',
         isSticky: true,
         chunks: [{ content: renderScrollShim }]
       })

@@ -64,7 +64,7 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
       ]}
       sections={[
         {
-          type: 'head',
+          type: 'header',
           chunks: [
             { rowContent: (
               <Fragment>
@@ -575,7 +575,7 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
           ]
         },
         {
-          type: 'foot',
+          type: 'footer',
           chunks: [
             { rowContent: (
               <Fragment>
@@ -625,7 +625,7 @@ function renderSimpleScrollGrid(isLiquid: boolean, forPrint: boolean) {
       ]}
       sections={[
         {
-          type: 'head',
+          type: 'header',
           chunk: {
             rowContent: (
               <tr>
