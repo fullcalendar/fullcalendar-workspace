@@ -89,8 +89,7 @@ class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
 
     let hookPropOrigin: HookPropOrigin = {
       date: cell.date,
-      text: cell.text,
-      navLinkData
+      text: cell.text
     }
     let hookProps = massageHookProps(hookPropOrigin, context)
 
@@ -106,7 +105,11 @@ class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
             colSpan={cell.colspan}
           >
             <div className='fc-timeline-slot-frame' style={{ height: props.rowInnerHeight }}>
-              <TimelineHeaderThInner {...hookPropOrigin} isSticky={props.isSticky} />
+              <TimelineHeaderThInner
+                {...hookPropOrigin}
+                isSticky={props.isSticky}
+                navLinkData={navLinkData}
+              />
             </div>
           </th>
         )}
@@ -119,6 +122,7 @@ class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
 
 interface TimelineHeaderThInnerProps extends HookPropOrigin {
   isSticky: boolean
+  navLinkData: string | null
 }
 
 class TimelineHeaderThInner extends BaseComponent<TimelineHeaderThInnerProps> {
@@ -129,9 +133,13 @@ class TimelineHeaderThInner extends BaseComponent<TimelineHeaderThInnerProps> {
     return (
       <ContentHook name='slotLabel' hookProps={hookProps} defaultContent={renderInnerContent}>
         {(innerElRef, innerContent) => (
-          <div className={'fc-timeline-slot-cushion fc-scrollgrid-sync-inner' + (props.isSticky ? ' fc-sticky' : '')} ref={innerElRef}>
+          <a
+            data-navlink={props.navLinkData}
+            className={'fc-timeline-slot-cushion fc-scrollgrid-sync-inner' + (props.isSticky ? ' fc-sticky' : '')}
+            ref={innerElRef}
+          >
             {innerContent}
-          </div>
+          </a>
         )}
       </ContentHook>
     )
@@ -140,12 +148,7 @@ class TimelineHeaderThInner extends BaseComponent<TimelineHeaderThInnerProps> {
 }
 
 function renderInnerContent(props) { // TODO: add types
-  // console.log('renderInnerContent')
-  return (
-    <a data-navlink={props.navLinkData}>
-      {props.text}
-    </a>
-  )
+  return props.text
 }
 
 
@@ -153,20 +156,17 @@ interface HookProps {
   date: DateMarker // localized
   view: ViewApi
   text: string
-  navLinkData?: string
 }
 
 interface HookPropOrigin {
   date: DateMarker // UTC
   text: string
-  navLinkData?: string
 }
 
 function massageHookProps(input: HookPropOrigin, context: ComponentContext): HookProps {
   return {
     date: context.dateEnv.toDate(input.date),
     view: context.view,
-    text: input.text,
-    navLinkData: input.navLinkData
+    text: input.text
   }
 }
