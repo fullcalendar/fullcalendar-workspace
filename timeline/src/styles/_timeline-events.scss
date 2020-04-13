@@ -67,6 +67,8 @@
 
 .fc-timeline-event-title-cushion { // sticky within fc-event-title container
   display: inline-block; // need this to be sticky cross-browser
+  left: 0;  // for sticky
+  right: 0; // for sticky
   vertical-align: top; // need this for not affecting line-height
   padding: 0 2px;
 
