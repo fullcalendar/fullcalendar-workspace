@@ -33,7 +33,7 @@ describe('vresource event rendering', function() {
     describeValues({
       'with normal event': null,
       'with background events': 'background'
-    }, function(renderingType) {
+    }, function(displayType) {
 
       describe('with a single-day event', function() {
 
@@ -47,7 +47,7 @@ describe('vresource event rendering', function() {
                 start: '2015-11-17T12:00:00',
                 end: '2015-11-17T02:00:00',
                 resourceId: 'c',
-                rendering: renderingType
+                display: displayType
               }
             ]
           },
@@ -60,7 +60,7 @@ describe('vresource event rendering', function() {
                 start: '2015-11-17',
                 end: '2015-11-18',
                 resourceId: 'c',
-                rendering: renderingType
+                display: displayType
               }
             ]
           }
@@ -113,7 +113,7 @@ describe('vresource event rendering', function() {
                 start: '2015-11-17T12:00:00',
                 end: '2015-11-18T12:00:00',
                 resourceId: 'c',
-                rendering: renderingType
+                display: displayType
               }
             ]
           })
@@ -131,7 +131,7 @@ describe('vresource event rendering', function() {
               expect(eventEls.length).toBe(2)
               const firstEventRect = getLeadingBoundingRect(eventEls, dir)
               const lastEventRect = getTrailingBoundingRect(eventEls, dir)
-              if (!renderingType) { // non-background events
+              if (!displayType) { // non-background events
                 expect(firstEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_START_CLASSNAME)
                 expect(lastEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_END_CLASSNAME)
               }
@@ -155,7 +155,7 @@ describe('vresource event rendering', function() {
               expect(eventEls.length).toBe(2)
               const firstEventRect = getLeadingBoundingRect(eventEls, dir)
               const lastEventRect = getTrailingBoundingRect(eventEls, dir)
-              if (!renderingType) { // non-background events
+              if (!displayType) { // non-background events
                 expect(firstEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_START_CLASSNAME)
                 expect(lastEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_END_CLASSNAME)
               }
@@ -178,7 +178,7 @@ describe('vresource event rendering', function() {
                 start: '2015-11-17',
                 end: '2015-11-19',
                 resourceId: 'c',
-                rendering: renderingType
+                display: displayType
               }
             ]
           })
@@ -213,7 +213,7 @@ describe('vresource event rendering', function() {
               expect(eventEls.length).toBe(2)
               const firstEventRect = getLeadingBoundingRect(eventEls, dir)
               const lastEventRect = getTrailingBoundingRect(eventEls, dir)
-              if (!renderingType) { // non-background events
+              if (!displayType) { // non-background events
                 expect(firstEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_START_CLASSNAME)
                 expect(lastEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_END_CLASSNAME)
               }
@@ -238,7 +238,7 @@ describe('vresource event rendering', function() {
                 className: 'event1',
                 start: '2015-11-17T12:00:00',
                 end: '2015-11-17T02:00:00',
-                rendering: renderingType
+                display: displayType
               }
             ]
           },
@@ -250,7 +250,7 @@ describe('vresource event rendering', function() {
                 className: 'event1',
                 start: '2015-11-17',
                 end: '2015-11-18',
-                rendering: renderingType
+                display: displayType
               }
             ]
           }
@@ -265,7 +265,7 @@ describe('vresource event rendering', function() {
             }
           }, function() {
 
-            if (renderingType === 'background') {
+            if (displayType === 'background') {
 
               it('renders on every resource', function() {
                 initCalendar()

@@ -19,7 +19,7 @@ describe('timeline background events', function() {
         resourceId: 'foo',
         start: '2017-03-07T02:00:00',
         end: '2017-03-07T06:00:00',
-        rendering: 'background'
+        display: 'background'
       }]
     })
 

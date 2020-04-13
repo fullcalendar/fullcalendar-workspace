@@ -48,7 +48,7 @@ describe('resourcesInitiallyExpanded', function() {
           { resourceId: 'a1',
             title: 'event1',
             className: 'event1',
-            rendering: 'background',
+            display: 'background',
             start: '2017-10-10T10:00:00' }
         ]
       })

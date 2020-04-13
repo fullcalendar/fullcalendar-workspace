@@ -82,7 +82,7 @@ describe('column event dragging with constraint', function() {
             start: '2016-02-14T01:00:00',
             end: '2016-02-14T03:00:00' },
           { id: '2',
-            rendering: 'background',
+            display: 'background',
             title: 'Event 2',
             className: 'event2',
             start: '2016-02-14T04:00:00',

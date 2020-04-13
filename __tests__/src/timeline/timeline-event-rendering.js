@@ -28,7 +28,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
           'with non-background rendering': '',
           'with background events': 'background',
           'with inverse-background events': 'inverse-background'
-        }, function(eventRendering) {
+        }, function(eventDisplay) {
 
           describe('when time scale', function() {
             pushOptions({
@@ -98,7 +98,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
               })
 
               // slotMinTime/slotMaxTime
-              if (!eventRendering) { // non-background, for faster tests
+              if (!eventDisplay) { // non-background, for faster tests
 
                 it('doesn\'t render when on same day before slotMinTime', function() {
                   initCalendar({
@@ -203,7 +203,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
               }
             })
 
-            if (resources && !eventRendering) { // speedup
+            if (resources && !eventDisplay) { // speedup
 
               it('renders events within exaggerated slotMaxTime', function() {
                 let calendar = initCalendar({
@@ -239,7 +239,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
               })
             }
 
-            if (!eventRendering) { // non-background
+            if (!eventDisplay) { // non-background
               it('render stacked events by duration', function() {
                 initCalendar({
                   events: [
@@ -255,14 +255,14 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
               })
             }
 
-            if (resources && eventRendering === 'background') {
+            if (resources && eventDisplay === 'background') {
               it('renders background events with no resource', function() {
                 let calendar = initCalendar({
                   events: [
                     {
                       title: 'event1',
                       className: 'event1',
-                      rendering: eventRendering,
+                      display: eventDisplay,
                       start: '2015-10-17T02:00:00',
                       end: '2015-10-17T06:00:00'
                     }
@@ -288,7 +288,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
           Problems with Grid's rangeToSegs.
           SO, DISABLE TESTS, BUT FIX LATER
           */
-          if (eventRendering !== 'inverse-background') {
+          if (eventDisplay !== 'inverse-background') {
 
             describe('when day scale', function() {
 
@@ -475,7 +475,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
             return {
               title: name,
               className: name,
-              rendering: eventRendering,
+              display: eventDisplay,
               resourceId: (resources != null ? resources[0].id : undefined),
               start,
               end
@@ -488,7 +488,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
             let timelineGridWrapper = viewWrapper.timelineGrid
             let $eventEls = $('.' + eventClassName, viewWrapper.el)
             let eventEdges = getEventEdges($eventEls, timelineGridWrapper.el)
-            let isBg = Boolean(eventRendering)
+            let isBg = Boolean(eventDisplay)
 
             let startDiff = Math.abs(eventEdges.start - timelineGridWrapper.getLeft(options.startDate))
             let endDiff = Math.abs(eventEdges.end - timelineGridWrapper.getLeft(options.endDate))
@@ -506,10 +506,10 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
 
 
           function getEventEdges($eventEls, canvasEl) { // gives start/end. fake-fills trailing gap
-            let isBg = Boolean(eventRendering)
+            let isBg = Boolean(eventDisplay)
             let edges
 
-            if (eventRendering === 'inverse-background') {
+            if (eventDisplay === 'inverse-background') {
               edges = getInverseBackgroundEventEdges($eventEls, canvasEl)
             } else {
               edges = getNormalEventEdges($eventEls)
