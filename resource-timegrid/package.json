@@ -1,20 +1,20 @@
 {
   "private": true,
   "name": "@fullcalendar/resource-timegrid",
-  "version": "5.0.0-beta.1",
+  "version": "5.0.0-beta.2",
   "title": "FullCalendar Resource Time Grid Plugin",
   "description": "Displays events on a vertical resource view with time slots",
   "docs": "https://fullcalendar.io/docs/vertical-resource-view",
   "dependencies": {
     "tslib": "^1.9.3",
-    "@fullcalendar/resource-common": "5.0.0-beta.1",
-    "@fullcalendar/timegrid": "5.0.0-beta.1",
-    "@fullcalendar/resource-daygrid": "5.0.0-beta.1"
+    "@fullcalendar/resource-common": "5.0.0-beta.2",
+    "@fullcalendar/timegrid": "5.0.0-beta.2",
+    "@fullcalendar/resource-daygrid": "5.0.0-beta.2"
   },
   "peerDependencies": {
-    "@fullcalendar/core": "5.0.0-beta.1"
+    "@fullcalendar/core": "5.0.0-beta.2"
   },
   "devDependencies": {
-    "@fullcalendar/core": "5.0.0-beta.1"
+    "@fullcalendar/core": "5.0.0-beta.2"
   }
 }
