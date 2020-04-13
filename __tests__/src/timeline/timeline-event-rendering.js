@@ -13,10 +13,10 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
     'with local timeZone': 'local'
   }, function(timeZone) {
 
-    describeOptions('dir', {
+    describeOptions('direction', {
       'when LTR': 'ltr',
       'when RTL': 'rtl'
-    }, function(dir) {
+    }, function(direction) {
 
       describeOptions('resources', {
         'with no resources': null,
@@ -515,7 +515,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
               edges = getNormalEventEdges($eventEls)
             }
 
-            if (dir === 'rtl') {
+            if (direction === 'rtl') {
               return { start: edges.right, end: edges.left - (isBg ? 0 : 1) }
             } else {
               return { start: edges.left, end: edges.right + (isBg ? 0 : 1) }
@@ -535,7 +535,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
           function getInverseBackgroundEventEdges($eventEls, canvasEl) {
             expect($eventEls.length).toBeLessThan(3)
             if ($eventEls.length === 2) {
-              if (dir === 'ltr') {
+              if (direction === 'ltr') {
                 return {
                   left: $eventEls.eq(0).offset().left + $eventEls.eq(0).outerWidth(),
                   right: $eventEls.eq(1).offset().left

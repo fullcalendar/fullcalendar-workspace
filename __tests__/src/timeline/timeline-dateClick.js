@@ -11,7 +11,7 @@ describe('timeline dateClick', function() {
     ]
   })
 
-  describeOptions('dir', {
+  describeOptions('direction', {
     'LTR': false,
     'RTL': true
   }, function() {

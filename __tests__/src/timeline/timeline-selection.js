@@ -12,7 +12,7 @@ describe('timeline selection', function() {
     ]
   })
 
-  describeOptions('dir', {
+  describeOptions('direction', {
     'LTR': 'ltr',
     'RTL': 'rtl'
   }, function() {

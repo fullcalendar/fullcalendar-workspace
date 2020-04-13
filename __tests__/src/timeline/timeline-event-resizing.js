@@ -16,10 +16,10 @@ describe('timeline event resizing', function() {
     ]
   })
 
-  describeOptions('dir', {
+  describeOptions('direction', {
     'LTR': 'ltr',
     'RTL': 'rtl'
-  }, function(dir) {
+  }, function(direction) {
 
     describeTimeZones(function(tz) {
 
@@ -210,7 +210,7 @@ describe('timeline event resizing', function() {
           $('.event1').simulate('mouseover') // resizer only shows on hover
           $(`.event1 .${CalendarWrapper.EVENT_END_RESIZER_CLASSNAME}`).simulate('drag', {
             // hack to make resize start within the bounds of the event
-            localPoint: { top: '50%', left: (dir === 'rtl' ? '100%' : '0%') },
+            localPoint: { top: '50%', left: (direction === 'rtl' ? '100%' : '0%') },
             isTouch: true,
             end: timelineGridWrapper.getPoint('b', '2015-11-28T07:00:00'),
             callback() {

@@ -31,8 +31,8 @@
 }
 
 // move 1px away from slot line
-.fc-dir-ltr .fc-timeline-event { margin-right: 1px }
-.fc-dir-rtl .fc-timeline-event { margin-left: 1px }
+.fc-direction-ltr .fc-timeline-event { margin-right: 1px }
+.fc-direction-rtl .fc-timeline-event { margin-left: 1px }
 
 // make event beefier when overlap not allowed
 .fc-timeline-overlap-disabled .fc-timeline-event {
@@ -98,13 +98,13 @@
 }
 
 // pointing left
-.fc-dir-ltr .fc-timeline-event:not(.fc-event-start) .fc-event-main:before,
-.fc-dir-rtl .fc-timeline-event:not(.fc-event-end) .fc-event-main:after {
+.fc-direction-ltr .fc-timeline-event:not(.fc-event-start) .fc-event-main:before,
+.fc-direction-rtl .fc-timeline-event:not(.fc-event-end) .fc-event-main:after {
   border-left: 0;
 }
 
 // pointing right
-.fc-dir-ltr .fc-timeline-event:not(.fc-event-end) .fc-event-main:after,
-.fc-dir-rtl .fc-timeline-event:not(.fc-event-start) .fc-event-main:before {
+.fc-direction-ltr .fc-timeline-event:not(.fc-event-end) .fc-event-main:after,
+.fc-direction-rtl .fc-timeline-event:not(.fc-event-start) .fc-event-main:before {
   border-right: 0;
 }

@@ -13,7 +13,7 @@ describe('vresource businessHours', function() {
     ]
   })
 
-  describeOptions('dir', {
+  describeOptions('direction', {
     'when LTR': 'ltr',
     'when RTL': 'rtl'
   }, function() {

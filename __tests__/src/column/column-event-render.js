@@ -25,10 +25,10 @@ describe('vresource event rendering', function() {
     ]
   })
 
-  describeOptions('dir', {
+  describeOptions('direction', {
     'when LTR': 'ltr',
     'when RTL': 'rtl'
-  }, function(dir) {
+  }, function(direction) {
 
     describeValues({
       'with normal event': null,
@@ -78,7 +78,7 @@ describe('vresource event rendering', function() {
               let calendar = initCalendar()
               let headerWrapper = new ViewWrapper(calendar).header
 
-              const colRect = getTrailingBoundingRect(headerWrapper.getDowEls('tue'), dir)
+              const colRect = getTrailingBoundingRect(headerWrapper.getDowEls('tue'), direction)
               const eventRect = getBoundingRect('.event1')
               expect(eventRect).toBeMostlyHBoundedBy(colRect)
             })
@@ -93,7 +93,7 @@ describe('vresource event rendering', function() {
               let calendar = initCalendar()
               let headerWrapper = new ViewWrapper(calendar).header
 
-              const resourceRect = getLeadingBoundingRect(headerWrapper.getResourceEls('c'), dir)
+              const resourceRect = getLeadingBoundingRect(headerWrapper.getResourceEls('c'), direction)
               const eventRect = getBoundingRect('.event1')
               expect(eventRect).toBeMostlyHBoundedBy(resourceRect)
             })
@@ -129,14 +129,14 @@ describe('vresource event rendering', function() {
 
               const eventEls = $('.event1')
               expect(eventEls.length).toBe(2)
-              const firstEventRect = getLeadingBoundingRect(eventEls, dir)
-              const lastEventRect = getTrailingBoundingRect(eventEls, dir)
+              const firstEventRect = getLeadingBoundingRect(eventEls, direction)
+              const lastEventRect = getTrailingBoundingRect(eventEls, direction)
               if (!displayType) { // non-background events
                 expect(firstEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_START_CLASSNAME)
                 expect(lastEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_END_CLASSNAME)
               }
-              const tueRect = getTrailingBoundingRect(headerWrapper.getDowEls('tue'), dir)
-              const wedRect = getTrailingBoundingRect(headerWrapper.getDowEls('wed'), dir)
+              const tueRect = getTrailingBoundingRect(headerWrapper.getDowEls('tue'), direction)
+              const wedRect = getTrailingBoundingRect(headerWrapper.getDowEls('wed'), direction)
               expect(firstEventRect).toBeMostlyHBoundedBy(tueRect)
               expect(lastEventRect).toBeMostlyHBoundedBy(wedRect)
             })
@@ -153,15 +153,15 @@ describe('vresource event rendering', function() {
 
               const eventEls = $('.event1')
               expect(eventEls.length).toBe(2)
-              const firstEventRect = getLeadingBoundingRect(eventEls, dir)
-              const lastEventRect = getTrailingBoundingRect(eventEls, dir)
+              const firstEventRect = getLeadingBoundingRect(eventEls, direction)
+              const lastEventRect = getTrailingBoundingRect(eventEls, direction)
               if (!displayType) { // non-background events
                 expect(firstEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_START_CLASSNAME)
                 expect(lastEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_END_CLASSNAME)
               }
               const resourceEls = headerWrapper.getResourceEls('c')
-              const firstResourceRect = getLeadingBoundingRect(resourceEls, dir)
-              const lastResourceRect = getTrailingBoundingRect(resourceEls, dir)
+              const firstResourceRect = getLeadingBoundingRect(resourceEls, direction)
+              const lastResourceRect = getTrailingBoundingRect(resourceEls, direction)
               expect(firstEventRect).toBeMostlyHBoundedBy(firstResourceRect)
               expect(lastEventRect).toBeMostlyHBoundedBy(lastResourceRect)
             })
@@ -193,8 +193,8 @@ describe('vresource event rendering', function() {
               let headerWrapper = new ResourceDayGridViewWrapper(calendar).header
 
               const eventRect = getBoundingRect('.event1')
-              const tueRect = getTrailingBoundingRect(headerWrapper.getDowEls('tue'), dir)
-              const wedRect = getTrailingBoundingRect(headerWrapper.getDowEls('wed'), dir)
+              const tueRect = getTrailingBoundingRect(headerWrapper.getDowEls('tue'), direction)
+              const wedRect = getTrailingBoundingRect(headerWrapper.getDowEls('wed'), direction)
               expect(tueRect).toBeMostlyHBoundedBy(eventRect)
               expect(wedRect).toBeMostlyHBoundedBy(eventRect)
             })
@@ -211,15 +211,15 @@ describe('vresource event rendering', function() {
 
               const eventEls = $('.event1')
               expect(eventEls.length).toBe(2)
-              const firstEventRect = getLeadingBoundingRect(eventEls, dir)
-              const lastEventRect = getTrailingBoundingRect(eventEls, dir)
+              const firstEventRect = getLeadingBoundingRect(eventEls, direction)
+              const lastEventRect = getTrailingBoundingRect(eventEls, direction)
               if (!displayType) { // non-background events
                 expect(firstEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_START_CLASSNAME)
                 expect(lastEventRect.node).toHaveClass(CalendarWrapper.EVENT_IS_END_CLASSNAME)
               }
               const resourceEls = headerWrapper.getResourceEls('c')
-              const firstResourceRect = getLeadingBoundingRect(resourceEls, dir)
-              const lastResourceRect = getTrailingBoundingRect(resourceEls, dir)
+              const firstResourceRect = getLeadingBoundingRect(resourceEls, direction)
+              const lastResourceRect = getTrailingBoundingRect(resourceEls, direction)
               expect(firstEventRect).toBeMostlyHBoundedBy(firstResourceRect)
               expect(lastEventRect).toBeMostlyHBoundedBy(lastResourceRect)
             })

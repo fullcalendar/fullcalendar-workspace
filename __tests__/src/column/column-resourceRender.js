@@ -18,7 +18,7 @@ describe('column-view resourceLabelDidMount trigger', function() { // TODO: rena
     }
   })
 
-  describeOptions('dir', {
+  describeOptions('direction', {
     'when LTR': 'ltr',
     'when RTL': 'rtl'
   }, function() {

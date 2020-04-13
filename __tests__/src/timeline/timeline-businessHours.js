@@ -9,7 +9,7 @@ describe('timeline businessHours', function() {
     scrollTime: '00:00'
   })
 
-  describeOptions('dir', {
+  describeOptions('direction', {
     'when LTR': 'ltr',
     'when RTL': 'rtl'
   }, function() {

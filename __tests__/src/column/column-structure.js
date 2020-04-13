@@ -35,7 +35,7 @@ describe('vresource structure', function() {
 
       describe('when LTR', function() {
         pushOptions({
-          dir: 'ltr'
+          direction: 'ltr'
         })
 
         it('renders cells right-to-left', function() {
@@ -57,7 +57,7 @@ describe('vresource structure', function() {
 
       describe('when RTL', function() {
         pushOptions({
-          dir: 'rtl'
+          direction: 'rtl'
         })
 
         it('renders cells left-to-right', function() {
@@ -176,10 +176,10 @@ describe('vresource structure', function() {
       ]
     })
 
-    describeOptions('dir', {
+    describeOptions('direction', {
       'when LTR': 'ltr',
       'when RTL': 'rtl'
-    }, function(dir) {
+    }, function(direction) {
 
       it('renders side-by-side months', function() {
         let calendar = initCalendar()
@@ -192,16 +192,16 @@ describe('vresource structure', function() {
         expect(headerWrapper.getDowEls('sun').length).toBe(2)
         expect(dayGridWrapper.getRowEls().length).toBe(6)
 
-        const firstADayRect = getLeadingBoundingRect('td[data-date="2015-11-01"]', dir)
-        const lastADayRect = getLeadingBoundingRect('td[data-date="2015-12-12"]', dir)
-        const firstBDayRect = getTrailingBoundingRect('td[data-date="2015-11-01"]', dir)
-        const lastBDayRect = getTrailingBoundingRect('td[data-date="2015-12-12"]', dir)
+        const firstADayRect = getLeadingBoundingRect('td[data-date="2015-11-01"]', direction)
+        const lastADayRect = getLeadingBoundingRect('td[data-date="2015-12-12"]', direction)
+        const firstBDayRect = getTrailingBoundingRect('td[data-date="2015-11-01"]', direction)
+        const lastBDayRect = getTrailingBoundingRect('td[data-date="2015-12-12"]', direction)
         const aDayRect = joinRects(firstADayRect, lastADayRect)
         aDayRect.right -= 1 // might share a pixel
         aDayRect.left += 1 // ditto, but for rtl
         const bDayRect = joinRects(firstBDayRect, lastBDayRect)
 
-        if (dir === 'rtl') {
+        if (direction === 'rtl') {
           expect(aDayRect).toBeRightOf(bDayRect)
         } else {
           expect(aDayRect).toBeLeftOf(bDayRect)

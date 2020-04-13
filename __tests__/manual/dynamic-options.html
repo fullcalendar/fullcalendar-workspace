@@ -12,12 +12,12 @@
 <script>
 
   $(function() { // document ready
-    var dir = 'ltr';
+    var direction = 'ltr';
     var businessHours = false;
 
     $('#change-dir-button').on('click', function() {
-      dir = dir === 'ltr' ? 'rtl' : 'ltr';
-      $('#calendar').fullCalendar('option', 'dir', dir);
+      direction = direction === 'ltr' ? 'rtl' : 'ltr';
+      $('#calendar').fullCalendar('option', 'direction', direction);
     });
 
     $('#change-businessHours-button').on('click', function() {
@@ -26,16 +26,16 @@
     });
 
     $('#change-all-button').on('click', function() {
-      dir = dir === 'ltr' ? 'rtl' : 'ltr';
+      direction = direction === 'ltr' ? 'rtl' : 'ltr';
       businessHours = !businessHours;
       $('#calendar').fullCalendar('option', {
-        dir: dir,
+        direction: direction,
         businessHours: businessHours
       });
     });
 
     $('#calendar').fullCalendar({
-      dir: dir,
+      direction: direction,
       businessHours: businessHours,
       now: '2016-07-11',
       editable: true, // enable draggable events

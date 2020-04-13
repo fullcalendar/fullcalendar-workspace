@@ -15,7 +15,7 @@ import dayGridPlugin from '@fullcalendar/daygrid' // we don't use. initializing 
 let doSimple = false
 let doVGrow = true
 let options: OptionsInput = {
-  dir: 'ltr',
+  direction: 'ltr',
   themeSystem: 'standard',
   plugins: [ dayGridPlugin ]
 }
