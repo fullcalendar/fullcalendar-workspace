@@ -1,5 +1,5 @@
 import { DateSpan, Calendar } from '@fullcalendar/core'
-import ResourceApi from './api/ResourceApi'
+import { ResourceApi } from './api/ResourceApi'
 import { ResourceInput, parseResource, ResourceHash, Resource } from './structs/resource'
 
 

@@ -1,15 +1,15 @@
 import { createPlugin } from '@fullcalendar/core'
-import TimelinePlugin from '@fullcalendar/timeline'
-import ResourceCommonPlugin from '@fullcalendar/resource-common'
-import ResourceTimelineView from './ResourceTimelineView'
+import timelinePlugin from '@fullcalendar/timeline'
+import resourceCommonPlugin from '@fullcalendar/resource-common'
+import { ResourceTimelineView } from './ResourceTimelineView'
 import './main.scss'
 
 export { ResourceTimelineView }
-export { default as ResourceTimelineLane } from './ResourceTimelineLane'
-export { default as SpreadsheetRow } from './SpreadsheetRow'
+export { ResourceTimelineLane } from './ResourceTimelineLane'
+export { SpreadsheetRow } from './SpreadsheetRow'
 
 export default createPlugin({
-  deps: [ ResourceCommonPlugin, TimelinePlugin ],
+  deps: [ resourceCommonPlugin, timelinePlugin ],
   initialView: 'resourceTimelineDay',
   views: {
 

@@ -11,7 +11,7 @@ export interface TimelineLaneSeg extends Seg {
 }
 
 
-export default class TimelineLaneSlicer extends Slicer<TimelineLaneSeg, [DateProfile, DateProfileGenerator, TimelineDateProfile, DateEnv]> {
+export class TimelineLaneSlicer extends Slicer<TimelineLaneSeg, [DateProfile, DateProfileGenerator, TimelineDateProfile, DateEnv]> {
 
   sliceRange(
     origRange: DateRange,

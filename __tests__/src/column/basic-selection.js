@@ -1,5 +1,5 @@
 import { getLeadingBoundingRect, getTrailingBoundingRect, sortBoundingRects } from 'standard-tests/src/lib/dom-geom'
-import DayGridViewWrapper from 'standard-tests/src/lib/wrappers/DayGridViewWrapper'
+import { DayGridViewWrapper } from 'standard-tests/src/lib/wrappers/DayGridViewWrapper'
 
 describe('dayGrid-view selection', function() {
   pushOptions({

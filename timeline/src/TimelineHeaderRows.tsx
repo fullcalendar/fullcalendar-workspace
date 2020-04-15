@@ -12,7 +12,7 @@ export interface TimelineHeaderRowsProps {
   rowInnerHeights?: number[]
 }
 
-export default class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
+export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
 
   render(props: TimelineHeaderRowsProps, state: {}, context: ComponentContext) {
     let { tDateProfile, rowInnerHeights } = props

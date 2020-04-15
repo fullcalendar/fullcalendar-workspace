@@ -3,8 +3,8 @@ import {
   ComponentContext, RefMap, CssDimValue, VNode, createRef, ScrollResponder, ScrollRequest, DateMarker, DateRange
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
-import TimelineSlatCell from './TimelineSlatCell'
-import TimelineCoords from './TimelineCoords'
+import { TimelineSlatCell } from './TimelineSlatCell'
+import { TimelineCoords } from './TimelineCoords'
 
 
 export interface TimelineSlatsProps extends TimelineSlatsContentProps {
@@ -23,7 +23,7 @@ interface TimelineSlatsContentProps {
 }
 
 
-export default class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
+export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
 
   private rootElRef = createRef<HTMLDivElement>()
   private cellElRefs = new RefMap<HTMLTableCellElement>()

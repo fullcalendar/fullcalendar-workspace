@@ -1,10 +1,10 @@
 import { Calendar } from '@fullcalendar/core'
-import ViewWrapper from 'standard-tests/src/lib/wrappers/ViewWrapper'
-import ResourceDayGridWrapper from './ResourceDayGridWrapper'
-import ResourceDayHeaderWrapper from './ResourceDayHeaderWrapper'
+import { ViewWrapper } from 'standard-tests/src/lib/wrappers/ViewWrapper'
+import { ResourceDayGridWrapper } from './ResourceDayGridWrapper'
+import { ResourceDayHeaderWrapper } from './ResourceDayHeaderWrapper'
 
 
-export default class ResourceDayGridViewWrapper extends ViewWrapper {
+export class ResourceDayGridViewWrapper extends ViewWrapper {
 
   constructor(calendar: Calendar) {
     super(calendar, 'fc-daygrid')

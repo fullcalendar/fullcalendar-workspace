@@ -1,5 +1,5 @@
 import { parseUtcDate } from 'standard-tests/src/lib/date-parsing'
-import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('eventResourceEditable in vertical resource view', function() {
 

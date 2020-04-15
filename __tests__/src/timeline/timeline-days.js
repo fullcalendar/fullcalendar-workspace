@@ -1,5 +1,5 @@
-import TimelineViewWrapper from "../lib/wrappers/TimelineViewWrapper"
-import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
+import { TimelineViewWrapper } from "../lib/wrappers/TimelineViewWrapper"
+import { CalendarWrapper } from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 
 
 describe('timeline whole days', function() {

@@ -1,5 +1,5 @@
-import DayGridViewWrapper from 'standard-tests/src/lib/wrappers/DayGridViewWrapper'
-import ResourceDayGridViewWrapper from '../lib/wrappers/ResourceDayGridViewWrapper'
+import { DayGridViewWrapper } from 'standard-tests/src/lib/wrappers/DayGridViewWrapper'
+import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
 
 describe('dayGrid-view event resizing', function() {
   pushOptions({

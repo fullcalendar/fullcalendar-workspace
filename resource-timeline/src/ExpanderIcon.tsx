@@ -5,7 +5,7 @@ import { h, VNode, Fragment } from '@fullcalendar/core'
 Renders the DOM responsible for the subrow expander area,
 as well as the space before it (used to align expanders of similar depths)
 */
-export default function ExpanderIcon({ depth, hasChildren, isExpanded, onExpanderClick }) {
+export function ExpanderIcon({ depth, hasChildren, isExpanded, onExpanderClick }) {
   let nodes: VNode[] = []
 
   for (let i = 0; i < depth; i++) {

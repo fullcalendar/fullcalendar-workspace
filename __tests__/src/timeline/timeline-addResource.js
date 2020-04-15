@@ -1,4 +1,4 @@
-import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline addResource', function() {
   pushOptions({

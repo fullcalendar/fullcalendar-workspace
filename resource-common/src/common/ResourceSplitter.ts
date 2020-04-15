@@ -9,7 +9,7 @@ export interface SplittableResourceProps extends SplittableProps {
 splits things BASED OFF OF which resources they are associated with.
 creates a '' entry which is when something has NO resource.
 */
-export default class ResourceSplitter extends Splitter<SplittableResourceProps> {
+export class ResourceSplitter extends Splitter<SplittableResourceProps> {
 
   getKeyInfo(props: SplittableResourceProps) {
     return {

@@ -1,7 +1,7 @@
 import { joinRects } from 'standard-tests/src/lib/geom'
 import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from 'standard-tests/src/lib/dom-geom'
-import ResourceDayGridViewWrapper from '../lib/wrappers/ResourceDayGridViewWrapper'
-import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
+import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('vresource structure', function() {
   pushOptions({

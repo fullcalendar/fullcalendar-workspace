@@ -20,9 +20,9 @@ import {
   collectFromHash,
   memoizeHashlike
 } from '@fullcalendar/core'
-import StickyScrolling from './StickyScrolling'
-import ClippedScroller, { ClippedOverflowValue } from './ClippedScroller'
-import ScrollSyncer from './ScrollSyncer'
+import { StickyScrolling } from './StickyScrolling'
+import { ClippedScroller, ClippedOverflowValue } from './ClippedScroller'
+import { ScrollSyncer } from './ScrollSyncer'
 
 
 interface ScrollGridState {
@@ -44,7 +44,7 @@ interface ColGroupStat {
 }
 
 
-export default class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> { // TODO: make <ScrollGridSection> subcomponent
+export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> { // TODO: make <ScrollGridSection> subcomponent
 
   private compileColGroupStats = memoizeArraylike(compileColGroupStat, isColGroupStatsEqual)
   private renderMicroColGroups = memoizeArraylike(renderMicroColGroup) // yucky to memoize VNodes, but much more efficient for consumers

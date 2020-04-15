@@ -6,7 +6,7 @@ import {
 import { TimelineDateProfile } from './timeline-date-profile'
 
 
-export default class TimelineCoords { // TODO: rename to "slat" coords?
+export class TimelineCoords { // TODO: rename to "slat" coords?
 
   outerCoordCache: PositionCache
   innerCoordCache: PositionCache

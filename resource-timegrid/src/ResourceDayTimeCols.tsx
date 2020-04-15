@@ -29,7 +29,7 @@ export interface ResourceDayTimeColsProps {
 }
 
 
-export default class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps> {
+export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps> {
 
   allowAcrossResources = false
 

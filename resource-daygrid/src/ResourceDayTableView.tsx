@@ -4,10 +4,10 @@ import {
 } from '@fullcalendar/core'
 import { TableView, buildDayTableModel } from '@fullcalendar/daygrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
-import ResourceDayTable from './ResourceDayTable'
+import { ResourceDayTable } from './ResourceDayTable'
 
 
-export default class ResourceDayTableView extends TableView {
+export class ResourceDayTableView extends TableView {
 
   props: ResourceViewProps
 

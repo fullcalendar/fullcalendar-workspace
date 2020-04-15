@@ -1,6 +1,6 @@
 import { getBoundingRect } from 'standard-tests/src/lib/dom-geom'
-import TimelineViewWrapper from '../lib/wrappers/TimelineViewWrapper'
-import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 /*
 RIDICULOUSLY BIG THRESHOLD, because IE/Edge have setInterval issues.

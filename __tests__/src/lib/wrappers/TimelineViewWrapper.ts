@@ -1,9 +1,9 @@
 import { Calendar } from '@fullcalendar/core'
-import ViewWrapper from 'standard-tests/src/lib/wrappers/ViewWrapper'
-import TimelineGridWrapper from './TimelineGridWrapper'
-import TimelineHeaderWrapper from './TimelineHeaderWrapper'
+import { ViewWrapper } from 'standard-tests/src/lib/wrappers/ViewWrapper'
+import { TimelineGridWrapper } from './TimelineGridWrapper'
+import { TimelineHeaderWrapper } from './TimelineHeaderWrapper'
 
-export default class TimelineViewWrapper extends ViewWrapper {
+export class TimelineViewWrapper extends ViewWrapper {
 
   constructor(calendar: Calendar) {
     super(calendar, 'fc-timeline')

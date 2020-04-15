@@ -28,7 +28,7 @@ export interface ResourceDayTableProps {
   clientHeight: number | null
 }
 
-export default class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
+export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
 
   allowAcrossResources = false
 

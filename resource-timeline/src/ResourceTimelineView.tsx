@@ -11,11 +11,11 @@ import {
 } from '@fullcalendar/timeline'
 import { GroupNode, ResourceNode, ResourceViewProps, buildRowNodes, ColSpec, GroupSpec } from '@fullcalendar/resource-common'
 import { __assign } from 'tslib'
-import SpreadsheetRow from './SpreadsheetRow'
-import SpreadsheetGroupRow from './SpreadsheetGroupRow'
-import SpreadsheetHeader from './SpreadsheetHeader'
-import ResourceTimelineGrid from './ResourceTimelineGrid'
-import ResourceTimelineViewLayout from './ResourceTimelineViewLayout'
+import { SpreadsheetRow } from './SpreadsheetRow'
+import { SpreadsheetGroupRow } from './SpreadsheetGroupRow'
+import { SpreadsheetHeader } from './SpreadsheetHeader'
+import { ResourceTimelineGrid } from './ResourceTimelineGrid'
+import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout'
 
 
 interface ResourceTimelineViewState {
@@ -35,7 +35,7 @@ interface ResourceScrollState {
 }
 
 
-export default class ResourceTimelineView extends BaseComponent<ResourceViewProps, ResourceTimelineViewState> {
+export class ResourceTimelineView extends BaseComponent<ResourceViewProps, ResourceTimelineViewState> {
 
   private processColOptions = memoize(processColOptions)
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)

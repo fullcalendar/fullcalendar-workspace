@@ -1,5 +1,5 @@
-import TimeGridViewWrapper from 'standard-tests/src/lib/wrappers/TimeGridViewWrapper'
-import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
+import { TimeGridViewWrapper } from 'standard-tests/src/lib/wrappers/TimeGridViewWrapper'
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 
 describe('column event dragging with constraint', function() {

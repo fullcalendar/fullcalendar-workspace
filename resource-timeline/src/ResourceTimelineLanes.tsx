@@ -6,8 +6,8 @@ import {
 } from '@fullcalendar/core'
 import {  GroupNode, ResourceNode } from '@fullcalendar/resource-common'
 import { TimelineDateProfile, TimelineCoords } from '@fullcalendar/timeline'
-import ResourceTimelineLane from './ResourceTimelineLane'
-import DividerRow from './DividerRow'
+import { ResourceTimelineLane } from './ResourceTimelineLane'
+import { DividerRow } from './DividerRow'
 
 
 export interface ResourceTimelineLanesProps extends ResourceTimelineLanesContentProps {
@@ -32,7 +32,7 @@ export interface ResourceTimelineLanesContentProps {
 }
 
 
-export default class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesProps> {
+export class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesProps> {
 
   private rootElRef = createRef<HTMLTableElement>()
   private rowElRefs = new RefMap<HTMLElement>()

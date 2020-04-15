@@ -1,4 +1,4 @@
-import ResourceTimeGridViewWrapper from "../lib/wrappers/ResourceTimeGridViewWrapper"
+import { ResourceTimeGridViewWrapper } from "../lib/wrappers/ResourceTimeGridViewWrapper"
 
 describe('resource timeGrid now-indicator', function() {
   pushOptions({

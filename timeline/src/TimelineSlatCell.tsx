@@ -17,7 +17,7 @@ export interface TimelineSlatCellProps {
 }
 
 
-export default class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
+export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
 
   render(props: TimelineSlatCellProps, state: {}, context: ComponentContext) {
     let { dateEnv } = context

@@ -1,6 +1,6 @@
 import { h, Ref, ComponentChildren, ComponentContextType, ComponentContext, RenderHook, ViewApi, formatDayString } from '@fullcalendar/core'
 import { Resource } from '../structs/resource'
-import ResourceApi from '../api/ResourceApi'
+import { ResourceApi } from '../api/ResourceApi'
 
 
 export interface ResourceLabelRootProps {
@@ -25,7 +25,7 @@ interface ResourceInnerProps {
 // TODO: not used for Spreadsheet. START USING. difficult because of col-specific rendering props
 
 
-export default function ResourceLabelRoot(props: ResourceLabelRootProps) {
+export function ResourceLabelRoot(props: ResourceLabelRootProps) {
   return (
     <ComponentContextType.Consumer>
       {(context: ComponentContext) => {

@@ -11,7 +11,7 @@ export interface ResourceTimelineLaneProps extends TimelineLaneCoreProps {
 }
 
 
-export default class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProps> {
+export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProps> {
 
   buildClassNames = buildHookClassNameGenerator('resourceLane')
   rootEl: HTMLTableRowElement

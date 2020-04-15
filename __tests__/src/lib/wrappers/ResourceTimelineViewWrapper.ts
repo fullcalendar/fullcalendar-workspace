@@ -1,11 +1,11 @@
 import { Calendar } from '@fullcalendar/core'
-import ViewWrapper from 'standard-tests/src/lib/wrappers/ViewWrapper'
-import ResourceTimelineGridWrapper from './ResourceTimelineGridWrapper'
-import ResourceDataGridWrapper from './ResourceDataGridWrapper'
-import TimelineHeaderWrapper from './TimelineHeaderWrapper'
-import ResourceDataHeaderWrapper from './ResourceDataHeaderWrapper'
+import { ViewWrapper } from 'standard-tests/src/lib/wrappers/ViewWrapper'
+import { ResourceTimelineGridWrapper } from './ResourceTimelineGridWrapper'
+import { ResourceDataGridWrapper } from './ResourceDataGridWrapper'
+import { TimelineHeaderWrapper } from './TimelineHeaderWrapper'
+import { ResourceDataHeaderWrapper } from './ResourceDataHeaderWrapper'
 
-export default class ResourceTimelineViewWrapper extends ViewWrapper {
+export class ResourceTimelineViewWrapper extends ViewWrapper {
 
   constructor(calendar: Calendar) {
     super(calendar, 'fc-resource-timeline')

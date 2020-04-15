@@ -1,4 +1,4 @@
-import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 import { waitEventDrag } from 'standard-tests/src/lib/wrappers/interaction-util'
 
 describe('eventConstraint', function() {

@@ -1,5 +1,5 @@
 import { expectRenderRange } from 'standard-tests/src/lib/ViewDateUtils'
-import TimelineViewWrapper from '../lib/wrappers/TimelineViewWrapper'
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
 describe('timeline date range', function() {
 

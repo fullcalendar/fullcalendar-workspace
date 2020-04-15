@@ -2,10 +2,10 @@ import {
   h, ViewProps, ComponentContext, memoize, ChunkContentCallbackArgs, createRef, ViewRoot, DateComponent, ScrollGridSectionConfig, renderScrollShim, getStickyHeaderDates, getStickyFooterScrollbar
 } from '@fullcalendar/core'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
-import TimelineHeader from './TimelineHeader'
+import { TimelineHeader } from './TimelineHeader'
 import { ScrollGrid } from '@fullcalendar/scrollgrid'
-import TimelineGrid from './TimelineGrid'
-import TimelineCoords from './TimelineCoords'
+import { TimelineGrid } from './TimelineGrid'
+import { TimelineCoords } from './TimelineCoords'
 
 
 interface TimelineViewState {
@@ -14,7 +14,7 @@ interface TimelineViewState {
 }
 
 
-export default class TimelineView extends DateComponent<ViewProps, TimelineViewState> { // would make this abstract, but TS complains
+export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { // would make this abstract, but TS complains
 
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private scrollGridRef = createRef<ScrollGrid>()

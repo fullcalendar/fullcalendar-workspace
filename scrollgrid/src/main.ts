@@ -1,5 +1,5 @@
 import { createPlugin } from '@fullcalendar/core'
-import ScrollGrid from './ScrollGrid'
+import { ScrollGrid } from './ScrollGrid'
 
 export { ScrollGrid }
 export { setScrollFromStartingEdge } from './scroll-left-norm'

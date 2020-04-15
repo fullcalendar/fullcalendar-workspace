@@ -1,5 +1,5 @@
-import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
-import TimelineViewWrapper from '../lib/wrappers/TimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
 describe('timeline selection', function() {
   pushOptions({

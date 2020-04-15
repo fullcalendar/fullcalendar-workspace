@@ -4,10 +4,10 @@ import {
   BaseComponent, h, memoize, Fragment, RefMap, mapHash, createRef, getSegMeta, DateMarker, DateRange
 } from '@fullcalendar/core'
 import {TimelineDateProfile } from './timeline-date-profile'
-import TimelineCoords from './TimelineCoords'
-import TimelineLaneBg from './TimelineLaneBg'
-import TimelineLaneSlicer, { TimelineLaneSeg } from './TimelineLaneSlicer'
-import TimelineEvent from './TimelineEvent'
+import { TimelineCoords } from './TimelineCoords'
+import { TimelineLaneBg } from './TimelineLaneBg'
+import { TimelineLaneSlicer, TimelineLaneSeg } from './TimelineLaneSlicer'
+import { TimelineEvent } from './TimelineEvent'
 import { computeSegHorizontals, computeSegVerticals, TimelineSegDims } from './event-placement'
 
 
@@ -37,7 +37,7 @@ interface TimelineLaneState {
 }
 
 
-export default class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneState> {
+export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneState> {
 
   private slicer = new TimelineLaneSlicer()
   private computeFgSegHorizontals = memoize(computeSegHorizontals) // only for fg event segs, not mirror

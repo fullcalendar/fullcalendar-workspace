@@ -1,4 +1,4 @@
-import ResourceApi from './api/ResourceApi'
+import { ResourceApi } from './api/ResourceApi'
 import { ResourceSourceInput, ResourceSource } from './structs/resource-source'
 import { ResourceHash } from './structs/resource'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'

@@ -1,11 +1,11 @@
 import { ensureDate, formatIsoDay } from 'standard-tests/src/lib/datelib-utils'
-import DayGridWrapper from 'standard-tests/src/lib/wrappers/DayGridWrapper'
-import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
+import { DayGridWrapper } from 'standard-tests/src/lib/wrappers/DayGridWrapper'
+import { CalendarWrapper } from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 import { getRectCenter } from '@fullcalendar/core'
 import { subtractPoints, addPoints } from 'standard-tests/src/lib/geom'
 
 
-export default class ResourceDayGridWrapper {
+export class ResourceDayGridWrapper {
 
   base: DayGridWrapper
 

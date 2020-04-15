@@ -1,7 +1,7 @@
 import { startOfDay } from '@fullcalendar/core'
 import lvLocale from '@fullcalendar/core/locales/lv'
-import TimelineViewWrapper from '../lib/wrappers/TimelineViewWrapper'
-import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('timeline rendering', function() {
   pushOptions({

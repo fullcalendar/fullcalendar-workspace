@@ -1,8 +1,8 @@
 
-import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
-import TimeGridViewWrapper from 'standard-tests/src/lib/wrappers/TimeGridViewWrapper'
+import { CalendarWrapper } from 'standard-tests/src/lib/wrappers/CalendarWrapper'
+import { TimeGridViewWrapper } from 'standard-tests/src/lib/wrappers/TimeGridViewWrapper'
 import { waitEventResize } from 'standard-tests/src/lib/wrappers/interaction-util'
-import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 
 describe('timeGrid-view event resizing', function() {

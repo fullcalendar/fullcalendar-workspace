@@ -1,18 +1,18 @@
 
 import 'standard-tests/src/lib/globals'
-import DEFAULT_PLUGINS from 'standard-tests/src/lib/install-plugins'
+import { DEFAULT_PLUGINS } from 'standard-tests/src/lib/install-plugins'
 import './lib/gpl-key'
 
-import TimelinePlugin from '@fullcalendar/timeline'
-import ResourceTimelinePlugin from '@fullcalendar/resource-timeline'
-import ResourceDayGridPlugin from '@fullcalendar/resource-daygrid'
-import ResourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
+import timelinePlugin from '@fullcalendar/timeline'
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
+import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
+import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 
 const MORE_DEFAULT_PLUGINS = [
-  TimelinePlugin,
-  ResourceTimelinePlugin,
-  ResourceDayGridPlugin,
-  ResourceTimeGridPlugin
+  timelinePlugin,
+  resourceTimelinePlugin,
+  resourceDayGridPlugin,
+  resourceTimeGridPlugin
 ]
 
 pushOptions({

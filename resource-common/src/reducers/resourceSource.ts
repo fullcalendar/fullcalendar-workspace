@@ -2,7 +2,7 @@ import { Calendar, DateProfile, rangesEqual, DateRange, guid } from '@fullcalend
 import { ResourceSource, parseResourceSource, getResourceSourceDef, doesSourceIgnoreRange } from '../structs/resource-source'
 import { ResourceAction } from './resources'
 
-export default function(
+export function reduceResourceSource(
   source: ResourceSource | undefined,
   action: ResourceAction,
   dateProfile: DateProfile,

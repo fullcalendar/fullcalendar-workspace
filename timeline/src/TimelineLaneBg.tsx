@@ -1,5 +1,5 @@
 import { BaseComponent, h, Fragment, BgEvent, renderFill, getSegMeta, DateRange, DateMarker } from '@fullcalendar/core'
-import TimelineCoords from './TimelineCoords'
+import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
 
@@ -14,7 +14,7 @@ export interface TimelineLaneBgProps {
 }
 
 
-export default class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
+export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
 
 
   render(props: TimelineLaneBgProps) {

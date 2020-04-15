@@ -2,7 +2,7 @@ import { findElements } from '@fullcalendar/core'
 import { formatIsoDay } from 'standard-tests/src/lib/datelib-utils'
 
 
-export default class ResourceDayHeaderWrapper {
+export class ResourceDayHeaderWrapper {
 
   constructor(private el: HTMLElement) {
   }

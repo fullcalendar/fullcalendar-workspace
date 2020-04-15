@@ -1,4 +1,4 @@
-import ResourceTimelineViewWrapper from "../lib/wrappers/ResourceTimelineViewWrapper"
+import { ResourceTimelineViewWrapper } from "../lib/wrappers/ResourceTimelineViewWrapper"
 
 describe('timeline column resizing', function() { // better renamed to 'sizing'
   pushOptions({

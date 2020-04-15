@@ -2,7 +2,7 @@ import {
   h, BaseComponent, ComponentContext, isArraysEqual, CssDimValue, Fragment, RenderHook, MountHook, buildHookClassNameGenerator, ContentHook, ViewApi
 } from '@fullcalendar/core'
 import { Resource, buildResourceFields, ColSpec, ResourceApi, getPublicId } from '@fullcalendar/resource-common'
-import ExpanderIcon from './ExpanderIcon'
+import { ExpanderIcon } from './ExpanderIcon'
 
 
 export interface SpreadsheetRowProps {
@@ -16,7 +16,7 @@ export interface SpreadsheetRowProps {
 }
 
 
-export default class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ComponentContext> {
+export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ComponentContext> {
 
   render(props: SpreadsheetRowProps, state: {}, context: ComponentContext) {
     let { resource, rowSpans, depth } = props

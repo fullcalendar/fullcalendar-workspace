@@ -1,4 +1,4 @@
-import ResourceApi from '../api/ResourceApi'
+import { ResourceApi } from '../api/ResourceApi'
 
 // a little bit strange to have references to "columns" here in common
 

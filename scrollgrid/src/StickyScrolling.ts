@@ -5,7 +5,7 @@ import {
   computeInnerRect,
   CssDimValue
 } from '@fullcalendar/core'
-import ScrollListener from './ScrollListener'
+import { ScrollListener } from './ScrollListener'
 import { getScrollCanvasOrigin, getScrollFromLeftEdge } from './scroll-left-norm'
 
 
@@ -32,7 +32,7 @@ This is because we attach the coords with JS, and the VDOM might take away the f
 
 TODO: don't query text-align:center. isn't compatible with flexbox centering. instead, check natural X coord within parent container
 */
-export default class StickyScroller {
+export class StickyScrolling {
 
   listener?: ScrollListener
   usingRelative: boolean | null = null

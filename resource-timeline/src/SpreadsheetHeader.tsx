@@ -15,7 +15,7 @@ export interface SpreadsheetHeaderProps {
 const SPREADSHEET_COL_MIN_WIDTH = 20
 
 
-export default class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
+export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
 
   private resizerElRefs = new RefMap<HTMLElement>(this._handleColResizerEl.bind(this))
   private colDraggings: { [index: string]: ElementDragging } = {}

@@ -1,7 +1,7 @@
 import { h, ComponentContext, createRef, ViewProps, Hit, DateComponent, CssDimValue, VNode, DateMarker, NowTimer, greatestDurationDenominator, DateRange, NowIndicatorRoot } from '@fullcalendar/core'
-import TimelineCoords from './TimelineCoords'
-import TimelineSlats from './TimelineSlats'
-import TimelineLane from './TimelineLane'
+import { TimelineCoords } from './TimelineCoords'
+import { TimelineSlats } from './TimelineSlats'
+import { TimelineLane } from './TimelineLane'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 
@@ -20,7 +20,7 @@ interface TimelineGridState {
 }
 
 
-export default class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridState> {
+export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridState> {
 
   private slatsRef = createRef<TimelineSlats>()
 

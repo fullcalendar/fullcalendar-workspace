@@ -1,8 +1,8 @@
-import ScrollListener from './ScrollListener'
+import { ScrollListener } from './ScrollListener'
 import { setScrollFromStartingEdge } from './scroll-left-norm'
 
 
-export default class ScrollSyncer {
+export class ScrollSyncer {
 
   private masterEl: HTMLElement
   private scrollListeners: ScrollListener[]

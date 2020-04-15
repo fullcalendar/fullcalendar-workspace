@@ -1,6 +1,6 @@
 import { findElements } from '@fullcalendar/core';
 
-export default class ResourceDataHeaderWrapper {
+export class ResourceDataHeaderWrapper {
 
   constructor(private el: HTMLElement) {
   }

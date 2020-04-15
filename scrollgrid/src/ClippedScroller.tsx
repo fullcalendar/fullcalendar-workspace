@@ -26,7 +26,7 @@ interface ClippedScrollerState {
 }
 
 
-export default class ClippedScroller extends BaseComponent<ClippedScrollerProps, ClippedScrollerState> implements ScrollerLike {
+export class ClippedScroller extends BaseComponent<ClippedScrollerProps, ClippedScrollerState> implements ScrollerLike {
 
   private elRef = createRef<HTMLDivElement>()
   private scroller: Scroller

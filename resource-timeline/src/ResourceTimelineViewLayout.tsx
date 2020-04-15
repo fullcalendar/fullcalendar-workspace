@@ -27,7 +27,7 @@ interface ResourceTimelineViewLayoutState {
 }
 
 
-export default class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineViewLayoutProps, ResourceTimelineViewLayoutState> { // RENAME?
+export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineViewLayoutProps, ResourceTimelineViewLayoutState> { // RENAME?
 
   private scrollGridRef = createRef<ScrollGrid>()
   private timeBodyScrollerElRef = createRef<HTMLDivElement>()

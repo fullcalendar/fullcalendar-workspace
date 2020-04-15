@@ -1,11 +1,11 @@
-import TimelineGridWrapper from './TimelineGridWrapper'
+import { TimelineGridWrapper } from './TimelineGridWrapper'
 import { getBoundingRect } from 'standard-tests/src/lib/dom-geom'
 import { findElements } from '@fullcalendar/core'
 import { getRectCenter, addPoints } from 'standard-tests/src/lib/geom'
-import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
+import { CalendarWrapper } from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 
 
-export default class ResourceTimelineGridWrapper {
+export class ResourceTimelineGridWrapper {
 
   base: TimelineGridWrapper
 

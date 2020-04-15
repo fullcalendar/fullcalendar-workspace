@@ -4,10 +4,10 @@ import {
 import { TimeColsView, buildTimeColsModel, buildSlatMetas } from '@fullcalendar/timegrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
 import { ResourceDayTable } from '@fullcalendar/resource-daygrid'
-import ResourceDayTimeCols from './ResourceDayTimeCols'
+import { ResourceDayTimeCols } from './ResourceDayTimeCols'
 
 
-export default class ResourceDayTimeColsView extends TimeColsView {
+export class ResourceDayTimeColsView extends TimeColsView {
 
   props: ResourceViewProps
 

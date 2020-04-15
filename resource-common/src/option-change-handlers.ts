@@ -1,6 +1,6 @@
 import { Calendar } from '@fullcalendar/core'
 
-export default {
+export const optionChangeHandlers = {
   resources: handleResources
 }
 

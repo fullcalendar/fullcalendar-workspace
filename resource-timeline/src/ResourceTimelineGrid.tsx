@@ -4,7 +4,7 @@ import {
 } from '@fullcalendar/core'
 import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource-common'
 import { TimelineDateProfile, TimelineCoords, TimelineSlats, TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg } from '@fullcalendar/timeline'
-import ResourceTimelineLanes from './ResourceTimelineLanes'
+import { ResourceTimelineLanes } from './ResourceTimelineLanes'
 
 
 export interface ResourceTimelineGridProps {
@@ -38,7 +38,7 @@ interface ResourceTimelineGridState {
 }
 
 
-export default class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProps, ResourceTimelineGridState> {
+export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProps, ResourceTimelineGridState> {
 
   private computeHasResourceBusinessHours = memoize(computeHasResourceBusinessHours)
   private resourceSplitter = new ResourceSplitter() // doesn't let it do businessHours tho

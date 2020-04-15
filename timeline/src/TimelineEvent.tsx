@@ -13,7 +13,7 @@ const DEFAULT_TIME_FORMAT = {
 }
 
 
-export default class TimelineEvent extends BaseComponent<TimelineEventProps> {
+export class TimelineEvent extends BaseComponent<TimelineEventProps> {
 
 
   render(props: TimelineEventProps) {

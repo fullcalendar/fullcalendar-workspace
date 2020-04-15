@@ -1,5 +1,5 @@
-import ResourceTimeGridViewWrapper from "../lib/wrappers/ResourceTimeGridViewWrapper"
-import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { ResourceTimeGridViewWrapper } from "../lib/wrappers/ResourceTimeGridViewWrapper"
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('resourceOrder', function() {
 

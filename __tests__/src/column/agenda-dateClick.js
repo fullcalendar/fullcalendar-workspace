@@ -1,6 +1,6 @@
 import { waitDateClick } from 'standard-tests/src/lib/wrappers/interaction-util'
-import TimeGridViewWrapper from 'standard-tests/src/lib/wrappers/TimeGridViewWrapper'
-import ResourceTimeGridViewWrapper from '../lib/wrappers/ResourceTimeGridViewWrapper'
+import { TimeGridViewWrapper } from 'standard-tests/src/lib/wrappers/TimeGridViewWrapper'
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('timeGrid-view dateClick', function() {
   pushOptions({

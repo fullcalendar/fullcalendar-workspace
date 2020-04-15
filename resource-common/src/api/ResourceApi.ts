@@ -1,7 +1,7 @@
 import { Calendar, EventApi } from '@fullcalendar/core'
 import { Resource, getPublicId } from '../structs/resource'
 
-export default class ResourceApi {
+export class ResourceApi {
 
   _calendar: Calendar
   _resource: Resource

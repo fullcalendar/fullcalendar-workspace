@@ -1,6 +1,6 @@
 import { doElsMatchSegs } from 'standard-tests/src/lib/segs'
-import ResourceTimelineViewWrapper from '../lib/wrappers/ResourceTimelineViewWrapper'
-import TimelineViewWrapper from '../lib/wrappers/TimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
 describe('timeline businessHours', function() {
   pushOptions({

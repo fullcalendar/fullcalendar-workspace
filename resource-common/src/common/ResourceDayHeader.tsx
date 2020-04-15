@@ -3,8 +3,8 @@ import {
   memoize, BaseComponent, DateMarker, DateProfile, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext, TableDateCell, Fragment, DateRange, NowTimer, Ref, ComponentChildren
 } from '@fullcalendar/core'
 import { Resource } from '../structs/resource'
-import ResourceLabelRoot from './ResourceLabelRoot'
-import ResourceApi from '../api/ResourceApi'
+import { ResourceLabelRoot } from './ResourceLabelRoot'
+import { ResourceApi } from '../api/ResourceApi'
 
 
 export interface ResourceDayHeaderProps {
@@ -15,7 +15,7 @@ export interface ResourceDayHeaderProps {
   renderIntro?: () => VNode
 }
 
-export default class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { // TODO: rename to ResourceDayHeaderTrs?
+export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { // TODO: rename to ResourceDayHeaderTrs?
 
   private buildDateFormat = memoize(buildDateFormat)
 

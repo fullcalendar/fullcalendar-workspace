@@ -1,4 +1,4 @@
-import TimelineCoords from './TimelineCoords'
+import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 import { sortEventSegs } from '@fullcalendar/core'
 

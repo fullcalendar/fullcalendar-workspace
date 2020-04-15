@@ -12,7 +12,7 @@ export interface DividerRowProps {
 /*
 parallels the SpreadsheetGroupRow
 */
-export default class DividerRow extends BaseComponent<DividerRowProps> {
+export class DividerRow extends BaseComponent<DividerRowProps> {
 
   render(props: DividerRowProps) {
     let hookProps = { groupValue: props.groupValue }

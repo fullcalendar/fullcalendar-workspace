@@ -1,8 +1,8 @@
 import { Calendar, CalendarState, Action, DateRange } from '@fullcalendar/core'
 import { ResourceSourceError } from '../structs/resource-source'
 import { ResourceHash, ResourceInput } from '../structs/resource'
-import reduceResourceSource from './resourceSource'
-import reduceResourceStore from './resourceStore'
+import { reduceResourceSource } from './resourceSource'
+import { reduceResourceStore } from './resourceStore'
 import { reduceResourceEntityExpansions } from './resourceEntityExpansions'
 
 
@@ -17,7 +17,7 @@ export type ResourceAction = Action |
   { type: 'RESET_RESOURCE_SOURCE', resourceSourceInput: any } |
   { type: 'REFETCH_RESOURCES' }
 
-export default function(state: CalendarState, action: ResourceAction, calendar: Calendar) {
+export function reduceResources(state: CalendarState, action: ResourceAction, calendar: Calendar) {
   let resourceSource = reduceResourceSource(state.resourceSource, action, state.dateProfile, calendar)
   let resourceStore = reduceResourceStore(state.resourceStore, action, resourceSource, calendar)
   let resourceEntityExpansions = reduceResourceEntityExpansions(state.resourceEntityExpansions, action)

@@ -1,4 +1,4 @@
-import TimelineViewWrapper from "../lib/wrappers/TimelineViewWrapper"
+import { TimelineViewWrapper } from "../lib/wrappers/TimelineViewWrapper"
 
 describe('validRange with timeline', function() {
 

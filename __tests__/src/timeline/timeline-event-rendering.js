@@ -1,6 +1,6 @@
-import ResourceTimelineViewWrapper from "../lib/wrappers/ResourceTimelineViewWrapper"
-import TimelineViewWrapper from '../lib/wrappers/TimelineViewWrapper'
-import CalendarWrapper from 'standard-tests/src/lib/wrappers/CalendarWrapper'
+import { ResourceTimelineViewWrapper } from "../lib/wrappers/ResourceTimelineViewWrapper"
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
+import { CalendarWrapper } from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 
 describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C SO MANY LOOPS!
   pushOptions({

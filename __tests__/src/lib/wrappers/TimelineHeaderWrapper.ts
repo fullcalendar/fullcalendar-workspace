@@ -3,7 +3,7 @@ import { parseIsoAsUtc } from 'standard-tests/src/lib/datelib-utils'
 import { parseUtcDate } from 'standard-tests/src/lib/date-parsing'
 
 
-export default class TimelineHeaderWrapper {
+export class TimelineHeaderWrapper {
 
   constructor(private el: HTMLElement) {
   }
