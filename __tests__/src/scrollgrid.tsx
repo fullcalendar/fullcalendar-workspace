@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let content = doSimple ? renderSimpleScrollGrid(doVGrow, forPrint) : renderScrollGrid(doVGrow, forPrint)
 
     render(
-      <ComponentContextType.Provider value={fakeCalendar.context}>
+      <ComponentContextType.Provider value={null /* BROKEN! */}>
         {content}
       </ComponentContextType.Provider>,
       el

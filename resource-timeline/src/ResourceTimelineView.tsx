@@ -60,15 +60,14 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
 
   render(props: ResourceViewProps, state: ResourceTimelineViewState, context: ComponentContext) {
-    let { options } = context
-    let { dateProfile } = props
+    let { options, dateProfile, viewSpec } = context
     let { superHeaderRendering, groupSpecs, orderSpecs, isVGrouping, colSpecs } = this.processColOptions(context.options)
 
     let tDateProfile = this.buildTimelineDateProfile(
       dateProfile,
       context.dateEnv,
       context.options,
-      props.dateProfileGenerator
+      context.dateProfileGenerator
     )
 
     let rowNodes = this.rowNodes = this.buildRowNodes(
@@ -91,7 +90,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
     let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
 
     return (
-      <ViewRoot viewSpec={props.viewSpec}>
+      <ViewRoot viewSpec={viewSpec}>
         {(rootElRef, classNames) => (
           <div ref={rootElRef} class={extraClassNames.concat(classNames).join(' ')}>
             <ResourceTimelineViewLayout
@@ -119,7 +118,6 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
                   clientHeight={contentArg.clientHeight}
                   tableMinWidth={contentArg.tableMinWidth}
                   tableColGroupNode={contentArg.tableColGroupNode}
-                  dateProfile={dateProfile}
                   tDateProfile={tDateProfile}
                   slatCoords={state.slatCoords}
                   rowInnerHeights={contentArg.rowSyncHeights}
@@ -134,8 +132,6 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
                   tableColGroupNode={contentArg.tableColGroupNode}
                   expandRows={contentArg.expandRows}
                   tDateProfile={tDateProfile}
-                  dateProfile={dateProfile}
-                  dateProfileGenerator={props.dateProfileGenerator}
                   rowNodes={rowNodes}
                   businessHours={props.businessHours}
                   dateSelection={props.dateSelection}
@@ -209,7 +205,9 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
   componentDidUpdate(prevProps: ResourceViewProps, prevState: ResourceTimelineViewState, snapshot: ResourceTimelineViewSnapshot) {
     this.renderedRowNodes = this.rowNodes
-    this.scrollResponder.update(this.props.dateProfile !== prevProps.dateProfile)
+
+    let didContextUpdate = prevProps === this.props && prevState === this.state // only way to detect context change. if props/start didnt
+    this.scrollResponder.update(didContextUpdate) // if context changed, dateProfile probably changed
 
     if (snapshot.resourceScroll) {
       this.handleScrollRequest(snapshot.resourceScroll) // TODO: this gets triggered too often

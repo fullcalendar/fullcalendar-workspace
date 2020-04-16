@@ -1,13 +1,12 @@
 import {
   h, createRef, VNode,
-  mapHash, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit, CssDimValue, NowTimer, Duration
+  mapHash, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit, CssDimValue, NowTimer, Duration
 } from '@fullcalendar/core'
 import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg, TimeSlatMeta } from '@fullcalendar/timegrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
 
 
 export interface ResourceDayTimeColsProps {
-  dateProfile: DateProfile | null
   resourceDayTableModel: AbstractResourceDayTableModel
   axis: boolean
   slotDuration: Duration
@@ -42,8 +41,8 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
 
 
   render(props: ResourceDayTimeColsProps, state: {}, context: ComponentContext) {
-    let { dateEnv, options } = context
-    let { dateProfile, resourceDayTableModel } = props
+    let { dateEnv, options, dateProfile } = context
+    let { resourceDayTableModel } = props
 
     let dayRanges = this.dayRanges = this.buildDayRanges(resourceDayTableModel.dayTableModel, dateProfile, dateEnv)
     let splitProps = this.splitter.splitProps(props)
@@ -72,7 +71,6 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
             ref={this.timeColsRef}
             rootElRef={this.handleRootEl}
             {...this.joiner.joinProps(slicedProps, resourceDayTableModel)}
-            dateProfile={dateProfile}
             axis={props.axis}
             slotDuration={props.slotDuration}
             slatMetas={props.slatMetas}

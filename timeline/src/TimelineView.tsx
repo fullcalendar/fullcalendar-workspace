@@ -24,13 +24,12 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
     let { options } = context
     let stickyHeaderDates = getStickyHeaderDates(options)
     let stickyFooterScrollbar = getStickyFooterScrollbar(options)
-    let { dateProfile } = props
 
     let tDateProfile = this.buildTimelineDateProfile(
-      dateProfile,
+      context.dateProfile,
       context.dateEnv,
       options,
-      props.dateProfileGenerator
+      context.dateProfileGenerator
     )
 
     let extraClassNames = [
@@ -52,7 +51,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
               clientHeight={contentArg.clientHeight}
               tableMinWidth={contentArg.tableMinWidth}
               tableColGroupNode={contentArg.tableColGroupNode}
-              dateProfile={dateProfile}
               tDateProfile={tDateProfile}
               slatCoords={state.slatCoords}
               onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
@@ -89,7 +87,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
     }
 
     return (
-      <ViewRoot viewSpec={props.viewSpec}>
+      <ViewRoot viewSpec={context.viewSpec}>
         {(rootElRef, classNames) => (
           <div ref={rootElRef} class={extraClassNames.concat(classNames).join(' ')}>
             <ScrollGrid

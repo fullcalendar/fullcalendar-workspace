@@ -1,5 +1,5 @@
 import {
-  h, BaseComponent, DateProfile, multiplyDuration,
+  h, BaseComponent, multiplyDuration,
   ComponentContext, RefMap, CssDimValue, VNode, createRef, ScrollResponder, ScrollRequest, DateMarker, DateRange
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
@@ -16,7 +16,6 @@ export interface TimelineSlatsProps extends TimelineSlatsContentProps {
 }
 
 interface TimelineSlatsContentProps {
-  dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
@@ -46,7 +45,6 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
           {props.tableColGroupNode}
           <TimelineSlatsBody
             cellElRefs={this.cellElRefs}
-            dateProfile={props.dateProfile}
             tDateProfile={props.tDateProfile}
             nowDate={props.nowDate}
             todayRange={props.todayRange}
@@ -63,9 +61,11 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
   }
 
 
-  componentDidUpdate(prevProps: TimelineSlatsProps) {
+  componentDidUpdate(prevProps: TimelineSlatsProps, prevState: {}) {
     this.updateSizing()
-    this.scrollResponder.update(this.props.dateProfile !== prevProps.dateProfile)
+
+    let didContextUpdate = prevProps === this.props && prevState === this.state // only way to detect context change. if props/start didnt
+    this.scrollResponder.update(didContextUpdate) // if context changed, dateProfile probably changed
   }
 
 
@@ -86,7 +86,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
       this.coords = new TimelineCoords(
         this.rootElRef.current,
         collectCellEls(this.cellElRefs.currentMap, props.tDateProfile.slotDates),
-        props.dateProfile,
+        context.dateProfile,
         props.tDateProfile,
         context.dateEnv,
         context.isRtl
@@ -175,7 +175,6 @@ class TimelineSlatsBody extends BaseComponent<TimelineSlatsBodyProps> {
                 key={key}
                 elRef={cellElRefs.createRef(key)}
                 date={slotDate}
-                dateProfile={props.dateProfile}
                 tDateProfile={tDateProfile}
                 nowDate={props.nowDate}
                 todayRange={props.todayRange}

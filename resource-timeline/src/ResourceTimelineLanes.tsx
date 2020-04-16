@@ -1,5 +1,5 @@
 import {
-  h, ComponentContext, DateProfileGenerator, DateProfile, PositionCache,
+  h, ComponentContext, PositionCache,
   SplittableProps, EventStore, createRef, BaseComponent, CssDimValue, RefMap,
   DateMarker,
   DateRange
@@ -21,8 +21,6 @@ export interface ResourceTimelineLanesContentProps {
   rowNodes: (GroupNode | ResourceNode)[]
   splitProps: { [resourceId: string]: SplittableProps }
   tDateProfile: TimelineDateProfile
-  dateProfile: DateProfile
-  dateProfileGenerator: DateProfileGenerator
   nowDate: DateMarker
   todayRange: DateRange
   fallbackBusinessHours: EventStore | null
@@ -52,8 +50,6 @@ export class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesPr
         <ResourceTimelineLanesBody
           rowElRefs={this.rowElRefs}
           rowNodes={props.rowNodes}
-          dateProfile={props.dateProfile}
-          dateProfileGenerator={props.dateProfileGenerator}
           tDateProfile={props.tDateProfile}
           nowDate={props.nowDate}
           todayRange={props.todayRange}
@@ -143,8 +139,6 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
                 elRef={rowElRefs.createRef(node.id)}
                 {...props.splitProps[resource.id]}
                 resource={resource}
-                dateProfile={props.dateProfile}
-                dateProfileGenerator={props.dateProfileGenerator}
                 tDateProfile={props.tDateProfile}
                 nowDate={props.nowDate}
                 todayRange={props.todayRange}

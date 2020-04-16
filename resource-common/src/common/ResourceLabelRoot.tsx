@@ -32,7 +32,7 @@ export function ResourceLabelRoot(props: ResourceLabelRootProps) {
         let hookProps: ResourceInnerProps = {
           resource: new ResourceApi(context.calendar, props.resource),
           date: props.date ? context.dateEnv.toDate(props.date) : null,
-          view: context.view
+          view: context.viewApi
         }
 
         let dataAttrs = {

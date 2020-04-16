@@ -82,7 +82,7 @@ class SpreadsheetGroupCell extends BaseComponent<SpreadsheetGroupCellProps> {
   render(props: SpreadsheetGroupCellProps, state: {}, context: ComponentContext) {
     let hookProps = {
       groupValue: props.fieldValue,
-      view: context.view
+      view: context.viewApi
     }
 
     // a grouped cell. no data that is specific to this specific resource
@@ -215,6 +215,6 @@ function massageHookProps(input: HookPropOrigin, context: ComponentContext): Hoo
   return {
     resource: new ResourceApi(context.calendar, input.resource),
     fieldValue: input.fieldValue,
-    view: context.view
+    view: context.viewApi
   }
 }

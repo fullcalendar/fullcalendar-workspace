@@ -25,7 +25,7 @@ registerResourceSourceDef({
   },
 
   fetch(arg, success, failure) {
-    let dateEnv = arg.calendar.dateEnv
+    let dateEnv = arg.calendar.state.dateEnv
     let func = arg.resourceSource.meta as ResourceFunc
 
     let publicArg = {}

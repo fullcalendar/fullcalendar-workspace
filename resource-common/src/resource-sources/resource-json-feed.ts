@@ -39,7 +39,7 @@ registerResourceSourceDef({
 
 // TODO: somehow consolidate with event json feed
 function buildRequestParams(meta: JsonFeedMeta, range: DateRange | null, calendar: Calendar) {
-  const dateEnv = calendar.dateEnv
+  const dateEnv = calendar.state.dateEnv
   let startParam
   let endParam
   let timeZoneParam

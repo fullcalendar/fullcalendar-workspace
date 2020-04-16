@@ -30,8 +30,6 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
               <div class='fc-timeline-lane-frame' style={{ height: props.innerHeight }}>
                 <ResourceTimelineLaneMisc resource={props.resource} />
                 <TimelineLane
-                  dateProfile={props.dateProfile}
-                  dateProfileGenerator={props.dateProfileGenerator}
                   tDateProfile={props.tDateProfile}
                   nowDate={props.nowDate}
                   todayRange={props.todayRange}

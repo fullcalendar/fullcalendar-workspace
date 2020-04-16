@@ -23,7 +23,7 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
 
   render(props: SpreadsheetHeaderProps, context: ComponentContext) {
     let { colSpecs, superHeaderRendering } = props
-    let hookProps = { view: context.view }
+    let hookProps = { view: context.viewApi }
     let rowNodes: VNode[] = []
     let rowInnerHeights = props.rowInnerHeights.slice() // copy, because we're gonna pop
 

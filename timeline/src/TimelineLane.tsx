@@ -1,6 +1,5 @@
 import {
   Duration, EventStore, EventUiHash, DateSpan, EventInteractionState, ComponentContext,
-  DateProfile, DateProfileGenerator,
   BaseComponent, h, memoize, Fragment, RefMap, mapHash, createRef, getSegMeta, DateMarker, DateRange
 } from '@fullcalendar/core'
 import {TimelineDateProfile } from './timeline-date-profile'
@@ -16,8 +15,6 @@ export interface TimelineLaneProps extends TimelineLaneCoreProps {
 }
 
 export interface TimelineLaneCoreProps {
-  dateProfile: DateProfile
-  dateProfileGenerator: DateProfileGenerator
   nowDate: DateMarker
   todayRange: DateRange
   tDateProfile: TimelineDateProfile
@@ -51,11 +48,11 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
 
     let slicedProps = this.slicer.sliceProps(
       props,
-      props.dateProfile,
+      context.dateProfile,
       tDateProfile.isTimeScale ? null : props.nextDayThreshold,
       context.calendar,
-      props.dateProfile,
-      props.dateProfileGenerator,
+      context.dateProfile,
+      context.dateProfileGenerator,
       tDateProfile,
       context.dateEnv
     )

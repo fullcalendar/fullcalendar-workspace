@@ -6,11 +6,13 @@ export function reduceResourceEntityExpansions(expansions: ResourceEntityExpansi
   switch (action.type) {
     case 'INIT':
       return {}
+
     case 'SET_RESOURCE_ENTITY_EXPANDED':
       return {
         ...expansions,
         [action.id]: action.isExpanded
       }
+
     default:
       return expansions
   }

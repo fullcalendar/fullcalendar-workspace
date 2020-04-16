@@ -17,8 +17,8 @@ export type ResourceAction = Action |
   { type: 'RESET_RESOURCE_SOURCE', resourceSourceInput: any } |
   { type: 'REFETCH_RESOURCES' }
 
-export function reduceResources(state: CalendarState, action: ResourceAction, calendar: Calendar) {
-  let resourceSource = reduceResourceSource(state.resourceSource, action, state.dateProfile, calendar)
+export function reduceResources(state: CalendarState, action: ResourceAction, rawOptions, calendar: Calendar) {
+  let resourceSource = reduceResourceSource(state.resourceSource, action, state.dateProfile, rawOptions, calendar)
   let resourceStore = reduceResourceStore(state.resourceStore, action, resourceSource, calendar)
   let resourceEntityExpansions = reduceResourceEntityExpansions(state.resourceEntityExpansions, action)
 

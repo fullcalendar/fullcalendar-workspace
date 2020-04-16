@@ -1,11 +1,10 @@
-import { h, BaseComponent, CssDimValue, VNode, DateMarker, ComponentContext, NowTimer, greatestDurationDenominator, DateRange, DateProfile, NowIndicatorRoot, createRef, findElements, RefObject } from '@fullcalendar/core'
+import { h, BaseComponent, CssDimValue, VNode, DateMarker, ComponentContext, NowTimer, greatestDurationDenominator, DateRange, NowIndicatorRoot, createRef, findElements, RefObject } from '@fullcalendar/core'
 import { TimelineHeaderRows } from './TimelineHeaderRows'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 
 export interface TimelineHeaderProps {
-  dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   clientWidth: number | null
   clientHeight: number | null
@@ -38,7 +37,6 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
             {props.tableColGroupNode}
             <tbody>
               <TimelineHeaderRows
-                dateProfile={props.dateProfile}
                 tDateProfile={props.tDateProfile}
                 nowDate={nowDate}
                 todayRange={todayRange}

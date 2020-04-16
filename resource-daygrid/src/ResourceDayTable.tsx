@@ -1,12 +1,11 @@
 import {
   h, createRef, VNode,
-  mapHash, Hit, DateSpan, DateComponent, DateProfile, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration, RefObject, CssDimValue
+  mapHash, Hit, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration, RefObject, CssDimValue
 } from '@fullcalendar/core'
 import { DayTableSlicer, Table, TableSeg } from '@fullcalendar/daygrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
 
 export interface ResourceDayTableProps {
-  dateProfile: DateProfile | null
   resourceDayTableModel: AbstractResourceDayTableModel
   businessHours: EventStore
   eventStore: EventStore
@@ -39,7 +38,7 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
 
 
   render(props: ResourceDayTableProps, state: {}, context: ComponentContext) {
-    let { dateProfile, resourceDayTableModel, nextDayThreshold } = props
+    let { resourceDayTableModel, nextDayThreshold } = props
 
     let splitProps = this.splitter.splitProps(props)
 
@@ -50,7 +49,7 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
     let slicedProps = mapHash(this.slicers, (slicer, resourceId) => {
       return slicer.sliceProps(
         splitProps[resourceId],
-        dateProfile,
+        context.dateProfile,
         nextDayThreshold,
         context.calendar,
         resourceDayTableModel.dayTableModel
@@ -65,7 +64,6 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
         elRef={this.handleRootEl}
         {...this.joiner.joinProps(slicedProps, resourceDayTableModel)}
         cells={resourceDayTableModel.cells}
-        dateProfile={dateProfile}
         colGroupNode={props.colGroupNode}
         tableMinWidth={props.tableMinWidth}
         renderRowIntro={props.renderRowIntro}

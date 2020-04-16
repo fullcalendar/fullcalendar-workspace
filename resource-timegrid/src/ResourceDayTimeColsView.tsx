@@ -19,28 +19,27 @@ export class ResourceDayTimeColsView extends TimeColsView {
 
 
   render(props: ResourceViewProps, state: {}, context: ComponentContext) {
-    let { options, nextDayThreshold, dateEnv } = context
+    let { options, nextDayThreshold, dateEnv, dateProfile } = context
 
     let splitProps = this.allDaySplitter.splitProps(props)
     let resourceOrderSpecs = this.parseResourceOrder(options.resourceOrder)
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
     let resourceDayTableModel = this.buildResourceTimeColsModel(
-      props.dateProfile,
-      props.dateProfileGenerator,
+      dateProfile,
+      context.dateProfileGenerator,
       resources,
       options.datesAboveResources,
       context.calendar
     )
 
     let slotDuration = this.parseSlotDuration(options.slotDuration)
-    let slatMetas = this.buildSlatMetas(props.dateProfile.slotMinTime, props.dateProfile.slotMaxTime, options.slotLabelInterval, slotDuration, dateEnv)
+    let slatMetas = this.buildSlatMetas(dateProfile.slotMinTime, dateProfile.slotMaxTime, options.slotLabelInterval, slotDuration, dateEnv)
     let { dayMinWidth } = options
 
     let headerContent = options.dayHeaders &&
       <ResourceDayHeader
         resources={resources}
         dates={resourceDayTableModel.dayTableModel.headerDates}
-        dateProfile={props.dateProfile}
         datesRepDistinctDays={true}
         renderIntro={dayMinWidth ? null : this.renderHeadAxis}
       />
@@ -48,7 +47,6 @@ export class ResourceDayTimeColsView extends TimeColsView {
     let allDayContent = options.allDaySlot && ((contentArg: ChunkContentCallbackArgs) => (
       <ResourceDayTable
         {...splitProps['allDay']}
-        dateProfile={props.dateProfile}
         resourceDayTableModel={resourceDayTableModel}
         nextDayThreshold={nextDayThreshold}
         tableMinWidth={contentArg.tableMinWidth}
@@ -66,7 +64,6 @@ export class ResourceDayTimeColsView extends TimeColsView {
     let timeGridContent = (contentArg: ChunkContentCallbackArgs) => (
       <ResourceDayTimeCols
         {...splitProps['timed']}
-        dateProfile={props.dateProfile}
         axis={!dayMinWidth}
         slotDuration={slotDuration}
         slatMetas={slatMetas}

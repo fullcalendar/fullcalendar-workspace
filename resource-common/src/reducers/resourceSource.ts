@@ -6,21 +6,22 @@ export function reduceResourceSource(
   source: ResourceSource | undefined,
   action: ResourceAction,
   dateProfile: DateProfile,
+  rawOptions: any,
   calendar: Calendar
 ): ResourceSource | null {
-  switch (action.type) {
 
+  switch (action.type) {
     case 'INIT':
-      return createSource(calendar.opt('resources'), calendar)
+      return createSource(rawOptions.resources, rawOptions.refetchResourcesOnNavigate, calendar)
 
     case 'RESET_RESOURCE_SOURCE':
-      return createSource(action.resourceSourceInput, calendar, true)
+      return createSource(action.resourceSourceInput, rawOptions.refetchResourcesOnNavigate, calendar, true)
 
     case 'PREV': // TODO: how do we track all actions that affect dateProfile :(
     case 'NEXT':
     case 'SET_DATE':
     case 'SET_VIEW_TYPE':
-      return handleRange(source, dateProfile.activeRange, calendar)
+      return handleRange(source, dateProfile.activeRange, rawOptions.refetchResourcesOnNavigate, calendar)
 
     case 'RECEIVE_RESOURCES':
     case 'RECEIVE_RESOURCE_ERROR':
@@ -34,12 +35,13 @@ export function reduceResourceSource(
   }
 }
 
-function createSource(input, calendar: Calendar, forceFetch?: boolean) {
+
+function createSource(input, refetchResourcesOnNavigate, calendar: Calendar, forceFetch?: boolean) {
 
   if (input) {
     let source = parseResourceSource(input)
 
-    if (forceFetch || !calendar.opt('refetchResourcesOnNavigate')) { // because assumes handleRange will do it later
+    if (forceFetch || !refetchResourcesOnNavigate) { // because assumes handleRange will do it later
       source = fetchSource(source, null, calendar)
     }
 
@@ -49,9 +51,10 @@ function createSource(input, calendar: Calendar, forceFetch?: boolean) {
   return null
 }
 
-function handleRange(source: ResourceSource, activeRange: DateRange, calendar: Calendar): ResourceSource {
+
+function handleRange(source: ResourceSource, activeRange: DateRange, refetchResourcesOnNavigate, calendar: Calendar): ResourceSource {
   if (
-    calendar.opt('refetchResourcesOnNavigate') &&
+    refetchResourcesOnNavigate &&
     !doesSourceIgnoreRange(source) &&
     (!source.fetchRange || !rangesEqual(source.fetchRange, activeRange))
   ) {
@@ -60,6 +63,7 @@ function handleRange(source: ResourceSource, activeRange: DateRange, calendar: C
     return source
   }
 }
+
 
 function fetchSource(source: ResourceSource, fetchRange: DateRange | null, calendar: Calendar): ResourceSource {
   let sourceDef = getResourceSourceDef(source.sourceDefId)
@@ -95,6 +99,7 @@ function fetchSource(source: ResourceSource, fetchRange: DateRange | null, calen
     latestFetchId: fetchId
   }
 }
+
 
 function receiveResponse(source: ResourceSource, fetchId: string, fetchRange: DateRange) {
 
