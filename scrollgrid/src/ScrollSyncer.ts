@@ -54,9 +54,8 @@ export class ScrollSyncer {
       }
     }
 
-    scrollListener.emitter
-      .on('scroll', onScroll)
-      .on('scrollEnd', onScrollEnd)
+    scrollListener.emitter.on('scroll', onScroll)
+    scrollListener.emitter.on('scrollEnd', onScrollEnd)
 
     return scrollListener
   }
