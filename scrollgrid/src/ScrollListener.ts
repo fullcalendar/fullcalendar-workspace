@@ -1,4 +1,4 @@
-import { EmitterMixin, DelayedRunner } from '@fullcalendar/core'
+import { Emitter, DelayedRunner } from '@fullcalendar/core'
 
 
 const WHEEL_EVENT_NAMES = 'wheel mousewheel DomMouseScroll MozMousePixelScroll'.split(' ')
@@ -9,7 +9,7 @@ ALSO, with the ability to disable touch
 */
 export class ScrollListener {
 
-  emitter = new EmitterMixin()
+  emitter = new Emitter()
   private isScrolling = false
   private isTouching = false // user currently has finger down?
   private isRecentlyWheeled = false
