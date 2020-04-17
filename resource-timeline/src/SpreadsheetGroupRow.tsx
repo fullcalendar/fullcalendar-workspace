@@ -52,7 +52,7 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
   onExpanderClick = () => {
     let { props } = this
 
-    this.context.calendar.dispatch({
+    this.context.dispatch({
       type: 'SET_RESOURCE_ENTITY_EXPANDED',
       id: props.id,
       isExpanded: !props.isExpanded

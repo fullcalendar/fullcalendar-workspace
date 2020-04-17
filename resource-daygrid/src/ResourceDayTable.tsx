@@ -51,7 +51,7 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
         splitProps[resourceId],
         context.dateProfile,
         nextDayThreshold,
-        context.calendar,
+        context,
         resourceDayTableModel.dayTableModel
       )
     })

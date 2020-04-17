@@ -56,7 +56,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
       bgLaneProps,
       context.dateProfile,
       tDateProfile.isTimeScale ? null : props.nextDayThreshold,
-      context.calendar,
+      context, // wish we didn't need to pass in the rest of these args...
       context.dateProfile,
       context.dateProfileGenerator,
       tDateProfile,

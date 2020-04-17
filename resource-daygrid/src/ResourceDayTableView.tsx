@@ -19,7 +19,7 @@ export class ResourceDayTableView extends TableView {
 
 
   render(props: ResourceViewProps, state: {}, context: ComponentContext) {
-    let { options, nextDayThreshold, dateProfile } = context
+    let { options, computedOptions, dateProfile } = context
     let resourceOrderSpecs = this.parseResourceOrder(options.resourceOrder)
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
     let resourceDayTableModel = this.buildResourceDayTableModel(
@@ -49,7 +49,7 @@ export class ResourceDayTableView extends TableView {
         eventSelection={props.eventSelection}
         eventDrag={props.eventDrag}
         eventResize={props.eventResize}
-        nextDayThreshold={nextDayThreshold}
+        nextDayThreshold={computedOptions.nextDayThreshold}
         tableMinWidth={contentArg.tableMinWidth}
         colGroupNode={contentArg.tableColGroupNode}
         dayMaxEvents={options.dayMaxEvents}

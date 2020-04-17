@@ -50,7 +50,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       props,
       context.dateProfile,
       tDateProfile.isTimeScale ? null : props.nextDayThreshold,
-      context.calendar,
+      context, // wish we didn't have to pass in the rest of the args...
       context.dateProfile,
       context.dateProfileGenerator,
       tDateProfile,
@@ -63,7 +63,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       []
 
     let segHorizontals = this.computeFgSegHorizontals(slicedProps.fgEventSegs, props.timelineCoords) // ONLY for non-mirror. needed?
-    let { segTops, height } = this.computeSegVerticals(slicedProps.fgEventSegs, context.eventOrderSpecs, state.segDims)
+    let { segTops, height } = this.computeSegVerticals(slicedProps.fgEventSegs, context.computedOptions.eventOrderSpecs, state.segDims)
 
     let hiddenSegs = // TODO: more convenient
       (slicedProps.eventDrag ? slicedProps.eventDrag.affectedInstances : null) ||

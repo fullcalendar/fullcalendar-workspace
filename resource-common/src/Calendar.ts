@@ -12,10 +12,10 @@ Calendar.prototype.addResource = function(this: Calendar, input: ResourceInput |
     resourceHash = { [resource.id]: resource }
   } else {
     resourceHash = {}
-    resource = parseResource(input, '', resourceHash, this)
+    resource = parseResource(input, '', resourceHash, this.state)
   }
 
-  this.dispatch({
+  this.state.dispatch({
     type: 'ADD_RESOURCE',
     resourceHash
   })
@@ -74,7 +74,7 @@ Calendar.prototype.getTopLevelResources = function(this: Calendar): ResourceApi[
 }
 
 Calendar.prototype.refetchResources = function(this: Calendar) {
-  this.dispatch({
+  this.state.dispatch({
     type: 'REFETCH_RESOURCES'
   })
 }

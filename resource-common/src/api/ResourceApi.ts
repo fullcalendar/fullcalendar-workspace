@@ -12,7 +12,7 @@ export class ResourceApi {
   }
 
   setProp(name: string, value: any) {
-    this._calendar.dispatch({
+    this._calendar.state.dispatch({
       type: 'SET_RESOURCE_PROP',
       resourceId: this._resource.id,
       propName: name,
@@ -21,7 +21,7 @@ export class ResourceApi {
   }
 
   remove() {
-    this._calendar.dispatch({
+    this._calendar.state.dispatch({
       type: 'REMOVE_RESOURCE',
       resourceId: this._resource.id
     })

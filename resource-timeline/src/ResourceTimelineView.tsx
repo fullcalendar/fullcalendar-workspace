@@ -141,7 +141,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
                   eventDrag={props.eventDrag}
                   eventResize={props.eventResize}
                   resourceStore={props.resourceStore}
-                  nextDayThreshold={context.nextDayThreshold}
+                  nextDayThreshold={context.computedOptions.nextDayThreshold}
                   rowInnerHeights={contentArg.rowSyncHeights}
                   onSlatCoords={this.handleSlatCoords}
                   onRowCoords={this.handleRowCoords}

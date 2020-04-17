@@ -142,7 +142,7 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
                 tDateProfile={props.tDateProfile}
                 nowDate={props.nowDate}
                 todayRange={props.todayRange}
-                nextDayThreshold={context.nextDayThreshold}
+                nextDayThreshold={context.computedOptions.nextDayThreshold}
                 businessHours={resource.businessHours || props.fallbackBusinessHours}
                 innerHeight={innerHeights[index] || ''}
                 timelineCoords={props.slatCoords}

@@ -1,4 +1,4 @@
-import { EventMutation, Hit, EventDef, Calendar } from '@fullcalendar/core'
+import { EventMutation, Hit, EventDef, ReducerContext } from '@fullcalendar/core'
 
 
 export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit, hit1: Hit) {
@@ -19,10 +19,10 @@ export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit
 /*
 TODO: all this would be much easier if we were using a hash!
 */
-export function applyEventDefMutation(eventDef: EventDef, mutation: EventMutation, calendar: Calendar) {
+export function applyEventDefMutation(eventDef: EventDef, mutation: EventMutation, context: ReducerContext) {
   let resourceMutation = mutation.resourceMutation
 
-  if (resourceMutation && computeResourceEditable(eventDef, calendar)) {
+  if (resourceMutation && computeResourceEditable(eventDef, context)) {
     let index = eventDef.resourceIds.indexOf(resourceMutation.matchResourceId)
 
     if (index !== -1) {
@@ -43,21 +43,21 @@ export function applyEventDefMutation(eventDef: EventDef, mutation: EventMutatio
 HACK
 TODO: use EventUi system instead of this
 */
-export function computeResourceEditable(eventDef: EventDef, calendar: Calendar): boolean {
+export function computeResourceEditable(eventDef: EventDef, context: ReducerContext): boolean {
   let { resourceEditable } = eventDef
 
   if (resourceEditable == null) {
-    let source = eventDef.sourceId && calendar.state.eventSources[eventDef.sourceId]
+    let source = eventDef.sourceId && context.calendar.state.eventSources[eventDef.sourceId]
 
     if (source) {
       resourceEditable = source.extendedProps.resourceEditable // used the Source::extendedProps hack
     }
 
     if (resourceEditable == null) {
-      resourceEditable = calendar.opt('eventResourceEditable')
+      resourceEditable = context.options.eventResourceEditable
 
       if (resourceEditable == null) {
-        resourceEditable = calendar.opt('editable') // TODO: use defaults system instead
+        resourceEditable = context.options.editable // TODO: use defaults system instead
       }
     }
   }
@@ -66,14 +66,17 @@ export function computeResourceEditable(eventDef: EventDef, calendar: Calendar):
 }
 
 
-export function transformEventDrop(mutation: EventMutation, calendar: Calendar) {
+export function transformEventDrop(mutation: EventMutation, context: ReducerContext) {
   let { resourceMutation } = mutation
 
   if (resourceMutation) {
+    let { calendar } = context
+
     return {
       oldResource: calendar.getResourceById(resourceMutation.matchResourceId),
       newResource: calendar.getResourceById(resourceMutation.setResourceId)
     }
+
   } else {
     return {
       oldResource: null,

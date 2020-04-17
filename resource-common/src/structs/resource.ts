@@ -1,4 +1,4 @@
-import { ConstraintInput, AllowFunc, refineProps, EventStore, parseBusinessHours, Calendar, EventUi, processScopedUiProps, BusinessHoursInput, guid } from '@fullcalendar/core'
+import { ConstraintInput, AllowFunc, refineProps, EventStore, parseBusinessHours, ReducerContext, EventUi, processScopedUiProps, BusinessHoursInput, guid } from '@fullcalendar/core'
 
 export interface ResourceInput {
   id?: string
@@ -49,11 +49,11 @@ const PRIVATE_ID_PREFIX = '_fc:'
 /*
 needs a full store so that it can populate children too
 */
-export function parseResource(input: ResourceInput, parentId: string = '', store: ResourceHash, calendar: Calendar): Resource {
+export function parseResource(input: ResourceInput, parentId: string = '', store: ResourceHash, context: ReducerContext): Resource {
   let leftovers0 = {}
   let props = refineProps(input, RESOURCE_PROPS, {}, leftovers0)
   let leftovers1 = {}
-  let ui = processScopedUiProps('event', leftovers0, calendar, leftovers1)
+  let ui = processScopedUiProps('event', leftovers0, context, leftovers1)
 
   if (!props.id) {
     props.id = PRIVATE_ID_PREFIX + guid()
@@ -63,7 +63,7 @@ export function parseResource(input: ResourceInput, parentId: string = '', store
     props.parentId = parentId
   }
 
-  props.businessHours = props.businessHours ? parseBusinessHours(props.businessHours, calendar) : null
+  props.businessHours = props.businessHours ? parseBusinessHours(props.businessHours, context) : null
   props.ui = ui
   props.extendedProps = { ...leftovers1, ...props.extendedProps }
 
@@ -80,7 +80,7 @@ export function parseResource(input: ResourceInput, parentId: string = '', store
     if (props.children) {
 
       for (let childInput of props.children) {
-        parseResource(childInput, props.id, store, calendar)
+        parseResource(childInput, props.id, store, context)
       }
 
       delete props.children

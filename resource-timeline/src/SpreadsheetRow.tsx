@@ -160,7 +160,7 @@ class SpreadsheetIndividualCell extends BaseComponent<SpreadsheetIndividualCellP
     let { props } = this
 
     if (props.hasChildren) {
-      this.context.calendar.dispatch({
+      this.context.dispatch({
         type: 'SET_RESOURCE_ENTITY_EXPANDED',
         id: props.resource.id,
         isExpanded: !props.isExpanded

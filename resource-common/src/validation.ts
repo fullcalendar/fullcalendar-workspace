@@ -1,12 +1,13 @@
-import { SplittableProps, Calendar, EventUi, isPropsValid, Constraint, EventStore, mergeEventStores } from '@fullcalendar/core'
+import { SplittableProps, EventUi, isPropsValid, Constraint, EventStore, mergeEventStores, ReducerContext } from '@fullcalendar/core'
 import { ResourceSplitter } from './common/ResourceSplitter'
 
-export function isPropsValidWithResources(props: SplittableProps, calendar: Calendar): boolean {
+
+export function isPropsValidWithResources(props: SplittableProps, context: ReducerContext): boolean {
   let splitter = new ResourceSplitter()
 
   let sets = splitter.splitProps({
     ...props,
-    resourceStore: calendar.state.resourceStore
+    resourceStore: context.calendar.state.resourceStore
   })
 
   for (let resourceId in sets) {
@@ -21,7 +22,7 @@ export function isPropsValidWithResources(props: SplittableProps, calendar: Cale
       }
     }
 
-    if (!isPropsValid(props, calendar, { resourceId }, filterConfig.bind(null, resourceId))) {
+    if (!isPropsValid(props, context, { resourceId }, filterConfig.bind(null, resourceId))) {
       return false
     }
   }
@@ -29,12 +30,14 @@ export function isPropsValidWithResources(props: SplittableProps, calendar: Cale
   return true
 }
 
+
 function filterConfig(resourceId, config: EventUi) {
   return {
     ...config,
     constraints: filterConstraints(resourceId, config.constraints)
   }
 }
+
 
 function filterConstraints(resourceId: string, constraints: Constraint[]) {
   return constraints.map(function(constraint) {

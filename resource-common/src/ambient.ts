@@ -16,8 +16,8 @@ declare module '@fullcalendar/core' {
     refetchResources(): void
   }
 
-  interface Calendar {
-    dispatch(action: ResourceAction)
+  interface ReducerContext {
+    dispatch(action: ResourceAction): void
   }
 
   interface CalendarState {

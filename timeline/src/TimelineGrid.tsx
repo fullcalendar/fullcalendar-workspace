@@ -26,6 +26,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
 
 
   render(props: TimelinGridProps, state: TimelineGridState, context: ComponentContext) {
+    let { options, computedOptions } = context
     let { tDateProfile } = props
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
 
@@ -51,7 +52,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
             tDateProfile={props.tDateProfile}
             nowDate={nowDate}
             todayRange={todayRange}
-            nextDayThreshold={context.nextDayThreshold}
+            nextDayThreshold={computedOptions.nextDayThreshold}
             businessHours={props.businessHours}
             eventStore={props.eventStore}
             eventUiBases={props.eventUiBases}
@@ -61,7 +62,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
             eventResize={props.eventResize}
             timelineCoords={state.coords}
           />,
-          (context.options.nowIndicator && state.coords && state.coords.isDateInRange(nowDate)) &&
+          (options.nowIndicator && state.coords && state.coords.isDateInRange(nowDate)) &&
             <NowIndicatorRoot isAxis={false} date={nowDate}>
               {(rootElRef, classNames, innerElRef, innerContent) => (
                 <div
