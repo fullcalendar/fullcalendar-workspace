@@ -26,7 +26,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
     let stickyFooterScrollbar = getStickyFooterScrollbar(options)
 
     let tDateProfile = this.buildTimelineDateProfile(
-      context.dateProfile,
+      props.dateProfile,
       context.dateEnv,
       options,
       context.dateProfileGenerator
@@ -47,6 +47,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
         chunks: [{
           content: (contentArg: ChunkContentCallbackArgs) => (
             <TimelineHeader
+              dateProfile={props.dateProfile}
               clientWidth={contentArg.clientWidth}
               clientHeight={contentArg.clientHeight}
               tableMinWidth={contentArg.tableMinWidth}

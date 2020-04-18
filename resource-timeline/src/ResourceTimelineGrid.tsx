@@ -1,6 +1,6 @@
 import {
   h, ComponentContext, PositionCache,
-  Duration, EventStore, DateSpan, EventUiHash, EventInteractionState, DateComponent, Hit, createRef, CssDimValue, VNode, memoize, NowTimer, greatestDurationDenominator, DateMarker, DateRange, NowIndicatorRoot
+  Duration, EventStore, DateSpan, EventUiHash, EventInteractionState, DateComponent, Hit, createRef, CssDimValue, VNode, memoize, NowTimer, greatestDurationDenominator, DateMarker, DateRange, NowIndicatorRoot, DateProfile
 } from '@fullcalendar/core'
 import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource-common'
 import { TimelineDateProfile, TimelineCoords, TimelineSlats, TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg } from '@fullcalendar/timeline'
@@ -8,6 +8,7 @@ import { ResourceTimelineLanes } from './ResourceTimelineLanes'
 
 
 export interface ResourceTimelineGridProps {
+  dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   rowNodes: (GroupNode | ResourceNode)[]
   businessHours: EventStore | null
@@ -46,7 +47,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
 
 
   render(props: ResourceTimelineGridProps, state: ResourceTimelineGridState, context: ComponentContext) {
-    let { tDateProfile } = props
+    let { dateProfile, tDateProfile } = props
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
     let hasResourceBusinessHours = this.computeHasResourceBusinessHours(props.rowNodes)
 
@@ -54,10 +55,10 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
     let bgLaneProps = splitProps['']
     let bgSlicedProps = this.bgSlicer.sliceProps(
       bgLaneProps,
-      context.dateProfile,
+      dateProfile,
       tDateProfile.isTimeScale ? null : props.nextDayThreshold,
       context, // wish we didn't need to pass in the rest of these args...
-      context.dateProfile,
+      dateProfile,
       context.dateProfileGenerator,
       tDateProfile,
       context.dateEnv
@@ -70,6 +71,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
         <NowTimer unit={timerUnit} content={(nowDate: DateMarker, todayRange: DateRange) => [
           <TimelineSlats
             ref={this.slatsRef}
+            dateProfile={dateProfile}
             tDateProfile={tDateProfile}
             nowDate={nowDate}
             todayRange={todayRange}
@@ -90,6 +92,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
           />,
           <ResourceTimelineLanes
             rowNodes={props.rowNodes}
+            dateProfile={dateProfile}
             tDateProfile={props.tDateProfile}
             nowDate={nowDate}
             todayRange={todayRange}

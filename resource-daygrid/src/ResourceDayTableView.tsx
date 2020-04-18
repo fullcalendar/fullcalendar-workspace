@@ -19,11 +19,11 @@ export class ResourceDayTableView extends TableView {
 
 
   render(props: ResourceViewProps, state: {}, context: ComponentContext) {
-    let { options, computedOptions, dateProfile } = context
+    let { options, computedOptions } = context
     let resourceOrderSpecs = this.parseResourceOrder(options.resourceOrder)
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
     let resourceDayTableModel = this.buildResourceDayTableModel(
-      dateProfile,
+      props.dateProfile,
       context.dateProfileGenerator,
       resources,
       options.datesAboveResources,
@@ -34,6 +34,7 @@ export class ResourceDayTableView extends TableView {
       <ResourceDayHeader
         ref={this.headerRef}
         resources={resources}
+        dateProfile={props.dateProfile}
         dates={resourceDayTableModel.dayTableModel.headerDates}
         datesRepDistinctDays={true}
       />
@@ -41,6 +42,7 @@ export class ResourceDayTableView extends TableView {
     let bodyContent = (contentArg: ChunkContentCallbackArgs) => (
       <ResourceDayTable
         ref={this.tableRef}
+        dateProfile={props.dateProfile}
         resourceDayTableModel={resourceDayTableModel}
         businessHours={props.businessHours}
         eventStore={props.eventStore}

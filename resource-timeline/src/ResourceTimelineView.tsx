@@ -60,11 +60,11 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
 
   render(props: ResourceViewProps, state: ResourceTimelineViewState, context: ComponentContext) {
-    let { options, dateProfile, viewSpec } = context
+    let { options, viewSpec } = context
     let { superHeaderRendering, groupSpecs, orderSpecs, isVGrouping, colSpecs } = this.processColOptions(context.options)
 
     let tDateProfile = this.buildTimelineDateProfile(
-      dateProfile,
+      props.dateProfile,
       context.dateEnv,
       context.options,
       context.dateProfileGenerator
@@ -118,6 +118,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
                   clientHeight={contentArg.clientHeight}
                   tableMinWidth={contentArg.tableMinWidth}
                   tableColGroupNode={contentArg.tableColGroupNode}
+                  dateProfile={props.dateProfile}
                   tDateProfile={tDateProfile}
                   slatCoords={state.slatCoords}
                   rowInnerHeights={contentArg.rowSyncHeights}
@@ -126,6 +127,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
               )}
               timeBodyContent={(contentArg: ChunkContentCallbackArgs) => (
                 <ResourceTimelineGrid
+                  dateProfile={props.dateProfile}
                   clientWidth={contentArg.clientWidth}
                   clientHeight={contentArg.clientHeight}
                   tableMinWidth={contentArg.tableMinWidth}

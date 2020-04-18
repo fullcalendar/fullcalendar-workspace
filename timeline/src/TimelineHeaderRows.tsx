@@ -1,10 +1,11 @@
 import {
-  h, BaseComponent, ComponentContext, Fragment, DateRange, DateMarker, getDateMeta, getSlotClassNames, buildNavLinkData, buildHookClassNameGenerator, MountHook, ContentHook, ViewApi, getDayClassNames
+  h, BaseComponent, ComponentContext, Fragment, DateRange, DateMarker, getDateMeta, getSlotClassNames, buildNavLinkData, buildHookClassNameGenerator, MountHook, ContentHook, ViewApi, getDayClassNames, DateProfile
 } from '@fullcalendar/core'
 import { TimelineDateProfile, TimelineHeaderCell } from './timeline-date-profile'
 
 
 export interface TimelineHeaderRowsProps {
+  dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
@@ -14,7 +15,7 @@ export interface TimelineHeaderRowsProps {
 export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
 
   render(props: TimelineHeaderRowsProps, state: {}, context: ComponentContext) {
-    let { tDateProfile, rowInnerHeights } = props
+    let { dateProfile, tDateProfile, rowInnerHeights } = props
     let { cellRows } = tDateProfile
 
     return (
@@ -29,6 +30,7 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
                 <TimelineHeaderTh
                   key={cell.date.toISOString()}
                   cell={cell}
+                  dateProfile={dateProfile}
                   tDateProfile={tDateProfile}
                   todayRange={props.todayRange}
                   nowDate={props.nowDate}
@@ -47,6 +49,7 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
 
 
 interface TimelineHeaderThProps {
+  dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   cell: TimelineHeaderCell
   todayRange: DateRange
@@ -62,13 +65,13 @@ class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
 
   render(props: TimelineHeaderThProps, state: {}, context: ComponentContext) {
     let { dateEnv, options } = context
-    let { cell, tDateProfile } = props
+    let { cell, dateProfile, tDateProfile } = props
 
     // the cell.rowUnit is f'd
     // giving 'month' for a 3-day view
     // workaround: to infer day, do NOT time
 
-    let dateMeta = getDateMeta(cell.date, props.todayRange, props.nowDate, context.dateProfile)
+    let dateMeta = getDateMeta(cell.date, props.todayRange, props.nowDate, dateProfile)
 
     let classNames = [ 'fc-timeline-slot', 'fc-timeline-slot-label' ].concat(
       cell.rowUnit === 'time' // TODO: so slot classnames for week/month/bigger. see note above about rowUnit

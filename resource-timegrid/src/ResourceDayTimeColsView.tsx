@@ -18,7 +18,8 @@ export class ResourceDayTimeColsView extends TimeColsView {
 
 
   render(props: ResourceViewProps, state: {}, context: ComponentContext) {
-    let { options, computedOptions, dateEnv, dateProfile } = context
+    let { options, computedOptions, dateEnv } = context
+    let { dateProfile } = props
 
     let splitProps = this.allDaySplitter.splitProps(props)
     let resourceOrderSpecs = this.parseResourceOrder(options.resourceOrder)
@@ -38,6 +39,7 @@ export class ResourceDayTimeColsView extends TimeColsView {
       <ResourceDayHeader
         resources={resources}
         dates={resourceDayTableModel.dayTableModel.headerDates}
+        dateProfile={dateProfile}
         datesRepDistinctDays={true}
         renderIntro={dayMinWidth ? null : this.renderHeadAxis}
       />
@@ -45,6 +47,7 @@ export class ResourceDayTimeColsView extends TimeColsView {
     let allDayContent = options.allDaySlot && ((contentArg: ChunkContentCallbackArgs) => (
       <ResourceDayTable
         {...splitProps['allDay']}
+        dateProfile={dateProfile}
         resourceDayTableModel={resourceDayTableModel}
         nextDayThreshold={computedOptions.nextDayThreshold}
         tableMinWidth={contentArg.tableMinWidth}
@@ -62,6 +65,7 @@ export class ResourceDayTimeColsView extends TimeColsView {
     let timeGridContent = (contentArg: ChunkContentCallbackArgs) => (
       <ResourceDayTimeCols
         {...splitProps['timed']}
+        dateProfile={dateProfile}
         axis={!dayMinWidth}
         slotDuration={computedOptions.slotDuration}
         slatMetas={slatMetas}

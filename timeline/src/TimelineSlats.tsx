@@ -1,6 +1,6 @@
 import {
   h, BaseComponent, multiplyDuration,
-  ComponentContext, RefMap, CssDimValue, VNode, createRef, ScrollResponder, ScrollRequest, DateMarker, DateRange
+  ComponentContext, RefMap, CssDimValue, VNode, createRef, ScrollResponder, ScrollRequest, DateMarker, DateRange, DateProfile
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { TimelineSlatCell } from './TimelineSlatCell'
@@ -8,6 +8,7 @@ import { TimelineCoords } from './TimelineCoords'
 
 
 export interface TimelineSlatsProps extends TimelineSlatsContentProps {
+  dateProfile: DateProfile
   clientWidth: number | null
   tableMinWidth: CssDimValue
   tableColGroupNode: VNode
@@ -86,7 +87,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
       this.coords = new TimelineCoords(
         this.rootElRef.current,
         collectCellEls(this.cellElRefs.currentMap, props.tDateProfile.slotDates),
-        context.dateProfile,
+        props.dateProfile,
         props.tDateProfile,
         context.dateEnv,
         context.isRtl

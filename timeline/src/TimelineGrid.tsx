@@ -27,7 +27,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
 
   render(props: TimelinGridProps, state: TimelineGridState, context: ComponentContext) {
     let { options, computedOptions } = context
-    let { tDateProfile } = props
+    let { dateProfile, tDateProfile } = props
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
 
     return (
@@ -39,6 +39,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
         <NowTimer unit={timerUnit} content={(nowDate: DateMarker, todayRange: DateRange) => [
           <TimelineSlats
             ref={this.slatsRef}
+            dateProfile={dateProfile}
             tDateProfile={tDateProfile}
             nowDate={nowDate}
             todayRange={todayRange}
@@ -49,6 +50,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
             onScrollLeftRequest={props.onScrollLeftRequest}
           />,
           <TimelineLane
+            dateProfile={dateProfile}
             tDateProfile={props.tDateProfile}
             nowDate={nowDate}
             todayRange={todayRange}

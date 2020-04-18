@@ -2,7 +2,8 @@ import {
   h, ComponentContext, PositionCache,
   SplittableProps, EventStore, createRef, BaseComponent, CssDimValue, RefMap,
   DateMarker,
-  DateRange
+  DateRange,
+  DateProfile
 } from '@fullcalendar/core'
 import {  GroupNode, ResourceNode } from '@fullcalendar/resource-common'
 import { TimelineDateProfile, TimelineCoords } from '@fullcalendar/timeline'
@@ -20,6 +21,7 @@ export interface ResourceTimelineLanesProps extends ResourceTimelineLanesContent
 export interface ResourceTimelineLanesContentProps {
   rowNodes: (GroupNode | ResourceNode)[]
   splitProps: { [resourceId: string]: SplittableProps }
+  dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
@@ -50,6 +52,7 @@ export class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesPr
         <ResourceTimelineLanesBody
           rowElRefs={this.rowElRefs}
           rowNodes={props.rowNodes}
+          dateProfile={props.dateProfile}
           tDateProfile={props.tDateProfile}
           nowDate={props.nowDate}
           todayRange={props.todayRange}
@@ -139,6 +142,7 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
                 elRef={rowElRefs.createRef(node.id)}
                 {...props.splitProps[resource.id]}
                 resource={resource}
+                dateProfile={props.dateProfile}
                 tDateProfile={props.tDateProfile}
                 nowDate={props.nowDate}
                 todayRange={props.todayRange}
