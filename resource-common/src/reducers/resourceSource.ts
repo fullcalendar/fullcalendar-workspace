@@ -12,16 +12,16 @@ export function reduceResourceSource(
 
   switch (action.type) {
     case 'INIT':
-      return createSource(options.resources, options.refetchResourcesOnNavigate, context)
+      return createSource(options.resources, dateProfile.activeRange, options.refetchResourcesOnNavigate, context)
 
     case 'RESET_RESOURCE_SOURCE':
-      return createSource(action.resourceSourceInput, options.refetchResourcesOnNavigate, context, true)
+      return createSource(action.resourceSourceInput, dateProfile.activeRange, options.refetchResourcesOnNavigate, context)
 
     case 'PREV': // TODO: how do we track all actions that affect dateProfile :(
     case 'NEXT':
-    case 'SET_DATE':
-    case 'SET_VIEW_TYPE':
-      return handleRange(source, dateProfile.activeRange, options.refetchResourcesOnNavigate, context)
+    case 'CHANGE_DATE':
+    case 'CHANGE_VIEW_TYPE':
+      return handleRangeChange(source, dateProfile.activeRange, options.refetchResourcesOnNavigate, context)
 
     case 'RECEIVE_RESOURCES':
     case 'RECEIVE_RESOURCE_ERROR':
@@ -36,15 +36,10 @@ export function reduceResourceSource(
 }
 
 
-function createSource(input, refetchResourcesOnNavigate, context: ReducerContext, forceFetch?: boolean) {
-
+function createSource(input, activeRange: DateRange, refetchResourcesOnNavigate, context: ReducerContext) {
   if (input) {
     let source = parseResourceSource(input)
-
-    if (forceFetch || !refetchResourcesOnNavigate) { // because assumes handleRange will do it later
-      source = fetchSource(source, null, context)
-    }
-
+    source = fetchSource(source, refetchResourcesOnNavigate ? activeRange : null, context)
     return source
   }
 
@@ -52,7 +47,7 @@ function createSource(input, refetchResourcesOnNavigate, context: ReducerContext
 }
 
 
-function handleRange(source: ResourceSource, activeRange: DateRange, refetchResourcesOnNavigate, context: ReducerContext): ResourceSource {
+function handleRangeChange(source: ResourceSource, activeRange: DateRange, refetchResourcesOnNavigate, context: ReducerContext): ResourceSource {
   if (
     refetchResourcesOnNavigate &&
     !doesSourceIgnoreRange(source) &&
