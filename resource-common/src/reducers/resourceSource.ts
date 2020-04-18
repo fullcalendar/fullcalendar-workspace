@@ -72,8 +72,8 @@ function fetchSource(source: ResourceSource, fetchRange: DateRange | null, conte
   sourceDef.fetch(
     {
       resourceSource: source,
-      calendar: context.calendar,
-      range: fetchRange
+      range: fetchRange,
+      context
     },
     function(res) {
       context.dispatch({

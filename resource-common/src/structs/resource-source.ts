@@ -1,4 +1,4 @@
-import { DateRange, Calendar, refineProps, guid } from '@fullcalendar/core'
+import { DateRange, ReducerContext, refineProps, guid } from '@fullcalendar/core'
 import { ResourceInput } from '../structs/resource'
 import { ResourceFunc } from '../resource-sources/resource-func'
 
@@ -11,8 +11,8 @@ export type ResourceSourceError = { // TODO: converge with EventSourceError
 export type ResourceFetcher = (
   arg: {
     resourceSource: ResourceSource
-    calendar: Calendar
     range: DateRange | null
+    context: ReducerContext
   },
   success: (res: { rawResources: ResourceInput[], xhr?: XMLHttpRequest }) => void,
   failure: (error: ResourceSourceError) => void
@@ -27,10 +27,12 @@ export interface ExtendedResourceSourceInput {
   // for json feed. TODO: move to resource-json-feed
   url?: string
   method?: string
+  startParam?: string
+  endParam?: string
+  timeZoneParam?: string
   extraParams?: object | (() => object)
 
   // TODO: event props
-  // TODO: startParam/endParam/timeZoneParam
   // TODO: success/failure
 }
 

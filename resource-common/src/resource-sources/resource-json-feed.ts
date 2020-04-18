@@ -1,10 +1,13 @@
-import { DateRange, Calendar, requestJson } from '@fullcalendar/core'
+import { DateRange, ReducerContext, requestJson } from '@fullcalendar/core'
 import { registerResourceSourceDef, ResourceSourceInput, ExtendedResourceSourceInput } from '../structs/resource-source'
 import { __assign } from 'tslib'
 
 interface JsonFeedMeta {
   url: string
   method: string
+  startParam?: string
+  endParam?: string
+  timeZoneParam?: string
   extraParams?: any
 }
 
@@ -26,7 +29,7 @@ registerResourceSourceDef({
 
   fetch(arg, successCallback, failureCallback) {
     let meta: JsonFeedMeta = arg.resourceSource.meta
-    let requestParams = buildRequestParams(meta, arg.range, arg.calendar)
+    let requestParams = buildRequestParams(meta, arg.range, arg.context)
 
     requestJson(meta.method, meta.url, requestParams, function(rawResources, xhr) {
       successCallback({ rawResources, xhr })
@@ -38,8 +41,8 @@ registerResourceSourceDef({
 })
 
 // TODO: somehow consolidate with event json feed
-function buildRequestParams(meta: JsonFeedMeta, range: DateRange | null, calendar: Calendar) {
-  const dateEnv = calendar.state.dateEnv
+function buildRequestParams(meta: JsonFeedMeta, range: DateRange | null, context: ReducerContext) {
+  let { dateEnv, options } = context
   let startParam
   let endParam
   let timeZoneParam
@@ -47,20 +50,20 @@ function buildRequestParams(meta: JsonFeedMeta, range: DateRange | null, calenda
   let params = {}
 
   if (range) {
-    // startParam = meta.startParam
-    // if (startParam == null) {
-    startParam = calendar.opt('startParam')
-    // }
+    startParam = meta.startParam
+    if (startParam == null) {
+      startParam = options.startParam
+    }
 
-    // endParam = meta.endParam
-    // if (endParam == null) {
-    endParam = calendar.opt('endParam')
-    // }
+    endParam = meta.endParam
+    if (endParam == null) {
+      endParam = options.endParam
+    }
 
-    // timeZoneParam = meta.timeZoneParam
-    // if (timeZoneParam == null) {
-    timeZoneParam = calendar.opt('timeZoneParam')
-    // }
+    timeZoneParam = meta.timeZoneParam
+    if (timeZoneParam == null) {
+      timeZoneParam = options.timeZoneParam
+    }
 
     params[startParam] = dateEnv.formatIso(range.start)
     params[endParam] = dateEnv.formatIso(range.end)
