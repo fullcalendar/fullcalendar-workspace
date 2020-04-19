@@ -1,4 +1,4 @@
-import { DateSpan, Calendar } from '@fullcalendar/core'
+import { DateSpan, Calendar, ReducerContext } from '@fullcalendar/core'
 import { ResourceApi } from './api/ResourceApi'
 import { ResourceInput, parseResource, ResourceHash, Resource } from './structs/resource'
 
@@ -79,14 +79,14 @@ Calendar.prototype.refetchResources = function(this: Calendar) {
   })
 }
 
-export function transformDatePoint(dateSpan: DateSpan, calendar: Calendar) {
+export function transformDatePoint(dateSpan: DateSpan, context: ReducerContext) {
   return dateSpan.resourceId ?
-    { resource: calendar.getResourceById(dateSpan.resourceId) } :
+    { resource: context.calendar.getResourceById(dateSpan.resourceId) } :
     {}
 }
 
-export function transformDateSpan(dateSpan: DateSpan, calendar: Calendar) {
+export function transformDateSpan(dateSpan: DateSpan, context: ReducerContext) {
   return dateSpan.resourceId ?
-    { resource: calendar.getResourceById(dateSpan.resourceId) } :
+    { resource: context.calendar.getResourceById(dateSpan.resourceId) } :
     {}
 }
