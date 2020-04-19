@@ -82,9 +82,9 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
 
   handeEl = (el: HTMLElement | null) => {
     if (el) {
-      this.context.calendar.registerInteractiveComponent(this, { el })
+      this.context.registerInteractiveComponent(this, { el })
     } else {
-      this.context.calendar.unregisterInteractiveComponent(this)
+      this.context.unregisterInteractiveComponent(this)
     }
   }
 

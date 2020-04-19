@@ -95,12 +95,10 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
 
 
   handleRootEl = (rootEl: HTMLElement | null) => {
-    let { calendar } = this.context
-
     if (rootEl) {
-      calendar.registerInteractiveComponent(this, { el: rootEl })
+      this.context.registerInteractiveComponent(this, { el: rootEl })
     } else {
-      calendar.unregisterInteractiveComponent(this)
+      this.context.unregisterInteractiveComponent(this)
     }
   }
 
