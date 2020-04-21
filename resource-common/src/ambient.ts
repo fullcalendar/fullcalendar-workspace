@@ -1,8 +1,9 @@
 import { ResourceApi } from './api/ResourceApi'
-import { ResourceSourceInput, ResourceSource } from './structs/resource-source'
+import { ResourceSource } from './structs/resource-source'
+import { ResourceSourceInput } from './structs/resource-source-parse'
 import { ResourceHash } from './structs/resource'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
-import { ResourceAction } from './reducers/resources'
+import { ResourceAction } from './reducers/resource-action'
 
 // QUESTION: why do only some files need to require this directly?
 

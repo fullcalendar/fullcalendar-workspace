@@ -1,5 +1,5 @@
 import { ReducerContext } from '@fullcalendar/core'
-import { ResourceAction } from './resources'
+import { ResourceAction } from './resource-action'
 import { ResourceHash, ResourceInput, parseResource } from '../structs/resource'
 import { ResourceSource } from '../structs/resource-source'
 

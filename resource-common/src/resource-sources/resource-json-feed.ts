@@ -1,5 +1,5 @@
 import { DateRange, ReducerContext, requestJson } from '@fullcalendar/core'
-import { registerResourceSourceDef, ResourceSourceInput, ExtendedResourceSourceInput } from '../structs/resource-source'
+import { registerResourceSourceDef } from '../structs/resource-source-def'
 import { __assign } from 'tslib'
 
 interface JsonFeedMeta {
@@ -13,17 +13,17 @@ interface JsonFeedMeta {
 
 registerResourceSourceDef({
 
-  parseMeta(raw: ResourceSourceInput): JsonFeedMeta | null {
+  parseMeta(raw: any): JsonFeedMeta | null {
     if (typeof raw === 'string') {
       raw = { url: raw }
-    } else if (!raw || typeof raw !== 'object' || !(raw as ExtendedResourceSourceInput).url) {
+    } else if (!raw || typeof raw !== 'object' || !raw.url) {
       return null
     }
 
     return {
-      url: (raw as ExtendedResourceSourceInput).url,
-      method: ((raw as ExtendedResourceSourceInput).method || 'GET').toUpperCase(),
-      extraParams: (raw as ExtendedResourceSourceInput).extraParams
+      url: raw.url,
+      method: (raw.method || 'GET').toUpperCase(),
+      extraParams: raw.extraParams
     }
   },
 

@@ -1,5 +1,6 @@
 import { unpromisify } from '@fullcalendar/core'
-import { registerResourceSourceDef, ExtendedResourceSourceInput, ResourceSourceError } from '../structs/resource-source'
+import { ResourceSourceError } from '../structs/resource-source'
+import { registerResourceSourceDef } from '../structs/resource-source-def'
 import { ResourceInput } from '../structs/resource'
 
 export type ResourceFunc = (
@@ -14,7 +15,7 @@ export type ResourceFunc = (
 
 registerResourceSourceDef({
 
-  parseMeta(raw: ExtendedResourceSourceInput): ResourceInput[] | null {
+  parseMeta(raw: any): ResourceInput[] | null { // TODO: better `any`
     if (typeof raw === 'function') {
       return raw
     } else if (typeof raw.resources === 'function') {
