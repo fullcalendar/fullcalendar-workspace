@@ -247,6 +247,7 @@ export function normalizeRange(range: DateRange, tDateProfile: TimelineDateProfi
 export function isValidDate(date: DateMarker, tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
   if (dateProfileGenerator.isHiddenDay(date)) {
     return false
+
   } else if (tDateProfile.isTimeScale) {
     // determine if the time is within slotMinTime/slotMaxTime, which may have wacky values
     let day = startOfDay(date)
@@ -254,6 +255,7 @@ export function isValidDate(date: DateMarker, tDateProfile: TimelineDateProfile,
     let ms = timeMs - asRoughMs(dateProfile.slotMinTime) // milliseconds since slotMinTime
     ms = ((ms % 86400000) + 86400000) % 86400000 // make negative values wrap to 24hr clock
     return ms < tDateProfile.timeWindowMs // before the slotMaxTime?
+
   } else {
     return true
   }

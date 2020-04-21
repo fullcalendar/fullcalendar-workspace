@@ -62,11 +62,10 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
   }
 
 
-  componentDidUpdate(prevProps: TimelineSlatsProps, prevState: {}) {
+  componentDidUpdate(prevProps: TimelineSlatsProps) {
     this.updateSizing()
 
-    let didContextUpdate = prevProps === this.props && prevState === this.state // only way to detect context change. if props/start didnt
-    this.scrollResponder.update(didContextUpdate) // if context changed, dateProfile probably changed
+    this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
   }
 
 

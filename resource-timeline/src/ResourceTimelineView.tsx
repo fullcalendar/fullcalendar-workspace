@@ -208,8 +208,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   componentDidUpdate(prevProps: ResourceViewProps, prevState: ResourceTimelineViewState, snapshot: ResourceTimelineViewSnapshot) {
     this.renderedRowNodes = this.rowNodes
 
-    let didContextUpdate = prevProps === this.props && prevState === this.state // only way to detect context change. if props/start didnt
-    this.scrollResponder.update(didContextUpdate) // if context changed, dateProfile probably changed
+    this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
 
     if (snapshot.resourceScroll) {
       this.handleScrollRequest(snapshot.resourceScroll) // TODO: this gets triggered too often
