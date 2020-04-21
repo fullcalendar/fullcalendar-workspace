@@ -1,18 +1,16 @@
-import { Calendar, EventApi } from '@fullcalendar/core'
+import { ReducerContext, EventApi } from '@fullcalendar/core'
 import { Resource, getPublicId } from '../structs/resource'
 
 export class ResourceApi {
 
-  _calendar: Calendar
-  _resource: Resource
-
-  constructor(calendar: Calendar, rawResource: Resource) {
-    this._calendar = calendar
-    this._resource = rawResource
+  constructor(
+    private _context: ReducerContext,
+    public _resource: Resource
+  ) {
   }
 
   setProp(name: string, value: any) {
-    this._calendar.state.dispatch({
+    this._context.dispatch({
       type: 'SET_RESOURCE_PROP',
       resourceId: this._resource.id,
       propName: name,
@@ -21,20 +19,20 @@ export class ResourceApi {
   }
 
   remove() {
-    this._calendar.state.dispatch({
+    this._context.dispatch({
       type: 'REMOVE_RESOURCE',
       resourceId: this._resource.id
     })
   }
 
   getParent(): ResourceApi | null {
-    let calendar = this._calendar
+    let context = this._context
     let parentId = this._resource.parentId
 
     if (parentId) {
       return new ResourceApi(
-        calendar,
-        calendar.state.resourceSource[parentId]
+        context,
+        context.getCurrentState().resourceSource[parentId]
       )
     } else {
       return null
@@ -43,14 +41,14 @@ export class ResourceApi {
 
   getChildren(): ResourceApi[] {
     let thisResourceId = this._resource.id
-    let calendar = this._calendar
-    let { resourceStore } = calendar.state
+    let context = this._context
+    let { resourceStore } = context.getCurrentState()
     let childApis: ResourceApi[] = []
 
     for (let resourceId in resourceStore) {
       if (resourceStore[resourceId].parentId === thisResourceId) {
         childApis.push(
-          new ResourceApi(calendar, resourceStore[resourceId])
+          new ResourceApi(context, resourceStore[resourceId])
         )
       }
     }
@@ -64,8 +62,8 @@ export class ResourceApi {
   */
   getEvents(): EventApi[] {
     let thisResourceId = this._resource.id
-    let calendar = this._calendar
-    let { defs, instances } = calendar.state.eventStore
+    let context = this._context
+    let { defs, instances } = context.getCurrentState().eventStore
     let eventApis: EventApi[] = []
 
     for (let instanceId in instances) {
@@ -73,7 +71,7 @@ export class ResourceApi {
       let def = defs[instance.defId]
 
       if (def.resourceIds.indexOf(thisResourceId) !== -1) { // inefficient!!!
-        eventApis.push(new EventApi(calendar, def, instance))
+        eventApis.push(new EventApi(context, def, instance))
       }
     }
 

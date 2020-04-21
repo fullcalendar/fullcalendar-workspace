@@ -16,6 +16,7 @@ export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit
   }
 }
 
+
 /*
 TODO: all this would be much easier if we were using a hash!
 */
@@ -39,6 +40,7 @@ export function applyEventDefMutation(eventDef: EventDef, mutation: EventMutatio
   }
 }
 
+
 /*
 HACK
 TODO: use EventUi system instead of this
@@ -47,7 +49,7 @@ export function computeResourceEditable(eventDef: EventDef, context: ReducerCont
   let { resourceEditable } = eventDef
 
   if (resourceEditable == null) {
-    let source = eventDef.sourceId && context.calendar.state.eventSources[eventDef.sourceId]
+    let source = eventDef.sourceId && context.getCurrentState().eventSources[eventDef.sourceId]
 
     if (source) {
       resourceEditable = source.extendedProps.resourceEditable // used the Source::extendedProps hack
@@ -70,11 +72,11 @@ export function transformEventDrop(mutation: EventMutation, context: ReducerCont
   let { resourceMutation } = mutation
 
   if (resourceMutation) {
-    let { calendar } = context
+    let { calendarApi } = context
 
     return {
-      oldResource: calendar.getResourceById(resourceMutation.matchResourceId),
-      newResource: calendar.getResourceById(resourceMutation.setResourceId)
+      oldResource: calendarApi.getResourceById(resourceMutation.matchResourceId),
+      newResource: calendarApi.getResourceById(resourceMutation.setResourceId)
     }
 
   } else {

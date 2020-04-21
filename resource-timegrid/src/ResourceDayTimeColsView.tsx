@@ -1,5 +1,5 @@
 import {
-  h, ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs, Calendar
+  h, ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs, ReducerContext
 } from '@fullcalendar/core'
 import { TimeColsView, buildTimeColsModel, buildSlatMetas } from '@fullcalendar/timegrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
@@ -29,7 +29,7 @@ export class ResourceDayTimeColsView extends TimeColsView {
       context.dateProfileGenerator,
       resources,
       options.datesAboveResources,
-      context.calendar
+      context
     )
 
     let slatMetas = this.buildSlatMetas(dateProfile.slotMinTime, dateProfile.slotMaxTime, options.slotLabelInterval, computedOptions.slotDuration, dateEnv)
@@ -93,11 +93,11 @@ function buildResourceTimeColsModel(
   dateProfileGenerator: DateProfileGenerator,
   resources: Resource[],
   datesAboveResources: boolean,
-  calendar: Calendar
+  context: ReducerContext
 ) {
   let dayTable = buildTimeColsModel(dateProfile, dateProfileGenerator)
 
   return datesAboveResources ?
-    new DayResourceTableModel(dayTable, resources, calendar) :
-    new ResourceDayTableModel(dayTable, resources, calendar)
+    new DayResourceTableModel(dayTable, resources, context) :
+    new ResourceDayTableModel(dayTable, resources, context)
 }

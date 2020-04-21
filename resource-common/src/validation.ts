@@ -7,7 +7,7 @@ export function isPropsValidWithResources(props: SplittableProps, context: Reduc
 
   let sets = splitter.splitProps({
     ...props,
-    resourceStore: context.calendar.state.resourceStore
+    resourceStore: context.getCurrentState().resourceStore
   })
 
   for (let resourceId in sets) {

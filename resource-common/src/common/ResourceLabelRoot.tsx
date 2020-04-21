@@ -30,7 +30,7 @@ export function ResourceLabelRoot(props: ResourceLabelRootProps) {
     <ComponentContextType.Consumer>
       {(context: ComponentContext) => {
         let hookProps: ResourceInnerProps = {
-          resource: new ResourceApi(context.calendar, props.resource),
+          resource: new ResourceApi(context, props.resource),
           date: props.date ? context.dateEnv.toDate(props.date) : null,
           view: context.viewApi
         }

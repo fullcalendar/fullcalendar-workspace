@@ -213,7 +213,7 @@ interface HookPropOrigin {
 
 function massageHookProps(input: HookPropOrigin, context: ComponentContext): HookProps {
   return {
-    resource: new ResourceApi(context.calendar, input.resource),
+    resource: new ResourceApi(context, input.resource),
     fieldValue: input.fieldValue,
     view: context.viewApi
   }

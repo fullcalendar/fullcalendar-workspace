@@ -8,7 +8,7 @@ import { ResourceAction } from './reducers/resources'
 
 declare module '@fullcalendar/core' {
 
-  interface Calendar {
+  interface CalendarApi {
     addResource(input: ResourceSourceInput): ResourceApi
     getResourceById(id: string): ResourceApi | null
     getResources(): ResourceApi[]

@@ -126,7 +126,7 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
   renderDateCell(date: DateMarker, dateFormat: DateFormatter, todayRange: DateRange, colSpan: number, resource?: Resource, isSticky?: boolean) {
     let { props } = this
     let keyPostfix = resource ? `:${resource.id}` : ''
-    let extraHookProps = resource ? { resource: new ResourceApi(this.context.calendar, resource) } : {}
+    let extraHookProps = resource ? { resource: new ResourceApi(this.context, resource) } : {}
     let extraDataAttrs = resource ? { 'data-resource-id' : resource.id } : {}
 
     return props.datesRepDistinctDays ?

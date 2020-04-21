@@ -4,10 +4,10 @@ import '../ambient'
 
 
 EventApi.prototype.getResources = function(this: EventApi): ResourceApi[] {
-  let calendar = this._calendar
+  let { calendarApi } = this._context
 
   return this._def.resourceIds.map(function(resourceId) {
-    return calendar.getResourceById(resourceId)
+    return calendarApi.getResourceById(resourceId)
   })
 }
 

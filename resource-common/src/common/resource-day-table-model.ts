@@ -1,4 +1,4 @@
-import { Calendar, SlicedProps, EventDef, mapHash, Splitter, DayTableModel, DayTableCell, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/core'
+import { ReducerContext, SlicedProps, EventDef, mapHash, Splitter, DayTableModel, DayTableCell, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/core'
 import { Resource } from '../structs/resource'
 import { __assign } from 'tslib'
 import { ResourceApi } from '../api/ResourceApi'
@@ -18,7 +18,7 @@ export abstract class AbstractResourceDayTableModel {
   constructor(
     public dayTableModel: DayTableModel,
     public resources: Resource[],
-    private calendar: Calendar
+    private context: ReducerContext
   ) {
     this.resourceIndex = new ResourceIndex(resources)
 
@@ -49,7 +49,7 @@ export abstract class AbstractResourceDayTableModel {
 
         for (let resourceCol = 0; resourceCol < resources.length; resourceCol++) {
           let resource = resources[resourceCol]
-          let extraHookProps = { resource: new ResourceApi(this.calendar, resource) }
+          let extraHookProps = { resource: new ResourceApi(this.context, resource) }
           let extraDataAttrs = { 'data-resource-id': resource.id }
           let extraClassNames = [ 'fc-resource' ]
           let date = dayTableModel.cells[row][dateCol].date

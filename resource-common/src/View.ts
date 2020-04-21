@@ -151,8 +151,8 @@ function injectResourceEventUi(origEventUi: EventUi, eventDef: EventDef, resourc
 export function transformIsDraggable(val: boolean, eventDef: EventDef, eventUi: EventUi, context: ReducerContext) {
 
   if (!val) {
-    let  { calendar } = context
-    let viewSpec = calendar.state.viewSpecs[calendar.state.viewType] // yuck
+    let state = context.getCurrentState()
+    let viewSpec = state.viewSpecs[state.viewType]
 
     if (viewSpec.optionDefaults.needsResourceData) {
       if (computeResourceEditable(eventDef, context)) {

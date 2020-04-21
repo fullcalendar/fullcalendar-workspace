@@ -19,7 +19,7 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
 
   render(props: ResourceTimelineLaneProps, state: {}, context: ComponentContext) {
     let hookPropOrigin = { resource: props.resource }
-    let hookProps = { resource: new ResourceApi(context.calendar, props.resource) }
+    let hookProps = { resource: new ResourceApi(context, props.resource) }
     let customClassNames = this.buildClassNames(hookProps, context, null, hookPropOrigin)
 
     return (
@@ -79,7 +79,7 @@ interface ResourceTimelineLaneMiscProps {
 class ResourceTimelineLaneMisc extends BaseComponent<ResourceTimelineLaneMiscProps> {
 
   render(props: ResourceTimelineLaneMiscProps, state: {}, context: ComponentContext) {
-    let hookProps = { resource: new ResourceApi(context.calendar, props.resource) }
+    let hookProps = { resource: new ResourceApi(context, props.resource) }
 
     return (
       <ContentHook name='resourceLane' hookProps={hookProps}>
