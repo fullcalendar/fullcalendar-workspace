@@ -1,5 +1,5 @@
 import {
-  h, ViewProps, ComponentContext, memoize, ChunkContentCallbackArgs, createRef, ViewRoot, DateComponent, ScrollGridSectionConfig, renderScrollShim, getStickyHeaderDates, getStickyFooterScrollbar
+  h, ViewProps, memoize, ChunkContentCallbackArgs, createRef, ViewRoot, DateComponent, ScrollGridSectionConfig, renderScrollShim, getStickyHeaderDates, getStickyFooterScrollbar
 } from '@fullcalendar/core'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
 import { TimelineHeader } from './TimelineHeader'
@@ -20,7 +20,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
   private scrollGridRef = createRef<ScrollGrid>()
 
 
-  render(props: ViewProps, state: TimelineViewState, context: ComponentContext) {
+  render() {
+    let { props, state, context } = this
     let { options } = context
     let stickyHeaderDates = getStickyHeaderDates(options)
     let stickyFooterScrollbar = getStickyFooterScrollbar(options)

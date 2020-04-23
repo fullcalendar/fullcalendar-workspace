@@ -17,7 +17,8 @@ export interface TimelineLaneBgProps {
 export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
 
 
-  render(props: TimelineLaneBgProps) {
+  render() {
+    let { props } = this
     let highlightSeg = [].concat(props.eventResizeSegs, props.dateSelectionSegs)
 
     return props.timelineCoords && (

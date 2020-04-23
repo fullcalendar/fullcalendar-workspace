@@ -3,7 +3,6 @@ import {
   BaseComponent,
   isArraysEqual,
   findElements,
-  ComponentContext,
   mapHash,
   RefMap,
   ColProps, ChunkConfig, CssDimValue, hasShrinkWidth, renderMicroColGroup,
@@ -75,7 +74,8 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
   }
 
 
-  render(props: ScrollGridProps, state: ScrollGridState, context: ComponentContext) {
+  render() {
+    let { props, state, context } = this
     let { shrinkWidths } = state
 
     let colGroupStats = this.compileColGroupStats(props.colGroups.map((colGroup) => [ colGroup ]))

@@ -14,8 +14,8 @@ export interface TimelineHeaderRowsProps {
 
 export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
 
-  render(props: TimelineHeaderRowsProps, state: {}, context: ComponentContext) {
-    let { dateProfile, tDateProfile, rowInnerHeights } = props
+  render() {
+    let { dateProfile, tDateProfile, rowInnerHeights, todayRange, nowDate } = this.props
     let { cellRows } = tDateProfile
 
     return (
@@ -32,8 +32,8 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
                   cell={cell}
                   dateProfile={dateProfile}
                   tDateProfile={tDateProfile}
-                  todayRange={props.todayRange}
-                  nowDate={props.nowDate}
+                  todayRange={todayRange}
+                  nowDate={nowDate}
                   rowInnerHeight={rowInnerHeights && rowInnerHeights[i]}
                   isSticky={!isLast}
                 />
@@ -63,7 +63,8 @@ class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
   buildClassNames = buildHookClassNameGenerator('slotLabel')
 
 
-  render(props: TimelineHeaderThProps, state: {}, context: ComponentContext) {
+  render() {
+    let { props, context } = this
     let { dateEnv, options } = context
     let { cell, dateProfile, tDateProfile } = props
 
@@ -127,8 +128,9 @@ interface TimelineHeaderThInnerProps extends HookPropOrigin {
 
 class TimelineHeaderThInner extends BaseComponent<TimelineHeaderThInnerProps> {
 
-  render(props: TimelineHeaderThInnerProps, state: {}, context: ComponentContext) {
-    let hookProps = massageHookProps(props, context)
+  render() {
+    let { props } = this
+    let hookProps = massageHookProps(props, this.context)
 
     return (
       <ContentHook name='slotLabel' hookProps={hookProps} defaultContent={renderInnerContent}>

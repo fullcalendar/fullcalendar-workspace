@@ -45,8 +45,9 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
   }
 
 
-  render(props: ResourceTimelineViewLayoutProps, state: ResourceTimelineViewLayoutState, context: ComponentContext) {
-    let { theme, options } = context
+  render() {
+    let { props, state, context } = this
+    let { options } = context
     let stickyHeaderDates = getStickyHeaderDates(options)
     let stickyFooterScrollbar = getStickyFooterScrollbar(options)
 
@@ -65,7 +66,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
             <td
               ref={this.spreadsheetResizerElRef}
               rowSpan={stickyFooterScrollbar ? 3 : 2}
-              className={'fc-resource-timeline-divider fc-divider ' + theme.getClass('tableCellShaded')}
+              className={'fc-resource-timeline-divider fc-divider ' + context.theme.getClass('tableCellShaded')}
             />
           ) },
           {

@@ -59,14 +59,15 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   }
 
 
-  render(props: ResourceViewProps, state: ResourceTimelineViewState, context: ComponentContext) {
+  render() {
+    let { props, state, context } = this
     let { options, viewSpec } = context
     let { superHeaderRendering, groupSpecs, orderSpecs, isVGrouping, colSpecs } = this.processColOptions(context.options)
 
     let tDateProfile = this.buildTimelineDateProfile(
       props.dateProfile,
       context.dateEnv,
-      context.options,
+      options,
       context.dateProfileGenerator
     )
 
@@ -76,7 +77,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       orderSpecs,
       isVGrouping,
       props.resourceEntityExpansions,
-      context.options.resourcesInitiallyExpanded
+      options.resourcesInitiallyExpanded
     )
 
     let extraClassNames = [
@@ -86,7 +87,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       options.eventOverlap === false ? 'fc-timeline-overlap-disabled' : 'fc-timeline-overlap-enabled'
     ]
 
-    let { slotMinWidth } = context.options
+    let { slotMinWidth } = options
     let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
 
     return (

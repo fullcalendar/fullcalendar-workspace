@@ -1,6 +1,5 @@
 import {
-  h, BaseComponent, multiplyDuration,
-  ComponentContext, RefMap, CssDimValue, VNode, createRef, ScrollResponder, ScrollRequest, DateMarker, DateRange, DateProfile
+  h, BaseComponent, multiplyDuration, RefMap, CssDimValue, VNode, createRef, ScrollResponder, ScrollRequest, DateMarker, DateRange, DateProfile
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { TimelineSlatCell } from './TimelineSlatCell'
@@ -31,13 +30,13 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
   private scrollResponder: ScrollResponder
 
 
-  render(props: TimelineSlatsProps, state: {}, context: ComponentContext) {
-    let { theme } = context
+  render() {
+    let { props, context } = this
 
     return (
       <div className='fc-timeline-slots' ref={this.rootElRef}>
         <table
-          className={theme.getClass('table')}
+          className={context.theme.getClass('table')}
           style={{
             minWidth: props.tableMinWidth,
             width: props.clientWidth
@@ -159,7 +158,8 @@ interface TimelineSlatsBodyProps extends TimelineSlatsContentProps {
 class TimelineSlatsBody extends BaseComponent<TimelineSlatsBodyProps> {
 
 
-  render(props: TimelineSlatsBodyProps) {
+  render() {
+    let { props } = this
     let { tDateProfile, cellElRefs } = props
     let { slotDates, isWeekStarts } = tDateProfile
     let isDay = !tDateProfile.isTimeScale && !tDateProfile.largeUnit

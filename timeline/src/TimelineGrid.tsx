@@ -1,4 +1,4 @@
-import { h, ComponentContext, createRef, ViewProps, Hit, DateComponent, CssDimValue, VNode, DateMarker, NowTimer, greatestDurationDenominator, DateRange, NowIndicatorRoot } from '@fullcalendar/core'
+import { h, createRef, ViewProps, Hit, DateComponent, CssDimValue, VNode, DateMarker, NowTimer, greatestDurationDenominator, DateRange, NowIndicatorRoot } from '@fullcalendar/core'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineSlats } from './TimelineSlats'
 import { TimelineLane } from './TimelineLane'
@@ -25,7 +25,8 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
   private slatsRef = createRef<TimelineSlats>()
 
 
-  render(props: TimelinGridProps, state: TimelineGridState, context: ComponentContext) {
+  render() {
+    let { props, state, context } = this
     let { options, computedOptions } = context
     let { dateProfile, tDateProfile } = props
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit

@@ -1,6 +1,6 @@
 import {
   h, createRef, VNode,
-  mapHash, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, ComponentContext, memoize, DateRange, DateMarker, Hit, CssDimValue, NowTimer, Duration, DateProfile
+  mapHash, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, memoize, DateRange, DateMarker, Hit, CssDimValue, NowTimer, Duration, DateProfile
 } from '@fullcalendar/core'
 import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg, TimeSlatMeta } from '@fullcalendar/timegrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
@@ -41,7 +41,8 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
   private timeColsRef = createRef<TimeCols>()
 
 
-  render(props: ResourceDayTimeColsProps, state: {}, context: ComponentContext) {
+  render() {
+    let { props, context } = this
     let { dateEnv, options } = context
     let { dateProfile, resourceDayTableModel } = props
 

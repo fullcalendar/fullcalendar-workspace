@@ -17,7 +17,8 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
   innerInnerRef: RefObject<HTMLDivElement> = createRef<HTMLDivElement>()
 
 
-  render(props: SpreadsheetGroupRowProps, state: {}, context: ComponentContext) {
+  render() {
+    let { props, context } = this
     let hookProps = {
       groupValue: props.group.value
     }

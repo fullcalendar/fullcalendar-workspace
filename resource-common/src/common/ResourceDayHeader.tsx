@@ -1,6 +1,6 @@
 import {
   VNode, h, TableDowCell,
-  memoize, BaseComponent, DateMarker, createFormatter, DateFormatter, computeFallbackHeaderFormat, ComponentContext, TableDateCell, Fragment, DateRange, NowTimer, Ref, ComponentChildren, DateProfile
+  memoize, BaseComponent, DateMarker, createFormatter, DateFormatter, computeFallbackHeaderFormat, TableDateCell, Fragment, DateRange, NowTimer, Ref, ComponentChildren, DateProfile
 } from '@fullcalendar/core'
 import { Resource } from '../structs/resource'
 import { ResourceLabelRoot } from './ResourceLabelRoot'
@@ -20,11 +20,11 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
   private buildDateFormat = memoize(buildDateFormat)
 
 
-  render(props: ResourceDayHeaderProps, state: {}, context: ComponentContext) {
-    let { options } = context
+  render() {
+    let { props, context } = this
 
     let dateFormat = this.buildDateFormat(
-      options.dayHeaderFormat,
+      context.options.dayHeaderFormat,
       props.datesRepDistinctDays,
       props.dates.length
     )
@@ -34,7 +34,7 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
         if (props.dates.length === 1) {
           return this.renderResourceRow(props.resources, props.dates[0])
         } else {
-          if (options.datesAboveResources) {
+          if (context.options.datesAboveResources) {
             return this.renderDayAndResourceRows(props.dates, dateFormat, todayRange, props.resources)
           } else {
             return this.renderResourceAndDayRows(props.resources, props.dates, dateFormat, todayRange)
@@ -189,7 +189,9 @@ interface ResourceCellProps {
 
 class ResourceCell extends BaseComponent<ResourceCellProps> {
 
-  render(props: ResourceCellProps) {
+  render() {
+    let { props } = this
+
     return (
       <ResourceLabelRoot resource={props.resource} date={props.date}>
         {(elRef: Ref<HTMLTableCellElement>, customClassNames: string[], dataAttrs, innerElRef, innerContent: ComponentChildren) => (

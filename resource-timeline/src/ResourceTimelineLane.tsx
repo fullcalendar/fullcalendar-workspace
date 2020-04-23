@@ -1,4 +1,4 @@
-import { h, Ref, BaseComponent, CssDimValue, ComponentContext, setRef, buildHookClassNameGenerator, ContentHook, MountHook } from '@fullcalendar/core'
+import { h, Ref, BaseComponent, CssDimValue, setRef, buildHookClassNameGenerator, ContentHook, MountHook } from '@fullcalendar/core'
 import { Resource, ResourceApi } from '@fullcalendar/resource-common'
 import { TimelineLane, TimelineLaneCoreProps } from '@fullcalendar/timeline'
 
@@ -17,7 +17,8 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
   rootEl: HTMLTableRowElement
 
 
-  render(props: ResourceTimelineLaneProps, state: {}, context: ComponentContext) {
+  render() {
+    let { props, context } = this
     let hookPropOrigin = { resource: props.resource }
     let hookProps = { resource: new ResourceApi(context, props.resource) }
     let customClassNames = this.buildClassNames(hookProps, context, null, hookPropOrigin)
@@ -78,7 +79,8 @@ interface ResourceTimelineLaneMiscProps {
 
 class ResourceTimelineLaneMisc extends BaseComponent<ResourceTimelineLaneMiscProps> {
 
-  render(props: ResourceTimelineLaneMiscProps, state: {}, context: ComponentContext) {
+  render() {
+    let { props, context } = this
     let hookProps = { resource: new ResourceApi(context, props.resource) }
 
     return (

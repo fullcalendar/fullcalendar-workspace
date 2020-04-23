@@ -1,5 +1,5 @@
 import {
-  h, ComponentContext, PositionCache,
+  h, PositionCache,
   Duration, EventStore, DateSpan, EventUiHash, EventInteractionState, DateComponent, Hit, createRef, CssDimValue, VNode, memoize, NowTimer, greatestDurationDenominator, DateMarker, DateRange, NowIndicatorRoot, DateProfile
 } from '@fullcalendar/core'
 import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource-common'
@@ -46,7 +46,8 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
   private rowCoords: PositionCache // for queryHit
 
 
-  render(props: ResourceTimelineGridProps, state: ResourceTimelineGridState, context: ComponentContext) {
+  render() {
+    let { props, state, context } = this
     let { dateProfile, tDateProfile } = props
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
     let hasResourceBusinessHours = this.computeHasResourceBusinessHours(props.rowNodes)

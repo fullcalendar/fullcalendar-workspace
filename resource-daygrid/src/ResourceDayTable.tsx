@@ -1,6 +1,6 @@
 import {
   h, createRef, VNode,
-  mapHash, Hit, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, ComponentContext, Duration, RefObject, CssDimValue, DateProfile
+  mapHash, Hit, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, Duration, RefObject, CssDimValue, DateProfile
 } from '@fullcalendar/core'
 import { DayTableSlicer, Table, TableSeg } from '@fullcalendar/daygrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
@@ -38,7 +38,8 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
   private tableRef = createRef<Table>()
 
 
-  render(props: ResourceDayTableProps, state: {}, context: ComponentContext) {
+  render() {
+    let { props, context } = this
     let { resourceDayTableModel, nextDayThreshold, dateProfile } = props
 
     let splitProps = this.splitter.splitProps(props)

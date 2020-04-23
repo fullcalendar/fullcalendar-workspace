@@ -1,6 +1,5 @@
 import {
-  h, createRef,
-  ComponentContext, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs, ReducerContext
+  h, createRef, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs, ReducerContext
 } from '@fullcalendar/core'
 import { TableView, buildDayTableModel } from '@fullcalendar/daygrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
@@ -18,8 +17,10 @@ export class ResourceDayTableView extends TableView {
   private tableRef = createRef<ResourceDayTable>()
 
 
-  render(props: ResourceViewProps, state: {}, context: ComponentContext) {
+  render() {
+    let { props, context } = this
     let { options, computedOptions } = context
+
     let resourceOrderSpecs = this.parseResourceOrder(options.resourceOrder)
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
     let resourceDayTableModel = this.buildResourceDayTableModel(

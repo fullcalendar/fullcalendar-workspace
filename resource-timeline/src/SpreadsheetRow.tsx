@@ -18,7 +18,8 @@ export interface SpreadsheetRowProps {
 
 export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ComponentContext> {
 
-  render(props: SpreadsheetRowProps, state: {}, context: ComponentContext) {
+  render() {
+    let { props } = this
     let { resource, rowSpans, depth } = props
     let resourceFields = buildResourceFields(resource) // slightly inefficient. already done up the call stack
 
@@ -79,7 +80,8 @@ interface SpreadsheetGroupCellProps {
 
 class SpreadsheetGroupCell extends BaseComponent<SpreadsheetGroupCellProps> {
 
-  render(props: SpreadsheetGroupCellProps, state: {}, context: ComponentContext) {
+  render() {
+    let { props, context } = this
     let hookProps = {
       groupValue: props.fieldValue,
       view: context.viewApi
@@ -125,7 +127,9 @@ class SpreadsheetIndividualCell extends BaseComponent<SpreadsheetIndividualCellP
 
   buildClassNames = buildHookClassNameGenerator('cell')
 
-  render(props:SpreadsheetIndividualCellProps, state: {}, context: ComponentContext) {
+  render() {
+    let { props, context } = this
+
     let hookPropOrigin: HookPropOrigin = {
       resource: props.resource,
       fieldValue: props.fieldValue
@@ -178,7 +182,8 @@ interface SpreadsheetIndividualCellInnerProps extends HookPropOrigin {
 
 class SpreadsheetIndividualCellInner extends BaseComponent<SpreadsheetIndividualCellInnerProps> {
 
-  render(props: SpreadsheetIndividualCellInnerProps, state: {}, context: ComponentContext) {
+  render() {
+    let { props, context } = this
     let hookProps = massageHookProps(props, context)
 
     return (

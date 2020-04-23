@@ -14,7 +14,8 @@ parallels the SpreadsheetGroupRow
 */
 export class DividerRow extends BaseComponent<DividerRowProps> {
 
-  render(props: DividerRowProps) {
+  render() {
+    let { props } = this
     let hookProps = { groupValue: props.groupValue }
 
     return (

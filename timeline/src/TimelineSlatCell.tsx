@@ -1,6 +1,5 @@
 import {
-  h, isInt, BaseComponent,
-  ComponentContext, DateMarker, Ref, DateRange, getDateMeta, getSlotClassNames, RenderHook, getDayClassNames
+  h, isInt, BaseComponent, DateMarker, Ref, DateRange, getDateMeta, getSlotClassNames, RenderHook, getDayClassNames
 } from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -18,7 +17,8 @@ export interface TimelineSlatCellProps {
 
 export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
 
-  render(props: TimelineSlatCellProps, state: {}, context: ComponentContext) {
+  render() {
+    let { props, context } = this
     let { dateEnv } = context
     let { date, tDateProfile, isEm } = props
     let dateMeta = getDateMeta(props.date, props.todayRange, props.nowDate)

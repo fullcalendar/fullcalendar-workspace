@@ -1,5 +1,5 @@
 import {
-  h, ComponentContext, PositionCache,
+  h, PositionCache,
   SplittableProps, EventStore, createRef, BaseComponent, CssDimValue, RefMap,
   DateMarker,
   DateRange,
@@ -38,7 +38,9 @@ export class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesPr
   private rowElRefs = new RefMap<HTMLElement>()
 
 
-  render(props: ResourceTimelineLanesProps, state: {}, context: ComponentContext) {
+  render() {
+    let { props, context } = this
+
     return (
       <table
         ref={this.rootElRef}
@@ -115,7 +117,8 @@ interface ResourceTimelineLanesBodyProps extends ResourceTimelineLanesContentPro
 class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyProps> { // TODO: this technique more
 
 
-  render(props: ResourceTimelineLanesBodyProps, state: {}, context: ComponentContext) {
+  render() {
+    let { props, context } = this
     let { rowElRefs, innerHeights } = props
 
     return (

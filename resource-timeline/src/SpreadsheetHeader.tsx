@@ -1,6 +1,6 @@
 import {
   VNode, h, Fragment,
-  BaseComponent, ElementDragging, elementClosest, PointerDragEvent, RefMap, findElements, RenderHook, ComponentContext,
+  BaseComponent, ElementDragging, elementClosest, PointerDragEvent, RefMap, findElements, RenderHook,
 } from '@fullcalendar/core'
 import { ColSpec } from '@fullcalendar/resource-common'
 
@@ -21,11 +21,12 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
   private colDraggings: { [index: string]: ElementDragging } = {}
 
 
-  render(props: SpreadsheetHeaderProps, context: ComponentContext) {
-    let { colSpecs, superHeaderRendering } = props
-    let hookProps = { view: context.viewApi }
+  render() {
+    let { colSpecs, superHeaderRendering, rowInnerHeights } = this.props
+    let hookProps = { view: this.context.viewApi }
     let rowNodes: VNode[] = []
-    let rowInnerHeights = props.rowInnerHeights.slice() // copy, because we're gonna pop
+
+    rowInnerHeights = rowInnerHeights.slice() // copy, because we're gonna pop
 
     if (superHeaderRendering) {
       let rowInnerHeight = rowInnerHeights.shift()

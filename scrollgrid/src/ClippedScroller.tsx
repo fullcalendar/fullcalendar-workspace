@@ -1,5 +1,5 @@
 import {
-  h, ComponentChildren, createRef, Ref, BaseComponent, setRef, ComponentContext,
+  h, ComponentChildren, createRef, Ref, BaseComponent, setRef,
   ScrollerLike,
   Scroller, OverflowValue,
   getScrollbarWidths,
@@ -37,7 +37,8 @@ export class ClippedScroller extends BaseComponent<ClippedScrollerProps, Clipped
   }
 
 
-  render(props: ClippedScrollerProps, state: ClippedScrollerState, context: ComponentContext) {
+  render() {
+    let { props, state, context } = this
     let isScrollbarOnLeft = context.isRtl && getIsRtlScrollbarOnLeft()
     let overcomeLeft = 0
     let overcomeRight = 0

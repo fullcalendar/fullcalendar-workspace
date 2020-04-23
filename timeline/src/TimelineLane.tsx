@@ -1,5 +1,5 @@
 import {
-  Duration, EventStore, EventUiHash, DateSpan, EventInteractionState, ComponentContext,
+  Duration, EventStore, EventUiHash, DateSpan, EventInteractionState,
   BaseComponent, h, memoize, Fragment, RefMap, mapHash, createRef, getSegMeta, DateMarker, DateRange, DateProfile
 } from '@fullcalendar/core'
 import {TimelineDateProfile } from './timeline-date-profile'
@@ -44,7 +44,8 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
   private innerElRef = createRef<HTMLDivElement>()
 
 
-  render(props: TimelineLaneProps, state: TimelineLaneState, context: ComponentContext) {
+  render() {
+    let { props, state, context } = this
     let { dateProfile, tDateProfile } = props
 
     let slicedProps = this.slicer.sliceProps(
