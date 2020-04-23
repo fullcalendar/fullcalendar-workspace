@@ -92,7 +92,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
     return (
       <ViewRoot viewSpec={viewSpec}>
         {(rootElRef, classNames) => (
-          <div ref={rootElRef} class={extraClassNames.concat(classNames).join(' ')}>
+          <div ref={rootElRef} className={extraClassNames.concat(classNames).join(' ')}>
             <ResourceTimelineViewLayout
               ref={this.layoutRef}
               forPrint={props.forPrint}

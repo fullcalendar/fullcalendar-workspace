@@ -65,7 +65,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
     )
 
     return (
-      <div ref={this.handleEl} class='fc-timeline-body' style={{
+      <div ref={this.handleEl} className='fc-timeline-body' style={{
         minWidth: props.tableMinWidth
       }}>
         <NowTimer unit={timerUnit} content={(nowDate: DateMarker, todayRange: DateRange) => [
@@ -111,7 +111,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
               {(rootElRef, classNames, innerElRef, innerContent) => (
                 <div
                   ref={rootElRef}
-                  class={[ 'fc-timeline-now-indicator-line' ].concat(classNames).join(' ')}
+                  className={[ 'fc-timeline-now-indicator-line' ].concat(classNames).join(' ')}
                   style={{ left: state.slatCoords.dateToCoord(nowDate) }}
                 >{innerContent}</div>
               )}

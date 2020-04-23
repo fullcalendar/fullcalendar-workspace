@@ -27,7 +27,7 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
         <MountHook name='resourceLane' hookProps={hookProps}>
           {(rootElRef) => (
             <td ref={rootElRef} className={[ 'fc-timeline-lane', 'fc-resource' ].concat(customClassNames).join(' ')} data-resource-id={props.resource.id}>
-              <div class='fc-timeline-lane-frame' style={{ height: props.innerHeight }}>
+              <div className='fc-timeline-lane-frame' style={{ height: props.innerHeight }}>
                 <ResourceTimelineLaneMisc resource={props.resource} />
                 <TimelineLane
                   dateProfile={props.dateProfile}
@@ -85,7 +85,7 @@ class ResourceTimelineLaneMisc extends BaseComponent<ResourceTimelineLaneMiscPro
       <ContentHook name='resourceLane' hookProps={hookProps}>
         {(innerElRef, innerContent) => (
           innerContent && // TODO: test how this would interfere with height
-            <div class='fc-timeline-lane-misc' ref={innerElRef}>{innerContent}</div>
+            <div className='fc-timeline-lane-misc' ref={innerElRef}>{innerContent}</div>
         )}
       </ContentHook>
     )

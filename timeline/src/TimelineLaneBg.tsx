@@ -21,7 +21,7 @@ export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
     let highlightSeg = [].concat(props.eventResizeSegs, props.dateSelectionSegs)
 
     return props.timelineCoords && (
-      <div class='fc-timeline-bg'>
+      <div className='fc-timeline-bg'>
         {/* Fragments contain the keys */}
         <Fragment>{this.renderSegs(props.businessHourSegs || [], props.timelineCoords, 'non-business')}</Fragment>
         <Fragment>{this.renderSegs(props.bgEventSegs || [], props.timelineCoords, 'bg-event')}</Fragment>
@@ -43,7 +43,7 @@ export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
       let key = eventRange.instance ? eventRange.instance.instanceId : eventRange.def.defId
 
       return (
-        <div class='fc-timeline-bg-harness' style={{
+        <div className='fc-timeline-bg-harness' style={{
           left: coords.left,
           right: -coords.right // outwards from right edge (which is same as left edge)
         }}>

@@ -93,7 +93,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
 
     return (
       <Fragment>
-        <table class={classNames.join(' ')} style={{ display: props.forPrint ? 'none' : '' }}>
+        <table className={classNames.join(' ')} style={{ display: props.forPrint ? 'none' : '' }}>
           <colgroup>
             {colGroupStats.map((colGroupStat, i) => renderMacroCol(colGroupStat, shrinkWidths[i]))}
           </colgroup>
@@ -122,7 +122,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     }
 
     return (
-      <tr key={sectionConfig.key} class={getSectionClassNames(sectionConfig, this.props.liquid).join(' ')}>
+      <tr key={sectionConfig.key} className={getSectionClassNames(sectionConfig, this.props.liquid).join(' ')}>
         {sectionConfig.chunks.map((chunkConfig, i) => {
           return this.renderChunk(
             sectionConfig,
@@ -546,7 +546,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
 
   fillPrintContainer() {
     render( // TODO: change CSS to be layout:normal
-      <table ref={this.handlePrintTableEl} class='fc-scrollgrid'>
+      <table ref={this.handlePrintTableEl} className='fc-scrollgrid'>
         <colgroup>{renderPrintCols(this.props.colGroups)}</colgroup>
       </table>,
       this.printContainerRef.current

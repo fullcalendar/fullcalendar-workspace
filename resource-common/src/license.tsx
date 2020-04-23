@@ -27,7 +27,7 @@ export function buildLicenseWarning(context: ReducerContext) {
 
   if (!isImmuneUrl(window.location.href) && !isValidKey(key)) {
     return (
-      <div class='fc-license-message' style={CSS}>
+      <div className='fc-license-message' style={CSS}>
         Please use a valid license key. <a href={LICENSE_INFO_URL}>More Info</a>
       </div>
     )

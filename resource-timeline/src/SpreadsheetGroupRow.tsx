@@ -27,9 +27,9 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
         {/* 'header' is a bad name. should be 'label' instead. needed to do this because of GroupSpec */}
         <RenderHook name='header' options={props.group.spec} hookProps={hookProps} defaultContent={renderCellInner}>
           {(rootElRef, classNames, innerElRef, innerContent) => (
-            <td class={[ 'fc-datagrid-cell', 'fc-resource-group', context.theme.getClass('tableCellShaded') ].concat(classNames).join(' ')} colSpan={props.spreadsheetColCnt} ref={rootElRef}>
-              <div class='fc-datagrid-cell-frame' style={{ height: props.innerHeight }}>
-                <div class='fc-datagrid-cell-cushion fc-scrollgrid-sync-inner' ref={this.innerInnerRef}>
+            <td className={[ 'fc-datagrid-cell', 'fc-resource-group', context.theme.getClass('tableCellShaded') ].concat(classNames).join(' ')} colSpan={props.spreadsheetColCnt} ref={rootElRef}>
+              <div className='fc-datagrid-cell-frame' style={{ height: props.innerHeight }}>
+                <div className='fc-datagrid-cell-cushion fc-scrollgrid-sync-inner' ref={this.innerInnerRef}>
                   <ExpanderIcon
                     depth={0}
                     hasChildren={true}

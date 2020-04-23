@@ -60,7 +60,7 @@ export class ClippedScroller extends BaseComponent<ClippedScrollerProps, Clipped
     return (
       <div
         ref={this.elRef}
-        class={'fc-scroller-harness' + (props.liquid ? ' fc-scroller-harness-liquid' : '')}
+        className={'fc-scroller-harness' + (props.liquid ? ' fc-scroller-harness-liquid' : '')}
       >
         <Scroller
           ref={this.handleScroller}

@@ -10,7 +10,7 @@ export function ExpanderIcon({ depth, hasChildren, isExpanded, onExpanderClick }
 
   for (let i = 0; i < depth; i++) {
     nodes.push(
-      <span class='fc-icon'></span>
+      <span className='fc-icon'></span>
     )
   }
 
@@ -25,10 +25,10 @@ export function ExpanderIcon({ depth, hasChildren, isExpanded, onExpanderClick }
 
   nodes.push(
     <span
-      class={'fc-datagrid-expander' + (hasChildren ? '' : ' fc-datagrid-expander-placeholder')}
+      className={'fc-datagrid-expander' + (hasChildren ? '' : ' fc-datagrid-expander-placeholder')}
       onClick={onExpanderClick}
     >
-      <span class={iconClassNames.join(' ')}></span>
+      <span className={iconClassNames.join(' ')}></span>
     </span>
   )
 

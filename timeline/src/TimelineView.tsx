@@ -90,7 +90,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
     return (
       <ViewRoot viewSpec={context.viewSpec}>
         {(rootElRef, classNames) => (
-          <div ref={rootElRef} class={extraClassNames.concat(classNames).join(' ')}>
+          <div ref={rootElRef} className={extraClassNames.concat(classNames).join(' ')}>
             <ScrollGrid
               ref={this.scrollGridRef}
               forPrint={props.forPrint}

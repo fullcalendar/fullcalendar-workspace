@@ -65,7 +65,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
             <td
               ref={this.spreadsheetResizerElRef}
               rowSpan={stickyFooterScrollbar ? 3 : 2}
-              class={'fc-resource-timeline-divider fc-divider ' + theme.getClass('tableCellShaded')}
+              className={'fc-resource-timeline-divider fc-divider ' + theme.getClass('tableCellShaded')}
             />
           ) },
           {

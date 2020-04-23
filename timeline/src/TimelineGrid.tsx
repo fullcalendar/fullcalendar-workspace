@@ -31,7 +31,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
 
     return (
-      <div class='fc-timeline-body' ref={this.handeEl} style={{
+      <div className='fc-timeline-body' ref={this.handeEl} style={{
         minWidth: props.tableMinWidth,
         height: props.clientHeight,
         width: props.clientWidth

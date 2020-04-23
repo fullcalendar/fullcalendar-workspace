@@ -30,7 +30,7 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
 
     return (
       <NowTimer unit={timerUnit} content={(nowDate: DateMarker, todayRange: DateRange) => (
-        <div class='fc-timeline-header' ref={this.rootElRef}>
+        <div className='fc-timeline-header' ref={this.rootElRef}>
           <table
             className='fc-scrollgrid-sync-table'
             style={{ minWidth: props.tableMinWidth, width: props.clientWidth }}

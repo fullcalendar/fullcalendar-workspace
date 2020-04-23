@@ -200,7 +200,7 @@ class ResourceCell extends BaseComponent<ResourceCellProps> {
             {...dataAttrs}
           >
             <span
-              class={[
+              className={[
                 'fc-col-header-cell-cushion',
                 props.isSticky ? 'fc-sticky' : ''
               ].join(' ')}

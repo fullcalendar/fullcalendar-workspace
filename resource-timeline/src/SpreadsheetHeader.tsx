@@ -34,8 +34,8 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
           <RenderHook name='header' hookProps={hookProps} options={superHeaderRendering}>
             {(rootElRef, classNames, innerElRef, innerContent) => (
               <th colSpan={colSpecs.length} className={[ 'fc-datagrid-cell', 'fc-datagrid-cell-super' ].concat(classNames).join(' ')} ref={rootElRef}>
-                <div class='fc-datagrid-cell-frame' style={{ height: rowInnerHeight }}>
-                  <div class='fc-datagrid-cell-cushion fc-scrollgrid-sync-inner' ref={innerElRef}>
+                <div className='fc-datagrid-cell-frame' style={{ height: rowInnerHeight }}>
+                  <div className='fc-datagrid-cell-cushion fc-scrollgrid-sync-inner' ref={innerElRef}>
                     {innerContent}
                   </div>
                 </div>
@@ -57,11 +57,11 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
             <RenderHook name='header' hookProps={hookProps} options={colSpec}>
               {(rootElRef, classNames, innerElRef, innerContent) => (
                 <th ref={rootElRef} className={[ 'fc-datagrid-cell' ].concat(classNames).join(' ')}>
-                  <div class='fc-datagrid-cell-frame' style={{ height: rowInnerHeight }}>
-                    <div class='fc-datagrid-cell-cushion fc-scrollgrid-sync-inner'>
+                  <div className='fc-datagrid-cell-frame' style={{ height: rowInnerHeight }}>
+                    <div className='fc-datagrid-cell-cushion fc-scrollgrid-sync-inner'>
                       {colSpec.isMain &&
-                        <span class='fc-datagrid-expander fc-datagrid-expander-placeholder'>
-                          <span class='fc-icon'></span>
+                        <span className='fc-datagrid-expander fc-datagrid-expander-placeholder'>
+                          <span className='fc-icon'></span>
                         </span>
                       }
                       <span className='fc-datagrid-cell-main' ref={innerElRef}>
@@ -69,7 +69,7 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
                       </span>
                     </div>
                     {!isLastCol &&
-                      <div class='fc-datagrid-cell-resizer' ref={this.resizerElRefs.createRef(i)}></div>
+                      <div className='fc-datagrid-cell-resizer' ref={this.resizerElRefs.createRef(i)}></div>
                     }
                   </div>
                 </th>

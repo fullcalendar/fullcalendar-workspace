@@ -83,7 +83,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           todayRange={props.todayRange}
         />
         <div
-          class='fc-timeline-events fc-scrollgrid-sync-inner'
+          className='fc-timeline-events fc-scrollgrid-sync-inner'
           ref={this.innerElRef}
           style={{ height /* computed by computeSegVerticals */ }}
         >
@@ -173,7 +173,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
               <div
                 key={instanceId}
                 ref={isMirror ? null : harnessElRefs.createRef(instanceId)}
-                class='fc-timeline-event-harness'
+                className='fc-timeline-event-harness'
                 style={{
                   left: horizontalCoords ? horizontalCoords.left : '',
                   right: horizontalCoords ? -horizontalCoords.right : '', // outwards from right edge (which is same as left edge)

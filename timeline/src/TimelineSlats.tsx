@@ -35,9 +35,9 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     let { theme } = context
 
     return (
-      <div class='fc-timeline-slots' ref={this.rootElRef}>
+      <div className='fc-timeline-slots' ref={this.rootElRef}>
         <table
-          class={theme.getClass('table')}
+          className={theme.getClass('table')}
           style={{
             minWidth: props.tableMinWidth,
             width: props.clientWidth

@@ -34,10 +34,10 @@ export class TimelineEvent extends BaseComponent<TimelineEventProps> {
 function renderInnerContent(innerProps: EventMeta) {
   return [
     innerProps.timeText &&
-      <div class='fc-event-time'>{innerProps.timeText}</div>
+      <div className='fc-event-time'>{innerProps.timeText}</div>
     ,
-    <div class='fc-event-title'>
-      <div class='fc-timeline-event-title-cushion fc-sticky'>
+    <div className='fc-event-title'>
+      <div className='fc-timeline-event-title-cushion fc-sticky'>
         {innerProps.event.title || <Fragment>&nbsp;</Fragment>}
       </div>
     </div>
