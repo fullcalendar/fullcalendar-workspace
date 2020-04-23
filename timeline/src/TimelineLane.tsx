@@ -11,7 +11,7 @@ import { computeSegHorizontals, computeSegVerticals, TimelineSegDims } from './e
 
 
 export interface TimelineLaneProps extends TimelineLaneCoreProps {
-  onHeightChange?: (isStable: boolean) => void
+  onHeightChange?: (innerEl: HTMLElement, isStable: boolean) => void
 }
 
 export interface TimelineLaneCoreProps {
@@ -136,7 +136,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
     let { timelineCoords } = this.props
 
     if (this.props.onHeightChange) {
-      this.props.onHeightChange(false)
+      this.props.onHeightChange(this.innerElRef.current, false)
     }
 
     if (timelineCoords) {
@@ -154,7 +154,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         })
       }, () => {
         if (this.props.onHeightChange) {
-          this.props.onHeightChange(true)
+          this.props.onHeightChange(this.innerElRef.current, true)
         }
       })
     }

@@ -1,4 +1,4 @@
-import { h, Ref, BaseComponent, CssDimValue, setRef, buildHookClassNameGenerator, ContentHook, MountHook } from '@fullcalendar/core'
+import { h, Ref, BaseComponent, CssDimValue, buildHookClassNameGenerator, ContentHook, MountHook, elementClosest } from '@fullcalendar/core'
 import { Resource, ResourceApi } from '@fullcalendar/resource-common'
 import { TimelineLane, TimelineLaneCoreProps } from '@fullcalendar/timeline'
 
@@ -14,7 +14,6 @@ export interface ResourceTimelineLaneProps extends TimelineLaneCoreProps {
 export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProps> {
 
   buildClassNames = buildHookClassNameGenerator('resourceLane')
-  rootEl: HTMLTableRowElement
 
 
   render() {
@@ -24,7 +23,7 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
     let customClassNames = this.buildClassNames(hookProps, context, null, hookPropOrigin)
 
     return (
-      <tr ref={this.handleRootEl}>
+      <tr ref={props.elRef}>
         <MountHook name='resourceLane' hookProps={hookProps}>
           {(rootElRef) => (
             <td ref={rootElRef} className={[ 'fc-timeline-lane', 'fc-resource' ].concat(customClassNames).join(' ')} data-resource-id={props.resource.id}>
@@ -55,18 +54,12 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
   }
 
 
-  handleRootEl = (el: HTMLTableRowElement) => {
-    this.rootEl = el
-
-    if (this.props.elRef) {
-      setRef(this.props.elRef, el)
-    }
-  }
-
-
-  handleHeightChange = (isStable: boolean) => {
+  handleHeightChange = (innerEl: HTMLElement, isStable: boolean) => {
     if (this.props.onHeightChange) {
-      this.props.onHeightChange(this.rootEl, isStable)
+      this.props.onHeightChange(
+        elementClosest(innerEl, 'tr') as HTMLTableRowElement, // would want to use own <tr> ref, but not guaranteed to be ready when this fires
+        isStable
+      )
     }
   }
 
