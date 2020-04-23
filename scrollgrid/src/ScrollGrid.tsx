@@ -93,7 +93,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
 
     return (
       <Fragment>
-        <table className={classNames.join(' ')} style={{ display: props.forPrint ? 'none' : '' }}>
+        <table ref={props.elRef} className={classNames.join(' ')} style={{ display: props.forPrint ? 'none' : '' }}>
           <colgroup>
             {colGroupStats.map((colGroupStat, i) => renderMacroCol(colGroupStat, shrinkWidths[i]))}
           </colgroup>
@@ -257,15 +257,17 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
       this.anyRowHeightsChanged = true
     }
 
+    let otherState: Partial<ScrollGridState> = {}
+
+    // if reacting to self-change of sectionRowMaxHeightsChanged, or not stable, don't do anything
+    if (!sectionRowMaxHeightsChanged && !this.rowUnstableMap.size) {
+      otherState.sectionRowMaxHeights = this.computeSectionRowMaxHeights()
+    }
+
     this.setState({
       shrinkWidths: this.computeShrinkWidths(),
       ...this.computeScrollerDims(),
-      ...(
-        // if reacting to self-change of sectionRowMaxHeightsChanged, or not stable, don't do anything
-        (sectionRowMaxHeightsChanged || this.rowUnstableMap.size) ? {} : {
-          sectionRowMaxHeights: this.computeSectionRowMaxHeights()
-        }
-      )
+      ...(otherState as any) // wtf
     }, () => {
       if (!this.rowUnstableMap.size) {
         this.updateStickyScrolling() // needs to happen AFTER final positioning committed to DOM

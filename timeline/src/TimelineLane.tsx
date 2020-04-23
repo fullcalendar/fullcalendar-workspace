@@ -179,7 +179,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
                   left: horizontalCoords ? horizontalCoords.left : '',
                   right: horizontalCoords ? -horizontalCoords.right : '', // outwards from right edge (which is same as left edge)
                   top: top != null ? top : '',
-                  visibility: hiddenSegs[instanceId] ? 'hidden' : ''
+                  visibility: hiddenSegs[instanceId] ? 'hidden' : ('' as any /* wtf, file @types/react bug */)
                 }}
               >
                 <TimelineEvent

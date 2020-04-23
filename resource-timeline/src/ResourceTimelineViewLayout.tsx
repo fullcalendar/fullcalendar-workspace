@@ -34,6 +34,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
   private spreadsheetHeaderChunkElRef = createRef<HTMLTableCellElement>()
   private spreadsheetResizerElRef = createRef<HTMLTableCellElement>()
   private spreadsheetResizerDragging: ElementDragging
+  private rootElRef = createRef<HTMLElement>()
 
 
   constructor(props: ResourceTimelineViewLayoutProps, context: ComponentContext) {
@@ -108,6 +109,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
     return (
       <ScrollGrid
         ref={this.scrollGridRef}
+        elRef={this.rootElRef}
         forPrint={props.forPrint}
         liquid={!props.isHeightAuto}
         colGroups={[
@@ -170,7 +172,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
         if (typeof dragStartWidth !== 'number') {
           dragStartWidth = spreadsheetHeadEl.getBoundingClientRect().width
         }
-        viewWidth = (this.base as HTMLElement).getBoundingClientRect().width
+        viewWidth = this.rootElRef.current.getBoundingClientRect().width
       })
 
       dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {

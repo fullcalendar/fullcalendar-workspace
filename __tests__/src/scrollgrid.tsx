@@ -83,12 +83,12 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
             { rowContent: (
               <Fragment>
                 <tr>
-                  <th><div className='cell-padding'><span className='fc-sticky' style='display:inline-block'>Monday</span></div></th>
-                  <th><div className='cell-padding'><span className='fc-sticky' style='display:inline-block'>Tuesday</span></div></th>
+                  <th><div className='cell-padding'><span className='fc-sticky' style={{ display: 'inline-block' }}>Monday</span></div></th>
+                  <th><div className='cell-padding'><span className='fc-sticky' style={{ display: 'inline-block' }}>Tuesday</span></div></th>
                 </tr>
                 <tr>
-                  <th><div className='cell-padding'><span className='fc-sticky' style='display:inline-block'>Monday</span></div></th>
-                  <th><div className='cell-padding'><span className='fc-sticky' style='display:inline-block'>Tuesday</span></div></th>
+                  <th><div className='cell-padding'><span className='fc-sticky' style={{ display: 'inline-block' }}>Monday</span></div></th>
+                  <th><div className='cell-padding'><span className='fc-sticky' style={{ display: 'inline-block' }}>Tuesday</span></div></th>
                 </tr>
               </Fragment>
             ) }
@@ -390,7 +390,7 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
                       <tr>
                         <td>
                           <div style={{ height: contentArg.rowSyncHeights[0] }}>
-                            <div className='cell-padding'><span className='fc-sticky' style='display:inline-block'>event1</span></div>
+                            <div className='cell-padding'><span className='fc-sticky' style={{ display: 'inline-block' }}>event1</span></div>
                           </div>
                         </td>
                         <td>
