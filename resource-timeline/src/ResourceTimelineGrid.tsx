@@ -33,7 +33,7 @@ export interface ResourceTimelineGridProps {
 }
 
 interface ResourceTimelineGridState {
-  slatCoords: TimelineCoords
+  slatCoords: TimelineCoords | null
 }
 
 
@@ -44,6 +44,10 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
   private bgSlicer = new TimelineLaneSlicer()
   private slatsRef = createRef<TimelineSlats>() // needed for Hit creation :(
   private rowCoords: PositionCache // for queryHit
+
+  state = {
+    slatCoords: null
+  }
 
 
   render() {

@@ -16,13 +16,17 @@ export interface TimelinGridProps extends ViewProps {
 }
 
 interface TimelineGridState {
-  coords?: TimelineCoords
+  coords: TimelineCoords | null
 }
 
 
 export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridState> {
 
   private slatsRef = createRef<TimelineSlats>()
+
+  state = {
+    coords: null
+  }
 
 
   render() {

@@ -31,7 +31,7 @@ export interface TimelineLaneCoreProps {
 }
 
 interface TimelineLaneState {
-  segDims?: { [instanceId: string]: TimelineSegDims }
+  segDims: { [instanceId: string]: TimelineSegDims } | null
 }
 
 
@@ -42,6 +42,10 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
   private computeSegVerticals = memoize(computeSegVerticals)
   private harnessElRefs = new RefMap<HTMLDivElement>()
   private innerElRef = createRef<HTMLDivElement>()
+
+  state = {
+    segDims: null
+  }
 
 
   render() {

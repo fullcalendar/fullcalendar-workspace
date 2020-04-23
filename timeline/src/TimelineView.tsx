@@ -9,8 +9,8 @@ import { TimelineCoords } from './TimelineCoords'
 
 
 interface TimelineViewState {
-  slatCoords?: TimelineCoords
-  slotCushionMaxWidth?: number
+  slatCoords: TimelineCoords | null
+  slotCushionMaxWidth: number | null
 }
 
 
@@ -18,6 +18,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
 
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private scrollGridRef = createRef<ScrollGrid>()
+
+  state = {
+    slatCoords: null,
+    slotCushionMaxWidth: null
+  }
 
 
   render() {
