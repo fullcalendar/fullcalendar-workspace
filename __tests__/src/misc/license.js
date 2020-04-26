@@ -1,4 +1,5 @@
-import { config, Calendar } from '@fullcalendar/core'
+import { config } from '@fullcalendar/core'
+import { Calendar } from '@fullcalendar/preact'
 import { CalendarWrapper } from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 
 describe('schedulerLicenseKey', function() {

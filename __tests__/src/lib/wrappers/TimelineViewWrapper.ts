@@ -1,4 +1,4 @@
-import { Calendar } from '@fullcalendar/core'
+import { Calendar } from '@fullcalendar/preact'
 import { ViewWrapper } from 'standard-tests/src/lib/wrappers/ViewWrapper'
 import { TimelineGridWrapper } from './TimelineGridWrapper'
 import { TimelineHeaderWrapper } from './TimelineHeaderWrapper'
