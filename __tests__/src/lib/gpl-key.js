@@ -1,4 +1,4 @@
-import { globalDefaults } from '@fullcalendar/preact'
+import { globalDefaults } from '@fullcalendar/core'
 
 // HACK to get to compile
 /** @type {any} */

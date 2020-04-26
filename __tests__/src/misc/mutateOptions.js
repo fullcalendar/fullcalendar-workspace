@@ -1,4 +1,4 @@
-import { Calendar } from '@fullcalendar/preact'
+import { Calendar } from '@fullcalendar/core'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import { CalendarWrapper } from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'

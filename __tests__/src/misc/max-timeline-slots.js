@@ -1,4 +1,4 @@
-import { config } from '@fullcalendar/preact'
+import { config } from '@fullcalendar/core'
 
 describe('MAX_TIMELINE_SLOTS hook', function() {
   it('is present', function() {

@@ -1,4 +1,4 @@
-import { startOfDay } from '@fullcalendar/preact'
+import { startOfDay } from '@fullcalendar/core'
 import lvLocale from '@fullcalendar/common/locales/lv'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
