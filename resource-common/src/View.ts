@@ -1,4 +1,4 @@
-import { rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewSpec, ViewPropsTransformer, CalendarComponentProps, memoize, mapHash, EventUi, isPropsEqual, EventUiHash, EventDefHash, EventDef, combineEventUis, EventStore, DateRange, ReducerContext } from '@fullcalendar/common'
+import { rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewSpec, ViewPropsTransformer, CalendarContentProps, memoize, mapHash, EventUi, isPropsEqual, EventUiHash, EventDefHash, EventDef, combineEventUis, EventStore, DateRange, ReducerContext } from '@fullcalendar/common'
 import { ResourceHash } from './structs/resource'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
 import { __assign } from 'tslib'
@@ -16,7 +16,7 @@ export class ResourceDataAdder implements ViewPropsTransformer {
 
   filterResources = memoize(filterResources)
 
-  transform(viewProps: ViewProps, viewSpec: ViewSpec, calendarProps: CalendarComponentProps, allOptions: any) {
+  transform(viewProps: ViewProps, viewSpec: ViewSpec, calendarProps: CalendarContentProps, allOptions: any) {
     if (viewSpec.optionDefaults.needsResourceData) {
       return {
         resourceStore: this.filterResources(
@@ -100,7 +100,7 @@ export class ResourceEventConfigAdder implements ViewPropsTransformer {
   buildResourceEventUis = memoize(buildResourceEventUis, isPropsEqual)
   injectResourceEventUis = memoize(injectResourceEventUis)
 
-  transform(viewProps: ViewProps, viewSpec: ViewSpec, calendarProps: CalendarComponentProps) {
+  transform(viewProps: ViewProps, viewSpec: ViewSpec, calendarProps: CalendarContentProps) {
     if (!viewSpec.optionDefaults.needsResourceData) {
       return {
         eventUiBases: this.injectResourceEventUis(
