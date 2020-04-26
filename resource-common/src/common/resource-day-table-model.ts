@@ -1,4 +1,4 @@
-import { ReducerContext, SlicedProps, EventDef, mapHash, Splitter, DayTableModel, DayTableCell, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/core'
+import { ReducerContext, SlicedProps, EventDef, mapHash, Splitter, DayTableModel, DayTableCell, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/common'
 import { Resource } from '../structs/resource'
 import { __assign } from 'tslib'
 import { ResourceApi } from '../api/ResourceApi'

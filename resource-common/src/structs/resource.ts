@@ -1,4 +1,4 @@
-import { ConstraintInput, AllowFunc, refineProps, EventStore, parseBusinessHours, ReducerContext, EventUi, processScopedUiProps, BusinessHoursInput, guid } from '@fullcalendar/core'
+import { ConstraintInput, AllowFunc, refineProps, EventStore, parseBusinessHours, ReducerContext, EventUi, processScopedUiProps, BusinessHoursInput, guid } from '@fullcalendar/common'
 
 export interface ResourceInput {
   id?: string

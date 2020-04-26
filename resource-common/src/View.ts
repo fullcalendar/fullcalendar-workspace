@@ -1,4 +1,4 @@
-import { rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewSpec, ViewPropsTransformer, CalendarComponentProps, memoize, mapHash, EventUi, isPropsEqual, EventUiHash, EventDefHash, EventDef, combineEventUis, EventStore, DateRange, ReducerContext } from '@fullcalendar/core'
+import { rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewSpec, ViewPropsTransformer, CalendarComponentProps, memoize, mapHash, EventUi, isPropsEqual, EventUiHash, EventDefHash, EventDef, combineEventUis, EventStore, DateRange, ReducerContext } from '@fullcalendar/common'
 import { ResourceHash } from './structs/resource'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
 import { __assign } from 'tslib'

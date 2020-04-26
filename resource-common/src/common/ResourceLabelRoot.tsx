@@ -1,4 +1,4 @@
-import { h, Ref, ComponentChildren, ComponentContextType, ComponentContext, RenderHook, ViewApi, formatDayString } from '@fullcalendar/core'
+import { h, Ref, ComponentChildren, ComponentContextType, ComponentContext, RenderHook, ViewApi, formatDayString } from '@fullcalendar/common'
 import { Resource } from '../structs/resource'
 import { ResourceApi } from '../api/ResourceApi'
 

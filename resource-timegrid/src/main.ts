@@ -1,4 +1,4 @@
-import { createPlugin } from '@fullcalendar/core'
+import { createPlugin } from '@fullcalendar/common'
 import resourceCommonPlugin from '@fullcalendar/resource-common'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import { ResourceDayTimeColsView } from './ResourceDayTimeColsView'

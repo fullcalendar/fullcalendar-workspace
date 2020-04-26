@@ -1,6 +1,6 @@
 import {
   h, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs, ReducerContext
-} from '@fullcalendar/core'
+} from '@fullcalendar/common'
 import { TimeColsView, buildTimeColsModel, buildSlatMetas } from '@fullcalendar/timegrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
 import { ResourceDayTable } from '@fullcalendar/resource-daygrid'

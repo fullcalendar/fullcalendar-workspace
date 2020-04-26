@@ -1,4 +1,4 @@
-import { EventApi } from '@fullcalendar/core'
+import { EventApi } from '@fullcalendar/common'
 import { ResourceApi } from './ResourceApi'
 import '../ambient'
 

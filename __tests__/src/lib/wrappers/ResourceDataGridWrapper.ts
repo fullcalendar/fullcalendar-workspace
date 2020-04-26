@@ -1,4 +1,4 @@
-import { findElements } from '@fullcalendar/core'
+import { findElements } from '@fullcalendar/preact'
 
 export class ResourceDataGridWrapper {
 

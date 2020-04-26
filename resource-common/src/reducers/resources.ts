@@ -1,4 +1,4 @@
-import { CalendarState, ReducerContext } from '@fullcalendar/core'
+import { CalendarState, ReducerContext } from '@fullcalendar/common'
 import { reduceResourceSource } from './resourceSource'
 import { reduceResourceStore } from './resourceStore'
 import { reduceResourceEntityExpansions } from './resourceEntityExpansions'

@@ -12,7 +12,7 @@ export * from '@fullcalendar/resource-daygrid'
 export * from '@fullcalendar/resource-timegrid'
 export * from '@fullcalendar/resource-timeline'
 
-import { globalPlugins } from '@fullcalendar/core'
+import { globalPlugins } from '@fullcalendar/preact'
 import interactionPlugin from '@fullcalendar/interaction'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'

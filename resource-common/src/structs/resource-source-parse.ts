@@ -1,4 +1,4 @@
-import { refineProps, guid } from '@fullcalendar/core'
+import { refineProps, guid } from '@fullcalendar/common'
 import { ResourceInput } from '../structs/resource'
 import { ResourceFunc } from '../resource-sources/resource-func'
 import { ResourceSource } from './resource-source'

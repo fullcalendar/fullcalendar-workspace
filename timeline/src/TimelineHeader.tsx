@@ -1,4 +1,4 @@
-import { h, BaseComponent, CssDimValue, VNode, DateMarker, NowTimer, greatestDurationDenominator, DateRange, NowIndicatorRoot, createRef, findElements, RefObject, DateProfile } from '@fullcalendar/core'
+import { h, BaseComponent, CssDimValue, VNode, DateMarker, NowTimer, greatestDurationDenominator, DateRange, NowIndicatorRoot, createRef, findElements, RefObject, DateProfile } from '@fullcalendar/common'
 import { TimelineHeaderRows } from './TimelineHeaderRows'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineDateProfile } from './timeline-date-profile'

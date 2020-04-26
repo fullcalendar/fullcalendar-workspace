@@ -7,7 +7,7 @@ import { ResourceAction } from './reducers/resource-action'
 
 // QUESTION: why do only some files need to require this directly?
 
-declare module '@fullcalendar/core' {
+declare module '@fullcalendar/common' {
 
   interface CalendarApi {
     addResource(input: ResourceSourceInput): ResourceApi

@@ -1,4 +1,4 @@
-import { htmlToElement, removeElement, computeEdges } from '@fullcalendar/core'
+import { htmlToElement, removeElement, computeEdges } from '@fullcalendar/common'
 
 
 // TODO: assume the el has no borders?

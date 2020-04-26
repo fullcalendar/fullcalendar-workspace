@@ -1,6 +1,6 @@
 import {
   h, BaseComponent, ComponentContext, Fragment, DateRange, DateMarker, getDateMeta, getSlotClassNames, buildNavLinkData, buildHookClassNameGenerator, MountHook, ContentHook, ViewApi, getDayClassNames, DateProfile
-} from '@fullcalendar/core'
+} from '@fullcalendar/common'
 import { TimelineDateProfile, TimelineHeaderCell } from './timeline-date-profile'
 
 

@@ -2,7 +2,7 @@ import {
   h, createRef,
   parseFieldSpecs, ComponentContext, memoize,
   Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache, ScrollRequest, ScrollResponder, ViewRoot, BaseComponent,
-} from '@fullcalendar/core'
+} from '@fullcalendar/common'
 import {
   buildTimelineDateProfile, TimelineHeader,
   buildSlatCols,

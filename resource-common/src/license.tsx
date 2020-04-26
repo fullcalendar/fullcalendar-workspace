@@ -1,4 +1,4 @@
-import { config, isValidDate, addDays, h, ReducerContext } from '@fullcalendar/core'
+import { config, isValidDate, addDays, h, ReducerContext } from '@fullcalendar/common'
 
 const RELEASE_DATE = '<%= releaseDate %>' // for Scheduler
 const UPGRADE_WINDOW = 365 + 7 // days. 1 week leeway, for tz shift reasons too

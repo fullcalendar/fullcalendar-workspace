@@ -1,6 +1,6 @@
 import {
   h, BaseComponent, multiplyDuration, RefMap, CssDimValue, VNode, createRef, ScrollResponder, ScrollRequest, DateMarker, DateRange, DateProfile
-} from '@fullcalendar/core'
+} from '@fullcalendar/common'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { TimelineSlatCell } from './TimelineSlatCell'
 import { TimelineCoords } from './TimelineCoords'

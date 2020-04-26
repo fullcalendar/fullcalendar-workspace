@@ -1,4 +1,4 @@
-import { SplittableProps, EventUi, isPropsValid, Constraint, EventStore, mergeEventStores, ReducerContext } from '@fullcalendar/core'
+import { SplittableProps, EventUi, isPropsValid, Constraint, EventStore, mergeEventStores, ReducerContext } from '@fullcalendar/common'
 import { ResourceSplitter } from './common/ResourceSplitter'
 
 

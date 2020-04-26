@@ -2,7 +2,7 @@ import {
   PositionCache, findDirectChildren,
   isInt, DateProfile,
   DateMarker, DateEnv, Duration, startOfDay, rangeContainsMarker
-} from '@fullcalendar/core'
+} from '@fullcalendar/common'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 

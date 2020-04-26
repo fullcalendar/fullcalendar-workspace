@@ -1,4 +1,4 @@
-import { ReducerContext, EventApi } from '@fullcalendar/core'
+import { ReducerContext, EventApi } from '@fullcalendar/common'
 import { Resource, getPublicId } from '../structs/resource'
 
 export class ResourceApi {

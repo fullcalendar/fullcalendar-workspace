@@ -1,4 +1,4 @@
-import { createPlugin } from '@fullcalendar/core'
+import { createPlugin } from '@fullcalendar/common'
 import timelinePlugin from '@fullcalendar/timeline'
 import resourceCommonPlugin from '@fullcalendar/resource-common'
 import { ResourceTimelineView } from './ResourceTimelineView'

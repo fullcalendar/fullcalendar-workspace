@@ -1,7 +1,7 @@
 import {
   h, createRef, VNode,
   mapHash, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, memoize, DateRange, DateMarker, Hit, CssDimValue, NowTimer, Duration, DateProfile
-} from '@fullcalendar/core'
+} from '@fullcalendar/common'
 import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg, TimeSlatMeta } from '@fullcalendar/timegrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
 

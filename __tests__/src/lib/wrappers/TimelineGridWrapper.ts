@@ -1,4 +1,4 @@
-import { findElements } from '@fullcalendar/core'
+import { findElements } from '@fullcalendar/preact'
 import { ensureDate, formatIsoWithoutTz } from 'standard-tests/src/lib/datelib-utils'
 import { getBoundingRect } from 'standard-tests/src/lib/dom-geom'
 import { getRectCenter, addPoints } from 'standard-tests/src/lib/geom'

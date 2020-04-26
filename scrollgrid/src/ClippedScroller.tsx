@@ -5,7 +5,7 @@ import {
   getScrollbarWidths,
   getIsRtlScrollbarOnLeft,
   isPropsEqual
-} from '@fullcalendar/core'
+} from '@fullcalendar/common'
 
 
 export type ClippedOverflowValue = OverflowValue | 'scroll-hidden'

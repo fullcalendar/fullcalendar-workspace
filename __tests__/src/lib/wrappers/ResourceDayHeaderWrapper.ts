@@ -1,4 +1,4 @@
-import { findElements } from '@fullcalendar/core'
+import { findElements } from '@fullcalendar/preact'
 import { formatIsoDay } from 'standard-tests/src/lib/datelib-utils'
 
 

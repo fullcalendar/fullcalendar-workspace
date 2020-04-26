@@ -1,4 +1,4 @@
-import { Action, DateRange } from '@fullcalendar/core'
+import { Action, DateRange } from '@fullcalendar/common'
 import { ResourceSourceError } from '../structs/resource-source'
 import { ResourceHash, ResourceInput } from '../structs/resource'
 

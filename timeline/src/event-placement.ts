@@ -1,6 +1,6 @@
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
-import { sortEventSegs } from '@fullcalendar/core'
+import { sortEventSegs } from '@fullcalendar/common'
 
 
 export function computeSegHorizontals(segs: TimelineLaneSeg[], timelineCoords?: TimelineCoords) {

@@ -1,4 +1,4 @@
-import { h, Ref, BaseComponent, CssDimValue, RenderHook } from '@fullcalendar/core'
+import { h, Ref, BaseComponent, CssDimValue, RenderHook } from '@fullcalendar/common'
 
 
 export interface DividerRowProps {

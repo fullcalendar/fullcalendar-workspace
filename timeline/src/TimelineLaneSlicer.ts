@@ -1,4 +1,4 @@
-import { DateRange, intersectRanges, addMs, DateProfile, Slicer, DateProfileGenerator, DateEnv, DateMarker, Seg } from '@fullcalendar/core'
+import { DateRange, intersectRanges, addMs, DateProfile, Slicer, DateProfileGenerator, DateEnv, DateMarker, Seg } from '@fullcalendar/common'
 import { normalizeRange, isValidDate, TimelineDateProfile } from './timeline-date-profile'
 import { computeDateSnapCoverage } from './TimelineCoords'
 

@@ -1,7 +1,7 @@
 import {
   h, PositionCache,
   Duration, EventStore, DateSpan, EventUiHash, EventInteractionState, DateComponent, Hit, createRef, CssDimValue, VNode, memoize, NowTimer, greatestDurationDenominator, DateMarker, DateRange, NowIndicatorRoot, DateProfile
-} from '@fullcalendar/core'
+} from '@fullcalendar/common'
 import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource-common'
 import { TimelineDateProfile, TimelineCoords, TimelineSlats, TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg } from '@fullcalendar/timeline'
 import { ResourceTimelineLanes } from './ResourceTimelineLanes'

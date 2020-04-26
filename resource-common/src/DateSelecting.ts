@@ -1,4 +1,4 @@
-import { Hit } from '@fullcalendar/core'
+import { Hit } from '@fullcalendar/common'
 
 export function transformDateSelectionJoin(hit0: Hit, hit1: Hit) {
   let resourceId0 = hit0.dateSpan.resourceId

@@ -1,4 +1,4 @@
-import { EventDef, refineProps } from '@fullcalendar/core'
+import { EventDef, refineProps } from '@fullcalendar/common'
 import '../ambient'
 
 

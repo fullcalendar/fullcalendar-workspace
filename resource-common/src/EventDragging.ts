@@ -1,4 +1,4 @@
-import { EventMutation, Hit, EventDef, ReducerContext } from '@fullcalendar/core'
+import { EventMutation, Hit, EventDef, ReducerContext } from '@fullcalendar/common'
 
 
 export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit, hit1: Hit) {

@@ -1,4 +1,4 @@
-import { config } from '@fullcalendar/core'
+import { config } from '@fullcalendar/preact'
 import { Calendar } from '@fullcalendar/preact'
 import { CalendarWrapper } from 'standard-tests/src/lib/wrappers/CalendarWrapper'
 

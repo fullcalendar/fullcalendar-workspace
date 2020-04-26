@@ -1,4 +1,4 @@
-import { h, VNode, Fragment } from '@fullcalendar/core'
+import { h, VNode, Fragment } from '@fullcalendar/common'
 
 
 /*

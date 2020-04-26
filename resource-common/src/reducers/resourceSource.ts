@@ -1,4 +1,4 @@
-import { DateProfile, rangesEqual, DateRange, guid, ReducerContext } from '@fullcalendar/core'
+import { DateProfile, rangesEqual, DateRange, guid, ReducerContext } from '@fullcalendar/common'
 import { ResourceSource } from '../structs/resource-source'
 import { parseResourceSource } from '../structs/resource-source-parse'
 import { getResourceSourceDef } from '../structs/resource-source-def'

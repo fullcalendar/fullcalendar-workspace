@@ -1,7 +1,7 @@
 import {
   config, computeVisibleDayRange, Duration, DateProfile, isSingleDay, addDays, wholeDivideDurations, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs,
   createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator
-} from '@fullcalendar/core'
+} from '@fullcalendar/common'
 
 export interface TimelineDateProfile {
   labelInterval: Duration

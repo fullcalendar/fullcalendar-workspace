@@ -18,7 +18,7 @@ import {
   memoizeArraylike,
   collectFromHash,
   memoizeHashlike
-} from '@fullcalendar/core'
+} from '@fullcalendar/common'
 import { StickyScrolling } from './StickyScrolling'
 import { ClippedScroller, ClippedOverflowValue } from './ClippedScroller'
 import { ScrollSyncer } from './ScrollSyncer'

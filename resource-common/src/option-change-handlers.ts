@@ -1,4 +1,4 @@
-import { ReducerContext } from '@fullcalendar/core'
+import { ReducerContext } from '@fullcalendar/common'
 
 export const optionChangeHandlers = {
   resources: handleResources

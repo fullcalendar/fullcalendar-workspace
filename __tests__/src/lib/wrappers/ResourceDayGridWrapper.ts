@@ -1,7 +1,7 @@
 import { ensureDate, formatIsoDay } from 'standard-tests/src/lib/datelib-utils'
 import { DayGridWrapper } from 'standard-tests/src/lib/wrappers/DayGridWrapper'
 import { CalendarWrapper } from 'standard-tests/src/lib/wrappers/CalendarWrapper'
-import { getRectCenter } from '@fullcalendar/core'
+import { getRectCenter } from '@fullcalendar/preact'
 import { subtractPoints, addPoints } from 'standard-tests/src/lib/geom'
 
 

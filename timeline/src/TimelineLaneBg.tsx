@@ -1,4 +1,4 @@
-import { BaseComponent, h, Fragment, BgEvent, renderFill, getSegMeta, DateRange, DateMarker } from '@fullcalendar/core'
+import { BaseComponent, h, Fragment, BgEvent, renderFill, getSegMeta, DateRange, DateMarker } from '@fullcalendar/common'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 

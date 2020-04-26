@@ -1,4 +1,4 @@
-import { DateRange, ReducerContext } from '@fullcalendar/core'
+import { DateRange, ReducerContext } from '@fullcalendar/common'
 import { ResourceInput } from '../structs/resource'
 
 

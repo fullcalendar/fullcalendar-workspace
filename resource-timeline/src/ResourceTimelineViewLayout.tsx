@@ -5,7 +5,7 @@ import {
   renderScrollShim,
   getStickyHeaderDates,
   getStickyFooterScrollbar
-} from '@fullcalendar/core'
+} from '@fullcalendar/common'
 import { ScrollGrid } from '@fullcalendar/scrollgrid'
 
 

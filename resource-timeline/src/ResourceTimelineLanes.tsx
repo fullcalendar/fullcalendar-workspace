@@ -4,7 +4,7 @@ import {
   DateMarker,
   DateRange,
   DateProfile
-} from '@fullcalendar/core'
+} from '@fullcalendar/common'
 import {  GroupNode, ResourceNode } from '@fullcalendar/resource-common'
 import { TimelineDateProfile, TimelineCoords } from '@fullcalendar/timeline'
 import { ResourceTimelineLane } from './ResourceTimelineLane'

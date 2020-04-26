@@ -1,7 +1,7 @@
 import {
   VNode, h, TableDowCell,
   memoize, BaseComponent, DateMarker, createFormatter, DateFormatter, computeFallbackHeaderFormat, TableDateCell, Fragment, DateRange, NowTimer, Ref, ComponentChildren, DateProfile
-} from '@fullcalendar/core'
+} from '@fullcalendar/common'
 import { Resource } from '../structs/resource'
 import { ResourceLabelRoot } from './ResourceLabelRoot'
 import { ResourceApi } from '../api/ResourceApi'

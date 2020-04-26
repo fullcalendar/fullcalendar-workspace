@@ -1,4 +1,4 @@
-import { h, createRef, ViewProps, Hit, DateComponent, CssDimValue, VNode, DateMarker, NowTimer, greatestDurationDenominator, DateRange, NowIndicatorRoot } from '@fullcalendar/core'
+import { h, createRef, ViewProps, Hit, DateComponent, CssDimValue, VNode, DateMarker, NowTimer, greatestDurationDenominator, DateRange, NowIndicatorRoot } from '@fullcalendar/common'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineSlats } from './TimelineSlats'
 import { TimelineLane } from './TimelineLane'

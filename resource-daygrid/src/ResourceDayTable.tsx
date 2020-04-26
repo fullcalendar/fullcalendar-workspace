@@ -1,7 +1,7 @@
 import {
   h, createRef, VNode,
   mapHash, Hit, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, Duration, RefObject, CssDimValue, DateProfile
-} from '@fullcalendar/core'
+} from '@fullcalendar/common'
 import { DayTableSlicer, Table, TableSeg } from '@fullcalendar/daygrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
 

@@ -1,4 +1,4 @@
-import { DateSpan, CalendarApi, ReducerContext } from '@fullcalendar/core'
+import { DateSpan, CalendarApi, ReducerContext } from '@fullcalendar/common'
 import { ResourceApi } from './ResourceApi'
 import { ResourceInput, parseResource, ResourceHash, Resource } from '../structs/resource'
 

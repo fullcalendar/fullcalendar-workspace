@@ -1,6 +1,6 @@
 import {
   h, BaseComponent, ComponentContext, isArraysEqual, CssDimValue, Fragment, RenderHook, MountHook, buildHookClassNameGenerator, ContentHook, ViewApi
-} from '@fullcalendar/core'
+} from '@fullcalendar/common'
 import { Resource, buildResourceFields, ColSpec, ResourceApi, getPublicId } from '@fullcalendar/resource-common'
 import { ExpanderIcon } from './ExpanderIcon'
 

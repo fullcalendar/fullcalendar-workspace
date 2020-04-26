@@ -1,4 +1,4 @@
-import { startOfDay, findElements } from '@fullcalendar/core'
+import { startOfDay, findElements } from '@fullcalendar/preact'
 import { ensureDate, formatIsoDay } from 'standard-tests/src/lib/datelib-utils'
 import { getBoundingRect } from 'standard-tests/src/lib/dom-geom'
 import { TimeGridWrapper } from 'standard-tests/src/lib/wrappers/TimeGridWrapper'

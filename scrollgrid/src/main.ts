@@ -1,4 +1,4 @@
-import { createPlugin } from '@fullcalendar/core'
+import { createPlugin } from '@fullcalendar/common'
 import { ScrollGrid } from './ScrollGrid'
 
 export { ScrollGrid }

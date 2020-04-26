@@ -1,6 +1,6 @@
 import {
   h, isInt, BaseComponent, DateMarker, Ref, DateRange, getDateMeta, getSlotClassNames, RenderHook, getDayClassNames
-} from '@fullcalendar/core'
+} from '@fullcalendar/common'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 
