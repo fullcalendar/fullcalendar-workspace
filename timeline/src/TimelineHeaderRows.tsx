@@ -1,5 +1,5 @@
 import {
-  h, BaseComponent, ComponentContext, Fragment, DateRange, DateMarker, getDateMeta, getSlotClassNames, buildNavLinkData, buildHookClassNameGenerator, MountHook, ContentHook, ViewApi, getDayClassNames, DateProfile
+  h, BaseComponent, ViewContext, Fragment, DateRange, DateMarker, getDateMeta, getSlotClassNames, buildNavLinkData, buildHookClassNameGenerator, MountHook, ContentHook, ViewApi, getDayClassNames, DateProfile
 } from '@fullcalendar/common'
 import { TimelineDateProfile, TimelineHeaderCell } from './timeline-date-profile'
 
@@ -165,7 +165,7 @@ interface HookPropOrigin {
   text: string
 }
 
-function massageHookProps(input: HookPropOrigin, context: ComponentContext): HookProps {
+function massageHookProps(input: HookPropOrigin, context: ViewContext): HookProps {
   return {
     date: context.dateEnv.toDate(input.date),
     view: context.viewApi,

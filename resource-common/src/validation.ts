@@ -1,13 +1,13 @@
-import { SplittableProps, EventUi, isPropsValid, Constraint, EventStore, mergeEventStores, ReducerContext } from '@fullcalendar/common'
+import { SplittableProps, EventUi, isPropsValid, Constraint, EventStore, mergeEventStores, CalendarContext } from '@fullcalendar/common'
 import { ResourceSplitter } from './common/ResourceSplitter'
 
 
-export function isPropsValidWithResources(props: SplittableProps, context: ReducerContext): boolean {
+export function isPropsValidWithResources(props: SplittableProps, context: CalendarContext): boolean {
   let splitter = new ResourceSplitter()
 
   let sets = splitter.splitProps({
     ...props,
-    resourceStore: context.getCurrentState().resourceStore
+    resourceStore: context.getCurrentData().resourceStore
   })
 
   for (let resourceId in sets) {

@@ -1,10 +1,10 @@
-import { ReducerContext, EventApi } from '@fullcalendar/common'
+import { CalendarContext, EventApi } from '@fullcalendar/common'
 import { Resource, getPublicId } from '../structs/resource'
 
 export class ResourceApi {
 
   constructor(
-    private _context: ReducerContext,
+    private _context: CalendarContext,
     public _resource: Resource
   ) {
   }
@@ -32,7 +32,7 @@ export class ResourceApi {
     if (parentId) {
       return new ResourceApi(
         context,
-        context.getCurrentState().resourceSource[parentId]
+        context.getCurrentData().resourceSource[parentId]
       )
     } else {
       return null
@@ -42,7 +42,7 @@ export class ResourceApi {
   getChildren(): ResourceApi[] {
     let thisResourceId = this._resource.id
     let context = this._context
-    let { resourceStore } = context.getCurrentState()
+    let { resourceStore } = context.getCurrentData()
     let childApis: ResourceApi[] = []
 
     for (let resourceId in resourceStore) {
@@ -63,7 +63,7 @@ export class ResourceApi {
   getEvents(): EventApi[] {
     let thisResourceId = this._resource.id
     let context = this._context
-    let { defs, instances } = context.getCurrentState().eventStore
+    let { defs, instances } = context.getCurrentData().eventStore
     let eventApis: EventApi[] = []
 
     for (let instanceId in instances) {

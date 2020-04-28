@@ -1,4 +1,4 @@
-import { h, Ref, ComponentChildren, ComponentContextType, ComponentContext, RenderHook, ViewApi, formatDayString } from '@fullcalendar/common'
+import { h, Ref, ComponentChildren, ViewContextType, ViewContext, RenderHook, ViewApi, formatDayString } from '@fullcalendar/common'
 import { Resource } from '../structs/resource'
 import { ResourceApi } from '../api/ResourceApi'
 
@@ -27,8 +27,8 @@ interface ResourceInnerProps {
 
 export function ResourceLabelRoot(props: ResourceLabelRootProps) {
   return (
-    <ComponentContextType.Consumer>
-      {(context: ComponentContext) => {
+    <ViewContextType.Consumer>
+      {(context: ViewContext) => {
         let hookProps: ResourceInnerProps = {
           resource: new ResourceApi(context, props.resource),
           date: props.date ? context.dateEnv.toDate(props.date) : null,
@@ -52,7 +52,7 @@ export function ResourceLabelRoot(props: ResourceLabelRootProps) {
           </RenderHook>
         )
       }}
-    </ComponentContextType.Consumer>
+    </ViewContextType.Consumer>
   )
 }
 

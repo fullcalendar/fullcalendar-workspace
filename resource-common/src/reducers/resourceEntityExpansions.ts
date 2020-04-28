@@ -2,11 +2,16 @@ import { ResourceAction } from './resource-action'
 
 export type ResourceEntityExpansions = { [id: string]: boolean }
 
-export function reduceResourceEntityExpansions(expansions: ResourceEntityExpansions, action: ResourceAction): ResourceEntityExpansions {
-  switch (action.type) {
-    case 'INIT':
-      return {}
+export function reduceResourceEntityExpansions(
+  expansions: ResourceEntityExpansions | null,
+  action: ResourceAction | null
+): ResourceEntityExpansions {
 
+  if (!expansions || !action) {
+    return {}
+  }
+
+  switch (action.type) {
     case 'SET_RESOURCE_ENTITY_EXPANDED':
       return {
         ...expansions,

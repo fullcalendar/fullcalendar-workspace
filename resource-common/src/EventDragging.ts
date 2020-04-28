@@ -1,4 +1,4 @@
-import { EventMutation, Hit, EventDef, ReducerContext } from '@fullcalendar/common'
+import { EventMutation, Hit, EventDef, CalendarContext } from '@fullcalendar/common'
 
 
 export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit, hit1: Hit) {
@@ -20,7 +20,7 @@ export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit
 /*
 TODO: all this would be much easier if we were using a hash!
 */
-export function applyEventDefMutation(eventDef: EventDef, mutation: EventMutation, context: ReducerContext) {
+export function applyEventDefMutation(eventDef: EventDef, mutation: EventMutation, context: CalendarContext) {
   let resourceMutation = mutation.resourceMutation
 
   if (resourceMutation && computeResourceEditable(eventDef, context)) {
@@ -45,11 +45,11 @@ export function applyEventDefMutation(eventDef: EventDef, mutation: EventMutatio
 HACK
 TODO: use EventUi system instead of this
 */
-export function computeResourceEditable(eventDef: EventDef, context: ReducerContext): boolean {
+export function computeResourceEditable(eventDef: EventDef, context: CalendarContext): boolean {
   let { resourceEditable } = eventDef
 
   if (resourceEditable == null) {
-    let source = eventDef.sourceId && context.getCurrentState().eventSources[eventDef.sourceId]
+    let source = eventDef.sourceId && context.getCurrentData().eventSources[eventDef.sourceId]
 
     if (source) {
       resourceEditable = source.extendedProps.resourceEditable // used the Source::extendedProps hack
@@ -68,7 +68,7 @@ export function computeResourceEditable(eventDef: EventDef, context: ReducerCont
 }
 
 
-export function transformEventDrop(mutation: EventMutation, context: ReducerContext) {
+export function transformEventDrop(mutation: EventMutation, context: CalendarContext) {
   let { resourceMutation } = mutation
 
   if (resourceMutation) {

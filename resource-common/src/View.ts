@@ -1,4 +1,4 @@
-import { rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewSpec, ViewPropsTransformer, CalendarContentProps, memoize, mapHash, EventUi, isPropsEqual, EventUiHash, EventDefHash, EventDef, combineEventUis, EventStore, DateRange, ReducerContext } from '@fullcalendar/common'
+import { rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewSpec, ViewPropsTransformer, CalendarContentProps, memoize, mapHash, EventUi, isPropsEqual, EventUiHash, EventDefHash, EventDef, combineEventUis, EventStore, DateRange, CalendarContext } from '@fullcalendar/common'
 import { ResourceHash } from './structs/resource'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
 import { __assign } from 'tslib'
@@ -148,11 +148,11 @@ function injectResourceEventUi(origEventUi: EventUi, eventDef: EventDef, resourc
 
 // for making sure events that have editable resources are always draggable in resource views
 
-export function transformIsDraggable(val: boolean, eventDef: EventDef, eventUi: EventUi, context: ReducerContext) {
+export function transformIsDraggable(val: boolean, eventDef: EventDef, eventUi: EventUi, context: CalendarContext) {
 
   if (!val) {
-    let state = context.getCurrentState()
-    let viewSpec = state.viewSpecs[state.viewType]
+    let state = context.getCurrentData()
+    let viewSpec = state.viewSpecs[state.currentViewType]
 
     if (viewSpec.optionDefaults.needsResourceData) {
       if (computeResourceEditable(eventDef, context)) {

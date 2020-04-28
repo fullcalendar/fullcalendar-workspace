@@ -1,4 +1,4 @@
-import { config, isValidDate, addDays, h, ReducerContext } from '@fullcalendar/common'
+import { config, isValidDate, addDays, h, CalendarContext } from '@fullcalendar/common'
 
 const RELEASE_DATE = '<%= releaseDate %>' // for Scheduler
 const UPGRADE_WINDOW = 365 + 7 // days. 1 week leeway, for tz shift reasons too
@@ -22,7 +22,7 @@ const CSS = {
 }
 
 
-export function buildLicenseWarning(context: ReducerContext) {
+export function buildLicenseWarning(context: CalendarContext) {
   let key = context.options.schedulerLicenseKey
 
   if (!isImmuneUrl(window.location.href) && !isValidKey(key)) {

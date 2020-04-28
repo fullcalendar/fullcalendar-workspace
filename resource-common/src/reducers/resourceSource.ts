@@ -1,21 +1,21 @@
-import { DateProfile, rangesEqual, DateRange, guid, ReducerContext } from '@fullcalendar/common'
+import { DateProfile, rangesEqual, DateRange, guid, CalendarContext } from '@fullcalendar/common'
 import { ResourceSource } from '../structs/resource-source'
 import { parseResourceSource } from '../structs/resource-source-parse'
 import { getResourceSourceDef } from '../structs/resource-source-def'
 import { ResourceAction } from './resource-action'
 
 export function reduceResourceSource(
-  source: ResourceSource | undefined,
-  action: ResourceAction,
-  dateProfile: DateProfile,
-  context: ReducerContext
-): ResourceSource | null {
-  let { options } = context
+  source: ResourceSource | null,
+  action: ResourceAction | null,
+  context: CalendarContext & { dateProfile: DateProfile }
+): ResourceSource {
+  let { options, dateProfile } = context
+
+  if (!source || !action) {
+    return createSource(options.resources, dateProfile.activeRange, options.refetchResourcesOnNavigate, context)
+  }
 
   switch (action.type) {
-    case 'INIT':
-      return createSource(options.resources, dateProfile.activeRange, options.refetchResourcesOnNavigate, context)
-
     case 'RESET_RESOURCE_SOURCE':
       return createSource(action.resourceSourceInput, dateProfile.activeRange, options.refetchResourcesOnNavigate, context)
 
@@ -38,7 +38,7 @@ export function reduceResourceSource(
 }
 
 
-function createSource(input, activeRange: DateRange, refetchResourcesOnNavigate, context: ReducerContext) {
+function createSource(input, activeRange: DateRange, refetchResourcesOnNavigate, context: CalendarContext) {
   if (input) {
     let source = parseResourceSource(input)
     source = fetchSource(source, refetchResourcesOnNavigate ? activeRange : null, context)
@@ -49,7 +49,7 @@ function createSource(input, activeRange: DateRange, refetchResourcesOnNavigate,
 }
 
 
-function handleRangeChange(source: ResourceSource, activeRange: DateRange, refetchResourcesOnNavigate, context: ReducerContext): ResourceSource {
+function handleRangeChange(source: ResourceSource, activeRange: DateRange, refetchResourcesOnNavigate, context: CalendarContext): ResourceSource {
   if (
     refetchResourcesOnNavigate &&
     !doesSourceIgnoreRange(source) &&
@@ -67,7 +67,7 @@ function doesSourceIgnoreRange(source: ResourceSource) {
 }
 
 
-function fetchSource(source: ResourceSource, fetchRange: DateRange | null, context: ReducerContext): ResourceSource {
+function fetchSource(source: ResourceSource, fetchRange: DateRange | null, context: CalendarContext): ResourceSource {
   let sourceDef = getResourceSourceDef(source.sourceDefId)
   let fetchId = guid()
 

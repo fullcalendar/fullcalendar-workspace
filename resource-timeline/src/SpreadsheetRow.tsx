@@ -1,5 +1,5 @@
 import {
-  h, BaseComponent, ComponentContext, isArraysEqual, CssDimValue, Fragment, RenderHook, MountHook, buildHookClassNameGenerator, ContentHook, ViewApi
+  h, BaseComponent, ViewContext, isArraysEqual, CssDimValue, Fragment, RenderHook, MountHook, buildHookClassNameGenerator, ContentHook, ViewApi
 } from '@fullcalendar/common'
 import { Resource, buildResourceFields, ColSpec, ResourceApi, getPublicId } from '@fullcalendar/resource-common'
 import { ExpanderIcon } from './ExpanderIcon'
@@ -16,7 +16,7 @@ export interface SpreadsheetRowProps {
 }
 
 
-export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ComponentContext> {
+export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ViewContext> {
 
   render() {
     let { props } = this
@@ -216,7 +216,7 @@ interface HookPropOrigin {
   fieldValue: any
 }
 
-function massageHookProps(input: HookPropOrigin, context: ComponentContext): HookProps {
+function massageHookProps(input: HookPropOrigin, context: ViewContext): HookProps {
   return {
     resource: new ResourceApi(context, input.resource),
     fieldValue: input.fieldValue,

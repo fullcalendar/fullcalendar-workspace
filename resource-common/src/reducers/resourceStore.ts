@@ -1,15 +1,20 @@
-import { ReducerContext } from '@fullcalendar/common'
+import { CalendarContext } from '@fullcalendar/common'
 import { ResourceAction } from './resource-action'
 import { ResourceHash, ResourceInput, parseResource } from '../structs/resource'
 import { ResourceSource } from '../structs/resource-source'
 
+export function reduceResourceStore(
+  store: ResourceHash | null,
+  action: ResourceAction | null,
+  source: ResourceSource,
+  context: CalendarContext
+): ResourceHash {
 
-export function reduceResourceStore(store: ResourceHash | undefined, action: ResourceAction, source: ResourceSource, context: ReducerContext): ResourceHash {
+  if (!store || !action) {
+    return {}
+  }
+
   switch (action.type) {
-
-    case 'INIT':
-      return {}
-
     case 'RECEIVE_RESOURCES':
       return receiveRawResources(store, action.rawResources, action.fetchId, source, context)
 
@@ -27,7 +32,7 @@ export function reduceResourceStore(store: ResourceHash | undefined, action: Res
   }
 }
 
-function receiveRawResources(existingStore: ResourceHash, inputs: ResourceInput[], fetchId: string, source: ResourceSource, context: ReducerContext): ResourceHash {
+function receiveRawResources(existingStore: ResourceHash, inputs: ResourceInput[], fetchId: string, source: ResourceSource, context: CalendarContext): ResourceHash {
   if (source.latestFetchId === fetchId) {
     let nextStore: ResourceHash = {}
 

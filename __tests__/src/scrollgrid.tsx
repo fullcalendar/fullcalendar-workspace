@@ -8,7 +8,7 @@ IMPLEMENT forPrint in SimpleScrollGrid
 FREEZING happens sometimes, window resize
 */
 
-import { render, h, Fragment, ComponentContextType, Calendar, SimpleScrollGrid, OptionsInput } from '@fullcalendar/core'
+import { render, h, Fragment, ViewContextType, Calendar, SimpleScrollGrid, OptionsInput } from '@fullcalendar/core'
 import { ScrollGrid } from '@fullcalendar/scrollgrid'
 import dayGridPlugin from '@fullcalendar/daygrid' // we don't use. initializing Calendar requires one view plugin
 
@@ -30,9 +30,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let content = doSimple ? renderSimpleScrollGrid(doVGrow, forPrint) : renderScrollGrid(doVGrow, forPrint)
 
     render(
-      <ComponentContextType.Provider value={null /* BROKEN! */}>
+      <ViewContextType.Provider value={null /* BROKEN! */}>
         {content}
-      </ComponentContextType.Provider>,
+      </ViewContextType.Provider>,
       el
     )
   }

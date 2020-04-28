@@ -1,4 +1,4 @@
-import { DateRange, ReducerContext, requestJson } from '@fullcalendar/common'
+import { DateRange, CalendarContext, requestJson } from '@fullcalendar/common'
 import { registerResourceSourceDef } from '../structs/resource-source-def'
 import { __assign } from 'tslib'
 
@@ -41,7 +41,7 @@ registerResourceSourceDef({
 })
 
 // TODO: somehow consolidate with event json feed
-function buildRequestParams(meta: JsonFeedMeta, range: DateRange | null, context: ReducerContext) {
+function buildRequestParams(meta: JsonFeedMeta, range: DateRange | null, context: CalendarContext) {
   let { dateEnv, options } = context
   let startParam
   let endParam

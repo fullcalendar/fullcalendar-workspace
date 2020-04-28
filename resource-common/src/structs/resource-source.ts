@@ -1,4 +1,4 @@
-import { DateRange, ReducerContext } from '@fullcalendar/common'
+import { DateRange, CalendarContext } from '@fullcalendar/common'
 import { ResourceInput } from '../structs/resource'
 
 
@@ -23,7 +23,7 @@ export type ResourceFetcher = (
   arg: {
     resourceSource: ResourceSource
     range: DateRange | null
-    context: ReducerContext
+    context: CalendarContext
   },
   success: (res: { rawResources: ResourceInput[], xhr?: XMLHttpRequest }) => void,
   failure: (error: ResourceSourceError) => void

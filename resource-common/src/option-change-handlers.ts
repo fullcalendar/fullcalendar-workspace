@@ -1,11 +1,11 @@
-import { ReducerContext } from '@fullcalendar/common'
+import { CalendarContext } from '@fullcalendar/common'
 
 export const optionChangeHandlers = {
   resources: handleResources
 }
 
-function handleResources(newSourceInput, context: ReducerContext) {
-  let oldSourceInput = context.getCurrentState().resourceSource._raw
+function handleResources(newSourceInput, context: CalendarContext) {
+  let oldSourceInput = context.getCurrentData().resourceSource._raw
 
   if (oldSourceInput !== newSourceInput) {
     context.dispatch({

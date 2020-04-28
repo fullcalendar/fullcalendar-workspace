@@ -17,12 +17,14 @@ declare module '@fullcalendar/common' {
     refetchResources(): void
   }
 
-  interface ReducerContext {
+  interface CalendarContext {
     dispatch(action: ResourceAction): void
   }
 
-  interface CalendarState {
-    resourceSource?: ResourceSource | null
+  interface CalendarData {
+    // adding in ResourceState, but make all optional. we're polluting CalendarData globally and don't want to require them
+    // i wish TS allowed is to "mixin" one interface into a different ambient interface
+    resourceSource?: ResourceSource
     resourceStore?: ResourceHash
     resourceEntityExpansions?: ResourceEntityExpansions
   }

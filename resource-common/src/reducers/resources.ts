@@ -1,16 +1,27 @@
-import { CalendarState, ReducerContext } from '@fullcalendar/common'
+import { CalendarContext, DateProfile } from '@fullcalendar/common'
+import { ResourceSource } from '../structs/resource-source'
+import { ResourceHash } from '../structs/resource'
 import { reduceResourceSource } from './resourceSource'
 import { reduceResourceStore } from './resourceStore'
-import { reduceResourceEntityExpansions } from './resourceEntityExpansions'
+import { reduceResourceEntityExpansions, ResourceEntityExpansions } from './resourceEntityExpansions'
 import { ResourceAction } from './resource-action'
 
-export function reduceResources(state: CalendarState, action: ResourceAction, context: ReducerContext) {
-  let resourceSource = reduceResourceSource(state.resourceSource, action, state.dateProfile, context)
-  let resourceStore = reduceResourceStore(state.resourceStore, action, resourceSource, context)
-  let resourceEntityExpansions = reduceResourceEntityExpansions(state.resourceEntityExpansions, action)
+export interface ResourceState {
+  resourceSource: ResourceSource
+  resourceStore: ResourceHash
+  resourceEntityExpansions: ResourceEntityExpansions
+}
+
+export function reduceResources(
+  state: ResourceState | null,
+  action: ResourceAction | null,
+  context: CalendarContext & { dateProfile: DateProfile }
+) {
+  let resourceSource = reduceResourceSource(state && state.resourceSource, action, context)
+  let resourceStore = reduceResourceStore(state && state.resourceStore, action, resourceSource, context)
+  let resourceEntityExpansions = reduceResourceEntityExpansions(state && state.resourceEntityExpansions, action)
 
   return {
-    ...state,
     resourceSource,
     resourceStore,
     resourceEntityExpansions

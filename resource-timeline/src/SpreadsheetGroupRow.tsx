@@ -1,4 +1,4 @@
-import { h, Fragment, BaseComponent, ComponentContext, CssDimValue, createRef, RenderHook, RefObject } from '@fullcalendar/common'
+import { h, Fragment, BaseComponent, ViewContext, CssDimValue, createRef, RenderHook, RefObject } from '@fullcalendar/common'
 import { Group, isGroupsEqual } from '@fullcalendar/resource-common'
 import { ExpanderIcon } from './ExpanderIcon'
 
@@ -12,7 +12,7 @@ export interface SpreadsheetGroupRowProps {
 }
 
 
-export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps, ComponentContext> {
+export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps, ViewContext> {
 
   innerInnerRef: RefObject<HTMLDivElement> = createRef<HTMLDivElement>()
 

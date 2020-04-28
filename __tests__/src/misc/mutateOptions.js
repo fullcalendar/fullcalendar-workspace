@@ -15,7 +15,7 @@ function buildOptions() {
   }
 }
 
-describe('mutateOptions', function() {
+describe('resetOptions', function() { // TODO: rename file
   let $calendarEl
   let calendar
 
@@ -36,7 +36,7 @@ describe('mutateOptions', function() {
     let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
     let dateEl = calendarWrapper.getFirstDateEl()
 
-    calendar.mutateOptions({
+    calendar.resetOptions({
       resources: [
         { id: 'a', title: 'Resource A' }
       ]

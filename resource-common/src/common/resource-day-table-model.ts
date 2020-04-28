@@ -1,4 +1,4 @@
-import { ReducerContext, SlicedProps, EventDef, mapHash, Splitter, DayTableModel, DayTableCell, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/common'
+import { CalendarContext, SlicedProps, EventDef, mapHash, Splitter, DayTableModel, DayTableCell, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/common'
 import { Resource } from '../structs/resource'
 import { __assign } from 'tslib'
 import { ResourceApi } from '../api/ResourceApi'
@@ -18,7 +18,7 @@ export abstract class AbstractResourceDayTableModel {
   constructor(
     public dayTableModel: DayTableModel,
     public resources: Resource[],
-    private context: ReducerContext
+    private context: CalendarContext
   ) {
     this.resourceIndex = new ResourceIndex(resources)
 

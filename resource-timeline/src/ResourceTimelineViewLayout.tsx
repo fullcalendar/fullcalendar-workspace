@@ -1,5 +1,5 @@
 import {
-  h, createRef, ComponentContext,
+  h, createRef, ViewContext,
   CssDimValue, ElementDragging, PointerDragEvent, BaseComponent, ColProps,
   ChunkConfigRowContent, ChunkConfigContent, ScrollGridSectionConfig,
   renderScrollShim,
@@ -37,7 +37,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
   private rootElRef = createRef<HTMLElement>()
 
 
-  constructor(props: ResourceTimelineViewLayoutProps, context: ComponentContext) {
+  constructor(props: ResourceTimelineViewLayoutProps, context: ViewContext) {
     super(props, context)
 
     this.state = {

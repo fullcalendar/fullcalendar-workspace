@@ -1,6 +1,6 @@
 import {
   h, createRef,
-  parseFieldSpecs, ComponentContext, memoize,
+  parseFieldSpecs, ViewContext, memoize,
   Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache, ScrollRequest, ScrollResponder, ViewRoot, BaseComponent,
 } from '@fullcalendar/common'
 import {
@@ -49,7 +49,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   private scrollResponder: ScrollResponder
 
 
-  constructor(props: ResourceViewProps, context: ComponentContext) {
+  constructor(props: ResourceViewProps, context: ViewContext) {
     super(props, context)
 
     this.state = {

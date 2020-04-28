@@ -1,5 +1,5 @@
 import {
-  h, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs, ReducerContext
+  h, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs, CalendarContext
 } from '@fullcalendar/common'
 import { TimeColsView, buildTimeColsModel, buildSlatMetas } from '@fullcalendar/timegrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
@@ -94,7 +94,7 @@ function buildResourceTimeColsModel(
   dateProfileGenerator: DateProfileGenerator,
   resources: Resource[],
   datesAboveResources: boolean,
-  context: ReducerContext
+  context: CalendarContext
 ) {
   let dayTable = buildTimeColsModel(dateProfile, dateProfileGenerator)
 

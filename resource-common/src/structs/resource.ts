@@ -1,4 +1,4 @@
-import { ConstraintInput, AllowFunc, refineProps, EventStore, parseBusinessHours, ReducerContext, EventUi, processScopedUiProps, BusinessHoursInput, guid } from '@fullcalendar/common'
+import { ConstraintInput, AllowFunc, refineProps, EventStore, parseBusinessHours, CalendarContext, EventUi, processScopedUiProps, BusinessHoursInput, guid } from '@fullcalendar/common'
 
 export interface ResourceInput {
   id?: string
@@ -49,7 +49,7 @@ const PRIVATE_ID_PREFIX = '_fc:'
 /*
 needs a full store so that it can populate children too
 */
-export function parseResource(input: ResourceInput, parentId: string = '', store: ResourceHash, context: ReducerContext): Resource {
+export function parseResource(input: ResourceInput, parentId: string = '', store: ResourceHash, context: CalendarContext): Resource {
   let leftovers0 = {}
   let props = refineProps(input, RESOURCE_PROPS, {}, leftovers0)
   let leftovers1 = {}
