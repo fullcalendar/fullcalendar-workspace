@@ -15,7 +15,7 @@ export interface ResourceState {
 export function reduceResources(
   state: ResourceState | null,
   action: ResourceAction | null,
-  context: CalendarContext & { dateProfile: DateProfile }
+  context: CalendarContext & { dateProfile: DateProfile, loadingLevel: number }
 ) {
   let resourceSource = reduceResourceSource(state && state.resourceSource, action, context)
   let resourceStore = reduceResourceStore(state && state.resourceStore, action, resourceSource, context)
@@ -24,6 +24,7 @@ export function reduceResources(
   return {
     resourceSource,
     resourceStore,
-    resourceEntityExpansions
+    resourceEntityExpansions,
+    loadingLevel: context.loadingLevel + (resourceSource.isFetching ? 1 : 0)
   }
 }
