@@ -40,7 +40,7 @@ describe('resetOptions', function() { // TODO: rename file
       resources: [
         { id: 'a', title: 'Resource A' }
       ]
-    })
+    }, true)
 
     expect(timelineGridWrapper.getResourceIds()).toEqual([ 'a' ])
     expect(calendarWrapper.getFirstDateEl()).toBe(dateEl)

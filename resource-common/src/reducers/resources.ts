@@ -25,6 +25,6 @@ export function reduceResources(
     resourceSource,
     resourceStore,
     resourceEntityExpansions,
-    loadingLevel: context.loadingLevel + (resourceSource.isFetching ? 1 : 0)
+    loadingLevel: context.loadingLevel + ((resourceSource && resourceSource.isFetching) ? 1 : 0)
   }
 }
