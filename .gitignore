@@ -1,5 +1,8 @@
 
-dist
+/*/*.js
+/*/*.d.ts
+/*/*.css
+/bundle/locales
 
 # npm
 node_modules

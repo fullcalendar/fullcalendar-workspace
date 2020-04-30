@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "fullcalendar-scheduler",
   "version": "5.0.0-beta.2",
   "devDependencies": {
@@ -15,5 +14,7 @@
     "@fullcalendar/resource-daygrid": "5.0.0-beta.2",
     "@fullcalendar/resource-timegrid": "5.0.0-beta.2",
     "@fullcalendar/resource-timeline": "5.0.0-beta.2"
-  }
+  },
+  "main": "main.js",
+  "types": "main.d.ts"
 }
