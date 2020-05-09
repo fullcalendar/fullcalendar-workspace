@@ -1,7 +1,7 @@
 import {
   h, createRef,
   parseFieldSpecs, ViewContext, memoize,
-  Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache, ScrollRequest, ScrollResponder, ViewRoot, BaseComponent,
+  Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache, ScrollRequest, ScrollResponder, ViewRoot, BaseComponent, RefinedViewOptions,
 } from '@fullcalendar/common'
 import {
   buildTimelineDateProfile, TimelineHeader,
@@ -144,7 +144,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
                   eventDrag={props.eventDrag}
                   eventResize={props.eventResize}
                   resourceStore={props.resourceStore}
-                  nextDayThreshold={context.computedOptions.nextDayThreshold}
+                  nextDayThreshold={context.options.nextDayThreshold}
                   rowInnerHeights={contentArg.rowSyncHeights}
                   onSlatCoords={this.handleSlatCoords}
                   onRowCoords={this.handleRowCoords}
@@ -359,7 +359,7 @@ function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
 }
 
 
-function processColOptions(options) {
+function processColOptions(options: RefinedViewOptions) {
   let allColSpecs: ColSpec[] = options.resourceAreaColumns || []
   let superHeaderRendering = null
 
@@ -416,10 +416,10 @@ function processColOptions(options) {
       groupSpecs.push({
         field: hGroupField,
 
-        headerClassNames: options.resourceGroupLabelClassNames,
-        headerContent: options.resourceGroupLabelContent,
-        headerDidMount: options.resourceGroupLabelDidMount,
-        headerWillUnmount: options.resourceGroupLabelWillUnmount,
+        labelClassNames: options.resourceGroupLabelClassNames,
+        labelContent: options.resourceGroupLabelContent,
+        labelDidMount: options.resourceGroupLabelDidMount,
+        labelWillUnmount: options.resourceGroupLabelWillUnmount,
 
         laneClassNames: options.resourceGroupLaneClassNames,
         laneContent: options.resourceGroupLaneContent,

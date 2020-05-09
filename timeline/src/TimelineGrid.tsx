@@ -31,7 +31,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
 
   render() {
     let { props, state, context } = this
-    let { options, computedOptions } = context
+    let { options } = context
     let { dateProfile, tDateProfile } = props
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
 
@@ -59,7 +59,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
             tDateProfile={props.tDateProfile}
             nowDate={nowDate}
             todayRange={todayRange}
-            nextDayThreshold={computedOptions.nextDayThreshold}
+            nextDayThreshold={options.nextDayThreshold}
             businessHours={props.businessHours}
             eventStore={props.eventStore}
             eventUiBases={props.eventUiBases}

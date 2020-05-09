@@ -1,5 +1,5 @@
 import { h, Fragment, BaseComponent, ViewContext, CssDimValue, createRef, RenderHook, RefObject } from '@fullcalendar/common'
-import { Group, isGroupsEqual } from '@fullcalendar/resource-common'
+import { Group, isGroupsEqual, ColCellHookProps } from '@fullcalendar/resource-common'
 import { ExpanderIcon } from './ExpanderIcon'
 
 
@@ -12,6 +12,7 @@ export interface SpreadsheetGroupRowProps {
 }
 
 
+// for HORIZONTAL cell grouping, in spreadsheet area
 export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps, ViewContext> {
 
   innerInnerRef: RefObject<HTMLDivElement> = createRef<HTMLDivElement>()
@@ -19,14 +20,19 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
 
   render() {
     let { props, context } = this
-    let hookProps = {
-      groupValue: props.group.value
-    }
+    let hookProps: ColCellHookProps = { groupValue: props.group.value, view: context.viewApi }
+    let spec = props.group.spec
 
     return (
       <tr>
-        {/* 'header' is a bad name. should be 'label' instead. needed to do this because of GroupSpec */}
-        <RenderHook name='header' options={props.group.spec} hookProps={hookProps} defaultContent={renderCellInner}>
+        <RenderHook<ColCellHookProps>
+          hookProps={hookProps}
+          classNames={spec.labelClassNames}
+          content={spec.labelContent}
+          defaultContent={renderCellInner}
+          didMount={spec.labelDidMount}
+          willUnmount={spec.labelWillUnmount}
+        >
           {(rootElRef, classNames, innerElRef, innerContent) => (
             <td className={[ 'fc-datagrid-cell', 'fc-resource-group', context.theme.getClass('tableCellShaded') ].concat(classNames).join(' ')} colSpan={props.spreadsheetColCnt} ref={rootElRef}>
               <div className='fc-datagrid-cell-frame' style={{ height: props.innerHeight }}>

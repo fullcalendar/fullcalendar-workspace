@@ -1,16 +1,16 @@
-import { StandardEvent, MinimalEventProps, h, BaseComponent, EventMeta, Fragment } from '@fullcalendar/common'
+import { StandardEvent, MinimalEventProps, h, BaseComponent, EventMeta, Fragment, createFormatter } from '@fullcalendar/common'
 
 
 export interface TimelineEventProps extends MinimalEventProps {
   isTimeScale: boolean
 }
 
-const DEFAULT_TIME_FORMAT = {
+const DEFAULT_TIME_FORMAT = createFormatter({
   hour: 'numeric',
   minute: '2-digit',
   omitZeroMinute: true,
   meridiem: 'narrow'
-}
+})
 
 
 export class TimelineEvent extends BaseComponent<TimelineEventProps> {

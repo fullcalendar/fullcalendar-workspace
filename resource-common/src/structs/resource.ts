@@ -1,4 +1,4 @@
-import { ConstraintInput, AllowFunc, refineProps, EventStore, parseBusinessHours, CalendarContext, EventUi, processScopedUiProps, BusinessHoursInput, guid } from '@fullcalendar/common'
+import { ConstraintInput, AllowFunc, refineProps, EventStore, parseBusinessHours, CalendarContext, EventUi, BusinessHoursInput, guid, processUiProps, EVENT_SCOPED_RAW_UI_PROPS } from '@fullcalendar/common'
 
 export interface ResourceInput {
   id?: string
@@ -13,7 +13,6 @@ export interface ResourceInput {
   eventConstraint?: ConstraintInput
   eventOverlap?: boolean
   eventAllow?: AllowFunc
-  eventClassName?: string[] | string
   eventClassNames?: string[] | string
   eventBackgroundColor?: string
   eventBorderColor?: string
@@ -41,7 +40,8 @@ const RESOURCE_PROPS = {
   parentId: String,
   businessHours: null,
   children: null,
-  extendedProps: null
+  extendedProps: null,
+  ...EVENT_SCOPED_RAW_UI_PROPS
 }
 
 const PRIVATE_ID_PREFIX = '_fc:'
@@ -50,10 +50,21 @@ const PRIVATE_ID_PREFIX = '_fc:'
 needs a full store so that it can populate children too
 */
 export function parseResource(input: ResourceInput, parentId: string = '', store: ResourceHash, context: CalendarContext): Resource {
-  let leftovers0 = {}
-  let props = refineProps(input, RESOURCE_PROPS, {}, leftovers0)
-  let leftovers1 = {}
-  let ui = processScopedUiProps('event', leftovers0, context, leftovers1)
+  let leftovers = {}
+  let props = refineProps(input, RESOURCE_PROPS, {}, leftovers)
+  let ui = processUiProps({
+    display: props.eventDisplay,
+    editable: props.editable, // without "event" at start
+    startEditable: props.eventStartEditable,
+    durationEditable: props.eventDurationEditable,
+    constraint: props.eventConstraint,
+    overlap: props.eventOverlap,
+    allow: props.eventAllow,
+    backgroundColor: props.eventBackgroundColor,
+    borderColor: props.eventBorderColor,
+    textColor: props.eventTextColor,
+    classNames: props.eventClassNames
+  }, context)
 
   if (!props.id) {
     props.id = PRIVATE_ID_PREFIX + guid()
@@ -65,7 +76,7 @@ export function parseResource(input: ResourceInput, parentId: string = '', store
 
   props.businessHours = props.businessHours ? parseBusinessHours(props.businessHours, context) : null
   props.ui = ui
-  props.extendedProps = { ...leftovers1, ...props.extendedProps }
+  props.extendedProps = { ...leftovers, ...props.extendedProps }
 
   // help out ResourceApi from having user modify props
   Object.freeze(ui.classNames)

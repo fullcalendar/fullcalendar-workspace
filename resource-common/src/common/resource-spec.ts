@@ -1,38 +1,50 @@
+import { ViewApi, ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '@fullcalendar/common'
 import { ResourceApi } from '../api/ResourceApi'
 
-// a little bit strange to have references to "columns" here in common
+// strange to reference columns in resource-common
 
+export interface ColHeaderHookProps {
+  view: ViewApi
+}
 
-export interface ColSpec {
+export interface ColCellHookProps { // for a group too. make an OR-type?
+  resource?: ResourceApi // if a group, won't be for a specific resource
+  groupValue?: any
+  view: ViewApi
+}
+
+export interface ColHeaderRenderHooks {
+  headerClassNames?: ClassNameGenerator<ColHeaderHookProps>
+  headerContent?: CustomContentGenerator<ColHeaderHookProps>
+  headerDidMount?: DidMountHandler<ColHeaderHookProps>
+  headerWillUnmount?: WillUnmountHandler<ColHeaderHookProps>
+}
+
+export interface ColSpec extends ColHeaderRenderHooks {
   group?: boolean
   isMain?: boolean // whether its the first resource-specific unique cell for the row
   width?: number
   field?: string
 
-  headerClassNames?: (() => string[] | string) | string[] | string
-  headerContent?: (() => any) | any // TODO: the "any" args are Content
-  headerDidMount?: (arg: { el: HTMLElement }) => void
-  headerWillUnmount?: (arg: { el: HTMLElement }) => void
-
-  cellClassNames?: (arg: { resource: ResourceApi }) => string[] | string
-  cellContent?: (arg: { resource: ResourceApi }) => any // TODO: the "any" args are Content
-  cellDidMount?: (arg: { resource: ResourceApi, el: HTMLElement }) => void
-  cellWillUnmount?: (arg: { resource: ResourceApi, el: HTMLElement }) => void
+  cellClassNames?: ClassNameGenerator<ColCellHookProps>
+  cellContent?: CustomContentGenerator<ColCellHookProps>
+  cellDidMount?: DidMountHandler<ColCellHookProps>
+  cellWillUnmount?: WillUnmountHandler<ColCellHookProps>
 }
 
+export interface GroupLaneRenderHooks {
+  laneClassNames?: ClassNameGenerator<ColCellHookProps>
+  laneContent?: CustomContentGenerator<ColCellHookProps>
+  laneDidMount?: DidMountHandler<ColCellHookProps>
+  laneWillUnmount?: WillUnmountHandler<ColCellHookProps>
+}
 
-export interface GroupSpec { // best place for this?
+export interface GroupSpec extends GroupLaneRenderHooks { // best place for this?
   field?: string
   order?: number
 
-  // BAD name, for when horizontal. called label instead
-  headerClassNames?: ((groupValue: any) => string[] | string) | string[] | string // TODO: unnecessary OR-ing, but needs to be compat with ColSpec
-  headerContent?: ((groupValue: any) => any) | any // TODO: the "any" args are Content. SAME^
-  headerDidMount?: (arg: { groupValue: any, el: HTMLElement }) => void
-  headerWillUnmount?: (arg: { groupValue: any, el: HTMLElement }) => void
-
-  laneClassNames?: ((groupValue: any) => string[] | string) | string[] | string // TODO: unnecessary OR-ing, but needs to be compat with ColSpec
-  laneContent?: ((groupValue: any) => any) | any // TODO: the "any" args are Content. SAME^
-  laneDidMount?: (arg: { groupValue: any, el: HTMLElement }) => void
-  laneWillUnmount?: (arg: { groupValue: any, el: HTMLElement }) => void
+  labelClassNames?: ClassNameGenerator<ColCellHookProps>
+  labelContent?: CustomContentGenerator<ColCellHookProps>
+  labelDidMount?: DidMountHandler<ColCellHookProps>
+  labelWillUnmount?: WillUnmountHandler<ColCellHookProps>
 }

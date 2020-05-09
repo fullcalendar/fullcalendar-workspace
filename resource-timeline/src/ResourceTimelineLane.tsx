@@ -1,5 +1,5 @@
-import { h, Ref, BaseComponent, CssDimValue, buildHookClassNameGenerator, ContentHook, MountHook, elementClosest } from '@fullcalendar/common'
-import { Resource, ResourceApi } from '@fullcalendar/resource-common'
+import { h, Ref, BaseComponent, CssDimValue, buildClassNameNormalizer, ContentHook, MountHook, elementClosest, memoizeObjArg } from '@fullcalendar/common'
+import { Resource, ResourceApi, ResourceLaneHookProps, RawResourceLaneHookProps } from '@fullcalendar/resource-common'
 import { TimelineLane, TimelineLaneCoreProps } from '@fullcalendar/timeline'
 
 
@@ -13,18 +13,19 @@ export interface ResourceTimelineLaneProps extends TimelineLaneCoreProps {
 
 export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProps> {
 
-  buildClassNames = buildHookClassNameGenerator('resourceLane')
+  refineHookProps = memoizeObjArg(refineHookProps)
+  normalizeClassNames = buildClassNameNormalizer<ResourceLaneHookProps>()
 
 
   render() {
     let { props, context } = this
-    let hookPropOrigin = { resource: props.resource }
-    let hookProps = { resource: new ResourceApi(context, props.resource) }
-    let customClassNames = this.buildClassNames(hookProps, context, null, hookPropOrigin)
+    let { options } = context
+    let hookProps = this.refineHookProps({ resource: props.resource, context})
+    let customClassNames = this.normalizeClassNames(options.resourceLaneClassNames, hookProps)
 
     return (
       <tr ref={props.elRef}>
-        <MountHook name='resourceLane' hookProps={hookProps}>
+        <MountHook hookProps={hookProps} didMount={options.resourceLaneDidMount} willUnmount={options.resourceLaneWillUnmount}>
           {(rootElRef) => (
             <td ref={rootElRef} className={[ 'fc-timeline-lane', 'fc-resource' ].concat(customClassNames).join(' ')} data-resource-id={props.resource.id}>
               <div className='fc-timeline-lane-frame' style={{ height: props.innerHeight }}>
@@ -74,10 +75,10 @@ class ResourceTimelineLaneMisc extends BaseComponent<ResourceTimelineLaneMiscPro
 
   render() {
     let { props, context } = this
-    let hookProps = { resource: new ResourceApi(context, props.resource) }
+    let hookProps: ResourceLaneHookProps = { resource: new ResourceApi(context, props.resource) } // just easier to make directly
 
     return (
-      <ContentHook name='resourceLane' hookProps={hookProps}>
+      <ContentHook hookProps={hookProps} content={context.options.resourceLaneContent}>
         {(innerElRef, innerContent) => (
           innerContent && // TODO: test how this would interfere with height
             <div className='fc-timeline-lane-misc' ref={innerElRef}>{innerContent}</div>
@@ -86,4 +87,11 @@ class ResourceTimelineLaneMisc extends BaseComponent<ResourceTimelineLaneMiscPro
     )
   }
 
+}
+
+
+function refineHookProps(raw: RawResourceLaneHookProps): ResourceLaneHookProps {
+  return {
+    resource: new ResourceApi(raw.context, raw.resource)
+  }
 }

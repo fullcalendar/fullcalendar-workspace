@@ -2,11 +2,11 @@ import {
   VNode, h, Fragment,
   BaseComponent, ElementDragging, elementClosest, PointerDragEvent, RefMap, findElements, RenderHook,
 } from '@fullcalendar/common'
-import { ColSpec } from '@fullcalendar/resource-common'
+import { ColSpec, ColHeaderHookProps, ColHeaderRenderHooks } from '@fullcalendar/resource-common'
 
 
 export interface SpreadsheetHeaderProps {
-  superHeaderRendering: { headerClassNames?, headerContent?, headerDidMount?, headerWillUnmount? }
+  superHeaderRendering: ColHeaderRenderHooks
   colSpecs: ColSpec[]
   rowInnerHeights: number[]
   onColWidthChange?: (colWidths: number[]) => void
@@ -23,7 +23,7 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
 
   render() {
     let { colSpecs, superHeaderRendering, rowInnerHeights } = this.props
-    let hookProps = { view: this.context.viewApi }
+    let hookProps: ColHeaderHookProps = { view: this.context.viewApi }
     let rowNodes: VNode[] = []
 
     rowInnerHeights = rowInnerHeights.slice() // copy, because we're gonna pop
@@ -32,7 +32,13 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
       let rowInnerHeight = rowInnerHeights.shift()
       rowNodes.push(
         <tr>
-          <RenderHook name='header' hookProps={hookProps} options={superHeaderRendering}>
+          <RenderHook
+            hookProps={hookProps}
+            classNames={superHeaderRendering.headerClassNames}
+            content={superHeaderRendering.headerContent}
+            didMount={superHeaderRendering.headerDidMount}
+            willUnmount={superHeaderRendering.headerWillUnmount}
+          >
             {(rootElRef, classNames, innerElRef, innerContent) => (
               <th colSpan={colSpecs.length} className={[ 'fc-datagrid-cell', 'fc-datagrid-cell-super' ].concat(classNames).join(' ')} ref={rootElRef}>
                 <div className='fc-datagrid-cell-frame' style={{ height: rowInnerHeight }}>
@@ -55,7 +61,13 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
 
           // need empty inner div for abs positioning for resizer
           return (
-            <RenderHook name='header' hookProps={hookProps} options={colSpec}>
+            <RenderHook
+              hookProps={hookProps}
+              classNames={colSpec.headerClassNames}
+              content={colSpec.headerContent}
+              didMount={colSpec.headerDidMount}
+              willUnmount={colSpec.headerWillUnmount}
+            >
               {(rootElRef, classNames, innerElRef, innerContent) => (
                 <th ref={rootElRef} className={[ 'fc-datagrid-cell' ].concat(classNames).join(' ')}>
                   <div className='fc-datagrid-cell-frame' style={{ height: rowInnerHeight }}>

@@ -1,6 +1,6 @@
 import {
   VNode, h, TableDowCell,
-  memoize, BaseComponent, DateMarker, createFormatter, DateFormatter, computeFallbackHeaderFormat, TableDateCell, Fragment, DateRange, NowTimer, Ref, ComponentChildren, DateProfile
+  memoize, BaseComponent, DateMarker, DateFormatter, computeFallbackHeaderFormat, TableDateCell, Fragment, DateRange, NowTimer, Ref, ComponentChildren, DateProfile
 } from '@fullcalendar/common'
 import { Resource } from '../structs/resource'
 import { ResourceLabelRoot } from './ResourceLabelRoot'
@@ -172,11 +172,8 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
 }
 
 
-function buildDateFormat(dayHeaderFormat, datesRepDistinctDays, dayCnt) {
-  return createFormatter(
-    dayHeaderFormat ||
-    computeFallbackHeaderFormat(datesRepDistinctDays, dayCnt)
-  )
+function buildDateFormat(dayHeaderFormat: DateFormatter, datesRepDistinctDays, dayCnt) {
+  return dayHeaderFormat || computeFallbackHeaderFormat(datesRepDistinctDays, dayCnt)
 }
 
 

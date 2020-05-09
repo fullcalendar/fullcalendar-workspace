@@ -11,7 +11,9 @@ import { transformExternalDef } from './ExternalElementDragging'
 import { transformEventResizeJoin } from './EventResizing'
 import './api/EventApi'
 import { buildLicenseWarning } from './license'
+export { ResourceLaneHookProps, RawResourceLaneHookProps } from './render-hooks'
 import { optionChangeHandlers } from './option-change-handlers'
+import { OPTION_REFINERS } from './options'
 
 // TODO: plugin-ify
 import './resource-sources/resource-array'
@@ -33,7 +35,8 @@ export default createPlugin({
   eventResizeJoinTransforms: [ transformEventResizeJoin ],
   viewContainerAppends: [ buildLicenseWarning ],
   eventDropTransformers: [ transformEventDrop ],
-  optionChangeHandlers
+  optionChangeHandlers,
+  optionRefiners: OPTION_REFINERS
 })
 
 export { ResourceDayHeader } from './common/ResourceDayHeader'
@@ -41,7 +44,7 @@ export { VResourceJoiner, AbstractResourceDayTableModel, ResourceDayTableModel, 
 export { Resource, ResourceHash, getPublicId } from './structs/resource'
 export { ResourceViewProps } from './View'
 export { flattenResources, Group, isGroupsEqual, GroupNode, ResourceNode, buildRowNodes, buildResourceFields } from './common/resource-hierarchy'
-export { ColSpec, GroupSpec } from './common/resource-spec'
+export { ColSpec, GroupSpec, GroupLaneRenderHooks, ColCellHookProps, ColHeaderHookProps, ColHeaderRenderHooks } from './common/resource-spec'
 export { ResourceApi } from './api/ResourceApi'
 export { ResourceSplitter } from './common/ResourceSplitter'
 

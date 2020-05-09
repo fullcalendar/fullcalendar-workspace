@@ -8,13 +8,13 @@ IMPLEMENT forPrint in SimpleScrollGrid
 FREEZING happens sometimes, window resize
 */
 
-import { render, h, Fragment, ViewContextType, Calendar, SimpleScrollGrid, OptionsInput } from '@fullcalendar/core'
+import { render, h, Fragment, ViewContextType, Calendar, SimpleScrollGrid, RawCalendarOptions } from '@fullcalendar/core'
 import { ScrollGrid } from '@fullcalendar/scrollgrid'
 import dayGridPlugin from '@fullcalendar/daygrid' // we don't use. initializing Calendar requires one view plugin
 
 let doSimple = false
 let doVGrow = true
-let options: OptionsInput = {
+let options: RawCalendarOptions = {
   direction: 'ltr',
   themeSystem: 'standard',
   plugins: [ dayGridPlugin ]

@@ -1,6 +1,6 @@
 import {
   config, computeVisibleDayRange, Duration, DateProfile, isSingleDay, addDays, wholeDivideDurations, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs,
-  createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator
+  createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator, RefinedBaseOptions
 } from '@fullcalendar/common'
 
 export interface TimelineDateProfile {
@@ -61,10 +61,10 @@ const STOCK_SUB_DURATIONS = [ // from largest to smallest
 ]
 
 
-export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: DateEnv, allOptions: any, dateProfileGenerator: DateProfileGenerator): TimelineDateProfile {
+export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: DateEnv, allOptions: RefinedBaseOptions, dateProfileGenerator: DateProfileGenerator): TimelineDateProfile {
   let tDateProfile = {
-    labelInterval: queryDurationOption(allOptions, 'slotLabelInterval'),
-    slotDuration: queryDurationOption(allOptions, 'slotDuration')
+    labelInterval: allOptions.slotLabelInterval,
+    slotDuration: allOptions.slotDuration
   } as TimelineDateProfile
 
   validateLabelAndSlot(tDateProfile, dateProfile, dateEnv) // validate after computed grid duration
@@ -262,14 +262,6 @@ export function isValidDate(date: DateMarker, tDateProfile: TimelineDateProfile,
 }
 
 
-function queryDurationOption(allOptions: any, name: string) {
-  const input = allOptions[name]
-  if (input != null) {
-    return createDuration(input)
-  }
-}
-
-
 function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateEnv: DateEnv) {
   const { currentRange } = dateProfile
 
@@ -399,7 +391,7 @@ function ensureSlotDuration(tDateProfile: TimelineDateProfile, dateProfile: Date
 }
 
 
-function computeHeaderFormats(tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateEnv: DateEnv, allOptions: any) {
+function computeHeaderFormats(tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateEnv: DateEnv, allOptions: RefinedBaseOptions) {
   let format1
   let format2
   const { labelInterval } = tDateProfile

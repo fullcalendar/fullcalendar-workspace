@@ -15,7 +15,7 @@ export interface ResourceLabelRootProps {
   ) => ComponentChildren
 }
 
-interface ResourceInnerProps {
+export interface ResourceLabelHookProps {
   resource: ResourceApi
   date?: Date
   view: ViewApi
@@ -29,7 +29,8 @@ export function ResourceLabelRoot(props: ResourceLabelRootProps) {
   return (
     <ViewContextType.Consumer>
       {(context: ViewContext) => {
-        let hookProps: ResourceInnerProps = {
+        let { options } = context
+        let hookProps: ResourceLabelHookProps = {
           resource: new ResourceApi(context, props.resource),
           date: props.date ? context.dateEnv.toDate(props.date) : null,
           view: context.viewApi
@@ -41,7 +42,14 @@ export function ResourceLabelRoot(props: ResourceLabelRootProps) {
         }
 
         return (
-          <RenderHook name='resourceLabel' hookProps={hookProps} defaultContent={renderInnerContent}>
+          <RenderHook<ResourceLabelHookProps>
+            hookProps={hookProps}
+            classNames={options.resourceLabelClassNames}
+            content={options.resourceLabelContent}
+            defaultContent={renderInnerContent}
+            didMount={options.resourceLabelDidMount}
+            willUnmount={options.resourceLabelWillUnmount}
+          >
             {(rootElRef, classNames, innerElRef, innerContent) => props.children(
               rootElRef,
               classNames, // TODO: pass in 'fc-resource' ?
@@ -57,6 +65,6 @@ export function ResourceLabelRoot(props: ResourceLabelRootProps) {
 }
 
 
-function renderInnerContent(props: ResourceInnerProps) {
+function renderInnerContent(props: ResourceLabelHookProps) {
   return props.resource.title || props.resource.id
 }

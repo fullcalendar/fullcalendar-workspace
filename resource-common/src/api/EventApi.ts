@@ -1,6 +1,5 @@
 import { EventApi } from '@fullcalendar/common'
 import { ResourceApi } from './ResourceApi'
-import '../ambient'
 
 
 EventApi.prototype.getResources = function(this: EventApi): ResourceApi[] {
@@ -10,6 +9,7 @@ EventApi.prototype.getResources = function(this: EventApi): ResourceApi[] {
     return calendarApi.getResourceById(resourceId)
   })
 }
+
 
 EventApi.prototype.setResources = function(this: EventApi, resources: (string | ResourceApi)[]) {
   let resourceIds = []

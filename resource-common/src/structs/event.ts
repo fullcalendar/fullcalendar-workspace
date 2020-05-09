@@ -1,5 +1,4 @@
 import { EventDef, refineProps } from '@fullcalendar/common'
-import '../ambient'
 
 
 const RESOURCE_RELATED_PROPS = {
@@ -11,6 +10,7 @@ const RESOURCE_RELATED_PROPS = {
   },
   resourceEditable: Boolean
 }
+
 
 export function parseEventDef(def: EventDef, props, leftovers) {
   let resourceRelatedProps = refineProps(props, RESOURCE_RELATED_PROPS, {}, leftovers)

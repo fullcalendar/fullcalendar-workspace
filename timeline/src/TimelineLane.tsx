@@ -69,7 +69,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       []
 
     let segHorizontals = this.computeFgSegHorizontals(slicedProps.fgEventSegs, props.timelineCoords) // ONLY for non-mirror. needed?
-    let { segTops, height } = this.computeSegVerticals(slicedProps.fgEventSegs, context.computedOptions.eventOrderSpecs, state.segDims)
+    let { segTops, height } = this.computeSegVerticals(slicedProps.fgEventSegs, context.options.eventOrderSpecs, state.segDims)
 
     let hiddenSegs = // TODO: more convenient
       (slicedProps.eventDrag ? slicedProps.eventDrag.affectedInstances : null) ||

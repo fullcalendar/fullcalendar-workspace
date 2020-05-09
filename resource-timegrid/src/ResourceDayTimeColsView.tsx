@@ -19,7 +19,7 @@ export class ResourceDayTimeColsView extends TimeColsView {
 
   render() {
     let { props, context } = this
-    let { options, computedOptions, dateEnv } = context
+    let { options, dateEnv } = context
     let { dateProfile } = props
 
     let splitProps = this.allDaySplitter.splitProps(props)
@@ -33,7 +33,7 @@ export class ResourceDayTimeColsView extends TimeColsView {
       context
     )
 
-    let slatMetas = this.buildSlatMetas(dateProfile.slotMinTime, dateProfile.slotMaxTime, options.slotLabelInterval, computedOptions.slotDuration, dateEnv)
+    let slatMetas = this.buildSlatMetas(dateProfile.slotMinTime, dateProfile.slotMaxTime, options.slotLabelInterval, options.slotDuration, dateEnv)
     let { dayMinWidth } = options
 
     let headerContent = options.dayHeaders &&
@@ -45,12 +45,12 @@ export class ResourceDayTimeColsView extends TimeColsView {
         renderIntro={dayMinWidth ? null : this.renderHeadAxis}
       />
 
-    let allDayContent = options.allDaySlot && ((contentArg: ChunkContentCallbackArgs) => (
+    let allDayContent = (options.allDaySlot !== false) && ((contentArg: ChunkContentCallbackArgs) => (
       <ResourceDayTable
         {...splitProps['allDay']}
         dateProfile={dateProfile}
         resourceDayTableModel={resourceDayTableModel}
-        nextDayThreshold={computedOptions.nextDayThreshold}
+        nextDayThreshold={options.nextDayThreshold}
         tableMinWidth={contentArg.tableMinWidth}
         colGroupNode={contentArg.tableColGroupNode}
         renderRowIntro={dayMinWidth ? null : this.renderTableRowAxis}
@@ -68,7 +68,7 @@ export class ResourceDayTimeColsView extends TimeColsView {
         {...splitProps['timed']}
         dateProfile={dateProfile}
         axis={!dayMinWidth}
-        slotDuration={computedOptions.slotDuration}
+        slotDuration={options.slotDuration}
         slatMetas={slatMetas}
         resourceDayTableModel={resourceDayTableModel}
         tableColGroupNode={contentArg.tableColGroupNode}
