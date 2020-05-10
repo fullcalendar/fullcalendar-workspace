@@ -43,9 +43,3 @@ export const OPTION_REFINERS = {
   resourceGroupLaneDidMount: identity as Identity<DidMountHandler<ColCellHookProps>>,
   resourceGroupLaneWillUnmount: identity as Identity<WillUnmountHandler<ColCellHookProps>>
 }
-
-// add types
-type ExtraOptionRefiners = typeof OPTION_REFINERS
-declare module '@fullcalendar/common' {
-  interface BaseOptionRefiners extends ExtraOptionRefiners {}
-}

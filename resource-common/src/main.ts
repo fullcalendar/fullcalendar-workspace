@@ -14,6 +14,7 @@ import { buildLicenseWarning } from './license'
 export { ResourceLaneHookProps, RawResourceLaneHookProps } from './render-hooks'
 import { optionChangeHandlers } from './option-change-handlers'
 import { OPTION_REFINERS } from './options'
+import './options-declare'
 
 // TODO: plugin-ify
 import './resource-sources/resource-array'
