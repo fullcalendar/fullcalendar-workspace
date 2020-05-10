@@ -1,4 +1,4 @@
-import { ConstraintInput, AllowFunc, refineProps, EventStore, parseBusinessHours, CalendarContext, EventUi, BusinessHoursInput, guid, processUiProps, EVENT_SCOPED_RAW_UI_PROPS } from '@fullcalendar/common'
+import { ConstraintInput, AllowFunc, refineProps, EventStore, parseBusinessHours, CalendarContext, EventUi, BusinessHoursInput, guid, processUiProps, UI_PROPS_REFINERS } from '@fullcalendar/common'
 
 export interface ResourceInput {
   id?: string
@@ -41,7 +41,7 @@ const RESOURCE_PROPS = {
   businessHours: null,
   children: null,
   extendedProps: null,
-  ...EVENT_SCOPED_RAW_UI_PROPS
+  ...UI_PROPS_REFINERS
 }
 
 const PRIVATE_ID_PREFIX = '_fc:'

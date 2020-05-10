@@ -1,6 +1,6 @@
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
-import { sortEventSegs } from '@fullcalendar/common'
+import { sortEventSegs, OrderSpec } from '@fullcalendar/common'
 
 
 export function computeSegHorizontals(segs: TimelineLaneSeg[], timelineCoords?: TimelineCoords) {
@@ -30,7 +30,7 @@ interface Placement {
 }
 
 
-export function computeSegVerticals(segs: TimelineLaneSeg[], eventOrderSpecs, dimHash: { [key: string]: TimelineSegDims } | null) {
+export function computeSegVerticals(segs: TimelineLaneSeg[], eventOrderSpecs: OrderSpec[], dimHash: { [key: string]: TimelineSegDims } | null) {
   let placements: Placement[] = [] // sorted by top
   let maxBottom = 0
 
