@@ -1,7 +1,6 @@
 import {
-  h, createRef,
-  parseFieldSpecs, ViewContext, memoize,
-  Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache, ScrollRequest, ScrollResponder, ViewRoot, BaseComponent, RefinedViewOptions,
+  h, createRef, ViewContext, memoize,
+  Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache, ScrollRequest, ScrollResponder, ViewRoot, BaseComponent, ViewOptionsRefined,
 } from '@fullcalendar/common'
 import {
   buildTimelineDateProfile, TimelineHeader,
@@ -359,7 +358,7 @@ function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
 }
 
 
-function processColOptions(options: RefinedViewOptions) {
+function processColOptions(options: ViewOptionsRefined) {
   let allColSpecs: ColSpec[] = options.resourceAreaColumns || []
   let superHeaderRendering = null
 
@@ -429,7 +428,7 @@ function processColOptions(options: RefinedViewOptions) {
     }
   }
 
-  let allOrderSpecs = parseFieldSpecs(options.resourceOrder)
+  let allOrderSpecs = options.resourceOrder
   let plainOrderSpecs = []
 
   for (let orderSpec of allOrderSpecs) {

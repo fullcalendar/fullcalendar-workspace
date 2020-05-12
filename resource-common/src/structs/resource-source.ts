@@ -2,11 +2,11 @@ import { DateRange, CalendarContext } from '@fullcalendar/common'
 import { ResourceInput } from '../structs/resource'
 
 
-export interface ResourceSource {
+export interface ResourceSource<ResourceSourceMeta> {
   _raw: any
   sourceId: string
   sourceDefId: number // one of the few IDs that's a NUMBER not a string
-  meta: any
+  meta: ResourceSourceMeta
   publicId: string
   isFetching: boolean
   latestFetchId: string
@@ -19,9 +19,9 @@ export type ResourceSourceError = { // TODO: converge with EventSourceError
   [otherProp: string]: any
 }
 
-export type ResourceFetcher = (
+export type ResourceFetcher<ResourceSourceMeta> = (
   arg: {
-    resourceSource: ResourceSource
+    resourceSource: ResourceSource<ResourceSourceMeta>
     range: DateRange | null
     context: CalendarContext
   },

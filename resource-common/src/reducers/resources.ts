@@ -7,7 +7,7 @@ import { reduceResourceEntityExpansions, ResourceEntityExpansions } from './reso
 import { ResourceAction } from './resource-action'
 
 export interface ResourceState {
-  resourceSource: ResourceSource
+  resourceSource: ResourceSource<any>
   resourceStore: ResourceHash
   resourceEntityExpansions: ResourceEntityExpansions
 }

@@ -1,6 +1,7 @@
 import { DateRange, CalendarContext, requestJson } from '@fullcalendar/common'
 import { registerResourceSourceDef } from '../structs/resource-source-def'
 import { __assign } from 'tslib'
+import { ResourceSourceRefined } from '../structs/resource-source-parse'
 
 interface JsonFeedMeta {
   url: string
@@ -8,27 +9,24 @@ interface JsonFeedMeta {
   startParam?: string
   endParam?: string
   timeZoneParam?: string
-  extraParams?: any
+  extraParams?: object | (() => object)
 }
 
-registerResourceSourceDef({
+registerResourceSourceDef<JsonFeedMeta>({
 
-  parseMeta(raw: any): JsonFeedMeta | null {
-    if (typeof raw === 'string') {
-      raw = { url: raw }
-    } else if (!raw || typeof raw !== 'object' || !raw.url) {
-      return null
+  parseMeta(refined: ResourceSourceRefined) {
+    if (refined.url) {
+      return {
+        url: refined.url,
+        method: (refined.method || 'GET').toUpperCase(),
+        extraParams: refined.extraParams
+      }
     }
-
-    return {
-      url: raw.url,
-      method: (raw.method || 'GET').toUpperCase(),
-      extraParams: raw.extraParams
-    }
+    return null
   },
 
   fetch(arg, successCallback, failureCallback) {
-    let meta: JsonFeedMeta = arg.resourceSource.meta
+    let meta = arg.resourceSource.meta
     let requestParams = buildRequestParams(meta, arg.range, arg.context)
 
     requestJson(meta.method, meta.url, requestParams, function(rawResources, xhr) {

@@ -115,7 +115,7 @@ function renderInnerContent(props) { // TODO: add types
 // hook props
 // ----------
 
-interface RawHookProps {
+interface HookPropsInput {
   dateMarker: DateMarker
   text: string
   dateEnv: DateEnv
@@ -128,7 +128,7 @@ interface HookProps {
   text: string
 }
 
-function refineHookProps(input: RawHookProps): HookProps {
+function refineHookProps(input: HookPropsInput): HookProps {
   return {
     date: input.dateEnv.toDate(input.dateMarker),
     view: input.viewApi,

@@ -1,5 +1,5 @@
 import {
-  h, DateProfileGenerator, memoize, parseFieldSpecs, DateProfile, ChunkContentCallbackArgs, CalendarContext
+  h, DateProfileGenerator, memoize, DateProfile, ChunkContentCallbackArgs, CalendarContext
 } from '@fullcalendar/common'
 import { TimeColsView, buildTimeColsModel, buildSlatMetas } from '@fullcalendar/timegrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
@@ -13,7 +13,6 @@ export class ResourceDayTimeColsView extends TimeColsView {
 
   private flattenResources = memoize(flattenResources)
   private buildResourceTimeColsModel = memoize(buildResourceTimeColsModel)
-  private parseResourceOrder = memoize(parseFieldSpecs)
   private buildSlatMetas = memoize(buildSlatMetas)
 
 
@@ -23,7 +22,7 @@ export class ResourceDayTimeColsView extends TimeColsView {
     let { dateProfile } = props
 
     let splitProps = this.allDaySplitter.splitProps(props)
-    let resourceOrderSpecs = this.parseResourceOrder(options.resourceOrder)
+    let resourceOrderSpecs = options.resourceOrder
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
     let resourceDayTableModel = this.buildResourceTimeColsModel(
       dateProfile,

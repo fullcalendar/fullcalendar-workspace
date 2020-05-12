@@ -2,16 +2,18 @@ import { createPlugin } from '@fullcalendar/common'
 import './ambient'
 import { ResourceDataAdder, ResourceEventConfigAdder, transformIsDraggable } from './View' // TODO: ResourceDataAdder should be own plugin
 import { reduceResources } from './reducers/resources'
-import { parseEventDef } from './structs/event'
+import { generateEventDefResourceMembers } from './structs/event'
 import { massageEventDragMutation, applyEventDefMutation, transformEventDrop } from './EventDragging'
 import { transformDateSelectionJoin } from './DateSelecting'
-import { transformDatePoint, transformDateSpan } from './api/CalendarApi'
+import { transformDatePoint, transformDateSpan } from './api/CalendarApi-extend'
+import './api/CalendarApi-declare'
 import { isPropsValidWithResources } from './validation'
 import { transformExternalDef } from './ExternalElementDragging'
 import { transformEventResizeJoin } from './EventResizing'
-import './api/EventApi'
+import './api/EventApi-extend'
+import './api/EventApi-declare'
 import { buildLicenseWarning } from './license'
-export { ResourceLaneHookProps, RawResourceLaneHookProps } from './render-hooks'
+export { ResourceLaneHookProps, ResourceLaneHookPropsInput } from './render-hooks'
 import { optionChangeHandlers } from './option-change-handlers'
 import { OPTION_REFINERS } from './options'
 import './options-declare'
@@ -23,7 +25,7 @@ import './resource-sources/resource-json-feed'
 
 export default createPlugin({
   reducers: [ reduceResources ],
-  eventDefParsers: [ parseEventDef ],
+  eventDefMemberAdders: [ generateEventDefResourceMembers ],
   isDraggableTransformers: [ transformIsDraggable ],
   eventDragMutationMassagers: [ massageEventDragMutation ],
   eventDefMutationAppliers: [ applyEventDefMutation ],

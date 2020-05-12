@@ -1,19 +1,12 @@
 import { ResourceApi } from './api/ResourceApi'
 import { ResourceSource } from './structs/resource-source'
-import { ResourceSourceInput } from './structs/resource-source-parse'
 import { ResourceHash } from './structs/resource'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
 import { ResourceAction } from './reducers/resource-action'
 
-declare module '@fullcalendar/common' {
+// TODO: move these out to specific files that care about them (to -declare.ts files)
 
-  interface CalendarApi {
-    addResource(input: ResourceSourceInput): ResourceApi
-    getResourceById(id: string): ResourceApi | null
-    getResources(): ResourceApi[]
-    getTopLevelResources(): ResourceApi[]
-    refetchResources(): void
-  }
+declare module '@fullcalendar/common' {
 
   interface CalendarContext {
     dispatch(action: ResourceAction): void
@@ -22,7 +15,7 @@ declare module '@fullcalendar/common' {
   interface CalendarData {
     // adding in ResourceState, but make all optional. we're polluting CalendarData globally and don't want to require them
     // i wish TS allowed is to "mixin" one interface into a different ambient interface
-    resourceSource?: ResourceSource
+    resourceSource?: ResourceSource<any>
     resourceStore?: ResourceHash
     resourceEntityExpansions?: ResourceEntityExpansions
   }
@@ -38,11 +31,6 @@ declare module '@fullcalendar/common' {
   interface EventMutation {
     resourceMutation?: { matchResourceId: string, setResourceId: string }
     // TODO: rename these to removeResourceId/addResourceId?
-  }
-
-  interface EventApi {
-    getResources: () => ResourceApi[]
-    setResources: (resources: (string | ResourceApi)[]) => void
   }
 
   interface EventDef {

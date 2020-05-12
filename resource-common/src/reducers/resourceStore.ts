@@ -6,7 +6,7 @@ import { ResourceSource } from '../structs/resource-source'
 export function reduceResourceStore(
   store: ResourceHash | null,
   action: ResourceAction | null,
-  source: ResourceSource,
+  source: ResourceSource<any>,
   context: CalendarContext
 ): ResourceHash {
 
@@ -32,7 +32,7 @@ export function reduceResourceStore(
   }
 }
 
-function receiveRawResources(existingStore: ResourceHash, inputs: ResourceInput[], fetchId: string, source: ResourceSource, context: CalendarContext): ResourceHash {
+function receiveRawResources(existingStore: ResourceHash, inputs: ResourceInput[], fetchId: string, source: ResourceSource<any>, context: CalendarContext): ResourceHash {
   if (source.latestFetchId === fetchId) {
     let nextStore: ResourceHash = {}
 

@@ -1,6 +1,6 @@
 import {
   config, computeVisibleDayRange, Duration, DateProfile, isSingleDay, addDays, wholeDivideDurations, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs,
-  createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator, RefinedBaseOptions
+  createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator, BaseOptionsRefined
 } from '@fullcalendar/common'
 
 export interface TimelineDateProfile {
@@ -61,7 +61,7 @@ const STOCK_SUB_DURATIONS = [ // from largest to smallest
 ]
 
 
-export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: DateEnv, allOptions: RefinedBaseOptions, dateProfileGenerator: DateProfileGenerator): TimelineDateProfile {
+export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: DateEnv, allOptions: BaseOptionsRefined, dateProfileGenerator: DateProfileGenerator): TimelineDateProfile {
   let tDateProfile = {
     labelInterval: allOptions.slotLabelInterval,
     slotDuration: allOptions.slotDuration
@@ -391,7 +391,7 @@ function ensureSlotDuration(tDateProfile: TimelineDateProfile, dateProfile: Date
 }
 
 
-function computeHeaderFormats(tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateEnv: DateEnv, allOptions: RefinedBaseOptions) {
+function computeHeaderFormats(tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateEnv: DateEnv, allOptions: BaseOptionsRefined) {
   let format1
   let format2
   const { labelInterval } = tDateProfile

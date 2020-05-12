@@ -1,73 +1,89 @@
-import { refineProps, guid } from '@fullcalendar/common'
+import { guid, identity, Identity, RefinedOptionsFromRefiners, refineProps, RawOptionsFromRefiners } from '@fullcalendar/common'
 import { ResourceInput } from '../structs/resource'
 import { ResourceFunc } from '../resource-sources/resource-func'
 import { ResourceSource } from './resource-source'
 import { getResourceSourceDefs } from './resource-source-def'
 
 
-export interface ExtendedResourceSourceInput {
-  id?: string
+// TODO: make this a plugin-able parser
+// TODO: success/failure
+export const RESOURCE_SOURCE_REFINERS = {
+  id: String,
 
   // for array. TODO: move to resource-array
-  resources?: ResourceInput[]
+  resources: identity as Identity<ResourceInput[] | ResourceFunc>,
 
   // for json feed. TODO: move to resource-json-feed
-  url?: string
-  method?: string
-  startParam?: string
-  endParam?: string
-  timeZoneParam?: string
-  extraParams?: object | (() => object)
-
-  // TODO: event props
-  // TODO: success/failure
+  url: String,
+  method: String,
+  startParam: String,
+  endParam: String,
+  timeZoneParam: String,
+  extraParams: identity as Identity<object | (() => object)>
 }
 
+export type ResourceSourceInputObject = RawOptionsFromRefiners<typeof RESOURCE_SOURCE_REFINERS>
+export type ResourceSourceRefined = RefinedOptionsFromRefiners<typeof RESOURCE_SOURCE_REFINERS>
+
 export type ResourceSourceInput =
+  ResourceSourceInputObject |
   ResourceInput[] |
-  ExtendedResourceSourceInput |
   ResourceFunc |
   string // url
 
 
-const RESOURCE_SOURCE_PROPS = {
-  id: String
-}
+export function parseResourceSource(input: ResourceSourceInput): ResourceSource<any> {
+  let inputObj: ResourceSourceInputObject
 
-export function parseResourceSource(input: ResourceSourceInput): ResourceSource {
-  let defs = getResourceSourceDefs()
+  if (typeof input === 'string') {
+    inputObj = { url: input }
+  } else if (typeof input === 'function' || Array.isArray(input)) {
+    inputObj = { resources: input }
+  } else if (typeof input === 'object' && input) { // non-null object
+    inputObj = input
+  }
 
-  for (let i = defs.length - 1; i >= 0; i--) { // later-added plugins take precedence
-    let def = defs[i]
-    let meta = def.parseMeta(input)
+  if (inputObj) {
+    let { refined, extra } = refineProps(inputObj, RESOURCE_SOURCE_REFINERS)
 
-    if (meta) {
-      let res = parseResourceSourceProps(
-        (typeof input === 'object' && input) ? (input as ExtendedResourceSourceInput) : {},
-        meta,
-        i
-      )
+    warnUnknownProps(extra)
 
-      res._raw = input
-      return res
+    let metaRes = buildResourceSourceMeta(refined)
+
+    if (metaRes) {
+      return {
+        _raw: input,
+        sourceId: guid(),
+        sourceDefId: metaRes.sourceDefId,
+        meta: metaRes.sourceDefId,
+        publicId: refined.id,
+        isFetching: false,
+        latestFetchId: '',
+        fetchRange: null
+      }
     }
   }
 
   return null
 }
 
-function parseResourceSourceProps(input: ExtendedResourceSourceInput, meta: object, sourceDefId: number): ResourceSource {
-  let props = refineProps(input, RESOURCE_SOURCE_PROPS)
 
-  props.sourceId = guid()
-  props.sourceDefId = sourceDefId
-  props.meta = meta
-  props.publicId = props.id
-  props.isFetching = false
-  props.latestFetchId = ''
-  props.fetchRange = null
+function buildResourceSourceMeta(refined: ResourceSourceRefined) {
+  let defs = getResourceSourceDefs()
 
-  delete props.id
+  for (let i = defs.length - 1; i >= 0; i--) { // later-added plugins take precedence
+    let def = defs[i]
+    let meta = def.parseMeta(refined)
 
-  return props as ResourceSource
+    if (meta) {
+      return { meta, sourceDefId: i }
+    }
+  }
+}
+
+
+function warnUnknownProps(props) {
+  for (let propName in props) {
+    console.warn(`Unknown resource prop '${propName}'`)
+  }
 }

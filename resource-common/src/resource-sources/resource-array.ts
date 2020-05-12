@@ -1,17 +1,15 @@
 import { registerResourceSourceDef } from '../structs/resource-source-def'
 import { ResourceInput } from '../structs/resource'
+import { ResourceSourceRefined } from '../structs/resource-source-parse'
 
-registerResourceSourceDef({
+registerResourceSourceDef<ResourceInput[]>({
 
   ignoreRange: true,
 
-  parseMeta(raw: any): ResourceInput[] | null {
-    if (Array.isArray(raw)) {
-      return raw
-    } else if (Array.isArray(raw.resources)) {
-      return raw.resources
+  parseMeta(refined: ResourceSourceRefined) {
+    if (Array.isArray(refined.resources)) {
+      return refined.resources
     }
-
     return null
   },
 

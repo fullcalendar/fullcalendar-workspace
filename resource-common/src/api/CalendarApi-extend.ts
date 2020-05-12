@@ -1,14 +1,6 @@
 import { DateSpan, CalendarApi, CalendarContext } from '@fullcalendar/common'
 import { ResourceApi } from './ResourceApi'
 import { ResourceInput, parseResource, ResourceHash, Resource } from '../structs/resource'
-import { ResourceAction } from '../reducers/resource-action'
-
-
-declare module '@fullcalendar/common' {
-  interface CalendarApi {
-    dispatch(action: ResourceAction)
-  }
-}
 
 
 CalendarApi.prototype.addResource = function(this: CalendarApi, input: ResourceInput | ResourceApi, scrollTo = true) {

@@ -1,25 +1,31 @@
-import { EventDef, refineProps } from '@fullcalendar/common'
+import { EventRefined, identity, Identity } from '@fullcalendar/common'
 
 
-const RESOURCE_RELATED_PROPS = {
+const EVENT_REFINERS = { // TODO: hook this up!!!
   resourceId: String,
-  resourceIds: (items) => {
-    return (items || []).map(function(item) {
-      return String(item)
-    })
-  },
+  resourceIds: identity as Identity<string[]>,
   resourceEditable: Boolean
 }
 
 
-export function parseEventDef(def: EventDef, props, leftovers) {
-  let resourceRelatedProps = refineProps(props, RESOURCE_RELATED_PROPS, {}, leftovers)
-  let resourceIds = resourceRelatedProps.resourceIds
+// TODO: put in separate file!!!
+type ExtraEventRefiners = typeof EVENT_REFINERS
+declare module '@fullcalendar/common' {
+  interface EventRefiners extends ExtraEventRefiners {}
+}
 
-  if (resourceRelatedProps.resourceId) {
-    resourceIds.push(resourceRelatedProps.resourceId)
+
+export function generateEventDefResourceMembers(refined: EventRefined) {
+  return {
+    resourceIds: ensureStringArray(refined.resourceIds)
+      .concat(refined.resourceId ? [ refined.resourceId ] : []),
+    resourceEditable: refined.resourceEditable
   }
+}
 
-  def.resourceIds = resourceIds
-  def.resourceEditable = resourceRelatedProps.resourceEditable
+
+function ensureStringArray(items: any[]) {
+  return (items || []).map(function(item) {
+    return String(item)
+  })
 }

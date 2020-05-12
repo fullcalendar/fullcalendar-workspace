@@ -2,6 +2,7 @@ import { flexibleCompare, compareByFieldSpecs, OrderSpec } from '@fullcalendar/c
 import { ResourceHash, Resource } from '../structs/resource'
 import { ResourceEntityExpansions } from '../reducers/resourceEntityExpansions'
 import { GroupSpec } from './resource-spec'
+import { ResourceApi } from '../api/ResourceApi'
 
 interface ParentNode {
   children: ParentNode[]
@@ -42,7 +43,7 @@ export interface ResourceNode {
 /*
 doesn't accept grouping
 */
-export function flattenResources(resourceStore: ResourceHash, orderSpecs): Resource[] {
+export function flattenResources(resourceStore: ResourceHash, orderSpecs: OrderSpec<ResourceApi>[]): Resource[] {
   return buildRowNodes(resourceStore, [], orderSpecs, false, {}, true)
     .map(function(node) {
       return (node as ResourceNode).resource
@@ -52,7 +53,7 @@ export function flattenResources(resourceStore: ResourceHash, orderSpecs): Resou
 export function buildRowNodes(
   resourceStore: ResourceHash,
   groupSpecs: GroupSpec[],
-  orderSpecs: OrderSpec[],
+  orderSpecs: OrderSpec<ResourceApi>[],
   isVGrouping: boolean,
   expansions: ResourceEntityExpansions,
   expansionDefault: boolean
@@ -122,7 +123,7 @@ function flattenNodes(
   }
 }
 
-function buildHierarchy(resourceStore: ResourceHash, maxDepth: number, groupSpecs: GroupSpec[], orderSpecs: OrderSpec[]): ParentNode[] {
+function buildHierarchy(resourceStore: ResourceHash, maxDepth: number, groupSpecs: GroupSpec[], orderSpecs: OrderSpec<ResourceApi>[]): ParentNode[] {
   let resourceNodes = buildResourceNodes(resourceStore, orderSpecs)
   let builtNodes: ParentNode[] = []
 
@@ -137,7 +138,7 @@ function buildHierarchy(resourceStore: ResourceHash, maxDepth: number, groupSpec
   return builtNodes
 }
 
-function buildResourceNodes(resourceStore: ResourceHash, orderSpecs: OrderSpec[]): ResourceNodeHash {
+function buildResourceNodes(resourceStore: ResourceHash, orderSpecs: OrderSpec<ResourceApi>[]): ResourceNodeHash {
   let nodeHash: ResourceNodeHash = {}
 
   for (let resourceId in resourceStore) {
@@ -165,7 +166,7 @@ function buildResourceNodes(resourceStore: ResourceHash, orderSpecs: OrderSpec[]
   return nodeHash
 }
 
-function insertResourceNode(resourceNode: ResourceParentNode, nodes: ParentNode[], groupSpecs: GroupSpec[], depth: number, maxDepth: number, orderSpecs: OrderSpec[]) {
+function insertResourceNode(resourceNode: ResourceParentNode, nodes: ParentNode[], groupSpecs: GroupSpec[], depth: number, maxDepth: number, orderSpecs: OrderSpec<ResourceApi>[]) {
   if (groupSpecs.length && (maxDepth === -1 || depth <= maxDepth)) {
     let groupNode = ensureGroupNodes(resourceNode, nodes, groupSpecs[0])
 
@@ -222,11 +223,11 @@ function ensureGroupNodes(resourceNode: ResourceParentNode, nodes: ParentNode[],
   return groupNode
 }
 
-function insertResourceNodeInSiblings(resourceNode, siblings, orderSpecs: OrderSpec[]) {
+function insertResourceNodeInSiblings(resourceNode, siblings, orderSpecs: OrderSpec<ResourceApi>[]) {
   let i
 
   for (i = 0; i < siblings.length; i++) {
-    let cmp = compareByFieldSpecs(siblings[i].resourceFields, resourceNode.resourceFields, orderSpecs)
+    let cmp = compareByFieldSpecs(siblings[i].resourceFields, resourceNode.resourceFields, orderSpecs) // TODO: pass in ResourceApi?
 
     if (cmp > 0) { // went 1 past. insert at i
       break

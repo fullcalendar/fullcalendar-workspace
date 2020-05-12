@@ -99,7 +99,7 @@ function renderResourceInner(hookProps) {
 // hook props
 // ----------
 
-interface RawHookProps {
+interface HookPropsInput {
   resource: Resource
   fieldValue: any
   context: ViewContext
@@ -111,7 +111,7 @@ interface HookProps {
   view: ViewApi
 }
 
-function refineHookProps(raw: RawHookProps): HookProps {
+function refineHookProps(raw: HookPropsInput): HookProps {
   return {
     resource: new ResourceApi(raw.context, raw.resource),
     fieldValue: raw.fieldValue,

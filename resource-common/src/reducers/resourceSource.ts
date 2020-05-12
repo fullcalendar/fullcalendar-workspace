@@ -5,10 +5,10 @@ import { getResourceSourceDef } from '../structs/resource-source-def'
 import { ResourceAction } from './resource-action'
 
 export function reduceResourceSource(
-  source: ResourceSource | null,
+  source: ResourceSource<any> | null,
   action: ResourceAction | null,
   context: CalendarContext & { dateProfile: DateProfile }
-): ResourceSource {
+): ResourceSource<any> {
   let { options, dateProfile } = context
 
   if (!source || !action) {
@@ -49,7 +49,7 @@ function createSource(input, activeRange: DateRange, refetchResourcesOnNavigate,
 }
 
 
-function handleRangeChange(source: ResourceSource, activeRange: DateRange, refetchResourcesOnNavigate, context: CalendarContext): ResourceSource {
+function handleRangeChange(source: ResourceSource<any>, activeRange: DateRange, refetchResourcesOnNavigate, context: CalendarContext): ResourceSource<any> {
   if (
     refetchResourcesOnNavigate &&
     !doesSourceIgnoreRange(source) &&
@@ -62,12 +62,12 @@ function handleRangeChange(source: ResourceSource, activeRange: DateRange, refet
 }
 
 
-function doesSourceIgnoreRange(source: ResourceSource) {
+function doesSourceIgnoreRange(source: ResourceSource<any>) {
   return Boolean(getResourceSourceDef(source.sourceDefId).ignoreRange)
 }
 
 
-function fetchSource(source: ResourceSource, fetchRange: DateRange | null, context: CalendarContext): ResourceSource {
+function fetchSource(source: ResourceSource<any>, fetchRange: DateRange | null, context: CalendarContext): ResourceSource<any> {
   let sourceDef = getResourceSourceDef(source.sourceDefId)
   let fetchId = guid()
 
@@ -103,7 +103,7 @@ function fetchSource(source: ResourceSource, fetchRange: DateRange | null, conte
 }
 
 
-function receiveResponse(source: ResourceSource, fetchId: string, fetchRange: DateRange) {
+function receiveResponse(source: ResourceSource<any>, fetchId: string, fetchRange: DateRange) {
 
   if (fetchId === source.latestFetchId) {
     return {

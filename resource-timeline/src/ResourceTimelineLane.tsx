@@ -1,5 +1,5 @@
 import { h, Ref, BaseComponent, CssDimValue, buildClassNameNormalizer, ContentHook, MountHook, elementClosest, memoizeObjArg } from '@fullcalendar/common'
-import { Resource, ResourceApi, ResourceLaneHookProps, RawResourceLaneHookProps } from '@fullcalendar/resource-common'
+import { Resource, ResourceApi, ResourceLaneHookProps, ResourceLaneHookPropsInput } from '@fullcalendar/resource-common'
 import { TimelineLane, TimelineLaneCoreProps } from '@fullcalendar/timeline'
 
 
@@ -90,7 +90,7 @@ class ResourceTimelineLaneMisc extends BaseComponent<ResourceTimelineLaneMiscPro
 }
 
 
-function refineHookProps(raw: RawResourceLaneHookProps): ResourceLaneHookProps {
+function refineHookProps(raw: ResourceLaneHookPropsInput): ResourceLaneHookProps {
   return {
     resource: new ResourceApi(raw.context, raw.resource)
   }

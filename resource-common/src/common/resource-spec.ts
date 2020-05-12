@@ -1,4 +1,4 @@
-import { ViewApi, ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '@fullcalendar/common'
+import { ViewApi, ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '@fullcalendar/common'
 import { ResourceApi } from '../api/ResourceApi'
 
 // strange to reference columns in resource-common
@@ -14,7 +14,7 @@ export interface ColCellHookProps { // for a group too. make an OR-type?
 }
 
 export interface ColHeaderRenderHooks {
-  headerClassNames?: ClassNameGenerator<ColHeaderHookProps>
+  headerClassNames?: ClassNamesGenerator<ColHeaderHookProps>
   headerContent?: CustomContentGenerator<ColHeaderHookProps>
   headerDidMount?: DidMountHandler<ColHeaderHookProps>
   headerWillUnmount?: WillUnmountHandler<ColHeaderHookProps>
@@ -26,14 +26,14 @@ export interface ColSpec extends ColHeaderRenderHooks {
   width?: number
   field?: string
 
-  cellClassNames?: ClassNameGenerator<ColCellHookProps>
+  cellClassNames?: ClassNamesGenerator<ColCellHookProps>
   cellContent?: CustomContentGenerator<ColCellHookProps>
   cellDidMount?: DidMountHandler<ColCellHookProps>
   cellWillUnmount?: WillUnmountHandler<ColCellHookProps>
 }
 
 export interface GroupLaneRenderHooks {
-  laneClassNames?: ClassNameGenerator<ColCellHookProps>
+  laneClassNames?: ClassNamesGenerator<ColCellHookProps>
   laneContent?: CustomContentGenerator<ColCellHookProps>
   laneDidMount?: DidMountHandler<ColCellHookProps>
   laneWillUnmount?: WillUnmountHandler<ColCellHookProps>
@@ -43,7 +43,7 @@ export interface GroupSpec extends GroupLaneRenderHooks { // best place for this
   field?: string
   order?: number
 
-  labelClassNames?: ClassNameGenerator<ColCellHookProps>
+  labelClassNames?: ClassNamesGenerator<ColCellHookProps>
   labelContent?: CustomContentGenerator<ColCellHookProps>
   labelDidMount?: DidMountHandler<ColCellHookProps>
   labelWillUnmount?: WillUnmountHandler<ColCellHookProps>
