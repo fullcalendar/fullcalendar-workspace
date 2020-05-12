@@ -15,8 +15,8 @@ describe('event resources', function() {
   it('processes multiple resources', function(done) {
     let calendar = initCalendar({
       resources: [
-        { id: 1, title: 'room 1' },
-        { id: 2, title: 'room 2' }
+        { id: '1', title: 'room 1' },
+        { id: '2', title: 'room 2' }
       ]
     })
 
@@ -32,9 +32,9 @@ describe('event resources', function() {
   it('will not process colliding IDs', function(done) {
     let calendar = initCalendar({
       resources: [
-        { id: 1, title: 'room 1' },
-        { id: 2, title: 'room 2' },
-        { id: 2, title: 'room 2' }
+        { id: '1', title: 'room 1' },
+        { id: '2', title: 'room 2' },
+        { id: '2', title: 'room 2' }
       ]
     })
 
@@ -145,8 +145,8 @@ describe('event resources', function() {
     let calendar = initCalendar({
       resources(arg, callback) {
         callback([
-          { id: 1, title: 'room 1' },
-          { id: 2, title: 'room 2' }
+          { id: '1', title: 'room 1' },
+          { id: '2', title: 'room 2' }
         ])
       }
     })
@@ -163,7 +163,7 @@ describe('event resources', function() {
   it('will parse event style props', function() {
     initCalendar({
       resources: [ {
-        id: 1,
+        id: '1',
         title: 'room 1',
         eventClassNames: 'niceevents',
         eventColor: 'red',
@@ -182,7 +182,7 @@ describe('event resources', function() {
   it('will put misc properties in extendedProps', function() {
     initCalendar({
       resources: [
-        { id: 1, title: 'room 1', something: 'cool' }
+        { id: '1', title: 'room 1', something: 'cool' }
       ]
     })
 
@@ -195,7 +195,7 @@ describe('event resources', function() {
   it('will receive an explicit extendedProps', function() {
     initCalendar({
       resources: [
-        { id: 1, title: 'room 1', extendedProps: { something: 'cool' } }
+        { id: '1', title: 'room 1', extendedProps: { something: 'cool' } }
       ]
     })
 

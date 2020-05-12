@@ -184,7 +184,6 @@ describe('timeline event resizing', function() {
     it('works with touch', function(done) {
       let resizeSpy
       let calendar = initCalendar({
-        isTouch: true,
         longPressDelay: 100,
         initialView: 'resourceTimelineDay',
         events: [

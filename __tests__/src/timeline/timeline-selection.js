@@ -224,7 +224,6 @@ describe('timeline selection', function() {
   it('reports selection on a resource via touch', function(done) {
     let selectCalled = false
     let calendar = initCalendar({
-      isTouch: true,
       longPressDelay: 100,
       initialView: 'resourceTimelineDay',
       select(arg) {

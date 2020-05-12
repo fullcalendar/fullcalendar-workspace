@@ -1,6 +1,6 @@
 import {
   ConstraintInput, AllowFunc, EventStore, parseBusinessHours, CalendarContext, EventUi, BusinessHoursInput,
-  guid, identity, Identity, RawOptionsFromRefiners, parseClassNames, refineProps, createEventUi
+  guid, identity, Identity, RawOptionsFromRefiners, parseClassNames, refineProps, createEventUi, GenericObject
 } from '@fullcalendar/common'
 
 
@@ -12,6 +12,7 @@ const RESOURCE_REFINERS = {
   children: identity as Identity<ResourceInput[]>,
   title: String,
   businessHours: identity as Identity<BusinessHoursInput>,
+  extendedProps: identity as Identity<GenericObject>,
 
   // event-ui
   eventEditable: Boolean,
@@ -33,7 +34,9 @@ export interface ResourceRefiners extends BuiltInResourceRefiners {
   // for preventing circular definition. also, good for making ambient in the future
 }
 
-export type ResourceInput = RawOptionsFromRefiners<Required<ResourceRefiners>> // Required hack
+export type ResourceInput =
+  RawOptionsFromRefiners<Required<ResourceRefiners>> & // Required hack
+  { [extendedProps: string]: any }
 
 export interface Resource {
   id: string
@@ -71,7 +74,10 @@ export function parseResource(raw: ResourceInput, parentId: string = '', store: 
       textColor: refined.eventTextColor,
       color: refined.eventColor
     }, context),
-    extendedProps: extra
+    extendedProps: {
+      ...extra,
+      ...refined.extendedProps
+    }
   }
 
   // help out ResourceApi from having user modify props

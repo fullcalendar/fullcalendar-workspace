@@ -58,6 +58,7 @@ describe('timeline-view event drag-n-drop', function() {
           debugger
         }
         expect(draggedEvent.start instanceof Date).toBe(true)
+        return true
       }
     })
 
@@ -176,7 +177,6 @@ describe('timeline-view event drag-n-drop', function() {
     let dropSpy
 
     initCalendar({
-      isTouch: true,
       longPressDelay: 100,
       events: [
         { title: 'event0', className: 'event0', start: '2015-11-29T02:00:00', end: '2015-11-29T03:00:00', resourceId: 'b' }

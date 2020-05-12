@@ -25,17 +25,18 @@ describe('resource crudding', function() {
       it('queries correctly with a number', function() {
         initCalendar({
           resources: [
-            { id: 1, title: 'room 1' }
+            { id: '1', title: 'room 1' }
           ]
         })
-        const resource = currentCalendar.getResourceById(1)
+        /** @type any */ const id = 1
+        const resource = currentCalendar.getResourceById(id)
         expect(resource.title).toBe('room 1')
       })
 
       it('queries correctly with a string', function() {
         initCalendar({
           resources: [
-            { id: 1, title: 'room 1' }
+            { id: '1', title: 'room 1' }
           ]
         })
         const resource = currentCalendar.getResourceById('1')

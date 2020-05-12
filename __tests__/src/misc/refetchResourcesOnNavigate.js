@@ -198,8 +198,8 @@ describe('refetchResourcesOnNavigate', function() {
         fetchCnt += 1
         setTimeout(function() {
           callback([
-            { id: 'a', eventClassName: `resource-a-${fetchCnt}` },
-            { id: 'b', eventClassName: `resource-b-${fetchCnt}` }
+            { id: 'a', eventClassNames: `resource-a-${fetchCnt}` },
+            { id: 'b', eventClassNames: `resource-b-${fetchCnt}` }
           ])
         }, 100)
       }

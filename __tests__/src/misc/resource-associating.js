@@ -21,44 +21,60 @@ describe('associating resources with event', function() {
     const roomAEvents = currentCalendar.getResourceById('a').getEvents()
     expect(roomAEvents.length).toBe(1)
     expect(roomAEvents[0].title).toBe('event 1')
+
     const roomBEvents = currentCalendar.getResourceById('b').getEvents()
     expect(roomBEvents.length).toBe(1)
     expect(roomBEvents[0].title).toBe('event 2')
+
     const event1Resources = currentCalendar.getEventById('1').getResources()
     expect(event1Resources.length).toBe(1)
     expect(event1Resources[0].title).toBe('room a')
+
     const event2Resources = currentCalendar.getEventById('2').getResources()
     expect(event2Resources.length).toBe(1)
     expect(event2Resources[0].title).toBe('room b')
+
     expect($('.event1').length).toBe(1)
     expect($('.event2').length).toBe(1)
   })
 
 
   it('works with integers', function() {
+    /** @type any */ let zero = 0
+    /** @type any */ let one = 1
+    /** @type any */ let id
+
     initCalendar({
       resources: [
-        { id: 0, title: 'room a' },
-        { id: 1, title: 'room b' }
+        { id: zero, title: 'room a' },
+        { id: one, title: 'room b' }
       ],
       events: [
-        { id: 0, title: 'event 1', resourceId: 0, className: 'event1', start: '2015-07-11T09:00:00' },
-        { id: 1, title: 'event 2', resourceId: 1, className: 'event2', start: '2015-07-11T10:00:00' }
+        { id: zero, title: 'event 1', resourceId: zero, className: 'event1', start: '2015-07-11T09:00:00' },
+        { id: one, title: 'event 2', resourceId: one, className: 'event2', start: '2015-07-11T10:00:00' }
       ]
     })
 
-    const roomAEvents = currentCalendar.getResourceById(0).getEvents()
+    id = 0
+    const roomAEvents = currentCalendar.getResourceById(id).getEvents()
     expect(roomAEvents.length).toBe(1)
     expect(roomAEvents[0].title).toBe('event 1')
-    const roomBEvents = currentCalendar.getResourceById(1).getEvents()
+
+    id = 1
+    const roomBEvents = currentCalendar.getResourceById(id).getEvents()
     expect(roomBEvents.length).toBe(1)
     expect(roomBEvents[0].title).toBe('event 2')
-    const event1Resources = currentCalendar.getEventById(0).getResources()
+
+    id = 0
+    const event1Resources = currentCalendar.getEventById(id).getResources()
     expect(event1Resources.length).toBe(1)
     expect(event1Resources[0].title).toBe('room a')
-    const event2Resources = currentCalendar.getEventById(1).getResources()
+
+    id = 1
+    const event2Resources = currentCalendar.getEventById(id).getResources()
     expect(event2Resources.length).toBe(1)
     expect(event2Resources[0].title).toBe('room b')
+
     expect($('.event1').length).toBe(1)
     expect($('.event2').length).toBe(1)
   })

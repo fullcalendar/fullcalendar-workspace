@@ -28,6 +28,7 @@ describe('rerender performance for resource timeline', function() {
       },
       slotLabelClassNames() {
         slotLabelClassNameCnt++
+        return []
       },
       slotLabelContent() {
         slotLabelRenderCnt++

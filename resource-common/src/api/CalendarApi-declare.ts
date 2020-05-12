@@ -1,12 +1,12 @@
 import { ResourceApi } from '../api/ResourceApi'
-import { ResourceSourceInput } from '../structs/resource-source-parse'
+import { ResourceInput } from '../structs/resource'
 import { ResourceAction } from '../reducers/resource-action'
 
 
 declare module '@fullcalendar/common' {
   interface CalendarApi {
     dispatch(action: ResourceAction)
-    addResource(input: ResourceSourceInput): ResourceApi
+    addResource(input: ResourceInput, scrollTo?: boolean): ResourceApi
     getResourceById(id: string): ResourceApi | null
     getResources(): ResourceApi[]
     getTopLevelResources(): ResourceApi[]
