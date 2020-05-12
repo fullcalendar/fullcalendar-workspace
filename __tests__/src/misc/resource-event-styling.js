@@ -7,14 +7,14 @@ describe('event styling hooks', function() {
       {
         id: 'a',
         title: 'Resource A',
-        eventClassName: 're1',
+        eventClassNames: 're1',
         eventColor: 'rgba(255,0,0,0.5)',
         eventBorderColor: 'rgba(0,0,255,0.5)'
       },
       {
         id: 'b',
         title: 'Resource B',
-        eventClassName: [ 're2', 're3' ],
+        eventClassNames: [ 're2', 're3' ],
         eventColor: 'rgba(0,255,0,0.5)',
         eventTextColor: 'rgba(0,0,255,0.5)'
       }

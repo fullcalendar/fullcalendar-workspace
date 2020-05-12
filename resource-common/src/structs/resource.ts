@@ -42,7 +42,7 @@ export interface Resource {
   id: string
   parentId: string
   title: string
-  businessHours: EventStore | null
+  businessHours: EventStore | null // if null, will fall thru to non-resource business hours
   ui: EventUi
   extendedProps: { [extendedProp: string]: any }
 }
@@ -60,7 +60,7 @@ export function parseResource(raw: ResourceInput, parentId: string = '', store: 
     id: refined.id || (PRIVATE_ID_PREFIX + guid()),
     parentId: refined.parentId || parentId,
     title: refined.title || '',
-    businessHours: parseBusinessHours(refined.businessHours, context),
+    businessHours: refined.businessHours ? parseBusinessHours(refined.businessHours, context) : null,
     ui: createEventUi({
       editable: refined.eventEditable,
       startEditable: refined.eventStartEditable,
