@@ -55,8 +55,8 @@ export function parseResourceSource(input: ResourceSourceInput): ResourceSource<
         _raw: input,
         sourceId: guid(),
         sourceDefId: metaRes.sourceDefId,
-        meta: metaRes.sourceDefId,
-        publicId: refined.id,
+        meta: metaRes.meta,
+        publicId: refined.id || '',
         isFetching: false,
         latestFetchId: '',
         fetchRange: null

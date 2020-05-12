@@ -1,8 +1,7 @@
 import {
   ConstraintInput, AllowFunc, EventStore, parseBusinessHours, CalendarContext, EventUi, BusinessHoursInput,
-  guid, identity, Identity, RawOptionsFromRefiners, parseClassNames, refineProps,
+  guid, identity, Identity, RawOptionsFromRefiners, parseClassNames, refineProps, createEventUi
 } from '@fullcalendar/common'
-import { createEventUi } from 'packages/common/src/component/event-ui'
 
 
 const PRIVATE_ID_PREFIX = '_fc:'

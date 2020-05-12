@@ -1,17 +1,10 @@
 import { EventRefined, identity, Identity } from '@fullcalendar/common'
 
 
-const EVENT_REFINERS = { // TODO: hook this up!!!
+export const EVENT_REFINERS = {
   resourceId: String,
   resourceIds: identity as Identity<string[]>,
   resourceEditable: Boolean
-}
-
-
-// TODO: put in separate file!!!
-type ExtraEventRefiners = typeof EVENT_REFINERS
-declare module '@fullcalendar/common' {
-  interface EventRefiners extends ExtraEventRefiners {}
 }
 
 

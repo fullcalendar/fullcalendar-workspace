@@ -22,7 +22,7 @@ export class ResourceDayTimeColsView extends TimeColsView {
     let { dateProfile } = props
 
     let splitProps = this.allDaySplitter.splitProps(props)
-    let resourceOrderSpecs = options.resourceOrder
+    let resourceOrderSpecs = options.resourceOrder || []
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
     let resourceDayTableModel = this.buildResourceTimeColsModel(
       dateProfile,

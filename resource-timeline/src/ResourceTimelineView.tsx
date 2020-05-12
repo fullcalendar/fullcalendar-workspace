@@ -428,7 +428,7 @@ function processColOptions(options: ViewOptionsRefined) {
     }
   }
 
-  let allOrderSpecs = options.resourceOrder
+  let allOrderSpecs = options.resourceOrder || []
   let plainOrderSpecs = []
 
   for (let orderSpec of allOrderSpecs) {

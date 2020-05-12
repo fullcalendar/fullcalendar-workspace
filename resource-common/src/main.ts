@@ -2,7 +2,8 @@ import { createPlugin } from '@fullcalendar/common'
 import './ambient'
 import { ResourceDataAdder, ResourceEventConfigAdder, transformIsDraggable } from './View' // TODO: ResourceDataAdder should be own plugin
 import { reduceResources } from './reducers/resources'
-import { generateEventDefResourceMembers } from './structs/event'
+import { generateEventDefResourceMembers, EVENT_REFINERS } from './structs/event-parse'
+import './structs/event-declare'
 import { massageEventDragMutation, applyEventDefMutation, transformEventDrop } from './EventDragging'
 import { transformDateSelectionJoin } from './DateSelecting'
 import { transformDatePoint, transformDateSpan } from './api/CalendarApi-extend'
@@ -25,6 +26,7 @@ import './resource-sources/resource-json-feed'
 
 export default createPlugin({
   reducers: [ reduceResources ],
+  eventRefiners: EVENT_REFINERS,
   eventDefMemberAdders: [ generateEventDefResourceMembers ],
   isDraggableTransformers: [ transformIsDraggable ],
   eventDragMutationMassagers: [ massageEventDragMutation ],

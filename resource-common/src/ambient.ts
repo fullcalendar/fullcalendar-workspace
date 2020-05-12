@@ -34,8 +34,8 @@ declare module '@fullcalendar/common' {
   }
 
   interface EventDef {
-    resourceIds: string[]
-    resourceEditable: boolean
+    resourceIds?: string[]
+    resourceEditable?: boolean
   }
 
 }

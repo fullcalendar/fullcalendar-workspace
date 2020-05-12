@@ -20,7 +20,7 @@ export class ResourceDayTableView extends TableView {
     let { props, context } = this
     let { options } = context
 
-    let resourceOrderSpecs = options.resourceOrder
+    let resourceOrderSpecs = options.resourceOrder || []
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
     let resourceDayTableModel = this.buildResourceDayTableModel(
       props.dateProfile,
