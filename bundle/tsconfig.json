@@ -2,8 +2,11 @@
   "extends":  "../../tsconfig.package.json",
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "dist"
+    "outDir": "tsc"
   },
+  "include": [
+    "src/**/*"
+  ],
   "references": [
     { "path": "../../packages/core" },
     { "path": "../../packages/interaction" },
