@@ -1,6 +1,6 @@
 import { createPlugin } from '@fullcalendar/common'
 import { TimelineView } from './TimelineView'
-import './main.scss'
+import './main.css'
 
 export { TimelineView }
 export { buildSlatCols } from './TimelineView'

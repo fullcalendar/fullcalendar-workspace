@@ -2,7 +2,7 @@ import { createPlugin } from '@fullcalendar/common'
 import timelinePlugin from '@fullcalendar/timeline'
 import resourceCommonPlugin from '@fullcalendar/resource-common'
 import { ResourceTimelineView } from './ResourceTimelineView'
-import './main.scss'
+import './main.css'
 
 export { ResourceTimelineView }
 export { ResourceTimelineLane } from './ResourceTimelineLane'
