@@ -1,7 +1,6 @@
 
 /*/tsconfig.tsbuildinfo
-/*/dist
 /*/tsc
-/*/rollup
+/*/dist
 /*/locales/*
 /*/locales-all.js
