@@ -1,8 +1,8 @@
 import { findElements } from '@fullcalendar/core'
-import { ensureDate, formatIsoWithoutTz } from 'standard-tests/src/lib/datelib-utils'
-import { getBoundingRect } from 'standard-tests/src/lib/dom-geom'
-import { getRectCenter, addPoints } from 'standard-tests/src/lib/geom'
-import { CalendarWrapper } from 'standard-tests/src/lib/wrappers/CalendarWrapper'
+import { ensureDate, formatIsoWithoutTz } from 'fullcalendar-tests/src/lib/datelib-utils'
+import { getBoundingRect } from 'fullcalendar-tests/src/lib/dom-geom'
+import { getRectCenter, addPoints } from 'fullcalendar-tests/src/lib/geom'
+import { CalendarWrapper } from 'fullcalendar-tests/src/lib/wrappers/CalendarWrapper'
 
 
 export class TimelineGridWrapper {

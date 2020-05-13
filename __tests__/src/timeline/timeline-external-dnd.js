@@ -2,7 +2,7 @@
 
 import { Draggable } from '@fullcalendar/interaction'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
-import { CalendarWrapper } from 'standard-tests/src/lib/wrappers/CalendarWrapper'
+import { CalendarWrapper } from 'fullcalendar-tests/src/lib/wrappers/CalendarWrapper'
 
 describe('timeline-view external element drag-n-drop', function() {
   pushOptions({

@@ -1,6 +1,6 @@
 
-import 'standard-tests/src/lib/globals'
-import { DEFAULT_PLUGINS } from 'standard-tests/src/lib/install-plugins'
+import 'fullcalendar-tests/src/lib/globals'
+import { DEFAULT_PLUGINS } from 'fullcalendar-tests/src/lib/install-plugins'
 import './lib/gpl-key'
 
 import timelinePlugin from '@fullcalendar/timeline'

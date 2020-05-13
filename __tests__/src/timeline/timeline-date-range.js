@@ -1,4 +1,4 @@
-import { expectRenderRange } from 'standard-tests/src/lib/ViewDateUtils'
+import { expectRenderRange } from 'fullcalendar-tests/src/lib/ViewDateUtils'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
 describe('timeline date range', function() {

@@ -1,4 +1,4 @@
-import { CalendarWrapper } from "standard-tests/src/lib/wrappers/CalendarWrapper"
+import { CalendarWrapper } from "fullcalendar-tests/src/lib/wrappers/CalendarWrapper"
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('resourcesInitiallyExpanded', function() {

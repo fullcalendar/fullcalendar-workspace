@@ -1,5 +1,5 @@
-import { TimeGridViewWrapper } from 'standard-tests/src/lib/wrappers/TimeGridViewWrapper'
-import { waitDateSelect } from 'standard-tests/src/lib/wrappers/interaction-util'
+import { TimeGridViewWrapper } from 'fullcalendar-tests/src/lib/wrappers/TimeGridViewWrapper'
+import { waitDateSelect } from 'fullcalendar-tests/src/lib/wrappers/interaction-util'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('timeGrid-view selection', function() {

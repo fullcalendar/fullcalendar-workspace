@@ -1,4 +1,4 @@
-import { DayGridViewWrapper } from 'standard-tests/src/lib/wrappers/DayGridViewWrapper'
+import { DayGridViewWrapper } from 'fullcalendar-tests/src/lib/wrappers/DayGridViewWrapper'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
 
 describe('dayGrid-view event resizing', function() {

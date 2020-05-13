@@ -1,4 +1,4 @@
-import { getBoundingRect } from 'standard-tests/src/lib/dom-geom'
+import { getBoundingRect } from 'fullcalendar-tests/src/lib/dom-geom'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 

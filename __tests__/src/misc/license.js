@@ -1,6 +1,6 @@
 import { config } from '@fullcalendar/core'
 import { Calendar } from '@fullcalendar/core'
-import { CalendarWrapper } from 'standard-tests/src/lib/wrappers/CalendarWrapper'
+import { CalendarWrapper } from 'fullcalendar-tests/src/lib/wrappers/CalendarWrapper'
 
 describe('schedulerLicenseKey', function() {
 
