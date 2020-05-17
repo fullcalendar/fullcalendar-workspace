@@ -1,5 +1,5 @@
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
-import { waitEventDrag } from 'fullcalendar-tests/src/lib/wrappers/interaction-util'
+import { waitEventDrag } from 'fullcalendar-tests/lib/wrappers/interaction-util'
 
 describe('eventAllow', function() {
   pushOptions({

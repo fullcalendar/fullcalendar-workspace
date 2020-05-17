@@ -2,7 +2,7 @@
 
 import { Draggable } from '@fullcalendar/interaction'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
-import { CalendarWrapper } from 'fullcalendar-tests/src/lib/wrappers/CalendarWrapper'
+import { CalendarWrapper } from 'fullcalendar-tests/lib/wrappers/CalendarWrapper'
 
 describe('dayGrid-view event drag-n-drop', function() {
   pushOptions({

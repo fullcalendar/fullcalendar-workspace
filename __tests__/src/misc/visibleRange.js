@@ -1,5 +1,5 @@
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
-import { TimeGridViewWrapper } from 'fullcalendar-tests/src/lib/wrappers/TimeGridViewWrapper'
+import { TimeGridViewWrapper } from 'fullcalendar-tests/lib/wrappers/TimeGridViewWrapper'
 
 describe('visibleRange', function() {
   pushOptions({

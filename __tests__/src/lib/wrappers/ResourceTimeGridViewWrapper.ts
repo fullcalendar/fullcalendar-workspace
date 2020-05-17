@@ -1,5 +1,5 @@
 import { Calendar } from '@fullcalendar/core'
-import { ViewWrapper } from 'fullcalendar-tests/src/lib/wrappers/ViewWrapper'
+import { ViewWrapper } from 'fullcalendar-tests/lib/wrappers/ViewWrapper'
 import { ResourceTimeGridWrapper } from './ResourceTimeGridWrapper'
 import { ResourceDayHeaderWrapper } from './ResourceDayHeaderWrapper'
 import { ResourceDayGridWrapper } from './ResourceDayGridWrapper'

@@ -1,4 +1,4 @@
-import { ListenerCounter } from 'fullcalendar-tests/src/lib/ListenerCounter'
+import { ListenerCounter } from 'fullcalendar-tests/lib/ListenerCounter'
 
 describe('destroy', function() {
   pushOptions({
