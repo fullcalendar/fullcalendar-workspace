@@ -1,6 +1,8 @@
 
 /*/tsconfig.tsbuildinfo
 /*/tsc
-/*/dist
-/*/locales/*
-/*/locales-all.js
+/*/locales
+/*/*.js
+/*/*.css
+/*/*.map
+/*/*.d.ts
