@@ -8,6 +8,7 @@
     "src/**/*"
   ],
   "references": [
+    { "path": "../../packages/__tests__" },
     { "path": "../../packages/core" },
     { "path": "../../packages/interaction" },
     { "path": "../../packages/daygrid" },
