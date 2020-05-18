@@ -49,8 +49,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
     let sections: ScrollGridSectionConfig[] = [
       {
         type: 'header',
+        key: 'header',
         isSticky: stickyHeaderDates,
         chunks: [{
+          key: 'timeline',
           content: (contentArg: ChunkContentCallbackArgs) => (
             <TimelineHeader
               dateProfile={props.dateProfile}
@@ -67,8 +69,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
       },
       {
         type: 'body',
+        key: 'body',
         liquid: true,
         chunks: [{
+          key: 'timeline',
           content: (contentArg: ChunkContentCallbackArgs) => (
             <TimelineGrid
               {...props}
@@ -88,8 +92,12 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
     if (stickyFooterScrollbar) {
       sections.push({
         type: 'footer',
+        key: 'footer',
         isSticky: true,
-        chunks: [{ content: renderScrollShim }]
+        chunks: [{
+          key: 'timeline',
+          content: renderScrollShim
+        }]
       })
     }
 

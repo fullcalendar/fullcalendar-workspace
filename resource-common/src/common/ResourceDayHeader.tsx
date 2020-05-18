@@ -30,17 +30,19 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
     )
 
     return (
-      <NowTimer unit='day' content={(nowDate: DateMarker, todayRange: DateRange) => {
-        if (props.dates.length === 1) {
-          return this.renderResourceRow(props.resources, props.dates[0])
-        } else {
-          if (context.options.datesAboveResources) {
-            return this.renderDayAndResourceRows(props.dates, dateFormat, todayRange, props.resources)
+      <NowTimer unit='day'>
+        {(nowDate: DateMarker, todayRange: DateRange) => {
+          if (props.dates.length === 1) {
+            return this.renderResourceRow(props.resources, props.dates[0])
           } else {
-            return this.renderResourceAndDayRows(props.resources, props.dates, dateFormat, todayRange)
+            if (context.options.datesAboveResources) {
+              return this.renderDayAndResourceRows(props.dates, dateFormat, todayRange, props.resources)
+            } else {
+              return this.renderResourceAndDayRows(props.resources, props.dates, dateFormat, todayRange)
+            }
           }
-        }
-      }} />
+        }}
+      </NowTimer>
     )
   }
 
@@ -49,6 +51,7 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
     let resourceCells = resources.map((resource) => {
       return (
         <ResourceCell
+          key={resource.id}
           resource={resource}
           colSpan={1}
           date={date}
@@ -158,7 +161,7 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
     let { renderIntro } = this.props
 
     if (!cells.length) {
-      cells = [ <td>&nbsp;</td> ]
+      cells = [ <td key={0}>&nbsp;</td> ]
     }
 
     return (

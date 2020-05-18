@@ -30,36 +30,38 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
     let timerUnit = greatestDurationDenominator(props.tDateProfile.slotDuration).unit
 
     return (
-      <NowTimer unit={timerUnit} content={(nowDate: DateMarker, todayRange: DateRange) => (
-        <div className='fc-timeline-header' ref={this.rootElRef}>
-          <table
-            className='fc-scrollgrid-sync-table'
-            style={{ minWidth: props.tableMinWidth, width: props.clientWidth }}
-          >
-            {props.tableColGroupNode}
-            <tbody>
-              <TimelineHeaderRows
-                dateProfile={props.dateProfile}
-                tDateProfile={props.tDateProfile}
-                nowDate={nowDate}
-                todayRange={todayRange}
-                rowInnerHeights={props.rowInnerHeights}
-              />
-            </tbody>
-          </table>
-          {(context.options.nowIndicator && props.slatCoords && props.slatCoords.isDateInRange(nowDate)) &&
-            <NowIndicatorRoot isAxis={true} date={nowDate}>
-              {(rootElRef, classNames, innerElRef, innerContent) => (
-                <div
-                  ref={rootElRef}
-                  className={[ 'fc-timeline-now-indicator-arrow' ].concat(classNames).join(' ')}
-                  style={{ left: props.slatCoords.dateToCoord(nowDate) }}
-                >{innerContent}</div>
-              )}
-            </NowIndicatorRoot>
-          }
-        </div>
-      )} />
+      <NowTimer unit={timerUnit}>
+        {(nowDate: DateMarker, todayRange: DateRange) => (
+          <div className='fc-timeline-header' ref={this.rootElRef}>
+            <table
+              className='fc-scrollgrid-sync-table'
+              style={{ minWidth: props.tableMinWidth, width: props.clientWidth }}
+            >
+              {props.tableColGroupNode}
+              <tbody>
+                <TimelineHeaderRows
+                  dateProfile={props.dateProfile}
+                  tDateProfile={props.tDateProfile}
+                  nowDate={nowDate}
+                  todayRange={todayRange}
+                  rowInnerHeights={props.rowInnerHeights}
+                />
+              </tbody>
+            </table>
+            {(context.options.nowIndicator && props.slatCoords && props.slatCoords.isDateInRange(nowDate)) &&
+              <NowIndicatorRoot isAxis={true} date={nowDate}>
+                {(rootElRef, classNames, innerElRef, innerContent) => (
+                  <div
+                    ref={rootElRef}
+                    className={[ 'fc-timeline-now-indicator-arrow' ].concat(classNames).join(' ')}
+                    style={{ left: props.slatCoords.dateToCoord(nowDate) }}
+                  >{innerContent}</div>
+                )}
+              </NowIndicatorRoot>
+            }
+          </div>
+        )}
+      </NowTimer>
     )
   }
 

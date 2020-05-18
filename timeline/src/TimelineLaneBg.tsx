@@ -24,9 +24,9 @@ export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
     return props.timelineCoords && (
       <div className='fc-timeline-bg'>
         {/* Fragments contain the keys */}
-        <Fragment>{this.renderSegs(props.businessHourSegs || [], props.timelineCoords, 'non-business')}</Fragment>
-        <Fragment>{this.renderSegs(props.bgEventSegs || [], props.timelineCoords, 'bg-event')}</Fragment>
-        <Fragment>{this.renderSegs(highlightSeg, props.timelineCoords, 'highlight')}</Fragment>
+        {this.renderSegs(props.businessHourSegs || [], props.timelineCoords, 'non-business')}
+        {this.renderSegs(props.bgEventSegs || [], props.timelineCoords, 'bg-event')}
+        {this.renderSegs(highlightSeg, props.timelineCoords, 'highlight')}
       </div>
     )
   }
@@ -35,7 +35,7 @@ export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
   renderSegs(segs: TimelineLaneSeg[], timelineCoords: TimelineCoords, fillType: string) {
     let { todayRange, nowDate } = this.props
 
-    return segs.map((seg) => {
+    let children = segs.map((seg) => {
       let { eventRange } = seg
       let coords = timelineCoords.rangeToCoords(seg) // seg has { start, end }
 
@@ -59,6 +59,8 @@ export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
         </div>
       )
     })
+
+    return h(Fragment, {}, ...children)
   }
 
 }

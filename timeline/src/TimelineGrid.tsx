@@ -1,4 +1,4 @@
-import { h, createRef, ViewProps, Hit, DateComponent, CssDimValue, VNode, DateMarker, NowTimer, greatestDurationDenominator, DateRange, NowIndicatorRoot } from '@fullcalendar/common'
+import { h, createRef, ViewProps, Hit, DateComponent, CssDimValue, VNode, DateMarker, NowTimer, greatestDurationDenominator, DateRange, NowIndicatorRoot, Fragment } from '@fullcalendar/common'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineSlats } from './TimelineSlats'
 import { TimelineLane } from './TimelineLane'
@@ -41,45 +41,50 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
         height: props.clientHeight,
         width: props.clientWidth
       }}>
-        <NowTimer unit={timerUnit} content={(nowDate: DateMarker, todayRange: DateRange) => [
-          <TimelineSlats
-            ref={this.slatsRef}
-            dateProfile={dateProfile}
-            tDateProfile={tDateProfile}
-            nowDate={nowDate}
-            todayRange={todayRange}
-            clientWidth={props.clientWidth}
-            tableColGroupNode={props.tableColGroupNode}
-            tableMinWidth={props.tableMinWidth}
-            onCoords={this.handleCoords}
-            onScrollLeftRequest={props.onScrollLeftRequest}
-          />,
-          <TimelineLane
-            dateProfile={dateProfile}
-            tDateProfile={props.tDateProfile}
-            nowDate={nowDate}
-            todayRange={todayRange}
-            nextDayThreshold={options.nextDayThreshold}
-            businessHours={props.businessHours}
-            eventStore={props.eventStore}
-            eventUiBases={props.eventUiBases}
-            dateSelection={props.dateSelection}
-            eventSelection={props.eventSelection}
-            eventDrag={props.eventDrag}
-            eventResize={props.eventResize}
-            timelineCoords={state.coords}
-          />,
-          (options.nowIndicator && state.coords && state.coords.isDateInRange(nowDate)) &&
-            <NowIndicatorRoot isAxis={false} date={nowDate}>
-              {(rootElRef, classNames, innerElRef, innerContent) => (
-                <div
-                  ref={rootElRef}
-                  className={[ 'fc-timeline-now-indicator-line' ].concat(classNames).join(' ')}
-                  style={{ left: state.coords.dateToCoord(nowDate) }}
-                >{innerContent}</div>
-              )}
-            </NowIndicatorRoot>
-        ]} />
+        <NowTimer unit={timerUnit}>
+          {(nowDate: DateMarker, todayRange: DateRange) => (
+            <Fragment>
+              <TimelineSlats
+                ref={this.slatsRef}
+                dateProfile={dateProfile}
+                tDateProfile={tDateProfile}
+                nowDate={nowDate}
+                todayRange={todayRange}
+                clientWidth={props.clientWidth}
+                tableColGroupNode={props.tableColGroupNode}
+                tableMinWidth={props.tableMinWidth}
+                onCoords={this.handleCoords}
+                onScrollLeftRequest={props.onScrollLeftRequest}
+              />
+              <TimelineLane
+                dateProfile={dateProfile}
+                tDateProfile={props.tDateProfile}
+                nowDate={nowDate}
+                todayRange={todayRange}
+                nextDayThreshold={options.nextDayThreshold}
+                businessHours={props.businessHours}
+                eventStore={props.eventStore}
+                eventUiBases={props.eventUiBases}
+                dateSelection={props.dateSelection}
+                eventSelection={props.eventSelection}
+                eventDrag={props.eventDrag}
+                eventResize={props.eventResize}
+                timelineCoords={state.coords}
+              />
+              {(options.nowIndicator && state.coords && state.coords.isDateInRange(nowDate)) &&
+                <NowIndicatorRoot isAxis={false} date={nowDate}>
+                  {(rootElRef, classNames, innerElRef, innerContent) => (
+                    <div
+                      ref={rootElRef}
+                      className={[ 'fc-timeline-now-indicator-line' ].concat(classNames).join(' ')}
+                      style={{ left: state.coords.dateToCoord(nowDate) }}
+                    >{innerContent}</div>
+                  )}
+                </NowIndicatorRoot>
+              }
+            </Fragment>
+          )}
+        </NowTimer>
       </div>
     )
   }

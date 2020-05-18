@@ -39,6 +39,7 @@ export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ViewConte
           if (rowSpan > 1) {
             return (
               <SpreadsheetGroupCell
+                key={i}
                 colSpec={colSpec}
                 fieldValue={fieldValue}
                 rowSpan={rowSpan}
@@ -48,6 +49,7 @@ export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ViewConte
           } else {
             return (
               <SpreadsheetIndividualCell
+                key={i}
                 colSpec={colSpec}
                 resource={resource}
                 fieldValue={fieldValue}

@@ -1,6 +1,6 @@
 import {
   h, PositionCache,
-  Duration, EventStore, DateSpan, EventUiHash, EventInteractionState, DateComponent, Hit, createRef, CssDimValue, VNode, memoize, NowTimer, greatestDurationDenominator, DateMarker, DateRange, NowIndicatorRoot, DateProfile
+  Duration, EventStore, DateSpan, EventUiHash, EventInteractionState, DateComponent, Hit, createRef, CssDimValue, VNode, memoize, NowTimer, greatestDurationDenominator, DateMarker, DateRange, NowIndicatorRoot, DateProfile, Fragment
 } from '@fullcalendar/common'
 import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource-common'
 import { TimelineDateProfile, TimelineCoords, TimelineSlats, TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg } from '@fullcalendar/timeline'
@@ -70,58 +70,61 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
     )
 
     return (
-      <div ref={this.handleEl} className='fc-timeline-body' style={{
-        minWidth: props.tableMinWidth
-      }}>
-        <NowTimer unit={timerUnit} content={(nowDate: DateMarker, todayRange: DateRange) => [
-          <TimelineSlats
-            ref={this.slatsRef}
-            dateProfile={dateProfile}
-            tDateProfile={tDateProfile}
-            nowDate={nowDate}
-            todayRange={todayRange}
-            clientWidth={props.clientWidth}
-            tableColGroupNode={props.tableColGroupNode}
-            tableMinWidth={props.tableMinWidth}
-            onCoords={this.handleSlatCoords}
-            onScrollLeftRequest={props.onScrollLeftRequest}
-          />,
-          <TimelineLaneBg
-            businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
-            bgEventSegs={bgSlicedProps.bgEventSegs}
-            timelineCoords={state.slatCoords}
-            eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs as TimelineLaneSeg[] : []) /* empty array will result in unnecessary rerenders? */}
-            dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
-            nowDate={nowDate}
-            todayRange={todayRange}
-          />,
-          <ResourceTimelineLanes
-            rowNodes={props.rowNodes}
-            dateProfile={dateProfile}
-            tDateProfile={props.tDateProfile}
-            nowDate={nowDate}
-            todayRange={todayRange}
-            splitProps={splitProps}
-            fallbackBusinessHours={hasResourceBusinessHours ? props.businessHours : null}
-            clientWidth={props.clientWidth}
-            minHeight={props.expandRows ? props.clientHeight : ''}
-            tableMinWidth={props.tableMinWidth}
-            innerHeights={props.rowInnerHeights}
-            slatCoords={state.slatCoords}
-            onRowCoords={this.handleRowCoords}
-            onRowHeightChange={props.onRowHeightChange}
-          />,
-          (context.options.nowIndicator && state.slatCoords && state.slatCoords.isDateInRange(nowDate)) &&
-            <NowIndicatorRoot isAxis={false} date={nowDate}>
-              {(rootElRef, classNames, innerElRef, innerContent) => (
-                <div
-                  ref={rootElRef}
-                  className={[ 'fc-timeline-now-indicator-line' ].concat(classNames).join(' ')}
-                  style={{ left: state.slatCoords.dateToCoord(nowDate) }}
-                >{innerContent}</div>
-              )}
-            </NowIndicatorRoot>
-        ]} />
+      <div ref={this.handleEl} className='fc-timeline-body' style={{ minWidth: props.tableMinWidth }}>
+        <NowTimer unit={timerUnit}>
+          {(nowDate: DateMarker, todayRange: DateRange) => (
+            <Fragment>
+              <TimelineSlats
+                ref={this.slatsRef}
+                dateProfile={dateProfile}
+                tDateProfile={tDateProfile}
+                nowDate={nowDate}
+                todayRange={todayRange}
+                clientWidth={props.clientWidth}
+                tableColGroupNode={props.tableColGroupNode}
+                tableMinWidth={props.tableMinWidth}
+                onCoords={this.handleSlatCoords}
+                onScrollLeftRequest={props.onScrollLeftRequest}
+              />
+              <TimelineLaneBg
+                businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
+                bgEventSegs={bgSlicedProps.bgEventSegs}
+                timelineCoords={state.slatCoords}
+                eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs as TimelineLaneSeg[] : []) /* empty array will result in unnecessary rerenders? */}
+                dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
+                nowDate={nowDate}
+                todayRange={todayRange}
+              />
+              <ResourceTimelineLanes
+                rowNodes={props.rowNodes}
+                dateProfile={dateProfile}
+                tDateProfile={props.tDateProfile}
+                nowDate={nowDate}
+                todayRange={todayRange}
+                splitProps={splitProps}
+                fallbackBusinessHours={hasResourceBusinessHours ? props.businessHours : null}
+                clientWidth={props.clientWidth}
+                minHeight={props.expandRows ? props.clientHeight : ''}
+                tableMinWidth={props.tableMinWidth}
+                innerHeights={props.rowInnerHeights}
+                slatCoords={state.slatCoords}
+                onRowCoords={this.handleRowCoords}
+                onRowHeightChange={props.onRowHeightChange}
+              />
+              {(context.options.nowIndicator && state.slatCoords && state.slatCoords.isDateInRange(nowDate)) &&
+                <NowIndicatorRoot isAxis={false} date={nowDate}>
+                  {(rootElRef, classNames, innerElRef, innerContent) => (
+                    <div
+                      ref={rootElRef}
+                      className={[ 'fc-timeline-now-indicator-line' ].concat(classNames).join(' ')}
+                      style={{ left: state.slatCoords.dateToCoord(nowDate) }}
+                    >{innerContent}</div>
+                  )}
+                </NowIndicatorRoot>
+              }
+            </Fragment>
+          )}
+        </NowTimer>
       </div>
     )
   }

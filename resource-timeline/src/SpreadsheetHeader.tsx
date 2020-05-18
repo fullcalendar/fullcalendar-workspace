@@ -31,7 +31,7 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
     if (superHeaderRendering) {
       let rowInnerHeight = rowInnerHeights.shift()
       rowNodes.push(
-        <tr>
+        <tr key='row-super'>
           <RenderHook
             hookProps={hookProps}
             classNames={superHeaderRendering.headerClassNames}
@@ -55,13 +55,14 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
 
     let rowInnerHeight = rowInnerHeights.shift()
     rowNodes.push(
-      <tr>
+      <tr key='row'>
         {colSpecs.map((colSpec, i) => {
           let isLastCol = i === (colSpecs.length - 1)
 
           // need empty inner div for abs positioning for resizer
           return (
             <RenderHook
+              key={i}
               hookProps={hookProps}
               classNames={colSpec.headerClassNames}
               content={colSpec.headerContent}

@@ -9,16 +9,16 @@ const PRESET_LICENSE_KEYS = [
 ]
 const CSS = {
   position: 'absolute' as 'absolute', // for TS+React. ugh.
-  'z-index': 99999,
+  zIndex: 99999,
   bottom: '1px',
   left: '1px',
   background: '#eee',
-  'border-color': '#ddd',
-  'border-style': 'solid',
-  'border-width': '1px 1px 0 0',
+  borderColor: '#ddd',
+  borderStyle: 'solid',
+  borderWidth: '1px 1px 0 0',
   padding: '2px 4px',
-  'font-size': '12px',
-  'border-top-right-radius': '3px'
+  fontSize: '12px',
+  borderTopRightRadius: '3px'
 }
 
 

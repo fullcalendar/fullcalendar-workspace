@@ -65,8 +65,9 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
       sections={[
         {
           type: 'header',
+          key: 'header',
           chunks: [
-            { rowContent: (
+            { key: 'a', rowContent: (
               <Fragment>
                 <tr>
                   <th className='fc-scrollgrid-shrink'>
@@ -80,7 +81,7 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
                 </tr>
               </Fragment>
             ) },
-            { rowContent: (
+            { key: 'b', rowContent: (
               <Fragment>
                 <tr>
                   <th><div className='cell-padding'><span className='fc-sticky' style={{ display: 'inline-block' }}>Monday</span></div></th>
@@ -96,9 +97,10 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
         },
         {
           type: 'body',
+          key: 'body0',
           maxHeight: 100,
           chunks: [
-            { rowContent: (
+            { key: 'a', rowContent: (
               <Fragment>
                 <tr>
                   <td className='fc-scrollgrid-shrink'>
@@ -112,7 +114,7 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
                 </tr>
               </Fragment>
             ) },
-            { rowContent: (
+            { key: 'b', rowContent: (
               <Fragment>
                 <tr><td>
                   <div className='cell-padding'>
@@ -149,10 +151,11 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
         },
         {
           type: 'body',
+          key: 'body1',
           liquid: true,
           expandRows: true,
           chunks: [
-            { rowContent: (contentArg) => (
+            { key: 'a', rowContent: (contentArg) => (
               <Fragment>
                 <tr>
                   <td className='fc-scrollgrid-shrink'>
@@ -381,6 +384,7 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
               </Fragment>
             ) },
             {
+              key: 'b',
               scrollerElRef: handleScrollerEl,
               content: (contentArg) => {
                 return (
@@ -576,8 +580,9 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
         },
         {
           type: 'footer',
+          key: 'footer',
           chunks: [
-            { rowContent: (
+            { key: 'a', rowContent: (
               <Fragment>
                 <tr>
                   <td className='fc-scrollgrid-shrink'>
@@ -593,7 +598,7 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
                 </tr>
               </Fragment>
             ) },
-            { rowContent: (
+            { key: 'b', rowContent: (
               <Fragment>
                 <tr>
                   <td><div className='cell-padding'>Monday</div></td>
@@ -626,6 +631,7 @@ function renderSimpleScrollGrid(isLiquid: boolean, forPrint: boolean) {
       sections={[
         {
           type: 'header',
+          key: 'header',
           chunk: {
             rowContent: (
               <tr>
@@ -643,6 +649,7 @@ function renderSimpleScrollGrid(isLiquid: boolean, forPrint: boolean) {
         },
         {
           type: 'body',
+          key: 'body',
           liquid: true,
           expandRows: true,
           chunk: {

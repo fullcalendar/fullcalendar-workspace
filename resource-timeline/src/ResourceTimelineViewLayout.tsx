@@ -55,38 +55,50 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
     let sections: ScrollGridSectionConfig[] = [
       {
         type: 'header',
+        key: 'header',
         syncRowHeights: true,
         isSticky: stickyHeaderDates,
         chunks: [
           {
+            key: 'datagrid',
             elRef: this.spreadsheetHeaderChunkElRef,
             tableClassName: 'fc-datagrid-header', // TODO: allow the content to specify this. have general-purpose 'content' with obj with keys
             rowContent: props.spreadsheetHeaderRows
           },
-          { outerContent: (
-            <td
-              ref={this.spreadsheetResizerElRef}
-              rowSpan={stickyFooterScrollbar ? 3 : 2}
-              className={'fc-resource-timeline-divider fc-divider ' + context.theme.getClass('tableCellShaded')}
-            />
-          ) },
           {
+            key: 'divider',
+              outerContent: (
+              <td
+                ref={this.spreadsheetResizerElRef}
+                rowSpan={stickyFooterScrollbar ? 3 : 2}
+                className={'fc-resource-timeline-divider fc-divider ' + context.theme.getClass('tableCellShaded')}
+              />
+            )
+          },
+          {
+            key: 'timeline',
             content: props.timeHeaderContent
           }
         ]
       },
       {
         type: 'body',
+        key: 'body',
         syncRowHeights: true,
         liquid: true,
         expandRows: Boolean(options.expandRows),
         chunks: [
           {
+            key: 'datagrid',
             tableClassName: 'fc-datagrid-body',
             rowContent: props.spreadsheetBodyRows
           },
-          { outerContent: null },
           {
+            key: 'divider',
+            outerContent: null
+          },
+          {
+            key: 'timeline',
             scrollerElRef: this.timeBodyScrollerElRef,
             content: props.timeBodyContent
           }
@@ -97,11 +109,21 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
     if (stickyFooterScrollbar) {
       sections.push({
         type: 'footer',
+        key: 'footer',
         isSticky: true,
         chunks: [
-          { content: renderScrollShim },
-          { outerContent: null },
-          { content: renderScrollShim }
+          {
+            key: 'datagrid',
+            content: renderScrollShim
+          },
+          {
+            key: 'divider',
+            outerContent: null
+          },
+          {
+            key: 'timeline',
+            content: renderScrollShim
+          }
         ]
       })
     }

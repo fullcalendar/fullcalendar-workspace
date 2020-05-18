@@ -32,5 +32,5 @@ export function ExpanderIcon({ depth, hasChildren, isExpanded, onExpanderClick }
     </span>
   )
 
-  return (<Fragment>{nodes}</Fragment>)
+  return h(Fragment, {}, ...nodes)
 }

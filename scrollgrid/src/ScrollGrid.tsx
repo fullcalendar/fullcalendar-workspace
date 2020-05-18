@@ -5,7 +5,7 @@ import {
   findElements,
   mapHash,
   RefMap,
-  ColProps, ChunkConfig, CssDimValue, hasShrinkWidth, renderMicroColGroup,
+  ColProps, CssDimValue, hasShrinkWidth, renderMicroColGroup,
   ScrollGridProps, ScrollGridSectionConfig, ColGroupConfig,
   getScrollGridClassNames, getSectionClassNames, getSectionHasLiquidHeight, getAllowYScrolling, renderChunkContent, computeShrinkWidth,
   getIsRtlScrollbarOnLeft,
@@ -22,6 +22,7 @@ import {
 import { StickyScrolling } from './StickyScrolling'
 import { ClippedScroller, ClippedOverflowValue } from './ClippedScroller'
 import { ScrollSyncer } from './ScrollSyncer'
+import { ScrollGridChunkConfig } from 'packages/common/src/scrollgrid/ScrollGridImpl'
 
 
 interface ScrollGridState {
@@ -94,9 +95,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     return (
       <Fragment>
         <table ref={props.elRef} className={classNames.join(' ')} style={{ display: props.forPrint ? 'none' : '' }}>
-          <colgroup>
-            {colGroupStats.map((colGroupStat, i) => renderMacroCol(colGroupStat, shrinkWidths[i]))}
-          </colgroup>
+          {renderMacroColGroup(colGroupStats, shrinkWidths)}
           <tbody>
             {props.sections.map((sectionConfig, i) => this.renderSection(sectionConfig, i, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights))}
           </tbody>
@@ -118,7 +117,11 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
   ): VNode {
 
     if ('outerContent' in sectionConfig) {
-      return sectionConfig.outerContent
+      return (
+        <Fragment key={sectionConfig.key}>
+          {sectionConfig.outerContent}
+        </Fragment>
+      )
     }
 
     return (
@@ -144,13 +147,17 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     sectionIndex: number,
     colGroupStat: ColGroupStat | undefined,
     microColGroupNode: VNode | undefined,
-    chunkConfig: ChunkConfig,
+    chunkConfig: ScrollGridChunkConfig,
     chunkIndex: number,
     rowHeights: number[]
   ): VNode {
 
     if ('outerContent' in chunkConfig) {
-      return chunkConfig.outerContent
+      return (
+        <Fragment key={chunkConfig.key}>
+          {chunkConfig.outerContent}
+        </Fragment>
+      )
     }
 
     let { state } = this
@@ -211,7 +218,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     )
 
     return (
-      <td ref={this.chunkElRefs.createRef(index)}>
+      <td key={chunkConfig.key} ref={this.chunkElRefs.createRef(index)}>
         {content}
       </td>
     )
@@ -327,10 +334,10 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     let sectionRowMaxHeights: number[][][] = []
 
     for (let sectionI = 0; sectionI < sectionCnt; sectionI++) {
-      let sectionConfig = this.props.sections[sectionI] || {}
+      let sectionConfig = this.props.sections[sectionI]
       let assignableHeights: number[][] = [] // chunk, row
 
-      if (sectionConfig.syncRowHeights) {
+      if (sectionConfig && sectionConfig.syncRowHeights) {
         let rowHeightsByChunk: number[][] = []
 
         for (let chunkI = 0; chunkI < chunksPerSection; chunkI++) {
@@ -700,16 +707,20 @@ function renderPrintTrs(sectionConfigs: ScrollGridSectionConfig[], chunkElRefs: 
 }
 
 
-function renderMacroCol(colGroupStat: ColGroupStat, shrinkWidth?: number) {
-  let width = colGroupStat.width
+function renderMacroColGroup(colGroupStats: ColGroupStat[], shrinkWidths: number[]) {
+  let children = colGroupStats.map((colGroupStat, i) => {
+    let width = colGroupStat.width
 
-  if (width === 'shrink') {
-    width = colGroupStat.totalColWidth + sanitizeShrinkWidth(shrinkWidth) + 1 // +1 for border :(
-  }
+    if (width === 'shrink') {
+      width = colGroupStat.totalColWidth + sanitizeShrinkWidth(shrinkWidths[i]) + 1 // +1 for border :(
+    }
 
-  return (
-    <col style={{ width }} />
-  )
+    return (
+      <col style={{ width }} />
+    )
+  })
+
+  return h('colgroup', {}, ...children)
 }
 
 

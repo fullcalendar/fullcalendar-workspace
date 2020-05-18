@@ -65,10 +65,9 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
 
     this.allowAcrossResources = dayRanges.length === 1
 
-    return (
-      <NowTimer // TODO: would move this further down hierarchy, but sliceNowDate needs it
-        unit={options.nowIndicator ? 'minute' : 'day'}
-        content={(nowDate: DateMarker, todayRange: DateRange) => (
+    return ( // TODO: would move this further down hierarchy, but sliceNowDate needs it
+      <NowTimer unit={options.nowIndicator ? 'minute' : 'day'}>
+        {(nowDate: DateMarker, todayRange: DateRange) => (
           <TimeCols
             ref={this.timeColsRef}
             rootElRef={this.handleRootEl}
@@ -90,7 +89,7 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
             forPrint={props.forPrint}
           />
         )}
-      />
+      </NowTimer>
     )
   }
 
