@@ -8,6 +8,7 @@
     "@fullcalendar/timegrid": "5.0.0-beta.2",
     "@fullcalendar/list": "5.0.0-beta.2",
     "@fullcalendar/bootstrap": "5.0.0-beta.2",
+    "@fullcalendar/google-calendar": "5.0.0-beta.2",
     "@fullcalendar/scrollgrid": "5.0.0-beta.2",
     "@fullcalendar/timeline": "5.0.0-beta.2",
     "@fullcalendar/resource-common": "5.0.0-beta.2",

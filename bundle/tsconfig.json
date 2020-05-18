@@ -14,6 +14,7 @@
     { "path": "../../packages/timegrid" },
     { "path": "../../packages/list" },
     { "path": "../../packages/bootstrap" },
+    { "path": "../../packages/google-calendar" },
     { "path": "../scrollgrid" },
     { "path": "../timeline" },
     { "path": "../resource-common" },
