@@ -1,4 +1,4 @@
-import { h, BaseComponent, ViewContext, CssDimValue, Fragment, MountHook, buildClassNameNormalizer, ContentHook, ViewApi, memoizeObjArg } from '@fullcalendar/common'
+import { createElement, BaseComponent, ViewContext, CssDimValue, Fragment, MountHook, buildClassNameNormalizer, ContentHook, ViewApi, memoizeObjArg } from '@fullcalendar/common'
 import { Resource, ColSpec, ResourceApi } from '@fullcalendar/resource-common'
 import { ExpanderIcon } from './ExpanderIcon'
 

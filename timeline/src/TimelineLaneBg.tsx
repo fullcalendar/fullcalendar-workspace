@@ -1,4 +1,4 @@
-import { BaseComponent, h, Fragment, BgEvent, renderFill, getSegMeta, DateRange, DateMarker } from '@fullcalendar/common'
+import { BaseComponent, createElement, Fragment, BgEvent, renderFill, getSegMeta, DateRange, DateMarker } from '@fullcalendar/common'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
@@ -60,7 +60,7 @@ export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
       )
     })
 
-    return h(Fragment, {}, ...children)
+    return createElement(Fragment, {}, ...children)
   }
 
 }

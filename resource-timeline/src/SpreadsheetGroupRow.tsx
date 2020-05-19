@@ -1,4 +1,4 @@
-import { h, Fragment, BaseComponent, ViewContext, CssDimValue, createRef, RenderHook, RefObject } from '@fullcalendar/common'
+import { createElement, Fragment, BaseComponent, ViewContext, CssDimValue, createRef, RenderHook, RefObject } from '@fullcalendar/common'
 import { Group, isGroupsEqual, ColCellHookProps } from '@fullcalendar/resource-common'
 import { ExpanderIcon } from './ExpanderIcon'
 

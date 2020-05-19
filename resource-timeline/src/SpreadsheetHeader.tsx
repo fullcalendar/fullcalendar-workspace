@@ -1,5 +1,5 @@
 import {
-  VNode, h, Fragment,
+  VNode, createElement, Fragment,
   BaseComponent, ElementDragging, elementClosest, PointerDragEvent, RefMap, findElements, RenderHook,
 } from '@fullcalendar/common'
 import { ColSpec, ColHeaderHookProps, ColHeaderRenderHooks } from '@fullcalendar/resource-common'

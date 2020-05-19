@@ -1,5 +1,5 @@
 import {
-  h, createRef, ViewContext, memoize,
+  createElement, createRef, ViewContext, memoize,
   Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache, ScrollRequest, ScrollResponder, ViewRoot, BaseComponent, ViewOptionsRefined,
 } from '@fullcalendar/common'
 import {

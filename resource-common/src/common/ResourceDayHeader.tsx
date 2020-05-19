@@ -1,5 +1,5 @@
 import {
-  VNode, h, TableDowCell,
+  VNode, createElement, TableDowCell,
   memoize, BaseComponent, DateMarker, DateFormatter, computeFallbackHeaderFormat, TableDateCell, Fragment, DateRange, NowTimer, Ref, ComponentChildren, DateProfile
 } from '@fullcalendar/common'
 import { Resource } from '../structs/resource'

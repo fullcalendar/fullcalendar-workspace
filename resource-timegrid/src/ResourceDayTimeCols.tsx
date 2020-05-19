@@ -1,5 +1,5 @@
 import {
-  h, createRef, VNode,
+  createElement, createRef, VNode,
   mapHash, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, memoize, DateRange, DateMarker, Hit, CssDimValue, NowTimer, Duration, DateProfile
 } from '@fullcalendar/common'
 import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg, TimeSlatMeta } from '@fullcalendar/timegrid'

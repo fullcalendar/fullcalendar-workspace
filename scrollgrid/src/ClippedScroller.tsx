@@ -1,5 +1,5 @@
 import {
-  h, ComponentChildren, createRef, Ref, BaseComponent, setRef,
+  createElement, ComponentChildren, createRef, Ref, BaseComponent, setRef,
   ScrollerLike,
   Scroller, OverflowValue,
   getScrollbarWidths,

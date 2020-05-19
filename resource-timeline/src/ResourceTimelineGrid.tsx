@@ -1,5 +1,5 @@
 import {
-  h, PositionCache,
+  createElement, PositionCache,
   Duration, EventStore, DateSpan, EventUiHash, EventInteractionState, DateComponent, Hit, createRef, CssDimValue, VNode, memoize, NowTimer, greatestDurationDenominator, DateMarker, DateRange, NowIndicatorRoot, DateProfile, Fragment
 } from '@fullcalendar/common'
 import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource-common'

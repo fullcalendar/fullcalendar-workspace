@@ -1,5 +1,5 @@
 import {
-  h, DateProfileGenerator, memoize, DateProfile, ChunkContentCallbackArgs, CalendarContext
+  createElement, DateProfileGenerator, memoize, DateProfile, ChunkContentCallbackArgs, CalendarContext
 } from '@fullcalendar/common'
 import { TimeColsView, buildTimeColsModel, buildSlatMetas } from '@fullcalendar/timegrid'
 import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'

@@ -1,4 +1,4 @@
-import { h, BaseComponent, ViewContext, isArraysEqual, CssDimValue } from '@fullcalendar/common'
+import { createElement, BaseComponent, ViewContext, isArraysEqual, CssDimValue } from '@fullcalendar/common'
 import { Resource, buildResourceFields, ColSpec, getPublicId } from '@fullcalendar/resource-common'
 import { SpreadsheetIndividualCell } from './SpreadsheetIndividualCell'
 import { SpreadsheetGroupCell } from './SpreadsheetGroupCell'

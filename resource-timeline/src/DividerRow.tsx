@@ -1,4 +1,4 @@
-import { h, Ref, BaseComponent, CssDimValue, RenderHook } from '@fullcalendar/common'
+import { createElement, Ref, BaseComponent, CssDimValue, RenderHook } from '@fullcalendar/common'
 import { GroupLaneRenderHooks, ColCellHookProps } from '@fullcalendar/resource-common'
 
 

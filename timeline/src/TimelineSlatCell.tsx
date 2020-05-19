@@ -1,5 +1,5 @@
 import {
-  h, isInt, BaseComponent, DateMarker, Ref, DateRange, getDateMeta, getSlotClassNames, RenderHook, getDayClassNames, SlotLaneHookProps
+  createElement, isInt, BaseComponent, DateMarker, Ref, DateRange, getDateMeta, getSlotClassNames, RenderHook, getDayClassNames, SlotLaneHookProps
 } from '@fullcalendar/common'
 import { TimelineDateProfile } from './timeline-date-profile'
 

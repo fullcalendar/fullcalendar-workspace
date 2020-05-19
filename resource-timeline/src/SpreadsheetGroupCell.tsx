@@ -1,4 +1,4 @@
-import { h, BaseComponent, Fragment, RenderHook } from '@fullcalendar/common'
+import { createElement, BaseComponent, Fragment, RenderHook } from '@fullcalendar/common'
 import { ColSpec, ColCellHookProps } from '@fullcalendar/resource-common'
 
 

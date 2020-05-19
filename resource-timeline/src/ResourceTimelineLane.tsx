@@ -1,4 +1,4 @@
-import { h, Ref, BaseComponent, CssDimValue, buildClassNameNormalizer, ContentHook, MountHook, elementClosest, memoizeObjArg } from '@fullcalendar/common'
+import { createElement, Ref, BaseComponent, CssDimValue, buildClassNameNormalizer, ContentHook, MountHook, elementClosest, memoizeObjArg } from '@fullcalendar/common'
 import { Resource, ResourceApi, ResourceLaneHookProps, ResourceLaneHookPropsInput } from '@fullcalendar/resource-common'
 import { TimelineLane, TimelineLaneCoreProps } from '@fullcalendar/timeline'
 

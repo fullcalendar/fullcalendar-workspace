@@ -1,5 +1,5 @@
 import {
-  h, PositionCache,
+  createElement, PositionCache,
   SplittableProps, EventStore, createRef, BaseComponent, CssDimValue, RefMap,
   DateMarker,
   DateRange,

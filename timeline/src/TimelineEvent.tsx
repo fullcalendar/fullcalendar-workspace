@@ -1,4 +1,4 @@
-import { StandardEvent, MinimalEventProps, h, BaseComponent, EventMeta, Fragment, createFormatter } from '@fullcalendar/common'
+import { StandardEvent, MinimalEventProps, createElement, BaseComponent, EventMeta, Fragment, createFormatter } from '@fullcalendar/common'
 
 
 export interface TimelineEventProps extends MinimalEventProps {

@@ -1,5 +1,5 @@
 import {
-  h, createRef, ViewContext,
+  createElement, createRef, ViewContext,
   CssDimValue, ElementDragging, PointerDragEvent, BaseComponent, ColProps,
   ChunkConfigRowContent, ChunkConfigContent, ScrollGridSectionConfig,
   renderScrollShim,

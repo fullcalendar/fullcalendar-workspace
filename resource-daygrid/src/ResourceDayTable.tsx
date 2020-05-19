@@ -1,5 +1,5 @@
 import {
-  h, createRef, VNode,
+  createElement, createRef, VNode,
   mapHash, Hit, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, Duration, RefObject, CssDimValue, DateProfile
 } from '@fullcalendar/common'
 import { DayTableSlicer, Table, TableSeg } from '@fullcalendar/daygrid'

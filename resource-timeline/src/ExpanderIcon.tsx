@@ -1,4 +1,4 @@
-import { h, VNode, Fragment } from '@fullcalendar/common'
+import { createElement, VNode, Fragment } from '@fullcalendar/common'
 
 
 /*
@@ -32,5 +32,5 @@ export function ExpanderIcon({ depth, hasChildren, isExpanded, onExpanderClick }
     </span>
   )
 
-  return h(Fragment, {}, ...nodes)
+  return createElement(Fragment, {}, ...nodes)
 }

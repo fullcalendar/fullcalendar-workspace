@@ -1,5 +1,5 @@
 import {
-  h, VNode, createRef, Fragment, render,
+  createElement, VNode, createRef, Fragment, render,
   BaseComponent,
   isArraysEqual,
   findElements,
@@ -720,7 +720,7 @@ function renderMacroColGroup(colGroupStats: ColGroupStat[], shrinkWidths: number
     )
   })
 
-  return h('colgroup', {}, ...children)
+  return createElement('colgroup', {}, ...children)
 }
 
 
