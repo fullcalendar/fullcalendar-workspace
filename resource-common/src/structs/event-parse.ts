@@ -10,15 +10,7 @@ export const EVENT_REFINERS = {
 
 export function generateEventDefResourceMembers(refined: EventRefined) {
   return {
-    resourceIds: ensureStringArray(refined.resourceIds)
-      .concat(refined.resourceId ? [ refined.resourceId ] : []),
+    resourceIds: (refined.resourceIds || []).concat(refined.resourceId),
     resourceEditable: refined.resourceEditable
   }
-}
-
-
-function ensureStringArray(items: any[]) {
-  return (items || []).map(function(item) {
-    return String(item)
-  })
 }
