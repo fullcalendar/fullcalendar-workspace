@@ -25,14 +25,22 @@ export class ResourceTimelineViewWrapper extends ViewWrapper {
 
 
   get dataGrid() {
-    return new ResourceDataGridWrapper(
-      this.el.querySelector('.fc-datagrid-body')
-    )
+    return new ResourceDataGridWrapper(this.getDataGridEl())
   }
 
 
   get dataHeader() { // rename `header` now?
     return new ResourceDataHeaderWrapper(this.el.querySelector('.fc-datagrid-header')) // doesnt exist yet. also, delete one other one by mistake
+  }
+
+
+  getDataGridEl() {
+    return this.el.querySelector('.fc-datagrid-body') as HTMLElement
+  }
+
+
+  getDataGridWidth() {
+    return this.getDataGridEl().getBoundingClientRect().width
   }
 
 

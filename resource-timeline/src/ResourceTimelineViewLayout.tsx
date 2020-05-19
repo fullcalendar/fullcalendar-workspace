@@ -1,6 +1,5 @@
 import {
-  createElement, createRef, ViewContext,
-  CssDimValue, ElementDragging, PointerDragEvent, BaseComponent, ColProps,
+  createElement, createRef, ElementDragging, PointerDragEvent, BaseComponent, ColProps,
   ChunkConfigRowContent, ChunkConfigContent, ScrollGridSectionConfig,
   renderScrollShim,
   getStickyHeaderDates,
@@ -23,7 +22,7 @@ export interface ResourceTimelineViewLayoutProps {
 }
 
 interface ResourceTimelineViewLayoutState {
-  resourceAreaWidth: CssDimValue
+  resourceAreaWidthOverride?: number
 }
 
 
@@ -35,15 +34,6 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
   private spreadsheetResizerElRef = createRef<HTMLTableCellElement>()
   private spreadsheetResizerDragging: ElementDragging
   private rootElRef = createRef<HTMLElement>()
-
-
-  constructor(props: ResourceTimelineViewLayoutProps, context: ViewContext) {
-    super(props, context)
-
-    this.state = {
-      resourceAreaWidth: context.options.resourceAreaWidth
-    }
-  }
 
 
   render() {
@@ -128,6 +118,10 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
       })
     }
 
+    let resourceAreaWidth = state.resourceAreaWidthOverride != null
+      ? state.resourceAreaWidthOverride
+      : options.resourceAreaWidth
+
     return (
       <ScrollGrid
         ref={this.scrollGridRef}
@@ -135,7 +129,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
         forPrint={props.forPrint}
         liquid={!props.isHeightAuto}
         colGroups={[
-          { cols: props.spreadsheetCols, width: state.resourceAreaWidth },
+          { cols: props.spreadsheetCols, width: resourceAreaWidth },
           { cols: [] }, // for the divider
           { cols: props.timeCols }
         ]}
@@ -190,10 +184,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
       let viewWidth
 
       dragging.emitter.on('dragstart', () => {
-        dragStartWidth = this.state.resourceAreaWidth
-        if (typeof dragStartWidth !== 'number') {
-          dragStartWidth = spreadsheetHeadEl.getBoundingClientRect().width
-        }
+        dragStartWidth = spreadsheetHeadEl.getBoundingClientRect().width
         viewWidth = this.rootElRef.current.getBoundingClientRect().width
       })
 
@@ -203,7 +194,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
         newWidth = Math.min(newWidth, viewWidth - MIN_RESOURCE_AREA_WIDTH)
 
         this.setState({ // TODO: debounce?
-          resourceAreaWidth: newWidth
+          resourceAreaWidthOverride: newWidth
         })
       })
 
