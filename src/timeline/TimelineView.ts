@@ -249,8 +249,8 @@ export default class TimelineView extends View {
     this.isTimeBodyScrolled = false // because if the grid has been rerendered, it will get a zero scroll
     this.timeBodyScroller.on('scroll', proxy(this, 'handleTimeBodyScrolled'))
 
-    this.slatContainerEl = $('<div class="fc-slats"/>').appendTo(this.timeBodyScroller.canvas.bgEl)
-    this.segContainerEl = $('<div class="fc-event-container"/>').appendTo(this.timeBodyScroller.canvas.contentEl)
+    this.slatContainerEl = $('<div class="fc-slats">').appendTo(this.timeBodyScroller.canvas.bgEl)
+    this.segContainerEl = $('<div class="fc-event-container">').appendTo(this.timeBodyScroller.canvas.contentEl)
     this.bgSegContainerEl = this.timeBodyScroller.canvas.bgEl
 
     this.timeBodyBoundCache = new CoordCache({
@@ -450,7 +450,7 @@ export default class TimelineView extends View {
     let html = '<table class="' + theme.getClass('tableGrid') + '">'
     html += '<colgroup>'
     for (date of slotDates) {
-      html += '<col/>'
+      html += '<col>'
     }
     html += '</colgroup>'
     html += '<tbody>'
@@ -489,7 +489,7 @@ export default class TimelineView extends View {
     let slatHtml = '<table class="' + theme.getClass('tableGrid') + '">'
     slatHtml += '<colgroup>'
     for (cell of slotCells) {
-      slatHtml += '<col/>'
+      slatHtml += '<col>'
     }
     slatHtml += '</colgroup>'
     slatHtml += '<tbody><tr>'
@@ -545,7 +545,7 @@ export default class TimelineView extends View {
 
     return '<td class="' + classes.join(' ') + '"' +
       ' data-date="' + date.format() + '"' +
-      '><div /></td>'
+      '><div></div></td>'
   }
 
 

@@ -34,7 +34,7 @@ export default class RowGroup extends RowParent {
   Renders the content wrapper element that will be inserted into this row's TD cell
   */
   renderGroupContentEl() {
-    let contentEl = $('<div class="fc-cell-content" />')
+    let contentEl = $('<div class="fc-cell-content">')
       .append(this.renderGroupTextEl())
 
     const filter = this.groupSpec.render
@@ -57,7 +57,7 @@ export default class RowGroup extends RowParent {
       text = filter(text) || text
     }
 
-    return $('<span class="fc-cell-text" />').text(text)
+    return $('<span class="fc-cell-text">').text(text)
   }
 
 }

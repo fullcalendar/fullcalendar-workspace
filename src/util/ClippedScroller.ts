@@ -36,7 +36,7 @@ export default class ClippedScroller extends EnhancedScroller {
 
   renderEl() {
     const scrollEl = super.renderEl()
-    return $('<div class="fc-scroller-clip" />').append(scrollEl) // return value
+    return $('<div class="fc-scroller-clip">').append(scrollEl) // return value
   }
 
 

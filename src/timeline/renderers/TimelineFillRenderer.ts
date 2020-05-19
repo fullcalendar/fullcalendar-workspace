@@ -20,7 +20,7 @@ export default class TimelineFillRenderer extends FillRenderer {
 
       // making a new container each time is OKAY
       // all types of segs (background or business hours or whatever) are rendered in one pass
-      const containerEl = $('<div class="fc-' + className + '-container" />')
+      const containerEl = $('<div class="fc-' + className + '-container">')
         .appendTo(this.component.bgSegContainerEl)
 
       for (let seg of segs) {

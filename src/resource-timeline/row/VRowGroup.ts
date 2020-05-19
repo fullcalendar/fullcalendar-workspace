@@ -29,7 +29,7 @@ export default class VRowGroup extends RowGroup {
 
       // ensure the TD element
       if (!this.groupTd) {
-        this.groupTd = $('<td class="' + theme.getClass('widgetContent') + '"/>')
+        this.groupTd = $('<td class="' + theme.getClass('widgetContent') + '">')
           .append(this.renderGroupContentEl())
       }
 

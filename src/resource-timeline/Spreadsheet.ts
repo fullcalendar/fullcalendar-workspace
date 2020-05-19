@@ -65,7 +65,7 @@ export default class Spreadsheet {
     this.bodyScroller.canvas.contentEl.html(
       `<div class="fc-rows"> \
 <table class="` + theme.getClass('tableGrid') + `">\
-` + this.colGroupHtml + `<tbody/> \
+` + this.colGroupHtml + `<tbody></tbody> \
 </table> \
 </div>`
     ) // colGroupHtml hack
@@ -95,9 +95,9 @@ export default class Spreadsheet {
     let colGroupHtml = '<colgroup>'
     for (let o of colSpecs) {
       if (o.isMain) {
-        colGroupHtml += '<col class="fc-main-col"/>'
+        colGroupHtml += '<col class="fc-main-col">'
       } else {
-        colGroupHtml += '<col/>'
+        colGroupHtml += '<col>'
       }
     }
 

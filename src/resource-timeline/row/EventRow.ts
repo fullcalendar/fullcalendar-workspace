@@ -19,7 +19,7 @@ export default class EventRow extends RowParent {
     tr.html(`\
 <td class="` + theme.getClass('widgetContent') + `"> \
 <div> \
-<div class="fc-event-container" /> \
+<div class="fc-event-container"></div> \
 </div> \
 </td>\
 `)

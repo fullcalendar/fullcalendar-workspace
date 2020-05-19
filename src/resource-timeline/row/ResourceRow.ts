@@ -130,12 +130,12 @@ export default class ResourceRow extends EventRow {
         contentEl = colSpec.render(resource, contentEl, input) || contentEl
       }
 
-      const td = $('<td class="' + theme.getClass('widgetContent') + '"/>')
+      const td = $('<td class="' + theme.getClass('widgetContent') + '">')
         .append(contentEl)
 
       // the first cell of the row needs to have an inner div for setTrInnerHeight
       if (colSpec.isMain) {
-        td.wrapInner('<div/>')
+        td.wrapInner('<div>')
       }
 
       tr.append(td)
@@ -154,7 +154,7 @@ export default class ResourceRow extends EventRow {
     const { depth } = this
 
     for (let i = 0; i < depth; i++) {
-      html += '<span class="fc-icon"/>'
+      html += '<span class="fc-icon"></span>'
     }
 
     html +=

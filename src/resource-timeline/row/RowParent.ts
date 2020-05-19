@@ -258,7 +258,7 @@ export default class RowParent extends DateComponent {
         // build the TR and record it
         // assign before calling the render methods, because they might rely
         const tbody = this.view.tbodyHash[type]
-        const tr = $('<tr/>')
+        const tr = $('<tr>')
         this.trHash[type] = tr
         trNodes.push(tr[0])
 

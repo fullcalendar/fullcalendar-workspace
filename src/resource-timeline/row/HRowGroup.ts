@@ -24,10 +24,10 @@ export default class HRowGroup extends RowGroup {
       '</span>'
     )
 
-    return $('<td class="fc-divider" />')
+    return $('<td class="fc-divider"></td>')
       .attr('colspan', this.view.colSpecs.length) // span across all columns
       .append(
-        $('<div/>').append(contentEl) // needed by setTrInnerHeight
+        $('<div>').append(contentEl) // needed by setTrInnerHeight
       )
       .appendTo(tr)
   }
@@ -40,7 +40,7 @@ export default class HRowGroup extends RowGroup {
     // there will be no content
     return tr.append(`\
 <td class="fc-divider"> \
-<div/> \
+<div></div> \
 </td>\
 `)
   }

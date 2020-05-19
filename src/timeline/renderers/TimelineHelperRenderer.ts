@@ -29,7 +29,7 @@ export default class TimelineHelperRenderer extends HelperRenderer {
       }
     }
 
-    const helperContainerEl = $('<div class="fc-event-container fc-helper-container"/>')
+    const helperContainerEl = $('<div class="fc-event-container fc-helper-container">')
       .appendTo(this.component.innerEl)
 
     helperNodes.push(helperContainerEl[0])
