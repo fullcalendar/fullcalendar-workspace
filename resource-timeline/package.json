@@ -5,16 +5,11 @@
   "description": "Display events and resources on a horizontal time axis",
   "docs": "https://fullcalendar.io/docs/timeline-view",
   "dependencies": {
-    "tslib": "^1.9.3",
+    "@fullcalendar/common": "5.0.0-beta.3",
     "@fullcalendar/resource-common": "5.0.0-beta.3",
     "@fullcalendar/scrollgrid": "5.0.0-beta.3",
-    "@fullcalendar/timeline": "5.0.0-beta.3"
-  },
-  "peerDependencies": {
-    "@fullcalendar/common": "5.0.0-beta.3"
-  },
-  "devDependencies": {
-    "@fullcalendar/common": "5.0.0-beta.3"
+    "@fullcalendar/timeline": "5.0.0-beta.3",
+    "tslib": "^1.9.3"
   },
   "module": "main.js",
   "types": "main.d.ts",
