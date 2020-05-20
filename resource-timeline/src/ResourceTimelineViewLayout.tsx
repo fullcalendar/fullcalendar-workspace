@@ -22,7 +22,7 @@ export interface ResourceTimelineViewLayoutProps {
 }
 
 interface ResourceTimelineViewLayoutState {
-  resourceAreaWidthOverride?: number
+  resourceAreaWidthOverride: number | null
 }
 
 
@@ -34,6 +34,10 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
   private spreadsheetResizerElRef = createRef<HTMLTableCellElement>()
   private spreadsheetResizerDragging: ElementDragging
   private rootElRef = createRef<HTMLElement>()
+
+  state = {
+    resourceAreaWidthOverride: null
+  }
 
 
   render() {
