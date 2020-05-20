@@ -176,12 +176,8 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     let allowYScrolling = getAllowYScrolling(this.props, sectionConfig) // rename? do in section func?
 
     let chunkVGrow = getSectionHasLiquidHeight(this.props, sectionConfig) // do in section func?
-    let expandRows = sectionConfig.expandRows
+    let expandRows = sectionConfig.expandRows && chunkVGrow
     let tableMinWidth = (colGroupStat && colGroupStat.totalColMinWidth) || ''
-
-    if (expandRows && !chunkVGrow) {
-      throw new Error('invalid use of expandRows')
-    }
 
     let content = renderChunkContent(sectionConfig, chunkConfig, {
       tableColGroupNode: microColGroupNode,
