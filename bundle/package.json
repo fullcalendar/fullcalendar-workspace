@@ -1,6 +1,9 @@
 {
   "name": "fullcalendar-scheduler",
   "version": "5.0.0-beta.2",
+  "title": "FullCalendar Premium Bundle",
+  "description": "An easily consumable combination of standard and premium plugins",
+  "docs": "https://fullcalendar.io/docs/v5/getting-started",
   "devDependencies": {
     "@fullcalendar/core": "5.0.0-beta.2",
     "@fullcalendar/interaction": "5.0.0-beta.2",
