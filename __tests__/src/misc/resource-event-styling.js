@@ -107,7 +107,7 @@ describe('event styling hooks', function() {
       const el = $('.event1')
       expect(el.length).toBe(1)
       expect(el.css('border-left-color')).toMatch(BLUE_RE)
-      expect(el.css('color')).toMatch(BLUE_RE) // text color
+      expect(el.find('.fc-event-title').css('color')).toMatch(BLUE_RE) // text color
     })
 
     it('receives eventClassName from resourceId', function() {
