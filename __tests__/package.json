@@ -3,16 +3,16 @@
   "name": "fullcalendar-scheduler-tests",
   "version": "0.0.0",
   "dependencies": {
-    "@fullcalendar/core": "5.0.0-beta.2",
-    "@fullcalendar/interaction": "5.0.0-beta.2",
-    "@fullcalendar/daygrid": "5.0.0-beta.2",
-    "@fullcalendar/timegrid": "5.0.0-beta.2",
-    "@fullcalendar/list": "5.0.0-beta.2",
-    "@fullcalendar/scrollgrid": "5.0.0-beta.2",
-    "@fullcalendar/timeline": "5.0.0-beta.2",
-    "@fullcalendar/resource-common": "5.0.0-beta.2",
-    "@fullcalendar/resource-timeline": "5.0.0-beta.2",
-    "@fullcalendar/resource-daygrid": "5.0.0-beta.2",
-    "@fullcalendar/resource-timegrid": "5.0.0-beta.2"
+    "@fullcalendar/core": "5.0.0-beta.3",
+    "@fullcalendar/interaction": "5.0.0-beta.3",
+    "@fullcalendar/daygrid": "5.0.0-beta.3",
+    "@fullcalendar/timegrid": "5.0.0-beta.3",
+    "@fullcalendar/list": "5.0.0-beta.3",
+    "@fullcalendar/scrollgrid": "5.0.0-beta.3",
+    "@fullcalendar/timeline": "5.0.0-beta.3",
+    "@fullcalendar/resource-common": "5.0.0-beta.3",
+    "@fullcalendar/resource-timeline": "5.0.0-beta.3",
+    "@fullcalendar/resource-daygrid": "5.0.0-beta.3",
+    "@fullcalendar/resource-timegrid": "5.0.0-beta.3"
   }
 }
