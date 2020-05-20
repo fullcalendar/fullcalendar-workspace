@@ -1,6 +1,7 @@
 import { ResourceTimelineViewWrapper } from "../lib/wrappers/ResourceTimelineViewWrapper"
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import { CalendarWrapper } from 'fullcalendar-tests/lib/wrappers/CalendarWrapper'
+import { anyElsIntersect } from 'fullcalendar-tests/lib/dom-geom'
 
 describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C SO MANY LOOPS!
   pushOptions({
@@ -581,4 +582,30 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
       })
     })
   })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/5413
+  it('doesn\'t collide when events are different heights', function() {
+    let calendar = initCalendar({
+      initialView: 'timelineDay',
+      initialDate: '2020-05-12',
+      slotMinTime: '08:00:00',
+      events: [
+        { id: '2', resourceId: 'b', start: '2020-05-12T08:00:00', end: '2020-05-12T22:00:00', title: 'event 2' },
+        { id: '3', resourceId: 'b', start: '2020-05-12T09:00:00', end: '2020-05-12T22:00:00', title: 'event 3' }
+      ],
+      eventContent: function(arg) {
+        var innerHTML = arg.event.title
+        if (arg.event.id === '2') {
+          innerHTML += '<br><br><br><br>';
+        } else {
+          innerHTML += '<br><br>';
+        }
+        return { html: '<div class="fc-event-description">' + innerHTML + '</div>' }
+      }
+    })
+    let timelineGridWrapper = new TimelineViewWrapper(calendar).timelineGrid
+    let eventEls = timelineGridWrapper.getEventEls()
+    expect(anyElsIntersect(eventEls)).toBe(false)
+  })
+
 })

@@ -49,7 +49,7 @@ export function computeSegVerticals(segs: TimelineLaneSeg[], eventOrderSpecs: Or
           let placement = placements[i]
 
           if (testCollide(dims, top, placement.dims, placement.top)) {
-            top = placement.top + dims.height
+            top = placement.top + placement.dims.height
             insertI = i
           }
         }
