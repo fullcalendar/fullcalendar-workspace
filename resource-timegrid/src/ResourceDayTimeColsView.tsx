@@ -34,6 +34,8 @@ export class ResourceDayTimeColsView extends TimeColsView {
 
     let slatMetas = this.buildSlatMetas(dateProfile.slotMinTime, dateProfile.slotMaxTime, options.slotLabelInterval, options.slotDuration, dateEnv)
     let { dayMinWidth } = options
+    let hasAttachedAxis = !props.forPrint && !dayMinWidth
+    let hasDetachedAxis = !props.forPrint && dayMinWidth
 
     let headerContent = options.dayHeaders &&
       <ResourceDayHeader
@@ -41,7 +43,7 @@ export class ResourceDayTimeColsView extends TimeColsView {
         dates={resourceDayTableModel.dayTableModel.headerDates}
         dateProfile={dateProfile}
         datesRepDistinctDays={true}
-        renderIntro={dayMinWidth ? null : this.renderHeadAxis}
+        renderIntro={hasAttachedAxis ? this.renderHeadAxis : null}
       />
 
     let allDayContent = (options.allDaySlot !== false) && ((contentArg: ChunkContentCallbackArgs) => (
@@ -52,7 +54,7 @@ export class ResourceDayTimeColsView extends TimeColsView {
         nextDayThreshold={options.nextDayThreshold}
         tableMinWidth={contentArg.tableMinWidth}
         colGroupNode={contentArg.tableColGroupNode}
-        renderRowIntro={dayMinWidth ? null : this.renderTableRowAxis}
+        renderRowIntro={hasAttachedAxis ? this.renderTableRowAxis : null}
         showWeekNumbers={false}
         expandRows={false}
         headerAlignElRef={this.headerElRef}
@@ -67,7 +69,7 @@ export class ResourceDayTimeColsView extends TimeColsView {
       <ResourceDayTimeCols
         {...splitProps['timed']}
         dateProfile={dateProfile}
-        axis={!dayMinWidth}
+        axis={hasAttachedAxis}
         slotDuration={options.slotDuration}
         slatMetas={slatMetas}
         resourceDayTableModel={resourceDayTableModel}
@@ -81,7 +83,7 @@ export class ResourceDayTimeColsView extends TimeColsView {
       />
     )
 
-    return dayMinWidth
+    return hasDetachedAxis
       ? this.renderHScrollLayout(headerContent, allDayContent, timeGridContent, resourceDayTableModel.colCnt, dayMinWidth, slatMetas)
       : this.renderSimpleLayout(headerContent, allDayContent, timeGridContent)
   }
