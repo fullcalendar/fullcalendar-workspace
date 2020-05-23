@@ -58,6 +58,7 @@ export class ResourceDayTimeColsView extends TimeColsView {
         headerAlignElRef={this.headerElRef}
         clientWidth={contentArg.clientWidth}
         clientHeight={contentArg.clientHeight}
+        forPrint={props.forPrint}
         {...this.getAllDayMaxEventProps()}
       />
     ))

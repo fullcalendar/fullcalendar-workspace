@@ -26,6 +26,7 @@ export interface ResourceDayTableProps {
   headerAlignElRef?: RefObject<HTMLElement> // for more popover alignment
   clientWidth: number | null
   clientHeight: number | null
+  forPrint: boolean
 }
 
 export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
@@ -62,6 +63,7 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
 
     return (
       <Table
+        forPrint={props.forPrint}
         ref={this.tableRef}
         elRef={this.handleRootEl}
         {...this.joiner.joinProps(slicedProps, resourceDayTableModel)}
