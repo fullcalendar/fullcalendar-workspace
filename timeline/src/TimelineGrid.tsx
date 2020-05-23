@@ -70,6 +70,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
                 eventDrag={props.eventDrag}
                 eventResize={props.eventResize}
                 timelineCoords={state.coords}
+                forPrint={props.forPrint}
               />
               {(options.nowIndicator && state.coords && state.coords.isDateInRange(nowDate)) &&
                 <NowIndicatorRoot isAxis={false} date={nowDate}>

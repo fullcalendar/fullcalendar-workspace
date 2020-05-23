@@ -256,6 +256,10 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
 
   handleSizing = (sectionRowMaxHeightsChanged?: boolean) => {
 
+    if (this.props.forPrint) {
+      return
+    }
+
     if (!sectionRowMaxHeightsChanged) { // something else changed, probably external
       this.anyRowHeightsChanged = true
     }
@@ -293,7 +297,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
         this.anyRowHeightsChanged = true
       }
 
-      if (!rowUnstableMap.size && this.anyRowHeightsChanged) {
+      if (!rowUnstableMap.size && this.anyRowHeightsChanged && !this.propEquality.forPrint) {
         this.anyRowHeightsChanged = false
         this.setState({
           sectionRowMaxHeights: this.computeSectionRowMaxHeights()
@@ -673,7 +677,7 @@ function renderPrintTrs(sectionConfigs: ScrollGridSectionConfig[], chunkElRefs: 
     let sectionEnd = sectionStart + chunksPerSection
     let chunkEls = chunkElRefs.collect(sectionStart, sectionEnd)
 
-    let tableBodyEl = document.createElement('t' + sectionConfig.type)
+    let tableBodyEl = document.createElement({ header: 'thead', body: 'tbody', footer: 'tfoot' }[sectionConfig.type])
     tableBodyEl.className = sectionConfig.className || ''
     tableEl.appendChild(tableBodyEl)
 

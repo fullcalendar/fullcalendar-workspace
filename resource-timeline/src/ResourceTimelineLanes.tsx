@@ -29,6 +29,7 @@ export interface ResourceTimelineLanesContentProps {
   innerHeights: number[]
   slatCoords: TimelineCoords | null
   onRowHeightChange?: (rowEl: HTMLTableRowElement, isStable: boolean) => void
+  forPrint: boolean
 }
 
 
@@ -63,6 +64,7 @@ export class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesPr
           slatCoords={props.slatCoords}
           innerHeights={props.innerHeights}
           onRowHeightChange={props.onRowHeightChange}
+          forPrint={props.forPrint}
         />
       </table>
     )
@@ -154,6 +156,7 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
                 innerHeight={innerHeights[index] || ''}
                 timelineCoords={props.slatCoords}
                 onHeightChange={props.onRowHeightChange}
+                forPrint={props.forPrint}
               />
             )
           }

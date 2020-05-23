@@ -97,7 +97,13 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
               ref={this.layoutRef}
               forPrint={props.forPrint}
               isHeightAuto={props.isHeightAuto}
-              spreadsheetCols={buildSpreadsheetCols(colSpecs, state.spreadsheetColWidths)}
+              spreadsheetCols={
+                buildSpreadsheetCols(
+                  colSpecs,
+                  state.spreadsheetColWidths,
+                  props.forPrint ? 1 : '' // for print shrinks the falls back to shrinking (1). otherwise, natural
+                )
+              }
               spreadsheetHeaderRows={(contentArg: ChunkContentCallbackArgs) => (
                 <SpreadsheetHeader // TODO: rename to SpreadsheetHeaderRows
                   superHeaderRendering={superHeaderRendering}
@@ -111,19 +117,21 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
                   {this.renderSpreadsheetRows(rowNodes, colSpecs, contentArg.rowSyncHeights)}
                 </Fragment>
               )}
-              timeCols={slatCols}
+              timeCols={props.forPrint ? [{}] : slatCols}
               timeHeaderContent={(contentArg: ChunkContentCallbackArgs) => (
-                <TimelineHeader
-                  clientWidth={contentArg.clientWidth}
-                  clientHeight={contentArg.clientHeight}
-                  tableMinWidth={contentArg.tableMinWidth}
-                  tableColGroupNode={contentArg.tableColGroupNode}
-                  dateProfile={props.dateProfile}
-                  tDateProfile={tDateProfile}
-                  slatCoords={state.slatCoords}
-                  rowInnerHeights={contentArg.rowSyncHeights}
-                  onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
-                />
+                props.forPrint ?
+                  <table><tr><th></th></tr></table> :
+                  <TimelineHeader
+                    clientWidth={contentArg.clientWidth}
+                    clientHeight={contentArg.clientHeight}
+                    tableMinWidth={contentArg.tableMinWidth}
+                    tableColGroupNode={contentArg.tableColGroupNode}
+                    dateProfile={props.dateProfile}
+                    tDateProfile={tDateProfile}
+                    slatCoords={state.slatCoords}
+                    rowInnerHeights={contentArg.rowSyncHeights}
+                    onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
+                  />
               )}
               timeBodyContent={(contentArg: ChunkContentCallbackArgs) => (
                 <ResourceTimelineGrid
@@ -149,6 +157,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
                   onRowCoords={this.handleRowCoords}
                   onScrollLeftRequest={this.handleScrollLeftRequest}
                   onRowHeightChange={contentArg.reportRowHeightChange}
+                  forPrint={props.forPrint}
                 />
               )}
             />
@@ -333,11 +342,11 @@ function buildRowIndex(rowNodes: (GroupNode | ResourceNode)[]) {
 }
 
 
-function buildSpreadsheetCols(colSpecs: ColSpec[], forcedWidths: number[]) {
+function buildSpreadsheetCols(colSpecs: ColSpec[], forcedWidths: number[], fallbackWidth: CssDimValue = '') {
   return colSpecs.map((colSpec, i) => {
     return {
       className: colSpec.isMain ? 'fc-main-col' : '',
-      width: forcedWidths[i] || colSpec.width || ''
+      width: forcedWidths[i] || colSpec.width || fallbackWidth
     }
   })
 }

@@ -28,6 +28,7 @@ export interface TimelineLaneCoreProps {
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
   timelineCoords?: TimelineCoords // TODO: do null instead of undefined? .. SLAT coords
+  forPrint: boolean
 }
 
 interface TimelineLaneState {
@@ -90,7 +91,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         <div
           className='fc-timeline-events fc-scrollgrid-sync-inner'
           ref={this.innerElRef}
-          style={{ height /* computed by computeSegVerticals */ }}
+          style={{ height: props.forPrint ? '' : height /* computed by computeSegVerticals */ }}
         >
           {this.renderFgSegs(
             slicedProps.fgEventSegs,
@@ -171,7 +172,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           let instanceId = seg.eventRange.instance.instanceId
           let horizontalCoords = segHorizontals[instanceId]
 
-          if (horizontalCoords) {
+          if (horizontalCoords || props.forPrint) {
             let top = segTops[instanceId]
 
             return (
@@ -193,6 +194,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
                   isResizing={isResizing}
                   isDateSelecting={isDateSelecting}
                   isSelected={instanceId === this.props.eventSelection /* TODO: bad for mirror? */}
+                  forPrint={props.forPrint}
                   {...getSegMeta(seg, props.todayRange, props.nowDate)}
                 />
               </div>
