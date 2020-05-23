@@ -80,7 +80,10 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
   updateSizing() {
     let { props, context } = this
 
-    if (props.clientWidth !== null) { // is sizing stable?
+    if (
+      props.clientWidth !== null && // is sizing stable?
+      this.scrollResponder // it's possible to have clientWidth immediately after mount (when returning from print view), but w/o scrollResponder
+    ) {
 
       this.coords = new TimelineCoords(
         this.rootElRef.current,

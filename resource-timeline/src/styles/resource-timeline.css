@@ -20,6 +20,12 @@
   // the height is explicitly set by row-height-sync
 }
 
+.fc-media-print {
+  .fc-timeline-lane-frame {
+    overflow: hidden; // we don't do this normally because of stickyness parents
+  }
+}
+
 
 .fc-timeline-overlap-enabled .fc-timeline-lane-frame .fc-timeline-events { // has height set on it
   box-sizing: content-box; // padding no longer part of height

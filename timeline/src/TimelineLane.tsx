@@ -28,7 +28,6 @@ export interface TimelineLaneCoreProps {
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
   timelineCoords?: TimelineCoords // TODO: do null instead of undefined? .. SLAT coords
-  forPrint: boolean
 }
 
 interface TimelineLaneState {
@@ -91,7 +90,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         <div
           className='fc-timeline-events fc-scrollgrid-sync-inner'
           ref={this.innerElRef}
-          style={{ height: props.forPrint ? '' : height /* computed by computeSegVerticals */ }}
+          style={{ height /* computed by computeSegVerticals */ }}
         >
           {this.renderFgSegs(
             slicedProps.fgEventSegs,
@@ -134,10 +133,11 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
 
 
   updateSize() {
-    let { timelineCoords } = this.props
+    let { props } = this
+    let { timelineCoords } = props
 
-    if (this.props.onHeightChange) {
-      this.props.onHeightChange(this.innerElRef.current, false)
+    if (props.onHeightChange) {
+      props.onHeightChange(this.innerElRef.current, false)
     }
 
     if (timelineCoords) {
@@ -154,8 +154,8 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           }
         })
       }, () => {
-        if (this.props.onHeightChange) {
-          this.props.onHeightChange(this.innerElRef.current, true)
+        if (props.onHeightChange) {
+          props.onHeightChange(this.innerElRef.current, true)
         }
       })
     }
@@ -171,38 +171,32 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         {segs.map((seg) => {
           let instanceId = seg.eventRange.instance.instanceId
           let horizontalCoords = segHorizontals[instanceId]
+          let top = segTops[instanceId]
 
-          if (horizontalCoords || props.forPrint) {
-            let top = segTops[instanceId]
-
-            return (
-              <div
-                key={instanceId}
-                ref={isMirror ? null : harnessElRefs.createRef(instanceId)}
-                className='fc-timeline-event-harness'
-                style={{
-                  left: horizontalCoords ? horizontalCoords.left : '',
-                  right: horizontalCoords ? -horizontalCoords.right : '', // outwards from right edge (which is same as left edge)
-                  top: top != null ? top : '',
-                  visibility: hiddenSegs[instanceId] ? 'hidden' : ('' as any /* wtf, file @types/react bug */)
-                }}
-              >
-                <TimelineEvent
-                  isTimeScale={this.props.tDateProfile.isTimeScale}
-                  seg={seg}
-                  isDragging={isDragging}
-                  isResizing={isResizing}
-                  isDateSelecting={isDateSelecting}
-                  isSelected={instanceId === this.props.eventSelection /* TODO: bad for mirror? */}
-                  forPrint={props.forPrint}
-                  {...getSegMeta(seg, props.todayRange, props.nowDate)}
-                />
-              </div>
-            )
-
-          } else { // no use in rendering if don't have horizontal coords yet
-            return null
-          }
+          return (
+            <div
+              key={instanceId}
+              ref={isMirror ? null : harnessElRefs.createRef(instanceId)}
+              className='fc-timeline-event-harness'
+              style={{
+                left: horizontalCoords ? horizontalCoords.left : '',
+                right: horizontalCoords ? -horizontalCoords.right : '', // outwards from right edge (which is same as left edge)
+                top: top != null ? top : '',
+                visibility: hiddenSegs[instanceId] ? 'hidden' : ('' as any /* wtf, file @types/react bug */)
+              }}
+            >
+              <TimelineEvent
+                isTimeScale={this.props.tDateProfile.isTimeScale}
+                seg={seg}
+                isDragging={isDragging}
+                isResizing={isResizing}
+                isDateSelecting={isDateSelecting}
+                isSelected={instanceId === this.props.eventSelection /* TODO: bad for mirror? */}
+                forPrint={false}
+                {...getSegMeta(seg, props.todayRange, props.nowDate)}
+              />
+            </div>
+          )
         })}
       </Fragment>
     )
