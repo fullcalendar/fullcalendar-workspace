@@ -1,4 +1,7 @@
-import { rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewSpec, ViewPropsTransformer, CalendarContentProps, memoize, mapHash, EventUi, isPropsEqual, EventUiHash, EventDefHash, EventDef, combineEventUis, EventStore, DateRange, CalendarContext } from '@fullcalendar/common'
+import {
+  rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewPropsTransformer, CalendarContentProps, memoize, mapHash,
+  EventUi, isPropsEqual, EventUiHash, EventDefHash, EventDef, combineEventUis, EventStore, DateRange, CalendarContext
+} from '@fullcalendar/common'
 import { ResourceHash } from './structs/resource'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
 import { __assign } from 'tslib'
@@ -16,12 +19,12 @@ export class ResourceDataAdder implements ViewPropsTransformer {
 
   filterResources = memoize(filterResources)
 
-  transform(viewProps: ViewProps, viewSpec: ViewSpec, calendarProps: CalendarContentProps, allOptions: any) {
-    if (viewSpec.optionDefaults.needsResourceData) {
+  transform(viewProps: ViewProps, calendarProps: CalendarContentProps) {
+    if (calendarProps.viewSpec.optionDefaults.needsResourceData) {
       return {
         resourceStore: this.filterResources(
           calendarProps.resourceStore,
-          allOptions.filterResourcesWithEvents,
+          calendarProps.options.filterResourcesWithEvents,
           calendarProps.eventStore,
           calendarProps.dateProfile.activeRange
         ),
@@ -100,8 +103,8 @@ export class ResourceEventConfigAdder implements ViewPropsTransformer {
   buildResourceEventUis = memoize(buildResourceEventUis, isPropsEqual)
   injectResourceEventUis = memoize(injectResourceEventUis)
 
-  transform(viewProps: ViewProps, viewSpec: ViewSpec, calendarProps: CalendarContentProps) {
-    if (!viewSpec.optionDefaults.needsResourceData) {
+  transform(viewProps: ViewProps, calendarProps: CalendarContentProps) {
+    if (!calendarProps.viewSpec.optionDefaults.needsResourceData) {
       return {
         eventUiBases: this.injectResourceEventUis(
           viewProps.eventUiBases,
