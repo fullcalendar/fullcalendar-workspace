@@ -45,7 +45,6 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
                   eventResize={props.eventResize}
                   timelineCoords={props.timelineCoords}
                   onHeightChange={this.handleHeightChange}
-                  forPrint={props.forPrint}
                 />
               </div>
             </td>

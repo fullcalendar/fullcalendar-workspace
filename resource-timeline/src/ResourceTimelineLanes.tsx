@@ -156,7 +156,6 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
                 innerHeight={innerHeights[index] || ''}
                 timelineCoords={props.slatCoords}
                 onHeightChange={props.onRowHeightChange}
-                forPrint={props.forPrint}
               />
             )
           }
