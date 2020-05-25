@@ -91,13 +91,43 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
       }
     }
 
+    // TODO: make DRY
+    let sectionConfigs = props.sections
+    let configCnt = sectionConfigs.length
+    let configI = 0
+    let currentConfig: ScrollGridSectionConfig
+    let headSectionNodes: VNode[] = []
+    let bodySectionNodes: VNode[] = []
+    let footSectionNodes: VNode[] = []
+
+    while (configI < configCnt && (currentConfig = sectionConfigs[configI]).type === 'header') {
+      headSectionNodes.push(this.renderSection(currentConfig, configI, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights))
+      configI++
+    }
+
+    while (configI < configCnt && (currentConfig = sectionConfigs[configI]).type === 'body') {
+      bodySectionNodes.push(this.renderSection(currentConfig, configI, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights))
+      configI++
+    }
+
+    while (configI < configCnt && (currentConfig = sectionConfigs[configI]).type === 'footer') {
+      footSectionNodes.push(this.renderSection(currentConfig, configI, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights))
+      configI++
+    }
+
     return (
       <Fragment>
         <table ref={props.elRef} className={classNames.join(' ')}>
           {renderMacroColGroup(colGroupStats, shrinkWidths)}
-          <tbody>
-            {props.sections.map((sectionConfig, i) => this.renderSection(sectionConfig, i, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights))}
-          </tbody>
+          {Boolean(headSectionNodes.length) &&
+            createElement('thead', {}, ...headSectionNodes)
+          }
+          {Boolean(bodySectionNodes.length) &&
+            createElement('tbody', {}, ...bodySectionNodes)
+          }
+          {Boolean(footSectionNodes.length) &&
+            createElement('tfoot', {}, ...footSectionNodes)
+          }
         </table>
       </Fragment>
     )

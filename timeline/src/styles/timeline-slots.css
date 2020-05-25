@@ -21,6 +21,10 @@ vertical slots in both the header AND the body
   border-style: dotted;
 }
 
+// only owns one side, so can do dotted
+.fc-direction-ltr .fc-timeline-slot { border-right: 0 !important }
+.fc-direction-rtl .fc-timeline-slot { border-left: 0 !important }
+
 
 // header cells (aka "label")
 

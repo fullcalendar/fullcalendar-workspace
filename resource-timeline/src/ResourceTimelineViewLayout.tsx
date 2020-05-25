@@ -31,7 +31,6 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
   private scrollGridRef = createRef<ScrollGrid>()
   private timeBodyScrollerElRef = createRef<HTMLDivElement>()
   private spreadsheetHeaderChunkElRef = createRef<HTMLTableCellElement>()
-  private spreadsheetResizerElRef = createRef<HTMLTableCellElement>()
   private spreadsheetResizerDragging: ElementDragging
   private rootElRef = createRef<HTMLElement>()
 
@@ -62,12 +61,8 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
           {
             key: 'divider',
               outerContent: (
-              <td
-                ref={this.spreadsheetResizerElRef}
-                rowSpan={stickyFooterScrollbar ? 3 : 2}
-                className={'fc-resource-timeline-divider fc-divider ' + context.theme.getClass('tableCellShaded')}
-              />
-            )
+                <td className={'fc-resource-timeline-divider fc-divider ' + context.theme.getClass('tableCellShaded')} />
+              )
           },
           {
             key: 'timeline',
@@ -89,7 +84,9 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
           },
           {
             key: 'divider',
-            outerContent: null
+            outerContent: (
+              <td className={'fc-resource-timeline-divider fc-divider ' + context.theme.getClass('tableCellShaded')} />
+            )
           },
           {
             key: 'timeline',
@@ -112,7 +109,9 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
           },
           {
             key: 'divider',
-            outerContent: null
+            outerContent: (
+              <td className={'fc-resource-timeline-divider fc-divider ' + context.theme.getClass('tableCellShaded')} />
+            )
           },
           {
             key: 'timeline',
@@ -167,7 +166,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
 
 
   componentDidMount() {
-    this.initSpreadsheetResizing(this.spreadsheetResizerElRef.current)
+    this.initSpreadsheetResizing()
   }
 
 
@@ -176,19 +175,20 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
   }
 
 
-  initSpreadsheetResizing(resizerEl: HTMLElement) {
+  initSpreadsheetResizing() {
     let { isRtl, pluginHooks } = this.context
     let ElementDraggingImpl = pluginHooks.elementDraggingImpl
     let spreadsheetHeadEl = this.spreadsheetHeaderChunkElRef.current
 
     if (ElementDraggingImpl) {
-      let dragging = this.spreadsheetResizerDragging = new ElementDraggingImpl(resizerEl)
+      let rootEl = this.rootElRef.current
+      let dragging = this.spreadsheetResizerDragging = new ElementDraggingImpl(rootEl, '.fc-resource-timeline-divider')
       let dragStartWidth
       let viewWidth
 
       dragging.emitter.on('dragstart', () => {
         dragStartWidth = spreadsheetHeadEl.getBoundingClientRect().width
-        viewWidth = this.rootElRef.current.getBoundingClientRect().width
+        viewWidth = rootEl.getBoundingClientRect().width
       })
 
       dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
