@@ -34,8 +34,8 @@ export class ResourceDayTimeColsView extends TimeColsView {
 
     let slatMetas = this.buildSlatMetas(dateProfile.slotMinTime, dateProfile.slotMaxTime, options.slotLabelInterval, options.slotDuration, dateEnv)
     let { dayMinWidth } = options
-    let hasAttachedAxis = !props.forPrint && !dayMinWidth
-    let hasDetachedAxis = !props.forPrint && dayMinWidth
+    let hasAttachedAxis = !dayMinWidth
+    let hasDetachedAxis = dayMinWidth
 
     let headerContent = options.dayHeaders &&
       <ResourceDayHeader

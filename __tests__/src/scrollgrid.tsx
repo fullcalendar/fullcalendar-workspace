@@ -50,8 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
   return (
     <ScrollGrid
-      liquid={isLiquid}
-      forPrint={forPrint}
+      liquid={isLiquid && !forPrint}
       colGroups={[
         { width: 150, cols: [
           { width: 'shrink' },
@@ -622,8 +621,7 @@ function handleScrollerEl(scrollerEl: HTMLElement) {
 function renderSimpleScrollGrid(isLiquid: boolean, forPrint: boolean) {
   return (
     <SimpleScrollGrid
-      liquid={isLiquid}
-      forPrint={forPrint}
+      liquid={isLiquid && !forPrint}
       cols={[
         {},
         { width: 'shrink' }

@@ -30,7 +30,6 @@ export interface ResourceTimelineGridProps {
   onRowCoords?: (rowCoords: PositionCache) => void
   onScrollLeftRequest?: (scrollLeft: number) => void
   onRowHeightChange?: (rowEl: HTMLTableRowElement, isStable: boolean) => void
-  forPrint: boolean
 }
 
 interface ResourceTimelineGridState {
@@ -75,31 +74,27 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
         <NowTimer unit={timerUnit}>
           {(nowDate: DateMarker, todayRange: DateRange) => (
             <Fragment>
-              {!props.forPrint &&
-                <Fragment>
-                  <TimelineSlats
-                    ref={this.slatsRef}
-                    dateProfile={dateProfile}
-                    tDateProfile={tDateProfile}
-                    nowDate={nowDate}
-                    todayRange={todayRange}
-                    clientWidth={props.clientWidth}
-                    tableColGroupNode={props.tableColGroupNode}
-                    tableMinWidth={props.tableMinWidth}
-                    onCoords={this.handleSlatCoords}
-                    onScrollLeftRequest={props.onScrollLeftRequest}
-                  />
-                  <TimelineLaneBg
-                    businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
-                    bgEventSegs={bgSlicedProps.bgEventSegs}
-                    timelineCoords={state.slatCoords}
-                    eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs as TimelineLaneSeg[] : []) /* empty array will result in unnecessary rerenders? */}
-                    dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
-                    nowDate={nowDate}
-                    todayRange={todayRange}
-                  />
-                </Fragment>
-              }
+              <TimelineSlats
+                ref={this.slatsRef}
+                dateProfile={dateProfile}
+                tDateProfile={tDateProfile}
+                nowDate={nowDate}
+                todayRange={todayRange}
+                clientWidth={props.clientWidth}
+                tableColGroupNode={props.tableColGroupNode}
+                tableMinWidth={props.tableMinWidth}
+                onCoords={this.handleSlatCoords}
+                onScrollLeftRequest={props.onScrollLeftRequest}
+              />
+              <TimelineLaneBg
+                businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
+                bgEventSegs={bgSlicedProps.bgEventSegs}
+                timelineCoords={state.slatCoords}
+                eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs as TimelineLaneSeg[] : []) /* empty array will result in unnecessary rerenders? */}
+                dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
+                nowDate={nowDate}
+                todayRange={todayRange}
+              />
               <ResourceTimelineLanes
                 rowNodes={props.rowNodes}
                 dateProfile={dateProfile}
@@ -115,7 +110,6 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
                 slatCoords={state.slatCoords}
                 onRowCoords={this.handleRowCoords}
                 onRowHeightChange={props.onRowHeightChange}
-                forPrint={props.forPrint}
               />
               {(context.options.nowIndicator && state.slatCoords && state.slatCoords.isDateInRange(nowDate)) &&
                 <NowIndicatorRoot isAxis={false} date={nowDate}>

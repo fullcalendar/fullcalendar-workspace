@@ -1,5 +1,5 @@
 import {
-  createElement, VNode, createRef, Fragment, render,
+  createElement, VNode, Fragment,
   BaseComponent,
   isArraysEqual,
   findElements,
@@ -48,7 +48,6 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
 
   private compileColGroupStats = memoizeArraylike(compileColGroupStat, isColGroupStatsEqual)
   private renderMicroColGroups = memoizeArraylike(renderMicroColGroup) // yucky to memoize VNodes, but much more efficient for consumers
-  private printContainerRef = createRef<HTMLDivElement>()
   private clippedScrollerRefs = new RefMap<ClippedScroller>()
   private scrollerElRefs = new RefMap<HTMLElement>(this._handleScrollerEl.bind(this)) // doesn't hold non-scrolling els used just for padding
   private chunkElRefs = new RefMap<HTMLTableCellElement>(this._handleChunkEl.bind(this))
@@ -94,15 +93,12 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
 
     return (
       <Fragment>
-        <table ref={props.elRef} className={classNames.join(' ')} style={{ display: props.forPrint ? 'none' : '' }}>
+        <table ref={props.elRef} className={classNames.join(' ')}>
           {renderMacroColGroup(colGroupStats, shrinkWidths)}
           <tbody>
             {props.sections.map((sectionConfig, i) => this.renderSection(sectionConfig, i, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights))}
           </tbody>
         </table>
-        {props.forPrint &&
-          <div ref={this.printContainerRef}></div>
-        }
       </Fragment>
     )
   }
@@ -223,12 +219,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
 
   componentDidMount() {
     this.updateScrollSyncers()
-
-    if (this.props.forPrint) {
-      this.fillPrintContainer()
-    } else {
-      this.handleSizing()
-    }
+    this.handleSizing()
 
     this.context.addResizeHandler(this.handleSizing)
   }
@@ -237,12 +228,8 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
   componentDidUpdate(prevProps: ScrollGridProps, prevState: ScrollGridState) {
     this.updateScrollSyncers()
 
-    if (this.props.forPrint) {
-      this.fillPrintContainer()
-    } else {
-      // TODO: need better solution when state contains non-sizing things
-      this.handleSizing(prevState.sectionRowMaxHeights !== this.state.sectionRowMaxHeights)
-    }
+    // TODO: need better solution when state contains non-sizing things
+    this.handleSizing(prevState.sectionRowMaxHeights !== this.state.sectionRowMaxHeights)
   }
 
 
@@ -255,10 +242,6 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
 
 
   handleSizing = (sectionRowMaxHeightsChanged?: boolean) => {
-
-    if (this.props.forPrint) {
-      return
-    }
 
     if (!sectionRowMaxHeightsChanged) { // something else changed, probably external
       this.anyRowHeightsChanged = true
@@ -297,7 +280,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
         this.anyRowHeightsChanged = true
       }
 
-      if (!rowUnstableMap.size && this.anyRowHeightsChanged && !this.propEquality.forPrint) {
+      if (!rowUnstableMap.size && this.anyRowHeightsChanged) {
         this.anyRowHeightsChanged = false
         this.setState({
           sectionRowMaxHeights: this.computeSectionRowMaxHeights()
@@ -553,23 +536,6 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
   }
 
 
-  fillPrintContainer() {
-    render( // TODO: change CSS to be layout:normal
-      <table ref={this.handlePrintTableEl} className='fc-scrollgrid'>
-        <colgroup>{renderPrintCols(this.props.colGroups)}</colgroup>
-      </table>,
-      this.printContainerRef.current
-    )
-  }
-
-
-  handlePrintTableEl = (el: HTMLTableElement | null) => {
-    if (el) {
-      renderPrintTrs(this.props.sections, this.chunkElRefs, el)
-    }
-  }
-
-
   forceScrollLeft(col: number, scrollLeft: number) {
     let scrollSyncer = this.scrollSyncersByColumn[col]
 
@@ -642,68 +608,6 @@ function getRowInnerMaxHeight(rowEl: HTMLElement) {
 
 function getElHeight(el: HTMLElement) {
   return el.offsetHeight // better to deal with integers, for rounding, for PureComponent
-}
-
-
-function renderPrintCols(colGroups: ColGroupConfig[]) {
-  let colVNodes: VNode[] = []
-
-  for (let colGroup of colGroups) {
-    for (let colProps of colGroup.cols) {
-      colVNodes.push(
-        <col
-          span={colProps.span}
-          style={{
-            width: colProps.width === 'shrink' ? 0 : colProps.width || '',
-            minWidth: colProps.minWidth || ''
-          }}
-        />
-      )
-    }
-  }
-
-  return colVNodes
-}
-
-
-function renderPrintTrs(sectionConfigs: ScrollGridSectionConfig[], chunkElRefs: RefMap<HTMLElement>, tableEl: HTMLElement) {
-
-  for (let sectionI = 0; sectionI < sectionConfigs.length; sectionI++) {
-    let sectionConfig = sectionConfigs[sectionI]
-
-    let trSets: HTMLElement[][] = []
-    let chunksPerSection = sectionConfig.chunks.length
-    let sectionStart = sectionI * chunksPerSection
-    let sectionEnd = sectionStart + chunksPerSection
-    let chunkEls = chunkElRefs.collect(sectionStart, sectionEnd)
-
-    let tableBodyEl = document.createElement({ header: 'thead', body: 'tbody', footer: 'tfoot' }[sectionConfig.type])
-    tableBodyEl.className = sectionConfig.className || ''
-    tableEl.appendChild(tableBodyEl)
-
-    for (let chunkEl of chunkEls) {
-      trSets.push(findElements(chunkEl, 'tr'))
-    }
-
-    if (trSets.length) {
-      let rowCnt = trSets[0].length
-
-      for (let row = 0; row < rowCnt; row++) {
-        let compoundTr = document.createElement('tr')
-        tableBodyEl.appendChild(compoundTr)
-
-        for (let trs of trSets) {
-          let tr = trs[row]
-          let cellEls: HTMLElement[] = Array.prototype.slice.call(tr.childNodes) // TODO: util
-
-          for (let cellEl of cellEls) {
-            let cellElCopy = cellEl.cloneNode(true) // deep
-            compoundTr.appendChild(cellElCopy)
-          }
-        }
-      }
-    }
-  }
 }
 
 

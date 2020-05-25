@@ -3,7 +3,6 @@ import { StandardEvent, MinimalEventProps, createElement, BaseComponent, EventMe
 
 export interface TimelineEventProps extends MinimalEventProps {
   isTimeScale: boolean
-  forPrint: boolean
 }
 
 const DEFAULT_TIME_FORMAT = createFormatter({

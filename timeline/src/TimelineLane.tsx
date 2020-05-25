@@ -192,7 +192,6 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
                 isResizing={isResizing}
                 isDateSelecting={isDateSelecting}
                 isSelected={instanceId === this.props.eventSelection /* TODO: bad for mirror? */}
-                forPrint={false}
                 {...getSegMeta(seg, props.todayRange, props.nowDate)}
               />
             </div>

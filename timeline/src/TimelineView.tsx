@@ -107,8 +107,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
           <div ref={rootElRef} className={extraClassNames.concat(classNames).join(' ')}>
             <ScrollGrid
               ref={this.scrollGridRef}
-              forPrint={props.forPrint}
-              liquid={!props.isHeightAuto}
+              liquid={!props.isHeightAuto && !props.forPrint}
               colGroups={[
                 { cols: slatCols }
               ]}

@@ -130,8 +130,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
       <ScrollGrid
         ref={this.scrollGridRef}
         elRef={this.rootElRef}
-        forPrint={props.forPrint}
-        liquid={!props.isHeightAuto}
+        liquid={!props.isHeightAuto && !props.forPrint}
         colGroups={[
           { cols: props.spreadsheetCols, width: resourceAreaWidth },
           { cols: [] }, // for the divider
