@@ -43,8 +43,8 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
   render() {
     let { props, state, context } = this
     let { options } = context
-    let stickyHeaderDates = getStickyHeaderDates(options)
-    let stickyFooterScrollbar = getStickyFooterScrollbar(options)
+    let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
+    let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
     let sections: ScrollGridSectionConfig[] = [
       {

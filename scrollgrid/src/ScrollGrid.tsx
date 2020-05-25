@@ -531,8 +531,9 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     let chunksPerSection = this.getDims()[1]
     let sectionI = Math.floor(index / chunksPerSection)
     let chunkI = index % chunksPerSection
+    let sectionConfig = this.props.sections[sectionI]
 
-    return this.props.sections[sectionI].chunks[chunkI]
+    return sectionConfig && sectionConfig.chunks[chunkI]
   }
 
 
@@ -557,14 +558,18 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
   _handleChunkEl(chunkEl: HTMLTableCellElement | null, key: string) {
     let chunkConfig = this.getChunkConfigByIndex(parseInt(key, 10))
 
-    setRef(chunkConfig.elRef, chunkEl)
+    if (chunkConfig) { // null if section disappeared. bad, b/c won't null-set the elRef
+      setRef(chunkConfig.elRef, chunkEl)
+    }
   }
 
 
   _handleScrollerEl(scrollerEl: HTMLElement | null, key: string) {
     let chunkConfig = this.getChunkConfigByIndex(parseInt(key, 10))
 
-    setRef(chunkConfig.scrollerElRef, scrollerEl)
+    if (chunkConfig) { // null if section disappeared. bad, b/c won't null-set the elRef
+      setRef(chunkConfig.scrollerElRef, scrollerEl)
+    }
   }
 
 

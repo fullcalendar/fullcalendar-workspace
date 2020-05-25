@@ -28,8 +28,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
   render() {
     let { props, state, context } = this
     let { options } = context
-    let stickyHeaderDates = getStickyHeaderDates(options)
-    let stickyFooterScrollbar = getStickyFooterScrollbar(options)
+    let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
+    let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
     let tDateProfile = this.buildTimelineDateProfile(
       props.dateProfile,
