@@ -6,6 +6,7 @@ import {
   removeExact
 } from '@fullcalendar/common'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
+import './main.css'
 
 
 let contexts: CalendarContext[] = []

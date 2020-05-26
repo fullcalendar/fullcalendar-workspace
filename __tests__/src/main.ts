@@ -7,12 +7,15 @@ import timelinePlugin from '@fullcalendar/timeline'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
+import premiumCommonPlugin from '@fullcalendar/premium-common'
+  // need this for schedulerLicenseKey but why? shouldn't deps include this?
 
 const MORE_DEFAULT_PLUGINS = [
   timelinePlugin,
   resourceTimelinePlugin,
   resourceDayGridPlugin,
-  resourceTimeGridPlugin
+  resourceTimeGridPlugin,
+  premiumCommonPlugin
 ]
 
 pushOptions({

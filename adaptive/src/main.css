@@ -6,5 +6,18 @@
 
 .fc-event,
 .fc-scrollgrid table tr {
-  break-inside: avoid; // awesome
+  break-inside: avoid;
+}
+
+.fc-media-print {
+
+  & .fc-timegrid-slots,
+  & .fc-timegrid-slot-labels, // when it's a separate axis
+  & .fc-timeline-slots {
+    display: none;
+  }
+
+  & .fc-timegrid-event {
+    margin: 0.5em 0;
+  }
 }

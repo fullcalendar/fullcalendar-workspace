@@ -1,5 +1,5 @@
 import {
-  createElement, BaseComponent, multiplyDuration, RefMap, CssDimValue, VNode, createRef, ScrollResponder, ScrollRequest, DateMarker, DateRange, DateProfile
+  createElement, BaseComponent, multiplyDuration, RefMap, CssDimValue, VNode, createRef, ScrollResponder, ScrollRequest, DateMarker, DateRange, DateProfile, isElVisible
 } from '@fullcalendar/common'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { TimelineSlatCell } from './TimelineSlatCell'
@@ -84,21 +84,24 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
       props.clientWidth !== null && // is sizing stable?
       this.scrollResponder // it's possible to have clientWidth immediately after mount (when returning from print view), but w/o scrollResponder
     ) {
+      let rootEl = this.rootElRef.current
 
-      this.coords = new TimelineCoords(
-        this.rootElRef.current,
-        collectCellEls(this.cellElRefs.currentMap, props.tDateProfile.slotDates),
-        props.dateProfile,
-        props.tDateProfile,
-        context.dateEnv,
-        context.isRtl
-      )
+      if (isElVisible(rootEl)) { // not hidden by css
+        this.coords = new TimelineCoords(
+          this.rootElRef.current,
+          collectCellEls(this.cellElRefs.currentMap, props.tDateProfile.slotDates),
+          props.dateProfile,
+          props.tDateProfile,
+          context.dateEnv,
+          context.isRtl
+        )
 
-      if (props.onCoords) {
-        props.onCoords(this.coords)
+        if (props.onCoords) {
+          props.onCoords(this.coords)
+        }
+
+        this.scrollResponder.update(false) // TODO: wouldn't have to do this if coords were in state
       }
-
-      this.scrollResponder.update(false) // TODO: wouldn't have to do this if coords were in state
     }
   }
 

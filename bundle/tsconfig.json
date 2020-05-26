@@ -16,6 +16,7 @@
     { "path": "../../packages/bootstrap" },
     { "path": "../../packages/google-calendar" },
     { "path": "../scrollgrid" },
+    { "path": "../adaptive" },
     { "path": "../timeline" },
     { "path": "../resource-common" },
     { "path": "../resource-daygrid" },
