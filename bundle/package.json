@@ -5,6 +5,7 @@
   "description": "An easily consumable combination of standard and premium plugins",
   "docs": "https://fullcalendar.io/docs/v5/getting-started",
   "devDependencies": {
+    "@fullcalendar/adaptive": "5.0.0-beta.3",
     "@fullcalendar/core": "5.0.0-beta.3",
     "@fullcalendar/interaction": "5.0.0-beta.3",
     "@fullcalendar/daygrid": "5.0.0-beta.3",

@@ -1,0 +1,10 @@
+
+.fc.fc-media-print {
+  display: block; // undo flexbox. FF doesn't know how to flow
+  max-width: 100%; // width will be hardcoded too
+}
+
+.fc-event,
+.fc-scrollgrid table tr {
+  break-inside: avoid; // awesome
+}

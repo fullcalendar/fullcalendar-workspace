@@ -7,6 +7,7 @@ export * from '@fullcalendar/list'
 export * from '@fullcalendar/bootstrap'
 export * from '@fullcalendar/google-calendar'
 export * from '@fullcalendar/scrollgrid'
+export * from '@fullcalendar/adaptive'
 export * from '@fullcalendar/timeline'
 export * from '@fullcalendar/resource-common'
 export * from '@fullcalendar/resource-daygrid'
@@ -21,6 +22,7 @@ import listPlugin from '@fullcalendar/list'
 import bootstrapPlugin from '@fullcalendar/bootstrap'
 import googleCalendarPlugin from '@fullcalendar/google-calendar'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
+import adaptivePlugin from '@fullcalendar/adaptive'
 import timelinePlugin from '@fullcalendar/timeline'
 import resourceCommonPlugin from '@fullcalendar/resource-common'
 import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
@@ -35,6 +37,7 @@ globalPlugins.push(
   bootstrapPlugin,
   googleCalendarPlugin,
   scrollGridPlugin,
+  adaptivePlugin,
   timelinePlugin,
   resourceCommonPlugin,
   resourceDayGridPlugin,
