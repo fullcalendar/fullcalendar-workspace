@@ -1,4 +1,5 @@
 import { createPlugin } from '@fullcalendar/common'
+import premiumCommonPlugin from '@fullcalendar/premium-common'
 import './ambient'
 import { ResourceDataAdder, ResourceEventConfigAdder, transformIsDraggable } from './View' // TODO: ResourceDataAdder should be own plugin
 import { reduceResources } from './reducers/resources'
@@ -13,7 +14,6 @@ import { transformExternalDef } from './ExternalElementDragging'
 import { transformEventResizeJoin } from './EventResizing'
 import './api/EventApi-extend'
 import './api/EventApi-declare'
-import { buildLicenseWarning } from './license'
 export { ResourceLaneHookProps, ResourceLaneHookPropsInput } from './render-hooks'
 import { optionChangeHandlers } from './option-change-handlers'
 import { OPTION_REFINERS } from './options'
@@ -27,6 +27,9 @@ import './resource-sources/resource-json-feed'
 export * from './api-type-deps'
 
 export default createPlugin({
+  deps: [
+    premiumCommonPlugin
+  ],
   reducers: [ reduceResources ],
   eventRefiners: EVENT_REFINERS,
   eventDefMemberAdders: [ generateEventDefResourceMembers ],
@@ -40,7 +43,6 @@ export default createPlugin({
   isPropsValid: isPropsValidWithResources,
   externalDefTransforms: [ transformExternalDef ],
   eventResizeJoinTransforms: [ transformEventResizeJoin ],
-  viewContainerAppends: [ buildLicenseWarning ],
   eventDropTransformers: [ transformEventDrop ],
   optionChangeHandlers,
   optionRefiners: OPTION_REFINERS

@@ -5,12 +5,16 @@ import {
   CalendarContext,
   removeExact
 } from '@fullcalendar/common'
+import premiumCommonPlugin from '@fullcalendar/premium-common'
 
 
 let contexts: CalendarContext[] = []
 let undoFuncs: (() => void)[]
 
 export default createPlugin({
+  deps: [
+    premiumCommonPlugin
+  ],
   contextInit(context) {
     if (!contexts.length) {
       attachGlobalHandlers()

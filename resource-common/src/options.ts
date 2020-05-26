@@ -9,7 +9,6 @@ import {
 } from './api-type-deps'
 
 export const OPTION_REFINERS = {
-  schedulerLicenseKey: String,
   resources: identity as Identity<ResourceSourceInput>,
   eventResourceEditable: Boolean,
   refetchResourcesOnNavigate: Boolean,

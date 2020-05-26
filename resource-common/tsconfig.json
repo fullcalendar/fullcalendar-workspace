@@ -8,6 +8,7 @@
     "src/**/*"
   ],
   "references": [
-    { "path": "../../packages/common" }
+    { "path": "../../packages/common" },
+    { "path": "../premium-common" }
   ]
 }
