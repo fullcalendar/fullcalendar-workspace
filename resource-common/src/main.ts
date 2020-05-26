@@ -24,6 +24,8 @@ import './resource-sources/resource-array'
 import './resource-sources/resource-func'
 import './resource-sources/resource-json-feed'
 
+export * from './api-type-deps'
+
 export default createPlugin({
   reducers: [ reduceResources ],
   eventRefiners: EVENT_REFINERS,

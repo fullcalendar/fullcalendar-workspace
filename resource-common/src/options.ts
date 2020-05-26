@@ -1,8 +1,12 @@
 import { Identity, CssDimValue, ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler, identity, parseFieldSpecs } from '@fullcalendar/common'
-import { ResourceSourceInput } from './structs/resource-source-parse'
-import { ResourceLabelHookProps } from './common/ResourceLabelRoot'
-import { ColSpec, ColHeaderHookProps, ColCellHookProps } from './common/resource-spec'
-import { ResourceLaneHookProps } from './render-hooks'
+
+// public
+import {
+  ResourceSourceInput,
+  ResourceLabelHookProps,
+  ColSpec, ColHeaderHookProps, ColCellHookProps,
+  ResourceLaneHookProps
+} from './api-type-deps'
 
 export const OPTION_REFINERS = {
   schedulerLicenseKey: String,
