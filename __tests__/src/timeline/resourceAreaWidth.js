@@ -10,10 +10,10 @@ describe('resourceAreaWidth', function() {
     })
 
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
-    expect(viewWrapper.getDataGridWidth()).toBe(200)
+    expect(Math.abs(viewWrapper.getDataGridWidth() - 200)).toBeLessThan(2)
 
     calendar.setOption('resourceAreaWidth', 300)
-    expect(viewWrapper.getDataGridWidth()).toBe(300)
+    expect(Math.abs(viewWrapper.getDataGridWidth() - 300)).toBeLessThan(2)
   })
 
 })
