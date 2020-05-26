@@ -16,6 +16,11 @@ export class TimelineHeaderWrapper {
   }
 
 
+  getDateRowCnt() {
+    return this.el.querySelectorAll('tr').length
+  }
+
+
   getDateEls(dateRow = 0) {
     return findElements(this.el, `tr:nth-child(${dateRow + 1}) > th[data-date]`)
   }
