@@ -10,7 +10,7 @@ import './main.css'
 
 
 let contexts: CalendarContext[] = []
-let undoFuncs: (() => void)[]
+let undoFuncs: (() => void)[] = []
 
 export default createPlugin({
   deps: [
@@ -57,16 +57,19 @@ function removeGlobalHandlers() {
 
 
 function handleBeforePrint() {
+  let scrollEls = queryScrollerEls()
+  let scrollCoords = queryScrollerCoords(scrollEls)
+
   for (let context of contexts) {
     context.emitter.trigger('_beforeprint')
   }
 
   flushToDom() // because printing grabs DOM immediately after
 
-  undoFuncs = [
-    freezeScrollgridWidths(),
-    freezeHScrolls()
-  ]
+  killHorizontalScrolling(scrollEls, scrollCoords)
+  undoFuncs.push(() => restoreScrollerCoords(scrollEls, scrollCoords))
+
+  undoFuncs.push(freezeScrollgridWidths())
 }
 
 
@@ -74,6 +77,8 @@ function handleAfterPrint() {
   for (let context of contexts) {
     context.emitter.trigger('_afterprint')
   }
+
+  flushToDom() // guarantee that there are real scrollers
 
   while (undoFuncs.length) {
     undoFuncs.shift()()
@@ -98,41 +103,52 @@ function unfreezeScrollGridWidth(el) {
 }
 
 
-// horizontal scrolling
+// scrollers
 // TODO: use scroll normalization!? yes
 
-function freezeHScrolls() {
-  let allEls = findElements(document.body, '.fc-scroller-harness > .fc-scroller')
-  let scrollInfos = []
+function queryScrollerEls() {
+  return findElements(document.body, '.fc-scroller-harness > .fc-scroller')
+}
 
-  for (let el of allEls) {
+interface ScrollerCoords {
+  scrollLeft: number
+  scrollTop: number
+  overflowX: string
+  overflowY: string
+  marginBottom: string
+}
+
+function queryScrollerCoords(els: HTMLElement[]): ScrollerCoords[] {
+  return els.map((el) => {
     let computedStyle = window.getComputedStyle(el)
 
-    if (computedStyle.overflowX === 'scroll') {
-      let { scrollLeft } = el
-
-      scrollInfos.push({
-        el,
-        scrollLeft,
-        overflowY: computedStyle.overflowY,
-        marginBottom: computedStyle.marginBottom
-      })
-
-      el.style.overflowX = 'visible' // need to clear X/Y to get true overflow
-      el.style.overflowY = 'visible' // need to clear X/Y to get true overflow
-      el.style.left = -scrollLeft + 'px' // simulate scrollLeft!
-      el.style.marginBottom = ''
+    return {
+      scrollLeft: el.scrollLeft,
+      scrollTop: el.scrollTop,
+      overflowX: computedStyle.overflowX,
+      overflowY: computedStyle.overflowY,
+      marginBottom: computedStyle.marginBottom
     }
-  }
+  })
+}
 
-  return () => {
-    for (let info of scrollInfos) {
-      let { el } = info
-      el.style.overflowX = 'scroll'
-      el.style.overflowY = info.overflowY
-      el.style.marginBottom = info.marginBottom
-      el.style.left = ''
-      el.scrollLeft = info.scrollLeft
-    }
-  }
+function killHorizontalScrolling(els: HTMLElement[], coords: ScrollerCoords[]) {
+  els.forEach((el, i) => {
+    el.style.overflowX = 'visible' // need to clear X/Y to get true overflow
+    el.style.overflowY = 'visible' // "
+    el.style.marginBottom = '' // for clipping away scrollbar. disable
+    el.style.left = -coords[i].scrollLeft + 'px' // simulate scrollLeft! will be position:relative
+  })
+}
+
+function restoreScrollerCoords(els: HTMLElement[], coords: ScrollerCoords[]) { // restores vertical scrolling too
+  els.forEach((el, i) => {
+    let c = coords[i]
+    el.style.overflowX = c.overflowX
+    el.style.overflowY = c.overflowY
+    el.style.marginBottom = c.marginBottom
+    el.style.left = ''
+    el.scrollLeft = c.scrollLeft
+    el.scrollTop = c.scrollTop
+  })
 }
