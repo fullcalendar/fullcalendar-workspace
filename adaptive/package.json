@@ -1,12 +1,12 @@
 {
   "name": "@fullcalendar/adaptive",
-  "version": "5.0.0-beta.3",
+  "version": "5.0.0-beta.4",
   "title": "FullCalendar Adaptive Plugin",
   "description": "Optimizes FullCalendar for print (and soon other types of devices)",
   "docs": "https://fullcalendar.io/docs",
   "dependencies": {
-    "@fullcalendar/common": "5.0.0-beta.3",
-    "@fullcalendar/premium-common": "5.0.0-beta.3",
+    "@fullcalendar/common": "5.0.0-beta.4",
+    "@fullcalendar/premium-common": "5.0.0-beta.4",
     "tslib": "^1.9.3"
   },
   "module": "main.js",

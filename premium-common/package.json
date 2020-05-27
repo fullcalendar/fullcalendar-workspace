@@ -1,10 +1,10 @@
 {
   "name": "@fullcalendar/premium-common",
-  "version": "5.0.0-beta.3",
+  "version": "5.0.0-beta.4",
   "title": "internal plugin",
   "description": "internal plugin",
   "dependencies": {
-    "@fullcalendar/common": "5.0.0-beta.3",
+    "@fullcalendar/common": "5.0.0-beta.4",
     "tslib": "^1.9.3"
   },
   "module": "main.js",
