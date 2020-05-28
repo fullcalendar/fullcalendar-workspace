@@ -22,11 +22,13 @@ export default function(state: CalendarState, action: ResourceAction, calendar: 
   let resourceSource = reduceResourceSource(state.resourceSource, action, state.dateProfile, calendar)
   let resourceStore = reduceResourceStore(state.resourceStore, action, resourceSource, calendar)
   let resourceEntityExpansions = reduceResourceEntityExpansions(state.resourceEntityExpansions, action)
+  let loadingLevel = state.loadingLevel + (resourceSource.isFetching ? 1 : 0)
 
   return {
     ...state,
     resourceSource,
     resourceStore,
-    resourceEntityExpansions
+    resourceEntityExpansions,
+    loadingLevel
   }
 }
