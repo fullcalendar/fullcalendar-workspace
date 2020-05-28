@@ -52,6 +52,8 @@ export default class ResourceTimeGrid extends DateComponent<ResourceTimeGridProp
       return this.slicers[resourceId] || new TimeGridSlicer()
     })
 
+    timeGrid.receiveContext(context) // hack because sliceProps expects component to have context
+
     let slicedProps = mapHash(this.slicers, (slicer, resourceId) => {
       return slicer.sliceProps(
         splitProps[resourceId],
