@@ -11,7 +11,7 @@ vertical slots in both the header AND the body
     top: 0;
     bottom: 0;
 
-    > table {
+    & > table {
       height: 100%;
     }
   }
