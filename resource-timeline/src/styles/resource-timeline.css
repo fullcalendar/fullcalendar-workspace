@@ -1,27 +1,30 @@
 
+.fc {
 
-.fc-resource-timeline-divider {
-  width: 3px; // important to have width to shrink this cell. no cross-browser problems
-  cursor: col-resize;
-}
-
-
-// will match horizontal groups in the datagrid AND group lanes in the timeline area
-.fc-resource-timeline {
-  .fc-resource-group:not([rowspan]) {
-    background: $fc-theme-standard-muted-bg-color;
-    background: var(--fc-theme-standard-muted-bg-color, $fc-theme-standard-muted-bg-color);
+  & .fc-resource-timeline-divider {
+    width: 3px; // important to have width to shrink this cell. no cross-browser problems
+    cursor: col-resize;
   }
-}
 
 
-.fc-timeline-lane-frame {
-  position: relative; // contains the fc-timeline-bg container, which liquidly expands
-  // the height is explicitly set by row-height-sync
-}
+  // will match horizontal groups in the datagrid AND group lanes in the timeline area
+  & .fc-resource-timeline {
+    & .fc-resource-group:not([rowspan]) {
+      background: $fc-theme-standard-muted-bg-color;
+      background: var(--fc-theme-standard-muted-bg-color, $fc-theme-standard-muted-bg-color);
+    }
+  }
 
 
-.fc-timeline-overlap-enabled .fc-timeline-lane-frame .fc-timeline-events { // has height set on it
-  box-sizing: content-box; // padding no longer part of height
-  padding-bottom: 10px; // give extra spacing underneath for selecting
+  & .fc-timeline-lane-frame {
+    position: relative; // contains the fc-timeline-bg container, which liquidly expands
+    // the height is explicitly set by row-height-sync
+  }
+
+
+  & .fc-timeline-overlap-enabled .fc-timeline-lane-frame .fc-timeline-events { // has height set on it
+    box-sizing: content-box; // padding no longer part of height
+    padding-bottom: 10px; // give extra spacing underneath for selecting
+  }
+
 }

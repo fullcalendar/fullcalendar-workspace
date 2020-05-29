@@ -1,7 +1,4 @@
 
-// TODO: rename file??
-
-
 // the "frame"
 
 .fc-datagrid-cell-frame-liquid {
@@ -9,74 +6,76 @@
 }
 
 .fc-liquid-hack {
-  .fc-datagrid-cell-frame-liquid {
+  & .fc-datagrid-cell-frame-liquid {
     @include liquid-absolute-override;
   }
 }
 
+.fc {
 
-// the "frame" in a HEADER
-// needs to position the column resizer
-// needs to vertically center content
+  // the "frame" in a HEADER
+  // needs to position the column resizer
+  // needs to vertically center content
 
-th.fc-datagrid-cell { // better than fc-datagrid-header, which won't work in print view
+  // TODO: deal
+  & th.fc-datagrid-cell { // better than fc-datagrid-header, which won't work in print view
 
-  .fc-datagrid-cell-frame {
-    position: relative; // for resizer
-    display: flex;
-    justify-content: flex-start; // horizontal align (natural left/right)
-    align-items: center; // vertical align
+    & .fc-datagrid-cell-frame {
+      position: relative; // for resizer
+      display: flex;
+      justify-content: flex-start; // horizontal align (natural left/right)
+      align-items: center; // vertical align
+    }
+
+    & .fc-datagrid-cell-super .fc-datagrid-cell-frame {
+      justify-content: center; // horizontal align
+    }
+
   }
 
-  .fc-datagrid-cell-super .fc-datagrid-cell-frame {
-    justify-content: center; // horizontal align
+  // the column resizer (only in HEADER)
+
+  & .fc-datagrid-cell-resizer {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    cursor: col-resize;
   }
 
-}
+  // the cushion
 
+  & .fc-datagrid-cell-cushion {
+    padding: 8px;
+    white-space: nowrap;
+    overflow: hidden; // problem for col resizer :(
+  }
 
-// the column resizer (only in HEADER)
+  // expander icons
 
-.fc-datagrid-cell-resizer {
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  bottom: 0;
-  width: 5px;
-  cursor: col-resize;
+  & .fc-datagrid-expander {
+    cursor: pointer;
+    opacity: 0.65;
+
+    & .fc-icon { /* the expander and spacers before the expander */
+      display: inline-block;
+      width: 1em; /* ensure constant width, esp for empty icons */
+      text-align: center;
+    }
+
+  }
+
+  & .fc-resource-timeline-flat {
+    & .fc-datagrid-expander-placeholder {
+      display: none;
+    }
+  }
+
 }
 
 .fc-direction-ltr .fc-datagrid-cell-resizer { right: -3px }
 .fc-direction-rtl .fc-datagrid-cell-resizer { left: -3px }
 
-
-// the cushion
-
-.fc-datagrid-cell-cushion {
-  padding: 8px;
-  white-space: nowrap;
-  overflow: hidden; // problem for col resizer :(
-}
-
-
-// expander icons
-
-.fc-datagrid-expander {
-  cursor: pointer;
-  opacity: 0.65;
-}
-
 .fc-direction-ltr .fc-datagrid-expander { margin-right: 3px }
 .fc-direction-rtl .fc-datagrid-expander { margin-left: 3px }
-
-.fc-datagrid-expander .fc-icon { /* the expander and spacers before the expander */
-  display: inline-block;
-  width: 1em; /* ensure constant width, esp for empty icons */
-  text-align: center;
-}
-
-.fc-resource-timeline-flat {
-  .fc-datagrid-expander-placeholder {
-    display: none;
-  }
-}

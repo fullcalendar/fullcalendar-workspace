@@ -1,6 +1,10 @@
 
-.fc-timeline-body {
-  min-height: 100%;
-  position: relative;
-  z-index: 1; // scope slots, bg, etc
+.fc {
+
+  & .fc-timeline-body {
+    min-height: 100%;
+    position: relative;
+    z-index: 1; // scope slots, bg, etc
+  }
+
 }
