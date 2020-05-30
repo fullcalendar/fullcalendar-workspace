@@ -10,8 +10,7 @@
   // will match horizontal groups in the datagrid AND group lanes in the timeline area
   & .fc-resource-timeline {
     & .fc-resource-group:not([rowspan]) {
-      background: $fc-theme-standard-muted-bg-color;
-      background: var(--fc-theme-standard-muted-bg-color, $fc-theme-standard-muted-bg-color);
+      background: var(--fc-theme-standard-muted-bg-color);
     }
   }
 
