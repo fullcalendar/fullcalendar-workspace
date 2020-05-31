@@ -20,6 +20,7 @@
     display: none;
   }
 
+  & .fc-toolbar button,
   & .fc-event {
     color: #000 !important;
     background: #fff !important;

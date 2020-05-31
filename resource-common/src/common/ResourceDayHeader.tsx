@@ -201,15 +201,17 @@ class ResourceCell extends BaseComponent<ResourceCellProps> {
             colSpan={props.colSpan}
             {...dataAttrs}
           >
-            <span
-              className={[
-                'fc-col-header-cell-cushion',
-                props.isSticky ? 'fc-sticky' : ''
-              ].join(' ')}
-              ref={innerElRef}
-            >
-              {innerContent}
-            </span>
+            <div className='fc-scrollgrid-sync-inner'>
+              <span
+                className={[
+                  'fc-col-header-cell-cushion',
+                  props.isSticky ? 'fc-sticky' : ''
+                ].join(' ')}
+                ref={innerElRef}
+              >
+                {innerContent}
+              </span>
+            </div>
           </th>
         )}
       </ResourceLabelRoot>
