@@ -61,7 +61,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
           {
             key: 'divider',
               outerContent: (
-                <td className={'fc-resource-timeline-divider fc-divider ' + context.theme.getClass('tableCellShaded')} />
+                <td className={'fc-resource-timeline-divider ' + context.theme.getClass('tableCellShaded')} />
               )
           },
           {
@@ -85,7 +85,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
           {
             key: 'divider',
             outerContent: (
-              <td className={'fc-resource-timeline-divider fc-divider ' + context.theme.getClass('tableCellShaded')} />
+              <td className={'fc-resource-timeline-divider ' + context.theme.getClass('tableCellShaded')} />
             )
           },
           {
@@ -110,7 +110,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
           {
             key: 'divider',
             outerContent: (
-              <td className={'fc-resource-timeline-divider fc-divider ' + context.theme.getClass('tableCellShaded')} />
+              <td className={'fc-resource-timeline-divider ' + context.theme.getClass('tableCellShaded')} />
             )
           },
           {

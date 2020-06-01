@@ -7,7 +7,7 @@
     z-index: $timeline-now-indicator-z;
     top: 0;
     border-style: solid;
-    border-color: $now-indicator-color;
+    border-color: var(--now-indicator-color);
   }
 
   & .fc-timeline-now-indicator-arrow {
