@@ -17,18 +17,13 @@
   // needs to position the column resizer
   // needs to vertically center content
 
-  // TODO: deal
-  & th.fc-datagrid-cell { // better than fc-datagrid-header, which won't work in print view
+  & .fc-datagrid-header {
 
     & .fc-datagrid-cell-frame {
       position: relative; // for resizer
       display: flex;
       justify-content: flex-start; // horizontal align (natural left/right)
       align-items: center; // vertical align
-    }
-
-    & .fc-datagrid-cell-super .fc-datagrid-cell-frame {
-      justify-content: center; // horizontal align
     }
 
   }
