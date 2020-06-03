@@ -1,7 +1,7 @@
 
 .fc {
 
-  // container (move?)
+  // container
   & .fc-timeline-events {
     position: relative;
     z-index: $timeline-fg-z;
@@ -11,30 +11,60 @@
   // harness (move?)
   & .fc-timeline-event-harness {
     position: absolute;
-    top: 0; // default when not specified
+    top: 0; // default when not specified... bad
     // JS will set tht left/right
   }
 
 }
 
+// z-index, scoped within fc-timeline-events
+.fc-timeline-event { z-index: 1 }
+.fc-timeline-event.fc-event-mirror { z-index: 2 }
 
-// root
-// ----------------------------------------------------------------------------------------------------
 
 .fc-timeline-event {
+
   position: relative; // contains things. TODO: make part of fc-h-event and fc-v-event
   border-radius: 0;
   padding: 2px 1px;
   margin-bottom: 1px;
+  font-size: var(--fc-smaller-font-size);
 
-  // TODO: make vars
-  font-size: .85em;
-  border: 1px solid #3788d8;
-  background-color: #3788d8;
+  // time and title spacing
+  // ----------------------------------------------------------------------------------------------------
 
   & .fc-event-main {
-    color: #fff; // better to be within the <a> tag, for theme. TODO: var
+    display: flex;
   }
+
+  & .fc-event-title { // serves as a container for the sticky cushion
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0; // important for allowing to shrink all the way
+  }
+
+  & .fc-event-time {
+    font-weight: bold;
+  }
+
+  & .fc-event-time,
+  & .fc-timeline-event-title-cushion {
+    white-space: nowrap;
+    padding: 0 2px;
+  }
+
+  & .fc-timeline-event-title-cushion { // sticky within fc-event-title container
+    display: inline-block; // need this to be sticky cross-browser
+    left: 0;  // for sticky
+    right: 0; // for sticky
+    vertical-align: top; // need this for not affecting line-height
+    padding: 0 2px;
+
+    // clip overflow on this element
+    max-width: 100%;
+    overflow: hidden;
+  }
+
 }
 
 // move 1px away from slot line
@@ -47,43 +77,6 @@
   padding-bottom: 5px;
   margin-bottom: 0;
 }
-
-
-// time and title spacing
-// ----------------------------------------------------------------------------------------------------
-
-.fc-timeline-event .fc-event-main {
-  display: flex;
-}
-
-.fc-timeline-event .fc-event-title {
-  flex-grow: 1;
-  flex-shrink: 1;
-  min-width: 0; // important for allowing to shrink all the way
-}
-
-.fc-timeline-event .fc-event-time {
-  font-weight: bold;
-}
-
-.fc-timeline-event .fc-event-time,
-.fc-timeline-event-title-cushion {
-  white-space: nowrap;
-  padding: 0 2px;
-}
-
-.fc-timeline-event-title-cushion { // sticky within fc-event-title container
-  display: inline-block; // need this to be sticky cross-browser
-  left: 0;  // for sticky
-  right: 0; // for sticky
-  vertical-align: top; // need this for not affecting line-height
-  padding: 0 2px;
-
-  // clip overflow on this element
-  max-width: 100%;
-  overflow: hidden;
-}
-
 
 // arrows indicating the event continues into past/future
 // ----------------------------------------------------------------------------------------------------
@@ -99,7 +92,7 @@
   width: 0;
   height: 0;
   margin: 0 1px;
-  border: 5px solid #000;
+  border: 5px solid #000; // TODO: var
   border-top-color: transparent;
   border-bottom-color: transparent;
 }
