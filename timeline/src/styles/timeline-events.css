@@ -37,23 +37,23 @@
     display: flex;
   }
 
-  & .fc-event-title { // serves as a container for the sticky cushion
+  & .fc-event-time {
+    font-weight: bold;
+  }
+
+  & .fc-event-title-frame { // serves as a container for the sticky cushion
     flex-grow: 1;
     flex-shrink: 1;
     min-width: 0; // important for allowing to shrink all the way
   }
 
-  & .fc-event-time {
-    font-weight: bold;
-  }
-
   & .fc-event-time,
-  & .fc-timeline-event-title-cushion {
+  & .fc-event-title {
     white-space: nowrap;
     padding: 0 2px;
   }
 
-  & .fc-timeline-event-title-cushion { // sticky within fc-event-title container
+  & .fc-event-title { // sticky within fc-event-title container
     display: inline-block; // need this to be sticky cross-browser
     left: 0;  // for sticky
     right: 0; // for sticky
