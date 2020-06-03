@@ -399,11 +399,20 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
 
           for (let chunkI = 0; chunkI < chunksPerSection; chunkI++) {
             let rowInChunkCnt = rowHeightsByChunk[chunkI].length
-            let rowInChunkHeight = (maxTotalSum - rowInChunkCnt) / rowInChunkCnt // subtract border
+            let rowInChunkTotalHeight = maxTotalSum - rowInChunkCnt // subtract border
+            let rowInChunkHeightOthers = Math.floor(rowInChunkTotalHeight / rowInChunkCnt) // height of non-first row. we do this to avoid rounding, because it's unreliable within a table
+            let rowInChunkHeightFirst = rowInChunkTotalHeight - rowInChunkHeightOthers * (rowInChunkCnt - 1) // whatever is leftover goes to the first row
             let rowInChunkHeights: number[] = []
+            let row = 0
 
-            for (let row = 0; row < rowInChunkCnt; row++) {
-              rowInChunkHeights.push(rowInChunkHeight)
+            if (row < rowInChunkCnt) {
+              rowInChunkHeights.push(rowInChunkHeightFirst)
+              row++
+            }
+
+            while (row < rowInChunkCnt) {
+              rowInChunkHeights.push(rowInChunkHeightOthers)
+              row++
             }
 
             assignableHeights.push(rowInChunkHeights)
