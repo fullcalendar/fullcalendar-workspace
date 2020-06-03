@@ -21,7 +21,8 @@
   }
 
   & .fc-toolbar button,
-  & .fc-event {
+  & .fc-h-event,
+  & .fc-v-event {
     color: #000 !important;
     background: #fff !important;
   }

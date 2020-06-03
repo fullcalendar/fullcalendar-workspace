@@ -2,7 +2,7 @@ import {
   createElement, createRef, VNode,
   mapHash, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, memoize, DateRange, DateMarker, Hit, CssDimValue, NowTimer, Duration, DateProfile
 } from '@fullcalendar/common'
-import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg, TimeSlatMeta } from '@fullcalendar/timegrid'
+import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg, TimeSlatMeta, TimeColsSlatsCoords } from '@fullcalendar/timegrid'
 import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
 
 
@@ -26,6 +26,7 @@ export interface ResourceDayTimeColsProps {
   expandRows: boolean
   onScrollTopRequest?: (scrollTop: number) => void
   forPrint: boolean
+  onSlatCoords?: (slatCoords: TimeColsSlatsCoords) => void
 }
 
 
@@ -87,6 +88,7 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
             todayRange={todayRange}
             onScrollTopRequest={props.onScrollTopRequest}
             forPrint={props.forPrint}
+            onSlatCoords={props.onSlatCoords}
           />
         )}
       </NowTimer>
