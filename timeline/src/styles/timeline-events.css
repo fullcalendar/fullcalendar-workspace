@@ -11,7 +11,7 @@
   // harness (move?)
   & .fc-timeline-event-harness {
     position: absolute;
-    top: 0; // default when not specified... bad
+    top: 0; // for when when top can't be computed yet
     // JS will set tht left/right
   }
 
