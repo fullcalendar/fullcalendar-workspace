@@ -44,11 +44,10 @@ export class ResourceDayGridWrapper {
       let rect0 = this.getDayEl(origEndInfo.resourceId, origEndInfo.date).getBoundingClientRect()
       let rect1 = this.getDayEl(newEndInfo.resourceId, newEndInfo.date).getBoundingClientRect()
 
-      $(eventEl).simulate('mouseover') // so that resize handle is revealed
-
-      var resizerEl = eventEl.querySelector(
+      var resizerEl = $(eventEl).find(
         '.' + (fromStart ? CalendarWrapper.EVENT_START_RESIZER_CLASSNAME : CalendarWrapper.EVENT_END_RESIZER_CLASSNAME)
-      )
+      ).css('display', 'block')[0] // usually only displays on hover. force display
+
       var resizerRect = resizerEl.getBoundingClientRect()
       var resizerCenter = getRectCenter(resizerRect)
 

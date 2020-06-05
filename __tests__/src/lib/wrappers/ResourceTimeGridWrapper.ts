@@ -117,9 +117,9 @@ export class ResourceTimeGridWrapper {
 
   resizeEvent(eventEl: HTMLElement, resourceId, origEndDate, newEndDate) {
     return new Promise((resolve) => {
-      $(eventEl).simulate('mouseover') // resizer only shows on hover
+      let resizerEl = $(eventEl).find('.' + CalendarWrapper.EVENT_RESIZER_CLASSNAME)
+        .css('display', 'block')[0] // usually only displays on hover. force display
 
-      let resizerEl = eventEl.querySelector('.' + CalendarWrapper.EVENT_RESIZER_CLASSNAME)
       let resizerPoint = getRectCenter(resizerEl.getBoundingClientRect())
       let origPoint = this.getPoint(resourceId, origEndDate)
       let yCorrect = resizerPoint.top - origPoint.top

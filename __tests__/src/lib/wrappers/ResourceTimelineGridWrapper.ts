@@ -53,11 +53,12 @@ export class ResourceTimelineGridWrapper {
   resizeEvent(eventEl: HTMLElement, newResourceId, newEndDate, fromStart?) {
     return new Promise((resolve) => {
       let $eventEl = $(eventEl)
-      $eventEl.simulate('mouseover') // resizer only shows on hover
-
       let eventRect = eventEl.getBoundingClientRect()
       let isRtl = $eventEl.css('direction') === 'rtl'
-      let resizerEl = eventEl.querySelector('.' + (fromStart ? CalendarWrapper.EVENT_START_RESIZER_CLASSNAME : CalendarWrapper.EVENT_END_RESIZER_CLASSNAME))
+
+      let resizerEl = $eventEl.find('.' + (fromStart ? CalendarWrapper.EVENT_START_RESIZER_CLASSNAME : CalendarWrapper.EVENT_END_RESIZER_CLASSNAME))
+        .css('display', 'block')[0] // usually only displays on hover. force display
+
       let resizerPoint = getRectCenter(resizerEl.getBoundingClientRect())
       let xCorrect = resizerPoint.left - (isRtl ? eventRect.left : eventRect.right)
       let destPoint = this.getPoint(newResourceId, newEndDate)
