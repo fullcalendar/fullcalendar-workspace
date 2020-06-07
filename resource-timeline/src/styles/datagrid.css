@@ -56,9 +56,12 @@
     & .fc-icon { /* the expander and spacers before the expander */
       display: inline-block;
       width: 1em; /* ensure constant width, esp for empty icons */
-      text-align: center;
     }
 
+  }
+
+  & .fc-datagrid-expander-placeholder {
+    cursor: auto;
   }
 
   & .fc-resource-timeline-flat {
