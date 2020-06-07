@@ -22,9 +22,13 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
         {cellRows.map((rowCells, i) => {
           let isLast = i === cellRows.length - 1
           let isChrono = tDateProfile.isTimeScale && isLast // the final row, with times?
+          let classNames = [
+            'fc-timeline-header-row',
+            isChrono ? 'fc-timeline-header-row-chrono' : ''
+          ]
 
           return (
-            <tr key={i} className={(isChrono ? 'fc-timeline-header-row-chrono' : '')}>
+            <tr key={i} className={classNames.join(' ')}>
               {rowCells.map((cell) => (
                 <TimelineHeaderTh
                   key={cell.date.toISOString()}
