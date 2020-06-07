@@ -7,7 +7,6 @@ import { TimelineCoords } from './TimelineCoords'
 
 
 export interface TimelineSlatsProps extends TimelineSlatsContentProps {
-  dateProfile: DateProfile
   clientWidth: number | null
   tableMinWidth: CssDimValue
   tableColGroupNode: VNode
@@ -16,6 +15,7 @@ export interface TimelineSlatsProps extends TimelineSlatsContentProps {
 }
 
 interface TimelineSlatsContentProps {
+  dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
@@ -45,6 +45,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
           {props.tableColGroupNode}
           <TimelineSlatsBody
             cellElRefs={this.cellElRefs}
+            dateProfile={props.dateProfile}
             tDateProfile={props.tDateProfile}
             nowDate={props.nowDate}
             todayRange={props.todayRange}
@@ -163,7 +164,6 @@ interface TimelineSlatsBodyProps extends TimelineSlatsContentProps {
 
 class TimelineSlatsBody extends BaseComponent<TimelineSlatsBodyProps> {
 
-
   render() {
     let { props } = this
     let { tDateProfile, cellElRefs } = props
@@ -181,6 +181,7 @@ class TimelineSlatsBody extends BaseComponent<TimelineSlatsBodyProps> {
                 key={key}
                 elRef={cellElRefs.createRef(key)}
                 date={slotDate}
+                dateProfile={props.dateProfile}
                 tDateProfile={tDateProfile}
                 nowDate={props.nowDate}
                 todayRange={props.todayRange}
