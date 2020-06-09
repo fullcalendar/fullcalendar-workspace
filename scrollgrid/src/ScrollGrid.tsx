@@ -663,7 +663,7 @@ function renderMacroColGroup(colGroupStats: ColGroupStat[], shrinkWidths: number
       width = colGroupStat.totalColWidth + sanitizeShrinkWidth(shrinkWidths[i]) + 1 // +1 for border :(
     }
 
-    return (
+    return ( // eslint-disable-next-line react/jsx-key
       <col style={{ width }} />
     )
   })

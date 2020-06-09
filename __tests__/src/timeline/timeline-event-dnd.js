@@ -54,9 +54,6 @@ describe('timeline-view event drag-n-drop', function() {
       ],
       eventAllow(dropLocation, draggedEvent) {
         calledEventAllow = true
-        if (!draggedEvent.start) {
-          debugger
-        }
         expect(draggedEvent.start instanceof Date).toBe(true)
         return true
       }

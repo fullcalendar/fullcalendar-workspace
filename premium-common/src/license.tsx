@@ -42,7 +42,7 @@ function isValidKey(key) {
   if (PRESET_LICENSE_KEYS.indexOf(key) !== -1) {
     return true
   }
-  const parts = (key || '').match(/^(\d+)\-fcs\-(\d+)$/)
+  const parts = (key || '').match(/^(\d+)-fcs-(\d+)$/)
   if (parts && (parts[1].length === 10)) {
     const purchaseDate = new Date(parseInt(parts[2], 10) * 1000)
     const releaseDate = new Date(config.mockSchedulerReleaseDate || RELEASE_DATE)
@@ -59,5 +59,5 @@ function isValidKey(key) {
 
 
 function isImmuneUrl(url) {
-  return /\w+\:\/\/fullcalendar\.io\/|\/examples\/[\w-]+\.html$/.test(url)
+  return /\w+:\/\/fullcalendar\.io\/|\/examples\/[\w-]+\.html$/.test(url)
 }

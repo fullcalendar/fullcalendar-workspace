@@ -1,6 +1,6 @@
-import { Hit } from '@fullcalendar/common'
+import { Hit, Dictionary } from '@fullcalendar/common'
 
-export function transformEventResizeJoin(hit0: Hit, hit1: Hit): false | object {
+export function transformEventResizeJoin(hit0: Hit, hit1: Hit): false | Dictionary {
   let component = hit0.component
 
   if (

@@ -44,23 +44,19 @@ export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
       let key = eventRange.instance ? eventRange.instance.instanceId : eventRange.def.defId
 
       return (
-        <div className='fc-timeline-bg-harness' style={{
+        <div key={key} className='fc-timeline-bg-harness' style={{
           left: coords.left,
           right: -coords.right // outwards from right edge (which is same as left edge)
         }}>
           {fillType === 'bg-event' ?
-            <BgEvent
-              key={key}
-              seg={seg}
-              {...getSegMeta(seg, todayRange, nowDate)}
-            /> :
+            <BgEvent seg={seg} {...getSegMeta(seg, todayRange, nowDate)} /> :
             renderFill(fillType)
           }
         </div>
       )
     })
 
-    return createElement(Fragment, {}, ...children)
+    return <Fragment>{children}</Fragment>
   }
 
 }

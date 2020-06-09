@@ -1,4 +1,4 @@
-import { createElement, Ref, ComponentChildren, ViewContextType, ViewContext, RenderHook, ViewApi, formatDayString } from '@fullcalendar/common'
+import { createElement, Ref, ComponentChildren, ViewContextType, ViewContext, RenderHook, ViewApi, formatDayString, Dictionary } from '@fullcalendar/common'
 import { Resource } from '../structs/resource'
 import { ResourceApi } from '../api/ResourceApi'
 
@@ -9,7 +9,7 @@ export interface ResourceLabelRootProps {
   children: (
     rootElRef: Ref<HTMLElement>,
     classNames: string[],
-    dataAttrs: object,
+    dataAttrs: Dictionary,
     innerElRef: Ref<HTMLElement>,
     innerContent: ComponentChildren
   ) => ComponentChildren

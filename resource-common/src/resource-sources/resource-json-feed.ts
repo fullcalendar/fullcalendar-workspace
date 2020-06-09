@@ -1,4 +1,4 @@
-import { DateRange, CalendarContext, requestJson } from '@fullcalendar/common'
+import { DateRange, CalendarContext, requestJson, Dictionary } from '@fullcalendar/common'
 import { registerResourceSourceDef } from '../structs/resource-source-def'
 import { __assign } from 'tslib'
 import { ResourceSourceRefined } from '../structs/resource-source-parse'
@@ -9,7 +9,7 @@ interface JsonFeedMeta {
   startParam?: string
   endParam?: string
   timeZoneParam?: string
-  extraParams?: object | (() => object)
+  extraParams?: Dictionary | (() => Dictionary)
 }
 
 registerResourceSourceDef<JsonFeedMeta>({

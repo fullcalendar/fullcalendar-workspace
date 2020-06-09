@@ -1,6 +1,6 @@
 import {
   ConstraintInput, AllowFunc, EventStore, parseBusinessHours, CalendarContext, EventUi, BusinessHoursInput,
-  guid, identity, Identity, RawOptionsFromRefiners, parseClassNames, refineProps, createEventUi, GenericObject
+  guid, identity, Identity, RawOptionsFromRefiners, parseClassNames, refineProps, createEventUi, Dictionary
 } from '@fullcalendar/common'
 
 
@@ -12,7 +12,7 @@ const RESOURCE_REFINERS = {
   children: identity as Identity<ResourceInput[]>,
   title: String,
   businessHours: identity as Identity<BusinessHoursInput>,
-  extendedProps: identity as Identity<GenericObject>,
+  extendedProps: identity as Identity<Dictionary>,
 
   // event-ui
   eventEditable: Boolean,

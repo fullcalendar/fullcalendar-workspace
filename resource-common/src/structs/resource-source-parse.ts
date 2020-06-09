@@ -1,4 +1,4 @@
-import { guid, identity, Identity, RefinedOptionsFromRefiners, refineProps, RawOptionsFromRefiners } from '@fullcalendar/common'
+import { guid, identity, Identity, RefinedOptionsFromRefiners, refineProps, RawOptionsFromRefiners, Dictionary } from '@fullcalendar/common'
 import { ResourceInput } from '../structs/resource'
 import { ResourceFunc } from '../resource-sources/resource-func'
 import { ResourceSource } from './resource-source'
@@ -19,7 +19,7 @@ export const RESOURCE_SOURCE_REFINERS = {
   startParam: String,
   endParam: String,
   timeZoneParam: String,
-  extraParams: identity as Identity<object | (() => object)>
+  extraParams: identity as Identity<Dictionary | (() => Dictionary)>
 }
 
 export type ResourceSourceInputObject = RawOptionsFromRefiners<typeof RESOURCE_SOURCE_REFINERS>
