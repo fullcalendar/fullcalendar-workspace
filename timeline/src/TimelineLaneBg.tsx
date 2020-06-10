@@ -1,4 +1,4 @@
-import { BaseComponent, createElement, Fragment, BgEvent, renderFill, getSegMeta, DateRange, DateMarker } from '@fullcalendar/common'
+import { BaseComponent, createElement, Fragment, BgEvent, renderFill, getSegMeta, DateRange, DateMarker, buildEventRangeKey } from '@fullcalendar/common'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
@@ -36,15 +36,10 @@ export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
     let { todayRange, nowDate } = this.props
 
     let children = segs.map((seg) => {
-      let { eventRange } = seg
       let coords = timelineCoords.rangeToCoords(seg) // seg has { start, end }
 
-      // inverse-background events don't have specific instances
-      // TODO: might be a key collision. better solution
-      let key = eventRange.instance ? eventRange.instance.instanceId : eventRange.def.defId
-
       return (
-        <div key={key} className='fc-timeline-bg-harness' style={{
+        <div key={buildEventRangeKey(seg.eventRange)} className='fc-timeline-bg-harness' style={{
           left: coords.left,
           right: -coords.right // outwards from right edge (which is same as left edge)
         }}>
