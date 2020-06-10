@@ -17,12 +17,12 @@ import {
   getScrollbarWidths,
   memoizeArraylike,
   collectFromHash,
-  memoizeHashlike
+  memoizeHashlike,
+  ScrollGridChunkConfig
 } from '@fullcalendar/common'
 import { StickyScrolling } from './StickyScrolling'
 import { ClippedScroller, ClippedOverflowValue } from './ClippedScroller'
 import { ScrollSyncer } from './ScrollSyncer'
-import { ScrollGridChunkConfig } from 'packages/common/src/scrollgrid/ScrollGridImpl'
 
 
 interface ScrollGridState {
