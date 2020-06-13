@@ -1,5 +1,6 @@
-import { CalendarContext, EventApi } from '@fullcalendar/common'
+import { CalendarContext, EventApi, Dictionary } from '@fullcalendar/common'
 import { Resource, getPublicId, ResourceHash } from '../structs/resource'
+import { __assign } from 'tslib'
 
 
 export class ResourceApi {
@@ -127,6 +128,57 @@ export class ResourceApi {
   // NOTE: user can't modify these because Object.freeze was called in event-def parsing
   get eventClassNames() { return this._resource.ui.classNames }
   get extendedProps() { return this._resource.extendedProps }
+
+
+  toPlainObject(settings: { collapseExtendedProps?: boolean, collapseEventColor?: boolean } = {}) {
+    let internal = this._resource
+    let { ui } = internal
+    let publicId = this.id
+    let res: Dictionary = {}
+
+    if (publicId) {
+      res.id = publicId
+    }
+
+    if (internal.title) {
+      res.title = internal.title
+    }
+
+    if (settings.collapseEventColor && ui.backgroundColor && ui.backgroundColor === ui.borderColor) {
+      res.eventColor = ui.backgroundColor
+
+    } else {
+      if (ui.backgroundColor) {
+        res.eventBackgroundColor = ui.backgroundColor
+      }
+      if (ui.borderColor) {
+        res.eventBorderColor = ui.borderColor
+      }
+    }
+
+    if (ui.textColor) {
+      res.eventTextColor = ui.textColor
+    }
+
+    if (ui.classNames.length) {
+      res.eventClassNames = ui.classNames
+    }
+
+    if (Object.keys(internal.extendedProps).length) {
+      if (settings.collapseExtendedProps) {
+        __assign(res, internal.extendedProps)
+      } else {
+        res.extendedProps = internal.extendedProps
+      }
+    }
+
+    return res
+  }
+
+
+  toJSON() {
+    return this.toPlainObject()
+  }
 
 }
 
