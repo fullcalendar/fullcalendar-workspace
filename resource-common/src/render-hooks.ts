@@ -1,4 +1,4 @@
-import { CalendarContext } from '@fullcalendar/common'
+import { CalendarContext, MountArg } from '@fullcalendar/common'
 import { ResourceApi } from './api/ResourceApi'
 import { Resource } from './structs/resource'
 
@@ -7,6 +7,8 @@ export interface ResourceLaneHookPropsInput {
   context: CalendarContext
 }
 
-export interface ResourceLaneHookProps {
+export interface ResourceLaneContentArg {
   resource: ResourceApi
 }
+
+export type ResourceLaneMountArg = MountArg<ResourceLaneContentArg>

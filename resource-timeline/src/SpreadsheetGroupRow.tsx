@@ -1,5 +1,5 @@
 import { createElement, Fragment, BaseComponent, ViewContext, CssDimValue, createRef, RenderHook, RefObject } from '@fullcalendar/common'
-import { Group, isGroupsEqual, ColCellHookProps } from '@fullcalendar/resource-common'
+import { Group, isGroupsEqual, ColCellContentArg } from '@fullcalendar/resource-common'
 import { ExpanderIcon } from './ExpanderIcon'
 
 
@@ -20,12 +20,12 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
 
   render() {
     let { props, context } = this
-    let hookProps: ColCellHookProps = { groupValue: props.group.value, view: context.viewApi }
+    let hookProps: ColCellContentArg = { groupValue: props.group.value, view: context.viewApi }
     let spec = props.group.spec
 
     return (
       <tr>
-        <RenderHook<ColCellHookProps>
+        <RenderHook<ColCellContentArg>
           hookProps={hookProps}
           classNames={spec.labelClassNames}
           content={spec.labelContent}

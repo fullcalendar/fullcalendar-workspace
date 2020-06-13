@@ -1,5 +1,5 @@
 import { createElement, Ref, BaseComponent, CssDimValue, RenderHook } from '@fullcalendar/common'
-import { GroupLaneRenderHooks, ColCellHookProps } from '@fullcalendar/resource-common'
+import { GroupLaneRenderHooks, ColCellContentArg } from '@fullcalendar/resource-common'
 
 
 export interface DividerRowProps {
@@ -18,7 +18,7 @@ export class DividerRow extends BaseComponent<DividerRowProps> {
   render() {
     let { props } = this
     let { renderingHooks } = this.props
-    let hookProps: ColCellHookProps = { groupValue: props.groupValue, view: this.context.viewApi }
+    let hookProps: ColCellContentArg = { groupValue: props.groupValue, view: this.context.viewApi }
 
     return (
       <tr ref={props.elRef}>

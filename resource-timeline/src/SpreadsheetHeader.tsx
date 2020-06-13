@@ -2,7 +2,7 @@ import {
   VNode, createElement, Fragment,
   BaseComponent, ElementDragging, elementClosest, PointerDragEvent, RefMap, findElements, RenderHook,
 } from '@fullcalendar/common'
-import { ColSpec, ColHeaderHookProps, ColHeaderRenderHooks } from '@fullcalendar/resource-common'
+import { ColSpec, ColHeaderContentArg, ColHeaderRenderHooks } from '@fullcalendar/resource-common'
 
 
 export interface SpreadsheetHeaderProps {
@@ -23,7 +23,7 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
 
   render() {
     let { colSpecs, superHeaderRendering, rowInnerHeights } = this.props
-    let hookProps: ColHeaderHookProps = { view: this.context.viewApi }
+    let hookProps: ColHeaderContentArg = { view: this.context.viewApi }
     let rowNodes: VNode[] = []
 
     rowInnerHeights = rowInnerHeights.slice() // copy, because we're gonna pop

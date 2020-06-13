@@ -1,5 +1,5 @@
 import { createElement, Ref, BaseComponent, CssDimValue, buildClassNameNormalizer, ContentHook, MountHook, elementClosest, memoizeObjArg } from '@fullcalendar/common'
-import { Resource, ResourceApi, ResourceLaneHookProps, ResourceLaneHookPropsInput } from '@fullcalendar/resource-common'
+import { Resource, ResourceApi, ResourceLaneContentArg, ResourceLaneHookPropsInput } from '@fullcalendar/resource-common'
 import { TimelineLane, TimelineLaneCoreProps } from '@fullcalendar/timeline'
 
 
@@ -14,7 +14,7 @@ export interface ResourceTimelineLaneProps extends TimelineLaneCoreProps {
 export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProps> {
 
   refineHookProps = memoizeObjArg(refineHookProps)
-  normalizeClassNames = buildClassNameNormalizer<ResourceLaneHookProps>()
+  normalizeClassNames = buildClassNameNormalizer<ResourceLaneContentArg>()
 
 
   render() {
@@ -75,7 +75,7 @@ class ResourceTimelineLaneMisc extends BaseComponent<ResourceTimelineLaneMiscPro
 
   render() {
     let { props, context } = this
-    let hookProps: ResourceLaneHookProps = { resource: new ResourceApi(context, props.resource) } // just easier to make directly
+    let hookProps: ResourceLaneContentArg = { resource: new ResourceApi(context, props.resource) } // just easier to make directly
 
     return (
       <ContentHook hookProps={hookProps} content={context.options.resourceLaneContent}>
@@ -90,7 +90,7 @@ class ResourceTimelineLaneMisc extends BaseComponent<ResourceTimelineLaneMiscPro
 }
 
 
-function refineHookProps(raw: ResourceLaneHookPropsInput): ResourceLaneHookProps {
+function refineHookProps(raw: ResourceLaneHookPropsInput): ResourceLaneContentArg {
   return {
     resource: new ResourceApi(raw.context, raw.resource)
   }

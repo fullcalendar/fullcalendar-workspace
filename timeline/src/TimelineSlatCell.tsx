@@ -1,5 +1,5 @@
 import {
-  createElement, isInt, BaseComponent, DateMarker, Ref, DateRange, getDateMeta, getSlotClassNames, RenderHook, getDayClassNames, SlotLaneHookProps, DateProfile
+  createElement, isInt, BaseComponent, DateMarker, Ref, DateRange, getDateMeta, getSlotClassNames, RenderHook, getDayClassNames, SlotLaneContentArg, DateProfile
 } from '@fullcalendar/common'
 import { TimelineDateProfile } from './timeline-date-profile'
 
@@ -25,7 +25,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
     let dateMeta = getDateMeta(props.date, props.todayRange, props.nowDate, props.dateProfile)
     let classNames = [ 'fc-timeline-slot', 'fc-timeline-slot-lane' ]
     let dataAttrs = { 'data-date': dateEnv.formatIso(date, { omitTimeZoneOffset: true, omitTime: !tDateProfile.isTimeScale }) }
-    let hookProps: SlotLaneHookProps = {
+    let hookProps: SlotLaneContentArg = {
       date: dateEnv.toDate(props.date),
       ...dateMeta,
       view: context.viewApi

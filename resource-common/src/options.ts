@@ -3,9 +3,11 @@ import { Identity, CssDimValue, ClassNamesGenerator, CustomContentGenerator, Did
 // public
 import {
   ResourceSourceInput,
-  ResourceLabelHookProps,
-  ColSpec, ColHeaderHookProps, ColCellHookProps,
-  ResourceLaneHookProps,
+  ResourceLabelContentArg, ResourceLabelMountArg,
+  ColSpec,
+  ColHeaderContentArg, ColHeaderMountArg,
+  ColCellContentArg, ColCellMountArg,
+  ResourceLaneContentArg, ResourceLaneMountArg,
   ResourceApi,
   ResourceAddArg, ResourceChangeArg, ResourceRemoveArg
 } from './api-type-deps'
@@ -25,30 +27,30 @@ export const OPTION_REFINERS = {
   datesAboveResources: Boolean,
   needsResourceData: Boolean, // internal-only
 
-  resourceAreaHeaderClassNames: identity as Identity<ClassNamesGenerator<ColHeaderHookProps>>,
-  resourceAreaHeaderContent: identity as Identity<CustomContentGenerator<ColHeaderHookProps>>,
-  resourceAreaHeaderDidMount: identity as Identity<DidMountHandler<ColHeaderHookProps>>,
-  resourceAreaHeaderWillUnmount: identity as Identity<WillUnmountHandler<ColHeaderHookProps>>,
+  resourceAreaHeaderClassNames: identity as Identity<ClassNamesGenerator<ColHeaderContentArg>>,
+  resourceAreaHeaderContent: identity as Identity<CustomContentGenerator<ColHeaderContentArg>>,
+  resourceAreaHeaderDidMount: identity as Identity<DidMountHandler<ColHeaderMountArg>>,
+  resourceAreaHeaderWillUnmount: identity as Identity<WillUnmountHandler<ColHeaderMountArg>>,
 
-  resourceGroupLabelClassNames: identity as Identity<ClassNamesGenerator<ColCellHookProps>>,
-  resourceGroupLabelContent: identity as Identity<CustomContentGenerator<ColCellHookProps>>,
-  resourceGroupLabelDidMount: identity as Identity<DidMountHandler<ColCellHookProps>>,
-  resourceGroupLabelWillUnmount: identity as Identity<WillUnmountHandler<ColCellHookProps>>,
+  resourceGroupLabelClassNames: identity as Identity<ClassNamesGenerator<ColCellContentArg>>,
+  resourceGroupLabelContent: identity as Identity<CustomContentGenerator<ColCellContentArg>>,
+  resourceGroupLabelDidMount: identity as Identity<DidMountHandler<ColCellMountArg>>,
+  resourceGroupLabelWillUnmount: identity as Identity<WillUnmountHandler<ColCellMountArg>>,
 
-  resourceLabelClassNames: identity as Identity<ClassNamesGenerator<ResourceLabelHookProps>>,
-  resourceLabelContent: identity as Identity<CustomContentGenerator<ResourceLabelHookProps>>,
-  resourceLabelDidMount: identity as Identity<DidMountHandler<ResourceLabelHookProps>>,
-  resourceLabelWillUnmount: identity as Identity<WillUnmountHandler<ResourceLabelHookProps>>,
+  resourceLabelClassNames: identity as Identity<ClassNamesGenerator<ResourceLabelContentArg>>,
+  resourceLabelContent: identity as Identity<CustomContentGenerator<ResourceLabelContentArg>>,
+  resourceLabelDidMount: identity as Identity<DidMountHandler<ResourceLabelMountArg>>,
+  resourceLabelWillUnmount: identity as Identity<WillUnmountHandler<ResourceLabelMountArg>>,
 
-  resourceLaneClassNames: identity as Identity<ClassNamesGenerator<ResourceLaneHookProps>>,
-  resourceLaneContent: identity as Identity<CustomContentGenerator<ResourceLaneHookProps>>,
-  resourceLaneDidMount: identity as Identity<DidMountHandler<ResourceLaneHookProps>>,
-  resourceLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceLaneHookProps>>,
+  resourceLaneClassNames: identity as Identity<ClassNamesGenerator<ResourceLaneContentArg>>,
+  resourceLaneContent: identity as Identity<CustomContentGenerator<ResourceLaneContentArg>>,
+  resourceLaneDidMount: identity as Identity<DidMountHandler<ResourceLaneMountArg>>,
+  resourceLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceLaneMountArg>>,
 
-  resourceGroupLaneClassNames: identity as Identity<ClassNamesGenerator<ColCellHookProps>>,
-  resourceGroupLaneContent: identity as Identity<CustomContentGenerator<ColCellHookProps>>,
-  resourceGroupLaneDidMount: identity as Identity<DidMountHandler<ColCellHookProps>>,
-  resourceGroupLaneWillUnmount: identity as Identity<WillUnmountHandler<ColCellHookProps>>
+  resourceGroupLaneClassNames: identity as Identity<ClassNamesGenerator<ColCellContentArg>>,
+  resourceGroupLaneContent: identity as Identity<CustomContentGenerator<ColCellContentArg>>,
+  resourceGroupLaneDidMount: identity as Identity<DidMountHandler<ColCellMountArg>>,
+  resourceGroupLaneWillUnmount: identity as Identity<WillUnmountHandler<ColCellMountArg>>
 }
 
 export const LISTENER_REFINERS = {

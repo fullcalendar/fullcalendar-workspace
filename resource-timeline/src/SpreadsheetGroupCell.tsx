@@ -1,5 +1,5 @@
 import { createElement, BaseComponent, Fragment, RenderHook } from '@fullcalendar/common'
-import { ColSpec, ColCellHookProps } from '@fullcalendar/resource-common'
+import { ColSpec, ColCellContentArg } from '@fullcalendar/resource-common'
 
 
 export interface SpreadsheetGroupCellProps {
@@ -14,7 +14,7 @@ export class SpreadsheetGroupCell extends BaseComponent<SpreadsheetGroupCellProp
   render() {
     let { props, context } = this
     let { colSpec } = props
-    let hookProps: ColCellHookProps = {
+    let hookProps: ColCellContentArg = {
       groupValue: props.fieldValue,
       view: context.viewApi
     }
@@ -22,7 +22,7 @@ export class SpreadsheetGroupCell extends BaseComponent<SpreadsheetGroupCellProp
     // a grouped cell. no data that is specific to this specific resource
     // `colSpec` is for the group. a GroupSpec :(
     return (
-      <RenderHook<ColCellHookProps>
+      <RenderHook<ColCellContentArg>
         hookProps={hookProps}
         classNames={colSpec.cellClassNames}
         content={colSpec.cellContent}

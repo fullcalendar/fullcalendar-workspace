@@ -1,4 +1,4 @@
-import { createElement, Ref, ComponentChildren, ViewContextType, ViewContext, RenderHook, ViewApi, formatDayString, Dictionary } from '@fullcalendar/common'
+import { createElement, Ref, ComponentChildren, ViewContextType, ViewContext, RenderHook, ViewApi, formatDayString, Dictionary, MountArg } from '@fullcalendar/common'
 import { Resource } from '../structs/resource'
 import { ResourceApi } from '../api/ResourceApi'
 
@@ -15,11 +15,13 @@ export interface ResourceLabelRootProps {
   ) => ComponentChildren
 }
 
-export interface ResourceLabelHookProps {
+export interface ResourceLabelContentArg {
   resource: ResourceApi
   date?: Date
   view: ViewApi
 }
+
+export type ResourceLabelMountArg = MountArg<ResourceLabelContentArg>
 
 
 // TODO: not used for Spreadsheet. START USING. difficult because of col-specific rendering props
@@ -30,7 +32,7 @@ export function ResourceLabelRoot(props: ResourceLabelRootProps) {
     <ViewContextType.Consumer>
       {(context: ViewContext) => {
         let { options } = context
-        let hookProps: ResourceLabelHookProps = {
+        let hookProps: ResourceLabelContentArg = {
           resource: new ResourceApi(context, props.resource),
           date: props.date ? context.dateEnv.toDate(props.date) : null,
           view: context.viewApi
@@ -42,7 +44,7 @@ export function ResourceLabelRoot(props: ResourceLabelRootProps) {
         }
 
         return (
-          <RenderHook<ResourceLabelHookProps>
+          <RenderHook<ResourceLabelContentArg>
             hookProps={hookProps}
             classNames={options.resourceLabelClassNames}
             content={options.resourceLabelContent}
@@ -65,6 +67,6 @@ export function ResourceLabelRoot(props: ResourceLabelRootProps) {
 }
 
 
-function renderInnerContent(props: ResourceLabelHookProps) {
+function renderInnerContent(props: ResourceLabelContentArg) {
   return props.resource.title || props.resource.id
 }

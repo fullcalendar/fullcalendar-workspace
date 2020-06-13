@@ -1,23 +1,27 @@
-import { ViewApi, ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '@fullcalendar/common'
+import { ViewApi, ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountArg } from '@fullcalendar/common'
 import { ResourceApi } from '../api/ResourceApi'
 
 // strange to reference columns in resource-common
 
-export interface ColHeaderHookProps {
+export interface ColHeaderContentArg {
   view: ViewApi
 }
 
-export interface ColCellHookProps { // for a group too. make an OR-type?
+export type ColHeaderMountArg = MountArg<ColHeaderContentArg>
+
+export interface ColCellContentArg { // for a group too. make an OR-type?
   resource?: ResourceApi // if a group, won't be for a specific resource
   groupValue?: any
   view: ViewApi
 }
 
+export type ColCellMountArg = MountArg<ColCellContentArg>
+
 export interface ColHeaderRenderHooks {
-  headerClassNames?: ClassNamesGenerator<ColHeaderHookProps>
-  headerContent?: CustomContentGenerator<ColHeaderHookProps>
-  headerDidMount?: DidMountHandler<ColHeaderHookProps>
-  headerWillUnmount?: WillUnmountHandler<ColHeaderHookProps>
+  headerClassNames?: ClassNamesGenerator<ColHeaderContentArg>
+  headerContent?: CustomContentGenerator<ColHeaderContentArg>
+  headerDidMount?: DidMountHandler<ColHeaderMountArg>
+  headerWillUnmount?: WillUnmountHandler<ColHeaderMountArg>
 }
 
 export interface ColSpec extends ColHeaderRenderHooks {
@@ -26,25 +30,25 @@ export interface ColSpec extends ColHeaderRenderHooks {
   width?: number
   field?: string
 
-  cellClassNames?: ClassNamesGenerator<ColCellHookProps>
-  cellContent?: CustomContentGenerator<ColCellHookProps>
-  cellDidMount?: DidMountHandler<ColCellHookProps>
-  cellWillUnmount?: WillUnmountHandler<ColCellHookProps>
+  cellClassNames?: ClassNamesGenerator<ColCellContentArg>
+  cellContent?: CustomContentGenerator<ColCellContentArg>
+  cellDidMount?: DidMountHandler<ColCellMountArg>
+  cellWillUnmount?: WillUnmountHandler<ColCellMountArg>
 }
 
 export interface GroupLaneRenderHooks {
-  laneClassNames?: ClassNamesGenerator<ColCellHookProps>
-  laneContent?: CustomContentGenerator<ColCellHookProps>
-  laneDidMount?: DidMountHandler<ColCellHookProps>
-  laneWillUnmount?: WillUnmountHandler<ColCellHookProps>
+  laneClassNames?: ClassNamesGenerator<ColCellContentArg>
+  laneContent?: CustomContentGenerator<ColCellContentArg>
+  laneDidMount?: DidMountHandler<ColCellMountArg>
+  laneWillUnmount?: WillUnmountHandler<ColCellMountArg>
 }
 
 export interface GroupSpec extends GroupLaneRenderHooks { // best place for this?
   field?: string
   order?: number
 
-  labelClassNames?: ClassNamesGenerator<ColCellHookProps>
-  labelContent?: CustomContentGenerator<ColCellHookProps>
-  labelDidMount?: DidMountHandler<ColCellHookProps>
-  labelWillUnmount?: WillUnmountHandler<ColCellHookProps>
+  labelClassNames?: ClassNamesGenerator<ColCellContentArg>
+  labelContent?: CustomContentGenerator<ColCellContentArg>
+  labelDidMount?: DidMountHandler<ColCellMountArg>
+  labelWillUnmount?: WillUnmountHandler<ColCellMountArg>
 }
