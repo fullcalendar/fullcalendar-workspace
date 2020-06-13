@@ -11,7 +11,9 @@ import {
 } from './api-type-deps'
 
 export const OPTION_REFINERS = {
+  initialResources: identity as Identity<ResourceSourceInput>,
   resources: identity as Identity<ResourceSourceInput>,
+
   eventResourceEditable: Boolean,
   refetchResourcesOnNavigate: Boolean,
   resourceOrder: parseFieldSpecs,

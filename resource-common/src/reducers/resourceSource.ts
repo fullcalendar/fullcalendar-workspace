@@ -12,7 +12,12 @@ export function reduceResourceSource(
   let { options, dateProfile } = context
 
   if (!source || !action) {
-    return createSource(options.resources, dateProfile.activeRange, options.refetchResourcesOnNavigate, context)
+    return createSource(
+      options.initialResources || options.resources,
+      dateProfile.activeRange,
+      options.refetchResourcesOnNavigate,
+      context
+    )
   }
 
   switch (action.type) {
