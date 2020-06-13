@@ -22,10 +22,23 @@ CalendarApi.prototype.addResource = function(this: CalendarApi, input: ResourceI
   })
 
   if (scrollTo) {
+    // TODO: wait til dispatch completes somehow
     this.trigger('_scrollRequest', { resourceId: resource.id })
   }
 
-  return new ResourceApi(currentState, resource)
+  let resourceApi = new ResourceApi(currentState, resource)
+
+  currentState.emitter.trigger('resourceAdd', {
+    resource: resourceApi,
+    revert: () => {
+      this.dispatch({
+        type: 'REMOVE_RESOURCE',
+        resourceId: resource.id
+      })
+    }
+  })
+
+  return resourceApi
 }
 
 

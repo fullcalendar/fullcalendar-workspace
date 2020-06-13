@@ -1,5 +1,6 @@
 import { CalendarContext, EventApi } from '@fullcalendar/common'
-import { Resource, getPublicId } from '../structs/resource'
+import { Resource, getPublicId, ResourceHash } from '../structs/resource'
+
 
 export class ResourceApi {
 
@@ -10,18 +11,54 @@ export class ResourceApi {
   }
 
   setProp(name: string, value: any) {
-    this._context.dispatch({
+    let context = this._context
+    let oldResource = this._resource
+    let resourceId = oldResource.id
+
+    context.dispatch({
       type: 'SET_RESOURCE_PROP',
-      resourceId: this._resource.id,
+      resourceId,
       propName: name,
       propValue: value
+    })
+
+    // TODO: what if dispatch didn't complete synchronously?
+    this._resource = context.getCurrentData().resourceStore[resourceId]
+
+    context.emitter.trigger('resourceChange', {
+      oldResource: new ResourceApi(context, oldResource),
+      resource: this,
+      revert() {
+        context.dispatch({
+          type: 'ADD_RESOURCE', // function as a merge. TODO: rename
+          resourceHash: {
+            [resourceId]: oldResource
+          }
+        })
+      }
     })
   }
 
   remove() {
-    this._context.dispatch({
+    let context = this._context
+    let internalResource = this._resource
+    let resourceId = internalResource.id
+
+    context.dispatch({
       type: 'REMOVE_RESOURCE',
-      resourceId: this._resource.id
+      resourceId
+    })
+
+    context.emitter.trigger('resourceRemove', {
+      resource: this,
+      revert() {
+        context.dispatch({
+          type: 'ADD_RESOURCE', // function as a merge. TODO: rename
+          resourceHash: {
+            [resourceId]: internalResource
+          }
+        })
+      }
     })
   }
 
@@ -91,4 +128,15 @@ export class ResourceApi {
   get eventClassNames() { return this._resource.ui.classNames }
   get extendedProps() { return this._resource.extendedProps }
 
+}
+
+
+export function buildResourceApis(resourceStore: ResourceHash, context: CalendarContext) {
+  let resourceApis: ResourceApi[] = []
+
+  for (let resourceId in resourceStore) {
+    resourceApis.push(new ResourceApi(context, resourceStore[resourceId]))
+  }
+
+  return resourceApis
 }

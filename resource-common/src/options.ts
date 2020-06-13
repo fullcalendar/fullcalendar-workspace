@@ -5,7 +5,9 @@ import {
   ResourceSourceInput,
   ResourceLabelHookProps,
   ColSpec, ColHeaderHookProps, ColCellHookProps,
-  ResourceLaneHookProps
+  ResourceLaneHookProps,
+  ResourceApi,
+  ResourceAddArg, ResourceChangeArg, ResourceRemoveArg
 } from './api-type-deps'
 
 export const OPTION_REFINERS = {
@@ -45,4 +47,11 @@ export const OPTION_REFINERS = {
   resourceGroupLaneContent: identity as Identity<CustomContentGenerator<ColCellHookProps>>,
   resourceGroupLaneDidMount: identity as Identity<DidMountHandler<ColCellHookProps>>,
   resourceGroupLaneWillUnmount: identity as Identity<WillUnmountHandler<ColCellHookProps>>
+}
+
+export const LISTENER_REFINERS = {
+  resourcesSet: identity as Identity<(resources: ResourceApi[]) => void>,
+  resourceAdd: identity as Identity<(arg: ResourceAddArg) => void>,
+  resourceChange: identity as Identity<(arg: ResourceChangeArg) => void>,
+  resourceRemove: identity as Identity<(arg: ResourceRemoveArg) => void>
 }

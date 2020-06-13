@@ -2,7 +2,10 @@ import {
   createElement, createRef, DateProfileGenerator, memoize, DateProfile, ChunkContentCallbackArgs, CalendarContext
 } from '@fullcalendar/common'
 import { TableView, buildDayTableModel } from '@fullcalendar/daygrid'
-import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
+import {
+  ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps,
+  Resource, flattenResources, DEFAULT_RESOURCE_ORDER
+} from '@fullcalendar/resource-common'
 import { ResourceDayTable } from './ResourceDayTable'
 
 
@@ -20,7 +23,7 @@ export class ResourceDayTableView extends TableView {
     let { props, context } = this
     let { options } = context
 
-    let resourceOrderSpecs = options.resourceOrder || []
+    let resourceOrderSpecs = options.resourceOrder || DEFAULT_RESOURCE_ORDER
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
     let resourceDayTableModel = this.buildResourceDayTableModel(
       props.dateProfile,

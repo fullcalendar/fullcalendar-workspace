@@ -8,7 +8,7 @@ import {
   TimelineCoords,
   TimelineDateProfile
 } from '@fullcalendar/timeline'
-import { GroupNode, ResourceNode, ResourceViewProps, buildRowNodes, ColSpec, GroupSpec } from '@fullcalendar/resource-common'
+import { GroupNode, ResourceNode, ResourceViewProps, buildRowNodes, ColSpec, GroupSpec, DEFAULT_RESOURCE_ORDER } from '@fullcalendar/resource-common'
 import { __assign } from 'tslib'
 import { SpreadsheetRow } from './SpreadsheetRow'
 import { SpreadsheetGroupRow } from './SpreadsheetGroupRow'
@@ -430,7 +430,7 @@ function processColOptions(options: ViewOptionsRefined) {
     }
   }
 
-  let allOrderSpecs = options.resourceOrder || []
+  let allOrderSpecs = options.resourceOrder || DEFAULT_RESOURCE_ORDER
   let plainOrderSpecs = []
 
   for (let orderSpec of allOrderSpecs) {

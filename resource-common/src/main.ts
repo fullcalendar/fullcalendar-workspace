@@ -16,7 +16,8 @@ import './api/EventApi-extend'
 import './api/EventApi-declare'
 export { ResourceLaneHookProps, ResourceLaneHookPropsInput } from './render-hooks'
 import { optionChangeHandlers } from './option-change-handlers'
-import { OPTION_REFINERS } from './options'
+import { handleResourceStore } from './resources-crud'
+import { OPTION_REFINERS, LISTENER_REFINERS } from './options'
 import './options-declare'
 
 // TODO: plugin-ify
@@ -25,6 +26,7 @@ import './resource-sources/resource-func'
 import './resource-sources/resource-json-feed'
 
 export * from './api-type-deps'
+export { DEFAULT_RESOURCE_ORDER } from './resources-crud'
 
 export default createPlugin({
   deps: [
@@ -45,7 +47,9 @@ export default createPlugin({
   eventResizeJoinTransforms: [ transformEventResizeJoin ],
   eventDropTransformers: [ transformEventDrop ],
   optionChangeHandlers,
-  optionRefiners: OPTION_REFINERS
+  optionRefiners: OPTION_REFINERS,
+  listenerRefiners: LISTENER_REFINERS,
+  propSetHandlers: { resourceStore: handleResourceStore }
 })
 
 export { ResourceDayHeader } from './common/ResourceDayHeader'

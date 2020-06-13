@@ -2,7 +2,10 @@ import {
   createElement, DateProfileGenerator, memoize, DateProfile, ChunkContentCallbackArgs, CalendarContext
 } from '@fullcalendar/common'
 import { TimeColsView, buildTimeColsModel, buildSlatMetas } from '@fullcalendar/timegrid'
-import { ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps, Resource, flattenResources } from '@fullcalendar/resource-common'
+import {
+  ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps,
+  Resource, flattenResources, DEFAULT_RESOURCE_ORDER
+} from '@fullcalendar/resource-common'
 import { ResourceDayTable } from '@fullcalendar/resource-daygrid'
 import { ResourceDayTimeCols } from './ResourceDayTimeCols'
 
@@ -22,7 +25,7 @@ export class ResourceDayTimeColsView extends TimeColsView {
     let { dateProfile } = props
 
     let splitProps = this.allDaySplitter.splitProps(props)
-    let resourceOrderSpecs = options.resourceOrder || []
+    let resourceOrderSpecs = options.resourceOrder || DEFAULT_RESOURCE_ORDER
     let resources = this.flattenResources(props.resourceStore, resourceOrderSpecs)
     let resourceDayTableModel = this.buildResourceTimeColsModel(
       dateProfile,
