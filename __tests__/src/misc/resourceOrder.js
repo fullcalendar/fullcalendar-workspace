@@ -22,16 +22,14 @@ describe('resourceOrder', function() {
       ]
     })
 
-
-    it('renders correct order when not defined and alpha collisions', function() {
+    it('renders alphabetically by ID when not defined', function() {
       let calendar = initCalendar()
       let headerWrapper = new ResourceTimeGridViewWrapper(calendar).header
 
       expect(headerWrapper.getResourceIds()).toEqual([
-        'a', 'b', 'c', 'd', 'e', 'f', 'a2', 'b2', 'c2', 'd2', 'e2', 'f2'
+        'a', 'a2', 'b', 'b2', 'c', 'c2', 'd', 'd2', 'e', 'e2', 'f', 'f2'
       ])
     })
-
 
     it('renders correct order when ordered by title', function() {
       let calendar = initCalendar({
@@ -70,7 +68,7 @@ describe('resourceOrder', function() {
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
 
       expect(timelineGridWrapper.getResourceIds()).toEqual([
-        'a', 'b', 'c', 'd', 'e', 'f', 'a2', 'b2', 'c2', 'd2', 'e2', 'f2'
+        'a', 'a2', 'b', 'b2', 'c', 'c2', 'd', 'd2', 'e', 'e2', 'f', 'f2'
       ])
     })
 
