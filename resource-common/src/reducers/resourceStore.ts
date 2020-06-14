@@ -27,6 +27,9 @@ export function reduceResourceStore(
     case 'SET_RESOURCE_PROP':
       return setResourceProp(store, action.resourceId, action.propName, action.propValue)
 
+    case 'SET_RESOURCE_EXTENDED_PROP':
+      return setResourceExtendedProp(store, action.resourceId, action.propName, action.propValue)
+
     default:
       return store
   }
@@ -83,6 +86,25 @@ function setResourceProp(existingStore: ResourceHash, resourceId: string, name: 
       [resourceId]: {
         ...existingResource,
         [name]: value
+      }
+    }
+  } else {
+    return existingStore
+  }
+}
+
+function setResourceExtendedProp(existingStore: ResourceHash, resourceId: string, name: string, value: any): ResourceHash {
+  let existingResource = existingStore[resourceId]
+
+  if (existingResource) {
+    return {
+      ...existingStore,
+      [resourceId]: {
+        ...existingResource,
+        extendedProps: {
+          ...existingResource.extendedProps,
+          [name]: value
+        }
       }
     }
   } else {

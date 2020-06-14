@@ -12,16 +12,34 @@ export class ResourceApi {
   }
 
   setProp(name: string, value: any) {
-    let context = this._context
     let oldResource = this._resource
-    let resourceId = oldResource.id
 
-    context.dispatch({
+    this._context.dispatch({
       type: 'SET_RESOURCE_PROP',
-      resourceId,
+      resourceId: oldResource.id,
       propName: name,
       propValue: value
     })
+
+    this.sync(oldResource)
+  }
+
+  setExtendedProp(name: string, value: any) {
+    let oldResource = this._resource
+
+    this._context.dispatch({
+      type: 'SET_RESOURCE_EXTENDED_PROP',
+      resourceId: oldResource.id,
+      propName: name,
+      propValue: value
+    })
+
+    this.sync(oldResource)
+  }
+
+  private sync(oldResource: Resource) {
+    let context = this._context
+    let resourceId = oldResource.id
 
     // TODO: what if dispatch didn't complete synchronously?
     this._resource = context.getCurrentData().resourceStore[resourceId]
