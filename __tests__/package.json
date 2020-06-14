@@ -10,7 +10,7 @@
     "@fullcalendar/list": "5.0.0-beta.4",
     "@fullcalendar/scrollgrid": "5.0.0-beta.4",
     "@fullcalendar/timeline": "5.0.0-beta.4",
-    "@fullcalendar/resource-common": "5.0.0-beta.4",
+    "@fullcalendar/premium-common": "5.0.0-beta.4",
     "@fullcalendar/resource-timeline": "5.0.0-beta.4",
     "@fullcalendar/resource-daygrid": "5.0.0-beta.4",
     "@fullcalendar/resource-timegrid": "5.0.0-beta.4",
