@@ -1,11 +1,11 @@
 {
   "name": "@fullcalendar/scrollgrid",
-  "version": "5.0.0-beta.4",
+  "version": "5.0.0-rc",
   "title": "FullCalendar ScrollGrid Plugin",
   "description": "internal package",
   "dependencies": {
-    "@fullcalendar/common": "5.0.0-beta.4",
-    "@fullcalendar/premium-common": "5.0.0-beta.4",
+    "@fullcalendar/common": "5.0.0-rc",
+    "@fullcalendar/premium-common": "5.0.0-rc",
     "tslib": "^2.0.0"
   },
   "main": "main.js",
