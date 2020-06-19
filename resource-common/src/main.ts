@@ -1,5 +1,6 @@
 import { createPlugin } from '@fullcalendar/common'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
+import '@fullcalendar/premium-common' // ensure ambient declarations
 import './ambient'
 import { ResourceDataAdder, ResourceEventConfigAdder, transformIsDraggable } from './View' // TODO: ResourceDataAdder should be own plugin
 import { reduceResources } from './reducers/resources'

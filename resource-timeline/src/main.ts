@@ -1,5 +1,6 @@
 import { createPlugin } from '@fullcalendar/common'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
+import '@fullcalendar/premium-common' // ensure ambient declarations
 import timelinePlugin from '@fullcalendar/timeline'
 import resourceCommonPlugin from '@fullcalendar/resource-common'
 import { ResourceTimelineView } from './ResourceTimelineView'

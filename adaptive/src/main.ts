@@ -6,6 +6,7 @@ import {
   removeExact
 } from '@fullcalendar/common'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
+import '@fullcalendar/premium-common' // ensure ambient declarations
 import './main.css'
 
 
