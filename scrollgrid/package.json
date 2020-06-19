@@ -2,7 +2,7 @@
   "name": "@fullcalendar/scrollgrid",
   "version": "5.0.0-rc",
   "title": "FullCalendar ScrollGrid Plugin",
-  "description": "internal package",
+  "description": "Tabular data chunked into scrollable panes",
   "dependencies": {
     "@fullcalendar/common": "5.0.0-rc",
     "@fullcalendar/premium-common": "5.0.0-rc",

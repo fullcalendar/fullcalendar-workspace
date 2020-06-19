@@ -1,8 +1,8 @@
 {
   "name": "@fullcalendar/premium-common",
   "version": "5.0.0-rc",
-  "title": "internal plugin",
-  "description": "internal plugin",
+  "title": "FullCalendar Premium Common",
+  "description": "Utilities for all of FullCalendar Scheduler's plugins",
   "dependencies": {
     "@fullcalendar/common": "5.0.0-rc",
     "tslib": "^2.0.0"
