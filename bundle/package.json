@@ -3,7 +3,7 @@
   "version": "5.0.0-rc",
   "title": "FullCalendar Premium Bundle",
   "description": "An easily consumable combination of standard and premium plugins",
-  "docs": "https://fullcalendar.io/docs/v5/getting-started",
+  "docs": "https://fullcalendar.io/docs/v5/initialize-globals",
   "devDependencies": {
     "@fullcalendar/adaptive": "5.0.0-rc",
     "@fullcalendar/core": "5.0.0-rc",
