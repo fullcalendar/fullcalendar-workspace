@@ -6,6 +6,7 @@
   "docs": "https://fullcalendar.io/docs/timeline-view-no-resources",
   "dependencies": {
     "@fullcalendar/common": "5.0.0-rc",
+    "@fullcalendar/premium-common": "5.0.0-rc",
     "@fullcalendar/scrollgrid": "5.0.0-rc",
     "tslib": "^2.0.0"
   },

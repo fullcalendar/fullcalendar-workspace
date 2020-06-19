@@ -1,4 +1,5 @@
 import { createPlugin } from '@fullcalendar/common'
+import premiumCommonPlugin from '@fullcalendar/premium-common'
 import resourceCommonPlugin from '@fullcalendar/resource-common'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { ResourceDayTableView } from './ResourceDayTableView'
@@ -7,7 +8,11 @@ export { ResourceDayTableView }
 export { ResourceDayTable } from './ResourceDayTable'
 
 export default createPlugin({
-  deps: [ resourceCommonPlugin, dayGridPlugin ],
+  deps: [
+    premiumCommonPlugin,
+    resourceCommonPlugin,
+    dayGridPlugin
+  ],
   initialView: 'resourceDayGridDay',
   views: {
 

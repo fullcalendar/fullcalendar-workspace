@@ -1,4 +1,5 @@
 import { createPlugin } from '@fullcalendar/common'
+import premiumCommonPlugin from '@fullcalendar/premium-common'
 import { TimelineView } from './TimelineView'
 import './main.css'
 
@@ -14,6 +15,9 @@ export { TimelineLaneSlicer, TimelineLaneSeg } from './TimelineLaneSlicer'
 export { TimelineHeaderRows } from './TimelineHeaderRows'
 
 export default createPlugin({
+  deps: [
+    premiumCommonPlugin
+  ],
   initialView: 'timelineDay',
   views: {
 

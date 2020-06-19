@@ -6,6 +6,7 @@
   "docs": "https://fullcalendar.io/docs/timeline-view",
   "dependencies": {
     "@fullcalendar/common": "5.0.0-rc",
+    "@fullcalendar/premium-common": "5.0.0-rc",
     "@fullcalendar/resource-common": "5.0.0-rc",
     "@fullcalendar/scrollgrid": "5.0.0-rc",
     "@fullcalendar/timeline": "5.0.0-rc",

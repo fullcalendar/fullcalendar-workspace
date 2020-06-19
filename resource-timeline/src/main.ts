@@ -1,4 +1,5 @@
 import { createPlugin } from '@fullcalendar/common'
+import premiumCommonPlugin from '@fullcalendar/premium-common'
 import timelinePlugin from '@fullcalendar/timeline'
 import resourceCommonPlugin from '@fullcalendar/resource-common'
 import { ResourceTimelineView } from './ResourceTimelineView'
@@ -9,7 +10,11 @@ export { ResourceTimelineLane } from './ResourceTimelineLane'
 export { SpreadsheetRow } from './SpreadsheetRow'
 
 export default createPlugin({
-  deps: [ resourceCommonPlugin, timelinePlugin ],
+  deps: [
+    premiumCommonPlugin,
+    resourceCommonPlugin,
+    timelinePlugin
+  ],
   initialView: 'resourceTimelineDay',
   views: {
 
