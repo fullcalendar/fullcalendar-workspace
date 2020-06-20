@@ -1,7 +1,7 @@
 
 # FullCalendar Premium Bundle
 
-FullCalendar is a full-sized drag & drop event calendar. This packages is an easily consumable combination of standard **AND** [premium](https://fullcalendar.io/docs/v5/premium) plugins. It makes the root namespace available as the `FullCalendar` browser global. [View the docs &raquo;](https://fullcalendar.io/docs/v5/getting-started)
+FullCalendar is a full-sized drag & drop event calendar. This packages is an easily consumable combination of standard **AND** [premium](https://fullcalendar.io/docs/premium) plugins. It makes the root namespace available as the `FullCalendar` browser global. [View the docs &raquo;](https://fullcalendar.io/docs/getting-started)
 
 This `fullcalendar-scheduler` package bundles together these plugins:
 
