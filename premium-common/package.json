@@ -3,6 +3,7 @@
   "version": "5.0.0",
   "title": "FullCalendar Premium Common",
   "description": "Utilities for all of FullCalendar Scheduler's plugins",
+  "docs": "https://fullcalendar.io/docs/scheduler",
   "dependencies": {
     "@fullcalendar/common": "~5.0.0",
     "tslib": "^2.0.0"
