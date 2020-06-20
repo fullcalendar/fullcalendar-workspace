@@ -1,11 +1,11 @@
 {
   "name": "@fullcalendar/resource-common",
-  "version": "5.0.0-rc",
+  "version": "5.0.0",
   "title": "FullCalendar Resources Common Plugin",
   "description": "Offers base support for resources. Required for all resource-related plugins.",
   "dependencies": {
-    "@fullcalendar/common": "5.0.0-rc",
-    "@fullcalendar/premium-common": "5.0.0-rc",
+    "@fullcalendar/common": "~5.0.0",
+    "@fullcalendar/premium-common": "~5.0.0",
     "tslib": "^2.0.0"
   },
   "main": "main.js",
