@@ -1,7 +1,7 @@
 
-# FullCalendar ScrollGrid Plugin
+# FullCalendar Adaptive Plugin
 
-Tabular data chunked into scrollable panes
+Optimizes FullCalendar for print (and soon other types of devices)
 
 [View the docs &raquo;](https://fullcalendar.io/docs/scheduler)
 

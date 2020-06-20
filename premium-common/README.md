@@ -1,7 +1,7 @@
 
-# FullCalendar ScrollGrid Plugin
+# FullCalendar Premium Common
 
-Tabular data chunked into scrollable panes
+Utilities for all of FullCalendar Scheduler&#x27;s plugins
 
 [View the docs &raquo;](https://fullcalendar.io/docs/scheduler)
 
