@@ -41,7 +41,7 @@ export function computeSegVerticals(segs: TimelineLaneSeg[], eventOrderSpecs: Or
       let key = seg.eventRange.instance.instanceId
       let dims = dimHash[key]
 
-      if (dims) { // MORE protection
+      if (dims) { // MORE-link protection
         let top = 0
         let insertI = 0 // where to start searching for an insert position
 

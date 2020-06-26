@@ -608,4 +608,31 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
     expect(anyElsIntersect(eventEls)).toBe(false)
   })
 
+  // https://github.com/fullcalendar/fullcalendar/issues/5549
+  // repro that doesn't need zoom: https://codepen.io/arshaw/pen/NWxvjwv?editable=true&editors=001
+  it('condenses events even when left/right are not computed as integers', function() {
+    let calendar = initCalendar({
+      initialDate: '2018-12-13',
+      initialView: 'resourceTimelineTenDay',
+      views: {
+        resourceTimelineTenDay: {
+          type: 'resourceTimeline',
+          duration: { days: 10 }
+        }
+      },
+      resources: [
+        { id: 'a', title: 'Auditorium A'}
+      ],
+      events: [
+        { id: '3', resourceId: 'a', start: '2018-12-13T08:00:00.2052265', end: '2018-12-13T10:00:04.2052265', title: 'Event 3' },
+        { id: '4', resourceId: 'a', start: '2018-12-13T07:00:00.2052265', end: '2018-12-13T08:00:04.2052265', title: 'Verry verry verry  long named event' }
+      ]
+    })
+    let timelineGridWrapper = new TimelineViewWrapper(calendar).timelineGrid
+    let eventEls = timelineGridWrapper.getEventEls()
+    let eventTop0 = eventEls[0].getBoundingClientRect().top
+    let eventTop1 = eventEls[1].getBoundingClientRect().top
+    expect(Math.abs(eventTop0 - eventTop1)).toBeLessThan(1)
+  })
+
 })

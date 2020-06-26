@@ -148,9 +148,9 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           let harnessRect = harnessEl.getBoundingClientRect()
 
           return {
-            left: harnessRect.left - originRect.left,
-            right: harnessRect.right - originRect.left,
-            height: harnessRect.height
+            left: Math.round(harnessRect.left - originRect.left),
+            right: Math.round(harnessRect.right - originRect.left),
+            height: Math.round(harnessRect.height)
           }
         })
       }, () => {
