@@ -81,4 +81,29 @@ describe('timeline rendering', function() {
 
     expect(callCnt).toBe(24)
   })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/5545
+  it('is sized correctly when height:auto and resources loaded on delay', function(done) {
+    let calendar = initCalendar({
+      initialView: 'resourceTimelineDay',
+      height: 'auto',
+      resources(fetchInfo, success) {
+        setTimeout(() => {
+          success(buildResources(20))
+        }, 100)
+      }
+    })
+
+    let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+    let dataGridWrapper = viewWrapper.dataGrid
+    let timelineGridWrapper = viewWrapper.timelineGrid
+
+    setTimeout(function() {
+      let dataGridHeight = dataGridWrapper.getRootEl().offsetHeight
+      let timelineGridHeight = timelineGridWrapper.getRootEl().offsetHeight
+      expect(Math.abs(dataGridHeight - timelineGridHeight)).toBeLessThan(1)
+      done()
+    }, 200)
+  })
+
 })

@@ -6,6 +6,11 @@ export class ResourceDataGridWrapper {
   }
 
 
+  getRootEl() {
+    return this.el
+  }
+
+
   getRowInfo() {
     let trs = findElements(this.el, 'tr')
     let infos = []

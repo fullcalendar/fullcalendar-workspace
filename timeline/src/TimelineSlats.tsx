@@ -1,5 +1,5 @@
 import {
-  createElement, BaseComponent, multiplyDuration, RefMap, CssDimValue, VNode, createRef, ScrollResponder, ScrollRequest, DateMarker, DateRange, DateProfile, isElVisible
+  createElement, BaseComponent, multiplyDuration, RefMap, CssDimValue, VNode, createRef, ScrollResponder, ScrollRequest, DateMarker, DateRange, DateProfile
 } from '@fullcalendar/common'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { TimelineSlatCell } from './TimelineSlatCell'
@@ -87,7 +87,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     ) {
       let rootEl = this.rootElRef.current
 
-      if (isElVisible(rootEl)) { // not hidden by css
+      if (rootEl.offsetWidth) {
         this.coords = new TimelineCoords(
           this.rootElRef.current,
           collectCellEls(this.cellElRefs.currentMap, props.tDateProfile.slotDates),

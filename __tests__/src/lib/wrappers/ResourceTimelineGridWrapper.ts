@@ -15,6 +15,11 @@ export class ResourceTimelineGridWrapper {
   }
 
 
+  getRootEl() {
+    return this.base.el
+  }
+
+
   click(resourceId: string, date) { // not JUST a date. a resource too
     let point = this.getPoint(resourceId, date)
 
