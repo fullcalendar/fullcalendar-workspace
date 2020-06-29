@@ -23,8 +23,9 @@
 
 
 .fc-timeline-event {
-
   position: relative; // contains things. TODO: make part of fc-h-event and fc-v-event
+  display: flex; // for v-aligning start/end arrows and making fc-event-main stretch all the way
+  align-items: center;
   border-radius: 0;
   padding: 2px 1px;
   margin-bottom: 1px;
@@ -34,7 +35,9 @@
   // ----------------------------------------------------------------------------------------------------
 
   & .fc-event-main {
-    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0; // important for allowing to shrink all the way
   }
 
   & .fc-event-time {
@@ -50,8 +53,8 @@
 }
 
 // move 1px away from slot line
-.fc-direction-ltr .fc-timeline-event { margin-right: 1px }
-.fc-direction-rtl .fc-timeline-event { margin-left: 1px }
+.fc-direction-ltr .fc-timeline-event.fc-event-end { margin-right: 1px }
+.fc-direction-rtl .fc-timeline-event.fc-event-end { margin-left: 1px }
 
 // make event beefier when overlap not allowed
 .fc-timeline-overlap-disabled .fc-timeline-event {
@@ -64,10 +67,12 @@
 // ----------------------------------------------------------------------------------------------------
 
 // part of the flexbox flow
-.fc-timeline-event:not(.fc-event-start) .fc-event-main:before,
-.fc-timeline-event:not(.fc-event-end) .fc-event-main:after {
+
+.fc-timeline-event:not(.fc-event-start):before,
+.fc-timeline-event:not(.fc-event-end):after {
   content: "";
-  align-self: center;
+  flex-grow: 0;
+  flex-shrink: 0;
   opacity: .5;
 
   // triangle. TODO: mixin
@@ -80,13 +85,13 @@
 }
 
 // pointing left
-.fc-direction-ltr .fc-timeline-event:not(.fc-event-start) .fc-event-main:before,
-.fc-direction-rtl .fc-timeline-event:not(.fc-event-end) .fc-event-main:after {
+.fc-direction-ltr .fc-timeline-event:not(.fc-event-start):before,
+.fc-direction-rtl .fc-timeline-event:not(.fc-event-end):after {
   border-left: 0;
 }
 
 // pointing right
-.fc-direction-ltr .fc-timeline-event:not(.fc-event-end) .fc-event-main:after,
-.fc-direction-rtl .fc-timeline-event:not(.fc-event-start) .fc-event-main:before {
+.fc-direction-ltr .fc-timeline-event:not(.fc-event-end):after,
+.fc-direction-rtl .fc-timeline-event:not(.fc-event-start):before {
   border-right: 0;
 }
