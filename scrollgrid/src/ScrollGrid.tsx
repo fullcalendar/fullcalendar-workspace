@@ -18,7 +18,8 @@ import {
   memoizeArraylike,
   collectFromHash,
   memoizeHashlike,
-  ScrollGridChunkConfig
+  ScrollGridChunkConfig,
+  getCanVGrowWithinCell
 } from '@fullcalendar/common'
 import { StickyScrolling } from './StickyScrolling'
 import { ClippedScroller, ClippedOverflowValue } from './ClippedScroller'
@@ -115,21 +116,19 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
       configI++
     }
 
-    return (
-      <Fragment>
-        <table ref={props.elRef} className={classNames.join(' ')}>
-          {renderMacroColGroup(colGroupStats, shrinkWidths)}
-          {Boolean(headSectionNodes.length) &&
-            createElement('thead', {}, ...headSectionNodes)
-          }
-          {Boolean(bodySectionNodes.length) &&
-            createElement('tbody', {}, ...bodySectionNodes)
-          }
-          {Boolean(footSectionNodes.length) &&
-            createElement('tfoot', {}, ...footSectionNodes)
-          }
-        </table>
-      </Fragment>
+    let isBuggy = !getCanVGrowWithinCell() // see NOTE in SimpleScrollGrid
+
+    return createElement(
+      'table',
+      {
+        ref: props.elRef,
+        className: classNames.join(' ')
+      },
+      renderMacroColGroup(colGroupStats, shrinkWidths),
+      Boolean(!isBuggy && headSectionNodes.length) && createElement('thead', {}, ...headSectionNodes),
+      Boolean(!isBuggy && bodySectionNodes.length) && createElement('tbody', {}, ...bodySectionNodes),
+      Boolean(!isBuggy && footSectionNodes.length) && createElement('tfoot', {}, ...footSectionNodes),
+      isBuggy && createElement('tbody', {}, ...headSectionNodes, ...bodySectionNodes, ...footSectionNodes)
     )
   }
 
