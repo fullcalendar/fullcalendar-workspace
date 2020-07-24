@@ -523,7 +523,9 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     let stickyScrollings = this.getStickyScrolling(argsByKey)
 
     for (let key in stickyScrollings) {
-      stickyScrollings[key].updateSize()
+		  if(typeof stickyScrollings[key].updateSize == 'function') {
+			  stickyScrollings[key].updateSize()
+		  }
     }
 
     this.stickyScrollings = stickyScrollings
