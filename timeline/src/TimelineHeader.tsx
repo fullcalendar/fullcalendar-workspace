@@ -29,6 +29,9 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
     // TODO: make part of tDateProfile?
     let timerUnit = greatestDurationDenominator(props.tDateProfile.slotDuration).unit
 
+    // WORKAROUND: make ignore slatCoords when out of sync with dateProfile
+    let slatCoords = props.slatCoords && props.slatCoords.dateProfile === props.dateProfile ? props.slatCoords : null
+
     return (
       <NowTimer unit={timerUnit}>
         {(nowDate: DateMarker, todayRange: DateRange) => (
@@ -48,13 +51,13 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
                 />
               </tbody>
             </table>
-            {(context.options.nowIndicator && props.slatCoords && props.slatCoords.isDateInRange(nowDate)) &&
+            {(context.options.nowIndicator && slatCoords && slatCoords.isDateInRange(nowDate)) &&
               <NowIndicatorRoot isAxis={true} date={nowDate}>
                 {(rootElRef, classNames, innerElRef, innerContent) => (
                   <div
                     ref={rootElRef}
                     className={[ 'fc-timeline-now-indicator-arrow' ].concat(classNames).join(' ')}
-                    style={{ left: props.slatCoords.dateToCoord(nowDate) }}
+                    style={{ left: slatCoords.dateToCoord(nowDate) }}
                   >{innerContent}</div>
                 )}
               </NowIndicatorRoot>

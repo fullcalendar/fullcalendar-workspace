@@ -15,7 +15,7 @@ export class TimelineCoords { // TODO: rename to "slat" coords?
   constructor(
     public slatRootEl: HTMLElement, // okay to expose?
     slatEls: HTMLElement[],
-    private dateProfile: DateProfile,
+    public dateProfile: DateProfile,
     private tDateProfile: TimelineDateProfile,
     private dateEnv: DateEnv,
     public isRtl: boolean

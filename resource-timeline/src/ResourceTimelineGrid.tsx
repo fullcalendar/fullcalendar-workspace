@@ -45,7 +45,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
   private slatsRef = createRef<TimelineSlats>() // needed for Hit creation :(
   private rowCoords: PositionCache // for queryHit
 
-  state = {
+  state: ResourceTimelineGridState = {
     slatCoords: null
   }
 
@@ -69,6 +69,9 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
       context.dateEnv
     )
 
+    // WORKAROUND: make ignore slatCoords when out of sync with dateProfile
+    let slatCoords = state.slatCoords && state.slatCoords.dateProfile === props.dateProfile ? state.slatCoords : null
+
     return (
       <div ref={this.handleEl} className='fc-timeline-body' style={{ minWidth: props.tableMinWidth }}>
         <NowTimer unit={timerUnit}>
@@ -89,7 +92,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
               <TimelineLaneBg
                 businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
                 bgEventSegs={bgSlicedProps.bgEventSegs}
-                timelineCoords={state.slatCoords}
+                timelineCoords={slatCoords}
                 eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs as TimelineLaneSeg[] : []) /* empty array will result in unnecessary rerenders? */}
                 dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
                 nowDate={nowDate}
@@ -107,19 +110,21 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
                 minHeight={props.expandRows ? props.clientHeight : ''}
                 tableMinWidth={props.tableMinWidth}
                 innerHeights={props.rowInnerHeights}
-                slatCoords={state.slatCoords}
+                slatCoords={slatCoords}
                 onRowCoords={this.handleRowCoords}
                 onRowHeightChange={props.onRowHeightChange}
               />
-              {(context.options.nowIndicator && state.slatCoords && state.slatCoords.isDateInRange(nowDate)) &&
+              {(context.options.nowIndicator && slatCoords && slatCoords.isDateInRange(nowDate)) &&
                 <NowIndicatorRoot isAxis={false} date={nowDate}>
-                  {(rootElRef, classNames, innerElRef, innerContent) => (
-                    <div
-                      ref={rootElRef}
-                      className={[ 'fc-timeline-now-indicator-line' ].concat(classNames).join(' ')}
-                      style={{ left: state.slatCoords.dateToCoord(nowDate) }}
-                    >{innerContent}</div>
-                  )}
+                  {(rootElRef, classNames, innerElRef, innerContent) => {
+                    return (
+                      <div
+                        ref={rootElRef}
+                        className={[ 'fc-timeline-now-indicator-line' ].concat(classNames).join(' ')}
+                        style={{ left: slatCoords.dateToCoord(nowDate) }}
+                      >{innerContent}</div>
+                    )
+                  }}
                 </NowIndicatorRoot>
               }
             </Fragment>
