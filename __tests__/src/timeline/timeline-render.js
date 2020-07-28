@@ -101,6 +101,22 @@ describe('timeline rendering', function() {
     expect(levels).toEqual([ '0', '1' ])
   })
 
+  // TODO: add test for implied week navlinks too
+  it('renders axis with navLinks even when customized', function() {
+    let calendar = initCalendar({
+      initialView: 'timelineMonth',
+      navLinks: true,
+      slotLabelFormat: function() {
+        return 'test'
+      }
+    })
+
+    let headerWrapper = new TimelineViewWrapper(calendar).header
+    let cellInfo = headerWrapper.getCellInfo()
+
+    expect(cellInfo[0].hasNavLink).toBe(true)
+  })
+
   // https://github.com/fullcalendar/fullcalendar/issues/5545
   it('is sized correctly when height:auto and resources loaded on delay', function(done) {
     let calendar = initCalendar({

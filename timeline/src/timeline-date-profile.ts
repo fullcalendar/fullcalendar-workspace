@@ -1,5 +1,5 @@
 import {
-  config, computeVisibleDayRange, Duration, DateProfile, isSingleDay, addDays, wholeDivideDurations, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs,
+  config, computeVisibleDayRange, Duration, DateProfile, asCleanDays, addDays, wholeDivideDurations, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs,
   createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator, BaseOptionsRefined
 } from '@fullcalendar/common'
 
@@ -94,7 +94,7 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: Date
   tDateProfile.largeUnit = largeUnit
 
   tDateProfile.emphasizeWeeks =
-    isSingleDay(tDateProfile.slotDuration) &&
+    asCleanDays(tDateProfile.slotDuration) === 1 &&
     currentRangeAs('weeks', dateProfile, dateEnv) >= 2 &&
     !allOptions.businessHours
 
@@ -537,10 +537,15 @@ function buildIsWeekStarts(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) 
 function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
   let slotDates = tDateProfile.slotDates
   let formats = tDateProfile.headerFormats
-  let cellRows = formats.map((format) => []) // indexed by row,col
+  let cellRows = formats.map(() => []) // indexed by row,col
+  let slotAsDays = asCleanDays(tDateProfile.slotDuration)
+  let guessedSlotUnit =
+    slotAsDays === 7 ? 'week' :
+      slotAsDays === 1 ? 'day' :
+        null
 
   // specifically for navclicks
-  let rowUnits = formats.map((format) => {
+  let rowUnitsFromFormats = formats.map((format) => {
     return format.getLargestUnit ? format.getLargestUnit() : null
   })
 
@@ -553,13 +558,15 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
       let format = formats[row]
       let rowCells = cellRows[row]
       let leadingCell = rowCells[rowCells.length - 1]
-      let isSuperRow = (formats.length > 1) && (row < (formats.length - 1)) // more than one row and not the last
+      let isLastRow = row === formats.length - 1
+      let isSuperRow = formats.length > 1 && !isLastRow // more than one row and not the last
       let newCell = null
+      let rowUnit = rowUnitsFromFormats[row] || (isLastRow ? guessedSlotUnit : null)
 
       if (isSuperRow) {
         let text = dateEnv.format(date, format)
         if (!leadingCell || (leadingCell.text !== text)) {
-          newCell = buildCellObject(date, text, rowUnits[row])
+          newCell = buildCellObject(date, text, rowUnit)
         } else {
           leadingCell.colspan += 1
         }
@@ -573,7 +580,7 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
           ))
         ) {
           let text = dateEnv.format(date, format)
-          newCell = buildCellObject(date, text, rowUnits[row])
+          newCell = buildCellObject(date, text, rowUnit)
         } else {
           leadingCell.colspan += 1
         }

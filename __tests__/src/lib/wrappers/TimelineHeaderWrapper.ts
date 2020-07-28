@@ -38,7 +38,8 @@ export class TimelineHeaderWrapper {
       return {
         date: parseUtcDate(cell.getAttribute('data-date')),
         isDisabled: classList.contains('fc-slot-disabled')
-          || classList.contains('fc-day-disabled')
+          || classList.contains('fc-day-disabled'),
+        hasNavLink: !!cell.querySelector('a[data-navlink]')
       }
     })
   }
