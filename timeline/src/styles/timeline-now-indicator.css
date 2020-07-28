@@ -1,10 +1,19 @@
 
 .fc {
 
+  & .fc-timeline-now-indicator-container {
+    position: absolute;
+    z-index: $timeline-now-indicator-z;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 0;
+  }
+
   & .fc-timeline-now-indicator-arrow,
   & .fc-timeline-now-indicator-line {
     position: absolute;
-    z-index: $timeline-now-indicator-z;
     top: 0;
     border-style: solid;
     border-color: var(--fc-now-indicator-color);

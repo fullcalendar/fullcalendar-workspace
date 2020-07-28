@@ -17,8 +17,8 @@ describe('timeline now-indicator', function() {
   })
 
   describeOptions('direction', {
-    'when LTR': 'ltr'
-    // 'when RTL': 'rtl' # wasn't working with headless. TODO: come back and fix
+    'when LTR': 'ltr',
+    'when RTL': 'rtl'
   }, function() {
 
     describeOptions('resources', {

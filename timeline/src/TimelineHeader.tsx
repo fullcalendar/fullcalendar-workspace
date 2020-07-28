@@ -52,15 +52,17 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
               </tbody>
             </table>
             {(context.options.nowIndicator && slatCoords && slatCoords.isDateInRange(nowDate)) &&
-              <NowIndicatorRoot isAxis={true} date={nowDate}>
-                {(rootElRef, classNames, innerElRef, innerContent) => (
-                  <div
-                    ref={rootElRef}
-                    className={[ 'fc-timeline-now-indicator-arrow' ].concat(classNames).join(' ')}
-                    style={{ left: slatCoords.dateToCoord(nowDate) }}
-                  >{innerContent}</div>
-                )}
-              </NowIndicatorRoot>
+              <div className='fc-timeline-now-indicator-container'>
+                <NowIndicatorRoot isAxis={true} date={nowDate}>
+                  {(rootElRef, classNames, innerElRef, innerContent) => (
+                    <div
+                      ref={rootElRef}
+                      className={[ 'fc-timeline-now-indicator-arrow' ].concat(classNames).join(' ')}
+                      style={{ left: slatCoords.dateToCoord(nowDate) }}
+                    >{innerContent}</div>
+                  )}
+                </NowIndicatorRoot>
+              </div>
             }
           </div>
         )}
