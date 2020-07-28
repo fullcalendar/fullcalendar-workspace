@@ -14,6 +14,14 @@ describe('timegrid height with horizontal scrolling', function() {
     expectSlotsEqualHeight(calendar)
   })
 
+  it('syncs with expandRows', function() {
+    let calendar = initCalendar({
+      slotDuration: '04:00',
+      expandRows: true
+    })
+    expectSlotsEqualHeight(calendar)
+  })
+
   function expectSlotsEqualHeight(calendar) {
     let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
     expect(timeGridWrapper.getMainSlotTable().offsetHeight).toBe(
