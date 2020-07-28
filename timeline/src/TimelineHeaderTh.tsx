@@ -7,6 +7,7 @@ import { TimelineDateProfile, TimelineHeaderCell } from './timeline-date-profile
 export interface TimelineHeaderThProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
+  rowLevel: number
   cell: TimelineHeaderCell
   todayRange: DateRange
   nowDate: DateMarker
@@ -46,6 +47,7 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
       : null
 
     let hookProps = this.refineHookProps({
+      level: props.rowLevel,
       dateMarker: cell.date,
       text: cell.text,
       dateEnv: context.dateEnv,
@@ -120,6 +122,7 @@ function renderInnerContent(props) { // TODO: add types
 // ----------
 
 interface HookPropsInput {
+  level: number
   dateMarker: DateMarker
   text: string
   dateEnv: DateEnv
@@ -127,6 +130,7 @@ interface HookPropsInput {
 }
 
 interface HookProps {
+  level: number
   date: DateMarker // localized
   view: ViewApi
   text: string
@@ -134,6 +138,7 @@ interface HookProps {
 
 function refineHookProps(input: HookPropsInput): HookProps {
   return {
+    level: input.level,
     date: input.dateEnv.toDate(input.dateMarker),
     view: input.viewApi,
     text: input.text

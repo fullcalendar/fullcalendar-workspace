@@ -82,6 +82,25 @@ describe('timeline rendering', function() {
     expect(callCnt).toBe(24)
   })
 
+  it('includes a level property in slotLabelContent', function() {
+    let levelHash = {}
+
+    initCalendar({
+      initialView: 'timelineWeek',
+      slotLabelFormat: [
+        { day: 'numeric' },
+        { hour: 'numeric', minute: 'numeric' }
+      ],
+      slotLabelContent(info) {
+        expect(typeof info.level).toBe('number')
+        levelHash[info.level] = true
+      }
+    })
+
+    let levels = Object.keys(levelHash).sort()
+    expect(levels).toEqual([ '0', '1' ])
+  })
+
   // https://github.com/fullcalendar/fullcalendar/issues/5545
   it('is sized correctly when height:auto and resources loaded on delay', function(done) {
     let calendar = initCalendar({

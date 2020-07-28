@@ -19,8 +19,8 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
 
     return (
       <Fragment>
-        {cellRows.map((rowCells, i) => {
-          let isLast = i === cellRows.length - 1
+        {cellRows.map((rowCells, rowLevel) => {
+          let isLast = rowLevel === cellRows.length - 1
           let isChrono = tDateProfile.isTimeScale && isLast // the final row, with times?
           let classNames = [
             'fc-timeline-header-row',
@@ -28,16 +28,17 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
           ]
 
           return (
-            <tr key={i} className={classNames.join(' ')}>
+            <tr key={rowLevel} className={classNames.join(' ')}>
               {rowCells.map((cell) => (
                 <TimelineHeaderTh
                   key={cell.date.toISOString()}
                   cell={cell}
+                  rowLevel={rowLevel}
                   dateProfile={dateProfile}
                   tDateProfile={tDateProfile}
                   todayRange={todayRange}
                   nowDate={nowDate}
-                  rowInnerHeight={rowInnerHeights && rowInnerHeights[i]}
+                  rowInnerHeight={rowInnerHeights && rowInnerHeights[rowLevel]}
                   isSticky={!isLast}
                 />
               ))}
