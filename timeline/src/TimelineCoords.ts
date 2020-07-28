@@ -84,16 +84,17 @@ export class TimelineCoords { // TODO: rename to "slat" coords?
 
 
   computeDurationLeft(duration: Duration) {
-    let { dateProfile, dateEnv, isRtl } = this
+    let { dateProfile, tDateProfile, dateEnv, isRtl } = this
     let left = 0
 
     if (dateProfile) {
-      left = this.dateToCoord(
-        dateEnv.add(
-          startOfDay(dateProfile.activeRange.start), // startOfDay needed?
-          duration
-        )
-      )
+      let date = dateEnv.add(dateProfile.activeRange.start, duration)
+
+      if (!tDateProfile.isTimeScale) {
+        date = startOfDay(date)
+      }
+
+      left = this.dateToCoord(date)
 
       // hack to overcome the left borders of non-first slat
       if (!isRtl && left) {

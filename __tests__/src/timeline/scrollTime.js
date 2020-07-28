@@ -26,4 +26,21 @@ describe('scrollTime', function() {
     })
   })
 
+  // https://github.com/fullcalendar/fullcalendar/issues/5645
+  it('is disregarded when slots are a day or bigger', function(done) {
+    let calendar = initCalendar({
+      initialView: 'resourceTimelineMonth',
+      scrollTime: '06:00'
+    })
+
+    let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+    let scrollEl = viewWrapper.getTimeScrollEl()
+
+    setTimeout(function() {
+      let scroll = scrollEl.scrollLeft
+      expect(scroll).toBe(0)
+      done()
+    })
+  })
+
 })
