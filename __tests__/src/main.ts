@@ -2,12 +2,14 @@
 import 'fullcalendar-tests/lib/globals'
 import { DEFAULT_PLUGINS } from 'fullcalendar-tests/lib/install-plugins'
 
+import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import timelinePlugin from '@fullcalendar/timeline'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 
 const MORE_DEFAULT_PLUGINS = [
+  scrollGridPlugin,
   timelinePlugin,
   resourceTimelinePlugin,
   resourceDayGridPlugin,
