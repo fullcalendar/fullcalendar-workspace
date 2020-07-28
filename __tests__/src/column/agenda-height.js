@@ -14,6 +14,8 @@ describe('timegrid height with horizontal scrolling', function() {
     expectSlotsEqualHeight(calendar)
   })
 
+
+  // https://github.com/fullcalendar/fullcalendar/issues/5674
   it('syncs with expandRows', function() {
     let calendar = initCalendar({
       slotDuration: '04:00',
