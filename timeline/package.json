@@ -10,8 +10,12 @@
     "@fullcalendar/scrollgrid": "~5.1.0",
     "tslib": "^2.0.0"
   },
+  "type": "module",
   "main": "main.js",
   "types": "main.d.ts",
+  "module": "main.combo.js",
+  "jsdelivr": "main.global.min.js",
+  "browserGlobal": "FullCalendarTimeline",
   "homepage": "https://fullcalendar.io/scheduler",
   "bugs": "https://fullcalendar.io/reporting-bugs",
   "repository": {

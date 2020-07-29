@@ -9,8 +9,12 @@
     "@fullcalendar/premium-common": "~5.1.0",
     "tslib": "^2.0.0"
   },
+  "type": "module",
   "main": "main.js",
   "types": "main.d.ts",
+  "module": "main.combo.js",
+  "jsdelivr": "main.global.min.js",
+  "browserGlobal": "FullCalendarAdaptive",
   "homepage": "https://fullcalendar.io/scheduler",
   "bugs": "https://fullcalendar.io/reporting-bugs",
   "repository": {

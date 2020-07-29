@@ -21,8 +21,8 @@
     "@fullcalendar/resource-timeline": "~5.1.0"
   },
   "main": "main.js",
-  "unpkg": "main.min.js",
-  "types": "main.d.ts",
+  "jsdelivr": "main.min.js",
+  "browserGlobal": "FullCalendar",
   "homepage": "https://fullcalendar.io/scheduler",
   "bugs": "https://fullcalendar.io/reporting-bugs",
   "repository": {

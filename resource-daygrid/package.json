@@ -11,8 +11,11 @@
     "@fullcalendar/resource-common": "~5.1.0",
     "tslib": "^2.0.0"
   },
+  "type": "module",
   "main": "main.js",
   "types": "main.d.ts",
+  "jsdelivr": "main.global.min.js",
+  "browserGlobal": "FullCalendarResourceDayGrid",
   "homepage": "https://fullcalendar.io/scheduler",
   "bugs": "https://fullcalendar.io/reporting-bugs",
   "repository": {
