@@ -1,4 +1,4 @@
-import { removeElement, computeEdges, renderVirtual, createElement } from '@fullcalendar/common'
+import { removeElement, computeEdges } from '@fullcalendar/common'
 
 
 // TODO: assume the el has no borders?
@@ -63,17 +63,15 @@ function getRtlScrollSystem() {
 }
 
 function detectRtlScrollSystem() {
-  let el = renderVirtual(
-    <div style={{
-      position: 'absolute',
-      top: '-1000px',
-      width: '1px',
-      height: '1px',
-      overflow: 'scroll',
-      direction: 'rtl',
-      fontSize: '100px'
-    }}>A</div>
-  )
+  let el = document.createElement('div')
+  el.style.position = 'absolute'
+  el.style.top = '-1000px'
+  el.style.width = '1px'
+  el.style.height = '1px'
+  el.style.overflow = 'scroll'
+  el.style.direction = 'rtl'
+  el.style.fontSize = '100px'
+  el.innerHTML = 'A'
 
   document.body.appendChild(el)
 
