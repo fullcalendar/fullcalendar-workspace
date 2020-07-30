@@ -13,7 +13,6 @@
   "type": "module",
   "main": "main.js",
   "types": "main.d.ts",
-  "browser": "main.combo.js",
   "jsdelivr": "main.global.min.js",
   "browserGlobal": "FullCalendarTimeline",
   "homepage": "https://fullcalendar.io/scheduler",
