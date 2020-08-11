@@ -248,7 +248,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
 
   componentDidMount() {
     this.updateScrollSyncers()
-    this.handleSizing()
+    this.handleSizing(false)
 
     this.context.addResizeHandler(this.handleSizing)
   }
@@ -258,7 +258,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     this.updateScrollSyncers()
 
     // TODO: need better solution when state contains non-sizing things
-    this.handleSizing(prevState.sectionRowMaxHeights !== this.state.sectionRowMaxHeights)
+    this.handleSizing(false, prevState.sectionRowMaxHeights !== this.state.sectionRowMaxHeights)
   }
 
 
@@ -270,7 +270,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
   }
 
 
-  handleSizing = (sectionRowMaxHeightsChanged?: boolean) => {
+  handleSizing = (isForcedResize: boolean, sectionRowMaxHeightsChanged?: boolean) => {
 
     if (!sectionRowMaxHeightsChanged) { // something else changed, probably external
       this.anyRowHeightsChanged = true
@@ -279,7 +279,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     let otherState: Partial<ScrollGridState> = {}
 
     // if reacting to self-change of sectionRowMaxHeightsChanged, or not stable, don't do anything
-    if (!sectionRowMaxHeightsChanged && !this.rowUnstableMap.size) {
+    if (isForcedResize || (!sectionRowMaxHeightsChanged && !this.rowUnstableMap.size)) {
       otherState.sectionRowMaxHeights = this.computeSectionRowMaxHeights()
     }
 
