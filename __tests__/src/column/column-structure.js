@@ -215,6 +215,7 @@ describe('vresource structure', function() {
     let calendar = initCalendar({
       initialView:'resourceTimeGridWeek',
       dayMinWidth: 350,
+      weekNumbers: true, // i think this is necessary to recreate the bug too
       resources(info, callback) {
         setTimeout(function() {
           callback([
