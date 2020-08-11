@@ -136,7 +136,7 @@ export class ResourceTimelineGridWrapper {
   }
 
 
-  getResourceLaneEls() {
+  getResourceLaneEls() { // are <td> cells
     return findElements(this.el, '.fc-timeline-lane[data-resource-id]')
   }
 
