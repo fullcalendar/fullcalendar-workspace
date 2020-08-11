@@ -8,6 +8,11 @@ export class ResourceDayHeaderWrapper {
   }
 
 
+  getRootTableEl() {
+    return this.el // it is the root el
+  }
+
+
   getResourceEls(resourceId, date?) {
     let datePart = ''
 

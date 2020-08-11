@@ -33,4 +33,14 @@ export class ResourceTimeGridViewWrapper extends ViewWrapper {
     return this.el.querySelector('.fc-timegrid-body').parentElement // TODO: use closest
   }
 
+
+  getHeaderAxisTable() {
+    return this.el.querySelectorAll('.fc-timegrid-axis')[0].closest('table')
+  }
+
+
+  getAllDayAxisTable() {
+    return this.el.querySelectorAll('.fc-timegrid-axis')[1].closest('table')
+  }
+
 }

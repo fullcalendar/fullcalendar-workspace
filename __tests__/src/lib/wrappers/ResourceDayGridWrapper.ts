@@ -15,6 +15,11 @@ export class ResourceDayGridWrapper {
   }
 
 
+  getRootTableEl() {
+    return this.base.getRootTableEl()
+  }
+
+
   getDayEl(resourceId, date) {
     date = ensureDate(date)
     return this.el.querySelector(

@@ -209,4 +209,38 @@ describe('vresource structure', function() {
       })
     })
   })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/5684
+  it('resyncs header row heights when horizontal scrolling and dynamic resources', function(done) {
+    let calendar = initCalendar({
+      initialView:'resourceTimeGridWeek',
+      dayMinWidth: 350,
+      resources(info, callback) {
+        setTimeout(function() {
+          callback([
+            { id: 'a', title: 'Resource A '},
+            { id: 'b', title: 'Resource B' }
+          ])
+        }, 100)
+      }
+    })
+    let viewWrapper = new ResourceTimeGridViewWrapper(calendar)
+
+    setTimeout(function() {
+      expect(
+        viewWrapper.getHeaderAxisTable().offsetHeight
+      ).toBe(
+        viewWrapper.header.getRootTableEl().offsetHeight
+      )
+
+      expect(
+        viewWrapper.getAllDayAxisTable().offsetHeight
+      ).toBe(
+        viewWrapper.dayGrid.getRootTableEl().offsetHeight
+      )
+
+      done()
+    }, 200)
+  })
+
 })
