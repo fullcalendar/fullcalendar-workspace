@@ -339,7 +339,6 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
   // has the side effect of grooming rowInnerMaxHeightMap
   // TODO: somehow short-circuit if there are no new height changes
   private computeSectionRowMaxHeights() {
-    let oldHeightMap = this.rowInnerMaxHeightMap
     let newHeightMap = new Map<HTMLTableRowElement, number>()
 
     let [ sectionCnt, chunksPerSection ] = this.getDims()
@@ -359,10 +358,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
           let chunkEl = this.chunkElRefs.currentMap[index]
           if (chunkEl) {
             rowHeights = findElements(chunkEl, '.fc-scrollgrid-sync-table tr').map(function(rowEl: HTMLTableRowElement) {
-              let max = oldHeightMap.get(rowEl)
-              if (max == null) {
-                max = getRowInnerMaxHeight(rowEl)
-              }
+              let max = getRowInnerMaxHeight(rowEl)
               newHeightMap.set(rowEl, max)
               return max
             })
