@@ -51,17 +51,22 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
                 />
               </tbody>
             </table>
-            {(context.options.nowIndicator && slatCoords && slatCoords.isDateInRange(nowDate)) &&
+            {context.options.nowIndicator &&
+              // need to have a container regardless of whether the current view has a visible now indicator
+              // because apparently removal of the element resets the scroll for some reasons (issue #5351).
+              // this issue doesn't happen for the timeline body however
               <div className='fc-timeline-now-indicator-container'>
-                <NowIndicatorRoot isAxis={true} date={nowDate}>
-                  {(rootElRef, classNames, innerElRef, innerContent) => (
-                    <div
-                      ref={rootElRef}
-                      className={[ 'fc-timeline-now-indicator-arrow' ].concat(classNames).join(' ')}
-                      style={{ left: slatCoords.dateToCoord(nowDate) }}
-                    >{innerContent}</div>
-                  )}
-                </NowIndicatorRoot>
+                {(slatCoords && slatCoords.isDateInRange(nowDate)) &&
+                  <NowIndicatorRoot isAxis={true} date={nowDate}>
+                    {(rootElRef, classNames, innerElRef, innerContent) => (
+                      <div
+                        ref={rootElRef}
+                        className={[ 'fc-timeline-now-indicator-arrow' ].concat(classNames).join(' ')}
+                        style={{ left: slatCoords.dateToCoord(nowDate) }}
+                      >{innerContent}</div>
+                    )}
+                  </NowIndicatorRoot>
+                }
               </div>
             }
           </div>
