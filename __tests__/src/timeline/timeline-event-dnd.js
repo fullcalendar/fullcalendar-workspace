@@ -1,4 +1,5 @@
 import { ResourceTimelineViewWrapper } from "../lib/wrappers/ResourceTimelineViewWrapper"
+import { waitEventDrag } from 'fullcalendar-tests/lib/wrappers/interaction-util'
 
 // TODO: test isRtl?
 
@@ -40,6 +41,28 @@ describe('timeline-view event drag-n-drop', function() {
 
       dragElTo($('.event0'), 'a', '2015-11-29T05:00:00', function() {
         expect(dropSpy).toHaveBeenCalled()
+        done()
+      })
+    })
+  })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/3900
+  it('can drag past midnight with extended slotMaxTime', function(done) {
+    let calendar = initCalendar({
+      slotDuration: '04:00',
+      slotMaxTime: '36:00',
+      events: [
+        { title: 'event0', start: '2015-11-29T20:00:00', end: '2015-11-29T24:00:00', resourceId: 'b' }
+      ]
+    })
+
+    setTimeout(function() { // wait for scrollTime
+      let grid = new ResourceTimelineViewWrapper(calendar).timelineGrid
+      let eventEl = grid.getEventEls()[0]
+      let dragging = grid.dragEventTo(eventEl, 'b', '2015-11-30T04:00:00')
+
+      waitEventDrag(calendar, dragging).then(function(event) {
+        expect(event.startStr).toBe('2015-11-30T04:00:00Z')
         done()
       })
     })

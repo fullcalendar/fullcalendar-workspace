@@ -24,6 +24,7 @@ export default createPlugin({
 
     timeline: {
       component: TimelineView,
+      usesMinMaxTime: true,
       eventResizableFromStart: true // how is this consumed for TimelineView tho?
     },
 
