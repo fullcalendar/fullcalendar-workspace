@@ -71,4 +71,30 @@ describe('scrollTime', function() {
     })
   })
 
+  // TODO: to fix this, make sure the scroll assignment happens AFTER
+  // the slot widths have been calculate and set. Happening in wrong order
+  // https://github.com/fullcalendar/fullcalendar/issues/5686
+  xit('has correct scrollTime when switching timeline views', function(done) {
+    let calendar = initCalendar({
+      initialView: 'resourceTimelineMonth'
+    })
+    let viewWrapper = new ResourceTimelineViewWrapper(calendar)
+
+    calendar.changeView('resourceTimelineWeek')
+    setTimeout(function() {
+
+      let scrollEl = viewWrapper.getTimeScrollEl()
+      let slatEl = viewWrapper.timelineGrid.getSlatElByDate('2020-08-09T06:00:00')
+
+      expect(
+        Math.abs(
+          scrollEl.getBoundingClientRect().left -
+          slatEl.getBoundingClientRect().left
+        )
+      ).toBeLessThan(1)
+
+      done()
+    })
+  })
+
 })
