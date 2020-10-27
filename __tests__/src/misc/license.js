@@ -17,7 +17,7 @@ describe('schedulerLicenseKey', function() {
       let calendar = initCalendar({
         schedulerLicenseKey: '<%= versionReleaseDate %>'
       })
-      expectIsValid(calendar, false)
+      expectInvalid(calendar)
     })
 
     it('is invalid when crap text when directly instantiating', function() {
@@ -35,41 +35,54 @@ describe('schedulerLicenseKey', function() {
       let calendar = initCalendar({
         schedulerLicenseKey: '1234567890-fcs-1273017600' // purchased on 2010-05-05
       })
-      expectIsValid(calendar, false)
+      expectOutdated(calendar)
     })
 
     it('is valid when purchased less than a year ago', function() {
       let calendar = initCalendar({
         schedulerLicenseKey: '1234567890-fcs-1275868800' // purchased on 2010-06-07
       })
-      expectIsValid(calendar, true)
+      expectValid(calendar)
     })
 
     it('is invalid when not 10 digits in random ID', function() {
       let calendar = initCalendar({
         schedulerLicenseKey: '123456789-fcs-1275868800' // purchased on 2010-06-07
       })
-      expectIsValid(calendar, false)
+      expectInvalid(calendar)
     })
 
     it('is valid when Creative Commons', function() {
       let calendar = initCalendar({
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives'
       })
-      expectIsValid(calendar, true)
+      expectValid(calendar)
     })
 
     it('is valid when GPL', function() {
       let calendar = initCalendar({
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source'
       })
-      expectIsValid(calendar, true)
+      expectValid(calendar)
     })
   }
 
-  function expectIsValid(calendar, bool) {
+  function expectValid(calendar) {
     let calendarWrapper = new CalendarWrapper(calendar)
-    return expect(!calendarWrapper.hasLicenseMessage()).toBe(bool)
+    let message = Boolean(calendarWrapper.getLicenseMessage())
+    return expect(message).toBe(false)
+  }
+
+  function expectOutdated(calendar) {
+    let calendarWrapper = new CalendarWrapper(calendar)
+    let message = calendarWrapper.getLicenseMessage()
+    return expect(message && message.match(/old/i)).toBeTruthy()
+  }
+
+  function expectInvalid(calendar) {
+    let calendarWrapper = new CalendarWrapper(calendar)
+    let message = calendarWrapper.getLicenseMessage()
+    return expect(message && message.match(/invalid/i)).toBeTruthy()
   }
 
 
@@ -102,17 +115,16 @@ describe('schedulerLicenseKey', function() {
     'when resource-daygrid view': 'resourceDayGridDay'
   }, function() {
     it('only renders one license message when view is rerendered', function() {
-      initCalendar({
+      let calendar = initCalendar({
         schedulerLicenseKey: '1234567890-fcs-1273017600', // purchased on 2010-05-05
         resources: [
           { id: 'a', title: 'Resource A' }
         ]
       })
 
-      let calendarWrapper = new CalendarWrapper(this)
-      expect(calendarWrapper.hasLicenseMessage()).toBe(true)
+      expectOutdated(calendar)
       currentCalendar.next()
-      expect(calendarWrapper.hasLicenseMessage()).toBe(true)
+      expectOutdated(calendar)
     })
   })
 })
