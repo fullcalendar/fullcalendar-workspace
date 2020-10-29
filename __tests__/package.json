@@ -17,5 +17,10 @@
     "fullcalendar-tests": "*",
     "tslib": "^2.0.0",
     "xhr-mock": "^2.5.1"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^3.3.12",
+    "@types/jasmine-jquery": "^1.5.33",
+    "@types/jquery": "^3.3.29"
   }
 }
