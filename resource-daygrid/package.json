@@ -9,7 +9,7 @@
     "@fullcalendar/daygrid": "~5.3.1",
     "@fullcalendar/premium-common": "~5.3.1",
     "@fullcalendar/resource-common": "~5.3.1",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.3"
   },
   "type": "module",
   "main": "main.js",

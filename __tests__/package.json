@@ -15,7 +15,7 @@
     "@fullcalendar/timegrid": "~5.3.1",
     "@fullcalendar/timeline": "~5.3.1",
     "fullcalendar-tests": "*",
-    "tslib": "^2.0.0",
+    "tslib": "^2.0.3",
     "xhr-mock": "^2.5.1"
   },
   "devDependencies": {
