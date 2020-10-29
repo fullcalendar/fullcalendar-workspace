@@ -1,5 +1,5 @@
-import { waitDateClick } from 'fullcalendar-tests/lib/wrappers/interaction-util'
-import { TimeGridViewWrapper } from 'fullcalendar-tests/lib/wrappers/TimeGridViewWrapper'
+import { waitDateClick } from 'fullcalendar-tests/src/lib/wrappers/interaction-util'
+import { TimeGridViewWrapper } from 'fullcalendar-tests/src/lib/wrappers/TimeGridViewWrapper'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('timeGrid-view dateClick', function() {

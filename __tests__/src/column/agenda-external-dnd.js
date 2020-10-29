@@ -2,7 +2,7 @@
 
 import { Draggable } from '@fullcalendar/interaction'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
-import { CalendarWrapper } from 'fullcalendar-tests/lib/wrappers/CalendarWrapper'
+import { CalendarWrapper } from 'fullcalendar-tests/src/lib/wrappers/CalendarWrapper'
 
 describe('timeGrid-view event drag-n-drop', function() {
 

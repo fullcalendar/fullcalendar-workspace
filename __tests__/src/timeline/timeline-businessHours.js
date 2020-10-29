@@ -1,4 +1,4 @@
-import { doElsMatchSegs } from 'fullcalendar-tests/lib/segs'
+import { doElsMatchSegs } from 'fullcalendar-tests/src/lib/segs'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 

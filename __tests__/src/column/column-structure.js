@@ -1,5 +1,5 @@
-import { joinRects } from 'fullcalendar-tests/lib/geom'
-import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from 'fullcalendar-tests/lib/dom-geom'
+import { joinRects } from 'fullcalendar-tests/src/lib/geom'
+import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from 'fullcalendar-tests/src/lib/dom-geom'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
