@@ -75,7 +75,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
   }
 
 
-  render() {
+  render(): VNode {
     let { props, state, context } = this
     let { shrinkWidths } = state
 
