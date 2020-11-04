@@ -5,11 +5,11 @@
   "description": "Display events and resources on a horizontal time axis",
   "docs": "https://fullcalendar.io/docs/timeline-view",
   "dependencies": {
-    "@fullcalendar/common": "~5.3.1",
-    "@fullcalendar/premium-common": "~5.3.1",
-    "@fullcalendar/resource-common": "~5.3.1",
-    "@fullcalendar/scrollgrid": "~5.3.1",
-    "@fullcalendar/timeline": "~5.3.1",
+    "@fullcalendar/common": "workspace:~5.3.1",
+    "@fullcalendar/premium-common": "workspace:~5.3.1",
+    "@fullcalendar/resource-common": "workspace:~5.3.1",
+    "@fullcalendar/scrollgrid": "workspace:~5.3.1",
+    "@fullcalendar/timeline": "workspace:~5.3.1",
     "tslib": "^2.0.3"
   },
   "main": "main.cjs.js",
@@ -31,6 +31,6 @@
     "url": "http://arshaw.com/"
   },
   "devDependencies": {
-    "@fullcalendar/core-preact": "workspace:packages/core-preact"
+    "@fullcalendar/core-preact": "workspace:*"
   }
 }

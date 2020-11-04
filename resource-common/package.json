@@ -5,8 +5,8 @@
   "description": "Offers base support for resources. Required for all resource-related plugins.",
   "docs": "https://fullcalendar.io/docs/scheduler",
   "dependencies": {
-    "@fullcalendar/common": "~5.3.1",
-    "@fullcalendar/premium-common": "~5.3.1",
+    "@fullcalendar/common": "workspace:~5.3.1",
+    "@fullcalendar/premium-common": "workspace:~5.3.1",
     "tslib": "^2.0.3"
   },
   "main": "main.cjs.js",
@@ -28,6 +28,6 @@
     "url": "http://arshaw.com/"
   },
   "devDependencies": {
-    "@fullcalendar/core-preact": "workspace:packages/core-preact"
+    "@fullcalendar/core-preact": "workspace:*"
   }
 }
