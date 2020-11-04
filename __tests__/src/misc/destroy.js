@@ -1,6 +1,6 @@
 import { ListenerCounter } from 'fullcalendar-tests/src/lib/ListenerCounter'
 
-describe('destroy', function() {
+xdescribe('destroy', function() {
   pushOptions({
     initialDate: '2016-06-01',
     droppable: true, // high chance of attaching global handlers
