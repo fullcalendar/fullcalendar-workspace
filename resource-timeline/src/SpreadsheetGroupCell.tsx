@@ -1,7 +1,6 @@
 import { createElement, BaseComponent, Fragment, RenderHook } from '@fullcalendar/common'
 import { ColSpec, ColCellContentArg } from '@fullcalendar/resource-common'
 
-
 export interface SpreadsheetGroupCellProps {
   colSpec: ColSpec
   fieldValue: any
@@ -10,13 +9,12 @@ export interface SpreadsheetGroupCellProps {
 
 // for VERTICAL cell grouping, in spreadsheet area
 export class SpreadsheetGroupCell extends BaseComponent<SpreadsheetGroupCellProps> {
-
   render() {
     let { props, context } = this
     let { colSpec } = props
     let hookProps: ColCellContentArg = {
       groupValue: props.fieldValue,
-      view: context.viewApi
+      view: context.viewApi,
     }
 
     // a grouped cell. no data that is specific to this specific resource
@@ -32,9 +30,10 @@ export class SpreadsheetGroupCell extends BaseComponent<SpreadsheetGroupCellProp
       >
         {(rootElRef, classNames, innerElRef, innerContent) => (
           // TODO: make data-attr with group value?
-          <td className={[ 'fc-datagrid-cell', 'fc-resource-group' ].concat(classNames).join(' ')} rowSpan={props.rowSpan} ref={rootElRef}>
-            <div className='fc-datagrid-cell-frame fc-datagrid-cell-frame-liquid'> {/* needed for stickiness in some browsers */}
-              <div className='fc-datagrid-cell-cushion fc-sticky' ref={innerElRef}>
+          <td className={['fc-datagrid-cell', 'fc-resource-group'].concat(classNames).join(' ')} rowSpan={props.rowSpan} ref={rootElRef}>
+            <div className="fc-datagrid-cell-frame fc-datagrid-cell-frame-liquid">
+              {/* ^needed for stickiness in some browsers */}
+              <div className="fc-datagrid-cell-cushion fc-sticky" ref={innerElRef}>
                 {innerContent}
               </div>
             </div>
@@ -43,7 +42,6 @@ export class SpreadsheetGroupCell extends BaseComponent<SpreadsheetGroupCellProp
       </RenderHook>
     )
   }
-
 }
 
 function renderGroupInner(hookProps) {

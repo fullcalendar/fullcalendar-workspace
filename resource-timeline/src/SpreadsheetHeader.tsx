@@ -4,7 +4,6 @@ import {
 } from '@fullcalendar/common'
 import { ColSpec, ColHeaderContentArg, ColHeaderRenderHooks } from '@fullcalendar/resource-common'
 
-
 export interface SpreadsheetHeaderProps {
   superHeaderRendering: ColHeaderRenderHooks
   colSpecs: ColSpec[]
@@ -14,12 +13,9 @@ export interface SpreadsheetHeaderProps {
 
 const SPREADSHEET_COL_MIN_WIDTH = 20
 
-
 export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
-
   private resizerElRefs = new RefMap<HTMLElement>(this._handleColResizerEl.bind(this))
   private colDraggings: { [index: string]: ElementDragging } = {}
-
 
   render() {
     let { colSpecs, superHeaderRendering, rowInnerHeights } = this.props
@@ -31,7 +27,7 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
     if (superHeaderRendering) {
       let rowInnerHeight = rowInnerHeights.shift()
       rowNodes.push(
-        <tr key='row-super'>
+        <tr key="row-super">
           <RenderHook
             hookProps={hookProps}
             classNames={superHeaderRendering.headerClassNames}
@@ -40,22 +36,22 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
             willUnmount={superHeaderRendering.headerWillUnmount}
           >
             {(rootElRef, classNames, innerElRef, innerContent) => (
-              <th colSpan={colSpecs.length} className={[ 'fc-datagrid-cell', 'fc-datagrid-cell-super' ].concat(classNames).join(' ')} ref={rootElRef}>
-                <div className='fc-datagrid-cell-frame' style={{ height: rowInnerHeight }}>
-                  <div className='fc-datagrid-cell-cushion fc-scrollgrid-sync-inner' ref={innerElRef}>
+              <th colSpan={colSpecs.length} className={['fc-datagrid-cell', 'fc-datagrid-cell-super'].concat(classNames).join(' ')} ref={rootElRef}>
+                <div className="fc-datagrid-cell-frame" style={{ height: rowInnerHeight }}>
+                  <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner" ref={innerElRef}>
                     {innerContent}
                   </div>
                 </div>
               </th>
             )}
           </RenderHook>
-        </tr>
+        </tr>,
       )
     }
 
     let rowInnerHeight = rowInnerHeights.shift()
     rowNodes.push(
-      <tr key='row'>
+      <tr key="row">
         {colSpecs.map((colSpec, i) => {
           let isLastCol = i === (colSpecs.length - 1)
 
@@ -70,33 +66,31 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
               willUnmount={colSpec.headerWillUnmount}
             >
               {(rootElRef, classNames, innerElRef, innerContent) => (
-                <th ref={rootElRef} className={[ 'fc-datagrid-cell' ].concat(classNames).join(' ')}>
-                  <div className='fc-datagrid-cell-frame' style={{ height: rowInnerHeight }}>
-                    <div className='fc-datagrid-cell-cushion fc-scrollgrid-sync-inner'>
-                      {colSpec.isMain &&
-                        <span className='fc-datagrid-expander fc-datagrid-expander-placeholder'>
-                          <span className='fc-icon'></span>
+                <th ref={rootElRef} className={['fc-datagrid-cell'].concat(classNames).join(' ')}>
+                  <div className="fc-datagrid-cell-frame" style={{ height: rowInnerHeight }}>
+                    <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner">
+                      {colSpec.isMain && (
+                        <span className="fc-datagrid-expander fc-datagrid-expander-placeholder">
+                          <span className="fc-icon" />
                         </span>
-                      }
-                      <span className='fc-datagrid-cell-main' ref={innerElRef}>
+                      )}
+                      <span className="fc-datagrid-cell-main" ref={innerElRef}>
                         {innerContent}
                       </span>
                     </div>
                     {!isLastCol &&
-                      <div className='fc-datagrid-cell-resizer' ref={this.resizerElRefs.createRef(i)}></div>
-                    }
+                      <div className="fc-datagrid-cell-resizer" ref={this.resizerElRefs.createRef(i)} />}
                   </div>
                 </th>
               )}
             </RenderHook>
           )
         })}
-      </tr>
+      </tr>,
     )
 
     return (<Fragment>{rowNodes}</Fragment>)
   }
-
 
   _handleColResizerEl(resizerEl: HTMLElement | null, index: string) {
     let { colDraggings } = this
@@ -108,7 +102,6 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
         dragging.destroy()
         delete colDraggings[index]
       }
-
     } else {
       let dragging = this.initColResizing(resizerEl, parseInt(index, 10))
 
@@ -117,7 +110,6 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
       }
     }
   }
-
 
   initColResizing(resizerEl: HTMLElement, index: number) {
     let { pluginHooks, isRtl } = this.context
@@ -151,5 +143,4 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
       return dragging
     }
   }
-
 }

@@ -14,7 +14,7 @@ export default createPlugin({
   deps: [
     premiumCommonPlugin,
     resourceCommonPlugin,
-    timelinePlugin
+    timelinePlugin,
   ],
   initialView: 'resourceTimelineDay',
   views: {
@@ -25,28 +25,28 @@ export default createPlugin({
       needsResourceData: true,
       resourceAreaWidth: '30%',
       resourcesInitiallyExpanded: true,
-      eventResizableFromStart: true // TODO: not DRY with this same setting in the main timeline config
+      eventResizableFromStart: true, // TODO: not DRY with this same setting in the main timeline config
     },
 
     resourceTimelineDay: {
       type: 'resourceTimeline',
-      duration: { days: 1 }
+      duration: { days: 1 },
     },
 
     resourceTimelineWeek: {
       type: 'resourceTimeline',
-      duration: { weeks: 1 }
+      duration: { weeks: 1 },
     },
 
     resourceTimelineMonth: {
       type: 'resourceTimeline',
-      duration: { months: 1 }
+      duration: { months: 1 },
     },
 
     resourceTimelineYear: {
       type: 'resourceTimeline',
-      duration: { years: 1 }
-    }
+      duration: { years: 1 },
+    },
 
-  }
+  },
 })

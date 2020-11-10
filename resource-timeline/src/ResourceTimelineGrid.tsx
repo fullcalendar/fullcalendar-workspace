@@ -1,11 +1,10 @@
 import {
   createElement, PositionCache,
-  Duration, EventStore, DateSpan, EventUiHash, EventInteractionState, DateComponent, Hit, createRef, CssDimValue, VNode, memoize, NowTimer, greatestDurationDenominator, DateMarker, DateRange, NowIndicatorRoot, DateProfile, Fragment
+  Duration, EventStore, DateSpan, EventUiHash, EventInteractionState, DateComponent, Hit, createRef, CssDimValue, VNode, memoize, NowTimer, greatestDurationDenominator, DateMarker, DateRange, NowIndicatorRoot, DateProfile, Fragment,
 } from '@fullcalendar/common'
 import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource-common'
 import { TimelineDateProfile, TimelineCoords, TimelineSlats, TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg } from '@fullcalendar/timeline'
 import { ResourceTimelineLanes } from './ResourceTimelineLanes'
-
 
 export interface ResourceTimelineGridProps {
   dateProfile: DateProfile
@@ -36,9 +35,7 @@ interface ResourceTimelineGridState {
   slatCoords: TimelineCoords | null
 }
 
-
 export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProps, ResourceTimelineGridState> {
-
   private computeHasResourceBusinessHours = memoize(computeHasResourceBusinessHours)
   private resourceSplitter = new ResourceSplitter() // doesn't let it do businessHours tho
   private bgSlicer = new TimelineLaneSlicer()
@@ -46,9 +43,8 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
   private rowCoords: PositionCache // for queryHit
 
   state: ResourceTimelineGridState = {
-    slatCoords: null
+    slatCoords: null,
   }
-
 
   render() {
     let { props, state, context } = this
@@ -66,14 +62,14 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
       dateProfile,
       context.dateProfileGenerator,
       tDateProfile,
-      context.dateEnv
+      context.dateEnv,
     )
 
     // WORKAROUND: make ignore slatCoords when out of sync with dateProfile
     let slatCoords = state.slatCoords && state.slatCoords.dateProfile === props.dateProfile ? state.slatCoords : null
 
     return (
-      <div ref={this.handleEl} className='fc-timeline-body' style={{ minWidth: props.tableMinWidth }}>
+      <div ref={this.handleEl} className="fc-timeline-body" style={{ minWidth: props.tableMinWidth }}>
         <NowTimer unit={timerUnit}>
           {(nowDate: DateMarker, todayRange: DateRange) => (
             <Fragment>
@@ -114,28 +110,27 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
                 onRowCoords={this.handleRowCoords}
                 onRowHeightChange={props.onRowHeightChange}
               />
-              {(context.options.nowIndicator && slatCoords && slatCoords.isDateInRange(nowDate)) &&
-                <div className='fc-timeline-now-indicator-container'>
+              {(context.options.nowIndicator && slatCoords && slatCoords.isDateInRange(nowDate)) && (
+                <div className="fc-timeline-now-indicator-container">
                   <NowIndicatorRoot isAxis={false} date={nowDate}>
-                    {(rootElRef, classNames, innerElRef, innerContent) => {
-                      return (
-                        <div
-                          ref={rootElRef}
-                          className={[ 'fc-timeline-now-indicator-line' ].concat(classNames).join(' ')}
-                          style={{ left: slatCoords.dateToCoord(nowDate) }}
-                        >{innerContent}</div>
-                      )
-                    }}
+                    {(rootElRef, classNames, innerElRef, innerContent) => (
+                      <div
+                        ref={rootElRef}
+                        className={['fc-timeline-now-indicator-line'].concat(classNames).join(' ')}
+                        style={{ left: slatCoords.dateToCoord(nowDate) }}
+                      >
+                        {innerContent}
+                      </div>
+                    )}
                   </NowIndicatorRoot>
                 </div>
-              }
+              )}
             </Fragment>
           )}
         </NowTimer>
       </div>
     )
   }
-
 
   handleEl = (el: HTMLElement | null) => {
     if (el) {
@@ -145,7 +140,6 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
     }
   }
 
-
   handleSlatCoords = (slatCoords: TimelineCoords | null) => {
     this.setState({ slatCoords })
 
@@ -153,7 +147,6 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
       this.props.onSlatCoords(slatCoords)
     }
   }
-
 
   handleRowCoords = (rowCoords: PositionCache | null) => {
     this.rowCoords = rowCoords
@@ -163,10 +156,8 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
     }
   }
 
-
   // Hit System
   // ------------------------------------------------------------------------------------------
-
 
   queryHit(positionLeft: number, positionTop: number): Hit {
     let rowCoords = this.rowCoords
@@ -184,27 +175,24 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
             dateSpan: {
               range: slatHit.dateSpan.range,
               allDay: slatHit.dateSpan.allDay,
-              resourceId: resource.id
+              resourceId: resource.id,
             },
             rect: {
               left: slatHit.left,
               right: slatHit.right,
               top: rowCoords.tops[rowIndex],
-              bottom: rowCoords.bottoms[rowIndex]
+              bottom: rowCoords.bottoms[rowIndex],
             },
             dayEl: slatHit.dayEl,
-            layer: 0
+            layer: 0,
           }
         }
       }
     }
   }
-
 }
 
-
 function computeHasResourceBusinessHours(rowNodes: (GroupNode | ResourceNode)[]) {
-
   for (let node of rowNodes) {
     let resource = (node as ResourceNode).resource
 

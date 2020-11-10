@@ -2,7 +2,6 @@ import { createElement, Fragment, BaseComponent, ViewContext, CssDimValue, creat
 import { Group, isGroupsEqual, ColCellContentArg } from '@fullcalendar/resource-common'
 import { ExpanderIcon } from './ExpanderIcon'
 
-
 export interface SpreadsheetGroupRowProps {
   spreadsheetColCnt: number
   id: string // 'field:value'
@@ -11,12 +10,9 @@ export interface SpreadsheetGroupRowProps {
   innerHeight: CssDimValue
 }
 
-
 // for HORIZONTAL cell grouping, in spreadsheet area
 export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps, ViewContext> {
-
   innerInnerRef: RefObject<HTMLDivElement> = createRef<HTMLDivElement>()
-
 
   render() {
     let { props, context } = this
@@ -34,16 +30,16 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
           willUnmount={spec.labelWillUnmount}
         >
           {(rootElRef, classNames, innerElRef, innerContent) => (
-            <td className={[ 'fc-datagrid-cell', 'fc-resource-group', context.theme.getClass('tableCellShaded') ].concat(classNames).join(' ')} colSpan={props.spreadsheetColCnt} ref={rootElRef}>
-              <div className='fc-datagrid-cell-frame' style={{ height: props.innerHeight }}>
-                <div className='fc-datagrid-cell-cushion fc-scrollgrid-sync-inner' ref={this.innerInnerRef}>
+            <td className={['fc-datagrid-cell', 'fc-resource-group', context.theme.getClass('tableCellShaded')].concat(classNames).join(' ')} colSpan={props.spreadsheetColCnt} ref={rootElRef}>
+              <div className="fc-datagrid-cell-frame" style={{ height: props.innerHeight }}>
+                <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner" ref={this.innerInnerRef}>
                   <ExpanderIcon
                     depth={0}
-                    hasChildren={true}
+                    hasChildren
                     isExpanded={props.isExpanded}
                     onExpanderClick={this.onExpanderClick}
                   />
-                  <span className='fc-datagrid-cell-main' ref={innerElRef}>
+                  <span className="fc-datagrid-cell-main" ref={innerElRef}>
                     {innerContent}
                   </span>
                 </div>
@@ -55,23 +51,20 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
     )
   }
 
-
   onExpanderClick = () => {
     let { props } = this
 
     this.context.dispatch({
       type: 'SET_RESOURCE_ENTITY_EXPANDED',
       id: props.id,
-      isExpanded: !props.isExpanded
+      isExpanded: !props.isExpanded,
     })
   }
-
 }
 
 SpreadsheetGroupRow.addPropsEquality({
-  group: isGroupsEqual
+  group: isGroupsEqual,
 })
-
 
 function renderCellInner(hookProps) {
   return hookProps.groupValue || <Fragment>&nbsp;</Fragment>

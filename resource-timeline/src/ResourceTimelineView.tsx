@@ -6,7 +6,7 @@ import {
   buildTimelineDateProfile, TimelineHeader,
   buildSlatCols,
   TimelineCoords,
-  TimelineDateProfile
+  TimelineDateProfile,
 } from '@fullcalendar/timeline'
 import { GroupNode, ResourceNode, ResourceViewProps, buildRowNodes, ColSpec, GroupSpec, DEFAULT_RESOURCE_ORDER } from '@fullcalendar/resource-common'
 import { __assign } from 'tslib'
@@ -15,7 +15,6 @@ import { SpreadsheetGroupRow } from './SpreadsheetGroupRow'
 import { SpreadsheetHeader } from './SpreadsheetHeader'
 import { ResourceTimelineGrid } from './ResourceTimelineGrid'
 import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout'
-
 
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
@@ -33,9 +32,7 @@ interface ResourceScrollState {
   fromBottom: number
 }
 
-
 export class ResourceTimelineView extends BaseComponent<ResourceViewProps, ResourceTimelineViewState> {
-
   private processColOptions = memoize(processColOptions)
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private hasNesting = memoize(hasNesting)
@@ -47,16 +44,14 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   private rowCoords: PositionCache
   private scrollResponder: ScrollResponder
 
-
   constructor(props: ResourceViewProps, context: ViewContext) {
     super(props, context)
 
     this.state = {
       resourceAreaWidth: context.options.resourceAreaWidth,
-      spreadsheetColWidths: []
+      spreadsheetColWidths: [],
     }
   }
-
 
   render() {
     let { props, state, context } = this
@@ -67,7 +62,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       props.dateProfile,
       context.dateEnv,
       options,
-      context.dateProfileGenerator
+      context.dateProfileGenerator,
     )
 
     let rowNodes = this.rowNodes = this.buildRowNodes(
@@ -76,14 +71,14 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       orderSpecs,
       isVGrouping,
       props.resourceEntityExpansions,
-      options.resourcesInitiallyExpanded
+      options.resourcesInitiallyExpanded,
     )
 
     let extraClassNames = [
       'fc-resource-timeline',
       this.hasNesting(rowNodes) ? '' : 'fc-resource-timeline-flat', // flat means there's no nesting
       'fc-timeline',
-      options.eventOverlap === false ? 'fc-timeline-overlap-disabled' : 'fc-timeline-overlap-enabled'
+      options.eventOverlap === false ? 'fc-timeline-overlap-disabled' : 'fc-timeline-overlap-enabled',
     ]
 
     let { slotMinWidth } = options
@@ -160,7 +155,6 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
     )
   }
 
-
   renderSpreadsheetRows(nodes: (ResourceNode | GroupNode)[], colSpecs: ColSpec[], rowSyncHeights: number[]) {
     return nodes.map((node, index) => {
       if ((node as GroupNode).group) {
@@ -174,7 +168,9 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
             innerHeight={rowSyncHeights[index] || ''}
           />
         )
-      } else if ((node as ResourceNode).resource) {
+      }
+
+      if ((node as ResourceNode).resource) {
         return (
           <SpreadsheetRow
             key={node.id}
@@ -191,21 +187,17 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
     })
   }
 
-
   componentDidMount() {
     this.renderedRowNodes = this.rowNodes
     this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
   }
 
-
   getSnapshotBeforeUpdate(): ResourceTimelineViewSnapshot {
     if (!this.props.forPrint) { // because print-view is always zero?
       return { resourceScroll: this.queryResourceScroll() }
-    } else {
-      return {}
     }
+    return {}
   }
-
 
   componentDidUpdate(prevProps: ResourceViewProps, prevState: ResourceTimelineViewState, snapshot: ResourceTimelineViewSnapshot) {
     this.renderedRowNodes = this.rowNodes
@@ -217,45 +209,37 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
     }
   }
 
-
   componentWillUnmount() {
     this.scrollResponder.detach()
   }
 
-
   handleSlatCoords = (slatCoords: TimelineCoords) => {
     this.setState({ slatCoords })
   }
-
 
   handleRowCoords = (rowCoords: PositionCache) => {
     this.rowCoords = rowCoords
     this.scrollResponder.update(false) // TODO: could eliminate this if rowCoords lived in state
   }
 
-
   handleMaxCushionWidth = (slotCushionMaxWidth) => {
     this.setState({
-      slotCushionMaxWidth: Math.ceil(slotCushionMaxWidth) // for less rerendering TODO: DRY
+      slotCushionMaxWidth: Math.ceil(slotCushionMaxWidth), // for less rerendering TODO: DRY
     })
   }
-
 
   computeFallbackSlotMinWidth(tDateProfile: TimelineDateProfile) { // TODO: duplicate definition
     return Math.max(30, ((this.state.slotCushionMaxWidth || 0) / tDateProfile.slotsPerLabel))
   }
 
-
   // Scrolling
   // ------------------------------------------------------------------------------------------------------------------
   // this is useful for scrolling prev/next dates while resource is scrolled down
-
 
   handleScrollLeftRequest = (scrollLeft: number) => { // for ResourceTimelineGrid
     let layout = this.layoutRef.current
     layout.forceTimeScroll(scrollLeft)
   }
-
 
   handleScrollRequest = (request: ScrollRequest & ResourceScrollState) => { // only handles resource scroll
     let { rowCoords } = this
@@ -281,7 +265,6 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
     }
   }
 
-
   queryResourceScroll(): ResourceScrollState {
     let { rowCoords, renderedRowNodes } = this
 
@@ -306,23 +289,19 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
     }
   }
 
-
   // Resource INDIVIDUAL-Column Area Resizing
   // ------------------------------------------------------------------------------------------
 
-
   handleColWidthChange = (colWidths: number[]) => {
     this.setState({
-      spreadsheetColWidths: colWidths
+      spreadsheetColWidths: colWidths,
     })
   }
-
 }
 
 ResourceTimelineView.addStateEquality({
-  spreadsheetColWidths: isArraysEqual
+  spreadsheetColWidths: isArraysEqual,
 })
-
 
 function buildRowIndex(rowNodes: (GroupNode | ResourceNode)[]) {
   let rowIdToIndex: { [id: string]: number } = {}
@@ -334,22 +313,20 @@ function buildRowIndex(rowNodes: (GroupNode | ResourceNode)[]) {
   return rowIdToIndex
 }
 
-
 function buildSpreadsheetCols(colSpecs: ColSpec[], forcedWidths: number[], fallbackWidth: CssDimValue = '') {
-  return colSpecs.map((colSpec, i) => {
-    return {
-      className: colSpec.isMain ? 'fc-main-col' : '',
-      width: forcedWidths[i] || colSpec.width || fallbackWidth
-    }
-  })
+  return colSpecs.map((colSpec, i) => ({
+    className: colSpec.isMain ? 'fc-main-col' : '',
+    width: forcedWidths[i] || colSpec.width || fallbackWidth,
+  }))
 }
-
 
 function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
   for (let node of nodes) {
     if ((node as GroupNode).group) {
       return true
-    } else if ((node as ResourceNode).resource) {
+    }
+
+    if ((node as ResourceNode).resource) {
       if ((node as ResourceNode).hasChildren) {
         return true
       }
@@ -358,7 +335,6 @@ function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
 
   return false
 }
-
 
 function processColOptions(options: ViewOptionsRefined) {
   let allColSpecs: ColSpec[] = options.resourceAreaColumns || []
@@ -369,15 +345,14 @@ function processColOptions(options: ViewOptionsRefined) {
       headerClassNames: options.resourceAreaHeaderClassNames,
       headerContent: options.resourceAreaHeaderContent || 'Resources', // TODO: view.defaults
       headerDidMount: options.resourceAreaHeaderDidMount,
-      headerWillUnmount: options.resourceAreaHeaderWillUnmount
+      headerWillUnmount: options.resourceAreaHeaderWillUnmount,
     })
-
   } else if (options.resourceAreaHeaderContent) { // weird way to determine if content
     superHeaderRendering = {
       headerClassNames: options.resourceAreaHeaderClassNames,
       headerContent: options.resourceAreaHeaderContent,
       headerDidMount: options.resourceAreaHeaderDidMount,
-      headerWillUnmount: options.resourceAreaHeaderWillUnmount
+      headerWillUnmount: options.resourceAreaHeaderWillUnmount,
     }
   }
 
@@ -393,7 +368,7 @@ function processColOptions(options: ViewOptionsRefined) {
         cellClassNames: colSpec.cellClassNames || options.resourceGroupLabelClassNames,
         cellContent: colSpec.cellContent || options.resourceGroupLabelContent,
         cellDidMount: colSpec.cellDidMount || options.resourceGroupLabelDidMount,
-        cellWillUnmount: colSpec.cellWillUnmount || options.resourceGroupLaneWillUnmount
+        cellWillUnmount: colSpec.cellWillUnmount || options.resourceGroupLaneWillUnmount,
       })
     } else {
       plainColSpecs.push(colSpec)
@@ -425,7 +400,7 @@ function processColOptions(options: ViewOptionsRefined) {
         laneClassNames: options.resourceGroupLaneClassNames,
         laneContent: options.resourceGroupLaneContent,
         laneDidMount: options.resourceGroupLaneDidMount,
-        laneWillUnmount: options.resourceGroupLaneWillUnmount
+        laneWillUnmount: options.resourceGroupLaneWillUnmount,
       })
     }
   }
@@ -452,6 +427,6 @@ function processColOptions(options: ViewOptionsRefined) {
     isVGrouping,
     groupSpecs,
     colSpecs: groupColSpecs.concat(plainColSpecs),
-    orderSpecs: plainOrderSpecs
+    orderSpecs: plainOrderSpecs,
   }
 }

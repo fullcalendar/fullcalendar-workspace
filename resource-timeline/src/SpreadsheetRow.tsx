@@ -3,7 +3,6 @@ import { Resource, buildResourceFields, ColSpec, getPublicId } from '@fullcalend
 import { SpreadsheetIndividualCell } from './SpreadsheetIndividualCell'
 import { SpreadsheetGroupCell } from './SpreadsheetGroupCell'
 
-
 export interface SpreadsheetRowProps {
   colSpecs: ColSpec[]
   rowSpans: number[]
@@ -14,9 +13,7 @@ export interface SpreadsheetRowProps {
   innerHeight: CssDimValue // bad name! inner vs innerinner
 }
 
-
 export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ViewContext> {
-
   render() {
     let { props } = this
     let { resource, rowSpans, depth } = props
@@ -29,7 +26,9 @@ export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ViewConte
 
           if (rowSpan === 0) { // not responsible for group-based rows. VRowGroup is
             return
-          } else if (rowSpan == null) {
+          }
+
+          if (rowSpan == null) {
             rowSpan = 1
           }
 
@@ -45,28 +44,26 @@ export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ViewConte
                 rowSpan={rowSpan}
               />
             )
-
-          } else {
-            return (
-              <SpreadsheetIndividualCell
-                key={i}
-                colSpec={colSpec}
-                resource={resource}
-                fieldValue={fieldValue}
-                depth={depth}
-                hasChildren={props.hasChildren}
-                isExpanded={props.isExpanded}
-                innerHeight={props.innerHeight}
-              />
-            )
           }
+
+          return (
+            <SpreadsheetIndividualCell
+              key={i}
+              colSpec={colSpec}
+              resource={resource}
+              fieldValue={fieldValue}
+              depth={depth}
+              hasChildren={props.hasChildren}
+              isExpanded={props.isExpanded}
+              innerHeight={props.innerHeight}
+            />
+          )
         })}
       </tr>
     )
   }
-
 }
 
 SpreadsheetRow.addPropsEquality({
-  rowSpans: isArraysEqual
+  rowSpans: isArraysEqual,
 })

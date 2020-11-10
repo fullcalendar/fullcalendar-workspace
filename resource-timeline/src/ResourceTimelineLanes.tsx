@@ -3,13 +3,12 @@ import {
   SplittableProps, EventStore, createRef, BaseComponent, CssDimValue, RefMap,
   DateMarker,
   DateRange,
-  DateProfile
+  DateProfile,
 } from '@fullcalendar/common'
-import {  GroupNode, ResourceNode } from '@fullcalendar/resource-common'
+import { GroupNode, ResourceNode } from '@fullcalendar/resource-common'
 import { TimelineDateProfile, TimelineCoords } from '@fullcalendar/timeline'
 import { ResourceTimelineLane } from './ResourceTimelineLane'
 import { DividerRow } from './DividerRow'
-
 
 export interface ResourceTimelineLanesProps extends ResourceTimelineLanesContentProps {
   minHeight: CssDimValue
@@ -31,12 +30,9 @@ export interface ResourceTimelineLanesContentProps {
   onRowHeightChange?: (rowEl: HTMLTableRowElement, isStable: boolean) => void
 }
 
-
 export class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesProps> {
-
   private rootElRef = createRef<HTMLTableElement>()
   private rowElRefs = new RefMap<HTMLElement>()
-
 
   render() {
     let { props, context } = this
@@ -48,7 +44,7 @@ export class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesPr
         style={{
           minWidth: props.tableMinWidth,
           width: props.clientWidth,
-          height: props.minHeight
+          height: props.minHeight,
         }}
       >
         <ResourceTimelineLanesBody
@@ -68,23 +64,19 @@ export class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesPr
     )
   }
 
-
   componentDidMount() {
     this.updateCoords()
   }
 
-
   componentDidUpdate() {
     this.updateCoords()
   }
-
 
   componentWillUnmount() {
     if (this.props.onRowCoords) {
       this.props.onRowCoords(null)
     }
   }
-
 
   updateCoords() {
     let { props } = this
@@ -95,28 +87,22 @@ export class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesPr
           this.rootElRef.current,
           collectRowEls(this.rowElRefs.currentMap, props.rowNodes),
           false,
-          true // isVertical
-        )
+          true, // isVertical
+        ),
       )
     }
   }
-
 }
-
 
 function collectRowEls(elMap: { [key: string]: HTMLElement }, rowNodes: (GroupNode | ResourceNode)[]) {
   return rowNodes.map((rowNode) => elMap[rowNode.id])
 }
 
-
 interface ResourceTimelineLanesBodyProps extends ResourceTimelineLanesContentProps {
   rowElRefs: RefMap<HTMLElement> // indexed by NUMERICAL INDEX, not node.id
 }
 
-
 class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyProps> { // TODO: this technique more
-
-
   render() {
     let { props, context } = this
     let { rowElRefs, innerHeights } = props
@@ -124,7 +110,6 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
     return (
       <tbody>
         {props.rowNodes.map((node, index) => {
-
           if ((node as GroupNode).group) {
             return (
               <DividerRow
@@ -135,8 +120,9 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
                 innerHeight={innerHeights[index] || ''}
               />
             )
+          }
 
-          } else if ((node as ResourceNode).resource) {
+          if ((node as ResourceNode).resource) {
             let resource = (node as ResourceNode).resource
 
             return (
@@ -161,5 +147,4 @@ class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyP
       </tbody>
     )
   }
-
 }

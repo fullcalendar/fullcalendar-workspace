@@ -2,7 +2,6 @@ import { createElement, BaseComponent, ViewContext, CssDimValue, Fragment, Mount
 import { Resource, ColSpec, ResourceApi } from '@fullcalendar/resource-common'
 import { ExpanderIcon } from './ExpanderIcon'
 
-
 export interface SpreadsheetIndividualCellProps {
   colSpec: ColSpec
   resource: Resource
@@ -14,10 +13,8 @@ export interface SpreadsheetIndividualCellProps {
 }
 
 export class SpreadsheetIndividualCell extends BaseComponent<SpreadsheetIndividualCellProps> { // worth making a PureComponent? (because of innerHeight)
-
   refineHookProps = memoizeObjArg(refineHookProps)
   normalizeClassNames = buildClassNameNormalizer<HookProps>()
-
 
   render() {
     let { props, context } = this
@@ -26,24 +23,24 @@ export class SpreadsheetIndividualCell extends BaseComponent<SpreadsheetIndividu
     let hookProps = this.refineHookProps({
       resource: props.resource,
       fieldValue: props.fieldValue,
-      context
+      context,
     })
     let customClassNames = this.normalizeClassNames(colSpec.cellClassNames, hookProps)
 
     return (
       <MountHook hookProps={hookProps} didMount={colSpec.cellDidMount} willUnmount={colSpec.cellWillUnmount}>
         {(rootElRef) => (
-          <td className={[ 'fc-datagrid-cell', 'fc-resource' ].concat(customClassNames).join(' ')} data-resource-id={props.resource.id} ref={rootElRef}>
-            <div className='fc-datagrid-cell-frame' style={{ height: props.innerHeight }}>
-              <div className='fc-datagrid-cell-cushion fc-scrollgrid-sync-inner'>
-                {colSpec.isMain &&
+          <td className={['fc-datagrid-cell', 'fc-resource'].concat(customClassNames).join(' ')} data-resource-id={props.resource.id} ref={rootElRef}>
+            <div className="fc-datagrid-cell-frame" style={{ height: props.innerHeight }}>
+              <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner">
+                {colSpec.isMain && (
                   <ExpanderIcon
                     depth={props.depth}
                     hasChildren={props.hasChildren}
                     isExpanded={props.isExpanded}
                     onExpanderClick={this.onExpanderClick}
                   />
-                }
+                )}
                 <SpreadsheetIndividualCellInner hookProps={hookProps} colSpec={colSpec} />
               </div>
             </div>
@@ -60,13 +57,11 @@ export class SpreadsheetIndividualCell extends BaseComponent<SpreadsheetIndividu
       this.context.dispatch({
         type: 'SET_RESOURCE_ENTITY_EXPANDED',
         id: props.resource.id,
-        isExpanded: !props.isExpanded
+        isExpanded: !props.isExpanded,
       })
     }
   }
-
 }
-
 
 interface SpreadsheetIndividualCellInnerProps {
   hookProps: HookProps
@@ -74,27 +69,24 @@ interface SpreadsheetIndividualCellInnerProps {
 }
 
 class SpreadsheetIndividualCellInner extends BaseComponent<SpreadsheetIndividualCellInnerProps> { // doesn't need context?
-
   render() {
     let { props } = this
 
     return (
       <ContentHook hookProps={props.hookProps} content={props.colSpec.cellContent} defaultContent={renderResourceInner}>
         {(innerElRef, innerContent) => (
-          <span className='fc-datagrid-cell-main' ref={innerElRef}>
+          <span className="fc-datagrid-cell-main" ref={innerElRef}>
             {innerContent}
           </span>
         )}
       </ContentHook>
     )
   }
-
 }
 
 function renderResourceInner(hookProps) {
   return hookProps.fieldValue || <Fragment>&nbsp;</Fragment>
 }
-
 
 // hook props
 // ----------
@@ -115,6 +107,6 @@ function refineHookProps(raw: HookPropsInput): HookProps {
   return {
     resource: new ResourceApi(raw.context, raw.resource),
     fieldValue: raw.fieldValue,
-    view: raw.context.viewApi
+    view: raw.context.viewApi,
   }
 }

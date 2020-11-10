@@ -3,10 +3,9 @@ import {
   ChunkConfigRowContent, ChunkConfigContent, ScrollGridSectionConfig,
   renderScrollShim,
   getStickyHeaderDates,
-  getStickyFooterScrollbar
+  getStickyFooterScrollbar,
 } from '@fullcalendar/common'
 import { ScrollGrid } from '@fullcalendar/scrollgrid'
-
 
 const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
 
@@ -25,9 +24,7 @@ interface ResourceTimelineViewLayoutState {
   resourceAreaWidthOverride: number | null
 }
 
-
 export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineViewLayoutProps, ResourceTimelineViewLayoutState> { // RENAME?
-
   private scrollGridRef = createRef<ScrollGrid>()
   private timeBodyScrollerElRef = createRef<HTMLDivElement>()
   private spreadsheetHeaderChunkElRef = createRef<HTMLTableCellElement>()
@@ -35,9 +32,8 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
   private rootElRef = createRef<HTMLElement>()
 
   state = {
-    resourceAreaWidthOverride: null
+    resourceAreaWidthOverride: null,
   }
-
 
   render() {
     let { props, state, context } = this
@@ -56,19 +52,19 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
             key: 'datagrid',
             elRef: this.spreadsheetHeaderChunkElRef,
             tableClassName: 'fc-datagrid-header', // TODO: allow the content to specify this. have general-purpose 'content' with obj with keys
-            rowContent: props.spreadsheetHeaderRows
+            rowContent: props.spreadsheetHeaderRows,
           },
           {
             key: 'divider',
               outerContent: (
                 <td className={'fc-resource-timeline-divider ' + context.theme.getClass('tableCellShaded')} />
-              )
+              ),
           },
           {
             key: 'timeline',
-            content: props.timeHeaderContent
-          }
-        ]
+            content: props.timeHeaderContent,
+          },
+        ],
       },
       {
         type: 'body',
@@ -80,21 +76,21 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
           {
             key: 'datagrid',
             tableClassName: 'fc-datagrid-body',
-            rowContent: props.spreadsheetBodyRows
+            rowContent: props.spreadsheetBodyRows,
           },
           {
             key: 'divider',
             outerContent: (
               <td className={'fc-resource-timeline-divider ' + context.theme.getClass('tableCellShaded')} />
-            )
+            ),
           },
           {
             key: 'timeline',
             scrollerElRef: this.timeBodyScrollerElRef,
-            content: props.timeBodyContent
-          }
-        ]
-      }
+            content: props.timeBodyContent,
+          },
+        ],
+      },
     ]
 
     if (stickyFooterScrollbar) {
@@ -105,19 +101,19 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
         chunks: [
           {
             key: 'datagrid',
-            content: renderScrollShim
+            content: renderScrollShim,
           },
           {
             key: 'divider',
             outerContent: (
               <td className={'fc-resource-timeline-divider ' + context.theme.getClass('tableCellShaded')} />
-            )
+            ),
           },
           {
             key: 'timeline',
-            content: renderScrollShim
-          }
-        ]
+            content: renderScrollShim,
+          },
+        ],
       })
     }
 
@@ -133,47 +129,40 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
         colGroups={[
           { cols: props.spreadsheetCols, width: resourceAreaWidth },
           { cols: [] }, // for the divider
-          { cols: props.timeCols }
+          { cols: props.timeCols },
         ]}
         sections={sections}
       />
     )
   }
 
-
   forceTimeScroll(left: number) {
     let scrollGrid = this.scrollGridRef.current
     scrollGrid.forceScrollLeft(2, left) // 2 = the time area
   }
-
 
   forceResourceScroll(top: number) {
     let scrollGrid = this.scrollGridRef.current
     scrollGrid.forceScrollTop(1, top) // 1 = the body
   }
 
-
   getResourceScroll(): number {
     let timeBodyScrollerEl = this.timeBodyScrollerElRef.current
     return timeBodyScrollerEl.scrollTop
   }
-
 
   // Resource Area Resizing
   // ------------------------------------------------------------------------------------------
   // NOTE: a callback Ref for the resizer was firing multiple times with same elements (Preact)
   // that's why we use spreadsheetResizerElRef instead
 
-
   componentDidMount() {
     this.initSpreadsheetResizing()
   }
 
-
   componentWillUnmount() {
     this.destroySpreadsheetResizing()
   }
-
 
   initSpreadsheetResizing() {
     let { isRtl, pluginHooks } = this.context
@@ -197,7 +186,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
         newWidth = Math.min(newWidth, viewWidth - MIN_RESOURCE_AREA_WIDTH)
 
         this.setState({ // TODO: debounce?
-          resourceAreaWidthOverride: newWidth
+          resourceAreaWidthOverride: newWidth,
         })
       })
 
@@ -205,11 +194,9 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
     }
   }
 
-
   destroySpreadsheetResizing() {
     if (this.spreadsheetResizerDragging) {
       this.spreadsheetResizerDragging.destroy()
     }
   }
-
 }
