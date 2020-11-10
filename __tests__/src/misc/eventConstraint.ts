@@ -1,7 +1,7 @@
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 import { waitEventDrag } from 'fullcalendar-tests/src/lib/wrappers/interaction-util'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
-describe('eventConstraint', function() {
+describe('eventConstraint', () => {
   pushOptions({
     now: '2016-09-04',
     initialView: 'resourceTimelineWeek',
@@ -10,32 +10,32 @@ describe('eventConstraint', function() {
     resources: [
       { id: 'a', title: 'Resource A' },
       { id: 'b', title: 'Resource B' },
-      { id: 'c', title: 'Resource C' }
+      { id: 'c', title: 'Resource C' },
     ],
     events: [
       {
         title: 'event 1',
         start: '2016-09-04T01:00',
-        resourceId: 'b'
-      }
-    ]
+        resourceId: 'b',
+      },
+    ],
   })
 
   // FYI: the fact that eventConstraint may be specified in Event Source and Event Objects
   // is covered by the core tests.
 
-  describe('with one resourceId', function() {
+  describe('with one resourceId', () => {
     pushOptions({
       eventConstraint: {
-        resourceId: 'b'
-      }
+        resourceId: 'b',
+      },
     })
 
-    it('allows dragging to the resource', function(done) {
+    it('allows dragging to the resource', (done) => {
       let calendar = initCalendar()
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
       let dragging = timelineGridWrapper.dragEventTo(
-        timelineGridWrapper.getFirstEventEl(), 'b', '2016-09-04T03:00:00'
+        timelineGridWrapper.getFirstEventEl(), 'b', '2016-09-04T03:00:00',
       )
 
       waitEventDrag(calendar, dragging).then((modifiedEvent) => {
@@ -44,11 +44,11 @@ describe('eventConstraint', function() {
       })
     })
 
-    it('disallows dragging to other resources', function(done) {
+    it('disallows dragging to other resources', (done) => {
       let calendar = initCalendar()
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
       let dragging = timelineGridWrapper.dragEventTo(
-        timelineGridWrapper.getFirstEventEl(), 'c', '2016-09-04T03:00:00'
+        timelineGridWrapper.getFirstEventEl(), 'c', '2016-09-04T03:00:00',
       )
 
       waitEventDrag(calendar, dragging).then((modifiedEvent) => {
@@ -58,18 +58,18 @@ describe('eventConstraint', function() {
     })
   })
 
-  describe('with multiple resourceIds', function() {
+  describe('with multiple resourceIds', () => {
     pushOptions({
       eventConstraint: {
-        resourceIds: [ 'b', 'c' ]
-      }
+        resourceIds: ['b', 'c'],
+      },
     })
 
-    it('allows dragging to whitelisted resource', function(done) {
+    it('allows dragging to whitelisted resource', (done) => {
       let calendar = initCalendar()
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
       let dragging = timelineGridWrapper.dragEventTo(
-        timelineGridWrapper.getFirstEventEl(), 'c', '2016-09-04T03:00:00'
+        timelineGridWrapper.getFirstEventEl(), 'c', '2016-09-04T03:00:00',
       )
 
       waitEventDrag(calendar, dragging).then((modifiedEvent) => {
@@ -78,11 +78,11 @@ describe('eventConstraint', function() {
       })
     })
 
-    it('disallows dragging to non-whitelisted resources', function(done) {
+    it('disallows dragging to non-whitelisted resources', (done) => {
       let calendar = initCalendar()
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
       let dragging = timelineGridWrapper.dragEventTo(
-        timelineGridWrapper.getFirstEventEl(), 'a', '2016-09-04T03:00:00'
+        timelineGridWrapper.getFirstEventEl(), 'a', '2016-09-04T03:00:00',
       )
 
       waitEventDrag(calendar, dragging).then((modifiedEvent) => {

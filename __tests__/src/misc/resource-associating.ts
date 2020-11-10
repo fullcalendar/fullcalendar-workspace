@@ -1,21 +1,19 @@
-
-describe('associating resources with event', function() {
-
+describe('associating resources with event', () => {
   pushOptions({
     initialView: 'resourceTimelineDay',
-    initialDate: '2015-07-11'
+    initialDate: '2015-07-11',
   })
 
-  it('works with an Event object\'s resourceId', function() {
+  it('works with an Event object\'s resourceId', () => {
     initCalendar({
       resources: [
         { id: 'a', title: 'room a' },
-        { id: 'b', title: 'room b' }
+        { id: 'b', title: 'room b' },
       ],
       events: [
         { id: '1', title: 'event 1', resourceId: 'a', className: 'event1', start: '2015-07-11T09:00:00' },
-        { id: '2', title: 'event 2', resourceId: 'b', className: 'event2', start: '2015-07-11T10:00:00' }
-      ]
+        { id: '2', title: 'event 2', resourceId: 'b', className: 'event2', start: '2015-07-11T10:00:00' },
+      ],
     })
 
     const roomAEvents = currentCalendar.getResourceById('a').getEvents()
@@ -38,21 +36,20 @@ describe('associating resources with event', function() {
     expect($('.event2').length).toBe(1)
   })
 
-
-  it('works with integers', function() {
-    /** @type any */ let zero = 0
-    /** @type any */ let one = 1
-    /** @type any */ let id
+  it('works with integers', () => {
+    let zero = 0 as any
+    let one = 1 as any
+    let id
 
     initCalendar({
       resources: [
         { id: zero, title: 'room a' },
-        { id: one, title: 'room b' }
+        { id: one, title: 'room b' },
       ],
       events: [
         { id: zero, title: 'event 1', resourceId: zero, className: 'event1', start: '2015-07-11T09:00:00' },
-        { id: one, title: 'event 2', resourceId: one, className: 'event2', start: '2015-07-11T10:00:00' }
-      ]
+        { id: one, title: 'event 2', resourceId: one, className: 'event2', start: '2015-07-11T10:00:00' },
+      ],
     })
 
     id = 0
@@ -79,25 +76,25 @@ describe('associating resources with event', function() {
     expect($('.event2').length).toBe(1)
   })
 
-  it('works asynchronously with resource delay', function(done) {
+  it('works asynchronously with resource delay', (done) => {
     initCalendar({
       resources(arg, callback) {
-        setTimeout(function() {
+        setTimeout(() => {
           callback([
             { id: 'a', title: 'room a' },
-            { id: 'b', title: 'room b' }
+            { id: 'b', title: 'room b' },
           ])
         }, 100)
       },
       events(arg, callback) {
         callback([
           { id: '1', title: 'event 1', resourceId: 'a', className: 'event1', start: '2015-07-11T09:00:00' },
-          { id: '2', title: 'event 2', resourceId: 'b', className: 'event2', start: '2015-07-11T10:00:00' }
+          { id: '2', title: 'event 2', resourceId: 'b', className: 'event2', start: '2015-07-11T10:00:00' },
         ])
-      }
+      },
     })
 
-    setTimeout(function() {
+    setTimeout(() => {
       const roomAEvents = currentCalendar.getResourceById('a').getEvents()
       expect(roomAEvents.length).toBe(1)
       expect(roomAEvents[0].title).toBe('event 1')
@@ -116,25 +113,25 @@ describe('associating resources with event', function() {
     }, 200) // after resources load
   })
 
-  it('works asynchronously with events delay', function(done) {
+  it('works asynchronously with events delay', (done) => {
     initCalendar({
       resources(arg, callback) {
         callback([
           { id: 'a', title: 'room a' },
-          { id: 'b', title: 'room b' }
+          { id: 'b', title: 'room b' },
         ])
       },
       events(arg, callback) {
-        setTimeout(function() {
+        setTimeout(() => {
           callback([
             { id: '1', title: 'event 1', resourceId: 'a', className: 'event1', start: '2015-07-11T09:00:00' },
-            { id: '2', title: 'event 2', resourceId: 'b', className: 'event2', start: '2015-07-11T10:00:00' }
+            { id: '2', title: 'event 2', resourceId: 'b', className: 'event2', start: '2015-07-11T10:00:00' },
           ])
         }, 100)
-      }
+      },
     })
 
-    setTimeout(function() {
+    setTimeout(() => {
       const roomAEvents = currentCalendar.getResourceById('a').getEvents()
       expect(roomAEvents.length).toBe(1)
       expect(roomAEvents[0].title).toBe('event 1')
@@ -153,23 +150,23 @@ describe('associating resources with event', function() {
     }, 200) // after events load
   })
 
-  describe('setResources on an Event obj', function() {
+  describe('setResources on an Event obj', () => {
     pushOptions({
       resources: [
         { id: 'a', title: 'room a' },
         { id: 'b', title: 'room b' },
-        { id: 'c', title: 'room c' }
+        { id: 'c', title: 'room c' },
       ],
       events: [
-        { id: '1', title: 'event 1', resourceId: 'a', className: 'event1', start: '2015-07-11T09:00:00' }
-      ]
+        { id: '1', title: 'event 1', resourceId: 'a', className: 'event1', start: '2015-07-11T09:00:00' },
+      ],
     })
 
-    it('works when receiving string IDs', function() {
+    it('works when receiving string IDs', () => {
       initCalendar()
 
       let event = currentCalendar.getEventById('1')
-      event.setResources([ 'b', 'c' ])
+      event.setResources(['b', 'c'])
 
       let newResources = event.getResources()
       expect(newResources.length).toBe(2)
@@ -177,13 +174,13 @@ describe('associating resources with event', function() {
       expect(newResources[1].id).toBe('c')
     })
 
-    it('works when receiving Resource objs', function() {
+    it('works when receiving Resource objs', () => {
       initCalendar()
 
       let event = currentCalendar.getEventById('1')
       let resourceB = currentCalendar.getResourceById('b')
       let resourceC = currentCalendar.getResourceById('c')
-      event.setResources([ resourceB, resourceC ])
+      event.setResources([resourceB, resourceC])
 
       let newResources = event.getResources()
       expect(newResources.length).toBe(2)
@@ -191,5 +188,4 @@ describe('associating resources with event', function() {
       expect(newResources[1].id).toBe('c')
     })
   })
-
 })

@@ -1,36 +1,33 @@
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
-describe('timeline dateClick', function() {
+describe('timeline dateClick', () => {
   pushOptions({
     now: '2015-11-28',
     scrollTime: '00:00',
     resources: [
       { id: 'a', title: 'Resource A' },
-      { id: 'b', title: 'Resource B' }
-    ]
+      { id: 'b', title: 'Resource B' },
+    ],
   })
 
   describeOptions('direction', {
-    'LTR': false,
-    'RTL': true
-  }, function() {
-
-    describeTimeZones(function(tz) {
-
-      describe('when time scale', function() {
+    LTR: false,
+    RTL: true,
+  }, () => {
+    describeTimeZones((tz) => {
+      describe('when time scale', () => {
         pushOptions({
-          initialView: 'resourceTimelineDay'
+          initialView: 'resourceTimelineDay',
         })
 
-        describe('when snap matches slots', function() {
-
-          describe('when no resources', function() {
+        describe('when snap matches slots', () => {
+          describe('when no resources', () => {
             pushOptions({
-              initialView: 'timelineDay'
+              initialView: 'timelineDay',
             })
 
-            it('reports date with no resource', function(done) {
+            it('reports date with no resource', (done) => {
               let dateClickCalled = false
               let calendar = initCalendar({
                 dateClick(arg) {
@@ -39,7 +36,7 @@ describe('timeline dateClick', function() {
                   expect(typeof arg.jsEvent).toBe('object')
                   expect(typeof arg.view).toBe('object')
                   expect(arg.resource).toBeFalsy()
-                }
+                },
               })
 
               let timelineGrid = new TimelineViewWrapper(calendar).timelineGrid
@@ -50,14 +47,13 @@ describe('timeline dateClick', function() {
             })
           })
 
-          describe('when resources', function() {
-
-            it('won\'t report anything if not clicked on resource', function(done) {
+          describe('when resources', () => {
+            it('won\'t report anything if not clicked on resource', (done) => {
               let dateClickCalled = false
               let calendar = initCalendar({
                 dateClick() {
                   dateClickCalled = true
-                }
+                },
               })
 
               let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
@@ -66,11 +62,11 @@ describe('timeline dateClick', function() {
                 callback() {
                   expect(dateClickCalled).toBe(false)
                   done()
-                }
+                },
               })
             })
 
-            it('reports click on a resource', function(done) {
+            it('reports click on a resource', (done) => {
               let dateClickCalled = false
               let calendar = initCalendar({
                 dateClick(arg) {
@@ -79,7 +75,7 @@ describe('timeline dateClick', function() {
                   expect(typeof arg.jsEvent).toBe('object')
                   expect(typeof arg.view).toBe('object')
                   expect(arg.resource.id).toBe('b')
-                }
+                },
               })
 
               let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
@@ -91,13 +87,13 @@ describe('timeline dateClick', function() {
           })
         })
 
-        describe('when snap smaller than slots', function() {
+        describe('when snap smaller than slots', () => {
           pushOptions({
             slotDuration: '00:30',
-            snapDuration: '00:15'
+            snapDuration: '00:15',
           })
 
-          it('reports a smaller granularity', function(done) {
+          it('reports a smaller granularity', (done) => {
             let dateClickCalled = false
             let calendar = initCalendar({
               dateClick(arg) {
@@ -106,7 +102,7 @@ describe('timeline dateClick', function() {
                 expect(typeof arg.jsEvent).toBe('object')
                 expect(typeof arg.view).toBe('object')
                 expect(arg.resource.id).toBe('b')
-              }
+              },
             })
 
             let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
@@ -119,13 +115,13 @@ describe('timeline dateClick', function() {
       })
     })
 
-    describe('when day scale', function() {
+    describe('when day scale', () => {
       pushOptions({
         initialView: 'resourceTimelineMonth',
-        slotDuration: { days: 1 }
+        slotDuration: { days: 1 },
       })
 
-      it('reports untimed dates', function(done) {
+      it('reports untimed dates', (done) => {
         let dateClickCalled = false
         let calendar = initCalendar({
           dateClick(arg) {
@@ -134,7 +130,7 @@ describe('timeline dateClick', function() {
             expect(typeof arg.jsEvent).toBe('object')
             expect(typeof arg.view).toBe('object')
             expect(arg.resource.id).toBe('a')
-          }
+          },
         })
 
         let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
@@ -145,13 +141,13 @@ describe('timeline dateClick', function() {
       })
     })
 
-    describe('when week scale', function() {
+    describe('when week scale', () => {
       pushOptions({
         initialView: 'resourceTimelineYear',
-        slotDuration: { weeks: 1 }
+        slotDuration: { weeks: 1 },
       })
 
-      it('reports untimed dates', function(done) {
+      it('reports untimed dates', (done) => {
         let dateClickCalled = false
         let calendar = initCalendar({
           dateClick(arg) {
@@ -160,7 +156,7 @@ describe('timeline dateClick', function() {
             expect(typeof arg.jsEvent).toBe('object')
             expect(typeof arg.view).toBe('object')
             expect(arg.resource.id).toBe('a')
-          }
+          },
         })
 
         let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid

@@ -1,24 +1,24 @@
 // TODO: test isRtl?
 
 import { Draggable } from '@fullcalendar/interaction'
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 import { CalendarWrapper } from 'fullcalendar-tests/src/lib/wrappers/CalendarWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
-describe('timeline-view external element drag-n-drop', function() {
+describe('timeline-view external element drag-n-drop', () => {
   pushOptions({
     droppable: true,
     now: '2015-11-29',
     resources: [
       { id: 'a', title: 'Resource A' },
-      { id: 'b', title: 'Resource B' }
+      { id: 'b', title: 'Resource B' },
     ],
     initialView: 'resourceTimelineDay',
-    scrollTime: '00:00'
+    scrollTime: '00:00',
   })
 
   let dragEl = null
 
-  beforeEach(function() {
+  beforeEach(() => {
     dragEl = $('<a' +
       ` class="external-event ${CalendarWrapper.EVENT_CLASSNAME}"` +
       ' style="width:100px"' +
@@ -27,26 +27,26 @@ describe('timeline-view external element drag-n-drop', function() {
 
     new Draggable(dragEl[0], {
       eventData: {
-        title: 'my external event'
-      }
+        title: 'my external event',
+      },
     })
   })
 
-  afterEach(function() {
+  afterEach(() => {
     dragEl.remove()
   })
 
-  describeTimeZones(function(tz) {
-
-    it('allows dropping onto a resource', function(done) {
-      let dropSpy, receiveSpy
+  describeTimeZones((tz) => {
+    it('allows dropping onto a resource', (done) => {
+      let dropSpy
+      let receiveSpy
       let calendar = initCalendar({
         drop:
-          (dropSpy = spyCall(function(arg) {
+          (dropSpy = spyCall((arg) => {
             expect(arg.date).toEqualDate(tz.parseDate('2015-11-29T05:00:00'))
           })),
         eventReceive:
-          (receiveSpy = spyCall(function(arg) {
+          (receiveSpy = spyCall((arg) => {
             expect(arg.event.title).toBe('my external event')
             expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-29T05:00:00'))
             expect(arg.event.end).toBe(null)
@@ -54,12 +54,12 @@ describe('timeline-view external element drag-n-drop', function() {
             let resources = arg.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('b')
-          }))
+          })),
       })
 
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
       timelineGridWrapper.dragEventTo(
-        $('.external-event')[0], 'b', '2015-11-29T05:00:00'
+        $('.external-event')[0], 'b', '2015-11-29T05:00:00',
       ).then(() => {
         expect(dropSpy).toHaveBeenCalled()
         expect(receiveSpy).toHaveBeenCalled()
@@ -68,7 +68,7 @@ describe('timeline-view external element drag-n-drop', function() {
     })
   })
 
-  describe('when overlap is false', function() {
+  describe('when overlap is false', () => {
     pushOptions({
       eventOverlap: false,
       events: [
@@ -76,21 +76,22 @@ describe('timeline-view external element drag-n-drop', function() {
           title: 'existing event',
           start: '2015-11-29T01:00:00',
           end: '2015-11-29T03:00:00',
-          resourceId: 'a'
-        }
-      ]
+          resourceId: 'a',
+        },
+      ],
     })
 
-    it('doesn\'t allow the drop on an event', function(done) {
-      let dropSpy, receiveSpy
+    it('doesn\'t allow the drop on an event', (done) => {
+      let dropSpy
+      let receiveSpy
       let calendar = initCalendar({
         drop: (dropSpy = jasmine.createSpy('drop')),
-        eventReceive: (receiveSpy = jasmine.createSpy('receive'))
+        eventReceive: (receiveSpy = jasmine.createSpy('receive')),
       })
 
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
       timelineGridWrapper.dragEventTo(
-        $('.external-event')[0], 'a', '2015-11-29T02:00:00'
+        $('.external-event')[0], 'a', '2015-11-29T02:00:00',
       ).then(() => {
         expect(dropSpy).not.toHaveBeenCalled()
         expect(receiveSpy).not.toHaveBeenCalled()
@@ -100,7 +101,7 @@ describe('timeline-view external element drag-n-drop', function() {
   })
 
   // issue 256 (but with event dragging, not dateClick)
-  it('restricts drop to bounding area', function(done) {
+  it('restricts drop to bounding area', (done) => {
     let isDropCalled = false
 
     // get dragEl to the right of the calendar, parallel with body slots
@@ -110,45 +111,45 @@ describe('timeline-view external element drag-n-drop', function() {
       .css({
         position: 'absolute',
         left: '100%',
-        top: 50
+        top: 50,
       })
 
     initCalendar({
       headerToolbar: false, // better guarantee that dragEl is parallel with body slots
       drop() {
         isDropCalled = true
-      }
+      },
     }, calEl) // will render calendar within this el
 
     dragEl.simulate('drag', {
       dy: 10, // some movement
       callback() {
-        setTimeout(function() { // wait for potential `drop`
+        setTimeout(() => { // wait for potential `drop`
           expect(isDropCalled).toBe(false)
           calEl.remove()
           done()
         }, 100)
-      }
+      },
     })
   })
 
-  it('works after a view switch', function(done) {
+  it('works after a view switch', (done) => {
     let calendar = initCalendar()
     currentCalendar.changeView('resourceTimelineWeek')
 
     let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
     timelineGridWrapper.dragEventTo(
-      $('.external-event')[0], 'b', '2015-11-29T05:00:00'
+      $('.external-event')[0], 'b', '2015-11-29T05:00:00',
     ).then(() => {
       // all we care about is no JS errors
       done()
     })
   })
 
-  it('works after calling destroy', function(done) {
+  it('works after calling destroy', (done) => {
     initCalendar()
 
-    setTimeout(function() { // problems with destroy otherwise
+    setTimeout(() => { // problems with destroy otherwise
       currentCalendar.destroy()
       $('.external-event').simulate('drag', {
         dx: 100,
@@ -156,7 +157,7 @@ describe('timeline-view external element drag-n-drop', function() {
         callback() {
           // all we care about is no JS errors
           done()
-        }
+        },
       })
     })
   })

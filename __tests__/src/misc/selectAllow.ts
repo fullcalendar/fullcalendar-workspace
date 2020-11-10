@@ -1,7 +1,7 @@
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 import { waitDateSelect } from 'fullcalendar-tests/src/lib/wrappers/interaction-util'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
-describe('selectAllow', function() {
+describe('selectAllow', () => {
   pushOptions({
     now: '2016-09-04',
     initialView: 'resourceTimelineWeek',
@@ -9,24 +9,24 @@ describe('selectAllow', function() {
     selectable: true,
     resources: [
       { id: 'a', title: 'Resource A' },
-      { id: 'b', title: 'Resource B' }
-    ]
+      { id: 'b', title: 'Resource B' },
+    ],
   })
 
-  it('disallows selecting when returning false', function(done) { // and given correct params
+  it('disallows selecting when returning false', (done) => { // and given correct params
     let isCalled = false
     let calendar = initCalendar({
       selectAllow(selectInfo) {
         expect(selectInfo.resource.id).toBe('b')
         isCalled = true
         return false
-      }
+      },
     })
 
     let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
     let selecting = timelineGridWrapper.selectDates(
       { resourceId: 'b', date: '2016-09-04T03:00:00' },
-      { resourceId: 'b', date: '2016-09-04T06:00:00' }
+      { resourceId: 'b', date: '2016-09-04T06:00:00' },
     )
 
     waitDateSelect(calendar, selecting).then((selectInfo) => {
@@ -36,19 +36,19 @@ describe('selectAllow', function() {
     })
   })
 
-  it('allows selecting when returning false', function(done) {
+  it('allows selecting when returning false', (done) => {
     let isCalled = false
     let calendar = initCalendar({
       selectAllow() {
         isCalled = true
         return true
-      }
+      },
     })
 
     let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
     let selecting = timelineGridWrapper.selectDates(
       { resourceId: 'b', date: '2016-09-04T03:00:00' },
-      { resourceId: 'b', date: '2016-09-04T06:00:00' }
+      { resourceId: 'b', date: '2016-09-04T06:00:00' },
     )
 
     waitDateSelect(calendar, selecting).then((selectInfo) => {

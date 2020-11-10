@@ -1,6 +1,6 @@
-import { ResourceTimelineViewWrapper } from "../lib/wrappers/ResourceTimelineViewWrapper"
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
-describe('timeline resource grouping', function() {
+describe('timeline resource grouping', () => {
   pushOptions({
     initialView: 'resourceTimeline',
     resourceGroupField: 'groupId',
@@ -8,22 +8,22 @@ describe('timeline resource grouping', function() {
       {
         id: 'A',
         groupId: '1',
-        title: 'Resource A'
+        title: 'Resource A',
       },
       {
         id: 'B',
         groupId: '1',
-        title: 'Resource B'
+        title: 'Resource B',
       },
       {
         id: 'C',
         groupId: '2',
-        title: 'Resource C'
-      }
-    ]
+        title: 'Resource C',
+      },
+    ],
   })
 
-  it('renders the hierarchy correctly', function() {
+  it('renders the hierarchy correctly', () => {
     let calendar = initCalendar()
     let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
     let rows = dataGridWrapper.getRowInfo()
@@ -39,7 +39,7 @@ describe('timeline resource grouping', function() {
   })
 
   // https://github.com/fullcalendar/fullcalendar-scheduler/issues/490
-  it('works with resourceOrder', function() {
+  it('works with resourceOrder', () => {
     let calendar = initCalendar({
       initialView: 'resourceTimelineDay',
       resourceOrder: 'building',
@@ -72,27 +72,25 @@ describe('timeline resource grouping', function() {
         { id: 'w', title: 'Room W', building: 'Beta' },
         { id: 'x', title: 'Room X', building: 'Gamma' },
         { id: 'y', title: 'Room Y', building: 'Epsilon' },
-        { id: 'z', title: 'Room Z', building: 'Epsilon' }
-      ]
+        { id: 'z', title: 'Room Z', building: 'Epsilon' },
+      ],
     })
 
     let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
     let rows = dataGridWrapper.getRowInfo()
 
-    let groupTexts = rows.map(function(row) {
-      return row.text
-    })
+    let groupTexts = rows.map((row) => row.text)
 
     expect(groupTexts).toEqual([
-      'Alpha', 'Beta', 'Delta', 'Epsilon', 'Gamma'
+      'Alpha', 'Beta', 'Delta', 'Epsilon', 'Gamma',
     ])
   })
 
-  it('renders base off resourceGroupLabelContent function', function() {
+  it('renders base off resourceGroupLabelContent function', () => {
     let calendar = initCalendar({
       resourceGroupLabelContent(arg) {
         return `Group ${arg.groupValue}`
-      }
+      },
     })
 
     let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
@@ -104,5 +102,4 @@ describe('timeline resource grouping', function() {
     expect(rows[3].type).toBe('group')
     expect(rows[3].text).toBe('Group 2')
   })
-
 })

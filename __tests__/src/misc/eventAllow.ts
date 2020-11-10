@@ -1,7 +1,7 @@
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 import { waitEventDrag } from 'fullcalendar-tests/src/lib/wrappers/interaction-util'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
-describe('eventAllow', function() {
+describe('eventAllow', () => {
   pushOptions({
     now: '2016-09-04',
     initialView: 'resourceTimelineWeek',
@@ -9,18 +9,18 @@ describe('eventAllow', function() {
     editable: true,
     resources: [
       { id: 'a', title: 'Resource A' },
-      { id: 'b', title: 'Resource B' }
+      { id: 'b', title: 'Resource B' },
     ],
     events: [
       {
         title: 'event 1',
         start: '2016-09-04T01:00',
-        resourceId: 'a'
-      }
-    ]
+        resourceId: 'a',
+      },
+    ],
   })
 
-  it('disallows dragging when returning false', function(done) { // and given correct params
+  it('disallows dragging when returning false', (done) => { // and given correct params
     let isACalled = false
     let isBCalled = false
     let calendar = initCalendar({
@@ -32,12 +32,12 @@ describe('eventAllow', function() {
         }
         expect(typeof event).toBe('object')
         return false
-      }
+      },
     })
 
     let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
     let dragging = timelineGridWrapper.dragEventTo(
-      timelineGridWrapper.getFirstEventEl(), 'b', '2016-09-04T03:00:00'
+      timelineGridWrapper.getFirstEventEl(), 'b', '2016-09-04T03:00:00',
     )
 
     waitEventDrag(calendar, dragging).then((modifiedEvent) => {
@@ -48,18 +48,18 @@ describe('eventAllow', function() {
     })
   })
 
-  it('allows dragging when returning true', function(done) {
+  it('allows dragging when returning true', (done) => {
     let isCalled = false
     let calendar = initCalendar({
       eventAllow() {
         isCalled = true
         return true
-      }
+      },
     })
 
     let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
     let dragging = timelineGridWrapper.dragEventTo(
-      timelineGridWrapper.getFirstEventEl(), 'b', '2016-09-04T03:00:00'
+      timelineGridWrapper.getFirstEventEl(), 'b', '2016-09-04T03:00:00',
     )
 
     waitEventDrag(calendar, dragging).then((modifiedEvent) => {

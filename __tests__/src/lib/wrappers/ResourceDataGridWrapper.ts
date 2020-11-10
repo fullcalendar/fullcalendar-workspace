@@ -1,15 +1,12 @@
 import { findElements } from '@fullcalendar/core'
 
 export class ResourceDataGridWrapper {
-
   constructor(private el: HTMLElement) {
   }
-
 
   getRootEl() {
     return this.el
   }
-
 
   getRowInfo() {
     let trs = findElements(this.el, 'tr')
@@ -32,16 +29,13 @@ export class ResourceDataGridWrapper {
     return infos
   }
 
-
   getResourceInfo() {
     return this.getRowInfo().filter((rowInfo) => rowInfo.type === 'resource')
   }
 
-
   getResourceIds() {
     return this.getResourceInfo().map((info) => info.resourceId)
   }
-
 
   getSpecificResourceInfo(resourceId) {
     let cellEl = this.getResourceCellEl(resourceId)
@@ -51,11 +45,9 @@ export class ResourceDataGridWrapper {
     }
   }
 
-
   getResourceCellEl(resourceId) {
     return this.el.querySelector(`.fc-datagrid-cell[data-resource-id="${resourceId}"]`) as HTMLElement
   }
-
 
   getResourceCellEls(resourceId) {
     let selector = '.fc-datagrid-cell.fc-resource'
@@ -67,46 +59,40 @@ export class ResourceDataGridWrapper {
     return findElements(this.el, selector)
   }
 
-
   getAllRows() {
     return findElements(this.el, 'tr')
   }
-
 
   clickFirstExpander() {
     $(this.el.querySelector('.fc-datagrid-expander')).simulate('click')
   }
 
-
   clickExpander(resourceId) {
     $(this.getExpanderEl(resourceId)).simulate('click')
   }
 
-
   getExpanderEl(resourceId) {
     return this.getResourceCellEl(resourceId).querySelector('.fc-datagrid-expander')
   }
-
 
   isRowExpanded(resourceId) {
     let iconEl = this.getExpanderEl(resourceId).querySelector('.fc-icon')
 
     if (iconEl.classList.contains('fc-icon-plus-square')) {
       return false
-    } else if (iconEl.classList.contains('fc-icon-minus-square')) {
-      return true
-    } else {
-      throw new Error('Resource row is neither expanded or contracted.')
     }
-  }
 
+    if (iconEl.classList.contains('fc-icon-minus-square')) {
+      return true
+    }
+
+    throw new Error('Resource row is neither expanded or contracted.')
+  }
 
   getRowIndentation(resourceId) {
     return this.getResourceCellEl(resourceId).querySelectorAll('.fc-icon').length
   }
-
 }
-
 
 function buildResourceInfoFromCell(cellEl) {
   return {
@@ -114,16 +100,15 @@ function buildResourceInfoFromCell(cellEl) {
     resourceId: cellEl.getAttribute('data-resource-id'),
     text: $(cellEl.querySelector('.fc-datagrid-cell-main')).text(),
     cellEl,
-    rowEl: cellEl.parentNode
+    rowEl: cellEl.parentNode,
   }
 }
-
 
 function buildGroupInfoFromCell(cellEl) {
   return {
     type: 'group',
     text: $(cellEl.querySelector('.fc-datagrid-cell-main')).text(),
     cellEl,
-    rowEl: cellEl.parentNode
+    rowEl: cellEl.parentNode,
   }
 }

@@ -3,9 +3,8 @@ import { ResourceTimelineView } from '@fullcalendar/resource-timeline'
 import { ResourceDayTimeColsView } from '@fullcalendar/resource-timegrid'
 import { ResourceDayTableView } from '@fullcalendar/resource-daygrid'
 
-describe('internal View classes', function() {
-
-  it('are exposed', function() {
+describe('internal View classes', () => {
+  it('are exposed', () => {
     expect(typeof TimelineView).toBe('function')
     expect(typeof ResourceTimelineView).toBe('function')
     expect(typeof ResourceDayTimeColsView).toBe('function')

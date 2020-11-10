@@ -3,12 +3,14 @@ import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
-describe('timeline dragging events between calendars', function() {
+describe('timeline dragging events between calendars', () => {
   let DEFAULT_DATE = '2019-01-01'
-  let el0, el1
-  let calendar0, calendar1
+  let el0
+  let el1
+  let calendar0
+  let calendar1
 
-  beforeEach(function() {
+  beforeEach(() => {
     el0 = document.createElement('div')
     el1 = document.createElement('div')
 
@@ -19,7 +21,7 @@ describe('timeline dragging events between calendars', function() {
     document.body.appendChild(el1)
   })
 
-  afterEach(function() {
+  afterEach(() => {
     if (calendar0) {
       calendar0.destroy()
     }
@@ -32,12 +34,11 @@ describe('timeline dragging events between calendars', function() {
     document.body.removeChild(el1)
   })
 
-  it('works when calendars have different resources', function(done) {
-
+  it('works when calendars have different resources', (done) => {
     // calendar we drag the event TO
     // important to have this first in the DOM so that dragElTo works
     calendar0 = new Calendar(el0, {
-      plugins: [ resourceTimelinePlugin, interactionPlugin ],
+      plugins: [resourceTimelinePlugin, interactionPlugin],
       timeZone: 'UTC',
       scrollTime: '00:00',
       initialDate: DEFAULT_DATE,
@@ -45,28 +46,28 @@ describe('timeline dragging events between calendars', function() {
       editable: true,
       droppable: true,
       resources: [
-        { id: 'b' }
+        { id: 'b' },
       ],
       eventReceive(info) {
         expect(info.event.start).toEqualDate(DEFAULT_DATE + 'T00:00:00Z')
         done()
-      }
+      },
     })
 
     // calendar we drag the event FROM
     calendar1 = new Calendar(el1, {
-      plugins: [ resourceTimelinePlugin, interactionPlugin ],
+      plugins: [resourceTimelinePlugin, interactionPlugin],
       timeZone: 'UTC',
       scrollTime: '00:00',
       initialDate: DEFAULT_DATE,
       initialView: 'resourceTimelineDay',
       editable: true,
       resources: [
-        { id: 'a' }
+        { id: 'a' },
       ],
       events: [
-        { resourceId: 'a', start: DEFAULT_DATE, allDay: false }
-      ]
+        { resourceId: 'a', start: DEFAULT_DATE, allDay: false },
+      ],
     })
 
     calendar0.render()
@@ -76,8 +77,7 @@ describe('timeline dragging events between calendars', function() {
     let timelineGrid1 = new ResourceTimelineViewWrapper(calendar1).timelineGrid
 
     timelineGrid0.dragEventTo(
-      timelineGrid1.getFirstEventEl(), 'b', DEFAULT_DATE + 'T00:00:00'
+      timelineGrid1.getFirstEventEl(), 'b', DEFAULT_DATE + 'T00:00:00',
     )
   })
-
 })

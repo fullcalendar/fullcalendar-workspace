@@ -1,15 +1,14 @@
-import { ResourceTimelineViewWrapper } from "../lib/wrappers/ResourceTimelineViewWrapper"
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
-describe('timeline resource rerendering', function() {
-
+describe('timeline resource rerendering', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/5586
-  it('adjusts height of resource row', function() {
+  it('adjusts height of resource row', () => {
     let isBig = false
     let calendar = initCalendar({
       initialView: 'resourceTimelineDay',
       resources: [
-        { id: 'a', title: 'Resource A '},
-        { id: 'b', title: 'Resource B' }
+        { id: 'a', title: 'Resource A ' },
+        { id: 'b', title: 'Resource B' },
       ],
       resourceLabelContent(info) {
         let html = 'line0<br>line1'
@@ -19,7 +18,7 @@ describe('timeline resource rerendering', function() {
         }
 
         return { html }
-      }
+      },
     })
     let view = new ResourceTimelineViewWrapper(calendar)
     let dataTd = view.dataGrid.getResourceInfo()[0].cellEl
@@ -34,5 +33,4 @@ describe('timeline resource rerendering', function() {
     expect(dataTd.offsetHeight).toBeGreaterThan(origHeight)
     expect(dataTd.offsetHeight).toBe(laneTd.offsetHeight)
   })
-
 })

@@ -3,24 +3,23 @@ import lvLocale from '@fullcalendar/core/locales/lv'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
-describe('timeline rendering', function() {
+describe('timeline rendering', () => {
   pushOptions({
-    initialDate: '2017-10-27'
+    initialDate: '2017-10-27',
   })
 
   function buildResources(cnt) {
     let resources = []
-    for (let i = 0; i < cnt; i++) {
+    for (let i = 0; i < cnt; i += 1) {
       resources.push({ title: `resource${i}` })
     }
     return resources
   }
 
-
-  it('has correct vertical scroll and gutters', function() {
+  it('has correct vertical scroll and gutters', () => {
     let calendar = initCalendar({
       initialView: 'resourceTimeline',
-      resources: buildResources(50)
+      resources: buildResources(50),
     })
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
@@ -35,22 +34,21 @@ describe('timeline rendering', function() {
       .toEqual(timeEl.scrollHeight)
   })
 
-
-  it('renders time slots localized', function() {
+  it('renders time slots localized', () => {
     let calendar = initCalendar({
       initialView: 'timelineWeek',
       slotDuration: '01:00',
       scrollTime: 0,
-      locale: lvLocale
+      locale: lvLocale,
     })
     let headerWrapper = new TimelineViewWrapper(calendar).header
 
     expect(
-      headerWrapper.getCellInfo()[0].date
+      headerWrapper.getCellInfo()[0].date,
     ).toEqualDate('2017-10-23T00:00:00') // start-of-week is a Monday, lv
   })
 
-  it('call slotLabelDidMount for each day', function() {
+  it('call slotLabelDidMount for each day', () => {
     let callCnt = 0
 
     initCalendar({
@@ -61,13 +59,13 @@ describe('timeline rendering', function() {
         expect(arg.el instanceof HTMLElement).toBe(true)
         expect(typeof arg.view).toBe('object')
         callCnt++
-      }
+      },
     })
 
     expect(callCnt).toBe(7)
   })
 
-  it('call slotLabelDidMount for each hour', function() {
+  it('call slotLabelDidMount for each hour', () => {
     let callCnt = 0
 
     initCalendar({
@@ -76,39 +74,39 @@ describe('timeline rendering', function() {
       slotLabelDidMount(arg) {
         expect(startOfDay(arg.date)).toEqualDate('2017-10-27')
         callCnt++
-      }
+      },
     })
 
     expect(callCnt).toBe(24)
   })
 
-  it('includes a level property in slotLabelContent', function() {
+  it('includes a level property in slotLabelContent', () => {
     let levelHash = {}
 
     initCalendar({
       initialView: 'timelineWeek',
       slotLabelFormat: [
         { day: 'numeric' },
-        { hour: 'numeric', minute: 'numeric' }
+        { hour: 'numeric', minute: 'numeric' },
       ],
       slotLabelContent(info) {
         expect(typeof info.level).toBe('number')
         levelHash[info.level] = true
-      }
+      },
     })
 
     let levels = Object.keys(levelHash).sort()
-    expect(levels).toEqual([ '0', '1' ])
+    expect(levels).toEqual(['0', '1'])
   })
 
   // TODO: add test for implied week navlinks too
-  it('renders axis with navLinks even when customized', function() {
+  it('renders axis with navLinks even when customized', () => {
     let calendar = initCalendar({
       initialView: 'timelineMonth',
       navLinks: true,
-      slotLabelFormat: function() {
+      slotLabelFormat() {
         return 'test'
-      }
+      },
     })
 
     let headerWrapper = new TimelineViewWrapper(calendar).header
@@ -118,7 +116,7 @@ describe('timeline rendering', function() {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5545
-  it('is sized correctly when height:auto and resources loaded on delay', function(done) {
+  it('is sized correctly when height:auto and resources loaded on delay', (done) => {
     let calendar = initCalendar({
       initialView: 'resourceTimelineDay',
       height: 'auto',
@@ -126,19 +124,18 @@ describe('timeline rendering', function() {
         setTimeout(() => {
           success(buildResources(20))
         }, 100)
-      }
+      },
     })
 
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
     let dataGridWrapper = viewWrapper.dataGrid
     let timelineGridWrapper = viewWrapper.timelineGrid
 
-    setTimeout(function() {
+    setTimeout(() => {
       let dataGridHeight = dataGridWrapper.getRootEl().offsetHeight
       let timelineGridHeight = timelineGridWrapper.getRootEl().offsetHeight
       expect(Math.abs(dataGridHeight - timelineGridHeight)).toBeLessThan(1)
       done()
     }, 200)
   })
-
 })

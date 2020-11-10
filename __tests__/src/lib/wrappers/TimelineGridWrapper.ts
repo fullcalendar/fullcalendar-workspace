@@ -4,12 +4,9 @@ import { getBoundingRect } from 'fullcalendar-tests/src/lib/dom-geom'
 import { getRectCenter, addPoints } from 'fullcalendar-tests/src/lib/geom'
 import { CalendarWrapper } from 'fullcalendar-tests/src/lib/wrappers/CalendarWrapper'
 
-
 export class TimelineGridWrapper {
-
   constructor(public el: HTMLElement) {
   }
-
 
   clickDate(date) { // not JUST a date. a resource too
     let point = this.getPoint(date)
@@ -23,11 +20,10 @@ export class TimelineGridWrapper {
     return new Promise((resolve) => {
       $.simulateByPoint('drag', {
         point,
-        onRelease: () => resolve()
+        onRelease: () => resolve(),
       })
     })
   }
-
 
   resizeEvent(eventEl: HTMLElement, newEndDate, fromStart?) {
     return new Promise((resolve) => {
@@ -45,41 +41,34 @@ export class TimelineGridWrapper {
 
       $(resizerEl).simulate('drag', {
         end: destPoint,
-        onRelease: () => resolve()
+        onRelease: () => resolve(),
       })
     })
   }
-
 
   getHighlightEls() {
     return findElements(this.el, '.fc-highlight')
   }
 
-
   getEventEls() { // FG events
     return findElements(this.el, '.fc-timeline-event')
   }
-
 
   getFirstEventEl() {
     return this.el.querySelector('.fc-timeline-event') as HTMLElement
   }
 
-
   getMirrorEventEls() {
     return findElements(this.el, '.fc-event-mirror')
   }
-
 
   getNonBusinessDayEls() {
     return findElements(this.el, '.fc-non-business')
   }
 
-
   getSlatEls() { // TODO: rename to "slot label"
     return findElements(this.el, '.fc-timeline-slot-lane')
   }
-
 
   getSlatElByDate(dateOrStr) { // prefers string. we do this because all-day doesnt have 00:00:00. TODO: rename to "slot label"
     if (typeof dateOrStr !== 'string') {
@@ -87,7 +76,6 @@ export class TimelineGridWrapper {
     }
     return this.el.querySelector('.fc-timeline-slot-lane[data-date="' + dateOrStr + '"]')
   }
-
 
   getRect(start, end) {
     let coord0 = this.getLeft(start)
@@ -98,10 +86,9 @@ export class TimelineGridWrapper {
       left: Math.min(coord0, coord1),
       right: Math.max(coord0, coord1),
       top: canvasRect.top,
-      bottom: canvasRect.bottom
+      bottom: canvasRect.bottom,
     }
   }
-
 
   getLine(date) {
     let contentRect = getBoundingRect(this.el)
@@ -111,10 +98,9 @@ export class TimelineGridWrapper {
       left,
       right: left,
       top: contentRect.top,
-      bottom: contentRect.bottom
+      bottom: contentRect.bottom,
     }
   }
-
 
   getPoint(date) {
     let contentRect = getBoundingRect(this.el)
@@ -122,10 +108,9 @@ export class TimelineGridWrapper {
 
     return {
       top: (contentRect.top + contentRect.bottom) / 2,
-      left
+      left,
     }
   }
-
 
   getLeft(targetDate) {
     targetDate = ensureDate(targetDate)
@@ -134,12 +119,12 @@ export class TimelineGridWrapper {
     let isRtl = $(this.el).css('direction') === 'rtl'
     let slatEl = this.getSlatElByDate(targetDate)
 
-    const getLeadingEdge = function(cellEl) {
+    const getLeadingEdge = function (cellEl) {
       let cellRect = cellEl.getBoundingClientRect()
       return isRtl ? cellRect.right : cellRect.left
     }
 
-    const getTrailingEdge = function(cellEl) {
+    const getTrailingEdge = function (cellEl) {
       let cellRect = cellEl.getBoundingClientRect()
       return isRtl ? cellRect.left : cellRect.right
     }
@@ -152,7 +137,7 @@ export class TimelineGridWrapper {
     let slatDate = null
     let prevSlatDate = null
 
-    for (let i = 0; i < slatEls.length; i++) { // traverse earlier to later
+    for (let i = 0; i < slatEls.length; i += 1) { // traverse earlier to later
       slatEl = slatEls[i]
 
       prevSlatDate = slatDate
@@ -163,14 +148,13 @@ export class TimelineGridWrapper {
         // before first slat
         if (!prevSlatDate) {
           return getLeadingEdge(slatEl)
-        } else {
-          const prevSlatEl = slatEls[i - 1]
-          const prevSlatCoord = getLeadingEdge(prevSlatEl)
-          slatCoord = getLeadingEdge(slatEl)
-          return prevSlatCoord +
-            ((slatCoord - prevSlatCoord) *
-            ((targetDate - prevSlatDate.valueOf()) / (slatDate.valueOf() - prevSlatDate.valueOf())))
         }
+        const prevSlatEl = slatEls[i - 1]
+        const prevSlatCoord = getLeadingEdge(prevSlatEl)
+        slatCoord = getLeadingEdge(slatEl)
+        return prevSlatCoord +
+          ((slatCoord - prevSlatCoord) *
+          ((targetDate - prevSlatDate.valueOf()) / (slatDate.valueOf() - prevSlatDate.valueOf())))
       }
     }
 
@@ -188,19 +172,15 @@ export class TimelineGridWrapper {
       Math.min(1, (targetDate - slatDate.valueOf()) / slatMsDuration)) // don't go past the last slat
   }
 
-
   hasNowIndicator() {
     return Boolean(this.getNowIndicatorEl())
   }
-
 
   getNowIndicatorEl() {
     return this.el.querySelector('.fc-timeline-now-indicator-line')
   }
 
-
   getBgEventEls() {
     return findElements(this.el, '.fc-bg-event')
   }
-
 }

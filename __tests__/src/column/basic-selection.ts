@@ -1,28 +1,28 @@
 import { getLeadingBoundingRect, getTrailingBoundingRect, sortBoundingRects } from 'fullcalendar-tests/src/lib/dom-geom'
 import { DayGridViewWrapper } from 'fullcalendar-tests/src/lib/wrappers/DayGridViewWrapper'
 
-describe('dayGrid-view selection', function() {
+describe('dayGrid-view selection', () => {
   pushOptions({
     now: '2015-11-28',
     selectable: true,
     resources: [
       { id: 'a', title: 'Resource A' },
-      { id: 'b', title: 'Resource B' }
+      { id: 'b', title: 'Resource B' },
     ],
     views: {
       resourceDayGridThreeDay: {
         type: 'resourceDayGrid',
-        duration: { days: 3 }
-      }
-    }
+        duration: { days: 3 },
+      },
+    },
   })
 
-  describe('when there are no resource columns', function() {
+  describe('when there are no resource columns', () => {
     pushOptions({
-      initialView: 'dayGridWeek'
+      initialView: 'dayGridWeek',
     })
 
-    it('allows non-resource selects', function(done) {
+    it('allows non-resource selects', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
         select(arg) {
@@ -32,7 +32,7 @@ describe('dayGrid-view selection', function() {
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
           expect(arg.resource).toBeFalsy()
-        }
+        },
       })
 
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
@@ -46,17 +46,17 @@ describe('dayGrid-view selection', function() {
         callback() {
           expect(selectCalled).toBe(true)
           done()
-        }
+        },
       })
     })
   })
 
-  describe('with resource columns above date columns', function() {
+  describe('with resource columns above date columns', () => {
     pushOptions({
-      initialView: 'resourceDayGridThreeDay'
+      initialView: 'resourceDayGridThreeDay',
     })
 
-    it('allows a resource selects', function(done) {
+    it('allows a resource selects', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
         select(arg) {
@@ -66,7 +66,7 @@ describe('dayGrid-view selection', function() {
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
           expect(arg.resource.id).toBe('a')
-        }
+        },
       })
 
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
@@ -78,16 +78,16 @@ describe('dayGrid-view selection', function() {
         callback() {
           expect(selectCalled).toBe(true)
           done()
-        }
+        },
       })
     })
 
-    it('disallows a selection across resources', function(done) {
+    it('disallows a selection across resources', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
         select() {
           selectCalled = true
-        }
+        },
       })
 
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
@@ -99,18 +99,18 @@ describe('dayGrid-view selection', function() {
         callback() {
           expect(selectCalled).toBe(false)
           done()
-        }
+        },
       })
     })
   })
 
-  describe('with date columns above resource columns', function() {
+  describe('with date columns above resource columns', () => {
     pushOptions({
       initialView: 'resourceDayGridThreeDay',
-      datesAboveResources: true
+      datesAboveResources: true,
     })
 
-    it('allows a resource selection', function(done) {
+    it('allows a resource selection', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
         select(arg) {
@@ -120,7 +120,7 @@ describe('dayGrid-view selection', function() {
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
           expect(arg.resource.id).toBe('b')
-        }
+        },
       })
 
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
@@ -134,16 +134,16 @@ describe('dayGrid-view selection', function() {
         callback() {
           expect(selectCalled).toBe(true)
           done()
-        }
+        },
       })
     })
 
-    it('disallows a selection across resources', function(done) {
+    it('disallows a selection across resources', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
         select() {
           selectCalled = true
-        }
+        },
       })
 
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
@@ -157,7 +157,7 @@ describe('dayGrid-view selection', function() {
         callback() {
           expect(selectCalled).toBe(false)
           done()
-        }
+        },
       })
     })
   })

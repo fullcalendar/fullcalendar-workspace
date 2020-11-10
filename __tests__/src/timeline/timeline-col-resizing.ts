@@ -1,29 +1,28 @@
-import { ResourceTimelineViewWrapper } from "../lib/wrappers/ResourceTimelineViewWrapper"
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
-describe('timeline column resizing', function() { // better renamed to 'sizing'
+describe('timeline column resizing', () => { // better renamed to 'sizing'
   pushOptions({
     resourceAreaWidth: 230,
     initialView: 'resourceTimelineDay',
     resourceAreaColumns: [
       {
         headerContent: 'Room',
-        field: 'title'
+        field: 'title',
       },
       {
         headerContent: 'Occupancy',
-        field: 'occupancy'
-      }
+        field: 'occupancy',
+      },
     ],
     resources: [
       { id: 'a', occupancy: 40, building: '460 Bryant', title: 'Auditorium A' },
-      { id: 'b', occupancy: 40, building: '460 Bryant', title: 'Auditorium B', eventColor: 'green' }
-    ]
+      { id: 'b', occupancy: 40, building: '460 Bryant', title: 'Auditorium B', eventColor: 'green' },
+    ],
   })
 
-
-  it('works with resourceGroupField', function(done) {
+  it('works with resourceGroupField', (done) => {
     let calendar = initCalendar({
-      resourceGroupField: 'building'
+      resourceGroupField: 'building',
     })
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
     let dataHeaderWrapper = viewWrapper.dataHeader
@@ -45,12 +44,11 @@ describe('timeline column resizing', function() { // better renamed to 'sizing'
       callback() {
         expectColWidthsToMatch()
         done()
-      }
+      },
     })
   })
 
-
-  it('is affected by resourceColumn[].width settings', function() {
+  it('is affected by resourceColumn[].width settings', () => {
     let calendar = initCalendar()
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
     let dataHeaderWrapper = viewWrapper.dataHeader
@@ -62,13 +60,13 @@ describe('timeline column resizing', function() { // better renamed to 'sizing'
       {
         headerContent: 'Room',
         field: 'title',
-        width: 350
+        width: 350,
       },
       {
         headerContent: 'Occupancy',
         field: 'occupancy',
-        width: 50
-      }
+        width: 50,
+      },
     ])
 
     let updatedHeadWidths = getHeadCellWidths(dataHeaderWrapper)
@@ -78,14 +76,11 @@ describe('timeline column resizing', function() { // better renamed to 'sizing'
     expect(updatedHeadWidths).toEqual(getBodyCellWidths(dataGridWrapper)) // they are in sync?
   })
 
-
   function getHeadCellWidths(dataHeaderWrapper) {
     return dataHeaderWrapper.getCellEls().map((el) => el.offsetWidth)
   }
 
-
   function getBodyCellWidths(dataGridWrapper) {
     return dataGridWrapper.getResourceCellEls('a').map((el) => el.offsetWidth)
   }
-
 })

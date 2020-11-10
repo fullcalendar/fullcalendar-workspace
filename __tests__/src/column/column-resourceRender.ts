@@ -1,40 +1,37 @@
-
-describe('column-view resourceLabelDidMount trigger', function() { // TODO: rename the file
+describe('column-view resourceLabelDidMount trigger', () => { // TODO: rename the file
   pushOptions({
     now: '2016-02-13',
     resources: [
       { id: 'a', title: 'Resource A' },
-      { id: 'b', title: 'Resource B' }
+      { id: 'b', title: 'Resource B' },
     ],
     views: {
       resourceTimeGridThreeDay: {
         type: 'resourceTimeGrid',
-        duration: { days: 3 }
+        duration: { days: 3 },
       },
       resourceDayGridThreeDay: {
         type: 'resourceDayGrid',
-        duration: { days: 3 }
-      }
-    }
+        duration: { days: 3 },
+      },
+    },
   })
 
   describeOptions('direction', {
     'when LTR': 'ltr',
-    'when RTL': 'rtl'
-  }, function() {
-
-    describe('when resource above dates', function() {
+    'when RTL': 'rtl',
+  }, () => {
+    describe('when resource above dates', () => {
       pushOptions({
-        datesAboveResources: false
+        datesAboveResources: false,
       })
 
       describeOptions('initialView', {
         'when timeGrid view': 'resourceTimeGridThreeDay',
         'when dayGrid view': 'resourceDayGridThreeDay',
-        'when month view': 'resourceDayGridMonth'
-      }, function() {
-
-        it('fires once per resources', function() {
+        'when month view': 'resourceDayGridMonth',
+      }, () => {
+        it('fires once per resources', () => {
           let callCnt = 0
           initCalendar({
             resourceLabelDidMount(arg) {
@@ -43,24 +40,23 @@ describe('column-view resourceLabelDidMount trigger', function() { // TODO: rena
                 expect(arg.el).toContainText('Resource A')
                 callCnt++
               }
-            }
+            },
           })
           expect(callCnt).toBe(1)
         })
       })
     })
 
-    describe('when dates above resource', function() {
+    describe('when dates above resource', () => {
       pushOptions({
-        datesAboveResources: true
+        datesAboveResources: true,
       })
 
       describeOptions('initialView', {
         'when timeGrid view': 'resourceTimeGridThreeDay',
-        'when dayGrid view': 'resourceDayGridThreeDay'
-      }, function() {
-
-        it('fires onces per day', function() {
+        'when dayGrid view': 'resourceDayGridThreeDay',
+      }, () => {
+        it('fires onces per day', () => {
           let callCnt = 0
           initCalendar({
             resourceLabelDidMount(arg) {
@@ -69,18 +65,18 @@ describe('column-view resourceLabelDidMount trigger', function() { // TODO: rena
                 expect(arg.el).toContainText('Resource A')
                 callCnt++
               }
-            }
+            },
           })
           expect(callCnt).toBe(3)
         })
       })
 
-      describe('when month view', function() {
+      describe('when month view', () => {
         pushOptions({
-          initialView: 'resourceDayGridMonth'
+          initialView: 'resourceDayGridMonth',
         })
 
-        it('fires onces per day', function() {
+        it('fires onces per day', () => {
           let callCnt = 0
           initCalendar({
             resourceLabelDidMount(arg) {
@@ -89,7 +85,7 @@ describe('column-view resourceLabelDidMount trigger', function() { // TODO: rena
                 expect(arg.el).toContainText('Resource A')
                 callCnt++
               }
-            }
+            },
           })
           expect(callCnt).toBe(7) // 7 days of the week
         })

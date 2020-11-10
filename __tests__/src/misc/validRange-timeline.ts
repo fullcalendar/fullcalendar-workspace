@@ -1,16 +1,15 @@
-import { TimelineViewWrapper } from "../lib/wrappers/TimelineViewWrapper"
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
-describe('validRange with timeline', function() {
-
-  it('works', function() {
+describe('validRange with timeline', () => {
+  it('works', () => {
     let calendar = initCalendar({
       initialView: 'timelineWeek',
       initialDate: '2017-03-23',
       slotDuration: { days: 1 },
       validRange: {
         start: '2017-03-20',
-        end: '2017-03-25'
-      }
+        end: '2017-03-25',
+      },
     })
 
     let headerWrapper = new TimelineViewWrapper(calendar).header
@@ -27,5 +26,4 @@ describe('validRange with timeline', function() {
     expect(cellInfo[6].date).toEqualDate('2017-03-25')
     expect(cellInfo[6].isDisabled).toBe(true)
   })
-
 })

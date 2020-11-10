@@ -1,15 +1,14 @@
 import { expectRenderRange } from 'fullcalendar-tests/src/lib/ViewDateUtils'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
-describe('timeline date range', function() {
-
-  it('respects firstDay with auto-detected alignment with 7-days', function() {
+describe('timeline date range', () => {
+  it('respects firstDay with auto-detected alignment with 7-days', () => {
     let calendar = initCalendar({
       initialDate: '2018-01-22',
       initialView: 'timeline',
       duration: { days: 183 },
       slotLabelInterval: { days: 7 },
-      firstDay: 1 // Monday
+      firstDay: 1, // Monday
     })
 
     let viewWrapper = new TimelineViewWrapper(calendar)
@@ -19,12 +18,12 @@ describe('timeline date range', function() {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/4937
-  xit('can do day slotDuration when slotLabel is month', function() {
+  xit('can do day slotDuration when slotLabel is month', () => {
     let calendar = initCalendar({
       initialDate: '2019-05-16',
       initialView: 'timelineYear',
       slotDuration: { days: 1 },
-      slotLabelInterval: { months: 1 }
+      slotLabelInterval: { months: 1 },
     })
 
     let viewWrapper = new TimelineViewWrapper(calendar)
@@ -36,7 +35,7 @@ describe('timeline date range', function() {
   })
 
   // https://github.com/fullcalendar/fullcalendar-scheduler/issues/525
-  xit('can go back by a month', function() {
+  xit('can go back by a month', () => {
     initCalendar({
       initialDate: '2019-04-23',
       initialView: 'timelineSpecial',
@@ -45,9 +44,9 @@ describe('timeline date range', function() {
           type: 'timeline',
           duration: { month: 3 },
           slotDuration: { month: 1 },
-          dateIncrement: { months: 1 }
-        }
-      }
+          dateIncrement: { months: 1 },
+        },
+      },
     })
 
     expectRenderRange('2019-04-01', '2019-07-01')
@@ -56,5 +55,4 @@ describe('timeline date range', function() {
     currentCalendar.prev()
     expectRenderRange('2019-02-01', '2019-05-01')
   })
-
 })

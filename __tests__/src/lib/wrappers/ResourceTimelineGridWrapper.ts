@@ -1,24 +1,19 @@
-import { TimelineGridWrapper } from './TimelineGridWrapper'
 import { getBoundingRect } from 'fullcalendar-tests/src/lib/dom-geom'
 import { findElements } from '@fullcalendar/core'
 import { getRectCenter, addPoints } from 'fullcalendar-tests/src/lib/geom'
 import { CalendarWrapper } from 'fullcalendar-tests/src/lib/wrappers/CalendarWrapper'
-
+import { TimelineGridWrapper } from './TimelineGridWrapper'
 
 export class ResourceTimelineGridWrapper {
-
   base: TimelineGridWrapper
-
 
   constructor(public el: HTMLElement) {
     this.base = new TimelineGridWrapper(el)
   }
 
-
   getRootEl() {
     return this.base.el
   }
-
 
   click(resourceId: string, date) { // not JUST a date. a resource too
     let point = this.getPoint(resourceId, date)
@@ -32,11 +27,10 @@ export class ResourceTimelineGridWrapper {
     return new Promise((resolve) => {
       $.simulateByPoint('drag', {
         point,
-        onRelease: () => resolve()
+        onRelease: () => resolve(),
       })
     })
   }
-
 
   dragEventTo(eventEl: HTMLElement, resourceId: string, date) {
     const MOVEOVER = 2
@@ -49,11 +43,10 @@ export class ResourceTimelineGridWrapper {
       $(eventEl).simulate('drag', {
         localPoint: { left: moveover, top: '50%' }, // 2 for zoom
         end: point,
-        onRelease: () => resolve()
+        onRelease: () => resolve(),
       })
     })
   }
-
 
   resizeEvent(eventEl: HTMLElement, newResourceId, newEndDate, fromStart?) {
     return new Promise((resolve) => {
@@ -71,11 +64,10 @@ export class ResourceTimelineGridWrapper {
 
       $(resizerEl).simulate('drag', {
         end: destPoint,
-        onRelease: () => resolve()
+        onRelease: () => resolve(),
       })
     })
   }
-
 
   // TODO: util for selecting NOT on resource (mousedown on the slats underneath)
   selectDates(startInfo, inclusiveEndInfo) {
@@ -94,11 +86,10 @@ export class ResourceTimelineGridWrapper {
       $.simulateByPoint('drag', {
         point: point0,
         end: point1,
-        onRelease: () => resolve()
+        onRelease: () => resolve(),
       })
     })
   }
-
 
   getRect(resourceId, start, end) {
     let coord0 = this.base.getLeft(start)
@@ -109,20 +100,18 @@ export class ResourceTimelineGridWrapper {
       left: Math.min(coord0, coord1),
       right: Math.max(coord0, coord1),
       top: rowRect.top,
-      bottom: rowRect.bottom
+      bottom: rowRect.bottom,
     }
   }
-
 
   getPoint(resourceId, date) {
     let rowRect = getBoundingRect(this.getResourceLaneEl(resourceId))
 
     return {
       left: this.base.getLeft(date),
-      top: (rowRect.top + rowRect.bottom) / 2
+      top: (rowRect.top + rowRect.bottom) / 2,
     }
   }
-
 
   getResourceIds() {
     return this.getResourceLaneEls().map((rowEl) => (
@@ -130,64 +119,51 @@ export class ResourceTimelineGridWrapper {
     ))
   }
 
-
   getResourceLaneEl(resourceId) {
     return this.el.querySelector(`.fc-timeline-lane[data-resource-id="${resourceId}"]`) as HTMLElement
   }
-
 
   getResourceLaneEls() { // are <td> cells
     return findElements(this.el, '.fc-timeline-lane[data-resource-id]')
   }
 
-
   getLeft(targetDate) {
     return this.base.getLeft(targetDate)
   }
-
 
   getSlatElByDate(date) {
     return this.base.getSlatElByDate(date)
   }
 
-
   getEventEls() { // FG events
     return this.base.getEventEls()
   }
-
 
   getFirstEventEl() {
     return this.base.getFirstEventEl()
   }
 
-
   getHGroupCnt() {
     return this.el.querySelectorAll('.fc-timeline-lane.fc-resource-group').length
   }
-
 
   hasNowIndicator() {
     return this.base.hasNowIndicator()
   }
 
-
   getBgEventEls() {
     return this.base.getBgEventEls()
   }
-
 
   getMirrorEventEls() {
     return this.base.getMirrorEventEls()
   }
 
-
   getNonBusinessDayEls() {
     return this.base.getNonBusinessDayEls()
   }
 
-
   getHighlightEls() {
     return this.base.getHighlightEls()
   }
-
 }

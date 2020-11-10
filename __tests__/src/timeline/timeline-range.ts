@@ -1,6 +1,6 @@
-import { TimelineViewWrapper } from "../lib/wrappers/TimelineViewWrapper"
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
-describe('timeline range', function() {
+describe('timeline range', () => {
   pushOptions({
     now: '2016-02-17',
     initialView: 'timelineTwoDay',
@@ -8,15 +8,15 @@ describe('timeline range', function() {
     views: {
       timelineTwoDay: {
         type: 'timeline',
-        duration: { days: 2 }
-      }
-    }
+        duration: { days: 2 },
+      },
+    },
   })
 
-  it('renders a range with negative slotMinTime, gap', function() {
+  it('renders a range with negative slotMinTime, gap', () => {
     let calendar = initCalendar({
       slotMinTime: '-02:00',
-      slotMaxTime: '20:00'
+      slotMaxTime: '20:00',
     })
     let headerWrapper = new TimelineViewWrapper(calendar).header
     let cells = headerWrapper.getCellInfo(1)
@@ -27,10 +27,10 @@ describe('timeline range', function() {
     expect(headerWrapper.getDateElByDate('2016-02-17T21:00:00')).toBeFalsy()
   })
 
-  it('renders a range with overflowed slotMaxTime, gap', function() {
+  it('renders a range with overflowed slotMaxTime, gap', () => {
     let calendar = initCalendar({
       slotMinTime: '09:00',
-      slotMaxTime: '28:00'
+      slotMaxTime: '28:00',
     })
     let headerWrapper = new TimelineViewWrapper(calendar).header
     let cells = headerWrapper.getCellInfo(1)
@@ -41,9 +41,9 @@ describe('timeline range', function() {
     expect(headerWrapper.getDateElByDate('2016-02-19T03:00:00')).toBeFalsy()
   })
 
-  it('renders a range with negative slotMinTime, complete overlap', function() {
+  it('renders a range with negative slotMinTime, complete overlap', () => {
     let calendar = initCalendar({
-      slotMinTime: '-02:00'
+      slotMinTime: '-02:00',
     })
     let headerWrapper = new TimelineViewWrapper(calendar).header
     let cells = headerWrapper.getCellInfo(1)
@@ -53,9 +53,9 @@ describe('timeline range', function() {
     expect(lastCell.date).toEqualDate('2016-02-18T23:00:00')
   })
 
-  it('renders a range with negative slotMinTime, complete overlap', function() {
+  it('renders a range with negative slotMinTime, complete overlap', () => {
     let calendar = initCalendar({
-      slotMaxTime: '26:00'
+      slotMaxTime: '26:00',
     })
     let headerWrapper = new TimelineViewWrapper(calendar).header
     let cells = headerWrapper.getCellInfo(1)
@@ -64,5 +64,4 @@ describe('timeline range', function() {
     expect(cells[0].date).toEqualDate('2016-02-17T00:00:00')
     expect(lastCell.date).toEqualDate('2016-02-19T01:00:00')
   })
-
 })

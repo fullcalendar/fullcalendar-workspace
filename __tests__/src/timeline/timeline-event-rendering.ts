@@ -1,190 +1,185 @@
-import { ResourceTimelineViewWrapper } from "../lib/wrappers/ResourceTimelineViewWrapper"
-import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import { CalendarWrapper } from 'fullcalendar-tests/src/lib/wrappers/CalendarWrapper'
 import { anyElsIntersect } from 'fullcalendar-tests/src/lib/dom-geom'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
-describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C SO MANY LOOPS!
+describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO MANY LOOPS!
   pushOptions({
     now: '2015-10-17',
-    scrollTime: '00:00'
+    scrollTime: '00:00',
   })
 
   describeOptions('timeZone', {
     'with UTC timeZone': 'UTC',
-    'with local timeZone': 'local'
-  }, function(timeZone) {
-
+    'with local timeZone': 'local',
+  }, (timeZone) => {
     describeOptions('direction', {
       'when LTR': 'ltr',
-      'when RTL': 'rtl'
-    }, function(direction) {
-
+      'when RTL': 'rtl',
+    }, (direction) => {
       describeOptions('resources', {
         'with no resources': null,
-        'with resources': [ { id: 'a', title: 'resource a' } ]
-      }, function(resources) {
+        'with resources': [{ id: 'a', title: 'resource a' }],
+      }, (resources) => {
         let ViewWrapper = resources ? ResourceTimelineViewWrapper : TimelineViewWrapper
 
         describeValues({
           'with non-background rendering': '',
           'with background events': 'background',
-          'with inverse-background events': 'inverse-background'
-        }, function(eventDisplay) {
-
-          describe('when time scale', function() {
+          'with inverse-background events': 'inverse-background',
+        }, (eventDisplay) => {
+          describe('when time scale', () => {
             pushOptions({
               initialView: resources ? 'resourceTimelineDay' : 'timelineDay',
-              slotDuration: { minutes: 30 }
+              slotDuration: { minutes: 30 },
             })
 
             describeOptions('snapDuration', {
               'with default snapDuration': null,
-              'with halved snapDuration': { minutes: 15 }
-            }, function() {
-
-              it('renders correctly when event completely fits', function() {
+              'with halved snapDuration': { minutes: 15 },
+            }, () => {
+              it('renders correctly when event completely fits', () => {
                 let calendar = initCalendar({
                   events: [
-                    makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00')
-                  ]
+                    makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00'),
+                  ],
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-17T02:00:00',
                   endDate: '2015-10-17T06:00:00',
                   isStart: true,
-                  isEnd: true
+                  isEnd: true,
                 })
               })
 
-              it('renders correctly when event starts early', function() {
+              it('renders correctly when event starts early', () => {
                 let calendar = initCalendar({
                   events: [
-                    makeEvent('event1', '2015-10-16T22:00:00', '2015-10-17T06:00:00')
-                  ]
+                    makeEvent('event1', '2015-10-16T22:00:00', '2015-10-17T06:00:00'),
+                  ],
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-17T00:00:00',
                   endDate: '2015-10-17T06:00:00',
                   isStart: false,
-                  isEnd: true
+                  isEnd: true,
                 })
               })
 
-              it('renders correctly when event ends late', function() {
+              it('renders correctly when event ends late', () => {
                 let calendar = initCalendar({
                   events: [
-                    makeEvent('event1', '2015-10-17T02:00:00', '2015-10-18T02:00:00')
-                  ]
+                    makeEvent('event1', '2015-10-17T02:00:00', '2015-10-18T02:00:00'),
+                  ],
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-17T02:00:00',
                   endDate: '2015-10-18T00:00:00',
                   isStart: true,
-                  isEnd: false
+                  isEnd: false,
                 })
               })
 
-              it('renders correctly when event starts/ends outside', function() {
+              it('renders correctly when event starts/ends outside', () => {
                 let calendar = initCalendar({
                   events: [
-                    makeEvent('event1', '2015-10-16T22:00:00', '2015-10-18T02:00:00')
-                  ]
+                    makeEvent('event1', '2015-10-16T22:00:00', '2015-10-18T02:00:00'),
+                  ],
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-17T00:00:00',
                   endDate: '2015-10-18T00:00:00',
                   isStart: false,
-                  isEnd: false
+                  isEnd: false,
                 })
               })
 
               // slotMinTime/slotMaxTime
               if (!eventDisplay) { // non-background, for faster tests
-
-                it('doesn\'t render when on same day before slotMinTime', function() {
+                it('doesn\'t render when on same day before slotMinTime', () => {
                   initCalendar({
                     slotMinTime: '09:00',
                     events: [
-                      makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T09:00:00')
-                    ]
+                      makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T09:00:00'),
+                    ],
                   })
                   expect($('.event1').length).toBe(0)
                 })
 
-                it('renders correctly when on different day, cropped by slotMinTime', function() {
+                it('renders correctly when on different day, cropped by slotMinTime', () => {
                   let calendar = initCalendar({
                     slotMinTime: '03:00',
                     events: [
-                      makeEvent('event1', '2015-10-16T12:00:00', '2015-10-17T06:00:00')
-                    ]
+                      makeEvent('event1', '2015-10-16T12:00:00', '2015-10-17T06:00:00'),
+                    ],
                   })
                   expectEventRendering(calendar, 'event1', {
                     startDate: '2015-10-17T03:00:00',
                     endDate: '2015-10-17T06:00:00',
                     isStart: false,
-                    isEnd: true
+                    isEnd: true,
                   })
                 })
 
-                it('renders correctly when on same day, cropped by slotMinTime', function() {
+                it('renders correctly when on same day, cropped by slotMinTime', () => {
                   let calendar = initCalendar({
                     slotMinTime: '03:00',
                     events: [
-                      makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00')
-                    ]
+                      makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00'),
+                    ],
                   })
                   expectEventRendering(calendar, 'event1', {
                     startDate: '2015-10-17T03:00:00',
                     endDate: '2015-10-17T06:00:00',
                     isStart: false,
-                    isEnd: true
+                    isEnd: true,
                   })
                 })
 
-                it('doesn\'t render when on same day after slotMaxTime', function() {
+                it('doesn\'t render when on same day after slotMaxTime', () => {
                   initCalendar({
                     scrollTime: '24:00', // the most possible
                     slotMaxTime: '18:00',
                     events: [
-                      makeEvent('event1', '2015-10-17T18:00:00', '2015-10-17T23:00:00')
-                    ]
+                      makeEvent('event1', '2015-10-17T18:00:00', '2015-10-17T23:00:00'),
+                    ],
                   })
                   expect($('.event1').length).toBe(0)
                 })
 
-                it('renders correctly when end on different day, cropped by slotMaxTime', function() {
+                it('renders correctly when end on different day, cropped by slotMaxTime', () => {
                   let calendar = initCalendar({
                     scrollTime: '24:00', // the most possible
                     slotMaxTime: '21:00', // last slot will be 8pm-9pm
                     events: [
-                      makeEvent('event1', '2015-10-17T19:00:00', '2015-10-18T02:00:00')
-                    ]
+                      makeEvent('event1', '2015-10-17T19:00:00', '2015-10-18T02:00:00'),
+                    ],
                   })
                   expectEventRendering(calendar, 'event1', {
                     startDate: '2015-10-17T19:00:00',
                     endDate: '2015-10-17T21:00:00',
                     isStart: true,
-                    isEnd: false
+                    isEnd: false,
                   })
                 })
 
-                it('renders correctly when end on same day, cropped by slotMaxTime', function() {
+                it('renders correctly when end on same day, cropped by slotMaxTime', () => {
                   let calendar = initCalendar({
                     scrollTime: '24:00', // the most possible
                     slotMaxTime: '18:00', // last slot will be 5pm-6pm
                     events: [
-                      makeEvent('event1', '2015-10-17T12:00:00', '2015-10-17T22:00:00')
-                    ]
+                      makeEvent('event1', '2015-10-17T12:00:00', '2015-10-17T22:00:00'),
+                    ],
                   })
                   expectEventRendering(calendar, 'event1', {
                     startDate: '2015-10-17T12:00:00',
                     endDate: '2015-10-17T18:00:00',
                     isStart: true,
-                    isEnd: false
+                    isEnd: false,
                   })
                 })
 
-                it('doesn\'t render when on dead zone between two days', function() {
+                it('doesn\'t render when on dead zone between two days', () => {
                   initCalendar({
                     slotMinTime: '09:00',
                     slotMaxTime: '17:00', // on the 17th
@@ -192,12 +187,12 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                     views: {
                       timelineTwoDay: {
                         type: resources ? 'resourceTimeline' : 'timeline',
-                        duration: { days: 2 }
-                      }
+                        duration: { days: 2 },
+                      },
                     },
                     events: [
-                      makeEvent('event1', '2015-10-17T17:00:00', '2015-10-18T09:00:00')
-                    ]
+                      makeEvent('event1', '2015-10-17T17:00:00', '2015-10-18T09:00:00'),
+                    ],
                   })
                   expect($('.event1').length).toBe(0)
                 })
@@ -205,48 +200,47 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
             })
 
             if (resources && !eventDisplay) { // speedup
-
-              it('renders events within exaggerated slotMaxTime', function() {
+              it('renders events within exaggerated slotMaxTime', () => {
                 let calendar = initCalendar({
                   slotMinTime: '09:00',
                   slotMaxTime: '28:00',
                   events: [
-                    makeEvent('event1', '2015-10-17T08:00:00', '2015-10-18T02:00:00')
+                    makeEvent('event1', '2015-10-17T08:00:00', '2015-10-18T02:00:00'),
                   ],
-                  scrollTime: '24:00'
+                  scrollTime: '24:00',
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-17T09:00:00',
                   endDate: '2015-10-18T02:00:00',
                   isStart: false,
-                  isEnd: true
+                  isEnd: true,
                 })
               })
 
-              it('renders events past an exaggerated slotMaxTime', function() {
+              it('renders events past an exaggerated slotMaxTime', () => {
                 let calendar = initCalendar({
                   slotMinTime: '09:00',
                   slotMaxTime: '28:00',
                   events: [
-                    makeEvent('event1', '2015-10-17T08:00:00', '2015-10-18T05:00:00')
-                  ]
+                    makeEvent('event1', '2015-10-17T08:00:00', '2015-10-18T05:00:00'),
+                  ],
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-17T09:00:00',
                   endDate: '2015-10-18T04:00:00',
                   isStart: false,
-                  isEnd: false
+                  isEnd: false,
                 })
               })
             }
 
             if (!eventDisplay) { // non-background
-              it('render stacked events by duration', function() {
+              it('render stacked events by duration', () => {
                 initCalendar({
                   events: [
                     makeEvent('event1', '2015-10-17T02:00:00', '2015-10-17T06:00:00'),
-                    makeEvent('event2', '2015-10-17T02:00:00', '2015-10-17T08:00:00')
-                  ]
+                    makeEvent('event2', '2015-10-17T02:00:00', '2015-10-17T08:00:00'),
+                  ],
                 })
                 let event1El = $('.event1')
                 let event2El = $('.event2')
@@ -257,7 +251,7 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
             }
 
             if (resources && eventDisplay === 'background') {
-              it('renders background events with no resource', function() {
+              it('renders background events with no resource', () => {
                 let calendar = initCalendar({
                   events: [
                     {
@@ -265,15 +259,15 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                       className: 'event1',
                       display: eventDisplay,
                       start: '2015-10-17T02:00:00',
-                      end: '2015-10-17T06:00:00'
-                    }
-                  ]
+                      end: '2015-10-17T06:00:00',
+                    },
+                  ],
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-17T02:00:00',
                   endDate: '2015-10-17T06:00:00',
                   isStart: true,
-                  isEnd: true
+                  isEnd: true,
                 })
 
                 let eventEl = $('.event1')[0]
@@ -281,7 +275,6 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                 expect(eventEl.offsetHeight).toBeCloseTo(canvasEl.offsetHeight)
               })
             }
-
           })
 
           /*
@@ -290,177 +283,174 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
           SO, DISABLE TESTS, BUT FIX LATER
           */
           if (eventDisplay !== 'inverse-background') {
-
-            describe('when day scale', function() {
-
+            describe('when day scale', () => {
               pushOptions({
                 initialView: 'timeline3Week',
                 views: {
                   timeline3Week: {
                     type: resources ? 'resourceTimeline' : 'timeline',
                     duration: { weeks: 3 },
-                    slotDuration: { days: 1 }
-                  }
-                }
+                    slotDuration: { days: 1 },
+                  },
+                },
               })
 
-              it('renders correctly when event fits completely', function() {
+              it('renders correctly when event fits completely', () => {
                 let calendar = initCalendar({
                   events: [
-                    makeEvent('event1', '2015-10-16', '2015-10-18')
-                  ]
+                    makeEvent('event1', '2015-10-16', '2015-10-18'),
+                  ],
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-16',
                   endDate: '2015-10-18',
                   isStart: true,
-                  isEnd: true
+                  isEnd: true,
                 })
               })
 
-              it('renders correctly when event starts is before', function() {
+              it('renders correctly when event starts is before', () => {
                 let calendar = initCalendar({
                   events: [
-                    makeEvent('event1', '2015-10-10', '2015-10-18')
-                  ]
+                    makeEvent('event1', '2015-10-10', '2015-10-18'),
+                  ],
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-11',
                   endDate: '2015-10-18',
                   isStart: false,
-                  isEnd: true
+                  isEnd: true,
                 })
               })
 
-              it('renders correctly when event end is after', function() {
+              it('renders correctly when event end is after', () => {
                 let calendar = initCalendar({
                   events: [
-                    makeEvent('event1', '2015-10-18', '2015-11-18')
-                  ]
+                    makeEvent('event1', '2015-10-18', '2015-11-18'),
+                  ],
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-18',
                   endDate: '2015-11-01',
                   isStart: true,
-                  isEnd: false
+                  isEnd: false,
                 })
               })
 
-              it('renders correctly when start/end is outside', function() {
+              it('renders correctly when start/end is outside', () => {
                 let calendar = initCalendar({
                   events: [
-                    makeEvent('event1', '2015-09-18', '2015-11-18')
-                  ]
+                    makeEvent('event1', '2015-09-18', '2015-11-18'),
+                  ],
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-11',
                   endDate: '2015-11-01',
                   isStart: false,
-                  isEnd: false
+                  isEnd: false,
                 })
               })
 
-              it('renders correctly when start/end is timed on same day', function() {
+              it('renders correctly when start/end is timed on same day', () => {
                 let calendar = initCalendar({
                   events: [
-                    makeEvent('event1', '2015-10-16T04:00:00', '2015-10-16T05:00:00')
-                  ]
+                    makeEvent('event1', '2015-10-16T04:00:00', '2015-10-16T05:00:00'),
+                  ],
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-16',
                   endDate: '2015-10-17',
                   isStart: true,
-                  isEnd: true
+                  isEnd: true,
                 })
               })
 
-              it('renders correctly when end time is before nextDayThreshold', function() {
+              it('renders correctly when end time is before nextDayThreshold', () => {
                 let calendar = initCalendar({
                   nextDayThreshold: '02:00', // 2am
                   events: [
-                    makeEvent('event1', '2015-10-16T04:00:00', '2015-10-18T01:00:00')
-                  ]
+                    makeEvent('event1', '2015-10-16T04:00:00', '2015-10-18T01:00:00'),
+                  ],
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-16',
                   endDate: '2015-10-18',
                   isStart: true,
-                  isEnd: true
+                  isEnd: true,
                 })
               })
 
-              it('renders correctly when end time is after nextDayThreshold', function() {
+              it('renders correctly when end time is after nextDayThreshold', () => {
                 let calendar = initCalendar({
                   nextDayThreshold: '02:00', // 2am
                   events: [
-                    makeEvent('event1', '2015-10-16T04:00:00', '2015-10-18T03:00:00')
-                  ]
+                    makeEvent('event1', '2015-10-16T04:00:00', '2015-10-18T03:00:00'),
+                  ],
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-16',
                   endDate: '2015-10-19',
                   isStart: true,
-                  isEnd: true
+                  isEnd: true,
                 })
               })
 
               // https://github.com/fullcalendar/fullcalendar-scheduler/issues/151
-              it('renders correctly when slotMinTime/slotMaxTime', function() {
+              it('renders correctly when slotMinTime/slotMaxTime', () => {
                 let calendar = initCalendar({
                   slotMinTime: '09:00',
                   slotMaxTime: '17:00',
                   events: [
-                    makeEvent('event1', '2015-10-16', '2015-10-18')
-                  ]
+                    makeEvent('event1', '2015-10-16', '2015-10-18'),
+                  ],
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-16',
                   endDate: '2015-10-18',
                   isStart: true,
-                  isEnd: true
+                  isEnd: true,
                 })
               })
             })
 
-            describe('when week scale', function() {
-
+            describe('when week scale', () => {
               pushOptions({
                 initialView: 'timeline52Weeks',
                 views: {
                   timeline52Weeks: {
                     type: resources ? 'resourceTimeline' : 'timeline',
                     duration: { weeks: 52 },
-                    slotDuration: { weeks: 1 }
-                  }
+                    slotDuration: { weeks: 1 },
+                  },
                 },
-                slotLabelFormat: { month: 'numeric', day: 'numeric' }
+                slotLabelFormat: { month: 'numeric', day: 'numeric' },
               })
 
-              it('renders correctly when aligns with weeks', function() {
+              it('renders correctly when aligns with weeks', () => {
                 let calendar = initCalendar({
                   events: [
-                    makeEvent('event1', '2015-10-18', '2015-11-15')
-                  ]
+                    makeEvent('event1', '2015-10-18', '2015-11-15'),
+                  ],
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-18',
                   endDate: '2015-11-15',
                   isStart: true,
-                  isEnd: true
+                  isEnd: true,
                 })
               })
 
-              it('renders correctly when mis-aligned with weeks', function() {
+              it('renders correctly when mis-aligned with weeks', () => {
                 let calendar = initCalendar({
                   events: [
-                    makeEvent('event1', '2015-10-19', '2015-11-17')
-                  ]
+                    makeEvent('event1', '2015-10-19', '2015-11-17'),
+                  ],
                 })
                 expectEventRendering(calendar, 'event1', {
                   startDate: '2015-10-18',
                   endDate: '2015-11-22',
                   isStart: true,
-                  isEnd: true
+                  isEnd: true,
                 })
               })
             })
@@ -471,7 +461,6 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
           --------------------------------------------------------------------------------------------
           */
 
-
           function makeEvent(name, start, end) {
             return {
               title: name,
@@ -479,10 +468,9 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
               display: eventDisplay,
               resourceId: (resources != null ? resources[0].id : undefined),
               start,
-              end
+              end,
             }
           }
-
 
           function expectEventRendering(calendar, eventClassName, options) {
             let viewWrapper = new ViewWrapper(calendar)
@@ -505,7 +493,6 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
             }
           }
 
-
           function getEventEdges($eventEls, canvasEl) { // gives start/end. fake-fills trailing gap
             let isBg = Boolean(eventDisplay)
             let edges
@@ -518,20 +505,18 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
 
             if (direction === 'rtl') {
               return { start: edges.right, end: edges.left - (isBg ? 0 : 1) }
-            } else {
-              return { start: edges.left, end: edges.right + (isBg ? 0 : 1) }
             }
-          }
 
+            return { start: edges.left, end: edges.right + (isBg ? 0 : 1) }
+          }
 
           function getNormalEventEdges($eventEls) {
             expect($eventEls.length).toBe(1)
             return {
               left: $eventEls.offset().left,
-              right: $eventEls.offset().left + $eventEls.outerWidth()
+              right: $eventEls.offset().left + $eventEls.outerWidth(),
             }
           }
-
 
           function getInverseBackgroundEventEdges($eventEls, canvasEl) {
             expect($eventEls.length).toBeLessThan(3)
@@ -539,15 +524,14 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
               if (direction === 'ltr') {
                 return {
                   left: $eventEls.eq(0).offset().left + $eventEls.eq(0).outerWidth(),
-                  right: $eventEls.eq(1).offset().left
-                }
-              } else {
-                return {
-                  left: $eventEls.eq(1).offset().left + $eventEls.eq(1).outerWidth(),
-                  right: $eventEls.eq(0).offset().left
+                  right: $eventEls.eq(1).offset().left,
                 }
               }
-            } else {
+                return {
+                  left: $eventEls.eq(1).offset().left + $eventEls.eq(1).outerWidth(),
+                  right: $eventEls.eq(0).offset().left,
+                }
+            }
               let $canvasEl = $(canvasEl)
               let canvasLeft = $canvasEl.offset().left
               let canvasRight = canvasLeft + $canvasEl.outerWidth()
@@ -561,47 +545,43 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
                 if (leftGap > rightGap) {
                   return {
                     left: canvasLeft,
-                    right: eventLeft
+                    right: eventLeft,
                   }
-                } else {
+                }
                   return {
                     left: eventRight,
-                    right: canvasRight
+                    right: canvasRight,
                   }
-                }
-              } else {
+              }
                 return {
                   left: canvasLeft,
-                  right: canvasRight
+                  right: canvasRight,
                 }
-              }
-            }
           }
-
         })
       })
     })
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5413
-  it('doesn\'t collide when events are different heights', function() {
+  it('doesn\'t collide when events are different heights', () => {
     let calendar = initCalendar({
       initialView: 'timelineDay',
       initialDate: '2020-05-12',
       slotMinTime: '08:00:00',
       events: [
         { id: '2', resourceId: 'b', start: '2020-05-12T08:00:00', end: '2020-05-12T22:00:00', title: 'event 2' },
-        { id: '3', resourceId: 'b', start: '2020-05-12T09:00:00', end: '2020-05-12T22:00:00', title: 'event 3' }
+        { id: '3', resourceId: 'b', start: '2020-05-12T09:00:00', end: '2020-05-12T22:00:00', title: 'event 3' },
       ],
-      eventContent: function(arg) {
-        var innerHTML = arg.event.title
+      eventContent(arg) {
+        let innerHTML = arg.event.title
         if (arg.event.id === '2') {
-          innerHTML += '<br><br><br><br>';
+          innerHTML += '<br><br><br><br>'
         } else {
-          innerHTML += '<br><br>';
+          innerHTML += '<br><br>'
         }
         return { html: '<div class="fc-event-description">' + innerHTML + '</div>' }
-      }
+      },
     })
     let timelineGridWrapper = new TimelineViewWrapper(calendar).timelineGrid
     let eventEls = timelineGridWrapper.getEventEls()
@@ -610,23 +590,23 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
 
   // https://github.com/fullcalendar/fullcalendar/issues/5549
   // repro that doesn't need zoom: https://codepen.io/arshaw/pen/NWxvjwv?editable=true&editors=001
-  it('condenses events even when left/right are not computed as integers', function() {
+  it('condenses events even when left/right are not computed as integers', () => {
     let calendar = initCalendar({
       initialDate: '2018-12-13',
       initialView: 'resourceTimelineTenDay',
       views: {
         resourceTimelineTenDay: {
           type: 'resourceTimeline',
-          duration: { days: 10 }
-        }
+          duration: { days: 10 },
+        },
       },
       resources: [
-        { id: 'a', title: 'Auditorium A'}
+        { id: 'a', title: 'Auditorium A' },
       ],
       events: [
         { id: '3', resourceId: 'a', start: '2018-12-13T08:00:00.2052265', end: '2018-12-13T10:00:04.2052265', title: 'Event 3' },
-        { id: '4', resourceId: 'a', start: '2018-12-13T07:00:00.2052265', end: '2018-12-13T08:00:04.2052265', title: 'Verry verry verry  long named event' }
-      ]
+        { id: '4', resourceId: 'a', start: '2018-12-13T07:00:00.2052265', end: '2018-12-13T08:00:04.2052265', title: 'Verry verry verry  long named event' },
+      ],
     })
     let timelineGridWrapper = new TimelineViewWrapper(calendar).timelineGrid
     let eventEls = timelineGridWrapper.getEventEls()
@@ -634,5 +614,4 @@ describe('timeline event rendering', function() { // TAKE A REALLY LONG TIME B/C
     let eventTop1 = eventEls[1].getBoundingClientRect().top
     expect(Math.abs(eventTop0 - eventTop1)).toBeLessThan(1)
   })
-
 })

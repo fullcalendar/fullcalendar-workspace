@@ -1,60 +1,57 @@
-import { TimelineViewWrapper } from "../lib/wrappers/TimelineViewWrapper"
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 import { CalendarWrapper } from 'fullcalendar-tests/src/lib/wrappers/CalendarWrapper'
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 // TODO: do resizing from the start
 // TODO: more tests when slotDuration=1week, no event end. resize behavior?
 
-describe('timeline event resizing', function() {
+describe('timeline event resizing', () => {
   pushOptions({
     now: '2015-11-28',
     scrollTime: '00:00',
     editable: true,
     resources: [
       { id: 'a', title: 'Resource A' },
-      { id: 'b', title: 'Resource B' }
-    ]
+      { id: 'b', title: 'Resource B' },
+    ],
   })
 
   describeOptions('direction', {
-    'LTR': 'ltr',
-    'RTL': 'rtl'
-  }, function(direction) {
-
-    describeTimeZones(function(tz) {
-
-      describe('when time scale', function() {
+    LTR: 'ltr',
+    RTL: 'rtl',
+  }, (direction) => {
+    describeTimeZones((tz) => {
+      describe('when time scale', () => {
         pushOptions({
-          initialView: 'resourceTimelineDay'
+          initialView: 'resourceTimelineDay',
         })
 
-        describe('when snap matches slots', function() {
-
-          describe('when no resources', function() {
+        describe('when snap matches slots', () => {
+          describe('when no resources', () => {
             pushOptions({
-              initialView: 'timelineDay'
+              initialView: 'timelineDay',
             })
 
-            it('reports resize with no resource', function(done) {
+            it('reports resize with no resource', (done) => {
               let resizeSpy
               let calendar = initCalendar({
                 events: [
-                  { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00' }
+                  { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00' },
                 ],
                 eventResize:
-                  (resizeSpy = spyCall(function(arg) {
+                  (resizeSpy = spyCall((arg) => {
                     expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
                     expect(arg.event.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
 
                     let resources = arg.event.getResources()
                     expect(resources.length).toBe(0)
-                  }))
+                  })),
               })
 
               let timelineGridWrapper = new TimelineViewWrapper(calendar).timelineGrid
               timelineGridWrapper.resizeEvent(
                 $('.event1')[0],
-                '2015-11-28T07:30:00'
+                '2015-11-28T07:30:00',
               ).then(() => {
                 expect(resizeSpy).toHaveBeenCalled()
                 expect(timelineGridWrapper.getHighlightEls().length).toBe(0) // TODO: move to its own test
@@ -63,28 +60,27 @@ describe('timeline event resizing', function() {
             })
           })
 
-          describe('when resources', function() {
-
-            it('reports resize on a resource', function(done) {
+          describe('when resources', () => {
+            it('reports resize on a resource', (done) => {
               let resizeSpy
               let calendar = initCalendar({
                 events: [
-                  { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
+                  { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' },
                 ],
                 eventResize:
-                  (resizeSpy = spyCall(function(arg) {
+                  (resizeSpy = spyCall((arg) => {
                     expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
                     expect(arg.event.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
 
                     let resources = arg.event.getResources()
                     expect(resources.length).toBe(1)
                     expect(resources[0].id).toBe('b')
-                  }))
+                  })),
               })
 
               let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
               timelineGridWrapper.resizeEvent(
-                $('.event1')[0], 'b', '2015-11-28T07:30:00'
+                $('.event1')[0], 'b', '2015-11-28T07:30:00',
               ).then(() => {
                 expect(resizeSpy).toHaveBeenCalled()
                 expect(timelineGridWrapper.getHighlightEls().length).toBe(0) // TODO: move to its own test
@@ -92,52 +88,52 @@ describe('timeline event resizing', function() {
               })
             })
 
-            it('reports resize across resources', function(done) {
+            it('reports resize across resources', (done) => {
               let resizeSpy
               let calendar = initCalendar({
                 events: [
-                  { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
+                  { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' },
                 ],
                 eventResize:
-                  (resizeSpy = spyCall(function(arg) {
+                  (resizeSpy = spyCall((arg) => {
                     expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
                     expect(arg.event.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
 
                     let resources = arg.event.getResources()
                     expect(resources.length).toBe(1)
                     expect(resources[0].id).toBe('b')
-                  }))
+                  })),
               })
 
               let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
               timelineGridWrapper.resizeEvent(
-                $('.event1')[0], 'a', '2015-11-28T07:30:00'
+                $('.event1')[0], 'a', '2015-11-28T07:30:00',
               ).then(() => {
                 expect(resizeSpy).toHaveBeenCalled()
                 done()
               })
             })
 
-            it('reports resize on one event of multiple resources', function(done) {
+            it('reports resize on one event of multiple resources', (done) => {
               let resizeSpy
               let calendar = initCalendar({
                 events: [
-                  { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceIds: [ 'a', 'b' ] }
+                  { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceIds: ['a', 'b'] },
                 ],
                 eventResize:
-                  (resizeSpy = spyCall(function(arg) {
+                  (resizeSpy = spyCall((arg) => {
                     expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
                     expect(arg.event.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
 
                     let resourceIds = arg.event.getResources().map((resource) => resource.id)
                     resourceIds.sort()
-                    expect(resourceIds).toEqual([ 'a', 'b' ])
-                  }))
+                    expect(resourceIds).toEqual(['a', 'b'])
+                  })),
               })
 
               let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
               timelineGridWrapper.resizeEvent(
-                $('.event1:first')[0], 'a', '2015-11-28T07:30:00'
+                $('.event1:first')[0], 'a', '2015-11-28T07:30:00',
               ).then(() => {
                 expect(resizeSpy).toHaveBeenCalled()
                 done()
@@ -146,32 +142,32 @@ describe('timeline event resizing', function() {
           })
         })
 
-        describe('when snap smaller than slots', function() {
+        describe('when snap smaller than slots', () => {
           pushOptions({
             slotDuration: '00:30',
-            snapDuration: '00:15'
+            snapDuration: '00:15',
           })
 
-          it('reports a smaller granularity', function(done) {
+          it('reports a smaller granularity', (done) => {
             let resizeSpy
             let calendar = initCalendar({
               events: [
-                { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
+                { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' },
               ],
               eventResize:
-                (resizeSpy = spyCall(function(arg) {
+                (resizeSpy = spyCall((arg) => {
                   expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
                   expect(arg.event.end).toEqualDate(tz.parseDate('2015-11-28T07:45:00'))
 
                   let resources = arg.event.getResources()
                   expect(resources.length).toBe(1)
                   expect(resources[0].id).toBe('b')
-                }))
+                })),
             })
 
             let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
             timelineGridWrapper.resizeEvent(
-              $('.event1')[0], 'b', '2015-11-28T07:45:00'
+              $('.event1')[0], 'b', '2015-11-28T07:45:00',
             ).then(() => {
               expect(resizeSpy).toHaveBeenCalled()
               done()
@@ -181,23 +177,23 @@ describe('timeline event resizing', function() {
       })
     })
 
-    it('works with touch', function(done) {
+    it('works with touch', (done) => {
       let resizeSpy
       let calendar = initCalendar({
         longPressDelay: 100,
         initialView: 'resourceTimelineDay',
         events: [
-          { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' }
+          { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceId: 'b' },
         ],
         eventResize:
-          (resizeSpy = spyCall(function(arg) {
+          (resizeSpy = spyCall((arg) => {
             expect(arg.event.start).toEqualDate('2015-11-28T04:00:00Z')
             expect(arg.event.end).toEqualDate('2015-11-28T07:30:00Z')
 
             let resources = arg.event.getResources()
             expect(resources.length).toBe(1)
             expect(resources[0].id).toBe('b')
-          }))
+          })),
       })
 
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
@@ -213,42 +209,42 @@ describe('timeline event resizing', function() {
             isTouch: true,
             end: timelineGridWrapper.getPoint('b', '2015-11-28T07:00:00'),
             callback() {
-              setTimeout(function() { // for next test. won't ignore mousedown
+              setTimeout(() => { // for next test. won't ignore mousedown
                 expect(resizeSpy).toHaveBeenCalled()
                 done()
               }, 500)
-            }
+            },
           })
-        }
+        },
       })
     })
 
-    describe('when day scale', function() {
+    describe('when day scale', () => {
       pushOptions({
         initialView: 'resourceTimelineMonth',
-        slotDuration: { days: 1 }
+        slotDuration: { days: 1 },
       })
 
-      it('reports untimed dates', function(done) {
+      it('reports untimed dates', (done) => {
         let resizeSpy
         let calendar = initCalendar({
           events: [
-            { title: 'event1', className: 'event1', start: '2015-11-03', resourceId: 'a' }
+            { title: 'event1', className: 'event1', start: '2015-11-03', resourceId: 'a' },
           ],
           eventResize:
-            (resizeSpy = spyCall(function(arg) {
+            (resizeSpy = spyCall((arg) => {
               expect(arg.event.start).toEqualDate('2015-11-03')
               expect(arg.event.end).toEqualDate('2015-11-06')
 
               let resources = arg.event.getResources()
               expect(resources.length).toBe(1)
               expect(resources[0].id).toBe('a')
-            }))
+            })),
         })
 
         let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
         timelineGridWrapper.resizeEvent(
-          $('.event1')[0], 'a', '2015-11-06'
+          $('.event1')[0], 'a', '2015-11-06',
         ).then(() => {
           expect(resizeSpy).toHaveBeenCalled()
           done()
@@ -256,33 +252,33 @@ describe('timeline event resizing', function() {
       })
     })
 
-    describe('when week scale', function() {
+    describe('when week scale', () => {
       pushOptions({
         initialView: 'resourceTimelineYear',
         slotDuration: { weeks: 1 },
-        slotMinWidth: 50
+        slotMinWidth: 50,
       })
 
-      it('reports untimed dates', function(done) { // TODO: this is desired behavior when no end???
+      it('reports untimed dates', (done) => { // TODO: this is desired behavior when no end???
         let resizeSpy
         let calendar = initCalendar({
           events: [
-            { title: 'event1', className: 'event1', start: '2015-01-18', end: '2015-01-25', resourceId: 'a' }
+            { title: 'event1', className: 'event1', start: '2015-01-18', end: '2015-01-25', resourceId: 'a' },
           ],
           eventResize:
-            (resizeSpy = spyCall(function(arg) {
+            (resizeSpy = spyCall((arg) => {
               expect(arg.event.start).toEqualDate('2015-01-18')
               expect(arg.event.end).toEqualDate('2015-02-15')
 
               let resources = arg.event.getResources()
               expect(resources.length).toBe(1)
               expect(resources[0].id).toBe('a')
-            }))
+            })),
         })
 
         let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
         timelineGridWrapper.resizeEvent(
-          $('.event1')[0], 'a', '2015-02-15'
+          $('.event1')[0], 'a', '2015-02-15',
         ).then(() => {
           expect(resizeSpy).toHaveBeenCalled()
           done()
@@ -291,9 +287,8 @@ describe('timeline event resizing', function() {
     })
   })
 
-  describe('mirror', function() {
-
-    it('gets passed into render hooks', function(done) {
+  describe('mirror', () => {
+    it('gets passed into render hooks', (done) => {
       let mirrorMountCnt = 0
       let mirrorContentCnt = 0
       let mirrorUnmountCnt = 0
@@ -304,7 +299,7 @@ describe('timeline event resizing', function() {
         slotDuration: '01:00',
         snapDuration: '01:00',
         events: [
-          { start: '2015-11-28T01:00:00', end: '2015-11-28T02:00:00', resourceId: 'a' }
+          { start: '2015-11-28T01:00:00', end: '2015-11-28T02:00:00', resourceId: 'a' },
         ],
         eventDidMount(info) {
           if (info.isMirror) {
@@ -320,15 +315,14 @@ describe('timeline event resizing', function() {
           if (info.isMirror) {
             mirrorUnmountCnt++
           }
-        }
+        },
       })
 
       // move two slots
       let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
       timelineGridWrapper.resizeEvent(
-        timelineGridWrapper.getFirstEventEl(), 'a', '2015-11-28T04:00:00'
+        timelineGridWrapper.getFirstEventEl(), 'a', '2015-11-28T04:00:00',
       ).then(() => {
-
         expect(mirrorMountCnt).toBe(1)
         expect(mirrorContentCnt).toBe(3)
         expect(mirrorUnmountCnt).toBe(1)
@@ -337,5 +331,4 @@ describe('timeline event resizing', function() {
       })
     })
   })
-
 })

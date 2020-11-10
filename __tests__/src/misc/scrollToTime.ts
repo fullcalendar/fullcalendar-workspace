@@ -1,14 +1,13 @@
-import { TimelineViewWrapper } from "../lib/wrappers/TimelineViewWrapper"
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
-describe('scrollToTime method', function() {
-
-  describe('when in timeline', function() {
+describe('scrollToTime method', () => {
+  describe('when in timeline', () => {
     pushOptions({
       initialView: 'timelineMonth',
-      slotDuration: { hours: 12 }
+      slotDuration: { hours: 12 },
     })
 
-    it('can scroll to a date', function() {
+    it('can scroll to a date', () => {
       let calendar = initCalendar()
       currentCalendar.scrollToTime({ days: 2 })
 

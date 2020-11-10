@@ -3,42 +3,42 @@ import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
-describe('vresource structure', function() {
+describe('vresource structure', () => {
   pushOptions({
-    now: '2015-11-16'
+    now: '2015-11-16',
   })
 
   describeValues({
     'with resourceTimeGrid views': 'resourceTimeGrid',
-    'with resourceDayGrid views': 'resourceDayGrid'
-  }, function(baseViewType) {
+    'with resourceDayGrid views': 'resourceDayGrid',
+  }, (baseViewType) => {
     let ViewWrapper = baseViewType.match(/^resourceDayGrid/) ? ResourceDayGridViewWrapper : ResourceTimeGridViewWrapper
 
     pushOptions({
       views: {
         oneDay: { type: baseViewType, duration: { days: 1 } },
-        twoDay: { type: baseViewType, duration: { days: 2 } }
+        twoDay: { type: baseViewType, duration: { days: 2 } },
       },
       scrollTime: '00:00',
       resources: [
         { id: 'a', title: 'Resource A' },
         { id: 'b', title: 'Resource B' },
         { id: 'c', title: 'Resource C' },
-        { id: 'd', title: 'Resource D' }
-      ]
+        { id: 'd', title: 'Resource D' },
+      ],
     })
 
-    describe('when one-day', function() {
+    describe('when one-day', () => {
       pushOptions({
-        initialView: 'oneDay'
+        initialView: 'oneDay',
       })
 
-      describe('when LTR', function() {
+      describe('when LTR', () => {
         pushOptions({
-          direction: 'ltr'
+          direction: 'ltr',
         })
 
-        it('renders cells right-to-left', function() {
+        it('renders cells right-to-left', () => {
           let calendar = initCalendar()
           let viewWrapper = new ViewWrapper(calendar)
           let headerWrapper = viewWrapper.header
@@ -55,12 +55,12 @@ describe('vresource structure', function() {
         })
       })
 
-      describe('when RTL', function() {
+      describe('when RTL', () => {
         pushOptions({
-          direction: 'rtl'
+          direction: 'rtl',
         })
 
-        it('renders cells left-to-right', function() {
+        it('renders cells left-to-right', () => {
           let calendar = initCalendar()
           let viewWrapper = new ViewWrapper(calendar)
           let headerWrapper = viewWrapper.header
@@ -78,17 +78,17 @@ describe('vresource structure', function() {
       })
     })
 
-    describe('with two-day', function() {
+    describe('with two-day', () => {
       pushOptions({
-        initialView: 'twoDay'
+        initialView: 'twoDay',
       })
 
-      describe('when resources are above dates', function() {
+      describe('when resources are above dates', () => {
         pushOptions({
-          datesAboveResources: false
+          datesAboveResources: false,
         })
 
-        it('renders cells correctly', function() {
+        it('renders cells correctly', () => {
           let calendar = initCalendar()
           let viewWrapper = new ViewWrapper(calendar)
           let headerWrapper = viewWrapper.header
@@ -107,12 +107,12 @@ describe('vresource structure', function() {
         })
       })
 
-      describe('when dates are above resources', function() {
+      describe('when dates are above resources', () => {
         pushOptions({
-          datesAboveResources: true
+          datesAboveResources: true,
         })
 
-        it('renders cells correctly', function() {
+        it('renders cells correctly', () => {
           let calendar = initCalendar()
           let viewWrapper = new ViewWrapper(calendar)
           let headerWrapper = viewWrapper.header
@@ -133,14 +133,13 @@ describe('vresource structure', function() {
       })
     })
 
-    describe('when no groupBy settings specified', function() {
-
-      describe('when one-day', function() {
+    describe('when no groupBy settings specified', () => {
+      describe('when one-day', () => {
         pushOptions({
-          initialView: 'oneDay'
+          initialView: 'oneDay',
         })
 
-        it('renders resources columns', function() {
+        it('renders resources columns', () => {
           let calendar = initCalendar()
           let headerWrapper = new ViewWrapper(calendar).header
 
@@ -152,36 +151,35 @@ describe('vresource structure', function() {
       })
     })
 
-    describe('when delay in resource fetching', function() {
+    describe('when delay in resource fetching', () => {
       pushOptions({
         initialView: 'oneDay',
         resources(arg, callback) {
-          setTimeout(function() {
+          setTimeout(() => {
             callback([
               { id: 'a', title: 'Resource A' },
-              { id: 'b', title: 'Resource B' }
+              { id: 'b', title: 'Resource B' },
             ])
           }, 200)
-        }
+        },
       })
     })
   })
 
-  describe('when month view', function() {
+  describe('when month view', () => {
     pushOptions({
       initialView: 'resourceDayGridMonth',
       resources: [
         { id: 'a', title: 'Resource A' },
-        { id: 'b', title: 'Resource B' }
-      ]
+        { id: 'b', title: 'Resource B' },
+      ],
     })
 
     describeOptions('direction', {
       'when LTR': 'ltr',
-      'when RTL': 'rtl'
-    }, function(direction) {
-
-      it('renders side-by-side months', function() {
+      'when RTL': 'rtl',
+    }, (direction) => {
+      it('renders side-by-side months', () => {
         let calendar = initCalendar()
         let viewWrapper = new ResourceDayGridViewWrapper(calendar)
         let headerWrapper = viewWrapper.header
@@ -211,37 +209,36 @@ describe('vresource structure', function() {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/5684
-  it('resyncs header row heights when horizontal scrolling and dynamic resources', function(done) {
+  it('resyncs header row heights when horizontal scrolling and dynamic resources', (done) => {
     let calendar = initCalendar({
-      initialView:'resourceTimeGridWeek',
+      initialView: 'resourceTimeGridWeek',
       dayMinWidth: 350,
       weekNumbers: true, // i think this is necessary to recreate the bug too
       resources(info, callback) {
-        setTimeout(function() {
+        setTimeout(() => {
           callback([
-            { id: 'a', title: 'Resource A '},
-            { id: 'b', title: 'Resource B' }
+            { id: 'a', title: 'Resource A ' },
+            { id: 'b', title: 'Resource B' },
           ])
         }, 100)
-      }
+      },
     })
     let viewWrapper = new ResourceTimeGridViewWrapper(calendar)
 
-    setTimeout(function() {
+    setTimeout(() => {
       expect(
-        viewWrapper.getHeaderAxisTable().offsetHeight
+        viewWrapper.getHeaderAxisTable().offsetHeight,
       ).toBe(
-        viewWrapper.header.getRootTableEl().offsetHeight
+        viewWrapper.header.getRootTableEl().offsetHeight,
       )
 
       expect(
-        viewWrapper.getAllDayAxisTable().offsetHeight
+        viewWrapper.getAllDayAxisTable().offsetHeight,
       ).toBe(
-        viewWrapper.dayGrid.getRootTableEl().offsetHeight
+        viewWrapper.dayGrid.getRootTableEl().offsetHeight,
       )
 
       done()
     }, 200)
   })
-
 })

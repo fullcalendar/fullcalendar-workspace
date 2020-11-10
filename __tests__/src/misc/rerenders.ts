@@ -1,18 +1,17 @@
-
-describe('rerender performance for resource timeline', function() {
+describe('rerender performance for resource timeline', () => {
   pushOptions({
     initialDate: '2017-10-04',
     initialView: 'resourceTimelineDay',
     resources: [
-      { id: 'a', title: 'Resource A' }
+      { id: 'a', title: 'Resource A' },
     ],
     events: [
-      { title: 'event 0', start: '2017-10-04', resourceId: 'a' }
+      { title: 'event 0', start: '2017-10-04', resourceId: 'a' },
     ],
-    windowResizeDelay: 0
+    windowResizeDelay: 0,
   })
 
-  it('calls methods a limited number of times', function(done) {
+  it('calls methods a limited number of times', (done) => {
     let slotLabelMountCnt = 0
     let slotLabelClassNameCnt = 0
     let slotLabelRenderCnt = 0
@@ -46,7 +45,7 @@ describe('rerender performance for resource timeline', function() {
       },
       eventContent() {
         eventRenderCnt++
-      }
+      },
     })
 
     function resetCounts() {
@@ -102,8 +101,7 @@ describe('rerender performance for resource timeline', function() {
 
     resetCounts()
     $(window).simulate('resize')
-    setTimeout(function() {
-
+    setTimeout(() => {
       expect(slotLabelMountCnt).toBe(0)
       expect(slotLabelClassNameCnt).toBe(0)
       expect(slotLabelRenderCnt).toBe(0)
@@ -112,8 +110,6 @@ describe('rerender performance for resource timeline', function() {
       expect(resourceLaneRenderCnt).toBe(0)
       expect(eventRenderCnt).toBe(0)
       done()
-
     }, 1) // more than windowResizeDelay
   })
-
 })

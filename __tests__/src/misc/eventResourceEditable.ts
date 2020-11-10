@@ -1,7 +1,7 @@
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 import { waitEventDrag } from 'fullcalendar-tests/src/lib/wrappers/interaction-util'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
-describe('eventResourceEditable', function() {
+describe('eventResourceEditable', () => {
   pushOptions({
     now: '2016-09-04',
     initialView: 'resourceTimelineWeek',
@@ -9,45 +9,43 @@ describe('eventResourceEditable', function() {
     resources: [
       { id: 'a', title: 'Resource A' },
       { id: 'b', title: 'Resource B' },
-      { id: 'c', title: 'Resource C' }
-    ]
+      { id: 'c', title: 'Resource C' },
+    ],
   })
 
-  function buildEvent(extra) {
-    if (extra == null) { extra = {} }
+  function buildEvent(extra = {}) {
     return $.extend({
       title: 'event 1',
       start: '2016-09-04T01:00:00',
-      resourceId: 'b'
+      resourceId: 'b',
     }, extra)
   }
 
-  describe('when dates ARE draggable but resource is NOT', function() {
+  describe('when dates ARE draggable but resource is NOT', () => {
     pushOptions({
-      editable: true
+      editable: true,
     })
 
     describeOptions({
       'via master property': {
         eventResourceEditable: false,
-        events: [ buildEvent() ]
+        events: [buildEvent()],
       },
       'via event source property': {
-        eventSources: [ {
+        eventSources: [{
           resourceEditable: false,
-          events: [ buildEvent() ]
-        } ]
+          events: [buildEvent()],
+        }],
       },
       'via event property': {
-        events: [ buildEvent({ resourceEditable: false }) ]
-      }
-    }, function() {
-
-      it('keeps within resource while dragging', function(done) {
+        events: [buildEvent({ resourceEditable: false })],
+      },
+    }, () => {
+      it('keeps within resource while dragging', (done) => {
         let calendar = initCalendar()
         let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
         let dragging = timelineGridWrapper.dragEventTo(
-          timelineGridWrapper.getFirstEventEl(), 'c', '2016-09-04T03:00:00'
+          timelineGridWrapper.getFirstEventEl(), 'c', '2016-09-04T03:00:00',
         )
 
         waitEventDrag(calendar, dragging).then((modifiedEvent) => {
@@ -60,32 +58,31 @@ describe('eventResourceEditable', function() {
     })
   })
 
-  describe('when dates are NOT draggable but resource IS', function() {
+  describe('when dates are NOT draggable but resource IS', () => {
     pushOptions({
-      editable: false
+      editable: false,
     })
 
     describeOptions({
       'via master property': {
         eventResourceEditable: true,
-        events: [ buildEvent() ]
+        events: [buildEvent()],
       },
       'via event source property': {
-        eventSources: [ {
+        eventSources: [{
           resourceEditable: true,
-          events: [ buildEvent() ]
-        } ]
+          events: [buildEvent()],
+        }],
       },
       'via event property': {
-        events: [ buildEvent({ resourceEditable: true }) ]
-      }
-    }, function() {
-
-      it('keeps within resource while dragging', function(done) {
+        events: [buildEvent({ resourceEditable: true })],
+      },
+    }, () => {
+      it('keeps within resource while dragging', (done) => {
         let calendar = initCalendar()
         let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
         let dragging = timelineGridWrapper.dragEventTo(
-          timelineGridWrapper.getFirstEventEl(), 'c', '2016-09-04T03:00:00'
+          timelineGridWrapper.getFirstEventEl(), 'c', '2016-09-04T03:00:00',
         )
 
         waitEventDrag(calendar, dragging).then((modifiedEvent) => {

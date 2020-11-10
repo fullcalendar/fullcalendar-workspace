@@ -1,27 +1,27 @@
 import { getLeadingBoundingRect, sortBoundingRects } from 'fullcalendar-tests/src/lib/dom-geom'
 import { DayGridViewWrapper } from 'fullcalendar-tests/src/lib/wrappers/DayGridViewWrapper'
 
-describe('dayGrid-view dateClick', function() {
+describe('dayGrid-view dateClick', () => {
   pushOptions({
     now: '2015-11-28',
     resources: [
       { id: 'a', title: 'Resource A' },
-      { id: 'b', title: 'Resource B' }
+      { id: 'b', title: 'Resource B' },
     ],
     views: {
       resourceDayGridThreeDay: {
         type: 'resourceDayGrid',
-        duration: { days: 3 }
-      }
-    }
+        duration: { days: 3 },
+      },
+    },
   })
 
-  describe('when there are no resource columns', function() {
+  describe('when there are no resource columns', () => {
     pushOptions({
-      initialView: 'dayGridWeek'
+      initialView: 'dayGridWeek',
     })
 
-    it('allows non-resource clicks', function(done) {
+    it('allows non-resource clicks', (done) => {
       let dateClickCalled = false
       let calendar = initCalendar({
         dateClick(arg) {
@@ -30,7 +30,7 @@ describe('dayGrid-view dateClick', function() {
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
           expect(arg.resource).toBeFalsy()
-        }
+        },
       })
 
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
@@ -41,17 +41,17 @@ describe('dayGrid-view dateClick', function() {
         callback() {
           expect(dateClickCalled).toBe(true)
           done()
-        }
+        },
       })
     })
   })
 
-  describe('with resource columns above date columns', function() {
+  describe('with resource columns above date columns', () => {
     pushOptions({
-      initialView: 'resourceDayGridThreeDay'
+      initialView: 'resourceDayGridThreeDay',
     })
 
-    it('allows a resource click', function(done) {
+    it('allows a resource click', (done) => {
       let dateClickCalled = false
       let calendar = initCalendar({
         dateClick(arg) {
@@ -60,7 +60,7 @@ describe('dayGrid-view dateClick', function() {
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
           expect(arg.resource.id).toBe('a')
-        }
+        },
       })
 
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
@@ -70,18 +70,18 @@ describe('dayGrid-view dateClick', function() {
         callback() {
           expect(dateClickCalled).toBe(true)
           done()
-        }
+        },
       })
     })
   })
 
-  describe('with date columns above resource columns', function() {
+  describe('with date columns above resource columns', () => {
     pushOptions({
       initialView: 'resourceDayGridThreeDay',
-      datesAboveResources: true
+      datesAboveResources: true,
     })
 
-    it('allows a resource click', function(done) {
+    it('allows a resource click', (done) => {
       let dateClickCalled = false
       let calendar = initCalendar({
         dateClick(arg) {
@@ -90,7 +90,7 @@ describe('dayGrid-view dateClick', function() {
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
           expect(arg.resource.id).toBe('b')
-        }
+        },
       })
 
       let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
@@ -101,7 +101,7 @@ describe('dayGrid-view dateClick', function() {
         callback() {
           expect(dateClickCalled).toBe(true)
           done()
-        }
+        },
       })
     })
   })

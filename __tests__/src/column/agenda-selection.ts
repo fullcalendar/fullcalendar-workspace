@@ -2,29 +2,29 @@ import { TimeGridViewWrapper } from 'fullcalendar-tests/src/lib/wrappers/TimeGri
 import { waitDateSelect } from 'fullcalendar-tests/src/lib/wrappers/interaction-util'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
-describe('timeGrid-view selection', function() {
+describe('timeGrid-view selection', () => {
   pushOptions({
     now: '2015-11-28',
     scrollTime: '00:00',
     selectable: true,
     resources: [
       { id: 'a', title: 'Resource A' },
-      { id: 'b', title: 'Resource B' }
+      { id: 'b', title: 'Resource B' },
     ],
     views: {
       resourceTimeGridThreeDay: {
         type: 'resourceTimeGrid',
-        duration: { days: 3 }
-      }
-    }
+        duration: { days: 3 },
+      },
+    },
   })
 
-  describe('when there are no resource columns', function() {
+  describe('when there are no resource columns', () => {
     pushOptions({
-      initialView: 'timeGridWeek'
+      initialView: 'timeGridWeek',
     })
 
-    it('allows non-resource selection', function(done) {
+    it('allows non-resource selection', (done) => {
       let calendar = initCalendar()
       let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
       let selecting = timeGridWrapper.selectDates('2015-11-23T02:00:00', '2015-11-23T04:30:00')
@@ -40,12 +40,12 @@ describe('timeGrid-view selection', function() {
     })
   })
 
-  describe('with resource columns above date columns', function() {
+  describe('with resource columns above date columns', () => {
     pushOptions({
-      initialView: 'resourceTimeGridThreeDay'
+      initialView: 'resourceTimeGridThreeDay',
     })
 
-    it('allows a same-day resource selection', function(done) {
+    it('allows a same-day resource selection', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
         select(arg) {
@@ -55,7 +55,7 @@ describe('timeGrid-view selection', function() {
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
           expect(arg.resource.id).toBe('b')
-        }
+        },
       })
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
@@ -65,11 +65,11 @@ describe('timeGrid-view selection', function() {
         callback() {
           expect(selectCalled).toBe(true)
           done()
-        }
+        },
       })
     })
 
-    it('allows a different-day resource selection', function(done) {
+    it('allows a different-day resource selection', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
         select(arg) {
@@ -79,7 +79,7 @@ describe('timeGrid-view selection', function() {
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
           expect(arg.resource.id).toBe('b')
-        }
+        },
       })
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
@@ -89,16 +89,16 @@ describe('timeGrid-view selection', function() {
         callback() {
           expect(selectCalled).toBe(true)
           done()
-        }
+        },
       })
     })
 
-    it('disallows a selection across resources', function(done) {
+    it('disallows a selection across resources', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
         select() {
           selectCalled = true
-        }
+        },
       })
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
@@ -108,18 +108,18 @@ describe('timeGrid-view selection', function() {
         callback() {
           expect(selectCalled).toBe(false)
           done()
-        }
+        },
       })
     })
   })
 
-  describe('with date columns above resource columns', function() {
+  describe('with date columns above resource columns', () => {
     pushOptions({
       initialView: 'resourceTimeGridThreeDay',
-      datesAboveResources: true
+      datesAboveResources: true,
     })
 
-    it('allows a same-day resource selection', function(done) {
+    it('allows a same-day resource selection', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
         select(arg) {
@@ -129,7 +129,7 @@ describe('timeGrid-view selection', function() {
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
           expect(arg.resource.id).toBe('b')
-        }
+        },
       })
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
@@ -139,11 +139,11 @@ describe('timeGrid-view selection', function() {
         callback() {
           expect(selectCalled).toBe(true)
           done()
-        }
+        },
       })
     })
 
-    it('allows a multi-day resource selection', function(done) {
+    it('allows a multi-day resource selection', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
         select(arg) {
@@ -153,7 +153,7 @@ describe('timeGrid-view selection', function() {
           expect(typeof arg.jsEvent).toBe('object')
           expect(typeof arg.view).toBe('object')
           expect(arg.resource.id).toBe('b')
-        }
+        },
       })
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
@@ -163,16 +163,16 @@ describe('timeGrid-view selection', function() {
         callback() {
           expect(selectCalled).toBe(true)
           done()
-        }
+        },
       })
     })
 
-    it('disallows a selection across resources', function(done) {
+    it('disallows a selection across resources', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
         select(arg) {
           selectCalled = true
-        }
+        },
       })
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
 
@@ -182,7 +182,7 @@ describe('timeGrid-view selection', function() {
         callback() {
           expect(selectCalled).toBe(false)
           done()
-        }
+        },
       })
     })
   })

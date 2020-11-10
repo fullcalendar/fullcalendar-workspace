@@ -6,53 +6,43 @@ import { TimelineHeaderWrapper } from './TimelineHeaderWrapper'
 import { ResourceDataHeaderWrapper } from './ResourceDataHeaderWrapper'
 
 export class ResourceTimelineViewWrapper extends ViewWrapper {
-
   constructor(calendar: Calendar) {
     super(calendar, 'fc-resource-timeline')
   }
-
 
   get header() {
     return new TimelineHeaderWrapper(this.el.querySelector('.fc-timeline-header'))
   }
 
-
   get timelineGrid() {
     return new ResourceTimelineGridWrapper(
-      this.el.querySelector('.fc-timeline-body')
+      this.el.querySelector('.fc-timeline-body'),
     )
   }
-
 
   get dataGrid() {
     return new ResourceDataGridWrapper(this.getDataGridEl())
   }
 
-
   get dataHeader() { // rename `header` now?
     return new ResourceDataHeaderWrapper(this.el.querySelector('.fc-datagrid-header')) // doesnt exist yet. also, delete one other one by mistake
   }
-
 
   getDataGridEl() {
     return this.el.querySelector('.fc-datagrid-body') as HTMLElement
   }
 
-
   getDataGridWidth() {
     return this.getDataGridEl().getBoundingClientRect().width
   }
-
 
   getDataScrollEl() {
     return this.el.querySelector('.fc-datagrid-body').parentElement // TODO: use closest with .fc-scroller
   }
 
-
   getTimeScrollEl() {
     return this.el.querySelector('.fc-timeline-body').parentElement // TODO: use closest with .fc-scroller
   }
-
 
   hasNowIndicator() {
     let inHeader = this.header.hasNowIndicator()
@@ -65,7 +55,6 @@ export class ResourceTimelineViewWrapper extends ViewWrapper {
     }
   }
 
-
   getResourceCnt() { // TODO: use this in more places
     let dataResourceCnt = this.dataGrid.getResourceInfo().length
     let timeResourceCnt = this.timelineGrid.getResourceLaneEls().length
@@ -76,5 +65,4 @@ export class ResourceTimelineViewWrapper extends ViewWrapper {
 
     return dataResourceCnt
   }
-
 }

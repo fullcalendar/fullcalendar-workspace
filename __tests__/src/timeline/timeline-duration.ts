@@ -1,3 +1,2 @@
-
-describe('timeline duration', function() {
+describe('timeline duration', () => {
 })

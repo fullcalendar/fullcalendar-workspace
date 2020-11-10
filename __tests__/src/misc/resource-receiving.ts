@@ -6,18 +6,17 @@ resources as a json feed
 resources as a function
 */
 
-describe('event resources', function() {
-
+describe('event resources', () => {
   pushOptions({
-    initialView: 'resourceTimelineDay'
+    initialView: 'resourceTimelineDay',
   })
 
-  it('processes multiple resources', function(done) {
+  it('processes multiple resources', (done) => {
     let calendar = initCalendar({
       resources: [
         { id: '1', title: 'room 1' },
-        { id: '2', title: 'room 2' }
-      ]
+        { id: '2', title: 'room 2' },
+      ],
     })
 
     let resources = calendar.getResources()
@@ -29,13 +28,13 @@ describe('event resources', function() {
     setTimeout(done)
   })
 
-  it('will not process colliding IDs', function(done) {
+  it('will not process colliding IDs', (done) => {
     let calendar = initCalendar({
       resources: [
         { id: '1', title: 'room 1' },
         { id: '2', title: 'room 2' },
-        { id: '2', title: 'room 2' }
-      ]
+        { id: '2', title: 'room 2' },
+      ],
     })
 
     // TODO: expect a console warning
@@ -48,12 +47,12 @@ describe('event resources', function() {
     setTimeout(done)
   })
 
-  it('will process resources without IDs', function(done) {
+  it('will process resources without IDs', (done) => {
     let calendar = initCalendar({
       resources: [
         { title: 'room 1' },
-        { title: 'room 2' }
-      ]
+        { title: 'room 2' },
+      ],
     })
 
     let resources = calendar.getResources()
@@ -63,16 +62,15 @@ describe('event resources', function() {
     setTimeout(done)
   })
 
-  it('will allow nested children', function(done) {
+  it('will allow nested children', (done) => {
     let calendar = initCalendar({
       resources: [
         { id: 'a',
           title: 'room a',
           children: [
-            { id: 'a1', title: 'room a1' }
-          ]
-        }
-      ]
+            { id: 'a1', title: 'room a1' },
+          ] },
+      ],
     })
 
     let resources = calendar.getTopLevelResources()
@@ -85,12 +83,12 @@ describe('event resources', function() {
     setTimeout(done)
   })
 
-  it('will allow flat children', function(done) {
+  it('will allow flat children', (done) => {
     let calendar = initCalendar({
       resources: [
         { id: 'a', title: 'room a' },
-        { id: 'a1', title: 'room a1', parentId: 'a' }
-      ]
+        { id: 'a1', title: 'room a1', parentId: 'a' },
+      ],
     })
 
     let resources = calendar.getTopLevelResources()
@@ -103,33 +101,29 @@ describe('event resources', function() {
     setTimeout(done)
   })
 
-  describe('when using a JSON feed', function() {
-
-    beforeEach(function() {
+  describe('when using a JSON feed', () => {
+    beforeEach(() => {
       XHRMock.setup()
     })
 
-    afterEach(function() {
+    afterEach(() => {
       XHRMock.teardown()
     })
 
-    it('reads correctly', function(done) {
-
-      XHRMock.get(/^my-feed\.json/, function(req, res) {
-        return res
+    it('reads correctly', (done) => {
+      XHRMock.get(/^my-feed\.json/, (req, res) => res
           .status(200)
           .header('content-type', 'application/json')
           .body(JSON.stringify([
-            { "id": 1, "title": "room 1" },
-            { "id": 2, "title": "room 2" }
-          ]))
-      })
+            { id: 1, title: 'room 1' },
+            { id: 2, title: 'room 2' },
+          ])))
 
       let calendar = initCalendar({
-        resources: 'my-feed.json'
+        resources: 'my-feed.json',
       })
 
-      setTimeout(function() {
+      setTimeout(() => {
         let resources = calendar.getResources()
         expect(resources.length).toBe(2)
         expect(resources[0].id).toBe('1')
@@ -141,14 +135,14 @@ describe('event resources', function() {
     })
   })
 
-  it('will read resources from a function', function(done) {
+  it('will read resources from a function', (done) => {
     let calendar = initCalendar({
       resources(arg, callback) {
         callback([
           { id: '1', title: 'room 1' },
-          { id: '2', title: 'room 2' }
+          { id: '2', title: 'room 2' },
         ])
-      }
+      },
     })
 
     let resources = calendar.getResources()
@@ -160,30 +154,30 @@ describe('event resources', function() {
     setTimeout(done)
   })
 
-  it('will parse event style props', function() {
+  it('will parse event style props', () => {
     initCalendar({
-      resources: [ {
+      resources: [{
         id: '1',
         title: 'room 1',
         eventClassNames: 'niceevents',
         eventColor: 'red',
-        eventTextColor: 'green'
-      } ]
+        eventTextColor: 'green',
+      }],
     })
 
     let resources = currentCalendar.getResources()
     expect(resources.length).toBe(1)
-    expect(resources[0].eventClassNames).toEqual([ 'niceevents' ])
+    expect(resources[0].eventClassNames).toEqual(['niceevents'])
     expect(resources[0].eventBackgroundColor).toBe('red')
     expect(resources[0].eventBorderColor).toBe('red')
     expect(resources[0].eventTextColor).toBe('green')
   })
 
-  it('will put misc properties in extendedProps', function() {
+  it('will put misc properties in extendedProps', () => {
     initCalendar({
       resources: [
-        { id: '1', title: 'room 1', something: 'cool' }
-      ]
+        { id: '1', title: 'room 1', something: 'cool' },
+      ],
     })
 
     let resources = currentCalendar.getResources()
@@ -192,11 +186,11 @@ describe('event resources', function() {
     expect(resources[0].extendedProps.something).toBe('cool')
   })
 
-  it('will receive an explicit extendedProps', function() {
+  it('will receive an explicit extendedProps', () => {
     initCalendar({
       resources: [
-        { id: '1', title: 'room 1', extendedProps: { something: 'cool' } }
-      ]
+        { id: '1', title: 'room 1', extendedProps: { something: 'cool' } },
+      ],
     })
 
     let resources = currentCalendar.getResources()
@@ -204,5 +198,4 @@ describe('event resources', function() {
     expect(typeof resources[0].extendedProps).toBe('object')
     expect(resources[0].extendedProps.something).toBe('cool')
   })
-
 })

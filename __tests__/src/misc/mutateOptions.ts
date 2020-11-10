@@ -5,30 +5,30 @@ import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineVie
 
 function buildOptions() {
   return {
-    plugins: [ resourceTimelinePlugin ],
+    plugins: [resourceTimelinePlugin],
     initialView: 'resourceTimelineDay',
     initialDate: '2019-04-01',
     resources: [
       { id: 'a', title: 'Resource A' },
-      { id: 'b', title: 'Resource B' }
-    ]
+      { id: 'b', title: 'Resource B' },
+    ],
   }
 }
 
-describe('resetOptions', function() { // TODO: rename file
+describe('resetOptions', () => { // TODO: rename file
   let $calendarEl
   let calendar
 
-  beforeEach(function() {
+  beforeEach(() => {
     $calendarEl = $('<div>').appendTo('body')
   })
 
-  afterEach(function() {
+  afterEach(() => {
     if (calendar) { calendar.destroy() }
     $calendarEl.remove()
   })
 
-  it('will rerender resoures without rerender the view', function() {
+  it('will rerender resoures without rerender the view', () => {
     calendar = new Calendar($calendarEl[0], buildOptions())
     calendar.render()
 
@@ -38,12 +38,11 @@ describe('resetOptions', function() { // TODO: rename file
 
     calendar.resetOptions({
       resources: [
-        { id: 'a', title: 'Resource A' }
-      ]
+        { id: 'a', title: 'Resource A' },
+      ],
     }, true)
 
-    expect(timelineGridWrapper.getResourceIds()).toEqual([ 'a' ])
+    expect(timelineGridWrapper.getResourceIds()).toEqual(['a'])
     expect(calendarWrapper.getFirstDateEl()).toBe(dateEl)
   })
-
 })

@@ -1,4 +1,3 @@
-
 import 'fullcalendar-tests/src/lib/globals'
 import { DEFAULT_PLUGINS } from 'fullcalendar-tests/src/lib/install-plugins'
 
@@ -13,11 +12,11 @@ const MORE_DEFAULT_PLUGINS = [
   timelinePlugin,
   resourceTimelinePlugin,
   resourceDayGridPlugin,
-  resourceTimeGridPlugin
+  resourceTimeGridPlugin,
 ]
 
 pushOptions({
-  plugins: DEFAULT_PLUGINS.concat(MORE_DEFAULT_PLUGINS)
+  plugins: DEFAULT_PLUGINS.concat(MORE_DEFAULT_PLUGINS),
 })
 
 // all of the non-lib .js files within subdirectories will be automatically included...

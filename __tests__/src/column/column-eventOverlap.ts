@@ -1,8 +1,7 @@
 import { TimeGridViewWrapper } from 'fullcalendar-tests/src/lib/wrappers/TimeGridViewWrapper'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
-
-describe('column event dragging with constraint', function() {
+describe('column event dragging with constraint', () => {
   pushOptions({
     now: '2016-02-14',
     initialView: 'resourceTimeGridDay',
@@ -11,18 +10,16 @@ describe('column event dragging with constraint', function() {
     eventOverlap: false,
     resources: [
       { id: 'a', title: 'Resource A', eventColor: 'green' },
-      { id: 'b', title: 'Resource B', eventColor: 'red' }
-    ]
+      { id: 'b', title: 'Resource B', eventColor: 'red' },
+    ],
   })
 
-  describe('when distinct resource columns', function() {
-
+  describe('when distinct resource columns', () => {
     describeOptions('initialView', {
       'when resource columns': 'resourceTimeGridDay',
-      'when no resource columns': 'timeGrid'
-    }, function(val) {
-
-      it('allows drop on same time, different resource', function(done) {
+      'when no resource columns': 'timeGrid',
+    }, (val) => {
+      it('allows drop on same time, different resource', (done) => {
         expectDropToBe(true, [
           { id: '1',
             resourceId: 'a',
@@ -35,11 +32,11 @@ describe('column event dragging with constraint', function() {
             title: 'Event 2',
             className: 'event2',
             start: '2016-02-14T04:00:00',
-            end: '2016-02-14T06:00:00' }
+            end: '2016-02-14T06:00:00' },
         ], done)
       })
 
-      it('disallows drop on same time, same resource', function(done) {
+      it('disallows drop on same time, same resource', (done) => {
         expectDropToBe(false, [
           { id: '1',
             resourceId: 'a',
@@ -52,11 +49,11 @@ describe('column event dragging with constraint', function() {
             title: 'Event 2',
             className: 'event2',
             start: '2016-02-14T04:00:00',
-            end: '2016-02-14T06:00:00' }
+            end: '2016-02-14T06:00:00' },
         ], done)
       })
 
-      it('disallows drop on same time, same resource, when multiple', function(done) {
+      it('disallows drop on same time, same resource, when multiple', (done) => {
         expectDropToBe(false, [
           { id: '1',
             resourceId: 'a',
@@ -69,11 +66,11 @@ describe('column event dragging with constraint', function() {
             title: 'Event 2',
             className: 'event2',
             start: '2016-02-14T04:00:00',
-            end: '2016-02-14T06:00:00' }
+            end: '2016-02-14T06:00:00' },
         ], done)
       })
 
-      it('disallows drop on same time, non-resource peer', function(done) {
+      it('disallows drop on same time, non-resource peer', (done) => {
         expectDropToBe(false, [
           { id: '1',
             resourceId: 'a',
@@ -86,7 +83,7 @@ describe('column event dragging with constraint', function() {
             title: 'Event 2',
             className: 'event2',
             start: '2016-02-14T04:00:00',
-            end: '2016-02-14T06:00:00' }
+            end: '2016-02-14T06:00:00' },
         ], done)
       })
 
@@ -100,22 +97,20 @@ describe('column event dragging with constraint', function() {
             dropped = true
           },
           eventDragStop() {
-            setTimeout(function() { // will call after the drop
+            setTimeout(() => { // will call after the drop
               expect(dropped).toBe(bool)
               done()
             })
-          }
+          },
         })
-
 
         $('.event1').simulate('drag', {
           localPoint: { left: '50%', top: 0 },
           end: val === 'resourceTimeGridDay' // otherwise 'timeGrid'
             ? new ResourceTimeGridViewWrapper(calendar).timeGrid.getPoint('a', '2016-02-14T04:00:00')
-            : new TimeGridViewWrapper(calendar).timeGrid.getPoint('2016-02-14T04:00:00')
+            : new TimeGridViewWrapper(calendar).timeGrid.getPoint('2016-02-14T04:00:00'),
         })
       }
-
     })
   })
 })

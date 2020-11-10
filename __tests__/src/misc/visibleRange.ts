@@ -1,27 +1,26 @@
-import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 import { TimeGridViewWrapper } from 'fullcalendar-tests/src/lib/wrappers/TimeGridViewWrapper'
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
-describe('visibleRange', function() {
+describe('visibleRange', () => {
   pushOptions({
     resources: [
       { id: 'a', title: 'a' },
       { id: 'b', title: 'b' },
-      { id: 'c', title: 'c' }
-    ]
+      { id: 'c', title: 'c' },
+    ],
   })
 
-
-  describe('in timeline view for a few days', function() {
+  describe('in timeline view for a few days', () => {
     pushOptions({
-      initialView: 'timeline'
+      initialView: 'timeline',
     })
 
-    it('renders the range correctly', function() {
+    it('renders the range correctly', () => {
       let calendar = initCalendar({
         visibleRange: {
           start: '2017-06-07',
-          end: '2017-06-09'
-        }
+          end: '2017-06-09',
+        },
       })
 
       let headerWrapper = new TimelineViewWrapper(calendar).header
@@ -33,18 +32,17 @@ describe('visibleRange', function() {
     })
   })
 
-
-  describe('in timeline view for years', function() {
+  describe('in timeline view for years', () => {
     pushOptions({
-      initialView: 'timeline'
+      initialView: 'timeline',
     })
 
-    it('renders the range correctly', function() {
+    it('renders the range correctly', () => {
       let calendar = initCalendar({
         visibleRange: {
           start: '2017-01',
-          end: '2019-01'
-        }
+          end: '2019-01',
+        },
       })
 
       let headerWrapper = new TimelineViewWrapper(calendar).header
@@ -56,19 +54,18 @@ describe('visibleRange', function() {
     })
   })
 
-
-  describe('in vertical resource view', function() {
+  describe('in vertical resource view', () => {
     pushOptions({
       initialView: 'timeGrid',
-      datesAboveResources: true
+      datesAboveResources: true,
     })
 
-    it('renders range correctly', function() {
+    it('renders range correctly', () => {
       let calendar = initCalendar({
         visibleRange: {
           start: '2017-06-07',
-          end: '2017-06-09'
-        }
+          end: '2017-06-09',
+        },
       })
 
       let headerWrapper = new TimeGridViewWrapper(calendar).header

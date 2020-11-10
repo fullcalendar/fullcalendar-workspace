@@ -4,28 +4,23 @@ import { TimelineGridWrapper } from './TimelineGridWrapper'
 import { TimelineHeaderWrapper } from './TimelineHeaderWrapper'
 
 export class TimelineViewWrapper extends ViewWrapper {
-
   constructor(calendar: Calendar) {
     super(calendar, 'fc-timeline')
   }
-
 
   get header() {
     return new TimelineHeaderWrapper(this.el.querySelector('.fc-timeline-header'))
   }
 
-
   get timelineGrid() {
     return new TimelineGridWrapper(
-      this.el.querySelector('.fc-timeline-body')
+      this.el.querySelector('.fc-timeline-body'),
     )
   }
-
 
   getHeaderScrollEl() {
     return this.el.querySelector('.fc-timeline-header').parentElement // TODO: use closest with .fc-scroller
   }
-
 
   hasNowIndicator() {
     let inHeader = this.header.hasNowIndicator()
@@ -37,5 +32,4 @@ export class TimelineViewWrapper extends ViewWrapper {
       return inHeader
     }
   }
-
 }
