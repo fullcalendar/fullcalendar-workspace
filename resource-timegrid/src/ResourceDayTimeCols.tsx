@@ -1,10 +1,11 @@
 import {
   createElement, createRef, VNode,
-  mapHash, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, memoize, DateRange, DateMarker, Hit, CssDimValue, NowTimer, Duration, DateProfile
+  mapHash, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, memoize, DateRange,
+  DateMarker, Hit, CssDimValue, NowTimer, Duration, DateProfile,
 } from '@fullcalendar/common'
-import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeColsSeg, TimeSlatMeta, TimeColsSlatsCoords } from '@fullcalendar/timegrid'
-import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
-
+import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeSlatMeta, TimeColsSlatsCoords } from '@fullcalendar/timegrid'
+import { AbstractResourceDayTableModel, VResourceSplitter } from '@fullcalendar/resource-common'
+import { ResourceDayTimeColsJoiner } from './ResourceDayTimeColsJoiner'
 
 export interface ResourceDayTimeColsProps {
   dateProfile: DateProfile
@@ -29,9 +30,7 @@ export interface ResourceDayTimeColsProps {
   onSlatCoords?: (slatCoords: TimeColsSlatsCoords) => void
 }
 
-
 export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps> {
-
   allowAcrossResources = false
 
   private buildDayRanges = memoize(buildDayRanges)
@@ -41,7 +40,6 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
   private joiner = new ResourceDayTimeColsJoiner()
   private timeColsRef = createRef<TimeCols>()
 
-
   render() {
     let { props, context } = this
     let { dateEnv, options } = context
@@ -50,19 +48,15 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
     let dayRanges = this.dayRanges = this.buildDayRanges(resourceDayTableModel.dayTableModel, dateProfile, dateEnv)
     let splitProps = this.splitter.splitProps(props)
 
-    this.slicers = mapHash(splitProps, (split, resourceId) => {
-      return this.slicers[resourceId] || new DayTimeColsSlicer()
-    })
+    this.slicers = mapHash(splitProps, (split, resourceId) => this.slicers[resourceId] || new DayTimeColsSlicer())
 
-    let slicedProps = mapHash(this.slicers, (slicer, resourceId) => {
-      return slicer.sliceProps(
+    let slicedProps = mapHash(this.slicers, (slicer, resourceId) => slicer.sliceProps(
         splitProps[resourceId],
         dateProfile,
         null,
         context,
-        dayRanges
-      )
-    })
+        dayRanges,
+      ))
 
     this.allowAcrossResources = dayRanges.length === 1
 
@@ -95,7 +89,6 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
     )
   }
 
-
   handleRootEl = (rootEl: HTMLElement | null) => {
     if (rootEl) {
       this.context.registerInteractiveComponent(this, { el: rootEl })
@@ -104,12 +97,10 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
     }
   }
 
-
   buildNowIndicatorSegs(date: DateMarker) {
     let nonResourceSegs = this.slicers[''].sliceNowDate(date, this.context, this.dayRanges)
     return this.joiner.expandSegs(this.props.resourceDayTableModel, nonResourceSegs)
   }
-
 
   queryHit(positionLeft: number, positionTop: number): Hit {
     let rawHit = this.timeColsRef.current.positionToHit(positionLeft, positionTop)
@@ -120,32 +111,19 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
         dateSpan: {
           range: rawHit.dateSpan.range,
           allDay: rawHit.dateSpan.allDay,
-          resourceId: this.props.resourceDayTableModel.cells[0][rawHit.col].resource.id
+          resourceId: this.props.resourceDayTableModel.cells[0][rawHit.col].resource.id,
         },
         dayEl: rawHit.dayEl,
         rect: {
           left: rawHit.relativeRect.left,
           right: rawHit.relativeRect.right,
           top: rawHit.relativeRect.top,
-          bottom: rawHit.relativeRect.bottom
+          bottom: rawHit.relativeRect.bottom,
         },
-        layer: 0
+        layer: 0,
       }
     }
+
+    return null
   }
-
-}
-
-
-class ResourceDayTimeColsJoiner extends VResourceJoiner<TimeColsSeg> {
-
-  transformSeg(seg: TimeColsSeg, resourceDayTable: AbstractResourceDayTableModel, resourceI: number) {
-    return [
-      {
-        ...seg,
-        col: resourceDayTable.computeCol(seg.col, resourceI)
-      }
-    ]
-  }
-
 }

@@ -1,23 +1,18 @@
-import {
-  createElement, DateProfileGenerator, memoize, DateProfile, ChunkContentCallbackArgs, CalendarContext
-} from '@fullcalendar/common'
+import { createElement, DateProfileGenerator, memoize, DateProfile, ChunkContentCallbackArgs, CalendarContext } from '@fullcalendar/common'
 import { TimeColsView, buildTimeColsModel, buildSlatMetas } from '@fullcalendar/timegrid'
 import {
   ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps,
-  Resource, flattenResources, DEFAULT_RESOURCE_ORDER
+  Resource, flattenResources, DEFAULT_RESOURCE_ORDER,
 } from '@fullcalendar/resource-common'
 import { ResourceDayTable } from '@fullcalendar/resource-daygrid'
 import { ResourceDayTimeCols } from './ResourceDayTimeCols'
 
-
 export class ResourceDayTimeColsView extends TimeColsView {
-
   props: ResourceViewProps
 
   private flattenResources = memoize(flattenResources)
   private buildResourceTimeColsModel = memoize(buildResourceTimeColsModel)
   private buildSlatMetas = memoize(buildSlatMetas)
-
 
   render() {
     let { props, context } = this
@@ -32,26 +27,33 @@ export class ResourceDayTimeColsView extends TimeColsView {
       context.dateProfileGenerator,
       resources,
       options.datesAboveResources,
-      context
+      context,
     )
 
-    let slatMetas = this.buildSlatMetas(dateProfile.slotMinTime, dateProfile.slotMaxTime, options.slotLabelInterval, options.slotDuration, dateEnv)
+    let slatMetas = this.buildSlatMetas(
+      dateProfile.slotMinTime,
+      dateProfile.slotMaxTime,
+      options.slotLabelInterval,
+      options.slotDuration,
+      dateEnv,
+    )
     let { dayMinWidth } = options
     let hasAttachedAxis = !dayMinWidth
     let hasDetachedAxis = dayMinWidth
 
-    let headerContent = options.dayHeaders &&
+    let headerContent = options.dayHeaders && (
       <ResourceDayHeader
         resources={resources}
         dates={resourceDayTableModel.dayTableModel.headerDates}
         dateProfile={dateProfile}
-        datesRepDistinctDays={true}
+        datesRepDistinctDays
         renderIntro={hasAttachedAxis ? this.renderHeadAxis : null}
       />
+    )
 
     let allDayContent = (options.allDaySlot !== false) && ((contentArg: ChunkContentCallbackArgs) => (
       <ResourceDayTable
-        {...splitProps['allDay']}
+        {...splitProps.allDay}
         dateProfile={dateProfile}
         resourceDayTableModel={resourceDayTableModel}
         nextDayThreshold={options.nextDayThreshold}
@@ -70,7 +72,7 @@ export class ResourceDayTimeColsView extends TimeColsView {
 
     let timeGridContent = (contentArg: ChunkContentCallbackArgs) => (
       <ResourceDayTimeCols
-        {...splitProps['timed']}
+        {...splitProps.timed}
         dateProfile={dateProfile}
         axis={hasAttachedAxis}
         slotDuration={options.slotDuration}
@@ -88,19 +90,29 @@ export class ResourceDayTimeColsView extends TimeColsView {
     )
 
     return hasDetachedAxis
-      ? this.renderHScrollLayout(headerContent, allDayContent, timeGridContent, resourceDayTableModel.colCnt, dayMinWidth, slatMetas, this.state.slatCoords)
-      : this.renderSimpleLayout(headerContent, allDayContent, timeGridContent)
+      ? this.renderHScrollLayout(
+        headerContent,
+        allDayContent,
+        timeGridContent,
+        resourceDayTableModel.colCnt,
+        dayMinWidth,
+        slatMetas,
+        this.state.slatCoords,
+      )
+      : this.renderSimpleLayout(
+        headerContent,
+        allDayContent,
+        timeGridContent,
+      )
   }
-
 }
-
 
 function buildResourceTimeColsModel(
   dateProfile: DateProfile,
   dateProfileGenerator: DateProfileGenerator,
   resources: Resource[],
   datesAboveResources: boolean,
-  context: CalendarContext
+  context: CalendarContext,
 ) {
   let dayTable = buildTimeColsModel(dateProfile, dateProfileGenerator)
 

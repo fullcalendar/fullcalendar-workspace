@@ -1,6 +1,9 @@
 import { createPlugin } from '@fullcalendar/common'
-import premiumCommonPlugin from '@fullcalendar/premium-common'
-import '@fullcalendar/premium-common' // ensure ambient declarations
+
+import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
+// ensure ambient declarations
+import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
+
 import resourceCommonPlugin from '@fullcalendar/resource-common'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import { ResourceDayTimeColsView } from './ResourceDayTimeColsView'
@@ -12,7 +15,7 @@ export default createPlugin({
   deps: [
     premiumCommonPlugin,
     resourceCommonPlugin,
-    timeGridPlugin
+    timeGridPlugin,
   ],
   initialView: 'resourceTimeGridDay',
   views: {
@@ -20,18 +23,18 @@ export default createPlugin({
     resourceTimeGrid: {
       type: 'timeGrid', // will inherit this configuration
       component: ResourceDayTimeColsView,
-      needsResourceData: true
+      needsResourceData: true,
     },
 
     resourceTimeGridDay: {
       type: 'resourceTimeGrid',
-      duration: { days: 1 }
+      duration: { days: 1 },
     },
 
     resourceTimeGridWeek: {
       type: 'resourceTimeGrid',
-      duration: { weeks: 1 }
-    }
+      duration: { weeks: 1 },
+    },
 
-  }
+  },
 })
