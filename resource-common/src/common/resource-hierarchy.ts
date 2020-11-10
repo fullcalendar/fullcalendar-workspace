@@ -45,9 +45,7 @@ doesn't accept grouping
 */
 export function flattenResources(resourceStore: ResourceHash, orderSpecs: OrderSpec<ResourceApi>[]): Resource[] {
   return buildRowNodes(resourceStore, [], orderSpecs, false, {}, true)
-    .map(function(node) {
-      return (node as ResourceNode).resource
-    })
+    .map((node) => (node as ResourceNode).resource)
 }
 
 export function buildRowNodes(
@@ -56,7 +54,7 @@ export function buildRowNodes(
   orderSpecs: OrderSpec<ResourceApi>[],
   isVGrouping: boolean,
   expansions: ResourceEntityExpansions,
-  expansionDefault: boolean
+  expansionDefault: boolean,
 ): (GroupNode | ResourceNode)[] {
   let complexNodes = buildHierarchy(resourceStore, isVGrouping ? -1 : 1, groupSpecs, orderSpecs)
   let flatNodes = []
@@ -70,15 +68,13 @@ function flattenNodes(
   complexNodes: ParentNode[],
   res, isVGrouping, rowSpans, depth,
   expansions: ResourceEntityExpansions,
-  expansionDefault: boolean
+  expansionDefault: boolean,
 ) {
-
   for (let i = 0; i < complexNodes.length; i++) {
     let complexNode = complexNodes[i]
     let group = (complexNode as GroupParentNode).group
 
     if (group) {
-
       if (isVGrouping) {
         let firstRowIndex = res.length
         let rowSpanIndex = rowSpans.length
@@ -101,7 +97,6 @@ function flattenNodes(
           flattenNodes(complexNode.children, res, isVGrouping, rowSpans, depth + 1, expansions, expansionDefault)
         }
       }
-
     } else if ((complexNode as ResourceParentNode).resource) {
       let id = (complexNode as ResourceParentNode).resource.id
       let isExpanded = expansions[id] != null ? expansions[id] : expansionDefault
@@ -113,7 +108,7 @@ function flattenNodes(
         isExpanded,
         hasChildren: Boolean(complexNode.children.length),
         resource: (complexNode as ResourceParentNode).resource,
-        resourceFields: (complexNode as ResourceParentNode).resourceFields
+        resourceFields: (complexNode as ResourceParentNode).resourceFields,
       })
 
       if (isExpanded) {
@@ -147,7 +142,7 @@ function buildResourceNodes(resourceStore: ResourceHash, orderSpecs: OrderSpec<R
     nodeHash[resourceId] = {
       resource,
       resourceFields: buildResourceFields(resource),
-      children: []
+      children: [],
     }
   }
 
@@ -212,9 +207,9 @@ function ensureGroupNodes(resourceNode: ResourceParentNode, nodes: ParentNode[],
     groupNode = {
       group: {
         value: groupValue,
-        spec: groupSpec
+        spec: groupSpec,
       },
-      children: []
+      children: [],
     }
 
     nodes.splice(newGroupIndex, 0, groupNode)

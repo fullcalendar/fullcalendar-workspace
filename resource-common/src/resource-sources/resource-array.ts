@@ -15,8 +15,8 @@ registerResourceSourceDef<ResourceInput[]>({
 
   fetch(arg, successCallback) {
     successCallback({
-      rawResources: arg.resourceSource.meta
+      rawResources: arg.resourceSource.meta,
     })
-  }
+  },
 
 })

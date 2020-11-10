@@ -6,7 +6,7 @@ const INVALID_LICENSE_URL = 'http://fullcalendar.io/docs/schedulerLicenseKey#inv
 const OUTDATED_LICENSE_URL = 'http://fullcalendar.io/docs/schedulerLicenseKey#outdated'
 const PRESET_LICENSE_KEYS = [
   'GPL-My-Project-Is-Open-Source',
-  'CC-Attribution-NonCommercial-NoDerivatives'
+  'CC-Attribution-NonCommercial-NoDerivatives',
 ]
 const CSS = {
   position: 'absolute' as 'absolute', // for TS+React. ugh.
@@ -19,9 +19,8 @@ const CSS = {
   borderWidth: '1px 1px 0 0',
   padding: '2px 4px',
   fontSize: '12px',
-  borderTopRightRadius: '3px'
+  borderTopRightRadius: '3px',
 }
-
 
 export function buildLicenseWarning(context: CalendarContext) {
   let key = context.options.schedulerLicenseKey
@@ -31,23 +30,23 @@ export function buildLicenseWarning(context: CalendarContext) {
 
     if (status !== 'valid') {
       return (
-        <div className='fc-license-message' style={CSS}>
-          {(status === 'outdated') ?
+        <div className="fc-license-message" style={CSS}>
+          {(status === 'outdated') ? (
             <Fragment>
               {'Your license key is too old to work with this version. '}
               <a href={OUTDATED_LICENSE_URL}>More Info</a>
-            </Fragment> :
+            </Fragment>
+          ) : (
             <Fragment>
               {'Your license key is invalid. '}
               <a href={INVALID_LICENSE_URL}>More Info</a>
             </Fragment>
-          }
+          )}
         </div>
       )
     }
   }
 }
-
 
 /*
 This decryption is not meant to be bulletproof. Just a way to remind about an upgrade.
@@ -68,16 +67,14 @@ function processLicenseKey(key) {
 
       if (minPurchaseDate < purchaseDate) {
         return 'valid'
-
-      } else {
-        return 'outdated'
       }
+
+      return 'outdated'
     }
   }
 
   return 'invalid'
 }
-
 
 function isImmuneUrl(url) {
   return /\w+:\/\/fullcalendar\.io\/|\/examples\/[\w-]+\.html$/.test(url)

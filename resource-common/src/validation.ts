@@ -1,13 +1,12 @@
 import { SplittableProps, EventUi, isPropsValid, Constraint, EventStore, mergeEventStores, CalendarContext } from '@fullcalendar/common'
 import { ResourceSplitter } from './common/ResourceSplitter'
 
-
 export function isPropsValidWithResources(props: SplittableProps, context: CalendarContext): boolean {
   let splitter = new ResourceSplitter()
 
   let sets = splitter.splitProps({
     ...props,
-    resourceStore: context.getCurrentData().resourceStore
+    resourceStore: context.getCurrentData().resourceStore,
   })
 
   for (let resourceId in sets) {
@@ -18,7 +17,7 @@ export function isPropsValidWithResources(props: SplittableProps, context: Calen
       props = {
         ...props,
         eventStore: mergeEventStores(sets[''].eventStore, props.eventStore),
-        eventUiBases: { ...sets[''].eventUiBases, ...props.eventUiBases }
+        eventUiBases: { ...sets[''].eventUiBases, ...props.eventUiBases },
       }
     }
 
@@ -30,18 +29,15 @@ export function isPropsValidWithResources(props: SplittableProps, context: Calen
   return true
 }
 
-
 function filterConfig(resourceId, config: EventUi) {
   return {
     ...config,
-    constraints: filterConstraints(resourceId, config.constraints)
+    constraints: filterConstraints(resourceId, config.constraints),
   }
 }
 
-
 function filterConstraints(resourceId: string, constraints: Constraint[]) {
-  return constraints.map(function(constraint) {
-
+  return constraints.map((constraint) => {
     let defs = (constraint as EventStore).defs
     if (defs) { // we are dealing with an EventStore
       // if any of the events define constraints to resources that are NOT this resource,

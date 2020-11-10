@@ -3,19 +3,21 @@ import {
   findElements,
   flushToDom,
   CalendarContext,
-  removeExact
+  removeExact,
 } from '@fullcalendar/common'
-import premiumCommonPlugin from '@fullcalendar/premium-common'
-import '@fullcalendar/premium-common' // ensure ambient declarations
-import './main.css'
 
+import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
+// ensure ambient declarations. TODO: remove?
+import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
+
+import './main.css'
 
 let contexts: CalendarContext[] = []
 let undoFuncs: (() => void)[] = []
 
 export default createPlugin({
   deps: [
-    premiumCommonPlugin
+    premiumCommonPlugin,
   ],
   contextInit(context) {
     if (!contexts.length) {
@@ -28,9 +30,8 @@ export default createPlugin({
         removeGlobalHandlers()
       }
     })
-  }
+  },
 })
-
 
 function attachGlobalHandlers() {
   window.addEventListener('beforeprint', handleBeforePrint)
@@ -50,12 +51,10 @@ function attachGlobalHandlers() {
   // })
 }
 
-
 function removeGlobalHandlers() {
   window.removeEventListener('beforeprint', handleBeforePrint)
   window.removeEventListener('afterprint', handleAfterPrint)
 }
-
 
 function handleBeforePrint() {
   let scrollEls = queryScrollerEls()
@@ -73,7 +72,6 @@ function handleBeforePrint() {
   undoFuncs.push(freezeScrollgridWidths())
 }
 
-
 function handleAfterPrint() {
   for (let context of contexts) {
     context.emitter.trigger('_afterprint')
@@ -85,7 +83,6 @@ function handleAfterPrint() {
     undoFuncs.shift()()
   }
 }
-
 
 // scrollgrid widths
 
@@ -102,7 +99,6 @@ function freezeScrollGridWidth(el: HTMLElement) {
 function unfreezeScrollGridWidth(el) {
   el.style.width = ''
 }
-
 
 // scrollers
 // TODO: use scroll normalization!? yes
@@ -128,7 +124,7 @@ function queryScrollerCoords(els: HTMLElement[]): ScrollerCoords[] {
       scrollTop: el.scrollTop,
       overflowX: computedStyle.overflowX,
       overflowY: computedStyle.overflowY,
-      marginBottom: computedStyle.marginBottom
+      marginBottom: computedStyle.marginBottom,
     }
   })
 }

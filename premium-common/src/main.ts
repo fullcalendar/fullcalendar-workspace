@@ -5,5 +5,5 @@ import './options-declare'
 
 export default createPlugin({
   optionRefiners: OPTION_REFINERS,
-  viewContainerAppends: [ buildLicenseWarning ]
+  viewContainerAppends: [buildLicenseWarning],
 })

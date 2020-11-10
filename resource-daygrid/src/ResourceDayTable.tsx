@@ -1,9 +1,10 @@
 import {
   createElement, createRef, VNode,
-  mapHash, Hit, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, Duration, RefObject, CssDimValue, DateProfile
+  mapHash, Hit, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, Duration, RefObject, CssDimValue, DateProfile,
 } from '@fullcalendar/common'
-import { DayTableSlicer, Table, TableSeg } from '@fullcalendar/daygrid'
-import { AbstractResourceDayTableModel, VResourceSplitter, VResourceJoiner } from '@fullcalendar/resource-common'
+import { DayTableSlicer, Table } from '@fullcalendar/daygrid'
+import { AbstractResourceDayTableModel, VResourceSplitter } from '@fullcalendar/resource-common'
+import { ResourceDayTableJoiner } from './ResourceDayTableJoiner'
 
 export interface ResourceDayTableProps {
   dateProfile: DateProfile
@@ -30,7 +31,6 @@ export interface ResourceDayTableProps {
 }
 
 export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
-
   allowAcrossResources = false
 
   private splitter = new VResourceSplitter()
@@ -38,26 +38,21 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
   private joiner = new ResourceDayTableJoiner()
   private tableRef = createRef<Table>()
 
-
   render() {
     let { props, context } = this
     let { resourceDayTableModel, nextDayThreshold, dateProfile } = props
 
     let splitProps = this.splitter.splitProps(props)
 
-    this.slicers = mapHash(splitProps, (split, resourceId) => {
-      return this.slicers[resourceId] || new DayTableSlicer()
-    })
+    this.slicers = mapHash(splitProps, (split, resourceId) => this.slicers[resourceId] || new DayTableSlicer())
 
-    let slicedProps = mapHash(this.slicers, (slicer, resourceId) => {
-      return slicer.sliceProps(
+    let slicedProps = mapHash(this.slicers, (slicer, resourceId) => slicer.sliceProps(
         splitProps[resourceId],
         dateProfile,
         nextDayThreshold,
         context,
-        resourceDayTableModel.dayTableModel
-      )
-    })
+        resourceDayTableModel.dayTableModel,
+      ))
 
     this.allowAcrossResources = resourceDayTableModel.dayTableModel.colCnt === 1 // hack for EventResizing
 
@@ -83,7 +78,6 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
     )
   }
 
-
   handleRootEl = (rootEl: HTMLElement | null) => {
     if (rootEl) {
       this.context.registerInteractiveComponent(this, { el: rootEl })
@@ -92,11 +86,9 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
     }
   }
 
-
   prepareHits() {
     this.tableRef.current.prepareHits()
   }
-
 
   queryHit(positionLeft: number, positionTop: number): Hit {
     let rawHit = this.tableRef.current.positionToHit(positionLeft, positionTop)
@@ -107,36 +99,19 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
         dateSpan: {
           range: rawHit.dateSpan.range,
           allDay: rawHit.dateSpan.allDay,
-          resourceId: this.props.resourceDayTableModel.cells[rawHit.row][rawHit.col].resource.id
+          resourceId: this.props.resourceDayTableModel.cells[rawHit.row][rawHit.col].resource.id,
         },
         dayEl: rawHit.dayEl,
         rect: {
           left: rawHit.relativeRect.left,
           right: rawHit.relativeRect.right,
           top: rawHit.relativeRect.top,
-          bottom: rawHit.relativeRect.bottom
+          bottom: rawHit.relativeRect.bottom,
         },
-        layer: 0
+        layer: 0,
       }
     }
+
+    return null
   }
-
-}
-
-
-class ResourceDayTableJoiner extends VResourceJoiner<TableSeg> {
-
-  transformSeg(seg: TableSeg, resourceDayTableModel: AbstractResourceDayTableModel, resourceI: number): TableSeg[] {
-    let colRanges = resourceDayTableModel.computeColRanges(seg.firstCol, seg.lastCol, resourceI)
-
-    return colRanges.map(function(colRange) {
-      return {
-        ...seg,
-        ...colRange,
-        isStart: seg.isStart && colRange.isStart,
-        isEnd: seg.isEnd && colRange.isEnd
-      }
-    })
-  }
-
 }

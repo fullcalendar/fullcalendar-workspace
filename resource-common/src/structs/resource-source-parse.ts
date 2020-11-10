@@ -1,9 +1,8 @@
 import { guid, identity, Identity, RefinedOptionsFromRefiners, refineProps, RawOptionsFromRefiners, Dictionary } from '@fullcalendar/common'
-import { ResourceInput } from '../structs/resource'
+import { ResourceInput } from './resource'
 import { ResourceFunc } from '../resource-sources/resource-func'
 import { ResourceSource } from './resource-source'
 import { getResourceSourceDefs } from './resource-source-def'
-
 
 // TODO: make this a plugin-able parser
 // TODO: success/failure
@@ -19,7 +18,7 @@ export const RESOURCE_SOURCE_REFINERS = {
   startParam: String,
   endParam: String,
   timeZoneParam: String,
-  extraParams: identity as Identity<Dictionary | (() => Dictionary)>
+  extraParams: identity as Identity<Dictionary | (() => Dictionary)>,
 }
 
 export type ResourceSourceInputObject = RawOptionsFromRefiners<typeof RESOURCE_SOURCE_REFINERS>
@@ -30,7 +29,6 @@ export type ResourceSourceInput =
   ResourceInput[] |
   ResourceFunc |
   string // url
-
 
 export function parseResourceSource(input: ResourceSourceInput): ResourceSource<any> {
   let inputObj: ResourceSourceInputObject
@@ -59,14 +57,13 @@ export function parseResourceSource(input: ResourceSourceInput): ResourceSource<
         publicId: refined.id || '',
         isFetching: false,
         latestFetchId: '',
-        fetchRange: null
+        fetchRange: null,
       }
     }
   }
 
   return null
 }
-
 
 function buildResourceSourceMeta(refined: ResourceSourceRefined) {
   let defs = getResourceSourceDefs()
@@ -80,7 +77,6 @@ function buildResourceSourceMeta(refined: ResourceSourceRefined) {
     }
   }
 }
-
 
 function warnUnknownProps(props) {
   for (let propName in props) {

@@ -7,9 +7,8 @@ export function reduceResourceStore(
   store: ResourceHash | null,
   action: ResourceAction | null,
   source: ResourceSource<any>,
-  context: CalendarContext
+  context: CalendarContext,
 ): ResourceHash {
-
   if (!store || !action) {
     return {}
   }
@@ -44,9 +43,9 @@ function receiveRawResources(existingStore: ResourceHash, inputs: ResourceInput[
     }
 
     return nextStore
-  } else {
-    return existingStore
   }
+
+  return existingStore
 }
 
 function addResource(existingStore: ResourceHash, additions: ResourceHash) {
@@ -62,12 +61,10 @@ function removeResource(existingStore: ResourceHash, resourceId: string) {
 
   // promote children
   for (let childResourceId in newStore) { // a child, *maybe* but probably not
-
     if (newStore[childResourceId].parentId === resourceId) {
-
       newStore[childResourceId] = {
         ...newStore[childResourceId],
-        parentId: ''
+        parentId: '',
       }
     }
   }
@@ -85,12 +82,12 @@ function setResourceProp(existingStore: ResourceHash, resourceId: string, name: 
       ...existingStore,
       [resourceId]: {
         ...existingResource,
-        [name]: value
-      }
+        [name]: value,
+      },
     }
-  } else {
-    return existingStore
   }
+
+  return existingStore
 }
 
 function setResourceExtendedProp(existingStore: ResourceHash, resourceId: string, name: string, value: any): ResourceHash {
@@ -103,11 +100,11 @@ function setResourceExtendedProp(existingStore: ResourceHash, resourceId: string
         ...existingResource,
         extendedProps: {
           ...existingResource.extendedProps,
-          [name]: value
-        }
-      }
+          [name]: value,
+        },
+      },
     }
-  } else {
-    return existingStore
   }
+
+  return existingStore
 }

@@ -1,6 +1,5 @@
 import { DateRange, CalendarContext } from '@fullcalendar/common'
-import { ResourceInput } from '../structs/resource'
-
+import { ResourceInput } from './resource'
 
 export interface ResourceSource<ResourceSourceMeta> {
   _raw: any

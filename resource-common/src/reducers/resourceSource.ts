@@ -7,7 +7,7 @@ import { ResourceAction } from './resource-action'
 export function reduceResourceSource(
   source: ResourceSource<any> | null,
   action: ResourceAction | null,
-  context: CalendarContext & { dateProfile: DateProfile }
+  context: CalendarContext & { dateProfile: DateProfile },
 ): ResourceSource<any> {
   let { options, dateProfile } = context
 
@@ -16,7 +16,7 @@ export function reduceResourceSource(
       options.initialResources || options.resources,
       dateProfile.activeRange,
       options.refetchResourcesOnNavigate,
-      context
+      context,
     )
   }
 
@@ -42,7 +42,6 @@ export function reduceResourceSource(
   }
 }
 
-
 function createSource(input, activeRange: DateRange, refetchResourcesOnNavigate, context: CalendarContext) {
   if (input) {
     let source = parseResourceSource(input)
@@ -53,7 +52,6 @@ function createSource(input, activeRange: DateRange, refetchResourcesOnNavigate,
   return null
 }
 
-
 function handleRangeChange(source: ResourceSource<any>, activeRange: DateRange, refetchResourcesOnNavigate, context: CalendarContext): ResourceSource<any> {
   if (
     refetchResourcesOnNavigate &&
@@ -61,16 +59,13 @@ function handleRangeChange(source: ResourceSource<any>, activeRange: DateRange, 
     (!source.fetchRange || !rangesEqual(source.fetchRange, activeRange))
   ) {
     return fetchSource(source, activeRange, context)
-  } else {
-    return source
   }
+  return source
 }
-
 
 function doesSourceIgnoreRange(source: ResourceSource<any>) {
   return Boolean(getResourceSourceDef(source.sourceDefId).ignoreRange)
 }
-
 
 function fetchSource(source: ResourceSource<any>, fetchRange: DateRange | null, context: CalendarContext): ResourceSource<any> {
   let sourceDef = getResourceSourceDef(source.sourceDefId)
@@ -80,41 +75,39 @@ function fetchSource(source: ResourceSource<any>, fetchRange: DateRange | null, 
     {
       resourceSource: source,
       range: fetchRange,
-      context
+      context,
     },
-    function(res) {
+    (res) => {
       context.dispatch({
         type: 'RECEIVE_RESOURCES',
         fetchId,
         fetchRange,
-        rawResources: res.rawResources
+        rawResources: res.rawResources,
       })
     },
-    function(error) {
+    (error) => {
       context.dispatch({
         type: 'RECEIVE_RESOURCE_ERROR',
         fetchId,
         fetchRange,
-        error
+        error,
       })
-    }
+    },
   )
 
   return {
     ...source,
     isFetching: true,
-    latestFetchId: fetchId
+    latestFetchId: fetchId,
   }
 }
 
-
 function receiveResponse(source: ResourceSource<any>, fetchId: string, fetchRange: DateRange) {
-
   if (fetchId === source.latestFetchId) {
     return {
       ...source,
       isFetching: false,
-      fetchRange
+      fetchRange,
     }
   }
 

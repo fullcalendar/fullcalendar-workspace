@@ -1,6 +1,5 @@
 import { EventMutation, Hit, EventDef, CalendarContext } from '@fullcalendar/common'
 
-
 export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit, hit1: Hit) {
   let resource0 = hit0.dateSpan.resourceId
   let resource1 = hit1.dateSpan.resourceId
@@ -11,11 +10,10 @@ export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit
   ) {
     eventMutation.resourceMutation = {
       matchResourceId: resource0,
-      setResourceId: resource1
+      setResourceId: resource1,
     }
   }
 }
-
 
 /*
 TODO: all this would be much easier if we were using a hash!
@@ -39,7 +37,6 @@ export function applyEventDefMutation(eventDef: EventDef, mutation: EventMutatio
     }
   }
 }
-
 
 /*
 HACK
@@ -67,7 +64,6 @@ export function computeResourceEditable(eventDef: EventDef, context: CalendarCon
   return resourceEditable
 }
 
-
 export function transformEventDrop(mutation: EventMutation, context: CalendarContext) {
   let { resourceMutation } = mutation
 
@@ -76,13 +72,12 @@ export function transformEventDrop(mutation: EventMutation, context: CalendarCon
 
     return {
       oldResource: calendarApi.getResourceById(resourceMutation.matchResourceId),
-      newResource: calendarApi.getResourceById(resourceMutation.setResourceId)
+      newResource: calendarApi.getResourceById(resourceMutation.setResourceId),
     }
+  }
 
-  } else {
-    return {
-      oldResource: null,
-      newResource: null
-    }
+  return {
+    oldResource: null,
+    newResource: null,
   }
 }

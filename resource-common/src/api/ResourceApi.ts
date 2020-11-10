@@ -1,13 +1,11 @@
 import { CalendarContext, EventApi, Dictionary } from '@fullcalendar/common'
-import { Resource, getPublicId, ResourceHash } from '../structs/resource'
 import { __assign } from 'tslib'
-
+import { Resource, getPublicId, ResourceHash } from '../structs/resource'
 
 export class ResourceApi {
-
   constructor(
     private _context: CalendarContext,
-    public _resource: Resource
+    public _resource: Resource,
   ) {
   }
 
@@ -18,7 +16,7 @@ export class ResourceApi {
       type: 'SET_RESOURCE_PROP',
       resourceId: oldResource.id,
       propName: name,
-      propValue: value
+      propValue: value,
     })
 
     this.sync(oldResource)
@@ -31,7 +29,7 @@ export class ResourceApi {
       type: 'SET_RESOURCE_EXTENDED_PROP',
       resourceId: oldResource.id,
       propName: name,
-      propValue: value
+      propValue: value,
     })
 
     this.sync(oldResource)
@@ -51,10 +49,10 @@ export class ResourceApi {
         context.dispatch({
           type: 'ADD_RESOURCE', // function as a merge. TODO: rename
           resourceHash: {
-            [resourceId]: oldResource
-          }
+            [resourceId]: oldResource,
+          },
         })
-      }
+      },
     })
   }
 
@@ -65,7 +63,7 @@ export class ResourceApi {
 
     context.dispatch({
       type: 'REMOVE_RESOURCE',
-      resourceId
+      resourceId,
     })
 
     context.emitter.trigger('resourceRemove', {
@@ -74,10 +72,10 @@ export class ResourceApi {
         context.dispatch({
           type: 'ADD_RESOURCE', // function as a merge. TODO: rename
           resourceHash: {
-            [resourceId]: internalResource
-          }
+            [resourceId]: internalResource,
+          },
         })
-      }
+      },
     })
   }
 
@@ -88,11 +86,11 @@ export class ResourceApi {
     if (parentId) {
       return new ResourceApi(
         context,
-        context.getCurrentData().resourceSource[parentId]
+        context.getCurrentData().resourceSource[parentId],
       )
-    } else {
-      return null
     }
+
+    return null
   }
 
   getChildren(): ResourceApi[] {
@@ -104,7 +102,7 @@ export class ResourceApi {
     for (let resourceId in resourceStore) {
       if (resourceStore[resourceId].parentId === thisResourceId) {
         childApis.push(
-          new ResourceApi(context, resourceStore[resourceId])
+          new ResourceApi(context, resourceStore[resourceId]),
         )
       }
     }
@@ -147,7 +145,6 @@ export class ResourceApi {
   get eventClassNames() { return this._resource.ui.classNames }
   get extendedProps() { return this._resource.extendedProps }
 
-
   toPlainObject(settings: { collapseExtendedProps?: boolean, collapseEventColor?: boolean } = {}) {
     let internal = this._resource
     let { ui } = internal
@@ -164,7 +161,6 @@ export class ResourceApi {
 
     if (settings.collapseEventColor && ui.backgroundColor && ui.backgroundColor === ui.borderColor) {
       res.eventColor = ui.backgroundColor
-
     } else {
       if (ui.backgroundColor) {
         res.eventBackgroundColor = ui.backgroundColor
@@ -193,13 +189,10 @@ export class ResourceApi {
     return res
   }
 
-
   toJSON() {
     return this.toPlainObject()
   }
-
 }
-
 
 export function buildResourceApis(resourceStore: ResourceHash, context: CalendarContext) {
   let resourceApis: ResourceApi[] = []

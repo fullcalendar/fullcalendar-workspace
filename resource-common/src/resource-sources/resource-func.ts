@@ -36,18 +36,18 @@ registerResourceSourceDef<ResourceFunc>({
       end: dateEnv.toDate(arg.range.end),
       startStr: dateEnv.formatIso(arg.range.start),
       endStr: dateEnv.formatIso(arg.range.end),
-      timeZone: dateEnv.timeZone
+      timeZone: dateEnv.timeZone,
     } : {}
 
     // TODO: make more dry with EventSourceFunc
     // TODO: accept a response?
     unpromisify(
       func.bind(null, publicArg),
-      function(rawResources) { // success
+      (rawResources) => { // success
         success({ rawResources }) // needs an object response
       },
-      failure // send errorObj directly to failure callback
+      failure, // send errorObj directly to failure callback
     )
-  }
+  },
 
 })

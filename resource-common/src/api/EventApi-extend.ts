@@ -1,17 +1,13 @@
 import { EventApi } from '@fullcalendar/common'
 import { ResourceApi } from './ResourceApi'
 
-
-EventApi.prototype.getResources = function(this: EventApi): ResourceApi[] {
+EventApi.prototype.getResources = function (this: EventApi): ResourceApi[] {
   let { calendarApi } = this._context
 
-  return this._def.resourceIds.map(function(resourceId) {
-    return calendarApi.getResourceById(resourceId)
-  })
+  return this._def.resourceIds.map((resourceId) => calendarApi.getResourceById(resourceId))
 }
 
-
-EventApi.prototype.setResources = function(this: EventApi, resources: (string | ResourceApi)[]) {
+EventApi.prototype.setResources = function (this: EventApi, resources: (string | ResourceApi)[]) {
   let resourceIds = []
 
   // massage resources -> resourceIds
@@ -35,7 +31,7 @@ EventApi.prototype.setResources = function(this: EventApi, resources: (string | 
 
   this.mutate({
     standardProps: {
-      resourceIds
-    }
+      resourceIds,
+    },
   })
 }

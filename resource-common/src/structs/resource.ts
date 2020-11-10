@@ -1,8 +1,7 @@
 import {
   ConstraintInput, AllowFunc, EventStore, parseBusinessHours, CalendarContext, EventUi, BusinessHoursInput,
-  guid, identity, Identity, RawOptionsFromRefiners, parseClassNames, refineProps, createEventUi, Dictionary
+  guid, identity, Identity, RawOptionsFromRefiners, parseClassNames, refineProps, createEventUi, Dictionary,
 } from '@fullcalendar/common'
-
 
 const PRIVATE_ID_PREFIX = '_fc:'
 
@@ -25,7 +24,7 @@ const RESOURCE_REFINERS = {
   eventBackgroundColor: String,
   eventBorderColor: String,
   eventTextColor: String,
-  eventColor: String
+  eventColor: String,
 }
 
 type BuiltInResourceRefiners = typeof RESOURCE_REFINERS
@@ -49,7 +48,6 @@ export interface Resource {
 
 export type ResourceHash = { [resourceId: string]: Resource }
 
-
 /*
 needs a full store so that it can populate children too
 */
@@ -72,12 +70,12 @@ export function parseResource(raw: ResourceInput, parentId: string = '', store: 
       backgroundColor: refined.eventBackgroundColor,
       borderColor: refined.eventBorderColor,
       textColor: refined.eventTextColor,
-      color: refined.eventColor
+      color: refined.eventColor,
     }, context),
     extendedProps: {
       ...extra,
-      ...refined.extendedProps
-    }
+      ...refined.extendedProps,
+    },
   }
 
   // help out ResourceApi from having user modify props
@@ -99,7 +97,6 @@ export function parseResource(raw: ResourceInput, parentId: string = '', store: 
 
   return resource
 }
-
 
 /*
 TODO: use this in more places

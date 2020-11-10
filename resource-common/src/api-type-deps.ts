@@ -1,4 +1,3 @@
-
 // TODO: rename to public-type.ts and put everything in here
 
 export { ResourceInput } from './structs/resource'

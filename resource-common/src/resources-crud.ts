@@ -2,7 +2,6 @@ import { CalendarData, parseFieldSpecs } from '@fullcalendar/common'
 import { buildResourceApis, ResourceApi } from './api/ResourceApi'
 import { ResourceHash } from './structs/resource'
 
-
 export const DEFAULT_RESOURCE_ORDER = parseFieldSpecs('id,title')
 
 export interface ResourceAddArg {
@@ -20,7 +19,6 @@ export interface ResourceRemoveArg {
   resource: ResourceApi
   revert: () => void
 }
-
 
 export function handleResourceStore(resourceStore: ResourceHash, calendarData: CalendarData) {
   let { emitter } = calendarData

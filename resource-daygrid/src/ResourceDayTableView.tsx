@@ -1,23 +1,26 @@
 import {
-  createElement, createRef, DateProfileGenerator, memoize, DateProfile, ChunkContentCallbackArgs, CalendarContext
+  createElement,
+  createRef,
+  DateProfileGenerator,
+  memoize,
+  DateProfile,
+  ChunkContentCallbackArgs,
+  CalendarContext,
 } from '@fullcalendar/common'
 import { TableView, buildDayTableModel } from '@fullcalendar/daygrid'
 import {
   ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps,
-  Resource, flattenResources, DEFAULT_RESOURCE_ORDER
+  Resource, flattenResources, DEFAULT_RESOURCE_ORDER,
 } from '@fullcalendar/resource-common'
 import { ResourceDayTable } from './ResourceDayTable'
 
-
 export class ResourceDayTableView extends TableView {
-
   props: ResourceViewProps
 
   private flattenResources = memoize(flattenResources)
   private buildResourceDayTableModel = memoize(buildResourceDayTableModel)
   private headerRef = createRef<ResourceDayHeader>()
   private tableRef = createRef<ResourceDayTable>()
-
 
   render() {
     let { props, context } = this
@@ -30,17 +33,18 @@ export class ResourceDayTableView extends TableView {
       context.dateProfileGenerator,
       resources,
       options.datesAboveResources,
-      context
+      context,
     )
 
-    let headerContent = options.dayHeaders &&
+    let headerContent = options.dayHeaders && (
       <ResourceDayHeader
         ref={this.headerRef}
         resources={resources}
         dateProfile={props.dateProfile}
         dates={resourceDayTableModel.dayTableModel.headerDates}
-        datesRepDistinctDays={true}
+        datesRepDistinctDays
       />
+    )
 
     let bodyContent = (contentArg: ChunkContentCallbackArgs) => (
       <ResourceDayTable
@@ -72,16 +76,14 @@ export class ResourceDayTableView extends TableView {
       ? this.renderHScrollLayout(headerContent, bodyContent, resourceDayTableModel.colCnt, options.dayMinWidth)
       : this.renderSimpleLayout(headerContent, bodyContent)
   }
-
 }
-
 
 function buildResourceDayTableModel(
   dateProfile: DateProfile,
   dateProfileGenerator: DateProfileGenerator,
   resources: Resource[],
   datesAboveResources: boolean,
-  context: CalendarContext
+  context: CalendarContext,
 ) {
   let dayTable = buildDayTableModel(dateProfile, dateProfileGenerator)
 

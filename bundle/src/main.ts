@@ -1,19 +1,3 @@
-
-export * from '@fullcalendar/core'
-export * from '@fullcalendar/interaction'
-export * from '@fullcalendar/daygrid'
-export * from '@fullcalendar/timegrid'
-export * from '@fullcalendar/list'
-export * from '@fullcalendar/bootstrap'
-export * from '@fullcalendar/google-calendar'
-export * from '@fullcalendar/scrollgrid'
-export * from '@fullcalendar/adaptive'
-export * from '@fullcalendar/timeline'
-export * from '@fullcalendar/resource-common'
-export * from '@fullcalendar/resource-daygrid'
-export * from '@fullcalendar/resource-timegrid'
-export * from '@fullcalendar/resource-timeline'
-
 import { globalPlugins } from '@fullcalendar/core'
 import interactionPlugin from '@fullcalendar/interaction'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -42,5 +26,20 @@ globalPlugins.push(
   resourceCommonPlugin,
   resourceDayGridPlugin,
   resourceTimeGridPlugin,
-  resourceTimelinePlugin
+  resourceTimelinePlugin,
 )
+
+export * from '@fullcalendar/core'
+export * from '@fullcalendar/interaction'
+export * from '@fullcalendar/daygrid'
+export * from '@fullcalendar/timegrid'
+export * from '@fullcalendar/list'
+export * from '@fullcalendar/bootstrap'
+export * from '@fullcalendar/google-calendar'
+export * from '@fullcalendar/scrollgrid'
+export * from '@fullcalendar/adaptive'
+export * from '@fullcalendar/timeline'
+export * from '@fullcalendar/resource-common'
+export * from '@fullcalendar/resource-daygrid'
+export * from '@fullcalendar/resource-timegrid'
+export * from '@fullcalendar/resource-timeline'

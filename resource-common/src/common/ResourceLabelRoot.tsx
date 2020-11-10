@@ -2,7 +2,6 @@ import { createElement, Ref, ComponentChildren, ViewContextType, ViewContext, Re
 import { Resource } from '../structs/resource'
 import { ResourceApi } from '../api/ResourceApi'
 
-
 export interface ResourceLabelRootProps {
   resource: Resource
   date?: Date
@@ -23,9 +22,7 @@ export interface ResourceLabelContentArg {
 
 export type ResourceLabelMountArg = MountArg<ResourceLabelContentArg>
 
-
 // TODO: not used for Spreadsheet. START USING. difficult because of col-specific rendering props
-
 
 export function ResourceLabelRoot(props: ResourceLabelRootProps) {
   return (
@@ -35,12 +32,12 @@ export function ResourceLabelRoot(props: ResourceLabelRootProps) {
         let hookProps: ResourceLabelContentArg = {
           resource: new ResourceApi(context, props.resource),
           date: props.date ? context.dateEnv.toDate(props.date) : null,
-          view: context.viewApi
+          view: context.viewApi,
         }
 
         let dataAttrs = {
           'data-resource-id': props.resource.id, // TODO: only do public-facing one?
-          'data-date': props.date ? formatDayString(props.date) : undefined
+          'data-date': props.date ? formatDayString(props.date) : undefined,
         }
 
         return (
@@ -57,7 +54,7 @@ export function ResourceLabelRoot(props: ResourceLabelRootProps) {
               classNames, // TODO: pass in 'fc-resource' ?
               dataAttrs,
               innerElRef,
-              innerContent
+              innerContent,
             )}
           </RenderHook>
         )
@@ -65,7 +62,6 @@ export function ResourceLabelRoot(props: ResourceLabelRootProps) {
     </ViewContextType.Consumer>
   )
 }
-
 
 function renderInnerContent(props: ResourceLabelContentArg) {
   return props.resource.title || props.resource.id

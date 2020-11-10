@@ -9,7 +9,7 @@ import {
   ColCellContentArg, ColCellMountArg,
   ResourceLaneContentArg, ResourceLaneMountArg,
   ResourceApi,
-  ResourceAddArg, ResourceChangeArg, ResourceRemoveArg
+  ResourceAddArg, ResourceChangeArg, ResourceRemoveArg,
 } from './api-type-deps'
 
 export const OPTION_REFINERS = {
@@ -50,12 +50,12 @@ export const OPTION_REFINERS = {
   resourceGroupLaneClassNames: identity as Identity<ClassNamesGenerator<ColCellContentArg>>,
   resourceGroupLaneContent: identity as Identity<CustomContentGenerator<ColCellContentArg>>,
   resourceGroupLaneDidMount: identity as Identity<DidMountHandler<ColCellMountArg>>,
-  resourceGroupLaneWillUnmount: identity as Identity<WillUnmountHandler<ColCellMountArg>>
+  resourceGroupLaneWillUnmount: identity as Identity<WillUnmountHandler<ColCellMountArg>>,
 }
 
 export const LISTENER_REFINERS = {
   resourcesSet: identity as Identity<(resources: ResourceApi[]) => void>,
   resourceAdd: identity as Identity<(arg: ResourceAddArg) => void>,
   resourceChange: identity as Identity<(arg: ResourceChangeArg) => void>,
-  resourceRemove: identity as Identity<(arg: ResourceRemoveArg) => void>
+  resourceRemove: identity as Identity<(arg: ResourceRemoveArg) => void>,
 }

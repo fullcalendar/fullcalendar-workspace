@@ -1,12 +1,11 @@
 import {
   rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewPropsTransformer, CalendarContentProps, memoize, mapHash,
-  EventUi, isPropsEqual, EventUiHash, EventDefHash, EventDef, combineEventUis, EventStore, DateRange, CalendarContext
+  EventUi, isPropsEqual, EventUiHash, EventDefHash, EventDef, combineEventUis, EventStore, DateRange, CalendarContext,
 } from '@fullcalendar/common'
+import { __assign } from 'tslib'
 import { ResourceHash } from './structs/resource'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
-import { __assign } from 'tslib'
 import { computeResourceEditable } from './EventDragging'
-
 
 // for when resource views need resource data
 
@@ -16,7 +15,6 @@ export interface ResourceViewProps extends ViewProps {
 }
 
 export class ResourceDataAdder implements ViewPropsTransformer {
-
   filterResources = memoize(filterResources)
 
   transform(viewProps: ViewProps, calendarProps: CalendarContentProps) {
@@ -26,13 +24,12 @@ export class ResourceDataAdder implements ViewPropsTransformer {
           calendarProps.resourceStore,
           calendarProps.options.filterResourcesWithEvents,
           calendarProps.eventStore,
-          calendarProps.dateProfile.activeRange
+          calendarProps.dateProfile.activeRange,
         ),
-        resourceEntityExpansions: calendarProps.resourceEntityExpansions
+        resourceEntityExpansions: calendarProps.resourceEntityExpansions,
       }
     }
   }
-
 }
 
 function filterResources(resourceStore: ResourceHash, doFilterResourcesWithEvents: boolean, eventStore: EventStore, activeRange: DateRange): ResourceHash {
@@ -42,19 +39,14 @@ function filterResources(resourceStore: ResourceHash, doFilterResourcesWithEvent
 
     __assign(hasEvents, computeAncestorHasEvents(hasEvents, resourceStore))
 
-    return filterHash(resourceStore, function(resource, resourceId) {
-      return hasEvents[resourceId]
-    })
-
-  } else {
-    return resourceStore
+    return filterHash(resourceStore, (resource, resourceId) => hasEvents[resourceId])
   }
+
+  return resourceStore
 }
 
 function filterEventInstancesInRange(eventInstances: EventInstanceHash, activeRange: DateRange) {
-  return filterHash(eventInstances, function(eventInstance) {
-    return rangesIntersect(eventInstance.range, activeRange)
-  })
+  return filterHash(eventInstances, (eventInstance) => rangesIntersect(eventInstance.range, activeRange))
 }
 
 function computeHasEvents(eventInstances: EventInstanceHash, eventDefs: EventDefHash) {
@@ -95,11 +87,9 @@ function computeAncestorHasEvents(hasEvents: { [resourceId: string]: boolean }, 
   return res
 }
 
-
 // for when non-resource view should be given EventUi info (for event coloring/constraints based off of resource data)
 
 export class ResourceEventConfigAdder implements ViewPropsTransformer {
-
   buildResourceEventUis = memoize(buildResourceEventUis, isPropsEqual)
   injectResourceEventUis = memoize(injectResourceEventUis)
 
@@ -109,27 +99,23 @@ export class ResourceEventConfigAdder implements ViewPropsTransformer {
         eventUiBases: this.injectResourceEventUis(
           viewProps.eventUiBases,
           viewProps.eventStore.defs,
-          this.buildResourceEventUis(calendarProps.resourceStore)
-        )
+          this.buildResourceEventUis(calendarProps.resourceStore),
+        ),
       }
     }
   }
-
 }
 
 function buildResourceEventUis(resourceStore: ResourceHash) {
-  return mapHash(resourceStore, function(resource) {
-    return resource.ui
-  })
+  return mapHash(resourceStore, (resource) => resource.ui)
 }
 
 function injectResourceEventUis(eventUiBases: EventUiHash, eventDefs: EventDefHash, resourceEventUis: EventUiHash) {
-  return mapHash(eventUiBases, function(eventUi, defId) {
+  return mapHash(eventUiBases, (eventUi, defId) => {
     if (defId) { // not the '' key
       return injectResourceEventUi(eventUi, eventDefs[defId], resourceEventUis)
-    } else {
-      return eventUi
     }
+    return eventUi
   })
 }
 
@@ -148,11 +134,9 @@ function injectResourceEventUi(origEventUi: EventUi, eventDef: EventDef, resourc
   return combineEventUis(parts)
 }
 
-
 // for making sure events that have editable resources are always draggable in resource views
 
 export function transformIsDraggable(val: boolean, eventDef: EventDef, eventUi: EventUi, context: CalendarContext) {
-
   if (!val) {
     let state = context.getCurrentData()
     let viewSpec = state.viewSpecs[state.currentViewType]

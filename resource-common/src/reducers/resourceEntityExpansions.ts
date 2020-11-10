@@ -4,9 +4,8 @@ export type ResourceEntityExpansions = { [id: string]: boolean }
 
 export function reduceResourceEntityExpansions(
   expansions: ResourceEntityExpansions | null,
-  action: ResourceAction | null
+  action: ResourceAction | null,
 ): ResourceEntityExpansions {
-
   if (!expansions || !action) {
     return {}
   }
@@ -15,7 +14,7 @@ export function reduceResourceEntityExpansions(
     case 'SET_RESOURCE_ENTITY_EXPANDED':
       return {
         ...expansions,
-        [action.id]: action.isExpanded
+        [action.id]: action.isExpanded,
       }
 
     default:

@@ -15,7 +15,6 @@ import { transformExternalDef } from './ExternalElementDragging'
 import { transformEventResizeJoin } from './EventResizing'
 import './api/EventApi-extend'
 import './api/EventApi-declare'
-export { ResourceLaneContentArg, ResourceLaneHookPropsInput } from './render-hooks'
 import { optionChangeHandlers } from './option-change-handlers'
 import { handleResourceStore } from './resources-crud'
 import { OPTION_REFINERS, LISTENER_REFINERS } from './options'
@@ -26,31 +25,33 @@ import './resource-sources/resource-array'
 import './resource-sources/resource-func'
 import './resource-sources/resource-json-feed'
 
+export { ResourceLaneContentArg, ResourceLaneHookPropsInput } from './render-hooks'
+
 export * from './api-type-deps'
 export { DEFAULT_RESOURCE_ORDER } from './resources-crud'
 
 export default createPlugin({
   deps: [
-    premiumCommonPlugin
+    premiumCommonPlugin,
   ],
-  reducers: [ reduceResources ],
+  reducers: [reduceResources],
   eventRefiners: EVENT_REFINERS,
-  eventDefMemberAdders: [ generateEventDefResourceMembers ],
-  isDraggableTransformers: [ transformIsDraggable ],
-  eventDragMutationMassagers: [ massageEventDragMutation ],
-  eventDefMutationAppliers: [ applyEventDefMutation ],
-  dateSelectionTransformers: [ transformDateSelectionJoin ],
-  datePointTransforms: [ transformDatePoint ],
-  dateSpanTransforms: [ transformDateSpan ],
-  viewPropsTransformers: [ ResourceDataAdder, ResourceEventConfigAdder ],
+  eventDefMemberAdders: [generateEventDefResourceMembers],
+  isDraggableTransformers: [transformIsDraggable],
+  eventDragMutationMassagers: [massageEventDragMutation],
+  eventDefMutationAppliers: [applyEventDefMutation],
+  dateSelectionTransformers: [transformDateSelectionJoin],
+  datePointTransforms: [transformDatePoint],
+  dateSpanTransforms: [transformDateSpan],
+  viewPropsTransformers: [ResourceDataAdder, ResourceEventConfigAdder],
   isPropsValid: isPropsValidWithResources,
-  externalDefTransforms: [ transformExternalDef ],
-  eventResizeJoinTransforms: [ transformEventResizeJoin ],
-  eventDropTransformers: [ transformEventDrop ],
+  externalDefTransforms: [transformExternalDef],
+  eventResizeJoinTransforms: [transformEventResizeJoin],
+  eventDropTransformers: [transformEventDrop],
   optionChangeHandlers,
   optionRefiners: OPTION_REFINERS,
   listenerRefiners: LISTENER_REFINERS,
-  propSetHandlers: { resourceStore: handleResourceStore }
+  propSetHandlers: { resourceStore: handleResourceStore },
 })
 
 export { ResourceDayHeader } from './common/ResourceDayHeader'

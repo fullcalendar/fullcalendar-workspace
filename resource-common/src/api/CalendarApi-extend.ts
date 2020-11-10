@@ -2,8 +2,7 @@ import { DateSpan, CalendarApi, CalendarContext } from '@fullcalendar/common'
 import { ResourceApi } from './ResourceApi'
 import { ResourceInput, parseResource, ResourceHash, Resource } from '../structs/resource'
 
-
-CalendarApi.prototype.addResource = function(this: CalendarApi, input: ResourceInput | ResourceApi, scrollTo = true) {
+CalendarApi.prototype.addResource = function (this: CalendarApi, input: ResourceInput | ResourceApi, scrollTo = true) {
   let currentState = this.getCurrentData()
   let resourceHash: ResourceHash
   let resource: Resource
@@ -18,7 +17,7 @@ CalendarApi.prototype.addResource = function(this: CalendarApi, input: ResourceI
 
   this.dispatch({
     type: 'ADD_RESOURCE',
-    resourceHash
+    resourceHash,
   })
 
   if (scrollTo) {
@@ -33,16 +32,15 @@ CalendarApi.prototype.addResource = function(this: CalendarApi, input: ResourceI
     revert: () => {
       this.dispatch({
         type: 'REMOVE_RESOURCE',
-        resourceId: resource.id
+        resourceId: resource.id,
       })
-    }
+    },
   })
 
   return resourceApi
 }
 
-
-CalendarApi.prototype.getResourceById = function(this: CalendarApi, id: string) {
+CalendarApi.prototype.getResourceById = function (this: CalendarApi, id: string) {
   id = String(id)
   let currentState = this.getCurrentData()
 
@@ -57,8 +55,7 @@ CalendarApi.prototype.getResourceById = function(this: CalendarApi, id: string) 
   return null
 }
 
-
-CalendarApi.prototype.getResources = function(this: CalendarApi): ResourceApi[] {
+CalendarApi.prototype.getResources = function (this: CalendarApi): ResourceApi[] {
   let currentState = this.getCurrentData()
   let { resourceStore } = currentState
   let resourceApis: ResourceApi[] = []
@@ -66,7 +63,7 @@ CalendarApi.prototype.getResources = function(this: CalendarApi): ResourceApi[] 
   if (resourceStore) { // guard against calendar with no resource functionality
     for (let resourceId in resourceStore) {
       resourceApis.push(
-        new ResourceApi(currentState, resourceStore[resourceId])
+        new ResourceApi(currentState, resourceStore[resourceId]),
       )
     }
   }
@@ -74,8 +71,7 @@ CalendarApi.prototype.getResources = function(this: CalendarApi): ResourceApi[] 
   return resourceApis
 }
 
-
-CalendarApi.prototype.getTopLevelResources = function(this: CalendarApi): ResourceApi[] {
+CalendarApi.prototype.getTopLevelResources = function (this: CalendarApi): ResourceApi[] {
   let currentState = this.getCurrentData()
   let { resourceStore } = currentState
   let resourceApis: ResourceApi[] = []
@@ -84,7 +80,7 @@ CalendarApi.prototype.getTopLevelResources = function(this: CalendarApi): Resour
     for (let resourceId in resourceStore) {
       if (!resourceStore[resourceId].parentId) {
         resourceApis.push(
-          new ResourceApi(currentState, resourceStore[resourceId])
+          new ResourceApi(currentState, resourceStore[resourceId]),
         )
       }
     }
@@ -93,20 +89,17 @@ CalendarApi.prototype.getTopLevelResources = function(this: CalendarApi): Resour
   return resourceApis
 }
 
-
-CalendarApi.prototype.refetchResources = function(this: CalendarApi) {
+CalendarApi.prototype.refetchResources = function (this: CalendarApi) {
   this.dispatch({
-    type: 'REFETCH_RESOURCES'
+    type: 'REFETCH_RESOURCES',
   })
 }
-
 
 export function transformDatePoint(dateSpan: DateSpan, context: CalendarContext) {
   return dateSpan.resourceId ?
     { resource: context.calendarApi.getResourceById(dateSpan.resourceId) } :
     {}
 }
-
 
 export function transformDateSpan(dateSpan: DateSpan, context: CalendarContext) {
   return dateSpan.resourceId ?
