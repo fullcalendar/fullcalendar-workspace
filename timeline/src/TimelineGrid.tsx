@@ -1,9 +1,11 @@
-import { createElement, createRef, ViewProps, Hit, DateComponent, CssDimValue, VNode, DateMarker, NowTimer, greatestDurationDenominator, DateRange, NowIndicatorRoot, Fragment } from '@fullcalendar/common'
+import {
+  createElement, createRef, ViewProps, Hit, DateComponent, CssDimValue, VNode, DateMarker, NowTimer,
+  greatestDurationDenominator, DateRange, NowIndicatorRoot, Fragment,
+} from '@fullcalendar/common'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineSlats } from './TimelineSlats'
 import { TimelineLane } from './TimelineLane'
 import { TimelineDateProfile } from './timeline-date-profile'
-
 
 export interface TimelinGridProps extends ViewProps {
   tDateProfile: TimelineDateProfile
@@ -19,15 +21,12 @@ interface TimelineGridState {
   coords: TimelineCoords | null
 }
 
-
 export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridState> {
-
   private slatsRef = createRef<TimelineSlats>()
 
   state = {
-    coords: null
+    coords: null,
   }
-
 
   render() {
     let { props, state, context } = this
@@ -36,11 +35,15 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
 
     return (
-      <div className='fc-timeline-body' ref={this.handeEl} style={{
-        minWidth: props.tableMinWidth,
-        height: props.clientHeight,
-        width: props.clientWidth
-      }}>
+      <div
+        className="fc-timeline-body"
+        ref={this.handeEl}
+        style={{
+          minWidth: props.tableMinWidth,
+          height: props.clientHeight,
+          width: props.clientWidth,
+        }}
+      >
         <NowTimer unit={timerUnit}>
           {(nowDate: DateMarker, todayRange: DateRange) => (
             <Fragment>
@@ -71,26 +74,27 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
                 eventResize={props.eventResize}
                 timelineCoords={state.coords}
               />
-              {(options.nowIndicator && state.coords && state.coords.isDateInRange(nowDate)) &&
-                <div className='fc-timeline-now-indicator-container'>
+              {(options.nowIndicator && state.coords && state.coords.isDateInRange(nowDate)) && (
+                <div className="fc-timeline-now-indicator-container">
                   <NowIndicatorRoot isAxis={false} date={nowDate}>
                     {(rootElRef, classNames, innerElRef, innerContent) => (
                       <div
                         ref={rootElRef}
-                        className={[ 'fc-timeline-now-indicator-line' ].concat(classNames).join(' ')}
+                        className={['fc-timeline-now-indicator-line'].concat(classNames).join(' ')}
                         style={{ left: state.coords.dateToCoord(nowDate) }}
-                      >{innerContent}</div>
+                      >
+                        {innerContent}
+                      </div>
                     )}
                   </NowIndicatorRoot>
                 </div>
-              }
+              )}
             </Fragment>
           )}
         </NowTimer>
       </div>
     )
   }
-
 
   handeEl = (el: HTMLElement | null) => {
     if (el) {
@@ -100,7 +104,6 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
     }
   }
 
-
   handleCoords = (coords: TimelineCoords) => {
     this.setState({ coords })
 
@@ -108,7 +111,6 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
       this.props.onSlatCoords(coords)
     }
   }
-
 
   // Hit System
   // ------------------------------------------------------------------------------------------
@@ -125,12 +127,13 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
           left: slatHit.left,
           right: slatHit.right,
           top: 0,
-          bottom: elHeight
+          bottom: elHeight,
         },
         dayEl: slatHit.dayEl,
-        layer: 0
+        layer: 0,
       }
     }
-  }
 
+    return null
+  }
 }

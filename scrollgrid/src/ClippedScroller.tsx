@@ -4,9 +4,8 @@ import {
   Scroller, OverflowValue,
   getScrollbarWidths,
   getIsRtlScrollbarOnLeft,
-  isPropsEqual
+  isPropsEqual,
 } from '@fullcalendar/common'
-
 
 export type ClippedOverflowValue = OverflowValue | 'scroll-hidden'
 
@@ -25,17 +24,14 @@ interface ClippedScrollerState {
   xScrollbarWidth?: number
 }
 
-
 export class ClippedScroller extends BaseComponent<ClippedScrollerProps, ClippedScrollerState> implements ScrollerLike {
-
   private elRef = createRef<HTMLDivElement>()
   private scroller: Scroller
 
   state = { // HACK?
     xScrollbarWidth: getScrollbarWidths().x,
-    yScrollbarWidth: getScrollbarWidths().y
+    yScrollbarWidth: getScrollbarWidths().y,
   }
-
 
   render() {
     let { props, state, context } = this
@@ -71,26 +67,29 @@ export class ClippedScroller extends BaseComponent<ClippedScrollerProps, Clipped
           overcomeLeft={overcomeLeft}
           overcomeRight={overcomeRight}
           overcomeBottom={overcomeBottom}
-          maxHeight={typeof props.maxHeight === 'number' ? (props.maxHeight + (props.overflowX === 'scroll-hidden' ? state.xScrollbarWidth : 0)) : ''}
+          maxHeight={
+            typeof props.maxHeight === 'number'
+              ? (props.maxHeight + (props.overflowX === 'scroll-hidden' ? state.xScrollbarWidth : 0))
+              : ''
+          }
           liquid={props.liquid}
-          liquidIsAbsolute={true}
-        >{props.children}</Scroller>
+          liquidIsAbsolute
+        >
+          {props.children}
+        </Scroller>
       </div>
     )
   }
-
 
   handleScroller = (scroller: Scroller) => {
     this.scroller = scroller
     setRef(this.props.scrollerRef, scroller)
   }
 
-
   componentDidMount() {
     this.handleSizing()
     this.context.addResizeHandler(this.handleSizing)
   }
-
 
   componentDidUpdate(prevProps: ClippedScrollerProps) {
     if (!isPropsEqual(prevProps, this.props)) { // an external change?
@@ -98,11 +97,9 @@ export class ClippedScroller extends BaseComponent<ClippedScrollerProps, Clipped
     }
   }
 
-
   componentWillUnmount() {
     this.context.removeResizeHandler(this.handleSizing)
   }
-
 
   handleSizing = () => {
     let { props } = this
@@ -116,14 +113,11 @@ export class ClippedScroller extends BaseComponent<ClippedScrollerProps, Clipped
     }
   }
 
-
   needsXScrolling() {
     return this.scroller.needsXScrolling()
   }
 
-
   needsYScrolling() {
     return this.scroller.needsYScrolling()
   }
-
 }

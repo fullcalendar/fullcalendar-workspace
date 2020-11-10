@@ -1,14 +1,13 @@
 import {
   Duration, EventStore, EventUiHash, DateSpan, EventInteractionState,
-  BaseComponent, createElement, memoize, Fragment, RefMap, mapHash, createRef, getSegMeta, DateMarker, DateRange, DateProfile
+  BaseComponent, createElement, memoize, Fragment, RefMap, mapHash, createRef, getSegMeta, DateMarker, DateRange, DateProfile,
 } from '@fullcalendar/common'
-import {TimelineDateProfile } from './timeline-date-profile'
+import { TimelineDateProfile } from './timeline-date-profile'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneBg } from './TimelineLaneBg'
 import { TimelineLaneSlicer, TimelineLaneSeg } from './TimelineLaneSlicer'
 import { TimelineEvent } from './TimelineEvent'
 import { computeSegHorizontals, computeSegVerticals, TimelineSegDims } from './event-placement'
-
 
 export interface TimelineLaneProps extends TimelineLaneCoreProps {
   onHeightChange?: (innerEl: HTMLElement, isStable: boolean) => void
@@ -34,9 +33,7 @@ interface TimelineLaneState {
   segDims: { [instanceId: string]: TimelineSegDims } | null
 }
 
-
 export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneState> {
-
   private slicer = new TimelineLaneSlicer()
   private computeFgSegHorizontals = memoize(computeSegHorizontals) // only for fg event segs, not mirror
   private computeSegVerticals = memoize(computeSegVerticals)
@@ -44,9 +41,8 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
   private innerElRef = createRef<HTMLDivElement>()
 
   state = {
-    segDims: null
+    segDims: null,
   }
-
 
   render() {
     let { props, state, context } = this
@@ -60,7 +56,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       dateProfile,
       context.dateProfileGenerator,
       tDateProfile,
-      context.dateEnv
+      context.dateEnv,
     )
 
     let mirrorSegs =
@@ -88,7 +84,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           todayRange={props.todayRange}
         />
         <div
-          className='fc-timeline-events fc-scrollgrid-sync-inner'
+          className="fc-timeline-events fc-scrollgrid-sync-inner"
           ref={this.innerElRef}
           style={{ height /* computed by computeSegVerticals */ }}
         >
@@ -99,7 +95,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
             hiddenSegs,
             false,
             false,
-            false
+            false,
           )}
           {this.renderFgSegs(
             mirrorSegs as TimelineLaneSeg[],
@@ -108,18 +104,16 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
             {},
             Boolean(slicedProps.eventDrag),
             Boolean(slicedProps.eventResize),
-            false // because mirror is never drawn for date selection
+            false, // because mirror is never drawn for date selection
           )}
         </div>
       </Fragment>
     )
   }
 
-
   componentDidMount() {
     this.updateSize()
   }
-
 
   componentDidUpdate(prevProps: TimelineLaneProps, prevState: TimelineLaneState) {
     if (
@@ -130,7 +124,6 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       this.updateSize()
     }
   }
-
 
   updateSize() {
     let { props } = this
@@ -150,9 +143,9 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           return {
             left: Math.round(harnessRect.left - originRect.left),
             right: Math.round(harnessRect.right - originRect.left),
-            height: Math.round(harnessRect.height)
+            height: Math.round(harnessRect.height),
           }
-        })
+        }),
       }, () => {
         if (props.onHeightChange) {
           props.onHeightChange(this.innerElRef.current, true)
@@ -160,7 +153,6 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       })
     }
   }
-
 
   renderFgSegs(segs: TimelineLaneSeg[], segHorizontals, segTops, hiddenSegs, isDragging, isResizing, isDateSelecting) {
     let { harnessElRefs, props } = this
@@ -177,12 +169,12 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
             <div
               key={instanceId}
               ref={isMirror ? null : harnessElRefs.createRef(instanceId)}
-              className='fc-timeline-event-harness'
+              className="fc-timeline-event-harness"
               style={{
                 left: horizontalCoords ? horizontalCoords.left : '',
                 right: horizontalCoords ? -horizontalCoords.right : '', // outwards from right edge (which is same as left edge)
                 top: top != null ? top : '',
-                visibility: hiddenSegs[instanceId] ? 'hidden' : ('' as any /* wtf, file @types/react bug */)
+                visibility: hiddenSegs[instanceId] ? 'hidden' : ('' as any /* wtf, file @types/react bug */),
               }}
             >
               <TimelineEvent
@@ -200,5 +192,4 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       </Fragment>
     )
   }
-
 }

@@ -1,6 +1,5 @@
 import { removeElement, computeEdges } from '@fullcalendar/common'
 
-
 // TODO: assume the el has no borders?
 export function getScrollCanvasOrigin(scrollEl: HTMLElement) { // best place for this?
   let rect = scrollEl.getBoundingClientRect()
@@ -8,10 +7,9 @@ export function getScrollCanvasOrigin(scrollEl: HTMLElement) { // best place for
 
   return {
     left: rect.left + edges.borderLeft + edges.scrollbarLeft - getScrollFromLeftEdge(scrollEl),
-    top: rect.top + edges.borderTop - scrollEl.scrollTop
+    top: rect.top + edges.borderTop - scrollEl.scrollTop,
   }
 }
-
 
 export function getScrollFromLeftEdge(el: HTMLElement) {
   let val = el.scrollLeft
@@ -30,7 +28,6 @@ export function getScrollFromLeftEdge(el: HTMLElement) {
 
   return val
 }
-
 
 /*
 `val` is in the "negative" scheme
@@ -51,7 +48,6 @@ export function setScrollFromStartingEdge(el: HTMLElement, val: number) {
 
   el.scrollLeft = val
 }
-
 
 // Horizontal Scroll System Detection
 // ----------------------------------------------------------------------------------------------
@@ -90,4 +86,3 @@ function detectRtlScrollSystem() {
   removeElement(el)
   return system
 }
-

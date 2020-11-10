@@ -1,7 +1,6 @@
+import { sortEventSegs, OrderSpec, EventApi } from '@fullcalendar/common'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
-import { sortEventSegs, OrderSpec, EventApi } from '@fullcalendar/common'
-
 
 export function computeSegHorizontals(segs: TimelineLaneSeg[], timelineCoords?: TimelineCoords) {
   let horizontals: { [instanceId: string]: { left: number, right: number } } = {}
@@ -16,7 +15,6 @@ export function computeSegHorizontals(segs: TimelineLaneSeg[], timelineCoords?: 
   return horizontals
 }
 
-
 export interface TimelineSegDims { // the natural dimensions queried from the DOM
   left: number
   right: number
@@ -29,8 +27,11 @@ interface Placement {
   top: number
 }
 
-
-export function computeSegVerticals(segs: TimelineLaneSeg[], eventOrderSpecs: OrderSpec<EventApi>[], dimHash: { [key: string]: TimelineSegDims } | null) {
+export function computeSegVerticals(
+  segs: TimelineLaneSeg[],
+  eventOrderSpecs: OrderSpec<EventApi>[],
+  dimHash: { [key: string]: TimelineSegDims } | null,
+) {
   let placements: Placement[] = [] // sorted by top
   let maxBottom = 0
 
@@ -45,7 +46,7 @@ export function computeSegVerticals(segs: TimelineLaneSeg[], eventOrderSpecs: Or
         let top = 0
         let insertI = 0 // where to start searching for an insert position
 
-        for (let i = 0; i < placements.length; i++) { // loop through existing placements
+        for (let i = 0; i < placements.length; i += 1) { // loop through existing placements
           let placement = placements[i]
 
           if (testCollide(dims, top, placement.dims, placement.top)) {
@@ -56,7 +57,7 @@ export function computeSegVerticals(segs: TimelineLaneSeg[], eventOrderSpecs: Or
 
         // move insertI along to be after the placement whos top is below the current top
         while (insertI < placements.length && top >= placements[insertI].top) {
-          insertI++
+          insertI += 1
         }
 
         placements.splice(insertI, 0, { key, dims, top }) // insert
@@ -73,7 +74,6 @@ export function computeSegVerticals(segs: TimelineLaneSeg[], eventOrderSpecs: Or
 
   return { segTops: topHash, height: maxBottom }
 }
-
 
 function testCollide(dims0: TimelineSegDims, top0: number, dims1: TimelineSegDims, top1: number) { // TODO: use geom utils?
   return dims0.right > dims1.left &&

@@ -1,28 +1,23 @@
 import { ScrollListener } from './ScrollListener'
 import { setScrollFromStartingEdge } from './scroll-left-norm'
 
-
 export class ScrollSyncer {
-
   private masterEl: HTMLElement
   private scrollListeners: ScrollListener[]
   private isPaused: boolean = false
 
-
   constructor(
     private isVertical: boolean,
-    private scrollEls: HTMLElement[]
+    private scrollEls: HTMLElement[],
   ) {
     this.scrollListeners = scrollEls.map((el) => this.bindScroller(el))
   }
-
 
   destroy() {
     for (let scrollListener of this.scrollListeners) {
       scrollListener.destroy()
     }
   }
-
 
   bindScroller(el: HTMLElement) {
     let { scrollEls, isVertical } = this
@@ -60,7 +55,6 @@ export class ScrollSyncer {
     return scrollListener
   }
 
-
   assignMaster(el: HTMLElement) {
     this.masterEl = el
 
@@ -70,7 +64,6 @@ export class ScrollSyncer {
       }
     }
   }
-
 
   /*
   will normalize the scrollLeft value
@@ -85,7 +78,6 @@ export class ScrollSyncer {
     this.isPaused = false
   }
 
-
   forceScrollTop(top: number) {
     this.isPaused = true
 
@@ -95,5 +87,4 @@ export class ScrollSyncer {
 
     this.isPaused = false
   }
-
 }

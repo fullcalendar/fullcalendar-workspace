@@ -2,7 +2,6 @@ import { createElement, BaseComponent, Fragment, DateRange, DateMarker, DateProf
 import { TimelineDateProfile } from './timeline-date-profile'
 import { TimelineHeaderTh } from './TimelineHeaderTh'
 
-
 export interface TimelineHeaderRowsProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
@@ -12,7 +11,6 @@ export interface TimelineHeaderRowsProps {
 }
 
 export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
-
   render() {
     let { dateProfile, tDateProfile, rowInnerHeights, todayRange, nowDate } = this.props
     let { cellRows } = tDateProfile
@@ -24,10 +22,10 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
           let isChrono = tDateProfile.isTimeScale && isLast // the final row, with times?
           let classNames = [
             'fc-timeline-header-row',
-            isChrono ? 'fc-timeline-header-row-chrono' : ''
+            isChrono ? 'fc-timeline-header-row-chrono' : '',
           ]
 
-          return (
+          return ( // eslint-disable-next-line react/no-array-index-key
             <tr key={rowLevel} className={classNames.join(' ')}>
               {rowCells.map((cell) => (
                 <TimelineHeaderTh
@@ -48,5 +46,4 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
       </Fragment>
     )
   }
-
 }

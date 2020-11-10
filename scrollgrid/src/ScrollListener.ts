@@ -1,14 +1,11 @@
 import { Emitter, DelayedRunner } from '@fullcalendar/common'
 
-
 const WHEEL_EVENT_NAMES = 'wheel mousewheel DomMouseScroll MozMousePixelScroll'.split(' ')
-
 
 /*
 ALSO, with the ability to disable touch
 */
 export class ScrollListener {
-
   emitter = new Emitter()
   private isScrolling = false
   private isTouching = false // user currently has finger down?
@@ -16,7 +13,6 @@ export class ScrollListener {
   private isRecentlyScrolled = false
   private wheelWaiter = new DelayedRunner(this._handleWheelWaited.bind(this))
   private scrollWaiter = new DelayedRunner(this._handleScrollWaited.bind(this))
-
 
   constructor(public el: HTMLElement) {
     el.addEventListener('scroll', this.handleScroll)
@@ -27,7 +23,6 @@ export class ScrollListener {
       el.addEventListener(eventName, this.handleWheel)
     }
   }
-
 
   destroy() {
     let { el } = this
@@ -40,10 +35,8 @@ export class ScrollListener {
     }
   }
 
-
   // Start / Stop
   // ----------------------------------------------------------------------------------------------
-
 
   private startScroll() {
     if (!this.isScrolling) {
@@ -51,7 +44,6 @@ export class ScrollListener {
       this.emitter.trigger('scrollStart', this.isRecentlyWheeled, this.isTouching)
     }
   }
-
 
   endScroll() {
     if (this.isScrolling) {
@@ -64,10 +56,8 @@ export class ScrollListener {
     }
   }
 
-
   // Handlers
   // ----------------------------------------------------------------------------------------------
-
 
   handleScroll = () => {
     this.startScroll()
@@ -75,7 +65,6 @@ export class ScrollListener {
     this.isRecentlyScrolled = true
     this.scrollWaiter.request(500)
   }
-
 
   _handleScrollWaited() {
     this.isRecentlyScrolled = false
@@ -87,24 +76,20 @@ export class ScrollListener {
     }
   }
 
-
   // will fire *before* the scroll event is fired (might not cause a scroll)
   handleWheel = () => {
     this.isRecentlyWheeled = true
     this.wheelWaiter.request(500)
   }
 
-
   _handleWheelWaited() {
     this.isRecentlyWheeled = false
   }
-
 
   // will fire *before* the scroll event is fired (might not cause a scroll)
   handleTouchStart = () => {
     this.isTouching = true
   }
-
 
   handleTouchEnd = () => {
     this.isTouching = false
@@ -115,5 +100,4 @@ export class ScrollListener {
       this.endScroll() // won't fire if already ended
     }
   }
-
 }

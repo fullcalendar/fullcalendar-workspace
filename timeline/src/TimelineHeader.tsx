@@ -1,8 +1,11 @@
-import { createElement, BaseComponent, CssDimValue, VNode, DateMarker, NowTimer, greatestDurationDenominator, DateRange, NowIndicatorRoot, createRef, findElements, RefObject, DateProfile } from '@fullcalendar/common'
+import {
+  createElement, BaseComponent, CssDimValue, VNode, DateMarker, NowTimer,
+  greatestDurationDenominator, DateRange, NowIndicatorRoot, createRef,
+  findElements, RefObject, DateProfile,
+} from '@fullcalendar/common'
 import { TimelineHeaderRows } from './TimelineHeaderRows'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineDateProfile } from './timeline-date-profile'
-
 
 export interface TimelineHeaderProps {
   dateProfile: DateProfile
@@ -16,11 +19,8 @@ export interface TimelineHeaderProps {
   onMaxCushionWidth?: (number) => void
 }
 
-
 export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
-
   rootElRef: RefObject<HTMLDivElement> = createRef<HTMLDivElement>()
-
 
   render() {
     let { props, context } = this
@@ -35,9 +35,9 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
     return (
       <NowTimer unit={timerUnit}>
         {(nowDate: DateMarker, todayRange: DateRange) => (
-          <div className='fc-timeline-header' ref={this.rootElRef}>
+          <div className="fc-timeline-header" ref={this.rootElRef}>
             <table
-              className='fc-scrollgrid-sync-table'
+              className="fc-scrollgrid-sync-table"
               style={{ minWidth: props.tableMinWidth, width: props.clientWidth }}
             >
               {props.tableColGroupNode}
@@ -51,40 +51,39 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
                 />
               </tbody>
             </table>
-            {context.options.nowIndicator &&
+            {context.options.nowIndicator && (
               // need to have a container regardless of whether the current view has a visible now indicator
               // because apparently removal of the element resets the scroll for some reasons (issue #5351).
-              // this issue doesn't happen for the timeline body however
-              <div className='fc-timeline-now-indicator-container'>
-                {(slatCoords && slatCoords.isDateInRange(nowDate)) &&
-                  <NowIndicatorRoot isAxis={true} date={nowDate}>
+              // this issue doesn't happen for the timeline body however (
+              <div className="fc-timeline-now-indicator-container">
+                {(slatCoords && slatCoords.isDateInRange(nowDate)) && (
+                  <NowIndicatorRoot isAxis date={nowDate}>
                     {(rootElRef, classNames, innerElRef, innerContent) => (
                       <div
                         ref={rootElRef}
-                        className={[ 'fc-timeline-now-indicator-arrow' ].concat(classNames).join(' ')}
+                        className={['fc-timeline-now-indicator-arrow'].concat(classNames).join(' ')}
                         style={{ left: slatCoords.dateToCoord(nowDate) }}
-                      >{innerContent}</div>
+                      >
+                        {innerContent}
+                      </div>
                     )}
                   </NowIndicatorRoot>
-                }
+                )}
               </div>
-            }
+            )}
           </div>
         )}
       </NowTimer>
     )
   }
 
-
   componentDidMount() {
     this.updateSize()
   }
 
-
   componentDidUpdate() {
     this.updateSize()
   }
-
 
   updateSize() {
     if (this.props.onMaxCushionWidth) {
@@ -92,13 +91,11 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
     }
   }
 
-
   computeMaxCushionWidth() { // TODO: called way too often
     return Math.max(
       ...findElements(this.rootElRef.current, '.fc-timeline-header-row:last-child .fc-timeline-slot-cushion').map(
-        (el) => el.getBoundingClientRect().width
-      )
+        (el) => el.getBoundingClientRect().width,
+      ),
     )
   }
-
 }

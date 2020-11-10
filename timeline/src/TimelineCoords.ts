@@ -1,16 +1,13 @@
 import {
   PositionCache, findDirectChildren,
   isInt, DateProfile,
-  DateMarker, DateEnv, Duration, startOfDay, rangeContainsMarker
+  DateMarker, DateEnv, Duration, startOfDay, rangeContainsMarker,
 } from '@fullcalendar/common'
 import { TimelineDateProfile } from './timeline-date-profile'
 
-
 export class TimelineCoords { // TODO: rename to "slat" coords?
-
   outerCoordCache: PositionCache
   innerCoordCache: PositionCache
-
 
   constructor(
     public slatRootEl: HTMLElement, // okay to expose?
@@ -18,13 +15,13 @@ export class TimelineCoords { // TODO: rename to "slat" coords?
     public dateProfile: DateProfile,
     private tDateProfile: TimelineDateProfile,
     private dateEnv: DateEnv,
-    public isRtl: boolean
+    public isRtl: boolean,
   ) {
     this.outerCoordCache = new PositionCache(
       slatRootEl,
       slatEls,
       true, // isHorizontal
-      false // isVertical
+      false, // isVertical
     )
 
     // for the inner divs within the slats
@@ -33,24 +30,20 @@ export class TimelineCoords { // TODO: rename to "slat" coords?
       slatRootEl,
       findDirectChildren(slatEls, 'div'),
       true, // isHorizontal
-      false // isVertical
+      false, // isVertical
     )
   }
-
 
   rangeToCoords(range) {
     if (this.isRtl) {
       return { right: this.dateToCoord(range.start), left: this.dateToCoord(range.end) }
-    } else {
-      return { left: this.dateToCoord(range.start), right: this.dateToCoord(range.end) }
     }
+    return { left: this.dateToCoord(range.start), right: this.dateToCoord(range.end) }
   }
-
 
   isDateInRange(date: DateMarker) {
     return rangeContainsMarker(this.dateProfile.currentRange, date)
   }
-
 
   // for LTR, results range from 0 to width of area
   // for RTL, results range from negative width of area to 0
@@ -68,20 +61,17 @@ export class TimelineCoords { // TODO: rename to "slat" coords?
         outerCoordCache.rights[slotIndex] -
         (innerCoordCache.getWidth(slotIndex) * partial)
       ) - outerCoordCache.originClientRect.width
-    } else {
+    }
       return (
         outerCoordCache.lefts[slotIndex] +
         (innerCoordCache.getWidth(slotIndex) * partial)
       )
-    }
   }
-
 
   // returned value is between 0 and the number of snaps
   computeDateSnapCoverage(date: DateMarker): number {
     return computeDateSnapCoverage(date, this.tDateProfile, this.dateEnv)
   }
-
 
   computeDurationLeft(duration: Duration) {
     let { dateProfile, tDateProfile, dateEnv, isRtl } = this
@@ -104,34 +94,34 @@ export class TimelineCoords { // TODO: rename to "slat" coords?
 
     return left
   }
-
 }
-
 
 // returned value is between 0 and the number of snaps
 export function computeDateSnapCoverage(date: DateMarker, tDateProfile: TimelineDateProfile, dateEnv: DateEnv): number {
   let snapDiff = dateEnv.countDurationsBetween(
     tDateProfile.normalizedRange.start,
     date,
-    tDateProfile.snapDuration
+    tDateProfile.snapDuration,
   )
 
   if (snapDiff < 0) {
     return 0
-  } else if (snapDiff >= tDateProfile.snapDiffToIndex.length) {
-    return tDateProfile.snapCnt
-  } else {
-    let snapDiffInt = Math.floor(snapDiff)
-    let snapCoverage = tDateProfile.snapDiffToIndex[snapDiffInt]
-
-    if (isInt(snapCoverage)) { // not an in-between value
-      snapCoverage += snapDiff - snapDiffInt // add the remainder
-    } else {
-      // a fractional value, meaning the date is not visible
-      // always round up in this case. works for start AND end dates in a range.
-      snapCoverage = Math.ceil(snapCoverage)
-    }
-
-    return snapCoverage
   }
+
+  if (snapDiff >= tDateProfile.snapDiffToIndex.length) {
+    return tDateProfile.snapCnt
+  }
+
+  let snapDiffInt = Math.floor(snapDiff)
+  let snapCoverage = tDateProfile.snapDiffToIndex[snapDiffInt]
+
+  if (isInt(snapCoverage)) { // not an in-between value
+    snapCoverage += snapDiff - snapDiffInt // add the remainder
+  } else {
+    // a fractional value, meaning the date is not visible
+    // always round up in this case. works for start AND end dates in a range.
+    snapCoverage = Math.ceil(snapCoverage)
+  }
+
+  return snapCoverage
 }

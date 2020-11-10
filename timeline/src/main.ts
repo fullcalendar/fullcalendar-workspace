@@ -1,6 +1,9 @@
 import { createPlugin } from '@fullcalendar/common'
-import premiumCommonPlugin from '@fullcalendar/premium-common'
-import '@fullcalendar/premium-common' // ensure ambient declarations
+
+import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
+// ensure ambient declarations
+import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
+
 import { TimelineView } from './TimelineView'
 import './main.css'
 
@@ -17,7 +20,7 @@ export { TimelineHeaderRows } from './TimelineHeaderRows'
 
 export default createPlugin({
   deps: [
-    premiumCommonPlugin
+    premiumCommonPlugin,
   ],
   initialView: 'timelineDay',
   views: {
@@ -25,28 +28,28 @@ export default createPlugin({
     timeline: {
       component: TimelineView,
       usesMinMaxTime: true,
-      eventResizableFromStart: true // how is this consumed for TimelineView tho?
+      eventResizableFromStart: true, // how is this consumed for TimelineView tho?
     },
 
     timelineDay: {
       type: 'timeline',
-      duration: { days: 1 }
+      duration: { days: 1 },
     },
 
     timelineWeek: {
       type: 'timeline',
-      duration: { weeks: 1 }
+      duration: { weeks: 1 },
     },
 
     timelineMonth: {
       type: 'timeline',
-      duration: { months: 1 }
+      duration: { months: 1 },
     },
 
     timelineYear: {
       type: 'timeline',
-      duration: { years: 1 }
-    }
+      duration: { years: 1 },
+    },
 
-  }
+  },
 })

@@ -1,8 +1,10 @@
 import {
-  createElement, BaseComponent, DateRange, DateMarker, getDateMeta, getSlotClassNames, buildNavLinkData, buildClassNameNormalizer, MountHook, ContentHook, ViewApi, getDayClassNames, DateProfile, memoizeObjArg, DateEnv
+  createElement, BaseComponent, DateRange, DateMarker, getDateMeta, getSlotClassNames,
+  buildNavLinkData, buildClassNameNormalizer, MountHook,
+  getDayClassNames, DateProfile, memoizeObjArg,
 } from '@fullcalendar/common'
 import { TimelineDateProfile, TimelineHeaderCell } from './timeline-date-profile'
-
+import { TimelineHeaderThInner, refineHookProps, HookProps } from './TimelineHeaderThInner'
 
 export interface TimelineHeaderThProps {
   dateProfile: DateProfile
@@ -16,10 +18,8 @@ export interface TimelineHeaderThProps {
 }
 
 export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
-
   refineHookProps = memoizeObjArg(refineHookProps)
   normalizeClassNames = buildClassNameNormalizer<HookProps>()
-
 
   render() {
     let { props, context } = this
@@ -32,10 +32,10 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
 
     let dateMeta = getDateMeta(cell.date, props.todayRange, props.nowDate, dateProfile)
 
-    let classNames = [ 'fc-timeline-slot', 'fc-timeline-slot-label' ].concat(
+    let classNames = ['fc-timeline-slot', 'fc-timeline-slot-label'].concat(
       cell.rowUnit === 'time' // TODO: so slot classnames for week/month/bigger. see note above about rowUnit
         ? getSlotClassNames(dateMeta, context.theme)
-        : getDayClassNames(dateMeta, context.theme)
+        : getDayClassNames(dateMeta, context.theme),
     )
 
     if (cell.isWeekStart) {
@@ -51,7 +51,7 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
       dateMarker: cell.date,
       text: cell.text,
       dateEnv: context.dateEnv,
-      viewApi: context.viewApi
+      viewApi: context.viewApi,
     })
 
     let customClassNames = this.normalizeClassNames(options.slotLabelClassNames, hookProps)
@@ -65,7 +65,7 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
             data-date={dateEnv.formatIso(cell.date, { omitTime: !tDateProfile.isTimeScale, omitTimeZoneOffset: true })}
             colSpan={cell.colspan}
           >
-            <div className='fc-timeline-slot-frame' style={{ height: props.rowInnerHeight }}>
+            <div className="fc-timeline-slot-frame" style={{ height: props.rowInnerHeight }}>
               <TimelineHeaderThInner
                 hookProps={hookProps}
                 isSticky={props.isSticky}
@@ -76,71 +76,5 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
         )}
       </MountHook>
     )
-  }
-
-}
-
-
-interface TimelineHeaderThInnerProps {
-  hookProps: HookProps
-  isSticky: boolean
-  navLinkData: string | null
-}
-
-class TimelineHeaderThInner extends BaseComponent<TimelineHeaderThInnerProps> {
-
-  render() {
-    let { props, context } = this
-
-    let navLinkAttrs = props.navLinkData
-      ? { 'data-navlink': props.navLinkData, tabIndex: 0 }
-      : {}
-
-    return (
-      <ContentHook hookProps={props.hookProps} content={context.options.slotLabelContent} defaultContent={renderInnerContent}>
-        {(innerElRef, innerContent) => (
-          <a
-            ref={innerElRef}
-            className={'fc-timeline-slot-cushion fc-scrollgrid-sync-inner' + (props.isSticky ? ' fc-sticky' : '')}
-            {...navLinkAttrs}
-          >
-            {innerContent}
-          </a>
-        )}
-      </ContentHook>
-    )
-  }
-
-}
-
-function renderInnerContent(props) { // TODO: add types
-  return props.text
-}
-
-
-// hook props
-// ----------
-
-interface HookPropsInput {
-  level: number
-  dateMarker: DateMarker
-  text: string
-  dateEnv: DateEnv
-  viewApi: ViewApi
-}
-
-interface HookProps {
-  level: number
-  date: DateMarker // localized
-  view: ViewApi
-  text: string
-}
-
-function refineHookProps(input: HookPropsInput): HookProps {
-  return {
-    level: input.level,
-    date: input.dateEnv.toDate(input.dateMarker),
-    view: input.viewApi,
-    text: input.text
   }
 }

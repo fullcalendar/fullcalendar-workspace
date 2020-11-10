@@ -1,8 +1,8 @@
 import {
-  createElement, isInt, BaseComponent, DateMarker, Ref, DateRange, getDateMeta, getSlotClassNames, RenderHook, getDayClassNames, SlotLaneContentArg, DateProfile
+  createElement, isInt, BaseComponent, DateMarker, Ref, DateRange, getDateMeta, getSlotClassNames,
+  RenderHook, getDayClassNames, SlotLaneContentArg, DateProfile,
 } from '@fullcalendar/common'
 import { TimelineDateProfile } from './timeline-date-profile'
-
 
 export interface TimelineSlatCellProps {
   date: DateMarker
@@ -15,20 +15,18 @@ export interface TimelineSlatCellProps {
   elRef?: Ref<HTMLTableCellElement>
 }
 
-
 export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
-
   render() {
     let { props, context } = this
     let { dateEnv, options, theme } = context
     let { date, tDateProfile, isEm } = props
     let dateMeta = getDateMeta(props.date, props.todayRange, props.nowDate, props.dateProfile)
-    let classNames = [ 'fc-timeline-slot', 'fc-timeline-slot-lane' ]
+    let classNames = ['fc-timeline-slot', 'fc-timeline-slot-lane']
     let dataAttrs = { 'data-date': dateEnv.formatIso(date, { omitTimeZoneOffset: true, omitTime: !tDateProfile.isTimeScale }) }
     let hookProps: SlotLaneContentArg = {
       date: dateEnv.toDate(props.date),
       ...dateMeta,
-      view: context.viewApi
+      view: context.viewApi,
     }
 
     if (isEm) {
@@ -40,10 +38,10 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
         isInt(dateEnv.countDurationsBetween(
           tDateProfile.normalizedRange.start,
           props.date,
-          tDateProfile.labelInterval
+          tDateProfile.labelInterval,
         )) ?
           'fc-timeline-slot-major' :
-          'fc-timeline-slot-minor'
+          'fc-timeline-slot-minor',
       )
     }
 
@@ -74,5 +72,4 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
       </RenderHook>
     )
   }
-
 }

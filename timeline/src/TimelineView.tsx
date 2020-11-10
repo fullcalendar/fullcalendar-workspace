@@ -1,29 +1,26 @@
 import {
-  createElement, ViewProps, memoize, ChunkContentCallbackArgs, createRef, ViewRoot, DateComponent, ScrollGridSectionConfig, renderScrollShim, getStickyHeaderDates, getStickyFooterScrollbar
+  createElement, ViewProps, memoize, ChunkContentCallbackArgs, createRef, ViewRoot,
+  DateComponent, ScrollGridSectionConfig, renderScrollShim, getStickyHeaderDates, getStickyFooterScrollbar,
 } from '@fullcalendar/common'
+import { ScrollGrid } from '@fullcalendar/scrollgrid'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
 import { TimelineHeader } from './TimelineHeader'
-import { ScrollGrid } from '@fullcalendar/scrollgrid'
 import { TimelineGrid } from './TimelineGrid'
 import { TimelineCoords } from './TimelineCoords'
-
 
 interface TimelineViewState {
   slatCoords: TimelineCoords | null
   slotCushionMaxWidth: number | null
 }
 
-
 export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { // would make this abstract, but TS complains
-
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private scrollGridRef = createRef<ScrollGrid>()
 
   state = {
     slatCoords: null,
-    slotCushionMaxWidth: null
+    slotCushionMaxWidth: null,
   }
-
 
   render() {
     let { props, state, context } = this
@@ -35,12 +32,12 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
       props.dateProfile,
       context.dateEnv,
       options,
-      context.dateProfileGenerator
+      context.dateProfileGenerator,
     )
 
     let extraClassNames = [
       'fc-timeline',
-      options.eventOverlap === false ? 'fc-timeline-overlap-disabled' : ''
+      options.eventOverlap === false ? 'fc-timeline-overlap-disabled' : '',
     ]
 
     let { slotMinWidth } = options
@@ -64,8 +61,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
               slatCoords={state.slatCoords}
               onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
             />
-          )
-        }]
+          ),
+        }],
       },
       {
         type: 'body',
@@ -84,9 +81,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
               onSlatCoords={this.handleSlatCoords}
               onScrollLeftRequest={this.handleScrollLeftRequest}
             />
-          )
-        }]
-      }
+          ),
+        }],
+      },
     ]
 
     if (stickyFooterScrollbar) {
@@ -96,8 +93,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
         isSticky: true,
         chunks: [{
           key: 'timeline',
-          content: renderScrollShim
-        }]
+          content: renderScrollShim,
+        }],
       })
     }
 
@@ -109,7 +106,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
               ref={this.scrollGridRef}
               liquid={!props.isHeightAuto && !props.forPrint}
               colGroups={[
-                { cols: slatCols }
+                { cols: slatCols },
               ]}
               sections={sections}
             />
@@ -119,35 +116,29 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
     )
   }
 
-
   handleSlatCoords = (slatCoords: TimelineCoords | null) => {
     this.setState({ slatCoords })
   }
-
 
   handleScrollLeftRequest = (scrollLeft: number) => {
     let scrollGrid = this.scrollGridRef.current
     scrollGrid.forceScrollLeft(0, scrollLeft)
   }
 
-
   handleMaxCushionWidth = (slotCushionMaxWidth) => {
     this.setState({
-      slotCushionMaxWidth: Math.ceil(slotCushionMaxWidth) // for less rerendering TODO: DRY
+      slotCushionMaxWidth: Math.ceil(slotCushionMaxWidth), // for less rerendering TODO: DRY
     })
   }
-
 
   computeFallbackSlotMinWidth(tDateProfile: TimelineDateProfile) { // TODO: duplicate definition
     return Math.max(30, ((this.state.slotCushionMaxWidth || 0) / tDateProfile.slotsPerLabel))
   }
-
 }
 
-
 export function buildSlatCols(tDateProfile: TimelineDateProfile, slotMinWidth?: number) {
-  return [ {
+  return [{
     span: tDateProfile.slotCnt,
-    minWidth: slotMinWidth || 1 // needs to be a non-zero number to trigger horizontal scrollbars!??????
-  } ]
+    minWidth: slotMinWidth || 1, // needs to be a non-zero number to trigger horizontal scrollbars!??????
+  }]
 }

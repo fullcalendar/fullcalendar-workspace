@@ -1,6 +1,7 @@
 import {
-  config, computeVisibleDayRange, Duration, DateProfile, asCleanDays, addDays, wholeDivideDurations, DateMarker, startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs,
-  createFormatter, greatestDurationDenominator, asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator, BaseOptionsRefined
+  config, computeVisibleDayRange, Duration, DateProfile, asCleanDays, addDays, wholeDivideDurations, DateMarker,
+  startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator,
+  asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator, BaseOptionsRefined,
 } from '@fullcalendar/common'
 
 export interface TimelineDateProfile {
@@ -32,7 +33,6 @@ export interface TimelineHeaderCell {
   isWeekStart: boolean
 }
 
-
 const MIN_AUTO_LABELS = 18 // more than `12` months but less that `24` hours
 const MAX_AUTO_SLOTS_PER_LABEL = 6 // allows 6 10-min slots in an hour
 const MAX_AUTO_CELLS = 200 // allows 4-days to have a :30 slot duration
@@ -57,14 +57,18 @@ const STOCK_SUB_DURATIONS = [ // from largest to smallest
   { milliseconds: 500 },
   { milliseconds: 100 },
   { milliseconds: 10 },
-  { milliseconds: 1 }
+  { milliseconds: 1 },
 ]
 
-
-export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: DateEnv, allOptions: BaseOptionsRefined, dateProfileGenerator: DateProfileGenerator): TimelineDateProfile {
+export function buildTimelineDateProfile(
+  dateProfile: DateProfile,
+  dateEnv: DateEnv,
+  allOptions: BaseOptionsRefined,
+  dateProfileGenerator: DateProfileGenerator,
+): TimelineDateProfile {
   let tDateProfile = {
     labelInterval: allOptions.slotLabelInterval,
-    slotDuration: allOptions.slotDuration
+    slotDuration: allOptions.slotDuration,
   } as TimelineDateProfile
 
   validateLabelAndSlot(tDateProfile, dateProfile, dateEnv) // validate after computed grid duration
@@ -74,12 +78,10 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: Date
   let input = allOptions.slotLabelFormat
   let rawFormats =
     Array.isArray(input) ? input :
-    (input != null) ? [ input ] :
+    (input != null) ? [input] :
     computeHeaderFormats(tDateProfile, dateProfile, dateEnv, allOptions)
 
-  tDateProfile.headerFormats = rawFormats.map(function(rawFormat) {
-    return createFormatter(rawFormat)
-  })
+  tDateProfile.headerFormats = rawFormats.map((rawFormat) => createFormatter(rawFormat))
 
   tDateProfile.isTimeScale = Boolean(tDateProfile.slotDuration.milliseconds)
 
@@ -138,7 +140,7 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: Date
     normalizedStart = dateEnv.add(normalizedStart, dateProfile.slotMinTime)
     normalizedEnd = dateEnv.add(
       addDays(normalizedEnd, -1),
-      dateProfile.slotMaxTime
+      dateProfile.slotMaxTime,
     )
   }
 
@@ -166,14 +168,14 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: Date
   date = normalizedStart
   while (date < normalizedEnd) {
     if (isValidDate(date, tDateProfile, dateProfile, dateProfileGenerator)) {
-      snapIndex++
+      snapIndex += 1
       snapDiffToIndex.push(snapIndex)
       snapIndexToDiff.push(snapDiff)
     } else {
       snapDiffToIndex.push(snapIndex + 0.5)
     }
     date = dateEnv.add(date, tDateProfile.snapDuration)
-    snapDiff++
+    snapDiff += 1
   }
 
   tDateProfile.snapDiffToIndex = snapDiffToIndex
@@ -190,7 +192,6 @@ export function buildTimelineDateProfile(dateProfile: DateProfile, dateEnv: Date
 
   return tDateProfile
 }
-
 
 /*
 snaps to appropriate unit
@@ -209,12 +210,10 @@ export function normalizeDate(date: DateMarker, tDateProfile: TimelineDateProfil
   return normalDate
 }
 
-
 /*
 snaps to appropriate unit
 */
 export function normalizeRange(range: DateRange, tDateProfile: TimelineDateProfile, dateEnv: DateEnv): DateRange {
-
   if (!tDateProfile.isTimeScale) {
     range = computeVisibleDayRange(range)
 
@@ -223,7 +222,7 @@ export function normalizeRange(range: DateRange, tDateProfile: TimelineDateProfi
 
       range = {
         start: dateEnv.startOf(range.start, tDateProfile.largeUnit),
-        end: dateEnv.startOf(range.end, tDateProfile.largeUnit)
+        end: dateEnv.startOf(range.end, tDateProfile.largeUnit),
       }
 
       // if date is partially through the interval, or is in the same interval as the start,
@@ -231,7 +230,7 @@ export function normalizeRange(range: DateRange, tDateProfile: TimelineDateProfi
       if (range.end.valueOf() !== dayRange.end.valueOf() || range.end <= range.start) {
         range = {
           start: range.start,
-          end: dateEnv.add(range.end, tDateProfile.slotDuration)
+          end: dateEnv.add(range.end, tDateProfile.slotDuration),
         }
       }
     }
@@ -240,24 +239,27 @@ export function normalizeRange(range: DateRange, tDateProfile: TimelineDateProfi
   return range
 }
 
-
-export function isValidDate(date: DateMarker, tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
+export function isValidDate(
+  date: DateMarker,
+  tDateProfile: TimelineDateProfile,
+  dateProfile: DateProfile,
+  dateProfileGenerator: DateProfileGenerator,
+) {
   if (dateProfileGenerator.isHiddenDay(date)) {
     return false
+  }
 
-  } else if (tDateProfile.isTimeScale) {
+  if (tDateProfile.isTimeScale) {
     // determine if the time is within slotMinTime/slotMaxTime, which may have wacky values
     let day = startOfDay(date)
     let timeMs = date.valueOf() - day.valueOf()
     let ms = timeMs - asRoughMs(dateProfile.slotMinTime) // milliseconds since slotMinTime
     ms = ((ms % 86400000) + 86400000) % 86400000 // make negative values wrap to 24hr clock
     return ms < tDateProfile.timeWindowMs // before the slotMaxTime?
-
-  } else {
-    return true
   }
-}
 
+  return true
+}
 
 function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateEnv: DateEnv) {
   const { currentRange } = dateProfile
@@ -267,7 +269,7 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
     const labelCnt = dateEnv.countDurationsBetween(
       currentRange.start,
       currentRange.end,
-      tDateProfile.labelInterval
+      tDateProfile.labelInterval,
     )
     if (labelCnt > config.MAX_TIMELINE_SLOTS) {
       console.warn('slotLabelInterval results in too many cells')
@@ -280,7 +282,7 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
     const slotCnt = dateEnv.countDurationsBetween(
       currentRange.start,
       currentRange.end,
-      tDateProfile.slotDuration
+      tDateProfile.slotDuration,
     )
     if (slotCnt > config.MAX_TIMELINE_SLOTS) {
       console.warn('slotDuration results in too many cells')
@@ -298,13 +300,11 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
   }
 }
 
-
 function ensureLabelInterval(tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateEnv: DateEnv) {
   const { currentRange } = dateProfile
   let { labelInterval } = tDateProfile
 
   if (!labelInterval) {
-
     // compute based off the slot duration
     // find the largest label interval with an acceptable slots-per-label
     let input
@@ -331,7 +331,7 @@ function ensureLabelInterval(tDateProfile: TimelineDateProfile, dateProfile: Dat
         const labelCnt = dateEnv.countDurationsBetween(
           currentRange.start,
           currentRange.end,
-          labelInterval
+          labelInterval,
         )
         if (labelCnt >= MIN_AUTO_LABELS) {
           break
@@ -344,7 +344,6 @@ function ensureLabelInterval(tDateProfile: TimelineDateProfile, dateProfile: Dat
 
   return labelInterval
 }
-
 
 function ensureSlotDuration(tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateEnv: DateEnv) {
   const { currentRange } = dateProfile
@@ -369,7 +368,7 @@ function ensureSlotDuration(tDateProfile: TimelineDateProfile, dateProfile: Date
       const slotCnt = dateEnv.countDurationsBetween(
         currentRange.start,
         currentRange.end,
-        slotDuration
+        slotDuration,
       )
       if (slotCnt > MAX_AUTO_CELLS) {
         slotDuration = null
@@ -387,8 +386,12 @@ function ensureSlotDuration(tDateProfile: TimelineDateProfile, dateProfile: Date
   return slotDuration
 }
 
-
-function computeHeaderFormats(tDateProfile: TimelineDateProfile, dateProfile: DateProfile, dateEnv: DateEnv, allOptions: BaseOptionsRefined) {
+function computeHeaderFormats(
+  tDateProfile: TimelineDateProfile,
+  dateProfile: DateProfile,
+  dateEnv: DateEnv,
+  allOptions: BaseOptionsRefined,
+) {
   let format1
   let format2
   const { labelInterval } = tDateProfile
@@ -450,7 +453,7 @@ function computeHeaderFormats(tDateProfile: TimelineDateProfile, dateProfile: Da
         hour: 'numeric',
         minute: '2-digit',
         omitZeroMinute: true,
-        meridiem: 'short'
+        meridiem: 'short',
       }
       break
 
@@ -459,16 +462,16 @@ function computeHeaderFormats(tDateProfile: TimelineDateProfile, dateProfile: Da
       if ((asRoughMinutes(labelInterval) / 60) >= MAX_AUTO_SLOTS_PER_LABEL) {
         format0 = {
           hour: 'numeric',
-          meridiem: 'short'
+          meridiem: 'short',
         }
-        format1 = function(params) {
-          return ':' + padStart(params.date.minute, 2) // ':30'
-        }
+        format1 = (params) => (
+          ':' + padStart(params.date.minute, 2) // ':30'
+        )
       } else {
         format0 = {
           hour: 'numeric',
           minute: 'numeric',
-          meridiem: 'short'
+          meridiem: 'short',
         }
       }
       break
@@ -477,9 +480,9 @@ function computeHeaderFormats(tDateProfile: TimelineDateProfile, dateProfile: Da
       // sufficiently large number of different second cells?
       if ((asRoughSeconds(labelInterval) / 60) >= MAX_AUTO_SLOTS_PER_LABEL) {
         format0 = { hour: 'numeric', minute: '2-digit', meridiem: 'lowercase' } // '8:30 PM'
-        format1 = function(params) {
-          return ':' + padStart(params.date.second, 2) // ':30'
-        }
+        format1 = (params) => (
+          ':' + padStart(params.date.second, 2) // ':30'
+        )
       } else {
         format0 = { hour: 'numeric', minute: '2-digit', second: '2-digit', meridiem: 'lowercase' } // '8:30:45 PM'
       }
@@ -487,9 +490,9 @@ function computeHeaderFormats(tDateProfile: TimelineDateProfile, dateProfile: Da
 
     case 'millisecond':
       format0 = { hour: 'numeric', minute: '2-digit', second: '2-digit', meridiem: 'lowercase' } // '8:30:45 PM'
-      format1 = function(params) {
-        return '.' + padStart(params.millisecond, 3)
-      }
+      format1 = (params) => (
+        '.' + padStart(params.millisecond, 3)
+      )
       break
   }
 
@@ -516,7 +519,6 @@ function currentRangeAs(unit: string, dateProfile: DateProfile, dateEnv: DateEnv
   return res || 0
 }
 
-
 function buildIsWeekStarts(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
   let { slotDates, emphasizeWeeks } = tDateProfile
   let prevWeekNumber = null
@@ -533,7 +535,6 @@ function buildIsWeekStarts(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) 
   return isWeekStarts
 }
 
-
 function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
   let slotDates = tDateProfile.slotDates
   let formats = tDateProfile.headerFormats
@@ -545,16 +546,16 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
         null
 
   // specifically for navclicks
-  let rowUnitsFromFormats = formats.map((format) => {
-    return format.getLargestUnit ? format.getLargestUnit() : null
-  })
+  let rowUnitsFromFormats = formats.map(
+    (format) => (format.getLargestUnit ? format.getLargestUnit() : null),
+  )
 
   // builds cellRows and slotCells
-  for (let i = 0; i < slotDates.length; i++) {
+  for (let i = 0; i < slotDates.length; i += 1) {
     let date = slotDates[i]
     let isWeekStart = tDateProfile.isWeekStarts[i]
 
-    for (let row = 0; row < formats.length; row++) {
+    for (let row = 0; row < formats.length; row += 1) {
       let format = formats[row]
       let rowCells = cellRows[row]
       let leadingCell = rowCells[rowCells.length - 1]
@@ -570,20 +571,18 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
         } else {
           leadingCell.colspan += 1
         }
+      } else if (
+        !leadingCell ||
+        isInt(dateEnv.countDurationsBetween(
+          tDateProfile.normalizedRange.start,
+          date,
+          tDateProfile.labelInterval,
+        ))
+      ) {
+        let text = dateEnv.format(date, format)
+        newCell = buildCellObject(date, text, rowUnit)
       } else {
-        if (
-          !leadingCell ||
-          isInt(dateEnv.countDurationsBetween(
-            tDateProfile.normalizedRange.start,
-            date,
-            tDateProfile.labelInterval
-          ))
-        ) {
-          let text = dateEnv.format(date, format)
-          newCell = buildCellObject(date, text, rowUnit)
-        } else {
-          leadingCell.colspan += 1
-        }
+        leadingCell.colspan += 1
       }
 
       if (newCell) {
@@ -595,7 +594,6 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
 
   return cellRows
 }
-
 
 function buildCellObject(date: DateMarker, text, rowUnit): TimelineHeaderCell {
   return { date, text, rowUnit, colspan: 1, isWeekStart: false }

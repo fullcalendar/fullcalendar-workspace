@@ -1,10 +1,9 @@
 import {
-  createElement, BaseComponent, multiplyDuration, RefMap, CssDimValue, VNode, createRef, ScrollResponder, ScrollRequest, DateMarker, DateRange, DateProfile
+  createElement, BaseComponent, multiplyDuration, RefMap, CssDimValue, VNode,
+  createRef, ScrollResponder, ScrollRequest, DateMarker,
 } from '@fullcalendar/common'
-import { TimelineDateProfile } from './timeline-date-profile'
-import { TimelineSlatCell } from './TimelineSlatCell'
 import { TimelineCoords } from './TimelineCoords'
-
+import { TimelineSlatsBody, TimelineSlatsContentProps } from './TimelineSlatsBody'
 
 export interface TimelineSlatsProps extends TimelineSlatsContentProps {
   clientWidth: number | null
@@ -14,32 +13,22 @@ export interface TimelineSlatsProps extends TimelineSlatsContentProps {
   onScrollLeftRequest?: (scrollLeft: number) => void
 }
 
-interface TimelineSlatsContentProps {
-  dateProfile: DateProfile
-  tDateProfile: TimelineDateProfile
-  nowDate: DateMarker
-  todayRange: DateRange
-}
-
-
 export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
-
   private rootElRef = createRef<HTMLDivElement>()
   private cellElRefs = new RefMap<HTMLTableCellElement>()
   private coords: TimelineCoords // for positionToHit
   private scrollResponder: ScrollResponder
 
-
   render() {
     let { props, context } = this
 
     return (
-      <div className='fc-timeline-slots' ref={this.rootElRef}>
+      <div className="fc-timeline-slots" ref={this.rootElRef}>
         <table
           className={context.theme.getClass('table')}
           style={{
             minWidth: props.tableMinWidth,
-            width: props.clientWidth
+            width: props.clientWidth,
           }}
         >
           {props.tableColGroupNode}
@@ -55,19 +44,16 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     )
   }
 
-
   componentDidMount() {
     this.updateSizing()
     this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
   }
-
 
   componentDidUpdate(prevProps: TimelineSlatsProps) {
     this.updateSizing()
 
     this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
   }
-
 
   componentWillUnmount() {
     this.scrollResponder.detach()
@@ -77,13 +63,13 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     }
   }
 
-
   updateSizing() {
     let { props, context } = this
 
     if (
       props.clientWidth !== null && // is sizing stable?
-      this.scrollResponder // it's possible to have clientWidth immediately after mount (when returning from print view), but w/o scrollResponder
+      this.scrollResponder
+      // ^it's possible to have clientWidth immediately after mount (when returning from print view), but w/o scrollResponder
     ) {
       let rootEl = this.rootElRef.current
 
@@ -94,7 +80,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
           props.dateProfile,
           props.tDateProfile,
           context.dateEnv,
-          context.isRtl
+          context.isRtl,
         )
 
         if (props.onCoords) {
@@ -105,7 +91,6 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
       }
     }
   }
-
 
   handleScrollRequest = (request: ScrollRequest) => {
     let { onScrollLeftRequest } = this.props
@@ -118,8 +103,9 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
       }
       return true
     }
-  }
 
+    return null // best?
+  }
 
   positionToHit(leftPosition) { // TODO: kill somehow
     let { outerCoordCache } = this.coords
@@ -136,67 +122,24 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
       let localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot)
       let start = dateEnv.add(
         tDateProfile.slotDates[slatIndex],
-        multiplyDuration(tDateProfile.snapDuration, localSnapIndex)
+        multiplyDuration(tDateProfile.snapDuration, localSnapIndex),
       )
       let end = dateEnv.add(start, tDateProfile.snapDuration)
 
       return {
         dateSpan: {
           range: { start, end },
-          allDay: !this.props.tDateProfile.isTimeScale
+          allDay: !this.props.tDateProfile.isTimeScale,
         },
         dayEl: this.cellElRefs.currentMap[slatIndex],
         left: outerCoordCache.lefts[slatIndex], // TODO: make aware of snaps?
-        right: outerCoordCache.rights[slatIndex]
+        right: outerCoordCache.rights[slatIndex],
       }
     }
 
     return null
   }
-
 }
-
-
-interface TimelineSlatsBodyProps extends TimelineSlatsContentProps {
-  cellElRefs: RefMap<HTMLTableCellElement>
-}
-
-
-class TimelineSlatsBody extends BaseComponent<TimelineSlatsBodyProps> {
-
-  render() {
-    let { props } = this
-    let { tDateProfile, cellElRefs } = props
-    let { slotDates, isWeekStarts } = tDateProfile
-    let isDay = !tDateProfile.isTimeScale && !tDateProfile.largeUnit
-
-    return (
-      <tbody>
-        <tr>
-          {slotDates.map((slotDate, i) => {
-            let key = slotDate.toISOString()
-
-            return (
-              <TimelineSlatCell
-                key={key}
-                elRef={cellElRefs.createRef(key)}
-                date={slotDate}
-                dateProfile={props.dateProfile}
-                tDateProfile={tDateProfile}
-                nowDate={props.nowDate}
-                todayRange={props.todayRange}
-                isEm={isWeekStarts[i]}
-                isDay={isDay}
-              />
-            )
-          })}
-        </tr>
-      </tbody>
-    )
-  }
-
-}
-
 
 function collectCellEls(elMap: { [key: string]: HTMLElement }, slotDates: DateMarker[]) {
   return slotDates.map((slotDate) => {
