@@ -58,7 +58,7 @@ describe('timeline rendering', () => {
         expect(arg.date instanceof Date).toBe(true)
         expect(arg.el instanceof HTMLElement).toBe(true)
         expect(typeof arg.view).toBe('object')
-        callCnt++
+        callCnt += 1
       },
     })
 
@@ -73,7 +73,7 @@ describe('timeline rendering', () => {
       slotDuration: { hours: 1 },
       slotLabelDidMount(arg) {
         expect(startOfDay(arg.date)).toEqualDate('2017-10-27')
-        callCnt++
+        callCnt += 1
       },
     })
 

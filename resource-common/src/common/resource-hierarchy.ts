@@ -70,7 +70,7 @@ function flattenNodes(
   expansions: ResourceEntityExpansions,
   expansionDefault: boolean,
 ) {
-  for (let i = 0; i < complexNodes.length; i++) {
+  for (let i = 0; i < complexNodes.length; i += 1) {
     let complexNode = complexNodes[i]
     let group = (complexNode as GroupParentNode).group
 
@@ -221,7 +221,7 @@ function ensureGroupNodes(resourceNode: ResourceParentNode, nodes: ParentNode[],
 function insertResourceNodeInSiblings(resourceNode, siblings, orderSpecs: OrderSpec<ResourceApi>[]) {
   let i
 
-  for (i = 0; i < siblings.length; i++) {
+  for (i = 0; i < siblings.length; i += 1) {
     let cmp = compareByFieldSpecs(siblings[i].resourceFields, resourceNode.resourceFields, orderSpecs) // TODO: pass in ResourceApi?
 
     if (cmp > 0) { // went 1 past. insert at i

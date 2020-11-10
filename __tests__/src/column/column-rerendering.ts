@@ -91,8 +91,10 @@ describe('column-based view rerendering', () => {
         initialView: 'resourceTimeGridDay',
         resources(arg, callback) {
           setTimeout(() => {
+            let id = fetchCalls
+            fetchCalls += 1
             callback([
-              { id: 'a', title: `Auditorium A${fetchCalls++}` },
+              { id: 'a', title: `Auditorium A${id}` },
               { id: 'b', title: 'Auditorium B' },
               { id: 'c', title: 'Auditorium C' },
             ])

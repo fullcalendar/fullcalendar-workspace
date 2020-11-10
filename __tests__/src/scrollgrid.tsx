@@ -55,13 +55,13 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
           cols: [
             { width: 'shrink' },
             { width: 200 },
-          ]
+          ],
         },
         {
           cols: [
             { minWidth: 2000 },
             { minWidth: 2000 },
-          ]
+          ],
         },
       ]}
       sections={[
@@ -84,22 +84,38 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
                     </th>
                   </tr>
                 </Fragment>
-              )
+              ),
             },
             {
               key: 'b',
               rowContent: (
                 <Fragment>
                   <tr>
-                    <th><div className="cell-padding"><span className="fc-sticky" style={{ display: 'inline-block' }}>Monday</span></div></th>
-                    <th><div className="cell-padding"><span className="fc-sticky" style={{ display: 'inline-block' }}>Tuesday</span></div></th>
+                    <th>
+                      <div className="cell-padding">
+                        <span className="fc-sticky" style={{ display: 'inline-block' }}>Monday</span>
+                      </div>
+                    </th>
+                    <th>
+                      <div className="cell-padding">
+                        <span className="fc-sticky" style={{ display: 'inline-block' }}>Tuesday</span>
+                      </div>
+                    </th>
                   </tr>
                   <tr>
-                    <th><div className="cell-padding"><span className="fc-sticky" style={{ display: 'inline-block' }}>Monday</span></div></th>
-                    <th><div className="cell-padding"><span className="fc-sticky" style={{ display: 'inline-block' }}>Tuesday</span></div></th>
+                    <th>
+                      <div className="cell-padding">
+                        <span className="fc-sticky" style={{ display: 'inline-block' }}>Monday</span>
+                      </div>
+                    </th>
+                    <th>
+                      <div className="cell-padding">
+                        <span className="fc-sticky" style={{ display: 'inline-block' }}>Tuesday</span>
+                      </div>
+                    </th>
                   </tr>
                 </Fragment>
-              )
+              ),
             },
           ],
         },
@@ -440,7 +456,10 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
               key: 'b',
               scrollerElRef: handleScrollerEl,
               content: (contentArg) => (
-                <table className="vgrow" style={{ minWidth: contentArg.tableMinWidth, width: contentArg.clientWidth, height: contentArg.clientHeight }}>
+                <table
+                  className="vgrow"
+                  style={{ minWidth: contentArg.tableMinWidth, width: contentArg.clientWidth, height: contentArg.clientHeight }}
+                >
                   {contentArg.tableColGroupNode}
                   <tbody>
                     <tr>

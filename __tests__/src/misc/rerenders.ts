@@ -23,28 +23,28 @@ describe('rerender performance for resource timeline', () => {
     initCalendar({
 
       slotLabelDidMount() {
-        slotLabelMountCnt++
+        slotLabelMountCnt += 1
       },
       slotLabelClassNames() {
-        slotLabelClassNameCnt++
+        slotLabelClassNameCnt += 1
         return []
       },
       slotLabelContent() {
-        slotLabelRenderCnt++
+        slotLabelRenderCnt += 1
       },
 
       slotLaneContent() {
-        slotLaneRenderCnt++
+        slotLaneRenderCnt += 1
       },
 
       resourceLabelContent() {
-        resourceLabelRenderCnt++
+        resourceLabelRenderCnt += 1
       },
       resourceLaneContent() {
-        resourceLaneRenderCnt++
+        resourceLaneRenderCnt += 1
       },
       eventContent() {
-        eventRenderCnt++
+        eventRenderCnt += 1
       },
     })
 

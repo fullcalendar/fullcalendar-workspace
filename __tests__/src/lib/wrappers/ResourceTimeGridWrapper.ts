@@ -45,6 +45,8 @@ export class ResourceTimeGridWrapper {
         bottom: base.getTimeTop(endTimeMs),
       }
     }
+
+    return null
   }
 
   getPoint(resourceId, date) {

@@ -8,7 +8,7 @@ describe('timeline resource labels', () => {
       let calendar = initCalendar({
         initialView: 'resourceTimelineDay',
         resourceLabelContent() {
-          renderCnt++
+          renderCnt += 1
           return { html: 'test' + renderCnt }
         },
         resources: [

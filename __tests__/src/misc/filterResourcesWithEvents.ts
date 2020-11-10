@@ -19,7 +19,7 @@ describe('filterResourcesWithEvents', () => {
   }
 
   function getResourceFunc(timeout) {
-    return function (arg, callback) {
+    return (arg, callback) => {
       setTimeout(() => {
         callback(getResourceArray())
       }, timeout)

@@ -117,9 +117,13 @@ describe('timeline event resizing', () => {
             it('reports resize on one event of multiple resources', (done) => {
               let resizeSpy
               let calendar = initCalendar({
-                events: [
-                  { title: 'event1', className: 'event1', start: '2015-11-28T04:00:00', end: '2015-11-28T05:00:00', resourceIds: ['a', 'b'] },
-                ],
+                events: [{
+                  title: 'event1',
+                  className: 'event1',
+                  start: '2015-11-28T04:00:00',
+                  end: '2015-11-28T05:00:00',
+                  resourceIds: ['a', 'b'],
+                }],
                 eventResize:
                   (resizeSpy = spyCall((arg) => {
                     expect(arg.event.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
@@ -303,17 +307,17 @@ describe('timeline event resizing', () => {
         ],
         eventDidMount(info) {
           if (info.isMirror) {
-            mirrorMountCnt++
+            mirrorMountCnt += 1
           }
         },
         eventContent(info) {
           if (info.isMirror) {
-            mirrorContentCnt++
+            mirrorContentCnt += 1
           }
         },
         eventWillUnmount(info) {
           if (info.isMirror) {
-            mirrorUnmountCnt++
+            mirrorUnmountCnt += 1
           }
         },
       })

@@ -76,7 +76,7 @@ describe('timeline view rerendering', () => {
       let resourceRenderCnt = 0
       let calendar = initCalendar({
         resourceLabelContent() {
-          resourceRenderCnt++
+          resourceRenderCnt += 1
         },
       })
       let dataGridWrapper = new ResourceTimelineViewWrapper(calendar).dataGrid
@@ -176,7 +176,8 @@ describe('timeline view rerendering', () => {
       },
       resources(arg, callback) {
         setTimeout(() => {
-          callback(getResources(resourceFetchCnt++)) // parameter will affect text
+          resourceFetchCnt += 1
+          callback(getResources(resourceFetchCnt)) // parameter will affect text
         }, 100)
       },
     })
@@ -189,7 +190,7 @@ describe('timeline view rerendering', () => {
       actionFunc()
 
       setTimeout(() => {
-        let cellText = dataGridWrapper.getSpecificResourceInfo('e').text
+        cellText = dataGridWrapper.getSpecificResourceInfo('e').text
         expect(cellText).toBe('Auditorium E1')
         doneFunc()
       }, 200) // after fetch

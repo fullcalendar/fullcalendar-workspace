@@ -24,13 +24,14 @@ describe('timeGrid-view event drag-n-drop', () => {
       it('allows dropping onto a resource', (done) => {
         let dropSpy
         let receiveSpy
-        let dragEl = $('<a' +
+        let dragEl = $(
+          '<a' +
           ` class="external-event ${CalendarWrapper.EVENT_CLASSNAME}"` +
           ' style="width:100px"' +
-          '>external</a>')
-          .appendTo('body')
+          '>external</a>',
+        ).appendTo('body')
 
-        new Draggable(dragEl[0], {
+        new Draggable(dragEl[0], { // eslint-disable-line no-new
           eventData: {
             title: 'my external event',
           },

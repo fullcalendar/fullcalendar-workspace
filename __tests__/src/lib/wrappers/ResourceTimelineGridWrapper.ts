@@ -54,8 +54,9 @@ export class ResourceTimelineGridWrapper {
       let eventRect = eventEl.getBoundingClientRect()
       let isRtl = $eventEl.css('direction') === 'rtl'
 
-      let resizerEl = $eventEl.find('.' + (fromStart ? CalendarWrapper.EVENT_START_RESIZER_CLASSNAME : CalendarWrapper.EVENT_END_RESIZER_CLASSNAME))
-        .css('display', 'block')[0] // usually only displays on hover. force display
+      let resizerEl = $eventEl.find(
+        '.' + (fromStart ? CalendarWrapper.EVENT_START_RESIZER_CLASSNAME : CalendarWrapper.EVENT_END_RESIZER_CLASSNAME),
+      ).css('display', 'block')[0] // usually only displays on hover. force display
 
       let resizerPoint = getRectCenter(resizerEl.getBoundingClientRect())
       let xCorrect = resizerPoint.left - (isRtl ? eventRect.left : eventRect.right)

@@ -38,7 +38,7 @@ describe('column-view resourceLabelDidMount trigger', () => { // TODO: rename th
               if (arg.resource.id === 'a') {
                 expect(arg.el instanceof HTMLTableCellElement).toBe(true)
                 expect(arg.el).toContainText('Resource A')
-                callCnt++
+                callCnt += 1
               }
             },
           })
@@ -63,7 +63,7 @@ describe('column-view resourceLabelDidMount trigger', () => { // TODO: rename th
               if (arg.resource.id === 'a') {
                 expect(arg.el instanceof HTMLTableCellElement).toBe(true)
                 expect(arg.el).toContainText('Resource A')
-                callCnt++
+                callCnt += 1
               }
             },
           })
@@ -83,7 +83,7 @@ describe('column-view resourceLabelDidMount trigger', () => { // TODO: rename th
               if (arg.resource.id === 'a') {
                 expect(arg.el instanceof HTMLTableCellElement).toBe(true)
                 expect(arg.el).toContainText('Resource A')
-                callCnt++
+                callCnt += 1
               }
             },
           })

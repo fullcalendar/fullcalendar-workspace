@@ -56,10 +56,9 @@ describe('resourcesInitiallyExpanded', () => {
 
       dataGridWrapper.clickFirstExpander()
       setTimeout(() => {
-        let $eventEl = $('.event1')
+        $eventEl = $('.event1')
         expect($eventEl.length).toBe(1)
         expect($eventEl).toHaveClass(CalendarWrapper.BG_EVENT_CLASSNAME)
-
         done()
       })
     })

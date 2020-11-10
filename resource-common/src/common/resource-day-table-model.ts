@@ -106,7 +106,7 @@ export class DayResourceTableModel extends AbstractResourceDayTableModel {
   computeColRanges(dateStartI, dateEndI, resourceI) {
     let segs = []
 
-    for (let i = dateStartI; i <= dateEndI; i++) {
+    for (let i = dateStartI; i <= dateEndI; i += 1) {
       let col = this.computeCol(i, resourceI)
 
       segs.push({
@@ -130,7 +130,7 @@ export class ResourceIndex {
     let indicesById = {}
     let ids = []
 
-    for (let i = 0; i < resources.length; i++) {
+    for (let i = 0; i < resources.length; i += 1) {
       let id = resources[i].id
 
       ids.push(id)
@@ -233,7 +233,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
     let resourceCnt = resourceDayTable.resources.length
     let transformedSegs = []
 
-    for (let i = 0; i < resourceCnt; i++) {
+    for (let i = 0; i < resourceCnt; i += 1) {
       for (let seg of segGroups[i]) {
         transformedSegs.push(
           ...this.transformSeg(seg, resourceDayTable, i),
@@ -259,7 +259,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
     let resourceCnt = resourceDayTable.resources.length
     let transformedSegs = []
 
-    for (let i = 0; i < resourceCnt; i++) {
+    for (let i = 0; i < resourceCnt; i += 1) {
       for (let seg of segs) {
         transformedSegs.push(
           ...this.transformSeg(seg, resourceDayTable, i),
@@ -277,7 +277,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
     let anyInteractions = false
     let isEvent = false
 
-    for (let i = 0; i < resourceCnt; i++) {
+    for (let i = 0; i < resourceCnt; i += 1) {
       let interaction = interactions[i]
 
       if (interaction) {

@@ -29,7 +29,7 @@ describe('dayGrid-view event drag-n-drop', () => {
           '>external</a>')
           .appendTo('body')
 
-        new Draggable(dragEl[0], {
+        new Draggable(dragEl[0], { // eslint-disable-line no-new
           eventData: {
             title: 'my external event',
             startTime: '05:00',

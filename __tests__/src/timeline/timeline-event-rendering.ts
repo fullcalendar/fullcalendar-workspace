@@ -604,8 +604,20 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
         { id: 'a', title: 'Auditorium A' },
       ],
       events: [
-        { id: '3', resourceId: 'a', start: '2018-12-13T08:00:00.2052265', end: '2018-12-13T10:00:04.2052265', title: 'Event 3' },
-        { id: '4', resourceId: 'a', start: '2018-12-13T07:00:00.2052265', end: '2018-12-13T08:00:04.2052265', title: 'Verry verry verry  long named event' },
+        {
+          id: '3',
+          resourceId: 'a',
+          start: '2018-12-13T08:00:00.2052265',
+          end: '2018-12-13T10:00:04.2052265',
+          title: 'Event 3',
+        },
+        {
+          id: '4',
+          resourceId: 'a',
+          start: '2018-12-13T07:00:00.2052265',
+          end: '2018-12-13T08:00:04.2052265',
+          title: 'Verry verry verry  long named event',
+        },
       ],
     })
     let timelineGridWrapper = new TimelineViewWrapper(calendar).timelineGrid

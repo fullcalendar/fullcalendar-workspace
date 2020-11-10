@@ -31,8 +31,9 @@ export class TimelineGridWrapper {
       let eventRect = eventEl.getBoundingClientRect()
       let isRtl = $eventEl.css('direction') === 'rtl'
 
-      let resizerEl = $eventEl.find('.' + (fromStart ? CalendarWrapper.EVENT_START_RESIZER_CLASSNAME : CalendarWrapper.EVENT_END_RESIZER_CLASSNAME))
-        .css('display', 'block')[0] // usually only displays on hover. force display
+      let resizerEl = $eventEl.find(
+        '.' + (fromStart ? CalendarWrapper.EVENT_START_RESIZER_CLASSNAME : CalendarWrapper.EVENT_END_RESIZER_CLASSNAME),
+      ).css('display', 'block')[0] // usually only displays on hover. force display
 
       let resizerPoint = getRectCenter(resizerEl.getBoundingClientRect())
       let xCorrect = resizerPoint.left - (isRtl ? eventRect.left : eventRect.right)
@@ -119,12 +120,12 @@ export class TimelineGridWrapper {
     let isRtl = $(this.el).css('direction') === 'rtl'
     let slatEl = this.getSlatElByDate(targetDate)
 
-    const getLeadingEdge = function (cellEl) {
+    const getLeadingEdge = (cellEl) => {
       let cellRect = cellEl.getBoundingClientRect()
       return isRtl ? cellRect.right : cellRect.left
     }
 
-    const getTrailingEdge = function (cellEl) {
+    const getTrailingEdge = (cellEl) => {
       let cellRect = cellEl.getBoundingClientRect()
       return isRtl ? cellRect.left : cellRect.right
     }

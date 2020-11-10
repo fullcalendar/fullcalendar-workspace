@@ -43,6 +43,8 @@ export class ResourceDataGridWrapper {
     if (cellEl) {
       return buildResourceInfoFromCell(cellEl)
     }
+
+    return null
   }
 
   getResourceCellEl(resourceId) {

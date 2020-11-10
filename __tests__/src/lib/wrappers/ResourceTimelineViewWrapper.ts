@@ -25,7 +25,8 @@ export class ResourceTimelineViewWrapper extends ViewWrapper {
   }
 
   get dataHeader() { // rename `header` now?
-    return new ResourceDataHeaderWrapper(this.el.querySelector('.fc-datagrid-header')) // doesnt exist yet. also, delete one other one by mistake
+    // doesnt exist yet. also, delete one other one by mistake
+    return new ResourceDataHeaderWrapper(this.el.querySelector('.fc-datagrid-header'))
   }
 
   getDataGridEl() {
