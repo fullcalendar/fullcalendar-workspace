@@ -14,4 +14,6 @@ export function transformDateSelectionJoin(hit0: Hit, hit1: Hit) {
 
     return { resourceId: resourceId0 }
   }
+
+  return null
 }

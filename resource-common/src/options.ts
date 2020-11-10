@@ -1,4 +1,7 @@
-import { Identity, CssDimValue, ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler, identity, parseFieldSpecs } from '@fullcalendar/common'
+import {
+  Identity, CssDimValue, ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler,
+  identity, parseFieldSpecs
+} from '@fullcalendar/common'
 
 // public
 import {

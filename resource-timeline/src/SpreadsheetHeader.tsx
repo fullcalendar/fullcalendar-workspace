@@ -36,7 +36,14 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
             willUnmount={superHeaderRendering.headerWillUnmount}
           >
             {(rootElRef, classNames, innerElRef, innerContent) => (
-              <th colSpan={colSpecs.length} className={['fc-datagrid-cell', 'fc-datagrid-cell-super'].concat(classNames).join(' ')} ref={rootElRef}>
+              <th
+                colSpan={colSpecs.length}
+                ref={rootElRef}
+                className={[
+                  'fc-datagrid-cell',
+                  'fc-datagrid-cell-super'
+                ].concat(classNames).join(' ')}
+              >
                 <div className="fc-datagrid-cell-frame" style={{ height: rowInnerHeight }}>
                   <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner" ref={innerElRef}>
                     {innerContent}
@@ -124,8 +131,8 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
       dragging.emitter.on('dragstart', () => {
         let allCells = findElements(elementClosest(resizerEl, 'tr'), 'th')
 
-        currentWidths = allCells.map((resizerEl) => (
-          elementClosest(resizerEl, 'th').getBoundingClientRect().width
+        currentWidths = allCells.map((cellEl) => (
+          cellEl.getBoundingClientRect().width
         ))
         startWidth = currentWidths[index]
       })
@@ -142,5 +149,7 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
 
       return dragging
     }
+
+    return null
   }
 }

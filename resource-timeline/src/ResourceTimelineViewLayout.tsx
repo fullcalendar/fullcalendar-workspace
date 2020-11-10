@@ -24,7 +24,8 @@ interface ResourceTimelineViewLayoutState {
   resourceAreaWidthOverride: number | null
 }
 
-export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineViewLayoutProps, ResourceTimelineViewLayoutState> { // RENAME?
+// RENAME?
+export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineViewLayoutProps, ResourceTimelineViewLayoutState> {
   private scrollGridRef = createRef<ScrollGrid>()
   private timeBodyScrollerElRef = createRef<HTMLDivElement>()
   private spreadsheetHeaderChunkElRef = createRef<HTMLTableCellElement>()
@@ -51,7 +52,8 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
           {
             key: 'datagrid',
             elRef: this.spreadsheetHeaderChunkElRef,
-            tableClassName: 'fc-datagrid-header', // TODO: allow the content to specify this. have general-purpose 'content' with obj with keys
+            // TODO: allow the content to specify this. have general-purpose 'content' with obj with keys
+            tableClassName: 'fc-datagrid-header',
             rowContent: props.spreadsheetHeaderRows,
           },
           {

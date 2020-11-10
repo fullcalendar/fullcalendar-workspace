@@ -1,9 +1,13 @@
 import {
-  createElement, PositionCache,
-  Duration, EventStore, DateSpan, EventUiHash, EventInteractionState, DateComponent, Hit, createRef, CssDimValue, VNode, memoize, NowTimer, greatestDurationDenominator, DateMarker, DateRange, NowIndicatorRoot, DateProfile, Fragment,
+  createElement, PositionCache, Duration, EventStore, DateSpan, EventUiHash, EventInteractionState,
+  DateComponent, Hit, createRef, CssDimValue, VNode, memoize, NowTimer, greatestDurationDenominator,
+  DateMarker, DateRange, NowIndicatorRoot, DateProfile, Fragment,
 } from '@fullcalendar/common'
 import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource-common'
-import { TimelineDateProfile, TimelineCoords, TimelineSlats, TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg } from '@fullcalendar/timeline'
+import {
+  TimelineDateProfile, TimelineCoords, TimelineSlats,
+  TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg
+} from '@fullcalendar/timeline'
 import { ResourceTimelineLanes } from './ResourceTimelineLanes'
 
 export interface ResourceTimelineGridProps {
@@ -189,6 +193,8 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
         }
       }
     }
+
+    return null
   }
 }
 

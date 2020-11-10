@@ -46,6 +46,8 @@ export function buildLicenseWarning(context: CalendarContext) {
       )
     }
   }
+
+  return null
 }
 
 /*

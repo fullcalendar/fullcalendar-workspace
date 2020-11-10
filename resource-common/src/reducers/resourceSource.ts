@@ -52,7 +52,12 @@ function createSource(input, activeRange: DateRange, refetchResourcesOnNavigate,
   return null
 }
 
-function handleRangeChange(source: ResourceSource<any>, activeRange: DateRange, refetchResourcesOnNavigate, context: CalendarContext): ResourceSource<any> {
+function handleRangeChange(
+  source: ResourceSource<any>,
+  activeRange: DateRange,
+  refetchResourcesOnNavigate,
+  context: CalendarContext,
+): ResourceSource<any> {
   if (
     refetchResourcesOnNavigate &&
     !doesSourceIgnoreRange(source) &&

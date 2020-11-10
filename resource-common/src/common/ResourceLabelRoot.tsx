@@ -1,4 +1,7 @@
-import { createElement, Ref, ComponentChildren, ViewContextType, ViewContext, RenderHook, ViewApi, formatDayString, Dictionary, MountArg } from '@fullcalendar/common'
+import {
+  createElement, Ref, ComponentChildren, ViewContextType, ViewContext, RenderHook,
+  ViewApi, formatDayString, Dictionary, MountArg,
+} from '@fullcalendar/common'
 import { Resource } from '../structs/resource'
 import { ResourceApi } from '../api/ResourceApi'
 

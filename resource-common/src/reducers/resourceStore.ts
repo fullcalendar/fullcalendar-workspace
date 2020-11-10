@@ -34,7 +34,13 @@ export function reduceResourceStore(
   }
 }
 
-function receiveRawResources(existingStore: ResourceHash, inputs: ResourceInput[], fetchId: string, source: ResourceSource<any>, context: CalendarContext): ResourceHash {
+function receiveRawResources(
+  existingStore: ResourceHash,
+  inputs: ResourceInput[],
+  fetchId: string,
+  source: ResourceSource<any>,
+  context: CalendarContext,
+): ResourceHash {
   if (source.latestFetchId === fetchId) {
     let nextStore: ResourceHash = {}
 

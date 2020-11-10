@@ -1,33 +1,12 @@
-import {
-  createElement, PositionCache,
-  SplittableProps, EventStore, createRef, BaseComponent, CssDimValue, RefMap,
-  DateMarker,
-  DateRange,
-  DateProfile,
-} from '@fullcalendar/common'
+import { createElement, PositionCache, createRef, BaseComponent, CssDimValue, RefMap } from '@fullcalendar/common'
 import { GroupNode, ResourceNode } from '@fullcalendar/resource-common'
-import { TimelineDateProfile, TimelineCoords } from '@fullcalendar/timeline'
-import { ResourceTimelineLane } from './ResourceTimelineLane'
-import { DividerRow } from './DividerRow'
+import { ResourceTimelineLanesBody, ResourceTimelineLanesContentProps } from './ResourceTimelineLanesBody'
 
 export interface ResourceTimelineLanesProps extends ResourceTimelineLanesContentProps {
   minHeight: CssDimValue
   clientWidth: number | null
   tableMinWidth: CssDimValue
   onRowCoords?: (rowCoords: PositionCache) => void
-}
-
-export interface ResourceTimelineLanesContentProps {
-  rowNodes: (GroupNode | ResourceNode)[]
-  splitProps: { [resourceId: string]: SplittableProps }
-  dateProfile: DateProfile
-  tDateProfile: TimelineDateProfile
-  nowDate: DateMarker
-  todayRange: DateRange
-  fallbackBusinessHours: EventStore | null
-  innerHeights: number[]
-  slatCoords: TimelineCoords | null
-  onRowHeightChange?: (rowEl: HTMLTableRowElement, isStable: boolean) => void
 }
 
 export class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesProps> {
@@ -96,55 +75,4 @@ export class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesPr
 
 function collectRowEls(elMap: { [key: string]: HTMLElement }, rowNodes: (GroupNode | ResourceNode)[]) {
   return rowNodes.map((rowNode) => elMap[rowNode.id])
-}
-
-interface ResourceTimelineLanesBodyProps extends ResourceTimelineLanesContentProps {
-  rowElRefs: RefMap<HTMLElement> // indexed by NUMERICAL INDEX, not node.id
-}
-
-class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyProps> { // TODO: this technique more
-  render() {
-    let { props, context } = this
-    let { rowElRefs, innerHeights } = props
-
-    return (
-      <tbody>
-        {props.rowNodes.map((node, index) => {
-          if ((node as GroupNode).group) {
-            return (
-              <DividerRow
-                key={node.id}
-                elRef={rowElRefs.createRef(node.id)}
-                groupValue={(node as GroupNode).group.value}
-                renderingHooks={(node as GroupNode).group.spec}
-                innerHeight={innerHeights[index] || ''}
-              />
-            )
-          }
-
-          if ((node as ResourceNode).resource) {
-            let resource = (node as ResourceNode).resource
-
-            return (
-              <ResourceTimelineLane
-                key={node.id}
-                elRef={rowElRefs.createRef(node.id)}
-                {...props.splitProps[resource.id]}
-                resource={resource}
-                dateProfile={props.dateProfile}
-                tDateProfile={props.tDateProfile}
-                nowDate={props.nowDate}
-                todayRange={props.todayRange}
-                nextDayThreshold={context.options.nextDayThreshold}
-                businessHours={resource.businessHours || props.fallbackBusinessHours}
-                innerHeight={innerHeights[index] || ''}
-                timelineCoords={props.slatCoords}
-                onHeightChange={props.onRowHeightChange}
-              />
-            )
-          }
-        })}
-      </tbody>
-    )
-  }
 }

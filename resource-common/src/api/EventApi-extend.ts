@@ -1,13 +1,16 @@
 import { EventApi } from '@fullcalendar/common'
 import { ResourceApi } from './ResourceApi'
 
-EventApi.prototype.getResources = function (this: EventApi): ResourceApi[] {
+EventApi.prototype.getResources = function (this: EventApi): ResourceApi[] { // eslint-disable-line func-names
   let { calendarApi } = this._context
 
   return this._def.resourceIds.map((resourceId) => calendarApi.getResourceById(resourceId))
 }
 
-EventApi.prototype.setResources = function (this: EventApi, resources: (string | ResourceApi)[]) {
+EventApi.prototype.setResources = function ( // eslint-disable-line func-names
+  this: EventApi,
+  resources: (string | ResourceApi)[]
+) {
   let resourceIds = []
 
   // massage resources -> resourceIds

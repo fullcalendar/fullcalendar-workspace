@@ -25,7 +25,7 @@ export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ViewConte
           let rowSpan = rowSpans[i]
 
           if (rowSpan === 0) { // not responsible for group-based rows. VRowGroup is
-            return
+            return null
           }
 
           if (rowSpan == null) {
@@ -38,7 +38,7 @@ export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ViewConte
           if (rowSpan > 1) {
             return (
               <SpreadsheetGroupCell
-                key={i}
+                key={i} // eslint-disable-line react/no-array-index-key
                 colSpec={colSpec}
                 fieldValue={fieldValue}
                 rowSpan={rowSpan}
@@ -48,7 +48,7 @@ export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ViewConte
 
           return (
             <SpreadsheetIndividualCell
-              key={i}
+              key={i} // eslint-disable-line react/no-array-index-key
               colSpec={colSpec}
               resource={resource}
               fieldValue={fieldValue}

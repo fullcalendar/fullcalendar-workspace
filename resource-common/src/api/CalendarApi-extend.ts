@@ -2,7 +2,11 @@ import { DateSpan, CalendarApi, CalendarContext } from '@fullcalendar/common'
 import { ResourceApi } from './ResourceApi'
 import { ResourceInput, parseResource, ResourceHash, Resource } from '../structs/resource'
 
-CalendarApi.prototype.addResource = function (this: CalendarApi, input: ResourceInput | ResourceApi, scrollTo = true) {
+CalendarApi.prototype.addResource = function ( // eslint-disable-line func-names
+  this: CalendarApi,
+  input: ResourceInput | ResourceApi,
+  scrollTo = true
+) {
   let currentState = this.getCurrentData()
   let resourceHash: ResourceHash
   let resource: Resource
@@ -40,7 +44,7 @@ CalendarApi.prototype.addResource = function (this: CalendarApi, input: Resource
   return resourceApi
 }
 
-CalendarApi.prototype.getResourceById = function (this: CalendarApi, id: string) {
+CalendarApi.prototype.getResourceById = function (this: CalendarApi, id: string) { // eslint-disable-line func-names
   id = String(id)
   let currentState = this.getCurrentData()
 
@@ -55,7 +59,7 @@ CalendarApi.prototype.getResourceById = function (this: CalendarApi, id: string)
   return null
 }
 
-CalendarApi.prototype.getResources = function (this: CalendarApi): ResourceApi[] {
+CalendarApi.prototype.getResources = function (this: CalendarApi): ResourceApi[] { // eslint-disable-line func-names
   let currentState = this.getCurrentData()
   let { resourceStore } = currentState
   let resourceApis: ResourceApi[] = []
@@ -71,7 +75,7 @@ CalendarApi.prototype.getResources = function (this: CalendarApi): ResourceApi[]
   return resourceApis
 }
 
-CalendarApi.prototype.getTopLevelResources = function (this: CalendarApi): ResourceApi[] {
+CalendarApi.prototype.getTopLevelResources = function (this: CalendarApi): ResourceApi[] { // eslint-disable-line func-names
   let currentState = this.getCurrentData()
   let { resourceStore } = currentState
   let resourceApis: ResourceApi[] = []
@@ -89,7 +93,7 @@ CalendarApi.prototype.getTopLevelResources = function (this: CalendarApi): Resou
   return resourceApis
 }
 
-CalendarApi.prototype.refetchResources = function (this: CalendarApi) {
+CalendarApi.prototype.refetchResources = function (this: CalendarApi) { // eslint-disable-line func-names
   this.dispatch({
     type: 'REFETCH_RESOURCES',
   })

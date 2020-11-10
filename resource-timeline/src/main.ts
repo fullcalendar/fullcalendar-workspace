@@ -1,6 +1,9 @@
 import { createPlugin } from '@fullcalendar/common'
-import premiumCommonPlugin from '@fullcalendar/premium-common'
-import '@fullcalendar/premium-common' // ensure ambient declarations
+
+import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
+// ensure ambient declarations
+import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
+
 import timelinePlugin from '@fullcalendar/timeline'
 import resourceCommonPlugin from '@fullcalendar/resource-common'
 import { ResourceTimelineView } from './ResourceTimelineView'

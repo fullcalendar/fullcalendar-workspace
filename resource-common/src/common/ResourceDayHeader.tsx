@@ -1,10 +1,11 @@
 import {
-  VNode, createElement, TableDowCell,
-  memoize, BaseComponent, DateMarker, DateFormatter, computeFallbackHeaderFormat, TableDateCell, Fragment, DateRange, NowTimer, Ref, ComponentChildren, DateProfile,
+  VNode, createElement, TableDowCell, memoize, BaseComponent,
+  DateMarker, DateFormatter, computeFallbackHeaderFormat, TableDateCell, Fragment,
+  DateRange, NowTimer, DateProfile,
 } from '@fullcalendar/common'
 import { Resource } from '../structs/resource'
-import { ResourceLabelRoot } from './ResourceLabelRoot'
 import { ResourceApi } from '../api/ResourceApi'
+import { ResourceCell } from './ResourceCell'
 
 export interface ResourceDayHeaderProps {
   dates: DateMarker[]
@@ -161,42 +162,4 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
 
 function buildDateFormat(dayHeaderFormat: DateFormatter, datesRepDistinctDays, dayCnt) {
   return dayHeaderFormat || computeFallbackHeaderFormat(datesRepDistinctDays, dayCnt)
-}
-
-interface ResourceCellProps {
-  resource: Resource
-  colSpan: number
-  date?: DateMarker
-  isSticky?: boolean
-}
-
-class ResourceCell extends BaseComponent<ResourceCellProps> {
-  render() {
-    let { props } = this
-
-    return (
-      <ResourceLabelRoot resource={props.resource} date={props.date}>
-        {(elRef: Ref<HTMLTableCellElement>, customClassNames: string[], dataAttrs, innerElRef, innerContent: ComponentChildren) => (
-          <th
-            ref={elRef}
-            className={['fc-col-header-cell', 'fc-resource'].concat(customClassNames).join(' ')}
-            colSpan={props.colSpan}
-            {...dataAttrs}
-          >
-            <div className="fc-scrollgrid-sync-inner">
-              <span
-                className={[
-                  'fc-col-header-cell-cushion',
-                  props.isSticky ? 'fc-sticky' : '',
-                ].join(' ')}
-                ref={innerElRef}
-              >
-                {innerContent}
-              </span>
-            </div>
-          </th>
-        )}
-      </ResourceLabelRoot>
-    )
-  }
 }

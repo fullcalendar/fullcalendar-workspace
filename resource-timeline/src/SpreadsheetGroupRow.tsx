@@ -30,7 +30,17 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
           willUnmount={spec.labelWillUnmount}
         >
           {(rootElRef, classNames, innerElRef, innerContent) => (
-            <td className={['fc-datagrid-cell', 'fc-resource-group', context.theme.getClass('tableCellShaded')].concat(classNames).join(' ')} colSpan={props.spreadsheetColCnt} ref={rootElRef}>
+            <td
+              ref={rootElRef}
+              colSpan={props.spreadsheetColCnt}
+              className={
+                [
+                  'fc-datagrid-cell',
+                  'fc-resource-group',
+                  context.theme.getClass('tableCellShaded')
+                ].concat(classNames).join(' ')
+              }
+            >
               <div className="fc-datagrid-cell-frame" style={{ height: props.innerHeight }}>
                 <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner" ref={this.innerInnerRef}>
                   <ExpanderIcon

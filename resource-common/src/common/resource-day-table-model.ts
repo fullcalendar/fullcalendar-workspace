@@ -1,4 +1,7 @@
-import { CalendarContext, SlicedProps, EventDef, mapHash, Splitter, DayTableModel, DayTableCell, SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/common'
+import {
+  CalendarContext, SlicedProps, EventDef, mapHash, Splitter, DayTableModel, DayTableCell,
+  SplittableProps, DateSpan, Seg, memoize, EventSegUiInteractionState,
+} from '@fullcalendar/common'
 import { __assign } from 'tslib'
 import { Resource } from '../structs/resource'
 import { ResourceApi } from '../api/ResourceApi'
@@ -38,11 +41,11 @@ export abstract class AbstractResourceDayTableModel {
     let { rowCnt, dayTableModel, resources } = this
     let rows: ResourceDayTableCell[][] = []
 
-    for (let row = 0; row < rowCnt; row++) {
+    for (let row = 0; row < rowCnt; row += 1) {
       let rowCells: ResourceDayTableCell[] = []
 
-      for (let dateCol = 0; dateCol < dayTableModel.colCnt; dateCol++) {
-        for (let resourceCol = 0; resourceCol < resources.length; resourceCol++) {
+      for (let dateCol = 0; dateCol < dayTableModel.colCnt; dateCol += 1) {
+        for (let resourceCol = 0; resourceCol < resources.length; resourceCol += 1) {
           let resource = resources[resourceCol]
           let extraHookProps = { resource: new ResourceApi(this.context, resource) }
           let extraDataAttrs = { 'data-resource-id': resource.id }
@@ -196,7 +199,10 @@ export abstract class VResourceJoiner<SegType extends Seg> {
   /*
   propSets also has a '' key for things with no resource
   */
-  joinProps(propSets: { [resourceId: string]: SlicedProps<SegType> }, resourceDayTable: AbstractResourceDayTableModel): SlicedProps<SegType> {
+  joinProps(
+    propSets: { [resourceId: string]: SlicedProps<SegType> },
+    resourceDayTable: AbstractResourceDayTableModel
+  ): SlicedProps<SegType> {
     let dateSelectionSets = []
     let businessHoursSets = []
     let fgEventSets = []
@@ -270,7 +276,10 @@ export abstract class VResourceJoiner<SegType extends Seg> {
     return transformedSegs
   }
 
-  joinInteractions(resourceDayTable: AbstractResourceDayTableModel, ...interactions: EventSegUiInteractionState[]): EventSegUiInteractionState | null {
+  joinInteractions(
+    resourceDayTable: AbstractResourceDayTableModel,
+    ...interactions: EventSegUiInteractionState[]
+  ): EventSegUiInteractionState | null {
     let resourceCnt = resourceDayTable.resources.length
     let affectedInstances = {}
     let transformedSegs = []

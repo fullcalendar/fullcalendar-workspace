@@ -118,7 +118,12 @@ function flattenNodes(
   }
 }
 
-function buildHierarchy(resourceStore: ResourceHash, maxDepth: number, groupSpecs: GroupSpec[], orderSpecs: OrderSpec<ResourceApi>[]): ParentNode[] {
+function buildHierarchy(
+  resourceStore: ResourceHash,
+  maxDepth: number,
+  groupSpecs: GroupSpec[],
+  orderSpecs: OrderSpec<ResourceApi>[]
+): ParentNode[] {
   let resourceNodes = buildResourceNodes(resourceStore, orderSpecs)
   let builtNodes: ParentNode[] = []
 
@@ -161,7 +166,14 @@ function buildResourceNodes(resourceStore: ResourceHash, orderSpecs: OrderSpec<R
   return nodeHash
 }
 
-function insertResourceNode(resourceNode: ResourceParentNode, nodes: ParentNode[], groupSpecs: GroupSpec[], depth: number, maxDepth: number, orderSpecs: OrderSpec<ResourceApi>[]) {
+function insertResourceNode(
+  resourceNode: ResourceParentNode,
+  nodes: ParentNode[],
+  groupSpecs: GroupSpec[],
+  depth: number,
+  maxDepth: number,
+  orderSpecs: OrderSpec<ResourceApi>[]
+) {
   if (groupSpecs.length && (maxDepth === -1 || depth <= maxDepth)) {
     let groupNode = ensureGroupNodes(resourceNode, nodes, groupSpecs[0])
 
@@ -178,7 +190,7 @@ function ensureGroupNodes(resourceNode: ResourceParentNode, nodes: ParentNode[],
 
   // find an existing group that matches, or determine the position for a new group
   if (groupSpec.order) {
-    for (newGroupIndex = 0; newGroupIndex < nodes.length; newGroupIndex++) {
+    for (newGroupIndex = 0; newGroupIndex < nodes.length; newGroupIndex += 1) {
       let node = nodes[newGroupIndex]
 
       if ((node as GroupParentNode).group) {
@@ -193,7 +205,7 @@ function ensureGroupNodes(resourceNode: ResourceParentNode, nodes: ParentNode[],
       }
     }
   } else { // the groups are unordered
-    for (newGroupIndex = 0; newGroupIndex < nodes.length; newGroupIndex++) {
+    for (newGroupIndex = 0; newGroupIndex < nodes.length; newGroupIndex += 1) {
       let node = nodes[newGroupIndex]
 
       if ((node as GroupParentNode).group && groupValue === (node as GroupParentNode).group.value) {

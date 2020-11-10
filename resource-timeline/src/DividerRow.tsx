@@ -27,7 +27,16 @@ export class DividerRow extends BaseComponent<DividerRowProps> {
           willUnmount={renderingHooks.laneWillUnmount}
         >
           {(rootElRef, classNames, innerElRef, innerContent) => (
-            <td className={['fc-timeline-lane', 'fc-resource-group', this.context.theme.getClass('tableCellShaded')].concat(classNames).join(' ')} ref={rootElRef}>
+            <td
+              ref={rootElRef}
+              className={
+                [
+                  'fc-timeline-lane',
+                  'fc-resource-group',
+                  this.context.theme.getClass('tableCellShaded')
+                ].concat(classNames).join(' ')
+              }
+            >
               <div style={{ height: props.innerHeight }} ref={innerElRef}>
                 {innerContent}
               </div>

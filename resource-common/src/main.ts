@@ -1,8 +1,12 @@
 import { createPlugin } from '@fullcalendar/common'
-import premiumCommonPlugin from '@fullcalendar/premium-common'
-import '@fullcalendar/premium-common' // ensure ambient declarations
+
+import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
+// ensure ambient declarations
+import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
+
 import './ambient'
-import { ResourceDataAdder, ResourceEventConfigAdder, transformIsDraggable } from './View' // TODO: ResourceDataAdder should be own plugin
+import { ResourceDataAdder, transformIsDraggable } from './View' // TODO: ResourceDataAdder should be own plugin
+import { ResourceEventConfigAdder } from './ResourceEventConfigAdder'
 import { reduceResources } from './reducers/resources'
 import { generateEventDefResourceMembers, EVENT_REFINERS } from './structs/event-parse'
 import './structs/event-declare'
@@ -55,12 +59,34 @@ export default createPlugin({
 })
 
 export { ResourceDayHeader } from './common/ResourceDayHeader'
-export { VResourceJoiner, AbstractResourceDayTableModel, ResourceDayTableModel, DayResourceTableModel, VResourceSplitter } from './common/resource-day-table-model'
+export {
+  VResourceJoiner,
+  AbstractResourceDayTableModel,
+  ResourceDayTableModel,
+  DayResourceTableModel,
+  VResourceSplitter
+} from './common/resource-day-table-model'
 export { Resource, ResourceHash, getPublicId } from './structs/resource'
 export { ResourceViewProps } from './View'
-export { flattenResources, Group, isGroupsEqual, GroupNode, ResourceNode, buildRowNodes, buildResourceFields } from './common/resource-hierarchy'
-export { ColSpec, GroupSpec, GroupLaneRenderHooks, ColCellContentArg, ColCellMountArg, ColHeaderContentArg, ColHeaderMountArg, ColHeaderRenderHooks } from './common/resource-spec'
+export {
+  flattenResources,
+  Group,
+  isGroupsEqual,
+  GroupNode,
+  ResourceNode,
+  buildRowNodes,
+  buildResourceFields
+} from './common/resource-hierarchy'
+export {
+  ColSpec,
+  GroupSpec,
+  GroupLaneRenderHooks,
+  ColCellContentArg,
+  ColCellMountArg,
+  ColHeaderContentArg,
+  ColHeaderMountArg,
+  ColHeaderRenderHooks
+} from './common/resource-spec'
 export { ResourceApi } from './api/ResourceApi'
 export { ResourceSplitter } from './common/ResourceSplitter'
-
 export { ResourceLabelRoot, ResourceLabelRootProps } from './common/ResourceLabelRoot'

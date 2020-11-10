@@ -68,7 +68,7 @@ export function parseResourceSource(input: ResourceSourceInput): ResourceSource<
 function buildResourceSourceMeta(refined: ResourceSourceRefined) {
   let defs = getResourceSourceDefs()
 
-  for (let i = defs.length - 1; i >= 0; i--) { // later-added plugins take precedence
+  for (let i = defs.length - 1; i >= 0; i -= 1) { // later-added plugins take precedence
     let def = defs[i]
     let meta = def.parseMeta(refined)
 
@@ -76,6 +76,8 @@ function buildResourceSourceMeta(refined: ResourceSourceRefined) {
       return { meta, sourceDefId: i }
     }
   }
+
+  return null
 }
 
 function warnUnknownProps(props) {

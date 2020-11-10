@@ -9,4 +9,6 @@ export function transformEventResizeJoin(hit0: Hit, hit1: Hit): false | Dictiona
   ) {
     return false
   }
+
+  return null
 }
