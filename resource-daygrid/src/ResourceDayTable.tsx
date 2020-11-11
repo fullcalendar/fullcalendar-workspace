@@ -47,12 +47,12 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
     this.slicers = mapHash(splitProps, (split, resourceId) => this.slicers[resourceId] || new DayTableSlicer())
 
     let slicedProps = mapHash(this.slicers, (slicer, resourceId) => slicer.sliceProps(
-        splitProps[resourceId],
-        dateProfile,
-        nextDayThreshold,
-        context,
-        resourceDayTableModel.dayTableModel,
-      ))
+      splitProps[resourceId],
+      dateProfile,
+      nextDayThreshold,
+      context,
+      resourceDayTableModel.dayTableModel,
+    ))
 
     this.allowAcrossResources = resourceDayTableModel.dayTableModel.colCnt === 1 // hack for EventResizing
 

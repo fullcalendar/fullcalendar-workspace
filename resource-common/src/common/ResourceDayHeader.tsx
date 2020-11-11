@@ -149,7 +149,7 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
         extraDataAttrs={extraDataAttrs}
       />
     )
-}
+  }
 
   buildTr(cells: VNode[], key: string) {
     let { renderIntro } = this.props

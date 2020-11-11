@@ -78,8 +78,8 @@ export function buildTimelineDateProfile(
   let input = allOptions.slotLabelFormat
   let rawFormats =
     Array.isArray(input) ? input :
-    (input != null) ? [input] :
-    computeHeaderFormats(tDateProfile, dateProfile, dateEnv, allOptions)
+      (input != null) ? [input] :
+        computeHeaderFormats(tDateProfile, dateProfile, dateEnv, allOptions)
 
   tDateProfile.headerFormats = rawFormats.map((rawFormat) => createFormatter(rawFormat))
 

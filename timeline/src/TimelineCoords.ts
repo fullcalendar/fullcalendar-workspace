@@ -62,10 +62,11 @@ export class TimelineCoords { // TODO: rename to "slat" coords?
         (innerCoordCache.getWidth(slotIndex) * partial)
       ) - outerCoordCache.originClientRect.width
     }
-      return (
-        outerCoordCache.lefts[slotIndex] +
-        (innerCoordCache.getWidth(slotIndex) * partial)
-      )
+
+    return (
+      outerCoordCache.lefts[slotIndex] +
+      (innerCoordCache.getWidth(slotIndex) * partial)
+    )
   }
 
   // returned value is between 0 and the number of snaps

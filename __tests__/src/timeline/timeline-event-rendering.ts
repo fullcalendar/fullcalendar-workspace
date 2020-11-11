@@ -520,6 +520,7 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
 
           function getInverseBackgroundEventEdges($eventEls, canvasEl) {
             expect($eventEls.length).toBeLessThan(3)
+
             if ($eventEls.length === 2) {
               if (direction === 'ltr') {
                 return {
@@ -527,36 +528,38 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
                   right: $eventEls.eq(1).offset().left,
                 }
               }
-                return {
-                  left: $eventEls.eq(1).offset().left + $eventEls.eq(1).outerWidth(),
-                  right: $eventEls.eq(0).offset().left,
-                }
-            }
-              let $canvasEl = $(canvasEl)
-              let canvasLeft = $canvasEl.offset().left
-              let canvasRight = canvasLeft + $canvasEl.outerWidth()
-
-              if ($eventEls.length === 1) {
-                let eventLeft = $eventEls.offset().left
-                let eventRight = eventLeft + $eventEls.outerWidth()
-                let leftGap = eventLeft - canvasLeft
-                let rightGap = canvasRight - eventRight
-
-                if (leftGap > rightGap) {
-                  return {
-                    left: canvasLeft,
-                    right: eventLeft,
-                  }
-                }
-                  return {
-                    left: eventRight,
-                    right: canvasRight,
-                  }
+              return {
+                left: $eventEls.eq(1).offset().left + $eventEls.eq(1).outerWidth(),
+                right: $eventEls.eq(0).offset().left,
               }
+            }
+
+            let $canvasEl = $(canvasEl)
+            let canvasLeft = $canvasEl.offset().left
+            let canvasRight = canvasLeft + $canvasEl.outerWidth()
+
+            if ($eventEls.length === 1) {
+              let eventLeft = $eventEls.offset().left
+              let eventRight = eventLeft + $eventEls.outerWidth()
+              let leftGap = eventLeft - canvasLeft
+              let rightGap = canvasRight - eventRight
+
+              if (leftGap > rightGap) {
                 return {
                   left: canvasLeft,
-                  right: canvasRight,
+                  right: eventLeft,
                 }
+              }
+              return {
+                left: eventRight,
+                right: canvasRight,
+              }
+            }
+
+            return {
+              left: canvasLeft,
+              right: canvasRight,
+            }
           }
         })
       })

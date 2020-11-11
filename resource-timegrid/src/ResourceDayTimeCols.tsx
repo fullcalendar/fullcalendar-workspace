@@ -51,12 +51,12 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
     this.slicers = mapHash(splitProps, (split, resourceId) => this.slicers[resourceId] || new DayTimeColsSlicer())
 
     let slicedProps = mapHash(this.slicers, (slicer, resourceId) => slicer.sliceProps(
-        splitProps[resourceId],
-        dateProfile,
-        null,
-        context,
-        dayRanges,
-      ))
+      splitProps[resourceId],
+      dateProfile,
+      null,
+      context,
+      dayRanges,
+    ))
 
     this.allowAcrossResources = dayRanges.length === 1
 

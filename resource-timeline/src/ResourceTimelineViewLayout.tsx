@@ -58,9 +58,9 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
           },
           {
             key: 'divider',
-              outerContent: (
-                <td className={'fc-resource-timeline-divider ' + context.theme.getClass('tableCellShaded')} />
-              ),
+            outerContent: (
+              <td className={'fc-resource-timeline-divider ' + context.theme.getClass('tableCellShaded')} />
+            ),
           },
           {
             key: 'timeline',

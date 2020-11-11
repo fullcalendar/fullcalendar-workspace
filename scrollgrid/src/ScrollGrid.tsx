@@ -148,14 +148,14 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     return (
       <tr key={sectionConfig.key} className={getSectionClassNames(sectionConfig, this.props.liquid).join(' ')}>
         {sectionConfig.chunks.map((chunkConfig, i) => this.renderChunk(
-            sectionConfig,
-            sectionIndex,
-            colGroupStats[i],
-            microColGroupNodes[i],
-            chunkConfig,
-            i,
-            (sectionRowMaxHeights[sectionIndex] || [])[i] || [],
-          ))}
+          sectionConfig,
+          sectionIndex,
+          colGroupStats[i],
+          microColGroupNodes[i],
+          chunkConfig,
+          i,
+          (sectionRowMaxHeights[sectionIndex] || [])[i] || [],
+        ))}
       </tr>
     )
   }
@@ -209,13 +209,13 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
 
     let overflowX: ClippedOverflowValue =
       forceXScrollbars ? (isLastSection ? 'scroll' : 'scroll-hidden') :
-      !allowXScrolling ? 'hidden' :
-      (isLastSection ? 'auto' : 'scroll-hidden')
+        !allowXScrolling ? 'hidden' :
+          (isLastSection ? 'auto' : 'scroll-hidden')
 
     let overflowY: ClippedOverflowValue =
       forceYScrollbars ? (isVScrollSide ? 'scroll' : 'scroll-hidden') :
-      !allowYScrolling ? 'hidden' :
-      (isVScrollSide ? 'auto' : 'scroll-hidden')
+        !allowYScrolling ? 'hidden' :
+          (isVScrollSide ? 'auto' : 'scroll-hidden')
 
     // it *could* be possible to reduce DOM wrappers by only doing a ClippedScroller when allowXScrolling or allowYScrolling,
     // but if these values were to change, the inner components would be unmounted/remounted because of the parent change.
@@ -488,7 +488,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
               (sectionI === lastSectionI && forceXScrollbars)
                 ? scrollbarWidth.x // use global because scroller might not have scrollbars yet but will need them in future
                 : 0
-              ),
+            ),
           )
         }
       }

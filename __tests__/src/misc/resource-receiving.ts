@@ -111,13 +111,14 @@ describe('event resources', () => {
     })
 
     it('reads correctly', (done) => {
-      XHRMock.get(/^my-feed\.json/, (req, res) => res
-          .status(200)
+      XHRMock.get(/^my-feed\.json/, (req, res) => (
+        res.status(200)
           .header('content-type', 'application/json')
           .body(JSON.stringify([
             { id: 1, title: 'room 1' },
             { id: 2, title: 'room 2' },
-          ])))
+          ]))
+      ))
 
       let calendar = initCalendar({
         resources: 'my-feed.json',

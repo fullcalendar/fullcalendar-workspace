@@ -33,7 +33,7 @@ describe('Resource::remove', () => {
       if (viewName === 'resourceTimelineDay') {
         return new ResourceTimelineViewWrapper(calendar).timelineGrid.getResourceIds()
       }
-        return new ResourceTimeGridViewWrapper(calendar).timeGrid.getResourceIds()
+      return new ResourceTimeGridViewWrapper(calendar).timeGrid.getResourceIds()
     }
   })
 })

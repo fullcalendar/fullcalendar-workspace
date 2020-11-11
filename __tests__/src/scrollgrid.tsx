@@ -650,7 +650,7 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
                     </tr>
                   </tbody>
                 </table>
-                ),
+              ),
             },
           ],
         },

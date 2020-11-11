@@ -6,10 +6,10 @@ export class ResourceDayTableJoiner extends VResourceJoiner<TableSeg> {
     let colRanges = resourceDayTableModel.computeColRanges(seg.firstCol, seg.lastCol, resourceI)
 
     return colRanges.map((colRange) => ({
-        ...seg,
-        ...colRange,
-        isStart: seg.isStart && colRange.isStart,
-        isEnd: seg.isEnd && colRange.isEnd,
-      }))
+      ...seg,
+      ...colRange,
+      isStart: seg.isStart && colRange.isStart,
+      isEnd: seg.isEnd && colRange.isEnd,
+    }))
   }
 }
