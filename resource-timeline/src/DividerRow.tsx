@@ -33,7 +33,7 @@ export class DividerRow extends BaseComponent<DividerRowProps> {
                 [
                   'fc-timeline-lane',
                   'fc-resource-group',
-                  this.context.theme.getClass('tableCellShaded')
+                  this.context.theme.getClass('tableCellShaded'),
                 ].concat(classNames).join(' ')
               }
             >

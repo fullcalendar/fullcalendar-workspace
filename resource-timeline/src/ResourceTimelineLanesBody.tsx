@@ -65,6 +65,8 @@ export class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLan
               />
             )
           }
+
+          return null
         })}
       </tbody>
     )

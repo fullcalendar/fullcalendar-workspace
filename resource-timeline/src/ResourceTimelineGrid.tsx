@@ -6,7 +6,7 @@ import {
 import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource-common'
 import {
   TimelineDateProfile, TimelineCoords, TimelineSlats,
-  TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg
+  TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg,
 } from '@fullcalendar/timeline'
 import { ResourceTimelineLanes } from './ResourceTimelineLanes'
 
@@ -93,7 +93,8 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
                 businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
                 bgEventSegs={bgSlicedProps.bgEventSegs}
                 timelineCoords={slatCoords}
-                eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs as TimelineLaneSeg[] : []) /* empty array will result in unnecessary rerenders? */}
+                // empty array will result in unnecessary rerenders?
+                eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs as TimelineLaneSeg[] : [])}
                 dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
                 nowDate={nowDate}
                 todayRange={todayRange}

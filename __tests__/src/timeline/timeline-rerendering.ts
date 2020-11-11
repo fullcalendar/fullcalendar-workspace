@@ -176,8 +176,9 @@ describe('timeline view rerendering', () => {
       },
       resources(arg, callback) {
         setTimeout(() => {
+          let id = resourceFetchCnt
           resourceFetchCnt += 1
-          callback(getResources(resourceFetchCnt)) // parameter will affect text
+          callback(getResources(id)) // parameter will affect text
         }, 100)
       },
     })

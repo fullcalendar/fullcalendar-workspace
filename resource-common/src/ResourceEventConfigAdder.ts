@@ -21,6 +21,7 @@ export class ResourceEventConfigAdder implements ViewPropsTransformer {
         ),
       }
     }
+    return null
   }
 }
 

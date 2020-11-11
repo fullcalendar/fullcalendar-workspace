@@ -1,6 +1,6 @@
 import {
   createElement, BaseComponent, CssDimValue, MountHook,
-  buildClassNameNormalizer, memoizeObjArg
+  buildClassNameNormalizer, memoizeObjArg,
 } from '@fullcalendar/common'
 import { Resource, ColSpec } from '@fullcalendar/resource-common'
 import { ExpanderIcon } from './ExpanderIcon'
@@ -41,7 +41,7 @@ export class SpreadsheetIndividualCell extends BaseComponent<SpreadsheetIndividu
             data-resource-id={props.resource.id}
             className={[
               'fc-datagrid-cell',
-              'fc-resource'
+              'fc-resource',
             ].concat(customClassNames).join(' ')}
           >
             <div className="fc-datagrid-cell-frame" style={{ height: props.innerHeight }}>

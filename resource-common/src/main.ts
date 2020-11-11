@@ -59,13 +59,11 @@ export default createPlugin({
 })
 
 export { ResourceDayHeader } from './common/ResourceDayHeader'
-export {
-  VResourceJoiner,
-  AbstractResourceDayTableModel,
-  ResourceDayTableModel,
-  DayResourceTableModel,
-  VResourceSplitter
-} from './common/resource-day-table-model'
+export { AbstractResourceDayTableModel } from './common/AbstractResourceDayTableModel'
+export { ResourceDayTableModel } from './common/ResourceDayTableModel'
+export { DayResourceTableModel } from './common/DayResourceTableModel'
+export { VResourceJoiner } from './common/VResourceJoiner'
+export { VResourceSplitter } from './common/VResourceSplitter'
 export { Resource, ResourceHash, getPublicId } from './structs/resource'
 export { ResourceViewProps } from './View'
 export {
@@ -75,7 +73,7 @@ export {
   GroupNode,
   ResourceNode,
   buildRowNodes,
-  buildResourceFields
+  buildResourceFields,
 } from './common/resource-hierarchy'
 export {
   ColSpec,
@@ -85,7 +83,7 @@ export {
   ColCellMountArg,
   ColHeaderContentArg,
   ColHeaderMountArg,
-  ColHeaderRenderHooks
+  ColHeaderRenderHooks,
 } from './common/resource-spec'
 export { ResourceApi } from './api/ResourceApi'
 export { ResourceSplitter } from './common/ResourceSplitter'

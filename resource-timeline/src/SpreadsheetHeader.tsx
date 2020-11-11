@@ -41,7 +41,7 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
                 ref={rootElRef}
                 className={[
                   'fc-datagrid-cell',
-                  'fc-datagrid-cell-super'
+                  'fc-datagrid-cell-super',
                 ].concat(classNames).join(' ')}
               >
                 <div className="fc-datagrid-cell-frame" style={{ height: rowInnerHeight }}>
@@ -65,7 +65,7 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
           // need empty inner div for abs positioning for resizer
           return (
             <RenderHook
-              key={i}
+              key={i} // eslint-disable-line react/no-array-index-key
               hookProps={hookProps}
               classNames={colSpec.headerClassNames}
               content={colSpec.headerContent}

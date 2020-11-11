@@ -20,4 +20,3 @@ export class ResourceTimelineLaneMisc extends BaseComponent<ResourceTimelineLane
     )
   }
 }
-

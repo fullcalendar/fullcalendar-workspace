@@ -1,6 +1,6 @@
 import {
   Identity, CssDimValue, ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler,
-  identity, parseFieldSpecs
+  identity, parseFieldSpecs,
 } from '@fullcalendar/common'
 
 // public

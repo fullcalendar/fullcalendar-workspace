@@ -37,7 +37,7 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
                 [
                   'fc-datagrid-cell',
                   'fc-resource-group',
-                  context.theme.getClass('tableCellShaded')
+                  context.theme.getClass('tableCellShaded'),
                 ].concat(classNames).join(' ')
               }
             >

@@ -29,10 +29,16 @@ export class ResourceDataAdder implements ViewPropsTransformer {
         resourceEntityExpansions: calendarProps.resourceEntityExpansions,
       }
     }
+    return null
   }
 }
 
-function filterResources(resourceStore: ResourceHash, doFilterResourcesWithEvents: boolean, eventStore: EventStore, activeRange: DateRange): ResourceHash {
+function filterResources(
+  resourceStore: ResourceHash,
+  doFilterResourcesWithEvents: boolean,
+  eventStore: EventStore,
+  activeRange: DateRange,
+): ResourceHash {
   if (doFilterResourcesWithEvents) {
     let instancesInRange = filterEventInstancesInRange(eventStore.instances, activeRange)
     let hasEvents = computeHasEvents(instancesInRange, eventStore.defs)

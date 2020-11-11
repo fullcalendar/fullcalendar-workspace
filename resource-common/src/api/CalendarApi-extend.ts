@@ -5,7 +5,7 @@ import { ResourceInput, parseResource, ResourceHash, Resource } from '../structs
 CalendarApi.prototype.addResource = function ( // eslint-disable-line func-names
   this: CalendarApi,
   input: ResourceInput | ResourceApi,
-  scrollTo = true
+  scrollTo = true,
 ) {
   let currentState = this.getCurrentData()
   let resourceHash: ResourceHash
@@ -46,7 +46,7 @@ CalendarApi.prototype.addResource = function ( // eslint-disable-line func-names
 
 CalendarApi.prototype.getResourceById = function (this: CalendarApi, id: string) { // eslint-disable-line func-names
   id = String(id)
-  let currentState = this.getCurrentData()
+  let currentState = this.getCurrentData() // eslint-disable-line react/no-this-in-sfc
 
   if (currentState.resourceStore) { // guard against calendar with no resource functionality
     let rawResource = currentState.resourceStore[id]

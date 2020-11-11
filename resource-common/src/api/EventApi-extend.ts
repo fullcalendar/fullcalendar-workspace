@@ -9,7 +9,7 @@ EventApi.prototype.getResources = function (this: EventApi): ResourceApi[] { // 
 
 EventApi.prototype.setResources = function ( // eslint-disable-line func-names
   this: EventApi,
-  resources: (string | ResourceApi)[]
+  resources: (string | ResourceApi)[],
 ) {
   let resourceIds = []
 

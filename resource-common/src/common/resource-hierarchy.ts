@@ -122,7 +122,7 @@ function buildHierarchy(
   resourceStore: ResourceHash,
   maxDepth: number,
   groupSpecs: GroupSpec[],
-  orderSpecs: OrderSpec<ResourceApi>[]
+  orderSpecs: OrderSpec<ResourceApi>[],
 ): ParentNode[] {
   let resourceNodes = buildResourceNodes(resourceStore, orderSpecs)
   let builtNodes: ParentNode[] = []
@@ -172,7 +172,7 @@ function insertResourceNode(
   groupSpecs: GroupSpec[],
   depth: number,
   maxDepth: number,
-  orderSpecs: OrderSpec<ResourceApi>[]
+  orderSpecs: OrderSpec<ResourceApi>[],
 ) {
   if (groupSpecs.length && (maxDepth === -1 || depth <= maxDepth)) {
     let groupNode = ensureGroupNodes(resourceNode, nodes, groupSpecs[0])

@@ -1,6 +1,7 @@
 import {
   createElement, createRef, ViewContext, memoize,
-  Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache, ScrollRequest, ScrollResponder, ViewRoot, BaseComponent, ViewOptionsRefined,
+  Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache,
+  ScrollRequest, ScrollResponder, ViewRoot, BaseComponent, ViewOptionsRefined,
 } from '@fullcalendar/common'
 import {
   buildTimelineDateProfile, TimelineHeader,
@@ -8,7 +9,10 @@ import {
   TimelineCoords,
   TimelineDateProfile,
 } from '@fullcalendar/timeline'
-import { GroupNode, ResourceNode, ResourceViewProps, buildRowNodes, ColSpec, GroupSpec, DEFAULT_RESOURCE_ORDER } from '@fullcalendar/resource-common'
+import {
+  GroupNode, ResourceNode, ResourceViewProps, buildRowNodes,
+  ColSpec, GroupSpec, DEFAULT_RESOURCE_ORDER,
+} from '@fullcalendar/resource-common'
 import { __assign } from 'tslib'
 import { SpreadsheetRow } from './SpreadsheetRow'
 import { SpreadsheetGroupRow } from './SpreadsheetGroupRow'
@@ -184,6 +188,8 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
           />
         )
       }
+
+      return null
     })
   }
 
@@ -263,6 +269,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
       return true
     }
+    return null
   }
 
   queryResourceScroll(): ResourceScrollState {
@@ -274,7 +281,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       let scrollTop = layout.getResourceScroll()
       let scroll = {} as any
 
-      for (let i = 0; i < trBottoms.length; i++) {
+      for (let i = 0; i < trBottoms.length; i += 1) {
         let rowNode = renderedRowNodes[i]
         let elBottom = trBottoms[i] - scrollTop // from the top of the scroller
 
@@ -287,6 +294,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
       return scroll
     }
+    return null
   }
 
   // Resource INDIVIDUAL-Column Area Resizing
@@ -306,7 +314,7 @@ ResourceTimelineView.addStateEquality({
 function buildRowIndex(rowNodes: (GroupNode | ResourceNode)[]) {
   let rowIdToIndex: { [id: string]: number } = {}
 
-  for (let i = 0; i < rowNodes.length; i++) {
+  for (let i = 0; i < rowNodes.length; i += 1) {
     rowIdToIndex[rowNodes[i].id] = i
   }
 

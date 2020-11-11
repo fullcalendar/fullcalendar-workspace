@@ -112,7 +112,14 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
   }
 
   // a cell with date text. might have a resource associated with it
-  renderDateCell(date: DateMarker, dateFormat: DateFormatter, todayRange: DateRange, colSpan: number, resource?: Resource, isSticky?: boolean) {
+  renderDateCell(
+    date: DateMarker,
+    dateFormat: DateFormatter,
+    todayRange: DateRange,
+    colSpan: number,
+    resource?: Resource,
+    isSticky?: boolean,
+  ) {
     let { props } = this
     let keyPostfix = resource ? `:${resource.id}` : ''
     let extraHookProps = resource ? { resource: new ResourceApi(this.context, resource) } : {}
