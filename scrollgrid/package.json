@@ -1,12 +1,12 @@
 {
   "name": "@fullcalendar/scrollgrid",
-  "version": "5.3.1",
+  "version": "5.4.0",
   "title": "FullCalendar ScrollGrid Plugin",
   "description": "Tabular data chunked into scrollable panes",
   "docs": "https://fullcalendar.io/docs/scheduler",
   "dependencies": {
-    "@fullcalendar/common": "workspace:~5.3.1",
-    "@fullcalendar/premium-common": "workspace:~5.3.1",
+    "@fullcalendar/common": "workspace:~5.4.0",
+    "@fullcalendar/premium-common": "workspace:~5.4.0",
     "tslib": "^2.0.3"
   },
   "main": "main.cjs.js",
