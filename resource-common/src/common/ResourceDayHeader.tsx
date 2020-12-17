@@ -12,7 +12,7 @@ export interface ResourceDayHeaderProps {
   dateProfile: DateProfile
   datesRepDistinctDays: boolean
   resources: Resource[] // flattened
-  renderIntro?: () => VNode
+  renderIntro?: (rowKey: string) => VNode
 }
 
 export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { // TODO: rename to ResourceDayHeaderTrs?
@@ -105,8 +105,8 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
 
     return (
       <Fragment>
-        {this.buildTr(resourceCells, 'day')}
-        {this.buildTr(dateCells, 'resources')}
+        {this.buildTr(resourceCells, 'resources')}
+        {this.buildTr(dateCells, 'day')}
       </Fragment>
     )
   }
@@ -160,7 +160,7 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
 
     return (
       <tr key={key}>
-        {renderIntro && renderIntro()}
+        {renderIntro && renderIntro(key)}
         {cells}
       </tr>
     )

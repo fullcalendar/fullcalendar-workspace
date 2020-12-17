@@ -44,4 +44,11 @@ export class ResourceDayHeaderWrapper {
   getDowEls(dayAbbrev) {
     return findElements(this.el, `.fc-col-header-cell.fc-day-${dayAbbrev}`)
   }
+
+  getWeekNumberStrings() {
+    return findElements(this.el, 'tr').map((trEl) => {
+      let cushionEl = trEl.querySelector('.fc-timegrid-axis-cushion')
+      return $(cushionEl).text()
+    })
+  }
 }
