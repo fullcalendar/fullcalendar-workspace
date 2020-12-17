@@ -87,6 +87,21 @@ describe('timeline now-indicator', () => {
     }, 500)
   })
 
+  // https://github.com/fullcalendar/fullcalendar/issues/5999
+  it('positions correctly when with month-interval cells', (done) => {
+    initCalendar({
+      initialView: 'timelineYear',
+      slotDuration: { months: 1 },
+      initialDate: '2020-11-28',
+      now: '2020-12-02',
+    })
+
+    setTimeout(() => { // bug happens after position updates
+      nowIndicatorRendersAt('2020-12-01')
+      done()
+    }, 100)
+  })
+
   function nowIndicatorRendersAt(date, thresh = PIXEL_THRESHOLD) {
     // wish threshold could do a smaller default threshold, but RTL messing up
 
