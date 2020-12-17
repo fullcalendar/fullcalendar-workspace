@@ -188,4 +188,26 @@ describe('associating resources with event', () => {
       expect(newResources[1].id).toBe('c')
     })
   })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/5896
+  it('fires loading callback evenly', (done) => {
+    let calls = []
+
+    initCalendar({
+      resources(fetchInfo, callback) {
+        setTimeout(() => callback([]), 500)
+      },
+      events(fetchInfo, callback) {
+        setTimeout(() => callback([]), 500)
+      },
+      loading(isLoading) {
+        calls.push(isLoading)
+      },
+    })
+
+    setTimeout(() => {
+      expect(calls).toEqual([true, false])
+      done()
+    }, 501)
+  })
 })

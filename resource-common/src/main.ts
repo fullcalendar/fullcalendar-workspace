@@ -7,7 +7,7 @@ import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicate
 import './ambient'
 import { ResourceDataAdder, transformIsDraggable } from './View' // TODO: ResourceDataAdder should be own plugin
 import { ResourceEventConfigAdder } from './ResourceEventConfigAdder'
-import { reduceResources } from './reducers/resources'
+import { reduceResources, ResourceState } from './reducers/resources'
 import { generateEventDefResourceMembers, EVENT_REFINERS } from './structs/event-parse'
 import './structs/event-declare'
 import { massageEventDragMutation, applyEventDefMutation, transformEventDrop } from './EventDragging'
@@ -38,7 +38,12 @@ export default createPlugin({
   deps: [
     premiumCommonPlugin,
   ],
-  reducers: [reduceResources],
+  reducers: [
+    reduceResources,
+  ],
+  isLoadingFuncs: [
+    (state: ResourceState) => state.resourceSource && state.resourceSource.isFetching,
+  ],
   eventRefiners: EVENT_REFINERS,
   eventDefMemberAdders: [generateEventDefResourceMembers],
   isDraggableTransformers: [transformIsDraggable],
