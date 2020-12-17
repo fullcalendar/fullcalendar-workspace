@@ -64,6 +64,9 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
   private rowInnerMaxHeightMap = new Map<HTMLTableRowElement, number>()
   private anyRowHeightsChanged = false
 
+  private lastSizingDate: Date
+  private recentSizingCnt = 0
+
   state: ScrollGridState = {
     shrinkWidths: [],
     forceYScrollbars: false,
@@ -261,6 +264,10 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
   }
 
   handleSizing = (isForcedResize: boolean, sectionRowMaxHeightsChanged?: boolean) => {
+    if (!this.allowSizing()) {
+      return
+    }
+
     if (!sectionRowMaxHeightsChanged) { // something else changed, probably external
       this.anyRowHeightsChanged = true
     }
@@ -281,6 +288,21 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
         this.updateStickyScrolling() // needs to happen AFTER final positioning committed to DOM
       }
     })
+  }
+
+  allowSizing() {
+    let now = new Date()
+
+    if (
+      !this.lastSizingDate ||
+      now.valueOf() > this.lastSizingDate.valueOf() + 1000 // beyond a second?
+    ) {
+      this.lastSizingDate = now
+      this.recentSizingCnt = 0
+      return true
+    }
+
+    return (this.recentSizingCnt += 1) <= 10
   }
 
   handleRowHeightChange = (rowEl: HTMLTableRowElement, isStable: boolean) => {
