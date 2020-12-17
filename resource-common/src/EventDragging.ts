@@ -1,4 +1,4 @@
-import { EventMutation, Hit, EventDef, CalendarContext } from '@fullcalendar/common'
+import { EventMutation, Hit, EventDef, CalendarContext, EventDropArg } from '@fullcalendar/common'
 
 export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit, hit1: Hit) {
   let resource0 = hit0.dateSpan.resourceId
@@ -64,7 +64,7 @@ export function computeResourceEditable(eventDef: EventDef, context: CalendarCon
   return resourceEditable
 }
 
-export function transformEventDrop(mutation: EventMutation, context: CalendarContext) {
+export function transformEventDrop(mutation: EventMutation, context: CalendarContext): Partial<EventDropArg> {
   let { resourceMutation } = mutation
 
   if (resourceMutation) {

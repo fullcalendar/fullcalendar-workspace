@@ -33,6 +33,11 @@ declare module '@fullcalendar/common' {
     // TODO: rename these to removeResourceId/addResourceId?
   }
 
+  interface EventDropArg {
+    oldResource?: ResourceApi
+    newResource?: ResourceApi
+  }
+
   interface EventDef {
     resourceIds?: string[]
     resourceEditable?: boolean
