@@ -1,4 +1,4 @@
-import { ResourceTimeGridViewWrapper } from "../lib/wrappers/ResourceTimeGridViewWrapper"
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('timegrid view weekNumbers', () => {
   pushOptions({
@@ -6,9 +6,9 @@ describe('timegrid view weekNumbers', () => {
     initialDate: '2020-12-17',
     weekNumbers: true,
     resources: [
-      { id: 'a', title: 'a '},
+      { id: 'a', title: 'a' },
       { id: 'b', title: 'b' },
-    ]
+    ],
   })
 
   it('only renders in date row when dates ABOVE resources', () => {
