@@ -47,4 +47,42 @@ describe('dayGrid-view event drag-n-drop', () => {
       })
     })
   })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/5593
+  it('can drag from +more link to a different resource', (done) => {
+    let dropSpy
+    let calendar = initCalendar({
+      initialView: 'resourceDayGridMonth',
+      dayMaxEvents: 0,
+      events: [
+        { title: 'event0', start: '2015-11-10', resourceId: 'a' },
+      ],
+      eventDrop:
+        (dropSpy = spyCall((arg) => {
+          let { event } = arg
+          let resources = event.getResources()
+
+          expect(event.start).toEqualDate('2015-11-18')
+          expect(resources.length).toBe(1)
+          expect(resources[0].id).toBe('b')
+        })),
+    })
+
+    let resourceDayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
+    let moreEl = resourceDayGridWrapper.getMoreEl()
+
+    $(moreEl).simulate('click')
+    setTimeout(() => {
+      let eventEl = resourceDayGridWrapper.getMorePopoverEventEls()[0]
+
+      $(eventEl).simulate('drag', {
+        debug: true, // TODO: remove!!!!!!!!!!
+        end: resourceDayGridWrapper.getDayEl('b', '2015-11-18'),
+        callback() {
+          expect(dropSpy).toHaveBeenCalled()
+          done()
+        },
+      })
+    }, 100)
+  })
 })

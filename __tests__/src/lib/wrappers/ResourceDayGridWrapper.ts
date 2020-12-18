@@ -35,6 +35,14 @@ export class ResourceDayGridWrapper {
     return this.base.getRowEls()
   }
 
+  getMoreEl() {
+    return this.base.getMoreEl()
+  }
+
+  getMorePopoverEventEls() {
+    return this.base.getMorePopoverEventEls()
+  }
+
   resizeEvent(eventEl: HTMLElement, origEndInfo, newEndInfo, fromStart?) {
     return new Promise((resolve) => {
       let rect0 = this.getDayEl(origEndInfo.resourceId, origEndInfo.date).getBoundingClientRect()
