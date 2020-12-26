@@ -17,11 +17,11 @@ export class ResourceTimelineGridWrapper {
 
   rightClick(resourceId: string, date) {
     let point = this.getPoint(resourceId, date)
-    
-    if ($(this.el).css("direction") === "ltr") {
-      point.left += 1;
+
+    if ($(this.el).css('direction') === 'ltr') {
+      point.left += 1
     } else {
-      point.left -= 1;
+      point.left -= 1
     }
 
     $.simulateByPoint('contextmenu', {
