@@ -2,7 +2,6 @@ import {
   createElement, ComponentChildren, createRef, Ref, BaseComponent, setRef,
   ScrollerLike,
   Scroller, OverflowValue,
-  getScrollbarWidths,
   getIsRtlScrollbarOnLeft,
   isPropsEqual,
 } from '@fullcalendar/common'
@@ -28,9 +27,9 @@ export class ClippedScroller extends BaseComponent<ClippedScrollerProps, Clipped
   private elRef = createRef<HTMLDivElement>()
   private scroller: Scroller
 
-  state = { // HACK?
-    xScrollbarWidth: getScrollbarWidths().x,
-    yScrollbarWidth: getScrollbarWidths().y,
+  state = {
+    xScrollbarWidth: 0,
+    yScrollbarWidth: 0,
   }
 
   render() {
