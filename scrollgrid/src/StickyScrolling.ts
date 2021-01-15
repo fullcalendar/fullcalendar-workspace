@@ -17,7 +17,7 @@ interface ElementGeom {
   textAlign: string
 }
 
-const IS_MS_EDGE = /Edge/.test(navigator.userAgent) // TODO: what about Chromeum-based Edge?
+const IS_MS_EDGE = typeof navigator !== 'undefined' && /Edge/.test(navigator.userAgent) // TODO: what about Chromeum-based Edge?
 const STICKY_SELECTOR = '.fc-sticky'
 
 /*
