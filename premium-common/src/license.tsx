@@ -24,8 +24,9 @@ const CSS = {
 
 export function buildLicenseWarning(context: CalendarContext) {
   let key = context.options.schedulerLicenseKey
+  let currentUrl = typeof window !== 'undefined' ? window.location.href : ''
 
-  if (!isImmuneUrl(window.location.href)) {
+  if (!isImmuneUrl(currentUrl)) {
     let status = processLicenseKey(key)
 
     if (status !== 'valid') {
