@@ -76,7 +76,6 @@ describe('dayGrid-view event drag-n-drop', () => {
       let eventEl = resourceDayGridWrapper.getMorePopoverEventEls()[0]
 
       $(eventEl).simulate('drag', {
-        debug: true, // TODO: remove!!!!!!!!!!
         end: resourceDayGridWrapper.getDayEl('b', '2015-11-18'),
         callback() {
           expect(dropSpy).toHaveBeenCalled()
