@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/scrollgrid",
-  "version": "5.5.0",
+  "version": "5.5.1",
   "title": "FullCalendar ScrollGrid Plugin",
   "description": "Tabular data chunked into scrollable panes",
   "docs": "https://fullcalendar.io/docs/scheduler",
