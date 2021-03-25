@@ -73,7 +73,14 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
     let slatCoords = state.slatCoords && state.slatCoords.dateProfile === props.dateProfile ? state.slatCoords : null
 
     return (
-      <div ref={this.handleEl} className="fc-timeline-body" style={{ minWidth: props.tableMinWidth }}>
+      <div
+        ref={this.handleEl}
+        className={[
+          'fc-timeline-body',
+          props.expandRows ? 'fc-timeline-body-expandrows' : ''
+        ].join(' ')}
+        style={{ minWidth: props.tableMinWidth }}
+      >
         <NowTimer unit={timerUnit}>
           {(nowDate: DateMarker, todayRange: DateRange) => (
             <Fragment>

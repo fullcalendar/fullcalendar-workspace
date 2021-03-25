@@ -27,3 +27,13 @@
   }
 
 }
+
+// hack to make bg expand to lane's full height in resource-timeline with expandRows (#6134)
+.fc-timeline-body-expandrows {
+  & td.fc-timeline-lane {
+    position: relative;
+  }
+  & .fc-timeline-lane-frame {
+    position: static;
+  }
+}

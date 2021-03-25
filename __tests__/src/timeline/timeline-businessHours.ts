@@ -69,6 +69,36 @@ describe('timeline businessHours', () => {
       expectResourceOverride(viewWrapper)
     })
 
+    it('renders full height with resource override and expandRow', () => {
+      let calendar = initCalendar({
+        initialView: 'resourceTimelineDay',
+        expandRows: true,
+        resources: [
+          { id: 'a', title: 'a' },
+          { id: 'b', title: 'b', businessHours: { startTime: '02:00', endTime: '22:00' } },
+          { id: 'c', title: 'c' },
+        ],
+        businessHours: true,
+      })
+      let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
+      let laneEls = timelineGrid.getResourceLaneEls()
+      let totalLaneHeight = 0 // for calculating ave height
+
+      for (let laneEl of laneEls) {
+        totalLaneHeight += laneEl.getBoundingClientRect().height
+      }
+
+      let aveLaneHeight = totalLaneHeight / laneEls.length
+      let nonBusinessEls = timelineGrid.getNonBusinessDayEls()
+
+      for (let nonBusinessEl of nonBusinessEls) {
+        expect(Math.abs(
+          nonBusinessEl.getBoundingClientRect().height -
+          aveLaneHeight
+        )).toBeLessThan(3)
+      }
+    })
+
     it('renders dynamically with resource override', (done) => {
       let specialResourceInput = {
         id: 'b',
