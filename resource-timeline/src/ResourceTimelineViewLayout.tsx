@@ -4,6 +4,7 @@ import {
   renderScrollShim,
   getStickyHeaderDates,
   getStickyFooterScrollbar,
+  config,
 } from '@fullcalendar/common'
 import { ScrollGrid } from '@fullcalendar/scrollgrid'
 
@@ -31,6 +32,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
   private spreadsheetHeaderChunkElRef = createRef<HTMLTableCellElement>()
   private spreadsheetResizerDragging: ElementDragging
   private rootElRef = createRef<HTMLElement>()
+  private ensureScrollGridResizeId: number = 0
 
   state = {
     resourceAreaWidthOverride: null,
@@ -188,9 +190,10 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
         newWidth = Math.max(newWidth, MIN_RESOURCE_AREA_WIDTH)
         newWidth = Math.min(newWidth, viewWidth - MIN_RESOURCE_AREA_WIDTH)
 
-        this.setState({ // TODO: debounce?
+        // scrollgrid will ignore resize requests if there are too many :|
+        this.setState({
           resourceAreaWidthOverride: newWidth,
-        })
+        }, this.ensureScrollGridResize)
       })
 
       dragging.setAutoScrollEnabled(false) // because gets weird with auto-scrolling time area
@@ -201,5 +204,17 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
     if (this.spreadsheetResizerDragging) {
       this.spreadsheetResizerDragging.destroy()
     }
+  }
+
+  /*
+  ghetto debounce. don't race with ScrollGrid's resizing delay. solves #6140
+  */
+  ensureScrollGridResize = () => {
+    if (this.ensureScrollGridResizeId) {
+      clearTimeout(this.ensureScrollGridResizeId)
+    }
+    this.ensureScrollGridResizeId = setTimeout(() => {
+      this.scrollGridRef.current.handleSizing(false)
+    }, config.SCROLLGRID_RESIZE_INTERVAL + 1)
   }
 }

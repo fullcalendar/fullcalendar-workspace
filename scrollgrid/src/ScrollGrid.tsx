@@ -20,6 +20,7 @@ import {
   memoizeHashlike,
   ScrollGridChunkConfig,
   getCanVGrowWithinCell,
+  config,
 } from '@fullcalendar/common'
 import { StickyScrolling } from './StickyScrolling'
 import { ClippedScroller, ClippedOverflowValue } from './ClippedScroller'
@@ -299,7 +300,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
 
     if (
       !this.lastSizingDate ||
-      now.valueOf() > this.lastSizingDate.valueOf() + 1000 // beyond a second?
+      now.valueOf() > this.lastSizingDate.valueOf() + config.SCROLLGRID_RESIZE_INTERVAL
     ) {
       this.lastSizingDate = now
       this.recentSizingCnt = 0
