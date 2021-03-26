@@ -4,6 +4,7 @@ import {
   flushToDom,
   CalendarContext,
   removeExact,
+  config
 } from '@fullcalendar/common'
 
 import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
@@ -11,6 +12,8 @@ import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable
 import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
 
 import './main.css'
+
+config.COLLAPSIBLE_WIDTH_THRESHOLD = 1200
 
 let contexts: CalendarContext[] = []
 let undoFuncs: (() => void)[] = []
@@ -93,7 +96,12 @@ function freezeScrollgridWidths() {
 }
 
 function freezeScrollGridWidth(el: HTMLElement) {
-  el.style.width = el.getBoundingClientRect().width + 'px'
+  let elWidth = el.getBoundingClientRect().width
+
+  // along with collapsibleWidth, this is a hack for #5707
+  if (!el.classList.contains('fc-scrollgrid-collapsible') || elWidth < config.COLLAPSIBLE_WIDTH_THRESHOLD) {
+    el.style.width = elWidth + 'px'
+  }
 }
 
 function unfreezeScrollGridWidth(el) {

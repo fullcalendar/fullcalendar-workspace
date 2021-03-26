@@ -43,7 +43,11 @@ interface ColGroupStat {
   cols: ColProps[]
 }
 
-export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> { // TODO: make <ScrollGridSection> subcomponent
+/*
+TODO: make <ScrollGridSection> subcomponent
+NOTE: doesn't support collapsibleWidth (which is sortof a hack anyway)
+*/
+export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> {
   private compileColGroupStats = memoizeArraylike(compileColGroupStat, isColGroupStatsEqual)
   private renderMicroColGroups = memoizeArraylike(renderMicroColGroup) // yucky to memoize VNodes, but much more efficient for consumers
   private clippedScrollerRefs = new RefMap<ClippedScroller>()

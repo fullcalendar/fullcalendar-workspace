@@ -105,6 +105,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
             <ScrollGrid
               ref={this.scrollGridRef}
               liquid={!props.isHeightAuto && !props.forPrint}
+              collapsibleWidth={false}
               colGroups={[
                 { cols: slatCols },
               ]}
