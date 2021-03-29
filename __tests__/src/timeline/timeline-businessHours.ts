@@ -94,7 +94,7 @@ describe('timeline businessHours', () => {
       for (let nonBusinessEl of nonBusinessEls) {
         expect(Math.abs(
           nonBusinessEl.getBoundingClientRect().height -
-          aveLaneHeight
+          aveLaneHeight,
         )).toBeLessThan(3)
       }
     })

@@ -4,7 +4,7 @@ import {
   flushToDom,
   CalendarContext,
   removeExact,
-  config
+  config,
 } from '@fullcalendar/common'
 
 import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates

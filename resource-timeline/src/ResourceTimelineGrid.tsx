@@ -77,7 +77,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
         ref={this.handleEl}
         className={[
           'fc-timeline-body',
-          props.expandRows ? 'fc-timeline-body-expandrows' : ''
+          props.expandRows ? 'fc-timeline-body-expandrows' : '',
         ].join(' ')}
         style={{ minWidth: props.tableMinWidth }}
       >
