@@ -1,83 +1,76 @@
-import { sortEventSegs, OrderSpec, EventApi } from '@fullcalendar/common'
+import { SegInput, SegHierarchy } from '@fullcalendar/common'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
-export function computeSegHorizontals(segs: TimelineLaneSeg[], timelineCoords?: TimelineCoords) {
-  let horizontals: { [instanceId: string]: { left: number, right: number } } = {}
-
-  if (timelineCoords) {
-    for (let seg of segs) {
-      let instanceId = seg.eventRange.instance.instanceId
-      horizontals[instanceId] = timelineCoords.rangeToCoords(seg) // seg has { start, end }
-    }
-  }
-
-  return horizontals
-}
-
-export interface TimelineSegDims { // the natural dimensions queried from the DOM
+export interface TimelineSegPlacement {
+  seg: TimelineLaneSeg
+  isVisible: boolean
   left: number
   right: number
-  height: number
-}
-
-interface Placement {
-  key: string
-  dims: TimelineSegDims
   top: number
 }
 
-export function computeSegVerticals(
+export function computeFgSegPlacements(
   segs: TimelineLaneSeg[],
-  eventOrderSpecs: OrderSpec<EventApi>[],
-  dimHash: { [key: string]: TimelineSegDims } | null,
-) {
-  let placements: Placement[] = [] // sorted by top
-  let maxBottom = 0
+  timelineCoords: TimelineCoords | null,
+  eventInstanceHeights: { [instanceId: string]: number }
+): [TimelineSegPlacement[], number] { // [placements, totalHeight]
+  let segInputs: SegInput[] = []
+  let crudePlacements: TimelineSegPlacement[] = [] // when we don't know height
 
-  if (dimHash) { // protection for if dims not computed yet
-    segs = sortEventSegs(segs, eventOrderSpecs) as TimelineLaneSeg[]
+  if (timelineCoords) {
+    for (let i = 0; i < segs.length; i++) {
+      let seg = segs[i]
+      let instanceId = seg.eventRange.instance.instanceId
+      let height = eventInstanceHeights[instanceId]
+      let horizontalCoords = timelineCoords.rangeToCoords(seg)
 
-    for (let seg of segs) {
-      let key = seg.eventRange.instance.instanceId
-      let dims = dimHash[key]
-
-      if (dims) { // MORE-link protection
-        let top = 0
-        let insertI = 0 // where to start searching for an insert position
-
-        for (let i = 0; i < placements.length; i += 1) { // loop through existing placements
-          let placement = placements[i]
-
-          if (testCollide(dims, top, placement.dims, placement.top)) {
-            top = placement.top + placement.dims.height
-            insertI = i
-          }
-        }
-
-        // move insertI along to be after the placement whos top is below the current top
-        while (insertI < placements.length && top >= placements[insertI].top) {
-          insertI += 1
-        }
-
-        placements.splice(insertI, 0, { key, dims, top }) // insert
-        maxBottom = Math.max(maxBottom, top + dims.height)
+      if (height != null) {
+        segInputs.push({
+          index: i,
+          spanStart: horizontalCoords.left,
+          spanEnd: horizontalCoords.right,
+          thickness: height
+        })
+      } else {
+        crudePlacements.push({
+          seg,
+          isVisible: false,
+          left: horizontalCoords.left,
+          right: horizontalCoords.right,
+          top: 0
+        })
       }
     }
   }
 
-  let topHash: { [key: string]: number } = {}
+  let hierarchy = new SegHierarchy()
+  let hiddenEntries = hierarchy.addSegs(segInputs)
+  let hiddenPlacements = hiddenEntries.map((entry) => ({
+    seg: segs[entry.segInput.index],
+    isVisible: false,
+    left: entry.spanStart,
+    right: entry.spanEnd,
+    top: 0
+  } as TimelineSegPlacement))
 
-  for (let placement of placements) {
-    topHash[placement.key] = placement.top
+  let visibleRects = hierarchy.toRects()
+  let visiblePlacements: TimelineSegPlacement[] = []
+  let maxHeight = 0
+
+  for (let rect of visibleRects) {
+    visiblePlacements.push({
+      seg: segs[rect.segInput.index],
+      isVisible: true,
+      left: rect.spanStart,
+      right: rect.spanEnd,
+      top: rect.levelCoord
+    })
+    maxHeight = Math.max(maxHeight, rect.levelCoord + rect.levelCoord)
   }
 
-  return { segTops: topHash, height: maxBottom }
-}
-
-function testCollide(dims0: TimelineSegDims, top0: number, dims1: TimelineSegDims, top1: number) { // TODO: use geom utils?
-  return dims0.right > dims1.left &&
-    dims0.left < dims1.right &&
-    top0 + dims0.height > top1 &&
-    top0 < top1 + dims1.height
+  return [
+    visiblePlacements.concat(crudePlacements, hiddenPlacements),
+    maxHeight
+  ]
 }

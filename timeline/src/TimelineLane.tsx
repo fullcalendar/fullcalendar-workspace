@@ -1,13 +1,13 @@
 import {
   Duration, EventStore, EventUiHash, DateSpan, EventInteractionState,
-  BaseComponent, createElement, memoize, Fragment, RefMap, mapHash, createRef, getSegMeta, DateMarker, DateRange, DateProfile,
+  BaseComponent, createElement, memoize, Fragment, RefMap, mapHash, createRef, getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs,
 } from '@fullcalendar/common'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneBg } from './TimelineLaneBg'
 import { TimelineLaneSlicer, TimelineLaneSeg } from './TimelineLaneSlicer'
 import { TimelineEvent } from './TimelineEvent'
-import { computeSegHorizontals, computeSegVerticals, TimelineSegDims } from './event-placement'
+import { computeFgSegPlacements, TimelineSegPlacement } from './event-placement'
 
 export interface TimelineLaneProps extends TimelineLaneCoreProps {
   onHeightChange?: (innerEl: HTMLElement, isStable: boolean) => void
@@ -26,22 +26,22 @@ export interface TimelineLaneCoreProps {
   eventSelection: string
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
-  timelineCoords?: TimelineCoords // TODO: do null instead of undefined? .. SLAT coords
+  timelineCoords: TimelineCoords | null // TODO: renamt to SLAT coords?
 }
 
 interface TimelineLaneState {
-  segDims: { [instanceId: string]: TimelineSegDims } | null
+  eventInstanceHeights: { [instanceId: string]: number }
 }
 
 export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneState> {
   private slicer = new TimelineLaneSlicer()
-  private computeFgSegHorizontals = memoize(computeSegHorizontals) // only for fg event segs, not mirror
-  private computeSegVerticals = memoize(computeSegVerticals)
+  private sortEventSegs = memoize(sortEventSegs)
+  private computeFgSegPlacements = memoize(computeFgSegPlacements)
   private harnessElRefs = new RefMap<HTMLDivElement>()
   private innerElRef = createRef<HTMLDivElement>()
 
-  state = {
-    segDims: null,
+  state: TimelineLaneState = {
+    eventInstanceHeights: {}
   }
 
   render() {
@@ -60,14 +60,14 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
     )
 
     let mirrorSegs =
-      (slicedProps.eventDrag ? slicedProps.eventDrag.segs : null) ||
-      (slicedProps.eventResize ? slicedProps.eventResize.segs : null) ||
+      (slicedProps.eventDrag ? slicedProps.eventDrag.segs as TimelineLaneSeg[] : null) ||
+      (slicedProps.eventResize ? slicedProps.eventResize.segs as TimelineLaneSeg[] : null) ||
       []
 
-    let segHorizontals = this.computeFgSegHorizontals(slicedProps.fgEventSegs, props.timelineCoords) // ONLY for non-mirror. needed?
-    let { segTops, height } = this.computeSegVerticals(slicedProps.fgEventSegs, context.options.eventOrder, state.segDims)
+    let fgSegs = this.sortEventSegs(slicedProps.fgEventSegs, context.options.eventOrder) as TimelineLaneSeg[]
+    let [fgPlacements, fgHeight] = this.computeFgSegPlacements(fgSegs, props.timelineCoords, state.eventInstanceHeights)
 
-    let hiddenSegs = // TODO: more convenient
+    let isForcedInvisible = // TODO: more convenient
       (slicedProps.eventDrag ? slicedProps.eventDrag.affectedInstances : null) ||
       (slicedProps.eventResize ? slicedProps.eventResize.affectedInstances : null) ||
       {}
@@ -86,21 +86,14 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         <div
           className="fc-timeline-events fc-scrollgrid-sync-inner"
           ref={this.innerElRef}
-          style={{ height /* computed by computeSegVerticals */ }}
+          style={{ height: fgHeight }}
         >
           {this.renderFgSegs(
-            slicedProps.fgEventSegs,
-            segHorizontals,
-            segTops,
-            hiddenSegs,
-            false,
-            false,
-            false,
+            fgPlacements,
+            isForcedInvisible
           )}
           {this.renderFgSegs(
-            mirrorSegs as TimelineLaneSeg[],
-            computeSegHorizontals(mirrorSegs as TimelineLaneSeg[], props.timelineCoords), // not memoized
-            segTops, // reuse same tops for mirror
+            buildMirrorPlacements(mirrorSegs, props.timelineCoords, fgPlacements),
             {},
             Boolean(slicedProps.eventDrag),
             Boolean(slicedProps.eventResize),
@@ -119,7 +112,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
     if (
       prevProps.eventStore !== this.props.eventStore ||
       prevProps.timelineCoords !== this.props.timelineCoords
-      // won't trigger on a segDims change
+      // won't trigger on a eventInstanceHeights change
     ) {
       this.updateSize()
     }
@@ -134,18 +127,10 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
     }
 
     if (timelineCoords) {
-      let originRect = timelineCoords.slatRootEl.getBoundingClientRect()
-
       this.setState({
-        segDims: mapHash(this.harnessElRefs.currentMap, (harnessEl) => {
-          let harnessRect = harnessEl.getBoundingClientRect()
-
-          return {
-            left: Math.round(harnessRect.left - originRect.left),
-            right: Math.round(harnessRect.right - originRect.left),
-            height: Math.round(harnessRect.height),
-          }
-        }),
+        eventInstanceHeights: mapHash(this.harnessElRefs.currentMap, (harnessEl) => (
+          harnessEl.getBoundingClientRect().height
+        )),
       }, () => {
         if (props.onHeightChange) {
           props.onHeightChange(this.innerElRef.current, true)
@@ -154,16 +139,22 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
     }
   }
 
-  renderFgSegs(segs: TimelineLaneSeg[], segHorizontals, segTops, hiddenSegs, isDragging, isResizing, isDateSelecting) {
+  renderFgSegs(
+    segPlacements: TimelineSegPlacement[],
+    isForcedInvisible: { [instanceId: string]: any },
+    isDragging?: boolean,
+    isResizing?: boolean,
+    isDateSelecting?: boolean
+  ) {
     let { harnessElRefs, props } = this
     let isMirror = isDragging || isResizing || isDateSelecting
 
     return (
       <Fragment>
-        {segs.map((seg) => {
+        {segPlacements.map((segPlacement) => {
+          let { seg } = segPlacement
           let instanceId = seg.eventRange.instance.instanceId
-          let horizontalCoords = segHorizontals[instanceId]
-          let top = segTops[instanceId]
+          let isVisible = segPlacement.isVisible && !isForcedInvisible[instanceId]
 
           return (
             <div
@@ -171,10 +162,10 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
               ref={isMirror ? null : harnessElRefs.createRef(instanceId)}
               className="fc-timeline-event-harness"
               style={{
-                left: horizontalCoords ? horizontalCoords.left : '',
-                right: horizontalCoords ? -horizontalCoords.right : '', // outwards from right edge (which is same as left edge)
-                top: top != null ? top : '',
-                visibility: hiddenSegs[instanceId] ? 'hidden' : ('' as any /* wtf, file @types/react bug */),
+                left: segPlacement.left,
+                right: -segPlacement.right,
+                top: segPlacement.top,
+                visibility: isVisible ? ('' as any) : 'hidden',
               }}
             >
               <TimelineEvent
@@ -192,4 +183,35 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       </Fragment>
     )
   }
+}
+
+function buildMirrorPlacements(
+  mirrorSegs: TimelineLaneSeg[],
+  timelineCoords: TimelineCoords | null,
+  fgPlacements: TimelineSegPlacement[]
+): TimelineSegPlacement[] {
+  if (!mirrorSegs.length || !timelineCoords) {
+    return []
+  }
+  let topsByInstanceId = buildAbsoluteTopHash(fgPlacements) // TODO: cache this at first render?
+  return mirrorSegs.map((seg) => {
+    let horizontalCoords = timelineCoords.rangeToCoords(seg)
+    return {
+      seg,
+      isVisible: true,
+      left: horizontalCoords.left,
+      right: horizontalCoords.right,
+      top: topsByInstanceId[seg.eventRange.instance.instanceId]
+    }
+  })
+}
+
+function buildAbsoluteTopHash(placements: TimelineSegPlacement[]) {
+  let topsByInstanceId: { [instanceId: string]: number } = {}
+
+  for (let placement of placements) {
+    topsByInstanceId[placement.seg.eventRange.instance.instanceId] = placement.top
+  }
+
+  return topsByInstanceId
 }
