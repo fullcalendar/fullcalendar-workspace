@@ -30,7 +30,7 @@ export interface TimelineLaneCoreProps {
 }
 
 interface TimelineLaneState {
-  eventInstanceHeights: { [instanceId: string]: number }
+  eventInstanceHeights: { [instanceId: string]: number } // integers
 }
 
 export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneState> {
@@ -129,7 +129,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
     if (timelineCoords) {
       this.setState({
         eventInstanceHeights: mapHash(this.harnessElRefs.currentMap, (harnessEl) => (
-          harnessEl.getBoundingClientRect().height
+          Math.round(harnessEl.getBoundingClientRect().height)
         )),
       }, () => {
         if (props.onHeightChange) {

@@ -24,22 +24,13 @@ export function computeFgSegPlacements(
       let instanceId = seg.eventRange.instance.instanceId
       let height = eventInstanceHeights[instanceId]
       let horizontalCoords = timelineCoords.rangeToCoords(seg)
+      let left = Math.round(horizontalCoords.left) // for barely-overlapping collisions
+      let right = Math.round(horizontalCoords.right) //
 
       if (height != null) {
-        segInputs.push({
-          index: i,
-          spanStart: horizontalCoords.left,
-          spanEnd: horizontalCoords.right,
-          thickness: height
-        })
+        segInputs.push({ index: i, spanStart: left, spanEnd: right, thickness: height })
       } else {
-        crudePlacements.push({
-          seg,
-          isVisible: false,
-          left: horizontalCoords.left,
-          right: horizontalCoords.right,
-          top: 0
-        })
+        crudePlacements.push({ seg, isVisible: false, left, right, top: 0 })
       }
     }
   }
