@@ -1,6 +1,7 @@
 import {
   Duration, EventStore, EventUiHash, DateSpan, EventInteractionState,
-  BaseComponent, createElement, memoize, Fragment, RefMap, mapHash, createRef, getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs,
+  BaseComponent, createElement, memoize, Fragment, RefMap, mapHash, createRef,
+  getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs,
 } from '@fullcalendar/common'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { TimelineCoords } from './TimelineCoords'
@@ -41,7 +42,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
   private innerElRef = createRef<HTMLDivElement>()
 
   state: TimelineLaneState = {
-    eventInstanceHeights: {}
+    eventInstanceHeights: {},
   }
 
   render() {
@@ -90,7 +91,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         >
           {this.renderFgSegs(
             fgPlacements,
-            isForcedInvisible
+            isForcedInvisible,
           )}
           {this.renderFgSegs(
             buildMirrorPlacements(mirrorSegs, props.timelineCoords, fgPlacements),
@@ -144,7 +145,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
     isForcedInvisible: { [instanceId: string]: any },
     isDragging?: boolean,
     isResizing?: boolean,
-    isDateSelecting?: boolean
+    isDateSelecting?: boolean,
   ) {
     let { harnessElRefs, props } = this
     let isMirror = isDragging || isResizing || isDateSelecting
@@ -188,7 +189,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
 function buildMirrorPlacements(
   mirrorSegs: TimelineLaneSeg[],
   timelineCoords: TimelineCoords | null,
-  fgPlacements: TimelineSegPlacement[]
+  fgPlacements: TimelineSegPlacement[],
 ): TimelineSegPlacement[] {
   if (!mirrorSegs.length || !timelineCoords) {
     return []
@@ -201,7 +202,7 @@ function buildMirrorPlacements(
       isVisible: true,
       left: horizontalCoords.left,
       right: horizontalCoords.right,
-      top: topsByInstanceId[seg.eventRange.instance.instanceId]
+      top: topsByInstanceId[seg.eventRange.instance.instanceId],
     }
   })
 }

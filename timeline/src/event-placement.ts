@@ -13,13 +13,13 @@ export interface TimelineSegPlacement {
 export function computeFgSegPlacements(
   segs: TimelineLaneSeg[],
   timelineCoords: TimelineCoords | null,
-  eventInstanceHeights: { [instanceId: string]: number }
+  eventInstanceHeights: { [instanceId: string]: number },
 ): [TimelineSegPlacement[], number] { // [placements, totalHeight]
   let segInputs: SegInput[] = []
   let crudePlacements: TimelineSegPlacement[] = [] // when we don't know height
 
   if (timelineCoords) {
-    for (let i = 0; i < segs.length; i++) {
+    for (let i = 0; i < segs.length; i += 1) {
       let seg = segs[i]
       let instanceId = seg.eventRange.instance.instanceId
       let height = eventInstanceHeights[instanceId]
@@ -42,7 +42,7 @@ export function computeFgSegPlacements(
     isVisible: false,
     left: entry.spanStart,
     right: entry.spanEnd,
-    top: 0
+    top: 0,
   } as TimelineSegPlacement))
 
   let visibleRects = hierarchy.toRects()
@@ -55,13 +55,13 @@ export function computeFgSegPlacements(
       isVisible: true,
       left: rect.spanStart,
       right: rect.spanEnd,
-      top: rect.levelCoord
+      top: rect.levelCoord,
     })
     maxHeight = Math.max(maxHeight, rect.levelCoord + rect.levelCoord)
   }
 
   return [
     visiblePlacements.concat(crudePlacements, hiddenPlacements),
-    maxHeight
+    maxHeight,
   ]
 }
