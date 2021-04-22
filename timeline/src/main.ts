@@ -4,6 +4,9 @@ import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable
 // ensure ambient declarations
 import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
 
+import { OPTION_REFINERS } from './options'
+import './options-declare'
+
 import { TimelineView } from './TimelineView'
 import './main.css'
 
@@ -23,6 +26,7 @@ export default createPlugin({
     premiumCommonPlugin,
   ],
   initialView: 'timelineDay',
+  optionRefiners: OPTION_REFINERS,
   views: {
 
     timeline: {

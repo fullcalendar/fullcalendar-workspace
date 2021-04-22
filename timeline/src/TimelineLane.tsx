@@ -170,7 +170,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
               }}
             >
               <TimelineEvent
-                isTimeScale={this.props.tDateProfile.isTimeScale}
+                isTimeScale={props.tDateProfile.isTimeScale}
                 seg={seg}
                 isDragging={isDragging}
                 isResizing={isResizing}
