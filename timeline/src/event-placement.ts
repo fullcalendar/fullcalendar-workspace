@@ -1,9 +1,9 @@
-import { SegInput, SegHierarchy, groupIntersectingEntries } from '@fullcalendar/common'
+import { SegInput, SegHierarchy, groupIntersectingEntries, SegEntry } from '@fullcalendar/common'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
 export interface TimelineSegPlacement {
-  seg: TimelineLaneSeg
+  seg: TimelineLaneSeg | TimelineLaneSeg[] // HACK: if array, then it's a more-link group
   isVisible: boolean
   left: number
   right: number
@@ -14,7 +14,8 @@ export function computeFgSegPlacements(
   segs: TimelineLaneSeg[],
   timelineCoords: TimelineCoords | null,
   eventInstanceHeights: { [instanceId: string]: number },
-  maxStackCnt?: number
+  moreLinkHeights: { [segPlacementLeft: string]: number },
+  maxStackCnt?: number,
 ): [TimelineSegPlacement[], number] { // [placements, totalHeight]
   let segInputs: SegInput[] = []
   let crudePlacements: TimelineSegPlacement[] = [] // when we don't know height
@@ -29,9 +30,20 @@ export function computeFgSegPlacements(
       let right = Math.round(horizontalCoords.right) //
 
       if (height != null) {
-        segInputs.push({ index: i, spanStart: left, spanEnd: right, thickness: height })
+        segInputs.push({
+          index: i,
+          spanStart: left,
+          spanEnd: right,
+          thickness: height
+        })
       } else {
-        crudePlacements.push({ seg, isVisible: false, left, right, top: 0 })
+        crudePlacements.push({
+          seg,
+          isVisible: false,
+          left,
+          right,
+          top: 0
+        })
       }
     }
   }
@@ -49,19 +61,49 @@ export function computeFgSegPlacements(
     right: entry.spanEnd,
     top: 0,
   } as TimelineSegPlacement))
-  let hiddenGroups = groupIntersectingEntries(hiddenEntries)
 
-  if (hiddenGroups.length) {
-    console.log('hiddenGroups', hiddenGroups)
+  let hiddenGroups = groupIntersectingEntries(hiddenEntries)
+  let moreLinkInputs: SegInput[] = []
+  let moreLinkCrudePlacements: TimelineSegPlacement[] = []
+  const extractSeg = (entry: SegEntry) => segs[entry.segInput.index]
+
+  for (let i = 0; i < hiddenGroups.length; i++) {
+    let hiddenGroup = hiddenGroups[i]
+    let height = moreLinkHeights[hiddenGroup.spanStart]
+
+    if (height != null) {
+      // NOTE: the hiddenGroup's spanStart/spanEnd are already computed by rangeToCoords. computed during input.
+      moreLinkInputs.push({
+        index: segs.length + i, // out-of-bounds indexes map to hiddenGroups
+        spanStart: hiddenGroup.spanStart,
+        spanEnd: hiddenGroup.spanEnd,
+        thickness: height
+      })
+    } else {
+      moreLinkCrudePlacements.push({
+        seg: hiddenGroup.entries.map(extractSeg), // a Seg array signals a more-link
+        isVisible: false,
+        left: hiddenGroup.spanStart,
+        right: hiddenGroup.spanEnd,
+        top: 0,
+      })
+    }
   }
+
+  // add more-links into the hierarchy, but don't limit
+  hierarchy.maxStackCnt = -1
+  hierarchy.addSegs(moreLinkInputs)
 
   let visibleRects = hierarchy.toRects()
   let visiblePlacements: TimelineSegPlacement[] = []
   let maxHeight = 0
 
   for (let rect of visibleRects) {
+    let segIndex = rect.segInput.index
     visiblePlacements.push({
-      seg: segs[rect.segInput.index],
+      seg: segIndex < segs.length
+        ? segs[segIndex] // a real seg
+        : hiddenGroups[segIndex - segs.length].entries.map(extractSeg), // signals a more-link
       isVisible: true,
       left: rect.spanStart,
       right: rect.spanEnd,
@@ -71,7 +113,7 @@ export function computeFgSegPlacements(
   }
 
   return [
-    visiblePlacements.concat(crudePlacements, hiddenPlacements),
+    visiblePlacements.concat(crudePlacements, hiddenPlacements, moreLinkCrudePlacements),
     maxHeight,
   ]
 }

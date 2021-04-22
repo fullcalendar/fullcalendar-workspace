@@ -9,7 +9,8 @@
   }
 
   // harness
-  & .fc-timeline-event-harness {
+  & .fc-timeline-event-harness,
+  & .fc-timeline-event-more {
     position: absolute;
     top: 0; // for when when top can't be computed yet
     // JS will set tht left/right
@@ -94,4 +95,14 @@
 .fc-direction-ltr .fc-timeline-event:not(.fc-event-end):after,
 .fc-direction-rtl .fc-timeline-event:not(.fc-event-start):before {
   border-right: 0;
+}
+
+// +more events indicator
+// ----------------------------------------------------------------------------------------------------
+
+.fc-timeline-event-more {
+  background: #ccc; // TODO: variable?
+  font-size: var(--fc-small-font-size);
+  padding: 2px 4px;
+  cursor: pointer;
 }
