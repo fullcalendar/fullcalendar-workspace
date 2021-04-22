@@ -57,7 +57,7 @@ export function computeFgSegPlacements(
       right: rect.spanEnd,
       top: rect.levelCoord,
     })
-    maxHeight = Math.max(maxHeight, rect.levelCoord + rect.levelCoord)
+    maxHeight = Math.max(maxHeight, rect.levelCoord + rect.thickness)
   }
 
   return [
