@@ -34,7 +34,7 @@ export function computeFgSegPlacements(
           index: i,
           spanStart: left,
           spanEnd: right,
-          thickness: height
+          thickness: height,
         })
       } else {
         crudePlacements.push({
@@ -42,7 +42,7 @@ export function computeFgSegPlacements(
           isVisible: false,
           left,
           right,
-          top: 0
+          top: 0,
         })
       }
     }
@@ -67,7 +67,7 @@ export function computeFgSegPlacements(
   let moreLinkCrudePlacements: TimelineSegPlacement[] = []
   const extractSeg = (entry: SegEntry) => segs[entry.segInput.index]
 
-  for (let i = 0; i < hiddenGroups.length; i++) {
+  for (let i = 0; i < hiddenGroups.length; i += 1) {
     let hiddenGroup = hiddenGroups[i]
     let height = moreLinkHeights[hiddenGroup.spanStart]
 
@@ -77,7 +77,7 @@ export function computeFgSegPlacements(
         index: segs.length + i, // out-of-bounds indexes map to hiddenGroups
         spanStart: hiddenGroup.spanStart,
         spanEnd: hiddenGroup.spanEnd,
-        thickness: height
+        thickness: height,
       })
     } else {
       moreLinkCrudePlacements.push({

@@ -143,7 +143,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         )),
         moreLinkHeights: mapHash(this.moreElRefs.currentMap, (moreEl) => (
           Math.round(moreEl.getBoundingClientRect().height)
-        ))
+        )),
       }, () => {
         if (props.onHeightChange) {
           props.onHeightChange(this.innerElRef.current, true)
@@ -178,7 +178,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
                   'fc-timeline-event-more',
                   isTimeScale
                     ? 'fc-timeline-event-more-block'
-                    : 'fc-timeline-event-more-simple'
+                    : 'fc-timeline-event-more-simple',
                 ].join(' ')}
                 style={{
                   left: segPlacement.left,
@@ -187,38 +187,37 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
                   visibility: segPlacement.isVisible ? ('' as any) : 'hidden',
                 }}
               >
-                +{seg.length} events
-              </div>
-            )
-
-          } else {
-            let instanceId = seg.eventRange.instance.instanceId
-            let isVisible = segPlacement.isVisible && !isForcedInvisible[instanceId]
-
-            return (
-              <div
-                key={'e:' + instanceId /* "e" for "event" */}
-                ref={isMirror ? null : harnessElRefs.createRef(instanceId)}
-                className="fc-timeline-event-harness"
-                style={{
-                  left: segPlacement.left,
-                  right: -segPlacement.right,
-                  top: segPlacement.top,
-                  visibility: isVisible ? ('' as any) : 'hidden',
-                }}
-              >
-                <TimelineEvent
-                  isTimeScale={props.tDateProfile.isTimeScale}
-                  seg={seg}
-                  isDragging={isDragging}
-                  isResizing={isResizing}
-                  isDateSelecting={isDateSelecting}
-                  isSelected={instanceId === this.props.eventSelection /* TODO: bad for mirror? */}
-                  {...getSegMeta(seg, props.todayRange, props.nowDate)}
-                />
+                {'+' + seg.length + 'events'}
               </div>
             )
           }
+
+          let instanceId = seg.eventRange.instance.instanceId
+          let isVisible = segPlacement.isVisible && !isForcedInvisible[instanceId]
+
+          return (
+            <div
+              key={'e:' + instanceId /* "e" for "event" */}
+              ref={isMirror ? null : harnessElRefs.createRef(instanceId)}
+              className="fc-timeline-event-harness"
+              style={{
+                left: segPlacement.left,
+                right: -segPlacement.right,
+                top: segPlacement.top,
+                visibility: isVisible ? ('' as any) : 'hidden',
+              }}
+            >
+              <TimelineEvent
+                isTimeScale={props.tDateProfile.isTimeScale}
+                seg={seg}
+                isDragging={isDragging}
+                isResizing={isResizing}
+                isDateSelecting={isDateSelecting}
+                isSelected={instanceId === this.props.eventSelection /* TODO: bad for mirror? */}
+                {...getSegMeta(seg, props.todayRange, props.nowDate)}
+              />
+            </div>
+          )
         })}
       </Fragment>
     )
@@ -227,7 +226,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
 
 TimelineLane.addStateEquality({
   eventInstanceHeights: isPropsEqual,
-  moreLinkHeights: isPropsEqual
+  moreLinkHeights: isPropsEqual,
 })
 
 function buildMirrorPlacements(
