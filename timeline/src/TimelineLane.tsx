@@ -66,7 +66,12 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       []
 
     let fgSegs = this.sortEventSegs(slicedProps.fgEventSegs, context.options.eventOrder) as TimelineLaneSeg[]
-    let [fgPlacements, fgHeight] = this.computeFgSegPlacements(fgSegs, props.timelineCoords, state.eventInstanceHeights)
+    let [fgPlacements, fgHeight] = this.computeFgSegPlacements(
+      fgSegs,
+      props.timelineCoords,
+      state.eventInstanceHeights,
+      context.options.timelineEventMaxStack
+    )
 
     let isForcedInvisible = // TODO: more convenient
       (slicedProps.eventDrag ? slicedProps.eventDrag.affectedInstances : null) ||

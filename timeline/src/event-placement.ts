@@ -1,4 +1,4 @@
-import { SegInput, SegHierarchy } from '@fullcalendar/common'
+import { SegInput, SegHierarchy, groupIntersectingEntries } from '@fullcalendar/common'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
@@ -14,6 +14,7 @@ export function computeFgSegPlacements(
   segs: TimelineLaneSeg[],
   timelineCoords: TimelineCoords | null,
   eventInstanceHeights: { [instanceId: string]: number },
+  maxStackCnt?: number
 ): [TimelineSegPlacement[], number] { // [placements, totalHeight]
   let segInputs: SegInput[] = []
   let crudePlacements: TimelineSegPlacement[] = [] // when we don't know height
@@ -36,6 +37,10 @@ export function computeFgSegPlacements(
   }
 
   let hierarchy = new SegHierarchy()
+  if (maxStackCnt != null) {
+    hierarchy.maxStackCnt = maxStackCnt
+  }
+
   let hiddenEntries = hierarchy.addSegs(segInputs)
   let hiddenPlacements = hiddenEntries.map((entry) => ({
     seg: segs[entry.segInput.index],
@@ -44,6 +49,11 @@ export function computeFgSegPlacements(
     right: entry.spanEnd,
     top: 0,
   } as TimelineSegPlacement))
+  let hiddenGroups = groupIntersectingEntries(hiddenEntries)
+
+  if (hiddenGroups.length) {
+    console.log('hiddenGroups', hiddenGroups)
+  }
 
   let visibleRects = hierarchy.toRects()
   let visiblePlacements: TimelineSegPlacement[] = []
