@@ -160,6 +160,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
     isDateSelecting?: boolean,
   ) {
     let { harnessElRefs, moreElRefs, props } = this
+    let { isTimeScale } = props.tDateProfile
     let isMirror = isDragging || isResizing || isDateSelecting
 
     return (
@@ -170,9 +171,15 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           if (Array.isArray(seg)) { // a more-link
             return (
               <div
-                key={'m:' + segPlacement.left /* "e" for "more" */}
+                key={'m:' + segPlacement.left /* "m" for "more" */}
                 ref={isMirror ? null : moreElRefs.createRef(segPlacement.left)}
-                className='fc-timeline-event-more fc-event-more'
+                className={[
+                  'fc-event-more',
+                  'fc-timeline-event-more',
+                  isTimeScale
+                    ? 'fc-timeline-event-more-block'
+                    : 'fc-timeline-event-more-simple'
+                ].join(' ')}
                 style={{
                   left: segPlacement.left,
                   right: -segPlacement.right,

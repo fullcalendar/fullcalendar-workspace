@@ -101,8 +101,11 @@
 // ----------------------------------------------------------------------------------------------------
 
 .fc-timeline-event-more {
-  background: #ccc; // TODO: variable?
   font-size: var(--fc-small-font-size);
   padding: 2px 4px;
   cursor: pointer;
+}
+
+.fc-timeline-event-more-block {
+  background: #ccc; // TODO: variable?
 }
