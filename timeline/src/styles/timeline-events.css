@@ -115,7 +115,7 @@
   color: var(--fc-event-more-text-color);
   background: var(--fc-event-more-bg-color);
   padding: 1px;
-  cursor: pointer; // will always be an <a> tag?
+  cursor: pointer;
 }
 
 .fc-timeline-event-more-inner { // has fc-sticky
