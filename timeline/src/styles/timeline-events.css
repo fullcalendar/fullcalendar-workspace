@@ -54,8 +54,18 @@
 }
 
 // move 1px away from slot line
-.fc-direction-ltr .fc-timeline-event.fc-event-end { margin-right: 1px }
-.fc-direction-rtl .fc-timeline-event.fc-event-end { margin-left: 1px }
+.fc-direction-ltr {
+  & .fc-timeline-event.fc-event-end,
+  & .fc-timeline-event-more {
+    margin-right: 1px;
+  }
+}
+.fc-direction-rtl {
+  & .fc-timeline-event.fc-event-end,
+  & .fc-timeline-event-more {
+    margin-left: 1px;
+  }
+}
 
 // make event beefier when overlap not allowed
 .fc-timeline-overlap-disabled .fc-timeline-event {
@@ -102,10 +112,15 @@
 
 .fc-timeline-event-more {
   font-size: var(--fc-small-font-size);
-  padding: 2px 4px;
-  cursor: pointer;
+  color: var(--fc-event-more-text-color);
+  background: var(--fc-event-more-bg-color);
+  padding: 1px;
+  cursor: pointer; // will always be an <a> tag?
 }
 
-.fc-timeline-event-more-block {
-  background: #ccc; // TODO: variable?
+.fc-timeline-event-more-inner { // has fc-sticky
+  display: inline-block;
+  left: 0;
+  right: 0;
+  padding: 2px;
 }
