@@ -1,13 +1,14 @@
 import {
   Duration, EventStore, EventUiHash, DateSpan, EventInteractionState,
   BaseComponent, createElement, memoize, Fragment, RefMap, mapHash, createRef,
-  getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs, isPropsEqual, MoreLinkRoot, setRef,
+  getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs, isPropsEqual,
 } from '@fullcalendar/common'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneBg } from './TimelineLaneBg'
 import { TimelineLaneSlicer, TimelineLaneSeg } from './TimelineLaneSlicer'
 import { TimelineEvent } from './TimelineEvent'
+import { TimelineLaneMoreLink } from './TimelineLaneMoreLink'
 import { computeFgSegPlacements, TimelineSegPlacement } from './event-placement'
 
 export interface TimelineLaneProps extends TimelineLaneCoreProps {
@@ -169,29 +170,12 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
 
           if (Array.isArray(seg)) { // a more-link
             return (
-              <MoreLinkRoot moreCnt={seg.length}>
-                {(rootElRef, classNames, innerElRef, innerContent) => (
-                  <a
-                    key={'m:' + segPlacement.left /* "m" for "more" */}
-                    ref={(el: HTMLElement | null) => { // bad to give new anon function each time
-                      setRef(rootElRef, el)
-                      setRef(moreElRefs.createRef(segPlacement.left), el)
-                    }}
-                    className={['fc-timeline-event-more'].concat(classNames).join(' ')}
-                    style={{
-                      left: segPlacement.left,
-                      right: -segPlacement.right,
-                      top: segPlacement.top,
-                      visibility: segPlacement.isVisible ? ('' as any) : 'hidden',
-                    }}
-                    onClick={this.handleMoreLinkClick}
-                  >
-                    <div ref={innerElRef} className='fc-timeline-event-more-inner fc-sticky'>
-                      {innerContent}
-                    </div>
-                  </a>
-                )}
-              </MoreLinkRoot>
+              <TimelineLaneMoreLink
+                key={'m:' + segPlacement.left /* "m" for "more" */}
+                elRef={moreElRefs.createRef(segPlacement.left)}
+                segPlacement={segPlacement}
+                segs={seg}
+              />
             )
           }
 
@@ -224,10 +208,6 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         })}
       </Fragment>
     )
-  }
-
-  handleMoreLinkClick = () => {
-    console.log('handleMoreClick')
   }
 }
 
