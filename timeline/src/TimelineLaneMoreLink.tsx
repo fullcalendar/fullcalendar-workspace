@@ -1,24 +1,26 @@
 import {
-  createElement, BaseComponent, Ref, createRef, MoreLinkRoot, ViewContext,
-  buildPublicSeg, EventSegment, setRef, memoize,
+  createElement, BaseComponent, Ref, createRef, MoreLinkRoot, setRef,
 } from '@fullcalendar/common'
 import { TimelineSegPlacement } from './event-placement'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
 export interface TimelineLaneMoreLinkProps {
   elRef: Ref<HTMLElement>
-  segPlacement: TimelineSegPlacement
-  segs: TimelineLaneSeg[]
+  hiddenSegs: TimelineLaneSeg[]
+  placement: TimelineSegPlacement
 }
 
 export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProps> {
   rootElRef = createRef<HTMLElement>()
-  buildPublicSegs = memoize(buildPublicSegs)
 
-  render({ elRef, segPlacement, segs }: TimelineLaneMoreLinkProps) {
-    let hiddenSegs = this.buildPublicSegs(segs, this.context)
+  render({ elRef, placement, hiddenSegs }: TimelineLaneMoreLinkProps) {
     return (
-      <MoreLinkRoot allSegs={hiddenSegs} hiddenSegs={hiddenSegs} positionElRef={this.rootElRef}>
+      <MoreLinkRoot
+        allDayDate={null}
+        allSegs={hiddenSegs}
+        hiddenSegs={hiddenSegs}
+        positionElRef={this.rootElRef}
+      >
         {(rootElRef, classNames, innerElRef, innerContent, handleClick) => (
           <a
             ref={(el: HTMLElement | null) => {
@@ -28,10 +30,10 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
             }}
             className={['fc-timeline-event-more'].concat(classNames).join(' ')}
             style={{
-              left: segPlacement.left,
-              right: -segPlacement.right,
-              top: segPlacement.top,
-              visibility: segPlacement.isVisible ? ('' as any) : 'hidden',
+              left: placement.left,
+              right: -placement.right,
+              top: placement.top,
+              visibility: placement.isVisible ? ('' as any) : 'hidden',
             }}
             onClick={handleClick}
           >
@@ -43,8 +45,4 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
       </MoreLinkRoot>
     )
   }
-}
-
-function buildPublicSegs(segs: TimelineLaneSeg[], context: ViewContext): EventSegment[] {
-  return segs.map((seg) => buildPublicSeg(seg, context))
 }

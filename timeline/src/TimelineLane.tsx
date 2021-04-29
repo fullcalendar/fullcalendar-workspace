@@ -173,8 +173,8 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
               <TimelineLaneMoreLink
                 key={'m:' + segPlacement.left /* "m" for "more" */}
                 elRef={moreElRefs.createRef(segPlacement.left)}
-                segPlacement={segPlacement}
-                segs={seg}
+                hiddenSegs={seg}
+                placement={segPlacement}
               />
             )
           }
