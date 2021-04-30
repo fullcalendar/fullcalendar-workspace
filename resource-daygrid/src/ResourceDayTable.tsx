@@ -31,8 +31,6 @@ export interface ResourceDayTableProps {
 }
 
 export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
-  allowAcrossResources = false
-
   private splitter = new VResourceSplitter()
   private slicers: { [resourceId: string]: DayTableSlicer } = {}
   private joiner = new ResourceDayTableJoiner()
@@ -43,9 +41,7 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
     let { resourceDayTableModel, nextDayThreshold, dateProfile } = props
 
     let splitProps = this.splitter.splitProps(props)
-
     this.slicers = mapHash(splitProps, (split, resourceId) => this.slicers[resourceId] || new DayTableSlicer())
-
     let slicedProps = mapHash(this.slicers, (slicer, resourceId) => slicer.sliceProps(
       splitProps[resourceId],
       dateProfile,
@@ -53,8 +49,6 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
       context,
       resourceDayTableModel.dayTableModel,
     ))
-
-    this.allowAcrossResources = resourceDayTableModel.dayTableModel.colCnt === 1 // hack for EventResizing
 
     return (
       <Table
@@ -80,7 +74,13 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
 
   handleRootEl = (rootEl: HTMLElement | null) => {
     if (rootEl) {
-      this.context.registerInteractiveComponent(this, { el: rootEl })
+      this.context.registerInteractiveComponent(this, {
+        el: rootEl,
+        isHitComboAllowed: (hit0: Hit, hit1: Hit) => {
+          let allowAcrossResources = this.props.resourceDayTableModel.dayTableModel.colCnt === 1
+          return allowAcrossResources || hit0.dateSpan.resourceId === hit1.dateSpan.resourceId
+        }
+      })
     } else {
       this.context.unregisterInteractiveComponent(this)
     }
@@ -95,7 +95,7 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
 
     if (rawHit) {
       return {
-        component: this,
+        dateProfile: this.props.dateProfile,
         dateSpan: {
           range: rawHit.dateSpan.range,
           allDay: rawHit.dateSpan.allDay,

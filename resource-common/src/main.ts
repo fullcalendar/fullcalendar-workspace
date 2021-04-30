@@ -16,7 +16,6 @@ import { transformDatePoint, transformDateSpan } from './api/CalendarApi-extend'
 import './api/CalendarApi-declare'
 import { isPropsValidWithResources } from './validation'
 import { transformExternalDef } from './ExternalElementDragging'
-import { transformEventResizeJoin } from './EventResizing'
 import './api/EventApi-extend'
 import './api/EventApi-declare'
 import { optionChangeHandlers } from './option-change-handlers'
@@ -55,7 +54,6 @@ export default createPlugin({
   viewPropsTransformers: [ResourceDataAdder, ResourceEventConfigAdder],
   isPropsValid: isPropsValidWithResources,
   externalDefTransforms: [transformExternalDef],
-  eventResizeJoinTransforms: [transformEventResizeJoin],
   eventDropTransformers: [transformEventDrop],
   optionChangeHandlers,
   optionRefiners: OPTION_REFINERS,

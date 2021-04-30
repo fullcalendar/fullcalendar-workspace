@@ -121,7 +121,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
 
     if (slatHit) {
       return {
-        component: this,
+        dateProfile: this.props.dateProfile,
         dateSpan: slatHit.dateSpan,
         rect: {
           left: slatHit.left,

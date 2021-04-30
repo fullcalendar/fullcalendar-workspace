@@ -183,7 +183,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
 
         if (slatHit) {
           return {
-            component: this,
+            dateProfile: this.props.dateProfile,
             dateSpan: {
               range: slatHit.dateSpan.range,
               allDay: slatHit.dateSpan.allDay,

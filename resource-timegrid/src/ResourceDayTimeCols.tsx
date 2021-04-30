@@ -31,8 +31,6 @@ export interface ResourceDayTimeColsProps {
 }
 
 export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps> {
-  allowAcrossResources = false
-
   private buildDayRanges = memoize(buildDayRanges)
   private dayRanges: DateRange[] // for now indicator
   private splitter = new VResourceSplitter()
@@ -49,7 +47,6 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
     let splitProps = this.splitter.splitProps(props)
 
     this.slicers = mapHash(splitProps, (split, resourceId) => this.slicers[resourceId] || new DayTimeColsSlicer())
-
     let slicedProps = mapHash(this.slicers, (slicer, resourceId) => slicer.sliceProps(
       splitProps[resourceId],
       dateProfile,
@@ -57,8 +54,6 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
       context,
       dayRanges,
     ))
-
-    this.allowAcrossResources = dayRanges.length === 1
 
     return ( // TODO: would move this further down hierarchy, but sliceNowDate needs it
       <NowTimer unit={options.nowIndicator ? 'minute' : 'day'}>
@@ -91,7 +86,13 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
 
   handleRootEl = (rootEl: HTMLElement | null) => {
     if (rootEl) {
-      this.context.registerInteractiveComponent(this, { el: rootEl })
+      this.context.registerInteractiveComponent(this, {
+        el: rootEl,
+        isHitComboAllowed: (hit0: Hit, hit1: Hit) => {
+          let allowAcrossResources = this.dayRanges.length === 1
+          return allowAcrossResources || hit0.dateSpan.resourceId === hit1.dateSpan.resourceId
+        }
+      })
     } else {
       this.context.unregisterInteractiveComponent(this)
     }
@@ -107,7 +108,7 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
 
     if (rawHit) {
       return {
-        component: this,
+        dateProfile: this.props.dateProfile,
         dateSpan: {
           range: rawHit.dateSpan.range,
           allDay: rawHit.dateSpan.allDay,
