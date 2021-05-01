@@ -60,7 +60,6 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
         {(nowDate: DateMarker, todayRange: DateRange) => (
           <TimeCols
             ref={this.timeColsRef}
-            rootElRef={this.handleRootEl}
             {...this.joiner.joinProps(slicedProps, resourceDayTableModel)}
             dateProfile={dateProfile}
             axis={props.axis}
@@ -78,53 +77,20 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
             onScrollTopRequest={props.onScrollTopRequest}
             forPrint={props.forPrint}
             onSlatCoords={props.onSlatCoords}
+            isHitComboAllowed={this.isHitComboAllowed}
           />
         )}
       </NowTimer>
     )
   }
 
-  handleRootEl = (rootEl: HTMLElement | null) => {
-    if (rootEl) {
-      this.context.registerInteractiveComponent(this, {
-        el: rootEl,
-        isHitComboAllowed: (hit0: Hit, hit1: Hit) => {
-          let allowAcrossResources = this.dayRanges.length === 1
-          return allowAcrossResources || hit0.dateSpan.resourceId === hit1.dateSpan.resourceId
-        }
-      })
-    } else {
-      this.context.unregisterInteractiveComponent(this)
-    }
+  isHitComboAllowed = (hit0: Hit, hit1: Hit) => {
+    let allowAcrossResources = this.dayRanges.length === 1
+    return allowAcrossResources || hit0.dateSpan.resourceId === hit1.dateSpan.resourceId
   }
 
   buildNowIndicatorSegs(date: DateMarker) {
     let nonResourceSegs = this.slicers[''].sliceNowDate(date, this.context, this.dayRanges)
     return this.joiner.expandSegs(this.props.resourceDayTableModel, nonResourceSegs)
-  }
-
-  queryHit(positionLeft: number, positionTop: number): Hit {
-    let rawHit = this.timeColsRef.current.positionToHit(positionLeft, positionTop)
-
-    if (rawHit) {
-      return {
-        dateProfile: this.props.dateProfile,
-        dateSpan: {
-          range: rawHit.dateSpan.range,
-          allDay: rawHit.dateSpan.allDay,
-          resourceId: this.props.resourceDayTableModel.cells[0][rawHit.col].resource.id,
-        },
-        dayEl: rawHit.dayEl,
-        rect: {
-          left: rawHit.relativeRect.left,
-          right: rawHit.relativeRect.right,
-          top: rawHit.relativeRect.top,
-          bottom: rawHit.relativeRect.bottom,
-        },
-        layer: 0,
-      }
-    }
-
-    return null
   }
 }

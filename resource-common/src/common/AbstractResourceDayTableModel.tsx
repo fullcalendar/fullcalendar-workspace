@@ -4,12 +4,8 @@ import { Resource } from '../structs/resource'
 import { ResourceApi } from '../api/ResourceApi'
 import { ResourceIndex } from './ResourceIndex'
 
-export interface ResourceDayTableCell extends DayTableCell {
-  resource: Resource
-}
-
 export abstract class AbstractResourceDayTableModel {
-  cells: ResourceDayTableCell[][]
+  cells: DayTableCell[][]
   rowCnt: number
   colCnt: number
   resourceIndex: ResourceIndex
@@ -33,12 +29,12 @@ export abstract class AbstractResourceDayTableModel {
     isEnd: boolean
   }[]
 
-  buildCells(): ResourceDayTableCell[][] {
+  buildCells(): DayTableCell[][] {
     let { rowCnt, dayTableModel, resources } = this
-    let rows: ResourceDayTableCell[][] = []
+    let rows: DayTableCell[][] = []
 
     for (let row = 0; row < rowCnt; row += 1) {
-      let rowCells: ResourceDayTableCell[] = []
+      let rowCells: DayTableCell[] = []
 
       for (let dateCol = 0; dateCol < dayTableModel.colCnt; dateCol += 1) {
         for (let resourceCol = 0; resourceCol < resources.length; resourceCol += 1) {
@@ -46,6 +42,7 @@ export abstract class AbstractResourceDayTableModel {
           let extraHookProps = { resource: new ResourceApi(this.context, resource) }
           let extraDataAttrs = { 'data-resource-id': resource.id }
           let extraClassNames = ['fc-resource']
+          let extraDateSpan = { resourceId: resource.id }
           let date = dayTableModel.cells[row][dateCol].date
 
           rowCells[
@@ -53,10 +50,10 @@ export abstract class AbstractResourceDayTableModel {
           ] = {
             key: resource.id + ':' + date.toISOString(),
             date,
-            resource,
             extraHookProps,
             extraDataAttrs,
             extraClassNames,
+            extraDateSpan,
           }
         }
       }

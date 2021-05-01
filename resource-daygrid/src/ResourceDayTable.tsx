@@ -54,7 +54,6 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
       <Table
         forPrint={props.forPrint}
         ref={this.tableRef}
-        elRef={this.handleRootEl}
         {...this.joiner.joinProps(slicedProps, resourceDayTableModel)}
         cells={resourceDayTableModel.cells}
         dateProfile={dateProfile}
@@ -68,50 +67,13 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
         headerAlignElRef={props.headerAlignElRef}
         clientWidth={props.clientWidth}
         clientHeight={props.clientHeight}
+        isHitComboAllowed={this.isHitComboAllowed}
       />
     )
   }
 
-  handleRootEl = (rootEl: HTMLElement | null) => {
-    if (rootEl) {
-      this.context.registerInteractiveComponent(this, {
-        el: rootEl,
-        isHitComboAllowed: (hit0: Hit, hit1: Hit) => {
-          let allowAcrossResources = this.props.resourceDayTableModel.dayTableModel.colCnt === 1
-          return allowAcrossResources || hit0.dateSpan.resourceId === hit1.dateSpan.resourceId
-        }
-      })
-    } else {
-      this.context.unregisterInteractiveComponent(this)
-    }
-  }
-
-  prepareHits() {
-    this.tableRef.current.prepareHits()
-  }
-
-  queryHit(positionLeft: number, positionTop: number): Hit {
-    let rawHit = this.tableRef.current.positionToHit(positionLeft, positionTop)
-
-    if (rawHit) {
-      return {
-        dateProfile: this.props.dateProfile,
-        dateSpan: {
-          range: rawHit.dateSpan.range,
-          allDay: rawHit.dateSpan.allDay,
-          resourceId: this.props.resourceDayTableModel.cells[rawHit.row][rawHit.col].resource.id,
-        },
-        dayEl: rawHit.dayEl,
-        rect: {
-          left: rawHit.relativeRect.left,
-          right: rawHit.relativeRect.right,
-          top: rawHit.relativeRect.top,
-          bottom: rawHit.relativeRect.bottom,
-        },
-        layer: 0,
-      }
-    }
-
-    return null
+  isHitComboAllowed = (hit0: Hit, hit1: Hit) => {
+    let allowAcrossResources = this.props.resourceDayTableModel.dayTableModel.colCnt === 1
+    return allowAcrossResources || hit0.dateSpan.resourceId === hit1.dateSpan.resourceId
   }
 }
