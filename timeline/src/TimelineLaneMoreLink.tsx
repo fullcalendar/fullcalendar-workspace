@@ -1,5 +1,5 @@
 import {
-  createElement, BaseComponent, Ref, createRef, MoreLinkRoot, setRef,
+  createElement, BaseComponent, Ref, createRef, MoreLinkRoot, setRef, DateProfile, DateRange,
 } from '@fullcalendar/common'
 import { TimelineSegPlacement } from './event-placement'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
@@ -8,18 +8,24 @@ export interface TimelineLaneMoreLinkProps {
   elRef: Ref<HTMLElement>
   hiddenSegs: TimelineLaneSeg[]
   placement: TimelineSegPlacement
+  dateProfile: DateProfile
+  todayRange: DateRange
 }
 
 export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProps> {
   rootElRef = createRef<HTMLElement>()
 
-  render({ elRef, placement, hiddenSegs }: TimelineLaneMoreLinkProps) {
+  render(props: TimelineLaneMoreLinkProps) {
+    let { elRef, placement } = props
+
     return (
       <MoreLinkRoot
         allDayDate={null}
-        allSegs={hiddenSegs}
-        hiddenSegs={hiddenSegs}
-        positionElRef={this.rootElRef}
+        allSegs={props.hiddenSegs}
+        hiddenSegs={props.hiddenSegs}
+        alignmentElRef={this.rootElRef}
+        dateProfile={props.dateProfile}
+        todayRange={props.todayRange}
       >
         {(rootElRef, classNames, innerElRef, innerContent, handleClick) => (
           <a

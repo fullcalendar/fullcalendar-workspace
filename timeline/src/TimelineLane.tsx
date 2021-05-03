@@ -175,6 +175,8 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
                 elRef={moreElRefs.createRef(segPlacement.left)}
                 hiddenSegs={seg}
                 placement={segPlacement}
+                dateProfile={props.dateProfile}
+                todayRange={props.todayRange}
               />
             )
           }
