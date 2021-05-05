@@ -1,5 +1,6 @@
 import {
-  createElement, BaseComponent, Ref, createRef, MoreLinkRoot, setRef, DateProfile, DateRange, DateMarker, Fragment, getSegMeta,
+  createElement, BaseComponent, Ref, createRef, MoreLinkRoot,
+  setRef, DateProfile, DateRange, DateMarker, Fragment, getSegMeta,
 } from '@fullcalendar/common'
 import { TimelineSegPlacement } from './event-placement'
 import { TimelineEvent } from './TimelineEvent'
@@ -74,7 +75,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
             }}
             onClick={handleClick}
           >
-            <div ref={innerElRef} className='fc-timeline-event-more-inner fc-sticky'>
+            <div ref={innerElRef} className="fc-timeline-event-more-inner fc-sticky">
               {innerContent}
             </div>
           </a>
