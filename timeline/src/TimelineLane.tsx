@@ -170,11 +170,11 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           let { seg } = segPlacement
 
           if (Array.isArray(seg)) { // a more-link
-            let moreLinkUid = buildIsoString(seg[0].start)
+            let isoStr = buildIsoString(seg[0].start)
             return (
               <TimelineLaneMoreLink
-                key={'m:' + moreLinkUid /* "m" for "more" */}
-                elRef={moreElRefs.createRef(moreLinkUid)}
+                key={'m:' + isoStr /* "m" for "more" */}
+                elRef={moreElRefs.createRef(isoStr)}
                 hiddenSegs={seg}
                 placement={segPlacement}
                 dateProfile={props.dateProfile}
@@ -183,6 +183,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
                 isTimeScale={props.tDateProfile.isTimeScale}
                 eventSelection={props.eventSelection}
                 resourceId={props.resourceId}
+                isForcedInvisible={isForcedInvisible}
               />
             )
           }

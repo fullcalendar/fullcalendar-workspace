@@ -15,6 +15,7 @@ export interface TimelineLaneMoreLinkProps {
   isTimeScale: boolean
   eventSelection: string
   resourceId?: string
+  isForcedInvisible: { [instanceId: string]: any }
 }
 
 export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProps> {
@@ -35,17 +36,25 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
         extraDateSpan={extraDateSpan}
         popoverContent={() => (
           <Fragment>
-            {props.hiddenSegs.map((seg) => (
-              <TimelineEvent
-                isTimeScale={props.isTimeScale}
-                seg={seg}
-                isDragging={false}
-                isResizing={false}
-                isDateSelecting={false}
-                isSelected={seg.eventRange.instance.instanceId === props.eventSelection}
-                {...getSegMeta(seg, props.todayRange, props.nowDate)}
-              />
-            ))}
+            {props.hiddenSegs.map((seg) => {
+              let instanceId = seg.eventRange.instance.instanceId
+              return (
+                <div
+                  key={instanceId}
+                  style={{ visibility: props.isForcedInvisible[instanceId] ? 'hidden' : ('' as any) }}
+                >
+                  <TimelineEvent
+                    isTimeScale={props.isTimeScale}
+                    seg={seg}
+                    isDragging={false}
+                    isResizing={false}
+                    isDateSelecting={false}
+                    isSelected={instanceId === props.eventSelection}
+                    {...getSegMeta(seg, props.todayRange, props.nowDate)}
+                  />
+                </div>
+              )
+            })}
           </Fragment>
         )}
       >
