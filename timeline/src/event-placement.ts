@@ -81,7 +81,7 @@ export function computeFgSegPlacements(
       })
     } else {
       moreLinkCrudePlacements.push({
-        seg: hiddenGroup.entries.map(extractSeg), // a Seg array signals a more-link
+        seg: hiddenGroup.entries.map(extractSeg).sort(cmpSegs), // a Seg array signals a more-link
         isVisible: false,
         left: hiddenGroup.spanStart,
         right: hiddenGroup.spanEnd,
@@ -103,7 +103,7 @@ export function computeFgSegPlacements(
     visiblePlacements.push({
       seg: segIndex < segs.length
         ? segs[segIndex] // a real seg
-        : hiddenGroups[segIndex - segs.length].entries.map(extractSeg), // signals a more-link
+        : hiddenGroups[segIndex - segs.length].entries.map(extractSeg).sort(cmpSegs), // signals a more-link
       isVisible: true,
       left: rect.spanStart,
       right: rect.spanEnd,
@@ -116,4 +116,8 @@ export function computeFgSegPlacements(
     visiblePlacements.concat(crudePlacements, hiddenPlacements, moreLinkCrudePlacements),
     maxHeight,
   ]
+}
+
+function cmpSegs(seg0: TimelineLaneSeg, seg1: TimelineLaneSeg) {
+  return seg0.start.valueOf() - seg1.start.valueOf()
 }
