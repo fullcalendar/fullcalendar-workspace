@@ -14,13 +14,15 @@ export interface TimelineLaneMoreLinkProps {
   todayRange: DateRange
   isTimeScale: boolean
   eventSelection: string
+  resourceId?: string
 }
 
 export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProps> {
   rootElRef = createRef<HTMLElement>()
 
   render(props: TimelineLaneMoreLinkProps) {
-    let { elRef, placement } = props
+    let { elRef, placement, resourceId } = props
+    let extraDateSpan = resourceId ? { resourceId } : {}
 
     return (
       <MoreLinkRoot
@@ -30,6 +32,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
         alignmentElRef={this.rootElRef}
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
+        extraDateSpan={extraDateSpan}
         popoverContent={() => (
           <Fragment>
             {props.hiddenSegs.map((seg) => (

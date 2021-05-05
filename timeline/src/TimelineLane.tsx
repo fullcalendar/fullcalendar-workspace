@@ -29,6 +29,7 @@ export interface TimelineLaneCoreProps {
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
   timelineCoords: TimelineCoords | null // TODO: renamt to SLAT coords?
+  resourceId?: string // hack
 }
 
 interface TimelineLaneState {
@@ -181,6 +182,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
                 todayRange={props.todayRange}
                 isTimeScale={props.tDateProfile.isTimeScale}
                 eventSelection={props.eventSelection}
+                resourceId={props.resourceId}
               />
             )
           }
