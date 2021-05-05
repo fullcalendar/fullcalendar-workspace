@@ -1,4 +1,4 @@
-import { SegInput, SegHierarchy, groupIntersectingEntries, SegEntry } from '@fullcalendar/common'
+import { SegInput, SegHierarchy, groupIntersectingEntries, SegEntry, buildIsoString } from '@fullcalendar/common'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
@@ -14,7 +14,7 @@ export function computeFgSegPlacements(
   segs: TimelineLaneSeg[],
   timelineCoords: TimelineCoords | null,
   eventInstanceHeights: { [instanceId: string]: number },
-  moreLinkHeights: { [segPlacementLeft: string]: number },
+  moreLinkHeights: { [isoStr: string]: number },
   maxStackCnt?: number,
 ): [TimelineSegPlacement[], number] { // [placements, totalHeight]
   let segInputs: SegInput[] = []
@@ -69,7 +69,8 @@ export function computeFgSegPlacements(
 
   for (let i = 0; i < hiddenGroups.length; i += 1) {
     let hiddenGroup = hiddenGroups[i]
-    let height = moreLinkHeights[hiddenGroup.spanStart]
+    let sortedSegs = hiddenGroup.entries.map(extractSeg).sort(cmpSegs)
+    let height = moreLinkHeights[buildIsoString(sortedSegs[0].start)]
 
     if (height != null) {
       // NOTE: the hiddenGroup's spanStart/spanEnd are already computed by rangeToCoords. computed during input.
@@ -81,7 +82,7 @@ export function computeFgSegPlacements(
       })
     } else {
       moreLinkCrudePlacements.push({
-        seg: hiddenGroup.entries.map(extractSeg).sort(cmpSegs), // a Seg array signals a more-link
+        seg: sortedSegs, // a Seg array signals a more-link
         isVisible: false,
         left: hiddenGroup.spanStart,
         right: hiddenGroup.spanEnd,

@@ -33,7 +33,7 @@ export interface TimelineLaneCoreProps {
 
 interface TimelineLaneState {
   eventInstanceHeights: { [instanceId: string]: number } // integers
-  moreLinkHeights: { [segPlacementLeft: string]: number } // integers
+  moreLinkHeights: { [isoStr: string]: number } // integers
 }
 
 export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneState> {
