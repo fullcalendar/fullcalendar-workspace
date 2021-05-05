@@ -22,7 +22,8 @@ export interface TimelineLaneMoreLinkProps {
 export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProps> {
   rootElRef = createRef<HTMLElement>()
 
-  render(props: TimelineLaneMoreLinkProps) {
+  render() {
+    let { props } = this
     let { elRef, placement, resourceId } = props
     let extraDateSpan = resourceId ? { resourceId } : {}
 
