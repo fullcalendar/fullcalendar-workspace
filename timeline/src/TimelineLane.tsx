@@ -177,7 +177,10 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
                 hiddenSegs={seg}
                 placement={segPlacement}
                 dateProfile={props.dateProfile}
+                nowDate={props.nowDate}
                 todayRange={props.todayRange}
+                isTimeScale={props.tDateProfile.isTimeScale}
+                eventSelection={props.eventSelection}
               />
             )
           }
@@ -203,7 +206,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
                 isDragging={isDragging}
                 isResizing={isResizing}
                 isDateSelecting={isDateSelecting}
-                isSelected={instanceId === this.props.eventSelection /* TODO: bad for mirror? */}
+                isSelected={instanceId === props.eventSelection /* TODO: bad for mirror? */}
                 {...getSegMeta(seg, props.todayRange, props.nowDate)}
               />
             </div>

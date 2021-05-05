@@ -1,7 +1,8 @@
 import {
-  createElement, BaseComponent, Ref, createRef, MoreLinkRoot, setRef, DateProfile, DateRange,
+  createElement, BaseComponent, Ref, createRef, MoreLinkRoot, setRef, DateProfile, DateRange, DateMarker, Fragment, getSegMeta,
 } from '@fullcalendar/common'
 import { TimelineSegPlacement } from './event-placement'
+import { TimelineEvent } from './TimelineEvent'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
 export interface TimelineLaneMoreLinkProps {
@@ -9,7 +10,10 @@ export interface TimelineLaneMoreLinkProps {
   hiddenSegs: TimelineLaneSeg[]
   placement: TimelineSegPlacement
   dateProfile: DateProfile
+  nowDate: DateMarker
   todayRange: DateRange
+  isTimeScale: boolean
+  eventSelection: string
 }
 
 export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProps> {
@@ -26,6 +30,21 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
         alignmentElRef={this.rootElRef}
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
+        popoverContent={() => (
+          <Fragment>
+            {props.hiddenSegs.map((seg) => (
+              <TimelineEvent
+                isTimeScale={props.isTimeScale}
+                seg={seg}
+                isDragging={false}
+                isResizing={false}
+                isDateSelecting={false}
+                isSelected={seg.eventRange.instance.instanceId === props.eventSelection}
+                {...getSegMeta(seg, props.todayRange, props.nowDate)}
+              />
+            ))}
+          </Fragment>
+        )}
       >
         {(rootElRef, classNames, innerElRef, innerContent, handleClick) => (
           <a
