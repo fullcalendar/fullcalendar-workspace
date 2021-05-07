@@ -10,7 +10,7 @@
 
   // harness
   & .fc-timeline-event-harness,
-  & .fc-timeline-event-more {
+  & .fc-timeline-more-link {
     position: absolute;
     top: 0; // for when when top can't be computed yet
     // JS will set tht left/right
@@ -55,13 +55,13 @@
 // move 1px away from slot line
 .fc-direction-ltr {
   & .fc-timeline-event.fc-event-end,
-  & .fc-timeline-event-more {
+  & .fc-timeline-more-link {
     margin-right: 1px;
   }
 }
 .fc-direction-rtl {
   & .fc-timeline-event.fc-event-end,
-  & .fc-timeline-event-more {
+  & .fc-timeline-more-link {
     margin-left: 1px;
   }
 }
@@ -109,15 +109,15 @@
 // +more events indicator
 // ----------------------------------------------------------------------------------------------------
 
-.fc-timeline-event-more {
+.fc-timeline-more-link {
   font-size: var(--fc-small-font-size);
-  color: var(--fc-event-more-text-color);
-  background: var(--fc-event-more-bg-color);
+  color: var(--fc-more-link-text-color);
+  background: var(--fc-more-link-bg-color);
   padding: 1px;
   cursor: pointer;
 }
 
-.fc-timeline-event-more-inner { // has fc-sticky
+.fc-timeline-more-link-inner { // has fc-sticky
   display: inline-block;
   left: 0;
   right: 0;

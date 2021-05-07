@@ -67,7 +67,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
               setRef(elRef, el) // for props props
               setRef(this.rootElRef, el) // for this component
             }}
-            className={['fc-timeline-event-more'].concat(classNames).join(' ')}
+            className={['fc-timeline-more-link'].concat(classNames).join(' ')}
             style={{
               left: placement.left,
               right: -placement.right,
@@ -76,7 +76,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
             }}
             onClick={handleClick}
           >
-            <div ref={innerElRef} className="fc-timeline-event-more-inner fc-sticky">
+            <div ref={innerElRef} className="fc-timeline-more-link-inner fc-sticky">
               {innerContent}
             </div>
           </a>
