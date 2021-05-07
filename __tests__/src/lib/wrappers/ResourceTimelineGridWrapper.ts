@@ -167,4 +167,28 @@ export class ResourceTimelineGridWrapper {
   getHighlightEls() {
     return this.base.getHighlightEls()
   }
+
+  getMoreEls() {
+    return findElements(this.el, '.fc-timeline-more-link')
+  }
+
+  openMorePopover(index?) {
+    $(this.getMoreEls()[index || 0]).simulate('click')
+  }
+
+  getMorePopoverEl() {
+    let viewWrapperEl = this.el.closest('.fc-view-harness')
+    return viewWrapperEl.querySelector('.fc-more-popover') as HTMLElement
+  }
+
+  getMorePopoverEventEls() {
+    return findElements(this.getMorePopoverEl(), '.fc-event')
+  }
+
+  static getEventElInfo(eventEl) {
+    return {
+      title: $(eventEl).find('.fc-event-title').text(),
+      timeText: $(eventEl).find('.fc-event-time').text(),
+    }
+  }
 }
