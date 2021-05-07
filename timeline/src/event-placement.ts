@@ -69,7 +69,7 @@ export function computeFgSegPlacements(
 
   for (let i = 0; i < hiddenGroups.length; i += 1) {
     let hiddenGroup = hiddenGroups[i]
-    let sortedSegs = hiddenGroup.entries.map(extractSeg).sort(cmpSegs)
+    let sortedSegs = hiddenGroup.entries.map(extractSeg)
     let height = moreLinkHeights[buildIsoString(sortedSegs[0].start)]
 
     if (height != null) {
@@ -104,7 +104,7 @@ export function computeFgSegPlacements(
     visiblePlacements.push({
       seg: segIndex < segs.length
         ? segs[segIndex] // a real seg
-        : hiddenGroups[segIndex - segs.length].entries.map(extractSeg).sort(cmpSegs), // signals a more-link
+        : hiddenGroups[segIndex - segs.length].entries.map(extractSeg), // signals a more-link
       isVisible: true,
       left: rect.spanStart,
       right: rect.spanEnd,
@@ -117,8 +117,4 @@ export function computeFgSegPlacements(
     visiblePlacements.concat(crudePlacements, hiddenPlacements, moreLinkCrudePlacements),
     maxHeight,
   ]
-}
-
-function cmpSegs(seg0: TimelineLaneSeg, seg1: TimelineLaneSeg) {
-  return seg0.start.valueOf() - seg1.start.valueOf()
 }

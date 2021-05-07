@@ -1,7 +1,7 @@
 import {
   Duration, EventStore, EventUiHash, DateSpan, EventInteractionState,
   BaseComponent, createElement, memoize, Fragment, RefMap, mapHash, createRef,
-  getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs, isPropsEqual, buildIsoString,
+  getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs, isPropsEqual, buildIsoString, computeEarliestSegStart,
 } from '@fullcalendar/common'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { TimelineCoords } from './TimelineCoords'
@@ -170,7 +170,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           let { seg } = segPlacement
 
           if (Array.isArray(seg)) { // a more-link
-            let isoStr = buildIsoString(seg[0].start)
+            let isoStr = buildIsoString(computeEarliestSegStart(seg))
             return (
               <TimelineLaneMoreLink
                 key={'m:' + isoStr /* "m" for "more" */}
