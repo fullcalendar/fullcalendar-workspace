@@ -53,6 +53,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
 
   render() {
     let { props, state, context } = this
+    let { options } = context
     let { dateProfile, tDateProfile } = props
 
     let slicedProps = this.slicer.sliceProps(
@@ -71,13 +72,15 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       (slicedProps.eventResize ? slicedProps.eventResize.segs as TimelineLaneSeg[] : null) ||
       []
 
-    let fgSegs = this.sortEventSegs(slicedProps.fgEventSegs, context.options.eventOrder) as TimelineLaneSeg[]
+    let fgSegs = this.sortEventSegs(slicedProps.fgEventSegs, options.eventOrder) as TimelineLaneSeg[]
     let [fgPlacements, fgHeight] = this.computeFgSegPlacements(
       fgSegs,
       props.timelineCoords,
       state.eventInstanceHeights,
       state.moreLinkHeights,
-      context.options.timelineEventMaxStack,
+      options.eventMinWidth,
+      context.isRtl,
+      options.timelineEventMaxStack,
     )
 
     let isForcedInvisible = // TODO: more convenient

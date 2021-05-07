@@ -1,4 +1,4 @@
-import { Calendar, findElements } from '@fullcalendar/core'
+import { Calendar } from '@fullcalendar/core'
 import { ViewWrapper } from 'fullcalendar-tests/src/lib/wrappers/ViewWrapper'
 import { ResourceTimelineGridWrapper } from './ResourceTimelineGridWrapper'
 import { ResourceDataGridWrapper } from './ResourceDataGridWrapper'

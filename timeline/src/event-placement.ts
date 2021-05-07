@@ -18,6 +18,8 @@ export function computeFgSegPlacements(
   timelineCoords: TimelineCoords | null,
   eventInstanceHeights: { [instanceId: string]: number },
   moreLinkHeights: { [isoStr: string]: number },
+  minWidth: number,
+  isRtl: boolean,
   maxStackCnt?: number,
 ): [TimelineSegPlacement[], number] { // [placements, totalHeight]
   let segInputs: SegInput[] = []
@@ -31,6 +33,14 @@ export function computeFgSegPlacements(
       let horizontalCoords = timelineCoords.rangeToCoords(seg)
       let left = Math.round(horizontalCoords.left) // for barely-overlapping collisions
       let right = Math.round(horizontalCoords.right) //
+
+      if (right - left < minWidth) {
+        if (isRtl) {
+          left = right - minWidth
+        } else {
+          right = left + minWidth
+        }
+      }
 
       if (height != null) {
         segInputs.push({
