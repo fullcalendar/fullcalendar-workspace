@@ -1,4 +1,7 @@
-import { SegInput, SegHierarchy, groupIntersectingEntries, SegEntry, buildIsoString } from '@fullcalendar/common'
+import {
+  SegInput, SegHierarchy, groupIntersectingEntries, SegEntry, buildIsoString,
+  computeEarliestSegStart,
+} from '@fullcalendar/common'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
@@ -70,7 +73,7 @@ export function computeFgSegPlacements(
   for (let i = 0; i < hiddenGroups.length; i += 1) {
     let hiddenGroup = hiddenGroups[i]
     let sortedSegs = hiddenGroup.entries.map(extractSeg)
-    let height = moreLinkHeights[buildIsoString(sortedSegs[0].start)]
+    let height = moreLinkHeights[buildIsoString(computeEarliestSegStart(sortedSegs))] // not optimal :(
 
     if (height != null) {
       // NOTE: the hiddenGroup's spanStart/spanEnd are already computed by rangeToCoords. computed during input.

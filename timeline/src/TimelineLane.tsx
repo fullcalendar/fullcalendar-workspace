@@ -1,7 +1,8 @@
 import {
   Duration, EventStore, EventUiHash, DateSpan, EventInteractionState,
   BaseComponent, createElement, memoize, Fragment, RefMap, mapHash, createRef,
-  getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs, isPropsEqual, buildIsoString, computeEarliestSegStart,
+  getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs, isPropsEqual, buildIsoString,
+  computeEarliestSegStart,
 } from '@fullcalendar/common'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { TimelineCoords } from './TimelineCoords'
