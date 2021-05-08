@@ -1,4 +1,4 @@
-import { TimelineViewWrapper } from "../lib/wrappers/TimelineViewWrapper"
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
 describe('eventMinWidth', () => {
   pushOptions({
@@ -6,8 +6,8 @@ describe('eventMinWidth', () => {
     initialDate: '2021-05-07',
     scrollTime: 0,
     events: [
-      { start: '2021-05-07T00:00:00', end: '2021-05-07T00:01:00' }
-    ]
+      { start: '2021-05-07T00:00:00', end: '2021-05-07T00:01:00' },
+    ],
   })
 
   it('has a default value (a min width)', () => {

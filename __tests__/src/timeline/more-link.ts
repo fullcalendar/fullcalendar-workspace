@@ -11,7 +11,7 @@ describe('timelineEventMaxStack', () => {
       { id: 'a' },
       { id: 'b' },
       { id: 'c' },
-    ]
+    ],
   })
 
   it('puts hidden events in a popover', (done) => {
@@ -57,7 +57,7 @@ describe('timelineEventMaxStack', () => {
           expect(event.start).toEqualDate(newStart)
           expect(event.getResources()[0].id).toBe('c')
           done()
-        }
+        },
       })
     })
   })
