@@ -80,6 +80,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       state.moreLinkHeights,
       options.eventMinWidth,
       context.isRtl,
+      options.eventOrderStrict,
       options.timelineEventMaxStack,
     )
 

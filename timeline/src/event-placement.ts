@@ -20,6 +20,7 @@ export function computeFgSegPlacements(
   moreLinkHeights: { [isoStr: string]: number },
   minWidth: number,
   isRtl: boolean,
+  strictOrder?: boolean,
   maxStackCnt?: number,
 ): [TimelineSegPlacement[], number] { // [placements, totalHeight]
   let segInputs: SegInput[] = []
@@ -62,6 +63,9 @@ export function computeFgSegPlacements(
   }
 
   let hierarchy = new SegHierarchy()
+  if (strictOrder != null) {
+    hierarchy.strictOrder = strictOrder
+  }
   if (maxStackCnt != null) {
     hierarchy.maxStackCnt = maxStackCnt
   }
