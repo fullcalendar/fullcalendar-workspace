@@ -81,7 +81,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       options.eventMinWidth,
       context.isRtl,
       options.eventOrderStrict,
-      options.timelineEventMaxStack,
+      options.eventMaxStack,
     )
 
     let isForcedInvisible = // TODO: more convenient

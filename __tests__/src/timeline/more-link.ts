@@ -1,12 +1,12 @@
 import { ResourceTimelineGridWrapper } from '../lib/wrappers/ResourceTimelineGridWrapper'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
-describe('timelineEventMaxStack', () => {
+describe('eventMaxStack', () => {
   pushOptions({
     initialView: 'resourceTimelineDay',
     initialDate: '2021-05-07',
     scrollTime: 0,
-    timelineEventMaxStack: 2,
+    eventMaxStack: 2,
     resources: [
       { id: 'a' },
       { id: 'b' },
