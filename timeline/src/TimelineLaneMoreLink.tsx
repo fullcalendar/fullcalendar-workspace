@@ -24,21 +24,22 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
 
   render() {
     let { props } = this
-    let { elRef, placement, resourceId } = props
+    let { hiddenSegs, elRef, placement, resourceId } = props
     let extraDateSpan = resourceId ? { resourceId } : {}
 
     return (
       <MoreLinkRoot
         allDayDate={null}
-        allSegs={props.hiddenSegs}
-        hiddenSegs={props.hiddenSegs}
+        moreCnt={hiddenSegs.length}
+        allSegs={hiddenSegs}
+        hiddenSegs={hiddenSegs}
         alignmentElRef={this.rootElRef}
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
         extraDateSpan={extraDateSpan}
         popoverContent={() => (
           <Fragment>
-            {props.hiddenSegs.map((seg) => {
+            {hiddenSegs.map((seg) => {
               let instanceId = seg.eventRange.instance.instanceId
               return (
                 <div
