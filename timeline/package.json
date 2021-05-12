@@ -1,13 +1,13 @@
 {
   "name": "@fullcalendar/timeline",
-  "version": "5.6.0",
+  "version": "5.7.0",
   "title": "FullCalendar Timeline Plugin",
   "description": "Display events on a horizontal time axis (without resources)",
   "docs": "https://fullcalendar.io/docs/timeline-view-no-resources",
   "dependencies": {
-    "@fullcalendar/common": "workspace:~5.6.0",
-    "@fullcalendar/premium-common": "workspace:~5.6.0",
-    "@fullcalendar/scrollgrid": "workspace:~5.6.0",
+    "@fullcalendar/common": "workspace:~5.7.0",
+    "@fullcalendar/premium-common": "workspace:~5.7.0",
+    "@fullcalendar/scrollgrid": "workspace:~5.7.0",
     "tslib": "^2.0.3"
   },
   "main": "main.cjs.js",
