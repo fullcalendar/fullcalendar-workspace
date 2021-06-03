@@ -52,6 +52,8 @@ export default class ResourceDayGrid extends DateComponent<ResourceDayGridProps>
       return this.slicers[resourceId] || new DayGridSlicer()
     })
 
+    dayGrid.receiveContext(context) // hack because sliceProps expects component to have context
+
     let slicedProps = mapHash(this.slicers, (slicer, resourceId) => {
       return slicer.sliceProps(
         splitProps[resourceId],

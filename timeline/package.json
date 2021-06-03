@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@fullcalendar/timeline",
-  "version": "4.4.1",
+  "version": "4.4.3",
   "title": "FullCalendar Timeline Plugin",
   "description": "Display events on a horizontal time axis (without resources)",
   "docs": "https://fullcalendar.io/docs/timeline-view-no-resources",
