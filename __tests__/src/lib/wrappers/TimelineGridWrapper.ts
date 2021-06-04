@@ -17,7 +17,7 @@ export class TimelineGridWrapper {
       point.left -= 1
     }
 
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       $.simulateByPoint('drag', {
         point,
         onRelease: () => resolve(),
@@ -26,7 +26,7 @@ export class TimelineGridWrapper {
   }
 
   resizeEvent(eventEl: HTMLElement, newEndDate, fromStart?) {
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       let $eventEl = $(eventEl)
       let eventRect = eventEl.getBoundingClientRect()
       let isRtl = $eventEl.css('direction') === 'rtl'

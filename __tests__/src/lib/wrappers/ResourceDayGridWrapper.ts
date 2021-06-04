@@ -44,7 +44,7 @@ export class ResourceDayGridWrapper {
   }
 
   resizeEvent(eventEl: HTMLElement, origEndInfo, newEndInfo, fromStart?) {
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       let rect0 = this.getDayEl(origEndInfo.resourceId, origEndInfo.date).getBoundingClientRect()
       let rect1 = this.getDayEl(newEndInfo.resourceId, newEndInfo.date).getBoundingClientRect()
 

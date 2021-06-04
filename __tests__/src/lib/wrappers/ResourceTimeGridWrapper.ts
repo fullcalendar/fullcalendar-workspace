@@ -103,7 +103,7 @@ export class ResourceTimeGridWrapper {
   }
 
   resizeEvent(eventEl: HTMLElement, resourceId, origEndDate, newEndDate) {
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       let resizerEl = $(eventEl).find('.' + CalendarWrapper.EVENT_RESIZER_CLASSNAME)
         .css('display', 'block')[0] // usually only displays on hover. force display
 

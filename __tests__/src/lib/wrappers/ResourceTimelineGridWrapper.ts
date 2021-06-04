@@ -24,7 +24,7 @@ export class ResourceTimelineGridWrapper {
       point.left -= 1
     }
 
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       $.simulateByPoint('drag', {
         point,
         onRelease: () => resolve(),
@@ -39,7 +39,7 @@ export class ResourceTimelineGridWrapper {
 
     point.left += moveover
 
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       $(eventEl).simulate('drag', {
         localPoint: { left: moveover, top: '50%' }, // 2 for zoom
         end: point,
@@ -49,7 +49,7 @@ export class ResourceTimelineGridWrapper {
   }
 
   resizeEvent(eventEl: HTMLElement, newResourceId, newEndDate, fromStart?) {
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       let $eventEl = $(eventEl)
       let eventRect = eventEl.getBoundingClientRect()
       let isRtl = $eventEl.css('direction') === 'rtl'
@@ -83,7 +83,7 @@ export class ResourceTimelineGridWrapper {
       point1.left -= 2
     }
 
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       $.simulateByPoint('drag', {
         point: point0,
         end: point1,
