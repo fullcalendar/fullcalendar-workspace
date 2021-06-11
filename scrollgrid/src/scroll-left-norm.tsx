@@ -12,35 +12,31 @@ export function getScrollCanvasOrigin(scrollEl: HTMLElement) { // best place for
 }
 
 export function getScrollFromLeftEdge(el: HTMLElement) {
-  let val = el.scrollLeft
+  let scrollLeft = el.scrollLeft
   let computedStyles = window.getComputedStyle(el) // TODO: pass in isRtl instead?
 
   if (computedStyles.direction === 'rtl') {
-    let maxScrollDistance = el.scrollWidth - el.clientWidth
-
     switch (getRtlScrollSystem()) {
       case 'negative':
-        return maxScrollDistance + val
-      case 'reverse':
-        return maxScrollDistance - val
+        scrollLeft *= -1 // convert to 'reverse'. fall through...
+      case 'reverse': // scrollLeft is distance between scrollframe's right edge scrollcanvas's right edge
+        scrollLeft = el.scrollWidth - scrollLeft - el.clientWidth
     }
   }
 
-  return val
+  return scrollLeft
 }
 
 export function setScrollFromLeftEdge(el: HTMLElement, scrollLeft: number) {
   let computedStyles = window.getComputedStyle(el) // TODO: pass in isRtl instead?
 
   if (computedStyles.direction === 'rtl') {
-    let maxScrollDistance = el.scrollWidth - el.clientWidth
-
     switch (getRtlScrollSystem()) {
-      case 'negative':
-        scrollLeft = maxScrollDistance - scrollLeft
-        break
       case 'reverse':
-        scrollLeft = maxScrollDistance + scrollLeft
+        scrollLeft = el.scrollWidth - scrollLeft - el.clientWidth
+        break
+      case 'negative':
+        scrollLeft = -(el.scrollWidth - scrollLeft - el.clientWidth)
         break
     }
   }
