@@ -5,12 +5,12 @@ import {
   computeEarliestSegStart,
 } from '@fullcalendar/common'
 import { TimelineDateProfile } from './timeline-date-profile'
-import { TimelineCoords } from './TimelineCoords'
+import { coordsToCss, TimelineCoords } from './TimelineCoords'
 import { TimelineLaneBg } from './TimelineLaneBg'
 import { TimelineLaneSlicer, TimelineLaneSeg } from './TimelineLaneSlicer'
 import { TimelineEvent } from './TimelineEvent'
 import { TimelineLaneMoreLink } from './TimelineLaneMoreLink'
-import { computeFgSegPlacements, TimelineSegPlacement } from './event-placement'
+import { computeFgSegPlacements, computeSegHCoords, TimelineSegPlacement } from './event-placement'
 
 export interface TimelineLaneProps extends TimelineLaneCoreProps {
   onHeightChange?: (innerEl: HTMLElement, isStable: boolean) => void
@@ -41,10 +41,10 @@ interface TimelineLaneState {
 export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneState> {
   private slicer = new TimelineLaneSlicer()
   private sortEventSegs = memoize(sortEventSegs)
-  private computeFgSegPlacements = memoize(computeFgSegPlacements)
   private harnessElRefs = new RefMap<HTMLDivElement>()
   private moreElRefs = new RefMap<HTMLDivElement>()
   private innerElRef = createRef<HTMLDivElement>()
+  // TODO: memoize event positioning
 
   state: TimelineLaneState = {
     eventInstanceHeights: {},
@@ -73,13 +73,12 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       []
 
     let fgSegs = this.sortEventSegs(slicedProps.fgEventSegs, options.eventOrder) as TimelineLaneSeg[]
-    let [fgPlacements, fgHeight] = this.computeFgSegPlacements(
+    let fgSegHCoords = computeSegHCoords(fgSegs, options.eventMinWidth, props.timelineCoords)
+    let [fgPlacements, fgHeight] = computeFgSegPlacements(
       fgSegs,
-      props.timelineCoords,
+      fgSegHCoords,
       state.eventInstanceHeights,
       state.moreLinkHeights,
-      options.eventMinWidth,
-      context.isRtl,
       options.eventOrderStrict,
       options.eventMaxStack,
     )
@@ -166,13 +165,13 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
     isResizing?: boolean,
     isDateSelecting?: boolean,
   ) {
-    let { harnessElRefs, moreElRefs, props } = this
+    let { harnessElRefs, moreElRefs, props, context } = this
     let isMirror = isDragging || isResizing || isDateSelecting
 
     return (
       <Fragment>
         {segPlacements.map((segPlacement) => {
-          let { seg } = segPlacement
+          let { seg, hcoords, top } = segPlacement
 
           if (Array.isArray(seg)) { // a more-link
             let isoStr = buildIsoString(computeEarliestSegStart(seg))
@@ -194,7 +193,8 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           }
 
           let instanceId = seg.eventRange.instance.instanceId
-          let isVisible = segPlacement.isVisible && !isForcedInvisible[instanceId]
+          let isVisible = isMirror || (!isForcedInvisible[instanceId] && hcoords && top !== null)
+          let hStyle = coordsToCss(hcoords, context.isRtl)
 
           return (
             <div
@@ -202,10 +202,9 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
               ref={isMirror ? null : harnessElRefs.createRef(instanceId)}
               className="fc-timeline-event-harness"
               style={{
-                left: segPlacement.left,
-                right: -segPlacement.right,
-                top: segPlacement.top,
                 visibility: isVisible ? ('' as any) : 'hidden',
+                top: top || 0,
+                ...hStyle
               }}
             >
               <TimelineEvent
@@ -240,12 +239,9 @@ function buildMirrorPlacements(
   }
   let topsByInstanceId = buildAbsoluteTopHash(fgPlacements) // TODO: cache this at first render?
   return mirrorSegs.map((seg) => {
-    let horizontalCoords = timelineCoords.rangeToCoords(seg)
     return {
       seg,
-      isVisible: true,
-      left: horizontalCoords.left,
-      right: horizontalCoords.right,
+      hcoords: timelineCoords.rangeToCoords(seg),
       top: topsByInstanceId[seg.eventRange.instance.instanceId],
     }
   })

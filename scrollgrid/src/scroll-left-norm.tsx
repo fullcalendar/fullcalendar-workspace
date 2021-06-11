@@ -13,40 +13,39 @@ export function getScrollCanvasOrigin(scrollEl: HTMLElement) { // best place for
 
 export function getScrollFromLeftEdge(el: HTMLElement) {
   let val = el.scrollLeft
-  let computedStyles = window.getComputedStyle(el) // TODO: pass in isRtl?
+  let computedStyles = window.getComputedStyle(el) // TODO: pass in isRtl instead?
 
   if (computedStyles.direction === 'rtl') {
+    let maxScrollDistance = el.scrollWidth - el.clientWidth
+
     switch (getRtlScrollSystem()) {
       case 'negative':
-        val = el.scrollWidth - el.clientWidth + val // maxScrollDistance + val
-        break
+        return maxScrollDistance + val
       case 'reverse':
-        val = el.scrollWidth - el.clientWidth - val // maxScrollDistance - val
-        break
+        return maxScrollDistance - val
     }
   }
 
   return val
 }
 
-/*
-`val` is in the "negative" scheme
-*/
-export function setScrollFromStartingEdge(el: HTMLElement, val: number) {
-  let computedStyles = window.getComputedStyle(el) // TODO: pass in isRtl?
+export function setScrollFromLeftEdge(el: HTMLElement, scrollLeft: number) {
+  let computedStyles = window.getComputedStyle(el) // TODO: pass in isRtl instead?
 
   if (computedStyles.direction === 'rtl') {
+    let maxScrollDistance = el.scrollWidth - el.clientWidth
+
     switch (getRtlScrollSystem()) {
-      case 'positive':
-        val = (el.scrollWidth - el.clientWidth) + val // maxScrollDistance + val
+      case 'negative':
+        scrollLeft = maxScrollDistance - scrollLeft
         break
       case 'reverse':
-        val = -val
+        scrollLeft = maxScrollDistance + scrollLeft
         break
     }
   }
 
-  el.scrollLeft = val
+  el.scrollLeft = scrollLeft
 }
 
 // Horizontal Scroll System Detection

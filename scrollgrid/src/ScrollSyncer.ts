@@ -1,5 +1,5 @@
 import { ScrollListener } from './ScrollListener'
-import { setScrollFromStartingEdge } from './scroll-left-norm'
+import { setScrollFromLeftEdge } from './scroll-left-norm'
 
 export class ScrollSyncer {
   private masterEl: HTMLElement
@@ -72,7 +72,7 @@ export class ScrollSyncer {
     this.isPaused = true
 
     for (let listener of this.scrollListeners) {
-      setScrollFromStartingEdge(listener.el, scrollLeft)
+      setScrollFromLeftEdge(listener.el, scrollLeft)
     }
 
     this.isPaused = false

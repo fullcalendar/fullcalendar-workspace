@@ -14,7 +14,7 @@ export { TimelineLaneBg } from './TimelineLaneBg'
 export { TimelineHeader } from './TimelineHeader'
 export { TimelineSlats } from './TimelineSlats'
 export { TimelineDateProfile, buildTimelineDateProfile } from './timeline-date-profile'
-export { TimelineCoords } from './TimelineCoords'
+export { TimelineCoords, coordToCss, coordsToCss } from './TimelineCoords'
 export { TimelineLaneSlicer, TimelineLaneSeg } from './TimelineLaneSlicer'
 export { TimelineHeaderRows } from './TimelineHeaderRows'
 

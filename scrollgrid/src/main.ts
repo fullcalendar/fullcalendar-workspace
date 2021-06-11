@@ -7,7 +7,7 @@ import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicate
 import { ScrollGrid } from './ScrollGrid'
 
 export { ScrollGrid }
-export { setScrollFromStartingEdge } from './scroll-left-norm'
+export { setScrollFromLeftEdge } from './scroll-left-norm'
 
 export default createPlugin({
   deps: [

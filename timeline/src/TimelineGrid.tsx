@@ -2,7 +2,7 @@ import {
   createElement, createRef, ViewProps, Hit, DateComponent, CssDimValue, VNode, DateMarker, NowTimer,
   greatestDurationDenominator, DateRange, NowIndicatorRoot, Fragment,
 } from '@fullcalendar/common'
-import { TimelineCoords } from './TimelineCoords'
+import { coordToCss, TimelineCoords } from './TimelineCoords'
 import { TimelineSlats } from './TimelineSlats'
 import { TimelineLane } from './TimelineLane'
 import { TimelineDateProfile } from './timeline-date-profile'
@@ -24,7 +24,7 @@ interface TimelineGridState {
 export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridState> {
   private slatsRef = createRef<TimelineSlats>()
 
-  state = {
+  state: TimelineGridState = {
     coords: null,
   }
 
@@ -81,7 +81,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
                       <div
                         ref={rootElRef}
                         className={['fc-timeline-now-indicator-line'].concat(classNames).join(' ')}
-                        style={{ left: state.coords.dateToCoord(nowDate) }}
+                        style={coordToCss(state.coords.dateToCoord(nowDate), context.isRtl)}
                       >
                         {innerContent}
                       </div>

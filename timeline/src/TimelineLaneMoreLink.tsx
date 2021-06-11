@@ -3,6 +3,7 @@ import {
   setRef, DateProfile, DateRange, DateMarker, Fragment, getSegMeta,
 } from '@fullcalendar/common'
 import { TimelineSegPlacement } from './event-placement'
+import { coordsToCss } from './TimelineCoords'
 import { TimelineEvent } from './TimelineEvent'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
@@ -23,8 +24,11 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
   rootElRef = createRef<HTMLElement>()
 
   render() {
-    let { props } = this
+    let { props, context } = this
     let { hiddenSegs, elRef, placement, resourceId } = props
+    let { top, hcoords } = placement
+    let isVisible = hcoords && top !== null
+    let hStyle = coordsToCss(hcoords, context.isRtl)
     let extraDateSpan = resourceId ? { resourceId } : {}
 
     return (
@@ -70,10 +74,9 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
             }}
             className={['fc-timeline-more-link'].concat(classNames).join(' ')}
             style={{
-              left: placement.left,
-              right: -placement.right,
-              top: placement.top,
-              visibility: placement.isVisible ? ('' as any) : 'hidden',
+              visibility: isVisible ? ('' as any) : 'hidden',
+              top: top || 0,
+              ...hStyle,
             }}
             onClick={handleClick}
           >

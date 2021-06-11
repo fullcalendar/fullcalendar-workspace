@@ -73,7 +73,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     ) {
       let rootEl = this.rootElRef.current
 
-      if (rootEl.offsetWidth) {
+      if (rootEl.offsetWidth) { // not hidden by css
         this.coords = new TimelineCoords(
           this.rootElRef.current,
           collectCellEls(this.cellElRefs.currentMap, props.tDateProfile.slotDates),
@@ -98,7 +98,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
 
     if (onScrollLeftRequest && coords) {
       if (request.time) {
-        let scrollLeft = coords.computeDurationLeft(request.time)
+        let scrollLeft = coords.coordFromLeft(coords.durationToCoord(request.time))
         onScrollLeftRequest(scrollLeft)
       }
       return true

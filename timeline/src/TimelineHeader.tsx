@@ -4,7 +4,7 @@ import {
   findElements, RefObject, DateProfile,
 } from '@fullcalendar/common'
 import { TimelineHeaderRows } from './TimelineHeaderRows'
-import { TimelineCoords } from './TimelineCoords'
+import { coordToCss, TimelineCoords } from './TimelineCoords'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 export interface TimelineHeaderProps {
@@ -62,7 +62,7 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
                       <div
                         ref={rootElRef}
                         className={['fc-timeline-now-indicator-arrow'].concat(classNames).join(' ')}
-                        style={{ left: slatCoords.dateToCoord(nowDate) }}
+                        style={coordToCss(slatCoords.dateToCoord(nowDate), context.isRtl)}
                       >
                         {innerContent}
                       </div>

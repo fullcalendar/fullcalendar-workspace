@@ -1,8 +1,9 @@
 import {
   PositionCache, findDirectChildren,
   isInt, DateProfile,
-  DateMarker, DateEnv, Duration, startOfDay, rangeContainsMarker,
+  DateMarker, DateEnv, Duration, startOfDay, rangeContainsMarker, CssDimValue, DateRange,
 } from '@fullcalendar/common'
+import { TimelineSegHCoords } from './event-placement'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 export class TimelineCoords { // TODO: rename to "slat" coords?
@@ -34,20 +35,12 @@ export class TimelineCoords { // TODO: rename to "slat" coords?
     )
   }
 
-  rangeToCoords(range) {
-    if (this.isRtl) {
-      return { right: this.dateToCoord(range.start), left: this.dateToCoord(range.end) }
-    }
-    return { left: this.dateToCoord(range.start), right: this.dateToCoord(range.end) }
-  }
-
   isDateInRange(date: DateMarker) {
     return rangeContainsMarker(this.dateProfile.currentRange, date)
   }
 
-  // for LTR, results range from 0 to width of area
-  // for RTL, results range from negative width of area to 0
-  dateToCoord(date) {
+  // results range from negative width of area to 0
+  dateToCoord(date: DateMarker): number {
     let { tDateProfile } = this
     let snapCoverage = this.computeDateSnapCoverage(date)
     let slotCoverage = snapCoverage / tDateProfile.snapsPerSlot
@@ -57,10 +50,10 @@ export class TimelineCoords { // TODO: rename to "slat" coords?
     let { innerCoordCache, outerCoordCache } = this
 
     if (this.isRtl) {
-      return (
+      return outerCoordCache.originClientRect.width - (
         outerCoordCache.rights[slotIndex] -
         (innerCoordCache.getWidth(slotIndex) * partial)
-      ) - outerCoordCache.originClientRect.width
+      )
     }
 
     return (
@@ -69,14 +62,16 @@ export class TimelineCoords { // TODO: rename to "slat" coords?
     )
   }
 
-  // returned value is between 0 and the number of snaps
-  computeDateSnapCoverage(date: DateMarker): number {
-    return computeDateSnapCoverage(date, this.tDateProfile, this.dateEnv)
+  rangeToCoords(range: DateRange): TimelineSegHCoords {
+    return {
+      spanStart: this.dateToCoord(range.start),
+      spanEnd: this.dateToCoord(range.end),
+    }
   }
 
-  computeDurationLeft(duration: Duration) {
+  durationToCoord(duration: Duration): number {
     let { dateProfile, tDateProfile, dateEnv, isRtl } = this
-    let left = 0
+    let coord = 0
 
     if (dateProfile) {
       let date = dateEnv.add(dateProfile.activeRange.start, duration)
@@ -85,15 +80,27 @@ export class TimelineCoords { // TODO: rename to "slat" coords?
         date = startOfDay(date)
       }
 
-      left = this.dateToCoord(date)
+      coord = this.dateToCoord(date)
 
       // hack to overcome the left borders of non-first slat
-      if (!isRtl && left) {
-        left += 1
+      if (!isRtl && coord) {
+        coord += 1
       }
     }
 
-    return left
+    return coord
+  }
+
+  coordFromLeft(coord: number) {
+    if (this.isRtl) {
+      return this.outerCoordCache.originClientRect.width - coord
+    }
+    return coord
+  }
+
+  // returned value is between 0 and the number of snaps
+  computeDateSnapCoverage(date: DateMarker): number {
+    return computeDateSnapCoverage(date, this.tDateProfile, this.dateEnv)
   }
 }
 
@@ -125,4 +132,30 @@ export function computeDateSnapCoverage(date: DateMarker, tDateProfile: Timeline
   }
 
   return snapCoverage
+}
+
+export function coordToCss(
+  hcoord: number | null,
+  isRtl: boolean,
+): { left: CssDimValue, right: CssDimValue } {
+  if (hcoord === null) {
+    return { left: '', right: '' }
+  } else if (isRtl) {
+    return { right: hcoord, left: '' }
+  } else {
+    return { left: hcoord, right: '' }
+  }
+}
+
+export function coordsToCss(
+  hcoords: TimelineSegHCoords | null,
+  isRtl: boolean,
+): { left: CssDimValue, right: CssDimValue } {
+  if (!hcoords) {
+    return { left: '', right: '' }
+  } else if (isRtl) {
+    return { right: hcoords.spanStart, left: -hcoords.spanEnd }
+  } else {
+    return { left: hcoords.spanStart, right: -hcoords.spanEnd }
+  }
 }

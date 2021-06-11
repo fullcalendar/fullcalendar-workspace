@@ -5,60 +5,70 @@ import {
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'
 
+export interface TimelineSegHCoords {
+  spanStart: number
+  spanEnd: number
+}
+
 export interface TimelineSegPlacement {
   seg: TimelineLaneSeg | TimelineLaneSeg[] // HACK: if array, then it's a more-link group
-  isVisible: boolean
-  left: number
-  right: number
-  top: number
+  hcoords: TimelineSegHCoords | null
+  top: number | null
+}
+
+export function computeSegHCoords(
+  segs: TimelineLaneSeg[],
+  minWidth: number,
+  timelineCoords: TimelineCoords | null
+): TimelineSegHCoords[] {
+  let hcoords: TimelineSegHCoords[] = []
+
+  if (timelineCoords) {
+    for (let seg of segs) {
+      let res = timelineCoords.rangeToCoords(seg)
+      let spanStart = Math.round(res.spanStart) // for barely-overlapping collisions
+      let spanEnd = Math.round(res.spanEnd) //
+
+      if (spanEnd - spanStart < minWidth) {
+        spanEnd = spanStart + minWidth
+      }
+
+      hcoords.push({ spanStart, spanEnd })
+    }
+  }
+
+  return hcoords
 }
 
 export function computeFgSegPlacements(
   segs: TimelineLaneSeg[],
-  timelineCoords: TimelineCoords | null,
-  eventInstanceHeights: { [instanceId: string]: number },
-  moreLinkHeights: { [isoStr: string]: number },
-  minWidth: number,
-  isRtl: boolean,
+  segHCoords: TimelineSegHCoords[], // might not have for every seg
+  eventInstanceHeights: { [instanceId: string]: number }, // might not have for every seg
+  moreLinkHeights: { [isoStr: string]: number }, // might not have for every more-link
   strictOrder?: boolean,
   maxStackCnt?: number,
 ): [TimelineSegPlacement[], number] { // [placements, totalHeight]
   let segInputs: SegInput[] = []
-  let crudePlacements: TimelineSegPlacement[] = [] // when we don't know height
+  let crudePlacements: TimelineSegPlacement[] = [] // when we don't know dims
 
-  if (timelineCoords) {
-    for (let i = 0; i < segs.length; i += 1) {
-      let seg = segs[i]
-      let instanceId = seg.eventRange.instance.instanceId
-      let height = eventInstanceHeights[instanceId]
-      let horizontalCoords = timelineCoords.rangeToCoords(seg)
-      let left = Math.round(horizontalCoords.left) // for barely-overlapping collisions
-      let right = Math.round(horizontalCoords.right) //
+  for (let i = 0; i < segs.length; i++) {
+    let seg = segs[i]
+    let instanceId = seg.eventRange.instance.instanceId
+    let height = eventInstanceHeights[instanceId]
+    let hcoords = segHCoords[i]
 
-      if (right - left < minWidth) {
-        if (isRtl) {
-          left = right - minWidth
-        } else {
-          right = left + minWidth
-        }
-      }
-
-      if (height != null) {
-        segInputs.push({
-          index: i,
-          spanStart: left,
-          spanEnd: right,
-          thickness: height,
-        })
-      } else {
-        crudePlacements.push({
-          seg,
-          isVisible: false,
-          left,
-          right,
-          top: 0,
-        })
-      }
+    if (height && hcoords) {
+      segInputs.push({
+        index: i,
+        ...hcoords,
+        thickness: height,
+      })
+    } else {
+      crudePlacements.push({
+        seg,
+        hcoords: null,
+        top: null,
+      })
     }
   }
 
@@ -74,8 +84,7 @@ export function computeFgSegPlacements(
   let hiddenPlacements = hiddenEntries.map((entry) => ({
     seg: segs[entry.segInput.index],
     isVisible: false,
-    left: entry.spanStart,
-    right: entry.spanEnd,
+    hcoords: entry,
     top: 0,
   } as TimelineSegPlacement))
 
@@ -100,10 +109,8 @@ export function computeFgSegPlacements(
     } else {
       moreLinkCrudePlacements.push({
         seg: sortedSegs, // a Seg array signals a more-link
-        isVisible: false,
-        left: hiddenGroup.spanStart,
-        right: hiddenGroup.spanEnd,
-        top: 0,
+        hcoords: hiddenGroup,
+        top: null,
       })
     }
   }
@@ -122,9 +129,7 @@ export function computeFgSegPlacements(
       seg: segIndex < segs.length
         ? segs[segIndex] // a real seg
         : hiddenGroups[segIndex - segs.length].entries.map(extractSeg), // signals a more-link
-      isVisible: true,
-      left: rect.spanStart,
-      right: rect.spanEnd,
+      hcoords: rect,
       top: rect.levelCoord,
     })
     maxHeight = Math.max(maxHeight, rect.levelCoord + rect.thickness)

@@ -7,6 +7,7 @@ import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullca
 import {
   TimelineDateProfile, TimelineCoords, TimelineSlats,
   TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg,
+  coordToCss,
 } from '@fullcalendar/timeline'
 import { ResourceTimelineLanes } from './ResourceTimelineLanes'
 
@@ -129,7 +130,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
                       <div
                         ref={rootElRef}
                         className={['fc-timeline-now-indicator-line'].concat(classNames).join(' ')}
-                        style={{ left: slatCoords.dateToCoord(nowDate) }}
+                        style={coordToCss(slatCoords.dateToCoord(nowDate), context.isRtl)}
                       >
                         {innerContent}
                       </div>
