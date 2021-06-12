@@ -1,9 +1,8 @@
 import {
   PositionCache, findDirectChildren,
   isInt, DateProfile,
-  DateMarker, DateEnv, Duration, startOfDay, rangeContainsMarker, CssDimValue, DateRange,
+  DateMarker, DateEnv, Duration, startOfDay, rangeContainsMarker, CssDimValue, DateRange, SegSpan,
 } from '@fullcalendar/common'
-import { TimelineSegHCoords } from './event-placement'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 export class TimelineCoords { // TODO: rename to "slat" coords?
@@ -62,10 +61,10 @@ export class TimelineCoords { // TODO: rename to "slat" coords?
     )
   }
 
-  rangeToCoords(range: DateRange): TimelineSegHCoords {
+  rangeToCoords(range: DateRange): SegSpan {
     return {
-      spanStart: this.dateToCoord(range.start),
-      spanEnd: this.dateToCoord(range.end),
+      start: this.dateToCoord(range.start),
+      end: this.dateToCoord(range.end),
     }
   }
 
@@ -148,14 +147,14 @@ export function coordToCss(
 }
 
 export function coordsToCss(
-  hcoords: TimelineSegHCoords | null,
+  hcoords: SegSpan | null,
   isRtl: boolean,
 ): { left: CssDimValue, right: CssDimValue } {
   if (!hcoords) {
     return { left: '', right: '' }
   } else if (isRtl) {
-    return { right: hcoords.spanStart, left: -hcoords.spanEnd }
+    return { right: hcoords.start, left: -hcoords.end }
   } else {
-    return { left: hcoords.spanStart, right: -hcoords.spanEnd }
+    return { left: hcoords.start, right: -hcoords.end }
   }
 }
