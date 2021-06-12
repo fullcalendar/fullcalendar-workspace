@@ -107,6 +107,9 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           {this.renderFgSegs(
             fgPlacements,
             isForcedInvisible,
+            false,
+            false,
+            false,
           )}
           {this.renderFgSegs(
             buildMirrorPlacements(mirrorSegs, props.timelineCoords, fgPlacements),
@@ -161,9 +164,9 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
   renderFgSegs(
     segPlacements: TimelineSegPlacement[],
     isForcedInvisible: { [instanceId: string]: any },
-    isDragging?: boolean,
-    isResizing?: boolean,
-    isDateSelecting?: boolean,
+    isDragging: boolean,
+    isResizing: boolean,
+    isDateSelecting: boolean,
   ) {
     let { harnessElRefs, moreElRefs, props, context } = this
     let isMirror = isDragging || isResizing || isDateSelecting
@@ -193,7 +196,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           }
 
           let instanceId = seg.eventRange.instance.instanceId
-          let isVisible = isMirror || (!isForcedInvisible[instanceId] && hcoords && top !== null)
+          let isVisible = isMirror || Boolean(!isForcedInvisible[instanceId] && hcoords && top !== null)
           let hStyle = coordsToCss(hcoords, context.isRtl)
 
           return (
