@@ -213,10 +213,8 @@ describe('timeline event resizing', () => {
             isTouch: true,
             end: timelineGridWrapper.getPoint('b', '2015-11-28T07:00:00'),
             callback() {
-              setTimeout(() => { // for next test. won't ignore mousedown
-                expect(resizeSpy).toHaveBeenCalled()
-                done()
-              }, 500)
+              expect(resizeSpy).toHaveBeenCalled()
+              done()
             },
           })
         },

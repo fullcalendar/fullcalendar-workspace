@@ -33,10 +33,10 @@ export function setScrollFromLeftEdge(el: HTMLElement, scrollLeft: number) {
   if (computedStyles.direction === 'rtl') {
     switch (getRtlScrollSystem()) {
       case 'reverse':
-        scrollLeft = el.scrollWidth - scrollLeft - el.clientWidth
+        scrollLeft = el.scrollWidth - scrollLeft
         break
       case 'negative':
-        scrollLeft = -(el.scrollWidth - scrollLeft - el.clientWidth)
+        scrollLeft = -(el.scrollWidth - scrollLeft)
         break
     }
   }
