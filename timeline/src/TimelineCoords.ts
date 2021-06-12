@@ -139,11 +139,11 @@ export function coordToCss(
 ): { left: CssDimValue, right: CssDimValue } {
   if (hcoord === null) {
     return { left: '', right: '' }
-  } else if (isRtl) {
-    return { right: hcoord, left: '' }
-  } else {
-    return { left: hcoord, right: '' }
   }
+  if (isRtl) {
+    return { right: hcoord, left: '' }
+  }
+  return { left: hcoord, right: '' }
 }
 
 export function coordsToCss(
@@ -152,9 +152,9 @@ export function coordsToCss(
 ): { left: CssDimValue, right: CssDimValue } {
   if (!hcoords) {
     return { left: '', right: '' }
-  } else if (isRtl) {
-    return { right: hcoords.start, left: -hcoords.end }
-  } else {
-    return { left: hcoords.start, right: -hcoords.end }
   }
+  if (isRtl) {
+    return { right: hcoords.start, left: -hcoords.end }
+  }
+  return { left: hcoords.start, right: -hcoords.end }
 }

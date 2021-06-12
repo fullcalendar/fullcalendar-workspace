@@ -14,7 +14,7 @@ export interface TimelineSegPlacement {
 export function computeSegHCoords(
   segs: TimelineLaneSeg[],
   minWidth: number,
-  timelineCoords: TimelineCoords | null
+  timelineCoords: TimelineCoords | null,
 ): SegSpan[] {
   let hcoords: SegSpan[] = []
 
@@ -46,7 +46,7 @@ export function computeFgSegPlacements(
   let segInputs: SegEntry[] = []
   let crudePlacements: TimelineSegPlacement[] = [] // when we don't know dims
 
-  for (let i = 0; i < segs.length; i++) {
+  for (let i = 0; i < segs.length; i += 1) {
     let seg = segs[i]
     let instanceId = seg.eventRange.instance.instanceId
     let height = eventInstanceHeights[instanceId]

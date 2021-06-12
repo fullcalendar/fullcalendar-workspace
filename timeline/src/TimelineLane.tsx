@@ -207,7 +207,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
               style={{
                 visibility: isVisible ? ('' as any) : 'hidden',
                 top: top || 0,
-                ...hStyle
+                ...hStyle,
               }}
             >
               <TimelineEvent
@@ -241,13 +241,11 @@ function buildMirrorPlacements(
     return []
   }
   let topsByInstanceId = buildAbsoluteTopHash(fgPlacements) // TODO: cache this at first render?
-  return mirrorSegs.map((seg) => {
-    return {
-      seg,
-      hcoords: timelineCoords.rangeToCoords(seg),
-      top: topsByInstanceId[seg.eventRange.instance.instanceId],
-    }
-  })
+  return mirrorSegs.map((seg) => ({
+    seg,
+    hcoords: timelineCoords.rangeToCoords(seg),
+    top: topsByInstanceId[seg.eventRange.instance.instanceId],
+  }))
 }
 
 function buildAbsoluteTopHash(placements: TimelineSegPlacement[]) {
