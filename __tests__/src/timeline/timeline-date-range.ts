@@ -35,7 +35,7 @@ describe('timeline date range', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar-scheduler/issues/525
-  xit('can go back by a month', () => {
+  it('can go back by a month', () => {
     initCalendar({
       initialDate: '2019-04-23',
       initialView: 'timelineSpecial',
