@@ -10,7 +10,7 @@
     "@fullcalendar/resource-common": "workspace:~5.7.2",
     "@fullcalendar/resource-daygrid": "workspace:~5.7.2",
     "@fullcalendar/timegrid": "workspace:~5.7.2",
-    "tslib": "^2.0.3"
+    "tslib": "^2.1.0"
   },
   "main": "main.cjs.js",
   "module": "main.js",
