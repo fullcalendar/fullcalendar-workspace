@@ -39,7 +39,7 @@ export class StickyScrolling {
     private isRtl: boolean,
   ) {
     this.usingRelative =
-      !computeStickyPropVal() || // IE11
+      !getStickySupported() || // IE11
       // https://stackoverflow.com/questions/56835658/in-microsoft-edge-sticky-positioning-doesnt-work-when-combined-with-dir-rtl
       (IS_MS_EDGE && isRtl)
 
@@ -207,18 +207,20 @@ function assignStickyPositions(els: HTMLElement[], elGeoms: ElementGeom[], viewp
   })
 }
 
-// overkill now that we use the stylesheet to set it!
-// just test that the 'position' value of a div with the fc-sticky classname has the word 'sticky' in it
-function computeStickyPropVal() {
+let _isStickySupported
+
+function getStickySupported() {
+  if (_isStickySupported == null) {
+    _isStickySupported = computeStickySupported()
+  }
+  return _isStickySupported
+}
+
+function computeStickySupported() {
   let el = document.createElement('div')
-  el.className = 'fc-sticky'
+  el.style.position = 'sticky'
   document.body.appendChild(el)
   let val = window.getComputedStyle(el).position
   removeElement(el)
-
-  if (val.indexOf('sticky') !== -1) {
-    return val
-  }
-
-  return null
+  return val === 'sticky'
 }
