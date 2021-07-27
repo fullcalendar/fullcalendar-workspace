@@ -1,5 +1,6 @@
 import { CalendarWrapper } from 'fullcalendar-tests/src/lib/wrappers/CalendarWrapper'
 import { anyElsIntersect } from 'fullcalendar-tests/src/lib/dom-geom'
+import { filterVisibleEls } from 'fullcalendar-tests/src/lib/dom-misc'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
@@ -628,5 +629,70 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
     let eventTop0 = eventEls[0].getBoundingClientRect().top
     let eventTop1 = eventEls[1].getBoundingClientRect().top
     expect(Math.abs(eventTop0 - eventTop1)).toBeLessThan(1)
+  })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/6395
+  it('does not overlap events when different heights', () => {
+    let calendar = initCalendar({
+      initialDate: '2021-06-24',
+      initialView: 'resourceTimelineDay',
+      slotMinTime: '05:00',
+      resources: [
+        { id: 'a', title: 'Auditorium A' },
+      ],
+      eventContent: (arg) => ({
+        html: arg.event.title
+      }),
+      events: [
+        {
+          resourceId: 'a',
+          title: 'event1',
+          start: '2021-06-24T06:00:00+00:00',
+          end: '2021-06-24T08:00:00+00:00',
+        },
+        {
+          resourceId: 'a',
+          title: '<div><div>event 2</div><div>line 2</div></div>',
+          start: '2021-06-24T06:00:00+00:00',
+          end: '2021-06-24T08:00:00+00:00',
+        },
+
+        {
+          resourceId: 'a',
+          title: 'event 3',
+          start: '2021-06-24T09:00:00+00:00',
+          end: '2021-06-24T10:00:00+00:00',
+        },
+        {
+          resourceId: 'a',
+          title: 'event 4',
+          start: '2021-06-24T09:00:00+00:00',
+          end: '2021-06-24T10:00:00+00:00',
+        },
+        {
+          resourceId: 'a',
+          title: '<div><div>event 5</div><div>line 2</div></div>',
+          start: '2021-06-24T12:00:00+00:00',
+          end: '2021-06-25T06:00:00+00:00',
+        },
+        {
+          resourceId: 'a',
+          title: '<div><div>event 6</div><div>line 2</div></div>',
+          start: '2021-06-24T12:00:00+00:00',
+          end: '2021-06-25T06:00:00+00:00',
+        },
+        {
+          resourceId: 'a',
+          title: '<div><div>event 7</div><div>line 2</div></div>',
+          start: '2021-06-24T12:00:00+00:00',
+          end: '2021-06-25T06:00:00+00:00',
+        }
+      ],
+    })
+    let timelineGridWrapper = new TimelineViewWrapper(calendar).timelineGrid
+    let eventEls = timelineGridWrapper.getEventEls()
+    let visibleEventEls = filterVisibleEls(eventEls)
+    expect(visibleEventEls.length).toBe(7)
+    expect(anyElsIntersect(visibleEventEls)).toBe(false)
   })
 })
