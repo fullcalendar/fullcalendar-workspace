@@ -641,7 +641,7 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
         { id: 'a', title: 'Auditorium A' },
       ],
       eventContent: (arg) => ({
-        html: arg.event.title
+        html: arg.event.title,
       }),
       events: [
         {
@@ -686,7 +686,7 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
           title: '<div><div>event 7</div><div>line 2</div></div>',
           start: '2021-06-24T12:00:00+00:00',
           end: '2021-06-25T06:00:00+00:00',
-        }
+        },
       ],
     })
     let timelineGridWrapper = new TimelineViewWrapper(calendar).timelineGrid
