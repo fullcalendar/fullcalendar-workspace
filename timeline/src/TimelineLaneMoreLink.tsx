@@ -65,7 +65,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
           </Fragment>
         )}
       >
-        {(rootElRef, classNames, innerElRef, innerContent, handleClick) => (
+        {(rootElRef, classNames, innerElRef, innerContent, handleClick, isExpanded, popoverId) => (
           <a
             ref={(el: HTMLElement | null) => {
               setRef(rootElRef, el) // for MoreLinkRoot
@@ -79,6 +79,8 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
               ...hStyle,
             }}
             onClick={handleClick}
+            aria-expanded={isExpanded}
+            aria-controls={popoverId}
           >
             <div ref={innerElRef} className="fc-timeline-more-link-inner fc-sticky">
               {innerContent}
