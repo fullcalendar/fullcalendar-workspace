@@ -1,6 +1,6 @@
 import {
   createElement, BaseComponent, DateRange, DateMarker, getDateMeta, getSlotClassNames,
-  buildNavLinkData, buildClassNameNormalizer, MountHook,
+  buildNavLinkAttrs, buildClassNameNormalizer, MountHook,
   getDayClassNames, DateProfile, memoizeObjArg,
 } from '@fullcalendar/common'
 import { TimelineDateProfile, TimelineHeaderCell } from './timeline-date-profile'
@@ -42,9 +42,9 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
       classNames.push('fc-timeline-slot-em')
     }
 
-    let navLinkData = (options.navLinks && cell.rowUnit && cell.rowUnit !== 'time')
-      ? buildNavLinkData(cell.date, cell.rowUnit)
-      : null
+    let navLinkAttrs = (cell.rowUnit && cell.rowUnit !== 'time')
+      ? buildNavLinkAttrs(context, cell.date, cell.rowUnit)
+      : {}
 
     let hookProps = this.refineHookProps({
       level: props.rowLevel,
@@ -69,7 +69,7 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
               <TimelineHeaderThInner
                 hookProps={hookProps}
                 isSticky={props.isSticky}
-                navLinkData={navLinkData}
+                navLinkAttrs={navLinkAttrs}
               />
             </div>
           </th>
