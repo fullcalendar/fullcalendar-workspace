@@ -20,7 +20,7 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
     let spec = props.group.spec
 
     return (
-      <tr>
+      <tr role='row'>
         <RenderHook<ColCellContentArg>
           hookProps={hookProps}
           classNames={spec.labelClassNames}
@@ -30,8 +30,10 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
           willUnmount={spec.labelWillUnmount}
         >
           {(rootElRef, classNames, innerElRef, innerContent) => (
-            <td
+            <th
               ref={rootElRef}
+              role='columnheader'
+              scope='colgroup'
               colSpan={props.spreadsheetColCnt}
               className={
                 [
@@ -54,7 +56,7 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
                   </span>
                 </div>
               </div>
-            </td>
+            </th>
           )}
         </RenderHook>
       </tr>

@@ -19,6 +19,7 @@ export class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesPr
     return (
       <table
         ref={this.rootElRef}
+        aria-hidden={true}
         className={'fc-scrollgrid-sync-table ' + context.theme.getClass('table')}
         style={{
           minWidth: props.tableMinWidth,

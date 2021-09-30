@@ -6,6 +6,12 @@
     cursor: col-resize;
   }
 
+  & .fc-resource-group {
+    // make it look less like a <th>
+    font-weight: inherit;
+    text-align: inherit;
+  }
+
 
   // will match horizontal groups in the datagrid AND group lanes in the timeline area
   & .fc-resource-timeline {

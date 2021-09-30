@@ -25,6 +25,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     return (
       <div className="fc-timeline-slots" ref={this.rootElRef}>
         <table
+          aria-hidden={true}
           className={context.theme.getClass('table')}
           style={{
             minWidth: props.tableMinWidth,
