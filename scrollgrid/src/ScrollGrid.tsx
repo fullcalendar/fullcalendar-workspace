@@ -158,6 +158,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     return (
       <tr
         key={sectionConfig.key}
+        role='presentation'
         className={getSectionClassNames(sectionConfig, this.props.liquid).join(' ')}
       >
         {sectionConfig.chunks.map((chunkConfig, i) => this.renderChunk(
@@ -252,6 +253,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
       {
         key: chunkConfig.key,
         ref: this.chunkElRefs.createRef(index) as any,
+        role: 'presentation',
       },
       content
     )
