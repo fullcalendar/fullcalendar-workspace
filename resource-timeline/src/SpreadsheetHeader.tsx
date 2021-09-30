@@ -39,6 +39,7 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
               <th
                 ref={rootElRef}
                 role='columnheader'
+                scope='colgroup'
                 colSpan={colSpecs.length}
                 className={[
                   'fc-datagrid-cell',

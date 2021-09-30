@@ -32,6 +32,10 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
           {(rootElRef, classNames, innerElRef, innerContent) => (
             <th
               ref={rootElRef}
+              // ARIA TODO: not really a columnheader
+              // extremely tedious to make this aria-compliant,
+              // to assign multiple headers to each cell
+              // https://www.w3.org/WAI/tutorials/tables/multi-level/
               role='columnheader'
               scope='colgroup'
               colSpan={props.spreadsheetColCnt}
