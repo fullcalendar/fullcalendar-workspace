@@ -123,6 +123,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     }
 
     const isBuggy = !getCanVGrowWithinCell() // see NOTE in SimpleScrollGrid
+    const roleAttrs = { role: 'rowgroup' }
 
     return createElement(
       'table',
@@ -132,10 +133,10 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
         className: classNames.join(' '),
       },
       renderMacroColGroup(colGroupStats, shrinkWidths),
-      Boolean(!isBuggy && headSectionNodes.length) && createElement('thead', {}, ...headSectionNodes),
-      Boolean(!isBuggy && bodySectionNodes.length) && createElement('tbody', {}, ...bodySectionNodes),
-      Boolean(!isBuggy && footSectionNodes.length) && createElement('tfoot', {}, ...footSectionNodes),
-      isBuggy && createElement('tbody', {}, ...headSectionNodes, ...bodySectionNodes, ...footSectionNodes),
+      Boolean(!isBuggy && headSectionNodes.length) && createElement('thead', roleAttrs, ...headSectionNodes),
+      Boolean(!isBuggy && bodySectionNodes.length) && createElement('tbody', roleAttrs, ...bodySectionNodes),
+      Boolean(!isBuggy && footSectionNodes.length) && createElement('tfoot', roleAttrs, ...footSectionNodes),
+      isBuggy && createElement('tbody', roleAttrs, ...headSectionNodes, ...bodySectionNodes, ...footSectionNodes),
     )
   }
 
