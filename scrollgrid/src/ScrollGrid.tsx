@@ -108,26 +108,27 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     let footSectionNodes: VNode[] = []
 
     while (configI < configCnt && (currentConfig = sectionConfigs[configI]).type === 'header') {
-      headSectionNodes.push(this.renderSection(currentConfig, configI, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights))
+      headSectionNodes.push(this.renderSection(currentConfig, configI, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights, true))
       configI += 1
     }
 
     while (configI < configCnt && (currentConfig = sectionConfigs[configI]).type === 'body') {
-      bodySectionNodes.push(this.renderSection(currentConfig, configI, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights))
+      bodySectionNodes.push(this.renderSection(currentConfig, configI, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights, false))
       configI += 1
     }
 
     while (configI < configCnt && (currentConfig = sectionConfigs[configI]).type === 'footer') {
-      footSectionNodes.push(this.renderSection(currentConfig, configI, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights))
+      footSectionNodes.push(this.renderSection(currentConfig, configI, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights, true))
       configI += 1
     }
 
-    let isBuggy = !getCanVGrowWithinCell() // see NOTE in SimpleScrollGrid
+    const isBuggy = !getCanVGrowWithinCell() // see NOTE in SimpleScrollGrid
 
     return createElement(
       'table',
       {
         ref: props.elRef,
+        role: 'table',
         className: classNames.join(' '),
       },
       renderMacroColGroup(colGroupStats, shrinkWidths),
@@ -144,6 +145,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     colGroupStats: ColGroupStat[],
     microColGroupNodes: VNode[],
     sectionRowMaxHeights: number[][][],
+    isHeader: boolean,
   ): VNode {
     if ('outerContent' in sectionConfig) {
       return (
@@ -154,7 +156,10 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     }
 
     return (
-      <tr key={sectionConfig.key} className={getSectionClassNames(sectionConfig, this.props.liquid).join(' ')}>
+      <tr
+        key={sectionConfig.key}
+        className={getSectionClassNames(sectionConfig, this.props.liquid).join(' ')}
+      >
         {sectionConfig.chunks.map((chunkConfig, i) => this.renderChunk(
           sectionConfig,
           sectionIndex,
@@ -163,6 +168,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
           chunkConfig,
           i,
           (sectionRowMaxHeights[sectionIndex] || [])[i] || [],
+          isHeader,
         ))}
       </tr>
     )
@@ -176,6 +182,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     chunkConfig: ScrollGridChunkConfig,
     chunkIndex: number,
     rowHeights: number[],
+    isHeader: boolean,
   ): VNode {
     if ('outerContent' in chunkConfig) {
       return (
@@ -213,7 +220,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
       syncRowHeights: Boolean(sectionConfig.syncRowHeights),
       rowSyncHeights: rowHeights,
       reportRowHeightChange: this.handleRowHeightChange,
-    })
+    }, isHeader)
 
     let overflowX: ClippedOverflowValue =
       forceXScrollbars ? (isLastSection ? 'scroll' : 'scroll-hidden') :
@@ -240,10 +247,13 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
       </ClippedScroller>
     )
 
-    return (
-      <td key={chunkConfig.key} ref={this.chunkElRefs.createRef(index)}>
-        {content}
-      </td>
+    return createElement(
+      isHeader ? 'th' : 'td',
+      {
+        key: chunkConfig.key,
+        ref: this.chunkElRefs.createRef(index) as any,
+      },
+      content
     )
   }
 

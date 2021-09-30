@@ -159,7 +159,7 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
     }
 
     return (
-      <tr key={key}>
+      <tr key={key} role='row'>
         {renderIntro && renderIntro(key)}
         {cells}
       </tr>
