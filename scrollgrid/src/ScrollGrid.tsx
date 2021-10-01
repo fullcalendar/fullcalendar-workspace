@@ -150,7 +150,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
       'table',
       {
         ref: props.elRef,
-        role: 'table',
+        role: 'grid',
         className: classNames.join(' '),
       },
       renderMacroColGroup(colGroupStats, shrinkWidths),

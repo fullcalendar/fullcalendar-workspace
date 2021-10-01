@@ -38,7 +38,7 @@ export class SpreadsheetIndividualCell extends BaseComponent<SpreadsheetIndividu
         {(rootElRef) => (
           <td
             ref={rootElRef}
-            role="cell"
+            role="gridcell"
             data-resource-id={props.resource.id}
             className={[
               'fc-datagrid-cell',
