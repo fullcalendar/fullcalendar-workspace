@@ -20,7 +20,7 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
     let spec = props.group.spec
 
     return (
-      <tr role='row'>
+      <tr role="row">
         <RenderHook<ColCellContentArg>
           hookProps={hookProps}
           classNames={spec.labelClassNames}
@@ -36,8 +36,8 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
               // extremely tedious to make this aria-compliant,
               // to assign multiple headers to each cell
               // https://www.w3.org/WAI/tutorials/tables/multi-level/
-              role='columnheader'
-              scope='colgroup'
+              role="columnheader"
+              scope="colgroup"
               colSpan={props.spreadsheetColCnt}
               className={
                 [

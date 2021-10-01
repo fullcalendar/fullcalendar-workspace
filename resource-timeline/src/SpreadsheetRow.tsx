@@ -20,7 +20,7 @@ export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ViewConte
     let resourceFields = buildResourceFields(resource) // slightly inefficient. already done up the call stack
 
     return (
-      <tr role='row'>
+      <tr role="row">
         {props.colSpecs.map((colSpec, i) => {
           let rowSpan = rowSpans[i]
 

@@ -18,7 +18,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         {(elRef: Ref<HTMLTableCellElement>, customClassNames: string[], dataAttrs, innerElRef, innerContent: ComponentChildren) => (
           <th
             ref={elRef}
-            role='columnheader'
+            role="columnheader"
             className={['fc-col-header-cell', 'fc-resource'].concat(customClassNames).join(' ')}
             colSpan={props.colSpan}
             {...dataAttrs}

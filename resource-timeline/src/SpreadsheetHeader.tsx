@@ -27,7 +27,7 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
     if (superHeaderRendering) {
       let rowInnerHeight = rowInnerHeights.shift()
       rowNodes.push(
-        <tr key="row-super" role='row'>
+        <tr key="row-super" role="row">
           <RenderHook
             hookProps={hookProps}
             classNames={superHeaderRendering.headerClassNames}
@@ -38,8 +38,8 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
             {(rootElRef, classNames, innerElRef, innerContent) => (
               <th
                 ref={rootElRef}
-                role='columnheader'
-                scope='colgroup'
+                role="columnheader"
+                scope="colgroup"
                 colSpan={colSpecs.length}
                 className={[
                   'fc-datagrid-cell',
@@ -60,7 +60,7 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
 
     let rowInnerHeight = rowInnerHeights.shift()
     rowNodes.push(
-      <tr key="row" role='row'>
+      <tr key="row" role="row">
         {colSpecs.map((colSpec, i) => {
           let isLastCol = i === (colSpecs.length - 1)
 
@@ -77,7 +77,7 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
               {(rootElRef, classNames, innerElRef, innerContent) => (
                 <th
                   ref={rootElRef}
-                  role='columnheader'
+                  role="columnheader"
                   className={['fc-datagrid-cell'].concat(classNames).join(' ')}
                 >
                   <div className="fc-datagrid-cell-frame" style={{ height: rowInnerHeight }}>

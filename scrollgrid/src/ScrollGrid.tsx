@@ -108,17 +108,38 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     let footSectionNodes: VNode[] = []
 
     while (configI < configCnt && (currentConfig = sectionConfigs[configI]).type === 'header') {
-      headSectionNodes.push(this.renderSection(currentConfig, configI, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights, true))
+      headSectionNodes.push(this.renderSection(
+        currentConfig,
+        configI,
+        colGroupStats,
+        microColGroupNodes,
+        state.sectionRowMaxHeights,
+        true,
+      ))
       configI += 1
     }
 
     while (configI < configCnt && (currentConfig = sectionConfigs[configI]).type === 'body') {
-      bodySectionNodes.push(this.renderSection(currentConfig, configI, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights, false))
+      bodySectionNodes.push(this.renderSection(
+        currentConfig,
+        configI,
+        colGroupStats,
+        microColGroupNodes,
+        state.sectionRowMaxHeights,
+        false,
+      ))
       configI += 1
     }
 
     while (configI < configCnt && (currentConfig = sectionConfigs[configI]).type === 'footer') {
-      footSectionNodes.push(this.renderSection(currentConfig, configI, colGroupStats, microColGroupNodes, state.sectionRowMaxHeights, true))
+      footSectionNodes.push(this.renderSection(
+        currentConfig,
+        configI,
+        colGroupStats,
+        microColGroupNodes,
+        state.sectionRowMaxHeights,
+        true,
+      ))
       configI += 1
     }
 
@@ -159,7 +180,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     return (
       <tr
         key={sectionConfig.key}
-        role='presentation'
+        role="presentation"
         className={getSectionClassNames(sectionConfig, this.props.liquid).join(' ')}
       >
         {sectionConfig.chunks.map((chunkConfig, i) => this.renderChunk(
@@ -256,7 +277,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
         ref: this.chunkElRefs.createRef(index) as any,
         role: 'presentation',
       },
-      content
+      content,
     )
   }
 

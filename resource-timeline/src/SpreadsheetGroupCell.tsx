@@ -32,7 +32,7 @@ export class SpreadsheetGroupCell extends BaseComponent<SpreadsheetGroupCellProp
           // TODO: make data-attr with group value?
           <td
             ref={rootElRef}
-            role='cell'
+            role="cell"
             rowSpan={props.rowSpan}
             className={['fc-datagrid-cell', 'fc-resource-group'].concat(classNames).join(' ')}
           >
