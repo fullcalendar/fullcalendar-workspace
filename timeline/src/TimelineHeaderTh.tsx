@@ -1,7 +1,7 @@
 import {
   createElement, BaseComponent, DateRange, DateMarker, getDateMeta, getSlotClassNames,
   buildNavLinkAttrs, buildClassNameNormalizer, MountHook,
-  getDayClassNames, DateProfile, memoizeObjArg,
+  getDayClassNames, DateProfile, memoizeObjArg, ViewContext, memoize,
 } from '@fullcalendar/common'
 import { TimelineDateProfile, TimelineHeaderCell } from './timeline-date-profile'
 import { TimelineHeaderThInner, refineHookProps, HookProps } from './TimelineHeaderThInner'
@@ -20,6 +20,7 @@ export interface TimelineHeaderThProps {
 export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
   refineHookProps = memoizeObjArg(refineHookProps)
   normalizeClassNames = buildClassNameNormalizer<HookProps>()
+  buildCellNavLinkAttrs = memoize(buildCellNavLinkAttrs)
 
   render() {
     let { props, context } = this
@@ -41,10 +42,6 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
     if (cell.isWeekStart) {
       classNames.push('fc-timeline-slot-em')
     }
-
-    let navLinkAttrs = (cell.rowUnit && cell.rowUnit !== 'time')
-      ? buildNavLinkAttrs(context, cell.date, cell.rowUnit)
-      : {}
 
     let hookProps = this.refineHookProps({
       level: props.rowLevel,
@@ -69,7 +66,7 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
               <TimelineHeaderThInner
                 hookProps={hookProps}
                 isSticky={props.isSticky}
-                navLinkAttrs={navLinkAttrs}
+                navLinkAttrs={this.buildCellNavLinkAttrs(context, cell.date, cell.rowUnit)}
               />
             </div>
           </th>
@@ -77,4 +74,10 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
       </MountHook>
     )
   }
+}
+
+function buildCellNavLinkAttrs(context: ViewContext, cellDate: DateMarker, rowUnit: string): object {
+  return (rowUnit && rowUnit !== 'time')
+    ? buildNavLinkAttrs(context, cellDate, rowUnit)
+    : {}
 }
