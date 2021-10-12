@@ -126,13 +126,13 @@ describe('eventMaxStack', () => {
           resourceId: 'a',
           title: 'C',
           start: '2021-07-29T12:00:00+00:00',
-        }
+        },
       ],
       resources: [
         {
           id: 'a',
           title: 'Auditorium A',
-        }
+        },
       ],
     })
     let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
