@@ -79,7 +79,7 @@ export function computeFgSegPlacements(
   let hiddenPlacements = hiddenEntries.map((entry) => ({
     seg: segs[entry.index],
     hcoords: entry.span,
-    top: 0,
+    top: null,
   } as TimelineSegPlacement))
 
   let hiddenGroups = groupIntersectingEntries(hiddenEntries)

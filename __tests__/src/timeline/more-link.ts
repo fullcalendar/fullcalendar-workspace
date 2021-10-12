@@ -1,3 +1,4 @@
+import { filterVisibleEls } from 'fullcalendar-tests/src/lib/dom-misc'
 import { ResourceTimelineGridWrapper } from '../lib/wrappers/ResourceTimelineGridWrapper'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
@@ -101,5 +102,42 @@ describe('eventMaxStack', () => {
       expect(ResourceTimelineGridWrapper.getEventElInfo(moreEventEls[0]).title).toBe('3')
       done()
     })
+  })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/6543
+  it('does not display hidden events', () => {
+    let calendar = initCalendar({
+      initialView: 'resourceTimelineDay',
+      eventOrder: 'title',
+      initialDate: '2021-07-29',
+      scrollTime: '11:00',
+      events: [
+        {
+          resourceId: 'a',
+          title: 'A',
+          start: '2021-07-29T12:00:00+00:00'
+        },
+        {
+          resourceId: 'a',
+          title: 'B',
+          start: '2021-07-29T12:00:00+00:00'
+        },
+        {
+          resourceId: 'a',
+          title: 'C',
+          start: '2021-07-29T12:00:00+00:00'
+        }
+      ],
+      resources: [
+        {
+          id: 'a',
+          title: 'Auditorium A'
+        }
+      ]
+    })
+    let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
+    let eventEls = timelineGrid.getEventEls()
+    let visibleEventEls = filterVisibleEls(eventEls)
+    expect(visibleEventEls.length).toBe(2)
   })
 })
