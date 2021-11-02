@@ -21,6 +21,7 @@
   "devDependencies": {
     "@types/jquery": "2.0.47",
     "awesome-typescript-loader": "^3.5.0",
+    "check-node-version": "^4.1.0",
     "components-jqueryui": "^1.12.1",
     "css-loader": "^0.28.11",
     "del": "^2.2.0",
@@ -57,8 +58,8 @@
     "karma-jasmine": "^1.1.1",
     "karma-phantomjs-launcher": "^1.0.1",
     "karma-sourcemap-loader": "^0.3.7",
-    "native-promise-only": "^0.8.1",
     "moment": "^2.20.1",
+    "native-promise-only": "^0.8.1",
     "node-sass": "^4.14.1",
     "phantomjs-prebuilt": "^2.1.7",
     "sass-loader": "^6.0.7",
@@ -83,12 +84,10 @@
   ],
   "scripts": {
     "clean": "gulp clean",
-    "dist": "gulp dist",
+    "dist": "npm run check-env && gulp dist",
     "lint": "gulp lint-and-example-repos",
     "test": "gulp test:single",
-    "test-side-effects": "./bin/test-side-effects.sh"
-  },
-  "engines": {
-    "node": "^11.0.0"
+    "test-side-effects": "./bin/test-side-effects.sh",
+    "check-env": "check-node-version --node 11"
   }
 }
