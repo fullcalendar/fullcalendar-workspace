@@ -16,8 +16,8 @@
   "dependencies": {
     "fullcalendar": "~3.10.0"
   },
-  "version": "0.0.0",
-  "releaseDate": "1970-01-01",
+  "version": "1.10.4",
+  "releaseDate": "2021-11-02",
   "devDependencies": {
     "@types/jquery": "2.0.47",
     "awesome-typescript-loader": "^3.5.0",
