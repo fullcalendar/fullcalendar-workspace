@@ -4,6 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import bootstrapPlugin from '@fullcalendar/bootstrap'
+import bootstrap5Plugin from '@fullcalendar/bootstrap5'
 import googleCalendarPlugin from '@fullcalendar/google-calendar'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import adaptivePlugin from '@fullcalendar/adaptive'
@@ -19,6 +20,7 @@ globalPlugins.push(
   timeGridPlugin,
   listPlugin,
   bootstrapPlugin,
+  bootstrap5Plugin,
   googleCalendarPlugin,
   scrollGridPlugin,
   adaptivePlugin,
