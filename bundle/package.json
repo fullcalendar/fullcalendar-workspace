@@ -1,13 +1,13 @@
 {
   "name": "fullcalendar-scheduler",
-  "version": "5.10.1",
+  "version": "5.10.2",
   "title": "FullCalendar Premium Bundle",
   "description": "An easily consumable combination of standard and premium plugins",
   "docs": "https://fullcalendar.io/docs/initialize-globals",
   "devDependencies": {
     "@fullcalendar/adaptive": "workspace:~5.10.1",
     "@fullcalendar/bootstrap": "workspace:~5.10.1",
-    "@fullcalendar/bootstrap5": "workspace:~5.10.1",
+    "@fullcalendar/bootstrap5": "workspace:~5.10.2",
     "@fullcalendar/core": "workspace:~5.10.1",
     "@fullcalendar/daygrid": "workspace:~5.10.1",
     "@fullcalendar/google-calendar": "workspace:~5.10.1",
