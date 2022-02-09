@@ -36,7 +36,7 @@ export * from '@fullcalendar/interaction'
 export * from '@fullcalendar/daygrid'
 export * from '@fullcalendar/timegrid'
 export * from '@fullcalendar/list'
-export * from '@fullcalendar/bootstrap'
+export * from '@fullcalendar/bootstrap' // bootstrap5 not exported
 export * from '@fullcalendar/google-calendar'
 export * from '@fullcalendar/scrollgrid'
 export * from '@fullcalendar/adaptive'
