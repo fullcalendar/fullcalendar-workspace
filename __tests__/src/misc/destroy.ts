@@ -1,5 +1,5 @@
 import { ListenerCounter } from 'fullcalendar-tests/src/lib/ListenerCounter'
-import { primeVDomContainer } from 'fullcalendar-tests/src/lib/vdom-misc'
+import { prepareStandardListeners } from 'fullcalendar-tests/src/lib/vdom-misc'
 
 describe('destroy', () => {
   pushOptions({
@@ -22,8 +22,8 @@ describe('destroy', () => {
   }, () => {
     it('unbinds all handlers', (done) => {
       setTimeout(() => { // other tests might still be cleaning up after their callbacks
+        const standardElListenerCount = prepareStandardListeners()
         const $el = $('<div />').appendTo('body')
-        primeVDomContainer($el[0])
 
         const windowListenerCounter = new ListenerCounter(window)
         const docListenerCounter = new ListenerCounter(document)
@@ -46,7 +46,7 @@ describe('destroy', () => {
 
           expect(windowListenerCounter.stopWatching()).toBe(0)
           expect(docListenerCounter.stopWatching()).toBe(0)
-          expect(elListenerCounter.stopWatching()).toBe(0)
+          expect(elListenerCounter.stopWatching()).toBe(standardElListenerCount)
 
           $el.remove()
           done()

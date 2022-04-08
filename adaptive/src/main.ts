@@ -1,7 +1,7 @@
 import {
   createPlugin,
   findElements,
-  flushToDom,
+  flushSync,
   CalendarContext,
   removeExact,
   config,
@@ -67,12 +67,11 @@ function handleBeforePrint() {
     context.emitter.trigger('_beforeprint')
   }
 
-  flushToDom() // because printing grabs DOM immediately after
-
-  killHorizontalScrolling(scrollEls, scrollCoords)
-  undoFuncs.push(() => restoreScrollerCoords(scrollEls, scrollCoords))
-
-  undoFuncs.push(freezeScrollgridWidths())
+  flushSync(() => { // because printing grabs DOM immediately after
+    killHorizontalScrolling(scrollEls, scrollCoords)
+    undoFuncs.push(() => restoreScrollerCoords(scrollEls, scrollCoords))
+    undoFuncs.push(freezeScrollgridWidths())
+  })
 }
 
 function handleAfterPrint() {
@@ -80,11 +79,11 @@ function handleAfterPrint() {
     context.emitter.trigger('_afterprint')
   }
 
-  flushToDom() // guarantee that there are real scrollers
-
-  while (undoFuncs.length) {
-    undoFuncs.shift()()
-  }
+  flushSync(() => { // guarantee that there are real scrollers
+    while (undoFuncs.length) {
+      undoFuncs.shift()()
+    }
+  })
 }
 
 // scrollgrid widths
