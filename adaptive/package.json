@@ -1,12 +1,12 @@
 {
   "name": "@fullcalendar/adaptive",
-  "version": "5.10.1",
+  "version": "5.11.0",
   "title": "FullCalendar Adaptive Plugin",
   "description": "Optimizes FullCalendar for print (and soon other types of devices)",
   "docs": "https://fullcalendar.io/docs/scheduler",
   "dependencies": {
-    "@fullcalendar/common": "workspace:~5.10.1",
-    "@fullcalendar/premium-common": "workspace:~5.10.1",
+    "@fullcalendar/common": "workspace:~5.11.0",
+    "@fullcalendar/premium-common": "workspace:~5.11.0",
     "tslib": "^2.1.0"
   },
   "main": "main.cjs.js",
