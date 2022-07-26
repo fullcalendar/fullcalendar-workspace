@@ -16,8 +16,10 @@ import {
   isColPropsEqual,
   getScrollbarWidths,
   memoizeArraylike,
+  MemoiseArrayFunc,
   collectFromHash,
   memoizeHashlike,
+  MemoizeHashFunc,
   ScrollGridChunkConfig,
   getCanVGrowWithinCell,
   config,
@@ -57,9 +59,9 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
   private scrollerElRefs = new RefMap<HTMLElement>(this._handleScrollerEl.bind(this))
 
   private chunkElRefs = new RefMap<HTMLTableCellElement>(this._handleChunkEl.bind(this))
-  private getStickyScrolling = memoizeArraylike(initStickyScrolling, null, destroyStickyScrolling)
-  private getScrollSyncersBySection = memoizeHashlike(initScrollSyncer.bind(this, true), null, destroyScrollSyncer)
-  private getScrollSyncersByColumn = memoizeHashlike(initScrollSyncer.bind(this, false), null, destroyScrollSyncer)
+  private getStickyScrolling: MemoiseArrayFunc<[HTMLElement, boolean], StickyScrolling>
+  private getScrollSyncersBySection: MemoizeHashFunc<HTMLElement[], ScrollSyncer>
+  private getScrollSyncersByColumn: MemoizeHashFunc<HTMLElement[], ScrollSyncer>
   private stickyScrollings: StickyScrolling[] = []
   private scrollSyncersBySection: { [sectionI: string]: ScrollSyncer } = {}
   private scrollSyncersByColumn: { [columnI: string]: ScrollSyncer } = {}
@@ -282,6 +284,10 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
   }
 
   componentDidMount() {
+    this.getStickyScrolling = memoizeArraylike(initStickyScrolling, null, destroyStickyScrolling)
+    this.getScrollSyncersBySection = memoizeHashlike(initScrollSyncer.bind(this, true), null, destroyScrollSyncer)
+    this.getScrollSyncersByColumn = memoizeHashlike(initScrollSyncer.bind(this, false), null, destroyScrollSyncer)
+
     this.updateScrollSyncers()
     this.handleSizing(false)
 
