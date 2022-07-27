@@ -1,14 +1,14 @@
 {
   "name": "@fullcalendar/resource-daygrid",
-  "version": "5.11.0",
+  "version": "5.11.2",
   "title": "FullCalendar Resource Day Grid Plugin",
   "description": "Displays events in individual columns for days and resources",
   "docs": "https://fullcalendar.io/docs/resource-daygrid-view",
   "dependencies": {
-    "@fullcalendar/common": "workspace:~5.11.0",
-    "@fullcalendar/daygrid": "workspace:~5.11.0",
-    "@fullcalendar/premium-common": "workspace:~5.11.0",
-    "@fullcalendar/resource-common": "workspace:~5.11.0",
+    "@fullcalendar/common": "workspace:~5.11.2",
+    "@fullcalendar/daygrid": "workspace:~5.11.2",
+    "@fullcalendar/premium-common": "workspace:~5.11.2",
+    "@fullcalendar/resource-common": "workspace:~5.11.2",
     "tslib": "^2.1.0"
   },
   "main": "main.cjs.js",
