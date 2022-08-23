@@ -610,14 +610,14 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
         { start: '2018-12-13T00:00:00' },
         { start: '2018-12-13T00:00:00' },
         { start: '2018-12-13T00:00:00' },
-      ]
+      ],
     })
     let timelineViewWrapper = new TimelineViewWrapper(calendar)
     let scrollEl = timelineViewWrapper.getBodyScrollerEl()
     let gridEl = timelineViewWrapper.timelineGrid.el
     expect(
       gridEl.offsetHeight - // should be be bigger than scroll height...
-      scrollEl.offsetHeight
+      scrollEl.offsetHeight,
     ).toBeGreaterThan(10) // ...by more than this
   })
 
