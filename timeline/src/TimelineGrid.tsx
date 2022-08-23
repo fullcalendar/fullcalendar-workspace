@@ -73,6 +73,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
                 eventDrag={props.eventDrag}
                 eventResize={props.eventResize}
                 timelineCoords={state.coords}
+                syncParentMinHeight={true}
               />
               {(options.nowIndicator && state.coords && state.coords.isDateInRange(nowDate)) && (
                 <div className="fc-timeline-now-indicator-container">
