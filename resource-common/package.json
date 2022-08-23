@@ -1,12 +1,12 @@
 {
   "name": "@fullcalendar/resource-common",
-  "version": "5.11.2",
+  "version": "5.11.3",
   "title": "FullCalendar Resources Common Plugin",
   "description": "Offers base support for resources. Required for all resource-related plugins.",
   "docs": "https://fullcalendar.io/docs/scheduler",
   "dependencies": {
-    "@fullcalendar/common": "workspace:~5.11.2",
-    "@fullcalendar/premium-common": "workspace:~5.11.2",
+    "@fullcalendar/common": "workspace:~5.11.3",
+    "@fullcalendar/premium-common": "workspace:~5.11.3",
     "tslib": "^2.1.0"
   },
   "main": "main.cjs.js",
