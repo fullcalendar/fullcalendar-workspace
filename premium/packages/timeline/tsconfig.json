@@ -1,5 +1,5 @@
 {
-  "extends":  "../../tsconfig.base",
+  "extends":  "../../../standard/tsconfig.base",
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "tsc"
@@ -8,7 +8,7 @@
     "src/**/*"
   ],
   "references": [
-    { "path": "../../packages/common" },
+    { "path": "../../../standard/packages/common" },
     { "path": "../scrollgrid" }
   ]
 }

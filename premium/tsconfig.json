@@ -1,0 +1,14 @@
+{
+  "files": [],
+  "references": [
+    { "path": "tests" },
+    { "path": "packages/bundle" },
+    { "path": "packages/resource-common" },
+    { "path": "packages/resource-daygrid" },
+    { "path": "packages/resource-timegrid" },
+    { "path": "packages/resource-timeline" },
+    { "path": "packages/scrollgrid" },
+    { "path": "packages/timeline" },
+    { "path": "packages/adaptive" }
+  ]
+}

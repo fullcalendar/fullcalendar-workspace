@@ -1,5 +1,5 @@
 {
-  "extends":  "../../tsconfig.base",
+  "extends":  "../../../standard/tsconfig.base",
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "tsc"
@@ -8,8 +8,8 @@
     "src/**/*"
   ],
   "references": [
-    { "path": "../../packages/common" },
-    { "path": "../../packages/daygrid" },
+    { "path": "../../../standard/packages/common" },
+    { "path": "../../../standard/packages/daygrid" },
     { "path": "../resource-common" }
   ]
 }

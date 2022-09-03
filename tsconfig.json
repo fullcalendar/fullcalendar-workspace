@@ -1,0 +1,8 @@
+{
+  "files": [],
+  "references": [
+    { "path": "scripts" },
+    { "path": "standard" },
+    { "path": "premium" }
+  ]
+}
