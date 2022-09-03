@@ -1,5 +1,5 @@
 {
-  "extends":  "../../../standard/tsconfig.base",
+  "extends":  "../../standard/tsconfig.base",
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "tsc"
@@ -14,11 +14,11 @@
     { "path": "../../standard/packages/timegrid" },
     { "path": "../../standard/packages/list" },
     { "path": "../../standard/packages/bootstrap" },
-    { "path": "../premium-common" },
-    { "path": "../scrollgrid" },
-    { "path": "../timeline" },
-    { "path": "../resource-daygrid" },
-    { "path": "../resource-timegrid" },
-    { "path": "../resource-timeline" }
+    { "path": "../packages/premium-common" },
+    { "path": "../packages/scrollgrid" },
+    { "path": "../packages/timeline" },
+    { "path": "../packages/resource-daygrid" },
+    { "path": "../packages/resource-timegrid" },
+    { "path": "../packages/resource-timeline" }
   ]
 }

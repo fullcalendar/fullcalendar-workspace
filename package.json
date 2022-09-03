@@ -4,11 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "types": "tsc -b",
     "whatever": "standard-script whatever 'this is cool'"
   },
   "devDependencies": {
     "@fullcalendar/standard-scripts": "*",
-    "@fullcalendar/workspace-scripts": "*"
+    "@fullcalendar/workspace-scripts": "*",
+    "typescript": "^4.8.2"
   },
   "engines": {
     "node": ">=16",

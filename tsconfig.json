@@ -1,8 +1,8 @@
 {
   "files": [],
   "references": [
-    { "path": "scripts" },
-    { "path": "standard" },
-    { "path": "premium" }
+    { "path": "./scripts" },
+    { "path": "./standard" },
+    { "path": "./premium" }
   ]
 }

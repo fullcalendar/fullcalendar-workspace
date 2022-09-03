@@ -7,7 +7,7 @@
     "workspace-script": "./bin/workspace-script"
   },
   "scripts": {
-    "check": "tsc"
+    "types": "tsc"
   },
   "devDependencies": {
     "@fullcalendar/standard-scripts": "*",
