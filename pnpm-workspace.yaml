@@ -4,6 +4,6 @@ packages:
   - 'standard/scripts'
   - 'premium/packages/*'
   - 'premium/tests'
-  - 'premium/scripts'
+  - 'scripts'
   - 'contrib/*'
   - 'examples/*'

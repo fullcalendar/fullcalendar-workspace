@@ -2,7 +2,16 @@
   "private": true,
   "name": "@fullcalendar/workspace-scripts",
   "version": "0.0.0",
+  "type": "module",
+  "bin": {
+    "workspace-script": "./bin/workspace-script"
+  },
+  "exports": {
+    "./": "./src/"
+  },
   "devDependencies": {
-    "@fullcalendar/standard-scripts": "*"
+    "@fullcalendar/standard-scripts": "*",
+    "cleye": "^1.2.1",
+    "tsx": "^3.9.0"
   }
 }

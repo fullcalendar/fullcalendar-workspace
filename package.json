@@ -7,7 +7,8 @@
     "whatever": "standard-script whatever 'this is cool'"
   },
   "devDependencies": {
-    "@fullcalendar/standard-scripts": "*"
+    "@fullcalendar/standard-scripts": "*",
+    "@fullcalendar/workspace-scripts": "*"
   },
   "engines": {
     "node": ">=16",
