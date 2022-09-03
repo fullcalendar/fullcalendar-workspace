@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@fullcalendar/root-workspace",
+  "name": "@fullcalendar/workspace",
   "version": "0.0.0",
   "type": "module",
   "scripts": {

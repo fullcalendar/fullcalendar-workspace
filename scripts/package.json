@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@fullcalendar/root-scripts",
+  "name": "@fullcalendar/workspace-scripts",
   "version": "0.0.0",
   "devDependencies": {
     "@fullcalendar/standard-scripts": "*"
