@@ -1,0 +1,9 @@
+packages:
+  - 'standard/packages/*'
+  - 'standard/tests'
+  - 'standard/scripts'
+  - 'premium/packages/*'
+  - 'premium/tests'
+  - 'premium/scripts'
+  - 'contrib/*'
+  - 'examples/*'

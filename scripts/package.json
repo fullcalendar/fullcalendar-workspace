@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "name": "@fullcalendar/root-scripts",
+  "version": "0.0.0",
+  "devDependencies": {
+    "@fullcalendar/standard-scripts": "*"
+  }
+}
