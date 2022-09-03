@@ -14,7 +14,6 @@
     "@fullcalendar/scrollgrid": "workspace:*",
     "@fullcalendar/timegrid": "workspace:*",
     "@fullcalendar/timeline": "workspace:*",
-    "fullcalendar-tests": "*",
     "jquery": "^3.4.0",
     "tslib": "^2.1.0",
     "xhr-mock": "^2.5.1"
