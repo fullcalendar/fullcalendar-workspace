@@ -6,9 +6,6 @@
   "bin": {
     "workspace-script": "./bin/workspace-script"
   },
-  "exports": {
-    "./": "./src/"
-  },
   "devDependencies": {
     "@fullcalendar/standard-scripts": "*",
     "cleye": "^1.2.1",

@@ -1,4 +1,5 @@
 import { cli } from 'cleye'
+import { outputStuff } from '@fullcalendar/standard-scripts/src/whatever'
 
 export default async function(rawArgs: string[]) {
   const argv = cli({
@@ -8,5 +9,5 @@ export default async function(rawArgs: string[]) {
     ]
   }, undefined, rawArgs)
 
-  console.log('superman argv', argv)
+  outputStuff(argv)
 }
