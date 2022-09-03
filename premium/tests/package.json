@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "fullcalendar-scheduler-tests",
+  "name": "@fullcalendar/premium-tests",
   "version": "0.0.0",
   "dependencies": {
     "@fullcalendar/core": "workspace:*",
