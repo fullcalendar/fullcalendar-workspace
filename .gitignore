@@ -1,8 +1,11 @@
 
-/*/tsconfig.tsbuildinfo
-/*/tsc
-/*/locales
-/*/*.js
-/*/*.css
-/*/*.map
-/*/*.d.ts
+node_modules
+
+/*/packages/*/tsconfig.tsbuildinfo
+/*/packages/*/tsc
+/*/packages/*/*.js
+/*/packages/*/*.css
+/*/packages/*/*.map
+/*/packages/*/*.d.ts
+# /*/packages/*/locales
+# /*/packages/core/src/locales-all.ts
