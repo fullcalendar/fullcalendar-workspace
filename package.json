@@ -2,6 +2,13 @@
   "private": true,
   "name": "@fullcalendar/root-workspace",
   "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "whatever": "standard-script whatever 'this is cool'"
+  },
+  "devDependencies": {
+    "@fullcalendar/standard-scripts": "*"
+  },
   "engines": {
     "node": ">=16",
     "pnpm": ">=7.8.0"
