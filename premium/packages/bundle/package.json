@@ -21,8 +21,8 @@
     "@fullcalendar/timegrid": "workspace:*",
     "@fullcalendar/timeline": "workspace:*"
   },
-  "main": "main.js",
-  "jsdelivr": "main.min.js",
+  "main": "tsc/main.js",
+  "types": "tsc/main.d.ts",
   "browserGlobal": "FullCalendar",
   "homepage": "https://fullcalendar.io/scheduler",
   "bugs": "https://fullcalendar.io/reporting-bugs",
