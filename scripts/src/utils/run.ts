@@ -1,44 +1,44 @@
 import * as path from 'path'
 import { cli, command } from 'cleye'
-import { CommandCliConfig, CommandConfig } from './command'
+import { ScriptCliConfig, ScriptConfig } from './script'
 
 export interface RunConfig {
-  commandDir: string
+  scriptDir: string
   bin: string
   binName: string
 }
 
 export async function run(config: RunConfig) {
-  const commandName = process.argv[2]
+  const scriptName = process.argv[2]
 
-  if (typeof commandName !== 'string') {
+  if (typeof scriptName !== 'string') {
     throw new Error('Must specify a script name.')
   }
-  if (!commandName.match(/[a-zA-Z-:]/)) {
-    throw new Error(`Script ${commandName} has invalid name.`)
+  if (!scriptName.match(/[a-zA-Z-:]/)) {
+    throw new Error(`Script ${scriptName} has invalid name.`)
   }
 
-  const commandPath = path.join(config.commandDir, commandName.replaceAll(':', '/'))
-  const commandExports = await import(commandPath)
-  const commandCliConfig: CommandCliConfig = commandExports.cliConfig || {}
+  const scriptPath = path.join(config.scriptDir, scriptName.replaceAll(':', '/'))
+  const scriptExports = await import(scriptPath)
+  const scriptCliConfig: ScriptCliConfig = scriptExports.cliConfig || {}
 
   const argv = cli({
     name: config.binName,
     commands: [
       command({
-        name: commandName,
-        ...commandCliConfig,
+        name: scriptName,
+        ...scriptCliConfig,
       })
     ]
   })
 
-  const commandConfig: CommandConfig<unknown, unknown> = {
+  const commandConfig: ScriptConfig<unknown, unknown> = {
     parameters: argv._,
     flags: argv.flags,
-    commandName: argv.command!,
+    scriptName,
     cwd: process.cwd(),
     bin: config.bin,
   }
 
-  commandExports.default(commandConfig)
+  scriptExports.default(commandConfig)
 }

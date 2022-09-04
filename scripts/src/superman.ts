@@ -1,7 +1,7 @@
 import { outputStuff } from '@fullcalendar/standard-scripts/src/whatever'
-import { CommandCliConfig, CommandConfig } from './utils/command'
+import { ScriptCliConfig, ScriptConfig } from './utils/script'
 
-export const cliConfig: CommandCliConfig = {
+export const cliConfig: ScriptCliConfig = {
   parameters: [
     '<hero>'
   ],
@@ -10,6 +10,6 @@ export const cliConfig: CommandCliConfig = {
   }
 }
 
-export default async function(config: CommandConfig<{}, {}>) {
+export default async function(config: ScriptConfig<{}, {}>) {
   outputStuff(config)
 }

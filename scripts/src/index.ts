@@ -6,7 +6,7 @@ const filePath = url.fileURLToPath(import.meta.url)
 const dirPath = path.join(filePath, '..')
 
 run({
-  commandDir: dirPath,
+  scriptDir: dirPath,
   bin: path.join(dirPath, '../bin/workspace-script'),
   binName: 'workspace-script',
 })

@@ -1,13 +1,13 @@
 
-export interface CommandCliConfig {
+export interface ScriptCliConfig {
   parameters?: string[]
   flags?: { [flag: string]: any }
 }
 
-export interface CommandConfig<Params, Flags> {
+export interface ScriptConfig<Params, Flags> {
   parameters: string[] & Params
   flags: Flags
-  commandName: string
+  scriptName: string
   cwd: string
   bin: string
 }
