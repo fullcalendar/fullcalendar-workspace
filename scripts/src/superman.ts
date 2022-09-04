@@ -1,13 +1,15 @@
-import { cli } from 'cleye'
 import { outputStuff } from '@fullcalendar/standard-scripts/src/whatever'
+import { CommandCliConfig, CommandConfig } from './utils/command'
 
-export default async function(rawArgs: string[]) {
-  const argv = cli({
-    name: 'superman',
-    parameters: [
-      '<hero>'
-    ]
-  }, undefined, rawArgs)
+export const cliConfig: CommandCliConfig = {
+  parameters: [
+    '<hero>'
+  ],
+  flags: {
+    'force': Boolean,
+  }
+}
 
-  outputStuff(argv)
+export default async function(config: CommandConfig<{}, {}>) {
+  outputStuff(config)
 }
