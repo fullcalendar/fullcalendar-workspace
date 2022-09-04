@@ -1,19 +1,5 @@
 
-node_modules
+# subrepos should define their own rules
 
-/*/packages/*/tsconfig.tsbuildinfo
-/*/packages/*/tsc
-/*/packages/*/*.js
-/*/packages/*/*.css
-/*/packages/*/*.map
-/*/packages/*/*.d.ts
-
-/*/tests/tsconfig.tsbuildinfo
-/*/tests/tsc
-/*/tests/*.js
-/*/tests/*.css
-/*/tests/*.map
-/*/tests/*.d.ts
-
-# /*/packages/*/locales
-# /*/packages/core/src/locales-all.ts
+/node_modules
+/scripts/node_modules
