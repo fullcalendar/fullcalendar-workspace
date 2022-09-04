@@ -1,5 +1,5 @@
-import 'fullcalendar-tests/src/lib/globals'
-import { DEFAULT_PLUGINS } from 'fullcalendar-tests/src/lib/install-plugins'
+import '@fullcalendar/standard-tests/src/lib/globals'
+import { DEFAULT_PLUGINS } from '@fullcalendar/standard-tests/src/lib/install-plugins'
 
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import timelinePlugin from '@fullcalendar/timeline'

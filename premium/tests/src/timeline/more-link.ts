@@ -1,4 +1,4 @@
-import { filterVisibleEls } from 'fullcalendar-tests/src/lib/dom-misc'
+import { filterVisibleEls } from '@fullcalendar/standard-tests/src/lib/dom-misc'
 import { ResourceTimelineGridWrapper } from '../lib/wrappers/ResourceTimelineGridWrapper'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 

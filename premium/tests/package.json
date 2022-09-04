@@ -12,6 +12,7 @@
     "@fullcalendar/resource-timegrid": "workspace:*",
     "@fullcalendar/resource-timeline": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*",
+    "@fullcalendar/standard-tests": "workspace:*",
     "@fullcalendar/timegrid": "workspace:*",
     "@fullcalendar/timeline": "workspace:*",
     "jquery": "^3.4.0",

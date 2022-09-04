@@ -1,4 +1,4 @@
-import { TimeGridViewWrapper } from 'fullcalendar-tests/src/lib/wrappers/TimeGridViewWrapper'
+import { TimeGridViewWrapper } from '@fullcalendar/standard-tests/src/lib/wrappers/TimeGridViewWrapper'
 
 describe('timegrid height with horizontal scrolling', () => {
   pushOptions({

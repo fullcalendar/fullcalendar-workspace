@@ -1,4 +1,4 @@
-import { waitDateSelect } from 'fullcalendar-tests/src/lib/wrappers/interaction-util'
+import { waitDateSelect } from '@fullcalendar/standard-tests/src/lib/wrappers/interaction-util'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
 
 describe('selectAllow', () => {

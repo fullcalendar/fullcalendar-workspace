@@ -1,4 +1,4 @@
-import { CalendarWrapper } from 'fullcalendar-tests/src/lib/wrappers/CalendarWrapper'
+import { CalendarWrapper } from '@fullcalendar/standard-tests/src/lib/wrappers/CalendarWrapper'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
 
 describe('timeline whole days', () => {

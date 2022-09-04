@@ -1,7 +1,7 @@
 // TODO: test isRtl?
 
 import { Draggable } from '@fullcalendar/interaction'
-import { CalendarWrapper } from 'fullcalendar-tests/src/lib/wrappers/CalendarWrapper'
+import { CalendarWrapper } from '@fullcalendar/standard-tests/src/lib/wrappers/CalendarWrapper'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
 
 describe('timeGrid-view event drag-n-drop', () => {

@@ -1,9 +1,9 @@
 import { startOfDay, findElements } from '@fullcalendar/core'
-import { ensureDate, formatIsoDay } from 'fullcalendar-tests/src/lib/datelib-utils'
-import { getBoundingRect } from 'fullcalendar-tests/src/lib/dom-geom'
-import { TimeGridWrapper } from 'fullcalendar-tests/src/lib/wrappers/TimeGridWrapper'
-import { getRectCenter, addPoints } from 'fullcalendar-tests/src/lib/geom'
-import { CalendarWrapper } from 'fullcalendar-tests/src/lib/wrappers/CalendarWrapper'
+import { ensureDate, formatIsoDay } from '@fullcalendar/standard-tests/src/lib/datelib-utils'
+import { getBoundingRect } from '@fullcalendar/standard-tests/src/lib/dom-geom'
+import { TimeGridWrapper } from '@fullcalendar/standard-tests/src/lib/wrappers/TimeGridWrapper'
+import { getRectCenter, addPoints } from '@fullcalendar/standard-tests/src/lib/geom'
+import { CalendarWrapper } from '@fullcalendar/standard-tests/src/lib/wrappers/CalendarWrapper'
 
 export class ResourceTimeGridWrapper {
   base: TimeGridWrapper
