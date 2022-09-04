@@ -1,3 +1,4 @@
+import { RunConfig } from './run'
 
 export interface SubrepoRootConfig {
   branch: string
@@ -9,4 +10,9 @@ export interface SubrepoConfig {
   copyFiles?: string[],
   generateFiles?: { [filename: string]: () => void | string }
   branchOverride?: string
+}
+
+export interface SubrepoRunConfig extends RunConfig {
+  rootDir: string
+  subrepo: string
 }

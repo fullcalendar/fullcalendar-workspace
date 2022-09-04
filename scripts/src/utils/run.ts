@@ -8,7 +8,7 @@ export interface RunConfig {
   binName: string
 }
 
-export async function run(config: RunConfig) {
+export async function run(config: RunConfig): Promise<any> {
   const scriptName = process.argv[2]
 
   if (typeof scriptName !== 'string') {
@@ -40,5 +40,5 @@ export async function run(config: RunConfig) {
     bin: config.bin,
   }
 
-  scriptExports.default(commandConfig)
+  return scriptExports.default(commandConfig)
 }
