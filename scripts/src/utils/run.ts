@@ -16,10 +16,10 @@ export async function run(config: RunConfig): Promise<any> {
     const scriptArgs = process.argv.slice(3)
 
     if (typeof scriptName !== 'string') {
-      throw new Error('Specify a script name.')
+      throw new Error('Must specify a script name')
     }
     if (!scriptName.match(/^[a-zA-Z][a-zA-Z-:]*$/)) {
-      throw new Error(`Script '${scriptName}' has invalid name.`)
+      throw new Error(`Script '${scriptName}' has invalid name`)
     }
 
     const scriptPath = path.join(config.scriptDir, scriptName.replaceAll(':', '/'))
@@ -28,7 +28,7 @@ export async function run(config: RunConfig): Promise<any> {
     try {
       scriptExports = await import(scriptPath)
     } catch(error: any) {
-      throw new Error(`Script '${scriptName}' does not exist.`)
+      throw new Error(`Script '${scriptName}' does not exist`)
     }
 
     const scriptCliConfig: ScriptCliConfig = scriptExports.cliConfig || {}

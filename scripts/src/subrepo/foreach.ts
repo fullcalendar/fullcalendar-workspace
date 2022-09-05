@@ -62,7 +62,7 @@ export function createForEach(
     } else if (config.flags.all) {
       return runForEach(config)
     } else {
-      throw new Error('Specify individual subrepos or use the --all flag')
+      throw new Error('Must specify individual subrepos or use the --all flag')
     }
   }
 }
