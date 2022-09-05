@@ -8,9 +8,10 @@ export const cliConfig = createCliConfig()
 export default createForEach(generateSubrepoMeta)
 
 export interface SubrepoMetaConfig {
-  subrepoConfig: SubrepoConfig
   rootDir: string
+  subrepo: string
   subrepoDir: string
+  subrepoConfig: SubrepoConfig
 }
 
 function generateSubrepoMeta(config: SubrepoMetaConfig): Promise<unknown> {
