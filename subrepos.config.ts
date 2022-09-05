@@ -31,7 +31,7 @@ const rootConfig: SubrepoRootConfig = {
       branchOverride: 'vue2-workspace-refactor',
       ...commonConfig,
     },
-    'contribu/vue3': {
+    'contrib/vue3': {
       remote: 'git@github.com:fullcalendar/fullcalendar-vue.git',
       branchOverride: 'vue3-workspace-refactor',
       ...commonConfig,

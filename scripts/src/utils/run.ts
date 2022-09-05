@@ -1,5 +1,5 @@
 import * as path from 'path'
-import { cli, command } from 'cleye'
+import { cli } from 'cleye'
 import { ScriptCliConfig, ScriptConfig } from './script'
 
 export interface RunConfig {
@@ -10,11 +10,12 @@ export interface RunConfig {
 
 export async function run(config: RunConfig): Promise<any> {
   const scriptName = process.argv[2]
+  const scriptArgs = process.argv.slice(3)
 
   if (typeof scriptName !== 'string') {
     throw new Error('Must specify a script name.')
   }
-  if (!scriptName.match(/[a-zA-Z-:]/)) {
+  if (!scriptName.match(/^[a-zA-Z][a-zA-Z-:]*$/)) {
     throw new Error(`Script ${scriptName} has invalid name.`)
   }
 
@@ -23,19 +24,15 @@ export async function run(config: RunConfig): Promise<any> {
   const scriptCliConfig: ScriptCliConfig = scriptExports.cliConfig || {}
 
   const argv = cli({
-    name: config.binName,
-    commands: [
-      command({
-        name: scriptName,
-        ...scriptCliConfig,
-      })
-    ]
-  })
+    name: scriptName.replaceAll(':', '-'), // TODO: have cleye accept colons
+    ...scriptCliConfig,
+  }, undefined, scriptArgs)
 
   const commandConfig: ScriptConfig<unknown, unknown> = {
+    scriptName,
+    scriptArgs,
     parameters: argv._,
     flags: argv.flags,
-    scriptName,
     cwd: process.cwd(),
     bin: config.bin,
   }

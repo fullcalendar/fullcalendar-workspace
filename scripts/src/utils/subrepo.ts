@@ -1,4 +1,4 @@
-import { RunConfig } from './run'
+import { ScriptConfig } from './script'
 
 export interface SubrepoRootConfig {
   branch: string
@@ -12,7 +12,8 @@ export interface SubrepoConfig {
   branchOverride?: string
 }
 
-export interface SubrepoRunConfig extends RunConfig {
+export interface SubrepoScriptConfig<Flags> extends ScriptConfig<{}, Flags> {
+  // can't accept ordered parameters. they are always subrepo names
   rootDir: string
   subrepo: string
 }
