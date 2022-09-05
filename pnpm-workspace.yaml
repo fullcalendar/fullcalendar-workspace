@@ -1,4 +1,5 @@
 packages:
+  - ./standard
   - ./standard/packages/*
   - ./standard/tests
   - ./standard/scripts
