@@ -26,10 +26,10 @@ export function live(command: string | string[], options: SpawnOptions = {}): Pr
 
   return new Promise((resolve, reject) => {
     childProcess.on('close', (status: number | null) => {
-      if (status === null || status !== 0) {
-        reject()
-      } else {
+      if (status === 0) {
         resolve()
+      } else {
+        reject()
       }
     })
   })
