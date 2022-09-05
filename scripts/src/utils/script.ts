@@ -65,5 +65,6 @@ export async function run(config: RunConfig): Promise<any> {
     console.error(chalk.red(error.message))
     console.error()
     console.error(error)
+    process.exit(1)
   }
 }

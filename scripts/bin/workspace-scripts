@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# exit upon error
+set -e
+
 dir=`dirname $0`
 src="$dir/../src/index.ts"
 
