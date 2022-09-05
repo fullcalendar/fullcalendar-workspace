@@ -1,4 +1,4 @@
-import { SubrepoRootConfig } from '@fullcalendar/workspace-scripts/src/utils/subrepo'
+import { SubrepoRootConfig } from '@fullcalendar/workspace-scripts/src/subrepo/config'
 
 const commonConfig = {
   copyFiles: [

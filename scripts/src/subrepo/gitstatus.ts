@@ -1,6 +1,5 @@
 import { live } from '../utils/exec'
-import { SubrepoScriptConfig } from '../utils/subrepo'
-import { createForEach, createCliConfig } from './foreach'
+import { SubrepoScriptConfig, createForEach, createCliConfig } from './foreach'
 
 export const cliConfig = createCliConfig({
   sup: Boolean

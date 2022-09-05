@@ -2,8 +2,13 @@ import * as path from 'path'
 import * as url from 'url'
 import concurrently, { ConcurrentlyCommandInput, CloseEvent } from 'concurrently'
 import { ScriptCliConfig, ScriptConfig } from '../utils/script'
-import { SubrepoScriptConfig } from '../utils/subrepo'
 import rootConfig from '../../../subrepos.config'
+
+export interface SubrepoScriptConfig<Flags> extends ScriptConfig<{}, Flags> {
+  // can't accept ordered parameters. they are always subrepo names
+  rootDir: string
+  subrepo: string
+}
 
 const filePath = url.fileURLToPath(import.meta.url)
 const rootDir = path.join(filePath, '../../../..')

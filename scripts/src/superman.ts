@@ -1,7 +1,6 @@
 import * as path from 'path'
 import { ScriptCliConfig } from './utils/script'
-import { createForEach, createCliConfig } from './subrepo/foreach'
-import { SubrepoScriptConfig } from './utils/subrepo'
+import { SubrepoScriptConfig, createForEach, createCliConfig } from './subrepo/foreach'
 
 export const cliConfig: ScriptCliConfig = createCliConfig({
   whatever: Boolean,
