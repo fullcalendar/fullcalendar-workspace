@@ -19,10 +19,15 @@ export async function generateSubdirWorkspace(config: SubrepoMetaConfig): Promis
 
   const yamlStr = await readFile(srcPath, { encoding: 'utf8' })
   const yamlDoc = yaml.load(yamlStr) as { packages: string[] }
+  const scopedPackages = scopePackages(yamlDoc.packages, config.subrepo)
 
-  yamlDoc.packages = scopePackages(yamlDoc.packages, config.subrepo)
-  const newYamlStr = yaml.dump(yamlDoc)
-  return writeFile(destPath, newYamlStr)
+  if (scopedPackages.length) {
+    yamlDoc.packages = scopedPackages
+    const newYamlStr = yaml.dump(yamlDoc)
+    return writeFile(destPath, newYamlStr)
+  } else {
+    return Promise.resolve()
+  }
 }
 
 function scopePackages(packageGlobs: string[], subrepo: string): string[] {
