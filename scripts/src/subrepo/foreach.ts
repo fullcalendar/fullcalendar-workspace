@@ -12,16 +12,15 @@ const rootDir = path.join(filePath, '../../../..')
 // -------------------------------------------------------------------------------------------------
 
 export const cliConfig: ScriptCliConfig = {
-  parameters: ['<subrepo>'],
-  flags: {
-    all: Boolean,
-  }
+  parameters: ['<script name>'],
 }
 
-export default async function(config: ScriptConfig<{ scriptName: string }, {}>) {
+export default async function(
+  config: ScriptConfig<{ scriptName: string }, {}>
+) {
   return runForEach({
-    scriptName: config.scriptArgs[0], // guaranteed via cliConfig
-    scriptArgs: config.scriptArgs.slice(1),
+    scriptName: config.parameters.scriptName,
+    flags: config.unknownFlags,
     bin: config.bin,
     cwd: config.cwd,
   })
@@ -53,7 +52,7 @@ export function createForEach(
         return worker({
           ...config,
           rootDir,
-          subrepo: parameters[0],
+          subrepo,
         })
       } else {
         throw new Error(`Subrepo '${subrepo}' does not exist`)
@@ -72,30 +71,41 @@ export function createForEach(
 // -------------------------------------------------------------------------------------------------
 
 function runForEach(
-  config: { scriptName: string, scriptArgs: string[], bin: string, cwd: string },
+  config: { scriptName: string, flags: { [name: string]: any }, bin: string, cwd: string },
   subrepoNames: string[] = Object.keys(rootConfig.subrepos)
 ): Promise<CloseEvent[]> {
   const commands: ConcurrentlyCommandInput[] = []
 
   for (const subrepoName of subrepoNames) {
-    const newScriptArgs = [subrepoName].concat(
-      config.scriptArgs.filter((arg) => (
-        arg.match(/^-/) && // only flags (ordered params are subrepo names)
-        arg !== '--all' // don't infinitely recurse
-      ))
-    )
-
     commands.push({
       name: subrepoName,
       prefixColor: 'green',
       command: [
         config.bin,
         config.scriptName,
-        ...newScriptArgs,
+        subrepoName,
+        ...buildFlagArgs(config.flags),
       ].join(' '), // TODO: fix faulty escaping
       cwd: config.cwd,
     })
   }
 
   return concurrently(commands).result
+}
+
+function buildFlagArgs(flags: { [name: string]: any }): string[] {
+  const args: string[] = []
+
+  for (let flagName in flags) {
+    const flagValue = flags[flagName]
+
+    if (
+      flagValue !== undefined &&
+      flagName !== 'all'
+    ) {
+      args.push(`--${flagName}='${flagValue}'`) // TODO: fix faulty escaping
+    }
+  }
+
+  return args
 }

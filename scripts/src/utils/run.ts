@@ -40,9 +40,9 @@ export async function run(config: RunConfig): Promise<any> {
 
     const commandConfig: ScriptConfig<unknown, unknown> = {
       scriptName,
-      scriptArgs,
       parameters: argv._,
       flags: argv.flags,
+      unknownFlags: argv.unknownFlags,
       cwd: process.cwd(),
       bin: config.bin,
     }

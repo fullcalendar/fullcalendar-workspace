@@ -7,9 +7,9 @@ export interface ScriptCliConfig {
 
 export interface ScriptConfig<Parameters, Flags> {
   scriptName: string
-  scriptArgs: string[]
   parameters: string[] & Parameters
   flags: Flags
+  unknownFlags: { [flag: string]: any }
   cwd: string
   bin: string
 }
