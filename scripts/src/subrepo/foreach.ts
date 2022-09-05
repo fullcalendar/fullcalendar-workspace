@@ -13,18 +13,20 @@ export interface SubrepoScriptConfig<Flags> extends ScriptConfig<{}, Flags> {
 const filePath = url.fileURLToPath(import.meta.url)
 const rootDir = path.join(filePath, '../../../..')
 
-// when run as `foreach <script name>`
+// when run as `foreach <script>`
 // -------------------------------------------------------------------------------------------------
 
 export const cliConfig: ScriptCliConfig = {
-  parameters: ['<script name>'],
+  parameters: [
+    '<script>'
+  ],
 }
 
 export default async function(
-  config: ScriptConfig<{ scriptName: string }, {}>
+  config: ScriptConfig<{ script: string }, {}>
 ) {
   return runForEach({
-    scriptName: config.parameters.scriptName,
+    scriptName: config.parameters.script,
     flags: config.unknownFlags,
     bin: config.bin,
     cwd: config.cwd,
@@ -37,6 +39,9 @@ export default async function(
 export function createCliConfig(flags: { [flag: string]: any }): ScriptCliConfig {
   // can't accept ordered parameters. they are always subrepo names
   return {
+    parameters: [
+      '[subrepos...]'
+    ],
     flags: {
       ...flags,
       all: Boolean,
