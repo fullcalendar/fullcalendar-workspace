@@ -1,47 +1,34 @@
 import * as path from 'path'
 import { copyFile, writeFile } from 'fs/promises'
-import { SubrepoConfig } from '../config'
-import { createForEach, createCliConfig } from '../foreach'
+import { createForEach, createCliConfig, SubrepoScriptConfig } from '../foreach'
 
 export const cliConfig = createCliConfig()
 
 export default createForEach(generateSubrepoMeta)
 
-export interface SubrepoMetaConfig {
-  rootDir: string
-  subrepo: string
-  subrepoDir: string
-  subrepoConfig: SubrepoConfig
-}
+function generateSubrepoMeta(config: SubrepoScriptConfig<{}>): Promise<unknown> {
+  const metaFiles = config.subrepoConfig.metaFiles || []
 
-function generateSubrepoMeta(config: SubrepoMetaConfig): Promise<unknown> {
-  const { subrepoConfig } = config
-  const copyFiles = subrepoConfig.copyFiles || []
-  const generateFiles = subrepoConfig.generateFiles || {}
+  const promises = metaFiles.map((fileInfo) => {
+    if (fileInfo.generator) {
+      const res = fileInfo.generator(config)
+      const promise = Promise.resolve<string | void>(res)
 
-  const promises = copyFiles.map((filePath) => {
-    return copyFile(
-      path.join(config.rootDir, filePath),
-      path.join(config.subrepoDir, filePath),
-    )
-  })
-
-  for (const filePath in generateFiles) {
-    const generator = generateFiles[filePath]
-    const res = generator(config)
-    const promise = Promise.resolve<string | void>(res)
-
-    promises.push(
-      promise.then((contents: string | void) => {
+      return promise.then((contents: string | void) => {
         if (typeof contents === 'string') {
           return writeFile(
-            path.join(config.subrepoDir, filePath),
+            path.join(config.subrepoDir, fileInfo.path),
             contents,
           )
         }
       })
-    )
-  }
+    } else {
+      return copyFile(
+        path.join(config.rootDir, fileInfo.path),
+        path.join(config.subrepoDir, fileInfo.path),
+      )
+    }
+  })
 
   return Promise.all(promises)
 }

@@ -2,18 +2,18 @@ import * as path from 'path'
 import { readFile, writeFile } from 'fs/promises'
 import * as yaml from 'js-yaml'
 import makeDedicatedLockfile from '@pnpm/make-dedicated-lockfile'
-import { SubrepoMetaConfig } from './generate'
+import { SubrepoScriptConfig } from '../foreach'
 
 const workspaceFilename = 'pnpm-workspace.yaml'
 
-export function generateSubdirLock(config: SubrepoMetaConfig): Promise<void> {
+export function generateSubdirLock(config: SubrepoScriptConfig<{}>): Promise<void> {
   return cjsInterop(makeDedicatedLockfile)(
     config.rootDir,
     config.subrepoDir,
   )
 }
 
-export async function generateSubdirWorkspace(config: SubrepoMetaConfig): Promise<void> {
+export async function generateSubdirWorkspace(config: SubrepoScriptConfig<{}>): Promise<void> {
   const srcPath = path.join(config.rootDir, workspaceFilename)
   const destPath = path.join(config.subrepoDir, workspaceFilename)
 

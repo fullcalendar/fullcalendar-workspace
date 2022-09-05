@@ -5,14 +5,12 @@ import {
 } from '@fullcalendar/workspace-scripts/src/subrepo/meta/pnpm'
 
 const commonConfig = {
-  copyFiles: [
-    '.npmrc',
-    '.editorconfig'
-  ],
-  generateFiles: {
-    'pnpm-workspace.yaml': generateSubdirWorkspace,
-    'pnpm-lock.yaml': generateSubdirLock,
-  },
+  metaFiles: [
+    { path: '.npmrc' },
+    { path: '.editorconfig' },
+    { path: 'pnpm-workspace.yaml', generator: generateSubdirWorkspace },
+    { path: 'pnpm-lock.yaml', generator: generateSubdirLock },
+  ]
 }
 
 const rootConfig: SubrepoRootConfig = {
