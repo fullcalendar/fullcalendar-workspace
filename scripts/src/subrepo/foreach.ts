@@ -56,14 +56,14 @@ export function createForEach(
           subrepo: parameters[0],
         })
       } else {
-        throw new Error(`${subrepo} is an invalid subrepo`)
+        throw new Error(`Subrepo '${subrepo}' does not exist`)
       }
     } else if (parameters.length > 1) {
       return runForEach(config, parameters)
     } else if (config.flags.all) {
       return runForEach(config)
     } else {
-      throw new Error('Must specify individual subrepos or use --all flag')
+      throw new Error('Specify individual subrepos or use the --all flag')
     }
   }
 }
