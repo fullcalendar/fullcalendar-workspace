@@ -79,7 +79,10 @@ function runForEach(
 
   for (const subrepoName of subrepoNames) {
     const newScriptArgs = [subrepoName].concat(
-      config.scriptArgs.filter((arg) => arg !== '--all')
+      config.scriptArgs.filter((arg) => (
+        arg.match(/^-/) && // only flags (ordered params are subrepo names)
+        arg !== '--all' // don't infinitely recurse
+      ))
     )
 
     commands.push({
