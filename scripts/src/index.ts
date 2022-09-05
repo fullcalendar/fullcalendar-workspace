@@ -7,6 +7,6 @@ const dirPath = path.join(filePath, '..')
 
 run({
   scriptDir: dirPath,
-  bin: path.join(dirPath, '../bin/workspace-script'),
-  binName: 'workspace-script',
+  bin: path.join(dirPath, '../bin/workspace-scripts'),
+  binName: 'workspace-scripts',
 })

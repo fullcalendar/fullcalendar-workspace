@@ -4,13 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "bin": {
-    "workspace-script": "./bin/workspace-script"
+    "workspace-scripts": "./bin/workspace-scripts"
   },
   "scripts": {
     "types": "tsc"
   },
   "devDependencies": {
-    "@fullcalendar/standard-scripts": "*",
     "@tsconfig/node16": "^1.0.3",
     "@types/cross-spawn": "^6.0.2",
     "@types/node": "14.10.0",
