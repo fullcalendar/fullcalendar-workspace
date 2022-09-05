@@ -3,11 +3,14 @@ import * as url from 'url'
 import concurrently, { ConcurrentlyCommandInput, CloseEvent } from 'concurrently'
 import { ScriptCliConfig, ScriptConfig } from '../utils/script'
 import rootConfig from '../../../subrepo.config'
+import { SubrepoConfig } from './config'
 
 export interface SubrepoScriptConfig<Flags> extends ScriptConfig<{}, Flags> {
   // can't accept ordered parameters. they are always subrepo names
   rootDir: string
   subrepo: string
+  subrepoDir: string
+  subrepoConfig: SubrepoConfig
 }
 
 const filePath = url.fileURLToPath(import.meta.url)
@@ -36,7 +39,7 @@ export default async function(
 // for giving other scripts for-each functionality
 // -------------------------------------------------------------------------------------------------
 
-export function createCliConfig(flags: { [flag: string]: any }): ScriptCliConfig {
+export function createCliConfig(flags: { [flag: string]: any } = {}): ScriptCliConfig {
   // can't accept ordered parameters. they are always subrepo names
   return {
     parameters: [
@@ -63,6 +66,8 @@ export function createForEach(
           ...config,
           rootDir,
           subrepo,
+          subrepoDir: path.join(rootDir, subrepo),
+          subrepoConfig: rootConfig.subrepos[subrepo],
         })
       } else {
         throw new Error(`Subrepo '${subrepo}' does not exist`)

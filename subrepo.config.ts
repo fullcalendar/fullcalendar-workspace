@@ -1,4 +1,8 @@
 import { SubrepoRootConfig } from '@fullcalendar/workspace-scripts/src/subrepo/config'
+import {
+  generateSubdirLock,
+  generateSubdirWorkspace,
+} from '@fullcalendar/workspace-scripts/src/subrepo/meta/pnpm'
 
 const commonConfig = {
   copyFiles: [
@@ -6,8 +10,8 @@ const commonConfig = {
     '.editorconfig'
   ],
   generateFiles: {
-    'pnpm-workspace.yaml': generateSubdirPnpmWorkspace,
-    'pnpm-lock.yaml': generateSubdirPnpmLock,
+    'pnpm-workspace.yaml': generateSubdirWorkspace,
+    'pnpm-lock.yaml': generateSubdirLock,
   },
 }
 
@@ -40,9 +44,3 @@ const rootConfig: SubrepoRootConfig = {
 }
 
 export default rootConfig
-
-function generateSubdirPnpmWorkspace() {
-}
-
-function generateSubdirPnpmLock() {
-}
