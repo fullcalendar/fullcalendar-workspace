@@ -46,5 +46,5 @@ function scopePackages(packageGlobs: string[], subrepo: string): string[] {
 // TODO: tsx handles __esModule strangely (esModuleInterop). bug maintainer
 // https://github.com/esbuild-kit/tsx/issues/67
 function cjsInterop<Type>(input: Type): Type {
-  return (input as any).default
+  return (input as any).default || input
 }
