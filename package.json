@@ -25,6 +25,9 @@
           }
         }
       }
+    },
+    "patchedDependencies": {
+      "@pnpm/make-dedicated-lockfile@0.3.20": "patches/@pnpm__make-dedicated-lockfile@0.3.20.patch"
     }
   }
 }
