@@ -138,13 +138,7 @@ export function parseArgs<
 async function getScriptFunc(scriptName: string): Promise<(...rawArgs: string[]) => any> {
   const scriptRootDir = path.join(currentMain, '../')
   const scriptPath = path.join(scriptRootDir, scriptName.replaceAll(':', '/'))
-  let scriptExports: any
-
-  // try {
-    scriptExports = await import(scriptPath)
-  // } catch(error: any) {
-  //   throw new Error(`Script '${scriptName}' does not exist`)
-  // }
+  const scriptExports = await import(scriptPath)
 
   if (typeof scriptExports.default !== 'function') {
     throw new Error(`Script '${scriptName}' does not have a default function export`)
