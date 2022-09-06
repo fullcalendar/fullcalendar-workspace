@@ -2,6 +2,12 @@ import { createRequire } from 'module'
 import { pathToFileURL } from 'url'
 import spawn from 'cross-spawn'
 
+/*
+modeled after:
+https://github.com/esbuild-kit/tsx/blob/develop/src/cli.ts
+https://github.com/esbuild-kit/tsx/blob/develop/src/run.ts
+*/
+
 const require = createRequire(import.meta.url)
 
 export function runFile(filePath) {
@@ -15,6 +21,9 @@ export function runFile(filePath) {
     {
       stdio: 'inherit',
     }
+  ).on(
+    'close',
+    (code) => process.exit(code),
   )
 }
 

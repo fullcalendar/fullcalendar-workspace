@@ -11,6 +11,8 @@ const [
   ...currentScriptArgs
 ] = process.argv
 
+let currentRunScript: string
+
 export function runMain() {
   run(currentScript, currentScriptArgs).catch((error: any) => {
     if (error.message) {
@@ -25,6 +27,7 @@ export function runMain() {
 }
 
 export async function run(scriptName: string, rawArgs: string[]): Promise<unknown> {
+  currentRunScript = scriptName
   const scriptFunc = await getScriptFunc(scriptName)
   return scriptFunc(...rawArgs)
 }
@@ -51,7 +54,9 @@ export async function runMap(scriptMap: { [scriptName: string]: string[] }): Pro
           ].join(' '), // TODO: fix faulty escaping
         }
       }),
-      { group: true },
+      {
+        // group: true
+      },
     ).result
   }
 }
@@ -68,7 +73,7 @@ export async function runEach(
   let scriptFunc: (...rawArgs: string[]) => any
 
   if (typeof scriptNameOrFunc === 'function') {
-    scriptName = currentScript
+    scriptName = currentRunScript || currentScript
     scriptFunc = scriptNameOrFunc
   } else {
     scriptName = scriptNameOrFunc
@@ -105,7 +110,7 @@ export async function runEach(
         prefix: typeof scriptNameOrFunc === 'function'
           ? '[{name}]' // self-loop doesn't need script name
           : `[${scriptName}][{name}]`,
-        group: true
+        // group: true
       },
     ).result
   }
