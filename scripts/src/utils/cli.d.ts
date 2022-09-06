@@ -1,6 +1,8 @@
 
-declare function runIndex(indexFile: string): void
+declare function runFile(filePath: string): void
 
 declare function getLoaderArgs(): string[]
 
-export { run, getLoaderArgs }
+declare function cjsDefaultInterop<T>(defaultImport: T): T
+
+export { run, getLoaderArgs, cjsDefaultInterop }

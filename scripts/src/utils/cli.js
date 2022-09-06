@@ -4,12 +4,12 @@ import spawn from 'cross-spawn'
 
 const require = createRequire(import.meta.url)
 
-export function runIndex(indexFile) {
+export function runFile(filePath) {
   spawn(
     process.execPath,
     [
       ...getLoaderArgs(),
-      indexFile,
+      filePath,
       ...process.argv.slice(2),
     ],
     {
@@ -25,4 +25,10 @@ export function getLoaderArgs() {
     '--loader',
     pathToFileURL(require.resolve('tsx')).toString(),
   ]
+}
+
+// TODO: tsx handles __esModule strangely (esModuleInterop). bug maintainer
+// https://github.com/esbuild-kit/tsx/issues/67
+export function cjsDefaultInterop(defaultImport) {
+  return defaultImport.default || defaultImport
 }

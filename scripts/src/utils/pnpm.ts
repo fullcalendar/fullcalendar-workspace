@@ -1,15 +1,19 @@
 import * as path from 'path'
 import { readFile } from 'fs/promises'
 import * as yaml from 'js-yaml'
-import makeDedicatedLockfile from '@pnpm/make-dedicated-lockfile'
+import _makeDedicatedLockfile from '@pnpm/make-dedicated-lockfile'
+import { cjsDefaultInterop } from './cli'
 import { getSubrepoDir, rootDir } from './subrepo'
 
+// Lock file
+
+const makeDedicatedLockfile = cjsDefaultInterop(_makeDedicatedLockfile)
+
 export function generateSubdirLock(subrepo: string): Promise<void> {
-  return cjsInterop(makeDedicatedLockfile)(
-    rootDir,
-    getSubrepoDir(subrepo),
-  )
+  return makeDedicatedLockfile(rootDir, getSubrepoDir(subrepo))
 }
+
+// Workspace file
 
 const workspaceFilename = 'pnpm-workspace.yaml'
 
@@ -37,10 +41,4 @@ function scopePackages(packageGlobs: string[], subrepo: string): string[] {
   }
 
   return newPackageGlobs
-}
-
-// TODO: tsx handles __esModule strangely (esModuleInterop). bug maintainer
-// https://github.com/esbuild-kit/tsx/issues/67
-function cjsInterop<Type>(input: Type): Type {
-  return (input as any).default || input
 }
