@@ -1,32 +1,28 @@
 import * as path from 'path'
-import { readFile, writeFile } from 'fs/promises'
+import { readFile } from 'fs/promises'
 import * as yaml from 'js-yaml'
 import makeDedicatedLockfile from '@pnpm/make-dedicated-lockfile'
-import { SubrepoScriptConfig } from '../foreach'
+import { getSubrepoDir, rootDir } from './subrepo'
 
-const workspaceFilename = 'pnpm-workspace.yaml'
-
-export function generateSubdirLock(config: SubrepoScriptConfig<{}>): Promise<void> {
+export function generateSubdirLock(subrepo: string): Promise<void> {
   return cjsInterop(makeDedicatedLockfile)(
-    config.rootDir,
-    config.subrepoDir,
+    rootDir,
+    getSubrepoDir(subrepo),
   )
 }
 
-export async function generateSubdirWorkspace(config: SubrepoScriptConfig<{}>): Promise<void> {
-  const srcPath = path.join(config.rootDir, workspaceFilename)
-  const destPath = path.join(config.subrepoDir, workspaceFilename)
+const workspaceFilename = 'pnpm-workspace.yaml'
+
+export async function generateSubdirWorkspace(subrepo: string): Promise<string | void> {
+  const srcPath = path.join(rootDir, workspaceFilename)
 
   const yamlStr = await readFile(srcPath, { encoding: 'utf8' })
   const yamlDoc = yaml.load(yamlStr) as { packages: string[] }
-  const scopedPackages = scopePackages(yamlDoc.packages, config.subrepo)
+  const scopedPackages = scopePackages(yamlDoc.packages, subrepo)
 
   if (scopedPackages.length) {
     yamlDoc.packages = scopedPackages
-    const newYamlStr = yaml.dump(yamlDoc)
-    return writeFile(destPath, newYamlStr)
-  } else {
-    return Promise.resolve()
+    return yaml.dump(yamlDoc)
   }
 }
 

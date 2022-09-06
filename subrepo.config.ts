@@ -1,8 +1,8 @@
-import { SubrepoRootConfig } from '@fullcalendar/workspace-scripts/src/subrepo/config'
+import { SubrepoRootConfig } from '@fullcalendar/workspace-scripts/src/utils/subrepo'
 import {
   generateSubdirLock,
   generateSubdirWorkspace,
-} from '@fullcalendar/workspace-scripts/src/subrepo/meta/pnpm'
+} from '@fullcalendar/workspace-scripts/src/utils/pnpm'
 
 const commonConfig = {
   metaFiles: [

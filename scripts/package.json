@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "bin": {
-    "workspace-scripts": "./bin/workspace-scripts"
+    "workspace-scripts": "./bin/workspace-scripts.js"
   },
   "scripts": {
     "types": "tsc"
@@ -17,7 +17,7 @@
     "@types/node": "^16.11.7",
     "chalk": "^5.0.1",
     "cleye": "^1.2.1",
-    "concurrently": "^7.3.0",
+    "concurrently": "7.3.0",
     "cross-spawn": "^7.0.3",
     "js-yaml": "^4.1.0",
     "tsx": "^3.9.0",

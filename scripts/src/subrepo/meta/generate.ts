@@ -1,34 +1,34 @@
 import * as path from 'path'
 import { copyFile, writeFile } from 'fs/promises'
-import { createForEach, createCliConfig, SubrepoScriptConfig } from '../foreach'
+import { runEach } from '../../utils/script'
+import { getSubrepoConfig, getSubrepoDir, parseSubrepoArgs, rootDir } from '../../utils/subrepo'
 
-export const cliConfig = createCliConfig()
+export default function(...rawArgs: string[]) {
+  const { subrepos } = parseSubrepoArgs(rawArgs)
 
-export default createForEach(generateSubrepoMeta)
+  return runEach((subrepo: string) => {
+    const subrepoDir = getSubrepoDir(subrepo)
+    const subrepoConfig = getSubrepoConfig(subrepo)
+    const metaFiles = subrepoConfig.metaFiles || []
 
-function generateSubrepoMeta(config: SubrepoScriptConfig<{}>): Promise<unknown> {
-  const metaFiles = config.subrepoConfig.metaFiles || []
+    return Promise.all(
+      metaFiles.map(async (fileInfo) => {
+        if (fileInfo.generator) {
+          const contents = await fileInfo.generator(subrepo)
 
-  const promises = metaFiles.map((fileInfo) => {
-    if (fileInfo.generator) {
-      const res = fileInfo.generator(config)
-      const promise = Promise.resolve<string | void>(res)
-
-      return promise.then((contents: string | void) => {
-        if (typeof contents === 'string') {
-          return writeFile(
-            path.join(config.subrepoDir, fileInfo.path),
-            contents,
+          if (typeof contents === 'string') {
+            await writeFile(
+              path.join(subrepoDir, fileInfo.path),
+              contents,
+            )
+          }
+        } else {
+          await copyFile(
+            path.join(rootDir, fileInfo.path),
+            path.join(subrepoDir, fileInfo.path),
           )
         }
       })
-    } else {
-      return copyFile(
-        path.join(config.rootDir, fileInfo.path),
-        path.join(config.subrepoDir, fileInfo.path),
-      )
-    }
-  })
-
-  return Promise.all(promises)
+    )
+  }, subrepos)
 }

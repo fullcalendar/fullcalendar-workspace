@@ -1,20 +1,23 @@
 import * as path from 'path'
 import { rm } from 'fs/promises'
-import { createForEach, createCliConfig, SubrepoScriptConfig } from '../foreach'
+import { runEach } from '../../utils/script'
+import { getSubrepoConfig, getSubrepoDir, parseSubrepoArgs } from '../../utils/subrepo'
 
-export const cliConfig = createCliConfig()
+export default function(...rawArgs: string[]) {
+  const { subrepos } = parseSubrepoArgs(rawArgs)
 
-export default createForEach(cleanSubrepoMeta)
+  return runEach((subrepo: string) => {
+    const subrepoDir = getSubrepoDir(subrepo)
+    const subrepoConfig = getSubrepoConfig(subrepo)
+    const metaFiles = subrepoConfig.metaFiles || []
 
-function cleanSubrepoMeta(config: SubrepoScriptConfig<{}>): Promise<unknown> {
-  const metaFiles = config.subrepoConfig.metaFiles || []
-
-  const promises = metaFiles.map((fileInfo) => {
-    return rm(
-      path.join(config.subrepoDir, fileInfo.path),
-      { force: true },
+    return Promise.all(
+      metaFiles.map((fileInfo) => {
+        return rm(
+          path.join(subrepoDir, fileInfo.path),
+          { force: true },
+        )
+      })
     )
-  })
-
-  return Promise.all(promises)
+  }, subrepos)
 }
