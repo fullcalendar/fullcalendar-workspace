@@ -1,6 +1,6 @@
-import { getSubrepoConfig, parseSubrepoArgs, rootConfig, rootDir } from '../utils/subrepo'
-import { getBranch } from '../utils/git'
 import { live } from '../utils/exec'
+import { getBranch } from '../utils/git'
+import { getSubrepoConfig, parseSubrepoArgs, rootConfig, rootDir } from '../utils/subrepo'
 
 export default async function(...rawArgs: string[]) {
   const { subrepos } = parseSubrepoArgs(rawArgs)
@@ -14,7 +14,7 @@ export default async function(...rawArgs: string[]) {
     const subrepoConfig = getSubrepoConfig(subrepo)
     const branch = subrepoConfig.branchOverride || rootConfig.branch
 
-    await console.log([
+    await live([
       'git', 'subtree', 'pull', '--prefix', subrepo, subrepoConfig.remote, branch, '--squash'
     ].join(' '), {
       cwd: rootDir,
