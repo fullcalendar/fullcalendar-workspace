@@ -58,3 +58,18 @@ export function getSubrepoDir(subrepo: string): string {
 export function getSubrepoConfig(subrepo: string): SubrepoConfig {
   return rootConfig.subrepos[subrepo]
 }
+
+export function getAllMetaFiles(subrepos: string[]): string[] {
+  const filePaths: string[] = []
+
+  for (let subrepo of subrepos) {
+    const subrepoConfig = getSubrepoConfig(subrepo)
+    const fileInfos = subrepoConfig.metaFiles || []
+
+    for (let fileInfo of fileInfos) {
+      filePaths.push(path.join(subrepo, fileInfo.path))
+    }
+  }
+
+  return filePaths
+}

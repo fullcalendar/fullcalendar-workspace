@@ -1,26 +1,50 @@
+import * as path from 'path'
+import { rm } from 'fs/promises'
 import { live } from './exec'
 
 /*
-IMPORTANT: writes to a git repo must happen serially
+IMPORTANT: writes to a git repo must happen serially,
+Accepting a files array in each function encourages this.
 */
 
-export async function assumeUnchanged(
-  rootDir: string,
-  files: string[],
-  bool: boolean,
-): Promise<void> {
+export async function disappear(rootDir: string, files: string[]) {
   for (const file of files) {
-    await live([
-      'git',
-      'update-index',
-      bool ? '--assume-unchanged' : '--no-assume-unchanged',
-      file,
+    const wasInIndex = await live([
+      'git', 'update-index', '--assume-unchanged', file,
     ], {
       cwd: rootDir,
     }).then(
       () => true, // success
-      () => false, // will fail if not already committed. swallow error
+      () => false, // will fail if not in index
     )
+
+    if (wasInIndex) {
+      await rm(
+        path.join(rootDir, file)
+      )
+    }
+  }
+}
+
+export async function reappear(rootDir: string, files: string[]) {
+  for (const file of files) {
+    const wasInIndex = await live([
+      'git', 'update-index', '--no-assume-unchanged', file,
+    ], {
+      cwd: rootDir,
+    }).then(
+      () => true, // success
+      () => false, // will fail if not in index
+    )
+
+    if (wasInIndex) {
+      // restore the file
+      await live([
+        'git', 'checkout', '--', file,
+      ], {
+        cwd: rootDir
+      })
+    }
   }
 }
 
