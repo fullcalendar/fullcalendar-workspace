@@ -1,20 +1,26 @@
 import * as path from 'path'
-import { cli } from 'cleye'
 import concurrently from 'concurrently'
 import chalk from 'chalk'
 import { getLoaderArgs } from './tsx'
+import { cli } from 'cleye'
 
 const [
   currentBin,
   currentMain,
-  currentScript,
+  currentScriptName,
   ...currentScriptArgs
 ] = process.argv
 
-let currentRunScript: string
+const prefixColors = [
+  'green'
+]
 
-export function runMain() {
-  run(currentScript, currentScriptArgs).catch((error: any) => {
+export async function runMain() {
+  const func = await getScriptFunc(currentScriptName)
+
+  try {
+    await func(...currentScriptArgs)
+  } catch (error: any) {
     if (error.message) {
       console.error(chalk.red(error.message))
       console.error()
@@ -23,139 +29,166 @@ export function runMain() {
       console.error(chalk.red('Error'))
     }
     process.exit(1)
-  })
-}
-
-export async function run(scriptName: string, rawArgs: string[]): Promise<unknown> {
-  currentRunScript = scriptName
-  const scriptFunc = await getScriptFunc(scriptName)
-  return scriptFunc(...rawArgs)
-}
-
-export async function runMap(scriptMap: { [scriptName: string]: string[] }): Promise<unknown> {
-  const scriptNames = Object.keys(scriptMap)
-
-  if (scriptNames.length === 1) {
-    const scriptName = scriptNames[0]
-    return run(scriptName, scriptMap[scriptName])
-  } else {
-    return concurrently(
-      scriptNames.map((scriptName) => {
-        const rawArgs = scriptMap[scriptName]
-        return {
-          name: scriptName,
-          prefixColor: 'green',
-          command: [
-            currentBin,
-            ...getLoaderArgs(),
-            currentMain,
-            scriptName,
-            ...rawArgs,
-          ].join(' '), // TODO: fix faulty escaping
-        }
-      }),
-      {
-        // group: true
-      },
-    ).result
   }
 }
 
 /*
-Might be best to *require* rawArgs, and filter away --all and positional args
+Will prefix output with `scriptName`
 */
-export async function runEach(
-  scriptNameOrFunc: string | ((...rawArgs: string[]) => any),
-  firstArgs: string[],
-  rawArgsOrFlags: string[] | { [flag: string]: any } = [],
-): Promise<unknown> {
-  let scriptName: string
-  let scriptFunc: (...rawArgs: string[]) => any
-
-  if (typeof scriptNameOrFunc === 'function') {
-    scriptName = currentRunScript || currentScript
-    scriptFunc = scriptNameOrFunc
-  } else {
-    scriptName = scriptNameOrFunc
-    scriptFunc = await getScriptFunc(scriptName)
-  }
-
-  let rawArgs: string[]
-
-  if (Array.isArray(rawArgsOrFlags)) {
-    rawArgs = rawArgsOrFlags
-  } else {
-    rawArgs = constructArgsFromFlags(rawArgsOrFlags)
-  }
-
-  if (firstArgs.length === 1) {
-    return scriptFunc(...[firstArgs[0]].concat(rawArgs))
-  } else {
-    return concurrently(
-      firstArgs.map((firstArg) => {
-        return {
-          name: firstArg,
-          prefixColor: 'green',
-          command: [
-            currentBin,
-            ...getLoaderArgs(),
-            currentMain,
-            scriptName,
-            firstArg,
-            ...rawArgs,
-          ].join(' '), // TODO: fix faulty escaping
-        }
-      }),
-      {
-        prefix: typeof scriptNameOrFunc === 'function'
-          ? '[{name}]' // self-loop doesn't need script name
-          : `[${scriptName}][{name}]`,
-        group: true
-      },
-    ).result
-  }
+export async function run(
+  scriptName: string,
+  args: string[] = [],
+): Promise<void> {
+  return concurrently(
+    [{
+      name: scriptName,
+      command: buildCommand(
+        absolutizeScriptName(scriptName),
+        args,
+      ),
+    }],
+    {
+      prefixColors,
+    }
+  ).result.then()
 }
 
-export function constructArgsFromFlags(flags: { [flag: string]: any }): string[] {
-  const rawArgs: string[] = []
+/*
+Will prefix output with each `scriptName`
+*/
+export async function runParallel(
+  scriptNamesAndArgs: string[] | { [scriptName: string]: string[] },
+  extraArgs: string[] = [],
+  group: boolean = false,
+): Promise<void> {
+  return concurrently(
+    normalizeArgSet(scriptNamesAndArgs).map((scriptNameAndArgs) => ({
+      name: scriptNameAndArgs[0],
+      command: buildCommand(
+        absolutizeScriptName(scriptNameAndArgs[0]),
+        scriptNameAndArgs.slice(1).concat(extraArgs),
+      ),
+    })),
+    {
+      prefixColors,
+      group,
+    }
+  ).result.then()
+}
 
-  for (const flag in flags) {
-    if (flag !== 'all') {
-      const flagValue = flags[flag]
-      if (flagValue !== undefined) {
-        rawArgs.push(`--${flag}='${flagValue}'`) // TODO: fix faulty escaping
+/*
+Will prefix output by each `firstArg`
+*/
+export async function spawnParallel(
+  scriptName: string,
+  argSet: string[] | { [firstArg: string]: string[] },
+  extraArgs: string[] = [],
+  group: boolean = false,
+): Promise<void> {
+  return concurrently(
+    normalizeArgSet(argSet).map((argArray) => ({
+      name: argArray[0],
+      command: buildCommand(
+        absolutizeScriptName(scriptName),
+        argArray.concat(extraArgs),
+      ),
+    })),
+    {
+      prefixColors,
+      group,
+    }
+  ).result.then()
+}
+
+async function getScriptFunc(scriptName: string): Promise<(...args: string[]) => Promise<any> | any> {
+  const scriptRootDir = path.join(currentMain, '../')
+  const scriptNameParts = scriptName.split(':')
+  let scriptExports: any
+  let scriptFunc: (() => Promise<any> | any) | undefined
+
+  try {
+    scriptExports = await import(path.join(scriptRootDir, ...scriptNameParts))
+  } catch (error: any) {}
+
+  if (scriptExports) {
+    scriptFunc = scriptExports.default
+
+    if (typeof scriptFunc !== 'function') {
+      throw new Error(
+        `Default export of script '${path.join(...scriptNameParts)}' must be a function`
+      )
+    }
+  } else if (scriptNameParts.length > 1) {
+    const exportName = scriptNameParts.pop()!
+
+    try {
+      scriptExports = await import(path.join(scriptRootDir, ...scriptNameParts))
+    } catch (error: any) {}
+
+    if (scriptExports) {
+      scriptFunc = scriptExports[exportName]
+
+      if (typeof scriptFunc !== 'function') {
+        throw new Error(
+          `Export '${exportName}' of script '${path.join(...scriptNameParts)}' must be a function`
+        )
       }
     }
   }
 
-  return rawArgs
+  if (!scriptFunc) {
+    throw new Error(`Could not find script ${scriptName}`)
+  }
+
+  return scriptFunc
+}
+
+function buildCommand(scriptName: string, args: string[]): string {
+  return [
+    currentBin,
+    ...getLoaderArgs(),
+    currentMain,
+    scriptName,
+    ...args
+  ].join(' ') // TODO: better escaping
+}
+
+function absolutizeScriptName(scriptName: string): string {
+  // TODO: more robust
+  return scriptName.replace(/^\.:/, `${currentScriptName}:`)
+}
+
+function normalizeArgSet(
+  argSet: string[] | { [item0: string]: string[] }
+): string[][] {
+  const res: string[][] = []
+
+  if (Array.isArray(argSet)) {
+    for (let item0 of argSet) {
+      res.push([item0])
+    }
+  } else {
+    for (let item0 in argSet) {
+      res.push([item0].concat(argSet[item0]))
+    }
+  }
+
+  return res
 }
 
 export function parseArgs<
   Flags extends { [flag: string]: any } | undefined,
   Params extends string[] | undefined
 >(
-  rawArgs: string[],
+  args: string[],
   flagConfig: Flags,
   paramConfig?: Params,
 ) {
   const res = cli({
-    name: currentScript.replaceAll(':', '-'), // TODO: have cleye accept colons
+    name: currentScriptName.replaceAll(':', '-'), // TODO: have cleye accept colons
     parameters: paramConfig,
     flags: flagConfig
-  }, undefined, rawArgs)
+  }, undefined, args)
 
   return { params: res._, flags: res.flags, unknownFlags: res.unknownFlags }
-}
-
-async function getScriptFunc(scriptName: string): Promise<(...rawArgs: string[]) => any> {
-  const scriptRootDir = path.join(currentMain, '../')
-  const scriptPath = path.join(scriptRootDir, scriptName.replaceAll(':', '/'))
-  const scriptExports = await import(scriptPath)
-
-  if (typeof scriptExports.default !== 'function') {
-    throw new Error(`Script '${scriptName}' does not have a default function export`)
-  }
-
-  return scriptExports.default
 }

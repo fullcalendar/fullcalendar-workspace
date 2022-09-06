@@ -49,7 +49,27 @@ export function parseSubrepoArgs<
     throw new Error('Must specify individual subrepos or use the --all flag')
   }
 
-  return { subrepos, flags, unknownFlags }
+  return {
+    subrepos,
+    flags,
+    flagArgs: argsToFlags(flags),
+    unknownFlags,
+  }
+}
+
+function argsToFlags(flags: { [flag: string]: any }): string[] {
+  const rawArgs: string[] = []
+
+  for (const flag in flags) {
+    if (flag !== 'all') {
+      const flagValue = flags[flag]
+      if (flagValue !== undefined) {
+        rawArgs.push(`--${flag}='${flagValue}'`) // TODO: fix faulty escaping
+      }
+    }
+  }
+
+  return rawArgs
 }
 
 export function getSubrepoDir(subrepo: string): string {
