@@ -56,6 +56,9 @@ export async function runMap(scriptMap: { [scriptName: string]: string[] }): Pro
   }
 }
 
+/*
+Might be best to *require* rawArgs, and filter away --all and positional args
+*/
 export async function runEach(
   scriptNameOrFunc: string | ((...rawArgs: string[]) => any),
   firstArgs: string[],
@@ -64,12 +67,12 @@ export async function runEach(
   let scriptName: string
   let scriptFunc: (...rawArgs: string[]) => any
 
-  if (typeof scriptNameOrFunc === 'string') {
-    scriptName = scriptNameOrFunc
-    scriptFunc = await getScriptFunc(scriptName)
-  } else {
+  if (typeof scriptNameOrFunc === 'function') {
     scriptName = currentScript
     scriptFunc = scriptNameOrFunc
+  } else {
+    scriptName = scriptNameOrFunc
+    scriptFunc = await getScriptFunc(scriptName)
   }
 
   let rawArgs: string[]
@@ -98,7 +101,12 @@ export async function runEach(
           ].join(' '), // TODO: fix faulty escaping
         }
       }),
-      { group: true },
+      {
+        prefix: typeof scriptNameOrFunc === 'function'
+          ? '[{name}]' // self-loop doesn't need script name
+          : `[${scriptName}][{name}]`,
+        group: true
+      },
     ).result
   }
 }

@@ -1,72 +1,61 @@
 import { live } from './exec'
-import { getSubrepoConfig, getSubrepoDir } from './subrepo'
 
 /*
 IMPORTANT: changes to a git repo must happen serially
 */
 
-export function forgetSubrepoMeta(subrepo: string): Promise<void> {
-  return toggleSubrepoMeta(subrepo, false)
-}
-
-export function rememberSubrepoMeta(subrepo: string): Promise<void> {
-  return toggleSubrepoMeta(subrepo, true)
-}
-
-async function toggleSubrepoMeta(subrepo: string, bool: boolean): Promise<void> {
-  const subrepoDir = getSubrepoDir(subrepo)
-  const subrepoConfig = getSubrepoConfig(subrepo)
-  const metaFiles = subrepoConfig.metaFiles || []
-
-  for (const fileInfo of metaFiles) {
+export async function assumeUnchanged(
+  rootDir: string,
+  files: string[],
+  bool: boolean,
+): Promise<void> {
+  for (const file of files) {
     await live([
       'git',
       'update-index',
-      bool ? '--no-assume-unchanged' : '--assume-unchanged',
-      fileInfo.path,
+      bool ? '--assume-unchanged' : '--no-assume-unchanged',
+      file,
     ], {
-      cwd: subrepoDir,
+      cwd: rootDir,
     })
   }
 }
 
-export async function stageSubrepoMeta(subrepo: string): Promise<boolean> {
-  const subrepoDir = getSubrepoDir(subrepo)
-  const subrepoConfig = getSubrepoConfig(subrepo)
-  const metaFiles = subrepoConfig.metaFiles || []
-  let wasStaged = false
+export async function addAndCommit(
+  rootDir: string,
+  files: string[],
+  message: string,
+): Promise<boolean> {
+  let isAnyStaged = false
 
-  for (const fileInfo of metaFiles) {
+  for (const file of files) {
     await live([
-      'git', 'add', fileInfo.path,
+      'git', 'add', file,
     ], {
-      cwd: subrepoDir,
+      cwd: rootDir,
     })
 
-    const fileWasStaged = await live([
-      'git', 'diff', '--staged', '--quiet', fileInfo.path
+    const isFileStaged = await live([
+      'git', 'diff', '--staged', '--quiet', file
     ], {
-      cwd: subrepoDir,
+      cwd: rootDir,
     }).then(
       () => false, // success means NO changes
       () => true, // failure means there ARE changes
     )
 
-    if (fileWasStaged) {
-      wasStaged = true
+    if (isFileStaged) {
+      isAnyStaged = true
     }
   }
 
-  return wasStaged
-}
+  if (isAnyStaged) {
+    await live([
+      'git', 'commit', '-m', message
+    ], {
+      cwd: rootDir,
+    })
+  }
 
-/*
-only call if certain there are staged changes
-*/
-export async function commitSubrepoMeta(rootDir: string): Promise<void> {
-  return live([
-    'git', 'commit', '-m', 'subrepo meta changes',
-  ], {
-    cwd: rootDir,
-  })
+  return isAnyStaged
 }

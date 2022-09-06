@@ -9,10 +9,10 @@ export default function(...rawArgs: string[]) {
   return runEach((subrepo: string) => {
     const subrepoDir = getSubrepoDir(subrepo)
     const subrepoConfig = getSubrepoConfig(subrepo)
-    const metaFiles = subrepoConfig.metaFiles || []
+    const fileInfos = subrepoConfig.metaFiles || []
 
     return Promise.all(
-      metaFiles.map(async (fileInfo) => {
+      fileInfos.map(async (fileInfo) => {
         if (fileInfo.generator) {
           const contents = await fileInfo.generator(subrepo)
 

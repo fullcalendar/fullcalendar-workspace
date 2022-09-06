@@ -10,6 +10,7 @@ const commonConfig = {
     { path: '.editorconfig' },
     { path: 'pnpm-workspace.yaml', generator: generateSubdirWorkspace },
     { path: 'pnpm-lock.yaml', generator: generateSubdirLock },
+    // will need to copy patches
   ]
 }
 
