@@ -18,7 +18,7 @@ const rootConfig: SubrepoRootConfig = {
   branch: 'workspace-refactor',
   subrepos: {
     'standard': {
-      remote: 'git@github.com:fullcalendar/fullcalendar.git',
+      remote: '../fullcalendar',
       ...commonConfig,
     },
     'examples': {
