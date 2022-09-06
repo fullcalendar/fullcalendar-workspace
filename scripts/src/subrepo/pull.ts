@@ -4,19 +4,19 @@ import { getSubrepoConfig, parseSubrepoArgs, rootConfig, rootDir } from '../util
 
 export default async function(...rawArgs: string[]) {
   const { subrepos } = parseSubrepoArgs(rawArgs)
-  const currentBranch = await getBranch(rootDir)
 
+  const currentBranch = await getBranch(rootDir)
   if (currentBranch !== rootConfig.branch) {
     throw new Error(`Must be on branch '${rootConfig.branch}' to pull`)
   }
 
   for (const subrepo of subrepos) {
     const subrepoConfig = getSubrepoConfig(subrepo)
-    const branch = subrepoConfig.branchOverride || rootConfig.branch
+    const remoteBranch = subrepoConfig.branchOverride || rootConfig.branch
 
     await live([
-      'git', 'subtree', 'pull', '--prefix', subrepo, subrepoConfig.remote, branch, '--squash'
-    ].join(' '), {
+      'git', 'subtree', 'pull', '--prefix', subrepo, subrepoConfig.remote, remoteBranch, '--squash'
+    ], {
       cwd: rootDir,
     })
   }
