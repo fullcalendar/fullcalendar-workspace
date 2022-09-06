@@ -13,6 +13,7 @@ export async function disappear(rootDir: string, files: string[]) {
       'git', 'update-index', '--assume-unchanged', file,
     ], {
       cwd: rootDir,
+      stdio: 'ignore', // silence error
     }).then(
       () => true, // success
       () => false, // will fail if not in index
@@ -20,7 +21,8 @@ export async function disappear(rootDir: string, files: string[]) {
 
     if (wasInIndex) {
       await rm(
-        path.join(rootDir, file)
+        path.join(rootDir, file),
+        { force: true },
       )
     }
   }
@@ -32,6 +34,7 @@ export async function reappear(rootDir: string, files: string[]) {
       'git', 'update-index', '--no-assume-unchanged', file,
     ], {
       cwd: rootDir,
+      stdio: 'ignore', // silence error
     }).then(
       () => true, // success
       () => false, // will fail if not in index
