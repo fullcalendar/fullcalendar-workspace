@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url'
 import { parseArgs } from './script'
 import rootConfig from '../../../subrepo.config'
 
+export { rootConfig }
 export const rootDir = path.join(fileURLToPath(import.meta.url), '../../../..')
 
 export interface SubrepoRootConfig {

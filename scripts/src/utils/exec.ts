@@ -1,7 +1,11 @@
-import { SpawnOptions } from 'child_process'
+import * as util from 'util'
+import * as childProcess from 'child_process'
 import spawn from 'cross-spawn'
 
-export function live(command: string | string[], options: SpawnOptions = {}): Promise<void> {
+export function live(
+  command: string | string[],
+  options: childProcess.SpawnOptions = {}
+): Promise<void> {
   let commandPath: string
   let commandArgs: string[]
   let shell: boolean
@@ -19,7 +23,7 @@ export function live(command: string | string[], options: SpawnOptions = {}): Pr
   }
 
   const childProcess = spawn(commandPath, commandArgs, {
-    stdio: 'inherit', // allow overriding
+    stdio: 'inherit', // allow options to override
     ...options,
     shell,
   })
@@ -33,4 +37,18 @@ export function live(command: string | string[], options: SpawnOptions = {}): Pr
       }
     })
   })
+}
+
+const exec = util.promisify(childProcess.exec)
+const execFile = util.promisify(childProcess.execFile)
+
+export function capture(
+  command: string | string[],
+  options: childProcess.ExecOptions = {},
+): Promise<{ stdout: string, stderr: string }> {
+  if (typeof command === 'string') {
+    return exec(command, options)
+  } else {
+    return execFile(command[0], command.slice(1), options)
+  }
 }

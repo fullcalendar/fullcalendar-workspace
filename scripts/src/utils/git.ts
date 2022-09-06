@@ -1,6 +1,6 @@
 import * as path from 'path'
 import { rm } from 'fs/promises'
-import { live } from './exec'
+import { live, capture } from './exec'
 
 /*
 IMPORTANT: writes to a git repo must happen serially,
@@ -94,4 +94,13 @@ export async function addAndCommit(
   }
 
   return isAnyStaged
+}
+
+export async function getBranch(rootDir: string): Promise<string> {
+  const { stdout } = await capture([
+    'git', 'symbolic-ref', '--short', '-q', 'HEAD',
+  ], {
+    cwd: rootDir,
+  })
+  return stdout.trim()
 }
