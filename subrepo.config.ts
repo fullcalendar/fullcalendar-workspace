@@ -22,20 +22,20 @@ const rootConfig: SubrepoRootConfig = {
       ...commonConfig,
     },
     'examples': {
-      remote: 'git@github.com:fullcalendar/fullcalendar-example-projects.git',
+      remote: '../fullcalendar/example-projects',
       ...commonConfig,
     },
     'contrib/react': {
-      remote: 'git@github.com:fullcalendar/fullcalendar-react.git',
+      remote: '../fullcalendar/packages-contrib/react',
       ...commonConfig,
     },
     'contrib/vue2': {
-      remote: 'git@github.com:fullcalendar/fullcalendar-vue.git',
+      remote: '../fullcalendar/packages-contrib/vue',
       branchOverride: 'vue2-workspace-refactor',
       ...commonConfig,
     },
     'contrib/vue3': {
-      remote: 'git@github.com:fullcalendar/fullcalendar-vue.git',
+      remote: '../fullcalendar/packages-contrib/vue3',
       branchOverride: 'vue3-workspace-refactor',
       ...commonConfig,
     }
