@@ -19,9 +19,9 @@ export function live(command: string | string[], options: SpawnOptions = {}): Pr
   }
 
   const childProcess = spawn(commandPath, commandArgs, {
+    stdio: 'inherit', // allow overriding
     ...options,
     shell,
-    stdio: 'inherit',
   })
 
   return new Promise((resolve, reject) => {

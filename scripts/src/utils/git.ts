@@ -1,7 +1,7 @@
 import { live } from './exec'
 
 /*
-IMPORTANT: changes to a git repo must happen serially
+IMPORTANT: writes to a git repo must happen serially
 */
 
 export async function assumeUnchanged(
@@ -17,7 +17,10 @@ export async function assumeUnchanged(
       file,
     ], {
       cwd: rootDir,
-    })
+    }).then(
+      () => true, // success
+      () => false, // will fail if not already committed. swallow error
+    )
   }
 }
 
@@ -29,23 +32,29 @@ export async function addAndCommit(
   let isAnyStaged = false
 
   for (const file of files) {
-    await live([
+    const isAdded = await live([
       'git', 'add', file,
     ], {
       cwd: rootDir,
-    })
-
-    const isFileStaged = await live([
-      'git', 'diff', '--staged', '--quiet', file
-    ], {
-      cwd: rootDir,
+      stdio: 'ignore', // silence error
     }).then(
-      () => false, // success means NO changes
-      () => true, // failure means there ARE changes
+      () => true, // success
+      () => false, // will fail if dynamic generator didn't want to generate. swallow error
     )
 
-    if (isFileStaged) {
-      isAnyStaged = true
+    if (isAdded) {
+      const isFileStaged = await live([
+        'git', 'diff', '--quiet', '--staged', file
+      ], {
+        cwd: rootDir,
+      }).then(
+        () => false, // success means NO changes
+        () => true, // failure means there ARE changes
+      )
+
+      if (isFileStaged) {
+        isAnyStaged = true
+      }
     }
   }
 
