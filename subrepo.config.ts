@@ -18,24 +18,24 @@ const rootConfig: SubrepoRootConfig = {
   branch: 'workspace-refactor',
   subrepos: {
     'standard': {
-      remote: '../fullcalendar',
+      remote: '../../Scratch/temp-repos/fullcalendar',
       ...commonConfig,
     },
     'examples': {
-      remote: '../fullcalendar/example-projects',
+      remote: '../../Scratch/temp-repos/fullcalendar-example-projects',
       ...commonConfig,
     },
     'contrib/react': {
-      remote: '../fullcalendar/packages-contrib/react',
+      remote: '../../Scratch/temp-repos/fullcalendar-react',
       ...commonConfig,
     },
     'contrib/vue2': {
-      remote: '../fullcalendar/packages-contrib/vue',
+      remote: '../../Scratch/temp-repos/fullcalendar-vue2',
       branchOverride: 'vue2-workspace-refactor',
       ...commonConfig,
     },
     'contrib/vue3': {
-      remote: '../fullcalendar/packages-contrib/vue3',
+      remote: '../../Scratch/temp-repos/fullcalendar-vue3',
       branchOverride: 'vue3-workspace-refactor',
       ...commonConfig,
     }
