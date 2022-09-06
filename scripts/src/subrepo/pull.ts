@@ -10,6 +10,7 @@ export default async function(...rawArgs: string[]) {
     throw new Error(`Must be on branch '${rootConfig.branch}' to pull`)
   }
 
+  // git write-operations must happen synchronously
   for (const subrepo of subrepos) {
     const subrepoConfig = getSubrepoConfig(subrepo)
     const remoteBranch = subrepoConfig.branchOverride || rootConfig.branch

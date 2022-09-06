@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 import { live } from '../utils/exec'
 import { getBranch } from '../utils/git'
-import { run } from '../utils/script'
+import { run, runEach } from '../utils/script'
 import { getSubrepoConfig, parseSubrepoArgs, rootConfig, rootDir } from '../utils/subrepo'
 
 export default async function(...rawArgs: string[]) {
@@ -22,7 +22,7 @@ export default async function(...rawArgs: string[]) {
     await run('subrepo:meta:update', subrepos)
   }
 
-  for (const subrepo of subrepos) {
+  await runEach(async (subrepo: string) => {
     const subrepoConfig = getSubrepoConfig(subrepo)
     const remoteBranch = subrepoConfig.branchOverride || rootConfig.branch
 
@@ -31,5 +31,5 @@ export default async function(...rawArgs: string[]) {
     ], {
       cwd: rootDir,
     })
-  }
+  }, subrepos, flags)
 }

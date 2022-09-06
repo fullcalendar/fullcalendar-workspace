@@ -110,7 +110,7 @@ export async function runEach(
         prefix: typeof scriptNameOrFunc === 'function'
           ? '[{name}]' // self-loop doesn't need script name
           : `[${scriptName}][{name}]`,
-        // group: true
+        group: true
       },
     ).result
   }
