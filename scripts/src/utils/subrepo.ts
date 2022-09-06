@@ -27,7 +27,7 @@ export function parseSubrepoArgs<
   const { params, flags, unknownFlags } = parseArgs(rawArgs, {
     ...flagConfig,
     all: Boolean,
-  }, [
+  } as Flags & { all: BooleanConstructor }, [
     '[subrepos...]'
   ])
 
