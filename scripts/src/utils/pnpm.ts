@@ -2,7 +2,7 @@ import * as path from 'path'
 import { readFile } from 'fs/promises'
 import * as yaml from 'js-yaml'
 import _makeDedicatedLockfile from '@pnpm/make-dedicated-lockfile'
-import { cjsDefaultInterop } from './cli'
+import { cjsDefaultInterop } from './tsx'
 import { getSubrepoDir, rootDir } from './subrepo'
 
 // Lock file

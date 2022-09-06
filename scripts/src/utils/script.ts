@@ -2,7 +2,7 @@ import * as path from 'path'
 import { cli } from 'cleye'
 import concurrently from 'concurrently'
 import chalk from 'chalk'
-import { getLoaderArgs } from './cli'
+import { getLoaderArgs } from './tsx'
 
 const [
   currentBin,
