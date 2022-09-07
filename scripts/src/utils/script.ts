@@ -16,9 +16,8 @@ const prefixColors = [
 ]
 
 export async function runMain() {
-  const func = await getScriptFunc(currentScriptName)
-
   try {
+    const func = await getScriptFunc(currentScriptName)
     await func(...currentScriptArgs)
   } catch (error: any) {
     if (error.message) {
@@ -137,7 +136,7 @@ async function getScriptFunc(scriptName: string): Promise<(...args: string[]) =>
   }
 
   if (!scriptFunc) {
-    throw new Error(`Could not find script ${scriptName}`)
+    throw new Error(`Could not find script '${scriptName}'`)
   }
 
   return scriptFunc

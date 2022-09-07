@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "bin": {
-    "workspace-scripts": "./bin/workspace-scripts.js"
+    "workspace-scripts": "./bin/workspace-scripts.js",
+    "ws": "./bin/workspace-scripts.js"
   },
   "scripts": {
     "types": "tsc"
