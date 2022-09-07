@@ -24,5 +24,12 @@ export default async function(...rawArgs: string[]): Promise<void> {
     ], {
       cwd: rootDir,
     })
+
+    // clean temporary "worktrees" that prevent other operations from happening
+    await live([
+      'git', 'subrepo', 'clean', subrepo,
+    ], {
+      cwd: rootDir,
+    })
   }
 }
