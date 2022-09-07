@@ -1,7 +1,8 @@
 import {
-  createElement, isInt, BaseComponent, DateMarker, Ref, DateRange, getDateMeta, getSlotClassNames,
+  isInt, BaseComponent, DateMarker, DateRange, getDateMeta, getSlotClassNames,
   RenderHook, getDayClassNames, SlotLaneContentArg, DateProfile,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
+import { createElement, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 export interface TimelineSlatCellProps {

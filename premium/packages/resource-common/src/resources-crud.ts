@@ -1,4 +1,4 @@
-import { CalendarData, parseFieldSpecs } from '@fullcalendar/common'
+import { CalendarData, parseFieldSpecs } from '@fullcalendar/core'
 import { buildResourceApis, ResourceApi } from './api/ResourceApi'
 import { ResourceHash } from './structs/resource'
 

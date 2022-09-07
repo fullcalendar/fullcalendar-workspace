@@ -1,4 +1,4 @@
-import { DateRange, CalendarContext } from '@fullcalendar/common'
+import { DateRange, CalendarContext } from '@fullcalendar/core'
 import { ResourceInput } from './resource'
 
 export interface ResourceSource<ResourceSourceMeta> {

@@ -1,4 +1,4 @@
-import { ViewContext, ViewApi } from '@fullcalendar/common'
+import { ViewContext, ViewApi } from '@fullcalendar/core'
 import { Resource, ResourceApi } from '@fullcalendar/resource-common'
 
 // hook props

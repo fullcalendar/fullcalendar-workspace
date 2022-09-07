@@ -1,9 +1,10 @@
 import {
   Duration, EventStore, EventUiHash, DateSpan, EventInteractionState,
-  BaseComponent, createElement, memoize, Fragment, RefMap, mapHash, createRef,
+  BaseComponent, memoize, RefMap, mapHash,
   getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs, isPropsEqual, buildIsoString,
   computeEarliestSegStart,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
+import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { coordsToCss, TimelineCoords } from './TimelineCoords'
 import { TimelineLaneBg } from './TimelineLaneBg'

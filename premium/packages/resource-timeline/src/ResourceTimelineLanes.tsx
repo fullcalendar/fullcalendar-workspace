@@ -1,4 +1,5 @@
-import { createElement, PositionCache, createRef, BaseComponent, CssDimValue, RefMap } from '@fullcalendar/common'
+import { PositionCache, BaseComponent, CssDimValue, RefMap } from '@fullcalendar/core'
+import { createElement, createRef } from '@fullcalendar/core/preact'
 import { GroupNode, ResourceNode } from '@fullcalendar/resource-common'
 import { ResourceTimelineLanesBody, ResourceTimelineLanesContentProps } from './ResourceTimelineLanesBody'
 

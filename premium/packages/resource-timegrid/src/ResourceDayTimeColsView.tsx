@@ -1,4 +1,5 @@
-import { createElement, DateProfileGenerator, memoize, DateProfile, ChunkContentCallbackArgs, CalendarContext } from '@fullcalendar/common'
+import { DateProfileGenerator, memoize, DateProfile, ChunkContentCallbackArgs, CalendarContext } from '@fullcalendar/core'
+import { createElement } from '@fullcalendar/core/preact'
 import { TimeColsView, buildTimeColsModel, buildSlatMetas } from '@fullcalendar/timegrid'
 import {
   ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps,

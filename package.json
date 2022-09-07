@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "types": "tsc -b",
-    "whatever": "standard-script whatever 'this is cool'"
+    "types:watch": "tsc -b --watch"
   },
   "devDependencies": {
     "@fullcalendar/standard-scripts": "*",
@@ -26,7 +26,7 @@
         }
       }
     },
-    "patchedDependencies": {
+    "xxxpatchedDependencies": {
       "@pnpm/make-dedicated-lockfile@0.3.20": "scripts/patches/@pnpm__make-dedicated-lockfile@0.3.20.patch",
       "concurrently@7.3.0": "scripts/patches/concurrently@7.3.0.patch"
     }

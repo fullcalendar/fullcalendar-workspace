@@ -5,7 +5,7 @@
   "description": "Tabular data chunked into scrollable panes",
   "docs": "https://fullcalendar.io/docs/scheduler",
   "dependencies": {
-    "@fullcalendar/common": "workspace:*",
+    "@fullcalendar/core": "workspace:*",
     "@fullcalendar/premium-common": "workspace:*",
     "tslib": "^2.1.0"
   },
@@ -24,8 +24,5 @@
     "name": "Adam Shaw",
     "email": "arshaw@arshaw.com",
     "url": "http://arshaw.com/"
-  },
-  "devDependencies": {
-    "@fullcalendar/core-preact": "workspace:*"
   }
 }

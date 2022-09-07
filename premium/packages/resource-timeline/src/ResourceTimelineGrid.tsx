@@ -1,8 +1,9 @@
 import {
-  createElement, PositionCache, Duration, EventStore, DateSpan, EventUiHash, EventInteractionState,
-  DateComponent, Hit, createRef, CssDimValue, VNode, memoize, NowTimer, greatestDurationDenominator,
-  DateMarker, DateRange, NowIndicatorRoot, DateProfile, Fragment,
-} from '@fullcalendar/common'
+  PositionCache, Duration, EventStore, DateSpan, EventUiHash, EventInteractionState,
+  DateComponent, Hit, CssDimValue, memoize, NowTimer, greatestDurationDenominator,
+  DateMarker, DateRange, NowIndicatorRoot, DateProfile,
+} from '@fullcalendar/core'
+import { createElement, createRef, VNode, Fragment } from '@fullcalendar/core/preact'
 import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource-common'
 import {
   TimelineDateProfile, TimelineCoords, TimelineSlats,

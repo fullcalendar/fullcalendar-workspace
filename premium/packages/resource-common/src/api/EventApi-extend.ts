@@ -1,4 +1,4 @@
-import { EventApi } from '@fullcalendar/common'
+import { EventApi } from '@fullcalendar/core'
 import { ResourceApi } from './ResourceApi'
 
 EventApi.prototype.getResources = function (this: EventApi): ResourceApi[] { // eslint-disable-line func-names

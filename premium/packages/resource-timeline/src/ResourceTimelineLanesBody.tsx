@@ -1,7 +1,8 @@
 import {
-  createElement, SplittableProps, EventStore, BaseComponent, RefMap,
+  SplittableProps, EventStore, BaseComponent, RefMap,
   DateMarker, DateRange, DateProfile,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
+import { createElement } from '@fullcalendar/core/preact'
 import { GroupNode, ResourceNode } from '@fullcalendar/resource-common'
 import { TimelineDateProfile, TimelineCoords } from '@fullcalendar/timeline'
 import { ResourceTimelineLane } from './ResourceTimelineLane'

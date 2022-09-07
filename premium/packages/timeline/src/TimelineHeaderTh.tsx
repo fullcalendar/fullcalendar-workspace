@@ -1,8 +1,9 @@
 import {
-  createElement, BaseComponent, DateRange, DateMarker, getDateMeta, getSlotClassNames,
+  BaseComponent, DateRange, DateMarker, getDateMeta, getSlotClassNames,
   buildNavLinkAttrs, buildClassNameNormalizer, MountHook,
   getDayClassNames, DateProfile, memoizeObjArg, ViewContext, memoize,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
+import { createElement } from '@fullcalendar/core/preact'
 import { TimelineDateProfile, TimelineHeaderCell } from './timeline-date-profile'
 import { TimelineHeaderThInner, refineHookProps, HookProps } from './TimelineHeaderThInner'
 

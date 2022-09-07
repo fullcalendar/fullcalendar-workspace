@@ -1,12 +1,11 @@
 import {
   createPlugin,
   findElements,
-  flushSync,
   CalendarContext,
   removeExact,
   config,
-} from '@fullcalendar/common'
-
+} from '@fullcalendar/core'
+import { flushSync } from '@fullcalendar/core/preact'
 import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
 // ensure ambient declarations. TODO: remove?
 import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates

@@ -1,7 +1,8 @@
 import {
-  createElement, BaseComponent, CssDimValue, MountHook,
+  BaseComponent, CssDimValue, MountHook,
   buildClassNameNormalizer, memoizeObjArg,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
+import { createElement } from '@fullcalendar/core/preact'
 import { Resource, ColSpec } from '@fullcalendar/resource-common'
 import { ExpanderIcon } from './ExpanderIcon'
 import { refineHookProps, HookProps } from './spreadsheet-cell-util'

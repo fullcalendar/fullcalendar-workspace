@@ -1,7 +1,9 @@
 import {
-  VNode, createElement, Fragment,
   BaseComponent, ElementDragging, elementClosest, PointerDragEvent, RefMap, findElements, RenderHook,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
+import {
+  VNode, createElement, Fragment,
+} from '@fullcalendar/core/preact'
 import { ColSpec, ColHeaderContentArg, ColHeaderRenderHooks } from '@fullcalendar/resource-common'
 
 export interface SpreadsheetHeaderProps {

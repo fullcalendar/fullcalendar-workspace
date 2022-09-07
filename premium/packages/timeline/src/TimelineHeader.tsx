@@ -1,8 +1,9 @@
 import {
-  createElement, BaseComponent, CssDimValue, VNode, DateMarker, NowTimer,
-  greatestDurationDenominator, DateRange, NowIndicatorRoot, createRef,
-  findElements, RefObject, DateProfile,
-} from '@fullcalendar/common'
+  BaseComponent, CssDimValue, DateMarker, NowTimer,
+  greatestDurationDenominator, DateRange, NowIndicatorRoot,
+  findElements, DateProfile,
+} from '@fullcalendar/core'
+import { createElement, VNode, createRef, RefObject } from '@fullcalendar/core/preact'
 import { TimelineHeaderRows } from './TimelineHeaderRows'
 import { coordToCss, TimelineCoords } from './TimelineCoords'
 import { TimelineDateProfile } from './timeline-date-profile'

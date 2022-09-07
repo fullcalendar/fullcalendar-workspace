@@ -1,4 +1,4 @@
-import { createPlugin, config } from '@fullcalendar/common'
+import { createPlugin, config } from '@fullcalendar/core'
 
 import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
 // ensure ambient declarations

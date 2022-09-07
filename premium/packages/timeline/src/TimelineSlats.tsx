@@ -1,7 +1,8 @@
 import {
-  createElement, BaseComponent, multiplyDuration, RefMap, CssDimValue, VNode,
-  createRef, ScrollResponder, ScrollRequest, DateMarker,
-} from '@fullcalendar/common'
+  BaseComponent, multiplyDuration, RefMap, CssDimValue,
+  ScrollResponder, ScrollRequest, DateMarker,
+} from '@fullcalendar/core'
+import { createElement, createRef, VNode } from '@fullcalendar/core/preact'
 import { TimelineCoords } from './TimelineCoords'
 import { TimelineSlatsBody, TimelineSlatsContentProps } from './TimelineSlatsBody'
 

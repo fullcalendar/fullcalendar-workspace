@@ -1,4 +1,4 @@
-import { DateRange, CalendarContext, requestJson, Dictionary } from '@fullcalendar/common'
+import { DateRange, CalendarContext, requestJson, Dictionary } from '@fullcalendar/core'
 import { __assign } from 'tslib'
 import { registerResourceSourceDef } from '../structs/resource-source-def'
 import { ResourceSourceRefined } from '../structs/resource-source-parse'

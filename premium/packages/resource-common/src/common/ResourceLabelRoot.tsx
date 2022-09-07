@@ -1,7 +1,10 @@
 import {
-  createElement, Ref, ComponentChildren, ViewContextType, ViewContext, RenderHook,
+  ViewContextType, ViewContext, RenderHook,
   ViewApi, formatDayString, Dictionary, MountArg,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
+import {
+  createElement, Ref, ComponentChildren,
+} from '@fullcalendar/core/preact'
 import { Resource } from '../structs/resource'
 import { ResourceApi } from '../api/ResourceApi'
 

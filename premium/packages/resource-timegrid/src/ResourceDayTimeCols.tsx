@@ -1,8 +1,10 @@
 import {
-  createElement, createRef, VNode,
   mapHash, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, memoize, DateRange,
   DateMarker, Hit, CssDimValue, NowTimer, Duration, DateProfile,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
+import {
+  createElement, createRef, VNode,
+} from '@fullcalendar/core/preact'
 import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeSlatMeta, TimeColsSlatsCoords } from '@fullcalendar/timegrid'
 import { AbstractResourceDayTableModel, VResourceSplitter } from '@fullcalendar/resource-common'
 import { ResourceDayTimeColsJoiner } from './ResourceDayTimeColsJoiner'

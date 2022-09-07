@@ -6,7 +6,7 @@ import { ResourceAction } from './reducers/resource-action'
 
 // TODO: move these out to specific files that care about them (to -declare.ts files)
 
-declare module '@fullcalendar/common' {
+declare module '@fullcalendar/core' {
 
   interface CalendarContext {
     dispatch(action: ResourceAction): void

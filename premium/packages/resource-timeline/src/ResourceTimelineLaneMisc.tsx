@@ -1,4 +1,5 @@
-import { createElement, BaseComponent, ContentHook } from '@fullcalendar/common'
+import { BaseComponent, ContentHook } from '@fullcalendar/core'
+import { createElement } from '@fullcalendar/core/preact'
 import { Resource, ResourceApi, ResourceLaneContentArg } from '@fullcalendar/resource-common'
 
 export interface ResourceTimelineLaneMiscProps {

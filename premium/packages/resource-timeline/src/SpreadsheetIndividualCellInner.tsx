@@ -1,4 +1,5 @@
-import { createElement, BaseComponent, Fragment, ContentHook } from '@fullcalendar/common'
+import { BaseComponent, ContentHook } from '@fullcalendar/core'
+import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { ColSpec } from '@fullcalendar/resource-common'
 import { HookProps } from './spreadsheet-cell-util'
 

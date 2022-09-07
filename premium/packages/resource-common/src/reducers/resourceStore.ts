@@ -1,4 +1,4 @@
-import { CalendarContext } from '@fullcalendar/common'
+import { CalendarContext } from '@fullcalendar/core'
 import { ResourceAction } from './resource-action'
 import { ResourceHash, ResourceInput, parseResource } from '../structs/resource'
 import { ResourceSource } from '../structs/resource-source'

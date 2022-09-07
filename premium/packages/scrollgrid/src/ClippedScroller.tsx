@@ -1,10 +1,17 @@
 import {
-  createElement, ComponentChildren, createRef, Ref, BaseComponent, setRef,
+  BaseComponent,
+  setRef,
   ScrollerLike,
   Scroller, OverflowValue,
   getIsRtlScrollbarOnLeft,
   isPropsEqual,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
+import {
+  createElement,
+  ComponentChildren,
+  createRef,
+  Ref,
+} from '@fullcalendar/core/preact'
 
 export type ClippedOverflowValue = OverflowValue | 'scroll-hidden'
 

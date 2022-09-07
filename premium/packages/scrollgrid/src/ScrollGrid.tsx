@@ -1,5 +1,4 @@
 import {
-  createElement, VNode, Fragment,
   BaseComponent,
   isArraysEqual,
   findElements,
@@ -23,7 +22,8 @@ import {
   ScrollGridChunkConfig,
   getCanVGrowWithinCell,
   config,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
+import { createElement, VNode, Fragment } from '@fullcalendar/core/preact'
 import { StickyScrolling } from './StickyScrolling'
 import { ClippedScroller, ClippedOverflowValue } from './ClippedScroller'
 import { ScrollSyncer } from './ScrollSyncer'

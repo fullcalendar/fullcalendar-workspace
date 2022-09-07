@@ -1,7 +1,8 @@
 import {
-  createElement, BaseComponent, Ref, createRef, MoreLinkRoot,
-  setRef, DateProfile, DateRange, DateMarker, Fragment, getSegMeta,
-} from '@fullcalendar/common'
+  BaseComponent, MoreLinkRoot,
+  setRef, DateProfile, DateRange, DateMarker, getSegMeta,
+} from '@fullcalendar/core'
+import { createElement, createRef, Ref, Fragment } from '@fullcalendar/core/preact'
 import { TimelineSegPlacement } from './event-placement'
 import { coordsToCss } from './TimelineCoords'
 import { TimelineEvent } from './TimelineEvent'

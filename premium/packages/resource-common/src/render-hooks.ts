@@ -1,4 +1,4 @@
-import { CalendarContext, MountArg } from '@fullcalendar/common'
+import { CalendarContext, MountArg } from '@fullcalendar/core'
 import { ResourceApi } from './api/ResourceApi'
 import { Resource } from './structs/resource'
 

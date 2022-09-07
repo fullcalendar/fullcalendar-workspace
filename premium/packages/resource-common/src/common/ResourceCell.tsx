@@ -1,4 +1,5 @@
-import { createElement, BaseComponent, DateMarker, Ref, ComponentChildren } from '@fullcalendar/common'
+import { BaseComponent, DateMarker } from '@fullcalendar/core'
+import { createElement, Ref, ComponentChildren } from '@fullcalendar/core/preact'
 import { Resource } from '../structs/resource'
 import { ResourceLabelRoot } from './ResourceLabelRoot'
 

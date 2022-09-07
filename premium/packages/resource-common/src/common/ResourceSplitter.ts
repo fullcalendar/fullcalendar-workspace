@@ -1,4 +1,4 @@
-import { Splitter, SplittableProps, DateSpan, EventDef } from '@fullcalendar/common'
+import { Splitter, SplittableProps, DateSpan, EventDef } from '@fullcalendar/core'
 import { ResourceHash } from '../structs/resource'
 
 export interface SplittableResourceProps extends SplittableProps {

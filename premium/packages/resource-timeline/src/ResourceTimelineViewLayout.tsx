@@ -1,11 +1,12 @@
 import {
-  createElement, createRef, ElementDragging, PointerDragEvent, BaseComponent, ColProps,
+  ElementDragging, PointerDragEvent, BaseComponent, ColProps,
   ChunkConfigRowContent, ChunkConfigContent, ScrollGridSectionConfig,
   renderScrollShim,
   getStickyHeaderDates,
   getStickyFooterScrollbar,
   config,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
+import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollGrid } from '@fullcalendar/scrollgrid'
 
 const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars

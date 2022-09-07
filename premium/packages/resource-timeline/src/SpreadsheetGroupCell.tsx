@@ -1,4 +1,5 @@
-import { createElement, BaseComponent, Fragment, RenderHook } from '@fullcalendar/common'
+import { BaseComponent, RenderHook } from '@fullcalendar/core'
+import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { ColSpec, ColCellContentArg } from '@fullcalendar/resource-common'
 
 export interface SpreadsheetGroupCellProps {

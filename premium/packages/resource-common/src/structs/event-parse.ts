@@ -1,4 +1,4 @@
-import { EventRefined, identity, Identity } from '@fullcalendar/common'
+import { EventRefined, identity, Identity } from '@fullcalendar/core'
 
 export const EVENT_REFINERS = {
   resourceId: String,

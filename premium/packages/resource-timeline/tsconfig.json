@@ -8,7 +8,7 @@
     "./src/**/*"
   ],
   "references": [
-    { "path": "../../../standard/packages/common" },
+    { "path": "../../../standard/packages/core" },
     { "path": "../resource-common" },
     { "path": "../scrollgrid" },
     { "path": "../timeline" }

@@ -1,8 +1,9 @@
 import {
-  createElement, createRef, ViewContext, memoize,
-  Fragment, CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache,
+  ViewContext, memoize,
+  CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache,
   ScrollRequest, ScrollResponder, ViewRoot, BaseComponent, ViewOptionsRefined,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
+import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import {
   buildTimelineDateProfile, TimelineHeader,
   buildSlatCols,

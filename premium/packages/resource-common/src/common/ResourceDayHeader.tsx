@@ -1,8 +1,11 @@
 import {
-  VNode, createElement, TableDowCell, memoize, BaseComponent,
-  DateMarker, DateFormatter, computeFallbackHeaderFormat, TableDateCell, Fragment,
+  TableDowCell, memoize, BaseComponent,
+  DateMarker, DateFormatter, computeFallbackHeaderFormat, TableDateCell,
   DateRange, NowTimer, DateProfile,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
+import {
+  VNode, createElement, Fragment,
+} from '@fullcalendar/core/preact'
 import { Resource } from '../structs/resource'
 import { ResourceApi } from '../api/ResourceApi'
 import { ResourceCell } from './ResourceCell'

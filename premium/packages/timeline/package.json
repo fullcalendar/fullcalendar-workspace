@@ -5,7 +5,7 @@
   "description": "Display events on a horizontal time axis (without resources)",
   "docs": "https://fullcalendar.io/docs/timeline-view-no-resources",
   "dependencies": {
-    "@fullcalendar/common": "workspace:*",
+    "@fullcalendar/core": "workspace:*",
     "@fullcalendar/premium-common": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*",
     "tslib": "^2.1.0"
@@ -25,8 +25,5 @@
     "name": "Adam Shaw",
     "email": "arshaw@arshaw.com",
     "url": "http://arshaw.com/"
-  },
-  "devDependencies": {
-    "@fullcalendar/core-preact": "workspace:*"
   }
 }

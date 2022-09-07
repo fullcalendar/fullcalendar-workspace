@@ -2,7 +2,7 @@ import {
   PositionCache, findDirectChildren,
   isInt, DateProfile,
   DateMarker, DateEnv, Duration, startOfDay, rangeContainsMarker, CssDimValue, DateRange, SegSpan,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
 import { TimelineDateProfile } from './timeline-date-profile'
 
 export class TimelineCoords { // TODO: rename to "slat" coords?

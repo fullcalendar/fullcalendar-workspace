@@ -1,4 +1,5 @@
-import { createElement, Ref, BaseComponent, CssDimValue, RenderHook } from '@fullcalendar/common'
+import { BaseComponent, CssDimValue, RenderHook } from '@fullcalendar/core'
+import { createElement, Ref } from '@fullcalendar/core/preact'
 import { GroupLaneRenderHooks, ColCellContentArg } from '@fullcalendar/resource-common'
 
 export interface DividerRowProps {

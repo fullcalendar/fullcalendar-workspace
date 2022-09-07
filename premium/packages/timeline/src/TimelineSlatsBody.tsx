@@ -1,4 +1,5 @@
-import { createElement, BaseComponent, RefMap, DateMarker, DateRange, DateProfile } from '@fullcalendar/common'
+import { BaseComponent, RefMap, DateMarker, DateRange, DateProfile } from '@fullcalendar/core'
+import { createElement } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from './timeline-date-profile'
 import { TimelineSlatCell } from './TimelineSlatCell'
 

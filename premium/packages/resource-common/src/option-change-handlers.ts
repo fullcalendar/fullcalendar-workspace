@@ -1,4 +1,4 @@
-import { CalendarContext } from '@fullcalendar/common'
+import { CalendarContext } from '@fullcalendar/core'
 
 export const optionChangeHandlers = {
   resources: handleResources,

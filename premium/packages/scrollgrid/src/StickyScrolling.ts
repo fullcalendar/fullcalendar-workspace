@@ -5,7 +5,7 @@ import {
   computeInnerRect,
   CssDimValue,
   removeElement,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
 import { ScrollListener } from './ScrollListener'
 import { getScrollCanvasOrigin, getScrollFromLeftEdge } from './scroll-left-norm'
 

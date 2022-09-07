@@ -1,4 +1,4 @@
-import { CalendarContext, DayTableModel, DayTableCell } from '@fullcalendar/common'
+import { CalendarContext, DayTableModel, DayTableCell } from '@fullcalendar/core'
 import { __assign } from 'tslib'
 import { Resource } from '../structs/resource'
 import { ResourceApi } from '../api/ResourceApi'

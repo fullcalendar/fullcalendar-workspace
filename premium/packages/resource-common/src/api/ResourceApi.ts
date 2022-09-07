@@ -1,4 +1,4 @@
-import { CalendarContext, EventApi, Dictionary } from '@fullcalendar/common'
+import { CalendarContext, EventApi, Dictionary } from '@fullcalendar/core'
 import { __assign } from 'tslib'
 import { Resource, getPublicId, ResourceHash } from '../structs/resource'
 

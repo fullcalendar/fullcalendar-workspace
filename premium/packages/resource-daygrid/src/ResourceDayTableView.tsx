@@ -1,12 +1,14 @@
 import {
-  createElement,
-  createRef,
   DateProfileGenerator,
   memoize,
   DateProfile,
   ChunkContentCallbackArgs,
   CalendarContext,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
+import {
+  createElement,
+  createRef,
+} from '@fullcalendar/core/preact'
 import { TableView, buildDayTableModel } from '@fullcalendar/daygrid'
 import {
   ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps,

@@ -1,7 +1,8 @@
 import {
-  BaseComponent, createElement, Fragment, BgEvent, renderFill,
+  BaseComponent, BgEvent, renderFill,
   getSegMeta, DateRange, DateMarker, buildEventRangeKey,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
+import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { computeSegHCoords } from './event-placement'
 import { coordsToCss, TimelineCoords } from './TimelineCoords'
 import { TimelineLaneSeg } from './TimelineLaneSlicer'

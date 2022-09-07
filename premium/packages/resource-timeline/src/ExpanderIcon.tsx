@@ -1,4 +1,4 @@
-import { createElement, VNode, Fragment } from '@fullcalendar/common'
+import { createElement, VNode, Fragment } from '@fullcalendar/core/preact'
 
 /*
 Renders the DOM responsible for the subrow expander area,

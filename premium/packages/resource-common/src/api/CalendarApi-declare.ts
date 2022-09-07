@@ -2,7 +2,7 @@ import { ResourceApi } from './ResourceApi'
 import { ResourceInput } from '../structs/resource'
 import { ResourceAction } from '../reducers/resource-action'
 
-declare module '@fullcalendar/common' {
+declare module '@fullcalendar/core' {
   interface CalendarApi {
     dispatch(action: ResourceAction)
     addResource(input: ResourceInput, scrollTo?: boolean): ResourceApi

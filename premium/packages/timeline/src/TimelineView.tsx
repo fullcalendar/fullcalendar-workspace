@@ -1,7 +1,8 @@
 import {
-  createElement, ViewProps, memoize, ChunkContentCallbackArgs, createRef, ViewRoot,
+  ViewProps, memoize, ChunkContentCallbackArgs, ViewRoot,
   DateComponent, ScrollGridSectionConfig, renderScrollShim, getStickyHeaderDates, getStickyFooterScrollbar,
-} from '@fullcalendar/common'
+} from '@fullcalendar/core'
+import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollGrid } from '@fullcalendar/scrollgrid'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
 import { TimelineHeader } from './TimelineHeader'

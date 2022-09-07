@@ -1,4 +1,4 @@
-import { SlicedProps, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/common'
+import { SlicedProps, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/core'
 import { __assign } from 'tslib'
 import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel'
 

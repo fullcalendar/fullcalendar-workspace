@@ -1,4 +1,5 @@
-import { createElement, BaseComponent, DateMarker, ContentHook, ViewApi, DateEnv } from '@fullcalendar/common'
+import { BaseComponent, DateMarker, ContentHook, ViewApi, DateEnv } from '@fullcalendar/core'
+import { createElement } from '@fullcalendar/core/preact'
 
 export interface TimelineHeaderThInnerProps {
   hookProps: HookProps
