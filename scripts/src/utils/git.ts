@@ -95,12 +95,3 @@ export async function addAndCommit(
 
   return isAnyStaged
 }
-
-export async function getBranch(rootDir: string): Promise<string> {
-  const { stdout } = await capture([
-    'git', 'symbolic-ref', '--short', '-q', 'HEAD',
-  ], {
-    cwd: rootDir,
-  })
-  return stdout.trim()
-}

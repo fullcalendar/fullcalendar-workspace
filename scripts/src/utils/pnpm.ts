@@ -6,6 +6,9 @@ import { cjsDefaultInterop } from './tsx'
 import { getSubrepoDir, rootDir } from './subrepo'
 
 // Lock file
+// -------------------------------------------------------------------------------------------------
+
+export const lockFilename = 'pnpm-lock.yaml'
 
 const makeDedicatedLockfile = cjsDefaultInterop(_makeDedicatedLockfile)
 
@@ -14,8 +17,9 @@ export function generateSubdirLock(subrepo: string): Promise<void> {
 }
 
 // Workspace file
+// -------------------------------------------------------------------------------------------------
 
-const workspaceFilename = 'pnpm-workspace.yaml'
+export const workspaceFilename = 'pnpm-workspace.yaml'
 
 export async function generateSubdirWorkspace(subrepo: string): Promise<string | void> {
   const srcPath = path.join(rootDir, workspaceFilename)

@@ -4,7 +4,7 @@ import { addAndCommit } from '../../utils/git'
 import { getAllMetaFiles, parseSubrepoArgs, rootDir } from '../../utils/subrepo'
 
 export default async function(...rawArgs: string[]): Promise<void> {
-  const { subrepos, flags } = parseSubrepoArgs(rawArgs, {
+  const { subrepos, flags } = await parseSubrepoArgs(rawArgs, {
     'no-commit': Boolean,
   })
 

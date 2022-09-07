@@ -1,25 +1,70 @@
 import * as path from 'path'
 import { fileURLToPath } from 'url'
+import { capture } from './exec'
+import {
+  lockFilename,
+  workspaceFilename,
+  generateSubdirLock,
+  generateSubdirWorkspace,
+} from './pnpm'
 import { parseArgs } from './script'
-import rootConfig from '../../../subrepo.config'
 
-export { rootConfig }
+// Directory paths
+// -------------------------------------------------------------------------------------------------
+
 export const rootDir = path.join(fileURLToPath(import.meta.url), '../../../..')
 
-export interface SubrepoRootConfig {
-  branch: string
-  subrepos: { [subdir: string]: SubrepoConfig }
+export function getSubrepoDir(subrepo: string): string {
+  return path.join(rootDir, subrepo)
 }
 
-export interface SubrepoConfig {
-  remote: string,
-  metaFiles: { path: string, generator?: SubrepoMetaGenerator }[]
-  branchOverride?: string
+// List of subrepos
+// -------------------------------------------------------------------------------------------------
+
+let storedSubrepos: string[] | undefined
+
+export async function getSubrepos(): Promise<string[]> {
+  if (storedSubrepos === undefined) {
+    storedSubrepos = await querySubrepos()
+  }
+  return storedSubrepos
 }
 
-export type SubrepoMetaGenerator = (subrepo: string) => Promise<string | void> | string | void
+async function querySubrepos(): Promise<string[]> {
+  const { stdout } = await capture([
+    'git', 'subrepo', 'status', '--quiet',
+  ], {
+    cwd: rootDir,
+  })
+  return stdout.trim().split('\n')
+}
 
-export function parseSubrepoArgs<
+// Meta files
+// -------------------------------------------------------------------------------------------------
+
+export const metaFileInfo = [
+  { path: '.npmrc' },
+  { path: '.editorconfig' },
+  { path: lockFilename, generator: generateSubdirLock },
+  { path: workspaceFilename, generator: generateSubdirWorkspace },
+]
+
+export function getAllMetaFiles(subrepos: string[]): string[] {
+  const filePaths: string[] = []
+
+  for (let subrepo of subrepos) {
+    for (let fileInfo of metaFileInfo) {
+      filePaths.push(path.join(subrepo, fileInfo.path))
+    }
+  }
+
+  return filePaths
+}
+
+// Arg parsing
+// -------------------------------------------------------------------------------------------------
+
+export async function parseSubrepoArgs<
   Flags extends { [flag: string]: any } | undefined
 >(
   rawArgs: string[],
@@ -32,16 +77,17 @@ export function parseSubrepoArgs<
     '[subrepos...]'
   ])
 
+  const allSubrepos = await getSubrepos()
   let subrepos: string[]
 
   if (flags.all) {
-    subrepos = Object.keys(rootConfig.subrepos)
+    subrepos = allSubrepos
   } else if (params.length >= 1) {
     subrepos = Array.prototype.slice.call(params, 0)
 
-    for (let subrepo of subrepos) {
-      if (!(subrepo in rootConfig.subrepos)) {
-        throw new Error(`Subrepo '${subrepo}' does not exist`)
+    for (let chosenSubrepo of subrepos) {
+      if (!allSubrepos.includes(chosenSubrepo)) {
+        throw new Error(`Subrepo '${chosenSubrepo}' does not exist`)
       }
     }
 
@@ -52,12 +98,12 @@ export function parseSubrepoArgs<
   return {
     subrepos,
     flags,
-    flagArgs: argsToFlags(flags),
+    flagArgs: flagsToArgs(flags),
     unknownFlags,
   }
 }
 
-function argsToFlags(flags: { [flag: string]: any }): string[] {
+function flagsToArgs(flags: { [flag: string]: any }): string[] {
   const rawArgs: string[] = []
 
   for (const flag in flags) {
@@ -70,27 +116,4 @@ function argsToFlags(flags: { [flag: string]: any }): string[] {
   }
 
   return rawArgs
-}
-
-export function getSubrepoDir(subrepo: string): string {
-  return path.join(rootDir, subrepo)
-}
-
-export function getSubrepoConfig(subrepo: string): SubrepoConfig {
-  return rootConfig.subrepos[subrepo]
-}
-
-export function getAllMetaFiles(subrepos: string[]): string[] {
-  const filePaths: string[] = []
-
-  for (let subrepo of subrepos) {
-    const subrepoConfig = getSubrepoConfig(subrepo)
-    const fileInfos = subrepoConfig.metaFiles || []
-
-    for (let fileInfo of fileInfos) {
-      filePaths.push(path.join(subrepo, fileInfo.path))
-    }
-  }
-
-  return filePaths
 }
