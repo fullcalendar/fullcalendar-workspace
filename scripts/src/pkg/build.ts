@@ -1,9 +1,13 @@
 import { join as joinPaths, resolve as resolvePath, isAbsolute, dirname } from 'path'
+import { createRequire } from 'module'
 import { readFile, readdir as readDir } from 'fs/promises'
 import { Plugin as RollupPlugin, rollup } from 'rollup'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
+import postcss from 'rollup-plugin-postcss'
 
 type GeneratorOutput = string | { [generator: string] : string }
+
+const require = createRequire(import.meta.url)
 
 /*
 Must be run from package root.
@@ -29,6 +33,12 @@ export default async function() {
       tscRerootPlugin(),
       nodeResolve(), // determines index.js and .js/cjs/mjs
       externalizePlugin(),
+      postcss({
+        config: {
+          path: require.resolve('../../postcss.config.cjs'),
+          ctx: {}, // arguments given to config file
+        }
+      })
       // TODO: resolve tsconfig.json paths
       // TODO: sourcemap plugin
     ]

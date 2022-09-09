@@ -4,7 +4,7 @@ module.exports = {
     require('postcss-advanced-variables'),
     require('postcss-nesting'),
     require('@arshaw/postcss-custom-properties')({ // a fork that does preserveWithFallback
-      importFrom: '../standard/packages/core/src/styles/vars.css', // available to all stylesheets
+      importFrom: require.resolve('../standard/packages/core/src/styles/vars.css'), // available to all stylesheets
       preserve: true, // keep var statements intact (but still reduce their value in a second statement)
       preserveWithFallback: true // the preserved var statements will have a fallback value
     }),
