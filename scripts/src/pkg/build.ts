@@ -1,6 +1,6 @@
 import { join as joinPaths } from 'path'
 import { readFile, readdir as readDir } from 'fs/promises'
-import { rollup } from 'rollup'
+import { Plugin, rollup } from 'rollup'
 
 type GeneratorOutput = string | { [generator: string] : string }
 
@@ -21,23 +21,21 @@ export default async function() {
     pkgMeta.generatedExports || {},
   )
 
-  console.log('entryFiles', entryFiles)
-  console.log('entryContents', entryContents)
+  // console.log('entryFiles', entryFiles)
+  // console.log('entryContents', entryContents)
 
-  // const bundle = await rollup({
-  //   plugins: [
-  //     {
-  //       name: '',
-  //       load(id: string) {
-  //         // if undefined, fallback to normal file load
-  //         return entryContents[id]
-  //       }
-  //     }
-  //   ]
-  // })
-  // const { output } = await bundle.generate({
-  // })
-  // bundle.close()
+  const bundle = await rollup({
+    input: entryFiles,
+    plugins: [
+      generatedContentPlugin(entryContents),
+    ]
+  })
+
+  const { output } = await bundle.generate({
+    dir: 'dist',
+  })
+
+  bundle.close()
 }
 
 // Input map
@@ -74,7 +72,7 @@ async function determineEntryFiles(
         throw new Error('Generator string output can\'t have blob entrypoint name')
       }
 
-      const generationId = createGenerationPath()
+      const generationId = createGenerationId()
 
       entryFiles[entryName] = generationId
       entryContents[generationId] = generatorOuput
@@ -85,7 +83,7 @@ async function determineEntryFiles(
 
       for (const key in generatorOuput) {
         const specificEntryName = entryName.replace('*', key)
-        const generationId = createGenerationPath()
+        const generationId = createGenerationId()
 
         entryFiles[specificEntryName] = generationId
         entryContents[generationId] = generatorOuput[key]
@@ -96,6 +94,23 @@ async function determineEntryFiles(
   }
 
   return { entryFiles, entryContents }
+}
+
+// Rollup generated-content plugin
+// -------------------------------------------------------------------------------------------------
+
+function generatedContentPlugin(entryContents: { [entryName: string]: string }): Plugin {
+  return {
+    name: 'generated-content',
+    resolveId(source, importer, options) {
+      if (options.isEntry && entryContents[source]) {
+        return source
+      }
+    },
+    load(id: string) {
+      return entryContents[id] // if undefined, fallback to normal file load
+    },
+  }
 }
 
 // Glob
@@ -149,6 +164,6 @@ async function expandEntryFile(
 
 let generationGuid = 0
 
-function createGenerationPath() {
-  return 'generation:' + (generationGuid++)
+function createGenerationId() {
+  return '\0generation:' + (generationGuid++)
 }
