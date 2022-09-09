@@ -2,12 +2,16 @@ import { join as joinPaths, resolve as resolvePath, isAbsolute, dirname } from '
 import { createRequire } from 'module'
 import { readFile, readdir as readDir } from 'fs/promises'
 import { Plugin as RollupPlugin, rollup } from 'rollup'
-import { nodeResolve } from '@rollup/plugin-node-resolve'
-import postcss from 'rollup-plugin-postcss'
+import { nodeResolve as nodeResolvePlugin } from '@rollup/plugin-node-resolve'
+import postcssPlugin from 'rollup-plugin-postcss'
+import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
 
 type GeneratorOutput = string | { [generator: string] : string }
 
 const require = createRequire(import.meta.url)
+
+const srcDir = resolvePath('./src')
+const tscDir = resolvePath('./tsc')
 
 /*
 Must be run from package root.
@@ -15,7 +19,7 @@ The `pnpm run` system does this automatically.
 */
 export default async function() {
   const pkgJsonPath = joinPaths(process.cwd(), 'package.json')
-  const pkgJson = (await readFile(pkgJsonPath)).toString()
+  const pkgJson = await readFile(pkgJsonPath, 'utf8')
   const pkgMeta = JSON.parse(pkgJson)
 
   const {
@@ -31,21 +35,22 @@ export default async function() {
     plugins: [
       strContentPlugin(entryContents), // provides synthetic content
       tscRerootPlugin(),
-      nodeResolve(), // determines index.js and .js/cjs/mjs
+      nodeResolvePlugin(), // determines index.js and .js/cjs/mjs
       externalizePlugin(),
-      postcss({
+      postcssPlugin({
         config: {
           path: require.resolve('../../postcss.config.cjs'),
           ctx: {}, // arguments given to config file
         }
-      })
+      }),
+      sourcemapsPlugin(), // load preexisting sourcemaps
       // TODO: resolve tsconfig.json paths
-      // TODO: sourcemap plugin
     ]
   })
 
   await bundle.write({
     dir: 'dist',
+    sourcemap: true,
   })
   bundle.close()
 }
@@ -128,8 +133,17 @@ function strContentPlugin(entryContents: { [entryName: string]: string }): Rollu
   return {
     name: 'str-content',
     resolveId(id, importer, options) {
-      if (options.isEntry && entryContents[id]) {
-        return id
+      if (options.isEntry) {
+        if (entryContents[id]) {
+          return id
+        }
+      } else if (
+        importer &&
+        entryContents[importer] &&
+        isRelative(id)
+      ) {
+        // consider imports from generated-files as external
+        return { id, external: true }
       }
     },
     load(id: string) {
@@ -139,9 +153,6 @@ function strContentPlugin(entryContents: { [entryName: string]: string }): Rollu
 }
 
 function tscRerootPlugin(): RollupPlugin {
-  const srcDir = resolvePath('./src')
-  const tscDir = resolvePath('./tsc')
-
   return {
     name: 'tsc-output',
     resolveId(id, importer, options) {
@@ -208,7 +219,7 @@ async function expandEntryFile(
 
   const dirPath = pathGlob.substring(0, starIndex)
   const ext = pathGlob.substring(starIndex + 1)
-  const filenames = (await readDir(dirPath)).filter((filename) => !filename.match(/^\./))
+  const filenames = (await readDir(dirPath)).filter((filename) => isFilenameHidden(filename))
   const entryFiles: { [entryName: string]: string } = {}
 
   for (let filename of filenames) {
@@ -254,4 +265,8 @@ function forceExtension(path: string, ext: string): string {
 function removeExtension(path: string): string {
   const match = path.match(/^(.*)\.([^\/]*)$/)
   return match ? match[1] : path
+}
+
+function isFilenameHidden(filename: string): boolean {
+  return Boolean(filename.match(/^\./))
 }
