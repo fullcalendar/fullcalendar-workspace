@@ -1,6 +1,7 @@
-import { join as joinPaths } from 'path'
+import { join as joinPaths, resolve as resolvePath } from 'path'
 import { readFile, readdir as readDir } from 'fs/promises'
-import { Plugin, rollup } from 'rollup'
+import { Plugin as RollupPlugin, rollup } from 'rollup'
+import { nodeResolve } from '@rollup/plugin-node-resolve'
 
 type GeneratorOutput = string | { [generator: string] : string }
 
@@ -21,20 +22,20 @@ export default async function() {
     pkgMeta.generatedExports || {},
   )
 
-  // console.log('entryFiles', entryFiles)
-  // console.log('entryContents', entryContents)
-
   const bundle = await rollup({
     input: entryFiles,
     plugins: [
-      generatedContentPlugin(entryContents),
+      nodeResolve(), // for resolving index.js for directories
+      strContentPlugin(entryContents), // must be before tscEntryPlugin
+      // TODO: asset loading
+      tscEntryPlugin(),
+      externalizePlugin(),
     ]
   })
 
-  const { output } = await bundle.generate({
+  await bundle.write({
     dir: 'dist',
   })
-
   bundle.close()
 }
 
@@ -74,7 +75,7 @@ async function determineEntryFiles(
 
       const generationId = createGenerationId()
 
-      entryFiles[entryName] = generationId
+      entryFiles[cleanEntryName(entryName)] = generationId
       entryContents[generationId] = generatorOuput
     } else if (typeof generatorOuput === 'object') {
       if (entryName.indexOf('*') === -1) {
@@ -85,7 +86,7 @@ async function determineEntryFiles(
         const specificEntryName = entryName.replace('*', key)
         const generationId = createGenerationId()
 
-        entryFiles[specificEntryName] = generationId
+        entryFiles[cleanEntryName(specificEntryName)] = generationId
         entryContents[generationId] = generatorOuput[key]
       }
     } else {
@@ -96,19 +97,52 @@ async function determineEntryFiles(
   return { entryFiles, entryContents }
 }
 
-// Rollup generated-content plugin
+// HACK
+function cleanEntryName(n: string) {
+  return n === '.' ? 'index' : n.replace(/^\.\//, '')
+}
+
+// Rollup plugins
 // -------------------------------------------------------------------------------------------------
 
-function generatedContentPlugin(entryContents: { [entryName: string]: string }): Plugin {
+function strContentPlugin(entryContents: { [entryName: string]: string }): RollupPlugin {
   return {
-    name: 'generated-content',
-    resolveId(source, importer, options) {
-      if (options.isEntry && entryContents[source]) {
-        return source
+    name: 'str-content',
+    resolveId(id, importer, options) {
+      if (options.isEntry && entryContents[id]) {
+        return id
       }
     },
     load(id: string) {
       return entryContents[id] // if undefined, fallback to normal file load
+    },
+  }
+}
+
+function tscEntryPlugin(): RollupPlugin {
+  return {
+    name: 'tsc-output',
+    resolveId(id, importer, options) {
+      if (options.isEntry) {
+        return id.replace(/^\.\/src\/(.*)\.tsx?$/, './tsc/$1.js')
+      }
+    },
+  }
+}
+
+/*
+TODO: ensure tsconfig.json paths are considered not-external
+*/
+function externalizePlugin(): RollupPlugin {
+  return {
+    name: 'externalize',
+    resolveId(id, importer, options) {
+      if (
+        !options.isEntry &&
+        !id.match(/^\.\.?\//)  // NOT relative
+      ) {
+        return { id, external: true }
+      }
     },
   }
 }
@@ -140,7 +174,7 @@ async function expandEntryFile(
 
   // not a glob
   if (starIndex === -1) {
-    return { [entryName]: pathGlob }
+    return { [cleanEntryName(entryName)]: pathGlob }
   }
 
   const dirPath = pathGlob.substring(0, starIndex)
@@ -152,7 +186,7 @@ async function expandEntryFile(
     if (filename.endsWith(ext)) {
       const filenameNoExt = filename.substring(0, filename.length - ext.length)
       const specificEntryName = entryName.replace('*', filenameNoExt)
-      entryFiles[specificEntryName] = dirPath + filename
+      entryFiles[cleanEntryName(specificEntryName)] = dirPath + filename
     }
   }
 

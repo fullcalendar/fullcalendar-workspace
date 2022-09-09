@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@pnpm/make-dedicated-lockfile": "0.3.20",
+    "@rollup/plugin-node-resolve": "^14.0.1",
     "@tsconfig/node16": "^1.0.3",
     "@types/cross-spawn": "^6.0.2",
     "@types/js-yaml": "^4.0.5",
@@ -20,6 +21,7 @@
     "cleye": "^1.2.1",
     "concurrently": "7.3.0",
     "cross-spawn": "^7.0.3",
+    "esbuild": "^0.15.7",
     "js-yaml": "^4.1.0",
     "rollup": "^2.79.0",
     "tsx": "^3.9.0",
