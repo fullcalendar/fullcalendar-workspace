@@ -23,9 +23,9 @@ export default async function() {
   )
 
   const bundle = await rollup({
-    input: entryFiles,
+    input: entryFilesToInput(entryFiles),
     plugins: [
-      strContentPlugin(entryContents), // must be before all else, to provide synthetic content
+      strContentPlugin(entryContents), // provides synthetic content
       tscRerootPlugin(),
       nodeResolve(), // determines index.js and .js/cjs/mjs
       externalizePlugin(),
@@ -76,7 +76,7 @@ async function determineEntryFiles(
 
       const generationId = createGenerationId()
 
-      entryFiles[cleanEntryName(entryName)] = generationId
+      entryFiles[entryName] = generationId
       entryContents[generationId] = generatorOuput
     } else if (typeof generatorOuput === 'object') {
       if (entryName.indexOf('*') === -1) {
@@ -87,7 +87,7 @@ async function determineEntryFiles(
         const specificEntryName = entryName.replace('*', key)
         const generationId = createGenerationId()
 
-        entryFiles[cleanEntryName(specificEntryName)] = generationId
+        entryFiles[specificEntryName] = generationId
         entryContents[generationId] = generatorOuput[key]
       }
     } else {
@@ -98,13 +98,21 @@ async function determineEntryFiles(
   return { entryFiles, entryContents }
 }
 
-// HACK
-function cleanEntryName(n: string) {
-  return n === '.' ? 'index' : n.replace(/^\.\//, '')
-}
-
-// Rollup plugins
+// Rollup
 // -------------------------------------------------------------------------------------------------
+
+function entryFilesToInput(
+  entryFiles: { [entryName: string] : string }
+): { [inputName: string] : string } {
+  const input: { [inputName: string] : string } = {}
+
+  for (let entryName in entryFiles) {
+    const inputName = entryName === '.' ? 'index' : entryName.replace(/^\.\//, '')
+    input[inputName] = entryFiles[entryName]
+  }
+
+  return input
+}
 
 function strContentPlugin(entryContents: { [entryName: string]: string }): RollupPlugin {
   return {
@@ -185,7 +193,7 @@ async function expandEntryFile(
 
   // not a glob
   if (starIndex === -1) {
-    return { [cleanEntryName(entryName)]: pathGlob }
+    return { [entryName]: pathGlob }
   }
 
   const dirPath = pathGlob.substring(0, starIndex)
@@ -197,7 +205,7 @@ async function expandEntryFile(
     if (filename.endsWith(ext)) {
       const filenameNoExt = filename.substring(0, filename.length - ext.length)
       const specificEntryName = entryName.replace('*', filenameNoExt)
-      entryFiles[cleanEntryName(specificEntryName)] = dirPath + filename
+      entryFiles[specificEntryName] = dirPath + filename
     }
   }
 
