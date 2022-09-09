@@ -56,7 +56,7 @@ async function determineEntryFiles(
 
   for (const entryName in entryGenerators) {
     const generatorFile = entryGenerators[entryName]
-    const generatorExports = await import(generatorFile)
+    const generatorExports = await import(joinPaths(process.cwd(), generatorFile))
     const generatorFunc = generatorExports.default
 
     if (typeof generatorFunc !== 'function') {
@@ -129,13 +129,16 @@ async function expandEntryFile(
   }
 
   const dirPath = pathGlob.substring(0, starIndex)
-  const filenames = (await readDir(dirPath))
-    .filter((filename) => !filename.match(/^\./)) // exclude hidden files
+  const ext = pathGlob.substring(starIndex + 1)
+  const filenames = (await readDir(dirPath)).filter((filename) => !filename.match(/^\./))
   const entryFiles: { [entryName: string]: string } = {}
 
   for (let filename of filenames) {
-    const specificEntryName = entryName.replace('*', filename)
-    entryFiles[specificEntryName] = pathGlob.replace('*', filename)
+    if (filename.endsWith(ext)) {
+      const filenameNoExt = filename.substring(0, filename.length - ext.length)
+      const specificEntryName = entryName.replace('*', filenameNoExt)
+      entryFiles[specificEntryName] = dirPath + filename
+    }
   }
 
   return entryFiles
