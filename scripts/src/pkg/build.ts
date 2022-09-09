@@ -1,4 +1,4 @@
-import { join as joinPaths, resolve as resolvePath } from 'path'
+import { join as joinPaths, resolve as resolvePath, isAbsolute, dirname } from 'path'
 import { readFile, readdir as readDir } from 'fs/promises'
 import { Plugin as RollupPlugin, rollup } from 'rollup'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
@@ -25,11 +25,12 @@ export default async function() {
   const bundle = await rollup({
     input: entryFiles,
     plugins: [
-      nodeResolve(), // for resolving index.js for directories
-      strContentPlugin(entryContents), // must be before tscEntryPlugin
-      // TODO: asset loading
-      tscEntryPlugin(),
+      strContentPlugin(entryContents), // must be before all else, to provide synthetic content
+      tscRerootPlugin(),
+      nodeResolve(), // determines index.js and .js/cjs/mjs
       externalizePlugin(),
+      // TODO: resolve tsconfig.json paths
+      // TODO: sourcemap plugin
     ]
   })
 
@@ -119,28 +120,38 @@ function strContentPlugin(entryContents: { [entryName: string]: string }): Rollu
   }
 }
 
-function tscEntryPlugin(): RollupPlugin {
+function tscRerootPlugin(): RollupPlugin {
+  const srcDir = resolvePath('./src')
+  const tscDir = resolvePath('./tsc')
+
   return {
     name: 'tsc-output',
     resolveId(id, importer, options) {
       if (options.isEntry) {
-        return id.replace(/^\.\/src\/(.*)\.tsx?$/, './tsc/$1.js')
+        // move entrypoints within tsc dirs
+        const absPath = joinPaths(process.cwd(), id)
+        if (isWithinDir(absPath, srcDir)) {
+          return tscDir + forceExtension(absPath.substring(srcDir.length), '.js')
+        }
+      } else if (importer && isRelative(id)) {
+        // move paths with extensions back to src
+        const ext = getExtension(id)
+        if (ext) {
+          const absPath = joinPaths(dirname(importer), id)
+          if (isWithinDir(absPath, tscDir)) {
+            return srcDir + absPath.substring(tscDir.length)
+          }
+        }
       }
-    },
+    }
   }
 }
 
-/*
-TODO: ensure tsconfig.json paths are considered not-external
-*/
 function externalizePlugin(): RollupPlugin {
   return {
     name: 'externalize',
     resolveId(id, importer, options) {
-      if (
-        !options.isEntry &&
-        !id.match(/^\.\.?\//)  // NOT relative
-      ) {
+      if (!options.isEntry && !isRelative(id) && !isAbsolute(id)) {
         return { id, external: true }
       }
     },
@@ -200,4 +211,29 @@ let generationGuid = 0
 
 function createGenerationId() {
   return '\0generation:' + (generationGuid++)
+}
+
+// Path utils
+// -------------------------------------------------------------------------------------------------
+
+function isRelative(path: string): boolean {
+  return Boolean(path.match(/^\.\.?\//))
+}
+
+function isWithinDir(path: string, dirPath: string): boolean {
+  return path.indexOf(dirPath) === 0 // TODO: make sure dirPath ends in separator
+}
+
+function getExtension(path: string): string {
+  const match = path.match(/\.[^\/]*$/)
+  return match ? match[0] : ''
+}
+
+function forceExtension(path: string, ext: string): string {
+  return removeExtension(path) + ext
+}
+
+function removeExtension(path: string): string {
+  const match = path.match(/^(.*)\.([^\/]*)$/)
+  return match ? match[1] : path
 }
