@@ -20,13 +20,8 @@ export async function runMain() {
     const func = await getScriptFunc(currentScriptName)
     await func(...currentScriptArgs)
   } catch (error: any) {
-    if (error.message) {
-      console.error(chalk.red(error.message))
-      console.error()
-      console.error(error)
-    } else {
-      console.error(chalk.red('Error'))
-    }
+    console.error(chalk.red(error.message || 'Error'))
+    // console.error(error)
     process.exit(1)
   }
 }
