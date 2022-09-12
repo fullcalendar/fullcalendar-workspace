@@ -22,9 +22,10 @@ const cjsExt = '.cjs'
 const esmExt = '.mjs'
 const iifeExt = '.js'
 const typesExt = '.d.ts'
-const distDir = 'dist'
+const distDir = './dist'
+const tscDir = './dist/.tsc' // also './.tsc/' below
 const srcDirAbs = resolvePath('./src')
-const tscDirAbs = resolvePath('./tsc')
+const tscDirAbs = resolvePath(tscDir)
 const pkgJsonPath = joinPaths(process.cwd(), 'package.json')
 
 /*
@@ -54,16 +55,16 @@ async function runDev() {
     )
 
     rollupWatcher = rollupWatch({
-      ...buildRollupInputOptions(entryFiles, entryContents, false),
+      ...buildRollupInputOptions(entryFiles, entryContents, true),
       output: buildRollupOutputOptions('esm', false),
     })
 
-    const distMeta = buildDistMeta(pkgMeta)
+    const distMeta = buildDistMeta(pkgMeta, true)
     const distMetaJson = JSON.stringify(distMeta, undefined, 2)
     await writeFile('./dist/package.json', distMetaJson)
   })
 
-  return new Promise<void>((resolve) => {
+  const watcherPromise = new Promise<void>((resolve) => {
     process.once('SIGINT', () => {
       pkgJsonWatcher.close()
 
@@ -74,6 +75,11 @@ async function runDev() {
       resolve()
     })
   })
+
+  return Promise.all([
+    watcherPromise,
+    writeNpmIgnore(),
+  ])
 }
 
 async function runProd() {
@@ -105,17 +111,22 @@ async function runProd() {
     })
   }
 
-  const distMeta = buildDistMeta(pkgMeta)
+  const distMeta = buildDistMeta(pkgMeta, false)
   const distMetaJson = JSON.stringify(distMeta, undefined, 2)
   const distMetaPromise = writeFile('./dist/package.json', distMetaJson)
 
-  return Promise.all([bundlePromise, iifeBundlePromise, distMetaPromise])
+  return Promise.all([
+    bundlePromise,
+    iifeBundlePromise,
+    distMetaPromise,
+    writeNpmIgnore(),
+  ])
 }
 
 // package.json
 // -------------------------------------------------------------------------------------------------
 
-function buildDistMeta(pkgMeta: any): any {
+function buildDistMeta(pkgMeta: any, dev: boolean): any {
   const allExports = {
     ...pkgMeta.fileExports,
     ...pkgMeta.generatedExports,
@@ -144,13 +155,27 @@ function buildDistMeta(pkgMeta: any): any {
     exportMap[entryName] = {
       require: pathNoExt + cjsExt,
       import: pathNoExt + esmExt,
-      types: pathNoExt + typesExt,
+      types: (
+        dev
+          ? pathNoExt.replace(/^\.\//, './.tsc/')
+          : pathNoExt
+      ) + typesExt
     }
   }
 
   distMeta.exports = exportMap
 
   return distMeta
+}
+
+// .npmignore
+// -------------------------------------------------------------------------------------------------
+
+function writeNpmIgnore() {
+  return writeFile(joinPaths(distDir, '.npmignore'), [
+    '.tsc',
+    'tsconfig.tsbuildinfo',
+  ].join("\n"))
 }
 
 // Entry map
@@ -238,7 +263,10 @@ function buildRollupInputOptions(
   }
 }
 
-function buildRollupOutputOptions(format: 'esm' | 'cjs' | 'iife', dev: boolean): RollupOutputOptions {
+function buildRollupOutputOptions(
+  format: 'esm' | 'cjs' | 'iife',
+  dev: boolean,
+): RollupOutputOptions {
   switch (format) {
     case 'esm':
       return {
@@ -304,7 +332,7 @@ function strContentPlugin(entryContents: { [entryName: string]: string }): Rollu
 
 function tscRerootPlugin(): RollupPlugin {
   return {
-    name: 'tsc-output',
+    name: 'tsc-reroot',
     resolveId(id, importer, options) {
       if (options.isEntry) {
         // move entrypoints within tsc dirs
