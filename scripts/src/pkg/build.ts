@@ -10,6 +10,7 @@ import {
   RollupWatcher,
 } from 'rollup'
 import { nodeResolve as nodeResolvePlugin } from '@rollup/plugin-node-resolve'
+import dtsPlugin from 'rollup-plugin-dts'
 import postcssPlugin from 'rollup-plugin-postcss'
 import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
 import { watch as watchPaths } from 'chokidar'
@@ -91,8 +92,9 @@ async function runProd() {
     pkgMeta.generatedExports || {},
   )
 
-  const bundleOptions = buildRollupInputOptions(entryFiles, entryContents, true)
-  const bundlePromise = rollup(bundleOptions).then((bundle) => {
+  const bundlePromise = rollup(
+    buildRollupInputOptions(entryFiles, entryContents, true)
+  ).then((bundle) => {
     return Promise.all([
       bundle.write(buildRollupOutputOptions('esm', false)),
       bundle.write(buildRollupOutputOptions('cjs', false))
@@ -103,13 +105,22 @@ async function runProd() {
 
   let iifeBundlePromise: Promise<void> | undefined
   if (pkgMeta.generateIIFE) {
-    const iifeBundleOptions = buildRollupInputOptions(entryFiles, entryContents, false)
-    iifeBundlePromise = rollup(iifeBundleOptions).then((bundle) => {
+    iifeBundlePromise = rollup(
+      buildRollupInputOptions(entryFiles, entryContents, false)
+    ).then((bundle) => {
       bundle.write(buildRollupOutputOptions('iife', false)).then(() => {
         bundle.close()
       })
     })
   }
+
+  // const dtsBundle = rollup(
+  //   buildRollupDtsInputOptions(entryFiles),
+  // ).then((bundle) => {
+  //   return bundle.write(buildRollupDtsOutputOptions()).then(() => {
+  //     bundle.close()
+  //   })
+  // })
 
   const distMeta = buildDistMeta(pkgMeta, false)
   const distMetaJson = JSON.stringify(distMeta, undefined, 2)
@@ -127,10 +138,9 @@ async function runProd() {
 // -------------------------------------------------------------------------------------------------
 
 function buildDistMeta(pkgMeta: any, dev: boolean): any {
-  const allExports = {
-    ...pkgMeta.fileExports,
-    ...pkgMeta.generatedExports,
-  }
+  const fileExports = pkgMeta.fileExports || {}
+  const generatedExports = pkgMeta.generatedExports || {}
+  const allExports = { ...fileExports, ...generatedExports }
 
   const distMeta = { ...pkgMeta }
   delete distMeta.fileExports
@@ -151,15 +161,15 @@ function buildDistMeta(pkgMeta: any, dev: boolean): any {
 
   for (let entryName in allExports) {
     const pathNoExt = entryName === '.' ? './index' : entryName
+    const srcFile = fileExports[entryName]
+    const typesPathNoExt = (dev && srcFile)
+      ? removeExtension(srcFile).replace('./src/', './.tsc/')
+      : pathNoExt
 
     exportMap[entryName] = {
       require: pathNoExt + cjsExt,
       import: pathNoExt + esmExt,
-      types: (
-        dev
-          ? pathNoExt.replace(/^\.\//, './.tsc/')
-          : pathNoExt
-      ) + typesExt
+      types: typesPathNoExt + typesExt
     }
   }
 
@@ -181,6 +191,9 @@ function writeNpmIgnore() {
 // Entry map
 // -------------------------------------------------------------------------------------------------
 
+/*
+TODO: improve out filename for fileExports
+*/
 async function determineEntryFiles(
   entryFilesUnexpanded: { [entryName: string]: string },
   entryGenerators: { [entryName: string]: string },

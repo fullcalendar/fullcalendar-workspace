@@ -34,6 +34,7 @@
     "postcss-loader": "^3.0.0",
     "postcss-nesting": "^7.0.1",
     "rollup": "^2.79.0",
+    "rollup-plugin-dts": "^3.0.2",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "tsx": "^3.9.0",
