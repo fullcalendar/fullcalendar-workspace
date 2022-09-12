@@ -30,37 +30,45 @@ export default async function() {
     pkgMeta.generatedExports || {},
   )
 
-  const bundlOptions = buildRollupOptions(entryFiles, entryContents, true)
-  const bundle = await rollup(bundlOptions)
-  await bundle.write({
-    format: 'esm',
-    dir: 'dist',
-    entryFileNames: '[name]' + esmExt,
-    sourcemap: true, // TODO: only for dev
+  const bundleOptions = buildRollupOptions(entryFiles, entryContents, true)
+  const bundlePromise = rollup(bundleOptions).then((bundle) => {
+    return Promise.all([
+      bundle.write({
+        format: 'esm',
+        dir: 'dist',
+        entryFileNames: '[name]' + esmExt,
+        sourcemap: true, // TODO: only for dev
+      }),
+      bundle.write({
+        format: 'cjs',
+        exports: 'auto',
+        dir: 'dist',
+        entryFileNames: '[name]' + cjsExt,
+      })
+    ]).then(() => {
+      bundle.close()
+    })
   })
-  await bundle.write({
-    format: 'cjs',
-    exports: 'auto',
-    dir: 'dist',
-    entryFileNames: '[name]' + cjsExt,
-  })
-  bundle.close()
 
+  let iifeBundlePromise: Promise<void> | undefined
   if (pkgMeta.generateIIFE) {
     const iifeBundleOptions = buildRollupOptions(entryFiles, entryContents, false)
-    const iifeBundle = await rollup(iifeBundleOptions)
-    await iifeBundle.write({
-      format: 'iife',
-      dir: 'dist',
-      entryFileNames: '[name]' + iifeExt,
+    iifeBundlePromise = rollup(iifeBundleOptions).then((bundle) => {
+      bundle.write({
+        format: 'iife',
+        dir: 'dist',
+        entryFileNames: '[name]' + iifeExt,
+      }).then(() => {
+        bundle.close()
+      })
     })
-    iifeBundle.close()
   }
 
   const distMeta = buildDistMeta(pkgMeta)
   const distMetaJson = JSON.stringify(distMeta, undefined, 2)
+  const distMetaPromise = writeFile('./dist/package.json', distMetaJson)
 
-  await writeFile('./dist/package.json', distMetaJson)
+  return Promise.all([bundlePromise, iifeBundlePromise, distMetaPromise])
 }
 
 function buildRollupOptions(
