@@ -1,6 +1,6 @@
 import { join as joinPaths, resolve as resolvePath, isAbsolute, dirname } from 'path'
 import { createRequire } from 'module'
-import { readFile, readdir as readDir } from 'fs/promises'
+import { readFile, readdir as readDir, writeFile } from 'fs/promises'
 import { Plugin as RollupPlugin, rollup } from 'rollup'
 import { nodeResolve as nodeResolvePlugin } from '@rollup/plugin-node-resolve'
 import postcssPlugin from 'rollup-plugin-postcss'
@@ -53,6 +53,56 @@ export default async function() {
     sourcemap: true,
   })
   bundle.close()
+
+  const distMeta = generateDistMeta(pkgMeta)
+  const distMetaJson = JSON.stringify(distMeta, undefined, 2)
+
+  await writeFile('./dist/package.json', distMetaJson)
+}
+
+// package.json
+// -------------------------------------------------------------------------------------------------
+
+const cjsExt = '.cjs'
+const esmExt = '.mjs'
+const iifeExt = '.js'
+const typesExt = '.d.ts'
+
+function generateDistMeta(pkgMeta: any): any {
+  const allExports = {
+    ...pkgMeta.fileExports,
+    ...pkgMeta.generatedExports,
+  }
+
+  const distMeta = { ...pkgMeta }
+  delete distMeta.fileExports
+  delete distMeta.generatedExports
+
+  if (!allExports['.']) {
+    throw new Error('There must be a root entry file')
+  }
+
+  distMeta.main = 'index' + cjsExt
+  distMeta.module = 'index' + esmExt
+  distMeta.types = 'index' + typesExt
+
+  const exportMap: any = {
+    './package.json': './package.json'
+  }
+
+  for (let entryName in allExports) {
+    const pathNoExt = entryName === '.' ? './index' : entryName
+
+    exportMap[entryName] = {
+      require: pathNoExt + cjsExt,
+      import: pathNoExt + esmExt,
+      types: pathNoExt + typesExt,
+    }
+  }
+
+  distMeta.exports = exportMap
+
+  return distMeta
 }
 
 // Input map
@@ -219,7 +269,7 @@ async function expandEntryFile(
 
   const dirPath = pathGlob.substring(0, starIndex)
   const ext = pathGlob.substring(starIndex + 1)
-  const filenames = (await readDir(dirPath)).filter((filename) => isFilenameHidden(filename))
+  const filenames = (await readDir(dirPath)).filter((filename) => !isFilenameHidden(filename))
   const entryFiles: { [entryName: string]: string } = {}
 
   for (let filename of filenames) {
