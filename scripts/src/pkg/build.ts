@@ -1,50 +1,95 @@
 import { join as joinPaths, resolve as resolvePath, isAbsolute, dirname } from 'path'
 import { createRequire } from 'module'
 import { readFile, readdir as readDir, writeFile } from 'fs/promises'
-import { Plugin as RollupPlugin, rollup, RollupOptions } from 'rollup'
+import {
+  rollup,
+  watch as rollupWatch,
+  Plugin as RollupPlugin,
+  InputOptions as RollupInputOptions,
+  OutputOptions as RollupOutputOptions,
+  RollupWatcher,
+} from 'rollup'
 import { nodeResolve as nodeResolvePlugin } from '@rollup/plugin-node-resolve'
 import postcssPlugin from 'rollup-plugin-postcss'
 import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
+import { watch as watchPaths } from 'chokidar'
 
 type GeneratorOutput = string | { [generator: string] : string }
 
 const require = createRequire(import.meta.url)
 
-const srcDir = resolvePath('./src')
-const tscDir = resolvePath('./tsc')
+const cjsExt = '.cjs'
+const esmExt = '.mjs'
+const iifeExt = '.js'
+const typesExt = '.d.ts'
+const distDir = 'dist'
+const srcDirAbs = resolvePath('./src')
+const tscDirAbs = resolvePath('./tsc')
+const pkgJsonPath = joinPaths(process.cwd(), 'package.json')
 
 /*
 Must be run from package root.
 The `pnpm run` system does this automatically.
 */
-export default async function() {
-  const pkgJsonPath = joinPaths(process.cwd(), 'package.json')
+export default async function(...args: string[]) {
+  return args.indexOf('--dev') !== -1
+    ? runDev()
+    : runProd()
+}
+
+async function runDev() {
+  let rollupWatcher: RollupWatcher | undefined
+
+  const pkgJsonWatcher = watchPaths(pkgJsonPath).on('all', async () => {
+    if (rollupWatcher) {
+      rollupWatcher.close()
+    }
+
+    const pkgJson = await readFile(pkgJsonPath, 'utf8')
+    const pkgMeta = JSON.parse(pkgJson)
+
+    const { entryFiles, entryContents } = await determineEntryFiles(
+      pkgMeta.fileExports || {},
+      pkgMeta.generatedExports || {},
+    )
+
+    rollupWatcher = rollupWatch({
+      ...buildRollupInputOptions(entryFiles, entryContents, false),
+      output: buildRollupOutputOptions('esm', false),
+    })
+
+    const distMeta = buildDistMeta(pkgMeta)
+    const distMetaJson = JSON.stringify(distMeta, undefined, 2)
+    await writeFile('./dist/package.json', distMetaJson)
+  })
+
+  return new Promise<void>((resolve) => {
+    process.once('SIGINT', () => {
+      pkgJsonWatcher.close()
+
+      if (rollupWatcher) {
+        rollupWatcher.close()
+      }
+
+      resolve()
+    })
+  })
+}
+
+async function runProd() {
   const pkgJson = await readFile(pkgJsonPath, 'utf8')
   const pkgMeta = JSON.parse(pkgJson)
 
-  const {
-    entryFiles,
-    entryContents,
-  } = await determineEntryFiles(
+  const { entryFiles, entryContents } = await determineEntryFiles(
     pkgMeta.fileExports || {},
     pkgMeta.generatedExports || {},
   )
 
-  const bundleOptions = buildRollupOptions(entryFiles, entryContents, true)
+  const bundleOptions = buildRollupInputOptions(entryFiles, entryContents, true)
   const bundlePromise = rollup(bundleOptions).then((bundle) => {
     return Promise.all([
-      bundle.write({
-        format: 'esm',
-        dir: 'dist',
-        entryFileNames: '[name]' + esmExt,
-        sourcemap: true, // TODO: only for dev
-      }),
-      bundle.write({
-        format: 'cjs',
-        exports: 'auto',
-        dir: 'dist',
-        entryFileNames: '[name]' + cjsExt,
-      })
+      bundle.write(buildRollupOutputOptions('esm', false)),
+      bundle.write(buildRollupOutputOptions('cjs', false))
     ]).then(() => {
       bundle.close()
     })
@@ -52,13 +97,9 @@ export default async function() {
 
   let iifeBundlePromise: Promise<void> | undefined
   if (pkgMeta.generateIIFE) {
-    const iifeBundleOptions = buildRollupOptions(entryFiles, entryContents, false)
+    const iifeBundleOptions = buildRollupInputOptions(entryFiles, entryContents, false)
     iifeBundlePromise = rollup(iifeBundleOptions).then((bundle) => {
-      bundle.write({
-        format: 'iife',
-        dir: 'dist',
-        entryFileNames: '[name]' + iifeExt,
-      }).then(() => {
+      bundle.write(buildRollupOutputOptions('iife', false)).then(() => {
         bundle.close()
       })
     })
@@ -71,37 +112,8 @@ export default async function() {
   return Promise.all([bundlePromise, iifeBundlePromise, distMetaPromise])
 }
 
-function buildRollupOptions(
-  entryFiles: { [entryName: string]: string },
-  entryContents: { [genetionId: string]: string },
-  externalize: boolean,
-): RollupOptions {
-  return {
-    input: entryFilesToInput(entryFiles),
-    plugins: [
-      strContentPlugin(entryContents), // provides synthetic content
-      tscRerootPlugin(),
-      nodeResolvePlugin(), // determines index.js and .js/cjs/mjs
-      externalize && externalizePlugin(),
-      postcssPlugin({
-        config: {
-          path: require.resolve('../../postcss.config.cjs'),
-          ctx: {}, // arguments given to config file
-        }
-      }),
-      sourcemapsPlugin(), // load preexisting sourcemaps
-      // TODO: resolve tsconfig.json paths
-    ]
-  }
-}
-
 // package.json
 // -------------------------------------------------------------------------------------------------
-
-const cjsExt = '.cjs'
-const esmExt = '.mjs'
-const iifeExt = '.js'
-const typesExt = '.d.ts'
 
 function buildDistMeta(pkgMeta: any): any {
   const allExports = {
@@ -112,6 +124,7 @@ function buildDistMeta(pkgMeta: any): any {
   const distMeta = { ...pkgMeta }
   delete distMeta.fileExports
   delete distMeta.generatedExports
+  delete distMeta.devDependencies
 
   if (!allExports['.']) {
     throw new Error('There must be a root entry file')
@@ -140,7 +153,7 @@ function buildDistMeta(pkgMeta: any): any {
   return distMeta
 }
 
-// Input map
+// Entry map
 // -------------------------------------------------------------------------------------------------
 
 async function determineEntryFiles(
@@ -198,7 +211,59 @@ async function determineEntryFiles(
   return { entryFiles, entryContents }
 }
 
-// Rollup
+// Rollup options
+// -------------------------------------------------------------------------------------------------
+
+function buildRollupInputOptions(
+  entryFiles: { [entryName: string]: string },
+  entryContents: { [genetionId: string]: string },
+  externalize: boolean,
+): RollupInputOptions {
+  return {
+    input: entryFilesToInput(entryFiles),
+    plugins: [
+      strContentPlugin(entryContents), // provides synthetic content
+      tscRerootPlugin(),
+      nodeResolvePlugin(), // determines index.js and .js/cjs/mjs
+      externalize && externalizePlugin(),
+      postcssPlugin({
+        config: {
+          path: require.resolve('../../postcss.config.cjs'),
+          ctx: {}, // arguments given to config file
+        }
+      }),
+      sourcemapsPlugin(), // load preexisting sourcemaps
+      // TODO: resolve tsconfig.json paths
+    ]
+  }
+}
+
+function buildRollupOutputOptions(format: 'esm' | 'cjs' | 'iife', dev: boolean): RollupOutputOptions {
+  switch (format) {
+    case 'esm':
+      return {
+        format: 'esm',
+        dir: distDir,
+        entryFileNames: '[name]' + esmExt,
+        sourcemap: dev,
+      }
+    case 'cjs':
+      return {
+        format: 'cjs',
+        exports: 'auto',
+        dir: distDir,
+        entryFileNames: '[name]' + cjsExt,
+      }
+    case 'iife':
+      return {
+        format: 'iife',
+        dir: distDir,
+        entryFileNames: '[name]' + iifeExt,
+      }
+  }
+}
+
+// Rollup plugins
 // -------------------------------------------------------------------------------------------------
 
 function entryFilesToInput(
@@ -244,16 +309,16 @@ function tscRerootPlugin(): RollupPlugin {
       if (options.isEntry) {
         // move entrypoints within tsc dirs
         const absPath = joinPaths(process.cwd(), id)
-        if (isWithinDir(absPath, srcDir)) {
-          return tscDir + forceExtension(absPath.substring(srcDir.length), '.js')
+        if (isWithinDir(absPath, srcDirAbs)) {
+          return tscDirAbs + forceExtension(absPath.substring(srcDirAbs.length), '.js')
         }
       } else if (importer && isRelative(id)) {
         // move paths with extensions back to src
         const ext = getExtension(id)
         if (ext) {
           const absPath = joinPaths(dirname(importer), id)
-          if (isWithinDir(absPath, tscDir)) {
-            return srcDir + absPath.substring(tscDir.length)
+          if (isWithinDir(absPath, tscDirAbs)) {
+            return srcDirAbs + absPath.substring(tscDirAbs.length)
           }
         }
       }
