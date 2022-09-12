@@ -1,7 +1,7 @@
 import { join as joinPaths, resolve as resolvePath, isAbsolute, dirname } from 'path'
 import { createRequire } from 'module'
 import { readFile, readdir as readDir, writeFile } from 'fs/promises'
-import { Plugin as RollupPlugin, rollup } from 'rollup'
+import { Plugin as RollupPlugin, rollup, RollupOptions } from 'rollup'
 import { nodeResolve as nodeResolvePlugin } from '@rollup/plugin-node-resolve'
 import postcssPlugin from 'rollup-plugin-postcss'
 import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
@@ -30,13 +30,51 @@ export default async function() {
     pkgMeta.generatedExports || {},
   )
 
-  const bundle = await rollup({
+  const bundlOptions = buildRollupOptions(entryFiles, entryContents, true)
+  const bundle = await rollup(bundlOptions)
+  await bundle.write({
+    format: 'esm',
+    dir: 'dist',
+    entryFileNames: '[name]' + esmExt,
+    sourcemap: true, // TODO: only for dev
+  })
+  await bundle.write({
+    format: 'cjs',
+    exports: 'auto',
+    dir: 'dist',
+    entryFileNames: '[name]' + cjsExt,
+  })
+  bundle.close()
+
+  if (pkgMeta.generateIIFE) {
+    const iifeBundleOptions = buildRollupOptions(entryFiles, entryContents, false)
+    const iifeBundle = await rollup(iifeBundleOptions)
+    await iifeBundle.write({
+      format: 'iife',
+      dir: 'dist',
+      entryFileNames: '[name]' + iifeExt,
+    })
+    iifeBundle.close()
+  }
+
+  const distMeta = buildDistMeta(pkgMeta)
+  const distMetaJson = JSON.stringify(distMeta, undefined, 2)
+
+  await writeFile('./dist/package.json', distMetaJson)
+}
+
+function buildRollupOptions(
+  entryFiles: { [entryName: string]: string },
+  entryContents: { [genetionId: string]: string },
+  externalize: boolean,
+): RollupOptions {
+  return {
     input: entryFilesToInput(entryFiles),
     plugins: [
       strContentPlugin(entryContents), // provides synthetic content
       tscRerootPlugin(),
       nodeResolvePlugin(), // determines index.js and .js/cjs/mjs
-      externalizePlugin(),
+      externalize && externalizePlugin(),
       postcssPlugin({
         config: {
           path: require.resolve('../../postcss.config.cjs'),
@@ -46,18 +84,7 @@ export default async function() {
       sourcemapsPlugin(), // load preexisting sourcemaps
       // TODO: resolve tsconfig.json paths
     ]
-  })
-
-  await bundle.write({
-    dir: 'dist',
-    sourcemap: true,
-  })
-  bundle.close()
-
-  const distMeta = generateDistMeta(pkgMeta)
-  const distMetaJson = JSON.stringify(distMeta, undefined, 2)
-
-  await writeFile('./dist/package.json', distMetaJson)
+  }
 }
 
 // package.json
@@ -68,7 +95,7 @@ const esmExt = '.mjs'
 const iifeExt = '.js'
 const typesExt = '.d.ts'
 
-function generateDistMeta(pkgMeta: any): any {
+function buildDistMeta(pkgMeta: any): any {
   const allExports = {
     ...pkgMeta.fileExports,
     ...pkgMeta.generatedExports,
