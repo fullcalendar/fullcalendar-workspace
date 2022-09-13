@@ -1,11 +1,10 @@
 import { join as joinPaths, resolve as resolvePath, isAbsolute, dirname } from 'path'
 import { createRequire } from 'module'
-import { readFile, readdir as readDir, writeFile } from 'fs/promises'
+import { readFile, readdir as readDir, writeFile, mkdir } from 'fs/promises'
 import {
   rollup,
   watch as rollupWatch,
   Plugin as RollupPlugin,
-  InputOptions as RollupInputOptions,
   OutputOptions as RollupOutputOptions,
   RollupWatcher,
 } from 'rollup'
@@ -15,19 +14,15 @@ import postcssPlugin from 'rollup-plugin-postcss'
 import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
 import { watch as watchPaths } from 'chokidar'
 
-type GeneratorOutput = string | { [generator: string] : string }
-
 const require = createRequire(import.meta.url)
 
 const cjsExt = '.cjs'
 const esmExt = '.mjs'
 const iifeExt = '.js'
-const typesExt = '.d.ts'
-const distDir = './dist'
-const tscDir = './dist/.tsc' // also './.tsc/' below
+const dtsExt = '.d.ts'
 const srcDirAbs = resolvePath('./src')
-const tscDirAbs = resolvePath(tscDir)
-const pkgJsonPath = joinPaths(process.cwd(), 'package.json')
+const tscDirAbs = resolvePath('./dist/.tsc')
+const packageJsonPath = resolvePath('package.json')
 
 /*
 Must be run from package root.
@@ -42,27 +37,43 @@ export default async function(...args: string[]) {
 async function runDev() {
   let rollupWatcher: RollupWatcher | undefined
 
-  const pkgJsonWatcher = watchPaths(pkgJsonPath).on('all', async () => {
+  await mkdir('./dist', { recursive: true })
+
+  const pkgJsonWatcher = watchPaths(packageJsonPath).on('all', async () => {
     if (rollupWatcher) {
       rollupWatcher.close()
     }
 
-    const pkgJson = await readFile(pkgJsonPath, 'utf8')
-    const pkgMeta = JSON.parse(pkgJson)
+    const origPackageJson = await readFile(packageJsonPath, 'utf8')
+    const origPackageMeta = JSON.parse(origPackageJson)
+    const sourceGlobs = origPackageMeta.fileExports || {}
+    const sourceGenerators = origPackageMeta.generatedExports || {}
+    const [ sourcePaths, sourceStrings ] = await Promise.all([
+      expandSourceGlobs(sourceGlobs),
+      buildSourceStrings(sourceGenerators)
+    ])
+    const { rollupInput, rollupInputStrings } = buildRollupInput(sourcePaths, sourceStrings)
+    const exportPaths = buildExportPaths(sourceGlobs, sourceGenerators)
 
-    const { entryFiles, entryContents } = await determineEntryFiles(
-      pkgMeta.fileExports || {},
-      pkgMeta.generatedExports || {},
-    )
+    // console.log('sourceGlobs', sourceGlobs)
+    // console.log('sourceGenerators', sourceGenerators)
+    // console.log('sourcePaths', sourcePaths)
+    // console.log('sourceStrings', sourceStrings)
+    // console.log('rollupInput', rollupInput)
+    // console.log('rollupInputStrings', rollupInputStrings)
+    // console.log('exportPaths', exportPaths)
+    // console.log('packageMeta', buildPackageMeta(origPackageMeta, exportPaths, true))
+    // process.exit(1)
 
     rollupWatcher = rollupWatch({
-      ...buildRollupInputOptions(entryFiles, entryContents, true),
-      output: buildRollupOutputOptions('esm', false),
+      input: rollupInput,
+      plugins: buildRollupPlugins(rollupInputStrings, true),
+      output: buildEsmOutputOptions(false),
     })
 
-    const distMeta = buildDistMeta(pkgMeta, true)
-    const distMetaJson = JSON.stringify(distMeta, undefined, 2)
-    await writeFile('./dist/package.json', distMetaJson)
+    const packageMeta = buildPackageMeta(origPackageMeta, exportPaths, true)
+    const packageJson = JSON.stringify(packageMeta, undefined, 2)
+    await writeFile('./dist/package.json', packageJson)
   })
 
   const watcherPromise = new Promise<void>((resolve) => {
@@ -84,243 +95,198 @@ async function runDev() {
 }
 
 async function runProd() {
-  const pkgJson = await readFile(pkgJsonPath, 'utf8')
-  const pkgMeta = JSON.parse(pkgJson)
+  const origPackageJson = await readFile(packageJsonPath, 'utf8')
+  const origPackageMeta = JSON.parse(origPackageJson)
+  const sourceGlobs = origPackageMeta.fileExports || {}
+  const sourceGenerators = origPackageMeta.generatedExports || {}
+  const [ sourcePaths, sourceStrings ] = await Promise.all([
+    expandSourceGlobs(sourceGlobs),
+    buildSourceStrings(sourceGenerators)
+  ])
+  const { rollupInput, rollupInputStrings } = buildRollupInput(sourcePaths, sourceStrings)
+  const exportPaths = buildExportPaths(sourceGlobs, sourceGenerators)
 
-  const { entryFiles, entryContents } = await determineEntryFiles(
-    pkgMeta.fileExports || {},
-    pkgMeta.generatedExports || {},
-  )
+  // console.log('sourceGlobs', sourceGlobs)
+  // console.log('sourceGenerators', sourceGenerators)
+  // console.log('sourcePaths', sourcePaths)
+  // console.log('sourceStrings', sourceStrings)
+  // console.log('rollupInput', rollupInput)
+  // console.log('rollupInputStrings', rollupInputStrings)
+  // console.log('exportPaths', exportPaths)
+  // console.log('packageMeta', buildPackageMeta(origPackageMeta, exportPaths, false))
+  // console.log('buildRollupDtsInput', buildRollupDtsInput(sourcePaths, sourceStrings))
+  // process.exit(1)
 
-  const bundlePromise = rollup(
-    buildRollupInputOptions(entryFiles, entryContents, true)
-  ).then((bundle) => {
+  await mkdir('./dist', { recursive: true })
+
+  const bundlePromise = rollup({
+    input: rollupInput,
+    plugins: buildRollupPlugins(rollupInputStrings, true),
+  }).then((bundle) => {
     return Promise.all([
-      bundle.write(buildRollupOutputOptions('esm', false)),
-      bundle.write(buildRollupOutputOptions('cjs', false))
+      bundle.write(buildEsmOutputOptions(false)),
+      bundle.write(buildCjsOutputOptions())
     ]).then(() => {
       bundle.close()
     })
   })
 
   let iifeBundlePromise: Promise<void> | undefined
-  if (pkgMeta.generateIIFE) {
-    iifeBundlePromise = rollup(
-      buildRollupInputOptions(entryFiles, entryContents, false)
-    ).then((bundle) => {
-      bundle.write(buildRollupOutputOptions('iife', false)).then(() => {
+
+  if (origPackageMeta.generateIIFE) {
+    iifeBundlePromise = rollup({
+      input: rollupInput,
+      plugins: buildRollupPlugins(rollupInputStrings, false),
+    }).then((bundle) => {
+      bundle.write(buildIifeOutputOptions()).then(() => {
         bundle.close()
       })
     })
   }
 
-  // const dtsBundle = rollup(
-  //   buildRollupDtsInputOptions(entryFiles),
-  // ).then((bundle) => {
-  //   return bundle.write(buildRollupDtsOutputOptions()).then(() => {
-  //     bundle.close()
-  //   })
-  // })
+  const dtsBundlePromise = rollup({
+    input: buildRollupDtsInput(sourcePaths, sourceStrings),
+    plugins: buildRollupDtsPlugins(),
+  }).then((bundle) => {
+    return bundle.write(buildDtsOutputOptions()).then(() => {
+      bundle.close()
+    })
+  })
 
-  const distMeta = buildDistMeta(pkgMeta, false)
-  const distMetaJson = JSON.stringify(distMeta, undefined, 2)
-  const distMetaPromise = writeFile('./dist/package.json', distMetaJson)
+  const packageMeta = buildPackageMeta(origPackageMeta, exportPaths, false)
+  const packageJson = JSON.stringify(packageMeta, undefined, 2)
+  const packageJsonPromise = writeFile('./dist/package.json', packageJson)
 
   return Promise.all([
     bundlePromise,
     iifeBundlePromise,
-    distMetaPromise,
+    dtsBundlePromise,
+    packageJsonPromise,
     writeNpmIgnore(),
   ])
 }
 
-// package.json
+// Rollup input
 // -------------------------------------------------------------------------------------------------
 
-function buildDistMeta(pkgMeta: any, dev: boolean): any {
-  const fileExports = pkgMeta.fileExports || {}
-  const generatedExports = pkgMeta.generatedExports || {}
-  const allExports = { ...fileExports, ...generatedExports }
+function buildRollupInput(
+  sourcePaths: { [entryName: string]: string },
+  sourceStrings: { [entryName: string]: string },
+): {
+  rollupInput: { [outputName: string]: string },
+  rollupInputStrings: { [outputName: string]: string },
+} {
+  const rollupInput: { [outputName: string]: string } = {}
+  const rollupInputStrings: { [outputName: string]: string } = {}
 
-  const distMeta = { ...pkgMeta }
-  delete distMeta.fileExports
-  delete distMeta.generatedExports
-  delete distMeta.devDependencies
+  for (const entryName in sourcePaths) {
+    const entrySourcePath = sourcePaths[entryName]
+    const outputName = stripSourcePath(entrySourcePath)
 
-  if (!allExports['.']) {
-    throw new Error('There must be a root entry file')
+    rollupInput[outputName] = entrySourcePath
   }
 
-  distMeta.main = 'index' + cjsExt
-  distMeta.module = 'index' + esmExt
-  distMeta.types = 'index' + typesExt
+  for (const entryName in sourceStrings) {
+    const outputName = removeRelPrefix(entryName) || 'index'
+    const generationId = createGenerationId()
 
-  const exportMap: any = {
-    './package.json': './package.json'
+    rollupInput[outputName] = generationId
+    rollupInputStrings[generationId] = sourceStrings[entryName]
   }
 
-  for (let entryName in allExports) {
-    const pathNoExt = entryName === '.' ? './index' : entryName
-    const srcFile = fileExports[entryName]
-    const typesPathNoExt = (dev && srcFile)
-      ? removeExtension(srcFile).replace('./src/', './.tsc/')
-      : pathNoExt
-
-    exportMap[entryName] = {
-      require: pathNoExt + cjsExt,
-      import: pathNoExt + esmExt,
-      types: typesPathNoExt + typesExt
-    }
-  }
-
-  distMeta.exports = exportMap
-
-  return distMeta
+  return { rollupInput, rollupInputStrings }
 }
 
-// .npmignore
-// -------------------------------------------------------------------------------------------------
+function buildRollupDtsInput(
+  sourcePaths: { [entryName: string]: string },
+  sourceStrings: { [entryName: string]: string },
+): { [entryName: string]: string } {
+  const rollupInput: { [outputName: string]: string } = {}
 
-function writeNpmIgnore() {
-  return writeFile(joinPaths(distDir, '.npmignore'), [
-    '.tsc',
-    'tsconfig.tsbuildinfo',
-  ].join("\n"))
-}
+  for (const entryName in sourcePaths) {
+    const shortPath = stripSourcePath(sourcePaths[entryName])
 
-// Entry map
-// -------------------------------------------------------------------------------------------------
-
-/*
-TODO: improve out filename for fileExports
-*/
-async function determineEntryFiles(
-  entryFilesUnexpanded: { [entryName: string]: string },
-  entryGenerators: { [entryName: string]: string },
-): Promise<{
-  entryFiles: { [entryName: string]: string },
-  entryContents: { [generationId: string]: string },
-}> {
-  const entryFiles: { [entryName: string]: string } = await expandEntryFiles(entryFilesUnexpanded)
-  const entryContents: { [entryName: string]: string } = {}
-  const generatorOutputs: { [generator: string]: GeneratorOutput } = {}
-
-  for (const entryName in entryGenerators) {
-    const generatorFile = entryGenerators[entryName]
-    const generatorExports = await import(joinPaths(process.cwd(), generatorFile))
-    const generatorFunc = generatorExports.default
-
-    if (typeof generatorFunc !== 'function') {
-      throw new Error('Generator must have a default function export')
-    }
-
-    generatorOutputs[entryName] = await generatorFunc(entryName)
+    rollupInput[shortPath] = `./dist/.tsc/${shortPath}.d.ts`
   }
 
-  for (let entryName in generatorOutputs) {
-    const generatorOuput = generatorOutputs[entryName]
+  for (const entryName in sourceStrings) {
+    const shortPath = removeRelPrefix(entryName) // fake the source file
 
-    if (typeof generatorOuput === 'string') {
-      if (entryName.indexOf('*') !== -1) {
-        throw new Error('Generator string output can\'t have blob entrypoint name')
-      }
-
-      const generationId = createGenerationId()
-
-      entryFiles[entryName] = generationId
-      entryContents[generationId] = generatorOuput
-    } else if (typeof generatorOuput === 'object') {
-      if (entryName.indexOf('*') === -1) {
-        throw new Error('Generator object output must have blob entrypoint name')
-      }
-
-      for (const key in generatorOuput) {
-        const specificEntryName = entryName.replace('*', key)
-        const generationId = createGenerationId()
-
-        entryFiles[specificEntryName] = generationId
-        entryContents[generationId] = generatorOuput[key]
-      }
-    } else {
-      throw new Error('Invalid type of generator output')
-    }
+    rollupInput[shortPath] = `./dist/.tsc/${shortPath}.d.ts`
   }
 
-  return { entryFiles, entryContents }
+  return rollupInput
 }
 
-// Rollup options
+// Rollup outpus
 // -------------------------------------------------------------------------------------------------
 
-function buildRollupInputOptions(
-  entryFiles: { [entryName: string]: string },
-  entryContents: { [genetionId: string]: string },
-  externalize: boolean,
-): RollupInputOptions {
+function buildEsmOutputOptions(dev: boolean): RollupOutputOptions {
   return {
-    input: entryFilesToInput(entryFiles),
-    plugins: [
-      strContentPlugin(entryContents), // provides synthetic content
-      tscRerootPlugin(),
-      nodeResolvePlugin(), // determines index.js and .js/cjs/mjs
-      externalize && externalizePlugin(),
-      postcssPlugin({
-        config: {
-          path: require.resolve('../../postcss.config.cjs'),
-          ctx: {}, // arguments given to config file
-        }
-      }),
-      sourcemapsPlugin(), // load preexisting sourcemaps
-      // TODO: resolve tsconfig.json paths
-    ]
+    format: 'esm',
+    dir: './dist',
+    entryFileNames: '[name]' + esmExt,
+    sourcemap: dev,
   }
 }
 
-function buildRollupOutputOptions(
-  format: 'esm' | 'cjs' | 'iife',
-  dev: boolean,
-): RollupOutputOptions {
-  switch (format) {
-    case 'esm':
-      return {
-        format: 'esm',
-        dir: distDir,
-        entryFileNames: '[name]' + esmExt,
-        sourcemap: dev,
-      }
-    case 'cjs':
-      return {
-        format: 'cjs',
-        exports: 'auto',
-        dir: distDir,
-        entryFileNames: '[name]' + cjsExt,
-      }
-    case 'iife':
-      return {
-        format: 'iife',
-        dir: distDir,
-        entryFileNames: '[name]' + iifeExt,
-      }
+function buildCjsOutputOptions(): RollupOutputOptions {
+  return {
+    format: 'cjs',
+    exports: 'auto',
+    dir: './dist',
+    entryFileNames: '[name]' + cjsExt,
+  }
+}
+
+function buildIifeOutputOptions(): RollupOutputOptions {
+  return {
+    format: 'iife',
+    dir: './dist',
+    entryFileNames: '[name]' + iifeExt,
+  }
+}
+
+function buildDtsOutputOptions(): RollupOutputOptions {
+  return {
+    format: 'esm',
+    dir: './dist',
+    entryFileNames: '[name]' + dtsExt,
   }
 }
 
 // Rollup plugins
 // -------------------------------------------------------------------------------------------------
 
-function entryFilesToInput(
-  entryFiles: { [entryName: string] : string }
-): { [inputName: string] : string } {
-  const input: { [inputName: string] : string } = {}
-
-  for (let entryName in entryFiles) {
-    const inputName = entryName === '.' ? 'index' : entryName.replace(/^\.\//, '')
-    input[inputName] = entryFiles[entryName]
-  }
-
-  return input
+function buildRollupPlugins(
+  rollupInputStrings: { [generationId: string]: string },
+  externalize: boolean,
+): (RollupPlugin | false)[] {
+  return [
+    stringContentPlugin(rollupInputStrings),
+    tscRerootPlugin(),
+    nodeResolvePlugin(), // determines index.js and .js/cjs/mjs
+    externalize && externalizePlugin(),
+    postcssPlugin({
+      config: {
+        path: require.resolve('../../postcss.config.cjs'),
+        ctx: {}, // arguments given to config file
+      }
+    }),
+    sourcemapsPlugin(), // load preexisting sourcemaps
+    // TODO: resolve tsconfig.json paths
+  ]
 }
 
-function strContentPlugin(entryContents: { [entryName: string]: string }): RollupPlugin {
+function buildRollupDtsPlugins() {
+  return [
+    dtsPlugin(),
+    nodeResolvePlugin(), // determines index.js and .js/cjs/mjs
+    externalAssetsPlugin(),
+  ]
+}
+
+function stringContentPlugin(entryContents: { [outputName: string]: string }): RollupPlugin {
   return {
     name: 'str-content',
     resolveId(id, importer, options) {
@@ -354,7 +320,7 @@ function tscRerootPlugin(): RollupPlugin {
           return tscDirAbs + forceExtension(absPath.substring(srcDirAbs.length), '.js')
         }
       } else if (importer && isRelative(id)) {
-        // move paths with extensions back to src
+        // move asset (paths with extensions) back to src
         const ext = getExtension(id)
         if (ext) {
           const absPath = joinPaths(dirname(importer), id)
@@ -378,66 +344,198 @@ function externalizePlugin(): RollupPlugin {
   }
 }
 
-// Glob
-// -------------------------------------------------------------------------------------------------
-
-async function expandEntryFiles(
-  entryFiles: { [name: string]: string },
-): Promise<{ [specificEntryName: string]: string }> {
-  const promises: Promise<{ [specificEntryName: string]: string }>[] = []
-
-  for (let entryName in entryFiles) {
-    promises.push(
-      expandEntryFile(entryName, entryFiles[entryName])
-    )
+/*
+externalize asset (paths with extensions)
+*/
+function externalAssetsPlugin(): RollupPlugin {
+  return {
+    name: 'externalize-assets',
+    resolveId(id, importer, options) {
+      if (importer && isRelative(id) && getExtension(id)) {
+        return { id, external: true }
+      }
+    },
   }
-
-  const maps = await Promise.all(promises)
-
-  return Object.assign({}, ...maps) // merge all maps
 }
 
-async function expandEntryFile(
-  entryName: string,
-  pathGlob: string,
-): Promise<{ [specificEntryName: string]: string }> {
-  const starIndex = pathGlob.indexOf('*')
-
-  // not a glob
-  if (starIndex === -1) {
-    return { [entryName]: pathGlob }
-  }
-
-  const dirPath = pathGlob.substring(0, starIndex)
-  const ext = pathGlob.substring(starIndex + 1)
-  const filenames = (await readDir(dirPath)).filter((filename) => !isFilenameHidden(filename))
-  const entryFiles: { [entryName: string]: string } = {}
-
-  for (let filename of filenames) {
-    if (filename.endsWith(ext)) {
-      const filenameNoExt = filename.substring(0, filename.length - ext.length)
-      const specificEntryName = entryName.replace('*', filenameNoExt)
-      entryFiles[specificEntryName] = dirPath + filename
-    }
-  }
-
-  return entryFiles
-}
-
-// Generation ID
+// Dynamic code generation
 // -------------------------------------------------------------------------------------------------
 
 let generationGuid = 0
 
 function createGenerationId() {
-  return '\0generation:' + (generationGuid++)
+  return '\0generation:' + (generationGuid++) // virtual file path
+}
+
+async function buildSourceStrings(
+  sourceGenerators: { [entryName: string]: string },
+): Promise<{ [entryName: string]: string }> { // sourceStrings
+  const sourceStrings: { [entryName: string]: string } = {}
+
+  for (const entryName in sourceGenerators) {
+    const generatorFile = sourceGenerators[entryName]
+    const generatorExports = await import(joinPaths(process.cwd(), generatorFile))
+    const generatorFunc = generatorExports.default
+
+    if (typeof generatorFunc !== 'function') {
+      throw new Error('Generator must have a default function export')
+    }
+
+    const generatorRes = await generatorFunc(entryName)
+
+    if (typeof generatorRes === 'string') {
+      if (entryName.indexOf('*') !== -1) {
+        throw new Error('Generator string output can\'t have blob entrypoint name')
+      }
+
+      sourceStrings[entryName] = generatorRes
+    } else if (typeof generatorRes === 'object') {
+      if (entryName.indexOf('*') === -1) {
+        throw new Error('Generator object output must have blob entrypoint name')
+      }
+
+      for (const key in generatorRes) {
+        const expandedEntryName = entryName.replace('*', key)
+
+        sourceStrings[expandedEntryName] = generatorRes[key]
+      }
+    } else {
+      throw new Error('Invalid type of generator output')
+    }
+  }
+
+  return sourceStrings
+}
+
+// package.json
+// -------------------------------------------------------------------------------------------------
+
+function buildExportPaths(
+  sourceGlobs: { [entryName: string]: string },
+  sourceGenerators: { [entryName: string]: string },
+): { [entryName: string]: string } { // exportPaths
+  const exportPaths: { [entryName: string]: string } = {}
+
+  for (const entryName in sourceGlobs) {
+    exportPaths[entryName] = './' + stripSourcePath(sourceGlobs[entryName])
+  }
+
+  for (const entryName in sourceGenerators) {
+    exportPaths[entryName] = entryName // generator path not used
+  }
+
+  return exportPaths
+}
+
+function buildPackageMeta(
+  origPackageMeta: any,
+  exportPaths: { [entryName: string]: string },
+  dev: boolean
+): any {
+  const packageMeta = { ...origPackageMeta }
+  delete packageMeta.fileExports
+  delete packageMeta.generatedExports
+  delete packageMeta.devDependencies
+
+  const mainExportPath = exportPaths['.']
+  if (!mainExportPath) {
+    throw new Error('There must be a root entry file')
+  }
+
+  packageMeta.main = removeRelPrefix(mainExportPath + cjsExt)
+  packageMeta.module = removeRelPrefix(mainExportPath + esmExt)
+  packageMeta.types = removeRelPrefix(mainExportPath + dtsExt)
+
+  const exportMap: any = {
+    './package.json': './package.json'
+  }
+
+  for (let entryName in exportPaths) {
+    const exportPath = exportPaths[entryName]
+
+    exportMap[entryName] = {
+      require: exportPath + cjsExt,
+      import: exportPath + esmExt,
+      types: (
+        dev
+          ? './.tsc/' + removeRelPrefix(exportPath)
+          : exportPath
+        ) + dtsExt,
+    }
+  }
+
+  packageMeta.exports = exportMap
+
+  return packageMeta
+}
+
+// .npmignore
+// -------------------------------------------------------------------------------------------------
+
+async function writeNpmIgnore() {
+  await writeFile('./dist/.npmignore', [
+    '.tsc',
+    'tsconfig.tsbuildinfo',
+  ].join("\n"))
+}
+
+// Glob
+// -------------------------------------------------------------------------------------------------
+
+async function expandSourceGlobs(
+  sourceGlobs: { [name: string]: string },
+): Promise<{ [entryName: string]: string }> { //  sourcePaths
+  const promises: Promise<{ [expandedEntryName: string]: string }>[] = []
+
+  for (let entryName in sourceGlobs) {
+    promises.push(
+      expandSourceGlob(entryName, sourceGlobs[entryName])
+    )
+  }
+
+  const maps = await Promise.all(promises)
+  return Object.assign({}, ...maps) // merge all maps
+}
+
+async function expandSourceGlob(
+  entryName: string,
+  sourceGlob: string,
+): Promise<{ [expandedEntryName: string]: string }> {
+  const starIndex = sourceGlob.indexOf('*')
+
+  // not a glob
+  if (starIndex === -1) {
+    return { [entryName]: sourceGlob }
+  }
+
+  const dirPath = sourceGlob.substring(0, starIndex)
+  const ext = sourceGlob.substring(starIndex + 1)
+  const filenames = (await readDir(dirPath)).filter((filename) => !isFilenameHidden(filename))
+  const sourcePaths: { [entryName: string]: string } = {}
+
+  for (let filename of filenames) {
+    if (filename.endsWith(ext)) {
+      const filenameNoExt = filename.substring(0, filename.length - ext.length)
+      sourcePaths[entryName.replace('*', filenameNoExt)] = dirPath + filename
+    }
+  }
+
+  return sourcePaths
 }
 
 // Path utils
 // -------------------------------------------------------------------------------------------------
 
+function stripSourcePath(path: string): string {
+  return removeExtension(path).replace(/^\.\/src\//, '')
+}
+
 function isRelative(path: string): boolean {
   return Boolean(path.match(/^\.\.?\//))
+}
+
+function isFilenameHidden(filename: string): boolean {
+  return Boolean(filename.match(/^\./))
 }
 
 function isWithinDir(path: string, dirPath: string): boolean {
@@ -458,6 +556,6 @@ function removeExtension(path: string): string {
   return match ? match[1] : path
 }
 
-function isFilenameHidden(filename: string): boolean {
-  return Boolean(filename.match(/^\./))
+function removeRelPrefix(path: string) {
+  return path.replace(/^\.\/?/, '')
 }

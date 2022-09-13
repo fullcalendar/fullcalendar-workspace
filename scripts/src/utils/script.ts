@@ -21,7 +21,7 @@ export async function runMain() {
     await func(...currentScriptArgs)
   } catch (error: any) {
     console.error(chalk.red(error.message || 'Error'))
-    console.error(error)
+    // console.error(error)
     process.exit(1)
   }
 }
