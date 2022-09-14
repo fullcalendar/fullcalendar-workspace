@@ -18,7 +18,7 @@ const require = createRequire(import.meta.url)
 
 const sourceGlobsProp = 'fileExports'
 const sourceGeneratorsProp = 'generatedExports'
-const iifeProp = 'generateIIFE'
+const iifeProp = 'globalsForExports'
 const cjsExt = '.cjs'
 const esmExt = '.mjs'
 const iifeExt = '.js'
@@ -134,17 +134,25 @@ async function runProd() {
     })
   })
 
-  let iifeBundlePromise: Promise<void> | undefined
+  const globalNames = origPkgMeta[iifeProp]
+  let iifeBundlePromises: Promise<void>[] = []
 
-  if (origPkgMeta[iifeProp]) {
-    iifeBundlePromise = rollup({
-      input: rollupInput,
-      plugins: buildRollupPlugins(rollupInputStrs, false),
-    }).then((bundle) => {
-      bundle.write(buildIifeOutputOptions()).then(() => {
-        bundle.close()
-      })
-    })
+  if (globalNames) {
+    // code-splitting doesn't work for iife. process each individual file
+    for (const outputName in rollupInput) {
+      iifeBundlePromises.push(
+        rollup({
+          input: rollupInput[outputName],
+          plugins: buildRollupPlugins(rollupInputStrs, false),
+        }).then((bundle) => {
+          bundle.write(
+            buildIifeOutputOptions(outputName, globalNames['./' + outputName] || '')
+          ).then(() => {
+            bundle.close()
+          })
+        })
+      )
+    }
   }
 
   const dtsBundlePromise = rollup({
@@ -162,7 +170,7 @@ async function runProd() {
 
   return Promise.all([
     bundlePromise,
-    iifeBundlePromise,
+    ...iifeBundlePromises,
     dtsBundlePromise,
     pkgJsonPromise,
     writeNpmIgnore(),
@@ -242,12 +250,20 @@ function buildCjsOutputOptions(): RollupOutputOptions {
   }
 }
 
-function buildIifeOutputOptions(): RollupOutputOptions {
-  return {
+function buildIifeOutputOptions(outputName: string, iifeGlobal: string): RollupOutputOptions {
+  // for single output file, because code-splitting is disallowed
+  const options: RollupOutputOptions = {
     format: 'iife',
-    dir: './dist',
-    entryFileNames: '[name]' + iifeExt,
+    file: './dist/' + outputName + iifeExt,
   }
+
+  if (iifeGlobal) {
+    options.name = iifeGlobal
+  } else {
+    options.exports = 'none'
+  }
+
+  return options
 }
 
 function buildDtsOutputOptions(): RollupOutputOptions {
