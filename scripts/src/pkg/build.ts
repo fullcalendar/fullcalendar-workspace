@@ -16,6 +16,9 @@ import { watch as watchPaths } from 'chokidar'
 
 const require = createRequire(import.meta.url)
 
+const sourceGlobsProp = 'fileExports'
+const sourceGeneratorsProp = 'generatedExports'
+const iifeProp = 'generateIIFE'
 const cjsExt = '.cjs'
 const esmExt = '.mjs'
 const iifeExt = '.js'
@@ -46,8 +49,8 @@ async function runDev() {
 
     const origPkgJson = await readFile(pkgJsonPath, 'utf8')
     const origPkgMeta = JSON.parse(origPkgJson)
-    const sourceGlobs = origPkgMeta.fileExports || {}
-    const sourceGenerators = origPkgMeta.generatedExports || {}
+    const sourceGlobs = origPkgMeta[sourceGlobsProp] || {}
+    const sourceGenerators = origPkgMeta[sourceGeneratorsProp] || {}
     const [ sourcePaths, sourceStrs ] = await Promise.all([
       expandSourceGlobs(sourceGlobs),
       buildSourceStrs(sourceGenerators)
@@ -97,8 +100,8 @@ async function runDev() {
 async function runProd() {
   const origPkgJson = await readFile(pkgJsonPath, 'utf8')
   const origPkgMeta = JSON.parse(origPkgJson)
-  const sourceGlobs = origPkgMeta.fileExports || {}
-  const sourceGenerators = origPkgMeta.generatedExports || {}
+  const sourceGlobs = origPkgMeta[sourceGlobsProp] || {}
+  const sourceGenerators = origPkgMeta[sourceGeneratorsProp] || {}
   const [ sourcePaths, sourceStrs ] = await Promise.all([
     expandSourceGlobs(sourceGlobs),
     buildSourceStrs(sourceGenerators)
@@ -133,7 +136,7 @@ async function runProd() {
 
   let iifeBundlePromise: Promise<void> | undefined
 
-  if (origPkgMeta.generateIIFE) {
+  if (origPkgMeta[iifeProp]) {
     iifeBundlePromise = rollup({
       input: rollupInput,
       plugins: buildRollupPlugins(rollupInputStrs, false),
@@ -440,8 +443,9 @@ function buildPkgMeta(
   dev: boolean
 ): any {
   const pkgMeta = { ...origPkgMeta }
-  delete pkgMeta.fileExports
-  delete pkgMeta.generatedExports
+  delete pkgMeta[sourceGlobsProp]
+  delete pkgMeta[sourceGeneratorsProp]
+  delete pkgMeta[iifeProp]
   delete pkgMeta.devDependencies
 
   const mainExportPath = exportPaths['.']
