@@ -18,7 +18,7 @@ const require = createRequire(import.meta.url)
 
 const sourceGlobsProp = 'fileExports'
 const sourceGeneratorsProp = 'generatedExports'
-const iifeProp = 'globalsForExports'
+const iifeProp = 'iife'
 const cjsExt = '.cjs'
 const esmExt = '.mjs'
 const iifeExt = '.js'
@@ -51,11 +51,9 @@ async function runDev() {
     const origPkgMeta = JSON.parse(origPkgJson)
     const sourceGlobs = origPkgMeta[sourceGlobsProp] || {}
     const sourceGenerators = origPkgMeta[sourceGeneratorsProp] || {}
-    const [ sourcePaths, sourceStrs ] = await Promise.all([
-      expandSourceGlobs(sourceGlobs),
-      buildSourceStrs(sourceGenerators)
-    ])
-    const { rollupInput, rollupInputStrs } = buildRollupInput(sourcePaths, sourceStrs)
+    const { fakeSourcePaths, sourceStrs } = await buildSourceStrs(sourceGenerators)
+    const sourcePaths = { ...fakeSourcePaths, ...(await expandSourceGlobs(sourceGlobs)) }
+    const rollupInput = buildRollupInput(sourcePaths)
     const exportPaths = buildExportPaths(sourceGlobs, sourceGenerators)
 
     // console.log('sourceGlobs', sourceGlobs)
@@ -63,14 +61,13 @@ async function runDev() {
     // console.log('sourcePaths', sourcePaths)
     // console.log('sourceStrs', sourceStrs)
     // console.log('rollupInput', rollupInput)
-    // console.log('rollupInputStrs', rollupInputStrs)
     // console.log('exportPaths', exportPaths)
     // console.log('pkgMeta', buildPkgMeta(origPkgMeta, exportPaths, true))
     // process.exit(1)
 
     rollupWatcher = rollupWatch({
       input: rollupInput,
-      plugins: buildRollupPlugins(rollupInputStrs, true),
+      plugins: buildRollupPlugins(sourceStrs, true),
       output: buildEsmOutputOptions(false),
     })
 
@@ -102,11 +99,9 @@ async function runProd() {
   const origPkgMeta = JSON.parse(origPkgJson)
   const sourceGlobs = origPkgMeta[sourceGlobsProp] || {}
   const sourceGenerators = origPkgMeta[sourceGeneratorsProp] || {}
-  const [ sourcePaths, sourceStrs ] = await Promise.all([
-    expandSourceGlobs(sourceGlobs),
-    buildSourceStrs(sourceGenerators)
-  ])
-  const { rollupInput, rollupInputStrs } = buildRollupInput(sourcePaths, sourceStrs)
+  const { fakeSourcePaths, sourceStrs } = await buildSourceStrs(sourceGenerators)
+  const sourcePaths = { ...(await expandSourceGlobs(sourceGlobs)), ...fakeSourcePaths }
+  const rollupInput = buildRollupInput(sourcePaths)
   const exportPaths = buildExportPaths(sourceGlobs, sourceGenerators)
 
   // console.log('sourceGlobs', sourceGlobs)
@@ -114,17 +109,15 @@ async function runProd() {
   // console.log('sourcePaths', sourcePaths)
   // console.log('sourceStrs', sourceStrs)
   // console.log('rollupInput', rollupInput)
-  // console.log('rollupInputStrs', rollupInputStrs)
   // console.log('exportPaths', exportPaths)
   // console.log('pkgMeta', buildPkgMeta(origPkgMeta, exportPaths, false))
-  // console.log('buildRollupDtsInput', buildRollupDtsInput(sourcePaths, sourceStrs))
   // process.exit(1)
 
   await mkdir('./dist', { recursive: true })
 
   const bundlePromise = rollup({
     input: rollupInput,
-    plugins: buildRollupPlugins(rollupInputStrs, true),
+    plugins: buildRollupPlugins(sourceStrs, true),
   }).then((bundle) => {
     return Promise.all([
       bundle.write(buildEsmOutputOptions(false)),
@@ -143,7 +136,7 @@ async function runProd() {
       iifeBundlePromises.push(
         rollup({
           input: rollupInput[outputName],
-          plugins: buildRollupPlugins(rollupInputStrs, false),
+          plugins: buildRollupPlugins(sourceStrs, false),
         }).then((bundle) => {
           bundle.write(
             buildIifeOutputOptions(outputName, globalNames['./' + outputName] || '')
@@ -156,7 +149,7 @@ async function runProd() {
   }
 
   const dtsBundlePromise = rollup({
-    input: buildRollupDtsInput(sourcePaths, sourceStrs),
+    input: buildRollupDtsInput(sourcePaths),
     plugins: buildRollupDtsPlugins(),
   }).then((bundle) => {
     return bundle.write(buildDtsOutputOptions()).then(() => {
@@ -182,13 +175,8 @@ async function runProd() {
 
 function buildRollupInput(
   sourcePaths: { [entryName: string]: string },
-  sourceStrs: { [entryName: string]: string },
-): {
-  rollupInput: { [outputName: string]: string },
-  rollupInputStrs: { [outputName: string]: string },
-} {
+): { [outputName: string]: string } {
   const rollupInput: { [outputName: string]: string } = {}
-  const rollupInputStrs: { [outputName: string]: string } = {}
 
   for (const entryName in sourcePaths) {
     const entrySourcePath = sourcePaths[entryName]
@@ -197,31 +185,16 @@ function buildRollupInput(
     rollupInput[outputName] = entrySourcePath
   }
 
-  for (const entryName in sourceStrs) {
-    const outputName = removeRelPrefix(entryName) || 'index'
-    const generationId = createGenerationId()
-
-    rollupInput[outputName] = generationId
-    rollupInputStrs[generationId] = sourceStrs[entryName]
-  }
-
-  return { rollupInput, rollupInputStrs }
+  return rollupInput
 }
 
 function buildRollupDtsInput(
   sourcePaths: { [entryName: string]: string },
-  sourceStrs: { [entryName: string]: string },
 ): { [entryName: string]: string } {
   const rollupInput: { [outputName: string]: string } = {}
 
   for (const entryName in sourcePaths) {
     const shortPath = stripSourcePath(sourcePaths[entryName])
-
-    rollupInput[shortPath] = `./dist/.tsc/${shortPath}.d.ts`
-  }
-
-  for (const entryName in sourceStrs) {
-    const shortPath = removeRelPrefix(entryName) // fake the source file
 
     rollupInput[shortPath] = `./dist/.tsc/${shortPath}.d.ts`
   }
@@ -278,11 +251,11 @@ function buildDtsOutputOptions(): RollupOutputOptions {
 // -------------------------------------------------------------------------------------------------
 
 function buildRollupPlugins(
-  inputStrs: { [generationId: string]: string },
+  sourceStrs: { [fakeSourcePath: string]: string },
   externalize: boolean,
 ): (RollupPlugin | false)[] {
   return [
-    inputStrsPlugin(inputStrs),
+    sourceStrsPlugin(sourceStrs),
     externalize && externalizeOtherPkgsPlugin(),
     externalize && externalizeDotImportsPlugin(),
     tscRerootPlugin(),
@@ -308,20 +281,24 @@ function buildRollupDtsPlugins(): RollupPlugin[] {
   ]
 }
 
-function inputStrsPlugin(inputStrs: { [outputName: string]: string }): RollupPlugin {
+function sourceStrsPlugin(sourceStrs: { [fakeSourcePath: string]: string }): RollupPlugin {
   return {
-    name: 'input-strs',
-    resolveId(id, importer, options) {
-      if (options.isEntry && inputStrs[id]) {
-        return id
-      } else if (importer && inputStrs[importer] && isRelative(id)) {
-        // always externalize relative imports from dynamically-generated files
-        // (the path would be relative from what?)
-        return { id, external: true }
+    name: 'source-strs',
+    async resolveId(id, importer, options) {
+      if (options.isEntry && sourceStrs[id]) {
+        return id // no further resolving
+      } else if (importer && sourceStrs[importer] && isRelative(id)) {
+        // handle relative imports from a generated source file
+        // HACK until tscRerootPlugin is more robust
+        return await this.resolve(
+          resolvePath(dirname(importer), id) + '.ts',
+          undefined,
+          { isEntry: true }
+        )
       }
     },
     load(id: string) {
-      return inputStrs[id] // if undefined, fallback to normal file load
+      return sourceStrs[id] // if undefined, fallback to normal file load
     },
   }
 }
@@ -337,10 +314,10 @@ function externalizeOtherPkgsPlugin(): RollupPlugin {
   }
 }
 
-function externalizeDotImportsPlugin(): RollupPlugin {
+function externalizeDotImportsPlugin(): RollupPlugin {[]
   return {
     name: 'externalize-dot-imports',
-    resolveId(id, importer) {
+    resolveId(id) {
       if (isRelativeDot(id)) {
         // when accessing the package root via '.' or '..', always externalize
         return { id, external: true }
@@ -366,15 +343,18 @@ function tscRerootPlugin(): RollupPlugin {
     resolveId(id, importer, options) {
       if (options.isEntry) {
         // move entrypoints within tsc dirs
-        const absPath = joinPaths(process.cwd(), id)
+        const absPath = resolvePath(id)
+
         if (isWithinDir(absPath, srcDirAbs)) {
           return tscDirAbs + forceExtension(absPath.substring(srcDirAbs.length), '.js')
         }
       } else if (importer && isRelative(id)) {
         // move asset (paths with extensions) back to src
         const ext = getExtension(id)
+
         if (ext) {
           const absPath = joinPaths(dirname(importer), id)
+
           if (isWithinDir(absPath, tscDirAbs)) {
             return srcDirAbs + absPath.substring(tscDirAbs.length)
           }
@@ -387,20 +367,18 @@ function tscRerootPlugin(): RollupPlugin {
 // Dynamic code generation
 // -------------------------------------------------------------------------------------------------
 
-let generationGuid = 0
-
-function createGenerationId() {
-  return '\0generation:' + (generationGuid++) // virtual file path
-}
-
 async function buildSourceStrs(
   sourceGenerators: { [entryName: string]: string },
-): Promise<{ [entryName: string]: string }> { // sourceStrs
-  const sourceStrs: { [entryName: string]: string } = {}
+): Promise<{
+  fakeSourcePaths: { [entryName: string]: string }
+  sourceStrs: { [fakeSourcePath: string]: string }
+}> {
+  const fakeSourcePaths: { [entryName: string]: string } = {}
+  const sourceStrs: { [fakeSourcePath: string]: string } = {}
 
   for (const entryName in sourceGenerators) {
     const generatorFile = sourceGenerators[entryName]
-    const generatorExports = await import(joinPaths(process.cwd(), generatorFile))
+    const generatorExports = await import(resolvePath(generatorFile))
     const generatorFunc = generatorExports.default
 
     if (typeof generatorFunc !== 'function') {
@@ -414,7 +392,10 @@ async function buildSourceStrs(
         throw new Error('Generator string output can\'t have blob entrypoint name')
       }
 
-      sourceStrs[entryName] = generatorRes
+      const fakeSourcePath = buildFakeSourcePath(entryName)
+
+      fakeSourcePaths[entryName] = fakeSourcePath
+      sourceStrs[fakeSourcePath] = generatorRes
     } else if (typeof generatorRes === 'object') {
       if (entryName.indexOf('*') === -1) {
         throw new Error('Generator object output must have blob entrypoint name')
@@ -422,15 +403,21 @@ async function buildSourceStrs(
 
       for (const key in generatorRes) {
         const expandedEntryName = entryName.replace('*', key)
+        const fakeSourcePath = buildFakeSourcePath(expandedEntryName)
 
-        sourceStrs[expandedEntryName] = generatorRes[key]
+        fakeSourcePaths[expandedEntryName] = fakeSourcePath
+        sourceStrs[fakeSourcePath] = generatorRes[key]
       }
     } else {
       throw new Error('Invalid type of generator output')
     }
   }
 
-  return sourceStrs
+  return { fakeSourcePaths, sourceStrs }
+}
+
+function buildFakeSourcePath(entryName: string): string {
+  return './src/' + removeRelPrefix(entryName) + '.js'
 }
 
 // package.json
@@ -447,7 +434,7 @@ function buildExportPaths(
   }
 
   for (const entryName in sourceGenerators) {
-    exportPaths[entryName] = entryName // generator path not used
+    exportPaths[entryName] = './' + stripSourcePath(buildFakeSourcePath(entryName))
   }
 
   return exportPaths
@@ -462,6 +449,7 @@ function buildPkgMeta(
   delete pkgMeta[sourceGlobsProp]
   delete pkgMeta[sourceGeneratorsProp]
   delete pkgMeta[iifeProp]
+  delete pkgMeta.scripts
   delete pkgMeta.devDependencies
 
   const mainExportPath = exportPaths['.']
@@ -472,6 +460,7 @@ function buildPkgMeta(
   pkgMeta.main = removeRelPrefix(mainExportPath + cjsExt)
   pkgMeta.module = removeRelPrefix(mainExportPath + esmExt)
   pkgMeta.types = removeRelPrefix(mainExportPath + dtsExt)
+  pkgMeta.jsdelivr = removeRelPrefix(mainExportPath + iifeExt) // TODO: .min.js
 
   const exportMap: any = {
     './package.json': './package.json'
@@ -510,7 +499,7 @@ async function writeNpmIgnore() {
 // -------------------------------------------------------------------------------------------------
 
 async function expandSourceGlobs(
-  sourceGlobs: { [name: string]: string },
+  sourceGlobs: { [entryName: string]: string },
 ): Promise<{ [entryName: string]: string }> { //  sourcePaths
   const promises: Promise<{ [expandedEntryName: string]: string }>[] = []
 
