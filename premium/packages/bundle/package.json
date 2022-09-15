@@ -4,6 +4,22 @@
   "title": "FullCalendar Premium Bundle",
   "description": "An easily consumable combination of standard and premium plugins",
   "docs": "https://fullcalendar.io/docs/initialize-globals",
+  "homepage": "https://fullcalendar.io/scheduler",
+  "bugs": "https://fullcalendar.io/reporting-bugs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fullcalendar/fullcalendar-scheduler.git",
+    "homepage": "https://github.com/fullcalendar/fullcalendar-scheduler"
+  },
+  "license": "SEE LICENSE IN LICENSE.md",
+  "author": {
+    "name": "Adam Shaw",
+    "email": "arshaw@arshaw.com",
+    "url": "http://arshaw.com/"
+  },
+  "scripts": {
+    "preflight": "workspace-scripts pkg:preflight"
+  },
   "devDependencies": {
     "@fullcalendar/adaptive": "workspace:*",
     "@fullcalendar/bootstrap": "workspace:*",
@@ -20,22 +36,7 @@
     "@fullcalendar/scrollgrid": "workspace:*",
     "@fullcalendar/timegrid": "workspace:*",
     "@fullcalendar/timeline": "workspace:*",
+    "@fullcalendar/workspace-scripts": "workspace:*",
     "tslib": "^2.1.0"
-  },
-  "main": "dist/.tsc/main.js",
-  "types": "dist/.tsc/main.d.ts",
-  "browserGlobal": "FullCalendar",
-  "homepage": "https://fullcalendar.io/scheduler",
-  "bugs": "https://fullcalendar.io/reporting-bugs",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/fullcalendar/fullcalendar-scheduler.git",
-    "homepage": "https://github.com/fullcalendar/fullcalendar-scheduler"
-  },
-  "license": "SEE LICENSE IN LICENSE.md",
-  "author": {
-    "name": "Adam Shaw",
-    "email": "arshaw@arshaw.com",
-    "url": "http://arshaw.com/"
   }
 }
