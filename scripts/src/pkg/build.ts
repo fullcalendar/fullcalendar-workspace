@@ -1,32 +1,32 @@
-import { join as joinPaths, resolve as resolvePath, isAbsolute, dirname } from 'path'
-import { fileURLToPath } from 'url'
-import { readFile, writeFile, readdir, mkdir } from 'fs/promises'
+import { resolve as resolvePath } from 'path'
+import { readdir, mkdir } from 'fs/promises'
 import {
   rollup,
   watch as rollupWatch,
-  Plugin as RollupPlugin,
-  OutputOptions as RollupOutputOptions,
   RollupWatcher,
 } from 'rollup'
-import { nodeResolve as nodeResolvePlugin } from '@rollup/plugin-node-resolve'
-import dtsPlugin from 'rollup-plugin-dts'
-import postcssPlugin from 'rollup-plugin-postcss'
-import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
 import { watch as watchPaths } from 'chokidar'
 import { live } from '../utils/exec'
-
-const srcGlobsProp = 'fileExports'
-const srcGeneratorsProp = 'generatedExports'
-const iifeProp = 'iife'
-const cjsExt = '.cjs'
-const esmExt = '.mjs'
-const iifeExt = '.js'
-const iifeMinExt = '.min.js'
-const dtsExt = '.d.ts'
-const srcJsonPath = resolvePath('./package.json')
-const srcDirAbs = resolvePath('./src')
-const tscDirAbs = resolvePath('./dist/.tsc')
-const scriptsDirAbs = joinPaths(fileURLToPath(import.meta.url), '../../..')
+import {
+  iifeMinExt,
+  iifeProp,
+  processSrcMeta,
+  scriptsDirAbs,
+  srcJsonPath,
+  writeDistMeta,
+  writeNpmIgnore
+} from '../utils/pkg-meta'
+import {
+  buildCjsOutputOptions,
+  buildDtsOutputOptions,
+  buildEsmOutputOptions,
+  buildIifeOutputOptions,
+  buildRollupDtsInput,
+  buildRollupDtsPlugins,
+  buildRollupInput,
+  buildRollupPlugins
+} from '../utils/pkg-rollup'
+import { buildFakeSrcPath, isFilenameHidden, removeExt } from '../utils/path'
 
 /*
 Must be run from package root.
@@ -48,7 +48,7 @@ async function runDev() {
       rollupWatcher.close()
     }
 
-    const { srcPaths, srcStrs, distMeta } = await processSrcMeta(true)
+    const { srcPaths, srcStrs, distMeta } = await processSrcMetaForBuild(true)
 
     rollupWatcher = rollupWatch({
       input: buildRollupInput(srcPaths),
@@ -76,7 +76,7 @@ async function runDev() {
 async function runProd() {
   await mkdir('./dist', { recursive: true })
 
-  const { srcPaths, srcStrs, srcMeta, distMeta } = await processSrcMeta(false) // dev=false
+  const { srcPaths, srcStrs, srcMeta, distMeta } = await processSrcMetaForBuild(false) // dev=false
 
   const bundlePromise = rollup({
     input: buildRollupInput(srcPaths),
@@ -124,201 +124,6 @@ async function runProd() {
     writeDistMeta(distMeta),
     writeNpmIgnore(),
   ])
-}
-
-// Rollup input
-// -------------------------------------------------------------------------------------------------
-
-function buildRollupInput(
-  srcPaths: { [entryName: string]: string },
-): { [distShortPath: string]: string } {
-  const rollupInput: { [distShortPath: string]: string } = {}
-
-  for (const entryName in srcPaths) {
-    const srcPath = srcPaths[entryName]
-    const distShortPath = buildDistShortPath(srcPath)
-
-    rollupInput[distShortPath] = srcPath
-  }
-
-  return rollupInput
-}
-
-function buildRollupDtsInput(
-  srcPaths: { [entryName: string]: string },
-): { [entryName: string]: string } {
-  const rollupInput: { [distShortPath: string]: string } = {}
-
-  for (const entryName in srcPaths) {
-    const srcPath = srcPaths[entryName]
-    const distShortPath = buildDistShortPath(srcPath)
-
-    rollupInput[distShortPath] = `./dist/.tsc/${distShortPath}.d.ts`
-  }
-
-  return rollupInput
-}
-
-// Rollup outputs
-// -------------------------------------------------------------------------------------------------
-
-function buildEsmOutputOptions(dev: boolean): RollupOutputOptions {
-  return {
-    format: 'esm',
-    dir: './dist',
-    entryFileNames: '[name]' + esmExt,
-    sourcemap: dev,
-  }
-}
-
-function buildCjsOutputOptions(): RollupOutputOptions {
-  return {
-    format: 'cjs',
-    exports: 'auto',
-    dir: './dist',
-    entryFileNames: '[name]' + cjsExt,
-  }
-}
-
-// for single output file, because code-splitting is disallowed
-function buildIifeOutputOptions(srcPath: string, iifeGlobal: string): RollupOutputOptions {
-  const options: RollupOutputOptions = {
-    format: 'iife',
-    file: './dist/' + buildDistShortPath(srcPath) + iifeExt,
-  }
-
-  if (iifeGlobal) {
-    options.name = iifeGlobal
-  } else {
-    options.exports = 'none'
-  }
-
-  return options
-}
-
-function buildDtsOutputOptions(): RollupOutputOptions {
-  return {
-    format: 'esm',
-    dir: './dist',
-    entryFileNames: '[name]' + dtsExt,
-  }
-}
-
-// Rollup plugins
-// -------------------------------------------------------------------------------------------------
-
-function buildRollupPlugins(
-  srcStrs: { [fakeSrcPath: string]: string },
-  externalize: boolean,
-): (RollupPlugin | false)[] {
-  return [
-    srcStrsPlugin(srcStrs),
-    externalize && externalizeOtherPkgsPlugin(),
-    externalize && externalizeDotImportsPlugin(),
-    tscRerootPlugin(),
-    nodeResolvePlugin(), // determines index.js and .js/cjs/mjs
-    sourcemapsPlugin(), // load preexisting sourcemaps
-    postcssPlugin({
-      config: {
-        path: joinPaths(scriptsDirAbs, 'postcss.config.cjs'),
-        ctx: {}, // arguments given to config file
-      }
-    }),
-    // TODO: resolve tsconfig.json paths
-  ]
-}
-
-function buildRollupDtsPlugins(): RollupPlugin[] {
-  return [
-    externalizeOtherPkgsPlugin(),
-    externalizeDotImportsPlugin(),
-    externalizeAssetsPlugin(),
-    dtsPlugin(),
-    nodeResolvePlugin(), // determines index.js and .js/cjs/mjs
-  ]
-}
-
-function srcStrsPlugin(srcStrs: { [fakeSrcPath: string]: string }): RollupPlugin {
-  return {
-    name: 'source-strings',
-    async resolveId(id, importer, options) {
-      if (options.isEntry && srcStrs[id]) {
-        return id // no further resolving
-      } else if (importer && srcStrs[importer] && isRelative(id)) {
-        // handle relative imports from a generated source file
-        // HACK until tscRerootPlugin is more robust
-        return await this.resolve(
-          resolvePath(dirname(importer), id) + '.ts',
-          undefined,
-          { isEntry: true }
-        )
-      }
-    },
-    load(id: string) {
-      return srcStrs[id] // if undefined, fallback to normal file load
-    },
-  }
-}
-
-function externalizeOtherPkgsPlugin(): RollupPlugin {
-  return {
-    name: 'externalize-other-pkgs',
-    resolveId(id, importer, options) {
-      if (!options.isEntry && !isRelative(id) && !isAbsolute(id)) {
-        return { id, external: true }
-      }
-    },
-  }
-}
-
-function externalizeDotImportsPlugin(): RollupPlugin {[]
-  return {
-    name: 'externalize-dot-imports',
-    resolveId(id) {
-      if (isRelativeDot(id)) {
-        // when accessing the package root via '.' or '..', always externalize
-        return { id, external: true }
-      }
-    }
-  }
-}
-
-function externalizeAssetsPlugin(): RollupPlugin {
-  return {
-    name: 'externalize-assets',
-    resolveId(id, importer) {
-      if (importer && isRelative(id) && getExt(id)) {
-        return { id, external: true }
-      }
-    },
-  }
-}
-
-function tscRerootPlugin(): RollupPlugin {
-  return {
-    name: 'tsc-reroot',
-    resolveId(id, importer, options) {
-      if (options.isEntry) {
-        // move entrypoints within tsc dirs
-        const absPath = resolvePath(id)
-
-        if (isWithinDir(absPath, srcDirAbs)) {
-          return tscDirAbs + forceExt(absPath.substring(srcDirAbs.length), '.js')
-        }
-      } else if (importer && isRelative(id)) {
-        // move asset (paths with extensions) back to src
-        const ext = getExt(id)
-
-        if (ext) {
-          const absPath = joinPaths(dirname(importer), id)
-
-          if (isWithinDir(absPath, tscDirAbs)) {
-            return srcDirAbs + absPath.substring(tscDirAbs.length)
-          }
-        }
-      }
-    }
-  }
 }
 
 // Dynamic code generation
@@ -373,106 +178,15 @@ async function buildSrcStrs(
   return { fakeSrcPaths, srcStrs }
 }
 
-function buildFakeSrcPath(entryName: string): string {
-  return './src/' + removeRelativePrefix(entryName) + '.js'
-}
-
 // package.json
 // -------------------------------------------------------------------------------------------------
 
-async function processSrcMeta(dev: boolean) {
-  const srcJson = await readFile(srcJsonPath, 'utf8')
-  const srcMeta = JSON.parse(srcJson)
-  const srcGlobs = srcMeta[srcGlobsProp] || {}
-  const srcGenerators = srcMeta[srcGeneratorsProp] || {}
+async function processSrcMetaForBuild(dev: boolean) {
+  const { srcGlobs, srcGenerators, srcMeta, distMeta } = await processSrcMeta(dev)
   const { fakeSrcPaths, srcStrs } = await buildSrcStrs(srcGenerators)
   const srcPaths = { ...(await expandSrcGlobs(srcGlobs)), ...fakeSrcPaths }
-  const exportPaths = buildExportPaths(srcGlobs, srcGenerators)
-  const distMeta = buildPkgMeta(srcMeta, exportPaths, dev)
 
   return { srcPaths, srcStrs, srcMeta, distMeta }
-}
-
-async function writeDistMeta(distPkgJson: any) {
-  const pkgJson = JSON.stringify(distPkgJson, undefined, 2)
-
-  await writeFile('./dist/package.json', pkgJson)
-}
-
-function buildExportPaths(
-  srcGlobs: { [entryName: string]: string },
-  srcGenerators: { [entryName: string]: string },
-): { [entryName: string]: string } { // exportPaths
-  const exportPaths: { [entryName: string]: string } = {}
-
-  for (const entryName in srcGlobs) {
-    exportPaths[entryName] = './' + buildDistShortPath(srcGlobs[entryName])
-  }
-
-  for (const entryName in srcGenerators) {
-    exportPaths[entryName] = './' + buildDistShortPath(buildFakeSrcPath(entryName))
-  }
-
-  return exportPaths
-}
-
-function buildPkgMeta(
-  srcMeta: any,
-  exportPaths: { [entryName: string]: string },
-  dev: boolean
-): any {
-  const distMeta = { ...srcMeta }
-  delete distMeta[srcGlobsProp]
-  delete distMeta[srcGeneratorsProp]
-  delete distMeta[iifeProp]
-  delete distMeta.scripts
-  delete distMeta.devDependencies
-
-  const mainExportPath = exportPaths['.']
-  const mainIifeGlobal = (srcMeta[iifeProp] || {})['.']
-
-  if (!mainExportPath) {
-    throw new Error('There must be a root entry file')
-  }
-
-  distMeta.main = removeRelativePrefix(mainExportPath + cjsExt)
-  distMeta.module = removeRelativePrefix(mainExportPath + esmExt)
-  distMeta.types = removeRelativePrefix(mainExportPath + dtsExt)
-  distMeta.jsdelivr = removeRelativePrefix(
-    mainExportPath + (mainIifeGlobal === undefined ? esmExt : iifeMinExt)
-  )
-
-  const exportMap: any = {
-    './package.json': './package.json'
-  }
-
-  for (let entryName in exportPaths) {
-    const exportPath = exportPaths[entryName]
-
-    exportMap[entryName] = {
-      require: exportPath + cjsExt,
-      import: exportPath + esmExt,
-      types: (
-        dev
-          ? './.tsc/' + removeRelativePrefix(exportPath)
-          : exportPath
-        ) + dtsExt,
-    }
-  }
-
-  distMeta.exports = exportMap
-
-  return distMeta
-}
-
-// .npmignore
-// -------------------------------------------------------------------------------------------------
-
-async function writeNpmIgnore() {
-  await writeFile('./dist/.npmignore', [
-    '.tsc',
-    'tsconfig.tsbuildinfo',
-  ].join("\n"))
 }
 
 // Glob
@@ -531,49 +245,4 @@ async function minifyFile(unminifiedPath: string): Promise<void> {
   ], {
     cwd: scriptsDirAbs,
   })
-}
-
-// Path utils
-// -------------------------------------------------------------------------------------------------
-
-// does NOT include './dist/' at beginning
-function buildDistShortPath(srcPath: string): string {
-  return removeExt(srcPath).replace(/^\.\/src\//, '')
-}
-
-function isRelative(path: string): boolean {
-  return /^\.\.?\/?/.test(path)
-}
-
-function isRelativeDot(path: string): boolean { // '.', './', '..', '../'
-  return /^\.\.?\/?$/.test(path)
-}
-
-function isFilenameHidden(filename: string): boolean {
-  return Boolean(filename.match(/^\./))
-}
-
-function isWithinDir(path: string, dirPath: string): boolean {
-  return path.indexOf(dirPath) === 0 // TODO: make sure dirPath ends in separator
-}
-
-function getExt(path: string): string {
-  if (isRelativeDot(path)) {
-    return ''
-  }
-  const match = path.match(/\.[^\/]*$/)
-  return match ? match[0] : ''
-}
-
-function forceExt(path: string, ext: string): string {
-  return removeExt(path) + ext
-}
-
-function removeExt(path: string): string {
-  const match = path.match(/^(.*)\.([^\/]*)$/)
-  return match ? match[1] : path
-}
-
-function removeRelativePrefix(path: string) {
-  return path.replace(/^\.\/?/, '')
 }
