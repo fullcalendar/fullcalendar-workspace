@@ -17,6 +17,7 @@
     "@rollup/plugin-node-resolve": "^14.0.1",
     "@types/cross-spawn": "^6.0.2",
     "@types/js-yaml": "^4.0.5",
+    "@types/node": "^16.11.7",
     "autoprefixer": "^9.8.4",
     "chalk": "^5.0.1",
     "chokidar": "^2.1.5",

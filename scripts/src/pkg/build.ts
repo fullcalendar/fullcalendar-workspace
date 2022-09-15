@@ -97,7 +97,7 @@ async function runProd() {
 
     return rollup({
       input: srcPath,
-      plugins: buildRollupPlugins(srcStrs, false),  // externalize=true
+      plugins: buildRollupPlugins(srcStrs, false),  // externalize=false
     }).then((bundle) => {
       const options = buildIifeOutputOptions(srcPath, iifeGlobal)
 

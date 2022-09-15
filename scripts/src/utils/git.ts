@@ -1,6 +1,6 @@
 import * as path from 'path'
 import { rm } from 'fs/promises'
-import { live, capture } from './exec'
+import { live } from './exec'
 
 /*
 IMPORTANT: writes to a git repo must happen serially,
