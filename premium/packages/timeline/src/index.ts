@@ -5,7 +5,7 @@ import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable
 import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
 
 import { TimelineView } from './TimelineView'
-import './main.css'
+import './index.css'
 
 export { TimelineView }
 export { buildSlatCols } from './TimelineView'

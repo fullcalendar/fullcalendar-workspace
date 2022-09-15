@@ -17,9 +17,6 @@
     "email": "arshaw@arshaw.com",
     "url": "http://arshaw.com/"
   },
-  "scripts": {
-    "preflight": "workspace-scripts pkg:preflight"
-  },
   "dependencies": {
     "@fullcalendar/core": "workspace:*",
     "@fullcalendar/premium-common": "workspace:*",
@@ -30,5 +27,11 @@
   },
   "devDependencies": {
     "@fullcalendar/workspace-scripts": "workspace:*"
+  },
+  "scripts": {
+    "preflight": "workspace-scripts pkg:preflight"
+  },
+  "fileExports": {
+    ".": "./src/index.ts"
   }
 }

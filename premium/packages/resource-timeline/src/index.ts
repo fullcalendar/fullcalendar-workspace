@@ -7,7 +7,7 @@ import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicate
 import timelinePlugin from '@fullcalendar/timeline'
 import resourceCommonPlugin from '@fullcalendar/resource-common'
 import { ResourceTimelineView } from './ResourceTimelineView'
-import './main.css'
+import './index.css'
 
 export { ResourceTimelineView }
 export { ResourceTimelineLane } from './ResourceTimelineLane'

@@ -10,7 +10,7 @@ import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable
 // ensure ambient declarations. TODO: remove?
 import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
 
-import './main.css'
+import './index.css'
 
 config.COLLAPSIBLE_WIDTH_THRESHOLD = 1200
 
