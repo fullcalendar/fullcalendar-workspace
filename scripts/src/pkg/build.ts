@@ -135,14 +135,14 @@ async function runProd() {
 
 function buildRollupInput(
   srcPaths: { [entryName: string]: string },
-): { [outputName: string]: string } {
-  const rollupInput: { [outputName: string]: string } = {}
+): { [distShortPath: string]: string } {
+  const rollupInput: { [distShortPath: string]: string } = {}
 
   for (const entryName in srcPaths) {
     const srcPath = srcPaths[entryName]
-    const outputName = stripSrcPath(srcPath)
+    const distShortPath = buildDistShortPath(srcPath)
 
-    rollupInput[outputName] = srcPath
+    rollupInput[distShortPath] = srcPath
   }
 
   return rollupInput
@@ -151,12 +151,13 @@ function buildRollupInput(
 function buildRollupDtsInput(
   srcPaths: { [entryName: string]: string },
 ): { [entryName: string]: string } {
-  const rollupInput: { [outputName: string]: string } = {}
+  const rollupInput: { [distShortPath: string]: string } = {}
 
   for (const entryName in srcPaths) {
-    const shortPath = stripSrcPath(srcPaths[entryName])
+    const srcPath = srcPaths[entryName]
+    const distShortPath = buildDistShortPath(srcPath)
 
-    rollupInput[shortPath] = `./dist/.tsc/${shortPath}.d.ts`
+    rollupInput[distShortPath] = `./dist/.tsc/${distShortPath}.d.ts`
   }
 
   return rollupInput
@@ -190,7 +191,7 @@ function buildIifeOutputOptions(
 ): RollupOutputOptions {
   const options: RollupOutputOptions = {
     format: 'iife',
-    file: './dist/' + stripSrcPath(srcPath) + iifeExt,
+    file: './dist/' + buildDistShortPath(srcPath) + iifeExt,
   }
 
   if (iifeGlobal) {
@@ -412,11 +413,11 @@ function buildExportPaths(
   const exportPaths: { [entryName: string]: string } = {}
 
   for (const entryName in srcGlobs) {
-    exportPaths[entryName] = './' + stripSrcPath(srcGlobs[entryName])
+    exportPaths[entryName] = './' + buildDistShortPath(srcGlobs[entryName])
   }
 
   for (const entryName in srcGenerators) {
-    exportPaths[entryName] = './' + stripSrcPath(buildFakeSrcPath(entryName))
+    exportPaths[entryName] = './' + buildDistShortPath(buildFakeSrcPath(entryName))
   }
 
   return exportPaths
@@ -542,7 +543,8 @@ async function minifyFile(unminifiedPath: string): Promise<void> {
 // Path utils
 // -------------------------------------------------------------------------------------------------
 
-function stripSrcPath(srcPath: string): string {
+// does NOT include './dist/' at beginning
+function buildDistShortPath(srcPath: string): string {
   return removeExtension(srcPath).replace(/^\.\/src\//, '')
 }
 
