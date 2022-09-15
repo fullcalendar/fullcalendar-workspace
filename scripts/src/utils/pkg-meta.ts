@@ -64,6 +64,7 @@ function buildPkgMeta(
   delete distMeta[iifeProp]
   delete distMeta.scripts
   delete distMeta.devDependencies
+  delete distMeta.publishConfig
 
   const mainExportPath = exportPaths['.']
   const mainIifeGlobal = (srcMeta[iifeProp] || {})['.']
