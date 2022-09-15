@@ -52,8 +52,8 @@ async function runDev() {
 
     rollupWatcher = rollupWatch({
       input: buildRollupInput(srcPaths),
-      plugins: buildRollupPlugins(srcStrs, true),
-      output: buildEsmOutputOptions(false),
+      plugins: buildRollupPlugins(srcStrs, true), // externalize=true
+      output: buildEsmOutputOptions(true), // dev=true
     })
 
     await writeDistMeta(distMeta)
@@ -62,12 +62,7 @@ async function runDev() {
   const watcherPromise = new Promise<void>((resolve) => {
     process.once('SIGINT', () => {
       pkgJsonWatcher.close()
-
-      if (rollupWatcher) {
-        rollupWatcher.close()
-      }
-
-      resolve()
+      Promise.resolve(rollupWatcher && rollupWatcher.close()).then(() => resolve())
     })
   })
 
@@ -80,14 +75,14 @@ async function runDev() {
 async function runProd() {
   await mkdir('./dist', { recursive: true })
 
-  const { srcPaths, srcStrs, srcMeta, distMeta } = await processSrcMeta(false)
+  const { srcPaths, srcStrs, srcMeta, distMeta } = await processSrcMeta(false) // dev=false
 
   const bundlePromise = rollup({
     input: buildRollupInput(srcPaths),
-    plugins: buildRollupPlugins(srcStrs, true),
+    plugins: buildRollupPlugins(srcStrs, true), // externalize=true
   }).then((bundle) => {
     return Promise.all([
-      bundle.write(buildEsmOutputOptions(false)),
+      bundle.write(buildEsmOutputOptions(false)), // dev=false
       bundle.write(buildCjsOutputOptions())
     ]).then(() => {
       bundle.close()
@@ -101,7 +96,7 @@ async function runProd() {
 
     return rollup({
       input: srcPath,
-      plugins: buildRollupPlugins(srcStrs, false),
+      plugins: buildRollupPlugins(srcStrs, false),  // externalize=true
     }).then((bundle) => {
       const options = buildIifeOutputOptions(srcPath, iifeGlobal)
 
