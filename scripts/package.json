@@ -5,6 +5,7 @@
   "type": "module",
   "bin": {
     "workspace-scripts": "./bin/workspace-scripts.js",
+    "workspace-scripts-tsc": "./node_modules/typescript/bin/tsc",
     "ws": "./bin/workspace-scripts.js"
   },
   "scripts": {

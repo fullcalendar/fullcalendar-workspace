@@ -3,12 +3,7 @@
   "name": "@fullcalendar/workspace",
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "types": "tsc -b",
-    "types:watch": "tsc -b --watch"
-  },
   "devDependencies": {
-    "@fullcalendar/standard-scripts": "*",
     "@fullcalendar/workspace-scripts": "*",
     "typescript": "^4.8.2"
   },
