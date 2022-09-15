@@ -23,7 +23,7 @@ const esmExt = '.mjs'
 const iifeExt = '.js'
 const iifeMinExt = '.min.js'
 const dtsExt = '.d.ts'
-const pkgJsonPath = resolvePath('./package.json')
+const srcJsonPath = resolvePath('./package.json')
 const srcDirAbs = resolvePath('./src')
 const tscDirAbs = resolvePath('./dist/.tsc')
 const scriptsDirAbs = joinPaths(fileURLToPath(import.meta.url), '../../..')
@@ -43,7 +43,7 @@ async function runDev() {
 
   let rollupWatcher: RollupWatcher | undefined
 
-  const pkgJsonWatcher = watchPaths(pkgJsonPath).on('all', async () => {
+  const pkgJsonWatcher = watchPaths(srcJsonPath).on('all', async () => {
     if (rollupWatcher) {
       rollupWatcher.close()
     }
@@ -62,7 +62,8 @@ async function runDev() {
   const watcherPromise = new Promise<void>((resolve) => {
     process.once('SIGINT', () => {
       pkgJsonWatcher.close()
-      Promise.resolve(rollupWatcher && rollupWatcher.close()).then(() => resolve())
+      Promise.resolve(rollupWatcher && rollupWatcher.close())
+        .then(() => resolve())
     })
   })
 
@@ -158,7 +159,7 @@ function buildRollupDtsInput(
   return rollupInput
 }
 
-// Rollup outpus
+// Rollup outputs
 // -------------------------------------------------------------------------------------------------
 
 function buildEsmOutputOptions(dev: boolean): RollupOutputOptions {
@@ -180,10 +181,7 @@ function buildCjsOutputOptions(): RollupOutputOptions {
 }
 
 // for single output file, because code-splitting is disallowed
-function buildIifeOutputOptions(
-  srcPath: string,
-  iifeGlobal: string,
-): RollupOutputOptions {
+function buildIifeOutputOptions(srcPath: string, iifeGlobal: string): RollupOutputOptions {
   const options: RollupOutputOptions = {
     format: 'iife',
     file: './dist/' + buildDistShortPath(srcPath) + iifeExt,
@@ -289,7 +287,7 @@ function externalizeAssetsPlugin(): RollupPlugin {
   return {
     name: 'externalize-assets',
     resolveId(id, importer) {
-      if (importer && isRelative(id) && getExtension(id)) {
+      if (importer && isRelative(id) && getExt(id)) {
         return { id, external: true }
       }
     },
@@ -305,11 +303,11 @@ function tscRerootPlugin(): RollupPlugin {
         const absPath = resolvePath(id)
 
         if (isWithinDir(absPath, srcDirAbs)) {
-          return tscDirAbs + forceExtension(absPath.substring(srcDirAbs.length), '.js')
+          return tscDirAbs + forceExt(absPath.substring(srcDirAbs.length), '.js')
         }
       } else if (importer && isRelative(id)) {
         // move asset (paths with extensions) back to src
-        const ext = getExtension(id)
+        const ext = getExt(id)
 
         if (ext) {
           const absPath = joinPaths(dirname(importer), id)
@@ -376,14 +374,14 @@ async function buildSrcStrs(
 }
 
 function buildFakeSrcPath(entryName: string): string {
-  return './src/' + removeRelPrefix(entryName) + '.js'
+  return './src/' + removeRelativePrefix(entryName) + '.js'
 }
 
 // package.json
 // -------------------------------------------------------------------------------------------------
 
 async function processSrcMeta(dev: boolean) {
-  const srcJson = await readFile(pkgJsonPath, 'utf8')
+  const srcJson = await readFile(srcJsonPath, 'utf8')
   const srcMeta = JSON.parse(srcJson)
   const srcGlobs = srcMeta[srcGlobsProp] || {}
   const srcGenerators = srcMeta[srcGeneratorsProp] || {}
@@ -437,10 +435,10 @@ function buildPkgMeta(
     throw new Error('There must be a root entry file')
   }
 
-  distMeta.main = removeRelPrefix(mainExportPath + cjsExt)
-  distMeta.module = removeRelPrefix(mainExportPath + esmExt)
-  distMeta.types = removeRelPrefix(mainExportPath + dtsExt)
-  distMeta.jsdelivr = removeRelPrefix(
+  distMeta.main = removeRelativePrefix(mainExportPath + cjsExt)
+  distMeta.module = removeRelativePrefix(mainExportPath + esmExt)
+  distMeta.types = removeRelativePrefix(mainExportPath + dtsExt)
+  distMeta.jsdelivr = removeRelativePrefix(
     mainExportPath + (mainIifeGlobal === undefined ? esmExt : iifeMinExt)
   )
 
@@ -456,7 +454,7 @@ function buildPkgMeta(
       import: exportPath + esmExt,
       types: (
         dev
-          ? './.tsc/' + removeRelPrefix(exportPath)
+          ? './.tsc/' + removeRelativePrefix(exportPath)
           : exportPath
         ) + dtsExt,
     }
@@ -528,7 +526,7 @@ async function minifyFile(unminifiedPath: string): Promise<void> {
   return live([
     'pnpm', 'exec', 'terser',
     '--config-file', 'terser.json',
-    '--output', resolvePath(removeExtension(unminifiedPath) + iifeMinExt),
+    '--output', resolvePath(removeExt(unminifiedPath) + iifeMinExt),
     '--', resolvePath(unminifiedPath),
   ], {
     cwd: scriptsDirAbs,
@@ -540,7 +538,7 @@ async function minifyFile(unminifiedPath: string): Promise<void> {
 
 // does NOT include './dist/' at beginning
 function buildDistShortPath(srcPath: string): string {
-  return removeExtension(srcPath).replace(/^\.\/src\//, '')
+  return removeExt(srcPath).replace(/^\.\/src\//, '')
 }
 
 function isRelative(path: string): boolean {
@@ -559,7 +557,7 @@ function isWithinDir(path: string, dirPath: string): boolean {
   return path.indexOf(dirPath) === 0 // TODO: make sure dirPath ends in separator
 }
 
-function getExtension(path: string): string {
+function getExt(path: string): string {
   if (isRelativeDot(path)) {
     return ''
   }
@@ -567,15 +565,15 @@ function getExtension(path: string): string {
   return match ? match[0] : ''
 }
 
-function forceExtension(path: string, ext: string): string {
-  return removeExtension(path) + ext
+function forceExt(path: string, ext: string): string {
+  return removeExt(path) + ext
 }
 
-function removeExtension(path: string): string {
+function removeExt(path: string): string {
   const match = path.match(/^(.*)\.([^\/]*)$/)
   return match ? match[1] : path
 }
 
-function removeRelPrefix(path: string) {
+function removeRelativePrefix(path: string) {
   return path.replace(/^\.\/?/, '')
 }
