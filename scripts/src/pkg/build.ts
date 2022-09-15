@@ -424,26 +424,30 @@ function buildExportPaths(
 }
 
 function buildPkgMeta(
-  origPkgMeta: any,
+  srcMeta: any,
   exportPaths: { [entryName: string]: string },
   dev: boolean
 ): any {
-  const pkgMeta = { ...origPkgMeta }
-  delete pkgMeta[srcGlobsProp]
-  delete pkgMeta[srcGeneratorsProp]
-  delete pkgMeta[iifeProp]
-  delete pkgMeta.scripts
-  delete pkgMeta.devDependencies
+  const distMeta = { ...srcMeta }
+  delete distMeta[srcGlobsProp]
+  delete distMeta[srcGeneratorsProp]
+  delete distMeta[iifeProp]
+  delete distMeta.scripts
+  delete distMeta.devDependencies
 
   const mainExportPath = exportPaths['.']
+  const mainIifeGlobal = (srcMeta[iifeProp] || {})['.']
+
   if (!mainExportPath) {
     throw new Error('There must be a root entry file')
   }
 
-  pkgMeta.main = removeRelPrefix(mainExportPath + cjsExt)
-  pkgMeta.module = removeRelPrefix(mainExportPath + esmExt)
-  pkgMeta.types = removeRelPrefix(mainExportPath + dtsExt)
-  pkgMeta.jsdelivr = removeRelPrefix(mainExportPath + iifeMinExt)
+  distMeta.main = removeRelPrefix(mainExportPath + cjsExt)
+  distMeta.module = removeRelPrefix(mainExportPath + esmExt)
+  distMeta.types = removeRelPrefix(mainExportPath + dtsExt)
+  distMeta.jsdelivr = removeRelPrefix(
+    mainExportPath + (mainIifeGlobal === undefined ? iifeExt : iifeMinExt)
+  )
 
   const exportMap: any = {
     './package.json': './package.json'
@@ -463,9 +467,9 @@ function buildPkgMeta(
     }
   }
 
-  pkgMeta.exports = exportMap
+  distMeta.exports = exportMap
 
-  return pkgMeta
+  return distMeta
 }
 
 // .npmignore
