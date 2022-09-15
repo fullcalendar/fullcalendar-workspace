@@ -1,5 +1,5 @@
-import { join as joinPaths, resolve as resolvePath, isAbsolute, dirname } from 'path'
-import { createRequire } from 'module'
+import path, { join as joinPaths, resolve as resolvePath, isAbsolute, dirname } from 'path'
+import { fileURLToPath } from 'url'
 import { readFile, readdir as readDir, writeFile, mkdir } from 'fs/promises'
 import {
   rollup,
@@ -13,8 +13,9 @@ import dtsPlugin from 'rollup-plugin-dts'
 import postcssPlugin from 'rollup-plugin-postcss'
 import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
 import { watch as watchPaths } from 'chokidar'
+import { live } from '../utils/exec'
 
-const require = createRequire(import.meta.url)
+export const scriptsDirAbs = joinPaths(fileURLToPath(import.meta.url), '../../..')
 
 const srcGlobsProp = 'fileExports'
 const srcGeneratorsProp = 'generatedExports'
@@ -22,6 +23,7 @@ const iifeProp = 'iife'
 const cjsExt = '.cjs'
 const esmExt = '.mjs'
 const iifeExt = '.js'
+const iifeMinExt = '.min.js'
 const dtsExt = '.d.ts'
 const srcDirAbs = resolvePath('./src')
 const tscDirAbs = resolvePath('./dist/.tsc')
@@ -102,11 +104,12 @@ async function runProd() {
       input: srcPath,
       plugins: buildRollupPlugins(srcStrs, false),
     }).then((bundle) => {
-      bundle.write(
-        buildIifeOutputOptions(srcPath, iifeGlobal)
-      ).then(() => {
-        bundle.close()
-      })
+      const options = buildIifeOutputOptions(srcPath, iifeGlobal)
+
+      return bundle.write(options).then(() => Promise.all([
+        bundle.close(),
+        minifyFile(options.file!),
+      ]))
     })
   })
 
@@ -224,7 +227,7 @@ function buildRollupPlugins(
     sourcemapsPlugin(), // load preexisting sourcemaps
     postcssPlugin({
       config: {
-        path: require.resolve('../../postcss.config.cjs'),
+        path: joinPaths(scriptsDirAbs, 'postcss.config.cjs'),
         ctx: {}, // arguments given to config file
       }
     }),
@@ -440,7 +443,7 @@ function buildPkgMeta(
   pkgMeta.main = removeRelPrefix(mainExportPath + cjsExt)
   pkgMeta.module = removeRelPrefix(mainExportPath + esmExt)
   pkgMeta.types = removeRelPrefix(mainExportPath + dtsExt)
-  pkgMeta.jsdelivr = removeRelPrefix(mainExportPath + iifeExt) // TODO: .min.js
+  pkgMeta.jsdelivr = removeRelPrefix(mainExportPath + iifeMinExt)
 
   const exportMap: any = {
     './package.json': './package.json'
@@ -517,6 +520,20 @@ async function expandSrcGlob(
   }
 
   return srcPaths
+}
+
+// JS minification
+// -------------------------------------------------------------------------------------------------
+
+async function minifyFile(unminifiedPath: string): Promise<void> {
+  return live([
+    'pnpm', 'exec', 'terser',
+    '--config-file', 'terser.json',
+    '--output', resolvePath(removeExtension(unminifiedPath) + iifeMinExt),
+    '--', resolvePath(unminifiedPath),
+  ], {
+    cwd: scriptsDirAbs,
+  })
 }
 
 // Path utils
