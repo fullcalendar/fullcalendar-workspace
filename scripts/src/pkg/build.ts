@@ -1,6 +1,6 @@
-import path, { join as joinPaths, resolve as resolvePath, isAbsolute, dirname } from 'path'
+import { join as joinPaths, resolve as resolvePath, isAbsolute, dirname } from 'path'
 import { fileURLToPath } from 'url'
-import { readFile, readdir as readDir, writeFile, mkdir } from 'fs/promises'
+import { readFile, writeFile, readdir, mkdir } from 'fs/promises'
 import {
   rollup,
   watch as rollupWatch,
@@ -15,8 +15,6 @@ import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
 import { watch as watchPaths } from 'chokidar'
 import { live } from '../utils/exec'
 
-export const scriptsDirAbs = joinPaths(fileURLToPath(import.meta.url), '../../..')
-
 const srcGlobsProp = 'fileExports'
 const srcGeneratorsProp = 'generatedExports'
 const iifeProp = 'iife'
@@ -25,9 +23,10 @@ const esmExt = '.mjs'
 const iifeExt = '.js'
 const iifeMinExt = '.min.js'
 const dtsExt = '.d.ts'
+const pkgJsonPath = resolvePath('./package.json')
 const srcDirAbs = resolvePath('./src')
 const tscDirAbs = resolvePath('./dist/.tsc')
-const pkgJsonPath = resolvePath('package.json')
+const scriptsDirAbs = joinPaths(fileURLToPath(import.meta.url), '../../..')
 
 /*
 Must be run from package root.
@@ -118,7 +117,7 @@ async function runProd() {
     plugins: buildRollupDtsPlugins(),
   }).then((bundle) => {
     return bundle.write(buildDtsOutputOptions()).then(() => {
-      bundle.close()
+      return bundle.close()
     })
   })
 
@@ -446,7 +445,7 @@ function buildPkgMeta(
   distMeta.module = removeRelPrefix(mainExportPath + esmExt)
   distMeta.types = removeRelPrefix(mainExportPath + dtsExt)
   distMeta.jsdelivr = removeRelPrefix(
-    mainExportPath + (mainIifeGlobal === undefined ? iifeExt : iifeMinExt)
+    mainExportPath + (mainIifeGlobal === undefined ? esmExt : iifeMinExt)
   )
 
   const exportMap: any = {
@@ -513,7 +512,7 @@ async function expandSrcGlob(
 
   const dirPath = srcGlob.substring(0, starIndex)
   const ext = srcGlob.substring(starIndex + 1)
-  const filenames = (await readDir(dirPath)).filter((filename) => !isFilenameHidden(filename))
+  const filenames = (await readdir(dirPath)).filter((filename) => !isFilenameHidden(filename))
   const srcPaths: { [entryName: string]: string } = {}
 
   for (let filename of filenames) {
