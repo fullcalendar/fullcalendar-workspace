@@ -3,3 +3,4 @@
 
 /node_modules
 /scripts/node_modules
+/scripts/tsconfig.tsbuildinfo
