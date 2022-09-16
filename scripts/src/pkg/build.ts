@@ -39,8 +39,6 @@ export default async function(...args: string[]) {
 }
 
 async function runDev() {
-  await mkdir('./dist', { recursive: true })
-
   let rollupWatcher: RollupWatcher | undefined
 
   const pkgJsonWatcher = watchPaths(srcJsonPath).on('all', async () => {
@@ -74,8 +72,6 @@ async function runDev() {
 }
 
 async function runProd() {
-  await mkdir('./dist', { recursive: true })
-
   const { srcPaths, srcStrs, srcMeta, distMeta } = await processSrcMetaForBuild(false) // dev=false
 
   const bundlePromise = rollup({
