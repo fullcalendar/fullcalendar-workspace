@@ -8,9 +8,6 @@
     "workspace-scripts-tsc": "./node_modules/typescript/bin/tsc",
     "ws": "./bin/workspace-scripts.js"
   },
-  "scripts": {
-    "types": "tsc"
-  },
   "devDependencies": {
     "@arshaw/postcss-calc": "^7.0.2",
     "@arshaw/postcss-custom-properties": "^9.1.1",

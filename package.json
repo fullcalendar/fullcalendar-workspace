@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "devDependencies": {
-    "@fullcalendar/workspace-scripts": "*",
-    "typescript": "^4.8.2"
+    "@fullcalendar/workspace-scripts": "workspace:*"
   },
   "scripts": {
     "pnpm:devPreinstall": "pnpm run preflight",
