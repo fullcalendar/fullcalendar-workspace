@@ -4,14 +4,18 @@
   "version": "0.0.0",
   "type": "module",
   "devDependencies": {
-    "@fullcalendar/workspace-scripts": "workspace:*"
+    "@fullcalendar/workspace-scripts": "workspace:*",
+    "turbo": "^1.4.6"
   },
   "scripts": {
     "pnpm:devPreinstall": "pnpm run preflight",
     "preflight": "pnpm run -r --parallel preflight",
     "tsc": "workspace-scripts-tsc -b",
     "build": "pnpm run -r --parallel --filter './standard/**' --filter './premium/**' build",
-    "clean": "pnpm run -r --parallel clean"
+    "clean": "pnpm run -r --parallel clean",
+    "turbo:preflight": "turbo run preflight",
+    "turbo:tsc": "turbo run --filter './standard/**' --filter './premium/**' tsc",
+    "turbo:build": "turbo run --filter './standard/**' --filter './premium/**' build"
   },
   "engines": {
     "node": ">=16",
@@ -28,7 +32,9 @@
       }
     },
     "peerDependencyRules": {
-      "allowAny": ["postcss"]
+      "allowAny": [
+        "postcss"
+      ]
     },
     "patchedDependencies": {
       "@pnpm/make-dedicated-lockfile@0.3.20": "scripts/patches/@pnpm__make-dedicated-lockfile@0.3.20.patch",
