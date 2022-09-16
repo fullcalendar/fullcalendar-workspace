@@ -117,9 +117,8 @@ async function runProd() {
     bundlePromise,
     ...iifeBundlePromises,
     dtsBundlePromise,
-    writeDistMeta(distMeta),
     writeNpmIgnore(),
-  ])
+  ]).then(() => writeDistMeta(distMeta)) // write only after bundled dts files can be pointed to
 }
 
 // Dynamic code generation

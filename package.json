@@ -12,7 +12,8 @@
     "build": "turbo run build --filter './standard/**' --filter './premium/**'",
     "dev": "turbo run tsc --filter './standard/**' --filter './premium/**' && turbo run '//#dev:tsc' dev --parallel --no-cache --filter './standard/**' --filter './premium/**'",
     "dev:tsc": "workspace-scripts-tsc -b --watch --pretty --preserveWatchOutput",
-    "clean": "turbo run clean"
+    "clean": "turbo run clean",
+    "clean-turbo": "rm -rf node_modules/.cache/turbo && find . -type d -name '.turbo' -exec rm -rf {} \\;"
   },
   "engines": {
     "node": ">=16",
