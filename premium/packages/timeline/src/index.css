@@ -1,5 +1,5 @@
 
-@import '../../../packages/core/src/styles/mixins';
+@import '../../../../standard/packages/core/src/styles/mixins';
 @import './styles/constants';
 
 @import './styles/timeline-body';

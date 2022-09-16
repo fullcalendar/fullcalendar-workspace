@@ -8,7 +8,10 @@
   },
   "scripts": {
     "pnpm:devPreinstall": "pnpm run preflight",
-    "preflight": "pnpm run -r --parallel preflight"
+    "preflight": "pnpm run -r --parallel preflight",
+    "tsc": "workspace-scripts-tsc -b",
+    "build": "pnpm run -r --parallel --filter './standard/**' --filter './premium/**' build",
+    "clean": "pnpm run -r --parallel clean"
   },
   "engines": {
     "node": ">=16",

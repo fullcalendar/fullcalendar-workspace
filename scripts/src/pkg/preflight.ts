@@ -1,11 +1,9 @@
 import { mkdir } from 'fs/promises'
 import { processSrcMeta, writeDistMeta, writeNpmIgnore } from '../utils/pkg-meta'
 
-export default async function(...args: string[]) {
-  const dev = args.indexOf('--dev') !== -1
-
+export default async function() {
   const [{ distMeta }] = await Promise.all([
-    processSrcMeta(dev),
+    processSrcMeta(true), // dev=true (for running immediately after tsc)
     mkdir('./dist', { recursive: true })
   ])
 
