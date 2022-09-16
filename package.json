@@ -8,16 +8,12 @@
     "turbo": "^1.4.6"
   },
   "scripts": {
-    "pnpm:devPreinstall": "pnpm run preflight",
-    "preflight": "pnpm run -r --parallel preflight",
+    "pnpm:devPreinstall": "pnpm run -r --parallel preflight",
+    "build": "turbo run preflight --filter './standard/**' --filter './premium/**' && turbo run tsc --filter './standard/**' --filter './premium/**' && turbo run build --filter './standard/**' --filter './premium/**'",
+    "dev": "turbo run preflight --filter './standard/**' --filter './premium/**' && turbo run tsc --filter './standard/**' --filter './premium/**' && turbo run '//#tsc:dev' dev --parallel --no-cache --filter './standard/**' --filter './premium/**'",
+    "clean": "turbo run clean",
     "tsc": "workspace-scripts-tsc -b",
-    "tsc:dev": "workspace-scripts-tsc -b --watch --pretty --preserveWatchOutput",
-    "build": "pnpm run -r --parallel --filter './standard/**' --filter './premium/**' build",
-    "clean": "pnpm run -r --parallel clean",
-    "turbo:preflight": "turbo run preflight",
-    "turbo:tsc": "turbo run tsc --filter './standard/**' --filter './premium/**'",
-    "turbo:build": "turbo run build --filter './standard/**' --filter './premium/**'",
-    "turbo:dev": "turbo run tsc --filter './standard/**' --filter './premium/**' && turbo run '//#tsc:dev' dev --parallel --no-cache --filter './standard/**' --filter './premium/**'"
+    "tsc:dev": "workspace-scripts-tsc -b --watch --pretty --preserveWatchOutput"
   },
   "engines": {
     "node": ">=16",

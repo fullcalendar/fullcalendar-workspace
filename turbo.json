@@ -1,0 +1,28 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "preflight": {
+      "inputs": ["package.json"],
+      "outputs": ["dist/package.json", "dist/.npmignore"]
+    },
+    "tsc": {
+      "dependsOn": ["^tsc"],
+      "inputs": ["src/**/*", "tsconfig.json"],
+      "outputs": ["dist/.tsc/**/*"]
+    },
+    "build": {
+      "dependsOn": ["^build", "tsc"],
+      "inputs": ["src/**/*", "package.json"],
+      "outputs": ["dist/**/*", "!dist/.tsc/**/*"]
+    },
+    "dev": {
+      "dependsOn": []
+    },
+    "clean": {
+      "dependsOn": []
+    },
+    "//#tsc:dev": {
+      "dependsOn": []
+    }
+  }
+}
