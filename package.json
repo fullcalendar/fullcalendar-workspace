@@ -9,11 +9,10 @@
   },
   "scripts": {
     "pnpm:devPreinstall": "pnpm run -r --parallel preflight",
-    "build": "turbo run preflight --filter './standard/**' --filter './premium/**' && turbo run tsc --filter './standard/**' --filter './premium/**' && turbo run build --filter './standard/**' --filter './premium/**'",
-    "dev": "turbo run preflight --filter './standard/**' --filter './premium/**' && turbo run tsc --filter './standard/**' --filter './premium/**' && turbo run '//#tsc:dev' dev --parallel --no-cache --filter './standard/**' --filter './premium/**'",
-    "clean": "turbo run clean",
-    "tsc": "workspace-scripts-tsc -b",
-    "tsc:dev": "workspace-scripts-tsc -b --watch --pretty --preserveWatchOutput"
+    "build": "turbo run build --filter './standard/**' --filter './premium/**'",
+    "dev": "turbo run tsc --filter './standard/**' --filter './premium/**' && turbo run '//#dev:tsc' dev --parallel --no-cache --filter './standard/**' --filter './premium/**'",
+    "dev:tsc": "workspace-scripts-tsc -b --watch --pretty --preserveWatchOutput",
+    "clean": "turbo run clean"
   },
   "engines": {
     "node": ">=16",
