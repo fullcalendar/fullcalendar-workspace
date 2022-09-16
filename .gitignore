@@ -4,3 +4,5 @@
 /node_modules
 /scripts/node_modules
 /scripts/tsconfig.tsbuildinfo
+/contrib/*/.turbo
+/examples/*/.turbo
