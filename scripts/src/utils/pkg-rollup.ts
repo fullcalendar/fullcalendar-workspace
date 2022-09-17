@@ -4,11 +4,11 @@ import {
   OutputOptions as RollupOutputOptions,
 } from 'rollup'
 import nodeResolvePlugin from '@rollup/plugin-node-resolve'
-import commonjsPlugin from '@rollup/plugin-commonjs'
-import dtsPlugin from 'rollup-plugin-dts'
-import jsonPlugin from '@rollup/plugin-json'
-import postcssPlugin from 'rollup-plugin-postcss'
-import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
+import { default as commonjsPlugin } from '@rollup/plugin-commonjs'
+import { default as dtsPlugin } from 'rollup-plugin-dts'
+import { default as jsonPlugin } from '@rollup/plugin-json'
+import { default as postcssPlugin } from 'rollup-plugin-postcss'
+import { default as sourcemapsPlugin } from 'rollup-plugin-sourcemaps'
 import {
   buildDistShortPath,
   forceExt,

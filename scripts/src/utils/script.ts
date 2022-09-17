@@ -1,5 +1,5 @@
 import * as path from 'path'
-import concurrently from 'concurrently'
+import { concurrently } from 'concurrently'
 import chalk from 'chalk'
 import { cli } from 'cleye'
 

@@ -1,7 +1,7 @@
 import * as path from 'path'
 import { readFile } from 'fs/promises'
 import * as yaml from 'js-yaml'
-import makeDedicatedLockfile from '@pnpm/make-dedicated-lockfile'
+import { default as makeDedicatedLockfile } from '@pnpm/make-dedicated-lockfile'
 import { getSubrepoDir, rootDir } from './subrepo.js'
 
 // Lock file

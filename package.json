@@ -9,6 +9,8 @@
   },
   "scripts": {
     "xxxpnpm:devPreinstall": "pnpm run -r --parallel preflight",
+    "preflight": "workspace-scripts preflight",
+    "dir": "pnpm -r --filter './standard/**' --filter './premium/**' exec mkdir -p dist",
     "build": "turbo run build --filter './standard/**' --filter './premium/**'",
     "tsc:dev": "tsc -b --watch --pretty --preserveWatchOutput",
     "clean": "turbo run clean",
