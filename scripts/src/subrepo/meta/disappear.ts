@@ -1,5 +1,5 @@
-import { parseSubrepoArgs, getAllMetaFiles, rootDir } from '../../utils/subrepo'
-import { disappear } from '../../utils/git'
+import { parseSubrepoArgs, getAllMetaFiles, rootDir } from '../../utils/subrepo.js'
+import { disappear } from '../../utils/git.js'
 
 // somehow call this ASAP, on installation
 

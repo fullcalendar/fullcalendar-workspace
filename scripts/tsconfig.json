@@ -1,5 +1,9 @@
 {
   "extends": "../standard/tsconfig.node",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist"
+  },
   "include": [
     "./src/**/*"
   ]

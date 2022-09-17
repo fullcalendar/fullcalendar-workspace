@@ -16,8 +16,8 @@ import {
   isRelative,
   isRelativeDot,
   isWithinDir
-} from './path'
-import { cjsExt, dtsExt, esmExt, iifeExt, scriptsDirAbs, srcDirAbs, tscDirAbs } from './pkg-meta'
+} from './path.js'
+import { cjsExt, dtsExt, esmExt, iifeExt, scriptsDirAbs, srcDirAbs, tscDirAbs } from './pkg-meta.js'
 
 // Rollup input
 // -------------------------------------------------------------------------------------------------

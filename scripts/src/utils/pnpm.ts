@@ -1,16 +1,13 @@
 import * as path from 'path'
 import { readFile } from 'fs/promises'
 import * as yaml from 'js-yaml'
-import _makeDedicatedLockfile from '@pnpm/make-dedicated-lockfile'
-import { cjsDefaultInterop } from './tsx'
-import { getSubrepoDir, rootDir } from './subrepo'
+import makeDedicatedLockfile from '@pnpm/make-dedicated-lockfile'
+import { getSubrepoDir, rootDir } from './subrepo.js'
 
 // Lock file
 // -------------------------------------------------------------------------------------------------
 
 export const lockFilename = 'pnpm-lock.yaml'
-
-const makeDedicatedLockfile = cjsDefaultInterop(_makeDedicatedLockfile)
 
 export function generateSubdirLock(subrepo: string): Promise<void> {
   return makeDedicatedLockfile(rootDir, getSubrepoDir(subrepo))

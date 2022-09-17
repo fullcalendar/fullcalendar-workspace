@@ -1,5 +1,5 @@
 import { mkdir } from 'fs/promises'
-import { processSrcMeta, writeDistMeta, writeNpmIgnore } from '../utils/pkg-meta'
+import { processSrcMeta, writeDistMeta, writeNpmIgnore } from '../utils/pkg-meta.js'
 
 export default async function() {
   const [{ distMeta }] = await Promise.all([

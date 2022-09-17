@@ -1,7 +1,7 @@
 import { join as joinPaths, resolve as resolvePath } from 'path'
 import { fileURLToPath } from 'url'
 import { readFile, writeFile } from 'fs/promises'
-import { buildDistShortPath, buildFakeSrcPath, removeRelativePrefix } from './path'
+import { buildDistShortPath, buildFakeSrcPath, removeRelativePrefix } from './path.js'
 
 export const srcGlobsProp = 'fileExports'
 export const srcGeneratorsProp = 'generatedExports'

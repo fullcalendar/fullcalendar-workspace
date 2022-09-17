@@ -1,13 +1,13 @@
 import * as path from 'path'
 import { fileURLToPath } from 'url'
-import { capture } from './exec'
+import { capture } from './exec.js'
 import {
   lockFilename,
   workspaceFilename,
   generateSubdirLock,
   generateSubdirWorkspace,
-} from './pnpm'
-import { parseArgs } from './script'
+} from './pnpm.js'
+import { parseArgs } from './script.js'
 
 // Directory paths
 // -------------------------------------------------------------------------------------------------

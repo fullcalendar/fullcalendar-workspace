@@ -5,8 +5,8 @@
   "type": "module",
   "bin": {
     "workspace-scripts": "./bin/workspace-scripts.js",
-    "workspace-scripts-tsc": "./node_modules/typescript/bin/tsc",
-    "ws": "./bin/workspace-scripts.js"
+    "ws": "./bin/workspace-scripts.js",
+    "tsc": "./node_modules/.bin/tsc"
   },
   "devDependencies": {
     "@arshaw/postcss-calc": "^7.0.2",
@@ -42,7 +42,13 @@
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "terser": "^4.8.0",
-    "tsx": "^3.9.0",
     "typescript": "^4.8.2"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./*": {
+      "default": "./dist/*.js",
+      "types": "./src/*.ts"
+    }
   }
 }

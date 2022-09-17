@@ -1,7 +1,7 @@
 import * as path from 'path'
 import { copyFile, writeFile } from 'fs/promises'
-import { spawnParallel } from '../../utils/script'
-import { getSubrepoDir, metaFileInfo, parseSubrepoArgs, rootDir } from '../../utils/subrepo'
+import { spawnParallel } from '../../utils/script.js'
+import { getSubrepoDir, metaFileInfo, parseSubrepoArgs, rootDir } from '../../utils/subrepo.js'
 
 export default async function(...rawArgs: string[]): Promise<void> {
   const { subrepos, flagArgs } = await parseSubrepoArgs(rawArgs)

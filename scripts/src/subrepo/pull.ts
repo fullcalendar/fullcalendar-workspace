@@ -1,5 +1,5 @@
-import { live } from '../utils/exec'
-import { parseSubrepoArgs, rootDir } from '../utils/subrepo'
+import { live } from '../utils/exec.js'
+import { parseSubrepoArgs, rootDir } from '../utils/subrepo.js'
 
 export default async function(...rawArgs: string[]): Promise<void> {
   const { subrepos } = await parseSubrepoArgs(rawArgs)

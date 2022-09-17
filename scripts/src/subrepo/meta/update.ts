@@ -1,7 +1,7 @@
 import chalk from 'chalk'
-import { run } from '../../utils/script'
-import { addAndCommit } from '../../utils/git'
-import { getAllMetaFiles, parseSubrepoArgs, rootDir } from '../../utils/subrepo'
+import { run } from '../../utils/script.js'
+import { addAndCommit } from '../../utils/git.js'
+import { getAllMetaFiles, parseSubrepoArgs, rootDir } from '../../utils/subrepo.js'
 
 export default async function(...rawArgs: string[]): Promise<void> {
   const { subrepos, flags } = await parseSubrepoArgs(rawArgs, {

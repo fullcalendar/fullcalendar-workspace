@@ -6,7 +6,7 @@ import {
   RollupWatcher,
 } from 'rollup'
 import { watch as watchPaths } from 'chokidar'
-import { live } from '../utils/exec'
+import { live } from '../utils/exec.js'
 import {
   iifeMinExt,
   iifeProp,
@@ -15,7 +15,7 @@ import {
   srcJsonPath,
   writeDistMeta,
   writeNpmIgnore
-} from '../utils/pkg-meta'
+} from '../utils/pkg-meta.js'
 import {
   buildCjsOutputOptions,
   buildDtsOutputOptions,
@@ -25,8 +25,8 @@ import {
   buildRollupDtsPlugins,
   buildRollupInput,
   buildRollupPlugins
-} from '../utils/pkg-rollup'
-import { buildFakeSrcPath, isFilenameHidden, removeExt } from '../utils/path'
+} from '../utils/pkg-rollup.js'
+import { buildFakeSrcPath, isFilenameHidden, removeExt } from '../utils/path.js'
 
 /*
 Must be run from package root.

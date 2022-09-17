@@ -1,8 +1,8 @@
 
-# subrepos should define their own rules
-
+# repo root
+# FYI, subrepos should define their own rules
 /node_modules
-/scripts/node_modules
-/scripts/tsconfig.tsbuildinfo
+
+# subrepos that don't use turborepo themselves
 /contrib/*/.turbo
 /examples/*/.turbo

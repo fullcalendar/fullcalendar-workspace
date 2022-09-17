@@ -1,7 +1,6 @@
 import * as path from 'path'
 import concurrently from 'concurrently'
 import chalk from 'chalk'
-import { getLoaderArgs } from './tsx'
 import { cli } from 'cleye'
 
 const [
@@ -140,7 +139,6 @@ async function getScriptFunc(scriptName: string): Promise<(...args: string[]) =>
 function buildCommand(scriptName: string, args: string[]): string {
   return [
     currentBin,
-    ...getLoaderArgs(),
     currentMain,
     scriptName,
     ...args
@@ -177,7 +175,7 @@ export function parseArgs<
   args: string[],
   flagConfig: Flags,
   paramConfig?: Params,
-) {
+): any {
   const res = cli({
     name: currentScriptName.replaceAll(':', '-'), // TODO: have cleye accept colons
     parameters: paramConfig,
