@@ -8,7 +8,7 @@
     "turbo": "^1.4.6"
   },
   "scripts": {
-    "pnpm:devPreinstall": "pnpm run -r --parallel preflight",
+    "xxxpnpm:devPreinstall": "pnpm run -r --parallel preflight",
     "build": "turbo run build --filter './standard/**' --filter './premium/**'",
     "dev": "turbo run tsc --filter './standard/**' --filter './premium/**' && turbo run '//#dev:tsc' dev --parallel --no-cache --filter './standard/**' --filter './premium/**'",
     "dev:tsc": "workspace-scripts-tsc -b --watch --pretty --preserveWatchOutput",
