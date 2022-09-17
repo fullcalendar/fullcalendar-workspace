@@ -15,6 +15,7 @@
     "@fullcalendar/standard-tests": "workspace:*",
     "@fullcalendar/timegrid": "workspace:*",
     "@fullcalendar/timeline": "workspace:*",
+    "@fullcalendar/workspace-scripts": "workspace:*",
     "jquery": "^3.4.0",
     "tslib": "^2.1.0",
     "xhr-mock": "^2.5.1"
@@ -23,5 +24,13 @@
     "@types/jasmine": "^3.3.12",
     "@types/jasmine-jquery": "^1.5.33",
     "@types/jquery": "^3.3.29"
+  },
+  "scripts": {
+    "clean": "workspace-scripts pkg:clean",
+    "tsc": "workspace-scripts-tsc -b",
+    "build": "workspace-scripts pkg:build --iife-only"
+  },
+  "generatedExports": {
+    ".": "./scripts/generate-index.ts"
   }
 }

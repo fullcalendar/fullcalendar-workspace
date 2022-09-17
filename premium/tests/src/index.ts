@@ -19,4 +19,8 @@ pushOptions({
   plugins: DEFAULT_PLUGINS.concat(MORE_DEFAULT_PLUGINS),
 })
 
-// all of the non-lib .js files within subdirectories will be automatically included...
+/* generate-index
+{{#each testPaths}}
+import '{{this}}'
+{{/each}}
+*/
