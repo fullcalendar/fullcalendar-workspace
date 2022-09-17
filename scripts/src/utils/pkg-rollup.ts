@@ -3,8 +3,10 @@ import {
   Plugin as RollupPlugin,
   OutputOptions as RollupOutputOptions,
 } from 'rollup'
-import { nodeResolve as nodeResolvePlugin } from '@rollup/plugin-node-resolve'
+import nodeResolvePlugin from '@rollup/plugin-node-resolve'
+import commonjsPlugin from '@rollup/plugin-commonjs'
 import dtsPlugin from 'rollup-plugin-dts'
+import jsonPlugin from '@rollup/plugin-json'
 import postcssPlugin from 'rollup-plugin-postcss'
 import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
 import {
@@ -107,7 +109,12 @@ export function buildRollupPlugins(
     externalize && externalizeOtherPkgsPlugin(),
     externalize && externalizeDotImportsPlugin(),
     tscRerootPlugin(),
-    nodeResolvePlugin(), // determines index.js and .js/cjs/mjs
+    nodeResolvePlugin({ // determines index.js and .js/cjs/mjs
+      browser: true, // for xhr-mock (use non-node shims that it wants to)
+      preferBuiltins: false // for xhr-mock (use 'url' npm package)
+    }),
+    commonjsPlugin(), // for moment and moment-timezone
+    jsonPlugin(), // for moment-timezone
     sourcemapsPlugin(), // load preexisting sourcemaps
     postcssPlugin({
       config: {
@@ -135,7 +142,7 @@ function srcStrsPlugin(srcStrs: { [fakeSrcPath: string]: string }): RollupPlugin
     async resolveId(id, importer, options) {
       if (options.isEntry && srcStrs[id]) {
         return id // no further resolving
-      } else if (importer && srcStrs[importer] && isRelative(id)) {
+      } else if (importer && srcStrs[importer] && isRelative(id) && !getExt(id).match(/\.css$/)) {
         // handle relative imports from a generated source file
         // HACK until tscRerootPlugin is more robust
         return await this.resolve(

@@ -1,5 +1,5 @@
 import { resolve as resolvePath } from 'path'
-import { readdir, mkdir } from 'fs/promises'
+import { readdir } from 'fs/promises'
 import {
   rollup,
   watch as rollupWatch,
@@ -33,6 +33,9 @@ Must be run from package root.
 The `pnpm run` system does this automatically.
 */
 export default async function(...args: string[]) {
+  if (args.indexOf('--iife-only') !== -1) {
+    return runIifeOnly()
+  }
   return args.indexOf('--dev') !== -1
     ? runDev()
     : runProd()
@@ -119,6 +122,23 @@ async function runProd() {
     dtsBundlePromise,
     writeNpmIgnore(),
   ]).then(() => writeDistMeta(distMeta)) // write only after bundled dts files can be pointed to
+}
+
+async function runIifeOnly() {
+  const { srcPaths, srcStrs, srcMeta, distMeta } = await processSrcMetaForBuild(true) // dev=true
+
+  return Object.keys(srcPaths).map((entryName) => {
+    const srcPath = srcPaths[entryName]
+
+    return rollup({
+      input: srcPath,
+      plugins: buildRollupPlugins(srcStrs, false),  // externalize=false
+    }).then((bundle) => {
+      const options = buildIifeOutputOptions(srcPath, '')
+
+      return bundle.write(options).then(() => bundle.close())
+    })
+  })
 }
 
 // Dynamic code generation

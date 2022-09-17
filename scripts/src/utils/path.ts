@@ -1,6 +1,6 @@
 
 export function buildFakeSrcPath(entryName: string): string {
-  return './src/' + removeRelativePrefix(entryName) + '.js'
+  return './src/' + (removeRelativePrefix(entryName) || 'index') + '.js'
 }
 
 // does NOT include './dist/' at beginning
