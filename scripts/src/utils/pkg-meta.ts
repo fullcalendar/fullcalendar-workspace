@@ -11,6 +11,7 @@ export const esmExt = '.mjs'
 export const iifeExt = '.js'
 export const iifeMinExt = '.min.js'
 export const dtsExt = '.d.ts'
+
 export const srcJsonPath = resolvePath('./package.json')
 export const srcDirAbs = resolvePath('./src')
 export const tscDirAbs = resolvePath('./dist/.tsc')
@@ -19,8 +20,8 @@ export const scriptsDirAbs = joinPaths(fileURLToPath(import.meta.url), '../../..
 // package.json
 // -------------------------------------------------------------------------------------------------
 
-export async function processSrcMeta(dev: boolean) {
-  const srcJson = await readFile(srcJsonPath, 'utf8')
+export async function processSrcMeta(dev: boolean, jsonPath = srcJsonPath) {
+  const srcJson = await readFile(jsonPath, 'utf8')
   const srcMeta = JSON.parse(srcJson)
   const srcGlobs = srcMeta[srcGlobsProp] || {}
   const srcGenerators = srcMeta[srcGeneratorsProp] || {}
@@ -30,10 +31,10 @@ export async function processSrcMeta(dev: boolean) {
   return { srcGlobs, srcGenerators, srcMeta, distMeta }
 }
 
-export async function writeDistMeta(distMeta: any) {
+export async function writeDistMeta(distMeta: any, jsonPath = './dist/package.json') {
   const pkgJson = JSON.stringify(distMeta, undefined, 2)
 
-  await writeFile('./dist/package.json', pkgJson)
+  await writeFile(jsonPath, pkgJson)
 }
 
 function buildExportPaths(
