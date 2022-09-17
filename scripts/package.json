@@ -6,7 +6,7 @@
   "bin": {
     "workspace-scripts": "./bin/workspace-scripts.js",
     "ws": "./bin/workspace-scripts.js",
-    "tsc": "./node_modules/.bin/tsc"
+    "tsc": "./node_modules/typescript/bin/tsc"
   },
   "devDependencies": {
     "@arshaw/postcss-calc": "^7.0.2",

@@ -16,7 +16,7 @@ const thisPkgRoot = joinPaths(fileURLToPath(import.meta.url), '../..')
 // compile all ts -> js
 await new Promise((resolve, reject) => {
   spawn(
-    './node_modules/.bin/tsc', ['-b'],
+    './node_modules/typescript/bin/tsc', ['-b'],
     { cwd: thisPkgRoot, stdio: 'inherit' }
   ).on('close', (status) => {
     if (status === 0) {
