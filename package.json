@@ -13,7 +13,7 @@
     "dir": "pnpm -r --filter './standard/**' --filter './premium/**' exec mkdir -p dist",
     "build": "turbo run build --filter './standard/**' --filter './premium/**'",
     "tsc:dev": "tsc -b --watch --pretty --preserveWatchOutput",
-    "clean": "turbo run clean",
+    "clean": "turbo run clean --no-cache",
     "turbo:clean": "rm -rf node_modules/.cache/turbo && find . -type d -name '.turbo' -exec rm -rf {} \\;"
   },
   "engines": {

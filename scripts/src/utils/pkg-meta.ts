@@ -76,7 +76,9 @@ function buildPkgMeta(
 
   distMeta.main = removeRelativePrefix(mainExportPath + cjsExt)
   distMeta.module = removeRelativePrefix(mainExportPath + esmExt)
-  distMeta.types = removeRelativePrefix(mainExportPath + dtsExt)
+  distMeta.types =
+    (dev ? '.tsc/' : '') +
+    removeRelativePrefix(mainExportPath + dtsExt)
   distMeta.jsdelivr = removeRelativePrefix(
     mainExportPath + (mainIifeGlobal === undefined ? esmExt : iifeMinExt)
   )
