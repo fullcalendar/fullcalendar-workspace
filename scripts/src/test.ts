@@ -15,6 +15,7 @@ export default function(...args: string[]) {
       singleRun: !dev,
       autoWatch: dev,
       browsers: !dev ? [ 'ChromeHeadless_custom' ] : [],
+      client: { args } // access via `window.__karma__.config.args`
     },
     {
       promiseConfig: true,
