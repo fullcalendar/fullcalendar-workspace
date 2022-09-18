@@ -2,6 +2,7 @@ packages:
   - ./standard
   - ./standard/packages/*
   - ./standard/tests
+  - ./premium
   - ./premium/packages/*
   - ./premium/tests
   - ./scripts
