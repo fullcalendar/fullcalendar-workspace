@@ -4,6 +4,7 @@ export function buildFakeSrcPath(entryName: string): string {
 }
 
 // does NOT include './dist/' at beginning
+// TODO!!!: change this to derive from entryName. more consistent with pre-node-16 resolution
 export function buildDistShortPath(srcPath: string): string {
   return removeExt(srcPath).replace(/^\.\/src\//, '')
 }

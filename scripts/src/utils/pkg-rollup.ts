@@ -106,7 +106,7 @@ export function buildRollupPlugins(
   return [
     srcStrsPlugin(srcStrs),
     externalize && externalizeOtherPkgsPlugin(),
-    externalize && externalizeDotImportsPlugin(),
+    externalize && externalizeRootImportPlugin(),
     tscRerootPlugin(),
     nodeResolvePlugin({ // determines index.js and .js/cjs/mjs
       browser: true, // for xhr-mock (use non-node shims that it wants to)
@@ -128,7 +128,7 @@ export function buildRollupPlugins(
 export function buildRollupDtsPlugins(): RollupPlugin[] {
   return [
     externalizeOtherPkgsPlugin(),
-    externalizeDotImportsPlugin(),
+    externalizeRootImportPlugin(),
     externalizeAssetsPlugin(),
     dtsPlugin(),
     nodeResolvePlugin(), // determines index.js and .js/cjs/mjs
@@ -168,15 +168,17 @@ function externalizeOtherPkgsPlugin(): RollupPlugin {
   }
 }
 
-function externalizeDotImportsPlugin(): RollupPlugin {[]
+function externalizeRootImportPlugin(): RollupPlugin {
+  const rootJsFileInTsc = resolvePath('./dist/.tsc/index.js')
+
   return {
     name: 'externalize-dot-imports',
-    resolveId(id) {
+    resolveId(id, importer) {
       if (
-        id === './index.js' || id === '../index.js' // HACK
-        // isRelativeDot(id) // we converted to node16 imports :(
+        isRelative(id) &&
+        importer &&
+        joinPaths(importer, '..', id) === rootJsFileInTsc
       ) {
-        // when accessing the package root via '.' or '..', always externalize
         return { id, external: true }
       }
     }
