@@ -142,11 +142,11 @@ function srcStrsPlugin(srcStrs: { [fakeSrcPath: string]: string }): RollupPlugin
     async resolveId(id, importer, options) {
       if (options.isEntry && srcStrs[id]) {
         return id // no further resolving
-      } else if (importer && srcStrs[importer] && isRelative(id) && !getExt(id).match(/\.css$/)) {
+      } else if (importer && srcStrs[importer] && isRelative(id) && getExt(id) !== '.css') {
         // handle relative imports from a generated source file
         // HACK until tscRerootPlugin is more robust
         return await this.resolve(
-          resolvePath(dirname(importer), id) + '.ts',
+          resolvePath(dirname(importer), id),
           undefined,
           { isEntry: true }
         )
@@ -185,7 +185,7 @@ function externalizeAssetsPlugin(): RollupPlugin {
   return {
     name: 'externalize-assets',
     resolveId(id, importer) {
-      if (importer && isRelative(id) && getExt(id)) {
+      if (importer && isRelative(id) && getExt(id) === '.css') {
         return { id, external: true }
       }
     },
@@ -207,7 +207,7 @@ function tscRerootPlugin(): RollupPlugin {
         // move asset (paths with extensions) back to src
         const ext = getExt(id)
 
-        if (ext) {
+        if (ext === '.css') {
           const absPath = joinPaths(dirname(importer), id)
 
           if (isWithinDir(absPath, tscDirAbs)) {

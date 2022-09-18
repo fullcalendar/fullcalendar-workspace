@@ -18,7 +18,10 @@ export default async function() {
       const pkgDistPath = joinPaths(pkgRootPath, 'dist')
 
       // TODO: filter based on publishConfig.linkDirectory and/or buildConfig
-      if (!pkgObj.private) {
+      if (
+        !pkgObj.private ||
+        pkgObj.name.match(/\-tests$/)
+      ) {
         const { distMeta } = await processSrcMeta(
           true, // dev
           joinPaths(pkgRootPath, 'package.json')
