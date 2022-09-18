@@ -1,7 +1,7 @@
 import { BaseComponent, DateMarker } from '@fullcalendar/core'
 import { createElement, Ref, ComponentChildren } from '@fullcalendar/core/preact'
-import { Resource } from '../structs/resource'
-import { ResourceLabelRoot } from './ResourceLabelRoot'
+import { Resource } from '../structs/resource.js'
+import { ResourceLabelRoot } from './ResourceLabelRoot.js'
 
 export interface ResourceCellProps {
   resource: Resource

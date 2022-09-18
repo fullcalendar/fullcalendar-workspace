@@ -1,6 +1,6 @@
 import { CalendarWrapper } from '@fullcalendar/standard-tests/src/lib/wrappers/CalendarWrapper'
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
-import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
 
 describe('filterResourcesWithEvents', () => {
   pushOptions({

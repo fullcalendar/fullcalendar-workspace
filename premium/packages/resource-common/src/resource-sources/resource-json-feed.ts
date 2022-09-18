@@ -1,7 +1,7 @@
 import { DateRange, CalendarContext, requestJson, Dictionary } from '@fullcalendar/core'
 import { __assign } from 'tslib'
-import { registerResourceSourceDef } from '../structs/resource-source-def'
-import { ResourceSourceRefined } from '../structs/resource-source-parse'
+import { registerResourceSourceDef } from '../structs/resource-source-def.js'
+import { ResourceSourceRefined } from '../structs/resource-source-parse.js'
 
 interface JsonFeedMeta {
   url: string

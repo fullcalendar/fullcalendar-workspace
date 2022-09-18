@@ -6,9 +6,9 @@ import {
 import {
   VNode, createElement, Fragment,
 } from '@fullcalendar/core/preact'
-import { Resource } from '../structs/resource'
-import { ResourceApi } from '../api/ResourceApi'
-import { ResourceCell } from './ResourceCell'
+import { Resource } from '../structs/resource.js'
+import { ResourceApi } from '../api/ResourceApi.js'
+import { ResourceCell } from './ResourceCell.js'
 
 export interface ResourceDayHeaderProps {
   dates: DateMarker[]

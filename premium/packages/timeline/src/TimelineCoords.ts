@@ -3,7 +3,7 @@ import {
   isInt, DateProfile,
   DateMarker, DateEnv, Duration, startOfDay, rangeContainsMarker, CssDimValue, DateRange, SegSpan,
 } from '@fullcalendar/core'
-import { TimelineDateProfile } from './timeline-date-profile'
+import { TimelineDateProfile } from './timeline-date-profile.js'
 
 export class TimelineCoords { // TODO: rename to "slat" coords?
   outerCoordCache: PositionCache

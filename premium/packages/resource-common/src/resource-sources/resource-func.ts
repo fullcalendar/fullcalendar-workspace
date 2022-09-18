@@ -1,8 +1,8 @@
 import { unpromisify } from '@fullcalendar/core'
-import { ResourceSourceError } from '../structs/resource-source'
-import { registerResourceSourceDef } from '../structs/resource-source-def'
-import { ResourceInput } from '../structs/resource'
-import { ResourceSourceRefined } from '../structs/resource-source-parse'
+import { ResourceSourceError } from '../structs/resource-source.js'
+import { registerResourceSourceDef } from '../structs/resource-source-def.js'
+import { ResourceInput } from '../structs/resource.js'
+import { ResourceSourceRefined } from '../structs/resource-source-parse.js'
 
 export interface ResourceFuncArg {
   start?: Date

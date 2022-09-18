@@ -6,8 +6,8 @@ import {
   CssDimValue,
   removeElement,
 } from '@fullcalendar/core'
-import { ScrollListener } from './ScrollListener'
-import { getScrollCanvasOrigin, getScrollFromLeftEdge } from './scroll-left-norm'
+import { ScrollListener } from './ScrollListener.js'
+import { getScrollCanvasOrigin, getScrollFromLeftEdge } from './scroll-left-norm.js'
 
 interface ElementGeom {
   parentBound: Rect // relative to the canvas origin

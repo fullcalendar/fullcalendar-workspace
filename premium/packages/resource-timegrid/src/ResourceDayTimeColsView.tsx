@@ -6,7 +6,7 @@ import {
   Resource, flattenResources, DEFAULT_RESOURCE_ORDER,
 } from '@fullcalendar/resource-common'
 import { ResourceDayTable } from '@fullcalendar/resource-daygrid'
-import { ResourceDayTimeCols } from './ResourceDayTimeCols'
+import { ResourceDayTimeCols } from './ResourceDayTimeCols.js'
 
 export class ResourceDayTimeColsView extends TimeColsView {
   props: ResourceViewProps

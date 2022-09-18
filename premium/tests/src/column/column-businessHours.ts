@@ -1,6 +1,6 @@
 import { doElsMatchSegs } from '@fullcalendar/standard-tests/src/lib/segs'
-import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
-import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
+import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper.js'
 
 describe('vresource businessHours', () => {
   pushOptions({

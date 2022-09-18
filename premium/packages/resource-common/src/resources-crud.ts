@@ -1,6 +1,6 @@
 import { CalendarData, parseFieldSpecs } from '@fullcalendar/core'
-import { buildResourceApis, ResourceApi } from './api/ResourceApi'
-import { ResourceHash } from './structs/resource'
+import { buildResourceApis, ResourceApi } from './api/ResourceApi.js'
+import { ResourceHash } from './structs/resource.js'
 
 export const DEFAULT_RESOURCE_ORDER = parseFieldSpecs('id,title')
 

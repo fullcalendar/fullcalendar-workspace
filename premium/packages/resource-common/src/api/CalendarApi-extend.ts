@@ -1,6 +1,6 @@
 import { DateSpan, CalendarApi, CalendarContext } from '@fullcalendar/core'
-import { ResourceApi } from './ResourceApi'
-import { ResourceInput, parseResource, ResourceHash, Resource } from '../structs/resource'
+import { ResourceApi } from './ResourceApi.js'
+import { ResourceInput, parseResource, ResourceHash, Resource } from '../structs/resource.js'
 
 CalendarApi.prototype.addResource = function ( // eslint-disable-line func-names
   this: CalendarApi,

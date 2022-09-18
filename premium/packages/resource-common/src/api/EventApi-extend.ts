@@ -1,5 +1,5 @@
 import { EventApi } from '@fullcalendar/core'
-import { ResourceApi } from './ResourceApi'
+import { ResourceApi } from './ResourceApi.js'
 
 EventApi.prototype.getResources = function (this: EventApi): ResourceApi[] { // eslint-disable-line func-names
   let { calendarApi } = this._context

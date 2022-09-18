@@ -1,6 +1,6 @@
-import { ResourceApi } from './ResourceApi'
-import { ResourceInput } from '../structs/resource'
-import { ResourceAction } from '../reducers/resource-action'
+import { ResourceApi } from './ResourceApi.js'
+import { ResourceInput } from '../structs/resource.js'
+import { ResourceAction } from '../reducers/resource-action.js'
 
 declare module '@fullcalendar/core' {
   interface CalendarApi {

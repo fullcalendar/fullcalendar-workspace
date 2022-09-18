@@ -1,5 +1,5 @@
 import { parseUtcDate } from '@fullcalendar/standard-tests/src/lib/date-parsing'
-import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
 
 describe('eventResourceEditable in vertical resource view', () => {
   it('allows resource dragging while start-date-dragging is disabled', (done) => {

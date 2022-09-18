@@ -1,8 +1,8 @@
-import { ResourceApi } from './api/ResourceApi'
-import { ResourceSource } from './structs/resource-source'
-import { ResourceHash } from './structs/resource'
-import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
-import { ResourceAction } from './reducers/resource-action'
+import { ResourceApi } from './api/ResourceApi.js'
+import { ResourceSource } from './structs/resource-source.js'
+import { ResourceHash } from './structs/resource.js'
+import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions.js'
+import { ResourceAction } from './reducers/resource-action.js'
 
 // TODO: move these out to specific files that care about them (to -declare.ts files)
 

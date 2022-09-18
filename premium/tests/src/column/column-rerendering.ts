@@ -1,5 +1,5 @@
-import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
-import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
+import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper.js'
 
 describe('column-based view rerendering', () => {
   pushOptions({

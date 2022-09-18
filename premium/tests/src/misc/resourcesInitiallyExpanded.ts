@@ -1,5 +1,5 @@
 import { CalendarWrapper } from '@fullcalendar/standard-tests/src/lib/wrappers/CalendarWrapper'
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 
 describe('resourcesInitiallyExpanded', () => {
   pushOptions({

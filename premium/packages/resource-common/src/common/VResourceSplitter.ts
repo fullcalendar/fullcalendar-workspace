@@ -1,6 +1,6 @@
 import { EventDef, mapHash, Splitter, SplittableProps, DateSpan } from '@fullcalendar/core'
 import { __assign } from 'tslib'
-import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel'
+import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel.js'
 
 // splitter
 

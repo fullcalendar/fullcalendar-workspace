@@ -2,8 +2,8 @@ import {
   DateRange, intersectRanges, addMs, DateProfile, Slicer,
   DateProfileGenerator, DateEnv, DateMarker, Seg,
 } from '@fullcalendar/core'
-import { normalizeRange, isValidDate, TimelineDateProfile } from './timeline-date-profile'
-import { computeDateSnapCoverage } from './TimelineCoords'
+import { normalizeRange, isValidDate, TimelineDateProfile } from './timeline-date-profile.js'
+import { computeDateSnapCoverage } from './TimelineCoords.js'
 
 export interface TimelineLaneSeg extends Seg {
   // the point of this range is because it might be different than seg.eventRange.range

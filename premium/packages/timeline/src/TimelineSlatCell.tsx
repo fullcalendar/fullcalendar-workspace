@@ -3,7 +3,7 @@ import {
   RenderHook, getDayClassNames, SlotLaneContentArg, DateProfile,
 } from '@fullcalendar/core'
 import { createElement, Ref } from '@fullcalendar/core/preact'
-import { TimelineDateProfile } from './timeline-date-profile'
+import { TimelineDateProfile } from './timeline-date-profile.js'
 
 export interface TimelineSlatCellProps {
   date: DateMarker

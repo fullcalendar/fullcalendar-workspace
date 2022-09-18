@@ -1,5 +1,5 @@
 import { DateRange, CalendarContext } from '@fullcalendar/core'
-import { ResourceInput } from './resource'
+import { ResourceInput } from './resource.js'
 
 export interface ResourceSource<ResourceSourceMeta> {
   _raw: any

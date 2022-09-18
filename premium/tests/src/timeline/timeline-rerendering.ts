@@ -1,4 +1,4 @@
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 
 describe('timeline view rerendering', () => {
   describe('events, when rerendering', () => {

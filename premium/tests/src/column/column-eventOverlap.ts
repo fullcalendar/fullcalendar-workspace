@@ -1,5 +1,5 @@
 import { TimeGridViewWrapper } from '@fullcalendar/standard-tests/src/lib/wrappers/TimeGridViewWrapper'
-import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
 
 describe('column event dragging with constraint', () => {
   pushOptions({

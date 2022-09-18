@@ -5,8 +5,8 @@ import {
 import { createElement } from '@fullcalendar/core/preact'
 import { GroupNode, ResourceNode } from '@fullcalendar/resource-common'
 import { TimelineDateProfile, TimelineCoords } from '@fullcalendar/timeline'
-import { ResourceTimelineLane } from './ResourceTimelineLane'
-import { DividerRow } from './DividerRow'
+import { ResourceTimelineLane } from './ResourceTimelineLane.js'
+import { DividerRow } from './DividerRow.js'
 
 export interface ResourceTimelineLanesBodyProps extends ResourceTimelineLanesContentProps {
   rowElRefs: RefMap<HTMLElement> // indexed by NUMERICAL INDEX, not node.id

@@ -1,6 +1,6 @@
-import { registerResourceSourceDef } from '../structs/resource-source-def'
-import { ResourceInput } from '../structs/resource'
-import { ResourceSourceRefined } from '../structs/resource-source-parse'
+import { registerResourceSourceDef } from '../structs/resource-source-def.js'
+import { ResourceInput } from '../structs/resource.js'
+import { ResourceSourceRefined } from '../structs/resource-source-parse.js'
 
 registerResourceSourceDef<ResourceInput[]>({
 

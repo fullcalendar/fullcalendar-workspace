@@ -4,9 +4,9 @@ import {
 } from '@fullcalendar/core'
 import { createElement } from '@fullcalendar/core/preact'
 import { Resource, ColSpec } from '@fullcalendar/resource-common'
-import { ExpanderIcon } from './ExpanderIcon'
-import { refineHookProps, HookProps } from './spreadsheet-cell-util'
-import { SpreadsheetIndividualCellInner } from './SpreadsheetIndividualCellInner'
+import { ExpanderIcon } from './ExpanderIcon.js'
+import { refineHookProps, HookProps } from './spreadsheet-cell-util.js'
+import { SpreadsheetIndividualCellInner } from './SpreadsheetIndividualCellInner.js'
 
 export interface SpreadsheetIndividualCellProps {
   colSpec: ColSpec

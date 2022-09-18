@@ -1,22 +1,22 @@
 import { createPlugin } from '@fullcalendar/core'
 
-import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
+import { default as premiumCommonPlugin } from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
 // ensure ambient declarations
 import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
 
-import { TimelineView } from './TimelineView'
+import { TimelineView } from './TimelineView.js'
 import './index.css'
 
 export { TimelineView }
-export { buildSlatCols } from './TimelineView'
-export { TimelineLane, TimelineLaneProps, TimelineLaneCoreProps } from './TimelineLane'
-export { TimelineLaneBg } from './TimelineLaneBg'
-export { TimelineHeader } from './TimelineHeader'
-export { TimelineSlats } from './TimelineSlats'
-export { TimelineDateProfile, buildTimelineDateProfile } from './timeline-date-profile'
-export { TimelineCoords, coordToCss, coordsToCss } from './TimelineCoords'
-export { TimelineLaneSlicer, TimelineLaneSeg } from './TimelineLaneSlicer'
-export { TimelineHeaderRows } from './TimelineHeaderRows'
+export { buildSlatCols } from './TimelineView.js'
+export { TimelineLane, TimelineLaneProps, TimelineLaneCoreProps } from './TimelineLane.js'
+export { TimelineLaneBg } from './TimelineLaneBg.js'
+export { TimelineHeader } from './TimelineHeader.js'
+export { TimelineSlats } from './TimelineSlats.js'
+export { TimelineDateProfile, buildTimelineDateProfile } from './timeline-date-profile.js'
+export { TimelineCoords, coordToCss, coordsToCss } from './TimelineCoords.js'
+export { TimelineLaneSlicer, TimelineLaneSeg } from './TimelineLaneSlicer.js'
+export { TimelineHeaderRows } from './TimelineHeaderRows.js'
 
 export default createPlugin({
   deps: [

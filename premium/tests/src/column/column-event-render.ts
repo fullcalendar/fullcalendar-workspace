@@ -1,7 +1,7 @@
 import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from '@fullcalendar/standard-tests/src/lib/dom-geom'
 import { CalendarWrapper } from '@fullcalendar/standard-tests/src/lib/wrappers/CalendarWrapper'
-import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
-import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
+import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper.js'
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
 
 describe('vresource event rendering', () => {
   pushOptions({

@@ -13,7 +13,7 @@ import {
   ResourceLaneContentArg, ResourceLaneMountArg,
   ResourceApi,
   ResourceAddArg, ResourceChangeArg, ResourceRemoveArg,
-} from './api-type-deps'
+} from './api-type-deps.js'
 
 export const OPTION_REFINERS = {
   initialResources: identity as Identity<ResourceSourceInput>,

@@ -1,17 +1,17 @@
 import { createPlugin } from '@fullcalendar/core'
 
-import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
+import { default as premiumCommonPlugin } from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
 // ensure ambient declarations
 import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
 
-import timelinePlugin from '@fullcalendar/timeline'
-import resourceCommonPlugin from '@fullcalendar/resource-common'
-import { ResourceTimelineView } from './ResourceTimelineView'
+import { default as timelinePlugin } from '@fullcalendar/timeline'
+import { default as resourceCommonPlugin } from '@fullcalendar/resource-common'
+import { ResourceTimelineView } from './ResourceTimelineView.js'
 import './index.css'
 
 export { ResourceTimelineView }
-export { ResourceTimelineLane } from './ResourceTimelineLane'
-export { SpreadsheetRow } from './SpreadsheetRow'
+export { ResourceTimelineLane } from './ResourceTimelineLane.js'
+export { SpreadsheetRow } from './SpreadsheetRow.js'
 
 export default createPlugin({
   deps: [

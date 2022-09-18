@@ -4,10 +4,10 @@ import {
 } from '@fullcalendar/core'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollGrid } from '@fullcalendar/scrollgrid'
-import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile'
-import { TimelineHeader } from './TimelineHeader'
-import { TimelineGrid } from './TimelineGrid'
-import { TimelineCoords } from './TimelineCoords'
+import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile.js'
+import { TimelineHeader } from './TimelineHeader.js'
+import { TimelineGrid } from './TimelineGrid.js'
+import { TimelineCoords } from './TimelineCoords.js'
 
 interface TimelineViewState {
   slatCoords: TimelineCoords | null

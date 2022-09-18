@@ -11,7 +11,7 @@ FREEZING happens sometimes, window resize
 import { ViewContextType, Calendar, SimpleScrollGrid, CalendarOptions } from '@fullcalendar/core'
 import { render, createElement, Fragment } from '@fullcalendar/core/preact'
 import { ScrollGrid } from '@fullcalendar/scrollgrid'
-import dayGridPlugin from '@fullcalendar/daygrid' // we don't use. initializing Calendar requires one view plugin
+import { default as dayGridPlugin } from '@fullcalendar/daygrid' // we don't use. initializing Calendar requires one view plugin
 
 let doSimple = false
 let doVGrow = true

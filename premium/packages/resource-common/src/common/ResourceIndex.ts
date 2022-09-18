@@ -1,4 +1,4 @@
-import { Resource } from '../structs/resource'
+import { Resource } from '../structs/resource.js'
 
 export class ResourceIndex {
   indicesById: { [resourceId: string]: number }

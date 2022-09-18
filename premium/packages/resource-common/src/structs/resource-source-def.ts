@@ -1,5 +1,5 @@
-import { ResourceFetcher } from './resource-source'
-import { ResourceSourceRefined } from './resource-source-parse'
+import { ResourceFetcher } from './resource-source.js'
+import { ResourceSourceRefined } from './resource-source-parse.js'
 
 export interface ResourceSourceDef<ResourceSourceMeta> {
   ignoreRange?: boolean

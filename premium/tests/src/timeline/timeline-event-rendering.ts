@@ -1,8 +1,8 @@
 import { CalendarWrapper } from '@fullcalendar/standard-tests/src/lib/wrappers/CalendarWrapper'
 import { anyElsIntersect } from '@fullcalendar/standard-tests/src/lib/dom-geom'
 import { filterVisibleEls } from '@fullcalendar/standard-tests/src/lib/dom-misc'
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
-import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper.js'
 
 describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO MANY LOOPS!
   pushOptions({

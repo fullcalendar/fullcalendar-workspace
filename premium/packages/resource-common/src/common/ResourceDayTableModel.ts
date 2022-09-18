@@ -1,5 +1,5 @@
 import { __assign } from 'tslib'
-import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel'
+import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel.js'
 
 /*
 resources over dates

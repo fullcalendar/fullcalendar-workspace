@@ -1,7 +1,7 @@
 import { BaseComponent, ContentHook } from '@fullcalendar/core'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { ColSpec } from '@fullcalendar/resource-common'
-import { HookProps } from './spreadsheet-cell-util'
+import { HookProps } from './spreadsheet-cell-util.js'
 
 export interface SpreadsheetIndividualCellInnerProps {
   hookProps: HookProps

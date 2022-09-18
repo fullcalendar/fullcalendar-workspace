@@ -1,4 +1,4 @@
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 
 describe('scrollTime', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/5351

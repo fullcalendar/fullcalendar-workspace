@@ -1,8 +1,8 @@
 import { CalendarContext, DayTableModel, DayTableCell } from '@fullcalendar/core'
 import { __assign } from 'tslib'
-import { Resource } from '../structs/resource'
-import { ResourceApi } from '../api/ResourceApi'
-import { ResourceIndex } from './ResourceIndex'
+import { Resource } from '../structs/resource.js'
+import { ResourceApi } from '../api/ResourceApi.js'
+import { ResourceIndex } from './ResourceIndex.js'
 
 export abstract class AbstractResourceDayTableModel {
   cells: DayTableCell[][]

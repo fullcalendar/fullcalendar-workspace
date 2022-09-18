@@ -10,7 +10,7 @@ import {
   TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg,
   coordToCss,
 } from '@fullcalendar/timeline'
-import { ResourceTimelineLanes } from './ResourceTimelineLanes'
+import { ResourceTimelineLanes } from './ResourceTimelineLanes.js'
 
 export interface ResourceTimelineGridProps {
   dateProfile: DateProfile

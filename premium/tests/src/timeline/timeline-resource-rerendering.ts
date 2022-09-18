@@ -1,4 +1,4 @@
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 
 describe('timeline resource rerendering', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/5586

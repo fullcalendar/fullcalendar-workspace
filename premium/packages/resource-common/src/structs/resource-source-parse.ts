@@ -1,8 +1,8 @@
 import { guid, identity, Identity, RefinedOptionsFromRefiners, refineProps, RawOptionsFromRefiners, Dictionary } from '@fullcalendar/core'
-import { ResourceInput } from './resource'
-import { ResourceFunc } from '../resource-sources/resource-func'
-import { ResourceSource } from './resource-source'
-import { getResourceSourceDefs } from './resource-source-def'
+import { ResourceInput } from './resource.js'
+import { ResourceFunc } from '../resource-sources/resource-func.js'
+import { ResourceSource } from './resource-source.js'
+import { getResourceSourceDefs } from './resource-source-def.js'
 
 // TODO: make this a plugin-able parser
 // TODO: success/failure

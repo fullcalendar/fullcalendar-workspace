@@ -6,7 +6,7 @@ import {
   config,
 } from '@fullcalendar/core'
 import { flushSync } from '@fullcalendar/core/preact'
-import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
+import { default as premiumCommonPlugin } from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
 // ensure ambient declarations. TODO: remove?
 import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
 

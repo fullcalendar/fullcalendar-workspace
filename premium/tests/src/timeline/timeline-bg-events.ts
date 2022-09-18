@@ -1,4 +1,4 @@
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 
 describe('timeline background events', () => {
   it('does not rerender a removed event when toggling collapse state', (done) => {

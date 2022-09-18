@@ -15,11 +15,11 @@ import {
   ColSpec, GroupSpec, DEFAULT_RESOURCE_ORDER,
 } from '@fullcalendar/resource-common'
 import { __assign } from 'tslib'
-import { SpreadsheetRow } from './SpreadsheetRow'
-import { SpreadsheetGroupRow } from './SpreadsheetGroupRow'
-import { SpreadsheetHeader } from './SpreadsheetHeader'
-import { ResourceTimelineGrid } from './ResourceTimelineGrid'
-import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout'
+import { SpreadsheetRow } from './SpreadsheetRow.js'
+import { SpreadsheetGroupRow } from './SpreadsheetGroupRow.js'
+import { SpreadsheetHeader } from './SpreadsheetHeader.js'
+import { ResourceTimelineGrid } from './ResourceTimelineGrid.js'
+import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout.js'
 
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue

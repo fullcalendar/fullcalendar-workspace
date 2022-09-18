@@ -14,7 +14,7 @@ import {
   ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps,
   Resource, flattenResources, DEFAULT_RESOURCE_ORDER,
 } from '@fullcalendar/resource-common'
-import { ResourceDayTable } from './ResourceDayTable'
+import { ResourceDayTable } from './ResourceDayTable.js'
 
 export class ResourceDayTableView extends TableView {
   props: ResourceViewProps

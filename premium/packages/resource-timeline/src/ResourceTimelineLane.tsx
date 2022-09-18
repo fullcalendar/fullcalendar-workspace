@@ -5,7 +5,7 @@ import {
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { Resource, ResourceApi, ResourceLaneContentArg, ResourceLaneHookPropsInput } from '@fullcalendar/resource-common'
 import { TimelineLane, TimelineLaneCoreProps } from '@fullcalendar/timeline'
-import { ResourceTimelineLaneMisc } from './ResourceTimelineLaneMisc'
+import { ResourceTimelineLaneMisc } from './ResourceTimelineLaneMisc.js'
 
 export interface ResourceTimelineLaneProps extends TimelineLaneCoreProps {
   elRef: Ref<HTMLTableRowElement>

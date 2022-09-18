@@ -5,8 +5,8 @@ import {
 import {
   createElement, Ref, ComponentChildren,
 } from '@fullcalendar/core/preact'
-import { Resource } from '../structs/resource'
-import { ResourceApi } from '../api/ResourceApi'
+import { Resource } from '../structs/resource.js'
+import { ResourceApi } from '../api/ResourceApi.js'
 
 export interface ResourceLabelRootProps {
   resource: Resource

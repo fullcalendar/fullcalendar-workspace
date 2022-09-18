@@ -2,8 +2,8 @@ import {
   SegSpan, SegHierarchy, groupIntersectingEntries, SegEntry, buildIsoString,
   computeEarliestSegStart,
 } from '@fullcalendar/core'
-import { TimelineCoords } from './TimelineCoords'
-import { TimelineLaneSeg } from './TimelineLaneSlicer'
+import { TimelineCoords } from './TimelineCoords.js'
+import { TimelineLaneSeg } from './TimelineLaneSlicer.js'
 
 export interface TimelineSegPlacement {
   seg: TimelineLaneSeg | TimelineLaneSeg[] // HACK: if array, then it's a more-link group

@@ -1,4 +1,4 @@
-import { ResourceApi } from './ResourceApi'
+import { ResourceApi } from './ResourceApi.js'
 
 declare module '@fullcalendar/core' {
 

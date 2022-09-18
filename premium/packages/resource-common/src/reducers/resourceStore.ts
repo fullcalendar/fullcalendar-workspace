@@ -1,7 +1,7 @@
 import { CalendarContext } from '@fullcalendar/core'
-import { ResourceAction } from './resource-action'
-import { ResourceHash, ResourceInput, parseResource } from '../structs/resource'
-import { ResourceSource } from '../structs/resource-source'
+import { ResourceAction } from './resource-action.js'
+import { ResourceHash, ResourceInput, parseResource } from '../structs/resource.js'
+import { ResourceSource } from '../structs/resource-source.js'
 
 export function reduceResourceStore(
   store: ResourceHash | null,

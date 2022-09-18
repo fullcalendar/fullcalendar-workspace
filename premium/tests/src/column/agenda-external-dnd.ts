@@ -2,7 +2,7 @@
 
 import { Draggable } from '@fullcalendar/interaction'
 import { CalendarWrapper } from '@fullcalendar/standard-tests/src/lib/wrappers/CalendarWrapper'
-import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
 
 describe('timeGrid-view event drag-n-drop', () => {
   pushOptions({

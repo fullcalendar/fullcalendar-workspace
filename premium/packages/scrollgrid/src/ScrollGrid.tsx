@@ -24,9 +24,9 @@ import {
   config,
 } from '@fullcalendar/core'
 import { createElement, VNode, Fragment } from '@fullcalendar/core/preact'
-import { StickyScrolling } from './StickyScrolling'
-import { ClippedScroller, ClippedOverflowValue } from './ClippedScroller'
-import { ScrollSyncer } from './ScrollSyncer'
+import { StickyScrolling } from './StickyScrolling.js'
+import { ClippedScroller, ClippedOverflowValue } from './ClippedScroller.js'
+import { ScrollSyncer } from './ScrollSyncer.js'
 
 interface ScrollGridState {
   shrinkWidths: number[] // for only one col within each vertical stack of chunks

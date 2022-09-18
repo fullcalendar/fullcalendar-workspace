@@ -7,7 +7,7 @@ import {
 } from '@fullcalendar/core/preact'
 import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeSlatMeta, TimeColsSlatsCoords } from '@fullcalendar/timegrid'
 import { AbstractResourceDayTableModel, VResourceSplitter } from '@fullcalendar/resource-common'
-import { ResourceDayTimeColsJoiner } from './ResourceDayTimeColsJoiner'
+import { ResourceDayTimeColsJoiner } from './ResourceDayTimeColsJoiner.js'
 
 export interface ResourceDayTimeColsProps {
   dateProfile: DateProfile

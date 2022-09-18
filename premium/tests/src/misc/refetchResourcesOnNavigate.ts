@@ -1,7 +1,7 @@
-import XHRMock from 'xhr-mock'
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
-import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
-import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper'
+import { default as XHRMock } from 'xhr-mock'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
+import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper.js'
 
 describe('refetchResourcesOnNavigate', () => {
   pushOptions({

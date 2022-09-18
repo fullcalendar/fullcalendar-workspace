@@ -1,15 +1,15 @@
 import { createPlugin } from '@fullcalendar/core'
 
-import premiumCommonPlugin from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
+import { default as premiumCommonPlugin } from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
 // ensure ambient declarations
 import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
 
-import resourceCommonPlugin from '@fullcalendar/resource-common'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import { ResourceDayTableView } from './ResourceDayTableView'
+import { default as resourceCommonPlugin } from '@fullcalendar/resource-common'
+import { default as dayGridPlugin } from '@fullcalendar/daygrid'
+import { ResourceDayTableView } from './ResourceDayTableView.js'
 
 export { ResourceDayTableView }
-export { ResourceDayTable } from './ResourceDayTable'
+export { ResourceDayTable } from './ResourceDayTable.js'
 
 export default createPlugin({
   deps: [

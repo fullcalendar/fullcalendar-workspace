@@ -6,7 +6,7 @@ import {
 } from '@fullcalendar/core/preact'
 import { DayTableSlicer, Table } from '@fullcalendar/daygrid'
 import { AbstractResourceDayTableModel, VResourceSplitter } from '@fullcalendar/resource-common'
-import { ResourceDayTableJoiner } from './ResourceDayTableJoiner'
+import { ResourceDayTableJoiner } from './ResourceDayTableJoiner.js'
 
 export interface ResourceDayTableProps {
   dateProfile: DateProfile

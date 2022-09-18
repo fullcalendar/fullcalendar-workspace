@@ -1,7 +1,7 @@
 import { PositionCache, BaseComponent, CssDimValue, RefMap } from '@fullcalendar/core'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { GroupNode, ResourceNode } from '@fullcalendar/resource-common'
-import { ResourceTimelineLanesBody, ResourceTimelineLanesContentProps } from './ResourceTimelineLanesBody'
+import { ResourceTimelineLanesBody, ResourceTimelineLanesContentProps } from './ResourceTimelineLanesBody.js'
 
 export interface ResourceTimelineLanesProps extends ResourceTimelineLanesContentProps {
   minHeight: CssDimValue

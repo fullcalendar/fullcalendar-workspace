@@ -5,13 +5,13 @@ import {
   computeEarliestSegStart,
 } from '@fullcalendar/core'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
-import { TimelineDateProfile } from './timeline-date-profile'
-import { coordsToCss, TimelineCoords } from './TimelineCoords'
-import { TimelineLaneBg } from './TimelineLaneBg'
-import { TimelineLaneSlicer, TimelineLaneSeg } from './TimelineLaneSlicer'
-import { TimelineEvent } from './TimelineEvent'
-import { TimelineLaneMoreLink } from './TimelineLaneMoreLink'
-import { computeFgSegPlacements, computeSegHCoords, TimelineSegPlacement } from './event-placement'
+import { TimelineDateProfile } from './timeline-date-profile.js'
+import { coordsToCss, TimelineCoords } from './TimelineCoords.js'
+import { TimelineLaneBg } from './TimelineLaneBg.js'
+import { TimelineLaneSlicer, TimelineLaneSeg } from './TimelineLaneSlicer.js'
+import { TimelineEvent } from './TimelineEvent.js'
+import { TimelineLaneMoreLink } from './TimelineLaneMoreLink.js'
+import { computeFgSegPlacements, computeSegHCoords, TimelineSegPlacement } from './event-placement.js'
 
 export interface TimelineLaneProps extends TimelineLaneCoreProps {
   onHeightChange?: (innerEl: HTMLElement, isStable: boolean) => void

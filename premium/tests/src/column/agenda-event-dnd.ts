@@ -1,6 +1,6 @@
 // TODO: test isRtl?
 
-import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
 
 describe('timeGrid-view event drag-n-drop', () => {
   pushOptions({

@@ -1,5 +1,5 @@
-import { ScrollListener } from './ScrollListener'
-import { setScrollFromLeftEdge } from './scroll-left-norm'
+import { ScrollListener } from './ScrollListener.js'
+import { setScrollFromLeftEdge } from './scroll-left-norm.js'
 
 export class ScrollSyncer {
   private masterEl: HTMLElement

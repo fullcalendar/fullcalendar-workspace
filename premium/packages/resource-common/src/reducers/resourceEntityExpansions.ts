@@ -1,4 +1,4 @@
-import { ResourceAction } from './resource-action'
+import { ResourceAction } from './resource-action.js'
 
 export type ResourceEntityExpansions = { [id: string]: boolean }
 

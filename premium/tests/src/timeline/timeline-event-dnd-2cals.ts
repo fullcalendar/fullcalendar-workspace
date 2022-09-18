@@ -1,7 +1,7 @@
 import { Calendar } from '@fullcalendar/core'
-import interactionPlugin from '@fullcalendar/interaction'
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
+import { default as interactionPlugin } from '@fullcalendar/interaction'
+import { default as resourceTimelinePlugin } from '@fullcalendar/resource-timeline'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 
 describe('timeline dragging events between calendars', () => {
   let DEFAULT_DATE = '2019-01-01'

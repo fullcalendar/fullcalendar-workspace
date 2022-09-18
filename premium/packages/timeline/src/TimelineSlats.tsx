@@ -3,8 +3,8 @@ import {
   ScrollResponder, ScrollRequest, DateMarker,
 } from '@fullcalendar/core'
 import { createElement, createRef, VNode } from '@fullcalendar/core/preact'
-import { TimelineCoords } from './TimelineCoords'
-import { TimelineSlatsBody, TimelineSlatsContentProps } from './TimelineSlatsBody'
+import { TimelineCoords } from './TimelineCoords.js'
+import { TimelineSlatsBody, TimelineSlatsContentProps } from './TimelineSlatsBody.js'
 
 export interface TimelineSlatsProps extends TimelineSlatsContentProps {
   clientWidth: number | null

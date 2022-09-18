@@ -1,7 +1,7 @@
 import { BaseComponent, ViewContext, CssDimValue, RenderHook } from '@fullcalendar/core'
 import { createElement, Fragment, createRef, RefObject } from '@fullcalendar/core/preact'
 import { Group, isGroupsEqual, ColCellContentArg } from '@fullcalendar/resource-common'
-import { ExpanderIcon } from './ExpanderIcon'
+import { ExpanderIcon } from './ExpanderIcon.js'
 
 export interface SpreadsheetGroupRowProps {
   spreadsheetColCnt: number

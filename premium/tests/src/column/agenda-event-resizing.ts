@@ -1,7 +1,7 @@
 import { CalendarWrapper } from '@fullcalendar/standard-tests/src/lib/wrappers/CalendarWrapper'
 import { TimeGridViewWrapper } from '@fullcalendar/standard-tests/src/lib/wrappers/TimeGridViewWrapper'
 import { waitEventResize } from '@fullcalendar/standard-tests/src/lib/wrappers/interaction-util'
-import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper'
+import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
 
 describe('timeGrid-view event resizing', () => {
   pushOptions({

@@ -1,7 +1,7 @@
 import { BaseComponent, RefMap, DateMarker, DateRange, DateProfile } from '@fullcalendar/core'
 import { createElement } from '@fullcalendar/core/preact'
-import { TimelineDateProfile } from './timeline-date-profile'
-import { TimelineSlatCell } from './TimelineSlatCell'
+import { TimelineDateProfile } from './timeline-date-profile.js'
+import { TimelineSlatCell } from './TimelineSlatCell.js'
 
 export interface TimelineSlatsContentProps {
   dateProfile: DateProfile

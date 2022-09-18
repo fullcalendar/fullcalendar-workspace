@@ -1,6 +1,6 @@
 import { doElsMatchSegs } from '@fullcalendar/standard-tests/src/lib/segs'
-import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper'
-import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper'
+import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
+import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper.js'
 
 describe('timeline businessHours', () => {
   pushOptions({

@@ -3,10 +3,10 @@ import {
   setRef, DateProfile, DateRange, DateMarker, getSegMeta,
 } from '@fullcalendar/core'
 import { createElement, createRef, Ref, Fragment } from '@fullcalendar/core/preact'
-import { TimelineSegPlacement } from './event-placement'
-import { coordsToCss } from './TimelineCoords'
-import { TimelineEvent } from './TimelineEvent'
-import { TimelineLaneSeg } from './TimelineLaneSlicer'
+import { TimelineSegPlacement } from './event-placement.js'
+import { coordsToCss } from './TimelineCoords.js'
+import { TimelineEvent } from './TimelineEvent.js'
+import { TimelineLaneSeg } from './TimelineLaneSlicer.js'
 
 export interface TimelineLaneMoreLinkProps {
   elRef: Ref<HTMLElement>

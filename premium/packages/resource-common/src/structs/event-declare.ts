@@ -1,4 +1,4 @@
-import { EVENT_REFINERS } from './event-parse'
+import { EVENT_REFINERS } from './event-parse.js'
 
 type ExtraEventRefiners = typeof EVENT_REFINERS
 

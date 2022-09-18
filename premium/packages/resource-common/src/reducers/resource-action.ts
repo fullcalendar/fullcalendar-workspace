@@ -1,6 +1,6 @@
 import { Action, DateRange } from '@fullcalendar/core'
-import { ResourceSourceError } from '../structs/resource-source'
-import { ResourceHash, ResourceInput } from '../structs/resource'
+import { ResourceSourceError } from '../structs/resource-source.js'
+import { ResourceHash, ResourceInput } from '../structs/resource.js'
 
 export type ResourceAction = Action |
   { type: 'FETCH_RESOURCE' } |

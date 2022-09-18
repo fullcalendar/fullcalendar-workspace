@@ -4,9 +4,9 @@ import {
   findElements, DateProfile,
 } from '@fullcalendar/core'
 import { createElement, VNode, createRef, RefObject } from '@fullcalendar/core/preact'
-import { TimelineHeaderRows } from './TimelineHeaderRows'
-import { coordToCss, TimelineCoords } from './TimelineCoords'
-import { TimelineDateProfile } from './timeline-date-profile'
+import { TimelineHeaderRows } from './TimelineHeaderRows.js'
+import { coordToCss, TimelineCoords } from './TimelineCoords.js'
+import { TimelineDateProfile } from './timeline-date-profile.js'
 
 export interface TimelineHeaderProps {
   dateProfile: DateProfile

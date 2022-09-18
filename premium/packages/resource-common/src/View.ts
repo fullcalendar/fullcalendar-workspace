@@ -3,9 +3,9 @@ import {
   EventUi, EventDefHash, EventDef, EventStore, DateRange, CalendarContext,
 } from '@fullcalendar/core'
 import { __assign } from 'tslib'
-import { ResourceHash } from './structs/resource'
-import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions'
-import { computeResourceEditable } from './EventDragging'
+import { ResourceHash } from './structs/resource.js'
+import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions.js'
+import { computeResourceEditable } from './EventDragging.js'
 
 // for when resource views need resource data
 

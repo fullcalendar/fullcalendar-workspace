@@ -3,10 +3,10 @@ import {
   greatestDurationDenominator, DateRange, NowIndicatorRoot,
 } from '@fullcalendar/core'
 import { createElement, createRef, VNode, Fragment } from '@fullcalendar/core/preact'
-import { coordToCss, TimelineCoords } from './TimelineCoords'
-import { TimelineSlats } from './TimelineSlats'
-import { TimelineLane } from './TimelineLane'
-import { TimelineDateProfile } from './timeline-date-profile'
+import { coordToCss, TimelineCoords } from './TimelineCoords.js'
+import { TimelineSlats } from './TimelineSlats.js'
+import { TimelineLane } from './TimelineLane.js'
+import { TimelineDateProfile } from './timeline-date-profile.js'
 
 export interface TimelinGridProps extends ViewProps {
   tDateProfile: TimelineDateProfile

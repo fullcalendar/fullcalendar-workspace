@@ -1,8 +1,8 @@
 import { flexibleCompare, compareByFieldSpecs, OrderSpec } from '@fullcalendar/core'
-import { ResourceHash, Resource } from '../structs/resource'
-import { ResourceEntityExpansions } from '../reducers/resourceEntityExpansions'
-import { GroupSpec } from './resource-spec'
-import { ResourceApi } from '../api/ResourceApi'
+import { ResourceHash, Resource } from '../structs/resource.js'
+import { ResourceEntityExpansions } from '../reducers/resourceEntityExpansions.js'
+import { GroupSpec } from './resource-spec.js'
+import { ResourceApi } from '../api/ResourceApi.js'
 
 interface ParentNode {
   children: ParentNode[]
