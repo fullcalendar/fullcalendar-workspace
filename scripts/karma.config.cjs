@@ -1,14 +1,14 @@
 const path = require('path')
 
 module.exports = function(config) {
-  const jQueryPath = require.resolve('jquery')
-  const jasmineJQueryPath = require.resolve('jasmine-jquery')
   const builtFile = path.resolve('./dist/index.js') // from cwd
 
   config.set({
     files: [
-      jQueryPath,
-      jasmineJQueryPath,
+      require.resolve('jquery'),
+      require.resolve('jasmine-jquery'),
+      require.resolve('jquery-simulate'),
+      require.resolve('components-jqueryui'),
       builtFile,
     ],
     preprocessors: {

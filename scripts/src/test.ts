@@ -1,4 +1,4 @@
-import { join as joinPaths, resolve as resolvePath } from 'path'
+import { join as joinPaths } from 'path'
 import { fileURLToPath } from 'url'
 import karma from 'karma'
 
