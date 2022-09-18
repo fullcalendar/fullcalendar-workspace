@@ -173,7 +173,10 @@ function externalizeDotImportsPlugin(): RollupPlugin {[]
   return {
     name: 'externalize-dot-imports',
     resolveId(id) {
-      if (isRelativeDot(id)) {
+      if (
+        id === './index.js' || id === '../index.js' // HACK
+        // isRelativeDot(id) // we converted to node16 imports :(
+      ) {
         // when accessing the package root via '.' or '..', always externalize
         return { id, external: true }
       }
