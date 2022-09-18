@@ -6,7 +6,7 @@ const thisPkgRoot = joinPaths(fileURLToPath(import.meta.url), '../..')
 const isCi = false
 
 export default function() {
-  const configPath = joinPaths(thisPkgRoot, 'karma.config.cjs')
+  const configPath = joinPaths(thisPkgRoot, './karma.config.cjs')
   const builtPath = resolvePath('./dist/index.js') // from cwd
 
   // see https://karma-runner.github.io/6.4/dev/public-api.html

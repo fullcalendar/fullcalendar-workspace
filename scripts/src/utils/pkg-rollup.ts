@@ -14,7 +14,6 @@ import {
   forceExt,
   getExt,
   isRelative,
-  isRelativeDot,
   isWithinDir
 } from './path.js'
 import { cjsExt, dtsExt, esmExt, iifeExt, scriptsDirAbs, srcDirAbs, tscDirAbs } from './pkg-meta.js'

@@ -125,7 +125,7 @@ async function runProd() {
 }
 
 async function runIifeOnly() {
-  const { srcPaths, srcStrs, srcMeta, distMeta } = await processSrcMetaForBuild(true) // dev=true
+  const { srcPaths, srcStrs } = await processSrcMetaForBuild(true) // dev=true
 
   return Object.keys(srcPaths).map((entryName) => {
     const srcPath = srcPaths[entryName]
