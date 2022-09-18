@@ -1,5 +1,5 @@
-import { resolve as resolvePath } from 'path'
-import { readdir } from 'fs/promises'
+import { resolve as resolvePath, dirname } from 'path'
+import { copyFile, mkdir, readdir } from 'fs/promises'
 import {
   rollup,
   watch as rollupWatch,
@@ -26,7 +26,7 @@ import {
   buildRollupInput,
   buildRollupPlugins
 } from '../utils/pkg-rollup.js'
-import { buildFakeSrcPath, isFilenameHidden, removeExt } from '../utils/path.js'
+import { buildFakeSrcPath, isFilenameHidden, removeExt, removeRelativePrefix } from '../utils/path.js'
 
 /*
 Must be run from package root.
@@ -75,7 +75,14 @@ async function runDev() {
 }
 
 async function runProd() {
-  const { srcPaths, srcStrs, srcMeta, distMeta } = await processSrcMetaForBuild(false) // dev=false
+  const {
+    srcPaths,
+    srcStrs,
+    srcMeta,
+    distMeta,
+    srcGenerators,
+    srcStrExpansions,
+  } = await processSrcMetaForBuild(false) // dev=false
 
   const bundlePromise = rollup({
     input: buildRollupInput(srcPaths),
@@ -108,6 +115,29 @@ async function runProd() {
       ]))
     })
   })
+
+  // dts prepwork for generated entrypoint dts
+  // TODO: should be part of preflight
+  await Promise.all(
+    Object.keys(srcGenerators).map(async (entryName) => {
+      const expansions = srcStrExpansions[entryName]
+      if (expansions) {
+        return Promise.all(
+          expansions.map(async (expandedEntryName) => {
+            const src = './src/' + removeRelativePrefix(entryName.replace('*', 'each')) + '.d.ts'
+            const dest = './dist/.tsc/'+ removeRelativePrefix(expandedEntryName) + '.d.ts'
+            await mkdir(dirname(dest), { recursive: true })
+            await copyFile(src, dest)
+          })
+        )
+      } else {
+        const src = './src/' + removeRelativePrefix(entryName) + '.d.ts'
+        const dest = './dist/.tsc/'+ removeRelativePrefix(entryName) + '.d.ts'
+        await mkdir(dirname(dest), { recursive: true })
+        await copyFile(src, dest)
+      }
+    })
+  )
 
   const dtsBundlePromise = rollup({
     input: buildRollupDtsInput(srcPaths),
@@ -151,9 +181,11 @@ async function buildSrcStrs(
 ): Promise<{
   fakeSrcPaths: { [entryName: string]: string }
   srcStrs: { [fakeSrcPath: string]: string }
+  srcStrExpansions: { [entryNameGlob: string]: string[] }
 }> {
   const fakeSrcPaths: { [entryName: string]: string } = {}
   const srcStrs: { [fakeSrcPath: string]: string } = {}
+  const srcStrExpansions: { [entryNameGlob: string]: string[] } = {}
 
   for (const entryName in srcGenerators) {
     const generatorFile = srcGenerators[entryName]
@@ -180,19 +212,24 @@ async function buildSrcStrs(
         throw new Error('Generator object output must have blob entrypoint name')
       }
 
+      const expansions: string[] = []
+
       for (const key in generatorRes) {
         const expandedEntryName = entryName.replace('*', key)
         const fakeSrcPath = buildFakeSrcPath(expandedEntryName)
 
         fakeSrcPaths[expandedEntryName] = fakeSrcPath
         srcStrs[fakeSrcPath] = generatorRes[key]
+        expansions.push(expandedEntryName)
       }
+
+      srcStrExpansions[entryName] = expansions
     } else {
       throw new Error('Invalid type of generator output')
     }
   }
 
-  return { fakeSrcPaths, srcStrs }
+  return { fakeSrcPaths, srcStrs, srcStrExpansions }
 }
 
 // package.json
@@ -200,10 +237,10 @@ async function buildSrcStrs(
 
 async function processSrcMetaForBuild(dev: boolean) {
   const { srcGlobs, srcGenerators, srcMeta, distMeta } = await processSrcMeta(dev)
-  const { fakeSrcPaths, srcStrs } = await buildSrcStrs(srcGenerators)
+  const { fakeSrcPaths, srcStrs, srcStrExpansions } = await buildSrcStrs(srcGenerators)
   const srcPaths = { ...(await expandSrcGlobs(srcGlobs)), ...fakeSrcPaths }
 
-  return { srcPaths, srcStrs, srcMeta, distMeta }
+  return { srcPaths, srcStrs, srcMeta, distMeta, srcGenerators, srcStrExpansions }
 }
 
 // Glob
