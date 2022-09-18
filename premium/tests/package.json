@@ -17,7 +17,6 @@
     "@fullcalendar/timegrid": "workspace:*",
     "@fullcalendar/timeline": "workspace:*",
     "@fullcalendar/workspace-scripts": "workspace:*",
-    "jquery": "^3.4.0",
     "tslib": "^2.1.0",
     "xhr-mock": "^2.5.1"
   },

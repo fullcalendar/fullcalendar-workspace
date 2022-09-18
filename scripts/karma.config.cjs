@@ -1,12 +1,19 @@
+const path = require('path')
 
 module.exports = function(config) {
+  const jQueryPath = require.resolve('jquery')
+  const jasmineJQueryPath = require.resolve('jasmine-jquery')
+  const builtFile = path.resolve('./dist/index.js') // from cwd
+
   config.set({
-    // // determined by caller script
-    // basePath: '',
-    // files: [],
-    // preprocessors: {
-    //   '<whatever>>': ['sourcemap']
-    // },
+    files: [
+      jQueryPath,
+      jasmineJQueryPath,
+      builtFile,
+    ],
+    preprocessors: {
+      [builtFile]: ['sourcemap']
+    },
 
     plugins: [
       require('karma-chrome-launcher'),

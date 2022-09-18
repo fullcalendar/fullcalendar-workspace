@@ -7,7 +7,6 @@ const isCi = false
 
 export default function() {
   const configPath = joinPaths(thisPkgRoot, './karma.config.cjs')
-  const builtPath = resolvePath('./dist/index.js') // from cwd
 
   // see https://karma-runner.github.io/6.4/dev/public-api.html
   return karma.config.parseConfig(
@@ -16,10 +15,6 @@ export default function() {
       singleRun: isCi,
       autoWatch: !isCi,
       browsers: isCi ? [ 'ChromeHeadless_custom' ] : [],
-      files: [builtPath],
-      preprocessors: {
-        [builtPath]: 'sourcemap'
-      }
     },
     {
       promiseConfig: true,
