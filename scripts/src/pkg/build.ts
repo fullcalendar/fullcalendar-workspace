@@ -100,6 +100,8 @@ async function runProd() {
     }).then((bundle) => {
       const options = buildIifeOutputOptions(srcPath, iifeGlobal)
 
+      // TODO: lint for imports of __index_js or whatever
+
       return bundle.write(options).then(() => Promise.all([
         bundle.close(),
         minifyFile(options.file!),
