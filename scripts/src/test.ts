@@ -3,18 +3,18 @@ import { fileURLToPath } from 'url'
 import karma from 'karma'
 
 const thisPkgRoot = joinPaths(fileURLToPath(import.meta.url), '../..')
-const isCi = false
 
-export default function() {
+export default function(...args: string[]) {
+  const dev = args.indexOf('--dev') !== -1
   const configPath = joinPaths(thisPkgRoot, './karma.config.cjs')
 
   // see https://karma-runner.github.io/6.4/dev/public-api.html
   return karma.config.parseConfig(
     configPath,
     {
-      singleRun: isCi,
-      autoWatch: !isCi,
-      browsers: isCi ? [ 'ChromeHeadless_custom' ] : [],
+      singleRun: !dev,
+      autoWatch: dev,
+      browsers: !dev ? [ 'ChromeHeadless_custom' ] : [],
     },
     {
       promiseConfig: true,
@@ -30,6 +30,7 @@ export default function() {
         }
       })
       server.start()
+      // TODO: handle SIGINT? seems to keep running after Ctrl+C
     })
   })
 }
