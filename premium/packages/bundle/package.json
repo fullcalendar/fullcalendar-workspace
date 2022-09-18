@@ -20,11 +20,8 @@
   "type": "module",
   "devDependencies": {
     "@fullcalendar/adaptive": "workspace:*",
-    "@fullcalendar/bootstrap": "workspace:*",
-    "@fullcalendar/bootstrap5": "workspace:*",
     "@fullcalendar/core": "workspace:*",
     "@fullcalendar/daygrid": "workspace:*",
-    "@fullcalendar/google-calendar": "workspace:*",
     "@fullcalendar/interaction": "workspace:*",
     "@fullcalendar/list": "workspace:*",
     "@fullcalendar/resource-common": "workspace:*",
@@ -44,6 +41,9 @@
   },
   "fileExports": {
     ".": "./src/index.ts"
+  },
+  "iife": {
+    ".": "FullCalendar"
   },
   "publishConfig": {
     "directory": "./dist",
