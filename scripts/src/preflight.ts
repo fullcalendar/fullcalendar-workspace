@@ -20,7 +20,7 @@ export default async function() {
       // TODO: filter based on publishConfig.linkDirectory and/or buildConfig
       if (
         !pkgObj.private ||
-        pkgObj.name.match(/\-tests$/)
+        pkgObj.name.match(/\-tests$/) // WAIT, not needed!
       ) {
         const { distMeta } = await processSrcMeta(
           true, // dev
