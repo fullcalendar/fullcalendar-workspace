@@ -4,29 +4,29 @@ import { default as premiumCommonPlugin } from '@fullcalendar/premium-common' //
 // ensure ambient declarations
 import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
 
-import './ambient'
+import './ambient.js'
 import { ResourceDataAdder, transformIsDraggable } from './View.js' // TODO: ResourceDataAdder should be own plugin
 import { ResourceEventConfigAdder } from './ResourceEventConfigAdder.js'
 import { reduceResources, ResourceState } from './reducers/resources.js'
 import { generateEventDefResourceMembers, EVENT_REFINERS } from './structs/event-parse.js'
-import './structs/event-declare'
+import './structs/event-declare.js'
 import { massageEventDragMutation, applyEventDefMutation, transformEventDrop } from './EventDragging.js'
 import { transformDateSelectionJoin } from './DateSelecting.js'
 import { transformDatePoint, transformDateSpan } from './api/CalendarApi-extend.js'
-import './api/CalendarApi-declare'
+import './api/CalendarApi-declare.js'
 import { isPropsValidWithResources } from './validation.js'
 import { transformExternalDef } from './ExternalElementDragging.js'
-import './api/EventApi-extend'
-import './api/EventApi-declare'
+import './api/EventApi-extend.js'
+import './api/EventApi-declare.js'
 import { optionChangeHandlers } from './option-change-handlers.js'
 import { handleResourceStore } from './resources-crud.js'
 import { OPTION_REFINERS, LISTENER_REFINERS } from './options.js'
-import './options-declare'
+import './options-declare.js'
 
 // TODO: plugin-ify
-import './resource-sources/resource-array'
-import './resource-sources/resource-func'
-import './resource-sources/resource-json-feed'
+import './resource-sources/resource-array.js'
+import './resource-sources/resource-func.js'
+import './resource-sources/resource-json-feed.js'
 
 export { ResourceLaneContentArg, ResourceLaneHookPropsInput } from './render-hooks.js'
 
