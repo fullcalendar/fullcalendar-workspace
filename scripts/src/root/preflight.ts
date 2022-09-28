@@ -13,7 +13,6 @@ export default async function() {
         pkgMeta.buildConfig &&
         pkgMeta.publishConfig?.linkDirectory
       ) {
-        // TODO: reuse pkgMeta here
         await runPkgPreflight(pkgDir)
       }
     })

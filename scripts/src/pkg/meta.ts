@@ -18,20 +18,16 @@ interface ExportConfig {
 }
 
 export default async function(...args: string[]) {
-  await runPkgMeta(
-    process.cwd(),
-    args.indexOf('--dev') !== -1
-  )
-}
+  const pkgDir = process.cwd()
+  const isDev = args.indexOf('--dev') !== -1
 
-export async function runPkgMeta(pkgDir: string, isDev: boolean) {
   const srcMeta = await readSrcPkgMeta(pkgDir)
   const distMeta = generateDistPkgMeta(srcMeta, isDev)
 
   await writeDistPkgMeta(pkgDir, distMeta)
 }
 
-function generateDistPkgMeta(srcMeta: any, isDev: boolean): any {
+export function generateDistPkgMeta(srcMeta: any, isDev: boolean): any {
   const buildConfig: BuildConfig = srcMeta.buildConfig || {}
   const exportConfigs = buildConfig.exports || {}
   const defaultExportConfig = exportConfigs['.']
@@ -119,7 +115,7 @@ export async function readSrcPkgMeta(pkgDir: string): Promise<any> {
   return srcMeta
 }
 
-async function writeDistPkgMeta(pkgDir: string, distMeta: any): Promise<void> {
+export async function writeDistPkgMeta(pkgDir: string, distMeta: any): Promise<void> {
   const jsonPath = joinPaths(pkgDir, 'dist', 'package.json')
   const distJson = JSON.stringify(distMeta, undefined, 2)
   await writeFile(jsonPath, distJson)

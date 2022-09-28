@@ -1,6 +1,6 @@
 import { join as joinPaths } from 'path'
 import { access as accessFile, mkdir, writeFile } from 'fs/promises'
-import { runPkgMeta } from './meta.js'
+import { generateDistPkgMeta, readSrcPkgMeta, writeDistPkgMeta } from './meta.js'
 
 export default async function() {
   const pkgDir = process.cwd()
@@ -9,17 +9,34 @@ export default async function() {
 }
 
 export async function runPkgPreflight(pkgDir: string): Promise<void> {
+  await ensureDistDir(pkgDir)
+
+  return Promise.all([
+    ensureDistMeta(pkgDir),
+    ensureNpmIgnore(pkgDir),
+  ]).then()
+}
+
+async function ensureDistDir(pkgDir: string): Promise<void> {
   const distDir = joinPaths(pkgDir, 'dist')
-  const distJsonPath = joinPaths(distDir, 'package.json')
-  const npmIgnorePath = joinPaths(distDir, '.npmignore')
 
   if (!(await fileExists(distDir))) {
     await mkdir(distDir)
   }
+}
+
+async function ensureDistMeta(pkgDir: string): Promise<void> {
+  const distJsonPath = joinPaths(pkgDir, 'dist', 'package.json')
 
   if (!(await fileExists(distJsonPath))) {
-    await runPkgMeta(pkgDir, true) // isDev=true
+    const srcMeta = await readSrcPkgMeta(pkgDir)
+    const distMeta = generateDistPkgMeta(srcMeta, true) // isDev=true
+    await writeDistPkgMeta(pkgDir, distMeta)
   }
+}
+
+async function ensureNpmIgnore(pkgDir: string): Promise<void> {
+  const npmIgnorePath = joinPaths(pkgDir, 'dist', '.npmignore')
 
   if (!(await fileExists(npmIgnorePath))) {
     await writeFile(npmIgnorePath, [
