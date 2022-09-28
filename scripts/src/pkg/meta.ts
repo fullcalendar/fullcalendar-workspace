@@ -52,7 +52,7 @@ export function generateDistPkgMeta(srcMeta: any, isDev: boolean): any {
     distMeta.module = 'index.mjs'
   }
   if (defaultExportConfig.types ?? buildConfig.types ?? true) {
-    distMeta.types = 'index.d.ts'
+    distMeta.types = (isDev ? '.tsc/' : '') + 'index.d.ts'
   }
 
   const exportEntries: any = {
@@ -77,7 +77,13 @@ export function generateDistPkgMeta(srcMeta: any, isDev: boolean): any {
         exportEntry.import = entryFilePath + '.mjs'
       }
       if (exportConfig.types ?? buildConfig.types ?? true) {
-        exportEntry.types = (exportConfig.typesPath || entryFilePath) + '.d.ts'
+        let typesPath = (exportConfig.typesPath || entryFilePath) + '.d.ts'
+
+        if (isDev) {
+          typesPath = typesPath.replace(/^\.\//, './.tsc/')
+        }
+
+        exportEntry.types = typesPath
       }
       if (exportConfig.iife) {
         exportEntry.default = entryFilePath + '.js'
@@ -97,7 +103,7 @@ export function generateDistPkgMeta(srcMeta: any, isDev: boolean): any {
       genericEntry.import = './*.mjs'
     }
     if (buildConfig.types ?? true) {
-      genericEntry.types = './*.d.ts'
+      genericEntry.types = './.tsc/*.d.ts'
     }
 
     exportEntries['./*'] = genericEntry
