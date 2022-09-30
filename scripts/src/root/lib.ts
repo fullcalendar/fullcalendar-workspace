@@ -2,7 +2,9 @@ import { join as joinPaths } from 'path'
 import { fileURLToPath } from 'url'
 import { capture } from '../utils/exec.js'
 
-const monorepoRootDir = joinPaths(fileURLToPath(import.meta.url), '../../../..')
+export const workspaceScriptsDir = joinPaths(fileURLToPath(import.meta.url), '../../..')
+export const monorepoRootDir = joinPaths(workspaceScriptsDir, '..')
+
 const pnpmPkgFilterArgs = ['--filter', './standard/**', '--filter', './premium/**']
 
 export async function getNormalPkgDirs(): Promise<string[]> {

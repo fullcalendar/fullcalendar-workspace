@@ -1,5 +1,4 @@
 import { join as joinPaths, resolve as resolvePath, dirname, isAbsolute } from 'path'
-import { fileURLToPath } from 'url'
 import { watch as watchPaths } from 'chokidar'
 import { globby } from 'globby'
 import {
@@ -15,10 +14,9 @@ import { default as jsonPlugin } from '@rollup/plugin-json'
 import { default as postcssPlugin } from 'rollup-plugin-postcss'
 import { default as sourcemapsPlugin } from 'rollup-plugin-sourcemaps'
 import { default as dtsPlugin } from 'rollup-plugin-dts'
+import { workspaceScriptsDir } from '../root/lib.js'
 import { EntryConfig, EntryConfigMap, readSrcPkgMeta, SrcPkgMeta } from './meta.js'
 import { live } from '../utils/exec.js'
-
-const workspaceScriptsDir = joinPaths(fileURLToPath(import.meta.url), '../../..')
 
 export default async function(...args: string[]) {
   const pkgDir = process.cwd()
