@@ -1,14 +1,27 @@
 import { join as joinPaths } from 'path'
 import { readFile, writeFile } from 'fs/promises'
 
-interface BuildConfig {
-  exports?: { [path: string]: ExportConfig }
+export interface SrcPkgMeta {
+  dependencies?: { [pkgName: string]: string }
+  buildConfig?: BuildConfig
+  publishConfig?: {
+    directory?: string
+    linkDirectory?: boolean
+  }
+  [standardProps: string]: any
+}
+
+export interface BuildConfig {
+  exports?: EntryConfigMap
   esm?: boolean
   cjs?: boolean
   types?: boolean
+  externalGlobals?: { [pkgName: string]: string }
 }
 
-interface ExportConfig {
+export type EntryConfigMap = { [entryId: string]: EntryConfig }
+
+export interface EntryConfig {
   typesPath?: string
   generator?: string
   esm?: boolean
@@ -27,7 +40,7 @@ export default async function(...args: string[]) {
   await writeDistPkgMeta(pkgDir, distMeta)
 }
 
-export function generateDistPkgMeta(srcMeta: any, isDev: boolean): any {
+export function generateDistPkgMeta(srcMeta: SrcPkgMeta, isDev: boolean): any {
   const buildConfig: BuildConfig = srcMeta.buildConfig || {}
   const exportConfigs = buildConfig.exports || {}
   const defaultExportConfig = exportConfigs['.']
@@ -114,7 +127,7 @@ export function generateDistPkgMeta(srcMeta: any, isDev: boolean): any {
   return distMeta
 }
 
-export async function readSrcPkgMeta(pkgDir: string): Promise<any> {
+export async function readSrcPkgMeta(pkgDir: string): Promise<SrcPkgMeta> {
   const jsonPath = joinPaths(pkgDir, 'package.json')
   const srcJson = await readFile(jsonPath, 'utf8')
   const srcMeta = JSON.parse(srcJson)
