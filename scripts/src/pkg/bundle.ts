@@ -71,13 +71,21 @@ async function bundleModules(
   contentMap: { [srcPath: string]: string },
   isDev: boolean,
 ): Promise<void> {
+  const buildConfig = pkgAnalysis.pkgMeta.buildConfig || {}
+  const esmEnabled = buildConfig.esm ?? true
+  const cjsEnabled = buildConfig.cjs ?? true
+
+  if (!esmEnabled && !cjsEnabled) {
+    return Promise.resolve()
+  }
+
   return rollup({
     input: buildSrcInputMap(pkgAnalysis),
     plugins: buildModulePlugins(pkgAnalysis, contentMap, isDev),
   }).then((bundle) => {
     return Promise.all([
-      bundle.write(buildEsmOutputOptions(pkgAnalysis.pkgDir, isDev)),
-      !isDev && bundle.write(buildCjsOutputOptions(pkgAnalysis.pkgDir)),
+      (esmEnabled) && bundle.write(buildEsmOutputOptions(pkgAnalysis.pkgDir, isDev)),
+      (!isDev && cjsEnabled) && bundle.write(buildCjsOutputOptions(pkgAnalysis.pkgDir)),
     ]).then(() => {
       bundle.close()
     })
@@ -122,7 +130,7 @@ function buildEsmOutputOptions(pkgDir: string, isDev: boolean): RollupOutputOpti
 function buildCjsOutputOptions(pkgDir: string): RollupOutputOptions {
   return {
     format: 'cjs',
-    exports: 'auto',
+    exports: 'named',
     dir: joinPaths(pkgDir, 'dist'),
     entryFileNames: '[name].cjs',
   }
@@ -252,6 +260,12 @@ async function minifyFile(unminifiedPath: string): Promise<void> {
 // -------------------------------------------------------------------------------------------------
 
 async function bundleTypes(pkgAnalysis: PkgAnalysis): Promise<void> {
+  const typesEnabled = pkgAnalysis.pkgMeta.buildConfig?.types ?? true
+
+  if (!typesEnabled) {
+    return Promise.resolve()
+  }
+
   return rollup({
     input: buildTypesInputMap(pkgAnalysis),
     plugins: buildTypesPlugins(pkgAnalysis),
@@ -334,19 +348,26 @@ function buildContentProcessingPlugins() {
         path: joinPaths(workspaceScriptsDir, 'postcss.config.cjs'),
         ctx: {}, // arguments given to config file
       }
-    }),
+    })
   ]
 }
 
+/*
+Will not externalize devDependencies
+*/
 function externalizeDepsPlugin(pkgAnalysis: PkgAnalysis): RollupPlugin {
-  const deps = pkgAnalysis.pkgMeta.dependencies || {}
+  const { pkgMeta } = pkgAnalysis
+  const deps = {
+    ...pkgMeta.dependencies,
+    ...pkgMeta.peerDependencies,
+  }
 
   return {
     name: 'externalize-deps',
     resolveId(id) {
-      const pkgName = id.match(/^([^\/]*)/)![0]
+      const pkgName = extractPkgName(id)
 
-      if (pkgName in deps) {
+      if (pkgName && (pkgName in deps)) {
         return { id, external: true }
       }
     },
@@ -623,4 +644,12 @@ function isPathWithinDir(path: string, dirPath: string): boolean {
 
 function isPathRelative(path: string): boolean {
   return /^\.\.?\/?/.test(path)
+}
+
+function extractPkgName(importId: string): string | undefined {
+  const m = importId.match(/^(@[a-z-]+\/)?[a-z-]+/)
+
+  if (m) {
+    return m[0]
+  }
 }

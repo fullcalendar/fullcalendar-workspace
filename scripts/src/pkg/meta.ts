@@ -2,7 +2,6 @@ import { join as joinPaths } from 'path'
 import { readFile, writeFile } from 'fs/promises'
 
 export interface SrcPkgMeta {
-  dependencies?: { [pkgName: string]: string }
   buildConfig?: BuildConfig
   publishConfig?: {
     directory?: string
@@ -24,10 +23,7 @@ export type EntryConfigMap = { [entryId: string]: EntryConfig }
 export interface EntryConfig {
   typesPath?: string
   generator?: string
-  esm?: boolean
-  cjs?: boolean
   iife?: boolean | string
-  types?: boolean
 }
 
 export default async function(...args: string[]) {
@@ -56,15 +52,15 @@ export function generateDistPkgMeta(srcMeta: SrcPkgMeta, isDev: boolean): any {
   delete distMeta.publishConfig
 
   distMeta.main = 'index' + (
-    (!isDev && (defaultExportConfig.cjs ?? buildConfig.cjs ?? true)) ? '.cjs' :
-    (defaultExportConfig.esm ?? buildConfig.esm ?? true) ? '.mjs' :
+    (!isDev && (buildConfig.cjs ?? true)) ? '.cjs' :
+    (buildConfig.esm ?? true) ? '.mjs' :
     (defaultExportConfig.iife) ? '.js' : '' // TODO: otherwise throw error
   )
 
-  if (defaultExportConfig.esm ?? buildConfig.esm ?? true) {
+  if (buildConfig.esm ?? true) {
     distMeta.module = 'index.mjs'
   }
-  if (defaultExportConfig.types ?? buildConfig.types ?? true) {
+  if (buildConfig.types ?? true) {
     distMeta.types = (isDev ? '.tsc/' : '') + 'index.d.ts'
   }
 
@@ -83,13 +79,13 @@ export function generateDistPkgMeta(srcMeta: SrcPkgMeta, isDev: boolean): any {
       const entryFilePath = exportPath === '.' ? './index' : exportPath
       const exportEntry: any = {}
 
-      if (exportConfig.cjs ?? buildConfig.cjs ?? true) {
+      if (buildConfig.cjs ?? true) {
         exportEntry.require = entryFilePath + '.cjs'
       }
-      if (exportConfig.esm ?? buildConfig.esm ?? true) {
+      if (buildConfig.esm ?? true) {
         exportEntry.import = entryFilePath + '.mjs'
       }
-      if (exportConfig.types ?? buildConfig.types ?? true) {
+      if (buildConfig.types ?? true) {
         let typesPath = (exportConfig.typesPath || entryFilePath) + '.d.ts'
 
         if (isDev) {
