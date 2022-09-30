@@ -1,6 +1,6 @@
 import { join as joinPaths } from 'path'
 import { access as accessFile, mkdir, writeFile } from 'fs/promises'
-import { generateDistPkgMeta, readSrcPkgMeta, writeDistPkgMeta } from './meta.js'
+import { generateDistPkgMeta, readSrcPkgMeta, SrcPkgMeta, writeDistPkgMeta } from './meta.js'
 
 export default async function() {
   const pkgDir = process.cwd()
@@ -9,12 +9,18 @@ export default async function() {
 }
 
 export async function runPkgPreflight(pkgDir: string): Promise<void> {
-  await ensureDistDir(pkgDir)
+  const srcMeta = await readSrcPkgMeta(pkgDir)
 
-  return Promise.all([
-    ensureDistMeta(pkgDir),
-    ensureNpmIgnore(pkgDir),
-  ]).then()
+  if (
+    srcMeta.buildConfig &&
+    srcMeta.publishConfig?.linkDirectory
+  ) {
+    await ensureDistDir(pkgDir)
+    await Promise.all([
+      ensureDistMeta(pkgDir, srcMeta),
+      ensureNpmIgnore(pkgDir),
+    ])
+  }
 }
 
 async function ensureDistDir(pkgDir: string): Promise<void> {
@@ -25,11 +31,10 @@ async function ensureDistDir(pkgDir: string): Promise<void> {
   }
 }
 
-async function ensureDistMeta(pkgDir: string): Promise<void> {
+async function ensureDistMeta(pkgDir: string, srcMeta: SrcPkgMeta): Promise<void> {
   const distJsonPath = joinPaths(pkgDir, 'dist', 'package.json')
 
   if (!(await fileExists(distJsonPath))) {
-    const srcMeta = await readSrcPkgMeta(pkgDir)
     const distMeta = generateDistPkgMeta(srcMeta, true) // isDev=true
     await writeDistPkgMeta(pkgDir, distMeta)
   }
