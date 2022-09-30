@@ -22,7 +22,6 @@ const workspaceScriptsDir = joinPaths(fileURLToPath(import.meta.url), '../../..'
 
 export default async function(...args: string[]) {
   const pkgDir = process.cwd()
-  const pkgAnalysis = await analyzePkg(pkgDir)
   const isDev = args.indexOf('--dev') !== -1
   const isWatch = args.indexOf('--watch') !== -1
 
@@ -37,10 +36,13 @@ export default async function(...args: string[]) {
 
     const srcJsonPath = joinPaths(pkgDir, 'package.json')
     const srcJsonWatcher = watchPaths(srcJsonPath).on('all', async () => {
+      const pkgAnalysis = await analyzePkg(pkgDir)
+      const contentMap = await generateContentMap(pkgAnalysis)
+
       closeRollupWatchers()
       rollupWatchers = [
-        continuouslyBundleModules(pkgAnalysis, isDev),
-        ...continuouslyBundleIifes(pkgAnalysis),
+        continuouslyBundleModules(pkgAnalysis, contentMap, isDev),
+        ...continuouslyBundleIifes(pkgAnalysis, contentMap),
       ]
     })
 
@@ -52,9 +54,12 @@ export default async function(...args: string[]) {
       })
     })
   } else {
+    const pkgAnalysis = await analyzePkg(pkgDir)
+    const contentMap = await generateContentMap(pkgAnalysis)
+
     return Promise.all([
-      bundleModules(pkgAnalysis, isDev),
-      bundleIifes(pkgAnalysis),
+      bundleModules(pkgAnalysis, contentMap, isDev),
+      bundleIifes(pkgAnalysis, contentMap),
       bundleTypes(pkgAnalysis),
     ])
   }
@@ -63,31 +68,43 @@ export default async function(...args: string[]) {
 // Bundling Modules
 // -------------------------------------------------------------------------------------------------
 
-async function bundleModules(pkgAnalysis: PkgAnalysis, isDev: boolean): Promise<void> {
+async function bundleModules(
+  pkgAnalysis: PkgAnalysis,
+  contentMap: { [srcPath: string]: string },
+  isDev: boolean,
+): Promise<void> {
   return rollup({
-    input: buildTscInputMap(pkgAnalysis),
-    plugins: buildModulePlugins(pkgAnalysis, isDev),
+    input: buildSrcInputMap(pkgAnalysis),
+    plugins: buildModulePlugins(pkgAnalysis, contentMap, isDev),
   }).then((bundle) => {
     return Promise.all([
       bundle.write(buildEsmOutputOptions(pkgAnalysis.pkgDir, isDev)),
-      isDev && bundle.write(buildCjsOutputOptions(pkgAnalysis.pkgDir)),
+      !isDev && bundle.write(buildCjsOutputOptions(pkgAnalysis.pkgDir)),
     ]).then(() => {
       bundle.close()
     })
   })
 }
 
-function continuouslyBundleModules(pkgAnalysis: PkgAnalysis, isDev: boolean): RollupWatcher {
+function continuouslyBundleModules(
+  pkgAnalysis: PkgAnalysis,
+  contentMap: { [srcPath: string]: string },
+  isDev: boolean,
+): RollupWatcher {
   return rollupWatch({
-    input: buildTscInputMap(pkgAnalysis),
-    plugins: buildModulePlugins(pkgAnalysis, isDev),
+    input: buildSrcInputMap(pkgAnalysis),
+    plugins: buildModulePlugins(pkgAnalysis, contentMap, isDev),
     output: buildEsmOutputOptions(pkgAnalysis.pkgDir, isDev),
   })
 }
 
-function buildModulePlugins(pkgAnalysis: PkgAnalysis, isDev: boolean): (RollupPlugin | false)[]  {
+function buildModulePlugins(
+  pkgAnalysis: PkgAnalysis,
+  contentMap: { [srcPath: string]: string },
+  isDev: boolean,
+): (RollupPlugin | false)[]  {
   return [
-    generatedContentPlugin(pkgAnalysis),
+    generatedContentPlugin(contentMap),
     externalizeDepsPlugin(pkgAnalysis),
     tscRerootPlugin(pkgAnalysis.pkgDir),
     isDev && sourcemapsPlugin(), // load preexisting sourcemaps
@@ -116,8 +133,12 @@ function buildCjsOutputOptions(pkgDir: string): RollupOutputOptions {
 // Bundling IIFEs
 // -------------------------------------------------------------------------------------------------
 
-function bundleIifes(pkgAnalysis: PkgAnalysis): Promise<void> {
+function bundleIifes(
+  pkgAnalysis: PkgAnalysis,
+  contentMap: { [srcPath: string]: string },
+): Promise<void> {
   const { pkgDir, entryConfigMap, relSrcPathMap, importIdToGlobal } = pkgAnalysis
+  const srcDir = joinPaths(pkgDir, 'src')
   const promises: Promise<void>[] = []
 
   for (const entryId in relSrcPathMap) {
@@ -127,7 +148,6 @@ function bundleIifes(pkgAnalysis: PkgAnalysis): Promise<void> {
 
     if (iife) {
       for (const relSrcPath of relSrcPaths) {
-        const tscPath = buildTscPath(pkgDir, relSrcPath)
         const outputOptions = buildIifeOutputOptions(
           pkgDir,
           entryConfig,
@@ -137,8 +157,8 @@ function bundleIifes(pkgAnalysis: PkgAnalysis): Promise<void> {
 
         promises.push(
           rollup({
-            input: tscPath,
-            plugins: buildIifePlugins(pkgAnalysis),
+            input: joinPaths(srcDir, relSrcPath),
+            plugins: buildIifePlugins(pkgAnalysis, contentMap),
           }).then((bundle) => {
             return bundle.write(outputOptions)
               .then(() => Promise.all([
@@ -154,8 +174,12 @@ function bundleIifes(pkgAnalysis: PkgAnalysis): Promise<void> {
   return Promise.all(promises).then()
 }
 
-function continuouslyBundleIifes(pkgAnalysis: PkgAnalysis): RollupWatcher[] {
+function continuouslyBundleIifes(
+  pkgAnalysis: PkgAnalysis,
+  contentMap: { [srcPath: string]: string },
+): RollupWatcher[] {
   const { pkgDir, entryConfigMap, relSrcPathMap, importIdToGlobal } = pkgAnalysis
+  const srcDir = joinPaths(pkgDir, 'src')
   const watchers: RollupWatcher[] = []
 
   for (const entryId in relSrcPathMap) {
@@ -165,7 +189,6 @@ function continuouslyBundleIifes(pkgAnalysis: PkgAnalysis): RollupWatcher[] {
 
     if (iife) {
       for (const relSrcPath of relSrcPaths) {
-        const tscPath = buildTscPath(pkgDir, relSrcPath)
         const outputOptions = buildIifeOutputOptions(
           pkgDir,
           entryConfig,
@@ -175,8 +198,8 @@ function continuouslyBundleIifes(pkgAnalysis: PkgAnalysis): RollupWatcher[] {
 
         watchers.push(
           rollupWatch({
-            input: tscPath,
-            plugins: buildIifePlugins(pkgAnalysis),
+            input: joinPaths(srcDir, relSrcPath),
+            plugins: buildIifePlugins(pkgAnalysis, contentMap),
             output: outputOptions,
           })
         )
@@ -187,9 +210,12 @@ function continuouslyBundleIifes(pkgAnalysis: PkgAnalysis): RollupWatcher[] {
   return watchers
 }
 
-function buildIifePlugins(pkgAnalysis: PkgAnalysis): RollupPlugin[] {
+function buildIifePlugins(
+  pkgAnalysis: PkgAnalysis,
+  contentMap: { [srcPath: string]: string },
+): RollupPlugin[] {
   return [
-    generatedContentPlugin(pkgAnalysis),
+    generatedContentPlugin(contentMap),
     externalizeDepsPlugin(pkgAnalysis),
     externalizeExportsPlugin(pkgAnalysis),
     tscRerootPlugin(pkgAnalysis.pkgDir),
@@ -229,7 +255,7 @@ async function minifyFile(unminifiedPath: string): Promise<void> {
 
 async function bundleTypes(pkgAnalysis: PkgAnalysis): Promise<void> {
   return rollup({
-    input: buildTscInputMap(pkgAnalysis, '.d.ts'),
+    input: buildTypesInputMap(pkgAnalysis),
     plugins: buildTypesPlugins(pkgAnalysis),
   }).then((bundle) => {
     return bundle.write(buildTypesOutputOptions(pkgAnalysis.pkgDir)).then(() => {
@@ -240,6 +266,7 @@ async function bundleTypes(pkgAnalysis: PkgAnalysis): Promise<void> {
 
 function buildTypesPlugins(pkgAnalysis: PkgAnalysis): RollupPlugin[] {
   return [
+    externalizeAssetsPlugin(),
     externalizeDepsPlugin(pkgAnalysis),
     externalizeExportsPlugin(pkgAnalysis), // because dts-bundler gets confused by code-splitting
     dtsPlugin(),
@@ -255,12 +282,29 @@ function buildTypesOutputOptions(pkgDir: string): RollupOutputOptions {
   }
 }
 
-// Rollup
+// Rollup Input
 // -------------------------------------------------------------------------------------------------
 
 type RollupInputMap = { [outputId: string]: string }
 
-function buildTscInputMap(pkgAnalysis: PkgAnalysis, ext = '.js'): RollupInputMap {
+function buildSrcInputMap(pkgAnalysis: PkgAnalysis): RollupInputMap {
+  const { pkgDir, relSrcPathMap } = pkgAnalysis
+  const srcDir = joinPaths(pkgDir, 'src')
+  const inputs: { [outputId: string]: string } = {}
+
+  for (let entryId in relSrcPathMap) {
+    const relSrcPaths = relSrcPathMap[entryId]
+
+    for (const relSrcPath of relSrcPaths) {
+      const outputId = buildOutputId(relSrcPath)
+      inputs[outputId] = joinPaths(srcDir, relSrcPath)
+    }
+  }
+
+  return inputs
+}
+
+function buildTypesInputMap(pkgAnalysis: PkgAnalysis): RollupInputMap {
   const { pkgDir, relSrcPathMap } = pkgAnalysis
   const inputs: { [outputId: string]: string } = {}
 
@@ -269,12 +313,15 @@ function buildTscInputMap(pkgAnalysis: PkgAnalysis, ext = '.js'): RollupInputMap
 
     for (const relSrcPath of relSrcPaths) {
       const outputId = buildOutputId(relSrcPath)
-      inputs[outputId] = buildTscPath(pkgDir, relSrcPath, ext)
+      inputs[outputId] = buildTscPath(pkgDir, relSrcPath, '.d.ts')
     }
   }
 
   return inputs
 }
+
+// Rollup Plugins
+// -------------------------------------------------------------------------------------------------
 
 function buildContentProcessingPlugins() {
   return [
@@ -299,7 +346,9 @@ function externalizeDepsPlugin(pkgAnalysis: PkgAnalysis): RollupPlugin {
   return {
     name: 'externalize-deps',
     resolveId(id) {
-      if (id in deps) {
+      const pkgName = id.match(/^([^\/]*)/)![0]
+
+      if (pkgName in deps) {
         return { id, external: true }
       }
     },
@@ -313,6 +362,23 @@ function externalizeExportsPlugin(pkgAnalysis: PkgAnalysis): RollupPlugin {
       const importPath = computeImportIdPath(id, importer)
 
       if (importPath && pkgAnalysis.tscPathToEntryId[importPath]) {
+        return {
+          // out source files reference eachother via .js, but esm output uses .mjs
+          id: id.replace(/\.js$/, '.mjs'),
+          external: true,
+        }
+      }
+    }
+  }
+}
+
+function externalizeAssetsPlugin(): RollupPlugin {
+  return {
+    name: 'externalize-assets',
+    resolveId(id, importer) {
+      const importPath = computeImportIdPath(id, importer)
+
+      if (importPath && isPathAsset(importPath)) {
         return { id, external: true }
       }
     }
@@ -346,9 +412,7 @@ function tscRerootPlugin(pkgDir: string): RollupPlugin {
   }
 }
 
-async function generatedContentPlugin(pkgAnalysis: PkgAnalysis): Promise<RollupPlugin> {
-  const contentMap = await generateContentMap(pkgAnalysis)
-
+function generatedContentPlugin(contentMap: { [srcPath: string]: string }): RollupPlugin {
   return {
     name: 'generated-content',
     async resolveId(id, importer, options) {
@@ -384,7 +448,7 @@ async function generatedContentPlugin(pkgAnalysis: PkgAnalysis): Promise<RollupP
 
 async function generateContentMap(
   pkgAnalysis: PkgAnalysis
-): Promise<{ [filePath: string]: string }> {
+): Promise<{ [srcPath: string]: string }> {
   const { pkgDir, entryConfigMap } = pkgAnalysis
   const contentMap: { [srcPath: string]: string } = {}
 
@@ -455,7 +519,7 @@ async function analyzePkg(pkgDir: string): Promise<PkgAnalysis> {
     const relSrcPaths = relSrcPathMap[entryId]
 
     for (const relSrcPath of relSrcPaths) {
-      const tscPath = buildTscPath(pkgDir, relSrcPath)
+      const tscPath = buildTscPath(pkgDir, relSrcPath, '.js')
 
       tscPathToEntryId[tscPath] = entryId
 
@@ -514,7 +578,7 @@ function fabricateSrcPath(pkgDir: string, entryId: string): string {
   )
 }
 
-function buildTscPath(pkgDir: string, relSrcPath: string, ext = '.js') {
+function buildTscPath(pkgDir: string, relSrcPath: string, ext: string) {
   return joinPaths(pkgDir, 'dist', '.tsc', relSrcPath).replace(/\.tsx?$/, ext)
 }
 

@@ -8,7 +8,7 @@
     "turbo": "^1.4.6"
   },
   "scripts": {
-    "pnpm:devPreinstall": "workspace-scripts preflight",
+    "pnpm:devPreinstall": "workspace-scripts root:preflight",
     "preflight": "workspace-scripts preflight",
     "all": "pnpm run clean && pnpm run preflight && pnpm exec tsc -b && pnpm run build",
     "build": "turbo run build --filter './standard/**' --filter './premium/**' --no-cache",
