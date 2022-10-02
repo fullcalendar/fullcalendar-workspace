@@ -43,7 +43,11 @@
     "cjs": false,
     "types": false,
     "exports": {
-      ".": { "iife": "FullCalendar" }
+      ".": {
+        "iife": {
+          "name": "FullCalendar"
+        }
+      }
     }
   },
   "publishConfig": {

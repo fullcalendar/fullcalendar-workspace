@@ -15,7 +15,6 @@ export interface BuildConfig {
   esm?: boolean
   cjs?: boolean
   types?: boolean
-  externalGlobals?: { [pkgName: string]: string }
 }
 
 export type EntryConfigMap = { [entryId: string]: EntryConfig }
@@ -23,7 +22,10 @@ export type EntryConfigMap = { [entryId: string]: EntryConfig }
 export interface EntryConfig {
   typesPath?: string
   generator?: string
-  iife?: boolean | string
+  iife?: {
+    name?: string
+    globals?: { [pkgName: string]: string }
+  }
 }
 
 export default async function(...args: string[]) {
