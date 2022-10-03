@@ -25,6 +25,7 @@ export interface EntryConfig {
   iife?: {
     name?: string
     globals?: { [pkgName: string]: string }
+    generator?: string
   }
 }
 
