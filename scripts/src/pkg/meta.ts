@@ -15,6 +15,7 @@ export interface BuildConfig {
   esm?: boolean
   cjs?: boolean
   types?: boolean
+  min?: boolean
 }
 
 export type EntryConfigMap = { [entryId: string]: EntryConfig }

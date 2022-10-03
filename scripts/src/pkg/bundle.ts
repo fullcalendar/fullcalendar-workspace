@@ -20,6 +20,10 @@ import { live } from '../utils/exec.js'
 
 // TODO: continuous rollup building can do multiple output options
 
+// TODO: entry iifes should NOT rely on non-iife source files being present
+
+// https://rollupjs.org/guide/en/#thissetassetsource
+
 export default async function(...args: string[]) {
   const pkgDir = process.cwd()
   const isDev = args.indexOf('--dev') !== -1
@@ -128,8 +132,9 @@ function buildCjsOutputOptions(pkgDir: string): RollupOutputOptions {
 // -------------------------------------------------------------------------------------------------
 
 function bundleIifes(pkgAnalysis: PkgAnalysis): Promise<void> {
-  const { pkgDir, entryConfigMap, relSrcPathMap } = pkgAnalysis
+  const { pkgDir, pkgMeta, entryConfigMap, relSrcPathMap } = pkgAnalysis
   const promises: Promise<void>[] = []
+  const enableMin = pkgMeta.buildConfig?.min ?? true
 
   for (const entryId in relSrcPathMap) {
     const relSrcPaths = relSrcPathMap[entryId]
@@ -148,7 +153,7 @@ function bundleIifes(pkgAnalysis: PkgAnalysis): Promise<void> {
             return bundle.write(outputOptions)
               .then(() => Promise.all([
                 bundle.close(),
-                minifyFile(outputOptions.file!),
+                enableMin && minifyFile(outputOptions.file!),
               ]).then())
           })
         )
@@ -545,6 +550,8 @@ function buildTscPath(pkgDir: string, relSrcPath: string, ext: string) {
   return joinPaths(pkgDir, 'dist', '.tsc', relSrcPath).replace(/\.tsx?$/, '') + ext
 }
 
+// TODO: use <context>.getFileName(referenceId) ?
+// https://rollupjs.org/guide/en/#thisgetfilename
 function computeImportPath(id: string, importer: string | undefined): string | undefined {
   // an entrypoint
   if (!importer) {

@@ -18,9 +18,3 @@ const MORE_DEFAULT_PLUGINS = [
 pushOptions({
   plugins: DEFAULT_PLUGINS.concat(MORE_DEFAULT_PLUGINS),
 })
-
-/* generate-index
-{{#each testPaths}}
-import '{{this}}'
-{{/each}}
-*/

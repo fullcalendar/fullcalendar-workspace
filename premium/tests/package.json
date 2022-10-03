@@ -16,11 +16,11 @@
     "@fullcalendar/standard-tests": "workspace:*",
     "@fullcalendar/timegrid": "workspace:*",
     "@fullcalendar/timeline": "workspace:*",
-    "@fullcalendar/workspace-scripts": "workspace:*",
     "tslib": "^2.1.0",
     "xhr-mock": "^2.5.1"
   },
   "devDependencies": {
+    "@fullcalendar/workspace-scripts": "workspace:*",
     "@types/jasmine": "^3.3.12",
     "@types/jasmine-jquery": "^1.5.33",
     "@types/jquery": "^3.3.29"
@@ -33,9 +33,14 @@
   "buildConfig": {
     "esm": false,
     "cjs": false,
+    "min": false,
     "types": false,
     "exports": {
-      ".": { "generator": "./scripts/generate-index.js", "iife": true }
+      ".": {
+        "iife": {
+          "generator": "./scripts/generate-index-iife.js"
+        }
+      }
     }
   }
 }
