@@ -1,10 +1,12 @@
 packages:
   - ./standard
-  - ./standard/packages/*
   - ./standard/tests
+  - ./standard/bundle
+  - ./standard/packages/*
   - ./premium
-  - ./premium/packages/*
   - ./premium/tests
+  - ./premium/bundle
+  - ./premium/packages/*
   - ./scripts
   - ./contrib/*
   - ./examples/*
