@@ -9,10 +9,8 @@
   },
   "scripts": {
     "pnpm:devPreinstall": "workspace-scripts root:preflight",
-    "preflight": "workspace-scripts preflight",
-    "all": "pnpm run clean && pnpm run preflight && pnpm exec tsc -b && pnpm run build",
-    "build": "turbo run build --filter './standard/**' --filter './premium/**' --no-cache",
-    "tsc:dev": "tsc -b --watch --pretty --preserveWatchOutput",
+    "preflight": "workspace-scripts root:preflight",
+    "build": "workspace-scripts root:build",
     "clean": "turbo run clean --no-cache",
     "turbo:clean": "rm -rf node_modules/.cache/turbo && find . -type d -name '.turbo' -exec rm -rf {} \\;"
   },

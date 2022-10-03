@@ -3,13 +3,8 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["src/**/*", "package.json"],
-      "outputs": ["dist/**/*", "!**/*.map", "!dist/.tsc/**/*"]
-    },
-    "dev": {
-      "dependsOn": [],
-      "inputs": ["src/**/*", "package.json"],
-      "outputs": ["dist/**/*", "!dist/.tsc/**/*"]
+      "inputs": ["package.json", "dist/.tsc/**/*"],
+      "outputs": ["dist/**/*.{mjs,cjs,js,json}", "!dist/.tsc/**/*"]
     },
     "clean": {
       "dependsOn": []

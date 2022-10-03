@@ -1,8 +1,8 @@
 import { runPkgPreflight } from '../pkg/preflight.js'
-import { getNormalPkgDirs } from './lib.js'
+import { getOurPkgDirs } from './lib.js'
 
 export default async function() {
-  const pkgDirs = await getNormalPkgDirs()
+  const pkgDirs = await getOurPkgDirs()
 
   await Promise.all(
     pkgDirs.map(async (pkgDir) => {
