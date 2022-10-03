@@ -2,27 +2,26 @@
 <html>
 <head>
 <meta charset='utf-8' />
-<script src='../bundle/dist/index.js'></script>
+<script src='../../bundle/dist/index.js'></script>
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'resourceTimeGridTwoDay',
+      initialView: 'resourceDayGridDay',
       initialDate: '2020-09-07',
       editable: true,
       selectable: true,
       dayMaxEvents: true, // allow "more" link when too many events
-      dayMinWidth: 200,
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
-        right: 'resourceTimeGridDay,resourceTimeGridTwoDay,resourceTimeGridWeek,dayGridMonth'
+        right: 'resourceDayGridDay,resourceDayGridTwoDay,timeGridWeek,dayGridMonth'
       },
       views: {
-        resourceTimeGridTwoDay: {
-          type: 'resourceTimeGrid',
+        resourceDayGridTwoDay: {
+          type: 'resourceDayGrid',
           duration: { days: 2 },
           buttonText: '2 days',
         }
