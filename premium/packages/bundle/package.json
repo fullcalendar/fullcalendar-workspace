@@ -18,7 +18,7 @@
     "url": "http://arshaw.com/"
   },
   "type": "module",
-  "devDependencies": {
+  "dependencies": {
     "@fullcalendar/adaptive": "workspace:*",
     "@fullcalendar/core": "workspace:*",
     "@fullcalendar/daygrid": "workspace:*",
@@ -31,17 +31,16 @@
     "@fullcalendar/scrollgrid": "workspace:*",
     "@fullcalendar/timegrid": "workspace:*",
     "@fullcalendar/timeline": "workspace:*",
-    "@fullcalendar/workspace-scripts": "workspace:*",
     "tslib": "^2.1.0"
+  },
+  "devDependencies": {
+    "@fullcalendar/workspace-scripts": "workspace:*"
   },
   "scripts": {
     "build": "workspace-scripts pkg:build",
     "clean": "workspace-scripts pkg:clean"
   },
   "buildConfig": {
-    "esm": false,
-    "cjs": false,
-    "types": false,
     "exports": {
       ".": {
         "iife": {

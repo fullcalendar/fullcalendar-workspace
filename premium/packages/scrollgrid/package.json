@@ -32,7 +32,15 @@
   },
   "buildConfig": {
     "exports": {
-      ".": {}
+      ".": {
+        "iife": {
+          "name": "FullCalendarScrollGrid",
+          "globals": {
+            "@fullcalendar/core": "FullCalendar",
+            "@fullcalendar/core/preact": "FullCalendar"
+          }
+        }
+      }
     }
   },
   "publishConfig": {

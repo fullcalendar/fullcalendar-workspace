@@ -26,14 +26,3 @@ globalPlugins.push(
 )
 
 export * from '@fullcalendar/core'
-export * from '@fullcalendar/interaction'
-export * from '@fullcalendar/daygrid'
-export * from '@fullcalendar/timegrid'
-export * from '@fullcalendar/list'
-export * from '@fullcalendar/scrollgrid'
-export * from '@fullcalendar/adaptive'
-export * from '@fullcalendar/timeline'
-export * from '@fullcalendar/resource-common'
-export * from '@fullcalendar/resource-daygrid'
-export * from '@fullcalendar/resource-timegrid'
-export * from '@fullcalendar/resource-timeline'
