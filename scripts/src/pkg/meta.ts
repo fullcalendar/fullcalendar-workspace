@@ -67,6 +67,9 @@ export function generateDistPkgMeta(srcMeta: SrcPkgMeta, isDev: boolean): any {
   if (buildConfig.types ?? true) {
     distMeta.types = (isDev ? '.tsc/' : '') + 'index.d.ts'
   }
+  if (defaultExportConfig.iife) {
+    distMeta.jsdelivr = 'index.js'
+  }
 
   const exportEntries: any = {
     './package.json': './package.json'
