@@ -11,6 +11,7 @@ export default async function() {
 export async function runPkgPreflight(pkgDir: string): Promise<void> {
   const srcMeta = await readSrcPkgMeta(pkgDir)
 
+  // TODO: more DRY with meta's main
   if (
     srcMeta.buildConfig &&
     srcMeta.publishConfig?.linkDirectory

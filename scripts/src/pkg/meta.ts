@@ -35,9 +35,15 @@ export default async function(...args: string[]) {
   const isDev = args.indexOf('--dev') !== -1
 
   const srcMeta = await readSrcPkgMeta(pkgDir)
-  const distMeta = generateDistPkgMeta(srcMeta, isDev)
 
-  await writeDistPkgMeta(pkgDir, distMeta)
+  // TODO: more DRY with meta's main
+  if (
+    srcMeta.buildConfig &&
+    srcMeta.publishConfig?.linkDirectory
+  ) {
+    const distMeta = generateDistPkgMeta(srcMeta, isDev)
+    await writeDistPkgMeta(pkgDir, distMeta)
+  }
 }
 
 export function generateDistPkgMeta(srcMeta: SrcPkgMeta, isDev: boolean): any {
