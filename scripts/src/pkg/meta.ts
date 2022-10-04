@@ -1,4 +1,4 @@
-import { join as joinPaths } from 'path'
+import { basename, join as joinPaths, sep as pathSeparator } from 'path'
 import { readFile, writeFile } from 'fs/promises'
 
 export interface SrcPkgMeta {
@@ -41,12 +41,17 @@ export default async function(...args: string[]) {
     srcMeta.buildConfig &&
     srcMeta.publishConfig?.linkDirectory
   ) {
-    const distMeta = generateDistPkgMeta(srcMeta, isDev)
+    const subrepoInfo = await getSubrepoInfo(pkgDir)
+    const distMeta = generateDistPkgMeta(subrepoInfo, srcMeta, isDev)
     await writeDistPkgMeta(pkgDir, distMeta)
   }
 }
 
-export function generateDistPkgMeta(srcMeta: SrcPkgMeta, isDev: boolean): any {
+export function generateDistPkgMeta(
+  subrepoInfo: SubrepoInfo,
+  srcMeta: SrcPkgMeta,
+  isDev: boolean,
+): any {
   const buildConfig: BuildConfig = srcMeta.buildConfig || {}
   const exportConfigs = buildConfig.exports || {}
   const defaultExportConfig = exportConfigs['.']
@@ -55,11 +60,14 @@ export function generateDistPkgMeta(srcMeta: SrcPkgMeta, isDev: boolean): any {
     throw new Error('Must have default export')
   }
 
-  const distMeta = { ...srcMeta }
+  const distMeta = { ...subrepoInfo.subrepoMeta, ...srcMeta }
   delete distMeta.scripts
   delete distMeta.devDependencies
   delete distMeta.buildConfig
   delete distMeta.publishConfig
+  delete distMeta.private
+
+  distMeta.repository.directory = subrepoInfo.subrepoSubdir
 
   distMeta.main = 'index' + (
     (!isDev && (buildConfig.cjs ?? true)) ? '.cjs' :
@@ -147,4 +155,25 @@ export async function writeDistPkgMeta(pkgDir: string, distMeta: any): Promise<v
   const jsonPath = joinPaths(pkgDir, 'dist', 'package.json')
   const distJson = JSON.stringify(distMeta, undefined, 2)
   await writeFile(jsonPath, distJson)
+}
+
+interface SubrepoInfo {
+  subrepoMeta: any
+  subrepoSubdir: string
+}
+
+export async function getSubrepoInfo(pkgDir: string): Promise<SubrepoInfo> {
+  if (basename(pkgDir) === 'bundle') {
+    return {
+      subrepoMeta: await readSrcPkgMeta(joinPaths(pkgDir, '..')),
+      subrepoSubdir: 'bundle',
+    }
+  } else {
+    const pkgDirParts = pkgDir.split(pathSeparator)
+
+    return {
+      subrepoMeta: await readSrcPkgMeta(joinPaths(pkgDir, '../..')),
+      subrepoSubdir: pkgDirParts.slice(-2).join('/'),
+    }
+  }
 }

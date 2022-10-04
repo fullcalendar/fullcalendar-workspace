@@ -1,6 +1,6 @@
 import { join as joinPaths } from 'path'
 import { access as accessFile, mkdir, writeFile } from 'fs/promises'
-import { generateDistPkgMeta, readSrcPkgMeta, SrcPkgMeta, writeDistPkgMeta } from './meta.js'
+import { generateDistPkgMeta, getSubrepoInfo, readSrcPkgMeta, SrcPkgMeta, writeDistPkgMeta } from './meta.js'
 
 export default async function() {
   const pkgDir = process.cwd()
@@ -32,11 +32,15 @@ async function ensureDistDir(pkgDir: string): Promise<void> {
   }
 }
 
+/*
+TODO: read baseMeta only once in preflight
+*/
 async function ensureDistMeta(pkgDir: string, srcMeta: SrcPkgMeta): Promise<void> {
   const distJsonPath = joinPaths(pkgDir, 'dist', 'package.json')
 
   if (!(await fileExists(distJsonPath))) {
-    const distMeta = generateDistPkgMeta(srcMeta, true) // isDev=true
+    const subrepoInfo = await getSubrepoInfo(pkgDir)
+    const distMeta = generateDistPkgMeta(subrepoInfo, srcMeta, true) // isDev=true
     await writeDistPkgMeta(pkgDir, distMeta)
   }
 }
