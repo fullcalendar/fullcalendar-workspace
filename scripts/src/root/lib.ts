@@ -1,6 +1,6 @@
 import { join as joinPaths } from 'path'
 import { fileURLToPath } from 'url'
-import { capture } from '../utils/exec.js'
+import { capture, live } from '../utils/exec.js'
 
 export const workspaceScriptsDir = joinPaths(fileURLToPath(import.meta.url), '../../..')
 export const monorepoRootDir = joinPaths(workspaceScriptsDir, '..')
@@ -18,4 +18,13 @@ export async function getOurPkgDirs(): Promise<string[]> {
 
   const pkgObjs = JSON.parse(json)
   return pkgObjs.map((pkgObj: any) => pkgObj.path)
+}
+
+export async function runTurboTask(taskName: string, args: string[] = []) {
+  await live([
+    joinPaths(workspaceScriptsDir, 'node_modules/turbo/bin/turbo'),
+    'run', taskName, ...args, ...filterArgs,
+  ], {
+    cwd: monorepoRootDir, // will use turbo.json config
+  })
 }

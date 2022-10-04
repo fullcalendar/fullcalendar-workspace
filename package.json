@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "devDependencies": {
-    "@fullcalendar/workspace-scripts": "workspace:*",
-    "turbo": "^1.4.6"
+    "@fullcalendar/workspace-scripts": "workspace:*"
   },
   "scripts": {
     "pnpm:devPreinstall": "workspace-scripts root:preflight",
