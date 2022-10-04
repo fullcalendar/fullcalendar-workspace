@@ -1,5 +1,25 @@
 {
   "private": true,
   "name": "@fullcalendar/premium-features",
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "keywords": [
+    "calendar",
+    "event",
+    "full-sized"
+  ],
+  "homepage": "https://fullcalendar.io/premium",
+  "docs": "https://fullcalendar.io/docs/premium",
+  "bugs": "https://fullcalendar.io/reporting-bugs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fullcalendar/fullcalendar-scheduler.git",
+    "homepage": "https://github.com/fullcalendar/fullcalendar-scheduler"
+  },
+  "license": "SEE LICENSE IN LICENSE.md",
+  "author": {
+    "name": "Adam Shaw",
+    "email": "arshaw@arshaw.com",
+    "url": "http://arshaw.com/"
+  },
+  "copyright": "2022 Adam Shaw"
 }
