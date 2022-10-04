@@ -8,7 +8,6 @@
   },
   "scripts": {
     "pnpm:devPreinstall": "workspace-scripts root:preflight",
-    "preflight": "workspace-scripts root:preflight",
     "build": "workspace-scripts root:build",
     "test": "workspace-scripts root:test",
     "clean": "workspace-scripts root:clean"
