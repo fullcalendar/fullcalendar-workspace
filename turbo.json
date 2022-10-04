@@ -7,6 +7,7 @@
       "outputs": ["dist/**/*.{mjs,cjs,js,json}", "!dist/.tsc/**/*"]
     },
     "clean": {
+      "cache": false,
       "dependsOn": []
     }
   }

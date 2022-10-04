@@ -162,6 +162,9 @@ interface SubrepoInfo {
   subrepoSubdir: string
 }
 
+/*
+TODO: rename? 'premium' is not a subrepo
+*/
 export async function getSubrepoInfo(pkgDir: string): Promise<SubrepoInfo> {
   if (basename(pkgDir) === 'bundle') {
     return {

@@ -40,6 +40,7 @@ async function createArchive(
   const archive = archiver('zip', { zlib: { level: 9 } })
   archive.pipe(archiveStream)
 
+  // TODO: no longer use blobs. other places are assuming file extensions
   ;['README.*', 'LICENSE.*'].forEach((pattern) => {
     archive.glob(pattern, { cwd: rootDir }, { prefix: archiveId })
   })
