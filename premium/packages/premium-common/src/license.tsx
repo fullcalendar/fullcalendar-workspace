@@ -3,8 +3,8 @@ import { createElement, Fragment } from '@fullcalendar/core/preact'
 
 const RELEASE_DATE = '<%= releaseDate %>' // for Scheduler
 const UPGRADE_WINDOW = 365 + 7 // days. 1 week leeway, for tz shift reasons too
-const INVALID_LICENSE_URL = 'http://fullcalendar.io/docs/schedulerLicenseKey#invalid'
-const OUTDATED_LICENSE_URL = 'http://fullcalendar.io/docs/schedulerLicenseKey#outdated'
+const INVALID_LICENSE_URL = 'https://fullcalendar.io/docs/schedulerLicenseKey#invalid'
+const OUTDATED_LICENSE_URL = 'https://fullcalendar.io/docs/schedulerLicenseKey#outdated'
 const PRESET_LICENSE_KEYS = [
   'GPL-My-Project-Is-Open-Source',
   'CC-Attribution-NonCommercial-NoDerivatives',
