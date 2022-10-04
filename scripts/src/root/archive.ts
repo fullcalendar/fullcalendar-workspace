@@ -40,16 +40,12 @@ async function createArchive(
   const archive = archiver('zip', { zlib: { level: 9 } })
   archive.pipe(archiveStream)
 
-  archive.directory(
-    joinPaths(bundleDir, 'examples'),
-    `${archiveId}/examples`,
-  )
+  ;['README.*', 'LICENSE.*'].forEach((pattern) => {
+    archive.glob(pattern, { cwd: rootDir }, { prefix: archiveId })
+  })
 
-  archive.glob(
-    'dist/*.js',
-    { cwd: bundleDir },
-    { prefix: archiveId },
-  )
+  archive.directory(joinPaths(bundleDir, 'examples'), `${archiveId}/examples`)
+  archive.glob('dist/*.js', { cwd: bundleDir }, { prefix: archiveId })
 
   const pkgRootDirs = [
     joinPaths(rootDir, 'packages'),
@@ -69,8 +65,6 @@ async function createArchive(
       )
     }
   }
-
-  // TODO: REAME, LICENSE
 
   return archive.finalize()
 }
