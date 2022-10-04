@@ -11,8 +11,7 @@
     "pnpm:devPreinstall": "workspace-scripts root:preflight",
     "preflight": "workspace-scripts root:preflight",
     "build": "workspace-scripts root:build",
-    "clean": "turbo run clean --no-cache",
-    "turbo:clean": "rm -rf node_modules/.cache/turbo && find . -type d -name '.turbo' -exec rm -rf {} \\;"
+    "clean": "turbo run clean --no-cache"
   },
   "engines": {
     "node": ">=16",
