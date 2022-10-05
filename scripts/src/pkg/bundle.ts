@@ -108,7 +108,7 @@ function buildModulePlugins(pkgAnalysis: PkgAnalysis, isDev: boolean): (RollupPl
     externalizeDepsPlugin(pkgAnalysis),
     rerootAssetsPlugin(pkgAnalysis.pkgDir),
     isDev && sourcemapsPlugin(), // load preexisting sourcemaps
-    ...buildContentProcessingPlugins(),
+    ...buildContentProcessingPlugins(pkgAnalysis),
   ]
 }
 
@@ -207,7 +207,7 @@ function buildIifePlugins(pkgAnalysis: PkgAnalysis, iifeGlobals: any, bundleAll:
     // !bundleAll && externalizeDepsPlugin(pkgAnalysis),
     externalizeGlobals(iifeGlobals),
     rerootAssetsPlugin(pkgAnalysis.pkgDir),
-    ...buildContentProcessingPlugins(),
+    ...buildContentProcessingPlugins(pkgAnalysis),
   ]
 }
 
@@ -312,7 +312,7 @@ function buildInputMap(pkgAnalysis: PkgAnalysis, ext: string): RollupInputMap {
 // Rollup Plugins
 // -------------------------------------------------------------------------------------------------
 
-function buildContentProcessingPlugins() {
+function buildContentProcessingPlugins(pkgAnalysis: PkgAnalysis) {
   return [
     nodeResolvePlugin({ // determines index.js and .js/cjs/mjs
       browser: true, // for xhr-mock (use non-node shims that it wants to)
@@ -324,7 +324,17 @@ function buildContentProcessingPlugins() {
       config: {
         path: joinPaths(workspaceScriptsDir, 'postcss.config.cjs'),
         ctx: {}, // arguments given to config file
-      }
+      },
+      inject: basename(pkgAnalysis.pkgDir) === 'tests'
+        ? true
+        : function (cssVarName: string) {
+            const importPath = pkgAnalysis.pkgMeta.name === '@fullcalendar/core'
+              ? joinPaths(pkgAnalysis.pkgDir, 'dist/.tsc/styleUtils.js') // TODO: use util
+              : '@fullcalendar/core'
+
+            return `import { injectStyles } from ${JSON.stringify(importPath)};\n` +
+              `injectStyles(${cssVarName});\n`
+          }
     })
   ]
 }
