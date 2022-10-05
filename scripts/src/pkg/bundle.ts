@@ -1,6 +1,7 @@
 import { join as joinPaths, resolve as resolvePath, dirname, isAbsolute } from 'path'
 import { watch as watchPaths } from 'chokidar'
 import { globby } from 'globby'
+import handlebars from 'handlebars'
 import {
   rollup,
   watch as rollupWatch,
@@ -15,8 +16,9 @@ import { default as postcssPlugin } from 'rollup-plugin-postcss'
 import { default as sourcemapsPlugin } from 'rollup-plugin-sourcemaps'
 import { default as dtsPlugin } from 'rollup-plugin-dts'
 import { workspaceScriptsDir } from '../root/lib.js'
-import { EntryConfig, EntryConfigMap, readSrcPkgMeta, SrcPkgMeta } from './meta.js'
+import { EntryConfig, EntryConfigMap, generateDistPkgMeta, getSubrepoInfo, readSrcPkgMeta, SrcPkgMeta } from './meta.js'
 import { live } from '../utils/exec.js'
+import { readFile } from 'fs/promises'
 
 // TODO: continuous rollup building can do multiple output options
 
@@ -45,7 +47,7 @@ export default async function(...args: string[]) {
       closeRollupWatchers()
       rollupWatchers = [
         continuouslyBundleModules(pkgAnalysis, isDev),
-        ...continuouslyBundleIifes(pkgAnalysis),
+        ...(await continuouslyBundleIifes(pkgAnalysis)),
       ]
     })
 
@@ -131,7 +133,7 @@ function buildCjsOutputOptions(pkgDir: string): RollupOutputOptions {
 // Bundling IIFEs
 // -------------------------------------------------------------------------------------------------
 
-function bundleIifes(pkgAnalysis: PkgAnalysis): Promise<void> {
+async function bundleIifes(pkgAnalysis: PkgAnalysis): Promise<void> {
   const { pkgDir, pkgMeta, entryConfigMap, relSrcPathMap } = pkgAnalysis
   const promises: Promise<void>[] = []
   const enableMin = pkgMeta.buildConfig?.min ?? true
@@ -143,7 +145,7 @@ function bundleIifes(pkgAnalysis: PkgAnalysis): Promise<void> {
 
     if (iifeConfig) {
       for (const relSrcPath of relSrcPaths) {
-        const outputOptions = buildIifeOutputOptions(pkgDir, entryConfig, relSrcPath)
+        const outputOptions = await buildIifeOutputOptions(pkgAnalysis, entryConfig, relSrcPath)
 
         promises.push(
           rollup({
@@ -164,7 +166,7 @@ function bundleIifes(pkgAnalysis: PkgAnalysis): Promise<void> {
   return Promise.all(promises).then()
 }
 
-function continuouslyBundleIifes(pkgAnalysis: PkgAnalysis): RollupWatcher[] {
+async function continuouslyBundleIifes(pkgAnalysis: PkgAnalysis): Promise<RollupWatcher[]> {
   const { pkgDir, entryConfigMap, relSrcPathMap } = pkgAnalysis
   const watchers: RollupWatcher[] = []
 
@@ -175,7 +177,7 @@ function continuouslyBundleIifes(pkgAnalysis: PkgAnalysis): RollupWatcher[] {
 
     if (iifeConfig) {
       for (const relSrcPath of relSrcPaths) {
-        const outputOptions = buildIifeOutputOptions(pkgDir, entryConfig, relSrcPath)
+        const outputOptions = await buildIifeOutputOptions(pkgAnalysis, entryConfig, relSrcPath)
 
         watchers.push(
           rollupWatch({
@@ -200,17 +202,19 @@ function buildIifePlugins(pkgAnalysis: PkgAnalysis, iifeGlobals: any): RollupPlu
   ]
 }
 
-function buildIifeOutputOptions(
-  pkgDir: string,
+async function buildIifeOutputOptions(
+  pkgAnalysis: PkgAnalysis,
   entryConfig: EntryConfig,
   relSrcPath: string,
-): RollupOutputOptions {
+): Promise<RollupOutputOptions> {
+  const { pkgDir, distMeta } = pkgAnalysis
   const iifeConfig = entryConfig.iife || {}
 
   return {
     format: 'iife',
     file: joinPaths(pkgDir, 'dist', buildOutputId(relSrcPath)) + '.js',
     globals: iifeConfig.globals || {},
+    banner: await buildBanner(distMeta),
     ...(
       typeof iifeConfig.name === 'string'
         ? { name: iifeConfig.name }
@@ -228,6 +232,13 @@ async function minifyFile(unminifiedIifePath: string): Promise<void> {
   ], {
     cwd: workspaceScriptsDir,
   })
+}
+
+async function buildBanner(distMeta: any): Promise<string> {
+  const templatePath = joinPaths(workspaceScriptsDir, 'banner.tpl')
+  const templateText = await readFile(templatePath, 'utf8')
+  const template = handlebars.compile(templateText)
+  return template(distMeta)
 }
 
 // Types
@@ -436,6 +447,7 @@ interface PkgAnalysis {
   relSrcPathMap: RelSrcPathMap
   entryContentMap: EntryContentMap // entryIds are expanded
   iifeEntryContentMap: EntryContentMap // entryIds are expanded
+  distMeta: any // hack
 }
 
 async function analyzePkg(pkgDir: string): Promise<PkgAnalysis> {
@@ -445,6 +457,16 @@ async function analyzePkg(pkgDir: string): Promise<PkgAnalysis> {
   const relSrcPathMap: RelSrcPathMap = {}
   const entryContentMap: EntryContentMap = {}
   const iifeEntryContentMap: EntryContentMap = {}
+
+  // HACK
+  const subrepoInfo = await getSubrepoInfo(pkgDir)
+  const distMeta = (
+    // TODO: more DRY
+    pkgMeta.buildConfig &&
+    pkgMeta.publishConfig?.linkDirectory
+  )
+    ? generateDistPkgMeta(subrepoInfo, pkgMeta, true) // isDev
+    : pkgMeta // don't process
 
   await Promise.all(
     Object.keys(entryConfigMap).map(async (entryId) => {
@@ -485,6 +507,7 @@ async function analyzePkg(pkgDir: string): Promise<PkgAnalysis> {
     relSrcPathMap,
     entryContentMap,
     iifeEntryContentMap,
+    distMeta,
   }
 }
 
