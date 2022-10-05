@@ -21,16 +21,17 @@
     "clean": "workspace-scripts pkg:clean"
   },
   "buildConfig": {
+    "iifeExternals": {
+      "@fullcalendar/core": "FullCalendar",
+      "@fullcalendar/core/preact": "FullCalendar",
+      "@fullcalendar/premium-common": "FullCalendarPremiumCommon",
+      "@fullcalendar/resource-common": "FullCalendarResourceCommon",
+      "@fullcalendar/scrollgrid": "FullCalendarScrollGrid",
+      "@fullcalendar/timeline": "FullCalendarTimeline",
+      "tslib": false
+    },
     "exports": {
-      ".": {
-        "iife": {
-          "name": "FullCalendarResourceTimelinePlugin",
-          "globals": {
-            "@fullcalendar/core": "FullCalendar",
-            "@fullcalendar/core/preact": "FullCalendar"
-          }
-        }
-      }
+      ".": { "iife": "FullCalendarResourceTimeline" }
     }
   },
   "publishConfig": {

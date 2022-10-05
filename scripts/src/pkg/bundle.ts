@@ -16,7 +16,7 @@ import { default as postcssPlugin } from 'rollup-plugin-postcss'
 import { default as sourcemapsPlugin } from 'rollup-plugin-sourcemaps'
 import { default as dtsPlugin } from 'rollup-plugin-dts'
 import { workspaceScriptsDir } from '../root/lib.js'
-import { EntryConfig, EntryConfigMap, generateDistPkgMeta, getSubrepoInfo, readSrcPkgMeta, SrcPkgMeta } from './meta.js'
+import { EntryConfig, EntryConfigMap, generateDistPkgMeta, getSubrepoInfo, IifeExternalsMap, readSrcPkgMeta, SrcPkgMeta } from './meta.js'
 import { live } from '../utils/exec.js'
 import { readFile } from 'fs/promises'
 
@@ -138,10 +138,6 @@ async function bundleIifes(pkgAnalysis: PkgAnalysis): Promise<void> {
   const promises: Promise<void>[] = []
   const enableMin = pkgMeta.buildConfig?.min ?? true
 
-  // HACK
-  const isBundle = basename(pkgDir) === 'bundle'
-  const isTests = basename(pkgDir) === 'tests'
-
   for (const entryId in relSrcPathMap) {
     const relSrcPaths = relSrcPathMap[entryId]
     const entryConfig = entryConfigMap[entryId]
@@ -154,7 +150,7 @@ async function bundleIifes(pkgAnalysis: PkgAnalysis): Promise<void> {
         promises.push(
           rollup({
             input: buildTscPath(pkgDir, relSrcPath, '.iife.js'),
-            plugins: buildIifePlugins(pkgAnalysis, iifeConfig.globals || {}, isBundle || isTests),
+            plugins: buildIifePlugins(pkgAnalysis, entryId, entryConfig),
           }).then((bundle) => {
             return bundle.write(outputOptions)
               .then(() => Promise.all([
@@ -174,23 +170,18 @@ async function continuouslyBundleIifes(pkgAnalysis: PkgAnalysis): Promise<Rollup
   const { pkgDir, entryConfigMap, relSrcPathMap } = pkgAnalysis
   const watchers: RollupWatcher[] = []
 
-  // HACK
-  const isBundle = basename(pkgDir) === 'bundle'
-  const isTests = basename(pkgDir) === 'tests'
-
   for (const entryId in relSrcPathMap) {
     const relSrcPaths = relSrcPathMap[entryId]
     const entryConfig = entryConfigMap[entryId]
-    const iifeConfig = entryConfig.iife
 
-    if (iifeConfig) {
+    if (entryConfig.iife) {
       for (const relSrcPath of relSrcPaths) {
         const outputOptions = await buildIifeOutputOptions(pkgAnalysis, entryConfig, relSrcPath)
 
         watchers.push(
           rollupWatch({
             input: buildTscPath(pkgDir, relSrcPath, '.iife.js'),
-            plugins: buildIifePlugins(pkgAnalysis, iifeConfig.globals || {}, isBundle || isTests),
+            plugins: buildIifePlugins(pkgAnalysis, entryId, entryConfig),
             output: outputOptions,
           })
         )
@@ -201,11 +192,20 @@ async function continuouslyBundleIifes(pkgAnalysis: PkgAnalysis): Promise<Rollup
   return watchers
 }
 
-function buildIifePlugins(pkgAnalysis: PkgAnalysis, iifeGlobals: any, bundleAll: boolean): RollupPlugin[] {
+function buildIifePlugins(
+  pkgAnalysis: PkgAnalysis,
+  entryId: string,
+  entryConfig: EntryConfig,
+): RollupPlugin[] {
+  const iifeExternals = entryConfig.iifeExternals
+    ?? pkgAnalysis.pkgMeta.buildConfig?.iifeExternals
+    ?? true
+
   return [
     generatedContentPlugin(pkgAnalysis),
-    // !bundleAll && externalizeDepsPlugin(pkgAnalysis),
-    externalizeGlobals(iifeGlobals),
+    (iifeExternals) && externalizeDepsPlugin(pkgAnalysis),
+    (typeof iifeExternals === 'object') && externalizeGlobals(iifeExternals),
+    externalizeOwnGlobalsPlugin(pkgAnalysis, entryId),
     rerootAssetsPlugin(pkgAnalysis.pkgDir),
     ...buildContentProcessingPlugins(pkgAnalysis),
   ]
@@ -216,17 +216,29 @@ async function buildIifeOutputOptions(
   entryConfig: EntryConfig,
   relSrcPath: string,
 ): Promise<RollupOutputOptions> {
-  const { pkgDir, distMeta } = pkgAnalysis
-  const iifeConfig = entryConfig.iife || {}
+  const { pkgDir, pkgMeta, distMeta } = pkgAnalysis
+  const iifeName = entryConfig.iife
+  const iifeExternals = pkgMeta.buildConfig?.iifeExternals
+  const iifeGlobals: { [importId: string]: string } = {}
+
+  if (typeof iifeExternals === 'object') {
+    for (const importId in iifeExternals) {
+      const iifeVal = iifeExternals[importId]
+
+      if (typeof iifeVal === 'string') {
+        iifeGlobals[importId] = iifeVal
+      }
+    }
+  }
 
   return {
     format: 'iife',
     file: joinPaths(pkgDir, 'dist', buildOutputId(relSrcPath)) + '.js',
-    globals: iifeConfig.globals || {},
+    globals: { ...iifeGlobals, ...buildGlobalsForOwnExports(pkgAnalysis) },
     banner: await buildBanner(distMeta),
     ...(
-      typeof iifeConfig.name === 'string'
-        ? { name: iifeConfig.name }
+      typeof iifeName === 'string'
+        ? { name: iifeName }
         : { exports: 'none' }
     )
   }
@@ -274,7 +286,7 @@ function buildTypesPlugins(pkgAnalysis: PkgAnalysis): RollupPlugin[] {
   return [
     externalizeAssetsPlugin(),
     externalizeDepsPlugin(pkgAnalysis),
-    externalizeExportsPlugin(pkgAnalysis), // because dts-bundler gets confused by code-splitting
+    externalizeOwnExportsPlugin(pkgAnalysis), // because dts-bundler gets confused by code-splitting
     dtsPlugin(),
     nodeResolvePlugin(),
   ]
@@ -359,7 +371,7 @@ function externalizeDepsPlugin(pkgAnalysis: PkgAnalysis): RollupPlugin {
   }
 }
 
-function externalizeGlobals(iifeGlobals: any): RollupPlugin {
+function externalizeGlobals(iifeGlobals: IifeExternalsMap): RollupPlugin {
   return {
     name: 'externalize-globals',
     resolveId(id) {
@@ -370,7 +382,7 @@ function externalizeGlobals(iifeGlobals: any): RollupPlugin {
   }
 }
 
-function externalizeExportsPlugin(pkgAnalysis: PkgAnalysis): RollupPlugin {
+function externalizeOwnExportsPlugin(pkgAnalysis: PkgAnalysis): RollupPlugin {
   const { pkgDir, relSrcPathMap } = pkgAnalysis
   const tscPathMap: { [tscPath: string]: boolean } = {}
 
@@ -383,7 +395,7 @@ function externalizeExportsPlugin(pkgAnalysis: PkgAnalysis): RollupPlugin {
   }
 
   return {
-    name: 'externalize-exports',
+    name: 'externalize-own-exports',
     resolveId(id, importer) {
       const importPath = computeImportPath(id, importer)
 
@@ -396,6 +408,62 @@ function externalizeExportsPlugin(pkgAnalysis: PkgAnalysis): RollupPlugin {
       }
     }
   }
+}
+
+function externalizeOwnGlobalsPlugin(
+  pkgAnalysis: PkgAnalysis,
+  currentEntryId: string,
+): RollupPlugin {
+  const { pkgDir, pkgMeta, relSrcPathMap } = pkgAnalysis
+  const entryConfigMap = pkgMeta.buildConfig?.exports || {}
+  const tscPathMap: { [tscPath: string]: boolean } = {}
+
+  for (let entryId in entryConfigMap) {
+    if (entryId !== currentEntryId) { // don't externalize itself
+      const entryConfig = entryConfigMap[entryId]
+      const relSrcPaths = relSrcPathMap[entryId]
+
+      if (typeof entryConfig.iife === 'string') {
+        for (const relSrcPath of relSrcPaths) {
+          tscPathMap[buildTscPath(pkgDir, relSrcPath, '.js')] = true
+        }
+      }
+    }
+  }
+
+  return {
+    name: 'externalize-own-globals',
+    resolveId(id, importer) {
+      const importPath = computeImportPath(id, importer)
+
+      if (importPath && tscPathMap[importPath]) {
+        return { id: importPath, external: true }
+      }
+    }
+  }
+}
+
+/*
+supports usage of externalizeOwnGlobalsPlugin
+*/
+function buildGlobalsForOwnExports(pkgAnalysis: PkgAnalysis) {
+  const { pkgDir, pkgMeta, relSrcPathMap } = pkgAnalysis
+  const entryConfigMap = pkgMeta.buildConfig?.exports || {}
+  const globalsMap: { [absPath: string]: string } = {}
+
+  for (let entryId in entryConfigMap) {
+    const entryConfig = entryConfigMap[entryId]
+    const relSrcPaths = relSrcPathMap[entryId]
+    const iifeName = entryConfig.iife
+
+    if (typeof iifeName === 'string') {
+      for (const relSrcPath of relSrcPaths) {
+        globalsMap[buildTscPath(pkgDir, relSrcPath, '.js')] = iifeName
+      }
+    }
+  }
+
+  return globalsMap
 }
 
 function externalizeAssetsPlugin(): RollupPlugin {
@@ -434,11 +502,13 @@ function generatedContentPlugin(pkgAnalysis: PkgAnalysis): RollupPlugin {
   const pathContentMap: { [path: string]: string } = {}
 
   for (let entryId in entryContentMap) {
-    pathContentMap[buildTscPath(pkgDir, entryId, '.js')] = entryContentMap[entryId]
+    const fakePath = (entryId === '.' ? 'index' : entryId) + '.ts' // TODO: use path util
+    pathContentMap[buildTscPath(pkgDir, fakePath, '.js')] = entryContentMap[entryId]
   }
 
   for (let entryId in iifeEntryContentMap) {
-    pathContentMap[buildTscPath(pkgDir, entryId, '.iife.js')] = iifeEntryContentMap[entryId]
+    const fakePath = (entryId === '.' ? 'index' : entryId) + '.ts' // TODO: use path util
+    pathContentMap[buildTscPath(pkgDir, fakePath, '.iife.js')] = iifeEntryContentMap[entryId]
   }
 
   return {
@@ -498,14 +568,17 @@ async function analyzePkg(pkgDir: string): Promise<PkgAnalysis> {
 
         Object.assign(entryContentMap, contentMap)
 
-        relSrcPaths = Object.keys(contentMap).map((entryId) => entryId + '.ts')
+        relSrcPaths = Object.keys(contentMap).map((entryId) => {
+          // TODO: use path util
+          return (entryId === '.' ? 'index' : entryId) + '.ts'
+        })
       } else {
         relSrcPaths = await queryRelSrcPaths(pkgDir, entryId)
       }
 
       relSrcPathMap[entryId] = relSrcPaths
 
-      const iifeGenerator = entryConfig.iife?.generator
+      const { iifeGenerator } = entryConfig
       if (iifeGenerator) {
         for (const relSrcPath of relSrcPaths) {
           const expandedEntryId = relSrcPath.replace(/\.tsx?/, '') // TODO: util

@@ -3,31 +3,34 @@ import { readFile, writeFile } from 'fs/promises'
 
 export interface SrcPkgMeta {
   buildConfig?: BuildConfig
-  publishConfig?: {
-    directory?: string
-    linkDirectory?: boolean
-  }
+  publishConfig?: PublishConfig
   [standardProps: string]: any
 }
 
 export interface BuildConfig {
-  exports?: EntryConfigMap
   esm?: boolean
   cjs?: boolean
   types?: boolean
   min?: boolean
+  iifeExternals?: boolean | IifeExternalsMap
+  exports?: EntryConfigMap
 }
+
+interface PublishConfig {
+  directory?: string
+  linkDirectory?: boolean
+}
+
+export type IifeExternalsMap = { [importId: string]: false | string }
 
 export type EntryConfigMap = { [entryId: string]: EntryConfig }
 
 export interface EntryConfig {
-  typesPath?: string
   generator?: string
-  iife?: {
-    name?: string
-    globals?: { [pkgName: string]: string }
-    generator?: string
-  }
+  typesPath?: string
+  iife?: boolean | string
+  iifeGenerator?: string
+  iifeExternals?: boolean | IifeExternalsMap
 }
 
 export default async function(...args: string[]) {
