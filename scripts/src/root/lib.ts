@@ -23,7 +23,7 @@ export async function getOurPkgDirs(): Promise<string[]> {
 export async function runTurboTask(taskName: string, args: string[] = []) {
   await live([
     joinPaths(workspaceScriptsDir, 'node_modules/turbo/bin/turbo'),
-    'run', taskName, ...filterArgs, ...args
+    'run', taskName, ...args, ...filterArgs,
   ], {
     cwd: monorepoRootDir, // will use turbo.json config
   })
