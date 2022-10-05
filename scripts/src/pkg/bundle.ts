@@ -1,4 +1,4 @@
-import { join as joinPaths, resolve as resolvePath, dirname, isAbsolute } from 'path'
+import { join as joinPaths, resolve as resolvePath, dirname, isAbsolute, basename } from 'path'
 import { watch as watchPaths } from 'chokidar'
 import { globby } from 'globby'
 import handlebars from 'handlebars'
@@ -138,6 +138,10 @@ async function bundleIifes(pkgAnalysis: PkgAnalysis): Promise<void> {
   const promises: Promise<void>[] = []
   const enableMin = pkgMeta.buildConfig?.min ?? true
 
+  // HACK
+  const isBundle = basename(pkgDir) === 'bundle'
+  const isTests = basename(pkgDir) === 'tests'
+
   for (const entryId in relSrcPathMap) {
     const relSrcPaths = relSrcPathMap[entryId]
     const entryConfig = entryConfigMap[entryId]
@@ -150,7 +154,7 @@ async function bundleIifes(pkgAnalysis: PkgAnalysis): Promise<void> {
         promises.push(
           rollup({
             input: buildTscPath(pkgDir, relSrcPath, '.iife.js'),
-            plugins: buildIifePlugins(pkgAnalysis, iifeConfig.globals || {}),
+            plugins: buildIifePlugins(pkgAnalysis, iifeConfig.globals || {}, isBundle || isTests),
           }).then((bundle) => {
             return bundle.write(outputOptions)
               .then(() => Promise.all([
@@ -170,6 +174,10 @@ async function continuouslyBundleIifes(pkgAnalysis: PkgAnalysis): Promise<Rollup
   const { pkgDir, entryConfigMap, relSrcPathMap } = pkgAnalysis
   const watchers: RollupWatcher[] = []
 
+  // HACK
+  const isBundle = basename(pkgDir) === 'bundle'
+  const isTests = basename(pkgDir) === 'tests'
+
   for (const entryId in relSrcPathMap) {
     const relSrcPaths = relSrcPathMap[entryId]
     const entryConfig = entryConfigMap[entryId]
@@ -182,7 +190,7 @@ async function continuouslyBundleIifes(pkgAnalysis: PkgAnalysis): Promise<Rollup
         watchers.push(
           rollupWatch({
             input: buildTscPath(pkgDir, relSrcPath, '.iife.js'),
-            plugins: buildIifePlugins(pkgAnalysis, iifeConfig.globals || {}),
+            plugins: buildIifePlugins(pkgAnalysis, iifeConfig.globals || {}, isBundle || isTests),
             output: outputOptions,
           })
         )
@@ -193,9 +201,10 @@ async function continuouslyBundleIifes(pkgAnalysis: PkgAnalysis): Promise<Rollup
   return watchers
 }
 
-function buildIifePlugins(pkgAnalysis: PkgAnalysis, iifeGlobals: any): RollupPlugin[] {
+function buildIifePlugins(pkgAnalysis: PkgAnalysis, iifeGlobals: any, bundleAll: boolean): RollupPlugin[] {
   return [
     generatedContentPlugin(pkgAnalysis),
+    // !bundleAll && externalizeDepsPlugin(pkgAnalysis),
     externalizeGlobals(iifeGlobals),
     rerootAssetsPlugin(pkgAnalysis.pkgDir),
     ...buildContentProcessingPlugins(),
