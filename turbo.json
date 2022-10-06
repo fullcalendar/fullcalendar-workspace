@@ -4,7 +4,7 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["package.json", "dist/.tsc/**/*"],
-      "outputs": ["dist/**/*.{mjs,cjs,js,json}", "!dist/.tsc/**/*"]
+      "outputs": ["dist/**/*.{json,js,cjs,mjs}", "!dist/.tsc/**/*"]
     },
     "clean": {
       "cache": false,
