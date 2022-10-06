@@ -8,4 +8,11 @@ module.exports = {
   ignorePatterns: [
     'dist',
   ],
+  overrides: [
+    {
+      // HACK: simply for adding .cjs extension
+      // https://eslint.org/docs/latest/user-guide/command-line-interface#--ext
+      files: '**/*.{js,cjs}'
+    }
+  ]
 }
