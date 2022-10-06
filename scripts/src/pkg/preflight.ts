@@ -52,7 +52,7 @@ async function ensureNpmIgnore(pkgDir: string): Promise<void> {
     await writeFile(npmIgnorePath, [
       '.tsc',
       'tsconfig.tsbuildinfo',
-    ].join("\n"))
+    ].join('\n'))
   }
 }
 

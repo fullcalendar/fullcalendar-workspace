@@ -36,7 +36,7 @@ export function getExt(path: string): string {
   if (isRelativeDot(path)) {
     return ''
   }
-  const match = path.match(/\.[^\/]*$/)
+  const match = path.match(/\.[^/]*$/)
   return match ? match[0] : ''
 }
 
@@ -45,6 +45,6 @@ export function forceExt(path: string, ext: string): string {
 }
 
 export function removeExt(path: string): string {
-  const match = path.match(/^(.*)\.([^\/]*)$/)
+  const match = path.match(/^(.*)\.([^/]*)$/)
   return match ? match[1] : path
 }

@@ -101,7 +101,9 @@ async function getScriptFunc(scriptName: string): Promise<(...args: string[]) =>
 
   try {
     scriptExports = await import(path.join(scriptRootDir, ...scriptNameParts))
-  } catch (error: any) {}
+  } catch (error: any) {
+    // continue regardless of error
+  }
 
   if (scriptExports) {
     scriptFunc = scriptExports.default
@@ -116,7 +118,9 @@ async function getScriptFunc(scriptName: string): Promise<(...args: string[]) =>
 
     try {
       scriptExports = await import(path.join(scriptRootDir, ...scriptNameParts))
-    } catch (error: any) {}
+    } catch (error: any) {
+      // continue regardless of error
+    }
 
     if (scriptExports) {
       scriptFunc = scriptExports[exportName]
