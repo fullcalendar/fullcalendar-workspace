@@ -256,7 +256,7 @@ async function minifyFile(unminifiedIifePath: string): Promise<void> {
 }
 
 async function buildBanner(distMeta: any): Promise<string> {
-  const templatePath = joinPaths(workspaceScriptsDir, 'banner.tpl')
+  const templatePath = joinPaths(workspaceScriptsDir, 'config/banner.tpl')
   const templateText = await readFile(templatePath, 'utf8')
   const template = handlebars.compile(templateText)
   return template(distMeta)
