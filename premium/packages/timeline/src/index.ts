@@ -1,8 +1,8 @@
 import { createPlugin } from '@fullcalendar/core'
 
-import { default as premiumCommonPlugin } from '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
+import { default as premiumCommonPlugin } from '@fullcalendar/premium-common'
 // ensure ambient declarations
-import '@fullcalendar/premium-common' // eslint-disable-line import/no-duplicates
+import '@fullcalendar/premium-common'
 
 import { TimelineView } from './TimelineView.js'
 import './index.css'

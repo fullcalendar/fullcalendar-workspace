@@ -4,7 +4,7 @@ import { createElement } from '@fullcalendar/core/preact'
 export interface TimelineHeaderThInnerProps {
   hookProps: HookProps
   isSticky: boolean
-  navLinkAttrs: object | null
+  navLinkAttrs: any | null
 }
 
 export class TimelineHeaderThInner extends BaseComponent<TimelineHeaderThInnerProps> {

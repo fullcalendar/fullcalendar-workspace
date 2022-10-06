@@ -10,7 +10,7 @@ const PRESET_LICENSE_KEYS = [
   'CC-Attribution-NonCommercial-NoDerivatives',
 ]
 const CSS = {
-  position: 'absolute' as 'absolute', // for TS+React. ugh.
+  position: 'absolute',
   zIndex: 99999,
   bottom: '1px',
   left: '1px',

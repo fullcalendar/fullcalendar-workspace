@@ -77,7 +77,7 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
   }
 }
 
-function buildCellNavLinkAttrs(context: ViewContext, cellDate: DateMarker, rowUnit: string): object {
+function buildCellNavLinkAttrs(context: ViewContext, cellDate: DateMarker, rowUnit: string): any {
   return (rowUnit && rowUnit !== 'time')
     ? buildNavLinkAttrs(context, cellDate, rowUnit)
     : {}
