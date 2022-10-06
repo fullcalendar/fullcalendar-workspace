@@ -19,5 +19,8 @@ module.exports = {
     // legitimately want disabled
     '@typescript-eslint/no-empty-interface': 'off', // need empty interfaces for decl merging
     '@typescript-eslint/no-non-null-assertion': 'off',
+
+    // TODO: merge rules from this legacy file:
+    // https://github.com/fullcalendar/fullcalendar/blob/v5.11.3/.eslintrc.yml
   }
 }
