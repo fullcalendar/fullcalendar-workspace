@@ -5,9 +5,8 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   rules: {
     quotes: ['error', 'single'],
-    indent: ['error', 2, {
-      SwitchCase: 1,
-    }],
+    indent: ['error', 2, { SwitchCase: 1 }],
+    semi: ['error', 'never'],
 
     // easy fixes in near-term
     '@typescript-eslint/no-unused-vars': 'off',
