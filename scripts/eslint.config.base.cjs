@@ -26,5 +26,5 @@ module.exports = {
 
     // TODO: merge rules from this legacy file:
     // https://github.com/fullcalendar/fullcalendar/blob/v5.11.3/.eslintrc.yml
-  }
+  },
 }

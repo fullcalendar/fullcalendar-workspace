@@ -12,14 +12,14 @@ module.exports = function(config) {
       builtFile,
     ],
     preprocessors: {
-      [builtFile]: ['sourcemap']
+      [builtFile]: ['sourcemap'],
     },
 
     plugins: [
       require('karma-chrome-launcher'),
       require('karma-jasmine'),
       require('karma-sourcemap-loader'),
-      require('karma-verbose-reporter')
+      require('karma-verbose-reporter'),
     ],
 
     // frameworks to use
@@ -47,9 +47,9 @@ module.exports = function(config) {
         base: 'ChromeHeadless',
         flags: [
           '--no-sandbox', // needed for TravisCI: https://docs.travis-ci.com/user/chrome#Sandboxing
-          '--window-size=1280,1696' // some tests only work with larger window (w?, h?)
-        ]
-      }
-    }
+          '--window-size=1280,1696', // some tests only work with larger window (w?, h?)
+        ],
+      },
+    },
   })
 }

@@ -7,8 +7,8 @@ module.exports = {
   ],
   settings: {
     react: {
-      version: '18.2.0' // can't detect b/c we don't use React. hardcode a recent version
-    }
+      version: '18.2.0', // can't detect b/c we don't use React. hardcode a recent version
+    },
   },
   env: {
     es6: true, // TODO: keep in sync with other configs?
@@ -25,12 +25,12 @@ module.exports = {
     {
       files: [
         '*.{js,cjs}', // config files in root
-        'scripts/**/*.{js,cjs}' // node scripts
+        'scripts/**/*.{js,cjs}', // node scripts
       ],
       env: {
         browser: false,
         node: true,
-      }
-    }
-  ]
+      },
+    },
+  ],
 }

@@ -12,7 +12,10 @@ module.exports = {
     {
       // HACK: simply for adding .cjs extension
       // https://eslint.org/docs/latest/user-guide/command-line-interface#--ext
-      files: '**/*.{js,cjs}'
-    }
-  ]
+      files: '**/*.cjs',
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off',
+      },
+    },
+  ],
 }
