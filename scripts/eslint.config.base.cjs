@@ -4,9 +4,10 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   rules: {
-    quotes: ['error', 'single'],
     indent: ['error', 2, { SwitchCase: 1 }],
     semi: ['error', 'never'],
+    quotes: ['error', 'single'],
+    'jsx-quotes': ['error', 'prefer-double'], // rethink this?
 
     // easy fixes in near-term
     '@typescript-eslint/no-unused-vars': 'off',
