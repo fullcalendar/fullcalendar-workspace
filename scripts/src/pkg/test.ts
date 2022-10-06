@@ -4,7 +4,7 @@ import { workspaceScriptsDir } from '../root/lib.js'
 
 export default function(...args: string[]) {
   const dev = args.indexOf('--dev') !== -1
-  const configPath = joinPaths(workspaceScriptsDir, './karma.config.cjs')
+  const configPath = joinPaths(workspaceScriptsDir, './config/karma.cjs')
 
   // see https://karma-runner.github.io/6.4/dev/public-api.html
   return karma.config.parseConfig(

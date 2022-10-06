@@ -247,7 +247,7 @@ async function buildIifeOutputOptions(
 async function minifyFile(unminifiedIifePath: string): Promise<void> {
   return live([
     'pnpm', 'exec', 'terser',
-    '--config-file', 'terser.json',
+    '--config-file', 'config/terser.json',
     '--output', unminifiedIifePath.replace(/\.js$/, '.min.js'),
     '--', unminifiedIifePath,
   ], {
@@ -334,7 +334,7 @@ function buildContentProcessingPlugins(pkgAnalysis: PkgAnalysis) {
     jsonPlugin(), // for moment-timezone
     postcssPlugin({
       config: {
-        path: joinPaths(workspaceScriptsDir, 'postcss.config.cjs'),
+        path: joinPaths(workspaceScriptsDir, 'config/postcss.cjs'),
         ctx: {}, // arguments given to config file
       },
       inject: basename(pkgAnalysis.pkgDir) === 'tests' ?

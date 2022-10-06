@@ -63,8 +63,8 @@
     "lint": "eslint ."
   },
   "exports": {
-    "./*.json": "./*.json",
-    "./*.cjs": "./*.cjs",
+    "./package.json": "./package.json",
+    "./config/*": "./config/*",
     "./*": {
       "types": "./src/*.ts",
       "default": "./dist/*.js"

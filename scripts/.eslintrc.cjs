@@ -1,4 +1,4 @@
 
 module.exports = {
-  extends: ['./eslint.config.pkg.node.cjs'],
+  extends: ['./config/eslint.pkg.node.cjs'],
 }

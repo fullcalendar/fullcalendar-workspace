@@ -1,7 +1,8 @@
 const path = require('path')
 
 module.exports = function(config) {
-  const builtFile = path.resolve('./dist/index.js') // from cwd
+  const pkgDir = process.cwd()
+  const builtFile = path.join(pkgDir, 'dist/index.js')
 
   config.set({
     files: [

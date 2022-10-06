@@ -2,7 +2,7 @@
 
 module.exports = {
   extends: [
-    './eslint.config.base.cjs',
+    './eslint.base.cjs',
     'plugin:react/recommended',
   ],
   settings: {

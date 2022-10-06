@@ -3,8 +3,14 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["package.json", "dist/.tsc/**/*"],
-      "outputs": ["dist/**/*.{json,js,cjs,mjs}", "!dist/.tsc/**/*"]
+      "inputs": [
+        "package.json",
+        "dist/.tsc/**/*"
+      ],
+      "outputs": [
+        "dist/**/*.{json,js,cjs,mjs}",
+        "!dist/.tsc/**/*"
+      ]
     },
     "clean": {
       "cache": false,
@@ -12,12 +18,15 @@
     },
     "lint": {
       "dependsOn": [],
-      "inputs": ["src/**/*"]
+      "inputs": [
+        "src/**/*"
+      ]
     }
   },
   "globalDependencies": [
-    "*.{json,js,cjs}",
-    "scripts/*.{json,js,cjs}",
+    "package.json",
+    "scripts/package.json",
+    "scripts/config/**/*",
     "scripts/src/**/*"
   ]
 }
