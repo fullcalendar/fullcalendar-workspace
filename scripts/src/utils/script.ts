@@ -11,7 +11,7 @@ const [
 ] = process.argv
 
 const prefixColors = [
-  'green'
+  'green',
 ]
 
 export async function runMain() {
@@ -145,7 +145,7 @@ function buildCommand(scriptName: string, args: string[]): string {
     currentBin,
     currentMain,
     scriptName,
-    ...args
+    ...args,
   ].join(' ') // TODO: better escaping
 }
 
@@ -183,7 +183,7 @@ export function parseArgs<
   const res = cli({
     name: currentScriptName.replaceAll(':', '-'), // TODO: have cleye accept colons
     parameters: paramConfig,
-    flags: flagConfig
+    flags: flagConfig,
   }, undefined, args)
 
   return { params: res._, flags: res.flags, unknownFlags: res.unknownFlags }

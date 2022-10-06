@@ -13,11 +13,11 @@ export default function(...args: string[]) {
       singleRun: !dev,
       autoWatch: dev,
       browsers: !dev ? [ 'ChromeHeadless_custom' ] : [],
-      client: { args } // access via `window.__karma__.config.args`
+      client: { args }, // access via `window.__karma__.config.args`
     },
     {
       promiseConfig: true,
-      throwErrors: true
+      throwErrors: true,
     }
   ).then((karmaConfig) => {
     return new Promise<karma.Server>((resolve, reject) => {

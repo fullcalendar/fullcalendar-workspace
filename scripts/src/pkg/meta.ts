@@ -89,7 +89,7 @@ export function generateDistPkgMeta(
   }
 
   const exportEntries: any = {
-    './package.json': './package.json'
+    './package.json': './package.json',
   }
 
   for (const exportPath in exportConfigs) {

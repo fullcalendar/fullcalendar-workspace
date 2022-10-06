@@ -240,7 +240,7 @@ async function buildIifeOutputOptions(
       typeof iifeName === 'string'
         ? { name: iifeName }
         : { exports: 'none' }
-    )
+    ),
   }
 }
 
@@ -328,7 +328,7 @@ function buildContentProcessingPlugins(pkgAnalysis: PkgAnalysis) {
   return [
     nodeResolvePlugin({ // determines index.js and .js/cjs/mjs
       browser: true, // for xhr-mock (use non-node shims that it wants to)
-      preferBuiltins: false // for xhr-mock (use 'url' npm package)
+      preferBuiltins: false, // for xhr-mock (use 'url' npm package)
     }),
     commonjsPlugin(), // for moment and moment-timezone
     jsonPlugin(), // for moment-timezone
@@ -346,8 +346,8 @@ function buildContentProcessingPlugins(pkgAnalysis: PkgAnalysis) {
 
           return `import { injectStyles } from ${JSON.stringify(importPath)};\n` +
             `injectStyles(${cssVarName});\n`
-        }
-    })
+        },
+    }),
   ]
 }
 
@@ -378,7 +378,7 @@ function externalizeGlobals(iifeGlobals: IifeExternalsMap): RollupPlugin {
       if (iifeGlobals[id]) {
         return { id, external: true }
       }
-    }
+    },
   }
 }
 
@@ -406,7 +406,7 @@ function externalizeOwnExportsPlugin(pkgAnalysis: PkgAnalysis): RollupPlugin {
           external: true,
         }
       }
-    }
+    },
   }
 }
 
@@ -439,7 +439,7 @@ function externalizeOwnGlobalsPlugin(
       if (importPath && tscPathMap[importPath]) {
         return { id: importPath, external: true }
       }
-    }
+    },
   }
 }
 
@@ -475,7 +475,7 @@ function externalizeAssetsPlugin(): RollupPlugin {
       if (importPath && isPathAsset(importPath)) {
         return { id, external: true }
       }
-    }
+    },
   }
 }
 
@@ -493,7 +493,7 @@ function rerootAssetsPlugin(pkgDir: string): RollupPlugin {
           return srcDir + importPath.substring(tscDir.length)
         }
       }
-    }
+    },
   }
 }
 
@@ -522,7 +522,7 @@ function generatedContentPlugin(pkgAnalysis: PkgAnalysis): RollupPlugin {
     },
     load(id) {
       return pathContentMap[id] // if undefined, fallback to normal file load
-    }
+    },
   }
 }
 

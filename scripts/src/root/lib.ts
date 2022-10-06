@@ -12,9 +12,9 @@ export const filterArgs = [
 
 export async function getOurPkgDirs(): Promise<string[]> {
   const json = (await capture([
-    'pnpm', 'list', '-r', '--depth', '-1', '--json', ...filterArgs
+    'pnpm', 'list', '-r', '--depth', '-1', '--json', ...filterArgs,
   ], {
-    cwd: monorepoRootDir
+    cwd: monorepoRootDir,
   })).stdout
 
   const pkgObjs = JSON.parse(json)

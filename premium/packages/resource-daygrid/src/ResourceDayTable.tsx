@@ -1,9 +1,7 @@
 import {
   mapHash, Hit, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, Duration, CssDimValue, DateProfile,
 } from '@fullcalendar/core'
-import {
-  createElement, createRef, VNode, RefObject
-} from '@fullcalendar/core/preact'
+import { createElement, createRef, VNode, RefObject } from '@fullcalendar/core/preact'
 import { DayTableSlicer, Table } from '@fullcalendar/daygrid'
 import { AbstractResourceDayTableModel, VResourceSplitter } from '@fullcalendar/resource-common'
 import { ResourceDayTableJoiner } from './ResourceDayTableJoiner.js'

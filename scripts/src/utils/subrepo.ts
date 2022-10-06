@@ -74,7 +74,7 @@ export async function parseSubrepoArgs<
     ...flagConfig,
     all: Boolean,
   } as Flags & { all: BooleanConstructor }, [
-    '[subrepos...]'
+    '[subrepos...]',
   ])
 
   const allSubrepos = await getSubrepos()

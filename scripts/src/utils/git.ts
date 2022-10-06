@@ -45,7 +45,7 @@ export async function reappear(rootDir: string, files: string[]) {
       await live([
         'git', 'checkout', '--', file,
       ], {
-        cwd: rootDir
+        cwd: rootDir,
       })
     }
   }
@@ -71,7 +71,7 @@ export async function addAndCommit(
 
     if (isAdded) {
       const isFileStaged = await live([
-        'git', 'diff', '--quiet', '--staged', file
+        'git', 'diff', '--quiet', '--staged', file,
       ], {
         cwd: rootDir,
       }).then(
@@ -87,7 +87,7 @@ export async function addAndCommit(
 
   if (isAnyStaged) {
     await live([
-      'git', 'commit', '-m', message
+      'git', 'commit', '-m', message,
     ], {
       cwd: rootDir,
     })
