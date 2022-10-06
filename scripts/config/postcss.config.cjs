@@ -1,12 +1,19 @@
+/*
+NOTE: unfortunately can't rename this file to `postcss.cjs` or error is thrown
+*/
+
 module.exports = {
   parser: require('postcss-comment'), // for "//" style comments
   plugins: [
     require('postcss-advanced-variables'),
     require('postcss-nesting'),
     require('@arshaw/postcss-custom-properties')({ // a fork that does preserveWithFallback
-      importFrom: require.resolve('../standard/packages/core/src/styles/vars.css'), // available to all stylesheets
-      preserve: true, // keep var statements intact (but still reduce their value in a second statement)
-      preserveWithFallback: true, // the preserved var statements will have a fallback value
+      // available to all stylesheets
+      importFrom: require.resolve('../../standard/packages/core/src/styles/vars.css'),
+      // keep var statements intact (but still reduce their value in a second statement)
+      preserve: true,
+      // the preserved var statements will have a fallback value
+      preserveWithFallback: true,
     }),
     require('@arshaw/postcss-calc'), // a fork that ensures important spaces (issue 5503)
     require('autoprefixer'),

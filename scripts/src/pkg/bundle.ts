@@ -334,7 +334,7 @@ function buildContentProcessingPlugins(pkgAnalysis: PkgAnalysis) {
     jsonPlugin(), // for moment-timezone
     postcssPlugin({
       config: {
-        path: joinPaths(workspaceScriptsDir, 'config/postcss.cjs'),
+        path: joinPaths(workspaceScriptsDir, 'config/postcss.config.cjs'),
         ctx: {}, // arguments given to config file
       },
       inject: basename(pkgAnalysis.pkgDir) === 'tests' ?
