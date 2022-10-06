@@ -337,16 +337,16 @@ function buildContentProcessingPlugins(pkgAnalysis: PkgAnalysis) {
         path: joinPaths(workspaceScriptsDir, 'postcss.config.cjs'),
         ctx: {}, // arguments given to config file
       },
-      inject: basename(pkgAnalysis.pkgDir) === 'tests'
-        ? true
-        : function (cssVarName: string) {
-            const importPath = pkgAnalysis.pkgMeta.name === '@fullcalendar/core'
-              ? joinPaths(pkgAnalysis.pkgDir, 'dist/.tsc/styleUtils.js') // TODO: use util
-              : '@fullcalendar/core'
+      inject: basename(pkgAnalysis.pkgDir) === 'tests' ?
+        true :
+        function (cssVarName: string) {
+          const importPath = pkgAnalysis.pkgMeta.name === '@fullcalendar/core'
+            ? joinPaths(pkgAnalysis.pkgDir, 'dist/.tsc/styleUtils.js') // TODO: use util
+            : '@fullcalendar/core'
 
-            return `import { injectStyles } from ${JSON.stringify(importPath)};\n` +
-              `injectStyles(${cssVarName});\n`
-          }
+          return `import { injectStyles } from ${JSON.stringify(importPath)};\n` +
+            `injectStyles(${cssVarName});\n`
+        }
     })
   ]
 }

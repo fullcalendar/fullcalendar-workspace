@@ -74,8 +74,8 @@ export function generateDistPkgMeta(
 
   distMeta.main = 'index' + (
     (!isDev && (buildConfig.cjs ?? true)) ? '.cjs' :
-    (buildConfig.esm ?? true) ? '.mjs' :
-    (defaultExportConfig.iife) ? '.js' : '' // TODO: otherwise throw error
+      (buildConfig.esm ?? true) ? '.mjs' :
+        (defaultExportConfig.iife) ? '.js' : '' // TODO: otherwise throw error
   )
 
   if (buildConfig.esm ?? true) {
