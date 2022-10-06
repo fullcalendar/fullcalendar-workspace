@@ -11,8 +11,13 @@
       "dependsOn": []
     },
     "lint": {
-      "cache": false,
-      "dependsOn": []
+      "dependsOn": [],
+      "inputs": ["src/**/*"]
     }
-  }
+  },
+  "globalDependencies": [
+    "*.{json,js,cjs}",
+    "scripts/*.{json,js,cjs}",
+    "scripts/src/**/*"
+  ]
 }
