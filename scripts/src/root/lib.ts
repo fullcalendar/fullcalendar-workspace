@@ -5,6 +5,7 @@ import { capture, live } from '../utils/exec.js'
 export const workspaceScriptsDir = joinPaths(fileURLToPath(import.meta.url), '../../..')
 export const monorepoRootDir = joinPaths(workspaceScriptsDir, '..')
 export const filterArgs = [
+  '--filter', './scripts',
   '--filter', './standard/**',
   '--filter', './premium/**',
 ]

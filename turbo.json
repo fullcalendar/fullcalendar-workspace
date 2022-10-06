@@ -9,6 +9,10 @@
     "clean": {
       "cache": false,
       "dependsOn": []
+    },
+    "lint": {
+      "cache": false,
+      "dependsOn": []
     }
   }
 }
