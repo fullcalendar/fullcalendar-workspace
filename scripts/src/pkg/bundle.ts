@@ -157,7 +157,7 @@ async function bundleIifes(pkgAnalysis: PkgAnalysis): Promise<void> {
                 bundle.close(),
                 enableMin && minifyFile(outputOptions.file!),
               ]).then())
-          })
+          }),
         )
       }
     }
@@ -183,7 +183,7 @@ async function continuouslyBundleIifes(pkgAnalysis: PkgAnalysis): Promise<Rollup
             input: buildTscPath(pkgDir, relSrcPath, '.iife.js'),
             plugins: buildIifePlugins(pkgAnalysis, entryId, entryConfig),
             output: outputOptions,
-          })
+          }),
         )
       }
     }
@@ -589,7 +589,7 @@ async function analyzePkg(pkgDir: string): Promise<PkgAnalysis> {
           }
         }
       }
-    })
+    }),
   )
 
   return {
@@ -706,7 +706,7 @@ function isPathAsset(path: string): boolean {
 
 function isPathWithinDir(path: string, dirPath: string): boolean {
   return path.indexOf(
-    joinPaths(dirPath, 'a').replace(/a$/, '')
+    joinPaths(dirPath, 'a').replace(/a$/, ''),
   ) === 0
 }
 

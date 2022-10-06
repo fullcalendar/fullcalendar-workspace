@@ -14,7 +14,7 @@ export default async function() {
     createArchive(
       joinPaths(monorepoRootDir, 'dist'),
       joinPaths(monorepoRootDir, 'premium'),
-      [joinPaths(monorepoRootDir, 'standard/packages')]
+      [joinPaths(monorepoRootDir, 'standard/packages')],
     ),
   ])
 }
@@ -62,7 +62,7 @@ async function createArchive(
 
       archive.file(
         joinPaths(pkgRootDir, pkgFileRelPath),
-        { name: [archiveId, 'packages'].concat(pathParts).join('/') }
+        { name: [archiveId, 'packages'].concat(pathParts).join('/') },
       )
     }
   }

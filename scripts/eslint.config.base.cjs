@@ -8,7 +8,13 @@ module.exports = {
     semi: ['error', 'never'],
     quotes: ['error', 'single'],
     'jsx-quotes': ['error', 'prefer-double'], // rethink this?
-    'comma-dangle': ['error', 'always-multiline'],
+    'comma-dangle': ['error', {
+      'arrays': 'always-multiline',
+      'objects': 'always-multiline',
+      'imports': 'always-multiline',
+      'exports': 'always-multiline',
+      'functions': 'always-multiline', // not included in single-value specification
+    }],
 
     // easy fixes in near-term
     '@typescript-eslint/no-unused-vars': 'off',

@@ -11,6 +11,6 @@ export async function runPreflight() {
   await Promise.all(
     pkgDirs.map(async (pkgDir) => {
       await runPkgPreflight(pkgDir)
-    })
+    }),
   )
 }

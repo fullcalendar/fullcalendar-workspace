@@ -18,6 +18,6 @@ export function each(subrepo: string): Promise<void> {
         path.join(subrepoDir, fileInfo.path),
         { force: true },
       )
-    })
+    }),
   ).then()
 }

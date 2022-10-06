@@ -4,7 +4,7 @@ import spawn from 'cross-spawn'
 
 export function live(
   command: string | string[],
-  options: childProcess.SpawnOptions = {}
+  options: childProcess.SpawnOptions = {},
 ): Promise<void> {
   let commandPath: string
   let commandArgs: string[]

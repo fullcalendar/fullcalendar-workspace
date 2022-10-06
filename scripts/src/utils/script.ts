@@ -42,7 +42,7 @@ export async function run(
     }],
     {
       prefixColors,
-    }
+    },
   ).result.then()
 }
 
@@ -65,7 +65,7 @@ export async function runParallel(
     {
       prefixColors,
       group,
-    }
+    },
   ).result.then()
 }
 
@@ -89,7 +89,7 @@ export async function spawnParallel(
     {
       prefixColors,
       group,
-    }
+    },
   ).result.then()
 }
 
@@ -110,7 +110,7 @@ async function getScriptFunc(scriptName: string): Promise<(...args: string[]) =>
 
     if (typeof scriptFunc !== 'function') {
       throw new Error(
-        `Default export of script '${path.join(...scriptNameParts)}' must be a function`
+        `Default export of script '${path.join(...scriptNameParts)}' must be a function`,
       )
     }
   } else if (scriptNameParts.length > 1) {
@@ -127,7 +127,7 @@ async function getScriptFunc(scriptName: string): Promise<(...args: string[]) =>
 
       if (typeof scriptFunc !== 'function') {
         throw new Error(
-          `Export '${exportName}' of script '${path.join(...scriptNameParts)}' must be a function`
+          `Export '${exportName}' of script '${path.join(...scriptNameParts)}' must be a function`,
         )
       }
     }
@@ -155,7 +155,7 @@ function absolutizeScriptName(scriptName: string): string {
 }
 
 function normalizeArgSet(
-  argSet: string[] | { [item0: string]: string[] }
+  argSet: string[] | { [item0: string]: string[] },
 ): string[][] {
   const res: string[][] = []
 

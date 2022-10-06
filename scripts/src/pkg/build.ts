@@ -38,6 +38,6 @@ function getSubrepoDir(pkgDir: string): string {
     pkgDir,
     basename(pkgDir) === 'bundle'
       ? '..'
-      : '../..'
+      : '../..',
   )
 }

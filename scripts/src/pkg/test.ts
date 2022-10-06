@@ -18,7 +18,7 @@ export default function(...args: string[]) {
     {
       promiseConfig: true,
       throwErrors: true,
-    }
+    },
   ).then((karmaConfig) => {
     return new Promise<karma.Server>((resolve, reject) => {
       const server = new karma.Server(karmaConfig, function(exitCode) {
