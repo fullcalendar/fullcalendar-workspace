@@ -12,9 +12,12 @@
         "!dist/.tsc/**/*"
       ]
     },
+    "test": {
+      "dependsOn": ["build", "^test"]
+    },
     "clean": {
-      "cache": false,
-      "dependsOn": []
+      "dependsOn": [],
+      "cache": false
     },
     "lint": {
       "dependsOn": [],

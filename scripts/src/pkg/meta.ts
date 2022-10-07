@@ -4,6 +4,7 @@ import { readFile, writeFile } from 'fs/promises'
 export interface SrcPkgMeta {
   buildConfig?: BuildConfig
   publishConfig?: PublishConfig
+  monorepoConfig?: MonorepoConfig
   [standardProps: string]: any
 }
 
@@ -19,6 +20,10 @@ export interface BuildConfig {
 interface PublishConfig {
   directory?: string
   linkDirectory?: boolean
+}
+
+export interface MonorepoConfig {
+  defaultSubtrees?: string[]
 }
 
 export type IifeExternalsMap = { [importId: string]: false | string }
