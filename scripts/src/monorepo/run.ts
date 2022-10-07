@@ -5,9 +5,6 @@ import { cleanMonorepoArchives, createMonorepoArchives } from './archive.js'
 import { buildFilterArgs, workspaceScriptsDir } from './lib.js'
 import { runMonorepoPreflight } from './preflight.js'
 
-// TODO: try turbo CWD for putting config in config/ dir
-// https://turborepo.org/docs/reference/command-line-reference#--cwd
-
 export default async function(...args: string[]) {
   const monorepoDir = process.cwd()
   const monorepoPkgMeta = await readSrcPkgMeta(monorepoDir)
