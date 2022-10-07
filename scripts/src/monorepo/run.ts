@@ -19,6 +19,7 @@ export default async function(...args: string[]) {
   if (taskNameMap.clean) {
     await cleanMonorepoArchives(monorepoDir, monorepoConfig)
 
+    // TODO: always fail. figure out why. just rerun and will bypass.
     if (pluckFlag(args, 'turbo')) {
       await live([
         joinPaths(workspaceScriptsDir, 'bin/clean-turbo.sh'),

@@ -8,7 +8,7 @@
         "dist/.tsc/**/*"
       ],
       "outputs": [
-        "dist/**/*.{json,js,cjs,mjs}",
+        "dist/**/*",
         "!dist/.tsc/**/*"
       ]
     },
@@ -25,11 +25,5 @@
         "src/**/*"
       ]
     }
-  },
-  "globalDependencies": [
-    "package.json",
-    "scripts/package.json",
-    "scripts/config/**/*",
-    "scripts/src/**/*"
-  ]
+  }
 }
