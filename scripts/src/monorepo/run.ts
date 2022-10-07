@@ -16,6 +16,18 @@ export default async function(...args: string[]) {
   const taskNames = pluckOrderedArgs(args)
   const taskNameMap = strArrayToMap(taskNames)
 
+  if (taskNameMap.clean) {
+    await cleanMonorepoArchives(monorepoDir, monorepoConfig)
+
+    if (pluckFlag(args, 'turbo')) {
+      await live([
+        joinPaths(workspaceScriptsDir, 'bin/clean-turbo.sh'),
+      ], {
+        cwd: monorepoDir,
+      })
+    }
+  }
+
   if (taskNameMap.build || taskNameMap.test || taskNameMap.lint) {
     const isDev = pluckFlag(args, 'dev')
     const isWatch = pluckFlag(args, 'watch')
@@ -44,9 +56,6 @@ export default async function(...args: string[]) {
     cwd: monorepoDir,
   })
 
-  if (taskNameMap.clean) {
-    await cleanMonorepoArchives(monorepoDir, monorepoConfig)
-  }
   if (taskNameMap.build) {
     await createMonorepoArchives(monorepoDir, monorepoConfig)
   }
@@ -56,7 +65,7 @@ function pluckOrderedArgs(args: string[]): string[] {
   let i = 0
 
   for (
-    let i = 0;
+    i = 0;
     i < args.length && !args[i].match(/^--/);
     i++
   ) {
@@ -95,10 +104,10 @@ function buildGlobalEnvArgs(monorepoConfig: MonorepoConfig): string[] {
 
   for (let relDir of relDirs) {
     globalEnvArgs.push(
-      `--global-deps='${relDir}/*.{json,js,cjs}'`,
-      `--global-deps='${relDir}/scripts/*.{json,js,cjs}'`,
-      `--global-deps='${relDir}/scripts/src/**'`,
-      `--global-deps='${relDir}/scripts/config/**'`,
+      '--global-deps', `${relDir}/*.{json,js,cjs}`,
+      '--global-deps', `${relDir}/scripts/*.{json,js,cjs}`,
+      '--global-deps', `${relDir}/scripts/src/**/*`,
+      '--global-deps', `${relDir}/scripts/config/**/*`,
     )
   }
 

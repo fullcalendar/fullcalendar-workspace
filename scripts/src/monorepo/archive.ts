@@ -34,9 +34,9 @@ export async function cleanMonorepoArchives(
 
   return Promise.all(
     rootDirs.map(async (rootDir) => {
-      const bundleDir = joinPaths(rootDir, 'bundle')
+      const distDir = joinPaths(rootDir, 'dist')
 
-      await rm(bundleDir, { recursive: true, force: true })
+      await rm(distDir, { recursive: true, force: true })
     }),
   ).then()
 }

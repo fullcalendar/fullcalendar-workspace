@@ -1,6 +1,6 @@
 import { join as joinPaths } from 'path'
 import karma from 'karma'
-import { workspaceScriptsDir } from '../root/lib.js'
+import { workspaceScriptsDir } from '../monorepo/lib.js'
 
 export default function(...args: string[]) {
   const dev = args.indexOf('--dev') !== -1

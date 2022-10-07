@@ -21,12 +21,17 @@ export default async function(...args: string[]) {
 
 async function cleanOldFiles(pkgDir: string): Promise<void> {
   const distDir = joinPaths(pkgDir, 'dist')
-  const topLevelFiles = await globby(
+  const relPaths = await globby(
     ['*', '!.tsc'],
     { cwd: distDir },
   )
   return Promise.all(
-    topLevelFiles.map((topLevelFile) => rm(topLevelFile)),
+    relPaths.map(async (relPath) => {
+      await rm(
+        joinPaths(distDir, relPath),
+        { recursive: true },
+      )
+    }),
   ).then()
 }
 

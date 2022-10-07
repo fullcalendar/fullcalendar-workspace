@@ -3,8 +3,6 @@
 # FYI, subrepos should define their own rules
 /node_modules
 
-/dist
-
 # subrepos that don't use turborepo themselves
 /contrib/*/.turbo
 /examples/*/.turbo
