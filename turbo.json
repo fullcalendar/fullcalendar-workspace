@@ -5,11 +5,11 @@
       "dependsOn": ["^build"],
       "inputs": [
         "package.json",
-        "dist/.tsc/**/*"
+        "dist/.tsout/**/*"
       ],
       "outputs": [
         "dist/**/*",
-        "!dist/.tsc/**/*"
+        "!dist/.tsout/**/*"
       ]
     },
     "test": {

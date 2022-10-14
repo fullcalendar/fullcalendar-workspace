@@ -23,14 +23,13 @@
   "tsConfig": {
     "extends":  "@fullcalendar/workspace-scripts/config/tsconfig.browser.json",
     "compilerOptions": {
-      "rootDir": "./src",
-      "outDir": "./dist/.tsc"
-    },
-    "include": [
-      "./src/**/*"
-    ]
+      "outDir": "./dist/.tsout"
+    }
   },
   "buildConfig": {
+    "exports": {
+      ".": { "iife": "FullCalendarResourceDayGrid" }
+    },
     "iifeExternals": {
       "@fullcalendar/core": "FullCalendar",
       "@fullcalendar/core/preact": "FullCalendar",
@@ -38,9 +37,6 @@
       "@fullcalendar/premium-common": "FullCalendarPremiumCommon",
       "@fullcalendar/resource-common": "FullCalendarResourceCommon",
       "tslib": false
-    },
-    "exports": {
-      ".": { "iife": "FullCalendarResourceDayGrid" }
     }
   },
   "publishConfig": {

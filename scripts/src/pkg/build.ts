@@ -22,7 +22,7 @@ export default async function(...args: string[]) {
 async function cleanOldFiles(pkgDir: string): Promise<void> {
   const distDir = joinPaths(pkgDir, 'dist')
   const relPaths = await globby(
-    ['*', '!.tsc'],
+    ['*', '!.tsout'],
     { cwd: distDir },
   )
   await Promise.all(

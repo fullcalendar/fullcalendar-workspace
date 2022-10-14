@@ -56,11 +56,13 @@ async function ensureTsPkgMeta(pkgDir, pkgJsonObj, refDirs) {
 
   if (tsConfig) {
     const tsConfigFinal = {
+      include: ['./src/**/*'],
       ...tsConfig,
       compilerOptions: {
         composite: true,
         declaration: true,
         declarationMap: true,
+        rootDir: './src',
         outDir: './.tsout',
         tsBuildInfoFile: './.tsbuildinfo',
         ...tsConfig.compilerOptions,

@@ -341,7 +341,7 @@ function buildContentProcessingPlugins(pkgAnalysis: PkgAnalysis) {
         true :
         function (cssVarName: string) {
           const importPath = pkgAnalysis.pkgMeta.name === '@fullcalendar/core'
-            ? joinPaths(pkgAnalysis.pkgDir, 'dist/.tsc/styleUtils.js') // TODO: use util
+            ? joinPaths(pkgAnalysis.pkgDir, 'dist/.tsout/styleUtils.js') // TODO: use util
             : '@fullcalendar/core'
 
           return `import { injectStyles } from ${JSON.stringify(importPath)};\n` +
@@ -481,7 +481,7 @@ function externalizeAssetsPlugin(): RollupPlugin {
 
 function rerootAssetsPlugin(pkgDir: string): RollupPlugin {
   const srcDir = joinPaths(pkgDir, 'src')
-  const tscDir = joinPaths(pkgDir, 'dist', '.tsc')
+  const tscDir = joinPaths(pkgDir, 'dist', '.tsout')
 
   return {
     name: 'reroot-assets',
@@ -662,7 +662,7 @@ async function queryRelSrcPaths(pkgDir: string, entryId: string): Promise<string
 }
 
 function buildTscPath(pkgDir: string, relSrcPath: string, ext: string) {
-  return joinPaths(pkgDir, 'dist', '.tsc', relSrcPath).replace(/\.tsx?$/, '') + ext
+  return joinPaths(pkgDir, 'dist', '.tsout', relSrcPath).replace(/\.tsx?$/, '') + ext
 }
 
 // TODO: use <context>.getFileName(referenceId) ?

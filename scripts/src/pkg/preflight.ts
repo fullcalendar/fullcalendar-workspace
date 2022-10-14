@@ -50,8 +50,8 @@ async function ensureNpmIgnore(pkgDir: string): Promise<void> {
 
   if (!(await fileExists(npmIgnorePath))) {
     await writeFile(npmIgnorePath, [
-      '.tsc',
-      'tsconfig.tsbuildinfo',
+      '.tsout',
+      'tsconfig.tsbuildinfo', // TODO: obsolete
     ].join('\n'))
   }
 }
