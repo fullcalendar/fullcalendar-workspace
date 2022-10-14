@@ -124,8 +124,8 @@ async function ensureLinkedPublishJson(pkgDir, pkgJsonObj) {
         name: pkgJsonObj.name,
         exports: {
           './package.json': './package.json',
-          '.': { types: './.tsc/index.d.ts' },
-          './*': { types: './.tsc/*.d.ts' },
+          '.': { types: './.tsout/index.d.ts' }, // TODO: use config'd dir
+          './*': { types: './.tsout/*.d.ts' }, // "
         },
       })
     }

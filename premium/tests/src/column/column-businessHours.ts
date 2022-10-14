@@ -1,4 +1,4 @@
-import { doElsMatchSegs } from '@fullcalendar/standard-tests/src/lib/segs'
+import { doElsMatchSegs } from '@fullcalendar/standard-tests/lib/segs'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper.js'
 

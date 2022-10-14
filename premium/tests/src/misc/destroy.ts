@@ -1,5 +1,5 @@
-import { ListenerCounter } from '@fullcalendar/standard-tests/src/lib/ListenerCounter'
-import { prepareStandardListeners } from '@fullcalendar/standard-tests/src/lib/vdom-misc'
+import { ListenerCounter } from '@fullcalendar/standard-tests/lib/ListenerCounter'
+import { prepareStandardListeners } from '@fullcalendar/standard-tests/lib/vdom-misc'
 
 describe('destroy', () => {
   pushOptions({
