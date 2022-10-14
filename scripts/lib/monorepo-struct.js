@@ -1,5 +1,5 @@
 import { join as joinPaths } from 'path'
-import { readFile } from 'fs/promises'
+import { readFile, writeFile } from 'fs/promises'
 import { execCapture } from './exec.js'
 
 export const queryPkgDirMap = cacheableByDir(readPkgDirMap)
@@ -41,6 +41,12 @@ async function readPkgJson(pkgDir) {
   const jsonPath = joinPaths(pkgDir, 'package.json')
   const json = await readFile(jsonPath, 'utf8')
   return JSON.parse(json)
+}
+
+export async function writePkgJson(pkgDir, pkgJsonObj) {
+  const jsonPath = joinPaths(pkgDir, 'package.json')
+  const json = JSON.stringify(pkgJsonObj, undefined, 2)
+  await writeFile(jsonPath, json)
 }
 
 function cacheableByDir(func) {

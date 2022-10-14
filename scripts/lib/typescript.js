@@ -1,6 +1,6 @@
 import { join as joinPaths, relative as relativizePath } from 'path'
 import { lstat, mkdir, readFile, writeFile } from 'fs/promises'
-import { queryPkgDirMap, queryPkgJson } from './monorepo-struct.js'
+import { queryPkgDirMap, queryPkgJson, writePkgJson } from './monorepo-struct.js'
 
 export async function ensureTsMeta(monorepoDir, subdir = '') {
   const pkgDirMap = await queryPkgDirMap(monorepoDir)
@@ -89,16 +89,16 @@ function formatReferences(pkgDir, refDirs) {
 }
 
 async function writeTsConfig(pkgDir, tsConfigFinal) {
-  const destFile = joinPaths(pkgDir, 'tsconfig.json')
-  const newJson = JSON.stringify(tsConfigFinal, undefined, 2)
+  const tsconfigPath = joinPaths(pkgDir, 'tsconfig.json')
+  const tsconfigJson = JSON.stringify(tsConfigFinal, undefined, 2)
 
-  const doWrite = await readFile(destFile, 'utf8').then(
-    (oldJson) => oldJson !== newJson, // different?
+  const needsWrite = await readFile(tsconfigPath, 'utf8').then(
+    (json) => json !== tsconfigJson, // different?
     () => true, // doesn't exist?
   )
 
-  if (doWrite) {
-    await writeFile(destFile, newJson)
+  if (needsWrite) {
+    await writeFile(tsconfigPath, tsconfigJson)
   }
 }
 
@@ -118,17 +118,14 @@ async function ensureLinkedPublishJson(pkgDir, pkgJsonObj) {
 
     if (!exists) {
       await mkdir(publishDir, { recursive: true })
-
-      const json = JSON.stringify({
+      await writePkgJson(publishDir, {
         name: pkgJsonObj.name,
         exports: {
           './package.json': './package.json',
           '.': { types: './.tsc/index.d.ts' },
           './*': { types: './.tsc/*.d.ts' },
         },
-      }, undefined, 2)
-
-      await writeFile(jsonPath, json)
+      })
     }
   }
 }
