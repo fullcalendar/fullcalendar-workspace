@@ -1,9 +1,7 @@
 packages:
-  - ./standard
   - ./standard/tests
   - ./standard/bundle
   - ./standard/packages/*
-  - ./premium
   - ./premium/tests
   - ./premium/bundle
   - ./premium/packages/*
