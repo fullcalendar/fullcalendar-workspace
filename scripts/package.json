@@ -62,6 +62,17 @@
   "scripts": {
     "lint": "eslint ."
   },
+  "tsConfig": {
+    "extends": "./config/tsconfig.node.json",
+    "compilerOptions": {
+      "rootDir": "./src",
+      "outDir": "./dist",
+      "sourceMap": true
+    },
+    "include": [
+      "./src/**/*"
+    ]
+  },
   "exports": {
     "./package.json": "./package.json",
     "./config/*": "./config/*",
