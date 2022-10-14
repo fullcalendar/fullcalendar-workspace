@@ -14,7 +14,8 @@
     "test:ci": "workspace-scripts monorepo:run test",
     "clean": "workspace-scripts monorepo:run clean",
     "lint": "workspace-scripts monorepo:run lint",
-    "ci": "workspace-scripts monorepo:run lint build test --all"
+    "ci": "workspace-scripts monorepo:run lint build test --all",
+    "ts": "./scripts/bin/ts.js && tsc -b"
   },
   "monorepoConfig": {
     "defaultSubtrees": [
