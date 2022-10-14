@@ -17,6 +17,7 @@ export async function ensureTsMeta(monorepoDir, subdir = '') {
       }),
     )
 
+    // must wait for allRefDirs
     await writeTsConfig(monorepoDir, {
       files: [],
       references: formatReferences(monorepoDir, allRefDirs),
@@ -29,11 +30,11 @@ async function traversePkg(pkgDir, pkgDirMap, promiseMap, allRefDirs) {
     const pkgJsonObj = await queryPkgJson(pkgDir)
 
     if (pkgJsonObj.tsConfig) {
-      const depPkgNames = extractPkgDepNames(pkgJsonObj)
+      const depNames = extractDepNames(pkgJsonObj)
       const refDirs = []
 
       await Promise.all(
-        depPkgNames.map(async (depPkgName) => {
+        depNames.map(async (depPkgName) => {
           const depPkgDir = pkgDirMap[depPkgName]
 
           if (depPkgDir && (await traversePkg(depPkgDir, pkgDirMap, promiseMap, allRefDirs))) {
@@ -72,14 +73,9 @@ async function ensureTsPkgMeta(pkgDir, pkgJsonObj, refDirs) {
 
     await Promise.all([
       writeTsConfig(pkgDir, tsConfigFinal),
-      ensureLinkedPublishJson(pkgDir, pkgJsonObj),
+      fortifyLinkedPublishDir(pkgDir, pkgJsonObj, tsConfigFinal.compilerOptions.outDir),
     ])
   }
-}
-
-function extractPkgDepNames(pkgJsonObj) {
-  return Object.keys(pkgJsonObj.dependencies || {})
-    .concat(Object.keys(pkgJsonObj.devDependencies || {}))
 }
 
 function formatReferences(pkgDir, refDirs) {
@@ -104,30 +100,53 @@ async function writeTsConfig(pkgDir, tsConfigFinal) {
   }
 }
 
-async function ensureLinkedPublishJson(pkgDir, pkgJsonObj) {
+async function fortifyLinkedPublishDir(pkgDir, pkgJsonObj, tsOutDir) {
   const publishConfig = pkgJsonObj.publishConfig || {}
 
   if (
     publishConfig.directory &&
     publishConfig.linkDirectory
   ) {
-    const publishDir = joinPaths(pkgDir, publishConfig.directory)
-    const jsonPath = joinPaths(publishDir, 'package.json')
-    const exists = await lstat(jsonPath).then(
-      () => true,
-      () => false,
-    )
+    let relTsOutDir = relativizePath(publishConfig.directory, tsOutDir)
 
-    if (!exists) {
+    // within the publish directory?
+    if (!relTsOutDir.match(/^\.\./)) {
+      const publishDir = joinPaths(pkgDir, publishConfig.directory)
+      const pkgJsonPath = joinPaths(publishDir, 'package.json')
+      const npmIgnorePath = joinPaths(publishDir, '.npmignore')
+
       await mkdir(publishDir, { recursive: true })
-      await writePkgJson(publishDir, {
-        name: pkgJsonObj.name,
-        exports: {
-          './package.json': './package.json',
-          '.': { types: './.tsout/index.d.ts' }, // TODO: use config'd dir
-          './*': { types: './.tsout/*.d.ts' }, // "
-        },
-      })
+      await Promise.all([
+        fileExists(pkgJsonPath).then((exists) => {
+          if (!exists) {
+            return writePkgJson(publishDir, {
+              name: pkgJsonObj.name,
+              exports: {
+                './package.json': './package.json',
+                '.': { types: `./${relTsOutDir}/index.d.ts` },
+                './*': { types: `./${relTsOutDir}/*.d.ts` },
+              },
+            })
+          }
+        }),
+        fileExists(npmIgnorePath).then((exists) => {
+          if (!exists) {
+            return writeFile(npmIgnorePath, relTsOutDir)
+          }
+        }),
+      ])
     }
   }
+}
+
+function extractDepNames(pkgJsonObj) {
+  return Object.keys(pkgJsonObj.dependencies || {})
+    .concat(Object.keys(pkgJsonObj.devDependencies || {}))
+}
+
+function fileExists(path) {
+  return lstat(path).then(
+    () => true,
+    () => false,
+  )
 }

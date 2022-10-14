@@ -7,7 +7,6 @@
     "@fullcalendar/workspace-scripts": "workspace:*"
   },
   "scripts": {
-    "pnpm:devPreinstall": "workspace-scripts monorepo:preflight",
     "build": "workspace-scripts monorepo:run build",
     "dev": "workspace-scripts monorepo:run build --dev --watch",
     "test": "workspace-scripts monorepo:run test --dev --watch",
