@@ -163,7 +163,7 @@ async function bundleIifes(pkgAnalysis: PkgAnalysis): Promise<void> {
     }
   }
 
-  return Promise.all(promises).then()
+  await Promise.all(promises)
 }
 
 async function continuouslyBundleIifes(pkgAnalysis: PkgAnalysis): Promise<RollupWatcher[]> {

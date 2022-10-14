@@ -20,9 +20,9 @@ export async function createMonorepoArchives(
   const { defaultSubtrees } = monorepoConfig
   const rootDirs = defaultSubtrees || [monorepoDir]
 
-  return Promise.all(
+  await Promise.all(
     rootDirs.map((rootDir) => createArchive(rootDir)),
-  ).then()
+  )
 }
 
 export async function cleanMonorepoArchives(
@@ -32,13 +32,13 @@ export async function cleanMonorepoArchives(
   const { defaultSubtrees } = monorepoConfig
   const rootDirs = defaultSubtrees || [monorepoDir]
 
-  return Promise.all(
+  await Promise.all(
     rootDirs.map(async (rootDir) => {
       const distDir = joinPaths(rootDir, 'dist')
 
       await rm(distDir, { recursive: true, force: true })
     }),
-  ).then()
+  )
 }
 
 async function createArchive(rootDir: string): Promise<void> {

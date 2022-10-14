@@ -9,10 +9,10 @@ export default async function(...rawArgs: string[]): Promise<void> {
   return spawnParallel('.:each', subrepos, flagArgs)
 }
 
-export function each(subrepo: string): Promise<void> {
+export async function each(subrepo: string): Promise<void> {
   const subrepoDir = getSubrepoDir(subrepo)
 
-  return Promise.all(
+  await Promise.all(
     metaFileInfo.map(async (fileInfo) => {
       if (fileInfo.generator) {
         const contents = await fileInfo.generator(subrepo)
@@ -30,5 +30,5 @@ export function each(subrepo: string): Promise<void> {
         )
       }
     }),
-  ).then()
+  )
 }

@@ -25,14 +25,14 @@ async function cleanOldFiles(pkgDir: string): Promise<void> {
     ['*', '!.tsc'],
     { cwd: distDir },
   )
-  return Promise.all(
+  await Promise.all(
     relPaths.map(async (relPath) => {
       await rm(
         joinPaths(distDir, relPath),
         { recursive: true },
       )
     }),
-  ).then()
+  )
 }
 
 async function copyLicense(pkgDir: string): Promise<void> {
