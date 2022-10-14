@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "sourceMap": true,
     "target": "es6",
     "module": "es6",
     "moduleResolution": "node16",
@@ -18,6 +17,7 @@
     "jsxFactory": "createElement",
     "strictBindCallApply": true,
     "skipLibCheck": true,
+    "sourceMap": true,
     "types": []
   }
 }

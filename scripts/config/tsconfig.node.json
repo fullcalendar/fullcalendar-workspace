@@ -2,6 +2,7 @@
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
     "module": "es2022",
-    "types": ["node"]
+    "types": ["node"],
+    "sourceMap": true
   }
 }

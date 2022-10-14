@@ -65,19 +65,18 @@
   "tsConfig": {
     "extends": "./config/tsconfig.node.json",
     "compilerOptions": {
-      "rootDir": "./src",
-      "outDir": "./dist",
-      "sourceMap": true
-    },
-    "include": [
-      "./src/**/*"
-    ]
+      "outDir": "./dist"
+    }
   },
   "exports": {
     "./package.json": "./package.json",
     "./config/*": "./config/*",
+    "./lib/*": {
+      "types": "./lib/*.d.ts",
+      "default": "./lib/*.js"
+    },
     "./*": {
-      "types": "./src/*.ts",
+      "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
     }
   }
