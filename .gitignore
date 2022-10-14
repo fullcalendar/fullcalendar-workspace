@@ -2,6 +2,7 @@
 # repo root
 # FYI, subrepos should define their own rules
 /node_modules
+/tsconfig.json
 
 # subrepos that don't use turborepo themselves
 /contrib/*/.turbo

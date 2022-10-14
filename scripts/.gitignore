@@ -1,5 +1,7 @@
 
 /node_modules
 /.turbo
-/tsconfig.tsbuildinfo
-/dist
+
+dist
+tsconfig.json
+.tsbuildinfo

@@ -1,3 +1,4 @@
+import { rm } from 'fs/promises'
 import { join as joinPaths } from 'path'
 import { MonorepoConfig, readSrcPkgMeta } from '../pkg/meta.js'
 import { live } from '../utils/exec.js'
@@ -15,6 +16,7 @@ export default async function(...args: string[]) {
 
   if (taskNameMap.clean) {
     await cleanMonorepoArchives(monorepoDir, monorepoConfig)
+    await rm(joinPaths(monorepoDir, 'tsconfig.json'), { force: true })
 
     // TODO: always fail. figure out why. just rerun and will bypass.
     if (pluckFlag(args, 'turbo')) {
