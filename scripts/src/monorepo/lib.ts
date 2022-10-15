@@ -3,6 +3,8 @@ import { fileURLToPath } from 'url'
 import { MonorepoConfig } from '../pkg/meta.js'
 import { capture } from '../utils/exec.js'
 
+export const monorepoDir = joinPaths(fileURLToPath(import.meta.url), '../../../..')
+
 export const workspaceScriptsDir = joinPaths(fileURLToPath(import.meta.url), '../../..')
 
 export function buildFilterArgs(monorepoConfig: MonorepoConfig): string[] {

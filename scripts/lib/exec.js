@@ -18,6 +18,14 @@ export function execCapture(command, options = {}) {
 }
 
 export function execLive(command, options = {}) {
+  return execWithStdio(command, options, 'inherit')
+}
+
+export function execSilent(command, options = {}) {
+  return execWithStdio(command, options, 'ignore')
+}
+
+function execWithStdio(command, options, stdio) {
   let commandPath
   let commandArgs
   let shell
@@ -35,18 +43,25 @@ export function execLive(command, options = {}) {
   }
 
   const childProcess = spawn(commandPath, commandArgs, {
-    stdio: 'inherit', // allow options to override
     ...options,
     shell,
+    stdio,
   })
 
   return new Promise((resolve, reject) => {
-    childProcess.on('close', (status) => {
-      if (status === 0) {
+    childProcess.on('close', (exitCode) => {
+      if (exitCode === 0) {
         resolve()
       } else {
-        reject()
+        reject(new ExecError(exitCode))
       }
     })
   })
+}
+
+export class ExecError extends Error {
+  constructor(exitCode) {
+    super(`Exec error with exit code ${exitCode}`)
+    this.exitCode = exitCode
+  }
 }
