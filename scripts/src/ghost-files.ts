@@ -2,7 +2,7 @@ import { join as joinPaths } from 'path'
 import { readFile, writeFile, copyFile, rm } from 'fs/promises'
 import { execCapture } from '../lib/exec.js'
 import { monorepoDir } from './monorepo/lib.js'
-import { addFile, assumeUnchanged, boolSuccess, checkoutFile, commitDir } from './subrepo/lib/git.js'
+import { addFile, assumeUnchanged, boolSuccess, checkoutFile, commitDir, hasDiff } from './subrepo/lib/git.js'
 import ghostFileConfigMap, { GhostFileConfig } from '../config/ghost-files.js'
 
 export default async function(...args: string[]) {
@@ -20,10 +20,13 @@ async function updateGhostFiles(monorepoDir: string, doCommit = true) {
   await generateFiles(monorepoDir, subdirs)
   const anyAdded = await addFiles(ghostFilePaths)
 
-  if (doCommit) {
-    if (anyAdded) {
+  if (anyAdded) {
+    if (doCommit) {
       await commitDir(monorepoDir, 'subrepo meta file changes')
+      await hideFiles(ghostFilePaths)
     }
+  } else {
+    // only hide files if nothing staged
     await hideFiles(ghostFilePaths)
   }
 }
@@ -105,8 +108,8 @@ async function addFiles(paths: string[]): Promise<boolean> {
   let anyAdded = false
 
   for (let path of paths) {
-    const added = await boolSuccess(addFile(path))
-    if (added) {
+    if (await hasDiff(path)) {
+      await addFile(path)
       anyAdded = true
     }
   }

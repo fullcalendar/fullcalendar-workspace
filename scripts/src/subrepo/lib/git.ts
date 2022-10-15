@@ -1,5 +1,5 @@
 import { dirname } from 'path'
-import { ExecError, execSilent } from '../../../lib/exec.js'
+import { ExecError, execSilent, execLive } from '../../../lib/exec.js'
 
 export function assumeUnchanged(path: string, toggle = true): Promise<void> {
   return execSilent([
@@ -20,7 +20,7 @@ export function checkoutFile(path: string): Promise<void> {
 }
 
 export function addFile(path: string): Promise<void> {
-  return execSilent([
+  return execLive([
     'git', 'add', path,
   ], {
     cwd: dirname(path),
@@ -28,16 +28,16 @@ export function addFile(path: string): Promise<void> {
 }
 
 export function commitDir(dir: string, message: string): Promise<void> {
-  return execSilent([
+  return execLive([
     'git', 'commit', '-m', message,
   ], {
     cwd: dir,
   })
 }
 
-export function isStaged(path: string): Promise<boolean> {
+export function hasDiff(path: string): Promise<boolean> {
   return execSilent([
-    'git', 'diff', '--quiet', '--staged', path, // implies --exit-code
+    'git', 'diff', '--quiet', path, // implies --exit-code
   ], {
     cwd: dirname(path),
   }).then(
