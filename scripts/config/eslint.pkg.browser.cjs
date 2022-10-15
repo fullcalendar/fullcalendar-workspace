@@ -9,7 +9,7 @@ module.exports = {
   overrides: [
     {
       files: [
-        './*.{js,cjs}',
+        './*.{js,cjs,ts}',
         './{scripts,config}/**/*.{js,cjs}',
       ],
       env: {

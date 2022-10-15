@@ -4,12 +4,12 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": [
-        "package.json",
-        "dist/.tsout/**/*"
+        "./package.json",
+        "./dist/.tsout/**/*"
       ],
       "outputs": [
-        "dist/**/*",
-        "!dist/.tsout/**/*"
+        "./dist/**/*",
+        "!./dist/.tsout/**/*"
       ]
     },
     "test": {
@@ -22,7 +22,8 @@
     "lint": {
       "dependsOn": [],
       "inputs": [
-        "src/**/*"
+        "./*.{js,cjs,ts}",
+        "./{scripts,config,src,tests}/**/*"
       ]
     }
   }
