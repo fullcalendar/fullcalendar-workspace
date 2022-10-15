@@ -1,21 +1,12 @@
 
 module.exports = {
-  extends: ['./eslint.base.cjs'],
-  env: {
-    es6: true, // TODO: keep in sync with other configs?
-    node: true,
-  },
+  extends: [
+    './eslint.base.cjs',
+  ],
   ignorePatterns: [
     'dist',
   ],
-  overrides: [
-    {
-      // HACK: simply for adding .cjs extension
-      // https://eslint.org/docs/latest/user-guide/command-line-interface#--ext
-      files: '**/*.cjs',
-      rules: {
-        '@typescript-eslint/no-var-requires': 'off',
-      },
-    },
-  ],
+  env: {
+    node: true,
+  },
 }

@@ -1,8 +1,22 @@
 
 module.exports = {
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+  ],
+  plugins: [
+    '@typescript-eslint',
+  ],
+  settings: {
+    react: {
+      version: '18.2.0', // can't detect b/c we don't use React. hardcode a recent version
+    },
+  },
+  env: {
+    es2022: true,
+  },
   rules: {
     indent: ['error', 2, { SwitchCase: 1 }],
     semi: ['error', 'never'],
@@ -15,6 +29,13 @@ module.exports = {
       'exports': 'always-multiline',
       'functions': 'always-multiline', // not included in single-value specification
     }],
+
+    // typescript will check unknown vars, even for js (with checkJs)
+    'no-undef': 'off',
+
+    // jsx
+    'react/react-in-jsx-scope': 'off', // not compat w/ Preact (checked in ts anyway)
+    'react/display-name': 'off',
 
     // easy fixes in near-term
     '@typescript-eslint/no-unused-vars': 'off',
@@ -33,4 +54,12 @@ module.exports = {
     // TODO: merge rules from this legacy file:
     // https://github.com/fullcalendar/fullcalendar/blob/v5.11.3/.eslintrc.yml
   },
+  overrides: [
+    {
+      files: '*.cjs', // at any depth
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off', // allow require() statements
+      },
+    },
+  ],
 }
