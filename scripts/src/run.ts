@@ -56,6 +56,14 @@ export async function runTasks(
   if (options.watch && !isLoneClean) {
     await Promise.all([
       compileTsOnly(monorepoDir, '', ['--watch', '--preserveWatchOutput', '--pretty']),
+      // execLive(['pnpm', 'run', '--parallel', ...massagedRunArgs], {
+      //   cwd: monorepoDir,
+      //   env: {
+      //     ...currentEnv,
+      //     BUILD_ENV,
+      //     BUILD_WATCH_LAZY: '1',
+      //   },
+      // }),
     ])
   }
 }

@@ -7,6 +7,7 @@
     "workspace-scripts": "./bin/workspace-scripts.js",
     "ws": "./bin/workspace-scripts.js",
     "tsc": "./node_modules/typescript/bin/tsc",
+    "turbo": "./node_modules/turbo/bin/turbo",
     "eslint": "./node_modules/eslint/bin/eslint.js"
   },
   "devDependencies": {
