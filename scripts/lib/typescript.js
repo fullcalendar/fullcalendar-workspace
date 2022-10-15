@@ -6,14 +6,14 @@ import { queryPkgDirMap, queryPkgJson, writePkgJson } from './monorepo-struct.js
 
 const thisPkgDir = joinPaths(fileURLToPath(import.meta.url), '../..')
 
-export async function compileTs(monorepoDir, subdir = '') {
+export async function compileTs(monorepoDir, subdir = '', tscArgs = []) {
   await ensureTsMeta(monorepoDir, subdir)
-  await compileTsOnly(monorepoDir, subdir)
+  await compileTsOnly(monorepoDir, subdir, tscArgs)
 }
 
-export async function compileTsOnly(monorepoDir, subdir = '') {
+export async function compileTsOnly(monorepoDir, subdir = '', tscArgs = []) {
   await execLive([
-    joinPaths(thisPkgDir, 'node_modules/typescript/bin/tsc'), '-b',
+    joinPaths(thisPkgDir, 'node_modules/typescript/bin/tsc'), '-b', ...tscArgs,
   ], {
     cwd: absolutizeSubdir(monorepoDir, subdir),
   })

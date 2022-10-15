@@ -4,7 +4,6 @@ import { MonorepoConfig, readSrcPkgMeta } from '../pkg/meta.js'
 import { live } from '../utils/exec.js'
 import { cleanMonorepoArchives, createMonorepoArchives } from './archive.js'
 import { buildFilterArgs, workspaceScriptsDir } from './lib.js'
-import { runMonorepoPreflight } from './preflight.js'
 
 export default async function(...args: string[]) {
   const monorepoDir = process.cwd()
@@ -39,7 +38,6 @@ export default async function(...args: string[]) {
       console.log('TODO: handle watch')
     }
 
-    await runMonorepoPreflight(monorepoDir, monorepoConfig)
     await live([ 'tsc', '-b' ], { cwd: monorepoDir })
   }
 

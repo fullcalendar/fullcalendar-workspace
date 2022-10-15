@@ -7,6 +7,20 @@ import runMeta from './meta.js' // TODO: better entrypoint
 export default async function(...args: string[]) {
   const pkgDir = process.cwd()
 
+  const isWatchLazy = process.env.BUILD_WATCH_LAZY === '1'
+  const isWatch = args.indexOf('--watch') !== -1 || isWatchLazy
+  const isDev = args.indexOf('--dev') !== -1 || process.env.BUILD_ENV === 'dev'
+
+  console.log('flags', {
+    isDev,
+    isWatch,
+    isWatchLazy,
+  })
+
+  if (isWatch) {
+    throw new Error('Watch not implemented yet')
+  }
+
   await cleanOldFiles(pkgDir)
 
   // TODO: best way to exclude?

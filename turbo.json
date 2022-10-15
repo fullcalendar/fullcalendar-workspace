@@ -3,27 +3,26 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
+      "env": ["BUILD_ENV"],
       "inputs": [
         "./package.json",
-        "./dist/.tsout/**/*"
+        "./{src,lib}/**"
       ],
       "outputs": [
-        "./dist/**/*",
-        "!./dist/.tsout/**/*"
+        "./dist/**",
+        "!./dist/.tsout/**"
       ]
     },
     "test": {
       "dependsOn": ["build"]
     },
     "clean": {
-      "dependsOn": [],
       "cache": false
     },
     "lint": {
-      "dependsOn": [],
       "inputs": [
-        "./*.{js,cjs,ts}",
-        "./{scripts,config,src,tests}/**/*"
+        "./*.{ts,js,cjs}",
+        "./{src,lib,tests,scripts,config}/**"
       ]
     }
   }
