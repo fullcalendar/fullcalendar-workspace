@@ -1,6 +1,23 @@
-import { join as joinPaths, relative as relativizePath } from 'path'
+import { join as joinPaths, relative as relativizePath, isAbsolute } from 'path'
+import { fileURLToPath } from 'url'
 import { lstat, mkdir, readFile, writeFile } from 'fs/promises'
+import { execLive } from './exec.js'
 import { queryPkgDirMap, queryPkgJson, writePkgJson } from './monorepo-struct.js'
+
+const thisPkgDir = joinPaths(fileURLToPath(import.meta.url), '../..')
+
+export async function compileTs(monorepoDir, subdir = '') {
+  await ensureTsMeta(monorepoDir, subdir)
+  await compileTsOnly(monorepoDir, subdir)
+}
+
+export async function compileTsOnly(monorepoDir, subdir = '') {
+  await execLive([
+    joinPaths(thisPkgDir, 'node_modules/typescript/bin/tsc'), '-b',
+  ], {
+    cwd: absolutizeSubdir(monorepoDir, subdir),
+  })
+}
 
 export async function ensureTsMeta(monorepoDir, subdir = '') {
   const pkgDirMap = await queryPkgDirMap(monorepoDir)
@@ -8,7 +25,7 @@ export async function ensureTsMeta(monorepoDir, subdir = '') {
   const allRefDirs = []
 
   if (subdir) {
-    await traversePkg(joinPaths(monorepoDir, subdir), pkgDirMap, promiseMap, allRefDirs)
+    await traversePkg(absolutizeSubdir(monorepoDir, subdir), pkgDirMap, promiseMap, allRefDirs)
   } else {
     await Promise.all(
       Object.keys(pkgDirMap).map((pkgName) => {
@@ -149,4 +166,11 @@ function fileExists(path) {
     () => true,
     () => false,
   )
+}
+
+function absolutizeSubdir(rootDir, subdir) {
+  if (isAbsolute(subdir)) {
+    return subdir
+  }
+  return joinPaths(rootDir, subdir)
 }
