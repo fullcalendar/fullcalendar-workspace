@@ -20,15 +20,12 @@ async function updateGhostFiles(monorepoDir: string, doCommit = true) {
   await generateFiles(monorepoDir, subdirs)
   const anyAdded = await addFiles(ghostFilePaths)
 
-  if (anyAdded) {
-    if (doCommit) {
-      await commitDir(monorepoDir, 'subrepo meta file changes')
-      await hideFiles(ghostFilePaths)
-    }
-  } else {
-    // only hide files if nothing staged
-    await hideFiles(ghostFilePaths)
+  if (anyAdded && doCommit) {
+    await commitDir(monorepoDir, 'subrepo meta file changes')
   }
+
+  // if not committed, files will be seen as staged, even after hiding them
+  await hideFiles(ghostFilePaths)
 }
 
 // generation
