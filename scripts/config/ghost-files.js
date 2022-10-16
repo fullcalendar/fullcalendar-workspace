@@ -8,7 +8,7 @@ export default {
   '.gitignore': { generator: scopeGitIgnore },
   'pnpm-workspace.yaml': { generator: scopeWorkspaceFile },
   'pnpm-lock.yaml': { generator: writeScopedLockfile },
-  'turbo.json': {},
+  // 'turbo.json': {}, // broken because of git staging bug
 }
 
 // .gitignore

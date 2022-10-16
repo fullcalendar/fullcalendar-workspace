@@ -11,7 +11,7 @@
     "dev": "workspace-scripts run build --dev --watch",
     "test": "workspace-scripts monorepo:run test --dev --watch",
     "test:ci": "workspace-scripts monorepo:run test",
-    "clean": "workspace-scripts monorepo:run clean",
+    "clean": "workspace-scripts run clean",
     "lint": "workspace-scripts monorepo:run lint",
     "ci": "workspace-scripts monorepo:run lint build test --all"
   },

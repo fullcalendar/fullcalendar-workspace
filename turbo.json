@@ -6,7 +6,8 @@
       "env": ["BUILD_ENV"],
       "inputs": [
         "./package.json",
-        "./{src,lib}/**"
+        "./lib/**",
+        "./dist/.tsout/**"
       ],
       "outputs": [
         "./dist/**",
