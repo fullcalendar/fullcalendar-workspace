@@ -48,6 +48,7 @@ async function scopeWorkspaceFile(readOrig, monorepoDir, subdir) {
     yamlDoc.packages = scopedPkgGlobs
     return yaml.dump(yamlDoc)
   }
+  // otherwise, if no scoped packages, nothing will be written
 }
 
 function scopePkgGlobs(globs, subdir) {
