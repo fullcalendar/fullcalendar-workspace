@@ -3,41 +3,22 @@ import { createWriteStream } from 'fs'
 import { mkdir, readFile, rm } from 'fs/promises'
 import { globby } from 'globby'
 import archiver from 'archiver'
-import { MonorepoConfig, readSrcPkgMeta } from '../pkg/meta.js'
+import { MonorepoStruct } from './utils/monorepo-struct.js'
+import { ScriptContext } from './utils/script-runner.js'
 
-export default async function() {
-  const monorepoDir = process.cwd()
-  const monorepoPkgMeta = await readSrcPkgMeta(monorepoDir)
-  const monorepoConfig = monorepoPkgMeta.monorepoConfig || {}
-
-  return createMonorepoArchives(monorepoDir, monorepoConfig)
+export default function(this: ScriptContext) {
+  return writeMonorepoArchives(this.monorepoStruct)
 }
 
-export async function createMonorepoArchives(
-  monorepoDir: string,
-  monorepoConfig: MonorepoConfig,
-): Promise<void> {
-  const { defaultSubtrees } = monorepoConfig
-  const rootDirs = defaultSubtrees || [monorepoDir]
-
+export async function writeMonorepoArchives(monorepoStruct: MonorepoStruct): Promise<void> {
   await Promise.all(
-    rootDirs.map((rootDir) => createArchive(rootDir)),
+    getRootDirs(monorepoStruct).map((rootDir) => createArchive(rootDir)),
   )
 }
 
-export async function cleanMonorepoArchives(
-  monorepoDir: string,
-  monorepoConfig: MonorepoConfig,
-): Promise<void> {
-  const { defaultSubtrees } = monorepoConfig
-  const rootDirs = defaultSubtrees || [monorepoDir]
-
+export async function deleteMonorepoArchives(monorepoStruct: MonorepoStruct): Promise<void> {
   await Promise.all(
-    rootDirs.map(async (rootDir) => {
-      const distDir = joinPaths(rootDir, 'dist')
-
-      await rm(distDir, { recursive: true, force: true })
-    }),
+    getRootDirs(monorepoStruct).map((rootDir) => deleteArchives(rootDir)),
   )
 }
 
@@ -79,4 +60,17 @@ async function createArchive(rootDir: string): Promise<void> {
   }
 
   return archive.finalize()
+}
+
+async function deleteArchives(rootDir: string): Promise<void> {
+  const distDir = joinPaths(rootDir, 'dist')
+
+  await rm(distDir, { recursive: true, force: true })
+}
+
+function getRootDirs(monorepoStruct: MonorepoStruct): string[] {
+  const { monorepoDir, monorepoPkgJson } = monorepoStruct
+  const defaultSubtrees: string[] | undefined = monorepoPkgJson.monorepoConfig.defaultSubtrees
+
+  return defaultSubtrees || [monorepoDir]
 }

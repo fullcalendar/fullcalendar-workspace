@@ -1,10 +1,10 @@
 import { join as joinPaths } from 'path'
 import karma from 'karma'
-import { workspaceScriptsDir } from '../monorepo/lib.js'
+import { monorepoScriptsDir } from '../utils/script-runner.js'
 
 export default function(...args: string[]) {
   const dev = args.indexOf('--dev') !== -1
-  const configPath = joinPaths(workspaceScriptsDir, './config/karma.cjs')
+  const configPath = joinPaths(monorepoScriptsDir, './config/karma.cjs')
 
   // see https://karma-runner.github.io/6.4/dev/public-api.html
   return karma.config.parseConfig(

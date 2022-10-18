@@ -1,7 +1,6 @@
-
 dist
 tmp
 node_modules
 tsconfig.json
-.tsbuildinfo
+tsconfig.tsbuildinfo
 .turbo

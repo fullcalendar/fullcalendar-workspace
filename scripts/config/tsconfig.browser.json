@@ -18,6 +18,9 @@
     "strictBindCallApply": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "types": []
+    "types": [],
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
   }
 }

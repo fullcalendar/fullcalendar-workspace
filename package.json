@@ -7,13 +7,13 @@
     "@fullcalendar/workspace-scripts": "workspace:*"
   },
   "scripts": {
-    "build": "workspace-scripts run build",
-    "dev": "workspace-scripts run build --dev --watch",
-    "test": "workspace-scripts monorepo:run test --dev --watch",
-    "test:ci": "workspace-scripts monorepo:run test",
-    "clean": "workspace-scripts run clean",
-    "lint": "workspace-scripts monorepo:run lint",
-    "ci": "workspace-scripts monorepo:run lint build test --all"
+    "postinstall": "workspace-scripts postinstall",
+    "build": "workspace-scripts build",
+    "dev": "workspace-scripts dev",
+    "test": "workspace-scripts test",
+    "clean": "workspace-scripts clean",
+    "lint": "workspace-scripts lint",
+    "ci": "workspace-scripts ci"
   },
   "monorepoConfig": {
     "defaultSubtrees": [

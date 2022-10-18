@@ -23,6 +23,7 @@
     "@types/js-yaml": "^4.0.5",
     "@types/karma": "^6.3.3",
     "@types/node": "^16.11.7",
+    "@types/semver": "^7.3.12",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.40.0",
     "archiver": "^5.3.1",
@@ -56,6 +57,7 @@
     "rollup-plugin-dts": "^3.0.2",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-sourcemaps": "^0.6.3",
+    "semver": "^7.3.8",
     "terser": "^4.8.0",
     "turbo": "^1.5.6",
     "typescript": "^4.8.2"
@@ -66,8 +68,12 @@
   "tsConfig": {
     "extends": "./config/tsconfig.node.json",
     "compilerOptions": {
+      "rootDir": "./src",
       "outDir": "./dist"
-    }
+    },
+    "include": [
+      "./src/**/*"
+    ]
   },
   "exports": {
     "./package.json": "./package.json",

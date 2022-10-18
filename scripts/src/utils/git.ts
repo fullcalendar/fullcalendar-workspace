@@ -1,97 +1,47 @@
-import * as path from 'path'
-import { rm } from 'fs/promises'
-import { live } from './exec.js'
+import { dirname } from 'path'
+import { SpawnError, execSilent, execLive } from './exec.js'
 
-/*
-IMPORTANT: writes to a git repo must happen serially,
-Accepting a files array in each function encourages this.
-*/
-
-export async function disappear(rootDir: string, files: string[]) {
-  for (const file of files) {
-    const wasInIndex = await live([
-      'git', 'update-index', '--assume-unchanged', file,
-    ], {
-      cwd: rootDir,
-      stdio: 'ignore', // silence error
-    }).then(
-      () => true, // success
-      () => false, // will fail if not in index
-    )
-
-    if (wasInIndex) {
-      await rm(
-        path.join(rootDir, file),
-        { force: true },
-      )
-    }
-  }
+export function assumeUnchanged(path: string, toggle = true): Promise<void> {
+  return execSilent([
+    'git', 'update-index',
+    toggle ? '--assume-unchanged' : '--no-assume-unchanged',
+    path,
+  ], {
+    cwd: dirname(path),
+  })
 }
 
-export async function reappear(rootDir: string, files: string[]) {
-  for (const file of files) {
-    const wasInIndex = await live([
-      'git', 'update-index', '--no-assume-unchanged', file,
-    ], {
-      cwd: rootDir,
-      stdio: 'ignore', // silence error
-    }).then(
-      () => true, // success
-      () => false, // will fail if not in index
-    )
-
-    if (wasInIndex) {
-      // restore the file
-      await live([
-        'git', 'checkout', '--', file,
-      ], {
-        cwd: rootDir,
-      })
-    }
-  }
+export function checkoutFile(path: string): Promise<void> {
+  return execSilent([
+    'git', 'checkout', '--', path,
+  ], {
+    cwd: dirname(path),
+  })
 }
 
-export async function addAndCommit(
-  rootDir: string,
-  files: string[],
-  message: string,
-): Promise<boolean> {
-  let isAnyStaged = false
+export function addFile(path: string): Promise<void> {
+  return execSilent([
+    'git', 'add', path,
+  ], {
+    cwd: dirname(path),
+  })
+}
 
-  for (const file of files) {
-    const isAdded = await live([
-      'git', 'add', file,
-    ], {
-      cwd: rootDir,
-      stdio: 'ignore', // silence error
-    }).then(
-      () => true, // success
-      () => false, // will fail if dynamic generator didn't want to generate. swallow error
-    )
+export function commitDir(dir: string, message: string): Promise<void> {
+  return execLive([
+    'git', 'commit', '-m', message,
+  ], {
+    cwd: dir,
+  })
+}
 
-    if (isAdded) {
-      const isFileStaged = await live([
-        'git', 'diff', '--quiet', '--staged', file,
-      ], {
-        cwd: rootDir,
-      }).then(
-        () => false, // success means NO changes
-        () => true, // failure means there ARE changes
-      )
-
-      if (isFileStaged) {
-        isAnyStaged = true
-      }
-    }
-  }
-
-  if (isAnyStaged) {
-    await live([
-      'git', 'commit', '-m', message,
-    ], {
-      cwd: rootDir,
-    })
-  }
-
-  return isAnyStaged
+export function isStaged(path: string): Promise<boolean> {
+  return execSilent([
+    'git', 'diff', '--quiet', '--staged', path, // implies --exit-code
+  ], {
+    cwd: dirname(path),
+  }).then(
+    () => false, // 0 exitCode means no difference
+    (error: SpawnError) => error.exitCode === 1, // 1 exitCode means difference
+  )
 }

@@ -1,10 +1,15 @@
 import { rm } from 'fs/promises'
 
+const pathsToDelete = [
+  './dist',
+  './tsconfig.json',
+  './tsconfig.tsbuildinfo',
+  './.tsbuildinfo', // for now
+  './.turbo',
+]
+
 export default function() {
-  return Promise.all([
-    rm('./dist', { force: true, recursive: true }),
-    rm('./tsconfig.json', { force: true, recursive: true }),
-    rm('./.tsbuildinfo', { force: true, recursive: true }),
-    rm('./.tsout', { force: true, recursive: true }),
-  ])
+  return Promise.all(
+    pathsToDelete.map((path) => rm(path, { force: true, recursive: true })),
+  )
 }

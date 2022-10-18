@@ -1,23 +1,36 @@
 import { join as joinPaths } from 'path'
 import { readFile, writeFile, copyFile, rm } from 'fs/promises'
-import { execCapture } from '../lib/exec.js'
-import { monorepoDir } from './monorepo/lib.js'
-import { addFile, assumeUnchanged, boolSuccess, checkoutFile, commitDir, hasDiff } from './subrepo/lib/git.js'
-import ghostFileConfigMap, { GhostFileConfig } from '../config/ghost-files.js'
+import { monorepoDir } from '../utils/script-runner.js'
+import {
+  addFile,
+  assumeUnchanged,
+  checkoutFile,
+  commitDir,
+  isStaged,
+} from '../utils/git.js'
+import { boolPromise } from '../utils/lang.js'
+import { querySubrepoSubdirs } from '../utils/git-subrepo.js'
+
+// config
+import ghostFileConfigMap, { GhostFileConfig } from '../../config/ghost-files.js'
 
 export default async function(...args: string[]) {
   await updateGhostFiles(
     monorepoDir,
+    await querySubrepoSubdirs(monorepoDir),
     args.indexOf('--no-commit') === -1,
   )
 }
 
-async function updateGhostFiles(monorepoDir: string, doCommit = true) {
-  const subdirs = await querySubrepoSubdirs(monorepoDir)
+export async function updateGhostFiles(
+  monorepoDir: string,
+  subdirs: string[] = [],
+  doCommit = true,
+) {
   const ghostFilePaths = getGhostFilePaths(monorepoDir, subdirs)
 
   await revealFiles(ghostFilePaths)
-  await generateFiles(monorepoDir, subdirs)
+  await writeFiles(monorepoDir, subdirs)
   const anyAdded = await addFiles(ghostFilePaths)
 
   if (anyAdded && doCommit) {
@@ -28,24 +41,38 @@ async function updateGhostFiles(monorepoDir: string, doCommit = true) {
   await hideFiles(ghostFilePaths)
 }
 
-// generation
+function getGhostFilePaths(monorepoDir: string, subdirs: string[]): string[] {
+  const ghostFileSubpaths = Object.keys(ghostFileConfigMap)
+  const paths: string[] = []
 
-async function generateFiles(monorepoDir: string, subdirs: string[]) {
+  for (const subdir of subdirs) {
+    for (const ghostFilePath of ghostFileSubpaths) {
+      paths.push(joinPaths(monorepoDir, subdir, ghostFilePath))
+    }
+  }
+
+  return paths
+}
+
+// Generation
+// -------------------------------------------------------------------------------------------------
+
+async function writeFiles(monorepoDir: string, subdirs: string[]) {
   await Promise.all(
-    subdirs.map((subdir) => generateSubdirFiles(monorepoDir, subdir)),
+    subdirs.map((subdir) => writeSubdirFiles(monorepoDir, subdir)),
   )
 }
 
-async function generateSubdirFiles(monorepoDir: string, subdir: string): Promise<void> {
+async function writeSubdirFiles(monorepoDir: string, subdir: string): Promise<void> {
   await Promise.all(
     Object.keys(ghostFileConfigMap).map(async (ghostFileSubpath) => {
       const ghostFileConfig = ghostFileConfigMap[ghostFileSubpath]
-      await generateSubdirFile(monorepoDir, subdir, ghostFileSubpath, ghostFileConfig)
+      await writeSubdirFile(monorepoDir, subdir, ghostFileSubpath, ghostFileConfig)
     }),
   )
 }
 
-async function generateSubdirFile(
+async function writeSubdirFile(
   monorepoDir: string,
   subdir: string,
   ghostFileSubpath: string,
@@ -66,35 +93,12 @@ async function generateSubdirFile(
   }
 }
 
-// subrepo utils
-
-async function querySubrepoSubdirs(monorepoDir: string): Promise<string[]> {
-  const s = await execCapture([
-    'git', 'subrepo', 'status', '--quiet',
-  ], {
-    cwd: monorepoDir,
-  })
-  return s.trim().split('\n')
-}
-
-function getGhostFilePaths(monorepoDir: string, subdirs: string[]): string[] {
-  const ghostFileSubpaths = Object.keys(ghostFileConfigMap)
-  const paths: string[] = []
-
-  for (const subdir of subdirs) {
-    for (const ghostFilePath of ghostFileSubpaths) {
-      paths.push(joinPaths(monorepoDir, subdir, ghostFilePath))
-    }
-  }
-
-  return paths
-}
-
-// git utils
+// Git utils
+// -------------------------------------------------------------------------------------------------
 
 async function revealFiles(paths: string[]): Promise<void> {
   for (let path of paths) {
-    const inIndex = await boolSuccess(assumeUnchanged(path, false))
+    const inIndex = await boolPromise(assumeUnchanged(path, false))
     if (inIndex) {
       await checkoutFile(path)
     }
@@ -105,8 +109,9 @@ async function addFiles(paths: string[]): Promise<boolean> {
   let anyAdded = false
 
   for (let path of paths) {
-    if (await hasDiff(path)) {
-      await addFile(path)
+    await addFile(path)
+
+    if (await isStaged(path)) {
       anyAdded = true
     }
   }
@@ -116,7 +121,7 @@ async function addFiles(paths: string[]): Promise<boolean> {
 
 async function hideFiles(paths: string[]): Promise<void> {
   for (let path of paths) {
-    const inIndex = await boolSuccess(assumeUnchanged(path, true))
+    const inIndex = await boolPromise(assumeUnchanged(path, true))
     if (inIndex) {
       await rm(path, { force: true })
     }

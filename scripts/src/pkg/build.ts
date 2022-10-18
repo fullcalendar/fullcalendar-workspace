@@ -1,44 +1,63 @@
-import { join as joinPaths, basename } from 'path'
+import { join as joinPaths } from 'path'
 import { copyFile, rm } from 'fs/promises'
 import { globby } from 'globby'
-import runBundler from './bundle.js' // TODO: better entrypoint
-import runMeta from './meta.js' // TODO: better entrypoint
+import { writeDistPkgJson } from './json.js'
+import { analyzePkg, PkgAnalysis } from '../utils/pkg-analysis.js'
+import { ScriptContext } from '../utils/script-runner.js'
+import { writeBundles } from './bundle.js'
+import { compileTs, writeTsconfigs } from '../utils/monorepo-ts.js'
+import { MonorepoStruct } from '../utils/monorepo-struct.js'
 
-export default async function(...args: string[]) {
-  const pkgDir = process.cwd()
+const distPathsToDelete = [
+  '*',
+  '!tsconfig.tsbuildinfo',
+  '!.tsout',
+]
 
-  const isWatchLazy = process.env.BUILD_WATCH_LAZY === '1'
-  const isWatch = args.indexOf('--watch') !== -1 || isWatchLazy
-  const isDev = args.indexOf('--dev') !== -1 || process.env.BUILD_ENV === 'dev'
+export default async function(this: ScriptContext, ...args: string[]) {
+  const { monorepoStruct } = this
+  const pkgDir = this.cwd
+  const isDev = args.includes('--dev')
 
-  console.log('flags', {
-    isDev,
-    isWatch,
-    isWatchLazy,
-  })
-
-  if (isWatch) {
-    throw new Error('Watch not implemented yet')
-  }
-
-  await cleanOldFiles(pkgDir)
-
-  // TODO: best way to exclude?
-  if (basename(pkgDir) !== 'tests') {
-    await copyLicense(pkgDir)
-    await copyReadme(pkgDir)
-  }
-
-  await runMeta(...args) // just for package.json (rename?)
-  await runBundler(...args)
+  await buildPkg(pkgDir, monorepoStruct, isDev)
 }
 
-async function cleanOldFiles(pkgDir: string): Promise<void> {
-  const distDir = joinPaths(pkgDir, 'dist')
-  const relPaths = await globby(
-    ['*', '!.tsout'],
-    { cwd: distDir },
+export async function buildPkg(pkgDir: string, monorepoStruct: MonorepoStruct, isDev = false) {
+  const pkgJson = monorepoStruct.pkgDirToJson[pkgDir]
+  const pkgAnalysis = analyzePkg(pkgDir)
+
+  await deleteDistFiles(pkgDir)
+  await writeTsconfigs(monorepoStruct, pkgDir)
+  await writeDistPkgJson(pkgDir, pkgJson, isDev)
+
+  // tsc needs tsconfig.json and package.json from above
+  await compileTs(pkgDir)
+
+  await Promise.all([
+    writeBundles({ pkgJson, ...pkgAnalysis, isDev }),
+    writeDistReadme(pkgDir),
+    writeDistLicense(pkgAnalysis),
+  ])
+}
+
+export async function writeDistReadme(pkgDir: string): Promise<void> {
+  await copyFile(
+    joinPaths(pkgDir, 'README.md'),
+    joinPaths(pkgDir, 'dist', 'README.md'),
   )
+}
+
+export async function writeDistLicense(pkgAnalysis: PkgAnalysis): Promise<void> {
+  await copyFile(
+    joinPaths(pkgAnalysis.metaRootDir, 'LICENSE.md'),
+    joinPaths(pkgAnalysis.pkgDir, 'dist', 'LICENSE.md'),
+  )
+}
+
+async function deleteDistFiles(pkgDir: string): Promise<void> {
+  const distDir = joinPaths(pkgDir, 'dist')
+  const relPaths = await globby(distPathsToDelete, { cwd: distDir })
+
   await Promise.all(
     relPaths.map(async (relPath) => {
       await rm(
@@ -46,31 +65,5 @@ async function cleanOldFiles(pkgDir: string): Promise<void> {
         { recursive: true },
       )
     }),
-  )
-}
-
-async function copyLicense(pkgDir: string): Promise<void> {
-  await copyFile(
-    joinPaths(getSubrepoDir(pkgDir), 'LICENSE.md'),
-    joinPaths(pkgDir, 'dist', 'LICENSE.md'),
-  )
-}
-
-async function copyReadme(pkgDir: string): Promise<void> {
-  await copyFile(
-    joinPaths(pkgDir, 'README.md'),
-    joinPaths(pkgDir, 'dist', 'README.md'),
-  )
-}
-
-/*
-TODO: rename? 'premium' is not a subrepo
-*/
-function getSubrepoDir(pkgDir: string): string {
-  return joinPaths(
-    pkgDir,
-    basename(pkgDir) === 'bundle'
-      ? '..'
-      : '../..',
   )
 }
