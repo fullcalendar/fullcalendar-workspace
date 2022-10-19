@@ -1,17 +1,98 @@
+import { watch } from 'chokidar'
+import { rollup, watch as rollupWatch, RollupOptions, OutputOptions } from 'rollup'
+import { MonorepoStruct } from '../utils/monorepo-struct.js'
+import { buildPkgBundleStruct, PkgBundleStruct } from './utils/bundle-struct.js'
+import { analyzePkg } from '../utils/pkg-analysis.js'
+import { buildDtsOptions, buildIifeOptions, buildModuleOptions } from './utils/rollup-presets.js'
+import { arrayify, continuousAsync } from '../utils/lang.js'
+import { ScriptContext } from '../utils/script-runner.js'
+import { untilSigInt } from '../utils/process.js'
 
-interface BundleConfig {
-  pkgDir: string
-  pkgJson: any
-  isBundle: boolean
-  isTests: boolean
-  isDev: boolean
+export default async function(this: ScriptContext, ...args: string[]) {
+  const { monorepoStruct } = this
+  const pkgDir = this.cwd
+  const pkgJson = monorepoStruct.pkgDirToJson[pkgDir]
+
+  const isWatch = args.includes('--watch')
+  const isDev = args.includes('--dev')
+
+  if (!isWatch) {
+    await writeBundles(pkgDir, pkgJson, monorepoStruct, isDev)
+  } else {
+    const stopWatch = await watchBundles(pkgDir, pkgJson, monorepoStruct, isDev)
+
+    await untilSigInt()
+    stopWatch()
+  }
 }
 
-export async function writeBundles(config: BundleConfig): Promise<void> {
-  console.log('TODO: buildBundles', config)
+export async function writeBundles(
+  pkgDir: string,
+  pkgJson: any,
+  monorepoStruct: MonorepoStruct,
+  isDev: boolean,
+): Promise<void> {
+  const pkgBundleStruct = await buildPkgBundleStruct(pkgDir, pkgJson)
+  const optionsObjs = await buildRollupOptionObjs(pkgBundleStruct, monorepoStruct, isDev)
+
+  await Promise.all(
+    optionsObjs.map(async (options) => {
+      const bundle = await rollup(options)
+      const outputOptionObjs: OutputOptions[] = arrayify(options.output)
+
+      await Promise.all(
+        outputOptionObjs.map((outputOptions) => bundle.write(outputOptions)),
+      )
+    }),
+  )
 }
 
-export async function watchBundles(config: BundleConfig): Promise<() => void> {
-  console.log('TODO: watchBundles', config)
-  return () => {}
+export async function watchBundles(
+  pkgDir: string,
+  pkgJson: any,
+  monorepoStruct: MonorepoStruct,
+  isDev: boolean,
+): Promise<() => void> {
+  return continuousAsync(async (rerun: any) => {
+    const pkgBundleStruct = await buildPkgBundleStruct(pkgDir, pkgJson)
+    const optionsObjs = await buildRollupOptionObjs(pkgBundleStruct, monorepoStruct, isDev)
+
+    const rollupWatcher = rollupWatch(optionsObjs)
+    await new Promise<void>((resolve) => {
+      rollupWatcher.on('event', (ev) => {
+        if (ev.code === 'END') {
+          resolve()
+        }
+      })
+    })
+
+    const fileWatcher = watch(pkgBundleStruct.miscWatchPaths)
+    fileWatcher.on('all', () => rerun())
+
+    return () => {
+      rollupWatcher.close()
+      fileWatcher.close()
+    }
+  })
+}
+
+async function buildRollupOptionObjs(
+  pkgBundleStruct: PkgBundleStruct,
+  monorepoStruct: MonorepoStruct,
+  isDev: boolean,
+): Promise<RollupOptions[]> {
+  const { isBundle, isTests } = analyzePkg(pkgBundleStruct.pkgDir)
+
+  const esm = true
+  const cjs = !isDev
+  const iife = !isDev || isBundle || isTests
+  const iifeMinify = !isDev && !isBundle && !isTests
+  const dts = !isDev
+  const sourcemap = isDev
+
+  return [
+    ...buildModuleOptions(pkgBundleStruct, esm, cjs, sourcemap),
+    ...(iife ? await buildIifeOptions(pkgBundleStruct, monorepoStruct, iifeMinify) : []),
+    ...(dts ? [buildDtsOptions(pkgBundleStruct)] : []),
+  ]
 }

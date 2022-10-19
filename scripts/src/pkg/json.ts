@@ -2,7 +2,7 @@ import { join as joinPaths, relative as relativizePath } from 'path'
 import { mkdir } from 'fs/promises'
 import { analyzePkg } from '../utils/pkg-analysis.js'
 import { readPkgJson, writePkgJson } from '../utils/pkg-json.js'
-import { mapHash } from '../utils/lang.js'
+import { mapObj } from '../utils/lang.js'
 import { ScriptContext } from '../utils/script-runner.js'
 
 export default async function(this: ScriptContext, ...args: string[]) {
@@ -33,7 +33,7 @@ export async function writeDistPkgJson(
       types: `${typesRoot}/index.d.ts`,
       exports: {
         './package.json': './package.json',
-        ...mapHash(buildConfig.exports, (entryConfig, entryName) => {
+        ...mapObj(buildConfig.exports, (entryConfig, entryName) => {
           const entrySubpath = entryName === '.' ? './index' : entryName
 
           return {

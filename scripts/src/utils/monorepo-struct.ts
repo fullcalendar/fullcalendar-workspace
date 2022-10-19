@@ -5,6 +5,7 @@ import { globby } from 'globby'
 import * as semver from 'semver'
 import * as yaml from 'js-yaml'
 import { getPkgJsonPath, readPkgJson } from './pkg-json.js'
+import { continuousAsync, ContinuousAsyncFuncRes } from './lang.js'
 
 export interface MonorepoStruct {
   monorepoDir: string
@@ -14,81 +15,58 @@ export interface MonorepoStruct {
   pkgDirToJson: { [name: string]: any }
 }
 
-export interface PkgStruct {
+export interface PkgStruct { // only for traversing
   pkgDir: string
   pkgJson: any
   localDepDirs: string[]
 }
 
-type MaybeCloseFunc =
-  Promise<(() => void) | void | undefined> |
-  (() => void) |
-  void |
-  undefined
-
 export async function watchMonorepo(
   monorepoDir: string,
-  handleMonorepo: (monorepoStruct: MonorepoStruct) => MaybeCloseFunc,
+  handleMonorepo: (monorepoStruct: MonorepoStruct) => ContinuousAsyncFuncRes,
   initialMonorepoStruct?: MonorepoStruct,
 ): Promise<() => void> {
-  let currentScan: Promise<() => void> | undefined
-  let currentCleanupFunc: (() => void) | undefined
-  let isDirty = false
-  let isStopped = false
-
-  async function tryScanMonorepo() {
-    if (!isStopped) {
-      if (!currentScan) {
-        currentScan = scanMonorepo()
-        currentCleanupFunc = await currentScan
-        currentScan = undefined
-
-        // had scan requests while previous scan was running?
-        if (isDirty) {
-          isDirty = false
-          currentCleanupFunc()
-          currentCleanupFunc = undefined
-          tryScanMonorepo()
-        }
-      } else {
-        isDirty = true
-      }
-    }
-  }
-
-  async function scanMonorepo() {
-    const monorepoStruct = initialMonorepoStruct || await readMonorepo(monorepoDir)
-    const relevantPaths = getMonorepoRelevantPaths(monorepoStruct)
+  return continuousAsync(async (rerun) => {
+    const monorepoStruct = initialMonorepoStruct || (await readMonorepo(monorepoDir))
     initialMonorepoStruct = undefined
 
+    const relevantPaths = getMonorepoRelevantPaths(monorepoStruct)
     const watcher = watchPaths(relevantPaths, { ignoreInitial: true })
-    watcher.once('all', tryScanMonorepo)
+    watcher.once('all', rerun)
 
     const cleanupFunc = await handleMonorepo(monorepoStruct)
 
     return () => {
       watcher.close()
+      cleanupFunc && cleanupFunc()
+    }
+  })
+}
 
-      if (typeof cleanupFunc === 'function') {
-        cleanupFunc()
+export async function traverseMonorepoNoOrder(
+  monorepoStruct: MonorepoStruct,
+  handlePkg: (pkgStruct: PkgStruct) => (Promise<void> | void),
+  startPkgDir: string = '',
+) {
+  const promises: Promise<void>[] = []
+
+  await traverseMonorepo(
+    monorepoStruct,
+    (pkgStruct: PkgStruct) => {
+      const promise = handlePkg(pkgStruct)
+      if (promise) {
+        promises.push(promise)
       }
-    }
-  }
+    },
+    startPkgDir,
+  )
 
-  await tryScanMonorepo()
-
-  return () => { // the "stop" function
-    isStopped = true
-
-    if (currentCleanupFunc) {
-      currentCleanupFunc()
-    }
-  }
+  await Promise.all(promises)
 }
 
 export async function traverseMonorepo(
   monorepoStruct: MonorepoStruct,
-  handlePkg: (pkgStruct: PkgStruct) => MaybeCloseFunc,
+  handlePkg: (pkgStruct: PkgStruct) => ContinuousAsyncFuncRes,
   startPkgDir: string = '',
 ): Promise<() => void> {
   const { pkgDirToJson } = monorepoStruct
@@ -126,14 +104,15 @@ export async function traverseMonorepo(
         pkgJson,
         localDepDirs,
       })
-      if (typeof cleanupFunc === 'function') {
+
+      if (cleanupFunc) {
         cleanupFuncs.push(cleanupFunc)
       }
     })()))
   }
 }
 
-function computeLocalDepDirs(monorepoStruct: MonorepoStruct, pkgJson: any): string[] {
+export function computeLocalDepDirs(monorepoStruct: MonorepoStruct, pkgJson: any): string[] {
   const { pkgNameToDir, pkgDirToJson } = monorepoStruct
   const depMap = { ...pkgJson.dependencies, ...pkgJson.devDependencies }
   const localDepDirs: string[] = []

@@ -26,17 +26,9 @@ export default async function(this: ScriptContext) {
     const stopPkgs = await traverseMonorepo(monorepoStruct, async (pkgStruct: PkgStruct) => {
       const { pkgDir, pkgJson } = pkgStruct
 
-      // consider this pkg buildable if has buildConfig
+      // presence of buildConfig means we can bundle
       if (pkgJson.buildConfig) {
-        const pkgAnalysis = analyzePkg(pkgDir)
-
-        const [stopBundles] = await Promise.all([
-          watchBundles({ pkgJson, ...pkgAnalysis, isDev: true }),
-          writeDistReadme(pkgDir),
-          writeDistLicense(pkgAnalysis),
-        ])
-
-        return stopBundles
+        return watchBundles(pkgDir, pkgJson, monorepoStruct, true) // isDev=true
       }
     })
 

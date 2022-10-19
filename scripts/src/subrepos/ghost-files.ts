@@ -18,7 +18,7 @@ export default async function(...args: string[]) {
   await updateGhostFiles(
     monorepoDir,
     await querySubrepoSubdirs(monorepoDir),
-    args.indexOf('--no-commit') === -1,
+    args.includes('--no-commit'),
   )
 }
 

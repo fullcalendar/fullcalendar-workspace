@@ -1,5 +1,5 @@
 import { join as joinPaths } from 'path'
-import { copyFile, rm } from 'fs/promises'
+import { copyFile, mkdir, rm } from 'fs/promises'
 import { globby } from 'globby'
 import { writeDistPkgJson } from './json.js'
 import { analyzePkg, PkgAnalysis } from '../utils/pkg-analysis.js'
@@ -8,10 +8,10 @@ import { writeBundles } from './bundle.js'
 import { compileTs, writeTsconfigs } from '../utils/monorepo-ts.js'
 import { MonorepoStruct } from '../utils/monorepo-struct.js'
 
-const distPathsToDelete = [
-  '*',
-  '!tsconfig.tsbuildinfo',
-  '!.tsout',
+const pathsToDelete = [
+  './dist/*',
+  '!./dist/tsconfig.tsbuildinfo',
+  '!./dist/.tsout',
 ]
 
 export default async function(this: ScriptContext, ...args: string[]) {
@@ -26,17 +26,17 @@ export async function buildPkg(pkgDir: string, monorepoStruct: MonorepoStruct, i
   const pkgJson = monorepoStruct.pkgDirToJson[pkgDir]
   const pkgAnalysis = analyzePkg(pkgDir)
 
-  await deleteDistFiles(pkgDir)
+  await deleteBuiltFiles(pkgDir)
   await writeTsconfigs(monorepoStruct, pkgDir)
-  await writeDistPkgJson(pkgDir, pkgJson, isDev)
+  await writeDistPkgJson(pkgDir, pkgJson, isDev) // creates dist folder
 
   // tsc needs tsconfig.json and package.json from above
   await compileTs(pkgDir)
 
   await Promise.all([
-    writeBundles({ pkgJson, ...pkgAnalysis, isDev }),
-    writeDistReadme(pkgDir),
-    writeDistLicense(pkgAnalysis),
+    writeBundles(pkgDir, pkgJson, monorepoStruct, isDev),
+    writeDistReadme(pkgDir), // needs dist folder
+    writeDistLicense(pkgAnalysis), // needs dist folder
   ])
 }
 
@@ -54,15 +54,14 @@ export async function writeDistLicense(pkgAnalysis: PkgAnalysis): Promise<void> 
   )
 }
 
-async function deleteDistFiles(pkgDir: string): Promise<void> {
-  const distDir = joinPaths(pkgDir, 'dist')
-  const relPaths = await globby(distPathsToDelete, { cwd: distDir })
+async function deleteBuiltFiles(pkgDir: string): Promise<void> {
+  const relPaths = await globby(pathsToDelete, { cwd: pkgDir })
 
   await Promise.all(
     relPaths.map(async (relPath) => {
       await rm(
-        joinPaths(distDir, relPath),
-        { recursive: true },
+        joinPaths(pkgDir, relPath),
+        { force: true, recursive: true },
       )
     }),
   )
