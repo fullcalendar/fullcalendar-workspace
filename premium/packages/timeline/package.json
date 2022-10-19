@@ -38,7 +38,7 @@
       "@fullcalendar/core/preact": "FullCalendar",
       "@fullcalendar/premium-common": "FullCalendarPremiumCommon",
       "@fullcalendar/scrollgrid": "FullCalendarScrollGrid",
-      "tslib": false
+      "tslib": ""
     }
   },
   "publishConfig": {

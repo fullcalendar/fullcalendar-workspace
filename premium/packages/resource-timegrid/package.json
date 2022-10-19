@@ -42,7 +42,7 @@
       "@fullcalendar/resource-common": "FullCalendarResourceCommon",
       "@fullcalendar/resource-daygrid": "FullCalendarResourceDayGrid",
       "@fullcalendar/timegrid": "FullCalendarTimeGrid",
-      "tslib": false
+      "tslib": ""
     }
   },
   "publishConfig": {

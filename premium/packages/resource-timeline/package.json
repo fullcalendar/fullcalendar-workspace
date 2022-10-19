@@ -42,7 +42,7 @@
       "@fullcalendar/resource-common": "FullCalendarResourceCommon",
       "@fullcalendar/scrollgrid": "FullCalendarScrollGrid",
       "@fullcalendar/timeline": "FullCalendarTimeline",
-      "tslib": false
+      "tslib": ""
     }
   },
   "publishConfig": {
