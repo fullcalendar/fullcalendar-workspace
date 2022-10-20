@@ -5,13 +5,13 @@
       "dependsOn": ["^build"],
       "env": ["BUILD_ENV"],
       "inputs": [
-        "./package.json",
-        "./lib/**",
-        "./dist/.tsout/**"
+        "./*.{ts,js,cjs,json}",
+        "./{src,scripts,config}/**"
       ],
       "outputs": [
         "./dist/**",
-        "!./dist/.tsout/**"
+        "!./dist/.tsout",
+        "!./dist/tsconfig.tsbuildinfo"
       ]
     },
     "test": {
@@ -23,7 +23,7 @@
     "lint": {
       "inputs": [
         "./*.{ts,js,cjs}",
-        "./{src,lib,tests,scripts,config}/**"
+        "./{src,scripts,config,tests}/**"
       ]
     }
   }
