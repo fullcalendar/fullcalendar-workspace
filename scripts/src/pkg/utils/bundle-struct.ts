@@ -1,4 +1,4 @@
-import { join as joinPaths } from 'path'
+import { isAbsolute, join as joinPaths } from 'path'
 import { globby } from 'globby'
 import { MonorepoStruct, computeLocalDepDirs } from '../../utils/monorepo-struct.js'
 
@@ -6,7 +6,7 @@ export interface PkgBundleStruct {
   pkgDir: string,
   pkgJson: any
   entryConfigMap: EntryConfigMap
-  entryStructMap: { [entryAlias: string]: EntryStruct } // entryAlias like "./index"
+  entryStructMap: { [entryAlias: string]: EntryStruct } // entryAlias like "index"
   iifeGlobalsMap: IifeGlobalsMap
   miscWatchPaths: string[]
 }
@@ -19,8 +19,8 @@ export interface EntryConfig {
 
 export interface EntryStruct {
   entryGlob: string // like "." or "./locales/*"
-  entrySrcPath: string // transpiled src. like "./index.js" or "./locales/en.js"
-  entrySrcBase: string // transpiled src, but without the extension
+  entrySrcPath: string // transpiled src. like "<absroot>/index.js"
+  entrySrcBase: string // transpiled src. like "<absroot>/index"
   content?: string
 }
 
@@ -50,16 +50,16 @@ export async function buildPkgBundleStruct(
   const iifeGlobalsMap: IifeGlobalsMap = buildConfig.iifeGlobals || {}
   const miscWatchPaths: string[] = []
 
-  await Object.keys(entryConfigMap).map(async (entryGlob) => {
-    const entryConfig = entryConfigMap[entryGlob]
+  await Promise.all(
+    Object.keys(entryConfigMap).map(async (entryGlob) => {
+      const entryConfig = entryConfigMap[entryGlob]
+      const newEntryStructMap = entryConfig.generator ?
+        await generateEntryStructMap(pkgDir, entryGlob, entryConfig.generator, miscWatchPaths) :
+        await unglobEntryStructMap(pkgDir, entryGlob)
 
-    Object.assign(
-      entryStructMap,
-      entryConfig.generator
-        ? await generateEntryStructMap(pkgDir, entryGlob, entryConfig.generator, miscWatchPaths)
-        : await unglobEntryStructMap(pkgDir, entryGlob),
-    )
-  })
+      Object.assign(entryStructMap, newEntryStructMap)
+    }),
+  )
 
   return { pkgDir, pkgJson, entryConfigMap, entryStructMap, iifeGlobalsMap, miscWatchPaths }
 }
@@ -72,13 +72,13 @@ async function unglobEntryStructMap(
   entryGlob: string,
 ): Promise<EntryStructMap> {
   const entryStructMap: EntryStructMap = {}
-  const fullGlob =
-    (entryGlob === '.' ? './index' : entryGlob) +
+  const massagedGlob =
+    (entryGlob === '.' ? 'index' : removeDotSlash(entryGlob)) +
     '{' + srcExtensions.join(',') + '}'
 
   const transpiledDir = joinPaths(pkgDir, transpiledSubdir)
   const srcDir = joinPaths(pkgDir, 'src')
-  const srcPaths = await globby(fullGlob, { cwd: srcDir })
+  const srcPaths = await globby(massagedGlob, { cwd: srcDir })
 
   for (const srcPath of srcPaths) {
     for (const srcExtension of srcExtensions) {
@@ -101,9 +101,10 @@ async function unglobEntryStructMap(
 async function generateEntryStructMap(
   pkgDir: string,
   entryGlob: string,
-  generatorPath: string,
+  generatorSubpath: string,
   miscWatchPaths: string[], // pass-by-reference, modified
 ): Promise<EntryStructMap> {
+  const generatorPath = joinPaths(pkgDir, generatorSubpath)
   const generatorExports = await import(generatorPath)
   const generatorFunc: GeneratorFunc = generatorExports.default
 
@@ -122,8 +123,9 @@ async function generateEntryStructMap(
 
     const entrySrcBase = joinPaths(transpiledDir, entryGlob)
     const entrySrcPath = entrySrcBase + transpiledExtension
+    const entryAlias = removeDotSlash(entryGlob)
 
-    entryStructMap[entryGlob] = {
+    entryStructMap[entryAlias] = {
       entryGlob,
       entrySrcPath,
       entrySrcBase,
@@ -135,7 +137,7 @@ async function generateEntryStructMap(
     }
 
     for (const key in generatorRes) {
-      const entryAlias = entryGlob.replace('*', key)
+      const entryAlias = removeDotSlash(entryGlob).replace('*', key)
       const entrySrcBase = joinPaths(transpiledDir, entryAlias)
       const entrySrcPath = entrySrcBase + transpiledExtension
 
@@ -150,8 +152,10 @@ async function generateEntryStructMap(
     throw new Error('Invalid type of generator output')
   }
 
-  const relWatchPaths: string[] = generatorExports.miscWatchPaths || []
-  const absWatchPaths = relWatchPaths.map((relPath) => joinPaths(pkgDir, relPath))
+  const rawWatchPaths: string[] = generatorExports.watchPaths || []
+  const absWatchPaths = rawWatchPaths.map(
+    (relPath) => isAbsolute(relPath) ? relPath : joinPaths(pkgDir, relPath),
+  )
 
   miscWatchPaths.push(...absWatchPaths)
   miscWatchPaths.push(generatorPath) // watch the generator script itself
@@ -270,7 +274,7 @@ export function computeIifeGlobals(
     if (globalName) {
       const fullImportId = entryGlob === '.' ?
         pkgName :
-        pkgName + entryAlias.substring(1)
+        pkgName + '/' + entryAlias
 
       allGlobalsMap[fullImportId] = globalName
       allGlobalsMap[entrySrcPath] = globalName // add file path too
@@ -281,8 +285,10 @@ export function computeIifeGlobals(
   for (const importId in iifeGlobalsMap) {
     const globalName = iifeGlobalsMap[importId]
 
-    if (importId !== '.' && !importId.startsWith('./')) {
-      allGlobalsMap[importId] = globalName
+    if (globalName) {
+      if (importId !== '.' && !importId.startsWith('./')) {
+        allGlobalsMap[importId] = globalName
+      }
     }
   }
 
@@ -298,13 +304,22 @@ export function computeIifeGlobals(
     for (const importId in depIifeGlobalsMap) {
       const globalName = depIifeGlobalsMap[importId]
 
-      if (importId === '.') {
-        allGlobalsMap[depPkgName] = globalName
-      } else if (importId.startsWith('./')) {
-        allGlobalsMap[depPkgName + importId.substring(1)] = globalName
+      if (globalName) {
+        if (importId === '.') {
+          allGlobalsMap[depPkgName] = globalName
+        } else if (importId.startsWith('./')) {
+          allGlobalsMap[depPkgName + importId.substring(1)] = globalName
+        }
       }
     }
   }
 
   return allGlobalsMap
+}
+
+// Utils
+// -------------------------------------------------------------------------------------------------
+
+function removeDotSlash(path: string): string {
+  return path.replace(/^\.\//, '')
 }

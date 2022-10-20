@@ -1,5 +1,5 @@
 import { join as joinPaths } from 'path'
-import { copyFile, mkdir, rm, writeFile } from 'fs/promises'
+import { copyFile, rm, writeFile } from 'fs/promises'
 import { globby } from 'globby'
 import { writeDistPkgJson } from './json.js'
 import { analyzePkg, PkgAnalysis } from '../utils/pkg-analysis.js'

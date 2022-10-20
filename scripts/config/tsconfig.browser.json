@@ -22,5 +22,6 @@
     "composite": true,
     "declaration": true,
     "declarationMap": true,
+    "allowSyntheticDefaultImports": true
   }
 }

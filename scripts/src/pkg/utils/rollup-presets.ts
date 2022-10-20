@@ -7,7 +7,7 @@ import dtsPlugin from 'rollup-plugin-dts'
 import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
 import commonjsPluginLib from '@rollup/plugin-commonjs'
 import jsonPluginLib from '@rollup/plugin-json'
-import postcssPluginLib from 'rollup-plugin-postcss'
+import { default as postcssPlugin } from 'rollup-plugin-postcss'
 import { mapObj } from '../../utils/lang.js'
 import { MonorepoStruct } from '../../utils/monorepo-struct.js'
 import { analyzePkg } from '../../utils/pkg-analysis.js'
@@ -230,7 +230,7 @@ function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
     cssPlugin({
       injector: {
         importId: pkgJson.name === '@fullcalendar/core' ?
-          joinPaths(pkgDir, transpiledSubdir, 'styleUtils', transpiledExtension) :
+          joinPaths(pkgDir, transpiledSubdir, 'styleUtils' + transpiledExtension) :
           '@fullcalendar/core',
         importProp: 'injectStyles',
       },
@@ -261,7 +261,7 @@ interface CssInjector {
 function cssPlugin(options?: { injector?: CssInjector }): Plugin {
   const injector = options?.injector
 
-  return postcssPluginLib.default({
+  return postcssPlugin({
     config: {
       path: joinPaths(monorepoScriptsDir, 'config/postcss.config.cjs'),
       ctx: {}, // arguments given to config file
