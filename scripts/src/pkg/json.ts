@@ -18,10 +18,13 @@ export default async function(this: ScriptContext, ...args: string[]) {
   await writeDistPkgJson(pkgDir, pkgJson, isDev)
 }
 
+/*
+Ensures the dist directory is created
+*/
 export async function writeDistPkgJson(
   pkgDir: string,
   pkgJson: any,
-  isDev = false,
+  isDev: boolean,
 ): Promise<void> {
   const { buildConfig } = pkgJson
 

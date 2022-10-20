@@ -27,7 +27,7 @@ export default async function(this: ScriptContext, ...args: string[]) {
   await buildPkg(pkgDir, monorepoStruct, isDev)
 }
 
-export async function buildPkg(pkgDir: string, monorepoStruct: MonorepoStruct, isDev = false) {
+export async function buildPkg(pkgDir: string, monorepoStruct: MonorepoStruct, isDev: boolean) {
   const pkgJson = monorepoStruct.pkgDirToJson[pkgDir]
   const pkgAnalysis = analyzePkg(pkgDir)
 
