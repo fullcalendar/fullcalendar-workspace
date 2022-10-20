@@ -1,7 +1,7 @@
 import { join as joinPaths, relative as relativizePath } from 'path'
 import { execLive, spawnLive } from './exec.js'
 import { ensureFileDir, stringifyJson, writeIfDifferent } from './fs.js'
-import { MonorepoStruct, PkgStruct, traverseMonorepoNoOrder } from './monorepo-struct.js'
+import { MonorepoStruct, PkgStruct, traverseMonorepoGreedy } from './monorepo-struct.js'
 
 export async function compileTs(dir: string, tscArgs: string[] = []): Promise<void> {
   await execLive(['tsc', '-b', ...tscArgs], { cwd: dir })
@@ -18,7 +18,7 @@ export function writeTsconfigs(
   monorepoStruct: MonorepoStruct,
   startPkgDir = '',
 ): Promise<void> {
-  return traverseMonorepoNoOrder(
+  return traverseMonorepoGreedy(
     monorepoStruct,
     (pkgStruct) => writePkgTsconfig(pkgStruct, monorepoStruct),
     startPkgDir,

@@ -5,7 +5,7 @@ import { ScriptContext } from '../utils/script-runner.js'
 const pathsToDelete = [
   './dist',
   './tsconfig.json',
-  './tsconfig.tsbuildinfo',
+  './tsconfig.tsbuildinfo', // for when pkg transpiles directly into dist
   './.turbo',
 ]
 

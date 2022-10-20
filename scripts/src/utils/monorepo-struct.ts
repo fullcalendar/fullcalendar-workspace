@@ -43,7 +43,10 @@ export async function watchMonorepo(
   })
 }
 
-export async function traverseMonorepoNoOrder(
+/*
+Like traverseMonorepo, but handlers will not delay traversal of dependents
+*/
+export async function traverseMonorepoGreedy(
   monorepoStruct: MonorepoStruct,
   handlePkg: (pkgStruct: PkgStruct) => (Promise<void> | void),
   startPkgDir: string = '',

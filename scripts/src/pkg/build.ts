@@ -1,5 +1,5 @@
 import { join as joinPaths } from 'path'
-import { copyFile, mkdir, rm } from 'fs/promises'
+import { copyFile, mkdir, rm, writeFile } from 'fs/promises'
 import { globby } from 'globby'
 import { writeDistPkgJson } from './json.js'
 import { analyzePkg, PkgAnalysis } from '../utils/pkg-analysis.js'
@@ -8,10 +8,15 @@ import { writeBundles } from './bundle.js'
 import { compileTs, writeTsconfigs } from '../utils/monorepo-ts.js'
 import { MonorepoStruct } from '../utils/monorepo-struct.js'
 
+const tscArtifacts = [
+  '.tsout',
+  'tsconfig.tsbuildinfo',
+]
+
 const pathsToDelete = [
   './dist/*',
-  '!./dist/tsconfig.tsbuildinfo',
-  '!./dist/.tsout',
+  // leave tscArtifacts
+  ...tscArtifacts.map((artifact) => `!./dist/${artifact}`),
 ]
 
 export default async function(this: ScriptContext, ...args: string[]) {
@@ -28,16 +33,24 @@ export async function buildPkg(pkgDir: string, monorepoStruct: MonorepoStruct, i
 
   await deleteBuiltFiles(pkgDir)
   await writeTsconfigs(monorepoStruct, pkgDir)
-  await writeDistPkgJson(pkgDir, pkgJson, isDev) // creates dist folder
+  await writeDistPkgJson(pkgDir, pkgJson, isDev) // ensures dist folder for other tasks
 
   // tsc needs tsconfig.json and package.json from above
   await compileTs(pkgDir)
 
   await Promise.all([
     writeBundles(pkgDir, pkgJson, monorepoStruct, isDev),
+    writeNpmIgnore(pkgDir),
     writeDistReadme(pkgDir), // needs dist folder
     writeDistLicense(pkgAnalysis), // needs dist folder
   ])
+}
+
+export async function writeNpmIgnore(pkgDir: string): Promise<void> {
+  await writeFile(
+    joinPaths(pkgDir, 'dist', '.npmignore'),
+    tscArtifacts.join('\n') + '\n',
+  )
 }
 
 export async function writeDistReadme(pkgDir: string): Promise<void> {
