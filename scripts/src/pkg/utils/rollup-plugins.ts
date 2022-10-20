@@ -168,7 +168,7 @@ function normalizeExtensionMap(input: ExtensionInput): ExtensionMap {
       map[extension] = extension
     }
   } else {
-    map = input as ExtensionMap
+    map = input
   }
 
   return map

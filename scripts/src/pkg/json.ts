@@ -5,6 +5,11 @@ import { readPkgJson, writePkgJson } from '../utils/pkg-json.js'
 import { mapObj } from '../utils/lang.js'
 import { ScriptContext } from '../utils/script-runner.js'
 
+const cdnFields = [
+  'unpkg',
+  'jsdelvr',
+]
+
 export default async function(this: ScriptContext, ...args: string[]) {
   const isDev = args.includes('--dev')
   const pkgDir = this.cwd
@@ -31,6 +36,10 @@ export async function writeDistPkgJson(
       main: './index.cjs',
       module: './index.mjs',
       types: `${typesRoot}/index.d.ts`,
+      ...cdnFields.reduce(
+        (obj, cdnField) => Object.assign(obj, { [cdnField]: './index.min.js' }),
+        {},
+      ),
       exports: {
         './package.json': './package.json',
         ...mapObj(buildConfig.exports, (entryConfig, entryName) => {
@@ -40,6 +49,7 @@ export async function writeDistPkgJson(
             require: entrySubpath + '.cjs',
             import: entrySubpath + '.mjs',
             types: entrySubpath.replace(/^\./, typesRoot) + '.d.ts',
+            default: entrySubpath + '.js',
           }
         }),
       },
