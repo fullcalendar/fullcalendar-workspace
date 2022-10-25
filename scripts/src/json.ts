@@ -10,6 +10,10 @@ export default async function(this: ScriptContext, ...args: string[]) {
 
 export function writeDistPkgJsons(monorepoStruct: MonorepoStruct, isDev: boolean) {
   return traverseMonorepoGreedy(monorepoStruct, (pkgStruct: PkgStruct) => {
-    return writeDistPkgJson(pkgStruct.pkgDir, pkgStruct.pkgJson, isDev)
+    const { pkgDir, pkgJson } = pkgStruct
+
+    if (pkgJson.buildConfig) {
+      return writeDistPkgJson(pkgDir, pkgJson, isDev)
+    }
   })
 }
