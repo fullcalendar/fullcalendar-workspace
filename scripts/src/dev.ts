@@ -41,6 +41,7 @@ export default async function(this: ScriptContext) {
     initialMonorepoStruct,
   )
 
+  console.log('DONE with INITIAL BUILD')
   await untilSigInt()
   stopMonorepo()
 }

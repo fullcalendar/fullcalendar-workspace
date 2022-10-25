@@ -7,6 +7,7 @@ import { buildDtsOptions, buildIifeOptions, buildModuleOptions } from './utils/r
 import { arrayify, continuousAsync } from '../utils/lang.js'
 import { ScriptContext } from '../utils/script-runner.js'
 import { untilSigInt } from '../utils/process.js'
+import { basename } from 'path'
 
 export default async function(this: ScriptContext, ...args: string[]) {
   const { monorepoStruct } = this
@@ -60,14 +61,22 @@ export async function watchBundles(
     const rollupWatcher = rollupWatch(optionsObjs)
     await new Promise<void>((resolve) => {
       rollupWatcher.on('event', (ev) => {
-        if (ev.code === 'END') {
-          resolve()
+        switch (ev.code) {
+          case 'BUNDLE_END':
+            console.log(formatWriteMessage(pkgJson.name, ev.input)) // FIX: doesn't always write all
+            break
+          case 'END':
+            resolve()
+            break
         }
       })
     })
 
-    const fileWatcher = watch(pkgBundleStruct.miscWatchPaths)
-    fileWatcher.on('all', () => rerun())
+    const fileWatcher = watch(pkgBundleStruct.miscWatchPaths, { ignoreInitial: true })
+    fileWatcher.on('all', (ev, path) => {
+      console.log('Rerun???', ev, path)
+      rerun()
+    })
 
     return () => {
       rollupWatcher.close()
@@ -96,4 +105,15 @@ async function buildRollupOptionObjs(
     ...(iife ? await buildIifeOptions(pkgBundleStruct, monorepoStruct, iifeMinify, iifeSourcemap) : []),
     ...(dts ? [buildDtsOptions(pkgBundleStruct)] : []),
   ]
+}
+
+function formatWriteMessage(pkgName: string, input: any): string {
+  const inputStrs = typeof input === 'object' ?
+    Object.keys(input) :
+    [basename(input)]
+
+  const otherFileCnt = inputStrs.length - 1
+
+  return `[${pkgName}] Wrote ${inputStrs[0]}` +
+    (otherFileCnt ? ` and ${otherFileCnt} other ${otherFileCnt === 1 ? 'file' : 'files'}` : '')
 }
