@@ -34,8 +34,9 @@ export type EntryConfigMap = { [entryGlob: string]: EntryConfig }
 export type EntryStructMap = { [entryAlias: string]: EntryStruct }
 export type IifeGlobalsMap = { [importPath: string]: string }
 
-export type GeneratorFunc = (entryGlob: string) => (string | { [entryName: string]: string })
-export type IifeGeneratorFunc = (entryAlias: string) => string
+export type GeneratorFunc = (pkgDir: string, entryGlob: string) => (string | { [entryName: string]: string })
+export type IifeGeneratorFunc = (pkgDir: string, entryAlias: string) => string
+export type WatchPathsFunc = (pkgDir: string) => string[]
 
 export const transpiledSubdir = 'dist/.tsout'
 export const transpiledExtension = '.js'
@@ -113,7 +114,7 @@ async function generateEntryStructMap(
     throw new Error('Generator must have a default function export')
   }
 
-  const generatorRes = await generatorFunc(entryGlob)
+  const generatorRes = await generatorFunc(pkgDir, entryGlob)
   const transpiledDir = joinPaths(pkgDir, transpiledSubdir)
   const entryStructMap: EntryStructMap = {}
 
@@ -153,13 +154,10 @@ async function generateEntryStructMap(
     throw new Error('Invalid type of generator output')
   }
 
-  const rawWatchPaths: string[] = generatorExports.watchPaths || []
-  const absWatchPaths = rawWatchPaths.map(
-    (relPath) => isAbsolute(relPath) ? relPath : joinPaths(pkgDir, relPath),
-  )
-
-  miscWatchPaths.push(...absWatchPaths)
-  miscWatchPaths.push(generatorPath) // watch the generator script itself
+  const getWatchPaths: WatchPathsFunc | undefined = generatorExports.getWatchPaths
+  if (getWatchPaths) {
+    miscWatchPaths.push(...getWatchPaths(pkgDir))
+  }
 
   return entryStructMap
 }
@@ -200,7 +198,7 @@ export async function generateIifeContent(
         throw new Error('iifeGenerator must have a default function export')
       }
 
-      const iifeGeneratorRes = await iifeGeneratorFunc(entryAlias)
+      const iifeGeneratorRes = await iifeGeneratorFunc(pkgDir, entryAlias)
 
       if (typeof iifeGeneratorRes !== 'string') {
         throw new Error('iifeGenerator must return a string')
@@ -210,6 +208,12 @@ export async function generateIifeContent(
       const transpiledPath = joinPaths(transpiledDir, entryAlias) + '.iife' + transpiledExtension
 
       contentMap[transpiledPath] = iifeGeneratorRes
+
+      const getWatchPaths: WatchPathsFunc | undefined = iifeGeneratorExports.getWatchPaths
+      if (getWatchPaths) {
+        // HACK: modify passed-in struct
+        pkgBundleStruct.miscWatchPaths.push(...getWatchPaths(pkgDir))
+      }
     }
   }
 
