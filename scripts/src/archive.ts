@@ -39,23 +39,25 @@ async function createArchive(rootDir: string): Promise<void> {
   const archive = archiver('zip', { zlib: { level: 9 } })
   archive.pipe(archiveStream)
 
-  // TODO: no longer use blobs. other places are assuming file extensions
-  ;['README.*', 'LICENSE.*'].forEach((pattern) => {
-    archive.glob(pattern, { cwd: rootDir }, { prefix: archiveId })
+  ;['README.md', 'LICENSE.md'].forEach((subpath) => {
+    archive.file(
+      joinPaths(rootDir, subpath),
+      { name: `${archiveId}/${subpath}` },
+    )
   })
 
   archive.directory(joinPaths(bundleDir, 'examples'), `${archiveId}/examples`)
   archive.glob('dist/*.js', { cwd: bundleDir }, { prefix: archiveId })
 
-  const pkgFileRelPaths = await globby('packages/*/dist/**/*.js', { cwd: rootDir })
+  const subpaths = await globby('packages/*/dist/**/*.js', { cwd: rootDir })
 
-  for (const pkgFileRelPath of pkgFileRelPaths) {
-    const pathParts = pkgFileRelPath.split(pathSeparator)
-    pathParts.splice(2, 1) // remove 'dist'
+  for (const subpath of subpaths) {
+    const subpathParts = subpath.split(pathSeparator)
+    subpathParts.splice(2, 1) // remove 'dist'
 
     archive.file(
-      pkgFileRelPath,
-      { name: [archiveId].concat(pathParts).join('/') },
+      joinPaths(rootDir, subpath),
+      { name: [archiveId].concat(subpathParts).join('/') },
     )
   }
 
