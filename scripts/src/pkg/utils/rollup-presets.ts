@@ -1,6 +1,6 @@
 import { readFile } from 'fs/promises'
 import { join as joinPaths } from 'path'
-import { RollupOptions, Plugin, OutputOptions } from 'rollup'
+import { RollupOptions, Plugin, OutputOptions, RollupWarning } from 'rollup'
 import handlebars from 'handlebars'
 import nodeResolvePlugin from '@rollup/plugin-node-resolve'
 import dtsPlugin from 'rollup-plugin-dts'
@@ -51,6 +51,7 @@ export function buildModuleOptions(
         ...(esm ? [buildEsmOutputOptions(pkgBundleStruct, sourcemap)] : []),
         ...(cjs ? [buildCjsOutputOptions(pkgBundleStruct, sourcemap)] : []),
       ],
+      onwarn,
     }]
   }
 
@@ -62,6 +63,7 @@ export function buildDtsOptions(pkgBundleStruct: PkgBundleStruct): RollupOptions
     input: buildDtsInput(pkgBundleStruct),
     plugins: buildDtsPlugins(pkgBundleStruct),
     output: buildDtsOutputOptions(pkgBundleStruct),
+    onwarn,
   }
 }
 
@@ -84,6 +86,7 @@ export async function buildIifeOptions(
         input: buildIifeInput(entryStruct),
         plugins: buildIifePlugins(entryStruct, pkgBundleStruct, iifeContentMap, minify),
         output: buildIifeOutputOptions(entryStruct, entryAlias, pkgBundleStruct, monorepoStruct, banner),
+        onwarn,
       })
     }
   }
@@ -320,4 +323,11 @@ async function buildBanner(pkgBundleStruct: PkgBundleStruct): Promise<string> {
   const template = handlebars.compile(templateText)
 
   return template(fullPkgJson)
+}
+
+
+function onwarn(warning: RollupWarning) {
+  if (warning.code !== 'CIRCULAR_DEPENDENCY') {
+    console.error(warning)
+  }
 }
