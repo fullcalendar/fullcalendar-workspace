@@ -27,7 +27,7 @@ export function boolPromise(promise: Promise<any>): Promise<boolean> {
 }
 
 export function arrayify(input: any): any[] {
-  return Array.isArray(input) ? input : (input == null ? [] : input)
+  return Array.isArray(input) ? input : (input == null ? [] : [input])
 }
 
 // Async

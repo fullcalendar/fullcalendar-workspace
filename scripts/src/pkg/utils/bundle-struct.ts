@@ -206,7 +206,7 @@ export async function generateIifeContent(
       }
 
       const transpiledDir = joinPaths(pkgDir, transpiledSubdir)
-      const transpiledPath = joinPaths(transpiledDir, entryAlias) + transpiledExtension
+      const transpiledPath = joinPaths(transpiledDir, entryAlias) + '.iife' + transpiledExtension
 
       contentMap[transpiledPath] = iifeGeneratorRes
     }

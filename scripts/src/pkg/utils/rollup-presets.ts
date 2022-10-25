@@ -69,19 +69,25 @@ export async function buildIifeOptions(
   monorepoStruct: MonorepoStruct,
   minify: boolean,
 ): Promise<RollupOptions[]> {
-  const { entryStructMap } = pkgBundleStruct
+  const { entryConfigMap, entryStructMap } = pkgBundleStruct
   const banner = await buildBanner(pkgBundleStruct)
   const iifeContentMap = await generateIifeContent(pkgBundleStruct)
+  const optionsObjs: RollupOptions[] = []
 
-  return Object.keys(entryStructMap).map((entryAlias)  => {
+  for (let entryAlias in entryStructMap) {
     const entryStruct = entryStructMap[entryAlias]
+    const entryConfig = entryConfigMap[entryStruct.entryGlob]
 
-    return {
-      input: buildIifeInput(entryStruct),
-      plugins: buildIifePlugins(pkgBundleStruct, iifeContentMap, minify),
-      output: buildIifeOutputOptions(entryAlias, pkgBundleStruct, monorepoStruct, banner),
+    if (entryConfig.iife) {
+      optionsObjs.push({
+        input: buildIifeInput(entryStruct),
+        plugins: buildIifePlugins(pkgBundleStruct, iifeContentMap, minify),
+        output: buildIifeOutputOptions(entryAlias, pkgBundleStruct, monorepoStruct, banner),
+      })
     }
-  })
+  }
+
+  return optionsObjs
 }
 
 // Input
