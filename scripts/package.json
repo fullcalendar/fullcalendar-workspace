@@ -30,7 +30,6 @@
     "chokidar": "^2.1.5",
     "cleye": "^1.2.1",
     "components-jqueryui": "^1.12.1",
-    "concurrently": "7.3.0",
     "cross-spawn": "^7.0.3",
     "esbuild": "^0.15.7",
     "eslint": "^8.25.0",

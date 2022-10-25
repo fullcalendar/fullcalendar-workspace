@@ -40,8 +40,7 @@
       ]
     },
     "patchedDependencies": {
-      "@pnpm/make-dedicated-lockfile@0.3.20": "scripts/patches/@pnpm__make-dedicated-lockfile@0.3.20.patch",
-      "concurrently@7.3.0": "scripts/patches/concurrently@7.3.0.patch"
+      "@pnpm/make-dedicated-lockfile@0.3.20": "scripts/patches/@pnpm__make-dedicated-lockfile@0.3.20.patch"
     }
   }
 }
