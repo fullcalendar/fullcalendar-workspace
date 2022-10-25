@@ -1,5 +1,4 @@
 import { writeDistPkgJsons } from './json.js'
-import { writeDistLicense, writeDistReadme } from './pkg/build.js'
 import { watchBundles } from './pkg/bundle.js'
 import {
   MonorepoStruct,
@@ -8,7 +7,6 @@ import {
   watchMonorepo,
 } from './utils/monorepo-struct.js'
 import { watchTs, writeTsconfigs } from './utils/monorepo-ts.js'
-import { analyzePkg } from './utils/pkg-analysis.js'
 import { untilSigInt } from './utils/process.js'
 import { ScriptContext } from './utils/script-runner.js'
 
@@ -26,7 +24,6 @@ export default async function(this: ScriptContext) {
     const stopPkgs = await traverseMonorepo(monorepoStruct, async (pkgStruct: PkgStruct) => {
       const { pkgDir, pkgJson } = pkgStruct
 
-      // presence of buildConfig means we can bundle
       if (pkgJson.buildConfig) {
         return watchBundles(pkgDir, pkgJson, monorepoStruct, true) // isDev=true
       }

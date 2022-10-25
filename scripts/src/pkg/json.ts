@@ -66,10 +66,7 @@ export async function writeDistPkgJson(
   delete finalPkgJson.tsConfig
   delete finalPkgJson.buildConfig
   delete finalPkgJson.publishConfig
-
-  if (!pkgAnalysis.isTests) {
-    delete finalPkgJson.private
-  }
+  delete finalPkgJson.private
 
   finalPkgJson.repository.directory = relativizePath(pkgAnalysis.metaRootDir, pkgDir)
 

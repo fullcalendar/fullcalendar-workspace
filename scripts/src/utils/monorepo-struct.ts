@@ -122,8 +122,11 @@ export function computeLocalDepDirs(monorepoStruct: MonorepoStruct, pkgJson: any
 
   for (let depName in depMap) {
     const depSpecifier = depMap[depName]
+
+    // TODO: workspace protocol accepts directory too
     const localDepMatch = depSpecifier.match(/^workspace:(.*)$/)
     const depVersionRange = localDepMatch ? localDepMatch[1] : depSpecifier
+
     const depDir = pkgNameToDir[depName]
     const depJsonObj = pkgDirToJson[depDir]
 
