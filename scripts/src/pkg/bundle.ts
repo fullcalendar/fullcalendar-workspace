@@ -1,4 +1,6 @@
+import { basename } from 'path'
 import { watch } from 'chokidar'
+import { default as chalk } from 'chalk'
 import { rollup, watch as rollupWatch, RollupOptions, OutputOptions } from 'rollup'
 import { MonorepoStruct } from '../utils/monorepo-struct.js'
 import { buildPkgBundleStruct, PkgBundleStruct } from './utils/bundle-struct.js'
@@ -7,7 +9,6 @@ import { buildDtsOptions, buildIifeOptions, buildModuleOptions } from './utils/r
 import { arrayify, continuousAsync } from '../utils/lang.js'
 import { ScriptContext } from '../utils/script-runner.js'
 import { untilSigInt } from '../utils/process.js'
-import { basename } from 'path'
 
 export default async function(this: ScriptContext, ...args: string[]) {
   const { monorepoStruct } = this
@@ -107,6 +108,10 @@ async function buildRollupOptionObjs(
   ]
 }
 
+const timeFormat = new Intl.DateTimeFormat('en', {
+  timeStyle: 'medium',
+})
+
 function formatWriteMessage(pkgName: string, input: any): string {
   const inputStrs = typeof input === 'object' ?
     Object.keys(input) :
@@ -114,6 +119,8 @@ function formatWriteMessage(pkgName: string, input: any): string {
 
   const otherFileCnt = inputStrs.length - 1
 
-  return `[${pkgName}] Wrote ${inputStrs[0]}` +
+  return `[${chalk.grey(timeFormat.format(new Date()))}] ` +
+    chalk.green(pkgName + ': ') +
+    `Wrote ${inputStrs[0]}` +
     (otherFileCnt ? ` and ${otherFileCnt} other ${otherFileCnt === 1 ? 'file' : 'files'}` : '')
 }
