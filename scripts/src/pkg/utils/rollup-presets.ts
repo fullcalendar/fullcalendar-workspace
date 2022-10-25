@@ -5,8 +5,8 @@ import handlebars from 'handlebars'
 import nodeResolvePlugin from '@rollup/plugin-node-resolve'
 import dtsPlugin from 'rollup-plugin-dts'
 import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
-import commonjsPluginLib from '@rollup/plugin-commonjs'
-import jsonPluginLib from '@rollup/plugin-json'
+import { default as commonjsPlugin } from '@rollup/plugin-commonjs'
+import { default as jsonPlugin } from '@rollup/plugin-json'
 import { default as postcssPlugin } from 'rollup-plugin-postcss'
 import { mapProps } from '../../utils/lang.js'
 import { MonorepoStruct } from '../../utils/monorepo-struct.js'
@@ -71,6 +71,7 @@ export async function buildIifeOptions(
   pkgBundleStruct: PkgBundleStruct,
   monorepoStruct: MonorepoStruct,
   minify: boolean,
+  sourcemap: boolean,
 ): Promise<RollupOptions[]> {
   const { entryConfigMap, entryStructMap } = pkgBundleStruct
   const banner = await buildBanner(pkgBundleStruct)
@@ -84,8 +85,8 @@ export async function buildIifeOptions(
     if (entryConfig.iife) {
       optionsObjs.push({
         input: buildIifeInput(entryStruct),
-        plugins: buildIifePlugins(entryStruct, pkgBundleStruct, iifeContentMap, minify),
-        output: buildIifeOutputOptions(entryStruct, entryAlias, pkgBundleStruct, monorepoStruct, banner),
+        plugins: buildIifePlugins(entryStruct, pkgBundleStruct, iifeContentMap, sourcemap, minify),
+        output: buildIifeOutputOptions(entryStruct, entryAlias, pkgBundleStruct, monorepoStruct, banner, sourcemap),
         onwarn,
       })
     }
@@ -149,6 +150,7 @@ function buildIifeOutputOptions(
   pkgBundleStruct: PkgBundleStruct,
   monorepoStruct: MonorepoStruct,
   banner: string,
+  sourcemap: boolean,
 ): OutputOptions {
   const { pkgDir, iifeGlobalsMap } = pkgBundleStruct
   const globalName = iifeGlobalsMap[entryStruct.entryGlob]
@@ -163,6 +165,7 @@ function buildIifeOutputOptions(
         ? { name: globalName }
         : { exports: 'none' }
     ),
+    sourcemap,
   }
 }
 
@@ -197,6 +200,7 @@ function buildIifePlugins(
   currentEntryStruct: EntryStruct,
   pkgBundleStruct: PkgBundleStruct,
   iifeContentMap: { [path: string]: string },
+  sourcemap: boolean,
   minify: boolean,
 ): Plugin[] {
   const { pkgDir, entryStructMap } = pkgBundleStruct
@@ -215,6 +219,7 @@ function buildIifePlugins(
       ...iifeContentMap,
     }),
     ...buildJsPlugins(pkgBundleStruct),
+    ...(sourcemap ? [sourcemapsPlugin()] : []),
     ...(minify ? [minifySeparatelyPlugin()] : []),
   ]
 }
@@ -266,8 +271,8 @@ function buildTestsJsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
       browser: true, // for xhr-mock (use non-node shims that it wants to)
       preferBuiltins: false, // for xhr-mock (use 'url' npm package)
     }),
-    commonjsPluginLib.default(), // for moment and moment-timezone
-    jsonPluginLib.default(), // for moment-timezone
+    commonjsPlugin(), // for moment and moment-timezone
+    jsonPlugin(), // for moment-timezone
     cssPlugin(),
   ]
 }

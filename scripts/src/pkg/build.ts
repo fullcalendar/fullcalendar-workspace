@@ -30,23 +30,27 @@ export default async function(this: ScriptContext, ...args: string[]) {
 export async function buildPkg(pkgDir: string, monorepoStruct: MonorepoStruct, isDev: boolean) {
   const pkgJson = monorepoStruct.pkgDirToJson[pkgDir]
   const pkgAnalysis = analyzePkg(pkgDir)
+  const { isTests } = pkgAnalysis
 
   await deleteBuiltFiles(pkgDir)
   await writeTsconfigs(monorepoStruct, pkgDir)
-  await writeDistPkgJson(pkgDir, pkgJson, isDev) // ensures dist folder for other tasks
+
+  if (!isTests) {
+    await writeDistPkgJson(pkgDir, pkgJson, isDev)
+  }
 
   // tsc needs tsconfig.json and package.json from above
   await compileTs(pkgDir)
 
   await Promise.all([
     writeBundles(pkgDir, pkgJson, monorepoStruct, isDev),
-    writeNpmIgnore(pkgDir),
-    writeDistReadme(pkgDir), // needs dist folder
-    writeDistLicense(pkgAnalysis), // needs dist folder
+    !isTests && writeDistNpmIgnore(pkgDir),
+    !isTests && writeDistReadme(pkgDir), // needs dist folder
+    !isTests && writeDistLicense(pkgAnalysis), // needs dist folder
   ])
 }
 
-export async function writeNpmIgnore(pkgDir: string): Promise<void> {
+export async function writeDistNpmIgnore(pkgDir: string): Promise<void> {
   await writeFile(
     joinPaths(pkgDir, 'dist', '.npmignore'),
     tscArtifacts.join('\n') + '\n',

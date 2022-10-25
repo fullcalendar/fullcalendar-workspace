@@ -28,47 +28,52 @@ export async function writeDistPkgJson(
 ): Promise<void> {
   const { buildConfig } = pkgJson
 
-  if (buildConfig) {
-    const pkgAnalysis = analyzePkg(pkgDir)
-    const basePkgJson = await readPkgJson(pkgAnalysis.metaRootDir)
-    const typesRoot = isDev ? './.tsout' : '.'
-
-    const finalPkgJson = {
-      ...basePkgJson,
-      ...pkgJson,
-      main: './index.cjs',
-      module: './index.mjs',
-      types: `${typesRoot}/index.d.ts`,
-      ...cdnFields.reduce(
-        (obj, cdnField) => Object.assign(obj, { [cdnField]: './index.min.js' }),
-        {},
-      ),
-      exports: {
-        './package.json': './package.json',
-        ...mapProps(buildConfig.exports, (entryConfig, entryName) => {
-          const entrySubpath = entryName === '.' ? './index' : entryName
-
-          return {
-            require: entrySubpath + '.cjs',
-            import: entrySubpath + '.mjs',
-            types: entrySubpath.replace(/^\./, typesRoot) + '.d.ts',
-            default: entrySubpath + '.js',
-          }
-        }),
-      },
-    }
-
-    delete finalPkgJson.scripts
-    delete finalPkgJson.devDependencies
-    delete finalPkgJson.tsConfig
-    delete finalPkgJson.buildConfig
-    delete finalPkgJson.publishConfig
-    delete finalPkgJson.private
-
-    finalPkgJson.repository.directory = relativizePath(pkgAnalysis.metaRootDir, pkgDir)
-
-    const distDir = joinPaths(pkgDir, 'dist')
-    await mkdir(distDir, { recursive: true })
-    await writePkgJson(distDir, finalPkgJson)
+  if (!buildConfig) {
+    throw new Error('Can only generate dist package.json for a buildConfig')
   }
+
+  const pkgAnalysis = analyzePkg(pkgDir)
+  const basePkgJson = await readPkgJson(pkgAnalysis.metaRootDir)
+  const typesRoot = isDev ? './.tsout' : '.'
+
+  const finalPkgJson = {
+    ...basePkgJson,
+    ...pkgJson,
+    main: './index.cjs',
+    module: './index.mjs',
+    types: `${typesRoot}/index.d.ts`,
+    ...cdnFields.reduce(
+      (obj, cdnField) => Object.assign(obj, { [cdnField]: './index.min.js' }),
+      {},
+    ),
+    exports: {
+      './package.json': './package.json',
+      ...mapProps(buildConfig.exports, (entryConfig, entryName) => {
+        const entrySubpath = entryName === '.' ? './index' : entryName
+
+        return {
+          require: entrySubpath + '.cjs',
+          import: entrySubpath + '.mjs',
+          types: entrySubpath.replace(/^\./, typesRoot) + '.d.ts',
+          default: entrySubpath + '.js',
+        }
+      }),
+    },
+  }
+
+  delete finalPkgJson.scripts
+  delete finalPkgJson.devDependencies
+  delete finalPkgJson.tsConfig
+  delete finalPkgJson.buildConfig
+  delete finalPkgJson.publishConfig
+
+  if (!pkgAnalysis.isTests) {
+    delete finalPkgJson.private
+  }
+
+  finalPkgJson.repository.directory = relativizePath(pkgAnalysis.metaRootDir, pkgDir)
+
+  const distDir = joinPaths(pkgDir, 'dist')
+  await mkdir(distDir, { recursive: true })
+  await writePkgJson(distDir, finalPkgJson)
 }

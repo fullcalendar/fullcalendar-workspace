@@ -31,14 +31,10 @@
   },
   "buildConfig": {
     "exports": {
-      ".": { "iife": "FullCalendarTimeline" }
+      ".": { "iife": true }
     },
-    "iifeExternals": {
-      "@fullcalendar/core": "FullCalendar",
-      "@fullcalendar/core/preact": "FullCalendar",
-      "@fullcalendar/premium-common": "FullCalendarPremiumCommon",
-      "@fullcalendar/scrollgrid": "FullCalendarScrollGrid",
-      "tslib": ""
+    "iifeGlobals": {
+      ".": "FullCalendarTimeline"
     }
   },
   "publishConfig": {

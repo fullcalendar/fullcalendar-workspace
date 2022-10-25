@@ -29,13 +29,10 @@
   },
   "buildConfig": {
     "exports": {
-      ".": { "iife": "FullCalendarAdaptive" }
+      ".": { "iife": true }
     },
-    "iifeExternals": {
-      "@fullcalendar/core": "FullCalendar",
-      "@fullcalendar/core/preact": "FullCalendar",
-      "@fullcalendar/premium-common": "FullCalendarPremiumCommon",
-      "tslib": ""
+    "iifeGlobals": {
+      ".": "FullCalendarAdaptive"
     }
   },
   "publishConfig": {

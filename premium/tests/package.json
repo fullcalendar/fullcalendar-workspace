@@ -43,13 +43,11 @@
     ]
   },
   "buildConfig": {
-    "esm": false,
-    "cjs": false,
-    "types": false,
-    "min": false,
-    "iifeExternals": false,
     "exports": {
       ".": { "iife": true, "iifeGenerator": "./scripts/generate-index-iife.js" }
+    },
+    "iifeGlobals": {
+      "*": ""
     }
   }
 }

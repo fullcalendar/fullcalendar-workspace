@@ -83,16 +83,17 @@ async function buildRollupOptionObjs(
 ): Promise<RollupOptions[]> {
   const { isBundle, isTests } = analyzePkg(pkgBundleStruct.pkgDir)
 
-  const esm = true
-  const cjs = !isDev
+  const esm = !isTests
+  const cjs = !isDev && !isTests
+  const moduleSourcemap = isDev || isTests
   const iife = !isDev || isBundle || isTests
-  const iifeMinify = !isDev && !isBundle && !isTests
-  const dts = !isDev
-  const sourcemap = isDev
+  const iifeMinify = !isDev && !isTests
+  const iifeSourcemap = isTests
+  const dts = !isDev && !isTests
 
   return [
-    ...buildModuleOptions(pkgBundleStruct, esm, cjs, sourcemap),
-    ...(iife ? await buildIifeOptions(pkgBundleStruct, monorepoStruct, iifeMinify) : []),
+    ...buildModuleOptions(pkgBundleStruct, esm, cjs, moduleSourcemap),
+    ...(iife ? await buildIifeOptions(pkgBundleStruct, monorepoStruct, iifeMinify, iifeSourcemap) : []),
     ...(dts ? [buildDtsOptions(pkgBundleStruct)] : []),
   ]
 }

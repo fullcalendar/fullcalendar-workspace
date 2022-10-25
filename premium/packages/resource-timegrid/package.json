@@ -33,16 +33,10 @@
   },
   "buildConfig": {
     "exports": {
-      ".": { "iife": "FullCalendarResourceTimeGrid" }
+      ".": { "iife": true }
     },
-    "iifeExternals": {
-      "@fullcalendar/core": "FullCalendar",
-      "@fullcalendar/core/preact": "FullCalendar",
-      "@fullcalendar/premium-common": "FullCalendarPremiumCommon",
-      "@fullcalendar/resource-common": "FullCalendarResourceCommon",
-      "@fullcalendar/resource-daygrid": "FullCalendarResourceDayGrid",
-      "@fullcalendar/timegrid": "FullCalendarTimeGrid",
-      "tslib": ""
+    "iifeGlobals": {
+      ".": "FullCalendarResourceTimeGrid"
     }
   },
   "publishConfig": {
