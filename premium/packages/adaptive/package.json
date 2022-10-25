@@ -32,7 +32,8 @@
       ".": { "iife": true }
     },
     "iifeGlobals": {
-      ".": "FullCalendarAdaptive"
+      ".": "FullCalendarAdaptive",
+      "tslib": ""
     }
   },
   "publishConfig": {

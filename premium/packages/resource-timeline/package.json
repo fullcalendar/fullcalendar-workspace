@@ -36,7 +36,8 @@
       ".": { "iife": true }
     },
     "iifeGlobals": {
-      ".": "FullCalendarResourceTimeline"
+      ".": "FullCalendarResourceTimeline",
+      "tslib": ""
     }
   },
   "publishConfig": {

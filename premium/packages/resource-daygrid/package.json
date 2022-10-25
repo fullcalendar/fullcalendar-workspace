@@ -35,7 +35,8 @@
       ".": { "iife": true }
     },
     "iifeGlobals": {
-      ".": "FullCalendarResourceDayGrid"
+      ".": "FullCalendarResourceDayGrid",
+      "tslib": ""
     }
   },
   "publishConfig": {

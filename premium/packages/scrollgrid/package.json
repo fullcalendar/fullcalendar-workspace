@@ -32,7 +32,8 @@
       ".": { "iife": true }
     },
     "iifeGlobals": {
-      ".": "FullCalendarScrollGrid"
+      ".": "FullCalendarScrollGrid",
+      "tslib": ""
     }
   },
   "publishConfig": {
