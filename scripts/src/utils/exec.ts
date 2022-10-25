@@ -45,7 +45,9 @@ export function spawnLive(
   options: ExecOptions = {},
 ): () => void {
   const child = spawnWithStdio(command, options, 'inherit')
-  return () => child.disconnect()
+  return () => {
+    child.disconnect && child.disconnect()
+  }
 }
 
 export function spawnSilent(
@@ -53,7 +55,9 @@ export function spawnSilent(
   options: ExecOptions = {},
 ): () => void {
   const child = spawnWithStdio(command, options, 'ignore')
-  return () => child.disconnect()
+  return () => {
+    child.disconnect && child.disconnect()
+  }
 }
 
 function execWithStdio(
