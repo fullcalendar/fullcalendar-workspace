@@ -8,7 +8,7 @@ import sourcemapsPlugin from 'rollup-plugin-sourcemaps'
 import commonjsPluginLib from '@rollup/plugin-commonjs'
 import jsonPluginLib from '@rollup/plugin-json'
 import { default as postcssPlugin } from 'rollup-plugin-postcss'
-import { mapObj } from '../../utils/lang.js'
+import { mapProps } from '../../utils/lang.js'
 import { MonorepoStruct } from '../../utils/monorepo-struct.js'
 import { analyzePkg } from '../../utils/pkg-analysis.js'
 import { readPkgJson } from '../../utils/pkg-json.js'
@@ -18,6 +18,7 @@ import {
   computeIifeExternalPkgs,
   computeIifeGlobals,
   computeOwnExternalPaths,
+  computeOwnIifeExternalPaths,
   EntryStruct,
   entryStructsToContentMap,
   generateIifeContent,
@@ -81,8 +82,8 @@ export async function buildIifeOptions(
     if (entryConfig.iife) {
       optionsObjs.push({
         input: buildIifeInput(entryStruct),
-        plugins: buildIifePlugins(pkgBundleStruct, iifeContentMap, minify),
-        output: buildIifeOutputOptions(entryAlias, pkgBundleStruct, monorepoStruct, banner),
+        plugins: buildIifePlugins(entryStruct, pkgBundleStruct, iifeContentMap, minify),
+        output: buildIifeOutputOptions(entryStruct, entryAlias, pkgBundleStruct, monorepoStruct, banner),
       })
     }
   }
@@ -96,7 +97,7 @@ export async function buildIifeOptions(
 type InputMap = { [entryAlias: string]: string }
 
 function buildModuleInput(pkgBundleStruct: PkgBundleStruct): InputMap {
-  return mapObj(pkgBundleStruct.entryStructMap, (entryStruct: EntryStruct) => {
+  return mapProps(pkgBundleStruct.entryStructMap, (entryStruct: EntryStruct) => {
     return entryStruct.entrySrcPath
   })
 }
@@ -106,7 +107,7 @@ function buildIifeInput(entryStruct: EntryStruct): string {
 }
 
 function buildDtsInput(pkgBundleStruct: PkgBundleStruct): InputMap {
-  return mapObj(pkgBundleStruct.entryStructMap, (entryStruct: EntryStruct) => {
+  return mapProps(pkgBundleStruct.entryStructMap, (entryStruct: EntryStruct) => {
     return entryStruct.entrySrcBase + '.d.ts'
   })
 }
@@ -140,13 +141,14 @@ function buildCjsOutputOptions(
 }
 
 function buildIifeOutputOptions(
+  entryStruct: EntryStruct,
   entryAlias: string,
   pkgBundleStruct: PkgBundleStruct,
   monorepoStruct: MonorepoStruct,
   banner: string,
 ): OutputOptions {
   const { pkgDir, iifeGlobalsMap } = pkgBundleStruct
-  const globalName = iifeGlobalsMap['.']
+  const globalName = iifeGlobalsMap[entryStruct.entryGlob]
 
   return {
     format: 'iife',
@@ -177,14 +179,19 @@ function buildModulePlugins(pkgBundleStruct: PkgBundleStruct, sourcemap: boolean
 
   return [
     rerootAssetsPlugin(pkgDir),
-    externalizePkgsPlugin(computeExternalPkgs(pkgBundleStruct)),
-    generatedContentPlugin(entryStructsToContentMap(entryStructMap)),
+    externalizePkgsPlugin(
+      computeExternalPkgs(pkgBundleStruct),
+    ),
+    generatedContentPlugin(
+      entryStructsToContentMap(entryStructMap),
+    ),
     ...buildJsPlugins(pkgBundleStruct),
     ...(sourcemap ? [sourcemapsPlugin()] : []), // load preexisting sourcemaps
   ]
 }
 
 function buildIifePlugins(
+  currentEntryStruct: EntryStruct,
   pkgBundleStruct: PkgBundleStruct,
   iifeContentMap: { [path: string]: string },
   minify: boolean,
@@ -193,7 +200,13 @@ function buildIifePlugins(
 
   return [
     rerootAssetsPlugin(pkgDir),
-    externalizePkgsPlugin(computeIifeExternalPkgs(pkgBundleStruct)),
+    externalizePkgsPlugin(
+      computeIifeExternalPkgs(pkgBundleStruct),
+    ),
+    externalizePathsPlugin({
+      paths: computeOwnIifeExternalPaths(currentEntryStruct, pkgBundleStruct),
+      absolutize: true, // because external browser-globals must match against absolute path
+    }),
     generatedContentPlugin({
       ...entryStructsToContentMap(entryStructMap),
       ...iifeContentMap,

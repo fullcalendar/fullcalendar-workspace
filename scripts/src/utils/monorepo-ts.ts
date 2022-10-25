@@ -2,6 +2,7 @@ import { join as joinPaths, relative as relativizePath } from 'path'
 import { execLive, spawnLive } from './exec.js'
 import { ensureFileDir, stringifyJson, writeIfDifferent } from './fs.js'
 import { MonorepoStruct, PkgStruct, traverseMonorepoGreedy } from './monorepo-struct.js'
+import { monorepoScriptsDir } from './script-runner.js'
 
 export async function compileTs(dir: string, tscArgs: string[] = []): Promise<void> {
   await execLive(['tsc', '-b', ...tscArgs], { cwd: dir })
@@ -11,7 +12,13 @@ export async function watchTs(dir: string, tscArgs: string[] = []): Promise<() =
   // initial compile for resolving result
   await compileTs(dir, tscArgs)
   // for watching, will compile again but will be quick
-  return spawnLive(['tsc', '-b', '--watch', ...tscArgs], { cwd: dir })
+  return spawnLive([
+    joinPaths(monorepoScriptsDir, 'node_modules/.bin/tsc'),
+    '-b', '--watch',
+    ...tscArgs,
+  ], {
+    cwd: dir,
+  })
 }
 
 export function writeTsconfigs(

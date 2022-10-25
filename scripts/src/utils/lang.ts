@@ -1,15 +1,33 @@
 
-export function mapObj(hash: any, func: (val: any, key: string) => any): any {
-  const newHash: { [key: string]: any } = {}
+export function mapProps<V, R>(
+  props: { [key: string]: V },
+  func: (val: V, key: string) => R,
+): { [key: string]: R } {
+  const newProps: { [key: string]: R } = {}
 
-  for (const key in hash) {
-    newHash[key] = func(hash[key], key)
+  for (const key in props) {
+    newProps[key] = func(props[key], key)
   }
 
-  return newHash
+  return newProps
 }
 
-export function strsToMap(strs: string[]): { [str: string]: true } {
+export function filterProps<V>(
+  props: { [key: string]: V },
+  func: (val: V, key: string) => boolean,
+): { [key: string]: V } {
+  const newProps: { [key: string]: V } = {}
+
+  for (const key in props) {
+    if (func(props[key], key)) {
+      newProps[key] = props[key]
+    }
+  }
+
+  return newProps
+}
+
+export function strsToProps(strs: string[]): { [str: string]: true } {
   const map: { [str: string]: true } = {}
 
   for (const str of strs) {

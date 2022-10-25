@@ -1,6 +1,7 @@
 import { isAbsolute, join as joinPaths } from 'path'
 import { globby } from 'globby'
 import { MonorepoStruct, computeLocalDepDirs } from '../../utils/monorepo-struct.js'
+import { filterProps } from '../../utils/lang.js'
 
 export interface PkgBundleStruct {
   pkgDir: string,
@@ -233,8 +234,8 @@ export function computeIifeExternalPkgs(pkgBundleStruct: PkgBundleStruct): strin
 
   return computeExternalPkgs(pkgBundleStruct)
     .filter((pkgName) => (
-      iifeGlobalsMap[pkgName] &&
-      iifeGlobalsMap['*']
+      iifeGlobalsMap[pkgName] !== '' &&
+      iifeGlobalsMap['*'] !== ''
     ))
 }
 
@@ -246,11 +247,23 @@ export function computeOwnExternalPaths(pkgBundleStruct: PkgBundleStruct): strin
     .map((entryStruct) => entryStruct.entrySrcPath)
 }
 
-export function computeOwnIifeExternalPaths(pkgBundleStruct: PkgBundleStruct): string[] {
-  const { entryConfigMap, entryStructMap } = pkgBundleStruct
+export function computeOwnIifeExternalPaths(
+  currentEntryStruct: EntryStruct,
+  pkgBundleStruct: PkgBundleStruct,
+): string[] {
+  const { entryConfigMap, entryStructMap, iifeGlobalsMap } = pkgBundleStruct
 
-  return Object.values(entryStructMap)
-    .filter((entryStruct) => entryConfigMap[entryStruct.entryGlob].iife)
+  // filter for entries that have iife (and iife global)
+  // and don't externalize current
+  const iifeEntryStructMap = filterProps(entryStructMap, (entryStruct) => {
+    return Boolean(
+      entryStruct.entryGlob !== currentEntryStruct.entryGlob &&
+      entryConfigMap[entryStruct.entryGlob].iife &&
+      iifeGlobalsMap[entryStruct.entryGlob],
+    )
+  })
+
+  return Object.values(iifeEntryStructMap)
     .map((entryStruct) => entryStruct.entrySrcPath)
 }
 

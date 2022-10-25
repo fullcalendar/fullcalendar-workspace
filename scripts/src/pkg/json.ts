@@ -2,7 +2,7 @@ import { join as joinPaths, relative as relativizePath } from 'path'
 import { mkdir } from 'fs/promises'
 import { analyzePkg } from '../utils/pkg-analysis.js'
 import { readPkgJson, writePkgJson } from '../utils/pkg-json.js'
-import { mapObj } from '../utils/lang.js'
+import { mapProps } from '../utils/lang.js'
 import { ScriptContext } from '../utils/script-runner.js'
 
 const cdnFields = [
@@ -45,7 +45,7 @@ export async function writeDistPkgJson(
       ),
       exports: {
         './package.json': './package.json',
-        ...mapObj(buildConfig.exports, (entryConfig, entryName) => {
+        ...mapProps(buildConfig.exports, (entryConfig, entryName) => {
           const entrySubpath = entryName === '.' ? './index' : entryName
 
           return {

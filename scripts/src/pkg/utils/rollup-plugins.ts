@@ -7,7 +7,7 @@ import {
 } from 'path'
 import { Plugin } from 'rollup'
 import { execLive } from '../../utils/exec.js'
-import { strsToMap } from '../../utils/lang.js'
+import { strsToProps } from '../../utils/lang.js'
 import { monorepoScriptsDir } from '../../utils/script-runner.js'
 
 // Generated Content
@@ -36,10 +36,11 @@ export function generatedContentPlugin(contentMap: { [path: string]: string }): 
 export interface ExteralizePathsOptions {
   paths: string[]
   extensions?: ExtensionInput
+  absolutize?: boolean
 }
 
 export function externalizePathsPlugin(options: ExteralizePathsOptions): Plugin {
-  const pathMap = strsToMap(options.paths)
+  const pathMap = strsToProps(options.paths)
   const extensionMap = options.extensions && normalizeExtensionMap(options.extensions)
 
   return {
@@ -48,14 +49,14 @@ export function externalizePathsPlugin(options: ExteralizePathsOptions): Plugin 
       const importPath = computeImportPath(importId, importerPath)
 
       if (importPath && pathMap[importPath]) {
-        if (extensionMap) {
-          const newImportId = findAndReplaceExtensions(importId, extensionMap)
+        let finalImportId: string | undefined = options.absolutize ? importPath : importId
 
-          if (newImportId) {
-            return { id: newImportId, external: true }
-          }
-        } else {
-          return { id: importId, external: true }
+        if (extensionMap) {
+          finalImportId = findAndReplaceExtensions(finalImportId, extensionMap)
+        }
+
+        if (finalImportId) {
+          return { id: finalImportId, external: true }
         }
       }
     },
@@ -128,24 +129,32 @@ export function minifySeparatelyPlugin(): Plugin {
   return {
     name: 'minify-separately',
     async writeBundle(options, bundles) {
-      await Promise.all(
-        Object.keys(bundles).map(
-          (bundlePath) => minifySeparately(resolvePath(bundlePath)),
-        ),
-      )
+      const { file, dir } = options
+
+      if (file) {
+        await minifySeparately(resolvePath(file))
+      } else if (dir) {
+        await Promise.all(
+          Object.keys(bundles).map((bundlePath) => {
+            return minifySeparately(resolvePath(joinPaths(dir, bundlePath)))
+          }),
+        )
+      } else {
+        throw new Error('For minification, must specify dir or file output option')
+      }
     },
   }
 }
 
-function minifySeparately(path: string): Promise<void> {
-  const pathMatch = path.match(/^(.*)\.([cm]?js)$/)
+async function minifySeparately(path: string): Promise<void> {
+  const pathMatch = path.match(/^(.*)(\.[cm]?js)$/)
 
   if (!pathMatch) {
     throw new Error('Invalid extension for minification')
   }
 
   return execLive([
-    'terser',
+    joinPaths(monorepoScriptsDir, 'node_modules/.bin/terser'),
     '--config-file', 'config/terser.json',
     '--output', pathMatch[1] + '.min' + pathMatch[2],
     '--', path,
