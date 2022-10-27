@@ -3,7 +3,6 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["BUILD_ENV"],
       "inputs": [
         "./*.{ts,js,cjs,json}",
         "./{src,scripts,config}/**"
