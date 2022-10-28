@@ -76,7 +76,7 @@ export async function watchBundles(
     })
 
     const fileWatcher = watch(pkgBundleStruct.miscWatchPaths, { ignoreInitial: true })
-    fileWatcher.on('all', () => {
+    fileWatcher.once('all', () => {
       pkgLog(pkgName, 'Misc file change detected. Rebuilding all.')
       rerun()
     })

@@ -66,6 +66,9 @@ export async function continuousAsync(workerFunc: ContinuousAsyncFunc): Promise<
   async function run() {
     if (!isStopped) {
       if (!currentRun) {
+        currentCleanupFunc && currentCleanupFunc()
+        currentCleanupFunc = undefined
+
         currentRun = Promise.resolve(workerFunc(run))
         currentCleanupFunc = (await currentRun) || undefined
         currentRun = undefined
@@ -73,8 +76,6 @@ export async function continuousAsync(workerFunc: ContinuousAsyncFunc): Promise<
         // had scan requests during previous run?
         if (isDirty) {
           isDirty = false
-          currentCleanupFunc && currentCleanupFunc()
-          currentCleanupFunc = undefined
           run()
         }
       } else {
