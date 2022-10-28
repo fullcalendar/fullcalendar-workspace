@@ -1,7 +1,7 @@
 import karma from 'karma'
 
 declare function buildKarmaConfig(
-  distFiles: string[],
+  pkgFilePaths: string[],
   isDev: boolean,
   cliArgs: string[],
 ): karma.ConfigOptions

@@ -48,6 +48,12 @@ export function arrayify(input: any): any[] {
   return Array.isArray(input) ? input : (input == null ? [] : [input])
 }
 
+export function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
+}
+
 // Async
 // -------------------------------------------------------------------------------------------------
 

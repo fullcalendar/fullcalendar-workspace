@@ -11,7 +11,7 @@
     "build-all": "workspace-scripts build",
     "build": "workspace-scripts build --filter='./standard/**' --filter='./premium/**'",
     "dev": "workspace-scripts dev",
-    "test": "workspace-scripts test",
+    "test": "workspace-scripts karma",
     "clean": "workspace-scripts clean",
     "lint": "workspace-scripts lint",
     "ci": "workspace-scripts ci"

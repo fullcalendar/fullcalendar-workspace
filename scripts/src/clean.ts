@@ -37,7 +37,12 @@ function deleteGlobalTurboCache(monorepoDir: string): Promise<void> {
 
 function cleanPkgsDirectly(monorepoStruct: MonorepoStruct): Promise<void> {
   return traverseMonorepoGreedy(monorepoStruct, (pkgStruct) => {
-    if (pkgStruct.pkgJson.buildConfig) {
+    const { pkgJson } = pkgStruct
+
+    if (
+      pkgJson.buildConfig ||
+      pkgJson.tsConfig
+    ) {
       return cleanPkg(pkgStruct.pkgDir)
     }
   })
