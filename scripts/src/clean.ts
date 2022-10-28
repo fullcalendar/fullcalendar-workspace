@@ -7,24 +7,16 @@ import { MonorepoStruct, traverseMonorepoGreedy } from './utils/monorepo-struct.
 import { cleanPkg } from './pkg/clean.js'
 
 export default async function(this: ScriptContext, ...args: string[]) {
-  const isFast = args.includes('-f') // "fast" aka "force"
-
-  await cleanMonorepo(this.monorepoStruct, isFast, args)
-}
-
-export async function cleanMonorepo(
-  monorepoStruct: MonorepoStruct,
-  isFast = false,
-  turboArgs: string[] = [],
-): Promise<void> {
+  const { monorepoStruct } = this
   const { monorepoDir } = monorepoStruct
+  const isAll = args.includes('--all')
 
   await Promise.all([
     deleteGlobalTurboCache(monorepoDir),
     deleteMonorepoArchives(monorepoStruct),
-    isFast ?
-      cleanPkgsDirectly(monorepoStruct) :
-      runTurboTasks(monorepoDir, ['clean', ...turboArgs]),
+    isAll ?
+      runTurboTasks(monorepoDir, ['clean']) :
+      cleanPkgsDirectly(monorepoStruct),
   ])
 }
 
