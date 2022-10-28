@@ -2,21 +2,27 @@ import chalk from 'chalk'
 import { ScriptContext } from './utils/script-runner.js'
 import { createKarmaServer, untilKarmaSuccess } from './pkg/karma.js'
 import { wait } from './utils/lang.js'
+import { execLive } from './utils/exec.js'
 
-export default async function(this: ScriptContext, ...cliArgs: string[]) {
-  const isDev = cliArgs.includes('--dev')
+export default async function(this: ScriptContext, ...args: string[]) {
+  const isAll = args.includes('--all')
+  const isDev = args.includes('--dev')
   const { monorepoStruct } = this
   const { pkgDirToJson } = monorepoStruct
 
   for (const pkgDir in pkgDirToJson) {
     const pkgJson = pkgDirToJson[pkgDir]
+    const isKarma = Boolean(pkgJson.karmaConfig)
+    const isOther = isAll && Boolean(pkgJson.scripts?.test)
 
-    if (pkgJson.karmaConfig) {
-      const server = await createKarmaServer({ pkgDir, pkgJson, isDev, cliArgs })
-
+    if (isKarma || isOther) {
       console.log()
       console.log(chalk.green(pkgJson.name))
       console.log()
+    }
+
+    if (isKarma) {
+      const server = await createKarmaServer({ pkgDir, pkgJson, isDev, cliArgs: args })
 
       if (!isDev) {
         server.start()
@@ -25,6 +31,8 @@ export default async function(this: ScriptContext, ...cliArgs: string[]) {
         await server.start()
         await wait(100) // let logging flush
       }
+    } else if (isOther) {
+      await execLive(['pnpm', 'run', 'test'], { cwd: pkgDir })
     }
   }
 }
