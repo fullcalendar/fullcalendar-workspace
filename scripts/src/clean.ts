@@ -37,7 +37,6 @@ function deleteGlobalTurboCache(monorepoDir: string): Promise<void> {
 
 function cleanPkgsDirectly(monorepoStruct: MonorepoStruct): Promise<void> {
   return traverseMonorepoGreedy(monorepoStruct, (pkgStruct) => {
-    // presence of buildConfig means we can clean
     if (pkgStruct.pkgJson.buildConfig) {
       return cleanPkg(pkgStruct.pkgDir)
     }
