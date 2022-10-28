@@ -43,7 +43,7 @@ export async function writeDistPkgJson(
     module: './index.mjs',
     types: `${typesRoot}/index.d.ts`,
     ...cdnFields.reduce(
-      (obj, cdnField) => Object.assign(obj, { [cdnField]: './index.min.js' }),
+      (props, cdnField) => Object.assign(props, { [cdnField]: './index.min.js' }),
       {},
     ),
     exports: {

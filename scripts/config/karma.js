@@ -1,20 +1,29 @@
-const path = require('path')
+import { createRequire } from 'module'
+import karma from 'karma'
 
-module.exports = function(config) {
-  const pkgDir = process.cwd()
-  const builtFile = path.join(pkgDir, 'dist/index.js')
+const require = createRequire(import.meta.url)
 
-  config.set({
-    files: [
-      require.resolve('jquery'),
-      require.resolve('jasmine-jquery'),
-      require.resolve('jquery-simulate'),
-      require.resolve('components-jqueryui'),
-      builtFile,
-    ],
-    preprocessors: {
-      [builtFile]: ['sourcemap'],
-    },
+export default function(distFiles, isDev, cliArgs) {
+  const files = [
+    require.resolve('jquery'),
+    require.resolve('jasmine-jquery'),
+    require.resolve('jquery-simulate'),
+    require.resolve('components-jqueryui'),
+    ...distFiles,
+  ]
+  const preprocessors = distFiles.reduce(
+    (props, distFile) => Object.assign(props, { [distFile]: ['sourcemap'] }),
+    {},
+  )
+
+  return {
+    singleRun: !isDev,
+    autoWatch: isDev,
+    browsers: !isDev ? ['ChromeHeadless_custom'] : [],
+    client: { cliArgs }, // access via `window.__karma__.config.cliArgs`
+
+    files,
+    preprocessors,
 
     plugins: [
       require('karma-chrome-launcher'),
@@ -37,8 +46,8 @@ module.exports = function(config) {
     colors: true,
 
     // level of logging
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_INFO,
+    // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
+    logLevel: karma.constants.LOG_INFO,
 
     // If browser does not capture in given timeout [ms], kill it
     captureTimeout: 60000,
@@ -52,5 +61,5 @@ module.exports = function(config) {
         ],
       },
     },
-  })
+  }
 }

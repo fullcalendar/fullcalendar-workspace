@@ -1,21 +1,20 @@
 import { join as joinPaths } from 'path'
 import karma from 'karma'
-import { monorepoScriptsDir } from '../utils/script-runner.js'
+import buildKarmaConfig from '../../config/karma.js'
 
 export default function(...args: string[]) {
+  const pkgDir = process.cwd()
   const isDev = args.includes('--dev')
-  const configPath = joinPaths(monorepoScriptsDir, './config/karma.cjs')
+  const distFile = joinPaths(pkgDir, 'dist/index.js')
 
-  // use CWD
-  // howto: https://karma-runner.github.io/6.4/dev/public-api.html
+  // karma JS API: https://karma-runner.github.io/6.4/dev/public-api.html
   return karma.config.parseConfig(
-    configPath,
-    {
-      singleRun: !isDev,
-      autoWatch: isDev,
-      browsers: !isDev ? ['ChromeHeadless_custom'] : [],
-      client: { args }, // access via `window.__karma__.config.args`
-    },
+    undefined,
+    buildKarmaConfig(
+      [distFile],
+      isDev,
+      args,
+    ),
     {
       promiseConfig: true,
       throwErrors: true,
