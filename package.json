@@ -8,7 +8,8 @@
   },
   "scripts": {
     "postinstall": "workspace-scripts postinstall",
-    "build": "workspace-scripts build",
+    "build-all": "workspace-scripts build",
+    "build": "workspace-scripts build --filter='./standard/**' --filter='./premium/**'",
     "dev": "workspace-scripts dev",
     "test": "workspace-scripts test",
     "clean": "workspace-scripts clean",
