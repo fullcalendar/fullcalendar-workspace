@@ -1,7 +1,6 @@
 import chalk from 'chalk'
 import { ScriptContext } from './utils/script-runner.js'
 import { createKarmaServer, untilKarmaSuccess } from './pkg/karma.js'
-import { untilSigInt } from './utils/process.js'
 import { wait } from './utils/lang.js'
 
 export default async function(this: ScriptContext, ...cliArgs: string[]) {
@@ -27,9 +26,5 @@ export default async function(this: ScriptContext, ...cliArgs: string[]) {
         await wait(100) // let logging flush
       }
     }
-  }
-
-  if (isDev) {
-    await untilSigInt()
   }
 }

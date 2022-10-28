@@ -2,7 +2,6 @@ import { join as joinPaths } from 'path'
 import karma from 'karma'
 import buildKarmaConfig from '../../config/karma.js'
 import { ScriptContext } from '../utils/script-runner.js'
-import { untilSigInt } from '../utils/process.js'
 
 export default async function(this: ScriptContext, ...args: string[]) {
   const pkgDir = this.cwd
@@ -14,9 +13,6 @@ export default async function(this: ScriptContext, ...args: string[]) {
 
   if (!isDev) {
     await untilKarmaSuccess(server)
-  } else {
-    await untilSigInt()
-    server.stop()
   }
 }
 
