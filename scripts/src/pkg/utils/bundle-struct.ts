@@ -2,6 +2,7 @@ import { isAbsolute, join as joinPaths } from 'path'
 import { globby } from 'globby'
 import { MonorepoStruct, computeLocalDepDirs } from '../../utils/monorepo-struct.js'
 import { filterProps } from '../../utils/lang.js'
+import { pkgLog } from './log.js'
 
 export interface PkgBundleStruct {
   pkgDir: string,
@@ -34,8 +35,14 @@ export type EntryConfigMap = { [entryGlob: string]: EntryConfig }
 export type EntryStructMap = { [entryAlias: string]: EntryStruct }
 export type IifeGlobalsMap = { [importPath: string]: string }
 
-export type GeneratorFunc = (pkgDir: string, entryGlob: string) => (string | { [entryName: string]: string })
-export type IifeGeneratorFunc = (pkgDir: string, entryAlias: string) => string
+export type GeneratorFunc = (
+  config: { pkgDir: string, entryGlob: string, log: (message: string) => void }
+) => (string | { [entryName: string]: string })
+
+export type IifeGeneratorFunc = (
+  config: { pkgDir: string, entryAlias: string, log: (message: string) => void }
+) => string
+
 export type WatchPathsFunc = (pkgDir: string) => string[]
 
 export const transpiledSubdir = 'dist/.tsout'
@@ -56,7 +63,7 @@ export async function buildPkgBundleStruct(
     Object.keys(entryConfigMap).map(async (entryGlob) => {
       const entryConfig = entryConfigMap[entryGlob]
       const newEntryStructMap = entryConfig.generator ?
-        await generateEntryStructMap(pkgDir, entryGlob, entryConfig.generator, miscWatchPaths) :
+        await generateEntryStructMap(pkgDir, pkgJson, entryGlob, entryConfig.generator, miscWatchPaths) :
         await unglobEntryStructMap(pkgDir, entryGlob)
 
       Object.assign(entryStructMap, newEntryStructMap)
@@ -102,6 +109,7 @@ async function unglobEntryStructMap(
 
 async function generateEntryStructMap(
   pkgDir: string,
+  pkgJson: any,
   entryGlob: string,
   generatorSubpath: string,
   miscWatchPaths: string[], // pass-by-reference, modified
@@ -114,7 +122,9 @@ async function generateEntryStructMap(
     throw new Error('Generator must have a default function export')
   }
 
-  const generatorRes = await generatorFunc(pkgDir, entryGlob)
+  const generatorConfig = { pkgDir, entryGlob, log: pkgLog.bind(undefined, pkgJson.name) }
+  const generatorRes = await generatorFunc(generatorConfig)
+
   const transpiledDir = joinPaths(pkgDir, transpiledSubdir)
   const entryStructMap: EntryStructMap = {}
 
@@ -154,10 +164,10 @@ async function generateEntryStructMap(
     throw new Error('Invalid type of generator output')
   }
 
-  const getWatchPaths: WatchPathsFunc | undefined = generatorExports.getWatchPaths
-  if (getWatchPaths) {
-    miscWatchPaths.push(...getWatchPaths(pkgDir))
-  }
+  miscWatchPaths.push(
+    generatorPath,
+    ...(generatorExports.getWatchPaths ? generatorExports.getWatchPaths(generatorConfig) : []),
+  )
 
   return entryStructMap
 }
@@ -198,7 +208,12 @@ export async function generateIifeContent(
         throw new Error('iifeGenerator must have a default function export')
       }
 
-      const iifeGeneratorRes = await iifeGeneratorFunc(pkgDir, entryAlias)
+      const iifeGeneratorConfig = {
+        pkgDir,
+        entryAlias,
+        log: pkgLog.bind(undefined, pkgBundleStruct.pkgJson.name),
+      }
+      const iifeGeneratorRes = await iifeGeneratorFunc(iifeGeneratorConfig)
 
       if (typeof iifeGeneratorRes !== 'string') {
         throw new Error('iifeGenerator must return a string')
@@ -209,11 +224,12 @@ export async function generateIifeContent(
 
       contentMap[transpiledPath] = iifeGeneratorRes
 
-      const getWatchPaths: WatchPathsFunc | undefined = iifeGeneratorExports.getWatchPaths
-      if (getWatchPaths) {
-        // HACK: modify passed-in struct
-        pkgBundleStruct.miscWatchPaths.push(...getWatchPaths(pkgDir))
-      }
+      pkgBundleStruct.miscWatchPaths.push( // HACK: modify passed-in struct
+        iifeGeneratorPath,
+        ...(iifeGeneratorExports.getWatchPaths ?
+          iifeGeneratorExports.getWatchPaths(iifeGeneratorConfig) :
+          []),
+      )
     }
   }
 

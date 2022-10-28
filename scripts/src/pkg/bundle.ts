@@ -9,6 +9,7 @@ import { buildDtsOptions, buildIifeOptions, buildModuleOptions } from './utils/r
 import { arrayify, continuousAsync } from '../utils/lang.js'
 import { ScriptContext } from '../utils/script-runner.js'
 import { untilSigInt } from '../utils/process.js'
+import { pkgLog } from './utils/log.js'
 
 export default async function(this: ScriptContext, ...args: string[]) {
   const { monorepoStruct } = this
@@ -56,6 +57,7 @@ export async function watchBundles(
   isDev: boolean,
 ): Promise<() => void> {
   return continuousAsync(async (rerun: any) => {
+    const pkgName = pkgJson.name
     const pkgBundleStruct = await buildPkgBundleStruct(pkgDir, pkgJson)
     const optionsObjs = await buildRollupOptionObjs(pkgBundleStruct, monorepoStruct, isDev)
 
@@ -64,7 +66,7 @@ export async function watchBundles(
       rollupWatcher.on('event', (ev) => {
         switch (ev.code) {
           case 'BUNDLE_END':
-            console.log(formatWriteMessage(pkgJson.name, ev.input)) // FIX: doesn't always write all
+            pkgLog(pkgName, formatWriteMessage(ev.input, ev.output as string[]))
             break
           case 'END':
             resolve()
@@ -74,8 +76,8 @@ export async function watchBundles(
     })
 
     const fileWatcher = watch(pkgBundleStruct.miscWatchPaths, { ignoreInitial: true })
-    fileWatcher.on('all', (ev, path) => {
-      console.log('Rerun???', ev, path)
+    fileWatcher.on('all', () => {
+      pkgLog(pkgName, 'Misc file change detected. Rebuilding all.')
       rerun()
     })
 
@@ -108,19 +110,21 @@ async function buildRollupOptionObjs(
   ]
 }
 
-const timeFormat = new Intl.DateTimeFormat('en', {
-  timeStyle: 'medium',
-})
+function formatWriteMessage(input: any, outputPaths: string[]): string {
+  const inputPaths: string[] = typeof input === 'object' ? Object.values(input) : [input]
+  const inputNames = inputPaths.map((inputPath) => basename(inputPath))
+  const outputNames = outputPaths.map((outputPath) => basename(outputPath))
 
-function formatWriteMessage(pkgName: string, input: any): string {
-  const inputStrs = typeof input === 'object' ?
-    Object.keys(input) :
-    [basename(input)]
+  return `Wrote ${formatNames(inputNames)} to ${formatNames(outputNames)}`
+}
 
-  const otherFileCnt = inputStrs.length - 1
+function formatNames(names: string[]) {
+  if (names.length <= 2) {
+    return names.join(', ')
+  } else {
+    const otherCnt = names.length - 2
 
-  return `[${chalk.grey(timeFormat.format(new Date()))}] ` +
-    chalk.green(pkgName + ': ') +
-    `Wrote ${inputStrs[0]}` +
-    (otherFileCnt ? ` and ${otherFileCnt} other ${otherFileCnt === 1 ? 'file' : 'files'}` : '')
+    return names.slice(0, 2).join(', ') + ', and ' +
+      otherCnt + ' ' + (otherCnt === 1 ? 'other' : 'others')
+  }
 }
