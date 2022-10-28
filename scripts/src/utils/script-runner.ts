@@ -1,7 +1,7 @@
 import { join as joinPaths } from 'path'
 import { fileURLToPath } from 'url'
 import { MonorepoStruct, readMonorepo } from './monorepo-struct.js'
-import { compileTs, writeTsconfigs } from './monorepo-ts.js'
+// import { compileTs, writeTsconfigs } from './monorepo-ts.js'
 
 export interface ScriptContext {
   cwd: string
@@ -21,8 +21,8 @@ export async function runScript(scriptPkgDir: string): Promise<void> {
   }
 
   const monorepoStruct = await readMonorepo(monorepoDir)
-  await writeTsconfigs(monorepoStruct, scriptPkgDir)
-  await compileTs(scriptPkgDir)
+  // await writeTsconfigs(monorepoStruct, scriptPkgDir)
+  // await compileTs(scriptPkgDir)
 
   const scriptPath = joinPaths(scriptPkgDir, 'dist', scriptName.replace(':', '/') + '.js')
   const scriptExports = await import(scriptPath)
