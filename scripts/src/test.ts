@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import { ScriptContext } from './utils/script-runner.js'
-import { createKarmaServer, untilKarmaSuccess } from './pkg/karma.js'
+import { createKarmaServer, untilKarmaSuccess } from './pkg/test.js'
 import { wait } from './utils/lang.js'
 import { execLive } from './utils/exec.js'
 
@@ -13,7 +13,7 @@ export default async function(this: ScriptContext, ...args: string[]) {
   for (const pkgDir in pkgDirToJson) {
     const pkgJson = pkgDirToJson[pkgDir]
     const isKarma = Boolean(pkgJson.karmaConfig)
-    const isOther = isAll && Boolean(pkgJson.scripts?.test)
+    const isOther = Boolean(pkgJson.scripts?.test) && isAll && !isDev
 
     if (isKarma || isOther) {
       console.log()
