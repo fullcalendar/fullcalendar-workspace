@@ -1,6 +1,5 @@
 import { basename } from 'path'
 import { watch } from 'chokidar'
-import { default as chalk } from 'chalk'
 import { rollup, watch as rollupWatch, RollupOptions, OutputOptions } from 'rollup'
 import { MonorepoStruct } from '../utils/monorepo-struct.js'
 import { buildPkgBundleStruct, PkgBundleStruct } from './utils/bundle-struct.js'
