@@ -10,11 +10,15 @@ export default function(pkgFilePaths, isDev, cliArgs) {
     require.resolve('jquery-simulate'),
     require.resolve('components-jqueryui'),
     ...pkgFilePaths,
+    ...pkgFilePaths.map((path) => ({
+      pattern: path.replace(/\.js$/, '.js.map'),
+      included: false,
+    })),
   ]
-  const preprocessors = pkgFilePaths.reduce(
-    (props, distFile) => Object.assign(props, { [distFile]: ['sourcemap'] }),
-    {},
-  )
+
+  const preprocessors = pkgFilePaths.reduce((props, distFile) => (
+    Object.assign(props, { [distFile]: ['sourcemap'] })
+  ), {})
 
   return {
     singleRun: !isDev,
