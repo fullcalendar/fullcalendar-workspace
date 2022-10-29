@@ -63,7 +63,7 @@ describe('timeline addResource', () => {
     const spreadsheetScrollerEl = viewWrapper.getDataScrollEl()
     const maxScroll = spreadsheetScrollerEl.scrollHeight - spreadsheetScrollerEl.clientHeight
     const currentScroll = spreadsheetScrollerEl.scrollTop
-    expect(maxScroll).toBe(currentScroll)
+    expect(Math.abs(maxScroll - currentScroll)).toBeLessThan(1)
   })
 
   describe('when adding resource as child of another', () => {

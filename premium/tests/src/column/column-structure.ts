@@ -154,14 +154,28 @@ describe('vresource structure', () => {
     describe('when delay in resource fetching', () => {
       pushOptions({
         initialView: 'oneDay',
-        resources(arg, callback) {
-          setTimeout(() => {
-            callback([
-              { id: 'a', title: 'Resource A' },
-              { id: 'b', title: 'Resource B' },
-            ])
-          }, 200)
-        },
+      })
+
+      it('renders resources correctly', (done) => {
+        let calendar = initCalendar({
+          resources(arg, callback) {
+            setTimeout(() => {
+              callback([
+                { id: 'a', title: 'Resource A' },
+                { id: 'b', title: 'Resource B' },
+              ])
+            }, 200)
+          },
+        })
+
+        setTimeout(() => {
+          let headerWrapper = new ViewWrapper(calendar).header
+
+          expect(headerWrapper.getResourceEls('a').length).toBe(1)
+          expect(headerWrapper.getResourceEls('b').length).toBe(1)
+
+          done()
+        }, 300)
       })
     })
   })

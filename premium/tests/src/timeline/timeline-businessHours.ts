@@ -171,11 +171,11 @@ describe('timeline businessHours', () => {
       businessHours: true,
     })
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
-
     expectResourceOverride(viewWrapper)
     calendar.changeView('dayGridMonth')
 
     calendar.changeView('resourceTimelineDay')
+    viewWrapper = new ResourceTimelineViewWrapper(calendar)
     expectResourceOverride(viewWrapper)
   })
 
