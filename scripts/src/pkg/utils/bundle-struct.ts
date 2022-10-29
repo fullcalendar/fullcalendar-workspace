@@ -315,6 +315,7 @@ export function computeIifeGlobals(
   }
 
   // scan the package's external dependencies
+  // TODO: scan dependencies of dependencies (or just do a global scan)
   for (const importId in iifeGlobalsMap) {
     const globalName = iifeGlobalsMap[importId]
 

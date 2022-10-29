@@ -35,4 +35,6 @@ export default async function(this: ScriptContext, ...args: string[]) {
       await execLive(['pnpm', 'run', 'test'], { cwd: pkgDir })
     }
   }
+
+  // TODO: for isDev, await sigint?
 }

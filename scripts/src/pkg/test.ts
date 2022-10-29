@@ -14,6 +14,8 @@ export default async function(this: ScriptContext, ...args: string[]) {
   if (!isDev) {
     await untilKarmaSuccess(server)
   }
+
+  // TODO: for isDev, await sigint?
 }
 
 export interface PkgKarmaServerConfig {

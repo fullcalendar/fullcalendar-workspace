@@ -12,6 +12,7 @@
     "build": "workspace-scripts build",
     "dev": "workspace-scripts dev",
     "test": "workspace-scripts test",
+    "test:dev": "workspace-scripts test --dev",
     "clean": "workspace-scripts clean"
   },
   "monorepoConfig": {

@@ -9,6 +9,8 @@ export default {
   'pnpm-workspace.yaml': { generator: scopeWorkspaceFile },
   'pnpm-lock.yaml': { generator: writeScopedLockfile },
   // 'turbo.json': {}, // broken because of git staging bug
+  // TODO: .vscode/extensions.json
+  // TODO: .vscode/settings.json
 }
 
 // .gitignore
