@@ -1,20 +1,2 @@
-import '@fullcalendar/standard-tests/lib/globals'
-import { DEFAULT_PLUGINS } from '@fullcalendar/standard-tests/lib/install-plugins'
-
-import { default as scrollGridPlugin } from '@fullcalendar/scrollgrid'
-import { default as timelinePlugin } from '@fullcalendar/timeline'
-import { default as resourceTimelinePlugin } from '@fullcalendar/resource-timeline'
-import { default as resourceDayGridPlugin } from '@fullcalendar/resource-daygrid'
-import { default as resourceTimeGridPlugin } from '@fullcalendar/resource-timegrid'
-
-const MORE_DEFAULT_PLUGINS = [
-  scrollGridPlugin,
-  timelinePlugin,
-  resourceTimelinePlugin,
-  resourceDayGridPlugin,
-  resourceTimeGridPlugin,
-]
-
-pushOptions({
-  plugins: DEFAULT_PLUGINS.concat(MORE_DEFAULT_PLUGINS),
-})
+import './lib/global.css'
+import './lib/global.js'
