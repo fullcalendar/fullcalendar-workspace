@@ -255,7 +255,7 @@ function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
   return [
     nodeResolvePlugin(),
     cssPlugin({
-      injector: {
+      inject: {
         importId: pkgJson.name === '@fullcalendar/core' ?
           joinPaths(pkgDir, transpiledSubdir, 'styleUtils' + transpiledExtension) :
           '@fullcalendar/core',
@@ -273,7 +273,7 @@ function buildTestsJsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
     }),
     commonjsPlugin(), // for moment and moment-timezone
     jsonPlugin(), // for moment-timezone
-    cssPlugin(),
+    cssPlugin({ inject: true }),
   ]
 }
 
@@ -285,18 +285,20 @@ interface CssInjector {
   importProp: string
 }
 
-function cssPlugin(options?: { injector?: CssInjector }): Plugin {
-  const injector = options?.injector
+function cssPlugin(options?: { inject?: CssInjector | boolean }): Plugin {
+  const { inject } = options || {}
 
   return postcssPlugin({
     config: {
       path: joinPaths(monorepoScriptsDir, 'config/postcss.config.cjs'),
       ctx: {}, // arguments given to config file
     },
-    inject: !injector ? false : (cssVarName: string) => {
-      return `import { ${injector.importProp} } from ${JSON.stringify(injector.importId)};\n` +
-        `injectStyles(${cssVarName});\n`
-    },
+    inject: typeof inject === 'object' ?
+      (cssVarName: string) => {
+        return `import { ${inject.importProp} } from ${JSON.stringify(inject.importId)};\n` +
+          `injectStyles(${cssVarName});\n`
+      } :
+      (inject || false),
   })
 }
 
