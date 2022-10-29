@@ -15,7 +15,7 @@ await copyFile(
 )
 const execFileP = promisify(execFile)
 await execFileP(
-  'node_modules/.bin/tsc',
+  './node_modules/.bin/tsc',
   ['-b'],
   { cwd: thisPkgDir, stdio: 'inherit' },
 )
