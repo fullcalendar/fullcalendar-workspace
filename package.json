@@ -8,18 +8,21 @@
   },
   "scripts": {
     "postinstall": "workspace-scripts postinstall",
-    "build-all": "workspace-scripts build",
-    "build": "workspace-scripts build --filter='./standard/**' --filter='./premium/**'",
+    "lint": "workspace-scripts lint",
+    "build": "workspace-scripts build",
     "dev": "workspace-scripts dev",
     "test": "workspace-scripts test",
-    "clean": "workspace-scripts clean",
-    "lint": "workspace-scripts lint",
-    "ci": "workspace-scripts ci"
+    "clean": "workspace-scripts clean"
   },
   "monorepoConfig": {
-    "defaultSubtrees": [
+    "archiveSubtrees": [
       "./standard",
       "./premium"
+    ],
+    "filterSubtrees": [
+      "./standard",
+      "./premium",
+      "./scripts"
     ]
   },
   "engines": {

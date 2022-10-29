@@ -5,6 +5,7 @@ import { globby } from 'globby'
 import archiver from 'archiver'
 import { MonorepoStruct } from './utils/monorepo-struct.js'
 import { ScriptContext } from './utils/script-runner.js'
+import { getArchiveRootDirs } from './utils/monorepo-config.js'
 
 export default function(this: ScriptContext) {
   return writeMonorepoArchives(this.monorepoStruct)
@@ -12,13 +13,13 @@ export default function(this: ScriptContext) {
 
 export async function writeMonorepoArchives(monorepoStruct: MonorepoStruct): Promise<void> {
   await Promise.all(
-    getRootDirs(monorepoStruct).map((rootDir) => createArchive(rootDir)),
+    getArchiveRootDirs(monorepoStruct).map((rootDir) => createArchive(rootDir)),
   )
 }
 
 export async function deleteMonorepoArchives(monorepoStruct: MonorepoStruct): Promise<void> {
   await Promise.all(
-    getRootDirs(monorepoStruct).map((rootDir) => deleteArchives(rootDir)),
+    getArchiveRootDirs(monorepoStruct).map((rootDir) => deleteArchives(rootDir)),
   )
 }
 
@@ -68,11 +69,4 @@ async function deleteArchives(rootDir: string): Promise<void> {
   const distDir = joinPaths(rootDir, 'dist')
 
   await rm(distDir, { recursive: true, force: true })
-}
-
-function getRootDirs(monorepoStruct: MonorepoStruct): string[] {
-  const { monorepoDir, monorepoPkgJson } = monorepoStruct
-  const defaultSubtrees: string[] | undefined = monorepoPkgJson.monorepoConfig.defaultSubtrees
-
-  return defaultSubtrees || [monorepoDir]
 }
