@@ -64,6 +64,9 @@ export async function watchBundles(
     await new Promise<void>((resolve) => {
       rollupWatcher.on('event', (ev) => {
         switch (ev.code) {
+          case 'ERROR':
+            console.error(ev.error)
+            break
           case 'BUNDLE_END':
             pkgLog(pkgName, formatWriteMessage(ev.input, ev.output as string[]))
             break
