@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: 16.18.0
           cache: 'pnpm'
-          cache-dependency-path: pnpm-workspace.yaml
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: Setup Turbo cache
         uses: actions/cache@v3
