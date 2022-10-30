@@ -23,7 +23,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.18.0
-          cache: pnpm
+          cache: 'pnpm'
+          cache-dependency-path: pnpm-workspace.yaml
 
       - name: Setup Turbo cache
         uses: actions/cache@v3
@@ -34,7 +35,7 @@ jobs:
             turbo-${{ github.job }}-${{ github.ref_name }}-
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
         run: pnpm run lint
@@ -42,5 +43,5 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Test
-        run: pnpm run test
+      # - name: Test
+      #   run: pnpm run test
