@@ -15,7 +15,7 @@
     "test:dev": "workspace-scripts test --dev",
     "clean": "workspace-scripts clean",
     "ci": "pnpm run lint && pnpm run build && pnpm run test",
-    "release": "pnpm run ci && echo 'TODO: release stuff'"
+    "release": "pnpm run ci && echo 'TODO: release stufff'"
   },
   "monorepoConfig": {
     "archiveSubtrees": [
