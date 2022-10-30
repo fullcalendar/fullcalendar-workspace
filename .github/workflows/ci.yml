@@ -14,34 +14,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16.18.0
-
       - name: Setup PNPM
         uses: pnpm/action-setup@v2.2.4
         with:
           version: 7.14.0
-          run_install: false
 
-      - name: Get PNPM store path
-        id: pnpm-store-path
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - name: Setup PNPM store
-        id: turbo-store-path
-        uses: actions/cache@v3
+      - name: Setup Node
+        uses: actions/setup-node@v2
         with:
-          path: ${{ steps.pnpm-store-path.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          node-version: 16.18.0
+          cache: pnpm
 
       - name: Setup Turbo cache
-        id: turbo-cache
         uses: actions/cache@v3
         with:
           path: node_modules/.cache/turbo
