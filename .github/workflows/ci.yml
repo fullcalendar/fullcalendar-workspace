@@ -23,6 +23,7 @@ jobs:
         uses: pnpm/action-setup@v2.2.4
         with:
           version: 7.14.0
+          run_install: false
 
       - name: Get PNPM store path
         id: pnpm-store-path
