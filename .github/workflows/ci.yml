@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v2.2.4
@@ -20,7 +20,7 @@ jobs:
           version: 7.14.0
 
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 16.18.0
           cache: pnpm
@@ -42,5 +42,5 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Test
-        run: pnpm run test
+      # - name: Test
+      #   run: pnpm run test
