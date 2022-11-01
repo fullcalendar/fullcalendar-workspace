@@ -8,9 +8,12 @@ export default {
   '.gitignore': { generator: scopeGitIgnore },
   'pnpm-workspace.yaml': { generator: scopeWorkspaceFile },
   'pnpm-lock.yaml': { generator: writeScopedLockfile },
-  // 'turbo.json': {}, // broken because of git staging bug
-  // TODO: .vscode/extensions.json
-  // TODO: .vscode/settings.json
+
+  // // TODO: push these, but only to standard (not contrib)
+  // // For now, manually copy
+  // 'turbo.json': {},
+  // '.vscode/extensions.json': {},
+  // '.vscode/settings.json': {},
 }
 
 // .gitignore
