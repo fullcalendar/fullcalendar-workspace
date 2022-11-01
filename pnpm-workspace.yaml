@@ -1,11 +1,13 @@
 packages:
-  - ./standard/scripts
-  - ./standard/tests
-  - ./standard/bundle
-  - ./standard/packages/*
-  - ./premium/tests
-  - ./premium/bundle
-  - ./premium/packages/*
-  - ./scripts
-  - ./contrib/*
-  - ./examples/*
+  - './standard/scripts'
+  - './standard/tests'
+  - './standard/bundle'
+  - './standard/packages/*'
+  - './premium/tests'
+  - './premium/bundle'
+  - './premium/packages/*'
+  - './scripts'
+  - './contrib/*'
+  - '!./contrib/react'
+  - './examples/*'
+  - '!./examples/react*'
