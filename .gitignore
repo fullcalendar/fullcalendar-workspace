@@ -1,6 +1,7 @@
-dist
-tmp
+
 node_modules
+.turbo
 tsconfig.json
 tsconfig.tsbuildinfo
-.turbo
+dist
+tmp
