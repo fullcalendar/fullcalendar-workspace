@@ -8,6 +8,7 @@ import {
   commitDir,
   isStaged,
 } from '@fullcalendar/standard-scripts/utils/git'
+import { fileExists } from '@fullcalendar/standard-scripts/utils/fs'
 import { boolPromise } from '@fullcalendar/standard-scripts/utils/lang'
 import { querySubrepoSubdirs } from '../utils/git-subrepo.js'
 
@@ -20,7 +21,7 @@ export default async function(this: ScriptContext, ...args: string[]) {
   await updateGhostFiles(
     monorepoDir,
     await querySubrepoSubdirs(monorepoDir),
-    args.includes('--no-commit'),
+    !args.includes('--no-commit'),
   )
 }
 
@@ -111,10 +112,13 @@ async function addFiles(paths: string[]): Promise<boolean> {
   let anyAdded = false
 
   for (let path of paths) {
-    await addFile(path)
+    // TODO: refactor this file to only add generated paths that return string/true
+    if (await fileExists(path)) {
+      await addFile(path)
 
-    if (await isStaged(path)) {
-      anyAdded = true
+      if (await isStaged(path)) {
+        anyAdded = true
+      }
     }
   }
 
