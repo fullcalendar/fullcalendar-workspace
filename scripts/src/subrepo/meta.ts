@@ -13,7 +13,7 @@ import { boolPromise } from '@fullcalendar/standard-scripts/utils/lang'
 import { querySubrepoSubdirs } from '../utils/git-subrepo.js'
 
 // config
-import ghostFileConfigMap, { GhostFileConfig } from '../../config/ghost-files.js'
+import ghostFileConfigMap, { GhostFileConfig } from '../../config/subrepo-meta.js'
 
 export default async function(this: ScriptContext, ...args: string[]) {
   const { monorepoDir } = this.monorepoStruct

@@ -1,6 +1,6 @@
 import { ScriptContext } from '@fullcalendar/standard-scripts/utils/script-runner'
 import { pushSubrepo, querySubrepoSubdirs } from '../utils/git-subrepo.js'
-import { updateGhostFiles } from './ghost-files.js'
+import { updateGhostFiles } from './meta.js'
 
 export default async function(this: ScriptContext) {
   const monorepoDir = this.cwd
