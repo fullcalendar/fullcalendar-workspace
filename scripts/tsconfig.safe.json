@@ -1,5 +1,5 @@
 {
-  "extends": "./config/tsconfig.node.json",
+  "extends": "@fullcalendar/standard-scripts/config/tsconfig.node.json",
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist"
@@ -8,6 +8,8 @@
     "./src/**/*"
   ],
   "references": [
-    "../standard/scripts"
+    {
+      "path": "../standard/scripts"
+    }
   ]
 }
