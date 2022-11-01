@@ -5,7 +5,9 @@
   "type": "module",
   "devDependencies": {
     "@fullcalendar/standard-scripts": "workspace:*",
-    "@types/node": "^16.11.7"
+    "@pnpm/make-dedicated-lockfile": "0.3.20",
+    "@types/node": "^16.11.7",
+    "js-yaml": "^4.1.0"
   },
   "bin": {
     "workspace-scripts": "./bin/workspace-scripts.js",
