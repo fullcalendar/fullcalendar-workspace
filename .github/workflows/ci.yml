@@ -6,8 +6,8 @@ env:
   TZ: "America/New_York"
 
 jobs:
-  ci:
-    name: CI
+  root-ci:
+    name: Root CI
     runs-on: ubuntu-latest
 
     steps:
@@ -45,3 +45,40 @@ jobs:
 
       - name: Test
         run: pnpm run test
+
+  standard-ci:
+    name: Standard CI
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: standard
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 7.14.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.18.0
+          cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Setup Turbo cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules/.cache/turbo
+          key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ github.job }}-${{ github.ref_name }}-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm run build
