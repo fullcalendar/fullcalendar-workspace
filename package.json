@@ -8,7 +8,7 @@
     "@fullcalendar/workspace-scripts": "workspace:*"
   },
   "scripts": {
-    "postinstall": "standard-scripts postinstall",
+    "postinstall": "workspace-scripts postinstall",
     "lint": "standard-scripts lint",
     "build": "standard-scripts build",
     "dev": "standard-scripts dev",
@@ -16,8 +16,7 @@
     "test:dev": "standard-scripts test --dev",
     "clean": "standard-scripts clean",
     "ci": "pnpm run lint && pnpm run build && pnpm run test",
-    "release": "pnpm run ci && echo 'TODO: release stuff'",
-    "hello": "workspace-scripts hello"
+    "release": "pnpm run ci && echo 'TODO: release stuff'"
   },
   "monorepoConfig": {
     "archiveSubtrees": [

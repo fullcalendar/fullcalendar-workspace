@@ -25,6 +25,13 @@ export default async function(this: ScriptContext, ...args: string[]) {
   )
 }
 
+export async function hideMonorepoGhostFiles(monorepoDir: string) {
+  const subdirs = await querySubrepoSubdirs(monorepoDir)
+  const ghostFilePaths = getGhostFilePaths(monorepoDir, subdirs)
+
+  await hideFiles(ghostFilePaths)
+}
+
 export async function updateGhostFiles(
   monorepoDir: string,
   subdirs: string[] = [],
