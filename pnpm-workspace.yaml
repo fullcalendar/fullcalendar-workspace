@@ -10,4 +10,4 @@ packages:
   - './contrib/*'
   - '!./contrib/react'
   - './examples/*'
-  - '!./examples/react*'
+  - '!./examples/*react*'
