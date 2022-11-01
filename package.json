@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "devDependencies": {
-    "@fullcalendar/standard-scripts": "workspace:*"
+    "@fullcalendar/standard-scripts": "workspace:*",
+    "@fullcalendar/workspace-scripts": "workspace:*"
   },
   "scripts": {
     "postinstall": "standard-scripts postinstall",
@@ -15,7 +16,8 @@
     "test:dev": "standard-scripts test --dev",
     "clean": "standard-scripts clean",
     "ci": "pnpm run lint && pnpm run build && pnpm run test",
-    "release": "pnpm run ci && echo 'TODO: release stufff'"
+    "release": "pnpm run ci && echo 'TODO: release stufff'",
+    "hello": "workspace-scripts hello"
   },
   "monorepoConfig": {
     "archiveSubtrees": [

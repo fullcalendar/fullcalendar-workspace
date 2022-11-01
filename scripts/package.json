@@ -1,0 +1,33 @@
+{
+  "private": true,
+  "name": "@fullcalendar/workspace-scripts",
+  "version": "0.0.0",
+  "type": "module",
+  "dependencies": {
+    "@fullcalendar/standard-scripts": "workspace:*"
+  },
+  "bin": {
+    "workspace-scripts": "./bin/workspace-scripts.js"
+  },
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "tsConfig": {
+    "extends": "@fullcalendar/standard-scripts/config/tsconfig.node.json",
+    "compilerOptions": {
+      "rootDir": "./src",
+      "outDir": "./dist"
+    },
+    "include": [
+      "./src/**/*"
+    ]
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./config/*": "./config/*",
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  }
+}

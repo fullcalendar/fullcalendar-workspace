@@ -6,5 +6,6 @@ packages:
   - ./premium/tests
   - ./premium/bundle
   - ./premium/packages/*
+  - ./scripts
   - ./contrib/*
   - ./examples/*
