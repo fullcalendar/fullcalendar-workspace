@@ -11,3 +11,4 @@ packages:
   - '!./contrib/react'
   - './examples/*'
   - '!./examples/*react*'
+  - '!./examples/*next*'
