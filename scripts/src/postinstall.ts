@@ -5,6 +5,8 @@ import { hideMonorepoGhostFiles } from './subrepo/meta.js'
 export default async function(this: ScriptContext) {
   await Promise.all([
     origPostinstall.call(this), // TODO: weird. use non-cli utility
-    hideMonorepoGhostFiles(this.monorepoStruct.monorepoDir),
+
+    // while we sort out git-submodules...
+    // hideMonorepoGhostFiles(this.monorepoStruct.monorepoDir),
   ])
 }
