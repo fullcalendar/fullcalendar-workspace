@@ -4,16 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "devDependencies": {
-    "@fullcalendar/workspace-scripts": "workspace:*"
+    "@fullcalendar/standard-scripts": "workspace:*"
   },
   "scripts": {
-    "postinstall": "workspace-scripts postinstall",
-    "lint": "workspace-scripts lint",
-    "build": "workspace-scripts build",
-    "dev": "workspace-scripts dev",
-    "test": "workspace-scripts test",
-    "test:dev": "workspace-scripts test --dev",
-    "clean": "workspace-scripts clean",
+    "postinstall": "standard-scripts postinstall",
+    "lint": "standard-scripts lint",
+    "build": "standard-scripts build",
+    "dev": "standard-scripts dev",
+    "test": "standard-scripts test",
+    "test:dev": "standard-scripts test --dev",
+    "clean": "standard-scripts clean",
     "ci": "pnpm run lint && pnpm run build && pnpm run test",
     "release": "pnpm run ci && echo 'TODO: release stufff'"
   },
