@@ -38,13 +38,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: pnpm run lint
+        run: pnpm run lint --all
 
       - name: Build
-        run: pnpm run build
+        run: pnpm run build --all
 
       - name: Test
-        run: pnpm run test
+        run: pnpm run test --all
 
   standard-ci:
     name: Standard CI

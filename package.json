@@ -15,7 +15,7 @@
     "test": "standard-scripts test",
     "test:dev": "standard-scripts test --dev",
     "clean": "standard-scripts clean",
-    "ci": "pnpm run lint && pnpm run build && pnpm run test",
+    "ci": "pnpm run lint --all && pnpm run build --all && pnpm run test --all",
     "release": "pnpm run ci && echo 'TODO: release stuff'"
   },
   "monorepoConfig": {
