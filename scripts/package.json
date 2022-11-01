@@ -3,7 +3,7 @@
   "name": "@fullcalendar/workspace-scripts",
   "version": "0.0.0",
   "type": "module",
-  "dependencies": {
+  "devDependencies": {
     "@fullcalendar/standard-scripts": "workspace:*",
     "@types/node": "^16.11.7"
   },

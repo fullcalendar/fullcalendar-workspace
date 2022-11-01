@@ -16,7 +16,7 @@
     "test:dev": "standard-scripts test --dev",
     "clean": "standard-scripts clean",
     "ci": "pnpm run lint && pnpm run build && pnpm run test",
-    "release": "pnpm run ci && echo 'TODO: release stufff'",
+    "release": "pnpm run ci && echo 'TODO: release stuff'",
     "hello": "workspace-scripts hello"
   },
   "monorepoConfig": {
@@ -49,7 +49,7 @@
       ]
     },
     "patchedDependencies": {
-      "@pnpm/make-dedicated-lockfile@0.3.20": "standard/scripts/patches/@pnpm__make-dedicated-lockfile@0.3.20.patch",
+      "@pnpm/make-dedicated-lockfile@0.3.20": "scripts/patches/@pnpm__make-dedicated-lockfile@0.3.20.patch",
       "jasmine-jquery@2.1.1": "standard/scripts/patches/jasmine-jquery@2.1.1.patch"
     }
   }
