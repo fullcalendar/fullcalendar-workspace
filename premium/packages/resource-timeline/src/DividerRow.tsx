@@ -1,4 +1,4 @@
-import { BaseComponent, CssDimValue, RenderHook } from '@fullcalendar/core'
+import { BaseComponent, CssDimValue, ContentContainer } from '@fullcalendar/core'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { GroupLaneRenderHooks, ColCellContentArg } from '@fullcalendar/resource-common'
 
@@ -6,7 +6,7 @@ export interface DividerRowProps {
   elRef?: Ref<HTMLTableRowElement>
   innerHeight: CssDimValue
   groupValue: any
-  renderingHooks: GroupLaneRenderHooks
+  renderHooks: GroupLaneRenderHooks
 }
 
 /*
@@ -14,36 +14,30 @@ parallels the SpreadsheetGroupRow
 */
 export class DividerRow extends BaseComponent<DividerRowProps> {
   render() {
-    let { props } = this
-    let { renderingHooks } = this.props
-    let hookProps: ColCellContentArg = { groupValue: props.groupValue, view: this.context.viewApi }
+    let { props, context } = this
+    let { renderHooks } = props
+    let renderProps: ColCellContentArg = { groupValue: props.groupValue, view: context.viewApi }
 
     return (
       <tr ref={props.elRef}>
-        <RenderHook
-          hookProps={hookProps}
-          classNames={renderingHooks.laneClassNames}
-          content={renderingHooks.laneContent}
-          didMount={renderingHooks.laneDidMount}
-          willUnmount={renderingHooks.laneWillUnmount}
+        <ContentContainer
+          tagName="td"
+          classNames={[
+            'fc-timeline-lane',
+            'fc-resource-group',
+            context.theme.getClass('tableCellShaded'),
+          ]}
+          renderProps={renderProps}
+          generatorName="laneContent"
+          generator={renderHooks.laneContent}
+          classNameGenerator={renderHooks.laneClassNames}
+          didMount={renderHooks.laneDidMount}
+          willUnmount={renderHooks.laneWillUnmount}
         >
-          {(rootElRef, classNames, innerElRef, innerContent) => (
-            <td
-              ref={rootElRef}
-              className={
-                [
-                  'fc-timeline-lane',
-                  'fc-resource-group',
-                  this.context.theme.getClass('tableCellShaded'),
-                ].concat(classNames).join(' ')
-              }
-            >
-              <div style={{ height: props.innerHeight }} ref={innerElRef}>
-                {innerContent}
-              </div>
-            </td>
+          {(InnerContainer) => (
+            <InnerContainer style={{ height: props.innerHeight }} />
           )}
-        </RenderHook>
+        </ContentContainer>
       </tr>
     )
   }

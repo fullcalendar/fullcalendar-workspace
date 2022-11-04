@@ -39,7 +39,7 @@ export class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLan
                 key={node.id}
                 elRef={rowElRefs.createRef(node.id)}
                 groupValue={(node as GroupNode).group.value}
-                renderingHooks={(node as GroupNode).group.spec}
+                renderHooks={(node as GroupNode).group.spec}
                 innerHeight={innerHeights[index] || ''}
               />
             )
