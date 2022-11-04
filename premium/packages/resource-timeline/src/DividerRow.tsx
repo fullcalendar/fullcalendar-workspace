@@ -21,8 +21,8 @@ export class DividerRow extends BaseComponent<DividerRowProps> {
     return (
       <tr ref={props.elRef}>
         <ContentContainer
-          tagName="td"
-          classNames={[
+          elTag="td"
+          elClasses={[
             'fc-timeline-lane',
             'fc-resource-group',
             context.theme.getClass('tableCellShaded'),
@@ -35,7 +35,7 @@ export class DividerRow extends BaseComponent<DividerRowProps> {
           willUnmount={renderHooks.laneWillUnmount}
         >
           {(InnerContainer) => (
-            <InnerContainer style={{ height: props.innerHeight }} />
+            <InnerContainer elAttrs={{ style: { height: props.innerHeight }}} />
           )}
         </ContentContainer>
       </tr>
