@@ -22,11 +22,11 @@ export interface TimelineLaneMoreLinkProps {
 }
 
 export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProps> {
-  rootElRef = createRef<HTMLElement>()
+  elRef = createRef<HTMLElement>()
 
   render() {
     let { props, context } = this
-    let { hiddenSegs, elRef, placement, resourceId } = props
+    let { hiddenSegs, placement, resourceId } = props
     let { top, hcoords } = placement
     let isVisible = hcoords && top !== null
     let hStyle = coordsToCss(hcoords, context.isRtl)
@@ -34,11 +34,20 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
 
     return (
       <MoreLinkRoot
+        elRef={this.handleEl}
+        elClasses={['fc-timeline-more-link']}
+        elAttrs={{
+          style: {
+            visibility: isVisible ? '' : 'hidden',
+            top: top || 0,
+            ...hStyle,
+          },
+        }}
         allDayDate={null}
         moreCnt={hiddenSegs.length}
         allSegs={hiddenSegs}
         hiddenSegs={hiddenSegs}
-        alignmentElRef={this.rootElRef}
+        alignmentElRef={this.elRef}
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
         extraDateSpan={extraDateSpan}
@@ -49,7 +58,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
               return (
                 <div
                   key={instanceId}
-                  style={{ visibility: props.isForcedInvisible[instanceId] ? 'hidden' : ('' as any) }}
+                  style={{ visibility: props.isForcedInvisible[instanceId] ? 'hidden' : '' }}
                 >
                   <TimelineEvent
                     isTimeScale={props.isTimeScale}
@@ -66,30 +75,15 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
           </Fragment>
         )}
       >
-        {(rootElRef, classNames, innerElRef, innerContent, handleClick, title, isExpanded, popoverId) => (
-          <a
-            ref={(el: HTMLElement | null) => {
-              setRef(rootElRef, el) // for MoreLinkRoot
-              setRef(elRef, el) // for props props
-              setRef(this.rootElRef, el) // for this component
-            }}
-            className={['fc-timeline-more-link'].concat(classNames).join(' ')}
-            style={{
-              visibility: isVisible ? ('' as any) : 'hidden',
-              top: top || 0,
-              ...hStyle,
-            }}
-            onClick={handleClick}
-            title={title}
-            aria-expanded={isExpanded}
-            aria-controls={popoverId}
-          >
-            <div ref={innerElRef} className="fc-timeline-more-link-inner fc-sticky">
-              {innerContent}
-            </div>
-          </a>
+        {(InnerContent) => (
+          <InnerContent elClasses={['fc-timeline-more-link-inner', 'fc-sticky']} />
         )}
       </MoreLinkRoot>
     )
+  }
+
+  handleEl = (el: HTMLElement) => {
+    setRef(this.props.elRef, el)
+    setRef(this.elRef, el)
   }
 }

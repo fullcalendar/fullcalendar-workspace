@@ -1,6 +1,6 @@
 import {
   isInt, BaseComponent, DateMarker, DateRange, getDateMeta, getSlotClassNames,
-  RenderHook, getDayClassNames, SlotLaneContentArg, DateProfile,
+  getDayClassNames, SlotLaneContentArg, DateProfile, ContentContainer,
 } from '@fullcalendar/core'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from './timeline-date-profile.js'
@@ -22,55 +22,51 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
     let { dateEnv, options, theme } = context
     let { date, tDateProfile, isEm } = props
     let dateMeta = getDateMeta(props.date, props.todayRange, props.nowDate, props.dateProfile)
-    let classNames = ['fc-timeline-slot', 'fc-timeline-slot-lane']
-    let dataAttrs = { 'data-date': dateEnv.formatIso(date, { omitTimeZoneOffset: true, omitTime: !tDateProfile.isTimeScale }) }
-    let hookProps: SlotLaneContentArg = {
+    let renderProps: SlotLaneContentArg = {
       date: dateEnv.toDate(props.date),
       ...dateMeta,
       view: context.viewApi,
     }
 
-    if (isEm) {
-      classNames.push('fc-timeline-slot-em')
-    }
-
-    if (tDateProfile.isTimeScale) {
-      classNames.push(
-        isInt(dateEnv.countDurationsBetween(
-          tDateProfile.normalizedRange.start,
-          props.date,
-          tDateProfile.labelInterval,
-        )) ?
-          'fc-timeline-slot-major' :
-          'fc-timeline-slot-minor',
-      )
-    }
-
-    classNames.push(...(
-      props.isDay
-        ? getDayClassNames(dateMeta, theme)
-        : getSlotClassNames(dateMeta, theme)
-    ))
-
     return (
-      <RenderHook
-        hookProps={hookProps}
-        classNames={options.slotLaneClassNames}
-        content={options.slotLaneContent}
+      <ContentContainer
+        elTag="td"
+        elClasses={[
+          'fc-timeline-slot',
+          'fc-timeline-slot-lane',
+          isEm ? 'fc-timeline-slot-em' : '',
+          tDateProfile.isTimeScale ? (
+            isInt(dateEnv.countDurationsBetween(
+              tDateProfile.normalizedRange.start,
+              props.date,
+              tDateProfile.labelInterval,
+            )) ?
+              'fc-timeline-slot-major' :
+              'fc-timeline-slot-minor'
+          ) : '',
+          ...(
+            props.isDay ?
+              getDayClassNames(dateMeta, theme) :
+              getSlotClassNames(dateMeta, theme)
+          ),
+        ]}
+        elAttrs={{
+          'data-date': dateEnv.formatIso(date, {
+            omitTimeZoneOffset: true,
+            omitTime: !tDateProfile.isTimeScale,
+          }),
+        }}
+        renderProps={renderProps}
+        generatorName="slotLaneContent"
+        generator={options.slotLaneContent}
+        classNameGenerator={options.slotLaneClassNames}
         didMount={options.slotLaneDidMount}
         willUnmount={options.slotLaneWillUnmount}
-        elRef={props.elRef}
       >
-        {(rootElRef, customClassNames, innerElRef, innerContent) => (
-          <td
-            ref={rootElRef}
-            className={classNames.concat(customClassNames).join(' ')}
-            {...dataAttrs}
-          >
-            <div ref={innerElRef}>{innerContent}</div>
-          </td>
+        {(InnerContent) => (
+          <InnerContent />
         )}
-      </RenderHook>
+      </ContentContainer>
     )
   }
 }

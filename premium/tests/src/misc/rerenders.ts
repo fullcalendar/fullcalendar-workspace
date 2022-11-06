@@ -77,7 +77,7 @@ describe('rerender performance for resource timeline', () => {
     expect(resourceLaneRenderCnt).toBe(0)
     expect(eventRenderCnt).toBe(0) // out of view
 
-    // FIRES UNNECESSARY ContentHook RERENDERS WHEN WE SWITCH VIEWS LIKE THIS FOR SOME REASON
+    // FIRES UNNECESSARY RERENDERS WHEN WE SWITCH VIEWS LIKE THIS FOR SOME REASON
     //
     // currentCalendar.changeView('listDay') // switch to different view
     // resetCounts()

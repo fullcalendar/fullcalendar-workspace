@@ -79,83 +79,80 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       options.resourcesInitiallyExpanded,
     )
 
-    let extraClassNames = [
-      'fc-resource-timeline',
-      this.hasNesting(rowNodes) ? '' : 'fc-resource-timeline-flat', // flat means there's no nesting
-      'fc-timeline',
-      options.eventOverlap === false ? 'fc-timeline-overlap-disabled' : 'fc-timeline-overlap-enabled',
-    ]
-
     let { slotMinWidth } = options
     let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
 
     return (
-      <ViewRoot viewSpec={viewSpec}>
-        {(rootElRef, classNames) => (
-          <div ref={rootElRef} className={extraClassNames.concat(classNames).join(' ')}>
-            <ResourceTimelineViewLayout
-              ref={this.layoutRef}
-              forPrint={props.forPrint}
-              isHeightAuto={props.isHeightAuto}
-              spreadsheetCols={
-                buildSpreadsheetCols(colSpecs, state.spreadsheetColWidths, '')
-              }
-              spreadsheetHeaderRows={(contentArg: ChunkContentCallbackArgs) => (
-                <SpreadsheetHeader // TODO: rename to SpreadsheetHeaderRows
-                  superHeaderRendering={superHeaderRendering}
-                  colSpecs={colSpecs}
-                  onColWidthChange={this.handleColWidthChange}
-                  rowInnerHeights={contentArg.rowSyncHeights}
-                />
-              )}
-              spreadsheetBodyRows={(contentArg: ChunkContentCallbackArgs) => (
-                <Fragment>
-                  {this.renderSpreadsheetRows(rowNodes, colSpecs, contentArg.rowSyncHeights)}
-                </Fragment>
-              )}
-              timeCols={slatCols}
-              timeHeaderContent={(contentArg: ChunkContentCallbackArgs) => (
-                <TimelineHeader
-                  clientWidth={contentArg.clientWidth}
-                  clientHeight={contentArg.clientHeight}
-                  tableMinWidth={contentArg.tableMinWidth}
-                  tableColGroupNode={contentArg.tableColGroupNode}
-                  dateProfile={props.dateProfile}
-                  tDateProfile={tDateProfile}
-                  slatCoords={state.slatCoords}
-                  rowInnerHeights={contentArg.rowSyncHeights}
-                  onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
-                />
-              )}
-              timeBodyContent={(contentArg: ChunkContentCallbackArgs) => (
-                <ResourceTimelineGrid
-                  dateProfile={props.dateProfile}
-                  clientWidth={contentArg.clientWidth}
-                  clientHeight={contentArg.clientHeight}
-                  tableMinWidth={contentArg.tableMinWidth}
-                  tableColGroupNode={contentArg.tableColGroupNode}
-                  expandRows={contentArg.expandRows}
-                  tDateProfile={tDateProfile}
-                  rowNodes={rowNodes}
-                  businessHours={props.businessHours}
-                  dateSelection={props.dateSelection}
-                  eventStore={props.eventStore}
-                  eventUiBases={props.eventUiBases}
-                  eventSelection={props.eventSelection}
-                  eventDrag={props.eventDrag}
-                  eventResize={props.eventResize}
-                  resourceStore={props.resourceStore}
-                  nextDayThreshold={context.options.nextDayThreshold}
-                  rowInnerHeights={contentArg.rowSyncHeights}
-                  onSlatCoords={this.handleSlatCoords}
-                  onRowCoords={this.handleRowCoords}
-                  onScrollLeftRequest={this.handleScrollLeftRequest}
-                  onRowHeightChange={contentArg.reportRowHeightChange}
-                />
-              )}
+      <ViewRoot
+        elClasses={[
+          'fc-resource-timeline',
+          this.hasNesting(rowNodes) ? '' : 'fc-resource-timeline-flat', // flat means there's no nesting
+          'fc-timeline',
+          options.eventOverlap === false ? 'fc-timeline-overlap-disabled' : 'fc-timeline-overlap-enabled',
+        ]}
+        viewSpec={viewSpec}
+      >
+        <ResourceTimelineViewLayout
+          ref={this.layoutRef}
+          forPrint={props.forPrint}
+          isHeightAuto={props.isHeightAuto}
+          spreadsheetCols={
+            buildSpreadsheetCols(colSpecs, state.spreadsheetColWidths, '')
+          }
+          spreadsheetHeaderRows={(contentArg: ChunkContentCallbackArgs) => (
+            <SpreadsheetHeader // TODO: rename to SpreadsheetHeaderRows
+              superHeaderRendering={superHeaderRendering}
+              colSpecs={colSpecs}
+              onColWidthChange={this.handleColWidthChange}
+              rowInnerHeights={contentArg.rowSyncHeights}
             />
-          </div>
-        )}
+          )}
+          spreadsheetBodyRows={(contentArg: ChunkContentCallbackArgs) => (
+            <Fragment>
+              {this.renderSpreadsheetRows(rowNodes, colSpecs, contentArg.rowSyncHeights)}
+            </Fragment>
+          )}
+          timeCols={slatCols}
+          timeHeaderContent={(contentArg: ChunkContentCallbackArgs) => (
+            <TimelineHeader
+              clientWidth={contentArg.clientWidth}
+              clientHeight={contentArg.clientHeight}
+              tableMinWidth={contentArg.tableMinWidth}
+              tableColGroupNode={contentArg.tableColGroupNode}
+              dateProfile={props.dateProfile}
+              tDateProfile={tDateProfile}
+              slatCoords={state.slatCoords}
+              rowInnerHeights={contentArg.rowSyncHeights}
+              onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
+            />
+          )}
+          timeBodyContent={(contentArg: ChunkContentCallbackArgs) => (
+            <ResourceTimelineGrid
+              dateProfile={props.dateProfile}
+              clientWidth={contentArg.clientWidth}
+              clientHeight={contentArg.clientHeight}
+              tableMinWidth={contentArg.tableMinWidth}
+              tableColGroupNode={contentArg.tableColGroupNode}
+              expandRows={contentArg.expandRows}
+              tDateProfile={tDateProfile}
+              rowNodes={rowNodes}
+              businessHours={props.businessHours}
+              dateSelection={props.dateSelection}
+              eventStore={props.eventStore}
+              eventUiBases={props.eventUiBases}
+              eventSelection={props.eventSelection}
+              eventDrag={props.eventDrag}
+              eventResize={props.eventResize}
+              resourceStore={props.resourceStore}
+              nextDayThreshold={context.options.nextDayThreshold}
+              rowInnerHeights={contentArg.rowSyncHeights}
+              onSlatCoords={this.handleSlatCoords}
+              onRowCoords={this.handleRowCoords}
+              onScrollLeftRequest={this.handleScrollLeftRequest}
+              onRowHeightChange={contentArg.reportRowHeightChange}
+            />
+          )}
+        />
       </ViewRoot>
     )
   }

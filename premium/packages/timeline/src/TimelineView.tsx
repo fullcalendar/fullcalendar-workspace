@@ -36,11 +36,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
       context.dateProfileGenerator,
     )
 
-    let extraClassNames = [
-      'fc-timeline',
-      options.eventOverlap === false ? 'fc-timeline-overlap-disabled' : '',
-    ]
-
     let { slotMinWidth } = options
     let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
 
@@ -100,20 +95,22 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
     }
 
     return (
-      <ViewRoot viewSpec={context.viewSpec}>
-        {(rootElRef, classNames) => (
-          <div ref={rootElRef} className={extraClassNames.concat(classNames).join(' ')}>
-            <ScrollGrid
-              ref={this.scrollGridRef}
-              liquid={!props.isHeightAuto && !props.forPrint}
-              collapsibleWidth={false}
-              colGroups={[
-                { cols: slatCols },
-              ]}
-              sections={sections}
-            />
-          </div>
-        )}
+      <ViewRoot
+        elClasses={[
+          'fc-timeline',
+          options.eventOverlap === false ? 'fc-timeline-overlap-disabled' : '',
+        ]}
+        viewSpec={context.viewSpec}
+      >
+        <ScrollGrid
+          ref={this.scrollGridRef}
+          liquid={!props.isHeightAuto && !props.forPrint}
+          collapsibleWidth={false}
+          colGroups={[
+            { cols: slatCols },
+          ]}
+          sections={sections}
+        />
       </ViewRoot>
     )
   }

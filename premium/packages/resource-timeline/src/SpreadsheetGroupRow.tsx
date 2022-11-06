@@ -1,5 +1,5 @@
-import { BaseComponent, ViewContext, CssDimValue, RenderHook } from '@fullcalendar/core'
-import { createElement, Fragment, createRef, RefObject } from '@fullcalendar/core/preact'
+import { BaseComponent, ViewContext, CssDimValue, ContentContainer } from '@fullcalendar/core'
+import { createElement, Fragment, createRef, RefObject, ComponentChild } from '@fullcalendar/core/preact'
 import { Group, isGroupsEqual, ColCellContentArg } from '@fullcalendar/resource-common'
 import { ExpanderIcon } from './ExpanderIcon.js'
 
@@ -17,53 +17,51 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
 
   render() {
     let { props, context } = this
-    let hookProps: ColCellContentArg = { groupValue: props.group.value, view: context.viewApi }
+    let renderProps: ColCellContentArg = { groupValue: props.group.value, view: context.viewApi }
     let spec = props.group.spec
 
     return (
       <tr role="row">
-        <RenderHook<ColCellContentArg>
-          hookProps={hookProps}
-          classNames={spec.labelClassNames}
-          content={spec.labelContent}
-          defaultContent={renderCellInner}
+        <ContentContainer
+          elTag="th"
+          elClasses={[
+            'fc-datagrid-cell',
+            'fc-resource-group',
+            context.theme.getClass('tableCellShaded'),
+          ]}
+          elAttrs={{
+            // ARIA TODO: not really a columnheader
+            // extremely tedious to make this aria-compliant,
+            // to assign multiple headers to each cell
+            // https://www.w3.org/WAI/tutorials/tables/multi-level/
+            role: 'columnheader',
+            scope: 'colgroup',
+            colSpan: props.spreadsheetColCnt,
+          }}
+          renderProps={renderProps}
+          generatorName="labelContent"
+          generator={spec.labelContent || renderCellInner}
+          classNameGenerator={spec.labelClassNames}
           didMount={spec.labelDidMount}
           willUnmount={spec.labelWillUnmount}
         >
-          {(rootElRef, classNames, innerElRef, innerContent) => (
-            <th
-              ref={rootElRef}
-              // ARIA TODO: not really a columnheader
-              // extremely tedious to make this aria-compliant,
-              // to assign multiple headers to each cell
-              // https://www.w3.org/WAI/tutorials/tables/multi-level/
-              role="columnheader"
-              scope="colgroup"
-              colSpan={props.spreadsheetColCnt}
-              className={
-                [
-                  'fc-datagrid-cell',
-                  'fc-resource-group',
-                  context.theme.getClass('tableCellShaded'),
-                ].concat(classNames).join(' ')
-              }
-            >
-              <div className="fc-datagrid-cell-frame" style={{ height: props.innerHeight }}>
-                <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner" ref={this.innerInnerRef}>
-                  <ExpanderIcon
-                    depth={0}
-                    hasChildren
-                    isExpanded={props.isExpanded}
-                    onExpanderClick={this.onExpanderClick}
-                  />
-                  <span className="fc-datagrid-cell-main" ref={innerElRef}>
-                    {innerContent}
-                  </span>
-                </div>
+          {(InnerContent) => (
+            <div className="fc-datagrid-cell-frame" style={{ height: props.innerHeight }}>
+              <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner" ref={this.innerInnerRef}>
+                <ExpanderIcon
+                  depth={0}
+                  hasChildren
+                  isExpanded={props.isExpanded}
+                  onExpanderClick={this.onExpanderClick}
+                />
+                <InnerContent
+                  elTag="span"
+                  elClasses={['fc-datagrid-cell-main']}
+                />
               </div>
-            </th>
+            </div>
           )}
-        </RenderHook>
+        </ContentContainer>
       </tr>
     )
   }
@@ -83,6 +81,6 @@ SpreadsheetGroupRow.addPropsEquality({
   group: isGroupsEqual,
 })
 
-function renderCellInner(hookProps) {
-  return hookProps.groupValue || <Fragment>&nbsp;</Fragment>
+function renderCellInner(renderProps: ColCellContentArg): ComponentChild {
+  return renderProps.groupValue || <Fragment>&nbsp;</Fragment>
 }

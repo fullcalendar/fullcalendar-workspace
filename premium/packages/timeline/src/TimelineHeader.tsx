@@ -59,17 +59,14 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
               // this issue doesn't happen for the timeline body however (
               <div className="fc-timeline-now-indicator-container">
                 {(slatCoords && slatCoords.isDateInRange(nowDate)) && (
-                  <NowIndicatorRoot isAxis date={nowDate}>
-                    {(rootElRef, classNames, innerElRef, innerContent) => (
-                      <div
-                        ref={rootElRef}
-                        className={['fc-timeline-now-indicator-arrow'].concat(classNames).join(' ')}
-                        style={coordToCss(slatCoords.dateToCoord(nowDate), context.isRtl)}
-                      >
-                        {innerContent}
-                      </div>
-                    )}
-                  </NowIndicatorRoot>
+                  <NowIndicatorRoot
+                    elClasses={['fc-timeline-now-indicator-arrow']}
+                    elAttrs={{
+                      style: coordToCss(slatCoords.dateToCoord(nowDate), context.isRtl),
+                    }}
+                    isAxis
+                    date={nowDate}
+                  />
                 )}
               </div>
             )}

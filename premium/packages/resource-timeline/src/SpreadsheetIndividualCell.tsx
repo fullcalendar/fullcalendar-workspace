@@ -1,12 +1,13 @@
 import {
-  BaseComponent, CssDimValue, MountHook,
-  buildClassNameNormalizer, memoizeObjArg,
+  BaseComponent, CssDimValue,
+  memoizeObjArg,
+  ContentContainer,
+  ViewContext,
+  ViewApi,
 } from '@fullcalendar/core'
-import { createElement } from '@fullcalendar/core/preact'
-import { Resource, ColSpec } from '@fullcalendar/resource-common'
+import { createElement, Fragment, ComponentChild } from '@fullcalendar/core/preact'
+import { Resource, ColSpec, ResourceApi } from '@fullcalendar/resource-common'
 import { ExpanderIcon } from './ExpanderIcon.js'
-import { refineHookProps, HookProps } from './spreadsheet-cell-util.js'
-import { SpreadsheetIndividualCellInner } from './SpreadsheetIndividualCellInner.js'
 
 export interface SpreadsheetIndividualCellProps {
   colSpec: ColSpec
@@ -20,48 +21,55 @@ export interface SpreadsheetIndividualCellProps {
 
 // worth making a PureComponent? (because of innerHeight)
 export class SpreadsheetIndividualCell extends BaseComponent<SpreadsheetIndividualCellProps> {
-  refineHookProps = memoizeObjArg(refineHookProps)
-  normalizeClassNames = buildClassNameNormalizer<HookProps>()
+  refineRenderProps = memoizeObjArg(refineRenderProps)
 
   render() {
     let { props, context } = this
     let { colSpec } = props
 
-    let hookProps = this.refineHookProps({
+    let renderProps = this.refineRenderProps({
       resource: props.resource,
       fieldValue: props.fieldValue,
       context,
     })
-    let customClassNames = this.normalizeClassNames(colSpec.cellClassNames, hookProps)
 
     return (
-      <MountHook hookProps={hookProps} didMount={colSpec.cellDidMount} willUnmount={colSpec.cellWillUnmount}>
-        {(rootElRef) => (
-          <td
-            ref={rootElRef}
-            role="gridcell"
-            data-resource-id={props.resource.id}
-            className={[
-              'fc-datagrid-cell',
-              'fc-resource',
-            ].concat(customClassNames).join(' ')}
-          >
-            <div className="fc-datagrid-cell-frame" style={{ height: props.innerHeight }}>
-              <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner">
-                {colSpec.isMain && (
-                  <ExpanderIcon
-                    depth={props.depth}
-                    hasChildren={props.hasChildren}
-                    isExpanded={props.isExpanded}
-                    onExpanderClick={this.onExpanderClick}
-                  />
-                )}
-                <SpreadsheetIndividualCellInner hookProps={hookProps} colSpec={colSpec} />
-              </div>
+      <ContentContainer
+        elTag="td"
+        elClasses={[
+          'fc-datagrid-cell',
+          'fc-resource',
+        ]}
+        elAttrs={{
+          role: 'gridcell',
+          'data-resource-id': props.resource.id,
+        }}
+        renderProps={renderProps}
+        generatorName="cellContent"
+        generator={colSpec.cellContent || renderResourceInner}
+        classNameGenerator={colSpec.cellClassNames}
+        didMount={colSpec.cellDidMount}
+        willUnmount={colSpec.cellWillUnmount}
+      >
+        {(InnerContent) => (
+          <div className="fc-datagrid-cell-frame" style={{ height: props.innerHeight }}>
+            <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner">
+              {colSpec.isMain && (
+                <ExpanderIcon
+                  depth={props.depth}
+                  hasChildren={props.hasChildren}
+                  isExpanded={props.isExpanded}
+                  onExpanderClick={this.onExpanderClick}
+                />
+              )}
+              <InnerContent
+                elTag="span"
+                elClasses={['fc-datagrid-cell-main']}
+              />
             </div>
-          </td>
+          </div>
         )}
-      </MountHook>
+      </ContentContainer>
     )
   }
 
@@ -75,5 +83,31 @@ export class SpreadsheetIndividualCell extends BaseComponent<SpreadsheetIndividu
         isExpanded: !props.isExpanded,
       })
     }
+  }
+}
+
+function renderResourceInner(renderProps: RenderProps): ComponentChild {
+  return renderProps.fieldValue || <Fragment>&nbsp;</Fragment>
+}
+
+// Render Props
+
+interface RenderPropsInput {
+  resource: Resource
+  fieldValue: any
+  context: ViewContext
+}
+
+interface RenderProps {
+  resource: ResourceApi
+  fieldValue: any
+  view: ViewApi
+}
+
+function refineRenderProps(raw: RenderPropsInput): RenderProps {
+  return {
+    resource: new ResourceApi(raw.context, raw.resource),
+    fieldValue: raw.fieldValue,
+    view: raw.context.viewApi,
   }
 }

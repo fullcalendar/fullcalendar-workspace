@@ -2,7 +2,7 @@ import { CalendarContext, MountArg } from '@fullcalendar/core'
 import { ResourceApi } from './api/ResourceApi.js'
 import { Resource } from './structs/resource.js'
 
-export interface ResourceLaneHookPropsInput {
+export interface ResourceLaneContentArgInput {
   resource: Resource
   context: CalendarContext
 }

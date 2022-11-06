@@ -77,17 +77,14 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
               />
               {(options.nowIndicator && state.coords && state.coords.isDateInRange(nowDate)) && (
                 <div className="fc-timeline-now-indicator-container">
-                  <NowIndicatorRoot isAxis={false} date={nowDate}>
-                    {(rootElRef, classNames, innerElRef, innerContent) => (
-                      <div
-                        ref={rootElRef}
-                        className={['fc-timeline-now-indicator-line'].concat(classNames).join(' ')}
-                        style={coordToCss(state.coords.dateToCoord(nowDate), context.isRtl)}
-                      >
-                        {innerContent}
-                      </div>
-                    )}
-                  </NowIndicatorRoot>
+                  <NowIndicatorRoot
+                    elClasses={['fc-timeline-now-indicator-line']}
+                    elAttrs={{
+                      style: coordToCss(state.coords.dateToCoord(nowDate), context.isRtl),
+                    }}
+                    isAxis={false}
+                    date={nowDate}
+                  />
                 </div>
               )}
             </Fragment>

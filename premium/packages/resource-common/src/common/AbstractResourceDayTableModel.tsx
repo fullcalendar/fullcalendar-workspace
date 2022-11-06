@@ -39,7 +39,7 @@ export abstract class AbstractResourceDayTableModel {
       for (let dateCol = 0; dateCol < dayTableModel.colCnt; dateCol += 1) {
         for (let resourceCol = 0; resourceCol < resources.length; resourceCol += 1) {
           let resource = resources[resourceCol]
-          let extraHookProps = { resource: new ResourceApi(this.context, resource) }
+          let extraRenderProps = { resource: new ResourceApi(this.context, resource) }
           let extraDataAttrs = { 'data-resource-id': resource.id }
           let extraClassNames = ['fc-resource']
           let extraDateSpan = { resourceId: resource.id }
@@ -50,7 +50,7 @@ export abstract class AbstractResourceDayTableModel {
           ] = {
             key: resource.id + ':' + date.toISOString(),
             date,
-            extraHookProps,
+            extraRenderProps,
             extraDataAttrs,
             extraClassNames,
             extraDateSpan,

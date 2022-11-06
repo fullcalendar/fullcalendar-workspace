@@ -1,5 +1,5 @@
-import { BaseComponent, RenderHook } from '@fullcalendar/core'
-import { createElement, Fragment } from '@fullcalendar/core/preact'
+import { BaseComponent, ContentContainer } from '@fullcalendar/core'
+import { ComponentChild, createElement, Fragment } from '@fullcalendar/core/preact'
 import { ColSpec, ColCellContentArg } from '@fullcalendar/resource-common'
 
 export interface SpreadsheetGroupCellProps {
@@ -13,7 +13,7 @@ export class SpreadsheetGroupCell extends BaseComponent<SpreadsheetGroupCellProp
   render() {
     let { props, context } = this
     let { colSpec } = props
-    let hookProps: ColCellContentArg = {
+    let renderProps: ColCellContentArg = {
       groupValue: props.fieldValue,
       view: context.viewApi,
     }
@@ -21,35 +21,33 @@ export class SpreadsheetGroupCell extends BaseComponent<SpreadsheetGroupCellProp
     // a grouped cell. no data that is specific to this specific resource
     // `colSpec` is for the group. a GroupSpec :(
     return (
-      <RenderHook<ColCellContentArg>
-        hookProps={hookProps}
-        classNames={colSpec.cellClassNames}
-        content={colSpec.cellContent}
-        defaultContent={renderGroupInner}
+      <ContentContainer
+        elTag="ts"
+        elClasses={[
+          'fc-datagrid-cell',
+          'fc-resource-group',
+        ]}
+        elAttrs={{
+          role: 'gridcell',
+          rowSpan: props.rowSpan,
+        }}
+        renderProps={renderProps}
+        generatorName="cellContent"
+        generator={colSpec.cellContent || renderGroupInner}
+        classNameGenerator={colSpec.cellClassNames}
         didMount={colSpec.cellDidMount}
         willUnmount={colSpec.cellWillUnmount}
       >
-        {(rootElRef, classNames, innerElRef, innerContent) => (
-          // TODO: make data-attr with group value?
-          <td
-            ref={rootElRef}
-            role="gridcell"
-            rowSpan={props.rowSpan}
-            className={['fc-datagrid-cell', 'fc-resource-group'].concat(classNames).join(' ')}
-          >
-            <div className="fc-datagrid-cell-frame fc-datagrid-cell-frame-liquid">
-              {/* ^needed for stickiness in some browsers */}
-              <div className="fc-datagrid-cell-cushion fc-sticky" ref={innerElRef}>
-                {innerContent}
-              </div>
-            </div>
-          </td>
+        {(InnerContent) => (
+          <div className="fc-datagrid-cell-frame fc-datagrid-cell-frame-liquid">
+            <InnerContent elClasses={['fc-datagrid-cell-cushion', 'fc-sticky']} />
+          </div>
         )}
-      </RenderHook>
+      </ContentContainer>
     )
   }
 }
 
-function renderGroupInner(hookProps) {
-  return hookProps.groupValue || <Fragment>&nbsp;</Fragment>
+function renderGroupInner(renderProps: ColCellContentArg): ComponentChild {
+  return renderProps.groupValue || <Fragment>&nbsp;</Fragment>
 }

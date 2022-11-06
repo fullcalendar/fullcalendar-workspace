@@ -125,7 +125,7 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
   ) {
     let { props } = this
     let keyPostfix = resource ? `:${resource.id}` : ''
-    let extraHookProps = resource ? { resource: new ResourceApi(this.context, resource) } : {}
+    let extraRenderProps = resource ? { resource: new ResourceApi(this.context, resource) } : {}
     let extraDataAttrs = resource ? { 'data-resource-id': resource.id } : {}
 
     return props.datesRepDistinctDays ? (
@@ -138,7 +138,7 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
         dayHeaderFormat={dateFormat}
         colSpan={colSpan}
         isSticky={isSticky}
-        extraHookProps={extraHookProps}
+        extraRenderProps={extraRenderProps}
         extraDataAttrs={extraDataAttrs}
       />
     ) : (
@@ -148,7 +148,7 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
         dayHeaderFormat={dateFormat}
         colSpan={colSpan}
         isSticky={isSticky}
-        extraHookProps={extraHookProps}
+        extraRenderProps={extraRenderProps}
         extraDataAttrs={extraDataAttrs}
       />
     )
