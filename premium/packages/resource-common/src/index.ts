@@ -28,7 +28,11 @@ import './resource-sources/resource-array.js'
 import './resource-sources/resource-func.js'
 import './resource-sources/resource-json-feed.js'
 
-export { ResourceLaneContentArg, ResourceLaneContentArgInput } from './render-hooks.js'
+export {
+  ResourceLaneContentArg,
+  ResourceLaneContentArgInput,
+  refineRenderProps,
+} from './render-hooks.js'
 
 export * from './api-type-deps.js'
 export { DEFAULT_RESOURCE_ORDER } from './resources-crud.js'

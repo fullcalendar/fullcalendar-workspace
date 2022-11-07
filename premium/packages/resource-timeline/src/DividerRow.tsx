@@ -16,7 +16,10 @@ export class DividerRow extends BaseComponent<DividerRowProps> {
   render() {
     let { props, context } = this
     let { renderHooks } = props
-    let renderProps: ColCellContentArg = { groupValue: props.groupValue, view: context.viewApi }
+    let renderProps: ColCellContentArg = {
+      groupValue: props.groupValue,
+      view: context.viewApi,
+    }
 
     return (
       <tr ref={props.elRef}>

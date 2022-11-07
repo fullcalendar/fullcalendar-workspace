@@ -3,7 +3,7 @@ import {
   elementClosest, memoizeObjArg, ContentContainer,
 } from '@fullcalendar/core'
 import { createElement, Ref } from '@fullcalendar/core/preact'
-import { Resource, ResourceApi, ResourceLaneContentArg, ResourceLaneContentArgInput } from '@fullcalendar/resource-common'
+import { Resource, refineRenderProps } from '@fullcalendar/resource-common'
 import { TimelineLane, TimelineLaneCoreProps } from '@fullcalendar/timeline'
 
 export interface ResourceTimelineLaneProps extends TimelineLaneCoreProps {
@@ -77,11 +77,5 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
         isStable,
       )
     }
-  }
-}
-
-function refineRenderProps(raw: ResourceLaneContentArgInput): ResourceLaneContentArg {
-  return {
-    resource: new ResourceApi(raw.context, raw.resource),
   }
 }

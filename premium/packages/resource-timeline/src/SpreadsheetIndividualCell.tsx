@@ -26,7 +26,6 @@ export class SpreadsheetIndividualCell extends BaseComponent<SpreadsheetIndividu
   render() {
     let { props, context } = this
     let { colSpec } = props
-
     let renderProps = this.refineRenderProps({
       resource: props.resource,
       fieldValue: props.fieldValue,
@@ -104,10 +103,10 @@ interface RenderProps {
   view: ViewApi
 }
 
-function refineRenderProps(raw: RenderPropsInput): RenderProps {
+function refineRenderProps(input: RenderPropsInput): RenderProps {
   return {
-    resource: new ResourceApi(raw.context, raw.resource),
-    fieldValue: raw.fieldValue,
-    view: raw.context.viewApi,
+    resource: new ResourceApi(input.context, input.resource),
+    fieldValue: input.fieldValue,
+    view: input.context.viewApi,
   }
 }

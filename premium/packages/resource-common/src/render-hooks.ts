@@ -12,3 +12,9 @@ export interface ResourceLaneContentArg {
 }
 
 export type ResourceLaneMountArg = MountArg<ResourceLaneContentArg>
+
+export function refineRenderProps(input: ResourceLaneContentArgInput): ResourceLaneContentArg {
+  return {
+    resource: new ResourceApi(input.context, input.resource),
+  }
+}
