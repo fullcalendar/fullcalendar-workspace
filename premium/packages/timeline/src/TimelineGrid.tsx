@@ -79,9 +79,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
                 <div className="fc-timeline-now-indicator-container">
                   <NowIndicatorRoot
                     elClasses={['fc-timeline-now-indicator-line']}
-                    elAttrs={{
-                      style: coordToCss(state.coords.dateToCoord(nowDate), context.isRtl),
-                    }}
+                    elStyle={coordToCss(state.coords.dateToCoord(nowDate), context.isRtl)}
                     isAxis={false}
                     date={nowDate}
                   />

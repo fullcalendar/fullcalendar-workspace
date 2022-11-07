@@ -36,12 +36,10 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
       <MoreLinkRoot
         elRef={this.handleEl}
         elClasses={['fc-timeline-more-link']}
-        elAttrs={{
-          style: {
-            visibility: isVisible ? '' : 'hidden',
-            top: top || 0,
-            ...hStyle,
-          },
+        elStyle={{
+          visibility: isVisible ? '' : 'hidden',
+          top: top || 0,
+          ...hStyle,
         }}
         allDayDate={null}
         moreCnt={hiddenSegs.length}

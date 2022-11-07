@@ -61,9 +61,7 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
                 {(slatCoords && slatCoords.isDateInRange(nowDate)) && (
                   <NowIndicatorRoot
                     elClasses={['fc-timeline-now-indicator-arrow']}
-                    elAttrs={{
-                      style: coordToCss(slatCoords.dateToCoord(nowDate), context.isRtl),
-                    }}
+                    elStyle={coordToCss(slatCoords.dateToCoord(nowDate), context.isRtl)}
                     isAxis
                     date={nowDate}
                   />

@@ -35,7 +35,7 @@ export class DividerRow extends BaseComponent<DividerRowProps> {
           willUnmount={renderHooks.laneWillUnmount}
         >
           {(InnerContainer) => (
-            <InnerContainer elAttrs={{ style: { height: props.innerHeight }}} />
+            <InnerContainer elStyle={{ height: props.innerHeight }} />
           )}
         </ContentContainer>
       </tr>

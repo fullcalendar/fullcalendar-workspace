@@ -128,9 +128,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
                 <div className="fc-timeline-now-indicator-container">
                   <NowIndicatorRoot
                     elClasses={['fc-timeline-now-indicator-line']}
-                    elAttrs={{
-                      style: coordToCss(slatCoords.dateToCoord(nowDate), context.isRtl),
-                    }}
+                    elStyle={coordToCss(slatCoords.dateToCoord(nowDate), context.isRtl)}
                     isAxis={false}
                     date={nowDate}
                   />
