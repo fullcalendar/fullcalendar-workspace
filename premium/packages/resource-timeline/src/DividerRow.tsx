@@ -25,6 +25,7 @@ export class DividerRow extends BaseComponent<DividerRowProps> {
       <tr ref={props.elRef}>
         <ContentContainer
           elTag="td"
+          elRef={props.elRef}
           elClasses={[
             'fc-timeline-lane',
             'fc-resource-group',

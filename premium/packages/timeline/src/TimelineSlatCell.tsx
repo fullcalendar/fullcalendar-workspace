@@ -6,6 +6,7 @@ import { createElement, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from './timeline-date-profile.js'
 
 export interface TimelineSlatCellProps {
+  elRef?: Ref<HTMLTableCellElement>
   date: DateMarker
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
@@ -13,7 +14,6 @@ export interface TimelineSlatCellProps {
   todayRange: DateRange
   isDay: boolean
   isEm: boolean
-  elRef?: Ref<HTMLTableCellElement>
 }
 
 export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
@@ -31,6 +31,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
     return (
       <ContentContainer
         elTag="td"
+        elRef={props.elRef}
         elClasses={[
           'fc-timeline-slot',
           'fc-timeline-slot-lane',
