@@ -1,7 +1,7 @@
 import {
   PositionCache, Duration, EventStore, DateSpan, EventUiHash, EventInteractionState,
   DateComponent, Hit, CssDimValue, memoize, NowTimer, greatestDurationDenominator,
-  DateMarker, DateRange, NowIndicatorRoot, DateProfile,
+  DateMarker, DateRange, NowIndicatorContainer, DateProfile,
 } from '@fullcalendar/core'
 import { createElement, createRef, VNode, Fragment } from '@fullcalendar/core/preact'
 import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource-common'
@@ -126,7 +126,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
               />
               {(context.options.nowIndicator && slatCoords && slatCoords.isDateInRange(nowDate)) && (
                 <div className="fc-timeline-now-indicator-container">
-                  <NowIndicatorRoot
+                  <NowIndicatorContainer
                     elClasses={['fc-timeline-now-indicator-line']}
                     elStyle={coordToCss(slatCoords.dateToCoord(nowDate), context.isRtl)}
                     isAxis={false}

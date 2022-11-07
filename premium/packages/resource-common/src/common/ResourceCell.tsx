@@ -1,7 +1,7 @@
 import { BaseComponent, DateMarker } from '@fullcalendar/core'
 import { createElement } from '@fullcalendar/core/preact'
 import { Resource } from '../structs/resource.js'
-import { ResourceLabelRoot } from './ResourceLabelRoot.js'
+import { ResourceLabelContainer } from './ResourceLabelContainer.js'
 
 export interface ResourceCellProps {
   resource: Resource
@@ -15,7 +15,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
     let { props } = this
 
     return (
-      <ResourceLabelRoot
+      <ResourceLabelContainer
         elTag="th"
         elClasses={['fc-col-header-cell', 'fc-resource']}
         elAttrs={{
@@ -36,7 +36,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
             />
           </div>
         )}
-      </ResourceLabelRoot>
+      </ResourceLabelContainer>
     )
   }
 }

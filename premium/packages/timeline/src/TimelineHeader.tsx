@@ -1,6 +1,6 @@
 import {
   BaseComponent, CssDimValue, DateMarker, NowTimer,
-  greatestDurationDenominator, DateRange, NowIndicatorRoot,
+  greatestDurationDenominator, DateRange, NowIndicatorContainer,
   findElements, DateProfile,
 } from '@fullcalendar/core'
 import { createElement, VNode, createRef, RefObject } from '@fullcalendar/core/preact'
@@ -59,7 +59,7 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
               // this issue doesn't happen for the timeline body however (
               <div className="fc-timeline-now-indicator-container">
                 {(slatCoords && slatCoords.isDateInRange(nowDate)) && (
-                  <NowIndicatorRoot
+                  <NowIndicatorContainer
                     elClasses={['fc-timeline-now-indicator-arrow']}
                     elStyle={coordToCss(slatCoords.dateToCoord(nowDate), context.isRtl)}
                     isAxis

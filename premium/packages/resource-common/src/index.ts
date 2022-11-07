@@ -94,4 +94,4 @@ export {
 } from './common/resource-spec.js'
 export { ResourceApi } from './api/ResourceApi.js'
 export { ResourceSplitter } from './common/ResourceSplitter.js'
-export { ResourceLabelRoot, ResourceLabelRootProps } from './common/ResourceLabelRoot.js'
+export { ResourceLabelContainer, ResourceLabelContainerProps } from './common/ResourceLabelContainer.js'

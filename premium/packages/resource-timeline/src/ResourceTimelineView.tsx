@@ -1,7 +1,7 @@
 import {
   ViewContext, memoize,
   CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache,
-  ScrollRequest, ScrollResponder, ViewRoot, BaseComponent, ViewOptionsRefined,
+  ScrollRequest, ScrollResponder, ViewContainer, BaseComponent, ViewOptionsRefined,
 } from '@fullcalendar/core'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import {
@@ -83,7 +83,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
     let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
 
     return (
-      <ViewRoot
+      <ViewContainer
         elClasses={[
           'fc-resource-timeline',
           !this.hasNesting(rowNodes) && 'fc-resource-timeline-flat', // flat means there's no nesting
@@ -155,7 +155,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
             />
           )}
         />
-      </ViewRoot>
+      </ViewContainer>
     )
   }
 

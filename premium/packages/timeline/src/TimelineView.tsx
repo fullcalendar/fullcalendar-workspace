@@ -1,5 +1,5 @@
 import {
-  ViewProps, memoize, ChunkContentCallbackArgs, ViewRoot,
+  ViewProps, memoize, ChunkContentCallbackArgs, ViewContainer,
   DateComponent, ScrollGridSectionConfig, renderScrollShim, getStickyHeaderDates, getStickyFooterScrollbar,
 } from '@fullcalendar/core'
 import { createElement, createRef } from '@fullcalendar/core/preact'
@@ -95,7 +95,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
     }
 
     return (
-      <ViewRoot
+      <ViewContainer
         elClasses={[
           'fc-timeline',
           options.eventOverlap === false ?
@@ -113,7 +113,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
           ]}
           sections={sections}
         />
-      </ViewRoot>
+      </ViewContainer>
     )
   }
 

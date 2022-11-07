@@ -1,5 +1,5 @@
 import {
-  BaseComponent, MoreLinkRoot,
+  BaseComponent, MoreLinkContainer,
   setRef, DateProfile, DateRange, DateMarker, getSegMeta,
 } from '@fullcalendar/core'
 import { createElement, createRef, Ref, Fragment } from '@fullcalendar/core/preact'
@@ -33,7 +33,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
     let extraDateSpan = resourceId ? { resourceId } : {}
 
     return (
-      <MoreLinkRoot
+      <MoreLinkContainer
         elRef={this.handleEl}
         elClasses={['fc-timeline-more-link']}
         elStyle={{
@@ -79,7 +79,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
             elClasses={['fc-timeline-more-link-inner', 'fc-sticky']}
           />
         )}
-      </MoreLinkRoot>
+      </MoreLinkContainer>
     )
   }
 

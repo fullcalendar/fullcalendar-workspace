@@ -11,7 +11,7 @@ import { createElement } from '@fullcalendar/core/preact'
 import { Resource } from '../structs/resource.js'
 import { ResourceApi } from '../api/ResourceApi.js'
 
-export interface ResourceLabelRootProps extends ElProps {
+export interface ResourceLabelContainerProps extends ElProps {
   resource: Resource
   date?: Date
   children?: InnerContainerFunc<ResourceLabelContentArg>
@@ -27,7 +27,7 @@ export type ResourceLabelMountArg = MountArg<ResourceLabelContentArg>
 
 // TODO: not used for Spreadsheet. START USING. difficult because of col-specific rendering props
 
-export class ResourceLabelRoot extends BaseComponent<ResourceLabelRootProps> {
+export class ResourceLabelContainer extends BaseComponent<ResourceLabelContainerProps> {
   refineRenderProps = memoizeObjArg(refineRenderProps)
 
   render() {

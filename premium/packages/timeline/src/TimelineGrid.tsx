@@ -1,6 +1,6 @@
 import {
   ViewProps, Hit, DateComponent, CssDimValue, DateMarker, NowTimer,
-  greatestDurationDenominator, DateRange, NowIndicatorRoot,
+  greatestDurationDenominator, DateRange, NowIndicatorContainer,
 } from '@fullcalendar/core'
 import { createElement, createRef, VNode, Fragment } from '@fullcalendar/core/preact'
 import { coordToCss, TimelineCoords } from './TimelineCoords.js'
@@ -77,7 +77,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
               />
               {(options.nowIndicator && state.coords && state.coords.isDateInRange(nowDate)) && (
                 <div className="fc-timeline-now-indicator-container">
-                  <NowIndicatorRoot
+                  <NowIndicatorContainer
                     elClasses={['fc-timeline-now-indicator-line']}
                     elStyle={coordToCss(state.coords.dateToCoord(nowDate), context.isRtl)}
                     isAxis={false}
