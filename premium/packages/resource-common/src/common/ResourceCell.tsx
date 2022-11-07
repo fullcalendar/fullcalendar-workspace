@@ -31,7 +31,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
               elTag="span"
               elClasses={[
                 'fc-col-header-cell-cushion',
-                props.isSticky ? 'fc-sticky' : '',
+                props.isSticky && 'fc-sticky',
               ]}
             />
           </div>

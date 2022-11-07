@@ -98,7 +98,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
       <ViewRoot
         elClasses={[
           'fc-timeline',
-          options.eventOverlap === false ? 'fc-timeline-overlap-disabled' : '',
+          options.eventOverlap === false ?
+            'fc-timeline-overlap-disabled' :
+            '',
         ]}
         viewSpec={context.viewSpec}
       >

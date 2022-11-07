@@ -45,7 +45,7 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
         elClasses={[
           'fc-timeline-slot',
           'fc-timeline-slot-label',
-          cell.isWeekStart ? 'fc-timeline-slot-em' : '',
+          cell.isWeekStart && 'fc-timeline-slot-em',
           ...( // TODO: so slot classnames for week/month/bigger. see note above about rowUnit
             cell.rowUnit === 'time' ?
               getSlotClassNames(dateMeta, context.theme) :
@@ -73,7 +73,7 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
               elClasses={[
                 'fc-timeline-slot-cushion',
                 'fc-scrollgrid-sync-inner',
-                props.isSticky ? 'fc-sticky' : '',
+                props.isSticky && 'fc-sticky',
               ]}
               elAttrs={this.buildCellNavLinkAttrs(context, cell.date, cell.rowUnit)}
             />

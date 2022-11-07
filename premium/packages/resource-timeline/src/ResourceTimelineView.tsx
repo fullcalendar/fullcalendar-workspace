@@ -86,9 +86,11 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       <ViewRoot
         elClasses={[
           'fc-resource-timeline',
-          this.hasNesting(rowNodes) ? '' : 'fc-resource-timeline-flat', // flat means there's no nesting
+          !this.hasNesting(rowNodes) && 'fc-resource-timeline-flat', // flat means there's no nesting
           'fc-timeline',
-          options.eventOverlap === false ? 'fc-timeline-overlap-disabled' : 'fc-timeline-overlap-enabled',
+          options.eventOverlap === false ?
+            'fc-timeline-overlap-disabled' :
+            'fc-timeline-overlap-enabled',
         ]}
         viewSpec={viewSpec}
       >
