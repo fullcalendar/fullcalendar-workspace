@@ -52,7 +52,10 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
           >
             {(InnerContent) => (
               <div className="fc-datagrid-cell-frame" style={{ height: rowInnerHeight }}>
-                <InnerContent elClasses={['fc-datagrid-cell-cushion', 'fc-scrollgrid-sync-inner']} />
+                <InnerContent
+                  elTag="div"
+                  elClasses={['fc-datagrid-cell-cushion', 'fc-scrollgrid-sync-inner']}
+                />
               </div>
             )}
           </ContentContainer>
@@ -88,7 +91,10 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
                         <span className="fc-icon" />
                       </span>
                     )}
-                    <InnerContent elTag="span" elClasses={['fc-datagrid-cell-main']} />
+                    <InnerContent
+                      elTag="span"
+                      elClasses={['fc-datagrid-cell-main']}
+                    />
                   </div>
                   {!isLastCol && (
                     <div className="fc-datagrid-cell-resizer" ref={this.resizerElRefs.createRef(i)} />

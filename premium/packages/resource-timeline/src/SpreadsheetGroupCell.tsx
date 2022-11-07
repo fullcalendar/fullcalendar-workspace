@@ -40,7 +40,10 @@ export class SpreadsheetGroupCell extends BaseComponent<SpreadsheetGroupCellProp
       >
         {(InnerContent) => (
           <div className="fc-datagrid-cell-frame fc-datagrid-cell-frame-liquid">
-            <InnerContent elClasses={['fc-datagrid-cell-cushion', 'fc-sticky']} />
+            <InnerContent
+              elTag="div"
+              elClasses={['fc-datagrid-cell-cushion', 'fc-sticky']}
+            />
           </div>
         )}
       </ContentContainer>

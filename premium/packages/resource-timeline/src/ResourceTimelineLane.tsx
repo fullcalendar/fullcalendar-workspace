@@ -41,7 +41,10 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
         >
           {(InnerContent) => (
             <div className="fc-timeline-lane-frame" style={{ height: props.innerHeight }}>
-              <InnerContent elClasses={['fc-timeline-lane-misc']} />
+              <InnerContent
+                elTag="div"
+                elClasses={['fc-timeline-lane-misc']}
+              />
               <TimelineLane
                 dateProfile={props.dateProfile}
                 tDateProfile={props.tDateProfile}

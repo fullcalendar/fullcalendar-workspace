@@ -74,7 +74,10 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
         )}
       >
         {(InnerContent) => (
-          <InnerContent elClasses={['fc-timeline-more-link-inner', 'fc-sticky']} />
+          <InnerContent
+            elTag="div"
+            elClasses={['fc-timeline-more-link-inner', 'fc-sticky']}
+          />
         )}
       </MoreLinkRoot>
     )

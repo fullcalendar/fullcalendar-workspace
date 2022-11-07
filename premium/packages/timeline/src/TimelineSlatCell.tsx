@@ -64,7 +64,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
         willUnmount={options.slotLaneWillUnmount}
       >
         {(InnerContent) => (
-          <InnerContent />
+          <InnerContent elTag="div" />
         )}
       </ContentContainer>
     )
