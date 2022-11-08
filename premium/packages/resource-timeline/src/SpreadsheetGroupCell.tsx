@@ -22,7 +22,7 @@ export class SpreadsheetGroupCell extends BaseComponent<SpreadsheetGroupCellProp
     // `colSpec` is for the group. a GroupSpec :(
     return (
       <ContentContainer
-        elTag="ts"
+        elTag="td"
         elClasses={[
           'fc-datagrid-cell',
           'fc-resource-group',

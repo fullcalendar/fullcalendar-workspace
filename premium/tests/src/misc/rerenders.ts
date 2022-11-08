@@ -13,7 +13,7 @@ describe('rerender performance for resource timeline', () => {
 
   it('calls methods a limited number of times', (done) => {
     let slotLabelMountCnt = 0
-    let slotLabelClassNameCnt = 0
+    // let slotLabelClassNameCnt = 0
     let slotLabelRenderCnt = 0
     let slotLaneRenderCnt = 0
     let resourceLabelRenderCnt = 0
@@ -25,10 +25,10 @@ describe('rerender performance for resource timeline', () => {
       slotLabelDidMount() {
         slotLabelMountCnt += 1
       },
-      slotLabelClassNames() {
-        slotLabelClassNameCnt += 1
-        return []
-      },
+      // slotLabelClassNames() {
+      //   slotLabelClassNameCnt += 1
+      //   return []
+      // },
       slotLabelContent() {
         slotLabelRenderCnt += 1
       },
@@ -50,7 +50,7 @@ describe('rerender performance for resource timeline', () => {
 
     function resetCounts() {
       slotLabelMountCnt = 0
-      slotLabelClassNameCnt = 0
+      // slotLabelClassNameCnt = 0
       slotLabelRenderCnt = 0
       slotLaneRenderCnt = 0
       resourceLabelRenderCnt = 0
@@ -59,7 +59,7 @@ describe('rerender performance for resource timeline', () => {
     }
 
     expect(slotLabelMountCnt).toBe(24)
-    expect(slotLabelClassNameCnt).toBe(24)
+    // expect(slotLabelClassNameCnt).toBe(24) // allow liberal calling now
     expect(slotLabelRenderCnt).toBe(24)
     expect(slotLaneRenderCnt).toBe(48)
     expect(resourceLabelRenderCnt).toBe(1)
@@ -70,7 +70,7 @@ describe('rerender performance for resource timeline', () => {
     currentCalendar.next()
 
     expect(slotLabelMountCnt).toBe(24)
-    expect(slotLabelClassNameCnt).toBe(24)
+    // expect(slotLabelClassNameCnt).toBe(24)
     expect(slotLabelRenderCnt).toBe(24)
     expect(slotLaneRenderCnt).toBe(48)
     expect(resourceLabelRenderCnt).toBe(0)
@@ -92,7 +92,7 @@ describe('rerender performance for resource timeline', () => {
     currentCalendar.addResource({ title: 'Resource B' })
 
     expect(slotLabelMountCnt).toBe(0)
-    expect(slotLabelClassNameCnt).toBe(0)
+    // expect(slotLabelClassNameCnt).toBe(0)
     expect(slotLabelRenderCnt).toBe(0)
     expect(slotLaneRenderCnt).toBe(0)
     expect(resourceLabelRenderCnt).toBe(1) // new resource
@@ -103,7 +103,7 @@ describe('rerender performance for resource timeline', () => {
     $(window).simulate('resize')
     setTimeout(() => {
       expect(slotLabelMountCnt).toBe(0)
-      expect(slotLabelClassNameCnt).toBe(0)
+      // expect(slotLabelClassNameCnt).toBe(0)
       expect(slotLabelRenderCnt).toBe(0)
       expect(slotLaneRenderCnt).toBe(0)
       expect(resourceLabelRenderCnt).toBe(0)
