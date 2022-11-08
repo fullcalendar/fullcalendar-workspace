@@ -1,8 +1,8 @@
 import {
   BaseComponent, MoreLinkContainer,
-  setRef, DateProfile, DateRange, DateMarker, getSegMeta,
+  DateProfile, DateRange, DateMarker, getSegMeta,
 } from '@fullcalendar/core'
-import { createElement, createRef, Ref, Fragment } from '@fullcalendar/core/preact'
+import { createElement, Ref, Fragment } from '@fullcalendar/core/preact'
 import { TimelineSegPlacement } from './event-placement.js'
 import { coordsToCss } from './TimelineCoords.js'
 import { TimelineEvent } from './TimelineEvent.js'
@@ -22,8 +22,6 @@ export interface TimelineLaneMoreLinkProps {
 }
 
 export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProps> {
-  elRef = createRef<HTMLElement>()
-
   render() {
     let { props, context } = this
     let { hiddenSegs, placement, resourceId } = props
@@ -34,7 +32,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
 
     return (
       <MoreLinkContainer
-        elRef={this.handleEl}
+        elRef={props.elRef}
         elClasses={['fc-timeline-more-link']}
         elStyle={{
           visibility: isVisible ? '' : 'hidden',
@@ -45,7 +43,6 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
         moreCnt={hiddenSegs.length}
         allSegs={hiddenSegs}
         hiddenSegs={hiddenSegs}
-        alignmentElRef={this.elRef}
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
         extraDateSpan={extraDateSpan}
@@ -81,10 +78,5 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
         )}
       </MoreLinkContainer>
     )
-  }
-
-  handleEl = (el: HTMLElement) => {
-    setRef(this.props.elRef, el)
-    setRef(this.elRef, el)
   }
 }
