@@ -13,7 +13,7 @@ import {
 import {
   GroupNode, ResourceNode, ResourceViewProps, buildRowNodes,
   ColSpec, GroupSpec, DEFAULT_RESOURCE_ORDER,
-} from '@fullcalendar/resource-common'
+} from '@fullcalendar/resource'
 import { __assign } from 'tslib'
 import { SpreadsheetRow } from './SpreadsheetRow.js'
 import { SpreadsheetGroupRow } from './SpreadsheetGroupRow.js'

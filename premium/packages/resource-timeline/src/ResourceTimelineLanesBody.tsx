@@ -3,7 +3,7 @@ import {
   DateMarker, DateRange, DateProfile,
 } from '@fullcalendar/core'
 import { createElement } from '@fullcalendar/core/preact'
-import { GroupNode, ResourceNode } from '@fullcalendar/resource-common'
+import { GroupNode, ResourceNode } from '@fullcalendar/resource'
 import { TimelineDateProfile, TimelineCoords } from '@fullcalendar/timeline'
 import { ResourceTimelineLane } from './ResourceTimelineLane.js'
 import { DividerRow } from './DividerRow.js'

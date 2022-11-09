@@ -13,7 +13,7 @@ import { TableView, buildDayTableModel } from '@fullcalendar/daygrid'
 import {
   ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps,
   Resource, flattenResources, DEFAULT_RESOURCE_ORDER,
-} from '@fullcalendar/resource-common'
+} from '@fullcalendar/resource'
 import { ResourceDayTable } from './ResourceDayTable.js'
 
 export class ResourceDayTableView extends TableView {

@@ -3,7 +3,7 @@ import {
   elementClosest, memoizeObjArg, ContentContainer,
 } from '@fullcalendar/core'
 import { createElement, Ref } from '@fullcalendar/core/preact'
-import { Resource, refineRenderProps } from '@fullcalendar/resource-common'
+import { Resource, refineRenderProps } from '@fullcalendar/resource'
 import { TimelineLane, TimelineLaneCoreProps } from '@fullcalendar/timeline'
 
 export interface ResourceTimelineLaneProps extends TimelineLaneCoreProps {

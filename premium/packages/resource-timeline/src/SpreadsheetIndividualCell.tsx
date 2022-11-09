@@ -6,7 +6,7 @@ import {
   ViewApi,
 } from '@fullcalendar/core'
 import { createElement, Fragment, ComponentChild } from '@fullcalendar/core/preact'
-import { Resource, ColSpec, ResourceApi } from '@fullcalendar/resource-common'
+import { Resource, ColSpec, ResourceApi } from '@fullcalendar/resource'
 import { ExpanderIcon } from './ExpanderIcon.js'
 
 export interface SpreadsheetIndividualCellProps {

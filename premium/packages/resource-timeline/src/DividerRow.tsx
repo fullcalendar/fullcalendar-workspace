@@ -1,6 +1,6 @@
 import { BaseComponent, CssDimValue, ContentContainer } from '@fullcalendar/core'
 import { createElement, Ref } from '@fullcalendar/core/preact'
-import { GroupLaneRenderHooks, ColCellContentArg } from '@fullcalendar/resource-common'
+import { GroupLaneRenderHooks, ColCellContentArg } from '@fullcalendar/resource'
 
 export interface DividerRowProps {
   elRef?: Ref<HTMLTableRowElement>

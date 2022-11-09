@@ -1,6 +1,6 @@
 import { BaseComponent, ContentContainer } from '@fullcalendar/core'
 import { ComponentChild, createElement, Fragment } from '@fullcalendar/core/preact'
-import { ColSpec, ColCellContentArg } from '@fullcalendar/resource-common'
+import { ColSpec, ColCellContentArg } from '@fullcalendar/resource'
 
 export interface SpreadsheetGroupCellProps {
   colSpec: ColSpec

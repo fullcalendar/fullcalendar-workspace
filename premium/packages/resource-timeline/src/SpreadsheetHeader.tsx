@@ -5,7 +5,7 @@ import {
 import {
   VNode, createElement, Fragment,
 } from '@fullcalendar/core/preact'
-import { ColSpec, ColHeaderContentArg, ColHeaderRenderHooks } from '@fullcalendar/resource-common'
+import { ColSpec, ColHeaderContentArg, ColHeaderRenderHooks } from '@fullcalendar/resource'
 
 export interface SpreadsheetHeaderProps {
   superHeaderRendering: ColHeaderRenderHooks

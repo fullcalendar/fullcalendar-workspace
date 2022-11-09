@@ -1,5 +1,5 @@
 import { TimeColsSeg } from '@fullcalendar/timegrid'
-import { AbstractResourceDayTableModel, VResourceJoiner } from '@fullcalendar/resource-common'
+import { AbstractResourceDayTableModel, VResourceJoiner } from '@fullcalendar/resource'
 
 export class ResourceDayTimeColsJoiner extends VResourceJoiner<TimeColsSeg> {
   transformSeg(seg: TimeColsSeg, resourceDayTable: AbstractResourceDayTableModel, resourceI: number) {

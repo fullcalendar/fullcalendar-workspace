@@ -4,7 +4,7 @@ import { default as premiumCommonPlugin } from '@fullcalendar/premium-common'
 // ensure ambient declarations
 import '@fullcalendar/premium-common'
 
-import { default as resourceCommonPlugin } from '@fullcalendar/resource-common'
+import { default as resourceCommonPlugin } from '@fullcalendar/resource'
 import { default as timeGridPlugin } from '@fullcalendar/timegrid'
 import { ResourceDayTimeColsView } from './ResourceDayTimeColsView.js'
 

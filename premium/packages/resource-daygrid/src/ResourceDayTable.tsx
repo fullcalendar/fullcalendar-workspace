@@ -3,7 +3,7 @@ import {
 } from '@fullcalendar/core'
 import { createElement, createRef, VNode, RefObject } from '@fullcalendar/core/preact'
 import { DayTableSlicer, Table } from '@fullcalendar/daygrid'
-import { AbstractResourceDayTableModel, VResourceSplitter } from '@fullcalendar/resource-common'
+import { AbstractResourceDayTableModel, VResourceSplitter } from '@fullcalendar/resource'
 import { ResourceDayTableJoiner } from './ResourceDayTableJoiner.js'
 
 export interface ResourceDayTableProps {

@@ -1,5 +1,5 @@
 import { TableSeg } from '@fullcalendar/daygrid'
-import { AbstractResourceDayTableModel, VResourceJoiner } from '@fullcalendar/resource-common'
+import { AbstractResourceDayTableModel, VResourceJoiner } from '@fullcalendar/resource'
 
 export class ResourceDayTableJoiner extends VResourceJoiner<TableSeg> {
   transformSeg(seg: TableSeg, resourceDayTableModel: AbstractResourceDayTableModel, resourceI: number): TableSeg[] {

@@ -4,7 +4,7 @@ import {
   DateMarker, DateRange, NowIndicatorContainer, DateProfile,
 } from '@fullcalendar/core'
 import { createElement, createRef, VNode, Fragment } from '@fullcalendar/core/preact'
-import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource-common'
+import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource'
 import {
   TimelineDateProfile, TimelineCoords, TimelineSlats,
   TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg,

@@ -5,7 +5,7 @@ import { default as premiumCommonPlugin } from '@fullcalendar/premium-common'
 import '@fullcalendar/premium-common'
 
 import { default as timelinePlugin } from '@fullcalendar/timeline'
-import { default as resourceCommonPlugin } from '@fullcalendar/resource-common'
+import { default as resourceCommonPlugin } from '@fullcalendar/resource'
 import { ResourceTimelineView } from './ResourceTimelineView.js'
 import './index.css'
 

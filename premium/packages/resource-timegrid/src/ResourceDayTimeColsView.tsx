@@ -4,7 +4,7 @@ import { TimeColsView, buildTimeColsModel, buildSlatMetas } from '@fullcalendar/
 import {
   ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps,
   Resource, flattenResources, DEFAULT_RESOURCE_ORDER,
-} from '@fullcalendar/resource-common'
+} from '@fullcalendar/resource'
 import { ResourceDayTable } from '@fullcalendar/resource-daygrid'
 import { ResourceDayTimeCols } from './ResourceDayTimeCols.js'
 

@@ -11,7 +11,7 @@
     "@fullcalendar/daygrid": "workspace:*",
     "@fullcalendar/interaction": "workspace:*",
     "@fullcalendar/list": "workspace:*",
-    "@fullcalendar/resource-common": "workspace:*",
+    "@fullcalendar/resource": "workspace:*",
     "@fullcalendar/resource-daygrid": "workspace:*",
     "@fullcalendar/resource-timegrid": "workspace:*",
     "@fullcalendar/resource-timeline": "workspace:*",
