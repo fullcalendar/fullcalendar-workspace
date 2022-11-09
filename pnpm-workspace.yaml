@@ -9,5 +9,3 @@ packages:
   - './scripts'
   - './contrib/*'
   - './examples/*'
-  - '!./examples/*react*'
-  - '!./examples/*next*'
