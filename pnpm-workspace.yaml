@@ -8,7 +8,6 @@ packages:
   - './premium/packages/*'
   - './scripts'
   - './contrib/*'
-  - '!./contrib/react'
   - './examples/*'
   - '!./examples/*react*'
   - '!./examples/*next*'
