@@ -5,11 +5,14 @@
   "description": "Tabular data chunked into scrollable panes",
   "type": "module",
   "dependencies": {
-    "@fullcalendar/core": "workspace:*",
     "@fullcalendar/premium-common": "workspace:*",
     "tslib": "^2.1.0"
   },
+  "peerDependencies": {
+    "@fullcalendar/core": "workspace:*"
+  },
   "devDependencies": {
+    "@fullcalendar/core": "workspace:*",
     "@fullcalendar/standard-scripts": "workspace:*"
   },
   "scripts": {

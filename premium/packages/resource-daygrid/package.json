@@ -6,13 +6,17 @@
   "docs": "https://fullcalendar.io/docs/resource-daygrid-view",
   "type": "module",
   "dependencies": {
-    "@fullcalendar/core": "workspace:*",
     "@fullcalendar/daygrid": "workspace:*",
     "@fullcalendar/premium-common": "workspace:*",
-    "@fullcalendar/resource": "workspace:*",
     "tslib": "^2.1.0"
   },
+  "peerDependencies": {
+    "@fullcalendar/core": "workspace:*",
+    "@fullcalendar/resource": "workspace:*"
+  },
   "devDependencies": {
+    "@fullcalendar/core": "workspace:*",
+    "@fullcalendar/resource": "workspace:*",
     "@fullcalendar/standard-scripts": "workspace:*"
   },
   "scripts": {
