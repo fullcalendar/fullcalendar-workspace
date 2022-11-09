@@ -1,7 +1,10 @@
-import { default as XHRMock } from 'xhr-mock'
+import XHRMockLib from 'xhr-mock'
+import { cjsInterop } from '@fullcalendar/standard-tests/lib/cjs'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper.js'
+
+const XHRMock = cjsInterop(XHRMockLib)
 
 describe('refetchResourcesOnNavigate', () => {
   pushOptions({

@@ -1,4 +1,7 @@
-import { default as XHRMock } from 'xhr-mock'
+import XHRMockLib from 'xhr-mock'
+import { cjsInterop } from '@fullcalendar/standard-tests/lib/cjs'
+
+const XHRMock = cjsInterop(XHRMockLib)
 
 describe('fetching resources from a JSON feed', () => {
   beforeEach(() => {
