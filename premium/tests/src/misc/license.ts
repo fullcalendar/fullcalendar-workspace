@@ -14,7 +14,7 @@ describe('schedulerLicenseKey', () => {
   function defineTests() {
     it('is invalid when crap text', () => {
       let calendar = initCalendar({
-        schedulerLicenseKey: '<%= versionReleaseDate %>',
+        schedulerLicenseKey: '<%= someCrapText %>',
       })
       expectInvalid(calendar)
     })
@@ -23,7 +23,7 @@ describe('schedulerLicenseKey', () => {
       // just to see if it compiles with schedulerLicenseKey
       let calendar = new Calendar(document.getElementById('cal'), {
         ...getCurrentOptions(),
-        schedulerLicenseKey: '<%= versionReleaseDate %>',
+        schedulerLicenseKey: '<%= someCrapText %>',
       })
 
       expect(calendar).toBeTruthy()
