@@ -18,6 +18,8 @@ let contexts: CalendarContext[] = []
 let undoFuncs: (() => void)[] = []
 
 export default createPlugin({
+  name: '<%= pkgName %>',
+  premiumReleaseDate: '<%= releaseDate %>',
   deps: [
     premiumCommonPlugin,
   ],

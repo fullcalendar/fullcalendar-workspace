@@ -38,6 +38,8 @@ export * from './api-type-deps.js'
 export { DEFAULT_RESOURCE_ORDER } from './resources-crud.js'
 
 export default createPlugin({
+  name: '<%= pkgName %>',
+  premiumReleaseDate: '<%= releaseDate %>',
   deps: [
     premiumCommonPlugin,
   ],

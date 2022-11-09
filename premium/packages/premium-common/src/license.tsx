@@ -1,7 +1,6 @@
 import { config, isValidDate, addDays, CalendarContext } from '@fullcalendar/core'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 
-const RELEASE_DATE = '<%= releaseDate %>' // for Scheduler
 const UPGRADE_WINDOW = 365 + 7 // days. 1 week leeway, for tz shift reasons too
 const INVALID_LICENSE_URL = 'https://fullcalendar.io/docs/schedulerLicenseKey#invalid'
 const OUTDATED_LICENSE_URL = 'https://fullcalendar.io/docs/schedulerLicenseKey#outdated'
@@ -28,7 +27,7 @@ export function buildLicenseWarning(context: CalendarContext) {
   let currentUrl = typeof window !== 'undefined' ? window.location.href : ''
 
   if (!isImmuneUrl(currentUrl)) {
-    let status = processLicenseKey(key)
+    let status = processLicenseKey(key, context.pluginHooks.premiumReleaseDate!)
 
     if (status !== 'valid') {
       return (
@@ -55,7 +54,7 @@ export function buildLicenseWarning(context: CalendarContext) {
 /*
 This decryption is not meant to be bulletproof. Just a way to remind about an upgrade.
 */
-function processLicenseKey(key) {
+function processLicenseKey(key, premiumReleaseDate: Date) {
   if (PRESET_LICENSE_KEYS.indexOf(key) !== -1) {
     return 'valid'
   }
@@ -64,7 +63,7 @@ function processLicenseKey(key) {
 
   if (parts && (parts[1].length === 10)) {
     const purchaseDate = new Date(parseInt(parts[2], 10) * 1000)
-    const releaseDate = new Date(config.mockSchedulerReleaseDate || RELEASE_DATE)
+    const releaseDate = config.mockSchedulerReleaseDate || premiumReleaseDate
 
     if (isValidDate(releaseDate)) { // token won't be replaced in dev mode
       const minPurchaseDate = addDays(releaseDate, -UPGRADE_WINDOW)

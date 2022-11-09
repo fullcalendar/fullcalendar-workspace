@@ -4,7 +4,7 @@ import { CalendarWrapper } from '@fullcalendar/standard-tests/lib/wrappers/Calen
 
 describe('schedulerLicenseKey', () => {
   beforeEach(() => {
-    config.mockSchedulerReleaseDate = '2011-06-06'
+    config.mockSchedulerReleaseDate = new Date('2011-06-06')
   })
 
   afterEach(() => {

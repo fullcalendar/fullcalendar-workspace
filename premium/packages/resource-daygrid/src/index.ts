@@ -12,6 +12,8 @@ export { ResourceDayTableView }
 export { ResourceDayTable } from './ResourceDayTable.js'
 
 export default createPlugin({
+  name: '<%= pkgName %>',
+  premiumReleaseDate: '<%= releaseDate %>',
   deps: [
     premiumCommonPlugin,
     resourceCommonPlugin,
@@ -19,23 +21,19 @@ export default createPlugin({
   ],
   initialView: 'resourceDayGridDay',
   views: {
-
     resourceDayGrid: {
       type: 'dayGrid', // will inherit this configuration
       component: ResourceDayTableView,
       needsResourceData: true,
     },
-
     resourceDayGridDay: {
       type: 'resourceDayGrid',
       duration: { days: 1 },
     },
-
     resourceDayGridWeek: {
       type: 'resourceDayGrid',
       duration: { weeks: 1 },
     },
-
     resourceDayGridMonth: {
       type: 'resourceDayGrid',
       duration: { months: 1 },
@@ -44,6 +42,5 @@ export default createPlugin({
       monthMode: true, // a hidden option!?
       fixedWeekCount: true,
     },
-
   },
 })

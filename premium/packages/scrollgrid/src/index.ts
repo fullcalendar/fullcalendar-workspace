@@ -10,6 +10,8 @@ export { ScrollGrid }
 export { setScrollFromLeftEdge } from './scroll-left-norm.js'
 
 export default createPlugin({
+  name: '<%= pkgName %>',
+  premiumReleaseDate: '<%= releaseDate %>',
   deps: [
     premiumCommonPlugin,
   ],

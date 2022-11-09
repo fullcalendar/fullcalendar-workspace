@@ -12,6 +12,8 @@ export { ResourceDayTimeColsView }
 export { ResourceDayTimeCols } from './ResourceDayTimeCols.js'
 
 export default createPlugin({
+  name: '<%= pkgName %>',
+  premiumReleaseDate: '<%= releaseDate %>',
   deps: [
     premiumCommonPlugin,
     resourceCommonPlugin,
@@ -19,22 +21,18 @@ export default createPlugin({
   ],
   initialView: 'resourceTimeGridDay',
   views: {
-
     resourceTimeGrid: {
       type: 'timeGrid', // will inherit this configuration
       component: ResourceDayTimeColsView,
       needsResourceData: true,
     },
-
     resourceTimeGridDay: {
       type: 'resourceTimeGrid',
       duration: { days: 1 },
     },
-
     resourceTimeGridWeek: {
       type: 'resourceTimeGrid',
       duration: { weeks: 1 },
     },
-
   },
 })

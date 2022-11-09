@@ -14,6 +14,8 @@ export { ResourceTimelineLane } from './ResourceTimelineLane.js'
 export { SpreadsheetRow } from './SpreadsheetRow.js'
 
 export default createPlugin({
+  name: '<%= pkgName %>',
+  premiumReleaseDate: '<%= releaseDate %>',
   deps: [
     premiumCommonPlugin,
     resourceCommonPlugin,
@@ -21,7 +23,6 @@ export default createPlugin({
   ],
   initialView: 'resourceTimelineDay',
   views: {
-
     resourceTimeline: {
       type: 'timeline', // inherit configuration
       component: ResourceTimelineView,
@@ -30,26 +31,21 @@ export default createPlugin({
       resourcesInitiallyExpanded: true,
       eventResizableFromStart: true, // TODO: not DRY with this same setting in the main timeline config
     },
-
     resourceTimelineDay: {
       type: 'resourceTimeline',
       duration: { days: 1 },
     },
-
     resourceTimelineWeek: {
       type: 'resourceTimeline',
       duration: { weeks: 1 },
     },
-
     resourceTimelineMonth: {
       type: 'resourceTimeline',
       duration: { months: 1 },
     },
-
     resourceTimelineYear: {
       type: 'resourceTimeline',
       duration: { years: 1 },
     },
-
   },
 })
