@@ -34,7 +34,7 @@
       ".": { "iife": true }
     },
     "iifeGlobals": {
-      ".": "FullCalendarPremiumCommon",
+      ".": "FullCalendar.PremiumCommon",
       "tslib": ""
     }
   },

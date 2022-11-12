@@ -36,8 +36,8 @@
       "./internal": {}
     },
     "iifeGlobals": {
-      ".": "FullCalendarScrollGrid",
-      "./internal": "FullCalendarScrollGrid.Internal",
+      ".": "FullCalendar.ScrollGrid",
+      "./internal": "FullCalendar.ScrollGrid.Internal",
       "tslib": ""
     }
   },

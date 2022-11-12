@@ -40,8 +40,8 @@
       "./internal": {}
     },
     "iifeGlobals": {
-      ".": "FullCalendarResourceDayGrid",
-      "./internal": "FullCalendarResourceDayGrid.Internal",
+      ".": "FullCalendar.ResourceDayGrid",
+      "./internal": "FullCalendar.ResourceDayGrid.Internal",
       "tslib": ""
     }
   },

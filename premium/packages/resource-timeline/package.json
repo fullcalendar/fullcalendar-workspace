@@ -41,8 +41,8 @@
       "./internal": {}
     },
     "iifeGlobals": {
-      ".": "FullCalendarResourceTimeline",
-      "./internal": "FullCalendarResourceTimeline.Internal",
+      ".": "FullCalendar.ResourceTimeline",
+      "./internal": "FullCalendar.ResourceTimeline.Internal",
       "tslib": ""
     }
   },

@@ -35,7 +35,7 @@
       ".": { "iife": true }
     },
     "iifeGlobals": {
-      ".": "FullCalendarAdaptive",
+      ".": "FullCalendar.Adaptive",
       "tslib": ""
     }
   },

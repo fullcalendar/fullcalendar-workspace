@@ -38,8 +38,8 @@
       "./internal": {}
     },
     "iifeGlobals": {
-      ".": "FullCalendarTimeline",
-      "./internal": "FullCalendarTimeline.Internal",
+      ".": "FullCalendar.Timeline",
+      "./internal": "FullCalendar.Timeline.Internal",
       "tslib": ""
     }
   },
