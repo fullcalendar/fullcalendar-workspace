@@ -22,7 +22,7 @@ export interface SpreadsheetIndividualCellProps {
 
 // worth making a PureComponent? (because of innerHeight)
 export class SpreadsheetIndividualCell extends BaseComponent<SpreadsheetIndividualCellProps> {
-  refineRenderProps = memoizeObjArg(refineRenderProps)
+  private refineRenderProps = memoizeObjArg(refineRenderProps)
 
   render() {
     let { props, context } = this

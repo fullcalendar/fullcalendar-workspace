@@ -29,7 +29,7 @@ export type ResourceLabelMountArg = MountArg<ResourceLabelContentArg>
 // TODO: not used for Spreadsheet. START USING. difficult because of col-specific rendering props
 
 export class ResourceLabelContainer extends BaseComponent<ResourceLabelContainerProps> {
-  refineRenderProps = memoizeObjArg(refineRenderProps)
+  private refineRenderProps = memoizeObjArg(refineRenderProps)
 
   render() {
     const { props } = this

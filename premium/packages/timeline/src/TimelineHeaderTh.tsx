@@ -19,8 +19,8 @@ export interface TimelineHeaderThProps {
 }
 
 export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
-  refineRenderProps = memoizeObjArg(refineRenderProps)
-  buildCellNavLinkAttrs = memoize(buildCellNavLinkAttrs)
+  private refineRenderProps = memoizeObjArg(refineRenderProps)
+  private buildCellNavLinkAttrs = memoize(buildCellNavLinkAttrs)
 
   render() {
     let { props, context } = this
