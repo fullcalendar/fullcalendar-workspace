@@ -1,4 +1,4 @@
-import { createPlugin } from '@fullcalendar/core/internal'
+import { createPlugin } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
 import { TimelineView } from './TimelineView.js'
 import './index.css'
