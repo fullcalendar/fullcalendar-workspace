@@ -1,11 +1,11 @@
-import { DateProfileGenerator, memoize, DateProfile, ChunkContentCallbackArgs, CalendarContext } from '@fullcalendar/core'
+import { DateProfileGenerator, memoize, DateProfile, ChunkContentCallbackArgs, CalendarContext } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
-import { TimeColsView, buildTimeColsModel, buildSlatMetas } from '@fullcalendar/timegrid'
+import { TimeColsView, buildTimeColsModel, buildSlatMetas } from '@fullcalendar/timegrid/internal'
 import {
   ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps,
   Resource, flattenResources, DEFAULT_RESOURCE_ORDER,
-} from '@fullcalendar/resource'
-import { ResourceDayTable } from '@fullcalendar/resource-daygrid'
+} from '@fullcalendar/resource/internal'
+import { ResourceDayTable } from '@fullcalendar/resource-daygrid/internal'
 import { ResourceDayTimeCols } from './ResourceDayTimeCols.js'
 
 export class ResourceDayTimeColsView extends TimeColsView {

@@ -1,7 +1,7 @@
 import {
   DateRange, intersectRanges, addMs, DateProfile, Slicer,
   DateProfileGenerator, DateEnv, DateMarker, Seg,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { normalizeRange, isValidDate, TimelineDateProfile } from './timeline-date-profile.js'
 import { computeDateSnapCoverage } from './TimelineCoords.js'
 

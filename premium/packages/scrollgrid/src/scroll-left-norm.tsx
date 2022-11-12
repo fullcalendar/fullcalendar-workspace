@@ -1,4 +1,4 @@
-import { removeElement, computeEdges } from '@fullcalendar/core'
+import { removeElement, computeEdges } from '@fullcalendar/core/internal'
 
 // TODO: assume the el has no borders?
 export function getScrollCanvasOrigin(scrollEl: HTMLElement) { // best place for this?

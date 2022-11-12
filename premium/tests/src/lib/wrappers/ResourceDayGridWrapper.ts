@@ -1,7 +1,7 @@
 import { ensureDate, formatIsoDay } from '@fullcalendar/standard-tests/lib/datelib-utils'
 import { DayGridWrapper } from '@fullcalendar/standard-tests/lib/wrappers/DayGridWrapper'
 import { CalendarWrapper } from '@fullcalendar/standard-tests/lib/wrappers/CalendarWrapper'
-import { getRectCenter } from '@fullcalendar/core'
+import { getRectCenter } from '@fullcalendar/core/internal'
 import { subtractPoints, addPoints } from '@fullcalendar/standard-tests/lib/geom'
 
 export class ResourceDayGridWrapper {

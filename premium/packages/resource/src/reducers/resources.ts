@@ -1,4 +1,4 @@
-import { CalendarContext, DateProfile } from '@fullcalendar/core'
+import { CalendarContext, DateProfile } from '@fullcalendar/core/internal'
 import { ResourceSource } from '../structs/resource-source.js'
 import { ResourceHash } from '../structs/resource.js'
 import { reduceResourceSource } from './resourceSource.js'

@@ -1,15 +1,15 @@
-import { globalPlugins } from '@fullcalendar/core'
-import { default as interactionPlugin } from '@fullcalendar/interaction'
-import { default as dayGridPlugin } from '@fullcalendar/daygrid'
-import { default as timeGridPlugin } from '@fullcalendar/timegrid'
-import { default as listPlugin } from '@fullcalendar/list'
-import { default as scrollGridPlugin } from '@fullcalendar/scrollgrid'
-import { default as adaptivePlugin } from '@fullcalendar/adaptive'
-import { default as timelinePlugin } from '@fullcalendar/timeline'
-import { default as resourceCommonPlugin } from '@fullcalendar/resource'
-import { default as resourceDayGridPlugin } from '@fullcalendar/resource-daygrid'
-import { default as resourceTimeGridPlugin } from '@fullcalendar/resource-timegrid'
-import { default as resourceTimelinePlugin } from '@fullcalendar/resource-timeline'
+import { globalPlugins } from '@fullcalendar/core/internal'
+import interactionPlugin from '@fullcalendar/interaction'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import listPlugin from '@fullcalendar/list'
+import scrollGridPlugin from '@fullcalendar/scrollgrid'
+import adaptivePlugin from '@fullcalendar/adaptive'
+import timelinePlugin from '@fullcalendar/timeline'
+import resourcePlugin from '@fullcalendar/resource'
+import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
+import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 
 globalPlugins.push(
   interactionPlugin,
@@ -19,7 +19,7 @@ globalPlugins.push(
   scrollGridPlugin,
   adaptivePlugin,
   timelinePlugin,
-  resourceCommonPlugin,
+  resourcePlugin,
   resourceDayGridPlugin,
   resourceTimeGridPlugin,
   resourceTimelinePlugin,

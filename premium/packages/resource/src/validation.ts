@@ -1,4 +1,4 @@
-import { SplittableProps, EventUi, isPropsValid, Constraint, EventStore, mergeEventStores, CalendarContext } from '@fullcalendar/core'
+import { SplittableProps, EventUi, isPropsValid, Constraint, EventStore, mergeEventStores, CalendarContext } from '@fullcalendar/core/internal'
 import { ResourceSplitter } from './common/ResourceSplitter.js'
 
 export function isPropsValidWithResources(combinedProps: SplittableProps, context: CalendarContext): boolean {

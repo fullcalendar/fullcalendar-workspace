@@ -1,5 +1,5 @@
-import { SlicedProps, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/core'
 import { __assign } from 'tslib'
+import { SlicedProps, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/core/internal'
 import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel.js'
 
 const NO_SEGS = [] // for memoizing

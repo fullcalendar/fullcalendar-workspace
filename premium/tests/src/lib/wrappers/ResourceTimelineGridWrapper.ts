@@ -1,5 +1,5 @@
 import { getBoundingRect } from '@fullcalendar/standard-tests/lib/dom-geom'
-import { findElements } from '@fullcalendar/core'
+import { findElements } from '@fullcalendar/core/internal'
 import { getRectCenter, addPoints } from '@fullcalendar/standard-tests/lib/geom'
 import { CalendarWrapper } from '@fullcalendar/standard-tests/lib/wrappers/CalendarWrapper'
 import { TimelineGridWrapper } from './TimelineGridWrapper.js'

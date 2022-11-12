@@ -5,7 +5,7 @@ import {
   Scroller, OverflowValue,
   getIsRtlScrollbarOnLeft,
   isPropsEqual,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import {
   createElement,
   ComponentChildren,

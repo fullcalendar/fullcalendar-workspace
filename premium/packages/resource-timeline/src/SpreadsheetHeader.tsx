@@ -1,7 +1,7 @@
 import {
   BaseComponent, ElementDragging, elementClosest, PointerDragEvent, RefMap, findElements,
   ContentContainer,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import {
   VNode, createElement, Fragment,
 } from '@fullcalendar/core/preact'

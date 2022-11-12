@@ -1,11 +1,11 @@
+import { CssDimValue } from '@fullcalendar/core'
 import {
   applyStyle,
   translateRect, Rect, Point,
   findElements,
   computeInnerRect,
-  CssDimValue,
   removeElement,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { ScrollListener } from './ScrollListener.js'
 import { getScrollCanvasOrigin, getScrollFromLeftEdge } from './scroll-left-norm.js'
 

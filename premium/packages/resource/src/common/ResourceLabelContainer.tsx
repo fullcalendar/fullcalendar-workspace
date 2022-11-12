@@ -1,12 +1,13 @@
+import { ViewApi } from '@fullcalendar/core'
 import {
   ViewContextType, ViewContext,
-  ViewApi, formatDayString, MountArg,
+  formatDayString, MountArg,
   ContentContainer,
   ElProps,
   InnerContainerFunc,
   memoizeObjArg,
   BaseComponent,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { Resource } from '../structs/resource.js'
 import { ResourceApi } from '../api/ResourceApi.js'

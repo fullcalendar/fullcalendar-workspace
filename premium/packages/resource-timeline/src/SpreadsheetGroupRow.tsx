@@ -1,6 +1,8 @@
-import { BaseComponent, ViewContext, CssDimValue, ContentContainer } from '@fullcalendar/core'
+import { CssDimValue } from '@fullcalendar/core'
+import { BaseComponent, ViewContext, ContentContainer } from '@fullcalendar/core/internal'
 import { createElement, Fragment, createRef, RefObject, ComponentChild } from '@fullcalendar/core/preact'
-import { Group, isGroupsEqual, ColCellContentArg } from '@fullcalendar/resource'
+import { ColCellContentArg } from '@fullcalendar/resource'
+import { Group, isGroupsEqual } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from './ExpanderIcon.js'
 
 export interface SpreadsheetGroupRowProps {

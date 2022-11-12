@@ -1,4 +1,5 @@
-import { BaseComponent, CssDimValue, ContentContainer } from '@fullcalendar/core'
+import { CssDimValue } from '@fullcalendar/core'
+import { BaseComponent, ContentContainer } from '@fullcalendar/core/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { GroupLaneRenderHooks, ColCellContentArg } from '@fullcalendar/resource'
 

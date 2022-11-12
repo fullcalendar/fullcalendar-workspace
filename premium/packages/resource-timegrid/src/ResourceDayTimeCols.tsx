@@ -1,12 +1,13 @@
+import { CssDimValue, Duration } from '@fullcalendar/core'
 import {
   mapHash, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, memoize, DateRange,
-  DateMarker, Hit, CssDimValue, NowTimer, Duration, DateProfile,
-} from '@fullcalendar/core'
+  DateMarker, Hit, NowTimer, DateProfile,
+} from '@fullcalendar/core/internal'
 import {
   createElement, createRef, VNode,
 } from '@fullcalendar/core/preact'
-import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeSlatMeta, TimeColsSlatsCoords } from '@fullcalendar/timegrid'
-import { AbstractResourceDayTableModel, VResourceSplitter } from '@fullcalendar/resource'
+import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeSlatMeta, TimeColsSlatsCoords } from '@fullcalendar/timegrid/internal'
+import { AbstractResourceDayTableModel, VResourceSplitter } from '@fullcalendar/resource/internal'
 import { ResourceDayTimeColsJoiner } from './ResourceDayTimeColsJoiner.js'
 
 export interface ResourceDayTimeColsProps {

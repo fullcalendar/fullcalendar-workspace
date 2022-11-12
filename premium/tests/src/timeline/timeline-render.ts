@@ -1,5 +1,5 @@
-import { startOfDay } from '@fullcalendar/core'
-import { default as lvLocale } from '@fullcalendar/core/locales/lv'
+import { startOfDay } from '@fullcalendar/core/internal'
+import lvLocale from '@fullcalendar/core/locales/lv'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper.js'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 

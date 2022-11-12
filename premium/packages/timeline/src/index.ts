@@ -1,29 +1,12 @@
-import { createPlugin } from '@fullcalendar/core'
-
-import { default as premiumCommonPlugin } from '@fullcalendar/premium-common'
-// ensure ambient declarations
-import '@fullcalendar/premium-common'
-
+import { createPlugin } from '@fullcalendar/core/internal'
+import premiumCommonPlugin from '@fullcalendar/premium-common'
 import { TimelineView } from './TimelineView.js'
 import './index.css'
-
-export { TimelineView }
-export { buildSlatCols } from './TimelineView.js'
-export { TimelineLane, TimelineLaneProps, TimelineLaneCoreProps } from './TimelineLane.js'
-export { TimelineLaneBg } from './TimelineLaneBg.js'
-export { TimelineHeader } from './TimelineHeader.js'
-export { TimelineSlats } from './TimelineSlats.js'
-export { TimelineDateProfile, buildTimelineDateProfile } from './timeline-date-profile.js'
-export { TimelineCoords, coordToCss, coordsToCss } from './TimelineCoords.js'
-export { TimelineLaneSlicer, TimelineLaneSeg } from './TimelineLaneSlicer.js'
-export { TimelineHeaderRows } from './TimelineHeaderRows.js'
 
 export default createPlugin({
   name: '<%= pkgName %>',
   premiumReleaseDate: '<%= releaseDate %>',
-  deps: [
-    premiumCommonPlugin,
-  ],
+  deps: [premiumCommonPlugin],
   initialView: 'timelineDay',
   views: {
     timeline: {

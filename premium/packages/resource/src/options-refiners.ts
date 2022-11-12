@@ -1,9 +1,8 @@
+import { ClassNamesGenerator, CssDimValue } from '@fullcalendar/core'
 import {
-  Identity, CssDimValue, ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler,
-  identity, parseFieldSpecs,
-} from '@fullcalendar/core'
-
-// public
+  Identity, identity, parseFieldSpecs,
+  CustomContentGenerator, DidMountHandler, WillUnmountHandler,
+} from '@fullcalendar/core/internal'
 import {
   ResourceSourceInput,
   ResourceLabelContentArg, ResourceLabelMountArg,
@@ -13,7 +12,7 @@ import {
   ResourceLaneContentArg, ResourceLaneMountArg,
   ResourceApi,
   ResourceAddArg, ResourceChangeArg, ResourceRemoveArg,
-} from './api-type-deps.js'
+} from './public-types.js'
 
 export const OPTION_REFINERS = {
   initialResources: identity as Identity<ResourceSourceInput>,

@@ -1,8 +1,9 @@
+import { Duration, CssDimValue } from '@fullcalendar/core'
 import {
   PositionCache, findDirectChildren,
   isInt, DateProfile,
-  DateMarker, DateEnv, Duration, startOfDay, rangeContainsMarker, CssDimValue, DateRange, SegSpan,
-} from '@fullcalendar/core'
+  DateMarker, DateEnv, startOfDay, rangeContainsMarker, DateRange, SegSpan,
+} from '@fullcalendar/core/internal'
 import { TimelineDateProfile } from './timeline-date-profile.js'
 
 export class TimelineCoords { // TODO: rename to "slat" coords?

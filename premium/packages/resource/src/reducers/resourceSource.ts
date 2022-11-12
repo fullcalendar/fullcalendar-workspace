@@ -1,4 +1,4 @@
-import { DateProfile, rangesEqual, DateRange, guid, CalendarContext } from '@fullcalendar/core'
+import { DateProfile, rangesEqual, DateRange, guid, CalendarContext } from '@fullcalendar/core/internal'
 import { ResourceSource } from '../structs/resource-source.js'
 import { parseResourceSource } from '../structs/resource-source-parse.js'
 import { getResourceSourceDef } from '../structs/resource-source-def.js'

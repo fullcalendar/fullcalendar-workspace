@@ -1,9 +1,10 @@
+import { Duration } from '@fullcalendar/core'
 import {
-  Duration, EventStore, EventUiHash, DateSpan, EventInteractionState,
+  EventStore, EventUiHash, DateSpan, EventInteractionState,
   BaseComponent, memoize, RefMap, mapHash,
   getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs, isPropsEqual, buildIsoString,
   computeEarliestSegStart,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from './timeline-date-profile.js'
 import { coordsToCss, TimelineCoords } from './TimelineCoords.js'

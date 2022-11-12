@@ -1,9 +1,10 @@
+import { Duration, CssDimValue } from '@fullcalendar/core'
 import {
-  mapHash, Hit, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, Duration, CssDimValue, DateProfile,
-} from '@fullcalendar/core'
+  mapHash, Hit, DateSpan, DateComponent, EventStore, EventUiHash, EventInteractionState, DateProfile,
+} from '@fullcalendar/core/internal'
 import { createElement, createRef, VNode, RefObject } from '@fullcalendar/core/preact'
-import { DayTableSlicer, Table } from '@fullcalendar/daygrid'
-import { AbstractResourceDayTableModel, VResourceSplitter } from '@fullcalendar/resource'
+import { DayTableSlicer, Table } from '@fullcalendar/daygrid/internal'
+import { AbstractResourceDayTableModel, VResourceSplitter } from '@fullcalendar/resource/internal'
 import { ResourceDayTableJoiner } from './ResourceDayTableJoiner.js'
 
 export interface ResourceDayTableProps {

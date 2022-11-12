@@ -1,10 +1,10 @@
 import {
   SplittableProps, EventStore, BaseComponent, RefMap,
   DateMarker, DateRange, DateProfile,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
-import { GroupNode, ResourceNode } from '@fullcalendar/resource'
-import { TimelineDateProfile, TimelineCoords } from '@fullcalendar/timeline'
+import { GroupNode, ResourceNode } from '@fullcalendar/resource/internal'
+import { TimelineDateProfile, TimelineCoords } from '@fullcalendar/timeline/internal'
 import { ResourceTimelineLane } from './ResourceTimelineLane.js'
 import { DividerRow } from './DividerRow.js'
 

@@ -1,15 +1,16 @@
+import { Duration, CssDimValue } from '@fullcalendar/core'
 import {
-  PositionCache, Duration, EventStore, DateSpan, EventUiHash, EventInteractionState,
-  DateComponent, Hit, CssDimValue, memoize, NowTimer, greatestDurationDenominator,
+  PositionCache, EventStore, DateSpan, EventUiHash, EventInteractionState,
+  DateComponent, Hit, memoize, NowTimer, greatestDurationDenominator,
   DateMarker, DateRange, NowIndicatorContainer, DateProfile,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { createElement, createRef, VNode, Fragment } from '@fullcalendar/core/preact'
-import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource'
+import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource/internal'
 import {
   TimelineDateProfile, TimelineCoords, TimelineSlats,
   TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg,
   coordToCss,
-} from '@fullcalendar/timeline'
+} from '@fullcalendar/timeline/internal'
 import { ResourceTimelineLanes } from './ResourceTimelineLanes.js'
 
 export interface ResourceTimelineGridProps {

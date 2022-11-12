@@ -2,7 +2,7 @@ import {
   TableDowCell, memoize, BaseComponent,
   DateMarker, DateFormatter, computeFallbackHeaderFormat, TableDateCell,
   DateRange, NowTimer, DateProfile,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import {
   VNode, createElement, Fragment,
 } from '@fullcalendar/core/preact'

@@ -1,22 +1,15 @@
-import { createPlugin } from '@fullcalendar/core'
-
-import { default as premiumCommonPlugin } from '@fullcalendar/premium-common'
-// ensure ambient declarations
-import '@fullcalendar/premium-common'
-
-import { default as resourceCommonPlugin } from '@fullcalendar/resource'
-import { default as timeGridPlugin } from '@fullcalendar/timegrid'
+import { createPlugin } from '@fullcalendar/core/internal'
+import premiumCommonPlugin from '@fullcalendar/premium-common'
+import resourcePlugin from '@fullcalendar/resource'
+import timeGridPlugin from '@fullcalendar/timegrid'
 import { ResourceDayTimeColsView } from './ResourceDayTimeColsView.js'
-
-export { ResourceDayTimeColsView }
-export { ResourceDayTimeCols } from './ResourceDayTimeCols.js'
 
 export default createPlugin({
   name: '<%= pkgName %>',
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [
     premiumCommonPlugin,
-    resourceCommonPlugin,
+    resourcePlugin,
     timeGridPlugin,
   ],
   initialView: 'resourceTimeGridDay',

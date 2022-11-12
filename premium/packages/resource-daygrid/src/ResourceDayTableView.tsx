@@ -4,16 +4,16 @@ import {
   DateProfile,
   ChunkContentCallbackArgs,
   CalendarContext,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import {
   createElement,
   createRef,
 } from '@fullcalendar/core/preact'
-import { TableView, buildDayTableModel } from '@fullcalendar/daygrid'
+import { TableView, buildDayTableModel } from '@fullcalendar/daygrid/internal'
 import {
   ResourceDayHeader, ResourceDayTableModel, DayResourceTableModel, ResourceViewProps,
   Resource, flattenResources, DEFAULT_RESOURCE_ORDER,
-} from '@fullcalendar/resource'
+} from '@fullcalendar/resource/internal'
 import { ResourceDayTable } from './ResourceDayTable.js'
 
 export class ResourceDayTableView extends TableView {

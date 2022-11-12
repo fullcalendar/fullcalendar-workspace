@@ -1,14 +1,29 @@
-import { EventApi } from '@fullcalendar/core'
+import { EventImpl } from '@fullcalendar/core/internal'
 import { ResourceApi } from './ResourceApi.js'
 
-EventApi.prototype.getResources = function (this: EventApi): ResourceApi[] { // eslint-disable-line func-names
+declare module '@fullcalendar/core' {
+  interface EventApi {
+    getResources: () => ResourceApi[]
+    setResources: (resources: (string | ResourceApi)[]) => void
+  }
+}
+
+// TODO: more DRY
+declare module '@fullcalendar/core/internal' {
+  interface EventImpl {
+    getResources: () => ResourceApi[]
+    setResources: (resources: (string | ResourceApi)[]) => void
+  }
+}
+
+EventImpl.prototype.getResources = function (this: EventImpl): ResourceApi[] { // eslint-disable-line func-names
   let { calendarApi } = this._context
 
   return this._def.resourceIds.map((resourceId) => calendarApi.getResourceById(resourceId))
 }
 
-EventApi.prototype.setResources = function ( // eslint-disable-line func-names
-  this: EventApi,
+EventImpl.prototype.setResources = function ( // eslint-disable-line func-names
+  this: EventImpl,
   resources: (string | ResourceApi)[],
 ) {
   let resourceIds = []

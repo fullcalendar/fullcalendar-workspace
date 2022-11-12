@@ -1,10 +1,11 @@
+import { CssDimValue } from '@fullcalendar/core'
 import {
-  BaseComponent, CssDimValue,
+  BaseComponent,
   elementClosest, memoizeObjArg, ContentContainer,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
-import { Resource, refineRenderProps } from '@fullcalendar/resource'
-import { TimelineLane, TimelineLaneCoreProps } from '@fullcalendar/timeline'
+import { Resource, refineRenderProps } from '@fullcalendar/resource/internal'
+import { TimelineLane, TimelineLaneCoreProps } from '@fullcalendar/timeline/internal'
 
 export interface ResourceTimelineLaneProps extends TimelineLaneCoreProps {
   elRef: Ref<HTMLTableRowElement>

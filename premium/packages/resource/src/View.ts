@@ -1,7 +1,7 @@
 import {
   rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewPropsTransformer, CalendarContentProps, memoize,
   EventUi, EventDefHash, EventDef, EventStore, DateRange, CalendarContext,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { __assign } from 'tslib'
 import { ResourceHash } from './structs/resource.js'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions.js'

@@ -1,4 +1,4 @@
-import { config } from '@fullcalendar/core'
+import { config } from '@fullcalendar/core/internal'
 
 describe('MAX_TIMELINE_SLOTS hook', () => {
   it('is present', () => {

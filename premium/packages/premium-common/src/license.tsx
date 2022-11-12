@@ -1,4 +1,4 @@
-import { config, isValidDate, addDays, CalendarContext } from '@fullcalendar/core'
+import { config, isValidDate, addDays, CalendarContext } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 
 const UPGRADE_WINDOW = 365 + 7 // days. 1 week leeway, for tz shift reasons too

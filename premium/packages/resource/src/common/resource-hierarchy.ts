@@ -1,4 +1,4 @@
-import { flexibleCompare, compareByFieldSpecs, OrderSpec } from '@fullcalendar/core'
+import { flexibleCompare, compareByFieldSpecs, OrderSpec } from '@fullcalendar/core/internal'
 import { ResourceHash, Resource } from '../structs/resource.js'
 import { ResourceEntityExpansions } from '../reducers/resourceEntityExpansions.js'
 import { GroupSpec } from './resource-spec.js'

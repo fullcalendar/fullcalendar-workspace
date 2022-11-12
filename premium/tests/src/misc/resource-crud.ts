@@ -1,3 +1,5 @@
+import '@fullcalendar/resource'
+
 describe('resource crudding', () => {
   pushOptions({
     initialView: 'resourceTimelineDay',

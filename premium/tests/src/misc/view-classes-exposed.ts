@@ -1,7 +1,7 @@
-import { TimelineView } from '@fullcalendar/timeline'
-import { ResourceTimelineView } from '@fullcalendar/resource-timeline'
-import { ResourceDayTimeColsView } from '@fullcalendar/resource-timegrid'
-import { ResourceDayTableView } from '@fullcalendar/resource-daygrid'
+import { TimelineView } from '@fullcalendar/timeline/internal'
+import { ResourceTimelineView } from '@fullcalendar/resource-timeline/internal'
+import { ResourceDayTimeColsView } from '@fullcalendar/resource-timegrid/internal'
+import { ResourceDayTableView } from '@fullcalendar/resource-daygrid/internal'
 
 describe('internal View classes', () => {
   it('are exposed', () => {

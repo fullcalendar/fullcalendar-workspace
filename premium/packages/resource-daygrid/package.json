@@ -36,10 +36,12 @@
   },
   "buildConfig": {
     "exports": {
-      ".": { "iife": true }
+      ".": { "iife": true },
+      "./internal": {}
     },
     "iifeGlobals": {
       ".": "FullCalendarResourceDayGrid",
+      "./internal": "FullCalendarResourceDayGrid.Internal",
       "tslib": ""
     }
   },

@@ -1,4 +1,5 @@
-import { EventMutation, Hit, EventDef, CalendarContext, EventDropArg } from '@fullcalendar/core'
+import { EventDropArg } from '@fullcalendar/core'
+import { EventMutation, Hit, EventDef, CalendarContext } from '@fullcalendar/core/internal'
 
 export function massageEventDragMutation(eventMutation: EventMutation, hit0: Hit, hit1: Hit) {
   let resource0 = hit0.dateSpan.resourceId

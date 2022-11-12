@@ -1,4 +1,4 @@
-import { Emitter, DelayedRunner } from '@fullcalendar/core'
+import { Emitter, DelayedRunner } from '@fullcalendar/core/internal'
 
 const WHEEL_EVENT_NAMES = 'wheel mousewheel DomMouseScroll MozMousePixelScroll'.split(' ')
 

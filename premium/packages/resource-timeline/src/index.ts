@@ -1,24 +1,16 @@
-import { createPlugin } from '@fullcalendar/core'
-
-import { default as premiumCommonPlugin } from '@fullcalendar/premium-common'
-// ensure ambient declarations
-import '@fullcalendar/premium-common'
-
-import { default as timelinePlugin } from '@fullcalendar/timeline'
-import { default as resourceCommonPlugin } from '@fullcalendar/resource'
+import { createPlugin } from '@fullcalendar/core/internal'
+import premiumCommonPlugin from '@fullcalendar/premium-common'
+import timelinePlugin from '@fullcalendar/timeline'
+import resourcePlugin from '@fullcalendar/resource'
 import { ResourceTimelineView } from './ResourceTimelineView.js'
 import './index.css'
-
-export { ResourceTimelineView }
-export { ResourceTimelineLane } from './ResourceTimelineLane.js'
-export { SpreadsheetRow } from './SpreadsheetRow.js'
 
 export default createPlugin({
   name: '<%= pkgName %>',
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [
     premiumCommonPlugin,
-    resourceCommonPlugin,
+    resourcePlugin,
     timelinePlugin,
   ],
   initialView: 'resourceTimelineDay',

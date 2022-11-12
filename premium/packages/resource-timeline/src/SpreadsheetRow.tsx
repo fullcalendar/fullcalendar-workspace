@@ -1,6 +1,7 @@
-import { BaseComponent, ViewContext, isArraysEqual, CssDimValue } from '@fullcalendar/core'
+import { CssDimValue } from '@fullcalendar/core'
+import { BaseComponent, ViewContext, isArraysEqual } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
-import { Resource, buildResourceFields, ColSpec, getPublicId } from '@fullcalendar/resource'
+import { Resource, buildResourceFields, ColSpec, getPublicId } from '@fullcalendar/resource/internal'
 import { SpreadsheetIndividualCell } from './SpreadsheetIndividualCell.js'
 import { SpreadsheetGroupCell } from './SpreadsheetGroupCell.js'
 

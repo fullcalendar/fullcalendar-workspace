@@ -1,7 +1,8 @@
+import { ConstraintInput, AllowFunc, BusinessHoursInput } from '@fullcalendar/core'
 import {
-  ConstraintInput, AllowFunc, EventStore, parseBusinessHours, CalendarContext, EventUi, BusinessHoursInput,
+  EventStore, parseBusinessHours, CalendarContext, EventUi,
   guid, identity, Identity, RawOptionsFromRefiners, parseClassNames, refineProps, createEventUi, Dictionary,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 
 const PRIVATE_ID_PREFIX = '_fc:'
 

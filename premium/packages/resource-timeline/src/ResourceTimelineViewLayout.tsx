@@ -5,9 +5,9 @@ import {
   getStickyHeaderDates,
   getStickyFooterScrollbar,
   config,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
-import { ScrollGrid } from '@fullcalendar/scrollgrid'
+import { ScrollGrid } from '@fullcalendar/scrollgrid/internal'
 
 const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
 

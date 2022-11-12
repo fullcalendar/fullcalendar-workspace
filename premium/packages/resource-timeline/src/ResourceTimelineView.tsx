@@ -1,20 +1,20 @@
+import { CssDimValue } from '@fullcalendar/core'
 import {
   ViewContext, memoize,
-  CssDimValue, ChunkContentCallbackArgs, isArraysEqual, PositionCache,
+  ChunkContentCallbackArgs, isArraysEqual, PositionCache,
   ScrollRequest, ScrollResponder, ViewContainer, BaseComponent, ViewOptionsRefined,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import {
   buildTimelineDateProfile, TimelineHeader,
   buildSlatCols,
   TimelineCoords,
   TimelineDateProfile,
-} from '@fullcalendar/timeline'
+} from '@fullcalendar/timeline/internal'
 import {
   GroupNode, ResourceNode, ResourceViewProps, buildRowNodes,
   ColSpec, GroupSpec, DEFAULT_RESOURCE_ORDER,
-} from '@fullcalendar/resource'
-import { __assign } from 'tslib'
+} from '@fullcalendar/resource/internal'
 import { SpreadsheetRow } from './SpreadsheetRow.js'
 import { SpreadsheetGroupRow } from './SpreadsheetGroupRow.js'
 import { SpreadsheetHeader } from './SpreadsheetHeader.js'

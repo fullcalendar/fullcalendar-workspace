@@ -1,5 +1,6 @@
-import { CalendarContext, EventApi, Dictionary } from '@fullcalendar/core'
 import { __assign } from 'tslib'
+import { EventApi } from '@fullcalendar/core'
+import { EventImpl, CalendarContext, Dictionary } from '@fullcalendar/core/internal'
 import { Resource, getPublicId, ResourceHash } from '../structs/resource.js'
 
 export class ResourceApi {
@@ -125,7 +126,7 @@ export class ResourceApi {
       let def = defs[instance.defId]
 
       if (def.resourceIds.indexOf(thisResourceId) !== -1) { // inefficient!!!
-        eventApis.push(new EventApi(context, def, instance))
+        eventApis.push(new EventImpl(context, def, instance))
       }
     }
 

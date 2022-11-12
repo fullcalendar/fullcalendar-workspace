@@ -9,6 +9,7 @@
     "@fullcalendar/interaction": "workspace:*",
     "@fullcalendar/list": "workspace:*",
     "@fullcalendar/premium-common": "workspace:*",
+    "@fullcalendar/resource": "workspace:*",
     "@fullcalendar/resource-daygrid": "workspace:*",
     "@fullcalendar/resource-timegrid": "workspace:*",
     "@fullcalendar/resource-timeline": "workspace:*",

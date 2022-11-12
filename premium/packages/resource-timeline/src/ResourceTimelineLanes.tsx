@@ -1,6 +1,7 @@
-import { PositionCache, BaseComponent, CssDimValue, RefMap } from '@fullcalendar/core'
+import { CssDimValue } from '@fullcalendar/core'
+import { PositionCache, BaseComponent, RefMap } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
-import { GroupNode, ResourceNode } from '@fullcalendar/resource'
+import { GroupNode, ResourceNode } from '@fullcalendar/resource/internal'
 import { ResourceTimelineLanesBody, ResourceTimelineLanesContentProps } from './ResourceTimelineLanesBody.js'
 
 export interface ResourceTimelineLanesProps extends ResourceTimelineLanesContentProps {

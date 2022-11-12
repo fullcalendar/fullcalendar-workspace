@@ -1,4 +1,4 @@
-import { BaseComponent, RefMap, DateMarker, DateRange, DateProfile } from '@fullcalendar/core'
+import { BaseComponent, RefMap, DateMarker, DateRange, DateProfile } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from './timeline-date-profile.js'
 import { TimelineSlatCell } from './TimelineSlatCell.js'

@@ -1,8 +1,9 @@
+import { CssDimValue } from '@fullcalendar/core'
 import {
-  BaseComponent, CssDimValue, DateMarker, NowTimer,
+  BaseComponent, DateMarker, NowTimer,
   greatestDurationDenominator, DateRange, NowIndicatorContainer,
   findElements, DateProfile,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { createElement, VNode, createRef, RefObject } from '@fullcalendar/core/preact'
 import { TimelineHeaderRows } from './TimelineHeaderRows.js'
 import { coordToCss, TimelineCoords } from './TimelineCoords.js'

@@ -1,8 +1,9 @@
+import { ViewApi } from '@fullcalendar/core'
 import {
   BaseComponent, DateRange, DateMarker, getDateMeta, getSlotClassNames,
   buildNavLinkAttrs,
-  getDayClassNames, DateProfile, memoizeObjArg, ViewContext, memoize, ContentContainer, DateEnv, ViewApi,
-} from '@fullcalendar/core'
+  getDayClassNames, DateProfile, memoizeObjArg, ViewContext, memoize, ContentContainer, DateEnv,
+} from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { TimelineDateProfile, TimelineHeaderCell } from './timeline-date-profile.js'
 

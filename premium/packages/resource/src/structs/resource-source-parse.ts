@@ -1,4 +1,4 @@
-import { guid, identity, Identity, RefinedOptionsFromRefiners, refineProps, RawOptionsFromRefiners, Dictionary } from '@fullcalendar/core'
+import { guid, identity, Identity, RefinedOptionsFromRefiners, refineProps, RawOptionsFromRefiners, Dictionary } from '@fullcalendar/core/internal'
 import { ResourceInput } from './resource.js'
 import { ResourceFunc } from '../resource-sources/resource-func.js'
 import { ResourceSource } from './resource-source.js'

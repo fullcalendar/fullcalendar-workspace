@@ -1,7 +1,7 @@
 import {
   SegSpan, SegHierarchy, groupIntersectingEntries, SegEntry, buildIsoString,
   computeEarliestSegStart,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { TimelineCoords } from './TimelineCoords.js'
 import { TimelineLaneSeg } from './TimelineLaneSlicer.js'
 

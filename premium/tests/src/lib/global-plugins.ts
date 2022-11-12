@@ -1,9 +1,9 @@
+import scrollGridPlugin from '@fullcalendar/scrollgrid'
+import timelinePlugin from '@fullcalendar/timeline'
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
+import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
+import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import { DEFAULT_PLUGINS } from '@fullcalendar/standard-tests/lib/global-plugins'
-import { default as scrollGridPlugin } from '@fullcalendar/scrollgrid'
-import { default as timelinePlugin } from '@fullcalendar/timeline'
-import { default as resourceTimelinePlugin } from '@fullcalendar/resource-timeline'
-import { default as resourceDayGridPlugin } from '@fullcalendar/resource-daygrid'
-import { default as resourceTimeGridPlugin } from '@fullcalendar/resource-timegrid'
 
 const MORE_DEFAULT_PLUGINS = [
   scrollGridPlugin,

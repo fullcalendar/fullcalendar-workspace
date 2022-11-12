@@ -1,10 +1,11 @@
+import { CssDimValue } from '@fullcalendar/core'
 import {
   BaseComponent,
   isArraysEqual,
   findElements,
   mapHash,
   RefMap,
-  ColProps, CssDimValue, hasShrinkWidth, renderMicroColGroup,
+  ColProps, hasShrinkWidth, renderMicroColGroup,
   ScrollGridProps, ScrollGridSectionConfig, ColGroupConfig,
   getScrollGridClassNames, getSectionClassNames, getSectionHasLiquidHeight, getAllowYScrolling, renderChunkContent, computeShrinkWidth,
   getIsRtlScrollbarOnLeft,
@@ -22,7 +23,7 @@ import {
   ScrollGridChunkConfig,
   getCanVGrowWithinCell,
   config,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { createElement, VNode, Fragment } from '@fullcalendar/core/preact'
 import { StickyScrolling } from './StickyScrolling.js'
 import { ClippedScroller, ClippedOverflowValue } from './ClippedScroller.js'
@@ -45,6 +46,8 @@ interface ColGroupStat {
   width?: CssDimValue
   cols: ColProps[]
 }
+
+config.SCROLLGRID_RESIZE_INTERVAL = 500
 
 /*
 TODO: make <ScrollGridSection> subcomponent

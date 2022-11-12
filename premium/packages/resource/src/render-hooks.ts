@@ -1,4 +1,4 @@
-import { CalendarContext, MountArg } from '@fullcalendar/core'
+import { CalendarContext, MountArg } from '@fullcalendar/core/internal'
 import { ResourceApi } from './api/ResourceApi.js'
 import { Resource } from './structs/resource.js'
 

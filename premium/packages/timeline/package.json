@@ -34,10 +34,12 @@
   },
   "buildConfig": {
     "exports": {
-      ".": { "iife": true }
+      ".": { "iife": true },
+      "./internal": {}
     },
     "iifeGlobals": {
       ".": "FullCalendarTimeline",
+      "./internal": "FullCalendarTimeline.Internal",
       "tslib": ""
     }
   },

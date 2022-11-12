@@ -1,7 +1,7 @@
 import {
   BaseComponent, BgEvent, renderFill,
   getSegMeta, DateRange, DateMarker, buildEventRangeKey,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { computeSegHCoords } from './event-placement.js'
 import { coordsToCss, TimelineCoords } from './TimelineCoords.js'

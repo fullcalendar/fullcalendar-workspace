@@ -1,4 +1,4 @@
-import { BaseComponent, ContentContainer } from '@fullcalendar/core'
+import { BaseComponent, ContentContainer } from '@fullcalendar/core/internal'
 import { ComponentChild, createElement, Fragment } from '@fullcalendar/core/preact'
 import { ColSpec, ColCellContentArg } from '@fullcalendar/resource'
 

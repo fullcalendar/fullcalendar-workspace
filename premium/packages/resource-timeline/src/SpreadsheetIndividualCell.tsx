@@ -1,12 +1,13 @@
+import { ViewApi, CssDimValue } from '@fullcalendar/core'
 import {
-  BaseComponent, CssDimValue,
+  BaseComponent,
   memoizeObjArg,
   ContentContainer,
   ViewContext,
-  ViewApi,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { createElement, Fragment, ComponentChild } from '@fullcalendar/core/preact'
-import { Resource, ColSpec, ResourceApi } from '@fullcalendar/resource'
+import { ResourceApi } from '@fullcalendar/resource'
+import { Resource, ColSpec } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from './ExpanderIcon.js'
 
 export interface SpreadsheetIndividualCellProps {

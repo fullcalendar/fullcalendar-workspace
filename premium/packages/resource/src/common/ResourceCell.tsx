@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker } from '@fullcalendar/core'
+import { BaseComponent, DateMarker } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { Resource } from '../structs/resource.js'
 import { ResourceLabelContainer } from './ResourceLabelContainer.js'

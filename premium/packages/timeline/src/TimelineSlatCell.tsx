@@ -1,7 +1,8 @@
+import { SlotLaneContentArg } from '@fullcalendar/core'
 import {
   isInt, BaseComponent, DateMarker, DateRange, getDateMeta, getSlotClassNames,
-  getDayClassNames, SlotLaneContentArg, DateProfile, ContentContainer,
-} from '@fullcalendar/core'
+  getDayClassNames, DateProfile, ContentContainer,
+} from '@fullcalendar/core/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from './timeline-date-profile.js'
 

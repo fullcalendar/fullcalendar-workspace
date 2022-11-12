@@ -1,7 +1,8 @@
+import { CssDimValue } from '@fullcalendar/core'
 import {
-  BaseComponent, multiplyDuration, RefMap, CssDimValue,
+  BaseComponent, multiplyDuration, RefMap,
   ScrollResponder, ScrollRequest, DateMarker,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { createElement, createRef, VNode } from '@fullcalendar/core/preact'
 import { TimelineCoords } from './TimelineCoords.js'
 import { TimelineSlatsBody, TimelineSlatsContentProps } from './TimelineSlatsBody.js'

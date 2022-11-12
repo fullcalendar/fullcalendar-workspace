@@ -1,9 +1,32 @@
-import { DateSpan, CalendarApi, CalendarContext } from '@fullcalendar/core'
+import { CalendarImpl, DateSpan, CalendarContext } from '@fullcalendar/core/internal'
 import { ResourceApi } from './ResourceApi.js'
 import { ResourceInput, parseResource, ResourceHash, Resource } from '../structs/resource.js'
+import { ResourceAction } from '../reducers/resource-action.js'
 
-CalendarApi.prototype.addResource = function ( // eslint-disable-line func-names
-  this: CalendarApi,
+declare module '@fullcalendar/core' {
+  interface CalendarApi {
+    addResource(input: ResourceInput, scrollTo?: boolean): ResourceApi
+    getResourceById(id: string): ResourceApi | null
+    getResources(): ResourceApi[]
+    getTopLevelResources(): ResourceApi[]
+    refetchResources(): void
+  }
+}
+
+// TODO: more DRY
+declare module '@fullcalendar/core/internal' {
+  interface CalendarImpl {
+    dispatch(action: ResourceAction) // internal-only
+    addResource(input: ResourceInput, scrollTo?: boolean): ResourceApi
+    getResourceById(id: string): ResourceApi | null
+    getResources(): ResourceApi[]
+    getTopLevelResources(): ResourceApi[]
+    refetchResources(): void
+  }
+}
+
+CalendarImpl.prototype.addResource = function ( // eslint-disable-line func-names
+  this: CalendarImpl,
   input: ResourceInput | ResourceApi,
   scrollTo = true,
 ) {
@@ -44,7 +67,7 @@ CalendarApi.prototype.addResource = function ( // eslint-disable-line func-names
   return resourceApi
 }
 
-CalendarApi.prototype.getResourceById = function (this: CalendarApi, id: string) { // eslint-disable-line func-names
+CalendarImpl.prototype.getResourceById = function (this: CalendarImpl, id: string) { // eslint-disable-line func-names
   id = String(id)
   let currentState = this.getCurrentData() // eslint-disable-line react/no-this-in-sfc
 
@@ -59,7 +82,7 @@ CalendarApi.prototype.getResourceById = function (this: CalendarApi, id: string)
   return null
 }
 
-CalendarApi.prototype.getResources = function (this: CalendarApi): ResourceApi[] { // eslint-disable-line func-names
+CalendarImpl.prototype.getResources = function (this: CalendarImpl): ResourceApi[] { // eslint-disable-line func-names
   let currentState = this.getCurrentData()
   let { resourceStore } = currentState
   let resourceApis: ResourceApi[] = []
@@ -75,7 +98,7 @@ CalendarApi.prototype.getResources = function (this: CalendarApi): ResourceApi[]
   return resourceApis
 }
 
-CalendarApi.prototype.getTopLevelResources = function (this: CalendarApi): ResourceApi[] { // eslint-disable-line func-names
+CalendarImpl.prototype.getTopLevelResources = function (this: CalendarImpl): ResourceApi[] { // eslint-disable-line func-names
   let currentState = this.getCurrentData()
   let { resourceStore } = currentState
   let resourceApis: ResourceApi[] = []
@@ -93,7 +116,7 @@ CalendarApi.prototype.getTopLevelResources = function (this: CalendarApi): Resou
   return resourceApis
 }
 
-CalendarApi.prototype.refetchResources = function (this: CalendarApi) { // eslint-disable-line func-names
+CalendarImpl.prototype.refetchResources = function (this: CalendarImpl) { // eslint-disable-line func-names
   this.dispatch({
     type: 'REFETCH_RESOURCES',
   })

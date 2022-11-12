@@ -1,4 +1,5 @@
-import { ViewApi, ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountArg } from '@fullcalendar/core'
+import { ViewApi, ClassNamesGenerator } from '@fullcalendar/core'
+import { CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountArg } from '@fullcalendar/core/internal'
 import { ResourceApi } from '../api/ResourceApi.js'
 
 // strange to reference columns in resource-common

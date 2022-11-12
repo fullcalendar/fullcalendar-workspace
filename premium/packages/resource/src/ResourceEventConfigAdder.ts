@@ -1,7 +1,7 @@
 import {
   ViewProps, ViewPropsTransformer, CalendarContentProps, memoize, mapHash,
   EventUi, isPropsEqual, EventUiHash, EventDefHash, EventDef, combineEventUis,
-} from '@fullcalendar/core'
+} from '@fullcalendar/core/internal'
 import { __assign } from 'tslib'
 import { ResourceHash } from './structs/resource.js'
 
