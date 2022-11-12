@@ -3,6 +3,7 @@ import premiumCommonPlugin from '@fullcalendar/premium-common'
 import timelinePlugin from '@fullcalendar/timeline'
 import resourcePlugin from '@fullcalendar/resource'
 import { ResourceTimelineView } from './ResourceTimelineView.js'
+import './ambient.js'
 import './index.css'
 
 export default createPlugin({

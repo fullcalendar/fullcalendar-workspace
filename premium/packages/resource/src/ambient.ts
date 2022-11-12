@@ -6,6 +6,9 @@ import { ResourceAction } from './reducers/resource-action.js'
 import { OPTION_REFINERS, LISTENER_REFINERS } from './options-refiners.js'
 import { EVENT_REFINERS } from './structs/event-parse.js'
 
+// all dependencies except core
+import '@fullcalendar/premium-common'
+
 type ExtraOptionRefiners = typeof OPTION_REFINERS
 type ExtraListenerRefiners = typeof LISTENER_REFINERS
 type ExtraEventRefiners = typeof EVENT_REFINERS

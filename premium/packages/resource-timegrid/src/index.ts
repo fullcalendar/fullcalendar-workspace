@@ -3,6 +3,7 @@ import premiumCommonPlugin from '@fullcalendar/premium-common'
 import resourcePlugin from '@fullcalendar/resource'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import { ResourceDayTimeColsView } from './ResourceDayTimeColsView.js'
+import './ambient.js'
 
 export default createPlugin({
   name: '<%= pkgName %>',

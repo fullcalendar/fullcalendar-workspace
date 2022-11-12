@@ -1,6 +1,5 @@
 import { ListenerCounter } from '@fullcalendar/standard-tests/lib/ListenerCounter'
 import { prepareStandardListeners } from '@fullcalendar/standard-tests/lib/vdom-misc'
-import '@fullcalendar/timegrid'
 
 describe('destroy', () => {
   pushOptions({
