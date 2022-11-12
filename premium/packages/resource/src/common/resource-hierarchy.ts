@@ -244,7 +244,7 @@ function insertResourceNodeInSiblings(resourceNode, siblings, orderSpecs: OrderS
   siblings.splice(i, 0, resourceNode)
 }
 
-export function buildResourceFields(resource: Resource) {
+export function buildResourceFields(resource: Resource): any {
   let obj = { ...resource.extendedProps, ...resource.ui, ...resource }
 
   delete obj.ui

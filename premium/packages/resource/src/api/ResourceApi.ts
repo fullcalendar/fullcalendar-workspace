@@ -133,14 +133,14 @@ export class ResourceApi {
     return eventApis
   }
 
-  get id() { return getPublicId(this._resource.id) }
-  get title() { return this._resource.title }
-  get eventConstraint() { return this._resource.ui.constraints[0] || null }
-  get eventOverlap() { return this._resource.ui.overlap }
-  get eventAllow() { return this._resource.ui.allows[0] || null }
-  get eventBackgroundColor() { return this._resource.ui.backgroundColor }
-  get eventBorderColor() { return this._resource.ui.borderColor }
-  get eventTextColor() { return this._resource.ui.textColor }
+  get id(): string { return getPublicId(this._resource.id) }
+  get title(): string { return this._resource.title }
+  get eventConstraint(): any { return this._resource.ui.constraints[0] || null } // TODO: better type
+  get eventOverlap(): boolean { return this._resource.ui.overlap }
+  get eventAllow(): any { return this._resource.ui.allows[0] || null } // TODO: better type
+  get eventBackgroundColor(): string { return this._resource.ui.backgroundColor }
+  get eventBorderColor(): string { return this._resource.ui.borderColor }
+  get eventTextColor(): string { return this._resource.ui.textColor }
 
   // NOTE: user can't modify these because Object.freeze was called in event-def parsing
   get eventClassNames() { return this._resource.ui.classNames }

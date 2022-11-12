@@ -6,7 +6,7 @@ import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import { DEFAULT_PLUGINS } from '@fullcalendar/standard-tests/lib/global-plugins'
 
-const MORE_DEFAULT_PLUGINS = [
+const MORE_DEFAULT_PLUGINS: PluginDef[] = [
   scrollGridPlugin,
   timelinePlugin,
   resourceTimelinePlugin,
