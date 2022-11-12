@@ -1,6 +1,6 @@
 import { Calendar } from '@fullcalendar/core'
-import { default as interactionPlugin } from '@fullcalendar/interaction'
-import { default as resourceTimelinePlugin } from '@fullcalendar/resource-timeline'
+import interactionPlugin from '@fullcalendar/interaction'
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 
 describe('timeline dragging events between calendars', () => {
