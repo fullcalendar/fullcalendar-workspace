@@ -1,4 +1,4 @@
-import { createPlugin } from '@fullcalendar/core'
+import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
 import { ResourceDataAdder, transformIsDraggable } from './View.js'
 import { ResourceEventConfigAdder } from './ResourceEventConfigAdder.js'
@@ -45,7 +45,7 @@ export default createPlugin({
   optionRefiners: OPTION_REFINERS,
   listenerRefiners: LISTENER_REFINERS,
   propSetHandlers: { resourceStore: handleResourceStore },
-})
+}) as PluginDef
 
 export * from './public-types.js'
 export { ResourceApi } from './api/ResourceApi.js'

@@ -1,4 +1,4 @@
-import { createPlugin } from '@fullcalendar/core'
+import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
 import timelinePlugin from '@fullcalendar/timeline'
 import resourcePlugin from '@fullcalendar/resource'
@@ -41,4 +41,4 @@ export default createPlugin({
       duration: { years: 1 },
     },
   },
-})
+}) as PluginDef

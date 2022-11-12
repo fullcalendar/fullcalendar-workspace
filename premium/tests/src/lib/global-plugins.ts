@@ -1,3 +1,4 @@
+import { PluginDef } from '@fullcalendar/core'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import timelinePlugin from '@fullcalendar/timeline'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'

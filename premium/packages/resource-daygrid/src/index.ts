@@ -1,4 +1,4 @@
-import { createPlugin } from '@fullcalendar/core'
+import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
 import resourcePlugin from '@fullcalendar/resource'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -37,4 +37,4 @@ export default createPlugin({
       fixedWeekCount: true,
     },
   },
-})
+}) as PluginDef

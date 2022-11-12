@@ -1,4 +1,4 @@
-import { createPlugin } from '@fullcalendar/core'
+import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
 import resourcePlugin from '@fullcalendar/resource'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -29,4 +29,4 @@ export default createPlugin({
       duration: { weeks: 1 },
     },
   },
-})
+}) as PluginDef
