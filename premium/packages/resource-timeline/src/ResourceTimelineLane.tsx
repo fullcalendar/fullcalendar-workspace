@@ -15,7 +15,7 @@ export interface ResourceTimelineLaneProps extends TimelineLaneCoreProps {
 }
 
 export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProps> {
-  refineRenderProps = memoizeObjArg(refineRenderProps)
+  refineRenderProps = memoizeObjArg(refineRenderProps) as (typeof refineRenderProps)
 
   render() {
     let { props, context } = this
