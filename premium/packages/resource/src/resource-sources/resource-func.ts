@@ -1,5 +1,3 @@
-import { unpromisify } from '@fullcalendar/core/internal'
-import { ResourceSourceError } from '../structs/resource-source.js'
 import { registerResourceSourceDef } from '../structs/resource-source-def.js'
 import { ResourceInput } from '../structs/resource.js'
 import { ResourceSourceRefined } from '../structs/resource-source-parse.js'
@@ -12,11 +10,9 @@ export interface ResourceFuncArg {
   timeZone?: string
 }
 
-export type ResourceFunc = (
-  arg: ResourceFuncArg,
-  successCallback: (events: ResourceInput[]) => void,
-  failureCallback: (errorObj: ResourceSourceError) => void
-) => any // TODO: promise-like object or nothing
+export type ResourceFunc =
+  ((arg: ResourceFuncArg, callback: (resourceInputs: ResourceInput[]) => void) => void) |
+  ((arg: ResourceFuncArg) => Promise<ResourceInput[]>)
 
 registerResourceSourceDef<ResourceFunc>({
 
@@ -27,7 +23,7 @@ registerResourceSourceDef<ResourceFunc>({
     return null
   },
 
-  fetch(arg, success, failure) {
+  fetch(arg) {
     let dateEnv = arg.context.dateEnv
     let func = arg.resourceSource.meta
 
@@ -39,14 +35,10 @@ registerResourceSourceDef<ResourceFunc>({
       timeZone: dateEnv.timeZone,
     } : {}
 
-    // TODO: make more dry with EventSourceFunc
-    // TODO: accept a response?
-    unpromisify(
-      func.bind(null, publicArg),
-      (rawResources) => { // success
-        success({ rawResources }) // needs an object response
-      },
-      failure, // send errorObj directly to failure callback
+    return new Promise<ResourceInput[]>((resolve) => {
+      return func(publicArg, resolve)
+    }).then(
+      (rawResources) => ({ rawResources }),
     )
   },
 

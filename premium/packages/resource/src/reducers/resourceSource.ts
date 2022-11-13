@@ -76,12 +76,11 @@ function fetchSource(source: ResourceSource<any>, fetchRange: DateRange | null, 
   let sourceDef = getResourceSourceDef(source.sourceDefId)
   let fetchId = guid()
 
-  sourceDef.fetch(
-    {
-      resourceSource: source,
-      range: fetchRange,
-      context,
-    },
+  sourceDef.fetch({
+    resourceSource: source,
+    range: fetchRange,
+    context,
+  }).then(
     (res) => {
       context.dispatch({
         type: 'RECEIVE_RESOURCES',

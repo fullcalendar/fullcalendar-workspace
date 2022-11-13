@@ -1,4 +1,5 @@
 import { DateRange, CalendarContext, requestJson, Dictionary } from '@fullcalendar/core/internal'
+import { ResourceInput } from '../public-types.js'
 import { registerResourceSourceDef } from '../structs/resource-source-def.js'
 import { ResourceSourceRefined } from '../structs/resource-source-parse.js'
 
@@ -24,15 +25,18 @@ registerResourceSourceDef<JsonFeedMeta>({
     return null
   },
 
-  fetch(arg, successCallback, failureCallback) {
+  fetch(arg) {
     let meta = arg.resourceSource.meta
     let requestParams = buildRequestParams(meta, arg.range, arg.context)
 
-    requestJson(meta.method, meta.url, requestParams, (rawResources, xhr) => {
-      successCallback({ rawResources, xhr })
-    }, (message, xhr) => {
-      failureCallback({ message, xhr })
-    })
+    return requestJson(
+      meta.method,
+      meta.url,
+      requestParams,
+    ).then(([rawResources, response]: [ResourceInput[], Response]) => ({
+      rawResources,
+      response,
+    }))
   },
 
 })

@@ -12,10 +12,9 @@ export interface ResourceSource<ResourceSourceMeta> {
   fetchRange: DateRange | null
 }
 
-export type ResourceSourceError = { // TODO: converge with EventSourceError
-  message: string
-  xhr?: XMLHttpRequest
-  [otherProp: string]: any
+export interface RequestFetcherRes {
+  rawResources: ResourceInput[]
+  response?: Response
 }
 
 export type ResourceFetcher<ResourceSourceMeta> = (
@@ -24,6 +23,4 @@ export type ResourceFetcher<ResourceSourceMeta> = (
     range: DateRange | null
     context: CalendarContext
   },
-  success: (res: { rawResources: ResourceInput[], xhr?: XMLHttpRequest }) => void,
-  failure: (error: ResourceSourceError) => void
-) => void // what about Promise?
+) => Promise<RequestFetcherRes>
