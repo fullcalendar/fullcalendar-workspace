@@ -1,4 +1,3 @@
-import { __assign } from 'tslib'
 import { SlicedProps, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/core/internal'
 import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel.js'
 
@@ -114,7 +113,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
           )
         }
 
-        __assign(affectedInstances, interaction.affectedInstances)
+        Object.assign(affectedInstances, interaction.affectedInstances)
         isEvent = isEvent || interaction.isEvent
       }
 

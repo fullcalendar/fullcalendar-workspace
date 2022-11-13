@@ -1,4 +1,3 @@
-import { __assign } from 'tslib'
 import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel.js'
 
 /*

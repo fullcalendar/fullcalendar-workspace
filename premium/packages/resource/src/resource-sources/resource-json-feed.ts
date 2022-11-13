@@ -1,5 +1,4 @@
 import { DateRange, CalendarContext, requestJson, Dictionary } from '@fullcalendar/core/internal'
-import { __assign } from 'tslib'
 import { registerResourceSourceDef } from '../structs/resource-source-def.js'
 import { ResourceSourceRefined } from '../structs/resource-source-parse.js'
 
@@ -80,7 +79,7 @@ function buildRequestParams(meta: JsonFeedMeta, range: DateRange | null, context
     customRequestParams = meta.extraParams || {}
   }
 
-  __assign(params, customRequestParams)
+  Object.assign(params, customRequestParams)
 
   return params
 }

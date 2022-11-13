@@ -2,7 +2,6 @@ import {
   rangesIntersect, EventInstanceHash, filterHash, ViewProps, ViewPropsTransformer, CalendarContentProps, memoize,
   EventUi, EventDefHash, EventDef, EventStore, DateRange, CalendarContext,
 } from '@fullcalendar/core/internal'
-import { __assign } from 'tslib'
 import { ResourceHash } from './structs/resource.js'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions.js'
 import { computeResourceEditable } from './EventDragging.js'
@@ -43,7 +42,7 @@ function filterResources(
     let instancesInRange = filterEventInstancesInRange(eventStore.instances, activeRange)
     let hasEvents = computeHasEvents(instancesInRange, eventStore.defs)
 
-    __assign(hasEvents, computeAncestorHasEvents(hasEvents, resourceStore))
+    Object.assign(hasEvents, computeAncestorHasEvents(hasEvents, resourceStore))
 
     return filterHash(resourceStore, (resource, resourceId) => hasEvents[resourceId])
   }

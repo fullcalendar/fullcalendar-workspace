@@ -1,4 +1,3 @@
-import { __assign } from 'tslib'
 import { EventApi } from '@fullcalendar/core'
 import { EventImpl, CalendarContext, Dictionary } from '@fullcalendar/core/internal'
 import { Resource, getPublicId, ResourceHash } from '../structs/resource.js'
@@ -181,7 +180,7 @@ export class ResourceApi {
 
     if (Object.keys(internal.extendedProps).length) {
       if (settings.collapseExtendedProps) {
-        __assign(res, internal.extendedProps)
+        Object.assign(res, internal.extendedProps)
       } else {
         res.extendedProps = internal.extendedProps
       }
