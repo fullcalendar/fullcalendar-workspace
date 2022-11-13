@@ -65,7 +65,6 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
   private getStickyScrolling: MemoiseArrayFunc<[HTMLElement, boolean], StickyScrolling>
   private getScrollSyncersBySection: MemoizeHashFunc<HTMLElement[], ScrollSyncer>
   private getScrollSyncersByColumn: MemoizeHashFunc<HTMLElement[], ScrollSyncer>
-  private stickyScrollings: StickyScrolling[] = []
   private scrollSyncersBySection: { [sectionI: string]: ScrollSyncer } = {}
   private scrollSyncersByColumn: { [columnI: string]: ScrollSyncer } = {}
 
@@ -287,7 +286,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
   }
 
   componentDidMount() {
-    this.getStickyScrolling = memoizeArraylike(initStickyScrolling, null, destroyStickyScrolling)
+    this.getStickyScrolling = memoizeArraylike(initStickyScrolling)
     this.getScrollSyncersBySection = memoizeHashlike(initScrollSyncer.bind(this, true), null, destroyScrollSyncer)
     this.getScrollSyncersByColumn = memoizeHashlike(initScrollSyncer.bind(this, false), null, destroyScrollSyncer)
 
@@ -307,7 +306,6 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
   componentWillUnmount() {
     this.context.removeResizeHandler(this.handleSizing)
 
-    this.destroyStickyScrolling()
     this.destroyScrollSyncers()
   }
 
@@ -573,15 +571,8 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
       (scrollEl) => [scrollEl, isRtl] as [ HTMLElement, boolean ],
     )
 
-    let stickyScrollings = this.getStickyScrolling(argsByKey)
-
-    stickyScrollings.forEach((stickyScrolling) => stickyScrolling.updateSize())
-
-    this.stickyScrollings = stickyScrollings
-  }
-
-  destroyStickyScrolling() {
-    this.stickyScrollings.forEach(destroyStickyScrolling)
+    this.getStickyScrolling(argsByKey)
+      .forEach((stickyScrolling) => stickyScrolling.updateSize())
   }
 
   updateScrollSyncers() {
@@ -756,8 +747,4 @@ function destroyScrollSyncer(scrollSyncer: ScrollSyncer) {
 
 function initStickyScrolling(scrollEl: HTMLElement, isRtl: boolean) {
   return new StickyScrolling(scrollEl, isRtl)
-}
-
-function destroyStickyScrolling(stickyScrolling: StickyScrolling) {
-  stickyScrolling.destroy()
 }

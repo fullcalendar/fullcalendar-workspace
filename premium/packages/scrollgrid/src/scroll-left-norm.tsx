@@ -11,7 +11,7 @@ export function getScrollCanvasOrigin(scrollEl: HTMLElement) { // best place for
   }
 }
 
-export function getScrollFromLeftEdge(el: HTMLElement) {
+function getScrollFromLeftEdge(el: HTMLElement) {
   let scrollLeft = el.scrollLeft
   let computedStyles = window.getComputedStyle(el) // TODO: pass in isRtl instead?
 
