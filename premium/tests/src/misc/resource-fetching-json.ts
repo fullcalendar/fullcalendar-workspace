@@ -1,27 +1,21 @@
-import XHRMockLib from 'xhr-mock'
-import { cjsInterop } from '@fullcalendar/standard-tests/lib/cjs'
-
-const XHRMock = cjsInterop(XHRMockLib)
+import fetchMock from 'fetch-mock'
 
 describe('fetching resources from a JSON feed', () => {
-  beforeEach(() => {
-    XHRMock.setup()
-  })
-
   afterEach(() => {
-    XHRMock.teardown()
+    fetchMock.restore()
   })
 
   it('allows a POST method', (done) => {
-    XHRMock.post(/^my-feed\.php/, (req, res) => {
+    const givenUrl = window.location.href + '/my-feed.php'
+    fetchMock.post(/my-feed\.php/, () => {
       done()
-      return res.status(200).header('content-type', 'application/json').body('[]')
+      return { body: [] }
     })
 
     initCalendar({
       initialView: 'resourceTimelineWeek',
       resources: {
-        url: 'my-feed.php', // will be picked up by XHRMock
+        url: givenUrl,
         method: 'POST',
       },
     })

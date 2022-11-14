@@ -23,4 +23,6 @@ export type ResourceFetcher<ResourceSourceMeta> = (
     range: DateRange | null
     context: CalendarContext
   },
-) => Promise<RequestFetcherRes>
+  successCallback: (res: RequestFetcherRes) => void,
+  errorCallback: (error: Error) => void,
+) => void

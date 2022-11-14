@@ -1,10 +1,7 @@
-import XHRMockLib from 'xhr-mock'
-import { cjsInterop } from '@fullcalendar/standard-tests/lib/cjs'
+import fetchMock from 'fetch-mock'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper.js'
-
-const XHRMock = cjsInterop(XHRMockLib)
 
 describe('refetchResourcesOnNavigate', () => {
   pushOptions({
@@ -288,69 +285,64 @@ describe('refetchResourcesOnNavigate', () => {
   })
 
   describe('when calling a JSON feed', () => {
-    beforeEach(() => {
-      XHRMock.setup()
-    })
-
     afterEach(() => {
-      XHRMock.teardown()
+      fetchMock.restore()
     })
 
-    it('receives the start/end/timezone GET parameters', (done) => {
-      XHRMock.get(/^my-feed\.php/, (req, res) => {
-        expect(req.url().query).toEqual({
-          start: '2017-02-12T00:00:00',
-          end: '2017-02-19T00:00:00',
-          timeZone: 'America/Chicago',
-        })
-        done()
-        return res.status(200).header('content-type', 'application/json').body('[]')
-      })
+    it('receives the start/end/timezone GET parameters', () => {
+      const givenUrl = window.location.href + '/my-feed.php'
+      fetchMock.get(/my-feed\.php/, { body: [] })
 
       initCalendar({
         initialView: 'resourceTimelineWeek',
         now: '2017-02-12',
         timeZone: 'America/Chicago',
-        resources: 'my-feed.php', // will be picked up by XHRMock
+        resources: givenUrl,
       })
+
+      const [requestUrl] = fetchMock.lastCall()
+      const requestParams = new URL(requestUrl).searchParams
+      expect(requestParams.get('start')).toBe('2017-02-12T00:00:00')
+      expect(requestParams.get('end')).toBe('2017-02-19T00:00:00')
+      expect(requestParams.get('timeZone')).toBe('America/Chicago')
     })
 
-    it('respects startParam/endParam/timeZoneParam', (done) => {
-      XHRMock.get(/^my-feed\.php/, (req, res) => {
-        expect(req.url().query).toEqual({
-          mystart: '2017-02-12T00:00:00',
-          myend: '2017-02-19T00:00:00',
-          mytimezone: 'America/Chicago',
-        })
-        done()
-        return res.status(200).header('content-type', 'application/json').body('[]')
-      })
+    it('respects startParam/endParam/timeZoneParam', () => {
+      const givenUrl = window.location.href + '/my-feed.php'
+      fetchMock.get(/my-feed\.php/, { body: [] })
 
       initCalendar({
         initialView: 'resourceTimelineWeek',
         now: '2017-02-12',
         timeZone: 'America/Chicago',
-        resources: 'my-feed.php', // will be picked up by XHRMock
+        resources: givenUrl,
         startParam: 'mystart',
         endParam: 'myend',
         timeZoneParam: 'mytimezone',
       })
+
+      const [requestUrl] = fetchMock.lastCall()
+      const requestParams = new URL(requestUrl).searchParams
+      expect(requestParams.get('mystart')).toBe('2017-02-12T00:00:00')
+      expect(requestParams.get('myend')).toBe('2017-02-19T00:00:00')
+      expect(requestParams.get('mytimezone')).toBe('America/Chicago')
     })
 
-    it('won\'t send start/end/timezone params when off', (done) => {
-      XHRMock.get(/^my-feed\.php/, (req, res) => {
-        expect(req.url().query).toEqual({}) // no params
-        done()
-        return res.status(200).header('content-type', 'application/json').body('[]')
-      })
+    it('won\'t send start/end/timezone params when off', () => {
+      const givenUrl = window.location.href + '/my-feed.php'
+      fetchMock.get(/my-feed\.php/, { body: [] })
 
       initCalendar({
         initialView: 'resourceTimelineWeek',
         now: '2017-02-12',
         timeZone: 'America/Chicago',
-        resources: 'my-feed.php', // will be picked up by XHRMock
+        resources: givenUrl,
         refetchResourcesOnNavigate: false,
       })
+
+      const [requestUrl] = fetchMock.lastCall()
+      const requestParamStr = new URL(requestUrl).searchParams.toString()
+      expect(requestParamStr).toBe('')
     })
   })
 

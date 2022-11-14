@@ -24,7 +24,8 @@
     "@fullcalendar/standard-scripts": "workspace:*",
     "@types/jasmine": "^3.3.12",
     "@types/jasmine-jquery": "^1.5.33",
-    "@types/jquery": "^3.3.29"
+    "@types/jquery": "^3.3.29",
+    "fetch-mock": "^9.11.0"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
@@ -33,9 +34,13 @@
     "lint": "eslint ."
   },
   "tsConfig": {
-    "extends":  "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
+    "extends": "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
     "compilerOptions": {
-      "types": ["jasmine", "jasmine-jquery", "jquery"],
+      "types": [
+        "jasmine",
+        "jasmine-jquery",
+        "jquery"
+      ],
       "rootDir": "./src",
       "outDir": "./dist/.tsout"
     },
@@ -45,7 +50,10 @@
   },
   "buildConfig": {
     "exports": {
-      ".": { "iife": true, "iifeGenerator": "./scripts/generate-index-iife.js" }
+      ".": {
+        "iife": true,
+        "iifeGenerator": "./scripts/generate-index-iife.js"
+      }
     },
     "iifeGlobals": {
       "*": ""

@@ -1,3 +1,4 @@
+import { unpromisify } from '@fullcalendar/core/internal'
 import { registerResourceSourceDef } from '../structs/resource-source-def.js'
 import { ResourceInput } from '../structs/resource.js'
 import { ResourceSourceRefined } from '../structs/resource-source-parse.js'
@@ -23,11 +24,11 @@ registerResourceSourceDef<ResourceFunc>({
     return null
   },
 
-  fetch(arg) {
-    let dateEnv = arg.context.dateEnv
-    let func = arg.resourceSource.meta
+  fetch(arg, successCallback, errorCallback) {
+    const dateEnv = arg.context.dateEnv
+    const func = arg.resourceSource.meta
 
-    let publicArg: ResourceFuncArg = arg.range ? {
+    const publicArg: ResourceFuncArg = arg.range ? {
       start: dateEnv.toDate(arg.range.start),
       end: dateEnv.toDate(arg.range.end),
       startStr: dateEnv.formatIso(arg.range.start),
@@ -35,10 +36,10 @@ registerResourceSourceDef<ResourceFunc>({
       timeZone: dateEnv.timeZone,
     } : {}
 
-    return new Promise<ResourceInput[]>((resolve) => {
-      return func(publicArg, resolve)
-    }).then(
-      (rawResources) => ({ rawResources }),
+    unpromisify(
+      func.bind(null, publicArg),
+      (rawResources) => successCallback({ rawResources }),
+      errorCallback,
     )
   },
 

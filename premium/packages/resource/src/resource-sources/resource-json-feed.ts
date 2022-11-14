@@ -25,18 +25,20 @@ registerResourceSourceDef<JsonFeedMeta>({
     return null
   },
 
-  fetch(arg) {
-    let meta = arg.resourceSource.meta
-    let requestParams = buildRequestParams(meta, arg.range, arg.context)
+  fetch(arg, successCallback, errorCallback) {
+    const meta = arg.resourceSource.meta
+    const requestParams = buildRequestParams(meta, arg.range, arg.context)
 
-    return requestJson(
+    requestJson(
       meta.method,
       meta.url,
       requestParams,
-    ).then(([rawResources, response]: [ResourceInput[], Response]) => ({
-      rawResources,
-      response,
-    }))
+    ).then(
+      ([rawResources, response]: [ResourceInput[], Response]) => {
+        successCallback({ rawResources, response })
+      },
+      errorCallback,
+    )
   },
 
 })

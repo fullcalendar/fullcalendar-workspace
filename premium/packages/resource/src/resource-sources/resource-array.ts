@@ -13,8 +13,8 @@ registerResourceSourceDef<ResourceInput[]>({
     return null
   },
 
-  fetch(arg) {
-    return Promise.resolve({
+  fetch(arg, successCallback) {
+    successCallback({
       rawResources: arg.resourceSource.meta,
     })
   },

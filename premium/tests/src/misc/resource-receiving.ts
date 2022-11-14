@@ -1,7 +1,4 @@
-import XHRMockLib from 'xhr-mock'
-import { cjsInterop } from '@fullcalendar/standard-tests/lib/cjs'
-
-const XHRMock = cjsInterop(XHRMockLib)
+import fetchMock from 'fetch-mock'
 
 /*
 resources as an array
@@ -105,26 +102,21 @@ describe('event resources', () => {
   })
 
   describe('when using a JSON feed', () => {
-    beforeEach(() => {
-      XHRMock.setup()
-    })
-
     afterEach(() => {
-      XHRMock.teardown()
+      fetchMock.restore()
     })
 
     it('reads correctly', (done) => {
-      XHRMock.get(/^my-feed\.json/, (req, res) => (
-        res.status(200)
-          .header('content-type', 'application/json')
-          .body(JSON.stringify([
-            { id: 1, title: 'room 1' },
-            { id: 2, title: 'room 2' },
-          ]))
-      ))
+      const givenUrl = window.location.href + '/my-feed.php'
+      fetchMock.get(/my-feed\.php/, {
+        body: [
+          { id: 1, title: 'room 1' },
+          { id: 2, title: 'room 2' },
+        ],
+      })
 
       let calendar = initCalendar({
-        resources: 'my-feed.json',
+        resources: givenUrl,
       })
 
       setTimeout(() => {
@@ -135,7 +127,7 @@ describe('event resources', () => {
         expect(resources[0].title).toBe('room 1')
         expect(resources[1].title).toBe('room 2')
         setTimeout(done)
-      }, 0)
+      }, 100)
     })
   })
 
