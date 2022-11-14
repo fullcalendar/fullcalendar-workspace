@@ -2,7 +2,6 @@
   "private": true,
   "name": "@fullcalendar/workspace",
   "version": "0.0.0",
-  "type": "module",
   "devDependencies": {
     "@fullcalendar/standard-scripts": "workspace:*",
     "@fullcalendar/workspace-scripts": "workspace:*"
@@ -18,6 +17,7 @@
     "ci": "pnpm run lint --all && pnpm run build --all && pnpm run test --all",
     "release": "pnpm run ci && echo 'TODO: release stuff'"
   },
+  "type": "module",
   "monorepoConfig": {
     "archiveSubtrees": [
       "./standard",

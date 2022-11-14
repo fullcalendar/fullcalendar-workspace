@@ -4,7 +4,6 @@
   "title": "FullCalendar Premium Bundle",
   "description": "An easily consumable combination of standard and premium plugins",
   "docs": "https://fullcalendar.io/docs/initialize-globals",
-  "type": "module",
   "dependencies": {
     "@fullcalendar/adaptive": "workspace:*",
     "@fullcalendar/core": "workspace:*",
@@ -27,6 +26,7 @@
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint ."
   },
+  "type": "module",
   "tsConfig": {
     "extends":  "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
     "compilerOptions": {

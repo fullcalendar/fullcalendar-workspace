@@ -4,7 +4,6 @@
   "title": "FullCalendar Resource Day Grid Plugin",
   "description": "Displays events in individual columns for days and resources",
   "docs": "https://fullcalendar.io/docs/resource-daygrid-view",
-  "type": "module",
   "dependencies": {
     "@fullcalendar/daygrid": "workspace:*",
     "@fullcalendar/premium-common": "workspace:*"
@@ -23,6 +22,7 @@
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint ."
   },
+  "type": "module",
   "tsConfig": {
     "extends":  "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
     "compilerOptions": {

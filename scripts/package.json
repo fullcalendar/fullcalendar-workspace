@@ -2,7 +2,6 @@
   "private": true,
   "name": "@fullcalendar/workspace-scripts",
   "version": "0.0.0",
-  "type": "module",
   "devDependencies": {
     "@fullcalendar/standard-scripts": "workspace:*",
     "@pnpm/make-dedicated-lockfile": "0.3.20",
@@ -16,6 +15,7 @@
   "scripts": {
     "lint": "eslint ."
   },
+  "type": "module",
   "tsConfig": {
     "extends": "@fullcalendar/standard-scripts/config/tsconfig.node.json",
     "compilerOptions": {

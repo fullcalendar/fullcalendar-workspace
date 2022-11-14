@@ -4,7 +4,6 @@
   "title": "FullCalendar Timeline Plugin",
   "description": "Display events on a horizontal time axis (without resources)",
   "docs": "https://fullcalendar.io/docs/timeline-view-no-resources",
-  "type": "module",
   "dependencies": {
     "@fullcalendar/premium-common": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*"
@@ -21,6 +20,7 @@
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint ."
   },
+  "type": "module",
   "tsConfig": {
     "extends":  "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
     "compilerOptions": {

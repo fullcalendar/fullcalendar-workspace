@@ -4,7 +4,6 @@
   "title": "FullCalendar Resource Timeline Plugin",
   "description": "Display events and resources on a horizontal time axis",
   "docs": "https://fullcalendar.io/docs/timeline-view",
-  "type": "module",
   "dependencies": {
     "@fullcalendar/premium-common": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*",
@@ -24,6 +23,7 @@
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint ."
   },
+  "type": "module",
   "tsConfig": {
     "extends":  "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
     "compilerOptions": {

@@ -4,7 +4,6 @@
   "title": "FullCalendar Resource Time Grid Plugin",
   "description": "Displays events on a vertical resource view with time slots",
   "docs": "https://fullcalendar.io/docs/vertical-resource-view",
-  "type": "module",
   "dependencies": {
     "@fullcalendar/premium-common": "workspace:*",
     "@fullcalendar/resource-daygrid": "workspace:*",
@@ -24,6 +23,7 @@
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint ."
   },
+  "type": "module",
   "tsConfig": {
     "extends":  "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
     "compilerOptions": {
