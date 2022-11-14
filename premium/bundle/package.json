@@ -17,8 +17,7 @@
     "@fullcalendar/resource-timeline": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*",
     "@fullcalendar/timegrid": "workspace:*",
-    "@fullcalendar/timeline": "workspace:*",
-    "tslib": "^2.1.0"
+    "@fullcalendar/timeline": "workspace:*"
   },
   "devDependencies": {
     "@fullcalendar/standard-scripts": "workspace:*"

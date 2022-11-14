@@ -4,9 +4,6 @@
   "title": "FullCalendar Premium Common",
   "description": "Utilities for all of FullCalendar Scheduler's plugins",
   "type": "module",
-  "dependencies": {
-    "tslib": "^2.1.0"
-  },
   "peerDependencies": {
     "@fullcalendar/core": "workspace:*"
   },
@@ -34,8 +31,7 @@
       ".": { "iife": true }
     },
     "iifeGlobals": {
-      ".": "FullCalendar.PremiumCommon",
-      "tslib": ""
+      ".": "FullCalendar.PremiumCommon"
     }
   },
   "publishConfig": {

@@ -5,8 +5,7 @@
   "description": "Offers base support for resources. Required for all resource-related plugins.",
   "type": "module",
   "dependencies": {
-    "@fullcalendar/premium-common": "workspace:*",
-    "tslib": "^2.1.0"
+    "@fullcalendar/premium-common": "workspace:*"
   },
   "peerDependencies": {
     "@fullcalendar/core": "workspace:*"
@@ -37,8 +36,7 @@
     },
     "iifeGlobals": {
       ".": "FullCalendar.Resource",
-      "./internal": "FullCalendar.Resource.Internal",
-      "tslib": ""
+      "./internal": "FullCalendar.Resource.Internal"
     }
   },
   "publishConfig": {

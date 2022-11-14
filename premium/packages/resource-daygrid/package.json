@@ -7,8 +7,7 @@
   "type": "module",
   "dependencies": {
     "@fullcalendar/daygrid": "workspace:*",
-    "@fullcalendar/premium-common": "workspace:*",
-    "tslib": "^2.1.0"
+    "@fullcalendar/premium-common": "workspace:*"
   },
   "peerDependencies": {
     "@fullcalendar/core": "workspace:*",
@@ -41,8 +40,7 @@
     },
     "iifeGlobals": {
       ".": "FullCalendar.ResourceDayGrid",
-      "./internal": "FullCalendar.ResourceDayGrid.Internal",
-      "tslib": ""
+      "./internal": "FullCalendar.ResourceDayGrid.Internal"
     }
   },
   "publishConfig": {

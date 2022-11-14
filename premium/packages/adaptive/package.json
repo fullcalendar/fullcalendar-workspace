@@ -5,8 +5,7 @@
   "description": "Optimizes FullCalendar for print (and soon other types of devices)",
   "type": "module",
   "dependencies": {
-    "@fullcalendar/premium-common": "workspace:*",
-    "tslib": "^2.1.0"
+    "@fullcalendar/premium-common": "workspace:*"
   },
   "peerDependencies": {
     "@fullcalendar/core": "workspace:*"
@@ -35,8 +34,7 @@
       ".": { "iife": true }
     },
     "iifeGlobals": {
-      ".": "FullCalendar.Adaptive",
-      "tslib": ""
+      ".": "FullCalendar.Adaptive"
     }
   },
   "publishConfig": {

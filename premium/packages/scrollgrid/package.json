@@ -5,8 +5,7 @@
   "description": "Tabular data chunked into scrollable panes",
   "type": "module",
   "dependencies": {
-    "@fullcalendar/premium-common": "workspace:*",
-    "tslib": "^2.1.0"
+    "@fullcalendar/premium-common": "workspace:*"
   },
   "peerDependencies": {
     "@fullcalendar/core": "workspace:*"
@@ -37,8 +36,7 @@
     },
     "iifeGlobals": {
       ".": "FullCalendar.ScrollGrid",
-      "./internal": "FullCalendar.ScrollGrid.Internal",
-      "tslib": ""
+      "./internal": "FullCalendar.ScrollGrid.Internal"
     }
   },
   "publishConfig": {

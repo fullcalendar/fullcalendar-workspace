@@ -7,8 +7,7 @@
   "type": "module",
   "dependencies": {
     "@fullcalendar/premium-common": "workspace:*",
-    "@fullcalendar/scrollgrid": "workspace:*",
-    "tslib": "^2.1.0"
+    "@fullcalendar/scrollgrid": "workspace:*"
   },
   "peerDependencies": {
     "@fullcalendar/core": "workspace:*"
@@ -39,8 +38,7 @@
     },
     "iifeGlobals": {
       ".": "FullCalendar.Timeline",
-      "./internal": "FullCalendar.Timeline.Internal",
-      "tslib": ""
+      "./internal": "FullCalendar.Timeline.Internal"
     }
   },
   "publishConfig": {

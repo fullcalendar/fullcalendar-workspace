@@ -8,8 +8,7 @@
   "dependencies": {
     "@fullcalendar/premium-common": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*",
-    "@fullcalendar/timeline": "workspace:*",
-    "tslib": "^2.1.0"
+    "@fullcalendar/timeline": "workspace:*"
   },
   "peerDependencies": {
     "@fullcalendar/core": "workspace:*",
@@ -42,8 +41,7 @@
     },
     "iifeGlobals": {
       ".": "FullCalendar.ResourceTimeline",
-      "./internal": "FullCalendar.ResourceTimeline.Internal",
-      "tslib": ""
+      "./internal": "FullCalendar.ResourceTimeline.Internal"
     }
   },
   "publishConfig": {
