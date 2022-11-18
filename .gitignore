@@ -3,5 +3,7 @@ node_modules
 .turbo
 tsconfig.json
 tsconfig.tsbuildinfo
+!/contrib/angular/tsconfig.json
+!/contrib/angular/tsconfig.tsbuildinfo
 dist
 tmp
