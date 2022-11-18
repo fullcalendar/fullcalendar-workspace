@@ -22,6 +22,10 @@ export class TimelineViewWrapper extends ViewWrapper {
     return this.el.querySelector('.fc-timeline-header').parentElement // TODO: use closest with .fc-scroller
   }
 
+  getBodyScrollerEl() {
+    return this.el.querySelector('.fc-timeline-body').parentElement // TODO: use closest with .fc-scroller
+  }
+
   hasNowIndicator() {
     let inHeader = this.header.hasNowIndicator()
     let inBody = this.timelineGrid.hasNowIndicator()

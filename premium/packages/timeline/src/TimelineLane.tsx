@@ -33,6 +33,7 @@ export interface TimelineLaneCoreProps {
   eventResize: EventInteractionState | null
   timelineCoords: TimelineCoords | null // TODO: renamt to SLAT coords?
   resourceId?: string // hack
+  syncParentMinHeight?: boolean // hack
 }
 
 interface TimelineLaneState {
@@ -142,9 +143,10 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
   updateSize() {
     let { props } = this
     let { timelineCoords } = props
+    const innerEl = this.innerElRef.current
 
     if (props.onHeightChange) {
-      props.onHeightChange(this.innerElRef.current, false)
+      props.onHeightChange(innerEl, false)
     }
 
     if (timelineCoords) {
@@ -157,9 +159,14 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         )),
       }, () => {
         if (props.onHeightChange) {
-          props.onHeightChange(this.innerElRef.current, true)
+          props.onHeightChange(innerEl, true)
         }
       })
+    }
+
+    // hack
+    if (props.syncParentMinHeight) {
+      innerEl.parentElement.style.minHeight = innerEl.style.height
     }
   }
 

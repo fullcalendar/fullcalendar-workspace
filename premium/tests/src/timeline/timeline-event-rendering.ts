@@ -592,6 +592,35 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
     expect(anyElsIntersect(eventEls)).toBe(false)
   })
 
+  // https://github.com/fullcalendar/fullcalendar/issues/5792
+  it('Timeline body (with no resources) vertically expands with events', () => {
+    let calendar = initCalendar({
+      initialView: 'timelineDay',
+      initialDate: '2018-12-13',
+      contentHeight: 100,
+      events: [
+        // events definitely have height taller than 100
+        { start: '2018-12-13T00:00:00' },
+        { start: '2018-12-13T00:00:00' },
+        { start: '2018-12-13T00:00:00' },
+        { start: '2018-12-13T00:00:00' },
+        { start: '2018-12-13T00:00:00' },
+        { start: '2018-12-13T00:00:00' },
+        { start: '2018-12-13T00:00:00' },
+        { start: '2018-12-13T00:00:00' },
+        { start: '2018-12-13T00:00:00' },
+        { start: '2018-12-13T00:00:00' },
+      ],
+    })
+    let timelineViewWrapper = new TimelineViewWrapper(calendar)
+    let scrollEl = timelineViewWrapper.getBodyScrollerEl()
+    let gridEl = timelineViewWrapper.timelineGrid.el
+    expect(
+      gridEl.offsetHeight - // should be be bigger than scroll height...
+      scrollEl.offsetHeight,
+    ).toBeGreaterThan(10) // ...by more than this
+  })
+
   // https://github.com/fullcalendar/fullcalendar/issues/5549
   // repro that doesn't need zoom: https://codepen.io/arshaw/pen/NWxvjwv?editable=true&editors=001
   it('condenses events even when left/right are not computed as integers', () => {
