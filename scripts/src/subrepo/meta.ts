@@ -1,110 +1,121 @@
 import { join as joinPaths } from 'path'
-import { readFile, writeFile, copyFile, rm } from 'fs/promises'
-import { ScriptContext } from '@fullcalendar/standard-scripts/utils/script-runner'
+import { rm, readFile, writeFile } from 'fs/promises'
+import * as yaml from 'js-yaml'
+import { makeDedicatedLockfile } from '@pnpm/make-dedicated-lockfile'
+import { execCapture, execSilent } from '@fullcalendar/standard-scripts/utils/exec'
 import {
   addFile,
   assumeUnchanged,
   checkoutFile,
-  commitDir,
   isStaged,
 } from '@fullcalendar/standard-scripts/utils/git'
 import { fileExists } from '@fullcalendar/standard-scripts/utils/fs'
 import { boolPromise } from '@fullcalendar/standard-scripts/utils/lang'
-import { querySubrepoSubdirs } from '../utils/git-subrepo.js'
 
-// config
-import ghostFileConfigMap, { GhostFileConfig } from '../../config/subrepo-meta.js'
+const workspaceFilename = 'pnpm-workspace.yaml'
+const lockFilename = 'pnpm-lock.yaml'
+const miscFiles = [
+  '.npmrc',
+  '.editorconfig',
+]
 
-export default async function(this: ScriptContext, ...args: string[]) {
-  const { monorepoDir } = this.monorepoStruct
+export default async function() {
+  const monorepoDir = process.cwd()
+  const subdirs = await getGitSubmodulePaths(monorepoDir)
+  const subdirsWithPkgJson = await asyncFilter(subdirs, (subdir) => {
+    return fileExists(joinPaths(subdir, 'package.json'))
+  })
 
-  await updateGhostFiles(
-    monorepoDir,
-    await querySubrepoSubdirs(monorepoDir),
-    !args.includes('--no-commit'),
-  )
-}
+  const workspaceConfigPath = joinPaths(monorepoDir, workspaceFilename)
+  const workspaceConfigStr = await readFile(workspaceConfigPath, 'utf8')
+  const workspaceConfig = yaml.load(workspaceConfigStr) as any
 
-export async function hideMonorepoGhostFiles(monorepoDir: string) {
-  const subdirs = await querySubrepoSubdirs(monorepoDir)
-  const ghostFilePaths = getGhostFilePaths(monorepoDir, subdirs)
+  for (const subdir of subdirsWithPkgJson) {
+    const subdirFull = joinPaths(monorepoDir, subdir)
+    const subpkgs = scopePkgGlobs(workspaceConfig.packages, subdir)
+    const isSubworkspace = Boolean(subpkgs.length)
 
-  await hideFiles(ghostFilePaths)
-}
+    if (isSubworkspace) {
+      const subconfig = { packages: subpkgs }
+      const subpath = joinPaths(subdirFull, workspaceFilename)
+      await writeFile(subpath, yaml.dump(subconfig))
+    }
 
-export async function updateGhostFiles(
-  monorepoDir: string,
-  subdirs: string[] = [],
-  doCommit = true,
-) {
-  const ghostFilePaths = getGhostFilePaths(monorepoDir, subdirs)
+    console.log('[PROCESSING]', subdirFull)
 
-  await revealFiles(ghostFilePaths)
-  await writeFiles(monorepoDir, subdirs)
-  const anyAdded = await addFiles(ghostFilePaths)
+    // this util has been patched to NOT rewrite the package.json and NOT call pnpm-install
+    // because it was too fragile and throwing errors
+    await makeDedicatedLockfile(monorepoDir, subdirFull)
 
-  if (anyAdded && doCommit) {
-    await commitDir(monorepoDir, 'subrepo meta file changes')
-  }
-
-  // if not committed, files will be seen as staged, even after hiding them
-  await hideFiles(ghostFilePaths)
-}
-
-function getGhostFilePaths(monorepoDir: string, subdirs: string[]): string[] {
-  const ghostFileSubpaths = Object.keys(ghostFileConfigMap)
-  const paths: string[] = []
-
-  for (const subdir of subdirs) {
-    for (const ghostFilePath of ghostFileSubpaths) {
-      paths.push(joinPaths(monorepoDir, subdir, ghostFilePath))
+    // however, calling pnpm-install is important b/c it fixes up the half-baked generated lockfile
+    if (isSubworkspace) {
+      // sub-workspaces have their own workspace config file which prevent pnpm-install from
+      // attempting to install the root workspace. doing an install this way is much more accurate.
+      await execSilent([
+        'pnpm',
+        'install',
+        '--ignore-scripts',
+      ], {
+        cwd: subdirFull,
+      })
+    } else {
+      // standalone packages do NOT have their own workspace config and thus will install the root
+      // workspace if pnpm-install is called. provide options to scope just this package.
+      // options are inspired by make-dedicated-lockfile source code.
+      await execSilent([
+        'pnpm',
+        'install',
+        '--ignore-scripts',
+        '--lockfile-dir=.',
+        '--filter=.',
+        '--no-link-workspace-packages',
+      ], {
+        cwd: subdirFull,
+      })
     }
   }
 
-  return paths
+  console.log('[RESTORING]', monorepoDir)
+
+  // restore all node_modules files as if they were part of root monorepo. very fast.
+  await execSilent([
+    'pnpm',
+    'install',
+    '--ignore-scripts',
+  ], {
+    cwd: monorepoDir,
+  })
+
+  console.log('[SUCCESS]')
 }
 
-// Generation
+// pnpm-workspace.yaml
 // -------------------------------------------------------------------------------------------------
 
-async function writeFiles(monorepoDir: string, subdirs: string[]) {
-  await Promise.all(
-    subdirs.map((subdir) => writeSubdirFiles(monorepoDir, subdir)),
-  )
-}
+function scopePkgGlobs(globs: string[], subdir: string): string[] {
+  const scopedGlobs = []
+  const prefix = `./${subdir}/`
 
-async function writeSubdirFiles(monorepoDir: string, subdir: string): Promise<void> {
-  await Promise.all(
-    Object.keys(ghostFileConfigMap).map(async (ghostFileSubpath) => {
-      const ghostFileConfig = ghostFileConfigMap[ghostFileSubpath]
-      await writeSubdirFile(monorepoDir, subdir, ghostFileSubpath, ghostFileConfig)
-    }),
-  )
-}
-
-async function writeSubdirFile(
-  monorepoDir: string,
-  subdir: string,
-  ghostFileSubpath: string,
-  ghostFileConfig: GhostFileConfig,
-): Promise<void> {
-  if (ghostFileConfig.generator) {
-    const readOrig = () => readFile(joinPaths(monorepoDir, ghostFileSubpath), 'utf8')
-    const res = await ghostFileConfig.generator(readOrig, monorepoDir, subdir)
-
-    if (typeof res === 'string') {
-      await writeFile(joinPaths(monorepoDir, subdir, ghostFileSubpath), res)
+  for (const glob of globs) {
+    if (glob.indexOf(prefix) === 0) {
+      scopedGlobs.push('./' + glob.substring(prefix.length))
     }
-  } else {
-    await copyFile(
-      joinPaths(monorepoDir, ghostFileSubpath),
-      joinPaths(monorepoDir, subdir, ghostFileSubpath),
-    )
   }
+
+  return scopedGlobs
 }
 
 // Git utils
 // -------------------------------------------------------------------------------------------------
+
+async function getGitSubmodulePaths(rootDir: string): Promise<string[]> {
+  const s = await execCapture(['git', 'submodule', 'status'], { cwd: rootDir })
+  const lines = s.trim().split('\n')
+
+  return lines.map((line) => {
+    return line.trim().split(' ')[1]
+  })
+}
 
 async function revealFiles(paths: string[]): Promise<void> {
   for (let path of paths) {
@@ -139,4 +150,16 @@ async function hideFiles(paths: string[]): Promise<void> {
       await rm(path, { force: true })
     }
   }
+}
+
+// Git utils
+// -------------------------------------------------------------------------------------------------
+
+async function asyncFilter<T = unknown>(
+  arr: T[],
+  predicate: (item: T) => Promise<boolean>,
+): Promise<T[]> {
+  const results = await Promise.all(arr.map(predicate))
+
+  return arr.filter((_v, index) => results[index])
 }
