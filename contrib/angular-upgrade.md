@@ -10,18 +10,19 @@ Improve scripts in root `package.json`:
      "ng": "ng",
      "start": "ng serve",
 -    "build": "ng build",
-+    "build": "ng build lib",
++    "build": "ng build lib && pnpm run meta",
 -    "watch": "ng build --watch --configuration development",
 +    "watch": "ng build lib --watch --configuration development",
 -    "test": "ng test lib"
 +    "test": "ng test lib --watch=false --browsers ChromeHeadless",
 +    "test:dev": "ng test lib",
 +    "clean": "rm -rf dist .angular/cache",
++    "meta": "mkdir -p dist/lib && cp README.md LICENSE.txt dist/lib",
 +    "ci": "pnpm run clean && pnpm run build && pnpm run test"
    },
 ```
 
-Reintroduce `package.json::(publishConfig|dependenciesNote)`
+Reintroduce `package.json::(publishConfig|dependenciesNote|versionNote)`
 
 Reintroduce `lib/ng-package.json::allowedNonPeerDependencies`
 
