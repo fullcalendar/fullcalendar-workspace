@@ -2,7 +2,7 @@ import { join as joinPaths } from 'path'
 import { assumeUnchanged, checkoutFile } from '@fullcalendar/standard-scripts/utils/git'
 import { boolPromise } from '@fullcalendar/standard-scripts/utils/lang'
 import { queryGitSubmodulePkgs } from './utils.js'
-import { workspaceFilename, lockFilename, miscSubpaths } from './config.js'
+import { allPaths } from './config.js'
 
 export default async function() {
   const monorepoDir = process.cwd()
@@ -10,15 +10,10 @@ export default async function() {
 
   for (const submoduleSubdir of submoduleSubdirs) {
     const submoduleDir = joinPaths(monorepoDir, submoduleSubdir)
-    const fileSubpathsToAdd: string[] = [
-      lockFilename,
-      workspaceFilename,
-      ...miscSubpaths,
-    ]
 
     console.log('[SHOWING]', submoduleDir)
 
-    for (const fileSubpath of fileSubpathsToAdd) {
+    for (const fileSubpath of allPaths) {
       const filePath = joinPaths(submoduleDir, fileSubpath)
       const inIndex =  await boolPromise(assumeUnchanged(filePath, false))
 

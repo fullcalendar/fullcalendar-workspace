@@ -6,7 +6,7 @@ import { execSilent } from '@fullcalendar/standard-scripts/utils/exec'
 import { addFile, assumeUnchanged } from '@fullcalendar/standard-scripts/utils/git'
 import { boolPromise } from '@fullcalendar/standard-scripts/utils/lang'
 import { queryGitSubmodulePkgs } from './utils.js'
-import { workspaceFilename, lockFilename, miscSubpaths } from './config.js'
+import { lockFilename, workspaceFilename, turboFilename, miscSubpaths } from './config.js'
 
 export default async function() {
   const monorepoDir = process.cwd()
@@ -69,7 +69,11 @@ export default async function() {
 
     const fileSubpathsToAdd: string[] = [
       lockFilename,
-      ...(isSubworkspace ? [workspaceFilename] : []),
+      ...(
+        isSubworkspace ?
+          [workspaceFilename, turboFilename] :
+          []
+      ),
       ...miscSubpaths,
     ]
 
