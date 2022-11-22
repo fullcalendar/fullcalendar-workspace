@@ -2,25 +2,15 @@ import { join as joinPaths } from 'path'
 import { rm, readFile, writeFile, copyFile } from 'fs/promises'
 import * as yaml from 'js-yaml'
 import { makeDedicatedLockfile } from '@pnpm/make-dedicated-lockfile'
-import { execCapture, execSilent } from '@fullcalendar/standard-scripts/utils/exec'
+import { execSilent } from '@fullcalendar/standard-scripts/utils/exec'
 import { addFile, assumeUnchanged } from '@fullcalendar/standard-scripts/utils/git'
-import { fileExists } from '@fullcalendar/standard-scripts/utils/fs'
 import { boolPromise } from '@fullcalendar/standard-scripts/utils/lang'
-
-const workspaceFilename = 'pnpm-workspace.yaml'
-const lockFilename = 'pnpm-lock.yaml'
-const miscSubpaths = [
-  '.npmrc',
-  '.editorconfig',
-]
+import { queryGitSubmodulePkgs } from './utils.js'
+import { workspaceFilename, lockFilename, miscSubpaths } from './config.js'
 
 export default async function() {
   const monorepoDir = process.cwd()
-
-  let submoduleSubdirs = await queryGitSubmodules(monorepoDir)
-  submoduleSubdirs = await asyncFilter(submoduleSubdirs, (subdir) => {
-    return fileExists(joinPaths(subdir, 'package.json'))
-  })
+  const submoduleSubdirs = await queryGitSubmodulePkgs(monorepoDir)
 
   const workspaceConfigPath = joinPaths(monorepoDir, workspaceFilename)
   const workspaceConfigStr = await readFile(workspaceConfigPath, 'utf8')
@@ -121,28 +111,4 @@ function scopePkgGlobs(globs: string[], subdir: string): string[] {
   }
 
   return scopedGlobs
-}
-
-// Git utils
-// -------------------------------------------------------------------------------------------------
-
-async function queryGitSubmodules(rootDir: string): Promise<string[]> {
-  const s = await execCapture(['git', 'submodule', 'status'], { cwd: rootDir })
-  const lines = s.trim().split('\n')
-
-  return lines.map((line) => {
-    return line.trim().split(' ')[1]
-  })
-}
-
-// Lang utils
-// -------------------------------------------------------------------------------------------------
-
-async function asyncFilter<T = unknown>(
-  arr: T[],
-  predicate: (item: T) => Promise<boolean>,
-): Promise<T[]> {
-  const results = await Promise.all(arr.map(predicate))
-
-  return arr.filter((_v, index) => results[index])
 }
