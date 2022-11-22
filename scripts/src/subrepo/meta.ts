@@ -1,28 +1,24 @@
 import { join as joinPaths } from 'path'
-import { rm, readFile, writeFile } from 'fs/promises'
+import { rm, readFile, writeFile, copyFile } from 'fs/promises'
 import * as yaml from 'js-yaml'
 import { makeDedicatedLockfile } from '@pnpm/make-dedicated-lockfile'
 import { execCapture, execSilent } from '@fullcalendar/standard-scripts/utils/exec'
-import {
-  addFile,
-  assumeUnchanged,
-  checkoutFile,
-  isStaged,
-} from '@fullcalendar/standard-scripts/utils/git'
+import { addFile, assumeUnchanged } from '@fullcalendar/standard-scripts/utils/git'
 import { fileExists } from '@fullcalendar/standard-scripts/utils/fs'
 import { boolPromise } from '@fullcalendar/standard-scripts/utils/lang'
 
 const workspaceFilename = 'pnpm-workspace.yaml'
 const lockFilename = 'pnpm-lock.yaml'
-const miscFiles = [
+const miscSubpaths = [
   '.npmrc',
   '.editorconfig',
 ]
 
 export default async function() {
   const monorepoDir = process.cwd()
-  const subdirs = await getGitSubmodulePaths(monorepoDir)
-  const subdirsWithPkgJson = await asyncFilter(subdirs, (subdir) => {
+
+  let submoduleSubdirs = await queryGitSubmodules(monorepoDir)
+  submoduleSubdirs = await asyncFilter(submoduleSubdirs, (subdir) => {
     return fileExists(joinPaths(subdir, 'package.json'))
   })
 
@@ -30,22 +26,22 @@ export default async function() {
   const workspaceConfigStr = await readFile(workspaceConfigPath, 'utf8')
   const workspaceConfig = yaml.load(workspaceConfigStr) as any
 
-  for (const subdir of subdirsWithPkgJson) {
-    const subdirFull = joinPaths(monorepoDir, subdir)
-    const subpkgs = scopePkgGlobs(workspaceConfig.packages, subdir)
+  for (const submoduleSubdir of submoduleSubdirs) {
+    const submoduleDir = joinPaths(monorepoDir, submoduleSubdir)
+    const subpkgs = scopePkgGlobs(workspaceConfig.packages, submoduleSubdir)
     const isSubworkspace = Boolean(subpkgs.length)
+
+    console.log('[PROCESSING]', submoduleDir)
 
     if (isSubworkspace) {
       const subconfig = { packages: subpkgs }
-      const subpath = joinPaths(subdirFull, workspaceFilename)
+      const subpath = joinPaths(submoduleDir, workspaceFilename)
       await writeFile(subpath, yaml.dump(subconfig))
     }
 
-    console.log('[PROCESSING]', subdirFull)
-
     // this util has been patched to NOT rewrite the package.json and NOT call pnpm-install
     // because it was too fragile and throwing errors
-    await makeDedicatedLockfile(monorepoDir, subdirFull)
+    await makeDedicatedLockfile(monorepoDir, submoduleDir)
 
     // however, calling pnpm-install is important b/c it fixes up the half-baked generated lockfile
     if (isSubworkspace) {
@@ -56,7 +52,7 @@ export default async function() {
         'install',
         '--ignore-scripts',
       ], {
-        cwd: subdirFull,
+        cwd: submoduleDir,
       })
     } else {
       // standalone packages do NOT have their own workspace config and thus will install the root
@@ -70,8 +66,30 @@ export default async function() {
         '--filter=.',
         '--no-link-workspace-packages',
       ], {
-        cwd: subdirFull,
+        cwd: submoduleDir,
       })
+    }
+
+    await Promise.all(
+      miscSubpaths.map((miscFile) => copyFile(
+        joinPaths(monorepoDir, miscFile),
+        joinPaths(submoduleDir, miscFile),
+      )),
+    )
+
+    const fileSubpathsToAdd: string[] = [
+      lockFilename,
+      ...(isSubworkspace ? [workspaceFilename] : []),
+      ...miscSubpaths,
+    ]
+
+    for (const fileSubpath of fileSubpathsToAdd) {
+      const filePath = joinPaths(submoduleDir, fileSubpath)
+
+      await boolPromise(assumeUnchanged(filePath, false)) // won't fail if path doesn't exist
+      await addFile(filePath)
+      await assumeUnchanged(filePath, true)
+      await rm(filePath)
     }
   }
 
@@ -89,7 +107,7 @@ export default async function() {
   console.log('[SUCCESS]')
 }
 
-// pnpm-workspace.yaml
+// Workspace utils
 // -------------------------------------------------------------------------------------------------
 
 function scopePkgGlobs(globs: string[], subdir: string): string[] {
@@ -108,7 +126,7 @@ function scopePkgGlobs(globs: string[], subdir: string): string[] {
 // Git utils
 // -------------------------------------------------------------------------------------------------
 
-async function getGitSubmodulePaths(rootDir: string): Promise<string[]> {
+async function queryGitSubmodules(rootDir: string): Promise<string[]> {
   const s = await execCapture(['git', 'submodule', 'status'], { cwd: rootDir })
   const lines = s.trim().split('\n')
 
@@ -117,42 +135,7 @@ async function getGitSubmodulePaths(rootDir: string): Promise<string[]> {
   })
 }
 
-async function revealFiles(paths: string[]): Promise<void> {
-  for (let path of paths) {
-    const inIndex = await boolPromise(assumeUnchanged(path, false))
-    if (inIndex) {
-      await checkoutFile(path)
-    }
-  }
-}
-
-async function addFiles(paths: string[]): Promise<boolean> {
-  let anyAdded = false
-
-  for (let path of paths) {
-    // TODO: refactor this file to only add generated paths that return string/true
-    if (await fileExists(path)) {
-      await addFile(path)
-
-      if (await isStaged(path)) {
-        anyAdded = true
-      }
-    }
-  }
-
-  return anyAdded
-}
-
-async function hideFiles(paths: string[]): Promise<void> {
-  for (let path of paths) {
-    const inIndex = await boolPromise(assumeUnchanged(path, true))
-    if (inIndex) {
-      await rm(path, { force: true })
-    }
-  }
-}
-
-// Git utils
+// Lang utils
 // -------------------------------------------------------------------------------------------------
 
 async function asyncFilter<T = unknown>(
