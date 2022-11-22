@@ -27,6 +27,8 @@ Reintroduce `lib/ng-package.json::allowedNonPeerDependencies`
 
 Port over fullcalendar-related dependencies to `package.json`
 
+Automatically update `.editorconfig` and such via `meta:update` scripts
+
 Rename the `lib` package to `@fullcalendar/angular`:
 
 1. `tsconfig.json::compilerOptions.paths`
@@ -50,8 +52,6 @@ Restore `app` files:
 3. `git checkout -- app/src`
 
 Add `allowSyntheticDefaultImports` to root `tsconfig.json`
-
-Add dependencies to root `package.json`
 
 Review and commit changes
 

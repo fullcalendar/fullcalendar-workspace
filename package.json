@@ -15,7 +15,9 @@
     "test:dev": "standard-scripts test --dev",
     "clean": "standard-scripts clean",
     "ci": "pnpm run lint --all && pnpm run build --all && pnpm run test --all",
-    "release": "pnpm run ci && echo 'TODO: release stuff'"
+    "meta:update": "workspace-scripts meta:update",
+    "meta:show": "workspace-scripts meta:show",
+    "meta:hide": "workspace-scripts meta:hide"
   },
   "type": "module",
   "monorepoConfig": {
