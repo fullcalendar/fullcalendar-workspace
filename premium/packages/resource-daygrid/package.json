@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/resource-daygrid",
-  "version": "6.0.0-beta.1",
+  "version": "6.0.0-beta.2",
   "title": "FullCalendar Resource Day Grid Plugin",
   "description": "Displays events in individual columns for days and resources",
   "docs": "https://fullcalendar.io/docs/resource-daygrid-view",

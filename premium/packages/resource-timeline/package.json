@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/resource-timeline",
-  "version": "6.0.0-beta.1",
+  "version": "6.0.0-beta.2",
   "title": "FullCalendar Resource Timeline Plugin",
   "description": "Display events and resources on a horizontal time axis",
   "docs": "https://fullcalendar.io/docs/timeline-view",
