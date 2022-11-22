@@ -2,7 +2,7 @@ import { join as joinPaths } from 'path'
 import { assumeUnchanged, checkoutFile } from '@fullcalendar/standard-scripts/utils/git'
 import { boolPromise } from '@fullcalendar/standard-scripts/utils/lang'
 import { queryGitSubmodulePkgs } from './utils.js'
-import { allPaths } from './config.js'
+import { allSubpaths } from './config.js'
 
 export default async function() {
   const monorepoDir = process.cwd()
@@ -13,7 +13,7 @@ export default async function() {
 
     console.log('[SHOWING]', submoduleDir)
 
-    for (const fileSubpath of allPaths) {
+    for (const fileSubpath of allSubpaths) {
       const filePath = joinPaths(submoduleDir, fileSubpath)
       const inIndex =  await boolPromise(assumeUnchanged(filePath, false))
 

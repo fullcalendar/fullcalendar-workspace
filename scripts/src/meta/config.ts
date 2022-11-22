@@ -6,7 +6,7 @@ export const miscSubpaths = [
   '.npmrc',
   '.editorconfig',
 ]
-export const allPaths = [
+export const allSubpaths = [
   lockFilename,
   workspaceFilename,
   turboFilename,
