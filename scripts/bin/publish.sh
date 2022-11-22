@@ -35,3 +35,8 @@ cd /Users/adam/Code/fullcalendar-workspace/contrib/angular && pnpm publish --no-
 cd /Users/adam/Code/fullcalendar-workspace/contrib/vue3 && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/contrib/vue2 && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace
+
+# tag pushing (DO SPECIAL for vue versions)
+# git tag -a v6.0.0-beta.2 -m v6.0.0-beta.2 && git push origin v6.0.0-beta.2
+# git tag -a v6.0.0-vue2beta.2 -m v6.0.0-vue2beta.2 && git push origin v6.0.0-vue2beta.2
+# git tag -a v6.0.0-vue3beta.2 -m v6.0.0-vue3beta.2 && git push origin v6.0.0-vue3beta.2
