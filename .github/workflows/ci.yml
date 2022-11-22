@@ -1,13 +1,11 @@
 name: CI
-
 on: [push]
-
 env:
   TZ: "America/New_York"
 
 jobs:
   root-ci:
-    name: Root CI
+    name: CI
     runs-on: ubuntu-latest
 
     steps:
@@ -26,18 +24,16 @@ jobs:
         with:
           node-version: 16.18.0
           cache: 'pnpm'
-          cache-dependency-path: pnpm-lock.yaml
 
       - name: Setup Turbo cache
         uses: actions/cache@v3
         with:
           path: node_modules/.cache/turbo
           key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
-          restore-keys: |
-            turbo-${{ github.job }}-${{ github.ref_name }}-
+          restore-keys: turbo-${{ github.job }}-${{ github.ref_name }}-
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Lint
         run: pnpm run lint --all
@@ -47,40 +43,3 @@ jobs:
 
       - name: Test
         run: pnpm run test --all
-
-  standard-ci:
-    name: Standard CI
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: standard
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v2.2.4
-        with:
-          version: 7.14.0
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.18.0
-          cache: 'pnpm'
-          cache-dependency-path: pnpm-lock.yaml
-
-      - name: Setup Turbo cache
-        uses: actions/cache@v3
-        with:
-          path: standard/node_modules/.cache/turbo
-          key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
-          restore-keys: |
-            turbo-${{ github.job }}-${{ github.ref_name }}-
-
-      - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
-
-      - name: Build
-        run: pnpm run build
