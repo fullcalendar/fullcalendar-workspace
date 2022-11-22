@@ -53,6 +53,8 @@ Restore `app` files:
 
 Add `allowSyntheticDefaultImports` to root `tsconfig.json`
 
+In `.gitignore` add "outer monorepo" line at end
+
 Review and commit changes
 
 `rm -rf contrib/angular-old`

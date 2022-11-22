@@ -1,6 +1,10 @@
 
+# Package manager
 node_modules
-.turbo
 
-dist
+# Generated
 tsconfig.json
+dist
+
+# Monorepo
+.turbo
