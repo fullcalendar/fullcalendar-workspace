@@ -33,9 +33,9 @@ importers:
       '@angular/platform-browser': ^15.0.0
       '@angular/platform-browser-dynamic': ^15.0.0
       '@angular/router': ^15.0.0
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
       '@types/jasmine': ~4.3.0
       fast-deep-equal: ^3.1.3
       jasmine-core: ~4.5.0
@@ -85,8 +85,8 @@ importers:
       '@babel/core': ^7.0.0
       '@babel/preset-env': ^7.9.0
       '@babel/preset-react': ^7.9.4
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
       '@rollup/plugin-babel': ^5.0.0
       '@rollup/plugin-commonjs': ^12.0.0
       '@rollup/plugin-json': ^4.0.3
@@ -150,8 +150,8 @@ importers:
       '@babel/plugin-transform-runtime': ^7.10.1
       '@babel/preset-env': ^7.8.4
       '@babel/runtime': ^7.12.1
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
       '@vue/test-utils': ^1.0.3
       babel-loader: ^8.1.0
       concurrently: ^5.3.0
@@ -200,8 +200,8 @@ importers:
 
   contrib/vue3:
     specifiers:
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
       '@vitejs/plugin-vue': ^3.2.0
       '@vue/test-utils': next
       concurrently: ^5.3.0
@@ -249,12 +249,12 @@ importers:
       '@angular/platform-browser': ^14.1.0
       '@angular/platform-browser-dynamic': ^14.1.0
       '@angular/router': ^14.1.0
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/list': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
-      '@fullcalendar/web-component': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/list': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
+      '@fullcalendar/web-component': 6.0.0-beta.2
       '@types/jasmine': ~4.0.0
       jasmine-core: ~4.2.0
       rxjs: ~7.5.0
@@ -300,10 +300,10 @@ importers:
       '@angular/platform-browser': ^15.0.0
       '@angular/platform-browser-dynamic': ^15.0.0
       '@angular/router': ^15.0.0
-      '@fullcalendar/angular': 6.0.0-beta.1
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
+      '@fullcalendar/angular': 6.0.0-beta.2
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
       '@types/jasmine': ~4.3.0
       jasmine-core: ~4.5.0
       karma: ~6.4.0
@@ -347,12 +347,12 @@ importers:
   examples/bootstrap4:
     specifiers:
       '@fortawesome/fontawesome-free': ^5.13.1
-      '@fullcalendar/bootstrap': 6.0.0-beta.1
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/list': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/bootstrap': 6.0.0-beta.2
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/list': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       bootstrap: ^4.5.0
       css-loader: ^4.3.0
       html-webpack-plugin: ^5.5.0
@@ -381,12 +381,12 @@ importers:
 
   examples/bootstrap5:
     specifiers:
-      '@fullcalendar/bootstrap5': 6.0.0-beta.1
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/list': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/bootstrap5': 6.0.0-beta.2
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/list': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       '@popperjs/core': ^2.11.6
       bootstrap: ^5.1.3
       bootstrap-icons: ^1.8.1
@@ -417,11 +417,11 @@ importers:
       '@babel/core': ^7.14.5
       '@babel/preset-env': ^7.14.5
       '@babel/preset-react': ^7.14.5
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/react': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
-      '@fullcalendar/timeline': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/react': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
+      '@fullcalendar/timeline': 6.0.0-beta.2
       '@testing-library/jest-dom': ^5.13.0
       '@testing-library/react': ^11.2.7
       babel-jest: ^27.0.2
@@ -447,11 +447,11 @@ importers:
 
   examples/locales:
     specifiers:
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/list': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/list': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       css-loader: ^4.3.0
       style-loader: ^3.3.1
       webpack: ^5.3.0
@@ -470,12 +470,12 @@ importers:
 
   examples/moment:
     specifiers:
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/list': 6.0.0-beta.1
-      '@fullcalendar/moment': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/list': 6.0.0-beta.2
+      '@fullcalendar/moment': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       css-loader: ^4.3.0
       html-webpack-plugin: ^5.5.0
       moment: ^2.29.1
@@ -501,10 +501,10 @@ importers:
 
   examples/moment-timezone:
     specifiers:
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/moment-timezone': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/moment-timezone': 6.0.0-beta.2
       css-loader: ^4.3.0
       html-webpack-plugin: ^5.5.0
       moment: ^2.29.1
@@ -532,12 +532,12 @@ importers:
 
   examples/moment-typescript:
     specifiers:
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/list': 6.0.0-beta.1
-      '@fullcalendar/moment': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/list': 6.0.0-beta.2
+      '@fullcalendar/moment': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       css-loader: ^4.3.0
       html-webpack-plugin: ^5.5.0
       moment: ^2.29.1
@@ -567,10 +567,10 @@ importers:
 
   examples/next:
     specifiers:
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/react': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/react': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       eslint: ^8.26.0
       eslint-config-next: ^13.0.1
       next: ^12.3.2
@@ -592,11 +592,11 @@ importers:
 
   examples/next-scheduler:
     specifiers:
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/react': 6.0.0-beta.1
-      '@fullcalendar/resource': 6.0.0-beta.1
-      '@fullcalendar/resource-timeline': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/react': 6.0.0-beta.2
+      '@fullcalendar/resource': 6.0.0-beta.2
+      '@fullcalendar/resource-timeline': 6.0.0-beta.2
       eslint: ^8.26.0
       eslint-config-next: ^13.0.1
       next: ^12.3.2
@@ -619,10 +619,10 @@ importers:
 
   examples/nuxt:
     specifiers:
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
-      '@fullcalendar/vue': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
+      '@fullcalendar/vue': 6.0.0-beta.2
       nuxt: ^2.15.4
     dependencies:
       '@fullcalendar/core': link:../../standard/packages/core/dist
@@ -634,11 +634,11 @@ importers:
   examples/parcel:
     specifiers:
       '@babel/core': ^7.13.16
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/list': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/list': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       parcel: ^2.7.0
     dependencies:
       '@fullcalendar/core': link:../../standard/packages/core/dist
@@ -659,11 +659,11 @@ importers:
       '@babel/plugin-syntax-dynamic-import': ^7.0.0
       '@babel/preset-env': ^7.0.0-beta.51
       '@babel/preset-react': ^7.0.0-beta.51
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/react': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/react': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       babel-loader: ^8.1.0
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
@@ -706,11 +706,11 @@ importers:
       '@babel/plugin-syntax-dynamic-import': ^7.0.0
       '@babel/preset-env': ^7.0.0-beta.51
       '@babel/preset-react': ^7.0.0-beta.51
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/react': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/react': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       babel-loader: ^8.1.0
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
@@ -746,11 +746,11 @@ importers:
 
   examples/react-mobx-typescript:
     specifiers:
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/react': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/react': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       '@types/react': ^16.9.55
       '@types/react-dom': ^16.9.9
       css-loader: ^4.3.0
@@ -796,11 +796,11 @@ importers:
       '@babel/plugin-syntax-dynamic-import': ^7.0.0
       '@babel/preset-env': ^7.0.0-beta.51
       '@babel/preset-react': ^7.0.0-beta.51
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/react': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/react': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       babel-loader: ^8.1.0
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
@@ -851,13 +851,13 @@ importers:
       '@babel/plugin-syntax-dynamic-import': ^7.0.0
       '@babel/preset-env': ^7.0.0-beta.51
       '@babel/preset-react': ^7.0.0-beta.51
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/react': 6.0.0-beta.1
-      '@fullcalendar/resource': 6.0.0-beta.1
-      '@fullcalendar/resource-timeline': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/react': 6.0.0-beta.2
+      '@fullcalendar/resource': 6.0.0-beta.2
+      '@fullcalendar/resource-timeline': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       babel-loader: ^8.1.0
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
@@ -895,11 +895,11 @@ importers:
 
   examples/react-typescript:
     specifiers:
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/react': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/react': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       '@types/react': ^16.9.55
       '@types/react-dom': ^16.9.9
       css-loader: ^4.3.0
@@ -934,11 +934,11 @@ importers:
 
   examples/rollup:
     specifiers:
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/list': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/list': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       '@rollup/plugin-node-resolve': ^14.0.1
       rollup: ^1.20.0||^2.0.0
       rollup-plugin-postcss: ^2.8.2
@@ -955,14 +955,14 @@ importers:
 
   examples/rollup-scheduler:
     specifiers:
-      '@fullcalendar/adaptive': 6.0.0-beta.1
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/list': 6.0.0-beta.1
-      '@fullcalendar/resource': 6.0.0-beta.1
-      '@fullcalendar/resource-timeline': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/adaptive': 6.0.0-beta.2
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/list': 6.0.0-beta.2
+      '@fullcalendar/resource': 6.0.0-beta.2
+      '@fullcalendar/resource-timeline': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       '@rollup/plugin-node-resolve': ^14.0.1
       rollup: ^1.20.0||^2.0.0
       rollup-plugin-postcss: ^2.8.2
@@ -982,11 +982,11 @@ importers:
 
   examples/typescript:
     specifiers:
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/list': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/list': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
       style-loader: ^2.0.0
@@ -1011,16 +1011,16 @@ importers:
 
   examples/typescript-scheduler:
     specifiers:
-      '@fullcalendar/adaptive': 6.0.0-beta.1
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/list': 6.0.0-beta.1
-      '@fullcalendar/premium-common': 6.0.0-beta.1
-      '@fullcalendar/resource': 6.0.0-beta.1
-      '@fullcalendar/resource-timeline': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
-      '@fullcalendar/timeline': 6.0.0-beta.1
+      '@fullcalendar/adaptive': 6.0.0-beta.2
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/list': 6.0.0-beta.2
+      '@fullcalendar/premium-common': 6.0.0-beta.2
+      '@fullcalendar/resource': 6.0.0-beta.2
+      '@fullcalendar/resource-timeline': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
+      '@fullcalendar/timeline': 6.0.0-beta.2
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
       style-loader: ^2.0.0
@@ -1052,11 +1052,11 @@ importers:
     specifiers:
       '@babel/core': ^7.14.3
       '@babel/preset-env': ^7.14.4
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
-      '@fullcalendar/vue': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
+      '@fullcalendar/vue': 6.0.0-beta.2
       babel-loader: ^8.2.2
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
@@ -1091,11 +1091,11 @@ importers:
 
   examples/vue2-typescript:
     specifiers:
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
-      '@fullcalendar/vue': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
+      '@fullcalendar/vue': 6.0.0-beta.2
       '@vitejs/plugin-vue2': ^1.1.2
       typescript: ^4.2.4
       vite: ^2.2.1
@@ -1118,11 +1118,11 @@ importers:
 
   examples/vue2-vuex:
     specifiers:
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
-      '@fullcalendar/vue': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
+      '@fullcalendar/vue': 6.0.0-beta.2
       '@vitejs/plugin-vue2': ^1.1.2
       core-js: ^3.6.5
       date-fns: ^2.14.0
@@ -1145,11 +1145,11 @@ importers:
 
   examples/vue3-typescript:
     specifiers:
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
-      '@fullcalendar/vue3': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
+      '@fullcalendar/vue3': 6.0.0-beta.2
       '@vitejs/plugin-vue': ^3.2.0
       '@vue/compiler-sfc': ^3.2.41
       typescript: ^4.2.4
@@ -1170,11 +1170,11 @@ importers:
 
   examples/webpack:
     specifiers:
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/list': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/list': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       css-loader: ^4.3.0
       html-webpack-plugin: ^5.5.0
       style-loader: ^3.3.1
@@ -1195,14 +1195,14 @@ importers:
 
   examples/webpack-scheduler:
     specifiers:
-      '@fullcalendar/adaptive': 6.0.0-beta.1
-      '@fullcalendar/core': 6.0.0-beta.1
-      '@fullcalendar/daygrid': 6.0.0-beta.1
-      '@fullcalendar/interaction': 6.0.0-beta.1
-      '@fullcalendar/list': 6.0.0-beta.1
-      '@fullcalendar/resource': 6.0.0-beta.1
-      '@fullcalendar/resource-timeline': 6.0.0-beta.1
-      '@fullcalendar/timegrid': 6.0.0-beta.1
+      '@fullcalendar/adaptive': 6.0.0-beta.2
+      '@fullcalendar/core': 6.0.0-beta.2
+      '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/interaction': 6.0.0-beta.2
+      '@fullcalendar/list': 6.0.0-beta.2
+      '@fullcalendar/resource': 6.0.0-beta.2
+      '@fullcalendar/resource-timeline': 6.0.0-beta.2
+      '@fullcalendar/timegrid': 6.0.0-beta.2
       css-loader: ^4.3.0
       html-webpack-plugin: ^5.5.0
       style-loader: ^3.3.1
@@ -7945,7 +7945,7 @@ packages:
       vite: ^3.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 3.2.4
+      vite: 3.2.4_terser@5.15.1
       vue: 3.2.45
     dev: true
 
