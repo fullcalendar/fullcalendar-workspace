@@ -6,7 +6,10 @@ import { queryGitSubmodulePkgs } from './utils.js'
 import { workspaceFilename, lockFilename, miscSubpaths } from './config.js'
 
 export default async function() {
-  const monorepoDir = process.cwd()
+  await hideMetaFiles(process.cwd())
+}
+
+export async function hideMetaFiles(monorepoDir: string, silent?: boolean) {
   const submoduleSubdirs = await queryGitSubmodulePkgs(monorepoDir)
 
   for (const submoduleSubdir of submoduleSubdirs) {
@@ -17,7 +20,9 @@ export default async function() {
       ...miscSubpaths,
     ]
 
-    console.log('[HIDING]', submoduleDir)
+    if (!silent) {
+      console.log('[HIDING]', submoduleDir)
+    }
 
     for (const fileSubpath of fileSubpathsToAdd) {
       const filePath = joinPaths(submoduleDir, fileSubpath)
@@ -29,5 +34,7 @@ export default async function() {
     }
   }
 
-  console.log('[SUCCESS]')
+  if (!silent) {
+    console.log('[SUCCESS]')
+  }
 }
