@@ -60,25 +60,26 @@ export default async function() {
       })
     }
 
-    await Promise.all(
-      miscSubpaths.map((miscFile) => copyFile(
-        joinPaths(monorepoDir, miscFile),
-        joinPaths(submoduleDir, miscFile),
-      )),
-    )
-
-    const fileSubpathsToAdd: string[] = [
-      lockFilename,
-      ...(
-        isSubworkspace ?
-          [workspaceFilename, turboFilename] :
-          []
-      ),
+    const copyableSubpaths: string[] = [
+      ...(isSubworkspace ? [turboFilename] : []),
       ...miscSubpaths,
     ]
 
-    for (const fileSubpath of fileSubpathsToAdd) {
-      const filePath = joinPaths(submoduleDir, fileSubpath)
+    await Promise.all(
+      copyableSubpaths.map((subpath) => copyFile(
+        joinPaths(monorepoDir, subpath),
+        joinPaths(submoduleDir, subpath),
+      )),
+    )
+
+    const addableSubpaths: string[] = [
+      lockFilename,
+      ...(isSubworkspace ? [workspaceFilename, turboFilename] : []),
+      ...miscSubpaths,
+    ]
+
+    for (const subpath of addableSubpaths) {
+      const filePath = joinPaths(submoduleDir, subpath)
 
       await boolPromise(assumeUnchanged(filePath, false)) // won't fail if path doesn't exist
       await addFile(filePath)
