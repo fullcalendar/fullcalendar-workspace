@@ -54,6 +54,7 @@ export default async function() {
         '--ignore-scripts',
         '--lockfile-dir=.',
         '--filter=.',
+        // '--no-link-workspace-packages', // disabled b/c release not public yet. revive somehow
       ], {
         cwd: submoduleDir,
       })
