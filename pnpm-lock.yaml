@@ -87,6 +87,7 @@ importers:
       '@babel/preset-react': ^7.9.4
       '@fullcalendar/core': 6.0.0-beta.2
       '@fullcalendar/daygrid': 6.0.0-beta.2
+      '@fullcalendar/list': 6.0.0-beta.2
       '@rollup/plugin-babel': ^5.0.0
       '@rollup/plugin-commonjs': ^12.0.0
       '@rollup/plugin-json': ^4.0.3
@@ -118,6 +119,7 @@ importers:
       '@babel/preset-react': 7.18.6_@babel+core@7.20.2
       '@fullcalendar/core': link:../../standard/packages/core/dist
       '@fullcalendar/daygrid': link:../../standard/packages/daygrid/dist
+      '@fullcalendar/list': link:../../standard/packages/list/dist
       '@rollup/plugin-babel': 5.3.1_rw3hudt2pmn5afxog7l3b6qtze
       '@rollup/plugin-commonjs': 12.0.0_rollup@2.79.1
       '@rollup/plugin-json': 4.1.0_rollup@2.79.1
