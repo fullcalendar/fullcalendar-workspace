@@ -1721,6 +1721,7 @@ importers:
       '@types/jasmine-jquery': ^1.5.33
       '@types/jquery': ^3.3.29
       fetch-mock: ^9.11.0
+      fullcalendar: workspace:*
       handlebars: ^4.7.7
       luxon: ^2.0.0
       moment: ^2.29.1
@@ -1739,6 +1740,7 @@ importers:
       '@fullcalendar/moment-timezone': link:../packages/moment-timezone/dist
       '@fullcalendar/rrule': link:../packages/rrule/dist
       '@fullcalendar/timegrid': link:../packages/timegrid/dist
+      fullcalendar: link:../bundle/dist
       luxon: 2.5.0
       moment: 2.29.4
       moment-timezone: 0.5.39

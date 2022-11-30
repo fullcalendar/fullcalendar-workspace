@@ -28,6 +28,7 @@
   "scripts": {
     "build": "standard-scripts pkg:build",
     "test": "standard-scripts pkg:test",
+    "test:dev": "standard-scripts pkg:test --dev",
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint ."
   },
