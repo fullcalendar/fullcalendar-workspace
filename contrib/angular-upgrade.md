@@ -1,4 +1,16 @@
 
+Before upgrading: higher version of Angular CLI sometimes do not output libs that support older
+versions. For example. Angular 15 outputs for >=14. More info:
+
+- Incompatibilities in `dist/lib/fesm2015/fullcalendar-angular.mjs`:
+  - `i0.ɵɵngDeclareComponent({ minVersion: "14.0.0"`
+- Search args for "ɵɵComponentDeclaration" in:
+  - https://cdn.jsdelivr.net/npm/@angular/core@15.0.1/index.d.ts
+  - https://cdn.jsdelivr.net/npm/@angular/core@14.0.1/index.d.ts
+  - https://cdn.jsdelivr.net/npm/@angular/core@13.3.12/core.d.ts
+  - https://cdn.jsdelivr.net/npm/@angular/core@12.2.17/core.d.ts
+
+
 Rename `contrib/angular` to `contrib/angular-old`
 
 Run `./contrib/angular-init.sh`
