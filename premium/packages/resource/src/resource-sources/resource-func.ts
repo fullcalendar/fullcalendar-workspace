@@ -12,7 +12,11 @@ export interface ResourceFuncArg {
 }
 
 export type ResourceFunc =
-  ((arg: ResourceFuncArg, callback: (resourceInputs: ResourceInput[]) => void) => void) |
+  ((
+    arg: ResourceFuncArg,
+    successCallback: (resourceInputs: ResourceInput[]) => void,
+    failureCallback: (error: Error) => void,
+  ) => void) |
   ((arg: ResourceFuncArg) => Promise<ResourceInput[]>)
 
 registerResourceSourceDef<ResourceFunc>({

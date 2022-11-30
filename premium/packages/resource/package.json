@@ -29,6 +29,7 @@
       "./src/**/*"
     ]
   },
+  "sideEffects": true,
   "buildConfig": {
     "exports": {
       ".": { "iife": true },
