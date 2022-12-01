@@ -37,6 +37,17 @@
   },
   "pnpm": {
     "packageExtensions": {
+      "@fullcalendar/angular12-example": {
+        "dependencies": {
+          "preact": "^10.0.5"
+        }
+      },
+      "@fullcalendar/angular14-example": {
+        "dependencies": {
+          "preact": "^10.0.5",
+          "@types/node": "^16.11.7"
+        }
+      },
       "@nuxt/components": {
         "peerDependenciesMeta": {
           "consola": {
