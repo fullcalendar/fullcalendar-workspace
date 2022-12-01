@@ -11,38 +11,30 @@ versions. For example. Angular 15 outputs for >=14. More info:
   - https://cdn.jsdelivr.net/npm/@angular/core@12.2.17/core.d.ts
 
 
-Rename `contrib/angular` to `contrib/angular-old`
+Create new lib with certain version of angular cli:
 
-Run `./contrib/angular-init.sh`
+```
+npx -p "@angular/cli@13" ng new "@fullcalendar/angular-new" \
+  --directory "angular-new" \
+  --new-project-root . \
+  --create-application=false \
+  --skip-install
 
-Improve scripts in root `package.json`:
+# then, pnpm-install in root
 
-```diff
-   "scripts": {
-     "ng": "ng",
-     "start": "ng serve",
--    "build": "ng build",
-+    "build": "ng build lib && pnpm run meta",
--    "watch": "ng build --watch --configuration development",
-+    "watch": "ng build lib --watch --configuration development",
--    "test": "ng test lib"
-+    "test": "ng test lib --watch=false --browsers ChromeHeadless",
-+    "test:dev": "ng test lib",
-+    "clean": "rm -rf dist .angular/cache",
-+    "meta": "mkdir -p dist/lib && cp README.md LICENSE.txt dist/lib",
-+    "ci": "pnpm run clean && pnpm run build && pnpm run test"
-   },
+cd angular-new
+pnpm ng generate library lib --skip-install
+pnpm ng generate application app --skip-install
+
+# then, install in root again
 ```
 
-Reintroduce `package.json::(publishConfig|dependenciesNote|versionNote)`
-
-Reintroduce `lib/ng-package.json::allowedNonPeerDependencies`
-
 Port over fullcalendar-related dependencies to `package.json`
+Port over `package.json::(scripts|publishConfig|dependenciesNote|versionNote)`
 
-Automatically update `.editorconfig` and such via `meta:update` scripts
+In `.gitignore` add "outer monorepo" line at end
 
-Rename the `lib` package to `@fullcalendar/angular`:
+Rename the `lib` package to `@fullcalendar/angular-new`:
 
 1. `tsconfig.json::compilerOptions.paths`
 2. `lib/package.json::name`
@@ -51,6 +43,7 @@ Remove unnecessary `app` assets:
 
 1. In `angular.json` remove `"assets": [` arrays
 2. `rm -rf app/src/assets app/src/favicon.ico`
+3. Temporarily change all references of `@fullcalendar/angular` to `@fullcalendar/angular-new`
 
 Restore `lib` files:
 
@@ -64,10 +57,12 @@ Restore `app` files:
 2. `rm -rf app/src`
 3. `git checkout -- app/src`
 
-Add `allowSyntheticDefaultImports` to root `tsconfig.json`
+Port over README/LICENSE/CONTRIBUTORS/CHANGELOG
 
-In `.gitignore` add "outer monorepo" line at end
+Review
 
-Review and commit changes
+AFTER:
 
-`rm -rf contrib/angular-old`
+Rename all `@fullcalendar/angular-new` to `@fullcalendar/angular`
+
+Automatically update `.editorconfig` and such via `meta:update` scripts. Squash into previous commit
