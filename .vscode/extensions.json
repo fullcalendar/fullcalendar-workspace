@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "dbaeumer.vscode-eslint",
-    "angular.ng-template"
+    "angular.ng-template",
+    "Vue.volar"
   ]
 }
