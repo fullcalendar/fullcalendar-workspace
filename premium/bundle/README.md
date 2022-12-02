@@ -3,7 +3,7 @@
 
 FullCalendar is a full-sized drag & drop event calendar. This packages is an easily consumable combination of standard **AND** [premium](https://fullcalendar.io/docs/premium) plugins. It makes the root namespace available as the `FullCalendar` browser global. [View the docs &raquo;](https://fullcalendar.io/docs/getting-started)
 
-This `fullcalendar-premium` package bundles together these plugins:
+This `fullcalendar-scheduler` package bundles together these plugins:
 
 - [@fullcalendar/core](https://www.npmjs.com/package/@fullcalendar/core)
 - [@fullcalendar/interaction](https://www.npmjs.com/package/@fullcalendar/interaction)

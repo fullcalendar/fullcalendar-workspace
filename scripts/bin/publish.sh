@@ -29,7 +29,7 @@ cd /Users/adam/Code/fullcalendar-workspace/premium/packages/resource-daygrid && 
 cd /Users/adam/Code/fullcalendar-workspace/premium/packages/timeline && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/premium/packages/resource-timegrid && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/premium/packages/resource-timeline && pnpm publish --no-git-checks --tag beta
-cd /Users/adam/Code/fullcalendar-workspace/premium/bundle && pnpm publish --no-git-checks
+cd /Users/adam/Code/fullcalendar-workspace/premium/bundle && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/contrib/react && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/contrib/angular && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/contrib/vue3 && pnpm publish --no-git-checks --tag beta
