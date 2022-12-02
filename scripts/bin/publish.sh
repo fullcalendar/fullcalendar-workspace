@@ -5,8 +5,8 @@ set -e
 
 # first-time publishes need `--access public`
 
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/core && pnpm publish --tag beta
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/bootstrap5 && pnpm publish --tag beta
+cd /Users/adam/Code/fullcalendar-workspace/standard/packages/core && pnpm publish --no-git-checks --tag beta
+cd /Users/adam/Code/fullcalendar-workspace/standard/packages/bootstrap5 && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/daygrid && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/timegrid && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/bootstrap && pnpm publish --no-git-checks --tag beta
@@ -29,7 +29,7 @@ cd /Users/adam/Code/fullcalendar-workspace/premium/packages/resource-daygrid && 
 cd /Users/adam/Code/fullcalendar-workspace/premium/packages/timeline && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/premium/packages/resource-timegrid && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/premium/packages/resource-timeline && pnpm publish --no-git-checks --tag beta
-cd /Users/adam/Code/fullcalendar-workspace/premium/bundle && pnpm publish --no-git-checks --access public
+cd /Users/adam/Code/fullcalendar-workspace/premium/bundle && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/contrib/react && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/contrib/angular && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/contrib/vue3 && pnpm publish --no-git-checks --tag beta
