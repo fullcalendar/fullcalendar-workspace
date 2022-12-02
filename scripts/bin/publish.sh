@@ -29,7 +29,7 @@ cd /Users/adam/Code/fullcalendar-workspace/premium/packages/resource-daygrid && 
 cd /Users/adam/Code/fullcalendar-workspace/premium/packages/timeline && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/premium/packages/resource-timegrid && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/premium/packages/resource-timeline && pnpm publish --no-git-checks --tag beta
-cd /Users/adam/Code/fullcalendar-workspace/premium/bundle && pnpm publish --no-git-checks --tag beta
+cd /Users/adam/Code/fullcalendar-workspace/premium/bundle && pnpm publish --no-git-checks --access public
 cd /Users/adam/Code/fullcalendar-workspace/contrib/react && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/contrib/angular && pnpm publish --no-git-checks --tag beta
 cd /Users/adam/Code/fullcalendar-workspace/contrib/vue3 && pnpm publish --no-git-checks --tag beta
@@ -37,6 +37,6 @@ cd /Users/adam/Code/fullcalendar-workspace/contrib/vue2 && pnpm publish --no-git
 cd /Users/adam/Code/fullcalendar-workspace
 
 # tag pushing (DO SPECIAL for vue versions)
-# git tag -a v6.0.0-beta.2 -m v6.0.0-beta.2 && git push origin v6.0.0-beta.2
-# git tag -a v6.0.0-vue2beta.2 -m v6.0.0-vue2beta.2 && git push origin v6.0.0-vue2beta.2
-# git tag -a v6.0.0-vue3beta.2 -m v6.0.0-vue3beta.2 && git push origin v6.0.0-vue3beta.2
+# git tag -a v6.0.0-beta.3 -m v6.0.0-beta.3 && git push origin v6.0.0-beta.3
+# git tag -a v6.0.0-vue2beta.3 -m v6.0.0-vue2beta.3 && git push origin v6.0.0-vue2beta.3
+# git tag -a v6.0.0-vue3beta.3 -m v6.0.0-vue3beta.3 && git push origin v6.0.0-vue3beta.3
