@@ -1,6 +1,6 @@
 lockfileVersion: 5.4
 
-packageExtensionsChecksum: f593fc68d1d0e94ae8154d5e563d7cc3
+packageExtensionsChecksum: 26b04a3e83818bd7873c56f58ec0009d
 
 patchedDependencies:
   jasmine-jquery@2.1.1:
@@ -437,12 +437,14 @@ importers:
       '@fullcalendar/daygrid': 6.0.0-beta.3
       '@fullcalendar/interaction': 6.0.0-beta.3
       '@types/jasmine': ~4.3.0
+      '@types/node': ^16.11.7
       jasmine-core: ~4.5.0
       karma: ~6.4.0
       karma-chrome-launcher: ~3.1.0
       karma-coverage: ~2.2.0
       karma-jasmine: ~5.1.0
       karma-jasmine-html-reporter: ~2.0.0
+      preact: ^10.0.5
       rxjs: ~7.5.0
       tslib: ^2.3.0
       typescript: ~4.8.2
@@ -460,6 +462,8 @@ importers:
       '@fullcalendar/core': link:../../standard/packages/core/dist
       '@fullcalendar/daygrid': link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction': link:../../standard/packages/interaction/dist
+      '@types/node': 16.18.3
+      preact: 10.11.3
       rxjs: 7.5.7
       tslib: 2.4.1
       zone.js: 0.12.0
