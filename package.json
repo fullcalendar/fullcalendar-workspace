@@ -54,6 +54,12 @@
           "@types/node": "^16.11.7"
         }
       },
+      "@fullcalendar/angular15-ngrx-example": {
+        "dependencies": {
+          "preact": "^10.0.5",
+          "@types/node": "^16.11.7"
+        }
+      },
       "@nuxt/components": {
         "peerDependenciesMeta": {
           "consola": {

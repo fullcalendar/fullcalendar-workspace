@@ -1,6 +1,6 @@
 lockfileVersion: 5.4
 
-packageExtensionsChecksum: 26b04a3e83818bd7873c56f58ec0009d
+packageExtensionsChecksum: 75588d2fbb5fc5fee720bcf0a8828426
 
 patchedDependencies:
   jasmine-jquery@2.1.1:
@@ -480,6 +480,73 @@ importers:
       '@fullcalendar/interaction': link:../../standard/packages/interaction/dist
       '@fullcalendar/list': link:../../standard/packages/list/dist
       '@fullcalendar/timegrid': link:../../standard/packages/timegrid/dist
+      '@types/node': 16.18.3
+      preact: 10.11.3
+      rxjs: 7.5.7
+      tslib: 2.4.1
+      zone.js: 0.12.0
+    devDependencies:
+      '@angular-devkit/build-angular': 15.0.0_hdty2734xg3e6awctjcuqdo2tm
+      '@angular/cli': 15.0.0
+      '@angular/compiler-cli': 15.0.0_wi64dnikphprnhepyj5q2xqyru
+      '@types/jasmine': 4.3.0
+      jasmine-core: 4.5.0
+      karma: 6.4.1
+      karma-chrome-launcher: 3.1.1
+      karma-coverage: 2.2.0
+      karma-jasmine: 5.1.0_karma@6.4.1
+      karma-jasmine-html-reporter: 2.0.0_uk6l45dlsjldsnfgnal4othgyq
+      typescript: 4.8.4
+
+  examples/angular15-ngrx:
+    specifiers:
+      '@angular-devkit/build-angular': ^15.0.0
+      '@angular/animations': ^15.0.0
+      '@angular/cli': ~15.0.0
+      '@angular/common': ^15.0.0
+      '@angular/compiler': ^15.0.0
+      '@angular/compiler-cli': ^15.0.0
+      '@angular/core': ^15.0.0
+      '@angular/forms': ^15.0.0
+      '@angular/platform-browser': ^15.0.0
+      '@angular/platform-browser-dynamic': ^15.0.0
+      '@angular/router': ^15.0.0
+      '@fullcalendar/angular': 6.0.0-beta.3
+      '@fullcalendar/core': 6.0.0-beta.3
+      '@fullcalendar/daygrid': 6.0.0-beta.3
+      '@fullcalendar/interaction': 6.0.0-beta.3
+      '@fullcalendar/list': 6.0.0-beta.3
+      '@fullcalendar/timegrid': 6.0.0-beta.3
+      '@ngrx/store': ^15.0.0
+      '@types/jasmine': ~4.3.0
+      '@types/node': ^16.11.7
+      jasmine-core: ~4.5.0
+      karma: ~6.4.0
+      karma-chrome-launcher: ~3.1.0
+      karma-coverage: ~2.2.0
+      karma-jasmine: ~5.1.0
+      karma-jasmine-html-reporter: ~2.0.0
+      preact: ^10.0.5
+      rxjs: ~7.5.0
+      tslib: ^2.3.0
+      typescript: ~4.8.2
+      zone.js: ~0.12.0
+    dependencies:
+      '@angular/animations': 15.0.0_@angular+core@15.0.0
+      '@angular/common': 15.0.0_m6rr3mnel36a2k7xtcfys3zh24
+      '@angular/compiler': 15.0.0_@angular+core@15.0.0
+      '@angular/core': 15.0.0_rxjs@7.5.7+zone.js@0.12.0
+      '@angular/forms': 15.0.0_l57367eq3wdw5lfv4fnbnmcfu4
+      '@angular/platform-browser': 15.0.0_qbiqfif4udibgvsmhnccc7le2y
+      '@angular/platform-browser-dynamic': 15.0.0_pulbxwlpifslvvthxw6am5bday
+      '@angular/router': 15.0.0_l57367eq3wdw5lfv4fnbnmcfu4
+      '@fullcalendar/angular': link:../../contrib/angular/dist/lib
+      '@fullcalendar/core': link:../../standard/packages/core/dist
+      '@fullcalendar/daygrid': link:../../standard/packages/daygrid/dist
+      '@fullcalendar/interaction': link:../../standard/packages/interaction/dist
+      '@fullcalendar/list': link:../../standard/packages/list/dist
+      '@fullcalendar/timegrid': link:../../standard/packages/timegrid/dist
+      '@ngrx/store': 15.0.0_m6rr3mnel36a2k7xtcfys3zh24
       '@types/node': 16.18.3
       preact: 10.11.3
       rxjs: 7.5.7
@@ -8538,6 +8605,17 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /@ngrx/store/15.0.0_m6rr3mnel36a2k7xtcfys3zh24:
+    resolution: {integrity: sha512-zGEK7pgL9X1M2d+tF5tJRjN9dUibfPnyAFcI0+375gBkUSU2gJxuphB0NoGPVJMtLFsW+5yI4+kjui7M6nsaYQ==}
+    peerDependencies:
+      '@angular/core': ^15.0.0
+      rxjs: ^6.5.3 || ^7.5.0
+    dependencies:
+      '@angular/core': 15.0.0_rxjs@7.5.7+zone.js@0.12.0
+      rxjs: 7.5.7
+      tslib: 2.4.1
+    dev: false
 
   /@ngtools/webpack/12.2.18_pbbxoirybujkixnzbiv3njffwa:
     resolution: {integrity: sha512-6h/QSG6oZDs2BGfrozdOKqtM5daoCu05q+0gyb3owHz1u9FtMeXXKQ3sQfyFC/GNT3dTMlH6YFxsJPvMPwuy9A==}
@@ -27344,6 +27422,7 @@ packages:
 
   /sourcemap-codec/1.4.8:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
+    deprecated: Please use @jridgewell/sourcemap-codec instead
 
   /spawn-command/0.0.2-1:
     resolution: {integrity: sha512-n98l9E2RMSJ9ON1AKisHzz7V42VDiBQGY6PB1BwRglz99wpVsSuGzQ+jOi6lFXBGVTCrRpltvjm+/XA+tpeJrg==}
