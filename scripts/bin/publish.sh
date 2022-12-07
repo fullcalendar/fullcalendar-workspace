@@ -37,6 +37,6 @@ cd /Users/adam/Code/fullcalendar-workspace/contrib/vue2 && pnpm publish --no-git
 cd /Users/adam/Code/fullcalendar-workspace
 
 # tag pushing (DO SPECIAL for vue versions)
-# git tag -a v6.0.0-beta.3 -m v6.0.0-beta.3 && git push origin v6.0.0-beta.3
-# git tag -a v6.0.0-vue2beta.3 -m v6.0.0-vue2beta.3 && git push origin v6.0.0-vue2beta.3
-# git tag -a v6.0.0-vue3beta.3 -m v6.0.0-vue3beta.3 && git push origin v6.0.0-vue3beta.3
+# git tag -a v6.0.0-beta.4 -m v6.0.0-beta.4 && git push origin v6.0.0-beta.4
+# git tag -a v6.0.0-vue2beta.4 -m v6.0.0-vue2beta.4 && git push origin v6.0.0-vue2beta.4
+# git tag -a v6.0.0-vue3beta.4 -m v6.0.0-vue3beta.4 && git push origin v6.0.0-vue3beta.4
