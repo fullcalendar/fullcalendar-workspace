@@ -41,7 +41,7 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
             colSpan: props.spreadsheetColCnt,
           }}
           renderProps={renderProps}
-          generatorName="labelContent"
+          generatorName="resourceGroupLabelContent"
           generator={spec.labelContent || renderCellInner}
           classNameGenerator={spec.labelClassNames}
           didMount={spec.labelDidMount}

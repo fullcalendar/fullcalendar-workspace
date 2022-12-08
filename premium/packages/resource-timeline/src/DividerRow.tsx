@@ -33,7 +33,7 @@ export class DividerRow extends BaseComponent<DividerRowProps> {
             context.theme.getClass('tableCellShaded'),
           ]}
           renderProps={renderProps}
-          generatorName="laneContent"
+          generatorName="resourceGroupLaneContent"
           generator={renderHooks.laneContent}
           classNameGenerator={renderHooks.laneClassNames}
           didMount={renderHooks.laneDidMount}

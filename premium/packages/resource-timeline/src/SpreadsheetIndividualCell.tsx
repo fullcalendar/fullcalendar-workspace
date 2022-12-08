@@ -45,7 +45,7 @@ export class SpreadsheetIndividualCell extends BaseComponent<SpreadsheetIndividu
           'data-resource-id': props.resource.id,
         }}
         renderProps={renderProps}
-        generatorName="cellContent"
+        generatorName={colSpec.isMain ? 'resourceLabelContent' : undefined}
         generator={colSpec.cellContent || renderResourceInner}
         classNameGenerator={colSpec.cellClassNames}
         didMount={colSpec.cellDidMount}

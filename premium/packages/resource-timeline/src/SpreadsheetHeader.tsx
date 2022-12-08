@@ -44,7 +44,7 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
               colSpan: colSpecs.length,
             }}
             renderProps={renderProps}
-            generatorName="headerContent"
+            generatorName="resourceAreaHeaderContent"
             generator={superHeaderRendering.headerContent}
             classNameGenerator={superHeaderRendering.headerClassNames}
             didMount={superHeaderRendering.headerDidMount}
@@ -77,7 +77,7 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
               elClasses={['fc-datagrid-cell']}
               elAttrs={{ role: 'columnheader' }}
               renderProps={renderProps}
-              generatorName="headerContent"
+              generatorName="resourceAreaHeaderContent"
               generator={colSpec.headerContent}
               classNameGenerator={colSpec.headerClassNames}
               didMount={colSpec.headerDidMount}
