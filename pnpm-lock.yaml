@@ -1,6 +1,6 @@
 lockfileVersion: 5.4
 
-packageExtensionsChecksum: 75588d2fbb5fc5fee720bcf0a8828426
+packageExtensionsChecksum: 1d7f960aea8dbde72525dcbb9d8fdb80
 
 patchedDependencies:
   jasmine-jquery@2.1.1:
@@ -388,14 +388,12 @@ importers:
       '@fullcalendar/list': 6.0.0-beta.4
       '@fullcalendar/timegrid': 6.0.0-beta.4
       '@types/jasmine': ~4.0.0
-      '@types/node': ^16.11.7
       jasmine-core: ~4.2.0
       karma: ~6.4.0
       karma-chrome-launcher: ~3.1.0
       karma-coverage: ~2.2.0
       karma-jasmine: ~5.1.0
       karma-jasmine-html-reporter: ~2.0.0
-      preact: ^10.0.5
       rxjs: ~7.5.0
       tslib: ^2.3.0
       typescript: ~4.7.2
@@ -415,8 +413,6 @@ importers:
       '@fullcalendar/interaction': link:../../standard/packages/interaction/dist
       '@fullcalendar/list': link:../../standard/packages/list/dist
       '@fullcalendar/timegrid': link:../../standard/packages/timegrid/dist
-      '@types/node': 16.18.3
-      preact: 10.11.3
       rxjs: 7.5.7
       tslib: 2.4.1
       zone.js: 0.11.8
@@ -453,14 +449,12 @@ importers:
       '@fullcalendar/list': 6.0.0-beta.4
       '@fullcalendar/timegrid': 6.0.0-beta.4
       '@types/jasmine': ~4.3.0
-      '@types/node': ^16.11.7
       jasmine-core: ~4.5.0
       karma: ~6.4.0
       karma-chrome-launcher: ~3.1.0
       karma-coverage: ~2.2.0
       karma-jasmine: ~5.1.0
       karma-jasmine-html-reporter: ~2.0.0
-      preact: ^10.0.5
       rxjs: ~7.5.0
       tslib: ^2.3.0
       typescript: ~4.8.2
@@ -480,8 +474,6 @@ importers:
       '@fullcalendar/interaction': link:../../standard/packages/interaction/dist
       '@fullcalendar/list': link:../../standard/packages/list/dist
       '@fullcalendar/timegrid': link:../../standard/packages/timegrid/dist
-      '@types/node': 16.18.3
-      preact: 10.11.3
       rxjs: 7.5.7
       tslib: 2.4.1
       zone.js: 0.12.0
@@ -519,14 +511,12 @@ importers:
       '@fullcalendar/timegrid': 6.0.0-beta.4
       '@ngrx/store': ^15.0.0
       '@types/jasmine': ~4.3.0
-      '@types/node': ^16.11.7
       jasmine-core: ~4.5.0
       karma: ~6.4.0
       karma-chrome-launcher: ~3.1.0
       karma-coverage: ~2.2.0
       karma-jasmine: ~5.1.0
       karma-jasmine-html-reporter: ~2.0.0
-      preact: ^10.0.5
       rxjs: ~7.5.0
       tslib: ^2.3.0
       typescript: ~4.8.2
@@ -547,8 +537,6 @@ importers:
       '@fullcalendar/list': link:../../standard/packages/list/dist
       '@fullcalendar/timegrid': link:../../standard/packages/timegrid/dist
       '@ngrx/store': 15.0.0_m6rr3mnel36a2k7xtcfys3zh24
-      '@types/node': 16.18.3
-      preact: 10.11.3
       rxjs: 7.5.7
       tslib: 2.4.1
       zone.js: 0.12.0
@@ -10737,6 +10725,7 @@ packages:
 
   /@types/node/16.18.3:
     resolution: {integrity: sha512-jh6m0QUhIRcZpNv7Z/rpN+ZWXOicUUQbSoWks7Htkbb9IjFQj4kzcX/xFCkjstCj5flMsN8FiSvt+q+Tcs4Llg==}
+    dev: true
 
   /@types/node/18.11.9:
     resolution: {integrity: sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==}
