@@ -572,7 +572,7 @@ importers:
       webpack-cli: ^4.1.0
     dependencies:
       '@fortawesome/fontawesome-free': 5.15.4
-      '@fullcalendar/bootstrap': link:../../standard/packages/bootstrap/dist
+      '@fullcalendar/bootstrap': link:../../standard/packages/bootstrap4/dist
       '@fullcalendar/core': link:../../standard/packages/core/dist
       '@fullcalendar/daygrid': link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction': link:../../standard/packages/interaction/dist
@@ -1653,7 +1653,7 @@ importers:
       '@fullcalendar/standard-scripts': link:../scripts
     publishDirectory: ./dist
 
-  standard/packages/bootstrap:
+  standard/packages/bootstrap4:
     specifiers:
       '@fullcalendar/core': workspace:*
       '@fullcalendar/standard-scripts': workspace:*
@@ -1733,7 +1733,7 @@ importers:
       '@fullcalendar/standard-scripts': link:../../scripts
     publishDirectory: ./dist
 
-  standard/packages/luxon:
+  standard/packages/luxon1:
     specifiers:
       '@fullcalendar/core': workspace:*
       '@fullcalendar/standard-scripts': workspace:*
@@ -1935,7 +1935,7 @@ importers:
       moment-timezone: ^0.5.31
       xhr-mock: ^2.5.1
     dependencies:
-      '@fullcalendar/bootstrap': link:../packages/bootstrap/dist
+      '@fullcalendar/bootstrap': link:../packages/bootstrap4/dist
       '@fullcalendar/core': link:../packages/core/dist
       '@fullcalendar/daygrid': link:../packages/daygrid/dist
       '@fullcalendar/google-calendar': link:../packages/google-calendar/dist
