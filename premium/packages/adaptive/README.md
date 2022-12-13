@@ -20,17 +20,14 @@ import { Calendar } from '@fullcalendar/core'
 import adaptivePlugin from '@fullcalendar/adaptive'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
-document.addEventListener('DOMContentLoaded', function() {
-  const calendarEl = document.getElementById('calendar')
-
-  const calendar = new Calendar(calendarEl, {
-    plugins: [
-      adaptivePlugin,
-      dayGridPlugin
-    ],
-    initialView: 'dayGridMonth'
-  })
-
-  calendar.render()
+const calendarEl = document.getElementById('calendar')
+const calendar = new Calendar(calendarEl, {
+  plugins: [
+    adaptivePlugin,
+    dayGridPlugin
+  ],
+  initialView: 'dayGridMonth'
 })
+
+calendar.render()
 ```

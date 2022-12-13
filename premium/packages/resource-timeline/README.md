@@ -19,18 +19,15 @@ Instantiate a Calendar with the correct plugins and options:
 import { Calendar } from '@fullcalendar/core'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 
-document.addEventListener('DOMContentLoaded', function() {
-  const calendarEl = document.getElementById('calendar')
-
-  const calendar = new Calendar(calendarEl, {
-    plugins: [resourceTimelinePlugin],
-    initialView: 'resourceTimelineWeek',
-    resources: [
-      { title: 'Resource A' },
-      { title: 'Resource B' }
-    ]
-  })
-
-  calendar.render()
+const calendarEl = document.getElementById('calendar')
+const calendar = new Calendar(calendarEl, {
+  plugins: [resourceTimelinePlugin],
+  initialView: 'resourceTimelineWeek',
+  resources: [
+    { title: 'Resource A' },
+    { title: 'Resource B' }
+  ]
 })
+
+calendar.render()
 ```

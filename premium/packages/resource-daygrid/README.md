@@ -19,18 +19,15 @@ Instantiate a Calendar with the correct plugins and options:
 import { Calendar } from '@fullcalendar/core'
 import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
 
-document.addEventListener('DOMContentLoaded', function() {
-  const calendarEl = document.getElementById('calendar')
-
-  const calendar = new Calendar(calendarEl, {
-    plugins: [resourceDayGridPlugin],
-    initialView: 'resourceDayGridDay',
-    resources: [
-      { title: 'Resource A' },
-      { title: 'Resource B' }
-    ]
-  })
-
-  calendar.render()
+const calendarEl = document.getElementById('calendar')
+const calendar = new Calendar(calendarEl, {
+  plugins: [resourceDayGridPlugin],
+  initialView: 'resourceDayGridDay',
+  resources: [
+    { title: 'Resource A' },
+    { title: 'Resource B' }
+  ]
 })
+
+calendar.render()
 ```

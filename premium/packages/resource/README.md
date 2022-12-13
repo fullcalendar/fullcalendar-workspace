@@ -20,20 +20,17 @@ import { Calendar } from '@fullcalendar/core'
 import { ResourceInput } from '@fullcalendar/resource'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 
-document.addEventListener('DOMContentLoaded', function() {
-  const calendarEl = document.getElementById('calendar')
+const resources: ResourceInput[] = [
+  { title: 'Resource A' },
+  { title: 'Resource B' }
+]
 
-  const resources: ResourceInput[] = [
-    { title: 'Resource A' },
-    { title: 'Resource B' }
-  ]
-
-  const calendar = new Calendar(calendarEl, {
-    plugins: [ resourceTimelinePlugin ],
-    initialView: 'resourceTimeline',
-    resources: resources
-  })
-
-  calendar.render()
+const calendarEl = document.getElementById('calendar')
+const calendar = new Calendar(calendarEl, {
+  plugins: [ resourceTimelinePlugin ],
+  initialView: 'resourceTimeline',
+  resources: resources
 })
+
+calendar.render()
 ```
