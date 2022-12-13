@@ -13,7 +13,7 @@ npm install @fullcalendar/core @fullcalendar/resource @fullcalendar/resource-tim
 
 ## Usage
 
-This package is especially useful for obtaining the `Resource` TypeScript type:
+This package is especially useful for obtaining the `ResourceInput` TypeScript type:
 
 ```ts
 import { Calendar } from '@fullcalendar/core'

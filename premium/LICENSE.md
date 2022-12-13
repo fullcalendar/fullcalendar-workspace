@@ -1,13 +1,13 @@
 
 For complete licensing information, visit:
-https://fullcalendar.io/scheduler/license
+https://fullcalendar.io/license
 
 FullCalendar Scheduler is tri-licensed, meaning you must choose
 one of three licenses to use. Here is a summary of those licenses:
 
 - Commercial License
   (a paid license, intended for commercial use)
-  https://fullcalendar.io/scheduler/license-details
+  https://fullcalendar.io/commercial-license
 
 - Creative Commons Non-Commercial No-Derivatives
   (intended for trial and non-commercial use)
