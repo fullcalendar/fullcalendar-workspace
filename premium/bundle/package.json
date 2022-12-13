@@ -2,7 +2,7 @@
   "name": "fullcalendar-scheduler",
   "version": "6.0.0-beta.4",
   "title": "FullCalendar Premium Bundle",
-  "description": "Easily render a full-sized drag & drop calendar with a combination of standard AND premium plugins",
+  "description": "Easily render a full-sized drag & drop calendar with a combination of standard & premium plugins",
   "homepage": "https://fullcalendar.io/docs/initialize-globals",
   "dependencies": {
     "@fullcalendar/adaptive": "workspace:*",

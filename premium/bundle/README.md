@@ -1,7 +1,7 @@
 
 # FullCalendar Premium Bundle
 
-Easily render a full-sized drag & drop calendar with a combination of standard **AND** [premium](https://fullcalendar.io/docs/premium) plugins
+Easily render a full-sized drag & drop calendar with a combination of standard & [premium](https://fullcalendar.io/docs/premium) plugins
 
 This `fullcalendar-scheduler` package bundles these plugins:
 
