@@ -1,4 +1,9 @@
 
 # FullCalendar Workspace
 
-This monorepo encompasses all FullCalendar-related projects, including [premium features](premium) and the sub-monorepo for [standard features](https://github.com/fullcalendar/fullcalendar/tree/v6).
+This monorepo encompasses all FullCalendar-related projects:
+
+- [standard features](https://github.com/fullcalendar/fullcalendar/tree/main) - MIT license
+- [premium features](premium) - [custom license](premium/LICENSE.md)
+- connectors - MIT license
+- examples - MIT license

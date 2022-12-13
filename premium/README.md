@@ -1,14 +1,53 @@
 
 # FullCalendar Scheduler
 
-A premium add-on to [FullCalendar](https://fullcalendar.io/) for displaying events and resources.
+Premium full-sized drag & drop calendar/scheduler in JavaScript
 
-- [Project website and demos](https://fullcalendar.io/scheduler)
-- [License](https://fullcalendar.io/scheduler/license)
+- [Project Website](https://fullcalendar.io/pricing)
+- [Documentation](https://fullcalendar.io/docs/premium)
 - [Changelog](CHANGELOG.md)
+- [Support](https://fullcalendar.io/support)
+- [License](https://fullcalendar.io/scheduler/license)
 - [Contributing](CONTRIBUTING.md)
+- [Roadmap](https://fullcalendar.io/roadmap)
 
+## Installation
 
-## Development Setup
+Install the FullCalendar core package and any plugins you plan to use:
 
-This repo is not capable of building dist files on its own. You must develop in the [main fullcalendar repo](https://github.com/fullcalendar/fullcalendar), which is a monorepo that references this one via git submodules.
+```sh
+npm install \
+  @fullcalendar/core \
+  @fullcalendar/interaction \
+  @fullcalendar/resource \
+  @fullcalendar/resource-timeline
+```
+
+## Usage
+
+Instantiate a Calendar with plugins and options:
+
+```js
+import { Calendar } from '@fullcalendar/core'
+import interactionPlugin from '@fullcalendar/interaction'
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
+
+const calendarEl = document.getElementById('calendar')
+const calendar = new Calendar(calendarEl, {
+  plugins: [
+    interactionPlugin,
+    resourceTimelinePlugin
+  ],
+  initialView: 'resourceTimelineWeek',
+  editable: true,
+  events: [
+    { id: '1', resourceId: 'a', title: 'Meeting', start: new Date() }
+  ],
+  resources: [
+    { id: 'a', title: 'Resource A' },
+    { id: 'b', title: 'Resource B' }
+  ]
+})
+
+calendar.render()
+```

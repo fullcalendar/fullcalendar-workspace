@@ -13,7 +13,7 @@ npm install @fullcalendar/core @fullcalendar/timeline
 
 ## Usage
 
-Instantiate a Calendar with the correct plugins and options:
+Instantiate a Calendar with the necessary plugin:
 
 ```js
 import { Calendar } from '@fullcalendar/core'
