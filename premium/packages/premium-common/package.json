@@ -2,7 +2,7 @@
   "name": "@fullcalendar/premium-common",
   "version": "6.0.0-beta.4",
   "title": "FullCalendar Premium Common",
-  "description": "Utilities for all of FullCalendar Scheduler's plugins",
+  "description": "Utilities for FullCalendar's premium plugins",
   "peerDependencies": {
     "@fullcalendar/core": "workspace:*"
   },

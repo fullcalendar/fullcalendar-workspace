@@ -3,7 +3,11 @@
   "version": "6.0.0-beta.4",
   "title": "FullCalendar Resource Time Grid Plugin",
   "description": "Displays events on a vertical resource view with time slots",
-  "docs": "https://fullcalendar.io/docs/vertical-resource-view",
+  "keywords": [
+    "scheduler",
+    "resource"
+  ],
+  "homepage": "https://fullcalendar.io/docs/vertical-resource-view",
   "dependencies": {
     "@fullcalendar/premium-common": "workspace:*",
     "@fullcalendar/resource-daygrid": "workspace:*",

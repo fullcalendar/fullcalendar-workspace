@@ -1,8 +1,36 @@
 
 # FullCalendar Resource Time Grid Plugin
 
-Displays events on a vertical resource view with time slots
+Display events on day/resource time slots
 
-[View the docs &raquo;](https://fullcalendar.io/docs/vertical-resource-view)
+## Installation
 
-This package was created from the [FullCalendar monorepo &raquo;](https://github.com/fullcalendar/fullcalendar-scheduler)
+Install the necessary packages. The **resource plugin is a required [peer dependency](https://nodejs.org/es/blog/npm/peer-dependencies/)**:
+
+```sh
+npm install @fullcalendar/core @fullcalendar/resource @fullcalendar/resource-timegrid
+```
+
+## Usage
+
+Instantiate a Calendar with the correct plugins and options:
+
+```js
+import { Calendar } from '@fullcalendar/core'
+import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
+
+document.addEventListener('DOMContentLoaded', function() {
+  const calendarEl = document.getElementById('calendar')
+
+  const calendar = new Calendar(calendarEl, {
+    plugins: [resourceTimeGridPlugin],
+    initialView: 'resourceTimeGridDay',
+    resources: [
+      { title: 'Resource A' },
+      { title: 'Resource B' }
+    ]
+  })
+
+  calendar.render()
+})
+```

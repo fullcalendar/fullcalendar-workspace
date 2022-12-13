@@ -1,8 +1,39 @@
 
-# FullCalendar Resources Common Plugin
+# FullCalendar Resource Plugin
 
-Offers base support for resources. Required for all resource-related plugins.
+Base support for resources, required by resource views
 
-[View the docs &raquo;](https://fullcalendar.io/docs/scheduler)
+## Installation
 
-This package was created from the [FullCalendar monorepo &raquo;](https://github.com/fullcalendar/fullcalendar-scheduler)
+It is necessary to install this package as a [peer dependency](https://nodejs.org/es/blog/npm/peer-dependencies/) of any other package that utilizes resources (such as [resource-timeline view](https://fullcalendar.io/docs/timeline-view)):
+
+```sh
+npm install @fullcalendar/core @fullcalendar/resource @fullcalendar/resource-timeline
+```
+
+## Usage
+
+This package is especially useful for obtaining the `Resource` TypeScript type:
+
+```ts
+import { Calendar } from '@fullcalendar/core'
+import { ResourceInput } from '@fullcalendar/resource'
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
+
+document.addEventListener('DOMContentLoaded', function() {
+  const calendarEl = document.getElementById('calendar')
+
+  const resources: ResourceInput[] = [
+    { title: 'Resource A' },
+    { title: 'Resource B' }
+  ]
+
+  const calendar = new Calendar(calendarEl, {
+    plugins: [ resourceTimelinePlugin ],
+    initialView: 'resourceTimeline',
+    resources: resources
+  })
+
+  calendar.render()
+})
+```

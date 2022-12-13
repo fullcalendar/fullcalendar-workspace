@@ -1,19 +1,63 @@
 
 # FullCalendar Premium Bundle
 
-FullCalendar is a full-sized drag & drop event calendar. This packages is an easily consumable combination of standard **AND** [premium](https://fullcalendar.io/docs/premium) plugins. It makes the root namespace available as the `FullCalendar` browser global. [View the docs &raquo;](https://fullcalendar.io/docs/getting-started)
+Easily render a full-sized drag & drop calendar with a combination of standard **AND** [premium](https://fullcalendar.io/docs/premium) plugins.
 
-This `fullcalendar-scheduler` package bundles together these plugins:
+This `fullcalendar-scheduler` package bundles these plugins:
 
-- [@fullcalendar/core](https://www.npmjs.com/package/@fullcalendar/core)
-- [@fullcalendar/interaction](https://www.npmjs.com/package/@fullcalendar/interaction)
-- [@fullcalendar/daygrid](https://www.npmjs.com/package/@fullcalendar/daygrid)
-- [@fullcalendar/timegrid](https://www.npmjs.com/package/@fullcalendar/timegrid)
-- [@fullcalendar/list](https://www.npmjs.com/package/@fullcalendar/list)
-- [@fullcalendar/bootstrap](https://www.npmjs.com/package/@fullcalendar/bootstrap)
-- [@fullcalendar/google-calendar](https://www.npmjs.com/package/@fullcalendar/google-calendar)
-- [@fullcalendar/adaptive](https://www.npmjs.com/package/@fullcalendar/adaptive)
-- [@fullcalendar/timeline](https://www.npmjs.com/package/@fullcalendar/timeline)
-- [@fullcalendar/resource-daygrid](https://www.npmjs.com/package/@fullcalendar/resource-daygrid)
-- [@fullcalendar/resource-timegrid](https://www.npmjs.com/package/@fullcalendar/resource-timegrid)
-- [@fullcalendar/resource-timeline](https://www.npmjs.com/package/@fullcalendar/resource-timeline)
+- [@fullcalendar/core](https://github.com/fullcalendar/fullcalendar/tree/main/packages/core)
+- [@fullcalendar/interaction](https://github.com/fullcalendar/fullcalendar/tree/main/packages/interaction)
+- [@fullcalendar/daygrid](https://github.com/fullcalendar/fullcalendar/tree/main/packages/daygrid)
+- [@fullcalendar/timegrid](https://github.com/fullcalendar/fullcalendar/tree/main/packages/timegrid)
+- [@fullcalendar/list](https://github.com/fullcalendar/fullcalendar/tree/main/packages/list)
+- [@fullcalendar/adaptive](https://github.com/fullcalendar/fullcalendar-workspace/tree/main/packages/adaptive)
+- [@fullcalendar/timeline](https://github.com/fullcalendar/fullcalendar-workspace/tree/main/packages/timeline)
+- [@fullcalendar/resource](https://github.com/fullcalendar/fullcalendar-workspace/tree/main/packages/resource)
+- [@fullcalendar/resource-daygrid](https://github.com/fullcalendar/fullcalendar-workspace/tree/main/packages/resource-daygrid)
+- [@fullcalendar/resource-timegrid](https://github.com/fullcalendar/fullcalendar-workspace/tree/main/packages/resource-timegrid)
+- [@fullcalendar/resource-timeline](https://github.com/fullcalendar/fullcalendar-workspace/tree/main/packages/resource-timeline)
+
+## Usage with CDN or ZIP archive
+
+Load the `index.global.min.js` file and use the `FullCalendar` global namespace:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler/index.global.min.js'></script>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const calendarEl = document.getElementById('calendar')
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'resourceTimelineMonth'
+        })
+        calendar.render()
+      })
+
+    </script>
+  </head>
+  <body>
+    <div id='calendar'></div>
+  </body>
+</html>
+```
+
+## Usage with NPM and ES modules
+
+```sh
+npm install fullcalendar-scheduler
+```
+
+```js
+import { Calendar } from 'fullcalendar-scheduler'
+
+document.addEventListener('DOMContentLoaded', function() {
+  const calendarEl = document.getElementById('calendar')
+  const calendar = new Calendar(calendarEl, {
+    initialView: 'resourceTimelineMonth'
+  })
+  calendar.render()
+})
+```

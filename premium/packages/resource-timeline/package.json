@@ -3,7 +3,12 @@
   "version": "6.0.0-beta.4",
   "title": "FullCalendar Resource Timeline Plugin",
   "description": "Display events and resources on a horizontal time axis",
-  "docs": "https://fullcalendar.io/docs/timeline-view",
+  "keywords": [
+    "scheduler",
+    "resource",
+    "timeline"
+  ],
+  "homepage": "https://fullcalendar.io/docs/timeline-view",
   "dependencies": {
     "@fullcalendar/premium-common": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*",

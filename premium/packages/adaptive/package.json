@@ -2,7 +2,11 @@
   "name": "@fullcalendar/adaptive",
   "version": "6.0.0-beta.4",
   "title": "FullCalendar Adaptive Plugin",
-  "description": "Optimizes FullCalendar for print (and soon other types of devices)",
+  "description": "Optimizes FullCalendar for print",
+  "keywords": [
+    "print"
+  ],
+  "homepage": "https://fullcalendar.io/docs/print",
   "dependencies": {
     "@fullcalendar/premium-common": "workspace:*"
   },

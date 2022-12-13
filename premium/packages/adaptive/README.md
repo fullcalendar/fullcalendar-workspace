@@ -3,6 +3,34 @@
 
 Optimizes FullCalendar for print (and soon other types of devices)
 
-[View the docs &raquo;](https://fullcalendar.io/docs/scheduler)
+## Installation
 
-This package was created from the [FullCalendar monorepo &raquo;](https://github.com/fullcalendar/fullcalendar-scheduler)
+Install the FullCalendar core package, the adaptive plugin, and any other plugins (like [daygrid](https://fullcalendar.io/docs/month-view)):
+
+```sh
+npm install @fullcalendar/core @fullcalendar/adaptive @fullcalendar/daygrid
+```
+
+## Usage
+
+Instantiate a Calendar with the correct plugins and options:
+
+```js
+import { Calendar } from '@fullcalendar/core'
+import adaptivePlugin from '@fullcalendar/adaptive'
+import dayGridPlugin from '@fullcalendar/daygrid'
+
+document.addEventListener('DOMContentLoaded', function() {
+  const calendarEl = document.getElementById('calendar')
+
+  const calendar = new Calendar(calendarEl, {
+    plugins: [
+      adaptivePlugin,
+      dayGridPlugin
+    ],
+    initialView: 'dayGridMonth'
+  })
+
+  calendar.render()
+})
+```

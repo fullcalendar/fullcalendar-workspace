@@ -3,6 +3,34 @@
 
 Display events and resources on a horizontal time axis
 
-[View the docs &raquo;](https://fullcalendar.io/docs/timeline-view)
+## Installation
 
-This package was created from the [FullCalendar monorepo &raquo;](https://github.com/fullcalendar/fullcalendar-scheduler)
+Install the necessary packages. The **resource plugin is a required [peer dependency](https://nodejs.org/es/blog/npm/peer-dependencies/)**:
+
+```sh
+npm install @fullcalendar/core @fullcalendar/resource @fullcalendar/resource-timeline
+```
+
+## Usage
+
+Instantiate a Calendar with the correct plugins and options:
+
+```js
+import { Calendar } from '@fullcalendar/core'
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
+
+document.addEventListener('DOMContentLoaded', function() {
+  const calendarEl = document.getElementById('calendar')
+
+  const calendar = new Calendar(calendarEl, {
+    plugins: [resourceTimelinePlugin],
+    initialView: 'resourceTimelineWeek',
+    resources: [
+      { title: 'Resource A' },
+      { title: 'Resource B' }
+    ]
+  })
+
+  calendar.render()
+})
+```

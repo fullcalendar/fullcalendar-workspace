@@ -3,6 +3,33 @@
 
 Display events on a horizontal time axis (without resources)
 
-[View the docs &raquo;](https://fullcalendar.io/docs/timeline-view-no-resources)
+## Installation
 
-This package was created from the [FullCalendar monorepo &raquo;](https://github.com/fullcalendar/fullcalendar-scheduler)
+Install the necessary packages:
+
+```sh
+npm install @fullcalendar/core @fullcalendar/timeline
+```
+
+## Usage
+
+Instantiate a Calendar with the correct plugins and options:
+
+```js
+import { Calendar } from '@fullcalendar/core'
+import timelinePlugin from '@fullcalendar/timeline'
+
+document.addEventListener('DOMContentLoaded', function() {
+  const calendarEl = document.getElementById('calendar')
+
+  const calendar = new Calendar(calendarEl, {
+    plugins: [timelinePlugin],
+    initialView: 'timelineWeek',
+    events: [
+      { title: 'Meeting', start: new Date() }
+    ]
+  })
+
+  calendar.render()
+})
+```
