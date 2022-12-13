@@ -5,10 +5,8 @@ Premium full-sized drag & drop calendar/scheduler in JavaScript
 
 - [Project Website](https://fullcalendar.io/pricing)
 - [Documentation](https://fullcalendar.io/docs/premium)
-- [Changelog](CHANGELOG.md)
 - [Support](https://fullcalendar.io/support)
 - [License](https://fullcalendar.io/scheduler/license)
-- [Contributing](CONTRIBUTING.md)
 - [Roadmap](https://fullcalendar.io/roadmap)
 
 ## Installation
