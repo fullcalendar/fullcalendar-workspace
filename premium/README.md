@@ -11,7 +11,7 @@ Premium full-sized drag & drop calendar & scheduler in JavaScript
 
 ## Bundle
 
-The [fullcalendar-scheduler bundle](bundle) is easier to install than individual plugins, though filesize will be larger. It works well with a CDN.
+The [FullCalendar Premium Bundle](bundle) is easier to install than individual plugins, though filesize will be larger. It works well with a CDN.
 
 ## Installation
 
