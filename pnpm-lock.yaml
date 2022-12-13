@@ -1729,11 +1729,10 @@ importers:
       '@fullcalendar/core': workspace:*
       '@fullcalendar/standard-scripts': workspace:*
       ical.js: ^1.4.0
-    dependencies:
-      ical.js: 1.5.0
     devDependencies:
       '@fullcalendar/core': link:../core/dist
       '@fullcalendar/standard-scripts': link:../../scripts
+      ical.js: 1.5.0
     publishDirectory: ./dist
 
   standard/packages/interaction:
@@ -18996,7 +18995,7 @@ packages:
 
   /ical.js/1.5.0:
     resolution: {integrity: sha512-7ZxMkogUkkaCx810yp0ZGKvq1ZpRgJeornPttpoxe6nYZ3NLesZe1wWMXDdwTkj/b5NtXT+Y16Aakph/ao98ZQ==}
-    dev: false
+    dev: true
 
   /iconv-lite/0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
