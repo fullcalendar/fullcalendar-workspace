@@ -1,13 +1,17 @@
 
-# FullCalendar Scheduler
+# FullCalendar Premium
 
-Premium full-sized drag & drop calendar/scheduler in JavaScript
+Premium full-sized drag & drop calendar & scheduler in JavaScript
 
 - [Project Website](https://fullcalendar.io/pricing)
 - [Documentation](https://fullcalendar.io/docs/premium)
 - [Support](https://fullcalendar.io/support)
 - [License](LICENSE.md)
 - [Roadmap](https://fullcalendar.io/roadmap)
+
+## Bundle
+
+The [fullcalendar-scheduler bundle](bundle) is easier to install than individual plugins, though filesize will be larger. It works well with a CDN.
 
 ## Installation
 
