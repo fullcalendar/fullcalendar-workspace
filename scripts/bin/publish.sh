@@ -9,12 +9,12 @@ cd /Users/adam/Code/fullcalendar-workspace/standard/packages/core && pnpm publis
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/bootstrap5 && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/daygrid && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/timegrid && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/bootstrap && pnpm publish --no-git-checks
+cd /Users/adam/Code/fullcalendar-workspace/standard/packages/bootstrap4 && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/google-calendar && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/icalendar && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/interaction && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/list && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/luxon && pnpm publish --no-git-checks
+cd /Users/adam/Code/fullcalendar-workspace/standard/packages/luxon1 && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/luxon2 && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/moment && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/moment-timezone && pnpm publish --no-git-checks
