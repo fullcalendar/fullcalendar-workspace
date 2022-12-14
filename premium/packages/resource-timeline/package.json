@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/resource-timeline",
-  "version": "6.0.0-beta.4",
+  "version": "6.0.0",
   "title": "FullCalendar Resource Timeline Plugin",
   "description": "Display events and resources on a horizontal time axis",
   "keywords": [
@@ -10,18 +10,18 @@
   ],
   "homepage": "https://fullcalendar.io/docs/timeline-view",
   "dependencies": {
-    "@fullcalendar/premium-common": "workspace:*",
-    "@fullcalendar/scrollgrid": "workspace:*",
-    "@fullcalendar/timeline": "workspace:*"
+    "@fullcalendar/premium-common": "~6.0.0",
+    "@fullcalendar/scrollgrid": "~6.0.0",
+    "@fullcalendar/timeline": "~6.0.0"
   },
   "peerDependencies": {
-    "@fullcalendar/core": "workspace:*",
-    "@fullcalendar/resource": "workspace:*"
+    "@fullcalendar/core": "~6.0.0",
+    "@fullcalendar/resource": "~6.0.0"
   },
   "devDependencies": {
-    "@fullcalendar/core": "workspace:*",
-    "@fullcalendar/resource": "workspace:*",
-    "@fullcalendar/standard-scripts": "workspace:*"
+    "@fullcalendar/core": "~6.0.0",
+    "@fullcalendar/resource": "~6.0.0",
+    "@fullcalendar/standard-scripts": "*"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",

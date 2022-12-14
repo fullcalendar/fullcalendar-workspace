@@ -3,8 +3,8 @@
   "name": "@fullcalendar/workspace",
   "version": "0.0.0",
   "devDependencies": {
-    "@fullcalendar/standard-scripts": "workspace:*",
-    "@fullcalendar/workspace-scripts": "workspace:*"
+    "@fullcalendar/standard-scripts": "*",
+    "@fullcalendar/workspace-scripts": "*"
   },
   "scripts": {
     "postinstall": "workspace-scripts postinstall",
