@@ -128,6 +128,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
 
   componentDidMount() {
     this.updateSize()
+    this.context.addResizeHandler(this.handleResize)
   }
 
   componentDidUpdate(prevProps: TimelineLaneProps, prevState: TimelineLaneState) {
@@ -136,6 +137,16 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       prevProps.timelineCoords !== this.props.timelineCoords || // external thing changed?
       prevState.moreLinkHeights !== this.state.moreLinkHeights // HACK. see addStateEquality
     ) {
+      this.updateSize()
+    }
+  }
+
+  componentWillUnmount() {
+    this.context.removeResizeHandler(this.handleResize)
+  }
+
+  handleResize = (isForced: boolean) => {
+    if (isForced) {
       this.updateSize()
     }
   }
