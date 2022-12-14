@@ -9,3 +9,5 @@ packages:
   - './scripts'
   - './contrib/*'
   - './examples/*'
+  # waiting for https://github.com/nuxt/framework/issues/5411
+  - '!./examples/nuxt'
