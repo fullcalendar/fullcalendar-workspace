@@ -1,14 +1,17 @@
 {
   "private": true,
   "name": "@fullcalendar/premium-features",
+  "description": "Premium full-sized drag & drop calendar & scheduler in JavaScript",
   "version": "0.0.0",
   "keywords": [
     "calendar",
     "event",
     "full-sized",
-    "fullcalendar"
+    "fullcalendar",
+    "scheduler",
+    "resource"
   ],
-  "homepage": "https://fullcalendar.io/premium",
+  "homepage": "https://fullcalendar.io/docs/premium",
   "bugs": "https://fullcalendar.io/reporting-bugs",
   "repository": {
     "type": "git",
