@@ -2,7 +2,7 @@
 For complete licensing information, visit:
 https://fullcalendar.io/license
 
-FullCalendar Scheduler is tri-licensed, meaning you must choose
+FullCalendar Premium is tri-licensed, meaning you must choose
 one of three licenses to use. Here is a summary of those licenses:
 
 - Commercial License
