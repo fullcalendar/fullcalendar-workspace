@@ -3,6 +3,14 @@
 # exit upon error
 set -e
 
+# bumping version. use vscode search + replace
+# 1. "@fullcalendar/(\w+)": "\^([^"]*)" (with regexp support on)
+#    "@fullcalendar/$1": "^6.0.1"
+# 2. "@fullcalendar/(\w+)": "~([^"]*)" (with regexp support on)
+#    "@fullcalendar/$1": "~6.0.1"
+# 3. "version": "6.0.0"
+#    "version": "6.0.1"
+
 # first-time publishes need `--access public`
 
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/core && pnpm publish --no-git-checks
@@ -37,6 +45,4 @@ cd /Users/adam/Code/fullcalendar-workspace/contrib/vue2 && pnpm publish --no-git
 cd /Users/adam/Code/fullcalendar-workspace
 
 # tag pushing (DO SPECIAL for vue versions)
-# git tag -a v6.0.0 -m v6.0.0 && git push origin v6.0.0
-# git tag -a v6.0.0-vue2 -m v6.0.0-vue2 && git push origin v6.0.0-vue2
-# git tag -a v6.0.0-vue3 -m v6.0.0-vue3 && git push origin v6.0.0-vue3
+# git tag -a v6.0.1 -m v6.0.1 && git push origin v6.0.1
