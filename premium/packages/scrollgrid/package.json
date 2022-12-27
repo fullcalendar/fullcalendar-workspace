@@ -1,16 +1,16 @@
 {
   "name": "@fullcalendar/scrollgrid",
-  "version": "6.0.1",
+  "version": "6.0.2",
   "title": "FullCalendar ScrollGrid Plugin",
   "description": "Tabular data chunked into scrollable panes",
   "dependencies": {
-    "@fullcalendar/premium-common": "~6.0.0"
+    "@fullcalendar/premium-common": "~6.0.2"
   },
   "peerDependencies": {
-    "@fullcalendar/core": "~6.0.1"
+    "@fullcalendar/core": "~6.0.2"
   },
   "devDependencies": {
-    "@fullcalendar/core": "~6.0.1",
+    "@fullcalendar/core": "~6.0.2",
     "@fullcalendar/standard-scripts": "*"
   },
   "scripts": {

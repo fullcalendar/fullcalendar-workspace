@@ -1,22 +1,22 @@
 {
   "name": "fullcalendar-scheduler",
-  "version": "6.0.1",
+  "version": "6.0.2",
   "title": "FullCalendar Premium Bundle",
   "description": "Easily render a full-sized drag & drop calendar with a combination of standard & premium plugins",
   "homepage": "https://fullcalendar.io/docs/initialize-globals",
   "dependencies": {
-    "@fullcalendar/adaptive": "~6.0.1",
-    "@fullcalendar/core": "~6.0.1",
-    "@fullcalendar/daygrid": "~6.0.1",
-    "@fullcalendar/interaction": "~6.0.1",
-    "@fullcalendar/list": "~6.0.1",
-    "@fullcalendar/resource": "~6.0.1",
-    "@fullcalendar/resource-daygrid": "~6.0.0",
-    "@fullcalendar/resource-timegrid": "~6.0.0",
-    "@fullcalendar/resource-timeline": "~6.0.0",
-    "@fullcalendar/scrollgrid": "~6.0.1",
-    "@fullcalendar/timegrid": "~6.0.1",
-    "@fullcalendar/timeline": "~6.0.1"
+    "@fullcalendar/adaptive": "~6.0.2",
+    "@fullcalendar/core": "~6.0.2",
+    "@fullcalendar/daygrid": "~6.0.2",
+    "@fullcalendar/interaction": "~6.0.2",
+    "@fullcalendar/list": "~6.0.2",
+    "@fullcalendar/resource": "~6.0.2",
+    "@fullcalendar/resource-daygrid": "~6.0.2",
+    "@fullcalendar/resource-timegrid": "~6.0.2",
+    "@fullcalendar/resource-timeline": "~6.0.2",
+    "@fullcalendar/scrollgrid": "~6.0.2",
+    "@fullcalendar/timegrid": "~6.0.2",
+    "@fullcalendar/timeline": "~6.0.2"
   },
   "devDependencies": {
     "@fullcalendar/standard-scripts": "*"
