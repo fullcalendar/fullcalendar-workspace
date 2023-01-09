@@ -79,7 +79,6 @@ describe('eventMaxStack', () => {
     expect(moreLinkEls.length).toBe(2)
   })
 
-  // TODO: test coords of more link
   it('puts overlapping hidden events in same popover, respecting eventOrder', (done) => {
     let calendar = initCalendar({
       eventOrder: 'title',
@@ -90,10 +89,19 @@ describe('eventMaxStack', () => {
         { title: '4', start: '2021-05-07T00:30:00', end: '2021-05-07T02:30:00', resourceId: 'a' }, // hidden
       ],
     })
+
     let timelineGrid = new ResourceTimelineViewWrapper(calendar).timelineGrid
     let moreLinkEls = timelineGrid.getMoreEls()
     expect(moreLinkEls.length).toBe(1)
     expect(moreLinkEls[0].style.visibility).not.toBe('hidden') // was having trouble finishing positioning process
+
+    const canvasCoords = timelineGrid.el.getBoundingClientRect()
+    const moreLinkCoords = moreLinkEls[0].getBoundingClientRect()
+    const moreLinkLeft = moreLinkCoords.left - canvasCoords.left
+    const moreLinkTop = moreLinkCoords.top - canvasCoords.top
+    // TODO: more precise coord matching
+    expect(moreLinkLeft).toBeGreaterThan(10)
+    expect(moreLinkTop).toBeGreaterThan(10)
 
     timelineGrid.openMorePopover()
     setTimeout(() => {
