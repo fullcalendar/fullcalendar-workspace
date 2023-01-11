@@ -248,7 +248,7 @@ importers:
       typescript: 4.9.3
       vite: 3.2.4_terser@5.15.1
       vue: 3.2.45
-      vue-i18n: 9.3.0-beta.13_vue@3.2.45
+      vue-i18n: 9.3.0-beta.14_vue@3.2.45
 
   examples/angular12:
     specifiers:
@@ -1133,6 +1133,53 @@ importers:
       style-loader: 2.0.0_webpack@5.75.0
       ts-loader: 8.4.0_vfotqvx6lgcbf3upbs6hgaza4q
       typescript: 4.9.3
+      webpack: 5.75.0_webpack-cli@4.10.0
+      webpack-cli: 4.10.0_ixwfotxft53uv5r5hjf7zsiiya
+      webpack-dev-server: 3.11.3_pda42hcaj7d62cr262fr632kue
+
+  examples/react17:
+    specifiers:
+      '@babel/core': ^7.4.0
+      '@babel/plugin-proposal-class-properties': ^7.0.0
+      '@babel/plugin-proposal-export-namespace-from': ^7.0.0
+      '@babel/plugin-proposal-throw-expressions': ^7.0.0
+      '@babel/plugin-syntax-dynamic-import': ^7.0.0
+      '@babel/preset-env': ^7.0.0-beta.51
+      '@babel/preset-react': ^7.0.0-beta.51
+      '@fullcalendar/core': ^6.0.2
+      '@fullcalendar/daygrid': ^6.0.2
+      '@fullcalendar/interaction': ^6.0.2
+      '@fullcalendar/react': ^6.0.2
+      '@fullcalendar/timegrid': ^6.0.2
+      babel-loader: ^8.1.0
+      css-loader: ^4.3.0
+      html-webpack-plugin: ^4.5.0
+      react: ^17.0.2
+      react-dom: ^17.0.2
+      style-loader: ^2.0.0
+      webpack: ^5.3.0
+      webpack-cli: ^4.1.0
+      webpack-dev-server: ^3.11.0
+    dependencies:
+      '@fullcalendar/core': link:../../standard/packages/core/dist
+      '@fullcalendar/daygrid': link:../../standard/packages/daygrid/dist
+      '@fullcalendar/interaction': link:../../standard/packages/interaction/dist
+      '@fullcalendar/react': link:../../contrib/react
+      '@fullcalendar/timegrid': link:../../standard/packages/timegrid/dist
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    devDependencies:
+      '@babel/core': 7.20.2
+      '@babel/plugin-proposal-class-properties': 7.18.6_@babel+core@7.20.2
+      '@babel/plugin-proposal-export-namespace-from': 7.18.9_@babel+core@7.20.2
+      '@babel/plugin-proposal-throw-expressions': 7.18.6_@babel+core@7.20.2
+      '@babel/plugin-syntax-dynamic-import': 7.8.3_@babel+core@7.20.2
+      '@babel/preset-env': 7.20.2_@babel+core@7.20.2
+      '@babel/preset-react': 7.18.6_@babel+core@7.20.2
+      babel-loader: 8.3.0_npabyccmuonwo2rku4k53xo3hi
+      css-loader: 4.3.0_webpack@5.75.0
+      html-webpack-plugin: 4.5.2_webpack@5.75.0
+      style-loader: 2.0.0_webpack@5.75.0
       webpack: 5.75.0_webpack-cli@4.10.0
       webpack-cli: 4.10.0_ixwfotxft53uv5r5hjf7zsiiya
       webpack-dev-server: 3.11.3_pda42hcaj7d62cr262fr632kue
@@ -8297,42 +8344,42 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@intlify/core-base/9.3.0-beta.13:
-    resolution: {integrity: sha512-QEhTQAC7mrysIecmsrEAiQWnr98fDZ0hcZpj834jvXPBcA/JEmnEYjbR4UGosDQc1a4iacR7x5xUsvd32bDW6w==}
+  /@intlify/core-base/9.3.0-beta.14:
+    resolution: {integrity: sha512-serGXFUOnn7w8RC+Yr9f/0Mvl9GSKnXjENPctGczpIPUq9O0hGtU1u5ubGUjo1mEiWN0FnaZczguOZ6vJLmTrw==}
     engines: {node: '>= 14'}
     dependencies:
-      '@intlify/devtools-if': 9.3.0-beta.13
-      '@intlify/message-compiler': 9.3.0-beta.13
-      '@intlify/shared': 9.3.0-beta.13
-      '@intlify/vue-devtools': 9.3.0-beta.13
+      '@intlify/devtools-if': 9.3.0-beta.14
+      '@intlify/message-compiler': 9.3.0-beta.14
+      '@intlify/shared': 9.3.0-beta.14
+      '@intlify/vue-devtools': 9.3.0-beta.14
     dev: true
 
-  /@intlify/devtools-if/9.3.0-beta.13:
-    resolution: {integrity: sha512-0nozVKi89vtd5DDTwZs62UuQTJM3D8MusBCSwFqyx0Hmh7c56S10D/jzB20TZZkatjx6gQY8/i6z/m5IpnH1nw==}
+  /@intlify/devtools-if/9.3.0-beta.14:
+    resolution: {integrity: sha512-TIgV9lqlZXjUA8iUR3uwigTGKFpS5iYcNRwXDpSJpEdjgM0p9lvpDsal6V8kHz+JZrXblcLG1miTDrEd6zNN7w==}
     engines: {node: '>= 14'}
     dependencies:
-      '@intlify/shared': 9.3.0-beta.13
+      '@intlify/shared': 9.3.0-beta.14
     dev: true
 
-  /@intlify/message-compiler/9.3.0-beta.13:
-    resolution: {integrity: sha512-6vVGAOqzSurfp8leQ+9ySBTxCTTJyucMBVVXxW1/ENWGxZg1SDdIIZG3FcZo+kZEfbm46AWVByCL8FdcHS2QGw==}
+  /@intlify/message-compiler/9.3.0-beta.14:
+    resolution: {integrity: sha512-PlZ3pl+YYuql54Nq+26wv6ohIa8Ig6ALrvQI+f2zZKUtkupb49M4wyVN3bDQbFlgYVE7/u3n19BJSY8lEuX5Eg==}
     engines: {node: '>= 14'}
     dependencies:
-      '@intlify/shared': 9.3.0-beta.13
+      '@intlify/shared': 9.3.0-beta.14
       source-map: 0.6.1
     dev: true
 
-  /@intlify/shared/9.3.0-beta.13:
-    resolution: {integrity: sha512-94pkO11UTh/7b1B9RGe6iEFG6e89I+qDN8MjA3rhc4dnMt7rGzg7/xhxMmavzGTieYQRfv86jv+EOUmP4cc5Wg==}
+  /@intlify/shared/9.3.0-beta.14:
+    resolution: {integrity: sha512-mJ/rFan+4uVsBAQSCAJnpQaPvSjQ49mJMNmGelTUbTDAmgf0oexYxwqtKOlFFyY3hmQ8lUDYaGQKuYrFgRuHnA==}
     engines: {node: '>= 14'}
     dev: true
 
-  /@intlify/vue-devtools/9.3.0-beta.13:
-    resolution: {integrity: sha512-1Z6WIR3i8cpBtmEWTmk2udkRGPieGprWv5+e37p0Q0nSTEMOUJ0rYB/sSgW8VPhiaRwydp7AGSiY5/4XtnndaA==}
+  /@intlify/vue-devtools/9.3.0-beta.14:
+    resolution: {integrity: sha512-gnMFXAAFftZhRs3EJyTez6kG2zh8CI/oXoRMvBUzT0rrs+BD9kcbLzAq9il0NNrrO5g39xTr5cs9yCscGyonaQ==}
     engines: {node: '>= 14'}
     dependencies:
-      '@intlify/core-base': 9.3.0-beta.13
-      '@intlify/shared': 9.3.0-beta.13
+      '@intlify/core-base': 9.3.0-beta.14
+      '@intlify/shared': 9.3.0-beta.14
     dev: true
 
   /@istanbuljs/load-nyc-config/1.1.0:
@@ -27127,15 +27174,15 @@ packages:
     resolution: {integrity: sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==}
     dev: true
 
-  /vue-i18n/9.3.0-beta.13_vue@3.2.45:
-    resolution: {integrity: sha512-pgGKxnNPFUInCMsH/ryUZOajp0qPBq3D2v+UXFE/aDGZaYVXPpoUNC4y81NgZctPBeliiyBG0px8cn4nA47ylQ==}
+  /vue-i18n/9.3.0-beta.14_vue@3.2.45:
+    resolution: {integrity: sha512-ebpi5gQ3S6qePpw7+5Za3/8RK30t/iKWCaMMsOw0kri5aXH1JCZqptq+kDS0GYgjaLo7nFx9vrD9XcbY+YuaAA==}
     engines: {node: '>= 14'}
     peerDependencies:
       vue: ^3.0.0
     dependencies:
-      '@intlify/core-base': 9.3.0-beta.13
-      '@intlify/shared': 9.3.0-beta.13
-      '@intlify/vue-devtools': 9.3.0-beta.13
+      '@intlify/core-base': 9.3.0-beta.14
+      '@intlify/shared': 9.3.0-beta.14
+      '@intlify/vue-devtools': 9.3.0-beta.14
       '@vue/devtools-api': 6.4.5
       vue: 3.2.45
     dev: true
