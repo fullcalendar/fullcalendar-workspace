@@ -31,9 +31,6 @@ export default createPlugin({
     resourceDayGridMonth: {
       type: 'resourceDayGrid',
       duration: { months: 1 },
-
-      // TODO: wish we didn't have to C&P from dayGrid's file
-      monthMode: true, // a hidden option!?
       fixedWeekCount: true,
     },
   },
