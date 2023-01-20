@@ -93,7 +93,7 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
   }
 
   buildNowIndicatorSegs(date: DateMarker) {
-    let nonResourceSegs = this.slicers[''].sliceNowDate(date, this.context, this.dayRanges)
+    let nonResourceSegs = this.slicers[''].sliceNowDate(date, this.props.dateProfile, this.context.options.nextDayThreshold, this.context, this.dayRanges)
     return this.joiner.expandSegs(this.props.resourceDayTableModel, nonResourceSegs)
   }
 }
