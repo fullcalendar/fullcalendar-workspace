@@ -78,6 +78,8 @@ export class ResourceDayTableView extends TableView {
       ? this.renderHScrollLayout(headerContent, bodyContent, resourceDayTableModel.colCnt, options.dayMinWidth)
       : this.renderSimpleLayout(headerContent, bodyContent)
   }
+
+  // can't override any lifecycle methods from parent
 }
 
 function buildResourceDayTableModel(
