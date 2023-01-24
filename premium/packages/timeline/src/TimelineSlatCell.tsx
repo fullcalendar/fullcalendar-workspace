@@ -60,7 +60,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
         }}
         renderProps={renderProps}
         generatorName="slotLaneContent"
-        generator={options.slotLaneContent}
+        customGenerator={options.slotLaneContent}
         classNameGenerator={options.slotLaneClassNames}
         didMount={options.slotLaneDidMount}
         willUnmount={options.slotLaneWillUnmount}

@@ -1,5 +1,6 @@
 import { ViewApi, ClassNamesGenerator } from '@fullcalendar/core'
 import { CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountArg } from '@fullcalendar/core/internal'
+import { ComponentChild } from '@fullcalendar/core/preact'
 import { ResourceApi } from '../api/ResourceApi.js'
 
 // strange to reference columns in resource-common
@@ -21,6 +22,7 @@ export type ColCellMountArg = MountArg<ColCellContentArg>
 export interface ColHeaderRenderHooks {
   headerClassNames?: ClassNamesGenerator<ColHeaderContentArg>
   headerContent?: CustomContentGenerator<ColHeaderContentArg>
+  headerDefault?: (renderProps: ColHeaderContentArg) => ComponentChild
   headerDidMount?: DidMountHandler<ColHeaderMountArg>
   headerWillUnmount?: WillUnmountHandler<ColHeaderMountArg>
 }

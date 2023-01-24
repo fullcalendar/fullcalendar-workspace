@@ -54,7 +54,8 @@ export class ResourceLabelContainer extends BaseComponent<ResourceLabelContainer
               }}
               renderProps={renderProps}
               generatorName="resourceLabelContent"
-              generator={options.resourceLabelContent || renderInnerContent}
+              customGenerator={options.resourceLabelContent}
+              defaultGenerator={renderInnerContent}
               classNameGenerator={options.resourceLabelClassNames}
               didMount={options.resourceLabelDidMount}
               willUnmount={options.resourceLabelWillUnmount}

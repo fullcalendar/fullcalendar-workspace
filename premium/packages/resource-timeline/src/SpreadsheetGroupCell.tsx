@@ -33,7 +33,8 @@ export class SpreadsheetGroupCell extends BaseComponent<SpreadsheetGroupCellProp
         }}
         renderProps={renderProps}
         generatorName="resourceGroupLabelContent"
-        generator={colSpec.cellContent || renderGroupInner}
+        customGenerator={colSpec.cellContent}
+        defaultGenerator={renderGroupInner}
         classNameGenerator={colSpec.cellClassNames}
         didMount={colSpec.cellDidMount}
         willUnmount={colSpec.cellWillUnmount}

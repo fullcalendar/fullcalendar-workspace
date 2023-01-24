@@ -62,7 +62,8 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
         }}
         renderProps={renderProps}
         generatorName="slotLabelContent"
-        generator={options.slotLabelContent || renderInnerContent}
+        customGenerator={options.slotLabelContent}
+        defaultGenerator={renderInnerContent}
         classNameGenerator={options.slotLabelClassNames}
         didMount={options.slotLabelDidMount}
         willUnmount={options.slotLabelWillUnmount}

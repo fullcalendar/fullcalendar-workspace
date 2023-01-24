@@ -1,10 +1,13 @@
 import {
-  BaseComponent, ElementDragging, elementClosest, PointerDragEvent, RefMap, findElements,
+  BaseComponent,
+  ElementDragging,
+  elementClosest,
+  PointerDragEvent,
+  RefMap,
+  findElements,
   ContentContainer,
 } from '@fullcalendar/core/internal'
-import {
-  VNode, createElement, Fragment,
-} from '@fullcalendar/core/preact'
+import { VNode, createElement, Fragment } from '@fullcalendar/core/preact'
 import { ColSpec, ColHeaderContentArg, ColHeaderRenderHooks } from '@fullcalendar/resource'
 
 export interface SpreadsheetHeaderProps {
@@ -45,7 +48,8 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
             }}
             renderProps={renderProps}
             generatorName="resourceAreaHeaderContent"
-            generator={superHeaderRendering.headerContent}
+            customGenerator={superHeaderRendering.headerContent}
+            defaultGenerator={superHeaderRendering.headerDefault}
             classNameGenerator={superHeaderRendering.headerClassNames}
             didMount={superHeaderRendering.headerDidMount}
             willUnmount={superHeaderRendering.headerWillUnmount}
@@ -78,7 +82,8 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
               elAttrs={{ role: 'columnheader' }}
               renderProps={renderProps}
               generatorName="resourceAreaHeaderContent"
-              generator={colSpec.headerContent}
+              customGenerator={colSpec.headerContent}
+              defaultGenerator={colSpec.headerDefault}
               classNameGenerator={colSpec.headerClassNames}
               didMount={colSpec.headerDidMount}
               willUnmount={colSpec.headerWillUnmount}

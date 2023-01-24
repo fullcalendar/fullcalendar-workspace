@@ -351,7 +351,8 @@ function processColOptions(options: ViewOptionsRefined) {
   if (!allColSpecs.length) {
     allColSpecs.push({
       headerClassNames: options.resourceAreaHeaderClassNames,
-      headerContent: options.resourceAreaHeaderContent || 'Resources', // TODO: view.defaults
+      headerContent: options.resourceAreaHeaderContent,
+      headerDefault: () => 'Resources', // TODO: view.defaults
       headerDidMount: options.resourceAreaHeaderDidMount,
       headerWillUnmount: options.resourceAreaHeaderWillUnmount,
     })

@@ -34,7 +34,7 @@ export class DividerRow extends BaseComponent<DividerRowProps> {
           ]}
           renderProps={renderProps}
           generatorName="resourceGroupLaneContent"
-          generator={renderHooks.laneContent}
+          customGenerator={renderHooks.laneContent}
           classNameGenerator={renderHooks.laneClassNames}
           didMount={renderHooks.laneDidMount}
           willUnmount={renderHooks.laneWillUnmount}

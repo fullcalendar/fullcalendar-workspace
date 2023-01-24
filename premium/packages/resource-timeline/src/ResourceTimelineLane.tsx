@@ -35,7 +35,7 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
           }}
           renderProps={renderProps}
           generatorName="resourceLaneContent"
-          generator={options.resourceLaneContent}
+          customGenerator={options.resourceLaneContent}
           classNameGenerator={options.resourceLaneClassNames}
           didMount={options.resourceLaneDidMount}
           willUnmount={options.resourceLaneWillUnmount}
