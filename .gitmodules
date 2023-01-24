@@ -1,18 +1,18 @@
 [submodule "standard"]
 	path = standard
-	url = git@github.com:fullcalendar/fullcalendar.git
+	url = ../fullcalendar.git
 [submodule "examples"]
 	path = examples
-	url = git@github.com:fullcalendar/fullcalendar-examples.git
+	url = ../fullcalendar-examples.git
 [submodule "contrib/angular"]
 	path = contrib/angular
-	url = git@github.com:fullcalendar/fullcalendar-angular.git
+	url = ../fullcalendar-angular.git
 [submodule "contrib/react"]
 	path = contrib/react
-	url = git@github.com:fullcalendar/fullcalendar-react.git
+	url = ../fullcalendar-react.git
 [submodule "contrib/vue2"]
 	path = contrib/vue2
-	url = git@github.com:fullcalendar/fullcalendar-vue2.git
+	url = ../fullcalendar-vue2.git
 [submodule "contrib/vue3"]
 	path = contrib/vue3
-	url = git@github.com:fullcalendar/fullcalendar-vue.git
+	url = ../fullcalendar-vue.git
