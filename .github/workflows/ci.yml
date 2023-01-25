@@ -1,3 +1,8 @@
+
+#
+# NOTE: keep this synced with workspace repo's config
+#
+
 name: CI
 on:
   push:
