@@ -2000,6 +2000,7 @@ importers:
       '@fullcalendar/luxon2': ~6.0.3
       '@fullcalendar/moment': ~6.0.3
       '@fullcalendar/moment-timezone': ~6.0.3
+      '@fullcalendar/multimonth': ~6.0.3
       '@fullcalendar/rrule': ~6.0.3
       '@fullcalendar/standard-scripts': '*'
       '@fullcalendar/timegrid': ~6.0.3
@@ -2024,6 +2025,7 @@ importers:
       '@fullcalendar/luxon2': link:../packages/luxon2/dist
       '@fullcalendar/moment': link:../packages/moment/dist
       '@fullcalendar/moment-timezone': link:../packages/moment-timezone/dist
+      '@fullcalendar/multimonth': link:../packages/multimonth/dist
       '@fullcalendar/rrule': link:../packages/rrule/dist
       '@fullcalendar/timegrid': link:../packages/timegrid/dist
       fullcalendar: link:../bundle/dist
