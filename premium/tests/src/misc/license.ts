@@ -20,13 +20,16 @@ describe('schedulerLicenseKey', () => {
     })
 
     it('is invalid when crap text when directly instantiating', () => {
+      let $calendarEl = $('<div>').appendTo('body')
+
       // just to see if it compiles with schedulerLicenseKey
-      let calendar = new Calendar(document.getElementById('cal'), {
+      let calendar = new Calendar($calendarEl[0], {
         ...getCurrentOptions(),
         schedulerLicenseKey: '<%= someCrapText %>',
       })
 
       expect(calendar).toBeTruthy()
+      $calendarEl.remove()
     })
 
     it('is invalid when purchased more than a year ago', () => {
