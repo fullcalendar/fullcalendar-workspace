@@ -36,11 +36,9 @@ describe('resetOptions', () => { // TODO: rename file
     let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
     let dateEl = calendarWrapper.getFirstDateEl()
 
-    calendar.resetOptions({
-      resources: [
-        { id: 'a', title: 'Resource A' },
-      ],
-    }, true)
+    calendar.setOption('resources', [
+      { id: 'a', title: 'Resource A' },
+    ])
 
     expect(timelineGridWrapper.getResourceIds()).toEqual(['a'])
     expect(calendarWrapper.getFirstDateEl()).toBe(dateEl)
