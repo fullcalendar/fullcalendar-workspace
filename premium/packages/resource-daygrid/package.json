@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/resource-daygrid",
-  "version": "6.0.3",
+  "version": "6.1.0",
   "title": "FullCalendar Resource Day Grid Plugin",
   "description": "Display events on day/resource columns",
   "keywords": [
@@ -9,16 +9,16 @@
   ],
   "homepage": "https://fullcalendar.io/docs/resource-daygrid-view",
   "dependencies": {
-    "@fullcalendar/daygrid": "~6.0.3",
-    "@fullcalendar/premium-common": "~6.0.3"
+    "@fullcalendar/daygrid": "~6.1.0",
+    "@fullcalendar/premium-common": "~6.1.0"
   },
   "peerDependencies": {
-    "@fullcalendar/core": "~6.0.3",
-    "@fullcalendar/resource": "~6.0.3"
+    "@fullcalendar/core": "~6.1.0",
+    "@fullcalendar/resource": "~6.1.0"
   },
   "devDependencies": {
-    "@fullcalendar/core": "~6.0.3",
-    "@fullcalendar/resource": "~6.0.3",
+    "@fullcalendar/core": "~6.1.0",
+    "@fullcalendar/resource": "~6.1.0",
     "@fullcalendar/standard-scripts": "*"
   },
   "scripts": {
