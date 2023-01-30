@@ -32,6 +32,7 @@ cd /Users/adam/Code/fullcalendar-workspace/standard/packages/moment && pnpm publ
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/moment-timezone && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/rrule && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/web-component && pnpm publish --no-git-checks
+cd /Users/adam/Code/fullcalendar-workspace/standard/packages/multimonth && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/bundle && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/premium/packages/premium-common && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/premium/packages/adaptive && pnpm publish --no-git-checks
