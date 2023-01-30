@@ -10,6 +10,7 @@ This `fullcalendar-scheduler` package bundles these plugins:
 - [@fullcalendar/daygrid](https://github.com/fullcalendar/fullcalendar/tree/main/packages/daygrid)
 - [@fullcalendar/timegrid](https://github.com/fullcalendar/fullcalendar/tree/main/packages/timegrid)
 - [@fullcalendar/list](https://github.com/fullcalendar/fullcalendar/tree/main/packages/list)
+- [@fullcalendar/multimonth](https://github.com/fullcalendar/fullcalendar/tree/main/packages/multimonth)
 - [@fullcalendar/adaptive](https://github.com/fullcalendar/fullcalendar-workspace/tree/main/packages/adaptive)
 - [@fullcalendar/timeline](https://github.com/fullcalendar/fullcalendar-workspace/tree/main/packages/timeline)
 - [@fullcalendar/resource](https://github.com/fullcalendar/fullcalendar-workspace/tree/main/packages/resource)

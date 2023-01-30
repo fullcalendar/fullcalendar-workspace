@@ -3,6 +3,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
+import multiMonthPlugin from '@fullcalendar/multimonth'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import adaptivePlugin from '@fullcalendar/adaptive'
 import timelinePlugin from '@fullcalendar/timeline'
@@ -16,6 +17,7 @@ globalPlugins.push(
   dayGridPlugin,
   timeGridPlugin,
   listPlugin,
+  multiMonthPlugin,
   scrollGridPlugin,
   adaptivePlugin,
   timelinePlugin,
