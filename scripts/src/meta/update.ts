@@ -48,13 +48,19 @@ export default async function() {
       // standalone packages do NOT have their own workspace config and thus will install the root
       // workspace if pnpm-install is called. provide options to scope just this package.
       // options are inspired by make-dedicated-lockfile source code.
+      //
+      // HACK NEEDED: even though this is scoped to submodule's directory, the lockfile still has an
+      // "../.." entry that references the monorepo root. Luckily this is ignored when the
+      // submodule is pnpm-installed, but it still means private monorepo packages must be public
+      // due to --no-link-workspace-packages being specific. Thus, ensure private packages are
+      // published as dummy packages (ex: https://www.npmjs.com/package/@fullcalendar/standard-scripts)
       await execSilent([
         'pnpm',
         'install',
         '--ignore-scripts',
+        '--no-link-workspace-packages', // don't reference symlinks outside of submodule root
         '--lockfile-dir=.',
         '--filter=.',
-        // '--no-link-workspace-packages', // disabled b/c release not public yet. revive somehow
       ], {
         cwd: submoduleDir,
       })
