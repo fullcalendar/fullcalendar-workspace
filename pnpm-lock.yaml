@@ -283,7 +283,7 @@ importers:
       karma-coverage: ~2.0.3
       karma-jasmine: ~4.0.0
       karma-jasmine-html-reporter: ~1.7.0
-      preact: ^10.0.5
+      preact: ~10.12.1
       rxjs: ~6.6.0
       tslib: ^2.3.0
       typescript: ~4.3.5
@@ -303,7 +303,7 @@ importers:
       '@fullcalendar/interaction': link:../../standard/packages/interaction/dist
       '@fullcalendar/list': link:../../standard/packages/list/dist
       '@fullcalendar/timegrid': link:../../standard/packages/timegrid/dist
-      preact: 10.11.3
+      preact: 10.12.1
       rxjs: 6.6.7
       tslib: 2.4.1
       zone.js: 0.11.8
@@ -1870,9 +1870,9 @@ importers:
       '@fullcalendar/standard-scripts': '*'
       globby: ^13.1.2
       handlebars: ^4.1.2
-      preact: ^10.0.5
+      preact: ~10.12.1
     dependencies:
-      preact: 10.11.3
+      preact: 10.12.1
     devDependencies:
       '@fullcalendar/standard-scripts': link:../../scripts
       globby: 13.1.2
@@ -24285,8 +24285,8 @@ packages:
       posthtml-render: 3.0.0
     dev: true
 
-  /preact/10.11.3:
-    resolution: {integrity: sha512-eY93IVpod/zG3uMF22Unl8h9KkrcKIRs2EGar8hwLZZDU1lkjph303V9HZBwufh2s736U6VXuhD109LYqPoffg==}
+  /preact/10.12.1:
+    resolution: {integrity: sha512-l8386ixSsBdbreOAkqtrwqHwdvR35ID8c3rKPa8lCWuO86dBi32QWHV4vfsZK1utLLFMvw+Z5Ad4XLkZzchscg==}
     dev: false
 
   /prelude-ls/1.1.2:
