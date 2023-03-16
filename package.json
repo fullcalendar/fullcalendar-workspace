@@ -36,15 +36,6 @@
     "pnpm": ">=7.9.5"
   },
   "pnpm": {
-    "packageExtensions": {
-      "@nuxt/components": {
-        "peerDependenciesMeta": {
-          "consola": {
-            "optional": true
-          }
-        }
-      }
-    },
     "patchedDependencies": {
       "jasmine-jquery@2.1.1": "standard/scripts/patches/jasmine-jquery@2.1.1.patch",
       "@pnpm/make-dedicated-lockfile@0.4.2": "scripts/patches/@pnpm__make-dedicated-lockfile@0.4.2.patch"

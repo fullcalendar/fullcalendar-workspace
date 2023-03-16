@@ -1,7 +1,5 @@
 lockfileVersion: 5.4
 
-packageExtensionsChecksum: 1d7f960aea8dbde72525dcbb9d8fdb80
-
 patchedDependencies:
   jasmine-jquery@2.1.1:
     hash: ii5vcd4rtfy5ngsgq7effin6p4
