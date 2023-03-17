@@ -1,0 +1,45 @@
+
+.fc {
+
+  & .fc-resource-timeline-divider {
+    width: 3px; // important to have width to shrink this cell. no cross-browser problems
+    cursor: col-resize;
+  }
+
+  & .fc-resource-group {
+    // make it look less like a <th>
+    font-weight: inherit;
+    text-align: inherit;
+  }
+
+
+  // will match horizontal groups in the datagrid AND group lanes in the timeline area
+  & .fc-resource-timeline {
+    & .fc-resource-group:not([rowspan]) {
+      background: var(--fc-neutral-bg-color);
+    }
+  }
+
+
+  & .fc-timeline-lane-frame {
+    position: relative; // contains the fc-timeline-bg container, which liquidly expands
+    // the height is explicitly set by row-height-sync
+  }
+
+
+  & .fc-timeline-overlap-enabled .fc-timeline-lane-frame .fc-timeline-events { // has height set on it
+    box-sizing: content-box; // padding no longer part of height
+    padding-bottom: 10px; // give extra spacing underneath for selecting
+  }
+
+}
+
+// hack to make bg expand to lane's full height in resource-timeline with expandRows (#6134)
+.fc-timeline-body-expandrows {
+  & td.fc-timeline-lane {
+    position: relative;
+  }
+  & .fc-timeline-lane-frame {
+    position: static;
+  }
+}

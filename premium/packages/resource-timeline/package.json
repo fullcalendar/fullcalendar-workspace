@@ -1,0 +1,56 @@
+{
+  "name": "@fullcalendar/resource-timeline",
+  "version": "6.1.4",
+  "title": "FullCalendar Resource Timeline Plugin",
+  "description": "Display events and resources on a horizontal time axis",
+  "keywords": [
+    "scheduler",
+    "resource",
+    "timeline"
+  ],
+  "homepage": "https://fullcalendar.io/docs/timeline-view",
+  "dependencies": {
+    "@fullcalendar/premium-common": "~6.1.4",
+    "@fullcalendar/scrollgrid": "~6.1.4",
+    "@fullcalendar/timeline": "~6.1.4"
+  },
+  "peerDependencies": {
+    "@fullcalendar/core": "~6.1.4",
+    "@fullcalendar/resource": "~6.1.4"
+  },
+  "devDependencies": {
+    "@fullcalendar/core": "~6.1.4",
+    "@fullcalendar/resource": "~6.1.4",
+    "@fullcalendar/standard-scripts": "*"
+  },
+  "scripts": {
+    "build": "standard-scripts pkg:build",
+    "clean": "standard-scripts pkg:clean",
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "tsConfig": {
+    "extends":  "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
+    "compilerOptions": {
+      "rootDir": "./src",
+      "outDir": "./dist/.tsout"
+    },
+    "include": [
+      "./src/**/*"
+    ]
+  },
+  "buildConfig": {
+    "exports": {
+      ".": { "iife": true },
+      "./internal": {}
+    },
+    "iifeGlobals": {
+      ".": "FullCalendar.ResourceTimeline",
+      "./internal": "FullCalendar.ResourceTimeline.Internal"
+    }
+  },
+  "publishConfig": {
+    "directory": "./dist",
+    "linkDirectory": true
+  }
+}

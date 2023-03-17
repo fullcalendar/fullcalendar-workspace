@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "name": "@fullcalendar/premium-features",
+  "description": "Premium full-sized drag & drop calendar & scheduler in JavaScript",
+  "version": "0.0.0",
+  "keywords": [
+    "calendar",
+    "event",
+    "full-sized",
+    "fullcalendar",
+    "scheduler",
+    "resource"
+  ],
+  "homepage": "https://fullcalendar.io/docs/premium",
+  "bugs": "https://fullcalendar.io/reporting-bugs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fullcalendar/fullcalendar-workspace.git",
+    "directory": "premium"
+  },
+  "license": "SEE LICENSE IN LICENSE.md",
+  "author": {
+    "name": "Adam Shaw",
+    "email": "arshaw@arshaw.com",
+    "url": "http://arshaw.com/"
+  },
+  "copyright": "2023 Adam Shaw"
+}

@@ -1,8 +1,6 @@
 
-/*/tsconfig.tsbuildinfo
-/*/tsc
-/*/locales
-/*/*.js
-/*/*.css
-/*/*.map
-/*/*.d.ts
+# Package manager
+/node_modules
+
+# Generated
+/tsconfig.json

@@ -1,0 +1,18 @@
+[submodule "standard"]
+	path = standard
+	url = ../fullcalendar.git
+[submodule "examples"]
+	path = examples
+	url = ../fullcalendar-examples.git
+[submodule "contrib/angular"]
+	path = contrib/angular
+	url = ../fullcalendar-angular.git
+[submodule "contrib/react"]
+	path = contrib/react
+	url = ../fullcalendar-react.git
+[submodule "contrib/vue2"]
+	path = contrib/vue2
+	url = ../fullcalendar-vue2.git
+[submodule "contrib/vue3"]
+	path = contrib/vue3
+	url = ../fullcalendar-vue.git

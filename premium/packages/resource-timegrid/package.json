@@ -1,0 +1,55 @@
+{
+  "name": "@fullcalendar/resource-timegrid",
+  "version": "6.1.4",
+  "title": "FullCalendar Resource Time Grid Plugin",
+  "description": "Displays events on a vertical resource view with time slots",
+  "keywords": [
+    "scheduler",
+    "resource"
+  ],
+  "homepage": "https://fullcalendar.io/docs/vertical-resource-view",
+  "dependencies": {
+    "@fullcalendar/premium-common": "~6.1.4",
+    "@fullcalendar/resource-daygrid": "~6.1.4",
+    "@fullcalendar/timegrid": "~6.1.4"
+  },
+  "peerDependencies": {
+    "@fullcalendar/core": "~6.1.4",
+    "@fullcalendar/resource": "~6.1.4"
+  },
+  "devDependencies": {
+    "@fullcalendar/core": "~6.1.4",
+    "@fullcalendar/resource": "~6.1.4",
+    "@fullcalendar/standard-scripts": "*"
+  },
+  "scripts": {
+    "build": "standard-scripts pkg:build",
+    "clean": "standard-scripts pkg:clean",
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "tsConfig": {
+    "extends":  "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
+    "compilerOptions": {
+      "rootDir": "./src",
+      "outDir": "./dist/.tsout"
+    },
+    "include": [
+      "./src/**/*"
+    ]
+  },
+  "buildConfig": {
+    "exports": {
+      ".": { "iife": true },
+      "./internal": {}
+    },
+    "iifeGlobals": {
+      ".": "FullCalendar.ResourceTimeGrid",
+      "./internal": "FullCalendar.ResourceTimeGrid.Internal"
+    }
+  },
+  "publishConfig": {
+    "directory": "./dist",
+    "linkDirectory": true
+  }
+}

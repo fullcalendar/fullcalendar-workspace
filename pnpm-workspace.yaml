@@ -1,0 +1,15 @@
+packages:
+  - './standard/scripts'
+  - './standard/tests'
+  - './standard/bundle'
+  - './standard/packages/*'
+  - './premium/tests'
+  - './premium/bundle'
+  - './premium/packages/*'
+  - './scripts'
+  - './contrib/*'
+  - './examples/*'
+  # waiting for https://github.com/nuxt/framework/issues/5411
+  - '!./examples/nuxt'
+  # waiting for https://github.com/vuejs/vitepress/issues/1507#issuecomment-1465658724
+  - '!./examples/nuxt3'

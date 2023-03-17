@@ -1,0 +1,51 @@
+{
+  "name": "@fullcalendar/resource",
+  "version": "6.1.4",
+  "title": "FullCalendar Resource Plugin",
+  "description": "Base support for resources, required by resource views",
+  "keywords": [
+    "scheduler",
+    "resource"
+  ],
+  "dependencies": {
+    "@fullcalendar/premium-common": "~6.1.4"
+  },
+  "peerDependencies": {
+    "@fullcalendar/core": "~6.1.4"
+  },
+  "devDependencies": {
+    "@fullcalendar/core": "~6.1.4",
+    "@fullcalendar/standard-scripts": "*"
+  },
+  "scripts": {
+    "build": "standard-scripts pkg:build",
+    "clean": "standard-scripts pkg:clean",
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "tsConfig": {
+    "extends":  "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
+    "compilerOptions": {
+      "rootDir": "./src",
+      "outDir": "./dist/.tsout"
+    },
+    "include": [
+      "./src/**/*"
+    ]
+  },
+  "sideEffects": true,
+  "buildConfig": {
+    "exports": {
+      ".": { "iife": true },
+      "./internal": {}
+    },
+    "iifeGlobals": {
+      ".": "FullCalendar.Resource",
+      "./internal": "FullCalendar.Resource.Internal"
+    }
+  },
+  "publishConfig": {
+    "directory": "./dist",
+    "linkDirectory": true
+  }
+}

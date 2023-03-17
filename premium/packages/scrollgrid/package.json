@@ -1,0 +1,46 @@
+{
+  "name": "@fullcalendar/scrollgrid",
+  "version": "6.1.4",
+  "title": "FullCalendar ScrollGrid Plugin",
+  "description": "Tabular data chunked into scrollable panes",
+  "dependencies": {
+    "@fullcalendar/premium-common": "~6.1.4"
+  },
+  "peerDependencies": {
+    "@fullcalendar/core": "~6.1.4"
+  },
+  "devDependencies": {
+    "@fullcalendar/core": "~6.1.4",
+    "@fullcalendar/standard-scripts": "*"
+  },
+  "scripts": {
+    "build": "standard-scripts pkg:build",
+    "clean": "standard-scripts pkg:clean",
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "tsConfig": {
+    "extends":  "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
+    "compilerOptions": {
+      "rootDir": "./src",
+      "outDir": "./dist/.tsout"
+    },
+    "include": [
+      "./src/**/*"
+    ]
+  },
+  "buildConfig": {
+    "exports": {
+      ".": { "iife": true },
+      "./internal": {}
+    },
+    "iifeGlobals": {
+      ".": "FullCalendar.ScrollGrid",
+      "./internal": "FullCalendar.ScrollGrid.Internal"
+    }
+  },
+  "publishConfig": {
+    "directory": "./dist",
+    "linkDirectory": true
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "name": "@fullcalendar/timeline",
+  "version": "6.1.4",
+  "title": "FullCalendar Timeline Plugin",
+  "description": "Display events on a horizontal time axis (without resources)",
+  "keywords": [
+    "scheduler",
+    "timeline"
+  ],
+  "homepage": "https://fullcalendar.io/docs/timeline-view-no-resources",
+  "dependencies": {
+    "@fullcalendar/premium-common": "~6.1.4",
+    "@fullcalendar/scrollgrid": "~6.1.4"
+  },
+  "peerDependencies": {
+    "@fullcalendar/core": "~6.1.4"
+  },
+  "devDependencies": {
+    "@fullcalendar/core": "~6.1.4",
+    "@fullcalendar/standard-scripts": "*"
+  },
+  "scripts": {
+    "build": "standard-scripts pkg:build",
+    "clean": "standard-scripts pkg:clean",
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "tsConfig": {
+    "extends":  "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
+    "compilerOptions": {
+      "rootDir": "./src",
+      "outDir": "./dist/.tsout"
+    },
+    "include": [
+      "./src/**/*"
+    ]
+  },
+  "buildConfig": {
+    "exports": {
+      ".": { "iife": true },
+      "./internal": {}
+    },
+    "iifeGlobals": {
+      ".": "FullCalendar.Timeline",
+      "./internal": "FullCalendar.Timeline.Internal"
+    }
+  },
+  "publishConfig": {
+    "directory": "./dist",
+    "linkDirectory": true
+  }
+}

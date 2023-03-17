@@ -1,0 +1,67 @@
+{
+  "private": true,
+  "name": "@fullcalendar/premium-tests",
+  "version": "0.0.0",
+  "dependencies": {
+    "@fullcalendar/core": "~6.1.4",
+    "@fullcalendar/daygrid": "~6.1.4",
+    "@fullcalendar/interaction": "~6.1.4",
+    "@fullcalendar/list": "~6.1.4",
+    "@fullcalendar/premium-common": "~6.1.4",
+    "@fullcalendar/resource": "~6.1.4",
+    "@fullcalendar/resource-daygrid": "~6.1.4",
+    "@fullcalendar/resource-timegrid": "~6.1.4",
+    "@fullcalendar/resource-timeline": "~6.1.4",
+    "@fullcalendar/scrollgrid": "~6.1.4",
+    "@fullcalendar/standard-tests": "*",
+    "@fullcalendar/timegrid": "~6.1.4",
+    "@fullcalendar/timeline": "~6.1.4",
+    "xhr-mock": "^2.5.1"
+  },
+  "devDependencies": {
+    "@fullcalendar/standard-scripts": "*",
+    "@types/jasmine": "^3.3.12",
+    "@types/jasmine-jquery": "^1.5.33",
+    "@types/jquery": "^3.3.29",
+    "fetch-mock": "^9.11.0"
+  },
+  "scripts": {
+    "build": "standard-scripts pkg:build",
+    "test": "standard-scripts pkg:test",
+    "test:dev": "standard-scripts pkg:test --dev",
+    "clean": "standard-scripts pkg:clean",
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "tsConfig": {
+    "extends": "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
+    "compilerOptions": {
+      "types": [
+        "jasmine",
+        "jasmine-jquery",
+        "jquery"
+      ],
+      "rootDir": "./src",
+      "outDir": "./dist/.tsout"
+    },
+    "include": [
+      "./src/**/*"
+    ]
+  },
+  "buildConfig": {
+    "exports": {
+      ".": {
+        "iife": true,
+        "iifeGenerator": "./scripts/generate-index-iife.js"
+      }
+    },
+    "iifeGlobals": {
+      "*": ""
+    }
+  },
+  "karmaConfig": {
+    "files": [
+      "./dist/index.global.js"
+    ]
+  }
+}

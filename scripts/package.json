@@ -1,0 +1,39 @@
+{
+  "private": true,
+  "name": "@fullcalendar/workspace-scripts",
+  "version": "0.0.0",
+  "devDependencies": {
+    "@fullcalendar/standard-scripts": "*",
+    "@pnpm/make-dedicated-lockfile": "^0.4.2",
+    "@types/js-yaml": "^4.0.5",
+    "@types/node": "^16.11.7",
+    "esbuild": "^0.15.7",
+    "js-yaml": "^4.1.0"
+  },
+  "bin": {
+    "workspace-scripts": "./bin/workspace-scripts.js",
+    "ws": "./bin/workspace-scripts.js"
+  },
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "tsConfig": {
+    "extends": "@fullcalendar/standard-scripts/config/tsconfig.node.json",
+    "compilerOptions": {
+      "rootDir": "./src",
+      "outDir": "./dist"
+    },
+    "include": [
+      "./src/**/*"
+    ]
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./config/*": "./config/*",
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  }
+}
