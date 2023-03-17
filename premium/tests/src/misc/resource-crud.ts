@@ -96,6 +96,25 @@ describe('resource crudding', () => {
     })
   })
 
+  describe('Resource::getParent', () => {
+    it('gets only top-level resources', () => {
+      initCalendar({
+        resources: [
+          { id: 'a', title: 'room a' },
+          { id: 'b',
+            title: 'room b',
+            children: [
+              { id: 'b1', title: 'room b1' },
+            ] },
+        ],
+      })
+      const child = currentCalendar.getResourceById('b1')
+      expect(child.title).toBe('room b1')
+      const parent = child.getParent()
+      expect(parent.title).toBe('room b')
+    })
+  })
+
   describe('addResource', () => {
     it('correctly adds a resouce', () => {
       initCalendar({

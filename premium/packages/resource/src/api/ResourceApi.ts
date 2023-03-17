@@ -86,7 +86,7 @@ export class ResourceApi {
     if (parentId) {
       return new ResourceApi(
         context,
-        context.getCurrentData().resourceSource[parentId],
+        context.getCurrentData().resourceStore[parentId],
       )
     }
 
