@@ -18,6 +18,7 @@ export type ClippedOverflowValue = OverflowValue | 'scroll-hidden'
 export interface ClippedScrollerProps {
   overflowX: ClippedOverflowValue
   overflowY: ClippedOverflowValue
+  forPrint: boolean
   liquid: boolean
   maxHeight?: number // incompatible with liquid
   children?: ComponentChildren
@@ -28,6 +29,10 @@ export interface ClippedScrollerProps {
 interface ClippedScrollerState {
   yScrollbarWidth?: number
   xScrollbarWidth?: number
+}
+
+interface ClippedScrollerSnapshot {
+  simulateScrollLeft?: number
 }
 
 export class ClippedScroller extends BaseComponent<ClippedScrollerProps, ClippedScrollerState> implements ScrollerLike {
@@ -46,11 +51,17 @@ export class ClippedScroller extends BaseComponent<ClippedScrollerProps, Clipped
     let overcomeRight = 0
     let overcomeBottom = 0
 
-    if (props.overflowX === 'scroll-hidden') {
+    let { overflowX, overflowY } = props
+    if (props.forPrint) {
+      overflowX = 'visible'
+      overflowY = 'visible'
+    }
+
+    if (overflowX === 'scroll-hidden') {
       overcomeBottom = state.xScrollbarWidth
     }
 
-    if (props.overflowY === 'scroll-hidden') {
+    if (overflowY === 'scroll-hidden') {
       if (state.yScrollbarWidth != null) {
         if (isScrollbarOnLeft) {
           overcomeLeft = state.yScrollbarWidth
@@ -68,14 +79,14 @@ export class ClippedScroller extends BaseComponent<ClippedScrollerProps, Clipped
         <Scroller
           ref={this.handleScroller}
           elRef={this.props.scrollerElRef}
-          overflowX={props.overflowX === 'scroll-hidden' ? 'scroll' : props.overflowX}
-          overflowY={props.overflowY === 'scroll-hidden' ? 'scroll' : props.overflowY}
+          overflowX={overflowX === 'scroll-hidden' ? 'scroll' : overflowX}
+          overflowY={overflowY === 'scroll-hidden' ? 'scroll' : overflowY}
           overcomeLeft={overcomeLeft}
           overcomeRight={overcomeRight}
           overcomeBottom={overcomeBottom}
           maxHeight={
             typeof props.maxHeight === 'number'
-              ? (props.maxHeight + (props.overflowX === 'scroll-hidden' ? state.xScrollbarWidth : 0))
+              ? (props.maxHeight + (overflowX === 'scroll-hidden' ? state.xScrollbarWidth : 0))
               : ''
           }
           liquid={props.liquid}
@@ -97,9 +108,26 @@ export class ClippedScroller extends BaseComponent<ClippedScrollerProps, Clipped
     this.context.addResizeHandler(this.handleSizing)
   }
 
-  componentDidUpdate(prevProps: ClippedScrollerProps) {
-    if (!isPropsEqual(prevProps, this.props)) { // an external change?
+  getSnapshotBeforeUpdate(prevProps: Readonly<ClippedScrollerProps>): ClippedScrollerSnapshot {
+    if (this.props.forPrint && !prevProps.forPrint) {
+      return { simulateScrollLeft: this.scroller.el.scrollLeft }
+    }
+    return {}
+  }
+
+  componentDidUpdate(prevProps: ClippedScrollerProps, prevState: ClippedScrollerState, snapshot: ClippedScrollerSnapshot) {
+    const { props, scroller: { el: scrollerEl } } = this
+
+    if (!isPropsEqual(prevProps, props)) { // an external change?
       this.handleSizing()
+    }
+
+    if (snapshot.simulateScrollLeft !== undefined) {
+      scrollerEl.style.left = -snapshot.simulateScrollLeft + 'px'
+    } else if (!props.forPrint && prevProps.forPrint) {
+      const restoredScrollLeft = -parseInt(scrollerEl.style.left)
+      scrollerEl.style.left = ''
+      scrollerEl.scrollLeft = restoredScrollLeft
     }
   }
 

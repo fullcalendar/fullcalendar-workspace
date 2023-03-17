@@ -48,16 +48,11 @@ function removeGlobalHandlers() {
 }
 
 function handleBeforePrint() {
-  let scrollEls = queryScrollerEls()
-  let scrollCoords = queryScrollerCoords(scrollEls)
-
   for (let context of contexts) {
     context.emitter.trigger('_beforeprint')
   }
 
   flushSync(() => { // because printing grabs DOM immediately after
-    killHorizontalScrolling(scrollEls, scrollCoords)
-    undoFuncs.push(() => restoreScrollerCoords(scrollEls, scrollCoords))
     undoFuncs.push(freezeScrollgridWidths())
   })
 }
@@ -93,54 +88,4 @@ function freezeScrollGridWidth(el: HTMLElement) {
 
 function unfreezeScrollGridWidth(el) {
   el.style.width = ''
-}
-
-// scrollers
-// TODO: use scroll normalization!? yes
-
-function queryScrollerEls() {
-  return findElements(document.body, '.fc-scroller-harness > .fc-scroller')
-}
-
-interface ScrollerCoords {
-  scrollLeft: number
-  scrollTop: number
-  overflowX: string
-  overflowY: string
-  marginBottom: string
-}
-
-function queryScrollerCoords(els: HTMLElement[]): ScrollerCoords[] {
-  return els.map((el) => {
-    let computedStyle = window.getComputedStyle(el)
-
-    return {
-      scrollLeft: el.scrollLeft,
-      scrollTop: el.scrollTop,
-      overflowX: computedStyle.overflowX,
-      overflowY: computedStyle.overflowY,
-      marginBottom: computedStyle.marginBottom,
-    }
-  })
-}
-
-function killHorizontalScrolling(els: HTMLElement[], coords: ScrollerCoords[]) {
-  els.forEach((el, i) => {
-    el.style.overflowX = 'visible' // need to clear X/Y to get true overflow
-    el.style.overflowY = 'visible' // "
-    el.style.marginBottom = '' // for clipping away scrollbar. disable
-    el.style.left = -coords[i].scrollLeft + 'px' // simulate scrollLeft! will be position:relative
-  })
-}
-
-function restoreScrollerCoords(els: HTMLElement[], coords: ScrollerCoords[]) { // restores vertical scrolling too
-  els.forEach((el, i) => {
-    let c = coords[i]
-    el.style.overflowX = c.overflowX
-    el.style.overflowY = c.overflowY
-    el.style.marginBottom = c.marginBottom
-    el.style.left = ''
-    el.scrollLeft = c.scrollLeft
-    el.scrollTop = c.scrollTop
-  })
 }

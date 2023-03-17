@@ -131,6 +131,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
         ref={this.scrollGridRef}
         elRef={this.rootElRef}
         liquid={!props.isHeightAuto && !props.forPrint}
+        forPrint={props.forPrint}
         collapsibleWidth={false}
         colGroups={[
           { cols: props.spreadsheetCols, width: resourceAreaWidth },

@@ -51,6 +51,7 @@ function renderScrollGrid(isLiquid: boolean, forPrint: boolean) {
   return (
     <ScrollGrid
       liquid={isLiquid && !forPrint}
+      forPrint={forPrint}
       collapsibleWidth={false}
       colGroups={[
         {

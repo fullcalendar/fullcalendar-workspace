@@ -267,6 +267,7 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
         scrollerElRef={this.scrollerElRefs.createRef(index)}
         overflowX={overflowX}
         overflowY={overflowY}
+        forPrint={this.props.forPrint}
         liquid={chunkVGrow}
         maxHeight={sectionConfig.maxHeight}
       >
