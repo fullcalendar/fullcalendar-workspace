@@ -1,3 +1,4 @@
+import './index.css'
 
 export { TimelineView } from './TimelineView.js'
 export { buildSlatCols } from './TimelineView.js'
