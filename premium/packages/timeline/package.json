@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/timeline",
-  "version": "6.1.5",
+  "version": "6.1.6",
   "title": "FullCalendar Timeline Plugin",
   "description": "Display events on a horizontal time axis (without resources)",
   "keywords": [
@@ -9,14 +9,14 @@
   ],
   "homepage": "https://fullcalendar.io/docs/timeline-view-no-resources",
   "dependencies": {
-    "@fullcalendar/premium-common": "~6.1.5",
-    "@fullcalendar/scrollgrid": "~6.1.5"
+    "@fullcalendar/premium-common": "~6.1.6",
+    "@fullcalendar/scrollgrid": "~6.1.6"
   },
   "peerDependencies": {
-    "@fullcalendar/core": "~6.1.5"
+    "@fullcalendar/core": "~6.1.6"
   },
   "devDependencies": {
-    "@fullcalendar/core": "~6.1.5",
+    "@fullcalendar/core": "~6.1.6",
     "@fullcalendar/standard-scripts": "*"
   },
   "scripts": {
