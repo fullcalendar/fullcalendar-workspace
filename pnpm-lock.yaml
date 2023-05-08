@@ -31,13 +31,13 @@ importers:
       '@angular/platform-browser': ~13.3.0
       '@angular/platform-browser-dynamic': ~13.3.0
       '@angular/router': ~13.3.0
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/daygrid': ~6.1.5
-      '@fullcalendar/interaction': ~6.1.5
-      '@fullcalendar/list': ~6.1.5
-      '@fullcalendar/resource': ~6.1.5
-      '@fullcalendar/resource-timegrid': ~6.1.5
-      '@fullcalendar/resource-timeline': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/daygrid': ~6.1.6
+      '@fullcalendar/interaction': ~6.1.6
+      '@fullcalendar/list': ~6.1.6
+      '@fullcalendar/resource': ~6.1.6
+      '@fullcalendar/resource-timegrid': ~6.1.6
+      '@fullcalendar/resource-timeline': ~6.1.6
       '@types/jasmine': ~3.10.0
       '@types/node': ^12.11.1
       jasmine-core: ~4.0.0
@@ -91,11 +91,11 @@ importers:
       '@babel/core': ^7.0.0
       '@babel/preset-env': ^7.9.0
       '@babel/preset-react': ^7.9.4
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/daygrid': ~6.1.5
-      '@fullcalendar/list': ~6.1.5
-      '@fullcalendar/resource': ~6.1.5
-      '@fullcalendar/resource-timeline': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/daygrid': ~6.1.6
+      '@fullcalendar/list': ~6.1.6
+      '@fullcalendar/resource': ~6.1.6
+      '@fullcalendar/resource-timeline': ~6.1.6
       '@rollup/plugin-babel': ^5.0.0
       '@rollup/plugin-commonjs': ^12.0.0
       '@rollup/plugin-json': ^4.0.3
@@ -162,11 +162,11 @@ importers:
       '@babel/plugin-transform-runtime': ^7.10.1
       '@babel/preset-env': ^7.8.4
       '@babel/runtime': ^7.12.1
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/daygrid': ~6.1.5
-      '@fullcalendar/interaction': ~6.1.5
-      '@fullcalendar/resource': ~6.1.5
-      '@fullcalendar/resource-timeline': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/daygrid': ~6.1.6
+      '@fullcalendar/interaction': ~6.1.6
+      '@fullcalendar/resource': ~6.1.6
+      '@fullcalendar/resource-timeline': ~6.1.6
       '@vue/test-utils': ^1.0.3
       babel-loader: ^8.1.0
       concurrently: ^5.3.0
@@ -218,8 +218,8 @@ importers:
 
   contrib/vue3:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/daygrid': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/daygrid': ~6.1.6
       '@vitejs/plugin-vue': ^3.2.0
       '@vue/test-utils': next
       concurrently: ^5.3.0
@@ -267,12 +267,12 @@ importers:
       '@angular/platform-browser': ~12.2.0
       '@angular/platform-browser-dynamic': ~12.2.0
       '@angular/router': ~12.2.0
-      '@fullcalendar/angular': ^6.1.5
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/angular': ^6.1.6
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       '@types/jasmine': ~3.8.0
       '@types/node': ^12.11.1
       jasmine-core: ~3.8.0
@@ -332,12 +332,12 @@ importers:
       '@angular/platform-browser': ~13.3.0
       '@angular/platform-browser-dynamic': ~13.3.0
       '@angular/router': ~13.3.0
-      '@fullcalendar/angular': ^6.1.5
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/angular': ^6.1.6
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       '@types/jasmine': ~3.10.0
       '@types/node': ^12.11.1
       jasmine-core: ~4.0.0
@@ -395,12 +395,12 @@ importers:
       '@angular/platform-browser': ^14.1.0
       '@angular/platform-browser-dynamic': ^14.1.0
       '@angular/router': ^14.1.0
-      '@fullcalendar/angular': ^6.1.5
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/angular': ^6.1.6
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       '@types/jasmine': ~4.0.0
       jasmine-core: ~4.2.0
       karma: ~6.4.0
@@ -456,12 +456,12 @@ importers:
       '@angular/platform-browser': ^15.0.0
       '@angular/platform-browser-dynamic': ^15.0.0
       '@angular/router': ^15.0.0
-      '@fullcalendar/angular': ^6.1.5
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/angular': ^6.1.6
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       '@types/jasmine': ~4.3.0
       jasmine-core: ~4.5.0
       karma: ~6.4.0
@@ -517,12 +517,12 @@ importers:
       '@angular/platform-browser': ^15.0.0
       '@angular/platform-browser-dynamic': ^15.0.0
       '@angular/router': ^15.0.0
-      '@fullcalendar/angular': ^6.1.5
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/angular': ^6.1.6
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       '@ngrx/store': ^15.0.0
       '@types/jasmine': ~4.3.0
       jasmine-core: ~4.5.0
@@ -570,12 +570,12 @@ importers:
   examples/bootstrap4:
     specifiers:
       '@fortawesome/fontawesome-free': ^5.13.1
-      '@fullcalendar/bootstrap': ^6.1.5
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/bootstrap': ^6.1.6
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       bootstrap: ^4.5.0
       css-loader: ^4.3.0
       html-webpack-plugin: ^5.5.0
@@ -604,12 +604,12 @@ importers:
 
   examples/bootstrap5:
     specifiers:
-      '@fullcalendar/bootstrap5': ^6.1.5
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/bootstrap5': ^6.1.6
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       '@popperjs/core': ^2.11.6
       bootstrap: ^5.1.3
       bootstrap-icons: ^1.8.1
@@ -659,10 +659,10 @@ importers:
       '@capacitor/haptics': 4.1.0
       '@capacitor/keyboard': 4.1.1
       '@capacitor/status-bar': 4.1.1
-      '@fullcalendar/angular': ^6.1.5
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/angular': ^6.1.6
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       '@ionic/angular': ^6.1.9
       '@ionic/angular-toolkit': ^8.0.0
       '@types/jasmine': ~4.0.0
@@ -745,11 +745,11 @@ importers:
       '@babel/core': ^7.14.5
       '@babel/preset-env': ^7.14.5
       '@babel/preset-react': ^7.14.5
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/react': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
-      '@fullcalendar/timeline': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/react': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
+      '@fullcalendar/timeline': ^6.1.6
       '@testing-library/jest-dom': ^5.13.0
       '@testing-library/react': ^11.2.7
       babel-jest: ^29.4.1
@@ -777,11 +777,11 @@ importers:
 
   examples/locales:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       css-loader: ^4.3.0
       style-loader: ^3.3.1
       webpack: ^5.3.0
@@ -800,12 +800,12 @@ importers:
 
   examples/moment:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/moment': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/moment': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       css-loader: ^4.3.0
       html-webpack-plugin: ^5.5.0
       moment: ^2.29.1
@@ -831,10 +831,10 @@ importers:
 
   examples/moment-timezone:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/moment-timezone': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/moment-timezone': ^6.1.6
       css-loader: ^4.3.0
       html-webpack-plugin: ^5.5.0
       moment: ^2.29.1
@@ -862,12 +862,12 @@ importers:
 
   examples/moment-typescript:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/moment': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/moment': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       css-loader: ^4.3.0
       html-webpack-plugin: ^5.5.0
       moment: ^2.29.1
@@ -897,11 +897,11 @@ importers:
 
   examples/next:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/react': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/react': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       eslint: ^8.26.0
       eslint-config-next: ^13.0.1
       next: ^12.3.2
@@ -924,11 +924,11 @@ importers:
 
   examples/next-scheduler:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/react': ^6.1.5
-      '@fullcalendar/resource': ^6.1.5
-      '@fullcalendar/resource-timeline': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/react': ^6.1.6
+      '@fullcalendar/resource': ^6.1.6
+      '@fullcalendar/resource-timeline': ^6.1.6
       eslint: ^8.26.0
       eslint-config-next: ^13.0.1
       next: ^12.3.2
@@ -951,11 +951,11 @@ importers:
 
   examples/next13:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/react': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/react': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       '@next/font': 13.2.3
       next: 13.2.3
       react: 18.2.0
@@ -974,11 +974,11 @@ importers:
   examples/parcel:
     specifiers:
       '@babel/core': ^7.13.16
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       parcel: ^2.7.0
     dependencies:
       '@fullcalendar/core': link:../../standard/packages/core/dist
@@ -999,11 +999,11 @@ importers:
       '@babel/plugin-syntax-dynamic-import': ^7.0.0
       '@babel/preset-env': ^7.0.0-beta.51
       '@babel/preset-react': ^7.0.0-beta.51
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/react': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/react': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       babel-loader: ^8.1.0
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
@@ -1046,11 +1046,11 @@ importers:
       '@babel/plugin-syntax-dynamic-import': ^7.0.0
       '@babel/preset-env': ^7.0.0-beta.51
       '@babel/preset-react': ^7.0.0-beta.51
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/react': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/react': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       babel-loader: ^8.1.0
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
@@ -1093,11 +1093,11 @@ importers:
       '@babel/plugin-syntax-dynamic-import': ^7.0.0
       '@babel/preset-env': ^7.0.0-beta.51
       '@babel/preset-react': ^7.0.0-beta.51
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/react': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/react': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       babel-loader: ^8.1.0
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
@@ -1140,11 +1140,11 @@ importers:
       '@babel/plugin-syntax-dynamic-import': ^7.0.0
       '@babel/preset-env': ^7.0.0-beta.51
       '@babel/preset-react': ^7.0.0-beta.51
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/react': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/react': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       babel-loader: ^8.1.0
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
@@ -1180,11 +1180,11 @@ importers:
 
   examples/react-mobx-typescript:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/react': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/react': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       '@types/react': ^16.9.55
       '@types/react-dom': ^16.9.9
       css-loader: ^4.3.0
@@ -1230,11 +1230,11 @@ importers:
       '@babel/plugin-syntax-dynamic-import': ^7.0.0
       '@babel/preset-env': ^7.0.0-beta.51
       '@babel/preset-react': ^7.0.0-beta.51
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/react': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/react': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       babel-loader: ^8.1.0
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
@@ -1285,13 +1285,13 @@ importers:
       '@babel/plugin-syntax-dynamic-import': ^7.0.0
       '@babel/preset-env': ^7.0.0-beta.51
       '@babel/preset-react': ^7.0.0-beta.51
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/react': ^6.1.5
-      '@fullcalendar/resource': ^6.1.5
-      '@fullcalendar/resource-timeline': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/react': ^6.1.6
+      '@fullcalendar/resource': ^6.1.6
+      '@fullcalendar/resource-timeline': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       babel-loader: ^8.1.0
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
@@ -1329,11 +1329,11 @@ importers:
 
   examples/react-typescript:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/react': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/react': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       '@types/react': ^16.9.55
       '@types/react-dom': ^16.9.9
       css-loader: ^4.3.0
@@ -1375,11 +1375,11 @@ importers:
       '@babel/plugin-syntax-dynamic-import': ^7.0.0
       '@babel/preset-env': ^7.0.0-beta.51
       '@babel/preset-react': ^7.0.0-beta.51
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/react': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/react': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       babel-loader: ^8.1.0
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
@@ -1415,11 +1415,11 @@ importers:
 
   examples/remix:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/react': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/react': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       '@remix-run/dev': ~1.14.2
       '@remix-run/eslint-config': ~1.14.2
       '@remix-run/node': ~1.14.2
@@ -1454,11 +1454,11 @@ importers:
 
   examples/rollup:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       '@rollup/plugin-node-resolve': ^14.0.1
       rollup: ^1.20.0||^2.0.0
       rollup-plugin-postcss: ^2.8.2
@@ -1475,14 +1475,14 @@ importers:
 
   examples/rollup-scheduler:
     specifiers:
-      '@fullcalendar/adaptive': ^6.1.5
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/resource': ^6.1.5
-      '@fullcalendar/resource-timeline': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/adaptive': ^6.1.6
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/resource': ^6.1.6
+      '@fullcalendar/resource-timeline': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       '@rollup/plugin-node-resolve': ^14.0.1
       rollup: ^1.20.0||^2.0.0
       rollup-plugin-postcss: ^2.8.2
@@ -1500,13 +1500,56 @@ importers:
       rollup: 2.79.1
       rollup-plugin-postcss: 2.9.0
 
+  examples/t3-app:
+    specifiers:
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/react': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
+      '@t3-oss/env-nextjs': ^0.2.1
+      '@types/eslint': ^8.21.3
+      '@types/node': ^18.15.5
+      '@types/react': ^18.0.28
+      '@types/react-dom': ^18.0.11
+      '@typescript-eslint/eslint-plugin': ^5.56.0
+      '@typescript-eslint/parser': ^5.56.0
+      eslint: ^8.36.0
+      eslint-config-next: ^13.4.1
+      next: ^13.4.1
+      react: 18.2.0
+      react-dom: 18.2.0
+      typescript: ^5.0.2
+      zod: ^3.21.4
+    dependencies:
+      '@t3-oss/env-nextjs': 0.2.2_zod@3.21.4
+      next: 13.4.1_biqbaboplfbrettd7655fr4n2y
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      zod: 3.21.4
+    devDependencies:
+      '@fullcalendar/core': link:../../standard/packages/core/dist
+      '@fullcalendar/daygrid': link:../../standard/packages/daygrid/dist
+      '@fullcalendar/interaction': link:../../standard/packages/interaction/dist
+      '@fullcalendar/react': link:../../contrib/react
+      '@fullcalendar/timegrid': link:../../standard/packages/timegrid/dist
+      '@types/eslint': 8.37.0
+      '@types/node': 18.16.5
+      '@types/react': 18.2.6
+      '@types/react-dom': 18.2.4
+      '@typescript-eslint/eslint-plugin': 5.59.5_zaj6dsh3leplki3sfxgbx2w2za
+      '@typescript-eslint/parser': 5.59.5_3qfatcekpgbllh6uk5ivyhkbxq
+      eslint: 8.40.0
+      eslint-config-next: 13.4.1_3qfatcekpgbllh6uk5ivyhkbxq
+      typescript: 5.0.4
+
   examples/typescript:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
       style-loader: ^2.0.0
@@ -1531,16 +1574,16 @@ importers:
 
   examples/typescript-scheduler:
     specifiers:
-      '@fullcalendar/adaptive': ^6.1.5
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/premium-common': ^6.1.5
-      '@fullcalendar/resource': ^6.1.5
-      '@fullcalendar/resource-timeline': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
-      '@fullcalendar/timeline': ^6.1.5
+      '@fullcalendar/adaptive': ^6.1.6
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/premium-common': ^6.1.6
+      '@fullcalendar/resource': ^6.1.6
+      '@fullcalendar/resource-timeline': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
+      '@fullcalendar/timeline': ^6.1.6
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
       style-loader: ^2.0.0
@@ -1572,11 +1615,11 @@ importers:
     specifiers:
       '@babel/core': ^7.14.3
       '@babel/preset-env': ^7.14.4
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
-      '@fullcalendar/vue': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
+      '@fullcalendar/vue': ^6.1.6
       babel-loader: ^8.2.2
       css-loader: ^4.3.0
       html-webpack-plugin: ^4.5.0
@@ -1611,11 +1654,11 @@ importers:
 
   examples/vue2-typescript:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
-      '@fullcalendar/vue': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
+      '@fullcalendar/vue': ^6.1.6
       '@vitejs/plugin-vue2': ^1.1.2
       typescript: ^4.2.4
       vite: ^2.2.1
@@ -1638,11 +1681,11 @@ importers:
 
   examples/vue2-vuex:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
-      '@fullcalendar/vue': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
+      '@fullcalendar/vue': ^6.1.6
       '@vitejs/plugin-vue2': ^1.1.2
       core-js: ^3.6.5
       date-fns: ^2.14.0
@@ -1665,11 +1708,11 @@ importers:
 
   examples/vue3:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
-      '@fullcalendar/vue3': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
+      '@fullcalendar/vue3': ^6.1.6
       '@vitejs/plugin-vue': ^4.0.0
       vite: ^4.0.0
       vue: ^3.2.45
@@ -1686,11 +1729,11 @@ importers:
 
   examples/vue3-typescript:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
-      '@fullcalendar/vue3': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
+      '@fullcalendar/vue3': ^6.1.6
       '@vitejs/plugin-vue': ^4.0.0
       typescript: ^4.9.3
       vite: ^4.0.0
@@ -1711,11 +1754,11 @@ importers:
 
   examples/webpack:
     specifiers:
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       css-loader: ^4.3.0
       html-webpack-plugin: ^5.5.0
       style-loader: ^3.3.1
@@ -1736,14 +1779,14 @@ importers:
 
   examples/webpack-scheduler:
     specifiers:
-      '@fullcalendar/adaptive': ^6.1.5
-      '@fullcalendar/core': ^6.1.5
-      '@fullcalendar/daygrid': ^6.1.5
-      '@fullcalendar/interaction': ^6.1.5
-      '@fullcalendar/list': ^6.1.5
-      '@fullcalendar/resource': ^6.1.5
-      '@fullcalendar/resource-timeline': ^6.1.5
-      '@fullcalendar/timegrid': ^6.1.5
+      '@fullcalendar/adaptive': ^6.1.6
+      '@fullcalendar/core': ^6.1.6
+      '@fullcalendar/daygrid': ^6.1.6
+      '@fullcalendar/interaction': ^6.1.6
+      '@fullcalendar/list': ^6.1.6
+      '@fullcalendar/resource': ^6.1.6
+      '@fullcalendar/resource-timeline': ^6.1.6
+      '@fullcalendar/timegrid': ^6.1.6
       css-loader: ^4.3.0
       html-webpack-plugin: ^5.5.0
       style-loader: ^3.3.1
@@ -1767,20 +1810,20 @@ importers:
 
   premium/bundle:
     specifiers:
-      '@fullcalendar/adaptive': ~6.1.5
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/daygrid': ~6.1.5
-      '@fullcalendar/interaction': ~6.1.5
-      '@fullcalendar/list': ~6.1.5
-      '@fullcalendar/multimonth': ~6.1.5
-      '@fullcalendar/resource': ~6.1.5
-      '@fullcalendar/resource-daygrid': ~6.1.5
-      '@fullcalendar/resource-timegrid': ~6.1.5
-      '@fullcalendar/resource-timeline': ~6.1.5
-      '@fullcalendar/scrollgrid': ~6.1.5
+      '@fullcalendar/adaptive': ~6.1.6
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/daygrid': ~6.1.6
+      '@fullcalendar/interaction': ~6.1.6
+      '@fullcalendar/list': ~6.1.6
+      '@fullcalendar/multimonth': ~6.1.6
+      '@fullcalendar/resource': ~6.1.6
+      '@fullcalendar/resource-daygrid': ~6.1.6
+      '@fullcalendar/resource-timegrid': ~6.1.6
+      '@fullcalendar/resource-timeline': ~6.1.6
+      '@fullcalendar/scrollgrid': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
-      '@fullcalendar/timegrid': ~6.1.5
-      '@fullcalendar/timeline': ~6.1.5
+      '@fullcalendar/timegrid': ~6.1.6
+      '@fullcalendar/timeline': ~6.1.6
     dependencies:
       '@fullcalendar/adaptive': link:../packages/adaptive/dist
       '@fullcalendar/core': link:../../standard/packages/core/dist
@@ -1801,8 +1844,8 @@ importers:
 
   premium/packages/adaptive:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/premium-common': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/premium-common': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
     dependencies:
       '@fullcalendar/premium-common': link:../premium-common/dist
@@ -1813,7 +1856,7 @@ importers:
 
   premium/packages/premium-common:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
     devDependencies:
       '@fullcalendar/core': link:../../../standard/packages/core/dist
@@ -1822,8 +1865,8 @@ importers:
 
   premium/packages/resource:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/premium-common': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/premium-common': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
     dependencies:
       '@fullcalendar/premium-common': link:../premium-common/dist
@@ -1834,10 +1877,10 @@ importers:
 
   premium/packages/resource-daygrid:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/daygrid': ~6.1.5
-      '@fullcalendar/premium-common': ~6.1.5
-      '@fullcalendar/resource': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/daygrid': ~6.1.6
+      '@fullcalendar/premium-common': ~6.1.6
+      '@fullcalendar/resource': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
     dependencies:
       '@fullcalendar/daygrid': link:../../../standard/packages/daygrid/dist
@@ -1850,12 +1893,12 @@ importers:
 
   premium/packages/resource-timegrid:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/premium-common': ~6.1.5
-      '@fullcalendar/resource': ~6.1.5
-      '@fullcalendar/resource-daygrid': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/premium-common': ~6.1.6
+      '@fullcalendar/resource': ~6.1.6
+      '@fullcalendar/resource-daygrid': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
-      '@fullcalendar/timegrid': ~6.1.5
+      '@fullcalendar/timegrid': ~6.1.6
     dependencies:
       '@fullcalendar/premium-common': link:../premium-common/dist
       '@fullcalendar/resource-daygrid': link:../resource-daygrid/dist
@@ -1868,12 +1911,12 @@ importers:
 
   premium/packages/resource-timeline:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/premium-common': ~6.1.5
-      '@fullcalendar/resource': ~6.1.5
-      '@fullcalendar/scrollgrid': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/premium-common': ~6.1.6
+      '@fullcalendar/resource': ~6.1.6
+      '@fullcalendar/scrollgrid': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
-      '@fullcalendar/timeline': ~6.1.5
+      '@fullcalendar/timeline': ~6.1.6
     dependencies:
       '@fullcalendar/premium-common': link:../premium-common/dist
       '@fullcalendar/scrollgrid': link:../scrollgrid/dist
@@ -1886,8 +1929,8 @@ importers:
 
   premium/packages/scrollgrid:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/premium-common': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/premium-common': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
     dependencies:
       '@fullcalendar/premium-common': link:../premium-common/dist
@@ -1898,9 +1941,9 @@ importers:
 
   premium/packages/timeline:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/premium-common': ~6.1.5
-      '@fullcalendar/scrollgrid': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/premium-common': ~6.1.6
+      '@fullcalendar/scrollgrid': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
     dependencies:
       '@fullcalendar/premium-common': link:../premium-common/dist
@@ -1912,20 +1955,20 @@ importers:
 
   premium/tests:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/daygrid': ~6.1.5
-      '@fullcalendar/interaction': ~6.1.5
-      '@fullcalendar/list': ~6.1.5
-      '@fullcalendar/premium-common': ~6.1.5
-      '@fullcalendar/resource': ~6.1.5
-      '@fullcalendar/resource-daygrid': ~6.1.5
-      '@fullcalendar/resource-timegrid': ~6.1.5
-      '@fullcalendar/resource-timeline': ~6.1.5
-      '@fullcalendar/scrollgrid': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/daygrid': ~6.1.6
+      '@fullcalendar/interaction': ~6.1.6
+      '@fullcalendar/list': ~6.1.6
+      '@fullcalendar/premium-common': ~6.1.6
+      '@fullcalendar/resource': ~6.1.6
+      '@fullcalendar/resource-daygrid': ~6.1.6
+      '@fullcalendar/resource-timegrid': ~6.1.6
+      '@fullcalendar/resource-timeline': ~6.1.6
+      '@fullcalendar/scrollgrid': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
       '@fullcalendar/standard-tests': '*'
-      '@fullcalendar/timegrid': ~6.1.5
-      '@fullcalendar/timeline': ~6.1.5
+      '@fullcalendar/timegrid': ~6.1.6
+      '@fullcalendar/timeline': ~6.1.6
       '@types/jasmine': ^3.3.12
       '@types/jasmine-jquery': ^1.5.33
       '@types/jquery': ^3.3.29
@@ -1971,13 +2014,13 @@ importers:
 
   standard/bundle:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/daygrid': ~6.1.5
-      '@fullcalendar/interaction': ~6.1.5
-      '@fullcalendar/list': ~6.1.5
-      '@fullcalendar/multimonth': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/daygrid': ~6.1.6
+      '@fullcalendar/interaction': ~6.1.6
+      '@fullcalendar/list': ~6.1.6
+      '@fullcalendar/multimonth': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
-      '@fullcalendar/timegrid': ~6.1.5
+      '@fullcalendar/timegrid': ~6.1.6
     dependencies:
       '@fullcalendar/core': link:../packages/core/dist
       '@fullcalendar/daygrid': link:../packages/daygrid/dist
@@ -1991,7 +2034,7 @@ importers:
 
   standard/packages/bootstrap4:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
     devDependencies:
       '@fullcalendar/core': link:../core/dist
@@ -2000,7 +2043,7 @@ importers:
 
   standard/packages/bootstrap5:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
     devDependencies:
       '@fullcalendar/core': link:../core/dist
@@ -2023,7 +2066,7 @@ importers:
 
   standard/packages/daygrid:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
     devDependencies:
       '@fullcalendar/core': link:../core/dist
@@ -2032,7 +2075,7 @@ importers:
 
   standard/packages/google-calendar:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
     devDependencies:
       '@fullcalendar/core': link:../core/dist
@@ -2041,7 +2084,7 @@ importers:
 
   standard/packages/icalendar:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
       ical.js: ^1.4.0
     devDependencies:
@@ -2052,7 +2095,7 @@ importers:
 
   standard/packages/interaction:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
     devDependencies:
       '@fullcalendar/core': link:../core/dist
@@ -2061,7 +2104,7 @@ importers:
 
   standard/packages/list:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
     devDependencies:
       '@fullcalendar/core': link:../core/dist
@@ -2070,7 +2113,7 @@ importers:
 
   standard/packages/luxon1:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
       luxon: ^1.12.1
     devDependencies:
@@ -2081,7 +2124,7 @@ importers:
 
   standard/packages/luxon2:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
       '@types/luxon': ^2.0.9
       luxon: ^2.0.0
@@ -2094,7 +2137,7 @@ importers:
 
   standard/packages/moment:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
       moment: ^2.29.1
     devDependencies:
@@ -2105,7 +2148,7 @@ importers:
 
   standard/packages/moment-timezone:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
       moment-timezone: ^0.5.40
     devDependencies:
@@ -2116,8 +2159,8 @@ importers:
 
   standard/packages/multimonth:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/daygrid': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/daygrid': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
     dependencies:
       '@fullcalendar/daygrid': link:../daygrid/dist
@@ -2128,7 +2171,7 @@ importers:
 
   standard/packages/rrule:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
       rrule: ^2.6.0
     devDependencies:
@@ -2139,8 +2182,8 @@ importers:
 
   standard/packages/timegrid:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/daygrid': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/daygrid': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
     dependencies:
       '@fullcalendar/daygrid': link:../daygrid/dist
@@ -2151,7 +2194,7 @@ importers:
 
   standard/packages/web-component:
     specifiers:
-      '@fullcalendar/core': ~6.1.5
+      '@fullcalendar/core': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
     devDependencies:
       '@fullcalendar/core': link:../core/dist
@@ -2256,25 +2299,25 @@ importers:
 
   standard/tests:
     specifiers:
-      '@fullcalendar/bootstrap': ~6.1.5
-      '@fullcalendar/core': ~6.1.5
-      '@fullcalendar/daygrid': ~6.1.5
-      '@fullcalendar/google-calendar': ~6.1.5
-      '@fullcalendar/icalendar': ~6.1.5
-      '@fullcalendar/interaction': ~6.1.5
-      '@fullcalendar/list': ~6.1.5
-      '@fullcalendar/luxon2': ~6.1.5
-      '@fullcalendar/moment': ~6.1.5
-      '@fullcalendar/moment-timezone': ~6.1.5
-      '@fullcalendar/multimonth': ~6.1.5
-      '@fullcalendar/rrule': ~6.1.5
+      '@fullcalendar/bootstrap': ~6.1.6
+      '@fullcalendar/core': ~6.1.6
+      '@fullcalendar/daygrid': ~6.1.6
+      '@fullcalendar/google-calendar': ~6.1.6
+      '@fullcalendar/icalendar': ~6.1.6
+      '@fullcalendar/interaction': ~6.1.6
+      '@fullcalendar/list': ~6.1.6
+      '@fullcalendar/luxon2': ~6.1.6
+      '@fullcalendar/moment': ~6.1.6
+      '@fullcalendar/moment-timezone': ~6.1.6
+      '@fullcalendar/multimonth': ~6.1.6
+      '@fullcalendar/rrule': ~6.1.6
       '@fullcalendar/standard-scripts': '*'
-      '@fullcalendar/timegrid': ~6.1.5
+      '@fullcalendar/timegrid': ~6.1.6
       '@types/jasmine': ^3.3.12
       '@types/jasmine-jquery': ^1.5.33
       '@types/jquery': ^3.3.29
       fetch-mock: ^9.11.0
-      fullcalendar: ~6.1.5
+      fullcalendar: ~6.1.6
       handlebars: ^4.7.7
       luxon: ^2.0.0
       moment: ^2.29.1
@@ -9455,7 +9498,22 @@ packages:
       eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
     dependencies:
       eslint: 8.28.0
-      eslint-visitor-keys: 3.3.0
+      eslint-visitor-keys: 3.4.1
+    dev: true
+
+  /@eslint-community/eslint-utils/4.4.0_eslint@8.40.0:
+    resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
+    dependencies:
+      eslint: 8.40.0
+      eslint-visitor-keys: 3.4.1
+    dev: true
+
+  /@eslint-community/regexpp/4.5.1:
+    resolution: {integrity: sha512-Z5ba73P98O1KUYCCJTUeVpja9RcGoMdncZ6T49FCUl2lN38JtCJ+3WgIDBv0AuY4WChU5PmtJmOCTlN6FZTFKQ==}
+    engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
     dev: true
 
   /@eslint/eslintrc/0.4.3:
@@ -9492,6 +9550,28 @@ packages:
       - supports-color
     dev: true
 
+  /@eslint/eslintrc/2.0.3:
+    resolution: {integrity: sha512-+5gy6OQfk+xx3q0d6jGZZC3f3KzAkXc/IanVxd1is/VIIziRqqt3ongQz0FiTUXqTk0c7aDB3OaFuKnuSoJicQ==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dependencies:
+      ajv: 6.12.6
+      debug: 4.3.4
+      espree: 9.5.2
+      globals: 13.20.0
+      ignore: 5.2.4
+      import-fresh: 3.3.0
+      js-yaml: 4.1.0
+      minimatch: 3.1.2
+      strip-json-comments: 3.1.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /@eslint/js/8.40.0:
+    resolution: {integrity: sha512-ElyB54bJIhXQYVKjDSvCkPO1iU1tSAeVQJbllWJq1XQSmmA4dgFk8CbiBGpiOPxleE48vDogxCtmMYku4HSVLA==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: true
+
   /@fortawesome/fontawesome-free/5.15.4:
     resolution: {integrity: sha512-eYm8vijH/hpzr/6/1CJ/V/Eb1xQFW2nnUKArb3z+yUWv7HTwj6M7SP957oMjfZjAHU6qpoNc2wQvIxBLWYa/Jg==}
     engines: {node: '>=6'}
@@ -9504,6 +9584,17 @@ packages:
 
   /@humanwhocodes/config-array/0.11.7:
     resolution: {integrity: sha512-kBbPWzN8oVMLb0hOUYXhmxggL/1cJE6ydvjDIGi9EnAGUyA7cLVKQg+d/Dsm+KZwx2czGHrCmMVLiyg8s5JPKw==}
+    engines: {node: '>=10.10.0'}
+    dependencies:
+      '@humanwhocodes/object-schema': 1.2.1
+      debug: 4.3.4
+      minimatch: 3.1.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /@humanwhocodes/config-array/0.11.8:
+    resolution: {integrity: sha512-UybHIJzJnR5Qc/MsD9Kr+RpO2h+/P1GhOwdiLPXK5TWk5sgTdu88bTD9UP+CKbPPh5Rni1u0GjAdYQLemG8g+g==}
     engines: {node: '>=10.10.0'}
     dependencies:
       '@humanwhocodes/object-schema': 1.2.1
@@ -9730,7 +9821,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.4.1
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       chalk: 4.1.2
       jest-message-util: 29.4.1
       jest-util: 29.4.1
@@ -9751,14 +9842,14 @@ packages:
       '@jest/test-result': 29.4.1
       '@jest/transform': 29.4.1
       '@jest/types': 29.4.1
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       ci-info: 3.6.1
       exit: 0.1.2
       graceful-fs: 4.2.10
       jest-changed-files: 29.4.0
-      jest-config: 29.4.1_@types+node@18.11.9
+      jest-config: 29.4.1_@types+node@18.16.5
       jest-haste-map: 29.4.1
       jest-message-util: 29.4.1
       jest-regex-util: 29.2.0
@@ -9785,7 +9876,7 @@ packages:
     dependencies:
       '@jest/fake-timers': 29.4.1
       '@jest/types': 29.4.1
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       jest-mock: 29.4.1
     dev: true
 
@@ -9812,7 +9903,7 @@ packages:
     dependencies:
       '@jest/types': 29.4.1
       '@sinonjs/fake-timers': 10.0.2
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       jest-message-util: 29.4.1
       jest-mock: 29.4.1
       jest-util: 29.4.1
@@ -9845,7 +9936,7 @@ packages:
       '@jest/transform': 29.4.1
       '@jest/types': 29.4.1
       '@jridgewell/trace-mapping': 0.3.17
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       chalk: 4.1.2
       collect-v8-coverage: 1.0.1
       exit: 0.1.2
@@ -9932,7 +10023,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       '@types/yargs': 15.0.14
       chalk: 4.1.2
     dev: true
@@ -9944,7 +10035,7 @@ packages:
       '@jest/schemas': 29.4.0
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       '@types/yargs': 17.0.13
       chalk: 4.1.2
     dev: true
@@ -10132,8 +10223,18 @@ packages:
     resolution: {integrity: sha512-FN50r/E+b8wuqyRjmGaqvqNDuWBWYWQiigfZ50KnSFH0f+AMQQyaZl+Zm2+CIpKk0fL9QxhLxOpTVA3xFHgFow==}
     dev: false
 
+  /@next/env/13.4.1:
+    resolution: {integrity: sha512-eD6WCBMFjLFooLM19SIhSkWBHtaFrZFfg2Cxnyl3vS3DAdFRfnx5TY2RxlkuKXdIRCC0ySbtK9JXXt8qLCqzZg==}
+    dev: false
+
   /@next/eslint-plugin-next/13.0.4:
     resolution: {integrity: sha512-jZ4urKT+aO9QHm3ttihrIQscQISDSKK8isAom750+EySn9o3LCSkTdPGBtvBqY7Yku+NqhfQempR5J58DqTaVg==}
+    dependencies:
+      glob: 7.1.7
+    dev: true
+
+  /@next/eslint-plugin-next/13.4.1:
+    resolution: {integrity: sha512-tVPS/2FKlA3ANCRCYZVT5jdbUKasBU8LG6bYqcNhyORDFTlDYa4cAWQJjZ7msIgLwMQIbL8CAsxrOL8maa/4Lg==}
     dependencies:
       glob: 7.1.7
     dev: true
@@ -10196,6 +10297,15 @@ packages:
     dev: false
     optional: true
 
+  /@next/swc-darwin-arm64/13.4.1:
+    resolution: {integrity: sha512-eF8ARHtYfnoYtDa6xFHriUKA/Mfj/cCbmKb3NofeKhMccs65G6/loZ15a6wYCCx4rPAd6x4t1WmVYtri7EdeBg==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@next/swc-darwin-x64/12.3.3:
     resolution: {integrity: sha512-gRYvTKrRYynjFQUDJ+upHMcBiNz0ii0m7zGgmUTlTSmrBWqVSzx79EHYT7Nn4GWHM+a/W+2VXfu+lqHcJeQ9gQ==}
     engines: {node: '>= 10'}
@@ -10207,6 +10317,15 @@ packages:
 
   /@next/swc-darwin-x64/13.2.3:
     resolution: {integrity: sha512-GZctkN6bJbpjlFiS5pylgB2pifHvgkqLAPumJzxnxkf7kqNm6rOGuNjsROvOWVWXmKhrzQkREO/WPS2aWsr/yw==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@next/swc-darwin-x64/13.4.1:
+    resolution: {integrity: sha512-7cmDgF9tGWTgn5Gw+vP17miJbH4wcraMHDCOHTYWkO/VeKT73dUWG23TNRLfgtCNSPgH4V5B4uLHoZTanx9bAw==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
@@ -10268,6 +10387,15 @@ packages:
     dev: false
     optional: true
 
+  /@next/swc-linux-arm64-gnu/13.4.1:
+    resolution: {integrity: sha512-qwJqmCri2ie8aTtE5gjTSr8S6O8B67KCYgVZhv9gKH44yvc/zXbAY8u23QGULsYOyh1islWE5sWfQNLOj9iryg==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@next/swc-linux-arm64-musl/12.3.3:
     resolution: {integrity: sha512-oyfQYljCwf+9zUu1YkTZbRbyxmcHzvJPMGOxC3kJOReh3kCUoGcmvAxUPMtFD6FSYjJ+eaog4+2IFHtYuAw/bQ==}
     engines: {node: '>= 10'}
@@ -10279,6 +10407,15 @@ packages:
 
   /@next/swc-linux-arm64-musl/13.2.3:
     resolution: {integrity: sha512-sujxFDhMMDjqhruup8LLGV/y+nCPi6nm5DlFoThMJFvaaKr/imhkXuk8uCTq4YJDbtRxnjydFv2y8laBSJVC2g==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@next/swc-linux-arm64-musl/13.4.1:
+    resolution: {integrity: sha512-qcC54tWNGDv/VVIFkazxhqH1Bnagjfs4enzELVRlUOoJPD2BGJTPI7z08pQPbbgxLtRiu8gl2mXvpB8WlOkMeA==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
@@ -10304,6 +10441,15 @@ packages:
     dev: false
     optional: true
 
+  /@next/swc-linux-x64-gnu/13.4.1:
+    resolution: {integrity: sha512-9TeWFlpLsBosZ+tsm/rWBaMwt5It9tPH8m3nawZqFUUrZyGRfGcI67js774vtx0k3rL9qbyY6+3pw9BCVpaYUA==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@next/swc-linux-x64-musl/12.3.3:
     resolution: {integrity: sha512-bG5QODFy59XnSFTiPyIAt+rbPdphtvQMibtOVvyjwIwsBUw7swJ6k+6PSPVYEYpi6SHzi3qYBsro39ayGJKQJg==}
     engines: {node: '>= 10'}
@@ -10315,6 +10461,15 @@ packages:
 
   /@next/swc-linux-x64-musl/13.2.3:
     resolution: {integrity: sha512-CTeelh8OzSOVqpzMFMFnVRJIFAFQoTsI9RmVJWW/92S4xfECGcOzgsX37CZ8K982WHRzKU7exeh7vYdG/Eh4CA==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@next/swc-linux-x64-musl/13.4.1:
+    resolution: {integrity: sha512-sNDGaWmSqTS4QRUzw61wl4mVPeSqNIr1OOjLlQTRuyInxMxtqImRqdvzDvFTlDfdeUMU/DZhWGYoHrXLlZXe6A==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -10340,6 +10495,15 @@ packages:
     dev: false
     optional: true
 
+  /@next/swc-win32-arm64-msvc/13.4.1:
+    resolution: {integrity: sha512-+CXZC7u1iXdLRudecoUYbhbsXpglYv8KFYsFxKBPn7kg+bk7eJo738wAA4jXIl8grTF2mPdmO93JOQym+BlYGA==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@next/swc-win32-ia32-msvc/12.3.3:
     resolution: {integrity: sha512-M/fKZC2tMGWA6eTsIniNEBpx2prdR8lIxvSO3gv5P6ymZOGVWCvEMksnTkPAjHnU6d8r8eCiuGKm3UNo7zCTpQ==}
     engines: {node: '>= 10'}
@@ -10358,6 +10522,15 @@ packages:
     dev: false
     optional: true
 
+  /@next/swc-win32-ia32-msvc/13.4.1:
+    resolution: {integrity: sha512-vIoXVVc7UYO68VwVMDKwJC2+HqAZQtCYiVlApyKEeIPIQpz2gpufzGxk1z3/gwrJt/kJ5CDZjlhYDCzd3hdz+g==}
+    engines: {node: '>= 10'}
+    cpu: [ia32]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@next/swc-win32-x64-msvc/12.3.3:
     resolution: {integrity: sha512-Ku9mfGwmNtk44o4B/jEWUxBAT4tJ3S7QbBMLJdL1GmtRZ05LGL36OqWjLvBPr8dFiHOQQbYoAmYfQw7zeGypYA==}
     engines: {node: '>= 10'}
@@ -10369,6 +10542,15 @@ packages:
 
   /@next/swc-win32-x64-msvc/13.2.3:
     resolution: {integrity: sha512-aLG2MaFs4y7IwaMTosz2r4mVbqRyCnMoFqOcmfTi7/mAS+G4IMH0vJp4oLdbshqiVoiVuKrAfqtXj55/m7Qu1Q==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@next/swc-win32-x64-msvc/13.4.1:
+    resolution: {integrity: sha512-n8V5ImLQZibKTu10UUdI3nIeTLkliEXe628qxqW9v8My3BAH2a7H0SaCqkV2OgqFnn8sG1wxKYw9/SNJ632kSA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -10983,7 +11165,7 @@ packages:
       '@parcel/plugin': 2.8.0_@parcel+core@2.8.0
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.8.0
-      globals: 13.18.0
+      globals: 13.20.0
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
@@ -11701,7 +11883,7 @@ packages:
     dependencies:
       '@remix-run/router': 1.3.3
       '@types/cookie': 0.4.1
-      '@types/react': 18.0.25
+      '@types/react': 18.2.6
       '@web3-storage/multipart-parser': 1.0.0
       cookie: 0.4.2
       set-cookie-parser: 2.6.0
@@ -11949,12 +12131,35 @@ packages:
     dependencies:
       tslib: 2.4.1
 
+  /@swc/helpers/0.5.1:
+    resolution: {integrity: sha512-sJ902EfIzn1Fa+qYmjdQqh8tPsoxyBz+8yBKC2HKUxyezKJFwPGOn7pv4WY6QuQW//ySQi5lJjA/ZT9sNWWNTg==}
+    dependencies:
+      tslib: 2.4.1
+    dev: false
+
   /@szmarczak/http-timer/4.0.6:
     resolution: {integrity: sha512-4BAffykYOgO+5nzBWYwE3W90sBgLJoUPRWWcL8wlyiM8IB8ipJz3UMJ9KXQd1RKQXpKp8Tutn80HZtWsu2u76w==}
     engines: {node: '>=10'}
     dependencies:
       defer-to-connect: 2.0.1
     dev: true
+
+  /@t3-oss/env-core/0.2.2_zod@3.21.4:
+    resolution: {integrity: sha512-Jiuph14/L3L9EDaU0O0YiLeaKUcWA9c3mWYuKem8+L64i3Iwz+IbKdl5Jp4cx+JbOsS/aptwGZplnxSHhm2gMQ==}
+    peerDependencies:
+      zod: ^3.0.0
+    dependencies:
+      zod: 3.21.4
+    dev: false
+
+  /@t3-oss/env-nextjs/0.2.2_zod@3.21.4:
+    resolution: {integrity: sha512-9LnVpTkf/8WkggyVN6Liz9Ma9a7fLzV00b5BngWj3HI3iWDfddsWaqCf/H0f46Bgu29NubP3Bwajf1JieVrxFA==}
+    peerDependencies:
+      zod: ^3.0.0
+    dependencies:
+      '@t3-oss/env-core': 0.2.2_zod@3.21.4
+      zod: 3.21.4
+    dev: false
 
   /@testing-library/dom/7.31.2:
     resolution: {integrity: sha512-3UqjCpey6HiTZT92vODYLPxTBWlM8ZOOjr3LX5F37/VRipW2M1kX6I/Cm4VXzteZqfGfagg8yXywpcOgQBlNsQ==}
@@ -12094,13 +12299,13 @@ packages:
     resolution: {integrity: sha512-ALYone6pm6QmwZoAgeyNksccT9Q4AWZQ6PvfwR37GT6r6FWUPguq6sUmNGSMV2Wr761oQoBxwGGa6DR5o1DC9g==}
     dependencies:
       '@types/connect': 3.4.35
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
     dev: true
 
   /@types/bonjour/3.5.10:
     resolution: {integrity: sha512-p7ienRMiS41Nu2/igbJxxLDWrSZ0WxM8UQgCeO9KhoVF7cOVFkrKsiDr1EsJIla8vV3oEEjGcz11jc5yimhzZw==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
     dev: true
 
   /@types/cacheable-request/6.0.3:
@@ -12108,7 +12313,7 @@ packages:
     dependencies:
       '@types/http-cache-semantics': 4.0.1
       '@types/keyv': 3.1.4
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       '@types/responselike': 1.0.0
     dev: true
 
@@ -12116,13 +12321,13 @@ packages:
     resolution: {integrity: sha512-h8QJa8xSb1WD4fpKBDcATDNGXghFj6/3GRWG6dhmRcu0RX1Ubasur2Uvx5aeEwlf0MwblEC2bMzzMQntxnw/Cw==}
     dependencies:
       '@types/express-serve-static-core': 4.17.31
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
     dev: true
 
   /@types/connect/3.4.35:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
     dev: true
 
   /@types/cookie/0.4.1:
@@ -12135,7 +12340,7 @@ packages:
   /@types/cross-spawn/6.0.2:
     resolution: {integrity: sha512-KuwNhp3eza+Rhu8IFI5HUXRP0LIhqH5cAjubUvGXXthh4YYBuP2ntwEX+Cz8GJoZUHlKo247wPWOfA9LYEq4cw==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
     dev: true
 
   /@types/debug/4.1.7:
@@ -12147,13 +12352,13 @@ packages:
   /@types/eslint-scope/3.7.4:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
-      '@types/eslint': 8.4.10
-      '@types/estree': 0.0.51
+      '@types/eslint': 8.37.0
+      '@types/estree': 1.0.0
 
-  /@types/eslint/8.4.10:
-    resolution: {integrity: sha512-Sl/HOqN8NKPmhWo2VBEPm0nvHnu2LL3v9vKo8MEq0EtbJ4eVzGPl41VNPvn5E1i5poMk4/XD8UriLHpJvEP/Nw==}
+  /@types/eslint/8.37.0:
+    resolution: {integrity: sha512-Piet7dG2JBuDIfohBngQ3rCt7MgO9xCO4xIMKxBThCq5PNRB91IjlJ10eJVwfoNtvTErmxLzwBZ7rHZtbOMmFQ==}
     dependencies:
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
       '@types/json-schema': 7.0.11
 
   /@types/estree-jsx/0.0.1:
@@ -12181,12 +12386,11 @@ packages:
 
   /@types/estree/1.0.0:
     resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
-    dev: true
 
   /@types/express-serve-static-core/4.17.31:
     resolution: {integrity: sha512-DxMhY+NAsTwMMFHBTtJFNp5qiHKJ7TeqOo23zVEM9alT1Ml27Q3xcTH0xwxn7Q0BbMcVEJOs/7aQtUWupUQN3Q==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.4
     dev: true
@@ -12203,27 +12407,27 @@ packages:
   /@types/fs-extra/8.1.2:
     resolution: {integrity: sha512-SvSrYXfWSc7R4eqnOzbQF4TZmfpNSM9FrSWLU3EUnWBuyZqNBOrv1B1JA3byUDPUl9z4Ab3jeZG2eDdySlgNMg==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
     dev: true
 
   /@types/glob/7.2.0:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
     dev: true
 
   /@types/glob/8.0.0:
     resolution: {integrity: sha512-l6NQsDDyQUVeoTynNpC9uRvCUint/gSUXQA2euwmTuWGvPY5LSDUu6tkCtJB2SvGQlJQzLaKqcGZP4//7EDveA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
     dev: true
 
   /@types/graceful-fs/4.1.5:
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
     dev: true
 
   /@types/hast/2.3.4:
@@ -12235,7 +12439,7 @@ packages:
   /@types/hoist-non-react-statics/3.3.1:
     resolution: {integrity: sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==}
     dependencies:
-      '@types/react': 18.0.25
+      '@types/react': 18.2.6
       hoist-non-react-statics: 3.3.2
     dev: false
 
@@ -12254,7 +12458,7 @@ packages:
   /@types/http-proxy/1.17.9:
     resolution: {integrity: sha512-QsbSjA/fSk7xB+UXlCT3wHBy5ai9wOcNDWwZAtud+jXhwOM3l+EYZh8Lng4+/6n8uar0J7xILzqftJdJ/Wdfkw==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
     dev: true
 
   /@types/istanbul-lib-coverage/2.0.4:
@@ -12316,7 +12520,7 @@ packages:
   /@types/jsdom/20.0.1:
     resolution: {integrity: sha512-d0r18sZPmMQr1eG35u12FZfhIXNrnsPU/g5wvRKCUf/tOGilKKwYMYGqh33BNR6ba+2gkHw1EUiHoN3mn7E5IQ==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       '@types/tough-cookie': 4.0.2
       parse5: 7.1.2
     dev: true
@@ -12331,7 +12535,7 @@ packages:
   /@types/karma/6.3.3:
     resolution: {integrity: sha512-nRMec4mTCt+tkpRqh5/pAxmnjzEgAaalIq7mdfLFH88gSRC8+bxejLiSjHMMT/vHIhJHqg4GPIGCnCFbwvDRww==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       log4js: 6.7.0
     transitivePeerDependencies:
       - supports-color
@@ -12340,7 +12544,7 @@ packages:
   /@types/keyv/3.1.4:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
     dev: true
 
   /@types/luxon/2.4.0:
@@ -12379,6 +12583,10 @@ packages:
 
   /@types/node/18.11.9:
     resolution: {integrity: sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==}
+    dev: true
+
+  /@types/node/18.16.5:
+    resolution: {integrity: sha512-seOA34WMo9KB+UA78qaJoCO20RJzZGVXQ5Sh6FWu0g/hfT44nKXnej3/tCQl7FL97idFpBhisLYCTB50S0EirA==}
 
   /@types/parse-json/4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
@@ -12415,11 +12623,17 @@ packages:
       '@types/react': 18.0.25
     dev: true
 
+  /@types/react-dom/18.2.4:
+    resolution: {integrity: sha512-G2mHoTMTL4yoydITgOGwWdWMVd8sNgyEP85xVmMKAPUBwQWm9wBPQUmvbeF4V3WBY1P7mmL4BkjQ0SqUpf1snw==}
+    dependencies:
+      '@types/react': 18.2.6
+    dev: true
+
   /@types/react-redux/7.1.24:
     resolution: {integrity: sha512-7FkurKcS1k0FHZEtdbbgN8Oc6b+stGSfZYjQGicofJ0j4U0qIn/jaSvnP2pLwZKiai3/17xqqxkkrxTgN8UNbQ==}
     dependencies:
       '@types/hoist-non-react-statics': 3.3.1
-      '@types/react': 18.0.25
+      '@types/react': 18.2.6
       hoist-non-react-statics: 3.3.2
       redux: 4.2.0
     dev: false
@@ -12438,17 +12652,25 @@ packages:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
       csstype: 3.1.1
+    dev: true
+
+  /@types/react/18.2.6:
+    resolution: {integrity: sha512-wRZClXn//zxCFW+ye/D2qY65UsYP1Fpex2YXorHc8awoNamkMZSvBxwxdYVInsHOZZd2Ppq8isnSzJL5Mpf8OA==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      '@types/scheduler': 0.16.2
+      csstype: 3.1.1
 
   /@types/resolve/1.17.1:
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
     dev: true
 
   /@types/responselike/1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
     dev: true
 
   /@types/retry/0.12.0:
@@ -12472,7 +12694,7 @@ packages:
     resolution: {integrity: sha512-z5xyF6uh8CbjAu9760KDKsH2FcDxZ2tFCsA4HIMWE6IkiYMXfVoa+4f9KX+FN0ZLsaMw1WNG2ETLA6N+/YA+cg==}
     dependencies:
       '@types/mime': 3.0.1
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
     dev: true
 
   /@types/sizzle/2.3.3:
@@ -12486,7 +12708,7 @@ packages:
   /@types/sockjs/0.3.33:
     resolution: {integrity: sha512-f0KEEe05NvUnat+boPTZ0dgaLZ4SfSouXUgv5noUiefG2ajgKjmETo9ZJyuqsl7dfl2aHlLJUiki6B4ZYldiiw==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
     dev: true
 
   /@types/source-list-map/0.1.2:
@@ -12524,7 +12746,7 @@ packages:
   /@types/webpack-sources/0.1.9:
     resolution: {integrity: sha512-bvzMnzqoK16PQIC8AYHNdW45eREJQMd6WG/msQWX5V2+vZmODCOPb4TJcbgRljTZZTwTM4wUMcsI8FftNA7new==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       '@types/source-list-map': 0.1.2
       source-map: 0.6.1
     dev: true
@@ -12532,7 +12754,7 @@ packages:
   /@types/webpack-sources/3.2.0:
     resolution: {integrity: sha512-Ft7YH3lEVRQ6ls8k4Ff1oB4jN6oy/XmU6tQISKdhfh+1mR+viZFphS6WL0IrtDOzvefmJg5a0s7ZQoRXwqTEFg==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       '@types/source-list-map': 0.1.2
       source-map: 0.7.4
     dev: true
@@ -12540,7 +12762,7 @@ packages:
   /@types/webpack/4.41.33:
     resolution: {integrity: sha512-PPajH64Ft2vWevkerISMtnZ8rTs4YmRbs+23c402J0INmxDKCrhZNvwZYtzx96gY2wAtXdrK1BS2fiC8MlLr3g==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       '@types/tapable': 1.0.8
       '@types/uglify-js': 3.17.1
       '@types/webpack-sources': 3.2.0
@@ -12551,7 +12773,7 @@ packages:
   /@types/ws/8.5.3:
     resolution: {integrity: sha512-6YOoWjruKj1uLf3INHH7D3qTXwFfEsg1kf3c0uDdSBJwfa/llkwIjrAGV7j7mVgGNbzTQ3HiHKKDXl6bJPD97w==}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
     dev: true
 
   /@types/yargs-parser/21.0.0:
@@ -12623,6 +12845,34 @@ packages:
       - supports-color
     dev: true
 
+  /@typescript-eslint/eslint-plugin/5.59.5_zaj6dsh3leplki3sfxgbx2w2za:
+    resolution: {integrity: sha512-feA9xbVRWJZor+AnLNAr7A8JRWeZqHUf4T9tlP+TN04b05pFVhO5eN7/O93Y/1OUlLMHKbnJisgDURs/qvtqdg==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      '@typescript-eslint/parser': ^5.0.0
+      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@eslint-community/regexpp': 4.5.1
+      '@typescript-eslint/parser': 5.59.5_3qfatcekpgbllh6uk5ivyhkbxq
+      '@typescript-eslint/scope-manager': 5.59.5
+      '@typescript-eslint/type-utils': 5.59.5_3qfatcekpgbllh6uk5ivyhkbxq
+      '@typescript-eslint/utils': 5.59.5_3qfatcekpgbllh6uk5ivyhkbxq
+      debug: 4.3.4
+      eslint: 8.40.0
+      grapheme-splitter: 1.0.4
+      ignore: 5.2.4
+      natural-compare-lite: 1.4.0
+      semver: 7.3.8
+      tsutils: 3.21.0_typescript@5.0.4
+      typescript: 5.0.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /@typescript-eslint/experimental-utils/5.3.0_3rubbgt5ekhqrcgx4uwls3neim:
     resolution: {integrity: sha512-NFVxYTjKj69qB0FM+piah1x3G/63WB8vCBMnlnEHUsiLzXSTWb9FmFn36FD9Zb4APKBLY3xRArOGSMQkuzTF1w==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -12681,6 +12931,26 @@ packages:
       - supports-color
     dev: true
 
+  /@typescript-eslint/parser/5.59.5_3qfatcekpgbllh6uk5ivyhkbxq:
+    resolution: {integrity: sha512-NJXQC4MRnF9N9yWqQE2/KLRSOLvrrlZb48NGVfBa+RuPMN6B7ZcK5jZOvhuygv4D64fRKnZI4L4p8+M+rfeQuw==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@typescript-eslint/scope-manager': 5.59.5
+      '@typescript-eslint/types': 5.59.5
+      '@typescript-eslint/typescript-estree': 5.59.5_typescript@5.0.4
+      debug: 4.3.4
+      eslint: 8.40.0
+      typescript: 5.0.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /@typescript-eslint/scope-manager/5.3.0:
     resolution: {integrity: sha512-22Uic9oRlTsPppy5Tcwfj+QET5RWEnZ5414Prby465XxQrQFZ6nnm5KnXgnsAJefG4hEgMnaxTB3kNEyjdjj6A==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -12711,6 +12981,14 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.59.0
       '@typescript-eslint/visitor-keys': 5.59.0
+    dev: true
+
+  /@typescript-eslint/scope-manager/5.59.5:
+    resolution: {integrity: sha512-jVecWwnkX6ZgutF+DovbBJirZcAxgxC0EOHYt/niMROf8p4PwxxG32Qdhj/iIQQIuOflLjNkxoXyArkcIP7C3A==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dependencies:
+      '@typescript-eslint/types': 5.59.5
+      '@typescript-eslint/visitor-keys': 5.59.5
     dev: true
 
   /@typescript-eslint/type-utils/5.44.0_hsf322ms6xhhd4b5ne6lb74y4a:
@@ -12753,6 +13031,26 @@ packages:
       - supports-color
     dev: true
 
+  /@typescript-eslint/type-utils/5.59.5_3qfatcekpgbllh6uk5ivyhkbxq:
+    resolution: {integrity: sha512-4eyhS7oGym67/pSxA2mmNq7X164oqDYNnZCUayBwJZIRVvKpBCMBzFnFxjeoDeShjtO6RQBHBuwybuX3POnDqg==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: '*'
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@typescript-eslint/typescript-estree': 5.59.5_typescript@5.0.4
+      '@typescript-eslint/utils': 5.59.5_3qfatcekpgbllh6uk5ivyhkbxq
+      debug: 4.3.4
+      eslint: 8.40.0
+      tsutils: 3.21.0_typescript@5.0.4
+      typescript: 5.0.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /@typescript-eslint/types/5.3.0:
     resolution: {integrity: sha512-fce5pG41/w8O6ahQEhXmMV+xuh4+GayzqEogN24EK+vECA3I6pUwKuLi5QbXO721EMitpQne5VKXofPonYlAQg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -12770,6 +13068,11 @@ packages:
 
   /@typescript-eslint/types/5.59.0:
     resolution: {integrity: sha512-yR2h1NotF23xFFYKHZs17QJnB51J/s+ud4PYU4MqdZbzeNxpgUr05+dNeCN/bb6raslHvGdd6BFCkVhpPk/ZeA==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: true
+
+  /@typescript-eslint/types/5.59.5:
+    resolution: {integrity: sha512-xkfRPHbqSH4Ggx4eHRIO/eGL8XL4Ysb4woL8c87YuAo8Md7AUjyWKa9YMwTL519SyDPrfEgKdewjkxNCVeJW7w==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
@@ -12878,6 +13181,27 @@ packages:
       - supports-color
     dev: true
 
+  /@typescript-eslint/typescript-estree/5.59.5_typescript@5.0.4:
+    resolution: {integrity: sha512-+XXdLN2CZLZcD/mO7mQtJMvCkzRfmODbeSKuMY/yXbGkzvA9rJyDY5qDYNoiz2kP/dmyAxXquL2BvLQLJFPQIg==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@typescript-eslint/types': 5.59.5
+      '@typescript-eslint/visitor-keys': 5.59.5
+      debug: 4.3.4
+      globby: 11.1.0
+      is-glob: 4.0.3
+      semver: 7.3.8
+      tsutils: 3.21.0_typescript@5.0.4
+      typescript: 5.0.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /@typescript-eslint/utils/5.44.0_hsf322ms6xhhd4b5ne6lb74y4a:
     resolution: {integrity: sha512-fMzA8LLQ189gaBjS0MZszw5HBdZgVwxVFShCO3QN+ws3GlPkcy9YuS3U4wkT6su0w+Byjq3mS3uamy9HE4Yfjw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -12958,12 +13282,32 @@ packages:
       - typescript
     dev: true
 
+  /@typescript-eslint/utils/5.59.5_3qfatcekpgbllh6uk5ivyhkbxq:
+    resolution: {integrity: sha512-sCEHOiw+RbyTii9c3/qN74hYDPNORb8yWCoPLmB7BIflhplJ65u2PBpdRla12e3SSTJ2erRkPjz7ngLHhUegxA==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+    dependencies:
+      '@eslint-community/eslint-utils': 4.4.0_eslint@8.40.0
+      '@types/json-schema': 7.0.11
+      '@types/semver': 7.3.13
+      '@typescript-eslint/scope-manager': 5.59.5
+      '@typescript-eslint/types': 5.59.5
+      '@typescript-eslint/typescript-estree': 5.59.5_typescript@5.0.4
+      eslint: 8.40.0
+      eslint-scope: 5.1.1
+      semver: 7.3.8
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+    dev: true
+
   /@typescript-eslint/visitor-keys/5.3.0:
     resolution: {integrity: sha512-oVIAfIQuq0x2TFDNLVavUn548WL+7hdhxYn+9j3YdJJXB7mH9dAmZNJsPDa7Jc+B9WGqoiex7GUDbyMxV0a/aw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       '@typescript-eslint/types': 5.3.0
-      eslint-visitor-keys: 3.3.0
+      eslint-visitor-keys: 3.4.1
     dev: true
 
   /@typescript-eslint/visitor-keys/5.44.0:
@@ -12971,7 +13315,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       '@typescript-eslint/types': 5.44.0
-      eslint-visitor-keys: 3.3.0
+      eslint-visitor-keys: 3.4.1
     dev: true
 
   /@typescript-eslint/visitor-keys/5.48.2:
@@ -12979,7 +13323,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       '@typescript-eslint/types': 5.48.2
-      eslint-visitor-keys: 3.3.0
+      eslint-visitor-keys: 3.4.1
     dev: true
 
   /@typescript-eslint/visitor-keys/5.59.0:
@@ -12987,7 +13331,15 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       '@typescript-eslint/types': 5.59.0
-      eslint-visitor-keys: 3.3.0
+      eslint-visitor-keys: 3.4.1
+    dev: true
+
+  /@typescript-eslint/visitor-keys/5.59.5:
+    resolution: {integrity: sha512-qL+Oz+dbeBRTeyJTIy0eniD3uvqU7x+y1QceBismZ41hd4aBSRh8UAw4pZP0+XzLuPZmx4raNMq/I+59W2lXKA==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dependencies:
+      '@typescript-eslint/types': 5.59.5
+      eslint-visitor-keys: 3.4.1
     dev: true
 
   /@vanilla-extract/babel-plugin-debug-ids/1.0.2:
@@ -14695,6 +15047,13 @@ packages:
     dependencies:
       semver: 7.3.8
     dev: true
+
+  /busboy/1.6.0:
+    resolution: {integrity: sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==}
+    engines: {node: '>=10.16.0'}
+    dependencies:
+      streamsearch: 1.1.0
+    dev: false
 
   /bytes/3.0.0:
     resolution: {integrity: sha512-pMhOfFDPiv9t5jjIXkHosWmkSyQbvsgEVNkz0ERHbuLh2T/7j4Mqqpz523Fe8MVY89KC6Sh/QfS2sM+SjgFDcw==}
@@ -17033,7 +17392,7 @@ packages:
     dependencies:
       '@types/cookie': 0.4.1
       '@types/cors': 2.8.12
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       accepts: 1.3.8
       base64id: 2.0.0
       cookie: 0.4.2
@@ -18568,6 +18927,31 @@ packages:
       - supports-color
     dev: true
 
+  /eslint-config-next/13.4.1_3qfatcekpgbllh6uk5ivyhkbxq:
+    resolution: {integrity: sha512-ajuxjCkW1hvirr0EQZb3/B/bFH52Z7CT89uCtTcICFL9l30i5c8hN4p0LXvTjdOXNPV5fEDcxBgGHgXdzTj1/A==}
+    peerDependencies:
+      eslint: ^7.23.0 || ^8.0.0
+      typescript: '>=3.3.1'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@next/eslint-plugin-next': 13.4.1
+      '@rushstack/eslint-patch': 1.2.0
+      '@typescript-eslint/parser': 5.59.5_3qfatcekpgbllh6uk5ivyhkbxq
+      eslint: 8.40.0
+      eslint-import-resolver-node: 0.3.6
+      eslint-import-resolver-typescript: 3.5.2_lw64bwrfdlvteab5a4bczvvhwa
+      eslint-plugin-import: 2.26.0_6fwt3wnk4pmkcw3osy37jz5veq
+      eslint-plugin-jsx-a11y: 6.6.1_eslint@8.40.0
+      eslint-plugin-react: 7.31.11_eslint@8.40.0
+      eslint-plugin-react-hooks: 4.6.0_eslint@8.40.0
+      typescript: 5.0.4
+    transitivePeerDependencies:
+      - eslint-import-resolver-webpack
+      - supports-color
+    dev: true
+
   /eslint-import-resolver-node/0.3.6:
     resolution: {integrity: sha512-0En0w03NRVMn9Uiyn8YRPDKvWjxCWkslUEhGNTdGx15RvPJYQ+lbOlqrlNI2vEAs4pDYK4f/HN2TbDmk5TP0iw==}
     dependencies:
@@ -18588,6 +18972,26 @@ packages:
       enhanced-resolve: 5.10.0
       eslint: 8.28.0
       eslint-plugin-import: 2.26.0_vc54pluhgv7booofyyjouvuf74
+      get-tsconfig: 4.2.0
+      globby: 13.1.2
+      is-core-module: 2.11.0
+      is-glob: 4.0.3
+      synckit: 0.8.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /eslint-import-resolver-typescript/3.5.2_lw64bwrfdlvteab5a4bczvvhwa:
+    resolution: {integrity: sha512-zX4ebnnyXiykjhcBvKIf5TNvt8K7yX6bllTRZ14MiurKPjDpCAZujlszTdB8pcNXhZcOf+god4s9SjQa5GnytQ==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      eslint: '*'
+      eslint-plugin-import: '*'
+    dependencies:
+      debug: 4.3.4
+      enhanced-resolve: 5.10.0
+      eslint: 8.40.0
+      eslint-plugin-import: 2.26.0_6fwt3wnk4pmkcw3osy37jz5veq
       get-tsconfig: 4.2.0
       globby: 13.1.2
       is-core-module: 2.11.0
@@ -18623,6 +19027,36 @@ packages:
       eslint: 8.28.0
       eslint-import-resolver-node: 0.3.6
       eslint-import-resolver-typescript: 3.5.2_ktrec6dplf4now6nlbc6d67jee
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /eslint-module-utils/2.7.4_ol55apaugyjekcc4hkuo6f2t4y:
+    resolution: {integrity: sha512-j4GT+rqzCoRKHwURX7pddtIPGySnX9Si/cgMI5ztrcqOPtk5dDEeZ34CQVPphnqkJytlc97Vuk05Um2mJ3gEQA==}
+    engines: {node: '>=4'}
+    peerDependencies:
+      '@typescript-eslint/parser': '*'
+      eslint: '*'
+      eslint-import-resolver-node: '*'
+      eslint-import-resolver-typescript: '*'
+      eslint-import-resolver-webpack: '*'
+    peerDependenciesMeta:
+      '@typescript-eslint/parser':
+        optional: true
+      eslint:
+        optional: true
+      eslint-import-resolver-node:
+        optional: true
+      eslint-import-resolver-typescript:
+        optional: true
+      eslint-import-resolver-webpack:
+        optional: true
+    dependencies:
+      '@typescript-eslint/parser': 5.59.5_3qfatcekpgbllh6uk5ivyhkbxq
+      debug: 3.2.7
+      eslint: 8.40.0
+      eslint-import-resolver-node: 0.3.6
+      eslint-import-resolver-typescript: 3.5.2_lw64bwrfdlvteab5a4bczvvhwa
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -18690,6 +19124,37 @@ packages:
       minimatch: 3.1.2
       object.values: 1.1.6
       read-pkg-up: 2.0.0
+      resolve: 1.22.1
+      tsconfig-paths: 3.14.1
+    transitivePeerDependencies:
+      - eslint-import-resolver-typescript
+      - eslint-import-resolver-webpack
+      - supports-color
+    dev: true
+
+  /eslint-plugin-import/2.26.0_6fwt3wnk4pmkcw3osy37jz5veq:
+    resolution: {integrity: sha512-hYfi3FXaM8WPLf4S1cikh/r4IxnO6zrhZbEGz2b660EJRbuxgpDS5gkCuYgGWg2xxh2rBuIr4Pvhve/7c31koA==}
+    engines: {node: '>=4'}
+    peerDependencies:
+      '@typescript-eslint/parser': '*'
+      eslint: ^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0 || ^8
+    peerDependenciesMeta:
+      '@typescript-eslint/parser':
+        optional: true
+    dependencies:
+      '@typescript-eslint/parser': 5.59.5_3qfatcekpgbllh6uk5ivyhkbxq
+      array-includes: 3.1.6
+      array.prototype.flat: 1.3.1
+      debug: 2.6.9
+      doctrine: 2.1.0
+      eslint: 8.40.0
+      eslint-import-resolver-node: 0.3.6
+      eslint-module-utils: 2.7.4_ol55apaugyjekcc4hkuo6f2t4y
+      has: 1.0.3
+      is-core-module: 2.11.0
+      is-glob: 4.0.3
+      minimatch: 3.1.2
+      object.values: 1.1.6
       resolve: 1.22.1
       tsconfig-paths: 3.14.1
     transitivePeerDependencies:
@@ -18802,6 +19267,28 @@ packages:
       semver: 6.3.0
     dev: true
 
+  /eslint-plugin-jsx-a11y/6.6.1_eslint@8.40.0:
+    resolution: {integrity: sha512-sXgFVNHiWffBq23uiS/JaP6eVR622DqwB4yTzKvGZGcPq6/yZ3WmOZfuBks/vHWo9GaFOqC2ZK4i6+C35knx7Q==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
+    dependencies:
+      '@babel/runtime': 7.20.1
+      aria-query: 4.2.2
+      array-includes: 3.1.6
+      ast-types-flow: 0.0.7
+      axe-core: 4.5.2
+      axobject-query: 2.2.0
+      damerau-levenshtein: 1.0.8
+      emoji-regex: 9.2.2
+      eslint: 8.40.0
+      has: 1.0.3
+      jsx-ast-utils: 3.3.3
+      language-tags: 1.0.5
+      minimatch: 3.1.2
+      semver: 6.3.0
+    dev: true
+
   /eslint-plugin-node/11.1.0_eslint@8.28.0:
     resolution: {integrity: sha512-oUwtPJ1W0SKD0Tr+wqu92c5xuCeQqB3hSCHasn/ZgjFdA9iDGNkNf2Zi9ztY7X+hNuMib23LNGRm6+uN+KLE3g==}
     engines: {node: '>=8.10.0'}
@@ -18834,6 +19321,15 @@ packages:
       eslint: 8.28.0
     dev: true
 
+  /eslint-plugin-react-hooks/4.6.0_eslint@8.40.0:
+    resolution: {integrity: sha512-oFc7Itz9Qxh2x4gNHStv3BqJq54ExXmfC+a1NjAta66IAN87Wu0R/QArgIS9qKzX3dXKPI9H5crl9QchNMY9+g==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
+    dependencies:
+      eslint: 8.40.0
+    dev: true
+
   /eslint-plugin-react/7.31.11_eslint@8.28.0:
     resolution: {integrity: sha512-TTvq5JsT5v56wPa9OYHzsrOlHzKZKjV+aLgS+55NJP/cuzdiQPC7PfYoUjMoxlffKtvijpk7vA/jmuqRb9nohw==}
     engines: {node: '>=4'}
@@ -18845,6 +19341,30 @@ packages:
       array.prototype.tosorted: 1.1.1
       doctrine: 2.1.0
       eslint: 8.28.0
+      estraverse: 5.3.0
+      jsx-ast-utils: 3.3.3
+      minimatch: 3.1.2
+      object.entries: 1.1.6
+      object.fromentries: 2.0.6
+      object.hasown: 1.1.2
+      object.values: 1.1.6
+      prop-types: 15.8.1
+      resolve: 2.0.0-next.4
+      semver: 6.3.0
+      string.prototype.matchall: 4.0.8
+    dev: true
+
+  /eslint-plugin-react/7.31.11_eslint@8.40.0:
+    resolution: {integrity: sha512-TTvq5JsT5v56wPa9OYHzsrOlHzKZKjV+aLgS+55NJP/cuzdiQPC7PfYoUjMoxlffKtvijpk7vA/jmuqRb9nohw==}
+    engines: {node: '>=4'}
+    peerDependencies:
+      eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
+    dependencies:
+      array-includes: 3.1.6
+      array.prototype.flatmap: 1.3.1
+      array.prototype.tosorted: 1.1.1
+      doctrine: 2.1.0
+      eslint: 8.40.0
       estraverse: 5.3.0
       jsx-ast-utils: 3.3.3
       minimatch: 3.1.2
@@ -18880,6 +19400,14 @@ packages:
 
   /eslint-scope/7.1.1:
     resolution: {integrity: sha512-QKQM/UXpIiHcLqJ5AOyIW7XZmzjkzQXYE54n1++wb0u9V/abW3l9uQnxX8Z5Xd18xyKIMTUAyQ0k1e8pz6LUrw==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dependencies:
+      esrecurse: 4.3.0
+      estraverse: 5.3.0
+    dev: true
+
+  /eslint-scope/7.2.0:
+    resolution: {integrity: sha512-DYj5deGlHBfMt15J7rdtyKNq/Nqlv5KfU4iodrQ019XESsRnwXH9KAE0y3cwtUHDo2ob7CypAnCqefh6vioWRw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       esrecurse: 4.3.0
@@ -18925,6 +19453,11 @@ packages:
 
   /eslint-visitor-keys/3.3.0:
     resolution: {integrity: sha512-mQ+suqKJVyeuwGYHAdjMFqjCyfl8+Ldnxuyp3ldiMBFKkvytrXUZWaiPCEav8qDHKty44bD+qV1IP4T+w+xXRA==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: true
+
+  /eslint-visitor-keys/3.4.1:
+    resolution: {integrity: sha512-pZnmmLwYzf+kWaM/Qgrvpen51upAktaaiI01nsJD/Yr3lMOdNtq0cxkrrg16w64VtisN6okbs7Q8AfGqj4c9fA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
@@ -19025,6 +19558,55 @@ packages:
       - supports-color
     dev: true
 
+  /eslint/8.40.0:
+    resolution: {integrity: sha512-bvR+TsP9EHL3TqNtj9sCNJVAFK3fBN8Q7g5waghxyRsPLIMwL73XSKnZFK0hk/O2ANC+iAoq6PWMQ+IfBAJIiQ==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    hasBin: true
+    dependencies:
+      '@eslint-community/eslint-utils': 4.4.0_eslint@8.40.0
+      '@eslint-community/regexpp': 4.5.1
+      '@eslint/eslintrc': 2.0.3
+      '@eslint/js': 8.40.0
+      '@humanwhocodes/config-array': 0.11.8
+      '@humanwhocodes/module-importer': 1.0.1
+      '@nodelib/fs.walk': 1.2.8
+      ajv: 6.12.6
+      chalk: 4.1.2
+      cross-spawn: 7.0.3
+      debug: 4.3.4
+      doctrine: 3.0.0
+      escape-string-regexp: 4.0.0
+      eslint-scope: 7.2.0
+      eslint-visitor-keys: 3.4.1
+      espree: 9.5.2
+      esquery: 1.5.0
+      esutils: 2.0.3
+      fast-deep-equal: 3.1.3
+      file-entry-cache: 6.0.1
+      find-up: 5.0.0
+      glob-parent: 6.0.2
+      globals: 13.20.0
+      grapheme-splitter: 1.0.4
+      ignore: 5.2.4
+      import-fresh: 3.3.0
+      imurmurhash: 0.1.4
+      is-glob: 4.0.3
+      is-path-inside: 3.0.3
+      js-sdsl: 4.2.0
+      js-yaml: 4.1.0
+      json-stable-stringify-without-jsonify: 1.0.1
+      levn: 0.4.1
+      lodash.merge: 4.6.2
+      minimatch: 3.1.2
+      natural-compare: 1.4.0
+      optionator: 0.9.1
+      strip-ansi: 6.0.1
+      strip-json-comments: 3.1.1
+      text-table: 0.2.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /espree/7.3.1:
     resolution: {integrity: sha512-v3JCNCE64umkFpmkFGqzVKsOT0tN1Zr+ueqLZfpV1Ob8e+CEgPWa+OxCoGH3tnhimMKIaBm4m/vaRpJ/krRz2g==}
     engines: {node: ^10.12.0 || >=12.0.0}
@@ -19043,6 +19625,15 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
+  /espree/9.5.2:
+    resolution: {integrity: sha512-7OASN1Wma5fum5SrNhFMAMJxOUAbhyfQ8dQ//PJaJbNw0URTPWqIghHWt1MmAANKhHZIYOHruW4Kw4ruUWOdGw==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dependencies:
+      acorn: 8.8.2
+      acorn-jsx: 5.3.2_acorn@8.8.2
+      eslint-visitor-keys: 3.4.1
+    dev: true
+
   /esprima/4.0.1:
     resolution: {integrity: sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==}
     engines: {node: '>=4'}
@@ -19051,6 +19642,13 @@ packages:
 
   /esquery/1.4.0:
     resolution: {integrity: sha512-cCDispWt5vHHtwMY2YrAQ4ibFkAL8RbH5YGBnZBc90MolvvfkkQcJro/aZiAQUlQ3qgrYS6D6v8Gc5G5CQsc9w==}
+    engines: {node: '>=0.10'}
+    dependencies:
+      estraverse: 5.3.0
+    dev: true
+
+  /esquery/1.5.0:
+    resolution: {integrity: sha512-YQLXUplAwJgCydQ78IMJywZCceoqk1oH01OERdSAJc/7U2AylwjhSCLDEtqwg811idIS/9fIU5GjG73IgjKMVg==}
     engines: {node: '>=0.10'}
     dependencies:
       estraverse: 5.3.0
@@ -19739,7 +20337,7 @@ packages:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
     engines: {node: '>= 4.0'}
     os: [darwin]
-    deprecated: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
+    deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
     requiresBuild: true
     dependencies:
       bindings: 1.5.0
@@ -19978,6 +20576,13 @@ packages:
 
   /globals/13.18.0:
     resolution: {integrity: sha512-/mR4KI8Ps2spmoc0Ulu9L7agOF0du1CZNQ3dke8yItYlyKNmGrkONemBbd6V8UTc1Wgcqn21t3WYB7dbRmh6/A==}
+    engines: {node: '>=8'}
+    dependencies:
+      type-fest: 0.20.2
+    dev: true
+
+  /globals/13.20.0:
+    resolution: {integrity: sha512-Qg5QtVkCy/kv3FUSlu4ukeZDVf9ee0iXLAUYX13gbR17bnejFTzr4iS9bY7kwCf1NztRNm1t91fjOiyx4CSwPQ==}
     engines: {node: '>=8'}
     dependencies:
       type-fest: 0.20.2
@@ -21535,7 +22140,7 @@ packages:
       '@jest/expect': 29.4.1
       '@jest/test-result': 29.4.1
       '@jest/types': 29.4.1
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       chalk: 4.1.2
       co: 4.6.0
       dedent: 0.7.0
@@ -21620,7 +22225,7 @@ packages:
       - supports-color
     dev: true
 
-  /jest-config/29.4.1_@types+node@18.11.9:
+  /jest-config/29.4.1_@types+node@18.16.5:
     resolution: {integrity: sha512-g7p3q4NuXiM4hrS4XFATTkd+2z0Ml2RhFmFPM8c3WyKwVDNszbl4E7cV7WIx1YZeqqCtqbtTtZhGZWJlJqngzg==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     peerDependencies:
@@ -21635,7 +22240,7 @@ packages:
       '@babel/core': 7.20.2
       '@jest/test-sequencer': 29.4.1
       '@jest/types': 29.4.1
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       babel-jest: 29.4.1_@babel+core@7.20.2
       chalk: 4.1.2
       ci-info: 3.6.1
@@ -21717,7 +22322,7 @@ packages:
       '@jest/environment': 29.4.1
       '@jest/fake-timers': 29.4.1
       '@jest/types': 29.4.1
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       jest-mock: 29.4.1
       jest-util: 29.4.1
     dev: true
@@ -21733,7 +22338,7 @@ packages:
     dependencies:
       '@jest/types': 29.4.1
       '@types/graceful-fs': 4.1.5
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.10
@@ -21784,7 +22389,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.4.1
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       jest-util: 29.4.1
     dev: true
 
@@ -21839,7 +22444,7 @@ packages:
       '@jest/test-result': 29.4.1
       '@jest/transform': 29.4.1
       '@jest/types': 29.4.1
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       chalk: 4.1.2
       emittery: 0.13.1
       graceful-fs: 4.2.10
@@ -21870,7 +22475,7 @@ packages:
       '@jest/test-result': 29.4.1
       '@jest/transform': 29.4.1
       '@jest/types': 29.4.1
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       chalk: 4.1.2
       cjs-module-lexer: 1.2.2
       collect-v8-coverage: 1.0.1
@@ -21927,7 +22532,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.4.1
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       chalk: 4.1.2
       ci-info: 3.6.1
       graceful-fs: 4.2.10
@@ -21952,7 +22557,7 @@ packages:
     dependencies:
       '@jest/test-result': 29.4.1
       '@jest/types': 29.4.1
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.13.1
@@ -21964,7 +22569,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -21972,7 +22577,7 @@ packages:
     resolution: {integrity: sha512-O9doU/S1EBe+yp/mstQ0VpPwpv0Clgn68TkNwGxL6/usX/KUW9Arnn4ag8C3jc6qHcXznhsT5Na1liYzAsuAbQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@types/node': 18.11.9
+      '@types/node': 18.16.5
       jest-util: 29.4.1
       merge-stream: 2.0.0
       supports-color: 8.1.1
@@ -24292,6 +24897,51 @@ packages:
       '@next/swc-win32-arm64-msvc': 13.2.3
       '@next/swc-win32-ia32-msvc': 13.2.3
       '@next/swc-win32-x64-msvc': 13.2.3
+    transitivePeerDependencies:
+      - '@babel/core'
+      - babel-plugin-macros
+    dev: false
+
+  /next/13.4.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-JBw2kAIyhKDpjhEWvNVoFeIzNp9xNxg8wrthDOtMctfn3EpqGCmW0FSviNyGgOSOSn6zDaX48pmvbdf6X2W9xA==}
+    engines: {node: '>=16.8.0'}
+    hasBin: true
+    peerDependencies:
+      '@opentelemetry/api': ^1.1.0
+      fibers: '>= 3.1.0'
+      node-sass: ^6.0.0 || ^7.0.0
+      react: ^18.2.0
+      react-dom: ^18.2.0
+      sass: ^1.3.0
+    peerDependenciesMeta:
+      '@opentelemetry/api':
+        optional: true
+      fibers:
+        optional: true
+      node-sass:
+        optional: true
+      sass:
+        optional: true
+    dependencies:
+      '@next/env': 13.4.1
+      '@swc/helpers': 0.5.1
+      busboy: 1.6.0
+      caniuse-lite: 1.0.30001434
+      postcss: 8.4.14
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      styled-jsx: 5.1.1_react@18.2.0
+      zod: 3.21.4
+    optionalDependencies:
+      '@next/swc-darwin-arm64': 13.4.1
+      '@next/swc-darwin-x64': 13.4.1
+      '@next/swc-linux-arm64-gnu': 13.4.1
+      '@next/swc-linux-arm64-musl': 13.4.1
+      '@next/swc-linux-x64-gnu': 13.4.1
+      '@next/swc-linux-x64-musl': 13.4.1
+      '@next/swc-win32-arm64-msvc': 13.4.1
+      '@next/swc-win32-ia32-msvc': 13.4.1
+      '@next/swc-win32-x64-msvc': 13.4.1
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
@@ -29910,6 +30560,11 @@ packages:
       - supports-color
     dev: true
 
+  /streamsearch/1.1.0:
+    resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
+    engines: {node: '>=10.0.0'}
+    dev: false
+
   /string-hash/1.1.3:
     resolution: {integrity: sha512-kJUvRUFK49aub+a7T1nNE66EJbZBMnBgoC1UbCZ5n6bsZKBRga4KgBRTMn/pFkeCZSYtNeSyMxPDM0AXWELk2A==}
     dev: true
@@ -30784,6 +31439,16 @@ packages:
       typescript: 4.9.3
     dev: true
 
+  /tsutils/3.21.0_typescript@5.0.4:
+    resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
+    engines: {node: '>= 6'}
+    peerDependencies:
+      typescript: '>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta'
+    dependencies:
+      tslib: 1.14.1
+      typescript: 5.0.4
+    dev: true
+
   /turbo-darwin-64/1.6.3:
     resolution: {integrity: sha512-QmDIX0Yh1wYQl0bUS0gGWwNxpJwrzZU2GIAYt3aOKoirWA2ecnyb3R6ludcS1znfNV2MfunP+l8E3ncxUHwtjA==}
     cpu: [x64]
@@ -30922,6 +31587,12 @@ packages:
   /typescript/4.9.3:
     resolution: {integrity: sha512-CIfGzTelbKNEnLpLdGFgdyKhG23CKdKgQPOBc+OUNrkJ2vr+KSzsSV5kq5iWhEQbok+quxgGzrAtGWCyU7tHnA==}
     engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: true
+
+  /typescript/5.0.4:
+    resolution: {integrity: sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==}
+    engines: {node: '>=12.20'}
     hasBin: true
     dev: true
 
@@ -32850,6 +33521,10 @@ packages:
       compress-commons: 4.1.1
       readable-stream: 3.6.0
     dev: true
+
+  /zod/3.21.4:
+    resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+    dev: false
 
   /zone.js/0.11.8:
     resolution: {integrity: sha512-82bctBg2hKcEJ21humWIkXRlLBBmrc3nN7DFh5LGGhcyycO2S7FN8NmdvlcKaGFDNVL4/9kFLmwmInTavdJERA==}
