@@ -901,6 +901,8 @@ importers:
       '@fullcalendar/daygrid': ^6.1.7
       '@fullcalendar/interaction': ^6.1.7
       '@fullcalendar/react': ^6.1.7
+      '@fullcalendar/resource': ^6.1.7
+      '@fullcalendar/resource-timeline': ^6.1.7
       '@fullcalendar/timegrid': ^6.1.7
       eslint: ^8.26.0
       eslint-config-next: ^13.0.1
@@ -913,6 +915,8 @@ importers:
       '@fullcalendar/daygrid': link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction': link:../../standard/packages/interaction/dist
       '@fullcalendar/react': link:../../contrib/react
+      '@fullcalendar/resource': link:../../premium/packages/resource/dist
+      '@fullcalendar/resource-timeline': link:../../premium/packages/resource-timeline/dist
       '@fullcalendar/timegrid': link:../../standard/packages/timegrid/dist
       next: 12.3.3_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
