@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/resource",
-  "version": "6.1.7",
+  "version": "6.1.8",
   "title": "FullCalendar Resource Plugin",
   "description": "Base support for resources, required by resource views",
   "keywords": [
@@ -8,13 +8,13 @@
     "resource"
   ],
   "dependencies": {
-    "@fullcalendar/premium-common": "~6.1.7"
+    "@fullcalendar/premium-common": "~6.1.8"
   },
   "peerDependencies": {
-    "@fullcalendar/core": "~6.1.7"
+    "@fullcalendar/core": "~6.1.8"
   },
   "devDependencies": {
-    "@fullcalendar/core": "~6.1.7",
+    "@fullcalendar/core": "~6.1.8",
     "@fullcalendar/standard-scripts": "*"
   },
   "scripts": {

@@ -1,13 +1,13 @@
 {
   "name": "@fullcalendar/premium-common",
-  "version": "6.1.7",
+  "version": "6.1.8",
   "title": "FullCalendar Premium Common",
   "description": "Utilities for FullCalendar's premium plugins",
   "peerDependencies": {
-    "@fullcalendar/core": "~6.1.7"
+    "@fullcalendar/core": "~6.1.8"
   },
   "devDependencies": {
-    "@fullcalendar/core": "~6.1.7",
+    "@fullcalendar/core": "~6.1.8",
     "@fullcalendar/standard-scripts": "*"
   },
   "scripts": {
