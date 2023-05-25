@@ -28,6 +28,7 @@ cd /Users/adam/Code/fullcalendar-workspace/standard/packages/interaction && pnpm
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/list && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/luxon1 && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/luxon2 && pnpm publish --no-git-checks
+cd /Users/adam/Code/fullcalendar-workspace/standard/packages/luxon3 && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/moment && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/moment-timezone && pnpm publish --no-git-checks
 cd /Users/adam/Code/fullcalendar-workspace/standard/packages/rrule && pnpm publish --no-git-checks
