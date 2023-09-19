@@ -2914,7 +2914,7 @@ importers:
         specifier: '*'
         version: link:../standard/scripts
       '@pnpm/make-dedicated-lockfile':
-        specifier: ^0.4.2
+        specifier: 0.4.2
         version: 0.4.2(patch_hash=zbuvo5rddmkwxbrm5daw6hdhee)
       '@types/js-yaml':
         specifier: ^4.0.5
@@ -10638,7 +10638,7 @@ packages:
     resolution: {integrity: sha512-d3tN8fkVJwFLkHkBN479SOsw4DMZnz8cdbL/gvuDuzy3TS6Nfw80HuQqhw1pITbIruHyh7d1fMA47kWzmcUEGA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/code-frame': 7.18.6
+      '@babel/code-frame': 7.21.4
       '@babel/generator': 7.20.4
       '@babel/helper-environment-visitor': 7.18.9
       '@babel/helper-function-name': 7.19.0
@@ -12672,7 +12672,7 @@ packages:
     dependencies:
       '@lezer/common': 0.15.12
       '@lezer/lr': 0.15.8
-      json5: 2.2.1
+      json5: 2.2.3
     dev: true
 
   /@msgpackr-extract/msgpackr-extract-darwin-arm64@2.2.0:
@@ -13470,7 +13470,7 @@ packages:
       clone: 2.1.2
       dotenv: 7.0.0
       dotenv-expand: 5.1.0
-      json5: 2.2.1
+      json5: 2.2.3
       msgpackr: 1.8.0
       nullthrows: 1.1.1
       semver: 5.7.1
@@ -13815,7 +13815,7 @@ packages:
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.8.0
       browserslist: 4.21.4
-      json5: 2.2.1
+      json5: 2.2.3
       nullthrows: 1.1.1
       semver: 5.7.1
     transitivePeerDependencies:
@@ -13891,7 +13891,7 @@ packages:
     engines: {node: '>= 12.0.0', parcel: ^2.8.0}
     dependencies:
       '@parcel/plugin': 2.8.0(@parcel/core@2.8.0)
-      json5: 2.2.1
+      json5: 2.2.3
     transitivePeerDependencies:
       - '@parcel/core'
     dev: true
@@ -14189,7 +14189,7 @@ packages:
       detect-indent: 6.1.0
       fast-deep-equal: 3.1.3
       is-windows: 1.0.2
-      json5: 2.2.1
+      json5: 2.2.3
       parse-json: 5.2.0
       read-yaml-file: 2.1.0
       sort-keys: 4.2.0
@@ -25649,12 +25649,12 @@ packages:
     resolution: {integrity: sha512-1hqLFMSrGHRHxav9q9gNjJ5EXznIxGVO09xQRrwplcS8qs28pZ8s8hupZAmqDwZUmVZ2Qb2jnyPOWcDH8m8dlA==}
     engines: {node: '>=6'}
     hasBin: true
+    dev: true
 
   /json5@2.2.3:
     resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
     engines: {node: '>=6'}
     hasBin: true
-    dev: true
 
   /jsonc-parser@3.0.0:
     resolution: {integrity: sha512-fQzRfAbIBnR0IQvftw9FJveWiHp72Fg20giDrHz6TdfB12UH/uue0D3hm57UB5KgAVuniLMCaS8P1IMj9NR7cA==}
@@ -26404,7 +26404,7 @@ packages:
     dependencies:
       big.js: 5.2.2
       emojis-list: 3.0.0
-      json5: 2.2.1
+      json5: 2.2.3
 
   /loader-utils@3.2.1:
     resolution: {integrity: sha512-ZvFw1KWS3GVyYBYb7qkmRM/WwL2TQQBxgCK62rlvm4WpVQ23Nb4tYjApUlfjrEGvOs7KHEsmyUn75OHZrJMWPw==}
