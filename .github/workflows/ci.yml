@@ -47,11 +47,11 @@ jobs:
         run: pnpm install
 
       - name: Lint
-        run: pnpm run lint --all
+        run: pnpm run lint
 
       - name: Build
-        run: pnpm run build --all
+        run: pnpm run build
 
       # TODO: solve flaky tests
       # - name: Test
-      #   run: pnpm run test --all
+      #   run: pnpm run test
