@@ -7,7 +7,7 @@ name: CI
 on:
   push:
     branches:
-      - dev
+      - ci-branch
   pull_request:
     branches:
       - main
