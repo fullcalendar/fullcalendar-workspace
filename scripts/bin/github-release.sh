@@ -4,7 +4,7 @@ set -e
 cd "`dirname $0`/../.."
 root_dir=`pwd`
 
-version="6.1.8"
+version="6.1.9"
 
 declare -a tag_dirs=( \
   "$root_dir/contrib/standard" \
