@@ -7,7 +7,7 @@ root_dir=`pwd`
 version="6.1.9"
 
 declare -a tag_dirs=( \
-  "$root_dir/contrib/standard" \
+  "$root_dir/standard" \
   "$root_dir/contrib/angular" \
   "$root_dir/contrib/react" \
   "$root_dir/contrib/vue2" \
@@ -16,10 +16,10 @@ declare -a tag_dirs=( \
 )
 
 for tag_dir in ${tag_dirs[@]}; do
-  echo "Pushing tag $tag in $tag_dir..."
+  echo "Creating and pushing tag $tag in $tag_dir..."
   cd "$tag_dir"
-  git tag -a "$version" -m "$version"
-  git push origin "$version"
+  git tag -a "v$version" -m "v$version"
+  git push origin "v$version"
 done
 
 declare -a release_repos=( \
@@ -37,8 +37,8 @@ for release_repo in ${release_repos[@]}; do
     -H "Accept: application/vnd.github+json" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
     "/repos/$release_repo/releases" \
-    -f tag_name="$version" \
-    -f name="$version" \
+    -f tag_name="v$version" \
+    -f name="v$version" \
     -f body="See https://github.com/fullcalendar/fullcalendar/releases/tag/$version" \
     -f make_latest=true
 done
