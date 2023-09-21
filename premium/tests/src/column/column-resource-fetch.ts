@@ -3,7 +3,7 @@ import { CalendarWrapper } from '@fullcalendar/standard-tests/lib/wrappers/Calen
 describe('vresource resource refetching', () => {
   const initialDate = '2023-09-20'
   const events = [
-    { start: initialDate, title: 'event', allDay: true, resourceId: 'a' }
+    { start: initialDate, title: 'event', allDay: true, resourceId: 'a' },
   ]
   const resources = [
     { id: 'a', title: 'Auditorium A' },
@@ -32,9 +32,6 @@ describe('vresource resource refetching', () => {
       eventClick() {
         eventClickCnt++
       },
-      dateClick() {
-        console.log('yypppppp')
-      }
     })
 
     setTimeout(() => {
