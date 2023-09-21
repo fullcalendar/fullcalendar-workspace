@@ -1,23 +1,23 @@
 {
   "name": "fullcalendar-scheduler",
-  "version": "6.1.8",
+  "version": "6.1.9",
   "title": "FullCalendar Premium Bundle",
   "description": "Easily render a full-sized drag & drop calendar with a combination of standard & premium plugins",
   "homepage": "https://fullcalendar.io/docs/initialize-globals",
   "dependencies": {
-    "@fullcalendar/adaptive": "~6.1.8",
-    "@fullcalendar/core": "~6.1.8",
-    "@fullcalendar/daygrid": "~6.1.8",
-    "@fullcalendar/interaction": "~6.1.8",
-    "@fullcalendar/list": "~6.1.8",
-    "@fullcalendar/multimonth": "~6.1.8",
-    "@fullcalendar/resource": "~6.1.8",
-    "@fullcalendar/resource-daygrid": "~6.1.8",
-    "@fullcalendar/resource-timegrid": "~6.1.8",
-    "@fullcalendar/resource-timeline": "~6.1.8",
-    "@fullcalendar/scrollgrid": "~6.1.8",
-    "@fullcalendar/timegrid": "~6.1.8",
-    "@fullcalendar/timeline": "~6.1.8"
+    "@fullcalendar/adaptive": "~6.1.9",
+    "@fullcalendar/core": "~6.1.9",
+    "@fullcalendar/daygrid": "~6.1.9",
+    "@fullcalendar/interaction": "~6.1.9",
+    "@fullcalendar/list": "~6.1.9",
+    "@fullcalendar/multimonth": "~6.1.9",
+    "@fullcalendar/resource": "~6.1.9",
+    "@fullcalendar/resource-daygrid": "~6.1.9",
+    "@fullcalendar/resource-timegrid": "~6.1.9",
+    "@fullcalendar/resource-timeline": "~6.1.9",
+    "@fullcalendar/scrollgrid": "~6.1.9",
+    "@fullcalendar/timegrid": "~6.1.9",
+    "@fullcalendar/timeline": "~6.1.9"
   },
   "devDependencies": {
     "@fullcalendar/standard-scripts": "*"
