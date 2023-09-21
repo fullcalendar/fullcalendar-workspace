@@ -1,9 +1,6 @@
 #!/bin/bash
-
-# exit upon error
-set -e
-
-# bumping version. use vscode search + replace
+#
+# for bumping version use vscode search + replace:
 # 1. "@fullcalendar/([\w-]+)": "\^([^"]*)" (with regexp support on)
 #    "@fullcalendar/$1": "^6.1.8"
 # 2. "fullcalendar(-scheduler)?": "\^([^"]*)" (with regexp support on)
@@ -15,37 +12,45 @@ set -e
 # 5. "version": "6.1.7"
 #    "version": "6.1.8"
 
-# first-time publishes need `--access public`
+set -e
+cd "`dirname $0`/../.."
+root_dir=`pwd`
 
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/core && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/bootstrap5 && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/daygrid && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/timegrid && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/bootstrap4 && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/google-calendar && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/icalendar && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/interaction && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/list && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/luxon1 && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/luxon2 && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/luxon3 && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/moment && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/moment-timezone && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/rrule && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/web-component && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/packages/multimonth && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/standard/bundle && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/premium/packages/premium-common && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/premium/packages/adaptive && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/premium/packages/resource && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/premium/packages/scrollgrid && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/premium/packages/resource-daygrid && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/premium/packages/timeline && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/premium/packages/resource-timegrid && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/premium/packages/resource-timeline && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/premium/bundle && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/contrib/react && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/contrib/angular && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/contrib/vue3 && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace/contrib/vue2 && pnpm publish --no-git-checks
-cd /Users/adam/Code/fullcalendar-workspace
+declare -a publish_dirs=( \
+  "$root_dir/standard/packages/core" \
+  "$root_dir/standard/packages/bootstrap5" \
+  "$root_dir/standard/packages/daygrid" \
+  "$root_dir/standard/packages/timegrid" \
+  "$root_dir/standard/packages/bootstrap4" \
+  "$root_dir/standard/packages/google-calendar" \
+  "$root_dir/standard/packages/icalendar" \
+  "$root_dir/standard/packages/interaction" \
+  "$root_dir/standard/packages/list" \
+  "$root_dir/standard/packages/luxon1" \
+  "$root_dir/standard/packages/luxon2" \
+  "$root_dir/standard/packages/luxon3" \
+  "$root_dir/standard/packages/moment" \
+  "$root_dir/standard/packages/moment-timezone" \
+  "$root_dir/standard/packages/rrule" \
+  "$root_dir/standard/packages/web-component" \
+  "$root_dir/standard/packages/multimonth" \
+  "$root_dir/standard/bundle" \
+  "$root_dir/premium/packages/premium-common" \
+  "$root_dir/premium/packages/adaptive" \
+  "$root_dir/premium/packages/resource" \
+  "$root_dir/premium/packages/scrollgrid" \
+  "$root_dir/premium/packages/resource-daygrid" \
+  "$root_dir/premium/packages/timeline" \
+  "$root_dir/premium/packages/resource-timegrid" \
+  "$root_dir/premium/packages/resource-timeline" \
+  "$root_dir/premium/bundle" \
+  "$root_dir/contrib/react" \
+  "$root_dir/contrib/angular" \
+  "$root_dir/contrib/vue3" \
+  "$root_dir/contrib/vue2" \
+)
+
+for publish_dir in ${publish_dirs[@]}; do
+  cd "$publish_dir"
+  pnpm publish --no-git-checks --access public
+done

@@ -1,17 +1,18 @@
 #!/bin/bash
 
-# exit upon error
 set -e
+cd "`dirname $0`/../.."
+root_dir=`pwd`
 
 version="6.1.8"
 
 declare -a tag_dirs=( \
-  "/Users/adam/Code/fullcalendar-workspace/contrib/standard" \
-  "/Users/adam/Code/fullcalendar-workspace/contrib/angular" \
-  "/Users/adam/Code/fullcalendar-workspace/contrib/react" \
-  "/Users/adam/Code/fullcalendar-workspace/contrib/vue2" \
-  "/Users/adam/Code/fullcalendar-workspace/contrib/vue3" \
-  "/Users/adam/Code/fullcalendar-workspace" \
+  "$root_dir/contrib/standard" \
+  "$root_dir/contrib/angular" \
+  "$root_dir/contrib/react" \
+  "$root_dir/contrib/vue2" \
+  "$root_dir/contrib/vue3" \
+  "$root_dir" \
 )
 
 for tag_dir in ${tag_dirs[@]}; do
