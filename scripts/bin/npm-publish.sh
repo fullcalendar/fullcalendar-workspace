@@ -11,6 +11,9 @@
 #    "fullcalendar$1": "~6.1.10"
 # 5. "version": "6.1.9"
 #    "version": "6.1.10"
+#
+# NOTE: also update github-release.sh
+#
 
 set -e
 cd "`dirname $0`/../.."

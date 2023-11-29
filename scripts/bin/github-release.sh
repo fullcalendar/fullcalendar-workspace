@@ -4,7 +4,7 @@ set -e
 cd "`dirname $0`/../.."
 root_dir=`pwd`
 
-version="6.1.9"
+version="6.1.10"
 
 declare -a tag_dirs=( \
   "$root_dir/standard" \
@@ -39,7 +39,7 @@ for release_repo in ${release_repos[@]}; do
     "/repos/$release_repo/releases" \
     -f tag_name="v$version" \
     -f name="v$version" \
-    -f body="See https://github.com/fullcalendar/fullcalendar/releases/tag/$version" \
+    -f body="See https://github.com/fullcalendar/fullcalendar/releases/tag/v$version" \
     -f make_latest=true
 done
 
