@@ -2,15 +2,15 @@
 #
 # for bumping version use vscode search + replace:
 # 1. "@fullcalendar/([\w-]+)": "\^([^"]*)" (with regexp support on)
-#    "@fullcalendar/$1": "^6.1.9"
+#    "@fullcalendar/$1": "^6.1.10"
 # 2. "fullcalendar(-scheduler)?": "\^([^"]*)" (with regexp support on)
-#    "fullcalendar$1": "^6.1.9"
+#    "fullcalendar$1": "^6.1.10"
 # 3. "@fullcalendar/([\w-]+)": "~([^"]*)" (with regexp support on)
-#    "@fullcalendar/$1": "~6.1.9"
+#    "@fullcalendar/$1": "~6.1.10"
 # 4. "fullcalendar(-scheduler)?": "~([^"]*)" (with regexp support on)
-#    "fullcalendar$1": "~6.1.9"
-# 5. "version": "6.1.8"
-#    "version": "6.1.9"
+#    "fullcalendar$1": "~6.1.10"
+# 5. "version": "6.1.9"
+#    "version": "6.1.10"
 
 set -e
 cd "`dirname $0`/../.."
