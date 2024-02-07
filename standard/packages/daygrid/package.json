@@ -1,0 +1,48 @@
+{
+  "name": "@fullcalendar/daygrid",
+  "version": "6.1.10",
+  "title": "FullCalendar Day Grid Plugin",
+  "description": "Display events on a month view or \"day grid\" view",
+  "homepage": "https://fullcalendar.io/docs/month-view",
+  "keywords": [
+    "month",
+    "month-view"
+  ],
+  "peerDependencies": {
+    "@fullcalendar/core": "~6.1.10"
+  },
+  "devDependencies": {
+    "@fullcalendar/core": "~6.1.10",
+    "@fullcalendar/standard-scripts": "*"
+  },
+  "scripts": {
+    "build": "standard-scripts pkg:build",
+    "clean": "standard-scripts pkg:clean",
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "tsConfig": {
+    "extends":  "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
+    "compilerOptions": {
+      "rootDir": "./src",
+      "outDir": "./dist/.tsout"
+    },
+    "include": [
+      "./src/**/*"
+    ]
+  },
+  "buildConfig": {
+    "exports": {
+      ".": { "iife": true },
+      "./internal": {}
+    },
+    "iifeGlobals": {
+      ".": "FullCalendar.DayGrid",
+      "./internal": "FullCalendar.DayGrid.Internal"
+    }
+  },
+  "publishConfig": {
+    "directory": "./dist",
+    "linkDirectory": true
+  }
+}

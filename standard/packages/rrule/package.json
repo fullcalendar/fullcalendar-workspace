@@ -1,0 +1,48 @@
+{
+  "name": "@fullcalendar/rrule",
+  "version": "6.1.10",
+  "title": "FullCalendar RRule Plugin",
+  "description": "Recurring events with RRule",
+  "keywords": [
+    "rrule"
+  ],
+  "homepage": "https://fullcalendar.io/docs/rrule-plugin",
+  "peerDependencies": {
+    "@fullcalendar/core": "~6.1.10",
+    "rrule": "^2.6.0"
+  },
+  "devDependencies": {
+    "@fullcalendar/core": "~6.1.10",
+    "@fullcalendar/standard-scripts": "*",
+    "rrule": "^2.6.0"
+  },
+  "scripts": {
+    "build": "standard-scripts pkg:build",
+    "clean": "standard-scripts pkg:clean",
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "tsConfig": {
+    "extends":  "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
+    "compilerOptions": {
+      "rootDir": "./src",
+      "outDir": "./dist/.tsout"
+    },
+    "include": [
+      "./src/**/*"
+    ]
+  },
+  "buildConfig": {
+    "exports": {
+      ".": { "iife": true }
+    },
+    "iifeGlobals": {
+      ".": "FullCalendar.RRule",
+      "rrule": "rrule"
+    }
+  },
+  "publishConfig": {
+    "directory": "./dist",
+    "linkDirectory": true
+  }
+}
