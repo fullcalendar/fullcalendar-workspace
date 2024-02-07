@@ -23,7 +23,7 @@ async function getSubrepos(monorepoDir: string) {
     'status',
     '--all',
   ], {
-    cwd: monorepoDir
+    cwd: monorepoDir,
   })
 
   const sections = s.split(/^(?=\S)/m) // split by non-indented starting line
@@ -33,7 +33,7 @@ async function getSubrepos(monorepoDir: string) {
     const sectionMatch = section.match(
       // match quoted text in first line, then everything in subsequent lines
       // the . does NOT match newlines
-      /^.*['"]([^'"]*)['"].*([\s\S]*)$/
+      /^.*['"]([^'"]*)['"].*([\s\S]*)$/,
     )
     if (sectionMatch) {
       const subrepoDir = sectionMatch[1]
