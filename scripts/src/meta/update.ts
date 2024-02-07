@@ -4,32 +4,32 @@ import * as yaml from 'js-yaml'
 import { makeDedicatedLockfile } from 'pnpm-make-dedicated-lockfile'
 import { addFile, assumeUnchanged } from '@fullcalendar/standard-scripts/utils/git'
 import { boolPromise } from '@fullcalendar/standard-scripts/utils/lang'
-import { queryGitSubmodulePkgs } from './utils.js'
+import { querySubrepoPkgs } from './utils.js'
 import { lockFilename, workspaceFilename, turboFilename, miscSubpaths } from './config.js'
 
 export default async function() {
   const monorepoDir = process.cwd()
-  const submoduleSubdirs = await queryGitSubmodulePkgs(monorepoDir)
+  const subrepoSubdirs = await querySubrepoPkgs(monorepoDir)
 
   const workspaceConfigPath = joinPaths(monorepoDir, workspaceFilename)
   const workspaceConfigStr = await readFile(workspaceConfigPath, 'utf8')
   const workspaceConfig = yaml.load(workspaceConfigStr) as any
 
-  for (const submoduleSubdir of submoduleSubdirs) {
-    const submoduleDir = joinPaths(monorepoDir, submoduleSubdir)
-    const subpkgs = scopePkgGlobs(workspaceConfig.packages, submoduleSubdir)
-    const isSubworkspace = Boolean(subpkgs.length)
+  for (const subrepoSubdir of subrepoSubdirs) {
+    const subrepoDir = joinPaths(monorepoDir, subrepoSubdir)
+    const subPkgs = scopePkgGlobs(workspaceConfig.packages, subrepoSubdir)
+    const isSubworkspace = Boolean(subPkgs.length)
 
-    console.log('[PROCESSING]', submoduleDir)
+    console.log('[PROCESSING]', subrepoDir)
 
     // Write scoped pnpm-workspace config
     if (isSubworkspace) {
-      const subconfig = { packages: subpkgs }
-      const subpath = joinPaths(submoduleDir, workspaceFilename)
+      const subconfig = { packages: subPkgs }
+      const subpath = joinPaths(subrepoDir, workspaceFilename)
       await writeFile(subpath, yaml.dump(subconfig))
     }
 
-    await makeDedicatedLockfile(monorepoDir, submoduleDir, false) // verbose=false
+    await makeDedicatedLockfile(monorepoDir, subrepoDir, false) // verbose=false
 
     const copyableSubpaths: string[] = [
       ...(isSubworkspace ? [turboFilename] : []),
@@ -39,7 +39,7 @@ export default async function() {
     await Promise.all(
       copyableSubpaths.map((subpath) => copyFile(
         joinPaths(monorepoDir, subpath),
-        joinPaths(submoduleDir, subpath),
+        joinPaths(subrepoDir, subpath),
       )),
     )
 
@@ -50,7 +50,7 @@ export default async function() {
     ]
 
     for (const subpath of addableSubpaths) {
-      const filePath = joinPaths(submoduleDir, subpath)
+      const filePath = joinPaths(subrepoDir, subpath)
 
       await boolPromise(assumeUnchanged(filePath, false)) // won't fail if path doesn't exist
       await addFile(filePath)

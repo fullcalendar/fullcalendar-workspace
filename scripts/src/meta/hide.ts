@@ -2,7 +2,7 @@ import { join as joinPaths } from 'path'
 import { rm } from 'fs/promises'
 import { assumeUnchanged } from '@fullcalendar/standard-scripts/utils/git'
 import { boolPromise } from '@fullcalendar/standard-scripts/utils/lang'
-import { queryGitSubmodulePkgs } from './utils.js'
+import { querySubrepoPkgs } from './utils.js'
 import { allSubpaths } from './config.js'
 
 export default async function() {
@@ -10,17 +10,17 @@ export default async function() {
 }
 
 export async function hideMetaFiles(monorepoDir: string, silent?: boolean) {
-  const submoduleSubdirs = await queryGitSubmodulePkgs(monorepoDir)
+  const subrepoSubdirs = await querySubrepoPkgs(monorepoDir)
 
-  for (const submoduleSubdir of submoduleSubdirs) {
-    const submoduleDir = joinPaths(monorepoDir, submoduleSubdir)
+  for (const subrepoSubdir of subrepoSubdirs) {
+    const subrepoDir = joinPaths(monorepoDir, subrepoSubdir)
 
     if (!silent) {
-      console.log('[HIDING]', submoduleDir)
+      console.log('[HIDING]', subrepoDir)
     }
 
     for (const fileSubpath of allSubpaths) {
-      const filePath = joinPaths(submoduleDir, fileSubpath)
+      const filePath = joinPaths(subrepoDir, fileSubpath)
       const inIndex =  await boolPromise(assumeUnchanged(filePath, true))
 
       if (inIndex) {

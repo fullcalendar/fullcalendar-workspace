@@ -5,25 +5,52 @@ import { fileExists } from '@fullcalendar/standard-scripts/utils/fs'
 // Git utils
 // -------------------------------------------------------------------------------------------------
 
-// TEMPORARY. RENAME.
-export async function queryGitSubmodulePkgs(monorepoDir: string): Promise<string[]> {
-  let submoduleSubdirs = await queryGitSubmoduleDirs(monorepoDir)
+export async function querySubrepoPkgs(monorepoDir: string): Promise<string[]> {
+  let submoduleSubdirs = await getSubrepoDirs(monorepoDir)
 
   return await asyncFilter(submoduleSubdirs, (subdir) => {
-    return fileExists(joinPaths(subdir, 'package.json'))
+    return fileExists(joinPaths(monorepoDir, subdir, 'package.json'))
   })
 }
 
-// TEMPORARY. RENAME
-async function queryGitSubmoduleDirs(monorepoDir: string): Promise<string[]> {
-  return [
-    'standard',
-    'examples',
-    'contrib/angular',
-    'contrib/react',
-    'contrib/vue2',
-    'contrib/vue3',
-  ]
+async function getSubrepoDirs(monorepoDir: string): Promise<string[]> {
+  return Object.keys(await getSubrepos(monorepoDir))
+}
+
+async function getSubrepos(monorepoDir: string) {
+  const s = await execCapture(['git', 'subrepo', 'status', '--all'], { cwd: monorepoDir }) // TODO: ensure command line!
+  const sections = s.split(/^(?=\S)/m) // split by non-indented starting line
+  const subrepos = {} as any
+
+  for (const section of sections) {
+    const sectionMatch = section.match(
+      // match quoted text in first line, then everything in subsequent lines
+      // the . does NOT match newlines
+      /^.*['"]([^'"]*)['"].*([\s\S]*)$/
+    )
+    if (sectionMatch) {
+      const subrepoDir = sectionMatch[1]
+      const lines = sectionMatch[2]
+        .split(/[\n\r]+/)
+        .map((line) => line.trim())
+        .filter((line) => line) // remove blank
+      const props = {} as any
+
+      for (let line of lines) {
+        const propMatch = line.match(/^(.*?)\s*:\s*(.*)$/)
+
+        if (propMatch) {
+          const key = propMatch[1].toLowerCase().replace(/\s+/, '-')
+          const val = propMatch[2]
+          props[key] = val
+        }
+      }
+
+      subrepos[subrepoDir] = props
+    }
+  }
+
+  return subrepos
 }
 
 // Lang utils
