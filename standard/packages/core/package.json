@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/core",
-  "version": "6.1.10",
+  "version": "6.1.11",
   "title": "FullCalendar Core",
   "description": "FullCalendar core package for rendering a calendar",
   "dependencies": {
@@ -18,7 +18,7 @@
   },
   "type": "module",
   "tsConfig": {
-    "extends":  "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
+    "extends": "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
     "compilerOptions": {
       "rootDir": "./src",
       "outDir": "./dist/.tsout"
@@ -29,11 +29,19 @@
   },
   "buildConfig": {
     "exports": {
-      ".": { "iife": true },
+      ".": {
+        "iife": true
+      },
       "./preact": {},
       "./internal": {},
-      "./locales-all": { "iife": true, "generator": "./scripts/generate-locales-all.js" },
-      "./locales/*": { "iife": true, "iifeGenerator": "./scripts/generate-locale-iife.js" }
+      "./locales-all": {
+        "iife": true,
+        "generator": "./scripts/generate-locales-all.js"
+      },
+      "./locales/*": {
+        "iife": true,
+        "iifeGenerator": "./scripts/generate-locale-iife.js"
+      }
     },
     "iifeGlobals": {
       ".": "FullCalendar",
