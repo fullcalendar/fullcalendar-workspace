@@ -44,14 +44,6 @@ jobs:
           key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
           restore-keys: turbo-${{ github.job }}-${{ github.ref_name }}-
 
-      - name: Install Git-Subrepo
-        # https://github.com/ingydotnet/git-subrepo?tab=readme-ov-file#installation
-        shell: bash
-        run: |
-          source ./scripts/git-subrepo/.rc
-          echo "PATH:$PATH"
-          git-subrepo version
-
       - name: Install Dependencies
         run: pnpm install
 
