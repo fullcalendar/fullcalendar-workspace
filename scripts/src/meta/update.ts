@@ -2,7 +2,6 @@ import { join as joinPaths } from 'path'
 import { rm, readFile, writeFile, copyFile } from 'fs/promises'
 import * as yaml from 'js-yaml'
 import { makeDedicatedLockfile } from 'pnpm-make-dedicated-lockfile'
-import { execSilent } from '@fullcalendar/standard-scripts/utils/exec'
 import { addFile, assumeUnchanged } from '@fullcalendar/standard-scripts/utils/git'
 import { boolPromise } from '@fullcalendar/standard-scripts/utils/lang'
 import { queryGitSubmodulePkgs } from './utils.js'
@@ -59,17 +58,6 @@ export default async function() {
       await rm(filePath)
     }
   }
-
-  // console.log('[RESTORING]', monorepoDir)
-  //
-  // // restore all node_modules files as if they were part of root monorepo. very fast.
-  // await execSilent([
-  //   'pnpm',
-  //   'install',
-  //   '--ignore-scripts',
-  // ], {
-  //   cwd: monorepoDir,
-  // })
 
   console.log('[SUCCESS]')
 }
