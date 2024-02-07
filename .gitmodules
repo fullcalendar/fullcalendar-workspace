@@ -1,6 +1,3 @@
-[submodule "standard"]
-	path = standard
-	url = ../fullcalendar.git
 [submodule "examples"]
 	path = examples
 	url = ../fullcalendar-examples.git
