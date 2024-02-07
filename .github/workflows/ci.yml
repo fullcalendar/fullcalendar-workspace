@@ -53,6 +53,11 @@ jobs:
       - name: Build
         run: pnpm run build
 
+      - name: Create Release Pull Request
+        uses: changesets/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       # TODO: solve flaky tests
       # - name: Test
       #   run: pnpm run test
