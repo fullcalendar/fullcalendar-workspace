@@ -1,6 +1,3 @@
-[submodule "contrib/vue2"]
-	path = contrib/vue2
-	url = ../fullcalendar-vue2.git
 [submodule "contrib/vue3"]
 	path = contrib/vue3
 	url = ../fullcalendar-vue.git
