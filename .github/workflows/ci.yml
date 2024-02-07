@@ -29,7 +29,10 @@ jobs:
       - name: Install Git-Subrepo
         # https://github.com/ingydotnet/git-subrepo?tab=readme-ov-file#installation
         shell: bash
-        run: source ./scripts/git-subrepo/.rc
+        run: |
+          source ./scripts/git-subrepo/.rc
+          echo "PATH:$PATH"
+          git subrepo version
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v2.2.4
