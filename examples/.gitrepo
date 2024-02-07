@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:fullcalendar/fullcalendar-examples.git
+	branch = main
+	commit = 56621abfc763e3f31f9da2c13f3d81cddb11f8b6
+	parent = b0941741c99cbd8ec45bae72cc6062a9023fc3ce
+	method = merge
+	cmdver = 0.4.6

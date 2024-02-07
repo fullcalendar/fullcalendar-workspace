@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "name": "@fullcalendar/parcel-example",
+  "version": "0.0.0",
+  "license": "ISC",
+  "author": "Adam Shaw <arshaw@arshaw.com> (http://arshaw.com/)",
+  "dependencies": {
+    "@fullcalendar/core": "^6.1.10",
+    "@fullcalendar/daygrid": "^6.1.10",
+    "@fullcalendar/interaction": "^6.1.10",
+    "@fullcalendar/list": "^6.1.10",
+    "@fullcalendar/timegrid": "^6.1.10"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.16",
+    "parcel": "^2.7.0"
+  },
+  "scripts": {
+    "build": "parcel build --cache-dir ./.cache --dist-dir ./dist ./src/index.html",
+    "start": "parcel serve --cache-dir ./.cache --no-hmr ./src/index.html",
+    "clean": "rm -rf dist .cache"
+  },
+  "type": "module"
+}

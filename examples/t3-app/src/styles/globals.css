@@ -1,0 +1,21 @@
+
+html {
+  font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+.navbar {
+  display: flex;
+  background-color: #ccc;
+  margin-bottom: 1em;
+}
+
+.navbar > * {
+  padding: .5em;
+}
+
+.calendar-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}

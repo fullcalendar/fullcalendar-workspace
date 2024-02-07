@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es6",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "strict": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "rootDir": "src",
+    "outDir": "tsc"
+  },
+  "include": [
+    "src/index.ts"
+  ]
+}

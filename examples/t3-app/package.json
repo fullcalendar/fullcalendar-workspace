@@ -1,0 +1,39 @@
+{
+  "name": "t3-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@t3-oss/env-nextjs": "^0.2.1",
+    "next": "^13.4.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@fullcalendar/core": "^6.1.10",
+    "@fullcalendar/daygrid": "^6.1.10",
+    "@fullcalendar/interaction": "^6.1.10",
+    "@fullcalendar/react": "^6.1.10",
+    "@fullcalendar/resource": "^6.1.10",
+    "@fullcalendar/resource-timeline": "^6.1.10",
+    "@fullcalendar/timegrid": "^6.1.10",
+    "@types/eslint": "^8.21.3",
+    "@types/node": "^18.15.5",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
+    "eslint": "^8.36.0",
+    "eslint-config-next": "^13.4.1",
+    "typescript": "^5.0.2"
+  },
+  "ct3aMetadata": {
+    "initVersion": "7.13.0"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "name": "@fullcalendar/rollup-scheduler-example",
+  "version": "0.0.0",
+  "license": "ISC",
+  "author": "Adam Shaw <arshaw@arshaw.com> (http://arshaw.com/)",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c --watch",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@fullcalendar/adaptive": "^6.1.10",
+    "@fullcalendar/core": "^6.1.10",
+    "@fullcalendar/daygrid": "^6.1.10",
+    "@fullcalendar/interaction": "^6.1.10",
+    "@fullcalendar/list": "^6.1.10",
+    "@fullcalendar/resource": "^6.1.10",
+    "@fullcalendar/resource-timeline": "^6.1.10",
+    "@fullcalendar/timegrid": "^6.1.10"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^14.0.1",
+    "rollup": "^1.20.0||^2.0.0",
+    "rollup-plugin-postcss": "^2.8.2"
+  }
+}

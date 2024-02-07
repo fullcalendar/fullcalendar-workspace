@@ -1,0 +1,9 @@
+
+# Each example packages
+# (TODO: move within)
+node_modules
+dist
+tmp
+
+# Outer monorepo
+.turbo

@@ -1,0 +1,57 @@
+
+<div class='demo-app'>
+
+  <div class='demo-app-sidebar'>
+    <div class='demo-app-sidebar-section'>
+      <h2>Instructions</h2>
+      <ul>
+        <li>Select dates and you will be prompted to create a new event</li>
+        <li>Drag, drop, and resize events</li>
+        <li>Click an event to delete it</li>
+      </ul>
+    </div>
+    <div class='demo-app-sidebar-section'>
+      <label>
+        <input
+          type='checkbox'
+          [checked]='calendarVisible$ | async'
+          (change)='handleCalendarToggle()'
+        />
+        toggle whole calendar
+      </label>
+    </div>
+    <div class='demo-app-sidebar-section'>
+      <label>
+        <input
+          type='checkbox'
+          [checked]='calendarOptions.weekends'
+          (change)='handleWeekendsToggle()'
+        />
+        toggle weekends
+      </label>
+    </div>
+    <div class='demo-app-sidebar-section'>
+      <h2>All Events ({{(eventsCount$ | async)}})</h2>
+      <ul>
+        <li *ngFor='let event of (events$ | async)'>
+          <b>{{event.start}}</b>
+          <i>{{event.title}}</i>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class='demo-app-main'>
+    <full-calendar
+      *ngIf='calendarVisible$ | async'
+      [options]='calendarOptions'
+      [events]="events$ | async"
+    >
+      <ng-template #eventContent let-arg>
+        <b>{{ arg.timeText }}</b>
+        <i>{{ arg.event.title }}</i>
+      </ng-template>
+    </full-calendar>
+  </div>
+
+</div>

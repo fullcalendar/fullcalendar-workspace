@@ -1,0 +1,25 @@
+{
+  "name": "@fullcalendar/next13-example",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "clean": "rm -rf .next"
+  },
+  "dependencies": {
+    "@fullcalendar/core": "^6.1.10",
+    "@fullcalendar/daygrid": "^6.1.10",
+    "@fullcalendar/interaction": "^6.1.10",
+    "@fullcalendar/react": "^6.1.10",
+    "@fullcalendar/resource": "^6.1.10",
+    "@fullcalendar/resource-timeline": "^6.1.10",
+    "@fullcalendar/timegrid": "^6.1.10",
+    "@next/font": "13.2.3",
+    "next": "13.2.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  }
+}

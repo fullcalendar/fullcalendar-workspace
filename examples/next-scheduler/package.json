@@ -1,0 +1,26 @@
+{
+  "name": "@fullcalendar/next-scheduler-example",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@fullcalendar/core": "^6.1.10",
+    "@fullcalendar/interaction": "^6.1.10",
+    "@fullcalendar/react": "^6.1.10",
+    "@fullcalendar/resource": "^6.1.10",
+    "@fullcalendar/resource-timeline": "^6.1.10",
+    "next": "^12.3.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.26.0",
+    "eslint-config-next": "^13.0.1",
+    "typescript": "^4.8.4"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "@fullcalendar/vue2-vuex-example",
+  "title": "FullCalendar Vue+Vuex Example Project",
+  "version": "0.0.0",
+  "license": "ISC",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fullcalendar/core": "^6.1.10",
+    "@fullcalendar/daygrid": "^6.1.10",
+    "@fullcalendar/interaction": "^6.1.10",
+    "@fullcalendar/timegrid": "^6.1.10",
+    "@fullcalendar/vue": "^6.1.10",
+    "core-js": "^3.6.5",
+    "date-fns": "^2.14.0",
+    "vue": "^2.6.12",
+    "vuex": "^3.4.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue2": "^1.1.2",
+    "vite": "^2.2.1"
+  },
+  "type": "module",
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
