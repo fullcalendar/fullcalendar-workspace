@@ -1,6 +1,3 @@
-[submodule "contrib/angular"]
-	path = contrib/angular
-	url = ../fullcalendar-angular.git
 [submodule "contrib/react"]
 	path = contrib/react
 	url = ../fullcalendar-react.git
