@@ -1,12 +1,24 @@
+import { join as joinPaths } from 'path'
+import { execCapture } from '@fullcalendar/standard-scripts/utils/exec'
+import { fileExists } from '@fullcalendar/standard-scripts/utils/fs'
 
 // Git utils
 // -------------------------------------------------------------------------------------------------
 
 // TEMPORARY. RENAME.
 export async function queryGitSubmodulePkgs(monorepoDir: string): Promise<string[]> {
+  let submoduleSubdirs = await queryGitSubmoduleDirs(monorepoDir)
+
+  return await asyncFilter(submoduleSubdirs, (subdir) => {
+    return fileExists(joinPaths(subdir, 'package.json'))
+  })
+}
+
+// TEMPORARY. RENAME
+async function queryGitSubmoduleDirs(monorepoDir: string): Promise<string[]> {
   return [
     'standard',
-    // 'examples', // does not have package.json
+    'examples',
     'contrib/angular',
     'contrib/react',
     'contrib/vue2',
