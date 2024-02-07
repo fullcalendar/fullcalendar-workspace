@@ -18,8 +18,7 @@ async function getSubrepoDirs(monorepoDir: string): Promise<string[]> {
 }
 
 async function getSubrepos(monorepoDir: string) {
-  await ensureGitSubrepo(monorepoDir)
-  const s: string = await execCapture(['git', 'subrepo', 'status', '--all'], { cwd: monorepoDir })
+  const s: string = await execCapture(['git-subrepo', 'status', '--all'], { cwd: monorepoDir })
 
   const sections = s.split(/^(?=\S)/m) // split by non-indented starting line
   const subrepos = {} as any
@@ -53,27 +52,6 @@ async function getSubrepos(monorepoDir: string) {
   }
 
   return subrepos
-}
-
-let gitSubrepoEnsured = false
-
-/*
-Only works for CI environments
-*/
-async function ensureGitSubrepo(monorepoDir: string) {
-  if (process.env.CI) {
-    if (!gitSubrepoEnsured) {
-      const installScript = joinPaths(monorepoDir, 'scripts/bin/git-subrepo-install.sh')
-
-      console.log()
-      console.log('Installing git-subrepo:')
-      console.log(installScript)
-      console.log()
-
-      await execLive([installScript], { cwd: monorepoDir })
-      gitSubrepoEnsured = true
-    }
-  }
 }
 
 // Lang utils
