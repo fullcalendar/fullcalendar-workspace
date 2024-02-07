@@ -63,19 +63,14 @@ Only works for CI environments
 async function ensureGitSubrepo(monorepoDir: string) {
   if (process.env.CI) {
     if (!gitSubrepoEnsured) {
-      // git-subrepo installation instructions:
-      // https://github.com/ingydotnet/git-subrepo?tab=readme-ov-file#installation
-      // Needs to be raw shell string
-      // `.` is like `source` but works in many types of shells
-      const gitSubrepoInstallScript = joinPaths(monorepoDir, 'scripts/git-subrepo/.rc')
-      const cmd = '. ' + gitSubrepoInstallScript
+      const installScript = joinPaths(monorepoDir, 'scripts/bin/git-subrepo-install.sh')
 
       console.log()
       console.log('Installing git-subrepo:')
-      console.log(cmd)
+      console.log(installScript)
       console.log()
 
-      await execLive(cmd, { cwd: monorepoDir })
+      await execLive([installScript], { cwd: monorepoDir })
       gitSubrepoEnsured = true
     }
   }
