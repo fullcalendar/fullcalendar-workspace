@@ -32,7 +32,7 @@ jobs:
         run: |
           source ./scripts/git-subrepo/.rc
           echo "PATH:$PATH"
-          git subrepo version
+          git-subrepo version
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v2.2.4

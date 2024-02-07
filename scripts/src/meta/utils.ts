@@ -18,6 +18,11 @@ async function getSubrepoDirs(monorepoDir: string): Promise<string[]> {
 }
 
 async function getSubrepos(monorepoDir: string) {
+  console.log()
+  console.log('DEBUG: getSubrepos')
+  console.log(process.env.PATH)
+  console.log()
+
   const s: string = await execCapture(['git-subrepo', 'status', '--all'], { cwd: monorepoDir })
 
   const sections = s.split(/^(?=\S)/m) // split by non-indented starting line
