@@ -3090,7 +3090,7 @@ importers:
   scripts:
     devDependencies:
       '@fullcalendar/standard-scripts':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../standard/scripts
       '@types/js-yaml':
         specifier: ^4.0.5
@@ -3104,6 +3104,9 @@ importers:
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.0
+      pnpm-make-dedicated-lockfile:
+        specifier: workspace:*
+        version: link:../premium/packages/pnpm-make-dedicated-lockfile
 
   standard/bundle:
     dependencies:

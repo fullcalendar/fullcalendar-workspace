@@ -3,8 +3,9 @@
   "name": "pnpm-make-dedicated-lockfile",
   "version": "0.0.0",
   "type": "module",
-  "main": "./lib.js",
   "bin": "./bin.js",
+  "main": "./lib.js",
+  "types": "./lib.d.ts",
   "dependencies": {
     "@pnpm/exportable-manifest": "~5.0.11",
     "@pnpm/find-workspace-dir": "~6.0.2",

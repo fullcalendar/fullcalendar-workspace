@@ -6,7 +6,7 @@
 export async function queryGitSubmodulePkgs(monorepoDir: string): Promise<string[]> {
   return [
     'standard',
-    'examples',
+    // 'examples', // does not have package.json
     'contrib/angular',
     'contrib/react',
     'contrib/vue2',
