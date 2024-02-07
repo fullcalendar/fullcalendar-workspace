@@ -2881,6 +2881,8 @@ importers:
         version: link:../../../standard/scripts
     publishDirectory: ./dist
 
+  premium/packages/pnpm-make-dedicated-lockfile: {}
+
   premium/packages/premium-common:
     devDependencies:
       '@fullcalendar/core':

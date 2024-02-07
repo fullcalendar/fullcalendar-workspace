@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "name": "pnpm-make-dedicated-lockfile",
+  "version": "0.0.0",
+  "type": "module",
+  "bin": "./bin.js",
+  "dependencies": {}
+}
