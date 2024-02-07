@@ -1,5 +1,5 @@
 import { join as joinPaths } from 'path'
-import { execCapture } from '@fullcalendar/standard-scripts/utils/exec'
+import { execCapture, execLive } from '@fullcalendar/standard-scripts/utils/exec'
 import { fileExists } from '@fullcalendar/standard-scripts/utils/fs'
 
 // Git utils
@@ -18,7 +18,9 @@ async function getSubrepoDirs(monorepoDir: string): Promise<string[]> {
 }
 
 async function getSubrepos(monorepoDir: string) {
-  const s = await execCapture(['git', 'subrepo', 'status', '--all'], { cwd: monorepoDir }) // TODO: ensure command line!
+  await ensureGitSubrepo(monorepoDir)
+  const s: string = await execCapture(['git', 'subrepo', 'status', '--all'], { cwd: monorepoDir })
+
   const sections = s.split(/^(?=\S)/m) // split by non-indented starting line
   const subrepos = {} as any
 
@@ -51,6 +53,28 @@ async function getSubrepos(monorepoDir: string) {
   }
 
   return subrepos
+}
+
+let gitSubrepoEnsured = false
+
+/*
+Only works for CI environments
+*/
+async function ensureGitSubrepo(monorepoDir: string) {
+  if (process.env.CI) {
+    if (!gitSubrepoEnsured) {
+      const gitSubrepoInstallScript = joinPaths(monorepoDir, 'scripts/git-subrepo/.rc')
+      const cmd = 'source ' + gitSubrepoInstallScript // needs to be raw shell string
+
+      console.log()
+      console.log('Installing git-subrepo:')
+      console.log(cmd)
+      console.log()
+
+      await execLive(cmd, { cwd: monorepoDir })
+      gitSubrepoEnsured = true
+    }
+  }
 }
 
 // Lang utils
