@@ -1,16 +1,17 @@
 
 #
-# NOTE: keep this synced with workspace repo's config
+# NOTE: keep this synced with workspace repo's config!!!!!!!!!!!
 #
 
 name: CI
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - newrepo
+  # pull_request:
+  #   branches:
+  #     - main
+
 env:
   TZ: "America/New_York"
 
