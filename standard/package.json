@@ -25,6 +25,10 @@
   "devDependencies": {
     "@fullcalendar/standard-scripts": "*"
   },
+  "type": "module",
+  "engines": {
+    "pnpm": ">=7.9.5"
+  },
   "scripts": {
     "postinstall": "standard-scripts postinstall",
     "lint": "standard-scripts lint",
@@ -34,19 +38,5 @@
     "test:dev": "standard-scripts test --dev",
     "clean": "standard-scripts clean",
     "ci": "pnpm run lint && pnpm run build && pnpm run test"
-  },
-  "type": "module",
-  "engines": {
-    "pnpm": ">=7.9.5"
-  },
-  "pnpm": {
-    "peerDependencyRules": {
-      "allowAny": [
-        "postcss"
-      ]
-    },
-    "patchedDependencies": {
-      "jasmine-jquery@2.1.1": "scripts/patches/jasmine-jquery@2.1.1.patch"
-    }
   }
 }
