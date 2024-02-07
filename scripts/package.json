@@ -4,7 +4,6 @@
   "version": "0.0.0",
   "devDependencies": {
     "@fullcalendar/standard-scripts": "*",
-    "@pnpm/make-dedicated-lockfile": "0.5.9",
     "@types/js-yaml": "^4.0.5",
     "@types/node": "^16.11.7",
     "esbuild": "^0.15.7",
