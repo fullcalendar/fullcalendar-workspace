@@ -78,7 +78,7 @@ async function syncManifestVersions(monorepoDir: string, subrepoSubdirs: string[
   const authorityManifest = await readManifest(joinPaths(monorepoDir, versionAuthorityPkg))
   const authorityVersion = authorityManifest.version
   const dirs = [monorepoDir].concat(
-    subrepoSubdirs.map((subrepoSubdir) => joinPaths(monorepoDir, subrepoSubdir))
+    subrepoSubdirs.map((subrepoSubdir) => joinPaths(monorepoDir, subrepoSubdir)),
   )
 
   for (const dir of dirs) {
