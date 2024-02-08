@@ -3108,6 +3108,12 @@ importers:
         specifier: workspace:*
         version: link:../premium/packages/pnpm-make-dedicated-lockfile
 
+  standard:
+    devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:scripts
+
   standard/bundle:
     dependencies:
       '@fullcalendar/core':
@@ -7469,7 +7475,7 @@ packages:
     dependencies:
       '@babel/core': 7.14.8
       '@babel/helper-create-class-features-plugin': 7.20.2(@babel/core@7.14.8)
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.20.2
     dev: true
 
   /@babel/plugin-proposal-class-properties@7.18.6(@babel/core@7.16.12):
@@ -7480,7 +7486,7 @@ packages:
     dependencies:
       '@babel/core': 7.16.12
       '@babel/helper-create-class-features-plugin': 7.20.2(@babel/core@7.16.12)
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.20.2
     dev: true
 
   /@babel/plugin-proposal-class-properties@7.18.6(@babel/core@7.18.10):
@@ -7491,7 +7497,7 @@ packages:
     dependencies:
       '@babel/core': 7.18.10
       '@babel/helper-create-class-features-plugin': 7.20.2(@babel/core@7.18.10)
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.20.2
     dev: true
 
   /@babel/plugin-proposal-class-properties@7.18.6(@babel/core@7.20.2):
@@ -7515,7 +7521,7 @@ packages:
     dependencies:
       '@babel/core': 7.21.4
       '@babel/helper-create-class-features-plugin': 7.20.2(@babel/core@7.21.4)
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.20.2
     dev: true
 
   /@babel/plugin-proposal-class-static-block@7.18.6(@babel/core@7.20.2):

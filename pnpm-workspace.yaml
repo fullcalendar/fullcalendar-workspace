@@ -1,4 +1,5 @@
 packages:
+  - './standard'
   - './standard/scripts'
   - './standard/tests'
   - './standard/bundle'
