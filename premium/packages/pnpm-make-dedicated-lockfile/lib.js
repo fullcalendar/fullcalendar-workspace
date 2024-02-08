@@ -51,19 +51,23 @@ export async function makeDedicatedLockfile(lockfileDir, projectDir, verbose) {
   }
 
   // Run a real install to clean up pnpm-lock.yaml
+  let installError
   try {
     await exec(['pnpm', 'install', '--ignore-scripts'], {
       cwd: projectDir,
       stdio: verbose ? 'inherit' : 'ignore',
     })
   } catch (error) {
-    console.error(error)
-    process.exit(1)
-  } finally {
-    // Undo temporary pnpm-workspace.yaml
-    if (subWorkspaceConfigIsTemp) {
-      await unlinkFile(subWorkspaceConfigPath)
-    }
+    installError = error
+  }
+
+  // Undo temporary pnpm-workspace.yaml
+  if (subWorkspaceConfigIsTemp) {
+    await unlinkFile(subWorkspaceConfigPath)
+  }
+
+  if (installError) {
+    throw installError
   }
 }
 

@@ -29,7 +29,7 @@ export default async function() {
       await writeFile(subpath, yaml.dump(subconfig))
     }
 
-    await makeDedicatedLockfile(monorepoDir, subrepoDir, false) // verbose=false
+    await makeDedicatedLockfile(monorepoDir, subrepoDir, true) // verbose=true
 
     const copyableSubpaths: string[] = [
       ...(isSubworkspace ? [turboFilename] : []),
