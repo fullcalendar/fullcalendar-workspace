@@ -3099,12 +3099,6 @@ importers:
         specifier: workspace:*
         version: link:../premium/packages/pnpm-make-dedicated-lockfile
 
-  standard:
-    devDependencies:
-      '@fullcalendar-scripts/standard':
-        specifier: '*'
-        version: link:scripts
-
   standard/bundle:
     dependencies:
       '@fullcalendar/core':
