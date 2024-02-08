@@ -218,7 +218,7 @@ importers:
         version: 2.9.0
       rollup-plugin-sourcemaps:
         specifier: ^0.6.3
-        version: 0.6.3(@types/node@12.20.55)(rollup@2.79.1)
+        version: 0.6.3(@types/node@16.18.3)(rollup@2.79.1)
       typescript:
         specifier: ^4.0.5
         version: 4.9.3
@@ -347,7 +347,7 @@ importers:
         version: 2.79.1
       rollup-plugin-sourcemaps:
         specifier: ^0.6.3
-        version: 0.6.3(@types/node@12.20.55)(rollup@2.79.1)
+        version: 0.6.3(@types/node@16.18.3)(rollup@2.79.1)
       terser:
         specifier: ^5.4.0
         version: 5.15.1
@@ -25479,7 +25479,7 @@ packages:
       object.values: 1.1.6
       prop-types: 15.8.1
       resolve: 2.0.0-next.4
-      semver: 6.3.1
+      semver: 6.3.0
       string.prototype.matchall: 4.0.8
     dev: true
 
