@@ -12,7 +12,6 @@
     "meta:hide": "workspace-scripts meta:hide",
     "meta:show": "workspace-scripts meta:show",
     "meta:update": "workspace-scripts meta:update",
-    "push": "git push --recurse-submodules=on-demand",
     "lint": "standard-scripts lint",
     "build": "standard-scripts build",
     "dev": "standard-scripts dev",
