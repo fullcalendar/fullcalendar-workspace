@@ -38,7 +38,7 @@ jobs:
           node-version: 18.13.0
           cache: 'pnpm'
 
-      - name: Setup Turbo cache
+      - name: Setup Turbo Cache
         uses: actions/cache@v3
         with:
           path: node_modules/.cache/turbo
@@ -61,13 +61,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Bundle Archives
-        uses: actions/upload-artifact@v4
-        with:
-          name: bundle-archives
-          path: |
-            standard/dist/*.zip
-            premium/dist/*.zip
+      # - name: Upload Bundle Archives
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: bundle-archives
+      #     path: |
+      #       standard/dist/*.zip
+      #       premium/dist/*.zip
 
       # TODO: solve flaky tests
       # - name: Test
