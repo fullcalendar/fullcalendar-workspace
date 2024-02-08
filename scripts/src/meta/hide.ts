@@ -1,7 +1,7 @@
 import { join as joinPaths } from 'path'
 import { rm } from 'fs/promises'
-import { assumeUnchanged } from '@fullcalendar/standard-scripts/utils/git'
-import { boolPromise } from '@fullcalendar/standard-scripts/utils/lang'
+import { assumeUnchanged } from '@fullcalendar-scripts/standard/utils/git'
+import { boolPromise } from '@fullcalendar-scripts/standard/utils/lang'
 import { querySubrepoPkgs } from './utils.js'
 import { allSubpaths } from './config.js'
 

@@ -1,5 +1,5 @@
-import { ScriptContext } from '@fullcalendar/standard-scripts/utils/script-runner'
-import origPostinstall from '@fullcalendar/standard-scripts/postinstall'
+import { ScriptContext } from '@fullcalendar-scripts/standard/utils/script-runner'
+import origPostinstall from '@fullcalendar-scripts/standard/postinstall'
 import { hideMetaFiles } from './meta/hide.js'
 
 export default async function(this: ScriptContext) {

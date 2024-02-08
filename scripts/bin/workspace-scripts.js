@@ -25,5 +25,5 @@ await execFileP(
   { cwd: thisPkgDir, stdio: 'inherit' },
 )
 
-const stuff = await import('@fullcalendar/standard-scripts/utils/script-runner')
+const stuff = await import('@fullcalendar-scripts/standard/utils/script-runner')
 stuff.runScript(thisPkgDir)

@@ -1,6 +1,6 @@
-import { ScriptContext } from '@fullcalendar/standard-scripts/utils/script-runner'
-import { PkgStruct, traverseMonorepoGreedy } from '@fullcalendar/standard-scripts/utils/monorepo-struct'
-import { analyzePkg } from '@fullcalendar/standard-scripts/utils/pkg-analysis'
+import { ScriptContext } from '@fullcalendar-scripts/standard/utils/script-runner'
+import { PkgStruct, traverseMonorepoGreedy } from '@fullcalendar-scripts/standard/utils/monorepo-struct'
+import { analyzePkg } from '@fullcalendar-scripts/standard/utils/pkg-analysis'
 import { PkgSrcs, getPkgSrcs, compileSizes, displayTable } from './pkg/src-size.js'
 
 export default async function(this: ScriptContext) {

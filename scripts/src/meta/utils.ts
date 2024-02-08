@@ -1,6 +1,6 @@
 import { join as joinPaths } from 'path'
-import { execCapture, execLive } from '@fullcalendar/standard-scripts/utils/exec'
-import { fileExists } from '@fullcalendar/standard-scripts/utils/fs'
+import { execCapture, execLive } from '@fullcalendar-scripts/standard/utils/exec'
+import { fileExists } from '@fullcalendar-scripts/standard/utils/fs'
 
 // Git utils
 // -------------------------------------------------------------------------------------------------
