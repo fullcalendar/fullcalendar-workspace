@@ -8,7 +8,7 @@ importers:
 
   .:
     devDependencies:
-      '@fullcalendar/standard-scripts':
+      '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:scripts
 
@@ -33,29 +33,29 @@ importers:
         specifier: ~6.1.10
         version: link:../packages/timegrid/dist
     devDependencies:
-      '@fullcalendar/standard-scripts':
+      '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../scripts
     publishDirectory: ./dist
 
   packages/bootstrap4:
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:../../scripts
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../core/dist
-      '@fullcalendar/standard-scripts':
-        specifier: '*'
-        version: link:../../scripts
     publishDirectory: ./dist
 
   packages/bootstrap5:
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:../../scripts
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../core/dist
-      '@fullcalendar/standard-scripts':
-        specifier: '*'
-        version: link:../../scripts
     publishDirectory: ./dist
 
   packages/core:
@@ -64,7 +64,7 @@ importers:
         specifier: ~10.12.1
         version: 10.12.1
     devDependencies:
-      '@fullcalendar/standard-scripts':
+      '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../scripts
       globby:
@@ -77,32 +77,32 @@ importers:
 
   packages/daygrid:
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:../../scripts
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../core/dist
-      '@fullcalendar/standard-scripts':
-        specifier: '*'
-        version: link:../../scripts
     publishDirectory: ./dist
 
   packages/google-calendar:
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:../../scripts
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../core/dist
-      '@fullcalendar/standard-scripts':
-        specifier: '*'
-        version: link:../../scripts
     publishDirectory: ./dist
 
   packages/icalendar:
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:../../scripts
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../core/dist
-      '@fullcalendar/standard-scripts':
-        specifier: '*'
-        version: link:../../scripts
       ical.js:
         specifier: ^1.4.0
         version: 1.5.0
@@ -110,32 +110,32 @@ importers:
 
   packages/interaction:
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:../../scripts
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../core/dist
-      '@fullcalendar/standard-scripts':
-        specifier: '*'
-        version: link:../../scripts
     publishDirectory: ./dist
 
   packages/list:
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:../../scripts
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../core/dist
-      '@fullcalendar/standard-scripts':
-        specifier: '*'
-        version: link:../../scripts
     publishDirectory: ./dist
 
   packages/luxon1:
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:../../scripts
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../core/dist
-      '@fullcalendar/standard-scripts':
-        specifier: '*'
-        version: link:../../scripts
       luxon:
         specifier: ^1.12.1
         version: 1.28.0
@@ -143,12 +143,12 @@ importers:
 
   packages/luxon2:
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:../../scripts
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../core/dist
-      '@fullcalendar/standard-scripts':
-        specifier: '*'
-        version: link:../../scripts
       '@types/luxon':
         specifier: ^2.0.9
         version: 2.4.0
@@ -159,12 +159,12 @@ importers:
 
   packages/luxon3:
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:../../scripts
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../core/dist
-      '@fullcalendar/standard-scripts':
-        specifier: '*'
-        version: link:../../scripts
       '@types/luxon':
         specifier: ^3.3.0
         version: 3.3.0
@@ -175,12 +175,12 @@ importers:
 
   packages/moment:
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:../../scripts
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../core/dist
-      '@fullcalendar/standard-scripts':
-        specifier: '*'
-        version: link:../../scripts
       moment:
         specifier: ^2.29.1
         version: 2.29.4
@@ -188,12 +188,12 @@ importers:
 
   packages/moment-timezone:
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:../../scripts
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../core/dist
-      '@fullcalendar/standard-scripts':
-        specifier: '*'
-        version: link:../../scripts
       moment-timezone:
         specifier: ^0.5.40
         version: 0.5.40
@@ -205,22 +205,22 @@ importers:
         specifier: ~6.1.10
         version: link:../daygrid/dist
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:../../scripts
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../core/dist
-      '@fullcalendar/standard-scripts':
-        specifier: '*'
-        version: link:../../scripts
     publishDirectory: ./dist
 
   packages/rrule:
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:../../scripts
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../core/dist
-      '@fullcalendar/standard-scripts':
-        specifier: '*'
-        version: link:../../scripts
       rrule:
         specifier: ^2.6.0
         version: 2.7.1
@@ -232,22 +232,22 @@ importers:
         specifier: ~6.1.10
         version: link:../daygrid/dist
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:../../scripts
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../core/dist
-      '@fullcalendar/standard-scripts':
-        specifier: '*'
-        version: link:../../scripts
     publishDirectory: ./dist
 
   packages/web-component:
     devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:../../scripts
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../core/dist
-      '@fullcalendar/standard-scripts':
-        specifier: '*'
-        version: link:../../scripts
     publishDirectory: ./dist
 
   scripts:
@@ -448,7 +448,7 @@ importers:
         specifier: ^2.5.1
         version: 2.5.1
     devDependencies:
-      '@fullcalendar/standard-scripts':
+      '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../scripts
       '@types/jasmine':
