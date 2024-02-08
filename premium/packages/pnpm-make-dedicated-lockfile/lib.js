@@ -60,7 +60,7 @@ export async function makeDedicatedLockfile(rootDir, scopedDir, verbose) {
 
   const dedicatedLockfile = pruneSharedLockfile(lockfile)
   await writeWantedLockfile(scopedDir, dedicatedLockfile)
-  console.log('Lockfile written.')
+  verbose && console.log('Lockfile written.')
 
   if (pkgsOutOfScope.length) {
     if (verbose) {
@@ -71,9 +71,7 @@ export async function makeDedicatedLockfile(rootDir, scopedDir, verbose) {
       )
     }
   } else {
-    if (verbose) {
-      console.log('Attempting fixup of generated lockfile with a reinstall:\n')
-    }
+    verbose && console.log('Attempting fixup of generated lockfile with a reinstall:\n')
     await exec([
       'pnpm',
       'install',
@@ -85,6 +83,7 @@ export async function makeDedicatedLockfile(rootDir, scopedDir, verbose) {
       cwd: scopedDir,
       stdio: verbose ? 'inherit' : 'ignore',
     })
+    verbose && console.log()
   }
 }
 

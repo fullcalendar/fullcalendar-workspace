@@ -7,6 +7,8 @@ import { boolPromise } from '@fullcalendar-scripts/standard/utils/lang'
 import { querySubrepoPkgs } from './utils.js'
 import { lockFilename, workspaceFilename, turboFilename, miscSubpaths } from './config.js'
 
+const verbose = true
+
 export default async function() {
   const monorepoDir = process.cwd()
   const subrepoSubdirs = await querySubrepoPkgs(monorepoDir)
@@ -21,6 +23,7 @@ export default async function() {
     const isSubworkspace = Boolean(subPkgs.length)
 
     console.log('[PROCESSING]', subrepoDir)
+    verbose && console.log()
 
     // Write scoped pnpm-workspace config
     if (isSubworkspace) {
@@ -29,7 +32,7 @@ export default async function() {
       await writeFile(subpath, yaml.dump(subconfig))
     }
 
-    await makeDedicatedLockfile(monorepoDir, subrepoDir, true) // verbose=true
+    await makeDedicatedLockfile(monorepoDir, subrepoDir, verbose)
 
     const copyableSubpaths: string[] = [
       ...(isSubworkspace ? [turboFilename] : []),
