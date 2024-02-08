@@ -61,6 +61,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Upload Bundle Archives
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-archives
+          path: |
+            standard/dist/*.zip
+            premium/dist/*.zip
+
       # TODO: solve flaky tests
       # - name: Test
       #   run: pnpm run test
