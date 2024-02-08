@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@fullcalendar/react16-example",
+  "name": "@fullcalendar-examples/react16",
   "title": "FullCalendar React 16 Example Project",
   "version": "0.0.0",
   "license": "ISC",

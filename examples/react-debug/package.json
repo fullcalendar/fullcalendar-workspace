@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@fullcalendar/react-debug-example",
+  "name": "@fullcalendar-examples/react-debug",
   "title": "FullCalendar React Example Project",
   "version": "0.0.0",
   "license": "ISC",

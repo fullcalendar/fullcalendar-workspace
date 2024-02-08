@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@fullcalendar/bootstrap4-example",
+  "name": "@fullcalendar-examples/bootstrap4",
   "version": "0.0.0",
   "license": "ISC",
   "author": "Adam Shaw <arshaw@arshaw.com> (http://arshaw.com/)",

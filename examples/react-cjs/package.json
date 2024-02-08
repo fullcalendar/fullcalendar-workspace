@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@fullcalendar/react-cjs-example",
+  "name": "@fullcalendar-examples/react-cjs",
   "title": "FullCalendar React CJS Example Project",
   "version": "0.0.0",
   "license": "ISC",

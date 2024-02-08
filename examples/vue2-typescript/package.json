@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@fullcalendar/vue2-typescript-example",
+  "name": "@fullcalendar-examples/vue2-typescript",
   "version": "0.0.0",
   "license": "ISC",
   "dependencies": {

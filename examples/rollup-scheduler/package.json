@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@fullcalendar/rollup-scheduler-example",
+  "name": "@fullcalendar-examples/rollup-scheduler",
   "version": "0.0.0",
   "license": "ISC",
   "author": "Adam Shaw <arshaw@arshaw.com> (http://arshaw.com/)",

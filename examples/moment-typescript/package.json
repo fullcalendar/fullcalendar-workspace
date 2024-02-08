@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@fullcalendar/moment-typescript-example",
+  "name": "@fullcalendar-examples/moment-typescript",
   "version": "0.0.0",
   "license": "ISC",
   "author": "Adam Shaw <arshaw@arshaw.com> (http://arshaw.com/)",
