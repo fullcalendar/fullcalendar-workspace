@@ -76,7 +76,8 @@ export async function makeDedicatedLockfile(rootDir, scopedDir, verbose) {
       'pnpm',
       'install',
       '--ignore-scripts',
-      '--resolution-only',
+      '--resolution-only', // don't write to node_modules
+      '--no-frozen-lockfile', // don't let CI choose a default
       '--lockfile-dir=.',
       '--filter=.',
     ], {
