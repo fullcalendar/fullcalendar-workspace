@@ -1,5 +1,18 @@
 # @fullcalendar/angular
 
+## 6.1.11
+
+### Patch Changes
+
+- Updated dependencies [f84c61a]
+  - @fullcalendar/core@6.1.11
+  - @fullcalendar/resource@6.1.11
+  - @fullcalendar/resource-timegrid@6.1.11
+  - @fullcalendar/resource-timeline@6.1.11
+  - @fullcalendar/daygrid@6.1.11
+  - @fullcalendar/interaction@6.1.11
+  - @fullcalendar/list@6.1.11
+
 ## 6.0.0-beta.3
 
 - FEATURE: custom template rendering using ng-template (#204)
@@ -43,7 +56,7 @@
 
 ## 4.2.1 (2019-06-04)
 
-- fixed bug with event/resource-fetching *functions* not working
+- fixed bug with event/resource-fetching _functions_ not working
 - removed `deep-copy` as a dependency
 
 ## 4.2.0 (2019-06-02)
