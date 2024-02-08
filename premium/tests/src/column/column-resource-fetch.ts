@@ -1,4 +1,4 @@
-import { CalendarWrapper } from '@fullcalendar/standard-tests/lib/wrappers/CalendarWrapper'
+import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
 
 describe('vresource resource refetching', () => {
   const initialDate = '2023-09-20'

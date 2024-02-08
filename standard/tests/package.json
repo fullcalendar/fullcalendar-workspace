@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@fullcalendar/standard-tests",
+  "name": "@fullcalendar-tests/standard",
   "version": "0.0.0",
   "dependencies": {
     "@fullcalendar/bootstrap": "~6.1.10",

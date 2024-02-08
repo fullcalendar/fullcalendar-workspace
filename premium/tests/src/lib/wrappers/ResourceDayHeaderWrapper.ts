@@ -1,5 +1,5 @@
 import { findElements } from '@fullcalendar/core/internal'
-import { formatIsoDay } from '@fullcalendar/standard-tests/lib/datelib-utils'
+import { formatIsoDay } from '@fullcalendar-tests/standard/lib/datelib-utils'
 
 export class ResourceDayHeaderWrapper {
   constructor(private el: HTMLElement) {

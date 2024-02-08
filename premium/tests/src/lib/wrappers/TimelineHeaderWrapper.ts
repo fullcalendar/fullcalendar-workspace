@@ -1,6 +1,6 @@
 import { findElements } from '@fullcalendar/core/internal'
-import { parseIsoAsUtc } from '@fullcalendar/standard-tests/lib/datelib-utils'
-import { parseUtcDate } from '@fullcalendar/standard-tests/lib/date-parsing'
+import { parseIsoAsUtc } from '@fullcalendar-tests/standard/lib/datelib-utils'
+import { parseUtcDate } from '@fullcalendar-tests/standard/lib/date-parsing'
 
 export class TimelineHeaderWrapper {
   constructor(private el: HTMLElement) {
