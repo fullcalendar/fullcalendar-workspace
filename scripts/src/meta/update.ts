@@ -2,6 +2,7 @@ import { join as joinPaths } from 'path'
 import { rm, readFile, writeFile, copyFile } from 'fs/promises'
 import * as yaml from 'js-yaml'
 import { makeDedicatedLockfile } from 'pnpm-make-dedicated-lockfile'
+import { readJson, writeJson } from '@fullcalendar-scripts/standard/utils/fs'
 import { addFile, assumeUnchanged } from '@fullcalendar-scripts/standard/utils/git'
 import { boolPromise } from '@fullcalendar-scripts/standard/utils/lang'
 import { querySubrepoPkgs } from './utils.js'
@@ -62,7 +63,47 @@ export default async function() {
     }
   }
 
-  console.log('[SUCCESS]')
+  await syncManifestVersions(monorepoDir, subrepoSubdirs)
+
+  console.log('[SUCCESS] Changes added to Git index')
+  console.log()
+}
+
+// Manifest Version Syncing
+// -------------------------------------------------------------------------------------------------
+
+const versionAuthorityPkg = 'standard/packages/core'
+
+async function syncManifestVersions(monorepoDir: string, subrepoSubdirs: string[]) {
+  const authorityManifest = await readManifest(joinPaths(monorepoDir, versionAuthorityPkg))
+  const authorityVersion = authorityManifest.version
+  const dirs = [monorepoDir].concat(
+    subrepoSubdirs.map((subrepoSubdir) => joinPaths(monorepoDir, subrepoSubdir))
+  )
+
+  for (const dir of dirs) {
+    const manifest = await readManifest(dir)
+    if (manifest.version !== authorityVersion) {
+      manifest.version = authorityVersion
+      const manifestPath = await writeManifest(dir, manifest)
+      await addFile(manifestPath)
+    }
+  }
+}
+
+// Manifest Read/Write
+// -------------------------------------------------------------------------------------------------
+// TODO: DRY with writeDistPkgJsons maybe?
+
+async function readManifest(dir: string): Promise<any> {
+  const manifestPath = joinPaths(dir, 'package.json')
+  return await readJson(manifestPath)
+}
+
+async function writeManifest(dir: string, obj: any): Promise<string> {
+  const manifestPath = joinPaths(dir, 'package.json')
+  await writeJson(manifestPath, obj)
+  return manifestPath
 }
 
 // Workspace utils

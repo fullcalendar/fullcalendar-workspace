@@ -2,7 +2,7 @@ import { join as joinPaths } from 'path'
 import { execCapture, execLive } from '@fullcalendar-scripts/standard/utils/exec'
 import { fileExists } from '@fullcalendar-scripts/standard/utils/fs'
 
-// Git utils
+// Git Subrepo Utils
 // -------------------------------------------------------------------------------------------------
 
 export async function querySubrepoPkgs(monorepoDir: string): Promise<string[]> {
@@ -60,7 +60,7 @@ async function getSubrepos(monorepoDir: string) {
   return subrepos
 }
 
-// Lang utils
+// Lang Utils
 // -------------------------------------------------------------------------------------------------
 
 async function asyncFilter<T = unknown>(
