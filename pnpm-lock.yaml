@@ -218,7 +218,7 @@ importers:
         version: 2.9.0
       rollup-plugin-sourcemaps:
         specifier: ^0.6.3
-        version: 0.6.3(@types/node@12.20.55)(rollup@2.79.1)
+        version: 0.6.3(@types/node@16.18.3)(rollup@2.79.1)
       typescript:
         specifier: ^4.0.5
         version: 4.9.3
@@ -347,7 +347,7 @@ importers:
         version: 2.79.1
       rollup-plugin-sourcemaps:
         specifier: ^0.6.3
-        version: 0.6.3(@types/node@12.20.55)(rollup@2.79.1)
+        version: 0.6.3(@types/node@16.18.3)(rollup@2.79.1)
       terser:
         specifier: ^5.4.0
         version: 5.15.1
@@ -3028,6 +3028,9 @@ importers:
 
   premium/tests:
     dependencies:
+      '@fullcalendar-tests/standard':
+        specifier: '*'
+        version: link:../../standard/tests
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../../standard/packages/core/dist
@@ -3058,9 +3061,6 @@ importers:
       '@fullcalendar/scrollgrid':
         specifier: ~6.1.10
         version: link:../packages/scrollgrid/dist
-      '@fullcalendar/standard-tests':
-        specifier: '*'
-        version: link:../../standard/tests
       '@fullcalendar/timegrid':
         specifier: ~6.1.10
         version: link:../../standard/packages/timegrid/dist
