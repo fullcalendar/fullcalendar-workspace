@@ -85,7 +85,7 @@ devDependencies:
     version: 2.9.0
   rollup-plugin-sourcemaps:
     specifier: ^0.6.3
-    version: 0.6.3(@types/node@12.20.55)(rollup@2.79.1)
+    version: 0.6.3(@types/node@16.18.3)(rollup@2.79.1)
   typescript:
     specifier: ^4.0.5
     version: 4.9.3
@@ -1822,8 +1822,8 @@ packages:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: true
 
-  /@types/node@12.20.55:
-    resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
+  /@types/node@16.18.3:
+    resolution: {integrity: sha512-jh6m0QUhIRcZpNv7Z/rpN+ZWXOicUUQbSoWks7Htkbb9IjFQj4kzcX/xFCkjstCj5flMsN8FiSvt+q+Tcs4Llg==}
     dev: true
 
   /@types/node@18.16.5:
@@ -5068,7 +5068,7 @@ packages:
       style-inject: 0.3.0
     dev: true
 
-  /rollup-plugin-sourcemaps@0.6.3(@types/node@12.20.55)(rollup@2.79.1):
+  /rollup-plugin-sourcemaps@0.6.3(@types/node@16.18.3)(rollup@2.79.1):
     resolution: {integrity: sha512-paFu+nT1xvuO1tPFYXGe+XnQvg4Hjqv/eIhG8i5EspfYYPBKL57X7iVbfv55aNVASg3dzWvES9dmWsL2KhfByw==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
@@ -5079,7 +5079,7 @@ packages:
         optional: true
     dependencies:
       '@rollup/pluginutils': 3.1.0(rollup@2.79.1)
-      '@types/node': 12.20.55
+      '@types/node': 16.18.3
       rollup: 2.79.1
       source-map-resolve: 0.6.0
     dev: true
