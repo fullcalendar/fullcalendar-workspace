@@ -29,27 +29,6 @@ dependencies:
   '@angular/router':
     specifier: ~13.3.0
     version: 13.3.12(@angular/common@13.3.12)(@angular/core@13.3.12)(@angular/platform-browser@13.3.12)(rxjs@7.5.7)
-  '@fullcalendar/core':
-    specifier: ~6.1.10
-    version: link:../../standard/packages/core/dist
-  '@fullcalendar/daygrid':
-    specifier: ~6.1.10
-    version: link:../../standard/packages/daygrid/dist
-  '@fullcalendar/interaction':
-    specifier: ~6.1.10
-    version: link:../../standard/packages/interaction/dist
-  '@fullcalendar/list':
-    specifier: ~6.1.10
-    version: link:../../standard/packages/list/dist
-  '@fullcalendar/resource':
-    specifier: ~6.1.10
-    version: link:../../premium/packages/resource/dist
-  '@fullcalendar/resource-timegrid':
-    specifier: ~6.1.10
-    version: link:../../premium/packages/resource-timegrid/dist
-  '@fullcalendar/resource-timeline':
-    specifier: ~6.1.10
-    version: link:../../premium/packages/resource-timeline/dist
   rxjs:
     specifier: ~7.5.0
     version: 7.5.7
@@ -8285,5 +8264,3 @@ packages:
     dependencies:
       tslib: 2.6.2
     dev: false
-
-publishDirectory: ./dist/lib
