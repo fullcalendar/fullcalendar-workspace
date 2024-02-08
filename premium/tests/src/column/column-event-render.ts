@@ -1,4 +1,4 @@
-import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from '@fullcalendar/standard-tests/lib/dom-geom'
+import { getBoundingRect, getLeadingBoundingRect, getTrailingBoundingRect } from '@fullcalendar-tests/standard/lib/dom-geom'
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
 import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper.js'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
