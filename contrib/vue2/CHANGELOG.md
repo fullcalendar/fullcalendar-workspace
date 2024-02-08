@@ -46,14 +46,14 @@ Emergency bugfix: event objects with Date objects wouldn't render
 - added missing props (#25, #29)
 - the following emitted events are now deprecated.
   use *props* instead. pass in a function as the prop:
-    - `datesRender`
-    - `datesDestroy`
-    - `dayRender`
-    - `eventRender`
-    - `eventDestroy`
-    - `viewSkeletonRender`
-    - `viewSkeletonDestroy`
-    - `resourceRender`
+  - `datesRender`
+  - `datesDestroy`
+  - `dayRender`
+  - `eventRender`
+  - `eventDestroy`
+  - `viewSkeletonRender`
+  - `viewSkeletonDestroy`
+  - `resourceRender`
   Allows returning false/DOM nodes (#27)
 - no unnecessary rerendering of calendar caused by header/footer
   props being specified as literals (#11)
