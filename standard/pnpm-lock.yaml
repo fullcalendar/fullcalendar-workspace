@@ -11,6 +11,12 @@ patchedDependencies:
 
 importers:
 
+  .:
+    devDependencies:
+      '@fullcalendar-scripts/standard':
+        specifier: '*'
+        version: link:scripts
+
   bundle:
     dependencies:
       '@fullcalendar/core':
