@@ -1,17 +1,21 @@
-
 # @fullcalendar/vue
 
-## v5.11.1 (2022-05-10)
+## Note
+
+This changelog does not mention all releases.
+Visit the github releases page as well as the main fullcalendar repo.
+
+## 5.11.1 (2022-05-10)
 
 - FIX: Cannot target calendar api with several instances (#155)
 
-## v5.7.1 (2021-06-02)
+## 5.7.1 (2021-06-02)
 
 - support for Vue 3
 - KNOWN BUG: templates within slots do not inherit App's
   mixins, directives, filters, and components (like #123)
 
-## v5.4.0 (2020-11-11)
+## 5.4.0 (2020-11-11)
 
 - no longer expose component as 'fullcalendar' when used globally
 - eventContent slot doesn't properly destroy the Vue components inside (#111)
@@ -23,12 +27,7 @@
 [core-5822]: https://github.com/fullcalendar/fullcalendar/issues/5822
 [core-5929]: https://github.com/fullcalendar/fullcalendar/issues/5929
 
-## Note
-
-This changelog does not mention all releases.
-Visit the github releases page as well as the main fullcalendar repo.
-
-## v5.2.0 (2020-07-30)
+## 5.2.0 (2020-07-30)
 
 - pre-built release of the Vue component (#61)
 - using the component through a CDN (#28)

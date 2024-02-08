@@ -1,7 +1,6 @@
-
 # @fullcalendar/angular
 
-## v6.0.0-beta.3
+## 6.0.0-beta.3
 
 - FEATURE: custom template rendering using ng-template (#204)
 - FEATURE: expose events/eventSources/resources as top-level component inputs (#303)
