@@ -38,5 +38,10 @@
     "test:dev": "standard-scripts test --dev",
     "clean": "standard-scripts clean",
     "ci": "pnpm run lint && pnpm run build && pnpm run test"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "jasmine-jquery@2.1.1": "scripts/patches/jasmine-jquery@2.1.1.patch"
+    }
   }
 }
