@@ -1,4 +1,4 @@
-name: Release
+name: Stage or Release
 on:
   push:
     branches:
@@ -8,8 +8,8 @@ env:
   TZ: "America/New_York"
 
 jobs:
-  release:
-    name: CI
+  stage-or-release:
+    name: Stage or Release
     runs-on: ubuntu-latest
     if: ${{ !contains(github.event.head_commit.message, 'ci skip') }}
 
@@ -46,6 +46,7 @@ jobs:
       - name: Create Release Pull Request
         uses: changesets/action@v1
         with:
+          title: Staged Release
           version: pnpm run version
           createGithubReleases: false
         env:
