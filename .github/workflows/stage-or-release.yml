@@ -15,7 +15,15 @@ jobs:
   stage-or-release:
     name: Stage or Release
     runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.head_commit.message, 'ci skip') }}
+
+    # Allow commit author to use "skip staging" in message. Also, prevent from running in forks
+    if: ${{ !contains(github.event.head_commit.message, 'skip staging') && github.repository == 'fullcalendar/fullcalendar-workspace' }}
+
+    # GITHUB_TOKEN's permission whitelist
+    # If not specified, default permissions are more liberal, might be abused
+    permissions:
+      pull-requests: write # to create pull request (changesets/action)
+      contents: write # to create release
 
     steps:
       - name: Checkout
@@ -43,25 +51,66 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pnpm \
+          pnpm install \
           --filter '@fullcalendar/*...' \
           --filter '@fullcalendar-scripts/*...' \
-          --filter '!./contrib/**' \
-          install
+          --filter '@fullcalendar-tests/*...' \
+          --filter '!./contrib/**'
+
+      - name: Lint
+        run: pnpm --filter '!./examples/**' run lint
+
+      - name: Bump Versions
+        run: pnpm run version
 
       - name: Build
         run: |
-          pnpm \
+          pnpm run \
           --filter '@fullcalendar/*...' \
           --filter '@fullcalendar-scripts/*...' \
+          --filter '@fullcalendar-tests/*...' \
           --filter '!./contrib/**' \
-          run build
+          build
 
-      - name: Create Release Pull Request
+      # - name: Test
+      #   run: |
+      #     pnpm run \
+      #     --filter '@fullcalendar/*...' \
+      #     --filter '@fullcalendar-scripts/*...' \
+      #     --filter '@fullcalendar-tests/*...' \
+      #     --filter '!./contrib/**' \
+      #     test
+
+      - name: Create Staging Pull Request
         uses: changesets/action@v1
-        with:
-          title: Staged Release
-          version: pnpm run version
-          createGithubReleases: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          title: Staged Release # title of PR
+          createGithubReleases: false # handled ourselves later
+
+          # Executes when commits pushed to branch (but NOT when changeset PR merged. see below).
+          # After execution, a staged-release PR will be created with working tree modifications.
+          # This PR will NOT trigger more GitHub Actions (pr-checks.yml) which is why all linting,
+          # building, and testing is done above. All this logic is duplicated in pr-checks.yml.
+          # Background:
+          # https://github.com/peter-evans/create-pull-request/issues/48#issuecomment-536184102
+          #
+          # A statement must be present or the default `changeset version` will be used.
+          version: |
+            echo "NOTE: version bumped in prior step"
+
+          # Executes when changeset PR merged into this branch
+          # Sets steps.changesets.outputs.published to 'true'
+          publish: |
+            echo "NOTE: publishing happens in future step"
+
+      - name: Publish to NPM
+        if: ${{ steps.changesets.outputs.published == 'true' }}
+        run: |
+          echo "TODO: run 'publish' command"
+
+      - name: Tag and Create GitHub Releases
+        if: ${{ steps.changesets.outputs.published == 'true' }}
+        run: |
+          echo "TODO: run 'tag-and-release' command"

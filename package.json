@@ -12,7 +12,6 @@
     "meta:hide": "workspace-scripts meta:hide",
     "meta:show": "workspace-scripts meta:show",
     "meta:update": "workspace-scripts meta:update",
-    "tag-and-release": "workspace-scripts tag-and-release",
     "lint": "standard-scripts lint",
     "build": "standard-scripts build",
     "dev": "standard-scripts dev",
@@ -21,7 +20,8 @@
     "clean": "standard-scripts clean",
     "ci": "pnpm run clean --all && pnpm run lint --all && pnpm run build --all && pnpm run test --all",
     "version": "changeset version && pnpm install --lockfile-only && pnpm run meta:update",
-    "publish": "changeset publish && pnpm run tag-and-release"
+    "publish": "changeset publish",
+    "tag-and-release": "workspace-scripts tag-and-release"
   },
   "type": "module",
   "monorepoConfig": {
