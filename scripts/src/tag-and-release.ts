@@ -147,7 +147,7 @@ async function createGithubRelease(
 
   const [owner, repo] = githubRepo.split('/')
   const body = linkToStandard
-    ? `See https://github.com/fullcalendar/fullcalendar/releases/tag/v${tagName}`
+    ? `See https://github.com/fullcalendar/fullcalendar/releases/tag/${tagName}`
     : 'TODO: manually enter release notes'
 
   console.log(`Creating release in ${githubRepo} ...`)
