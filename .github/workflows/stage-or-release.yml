@@ -1,3 +1,7 @@
+#
+# NOTE: keep synced with other workflow configs (in root/standard)
+#
+
 name: Stage or Release
 on:
   push:

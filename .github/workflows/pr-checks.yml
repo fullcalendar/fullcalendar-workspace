@@ -1,5 +1,5 @@
 #
-# NOTE: keep this synced with standard repo's config
+# NOTE: keep synced with other workflow configs (in root/standard)
 #
 
 name: Pull Request Checks

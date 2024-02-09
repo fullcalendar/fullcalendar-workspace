@@ -1,10 +1,12 @@
-
 #
-# NOTE: keep this synced with workspace repo's config
+# NOTE: keep synced with other workflow configs (in root/standard)
 #
 
-name: Pull Request Checks
+name: CI
 on:
+  push:
+    branches:
+      - newrepo
   pull_request:
     branches:
       - newrepo
@@ -13,8 +15,8 @@ env:
   TZ: "America/New_York"
 
 jobs:
-  pr-checks:
-    name: Pull Request Checks
+  ci:
+    name: CI
     runs-on: ubuntu-latest
 
     steps:
