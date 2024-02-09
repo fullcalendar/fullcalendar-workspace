@@ -2,10 +2,9 @@ import { join as joinPaths } from 'path'
 import { rm, readFile, writeFile, copyFile } from 'fs/promises'
 import * as yaml from 'js-yaml'
 import { makeDedicatedLockfile } from 'pnpm-make-dedicated-lockfile'
-import { readJson, writeJson } from '@fullcalendar-scripts/standard/utils/fs'
 import { addFile, assumeUnchanged } from '@fullcalendar-scripts/standard/utils/git'
 import { boolPromise } from '@fullcalendar-scripts/standard/utils/lang'
-import { querySubrepoPkgs } from './utils.js'
+import { querySubrepoPkgs, readManifest, writeManifest } from './utils.js'
 import { lockFilename, workspaceFilename, turboFilename, miscSubpaths } from './config.js'
 
 const verbose = true
@@ -89,21 +88,6 @@ async function syncManifestVersions(monorepoDir: string, subrepoSubdirs: string[
       await addFile(manifestPath)
     }
   }
-}
-
-// Manifest Read/Write
-// -------------------------------------------------------------------------------------------------
-// TODO: DRY with writeDistPkgJsons maybe?
-
-async function readManifest(dir: string): Promise<any> {
-  const manifestPath = joinPaths(dir, 'package.json')
-  return await readJson(manifestPath)
-}
-
-async function writeManifest(dir: string, obj: any): Promise<string> {
-  const manifestPath = joinPaths(dir, 'package.json')
-  await writeJson(manifestPath, obj)
-  return manifestPath
 }
 
 // Workspace utils

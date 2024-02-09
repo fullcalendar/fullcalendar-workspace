@@ -1,6 +1,6 @@
 import { join as joinPaths } from 'path'
-import { execCapture, execLive } from '@fullcalendar-scripts/standard/utils/exec'
-import { fileExists } from '@fullcalendar-scripts/standard/utils/fs'
+import { execCapture } from '@fullcalendar-scripts/standard/utils/exec'
+import { fileExists, readJson, writeJson } from '@fullcalendar-scripts/standard/utils/fs'
 
 // Git Subrepo Utils
 // -------------------------------------------------------------------------------------------------
@@ -13,11 +13,11 @@ export async function querySubrepoPkgs(monorepoDir: string): Promise<string[]> {
   })
 }
 
-async function getSubrepoDirs(monorepoDir: string): Promise<string[]> {
+export async function getSubrepoDirs(monorepoDir: string): Promise<string[]> {
   return Object.keys(await getSubrepos(monorepoDir))
 }
 
-async function getSubrepos(monorepoDir: string) {
+export async function getSubrepos(monorepoDir: string) {
   const s: string = await execCapture([
     joinPaths(monorepoDir, 'scripts/bin/git-subrepo.sh'),
     'status',
@@ -58,6 +58,21 @@ async function getSubrepos(monorepoDir: string) {
   }
 
   return subrepos
+}
+
+// Manifest Read/Write
+// -------------------------------------------------------------------------------------------------
+// TODO: DRY with writeDistPkgJsons maybe?
+
+export async function readManifest(dir: string): Promise<any> {
+  const manifestPath = joinPaths(dir, 'package.json')
+  return await readJson(manifestPath)
+}
+
+export async function writeManifest(dir: string, obj: any): Promise<string> {
+  const manifestPath = joinPaths(dir, 'package.json')
+  await writeJson(manifestPath, obj)
+  return manifestPath
 }
 
 // Lang Utils
