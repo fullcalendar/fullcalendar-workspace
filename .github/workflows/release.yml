@@ -1,11 +1,6 @@
-
-#
-# NOTE: keep this synced with workspace repo's config
-#
-
-name: CI
+name: Release
 on:
-  pull_request:
+  push:
     branches:
       - newrepo
 
@@ -13,13 +8,16 @@ env:
   TZ: "America/New_York"
 
 jobs:
-  ci:
+  release:
     name: CI
     runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, 'ci skip') }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v2.2.4
@@ -32,22 +30,23 @@ jobs:
           node-version: 18.13.0
           cache: 'pnpm'
 
-      - name: Setup Turbo cache
+      - name: Setup Turbo Cache
         uses: actions/cache@v3
         with:
           path: node_modules/.cache/turbo
           key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
           restore-keys: turbo-${{ github.job }}-${{ github.ref_name }}-
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: pnpm install
-
-      - name: Lint
-        run: pnpm run lint
 
       - name: Build
         run: pnpm run build
 
-      # TODO: solve flaky tests
-      # - name: Test
-      #   run: pnpm run test
+      - name: Create Release Pull Request
+        uses: changesets/action@v1
+        with:
+          version: pnpm run version
+          createGithubReleases: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
