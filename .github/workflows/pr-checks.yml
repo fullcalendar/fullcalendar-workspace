@@ -45,6 +45,7 @@ jobs:
         run: |
           pnpm \
           --filter '@fullcalendar/*...' \
+          --filter '@fullcalendar-scripts/*...' \
           --filter '@fullcalendar-tests/*...' \
           --filter '!./contrib/**' \
           install
@@ -56,6 +57,7 @@ jobs:
         run: |
           pnpm \
           --filter '@fullcalendar/*...' \
+          --filter '@fullcalendar-scripts/*...' \
           --filter '@fullcalendar-tests/*...' \
           --filter '!./contrib/**' \
           run build
@@ -64,6 +66,7 @@ jobs:
         run: |
           pnpm \
           --filter '@fullcalendar/*...' \
+          --filter '@fullcalendar-scripts/*...' \
           --filter '@fullcalendar-tests/*...' \
           --filter '!./contrib/**' \
           run test
