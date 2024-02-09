@@ -68,7 +68,7 @@ async function tagAndReleaseRoot(monorepoDir: string, version: string): Promise<
   } else if (!isCi) {
     console.log('Skipping release creation')
   } else {
-    throw new Error(`Must specify GITHUB_TOKEN/GITHUB_REPOSITORY`)
+    throw new Error('Must specify GITHUB_TOKEN/GITHUB_REPOSITORY')
   }
 }
 
@@ -113,7 +113,7 @@ async function tagAndReleaseSubrepo(
   await execLive(
     // provide a tag refspec so the remote gets the 'short' name
     ['git', 'push', secretUrl || subrepoRemote, `${tagName}:${tagNameShort}`],
-    execOpts
+    execOpts,
   )
 
   console.log(`Locally deleting tag ${tagName} ...`)
