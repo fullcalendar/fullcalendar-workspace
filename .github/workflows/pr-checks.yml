@@ -2,7 +2,7 @@
 # NOTE: keep this synced with standard repo's config
 #
 
-name: CI
+name: Pull Request Checks
 on:
   pull_request:
     branches:
@@ -12,8 +12,8 @@ env:
   TZ: "America/New_York"
 
 jobs:
-  ci:
-    name: CI
+  pr-checks:
+    name: Pull Request Checks
     runs-on: ubuntu-latest
 
     steps:
