@@ -34,22 +34,36 @@ jobs:
           node-version: 18.13.0
           cache: 'pnpm'
 
-      - name: Setup Turbo Cache
-        uses: actions/cache@v3
-        with:
-          path: node_modules/.cache/turbo
-          key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
-          restore-keys: turbo-${{ github.job }}-${{ github.ref_name }}-
+      # - name: Setup Turbo Cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: node_modules/.cache/turbo
+      #     key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+      #     restore-keys: turbo-${{ github.job }}-${{ github.ref_name }}-
 
       - name: Install Dependencies
-        run: pnpm install
+        run: |
+          pnpm \
+          --filter '@fullcalendar/*...' \
+          --filter '@fullcalendar-tests/*...' \
+          --filter '!./contrib/**' \
+          install
 
       - name: Lint
-        run: pnpm run lint
+        run: pnpm --filter '!./examples/**' run lint
 
       - name: Build
-        run: pnpm run build
+        run: |
+          pnpm \
+          --filter '@fullcalendar/*...' \
+          --filter '@fullcalendar-tests/*...' \
+          --filter '!./contrib/**' \
+          run build
 
-      # TODO: solve flaky tests
-      # - name: Test
-      #   run: pnpm run test
+      - name: Test
+        run: |
+          pnpm \
+          --filter '@fullcalendar/*...' \
+          --filter '@fullcalendar-tests/*...' \
+          --filter '!./contrib/**' \
+          run test
