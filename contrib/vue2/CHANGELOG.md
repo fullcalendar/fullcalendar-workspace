@@ -1,11 +1,9 @@
-# @fullcalendar/vue2
-
 ## Note
 
 This changelog does not mention all releases.
 Visit the github releases page as well as the main fullcalendar repo.
 
-## 5.4.0 (2020-11-11)
+## v5.4.0 (2020-11-11)
 
 - no longer expose component as 'fullcalendar' when used globally
 - eventContent slot doesn't properly destroy the Vue components inside (#111)
@@ -17,29 +15,29 @@ Visit the github releases page as well as the main fullcalendar repo.
 [core-5822]: https://github.com/fullcalendar/fullcalendar/issues/5822
 [core-5929]: https://github.com/fullcalendar/fullcalendar/issues/5929
 
-## 5.2.0 (2020-07-30)
+## v5.2.0 (2020-07-30)
 
 - pre-built release of the Vue component (#61)
 - using the component through a CDN (#28)
 - Build errors due to missing types in main.ts (#101)
 - when appropriate, expose as 'fullcalendar' component, for DOM templates
 
-## 4.3.1 (2019-08-12)
+## v4.3.1 (2019-08-12)
 
 fix regression where object props wrongly forcing rerenders (#11, #34)
 
-## 4.2.2 (2019-06-04)
+## v4.2.2 (2019-06-04)
 
 Emergency bugfix: event objects with Date objects wouldn't render
 
-## 4.2.1 (2019-06-04)
+## v4.2.1 (2019-06-04)
 
 - Fixed bugs surfaced in issue #32:
   - event/resource-fetching *functions* don't work
   - event/resource *computed properties* don't work
   - removed `deep-copy` as a dependency
 
-## 4.2.0 (2019-06-02)
+## v4.2.0 (2019-06-02)
 
 - nested props data mutations, like events being updated,
   will now be rendred on the calendar (#9)
@@ -60,6 +58,6 @@ Emergency bugfix: event objects with Date objects wouldn't render
 - new dependency: fast-deep-equal
   automatically bundled with UMD dist
 
-## 4.1.1 (2019-05-14)
+## v4.1.1 (2019-05-14)
 
 Fix missing option `googleCalendarApiKey` (#12)
