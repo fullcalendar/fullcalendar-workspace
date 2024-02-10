@@ -22,7 +22,7 @@
     "ci": "pnpm run clean --all && pnpm run lint --all && pnpm run build --all && pnpm run test --all",
     "version": "changeset version",
     "publish": "changeset publish",
-    "version-description": "workspace-scripts version-description",
+    "version-notes": "workspace-scripts version-notes",
     "tag-and-release": "workspace-scripts tag-and-release"
   },
   "type": "module",

@@ -63,8 +63,8 @@ jobs:
       - name: Sync Configs
         run: pnpm run meta:update
 
-      - name: Generate Pull Request Description
-        run: pnpm run version-description
+      - name: Generate Pull Request Notes
+        run: pnpm run version-notes
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
@@ -72,5 +72,5 @@ jobs:
           branch: next-version-bump
           commit-message: next-version-bump
           title: Next Version Bump
-          body-path: VERSION-DESCRIPTION.md
+          body-path: VERSION-NOTES.md
           delete-branch: true # delete old branch (if no open PRs) before creating new
