@@ -76,6 +76,7 @@ export async function makeDedicatedLockfile(rootDir, scopedDir, verbose) {
       'pnpm',
       'install',
       '--ignore-scripts',
+      '--offline', // don't ask for newer version. TODO: maybe this `install` is unnecessary! test out more!
       '--lockfile-only', // write new lockfile, but don't write to node_modules nor run scripts
       '--lockfile-dir=.',
       '--filter=.',

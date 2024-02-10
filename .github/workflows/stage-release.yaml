@@ -12,7 +12,7 @@ jobs:
     name: Stage Release
     if: >
       github.repository == 'fullcalendar/fullcalendar-workspace' &&
-      github.event.head_commit.message != 'Staged Release Bump' &&
+      !contains(github.event.head_commit.message, 'staged-release') &&
       !contains(github.event.head_commit.message, 'no-stage')
     runs-on: ubuntu-latest
 
@@ -57,5 +57,6 @@ jobs:
         with:
           branch: staged-release
           commit-message: Staged Release Bump
+          delete-branch: true # delete old branch (if no open PRs) before creating new
           title: Staged Release
           body: Staged release baby!!!

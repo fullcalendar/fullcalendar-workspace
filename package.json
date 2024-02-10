@@ -19,7 +19,7 @@
     "test:dev": "standard-scripts test --dev",
     "clean": "standard-scripts clean",
     "ci": "pnpm run clean --all && pnpm run lint --all && pnpm run build --all && pnpm run test --all",
-    "version": "changeset version && pnpm install --lockfile-only && pnpm run meta:update",
+    "version": "changeset version && pnpm install --lockfile-only --offline && pnpm run meta:update",
     "publish": "changeset publish",
     "tag-and-release": "workspace-scripts tag-and-release"
   },
