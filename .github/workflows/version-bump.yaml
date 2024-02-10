@@ -4,6 +4,7 @@ on:
     branches:
       - newrepo
     paths:
+      - './scripts/**'
       - './changeset/**'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
