@@ -9,13 +9,14 @@ on:
 env:
   TZ: "America/New_York"
 
+# github.event.pull_request.title == 'Staged Release' &&
+
 jobs:
   release:
     name: Release
     if: >
       github.repository == 'fullcalendar/fullcalendar-workspace' &&
-      github.event.pull_request.title == 'Staged Release' &&
-      github.event.pull_request.merged == 'true'
+      github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
