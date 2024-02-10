@@ -44,15 +44,6 @@ jobs:
           --filter '@fullcalendar-tests/*...' \
           --filter '!./contrib/**' \
 
-      - name: Build
-        run: |
-          pnpm run \
-          --filter '@fullcalendar/*...' \
-          --filter '@fullcalendar-scripts/*...' \
-          --filter '@fullcalendar-tests/*...' \
-          --filter '!./contrib/**' \
-          build
-
       - name: Bump Versions
         run: |
           pnpm run version
@@ -61,7 +52,6 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           commit-message: Version Bump
-          branch: newrepo
           base: live
           title: Staged Deploy
           body: Staged deploy baby
