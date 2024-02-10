@@ -12,7 +12,7 @@ jobs:
     name: Stage Release
     if: >
       github.repository == 'fullcalendar/fullcalendar-workspace' &&
-      github.event.head_commit != 'Staged Release Bump' &&
+      github.event.head_commit.message != 'Staged Release Bump' &&
       !contains(github.event.head_commit.message, 'no-stage')
     runs-on: ubuntu-latest
 
