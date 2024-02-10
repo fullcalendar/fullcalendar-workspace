@@ -1,6 +1,6 @@
-name: Pull Request Checks
+name: Stage a Deploy
 on:
-  pull_request:
+  push:
     branches:
       - newrepo
 
@@ -8,8 +8,8 @@ env:
   TZ: "America/New_York"
 
 jobs:
-  pr-checks:
-    name: Pull Request Checks
+  stage:
+    name: Stage a Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -44,9 +44,6 @@ jobs:
           --filter '@fullcalendar-tests/*...' \
           --filter '!./contrib/**' \
 
-      - name: Lint
-        run: pnpm --filter '!./examples/**' run lint
-
       - name: Build
         run: |
           pnpm run \
@@ -56,11 +53,15 @@ jobs:
           --filter '!./contrib/**' \
           build
 
-      - name: Test
+      - name: Bump Versions
         run: |
-          pnpm run \
-          --filter '@fullcalendar/*...' \
-          --filter '@fullcalendar-scripts/*...' \
-          --filter '@fullcalendar-tests/*...' \
-          --filter '!./contrib/**' \
-          test
+          pnpm run version
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: Version Bump
+          branch: newrepo
+          base: live
+          title: Staged Deploy
+          body: Staged deploy baby

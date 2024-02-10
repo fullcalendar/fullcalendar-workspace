@@ -1,15 +1,15 @@
-name: Pull Request Checks
+name: Deploy
 on:
-  pull_request:
+  push:
     branches:
-      - newrepo
+      - live
 
 env:
   TZ: "America/New_York"
 
 jobs:
-  pr-checks:
-    name: Pull Request Checks
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -64,3 +64,7 @@ jobs:
           --filter '@fullcalendar-tests/*...' \
           --filter '!./contrib/**' \
           test
+
+      - name: Deploy
+        run: |
+          echo TODO do the deploy!!!
