@@ -11,7 +11,7 @@ export default async function() {
   const changelogPath = joinPaths(monorepoDir, changelogSrc)
   const changelogEntry = await getChangelogEntry(changelogPath, latestVersion)
   const releaseNotes =
-    `## v${latestVersion}:\n\n` +
+    `# v${latestVersion}\n\n` +
     (changelogEntry || '_No release notes yet_')
 
   await writeFile(releaseNotesDest, releaseNotes)
