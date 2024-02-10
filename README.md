@@ -1,8 +1,6 @@
 
 # FullCalendar Workspace
 
-readme stuff
-
 This monorepo encompasses all FullCalendar-related projects:
 
 - [premium features](premium) - [custom license](premium/LICENSE.md)
