@@ -11,6 +11,7 @@ env:
 
 jobs:
   release:
+    name: Release
     if: >
       github.repository == 'fullcalendar/fullcalendar-workspace' &&
       github.event.pull_request.title == 'Staged Release' &&

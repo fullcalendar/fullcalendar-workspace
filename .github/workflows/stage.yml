@@ -9,6 +9,7 @@ env:
 
 jobs:
   stage:
+    name: Stage
     if: >
       github.repository == 'fullcalendar/fullcalendar-workspace' &&
       github.event.head_commit.message != 'Staged Release Bump' &&
