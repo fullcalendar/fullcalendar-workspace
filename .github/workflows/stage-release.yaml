@@ -10,9 +10,11 @@ env:
 jobs:
   stage-release:
     name: Stage Release
+    # conditions for 2 types of merges: normal & rebase
     if: >
       github.repository == 'fullcalendar/fullcalendar-workspace' &&
       !contains(github.event.head_commit.message, 'staged-release') &&
+      !contains(github.event.head_commit.message, 'Staged Release') &&
       !contains(github.event.head_commit.message, 'no-stage')
     runs-on: ubuntu-latest
 
