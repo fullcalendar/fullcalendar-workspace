@@ -51,6 +51,9 @@ jobs:
           --filter '@fullcalendar-tests/*...' \
           --filter '!./contrib/**' \
 
+      - name: Ensure Subrepos Updated
+        run: pnpm run subrepos-updated
+
       - name: Lint
         run: pnpm --filter '!./examples/**' run lint
 

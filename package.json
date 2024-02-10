@@ -9,6 +9,7 @@
   },
   "scripts": {
     "postinstall": "workspace-scripts postinstall",
+    "subrepos-updated": "workspace-scripts subrepos-updated",
     "meta:hide": "workspace-scripts meta:hide",
     "meta:show": "workspace-scripts meta:show",
     "meta:update": "workspace-scripts meta:update",

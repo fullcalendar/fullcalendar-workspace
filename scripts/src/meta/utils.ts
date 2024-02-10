@@ -19,7 +19,7 @@ export async function getSubrepoDirs(monorepoDir: string): Promise<string[]> {
 
 export async function getSubrepos(monorepoDir: string) {
   const s: string = await execCapture([
-    joinPaths(monorepoDir, 'scripts/bin/git-subrepo.sh'),
+    joinPaths(monorepoDir, 'scripts/bin/git-subrepo.sh'), // TODO: DRY
     'status',
     '--all',
   ], {
