@@ -1,6 +1,4 @@
-## v6.1.10 (2023-11-28)
-
-// TODO: change changelog format. remove v
+## 6.1.10 (2023-11-28)
 
 - feature: Angular version 17 support (#7525)
 - fix: Vue 3 background event with custom rendering, not receiving el in eventDidMount (#7524)
@@ -9,7 +7,7 @@
 - locale: fix ca (#7394)
 - locale: fix nl (#7471)
 
-## v6.1.9 (2023-09-21)
+## 6.1.9 (2023-09-21)
 
 - fix: Table selection is not prevented when long pressing to drag events in Safari (#7441)
 - fix: Custom event rendering with `white-space:normal` can causes infinite loop (#7447)
@@ -19,7 +17,7 @@
 - fix: Angular/Vue2: dot-event element from `eventDidMount` does not exists in the DOM (#7191)
 - fix: Angular Universal: `document` is not defined error (#7352)
 
-## v6.1.8 (2023-05-24)
+## 6.1.8 (2023-05-24)
 
 - feature: Luxon 3 plugin (#6957)
 - feature: Angular 16 support (#7312)
@@ -30,18 +28,18 @@
 - locale fix: he (#7124)
 - locale fix: zh-tw (#7289)
 
-## v6.1.7 (2023-05-08)
+## 6.1.7 (2023-05-08)
 
 - fix: React 18 flickering while rendering event-mirror during drag/resize/select (#7165, #7234)
 - fix: React & Vue3: unnecessary calls to `eventContent` for event-mirror during drag/resize/select
 
-## v6.1.6 (2023-04-23)
+## 6.1.6 (2023-04-23)
 
 - fix: timeZone change (w/ tz plugin) not updating recurring event times (#5273)
 - fix: timeZone change (w/ tz plugin) not rerendering timed events
 - fix: rrule package breaks when imported via cjs, like in Next.js (#7260)
 
-## v6.1.5 (2023-03-21)
+## 6.1.5 (2023-03-21)
 
 - fix: inject static runtime stylesheets near top of head, avoid CSS precedence problems (#7220)
 - fix: prevent unnecessary reflows during clicking (potentially solves #7209)
@@ -58,32 +56,32 @@
 - fix: Nuxt 2 error: Cannot read properties of undefined (reading 'isHiddenDay') (#7217)
 - fix: Vue 2 SSR broken
 
-## v6.1.4 (2023-02-07)
+## 6.1.4 (2023-02-07)
 
 - fix: bug introduced in v6.1.3 where month-start-text appears within day cells of multimonth view
 
-## v6.1.3 (2023-02-07)
+## 6.1.3 (2023-02-07)
 
 - fix: React: finally fix root cause of state issues (#7066, #7067, #7071)
 - fix: Angular: NgClass can only toggle CSS classes expressed as strings (#7182)
 - fix: Angular/Vue: accept content-injection function w/ { html } or { domNodes } (#7188)
 - fix: monthStartFormat not working with dayGrid views having a custom duration (#7197)
 
-## v6.1.2 (2023-01-31)
+## 6.1.2 (2023-01-31)
 
 Apply v6.1.1's new CJS/ESM/nested-import interop strategy to React/Vue connectors. Details:
 
 - For maximum compatibility with legacy build systems like create-react-app
 - Only affects React/Vue2/Vue3 connectors. Assets for standard/premium not generated
 
-## v6.1.1 (2023-01-30)
+## 6.1.1 (2023-01-30)
 
 - fix: Multi-Month not included in fullcalendar-scheduler (#7177)
 - fix: Multi-Month has nonexistent 'internal' entrypoint, causing error for skypack (#7176)
 - fix: Vue connector should not error-out when given content-injector functions (#7175)
 - fix: continued CJS/ESM confusion with certain build tools (#7170, #7113, #7143)
 
-## v6.1.0 (2023-01-29)
+## 6.1.0 (2023-01-29)
 
 - feature: multimonth view (#470, #1140)
   - provides `multiMonthYear` view, which displays 3x4 small months when space permits
@@ -114,13 +112,13 @@ Apply v6.1.1's new CJS/ESM/nested-import interop strategy to React/Vue connector
 - locale: update Galician locale (#7103)
 - locale: update pt-br locale (#7106)
 
-## v6.0.4 (2023-01-13)
+## 6.0.4 (2023-01-13)
 
 React:
 
 - FIX: Remove need to import `react-dom/test-utils` for `act()` (#7140, #7141)
 
-## v6.0.3 (2023-01-11)
+## 6.0.3 (2023-01-11)
 
 Standard/premium
 
@@ -137,7 +135,7 @@ Vue 3:
 
 - FIX: With Webpack, fullySpecified:false workaround no longer needed (#7125, #7114)
 
-## v6.0.2 (2022-12-27)
+## 6.0.2 (2022-12-27)
 
 Standard/premium:
 
@@ -155,7 +153,7 @@ Vue 2:
 
 - FIX: resource content-injection, when resource element destroyed, throws JS error
 
-## v6.0.1 (2022-12-20)
+## 6.0.1 (2022-12-20)
 
 Standard/premium:
 
@@ -170,7 +168,7 @@ Angular:
 
 - FIX: error with eventContent & list view (#7058)
 
-## v6.0.0 (2022-12-13)
+## 6.0.0 (2022-12-13)
 
 [V6 Release Notes and Upgrade Guide](https://fullcalendar.io/docs/v6/upgrading-from-v5)
 
@@ -184,7 +182,7 @@ Changes since final beta:
 
 [angular-426]: https://github.com/fullcalendar/fullcalendar-angular/issues/426
 
-## v6.0.0-beta.4 (2022-12-07)
+## 6.0.0-beta.4 (2022-12-07)
 
 Standard/Premium:
 
@@ -210,7 +208,7 @@ React:
 [angular-423]: https://github.com/fullcalendar/fullcalendar-angular/issues/423
 [angular-424]: https://github.com/fullcalendar/fullcalendar-angular/issues/424
 
-## v6.0.0-beta.3 (2022-12-01)
+## 6.0.0-beta.3 (2022-12-01)
 
 Bugfixes:
 
@@ -219,16 +217,16 @@ Bugfixes:
 - Fix package.json lint warnings (#7038)
 - Fixes in React/Angular connectors (see individual changelogs)
 
-## v6.0.0-beta.2 (2022-11-22)
+## 6.0.0-beta.2 (2022-11-22)
 
 See https://fullcalendar.io/docs/v6/upgrading-from-v5
 
-## v5.11.3 (2022-08-23)
+## 5.11.3 (2022-08-23)
 
 - fixed: timeline view (without resources) problem with expanding height (#5792)
 - fixed: locales not working in IE11 (#6790)
 
-## v6.0.0-beta.1 (2022-08-03)
+## 6.0.0-beta.1 (2022-08-03)
 
 FullCalendar no longer attempts to import .css files. Instead, FullCalendar's JS is responsible for
 injecting its own CSS. This solves many issues with third party libraries:
@@ -250,7 +248,7 @@ injecting its own CSS. This solves many issues with third party libraries:
 [angular-css-bug]: https://github.com/fullcalendar/fullcalendar-angular/issues/403
 [angular-web-components]: https://coryrylan.com/blog/using-web-components-in-angular
 
-## v5.11.2 (2022-07-26)
+## 5.11.2 (2022-07-26)
 
 - fixed: React Strict Mode, dateSet, and "Maximum update depth exceeded error" (#5935, [react-185])
 - fixed: React Strict Mode, timeline scrolling not synced ([react-192])
@@ -260,7 +258,7 @@ injecting its own CSS. This solves many issues with third party libraries:
 [react-192]: https://github.com/fullcalendar/fullcalendar-react/issues/192
 [react-131]: https://github.com/fullcalendar/fullcalendar-react/issues/131
 
-## v5.11.1 (_see dates in tickets_)
+## 5.11.1 (_see dates in tickets_)
 
 - react fix: restore accidentally-removed support for React 17 ([react-182])
 - vue3 fix: Cannot target calendar api with several instances ([vue-155])
@@ -268,11 +266,11 @@ injecting its own CSS. This solves many issues with third party libraries:
 [react-182]: https://github.com/fullcalendar/fullcalendar-react/issues/182
 [vue-155]: https://github.com/fullcalendar/fullcalendar-vue/issues/155
 
-## v5.11.0 (2022-04-08)
+## 5.11.0 (2022-04-08)
 
 - internal changes for compatibility with React 18
 
-## v5.10.2 (2022-02-09)
+## 5.10.2 (2022-02-09)
 
 - bootstrap 5 support, via `@fullcalendar/bootstrap5` package (#6299)
 - luxon 2 support, via `@fullcalendar/luxon2` package (#6502)
@@ -280,14 +278,14 @@ injecting its own CSS. This solves many issues with third party libraries:
 
 [ang-387]: https://github.com/fullcalendar/fullcalendar-angular/issues/387
 
-## v5.10.1 (2021-11-02)
+## 5.10.1 (2021-11-02)
 
 - locale strings for the recent WAI-ARIA improvements:
   - nb (#6610)
   - de (#6597)
   - sv (#6592)
 
-## v5.10.0 (2021-10-13)
+## 5.10.0 (2021-10-13)
 
 - feature: WAI-ARIA improvements:
   - toolbar (#6521)
@@ -342,7 +340,7 @@ HELP WANTED populating new options in locales (examples: [es][es-aria-example], 
 [es-aria-example]: https://github.com/fullcalendar/fullcalendar/commit/63cd61bd89ae56642e76e3ea8b3a44cbd3fe2555
 [en-aria-example]: https://github.com/fullcalendar/fullcalendar/commit/d8e33a04ecc9bd8dd54f1d2c39aaa7ed919f896c
 
-## v5.9.0 (2021-07-28)
+## 5.9.0 (2021-07-28)
 
 - fix: dayGrid events sometimes overlap when eventOrderStrict:true (#6393)
 - fix: timeline events incorrectly positioned when uneven heights (#6395)
@@ -362,7 +360,7 @@ HELP WANTED populating new options in locales (examples: [es][es-aria-example], 
 - locale: added Khmer (#6416)
 - locale: fixed Hungarian (#6229)
 
-## v5.8.0 (2021-06-15)
+## 5.8.0 (2021-06-15)
 
 - fix: events not rendering in Jest environment (#6377)
 - fix: prev button sometimes ineffective when dateIncrement < view's duration (#5319, #4678)
@@ -370,17 +368,17 @@ HELP WANTED populating new options in locales (examples: [es][es-aria-example], 
 - fix: upgrade tslib to guarantee \_\_spreadArray (#6376)
 - fix: eventOrderStrict positioning problems (#5767)
 
-## v5.7.2 (2021-06-03)
+## 5.7.2 (2021-06-03)
 
 - fixed table-related Chrome 91 bug causing timegrid view with allDaySlot:false and certain
   custom CSS to appear broken (#6338, #6343)
 
-## v5.7.1 (2021-06-02)
+## 5.7.1 (2021-06-02)
 
 - updated Angular connector to support Angular 12 ([angular-369](https://github.com/fullcalendar/fullcalendar-angular/issues/369))
 - new Vue 3 connector ([vue-131](https://github.com/fullcalendar/fullcalendar-vue/issues/131))
 
-## v5.7.0 (2021-05-11)
+## 5.7.0 (2021-05-11)
 
 - feature: +more popover for timegrid (#4218)
 - feature: +more popover for timeline (#4827)
@@ -405,7 +403,7 @@ HELP WANTED populating new options in locales (examples: [es][es-aria-example], 
 - renamed fc-timegrid-event-condensed className to fc-timegrid-event-short
 - removed config.timeGridEventCondensedHeight
 
-## v5.6.0 (2021-03-28)
+## 5.6.0 (2021-03-28)
 
 - feature: icalendar events receive URL (#6173)
 - feature: icalendar events receive location, organizer, description in extendedProps (#6097)
@@ -427,7 +425,7 @@ HELP WANTED populating new options in locales (examples: [es][es-aria-example], 
   the resulting Event object's end is now determined by forceEventDuration, defaultTimedEventDuration,
   and defaultAllDayEventDuration, whereas previously it was _sometimes_ null.
 
-## v5.5.1 (2021-01-16)
+## 5.5.1 (2021-01-16)
 
 - view styles lost after changing to view with allDaySlot:false, view-specific dayHeaders (#6069)
 - type error when slotDuration is in whole days (#5952)
@@ -437,7 +435,7 @@ HELP WANTED populating new options in locales (examples: [es][es-aria-example], 
 - error in @fullcalendar/scrollgrid with NextJS (SSR) (#6037)
 - removed unnecessary use of Promise in icalendar package. restores IE11 compatibility
 
-## v5.5.0 (2020-12-19)
+## 5.5.0 (2020-12-19)
 
 - icalendar support (#1580)
 - support exrule and exdate for rrule plugin (#4439)
@@ -459,7 +457,7 @@ HELP WANTED populating new options in locales (examples: [es][es-aria-example], 
 - locale: improve Dutch
 - breaking-change: EventDropArg typescript type moved from interaction package to core
 
-## v5.4.0 (2020-11-11)
+## 5.4.0 (2020-11-11)
 
 - new fixedMirrorParent settings for drag-n-drop. workaround for #4673
 - rrule exclusion doesn't work while adding the 'Z' char for RRule datetimes (#5726)
@@ -469,11 +467,11 @@ HELP WANTED populating new options in locales (examples: [es][es-aria-example], 
 - better compatibility with Webpack 5, deeming `resolve.fullySpecified` unnecessary (#5822)
 - dist files now include a CJS file. ESM is still used by default in most environments (#5929)
 
-## v5.3.2 (2020-09-06)
+## 5.3.2 (2020-09-06)
 
 fix: more-link sometimes incorrectly positioned behind events (#5790)
 
-## v5.3.1 (2020-09-04)
+## 5.3.1 (2020-09-04)
 
 bugfixes:
 
@@ -482,7 +480,7 @@ bugfixes:
 - more links sometimes hidden behind events with dayMaxEventRows (#5771)
 - wrong version text in dist js files (#5778)
 
-## v5.3.0 (2020-08-12)
+## 5.3.0 (2020-08-12)
 
 bugfixes:
 
@@ -495,11 +493,11 @@ bugfixes:
 - timeGrid with dayMinWidth, weekNumber cell collapses (#5684)
 - fix luxon connector browser-global JS file including actual luxon lib
 
-## v5.2.1 (2020-07-30)
+## 5.2.1 (2020-07-30)
 
 Fixed misconfigured bundledDependencies. Only affected @fullcalendar/core NPM package.
 
-## v5.2.0 (2020-07-30)
+## 5.2.0 (2020-07-30)
 
 features:
 
@@ -530,7 +528,7 @@ bugfixes:
 - (p)react maximum recursion with specific resize/scrollbars (#5558, #5606)
 - dayGridMonth overflows in Firefox (#5524)
 
-## v5.1.0 (2020-06-29)
+## 5.1.0 (2020-06-29)
 
 - fix: css variables for default event border and bg color switched (#5551)
 - fix: eventContent moves arrow event length indicators (#5547)
@@ -544,7 +542,7 @@ bugfixes:
 - fix: unwanted text selection while dragging in Safari
 - fix: reintroduce list-view color-change on event-row hover
 
-## v5.0.1 (2020-06-23)
+## 5.0.1 (2020-06-23)
 
 - fix: give type attribute to buttons in header to prevent form submit (#5529)
 - fix: time axis customization via slotLabelContent causes ugly spacing (#5526)
@@ -554,7 +552,7 @@ bugfixes:
   - fixes bootstrap-themed popover incorrectly being colored semi-transparent
   - removes yellow color from date headers in timegrid view, which looks better
 
-## v5.0.0 (2020-06-21)
+## 5.0.0 (2020-06-21)
 
 Changes since RC:
 
@@ -566,7 +564,7 @@ Changes since RC:
 - fix typescript def omission of eventSource 'method' prop (#5505)
 - fix typescript def problem with schedulerLicenseKey again (#5462)
 
-## v5.0.0-rc (2020-06-15)
+## 5.0.0-rc (2020-06-15)
 
 Changes since beta.4:
 
@@ -607,7 +605,7 @@ Changes since beta.4:
   - @fullcalendar/common has no exported member ScrollGridChunkConfig (#5459)
   - event title should display on same line as time for 30 minute events in grid views (#5447)
 
-## v5.0.0-beta.4 (2020-05-26)
+## 5.0.0-beta.4 (2020-05-26)
 
 Changes since beta.3:
 
@@ -619,7 +617,7 @@ Changes since beta.3:
   - `slotLabelFormat` as array not working (#5450)
   - more exports of typescript interfaces (#5452)
 
-## v5.0.0-beta.3 (2020-05-20)
+## 5.0.0-beta.3 (2020-05-20)
 
 Changes since beta.2:
 
@@ -646,7 +644,7 @@ Changes since beta.2:
   - JS error when printing timeline view with expandRows (#5399)
   - fixed Scheduler license keys not working with `fullcalendar-scheduler` bundle
 
-## v5.0.0-beta.2 (2020-04-14)
+## 5.0.0-beta.2 (2020-04-14)
 
 Changes since beta.1:
 
@@ -668,24 +666,24 @@ Changes since beta.1:
 
 View the [full changelog](https://fullcalendar.io/docs/v5/upgrading-from-v4)
 
-## v5.0.0-beta.1 (2020-04-06)
+## 5.0.0-beta.1 (2020-04-06)
 
 Read the [blog post](https://fullcalendar.io/blog/2020/04/v5-beta-released)
 
-## v4.4.0 (2020-02-11)
+## 4.4.0 (2020-02-11)
 
 - configurable `googleCalendarApiBase` (#4974)
 - fix: navigating prev/next quickly might miss an event-source fetch (#4975)
 - new locales: ug (#180), uz (#3553)
 - locale fixes: fr (#5236), az (#5185), th (#5069), el (#5010), pt-br (#3812)
 
-## v4.3.1 (2019-08-10)
+## 4.3.1 (2019-08-10)
 
 - `FullCalendar.version` had incorrect text
 - scheduler's releaseDate not written correctly,
   resulting in license key warning always showing.
 
-## v4.3.0 (2019-08-09)
+## 4.3.0 (2019-08-09)
 
 - HTML/CSS for timeline events has been refactored. BREAKING CHANGE if customized CSS.
 - timeline event titles sometimes overflow outside of element when time (#4928)
@@ -708,13 +706,13 @@ Read the [blog post](https://fullcalendar.io/blog/2020/04/v5-beta-released)
 - distributing an ESM file, referenced by package.json's `module`
 - using a more portable SASS (#4626, #4651, #4671)
 
-## v4.2.0 (2019-06-02)
+## 4.2.0 (2019-06-02)
 
 - fix recurring event expansion when event starts before view and has duration (#4617, #4635)
 - simple event recurring now allows a duration property on the event object
 - internal Calendar::setOptions method removed (never meant to be public)
 
-## v4.1.0 (2019-04-24)
+## 4.1.0 (2019-04-24)
 
 - scrollToTime method (#467)
 - ISO8601 datetime strings with no 'T' not parsed in Safari (#4610)
@@ -726,7 +724,7 @@ Read the [blog post](https://fullcalendar.io/blog/2020/04/v5-beta-released)
 - Interdependent package semvers with carrot, use tilde (#4620)
 - dayRender now called for day columns in timeGrid views
 
-## v4.0.2 (2019-04-03)
+## 4.0.2 (2019-04-03)
 
 Bugfixes:
 
@@ -742,7 +740,7 @@ Bugfixes:
 - header "today" button not translated for pt and pt-br (#4591)
 - fa locale typo (#4582)
 
-## v4.0.1 (2019-03-18)
+## 4.0.1 (2019-03-18)
 
 Read about all the changes in v4:
 https://fullcalendar.io/docs/upgrading-from-v3
@@ -760,7 +758,7 @@ Advancements since latest prerelease:
 
 NOTE: version "4.0.0" was skipped because of an NPM publishing error
 
-## v3.10.0 (2019-01-10)
+## 3.10.0 (2019-01-10)
 
 POTENTIALLY BREAKING CHANGE:
 The jquery and moment packages have been moved to peerDependencies. If you are using
@@ -789,7 +787,7 @@ Bugfixes:
 - fixed typescript definition for: eventAllow (#4243), selectAllow (#4319)
 - fixed locales: de (#4197, #4371), hu (#4203), tr (#4312), ja (#4329)
 
-## v3.9.0 (2018-03-04)
+## 3.9.0 (2018-03-04)
 
 - Bootstrap 4 support (#4032, #4065, thx @GeekJosh)
 - add OptionsInput to the fullcalendar.d.ts exports (#4040, #4006)
@@ -799,13 +797,13 @@ Bugfixes:
 - swedish week header translation fix (#4082)
 - dutch year translation (#4069)
 
-## v3.8.2 (2018-01-30)
+## 3.8.2 (2018-01-30)
 
 Bugfixes:
 
 - Fix TypeScript definitions file with strictNullChecks (#4035)
 
-## v3.8.1 (2018-01-28)
+## 3.8.1 (2018-01-28)
 
 Bugfixes:
 
@@ -823,7 +821,7 @@ Locales:
 - added Georgian (#3994)
 - added Bosnian (#4029)
 
-## v3.8.0 (2017-12-18)
+## 3.8.0 (2017-12-18)
 
 - new settings for month/agenda/basic views (#3078):
   - `columnHeaderFormat` (renamed from `columnFormat`)
@@ -834,7 +832,7 @@ Locales:
 - codebase fully ported to TypeScript / Webpack
 - Afrikaans locale fix (#3862)
 
-## v3.7.0 (2017-11-13)
+## 3.7.0 (2017-11-13)
 
 Bugfixes:
 
@@ -849,7 +847,7 @@ Other:
 
 [scheduler-375]: https://github.com/fullcalendar/fullcalendar-scheduler/issues/375
 
-## v3.6.2 (2017-10-23)
+## 3.6.2 (2017-10-23)
 
 Bugfixes:
 
@@ -859,14 +857,14 @@ Bugfixes:
 - `nowIndicator` arrow would repeatedly render (#3872)
 - fc-content-skeleton DOM element would repeatedly render on navigation in agenda view
 
-## v3.6.1 (2017-10-11)
+## 3.6.1 (2017-10-11)
 
 Bugfixes:
 
 - JSON feed event sources always requesting current page (#3865)
 - multi-day events appearing multiple times in more+ popover (#3856)
 
-## v3.6.0 (2017-10-10)
+## 3.6.0 (2017-10-10)
 
 Features:
 
@@ -895,14 +893,14 @@ Incompatibilities:
 - The internal `Grid` class (accessed via `$.fullCalendar.Grid`) has been removed.
   For monkeypatching, use DayGrid/TimeGrid directly.
 
-## v3.5.1 (2017-09-06)
+## 3.5.1 (2017-09-06)
 
 - fixed loading trigger not firing (#3810)
 - fixed overaggressively fetching events, on option changes (#3820)
 - fixed event object `date` property being discarded (tho still parsed) (#3819)
 - fixed event object `_id` property being discarded (#3811)
 
-## v3.5.0 (2017-08-30)
+## 3.5.0 (2017-08-30)
 
 Features:
 
@@ -935,7 +933,7 @@ Incompatibilities:
 - `clientEvents` method no longer returns events in same order as received.
   Do not depend on order.
 
-## v3.4.0 (2017-04-27)
+## 3.4.0 (2017-04-27)
 
 - composer.json for Composer (PHP package manager) (#3617)
 - fix toISOString for locales with non-trivial postformatting (#3619)
@@ -944,7 +942,7 @@ Incompatibilities:
 - fixed Latvian localization (#3525)
 - internal refactor of async systems
 
-## v3.3.1 (2017-04-01)
+## 3.3.1 (2017-04-01)
 
 Bugfixes:
 
@@ -954,7 +952,7 @@ Bugfixes:
 - navigation bug when trying to navigate to a day of another week (#3610)
 - dateIncrement not working when duration and dateIncrement have different units
 
-## v3.3.0 (2017-03-23)
+## 3.3.0 (2017-03-23)
 
 Features:
 
@@ -986,7 +984,7 @@ Bugfixes:
 - can't make an immediate new selection after existing selection, with mouse.
   introduced in v3.2.0 (#3558)
 
-## v3.2.0 (2017-02-14)
+## 3.2.0 (2017-02-14)
 
 Features:
 
@@ -1007,7 +1005,7 @@ Bugfixes:
 - Croatian (hr) buttonText is blank (#3270)
 - JSON feed PHP example, date range math bug (#3485)
 
-## v3.1.0 (2016-12-05)
+## 3.1.0 (2016-12-05)
 
 - experimental support for implicitly batched ("debounced") event rendering (#2938)
   - `eventRenderWait` (off by default)
@@ -1028,7 +1026,7 @@ Bugfixes:
   calls to rerender the current date-range and events from within handlers
   might not execute immediately. instead, will execute after handler finishes.
 
-## v3.0.1 (2016-09-26)
+## 3.0.1 (2016-09-26)
 
 Bugfixes:
 
@@ -1038,7 +1036,7 @@ Bugfixes:
 - add .fc scope to table print styles (#3343)
 - "display no events" text fix for German (#3354)
 
-## v3.0.0 (2016-09-04)
+## 3.0.0 (2016-09-04)
 
 Features:
 
@@ -1088,7 +1086,7 @@ Build System:
 - using npm internally for dependencies instead of bower
 - changed repo directory structure
 
-## v2.9.1 (2016-07-31)
+## 2.9.1 (2016-07-31)
 
 - multiple definitions for businessHours (#2686)
 - businessHours for single day doesn't display weekends (#2944)
@@ -1098,13 +1096,13 @@ Build System:
 - Norwegian Nynorsk translation (#3246)
 - fix isAnimating JS error (#3285)
 
-## v2.9.0 (2016-07-10)
+## 2.9.0 (2016-07-10)
 
 - Setters for (almost) all options (#564).
   See [docs](https://fullcalendar.io/docs/utilities/dynamic_options/) for more info.
 - Travis CI improvements (#3266)
 
-## v2.8.0 (2016-06-19)
+## 2.8.0 (2016-06-19)
 
 - getEventSources method (#3103, #2433)
 - getEventSourceById method (#3223)
@@ -1122,14 +1120,14 @@ Build System:
   - Galician (#194)
   - Luxembourgish (#2979)
 
-## v2.7.3 (2016-06-02)
+## 2.7.3 (2016-06-02)
 
 internal enhancements that plugins can benefit from:
 
 - EventEmitter not correctly working with stopListeningTo
 - normalizeEvent hook for manipulating event data
 
-## v2.7.2 (2016-05-20)
+## 2.7.2 (2016-05-20)
 
 - fixed desktops/laptops with touch support not accepting mouse events for
   dayClick/dragging/resizing (#3154, #3149)
@@ -1138,7 +1136,7 @@ internal enhancements that plugins can benefit from:
 - fixed minified JS still contained comments
 - UI change: mouse users must hover over an event to reveal its resizers
 
-## v2.7.1 (2016-05-01)
+## 2.7.1 (2016-05-01)
 
 - dayClick not firing on touch devices (#3138)
 - icons for prev/next not working in MS Edge (#2852)
@@ -1148,15 +1146,15 @@ internal enhancements that plugins can benefit from:
 - misc automated test updates (#3139, #3147)
 - Google Calendar htmlLink not always defined (#2844)
 
-## v2.7.0 (2016-04-23)
+## 2.7.0 (2016-04-23)
 
 touch device support (#994): - smoother scrolling - interactions initiated via "long press": - event drag-n-drop - event resize - time-range selecting - `longPressDelay`
 
-## v2.6.1 (2016-02-17)
+## 2.6.1 (2016-02-17)
 
 - make `nowIndicator` positioning refresh on window resize
 
-## v2.6.0 (2016-01-07)
+## 2.6.0 (2016-01-07)
 
 - current time indicator (#414)
 - bundled with most recent version of moment (2.11.0)
@@ -1164,12 +1162,12 @@ touch device support (#994): - smoother scrolling - interactions initiated via "
 - fix bug where external event dragging would not respect eventOverlap
 - fix bug where external event dropping would not render the whole-day highlight
 
-## v2.5.0 (2015-11-30)
+## 2.5.0 (2015-11-30)
 
 - internal timezone refactor. fixes #2396, #2900, #2945, #2711
 - internal "grid" system refactor. improved API for plugins.
 
-## v2.4.0 (2015-08-16)
+## 2.4.0 (2015-08-16)
 
 - add new buttons to the header via `customButtons` ([225])
 - control stacking order of events via `eventOrder` ([364])
@@ -1184,11 +1182,11 @@ touch device support (#994): - smoother scrolling - interactions initiated via "
 [1904]: https://code.google.com/p/fullcalendar/issues/detail?id=1904
 [1910]: https://code.google.com/p/fullcalendar/issues/detail?id=1910
 
-## v2.3.2 (2015-06-14)
+## 2.3.2 (2015-06-14)
 
 - minor code adjustment in preparation for plugins
 
-## v2.3.1 (2015-03-08)
+## 2.3.1 (2015-03-08)
 
 - Fix week view column title for en-gb ([PR220])
 - Publish to NPM ([2447])
@@ -1198,7 +1196,7 @@ touch device support (#994): - smoother scrolling - interactions initiated via "
 [2447]: https://code.google.com/p/fullcalendar/issues/detail?id=2447
 [PR179]: https://github.com/arshaw/fullcalendar/pull/179
 
-## v2.3.0 (2015-02-21)
+## 2.3.0 (2015-02-21)
 
 - internal refactoring in preparation for other views
 - businessHours now renders on whole-days in addition to timed areas
@@ -1223,7 +1221,7 @@ touch device support (#994): - smoother scrolling - interactions initiated via "
 [2428]: https://code.google.com/p/fullcalendar/issues/detail?id=2428
 [2330]: https://code.google.com/p/fullcalendar/issues/detail?id=2330
 
-## v2.2.7 (2015-02-10)
+## 2.2.7 (2015-02-10)
 
 - view.title wasn't defined in viewRender callback ([2407])
 - FullCalendar versions >= 2.2.5 brokenness with Moment versions <= 2.8.3 ([2417])
@@ -1233,7 +1231,7 @@ touch device support (#994): - smoother scrolling - interactions initiated via "
 [2417]: https://code.google.com/p/fullcalendar/issues/detail?id=2417
 [2427]: https://code.google.com/p/fullcalendar/issues/detail?id=2427
 
-## v2.2.6 (2015-01-11)
+## 2.2.6 (2015-01-11)
 
 - Compatibility with Moment v2.9. Was breaking GCal plugin ([2408])
 - View object's `title` property mistakenly omitted ([2407])
@@ -1247,13 +1245,13 @@ touch device support (#994): - smoother scrolling - interactions initiated via "
 [2395]: https://code.google.com/p/fullcalendar/issues/detail?id=2395
 [2157]: https://code.google.com/p/fullcalendar/issues/detail?id=2157
 
-## v2.2.5 (2014-12-30)
+## 2.2.5 (2014-12-30)
 
 - `buttonText` specified for custom views via the `views` option
   - bugfix: wrong default value, couldn't override default
   - feature: default value taken from locale
 
-## v2.2.4 (2014-12-29)
+## 2.2.4 (2014-12-29)
 
 - Arbitrary durations for basic/agenda views with the `views` option ([692])
 - Specify view-specific options using the `views` option. fixes [2283]
@@ -1266,7 +1264,7 @@ touch device support (#994): - smoother scrolling - interactions initiated via "
 [1055]: https://code.google.com/p/fullcalendar/issues/detail?id=1055
 [2194]: https://code.google.com/p/fullcalendar/issues/detail?id=2194
 
-## v2.2.3 (2014-11-26)
+## 2.2.3 (2014-11-26)
 
 - removeEventSource with Google Calendar object source, would not remove ([2368])
 - Events with invalid end dates are still accepted and rendered ([2350], [2237], [2296])
@@ -1284,19 +1282,19 @@ touch device support (#994): - smoother scrolling - interactions initiated via "
 [2122]: https://code.google.com/p/fullcalendar/issues/detail?id=2122
 [2370]: https://code.google.com/p/fullcalendar/issues/detail?id=2370
 
-## v2.2.2 (2014-11-19)
+## 2.2.2 (2014-11-19)
 
 - Fixes to Google Calendar API V3 code
   - wouldn't recognize a lone-string Google Calendar ID if periods before the @ symbol
   - removeEventSource wouldn't work when given a Google Calendar ID
 
-## v2.2.1 (2014-11-19)
+## 2.2.1 (2014-11-19)
 
 - Migrate Google Calendar plugin to use V3 of the API ([1526])
 
 [1526]: https://code.google.com/p/fullcalendar/issues/detail?id=1526
 
-## v2.2.0 (2014-11-14)
+## 2.2.0 (2014-11-14)
 
 - Background events. Event object's `rendering` property ([144], [1286])
 - `businessHours` option ([144])
@@ -1319,7 +1317,7 @@ touch device support (#994): - smoother scrolling - interactions initiated via "
 [2259]: https://code.google.com/p/fullcalendar/issues/detail?id=2259
 [2312]: https://code.google.com/p/fullcalendar/issues/detail?id=2312
 
-## v2.1.1 (2014-08-29)
+## 2.1.1 (2014-08-29)
 
 - removeEventSource not working with array ([2203])
 - mouseout not triggered after mouseover+updateEvent ([829])
@@ -1329,7 +1327,7 @@ touch device support (#994): - smoother scrolling - interactions initiated via "
 [829]: https://code.google.com/p/fullcalendar/issues/detail?id=829
 [2263]: https://code.google.com/p/fullcalendar/issues/detail?id=2263
 
-## v2.1.0 (2014-08-25)
+## 2.1.0 (2014-08-25)
 
 Large code refactor with better OOP, better code reuse, and more comments.
 **No more reliance on jQuery UI** for event dragging, resizing, or anything else.
@@ -1431,7 +1429,7 @@ Other issues resolved along the way:
 [2196]: https://code.google.com/p/fullcalendar/issues/detail?id=2196
 [111]: https://code.google.com/p/fullcalendar/issues/detail?id=111
 
-## v2.0.3 (2014-08-15)
+## 2.0.3 (2014-08-15)
 
 - moment-2.8.1 compatibility ([2221])
 - relative path in bower.json ([PR 117])
@@ -1440,7 +1438,7 @@ Other issues resolved along the way:
 [2221]: https://code.google.com/p/fullcalendar/issues/detail?id=2221
 [PR 117]: https://github.com/arshaw/fullcalendar/pull/177
 
-## v2.0.2 (2014-06-24)
+## 2.0.2 (2014-06-24)
 
 - bug with persisting addEventSource calls ([2191])
 - bug with persisting removeEvents calls with an array source ([2187])
@@ -1450,7 +1448,7 @@ Other issues resolved along the way:
 [2187]: https://code.google.com/p/fullcalendar/issues/detail?id=2187
 [2082]: https://code.google.com/p/fullcalendar/issues/detail?id=2082
 
-## v2.0.1 (2014-06-15)
+## 2.0.1 (2014-06-15)
 
 - `delta` parameters reintroduced in `eventDrop` and `eventResize` handlers ([2156])
   - **Note**: this changes the argument order for `revertFunc`
@@ -1475,7 +1473,7 @@ Other issues resolved along the way:
 [2180]: https://code.google.com/p/fullcalendar/issues/detail?id=2180
 [PR 172]: https://github.com/arshaw/fullcalendar/pull/172
 
-## v2.0.0 (2014-06-01)
+## 2.0.0 (2014-06-01)
 
 Internationalization support, timezone support, and [MomentJS] integration. Extensive changes, many
 of which are backwards incompatible.
@@ -1496,7 +1494,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 [Jasmine]: http://jasmine.github.io/
 [Bower]: http://bower.io/
 
-## v1.6.4 (2013-09-01)
+## 1.6.4 (2013-09-01)
 
 - better algorithm for positioning timed agenda events ([1115])
 - `slotEventOverlap` option to tweak timed agenda event overlapping ([218])
@@ -1517,7 +1515,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 [1762]: https://code.google.com/p/fullcalendar/issues/detail?id=1762
 [PR 125]: https://github.com/arshaw/fullcalendar/pull/125
 
-## v1.6.3 (2013-08-10)
+## 1.6.3 (2013-08-10)
 
 - `viewRender` callback ([PR 15])
 - `viewDestroy` callback ([PR 15])
@@ -1548,7 +1546,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 [PR 84]: https://github.com/arshaw/fullcalendar/pull/84
 [PR 56]: https://github.com/arshaw/fullcalendar/pull/56
 
-## v1.6.2 (2013-07-18)
+## 1.6.2 (2013-07-18)
 
 - `hiddenDays` option ([686])
 - bugfix: when `eventRender` returns `false`, incorrect stacking of events ([762])
@@ -1557,7 +1555,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 [686]: https://code.google.com/p/fullcalendar/issues/detail?id=686
 [762]: https://code.google.com/p/fullcalendar/issues/detail?id=762
 
-## v1.6.1 (2013-04-14)
+## 1.6.1 (2013-04-14)
 
 - fixed event inner content overflow bug ([1783])
 - fixed table header className bug [1772]
@@ -1566,7 +1564,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 [1783]: https://code.google.com/p/fullcalendar/issues/detail?id=1783
 [1772]: https://code.google.com/p/fullcalendar/issues/detail?id=1772
 
-## v1.6.0 (2013-03-18)
+## 1.6.0 (2013-03-18)
 
 - visual facelift, with bootstrap-inspired buttons and colors
 - simplified HTML/CSS for events and buttons
@@ -1592,25 +1590,25 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 [495]: https://code.google.com/p/fullcalendar/issues/detail?id=495
 [753]: https://code.google.com/p/fullcalendar/issues/detail?id=753
 
-## v1.5.4 (2012-09-05)
+## 1.5.4 (2012-09-05)
 
 - made compatible with jQuery 1.8.\* (thx @archaeron)
 - bundled with jQuery 1.8.1 and jQuery UI 1.8.23
 
-## v1.5.3 (2012-02-06)
+## 1.5.3 (2012-02-06)
 
 - fixed dragging issue with jQuery UI 1.8.16 ([1168])
 - bundled with jQuery 1.7.1 and jQuery UI 1.8.17
 
 [1168]: https://code.google.com/p/fullcalendar/issues/detail?id=1168
 
-## v1.5.2 (2011-08-21)
+## 1.5.2 (2011-08-21)
 
 - correctly process UTC "Z" ISO8601 date strings ([750])
 
 [750]: https://code.google.com/p/fullcalendar/issues/detail?id=750
 
-## v1.5.1 (2011-04-09)
+## 1.5.1 (2011-04-09)
 
 - more flexible ISO8601 date parsing ([814])
 - more flexible parsing of UNIX timestamps ([826])
@@ -1623,7 +1621,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 [795]: https://code.google.com/p/fullcalendar/issues/detail?id=795
 [883]: https://code.google.com/p/fullcalendar/issues/detail?id=883
 
-## v1.5 (2011-03-19)
+## 1.5 (2011-03-19)
 
 - slicker default styling for buttons
 - reworked a lot of the calendar's HTML and accompanying CSS (solves [327] and [395])
@@ -1678,7 +1676,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 [355]: https://code.google.com/p/fullcalendar/issues/detail?id=355
 [504]: https://code.google.com/p/fullcalendar/issues/detail?id=504
 
-## v1.4.11 (2011-02-22)
+## 1.4.11 (2011-02-22)
 
 - fixed rerenderEvents bug ([790])
 - fixed bug with faulty dragging of events from all-day slot in agenda views
@@ -1686,7 +1684,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 
 [790]: https://code.google.com/p/fullcalendar/issues/detail?id=790
 
-## v1.4.10 (2011-01-02)
+## 1.4.10 (2011-01-02)
 
 - fixed bug with resizing event to different week in 5-day month view ([740])
 - fixed bug with events not sticking after a removeEvents call ([757])
@@ -1696,7 +1694,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 [757]: https://code.google.com/p/fullcalendar/issues/detail?id=757
 [688]: https://code.google.com/p/fullcalendar/issues/detail?id=688
 
-## v1.4.9 (2010-11-16)
+## 1.4.9 (2010-11-16)
 
 - new algorithm for vertically stacking events ([111])
 - resizing an event to a different week ([306])
@@ -1706,7 +1704,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 [306]: https://code.google.com/p/fullcalendar/issues/detail?id=306
 [679]: https://code.google.com/p/fullcalendar/issues/detail?id=679
 
-## v1.4.8 (2010-10-16)
+## 1.4.8 (2010-10-16)
 
 - ignoreTimezone option (set to `false` to process UTC offsets in ISO8601 dates)
 - bugfixes
@@ -1729,7 +1727,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 [517]: https://code.google.com/p/fullcalendar/issues/detail?id=517
 [235]: https://code.google.com/p/fullcalendar/issues/detail?id=235
 
-## v1.4.7 (2010-07-05)
+## 1.4.7 (2010-07-05)
 
 - "dropping" external objects onto the calendar
   - droppable (boolean, to turn on/off)
@@ -1749,7 +1747,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 [429]: https://code.google.com/p/fullcalendar/issues/detail?id=429
 [412]: https://code.google.com/p/fullcalendar/issues/detail?id=412
 
-## v1.4.6 (2010-05-31)
+## 1.4.6 (2010-05-31)
 
 - "selecting" days or timeslots
   - options: selectable, selectHelper, unselectAuto, unselectCancel
@@ -1759,7 +1757,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 - code compressing by Google Closure Compiler
 - bundled with jQuery 1.4.2 and jQuery UI 1.8.1
 
-## v1.4.5 (2010-02-21)
+## 1.4.5 (2010-02-21)
 
 - lazyFetching option, which can force the calendar to fetch events on every view/date change
 - scroll state of agenda views are preserved when switching back to view
@@ -1777,13 +1775,13 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 [333]: https://code.google.com/p/fullcalendar/issues/detail?id=333
 [341]: https://code.google.com/p/fullcalendar/issues/detail?id=341
 
-## v1.4.4 (2010-02-03)
+## 1.4.4 (2010-02-03)
 
 - optimized event rendering in all views (events render in 1/10 the time)
 - gotoDate() does not force the calendar to unnecessarily rerender
 - render() method now correctly readjusts height
 
-## v1.4.3 (2009-12-22)
+## 1.4.3 (2009-12-22)
 
 - added destroy method
 - Google Calendar event pages respect currentTimezone
@@ -1796,7 +1794,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
   - event not displayed when end is an empty string
   - dynamically setting calendar height when no events have been fetched, throws error
 
-## v1.4.2 (2009-12-02)
+## 1.4.2 (2009-12-02)
 
 - eventAfterRender trigger
 - getDate & getView methods
@@ -1810,7 +1808,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
   - guaranteed space on right side of agenda events (even when stacked)
   - accepts ISO8601 dates with a space (instead of 'T')
 
-## v1.4.1 (2009-10-31)
+## 1.4.1 (2009-10-31)
 
 - can exclude weekends with new 'weekends' option
 - gcal feed 'currentTimezone' option
@@ -1819,7 +1817,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
   - daylight savings issue caused agenda views to start at 1am (for BST users)
 - cleanup of gcal.js code
 
-## v1.4 (2009-10-19)
+## 1.4 (2009-10-19)
 
 - agendaWeek and agendaDay views
 - added some options for agenda views:
@@ -1839,7 +1837,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 - added event-color-changing example in docs
 - better defaults for right-to-left themed button icons
 
-## v1.3.2 (2009-10-13)
+## 1.3.2 (2009-10-13)
 
 - Bugfixes (please upgrade from 1.3.1!)
   - squashed potential infinite loop when addMonths and addDays
@@ -1849,7 +1847,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 - gotoDate now can accept a single Date argument
 - documentation for changes in 1.3.1 and 1.3.2 now on website
 
-## v1.3.1 (2009-09-30)
+## 1.3.1 (2009-09-30)
 
 - Important Bugfixes (please upgrade from 1.3!)
   - When current date was late in the month, for long months, and prev/next buttons
@@ -1860,7 +1858,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 - Added 'allDayDefault' option
 - Added 'changeView' and 'render' methods
 
-## v1.3 (2009-09-21)
+## 1.3 (2009-09-21)
 
 - different 'views': month/basicWeek/basicDay
 - more flexible 'header' system for buttons
@@ -1922,7 +1920,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
 - Bugfixes
   - gcal extension fetched 25 results max, now fetches all
 
-## v1.2.1 (2009-06-29)
+## 1.2.1 (2009-06-29)
 
 - bugfixes
   - allows and corrects invalid end dates for events
@@ -1930,7 +1928,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
   - fixed 'loading' callback when used w/ multiple addEventSource calls
   - gcal className can now be an array
 
-## v1.2 (2009-05-31)
+## 1.2 (2009-05-31)
 
 - expanded API
   - 'className' CalEvent attribute
@@ -1958,7 +1956,7 @@ JS/CSS for the project and will serve as the new [Bower] endpoint.
   - thus CSS has changed. IF UPGRADING FROM PREVIOUS VERSIONS,
     UPGRADE YOUR FULLCALENDAR.CSS FILE
 
-## v1.1 (2009-05-10)
+## 1.1 (2009-05-10)
 
 - Added the following options:
   - weekStart

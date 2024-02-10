@@ -3,22 +3,22 @@
 This changelog does not mention all releases.
 Visit the github releases page as well as the main fullcalendar repo.
 
-## v6.0.0-beta.3
+## 6.0.0-beta.3
 
 - FIX: content-injection functions not directly accepting jsx ([core-7034])
 
 [core-7034]: https://github.com/fullcalendar/fullcalendar/issues/7034
 
-## v5.11.1 (2022-04-20)
+## 5.11.1 (2022-04-20)
 
 - FIX: restore accidentally-removed support for React 17 (#182)
 
-## v5.11.0 (2022-04-08)
+## 5.11.0 (2022-04-08)
 
 - support for React 18
 - fix CalendarContent crashes when suspended in concurrent mode (#177)
 
-## v5.4.0 (2020-11-11)
+## 5.4.0 (2020-11-11)
 
 - react 17 support
 - better compatibility with Webpack 5, deeming `resolve.fullySpecified` unnecessary ([core-5822])
@@ -27,11 +27,11 @@ Visit the github releases page as well as the main fullcalendar repo.
 [core-5822]: https://github.com/fullcalendar/fullcalendar/issues/5822
 [core-5929]: https://github.com/fullcalendar/fullcalendar/issues/5929
 
-## v5.2.0 (2020-07-30)
+## 5.2.0 (2020-07-30)
 
 bugfix: dayMinWidth causes error "NowTimer(...): Nothing was returned from render..." (#80)
 
-## v4.2.0 (2019-06-02)
+## 4.2.0 (2019-06-02)
 
 - bugfix: if `header`/`footer` were specified as object literals,
   any change to ANY of the FullCalendar component's props would trigger
