@@ -2,6 +2,7 @@ import { join as joinPaths } from 'path'
 import { readFile, writeFile } from 'fs/promises'
 import { readManifest } from './meta/utils.js'
 
+// TODO: make DRY with other configs
 const changelogSrc = 'standard/CHANGELOG.md'
 const releaseNotesDest = 'VERSION-NOTES.md'
 
