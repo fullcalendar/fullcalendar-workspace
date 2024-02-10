@@ -2,8 +2,6 @@ import { join as joinPaths } from 'path'
 import { readFile, writeFile } from 'fs/promises'
 import { readManifest } from './meta/utils.js'
 
-// TODO: change changelog format. remove v
-
 const changelogSrc = 'standard/CHANGELOG.md'
 const releaseNotesDest = 'STAGED-RELEASE-NOTES.md'
 
