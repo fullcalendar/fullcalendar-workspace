@@ -13,8 +13,8 @@ jobs:
     # conditions for 2 types of merges: normal & rebase
     if: >
       github.repository == 'fullcalendar/fullcalendar-workspace' &&
-      !contains(github.event.head_commit.message, 'staged-release') &&
-      !contains(github.event.head_commit.message, 'Staged Release') &&
+      !contains(github.event.head_commit.message, vars.STAGED_RELEASE_BRANCH) &&
+      !contains(github.event.head_commit.message, vars.STAGED_RELEASE_COMMIT_MESSAGE) &&
       !contains(github.event.head_commit.message, 'no-stage')
     runs-on: ubuntu-latest
 
@@ -57,8 +57,8 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          branch: staged-release
-          commit-message: Staged Release Bump
-          delete-branch: true # delete old branch (if no open PRs) before creating new
-          title: Staged Release
+          branch: ${{ vars.STAGED_RELEASE_BRANCH }}
+          commit-message: ${{ vars.STAGED_RELEASE_COMMIT_MESSAGE }}
+          title: ${{ vars.STAGED_RELEASE_PR_TITLE }}
           body: Staged release baby!!!
+          delete-branch: true # delete old branch (if no open PRs) before creating new
