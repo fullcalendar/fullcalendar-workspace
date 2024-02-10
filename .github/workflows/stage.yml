@@ -1,4 +1,4 @@
-name: Stage a Deploy
+name: Stage
 on:
   push:
     branches:
@@ -9,7 +9,10 @@ env:
 
 jobs:
   stage:
-    name: Stage a Deploy
+    if: >
+      github.repository == 'fullcalendar/fullcalendar-workspace' &&
+      github.event.head_commit.message != 'Staged Release Bump' &&
+      !contains(github.event.head_commit.message, 'no-stage')
     runs-on: ubuntu-latest
 
     steps:
@@ -51,7 +54,6 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          commit-message: Version Bump
-          base: live
-          title: Staged Deploy
-          body: Staged deploy baby
+          commit-message: Staged Release Bump
+          title: Staged Release
+          body: Staged release baby!!!
