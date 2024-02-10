@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/timegrid",
-  "version": "6.1.10",
+  "version": "6.1.11",
   "title": "FullCalendar Time Grid Plugin",
   "description": "Display events on time slots",
   "keywords": [
@@ -9,13 +9,13 @@
   ],
   "homepage": "https://fullcalendar.io/docs/timegrid-view",
   "dependencies": {
-    "@fullcalendar/daygrid": "~6.1.10"
+    "@fullcalendar/daygrid": "~6.1.11"
   },
   "peerDependencies": {
-    "@fullcalendar/core": "~6.1.10"
+    "@fullcalendar/core": "~6.1.11"
   },
   "devDependencies": {
-    "@fullcalendar/core": "~6.1.10",
+    "@fullcalendar/core": "~6.1.11",
     "@fullcalendar-scripts/standard": "*"
   },
   "scripts": {
@@ -25,7 +25,7 @@
   },
   "type": "module",
   "tsConfig": {
-    "extends":  "@fullcalendar-scripts/standard/config/tsconfig.browser.json",
+    "extends": "@fullcalendar-scripts/standard/config/tsconfig.browser.json",
     "compilerOptions": {
       "rootDir": "./src",
       "outDir": "./dist/.tsout"
@@ -36,7 +36,9 @@
   },
   "buildConfig": {
     "exports": {
-      ".": { "iife": true },
+      ".": {
+        "iife": true
+      },
       "./internal": {}
     },
     "iifeGlobals": {
