@@ -1,4 +1,4 @@
-name: Stage
+name: Stage Release
 on:
   push:
     branches:
@@ -8,11 +8,11 @@ env:
   TZ: "America/New_York"
 
 jobs:
-  stage:
-    name: Stage
+  stage-release:
+    name: Stage Release
     if: >
       github.repository == 'fullcalendar/fullcalendar-workspace' &&
-      github.event.head_commit.message != 'Staged Release Bump' &&
+      github.event.head_commit != 'Staged Release Bump' &&
       !contains(github.event.head_commit.message, 'no-stage')
     runs-on: ubuntu-latest
 
@@ -55,6 +55,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
+          branch: staged-release
           commit-message: Staged Release Bump
           title: Staged Release
           body: Staged release baby!!!
