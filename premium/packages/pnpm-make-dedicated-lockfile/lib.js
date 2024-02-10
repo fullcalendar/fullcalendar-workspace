@@ -65,29 +65,10 @@ export async function makeDedicatedLockfile(rootDir, scopedDir, verbose) {
   if (pkgsOutOfScope.length) {
     if (verbose) {
       console.log(
-        'However, cannot fixup generated lockfile with a reinstall due to the following linked packages being\n' +
-        'out of the scope of ' + scopedDir + ':\n' +
+        'WARNING: Discarded linked packages outside of\n' + scopedDir + ':\n' +
         '- ' + pkgsOutOfScope.join('\n- ') + '\n'
       )
     }
-  } else {
-    verbose && console.log('Attempting fixup of generated lockfile with a reinstall:\n')
-    await exec([
-      'pnpm',
-      'install',
-      '--ignore-scripts',
-      // don't ask for newer version
-      // TODO: maybe this `install` is unnecessary! test out more!
-      // can't do fully offline because @next package resolution never stored offline
-      '--prefer-offline',
-      '--lockfile-only', // write new lockfile, but don't write to node_modules nor run scripts
-      '--lockfile-dir=.',
-      '--filter=.',
-    ], {
-      cwd: scopedDir,
-      stdio: verbose ? 'inherit' : 'ignore',
-    })
-    verbose && console.log()
   }
 }
 
