@@ -2,5 +2,6 @@
 # Package manager
 /node_modules
 
-# Generated
+# Dynamically generated
 /tsconfig.json
+/STAGED-RELEASE-NOTES.md

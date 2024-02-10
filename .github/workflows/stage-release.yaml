@@ -61,5 +61,5 @@ jobs:
           branch: staged-release
           commit-message: staged-release
           title: Next Release
-          body: Next release baby!!!
+          body-path: STAGED-RELEASE-NOTES.md
           delete-branch: true # delete old branch (if no open PRs) before creating new

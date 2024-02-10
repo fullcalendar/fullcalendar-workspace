@@ -20,8 +20,9 @@
     "test:dev": "standard-scripts test --dev",
     "clean": "standard-scripts clean",
     "ci": "pnpm run clean --all && pnpm run lint --all && pnpm run build --all && pnpm run test --all",
-    "version": "changeset version && pnpm run meta:update",
+    "version": "changeset version && pnpm run meta:update && pnpm run staged-release-notes",
     "publish": "changeset publish",
+    "staged-release-notes": "workspace-scripts staged-release-notes",
     "tag-and-release": "workspace-scripts tag-and-release"
   },
   "type": "module",
