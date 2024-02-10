@@ -1,6 +1,6 @@
 name: Release
 on:
-  pull_request_target:
+  pull_request:
     branches:
       - newrepo
     types:
@@ -14,7 +14,8 @@ jobs:
     name: Release
     if: >
       github.repository == 'fullcalendar/fullcalendar-workspace' &&
-      github.event.pull_request.title == vars.STAGED_RELEASE_PR_TITLE &&
+      github.event.pull_request.head.repo.full_name == 'fullcalendar/fullcalendar-workspace' &&
+      github.event.pull_request.head.ref == 'staged-release' &&
       github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
