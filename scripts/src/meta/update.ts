@@ -1,7 +1,7 @@
 import { join as joinPaths } from 'path'
 import { rm, readFile, writeFile, copyFile } from 'fs/promises'
 import * as yaml from 'js-yaml'
-import { makeDedicatedLockfile } from 'pnpm-make-dedicated-lockfile'
+import { makeDedicatedLockfile, readLockfile, relinkLockfile, writeLockfile } from 'pnpm-make-dedicated-lockfile'
 import { addFile, assumeUnchanged } from '@fullcalendar-scripts/standard/utils/git'
 import { boolPromise } from '@fullcalendar-scripts/standard/utils/lang'
 import { querySubrepoPkgs, readManifest, writeManifest } from './utils.js'
@@ -16,6 +16,12 @@ export default async function() {
   const workspaceConfigPath = joinPaths(monorepoDir, workspaceFilename)
   const workspaceConfigStr = await readFile(workspaceConfigPath, 'utf8')
   const workspaceConfig = yaml.load(workspaceConfigStr) as any
+
+  // update for linked-package version bumps
+  // TODO: reuse monorepoLockfile for makeDedicatedLockfile
+  const monorepoLockfile = await readLockfile(monorepoDir)
+  const relinkedLockfile = await relinkLockfile(monorepoDir, monorepoLockfile, readManifest)
+  await writeLockfile(monorepoDir, relinkedLockfile)
 
   for (const subrepoSubdir of subrepoSubdirs) {
     const subrepoDir = joinPaths(monorepoDir, subrepoSubdir)

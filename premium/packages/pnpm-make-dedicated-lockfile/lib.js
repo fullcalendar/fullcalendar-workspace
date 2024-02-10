@@ -1,13 +1,18 @@
 // derived from https://github.com/pnpm/pnpm/blob/main/packages/make-dedicated-lockfile/src/index.ts
 
-import { spawn } from 'child_process'
 import { join as joinPaths, sep as pathSep, isAbsolute } from 'path'
 import { getLockfileImporterId, readWantedLockfile, writeWantedLockfile } from '@pnpm/lockfile-file'
 import { pruneSharedLockfile } from '@pnpm/prune-lockfile'
 import { DEPENDENCIES_FIELDS } from '@pnpm/types'
 
+export function readLockfile(rootDir, ignoreIncompatible = true) {
+  return readWantedLockfile(rootDir, { ignoreIncompatible }) // needs options or fails!
+}
+
+export const writeLockfile = writeWantedLockfile
+
 export async function makeDedicatedLockfile(rootDir, scopedDir, verbose) {
-  const lockfile = await readWantedLockfile(rootDir, { ignoreIncompatible: false })
+  const lockfile = await readLockfile(rootDir)
   if (lockfile == null) {
     throw new Error('no lockfile found')
   }
@@ -36,36 +41,34 @@ export async function makeDedicatedLockfile(rootDir, scopedDir, verbose) {
     lockfile.patchedDependencies = transformedPatchedDeps
   }
 
-  if (lockfile.importers) {
-    const transformedImporters = {}
+  const transformedImporters = {}
 
-    for (const [importerId, snapshot] of Object.entries(lockfile.importers)) {
-      let scopedImporterId =
-        importerId.startsWith(`${baseImporterId}/`)
-          ? importerId.slice(baseImporterId.length + 1)
-          : (importerId === baseImporterId ? '.' : undefined)
+  for (const [importerId, snapshot] of Object.entries(lockfile.importers)) {
+    let scopedImporterId =
+      importerId.startsWith(`${baseImporterId}/`)
+        ? importerId.slice(baseImporterId.length + 1)
+        : (importerId === baseImporterId ? '.' : undefined)
 
-      if (scopedImporterId) {
-        transformedImporters[scopedImporterId] = filterLinkedDepsOutOfScope(
-          scopedImporterId,
-          snapshot,
-          scopedDir,
-          pkgsOutOfScope, // appended to
-        )
-      }
+    if (scopedImporterId) {
+      transformedImporters[scopedImporterId] = filterLinkedDepsOutOfScope(
+        scopedImporterId,
+        snapshot,
+        scopedDir,
+        pkgsOutOfScope, // appended to
+      )
     }
-
-    lockfile.importers = transformedImporters
   }
+
+  lockfile.importers = transformedImporters
 
   const dedicatedLockfile = pruneSharedLockfile(lockfile)
   await writeWantedLockfile(scopedDir, dedicatedLockfile)
-  verbose && console.log('Lockfile written.')
+  verbose && console.log('Lockfile written.\n')
 
   if (pkgsOutOfScope.length) {
     if (verbose) {
       console.log(
-        'WARNING: Discarded linked packages outside of\n' + scopedDir + ':\n' +
+        'WARNING: Discarded linked package references outside of\n' + scopedDir + ':\n' +
         '- ' + pkgsOutOfScope.join('\n- ') + '\n'
       )
     }
@@ -112,20 +115,47 @@ function filterLinkedDepsOutOfScope(importerId, snapshot, scopedDir, pkgsOutOfSc
   return transformedSnapshot
 }
 
-// General Utils (TODO: make DRY)
+// RE-LINK LOCKFILE (UNRELATED)
 // -------------------------------------------------------------------------------------------------
 
-function exec(cmdParts, options = {}) {
-  return new Promise((resolve, reject) => {
-    spawn(cmdParts[0], cmdParts.slice(1), {
-      shell: false,
-      ...options,
-    }).on('close', (status) => {
-      if (status === 0) {
-        resolve()
-      } else {
-        reject(new Error(`Command failed with status code ${status}`))
+/*
+HACK: pass-in readManifest because code reuse is hard. Refactor as a util within this package.
+*/
+export async function relinkLockfile(rootDir, lockfile, readManifest) {
+  const transformedImporters = {}
+
+  for (const [importerId, snapshot] of Object.entries(lockfile.importers)) {
+    transformedImporters[importerId] = await relinkDeps(
+      rootDir,
+      importerId,
+      snapshot,
+      readManifest,
+    )
+  }
+
+  return { ...lockfile, importers: transformedImporters }
+}
+
+async function relinkDeps(rootDir, importerId, snapshot, readManifest) {
+  const manifest = await readManifest(joinPaths(rootDir, importerId))
+  const transformedSpecifiers = {}
+
+  for (const [depName, specifier] of Object.entries(snapshot.specifiers)) {
+    let updatedLinkSpecifier
+
+    for (const depField of DEPENDENCIES_FIELDS) {
+      const depLocator = snapshot[depField]?.[depName]
+      if (depLocator && depLocator.startsWith(linkPrefix)) {
+        updatedLinkSpecifier = manifest[depField]?.[depName]
+        break
       }
-    })
-  })
+    }
+
+    transformedSpecifiers[depName] = updatedLinkSpecifier || specifier
+  }
+
+  return {
+    ...snapshot,
+    specifiers: transformedSpecifiers,
+  }
 }
