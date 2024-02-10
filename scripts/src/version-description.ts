@@ -3,7 +3,7 @@ import { readFile, writeFile } from 'fs/promises'
 import { readManifest } from './meta/utils.js'
 
 const changelogSrc = 'standard/CHANGELOG.md'
-const releaseNotesDest = 'STAGED-RELEASE-NOTES.md'
+const releaseNotesDest = 'VERSION-DESCRIPTION.md'
 
 export default async function() {
   const monorepoDir = process.cwd()

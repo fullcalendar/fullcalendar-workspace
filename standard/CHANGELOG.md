@@ -6,7 +6,7 @@
 - locale: fix bg (#7493)
 - locale: fix ca (#7394)
 - locale: fix nl (#7471)
--
+
 ## 6.1.10 (2023-11-28)
 
 - feature: Angular version 17 support (#7525)
