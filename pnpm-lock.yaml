@@ -50,25 +50,25 @@ importers:
         specifier: ~13.3.0
         version: 13.3.12(@angular/common@13.3.12)(@angular/core@13.3.12)(@angular/platform-browser@13.3.12)(rxjs@7.5.7)
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../standard/packages/list/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timegrid':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../premium/packages/resource-timegrid/dist
       '@fullcalendar/resource-timeline':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../premium/packages/resource-timeline/dist
       rxjs:
         specifier: ~7.5.0
@@ -133,19 +133,19 @@ importers:
         specifier: ^7.9.4
         version: 7.18.6(@babel/core@7.20.2)
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/list':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../standard/packages/list/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../premium/packages/resource-timeline/dist
       '@rollup/plugin-babel':
         specifier: ^5.0.0
@@ -238,19 +238,19 @@ importers:
         specifier: ^7.12.1
         version: 7.20.1
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../premium/packages/resource-timeline/dist
       '@vue/test-utils':
         specifier: ^1.0.3
@@ -313,17 +313,17 @@ importers:
   contrib/vue3:
     devDependencies:
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../standard/packages/daygrid/dist
       '@vitejs/plugin-vue':
         specifier: ^3.2.0
         version: 3.2.0(vite@3.2.4)(vue@3.2.45)
       '@vue/test-utils':
         specifier: next
-        version: 2.4.0-alpha.1(vue@3.2.45)
+        version: 2.4.0-alpha.2(vue@3.2.45)
       concurrently:
         specifier: ^5.3.0
         version: 5.3.0
@@ -362,7 +362,7 @@ importers:
         version: 3.2.45
       vue-i18n:
         specifier: next
-        version: 9.3.0-beta.17(vue@3.2.45)
+        version: 9.9.0(vue@3.2.45)
 
   examples/angular12:
     dependencies:
@@ -2870,14 +2870,14 @@ importers:
   premium/packages/adaptive:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../premium-common/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
@@ -2902,118 +2902,118 @@ importers:
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
   premium/packages/resource:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../premium-common/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
   premium/packages/resource-daygrid:
     dependencies:
       '@fullcalendar/daygrid':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../../standard/packages/daygrid/dist
       '@fullcalendar/premium-common':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../premium-common/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../../standard/packages/core/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../resource/dist
     publishDirectory: ./dist
 
   premium/packages/resource-timegrid:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../premium-common/dist
       '@fullcalendar/resource-daygrid':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../resource-daygrid/dist
       '@fullcalendar/timegrid':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../../standard/packages/timegrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../../standard/packages/core/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../resource/dist
     publishDirectory: ./dist
 
   premium/packages/resource-timeline:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../premium-common/dist
       '@fullcalendar/scrollgrid':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../scrollgrid/dist
       '@fullcalendar/timeline':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../timeline/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../../standard/packages/core/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../resource/dist
     publishDirectory: ./dist
 
   premium/packages/scrollgrid:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../premium-common/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
   premium/packages/timeline:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../premium-common/dist
       '@fullcalendar/scrollgrid':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../scrollgrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
@@ -3134,7 +3134,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3144,7 +3144,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3171,7 +3171,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3181,7 +3181,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3191,7 +3191,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../core/dist
       ical.js:
         specifier: ^1.4.0
@@ -3204,7 +3204,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3214,7 +3214,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3224,7 +3224,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../core/dist
       luxon:
         specifier: ^1.12.1
@@ -3237,7 +3237,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../core/dist
       '@types/luxon':
         specifier: ^2.0.9
@@ -3253,7 +3253,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../core/dist
       '@types/luxon':
         specifier: ^3.3.0
@@ -3269,7 +3269,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../core/dist
       moment:
         specifier: ^2.29.1
@@ -3282,7 +3282,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../core/dist
       moment-timezone:
         specifier: ^0.5.40
@@ -3292,14 +3292,14 @@ importers:
   standard/packages/multimonth:
     dependencies:
       '@fullcalendar/daygrid':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../daygrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3309,7 +3309,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../core/dist
       rrule:
         specifier: ^2.6.0
@@ -3319,14 +3319,14 @@ importers:
   standard/packages/timegrid:
     dependencies:
       '@fullcalendar/daygrid':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../daygrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3336,7 +3336,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -6328,11 +6328,13 @@ packages:
       '@babel/core': 7.14.8
       '@babel/helper-annotate-as-pure': 7.22.5
       '@babel/helper-environment-visitor': 7.22.20
-      '@babel/helper-function-name': 7.23.0
+      '@babel/helper-function-name': 7.19.0
       '@babel/helper-member-expression-to-functions': 7.18.9
-      '@babel/helper-optimise-call-expression': 7.22.5
-      '@babel/helper-replace-supers': 7.22.20(@babel/core@7.14.8)
+      '@babel/helper-optimise-call-expression': 7.18.6
+      '@babel/helper-replace-supers': 7.19.1
       '@babel/helper-split-export-declaration': 7.22.6
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/helper-create-class-features-plugin@7.20.2(@babel/core@7.16.12):
@@ -6344,11 +6346,13 @@ packages:
       '@babel/core': 7.16.12
       '@babel/helper-annotate-as-pure': 7.22.5
       '@babel/helper-environment-visitor': 7.22.20
-      '@babel/helper-function-name': 7.23.0
+      '@babel/helper-function-name': 7.19.0
       '@babel/helper-member-expression-to-functions': 7.18.9
-      '@babel/helper-optimise-call-expression': 7.22.5
-      '@babel/helper-replace-supers': 7.22.20(@babel/core@7.16.12)
+      '@babel/helper-optimise-call-expression': 7.18.6
+      '@babel/helper-replace-supers': 7.19.1
       '@babel/helper-split-export-declaration': 7.22.6
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/helper-create-class-features-plugin@7.20.2(@babel/core@7.18.10):
@@ -6360,11 +6364,13 @@ packages:
       '@babel/core': 7.18.10
       '@babel/helper-annotate-as-pure': 7.22.5
       '@babel/helper-environment-visitor': 7.22.20
-      '@babel/helper-function-name': 7.23.0
+      '@babel/helper-function-name': 7.19.0
       '@babel/helper-member-expression-to-functions': 7.18.9
-      '@babel/helper-optimise-call-expression': 7.22.5
-      '@babel/helper-replace-supers': 7.22.20(@babel/core@7.18.10)
+      '@babel/helper-optimise-call-expression': 7.18.6
+      '@babel/helper-replace-supers': 7.19.1
       '@babel/helper-split-export-declaration': 7.22.6
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/helper-create-class-features-plugin@7.20.2(@babel/core@7.20.2):
@@ -6394,11 +6400,13 @@ packages:
       '@babel/core': 7.21.4
       '@babel/helper-annotate-as-pure': 7.22.5
       '@babel/helper-environment-visitor': 7.22.20
-      '@babel/helper-function-name': 7.23.0
+      '@babel/helper-function-name': 7.19.0
       '@babel/helper-member-expression-to-functions': 7.18.9
-      '@babel/helper-optimise-call-expression': 7.22.5
-      '@babel/helper-replace-supers': 7.22.20(@babel/core@7.21.4)
+      '@babel/helper-optimise-call-expression': 7.18.6
+      '@babel/helper-replace-supers': 7.19.1
       '@babel/helper-split-export-declaration': 7.22.6
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/helper-create-class-features-plugin@7.21.4(@babel/core@7.14.8):
@@ -7411,7 +7419,7 @@ packages:
       '@babel/core': ^7.0.0
     dependencies:
       '@babel/core': 7.18.10
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.21.5
     dev: true
 
   /@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression@7.18.6(@babel/core@7.20.2):
@@ -7431,7 +7439,7 @@ packages:
       '@babel/core': ^7.0.0
     dependencies:
       '@babel/core': 7.21.4
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.21.5
     dev: true
 
   /@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression@7.23.3(@babel/core@7.16.12):
@@ -7639,6 +7647,8 @@ packages:
       '@babel/core': 7.14.8
       '@babel/helper-create-class-features-plugin': 7.20.2(@babel/core@7.14.8)
       '@babel/helper-plugin-utils': 7.20.2
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/plugin-proposal-class-properties@7.18.6(@babel/core@7.16.12):
@@ -7650,6 +7660,8 @@ packages:
       '@babel/core': 7.16.12
       '@babel/helper-create-class-features-plugin': 7.20.2(@babel/core@7.16.12)
       '@babel/helper-plugin-utils': 7.20.2
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/plugin-proposal-class-properties@7.18.6(@babel/core@7.18.10):
@@ -7661,6 +7673,8 @@ packages:
       '@babel/core': 7.18.10
       '@babel/helper-create-class-features-plugin': 7.20.2(@babel/core@7.18.10)
       '@babel/helper-plugin-utils': 7.20.2
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/plugin-proposal-class-properties@7.18.6(@babel/core@7.20.2):
@@ -7685,6 +7699,8 @@ packages:
       '@babel/core': 7.21.4
       '@babel/helper-create-class-features-plugin': 7.20.2(@babel/core@7.21.4)
       '@babel/helper-plugin-utils': 7.20.2
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/plugin-proposal-class-static-block@7.18.6(@babel/core@7.20.2):
@@ -7809,7 +7825,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.14.8
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.21.5
       '@babel/plugin-syntax-export-namespace-from': 7.8.3(@babel/core@7.14.8)
     dev: true
 
@@ -7820,7 +7836,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.16.12
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.21.5
       '@babel/plugin-syntax-export-namespace-from': 7.8.3(@babel/core@7.16.12)
     dev: true
 
@@ -7831,7 +7847,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.18.10
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.21.5
       '@babel/plugin-syntax-export-namespace-from': 7.8.3(@babel/core@7.18.10)
     dev: true
 
@@ -7853,7 +7869,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.4
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.21.5
       '@babel/plugin-syntax-export-namespace-from': 7.8.3(@babel/core@7.21.4)
     dev: true
 
@@ -8660,7 +8676,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.14.8
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.21.5
     dev: true
 
   /@babel/plugin-syntax-dynamic-import@7.8.3(@babel/core@7.16.12):
@@ -8669,7 +8685,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.16.12
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.21.5
     dev: true
 
   /@babel/plugin-syntax-dynamic-import@7.8.3(@babel/core@7.18.10):
@@ -8678,7 +8694,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.18.10
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.21.5
     dev: true
 
   /@babel/plugin-syntax-dynamic-import@7.8.3(@babel/core@7.20.2):
@@ -8696,7 +8712,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.4
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.21.5
     dev: true
 
   /@babel/plugin-syntax-dynamic-import@7.8.3(@babel/core@7.23.2):
@@ -8705,7 +8721,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.23.2
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.21.5
     dev: true
 
   /@babel/plugin-syntax-export-namespace-from@7.8.3(@babel/core@7.14.8):
@@ -8769,7 +8785,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.18.10
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.21.5
     dev: true
 
   /@babel/plugin-syntax-import-assertions@7.20.0(@babel/core@7.20.2):
@@ -8789,7 +8805,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.4
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.21.5
     dev: true
 
   /@babel/plugin-syntax-import-assertions@7.23.3(@babel/core@7.23.2):
@@ -14794,42 +14810,25 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@intlify/core-base@9.3.0-beta.17:
-    resolution: {integrity: sha512-M/ZUU53G68YKN59E2gd/bOZB4TvFMWXvpWIgwsLJeAjktKYOt7JDSGdGHYGivKAG12pTGWeIeY6WmJCaDenloA==}
-    engines: {node: '>= 14'}
+  /@intlify/core-base@9.9.0:
+    resolution: {integrity: sha512-C7UXPymDIOlMGSNjAhNLtKgzITc/8BjINK5gNKXg8GiWCTwL6n3MWr55czksxn8RM5wTMz0qcLOFT+adtaVQaA==}
+    engines: {node: '>= 16'}
     dependencies:
-      '@intlify/devtools-if': 9.3.0-beta.17
-      '@intlify/message-compiler': 9.3.0-beta.17
-      '@intlify/shared': 9.3.0-beta.17
-      '@intlify/vue-devtools': 9.3.0-beta.17
+      '@intlify/message-compiler': 9.9.0
+      '@intlify/shared': 9.9.0
     dev: true
 
-  /@intlify/devtools-if@9.3.0-beta.17:
-    resolution: {integrity: sha512-up5vm1ytN9Wm/loKjFlp5TuDy7dmBVgU3UOk1vLUXUfYH+EMlm07pUXNiIpSjdt4Eak+bSLfsWcqPwhsb2jknw==}
-    engines: {node: '>= 14'}
+  /@intlify/message-compiler@9.9.0:
+    resolution: {integrity: sha512-yDU/jdUm9KuhEzYfS+wuyja209yXgdl1XFhMlKtXEgSFTxz4COZQCRXXbbH8JrAjMsaJ7bdoPSLsKlY6mXG2iA==}
+    engines: {node: '>= 16'}
     dependencies:
-      '@intlify/shared': 9.3.0-beta.17
+      '@intlify/shared': 9.9.0
+      source-map-js: 1.0.2
     dev: true
 
-  /@intlify/message-compiler@9.3.0-beta.17:
-    resolution: {integrity: sha512-i7hvVIRk1Ax2uKa9xLRJCT57to08OhFMhFXXjWN07rmx5pWQYQ23MfX1xgggv9drnWTNhqEiD+u4EJeHoS5+Ww==}
-    engines: {node: '>= 14'}
-    dependencies:
-      '@intlify/shared': 9.3.0-beta.17
-      source-map: 0.6.1
-    dev: true
-
-  /@intlify/shared@9.3.0-beta.17:
-    resolution: {integrity: sha512-mscf7RQsUTOil35jTij4KGW1RC9SWQjYScwLxP53Ns6g24iEd5HN7ksbt9O6FvTmlQuX77u+MXpBdfJsGqizLQ==}
-    engines: {node: '>= 14'}
-    dev: true
-
-  /@intlify/vue-devtools@9.3.0-beta.17:
-    resolution: {integrity: sha512-Wzl+3kZONjYG3lL8I8G+4H46s7m3CkxyoZXjZgC0zMy51cq1OTlOuOohcgxpwcSSYYVj9Y86PvlSakPNqHEweA==}
-    engines: {node: '>= 14'}
-    dependencies:
-      '@intlify/core-base': 9.3.0-beta.17
-      '@intlify/shared': 9.3.0-beta.17
+  /@intlify/shared@9.9.0:
+    resolution: {integrity: sha512-1ECUyAHRrzOJbOizyGufYP2yukqGrWXtkmTu4PcswVnWbkcjzk3YQGmJ0bLkM7JZ0ZYAaohLGdYvBYnTOGYJ9g==}
+    engines: {node: '>= 16'}
     dev: true
 
   /@ionic/angular-toolkit@8.0.0:
@@ -19202,8 +19201,8 @@ packages:
       - whiskers
     dev: true
 
-  /@vue/devtools-api@6.4.5:
-    resolution: {integrity: sha512-JD5fcdIuFxU4fQyXUu3w2KpAJHzTVdN+p4iOX2lMWSHMOoQdMAcpFLZzm9Z/2nmsoZ1a96QEhZ26e50xLBsgOQ==}
+  /@vue/devtools-api@6.5.1:
+    resolution: {integrity: sha512-+KpckaAQyfbvshdDW5xQylLni1asvNSGme1JFs8I1+/H5pHEhqUKMEQD/qn3Nx5+/nycBq11qAEi8lk+LXI2dA==}
     dev: true
 
   /@vue/reactivity-transform@3.2.45:
@@ -19258,8 +19257,8 @@ packages:
       vue-template-compiler: 2.7.14
     dev: true
 
-  /@vue/test-utils@2.4.0-alpha.1(vue@3.2.45):
-    resolution: {integrity: sha512-Irbty6HWqiaMEPppPROp6EitGo87NfpZVtZ9QaOqBUnydGX7w9ond7/pl1t9pqUSecCEunLmXkie4MMe3oud+w==}
+  /@vue/test-utils@2.4.0-alpha.2(vue@3.2.45):
+    resolution: {integrity: sha512-P1XgbB8sEIZvzG+9hJGL25fhjO+P4TXTZC9ApM7NAUqqzLEP1tIa7hMtp6XFfi+M6Taw5xa2/Fwt3OG2gk80Xg==}
     peerDependencies:
       '@vue/compiler-dom': ^3.0.1
       '@vue/server-renderer': ^3.0.1
@@ -19272,6 +19271,7 @@ packages:
     dependencies:
       js-beautify: 1.14.6
       vue: 3.2.45
+      vue-component-type-helpers: 1.6.5
     dev: true
 
   /@web3-storage/multipart-parser@1.0.0:
@@ -26766,6 +26766,7 @@ packages:
 
   /file-uri-to-path@1.0.0:
     resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -31977,6 +31978,7 @@ packages:
 
   /nan@2.17.0:
     resolution: {integrity: sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -40381,20 +40383,23 @@ packages:
       vue: 2.7.14
     dev: false
 
+  /vue-component-type-helpers@1.6.5:
+    resolution: {integrity: sha512-iGdlqtajmiqed8ptURKPJ/Olz0/mwripVZszg6tygfZSIL9kYFPJTNY6+Q6OjWGznl2L06vxG5HvNvAnWrnzbg==}
+    dev: true
+
   /vue-hot-reload-api@2.3.4:
     resolution: {integrity: sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==}
     dev: true
 
-  /vue-i18n@9.3.0-beta.17(vue@3.2.45):
-    resolution: {integrity: sha512-2r6QWgwCMjzpLb6RuIU8XPw8vU9kJu8OE4zGIOOnNq1gMYrzawO1LlK/yxG7ugWmzFA/IBqSIs6ADu0Z+PO/Ow==}
-    engines: {node: '>= 14'}
+  /vue-i18n@9.9.0(vue@3.2.45):
+    resolution: {integrity: sha512-xQ5SxszUAqK5n84N+uUyHH/PiQl9xZ24FOxyAaNonmOQgXeN+rD9z/6DStOpOxNFQn4Cgcquot05gZc+CdOujA==}
+    engines: {node: '>= 16'}
     peerDependencies:
       vue: ^3.0.0
     dependencies:
-      '@intlify/core-base': 9.3.0-beta.17
-      '@intlify/shared': 9.3.0-beta.17
-      '@intlify/vue-devtools': 9.3.0-beta.17
-      '@vue/devtools-api': 6.4.5
+      '@intlify/core-base': 9.9.0
+      '@intlify/shared': 9.9.0
+      '@vue/devtools-api': 6.5.1
       vue: 3.2.45
     dev: true
 
