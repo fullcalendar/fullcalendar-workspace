@@ -11,10 +11,11 @@ jobs:
   stage-release:
     name: Stage Release
     # Commit message matches against branch name (merge) or head commit (rebase)
+    # NOTE: YAML lines can't start with `!`, thus the weird parens
     if: >
-      ${{ github.repository == 'fullcalendar/fullcalendar-workspace' }} &&
-      ${{ !contains(github.event.head_commit.message, 'staged-release') }} &&
-      ${{ !contains(github.event.head_commit.message, 'no-stage') }}
+      github.repository == 'fullcalendar/fullcalendar-workspace' &&
+      (!contains(github.event.head_commit.message, 'staged-release')) &&
+      (!contains(github.event.head_commit.message, 'no-stage'))
     runs-on: ubuntu-latest
 
     steps:
