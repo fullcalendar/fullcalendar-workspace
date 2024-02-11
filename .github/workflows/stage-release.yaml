@@ -51,7 +51,11 @@ jobs:
           install
 
       - name: Bump Versions
-        run: pnpm run version-bump
+        # ensure all commits result in a change,
+        # esp for release that fail to build and need to be reinitiated
+        run: |
+          pnpm run version-bump && \
+          date > .changeset/staged-date.txt
 
       - name: Sync Configs
         run: pnpm run meta:update
