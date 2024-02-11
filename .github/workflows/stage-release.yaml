@@ -50,7 +50,7 @@ jobs:
           --filter '!./contrib/**' \
 
       - name: Bump Versions
-        run: pnpm run version
+        run: pnpm run version-bump
 
       - name: Sync Configs
         run: pnpm run meta:update

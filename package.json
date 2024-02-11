@@ -20,7 +20,7 @@
     "test:dev": "standard-scripts test --dev",
     "clean": "standard-scripts clean",
     "ci": "pnpm run clean --all && pnpm run lint --all && pnpm run build --all && pnpm run test --all",
-    "version": "changeset version",
+    "version-bump": "changeset version",
     "publish": "changeset publish",
     "version-notes": "workspace-scripts version-notes",
     "tag-and-release": "workspace-scripts tag-and-release"
