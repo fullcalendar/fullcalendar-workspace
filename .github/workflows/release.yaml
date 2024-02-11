@@ -52,12 +52,12 @@ jobs:
           --filter '!./contrib/**' \
           install
 
-      - name: Ensure Subrepos Updated
+      - name: Check Subrepos Updated
         run: pnpm run subrepos-updated
 
       - name: Lint
         run: pnpm \
-          --filter !'@fullcalendar-monorepos/*' \
+          --filter '!@fullcalendar-monorepos/*' \
           --filter '!./examples/**' \
           run lint
 
