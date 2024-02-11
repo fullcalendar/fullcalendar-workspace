@@ -1,3 +1,5 @@
+Some changelog stuff
+
 ## Note
 
 This changelog does not mention all releases.
