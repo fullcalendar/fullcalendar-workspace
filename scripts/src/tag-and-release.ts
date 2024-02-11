@@ -122,7 +122,9 @@ async function tagAndReleaseSubrepo(
   if (subrepoCommit !== updatedSubrepoCommit) {
     subrepoCommit = updatedSubrepoCommit
 
-    // The secretUrl gets recorded in git-subrepo config file, so reset to commit before
+    // The secretUrl gets recorded in git-subrepo config file, so reset to the commit before.
+    // Intended for CI. If happens in a developer's repo, history will be messed up a bit
+    // but better that than accidentally committing the token to the codebase later.
     if (secretUrl) {
       await execLive(['git', 'reset', '--hard', 'HEAD~1'])
     }
