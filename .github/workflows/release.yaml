@@ -46,6 +46,8 @@ jobs:
       - name: Install Dependencies
         run: |
           pnpm \
+          --filter 'fullcalendar...' \
+          --filter 'fullcalendar-scheduler...' \
           --filter '@fullcalendar/*...' \
           --filter '@fullcalendar-scripts/*...' \
           --filter '@fullcalendar-tests/*...' \
@@ -65,6 +67,8 @@ jobs:
       - name: Build
         run: |
           pnpm \
+          --filter 'fullcalendar...' \
+          --filter 'fullcalendar-scheduler...' \
           --filter '@fullcalendar/*...' \
           --filter '@fullcalendar-scripts/*...' \
           --filter '@fullcalendar-tests/*...' \
@@ -75,6 +79,8 @@ jobs:
         if: ${{ !contains(github.event.pull_request.title, 'no-test') }}
         run: |
           pnpm \
+          --filter 'fullcalendar...' \
+          --filter 'fullcalendar-scheduler...' \
           --filter '@fullcalendar/*...' \
           --filter '@fullcalendar-scripts/*...' \
           --filter '@fullcalendar-tests/*...' \

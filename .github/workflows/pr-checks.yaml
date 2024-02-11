@@ -39,6 +39,8 @@ jobs:
       - name: Install Dependencies
         run: |
           pnpm \
+          --filter 'fullcalendar...' \
+          --filter 'fullcalendar-scheduler...' \
           --filter '@fullcalendar/*...' \
           --filter '@fullcalendar-scripts/*...' \
           --filter '@fullcalendar-tests/*...' \
@@ -54,6 +56,8 @@ jobs:
       - name: Build
         run: |
           pnpm \
+          --filter 'fullcalendar...' \
+          --filter 'fullcalendar-scheduler...' \
           --filter '@fullcalendar/*...' \
           --filter '@fullcalendar-scripts/*...' \
           --filter '@fullcalendar-tests/*...' \
@@ -63,6 +67,8 @@ jobs:
       # - name: Test
       #   run: |
       #     pnpm \
+      #     --filter 'fullcalendar...' \
+      #     --filter 'fullcalendar-scheduler...' \
       #     --filter '@fullcalendar/*...' \
       #     --filter '@fullcalendar-scripts/*...' \
       #     --filter '@fullcalendar-tests/*...' \
