@@ -15,7 +15,7 @@ jobs:
     if: >
       github.repository == 'fullcalendar/fullcalendar-workspace' &&
       github.event.pull_request.head.repo.full_name == 'fullcalendar/fullcalendar-workspace' &&
-      github.event.pull_request.head.ref == 'next-version-bump' &&
+      github.event.pull_request.head.ref == 'stage-release' &&
       github.event.pull_request.merged
     runs-on: ubuntu-latest
 

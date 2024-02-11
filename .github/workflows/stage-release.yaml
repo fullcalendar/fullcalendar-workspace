@@ -1,28 +1,20 @@
-name: Version Bump & Config Sync
+name: Stage Release
 on:
   push:
     branches:
       - newrepo
-    paths:
-      - 'scripts/**'
-      - '.changeset/**'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
-      - 'turbo.json'
-      - '.npmrc'
-      - '.editorconfig'
-      - 'standard/CHANGELOG.md'
 
 env:
   TZ: "America/New_York"
 
 jobs:
-  version-bump:
-    name: Version Bump & Config Sync
+  stage-release:
+    name: Stage Release
     # Commit message matches against branch name (merge) or head commit (rebase)
     if: >
       github.repository == 'fullcalendar/fullcalendar-workspace' &&
-      !contains(github.event.head_commit.message, 'next-version-bump')
+      !contains(github.event.head_commit.message, 'stage-release') &&
+      !contains(github.event.head_commit.message, 'no-stage')
     runs-on: ubuntu-latest
 
     steps:
@@ -69,8 +61,8 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          branch: next-version-bump
-          commit-message: next-version-bump
+          branch: stage-release
+          commit-message: stage-release
           title: Next Version Bump
           body-path: VERSION-NOTES.md
           delete-branch: true # delete old branch (if no open PRs) before creating new
