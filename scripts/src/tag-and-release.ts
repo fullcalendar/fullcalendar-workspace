@@ -118,6 +118,7 @@ async function tagAndReleaseSubrepo(
 
   const updatedSubrepo = await getSubrepo(monorepoDir, subrepoSubdir)
   const updatedSubrepoCommit = updatedSubrepo['pulled-commit']
+
   if (subrepoCommit !== updatedSubrepoCommit) {
     subrepoCommit = updatedSubrepoCommit
 
@@ -149,7 +150,7 @@ async function tagAndReleaseSubrepo(
     await createGithubRelease(
       githubToken,
       githubRepo,
-      tagName,
+      tagNameShort, // the tag the remote uses
       version,
       monorepoDir,
       isStandard && `standard/dist/fullcalendar-${version}.zip`,
