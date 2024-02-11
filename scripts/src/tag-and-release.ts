@@ -134,15 +134,17 @@ async function tagAndReleaseSubrepo(
   console.log(`Creating tag ${tagName} ...`)
   await execLive(['git', 'tag', '-a', tagName, '-m', tagNameShort, subrepoCommit], execOpts)
 
-  console.log(`Pushing tag ${tagName} ...`)
-  await execLive(
-    // provide a tag refspec so the remote gets the 'short' name
-    ['git', 'push', secretUrl || subrepoRemote, `${tagName}:${tagNameShort}`],
-    execOpts,
-  )
-
-  console.log(`Locally deleting tag ${tagName} ...`)
-  await execLive(['git', 'tag', '-d', tagName], execOpts)
+  try {
+    console.log(`Pushing tag ${tagName} ...`)
+    await execLive(
+      // provide a tag refspec so the remote gets the 'short' name
+      ['git', 'push', secretUrl || subrepoRemote, `${tagName}:${tagNameShort}`],
+      execOpts,
+    )
+  } finally {
+    console.log(`Locally deleting tag ${tagName} ...`)
+    await execLive(['git', 'tag', '-d', tagName], execOpts)
+  }
 
   // Create GitHub release
   if (githubToken) {
