@@ -6,8 +6,6 @@
 - locale: fix bg (#7493)
 - locale: fix ca (#7394)
 - locale: fix nl (#7471)
-- more!!!
-- another test
 
 ## 6.1.10 (2023-11-28)
 
