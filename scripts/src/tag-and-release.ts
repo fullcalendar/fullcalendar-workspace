@@ -2,7 +2,7 @@ import { basename, join as joinPaths } from 'path'
 import { readFile } from 'fs/promises'
 import { Octokit } from 'octokit'
 import { execLive } from '@fullcalendar-scripts/standard/utils/exec'
-import { getSubrepos, readManifest } from './meta/utils.js'
+import { getSubrepo, getSubrepos, readManifest } from './meta/utils.js'
 import { changelogSrc, getChangelogEntry } from './version-notes.js'
 
 export default async function() {
@@ -17,8 +17,8 @@ export default async function() {
   //   errorMap['.'] = error
   // })
 
-  for (const [subrepoSubdir, subrepoData] of Object.entries(subrepoMap)) {
-    await tagAndReleaseSubrepo(monorepoDir, monorepoVersion, subrepoSubdir, subrepoData)
+  for (const [subrepoSubdir, subrepo] of Object.entries(subrepoMap)) {
+    await tagAndReleaseSubrepo(monorepoDir, monorepoVersion, subrepoSubdir, subrepo)
       .catch((error: Error) => {
         errorMap[subrepoSubdir] = error
       })
@@ -84,7 +84,7 @@ async function tagAndReleaseSubrepo(
   monorepoDir: string,
   version: string,
   subrepoSubdir: string,
-  subrepoData: any,
+  subrepo: any,
 ): Promise<void> {
   if (subrepoSubdir !== 'contrib/angular') {
     return
@@ -92,8 +92,8 @@ async function tagAndReleaseSubrepo(
 
   const execOpts = { cwd: monorepoDir }
   const isCi = Boolean(process.env.CI)
-  const subrepoRemote = subrepoData['remote-url']
-  const subrepoCommit = subrepoData['pulled-commit']
+  const subrepoRemote = subrepo['remote-url']
+  let subrepoCommit = subrepo['pulled-commit']
 
   if (!subrepoRemote || !subrepoCommit) {
     throw new Error('Could not determine subrepo remote/commit')
@@ -114,6 +114,17 @@ async function tagAndReleaseSubrepo(
     await execLive([gitSubrepoBin, 'push', subrepoSubdir], execOpts)
   } else {
     throw new Error(`Must specify ${githubTokenName} environment variable`)
+  }
+
+  const updatedSubrepo = await getSubrepo(monorepoDir, subrepoSubdir)
+  const updatedSubrepoCommit = updatedSubrepo['pulled-commit']
+  if (subrepoCommit !== updatedSubrepoCommit) {
+    subrepoCommit = updatedSubrepoCommit
+
+    // The secretUrl gets recorded in git-subrepo config file, so reset to commit before
+    if (secretUrl) {
+      await execLive(['git', 'reset', '--hard', 'HEAD~1'])
+    }
   }
 
   const tagNameShort = `v${version}`

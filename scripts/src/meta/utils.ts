@@ -17,11 +17,16 @@ export async function getSubrepoDirs(monorepoDir: string): Promise<string[]> {
   return Object.keys(await getSubrepos(monorepoDir))
 }
 
-export async function getSubrepos(monorepoDir: string) {
+export async function getSubrepo(monorepo: string, name: string) {
+  const subrepos = await getSubrepos(monorepo, name)
+  return subrepos[name]
+}
+
+export async function getSubrepos(monorepoDir: string, singleName?: string) {
   const s: string = await execCapture([
     joinPaths(monorepoDir, 'scripts/bin/git-subrepo.sh'), // TODO: DRY
     'status',
-    '--all',
+    singleName || '--all',
   ], {
     cwd: monorepoDir,
   })
