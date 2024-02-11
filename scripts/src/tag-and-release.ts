@@ -45,9 +45,11 @@ async function tagAndReleaseRoot(monorepoDir: string, version: string): Promise<
   const githubRepo = process.env.GITHUB_REPOSITORY
   const tagName = `v${version}`
 
+  // Create Git tag
   console.log(`Creating root tag ${tagName}...`)
   await execLive(['git', 'tag', '-a', tagName, '-m', tagName], execOpts)
 
+  // Push Git tag
   if (githubToken && githubRepo) {
     console.log('Pushing root tag to remote with credentials...')
     const secretUrl = `https://${githubToken}@github.com/${githubRepo}.git`
@@ -59,6 +61,7 @@ async function tagAndReleaseRoot(monorepoDir: string, version: string): Promise<
     throw new Error('Must specify GITHUB_TOKEN/GITHUB_REPOSITORY')
   }
 
+  // Create GitHub release
   if (githubToken && githubRepo) {
     await createGithubRelease(
       githubToken,
@@ -95,6 +98,7 @@ async function tagAndReleaseSubrepo(
   const secretUrl = githubToken && `https://${githubToken}@github.com/${githubRepo}.git`
   const gitSubrepoBin = joinPaths(monorepoDir, 'scripts/bin/git-subrepo.sh') // TODO: DRY
 
+  // Push subrepo
   if (secretUrl) {
     console.log('Pushing subrepo branch to remote with credentials...')
     await execLive([gitSubrepoBin, 'push', subrepoSubdir, '-r', secretUrl], execOpts)
@@ -121,6 +125,7 @@ async function tagAndReleaseSubrepo(
   console.log(`Locally deleting tag ${tagName} ...`)
   await execLive(['git', 'tag', '-d', tagName], execOpts)
 
+  // Create GitHub release
   if (githubToken) {
     const isStandard = githubRepo === 'fullcalendar/fullcalendar'
     await createGithubRelease(
