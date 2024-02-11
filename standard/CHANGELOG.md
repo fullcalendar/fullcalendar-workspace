@@ -1,4 +1,4 @@
-## 6.1.11 (TEST)
+## 6.1.11-test
 
 - feature: Angular version 17 support (#7525)
 - fix: Vue 3 background event with custom rendering, not receiving el in eventDidMount (#7524)

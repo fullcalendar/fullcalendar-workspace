@@ -86,7 +86,7 @@ async function tagAndReleaseSubrepo(
   subrepoSubdir: string,
   subrepo: any,
 ): Promise<void> {
-  if (subrepoSubdir !== 'contrib/angular') {
+  if (subrepoSubdir !== 'standard') {
     return
   }
 
@@ -150,7 +150,7 @@ async function tagAndReleaseSubrepo(
 
   // Create GitHub release
   if (githubToken) {
-    const isStandard = githubRepo === 'fullcalendar/fullcalendar'
+    const isStandard = githubRepo === 'fullcalendar/fullcalendar' // TODO: read from manifest?
     await createGithubRelease(
       githubToken,
       githubRepo,
