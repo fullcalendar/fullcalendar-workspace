@@ -13,7 +13,7 @@ jobs:
     # Commit message matches against branch name (merge) or head commit (rebase)
     if: >
       github.repository == 'fullcalendar/fullcalendar-workspace' &&
-      !contains(github.event.head_commit.message, 'stage-release') &&
+      !contains(github.event.head_commit.message, 'staged-release') &&
       !contains(github.event.head_commit.message, 'no-stage')
     runs-on: ubuntu-latest
 
@@ -62,8 +62,8 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          branch: stage-release
-          commit-message: stage-release
+          branch: staged-release
+          commit-message: staged-release
           title: Next Version
           body-path: VERSION-NOTES.md
           delete-branch: true # delete old branch (if no open PRs) before creating new
