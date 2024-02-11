@@ -7,6 +7,7 @@ export default async function() {
   const gitSubrepoBin = joinPaths(monorepoDir, 'scripts/bin/git-subrepo.sh') // TODO: DRY
 
   await execLive([gitSubrepoBin, 'fetch', '--all'])
+  console.log()
 
   const subrepos = await getSubrepos(monorepoDir)
 
@@ -21,4 +22,7 @@ export default async function() {
       )
     }
   }
+
+  console.log('All subrepos up-to-date')
+  console.log()
 }
