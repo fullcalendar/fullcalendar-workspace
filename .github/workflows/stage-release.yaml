@@ -63,6 +63,6 @@ jobs:
         with:
           branch: stage-release
           commit-message: stage-release
-          title: Next Version Bump
+          title: Next Version
           body-path: VERSION-NOTES.md
           delete-branch: true # delete old branch (if no open PRs) before creating new
