@@ -55,13 +55,6 @@ jobs:
       - name: Check Subrepos Updated
         run: pnpm run subrepos-updated
 
-      - name: DEBUG
-        run: |
-          pnpm \
-          --filter '!@fullcalendar-monorepos/*' \
-          --filter '!./examples/**' \
-          list --depth -1
-
       - name: Lint
         run: |
           pnpm \
