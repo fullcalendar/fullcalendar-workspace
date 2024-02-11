@@ -10,6 +10,7 @@ export default async function() {
   console.log()
 
   const subrepos = await getSubrepos(monorepoDir)
+  let errorCnt = 0
 
   for (const subdir in subrepos) {
     const subrepo = subrepos[subdir]
@@ -17,10 +18,15 @@ export default async function() {
     const upstreamRef = subrepo['upstream-ref']
 
     if (!pulledCommit || !upstreamRef || pulledCommit !== upstreamRef) {
-      throw new Error(
+      errorCnt++
+      console.error(
         `Subrepo '${subdir}' is not up-to-date with remote (${pulledCommit} <- ${upstreamRef})`,
       )
     }
+  }
+
+  if (errorCnt) {
+    process.exit(1)
   }
 
   console.log('All subrepos up-to-date')

@@ -33,6 +33,8 @@ export default async function() {
       console.error(error)
       console.error()
     }
+
+    process.exit(1)
   }
 }
 
