@@ -3,7 +3,8 @@ import { readFile, writeFile } from 'fs/promises'
 import { readManifest } from './meta/utils.js'
 
 // TODO: make DRY with other configs
-const changelogSrc = 'standard/CHANGELOG.md'
+// export is yuck
+export const changelogSrc = 'standard/CHANGELOG.md'
 const releaseNotesDest = 'VERSION-NOTES.md'
 
 export default async function() {
@@ -18,7 +19,7 @@ export default async function() {
   await writeFile(releaseNotesDest, releaseNotes)
 }
 
-async function getChangelogEntry(
+export async function getChangelogEntry(
   changelogPath: string,
   desiredVersion: string,
 ) {

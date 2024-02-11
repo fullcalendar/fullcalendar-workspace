@@ -3,18 +3,19 @@ import { readFile } from 'fs/promises'
 import { Octokit } from 'octokit'
 import { execLive } from '@fullcalendar-scripts/standard/utils/exec'
 import { getSubrepos, readManifest } from './meta/utils.js'
+import { changelogSrc, getChangelogEntry } from './version-notes.js'
 
 export default async function() {
   const monorepoDir = process.cwd()
   const monorepoManifest = await readManifest(monorepoDir)
-  const monorepoVersion = monorepoManifest.version
+  const monorepoVersion = monorepoManifest.version + '-test' // temporary!!!
 
   const subrepoMap = await getSubrepos(monorepoDir)
   const errorMap = {} as any
 
-  await tagAndReleaseRoot(monorepoDir, monorepoVersion).catch((error: Error) => {
-    errorMap['.'] = error
-  })
+  // await tagAndReleaseRoot(monorepoDir, monorepoVersion).catch((error: Error) => {
+  //   errorMap['.'] = error
+  // })
 
   for (const [subrepoSubdir, subrepoData] of Object.entries(subrepoMap)) {
     await tagAndReleaseSubrepo(monorepoDir, monorepoVersion, subrepoSubdir, subrepoData)
@@ -42,7 +43,7 @@ async function tagAndReleaseRoot(monorepoDir: string, version: string): Promise<
   const execOpts = { cwd: monorepoDir }
   const isCi = Boolean(process.env.CI)
   const githubToken = process.env.GITHUB_TOKEN
-  const githubRepo = process.env.GITHUB_REPOSITORY
+  const githubRepo = process.env.GITHUB_REPOSITORY || 'fullcalendar/fullcalendar-workspace' // TODO: read this from manifest
   const tagName = `v${version}`
 
   // Create Git tag
@@ -50,7 +51,7 @@ async function tagAndReleaseRoot(monorepoDir: string, version: string): Promise<
   await execLive(['git', 'tag', '-a', tagName, '-m', tagName], execOpts)
 
   // Push Git tag
-  if (githubToken && githubRepo) {
+  if (githubToken) {
     console.log('Pushing root tag to remote with credentials...')
     const secretUrl = `https://${githubToken}@github.com/${githubRepo}.git`
     await execLive(['git', 'push', secretUrl, tagName], execOpts)
@@ -58,22 +59,24 @@ async function tagAndReleaseRoot(monorepoDir: string, version: string): Promise<
     console.log('Pushing root tag to remote...')
     await execLive(['git', 'push', 'origin', tagName], execOpts)
   } else {
-    throw new Error('Must specify GITHUB_TOKEN/GITHUB_REPOSITORY')
+    throw new Error('Must specify GITHUB_TOKEN')
   }
 
   // Create GitHub release
-  if (githubToken && githubRepo) {
+  if (githubToken) {
     await createGithubRelease(
       githubToken,
       githubRepo,
       tagName,
-      joinPaths(monorepoDir, `premium/dist/fullcalendar-scheduler-${version}.zip`),
+      version,
+      monorepoDir,
+      `premium/dist/fullcalendar-scheduler-${version}.zip`,
       true, // linkToStandard
     )
   } else if (!isCi) {
     console.log('Skipping release creation')
   } else {
-    throw new Error('Must specify GITHUB_TOKEN/GITHUB_REPOSITORY')
+    throw new Error('Must specify GITHUB_TOKEN')
   }
 }
 
@@ -83,6 +86,10 @@ async function tagAndReleaseSubrepo(
   subrepoSubdir: string,
   subrepoData: any,
 ): Promise<void> {
+  if (subrepoSubdir !== 'contrib/angular') {
+    return
+  }
+
   const execOpts = { cwd: monorepoDir }
   const isCi = Boolean(process.env.CI)
   const subrepoRemote = subrepoData['remote-url']
@@ -132,7 +139,9 @@ async function tagAndReleaseSubrepo(
       githubToken,
       githubRepo,
       tagName,
-      isStandard && joinPaths(monorepoDir, `standard/dist/fullcalendar-${version}.zip`),
+      version,
+      monorepoDir,
+      isStandard && `standard/dist/fullcalendar-${version}.zip`,
       !isStandard, // linkToStandard
     )
   } else if (!isCi) {
@@ -146,6 +155,8 @@ async function createGithubRelease(
   githubToken: string,
   githubRepo: string,
   tagName: string,
+  version: string,
+  monorepoDir: string,
   filePath?: string | false,
   linkToStandard?: boolean,
 ): Promise<void> {
@@ -155,7 +166,8 @@ async function createGithubRelease(
   const [owner, repo] = githubRepo.split('/')
   const body = linkToStandard
     ? `See https://github.com/fullcalendar/fullcalendar/releases/tag/${tagName}`
-    : 'TODO: manually enter release notes'
+    : (await getChangelogEntry(joinPaths(monorepoDir, changelogSrc), version) ||
+        '_Manually enter release notes_')
 
   console.log(`Creating release in ${githubRepo} ...`)
   const releaseRes = await octokit.request('POST /repos/{owner}/{repo}/releases', {
@@ -169,7 +181,7 @@ async function createGithubRelease(
 
   if (filePath) {
     const fileName = basename(filePath)
-    const fileRaw = await readFile(filePath)
+    const fileRaw = await readFile(joinPaths(monorepoDir, filePath))
 
     console.log(`Uploading release asset ${fileName} ...`)
     await octokit.request({
