@@ -72,8 +72,7 @@ jobs:
           run build
 
       - name: Test
-        if: >
-          !contains(github.event.pull_request.body, 'no-test')
+        if: ${{ !contains(github.event.pull_request.body, 'no-test') }}
         run: |
           pnpm \
           --filter '@fullcalendar/*...' \
