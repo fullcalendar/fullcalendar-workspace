@@ -17,7 +17,7 @@ export default async function() {
 
     if (!pulledCommit || !upstreamRef || pulledCommit !== upstreamRef) {
       throw new Error(
-        `Subrepo '${subdir}' is not up-to-date with remote (${pulledCommit} <- ${upstreamRef})`
+        `Subrepo '${subdir}' is not up-to-date with remote (${pulledCommit} <- ${upstreamRef})`,
       )
     }
   }

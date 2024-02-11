@@ -55,7 +55,10 @@ jobs:
         run: pnpm run subrepos-updated
 
       - name: Lint
-        run: pnpm --filter '!./examples/**' run lint
+        run: pnpm run \
+          --filter !'@fullcalendar-monorepos/*' \
+          --filter '!./examples/**' \
+          lint
 
       - name: Build
         run: |
