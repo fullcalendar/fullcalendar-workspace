@@ -43,11 +43,12 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pnpm install \
+          pnpm \
           --filter '@fullcalendar/*...' \
           --filter '@fullcalendar-scripts/*...' \
           --filter '@fullcalendar-tests/*...' \
           --filter '!./contrib/**' \
+          install
 
       - name: Bump Versions
         run: pnpm run version-bump

@@ -38,29 +38,33 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pnpm install \
+          pnpm \
           --filter '@fullcalendar/*...' \
           --filter '@fullcalendar-scripts/*...' \
           --filter '@fullcalendar-tests/*...' \
           --filter '!./contrib/**' \
+          install
 
       - name: Lint
-        run: pnpm --filter '!./examples/**' run lint
+        run: |
+          pnpm \
+          --filter '!./examples/**' \
+          run lint
 
       - name: Build
         run: |
-          pnpm run \
+          pnpm \
           --filter '@fullcalendar/*...' \
           --filter '@fullcalendar-scripts/*...' \
           --filter '@fullcalendar-tests/*...' \
           --filter '!./contrib/**' \
-          build
+          run build
 
       # - name: Test
       #   run: |
-      #     pnpm run \
+      #     pnpm \
       #     --filter '@fullcalendar/*...' \
       #     --filter '@fullcalendar-scripts/*...' \
       #     --filter '@fullcalendar-tests/*...' \
       #     --filter '!./contrib/**' \
-      #     test
+      #     run test
