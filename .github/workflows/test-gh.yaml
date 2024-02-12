@@ -6,12 +6,14 @@ on:
 
 env:
   TZ: "America/New_York"
-  GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
 
 jobs:
   test-gh:
     name: Test GH
     runs-on: ubuntu-latest
+    environment: Production
+    env:
+      GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
 
     steps:
       - name: Checkout
