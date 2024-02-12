@@ -45,7 +45,7 @@ jobs:
 
       - name: Setup Git Credentials
         run: |
-          gh auth setup-git
+          gh auth setup-git && gh auth status
 
       - name: Sync Repos
         run: pnpm run sync-repos
