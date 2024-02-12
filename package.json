@@ -21,7 +21,7 @@
     "ci": "pnpm run clean --all && pnpm run lint --all && pnpm run build --all && pnpm run test --all",
     "version-bump": "changeset version",
     "version-notes": "workspace-scripts version-notes",
-    "update-subrepos": "workspace-scripts update-subrepos",
+    "sync-repos": "workspace-scripts sync-repos",
     "tag-and-release": "workspace-scripts tag-and-release",
     "publish": "changeset publish"
   },

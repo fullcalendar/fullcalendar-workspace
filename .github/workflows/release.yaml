@@ -54,8 +54,8 @@ jobs:
           --filter '!./contrib/**' \
           install
 
-      - name: Update Subrepos
-        run: pnpm run update-subrepos
+      - name: Sync Repos
+        run: pnpm run sync-repos
 
       - name: Lint
         run: |
