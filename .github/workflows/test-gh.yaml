@@ -43,9 +43,9 @@ jobs:
           --filter '!./contrib/**' \
           install
 
-      - name: Debug Token
+      - name: Setup Git Credentials
         run: |
-          echo "This is the token!!!: $GH_TOKEN"
+          gh auth setup-git
 
       - name: Sync Repos
         run: pnpm run sync-repos
