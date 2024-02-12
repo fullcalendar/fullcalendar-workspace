@@ -50,5 +50,5 @@ jobs:
       - name: Sync Repos
         run: |
           gh auth setup-git && gh auth status && \
-          git show --stat 9dcb198e6428b5b1b8a98afee319e95e09c328b1 \
+          git show --stat 9dcb198e6428b5b1b8a98afee319e95e09c328b1 && \
           pnpm run sync-repos
