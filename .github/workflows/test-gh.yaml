@@ -53,4 +53,7 @@ jobs:
 
       - name: Sync Repos
         run: |
+          gh auth setup-git && \
+          git config --global user.name "Adam Shaw" && \
+          git config --global user.email "arshaw@users.noreply.github.com" && \
           pnpm run sync-repos
