@@ -20,22 +20,22 @@ importers:
   bundle:
     dependencies:
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../packages/interaction/dist
       '@fullcalendar/list':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../packages/list/dist
       '@fullcalendar/multimonth':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../packages/multimonth/dist
       '@fullcalendar/timegrid':
-        specifier: ~6.1.10
+        specifier: ~6.1.11
         version: link:../packages/timegrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
@@ -4808,6 +4808,7 @@ packages:
   /semver@7.5.4:
     resolution: {integrity: sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==}
     engines: {node: '>=10'}
+    hasBin: true
     dependencies:
       lru-cache: 6.0.0
     dev: true

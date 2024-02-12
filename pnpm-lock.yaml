@@ -133,19 +133,19 @@ importers:
         specifier: ^7.9.4
         version: 7.18.6(@babel/core@7.20.2)
       '@fullcalendar/core':
-        specifier: ~6.1.11
+        specifier: ~6.1.10
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.11
+        specifier: ~6.1.10
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/list':
-        specifier: ~6.1.11
+        specifier: ~6.1.10
         version: link:../../standard/packages/list/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.11
+        specifier: ~6.1.10
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: ~6.1.11
+        specifier: ~6.1.10
         version: link:../../premium/packages/resource-timeline/dist
       '@rollup/plugin-babel':
         specifier: ^5.0.0
@@ -25757,7 +25757,7 @@ packages:
       object.values: 1.1.6
       prop-types: 15.8.1
       resolve: 2.0.0-next.4
-      semver: 6.3.1
+      semver: 6.3.0
       string.prototype.matchall: 4.0.8
     dev: true
 
