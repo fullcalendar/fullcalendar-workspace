@@ -41,5 +41,9 @@ jobs:
           --filter '!./contrib/**' \
           install
 
+      - name: Debug Token
+        run: |
+          echo "This is the token!!!: $GH_TOKEN"
+
       - name: Sync Repos
         run: pnpm run sync-repos
