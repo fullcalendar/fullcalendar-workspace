@@ -12,8 +12,6 @@ jobs:
     name: Test GH
     runs-on: ubuntu-latest
     environment: Production
-    env:
-      GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }} # for GitHub CLI
 
     steps:
       - name: Checkout
@@ -53,6 +51,9 @@ jobs:
           install
 
       - name: Sync Repos
-        run: |
-          git config -l && \
-          pnpm run sync-repos
+        run: pnpm run sync-repos
+
+      - name: GitHub CLI Stuff
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+        run: gh auth status
