@@ -56,4 +56,5 @@ jobs:
           gh auth setup-git && \
           git config --global user.name "Adam Shaw" && \
           git config --global user.email "arshaw@users.noreply.github.com" && \
+          git config -l && \
           pnpm run sync-repos
