@@ -54,6 +54,7 @@ jobs:
       - name: Sync Repos
         run: |
           gh auth setup-git && \
+          gh auth status && \
           git config --global user.name "Adam Shaw" && \
           git config --global user.email "arshaw@users.noreply.github.com" && \
           git config -l && \
