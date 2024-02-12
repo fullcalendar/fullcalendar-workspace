@@ -22,6 +22,7 @@ jobs:
           submodules: recursive
           fetch-depth: 0 # fetches ALL history. needed for git-subrepo operations
           fetch-tags: false # but don't need all tags
+          persist-credentials: false # test!!!
 
       - name: Setup Git Credentials
         run: |
