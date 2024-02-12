@@ -11,11 +11,8 @@ export default async function() {
   console.log('TEST!!!0...')
   await execLive('git status')
 
-  console.log('TEST!!!1...')
-  await execLive('git show HEAD')
-
   console.log('TEST!!!2...')
-  await execLive('git show 290b11a7f965b5211ce9caf9df451fdf6fe1791e')
+  await execLive('git diff 290b11a7f965b5211ce9caf9df451fdf6fe1791e..HEAD')
 
   console.log('TEST!!!3...')
   await execLive('git rev-list --reverse --ancestry-path --topo-order 290b11a7f965b5211ce9caf9df451fdf6fe1791e..HEAD')
