@@ -5,9 +5,6 @@ export default async function() {
   const monorepoDir = process.cwd()
   const gitSubrepoBin = joinPaths(monorepoDir, 'scripts/bin/git-subrepo.sh') // TODO: DRY
 
-  console.log('TEST!!!A...')
-  await execLive('cwd')
-
   // Try...
   await execLive([gitSubrepoBin, 'fetch', '--all'])
 
