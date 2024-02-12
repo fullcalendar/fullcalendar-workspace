@@ -11,16 +11,16 @@ export default async function() {
   const subrepoMap = await getSubrepos(monorepoDir)
   const errorMap = {} as any
 
-  // await tagAndReleaseRoot(monorepoDir, monorepoVersion).catch((error: Error) => {
-  //   errorMap['.'] = error
-  // })
+  await tagAndReleaseRoot(monorepoDir, monorepoVersion).catch((error: Error) => {
+    errorMap['.'] = error
+  })
 
-  for (const [subrepoSubdir, subrepo] of Object.entries(subrepoMap)) {
-    await tagAndReleaseSubrepo(monorepoDir, monorepoVersion, subrepoSubdir, subrepo)
-      .catch((error: Error) => {
-        errorMap[subrepoSubdir] = error
-      })
-  }
+  // for (const [subrepoSubdir, subrepo] of Object.entries(subrepoMap)) {
+  //   await tagAndReleaseSubrepo(monorepoDir, monorepoVersion, subrepoSubdir, subrepo)
+  //     .catch((error: Error) => {
+  //       errorMap[subrepoSubdir] = error
+  //     })
+  // }
 
   const errorCnt = Object.keys(errorMap).length
   if (errorCnt) {
