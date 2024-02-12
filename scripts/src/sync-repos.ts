@@ -9,7 +9,7 @@ export default async function() {
   // await execLive([gitSubrepoBin, 'fetch', '--all'])
 
   // Push to subrepos. Will fail if our copies are not up-to-date
-  await execLive([gitSubrepoBin, 'push', '--all', '--verbose'])
+  await execLive([gitSubrepoBin, 'push', '--all', '--debug'])
 
   // Push the git-subrepo meta-file updates back to our remote
   await execLive(['git', 'push'])
