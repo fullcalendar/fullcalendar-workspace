@@ -9,7 +9,6 @@
   },
   "scripts": {
     "postinstall": "workspace-scripts postinstall",
-    "subrepos-updated": "workspace-scripts subrepos-updated",
     "meta:hide": "workspace-scripts meta:hide",
     "meta:show": "workspace-scripts meta:show",
     "meta:update": "workspace-scripts meta:update",
@@ -21,9 +20,10 @@
     "clean": "standard-scripts clean",
     "ci": "pnpm run clean --all && pnpm run lint --all && pnpm run build --all && pnpm run test --all",
     "version-bump": "changeset version",
-    "publish": "changeset publish",
     "version-notes": "workspace-scripts version-notes",
-    "tag-and-release": "workspace-scripts tag-and-release"
+    "update-subrepos": "workspace-scripts update-subrepos",
+    "tag-and-release": "workspace-scripts tag-and-release",
+    "publish": "changeset publish"
   },
   "type": "module",
   "monorepoConfig": {

@@ -54,8 +54,8 @@ jobs:
           --filter '!./contrib/**' \
           install
 
-      - name: Check Subrepos Updated
-        run: pnpm run subrepos-updated
+      - name: Update Subrepos
+        run: pnpm run update-subrepos
 
       - name: Lint
         run: |
