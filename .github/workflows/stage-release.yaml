@@ -10,12 +10,18 @@ env:
 jobs:
   stage-release:
     name: Stage Release
-    # Commit message matches against branch name (merge) or head commit (rebase)
-    # NOTE: YAML lines can't start with `!`, thus the weird parens
+
+    # Skips staged-release creation in these scenarios:
+    # - on a fork
+    # - manually requested in commit message ('no-stage')
+    # - when staged-release PR merged into main. see notes below
+    # - when git-subrepo creates meta commit. like from release workflow
     if: >
       github.repository == 'fullcalendar/fullcalendar-workspace' &&
+      (!contains(github.event.head_commit.message, 'no-stage')) &&
       (!contains(github.event.head_commit.message, 'staged-release')) &&
-      (!contains(github.event.head_commit.message, 'no-stage'))
+      (!contains(github.event.head_commit.message, 'git-subrepo'))
+
     runs-on: ubuntu-latest
 
     steps:
@@ -69,8 +75,15 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
+          # keep branch and commit message the same
+          # allows identifiable string in commit message when PR is merged,
+          # whether doing a normal merge or rebase merge
           branch: staged-release
           commit-message: staged-release
+
+          # delete old branch (if no open PRs) before creating new
+          delete-branch: true
+
+          # PR metadata
           title: Next Version
           body-path: VERSION-NOTES.md
-          delete-branch: true # delete old branch (if no open PRs) before creating new
