@@ -15,7 +15,7 @@ jobs:
     # - on a fork
     # - manually requested in commit message ('no-stage')
     # - when staged-release PR merged into main. see notes below
-    # - when git-subrepo creates meta commit. like from release workflow
+    # - when git-subrepo creates meta commit. likely from release workflow
     if: >
       github.repository == 'fullcalendar/fullcalendar-workspace' &&
       (!contains(github.event.head_commit.message, 'no-stage')) &&
