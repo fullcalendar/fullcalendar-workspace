@@ -6,7 +6,7 @@
 [subrepo]
 	remote = https://github.com/fullcalendar/fullcalendar-vue.git
 	branch = newrepo
-	commit = 64d1f65d158845ccc64bd1ba30cae95f497cfaed
-	parent = 06ab66f49b16ae9ce6d0ea445864bd1dc2c9e33f
+	commit = d0e6f45f1f72e56216362659d4805e6b3b4c321b
+	parent = b2eadc6d876de72bf4f2646ae74853d5ee068222
 	method = merge
 	cmdver = 0.4.6
