@@ -23,6 +23,12 @@ jobs:
           fetch-depth: 0 # fetches ALL history. needed for git-subrepo operations
           fetch-tags: false # but don't need all tags
 
+      - name: Setup Git Credentials
+        run: |
+          gh auth setup-git && \
+          git config --global user.name "github-actions[bot]" && \
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - name: Setup PNPM
         uses: pnpm/action-setup@v2.2.4
         with:
@@ -44,12 +50,6 @@ jobs:
           --filter '@fullcalendar-tests/*...' \
           --filter '!./contrib/**' \
           install
-
-      - name: Setup Git Credentials
-        run: |
-          gh auth setup-git && \
-          git config --global user.name "github-actions[bot]" && \
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Sync Repos
         run: |
