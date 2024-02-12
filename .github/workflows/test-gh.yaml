@@ -48,4 +48,4 @@ jobs:
           gh auth setup-git && gh auth status
 
       - name: Sync Repos
-        run: pnpm run sync-repos
+        run: gh auth setup-git && pnpm run sync-repos
