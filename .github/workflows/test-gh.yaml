@@ -22,7 +22,6 @@ jobs:
           submodules: recursive
           token: ${{ secrets.RELEASE_GITHUB_TOKEN }} # for git-subrepo pull/push later on
           fetch-depth: 0 # fetches ALL history. needed for git-subrepo operations
-          fetch-tags: false # but don't need all tags
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v2.2.4
