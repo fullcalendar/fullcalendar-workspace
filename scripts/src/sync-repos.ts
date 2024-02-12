@@ -27,7 +27,7 @@ export default async function() {
   // await execLive('git rev-list --reverse --ancestry-path --topo-order 290b11a7f965b5211ce9caf9df451fdf6fe1791e..HEAD')
 
   // Push to subrepos. Will fail if our copies are not up-to-date
-  await execLive([gitSubrepoBin, 'push', '--all', '--DEBUG'])
+  await execLive([gitSubrepoBin, 'push', '--all'])
 
   // Push the git-subrepo meta-file updates back to our remote
   await execLive(['git', 'push'])

@@ -1,3 +1,4 @@
+Some angular readme stuff
 
 # FullCalendar Angular Component
 
