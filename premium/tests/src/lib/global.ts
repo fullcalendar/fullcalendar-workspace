@@ -1,2 +1,2 @@
-import '@fullcalendar/standard-tests/lib/global'
+import '@fullcalendar-tests/standard/lib/global'
 import './global-plugins.js'

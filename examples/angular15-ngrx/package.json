@@ -1,5 +1,5 @@
 {
-  "name": "@fullcalendar/angular15-ngrx-example",
+  "name": "@fullcalendar-examples/angular15-ngrx",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

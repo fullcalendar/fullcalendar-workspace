@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@fullcalendar/react-typescript-example",
+  "name": "@fullcalendar-examples/react-typescript",
   "title": "FullCalendar React+TypeScript Example Project",
   "version": "0.0.0",
   "license": "ISC",

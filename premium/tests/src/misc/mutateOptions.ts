@@ -1,6 +1,6 @@
 import { Calendar } from '@fullcalendar/core'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
-import { CalendarWrapper } from '@fullcalendar/standard-tests/lib/wrappers/CalendarWrapper'
+import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 
 function buildOptions() {

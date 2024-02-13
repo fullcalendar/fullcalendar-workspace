@@ -1,4 +1,4 @@
-import { parseUtcDate } from '@fullcalendar/standard-tests/lib/date-parsing'
+import { parseUtcDate } from '@fullcalendar-tests/standard/lib/date-parsing'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
 
 describe('eventResourceEditable in vertical resource view', () => {

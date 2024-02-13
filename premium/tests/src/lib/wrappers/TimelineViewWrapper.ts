@@ -1,5 +1,5 @@
 import { Calendar } from '@fullcalendar/core'
-import { ViewWrapper } from '@fullcalendar/standard-tests/lib/wrappers/ViewWrapper'
+import { ViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/ViewWrapper'
 import { TimelineGridWrapper } from './TimelineGridWrapper.js'
 import { TimelineHeaderWrapper } from './TimelineHeaderWrapper.js'
 

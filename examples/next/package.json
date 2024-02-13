@@ -1,5 +1,5 @@
 {
-  "name": "@fullcalendar/next-example",
+  "name": "@fullcalendar-examples/next",
   "version": "0.0.0",
   "private": true,
   "scripts": {

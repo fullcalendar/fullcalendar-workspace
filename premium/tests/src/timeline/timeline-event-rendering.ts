@@ -1,6 +1,6 @@
-import { CalendarWrapper } from '@fullcalendar/standard-tests/lib/wrappers/CalendarWrapper'
-import { anyElsIntersect } from '@fullcalendar/standard-tests/lib/dom-geom'
-import { filterVisibleEls } from '@fullcalendar/standard-tests/lib/dom-misc'
+import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
+import { anyElsIntersect } from '@fullcalendar-tests/standard/lib/dom-geom'
+import { filterVisibleEls } from '@fullcalendar-tests/standard/lib/dom-misc'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper.js'
 

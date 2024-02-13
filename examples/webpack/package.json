@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@fullcalendar/webpack-example",
+  "name": "@fullcalendar-examples/webpack",
   "version": "0.0.0",
   "license": "ISC",
   "author": "Adam Shaw <arshaw@arshaw.com> (http://arshaw.com/)",

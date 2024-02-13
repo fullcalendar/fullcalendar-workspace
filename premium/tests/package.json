@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@fullcalendar/premium-tests",
+  "name": "@fullcalendar-tests/premium",
   "version": "0.0.0",
   "dependencies": {
     "@fullcalendar/core": "~6.1.10",
@@ -13,13 +13,13 @@
     "@fullcalendar/resource-timegrid": "~6.1.10",
     "@fullcalendar/resource-timeline": "~6.1.10",
     "@fullcalendar/scrollgrid": "~6.1.10",
-    "@fullcalendar/standard-tests": "*",
+    "@fullcalendar-tests/standard": "*",
     "@fullcalendar/timegrid": "~6.1.10",
     "@fullcalendar/timeline": "~6.1.10",
     "xhr-mock": "^2.5.1"
   },
   "devDependencies": {
-    "@fullcalendar/standard-scripts": "*",
+    "@fullcalendar-scripts/standard": "*",
     "@types/jasmine": "^3.3.12",
     "@types/jasmine-jquery": "^1.5.33",
     "@types/jquery": "^3.3.29",
@@ -34,7 +34,7 @@
   },
   "type": "module",
   "tsConfig": {
-    "extends": "@fullcalendar/standard-scripts/config/tsconfig.browser.json",
+    "extends": "@fullcalendar-scripts/standard/config/tsconfig.browser.json",
     "compilerOptions": {
       "types": [
         "jasmine",

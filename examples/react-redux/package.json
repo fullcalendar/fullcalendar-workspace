@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@fullcalendar/react-redux-example",
+  "name": "@fullcalendar-examples/react-redux",
   "title": "FullCalendar React+Redux Example Project",
   "version": "0.0.0",
   "license": "ISC",

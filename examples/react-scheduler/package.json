@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@fullcalendar/react-scheduler-example",
+  "name": "@fullcalendar-examples/react-scheduler",
   "title": "FullCalendar React Example Project (with Premium)",
   "version": "0.0.0",
   "license": "ISC",

@@ -1,5 +1,5 @@
 {
-  "name": "@fullcalendar/vue2-vuex-example",
+  "name": "@fullcalendar-examples/vue2-vuex",
   "title": "FullCalendar Vue+Vuex Example Project",
   "version": "0.0.0",
   "license": "ISC",

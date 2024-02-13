@@ -1,4 +1,4 @@
-import { waitEventDrag } from '@fullcalendar/standard-tests/lib/wrappers/interaction-util'
+import { waitEventDrag } from '@fullcalendar-tests/standard/lib/wrappers/interaction-util'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 
 // TODO: test isRtl?

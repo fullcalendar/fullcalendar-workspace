@@ -1,5 +1,5 @@
 {
-  "name": "@fullcalendar/angular14-example",
+  "name": "@fullcalendar-examples/angular14",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
