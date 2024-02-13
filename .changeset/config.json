@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
+  "changelog": false,
+  "commit": false,
+  "fixed": [["@fullcalendar/*", "fullcalendar", "fullcalendar-scheduler"]],
+  "linked": [],
+  "access": "restricted",
+  "baseBranch": "newrepo",
+  "updateInternalDependencies": "patch",
+  "ignore": []
+}
