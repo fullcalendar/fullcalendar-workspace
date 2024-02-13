@@ -37,7 +37,7 @@
     "karma-jasmine": "^4.0.1",
     "karma-sourcemap-loader": "^0.3.8",
     "karma-verbose-reporter": "0.0.6",
-    "postcss": "^8.4.20",
+    "postcss": "^8.4.31",
     "postcss-advanced-variables": "^3.0.1",
     "postcss-comment": "^2.0.0",
     "postcss-nesting": "^7.0.1",
