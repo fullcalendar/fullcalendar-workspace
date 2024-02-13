@@ -1,0 +1,69 @@
+name: Check PR
+on:
+  pull_request:
+    branches:
+      - newrepo
+
+env:
+  TZ: "America/New_York"
+
+jobs:
+  check-pr:
+    name: Check PR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 8.6.3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.13.0
+          cache: 'pnpm'
+
+      # - name: Setup Turbo Cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: node_modules/.cache/turbo
+      #     key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+      #     restore-keys: turbo-${{ github.job }}-${{ github.ref_name }}-
+
+      - name: Install Dependencies
+        run: |
+          pnpm \
+          --filter '!./standard' \
+          --filter '!./contrib/**' \
+          --filter '!./examples/**' \
+          install
+
+      - name: Lint
+        run: |
+          pnpm \
+          --filter '!./standard' \
+          --filter '!./contrib/**' \
+          --filter '!./examples/**' \
+          run lint
+
+      - name: Build
+        run: |
+          pnpm \
+          --filter '!./standard' \
+          --filter '!./contrib/**' \
+          --filter '!./examples/**' \
+          run build
+
+      # - name: Test
+      #   run: |
+      #     pnpm \
+      #     --filter '!./standard' \
+      #     --filter '!./contrib/**' \
+      #     --filter '!./examples/**' \
+      #     run test

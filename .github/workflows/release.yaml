@@ -1,0 +1,98 @@
+name: Release
+on:
+  pull_request:
+    branches:
+      - newrepo
+    types:
+      - closed
+
+env:
+  TZ: "America/New_York"
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    environment: Production
+
+    if: >
+      github.repository == 'fullcalendar/fullcalendar-workspace' &&
+      github.event.pull_request.head.repo.full_name == 'fullcalendar/fullcalendar-workspace' &&
+      github.event.pull_request.head.ref == 'staged-release' &&
+      github.event.pull_request.merged
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          token: ${{ secrets.RELEASE_GITHUB_TOKEN }} # for sync-repos pull/push later on
+          fetch-depth: 0 # fetches ALL history. needed for sync-repos operations
+
+      # for sync-repos pull/push later on
+      - name: Setup Git User
+        run: |
+          git config --global user.name "${{ github.triggering_actor }}" && \
+          git config --global user.email "${{ github.triggering_actor }}@users.noreply.github.com"
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 8.6.3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.13.0
+          cache: 'pnpm'
+
+      # - name: Setup Turbo Cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: node_modules/.cache/turbo
+      #     key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+      #     restore-keys: turbo-${{ github.job }}-${{ github.ref_name }}-
+
+      - name: Install Dependencies
+        run: |
+          pnpm \
+          --filter '!./standard' \
+          --filter '!./examples/**' \
+          install
+
+      - name: Sync Repos
+        run: pnpm run sync-repos
+
+      - name: Lint
+        run: |
+          pnpm \
+          --filter '!./standard' \
+          --filter '!./examples/**' \
+          run lint
+
+      - name: Build
+        run: |
+          pnpm \
+          --filter '!./standard' \
+          --filter '!./examples/**' \
+          run build && \
+          pnpm run archive
+
+      # NOTE: premium/standard tests disabled in CI while flakiness is addressed
+      - name: Test
+        if: ${{ !contains(github.event.pull_request.title, 'no-test') }}
+        run: |
+          pnpm \
+          --filter '!./premium/**' \
+          --filter '!./standard/**' \
+          --filter '!./standard' \
+          --filter '!./examples/**' \
+          run test
+
+      - name: Tag & Create GitHub Releases
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }} # for GitHub CLI
+        run: pnpm run tag-and-release
+
+      - name: Publish to NPM
+        run: echo "TODO!!!"
