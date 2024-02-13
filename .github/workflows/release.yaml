@@ -13,7 +13,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    environment: Production
+    environment: production
 
     if: >
       github.repository == 'fullcalendar/fullcalendar-workspace' &&
