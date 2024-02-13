@@ -1,24 +1,30 @@
 {
   "private": true,
-  "name": "@fullcalendar/workspace",
-  "version": "0.0.0",
+  "name": "@fullcalendar-monorepos/root",
+  "version": "6.1.10",
   "devDependencies": {
-    "@fullcalendar/standard-scripts": "*",
-    "@fullcalendar/workspace-scripts": "*"
+    "@changesets/cli": "^2.27.1",
+    "@fullcalendar-scripts/standard": "*",
+    "@fullcalendar-scripts/workspace": "*"
   },
   "scripts": {
     "postinstall": "workspace-scripts postinstall",
     "meta:hide": "workspace-scripts meta:hide",
     "meta:show": "workspace-scripts meta:show",
     "meta:update": "workspace-scripts meta:update",
-    "push": "git push --recurse-submodules=on-demand",
     "lint": "standard-scripts lint",
     "build": "standard-scripts build",
     "dev": "standard-scripts dev",
     "test": "standard-scripts test",
     "test:dev": "standard-scripts test --dev",
     "clean": "standard-scripts clean",
-    "ci": "pnpm run clean --all && pnpm run lint --all && pnpm run build --all && pnpm run test --all"
+    "ci": "pnpm run clean --all && pnpm run lint --all && pnpm run build --all && pnpm run test --all",
+    "version-bump": "changeset version",
+    "version-notes": "workspace-scripts version-notes",
+    "sync-repos": "workspace-scripts sync-repos",
+    "archive": "standard-scripts archive",
+    "tag-and-release": "workspace-scripts tag-and-release",
+    "publish": "changeset publish"
   },
   "type": "module",
   "monorepoConfig": {
@@ -36,9 +42,13 @@
     "pnpm": ">=7.9.5"
   },
   "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "ng-packagr@13>typescript": "^4.4.0"
+      }
+    },
     "patchedDependencies": {
-      "jasmine-jquery@2.1.1": "standard/scripts/patches/jasmine-jquery@2.1.1.patch",
-      "@pnpm/make-dedicated-lockfile@0.5.9": "scripts/patches/@pnpm__make-dedicated-lockfile@0.5.9.patch"
+      "jasmine-jquery@2.1.1": "standard/scripts/patches/jasmine-jquery@2.1.1.patch"
     }
   }
 }
