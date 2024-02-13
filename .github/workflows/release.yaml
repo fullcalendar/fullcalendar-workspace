@@ -56,12 +56,8 @@ jobs:
       - name: Install Dependencies
         run: |
           pnpm \
-          --filter 'fullcalendar...' \
-          --filter 'fullcalendar-scheduler...' \
-          --filter '@fullcalendar/*...' \
-          --filter '@fullcalendar-scripts/*...' \
-          --filter '@fullcalendar-tests/*...' \
-          --filter '!./contrib/**' \
+          --filter '!./standard' \
+          --filter '!./examples/**' \
           install
 
       - name: Sync Repos
@@ -70,34 +66,26 @@ jobs:
       - name: Lint
         run: |
           pnpm \
-          --filter '!@fullcalendar-monorepos/*' \
+          --filter '!./standard' \
           --filter '!./examples/**' \
           run lint
 
       - name: Build
         run: |
           pnpm \
-          --filter 'fullcalendar...' \
-          --filter 'fullcalendar-scheduler...' \
-          --filter '@fullcalendar/*...' \
-          --filter '@fullcalendar-scripts/*...' \
-          --filter '@fullcalendar-tests/*...' \
-          --filter '!./contrib/**' \
+          --filter '!./standard' \
+          --filter '!./examples/**' \
           run build
 
       - name: Test
         if: ${{ !contains(github.event.pull_request.title, 'no-test') }}
         run: |
           pnpm \
-          --filter 'fullcalendar...' \
-          --filter 'fullcalendar-scheduler...' \
-          --filter '@fullcalendar/*...' \
-          --filter '@fullcalendar-scripts/*...' \
-          --filter '@fullcalendar-tests/*...' \
-          --filter '!./contrib/**' \
+          --filter '!./standard' \
+          --filter '!./examples/**' \
           run test
 
-      - name: GitHub CLI Stuff
+      - name: Tag & Create GitHubRelease
         env:
-          GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
-        run: gh auth status
+          GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }} # for GitHub CLI
+        run: pnpm run tag-and-release

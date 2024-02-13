@@ -50,12 +50,9 @@ jobs:
       - name: Install Dependencies
         run: |
           pnpm \
-          --filter 'fullcalendar...' \
-          --filter 'fullcalendar-scheduler...' \
-          --filter '@fullcalendar/*...' \
-          --filter '@fullcalendar-scripts/*...' \
-          --filter '@fullcalendar-tests/*...' \
+          --filter '!./standard' \
           --filter '!./contrib/**' \
+          --filter '!./examples/**' \
           install
 
       - name: Bump Versions
