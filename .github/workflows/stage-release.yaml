@@ -2,7 +2,7 @@ name: Stage Release
 on:
   push:
     branches:
-      - newrepo
+      - main
 
 env:
   TZ: "America/New_York"

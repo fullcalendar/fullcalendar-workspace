@@ -5,7 +5,7 @@
   "fixed": [["@fullcalendar/*", "fullcalendar", "fullcalendar-scheduler"]],
   "linked": [],
   "access": "restricted",
-  "baseBranch": "newrepo",
+  "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": []
 }

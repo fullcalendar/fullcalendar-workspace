@@ -2,7 +2,7 @@ name: Check PR
 on:
   pull_request:
     branches:
-      - newrepo
+      - main
 
 env:
   TZ: "America/New_York"
