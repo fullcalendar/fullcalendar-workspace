@@ -33,8 +33,7 @@ jobs:
       - name: Setup Git User
         run: |
           git config --global user.name "${{ github.triggering_actor }}" && \
-          git config --global user.email "${{ github.triggering_actor }}@users.noreply.github.com" && \
-          git config -l
+          git config --global user.email "${{ github.triggering_actor }}@users.noreply.github.com"
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v2.2.4
@@ -86,17 +85,17 @@ jobs:
           --filter '!./contrib/**' \
           run build
 
-      # - name: Test
-      #   if: ${{ !contains(github.event.pull_request.title, 'no-test') }}
-      #   run: |
-      #     pnpm \
-      #     --filter 'fullcalendar...' \
-      #     --filter 'fullcalendar-scheduler...' \
-      #     --filter '@fullcalendar/*...' \
-      #     --filter '@fullcalendar-scripts/*...' \
-      #     --filter '@fullcalendar-tests/*...' \
-      #     --filter '!./contrib/**' \
-      #     run test
+      - name: Test
+        if: ${{ !contains(github.event.pull_request.title, 'no-test') }}
+        run: |
+          pnpm \
+          --filter 'fullcalendar...' \
+          --filter 'fullcalendar-scheduler...' \
+          --filter '@fullcalendar/*...' \
+          --filter '@fullcalendar-scripts/*...' \
+          --filter '@fullcalendar-tests/*...' \
+          --filter '!./contrib/**' \
+          run test
 
       - name: GitHub CLI Stuff
         env:
