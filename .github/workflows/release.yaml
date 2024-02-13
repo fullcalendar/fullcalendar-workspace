@@ -75,7 +75,8 @@ jobs:
           pnpm \
           --filter '!./standard' \
           --filter '!./examples/**' \
-          run build
+          run build && \
+          pnpm run archive
 
       - name: Test
         if: ${{ !contains(github.event.pull_request.title, 'no-test') }}

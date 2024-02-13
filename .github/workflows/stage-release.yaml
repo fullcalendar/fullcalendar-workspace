@@ -53,6 +53,7 @@ jobs:
           --filter '!./standard' \
           --filter '!./contrib/**' \
           --filter '!./examples/**' \
+          --filter '!@fullcalendar-tests/*' \
           install
 
       - name: Bump Versions
