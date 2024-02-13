@@ -142,8 +142,8 @@ importers:
         specifier: ~6.1.10
         version: link:../core/dist
       luxon:
-        specifier: ^1.12.1
-        version: 1.28.0
+        specifier: ^1.28.1
+        version: 1.28.1
     publishDirectory: ./dist
 
   packages/luxon2:
@@ -158,8 +158,8 @@ importers:
         specifier: ^2.0.9
         version: 2.4.0
       luxon:
-        specifier: ^2.0.0
-        version: 2.5.0
+        specifier: ^1.28.1
+        version: 1.28.1
     publishDirectory: ./dist
 
   packages/luxon3:
@@ -174,8 +174,8 @@ importers:
         specifier: ^3.3.0
         version: 3.3.0
       luxon:
-        specifier: ^3.0.0
-        version: 3.3.0
+        specifier: ^1.28.1
+        version: 1.28.1
     publishDirectory: ./dist
 
   packages/moment:
@@ -441,8 +441,8 @@ importers:
         specifier: ~6.1.10
         version: link:../bundle/dist
       luxon:
-        specifier: ^2.0.0
-        version: 2.5.0
+        specifier: ^1.28.1
+        version: 1.28.1
       moment:
         specifier: ^2.29.1
         version: 2.29.4
@@ -1348,6 +1348,7 @@ packages:
 
   /bindings@1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
+    requiresBuild: true
     dependencies:
       file-uri-to-path: 1.0.0
     dev: true
@@ -2614,6 +2615,7 @@ packages:
 
   /file-uri-to-path@1.0.0:
     resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -3584,18 +3586,8 @@ packages:
       yallist: 4.0.0
     dev: true
 
-  /luxon@1.28.0:
-    resolution: {integrity: sha512-TfTiyvZhwBYM/7QdAVDh+7dBTBA29v4ik0Ce9zda3Mnf8on1S5KJI8P2jKFZ8+5C0jhmr0KwJEO/Wdpm0VeWJQ==}
-    dev: true
-
-  /luxon@2.5.0:
-    resolution: {integrity: sha512-IDkEPB80Rb6gCAU+FEib0t4FeJ4uVOuX1CQ9GsvU3O+JAGIgu0J7sf1OarXKaKDygTZIoJyU6YdZzTFRu+YR0A==}
-    engines: {node: '>=12'}
-
-  /luxon@3.3.0:
-    resolution: {integrity: sha512-An0UCfG/rSiqtAIiBPO0Y9/zAnHUZxAMiCpTd5h2smgsj7GGmcenvrvww2cqNA8/4A5ZrD1gJpHN2mIHZQF+Mg==}
-    engines: {node: '>=12'}
-    dev: true
+  /luxon@1.28.1:
+    resolution: {integrity: sha512-gYHAa180mKrNIUJCbwpmD0aTu9kV0dREDrwNnuyFAsO1Wt0EVYSZelPnJlbj9HplzXX/YWXHFTL45kvZ53M0pw==}
 
   /magic-string@0.25.9:
     resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}
@@ -3737,6 +3729,7 @@ packages:
 
   /nan@2.17.0:
     resolution: {integrity: sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==}
+    requiresBuild: true
     dev: true
     optional: true
 

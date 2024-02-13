@@ -17,7 +17,7 @@
     "@fullcalendar/rrule": "~6.1.10",
     "@fullcalendar/timegrid": "~6.1.10",
     "fullcalendar": "~6.1.10",
-    "luxon": "^2.0.0",
+    "luxon": "^1.28.1",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.40",
     "xhr-mock": "^2.5.1"

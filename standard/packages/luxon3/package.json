@@ -11,13 +11,13 @@
   "homepage": "https://fullcalendar.io/docs/luxon",
   "peerDependencies": {
     "@fullcalendar/core": "~6.1.10",
-    "luxon": "^3.0.0"
+    "luxon": "^1.28.1"
   },
   "devDependencies": {
     "@fullcalendar/core": "~6.1.10",
     "@fullcalendar-scripts/standard": "*",
     "@types/luxon": "^3.3.0",
-    "luxon": "^3.0.0"
+    "luxon": "^1.28.1"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
