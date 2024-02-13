@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "pnpm-make-dedicated-lockfile",
+  "version": "0.0.0",
+  "type": "module",
+  "bin": "./bin.js",
+  "main": "./lib.js",
+  "types": "./lib.d.ts",
+  "dependencies": {
+    "@pnpm/find-workspace-dir": "~6.0.2",
+    "@pnpm/lockfile-file": "~8.1.6",
+    "@pnpm/prune-lockfile": "~5.0.9",
+    "@pnpm/types": "~9.4.2"
+  }
+}
