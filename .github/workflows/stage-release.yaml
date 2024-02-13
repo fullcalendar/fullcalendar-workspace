@@ -10,6 +10,7 @@ env:
 jobs:
   stage-release:
     name: Stage Release
+    runs-on: ubuntu-latest
 
     # Skips staged-release creation in these scenarios:
     # - on a fork
@@ -21,8 +22,6 @@ jobs:
       (!contains(github.event.head_commit.message, 'no-stage')) &&
       (!contains(github.event.head_commit.message, 'staged-release')) &&
       (!contains(github.event.head_commit.message, 'git-subrepo'))
-
-    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -69,10 +68,10 @@ jobs:
       - name: Sync Configs
         run: pnpm run meta:update
 
-      - name: Generate Pull Request Notes
+      - name: Generate PR Notes
         run: pnpm run version-notes
 
-      - name: Create Pull Request
+      - name: Create PR
         uses: peter-evans/create-pull-request@v6
         with:
           # keep branch and commit message the same

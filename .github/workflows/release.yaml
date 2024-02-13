@@ -1,22 +1,40 @@
-name: Pull Request Checks
+name: Release
 on:
   pull_request:
     branches:
       - newrepo
+    types:
+      - closed
 
 env:
   TZ: "America/New_York"
 
 jobs:
-  pr-checks:
-    name: Pull Request Checks
+  release:
+    name: Release
     runs-on: ubuntu-latest
+    environment: Production
+
+    if: >
+      github.repository == 'fullcalendar/fullcalendar-workspace' &&
+      github.event.pull_request.head.repo.full_name == 'fullcalendar/fullcalendar-workspace' &&
+      github.event.pull_request.head.ref == 'staged-release' &&
+      github.event.pull_request.merged
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           submodules: recursive
+          token: ${{ secrets.RELEASE_GITHUB_TOKEN }} # for sync-repos pull/push later on
+          fetch-depth: 0 # fetches ALL history. needed for sync-repos operations
+
+      # for sync-repos pull/push later on
+      - name: Setup Git User
+        run: |
+          git config --global user.name "${{ github.triggering_actor }}" && \
+          git config --global user.email "${{ github.triggering_actor }}@users.noreply.github.com" && \
+          git config -l
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v2.2.4
@@ -47,9 +65,13 @@ jobs:
           --filter '!./contrib/**' \
           install
 
+      - name: Sync Repos
+        run: pnpm run sync-repos
+
       - name: Lint
         run: |
           pnpm \
+          --filter '!@fullcalendar-monorepos/*' \
           --filter '!./examples/**' \
           run lint
 
@@ -65,6 +87,7 @@ jobs:
           run build
 
       # - name: Test
+      #   if: ${{ !contains(github.event.pull_request.title, 'no-test') }}
       #   run: |
       #     pnpm \
       #     --filter 'fullcalendar...' \
@@ -74,3 +97,8 @@ jobs:
       #     --filter '@fullcalendar-tests/*...' \
       #     --filter '!./contrib/**' \
       #     run test
+
+      - name: GitHub CLI Stuff
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+        run: gh auth status

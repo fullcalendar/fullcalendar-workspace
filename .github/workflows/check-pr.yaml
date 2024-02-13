@@ -1,22 +1,15 @@
-name: Release
+name: Check PR
 on:
   pull_request:
     branches:
       - newrepo
-    types:
-      - closed
 
 env:
   TZ: "America/New_York"
 
 jobs:
-  release:
-    name: Release
-    if: >
-      github.repository == 'fullcalendar/fullcalendar-workspace' &&
-      github.event.pull_request.head.repo.full_name == 'fullcalendar/fullcalendar-workspace' &&
-      github.event.pull_request.head.ref == 'staged-release' &&
-      github.event.pull_request.merged
+  check-pr:
+    name: Check PR
     runs-on: ubuntu-latest
 
     steps:
@@ -54,13 +47,9 @@ jobs:
           --filter '!./contrib/**' \
           install
 
-      - name: Sync Repos
-        run: pnpm run sync-repos
-
       - name: Lint
         run: |
           pnpm \
-          --filter '!@fullcalendar-monorepos/*' \
           --filter '!./examples/**' \
           run lint
 
@@ -75,18 +64,13 @@ jobs:
           --filter '!./contrib/**' \
           run build
 
-      - name: Test
-        if: ${{ !contains(github.event.pull_request.title, 'no-test') }}
-        run: |
-          pnpm \
-          --filter 'fullcalendar...' \
-          --filter 'fullcalendar-scheduler...' \
-          --filter '@fullcalendar/*...' \
-          --filter '@fullcalendar-scripts/*...' \
-          --filter '@fullcalendar-tests/*...' \
-          --filter '!./contrib/**' \
-          run test
-
-      - name: Release
-        run: |
-          echo TODO do the release!!!
+      # - name: Test
+      #   run: |
+      #     pnpm \
+      #     --filter 'fullcalendar...' \
+      #     --filter 'fullcalendar-scheduler...' \
+      #     --filter '@fullcalendar/*...' \
+      #     --filter '@fullcalendar-scripts/*...' \
+      #     --filter '@fullcalendar-tests/*...' \
+      #     --filter '!./contrib/**' \
+      #     run test
