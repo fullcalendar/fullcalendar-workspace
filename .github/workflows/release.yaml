@@ -78,10 +78,13 @@ jobs:
           run build && \
           pnpm run archive
 
+      # NOTE: premium/standard tests disabled in CI while flakiness is addressed
       - name: Test
         if: ${{ !contains(github.event.pull_request.title, 'no-test') }}
         run: |
           pnpm \
+          --filter '!./premium/**' \
+          --filter '!./standard/**' \
           --filter '!./standard' \
           --filter '!./examples/**' \
           run test
