@@ -1,10 +1,7 @@
 name: Release
 on:
-  pull_request:
-    branches:
-      - main
-    types:
-      - closed
+  # Run manually from UI
+  workflow_dispatch: {}
 
 env:
   TZ: "America/New_York"
@@ -14,12 +11,6 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     environment: production
-
-    if: >
-      github.repository == 'fullcalendar/fullcalendar-workspace' &&
-      github.event.pull_request.head.repo.full_name == 'fullcalendar/fullcalendar-workspace' &&
-      github.event.pull_request.head.ref == 'staged-release' &&
-      github.event.pull_request.merged
 
     steps:
       - name: Checkout
@@ -60,15 +51,18 @@ jobs:
           --filter '!./examples/**' \
           install
 
-      - name: Sync Repos
-        run: pnpm run sync-repos
-
       - name: Lint
         run: |
           pnpm \
           --filter '!./standard' \
           --filter '!./examples/**' \
           run lint
+
+      - name: Bump Versions
+        run: |
+          pnpm run version-bump && \
+          git add --all && \
+          git commit -m 'version-bump'
 
       - name: Build
         run: |
@@ -78,16 +72,15 @@ jobs:
           run build && \
           pnpm run archive
 
-      # NOTE: premium/standard tests disabled in CI while flakiness is addressed
+      # execute only contrib tests, as "smoke" tests. they're fast
       - name: Test
-        if: ${{ !contains(github.event.pull_request.title, 'no-test') }}
         run: |
           pnpm \
-          --filter '!./premium/**' \
-          --filter '!./standard/**' \
-          --filter '!./standard' \
-          --filter '!./examples/**' \
+          --filter './contrib/**' \
           run test
+
+      - name: Sync Repos
+        run: pnpm run sync-repos
 
       - name: Tag & Create GitHub Releases
         env:
