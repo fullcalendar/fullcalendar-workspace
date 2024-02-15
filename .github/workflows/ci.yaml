@@ -2,10 +2,10 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - feat-simpler-ci
   pull_request:
     branches:
-      - main
+      - feat-simpler-ci
 
 env:
   TZ: "America/New_York"
