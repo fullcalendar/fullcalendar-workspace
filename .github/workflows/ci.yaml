@@ -44,6 +44,8 @@ jobs:
           pnpm \
           --filter '!./standard' \
           --filter '!./examples/**' \
+          --filter '!@fullcalendar/angular' \
+          --filter '!@fullcalendar-tests/*' \
           install
 
       - name: Lint
@@ -51,6 +53,8 @@ jobs:
           pnpm \
           --filter '!./standard' \
           --filter '!./examples/**' \
+          --filter '!@fullcalendar/angular' \
+          --filter '!@fullcalendar-tests/*' \
           run lint
 
       - name: Build
@@ -58,6 +62,8 @@ jobs:
           pnpm \
           --filter '!./standard' \
           --filter '!./examples/**' \
+          --filter '!@fullcalendar/angular' \
+          --filter '!@fullcalendar-tests/*' \
           run build
 
       # execute only contrib tests, as "smoke" tests. they're fast
@@ -65,4 +71,5 @@ jobs:
         run: |
           pnpm \
           --filter './contrib/**' \
+          --filter '!@fullcalendar/angular' \
           run test

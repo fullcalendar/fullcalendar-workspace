@@ -10,7 +10,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    environment: production
+    environment: Production
 
     steps:
       - name: Checkout
@@ -49,6 +49,8 @@ jobs:
           pnpm \
           --filter '!./standard' \
           --filter '!./examples/**' \
+          --filter '!@fullcalendar/angular' \
+          --filter '!@fullcalendar-tests/*' \
           install
 
       - name: Lint
@@ -56,6 +58,8 @@ jobs:
           pnpm \
           --filter '!./standard' \
           --filter '!./examples/**' \
+          --filter '!@fullcalendar/angular' \
+          --filter '!@fullcalendar-tests/*' \
           run lint
 
       - name: Bump Versions
@@ -69,6 +73,8 @@ jobs:
           pnpm \
           --filter '!./standard' \
           --filter '!./examples/**' \
+          --filter '!@fullcalendar/angular' \
+          --filter '!@fullcalendar-tests/*' \
           run build && \
           pnpm run archive
 
@@ -77,6 +83,7 @@ jobs:
         run: |
           pnpm \
           --filter './contrib/**' \
+          --filter '!@fullcalendar/angular' \
           run test
 
       # - name: Sync Repos
