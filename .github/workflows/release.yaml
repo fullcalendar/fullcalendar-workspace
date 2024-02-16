@@ -37,6 +37,10 @@ jobs:
           node-version: 18.13.0
           cache: 'pnpm'
 
+          # Mutates .npmrc to allow for NPM publishing
+          # Will expect the NODE_AUTH_TOKEN environment variable (see below)
+          registry-url: 'https://registry.npmjs.org'
+
       # - name: Setup Turbo Cache
       #   uses: actions/cache@v3
       #   with:
@@ -66,7 +70,8 @@ jobs:
         run: |
           pnpm run version-bump
           git add --all
-          git commit -m 'version-bump'
+          git diff-index --quiet HEAD || \
+            git commit -m 'version-bump'
 
       - name: Build
         run: |
@@ -86,7 +91,8 @@ jobs:
           --filter '!@fullcalendar/angular' \
           run test
 
-      # # do git-push first. another git-push will happen after subrepos are updated,
+      # # NOTE: RELEASE_GITHUB_TOKEN must have permissions to push to protected branches
+      # # NOTE: do git-push first. another git-push will happen after subrepos are updated,
       # # but if that one fails, we might be in a bad state w/ subrepos.
       # - name: Sync Repos
       #   run: |
@@ -98,5 +104,7 @@ jobs:
       #     GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }} # for GitHub CLI
       #   run: pnpm run tag-and-release
 
-      - name: Publish to NPM
-        run: echo "TODO!!!"
+      # - name: Publish to NPM
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      #   run: pnpm run publish
