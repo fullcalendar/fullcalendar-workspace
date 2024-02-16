@@ -1,7 +1,7 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
   "changelog": false,
-  "commit": false,
+  "commit": "@changesets/cli/commit",
   "fixed": [["@fullcalendar/*", "fullcalendar", "fullcalendar-scheduler"]],
   "linked": [],
   "access": "restricted",
