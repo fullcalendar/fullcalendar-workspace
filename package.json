@@ -18,7 +18,7 @@
     "test": "standard-scripts test",
     "test:dev": "standard-scripts test --dev",
     "clean": "standard-scripts clean",
-    "ci": "pnpm run clean --all && pnpm run lint --all && pnpm run build --all && pnpm run test --all",
+    "release-prep": "./scripts/bin/release-prep.sh",
     "version-bump": "changeset version",
     "version-notes": "workspace-scripts version-notes",
     "sync-repos": "workspace-scripts sync-repos",
