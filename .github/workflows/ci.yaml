@@ -42,34 +42,34 @@ jobs:
       - name: Install Dependencies
         run: |
           pnpm \
-          --filter '!./standard' \
-          --filter '!./examples/**' \
-          --filter '!@fullcalendar/angular' \
-          --filter '!@fullcalendar-tests/*' \
-          install
+            --filter '!./standard' \
+            --filter '!./examples/**' \
+            --filter '!@fullcalendar/angular' \
+            --filter '!@fullcalendar-tests/*' \
+            install
 
       - name: Lint
         run: |
           pnpm \
-          --filter '!./standard' \
-          --filter '!./examples/**' \
-          --filter '!@fullcalendar/angular' \
-          --filter '!@fullcalendar-tests/*' \
-          run lint
+            --filter '!./standard' \
+            --filter '!./examples/**' \
+            --filter '!@fullcalendar/angular' \
+            --filter '!@fullcalendar-tests/*' \
+            run lint
 
       - name: Build
         run: |
           pnpm \
-          --filter '!./standard' \
-          --filter '!./examples/**' \
-          --filter '!@fullcalendar/angular' \
-          --filter '!@fullcalendar-tests/*' \
-          run build
+            --filter '!./standard' \
+            --filter '!./examples/**' \
+            --filter '!@fullcalendar/angular' \
+            --filter '!@fullcalendar-tests/*' \
+            run build
 
       # execute only contrib tests, as "smoke" tests. they're fast
       - name: Test
         run: |
           pnpm \
-          --filter './contrib/**' \
-          --filter '!@fullcalendar/angular' \
-          run test
+            --filter './contrib/**' \
+            --filter '!@fullcalendar/angular' \
+            run test
