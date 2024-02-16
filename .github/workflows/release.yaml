@@ -1,13 +1,7 @@
 name: Release
 on:
   # Run manually from UI
-  workflow_dispatch:
-    inputs:
-      skipVersionBump:
-        description: Skip version bump
-        type: boolean
-        required: false
-        default: false
+  workflow_dispatch: {}
 
 env:
   TZ: "America/New_York"
@@ -73,7 +67,6 @@ jobs:
             run lint
 
       - name: Bump Versions
-        if: success() && !inputs.skipVersionBump
         run: pnpm run version-bump
 
       - name: Build
@@ -94,14 +87,6 @@ jobs:
             --filter '!@fullcalendar/angular' \
             run test
 
-      # # NOTE: RELEASE_GITHUB_TOKEN must have permissions to push to protected branches
-      # # NOTE: do git-push first. another git-push will happen after subrepos are updated,
-      # # but if that one fails, we might be in a bad state w/ subrepos.
-      # - name: Sync Repos
-      #   run: |
-      #     pnpm run meta:update
-      #     pnpm run sync-repos
-
       # - name: Tag & Create GitHub Releases
       #   env:
       #     GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }} # for GitHub CLI
@@ -111,3 +96,26 @@ jobs:
       #   env:
       #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       #   run: pnpm run publish
+
+      - name: Sync Repos
+        # Don't mark the whole workflow as failed if this set fails
+        continue-on-error: true
+
+        #
+        # RELEASE_GITHUB_TOKEN must have permissions to push to protected branches
+        #
+        run: |
+          echo "Pulling latest and rebasing version-bump commit atop..."
+          git pull --rebase
+          echo "Pushing..."
+          git push
+
+          echo "Updating subrepo configs..."
+          pnpm run meta:update
+          git commit -m 'meta:update'
+          echo "Pushing..."
+          git push
+
+          echo "Syncing subrepos with latest commits..."
+          echo "(Will record new state of subrepos on HEAD and push...)"
+          pnpm run sync-repos
