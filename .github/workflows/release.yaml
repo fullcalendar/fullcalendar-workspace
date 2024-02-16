@@ -98,7 +98,9 @@ jobs:
       # # NOTE: do git-push first. another git-push will happen after subrepos are updated,
       # # but if that one fails, we might be in a bad state w/ subrepos.
       # - name: Sync Repos
-      #   run: pnpm run sync-repos
+      #   run: |
+      #     pnpm run meta:update
+      #     pnpm run sync-repos
 
       # - name: Tag & Create GitHub Releases
       #   env:
