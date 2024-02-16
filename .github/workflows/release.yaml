@@ -1,7 +1,13 @@
 name: Release
 on:
   # Run manually from UI
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      skipVersionBump:
+        description: Skip version bump
+        type: boolean
+        required: false
+        default: false
 
 env:
   TZ: "America/New_York"
@@ -67,6 +73,7 @@ jobs:
             run lint
 
       - name: Bump Versions
+        if: success() && !inputs.skipVersionBump
         run: pnpm run version-bump
 
       - name: Build
