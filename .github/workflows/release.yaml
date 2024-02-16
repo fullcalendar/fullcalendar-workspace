@@ -64,8 +64,8 @@ jobs:
 
       - name: Bump Versions
         run: |
-          pnpm run version-bump && \
-          git add --all && \
+          pnpm run version-bump
+          git add --all
           git commit -m 'version-bump'
 
       - name: Build
@@ -75,7 +75,7 @@ jobs:
           --filter '!./examples/**' \
           --filter '!@fullcalendar/angular' \
           --filter '!@fullcalendar-tests/*' \
-          run build && \
+          run build
           pnpm run archive
 
       # execute only contrib tests, as "smoke" tests. they're fast
@@ -86,8 +86,12 @@ jobs:
           --filter '!@fullcalendar/angular' \
           run test
 
+      # # do git-push first. another git-push will happen after subrepos are updated,
+      # # but if that one fails, we might be in a bad state w/ subrepos.
       # - name: Sync Repos
-      #   run: pnpm run sync-repos
+      #   run: |
+      #     git push
+      #     pnpm run sync-repos
 
       # - name: Tag & Create GitHub Releases
       #   env:
