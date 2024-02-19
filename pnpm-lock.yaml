@@ -132,6 +132,9 @@ importers:
       '@babel/preset-react':
         specifier: ^7.9.4
         version: 7.18.6(@babel/core@7.20.2)
+      '@fullcalendar/adaptive':
+        specifier: ~6.1.10
+        version: link:../../premium/packages/adaptive/dist
       '@fullcalendar/core':
         specifier: ~6.1.10
         version: link:../../standard/packages/core/dist
@@ -147,6 +150,9 @@ importers:
       '@fullcalendar/resource-timeline':
         specifier: ~6.1.10
         version: link:../../premium/packages/resource-timeline/dist
+      '@fullcalendar/timegrid':
+        specifier: ~6.1.10
+        version: link:../../standard/packages/timegrid/dist
       '@rollup/plugin-babel':
         specifier: ^5.0.0
         version: 5.3.1(@babel/core@7.20.2)(rollup@2.79.1)
