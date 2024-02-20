@@ -2,10 +2,10 @@ name: CI
 on:
   push:
     branches:
-      - xxxmain
+      - main
   pull_request:
     branches:
-      - xxxmain
+      - main
 
 env:
   TZ: "America/New_York"
