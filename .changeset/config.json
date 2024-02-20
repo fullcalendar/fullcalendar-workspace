@@ -4,7 +4,7 @@
   "commit": "@changesets/cli/commit",
   "fixed": [["@fullcalendar/*", "fullcalendar", "fullcalendar-scheduler"]],
   "linked": [],
-  "access": "restricted",
+  "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": []
