@@ -1,3 +1,3 @@
 [submodule "scripts/git-subrepo"]
 	path = scripts/git-subrepo
-	url = git@github.com:ingydotnet/git-subrepo.git
+	url = https://github.com/ingydotnet/git-subrepo.git
