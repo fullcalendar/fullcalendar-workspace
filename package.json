@@ -20,7 +20,6 @@
     "clean": "standard-scripts clean",
     "release-prep": "./scripts/bin/release-prep.sh",
     "version-bump": "changeset version",
-    "version-notes": "workspace-scripts version-notes",
     "sync-repos": "workspace-scripts sync-repos",
     "archive": "standard-scripts archive",
     "tag-and-release": "workspace-scripts tag-and-release",

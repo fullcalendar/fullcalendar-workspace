@@ -1,7 +1,7 @@
 import { join as joinPaths } from 'path'
 import { execLive } from '@fullcalendar-scripts/standard/utils/exec'
 import { getSubrepos, readManifest } from './meta/utils.js'
-import { changelogSrc, getChangelogEntry } from './version-notes.js'
+import { changelogSrc, getReleaseNotes } from './version-notes.js'
 
 export default async function() {
   const monorepoDir = process.cwd()
@@ -107,7 +107,7 @@ async function createGithubRelease(
   const releaseNotes = linkToStandard
     // TODO: make DRY by using package.json for repo URL
     ? `See https://github.com/fullcalendar/fullcalendar/releases/tag/${tagName}`
-    : (await getChangelogEntry(joinPaths(monorepoDir, changelogSrc), version) ||
+    : (await getReleaseNotes(joinPaths(monorepoDir, changelogSrc), version) ||
         '_Manually enter release notes_')
 
   await execLive([
