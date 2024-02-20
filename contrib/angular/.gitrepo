@@ -6,7 +6,7 @@
 [subrepo]
 	remote = https://github.com/fullcalendar/fullcalendar-angular.git
 	branch = main
-	commit = 6da1af20f92c6e74fad003130306e72ddcee4127
+	commit = 68fc876582b29165bd6e18540515615c509164f0
 	parent = 4b79207dc9ff5e1165e59e2e2f9a4dff2415df9e
 	method = merge
 	cmdver = 0.4.6
