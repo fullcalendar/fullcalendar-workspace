@@ -3,12 +3,13 @@
 set -e
 cd "`dirname $0`/../.."
 
-pnpm run clean --all
+# # clean. for some reason standard-scripts was struggling here
+# pnpm -r run clean
+# pnpm -r exec rm -rf '.turbo'
+
 pnpm run lint --all
 
 pnpm run version-bump
-# undo commit that changesets made
-git reset HEAD~1
 
 pnpm run build --all
 
@@ -20,5 +21,5 @@ pnpm \
 
 echo
 echo "Done with release-prep!"
-echo "Remember to clear modifications to the working tree!"
+echo "Remember to clear modifications from the version-bump!"
 echo
