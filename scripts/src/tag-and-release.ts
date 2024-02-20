@@ -1,7 +1,7 @@
 import { join as joinPaths } from 'path'
 import { execLive } from '@fullcalendar-scripts/standard/utils/exec'
 import { getSubrepos, readManifest } from './meta/utils.js'
-import { changelogSrc, getReleaseNotes } from './version-notes.js'
+import { changelogSrc, getReleaseNotes } from './release-notes.js'
 
 export default async function() {
   const monorepoDir = process.cwd()
