@@ -29,7 +29,7 @@ export async function getChangelogEntry(
 
 async function getRecentChangelogEntry(changelogPath: string) {
   const changelogText = await readFile(changelogPath, { encoding: 'utf8' })
-  const match = changelogText.match(/(^|[\n\r])##\s+v?(\S*)[^\n\r]*(.*?)(##|$)/s)
+  const match = changelogText.match(/(^|[\n\r])##\s+v?(\S*)[^\n\r]*(.*?)([\n\r]##\s+|$)/s)
 
   if (!match) {
     throw new Error('Could not find any changelog entries')
