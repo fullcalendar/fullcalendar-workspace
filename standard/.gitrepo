@@ -4,7 +4,7 @@
 ; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
 ;
 [subrepo]
-	remote = git@github.com:fullcalendar/fullcalendar.git
+	remote = https://github.com/fullcalendar/fullcalendar.git
 	branch = main
 	commit = 98318ce21a38f63dbd35a010e168b144899168c1
 	parent = 50511300c12ebb800c726c4c347fc908e226b3bf
