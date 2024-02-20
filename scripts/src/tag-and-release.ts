@@ -3,8 +3,6 @@ import { execLive } from '@fullcalendar-scripts/standard/utils/exec'
 import { getSubrepos, readManifest } from './meta/utils.js'
 import { changelogSrc, getChangelogEntry } from './version-notes.js'
 
-const TAG_POSTFIX = '-test'
-
 export default async function() {
   const monorepoDir = process.cwd()
   const monorepoManifest = await readManifest(monorepoDir)
@@ -41,7 +39,7 @@ export default async function() {
 
 async function tagAndReleaseRoot(monorepoDir: string, version: string): Promise<void> {
   const execOpts = { cwd: monorepoDir }
-  const tagName = `v${version}${TAG_POSTFIX}`
+  const tagName = `v${version}`
 
   console.log(`Creating root tag ${tagName}...`)
   await execLive(['git', 'tag', '-a', tagName, '-m', tagName], execOpts)
@@ -71,7 +69,7 @@ async function tagAndReleaseSubrepo(
   }
 
   const execOpts = { cwd: monorepoDir }
-  const tagName = `v${version}${TAG_POSTFIX}`
+  const tagName = `v${version}`
   const tempTagName = `subrepo/${subrepoSubdir}/${tagName}`
   const subrepoRemote = subrepo['remote-url']
   const subrepoCommit = subrepo['pulled-commit']
