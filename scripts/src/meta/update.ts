@@ -80,7 +80,7 @@ export default async function() {
 
 const versionAuthorityPkg = 'standard/packages/core'
 const extraSyncedManifestDirs = [
-  'contrib/angular/lib'
+  'contrib/angular/lib',
 ]
 
 async function syncManifestVersions(monorepoDir: string, subrepoSubdirs: string[]) {
