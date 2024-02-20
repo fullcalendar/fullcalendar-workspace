@@ -585,4 +585,117 @@ describe('dayGrid advanced event rendering', () => {
     let visibleEventEls = filterVisibleEls(eventEls)
     expect(anyElsIntersect(visibleEventEls)).toBe(false)
   })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/6486
+  it('renders events starting yesterday, ending at midnight, as "past"', () => {
+    let calendar = initCalendar({
+      initialView: 'dayGridMonth',
+      initialDate: '2023-04-09', // "today"
+      now: '2023-04-09', // "today"
+      events: [{
+        start: '2023-04-08', // yesterday
+        allDay: true,
+      }],
+    })
+    let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+    let eventEls = dayGridWrapper.getEventEls()
+
+    expect(eventEls[0]).toHaveClass('fc-event-past')
+  })
+
+  // https://github.com/fullcalendar/fullcalendar/issues/7462
+  it('Cannot infinitely recurse with dayMaxEventRows and many hidden event rows', () => {
+    initCalendar({
+      initialView: 'dayGridMonth',
+      initialDate: '2023-09-01',
+      dayMaxEventRows: 6,
+      events: [
+        {
+          start: '2023-09-28T00:00:00',
+          end: '2023-10-01T00:00:00',
+        },
+        {
+          start: '2023-09-26T00:00:00',
+          end: '2023-09-27T00:00:00',
+        },
+        {
+          start: '2023-09-20T17:00:00',
+          end: '2023-09-27T17:00:00',
+        },
+        {
+          start: '2023-09-21T16:00:00',
+          end: '2023-09-25T14:00:00',
+        },
+        {
+          start: '2023-09-21T16:00:00',
+          end: '2023-09-25T11:00:00',
+        },
+        {
+          start: '2023-09-28T10:00:00',
+          end: '2023-09-28T15:00:00',
+        },
+        {
+          start: '2023-09-27T08:00:00',
+          end: '2023-10-04T18:00:00',
+        },
+        {
+          start: '2023-09-20T13:00:00',
+          end: '2023-09-29T12:00:00',
+        },
+        {
+          start: '2023-09-20T12:00:00',
+          end: '2023-09-29T12:00:00',
+        },
+        {
+          start: '2023-09-27T11:00:00',
+          end: '2023-09-28T18:00:00',
+        },
+        {
+          start: '2023-03-29T23:00:00',
+          end: '2024-03-29T22:00:00',
+        },
+        {
+          start: '2023-09-25T02:00:00',
+          end: '2023-09-29T12:00:00',
+        },
+        {
+          start: '2023-09-22T14:00:00',
+          end: '2023-09-29T12:00:00',
+        },
+        {
+          start: '2023-09-22T14:00:00',
+          end: '2023-09-28T12:00:00',
+        },
+        {
+          start: '2023-09-19T13:00:00',
+          end: '2023-09-30T13:00:00',
+        },
+      ],
+    })
+  })
+
+  it('will limit events to dayMaxEventRows:1', () => {
+    const calendar = initCalendar({
+      initialDate: '2021-10-31',
+      dayMaxEventRows: 1,
+      events: [
+        { title: 'A', start:'2021-10-31', end:'2021-11-02' },
+        { title: 'B', start:'2021-10-29', end:'2021-11-02' },
+        { title: 'C', start:'2021-10-28 12:00:00', end:'2021-10-31 12:00:00' },
+      ],
+    })
+
+    let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+    let visibleEventEls = filterVisibleEls(dayGridWrapper.getEventEls())
+    let moreEls = dayGridWrapper.getMoreEls()
+    let allEls = [...visibleEventEls, ...moreEls]
+    let offsetTopHash = {}
+
+    for (let el of allEls) {
+      offsetTopHash[Math.round(el.getBoundingClientRect().top)] = true
+    }
+
+    // two weeks, two distinct lines of events (one per week)
+    expect(Object.keys(offsetTopHash).length).toBe(2)
+  })
 })

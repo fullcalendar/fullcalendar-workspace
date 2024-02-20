@@ -1,3 +1,27 @@
+## 6.1.11 (2024-02-19)
+
+### General
+
+- fix: fc-event-past className not attached to events that end midnight before today (#6120, #6486)
+- fix: aria-labelledby on view container should not exist when headerToolbar:false (#6884)
+
+### DayGrid and MultiMonth
+
+- fix: possible infinite recursion with dayGrid, dayMaxEventRows, and many hidden event rows (#7462)
+- fix: incorrectly put events under +more link (#7002, #6608, #6900)
+
+### React
+
+- fix: events incorrectly positioned w/ React strict-mode (#7574, #7389, #7400)
+
+### Angular
+
+- fix: Angular 17 SRR error with el.getRootNode (#7550)
+
+### React/Vue/Angular Connectors and Adaptive plugin
+
+- fix: eventContent custom content not rendering within print-mode (#7419)
+
 ## 6.1.10 (2023-11-28)
 
 - feature: Angular version 17 support (#7525)

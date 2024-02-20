@@ -87,15 +87,15 @@ jobs:
             --filter '!@fullcalendar/angular' \
             run test
 
-      # - name: Tag & Create GitHub Releases
-      #   env:
-      #     GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }} # for GitHub CLI
-      #   run: pnpm run tag-and-release
+      - name: Tag & Create GitHub Releases
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }} # for GitHub CLI
+        run: pnpm run tag-and-release
 
-      # - name: Publish to NPM
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      #   run: pnpm run publish
+      - name: Publish to NPM
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm run publish
 
       - name: Sync Repos
         # Don't mark the whole workflow as failed if this set fails

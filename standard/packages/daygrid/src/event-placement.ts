@@ -42,7 +42,9 @@ export function computeFgSegPlacement(
     let segUid = segs[segEntry.index].eventRange.instance.instanceId +
       ':' + segEntry.span.start +
       ':' + (segEntry.span.end - 1)
-    return segHeights[segUid]
+
+    // if no thickness known, assume 1 (if 0, so small it always fits)
+    return segHeights[segUid] || 1
   })
   hierarchy.allowReslicing = true
   hierarchy.strictOrder = strictOrder
@@ -278,19 +280,26 @@ class DayGridSegHierarchy extends SegHierarchy {
     const { entriesByLevel, forceHidden } = this
     const { touchingEntry, touchingLevel, touchingLateral } = insertion
 
+    // the entry that the new insertion is touching must be hidden
     if (this.hiddenConsumes && touchingEntry) {
       const touchingEntryId = buildEntryKey(touchingEntry)
-      // if not already hidden
+
       if (!forceHidden[touchingEntryId]) {
         if (this.allowReslicing) {
-          const placeholderEntry: SegEntry = { // placeholder of the "more" link
+          // split up the touchingEntry, reinsert it
+          const hiddenEntry = {
             ...touchingEntry,
-            span: intersectSpans(touchingEntry.span, entry.span),
+            span: intersectSpans(touchingEntry.span, entry.span), // hit the `entry` barrier
           }
-          const placeholderEntryId = buildEntryKey(placeholderEntry)
-          forceHidden[placeholderEntryId] = true
-          entriesByLevel[touchingLevel][touchingLateral] = placeholderEntry // replace touchingEntry with our placeholder
-          this.splitEntry(touchingEntry, entry, hiddenEntries) // split up the touchingEntry, reinsert it
+
+          // reinsert the area that turned into a "more" link (so no other entries try to
+          // occupy the space) but mark it forced-hidden
+          const hiddenEntryId = buildEntryKey(hiddenEntry)
+          forceHidden[hiddenEntryId] = true
+          entriesByLevel[touchingLevel][touchingLateral] = hiddenEntry
+
+          hiddenEntries.push(hiddenEntry)
+          this.splitEntry(touchingEntry, entry, hiddenEntries)
         } else {
           forceHidden[touchingEntryId] = true
           hiddenEntries.push(touchingEntry)
@@ -298,6 +307,7 @@ class DayGridSegHierarchy extends SegHierarchy {
       }
     }
 
-    return super.handleInvalidInsertion(insertion, entry, hiddenEntries)
+    // will try to reslice...
+    super.handleInvalidInsertion(insertion, entry, hiddenEntries)
   }
 }
