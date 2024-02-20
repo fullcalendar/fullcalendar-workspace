@@ -53,7 +53,6 @@ jobs:
           pnpm \
             --filter '!./standard' \
             --filter '!./examples/**' \
-            --filter '!@fullcalendar/angular' \
             --filter '!@fullcalendar-tests/*' \
             install
 
@@ -62,7 +61,6 @@ jobs:
           pnpm \
             --filter '!./standard' \
             --filter '!./examples/**' \
-            --filter '!@fullcalendar/angular' \
             --filter '!@fullcalendar-tests/*' \
             run lint
 
@@ -74,7 +72,6 @@ jobs:
           pnpm \
             --filter '!./standard' \
             --filter '!./examples/**' \
-            --filter '!@fullcalendar/angular' \
             --filter '!@fullcalendar-tests/*' \
             run build
           pnpm run archive
@@ -84,7 +81,6 @@ jobs:
         run: |
           pnpm \
             --filter './contrib/**' \
-            --filter '!@fullcalendar/angular' \
             run test
 
       - name: Tag & Create GitHub Releases
