@@ -22,6 +22,7 @@ export default async function() {
   const monorepoLockfile = await readLockfile(monorepoDir)
   const relinkedLockfile = await relinkLockfile(monorepoDir, monorepoLockfile, readManifest)
   await writeLockfile(monorepoDir, relinkedLockfile)
+  await addFile(joinPaths(monorepoDir, 'pnpm-lock.yaml'))
 
   for (const subrepoSubdir of subrepoSubdirs) {
     const subrepoDir = joinPaths(monorepoDir, subrepoSubdir)
@@ -78,6 +79,9 @@ export default async function() {
 // -------------------------------------------------------------------------------------------------
 
 const versionAuthorityPkg = 'standard/packages/core'
+const extraSyncedManifestDirs = [
+  'contrib/angular/lib'
+]
 
 async function syncManifestVersions(monorepoDir: string, subrepoSubdirs: string[]) {
   const authorityManifest = await readManifest(joinPaths(monorepoDir, versionAuthorityPkg))
@@ -85,6 +89,10 @@ async function syncManifestVersions(monorepoDir: string, subrepoSubdirs: string[
   const dirs = [monorepoDir].concat(
     subrepoSubdirs.map((subrepoSubdir) => joinPaths(monorepoDir, subrepoSubdir)),
   )
+
+  for (const extraDir of extraSyncedManifestDirs) {
+    dirs.push(joinPaths(monorepoDir, extraDir))
+  }
 
   for (const dir of dirs) {
     const manifest = await readManifest(dir)

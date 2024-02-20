@@ -1,7 +1,11 @@
 name: Release
 on:
   # Run manually from UI
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      skip_version_bump:
+        description: Skip version bump
+        type: boolean
 
 env:
   TZ: "America/New_York"
@@ -65,6 +69,7 @@ jobs:
             run lint
 
       - name: Bump Versions
+        if: success() && !inputs.skip_version_bump
         run: pnpm run version-bump
 
       - name: Build
@@ -86,18 +91,23 @@ jobs:
       # Must happen before tag-and-release. Would prefer to do it after as a
       # `continue-on-error:true` optional task, in case pushing back to main fails,
       # but the tag-and-release script expects everything to be ready.
-      # RELEASE_GITHUB_TOKEN must have permissions to push to protected branches
+      #
+      # Also, do as few pushes as possible, because each triggers CI.
+      #
+      # Also, RELEASE_GITHUB_TOKEN must have permissions to push to protected branches.
+      #
       - name: Sync Repos
         run: |
           echo "Pulling latest and rebasing version-bump commit atop..."
           git pull --rebase
-          echo "Pushing..."
-          git push
 
           echo "Updating subrepo configs..."
           pnpm run meta:update
-          git commit -m 'meta:update'
-          git push
+          git diff-index --quiet HEAD || \
+            git commit -m 'meta:update'
+
+          echo "Checking Git status (for sync-repos debugging)..."
+          git status
 
           echo "Syncing subrepos with latest commits..."
           echo "(Will record new state of subrepos on HEAD and push...)"
