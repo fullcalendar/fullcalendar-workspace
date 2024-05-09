@@ -14,7 +14,7 @@
     "@fullcalendar/react": "^6.1.10",
     "@fullcalendar/resource": "^6.1.10",
     "@fullcalendar/resource-timeline": "^6.1.10",
-    "next": "^12.3.2",
+    "next": "^13.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
