@@ -57,11 +57,11 @@ function detectRtlScrollSystem() {
   let el = document.createElement('div')
   el.style.position = 'absolute'
   el.style.top = '-1000px'
-  el.style.width = '1px'
-  el.style.height = '1px'
+  el.style.width = '100px' // must be at least the side of scrollbars or you get inaccurate values (#7335)
+  el.style.height = '100px' // "
   el.style.overflow = 'scroll'
   el.style.direction = 'rtl'
-  el.style.fontSize = '100px'
+  el.style.fontSize = '200px'
   el.innerHTML = 'A'
 
   document.body.appendChild(el)
