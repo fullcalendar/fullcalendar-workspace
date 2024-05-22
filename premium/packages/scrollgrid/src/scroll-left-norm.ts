@@ -61,9 +61,12 @@ function detectRtlScrollSystem() {
   el.style.height = '100px' // "
   el.style.overflow = 'scroll'
   el.style.direction = 'rtl'
-  el.style.fontSize = '200px'
-  el.innerHTML = 'A'
 
+  let innerEl = document.createElement('div')
+  innerEl.style.width = '200px'
+  innerEl.style.height = '200px'
+
+  el.appendChild(innerEl)
   document.body.appendChild(el)
 
   let system
