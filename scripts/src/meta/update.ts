@@ -70,6 +70,7 @@ export default async function() {
   }
 
   await syncManifestVersions(monorepoDir, subrepoSubdirs)
+  await syncAngularLibManifestDeps(monorepoDir)
 
   console.log('[SUCCESS] Changes added to Git index')
   console.log()
@@ -80,7 +81,7 @@ export default async function() {
 
 const versionAuthorityPkg = 'standard/packages/core'
 const extraSyncedManifestDirs = [
-  'contrib/angular/lib', // special case!
+  'contrib/angular/lib', // Angular special case!
 ]
 
 async function syncManifestVersions(monorepoDir: string, subrepoSubdirs: string[]) {
@@ -102,6 +103,17 @@ async function syncManifestVersions(monorepoDir: string, subrepoSubdirs: string[
       await addFile(manifestPath)
     }
   }
+}
+
+// Angular special case!
+async function syncAngularLibManifestDeps(monorepoDir: string) {
+  const angularRootManifest = await readManifest(joinPaths(monorepoDir, 'contrib/angular'))
+  const angularLibManifest = await readManifest(joinPaths(monorepoDir, 'contrib/angular/lib'))
+
+  angularLibManifest.dependencies = angularRootManifest.dependencies
+  angularLibManifest.peerDependencies = angularRootManifest.peerDependencies
+
+  await writeManifest(joinPaths(monorepoDir, 'contrib/angular/lib'), angularLibManifest)
 }
 
 // Workspace utils

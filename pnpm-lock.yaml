@@ -25,15 +25,28 @@ importers:
 
   contrib/angular:
     dependencies:
+      tslib:
+        specifier: ^2.3.0
+        version: 2.3.0
+    devDependencies:
+      '@angular-devkit/build-angular':
+        specifier: ~13.3.10
+        version: 13.3.10(@angular/compiler-cli@13.3.12)(karma@6.3.20)(ng-packagr@13.0.0)(typescript@4.6.4)
       '@angular/animations':
         specifier: ~13.3.0
         version: 13.3.12(@angular/core@13.3.12)
+      '@angular/cli':
+        specifier: ~13.3.10
+        version: 13.3.10
       '@angular/common':
         specifier: ~13.3.0
         version: 13.3.12(@angular/core@13.3.12)(rxjs@7.5.7)
       '@angular/compiler':
         specifier: ~13.3.0
         version: 13.3.12
+      '@angular/compiler-cli':
+        specifier: ~13.3.0
+        version: 13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4)
       '@angular/core':
         specifier: ~13.3.0
         version: 13.3.12(rxjs@7.5.7)(zone.js@0.11.8)
@@ -70,25 +83,6 @@ importers:
       '@fullcalendar/resource-timeline':
         specifier: ~6.1.13
         version: link:../../premium/packages/resource-timeline/dist
-      rxjs:
-        specifier: ~7.5.0
-        version: 7.5.7
-      tslib:
-        specifier: ^2.3.0
-        version: 2.3.0
-      zone.js:
-        specifier: ~0.11.4
-        version: 0.11.8
-    devDependencies:
-      '@angular-devkit/build-angular':
-        specifier: ~13.3.10
-        version: 13.3.10(@angular/compiler-cli@13.3.12)(karma@6.3.20)(ng-packagr@13.0.0)(typescript@4.6.4)
-      '@angular/cli':
-        specifier: ~13.3.10
-        version: 13.3.10
-      '@angular/compiler-cli':
-        specifier: ~13.3.0
-        version: 13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4)
       '@types/jasmine':
         specifier: ~3.10.0
         version: 3.10.6
@@ -116,9 +110,15 @@ importers:
       ng-packagr:
         specifier: ^13.0.0
         version: 13.0.0(@angular/compiler-cli@13.3.12)(@types/node@12.20.55)(tslib@2.3.0)(typescript@4.6.4)
+      rxjs:
+        specifier: ~7.5.0
+        version: 7.5.7
       typescript:
         specifier: ~4.6.4
         version: 4.6.4
+      zone.js:
+        specifier: ~0.11.4
+        version: 0.11.8
     publishDirectory: ./dist/lib
 
   contrib/react:
@@ -4982,7 +4982,6 @@ packages:
     dependencies:
       '@angular/core': 13.3.12(rxjs@7.5.7)(zone.js@0.11.8)
       tslib: 2.6.2
-    dev: false
 
   /@angular/animations@14.2.12(@angular/core@14.2.12):
     resolution: {integrity: sha512-gwdnFZkvVUr+enUNfhfCGRGGqNHn1+vTA81apLfHYhJxgjiLUtETc4KTOrQevtDm022pEd+LSrvr8r+7ag+jkw==}
@@ -5219,7 +5218,6 @@ packages:
       '@angular/core': 13.3.12(rxjs@7.5.7)(zone.js@0.11.8)
       rxjs: 7.5.7
       tslib: 2.6.2
-    dev: false
 
   /@angular/common@14.2.12(@angular/core@14.2.12)(rxjs@7.5.7):
     resolution: {integrity: sha512-oZunh9wfInFWhNO1P8uoEs/o4u8kerKMhw8GruywKm1TV7gHDP2Fi5WHGjFqq3XYptgBTPCTSEfyLX6Cwq1PUw==}
@@ -5495,7 +5493,6 @@ packages:
       rxjs: 7.5.7
       tslib: 2.6.2
       zone.js: 0.11.8
-    dev: false
 
   /@angular/core@14.2.12(rxjs@7.5.7)(zone.js@0.11.8):
     resolution: {integrity: sha512-sGQxU5u4uawwvJa6jOTmGoisJiQ5HIN/RoBw99CmoqZIVyUSg9IRJJC1KVdH8gbpWBNLkElZv21lwJTL/msWyg==}
@@ -5583,7 +5580,6 @@ packages:
       '@angular/platform-browser': 13.3.12(@angular/animations@13.3.12)(@angular/common@13.3.12)(@angular/core@13.3.12)
       rxjs: 7.5.7
       tslib: 2.6.2
-    dev: false
 
   /@angular/forms@14.2.12(@angular/common@14.2.12)(@angular/core@14.2.12)(@angular/platform-browser@14.2.12)(rxjs@7.5.7):
     resolution: {integrity: sha512-7abYlGIT2JnAtutQUlH3fQS6QEpbfftgvsVcZJCyvX0rXL3u2w2vUQkDHJH4YJJp3AHFVCH4/l7R4VcaPnrwvA==}
@@ -5684,7 +5680,6 @@ packages:
       '@angular/core': 13.3.12(rxjs@7.5.7)(zone.js@0.11.8)
       '@angular/platform-browser': 13.3.12(@angular/animations@13.3.12)(@angular/common@13.3.12)(@angular/core@13.3.12)
       tslib: 2.6.2
-    dev: false
 
   /@angular/platform-browser-dynamic@14.2.12(@angular/common@14.2.12)(@angular/compiler@14.2.12)(@angular/core@14.2.12)(@angular/platform-browser@14.2.12):
     resolution: {integrity: sha512-oZhNJeaBmgw8+KBSYpKz2RYqEDyETC+HJXH8dwIFcP6BqqwL2NE70FdSR7EnOa5c41MEtTmMCGhrJSFR60x5/w==}
@@ -5782,7 +5777,6 @@ packages:
       '@angular/common': 13.3.12(@angular/core@13.3.12)(rxjs@7.5.7)
       '@angular/core': 13.3.12(rxjs@7.5.7)(zone.js@0.11.8)
       tslib: 2.6.2
-    dev: false
 
   /@angular/platform-browser@14.2.12(@angular/animations@14.2.12)(@angular/common@14.2.12)(@angular/core@14.2.12):
     resolution: {integrity: sha512-vOarWym8ucl1gjYWCzdwyBha+MTvL381mvTTUu8aUx6nVhHFjv4bvpjlZnZgojecqUPyxOwmPLLHvCZPJVHZYg==}
@@ -5898,7 +5892,6 @@ packages:
       '@angular/platform-browser': 13.3.12(@angular/animations@13.3.12)(@angular/common@13.3.12)(@angular/core@13.3.12)
       rxjs: 7.5.7
       tslib: 2.6.2
-    dev: false
 
   /@angular/router@14.2.12(@angular/common@14.2.12)(@angular/core@14.2.12)(@angular/platform-browser@14.2.12)(rxjs@7.5.7):
     resolution: {integrity: sha512-r5tVus5RJDNc4U2v0jMtjPiAS1xDsVsJ70lS313DgZmBDHIVZP1cWIehdxwgNlGwQQtAA36eG7toBwqUU3gb/A==}
@@ -23822,6 +23815,7 @@ packages:
 
   /errno@0.1.8:
     resolution: {integrity: sha512-dJ6oBr5SQ1VSd9qkk7ByRgb/1SH4JZjCHSW/mr63/QcXO9zLVxvJ6Oy13nio03rxpSnVDDjFor75SjVeZWPW/A==}
+    requiresBuild: true
     dependencies:
       prr: 1.0.1
     dev: true
@@ -25883,7 +25877,7 @@ packages:
       object.values: 1.1.6
       prop-types: 15.8.1
       resolve: 2.0.0-next.4
-      semver: 6.3.0
+      semver: 6.3.1
       string.prototype.matchall: 4.0.8
     dev: true
 
@@ -30633,6 +30627,7 @@ packages:
   /make-dir@2.1.0:
     resolution: {integrity: sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA==}
     engines: {node: '>=6'}
+    requiresBuild: true
     dependencies:
       pify: 4.0.1
       semver: 5.7.1
