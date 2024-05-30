@@ -75,12 +75,12 @@ export default async function() {
   console.log()
 }
 
-// Manifest Version Syncing
+// Subrepo Manifest Version Syncing
 // -------------------------------------------------------------------------------------------------
 
 const versionAuthorityPkg = 'standard/packages/core'
 const extraSyncedManifestDirs = [
-  'contrib/angular/lib',
+  'contrib/angular/lib', // special case!
 ]
 
 async function syncManifestVersions(monorepoDir: string, subrepoSubdirs: string[]) {

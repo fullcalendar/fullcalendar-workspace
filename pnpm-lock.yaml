@@ -3059,43 +3059,43 @@ importers:
   premium/tests:
     dependencies:
       '@fullcalendar-tests/standard':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../../standard/tests
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../../standard/packages/list/dist
       '@fullcalendar/premium-common':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/premium-common/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/resource/dist
       '@fullcalendar/resource-daygrid':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/resource-daygrid/dist
       '@fullcalendar/resource-timegrid':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/resource-timegrid/dist
       '@fullcalendar/resource-timeline':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/resource-timeline/dist
       '@fullcalendar/scrollgrid':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/scrollgrid/dist
       '@fullcalendar/timegrid':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../../standard/packages/timegrid/dist
       '@fullcalendar/timeline':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/timeline/dist
       xhr-mock:
         specifier: ^2.5.1
@@ -3526,46 +3526,46 @@ importers:
   standard/tests:
     dependencies:
       '@fullcalendar/bootstrap':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/bootstrap4/dist
       '@fullcalendar/core':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/daygrid/dist
       '@fullcalendar/google-calendar':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/google-calendar/dist
       '@fullcalendar/icalendar':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/icalendar/dist
       '@fullcalendar/interaction':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/interaction/dist
       '@fullcalendar/list':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/list/dist
       '@fullcalendar/luxon3':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/luxon3/dist
       '@fullcalendar/moment':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/moment/dist
       '@fullcalendar/moment-timezone':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/moment-timezone/dist
       '@fullcalendar/multimonth':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/multimonth/dist
       '@fullcalendar/rrule':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/rrule/dist
       '@fullcalendar/timegrid':
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../packages/timegrid/dist
       fullcalendar:
-        specifier: ~6.1.10
+        specifier: workspace:*
         version: link:../bundle/dist
       luxon:
         specifier: ^2.0.0
@@ -25883,7 +25883,7 @@ packages:
       object.values: 1.1.6
       prop-types: 15.8.1
       resolve: 2.0.0-next.4
-      semver: 6.3.1
+      semver: 6.3.0
       string.prototype.matchall: 4.0.8
     dev: true
 
@@ -27200,6 +27200,7 @@ packages:
   /glob@8.1.0:
     resolution: {integrity: sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==}
     engines: {node: '>=12'}
+    deprecated: Glob versions prior to v9 are no longer supported
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
@@ -28092,6 +28093,7 @@ packages:
 
   /inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
     dependencies:
       once: 1.4.0
       wrappy: 1.0.2
@@ -41384,7 +41386,7 @@ packages:
       eslint-scope: 5.1.1
       events: 3.3.0
       glob-to-regexp: 0.4.1
-      graceful-fs: 4.2.11
+      graceful-fs: 4.2.10
       json-parse-even-better-errors: 2.3.1
       loader-runner: 4.3.0
       mime-types: 2.1.35
