@@ -6,7 +6,7 @@
 [subrepo]
 	remote = https://github.com/fullcalendar/fullcalendar-react.git
 	branch = main
-	commit = b1a60a464d3170353628f9e7bf42b86c7b1bbda4
-	parent = c2d49f7e24fc24c13f3eb5d486e814079a5af32d
+	commit = 227680867755dcb646f9c962de87d2362012a55f
+	parent = 6b34417df5d9f5916e63a56917587e2bf7845b95
 	method = merge
 	cmdver = 0.4.6
