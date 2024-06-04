@@ -2,7 +2,7 @@
 To initialize a new project:
 
 ```
-ng_version="15"
+ng_version="18"
 npx -p "@angular/cli@${ng_version}" ng new "@fullcalendar/angular${ng_version}-example" --directory "angular${ng_version}" --skip-install
 ```
 
