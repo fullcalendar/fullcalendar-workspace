@@ -18,12 +18,12 @@
     "@fullcalendar/timegrid": "^6.1.10",
     "mobx": "^6.0.3",
     "mobx-react-lite": "^3.0.1",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/react": "^16.9.55",
-    "@types/react-dom": "^16.9.9",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "css-loader": "^4.3.0",
     "html-webpack-plugin": "^4.5.0",
     "style-loader": "^2.0.0",
