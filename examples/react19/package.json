@@ -4,11 +4,12 @@
   "title": "FullCalendar React 19 Example Project",
   "version": "0.0.0",
   "license": "ISC",
+  "type": "module",
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "webpack",
-    "watch": "webpack --watch",
-    "start": "webpack serve"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.10",
@@ -20,19 +21,9 @@
     "react-dom": "^19.0.0-rc.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.0",
-    "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
-    "@babel/plugin-proposal-throw-expressions": "^7.0.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
-    "@babel/preset-env": "^7.0.0-beta.51",
-    "@babel/preset-react": "^7.0.0-beta.51",
-    "babel-loader": "^8.1.0",
-    "css-loader": "^4.3.0",
-    "html-webpack-plugin": "^4.5.0",
-    "style-loader": "^2.0.0",
-    "webpack": "^5.3.0",
-    "webpack-cli": "^4.1.0",
-    "webpack-dev-server": "^3.11.0"
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.2.0"
   }
 }
