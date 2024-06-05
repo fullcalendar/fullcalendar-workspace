@@ -113,7 +113,8 @@ async function syncAngularLibManifestDeps(monorepoDir: string) {
   angularLibManifest.dependencies = angularRootManifest.dependencies
   angularLibManifest.peerDependencies = angularRootManifest.peerDependencies
 
-  await writeManifest(joinPaths(monorepoDir, 'contrib/angular/lib'), angularLibManifest)
+  const libManifestPath = await writeManifest(joinPaths(monorepoDir, 'contrib/angular/lib'), angularLibManifest)
+  await addFile(libManifestPath)
 }
 
 // Workspace utils
