@@ -106,6 +106,10 @@ async function syncManifestVersions(monorepoDir: string, subrepoSubdirs: string[
 }
 
 // Angular special case!
+/*
+Problem: this should happen BEFORE BUILD so dist/ directory's generated package.json
+has correct version
+*/
 async function syncAngularLibManifestDeps(monorepoDir: string) {
   const angularRootManifest = await readManifest(joinPaths(monorepoDir, 'contrib/angular'))
   const angularLibManifest = await readManifest(joinPaths(monorepoDir, 'contrib/angular/lib'))
