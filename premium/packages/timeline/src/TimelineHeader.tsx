@@ -17,7 +17,6 @@ export interface TimelineHeaderProps {
   tableMinWidth: CssDimValue
   tableColGroupNode: VNode
   slatCoords: TimelineCoords
-  rowInnerHeights?: number[]
   onMaxCushionWidth?: (number) => void
 }
 
@@ -40,7 +39,6 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
           <div className="fc-timeline-header" ref={this.rootElRef}>
             <table
               aria-hidden
-              className="fc-scrollgrid-sync-table"
               style={{ minWidth: props.tableMinWidth, width: props.clientWidth }}
             >
               {props.tableColGroupNode}
@@ -50,7 +48,6 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
                   tDateProfile={props.tDateProfile}
                   nowDate={nowDate}
                   todayRange={todayRange}
-                  rowInnerHeights={props.rowInnerHeights}
                 />
               </tbody>
             </table>

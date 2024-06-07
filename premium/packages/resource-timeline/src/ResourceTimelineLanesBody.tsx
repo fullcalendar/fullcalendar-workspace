@@ -7,6 +7,7 @@ import { GroupNode, ResourceNode } from '@fullcalendar/resource/internal'
 import { TimelineDateProfile, TimelineCoords } from '@fullcalendar/timeline/internal'
 import { ResourceTimelineLane } from './ResourceTimelineLane.js'
 import { DividerRow } from './DividerRow.js'
+import { RowSyncer } from './RowSyncer.js'
 
 export interface ResourceTimelineLanesBodyProps extends ResourceTimelineLanesContentProps {
   rowElRefs: RefMap<HTMLElement> // indexed by NUMERICAL INDEX, not node.id
@@ -20,15 +21,14 @@ export interface ResourceTimelineLanesContentProps {
   nowDate: DateMarker
   todayRange: DateRange
   fallbackBusinessHours: EventStore | null
-  innerHeights: number[]
   slatCoords: TimelineCoords | null
-  onRowHeightChange?: (rowEl: HTMLTableRowElement, isStable: boolean) => void
+  rowSyncer: RowSyncer
 }
 
 export class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyProps> { // TODO: this technique more
   render() {
     let { props, context } = this
-    let { rowElRefs, innerHeights } = props
+    let { rowElRefs } = props
 
     return (
       <tbody>
@@ -40,7 +40,7 @@ export class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLan
                 elRef={rowElRefs.createRef(node.id)}
                 groupValue={(node as GroupNode).group.value}
                 renderHooks={(node as GroupNode).group.spec}
-                innerHeight={innerHeights[index] || ''}
+                rowSyncer={props.rowSyncer}
               />
             )
           }
@@ -60,9 +60,8 @@ export class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLan
                 todayRange={props.todayRange}
                 nextDayThreshold={context.options.nextDayThreshold}
                 businessHours={resource.businessHours || props.fallbackBusinessHours}
-                innerHeight={innerHeights[index] || ''}
                 timelineCoords={props.slatCoords}
-                onHeightChange={props.onRowHeightChange}
+                rowSyncer={props.rowSyncer}
               />
             )
           }

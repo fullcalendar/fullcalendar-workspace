@@ -21,7 +21,6 @@ export interface SectionConfig {
   maxHeight?: number
   liquid?: boolean
   expandRows?: boolean // TODO: how to get a bottom rule?
-  syncRowHeights?: boolean // yuck
   isSticky?: boolean
 }
 
@@ -43,9 +42,6 @@ export interface ChunkContentCallbackArgs { // TODO: util for wrapping tables!?
   clientWidth: number | null // important to know whether 0 or not-yet-determined. for headless testing
   clientHeight: number | null //
   expandRows: boolean
-  syncRowHeights: boolean
-  rowSyncHeights: number[]
-  reportRowHeightChange: (rowEl: HTMLElement, isStable: boolean) => void
 }
 
 export function computeShrinkWidth(chunkEls: HTMLElement[]) { // all in same COL!
@@ -91,10 +87,7 @@ export function renderChunkContent(
       'table',
       {
         role: 'presentation',
-        className: [
-          chunkConfig.tableClassName,
-          sectionConfig.syncRowHeights ? 'fc-scrollgrid-sync-table' : '',
-        ].join(' '),
+        className: chunkConfig.tableClassName,
         style: {
           minWidth: arg.tableMinWidth, // because colMinWidths arent enough
           width: arg.clientWidth,

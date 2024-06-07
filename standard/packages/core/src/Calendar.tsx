@@ -13,6 +13,9 @@ import { RenderId } from './content-inject/RenderId.js'
 import { CalendarImpl } from './api/CalendarImpl.js'
 import { ensureElHasStyles } from './styleUtils.js'
 
+/*
+Vanilla JS API
+*/
 export class Calendar extends CalendarImpl {
   el: HTMLElement
 

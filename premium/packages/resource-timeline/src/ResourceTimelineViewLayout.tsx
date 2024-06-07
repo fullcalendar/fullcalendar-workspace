@@ -49,7 +49,6 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
       {
         type: 'header',
         key: 'header',
-        syncRowHeights: true,
         isSticky: stickyHeaderDates,
         chunks: [
           {
@@ -74,7 +73,6 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
       {
         type: 'body',
         key: 'body',
-        syncRowHeights: true,
         liquid: true,
         expandRows: Boolean(options.expandRows),
         chunks: [
@@ -216,7 +214,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
       clearTimeout(this.ensureScrollGridResizeId)
     }
     this.ensureScrollGridResizeId = setTimeout(() => {
-      this.scrollGridRef.current.handleSizing(false)
+      this.scrollGridRef.current.handleSizing()
     }, config.SCROLLGRID_RESIZE_INTERVAL + 1)
   }
 }

@@ -8,12 +8,11 @@ export interface TimelineHeaderRowsProps {
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
-  rowInnerHeights?: number[]
 }
 
 export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
   render() {
-    let { dateProfile, tDateProfile, rowInnerHeights, todayRange, nowDate } = this.props
+    let { dateProfile, tDateProfile, todayRange, nowDate } = this.props
     let { cellRows } = tDateProfile
 
     return (
@@ -37,7 +36,6 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
                   tDateProfile={tDateProfile}
                   todayRange={todayRange}
                   nowDate={nowDate}
-                  rowInnerHeight={rowInnerHeights && rowInnerHeights[rowLevel]}
                   isSticky={!isLast}
                 />
               ))}

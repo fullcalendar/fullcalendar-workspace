@@ -1,4 +1,4 @@
-import { CssDimValue, AllDayContentArg } from '@fullcalendar/core'
+import { AllDayContentArg } from '@fullcalendar/core'
 import {
   diffDays,
   SimpleScrollGridSection,
@@ -146,13 +146,12 @@ export abstract class TimeColsView extends DateComponent<ViewProps, TimeColsView
         type: 'header',
         key: 'header',
         isSticky: stickyHeaderDates,
-        syncRowHeights: true,
         chunks: [
           {
             key: 'axis',
-            rowContent: (arg: ChunkContentCallbackArgs) => (
+            rowContent: () => (
               <tr role="presentation">
-                {this.renderHeadAxis('day', arg.rowSyncHeights[0])}
+                {this.renderHeadAxis('day')}
               </tr>
             ),
           },
@@ -170,13 +169,12 @@ export abstract class TimeColsView extends DateComponent<ViewProps, TimeColsView
       sections.push({
         type: 'body',
         key: 'all-day',
-        syncRowHeights: true,
         chunks: [
           {
             key: 'axis',
-            rowContent: (contentArg: ChunkContentCallbackArgs) => (
+            rowContent: () => (
               <tr role="presentation">
-                {this.renderTableRowAxis(contentArg.rowSyncHeights[0])}
+                {this.renderTableRowAxis()}
               </tr>
             ),
           },
@@ -312,7 +310,7 @@ export abstract class TimeColsView extends DateComponent<ViewProps, TimeColsView
   /* Header Render Methods
   ------------------------------------------------------------------------------------------------------------------*/
 
-  renderHeadAxis = (rowKey: 'day' | string, frameHeight: CssDimValue = '') => {
+  renderHeadAxis = (rowKey: 'day' | string) => {
     let { options } = this.context
     let { dateProfile } = this.props
     let range = dateProfile.renderRange
@@ -373,7 +371,7 @@ export abstract class TimeColsView extends DateComponent<ViewProps, TimeColsView
 
   // only a one-way height sync. we don't send the axis inner-content height to the DayGrid,
   // but DayGrid still needs to have classNames on inner elements in order to measure.
-  renderTableRowAxis = (rowHeight?: number) => {
+  renderTableRowAxis = () => {
     let { options, viewApi } = this.context
     let renderProps: AllDayContentArg = {
       text: options.allDayText,

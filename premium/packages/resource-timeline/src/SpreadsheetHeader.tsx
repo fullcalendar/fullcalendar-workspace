@@ -13,7 +13,6 @@ import { ColSpec, ColHeaderContentArg, ColHeaderRenderHooks } from '@fullcalenda
 export interface SpreadsheetHeaderProps {
   superHeaderRendering: ColHeaderRenderHooks
   colSpecs: ColSpec[]
-  rowInnerHeights: number[]
   onColWidthChange?: (colWidths: number[]) => void
 }
 
@@ -24,15 +23,11 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
   private colDraggings: { [index: string]: ElementDragging } = {}
 
   render() {
-    let { colSpecs, superHeaderRendering, rowInnerHeights } = this.props
+    let { colSpecs, superHeaderRendering } = this.props
     let renderProps: ColHeaderContentArg = { view: this.context.viewApi }
     let rowNodes: VNode[] = []
 
-    rowInnerHeights = rowInnerHeights.slice() // copy, because we're gonna pop
-
     if (superHeaderRendering) {
-      let rowInnerHeight = rowInnerHeights.shift()
-
       rowNodes.push(
         <tr key="row-super" role="row">
           <ContentContainer
@@ -67,7 +62,6 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
       )
     }
 
-    let rowInnerHeight = rowInnerHeights.shift()
     rowNodes.push(
       <tr key="row" role="row">
         {colSpecs.map((colSpec, i) => {

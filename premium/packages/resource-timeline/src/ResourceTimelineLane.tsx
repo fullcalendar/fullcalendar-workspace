@@ -1,24 +1,25 @@
-import { CssDimValue } from '@fullcalendar/core'
-import {
-  BaseComponent,
-  elementClosest, memoizeObjArg, ContentContainer,
-} from '@fullcalendar/core/internal'
+import { BaseComponent, memoizeObjArg, ContentContainer } from '@fullcalendar/core/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { Resource, refineRenderProps } from '@fullcalendar/resource/internal'
-import { TimelineLane, TimelineLaneCoreProps } from '@fullcalendar/timeline/internal'
+import { TimelineLane, TimelineLaneProps } from '@fullcalendar/timeline/internal'
+import { RowSyncer } from './RowSyncer.js'
+import { resourcePrefix } from './RowKey.js'
 
-export interface ResourceTimelineLaneProps extends TimelineLaneCoreProps {
+export interface ResourceTimelineLaneProps extends TimelineLaneProps {
   elRef: Ref<HTMLTableRowElement>
   resource: Resource
-  innerHeight: CssDimValue
-  onHeightChange?: (rowEl: HTMLTableRowElement, isStable: boolean) => void
+  rowSyncer: RowSyncer
 }
 
-export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProps> {
+interface ResourceTimelineLaneState {
+  frameHeight?: number
+}
+
+export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProps, ResourceTimelineLaneState> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)
 
   render() {
-    let { props, context } = this
+    let { props, state, context } = this
     let { options } = context
     let renderProps = this.refineRenderProps({ resource: props.resource, context })
 
@@ -41,7 +42,7 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
           willUnmount={options.resourceLaneWillUnmount}
         >
           {(InnerContent) => (
-            <div className="fc-timeline-lane-frame" style={{ height: props.innerHeight }}>
+            <div className="fc-timeline-lane-frame" style={{ height: state.frameHeight }}>
               <InnerContent
                 elTag="div"
                 elClasses={['fc-timeline-lane-misc']}
@@ -60,8 +61,8 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
                 eventDrag={props.eventDrag}
                 eventResize={props.eventResize}
                 timelineCoords={props.timelineCoords}
-                onHeightChange={this.handleHeightChange}
                 resourceId={props.resource.id}
+                onHeightChange={this.handleLaneHeight}
               />
             </div>
           )}
@@ -70,13 +71,32 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
     ) // important NOT to do liquid-height. dont want to shrink height smaller than content
   }
 
-  handleHeightChange = (innerEl: HTMLElement, isStable: boolean) => {
-    if (this.props.onHeightChange) {
-      this.props.onHeightChange(
-        // would want to use own <tr> ref, but not guaranteed to be ready when this fires
-        elementClosest(innerEl, 'tr') as HTMLTableRowElement,
-        isStable,
-      )
-    }
+  // Receive Cell Height & setup callback for TimelineLane to report height
+  // -----------------------------------------------------------------------------------------------
+
+  componentDidMount(): void {
+    this.props.rowSyncer.addHandler(
+      resourcePrefix + this.props.resource.id,
+      this.handleFrameHeight,
+    )
+  }
+
+  componentWillUnmount(): void {
+    this.props.rowSyncer.removeHandler(
+      resourcePrefix + this.props.resource.id,
+      this.handleFrameHeight,
+    )
+  }
+
+  handleFrameHeight = (frameHeight: number) => {
+    this.setState({ frameHeight })
+  }
+
+  handleLaneHeight = (laneHeight: number | undefined) => {
+    this.props.rowSyncer.reportSize(
+      resourcePrefix + this.props.resource.id,
+      'lane',
+      laneHeight,
+    )
   }
 }

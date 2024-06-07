@@ -1,21 +1,22 @@
-import { CssDimValue } from '@fullcalendar/core'
 import { BaseComponent, ViewContext, ContentContainer } from '@fullcalendar/core/internal'
 import { createElement, Fragment, createRef, RefObject, ComponentChild } from '@fullcalendar/core/preact'
 import { ColCellContentArg } from '@fullcalendar/resource'
 import { Group, isGroupsEqual } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from './ExpanderIcon.js'
+import { RowSyncer } from './RowSyncer.js'
+import { groupPrefix } from './RowKey.js'
 
 export interface SpreadsheetGroupRowProps {
   spreadsheetColCnt: number
-  id: string // 'field:value'
+  id: string // 'field:value' -- for SET_RESOURCE_ENTITY_EXPANDED
   isExpanded: boolean
   group: Group
-  innerHeight: CssDimValue
+  rowSyncer: RowSyncer
 }
 
 // for HORIZONTAL cell grouping, in spreadsheet area
 export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps, ViewContext> {
-  innerInnerRef: RefObject<HTMLDivElement> = createRef<HTMLDivElement>()
+  innerElRef: RefObject<HTMLDivElement> = createRef<HTMLDivElement>()
 
   render() {
     let { props, context } = this
@@ -49,8 +50,8 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
           willUnmount={spec.labelWillUnmount}
         >
           {(InnerContent) => (
-            <div className="fc-datagrid-cell-frame" style={{ height: props.innerHeight }}>
-              <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner" ref={this.innerInnerRef}>
+            <div className="fc-datagrid-cell-frame">
+              <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner" ref={this.innerElRef}>
                 <ExpanderIcon
                   depth={0}
                   hasChildren
@@ -77,6 +78,35 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
       id: props.id,
       isExpanded: !props.isExpanded,
     })
+  }
+
+  // Just Report Cell Height
+  // -----------------------------------------------------------------------------------------------
+
+  componentDidMount(): void {
+    this.context.addResizeHandler(this.handleResize)
+    this.updateSize()
+  }
+
+  componentDidUpdate(): void {
+    this.updateSize()
+  }
+
+  componentWillUnmount(): void {
+    this.context.removeResizeHandler(this.handleResize)
+  }
+
+  handleResize = () => {
+    this.updateSize()
+  }
+
+  updateSize() {
+    const { props } = this
+    props.rowSyncer.reportSize(
+      groupPrefix + props.group.value,
+      'spreadsheet',
+      this.innerElRef.current.offsetHeight,
+    )
   }
 }
 

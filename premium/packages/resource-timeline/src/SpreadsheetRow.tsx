@@ -1,9 +1,9 @@
-import { CssDimValue } from '@fullcalendar/core'
 import { BaseComponent, ViewContext, isArraysEqual } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { Resource, buildResourceFields, ColSpec, getPublicId } from '@fullcalendar/resource/internal'
 import { SpreadsheetIndividualCell } from './SpreadsheetIndividualCell.js'
 import { SpreadsheetGroupCell } from './SpreadsheetGroupCell.js'
+import { RowSyncer } from './RowSyncer.js'
 
 export interface SpreadsheetRowProps {
   colSpecs: ColSpec[]
@@ -12,7 +12,7 @@ export interface SpreadsheetRowProps {
   isExpanded: boolean
   hasChildren: boolean
   resource: Resource
-  innerHeight: CssDimValue // bad name! inner vs innerinner
+  rowSyncer: RowSyncer
 }
 
 export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ViewContext> {
@@ -57,7 +57,7 @@ export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ViewConte
               depth={depth}
               hasChildren={props.hasChildren}
               isExpanded={props.isExpanded}
-              innerHeight={props.innerHeight}
+              rowSyncer={props.rowSyncer}
             />
           )
         })}

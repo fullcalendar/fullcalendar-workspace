@@ -30,8 +30,8 @@ export interface ViewContext extends CalendarContext {
   dateProfileGenerator: DateProfileGenerator
   viewSpec: ViewSpec
   viewApi: ViewImpl
-  addResizeHandler: (handler: ResizeHandler) => void
-  removeResizeHandler: (handler: ResizeHandler) => void
+  addResizeHandler: (handler: ResizeHandler, timing?: '' | 'pre' | 'post') => void
+  removeResizeHandler: (handler: ResizeHandler, timing?: '' | 'pre' | 'post') => void
   createScrollResponder: (execFunc: ScrollRequestHandler) => ScrollResponder
   registerInteractiveComponent: (component: DateComponent<any>, settingsInput: InteractionSettingsInput) => void
   unregisterInteractiveComponent: (component: DateComponent<any>) => void
@@ -65,11 +65,11 @@ export function buildViewContext(
     dateProfileGenerator,
     theme,
     isRtl: viewOptions.direction === 'rtl',
-    addResizeHandler(handler: ResizeHandler) {
-      emitter.on('_resize', handler)
+    addResizeHandler(handler: ResizeHandler, timing: '' | 'pre' | 'post' = '') {
+      emitter.on(('_resize' + timing) as any, handler)
     },
-    removeResizeHandler(handler: ResizeHandler) {
-      emitter.off('_resize', handler)
+    removeResizeHandler(handler: ResizeHandler, timing: '' | 'pre' | 'post' = '') {
+      emitter.off(('_resize' + timing) as any, handler)
     },
     createScrollResponder(execFunc: ScrollRequestHandler) {
       return new ScrollResponder(

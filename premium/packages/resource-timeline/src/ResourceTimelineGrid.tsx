@@ -1,6 +1,6 @@
 import { Duration, CssDimValue } from '@fullcalendar/core'
 import {
-  PositionCache, EventStore, DateSpan, EventUiHash, EventInteractionState,
+  EventStore, DateSpan, EventUiHash, EventInteractionState,
   DateComponent, Hit, memoize, NowTimer, greatestDurationDenominator,
   DateMarker, DateRange, NowIndicatorContainer, DateProfile,
 } from '@fullcalendar/core/internal'
@@ -12,6 +12,7 @@ import {
   coordToCss,
 } from '@fullcalendar/timeline/internal'
 import { ResourceTimelineLanes } from './ResourceTimelineLanes.js'
+import { RowSyncer } from './RowSyncer.js'
 
 export interface ResourceTimelineGridProps {
   dateProfile: DateProfile
@@ -31,11 +32,9 @@ export interface ResourceTimelineGridProps {
   tableMinWidth: CssDimValue
   tableColGroupNode: VNode
   expandRows: boolean
-  rowInnerHeights: number[]
   onSlatCoords?: (slatCoords: TimelineCoords) => void
-  onRowCoords?: (rowCoords: PositionCache) => void
   onScrollLeftRequest?: (scrollLeft: number) => void
-  onRowHeightChange?: (rowEl: HTMLTableRowElement, isStable: boolean) => void
+  rowSyncer: RowSyncer
 }
 
 interface ResourceTimelineGridState {
@@ -47,7 +46,6 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
   private resourceSplitter = new ResourceSplitter() // doesn't let it do businessHours tho
   private bgSlicer = new TimelineLaneSlicer()
   private slatsRef = createRef<TimelineSlats>() // needed for Hit creation :(
-  private rowCoords: PositionCache // for queryHit
 
   state: ResourceTimelineGridState = {
     slatCoords: null,
@@ -120,10 +118,8 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
                 clientWidth={props.clientWidth}
                 minHeight={props.expandRows ? props.clientHeight : ''}
                 tableMinWidth={props.tableMinWidth}
-                innerHeights={props.rowInnerHeights}
                 slatCoords={slatCoords}
-                onRowCoords={this.handleRowCoords}
-                onRowHeightChange={props.onRowHeightChange}
+                rowSyncer={props.rowSyncer}
               />
               {(context.options.nowIndicator && slatCoords && slatCoords.isDateInRange(nowDate)) && (
                 <div className="fc-timeline-now-indicator-container">
@@ -158,25 +154,18 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
     }
   }
 
-  handleRowCoords = (rowCoords: PositionCache | null) => {
-    this.rowCoords = rowCoords
-
-    if (this.props.onRowCoords) {
-      this.props.onRowCoords(rowCoords)
-    }
-  }
-
   // Hit System
   // ------------------------------------------------------------------------------------------
 
   queryHit(positionLeft: number, positionTop: number): Hit {
-    let rowCoords = this.rowCoords
-    let rowIndex = rowCoords.topToIndex(positionTop)
+    let { rowSyncer } = this.props
+    let rowIndex = rowSyncer.topToIndex(positionTop)
 
-    if (rowIndex != null) {
+    if (rowIndex != undefined) {
       let resource = (this.props.rowNodes[rowIndex] as ResourceNode).resource
 
       if (resource) { // not a group
+        let rowKey = rowSyncer.orderedKeys[rowIndex]
         let slatHit = this.slatsRef.current.positionToHit(positionLeft)
 
         if (slatHit) {
@@ -190,8 +179,8 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
             rect: {
               left: slatHit.left,
               right: slatHit.right,
-              top: rowCoords.tops[rowIndex],
-              bottom: rowCoords.bottoms[rowIndex],
+              top: rowSyncer.getTop(rowKey),
+              bottom: rowSyncer.getBottom(rowKey),
             },
             dayEl: slatHit.dayEl,
             layer: 0,

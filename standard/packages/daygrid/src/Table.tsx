@@ -46,7 +46,6 @@ export class Table extends DateComponent<TableProps> {
       >
         <table
           role="presentation"
-          className="fc-scrollgrid-sync-table"
           style={{
             width: props.clientWidth,
             minWidth: props.tableMinWidth,

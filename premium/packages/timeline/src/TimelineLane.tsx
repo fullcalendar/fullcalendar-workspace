@@ -14,11 +14,7 @@ import { TimelineEvent } from './TimelineEvent.js'
 import { TimelineLaneMoreLink } from './TimelineLaneMoreLink.js'
 import { computeFgSegPlacements, computeSegHCoords, TimelineSegPlacement } from './event-placement.js'
 
-export interface TimelineLaneProps extends TimelineLaneCoreProps {
-  onHeightChange?: (innerEl: HTMLElement, isStable: boolean) => void
-}
-
-export interface TimelineLaneCoreProps {
+export interface TimelineLaneProps {
   nowDate: DateMarker
   todayRange: DateRange
   dateProfile: DateProfile
@@ -34,6 +30,7 @@ export interface TimelineLaneCoreProps {
   timelineCoords: TimelineCoords | null // TODO: renamt to SLAT coords?
   resourceId?: string // hack
   syncParentMinHeight?: boolean // hack
+  onHeightChange?: (height: number | undefined) => void
 }
 
 interface TimelineLaneState {
@@ -153,11 +150,11 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
 
   updateSize() {
     let { props } = this
-    let { timelineCoords } = props
+    let { timelineCoords, onHeightChange } = props
     const innerEl = this.innerElRef.current
 
-    if (props.onHeightChange) {
-      props.onHeightChange(innerEl, false)
+    if (onHeightChange) {
+      onHeightChange(undefined)
     }
 
     if (timelineCoords) {
@@ -169,8 +166,8 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           Math.round(moreEl.getBoundingClientRect().height)
         )),
       }, () => {
-        if (props.onHeightChange) {
-          props.onHeightChange(innerEl, true)
+        if (onHeightChange) {
+          onHeightChange(innerEl.offsetHeight)
         }
       })
     }

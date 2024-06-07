@@ -156,9 +156,6 @@ export class SimpleScrollGrid extends BaseComponent<SimpleScrollGridProps, Simpl
       clientWidth: (!props.collapsibleWidth && scrollerClientWidths[sectionKey] !== undefined) ? scrollerClientWidths[sectionKey] : null,
       clientHeight: scrollerClientHeights[sectionKey] !== undefined ? scrollerClientHeights[sectionKey] : null,
       expandRows: sectionConfig.expandRows,
-      syncRowHeights: false,
-      rowSyncHeights: [],
-      reportRowHeightChange: () => {},
     }, isHeader)
 
     return createElement(
