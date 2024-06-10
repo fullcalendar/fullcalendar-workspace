@@ -1,18 +1,23 @@
 import { Component } from '@fullcalendar/core/preact'
 import { Resource, Group, ParentNode, GroupNode, ResourceNode } from '@fullcalendar/resource/internal'
 
-export type SizeSyncerEntity = Resource | Group | GroupNode | ResourceNode // ahhhh
+export type SizeSyncerEntity = // ahhhh
+  Resource | Group |
+  GroupNode | ResourceNode |
+  { children?: SizeSyncerEntity } |
+  number |
+  string
 
 export interface SizeSyncerOptions {
   rowHierarchy: ParentNode[]
   rowNodes: (ResourceNode | GroupNode)[]
-  expandToHeight: number | string
+  expandToHeight: number | undefined
 }
 
 export class SizeSyncer {
   private rowHierarchy: ParentNode[]
   private rowNodes: (ResourceNode | GroupNode)[]
-  private expandToHeight: number | string
+  private expandToHeight: number | undefined
 
   preupdate() {
     console.log(

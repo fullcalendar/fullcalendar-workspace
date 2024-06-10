@@ -48,7 +48,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   private rowSyncer: SizeSyncer // TODO: make another for the spreadsheet/timeline header
   private rowHierarchy: ParentNode[] = []
   private rowNodes: (GroupNode | ResourceNode)[] = []
-  private expandBodyToHeight: number | string = ''
+  private expandBodyToHeight: number | undefined
 
   constructor(props: ResourceViewProps, context: ViewContext) {
     super(props, context)
@@ -83,7 +83,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
     )
     this.rowHierarchy = rowHierarchy
     this.rowNodes = rowNodes
-    this.rowSyncer.preupdate()
+    this.preUpdateRowSyncer()
 
     let { slotMinWidth } = options
     let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
@@ -134,7 +134,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
           )}
           timeBodyContent={(contentArg: ChunkContentCallbackArgs) => {
             // TODO: converge with ResourceTimelineLanes::minHeight
-            this.expandBodyToHeight = contentArg.expandRows ? contentArg.clientHeight : ''
+            this.expandBodyToHeight = contentArg.expandRows ? contentArg.clientHeight : undefined
 
             return (
               <ResourceTimelineGrid
