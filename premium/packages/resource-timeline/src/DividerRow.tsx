@@ -2,12 +2,12 @@ import { BaseComponent, ContentContainer } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { ColCellContentArg } from '@fullcalendar/resource'
 import { Group } from '@fullcalendar/resource/internal'
-import { RowSyncer } from './RowSyncer.js'
+import { SizeSyncer } from './SizeSyncer.js'
 
 export interface DividerRowProps {
   elRef?: Ref<HTMLTableRowElement>
   group: Group
-  rowSyncer: RowSyncer
+  rowSyncer: SizeSyncer
 }
 
 interface DividerRowState {

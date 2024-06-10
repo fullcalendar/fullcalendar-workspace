@@ -3,14 +3,14 @@ import { createElement, Fragment, createRef, RefObject, ComponentChild } from '@
 import { ColCellContentArg } from '@fullcalendar/resource'
 import { Group, isGroupsEqual } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from './ExpanderIcon.js'
-import { RowSyncer } from './RowSyncer.js'
+import { SizeSyncer } from './SizeSyncer.js'
 
 export interface SpreadsheetGroupRowProps {
   spreadsheetColCnt: number
   id: string // 'field:value' -- for SET_RESOURCE_ENTITY_EXPANDED
   isExpanded: boolean
   group: Group // CONSTANT
-  rowSyncer: RowSyncer // CONSTANT
+  rowSyncer: SizeSyncer // CONSTANT
 }
 
 // for HORIZONTAL cell grouping, in spreadsheet area

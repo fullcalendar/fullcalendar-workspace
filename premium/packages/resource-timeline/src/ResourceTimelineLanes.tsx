@@ -2,13 +2,13 @@ import { CssDimValue } from '@fullcalendar/core'
 import { BaseComponent, RefMap } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ResourceTimelineLanesBody, ResourceTimelineLanesContentProps } from './ResourceTimelineLanesBody.js'
-import { RowSyncer } from './RowSyncer.js'
+import { SizeSyncer } from './SizeSyncer.js'
 
 export interface ResourceTimelineLanesProps extends ResourceTimelineLanesContentProps {
   minHeight: CssDimValue
   clientWidth: number | null
   tableMinWidth: CssDimValue
-  rowSyncer: RowSyncer
+  rowSyncer: SizeSyncer
 }
 
 export class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesProps> {

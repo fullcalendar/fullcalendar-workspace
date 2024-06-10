@@ -2,12 +2,12 @@ import { BaseComponent, memoizeObjArg, ContentContainer } from '@fullcalendar/co
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { Resource, refineRenderProps } from '@fullcalendar/resource/internal'
 import { TimelineLane, TimelineLaneProps } from '@fullcalendar/timeline/internal'
-import { RowSyncer } from './RowSyncer.js'
+import { SizeSyncer } from './SizeSyncer.js'
 
 export interface ResourceTimelineLaneProps extends TimelineLaneProps {
   elRef: Ref<HTMLTableRowElement>
   resource: Resource // CONSTANT
-  rowSyncer: RowSyncer // CONSTANT
+  rowSyncer: SizeSyncer // CONSTANT
 }
 
 interface ResourceTimelineLaneState {

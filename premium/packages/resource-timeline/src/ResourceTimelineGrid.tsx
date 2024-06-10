@@ -12,7 +12,7 @@ import {
   coordToCss,
 } from '@fullcalendar/timeline/internal'
 import { ResourceTimelineLanes } from './ResourceTimelineLanes.js'
-import { RowSyncer } from './RowSyncer.js'
+import { SizeSyncer } from './SizeSyncer.js'
 
 export interface ResourceTimelineGridProps {
   dateProfile: DateProfile
@@ -34,7 +34,7 @@ export interface ResourceTimelineGridProps {
   expandRows: boolean
   onSlatCoords?: (slatCoords: TimelineCoords) => void
   onScrollLeftRequest?: (scrollLeft: number) => void
-  rowSyncer: RowSyncer
+  rowSyncer: SizeSyncer
 }
 
 interface ResourceTimelineGridState {
@@ -165,10 +165,10 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
       let resource = (this.props.rowNodes[rowIndex] as ResourceNode).resource
 
       if (resource) { // not a group
-        let rowKey = rowSyncer.indexToRowKey(rowIndex)
+        let entity = rowSyncer.indexToEntity(rowIndex)
         let slatHit = this.slatsRef.current.positionToHit(positionLeft)
-        let top = rowSyncer.getPosition(rowKey)
-        let bottom = top + rowSyncer.getSize(rowKey)
+        let top = rowSyncer.getPosition(entity)
+        let bottom = top + rowSyncer.getSize(entity)
 
         if (slatHit) {
           return {

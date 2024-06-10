@@ -1,18 +1,15 @@
 import { Component } from '@fullcalendar/core/preact'
 import { Resource, Group, ParentNode, GroupNode, ResourceNode } from '@fullcalendar/resource/internal'
 
-export type RowSyncerEntity = Resource | Group | GroupNode | ResourceNode // ahhhh
+export type SizeSyncerEntity = Resource | Group | GroupNode | ResourceNode // ahhhh
 
-export interface RowSyncerOptions {
+export interface SizeSyncerOptions {
   rowHierarchy: ParentNode[]
   rowNodes: (ResourceNode | GroupNode)[]
   expandToHeight: number | string
 }
 
-/*
-TODO: rename
-*/
-export class RowSyncer {
+export class SizeSyncer {
   private rowHierarchy: ParentNode[]
   private rowNodes: (ResourceNode | GroupNode)[]
   private expandToHeight: number | string
@@ -25,7 +22,7 @@ export class RowSyncer {
     )
   }
 
-  update(options: RowSyncerOptions) {
+  update(options: SizeSyncerOptions) {
     this.rowHierarchy = options.rowHierarchy
     this.rowNodes = options.rowNodes
     this.expandToHeight = options.expandToHeight
@@ -35,15 +32,15 @@ export class RowSyncer {
 
   }
 
-  updateCell(component: Component, entity: RowSyncerEntity, size: number | undefined) {
+  updateCell(component: Component, entity: SizeSyncerEntity, size: number | undefined) {
 
   }
 
-  addSizeListener(entity: RowSyncerEntity, func: (size: number) => void) {
+  addSizeListener(entity: SizeSyncerEntity, func: (size: number) => void) {
 
   }
 
-  removeSizeListener(entity: RowSyncerEntity, func: (size: number) => void) {
+  removeSizeListener(entity: SizeSyncerEntity, func: (size: number) => void) {
 
   }
 
@@ -55,11 +52,11 @@ export class RowSyncer {
 
   }
 
-  getPosition(entity: RowSyncerEntity): number {
+  getPosition(entity: SizeSyncerEntity): number {
     return 0
   }
 
-  getSize(entity: RowSyncerEntity): number {
+  getSize(entity: SizeSyncerEntity): number {
     return 0
   }
 
@@ -67,7 +64,7 @@ export class RowSyncer {
     return 0
   }
 
-  indexToRowKey(index: number): any {
-
+  indexToEntity(index: number): SizeSyncerEntity {
+    return null as any
   }
 }

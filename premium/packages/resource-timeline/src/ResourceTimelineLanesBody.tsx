@@ -7,7 +7,7 @@ import { GroupNode, ResourceNode } from '@fullcalendar/resource/internal'
 import { TimelineDateProfile, TimelineCoords } from '@fullcalendar/timeline/internal'
 import { ResourceTimelineLane } from './ResourceTimelineLane.js'
 import { DividerRow } from './DividerRow.js'
-import { RowSyncer } from './RowSyncer.js'
+import { SizeSyncer } from './SizeSyncer.js'
 
 export interface ResourceTimelineLanesBodyProps extends ResourceTimelineLanesContentProps {
   rowElRefs: RefMap<HTMLElement> // indexed by NUMERICAL INDEX, not node.id
@@ -22,7 +22,7 @@ export interface ResourceTimelineLanesContentProps {
   todayRange: DateRange
   fallbackBusinessHours: EventStore | null
   slatCoords: TimelineCoords | null
-  rowSyncer: RowSyncer
+  rowSyncer: SizeSyncer
 }
 
 export class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyProps> { // TODO: this technique more

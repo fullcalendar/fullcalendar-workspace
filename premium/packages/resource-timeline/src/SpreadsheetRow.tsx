@@ -3,7 +3,7 @@ import { createElement } from '@fullcalendar/core/preact'
 import { Resource, buildResourceFields, ColSpec, getPublicId } from '@fullcalendar/resource/internal'
 import { SpreadsheetIndividualCell } from './SpreadsheetIndividualCell.js'
 import { SpreadsheetGroupCell } from './SpreadsheetGroupCell.js'
-import { RowSyncer } from './RowSyncer.js'
+import { SizeSyncer } from './SizeSyncer.js'
 
 export interface SpreadsheetRowProps {
   colSpecs: ColSpec[]
@@ -12,7 +12,7 @@ export interface SpreadsheetRowProps {
   isExpanded: boolean
   hasChildren: boolean
   resource: Resource
-  rowSyncer: RowSyncer
+  rowSyncer: SizeSyncer
 }
 
 export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ViewContext> {

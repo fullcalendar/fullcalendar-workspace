@@ -9,7 +9,7 @@ import { createElement, Fragment, ComponentChild, createRef } from '@fullcalenda
 import { ResourceApi } from '@fullcalendar/resource'
 import { Resource, ColSpec } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from './ExpanderIcon.js'
-import { RowSyncer } from './RowSyncer.js'
+import { SizeSyncer } from './SizeSyncer.js'
 
 export interface SpreadsheetIndividualCellProps {
   colSpec: ColSpec
@@ -18,7 +18,7 @@ export interface SpreadsheetIndividualCellProps {
   depth: number
   hasChildren: boolean
   isExpanded: boolean
-  rowSyncer: RowSyncer
+  rowSyncer: SizeSyncer
 }
 
 interface SpreadsheetIndividualCellState {

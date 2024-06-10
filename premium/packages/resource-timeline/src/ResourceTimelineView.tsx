@@ -20,7 +20,7 @@ import { SpreadsheetGroupRow } from './SpreadsheetGroupRow.js'
 import { SpreadsheetHeader } from './SpreadsheetHeader.js'
 import { ResourceTimelineGrid } from './ResourceTimelineGrid.js'
 import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout.js'
-import { RowSyncer } from './RowSyncer.js'
+import { SizeSyncer } from './SizeSyncer.js'
 
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
@@ -45,7 +45,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   private buildRowNodes = memoize(buildRowNodes)
   private layoutRef = createRef<ResourceTimelineViewLayout>()
   private scrollResponder: ScrollResponder
-  private rowSyncer: RowSyncer // TODO: make another for the spreadsheet/timeline header
+  private rowSyncer: SizeSyncer // TODO: make another for the spreadsheet/timeline header
   private rowHierarchy: ParentNode[] = []
   private rowNodes: (GroupNode | ResourceNode)[] = []
   private expandBodyToHeight: number | string = ''
@@ -58,7 +58,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       spreadsheetColWidths: [],
     }
 
-    this.rowSyncer = new RowSyncer()
+    this.rowSyncer = new SizeSyncer()
   }
 
   render() {
