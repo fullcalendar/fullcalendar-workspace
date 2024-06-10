@@ -8,18 +8,20 @@ export interface TimelineHeaderRowsProps {
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
+  rowSyncer?: any // TODO
+  heightDefs?: any[] // TODO
 }
 
 export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
   render() {
-    let { dateProfile, tDateProfile, todayRange, nowDate } = this.props
+    let { dateProfile, tDateProfile, todayRange, nowDate, rowSyncer, heightDefs } = this.props
     let { cellRows } = tDateProfile
 
     return (
       <Fragment>
         {cellRows.map((rowCells, rowLevel) => {
-          let isLast = rowLevel === cellRows.length - 1
-          let isChrono = tDateProfile.isTimeScale && isLast // the final row, with times?
+          let isLastRow = rowLevel === cellRows.length - 1
+          let isChrono = tDateProfile.isTimeScale && isLastRow // the final row, with times?
           let classNames = [
             'fc-timeline-header-row',
             isChrono ? 'fc-timeline-header-row-chrono' : '',
@@ -36,7 +38,9 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
                   tDateProfile={tDateProfile}
                   todayRange={todayRange}
                   nowDate={nowDate}
-                  isSticky={!isLast}
+                  isSticky={!isLastRow}
+                  rowSyncer={rowSyncer}
+                  heightDef={heightDefs[rowLevel]}
                 />
               ))}
             </tr>

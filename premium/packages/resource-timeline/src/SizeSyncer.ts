@@ -11,7 +11,6 @@ export type SizeSyncerEntity = // ahhhh
 export interface SizeSyncerOptions {
   rowHierarchy: ParentNode[]
   rowNodes: (ResourceNode | GroupNode)[]
-  expandToHeight: number | undefined
 }
 
 export class SizeSyncer {
@@ -19,18 +18,19 @@ export class SizeSyncer {
   private rowNodes: (ResourceNode | GroupNode)[]
   private expandToHeight: number | undefined
 
-  preupdate() {
+  setOptions(options: SizeSyncerOptions) {
+    this.rowHierarchy = options.rowHierarchy
+    this.rowNodes = options.rowNodes
+  }
+
+  release(expandToHeight?: number) {
+    this.expandToHeight = expandToHeight
+
     console.log(
       this.rowHierarchy,
       this.rowNodes,
       this.expandToHeight,
     )
-  }
-
-  update(options: SizeSyncerOptions) {
-    this.rowHierarchy = options.rowHierarchy
-    this.rowNodes = options.rowNodes
-    this.expandToHeight = options.expandToHeight
   }
 
   clearCell(component: Component): void {

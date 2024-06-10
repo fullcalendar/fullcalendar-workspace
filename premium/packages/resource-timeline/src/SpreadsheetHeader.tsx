@@ -7,20 +7,31 @@ import {
   findElements,
   ContentContainer,
 } from '@fullcalendar/core/internal'
-import { VNode, createElement, Fragment } from '@fullcalendar/core/preact'
+import { VNode, createElement, Fragment, createRef } from '@fullcalendar/core/preact'
 import { ColSpec, ColHeaderContentArg, ColHeaderRenderHooks } from '@fullcalendar/resource'
+import { SizeSyncer, SizeSyncerEntity } from './SizeSyncer.js'
 
 export interface SpreadsheetHeaderProps {
   superHeaderRendering: ColHeaderRenderHooks
   colSpecs: ColSpec[]
   onColWidthChange?: (colWidths: number[]) => void
+  rowSyncer: SizeSyncer
+  normalHeightDef: SizeSyncerEntity
+  superHeightDef: SizeSyncerEntity
+}
+
+interface SpreadsheetHeaderState {
+  normalHeight: number
+  superHeight: number
 }
 
 const SPREADSHEET_COL_MIN_WIDTH = 20
 
-export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
+export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps, SpreadsheetHeaderState> {
   private resizerElRefs = new RefMap<HTMLElement>(this._handleColResizerEl.bind(this))
   private colDraggings: { [index: string]: ElementDragging } = {}
+  private normalInnerElRef = createRef<HTMLDivElement>()
+  private superInnerElRef = createRef<HTMLDivElement>()
 
   render() {
     let { colSpecs, superHeaderRendering } = this.props
@@ -50,10 +61,11 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
             willUnmount={superHeaderRendering.headerWillUnmount}
           >
             {(InnerContent) => (
-              <div className="fc-datagrid-cell-frame" style={{ height: rowInnerHeight }}>
+              <div className="fc-datagrid-cell-frame" style={{ height: this.state.superHeight }}>
                 <InnerContent
                   elTag="div"
                   elClasses={['fc-datagrid-cell-cushion', 'fc-scrollgrid-sync-inner']}
+                  elRef={this.superInnerElRef}
                 />
               </div>
             )}
@@ -83,8 +95,8 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
               willUnmount={colSpec.headerWillUnmount}
             >
               {(InnerContent) => (
-                <div className="fc-datagrid-cell-frame" style={{ height: rowInnerHeight }}>
-                  <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner">
+                <div className="fc-datagrid-cell-frame" style={{ height: this.state.normalHeight }}>
+                  <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner" ref={this.normalInnerElRef}>
                     {colSpec.isMain && (
                       <span className="fc-datagrid-expander fc-datagrid-expander-placeholder">
                         <span className="fc-icon" />
@@ -161,5 +173,42 @@ export class SpreadsheetHeader extends BaseComponent<SpreadsheetHeaderProps> {
     }
 
     return null
+  }
+
+  // RowSyncer
+  // -----------------------------------------------------------------------------------------------
+
+  componentDidMount(): void {
+    const { rowSyncer, normalHeightDef, superHeightDef} = this.props
+    rowSyncer.addSizeListener(normalHeightDef, this.handleNormalHeight)
+    rowSyncer.addSizeListener(superHeightDef, this.handleSuperHeight)
+    this.updateRowSyncer()
+    this.context.addResizeHandler(this.updateRowSyncer)
+  }
+
+  componentDidUpdate(): void {
+    this.updateRowSyncer()
+  }
+
+  componentWillUnmount(): void {
+    const { rowSyncer, normalHeightDef, superHeightDef } = this.props
+    this.context.removeResizeHandler(this.updateRowSyncer)
+    rowSyncer.removeSizeListener(normalHeightDef, this.handleNormalHeight)
+    rowSyncer.removeSizeListener(superHeightDef, this.handleSuperHeight)
+    rowSyncer.clearCell(this)
+  }
+
+  updateRowSyncer = () => {
+    const { rowSyncer, normalHeightDef, superHeightDef } = this.props
+    rowSyncer.updateCell(this, normalHeightDef, this.normalInnerElRef.current.offsetHeight)
+    rowSyncer.updateCell(this, superHeightDef, this.superInnerElRef.current.offsetHeight)
+  }
+
+  handleNormalHeight = (normalHeight: number) => {
+    this.setState({ normalHeight })
+  }
+
+  handleSuperHeight = (superHeight: number) => {
+    this.setState({ superHeight })
   }
 }

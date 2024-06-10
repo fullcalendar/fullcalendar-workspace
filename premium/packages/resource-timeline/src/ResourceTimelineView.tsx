@@ -20,7 +20,7 @@ import { SpreadsheetGroupRow } from './SpreadsheetGroupRow.js'
 import { SpreadsheetHeader } from './SpreadsheetHeader.js'
 import { ResourceTimelineGrid } from './ResourceTimelineGrid.js'
 import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout.js'
-import { SizeSyncer } from './SizeSyncer.js'
+import { SizeSyncer, SizeSyncerEntity } from './SizeSyncer.js'
 
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
@@ -38,16 +38,27 @@ interface ResourceScrollState {
   fromBottom: number
 }
 
+function buildHeaderRowHeightDefs(hasSuperHeader: boolean, timelineHeaderCnt: number): {
+  superHeaderHeightDef: SizeSyncerEntity,
+  normalHeaderHeightDef: SizeSyncerEntity,
+  timelineHeaderHeightDefs: SizeSyncerEntity[],
+  rowHierarchy: ParentNode[],
+  rowNodes: (ResourceNode | GroupNode)[],
+} {
+  return {} as any
+}
+
 export class ResourceTimelineView extends BaseComponent<ResourceViewProps, ResourceTimelineViewState> {
   private processColOptions = memoize(processColOptions)
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
+  private processHeaderRowHeightDefs = memoize(buildHeaderRowHeightDefs)
   private hasNesting = memoize(hasNesting)
   private buildRowNodes = memoize(buildRowNodes)
   private layoutRef = createRef<ResourceTimelineViewLayout>()
   private scrollResponder: ScrollResponder
-  private rowSyncer: SizeSyncer // TODO: make another for the spreadsheet/timeline header
-  private rowHierarchy: ParentNode[] = []
-  private rowNodes: (GroupNode | ResourceNode)[] = []
+  private bodyRowNodes: (ResourceNode | GroupNode)[]
+  private bodyRowSyncer: SizeSyncer
+  private headRowSyncer: SizeSyncer
   private expandBodyToHeight: number | undefined
 
   constructor(props: ResourceViewProps, context: ViewContext) {
@@ -58,7 +69,8 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       spreadsheetColWidths: [],
     }
 
-    this.rowSyncer = new SizeSyncer()
+    this.bodyRowSyncer = new SizeSyncer()
+    this.headRowSyncer = new SizeSyncer()
   }
 
   render() {
@@ -73,7 +85,15 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       context.dateProfileGenerator,
     )
 
-    let [rowHierarchy, rowNodes] = this.buildRowNodes(
+    let {
+      superHeaderHeightDef,
+      normalHeaderHeightDef,
+      timelineHeaderHeightDefs,
+      rowHierarchy: headRowHierarchy,
+      rowNodes: headRowNodes,
+    } = this.processHeaderRowHeightDefs(Boolean(superHeaderRendering), tDateProfile.cellRows.length)
+
+    let [bodyRowHierarchy, bodyRowNodes] = this.buildRowNodes(
       props.resourceStore,
       groupSpecs,
       orderSpecs,
@@ -81,9 +101,15 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       props.resourceEntityExpansions,
       options.resourcesInitiallyExpanded,
     )
-    this.rowHierarchy = rowHierarchy
-    this.rowNodes = rowNodes
-    this.preUpdateRowSyncer()
+    this.bodyRowNodes = bodyRowNodes
+    this.headRowSyncer.setOptions({
+      rowHierarchy: headRowHierarchy,
+      rowNodes: headRowNodes,
+    })
+    this.bodyRowSyncer.setOptions({
+      rowHierarchy: bodyRowHierarchy,
+      rowNodes: bodyRowNodes,
+    })
 
     let { slotMinWidth } = options
     let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
@@ -92,7 +118,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       <ViewContainer
         elClasses={[
           'fc-resource-timeline',
-          !this.hasNesting(rowNodes) && 'fc-resource-timeline-flat', // flat means there's no nesting
+          !this.hasNesting(bodyRowNodes) && 'fc-resource-timeline-flat', // flat means there's no nesting
           'fc-timeline',
           options.eventOverlap === false ?
             'fc-timeline-overlap-disabled' :
@@ -112,11 +138,14 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
               superHeaderRendering={superHeaderRendering}
               colSpecs={colSpecs}
               onColWidthChange={this.handleColWidthChange}
+              rowSyncer={this.headRowSyncer}
+              normalHeightDef={normalHeaderHeightDef}
+              superHeightDef={superHeaderHeightDef}
             />
           )}
           spreadsheetBodyRows={() => (
             <Fragment>
-              {this.renderSpreadsheetRows(rowNodes, colSpecs)}
+              {this.renderSpreadsheetRows(bodyRowNodes, colSpecs)}
             </Fragment>
           )}
           timeCols={slatCols}
@@ -130,6 +159,8 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
               tDateProfile={tDateProfile}
               slatCoords={state.slatCoords}
               onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
+              rowSyncer={this.headRowSyncer}
+              heightDefs={timelineHeaderHeightDefs}
             />
           )}
           timeBodyContent={(contentArg: ChunkContentCallbackArgs) => {
@@ -145,7 +176,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
                 tableColGroupNode={contentArg.tableColGroupNode}
                 expandRows={contentArg.expandRows}
                 tDateProfile={tDateProfile}
-                rowNodes={rowNodes}
+                rowNodes={bodyRowNodes}
                 businessHours={props.businessHours}
                 dateSelection={props.dateSelection}
                 eventStore={props.eventStore}
@@ -157,7 +188,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
                 nextDayThreshold={context.options.nextDayThreshold}
                 onSlatCoords={this.handleSlatCoords}
                 onScrollLeftRequest={this.handleScrollLeftRequest}
-                rowSyncer={this.rowSyncer}
+                rowSyncer={this.bodyRowSyncer}
               />
             )
           }}
@@ -176,7 +207,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
             spreadsheetColCnt={colSpecs.length}
             isExpanded={node.isExpanded}
             group={(node as GroupNode).group}
-            rowSyncer={this.rowSyncer}
+            rowSyncer={this.bodyRowSyncer}
           />
         )
       }
@@ -191,7 +222,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
             isExpanded={node.isExpanded}
             hasChildren={(node as ResourceNode).hasChildren}
             resource={(node as ResourceNode).resource}
-            rowSyncer={this.rowSyncer}
+            rowSyncer={this.bodyRowSyncer}
           />
         )
       }
@@ -202,10 +233,8 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
   componentDidMount() {
     // row syncer
-    this.rowSyncer.addTotalSizeListener(this.handleTotalBodyHeight)
-    this.updateRowSyncer()
-    this.context.addResizeHandler(this.preUpdateRowSyncer, 'pre')
-    this.context.addResizeHandler(this.updateRowSyncer, 'post')
+    this.bodyRowSyncer.addTotalSizeListener(this.handleTotalBodyHeight)
+    this.context.addResizeHandler(this.releaseRowSyncers)
 
     // scroll responder
     this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
@@ -219,9 +248,6 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   }
 
   componentDidUpdate(prevProps: ResourceViewProps, prevState: ResourceTimelineViewState, snapshot: ResourceTimelineViewSnapshot) {
-    // row syncer
-    this.updateRowSyncer()
-
     // scroll responder
     this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
     if (snapshot.resourceScroll) {
@@ -231,9 +257,8 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
   componentWillUnmount() {
     // row syncer
-    this.rowSyncer.removeTotalSizeListener(this.handleTotalBodyHeight)
-    this.context.removeResizeHandler(this.preUpdateRowSyncer, 'pre')
-    this.context.removeResizeHandler(this.updateRowSyncer, 'post')
+    this.bodyRowSyncer.removeTotalSizeListener(this.handleTotalBodyHeight)
+    this.context.removeResizeHandler(this.releaseRowSyncers)
 
     // scroll responder
     this.scrollResponder.detach()
@@ -256,16 +281,9 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   // Row Syncer
   // ------------------------------------------------------------------------------------------------------------------
 
-  preUpdateRowSyncer = () => {
-    this.rowSyncer.preupdate()
-  }
-
-  updateRowSyncer = () => {
-    this.rowSyncer.update({
-      rowHierarchy: this.rowHierarchy,
-      rowNodes: this.rowNodes,
-      expandToHeight: this.expandBodyToHeight,
-    })
+  releaseRowSyncers = () => {
+    this.headRowSyncer.release()
+    this.bodyRowSyncer.release(this.expandBodyToHeight)
   }
 
   handleTotalBodyHeight = (h: number) => {
@@ -282,13 +300,13 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   }
 
   handleScrollRequest = (request: ScrollRequest & ResourceScrollState) => { // only handles resource scroll
-    let { rowSyncer } = this
+    let { bodyRowSyncer: rowSyncer } = this
     let { rowId } = request
     let layout = this.layoutRef.current
 
     // find
     let rowNode: (GroupNode | ResourceNode)
-    for (const lookRowNode of this.rowNodes) {
+    for (const lookRowNode of this.bodyRowNodes) {
       if (lookRowNode.id === rowId) {
         rowNode = lookRowNode
         break
@@ -314,12 +332,12 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   }
 
   queryResourceScroll(): ResourceScrollState {
-    let { rowSyncer } = this
+    let { bodyRowSyncer: rowSyncer } = this
     let layout = this.layoutRef.current
     let scrollTop = layout.getResourceScroll()
     let scroll = {} as any
 
-    for (const rowNode of this.rowNodes) {
+    for (const rowNode of this.bodyRowNodes) {
       const elTop = rowSyncer.getPosition(rowNode)
       const elBottom = elTop + rowSyncer.getSize(rowNode)
 

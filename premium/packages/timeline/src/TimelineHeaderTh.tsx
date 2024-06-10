@@ -4,7 +4,7 @@ import {
   buildNavLinkAttrs,
   getDayClassNames, DateProfile, memoizeObjArg, ViewContext, memoize, ContentContainer, DateEnv,
 } from '@fullcalendar/core/internal'
-import { createElement } from '@fullcalendar/core/preact'
+import { createElement, createRef } from '@fullcalendar/core/preact'
 import { TimelineDateProfile, TimelineHeaderCell } from './timeline-date-profile.js'
 
 export interface TimelineHeaderThProps {
@@ -15,14 +15,21 @@ export interface TimelineHeaderThProps {
   todayRange: DateRange
   nowDate: DateMarker
   isSticky: boolean
+  rowSyncer?: any // TODO
+  heightDef?: any // TODO
 }
 
-export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
+interface TimelineHeaderThState {
+  height?: number
+}
+
+export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps, TimelineHeaderThState> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)
   private buildCellNavLinkAttrs = memoize(buildCellNavLinkAttrs)
+  private innerElRef = createRef<HTMLDivElement>()
 
   render() {
-    let { props, context } = this
+    let { props, state, context } = this
     let { dateEnv, options } = context
     let { cell, dateProfile, tDateProfile } = props
 
@@ -68,7 +75,7 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
         willUnmount={options.slotLabelWillUnmount}
       >
         {(InnerContent) => (
-          <div className="fc-timeline-slot-frame" style={{ height: props.rowInnerHeight }}>
+          <div className="fc-timeline-slot-frame" style={{ height: state.height }}>
             <InnerContent
               elTag="a"
               elClasses={[
@@ -77,11 +84,48 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
                 props.isSticky && 'fc-sticky',
               ]}
               elAttrs={this.buildCellNavLinkAttrs(context, cell.date, cell.rowUnit)}
+              elRef={this.innerElRef}
             />
           </div>
         )}
       </ContentContainer>
     )
+  }
+
+  // RowSyncer
+  // -----------------------------------------------------------------------------------------------
+
+  componentDidMount(): void {
+    const { rowSyncer, heightDef } = this.props
+    if (rowSyncer) {
+      rowSyncer.addSizeListener(heightDef, this.handleHeight)
+      this.updateRowSyncer()
+      this.context.addResizeHandler(this.updateRowSyncer)
+    }
+  }
+
+  componentDidUpdate(): void {
+    this.updateRowSyncer()
+  }
+
+  componentWillUnmount(): void {
+    const { rowSyncer, heightDef } = this.props
+    if (rowSyncer) {
+      this.context.removeResizeHandler(this.updateRowSyncer)
+      rowSyncer.removeSizeListener(heightDef, this.handleHeight)
+      rowSyncer.clearCell(this)
+    }
+  }
+
+  updateRowSyncer = () => {
+    const { rowSyncer, heightDef } = this.props
+    if (rowSyncer) {
+      rowSyncer.updateCell(this, heightDef, this.innerElRef.current.offsetHeight)
+    }
+  }
+
+  handleHeight = (height: number) => {
+    this.setState({ height })
   }
 }
 

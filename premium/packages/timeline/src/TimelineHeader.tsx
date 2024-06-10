@@ -18,6 +18,8 @@ export interface TimelineHeaderProps {
   tableColGroupNode: VNode
   slatCoords: TimelineCoords
   onMaxCushionWidth?: (number) => void
+  rowSyncer?: any
+  heightDefs?: any[]
 }
 
 export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
@@ -48,6 +50,8 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
                   tDateProfile={props.tDateProfile}
                   nowDate={nowDate}
                   todayRange={todayRange}
+                  rowSyncer={props.rowSyncer}
+                  heightDefs={props.heightDefs}
                 />
               </tbody>
             </table>
