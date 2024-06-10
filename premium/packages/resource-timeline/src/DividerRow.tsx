@@ -1,29 +1,31 @@
 import { BaseComponent, ContentContainer } from '@fullcalendar/core/internal'
-import { createElement, Ref } from '@fullcalendar/core/preact'
-import { GroupLaneRenderHooks, ColCellContentArg } from '@fullcalendar/resource'
+import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
+import { ColCellContentArg } from '@fullcalendar/resource'
+import { Group } from '@fullcalendar/resource/internal'
 import { RowSyncer } from './RowSyncer.js'
-import { groupPrefix } from './RowKey.js'
 
 export interface DividerRowProps {
   elRef?: Ref<HTMLTableRowElement>
-  groupValue: any
-  renderHooks: GroupLaneRenderHooks
+  group: Group
   rowSyncer: RowSyncer
 }
 
 interface DividerRowState {
-  frameHeight?: number
+  height?: number
 }
 
 /*
 parallels the SpreadsheetGroupRow
 */
 export class DividerRow extends BaseComponent<DividerRowProps, DividerRowState> {
+  private innerElRef = createRef<HTMLDivElement>()
+
   render() {
     let { props, state, context } = this
-    let { renderHooks } = props
+    let { group } = props
+    let groupSpec = group.spec
     let renderProps: ColCellContentArg = {
-      groupValue: props.groupValue,
+      groupValue: group.value,
       view: context.viewApi,
     }
 
@@ -39,34 +41,52 @@ export class DividerRow extends BaseComponent<DividerRowProps, DividerRowState> 
           ]}
           renderProps={renderProps}
           generatorName="resourceGroupLaneContent"
-          customGenerator={renderHooks.laneContent}
-          classNameGenerator={renderHooks.laneClassNames}
-          didMount={renderHooks.laneDidMount}
-          willUnmount={renderHooks.laneWillUnmount}
+          customGenerator={groupSpec.laneContent}
+          classNameGenerator={groupSpec.laneClassNames}
+          didMount={groupSpec.laneDidMount}
+          willUnmount={groupSpec.laneWillUnmount}
         >
           {(InnerContainer) => (
-            <InnerContainer
-              elTag="div"
-              elStyle={{ height: state.frameHeight }}
-            />
+            <div className='fc-resource-group-frame' style={{ height: state.height }}>
+              <InnerContainer
+                elTag="div"
+                elClasses={['fc-resource-group-frame-inner']}
+                elRef={this.innerElRef}
+              />
+            </div>
           )}
         </ContentContainer>
       </tr>
     )
   }
 
-  // Just Receive Cell Height
+  // RowSyncer
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount(): void {
-    this.props.rowSyncer.addHandler(groupPrefix + this.props.groupValue, this.handleFrameHeight)
+    const { rowSyncer, group } = this.props
+    rowSyncer.addSizeListener(group, this.handleHeight)
+    this.updateRowSyncer()
+    this.context.addResizeHandler(this.updateRowSyncer)
+  }
+
+  componentDidUpdate(): void {
+    this.updateRowSyncer()
   }
 
   componentWillUnmount(): void {
-    this.props.rowSyncer.removeHandler(groupPrefix + this.props.groupValue, this.handleFrameHeight)
+    const { rowSyncer, group } = this.props
+    this.context.removeResizeHandler(this.updateRowSyncer)
+    rowSyncer.removeSizeListener(group, this.handleHeight)
+    rowSyncer.clearCell(this)
   }
 
-  handleFrameHeight = (frameHeight: number) => {
-    this.setState({ frameHeight })
+  updateRowSyncer = () => {
+    const { rowSyncer, group } = this.props
+    rowSyncer.updateCell(this, group, this.innerElRef.current.offsetHeight)
+  }
+
+  handleHeight = (height: number) => {
+    this.setState({ height })
   }
 }

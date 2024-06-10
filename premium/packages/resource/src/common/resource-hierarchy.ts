@@ -4,18 +4,18 @@ import { ResourceEntityExpansions } from '../reducers/resourceEntityExpansions.j
 import { GroupSpec } from './resource-spec.js'
 import { ResourceApi } from '../api/ResourceApi.js'
 
-interface ParentNode {
+export interface ParentNode {
   children: ParentNode[]
 }
 
-interface ResourceParentNode extends ParentNode {
+export interface ResourceParentNode extends ParentNode {
   resource: Resource
   resourceFields: any
 }
 
 type ResourceNodeHash = { [resourceId: string]: ResourceParentNode }
 
-interface GroupParentNode extends ParentNode {
+export interface GroupParentNode extends ParentNode {
   group: Group
 }
 
@@ -44,7 +44,7 @@ export interface ResourceNode {
 doesn't accept grouping
 */
 export function flattenResources(resourceStore: ResourceHash, orderSpecs: OrderSpec<ResourceApi>[]): Resource[] {
-  return buildRowNodes(resourceStore, [], orderSpecs, false, {}, true)
+  return buildRowNodes(resourceStore, [], orderSpecs, false, {}, true)[1]
     .map((node) => (node as ResourceNode).resource)
 }
 
@@ -55,13 +55,13 @@ export function buildRowNodes(
   isVGrouping: boolean,
   expansions: ResourceEntityExpansions,
   expansionDefault: boolean,
-): (GroupNode | ResourceNode)[] {
+): [ParentNode[], (GroupNode | ResourceNode)[]] {
   let complexNodes = buildHierarchy(resourceStore, isVGrouping ? -1 : 1, groupSpecs, orderSpecs)
   let flatNodes = []
 
   flattenNodes(complexNodes, flatNodes, isVGrouping, [], 0, expansions, expansionDefault)
 
-  return flatNodes
+  return [complexNodes, flatNodes]
 }
 
 function flattenNodes(

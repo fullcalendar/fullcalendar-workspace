@@ -12,7 +12,7 @@ import {
   TimelineDateProfile,
 } from '@fullcalendar/timeline/internal'
 import {
-  GroupNode, ResourceNode, ResourceViewProps, buildRowNodes,
+  ParentNode, GroupNode, ResourceNode, ResourceViewProps, buildRowNodes,
   ColSpec, GroupSpec, DEFAULT_RESOURCE_ORDER,
 } from '@fullcalendar/resource/internal'
 import { SpreadsheetRow } from './SpreadsheetRow.js'
@@ -21,7 +21,6 @@ import { SpreadsheetHeader } from './SpreadsheetHeader.js'
 import { ResourceTimelineGrid } from './ResourceTimelineGrid.js'
 import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout.js'
 import { RowSyncer } from './RowSyncer.js'
-import { assignOrderedRowKeys } from './RowKey.js'
 
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
@@ -35,7 +34,7 @@ interface ResourceTimelineViewSnapshot {
 }
 
 interface ResourceScrollState {
-  rowKey: string
+  rowId: string
   fromBottom: number
 }
 
@@ -45,9 +44,11 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   private hasNesting = memoize(hasNesting)
   private buildRowNodes = memoize(buildRowNodes)
   private layoutRef = createRef<ResourceTimelineViewLayout>()
-  private rowNodes: (GroupNode | ResourceNode)[] = []
   private scrollResponder: ScrollResponder
-  private rowSyncer: RowSyncer
+  private rowSyncer: RowSyncer // TODO: make another for the spreadsheet/timeline header
+  private rowHierarchy: ParentNode[] = []
+  private rowNodes: (GroupNode | ResourceNode)[] = []
+  private expandBodyToHeight: number | string = ''
 
   constructor(props: ResourceViewProps, context: ViewContext) {
     super(props, context)
@@ -57,8 +58,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       spreadsheetColWidths: [],
     }
 
-    this.rowSyncer = new RowSyncer(this.handleRowsSynced)
-    this.rowSyncer.pause()
+    this.rowSyncer = new RowSyncer()
   }
 
   render() {
@@ -73,7 +73,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       context.dateProfileGenerator,
     )
 
-    let rowNodes = this.rowNodes = this.buildRowNodes(
+    let [rowHierarchy, rowNodes] = this.buildRowNodes(
       props.resourceStore,
       groupSpecs,
       orderSpecs,
@@ -81,6 +81,9 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       props.resourceEntityExpansions,
       options.resourcesInitiallyExpanded,
     )
+    this.rowHierarchy = rowHierarchy
+    this.rowNodes = rowNodes
+    this.rowSyncer.preupdate()
 
     let { slotMinWidth } = options
     let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
@@ -129,30 +132,35 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
               onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
             />
           )}
-          timeBodyContent={(contentArg: ChunkContentCallbackArgs) => (
-            <ResourceTimelineGrid
-              dateProfile={props.dateProfile}
-              clientWidth={contentArg.clientWidth}
-              clientHeight={contentArg.clientHeight}
-              tableMinWidth={contentArg.tableMinWidth}
-              tableColGroupNode={contentArg.tableColGroupNode}
-              expandRows={contentArg.expandRows}
-              tDateProfile={tDateProfile}
-              rowNodes={rowNodes}
-              businessHours={props.businessHours}
-              dateSelection={props.dateSelection}
-              eventStore={props.eventStore}
-              eventUiBases={props.eventUiBases}
-              eventSelection={props.eventSelection}
-              eventDrag={props.eventDrag}
-              eventResize={props.eventResize}
-              resourceStore={props.resourceStore}
-              nextDayThreshold={context.options.nextDayThreshold}
-              onSlatCoords={this.handleSlatCoords}
-              onScrollLeftRequest={this.handleScrollLeftRequest}
-              rowSyncer={this.rowSyncer}
-            />
-          )}
+          timeBodyContent={(contentArg: ChunkContentCallbackArgs) => {
+            // TODO: converge with ResourceTimelineLanes::minHeight
+            this.expandBodyToHeight = contentArg.expandRows ? contentArg.clientHeight : ''
+
+            return (
+              <ResourceTimelineGrid
+                dateProfile={props.dateProfile}
+                clientWidth={contentArg.clientWidth}
+                clientHeight={contentArg.clientHeight}
+                tableMinWidth={contentArg.tableMinWidth}
+                tableColGroupNode={contentArg.tableColGroupNode}
+                expandRows={contentArg.expandRows}
+                tDateProfile={tDateProfile}
+                rowNodes={rowNodes}
+                businessHours={props.businessHours}
+                dateSelection={props.dateSelection}
+                eventStore={props.eventStore}
+                eventUiBases={props.eventUiBases}
+                eventSelection={props.eventSelection}
+                eventDrag={props.eventDrag}
+                eventResize={props.eventResize}
+                resourceStore={props.resourceStore}
+                nextDayThreshold={context.options.nextDayThreshold}
+                onSlatCoords={this.handleSlatCoords}
+                onScrollLeftRequest={this.handleScrollLeftRequest}
+                rowSyncer={this.rowSyncer}
+              />
+            )
+          }}
         />
       </ViewContainer>
     )
@@ -194,10 +202,10 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
   componentDidMount() {
     // row syncer
-    assignOrderedRowKeys(this.rowSyncer, this.rowNodes)
-    this.rowSyncer.resume() // unpause what happened in constructor
-    this.context.addResizeHandler(this.handleResizePre, 'pre')
-    this.context.addResizeHandler(this.handleResizePost, 'post')
+    this.rowSyncer.addTotalSizeListener(this.handleTotalBodyHeight)
+    this.updateRowSyncer()
+    this.context.addResizeHandler(this.preUpdateRowSyncer, 'pre')
+    this.context.addResizeHandler(this.updateRowSyncer, 'post')
 
     // scroll responder
     this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
@@ -212,7 +220,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
   componentDidUpdate(prevProps: ResourceViewProps, prevState: ResourceTimelineViewState, snapshot: ResourceTimelineViewSnapshot) {
     // row syncer
-    assignOrderedRowKeys(this.rowSyncer, this.rowNodes)
+    this.updateRowSyncer()
 
     // scroll responder
     this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
@@ -223,8 +231,9 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
   componentWillUnmount() {
     // row syncer
-    this.context.removeResizeHandler(this.handleResizePre, 'pre')
-    this.context.removeResizeHandler(this.handleResizePost, 'post')
+    this.rowSyncer.removeTotalSizeListener(this.handleTotalBodyHeight)
+    this.context.removeResizeHandler(this.preUpdateRowSyncer, 'pre')
+    this.context.removeResizeHandler(this.updateRowSyncer, 'post')
 
     // scroll responder
     this.scrollResponder.detach()
@@ -232,18 +241,6 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
   handleSlatCoords = (slatCoords: TimelineCoords) => {
     this.setState({ slatCoords })
-  }
-
-  handleRowsSynced = () => {
-    this.scrollResponder.update(false) // TODO: could eliminate this if rowCoords lived in state
-  }
-
-  handleResizePre = () => {
-    this.rowSyncer.pause()
-  }
-
-  handleResizePost = () => {
-    this.rowSyncer.resume()
   }
 
   handleMaxCushionWidth = (slotCushionMaxWidth) => {
@@ -254,6 +251,25 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
   computeFallbackSlotMinWidth(tDateProfile: TimelineDateProfile) { // TODO: duplicate definition
     return Math.max(30, ((this.state.slotCushionMaxWidth || 0) / tDateProfile.slotsPerLabel))
+  }
+
+  // Row Syncer
+  // ------------------------------------------------------------------------------------------------------------------
+
+  preUpdateRowSyncer = () => {
+    this.rowSyncer.preupdate()
+  }
+
+  updateRowSyncer = () => {
+    this.rowSyncer.update({
+      rowHierarchy: this.rowHierarchy,
+      rowNodes: this.rowNodes,
+      expandToHeight: this.expandBodyToHeight,
+    })
+  }
+
+  handleTotalBodyHeight = (h: number) => {
+    this.scrollResponder.update(false)
   }
 
   // Scrolling
@@ -267,12 +283,21 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
   handleScrollRequest = (request: ScrollRequest & ResourceScrollState) => { // only handles resource scroll
     let { rowSyncer } = this
-    let { rowKey } = request
+    let { rowId } = request
     let layout = this.layoutRef.current
 
-    if (rowKey) {
-      const top = rowSyncer.getTop(rowKey)
-      const bottom = rowSyncer.getBottom(rowKey)
+    // find
+    let rowNode: (GroupNode | ResourceNode)
+    for (const lookRowNode of this.rowNodes) {
+      if (lookRowNode.id === rowId) {
+        rowNode = lookRowNode
+        break
+      }
+    }
+
+    if (rowNode) {
+      const top = rowSyncer.getPosition(rowNode)
+      const bottom = top + rowSyncer.getSize(rowNode)
 
       if (top !== undefined) {
         let scrollTop =
@@ -294,14 +319,15 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
     let scrollTop = layout.getResourceScroll()
     let scroll = {} as any
 
-    for (const rowKey of rowSyncer.orderedKeys) {
-      const elBottom = rowSyncer.getBottom(rowKey)
+    for (const rowNode of this.rowNodes) {
+      const elTop = rowSyncer.getPosition(rowNode)
+      const elBottom = elTop + rowSyncer.getSize(rowNode)
 
       if (elBottom !== undefined) {
         const elBottomRelScroller = elBottom - scrollTop
 
         if (elBottomRelScroller > 0) {
-          scroll.rowKey = rowKey
+          scroll.rowId = rowNode.id
           scroll.fromBottom = elBottom
           break
         }

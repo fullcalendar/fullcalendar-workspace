@@ -14,7 +14,6 @@ export interface TimelineHeaderThProps {
   cell: TimelineHeaderCell
   todayRange: DateRange
   nowDate: DateMarker
-  rowInnerHeight?: number
   isSticky: boolean
 }
 

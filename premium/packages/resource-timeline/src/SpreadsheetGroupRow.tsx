@@ -4,14 +4,13 @@ import { ColCellContentArg } from '@fullcalendar/resource'
 import { Group, isGroupsEqual } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from './ExpanderIcon.js'
 import { RowSyncer } from './RowSyncer.js'
-import { groupPrefix } from './RowKey.js'
 
 export interface SpreadsheetGroupRowProps {
   spreadsheetColCnt: number
   id: string // 'field:value' -- for SET_RESOURCE_ENTITY_EXPANDED
   isExpanded: boolean
-  group: Group
-  rowSyncer: RowSyncer
+  group: Group // CONSTANT
+  rowSyncer: RowSyncer // CONSTANT
 }
 
 // for HORIZONTAL cell grouping, in spreadsheet area
@@ -84,29 +83,22 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount(): void {
-    this.context.addResizeHandler(this.handleResize)
-    this.updateSize()
+    this.updateRowSyncer()
+    this.context.addResizeHandler(this.updateRowSyncer)
   }
 
   componentDidUpdate(): void {
-    this.updateSize()
+    this.updateRowSyncer()
   }
 
   componentWillUnmount(): void {
-    this.context.removeResizeHandler(this.handleResize)
+    this.props.rowSyncer.clearCell(this)
+    this.context.removeResizeHandler(this.updateRowSyncer)
   }
 
-  handleResize = () => {
-    this.updateSize()
-  }
-
-  updateSize() {
-    const { props } = this
-    props.rowSyncer.reportSize(
-      groupPrefix + props.group.value,
-      'spreadsheet',
-      this.innerElRef.current.offsetHeight,
-    )
+  updateRowSyncer = () => {
+    const { rowSyncer, group } = this.props
+    rowSyncer.updateCell(this, group, this.innerElRef.current.offsetHeight)
   }
 }
 

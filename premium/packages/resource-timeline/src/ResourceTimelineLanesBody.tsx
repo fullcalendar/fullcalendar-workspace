@@ -38,8 +38,7 @@ export class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLan
               <DividerRow
                 key={node.id}
                 elRef={rowElRefs.createRef(node.id)}
-                groupValue={(node as GroupNode).group.value}
-                renderHooks={(node as GroupNode).group.spec}
+                group={(node as GroupNode).group}
                 rowSyncer={props.rowSyncer}
               />
             )

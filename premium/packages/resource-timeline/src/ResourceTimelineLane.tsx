@@ -3,16 +3,15 @@ import { createElement, Ref } from '@fullcalendar/core/preact'
 import { Resource, refineRenderProps } from '@fullcalendar/resource/internal'
 import { TimelineLane, TimelineLaneProps } from '@fullcalendar/timeline/internal'
 import { RowSyncer } from './RowSyncer.js'
-import { resourcePrefix } from './RowKey.js'
 
 export interface ResourceTimelineLaneProps extends TimelineLaneProps {
   elRef: Ref<HTMLTableRowElement>
-  resource: Resource
-  rowSyncer: RowSyncer
+  resource: Resource // CONSTANT
+  rowSyncer: RowSyncer // CONSTANT
 }
 
 interface ResourceTimelineLaneState {
-  frameHeight?: number
+  height?: number
 }
 
 export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProps, ResourceTimelineLaneState> {
@@ -42,7 +41,7 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
           willUnmount={options.resourceLaneWillUnmount}
         >
           {(InnerContent) => (
-            <div className="fc-timeline-lane-frame" style={{ height: state.frameHeight }}>
+            <div className="fc-timeline-lane-frame" style={{ height: state.height }}>
               <InnerContent
                 elTag="div"
                 elClasses={['fc-timeline-lane-misc']}
@@ -75,28 +74,22 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount(): void {
-    this.props.rowSyncer.addHandler(
-      resourcePrefix + this.props.resource.id,
-      this.handleFrameHeight,
-    )
+    const { rowSyncer, resource } = this.props
+    rowSyncer.addSizeListener(resource, this.handleFrameHeight)
   }
 
   componentWillUnmount(): void {
-    this.props.rowSyncer.removeHandler(
-      resourcePrefix + this.props.resource.id,
-      this.handleFrameHeight,
-    )
+    const { rowSyncer, resource } = this.props
+    rowSyncer.removeSizeListener(resource, this.handleFrameHeight)
+    rowSyncer.clearCell(this)
   }
 
-  handleFrameHeight = (frameHeight: number) => {
-    this.setState({ frameHeight })
+  handleFrameHeight = (height: number) => {
+    this.setState({ height })
   }
 
   handleLaneHeight = (laneHeight: number | undefined) => {
-    this.props.rowSyncer.reportSize(
-      resourcePrefix + this.props.resource.id,
-      'lane',
-      laneHeight,
-    )
+    const { rowSyncer, resource } = this.props
+    rowSyncer.updateCell(this, resource, laneHeight)
   }
 }

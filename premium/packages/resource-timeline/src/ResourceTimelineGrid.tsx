@@ -159,14 +159,16 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
 
   queryHit(positionLeft: number, positionTop: number): Hit {
     let { rowSyncer } = this.props
-    let rowIndex = rowSyncer.topToIndex(positionTop)
+    let rowIndex = rowSyncer.positionToIndex(positionTop)
 
     if (rowIndex != undefined) {
       let resource = (this.props.rowNodes[rowIndex] as ResourceNode).resource
 
       if (resource) { // not a group
-        let rowKey = rowSyncer.orderedKeys[rowIndex]
+        let rowKey = rowSyncer.indexToRowKey(rowIndex)
         let slatHit = this.slatsRef.current.positionToHit(positionLeft)
+        let top = rowSyncer.getPosition(rowKey)
+        let bottom = top + rowSyncer.getSize(rowKey)
 
         if (slatHit) {
           return {
@@ -179,8 +181,8 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
             rect: {
               left: slatHit.left,
               right: slatHit.right,
-              top: rowSyncer.getTop(rowKey),
-              bottom: rowSyncer.getBottom(rowKey),
+              top,
+              bottom,
             },
             dayEl: slatHit.dayEl,
             layer: 0,

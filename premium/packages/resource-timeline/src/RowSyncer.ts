@@ -1,47 +1,73 @@
+import { Component } from '@fullcalendar/core/preact'
+import { Resource, Group, ParentNode, GroupNode, ResourceNode } from '@fullcalendar/resource/internal'
+
+export type RowSyncerEntity = Resource | Group | GroupNode | ResourceNode // ahhhh
+
+export interface RowSyncerOptions {
+  rowHierarchy: ParentNode[]
+  rowNodes: (ResourceNode | GroupNode)[]
+  expandToHeight: number | string
+}
+
+/*
+TODO: rename
+*/
 export class RowSyncer {
-  orderedKeys: string[]
+  private rowHierarchy: ParentNode[]
+  private rowNodes: (ResourceNode | GroupNode)[]
+  private expandToHeight: number | string
 
-  constructor(private onSynced: () => void) {
-    console.log('onSynced', this.onSynced)
+  preupdate() {
+    console.log(
+      this.rowHierarchy,
+      this.rowNodes,
+      this.expandToHeight,
+    )
   }
 
-  pause() {
-    console.log('pause')
+  update(options: RowSyncerOptions) {
+    this.rowHierarchy = options.rowHierarchy
+    this.rowNodes = options.rowNodes
+    this.expandToHeight = options.expandToHeight
   }
 
-  resume() {
-    console.log('resume')
+  clearCell(component: Component): void {
+
   }
 
-  isActive(): boolean {
-    console.log('isActive?')
-    return false
+  updateCell(component: Component, entity: RowSyncerEntity, size: number | undefined) {
+
   }
 
-  addHandler(key: string, func: (frameHeight: number) => void) {
-    console.log('addListener', key)
+  addSizeListener(entity: RowSyncerEntity, func: (size: number) => void) {
+
   }
 
-  removeHandler(key: string, func: (frameHeight: number) => void) {
-    console.log('removeListener', key)
+  removeSizeListener(entity: RowSyncerEntity, func: (size: number) => void) {
+
   }
 
-  reportSize(key: string, subkey: string, height: number | undefined): void {
-    console.log('reportSize', key, subkey, height)
+  addTotalSizeListener(func: (size: number) => void) {
+
   }
 
-  getTop(key: string): number {
-    console.log('getTop', key)
+  removeTotalSizeListener(func: (size: number) => void) {
+
+  }
+
+  getPosition(entity: RowSyncerEntity): number {
     return 0
   }
 
-  getBottom(key: string): number {
-    console.log('getBottom', key)
+  getSize(entity: RowSyncerEntity): number {
     return 0
   }
 
-  topToIndex(top: number): number | undefined {
-    console.log('topToIndex', top)
-    return undefined
+  positionToIndex(position: number): number {
+    return 0
+  }
+
+  indexToRowKey(index: number): any {
+
   }
 }

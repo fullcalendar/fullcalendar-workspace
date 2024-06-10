@@ -10,7 +10,6 @@ import { ResourceApi } from '@fullcalendar/resource'
 import { Resource, ColSpec } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from './ExpanderIcon.js'
 import { RowSyncer } from './RowSyncer.js'
-import { resourcePrefix } from './RowKey.js'
 
 export interface SpreadsheetIndividualCellProps {
   colSpec: ColSpec
@@ -23,7 +22,7 @@ export interface SpreadsheetIndividualCellProps {
 }
 
 interface SpreadsheetIndividualCellState {
-  frameHeight?: number
+  height?: number
 }
 
 export class SpreadsheetIndividualCell extends BaseComponent<SpreadsheetIndividualCellProps, SpreadsheetIndividualCellState> {
@@ -59,7 +58,7 @@ export class SpreadsheetIndividualCell extends BaseComponent<SpreadsheetIndividu
         willUnmount={colSpec.cellWillUnmount}
       >
         {(InnerContent) => (
-          <div className="fc-datagrid-cell-frame" style={{ height: state.frameHeight }}>
+          <div className="fc-datagrid-cell-frame" style={{ height: state.height }}>
             <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner" ref={this.innerElRef}>
               {colSpec.isMain && (
                 <ExpanderIcon
@@ -92,39 +91,34 @@ export class SpreadsheetIndividualCell extends BaseComponent<SpreadsheetIndividu
     }
   }
 
-  // Report / Receive Cell Height
+  // RowSyncer
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount(): void {
-    this.props.rowSyncer.addHandler(this.props.resource.id, this.handleFrameHeight)
-    this.context.addResizeHandler(this.handleResize)
-    this.updateSize()
+    const { rowSyncer, resource } = this.props
+    rowSyncer.addSizeListener(resource, this.handleHeight)
+    this.updateRowSyncer()
+    this.context.addResizeHandler(this.updateRowSyncer)
   }
 
   componentDidUpdate(): void {
-    this.updateSize()
+    this.updateRowSyncer()
   }
 
   componentWillUnmount(): void {
-    this.props.rowSyncer.removeHandler(this.props.resource.id, this.handleFrameHeight)
-    this.context.removeResizeHandler(this.handleResize)
+    const { rowSyncer, resource } = this.props
+    this.context.removeResizeHandler(this.updateRowSyncer)
+    rowSyncer.removeSizeListener(resource, this.handleHeight)
+    rowSyncer.clearCell(this)
   }
 
-  handleFrameHeight = (frameHeight: number) => {
-    this.setState({ frameHeight })
+  updateRowSyncer = () => {
+    const { rowSyncer, resource } = this.props
+    rowSyncer.updateCell(this, resource, this.innerElRef.current.offsetHeight)
   }
 
-  handleResize = () => {
-    this.updateSize()
-  }
-
-  updateSize() {
-    const { props } = this
-    props.rowSyncer.reportSize(
-      resourcePrefix + props.resource.id,
-      'col:' + (props.colSpec.field || ''),
-      this.innerElRef.current.offsetHeight,
-    )
+  handleHeight = (height: number) => {
+    this.setState({ height })
   }
 }
 
