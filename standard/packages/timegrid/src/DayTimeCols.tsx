@@ -13,11 +13,7 @@ import {
   DateMarker,
   NowTimer,
 } from '@fullcalendar/core/internal'
-import {
-  createElement,
-  createRef,
-  VNode,
-} from '@fullcalendar/core/preact'
+import { createElement, createRef } from '@fullcalendar/core/preact'
 import { TimeCols } from './TimeCols.js'
 import { TimeSlatMeta } from './time-slat-meta.js'
 import { TimeColsSlatsCoords } from './TimeColsSlatsCoords.js'
@@ -36,7 +32,6 @@ export interface DayTimeColsProps {
   eventSelection: string
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
-  tableColGroupNode: VNode
   tableMinWidth: CssDimValue
   clientWidth: number | null
   clientHeight: number | null
@@ -71,7 +66,6 @@ export class DayTimeCols extends DateComponent<DayTimeColsProps> {
             slatMetas={props.slatMetas}
             slotDuration={props.slotDuration}
             cells={dayTableModel.cells[0]}
-            tableColGroupNode={props.tableColGroupNode}
             tableMinWidth={props.tableMinWidth}
             clientWidth={props.clientWidth}
             clientHeight={props.clientHeight}

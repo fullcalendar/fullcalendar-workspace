@@ -15,21 +15,17 @@ export interface TimelineHeaderThProps {
   todayRange: DateRange
   nowDate: DateMarker
   isSticky: boolean
-  rowSyncer?: any // TODO
-  heightDef?: any // TODO
+  height: number | undefined
+  onNaturalHeight?: (height: number) => void
 }
 
-interface TimelineHeaderThState {
-  height?: number
-}
-
-export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps, TimelineHeaderThState> {
+export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)
   private buildCellNavLinkAttrs = memoize(buildCellNavLinkAttrs)
   private innerElRef = createRef<HTMLDivElement>()
 
   render() {
-    let { props, state, context } = this
+    let { props, context } = this
     let { dateEnv, options } = context
     let { cell, dateProfile, tDateProfile } = props
 
@@ -75,7 +71,7 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps, Timel
         willUnmount={options.slotLabelWillUnmount}
       >
         {(InnerContent) => (
-          <div className="fc-timeline-slot-frame" style={{ height: state.height }}>
+          <div className="fc-timeline-slot-frame" style={{ height: props.height }}>
             <InnerContent
               elTag="a"
               elClasses={[
@@ -92,40 +88,18 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps, Timel
     )
   }
 
-  // RowSyncer
-  // -----------------------------------------------------------------------------------------------
-
   componentDidMount(): void {
-    const { rowSyncer, heightDef } = this.props
-    if (rowSyncer) {
-      rowSyncer.addSizeListener(heightDef, this.handleHeight)
-      this.updateRowSyncer()
-      this.context.addResizeHandler(this.updateRowSyncer)
-    }
+    this.reportNaturalHeight()
   }
 
   componentDidUpdate(): void {
-    this.updateRowSyncer()
+    this.reportNaturalHeight()
   }
 
-  componentWillUnmount(): void {
-    const { rowSyncer, heightDef } = this.props
-    if (rowSyncer) {
-      this.context.removeResizeHandler(this.updateRowSyncer)
-      rowSyncer.removeSizeListener(heightDef, this.handleHeight)
-      rowSyncer.clearCell(this)
+  reportNaturalHeight() {
+    if (this.props.onNaturalHeight) {
+      this.props.onNaturalHeight(this.innerElRef.current.offsetHeight)
     }
-  }
-
-  updateRowSyncer = () => {
-    const { rowSyncer, heightDef } = this.props
-    if (rowSyncer) {
-      rowSyncer.updateCell(this, heightDef, this.innerElRef.current.offsetHeight)
-    }
-  }
-
-  handleHeight = (height: number) => {
-    this.setState({ height })
   }
 }
 

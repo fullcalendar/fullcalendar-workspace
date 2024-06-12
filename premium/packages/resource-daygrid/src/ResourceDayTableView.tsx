@@ -62,7 +62,6 @@ export class ResourceDayTableView extends TableView {
         eventResize={props.eventResize}
         nextDayThreshold={options.nextDayThreshold}
         tableMinWidth={contentArg.tableMinWidth}
-        colGroupNode={contentArg.tableColGroupNode}
         dayMaxEvents={options.dayMaxEvents}
         dayMaxEventRows={options.dayMaxEventRows}
         showWeekNumbers={options.weekNumbers}

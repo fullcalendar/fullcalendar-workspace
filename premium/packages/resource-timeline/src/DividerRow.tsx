@@ -1,27 +1,23 @@
 import { BaseComponent, ContentContainer } from '@fullcalendar/core/internal'
-import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
+import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ColCellContentArg } from '@fullcalendar/resource'
 import { Group } from '@fullcalendar/resource/internal'
-import { SizeSyncer } from './SizeSyncer.js'
 
 export interface DividerRowProps {
-  elRef?: Ref<HTMLTableRowElement>
   group: Group
-  rowSyncer: SizeSyncer
-}
-
-interface DividerRowState {
-  height?: number
+  top: number | undefined
+  height: number | undefined
+  onNaturalHeight?: (height: number) => void
 }
 
 /*
 parallels the SpreadsheetGroupRow
 */
-export class DividerRow extends BaseComponent<DividerRowProps, DividerRowState> {
+export class DividerRow extends BaseComponent<DividerRowProps> {
   private innerElRef = createRef<HTMLDivElement>()
 
   render() {
-    let { props, state, context } = this
+    let { props, context } = this
     let { group } = props
     let groupSpec = group.spec
     let renderProps: ColCellContentArg = {
@@ -30,10 +26,9 @@ export class DividerRow extends BaseComponent<DividerRowProps, DividerRowState> 
     }
 
     return (
-      <tr ref={props.elRef}>
+      <tr>
         <ContentContainer
           elTag="td"
-          elRef={props.elRef}
           elClasses={[
             'fc-timeline-lane',
             'fc-resource-group',
@@ -47,7 +42,7 @@ export class DividerRow extends BaseComponent<DividerRowProps, DividerRowState> 
           willUnmount={groupSpec.laneWillUnmount}
         >
           {(InnerContainer) => (
-            <div className='fc-resource-group-frame' style={{ height: state.height }}>
+            <div className='fc-resource-group-frame' style={{ height: props.height }}>
               <InnerContainer
                 elTag="div"
                 elClasses={['fc-resource-group-frame-inner']}
@@ -60,33 +55,17 @@ export class DividerRow extends BaseComponent<DividerRowProps, DividerRowState> 
     )
   }
 
-  // RowSyncer
-  // -----------------------------------------------------------------------------------------------
-
   componentDidMount(): void {
-    const { rowSyncer, group } = this.props
-    rowSyncer.addSizeListener(group, this.handleHeight)
-    this.updateRowSyncer()
-    this.context.addResizeHandler(this.updateRowSyncer)
+    this.reportNaturalHeight()
   }
 
   componentDidUpdate(): void {
-    this.updateRowSyncer()
+    this.reportNaturalHeight()
   }
 
-  componentWillUnmount(): void {
-    const { rowSyncer, group } = this.props
-    this.context.removeResizeHandler(this.updateRowSyncer)
-    rowSyncer.removeSizeListener(group, this.handleHeight)
-    rowSyncer.clearCell(this)
-  }
-
-  updateRowSyncer = () => {
-    const { rowSyncer, group } = this.props
-    rowSyncer.updateCell(this, group, this.innerElRef.current.offsetHeight)
-  }
-
-  handleHeight = (height: number) => {
-    this.setState({ height })
+  reportNaturalHeight() {
+    if (this.props.onNaturalHeight) {
+      this.props.onNaturalHeight(this.innerElRef.current.offsetHeight)
+    }
   }
 }

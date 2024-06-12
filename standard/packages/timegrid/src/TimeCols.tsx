@@ -15,10 +15,7 @@ import {
   Hit,
   DateComponent,
 } from '@fullcalendar/core/internal'
-import {
-  createElement,
-  VNode,
-} from '@fullcalendar/core/preact'
+import { createElement } from '@fullcalendar/core/preact'
 import { TimeColsSlats } from './TimeColsSlats.js'
 import { TimeSlatMeta } from './time-slat-meta.js'
 import { TimeColsContent } from './TimeColsContent.js'
@@ -38,7 +35,6 @@ export interface TimeColsProps {
   eventSelection: string
   eventDrag: EventSegUiInteractionState | null
   eventResize: EventSegUiInteractionState | null
-  tableColGroupNode: VNode
   tableMinWidth: CssDimValue
   clientWidth: number | null
   clientHeight: number | null
@@ -89,7 +85,6 @@ export class TimeCols extends DateComponent<TimeColsProps, TimeColsState> {
           clientWidth={props.clientWidth}
           minHeight={props.expandRows ? props.clientHeight : ''}
           tableMinWidth={props.tableMinWidth}
-          tableColGroupNode={props.axis ? props.tableColGroupNode : null /* axis depends on the colgroup's shrinking */}
           onCoords={this.handleSlatCoords}
         />
         <TimeColsContent
@@ -108,7 +103,6 @@ export class TimeCols extends DateComponent<TimeColsProps, TimeColsState> {
           nowIndicatorSegs={props.nowIndicatorSegs}
           clientWidth={props.clientWidth}
           tableMinWidth={props.tableMinWidth}
-          tableColGroupNode={props.tableColGroupNode}
           slatCoords={state.slatCoords}
           onColCoords={this.handleColCoords}
           forPrint={props.forPrint}

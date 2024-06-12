@@ -12,15 +12,31 @@ import {
   TimelineDateProfile,
 } from '@fullcalendar/timeline/internal'
 import {
-  ParentNode, GroupNode, ResourceNode, ResourceViewProps, buildRowNodes,
+  ResourceViewProps,
   ColSpec, GroupSpec, DEFAULT_RESOURCE_ORDER,
+  buildResourceHierarchy,
+  Group,
+  Resource,
+  ParentNode,
+  isEntityGroup,
 } from '@fullcalendar/resource/internal'
 import { SpreadsheetRow } from './SpreadsheetRow.js'
 import { SpreadsheetGroupRow } from './SpreadsheetGroupRow.js'
 import { SpreadsheetHeader } from './SpreadsheetHeader.js'
 import { ResourceTimelineGrid } from './ResourceTimelineGrid.js'
 import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout.js'
-import { SizeSyncer, SizeSyncerEntity } from './SizeSyncer.js'
+import {
+  GroupCellDisplay,
+  GroupRowDisplay,
+  NaturalHeightMap,
+  ResourceRowDisplay,
+  VerticalPosition,
+  buildHeaderHeightHierarchy,
+  buildResourceDisplays,
+  buildVerticalPositions,
+  searchTopmostEntity,
+} from './resource-table.js'
+import { SpreadsheetGroupCell } from './SpreadsheetGroupCell.js'
 
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
@@ -34,32 +50,32 @@ interface ResourceTimelineViewSnapshot {
 }
 
 interface ResourceScrollState {
-  rowId: string
+  resourceId?: string
+  groupValue?: any
   fromBottom: number
 }
 
-function buildHeaderRowHeightDefs(hasSuperHeader: boolean, timelineHeaderCnt: number): {
-  superHeaderHeightDef: SizeSyncerEntity,
-  normalHeaderHeightDef: SizeSyncerEntity,
-  timelineHeaderHeightDefs: SizeSyncerEntity[],
-  rowHierarchy: ParentNode[],
-  rowNodes: (ResourceNode | GroupNode)[],
-} {
-  return {} as any
-}
-
 export class ResourceTimelineView extends BaseComponent<ResourceViewProps, ResourceTimelineViewState> {
-  private processColOptions = memoize(processColOptions)
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
-  private processHeaderRowHeightDefs = memoize(buildHeaderRowHeightDefs)
-  private hasNesting = memoize(hasNesting)
-  private buildRowNodes = memoize(buildRowNodes)
+  private processColOptions = memoize(processColOptions)
+  private buildResourceHierarchy = memoize(buildResourceHierarchy)
+  private buildResourceDisplays = memoize(buildResourceDisplays)
+  private buildHeaderHeightHierarchy = memoize(buildHeaderHeightHierarchy)
+  private buildHeaderVerticalPositions = memoize(buildVerticalPositions)
+  private buildBodyVerticalPositions = memoize(buildVerticalPositions)
   private layoutRef = createRef<ResourceTimelineViewLayout>()
   private scrollResponder: ScrollResponder
-  private bodyRowNodes: (ResourceNode | GroupNode)[]
-  private bodyRowSyncer: SizeSyncer
-  private headRowSyncer: SizeSyncer
   private expandBodyToHeight: number | undefined
+
+  // (have sub-components report their natural heights via callbacks)
+  private headerNaturalHeightMap: Map<boolean | number, NaturalHeightMap>
+  private bodyNaturalHeightMap: Map<Resource | Group, NaturalHeightMap>
+
+  // DERIVED
+  private currentGroupRowDisplays: GroupRowDisplay[]
+  private currentResourceRowDisplays: ResourceRowDisplay[]
+  private currentBodyHeightHierarchy: ParentNode<Resource | Group>[]
+  private currentBodyVerticalPositions: Map<Resource | Group, VerticalPosition>
 
   constructor(props: ResourceViewProps, context: ViewContext) {
     super(props, context)
@@ -68,15 +84,11 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       resourceAreaWidth: context.options.resourceAreaWidth,
       spreadsheetColWidths: [],
     }
-
-    this.bodyRowSyncer = new SizeSyncer()
-    this.headRowSyncer = new SizeSyncer()
   }
 
   render() {
-    let { props, state, context } = this
+    let { props, state, context, bodyNaturalHeightMap, headerNaturalHeightMap } = this
     let { options, viewSpec } = context
-    let { superHeaderRendering, groupSpecs, orderSpecs, isVGrouping, colSpecs } = this.processColOptions(context.options)
 
     let tDateProfile = this.buildTimelineDateProfile(
       props.dateProfile,
@@ -86,39 +98,64 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
     )
 
     let {
-      superHeaderHeightDef,
-      normalHeaderHeightDef,
-      timelineHeaderHeightDefs,
-      rowHierarchy: headRowHierarchy,
-      rowNodes: headRowNodes,
-    } = this.processHeaderRowHeightDefs(Boolean(superHeaderRendering), tDateProfile.cellRows.length)
+      groupSpecs,
+      rowGroupDepth,
+      orderSpecs,
+      colSpecs,
+      resourceColSpecs,
+      superHeaderRendering,
+    } = this.processColOptions(context.options)
 
-    let [bodyRowHierarchy, bodyRowNodes] = this.buildRowNodes(
+    let resourceHierarchy = this.buildResourceHierarchy(
       props.resourceStore,
       groupSpecs,
       orderSpecs,
-      isVGrouping,
+    )
+
+    let {
+      groupColDisplays,
+      groupRowDisplays,
+      resourceRowDisplays,
+      heightHierarchy: bodyHeightHierarchy,
+      anyNesting,
+    } = this.buildResourceDisplays(
+      resourceHierarchy,
+      rowGroupDepth,
       props.resourceEntityExpansions,
       options.resourcesInitiallyExpanded,
     )
-    this.bodyRowNodes = bodyRowNodes
-    this.headRowSyncer.setOptions({
-      rowHierarchy: headRowHierarchy,
-      rowNodes: headRowNodes,
-    })
-    this.bodyRowSyncer.setOptions({
-      rowHierarchy: bodyRowHierarchy,
-      rowNodes: bodyRowNodes,
-    })
+    this.currentGroupRowDisplays = groupRowDisplays
+    this.currentResourceRowDisplays = resourceRowDisplays
+    this.currentBodyHeightHierarchy = bodyHeightHierarchy
+
+    let headerHeightHierarchy = this.buildHeaderHeightHierarchy(
+      Boolean(superHeaderRendering),
+      tDateProfile.cellRows.length,
+    )
+
+    // NOTE: TimelineHeader doesn't need top coordinates, only heights
+    let headerVerticalPositions = this.buildHeaderVerticalPositions(
+      headerHeightHierarchy,
+      headerNaturalHeightMap,
+      undefined, // minHeight
+    )
+
+    let bodyVerticalPositions = this.currentBodyVerticalPositions = this.buildBodyVerticalPositions(
+      bodyHeightHierarchy,
+      bodyNaturalHeightMap,
+      this.expandBodyToHeight, // minHeight
+    )
 
     let { slotMinWidth } = options
-    let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
+    let slatCols =
+      buildSlatCols(tDateProfile, slotMinWidth ||
+      this.computeFallbackSlotMinWidth(tDateProfile))
 
     return (
       <ViewContainer
         elClasses={[
           'fc-resource-timeline',
-          !this.hasNesting(bodyRowNodes) && 'fc-resource-timeline-flat', // flat means there's no nesting
+          !anyNesting && 'fc-resource-timeline-flat', // flat means there's no nesting
           'fc-timeline',
           options.eventOverlap === false ?
             'fc-timeline-overlap-disabled' :
@@ -138,14 +175,18 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
               superHeaderRendering={superHeaderRendering}
               colSpecs={colSpecs}
               onColWidthChange={this.handleColWidthChange}
-              rowSyncer={this.headRowSyncer}
-              normalHeightDef={normalHeaderHeightDef}
-              superHeightDef={superHeaderHeightDef}
+              verticalPositions={headerVerticalPositions}
             />
           )}
           spreadsheetBodyRows={() => (
             <Fragment>
-              {this.renderSpreadsheetRows(bodyRowNodes, colSpecs)}
+              {this.renderSpreadsheetRows(
+                groupColDisplays,
+                groupRowDisplays,
+                resourceRowDisplays,
+                resourceColSpecs,
+                bodyVerticalPositions,
+              )}
             </Fragment>
           )}
           timeCols={slatCols}
@@ -154,13 +195,11 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
               clientWidth={contentArg.clientWidth}
               clientHeight={contentArg.clientHeight}
               tableMinWidth={contentArg.tableMinWidth}
-              tableColGroupNode={contentArg.tableColGroupNode}
               dateProfile={props.dateProfile}
               tDateProfile={tDateProfile}
               slatCoords={state.slatCoords}
               onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
-              rowSyncer={this.headRowSyncer}
-              heightDefs={timelineHeaderHeightDefs}
+              verticalPositions={headerVerticalPositions}
             />
           )}
           timeBodyContent={(contentArg: ChunkContentCallbackArgs) => {
@@ -173,10 +212,10 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
                 clientWidth={contentArg.clientWidth}
                 clientHeight={contentArg.clientHeight}
                 tableMinWidth={contentArg.tableMinWidth}
-                tableColGroupNode={contentArg.tableColGroupNode}
                 expandRows={contentArg.expandRows}
                 tDateProfile={tDateProfile}
-                rowNodes={bodyRowNodes}
+                groupRowDisplays={groupRowDisplays}
+                resourceRowDisplays={resourceRowDisplays}
                 businessHours={props.businessHours}
                 dateSelection={props.dateSelection}
                 eventStore={props.eventStore}
@@ -188,7 +227,8 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
                 nextDayThreshold={context.options.nextDayThreshold}
                 onSlatCoords={this.handleSlatCoords}
                 onScrollLeftRequest={this.handleScrollLeftRequest}
-                rowSyncer={this.bodyRowSyncer}
+                verticalPositions={bodyVerticalPositions}
+                heightHierarchy={this.currentBodyHeightHierarchy}
               />
             )
           }}
@@ -197,46 +237,61 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
     )
   }
 
-  renderSpreadsheetRows(nodes: (ResourceNode | GroupNode)[], colSpecs: ColSpec[]) {
-    return nodes.map((node) => {
-      if ((node as GroupNode).group) {
-        return (
-          <SpreadsheetGroupRow
-            key={node.id}
-            id={node.id}
-            spreadsheetColCnt={colSpecs.length}
-            isExpanded={node.isExpanded}
-            group={(node as GroupNode).group}
-            rowSyncer={this.bodyRowSyncer}
-          />
-        )
-      }
-
-      if ((node as ResourceNode).resource) {
-        return (
-          <SpreadsheetRow
-            key={node.id}
-            colSpecs={colSpecs}
-            rowSpans={(node as ResourceNode).rowSpans}
-            depth={(node as ResourceNode).depth}
-            isExpanded={node.isExpanded}
-            hasChildren={(node as ResourceNode).hasChildren}
-            resource={(node as ResourceNode).resource}
-            rowSyncer={this.bodyRowSyncer}
-          />
-        )
-      }
-
-      return null
-    })
+  /*
+  TODO: tabindex
+  */
+  renderSpreadsheetRows(
+    groupColDisplays: GroupCellDisplay[][],
+    groupRowDisplays: GroupRowDisplay[],
+    resourceRowDisplays: ResourceRowDisplay[],
+    resourceColSpecs: ColSpec[],
+    verticalPositions: Map<Resource | Group, VerticalPosition>,
+  ) {
+    return (
+      <Fragment>
+        {groupColDisplays.map((groupCellDisplays, cellIndex) => (
+          <div key={cellIndex}>
+            {groupCellDisplays.map((groupCellDisplay) => (
+              <SpreadsheetGroupCell
+                key={String(groupCellDisplay.group.value)}
+                colSpec={groupCellDisplay.group.spec}
+                fieldValue={groupCellDisplay.group.value}
+                top={verticalPositions.get(groupCellDisplay.group).top}
+                height={verticalPositions.get(groupCellDisplay.group).height}
+              />
+            ))}
+          </div>
+        ))}
+        <div>
+          {groupRowDisplays.map((groupRowDisplay) => (
+            <SpreadsheetGroupRow
+              key={String(groupRowDisplay.group.value)}
+              group={groupRowDisplay.group}
+              isExpanded={groupRowDisplay.isExpanded}
+              top={verticalPositions.get(groupRowDisplay.group).top}
+              height={verticalPositions.get(groupRowDisplay.group).height}
+            />
+          ))}
+        </div>
+        <div>
+          {resourceRowDisplays.map((resourceRowDisplay) => (
+            <SpreadsheetRow
+              key={resourceRowDisplay.resource.id}
+              resource={resourceRowDisplay.resource}
+              depth={resourceRowDisplay.depth}
+              hasChildren={resourceRowDisplay.hasChildren}
+              isExpanded={resourceRowDisplay.isExpanded}
+              colSpecs={resourceColSpecs}
+              top={verticalPositions.get(resourceRowDisplay.resource).top}
+              height={verticalPositions.get(resourceRowDisplay.resource).height}
+            />
+          ))}
+        </div>
+      </Fragment>
+    )
   }
 
   componentDidMount() {
-    // row syncer
-    this.bodyRowSyncer.addTotalSizeListener(this.handleTotalBodyHeight)
-    this.context.addResizeHandler(this.releaseRowSyncers)
-
-    // scroll responder
     this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
   }
 
@@ -248,19 +303,16 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   }
 
   componentDidUpdate(prevProps: ResourceViewProps, prevState: ResourceTimelineViewState, snapshot: ResourceTimelineViewSnapshot) {
-    // scroll responder
-    this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
+    this.scrollResponder.update(
+      prevProps.dateProfile !== this.props.dateProfile,
+    )
+
     if (snapshot.resourceScroll) {
       this.handleScrollRequest(snapshot.resourceScroll) // TODO: this gets triggered too often
     }
   }
 
   componentWillUnmount() {
-    // row syncer
-    this.bodyRowSyncer.removeTotalSizeListener(this.handleTotalBodyHeight)
-    this.context.removeResizeHandler(this.releaseRowSyncers)
-
-    // scroll responder
     this.scrollResponder.detach()
   }
 
@@ -278,18 +330,6 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
     return Math.max(30, ((this.state.slotCushionMaxWidth || 0) / tDateProfile.slotsPerLabel))
   }
 
-  // Row Syncer
-  // ------------------------------------------------------------------------------------------------------------------
-
-  releaseRowSyncers = () => {
-    this.headRowSyncer.release()
-    this.bodyRowSyncer.release(this.expandBodyToHeight)
-  }
-
-  handleTotalBodyHeight = (h: number) => {
-    this.scrollResponder.update(false)
-  }
-
   // Scrolling
   // ------------------------------------------------------------------------------------------------------------------
   // this is useful for scrolling prev/next dates while resource is scrolled down
@@ -300,24 +340,34 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   }
 
   handleScrollRequest = (request: ScrollRequest & ResourceScrollState) => { // only handles resource scroll
-    let { bodyRowSyncer: rowSyncer } = this
-    let { rowId } = request
+    let { currentGroupRowDisplays, currentResourceRowDisplays, currentBodyVerticalPositions } = this
     let layout = this.layoutRef.current
+    let entity: Resource | Group | undefined
 
-    // find
-    let rowNode: (GroupNode | ResourceNode)
-    for (const lookRowNode of this.bodyRowNodes) {
-      if (lookRowNode.id === rowId) {
-        rowNode = lookRowNode
-        break
+    // find entity. hack
+    if (request.resourceId) {
+      for (const resourceRowDisplay of currentResourceRowDisplays) {
+        if (resourceRowDisplay.resource.id === request.resourceId) {
+          entity = resourceRowDisplay.resource
+          break
+        }
+      }
+    } else if (request.groupValue) { // okay for falsiness?
+      for (const groupRowDisplay of currentGroupRowDisplays) {
+        if (groupRowDisplay.group.value === request.groupValue) {
+          entity = groupRowDisplay.group
+          break
+        }
       }
     }
 
-    if (rowNode) {
-      const top = rowSyncer.getPosition(rowNode)
-      const bottom = top + rowSyncer.getSize(rowNode)
+    if (entity) {
+      const position = currentBodyVerticalPositions.get(entity)
 
-      if (top !== undefined) {
+      if (position) {
+        const { top, height } = position
+        const bottom = top + height
+
         let scrollTop =
           request.fromBottom != null ?
             bottom - request.fromBottom : // pixels from bottom edge
@@ -332,23 +382,28 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   }
 
   queryResourceScroll(): ResourceScrollState {
-    let { bodyRowSyncer: rowSyncer } = this
+    let { currentBodyHeightHierarchy, currentBodyVerticalPositions } = this
     let layout = this.layoutRef.current
     let scrollTop = layout.getResourceScroll()
     let scroll = {} as any
 
-    for (const rowNode of this.bodyRowNodes) {
-      const elTop = rowSyncer.getPosition(rowNode)
-      const elBottom = elTop + rowSyncer.getSize(rowNode)
+    let entityAtTop = searchTopmostEntity(
+      scrollTop,
+      currentBodyHeightHierarchy,
+      currentBodyVerticalPositions,
+    )
 
-      if (elBottom !== undefined) {
-        const elBottomRelScroller = elBottom - scrollTop
+    if (entityAtTop) {
+      let position = currentBodyVerticalPositions.get(entityAtTop)
+      let elTop = position.top
+      let elBottom = elTop + position.height
+      let elBottomRelScroller = elBottom - scrollTop
 
-        if (elBottomRelScroller > 0) {
-          scroll.rowId = rowNode.id
-          scroll.fromBottom = elBottom
-          break
-        }
+      scroll.fromBottom = elBottomRelScroller
+      if (isEntityGroup(entityAtTop)) {
+        scroll.groupValue = entityAtTop.value
+      } else {
+        scroll.resourceId = entityAtTop.id
       }
     }
 
@@ -376,22 +431,6 @@ function buildSpreadsheetCols(colSpecs: ColSpec[], forcedWidths: number[], fallb
   }))
 }
 
-function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
-  for (let node of nodes) {
-    if ((node as GroupNode).group) {
-      return true
-    }
-
-    if ((node as ResourceNode).resource) {
-      if ((node as ResourceNode).hasChildren) {
-        return true
-      }
-    }
-  }
-
-  return false
-}
-
 function processColOptions(options: ViewOptionsRefined) {
   let allColSpecs: ColSpec[] = options.resourceAreaColumns || []
   let superHeaderRendering = null
@@ -413,10 +452,10 @@ function processColOptions(options: ViewOptionsRefined) {
     }
   }
 
-  let plainColSpecs: ColSpec[] = []
+  let resourceColSpecs: ColSpec[] = []
   let groupColSpecs: ColSpec[] = [] // part of the colSpecs, but filtered out in order to put first
   let groupSpecs: GroupSpec[] = []
-  let isVGrouping = false
+  let rowGroupDepth = 0
 
   for (let colSpec of allColSpecs) {
     if (colSpec.group) {
@@ -428,12 +467,12 @@ function processColOptions(options: ViewOptionsRefined) {
         cellWillUnmount: colSpec.cellWillUnmount || options.resourceGroupLaneWillUnmount,
       })
     } else {
-      plainColSpecs.push(colSpec)
+      resourceColSpecs.push(colSpec)
     }
   }
 
   // BAD: mutates a user-supplied option
-  let mainColSpec = plainColSpecs[0]
+  let mainColSpec = resourceColSpecs[0]
   mainColSpec.isMain = true
   mainColSpec.cellClassNames = mainColSpec.cellClassNames || options.resourceLabelClassNames
   mainColSpec.cellContent = mainColSpec.cellContent || options.resourceLabelContent
@@ -442,8 +481,8 @@ function processColOptions(options: ViewOptionsRefined) {
 
   if (groupColSpecs.length) {
     groupSpecs = groupColSpecs
-    isVGrouping = true
   } else {
+    rowGroupDepth = 1
     let hGroupField = options.resourceGroupField
     if (hGroupField) {
       groupSpecs.push({
@@ -480,10 +519,11 @@ function processColOptions(options: ViewOptionsRefined) {
   }
 
   return {
-    superHeaderRendering,
-    isVGrouping,
     groupSpecs,
-    colSpecs: groupColSpecs.concat(plainColSpecs),
+    rowGroupDepth,
     orderSpecs: plainOrderSpecs,
+    colSpecs: groupColSpecs.concat(resourceColSpecs),
+    resourceColSpecs,
+    superHeaderRendering,
   }
 }

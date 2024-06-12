@@ -59,7 +59,6 @@ export class ResourceDayTimeColsView extends TimeColsView {
         resourceDayTableModel={resourceDayTableModel}
         nextDayThreshold={options.nextDayThreshold}
         tableMinWidth={contentArg.tableMinWidth}
-        colGroupNode={contentArg.tableColGroupNode}
         renderRowIntro={hasAttachedAxis ? this.renderTableRowAxis : null}
         showWeekNumbers={false}
         expandRows={false}
@@ -79,7 +78,6 @@ export class ResourceDayTimeColsView extends TimeColsView {
         slotDuration={options.slotDuration}
         slatMetas={slatMetas}
         resourceDayTableModel={resourceDayTableModel}
-        tableColGroupNode={contentArg.tableColGroupNode}
         tableMinWidth={contentArg.tableMinWidth}
         clientWidth={contentArg.clientWidth}
         clientHeight={contentArg.clientHeight}

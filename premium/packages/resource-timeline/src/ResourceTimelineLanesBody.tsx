@@ -1,20 +1,20 @@
 import {
-  SplittableProps, EventStore, BaseComponent, RefMap,
+  SplittableProps, EventStore, BaseComponent,
   DateMarker, DateRange, DateProfile,
 } from '@fullcalendar/core/internal'
-import { createElement } from '@fullcalendar/core/preact'
-import { GroupNode, ResourceNode } from '@fullcalendar/resource/internal'
+import { Fragment, createElement } from '@fullcalendar/core/preact'
+import { Group, Resource } from '@fullcalendar/resource/internal'
 import { TimelineDateProfile, TimelineCoords } from '@fullcalendar/timeline/internal'
 import { ResourceTimelineLane } from './ResourceTimelineLane.js'
 import { DividerRow } from './DividerRow.js'
-import { SizeSyncer } from './SizeSyncer.js'
+import { GroupRowDisplay, ResourceRowDisplay } from './resource-table.js'
 
 export interface ResourceTimelineLanesBodyProps extends ResourceTimelineLanesContentProps {
-  rowElRefs: RefMap<HTMLElement> // indexed by NUMERICAL INDEX, not node.id
 }
 
 export interface ResourceTimelineLanesContentProps {
-  rowNodes: (GroupNode | ResourceNode)[]
+  groupRowDisplays: GroupRowDisplay[]
+  resourceRowDisplays: ResourceRowDisplay[]
   splitProps: { [resourceId: string]: SplittableProps }
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
@@ -22,35 +22,31 @@ export interface ResourceTimelineLanesContentProps {
   todayRange: DateRange
   fallbackBusinessHours: EventStore | null
   slatCoords: TimelineCoords | null
-  rowSyncer: SizeSyncer
+  verticalPositions: Map<Resource | Group, { top: number, height: number }>
 }
 
 export class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLanesBodyProps> { // TODO: this technique more
   render() {
     let { props, context } = this
-    let { rowElRefs } = props
 
     return (
-      <tbody>
-        {props.rowNodes.map((node, index) => {
-          if ((node as GroupNode).group) {
-            return (
-              <DividerRow
-                key={node.id}
-                elRef={rowElRefs.createRef(node.id)}
-                group={(node as GroupNode).group}
-                rowSyncer={props.rowSyncer}
-              />
-            )
-          }
-
-          if ((node as ResourceNode).resource) {
-            let resource = (node as ResourceNode).resource
-
+      <Fragment>
+        <Fragment>
+          {props.groupRowDisplays.map((groupRowDisplay) => (
+            <DividerRow
+              key={String(groupRowDisplay.group.value)}
+              group={groupRowDisplay.group}
+              top={props.verticalPositions.get(groupRowDisplay.group).top}
+              height={props.verticalPositions.get(groupRowDisplay.group).height}
+            />
+          ))}
+        </Fragment>
+        <Fragment>
+          {props.resourceRowDisplays.map((resourceRowDisplay) => {
+            const { resource } = resourceRowDisplay
             return (
               <ResourceTimelineLane
-                key={node.id}
-                elRef={rowElRefs.createRef(node.id)}
+                key={resource.id}
                 {...props.splitProps[resource.id]}
                 resource={resource}
                 dateProfile={props.dateProfile}
@@ -60,14 +56,13 @@ export class ResourceTimelineLanesBody extends BaseComponent<ResourceTimelineLan
                 nextDayThreshold={context.options.nextDayThreshold}
                 businessHours={resource.businessHours || props.fallbackBusinessHours}
                 timelineCoords={props.slatCoords}
-                rowSyncer={props.rowSyncer}
+                top={props.verticalPositions.get(resource).top}
+                height={props.verticalPositions.get(resource).height}
               />
             )
-          }
-
-          return null
-        })}
-      </tbody>
+          })}
+        </Fragment>
+      </Fragment>
     )
   }
 }

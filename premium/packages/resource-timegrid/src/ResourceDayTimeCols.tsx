@@ -4,7 +4,7 @@ import {
   DateMarker, Hit, NowTimer, DateProfile,
 } from '@fullcalendar/core/internal'
 import {
-  createElement, createRef, VNode,
+  createElement, createRef,
 } from '@fullcalendar/core/preact'
 import { DayTimeColsSlicer, TimeCols, buildDayRanges, TimeSlatMeta, TimeColsSlatsCoords } from '@fullcalendar/timegrid/internal'
 import { AbstractResourceDayTableModel, VResourceSplitter } from '@fullcalendar/resource/internal'
@@ -23,7 +23,6 @@ export interface ResourceDayTimeColsProps {
   eventSelection: string
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
-  tableColGroupNode: VNode
   tableMinWidth: CssDimValue
   clientWidth: number | null
   clientHeight: number | null
@@ -69,7 +68,6 @@ export class ResourceDayTimeCols extends DateComponent<ResourceDayTimeColsProps>
             slotDuration={props.slotDuration}
             slatMetas={props.slatMetas}
             cells={resourceDayTableModel.cells[0]}
-            tableColGroupNode={props.tableColGroupNode}
             tableMinWidth={props.tableMinWidth}
             clientWidth={props.clientWidth}
             clientHeight={props.clientHeight}

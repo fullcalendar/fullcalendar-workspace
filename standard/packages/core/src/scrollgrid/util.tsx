@@ -37,7 +37,6 @@ export interface ChunkConfig {
 }
 
 export interface ChunkContentCallbackArgs { // TODO: util for wrapping tables!?
-  tableColGroupNode: VNode
   tableMinWidth: CssDimValue
   clientWidth: number | null // important to know whether 0 or not-yet-determined. for headless testing
   clientHeight: number | null //
@@ -94,7 +93,6 @@ export function renderChunkContent(
           height: expandRows ? arg.clientHeight : '', // css `height` on a <table> serves as a min-height
         },
       },
-      arg.tableColGroupNode,
       createElement(
         isHeader ? 'thead' : 'tbody',
         {
@@ -111,32 +109,6 @@ export function renderChunkContent(
 
 export function isColPropsEqual(cols0: ColProps[], cols1: ColProps[]) {
   return isArraysEqual(cols0, cols1, isPropsEqual)
-}
-
-export function renderMicroColGroup(cols: ColProps[], shrinkWidth?: number): VNode {
-  let colNodes: VNode[] = []
-
-  /*
-  for ColProps with spans, it would have been great to make a single <col span="">
-  HOWEVER, Chrome was getting messing up distributing the width to <td>/<th> elements with colspans.
-  SOLUTION: making individual <col> elements makes Chrome behave.
-  */
-  for (let colProps of cols) {
-    let span = colProps.span || 1
-
-    for (let i = 0; i < span; i += 1) {
-      colNodes.push(
-        <col
-          style={{
-            width: colProps.width === 'shrink' ? sanitizeShrinkWidth(shrinkWidth) : (colProps.width || ''),
-            minWidth: colProps.minWidth || '',
-          }}
-        />,
-      )
-    }
-  }
-
-  return createElement('colgroup', {}, ...colNodes)
 }
 
 export function sanitizeShrinkWidth(shrinkWidth?: number) {

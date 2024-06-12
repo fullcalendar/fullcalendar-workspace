@@ -225,7 +225,7 @@ export type {
   ChunkConfigRowContent, ChunkConfigContent,
 } from './scrollgrid/util.js'
 export {
-  hasShrinkWidth, renderMicroColGroup,
+  hasShrinkWidth,
   getScrollGridClassNames, getSectionClassNames, getSectionHasLiquidHeight, getAllowYScrolling, renderChunkContent, computeShrinkWidth,
   sanitizeShrinkWidth,
   isColPropsEqual,

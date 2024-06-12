@@ -1,26 +1,20 @@
 import { CssDimValue } from '@fullcalendar/core'
-import { BaseComponent, RefMap } from '@fullcalendar/core/internal'
-import { createElement, createRef } from '@fullcalendar/core/preact'
+import { BaseComponent } from '@fullcalendar/core/internal'
+import { createElement } from '@fullcalendar/core/preact'
 import { ResourceTimelineLanesBody, ResourceTimelineLanesContentProps } from './ResourceTimelineLanesBody.js'
-import { SizeSyncer } from './SizeSyncer.js'
 
 export interface ResourceTimelineLanesProps extends ResourceTimelineLanesContentProps {
   minHeight: CssDimValue
   clientWidth: number | null
   tableMinWidth: CssDimValue
-  rowSyncer: SizeSyncer
 }
 
 export class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesProps> {
-  private rootElRef = createRef<HTMLTableElement>()
-  private rowElRefs = new RefMap<HTMLElement>()
-
   render() {
     let { props, context } = this
 
     return (
       <table
-        ref={this.rootElRef}
         aria-hidden
         className={context.theme.getClass('table')}
         style={{
@@ -30,8 +24,8 @@ export class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesPr
         }}
       >
         <ResourceTimelineLanesBody
-          rowElRefs={this.rowElRefs}
-          rowNodes={props.rowNodes}
+          groupRowDisplays={props.groupRowDisplays}
+          resourceRowDisplays={props.resourceRowDisplays}
           dateProfile={props.dateProfile}
           tDateProfile={props.tDateProfile}
           nowDate={props.nowDate}
@@ -39,7 +33,7 @@ export class ResourceTimelineLanes extends BaseComponent<ResourceTimelineLanesPr
           splitProps={props.splitProps}
           fallbackBusinessHours={props.fallbackBusinessHours}
           slatCoords={props.slatCoords}
-          rowSyncer={props.rowSyncer}
+          verticalPositions={props.verticalPositions}
         />
       </table>
     )

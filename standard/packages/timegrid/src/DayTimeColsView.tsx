@@ -52,7 +52,6 @@ export class DayTimeColsView extends TimeColsView {
         dayTableModel={dayTableModel}
         nextDayThreshold={options.nextDayThreshold}
         tableMinWidth={contentArg.tableMinWidth}
-        colGroupNode={contentArg.tableColGroupNode}
         renderRowIntro={hasAttachedAxis ? this.renderTableRowAxis : null}
         showWeekNumbers={false}
         expandRows={false}
@@ -73,7 +72,6 @@ export class DayTimeColsView extends TimeColsView {
         slotDuration={options.slotDuration}
         slatMetas={slatMetas}
         forPrint={props.forPrint}
-        tableColGroupNode={contentArg.tableColGroupNode}
         tableMinWidth={contentArg.tableMinWidth}
         clientWidth={contentArg.clientWidth}
         clientHeight={contentArg.clientHeight}

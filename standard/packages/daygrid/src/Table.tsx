@@ -1,10 +1,9 @@
 import { CssDimValue } from '@fullcalendar/core'
 import { DateComponent, formatIsoMonthStr, formatDayString, DateProfile } from '@fullcalendar/core/internal'
-import { VNode, RefObject, createElement, createRef } from '@fullcalendar/core/preact'
+import { RefObject, createElement, createRef } from '@fullcalendar/core/preact'
 import { TableRows, TableRowsProps } from './TableRows.js'
 
 export interface TableProps extends TableRowsProps {
-  colGroupNode: VNode
   tableMinWidth: CssDimValue
   expandRows: boolean
   headerAlignElRef?: RefObject<HTMLElement>
@@ -52,7 +51,6 @@ export class Table extends DateComponent<TableProps> {
             height: expandRows ? props.clientHeight : '',
           }}
         >
-          {props.colGroupNode}
           <tbody role="presentation">
             <TableRows
               dateProfile={props.dateProfile}

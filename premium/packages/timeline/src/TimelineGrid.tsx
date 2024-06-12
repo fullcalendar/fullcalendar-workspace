@@ -3,7 +3,7 @@ import {
   ViewProps, Hit, DateComponent, DateMarker, NowTimer,
   greatestDurationDenominator, DateRange, NowIndicatorContainer,
 } from '@fullcalendar/core/internal'
-import { createElement, createRef, VNode, Fragment } from '@fullcalendar/core/preact'
+import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import { coordToCss, TimelineCoords } from './TimelineCoords.js'
 import { TimelineSlats } from './TimelineSlats.js'
 import { TimelineLane } from './TimelineLane.js'
@@ -14,7 +14,6 @@ export interface TimelinGridProps extends ViewProps {
   clientWidth: number | null
   clientHeight: number | null
   tableMinWidth: CssDimValue
-  tableColGroupNode: VNode
   onSlatCoords?: (coords: TimelineCoords) => void
   onScrollLeftRequest?: (scrollLeft: number) => void
 }
@@ -56,7 +55,6 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
                 nowDate={nowDate}
                 todayRange={todayRange}
                 clientWidth={props.clientWidth}
-                tableColGroupNode={props.tableColGroupNode}
                 tableMinWidth={props.tableMinWidth}
                 onCoords={this.handleCoords}
                 onScrollLeftRequest={props.onScrollLeftRequest}

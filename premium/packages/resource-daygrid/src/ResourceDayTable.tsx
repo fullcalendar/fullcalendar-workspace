@@ -19,7 +19,6 @@ export interface ResourceDayTableProps {
   eventResize: EventInteractionState | null
   nextDayThreshold: Duration
   tableMinWidth: CssDimValue
-  colGroupNode: VNode
   renderRowIntro?: () => VNode
   dayMaxEvents: boolean | number
   dayMaxEventRows: boolean | number
@@ -58,7 +57,6 @@ export class ResourceDayTable extends DateComponent<ResourceDayTableProps> {
         {...this.joiner.joinProps(slicedProps, resourceDayTableModel)}
         cells={resourceDayTableModel.cells}
         dateProfile={dateProfile}
-        colGroupNode={props.colGroupNode}
         tableMinWidth={props.tableMinWidth}
         renderRowIntro={props.renderRowIntro}
         dayMaxEvents={props.dayMaxEvents}

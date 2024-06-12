@@ -4,20 +4,21 @@ import {
   DateComponent, Hit, memoize, NowTimer, greatestDurationDenominator,
   DateMarker, DateRange, NowIndicatorContainer, DateProfile,
 } from '@fullcalendar/core/internal'
-import { createElement, createRef, VNode, Fragment } from '@fullcalendar/core/preact'
-import { ResourceHash, GroupNode, ResourceNode, ResourceSplitter } from '@fullcalendar/resource/internal'
+import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
+import { ResourceHash, ResourceSplitter, Resource, Group, ParentNode, isEntityGroup } from '@fullcalendar/resource/internal'
 import {
   TimelineDateProfile, TimelineCoords, TimelineSlats,
   TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg,
   coordToCss,
 } from '@fullcalendar/timeline/internal'
 import { ResourceTimelineLanes } from './ResourceTimelineLanes.js'
-import { SizeSyncer } from './SizeSyncer.js'
+import { GroupRowDisplay, ResourceRowDisplay, searchTopmostEntity } from './resource-table.js'
 
 export interface ResourceTimelineGridProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
-  rowNodes: (GroupNode | ResourceNode)[]
+  groupRowDisplays: GroupRowDisplay[]
+  resourceRowDisplays: ResourceRowDisplay[]
   businessHours: EventStore | null
   dateSelection: DateSpan | null
   eventStore: EventStore
@@ -30,11 +31,11 @@ export interface ResourceTimelineGridProps {
   clientWidth: number | null
   clientHeight: number | null
   tableMinWidth: CssDimValue
-  tableColGroupNode: VNode
   expandRows: boolean
   onSlatCoords?: (slatCoords: TimelineCoords) => void
   onScrollLeftRequest?: (scrollLeft: number) => void
-  rowSyncer: SizeSyncer
+  verticalPositions: Map<Resource | Group, { top: number, height: number }>
+  heightHierarchy: ParentNode<Resource | Group>[]
 }
 
 interface ResourceTimelineGridState {
@@ -55,7 +56,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
     let { props, state, context } = this
     let { dateProfile, tDateProfile } = props
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
-    let hasResourceBusinessHours = this.computeHasResourceBusinessHours(props.rowNodes)
+    let hasResourceBusinessHours = this.computeHasResourceBusinessHours(props.resourceRowDisplays)
 
     let splitProps = this.resourceSplitter.splitProps(props)
     let bgLaneProps = splitProps['']
@@ -92,7 +93,6 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
                 nowDate={nowDate}
                 todayRange={todayRange}
                 clientWidth={props.clientWidth}
-                tableColGroupNode={props.tableColGroupNode}
                 tableMinWidth={props.tableMinWidth}
                 onCoords={this.handleSlatCoords}
                 onScrollLeftRequest={props.onScrollLeftRequest}
@@ -108,7 +108,8 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
                 todayRange={todayRange}
               />
               <ResourceTimelineLanes
-                rowNodes={props.rowNodes}
+                groupRowDisplays={props.groupRowDisplays}
+                resourceRowDisplays={props.resourceRowDisplays}
                 dateProfile={dateProfile}
                 tDateProfile={props.tDateProfile}
                 nowDate={nowDate}
@@ -119,7 +120,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
                 minHeight={props.expandRows ? props.clientHeight : ''}
                 tableMinWidth={props.tableMinWidth}
                 slatCoords={slatCoords}
-                rowSyncer={props.rowSyncer}
+                verticalPositions={props.verticalPositions}
               />
               {(context.options.nowIndicator && slatCoords && slatCoords.isDateInRange(nowDate)) && (
                 <div className="fc-timeline-now-indicator-container">
@@ -158,35 +159,36 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
   // ------------------------------------------------------------------------------------------
 
   queryHit(positionLeft: number, positionTop: number): Hit {
-    let { rowSyncer } = this.props
-    let rowIndex = rowSyncer.positionToIndex(positionTop)
+    let { dateProfile, heightHierarchy, verticalPositions } = this.props
 
-    if (rowIndex != undefined) {
-      let resource = (this.props.rowNodes[rowIndex] as ResourceNode).resource
+    let entityAtTop = searchTopmostEntity(
+      positionTop,
+      heightHierarchy,
+      verticalPositions,
+    )
 
-      if (resource) { // not a group
-        let entity = rowSyncer.indexToEntity(rowIndex)
-        let slatHit = this.slatsRef.current.positionToHit(positionLeft)
-        let top = rowSyncer.getPosition(entity)
-        let bottom = top + rowSyncer.getSize(entity)
+    if (entityAtTop && !isEntityGroup(entityAtTop)) {
+      let resource = entityAtTop
+      let { top, height } = verticalPositions.get(resource)
+      let bottom = top + height
+      let slatHit = this.slatsRef.current.positionToHit(positionLeft)
 
-        if (slatHit) {
-          return {
-            dateProfile: this.props.dateProfile,
-            dateSpan: {
-              range: slatHit.dateSpan.range,
-              allDay: slatHit.dateSpan.allDay,
-              resourceId: resource.id,
-            },
-            rect: {
-              left: slatHit.left,
-              right: slatHit.right,
-              top,
-              bottom,
-            },
-            dayEl: slatHit.dayEl,
-            layer: 0,
-          }
+      if (slatHit) {
+        return {
+          dateProfile,
+          dateSpan: {
+            range: slatHit.dateSpan.range,
+            allDay: slatHit.dateSpan.allDay,
+            resourceId: resource.id,
+          },
+          rect: {
+            left: slatHit.left,
+            right: slatHit.right,
+            top,
+            bottom,
+          },
+          dayEl: slatHit.dayEl,
+          layer: 0,
         }
       }
     }
@@ -195,9 +197,9 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
   }
 }
 
-function computeHasResourceBusinessHours(rowNodes: (GroupNode | ResourceNode)[]) {
-  for (let node of rowNodes) {
-    let resource = (node as ResourceNode).resource
+function computeHasResourceBusinessHours(resourceRowDisplays: ResourceRowDisplay[]) {
+  for (let resourceRowDisplay of resourceRowDisplays) {
+    let { resource } = resourceRowDisplay
 
     if (resource && resource.businessHours) {
       return true

@@ -5,11 +5,7 @@ import {
   PositionCache,
   DateProfile,
 } from '@fullcalendar/core/internal'
-import {
-  createElement,
-  VNode,
-  createRef,
-} from '@fullcalendar/core/preact'
+import { createElement, createRef } from '@fullcalendar/core/preact'
 import { TimeSlatMeta } from './time-slat-meta.js'
 import { TimeColsSlatsCoords } from './TimeColsSlatsCoords.js'
 import { TimeColsSlatsBody } from './TimeColsSlatsBody.js'
@@ -19,7 +15,6 @@ export interface TimeColsSlatsProps extends TimeColsSlatsContentProps {
   clientWidth: number | null
   minHeight: CssDimValue
   tableMinWidth: CssDimValue
-  tableColGroupNode: VNode
   onCoords?: (coords: TimeColsSlatsCoords | null) => void
 }
 
@@ -50,7 +45,6 @@ export class TimeColsSlats extends BaseComponent<TimeColsSlatsProps> {
             height: props.minHeight,
           }}
         >
-          {props.tableColGroupNode /* relies on there only being a single <col> for the axis */}
           <TimeColsSlatsBody
             slatElRefs={this.slatElRefs}
             axis={props.axis}

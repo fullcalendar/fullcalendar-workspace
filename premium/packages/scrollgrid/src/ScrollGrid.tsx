@@ -4,7 +4,7 @@ import {
   isArraysEqual,
   mapHash,
   RefMap,
-  ColProps, hasShrinkWidth, renderMicroColGroup,
+  ColProps, hasShrinkWidth,
   ScrollGridProps, ScrollGridSectionConfig, ColGroupConfig,
   getScrollGridClassNames, getSectionClassNames, getSectionHasLiquidHeight, getAllowYScrolling, renderChunkContent, computeShrinkWidth,
   getIsRtlScrollbarOnLeft,
@@ -53,7 +53,6 @@ NOTE: doesn't support collapsibleWidth (which is sortof a hack anyway)
 */
 export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> {
   private compileColGroupStats = memoizeArraylike(compileColGroupStat, isColGroupStatsEqual)
-  private renderMicroColGroups = memoizeArraylike(renderMicroColGroup) // yucky to memoize VNodes, but much more efficient for consumers
   private clippedScrollerRefs = new RefMap<ClippedScroller>()
 
   // doesn't hold non-scrolling els used just for padding
@@ -82,7 +81,6 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     let { shrinkWidths } = state
 
     let colGroupStats = this.compileColGroupStats(props.colGroups.map((colGroup) => [colGroup]))
-    let microColGroupNodes = this.renderMicroColGroups(colGroupStats.map((stat, i) => [stat.cols, shrinkWidths[i]]))
     let classNames = getScrollGridClassNames(props.liquid, context)
 
     // yuck
@@ -108,7 +106,6 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
         currentConfig,
         configI,
         colGroupStats,
-        microColGroupNodes,
         true,
       ))
       configI += 1
@@ -119,7 +116,6 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
         currentConfig,
         configI,
         colGroupStats,
-        microColGroupNodes,
         false,
       ))
       configI += 1
@@ -130,7 +126,6 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
         currentConfig,
         configI,
         colGroupStats,
-        microColGroupNodes,
         true,
       ))
       configI += 1
@@ -158,7 +153,6 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     sectionConfig: ScrollGridSectionConfig,
     sectionIndex: number,
     colGroupStats: ColGroupStat[],
-    microColGroupNodes: VNode[],
     isHeader: boolean,
   ): VNode {
     if ('outerContent' in sectionConfig) {
@@ -179,7 +173,6 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
           sectionConfig,
           sectionIndex,
           colGroupStats[i],
-          microColGroupNodes[i],
           chunkConfig,
           i,
           isHeader,
@@ -192,7 +185,6 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     sectionConfig: ScrollGridSectionConfig,
     sectionIndex: number,
     colGroupStat: ColGroupStat | undefined,
-    microColGroupNode: VNode | undefined,
     chunkConfig: ScrollGridChunkConfig,
     chunkIndex: number,
     isHeader: boolean,
@@ -225,7 +217,6 @@ export class ScrollGrid extends BaseComponent<ScrollGridProps, ScrollGridState> 
     let tableMinWidth = (colGroupStat && colGroupStat.totalColMinWidth) || ''
 
     let content = renderChunkContent(sectionConfig, chunkConfig, {
-      tableColGroupNode: microColGroupNode,
       tableMinWidth,
       clientWidth: scrollerClientWidths[index] !== undefined ? scrollerClientWidths[index] : null,
       clientHeight: scrollerClientHeights[index] !== undefined ? scrollerClientHeights[index] : null,

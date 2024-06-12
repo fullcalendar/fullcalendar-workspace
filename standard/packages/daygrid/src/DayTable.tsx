@@ -29,7 +29,6 @@ export interface DayTableProps {
   eventSelection: string
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
-  colGroupNode: VNode
   tableMinWidth: CssDimValue
   renderRowIntro?: () => VNode
   dayMaxEvents: boolean | number
@@ -55,7 +54,6 @@ export class DayTable extends DateComponent<DayTableProps, ViewContext> {
         {...this.slicer.sliceProps(props, props.dateProfile, props.nextDayThreshold, context, props.dayTableModel)}
         dateProfile={props.dateProfile}
         cells={props.dayTableModel.cells}
-        colGroupNode={props.colGroupNode}
         tableMinWidth={props.tableMinWidth}
         renderRowIntro={props.renderRowIntro}
         dayMaxEvents={props.dayMaxEvents}

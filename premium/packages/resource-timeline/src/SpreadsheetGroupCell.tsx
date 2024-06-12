@@ -5,7 +5,8 @@ import { ColSpec, ColCellContentArg } from '@fullcalendar/resource'
 export interface SpreadsheetGroupCellProps {
   colSpec: ColSpec
   fieldValue: any
-  rowSpan: number
+  top: number | undefined
+  height: number | undefined
 }
 
 // for VERTICAL cell grouping, in spreadsheet area
@@ -29,7 +30,6 @@ export class SpreadsheetGroupCell extends BaseComponent<SpreadsheetGroupCellProp
         ]}
         elAttrs={{
           role: 'gridcell',
-          rowSpan: props.rowSpan,
         }}
         renderProps={renderProps}
         generatorName="resourceGroupLabelContent"

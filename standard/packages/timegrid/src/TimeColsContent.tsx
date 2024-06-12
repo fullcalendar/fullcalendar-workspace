@@ -11,11 +11,7 @@ import {
   DateProfile,
   DayTableCell,
 } from '@fullcalendar/core/internal'
-import {
-  createElement,
-  createRef,
-  VNode,
-} from '@fullcalendar/core/preact'
+import { createElement, createRef } from '@fullcalendar/core/preact'
 import { TimeColsSeg, splitSegsByCol, splitInteractionByCol } from './TimeColsSeg.js'
 import { TimeColsSlatsCoords } from './TimeColsSlatsCoords.js'
 import { TimeCol } from './TimeCol.js'
@@ -36,7 +32,6 @@ export interface TimeColsContentProps {
   nowIndicatorSegs: TimeColsSeg[]
   clientWidth: number | null
   tableMinWidth: CssDimValue
-  tableColGroupNode: VNode
   slatCoords: TimeColsSlatsCoords
   onColCoords?: (colCoords: PositionCache) => void
   forPrint: boolean
@@ -78,7 +73,6 @@ export class TimeColsContent extends BaseComponent<TimeColsContentProps> { // TO
             width: props.clientWidth,
           }}
         >
-          {props.tableColGroupNode}
           <tbody role="presentation">
             <tr role="row">
               {props.axis && (

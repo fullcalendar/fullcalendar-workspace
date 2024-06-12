@@ -1,16 +1,15 @@
 import { BaseComponent, ViewContext, ContentContainer } from '@fullcalendar/core/internal'
 import { createElement, Fragment, createRef, RefObject, ComponentChild } from '@fullcalendar/core/preact'
 import { ColCellContentArg } from '@fullcalendar/resource'
-import { Group, isGroupsEqual } from '@fullcalendar/resource/internal'
+import { Group, createGroupId, isGroupsEqual } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from './ExpanderIcon.js'
-import { SizeSyncer } from './SizeSyncer.js'
 
 export interface SpreadsheetGroupRowProps {
-  spreadsheetColCnt: number
-  id: string // 'field:value' -- for SET_RESOURCE_ENTITY_EXPANDED
   isExpanded: boolean
-  group: Group // CONSTANT
-  rowSyncer: SizeSyncer // CONSTANT
+  group: Group
+  top: number | undefined
+  height: number | undefined
+  onNaturalHeight?: (height: number) => void
 }
 
 // for HORIZONTAL cell grouping, in spreadsheet area
@@ -38,7 +37,6 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
             // https://www.w3.org/WAI/tutorials/tables/multi-level/
             role: 'columnheader',
             scope: 'colgroup',
-            colSpan: props.spreadsheetColCnt,
           }}
           renderProps={renderProps}
           generatorName="resourceGroupLabelContent"
@@ -49,7 +47,7 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
           willUnmount={spec.labelWillUnmount}
         >
           {(InnerContent) => (
-            <div className="fc-datagrid-cell-frame">
+            <div className="fc-datagrid-cell-frame" style={{ height: props.height }}>
               <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner" ref={this.innerElRef}>
                 <ExpanderIcon
                   depth={0}
@@ -74,31 +72,23 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
 
     this.context.dispatch({
       type: 'SET_RESOURCE_ENTITY_EXPANDED',
-      id: props.id,
+      id: createGroupId(props.group),
       isExpanded: !props.isExpanded,
     })
   }
 
-  // Just Report Cell Height
-  // -----------------------------------------------------------------------------------------------
-
   componentDidMount(): void {
-    this.updateRowSyncer()
-    this.context.addResizeHandler(this.updateRowSyncer)
+    this.reportNaturalHeight()
   }
 
   componentDidUpdate(): void {
-    this.updateRowSyncer()
+    this.reportNaturalHeight()
   }
 
-  componentWillUnmount(): void {
-    this.props.rowSyncer.clearCell(this)
-    this.context.removeResizeHandler(this.updateRowSyncer)
-  }
-
-  updateRowSyncer = () => {
-    const { rowSyncer, group } = this.props
-    rowSyncer.updateCell(this, group, this.innerElRef.current.offsetHeight)
+  reportNaturalHeight() {
+    if (this.props.onNaturalHeight) {
+      this.props.onNaturalHeight(this.innerElRef.current.offsetHeight)
+    }
   }
 }
 

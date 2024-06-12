@@ -1,29 +1,25 @@
 import { BaseComponent, memoizeObjArg, ContentContainer } from '@fullcalendar/core/internal'
-import { createElement, Ref } from '@fullcalendar/core/preact'
+import { createElement } from '@fullcalendar/core/preact'
 import { Resource, refineRenderProps } from '@fullcalendar/resource/internal'
 import { TimelineLane, TimelineLaneProps } from '@fullcalendar/timeline/internal'
-import { SizeSyncer } from './SizeSyncer.js'
 
 export interface ResourceTimelineLaneProps extends TimelineLaneProps {
-  elRef: Ref<HTMLTableRowElement>
-  resource: Resource // CONSTANT
-  rowSyncer: SizeSyncer // CONSTANT
+  resource: Resource
+  top: number | undefined
+  height: number | undefined
+  onNaturalHeight?: (height: number | undefined) => void
 }
 
-interface ResourceTimelineLaneState {
-  height?: number
-}
-
-export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProps, ResourceTimelineLaneState> {
+export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProps> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)
 
   render() {
-    let { props, state, context } = this
+    let { props, context } = this
     let { options } = context
     let renderProps = this.refineRenderProps({ resource: props.resource, context })
 
     return (
-      <tr ref={props.elRef}>
+      <tr>
         <ContentContainer
           elTag="td"
           elClasses={[
@@ -41,7 +37,7 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
           willUnmount={options.resourceLaneWillUnmount}
         >
           {(InnerContent) => (
-            <div className="fc-timeline-lane-frame" style={{ height: state.height }}>
+            <div className="fc-timeline-lane-frame" style={{ height: props.height }}>
               <InnerContent
                 elTag="div"
                 elClasses={['fc-timeline-lane-misc']}
@@ -61,35 +57,12 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
                 eventResize={props.eventResize}
                 timelineCoords={props.timelineCoords}
                 resourceId={props.resource.id}
-                onHeightChange={this.handleLaneHeight}
+                onNaturalHeight={props.onNaturalHeight}
               />
             </div>
           )}
         </ContentContainer>
       </tr>
     ) // important NOT to do liquid-height. dont want to shrink height smaller than content
-  }
-
-  // Receive Cell Height & setup callback for TimelineLane to report height
-  // -----------------------------------------------------------------------------------------------
-
-  componentDidMount(): void {
-    const { rowSyncer, resource } = this.props
-    rowSyncer.addSizeListener(resource, this.handleFrameHeight)
-  }
-
-  componentWillUnmount(): void {
-    const { rowSyncer, resource } = this.props
-    rowSyncer.removeSizeListener(resource, this.handleFrameHeight)
-    rowSyncer.clearCell(this)
-  }
-
-  handleFrameHeight = (height: number) => {
-    this.setState({ height })
-  }
-
-  handleLaneHeight = (laneHeight: number | undefined) => {
-    const { rowSyncer, resource } = this.props
-    rowSyncer.updateCell(this, resource, laneHeight)
   }
 }

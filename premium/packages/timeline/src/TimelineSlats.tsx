@@ -3,14 +3,13 @@ import {
   BaseComponent, multiplyDuration, RefMap,
   ScrollResponder, ScrollRequest, DateMarker,
 } from '@fullcalendar/core/internal'
-import { createElement, createRef, VNode } from '@fullcalendar/core/preact'
+import { createElement, createRef } from '@fullcalendar/core/preact'
 import { TimelineCoords } from './TimelineCoords.js'
 import { TimelineSlatsBody, TimelineSlatsContentProps } from './TimelineSlatsBody.js'
 
 export interface TimelineSlatsProps extends TimelineSlatsContentProps {
   clientWidth: number | null
   tableMinWidth: CssDimValue
-  tableColGroupNode: VNode
   onCoords?: (coord: TimelineCoords | null) => void
   onScrollLeftRequest?: (scrollLeft: number) => void
 }
@@ -34,7 +33,6 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
             width: props.clientWidth,
           }}
         >
-          {props.tableColGroupNode}
           <TimelineSlatsBody
             cellElRefs={this.cellElRefs}
             dateProfile={props.dateProfile}

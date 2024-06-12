@@ -8,13 +8,12 @@ export interface TimelineHeaderRowsProps {
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
-  rowSyncer?: any // TODO
-  heightDefs?: any[] // TODO
+  verticalPositions?: Map<boolean | number, { top: number, height: number }>
 }
 
 export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
   render() {
-    let { dateProfile, tDateProfile, todayRange, nowDate, rowSyncer, heightDefs } = this.props
+    let { dateProfile, tDateProfile, todayRange, nowDate, verticalPositions } = this.props
     let { cellRows } = tDateProfile
 
     return (
@@ -26,6 +25,9 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
             'fc-timeline-header-row',
             isChrono ? 'fc-timeline-header-row-chrono' : '',
           ]
+
+          const cellPosition = verticalPositions ? verticalPositions.get(rowLevel) : undefined
+          const cellHeight = cellPosition ? cellPosition.height : undefined
 
           return ( // eslint-disable-next-line react/no-array-index-key
             <tr key={rowLevel} className={classNames.join(' ')}>
@@ -39,8 +41,7 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
                   todayRange={todayRange}
                   nowDate={nowDate}
                   isSticky={!isLastRow}
-                  rowSyncer={rowSyncer}
-                  heightDef={heightDefs[rowLevel]}
+                  height={cellHeight}
                 />
               ))}
             </tr>

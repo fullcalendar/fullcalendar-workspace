@@ -3,12 +3,10 @@ import { BaseComponent, setRef } from '../vdom-util.js'
 import { Scroller, OverflowValue } from './Scroller.js'
 import { RefMap } from '../util/RefMap.js'
 import {
-  ColProps, SectionConfig, renderMicroColGroup, computeShrinkWidth, getScrollGridClassNames, getSectionClassNames, getAllowYScrolling,
+  ColProps, SectionConfig, computeShrinkWidth, getScrollGridClassNames, getSectionClassNames, getAllowYScrolling,
   renderChunkContent, getSectionHasLiquidHeight, ChunkConfig, hasShrinkWidth, CssDimValue,
-  isColPropsEqual,
 } from './util.js'
 import { getCanVGrowWithinCell } from '../util/table-styling.js'
-import { memoize } from '../util/memoize.js'
 import { isPropsEqual } from '../util/object.js'
 import { getScrollbarWidths } from '../util/scrollbar-width.js'
 
@@ -33,11 +31,6 @@ interface SimpleScrollGridState {
 }
 
 export class SimpleScrollGrid extends BaseComponent<SimpleScrollGridProps, SimpleScrollGridState> {
-  processCols = memoize((a) => a, isColPropsEqual) // so we get same `cols` props every time
-
-  // yucky to memoize VNodes, but much more efficient for consumers
-  renderMicroColGroup: typeof renderMicroColGroup = memoize(renderMicroColGroup)
-
   scrollerRefs = new RefMap<Scroller>()
   scrollerElRefs = new RefMap<HTMLElement>(this._handleScrollerEl.bind(this))
 
@@ -49,11 +42,8 @@ export class SimpleScrollGrid extends BaseComponent<SimpleScrollGridProps, Simpl
   }
 
   render(): VNode {
-    let { props, state, context } = this
+    let { props, context } = this
     let sectionConfigs = props.sections || []
-    let cols = this.processCols(props.cols)
-
-    let microColGroupNode = this.renderMicroColGroup(cols, state.shrinkWidth)
     let classNames = getScrollGridClassNames(props.liquid, context)
 
     if (props.collapsibleWidth) {
@@ -69,17 +59,17 @@ export class SimpleScrollGrid extends BaseComponent<SimpleScrollGridProps, Simpl
     let footSectionNodes: VNode[] = []
 
     while (configI < configCnt && (currentConfig = sectionConfigs[configI]).type === 'header') {
-      headSectionNodes.push(this.renderSection(currentConfig, microColGroupNode, true))
+      headSectionNodes.push(this.renderSection(currentConfig, true))
       configI += 1
     }
 
     while (configI < configCnt && (currentConfig = sectionConfigs[configI]).type === 'body') {
-      bodySectionNodes.push(this.renderSection(currentConfig, microColGroupNode, false))
+      bodySectionNodes.push(this.renderSection(currentConfig, false))
       configI += 1
     }
 
     while (configI < configCnt && (currentConfig = sectionConfigs[configI]).type === 'footer') {
-      footSectionNodes.push(this.renderSection(currentConfig, microColGroupNode, true))
+      footSectionNodes.push(this.renderSection(currentConfig, true))
       configI += 1
     }
 
@@ -105,7 +95,7 @@ export class SimpleScrollGrid extends BaseComponent<SimpleScrollGridProps, Simpl
     )
   }
 
-  renderSection(sectionConfig: SimpleScrollGridSection, microColGroupNode: VNode, isHeader: boolean) {
+  renderSection(sectionConfig: SimpleScrollGridSection, isHeader: boolean) {
     if ('outerContent' in sectionConfig) {
       return (
         <Fragment key={sectionConfig.key}>
@@ -120,14 +110,13 @@ export class SimpleScrollGrid extends BaseComponent<SimpleScrollGridProps, Simpl
         role="presentation"
         className={getSectionClassNames(sectionConfig, this.props.liquid).join(' ')}
       >
-        {this.renderChunkTd(sectionConfig, microColGroupNode, sectionConfig.chunk, isHeader)}
+        {this.renderChunkTd(sectionConfig, sectionConfig.chunk, isHeader)}
       </tr>
     )
   }
 
   renderChunkTd(
     sectionConfig: SimpleScrollGridSection,
-    microColGroupNode: VNode,
     chunkConfig: ChunkConfig,
     isHeader: boolean,
   ): createElement.JSX.Element {
@@ -151,7 +140,6 @@ export class SimpleScrollGrid extends BaseComponent<SimpleScrollGridProps, Simpl
 
     let sectionKey = sectionConfig.key
     let content = renderChunkContent(sectionConfig, chunkConfig, {
-      tableColGroupNode: microColGroupNode,
       tableMinWidth: '',
       clientWidth: (!props.collapsibleWidth && scrollerClientWidths[sectionKey] !== undefined) ? scrollerClientWidths[sectionKey] : null,
       clientHeight: scrollerClientHeights[sectionKey] !== undefined ? scrollerClientHeights[sectionKey] : null,

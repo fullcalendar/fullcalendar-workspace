@@ -14,7 +14,7 @@ interface TimelineViewState {
   slotCushionMaxWidth: number | null
 }
 
-export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { // would make this abstract, but TS complains
+export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private scrollGridRef = createRef<ScrollGrid>()
 
@@ -52,7 +52,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
               clientWidth={contentArg.clientWidth}
               clientHeight={contentArg.clientHeight}
               tableMinWidth={contentArg.tableMinWidth}
-              tableColGroupNode={contentArg.tableColGroupNode}
               tDateProfile={tDateProfile}
               slatCoords={state.slatCoords}
               onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
@@ -72,7 +71,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> { 
               clientWidth={contentArg.clientWidth}
               clientHeight={contentArg.clientHeight}
               tableMinWidth={contentArg.tableMinWidth}
-              tableColGroupNode={contentArg.tableColGroupNode}
               tDateProfile={tDateProfile}
               onSlatCoords={this.handleSlatCoords}
               onScrollLeftRequest={this.handleScrollLeftRequest}

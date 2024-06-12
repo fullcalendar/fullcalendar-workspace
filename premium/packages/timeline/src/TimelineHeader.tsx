@@ -4,7 +4,7 @@ import {
   greatestDurationDenominator, DateRange, NowIndicatorContainer,
   findElements, DateProfile,
 } from '@fullcalendar/core/internal'
-import { createElement, VNode, createRef, RefObject } from '@fullcalendar/core/preact'
+import { createElement, createRef, RefObject } from '@fullcalendar/core/preact'
 import { TimelineHeaderRows } from './TimelineHeaderRows.js'
 import { coordToCss, TimelineCoords } from './TimelineCoords.js'
 import { TimelineDateProfile } from './timeline-date-profile.js'
@@ -15,11 +15,9 @@ export interface TimelineHeaderProps {
   clientWidth: number | null
   clientHeight: number | null
   tableMinWidth: CssDimValue
-  tableColGroupNode: VNode
   slatCoords: TimelineCoords
   onMaxCushionWidth?: (number) => void
-  rowSyncer?: any
-  heightDefs?: any[]
+  verticalPositions?: Map<boolean | number, { top: number, height: number }>
 }
 
 export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
@@ -43,15 +41,13 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
               aria-hidden
               style={{ minWidth: props.tableMinWidth, width: props.clientWidth }}
             >
-              {props.tableColGroupNode}
               <tbody>
                 <TimelineHeaderRows
                   dateProfile={props.dateProfile}
                   tDateProfile={props.tDateProfile}
                   nowDate={nowDate}
                   todayRange={todayRange}
-                  rowSyncer={props.rowSyncer}
-                  heightDefs={props.heightDefs}
+                  verticalPositions={props.verticalPositions}
                 />
               </tbody>
             </table>

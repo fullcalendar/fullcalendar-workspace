@@ -30,7 +30,7 @@ export interface TimelineLaneProps {
   timelineCoords: TimelineCoords | null // TODO: renamt to SLAT coords?
   resourceId?: string // hack
   syncParentMinHeight?: boolean // hack
-  onHeightChange?: (height: number | undefined) => void
+  onNaturalHeight?: (height: number | undefined) => void
 }
 
 interface TimelineLaneState {
@@ -150,11 +150,11 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
 
   updateSize() {
     let { props } = this
-    let { timelineCoords, onHeightChange } = props
+    let { timelineCoords, onNaturalHeight } = props
     const innerEl = this.innerElRef.current
 
-    if (onHeightChange) {
-      onHeightChange(undefined)
+    if (onNaturalHeight) {
+      onNaturalHeight(undefined)
     }
 
     if (timelineCoords) {
@@ -166,8 +166,8 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           Math.round(moreEl.getBoundingClientRect().height)
         )),
       }, () => {
-        if (onHeightChange) {
-          onHeightChange(innerEl.offsetHeight)
+        if (onNaturalHeight) {
+          onNaturalHeight(innerEl.offsetHeight)
         }
       })
     }
