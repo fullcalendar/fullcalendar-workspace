@@ -11,8 +11,9 @@ import {
   TimelineLaneSlicer, TimelineLaneBg, TimelineLaneSeg,
   coordToCss,
 } from '@fullcalendar/timeline/internal'
-import { ResourceTimelineLanes } from './ResourceTimelineLanes.js'
 import { GroupRowDisplay, ResourceRowDisplay, searchTopmostEntity } from './resource-table.js'
+import { ResourceTimelineLane } from './ResourceTimelineLane.js'
+import { DividerRow } from './DividerRow.js'
 
 export interface ResourceTimelineGridProps {
   dateProfile: DateProfile
@@ -74,6 +75,8 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
     // WORKAROUND: make ignore slatCoords when out of sync with dateProfile
     let slatCoords = state.slatCoords && state.slatCoords.dateProfile === props.dateProfile ? state.slatCoords : null
 
+    let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
+
     return (
       <div
         ref={this.handleEl}
@@ -107,21 +110,49 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
                 nowDate={nowDate}
                 todayRange={todayRange}
               />
-              <ResourceTimelineLanes
-                groupRowDisplays={props.groupRowDisplays}
-                resourceRowDisplays={props.resourceRowDisplays}
-                dateProfile={dateProfile}
-                tDateProfile={props.tDateProfile}
-                nowDate={nowDate}
-                todayRange={todayRange}
-                splitProps={splitProps}
-                fallbackBusinessHours={hasResourceBusinessHours ? props.businessHours : null}
-                clientWidth={props.clientWidth}
-                minHeight={props.expandRows ? props.clientHeight : ''}
-                tableMinWidth={props.tableMinWidth}
-                slatCoords={slatCoords}
-                verticalPositions={props.verticalPositions}
-              />
+              <table
+                aria-hidden
+                className={context.theme.getClass('table')}
+                style={{
+                  minWidth: props.tableMinWidth,
+                  width: props.clientWidth,
+                  height: props.expandRows ? props.clientHeight : '',
+                }}
+              >
+                <tbody>
+                  <Fragment>
+                    {props.groupRowDisplays.map((groupRowDisplay) => (
+                      <DividerRow
+                        key={String(groupRowDisplay.group.value)}
+                        group={groupRowDisplay.group}
+                        top={props.verticalPositions.get(groupRowDisplay.group).top}
+                        height={props.verticalPositions.get(groupRowDisplay.group).height}
+                      />
+                    ))}
+                  </Fragment>
+                  <Fragment>
+                    {props.resourceRowDisplays.map((resourceRowDisplay) => {
+                      const { resource } = resourceRowDisplay
+                      return (
+                        <ResourceTimelineLane
+                          key={resource.id}
+                          {...splitProps[resource.id]}
+                          resource={resource}
+                          dateProfile={props.dateProfile}
+                          tDateProfile={props.tDateProfile}
+                          nowDate={nowDate}
+                          todayRange={todayRange}
+                          nextDayThreshold={context.options.nextDayThreshold}
+                          businessHours={resource.businessHours || fallbackBusinessHours}
+                          timelineCoords={slatCoords}
+                          top={props.verticalPositions.get(resource).top}
+                          height={props.verticalPositions.get(resource).height}
+                        />
+                      )
+                    })}
+                  </Fragment>
+                </tbody>
+              </table>
               {(context.options.nowIndicator && slatCoords && slatCoords.isDateInRange(nowDate)) && (
                 <div className="fc-timeline-now-indicator-container">
                   <NowIndicatorContainer

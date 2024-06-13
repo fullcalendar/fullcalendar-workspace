@@ -223,7 +223,6 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
             />
           )}
           timeBodyContent={(contentArg: ChunkContentCallbackArgs) => {
-            // TODO: converge with ResourceTimelineLanes::minHeight
             this.expandBodyToHeight = contentArg.expandRows ? contentArg.clientHeight : undefined
 
             return (
