@@ -241,14 +241,49 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
             </Fragment>
           )}
           spreadsheetBodyRows={() => (
+            /* TODO: tabindex */
             <Fragment>
-              {this.renderSpreadsheetRows(
-                groupColDisplays,
-                groupRowDisplays,
-                resourceRowDisplays,
-                resourceColSpecs,
-                bodyVerticalPositions,
-              )}
+              {groupColDisplays.map((groupCellDisplays, cellIndex) => (
+                <div key={cellIndex}>{/* TODO: assign left/width */}
+                  {groupCellDisplays.map((groupCellDisplay) => (
+                    <SpreadsheetGroupTallCell
+                      key={String(groupCellDisplay.group.value)}
+                      colSpec={groupCellDisplay.group.spec}
+                      fieldValue={groupCellDisplay.group.value}
+                      top={bodyVerticalPositions.get(groupCellDisplay.group).top}
+                      height={bodyVerticalPositions.get(groupCellDisplay.group).height}
+                    />
+                  ))}
+                </div>
+              ))}
+              <div>{/* TODO: assign left/width */}
+                {groupRowDisplays.map((groupRowDisplay) => (
+                  <tr role="row">{/* TODO: assign top/height */}
+                    <SpreadsheetGroupWideCell
+                      key={String(groupRowDisplay.group.value)}
+                      group={groupRowDisplay.group}
+                      isExpanded={groupRowDisplay.isExpanded}
+                      top={bodyVerticalPositions.get(groupRowDisplay.group).top}
+                      height={bodyVerticalPositions.get(groupRowDisplay.group).height}
+                    />
+                  </tr>
+                ))}
+              </div>
+              <div>{/* TODO: assign left/width */}
+                {resourceRowDisplays.map((resourceRowDisplay) => (
+                  <tr role="row">{/* TODO: assign top/height */}
+                    <SpreadsheetResourceCells
+                      key={resourceRowDisplay.resource.id}
+                      resource={resourceRowDisplay.resource}
+                      resourceFields={resourceRowDisplay.resourceFields}
+                      depth={resourceRowDisplay.depth}
+                      hasChildren={resourceRowDisplay.hasChildren}
+                      isExpanded={resourceRowDisplay.isExpanded}
+                      colSpecs={resourceColSpecs}
+                    />
+                  </tr>
+                ))}
+              </div>
             </Fragment>
           )}
           timeCols={slatCols}
@@ -361,63 +396,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
           }}
         />
       </ViewContainer>
-    )
-  }
-
-  /*
-  TODO: tabindex
-  */
-  renderSpreadsheetRows(
-    groupColDisplays: GroupCellDisplay[][],
-    groupRowDisplays: GroupRowDisplay[],
-    resourceRowDisplays: ResourceRowDisplay[],
-    resourceColSpecs: ColSpec[],
-    verticalPositions: Map<Resource | Group, VerticalPosition>,
-  ) {
-    return (
-      <Fragment>
-        {groupColDisplays.map((groupCellDisplays, cellIndex) => (
-          <div key={cellIndex}>{/* TODO: assign left/width */}
-            {groupCellDisplays.map((groupCellDisplay) => (
-              <SpreadsheetGroupTallCell
-                key={String(groupCellDisplay.group.value)}
-                colSpec={groupCellDisplay.group.spec}
-                fieldValue={groupCellDisplay.group.value}
-                top={verticalPositions.get(groupCellDisplay.group).top}
-                height={verticalPositions.get(groupCellDisplay.group).height}
-              />
-            ))}
-          </div>
-        ))}
-        <div>{/* TODO: assign left/width */}
-          {groupRowDisplays.map((groupRowDisplay) => (
-            <tr role="row">{/* TODO: assign top/height */}
-              <SpreadsheetGroupWideCell
-                key={String(groupRowDisplay.group.value)}
-                group={groupRowDisplay.group}
-                isExpanded={groupRowDisplay.isExpanded}
-                top={verticalPositions.get(groupRowDisplay.group).top}
-                height={verticalPositions.get(groupRowDisplay.group).height}
-              />
-            </tr>
-          ))}
-        </div>
-        <div>{/* TODO: assign left/width */}
-          {resourceRowDisplays.map((resourceRowDisplay) => (
-            <tr role="row">{/* TODO: assign top/height */}
-              <SpreadsheetResourceCells
-                key={resourceRowDisplay.resource.id}
-                resource={resourceRowDisplay.resource}
-                resourceFields={resourceRowDisplay.resourceFields}
-                depth={resourceRowDisplay.depth}
-                hasChildren={resourceRowDisplay.hasChildren}
-                isExpanded={resourceRowDisplay.isExpanded}
-                colSpecs={resourceColSpecs}
-              />
-            </tr>
-          ))}
-        </div>
-      </Fragment>
     )
   }
 
