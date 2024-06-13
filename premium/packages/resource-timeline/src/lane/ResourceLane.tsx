@@ -59,6 +59,6 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
           </div>
         )}
       </ContentContainer>
-    ) // important NOT to do liquid-height. dont want to shrink height smaller than content
+    )
   }
 }

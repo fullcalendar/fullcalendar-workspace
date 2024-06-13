@@ -1,4 +1,3 @@
-import { CssDimValue } from '@fullcalendar/core'
 import {
   BaseComponent, DateMarker, NowTimer,
   greatestDurationDenominator, DateRange, NowIndicatorContainer,
@@ -12,9 +11,6 @@ import { TimelineDateProfile } from './timeline-date-profile.js'
 export interface TimelineHeaderProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
-  clientWidth: number | null
-  clientHeight: number | null
-  tableMinWidth: CssDimValue
   slatCoords: TimelineCoords
   onMaxCushionWidth?: (number) => void
   verticalPositions?: Map<boolean | number, { top: number, height: number }>
@@ -37,10 +33,7 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
       <NowTimer unit={timerUnit}>
         {(nowDate: DateMarker, todayRange: DateRange) => (
           <div className="fc-timeline-header" ref={this.rootElRef}>
-            <table
-              aria-hidden
-              style={{ minWidth: props.tableMinWidth, width: props.clientWidth }}
-            >
+            <table aria-hidden>
               <tbody>
                 <TimelineHeaderRows
                   dateProfile={props.dateProfile}

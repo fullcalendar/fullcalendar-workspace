@@ -1,4 +1,3 @@
-import { CssDimValue } from '@fullcalendar/core'
 import {
   BaseComponent, multiplyDuration, RefMap,
   ScrollResponder, ScrollRequest, DateMarker,
@@ -8,8 +7,6 @@ import { TimelineCoords } from './TimelineCoords.js'
 import { TimelineSlatsBody, TimelineSlatsContentProps } from './TimelineSlatsBody.js'
 
 export interface TimelineSlatsProps extends TimelineSlatsContentProps {
-  clientWidth: number | null
-  tableMinWidth: CssDimValue
   onCoords?: (coord: TimelineCoords | null) => void
   onScrollLeftRequest?: (scrollLeft: number) => void
 }
@@ -28,10 +25,6 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
         <table
           aria-hidden
           className={context.theme.getClass('table')}
-          style={{
-            minWidth: props.tableMinWidth,
-            width: props.clientWidth,
-          }}
         >
           <TimelineSlatsBody
             cellElRefs={this.cellElRefs}
@@ -52,7 +45,6 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
 
   componentDidUpdate(prevProps: TimelineSlatsProps) {
     this.updateSizing()
-
     this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
   }
 
@@ -66,30 +58,23 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
 
   updateSizing() {
     let { props, context } = this
+    let rootEl = this.rootElRef.current
 
-    if (
-      props.clientWidth !== null && // is sizing stable?
-      this.scrollResponder
-      // ^it's possible to have clientWidth immediately after mount (when returning from print view), but w/o scrollResponder
-    ) {
-      let rootEl = this.rootElRef.current
+    if (rootEl.offsetWidth) { // not hidden by css
+      this.coords = new TimelineCoords(
+        this.rootElRef.current,
+        collectCellEls(this.cellElRefs.currentMap, props.tDateProfile.slotDates),
+        props.dateProfile,
+        props.tDateProfile,
+        context.dateEnv,
+        context.isRtl,
+      )
 
-      if (rootEl.offsetWidth) { // not hidden by css
-        this.coords = new TimelineCoords(
-          this.rootElRef.current,
-          collectCellEls(this.cellElRefs.currentMap, props.tDateProfile.slotDates),
-          props.dateProfile,
-          props.tDateProfile,
-          context.dateEnv,
-          context.isRtl,
-        )
-
-        if (props.onCoords) {
-          props.onCoords(this.coords)
-        }
-
-        this.scrollResponder.update(false) // TODO: wouldn't have to do this if coords were in state
+      if (props.onCoords) {
+        props.onCoords(this.coords)
       }
+
+      this.scrollResponder.update(false) // TODO: wouldn't have to do this if coords were in state
     }
   }
 

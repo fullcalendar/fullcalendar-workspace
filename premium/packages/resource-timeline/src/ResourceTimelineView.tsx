@@ -1,7 +1,7 @@
 import { CssDimValue } from '@fullcalendar/core'
 import {
   ViewContext, memoize,
-  ChunkContentCallbackArgs, isArraysEqual,
+  isArraysEqual,
   ScrollRequest, ScrollResponder, ViewContainer, ViewOptionsRefined,
   RefMap, ElementDragging,
   findElements,
@@ -39,7 +39,6 @@ import {
 } from '@fullcalendar/resource/internal'
 import { ResourceCells } from './spreadsheet/ResourceCells.js'
 import { GroupWideCell } from './spreadsheet/GroupWideCell.js'
-import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout.js'
 import {
   GroupRowDisplay,
   NaturalHeightMap,
@@ -55,6 +54,7 @@ import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
 import { HeaderCell } from './spreadsheet/HeaderCell.js'
 import { ResourceLane } from './lane/ResourceLane.js'
 import { GroupLane } from './lane/GroupLane.js'
+import { ResizableTwoCol } from './ResizableTwoCol.js'
 
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
@@ -83,9 +83,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private buildHeaderHeightHierarchy = memoize(buildHeaderHeightHierarchy)
   private buildHeaderVerticalPositions = memoize(buildVerticalPositions)
   private buildBodyVerticalPositions = memoize(buildVerticalPositions)
-  private layoutRef = createRef<ResourceTimelineViewLayout>()
   private scrollResponder: ScrollResponder
-  private expandBodyToHeight: number | undefined
+  private expandBodyToHeight: number | undefined // kill!!!
 
   // TODO: make stateful
   // (have sub-components report their natural heights via callbacks)
@@ -117,6 +116,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     let { props, state, context, bodyNaturalHeightMap, headerNaturalHeightMap } = this
     let { dateProfile } = props
     let { options, viewSpec } = context
+    let { expandRows } = options
 
     let tDateProfile = this.buildTimelineDateProfile(
       dateProfile,
@@ -176,8 +176,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     let { slotMinWidth } = options
     let slatCols =
-      buildSlatCols(tDateProfile, slotMinWidth ||
-      this.computeFallbackSlotMinWidth(tDateProfile))
+      buildSlatCols(
+        tDateProfile,
+        slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile),
+      )
+    // { minWidth, span } // span???
+
+    let spreadsheetCols = buildSpreadsheetCols(colSpecs, state.spreadsheetColWidths, '')
+    // { className, width }
 
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
     let hasResourceBusinessHours = this.computeHasResourceBusinessHours(resourceRowDisplays)
@@ -200,6 +206,17 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
 
+    console.log(
+      'TODO: use cols',
+      slatCols,
+      spreadsheetCols,
+    )
+
+    /*
+    TODO:
+    - forPrint
+    - isHeightAuto
+    */
     return (
       <ViewContainer
         elClasses={[
@@ -212,103 +229,88 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
         ]}
         viewSpec={viewSpec}
       >
-        <ResourceTimelineViewLayout
-          ref={this.layoutRef}
-          forPrint={props.forPrint}
-          isHeightAuto={props.isHeightAuto}
-          spreadsheetCols={
-            buildSpreadsheetCols(colSpecs, state.spreadsheetColWidths, '')
-          }
-          spreadsheetHeaderRows={() => (
+        <ResizableTwoCol
+          startContent={() => (
             <Fragment>
-              {Boolean(superHeaderRendering) && (
-                <tr key="row-super" role="row">
-                  <SuperHeaderCell
-                    renderHooks={superHeaderRendering}
-                  />
-                </tr>
-              )}
-              <tr key="row" role="row">
-                {colSpecs.map((colSpec, i) => (
-                  <HeaderCell
-                    colSpec={colSpec}
-                    resizer={i < colSpecs.length - 1}
-                    resizerElRef={this.resizerElRefs.createRef(i)}
-                  />
-                ))}
-              </tr>
-            </Fragment>
-          )}
-          spreadsheetBodyRows={() => (
-            /* TODO: tabindex */
-            <Fragment>
-              {groupColDisplays.map((groupCellDisplays, cellIndex) => (
-                <div key={cellIndex}>{/* TODO: assign left/width */}
-                  {groupCellDisplays.map((groupCellDisplay) => (
-                    <GroupTallCell
-                      key={String(groupCellDisplay.group.value)}
-                      colSpec={groupCellDisplay.group.spec}
-                      fieldValue={groupCellDisplay.group.value}
-                      top={bodyVerticalPositions.get(groupCellDisplay.group).top}
-                      height={bodyVerticalPositions.get(groupCellDisplay.group).height}
+              <div class='fc-datagrid-header'>
+                {Boolean(superHeaderRendering) && (
+                  <div key="row-super" role="row">
+                    <SuperHeaderCell
+                      renderHooks={superHeaderRendering}
+                    />
+                  </div>
+                )}
+                <div key="row" role="row">
+                  {colSpecs.map((colSpec, i) => (
+                    <HeaderCell
+                      colSpec={colSpec}
+                      resizer={i < colSpecs.length - 1}
+                      resizerElRef={this.resizerElRefs.createRef(i)}
                     />
                   ))}
                 </div>
-              ))}
-              <div>{/* TODO: assign left/width */}
-                {groupRowDisplays.map((groupRowDisplay) => (
-                  <tr role="row">{/* TODO: assign top/height */}
-                    <GroupWideCell
-                      key={String(groupRowDisplay.group.value)}
-                      group={groupRowDisplay.group}
-                      isExpanded={groupRowDisplay.isExpanded}
-                      top={bodyVerticalPositions.get(groupRowDisplay.group).top}
-                      height={bodyVerticalPositions.get(groupRowDisplay.group).height}
-                    />
-                  </tr>
-                ))}
               </div>
-              <div>{/* TODO: assign left/width */}
-                {resourceRowDisplays.map((resourceRowDisplay) => (
-                  <tr role="row">{/* TODO: assign top/height */}
-                    <ResourceCells
-                      key={resourceRowDisplay.resource.id}
-                      resource={resourceRowDisplay.resource}
-                      resourceFields={resourceRowDisplay.resourceFields}
-                      depth={resourceRowDisplay.depth}
-                      hasChildren={resourceRowDisplay.hasChildren}
-                      isExpanded={resourceRowDisplay.isExpanded}
-                      colSpecs={resourceColSpecs}
-                    />
-                  </tr>
+              <div class='fc-datagrid-body'>
+                {groupColDisplays.map((groupCellDisplays, cellIndex) => (
+                  <div key={cellIndex}>{/* TODO: assign left/width */}
+                    {groupCellDisplays.map((groupCellDisplay) => (
+                      <GroupTallCell
+                        key={String(groupCellDisplay.group.value)}
+                        colSpec={groupCellDisplay.group.spec}
+                        fieldValue={groupCellDisplay.group.value}
+                        top={bodyVerticalPositions.get(groupCellDisplay.group).top}
+                        height={bodyVerticalPositions.get(groupCellDisplay.group).height}
+                      />
+                    ))}
+                  </div>
                 ))}
+                {/* TODO: tabindex */}
+                <div>{/* TODO: assign left/width */}
+                  {groupRowDisplays.map((groupRowDisplay) => (
+                    <tr role="row">{/* TODO: assign top/height */}
+                      <GroupWideCell
+                        key={String(groupRowDisplay.group.value)}
+                        group={groupRowDisplay.group}
+                        isExpanded={groupRowDisplay.isExpanded}
+                        top={bodyVerticalPositions.get(groupRowDisplay.group).top}
+                        height={bodyVerticalPositions.get(groupRowDisplay.group).height}
+                      />
+                    </tr>
+                  ))}
+                </div>
+                <div>{/* TODO: assign left/width */}
+                  {resourceRowDisplays.map((resourceRowDisplay) => (
+                    <tr role="row">{/* TODO: assign top/height */}
+                      <ResourceCells
+                        key={resourceRowDisplay.resource.id}
+                        resource={resourceRowDisplay.resource}
+                        resourceFields={resourceRowDisplay.resourceFields}
+                        depth={resourceRowDisplay.depth}
+                        hasChildren={resourceRowDisplay.hasChildren}
+                        isExpanded={resourceRowDisplay.isExpanded}
+                        colSpecs={resourceColSpecs}
+                      />
+                    </tr>
+                  ))}
+                </div>
               </div>
             </Fragment>
           )}
-          timeCols={slatCols}
-          timeHeaderContent={(contentArg: ChunkContentCallbackArgs) => (
-            <TimelineHeader
-              clientWidth={contentArg.clientWidth}
-              clientHeight={contentArg.clientHeight}
-              tableMinWidth={contentArg.tableMinWidth}
-              dateProfile={dateProfile}
-              tDateProfile={tDateProfile}
-              slatCoords={state.slatCoords}
-              onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
-              verticalPositions={headerVerticalPositions}
-            />
-          )}
-          timeBodyContent={(contentArg: ChunkContentCallbackArgs) => {
-            this.expandBodyToHeight = contentArg.expandRows ? contentArg.clientHeight : undefined
-
-            return (
+          endContent={() => (
+            <Fragment>
+              <TimelineHeader
+                dateProfile={dateProfile}
+                tDateProfile={tDateProfile}
+                slatCoords={state.slatCoords}
+                onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
+                verticalPositions={headerVerticalPositions}
+              />
               <div
                 ref={this.handleBodyEl}
                 className={[
                   'fc-timeline-body',
-                  contentArg.expandRows ? 'fc-timeline-body-expandrows' : '',
+                  expandRows ? 'fc-timeline-body-expandrows' : '',
                 ].join(' ')}
-                style={{ minWidth: contentArg.tableMinWidth }}
               >
                 <NowTimer unit={timerUnit}>
                   {(nowDate: DateMarker, todayRange: DateRange) => (
@@ -319,8 +321,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         tDateProfile={tDateProfile}
                         nowDate={nowDate}
                         todayRange={todayRange}
-                        clientWidth={contentArg.clientWidth}
-                        tableMinWidth={contentArg.tableMinWidth}
                         onCoords={this.handleSlatCoords}
                         onScrollLeftRequest={this.handleScrollLeftRequest}
                       />
@@ -334,15 +334,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         nowDate={nowDate}
                         todayRange={todayRange}
                       />
-                      <table
-                        aria-hidden
-                        className={context.theme.getClass('table')}
-                        style={{
-                          minWidth: contentArg.tableMinWidth,
-                          width: contentArg.clientWidth,
-                          height: contentArg.expandRows ? contentArg.clientHeight : '',
-                        }}
-                      >
+                      <table aria-hidden className={context.theme.getClass('table')}>
                         <tbody>
                           <Fragment>
                             {groupRowDisplays.map((groupRowDisplay) => (
@@ -391,8 +383,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   )}
                 </NowTimer>
               </div>
-            )
-          }}
+            </Fragment>
+          )}
         />
       </ViewContainer>
     )
@@ -442,14 +434,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   // ------------------------------------------------------------------------------------------------------------------
   // this is useful for scrolling prev/next dates while resource is scrolled down
 
-  handleScrollLeftRequest = (scrollLeft: number) => { // for ResourceTimelineGrid
-    let layout = this.layoutRef.current
-    layout.forceTimeScroll(scrollLeft)
+  handleScrollLeftRequest = (scrollLeft: number) => {
+    this.forceTimeScroll(scrollLeft)
   }
 
   handleScrollRequest = (request: ScrollRequest & ResourceScrollState) => { // only handles resource scroll
     let { currentGroupRowDisplays, currentResourceRowDisplays, currentBodyVerticalPositions } = this
-    let layout = this.layoutRef.current
     let entity: Resource | Group | undefined
 
     // find entity. hack
@@ -481,7 +471,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
             bottom - request.fromBottom : // pixels from bottom edge
             top // just use top edge
 
-        layout.forceResourceScroll(scrollTop)
+        this.forceResourceScroll(scrollTop)
         return true
       }
     }
@@ -491,8 +481,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
   queryResourceScroll(): ResourceScrollState {
     let { currentBodyHeightHierarchy, currentBodyVerticalPositions } = this
-    let layout = this.layoutRef.current
-    let scrollTop = layout.getResourceScroll()
+    let scrollTop = this.getResourceScroll()
     let scroll = {} as any
 
     let entityAtTop = searchTopmostEntity(
@@ -516,6 +505,18 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     }
 
     return scroll
+  }
+
+  getResourceScroll(): number {
+    return 0 // TODO
+  }
+
+  forceResourceScroll(top: number): void {
+    // TODO
+  }
+
+  forceTimeScroll(left: number): void {
+    // TODO
   }
 
   // Resource INDIVIDUAL-Column Area Resizing
@@ -636,7 +637,6 @@ ResourceTimelineView.addStateEquality({
   spreadsheetColWidths: isArraysEqual,
 })
 
-// !!!
 function buildSpreadsheetCols(colSpecs: ColSpec[], forcedWidths: number[], fallbackWidth: CssDimValue = '') {
   return colSpecs.map((colSpec, i) => ({
     className: colSpec.isMain ? 'fc-main-col' : '',

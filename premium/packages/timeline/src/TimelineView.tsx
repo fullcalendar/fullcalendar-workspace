@@ -1,5 +1,5 @@
 import {
-  ViewProps, memoize, ChunkContentCallbackArgs, ViewContainer,
+  ViewProps, memoize, ViewContainer,
   DateComponent, ScrollGridSectionConfig, renderScrollShim, getStickyHeaderDates, getStickyFooterScrollbar,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
@@ -46,12 +46,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
         isSticky: stickyHeaderDates,
         chunks: [{
           key: 'timeline',
-          content: (contentArg: ChunkContentCallbackArgs) => (
+          content: () => (
             <TimelineHeader
               dateProfile={props.dateProfile}
-              clientWidth={contentArg.clientWidth}
-              clientHeight={contentArg.clientHeight}
-              tableMinWidth={contentArg.tableMinWidth}
               tDateProfile={tDateProfile}
               slatCoords={state.slatCoords}
               onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
@@ -65,12 +62,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
         liquid: true,
         chunks: [{
           key: 'timeline',
-          content: (contentArg: ChunkContentCallbackArgs) => (
+          content: () => (
             <TimelineGrid
               {...props}
-              clientWidth={contentArg.clientWidth}
-              clientHeight={contentArg.clientHeight}
-              tableMinWidth={contentArg.tableMinWidth}
               tDateProfile={tDateProfile}
               onSlatCoords={this.handleSlatCoords}
               onScrollLeftRequest={this.handleScrollLeftRequest}

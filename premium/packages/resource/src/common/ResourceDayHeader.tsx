@@ -8,7 +8,7 @@ import {
 } from '@fullcalendar/core/preact'
 import { Resource } from '../structs/resource.js'
 import { ResourceApi } from '../api/ResourceApi.js'
-import { ResourceCell } from './ResourceCell.js'
+import { ResourceDayHeaderCell } from './ResourceDayHeaderCell.js'
 
 export interface ResourceDayHeaderProps {
   dates: DateMarker[]
@@ -46,7 +46,7 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
 
   renderResourceRow(resources: Resource[], date: DateMarker) {
     let resourceCells = resources.map((resource) => (
-      <ResourceCell
+      <ResourceDayHeaderCell
         key={resource.id}
         resource={resource}
         colSpan={1}
@@ -67,7 +67,7 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
 
       for (let resource of resources) {
         resourceCells.push(
-          <ResourceCell
+          <ResourceDayHeaderCell
             key={resource.id + ':' + date.toISOString()}
             resource={resource}
             colSpan={1}
@@ -91,7 +91,7 @@ export class ResourceDayHeader extends BaseComponent<ResourceDayHeaderProps> { /
 
     for (let resource of resources) {
       resourceCells.push(
-        <ResourceCell
+        <ResourceDayHeaderCell
           key={resource.id}
           resource={resource}
           colSpan={dates.length}

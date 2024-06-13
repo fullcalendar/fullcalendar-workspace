@@ -1,4 +1,3 @@
-import { CssDimValue } from '@fullcalendar/core'
 import {
   ViewProps, Hit, DateComponent, DateMarker, NowTimer,
   greatestDurationDenominator, DateRange, NowIndicatorContainer,
@@ -11,9 +10,6 @@ import { TimelineDateProfile } from './timeline-date-profile.js'
 
 export interface TimelinGridProps extends ViewProps {
   tDateProfile: TimelineDateProfile
-  clientWidth: number | null
-  clientHeight: number | null
-  tableMinWidth: CssDimValue
   onSlatCoords?: (coords: TimelineCoords) => void
   onScrollLeftRequest?: (scrollLeft: number) => void
 }
@@ -39,11 +35,6 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
       <div
         className="fc-timeline-body"
         ref={this.handeEl}
-        style={{
-          minWidth: props.tableMinWidth,
-          height: props.clientHeight,
-          width: props.clientWidth,
-        }}
       >
         <NowTimer unit={timerUnit}>
           {(nowDate: DateMarker, todayRange: DateRange) => (
@@ -54,8 +45,6 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
                 tDateProfile={tDateProfile}
                 nowDate={nowDate}
                 todayRange={todayRange}
-                clientWidth={props.clientWidth}
-                tableMinWidth={props.tableMinWidth}
                 onCoords={this.handleCoords}
                 onScrollLeftRequest={props.onScrollLeftRequest}
               />
