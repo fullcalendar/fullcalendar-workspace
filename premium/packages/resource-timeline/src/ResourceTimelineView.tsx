@@ -3,6 +3,10 @@ import {
   ViewContext, memoize,
   ChunkContentCallbackArgs, isArraysEqual,
   ScrollRequest, ScrollResponder, ViewContainer, BaseComponent, ViewOptionsRefined,
+  RefMap, ElementDragging,
+  findElements,
+  elementClosest,
+  PointerDragEvent,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import {
@@ -22,7 +26,6 @@ import {
 } from '@fullcalendar/resource/internal'
 import { SpreadsheetRow } from './SpreadsheetRow.js'
 import { SpreadsheetGroupRow } from './SpreadsheetGroupRow.js'
-import { SpreadsheetHeader } from './SpreadsheetHeader.js'
 import { ResourceTimelineGrid } from './ResourceTimelineGrid.js'
 import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout.js'
 import {
@@ -37,6 +40,8 @@ import {
   searchTopmostEntity,
 } from './resource-table.js'
 import { SpreadsheetGroupCell } from './SpreadsheetGroupCell.js'
+import { SpreadsheetSuperHeaderCell } from './SpreadsheetSuperHeaderCell.js'
+import { SpreadsheetHeaderCell } from './SpreadsheetHeaderCell.js'
 
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
@@ -54,6 +59,8 @@ interface ResourceScrollState {
   groupValue?: any
   fromBottom: number
 }
+
+const SPREADSHEET_COL_MIN_WIDTH = 20
 
 export class ResourceTimelineView extends BaseComponent<ResourceViewProps, ResourceTimelineViewState> {
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
@@ -172,12 +179,24 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
             buildSpreadsheetCols(colSpecs, state.spreadsheetColWidths, '')
           }
           spreadsheetHeaderRows={() => (
-            <SpreadsheetHeader // TODO: rename to SpreadsheetHeaderRows
-              superHeaderRendering={superHeaderRendering}
-              colSpecs={colSpecs}
-              onColWidthChange={this.handleColWidthChange}
-              verticalPositions={headerVerticalPositions}
-            />
+            <Fragment>
+              {Boolean(superHeaderRendering) && (
+                <tr key="row-super" role="row">
+                  <SpreadsheetSuperHeaderCell
+                    renderHooks={superHeaderRendering}
+                  />
+                </tr>
+              )}
+              <tr key="row" role="row">
+                {colSpecs.map((colSpec, i) => (
+                  <SpreadsheetHeaderCell
+                    colSpec={colSpec}
+                    resizer={i < colSpecs.length - 1}
+                    resizerElRef={this.resizerElRefs.createRef(i)}
+                  />
+                ))}
+              </tr>
+            </Fragment>
           )}
           spreadsheetBodyRows={() => (
             <Fragment>
@@ -415,7 +434,61 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   // Resource INDIVIDUAL-Column Area Resizing
   // ------------------------------------------------------------------------------------------
 
-  handleColWidthChange = (colWidths: number[]) => {
+  private resizerElRefs = new RefMap<HTMLElement>(this._handleColResizerEl.bind(this))
+  private colDraggings: { [index: string]: ElementDragging } = {}
+
+  _handleColResizerEl(resizerEl: HTMLElement | null, index: string) {
+    let { colDraggings } = this
+
+    if (!resizerEl) {
+      let dragging = colDraggings[index]
+
+      if (dragging) {
+        dragging.destroy()
+        delete colDraggings[index]
+      }
+    } else {
+      let dragging = this.initColResizing(resizerEl, parseInt(index, 10))
+
+      if (dragging) {
+        colDraggings[index] = dragging
+      }
+    }
+  }
+
+  initColResizing(resizerEl: HTMLElement, index: number) {
+    let { pluginHooks, isRtl } = this.context
+    let ElementDraggingImpl = pluginHooks.elementDraggingImpl
+
+    if (ElementDraggingImpl) {
+      let dragging = new ElementDraggingImpl(resizerEl)
+      let startWidth: number // of just the single column
+      let currentWidths: number[] // of all columns
+
+      dragging.emitter.on('dragstart', () => {
+        let allCells = findElements(elementClosest(resizerEl, 'tr'), 'th')
+
+        currentWidths = allCells.map((cellEl) => (
+          cellEl.getBoundingClientRect().width
+        ))
+        startWidth = currentWidths[index]
+      })
+
+      dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
+        currentWidths[index] = Math.max(startWidth + pev.deltaX * (isRtl ? -1 : 1), SPREADSHEET_COL_MIN_WIDTH)
+
+        this.handleColWidthChange(currentWidths.slice()) // send a copy since currentWidths continues to be mutated
+      })
+
+      dragging.setAutoScrollEnabled(false) // because gets weird with auto-scrolling time area
+
+      return dragging
+    }
+
+    return null
+  }
+
+  handleColWidthChange(colWidths: number[]) {
     this.setState({
       spreadsheetColWidths: colWidths,
     })
