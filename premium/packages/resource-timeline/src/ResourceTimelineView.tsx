@@ -37,11 +37,10 @@ import {
   isEntityGroup,
   ResourceSplitter,
 } from '@fullcalendar/resource/internal'
-import { SpreadsheetResourceCells } from './SpreadsheetResourceCells.js'
-import { SpreadsheetGroupWideCell } from './SpreadsheetGroupWideCell.js'
+import { SpreadsheetResourceCells } from './spreadsheet/SpreadsheetResourceCells.js'
+import { SpreadsheetGroupWideCell } from './spreadsheet/SpreadsheetGroupWideCell.js'
 import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout.js'
 import {
-  GroupCellDisplay,
   GroupRowDisplay,
   NaturalHeightMap,
   ResourceRowDisplay,
@@ -51,11 +50,11 @@ import {
   buildVerticalPositions,
   searchTopmostEntity,
 } from './resource-table.js'
-import { SpreadsheetGroupTallCell } from './SpreadsheetGroupTallCell.js'
-import { SpreadsheetSuperHeaderCell } from './SpreadsheetSuperHeaderCell.js'
-import { SpreadsheetHeaderCell } from './SpreadsheetHeaderCell.js'
-import { ResourceTimelineLane } from './ResourceTimelineLane.js'
-import { DividerRow } from './DividerRow.js'
+import { SpreadsheetGroupTallCell } from './spreadsheet/SpreadsheetGroupTallCell.js'
+import { SpreadsheetSuperHeaderCell } from './spreadsheet/SpreadsheetSuperHeaderCell.js'
+import { SpreadsheetHeaderCell } from './spreadsheet/SpreadsheetHeaderCell.js'
+import { ResourceTimelineLane } from './lane/ResourceTimelineLane.js'
+import { DividerRow } from './lane/DividerRow.js'
 
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
