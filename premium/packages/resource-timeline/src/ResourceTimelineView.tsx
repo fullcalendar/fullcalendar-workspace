@@ -2,11 +2,18 @@ import { CssDimValue } from '@fullcalendar/core'
 import {
   ViewContext, memoize,
   ChunkContentCallbackArgs, isArraysEqual,
-  ScrollRequest, ScrollResponder, ViewContainer, BaseComponent, ViewOptionsRefined,
+  ScrollRequest, ScrollResponder, ViewContainer, ViewOptionsRefined,
   RefMap, ElementDragging,
   findElements,
   elementClosest,
   PointerDragEvent,
+  Hit,
+  DateComponent,
+  greatestDurationDenominator,
+  NowTimer,
+  DateMarker,
+  DateRange,
+  NowIndicatorContainer,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import {
@@ -14,6 +21,11 @@ import {
   buildSlatCols,
   TimelineCoords,
   TimelineDateProfile,
+  TimelineLaneSlicer,
+  TimelineSlats,
+  coordToCss,
+  TimelineLaneSeg,
+  TimelineLaneBg,
 } from '@fullcalendar/timeline/internal'
 import {
   ResourceViewProps,
@@ -23,10 +35,10 @@ import {
   Resource,
   ParentNode,
   isEntityGroup,
+  ResourceSplitter,
 } from '@fullcalendar/resource/internal'
 import { SpreadsheetRow } from './SpreadsheetRow.js'
 import { SpreadsheetGroupRow } from './SpreadsheetGroupRow.js'
-import { ResourceTimelineGrid } from './ResourceTimelineGrid.js'
 import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout.js'
 import {
   GroupCellDisplay,
@@ -42,6 +54,8 @@ import {
 import { SpreadsheetGroupCell } from './SpreadsheetGroupCell.js'
 import { SpreadsheetSuperHeaderCell } from './SpreadsheetSuperHeaderCell.js'
 import { SpreadsheetHeaderCell } from './SpreadsheetHeaderCell.js'
+import { ResourceTimelineLane } from './ResourceTimelineLane.js'
+import { DividerRow } from './DividerRow.js'
 
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
@@ -62,7 +76,7 @@ interface ResourceScrollState {
 
 const SPREADSHEET_COL_MIN_WIDTH = 20
 
-export class ResourceTimelineView extends BaseComponent<ResourceViewProps, ResourceTimelineViewState> {
+export class ResourceTimelineView extends DateComponent<ResourceViewProps, ResourceTimelineViewState> {
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private processColOptions = memoize(processColOptions)
   private buildResourceHierarchy = memoize(buildResourceHierarchy)
@@ -85,6 +99,12 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   private currentBodyHeightHierarchy: ParentNode<Resource | Group>[]
   private currentBodyVerticalPositions: Map<Resource | Group, VerticalPosition>
 
+  // misc
+  private computeHasResourceBusinessHours = memoize(computeHasResourceBusinessHours)
+  private resourceSplitter = new ResourceSplitter() // doesn't let it do businessHours tho
+  private bgSlicer = new TimelineLaneSlicer()
+  private slatsRef = createRef<TimelineSlats>() // needed for Hit creation :(
+
   constructor(props: ResourceViewProps, context: ViewContext) {
     super(props, context)
 
@@ -96,10 +116,11 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
   render() {
     let { props, state, context, bodyNaturalHeightMap, headerNaturalHeightMap } = this
+    let { dateProfile } = props
     let { options, viewSpec } = context
 
     let tDateProfile = this.buildTimelineDateProfile(
-      props.dateProfile,
+      dateProfile,
       context.dateEnv,
       options,
       context.dateProfileGenerator,
@@ -159,6 +180,27 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       buildSlatCols(tDateProfile, slotMinWidth ||
       this.computeFallbackSlotMinWidth(tDateProfile))
 
+    let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
+    let hasResourceBusinessHours = this.computeHasResourceBusinessHours(resourceRowDisplays)
+
+    let splitProps = this.resourceSplitter.splitProps(props)
+    let bgLaneProps = splitProps['']
+    let bgSlicedProps = this.bgSlicer.sliceProps(
+      bgLaneProps,
+      dateProfile,
+      tDateProfile.isTimeScale ? null : options.nextDayThreshold,
+      context, // wish we didn't need to pass in the rest of these args...
+      dateProfile,
+      context.dateProfileGenerator,
+      tDateProfile,
+      context.dateEnv,
+    )
+
+    // WORKAROUND: make ignore slatCoords when out of sync with dateProfile
+    let slatCoords = state.slatCoords && state.slatCoords.dateProfile === dateProfile ? state.slatCoords : null
+
+    let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
+
     return (
       <ViewContainer
         elClasses={[
@@ -215,7 +257,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
               clientWidth={contentArg.clientWidth}
               clientHeight={contentArg.clientHeight}
               tableMinWidth={contentArg.tableMinWidth}
-              dateProfile={props.dateProfile}
+              dateProfile={dateProfile}
               tDateProfile={tDateProfile}
               slatCoords={state.slatCoords}
               onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
@@ -226,29 +268,95 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
             this.expandBodyToHeight = contentArg.expandRows ? contentArg.clientHeight : undefined
 
             return (
-              <ResourceTimelineGrid
-                dateProfile={props.dateProfile}
-                clientWidth={contentArg.clientWidth}
-                clientHeight={contentArg.clientHeight}
-                tableMinWidth={contentArg.tableMinWidth}
-                expandRows={contentArg.expandRows}
-                tDateProfile={tDateProfile}
-                groupRowDisplays={groupRowDisplays}
-                resourceRowDisplays={resourceRowDisplays}
-                businessHours={props.businessHours}
-                dateSelection={props.dateSelection}
-                eventStore={props.eventStore}
-                eventUiBases={props.eventUiBases}
-                eventSelection={props.eventSelection}
-                eventDrag={props.eventDrag}
-                eventResize={props.eventResize}
-                resourceStore={props.resourceStore}
-                nextDayThreshold={context.options.nextDayThreshold}
-                onSlatCoords={this.handleSlatCoords}
-                onScrollLeftRequest={this.handleScrollLeftRequest}
-                verticalPositions={bodyVerticalPositions}
-                heightHierarchy={this.currentBodyHeightHierarchy}
-              />
+              <div
+                ref={this.handleBodyEl}
+                className={[
+                  'fc-timeline-body',
+                  contentArg.expandRows ? 'fc-timeline-body-expandrows' : '',
+                ].join(' ')}
+                style={{ minWidth: contentArg.tableMinWidth }}
+              >
+                <NowTimer unit={timerUnit}>
+                  {(nowDate: DateMarker, todayRange: DateRange) => (
+                    <Fragment>
+                      <TimelineSlats
+                        ref={this.slatsRef}
+                        dateProfile={dateProfile}
+                        tDateProfile={tDateProfile}
+                        nowDate={nowDate}
+                        todayRange={todayRange}
+                        clientWidth={contentArg.clientWidth}
+                        tableMinWidth={contentArg.tableMinWidth}
+                        onCoords={this.handleSlatCoords}
+                        onScrollLeftRequest={this.handleScrollLeftRequest}
+                      />
+                      <TimelineLaneBg
+                        businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
+                        bgEventSegs={bgSlicedProps.bgEventSegs}
+                        timelineCoords={slatCoords}
+                        // empty array will result in unnecessary rerenders?
+                        eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs as TimelineLaneSeg[] : [])}
+                        dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
+                        nowDate={nowDate}
+                        todayRange={todayRange}
+                      />
+                      <table
+                        aria-hidden
+                        className={context.theme.getClass('table')}
+                        style={{
+                          minWidth: contentArg.tableMinWidth,
+                          width: contentArg.clientWidth,
+                          height: contentArg.expandRows ? contentArg.clientHeight : '',
+                        }}
+                      >
+                        <tbody>
+                          <Fragment>
+                            {groupRowDisplays.map((groupRowDisplay) => (
+                              <DividerRow
+                                key={String(groupRowDisplay.group.value)}
+                                group={groupRowDisplay.group}
+                                top={bodyVerticalPositions.get(groupRowDisplay.group).top}
+                                height={bodyVerticalPositions.get(groupRowDisplay.group).height}
+                              />
+                            ))}
+                          </Fragment>
+                          <Fragment>
+                            {resourceRowDisplays.map((resourceRowDisplay) => {
+                              const { resource } = resourceRowDisplay
+                              return (
+                                <ResourceTimelineLane
+                                  key={resource.id}
+                                  {...splitProps[resource.id]}
+                                  resource={resource}
+                                  dateProfile={dateProfile}
+                                  tDateProfile={tDateProfile}
+                                  nowDate={nowDate}
+                                  todayRange={todayRange}
+                                  nextDayThreshold={context.options.nextDayThreshold}
+                                  businessHours={resource.businessHours || fallbackBusinessHours}
+                                  timelineCoords={slatCoords}
+                                  top={bodyVerticalPositions.get(resource).top}
+                                  height={bodyVerticalPositions.get(resource).height}
+                                />
+                              )
+                            })}
+                          </Fragment>
+                        </tbody>
+                      </table>
+                      {(context.options.nowIndicator && slatCoords && slatCoords.isDateInRange(nowDate)) && (
+                        <div className="fc-timeline-now-indicator-container">
+                          <NowIndicatorContainer
+                            elClasses={['fc-timeline-now-indicator-line']}
+                            elStyle={coordToCss(slatCoords.dateToCoord(nowDate), context.isRtl)}
+                            isAxis={false}
+                            date={nowDate}
+                          />
+                        </div>
+                      )}
+                    </Fragment>
+                  )}
+                </NowTimer>
+              </div>
             )
           }}
         />
@@ -492,6 +600,56 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
       spreadsheetColWidths: colWidths,
     })
   }
+
+  // Hit System
+  // ------------------------------------------------------------------------------------------
+
+  handleBodyEl = (el: HTMLElement | null) => {
+    if (el) {
+      this.context.registerInteractiveComponent(this, { el })
+    } else {
+      this.context.unregisterInteractiveComponent(this)
+    }
+  }
+
+  queryHit(positionLeft: number, positionTop: number): Hit {
+    let { currentBodyHeightHierarchy, currentBodyVerticalPositions } = this
+    let { dateProfile } = this.props
+
+    let entityAtTop = searchTopmostEntity(
+      positionTop,
+      currentBodyHeightHierarchy,
+      currentBodyVerticalPositions,
+    )
+
+    if (entityAtTop && !isEntityGroup(entityAtTop)) {
+      let resource = entityAtTop
+      let { top, height } = currentBodyVerticalPositions.get(resource)
+      let bottom = top + height
+      let slatHit = this.slatsRef.current.positionToHit(positionLeft)
+
+      if (slatHit) {
+        return {
+          dateProfile,
+          dateSpan: {
+            range: slatHit.dateSpan.range,
+            allDay: slatHit.dateSpan.allDay,
+            resourceId: resource.id,
+          },
+          rect: {
+            left: slatHit.left,
+            right: slatHit.right,
+            top,
+            bottom,
+          },
+          dayEl: slatHit.dayEl,
+          layer: 0,
+        }
+      }
+    }
+
+    return null
+  }
 }
 
 ResourceTimelineView.addStateEquality({
@@ -601,4 +759,16 @@ function processColOptions(options: ViewOptionsRefined) {
     resourceColSpecs,
     superHeaderRendering,
   }
+}
+
+function computeHasResourceBusinessHours(resourceRowDisplays: ResourceRowDisplay[]) {
+  for (let resourceRowDisplay of resourceRowDisplays) {
+    let { resource } = resourceRowDisplay
+
+    if (resource && resource.businessHours) {
+      return true
+    }
+  }
+
+  return false
 }
