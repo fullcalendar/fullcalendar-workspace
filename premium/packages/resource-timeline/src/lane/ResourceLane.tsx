@@ -3,14 +3,14 @@ import { createElement } from '@fullcalendar/core/preact'
 import { Resource, refineRenderProps } from '@fullcalendar/resource/internal'
 import { TimelineLane, TimelineLaneProps } from '@fullcalendar/timeline/internal'
 
-export interface ResourceTimelineLaneProps extends TimelineLaneProps {
+export interface ResourceLaneProps extends TimelineLaneProps {
   resource: Resource
   top: number | undefined
   height: number | undefined
   onNaturalHeight?: (height: number | undefined) => void
 }
 
-export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProps> {
+export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)
 
   render() {

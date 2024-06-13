@@ -37,8 +37,8 @@ import {
   isEntityGroup,
   ResourceSplitter,
 } from '@fullcalendar/resource/internal'
-import { SpreadsheetResourceCells } from './spreadsheet/SpreadsheetResourceCells.js'
-import { SpreadsheetGroupWideCell } from './spreadsheet/SpreadsheetGroupWideCell.js'
+import { ResourceCells } from './spreadsheet/ResourceCells.js'
+import { GroupWideCell } from './spreadsheet/GroupWideCell.js'
 import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout.js'
 import {
   GroupRowDisplay,
@@ -50,11 +50,11 @@ import {
   buildVerticalPositions,
   searchTopmostEntity,
 } from './resource-table.js'
-import { SpreadsheetGroupTallCell } from './spreadsheet/SpreadsheetGroupTallCell.js'
-import { SpreadsheetSuperHeaderCell } from './spreadsheet/SpreadsheetSuperHeaderCell.js'
-import { SpreadsheetHeaderCell } from './spreadsheet/SpreadsheetHeaderCell.js'
-import { ResourceTimelineLane } from './lane/ResourceTimelineLane.js'
-import { DividerRow } from './lane/DividerRow.js'
+import { GroupTallCell } from './spreadsheet/GroupTallCell.js'
+import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
+import { HeaderCell } from './spreadsheet/HeaderCell.js'
+import { ResourceLane } from './lane/ResourceLane.js'
+import { GroupLane } from './lane/GroupLane.js'
 
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
@@ -223,14 +223,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
             <Fragment>
               {Boolean(superHeaderRendering) && (
                 <tr key="row-super" role="row">
-                  <SpreadsheetSuperHeaderCell
+                  <SuperHeaderCell
                     renderHooks={superHeaderRendering}
                   />
                 </tr>
               )}
               <tr key="row" role="row">
                 {colSpecs.map((colSpec, i) => (
-                  <SpreadsheetHeaderCell
+                  <HeaderCell
                     colSpec={colSpec}
                     resizer={i < colSpecs.length - 1}
                     resizerElRef={this.resizerElRefs.createRef(i)}
@@ -245,7 +245,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               {groupColDisplays.map((groupCellDisplays, cellIndex) => (
                 <div key={cellIndex}>{/* TODO: assign left/width */}
                   {groupCellDisplays.map((groupCellDisplay) => (
-                    <SpreadsheetGroupTallCell
+                    <GroupTallCell
                       key={String(groupCellDisplay.group.value)}
                       colSpec={groupCellDisplay.group.spec}
                       fieldValue={groupCellDisplay.group.value}
@@ -258,7 +258,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               <div>{/* TODO: assign left/width */}
                 {groupRowDisplays.map((groupRowDisplay) => (
                   <tr role="row">{/* TODO: assign top/height */}
-                    <SpreadsheetGroupWideCell
+                    <GroupWideCell
                       key={String(groupRowDisplay.group.value)}
                       group={groupRowDisplay.group}
                       isExpanded={groupRowDisplay.isExpanded}
@@ -271,7 +271,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               <div>{/* TODO: assign left/width */}
                 {resourceRowDisplays.map((resourceRowDisplay) => (
                   <tr role="row">{/* TODO: assign top/height */}
-                    <SpreadsheetResourceCells
+                    <ResourceCells
                       key={resourceRowDisplay.resource.id}
                       resource={resourceRowDisplay.resource}
                       resourceFields={resourceRowDisplay.resourceFields}
@@ -346,7 +346,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         <tbody>
                           <Fragment>
                             {groupRowDisplays.map((groupRowDisplay) => (
-                              <DividerRow
+                              <GroupLane
                                 key={String(groupRowDisplay.group.value)}
                                 group={groupRowDisplay.group}
                                 top={bodyVerticalPositions.get(groupRowDisplay.group).top}
@@ -358,7 +358,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             {resourceRowDisplays.map((resourceRowDisplay) => {
                               const { resource } = resourceRowDisplay
                               return (
-                                <ResourceTimelineLane
+                                <ResourceLane
                                   key={resource.id}
                                   {...splitProps[resource.id]}
                                   resource={resource}

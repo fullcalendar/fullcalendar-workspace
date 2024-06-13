@@ -10,7 +10,7 @@ import { ResourceApi } from '@fullcalendar/resource'
 import { Resource, ColSpec } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from '../ExpanderIcon.js'
 
-export interface SpreadsheetResourceCellProps {
+export interface ResourceCellProps {
   colSpec: ColSpec
   resource: Resource
   fieldValue: any
@@ -21,7 +21,7 @@ export interface SpreadsheetResourceCellProps {
   onNaturalHeight?: (height: number) => void
 }
 
-export class SpreadsheetResourceCell extends BaseComponent<SpreadsheetResourceCellProps> {
+export class ResourceCell extends BaseComponent<ResourceCellProps> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)
   private innerElRef = createRef<HTMLDivElement>()
 

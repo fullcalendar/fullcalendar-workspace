@@ -2,14 +2,14 @@ import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { BaseComponent, ContentContainer } from '@fullcalendar/core/internal'
 import { ColSpec, ColHeaderContentArg } from '@fullcalendar/resource'
 
-export interface SpreadsheetHeaderCellProps {
+export interface HeaderCellProps {
   colSpec: ColSpec
   resizer: boolean
   resizerElRef: Ref<HTMLDivElement>
   onNaturalHeight?: (height: number) => void
 }
 
-export class SpreadsheetHeaderCell extends BaseComponent<SpreadsheetHeaderCellProps> {
+export class HeaderCell extends BaseComponent<HeaderCellProps> {
   private innerElRef = createRef<HTMLDivElement>()
 
   render() {

@@ -3,7 +3,7 @@ import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ColCellContentArg } from '@fullcalendar/resource'
 import { Group } from '@fullcalendar/resource/internal'
 
-export interface DividerRowProps {
+export interface GroupLaneProps {
   group: Group
   top: number | undefined
   height: number | undefined
@@ -13,7 +13,7 @@ export interface DividerRowProps {
 /*
 parallels the SpreadsheetGroupRow
 */
-export class DividerRow extends BaseComponent<DividerRowProps> {
+export class GroupLane extends BaseComponent<GroupLaneProps> {
   private innerElRef = createRef<HTMLDivElement>()
 
   render() {

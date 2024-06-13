@@ -1,9 +1,9 @@
 import { BaseComponent, ViewContext } from '@fullcalendar/core/internal'
 import { Fragment, createElement } from '@fullcalendar/core/preact'
 import { Resource, ColSpec, getPublicId } from '@fullcalendar/resource/internal'
-import { SpreadsheetResourceCell } from './SpreadsheetResourceCell.js'
+import { ResourceCell } from './ResourceCell.js'
 
-export interface SpreadsheetResourceCellsProps {
+export interface ResourceCellsProps {
   resource: Resource
   resourceFields: any
   colSpecs: ColSpec[]
@@ -12,7 +12,7 @@ export interface SpreadsheetResourceCellsProps {
   hasChildren: boolean
 }
 
-export class SpreadsheetResourceCells extends BaseComponent<SpreadsheetResourceCellsProps, ViewContext> {
+export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext> {
   render() {
     let { props } = this
     let { resource, resourceFields } = props
@@ -24,7 +24,7 @@ export class SpreadsheetResourceCells extends BaseComponent<SpreadsheetResourceC
             (resource.title || getPublicId(resource.id))
 
           return (
-            <SpreadsheetResourceCell
+            <ResourceCell
               key={i} // eslint-disable-line react/no-array-index-key
               colSpec={colSpec}
               resource={resource}

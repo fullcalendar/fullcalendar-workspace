@@ -4,7 +4,7 @@ import { ColCellContentArg } from '@fullcalendar/resource'
 import { Group, createGroupId, isGroupsEqual } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from '../ExpanderIcon.js'
 
-export interface SpreadsheetGroupWideCellProps {
+export interface GroupWideCellProps {
   isExpanded: boolean
   group: Group
   top: number | undefined
@@ -12,7 +12,7 @@ export interface SpreadsheetGroupWideCellProps {
   onNaturalHeight?: (height: number) => void
 }
 
-export class SpreadsheetGroupWideCell extends BaseComponent<SpreadsheetGroupWideCellProps, ViewContext> {
+export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext> {
   innerElRef: RefObject<HTMLDivElement> = createRef<HTMLDivElement>()
 
   render() {
@@ -91,7 +91,7 @@ export class SpreadsheetGroupWideCell extends BaseComponent<SpreadsheetGroupWide
   }
 }
 
-SpreadsheetGroupWideCell.addPropsEquality({
+GroupWideCell.addPropsEquality({
   group: isGroupsEqual,
 })
 

@@ -2,19 +2,18 @@ import { BaseComponent, ContentContainer } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ColHeaderContentArg, ColHeaderRenderHooks } from '@fullcalendar/resource'
 
-export interface SpreadsheetSuperHeaderCellProps {
+export interface SuperHeaderCellProps {
   renderHooks: ColHeaderRenderHooks
   onNaturalHeight?: (height: number) => void
 }
 
-export class SpreadsheetSuperHeaderCell extends BaseComponent<SpreadsheetSuperHeaderCellProps> {
+export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
   private innerElRef = createRef<HTMLDivElement>()
 
   render() {
     let { renderHooks } = this.props
     let renderProps: ColHeaderContentArg = { view: this.context.viewApi }
 
-    // <tr key="row-super" role="row">
     return (
       <ContentContainer
         elTag="th"
