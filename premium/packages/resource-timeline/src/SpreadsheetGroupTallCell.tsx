@@ -2,7 +2,7 @@ import { BaseComponent, ContentContainer } from '@fullcalendar/core/internal'
 import { ComponentChild, createElement, Fragment } from '@fullcalendar/core/preact'
 import { ColSpec, ColCellContentArg } from '@fullcalendar/resource'
 
-export interface SpreadsheetGroupCellProps {
+export interface SpreadsheetGroupTallCellProps {
   colSpec: ColSpec
   fieldValue: any
   top: number | undefined
@@ -10,7 +10,7 @@ export interface SpreadsheetGroupCellProps {
 }
 
 // for VERTICAL cell grouping, in spreadsheet area
-export class SpreadsheetGroupCell extends BaseComponent<SpreadsheetGroupCellProps> {
+export class SpreadsheetGroupTallCell extends BaseComponent<SpreadsheetGroupTallCellProps> {
   render() {
     let { props, context } = this
     let { colSpec } = props

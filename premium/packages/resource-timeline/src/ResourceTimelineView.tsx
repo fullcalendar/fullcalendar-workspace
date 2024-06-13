@@ -38,7 +38,7 @@ import {
   ResourceSplitter,
 } from '@fullcalendar/resource/internal'
 import { SpreadsheetResourceCells } from './SpreadsheetResourceCells.js'
-import { SpreadsheetGroupRow } from './SpreadsheetGroupRow.js'
+import { SpreadsheetGroupWideCell } from './SpreadsheetGroupWideCell.js'
 import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout.js'
 import {
   GroupCellDisplay,
@@ -51,7 +51,7 @@ import {
   buildVerticalPositions,
   searchTopmostEntity,
 } from './resource-table.js'
-import { SpreadsheetGroupCell } from './SpreadsheetGroupCell.js'
+import { SpreadsheetGroupTallCell } from './SpreadsheetGroupTallCell.js'
 import { SpreadsheetSuperHeaderCell } from './SpreadsheetSuperHeaderCell.js'
 import { SpreadsheetHeaderCell } from './SpreadsheetHeaderCell.js'
 import { ResourceTimelineLane } from './ResourceTimelineLane.js'
@@ -379,7 +379,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
         {groupColDisplays.map((groupCellDisplays, cellIndex) => (
           <div key={cellIndex}>{/* TODO: assign left/width */}
             {groupCellDisplays.map((groupCellDisplay) => (
-              <SpreadsheetGroupCell
+              <SpreadsheetGroupTallCell
                 key={String(groupCellDisplay.group.value)}
                 colSpec={groupCellDisplay.group.spec}
                 fieldValue={groupCellDisplay.group.value}
@@ -391,13 +391,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
         ))}
         <div>{/* TODO: assign left/width */}
           {groupRowDisplays.map((groupRowDisplay) => (
-            <SpreadsheetGroupRow
-              key={String(groupRowDisplay.group.value)}
-              group={groupRowDisplay.group}
-              isExpanded={groupRowDisplay.isExpanded}
-              top={verticalPositions.get(groupRowDisplay.group).top}
-              height={verticalPositions.get(groupRowDisplay.group).height}
-            />
+            <tr role="row">{/* TODO: assign top/height */}
+              <SpreadsheetGroupWideCell
+                key={String(groupRowDisplay.group.value)}
+                group={groupRowDisplay.group}
+                isExpanded={groupRowDisplay.isExpanded}
+                top={verticalPositions.get(groupRowDisplay.group).top}
+                height={verticalPositions.get(groupRowDisplay.group).height}
+              />
+            </tr>
           ))}
         </div>
         <div>{/* TODO: assign left/width */}

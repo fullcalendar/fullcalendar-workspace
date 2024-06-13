@@ -4,7 +4,7 @@ import { ColCellContentArg } from '@fullcalendar/resource'
 import { Group, createGroupId, isGroupsEqual } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from './ExpanderIcon.js'
 
-export interface SpreadsheetGroupRowProps {
+export interface SpreadsheetGroupWideCellProps {
   isExpanded: boolean
   group: Group
   top: number | undefined
@@ -12,8 +12,7 @@ export interface SpreadsheetGroupRowProps {
   onNaturalHeight?: (height: number) => void
 }
 
-// for HORIZONTAL cell grouping, in spreadsheet area
-export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps, ViewContext> {
+export class SpreadsheetGroupWideCell extends BaseComponent<SpreadsheetGroupWideCellProps, ViewContext> {
   innerElRef: RefObject<HTMLDivElement> = createRef<HTMLDivElement>()
 
   render() {
@@ -22,7 +21,7 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
     let spec = props.group.spec
 
     return ( // TODO: apply the top-coordinate
-      <tr role="row">
+      <Fragment>
         <ContentContainer
           elTag="th"
           elClasses={[
@@ -63,7 +62,7 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
             </div>
           )}
         </ContentContainer>
-      </tr>
+      </Fragment>
     )
   }
 
@@ -92,7 +91,7 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
   }
 }
 
-SpreadsheetGroupRow.addPropsEquality({
+SpreadsheetGroupWideCell.addPropsEquality({
   group: isGroupsEqual,
 })
 
