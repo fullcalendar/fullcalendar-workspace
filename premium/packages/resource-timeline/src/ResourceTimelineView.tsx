@@ -175,15 +175,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     )
 
     let { slotMinWidth } = options
-    let slatCols =
-      buildSlatCols(
-        tDateProfile,
-        slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile),
-      )
-    // { minWidth, span } // span???
-
+    let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
     let spreadsheetCols = buildSpreadsheetCols(colSpecs, state.spreadsheetColWidths, '')
-    // { className, width }
+
+    console.log(
+      'TODO: use cols',
+      slatCols,
+      spreadsheetCols,
+    )
 
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
     let hasResourceBusinessHours = this.computeHasResourceBusinessHours(resourceRowDisplays)
@@ -206,16 +205,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
 
-    console.log(
-      'TODO: use cols',
-      slatCols,
-      spreadsheetCols,
-    )
-
     /*
     TODO:
     - forPrint
-    - isHeightAuto
+    - liquid(height) = !props.isHeightAuto && !props.forPrint
+    - collapsibleWidth = false
+    - stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
+    - stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
     */
     return (
       <ViewContainer

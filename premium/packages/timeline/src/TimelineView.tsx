@@ -1,7 +1,4 @@
-import {
-  ViewProps, memoize, ViewContainer,
-  DateComponent, ScrollGridSectionConfig, renderScrollShim, getStickyHeaderDates, getStickyFooterScrollbar,
-} from '@fullcalendar/core/internal'
+import { ViewProps, memoize, ViewContainer, DateComponent } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollGrid } from '@fullcalendar/scrollgrid/internal'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile.js'
@@ -26,8 +23,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   render() {
     let { props, state, context } = this
     let { options } = context
-    let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
-    let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
     let tDateProfile = this.buildTimelineDateProfile(
       props.dateProfile,
@@ -39,53 +34,16 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     let { slotMinWidth } = options
     let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
 
-    let sections: ScrollGridSectionConfig[] = [
-      {
-        type: 'header',
-        key: 'header',
-        isSticky: stickyHeaderDates,
-        chunks: [{
-          key: 'timeline',
-          content: () => (
-            <TimelineHeader
-              dateProfile={props.dateProfile}
-              tDateProfile={tDateProfile}
-              slatCoords={state.slatCoords}
-              onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
-            />
-          ),
-        }],
-      },
-      {
-        type: 'body',
-        key: 'body',
-        liquid: true,
-        chunks: [{
-          key: 'timeline',
-          content: () => (
-            <TimelineGrid
-              {...props}
-              tDateProfile={tDateProfile}
-              onSlatCoords={this.handleSlatCoords}
-              onScrollLeftRequest={this.handleScrollLeftRequest}
-            />
-          ),
-        }],
-      },
-    ]
+    console.log('TODO use cols', slatCols)
 
-    if (stickyFooterScrollbar) {
-      sections.push({
-        type: 'footer',
-        key: 'footer',
-        isSticky: true,
-        chunks: [{
-          key: 'timeline',
-          content: renderScrollShim,
-        }],
-      })
-    }
-
+    /*
+    TODO:
+    - forPrint
+    - liquid(height) = !props.isHeightAuto && !props.forPrint
+    - collapsibleWidth = false
+    - stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
+    - stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
+    */
     return (
       <ViewContainer
         elClasses={[
@@ -96,16 +54,20 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
         ]}
         viewSpec={context.viewSpec}
       >
-        <ScrollGrid
-          ref={this.scrollGridRef}
-          liquid={!props.isHeightAuto && !props.forPrint}
-          forPrint={props.forPrint}
-          collapsibleWidth={false}
-          colGroups={[
-            { cols: slatCols },
-          ]}
-          sections={sections}
-        />
+        <div>
+          <TimelineHeader
+            dateProfile={props.dateProfile}
+            tDateProfile={tDateProfile}
+            slatCoords={state.slatCoords}
+            onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
+          />
+          <TimelineGrid
+            {...props}
+            tDateProfile={tDateProfile}
+            onSlatCoords={this.handleSlatCoords}
+            onScrollLeftRequest={this.handleScrollLeftRequest}
+          />
+        </div>
       </ViewContainer>
     )
   }
