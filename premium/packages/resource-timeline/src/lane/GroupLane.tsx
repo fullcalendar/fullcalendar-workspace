@@ -5,8 +5,6 @@ import { Group } from '@fullcalendar/resource/internal'
 
 export interface GroupLaneProps {
   group: Group
-  top: number | undefined
-  height: number | undefined
   onNaturalHeight?: (height: number) => void
 }
 
@@ -26,32 +24,30 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
     }
 
     return (
-      <tr>
-        <ContentContainer
-          elTag="td"
-          elClasses={[
-            'fc-timeline-lane',
-            'fc-resource-group',
-            context.theme.getClass('tableCellShaded'),
-          ]}
-          renderProps={renderProps}
-          generatorName="resourceGroupLaneContent"
-          customGenerator={groupSpec.laneContent}
-          classNameGenerator={groupSpec.laneClassNames}
-          didMount={groupSpec.laneDidMount}
-          willUnmount={groupSpec.laneWillUnmount}
-        >
-          {(InnerContainer) => (
-            <div className='fc-resource-group-frame' style={{ height: props.height }}>
-              <InnerContainer
-                elTag="div"
-                elClasses={['fc-resource-group-frame-inner']}
-                elRef={this.innerElRef}
-              />
-            </div>
-          )}
-        </ContentContainer>
-      </tr>
+      <ContentContainer
+        elTag="td"
+        elClasses={[
+          'fc-timeline-lane',
+          'fc-resource-group',
+          context.theme.getClass('tableCellShaded'),
+        ]}
+        renderProps={renderProps}
+        generatorName="resourceGroupLaneContent"
+        customGenerator={groupSpec.laneContent}
+        classNameGenerator={groupSpec.laneClassNames}
+        didMount={groupSpec.laneDidMount}
+        willUnmount={groupSpec.laneWillUnmount}
+      >
+        {(InnerContainer) => (
+          <div className='fc-resource-group-frame'>
+            <InnerContainer
+              elTag="div"
+              elClasses={['fc-resource-group-frame-inner']}
+              elRef={this.innerElRef}
+            />
+          </div>
+        )}
+      </ContentContainer>
     )
   }
 

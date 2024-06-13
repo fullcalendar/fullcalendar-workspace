@@ -346,32 +346,32 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         <tbody>
                           <Fragment>
                             {groupRowDisplays.map((groupRowDisplay) => (
-                              <GroupLane
-                                key={String(groupRowDisplay.group.value)}
-                                group={groupRowDisplay.group}
-                                top={bodyVerticalPositions.get(groupRowDisplay.group).top}
-                                height={bodyVerticalPositions.get(groupRowDisplay.group).height}
-                              />
+                              <tr>
+                                <GroupLane
+                                  key={String(groupRowDisplay.group.value)}
+                                  group={groupRowDisplay.group}
+                                />
+                              </tr>
                             ))}
                           </Fragment>
                           <Fragment>
                             {resourceRowDisplays.map((resourceRowDisplay) => {
                               const { resource } = resourceRowDisplay
                               return (
-                                <ResourceLane
-                                  key={resource.id}
-                                  {...splitProps[resource.id]}
-                                  resource={resource}
-                                  dateProfile={dateProfile}
-                                  tDateProfile={tDateProfile}
-                                  nowDate={nowDate}
-                                  todayRange={todayRange}
-                                  nextDayThreshold={context.options.nextDayThreshold}
-                                  businessHours={resource.businessHours || fallbackBusinessHours}
-                                  timelineCoords={slatCoords}
-                                  top={bodyVerticalPositions.get(resource).top}
-                                  height={bodyVerticalPositions.get(resource).height}
-                                />
+                                <tr>
+                                  <ResourceLane
+                                    key={resource.id}
+                                    {...splitProps[resource.id]}
+                                    resource={resource}
+                                    dateProfile={dateProfile}
+                                    tDateProfile={tDateProfile}
+                                    nowDate={nowDate}
+                                    todayRange={todayRange}
+                                    nextDayThreshold={context.options.nextDayThreshold}
+                                    businessHours={resource.businessHours || fallbackBusinessHours}
+                                    timelineCoords={slatCoords}
+                                  />
+                                </tr>
                               )
                             })}
                           </Fragment>
