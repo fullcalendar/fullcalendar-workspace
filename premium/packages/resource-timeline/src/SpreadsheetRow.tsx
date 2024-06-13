@@ -22,7 +22,7 @@ export class SpreadsheetRow extends BaseComponent<SpreadsheetRowProps, ViewConte
     let { resource, depth } = props
     let resourceFields = buildResourceFields(resource) // slightly inefficient. already done up the call stack
 
-    return (
+    return ( // TODO: apply top-position
       <tr role="row">
         {props.colSpecs.map((colSpec, i) => {
           let fieldValue = colSpec.field ? resourceFields[colSpec.field] :

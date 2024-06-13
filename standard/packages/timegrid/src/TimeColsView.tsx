@@ -341,7 +341,7 @@ export abstract class TimeColsView extends DateComponent<ViewProps, TimeColsView
                 'fc-scrollgrid-shrink-frame',
                 'fc-timegrid-axis-frame-liquid',
               ].join(' ')}
-              style={{ height: frameHeight }}
+              style={{ /*height: frameHeight*/ }}
             >
               <InnerContent
                 elTag="a"
@@ -360,7 +360,7 @@ export abstract class TimeColsView extends DateComponent<ViewProps, TimeColsView
 
     return (
       <th aria-hidden className="fc-timegrid-axis">
-        <div className="fc-timegrid-axis-frame" style={{ height: frameHeight }} />
+        <div className="fc-timegrid-axis-frame" style={{ /*height: frameHeight*/ }} />
       </th>
     )
   }
@@ -401,9 +401,9 @@ export abstract class TimeColsView extends DateComponent<ViewProps, TimeColsView
             className={[
               'fc-timegrid-axis-frame',
               'fc-scrollgrid-shrink-frame',
-              rowHeight == null ? ' fc-timegrid-axis-frame-liquid' : '',
+              // rowHeight == null ? ' fc-timegrid-axis-frame-liquid' : '',
             ].join(' ')}
-            style={{ height: rowHeight }}
+            style={{ /*height: rowHeight*/ }}
           >
             <InnerContent
               elTag="span"

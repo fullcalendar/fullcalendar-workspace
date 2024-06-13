@@ -21,7 +21,7 @@ export class SpreadsheetGroupRow extends BaseComponent<SpreadsheetGroupRowProps,
     let renderProps: ColCellContentArg = { groupValue: props.group.value, view: context.viewApi }
     let spec = props.group.spec
 
-    return (
+    return ( // TODO: apply the top-coordinate
       <tr role="row">
         <ContentContainer
           elTag="th"

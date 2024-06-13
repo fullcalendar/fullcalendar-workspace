@@ -86,6 +86,9 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
     }
   }
 
+  /*
+  TODO: rethink this
+  */
   computeMaxCushionWidth() { // TODO: called way too often
     return Math.max(
       ...findElements(this.rootElRef.current, '.fc-timeline-header-row:last-child .fc-timeline-slot-cushion').map(

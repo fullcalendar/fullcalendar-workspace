@@ -25,19 +25,19 @@ export interface Group {
 }
 
 export interface GroupNode {
-  id: string // 'field:value'
+  id: string // 'field:value' -- bad for concatenating value!
   isExpanded: boolean
   group: Group
 }
 
 export interface ResourceNode {
   id: string // 'resourceId' (won't collide with group ID's because has colon)
-  rowSpans: number[]
+  rowSpans: number[] // TODO: eventually kill this
   depth: number
   isExpanded: boolean
   hasChildren: boolean
   resource: Resource
-  resourceFields: any
+  resourceFields: any // fields mushed together for sorting
 }
 
 /*
@@ -171,7 +171,7 @@ function insertResourceNode(
   nodes: ParentNode[],
   groupSpecs: GroupSpec[],
   depth: number,
-  maxDepth: number,
+  maxDepth: number, // used???
   orderSpecs: OrderSpec<ResourceApi>[],
 ) {
   if (groupSpecs.length && (maxDepth === -1 || depth <= maxDepth)) {

@@ -9,18 +9,34 @@ export { VResourceJoiner } from './common/VResourceJoiner.js'
 export { VResourceSplitter } from './common/VResourceSplitter.js'
 export { Resource, ResourceHash, getPublicId } from './structs/resource.js'
 export { ResourceViewProps } from './View.js'
+
+// OLD
 export {
   flattenResources,
-  Group,
+  // Group,
   isGroupsEqual,
   GroupNode,
-  ParentNode,
+  // ParentNode,
   ResourceParentNode,
   GroupParentNode,
   ResourceNode,
   buildRowNodes,
   buildResourceFields,
 } from './common/resource-hierarchy.js'
+
+// NEW
+export {
+  Group,
+  ParentNode,
+  buildResourceHierarchy,
+  isEntityGroup,
+  createGroupId,
+} from './common/resource-hierarchy2.js'
+
+export {
+  ResourceEntityExpansions,
+} from './reducers/resourceEntityExpansions.js'
+
 export { ColSpec, GroupSpec } from './common/resource-spec.js'
 export { ResourceSplitter } from './common/ResourceSplitter.js'
 export { ResourceLabelContainer, ResourceLabelContainerProps } from './common/ResourceLabelContainer.js'

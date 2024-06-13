@@ -67,6 +67,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   private scrollResponder: ScrollResponder
   private expandBodyToHeight: number | undefined
 
+  // TODO: make stateful
   // (have sub-components report their natural heights via callbacks)
   private headerNaturalHeightMap: Map<boolean | number, NaturalHeightMap>
   private bodyNaturalHeightMap: Map<Resource | Group, NaturalHeightMap>
@@ -250,7 +251,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
     return (
       <Fragment>
         {groupColDisplays.map((groupCellDisplays, cellIndex) => (
-          <div key={cellIndex}>
+          <div key={cellIndex}>{/* TODO: assign left/width */}
             {groupCellDisplays.map((groupCellDisplay) => (
               <SpreadsheetGroupCell
                 key={String(groupCellDisplay.group.value)}
@@ -262,7 +263,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
             ))}
           </div>
         ))}
-        <div>
+        <div>{/* TODO: assign left/width */}
           {groupRowDisplays.map((groupRowDisplay) => (
             <SpreadsheetGroupRow
               key={String(groupRowDisplay.group.value)}
@@ -273,7 +274,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
             />
           ))}
         </div>
-        <div>
+        <div>{/* TODO: assign left/width */}
           {resourceRowDisplays.map((resourceRowDisplay) => (
             <SpreadsheetRow
               key={resourceRowDisplay.resource.id}
@@ -305,6 +306,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   componentDidUpdate(prevProps: ResourceViewProps, prevState: ResourceTimelineViewState, snapshot: ResourceTimelineViewSnapshot) {
     this.scrollResponder.update(
       prevProps.dateProfile !== this.props.dateProfile,
+      // TODO: && bodyVericalPositions stable
     )
 
     if (snapshot.resourceScroll) {
@@ -424,6 +426,7 @@ ResourceTimelineView.addStateEquality({
   spreadsheetColWidths: isArraysEqual,
 })
 
+// !!!
 function buildSpreadsheetCols(colSpecs: ColSpec[], forcedWidths: number[], fallbackWidth: CssDimValue = '') {
   return colSpecs.map((colSpec, i) => ({
     className: colSpec.isMain ? 'fc-main-col' : '',

@@ -36,7 +36,7 @@ export class ResourceTimelineLane extends BaseComponent<ResourceTimelineLaneProp
           didMount={options.resourceLaneDidMount}
           willUnmount={options.resourceLaneWillUnmount}
         >
-          {(InnerContent) => (
+          {(InnerContent) => ( // TODO: apply top-coordinate
             <div className="fc-timeline-lane-frame" style={{ height: props.height }}>
               <InnerContent
                 elTag="div"
