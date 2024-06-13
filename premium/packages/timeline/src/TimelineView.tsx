@@ -1,10 +1,10 @@
-import { ViewProps, memoize, ViewContainer, DateComponent } from '@fullcalendar/core/internal'
-import { createElement, createRef } from '@fullcalendar/core/preact'
-import { ScrollGrid } from '@fullcalendar/scrollgrid/internal'
+import { ViewProps, memoize, ViewContainer, DateComponent, Hit, greatestDurationDenominator, NowTimer, DateMarker, DateRange, NowIndicatorContainer } from '@fullcalendar/core/internal'
+import { Fragment, createElement, createRef } from '@fullcalendar/core/preact'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile.js'
 import { TimelineHeader } from './TimelineHeader.js'
-import { TimelineGrid } from './TimelineGrid.js'
-import { TimelineCoords } from './TimelineCoords.js'
+import { TimelineCoords, coordToCss } from './TimelineCoords.js'
+import { TimelineSlats } from './TimelineSlats.js'
+import { TimelineLane } from './TimelineLane.js'
 
 interface TimelineViewState {
   slatCoords: TimelineCoords | null
@@ -13,7 +13,7 @@ interface TimelineViewState {
 
 export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
-  private scrollGridRef = createRef<ScrollGrid>()
+  private slatsRef = createRef<TimelineSlats>()
 
   state = {
     slatCoords: null,
@@ -35,6 +35,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
 
     console.log('TODO use cols', slatCols)
+
+    let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
 
     /*
     TODO:
@@ -61,12 +63,52 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
             slatCoords={state.slatCoords}
             onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
           />
-          <TimelineGrid
-            {...props}
-            tDateProfile={tDateProfile}
-            onSlatCoords={this.handleSlatCoords}
-            onScrollLeftRequest={this.handleScrollLeftRequest}
-          />
+          <div
+            className="fc-timeline-body"
+            ref={this.handeBodyEl}
+          >
+            <NowTimer unit={timerUnit}>
+              {(nowDate: DateMarker, todayRange: DateRange) => (
+                <Fragment>
+                  <TimelineSlats
+                    ref={this.slatsRef}
+                    dateProfile={props.dateProfile}
+                    tDateProfile={tDateProfile}
+                    nowDate={nowDate}
+                    todayRange={todayRange}
+                    onCoords={this.handleSlatCoords}
+                    onScrollLeftRequest={this.handleScrollLeftRequest}
+                  />
+                  <TimelineLane
+                    dateProfile={props.dateProfile}
+                    tDateProfile={tDateProfile}
+                    nowDate={nowDate}
+                    todayRange={todayRange}
+                    nextDayThreshold={options.nextDayThreshold}
+                    businessHours={props.businessHours}
+                    eventStore={props.eventStore}
+                    eventUiBases={props.eventUiBases}
+                    dateSelection={props.dateSelection}
+                    eventSelection={props.eventSelection}
+                    eventDrag={props.eventDrag}
+                    eventResize={props.eventResize}
+                    timelineCoords={state.slatCoords}
+                    syncParentMinHeight
+                  />
+                  {(options.nowIndicator && state.slatCoords && state.slatCoords.isDateInRange(nowDate)) && (
+                    <div className="fc-timeline-now-indicator-container">
+                      <NowIndicatorContainer
+                        elClasses={['fc-timeline-now-indicator-line']}
+                        elStyle={coordToCss(state.slatCoords.dateToCoord(nowDate), context.isRtl)}
+                        isAxis={false}
+                        date={nowDate}
+                      />
+                    </div>
+                  )}
+                </Fragment>
+              )}
+            </NowTimer>
+          </div>
         </div>
       </ViewContainer>
     )
@@ -77,8 +119,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   }
 
   handleScrollLeftRequest = (scrollLeft: number) => {
-    let scrollGrid = this.scrollGridRef.current
-    scrollGrid.forceScrollLeft(0, scrollLeft)
+    this.forceScrollLeft(scrollLeft)
   }
 
   handleMaxCushionWidth = (slotCushionMaxWidth) => {
@@ -89,6 +130,43 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
   computeFallbackSlotMinWidth(tDateProfile: TimelineDateProfile) { // TODO: duplicate definition
     return Math.max(30, ((this.state.slotCushionMaxWidth || 0) / tDateProfile.slotsPerLabel))
+  }
+
+  forceScrollLeft(left: number): void { // just time-scroll
+    // TODO
+  }
+
+  // Hit System
+  // ------------------------------------------------------------------------------------------
+
+  handeBodyEl = (el: HTMLElement | null) => {
+    if (el) {
+      this.context.registerInteractiveComponent(this, { el })
+    } else {
+      this.context.unregisterInteractiveComponent(this)
+    }
+  }
+
+  queryHit(positionLeft: number, positionTop: number, elWidth: number, elHeight: number): Hit {
+    let slats = this.slatsRef.current
+    let slatHit = slats.positionToHit(positionLeft)
+
+    if (slatHit) {
+      return {
+        dateProfile: this.props.dateProfile,
+        dateSpan: slatHit.dateSpan,
+        rect: {
+          left: slatHit.left,
+          right: slatHit.right,
+          top: 0,
+          bottom: elHeight,
+        },
+        dayEl: slatHit.dayEl,
+        layer: 0,
+      }
+    }
+
+    return null
   }
 }
 
