@@ -37,7 +37,7 @@ import {
   isEntityGroup,
   ResourceSplitter,
 } from '@fullcalendar/resource/internal'
-import { SpreadsheetRow } from './SpreadsheetRow.js'
+import { SpreadsheetResourceCells } from './SpreadsheetResourceCells.js'
 import { SpreadsheetGroupRow } from './SpreadsheetGroupRow.js'
 import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout.js'
 import {
@@ -402,16 +402,17 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
         </div>
         <div>{/* TODO: assign left/width */}
           {resourceRowDisplays.map((resourceRowDisplay) => (
-            <SpreadsheetRow
-              key={resourceRowDisplay.resource.id}
-              resource={resourceRowDisplay.resource}
-              depth={resourceRowDisplay.depth}
-              hasChildren={resourceRowDisplay.hasChildren}
-              isExpanded={resourceRowDisplay.isExpanded}
-              colSpecs={resourceColSpecs}
-              top={verticalPositions.get(resourceRowDisplay.resource).top}
-              height={verticalPositions.get(resourceRowDisplay.resource).height}
-            />
+            <tr role="row">{/* TODO: assign top/height */}
+              <SpreadsheetResourceCells
+                key={resourceRowDisplay.resource.id}
+                resource={resourceRowDisplay.resource}
+                resourceFields={resourceRowDisplay.resourceFields}
+                depth={resourceRowDisplay.depth}
+                hasChildren={resourceRowDisplay.hasChildren}
+                isExpanded={resourceRowDisplay.isExpanded}
+                colSpecs={resourceColSpecs}
+              />
+            </tr>
           ))}
         </div>
       </Fragment>
