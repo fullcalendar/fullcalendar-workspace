@@ -23,10 +23,10 @@ export interface TimelineDateProfile {
   snapIndexToDiff: number[]
   snapCnt: number
   slotCnt: number
-  cellRows: TimelineHeaderCell[][]
+  cellRows: TimelineHeaderCellData[][]
 }
 
-export interface TimelineHeaderCell {
+export interface TimelineHeaderCellData {
   date: DateMarker
   text: string
   rowUnit: string
@@ -596,6 +596,6 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
   return cellRows
 }
 
-function buildCellObject(date: DateMarker, text, rowUnit): TimelineHeaderCell {
+function buildCellObject(date: DateMarker, text, rowUnit): TimelineHeaderCellData {
   return { date, text, rowUnit, colspan: 1, isWeekStart: false }
 }

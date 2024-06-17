@@ -5,13 +5,13 @@ import {
   getDayClassNames, DateProfile, memoizeObjArg, ViewContext, memoize, ContentContainer, DateEnv,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
-import { TimelineDateProfile, TimelineHeaderCell } from './timeline-date-profile.js'
+import { TimelineDateProfile, TimelineHeaderCellData } from './timeline-date-profile.js'
 
 export interface TimelineHeaderThProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   rowLevel: number
-  cell: TimelineHeaderCell
+  cell: TimelineHeaderCellData
   todayRange: DateRange
   nowDate: DateMarker
   isSticky: boolean
@@ -19,7 +19,7 @@ export interface TimelineHeaderThProps {
   onNaturalHeight?: (height: number) => void
 }
 
-export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
+export class TimelineHeaderCell extends BaseComponent<TimelineHeaderThProps> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)
   private buildCellNavLinkAttrs = memoize(buildCellNavLinkAttrs)
   private innerElRef = createRef<HTMLDivElement>()
@@ -44,7 +44,7 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
 
     return (
       <ContentContainer
-        elTag="th"
+        elTag="div"
         elClasses={[
           'fc-timeline-slot',
           'fc-timeline-slot-label',
