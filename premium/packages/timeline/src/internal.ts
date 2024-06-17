@@ -1,7 +1,6 @@
 import './index.css'
 
 export { TimelineView } from './TimelineView.js'
-export { buildSlatCols } from './TimelineView.js'
 export { TimelineLane, TimelineLaneProps } from './TimelineLane.js'
 export { TimelineLaneBg } from './TimelineLaneBg.js'
 export { TimelineHeader } from './TimelineHeader.js'

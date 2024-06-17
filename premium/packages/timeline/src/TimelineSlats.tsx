@@ -1,12 +1,21 @@
 import {
   BaseComponent, multiplyDuration, RefMap,
   ScrollResponder, ScrollRequest, DateMarker,
+  DateProfile,
+  DateRange,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { TimelineCoords } from './TimelineCoords.js'
-import { TimelineSlatsBody, TimelineSlatsContentProps } from './TimelineSlatsBody.js'
+import { TimelineSlatCell } from './TimelineSlatCell.js'
+import { TimelineDateProfile } from './timeline-date-profile.js'
 
-export interface TimelineSlatsProps extends TimelineSlatsContentProps {
+export interface TimelineSlatsProps {
+  dateProfile: DateProfile
+  tDateProfile: TimelineDateProfile
+  nowDate: DateMarker
+  todayRange: DateRange
+  normalSlotWidth: number | undefined
+  lastSlotWidth: number | undefined
   onCoords?: (coord: TimelineCoords | null) => void
   onScrollLeftRequest?: (scrollLeft: number) => void
 }
@@ -18,22 +27,32 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
   private scrollResponder: ScrollResponder
 
   render() {
-    let { props, context } = this
+    let { props } = this
+    let { tDateProfile, normalSlotWidth, lastSlotWidth } = props
+    let { slotDates, isWeekStarts } = tDateProfile
+    let isDay = !tDateProfile.isTimeScale && !tDateProfile.largeUnit
 
     return (
       <div className="fc-timeline-slots" ref={this.rootElRef}>
-        <table
-          aria-hidden
-          className={context.theme.getClass('table')}
-        >
-          <TimelineSlatsBody
-            cellElRefs={this.cellElRefs}
-            dateProfile={props.dateProfile}
-            tDateProfile={props.tDateProfile}
-            nowDate={props.nowDate}
-            todayRange={props.todayRange}
-          />
-        </table>
+        {slotDates.map((slotDate, i) => {
+          let isLast = i === slotDates.length - 1
+          let key = slotDate.toISOString()
+
+          return (
+            <TimelineSlatCell
+              key={key}
+              elRef={this.cellElRefs.createRef(key)}
+              date={slotDate}
+              dateProfile={props.dateProfile}
+              tDateProfile={tDateProfile}
+              nowDate={props.nowDate}
+              todayRange={props.todayRange}
+              isEm={isWeekStarts[i]}
+              isDay={isDay}
+              width={isLast ? lastSlotWidth : normalSlotWidth}
+            />
+          )
+        })}
       </div>
     )
   }

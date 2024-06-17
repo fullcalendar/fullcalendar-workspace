@@ -15,6 +15,7 @@ export interface TimelineSlatCellProps {
   todayRange: DateRange
   isDay: boolean
   isEm: boolean
+  width: number | undefined
 }
 
 export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
@@ -31,7 +32,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
 
     return (
       <ContentContainer
-        elTag="td"
+        elTag="div"
         elRef={props.elRef}
         elClasses={[
           'fc-timeline-slot',
@@ -57,6 +58,9 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
             omitTimeZoneOffset: true,
             omitTime: !tDateProfile.isTimeScale,
           }),
+        }}
+        elStyle={{
+          width: props.width,
         }}
         renderProps={renderProps}
         generatorName="slotLaneContent"

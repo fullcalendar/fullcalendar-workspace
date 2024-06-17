@@ -199,6 +199,8 @@ export {
 export type { DayTableCell } from './common/DayTableModel.js'
 export { DayTableModel } from './common/DayTableModel.js'
 
+export { NewScroller } from './common/NewScroller.js'
+
 export type { SlicedProps } from './common/slicing-utils.js'
 export { Slicer } from './common/slicing-utils.js'
 

@@ -14,7 +14,6 @@ export interface TimelineHeaderProps {
   slatCoords: TimelineCoords
   onMaxCushionWidth?: (number) => void
   verticalPositions?: Map<boolean | number, { top: number, height: number }>
-  isVerticallySticky?: boolean
 }
 
 export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
@@ -34,10 +33,7 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
       <NowTimer unit={timerUnit}>
         {(nowDate: DateMarker, todayRange: DateRange) => (
           <div
-            className={[
-              'fc-timeline-header',
-              props.isVerticallySticky && 'fc-newnew-timeline-header-sticky',
-            ].join(' ')}
+            className='fc-timeline-header'
             ref={this.rootElRef}
           >
             <div>
@@ -85,13 +81,15 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
   }
 
   /*
-  TODO: rethink this
+  TODO: rethink this, called way too often
   */
-  computeMaxCushionWidth() { // TODO: called way too often
-    return Math.max(
-      ...findElements(this.rootElRef.current, '.fc-timeline-header-row:last-child .fc-timeline-slot-cushion').map(
-        (el) => el.getBoundingClientRect().width,
-      ),
+  computeMaxCushionWidth() {
+    return Math.ceil(
+      Math.max(
+        ...findElements(this.rootElRef.current, '.fc-timeline-header-row:last-child .fc-timeline-slot-cushion').map(
+          (el) => el.getBoundingClientRect().width,
+        ),
+      )
     )
   }
 }

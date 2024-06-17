@@ -16,13 +16,12 @@ import {
   NowIndicatorContainer,
   getStickyHeaderDates,
   getStickyFooterScrollbar,
+  NewScroller,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import {
   buildTimelineDateProfile, TimelineHeader,
-  buildSlatCols,
   TimelineCoords,
-  TimelineDateProfile,
   TimelineLaneSlicer,
   TimelineSlats,
   coordToCss,
@@ -57,12 +56,17 @@ import { HeaderCell } from './spreadsheet/HeaderCell.js'
 import { ResourceLane } from './lane/ResourceLane.js'
 import { GroupLane } from './lane/GroupLane.js'
 import { ResizableTwoCol } from './ResizableTwoCol.js'
+import { computeSlotWidth } from '../../timeline/src/TimelineView.js'
 
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
   spreadsheetColWidths: number[]
   slatCoords?: TimelineCoords
   slotCushionMaxWidth?: number
+  spreadsheetInnerWidth?: number,
+  timeInnerWidth?: number,
+  leftScrollbarWidth?: number,
+  rightScrollbarWidth?: number,
 }
 
 interface ResourceTimelineViewSnapshot {
@@ -177,13 +181,20 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     )
 
     let { slotMinWidth } = options
-    let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
-    let spreadsheetCols = buildSpreadsheetCols(colSpecs, state.spreadsheetColWidths, '')
+    let [normalSlotWidth, lastSlotWidth, timeCanvasWidth] = computeSlotWidth( // TODO: memoize
+      tDateProfile,
+      state.slotCushionMaxWidth,
+      state.timeInnerWidth
+    )
 
-    console.log(
-      'TODO: use cols',
-      spreadsheetCols,
-      slatCols,
+    let [spreadsheetColPositions, spreadsheetCanvasWidth] = computeSpreadsheetColPositions( // TODO: memoize
+      colSpecs,
+      state.spreadsheetColWidths,
+      state.spreadsheetInnerWidth,
+    )
+    let spreadsheetBulkColsPosition = sliceSpreadsheetColPositions(
+      spreadsheetColPositions,
+      groupColDisplays.length,
     )
 
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
@@ -202,9 +213,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       context.dateEnv,
     )
 
-    // WORKAROUND: make ignore slatCoords when out of sync with dateProfile
-    let slatCoords = state.slatCoords && state.slatCoords.dateProfile === dateProfile ? state.slatCoords : null
-
     let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
 
     let liquidHeight = !props.isHeightAuto && !props.forPrint
@@ -217,7 +225,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     TODO:
     - tabindex
     - forPrint / collapsibleWidth (not needed anymore?)
+    - onNaturalHeight handlers
     - scroll-joiners
+    - forceScrollLeft, etc
+    - the left/width coords need to consider RTL!
+    - do NOT to vertical scrolling if height:auto
     */
     return (
       <ViewContainer
@@ -233,204 +245,241 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       >
         <ResizableTwoCol
           liquidHeight={liquidHeight}
-          startClassName='fc-newnew-datagrid'
+          startClassName='fc-newnew-datagrid' // should make flexbox-based liquid height
           startContent={() => (
             <Fragment>
-              <div class={[
-                'fc-datagrid-header',
-                stickyHeaderDates && 'fc-newnew-datagrid-header-sticky',
-              ].join(' ')}>
-                {Boolean(superHeaderRendering) && (
-                  <div role="row">
-                    <SuperHeaderCell
-                      renderHooks={superHeaderRendering}
-                    />
-                  </div>
-                )}
-                <div role="row">
-                  {colSpecs.map((colSpec, i) => (
-                    <HeaderCell
-                      colSpec={colSpec}
-                      resizer={i < colSpecs.length - 1}
-                      resizerElRef={this.resizerElRefs.createRef(i)}
-                    />
-                  ))}
-                </div>
-              </div>
-              <div class='fc-datagrid-body'>
-                {groupColDisplays.map((groupCellDisplays, cellIndex) => (
-                  <div key={cellIndex}>{/* TODO: assign left/width */}
-                    {groupCellDisplays.map((groupCellDisplay) => {
-                      const { group } = groupCellDisplay
-                      const position = bodyVerticalPositions.get(group)
-                      return (
-                        <div
-                          key={String(group.value)}
-                          class='fc-newnew-row'
-                          role='row'
-                          style={{ top: position.top, height: position.height }}
-                        >
-                          <GroupTallCell
-                            colSpec={group.spec}
-                            fieldValue={group.value}
-                          />
-                        </div>
-                      )
-                    })}
-                  </div>
-                ))}
-                <div>{/* TODO: assign left/width for BULK column(s) */}
-                  <Fragment>
-                    {groupRowDisplays.map((groupRowDisplay) => {
-                      const { group } = groupRowDisplay
-                      const position = bodyVerticalPositions.get(group)
-                      return (
-                        <div
-                          key={String(group.value)}
-                          class='fc-newnew-row'
-                          role='row'
-                          style={{ top: position.top, height: position.height }}
-                        >
-                          <GroupWideCell
-                            group={group}
-                            isExpanded={groupRowDisplay.isExpanded}
-                          />
-                        </div>
-                      )
-                    })}
-                  </Fragment>
-                  <Fragment>
-                    {resourceRowDisplays.map((resourceRowDisplay) => {
-                      const { resource } = resourceRowDisplay
-                      const position = bodyVerticalPositions.get(resource)
-                      return (
-                        <div
-                          key={resource.id}
-                          class='fc-newnew-row'
-                          role='row'
-                          style={{ top: position.top, height: position.height }}
-                        >
-                          <ResourceCells
-                            resource={resource}
-                            resourceFields={resourceRowDisplay.resourceFields}
-                            depth={resourceRowDisplay.depth}
-                            hasChildren={resourceRowDisplay.hasChildren}
-                            isExpanded={resourceRowDisplay.isExpanded}
-                            colSpecs={resourceColSpecs}
-                          />
-                        </div>
-                      )
-                    })}
-                  </Fragment>
-                </div>
-              </div>
-              <div class='fc-newnew-scroller'>
-                <div />{/* TODO: canvas width */}
-              </div>
-            </Fragment>
-          )}
-          endClassName='fc-newnew-timeline-body'
-          endContent={() => (
-            <Fragment>
-              <TimelineHeader
-                dateProfile={dateProfile}
-                tDateProfile={tDateProfile}
-                slatCoords={state.slatCoords}
-                onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
-                verticalPositions={headerVerticalPositions}
-                isVerticallySticky={stickyHeaderDates}
-              />
-              <div
-                ref={this.handleBodyEl}
-                className={[
-                  'fc-timeline-body',
-                  expandRows ? 'fc-timeline-body-expandrows' : '',
-                ].join(' ')}
+              <NewScroller
+                horizontal
+                hideBars
+                className={stickyHeaderDates ? 'fc-newnew-v-sticky' : ''}
               >
-                <NowTimer unit={timerUnit}>
-                  {(nowDate: DateMarker, todayRange: DateRange) => (
-                    <Fragment>
-                      <TimelineSlats
-                        ref={this.slatsRef}
-                        dateProfile={dateProfile}
-                        tDateProfile={tDateProfile}
-                        nowDate={nowDate}
-                        todayRange={todayRange}
-                        onCoords={this.handleSlatCoords}
-                        onScrollLeftRequest={this.handleScrollLeftRequest}
+                <div class='fc-datagrid-header' style={{ width: spreadsheetCanvasWidth }}>
+                  {Boolean(superHeaderRendering) && (
+                    <div role="row">
+                      <SuperHeaderCell
+                        renderHooks={superHeaderRendering}
                       />
-                      <TimelineLaneBg
-                        businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
-                        bgEventSegs={bgSlicedProps.bgEventSegs}
-                        timelineCoords={slatCoords}
-                        // empty array will result in unnecessary rerenders?
-                        eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs as TimelineLaneSeg[] : [])}
-                        dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
-                        nowDate={nowDate}
-                        todayRange={todayRange}
+                    </div>
+                  )}
+                  <div role="row">
+                    {colSpecs.map((colSpec, i) => (
+                      <HeaderCell
+                        colSpec={colSpec}
+                        resizer={i < colSpecs.length - 1}
+                        resizerElRef={this.resizerElRefs.createRef(i)}
                       />
-                      <Fragment>
-                        {groupRowDisplays.map((groupRowDisplay) => {
-                          const { group } = groupRowDisplay
+                    ))}
+                  </div>
+                </div>
+              </NewScroller>
+              <NewScroller
+                horizontal
+                hideBars
+                onInnerWidth={this.handleSpreadsheetInnerWidth}
+              >
+                <div className='fc-datagrid-body' style={{ width: spreadsheetCanvasWidth }}>
+                  {groupColDisplays.map((groupCellDisplays, cellIndex) => {
+                    const hposition = spreadsheetColPositions[cellIndex]
+                    return (
+                      <div
+                        key={cellIndex}
+                        style={{ left: hposition.left, width: hposition.width }}
+                      >
+                        {groupCellDisplays.map((groupCellDisplay) => {
+                          const { group } = groupCellDisplay
                           const position = bodyVerticalPositions.get(group)
                           return (
                             <div
-                              key={String(groupRowDisplay.group.value)}
+                              key={String(group.value)}
                               class='fc-newnew-row'
                               role='row'
                               style={{ top: position.top, height: position.height }}
                             >
-                              <GroupLane
-                                group={groupRowDisplay.group}
+                              <GroupTallCell
+                                colSpec={group.spec}
+                                fieldValue={group.value}
                               />
                             </div>
                           )
                         })}
-                      </Fragment>
-                      <Fragment>
-                        {resourceRowDisplays.map((resourceRowDisplay) => {
-                          const { resource } = resourceRowDisplay
-                          const position = bodyVerticalPositions.get(resource)
-                          return (
-                            <div
-                              key={resource.id}
-                              class='fc-newnew-row'
-                              role='row'
-                              style={{ top: position.top, height: position.height }}
-                            >
-                              <ResourceLane
-                                {...splitProps[resource.id]}
-                                resource={resource}
-                                dateProfile={dateProfile}
-                                tDateProfile={tDateProfile}
-                                nowDate={nowDate}
-                                todayRange={todayRange}
-                                nextDayThreshold={context.options.nextDayThreshold}
-                                businessHours={resource.businessHours || fallbackBusinessHours}
-                                timelineCoords={slatCoords}
-                              />
-                            </div>
-                          )
-                        })}
-                      </Fragment>
-                      {(context.options.nowIndicator && slatCoords && slatCoords.isDateInRange(nowDate)) && (
-                        <div className="fc-timeline-now-indicator-container">
-                          <NowIndicatorContainer
-                            elClasses={['fc-timeline-now-indicator-line']}
-                            elStyle={coordToCss(slatCoords.dateToCoord(nowDate), context.isRtl)}
-                            isAxis={false}
-                            date={nowDate}
-                          />
-                        </div>
-                      )}
+                      </div>
+                    )
+                  })}
+                  <div style={{ left: spreadsheetBulkColsPosition.left, width: spreadsheetBulkColsPosition.width }}>
+                    <Fragment>
+                      {groupRowDisplays.map((groupRowDisplay) => {
+                        const { group } = groupRowDisplay
+                        const position = bodyVerticalPositions.get(group)
+                        return (
+                          <div
+                            key={String(group.value)}
+                            class='fc-newnew-row'
+                            role='row'
+                            style={{ top: position.top, height: position.height }}
+                          >
+                            <GroupWideCell
+                              group={group}
+                              isExpanded={groupRowDisplay.isExpanded}
+                            />
+                          </div>
+                        )
+                      })}
                     </Fragment>
-                  )}
-                </NowTimer>
-              </div>
-              {stickyFooterScrollbar && (
-                <div class='fc-newnew-scroller'>
-                  <div />{/* TODO: canvas width */}
+                    <Fragment>
+                      {resourceRowDisplays.map((resourceRowDisplay) => {
+                        const { resource } = resourceRowDisplay
+                        const position = bodyVerticalPositions.get(resource)
+                        return (
+                          <div
+                            key={resource.id}
+                            class='fc-newnew-row'
+                            role='row'
+                            style={{ top: position.top, height: position.height }}
+                          >
+                            <ResourceCells
+                              resource={resource}
+                              resourceFields={resourceRowDisplay.resourceFields}
+                              depth={resourceRowDisplay.depth}
+                              hasChildren={resourceRowDisplay.hasChildren}
+                              isExpanded={resourceRowDisplay.isExpanded}
+                              colSpecs={resourceColSpecs}
+                            />
+                          </div>
+                        )
+                      })}
+                    </Fragment>
+                  </div>
                 </div>
+              </NewScroller>
+              <NewScroller horizontal>
+                <div style={{ width: spreadsheetCanvasWidth }} />
+              </NewScroller>
+            </Fragment>
+          )}
+          endClassName='fc-newnew-timeline' // should make flexbox-based liquid height
+          endContent={() => (
+            <Fragment>
+              <NewScroller
+                horizontal
+                hideBars
+                className={stickyHeaderDates ? 'fc-newnew-v-sticky' : ''}
+              >
+                <div style={{
+                  width: timeCanvasWidth,
+                  paddingLeft: state.leftScrollbarWidth,
+                  paddingRight: state.rightScrollbarWidth,
+                }}>
+                  <TimelineHeader
+                    dateProfile={dateProfile}
+                    tDateProfile={tDateProfile}
+                    slatCoords={state.slatCoords}
+                    onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
+                    verticalPositions={headerVerticalPositions}
+                  />
+                </div>
+              </NewScroller>
+              <NewScroller // how does it know to be liquid-height?
+                vertical
+                horizontal
+                onInnerWidth={this.handleTimeInnerWidth}
+                onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
+                onRightScrollbarWidth={this.handleRightScrollbarWidth}
+              >
+                <div
+                  ref={this.handleBodyEl}
+                  className={[
+                    'fc-timeline-body',
+                    expandRows ? 'fc-timeline-body-expandrows' : '',
+                  ].join(' ')}
+                  style={{ width: timeCanvasWidth }}
+                >
+                  <NowTimer unit={timerUnit}>
+                    {(nowDate: DateMarker, todayRange: DateRange) => (
+                      <Fragment>
+                        <TimelineSlats
+                          ref={this.slatsRef}
+                          dateProfile={dateProfile}
+                          tDateProfile={tDateProfile}
+                          nowDate={nowDate}
+                          todayRange={todayRange}
+                          normalSlotWidth={normalSlotWidth}
+                          lastSlotWidth={lastSlotWidth}
+                          onCoords={this.handleSlatCoords}
+                          onScrollLeftRequest={this.handleScrollLeftRequest}
+                        />
+                        <TimelineLaneBg
+                          businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
+                          bgEventSegs={bgSlicedProps.bgEventSegs}
+                          timelineCoords={state.slatCoords}
+                          // empty array will result in unnecessary rerenders?
+                          eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs as TimelineLaneSeg[] : [])}
+                          dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
+                          nowDate={nowDate}
+                          todayRange={todayRange}
+                        />
+                        <Fragment>
+                          {groupRowDisplays.map((groupRowDisplay) => {
+                            const { group } = groupRowDisplay
+                            const position = bodyVerticalPositions.get(group)
+                            return (
+                              <div
+                                key={String(groupRowDisplay.group.value)}
+                                class='fc-newnew-row'
+                                role='row'
+                                style={{ top: position.top, height: position.height }}
+                              >
+                                <GroupLane
+                                  group={groupRowDisplay.group}
+                                />
+                              </div>
+                            )
+                          })}
+                        </Fragment>
+                        <Fragment>
+                          {resourceRowDisplays.map((resourceRowDisplay) => {
+                            const { resource } = resourceRowDisplay
+                            const position = bodyVerticalPositions.get(resource)
+                            return (
+                              <div
+                                key={resource.id}
+                                class='fc-newnew-row'
+                                role='row'
+                                style={{ top: position.top, height: position.height }}
+                              >
+                                <ResourceLane
+                                  {...splitProps[resource.id]}
+                                  resource={resource}
+                                  dateProfile={dateProfile}
+                                  tDateProfile={tDateProfile}
+                                  nowDate={nowDate}
+                                  todayRange={todayRange}
+                                  nextDayThreshold={context.options.nextDayThreshold}
+                                  businessHours={resource.businessHours || fallbackBusinessHours}
+                                  timelineCoords={state.slatCoords}
+                                />
+                              </div>
+                            )
+                          })}
+                        </Fragment>
+                        {(context.options.nowIndicator && state.slatCoords && state.slatCoords.isDateInRange(nowDate)) && (
+                          <div className="fc-timeline-now-indicator-container">
+                            <NowIndicatorContainer
+                              elClasses={['fc-timeline-now-indicator-line']}
+                              elStyle={coordToCss(state.slatCoords.dateToCoord(nowDate), context.isRtl)}
+                              isAxis={false}
+                              date={nowDate}
+                            />
+                          </div>
+                        )}
+                      </Fragment>
+                    )}
+                  </NowTimer>
+                </div>
+              </NewScroller>
+              {stickyFooterScrollbar && (
+                <NewScroller horizontal>
+                  <div style={{ width: timeCanvasWidth }}/>
+                </NewScroller>
               )}
             </Fragment>
           )}
@@ -471,12 +520,32 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
   handleMaxCushionWidth = (slotCushionMaxWidth) => {
     this.setState({
-      slotCushionMaxWidth: Math.ceil(slotCushionMaxWidth), // for less rerendering TODO: DRY
+      slotCushionMaxWidth,
     })
   }
 
-  computeFallbackSlotMinWidth(tDateProfile: TimelineDateProfile) { // TODO: duplicate definition
-    return Math.max(30, ((this.state.slotCushionMaxWidth || 0) / tDateProfile.slotsPerLabel))
+  handleSpreadsheetInnerWidth = (spreadsheetInnerWidth: number) => {
+    this.setState({
+      spreadsheetInnerWidth,
+    })
+  }
+
+  handleTimeInnerWidth = (timeInnerWidth: number) => {
+    this.setState({
+      timeInnerWidth,
+    })
+  }
+
+  handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
+    this.setState({
+      leftScrollbarWidth
+    })
+  }
+
+  handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
+    this.setState({
+      rightScrollbarWidth
+    })
   }
 
   // Scrolling
@@ -686,12 +755,21 @@ ResourceTimelineView.addStateEquality({
   spreadsheetColWidths: isArraysEqual,
 })
 
-function buildSpreadsheetCols(colSpecs: ColSpec[], forcedWidths: number[], fallbackWidth: CssDimValue = '') {
-  return colSpecs.map((colSpec, i) => ({
-    className: colSpec.isMain ? 'fc-main-col' : '',
-    width: forcedWidths[i] || colSpec.width || fallbackWidth,
-  }))
+function computeSpreadsheetColPositions(
+  colSpecs: ColSpec[],
+  forcedWidths: number[],
+  availableWidth: number,
+): [{ left: number, width: number }[], number] {
+  return null as any
 }
+
+function sliceSpreadsheetColPositions(
+  colPositions: { left: number, width: number }[],
+  startIndex: number,
+): { left: number, width: number } {
+  return null as any
+}
+
 
 function processColOptions(options: ViewOptionsRefined) {
   let allColSpecs: ColSpec[] = options.resourceAreaColumns || []
