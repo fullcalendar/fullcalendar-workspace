@@ -14,6 +14,8 @@ import {
   DateMarker,
   DateRange,
   NowIndicatorContainer,
+  getStickyHeaderDates,
+  getStickyFooterScrollbar,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import {
@@ -180,8 +182,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     console.log(
       'TODO: use cols',
-      slatCols,
       spreadsheetCols,
+      slatCols,
     )
 
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
@@ -205,13 +207,17 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
 
+    let liquidHeight = !props.isHeightAuto && !props.forPrint
+
+    let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
+
+    let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
+
     /*
     TODO:
-    - forPrint
-    - liquid(height) = !props.isHeightAuto && !props.forPrint
-    - collapsibleWidth = false
-    - stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
-    - stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
+    - tabindex
+    - forPrint / collapsibleWidth (not needed anymore?)
+    - scroll-joiners
     */
     return (
       <ViewContainer
@@ -226,17 +232,22 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
         viewSpec={viewSpec}
       >
         <ResizableTwoCol
+          liquidHeight={liquidHeight}
+          startClassName='fc-newnew-datagrid'
           startContent={() => (
             <Fragment>
-              <div class='fc-datagrid-header'>
+              <div class={[
+                'fc-datagrid-header',
+                stickyHeaderDates && 'fc-newnew-datagrid-header-sticky',
+              ].join(' ')}>
                 {Boolean(superHeaderRendering) && (
-                  <div key="row-super" role="row">
+                  <div role="row">
                     <SuperHeaderCell
                       renderHooks={superHeaderRendering}
                     />
                   </div>
                 )}
-                <div key="row" role="row">
+                <div role="row">
                   {colSpecs.map((colSpec, i) => (
                     <HeaderCell
                       colSpec={colSpec}
@@ -249,49 +260,76 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               <div class='fc-datagrid-body'>
                 {groupColDisplays.map((groupCellDisplays, cellIndex) => (
                   <div key={cellIndex}>{/* TODO: assign left/width */}
-                    {groupCellDisplays.map((groupCellDisplay) => (
-                      <GroupTallCell
-                        key={String(groupCellDisplay.group.value)}
-                        colSpec={groupCellDisplay.group.spec}
-                        fieldValue={groupCellDisplay.group.value}
-                        top={bodyVerticalPositions.get(groupCellDisplay.group).top}
-                        height={bodyVerticalPositions.get(groupCellDisplay.group).height}
-                      />
-                    ))}
+                    {groupCellDisplays.map((groupCellDisplay) => {
+                      const { group } = groupCellDisplay
+                      const position = bodyVerticalPositions.get(group)
+                      return (
+                        <div
+                          key={String(group.value)}
+                          class='fc-newnew-row'
+                          role='row'
+                          style={{ top: position.top, height: position.height }}
+                        >
+                          <GroupTallCell
+                            colSpec={group.spec}
+                            fieldValue={group.value}
+                          />
+                        </div>
+                      )
+                    })}
                   </div>
                 ))}
-                {/* TODO: tabindex */}
-                <div>{/* TODO: assign left/width */}
-                  {groupRowDisplays.map((groupRowDisplay) => (
-                    <tr role="row">{/* TODO: assign top/height */}
-                      <GroupWideCell
-                        key={String(groupRowDisplay.group.value)}
-                        group={groupRowDisplay.group}
-                        isExpanded={groupRowDisplay.isExpanded}
-                        top={bodyVerticalPositions.get(groupRowDisplay.group).top}
-                        height={bodyVerticalPositions.get(groupRowDisplay.group).height}
-                      />
-                    </tr>
-                  ))}
+                <div>{/* TODO: assign left/width for BULK column(s) */}
+                  <Fragment>
+                    {groupRowDisplays.map((groupRowDisplay) => {
+                      const { group } = groupRowDisplay
+                      const position = bodyVerticalPositions.get(group)
+                      return (
+                        <div
+                          key={String(group.value)}
+                          class='fc-newnew-row'
+                          role='row'
+                          style={{ top: position.top, height: position.height }}
+                        >
+                          <GroupWideCell
+                            group={group}
+                            isExpanded={groupRowDisplay.isExpanded}
+                          />
+                        </div>
+                      )
+                    })}
+                  </Fragment>
+                  <Fragment>
+                    {resourceRowDisplays.map((resourceRowDisplay) => {
+                      const { resource } = resourceRowDisplay
+                      const position = bodyVerticalPositions.get(resource)
+                      return (
+                        <div
+                          key={resource.id}
+                          class='fc-newnew-row'
+                          role='row'
+                          style={{ top: position.top, height: position.height }}
+                        >
+                          <ResourceCells
+                            resource={resource}
+                            resourceFields={resourceRowDisplay.resourceFields}
+                            depth={resourceRowDisplay.depth}
+                            hasChildren={resourceRowDisplay.hasChildren}
+                            isExpanded={resourceRowDisplay.isExpanded}
+                            colSpecs={resourceColSpecs}
+                          />
+                        </div>
+                      )
+                    })}
+                  </Fragment>
                 </div>
-                <div>{/* TODO: assign left/width */}
-                  {resourceRowDisplays.map((resourceRowDisplay) => (
-                    <tr role="row">{/* TODO: assign top/height */}
-                      <ResourceCells
-                        key={resourceRowDisplay.resource.id}
-                        resource={resourceRowDisplay.resource}
-                        resourceFields={resourceRowDisplay.resourceFields}
-                        depth={resourceRowDisplay.depth}
-                        hasChildren={resourceRowDisplay.hasChildren}
-                        isExpanded={resourceRowDisplay.isExpanded}
-                        colSpecs={resourceColSpecs}
-                      />
-                    </tr>
-                  ))}
-                </div>
+              </div>
+              <div class='fc-newnew-scroller'>
+                <div />{/* TODO: canvas width */}
               </div>
             </Fragment>
           )}
+          endClassName='fc-newnew-timeline-body'
           endContent={() => (
             <Fragment>
               <TimelineHeader
@@ -300,6 +338,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 slatCoords={state.slatCoords}
                 onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
                 verticalPositions={headerVerticalPositions}
+                isVerticallySticky={stickyHeaderDates}
               />
               <div
                 ref={this.handleBodyEl}
@@ -330,41 +369,50 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         nowDate={nowDate}
                         todayRange={todayRange}
                       />
-                      <table aria-hidden className={context.theme.getClass('table')}>
-                        <tbody>
-                          <Fragment>
-                            {groupRowDisplays.map((groupRowDisplay) => (
-                              <tr>
-                                <GroupLane
-                                  key={String(groupRowDisplay.group.value)}
-                                  group={groupRowDisplay.group}
-                                />
-                              </tr>
-                            ))}
-                          </Fragment>
-                          <Fragment>
-                            {resourceRowDisplays.map((resourceRowDisplay) => {
-                              const { resource } = resourceRowDisplay
-                              return (
-                                <tr>
-                                  <ResourceLane
-                                    key={resource.id}
-                                    {...splitProps[resource.id]}
-                                    resource={resource}
-                                    dateProfile={dateProfile}
-                                    tDateProfile={tDateProfile}
-                                    nowDate={nowDate}
-                                    todayRange={todayRange}
-                                    nextDayThreshold={context.options.nextDayThreshold}
-                                    businessHours={resource.businessHours || fallbackBusinessHours}
-                                    timelineCoords={slatCoords}
-                                  />
-                                </tr>
-                              )
-                            })}
-                          </Fragment>
-                        </tbody>
-                      </table>
+                      <Fragment>
+                        {groupRowDisplays.map((groupRowDisplay) => {
+                          const { group } = groupRowDisplay
+                          const position = bodyVerticalPositions.get(group)
+                          return (
+                            <div
+                              key={String(groupRowDisplay.group.value)}
+                              class='fc-newnew-row'
+                              role='row'
+                              style={{ top: position.top, height: position.height }}
+                            >
+                              <GroupLane
+                                group={groupRowDisplay.group}
+                              />
+                            </div>
+                          )
+                        })}
+                      </Fragment>
+                      <Fragment>
+                        {resourceRowDisplays.map((resourceRowDisplay) => {
+                          const { resource } = resourceRowDisplay
+                          const position = bodyVerticalPositions.get(resource)
+                          return (
+                            <div
+                              key={resource.id}
+                              class='fc-newnew-row'
+                              role='row'
+                              style={{ top: position.top, height: position.height }}
+                            >
+                              <ResourceLane
+                                {...splitProps[resource.id]}
+                                resource={resource}
+                                dateProfile={dateProfile}
+                                tDateProfile={tDateProfile}
+                                nowDate={nowDate}
+                                todayRange={todayRange}
+                                nextDayThreshold={context.options.nextDayThreshold}
+                                businessHours={resource.businessHours || fallbackBusinessHours}
+                                timelineCoords={slatCoords}
+                              />
+                            </div>
+                          )
+                        })}
+                      </Fragment>
                       {(context.options.nowIndicator && slatCoords && slatCoords.isDateInRange(nowDate)) && (
                         <div className="fc-timeline-now-indicator-container">
                           <NowIndicatorContainer
@@ -379,6 +427,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   )}
                 </NowTimer>
               </div>
+              {stickyFooterScrollbar && (
+                <div class='fc-newnew-scroller'>
+                  <div />{/* TODO: canvas width */}
+                </div>
+              )}
             </Fragment>
           )}
         />

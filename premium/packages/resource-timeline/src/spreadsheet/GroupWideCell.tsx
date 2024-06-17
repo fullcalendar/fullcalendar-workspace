@@ -7,8 +7,6 @@ import { ExpanderIcon } from '../ExpanderIcon.js'
 export interface GroupWideCellProps {
   isExpanded: boolean
   group: Group
-  top: number | undefined
-  height: number | undefined
   onNaturalHeight?: (height: number) => void
 }
 
@@ -23,7 +21,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
     return ( // TODO: apply the top-coordinate
       <Fragment>
         <ContentContainer
-          elTag="th"
+          elTag="div"
           elClasses={[
             'fc-datagrid-cell',
             'fc-resource-group',
@@ -46,7 +44,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
           willUnmount={spec.labelWillUnmount}
         >
           {(InnerContent) => (
-            <div className="fc-datagrid-cell-frame" style={{ height: props.height }}>
+            <div className="fc-datagrid-cell-frame">
               <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner" ref={this.innerElRef}>
                 <ExpanderIcon
                   depth={0}

@@ -14,6 +14,7 @@ export interface TimelineHeaderProps {
   slatCoords: TimelineCoords
   onMaxCushionWidth?: (number) => void
   verticalPositions?: Map<boolean | number, { top: number, height: number }>
+  isVerticallySticky?: boolean
 }
 
 export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
@@ -32,18 +33,22 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
     return (
       <NowTimer unit={timerUnit}>
         {(nowDate: DateMarker, todayRange: DateRange) => (
-          <div className="fc-timeline-header" ref={this.rootElRef}>
-            <table aria-hidden>
-              <tbody>
-                <TimelineHeaderRows
-                  dateProfile={props.dateProfile}
-                  tDateProfile={props.tDateProfile}
-                  nowDate={nowDate}
-                  todayRange={todayRange}
-                  verticalPositions={props.verticalPositions}
-                />
-              </tbody>
-            </table>
+          <div
+            className={[
+              'fc-timeline-header',
+              props.isVerticallySticky && 'fc-newnew-timeline-header-sticky',
+            ].join(' ')}
+            ref={this.rootElRef}
+          >
+            <div>
+              <TimelineHeaderRows
+                dateProfile={props.dateProfile}
+                tDateProfile={props.tDateProfile}
+                nowDate={nowDate}
+                todayRange={todayRange}
+                verticalPositions={props.verticalPositions}
+              />
+            </div>
             {context.options.nowIndicator && (
               // need to have a container regardless of whether the current view has a visible now indicator
               // because apparently removal of the element resets the scroll for some reasons (issue #5351).

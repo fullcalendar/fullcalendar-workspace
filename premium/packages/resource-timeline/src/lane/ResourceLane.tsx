@@ -18,7 +18,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
 
     return (
       <ContentContainer
-        elTag="td"
+        elTag="div"
         elClasses={[
           'fc-timeline-lane',
           'fc-resource',

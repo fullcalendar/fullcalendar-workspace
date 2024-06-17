@@ -2,8 +2,11 @@ import { BaseComponent, ElementDragging, PointerDragEvent } from '@fullcalendar/
 import { ComponentChildren, createElement, createRef } from '@fullcalendar/core/preact';
 
 export interface ResizableTwoColProps {
+  liquidHeight?: boolean
   startContent: ComponentChildren
+  startClassName?: string
   endContent: ComponentChildren
+  endClassName?: string
 }
 
 interface ResizableTwoColState {
@@ -26,15 +29,15 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
       : options.resourceAreaWidth
 
     return (
-      <div ref={this.rootElRef}>
-        <div style={{ width: resourceAreaWidth }}>
+      <div ref={this.rootElRef} class={props.liquidHeight ? 'fc-twocol-liquidheight' : ''}>
+        <div style={{ width: resourceAreaWidth }} class={props.startClassName}>
           {props.startContent}
         </div>
         <div
           ref={this.resizerElRef}
           className={'fc-resource-timeline-divider ' + theme.getClass('tableCellShaded')}
         />
-        <div>
+        <div class={props.endClassName}>
           {props.endContent}
         </div>
       </div>

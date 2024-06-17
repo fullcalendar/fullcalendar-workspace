@@ -1,4 +1,4 @@
-import { ViewProps, memoize, ViewContainer, DateComponent, Hit, greatestDurationDenominator, NowTimer, DateMarker, DateRange, NowIndicatorContainer } from '@fullcalendar/core/internal'
+import { ViewProps, memoize, ViewContainer, DateComponent, Hit, greatestDurationDenominator, NowTimer, DateMarker, DateRange, NowIndicatorContainer, getStickyHeaderDates, getStickyFooterScrollbar } from '@fullcalendar/core/internal'
 import { Fragment, createElement, createRef } from '@fullcalendar/core/preact'
 import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile.js'
 import { TimelineHeader } from './TimelineHeader.js'
@@ -38,13 +38,16 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
 
+    let liquidHeight = !props.isHeightAuto && !props.forPrint
+
+    let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
+
+    let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
+
     /*
     TODO:
-    - forPrint
-    - liquid(height) = !props.isHeightAuto && !props.forPrint
-    - collapsibleWidth = false
-    - stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
-    - stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
+    - tabindex
+    - forPrint / collapsibleWidth (not needed anymore?)
     */
     return (
       <ViewContainer
@@ -56,12 +59,13 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
         ]}
         viewSpec={context.viewSpec}
       >
-        <div>
+        <div style={{ height: liquidHeight ? '100%' : '' }}>
           <TimelineHeader
             dateProfile={props.dateProfile}
             tDateProfile={tDateProfile}
             slatCoords={state.slatCoords}
             onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
+            isVerticallySticky={stickyHeaderDates}
           />
           <div
             className="fc-timeline-body"
@@ -109,6 +113,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               )}
             </NowTimer>
           </div>
+          {stickyFooterScrollbar && (
+            <div class='fc-newnew-scroller'>
+              <div />{/* TODO: canvas width */}
+            </div>
+          )}
         </div>
       </ViewContainer>
     )

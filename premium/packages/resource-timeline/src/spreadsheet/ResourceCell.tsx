@@ -36,7 +36,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
 
     return (
       <ContentContainer
-        elTag="td"
+        elTag="div"
         elClasses={[
           'fc-datagrid-cell',
           'fc-resource',

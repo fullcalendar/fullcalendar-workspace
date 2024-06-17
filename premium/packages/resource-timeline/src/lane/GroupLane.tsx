@@ -25,7 +25,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
 
     return (
       <ContentContainer
-        elTag="td"
+        elTag="div"
         elClasses={[
           'fc-timeline-lane',
           'fc-resource-group',

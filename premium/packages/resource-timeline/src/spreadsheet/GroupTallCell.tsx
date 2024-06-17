@@ -5,8 +5,6 @@ import { ColSpec, ColCellContentArg } from '@fullcalendar/resource'
 export interface GroupTallCellProps {
   colSpec: ColSpec
   fieldValue: any
-  top: number | undefined
-  height: number | undefined
 }
 
 export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
@@ -22,7 +20,7 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
     // `colSpec` is for the group. a GroupSpec :(
     return (
       <ContentContainer
-        elTag="td"
+        elTag="div"
         elClasses={[
           'fc-datagrid-cell',
           'fc-resource-group',
