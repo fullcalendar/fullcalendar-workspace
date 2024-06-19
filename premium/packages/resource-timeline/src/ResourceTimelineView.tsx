@@ -67,6 +67,8 @@ interface ResourceTimelineViewState {
   timeInnerWidth?: number,
   leftScrollbarWidth?: number,
   rightScrollbarWidth?: number,
+  spreadsheetBottomScrollbarWidth?: number,
+  timeBottomScrollbarWidth?: number,
 }
 
 interface ResourceTimelineViewSnapshot {
@@ -122,7 +124,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     let { props, state, context, bodyNaturalHeightMap, headerNaturalHeightMap } = this
     let { dateProfile } = props
     let { options, viewSpec } = context
-    let { expandRows } = options
+    let { expandRows, direction } = options
+    let isRTL = direction === 'rtl'
 
     let tDateProfile = this.buildTimelineDateProfile(
       dateProfile,
@@ -215,8 +218,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
 
-    let liquidHeight = !props.isHeightAuto && !props.forPrint
-
     let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
 
     let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
@@ -225,15 +226,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     TODO:
     - tabindex
     - forPrint / collapsibleWidth (not needed anymore?)
-    - onNaturalHeight handlers
-    - scroll-joiners
     - forceScrollLeft, etc
-    - the left/width coords need to consider RTL!
-    - do NOT to vertical scrolling if height:auto
+    - scroll-joiners
+    - onNaturalHeight handlers
     */
     return (
       <ViewContainer
         elClasses={[
+          'fc-newnew-flexparent',
           'fc-resource-timeline',
           !anyNesting && 'fc-resource-timeline-flat', // flat means there's no nesting
           'fc-timeline',
@@ -244,8 +244,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
         viewSpec={viewSpec}
       >
         <ResizableTwoCol
-          liquidHeight={liquidHeight}
-          startClassName='fc-newnew-datagrid' // should make flexbox-based liquid height
+          onSizes={this.handleTwoColSizes}
+          className={'fc-newnew-flexexpand'}
+          startClassName='fc-newnew-flexparent'
           startContent={() => (
             <Fragment>
               <NewScroller
@@ -253,7 +254,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 hideBars
                 className={stickyHeaderDates ? 'fc-newnew-v-sticky' : ''}
               >
-                <div class='fc-datagrid-header' style={{ width: spreadsheetCanvasWidth }}>
+                <div
+                  class='fc-datagrid-header'
+                  style={{
+                    width: spreadsheetCanvasWidth,
+                    paddingBottom: state.spreadsheetBottomScrollbarWidth - state.timeBottomScrollbarWidth,
+                  }}
+                >
                   {Boolean(superHeaderRendering) && (
                     <div role="row">
                       <SuperHeaderCell
@@ -273,9 +280,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 </div>
               </NewScroller>
               <NewScroller
+                vertical
                 horizontal
                 hideBars
-                onInnerWidth={this.handleSpreadsheetInnerWidth}
+                className='fc-newnew-flexexpand'
               >
                 <div className='fc-datagrid-body' style={{ width: spreadsheetCanvasWidth }}>
                   {groupColDisplays.map((groupCellDisplays, cellIndex) => {
@@ -283,7 +291,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     return (
                       <div
                         key={cellIndex}
-                        style={{ left: hposition.left, width: hposition.width }}
+                        style={{
+                          [isRTL ? 'right' : 'left']: hposition.start,
+                          width: hposition.size,
+                        }}
                       >
                         {groupCellDisplays.map((groupCellDisplay) => {
                           const { group } = groupCellDisplay
@@ -305,7 +316,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       </div>
                     )
                   })}
-                  <div style={{ left: spreadsheetBulkColsPosition.left, width: spreadsheetBulkColsPosition.width }}>
+                  <div style={{
+                    [isRTL ? 'right' : 'left']: spreadsheetBulkColsPosition.start,
+                    width: spreadsheetBulkColsPosition.size,
+                  }}>
                     <Fragment>
                       {groupRowDisplays.map((groupRowDisplay) => {
                         const { group } = groupRowDisplay
@@ -351,12 +365,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   </div>
                 </div>
               </NewScroller>
-              <NewScroller horizontal>
+              <NewScroller
+                horizontal
+                onBottomScrollbarWidth={this.handleSpreadsheetBottomScrollbarWidth}
+              >
                 <div style={{ width: spreadsheetCanvasWidth }} />
               </NewScroller>
             </Fragment>
           )}
-          endClassName='fc-newnew-timeline' // should make flexbox-based liquid height
+          endClassName='fc-newnew-flexparent'
           endContent={() => (
             <Fragment>
               <NewScroller
@@ -378,12 +395,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   />
                 </div>
               </NewScroller>
-              <NewScroller // how does it know to be liquid-height?
+              <NewScroller
                 vertical
                 horizontal
-                onInnerWidth={this.handleTimeInnerWidth}
                 onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
                 onRightScrollbarWidth={this.handleRightScrollbarWidth}
+                onBottomScrollbarWidth={this.handleTimeBottomScrollbarWidth}
               >
                 <div
                   ref={this.handleBodyEl}
@@ -515,7 +532,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   handleSlatCoords = (slatCoords: TimelineCoords) => {
-    this.setState({ slatCoords })
+    this.setState({
+      slatCoords,
+    })
   }
 
   handleMaxCushionWidth = (slotCushionMaxWidth) => {
@@ -524,14 +543,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     })
   }
 
-  handleSpreadsheetInnerWidth = (spreadsheetInnerWidth: number) => {
+  handleTwoColSizes = (spreadsheetInnerWidth: number, timeInnerWidth: number) => {
     this.setState({
       spreadsheetInnerWidth,
-    })
-  }
-
-  handleTimeInnerWidth = (timeInnerWidth: number) => {
-    this.setState({
       timeInnerWidth,
     })
   }
@@ -545,6 +559,18 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
     this.setState({
       rightScrollbarWidth
+    })
+  }
+
+  handleSpreadsheetBottomScrollbarWidth = (spreadsheetBottomScrollbarWidth: number) => {
+    this.setState({
+      spreadsheetBottomScrollbarWidth
+    })
+  }
+
+  handleTimeBottomScrollbarWidth = (timeBottomScrollbarWidth: number) => {
+    this.setState({
+      timeBottomScrollbarWidth
     })
   }
 
@@ -759,14 +785,14 @@ function computeSpreadsheetColPositions(
   colSpecs: ColSpec[],
   forcedWidths: number[],
   availableWidth: number,
-): [{ left: number, width: number }[], number] {
+): [{ start: number, size: number }[], number] {
   return null as any
 }
 
 function sliceSpreadsheetColPositions(
-  colPositions: { left: number, width: number }[],
+  colPositions: { start: number, size: number }[],
   startIndex: number,
-): { left: number, width: number } {
+): { start: number, size: number } {
   return null as any
 }
 

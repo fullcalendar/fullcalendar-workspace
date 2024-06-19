@@ -2,11 +2,12 @@ import { BaseComponent, ElementDragging, PointerDragEvent } from '@fullcalendar/
 import { ComponentChildren, createElement, createRef } from '@fullcalendar/core/preact';
 
 export interface ResizableTwoColProps {
-  liquidHeight?: boolean
+  className?: string
   startContent: ComponentChildren
   startClassName?: string
   endContent: ComponentChildren
   endClassName?: string
+  onSizes?: (startWidth: number, endWidth: number) => void
 }
 
 interface ResizableTwoColState {
@@ -29,7 +30,10 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
       : options.resourceAreaWidth
 
     return (
-      <div ref={this.rootElRef} class={props.liquidHeight ? 'fc-twocol-liquidheight' : ''}>
+      <div
+        ref={this.rootElRef}
+        class={props.className}
+      >
         <div style={{ width: resourceAreaWidth }} class={props.startClassName}>
           {props.startContent}
         </div>
