@@ -1,5 +1,5 @@
-import { BaseComponent, ElementDragging, PointerDragEvent } from '@fullcalendar/core/internal';
-import { ComponentChildren, createElement, createRef } from '@fullcalendar/core/preact';
+import { BaseComponent, ElementDragging, PointerDragEvent, setRef } from '@fullcalendar/core/internal'
+import { ComponentChildren, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 
 export interface ResizableTwoColProps {
   className?: string
@@ -8,6 +8,7 @@ export interface ResizableTwoColProps {
   endContent: ComponentChildren
   endClassName?: string
   onSizes?: (startWidth: number, endWidth: number) => void
+  elRef?: Ref<HTMLDivElement>
 }
 
 interface ResizableTwoColState {
@@ -17,7 +18,7 @@ interface ResizableTwoColState {
 const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
 
 export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, ResizableTwoColState> {
-  rootElRef = createRef<HTMLDivElement>()
+  currentRootEl: null | HTMLDivElement = null
   resizerElRef = createRef<HTMLDivElement>()
   resizerDragging: ElementDragging
 
@@ -31,7 +32,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
 
     return (
       <div
-        ref={this.rootElRef}
+        ref={this.handleRootEl}
         class={props.className}
       >
         <div style={{ width: resourceAreaWidth }} class={props.startClassName}>
@@ -48,6 +49,14 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
     )
   }
 
+  handleRootEl = (el: HTMLDivElement | null) => {
+    this.currentRootEl = el
+
+    if (this.props.elRef) {
+      setRef(this.props.elRef, el)
+    }
+  }
+
   componentDidMount() {
     this.initResizing()
   }
@@ -62,7 +71,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
     let resizerEl = this.resizerElRef.current
 
     if (ElementDraggingImpl) {
-      let rootEl = this.rootElRef.current
+      let rootEl = this.currentRootEl
       let dragging = this.resizerDragging = new ElementDraggingImpl(resizerEl)
       let dragStartWidth
       let viewWidth

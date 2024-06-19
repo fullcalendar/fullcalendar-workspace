@@ -5,7 +5,7 @@ import {
   ContentContainer,
   ViewContext,
 } from '@fullcalendar/core/internal'
-import { createElement, Fragment, ComponentChild, createRef } from '@fullcalendar/core/preact'
+import { createElement, Fragment, ComponentChild } from '@fullcalendar/core/preact'
 import { ResourceApi } from '@fullcalendar/resource'
 import { Resource, ColSpec } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from '../ExpanderIcon.js'

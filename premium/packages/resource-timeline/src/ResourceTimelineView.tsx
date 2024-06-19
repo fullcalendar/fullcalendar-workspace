@@ -63,8 +63,9 @@ interface ResourceTimelineViewState {
   spreadsheetColWidths: number[]
   slatCoords?: TimelineCoords
   slotCushionMaxWidth?: number
-  spreadsheetInnerWidth?: number
-  timeInnerWidth?: number
+  viewInnerHeight?: number
+  spreadsheetViewportWidth?: number
+  timeViewportWidth?: number
   leftScrollbarWidth?: number
   rightScrollbarWidth?: number
   spreadsheetBottomScrollbarWidth?: number
@@ -94,8 +95,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private buildHeaderVerticalPositions = memoize(buildVerticalPositions)
   private buildBodyVerticalPositions = memoize(buildVerticalPositions)
   private scrollResponder: ScrollResponder
-  private expandBodyToHeight: number | undefined // kill!!!
 
+  private twoColElRef = createRef<HTMLDivElement>()
   private superHeaderRef = createRef<HTMLDivElement>()
   private normalHeaderRef = createRef<HTMLDivElement>()
   private timeHeaderRefMap = new RefMapKeyed<number, HTMLDivElement>()
@@ -177,30 +178,39 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       tDateProfile.cellRows.length,
     )
 
+    // TODO: be okay with null headerVerticalPositions/bodyVerticalPositions
+    // ... other horizontal positions tooo
+
     // NOTE: TimelineHeader doesn't need top coordinates, only heights
-    let headerVerticalPositions = this.buildHeaderVerticalPositions(
+    let [headerVerticalPositions, headerTotalHeight] = this.buildHeaderVerticalPositions(
       headerHeightHierarchy,
       state.headerNaturalHeightMap,
       undefined, // minHeight
     )
 
-    let bodyVerticalPositions = this.currentBodyVerticalPositions = this.buildBodyVerticalPositions(
+    let { viewInnerHeight } = state
+    let bodyHeight = (viewInnerHeight !== undefined && headerTotalHeight !== undefined)
+      ? viewInnerHeight - headerTotalHeight
+      : undefined
+
+    let [bodyVerticalPositions] = this.buildBodyVerticalPositions(
       bodyHeightHierarchy,
-      bodyNaturalHeightMap,
-      this.expandBodyToHeight, // minHeight
+      state.bodyNaturalHeightMap,
+      bodyHeight,
     )
+    this.currentBodyVerticalPositions = bodyVerticalPositions
 
     let { slotMinWidth } = options
     let [normalSlotWidth, lastSlotWidth, timeCanvasWidth] = computeSlotWidth( // TODO: memoize
       tDateProfile,
       state.slotCushionMaxWidth,
-      state.timeInnerWidth
+      state.timeViewportWidth
     )
 
     let [spreadsheetColPositions, spreadsheetCanvasWidth] = computeSpreadsheetColPositions( // TODO: memoize
       colSpecs,
       state.spreadsheetColWidths,
-      state.spreadsheetInnerWidth,
+      state.spreadsheetViewportWidth,
     )
     let spreadsheetBulkColsPosition = sliceSpreadsheetColPositions(
       spreadsheetColPositions,
@@ -251,6 +261,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       >
         <ResizableTwoCol
           onSizes={this.handleTwoColSizes}
+          elRef={this.twoColElRef}
           className={'fc-newnew-flexexpand'}
           startClassName='fc-newnew-flexparent'
           startContent={() => (
@@ -294,24 +305,21 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               >
                 <div className='fc-datagrid-body' style={{ width: spreadsheetCanvasWidth }}>
                   {groupColDisplays.map((groupCellDisplays, cellIndex) => {
-                    const hposition = spreadsheetColPositions[cellIndex]
+                    const hposition = spreadsheetColPositions[cellIndex] // might be undefined
                     return (
                       <div
                         key={cellIndex}
-                        style={{
-                          [isRTL ? 'right' : 'left']: hposition.start,
-                          width: hposition.size,
-                        }}
+                        style={createHorizontalCss(hposition, isRTL)}
                       >
                         {groupCellDisplays.map((groupCellDisplay) => {
                           const { group } = groupCellDisplay
-                          const position = bodyVerticalPositions.get(group)
+                          const position = bodyVerticalPositions && bodyVerticalPositions.get(group)
                           return (
                             <div
                               key={String(group.value)}
                               class='fc-newnew-row'
                               role='row'
-                              style={{ top: position.top, height: position.height }}
+                              style={position as any /* !!! */}
                               ref={this.spreadsheetGroupTallRefMap.createRef(group)}
                             >
                               <GroupTallCell
@@ -324,20 +332,17 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       </div>
                     )
                   })}
-                  <div style={{
-                    [isRTL ? 'right' : 'left']: spreadsheetBulkColsPosition.start,
-                    width: spreadsheetBulkColsPosition.size,
-                  }}>
+                  <div style={createHorizontalCss(spreadsheetBulkColsPosition, isRTL)}>
                     <Fragment>
                       {groupRowDisplays.map((groupRowDisplay) => {
                         const { group } = groupRowDisplay
-                        const position = bodyVerticalPositions.get(group)
+                        const position = bodyVerticalPositions && bodyVerticalPositions.get(group)
                         return (
                           <div
                             key={String(group.value)}
                             class='fc-newnew-row'
                             role='row'
-                            style={{ top: position.top, height: position.height }}
+                            style={position as any /* !!! */}
                             ref={this.spreadsheetGroupWideRefMap.createRef(group.value)}
                           >
                             <GroupWideCell
@@ -351,13 +356,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     <Fragment>
                       {resourceRowDisplays.map((resourceRowDisplay) => {
                         const { resource } = resourceRowDisplay
-                        const position = bodyVerticalPositions.get(resource)
+                        const position = bodyVerticalPositions && bodyVerticalPositions.get(resource)
                         return (
                           <div
                             key={resource.id}
                             class='fc-newnew-row'
                             role='row'
-                            style={{ top: position.top, height: position.height }}
+                            style={position as any /* !!! */}
                             ref={this.spreadsheetResourceRefMap.createRef(resource)}
                           >
                             <ResourceCells
@@ -448,13 +453,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         <Fragment>
                           {groupRowDisplays.map((groupRowDisplay) => {
                             const { group } = groupRowDisplay
-                            const position = bodyVerticalPositions.get(group)
+                            const position = bodyVerticalPositions && bodyVerticalPositions.get(group)
                             return (
                               <div
                                 key={String(group.value)}
                                 class='fc-newnew-row'
                                 role='row'
-                                style={{ top: position.top, height: position.height }}
+                                style={position as any /* !!! */}
                                 ref={this.timeGroupWideRefMap.createRef(group.value)}
                               >
                                 <GroupLane group={group} />
@@ -465,13 +470,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         <Fragment>
                           {resourceRowDisplays.map((resourceRowDisplay) => {
                             const { resource } = resourceRowDisplay
-                            const position = bodyVerticalPositions.get(resource)
+                            const position = bodyVerticalPositions && bodyVerticalPositions.get(resource)
                             return (
                               <div
                                 key={resource.id}
                                 class='fc-newnew-row'
                                 role='row'
-                                style={{ top: position.top, height: position.height }}
+                                style={position as any /* !!! */}
                                 ref={this.timeResourceRefMap.createRef(resource)}
                               >
                                 <ResourceLane
@@ -550,10 +555,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
   handleResourceLaneStable = (isStable) => {
     this.resourceLaneUnstableCount += (isStable ? -1 : 1)
-    this.handleSizing()
+    this.handleRowSizing()
   }
 
   handleSizing = () => {
+    this.handleRowSizing()
+    this.handleViewInnerHeight()
+  }
+
+  handleRowSizing = () => {
     if (!this.resourceLaneUnstableCount) {
       const headerNaturalHeightMap = new Map<boolean | number, number>()
       const bodyNaturalHeightMap = new Map<Resource | Group, number>()
@@ -605,6 +615,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     }
   }
 
+  handleViewInnerHeight = () => {
+    this.setState({
+      viewInnerHeight: this.twoColElRef.current.offsetHeight
+    })
+  }
+
   handleSlatCoords = (slatCoords: TimelineCoords) => {
     this.setState({
       slatCoords,
@@ -617,10 +633,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     })
   }
 
-  handleTwoColSizes = (spreadsheetInnerWidth: number, timeInnerWidth: number) => {
+  handleTwoColSizes = (spreadsheetViewportWidth: number, timeViewportWidth: number) => {
     this.setState({
-      spreadsheetInnerWidth,
-      timeInnerWidth,
+      spreadsheetViewportWidth,
+      timeViewportWidth,
     })
   }
 
@@ -858,7 +874,7 @@ ResourceTimelineView.addStateEquality({
 function computeSpreadsheetColPositions(
   colSpecs: ColSpec[],
   forcedWidths: number[],
-  availableWidth: number,
+  availableWidth: number | undefined,
 ): [{ start: number, size: number }[], number] {
   return null as any
 }
@@ -866,10 +882,9 @@ function computeSpreadsheetColPositions(
 function sliceSpreadsheetColPositions(
   colPositions: { start: number, size: number }[],
   startIndex: number,
-): { start: number, size: number } {
+): { start: number, size: number } | undefined {
   return null as any
 }
-
 
 function processColOptions(options: ViewOptionsRefined) {
   let allColSpecs: ColSpec[] = options.resourceAreaColumns || []
@@ -978,4 +993,16 @@ function computeHasResourceBusinessHours(resourceRowDisplays: ResourceRowDisplay
   }
 
   return false
+}
+
+function createHorizontalCss(
+  props: { start: number, size: number } | undefined,
+  isRTL: boolean,
+): { left?: number, right?: number, width: number } | undefined {
+  if (props) {
+    return {
+      [isRTL ? 'right' : 'left']: props.start,
+      width: props.size,
+    }
+  }
 }
