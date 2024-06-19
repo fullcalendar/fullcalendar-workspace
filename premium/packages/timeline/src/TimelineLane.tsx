@@ -5,7 +5,7 @@ import {
   getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs, isPropsEqual, buildIsoString,
   computeEarliestSegStart,
 } from '@fullcalendar/core/internal'
-import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
+import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from './timeline-date-profile.js'
 import { coordsToCss, TimelineCoords } from './TimelineCoords.js'
 import { TimelineLaneBg } from './TimelineLaneBg.js'
@@ -29,8 +29,7 @@ export interface TimelineLaneProps {
   eventResize: EventInteractionState | null
   timelineCoords: TimelineCoords | null // TODO: renamt to SLAT coords?
   resourceId?: string // hack
-  syncParentMinHeight?: boolean // hack
-  onNaturalHeight?: (height: number | undefined) => void
+  onHeightStable?: (isStable: boolean) => void
 }
 
 interface TimelineLaneState {
@@ -43,7 +42,6 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
   private sortEventSegs = memoize(sortEventSegs)
   private harnessElRefs = new RefMap<HTMLDivElement>()
   private moreElRefs = new RefMap<HTMLDivElement>()
-  private innerElRef = createRef<HTMLDivElement>()
   // TODO: memoize event positioning
 
   state: TimelineLaneState = {
@@ -101,7 +99,6 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         />
         <div
           className="fc-timeline-events fc-scrollgrid-sync-inner"
-          ref={this.innerElRef}
           style={{ height: fgHeight }}
         >
           {this.renderFgSegs(
@@ -124,8 +121,8 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
   }
 
   componentDidMount() {
-    this.updateSize()
-    this.context.addResizeHandler(this.handleResize)
+    this.handleSizing()
+    this.context.addResizeHandler(this.handleSizing)
   }
 
   componentDidUpdate(prevProps: TimelineLaneProps, prevState: TimelineLaneState) {
@@ -134,27 +131,20 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       prevProps.timelineCoords !== this.props.timelineCoords || // external thing changed?
       prevState.moreLinkHeights !== this.state.moreLinkHeights // HACK. see addStateEquality
     ) {
-      this.updateSize()
+      this.handleSizing()
     }
   }
 
   componentWillUnmount() {
-    this.context.removeResizeHandler(this.handleResize)
+    this.context.removeResizeHandler(this.handleSizing)
   }
 
-  handleResize = (isForced: boolean) => {
-    if (isForced) {
-      this.updateSize()
-    }
-  }
-
-  updateSize() {
+  handleSizing = () => {
     let { props } = this
-    let { timelineCoords, onNaturalHeight } = props
-    const innerEl = this.innerElRef.current
+    let { timelineCoords, onHeightStable } = props
 
-    if (onNaturalHeight) {
-      onNaturalHeight(undefined)
+    if (onHeightStable) {
+      onHeightStable(false)
     }
 
     if (timelineCoords) {
@@ -166,15 +156,10 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           Math.round(moreEl.getBoundingClientRect().height)
         )),
       }, () => {
-        if (onNaturalHeight) {
-          onNaturalHeight(innerEl.offsetHeight)
+        if (onHeightStable) {
+          onHeightStable(true)
         }
       })
-    }
-
-    // hack
-    if (props.syncParentMinHeight) {
-      innerEl.parentElement.style.minHeight = innerEl.style.height
     }
   }
 

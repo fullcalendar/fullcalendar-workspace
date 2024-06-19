@@ -1,4 +1,4 @@
-import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
+import { createElement, Ref } from '@fullcalendar/core/preact'
 import { BaseComponent, ContentContainer } from '@fullcalendar/core/internal'
 import { ColSpec, ColHeaderContentArg } from '@fullcalendar/resource'
 
@@ -6,12 +6,9 @@ export interface HeaderCellProps {
   colSpec: ColSpec
   resizer: boolean
   resizerElRef: Ref<HTMLDivElement>
-  onNaturalHeight?: (height: number) => void
 }
 
 export class HeaderCell extends BaseComponent<HeaderCellProps> {
-  private innerElRef = createRef<HTMLDivElement>()
-
   render() {
     let { colSpec, resizer, resizerElRef } = this.props
     let renderProps: ColHeaderContentArg = { view: this.context.viewApi }
@@ -32,7 +29,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
       >
         {(InnerContent) => (
           <div className="fc-datagrid-cell-frame">
-            <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner" ref={this.innerElRef}>
+            <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner">
               {colSpec.isMain && (
                 <span className="fc-datagrid-expander fc-datagrid-expander-placeholder">
                   <span className="fc-icon" />
@@ -50,19 +47,5 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         )}
       </ContentContainer>
     )
-  }
-
-  componentDidMount(): void {
-    this.reportNaturalHeight()
-  }
-
-  componentDidUpdate(): void {
-    this.reportNaturalHeight()
-  }
-
-  reportNaturalHeight() {
-    if (this.props.onNaturalHeight) {
-      this.props.onNaturalHeight(this.innerElRef.current.offsetHeight)
-    }
   }
 }

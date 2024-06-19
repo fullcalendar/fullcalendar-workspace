@@ -5,7 +5,7 @@ import { TimelineLane, TimelineLaneProps } from '@fullcalendar/timeline/internal
 
 export interface ResourceLaneProps extends TimelineLaneProps {
   resource: Resource
-  onNaturalHeight?: (height: number | undefined) => void
+  onHeightStable?: (isStable: boolean) => void
 }
 
 export class ResourceLane extends BaseComponent<ResourceLaneProps> {
@@ -54,7 +54,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
               eventResize={props.eventResize}
               timelineCoords={props.timelineCoords}
               resourceId={props.resource.id}
-              onNaturalHeight={props.onNaturalHeight}
+              onHeightStable={props.onHeightStable}
             />
           </div>
         )}

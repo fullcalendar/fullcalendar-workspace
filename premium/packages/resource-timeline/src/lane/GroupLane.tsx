@@ -1,19 +1,16 @@
 import { BaseComponent, ContentContainer } from '@fullcalendar/core/internal'
-import { createElement, createRef } from '@fullcalendar/core/preact'
+import { createElement } from '@fullcalendar/core/preact'
 import { ColCellContentArg } from '@fullcalendar/resource'
 import { Group } from '@fullcalendar/resource/internal'
 
 export interface GroupLaneProps {
   group: Group
-  onNaturalHeight?: (height: number) => void
 }
 
 /*
 parallels the SpreadsheetGroupRow
 */
 export class GroupLane extends BaseComponent<GroupLaneProps> {
-  private innerElRef = createRef<HTMLDivElement>()
-
   render() {
     let { props, context } = this
     let { group } = props
@@ -43,25 +40,10 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
             <InnerContainer
               elTag="div"
               elClasses={['fc-resource-group-frame-inner']}
-              elRef={this.innerElRef}
             />
           </div>
         )}
       </ContentContainer>
     )
-  }
-
-  componentDidMount(): void {
-    this.reportNaturalHeight()
-  }
-
-  componentDidUpdate(): void {
-    this.reportNaturalHeight()
-  }
-
-  reportNaturalHeight() {
-    if (this.props.onNaturalHeight) {
-      this.props.onNaturalHeight(this.innerElRef.current.offsetHeight)
-    }
   }
 }

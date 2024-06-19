@@ -17,6 +17,7 @@ import {
   getStickyHeaderDates,
   getStickyFooterScrollbar,
   NewScroller,
+  RefMapKeyed,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import {
@@ -42,7 +43,6 @@ import { ResourceCells } from './spreadsheet/ResourceCells.js'
 import { GroupWideCell } from './spreadsheet/GroupWideCell.js'
 import {
   GroupRowDisplay,
-  NaturalHeightMap,
   ResourceRowDisplay,
   VerticalPosition,
   buildHeaderHeightHierarchy,
@@ -63,12 +63,14 @@ interface ResourceTimelineViewState {
   spreadsheetColWidths: number[]
   slatCoords?: TimelineCoords
   slotCushionMaxWidth?: number
-  spreadsheetInnerWidth?: number,
-  timeInnerWidth?: number,
-  leftScrollbarWidth?: number,
-  rightScrollbarWidth?: number,
-  spreadsheetBottomScrollbarWidth?: number,
-  timeBottomScrollbarWidth?: number,
+  spreadsheetInnerWidth?: number
+  timeInnerWidth?: number
+  leftScrollbarWidth?: number
+  rightScrollbarWidth?: number
+  spreadsheetBottomScrollbarWidth?: number
+  timeBottomScrollbarWidth?: number
+  headerNaturalHeightMap?: Map<boolean | number, number>
+  bodyNaturalHeightMap?: Map<Resource | Group, number>
 }
 
 interface ResourceTimelineViewSnapshot {
@@ -94,10 +96,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private scrollResponder: ScrollResponder
   private expandBodyToHeight: number | undefined // kill!!!
 
-  // TODO: make stateful
-  // (have sub-components report their natural heights via callbacks)
-  private headerNaturalHeightMap: Map<boolean | number, NaturalHeightMap>
-  private bodyNaturalHeightMap: Map<Resource | Group, NaturalHeightMap>
+  private superHeaderRef = createRef<HTMLDivElement>()
+  private normalHeaderRef = createRef<HTMLDivElement>()
+  private timeHeaderRefMap = new RefMapKeyed<number, HTMLDivElement>()
+  private spreadsheetGroupTallRefMap = new RefMapKeyed<Group, HTMLDivElement>()
+  private spreadsheetGroupWideRefMap = new RefMapKeyed<Group, HTMLDivElement>()
+  private spreadsheetResourceRefMap = new RefMapKeyed<Resource, HTMLDivElement>()
+  private timeGroupWideRefMap = new RefMapKeyed<Group, HTMLDivElement>()
+  private timeResourceRefMap = new RefMapKeyed<Resource, HTMLDivElement>()
 
   // DERIVED
   private currentGroupRowDisplays: GroupRowDisplay[]
@@ -110,6 +116,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private resourceSplitter = new ResourceSplitter() // doesn't let it do businessHours tho
   private bgSlicer = new TimelineLaneSlicer()
   private slatsRef = createRef<TimelineSlats>() // needed for Hit creation :(
+  private resourceLaneUnstableCount = 0
 
   constructor(props: ResourceViewProps, context: ViewContext) {
     super(props, context)
@@ -121,7 +128,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   render() {
-    let { props, state, context, bodyNaturalHeightMap, headerNaturalHeightMap } = this
+    let { props, state, context } = this
     let { dateProfile } = props
     let { options, viewSpec } = context
     let { expandRows, direction } = options
@@ -173,7 +180,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     // NOTE: TimelineHeader doesn't need top coordinates, only heights
     let headerVerticalPositions = this.buildHeaderVerticalPositions(
       headerHeightHierarchy,
-      headerNaturalHeightMap,
+      state.headerNaturalHeightMap,
       undefined, // minHeight
     )
 
@@ -228,7 +235,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     - forPrint / collapsibleWidth (not needed anymore?)
     - forceScrollLeft, etc
     - scroll-joiners
-    - onNaturalHeight handlers
     */
     return (
       <ViewContainer
@@ -262,15 +268,16 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   }}
                 >
                   {Boolean(superHeaderRendering) && (
-                    <div role="row">
+                    <div role="row" ref={this.superHeaderRef}>
                       <SuperHeaderCell
                         renderHooks={superHeaderRendering}
                       />
                     </div>
                   )}
-                  <div role="row">
+                  <div role="row" ref={this.normalHeaderRef}>
                     {colSpecs.map((colSpec, i) => (
                       <HeaderCell
+                        key={i}
                         colSpec={colSpec}
                         resizer={i < colSpecs.length - 1}
                         resizerElRef={this.resizerElRefs.createRef(i)}
@@ -305,6 +312,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                               class='fc-newnew-row'
                               role='row'
                               style={{ top: position.top, height: position.height }}
+                              ref={this.spreadsheetGroupTallRefMap.createRef(group)}
                             >
                               <GroupTallCell
                                 colSpec={group.spec}
@@ -330,6 +338,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             class='fc-newnew-row'
                             role='row'
                             style={{ top: position.top, height: position.height }}
+                            ref={this.spreadsheetGroupWideRefMap.createRef(group.value)}
                           >
                             <GroupWideCell
                               group={group}
@@ -349,6 +358,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             class='fc-newnew-row'
                             role='row'
                             style={{ top: position.top, height: position.height }}
+                            ref={this.spreadsheetResourceRefMap.createRef(resource)}
                           >
                             <ResourceCells
                               resource={resource}
@@ -392,6 +402,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     slatCoords={state.slatCoords}
                     onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
                     verticalPositions={headerVerticalPositions}
+                    rowRefMap={this.timeHeaderRefMap}
                   />
                 </div>
               </NewScroller>
@@ -440,14 +451,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             const position = bodyVerticalPositions.get(group)
                             return (
                               <div
-                                key={String(groupRowDisplay.group.value)}
+                                key={String(group.value)}
                                 class='fc-newnew-row'
                                 role='row'
                                 style={{ top: position.top, height: position.height }}
+                                ref={this.timeGroupWideRefMap.createRef(group.value)}
                               >
-                                <GroupLane
-                                  group={groupRowDisplay.group}
-                                />
+                                <GroupLane group={group} />
                               </div>
                             )
                           })}
@@ -462,6 +472,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                 class='fc-newnew-row'
                                 role='row'
                                 style={{ top: position.top, height: position.height }}
+                                ref={this.timeResourceRefMap.createRef(resource)}
                               >
                                 <ResourceLane
                                   {...splitProps[resource.id]}
@@ -473,6 +484,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   nextDayThreshold={context.options.nextDayThreshold}
                                   businessHours={resource.businessHours || fallbackBusinessHours}
                                   timelineCoords={state.slatCoords}
+                                  onHeightStable={this.handleResourceLaneStable}
                                 />
                               </div>
                             )
@@ -507,6 +519,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
   componentDidMount() {
     this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
+    this.handleSizing()
+    this.context.addResizeHandler(this.handleSizing)
   }
 
   getSnapshotBeforeUpdate(): ResourceTimelineViewSnapshot {
@@ -525,10 +539,70 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     if (snapshot.resourceScroll) {
       this.handleScrollRequest(snapshot.resourceScroll) // TODO: this gets triggered too often
     }
+
+    this.handleSizing()
   }
 
   componentWillUnmount() {
     this.scrollResponder.detach()
+    this.context.removeResizeHandler(this.handleSizing)
+  }
+
+  handleResourceLaneStable = (isStable) => {
+    this.resourceLaneUnstableCount += (isStable ? -1 : 1)
+    this.handleSizing()
+  }
+
+  handleSizing = () => {
+    if (!this.resourceLaneUnstableCount) {
+      const headerNaturalHeightMap = new Map<boolean | number, number>()
+      const bodyNaturalHeightMap = new Map<Resource | Group, number>()
+
+      if (this.superHeaderRef.current) {
+        headerNaturalHeightMap.set(
+          true,
+          this.superHeaderRef.current.offsetHeight,
+        )
+      }
+
+      headerNaturalHeightMap.set(
+        false,
+        this.normalHeaderRef.current.offsetHeight,
+      )
+
+      for (const [rowIndex, el] of this.timeHeaderRefMap.current.entries()) {
+        headerNaturalHeightMap.set(rowIndex, el.offsetHeight)
+      }
+
+      for (const [group, el] of this.spreadsheetGroupTallRefMap.current.entries()) {
+        bodyNaturalHeightMap.set(group, el.offsetHeight)
+      }
+
+      for (const [group, el] of this.spreadsheetGroupWideRefMap.current.entries()) {
+        bodyNaturalHeightMap.set(
+          group,
+          Math.max(
+            el.offsetHeight,
+            this.timeGroupWideRefMap.current.get(group).offsetHeight,
+          )
+        )
+      }
+
+      for (const [resource, el] of this.spreadsheetResourceRefMap.current.entries()) {
+        bodyNaturalHeightMap.set(
+          resource,
+          Math.max(
+            el.offsetHeight,
+            this.timeResourceRefMap.current.get(resource).offsetHeight,
+          ),
+        )
+      }
+
+      this.setState({
+        headerNaturalHeightMap,
+        bodyNaturalHeightMap,
+      })
+    }
   }
 
   handleSlatCoords = (slatCoords: TimelineCoords) => {

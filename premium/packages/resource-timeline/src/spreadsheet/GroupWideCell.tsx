@@ -1,5 +1,5 @@
 import { BaseComponent, ViewContext, ContentContainer } from '@fullcalendar/core/internal'
-import { createElement, Fragment, createRef, RefObject, ComponentChild } from '@fullcalendar/core/preact'
+import { createElement, Fragment, ComponentChild } from '@fullcalendar/core/preact'
 import { ColCellContentArg } from '@fullcalendar/resource'
 import { Group, createGroupId, isGroupsEqual } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from '../ExpanderIcon.js'
@@ -7,12 +7,9 @@ import { ExpanderIcon } from '../ExpanderIcon.js'
 export interface GroupWideCellProps {
   isExpanded: boolean
   group: Group
-  onNaturalHeight?: (height: number) => void
 }
 
 export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext> {
-  innerElRef: RefObject<HTMLDivElement> = createRef<HTMLDivElement>()
-
   render() {
     let { props, context } = this
     let renderProps: ColCellContentArg = { groupValue: props.group.value, view: context.viewApi }
@@ -45,7 +42,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
         >
           {(InnerContent) => (
             <div className="fc-datagrid-cell-frame">
-              <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner" ref={this.innerElRef}>
+              <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner">
                 <ExpanderIcon
                   depth={0}
                   hasChildren
@@ -72,20 +69,6 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
       id: createGroupId(props.group),
       isExpanded: !props.isExpanded,
     })
-  }
-
-  componentDidMount(): void {
-    this.reportNaturalHeight()
-  }
-
-  componentDidUpdate(): void {
-    this.reportNaturalHeight()
-  }
-
-  reportNaturalHeight() {
-    if (this.props.onNaturalHeight) {
-      this.props.onNaturalHeight(this.innerElRef.current.offsetHeight)
-    }
   }
 }
 

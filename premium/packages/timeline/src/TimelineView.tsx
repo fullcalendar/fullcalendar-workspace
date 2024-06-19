@@ -48,7 +48,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     - forPrint / collapsibleWidth (not needed anymore?)
     - forceScrollLeft, etc
     - scroll-joiners
-    - onNaturalHeight handlers
     */
     return (
       <ViewContainer
@@ -119,7 +118,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     eventDrag={props.eventDrag}
                     eventResize={props.eventResize}
                     timelineCoords={state.slatCoords}
-                    syncParentMinHeight
                   />
                   {(options.nowIndicator && state.slatCoords && state.slatCoords.isDateInRange(nowDate)) && (
                     <div className="fc-timeline-now-indicator-container">

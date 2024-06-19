@@ -239,6 +239,7 @@ export type {  OverflowValue } from './scrollgrid/Scroller.js'
 export { Scroller } from './scrollgrid/Scroller.js'
 export { getScrollbarWidths } from './util/scrollbar-width.js'
 export { RefMap } from './util/RefMap.js'
+export { RefMapKeyed } from './util/RefMapKeyed.js'
 export { getIsRtlScrollbarOnLeft } from './util/scrollbar-side.js'
 
 export { NowTimer } from './NowTimer.js'

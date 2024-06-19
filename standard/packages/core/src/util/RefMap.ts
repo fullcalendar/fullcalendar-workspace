@@ -3,6 +3,7 @@ import { hashValuesToArray, collectFromHash } from './object.js'
 /*
 TODO: somehow infer OtherArgs from masterCallback?
 TODO: infer RefType from masterCallback if provided
+TODO: use Map, so any kind of key will work!
 */
 export class RefMap<RefType> {
   public currentMap: { [key: string]: RefType } = {}

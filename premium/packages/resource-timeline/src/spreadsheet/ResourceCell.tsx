@@ -18,12 +18,10 @@ export interface ResourceCellProps {
   hasChildren: boolean
   isExpanded: boolean
   height?: number | undefined
-  onNaturalHeight?: (height: number) => void
 }
 
 export class ResourceCell extends BaseComponent<ResourceCellProps> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)
-  private innerElRef = createRef<HTMLDivElement>()
 
   render() {
     let { props, context } = this
@@ -55,7 +53,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
       >
         {(InnerContent) => (
           <div className="fc-datagrid-cell-frame" style={{ height: props.height }}>
-            <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner" ref={this.innerElRef}>
+            <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner">
               {colSpec.isMain && (
                 <ExpanderIcon
                   depth={props.depth}
@@ -84,20 +82,6 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         id: props.resource.id,
         isExpanded: !props.isExpanded,
       })
-    }
-  }
-
-  componentDidMount(): void {
-    this.reportNaturalHeight()
-  }
-
-  componentDidUpdate(): void {
-    this.reportNaturalHeight()
-  }
-
-  reportNaturalHeight() {
-    if (this.props.onNaturalHeight) {
-      this.props.onNaturalHeight(this.innerElRef.current.offsetHeight)
     }
   }
 }

@@ -2,6 +2,7 @@ import {
   BaseComponent, DateMarker, NowTimer,
   greatestDurationDenominator, DateRange, NowIndicatorContainer,
   findElements, DateProfile,
+  RefMapKeyed,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, RefObject } from '@fullcalendar/core/preact'
 import { TimelineHeaderRows } from './TimelineHeaderRows.js'
@@ -14,6 +15,7 @@ export interface TimelineHeaderProps {
   slatCoords: TimelineCoords
   onMaxCushionWidth?: (number) => void
   verticalPositions?: Map<boolean | number, { top: number, height: number }>
+  rowRefMap?: RefMapKeyed<number, HTMLDivElement>
 }
 
 export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
@@ -43,6 +45,7 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
                 nowDate={nowDate}
                 todayRange={todayRange}
                 verticalPositions={props.verticalPositions}
+                rowRefMap={props.rowRefMap}
               />
             </div>
             {context.options.nowIndicator && (

@@ -4,7 +4,7 @@ import {
   buildNavLinkAttrs,
   getDayClassNames, DateProfile, memoizeObjArg, ViewContext, memoize, ContentContainer, DateEnv,
 } from '@fullcalendar/core/internal'
-import { createElement, createRef } from '@fullcalendar/core/preact'
+import { createElement } from '@fullcalendar/core/preact'
 import { TimelineDateProfile, TimelineHeaderCellData } from './timeline-date-profile.js'
 
 export interface TimelineHeaderThProps {
@@ -16,13 +16,11 @@ export interface TimelineHeaderThProps {
   nowDate: DateMarker
   isSticky: boolean
   height: number | undefined
-  onNaturalHeight?: (height: number) => void
 }
 
 export class TimelineHeaderCell extends BaseComponent<TimelineHeaderThProps> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)
   private buildCellNavLinkAttrs = memoize(buildCellNavLinkAttrs)
-  private innerElRef = createRef<HTMLDivElement>()
 
   render() {
     let { props, context } = this
@@ -80,26 +78,11 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderThProps> {
                 props.isSticky && 'fc-sticky',
               ]}
               elAttrs={this.buildCellNavLinkAttrs(context, cell.date, cell.rowUnit)}
-              elRef={this.innerElRef}
             />
           </div>
         )}
       </ContentContainer>
     )
-  }
-
-  componentDidMount(): void {
-    this.reportNaturalHeight()
-  }
-
-  componentDidUpdate(): void {
-    this.reportNaturalHeight()
-  }
-
-  reportNaturalHeight() {
-    if (this.props.onNaturalHeight) {
-      this.props.onNaturalHeight(this.innerElRef.current.offsetHeight)
-    }
   }
 }
 
