@@ -16,7 +16,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
     // need empty inner div for abs positioning for resizer
     return (
       <ContentContainer
-        elTag="th"
+        elTag="div"
         elClasses={['fc-datagrid-cell']}
         elAttrs={{ role: 'columnheader' }}
         renderProps={renderProps}

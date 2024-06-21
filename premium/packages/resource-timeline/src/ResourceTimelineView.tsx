@@ -213,9 +213,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       tDateProfile.cellRows.length,
     )
 
-    // TODO: be okay with null headerVerticalPositions/bodyVerticalPositions
-    // ... other horizontal positions tooo
-
     // NOTE: TimelineHeader doesn't need top coordinates, only heights
     let [headerVerticalPositions, headerTotalHeight] = this.buildHeaderVerticalPositions(
       headerHeightHierarchy,
@@ -311,10 +308,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               >
                 <div
                   class='fc-datagrid-header'
-                  style={{
-                    width: spreadsheetCanvasWidth,
-                    paddingBottom: state.spreadsheetBottomScrollbarWidth - state.timeBottomScrollbarWidth,
-                  }}
+                  style={{ width: spreadsheetCanvasWidth }}
                 >
                   {Boolean(superHeaderRendering) && (
                     <div role="row" ref={this.superHeaderRef}>
@@ -350,36 +344,47 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 className='fc-newnew-flexexpand'
                 elRef={this.spreadsheetBodyScroll.handleEl}
               >
-                <div className='fc-datagrid-body' style={{ width: spreadsheetCanvasWidth }}>
-                  {groupColDisplays.map((groupCellDisplays, colIndex) => {
-                    const hposition = spreadsheetColPositions[colIndex] // might be undefined
-                    return (
-                      <div
-                        key={colIndex}
-                        style={createHorizontalCss(hposition, isRTL)}
-                      >
-                        {groupCellDisplays.map((groupCellDisplay) => {
-                          const { group } = groupCellDisplay
-                          const position = bodyVerticalPositions && bodyVerticalPositions.get(group)
-                          return (
-                            <div
-                              key={String(group.value) /* TODO: some sort of util!!! */}
-                              class='fc-newnew-row'
-                              role='row'
-                              style={position as any /* !!! */}
-                              ref={this.spreadsheetGroupTallRefMap.createRef(group)}
-                            >
-                              <GroupTallCell
-                                colSpec={group.spec}
-                                fieldValue={group.value}
-                              />
-                            </div>
-                          )
-                        })}
-                      </div>
-                    )
-                  })}
+                <div
+                  className='fc-datagrid-body'
+                  style={{
+                    width: spreadsheetCanvasWidth,
+                    paddingBottom: state.spreadsheetBottomScrollbarWidth - state.timeBottomScrollbarWidth,
+                  }}
+                >
+                  {/* ----- Group Columns > Cells ----- */}
+                  <Fragment>
+                    {groupColDisplays.map((groupCellDisplays, colIndex) => {
+                      const hposition = spreadsheetColPositions[colIndex] // might be undefined
+                      return (
+                        <div
+                          key={colIndex}
+                          style={createHorizontalCss(hposition, isRTL)}
+                        >
+                          {groupCellDisplays.map((groupCellDisplay) => {
+                            const { group } = groupCellDisplay
+                            const position = bodyVerticalPositions && bodyVerticalPositions.get(group)
+                            return (
+                              <div
+                                key={String(group.value) /* TODO: some sort of util!!! */}
+                                class='fc-newnew-row'
+                                role='row'
+                                style={position as any /* !!! */}
+                                ref={this.spreadsheetGroupTallRefMap.createRef(group)}
+                              >
+                                <GroupTallCell
+                                  colSpec={group.spec}
+                                  fieldValue={group.value}
+                                />
+                              </div>
+                            )
+                          })}
+                        </div>
+                      )
+                    })}
+                  </Fragment>
+                  {/* ----- Bulk-Row Container ----- */}
                   <div style={createHorizontalCss(spreadsheetBulkColsPosition, isRTL)}>
+                    {/* ----- Group Bulk-Rows ----- */}
                     <Fragment>
                       {groupRowDisplays.map((groupRowDisplay) => {
                         const { group } = groupRowDisplay
@@ -400,6 +405,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         )
                       })}
                     </Fragment>
+                    {/* ----- Resource Bulk-Rows ----- */}
                     <Fragment>
                       {resourceRowDisplays.map((resourceRowDisplay) => {
                         const { resource } = resourceRowDisplay

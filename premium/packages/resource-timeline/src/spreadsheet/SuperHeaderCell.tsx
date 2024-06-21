@@ -13,7 +13,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
 
     return (
       <ContentContainer
-        elTag="th"
+        elTag="div"
         elClasses={[
           'fc-datagrid-cell',
           'fc-datagrid-cell-super',
