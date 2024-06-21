@@ -296,9 +296,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
           onSizes={this.handleTwoColSizes}
           elRef={this.twoColElRef}
           className={'fc-newnew-flexexpand'}
+
+          // ----- spreadsheet -----
+
           startClassName='fc-newnew-flexparent'
           startContent={() => (
             <Fragment>
+              {/* ----- spreadsheet HEADER ----- */}
               <NewScroller
                 horizontal
                 hideBars
@@ -320,17 +324,25 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     </div>
                   )}
                   <div role="row" ref={this.normalHeaderRef}>
-                    {colSpecs.map((colSpec, i) => (
-                      <HeaderCell
-                        key={i}
-                        colSpec={colSpec}
-                        resizer={i < colSpecs.length - 1}
-                        resizerElRef={this.resizerElRefs.createRef(i)}
-                      />
-                    ))}
+                    {colSpecs.map((colSpec, colIndex) => {
+                      const hposition = spreadsheetColPositions[colIndex] // could be undefined
+                      return (
+                        <div
+                          key={colIndex}
+                          style={{ width: hposition ? hposition.size : undefined }}
+                        >
+                          <HeaderCell
+                            colSpec={colSpec}
+                            resizer={colIndex < colSpecs.length - 1}
+                            resizerElRef={this.resizerElRefs.createRef(colIndex)}
+                          />
+                        </div>
+                      )
+                    })}
                   </div>
                 </div>
               </NewScroller>
+              {/* ----- spreadsheet BODY ----- */}
               <NewScroller
                 vertical
                 horizontal
@@ -339,11 +351,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 elRef={this.spreadsheetBodyScroll.handleEl}
               >
                 <div className='fc-datagrid-body' style={{ width: spreadsheetCanvasWidth }}>
-                  {groupColDisplays.map((groupCellDisplays, cellIndex) => {
-                    const hposition = spreadsheetColPositions[cellIndex] // might be undefined
+                  {groupColDisplays.map((groupCellDisplays, colIndex) => {
+                    const hposition = spreadsheetColPositions[colIndex] // might be undefined
                     return (
                       <div
-                        key={cellIndex}
+                        key={colIndex}
                         style={createHorizontalCss(hposition, isRTL)}
                       >
                         {groupCellDisplays.map((groupCellDisplay) => {
@@ -415,6 +427,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   </div>
                 </div>
               </NewScroller>
+              {/* ----- spreadsheet FOOTER scrollbar ----- */}
               <NewScroller
                 horizontal
                 onBottomScrollbarWidth={this.handleSpreadsheetBottomScrollbarWidth}
@@ -424,9 +437,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               </NewScroller>
             </Fragment>
           )}
+
+          // ----- time-axis -----
+
           endClassName='fc-newnew-flexparent'
           endContent={() => (
             <Fragment>
+              {/* ----- time-axis HEADER ----- */}
               <NewScroller
                 horizontal
                 hideBars
@@ -448,6 +465,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   />
                 </div>
               </NewScroller>
+              {/* ----- time-axis BODY (resources) ----- */}
               <NewScroller
                 vertical
                 horizontal
@@ -547,6 +565,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   </NowTimer>
                 </div>
               </NewScroller>
+              {/* ----- time-axis FOOTER scrollbars ----- */}
               {stickyFooterScrollbar && (
                 <NewScroller
                   horizontal
