@@ -1,8 +1,8 @@
-import { CssDimValue } from '@fullcalendar/core'
+import { CssDimValue, Duration } from '@fullcalendar/core'
 import {
   ViewContext, memoize,
   isArraysEqual,
-  ScrollRequest, ScrollResponder, ViewContainer, ViewOptionsRefined,
+  ScrollRequest, ViewContainer, ViewOptionsRefined,
   RefMap, ElementDragging,
   findElements,
   elementClosest,
@@ -39,6 +39,7 @@ import {
   isEntityGroup,
   ResourceSplitter,
 } from '@fullcalendar/resource/internal'
+import { ScrollController, ScrollJoiner } from '@fullcalendar/scrollgrid/internal'
 import { ResourceCells } from './spreadsheet/ResourceCells.js'
 import { GroupWideCell } from './spreadsheet/GroupWideCell.js'
 import {
@@ -74,14 +75,10 @@ interface ResourceTimelineViewState {
   bodyNaturalHeightMap?: Map<Resource | Group, number>
 }
 
-interface ResourceTimelineViewSnapshot {
-  resourceScroll?: ResourceScrollState
-}
-
 interface ResourceScrollState {
   resourceId?: string
   groupValue?: any
-  fromBottom: number
+  fromBottom?: number
 }
 
 const SPREADSHEET_COL_MIN_WIDTH = 20
@@ -94,7 +91,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private buildHeaderHeightHierarchy = memoize(buildHeaderHeightHierarchy)
   private buildHeaderVerticalPositions = memoize(buildVerticalPositions)
   private buildBodyVerticalPositions = memoize(buildVerticalPositions)
-  private scrollResponder: ScrollResponder
 
   private twoColElRef = createRef<HTMLDivElement>()
   private superHeaderRef = createRef<HTMLDivElement>()
@@ -110,7 +106,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private currentGroupRowDisplays: GroupRowDisplay[]
   private currentResourceRowDisplays: ResourceRowDisplay[]
   private currentBodyHeightHierarchy: ParentNode<Resource | Group>[]
-  private currentBodyVerticalPositions: Map<Resource | Group, VerticalPosition>
+  private currentBodyVerticalPositions?: Map<Resource | Group, VerticalPosition>
 
   // misc
   private computeHasResourceBusinessHours = memoize(computeHasResourceBusinessHours)
@@ -119,6 +115,31 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private slatsRef = createRef<TimelineSlats>() // needed for Hit creation :(
   private resourceLaneUnstableCount = 0
 
+  // scroll stuff
+  //
+  private forcedTimeScroll?: Duration
+  private currentResourceScroll?: ResourceScrollState
+  //
+  private spreadsheetHeaderScroll = new ScrollController()
+  private spreadsheetBodyScroll = new ScrollController()
+  private spreadsheetFooterScroll = new ScrollController()
+  private timeHeaderScroll = new ScrollController()
+  private timeBodyScroll = new ScrollController()
+  private timeFooterScroll = new ScrollController()
+  //
+  // for time
+  private timeScrolls = new ScrollJoiner([
+    this.timeHeaderScroll,
+    this.timeBodyScroll,
+    this.timeFooterScroll,
+  ], true)
+  //
+  // for resources
+  private bodyScrolls = new ScrollJoiner([
+    this.spreadsheetBodyScroll,
+    this.timeBodyScroll,
+  ])
+
   constructor(props: ResourceViewProps, context: ViewContext) {
     super(props, context)
 
@@ -126,6 +147,20 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       resourceAreaWidth: context.options.resourceAreaWidth,
       spreadsheetColWidths: [],
     }
+
+    this.timeScrolls.addScrollListener(() => {
+      this.forcedTimeScroll = undefined
+    })
+
+    this.bodyScrolls.addScrollListener(() => {
+      this.currentResourceScroll = this.queryResourceScroll()
+    })
+
+    new ScrollJoiner([
+      this.spreadsheetHeaderScroll,
+      this.spreadsheetBodyScroll,
+      this.spreadsheetFooterScroll,
+    ], true)
   }
 
   render() {
@@ -243,8 +278,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     TODO:
     - tabindex
     - forPrint / collapsibleWidth (not needed anymore?)
-    - forceScrollLeft, etc
-    - scroll-joiners
     */
     return (
       <ViewContainer
@@ -270,6 +303,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 horizontal
                 hideBars
                 className={stickyHeaderDates ? 'fc-newnew-v-sticky' : ''}
+                elRef={this.spreadsheetHeaderScroll.handleEl}
               >
                 <div
                   class='fc-datagrid-header'
@@ -302,6 +336,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 horizontal
                 hideBars
                 className='fc-newnew-flexexpand'
+                elRef={this.spreadsheetBodyScroll.handleEl}
               >
                 <div className='fc-datagrid-body' style={{ width: spreadsheetCanvasWidth }}>
                   {groupColDisplays.map((groupCellDisplays, cellIndex) => {
@@ -316,7 +351,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           const position = bodyVerticalPositions && bodyVerticalPositions.get(group)
                           return (
                             <div
-                              key={String(group.value)}
+                              key={String(group.value) /* TODO: some sort of util!!! */}
                               class='fc-newnew-row'
                               role='row'
                               style={position as any /* !!! */}
@@ -383,6 +418,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               <NewScroller
                 horizontal
                 onBottomScrollbarWidth={this.handleSpreadsheetBottomScrollbarWidth}
+                elRef={this.spreadsheetFooterScroll.handleEl}
               >
                 <div style={{ width: spreadsheetCanvasWidth }} />
               </NewScroller>
@@ -395,6 +431,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 horizontal
                 hideBars
                 className={stickyHeaderDates ? 'fc-newnew-v-sticky' : ''}
+                elRef={this.timeHeaderScroll.handleEl}
               >
                 <div style={{
                   width: timeCanvasWidth,
@@ -414,6 +451,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               <NewScroller
                 vertical
                 horizontal
+                elRef={this.timeBodyScroll.handleEl}
                 onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
                 onRightScrollbarWidth={this.handleRightScrollbarWidth}
                 onBottomScrollbarWidth={this.handleTimeBottomScrollbarWidth}
@@ -438,7 +476,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           normalSlotWidth={normalSlotWidth}
                           lastSlotWidth={lastSlotWidth}
                           onCoords={this.handleSlatCoords}
-                          onScrollLeftRequest={this.handleScrollLeftRequest}
                         />
                         <TimelineLaneBg
                           businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
@@ -511,7 +548,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 </div>
               </NewScroller>
               {stickyFooterScrollbar && (
-                <NewScroller horizontal>
+                <NewScroller
+                  horizontal
+                  elRef={this.timeFooterScroll.handleEl}
+                >
                   <div style={{ width: timeCanvasWidth }}/>
                 </NewScroller>
               )}
@@ -523,34 +563,40 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   componentDidMount() {
-    this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
     this.handleSizing()
     this.context.addResizeHandler(this.handleSizing)
+
+    this.handleTimeScroll(this.context.options.scrollTime)
+    this.context.emitter.on('_scrollRequest', this.handleScroll)
   }
 
-  getSnapshotBeforeUpdate(): ResourceTimelineViewSnapshot {
-    if (!this.props.forPrint) { // because print-view is always zero?
-      return { resourceScroll: this.queryResourceScroll() }
-    }
-    return {}
-  }
-
-  componentDidUpdate(prevProps: ResourceViewProps, prevState: ResourceTimelineViewState, snapshot: ResourceTimelineViewSnapshot) {
-    this.scrollResponder.update(
-      prevProps.dateProfile !== this.props.dateProfile,
-      // TODO: && bodyVericalPositions stable
-    )
-
-    if (snapshot.resourceScroll) {
-      this.handleScrollRequest(snapshot.resourceScroll) // TODO: this gets triggered too often
-    }
-
+  componentDidUpdate(
+    prevProps: ResourceViewProps,
+    prevState: ResourceTimelineViewState,
+  ) {
     this.handleSizing()
+
+    // anything change that affects horizontal coordinates?
+    if (
+      prevProps.dateProfile !== this.props.dateProfile ||
+      prevState.slatCoords !== this.state.slatCoords
+    ) {
+      this.applyTimeScroll()
+    }
+
+    // anything change that affects vertical coordinates?
+    if (
+      prevProps.resourceStore !== this.props.resourceStore ||
+      prevProps.eventStore !== this.props.eventStore
+    ) {
+      this.applyResourceScroll()
+    }
   }
 
   componentWillUnmount() {
-    this.scrollResponder.detach()
     this.context.removeResizeHandler(this.handleSizing)
+
+    this.context.emitter.off('_scrollRequest', this.handleScroll)
   }
 
   handleResourceLaneStable = (isStable) => {
@@ -642,80 +688,99 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
   handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
     this.setState({
-      leftScrollbarWidth
+      leftScrollbarWidth,
     })
   }
 
   handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
     this.setState({
-      rightScrollbarWidth
+      rightScrollbarWidth,
     })
   }
 
   handleSpreadsheetBottomScrollbarWidth = (spreadsheetBottomScrollbarWidth: number) => {
     this.setState({
-      spreadsheetBottomScrollbarWidth
+      spreadsheetBottomScrollbarWidth,
     })
   }
 
   handleTimeBottomScrollbarWidth = (timeBottomScrollbarWidth: number) => {
     this.setState({
-      timeBottomScrollbarWidth
+      timeBottomScrollbarWidth,
     })
   }
 
   // Scrolling
-  // ------------------------------------------------------------------------------------------------------------------
-  // this is useful for scrolling prev/next dates while resource is scrolled down
+  // -----------------------------------------------------------------------------------------------
 
-  handleScrollLeftRequest = (scrollLeft: number) => {
-    this.forceTimeScroll(scrollLeft)
+  handleScroll = (request: ScrollRequest) => {
+    if (request.time) {
+      this.handleTimeScroll(request.time)
+    }
   }
 
-  handleScrollRequest = (request: ScrollRequest & ResourceScrollState) => { // only handles resource scroll
-    let { currentGroupRowDisplays, currentResourceRowDisplays, currentBodyVerticalPositions } = this
-    let entity: Resource | Group | undefined
+  handleTimeScroll = (time: Duration) => {
+    this.forcedTimeScroll = time
+    this.applyTimeScroll()
+  }
 
-    // find entity. hack
-    if (request.resourceId) {
-      for (const resourceRowDisplay of currentResourceRowDisplays) {
-        if (resourceRowDisplay.resource.id === request.resourceId) {
-          entity = resourceRowDisplay.resource
-          break
+  applyTimeScroll() {
+    let timeScroll = this.forcedTimeScroll
+
+    if (timeScroll) {
+      let { slatCoords } = this.state
+      if (slatCoords) {
+        let scrollLeft = slatCoords.coordFromLeft(slatCoords.durationToCoord(timeScroll))
+        this.timeScrolls.scrollTo(scrollLeft)
+      }
+    }
+  }
+
+  applyResourceScroll() {
+    let resourceScroll = this.currentResourceScroll
+
+    if (resourceScroll) {
+      let { currentGroupRowDisplays, currentResourceRowDisplays, currentBodyVerticalPositions } = this
+      let entity: Resource | Group | undefined
+
+      // find entity. hack
+      if (resourceScroll.resourceId) {
+        for (const resourceRowDisplay of currentResourceRowDisplays) {
+          if (resourceRowDisplay.resource.id === resourceScroll.resourceId) {
+            entity = resourceRowDisplay.resource
+            break
+          }
+        }
+      } else if (resourceScroll.groupValue !== undefined) {
+        for (const groupRowDisplay of currentGroupRowDisplays) {
+          if (groupRowDisplay.group.value === resourceScroll.groupValue) {
+            entity = groupRowDisplay.group
+            break
+          }
         }
       }
-    } else if (request.groupValue) { // okay for falsiness?
-      for (const groupRowDisplay of currentGroupRowDisplays) {
-        if (groupRowDisplay.group.value === request.groupValue) {
-          entity = groupRowDisplay.group
-          break
+
+      if (entity) {
+        const position = currentBodyVerticalPositions && currentBodyVerticalPositions.get(entity)
+
+        if (position) {
+          const { top, height } = position
+          const bottom = top + height
+
+          let scrollTop =
+            resourceScroll.fromBottom != null ?
+              bottom - resourceScroll.fromBottom : // pixels from bottom edge
+              top // just use top edge
+
+          this.bodyScrolls.scrollTo(scrollTop)
         }
       }
     }
-
-    if (entity) {
-      const position = currentBodyVerticalPositions.get(entity)
-
-      if (position) {
-        const { top, height } = position
-        const bottom = top + height
-
-        let scrollTop =
-          request.fromBottom != null ?
-            bottom - request.fromBottom : // pixels from bottom edge
-            top // just use top edge
-
-        this.forceResourceScroll(scrollTop)
-        return true
-      }
-    }
-
-    return null
   }
 
   queryResourceScroll(): ResourceScrollState {
     let { currentBodyHeightHierarchy, currentBodyVerticalPositions } = this
-    let scrollTop = this.getResourceScroll()
+    let scrollTop = this.bodyScrolls.y
     let scroll = {} as any
 
     let entityAtTop = searchTopmostEntity(
@@ -731,6 +796,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       let elBottomRelScroller = elBottom - scrollTop
 
       scroll.fromBottom = elBottomRelScroller
+
       if (isEntityGroup(entityAtTop)) {
         scroll.groupValue = entityAtTop.value
       } else {
@@ -739,18 +805,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     }
 
     return scroll
-  }
-
-  getResourceScroll(): number {
-    return 0 // TODO
-  }
-
-  forceResourceScroll(top: number): void {
-    // TODO
-  }
-
-  forceTimeScroll(left: number): void {
-    // TODO
   }
 
   // Resource INDIVIDUAL-Column Area Resizing

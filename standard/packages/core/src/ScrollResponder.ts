@@ -4,7 +4,6 @@ import { CalendarListeners } from './options.js'
 
 export interface ScrollRequest {
   time?: Duration
-  [otherProp: string]: any
 }
 
 export type ScrollRequestHandler = (request: ScrollRequest) => boolean

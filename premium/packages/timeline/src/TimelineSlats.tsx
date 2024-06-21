@@ -1,6 +1,5 @@
 import {
-  BaseComponent, multiplyDuration, RefMap,
-  ScrollResponder, ScrollRequest, DateMarker,
+  BaseComponent, multiplyDuration, RefMap, DateMarker,
   DateProfile,
   DateRange,
 } from '@fullcalendar/core/internal'
@@ -17,14 +16,12 @@ export interface TimelineSlatsProps {
   normalSlotWidth: number | undefined
   lastSlotWidth: number | undefined
   onCoords?: (coord: TimelineCoords | null) => void
-  onScrollLeftRequest?: (scrollLeft: number) => void
 }
 
 export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
   private rootElRef = createRef<HTMLDivElement>()
   private cellElRefs = new RefMap<HTMLTableCellElement>()
   private coords: TimelineCoords // for positionToHit
-  private scrollResponder: ScrollResponder
 
   render() {
     let { props } = this
@@ -59,17 +56,13 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
 
   componentDidMount() {
     this.updateSizing()
-    this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
   }
 
   componentDidUpdate(prevProps: TimelineSlatsProps) {
     this.updateSizing()
-    this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
   }
 
   componentWillUnmount() {
-    this.scrollResponder.detach()
-
     if (this.props.onCoords) {
       this.props.onCoords(null)
     }
@@ -92,24 +85,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
       if (props.onCoords) {
         props.onCoords(this.coords)
       }
-
-      this.scrollResponder.update(false) // TODO: wouldn't have to do this if coords were in state
     }
-  }
-
-  handleScrollRequest = (request: ScrollRequest) => {
-    let { onScrollLeftRequest } = this.props
-    let { coords } = this
-
-    if (onScrollLeftRequest && coords) {
-      if (request.time) {
-        let scrollLeft = coords.coordFromLeft(coords.durationToCoord(request.time))
-        onScrollLeftRequest(scrollLeft)
-      }
-      return true
-    }
-
-    return null // best?
   }
 
   positionToHit(leftPosition) { // TODO: kill somehow
