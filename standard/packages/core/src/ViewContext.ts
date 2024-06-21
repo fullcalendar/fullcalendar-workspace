@@ -65,12 +65,13 @@ export function buildViewContext(
     dateProfileGenerator,
     theme,
     isRtl: viewOptions.direction === 'rtl',
-    addResizeHandler(handler: ResizeHandler, timing: '' | 'pre' | 'post' = '') {
-      emitter.on(('_resize' + timing) as any, handler)
+    addResizeHandler(handler: ResizeHandler) {
+      emitter.on('_resize', handler)
     },
-    removeResizeHandler(handler: ResizeHandler, timing: '' | 'pre' | 'post' = '') {
-      emitter.off(('_resize' + timing) as any, handler)
+    removeResizeHandler(handler: ResizeHandler) {
+      emitter.off('_resize', handler)
     },
+    // TODO: eventually remove this
     createScrollResponder(execFunc: ScrollRequestHandler) {
       return new ScrollResponder(
         execFunc,

@@ -341,9 +341,7 @@ export const CALENDAR_LISTENER_REFINERS = {
   _afterprint: identity as Identity<() => void>,
   _noEventDrop: identity as Identity<() => void>,
   _noEventResize: identity as Identity<() => void>,
-  _resizepre: identity as Identity<(forced: boolean) => void>,
   _resize: identity as Identity<(forced: boolean) => void>,
-  _resizepost: identity as Identity<(forced: boolean) => void>,
   _scrollRequest: identity as Identity<(arg: any) => void>,
 }
 

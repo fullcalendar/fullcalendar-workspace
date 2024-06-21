@@ -49,9 +49,7 @@ export class CalendarImpl implements CalendarApi {
   }
 
   updateSize(): void {
-    this.trigger('_resizepre', true)
     this.trigger('_resize', true)
-    this.trigger('_resizepost', true)
   }
 
   // Options
