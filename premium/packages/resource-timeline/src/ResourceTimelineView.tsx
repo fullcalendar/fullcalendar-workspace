@@ -179,7 +179,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     let {
       groupSpecs,
-      rowGroupDepth,
+      groupRowDepth,
       orderSpecs,
       colSpecs,
       resourceColSpecs,
@@ -200,7 +200,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       anyNesting,
     } = this.buildResourceDisplays(
       resourceHierarchy,
-      rowGroupDepth,
+      groupRowDepth,
       props.resourceEntityExpansions,
       options.resourcesInitiallyExpanded,
     )
@@ -244,7 +244,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       state.spreadsheetColWidths,
       state.spreadsheetViewportWidth,
     )
-    let spreadsheetBulkColsPosition = sliceSpreadsheetColPositions(
+    let resourceHPosition = sliceSpreadsheetColPositions(
       spreadsheetColPositions,
       groupColDisplays.length,
     )
@@ -299,6 +299,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
           startClassName='fc-newnew-flexparent'
           startContent={() => (
             <Fragment>
+
               {/* ----- spreadsheet HEADER ----- */}
               <NewScroller
                 horizontal
@@ -336,6 +337,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   </div>
                 </div>
               </NewScroller>
+
               {/* ----- spreadsheet BODY ----- */}
               <NewScroller
                 vertical
@@ -382,57 +384,57 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       )
                     })}
                   </Fragment>
-                  {/* ----- Bulk-Row Container ----- */}
-                  <div style={createHorizontalCss(spreadsheetBulkColsPosition, isRTL)}>
-                    {/* ----- Group Bulk-Rows ----- */}
-                    <Fragment>
-                      {groupRowDisplays.map((groupRowDisplay) => {
-                        const { group } = groupRowDisplay
-                        const position = bodyVerticalPositions && bodyVerticalPositions.get(group)
-                        return (
-                          <div
-                            key={String(group.value)}
-                            class='fc-newnew-row'
-                            role='row'
-                            style={position as any /* !!! */}
-                            ref={this.spreadsheetGroupWideRefMap.createRef(group.value)}
-                          >
-                            <GroupWideCell
-                              group={group}
-                              isExpanded={groupRowDisplay.isExpanded}
-                            />
-                          </div>
-                        )
-                      })}
-                    </Fragment>
-                    {/* ----- Resource Bulk-Rows ----- */}
-                    <Fragment>
-                      {resourceRowDisplays.map((resourceRowDisplay) => {
-                        const { resource } = resourceRowDisplay
-                        const position = bodyVerticalPositions && bodyVerticalPositions.get(resource)
-                        return (
-                          <div
-                            key={resource.id}
-                            class='fc-newnew-row'
-                            role='row'
-                            style={position as any /* !!! */}
-                            ref={this.spreadsheetResourceRefMap.createRef(resource)}
-                          >
-                            <ResourceCells
-                              resource={resource}
-                              resourceFields={resourceRowDisplay.resourceFields}
-                              depth={resourceRowDisplay.depth}
-                              hasChildren={resourceRowDisplay.hasChildren}
-                              isExpanded={resourceRowDisplay.isExpanded}
-                              colSpecs={resourceColSpecs}
-                            />
-                          </div>
-                        )
-                      })}
-                    </Fragment>
+
+                  {/* ----- Group Rows (full horizontal span) ----- */}
+                  <Fragment>
+                    {groupRowDisplays.map((groupRowDisplay) => {
+                      const { group } = groupRowDisplay
+                      const position = bodyVerticalPositions && bodyVerticalPositions.get(group)
+                      return (
+                        <div
+                          key={String(group.value)}
+                          class='fc-newnew-row'
+                          role='row'
+                          style={position as any /* !!! */}
+                          ref={this.spreadsheetGroupWideRefMap.createRef(group.value)}
+                        >
+                          <GroupWideCell
+                            group={group}
+                            isExpanded={groupRowDisplay.isExpanded}
+                          />
+                        </div>
+                      )
+                    })}
+                  </Fragment>
+
+                  {/* ----- Resource Rows ----- */}
+                  <div style={createHorizontalCss(resourceHPosition, isRTL)}>
+                    {resourceRowDisplays.map((resourceRowDisplay) => {
+                      const { resource } = resourceRowDisplay
+                      const position = bodyVerticalPositions && bodyVerticalPositions.get(resource)
+                      return (
+                        <div
+                          key={resource.id}
+                          class='fc-newnew-row'
+                          role='row'
+                          style={position as any /* !!! */}
+                          ref={this.spreadsheetResourceRefMap.createRef(resource)}
+                        >
+                          <ResourceCells
+                            resource={resource}
+                            resourceFields={resourceRowDisplay.resourceFields}
+                            depth={resourceRowDisplay.depth}
+                            hasChildren={resourceRowDisplay.hasChildren}
+                            isExpanded={resourceRowDisplay.isExpanded}
+                            colSpecs={resourceColSpecs}
+                          />
+                        </div>
+                      )
+                    })}
                   </div>
                 </div>
               </NewScroller>
+
               {/* ----- spreadsheet FOOTER scrollbar ----- */}
               <NewScroller
                 horizontal
@@ -449,6 +451,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
           endClassName='fc-newnew-flexparent'
           endContent={() => (
             <Fragment>
+
               {/* ----- time-axis HEADER ----- */}
               <NewScroller
                 horizontal
@@ -471,6 +474,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   />
                 </div>
               </NewScroller>
+
               {/* ----- time-axis BODY (resources) ----- */}
               <NewScroller
                 vertical
@@ -571,6 +575,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   </NowTimer>
                 </div>
               </NewScroller>
+
               {/* ----- time-axis FOOTER scrollbars ----- */}
               {stickyFooterScrollbar && (
                 <NewScroller
@@ -580,6 +585,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   <div style={{ width: timeCanvasWidth }}/>
                 </NewScroller>
               )}
+
             </Fragment>
           )}
         />
@@ -989,7 +995,7 @@ function processColOptions(options: ViewOptionsRefined) {
   let resourceColSpecs: ColSpec[] = []
   let groupColSpecs: ColSpec[] = [] // part of the colSpecs, but filtered out in order to put first
   let groupSpecs: GroupSpec[] = []
-  let rowGroupDepth = 0
+  let groupRowDepth = 0
 
   for (let colSpec of allColSpecs) {
     if (colSpec.group) {
@@ -1016,7 +1022,7 @@ function processColOptions(options: ViewOptionsRefined) {
   if (groupColSpecs.length) {
     groupSpecs = groupColSpecs
   } else {
-    rowGroupDepth = 1
+    groupRowDepth = 1
     let hGroupField = options.resourceGroupField
     if (hGroupField) {
       groupSpecs.push({
@@ -1054,7 +1060,7 @@ function processColOptions(options: ViewOptionsRefined) {
 
   return {
     groupSpecs,
-    rowGroupDepth,
+    groupRowDepth,
     orderSpecs: plainOrderSpecs,
     colSpecs: groupColSpecs.concat(resourceColSpecs),
     resourceColSpecs,
