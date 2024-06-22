@@ -174,6 +174,7 @@ export function getStickyHeaderDates(options: BaseOptionsRefined) {
   let { stickyHeaderDates } = options
 
   if (stickyHeaderDates == null || stickyHeaderDates === 'auto') {
+    // TODO: use props.isHeightAuto?
     stickyHeaderDates = options.height === 'auto' || options.viewHeight === 'auto'
   }
 
@@ -184,6 +185,7 @@ export function getStickyFooterScrollbar(options: BaseOptionsRefined) {
   let { stickyFooterScrollbar } = options
 
   if (stickyFooterScrollbar == null || stickyFooterScrollbar === 'auto') {
+    // TODO: use props.isHeightAuto?
     stickyFooterScrollbar = options.height === 'auto' || options.viewHeight === 'auto'
   }
 

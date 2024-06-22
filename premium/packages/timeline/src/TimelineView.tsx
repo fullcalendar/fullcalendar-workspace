@@ -2,32 +2,36 @@ import { Duration } from '@fullcalendar/core'
 import { ViewProps, memoize, ViewContainer, DateComponent, Hit, greatestDurationDenominator, NowTimer, DateMarker, DateRange, NowIndicatorContainer, getStickyHeaderDates, getStickyFooterScrollbar, NewScroller, ScrollRequest, ViewContext } from '@fullcalendar/core/internal'
 import { Fragment, createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollController, ScrollJoiner } from '@fullcalendar/scrollgrid/internal'
-import { buildTimelineDateProfile, TimelineDateProfile } from './timeline-date-profile.js'
+import { buildTimelineDateProfile } from './timeline-date-profile.js'
 import { TimelineHeader } from './TimelineHeader.js'
 import { TimelineCoords, coordToCss } from './TimelineCoords.js'
 import { TimelineSlats } from './TimelineSlats.js'
 import { TimelineLane } from './TimelineLane.js'
+import { computeSlotWidth } from './timeline-positioning.js'
 
 interface TimelineViewState {
   slatCoords?: TimelineCoords
   slotCushionMaxWidth?: number
-  bodyInnerWidth?: number,
+  viewInnerWidth?: number,
   leftScrollbarWidth?: number,
   rightScrollbarWidth?: number,
 }
 
 export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
+  // memoized
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
+  private computeSlotWidth = memoize(computeSlotWidth)
+
+  // refs
   private slatsRef = createRef<TimelineSlats>()
 
-  // scroll stuff
-  //
+  // unmanaged state
   private forcedTimeScroll?: Duration
-  //
+
+  // scroll managers
   private headerScroll = new ScrollController()
   private bodyScroll = new ScrollController()
   private footerScroll = new ScrollController()
-  //
   private scrollJoiner = new ScrollJoiner([
     this.headerScroll,
     this.bodyScroll,
@@ -37,6 +41,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   constructor(props: ViewProps, context: ViewContext) {
     super(props, context)
 
+    // scroll manager further initialization
     this.scrollJoiner.addScrollListener(() => {
       this.forcedTimeScroll = undefined
     })
@@ -46,34 +51,35 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     let { props, state, context } = this
     let { options } = context
 
+    /* date */
+
     let tDateProfile = this.buildTimelineDateProfile(
       props.dateProfile,
       context.dateEnv,
       options,
       context.dateProfileGenerator,
     )
-
-    let { slotMinWidth } = options
-    let [normalSlotWidth, lastSlotWidth, canvasWidth] = computeSlotWidth( // TODO: memoize
-      tDateProfile,
-      state.slotCushionMaxWidth,
-      state.bodyInnerWidth
-    )
-
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
 
-    let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
+    /* table settings */
 
+    let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
-    /*
-    TODO:
-    - tabindex
-    - forPrint / collapsibleWidth (not needed anymore?)
-    */
+    /* table positions */
+
+    let { slotMinWidth } = options
+    let [normalSlotWidth, lastSlotWidth, canvasWidth] = this.computeSlotWidth(
+      tDateProfile,
+      slotMinWidth,
+      state.slotCushionMaxWidth,
+      state.viewInnerWidth
+    )
+
     return (
       <ViewContainer
         elClasses={[
+          'fc-newnew-flexexpand', // expand within fc-view-harness
           'fc-newnew-flexparent',
           'fc-timeline',
           options.eventOverlap === false ?
@@ -82,6 +88,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
         ]}
         viewSpec={context.viewSpec}
       >
+        {/* header */}
         <NewScroller
           horizontal
           hideBars
@@ -97,16 +104,18 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               dateProfile={props.dateProfile}
               tDateProfile={tDateProfile}
               slatCoords={state.slatCoords}
-              onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
+              onMaxCushionWidth={this.handleMaxCushionWidth}
             />
           </div>
         </NewScroller>
+
+        {/* body */}
         <NewScroller // how does it know to be liquid-height?
           vertical
           horizontal
           className='fc-newnew-flexexpand'
           elRef={this.bodyScroll.handleEl}
-          onWidth={this.handleBodyInnerWidth}
+          onWidth={this.handleViewInnerWidth}
           onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
           onRightScrollbarWidth={this.handleRightScrollbarWidth}
         >
@@ -157,6 +166,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
             </NowTimer>
           </div>
         </NewScroller>
+
+        {/* footer scrollbar */}
         {stickyFooterScrollbar && (
           <NewScroller
             horizontal
@@ -169,7 +180,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     )
   }
 
+  // Lifecycle
+  // -----------------------------------------------------------------------------------------------
+
   componentDidMount() {
+    // scrolling
     this.handleTimeScroll(this.context.options.scrollTime)
     this.context.emitter.on('_scrollRequest', this.handleScroll)
   }
@@ -188,12 +203,19 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   }
 
   componentWillUnmount() {
+    // scrolling
     this.context.emitter.off('_scrollRequest', this.handleScroll)
   }
 
-  handleSlatCoords = (slatCoords: TimelineCoords | null) => {
+  // Sizing
+  // -----------------------------------------------------------------------------------------------
+
+  /*
+  TODO: have Calendar, which manage view-harness, tell us about width explicitly?
+  */
+  handleViewInnerWidth = (viewInnerWidth: number) => {
     this.setState({
-      slatCoords
+      viewInnerWidth,
     })
   }
 
@@ -203,9 +225,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     })
   }
 
-  handleBodyInnerWidth = (bodyInnerWidth: number) => {
+  handleSlatCoords = (slatCoords: TimelineCoords | null) => {
     this.setState({
-      bodyInnerWidth,
+      slatCoords
     })
   }
 
@@ -222,8 +244,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   }
 
   // Scrolling
-  // ------------------------------------------------------------------------------------------
-  // TODO: make DRY
+  // -----------------------------------------------------------------------------------------------
 
   handleScroll = (request: ScrollRequest) => {
     if (request.time) {
@@ -249,7 +270,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   }
 
   // Hit System
-  // ------------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------------
 
   handeBodyEl = (el: HTMLElement | null) => {
     if (el) {
@@ -280,13 +301,4 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
     return null
   }
-}
-
-export function computeSlotWidth(
-  tDateProfile: TimelineDateProfile,
-  minSlatContent: number | number, // TODO: if either is undefined, return undefined
-  availableWidth: number | number, //
-): [number, number, number] { // [normalWidth, lastWidth, totalWidth]
-  // const slatMinWidth = Math.max(30, ((slatMaxWidth || 0) / tDateProfile.slotsPerLabel))
-  return null as any
 }

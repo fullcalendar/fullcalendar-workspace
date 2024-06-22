@@ -18,6 +18,7 @@ import {
   getStickyFooterScrollbar,
   NewScroller,
   RefMapKeyed,
+  guid,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import {
@@ -28,6 +29,7 @@ import {
   coordToCss,
   TimelineLaneSeg,
   TimelineLaneBg,
+  computeSlotWidth,
 } from '@fullcalendar/timeline/internal'
 import {
   ResourceViewProps,
@@ -42,22 +44,26 @@ import {
 import { ScrollController, ScrollJoiner } from '@fullcalendar/scrollgrid/internal'
 import { ResourceCells } from './spreadsheet/ResourceCells.js'
 import { GroupWideCell } from './spreadsheet/GroupWideCell.js'
-import {
-  GroupRowDisplay,
-  ResourceRowDisplay,
-  VerticalPosition,
-  buildHeaderHeightHierarchy,
-  buildResourceDisplays,
-  buildVerticalPositions,
-  searchTopmostEntity,
-} from './resource-table.js'
 import { GroupTallCell } from './spreadsheet/GroupTallCell.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
 import { HeaderCell } from './spreadsheet/HeaderCell.js'
 import { ResourceLane } from './lane/ResourceLane.js'
 import { GroupLane } from './lane/GroupLane.js'
 import { ResizableTwoCol } from './ResizableTwoCol.js'
-import { computeSlotWidth } from '../../timeline/src/TimelineView.js'
+import {
+  GroupRowDisplay,
+  ResourceRowDisplay,
+  buildResourceDisplays,
+} from './resource-display.js'
+import {
+  VerticalPosition,
+  buildHeaderHeightHierarchy,
+  buildVerticalPositions,
+  searchTopmostEntity,
+  computeSpreadsheetColPositions,
+  sliceSpreadsheetColPositions,
+  createHorizontalCss,
+} from './resource-positioning.js'
 
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
@@ -84,6 +90,7 @@ interface ResourceScrollState {
 const SPREADSHEET_COL_MIN_WIDTH = 20
 
 export class ResourceTimelineView extends DateComponent<ResourceViewProps, ResourceTimelineViewState> {
+  // memoized
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private processColOptions = memoize(processColOptions)
   private buildResourceHierarchy = memoize(buildResourceHierarchy)
@@ -91,7 +98,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private buildHeaderHeightHierarchy = memoize(buildHeaderHeightHierarchy)
   private buildHeaderVerticalPositions = memoize(buildVerticalPositions)
   private buildBodyVerticalPositions = memoize(buildVerticalPositions)
+  private computeSlotWidth = memoize(computeSlotWidth)
+  private computeSpreadsheetColPositions = memoize(computeSpreadsheetColPositions)
+  private computeHasResourceBusinessHours = memoize(computeHasResourceBusinessHours)
 
+  // refs
   private twoColElRef = createRef<HTMLDivElement>()
   private superHeaderRef = createRef<HTMLDivElement>()
   private normalHeaderRef = createRef<HTMLDivElement>()
@@ -101,41 +112,34 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private spreadsheetResourceRefMap = new RefMapKeyed<Resource, HTMLDivElement>()
   private timeGroupWideRefMap = new RefMapKeyed<Group, HTMLDivElement>()
   private timeResourceRefMap = new RefMapKeyed<Resource, HTMLDivElement>()
+  private slatsRef = createRef<TimelineSlats>() // needed for Hit system
 
-  // DERIVED
+  // current
   private currentGroupRowDisplays: GroupRowDisplay[]
   private currentResourceRowDisplays: ResourceRowDisplay[]
   private currentBodyHeightHierarchy: ParentNode<Resource | Group>[]
   private currentBodyVerticalPositions?: Map<Resource | Group, VerticalPosition>
 
-  // misc
-  private computeHasResourceBusinessHours = memoize(computeHasResourceBusinessHours)
-  private resourceSplitter = new ResourceSplitter() // doesn't let it do businessHours tho
+  // unmanaged state
+  private resourceSplitter = new ResourceSplitter()
   private bgSlicer = new TimelineLaneSlicer()
-  private slatsRef = createRef<TimelineSlats>() // needed for Hit creation :(
   private resourceLaneUnstableCount = 0
-
-  // scroll stuff
-  //
   private forcedTimeScroll?: Duration
   private currentResourceScroll?: ResourceScrollState
-  //
+
+  // scroll managers
   private spreadsheetHeaderScroll = new ScrollController()
   private spreadsheetBodyScroll = new ScrollController()
   private spreadsheetFooterScroll = new ScrollController()
   private timeHeaderScroll = new ScrollController()
   private timeBodyScroll = new ScrollController()
   private timeFooterScroll = new ScrollController()
-  //
-  // for time
   private timeScrolls = new ScrollJoiner([
     this.timeHeaderScroll,
     this.timeBodyScroll,
     this.timeFooterScroll,
   ], true)
-  //
-  // for resources
-  private bodyScrolls = new ScrollJoiner([
+  private bodyScrolls = new ScrollJoiner([ // for resources
     this.spreadsheetBodyScroll,
     this.timeBodyScroll,
   ])
@@ -148,14 +152,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       spreadsheetColWidths: [],
     }
 
+    // scroll manager further initialization
     this.timeScrolls.addScrollListener(() => {
       this.forcedTimeScroll = undefined
     })
-
     this.bodyScrolls.addScrollListener(() => {
       this.currentResourceScroll = this.queryResourceScroll()
     })
 
+    // scroll manager that doesn't need to be referenced
     new ScrollJoiner([
       this.spreadsheetHeaderScroll,
       this.spreadsheetBodyScroll,
@@ -167,8 +172,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     let { props, state, context } = this
     let { dateProfile } = props
     let { options, viewSpec } = context
-    let { expandRows, direction } = options
-    let isRTL = direction === 'rtl'
+
+    /* date */
 
     let tDateProfile = this.buildTimelineDateProfile(
       dateProfile,
@@ -176,6 +181,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       options,
       context.dateProfileGenerator,
     )
+    let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
+
+    /* table settings */
+
+    let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
+    let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
     let {
       groupSpecs,
@@ -186,11 +197,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       superHeaderRendering,
     } = this.processColOptions(context.options)
 
+    /* table hierarchy */
+
     let resourceHierarchy = this.buildResourceHierarchy(
       props.resourceStore,
       groupSpecs,
       orderSpecs,
     )
+
+    /* table display */
 
     let {
       groupColDisplays,
@@ -208,38 +223,41 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     this.currentResourceRowDisplays = resourceRowDisplays
     this.currentBodyHeightHierarchy = bodyHeightHierarchy
 
+    /* table positions */
+
     let headerHeightHierarchy = this.buildHeaderHeightHierarchy(
       Boolean(superHeaderRendering),
       tDateProfile.cellRows.length,
     )
 
-    // NOTE: TimelineHeader doesn't need top coordinates, only heights
     let [headerVerticalPositions, headerTotalHeight] = this.buildHeaderVerticalPositions(
       headerHeightHierarchy,
       state.headerNaturalHeightMap,
-      undefined, // minHeight
     )
 
     let { viewInnerHeight } = state
-    let bodyHeight = (viewInnerHeight !== undefined && headerTotalHeight !== undefined)
-      ? viewInnerHeight - headerTotalHeight
+    let rowsMinHeight = (
+      options.expandRows && !props.isHeightAuto &&
+      viewInnerHeight !== undefined && headerTotalHeight !== undefined
+    ) ? viewInnerHeight - headerTotalHeight
       : undefined
 
     let [bodyVerticalPositions] = this.buildBodyVerticalPositions(
       bodyHeightHierarchy,
       state.bodyNaturalHeightMap,
-      bodyHeight,
+      rowsMinHeight,
     )
     this.currentBodyVerticalPositions = bodyVerticalPositions
 
     let { slotMinWidth } = options
-    let [normalSlotWidth, lastSlotWidth, timeCanvasWidth] = computeSlotWidth( // TODO: memoize
+    let [normalSlotWidth, lastSlotWidth, timeCanvasWidth] = this.computeSlotWidth(
       tDateProfile,
+      slotMinWidth,
       state.slotCushionMaxWidth,
       state.timeViewportWidth
     )
 
-    let [spreadsheetColPositions, spreadsheetCanvasWidth] = computeSpreadsheetColPositions( // TODO: memoize
+    let [spreadsheetColPositions, spreadsheetCanvasWidth] = this.computeSpreadsheetColPositions(
       colSpecs,
       state.spreadsheetColWidths,
       state.spreadsheetViewportWidth,
@@ -249,8 +267,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       groupColDisplays.length,
     )
 
-    let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
-    let hasResourceBusinessHours = this.computeHasResourceBusinessHours(resourceRowDisplays)
+    /* event display */
 
     let splitProps = this.resourceSplitter.splitProps(props)
     let bgLaneProps = splitProps['']
@@ -265,20 +282,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       context.dateEnv,
     )
 
+    /* business hour display */
+
+    let hasResourceBusinessHours = this.computeHasResourceBusinessHours(resourceRowDisplays)
     let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
 
-    let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
-
-    let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
-
-    /*
-    TODO:
-    - tabindex
-    - forPrint / collapsibleWidth (not needed anymore?)
-    */
     return (
       <ViewContainer
         elClasses={[
+          'fc-newnew-flexexpand', // expand within fc-view-harness
           'fc-newnew-flexparent',
           'fc-resource-timeline',
           !anyNesting && 'fc-resource-timeline-flat', // flat means there's no nesting
@@ -294,13 +306,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
           elRef={this.twoColElRef}
           className={'fc-newnew-flexexpand'}
 
-          // ----- spreadsheet -----
+          /* spreadsheet */
 
           startClassName='fc-newnew-flexparent'
           startContent={() => (
             <Fragment>
 
-              {/* ----- spreadsheet HEADER ----- */}
+              {/* spreadsheet HEADER */}
               <NewScroller
                 horizontal
                 hideBars
@@ -338,7 +350,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 </div>
               </NewScroller>
 
-              {/* ----- spreadsheet BODY ----- */}
+              {/* spreadsheet BODY */}
               <NewScroller
                 vertical
                 horizontal
@@ -353,21 +365,21 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     paddingBottom: state.spreadsheetBottomScrollbarWidth - state.timeBottomScrollbarWidth,
                   }}
                 >
-                  {/* ----- Group Columns > Cells ----- */}
+                  {/* group columns > cells */}
                   <Fragment>
                     {groupColDisplays.map((groupCellDisplays, colIndex) => {
                       const hposition = spreadsheetColPositions[colIndex] // might be undefined
                       return (
                         <div
                           key={colIndex}
-                          style={createHorizontalCss(hposition, isRTL)}
+                          style={createHorizontalCss(hposition, context.isRtl)}
                         >
                           {groupCellDisplays.map((groupCellDisplay) => {
                             const { group } = groupCellDisplay
                             const position = bodyVerticalPositions && bodyVerticalPositions.get(group)
                             return (
                               <div
-                                key={String(group.value) /* TODO: some sort of util!!! */}
+                                key={queryObjKey(group)}
                                 class='fc-newnew-row'
                                 role='row'
                                 style={position as any /* !!! */}
@@ -385,7 +397,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     })}
                   </Fragment>
 
-                  {/* ----- Group Rows (full horizontal span) ----- */}
+                  {/* group rows */}
                   <Fragment>
                     {groupRowDisplays.map((groupRowDisplay) => {
                       const { group } = groupRowDisplay
@@ -407,8 +419,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     })}
                   </Fragment>
 
-                  {/* ----- Resource Rows ----- */}
-                  <div style={createHorizontalCss(resourceHPosition, isRTL)}>
+                  {/* resource rows */}
+                  <div style={createHorizontalCss(resourceHPosition, context.isRtl)}>
                     {resourceRowDisplays.map((resourceRowDisplay) => {
                       const { resource } = resourceRowDisplay
                       const position = bodyVerticalPositions && bodyVerticalPositions.get(resource)
@@ -435,7 +447,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 </div>
               </NewScroller>
 
-              {/* ----- spreadsheet FOOTER scrollbar ----- */}
+              {/* spreadsheet FOOTER scrollbar */}
               <NewScroller
                 horizontal
                 onBottomScrollbarWidth={this.handleSpreadsheetBottomScrollbarWidth}
@@ -446,13 +458,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
             </Fragment>
           )}
 
-          // ----- time-axis -----
+          /* time-area */
 
           endClassName='fc-newnew-flexparent'
           endContent={() => (
             <Fragment>
 
-              {/* ----- time-axis HEADER ----- */}
+              {/* time-area HEADER */}
               <NewScroller
                 horizontal
                 hideBars
@@ -468,14 +480,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     dateProfile={dateProfile}
                     tDateProfile={tDateProfile}
                     slatCoords={state.slatCoords}
-                    onMaxCushionWidth={slotMinWidth ? null : this.handleMaxCushionWidth}
+                    onMaxCushionWidth={this.handleMaxCushionWidth}
                     verticalPositions={headerVerticalPositions}
                     rowRefMap={this.timeHeaderRefMap}
                   />
                 </div>
               </NewScroller>
 
-              {/* ----- time-axis BODY (resources) ----- */}
+              {/* time-area BODY (resources) */}
               <NewScroller
                 vertical
                 horizontal
@@ -486,10 +498,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               >
                 <div
                   ref={this.handleBodyEl}
-                  className={[
-                    'fc-timeline-body',
-                    expandRows ? 'fc-timeline-body-expandrows' : '',
-                  ].join(' ')}
+                  className='fc-timeline-body'
                   style={{ width: timeCanvasWidth }}
                 >
                   <NowTimer unit={timerUnit}>
@@ -576,7 +585,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 </div>
               </NewScroller>
 
-              {/* ----- time-axis FOOTER scrollbars ----- */}
+              {/* time-area FOOTER */}
               {stickyFooterScrollbar && (
                 <NewScroller
                   horizontal
@@ -593,10 +602,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     )
   }
 
+  // Lifecycle
+  // -----------------------------------------------------------------------------------------------
+
   componentDidMount() {
+    // sizing
     this.handleSizing()
     this.context.addResizeHandler(this.handleSizing)
 
+    // scrolling
     this.handleTimeScroll(this.context.options.scrollTime)
     this.context.emitter.on('_scrollRequest', this.handleScroll)
   }
@@ -607,7 +621,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   ) {
     this.handleSizing()
 
-    // anything change that affects horizontal coordinates?
+    // changes that affect horizontal coordinates
     if (
       prevProps.dateProfile !== this.props.dateProfile ||
       prevState.slatCoords !== this.state.slatCoords
@@ -615,7 +629,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       this.applyTimeScroll()
     }
 
-    // anything change that affects vertical coordinates?
+    // changes that affect vertical coordinates
     if (
       prevProps.resourceStore !== this.props.resourceStore ||
       prevProps.eventStore !== this.props.eventStore
@@ -625,19 +639,24 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   componentWillUnmount() {
+    // sizing
     this.context.removeResizeHandler(this.handleSizing)
 
+    // scrolling
     this.context.emitter.off('_scrollRequest', this.handleScroll)
+  }
+
+  // Sizing
+  // -----------------------------------------------------------------------------------------------
+
+  handleSizing = () => {
+    this.handleRowSizing()
+    this.handleViewInnerSizing()
   }
 
   handleResourceLaneStable = (isStable) => {
     this.resourceLaneUnstableCount += (isStable ? -1 : 1)
     this.handleRowSizing()
-  }
-
-  handleSizing = () => {
-    this.handleRowSizing()
-    this.handleViewInnerHeight()
   }
 
   handleRowSizing = () => {
@@ -692,15 +711,19 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     }
   }
 
-  handleViewInnerHeight = () => {
+  /*
+  TODO: have Calendar, which creates view-harness and sets height on it, tell us about height explicitly?
+  */
+  handleViewInnerSizing = () => {
     this.setState({
       viewInnerHeight: this.twoColElRef.current.offsetHeight
     })
   }
 
-  handleSlatCoords = (slatCoords: TimelineCoords) => {
+  handleTwoColSizes = (spreadsheetViewportWidth: number, timeViewportWidth: number) => {
     this.setState({
-      slatCoords,
+      spreadsheetViewportWidth,
+      timeViewportWidth,
     })
   }
 
@@ -710,10 +733,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     })
   }
 
-  handleTwoColSizes = (spreadsheetViewportWidth: number, timeViewportWidth: number) => {
+  handleSlatCoords = (slatCoords: TimelineCoords) => {
     this.setState({
-      spreadsheetViewportWidth,
-      timeViewportWidth,
+      slatCoords,
     })
   }
 
@@ -839,12 +861,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   // Resource INDIVIDUAL-Column Area Resizing
-  // ------------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------------
 
-  private resizerElRefs = new RefMap<HTMLElement>(this._handleColResizerEl.bind(this))
+  private resizerElRefs = new RefMap<HTMLElement>(this.handleColResizerEl.bind(this))
   private colDraggings: { [index: string]: ElementDragging } = {}
 
-  _handleColResizerEl(resizerEl: HTMLElement | null, index: string) {
+  handleColResizerEl(resizerEl: HTMLElement | null, index: string) {
     let { colDraggings } = this
 
     if (!resizerEl) {
@@ -902,7 +924,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   // Hit System
-  // ------------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------------
 
   handleBodyEl = (el: HTMLElement | null) => {
     if (el) {
@@ -955,21 +977,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 ResourceTimelineView.addStateEquality({
   spreadsheetColWidths: isArraysEqual,
 })
-
-function computeSpreadsheetColPositions(
-  colSpecs: ColSpec[],
-  forcedWidths: number[],
-  availableWidth: number | undefined,
-): [{ start: number, size: number }[], number] {
-  return null as any
-}
-
-function sliceSpreadsheetColPositions(
-  colPositions: { start: number, size: number }[],
-  startIndex: number,
-): { start: number, size: number } | undefined {
-  return null as any
-}
 
 function processColOptions(options: ViewOptionsRefined) {
   let allColSpecs: ColSpec[] = options.resourceAreaColumns || []
@@ -1080,14 +1087,17 @@ function computeHasResourceBusinessHours(resourceRowDisplays: ResourceRowDisplay
   return false
 }
 
-function createHorizontalCss(
-  props: { start: number, size: number } | undefined,
-  isRTL: boolean,
-): { left?: number, right?: number, width: number } | undefined {
-  if (props) {
-    return {
-      [isRTL ? 'right' : 'left']: props.start,
-      width: props.size,
-    }
+// General Utils
+// -------------------------------------------------------------------------------------------------
+
+const keyMap = new WeakMap<any, string>()
+
+function queryObjKey(obj: any): string {
+  if (keyMap.has(obj)) {
+    return keyMap.get(obj)
   }
+
+  const key = guid()
+  keyMap.set(obj, key)
+  return key
 }
