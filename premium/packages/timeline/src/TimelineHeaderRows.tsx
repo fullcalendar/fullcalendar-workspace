@@ -8,13 +8,24 @@ export interface TimelineHeaderRowsProps {
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
+  normalSlotWidth: number | undefined
+  lastSlotWidth: number | undefined
   verticalPositions?: Map<boolean | number, { top: number, height: number }>
   rowRefMap?: RefMapKeyed<number, HTMLDivElement>
 }
 
 export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
   render() {
-    let { dateProfile, tDateProfile, todayRange, nowDate, verticalPositions, rowRefMap } = this.props
+    let {
+      dateProfile,
+      tDateProfile,
+      todayRange,
+      nowDate,
+      normalSlotWidth,
+      lastSlotWidth,
+      verticalPositions,
+      rowRefMap,
+    } = this.props
     let { cellRows } = tDateProfile
 
     return (
@@ -30,25 +41,34 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
           const cellPosition = verticalPositions ? verticalPositions.get(rowLevel) : undefined
           const cellHeight = cellPosition ? cellPosition.height : undefined
 
+          // wrong to apply height!!!
+
+          // what about cell widths???
+
           return ( // eslint-disable-next-line react/no-array-index-key
             <div
               key={rowLevel}
               className={classNames.join(' ')}
               ref={rowRefMap && rowRefMap.createRef(rowLevel)}
+              style={{ height: cellHeight }}
             >
-              {rowCells.map((cell) => (
-                <TimelineHeaderCell
-                  key={cell.date.toISOString()}
-                  cell={cell}
-                  rowLevel={rowLevel}
-                  dateProfile={dateProfile}
-                  tDateProfile={tDateProfile}
-                  todayRange={todayRange}
-                  nowDate={nowDate}
-                  isSticky={!isLastRow}
-                  height={cellHeight}
-                />
-              ))}
+              {rowCells.map((cell, i) => {
+                let isLast = i === rowCells.length - 1
+
+                return (
+                  <TimelineHeaderCell
+                    key={cell.date.toISOString()}
+                    cell={cell}
+                    rowLevel={rowLevel}
+                    dateProfile={dateProfile}
+                    tDateProfile={tDateProfile}
+                    todayRange={todayRange}
+                    nowDate={nowDate}
+                    isSticky={!isLastRow}
+                    width={isLast ? lastSlotWidth : normalSlotWidth}
+                  />
+                )
+              })}
             </div>
           )
         })}

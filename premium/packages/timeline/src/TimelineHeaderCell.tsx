@@ -15,7 +15,7 @@ export interface TimelineHeaderThProps {
   todayRange: DateRange
   nowDate: DateMarker
   isSticky: boolean
-  height: number | undefined
+  width: number | undefined
 }
 
 export class TimelineHeaderCell extends BaseComponent<TimelineHeaderThProps> {
@@ -60,6 +60,9 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderThProps> {
             omitTimeZoneOffset: true,
           }),
         }}
+        elStyle={{
+          width: props.width,
+        }}
         renderProps={renderProps}
         generatorName="slotLabelContent"
         customGenerator={options.slotLabelContent}
@@ -69,7 +72,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderThProps> {
         willUnmount={options.slotLabelWillUnmount}
       >
         {(InnerContent) => (
-          <div className="fc-timeline-slot-frame" style={{ height: props.height }}>
+          <div className="fc-timeline-slot-frame">
             <InnerContent
               elTag="a"
               elClasses={[

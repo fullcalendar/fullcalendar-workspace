@@ -105,6 +105,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               tDateProfile={tDateProfile}
               slatCoords={state.slatCoords}
               onMaxCushionWidth={this.handleMaxCushionWidth}
+              normalSlotWidth={normalSlotWidth}
+              lastSlotWidth={lastSlotWidth}
             />
           </div>
         </NewScroller>

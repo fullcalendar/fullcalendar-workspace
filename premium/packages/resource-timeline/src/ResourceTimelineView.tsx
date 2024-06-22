@@ -481,6 +481,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     tDateProfile={tDateProfile}
                     slatCoords={state.slatCoords}
                     onMaxCushionWidth={this.handleMaxCushionWidth}
+                    normalSlotWidth={normalSlotWidth}
+                    lastSlotWidth={lastSlotWidth}
                     verticalPositions={headerVerticalPositions}
                     rowRefMap={this.timeHeaderRefMap}
                   />
