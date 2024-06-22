@@ -1,5 +1,21 @@
 import { Duration } from '@fullcalendar/core'
-import { ViewProps, memoize, ViewContainer, DateComponent, Hit, greatestDurationDenominator, NowTimer, DateMarker, DateRange, NowIndicatorContainer, getStickyHeaderDates, getStickyFooterScrollbar, NewScroller, ScrollRequest, ViewContext } from '@fullcalendar/core/internal'
+import {
+  ViewProps,
+  memoize,
+  ViewContainer,
+  DateComponent,
+  Hit,
+  greatestDurationDenominator,
+  NowTimer,
+  DateMarker,
+  DateRange,
+  NowIndicatorContainer,
+  getStickyHeaderDates,
+  getStickyFooterScrollbar,
+  NewScroller,
+  ScrollRequest,
+  ViewContext,
+} from '@fullcalendar/core/internal'
 import { Fragment, createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollController, ScrollJoiner } from '@fullcalendar/scrollgrid/internal'
 import { buildTimelineDateProfile } from './timeline-date-profile.js'

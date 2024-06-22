@@ -29,7 +29,10 @@ import {
   coordToCss,
   TimelineLaneSeg,
   TimelineLaneBg,
+  createHorizontalStyle,
+  CoordRange,
   computeSlotWidth,
+  createVerticalStyle,
 } from '@fullcalendar/timeline/internal'
 import {
   ResourceViewProps,
@@ -56,13 +59,11 @@ import {
   buildResourceDisplays,
 } from './resource-display.js'
 import {
-  VerticalPosition,
-  buildHeaderHeightHierarchy,
-  buildVerticalPositions,
-  searchTopmostEntity,
-  computeSpreadsheetColPositions,
-  sliceSpreadsheetColPositions,
-  createHorizontalCss,
+  buildHeaderCoordHierarchy,
+  buildEntityCoordRanges,
+  findEntityByCoord,
+  computeSpreadsheetColHorizontals,
+  sliceSpreadsheetColHorizontal,
 } from './resource-positioning.js'
 
 interface ResourceTimelineViewState {
@@ -95,11 +96,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private processColOptions = memoize(processColOptions)
   private buildResourceHierarchy = memoize(buildResourceHierarchy)
   private buildResourceDisplays = memoize(buildResourceDisplays)
-  private buildHeaderHeightHierarchy = memoize(buildHeaderHeightHierarchy)
-  private buildHeaderVerticalPositions = memoize(buildVerticalPositions)
-  private buildBodyVerticalPositions = memoize(buildVerticalPositions)
+  private buildHeaderHeightHierarchy = memoize(buildHeaderCoordHierarchy)
+  private buildHeaderVerticalPositions = memoize(buildEntityCoordRanges)
+  private buildBodyVerticalPositions = memoize(buildEntityCoordRanges)
   private computeSlotWidth = memoize(computeSlotWidth)
-  private computeSpreadsheetColPositions = memoize(computeSpreadsheetColPositions)
+  private computeSpreadsheetColHorizontals = memoize(computeSpreadsheetColHorizontals)
   private computeHasResourceBusinessHours = memoize(computeHasResourceBusinessHours)
 
   // refs
@@ -118,7 +119,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private currentGroupRowDisplays: GroupRowDisplay[]
   private currentResourceRowDisplays: ResourceRowDisplay[]
   private currentBodyHeightHierarchy: ParentNode<Resource | Group>[]
-  private currentBodyVerticalPositions?: Map<Resource | Group, VerticalPosition>
+  private currentBodyVerticals?: Map<Resource | Group, CoordRange>
 
   // unmanaged state
   private resourceSplitter = new ResourceSplitter()
@@ -242,12 +243,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     ) ? viewInnerHeight - headerTotalHeight
       : undefined
 
-    let [bodyVerticalPositions] = this.buildBodyVerticalPositions(
+    let [bodyVerticals] = this.buildBodyVerticalPositions(
       bodyHeightHierarchy,
       state.bodyNaturalHeightMap,
       rowsMinHeight,
     )
-    this.currentBodyVerticalPositions = bodyVerticalPositions
+    this.currentBodyVerticals = bodyVerticals
 
     let { slotMinWidth } = options
     let [normalSlotWidth, lastSlotWidth, timeCanvasWidth] = this.computeSlotWidth(
@@ -257,14 +258,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       state.timeViewportWidth
     )
 
-    let [spreadsheetColPositions, spreadsheetCanvasWidth] = this.computeSpreadsheetColPositions(
+    let [spreadsheetColHorizontals, spreadsheetCanvasWidth] = this.computeSpreadsheetColHorizontals(
       colSpecs,
       state.spreadsheetColWidths,
       state.spreadsheetViewportWidth,
     )
-    let resourceHPosition = sliceSpreadsheetColPositions(
-      spreadsheetColPositions,
-      groupColDisplays.length,
+    let resourceHorizontal = sliceSpreadsheetColHorizontal(
+      spreadsheetColHorizontals,
+      groupColDisplays.length, // start slicing here
     )
 
     /* event display */
@@ -332,11 +333,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   )}
                   <div role="row" ref={this.normalHeaderRef}>
                     {colSpecs.map((colSpec, colIndex) => {
-                      const hposition = spreadsheetColPositions[colIndex] // could be undefined
+                      const horizontal = spreadsheetColHorizontals[colIndex] // could be undefined
                       return (
                         <div
                           key={colIndex}
-                          style={{ width: hposition ? hposition.size : undefined }}
+                          style={{ width: horizontal ? horizontal.size : undefined }}
                         >
                           <HeaderCell
                             colSpec={colSpec}
@@ -368,21 +369,21 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   {/* group columns > cells */}
                   <Fragment>
                     {groupColDisplays.map((groupCellDisplays, colIndex) => {
-                      const hposition = spreadsheetColPositions[colIndex] // might be undefined
+                      const horizontal = spreadsheetColHorizontals[colIndex] // might be undefined
                       return (
                         <div
                           key={colIndex}
-                          style={createHorizontalCss(hposition, context.isRtl)}
+                          style={createHorizontalStyle(horizontal, context.isRtl)}
                         >
                           {groupCellDisplays.map((groupCellDisplay) => {
                             const { group } = groupCellDisplay
-                            const position = bodyVerticalPositions && bodyVerticalPositions.get(group)
+                            const vertical = bodyVerticals && bodyVerticals.get(group)
                             return (
                               <div
                                 key={queryObjKey(group)}
                                 class='fc-newnew-row'
                                 role='row'
-                                style={position as any /* !!! */}
+                                style={createVerticalStyle(vertical)}
                                 ref={this.spreadsheetGroupTallRefMap.createRef(group)}
                               >
                                 <GroupTallCell
@@ -401,13 +402,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   <Fragment>
                     {groupRowDisplays.map((groupRowDisplay) => {
                       const { group } = groupRowDisplay
-                      const position = bodyVerticalPositions && bodyVerticalPositions.get(group)
+                      const vertical = bodyVerticals && bodyVerticals.get(group)
                       return (
                         <div
                           key={String(group.value)}
                           class='fc-newnew-row'
                           role='row'
-                          style={position as any /* !!! */}
+                          style={createVerticalStyle(vertical)}
                           ref={this.spreadsheetGroupWideRefMap.createRef(group.value)}
                         >
                           <GroupWideCell
@@ -420,16 +421,16 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   </Fragment>
 
                   {/* resource rows */}
-                  <div style={createHorizontalCss(resourceHPosition, context.isRtl)}>
+                  <div style={createHorizontalStyle(resourceHorizontal, context.isRtl)}>
                     {resourceRowDisplays.map((resourceRowDisplay) => {
                       const { resource } = resourceRowDisplay
-                      const position = bodyVerticalPositions && bodyVerticalPositions.get(resource)
+                      const vertical = bodyVerticals && bodyVerticals.get(resource)
                       return (
                         <div
                           key={resource.id}
                           class='fc-newnew-row'
                           role='row'
-                          style={position as any /* !!! */}
+                          style={createVerticalStyle(vertical)}
                           ref={this.spreadsheetResourceRefMap.createRef(resource)}
                         >
                           <ResourceCells
@@ -529,13 +530,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         <Fragment>
                           {groupRowDisplays.map((groupRowDisplay) => {
                             const { group } = groupRowDisplay
-                            const position = bodyVerticalPositions && bodyVerticalPositions.get(group)
+                            const vertical = bodyVerticals && bodyVerticals.get(group)
                             return (
                               <div
                                 key={String(group.value)}
                                 class='fc-newnew-row'
                                 role='row'
-                                style={position as any /* !!! */}
+                                style={createVerticalStyle(vertical)}
                                 ref={this.timeGroupWideRefMap.createRef(group.value)}
                               >
                                 <GroupLane group={group} />
@@ -546,13 +547,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         <Fragment>
                           {resourceRowDisplays.map((resourceRowDisplay) => {
                             const { resource } = resourceRowDisplay
-                            const position = bodyVerticalPositions && bodyVerticalPositions.get(resource)
+                            const vertical = bodyVerticals && bodyVerticals.get(resource)
                             return (
                               <div
                                 key={resource.id}
                                 class='fc-newnew-row'
                                 role='row'
-                                style={position as any /* !!! */}
+                                style={createVerticalStyle(vertical)}
                                 ref={this.timeResourceRefMap.createRef(resource)}
                               >
                                 <ResourceLane
@@ -795,7 +796,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     let resourceScroll = this.currentResourceScroll
 
     if (resourceScroll) {
-      let { currentGroupRowDisplays, currentResourceRowDisplays, currentBodyVerticalPositions } = this
+      let { currentGroupRowDisplays, currentResourceRowDisplays, currentBodyVerticals } = this
       let entity: Resource | Group | undefined
 
       // find entity. hack
@@ -816,16 +817,16 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       }
 
       if (entity) {
-        const position = currentBodyVerticalPositions && currentBodyVerticalPositions.get(entity)
+        const vertical = currentBodyVerticals && currentBodyVerticals.get(entity)
 
-        if (position) {
-          const { top, height } = position
-          const bottom = top + height
+        if (vertical) {
+          const { start, size } = vertical
+          const end = start + size
 
           let scrollTop =
             resourceScroll.fromBottom != null ?
-              bottom - resourceScroll.fromBottom : // pixels from bottom edge
-              top // just use top edge
+              end - resourceScroll.fromBottom : // pixels from bottom edge
+              start // just use top edge
 
           this.bodyScrolls.scrollTo(scrollTop)
         }
@@ -834,20 +835,20 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   queryResourceScroll(): ResourceScrollState {
-    let { currentBodyHeightHierarchy, currentBodyVerticalPositions } = this
+    let { currentBodyHeightHierarchy, currentBodyVerticals } = this
     let scrollTop = this.bodyScrolls.y
     let scroll = {} as any
 
-    let entityAtTop = searchTopmostEntity(
+    let entityAtTop = findEntityByCoord(
       scrollTop,
       currentBodyHeightHierarchy,
-      currentBodyVerticalPositions,
+      currentBodyVerticals,
     )
 
     if (entityAtTop) {
-      let position = currentBodyVerticalPositions.get(entityAtTop)
-      let elTop = position.top
-      let elBottom = elTop + position.height
+      let vertical = currentBodyVerticals.get(entityAtTop)
+      let elTop = vertical.start
+      let elBottom = elTop + vertical.size
       let elBottomRelScroller = elBottom - scrollTop
 
       scroll.fromBottom = elBottomRelScroller
@@ -937,18 +938,18 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   queryHit(positionLeft: number, positionTop: number): Hit {
-    let { currentBodyHeightHierarchy, currentBodyVerticalPositions } = this
+    let { currentBodyHeightHierarchy, currentBodyVerticals } = this
     let { dateProfile } = this.props
 
-    let entityAtTop = searchTopmostEntity(
+    let entityAtTop = findEntityByCoord(
       positionTop,
       currentBodyHeightHierarchy,
-      currentBodyVerticalPositions,
+      currentBodyVerticals,
     )
 
     if (entityAtTop && !isEntityGroup(entityAtTop)) {
       let resource = entityAtTop
-      let { top, height } = currentBodyVerticalPositions.get(resource)
+      let { start: top, size: height } = currentBodyVerticals.get(resource)
       let bottom = top + height
       let slatHit = this.slatsRef.current.positionToHit(positionLeft)
 

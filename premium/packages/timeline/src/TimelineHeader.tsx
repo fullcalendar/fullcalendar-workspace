@@ -8,6 +8,7 @@ import { createElement, createRef, RefObject } from '@fullcalendar/core/preact'
 import { TimelineHeaderRows } from './TimelineHeaderRows.js'
 import { coordToCss, TimelineCoords } from './TimelineCoords.js'
 import { TimelineDateProfile } from './timeline-date-profile.js'
+import { CoordRange } from './timeline-positioning.js'
 
 export interface TimelineHeaderProps {
   dateProfile: DateProfile
@@ -16,7 +17,7 @@ export interface TimelineHeaderProps {
   onMaxCushionWidth?: (number) => void
   normalSlotWidth: number | undefined
   lastSlotWidth: number | undefined
-  verticalPositions?: Map<boolean | number, { top: number, height: number }>
+  verticalPositions?: Map<boolean | number, CoordRange>
   rowRefMap?: RefMapKeyed<number, HTMLDivElement>
 }
 

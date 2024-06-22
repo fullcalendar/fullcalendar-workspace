@@ -2,6 +2,7 @@ import { BaseComponent, DateRange, DateMarker, DateProfile, RefMapKeyed } from '
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from './timeline-date-profile.js'
 import { TimelineHeaderCell } from './TimelineHeaderCell.js'
+import { CoordRange } from './timeline-positioning.js'
 
 export interface TimelineHeaderRowsProps {
   dateProfile: DateProfile
@@ -10,7 +11,7 @@ export interface TimelineHeaderRowsProps {
   todayRange: DateRange
   normalSlotWidth: number | undefined
   lastSlotWidth: number | undefined
-  verticalPositions?: Map<boolean | number, { top: number, height: number }>
+  verticalPositions?: Map<boolean | number, CoordRange>
   rowRefMap?: RefMapKeyed<number, HTMLDivElement>
 }
 
@@ -39,11 +40,7 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
           ]
 
           const cellPosition = verticalPositions ? verticalPositions.get(rowLevel) : undefined
-          const cellHeight = cellPosition ? cellPosition.height : undefined
-
-          // wrong to apply height!!!
-
-          // what about cell widths???
+          const cellHeight = cellPosition ? cellPosition.size : undefined
 
           return ( // eslint-disable-next-line react/no-array-index-key
             <div
