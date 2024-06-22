@@ -251,7 +251,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     this.currentBodyVerticals = bodyVerticals
 
     let { slotMinWidth } = options
-    let [normalSlotWidth, lastSlotWidth, timeCanvasWidth] = this.computeSlotWidth(
+    let [slotWidth, timeCanvasWidth] = this.computeSlotWidth(
       tDateProfile,
       slotMinWidth,
       state.slotCushionMaxWidth,
@@ -482,8 +482,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     tDateProfile={tDateProfile}
                     slatCoords={state.slatCoords}
                     onMaxCushionWidth={this.handleMaxCushionWidth}
-                    normalSlotWidth={normalSlotWidth}
-                    lastSlotWidth={lastSlotWidth}
+                    slotWidth={slotWidth}
                     verticalPositions={headerVerticalPositions}
                     rowRefMap={this.timeHeaderRefMap}
                   />
@@ -513,8 +512,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           tDateProfile={tDateProfile}
                           nowDate={nowDate}
                           todayRange={todayRange}
-                          normalSlotWidth={normalSlotWidth}
-                          lastSlotWidth={lastSlotWidth}
+                          slotWidth={slotWidth}
                           onCoords={this.handleSlatCoords}
                         />
                         <TimelineLaneBg

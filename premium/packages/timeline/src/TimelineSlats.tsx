@@ -13,8 +13,7 @@ export interface TimelineSlatsProps {
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
-  normalSlotWidth: number | undefined
-  lastSlotWidth: number | undefined
+  slotWidth: number | undefined
   onCoords?: (coord: TimelineCoords | null) => void
 }
 
@@ -25,7 +24,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
 
   render() {
     let { props } = this
-    let { tDateProfile, normalSlotWidth, lastSlotWidth } = props
+    let { tDateProfile, slotWidth } = props
     let { slotDates, isWeekStarts } = tDateProfile
     let isDay = !tDateProfile.isTimeScale && !tDateProfile.largeUnit
 
@@ -46,7 +45,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
               todayRange={props.todayRange}
               isEm={isWeekStarts[i]}
               isDay={isDay}
-              width={isLast ? lastSlotWidth : normalSlotWidth}
+              width={isLast ? undefined : slotWidth}
             />
           )
         })}

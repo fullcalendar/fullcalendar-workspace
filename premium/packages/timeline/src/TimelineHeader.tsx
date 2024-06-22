@@ -15,8 +15,7 @@ export interface TimelineHeaderProps {
   tDateProfile: TimelineDateProfile
   slatCoords: TimelineCoords
   onMaxCushionWidth?: (number) => void
-  normalSlotWidth: number | undefined
-  lastSlotWidth: number | undefined
+  slotWidth: number | undefined
   verticalPositions?: Map<boolean | number, CoordRange>
   rowRefMap?: RefMapKeyed<number, HTMLDivElement>
 }
@@ -47,8 +46,7 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
                 tDateProfile={props.tDateProfile}
                 nowDate={nowDate}
                 todayRange={todayRange}
-                normalSlotWidth={props.normalSlotWidth}
-                lastSlotWidth={props.lastSlotWidth}
+                slotWidth={props.slotWidth}
                 verticalPositions={props.verticalPositions}
                 rowRefMap={props.rowRefMap}
               />

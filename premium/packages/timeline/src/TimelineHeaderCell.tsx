@@ -15,7 +15,7 @@ export interface TimelineHeaderThProps {
   todayRange: DateRange
   nowDate: DateMarker
   isSticky: boolean
-  width: number | undefined
+  slotWidth: number | undefined
 }
 
 export class TimelineHeaderCell extends BaseComponent<TimelineHeaderThProps> {
@@ -61,7 +61,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderThProps> {
           }),
         }}
         elStyle={{
-          width: props.width,
+          width: props.slotWidth != null ? props.slotWidth * cell.colspan : undefined,
         }}
         renderProps={renderProps}
         generatorName="slotLabelContent"

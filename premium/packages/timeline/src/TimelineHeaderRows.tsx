@@ -9,8 +9,7 @@ export interface TimelineHeaderRowsProps {
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
-  normalSlotWidth: number | undefined
-  lastSlotWidth: number | undefined
+  slotWidth: number | undefined
   verticalPositions?: Map<boolean | number, CoordRange>
   rowRefMap?: RefMapKeyed<number, HTMLDivElement>
 }
@@ -22,8 +21,7 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
       tDateProfile,
       todayRange,
       nowDate,
-      normalSlotWidth,
-      lastSlotWidth,
+      slotWidth,
       verticalPositions,
       rowRefMap,
     } = this.props
@@ -62,7 +60,7 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
                     todayRange={todayRange}
                     nowDate={nowDate}
                     isSticky={!isLastRow}
-                    width={isLast ? lastSlotWidth : normalSlotWidth}
+                    slotWidth={isLast ? undefined : slotWidth}
                   />
                 )
               })}

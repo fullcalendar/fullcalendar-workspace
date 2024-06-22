@@ -85,7 +85,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     /* table positions */
 
     let { slotMinWidth } = options
-    let [normalSlotWidth, lastSlotWidth, canvasWidth] = this.computeSlotWidth(
+    let [slotWidth, canvasWidth] = this.computeSlotWidth(
       tDateProfile,
       slotMinWidth,
       state.slotCushionMaxWidth,
@@ -121,8 +121,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               tDateProfile={tDateProfile}
               slatCoords={state.slatCoords}
               onMaxCushionWidth={this.handleMaxCushionWidth}
-              normalSlotWidth={normalSlotWidth}
-              lastSlotWidth={lastSlotWidth}
+              slotWidth={slotWidth}
             />
           </div>
         </NewScroller>
@@ -150,8 +149,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     tDateProfile={tDateProfile}
                     nowDate={nowDate}
                     todayRange={todayRange}
-                    normalSlotWidth={normalSlotWidth}
-                    lastSlotWidth={lastSlotWidth}
+                    slotWidth={slotWidth}
                     onCoords={this.handleSlatCoords}
                   />
                   <TimelineLane
