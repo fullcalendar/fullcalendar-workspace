@@ -170,7 +170,7 @@ importers:
         version: 5.0.1(rollup@2.79.1)
       '@testing-library/react':
         specifier: ^13.4.0
-        version: 13.4.0(react-dom@19.0.0-rc.0)(react@19.0.0-rc.0)
+        version: 13.4.0(react-dom@18.3.1)(react@18.3.1)
       '@types/react':
         specifier: ^18.3.3
         version: 18.3.3
@@ -196,11 +196,11 @@ importers:
         specifier: ^0.0.32
         version: 0.0.32(karma@6.4.1)
       react:
-        specifier: ^19.0.0-rc.0
-        version: 19.0.0-rc.0
+        specifier: ^18.3.1
+        version: 18.3.1
       react-dom:
-        specifier: ^19.0.0-rc.0
-        version: 19.0.0-rc.0(react@19.0.0-rc.0)
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
       rollup:
         specifier: ^2.79.0
         version: 2.79.1
@@ -2070,6 +2070,9 @@ importers:
 
   examples/react-scheduler:
     dependencies:
+      '@fullcalendar/adaptive':
+        specifier: ^6.1.10
+        version: link:../../premium/packages/adaptive/dist
       '@fullcalendar/core':
         specifier: ^6.1.10
         version: link:../../standard/packages/core/dist
@@ -19327,7 +19330,7 @@ packages:
       pretty-format: 27.5.1
     dev: true
 
-  /@testing-library/react@13.4.0(react-dom@19.0.0-rc.0)(react@19.0.0-rc.0):
+  /@testing-library/react@13.4.0(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-sXOGON+WNTh3MLE9rve97ftaZukN3oNf2KjDy7YTx6hcTO2uuLHuCGynMDhFwGw/jYf4OJ2Qk0i4i79qMNNkyw==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -19337,8 +19340,8 @@ packages:
       '@babel/runtime': 7.20.1
       '@testing-library/dom': 8.19.0
       '@types/react-dom': 18.3.0
-      react: 19.0.0-rc.0
-      react-dom: 19.0.0-rc.0(react@19.0.0-rc.0)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     dev: true
 
   /@tootallnate/once@1.1.2:
@@ -37655,7 +37658,6 @@ packages:
       loose-envify: 1.4.0
       react: 18.3.1
       scheduler: 0.23.2
-    dev: false
 
   /react-dom@19.0.0-rc.0(react@19.0.0-rc.0):
     resolution: {integrity: sha512-MhgN2RMYFUkZekkFbsXg9ycwEGaMBzATpTNvGGvWNA9BZZEkdzIL4pv7iDuZKn48YoGARk8ydu4S+Ehd8Yrc4g==}
@@ -37664,6 +37666,7 @@ packages:
     dependencies:
       react: 19.0.0-rc.0
       scheduler: 0.25.0-rc.0
+    dev: false
 
   /react-error-overlay@6.0.9:
     resolution: {integrity: sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==}
@@ -37756,6 +37759,7 @@ packages:
   /react@19.0.0-rc.0:
     resolution: {integrity: sha512-8nrDCl5uE54FHeKqKrEO0TS+10bT4cxutJGb2okiJc0FHMQ6I3FeItaqly/1nbijlhSO3HmAVyPIexIQQWYAtQ==}
     engines: {node: '>=0.10.0'}
+    dev: false
 
   /read-cache@1.0.0:
     resolution: {integrity: sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==}
@@ -38925,10 +38929,10 @@ packages:
     resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
 
   /scheduler@0.25.0-rc.0:
     resolution: {integrity: sha512-B3aSqMfoRkucM94MztZD1CyNyf68W9A3dL/TT453G6uNcxMBqGQ+rhFKyxNnWH/mfRHlGBr0tF0F472JCETH4g==}
+    dev: false
 
   /schema-utils@1.0.0:
     resolution: {integrity: sha512-i27Mic4KovM/lnGsy8whRCHhc7VicJajAjTrYg11K9zfZXnYIt4k5F+kZkwjnrhKzLic/HLU4j11mjsz2G/75g==}
