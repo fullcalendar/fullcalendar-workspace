@@ -1,6 +1,7 @@
 import React from 'react'
 import { formatDate } from '@fullcalendar/core'
 import FullCalendar from '@fullcalendar/react'
+import adaptivePlugin from '@fullcalendar/adaptive'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -26,7 +27,13 @@ export default class DemoApp extends React.Component {
         {this.renderSidebar()}
         <div className='demo-app-main'>
           <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, resourceTimelinePlugin]}
+            plugins={[
+              adaptivePlugin,
+              dayGridPlugin,
+              timeGridPlugin,
+              interactionPlugin,
+              resourceTimelinePlugin,
+            ]}
             headerToolbar={{
               left: 'prev,next today',
               center: 'title',
@@ -77,6 +84,9 @@ export default class DemoApp extends React.Component {
           </label>
         </div>
         <div className='demo-app-sidebar-section'>
+          <button onClick={this.handlePrint}>Print</button>
+        </div>
+        <div className='demo-app-sidebar-section'>
           <h2>All Events ({this.state.currentEvents.length})</h2>
           <ul>
             {this.state.currentEvents.map(renderSidebarEvent)}
@@ -119,6 +129,10 @@ export default class DemoApp extends React.Component {
     this.setState({
       currentEvents: events
     })
+  }
+
+  handlePrint = () => {
+    window.print()
   }
 
 }
