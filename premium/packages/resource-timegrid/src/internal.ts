@@ -1,3 +1,3 @@
 
-export { ResourceDayTimeColsView } from './ResourceDayTimeColsView.js'
-export { ResourceDayTimeCols } from './ResourceDayTimeCols.js'
+export { ResourceDayTimeColsView } from './old/ResourceDayTimeColsView.js'
+export { ResourceDayTimeCols } from './old/ResourceDayTimeCols.js'

@@ -2,7 +2,7 @@ import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
 import resourcePlugin from '@fullcalendar/resource'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import { ResourceDayTableView } from './ResourceDayTableView.js'
+import { ResourceDayTableView } from './old/ResourceDayTableView.js'
 import './ambient.js'
 
 export default createPlugin({

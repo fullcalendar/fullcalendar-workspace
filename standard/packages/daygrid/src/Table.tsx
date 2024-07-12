@@ -1,7 +1,7 @@
 import { CssDimValue } from '@fullcalendar/core'
 import { DateComponent, formatIsoMonthStr, formatDayString, DateProfile } from '@fullcalendar/core/internal'
 import { RefObject, createElement, createRef } from '@fullcalendar/core/preact'
-import { TableRows, TableRowsProps } from './TableRows.js'
+import { TableRows, TableRowsProps } from './old/TableRows.js'
 
 export interface TableProps extends TableRowsProps {
   tableMinWidth: CssDimValue

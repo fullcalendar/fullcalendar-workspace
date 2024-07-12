@@ -19,6 +19,7 @@ import {
   NewScroller,
   RefMapKeyed,
   guid,
+  ScrollController2,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import {
@@ -44,7 +45,7 @@ import {
   isEntityGroup,
   ResourceSplitter,
 } from '@fullcalendar/resource/internal'
-import { ScrollController, ScrollJoiner } from '@fullcalendar/scrollgrid/internal'
+import { ScrollJoiner } from '@fullcalendar/scrollgrid/internal'
 import { ResourceCells } from './spreadsheet/ResourceCells.js'
 import { GroupWideCell } from './spreadsheet/GroupWideCell.js'
 import { GroupTallCell } from './spreadsheet/GroupTallCell.js'
@@ -129,12 +130,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private currentResourceScroll?: ResourceScrollState
 
   // scroll managers
-  private spreadsheetHeaderScroll = new ScrollController()
-  private spreadsheetBodyScroll = new ScrollController()
-  private spreadsheetFooterScroll = new ScrollController()
-  private timeHeaderScroll = new ScrollController()
-  private timeBodyScroll = new ScrollController()
-  private timeFooterScroll = new ScrollController()
+  private spreadsheetHeaderScroll = new ScrollController2()
+  private spreadsheetBodyScroll = new ScrollController2()
+  private spreadsheetFooterScroll = new ScrollController2()
+  private timeHeaderScroll = new ScrollController2()
+  private timeBodyScroll = new ScrollController2()
+  private timeFooterScroll = new ScrollController2()
   private timeScrolls = new ScrollJoiner([
     this.timeHeaderScroll,
     this.timeBodyScroll,
@@ -188,6 +189,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
+    /*
+    if stickyFooterScrollbar, don't show scrollbars on main Scroller
+    only do all that if isHeightAuto
+    */
 
     let {
       groupSpecs,
@@ -383,6 +388,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                 key={queryObjKey(group)}
                                 class='fc-newnew-row'
                                 role='row'
+                                // wrong!!! can't read/write height to same el
                                 style={createVerticalStyle(vertical)}
                                 ref={this.spreadsheetGroupTallRefMap.createRef(group)}
                               >
@@ -408,6 +414,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           key={String(group.value)}
                           class='fc-newnew-row'
                           role='row'
+                          // wrong!!! can't read/write height to same el
                           style={createVerticalStyle(vertical)}
                           ref={this.spreadsheetGroupWideRefMap.createRef(group.value)}
                         >
@@ -430,6 +437,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           key={resource.id}
                           class='fc-newnew-row'
                           role='row'
+                          // wrong!!! can't read/write height to same el
                           style={createVerticalStyle(vertical)}
                           ref={this.spreadsheetResourceRefMap.createRef(resource)}
                         >
@@ -624,8 +632,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     // changes that affect horizontal coordinates
     if (
-      prevProps.dateProfile !== this.props.dateProfile ||
-      prevState.slatCoords !== this.state.slatCoords
+      (
+        prevProps.dateProfile !== this.props.dateProfile ||
+        prevState.slatCoords !== this.state.slatCoords
+      ) && this.context.options.scrollTimeReset
     ) {
       this.applyTimeScroll()
     }

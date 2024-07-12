@@ -9,6 +9,7 @@
   ],
   "homepage": "https://fullcalendar.io/docs/vertical-resource-view",
   "dependencies": {
+    "@fullcalendar/daygrid": "~6.1.14",
     "@fullcalendar/premium-common": "~6.1.14",
     "@fullcalendar/resource-daygrid": "~6.1.14",
     "@fullcalendar/timegrid": "~6.1.14"

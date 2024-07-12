@@ -15,9 +15,10 @@ import {
   NewScroller,
   ScrollRequest,
   ViewContext,
+  ScrollController2,
 } from '@fullcalendar/core/internal'
 import { Fragment, createElement, createRef } from '@fullcalendar/core/preact'
-import { ScrollController, ScrollJoiner } from '@fullcalendar/scrollgrid/internal'
+import { ScrollJoiner } from '@fullcalendar/scrollgrid/internal'
 import { buildTimelineDateProfile } from './timeline-date-profile.js'
 import { TimelineHeader } from './TimelineHeader.js'
 import { TimelineCoords, coordToCss } from './TimelineCoords.js'
@@ -45,9 +46,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   private forcedTimeScroll?: Duration
 
   // scroll managers
-  private headerScroll = new ScrollController()
-  private bodyScroll = new ScrollController()
-  private footerScroll = new ScrollController()
+  private headerScroll = new ScrollController2()
+  private bodyScroll = new ScrollController2()
+  private footerScroll = new ScrollController2()
   private scrollJoiner = new ScrollJoiner([
     this.headerScroll,
     this.bodyScroll,
@@ -81,6 +82,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
     let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
+    /*
+    if stickyFooterScrollbar, don't show scrollbars on main Scroller
+    only do all that if isHeightAuto
+    */
 
     /* table positions */
 
@@ -211,8 +216,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   ) {
     // anything change that affects horizontal coordinates?
     if (
-      prevProps.dateProfile !== this.props.dateProfile ||
-      prevState.slatCoords !== this.state.slatCoords
+      (
+        prevProps.dateProfile !== this.props.dateProfile ||
+        prevState.slatCoords !== this.state.slatCoords
+      ) && this.context.options.scrollTimeReset
     ) {
       this.applyTimeScroll()
     }

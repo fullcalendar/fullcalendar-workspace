@@ -1,4 +1,4 @@
-export type { CalendarOptions, CalendarListeners } from '../options.js'
+export type { CalendarOptions, CalendarListeners, ViewOptions } from '../options.js'
 export type { DateInput } from '../datelib/env.js'
 export type { DurationInput } from '../datelib/duration.js'
 export type { DateSpanInput } from '../structs/date-span.js'
@@ -42,3 +42,5 @@ export type { DateSelectionApi } from '../calendar-utils.js'
 
 // used by some args
 export type { Duration } from '../datelib/duration.js'
+
+// TODO: other new "public" exports that should be in an "/api/" file like this?

@@ -1,7 +1,7 @@
 
 export { refineRenderProps } from './render-hooks.js'
 export { DEFAULT_RESOURCE_ORDER } from './resources-crud.js'
-export { ResourceDayHeader } from './common/ResourceDayHeader.js'
+export { ResourceDayHeader } from './common/old/ResourceDayHeader.js'
 export { AbstractResourceDayTableModel } from './common/AbstractResourceDayTableModel.js'
 export { ResourceDayTableModel } from './common/ResourceDayTableModel.js'
 export { DayResourceTableModel } from './common/DayResourceTableModel.js'

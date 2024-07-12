@@ -77,7 +77,7 @@ export type { EventUiHash, EventUi } from './component/event-ui.js'
 export { combineEventUis, createEventUi } from './component/event-ui.js'
 export type { SplittableProps } from './component/event-splitting.js'
 export { Splitter } from './component/event-splitting.js'
-export { getDayClassNames, getDateMeta, getSlotClassNames } from './component/date-rendering.js'
+export { getDayClassNames, getDateMeta, getSlotClassNames, DateMeta } from './component/date-rendering.js'
 export { buildNavLinkAttrs } from './common/nav-link.js'
 
 export {
@@ -180,10 +180,10 @@ export type { CalendarContext } from './CalendarContext.js'
 export type { CalendarContentProps } from './CalendarContent.js'
 export { CalendarRoot } from './CalendarRoot.js'
 
-export { DayHeader } from './common/DayHeader.js'
+export { DayHeader } from './common/old/DayHeader.js'
 export { computeFallbackHeaderFormat } from './common/table-utils.js'
-export { TableDateCell } from './common/TableDateCell.js'
-export { TableDowCell } from './common/TableDowCell.js'
+export { TableDateCell } from './common/old/TableDateCell.js'
+export { TableDowCell } from './common/old/TableDowCell.js'
 
 export { DaySeriesModel } from './common/DaySeriesModel.js'
 
@@ -199,7 +199,7 @@ export {
 export type { DayTableCell } from './common/DayTableModel.js'
 export { DayTableModel } from './common/DayTableModel.js'
 
-export { NewScroller } from './common/NewScroller.js'
+export { NewScroller } from './scrollgrid/NewScroller.js'
 
 export type { SlicedProps } from './common/slicing-utils.js'
 export { Slicer } from './common/slicing-utils.js'
@@ -235,6 +235,8 @@ export {
   getStickyFooterScrollbar,
   getStickyHeaderDates,
 } from './scrollgrid/util.js'
+export { ScrollController2 } from './scrollgrid/ScrollController2.js'
+export { ScrollJoinerInterface, ScrollJoinerClassInterface } from './scrollgrid/ScrollJoinerInterface.js'
 export type {  OverflowValue } from './scrollgrid/Scroller.js'
 export { Scroller } from './scrollgrid/Scroller.js'
 export { getScrollbarWidths } from './util/scrollbar-width.js'

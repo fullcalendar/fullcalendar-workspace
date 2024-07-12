@@ -1,5 +1,5 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
-import { DayTimeColsView } from './DayTimeColsView.js'
+import { DayTimeColsView } from './old/DayTimeColsView.js'
 import { OPTION_REFINERS } from './options-refiners.js'
 import './ambient.js'
 import './index.css'
