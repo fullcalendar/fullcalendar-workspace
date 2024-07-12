@@ -22,7 +22,7 @@ jobs:
           submodules: recursive
 
       - name: Setup PNPM
-        uses: pnpm/action-setup@v2.2.4
+        uses: pnpm/action-setup@v2.4.1
         with:
           version: 8.6.3
 
