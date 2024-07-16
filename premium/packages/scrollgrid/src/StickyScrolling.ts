@@ -39,7 +39,7 @@ export class StickyScrolling {
     let { scrollEl } = this
     let els = findElements(scrollEl, STICKY_SELECTOR)
     let elGeoms = this.queryElGeoms(els)
-    let viewportWidth = scrollEl.clientWidth
+    let viewportWidth = scrollEl.getBoundingClientRect().width;
 
     assignStickyPositions(els, elGeoms, viewportWidth)
   }
