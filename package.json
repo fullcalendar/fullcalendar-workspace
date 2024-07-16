@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@fullcalendar-monorepos/root",
-  "version": "6.1.14",
+  "version": "6.1.15",
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
     "@fullcalendar-scripts/standard": "*",
@@ -20,6 +20,7 @@
     "clean": "standard-scripts clean",
     "release-prep": "./scripts/bin/release-prep.sh",
     "version-bump": "changeset version",
+    "version-sync": "workspace-scripts version-sync",
     "sync-repos": "workspace-scripts sync-repos",
     "archive": "standard-scripts archive",
     "tag-and-release": "workspace-scripts tag-and-release",

@@ -20,10 +20,6 @@ npm run start # continously build, as a server
 
 After running the `npm run start` command, you will be given a localhost URL that can be visited in a browser.
 
-## StackBlitz Quirk
+## TODO: fix StackBlitz Problems
 
-To get this example working within [StackBlitz](https://stackblitz.com/), the following hack was added to `src/main.ts`. It can be safely removed in other environments.
-
-```ts
-import 'zone.js' // hack for StackBlitz
-```
+Unlike the Angular 17 project, this project dies in StackBlitz. Figure out why.

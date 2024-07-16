@@ -69,63 +69,15 @@ export default async function() {
     }
   }
 
-  await syncManifestVersions(monorepoDir, subrepoSubdirs)
-  await syncAngularLibManifestDeps(monorepoDir)
-
   console.log('[SUCCESS] Changes added to Git index')
   console.log()
-}
-
-// Subrepo Manifest Version Syncing
-// -------------------------------------------------------------------------------------------------
-
-const versionAuthorityPkg = 'standard/packages/core'
-const extraSyncedManifestDirs = [
-  'contrib/angular/lib', // Angular special case!
-]
-
-async function syncManifestVersions(monorepoDir: string, subrepoSubdirs: string[]) {
-  const authorityManifest = await readManifest(joinPaths(monorepoDir, versionAuthorityPkg))
-  const authorityVersion = authorityManifest.version
-  const dirs = [monorepoDir].concat(
-    subrepoSubdirs.map((subrepoSubdir) => joinPaths(monorepoDir, subrepoSubdir)),
-  )
-
-  for (const extraDir of extraSyncedManifestDirs) {
-    dirs.push(joinPaths(monorepoDir, extraDir))
-  }
-
-  for (const dir of dirs) {
-    const manifest = await readManifest(dir)
-    if (manifest.version !== authorityVersion) {
-      manifest.version = authorityVersion
-      const manifestPath = await writeManifest(dir, manifest)
-      await addFile(manifestPath)
-    }
-  }
-}
-
-// Angular special case!
-/*
-Problem: this should happen BEFORE BUILD so dist/ directory's generated package.json
-has correct version
-*/
-async function syncAngularLibManifestDeps(monorepoDir: string) {
-  const angularRootManifest = await readManifest(joinPaths(monorepoDir, 'contrib/angular'))
-  const angularLibManifest = await readManifest(joinPaths(monorepoDir, 'contrib/angular/lib'))
-
-  angularLibManifest.dependencies = angularRootManifest.dependencies
-  angularLibManifest.peerDependencies = angularRootManifest.peerDependencies
-
-  const libManifestPath = await writeManifest(joinPaths(monorepoDir, 'contrib/angular/lib'), angularLibManifest)
-  await addFile(libManifestPath)
 }
 
 // Workspace utils
 // -------------------------------------------------------------------------------------------------
 
 function scopePkgGlobs(globs: string[], subdir: string): string[] {
-  const scopedGlobs = []
+  const scopedGlobs: string[] = []
   const prefix = `./${subdir}/`
 
   for (const glob of globs) {

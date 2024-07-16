@@ -40,6 +40,12 @@ b { /* used for event dates/times */
   border-right: 1px solid #d3e2e8;
 }
 
+@media print {
+  .demo-app-sidebar {
+    display: none;
+  }
+}
+
 .demo-app-sidebar-section {
   padding: 2em;
 }

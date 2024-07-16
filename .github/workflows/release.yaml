@@ -34,7 +34,7 @@ jobs:
           git config --global user.email "${{ github.triggering_actor }}@users.noreply.github.com"
 
       - name: Setup PNPM
-        uses: pnpm/action-setup@v2.2.4
+        uses: pnpm/action-setup@v2.4.1
         with:
           version: 8.6.3
 
@@ -74,6 +74,13 @@ jobs:
       - name: Bump Versions
         if: success() && !inputs.skip_version_bump
         run: pnpm run version-bump
+
+      - name: Sync Versions
+        if: success() && !inputs.skip_version_bump
+        run: |
+          pnpm run version-sync
+          git diff-index --quiet HEAD || \
+            git commit -m 'sync versions'
 
       - name: Build
         run: |
