@@ -2,8 +2,6 @@ import { CssDimValue } from '@fullcalendar/core'
 import {
   EventSegUiInteractionState,
   DateComponent,
-  PositionCache,
-  RefMap,
   DateRange,
   getSegMeta,
   DateProfile,
@@ -13,7 +11,11 @@ import {
   buildEventRangeKey,
   sortEventSegs,
   DayTableCell,
+  setRef,
   RefMapKeyed,
+  createFormatter,
+  WeekNumberContainer,
+  buildNavLinkAttrs,
 } from '@fullcalendar/core/internal'
 import {
   VNode,
@@ -25,55 +27,63 @@ import { TableSeg, splitSegsByFirstCol } from '../TableSeg.js'
 import { DayCell } from './DayCell.js'
 import { DayGridListEvent } from './DayGridListEvent.js'
 import { DayGridBlockEvent } from './DayGridBlockEvent.js'
-import { computeFgSegPlacement, generateSegKey, generateSegUid, TableSegPlacement } from '../event-placement.js'
+import { generateSegKey, generateSegUid, newComputeFgSegPlacement, NewTableSegPlacement } from '../event-placement.js'
 import { hasListItemDisplay } from '../event-rendering.js'
 
-// TODO: attach to window resize?
-
 export interface DayGridRowProps {
-  cells: DayTableCell[]
-  businessHourSegs: TableSeg[]
-  bgEventSegs: TableSeg[]
-  fgEventSegs: TableSeg[]
-  dateSelectionSegs: TableSeg[]
-  eventSelection: string
-  eventDrag: EventSegUiInteractionState | null
-  eventResize: EventSegUiInteractionState | null
-  dayMaxEvents: boolean | number
-  dayMaxEventRows: boolean | number
   dateProfile: DateProfile
   todayRange: DateRange
+  cells: DayTableCell[]
   showDayNumbers: boolean
-  showWeekNumbers: boolean
   forPrint: boolean
-  colWidth?: number
-  elRef?: Ref<HTMLDivElement>
-  cellRefMap?: RefMapKeyed<string, HTMLElement> // TODO: leverage this
-  height?: number // TODO: use!!!
+
+  // content
+  fgEventSegs: TableSeg[]
+  bgEventSegs: TableSeg[]
+  businessHourSegs: TableSeg[]
+  dateSelectionSegs: TableSeg[]
+  eventDrag: EventSegUiInteractionState | null
+  eventResize: EventSegUiInteractionState | null
+  eventSelection: string
+  dayMaxEvents: boolean | number
+  dayMaxEventRows: boolean | number
+
+  // dimensions
+  colWidth: number | undefined
+  colActualWidth: number | undefined
+  height?: number
+
+  // refs
+  elRef?: Ref<HTMLTableRowElement>
+  cellInnerElRefMap?: RefMapKeyed<string, HTMLElement>
 }
 
 interface DayGridRowState {
-  framePositions: PositionCache
-  maxContentHeight: number | null
-  segHeights: { [segUid: string]: number } // integers
+  fgContainerTops: { [key: string]: number }
+  fgContainerHeights: { [key: string]: number }
+  segHeights: { [segUid: string]: number }
 }
 
+const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
+
 export class DayGridRow extends DateComponent<DayGridRowProps, DayGridRowState> {
-  private cellElRefs = new RefMap<HTMLTableCellElement>() // the <td>
-  private frameElRefs = new RefMap<HTMLElement>() // the fc-daygrid-day-frame
-  private fgElRefs = new RefMap<HTMLDivElement>() // the fc-daygrid-day-events
-  private segHarnessRefs = new RefMap<HTMLDivElement>() // indexed by "instanceId:firstCol"
-  private rootEl: HTMLDivElement | null | undefined
+  private rootEl?: HTMLElement
+  private fcContainerElRefMap = new RefMapKeyed<string, HTMLDivElement>()
+  private segHarnessElRefMap = new RefMapKeyed<string, HTMLDivElement>() // indexed by generateSegUid
 
   state: DayGridRowState = {
-    framePositions: null,
-    maxContentHeight: null,
+    fgContainerTops: {},
+    fgContainerHeights: {},
     segHeights: {},
   }
 
   render() {
     let { props, state, context } = this
+    let { cells, cellInnerElRefMap } = props
+    let { fgContainerTops, fgContainerHeights } = state
     let { options } = context
+
+    let weekDate = props.cells[0].date
     let colCnt = props.cells.length
 
     let businessHoursByCol = splitSegsByFirstCol(props.businessHourSegs, colCnt)
@@ -81,13 +91,16 @@ export class DayGridRow extends DateComponent<DayGridRowProps, DayGridRowState> 
     let highlightSegsByCol = splitSegsByFirstCol(this.getHighlightSegs(), colCnt)
     let mirrorSegsByCol = splitSegsByFirstCol(this.getMirrorSegs(), colCnt)
 
-    let { singleColPlacements, multiColPlacements, moreCnts, moreMarginTops } = computeFgSegPlacement(
+    let fgLiquid = props.dayMaxEvents === true || props.dayMaxEventRows === true
+
+    let { segPlacementsByCol, moreTops, moreCnts } = newComputeFgSegPlacement(
       sortEventSegs(props.fgEventSegs, options.eventOrder) as TableSeg[],
       props.dayMaxEvents,
       props.dayMaxEventRows,
       options.eventOrderStrict,
+      cells.map((cell) => fgContainerTops[cell.key]),
+      fgLiquid ? cells.map((cell) => fgContainerHeights[cell.key]) : [],
       state.segHeights,
-      state.maxContentHeight,
       props.cells,
     )
 
@@ -97,20 +110,31 @@ export class DayGridRow extends DateComponent<DayGridRowProps, DayGridRowState> 
       {}
 
     return (
-      <tr ref={this.handleRootEl} role="row">
+      <div
+        role="row"
+        style={{ height: props.height }}
+        ref={this.handleRootEl}
+      >
+        {options.weekNumbers && ( // NOTE: this will mess-up the .children hack the owner uses
+          <WeekNumberContainer
+            elTag="a"
+            elClasses={['fc-daygrid-week-number']}
+            elAttrs={buildNavLinkAttrs(context, weekDate, 'week')}
+            date={weekDate}
+            defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
+          />
+        )}
         {props.cells.map((cell, col) => {
-          let isLast = col === props.cells.length - 1
+          let segPlacements = segPlacementsByCol[col]
 
           let normalFgNodes = this.renderFgSegs(
-            col,
-            props.forPrint ? singleColPlacements[col] : multiColPlacements[col],
+            segPlacements,
             props.todayRange,
             isForcedInvisible,
           )
 
           let mirrorFgNodes = this.renderFgSegs(
-            col,
-            buildMirrorPlacements(mirrorSegsByCol[col], multiColPlacements),
+            buildMirrorPlacements(mirrorSegsByCol[col], segPlacements),
             props.todayRange,
             {},
             Boolean(props.eventDrag),
@@ -121,71 +145,246 @@ export class DayGridRow extends DateComponent<DayGridRowProps, DayGridRowState> 
           return (
             <DayCell
               key={cell.key}
-              elRef={this.cellElRefs.createRef(cell.key)}
-              innerElRef={this.frameElRefs.createRef(cell.key) /* FF <td> problem, but okay to use for left/right. TODO: rename prop */}
               dateProfile={props.dateProfile}
+              todayRange={props.todayRange}
               date={cell.date}
               showDayNumber={props.showDayNumbers}
-              showWeekNumber={props.showWeekNumbers && col === 0}
-              forceDayTop={props.showWeekNumbers /* even displaying weeknum for row, not necessarily day */}
-              todayRange={props.todayRange}
-              eventSelection={props.eventSelection}
-              eventDrag={props.eventDrag}
-              eventResize={props.eventResize}
-              extraRenderProps={cell.extraRenderProps}
-              extraDataAttrs={cell.extraDataAttrs}
-              extraClassNames={cell.extraClassNames}
-              extraDateSpan={cell.extraDateSpan}
-              moreCnt={moreCnts[col]}
-              moreMarginTop={moreMarginTops[col]}
-              singlePlacements={singleColPlacements[col]}
-              fgContentElRef={this.fgElRefs.createRef(cell.key)}
-              fgContent={( // Fragment scopes the keys
+
+              // content
+              segPlacements={segPlacements}
+              fgLiquid={fgLiquid}
+              fg={(
                 <Fragment>
                   <Fragment>{normalFgNodes}</Fragment>
                   <Fragment>{mirrorFgNodes}</Fragment>
                 </Fragment>
               )}
-              bgContent={( // Fragment scopes the keys
+              bg={(
                 <Fragment>
                   {this.renderFillSegs(highlightSegsByCol[col], 'highlight')}
                   {this.renderFillSegs(businessHoursByCol[col], 'non-business')}
                   {this.renderFillSegs(bgEventSegsByCol[col], 'bg-event')}
                 </Fragment>
               )}
-              width={isLast ? undefined : props.colWidth}
+              moreCnt={moreCnts[col]}
+              eventDrag={props.eventDrag}
+              eventResize={props.eventResize}
+              eventSelection={props.eventSelection}
+
+              // render hooks
+              extraRenderProps={cell.extraRenderProps}
+              extraDateSpan={cell.extraDateSpan}
+              extraDataAttrs={cell.extraDataAttrs}
+              extraClassNames={cell.extraClassNames}
+
+              // dimensions
+              moreTop={moreTops[col]}
+              width={props.colWidth}
+
+              // refs
+              innerElRef={cellInnerElRefMap && cellInnerElRefMap.createRef(cell.key)}
+              fgContainerElRef={this.fcContainerElRefMap.createRef(cell.key)}
             />
           )
         })}
-      </tr>
+      </div>
     )
   }
+
+  renderFgSegs(
+    segPlacements: NewTableSegPlacement[],
+    todayRange: DateRange,
+    isForcedInvisible: { [instanceId: string]: any },
+    isDragging?: boolean,
+    isResizing?: boolean,
+    isDateSelecting?: boolean,
+  ): VNode[] {
+    let { props, context } = this
+    let { isRtl } = context
+    let { colActualWidth, eventSelection } = props
+    let defaultDisplayEventEnd = props.cells.length === 1 // colCnt === 1
+    let isMirror = isDragging || isResizing || isDateSelecting
+    let nodes: VNode[] = []
+
+    for (let placement of segPlacements) {
+      let { seg, top } = placement
+      let { instanceId } = seg.eventRange.instance
+      let isVisible = top != null && !isForcedInvisible[instanceId]
+      let width: CssDimValue = ''
+      let left: CssDimValue = ''
+      let right: CssDimValue = ''
+
+      if (colActualWidth != null) {
+        width = (seg.lastCol - seg.firstCol + 1) * colActualWidth
+
+        if (isRtl) {
+          right = seg.lastCol * colActualWidth
+        } else {
+          left = seg.firstCol * colActualWidth
+        }
+      }
+
+      /*
+      known bug: events that are force to be list-item but span multiple days still take up space in later columns
+      todo: in print view, for multi-day events, don't display title within non-start/end segs
+      */
+      nodes.push(
+        <div
+          className={'fc-daygrid-event-harness fc-daygrid-event-harness-abs'}
+          key={generateSegKey(seg)}
+          ref={isMirror ? null : this.segHarnessElRefMap.createRef(generateSegUid(seg))}
+          style={{
+            visibility: isVisible ? ('' as any) : 'hidden',
+            top: top != null ? top : '',
+            left,
+            right,
+            width,
+          }}
+        >
+          {hasListItemDisplay(seg) ? (
+            <DayGridListEvent
+              seg={seg}
+              isDragging={isDragging}
+              isSelected={instanceId === eventSelection}
+              defaultDisplayEventEnd={defaultDisplayEventEnd}
+              {...getSegMeta(seg, todayRange)}
+            />
+          ) : (
+            <DayGridBlockEvent
+              seg={seg}
+              isDragging={isDragging}
+              isResizing={isResizing}
+              isDateSelecting={isDateSelecting}
+              isSelected={instanceId === eventSelection}
+              defaultDisplayEventEnd={defaultDisplayEventEnd}
+              {...getSegMeta(seg, todayRange)}
+            />
+          )}
+        </div>,
+      )
+    }
+
+    return nodes
+  }
+
+  renderFillSegs(segs: TableSeg[], fillType: string): VNode {
+    let { isRtl } = this.context
+    let { todayRange, colActualWidth } = this.props
+    let nodes: VNode[] = []
+
+    for (let seg of segs) {
+      let width: CssDimValue = ''
+      let left: CssDimValue = ''
+      let right: CssDimValue = ''
+
+      // TODO: more DRY with fg events
+      if (colActualWidth != null) {
+        width = (seg.lastCol - seg.firstCol + 1) * colActualWidth
+
+        if (isRtl) {
+          right = seg.lastCol * colActualWidth
+        } else {
+          left = seg.firstCol * colActualWidth
+        }
+      }
+
+      nodes.push(
+        <div
+          key={buildEventRangeKey(seg.eventRange)}
+          className="fc-daygrid-bg-harness"
+          style={{
+            left,
+            right,
+            width,
+          }}
+        >
+          {fillType === 'bg-event' ?
+            <BgEvent seg={seg} {...getSegMeta(seg, todayRange)} /> :
+            renderFill(fillType)}
+        </div>,
+      )
+    }
+
+    return createElement(Fragment, {}, ...nodes)
+  }
+
+  // Lifecycle
+  // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
-    this.updateSizing(true)
-    this.context.addResizeHandler(this.handleResize)
+    this.handleSizing()
+    this.context.addResizeHandler(this.handleSizing)
   }
 
-  componentDidUpdate(prevProps: DayGridRowProps, prevState: DayGridRowState) {
-    let currentProps = this.props
-
-    this.updateSizing(
-      !isPropsEqual(prevProps, currentProps),
-    )
+  componentDidUpdate() {
+    this.handleSizing()
   }
 
   componentWillUnmount() {
-    this.context.removeResizeHandler(this.handleResize)
+    this.context.removeResizeHandler(this.handleSizing)
   }
 
-  handleRootEl = (rootEl: HTMLDivElement | null) => {
+  // Handlers
+  // -----------------------------------------------------------------------------------------------
+
+  handleRootEl = (rootEl: HTMLElement | null) => {
     this.rootEl = rootEl
+    setRef(this.props.elRef, rootEl)
   }
 
-  handleResize = (isForced: boolean) => {
-    if (isForced) {
-      this.updateSizing(true) // isExternal=true
+  // Sizing
+  // -----------------------------------------------------------------------------------------------
+
+  handleSizing = () => {
+    const { props } = this
+    const { fgContainerTops, fgContainerHeights } = this.queryFgContainerDims()
+    const segHeights = this.querySegHeights()
+    const fgLiquid = props.dayMaxEvents === true || props.dayMaxEventRows === true
+
+    this.safeSetState({ fgContainerTops, segHeights })
+
+    if (fgLiquid) {
+      this.safeSetState({ fgContainerHeights })
     }
+  }
+
+  querySegHeights() {
+    const { segHarnessElRefMap } = this
+    const segHeights: { [segUid: string]: number } = {}
+
+    for (const [segUid, segHarnessEl] of segHarnessElRefMap.current.entries()) {
+      segHeights[segUid] = segHarnessEl.getBoundingClientRect().height
+    }
+
+    return segHeights
+  }
+
+  queryFgContainerDims() {
+    const { rootEl, fcContainerElRefMap } = this
+    const rootElTop = rootEl.getBoundingClientRect().top
+    const fgContainerTops: { [key: string]: number } = {}
+    const fgContainerHeights: { [key: string]: number } = {}
+
+    for (const [key, fgContainerEl] of fcContainerElRefMap.current.entries()) {
+      const rect = fgContainerEl.getBoundingClientRect()
+      fgContainerTops[key] = rect.top - rootElTop
+      fgContainerHeights[key] = rect.height
+    }
+
+    return { fgContainerTops, fgContainerHeights }
+  }
+
+  // Utils
+  // -----------------------------------------------------------------------------------------------
+
+  getMirrorSegs(): TableSeg[] {
+    let { props } = this
+
+    if (props.eventResize && props.eventResize.segs.length) { // messy check
+      return props.eventResize.segs as TableSeg[]
+    }
+
+    return []
   }
 
   getHighlightSegs(): TableSeg[] {
@@ -201,226 +400,38 @@ export class DayGridRow extends DateComponent<DayGridRowProps, DayGridRowState> 
 
     return props.dateSelectionSegs
   }
-
-  getMirrorSegs(): TableSeg[] {
-    let { props } = this
-
-    if (props.eventResize && props.eventResize.segs.length) { // messy check
-      return props.eventResize.segs as TableSeg[]
-    }
-
-    return []
-  }
-
-  renderFgSegs(
-    col: number,
-    segPlacements: TableSegPlacement[],
-    todayRange: DateRange,
-    isForcedInvisible: { [instanceId: string]: any },
-    isDragging?: boolean,
-    isResizing?: boolean,
-    isDateSelecting?: boolean,
-  ): VNode[] {
-    let { context } = this
-    let { eventSelection } = this.props
-    let { framePositions } = this.state
-    let defaultDisplayEventEnd = this.props.cells.length === 1 // colCnt === 1
-    let isMirror = isDragging || isResizing || isDateSelecting
-    let nodes: VNode[] = []
-
-    if (framePositions) {
-      for (let placement of segPlacements) {
-        let { seg } = placement
-        let { instanceId } = seg.eventRange.instance
-        let isVisible = placement.isVisible && !isForcedInvisible[instanceId]
-        let isAbsolute = placement.isAbsolute
-        let left: CssDimValue = ''
-        let right: CssDimValue = ''
-
-        if (isAbsolute) {
-          if (context.isRtl) {
-            right = 0
-            left = framePositions.lefts[seg.lastCol] - framePositions.lefts[seg.firstCol]
-          } else {
-            left = 0
-            right = framePositions.rights[seg.firstCol] - framePositions.rights[seg.lastCol]
-          }
-        }
-
-        /*
-        known bug: events that are force to be list-item but span multiple days still take up space in later columns
-        todo: in print view, for multi-day events, don't display title within non-start/end segs
-        */
-        nodes.push(
-          <div
-            className={'fc-daygrid-event-harness' + (isAbsolute ? ' fc-daygrid-event-harness-abs' : '')}
-            key={generateSegKey(seg)}
-            ref={isMirror ? null : this.segHarnessRefs.createRef(generateSegUid(seg))}
-            style={{
-              visibility: isVisible ? ('' as any) : 'hidden',
-              marginTop: isAbsolute ? '' : placement.marginTop,
-              top: isAbsolute ? placement.absoluteTop : '',
-              left,
-              right,
-            }}
-          >
-            {hasListItemDisplay(seg) ? (
-              <DayGridListEvent
-                seg={seg}
-                isDragging={isDragging}
-                isSelected={instanceId === eventSelection}
-                defaultDisplayEventEnd={defaultDisplayEventEnd}
-                {...getSegMeta(seg, todayRange)}
-              />
-            ) : (
-              <DayGridBlockEvent
-                seg={seg}
-                isDragging={isDragging}
-                isResizing={isResizing}
-                isDateSelecting={isDateSelecting}
-                isSelected={instanceId === eventSelection}
-                defaultDisplayEventEnd={defaultDisplayEventEnd}
-                {...getSegMeta(seg, todayRange)}
-              />
-            )}
-          </div>,
-        )
-      }
-    }
-
-    return nodes
-  }
-
-  renderFillSegs(segs: TableSeg[], fillType: string): VNode {
-    let { isRtl } = this.context
-    let { todayRange } = this.props
-    let { framePositions } = this.state
-    let nodes: VNode[] = []
-
-    if (framePositions) {
-      for (let seg of segs) {
-        let leftRightCss = isRtl ? {
-          right: 0,
-          left: framePositions.lefts[seg.lastCol] - framePositions.lefts[seg.firstCol],
-        } : {
-          left: 0,
-          right: framePositions.rights[seg.firstCol] - framePositions.rights[seg.lastCol],
-        }
-
-        nodes.push(
-          <div
-            key={buildEventRangeKey(seg.eventRange)}
-            className="fc-daygrid-bg-harness"
-            style={leftRightCss}
-          >
-            {fillType === 'bg-event' ?
-              <BgEvent seg={seg} {...getSegMeta(seg, todayRange)} /> :
-              renderFill(fillType)}
-          </div>,
-        )
-      }
-    }
-
-    return createElement(Fragment, {}, ...nodes)
-  }
-
-  updateSizing(isExternalSizingChange) {
-    let { props, state, frameElRefs } = this
-
-    if (!props.forPrint) {
-      if (isExternalSizingChange) {
-        let frameEls = props.cells.map((cell) => frameElRefs.currentMap[cell.key])
-
-        if (frameEls.length) {
-          let originEl = this.rootEl
-          let newPositionCache = new PositionCache(
-            originEl,
-            frameEls,
-            true, // isHorizontal
-            false,
-          )
-
-          if (!state.framePositions || !state.framePositions.similarTo(newPositionCache)) {
-            this.setState({ // will trigger isCellPositionsChanged...
-              framePositions: new PositionCache(
-                originEl,
-                frameEls,
-                true, // isHorizontal
-                false,
-              ),
-            })
-          }
-        }
-      }
-
-      const oldSegHeights = this.state.segHeights
-      const newSegHeights = this.querySegHeights()
-      const limitByContentHeight = props.dayMaxEvents === true || props.dayMaxEventRows === true
-
-      this.safeSetState({
-        // HACK to prevent oscillations of events being shown/hidden from max-event-rows
-        // Essentially, once you compute an element's height, never null-out.
-        // TODO: always display all events, as visibility:hidden?
-        segHeights: { ...oldSegHeights, ...newSegHeights },
-
-        maxContentHeight: limitByContentHeight ? this.computeMaxContentHeight() : null,
-      })
-    }
-  }
-
-  querySegHeights() {
-    let segElMap = this.segHarnessRefs.currentMap
-    let segHeights: { [segUid: string]: number } = {}
-
-    // get the max height amongst instance segs
-    for (let segUid in segElMap) {
-      let height = Math.round(segElMap[segUid].getBoundingClientRect().height)
-      segHeights[segUid] = Math.max(segHeights[segUid] || 0, height)
-    }
-
-    return segHeights
-  }
-
-  computeMaxContentHeight() {
-    let firstKey = this.props.cells[0].key
-    let cellEl = this.cellElRefs.currentMap[firstKey]
-    let fcContainerEl = this.fgElRefs.currentMap[firstKey]
-
-    return cellEl.getBoundingClientRect().bottom - fcContainerEl.getBoundingClientRect().top
-  }
-
-  public getCellEls() {
-    let elMap = this.cellElRefs.currentMap
-
-    return this.props.cells.map((cell) => elMap[cell.key])
-  }
 }
 
+/*
+TODO: make these comparisons fuzzy with coordinates
+*/
 DayGridRow.addStateEquality({
+  fgContainerTops: isPropsEqual,
+  fgContainerHeights: isPropsEqual,
   segHeights: isPropsEqual,
 })
 
-function buildMirrorPlacements(mirrorSegs: TableSeg[], colPlacements: TableSegPlacement[][]): TableSegPlacement[] {
+function buildMirrorPlacements(
+  mirrorSegs: TableSeg[],
+  segPlacements: NewTableSegPlacement[]
+): NewTableSegPlacement[] {
   if (!mirrorSegs.length) {
     return []
   }
-  let topsByInstanceId = buildAbsoluteTopHash(colPlacements) // TODO: cache this at first render?
+  let topsByInstanceId = buildAbsoluteTopHash(segPlacements) // TODO: cache this at first render?
+
   return mirrorSegs.map((seg: TableSeg) => ({
     seg,
+    top: topsByInstanceId[seg.eventRange.instance.instanceId],
     isVisible: true,
-    isAbsolute: true,
-    absoluteTop: topsByInstanceId[seg.eventRange.instance.instanceId],
-    marginTop: 0,
   }))
 }
 
-function buildAbsoluteTopHash(colPlacements: TableSegPlacement[][]): { [instanceId: string]: number } {
+function buildAbsoluteTopHash(segPlacements: NewTableSegPlacement[]): { [instanceId: string]: number } {
   let topsByInstanceId: { [instanceId: string]: number } = {}
 
-  for (let placements of colPlacements) {
-    for (let placement of placements) {
-      topsByInstanceId[placement.seg.eventRange.instance.instanceId] = placement.absoluteTop
-    }
+  for (let segPlacement of segPlacements) {
+    topsByInstanceId[segPlacement.seg.eventRange.instance.instanceId] = segPlacement.top
   }
 
   return topsByInstanceId

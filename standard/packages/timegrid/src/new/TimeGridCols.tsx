@@ -1,6 +1,4 @@
-import {
-  Duration,
-} from '@fullcalendar/core'
+import { Duration } from '@fullcalendar/core'
 import {
   DateComponent,
   DateMarker,
@@ -9,7 +7,7 @@ import {
   DayTableCell,
   EventSegUiInteractionState,
   Hit,
-  PositionCache,
+  RefMapKeyed,
   addDurations,
   memoize,
   multiplyDuration,
@@ -20,10 +18,14 @@ import { TimeColsSeg } from '../TimeColsSeg.js'
 import { TimeGridCol } from './TimeGridCol.js'
 
 export interface TimeGridColsProps {
-  cells: DayTableCell[]
   dateProfile: DateProfile
   nowDate: DateMarker
   todayRange: DateRange
+  cells: DayTableCell[]
+  forPrint: boolean
+  isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
+
+  // content
   fgEventSegsByCol: TimeColsSeg[][]
   bgEventSegsByCol: TimeColsSeg[][]
   businessHourSegsByCol: TimeColsSeg[][]
@@ -32,28 +34,38 @@ export interface TimeGridColsProps {
   eventDragByCol: EventSegUiInteractionState[]
   eventResizeByCol: EventSegUiInteractionState[]
   eventSelection: string
-  slatHeight: number | undefined // TODO: apply this to all sub-components too
-  colCoords: PositionCache | undefined
-  forPrint: boolean
-  isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
+
+  // dimensions
+  colWidth: number | undefined
+  colActualWidth: number | undefined // for hit processing
+  slatHeight: number | undefined
 }
 
 export class TimeGridCols extends DateComponent<TimeGridColsProps> {
+  // memo
   private processSlotOptions = memoize(processSlotOptions)
+
+  // refs
+  private colElRefMap = new RefMapKeyed<string, HTMLElement>()
 
   render() {
     const { props } = this
+
     return (
       <div ref={this.handleRootEl}>
         {props.cells.map((cell, col) => (
           <TimeGridCol
+            key={cell.key}
             dateProfile={props.dateProfile}
-            date={cell.date}
             nowDate={props.nowDate}
             todayRange={props.todayRange}
+            date={cell.date}
             extraRenderProps={cell.extraRenderProps}
             extraDataAttrs={cell.extraDataAttrs}
             extraDateSpan={cell.extraDateSpan}
+            forPrint={props.forPrint}
+
+            // content
             fgEventSegs={props.fgEventSegsByCol[col]}
             bgEventSegs={props.bgEventSegsByCol[col]}
             businessHourSegs={props.businessHourSegsByCol[col]}
@@ -61,9 +73,14 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
             dateSelectionSegs={props.dateSelectionSegsByCol[col]}
             eventDrag={props.eventDragByCol[col]}
             eventResize={props.eventResizeByCol[col]}
-            slatCoords={undefined}
             eventSelection={props.eventSelection}
-            forPrint={props.forPrint}
+
+            // dimensions
+            width={props.colWidth}
+            slatHeight={props.slatHeight}
+
+            // refs
+            elRef={this.colElRefMap.createRef(cell.key)}
           />
         ))}
       </div>
@@ -83,14 +100,16 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
 
   queryHit(positionLeft: number, positionTop: number): Hit {
     let { dateEnv, options } = this.context
-    let { dateProfile, colCoords } = this.props
+    let { dateProfile, colActualWidth } = this.props
     let { slatCoords } = this.state
+
     let { snapDuration, snapsPerSlot } = this.processSlotOptions(options.slotDuration, options.snapDuration)
 
-    let colIndex = colCoords.leftToIndex(positionLeft)
+    let colCnt = this.props.cells.length
+    let colIndex = Math.floor(positionLeft / colActualWidth) // TODO: make work with RTL
     let slatIndex = slatCoords.positions.topToIndex(positionTop)
 
-    if (colIndex != null && slatIndex != null) {
+    if (colIndex != null && slatIndex != null && colIndex < colCnt) {
       let cell = this.props.cells[colIndex]
       let slatTop = slatCoords.positions.tops[slatIndex]
       let slatHeight = slatCoords.positions.getHeight(slatIndex)
@@ -114,10 +133,10 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
           allDay: false,
           ...cell.extraDateSpan,
         },
-        dayEl: colCoords.els[colIndex],
+        dayEl: this.colElRefMap.current.get(this.props.cells[colIndex].key),
         rect: {
-          left: colCoords.lefts[colIndex],
-          right: colCoords.rights[colIndex],
+          left: colIndex * colActualWidth,
+          right: (colIndex + 1) * colActualWidth, // TODO: make work with RTL
           top: slatTop,
           bottom: slatTop + slatHeight,
         },

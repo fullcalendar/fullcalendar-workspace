@@ -1,26 +1,27 @@
-import { Duration, ViewOptions } from '@fullcalendar/core'
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, ScrollController2, ViewContainer, memoize } from "@fullcalendar/core/internal"
+import { ViewOptions } from '@fullcalendar/core'
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, NewScroller, ScrollRequest, ScrollResponder, ViewContainer, memoize } from "@fullcalendar/core/internal"
 import { createElement, ComponentChild, createRef } from '@fullcalendar/core/preact'
-import { DayGridRowProps, TableSeg } from '@fullcalendar/daygrid/internal'
+import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { buildSlatMetas } from "../time-slat-meta.js"
-import { TimeGridColsProps } from "./TimeGridCols.js"
 import { TimeColsSeg } from '../TimeColsSeg.js'
 import { TimeGridLayoutPannable } from './TimeGridLayoutPannable.js'
 import { TimeGridLayoutNormal } from './TimeGridLayoutNormal.js'
 
 export interface TimeGridLayoutProps<HeaderCellModel, HeaderCellKey> {
-  cells: DayTableCell[] // just the ONE row
   dateProfile: DateProfile
   nowDate: DateMarker
   todayRange: DateRange
-  eventSelection: string,
+  cells: DayTableCell[]
+  forPrint: boolean
+  isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
 
+  // header content
   headerTiers: HeaderCellModel[][]
   renderHeaderLabel: (tier: number, handleEl: (el: HTMLElement) => void, height: number) => ComponentChild
   renderHeaderContent: (model: HeaderCellModel, tier: number, handleEl: (el: HTMLElement) => void) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
-  // for all-day
+  // all-day content
   fgEventSegs: TableSeg[],
   bgEventSegs: TableSeg[],
   businessHourSegs: TableSeg[],
@@ -28,28 +29,34 @@ export interface TimeGridLayoutProps<HeaderCellModel, HeaderCellKey> {
   eventDrag: EventSegUiInteractionState | null,
   eventResize: EventSegUiInteractionState | null,
 
-  // for timed
+  // timed content
   fgEventSegsByCol: TimeColsSeg[][]
   bgEventSegsByCol: TimeColsSeg[][]
   businessHourSegsByCol: TimeColsSeg[][]
-  nowIndicatorSegsByCol: TimeColsSeg[][] // only for timed
+  nowIndicatorSegsByCol: TimeColsSeg[][]
   dateSelectionSegsByCol: TimeColsSeg[][]
   eventDragByCol: EventSegUiInteractionState[]
   eventResizeByCol: EventSegUiInteractionState[]
 
-  isHeightAuto: boolean
-  forPrint: boolean
+  // universal content
+  eventSelection: string
 }
 
 export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent<TimeGridLayoutProps<HeaderCellModel, HeaderCellKey>> {
+  // memo
   private buildSlatMetas = memoize(buildSlatMetas)
 
-  private scrollControllerRef = createRef<ScrollController2>()
+  // refs
+  private dayScrollerRef = createRef<NewScroller>()
+  private timeScrollerRef = createRef<NewScroller>()
   private slatHeightRef = createRef<number>()
 
+  // internal
+  private scrollResponder: ScrollResponder
+
   render() {
-    const { props, state, context } = this
-    const { dateProfile, nowDate, todayRange } = props
+    const { props, context } = this
+    const { dateProfile } = props
     const { options, dateEnv } = context
     const { dayMinWidth } = options
 
@@ -61,29 +68,31 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
       dateEnv,
     )
 
-    const dayGridRowProps: DayGridRowProps = {
+    const commonLayoutProps = {
+      dateProfile: dateProfile,
+      nowDate: props.nowDate,
+      todayRange: props.todayRange,
       cells: props.cells,
-      businessHourSegs: props.businessHourSegs,
-      bgEventSegs: props.bgEventSegs,
+      slatMetas,
+      forPrint: props.forPrint,
+      isHitComboAllowed: props.isHitComboAllowed,
+
+      // header content
+      headerTiers: props.headerTiers,
+      renderHeaderLabel: props.renderHeaderLabel,
+      renderHeaderContent: props.renderHeaderContent,
+      getHeaderModelKey: props.getHeaderModelKey,
+
+      // all-day content
       fgEventSegs: props.fgEventSegs,
+      bgEventSegs: props.bgEventSegs,
+      businessHourSegs: props.businessHourSegs,
       dateSelectionSegs: props.dateSelectionSegs,
-      eventSelection: props.eventSelection,
       eventDrag: props.eventDrag,
       eventResize: props.eventResize,
       ...getAllDayMaxEventProps(options),
-      dateProfile: dateProfile,
-      todayRange: todayRange,
-      showDayNumbers: false,
-      showWeekNumbers: false,
-      forPrint: props.forPrint,
-      colWidth: undefined,
-    }
 
-    const timeGridColsProps: TimeGridColsProps = {
-      cells: props.cells,
-      dateProfile: dateProfile,
-      nowDate: nowDate,
-      todayRange: todayRange,
+      // timed content
       fgEventSegsByCol: props.fgEventSegsByCol,
       bgEventSegsByCol: props.bgEventSegsByCol,
       businessHourSegsByCol: props.businessHourSegsByCol,
@@ -91,44 +100,25 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
       dateSelectionSegsByCol: props.dateSelectionSegsByCol,
       eventDragByCol: props.eventDragByCol,
       eventResizeByCol: props.eventResizeByCol,
+
+      // universal content
       eventSelection: props.eventSelection,
-      slatHeight: state.slatHeight,
-      colCoords: undefined,
-      forPrint: props.forPrint,
+
+      // refs
+      timeScrollerRef: this.timeScrollerRef,
+      slatHeightRef: this.slatHeightRef,
     }
 
     return (
       <ViewContainer elClasses={['fc-timegrid']} viewSpec={context.viewSpec}>
         {dayMinWidth ? (
           <TimeGridLayoutPannable
-            scrollControllerRef={this.scrollControllerRef}
-            slatHeightRef={this.slatHeightRef}
-            cells={props.cells}
-            nowDate={props.nowDate}
-            headerTiers={props.headerTiers}
-            renderHeaderLabel={props.renderHeaderLabel}
-            renderHeaderContent={props.renderHeaderContent}
-            getHeaderModelKey={props.getHeaderModelKey}
-            dayGridRowProps={dayGridRowProps}
-            timeGridColsProps={timeGridColsProps}
-            slatMetas={slatMetas}
-            isHeightAuto={props.isHeightAuto}
+            {...commonLayoutProps}
             dayMinWidth={dayMinWidth}
+            dayScrollerRef={this.dayScrollerRef}
           />
         ) : (
-          <TimeGridLayoutNormal
-            scrollControllerRef={this.scrollControllerRef}
-            slatHeightRef={this.slatHeightRef}
-            cells={props.cells}
-            nowDate={props.nowDate}
-            headerTiers={props.headerTiers}
-            renderHeaderLabel={props.renderHeaderLabel}
-            renderHeaderContent={props.renderHeaderContent}
-            getHeaderModelKey={props.getHeaderModelKey}
-            dayGridRowProps={dayGridRowProps}
-            timeGridColsProps={timeGridColsProps}
-            slatMetas={slatMetas}
-          />
+          <TimeGridLayoutNormal {...commonLayoutProps} />
         )}
       </ViewContainer>
     )
@@ -138,42 +128,40 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
-    this.handleScroll(this.context.options.scrollTime)
-    this.context.emitter.on('_scrollRequest', this.handleScroll)
+    this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
   }
 
   componentDidUpdate(prevProps: TimeGridLayoutProps<unknown, unknown>) {
-    if (
-      prevProps.dateProfile !== this.props.dateProfile &&
-      this.context.options.scrollTimeReset
-    ) {
-      const scrollController = this.scrollControllerRef.current
-
-      if (scrollController) {
-        scrollController.scrollTo({ x: 0 })
-      }
-    }
+    this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
   }
 
   componentWillUnmount() {
-    this.context.emitter.off('_scrollRequest', this.handleScroll)
+    this.scrollResponder.detach()
   }
 
   // Scrolling
   // -----------------------------------------------------------------------------------------------
 
-  // TODO: emulate applyTimeScroll system that ResourceTimelineView does!
-
-  handleScroll = (time: Duration) => {
-    if (time) {
-      const scrollController = this.scrollControllerRef.current
+  handleScrollRequest = (scrollRequest: ScrollRequest) => {
+    if (scrollRequest.time) {
       const slatHeight = this.slatHeightRef.current
 
-      if (scrollController && slatHeight) {
-        const top = slatHeight * Math.random() // TODO: somehow use slatHeight
-        scrollController.scrollTo({ y: top })
+      if (slatHeight) {
+        const timeScroller = this.timeScrollerRef.current
+        const dayScroller = this.dayScrollerRef.current
+
+        const top = slatHeight * Math.random() // TODO: somehow use slatHeight!!!!!!
+        timeScroller.scrollTo({ y: top })
+
+        if (dayScroller) {
+          dayScroller.scrollTo({ x: 0 })
+        }
+
+        return true
       }
     }
+
+    return false
   }
 }
 

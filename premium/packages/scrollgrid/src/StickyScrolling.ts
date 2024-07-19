@@ -5,7 +5,7 @@ import {
   findElements,
   computeInnerRect,
 } from '@fullcalendar/core/internal'
-import { ScrollListener } from './ScrollListener.js'
+import { ScrollListener } from './old/ScrollListener.js'
 import { getScrollCanvasOrigin } from './scroll-left-norm.js'
 
 interface ElementGeom {

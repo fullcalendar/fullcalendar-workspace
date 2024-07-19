@@ -68,12 +68,15 @@ export class TimeGridView extends DateComponent<ViewProps> {
 
           return (
             <TimeGridLayout
-              cells={dayTableModel.cells[0]}
               dateProfile={dateProfile}
               nowDate={nowDate}
               todayRange={todayRange}
+              cells={dayTableModel.cells[0]}
+              forPrint={props.forPrint}
+
               eventSelection={props.eventSelection}
 
+              // header content
               headerTiers={[dayTableModel.cells[0]]}
               renderHeaderLabel={(tierNum, handleEl, height) => (
                 options.weekNumbers ? (
@@ -95,13 +98,15 @@ export class TimeGridView extends DateComponent<ViewProps> {
               )}
               getHeaderModelKey={(cell) => cell.date.toISOString()}
 
-              businessHourSegs={allDayProps.businessHourSegs}
-              bgEventSegs={allDayProps.bgEventSegs}
+              // all-day content
               fgEventSegs={allDayProps.fgEventSegs}
+              bgEventSegs={allDayProps.bgEventSegs}
+              businessHourSegs={allDayProps.businessHourSegs}
               dateSelectionSegs={allDayProps.dateSelectionSegs}
               eventDrag={allDayProps.eventDrag}
               eventResize={allDayProps.eventResize}
 
+              // timed content
               fgEventSegsByCol={fgEventSegsByCol}
               bgEventSegsByCol={bgEventSegsByCol}
               businessHourSegsByCol={businessHourSegsByCol}
@@ -109,9 +114,6 @@ export class TimeGridView extends DateComponent<ViewProps> {
               dateSelectionSegsByCol={dateSelectionSegsByCol}
               eventDragByCol={eventDragByCol}
               eventResizeByCol={eventResizeByCol}
-
-              isHeightAuto={props.isHeightAuto}
-              forPrint={props.forPrint}
             />
           )
         }}

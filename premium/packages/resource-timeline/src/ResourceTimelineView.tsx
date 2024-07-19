@@ -1,6 +1,6 @@
 import { CssDimValue, Duration } from '@fullcalendar/core'
 import {
-  ViewContext, memoize,
+  memoize,
   isArraysEqual,
   ScrollRequest, ViewContainer, ViewOptionsRefined,
   RefMap, ElementDragging,
@@ -14,12 +14,14 @@ import {
   DateMarker,
   DateRange,
   NowIndicatorContainer,
-  getStickyHeaderDates,
-  getStickyFooterScrollbar,
   NewScroller,
   RefMapKeyed,
   guid,
-  ScrollController2,
+  NewScrollerSyncerInterface,
+  getStickyHeaderDates,
+  getStickyFooterScrollbar,
+  ScrollResponder,
+  getIsHeightAuto,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import {
@@ -45,7 +47,7 @@ import {
   isEntityGroup,
   ResourceSplitter,
 } from '@fullcalendar/resource/internal'
-import { ScrollJoiner } from '@fullcalendar/scrollgrid/internal'
+import { NewScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
 import { ResourceCells } from './spreadsheet/ResourceCells.js'
 import { GroupWideCell } from './spreadsheet/GroupWideCell.js'
 import { GroupTallCell } from './spreadsheet/GroupTallCell.js'
@@ -83,7 +85,7 @@ interface ResourceTimelineViewState {
   bodyNaturalHeightMap?: Map<Resource | Group, number>
 }
 
-interface ResourceScrollState {
+interface ResourceTimelineScrollState {
   resourceId?: string
   groupValue?: any
   fromBottom?: number
@@ -115,6 +117,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private timeGroupWideRefMap = new RefMapKeyed<Group, HTMLDivElement>()
   private timeResourceRefMap = new RefMapKeyed<Resource, HTMLDivElement>()
   private slatsRef = createRef<TimelineSlats>() // needed for Hit system
+  private spreadsheetHeaderScrollerRef = createRef<NewScroller>()
+  private spreadsheetBodyScrollerRef = createRef<NewScroller>()
+  private spreadsheetFooterScrollerRef = createRef<NewScroller>()
+  private timeHeaderScrollerRef = createRef<NewScroller>()
+  private timeBodyScrollerRef = createRef<NewScroller>()
+  private timeFooterScrollerRef = createRef<NewScroller>()
 
   // current
   private currentGroupRowDisplays: GroupRowDisplay[]
@@ -122,53 +130,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private currentBodyHeightHierarchy: ParentNode<Resource | Group>[]
   private currentBodyVerticals?: Map<Resource | Group, CoordRange>
 
-  // unmanaged state
+  // internal
   private resourceSplitter = new ResourceSplitter()
   private bgSlicer = new TimelineLaneSlicer()
   private resourceLaneUnstableCount = 0
-  private forcedTimeScroll?: Duration
-  private currentResourceScroll?: ResourceScrollState
-
-  // scroll managers
-  private spreadsheetHeaderScroll = new ScrollController2()
-  private spreadsheetBodyScroll = new ScrollController2()
-  private spreadsheetFooterScroll = new ScrollController2()
-  private timeHeaderScroll = new ScrollController2()
-  private timeBodyScroll = new ScrollController2()
-  private timeFooterScroll = new ScrollController2()
-  private timeScrolls = new ScrollJoiner([
-    this.timeHeaderScroll,
-    this.timeBodyScroll,
-    this.timeFooterScroll,
-  ], true)
-  private bodyScrolls = new ScrollJoiner([ // for resources
-    this.spreadsheetBodyScroll,
-    this.timeBodyScroll,
-  ])
-
-  constructor(props: ResourceViewProps, context: ViewContext) {
-    super(props, context)
-
-    this.state = {
-      resourceAreaWidth: context.options.resourceAreaWidth,
-      spreadsheetColWidths: [],
-    }
-
-    // scroll manager further initialization
-    this.timeScrolls.addScrollListener(() => {
-      this.forcedTimeScroll = undefined
-    })
-    this.bodyScrolls.addScrollListener(() => {
-      this.currentResourceScroll = this.queryResourceScroll()
-    })
-
-    // scroll manager that doesn't need to be referenced
-    new ScrollJoiner([
-      this.spreadsheetHeaderScroll,
-      this.spreadsheetBodyScroll,
-      this.spreadsheetFooterScroll,
-    ], true)
-  }
+  private timeScroller: NewScrollerSyncerInterface
+  private bodyScroller: NewScrollerSyncerInterface
+  private spreadsheetScroller: NewScrollerSyncerInterface
+  private scrollResponder: ScrollResponder
 
   render() {
     let { props, state, context } = this
@@ -187,12 +156,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     /* table settings */
 
+    let verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
     let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
-    /*
-    if stickyFooterScrollbar, don't show scrollbars on main Scroller
-    only do all that if isHeightAuto
-    */
 
     let {
       groupSpecs,
@@ -320,10 +286,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
               {/* spreadsheet HEADER */}
               <NewScroller
+                ref={this.spreadsheetHeaderScrollerRef}
                 horizontal
                 hideBars
                 className={stickyHeaderDates ? 'fc-newnew-v-sticky' : ''}
-                elRef={this.spreadsheetHeaderScroll.handleEl}
               >
                 <div
                   class='fc-datagrid-header'
@@ -358,11 +324,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
               {/* spreadsheet BODY */}
               <NewScroller
-                vertical
+                ref={this.spreadsheetBodyScrollerRef}
+                vertical={verticalScrolling}
                 horizontal
                 hideBars
                 className='fc-newnew-flexexpand'
-                elRef={this.spreadsheetBodyScroll.handleEl}
               >
                 <div
                   className='fc-datagrid-body'
@@ -458,9 +424,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
               {/* spreadsheet FOOTER scrollbar */}
               <NewScroller
+                ref={this.spreadsheetFooterScrollerRef}
                 horizontal
                 onBottomScrollbarWidth={this.handleSpreadsheetBottomScrollbarWidth}
-                elRef={this.spreadsheetFooterScroll.handleEl}
               >
                 <div style={{ width: spreadsheetCanvasWidth }} />
               </NewScroller>
@@ -475,10 +441,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
               {/* time-area HEADER */}
               <NewScroller
+                ref={this.timeHeaderScrollerRef}
                 horizontal
                 hideBars
                 className={stickyHeaderDates ? 'fc-newnew-v-sticky' : ''}
-                elRef={this.timeHeaderScroll.handleEl}
               >
                 <div style={{
                   width: timeCanvasWidth,
@@ -499,9 +465,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
               {/* time-area BODY (resources) */}
               <NewScroller
-                vertical
+                ref={this.timeBodyScrollerRef}
+                vertical={verticalScrolling}
                 horizontal
-                elRef={this.timeBodyScroll.handleEl}
                 onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
                 onRightScrollbarWidth={this.handleRightScrollbarWidth}
                 onBottomScrollbarWidth={this.handleTimeBottomScrollbarWidth}
@@ -597,8 +563,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               {/* time-area FOOTER */}
               {stickyFooterScrollbar && (
                 <NewScroller
+                  ref={this.timeFooterScrollerRef}
                   horizontal
-                  elRef={this.timeFooterScroll.handleEl}
                 >
                   <div style={{ width: timeCanvasWidth }}/>
                 </NewScroller>
@@ -620,33 +586,21 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     this.context.addResizeHandler(this.handleSizing)
 
     // scrolling
-    this.handleTimeScroll(this.context.options.scrollTime)
-    this.context.emitter.on('_scrollRequest', this.handleScroll)
+    // TODO: use plugin system for this!!!!!!!!!!
+    this.timeScroller = new NewScrollerSyncer(true) // horizontal=true
+    this.bodyScroller = new NewScrollerSyncer() // horizontal=false
+    this.spreadsheetScroller = new NewScrollerSyncer(true) // horizontal=true
+    this.updateScrollersSyncers()
+    this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
   }
 
-  componentDidUpdate(
-    prevProps: ResourceViewProps,
-    prevState: ResourceTimelineViewState,
-  ) {
+  componentDidUpdate(prevProps: ResourceViewProps) {
+    // sizing
     this.handleSizing()
 
-    // changes that affect horizontal coordinates
-    if (
-      (
-        prevProps.dateProfile !== this.props.dateProfile ||
-        prevState.slatCoords !== this.state.slatCoords
-      ) && this.context.options.scrollTimeReset
-    ) {
-      this.applyTimeScroll()
-    }
-
-    // changes that affect vertical coordinates
-    if (
-      prevProps.resourceStore !== this.props.resourceStore ||
-      prevProps.eventStore !== this.props.eventStore
-    ) {
-      this.applyResourceScroll()
-    }
+    // scrolling
+    this.updateScrollersSyncers()
+    this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
   }
 
   componentWillUnmount() {
@@ -654,7 +608,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     this.context.removeResizeHandler(this.handleSizing)
 
     // scrolling
-    this.context.emitter.off('_scrollRequest', this.handleScroll)
+    this.timeScroller.destroy()
+    this.bodyScroller.destroy()
+    this.spreadsheetScroller.destroy()
+    this.scrollResponder.detach()
+  }
+
+  getSnapshotBeforeUpdate(): ResourceTimelineScrollState {
+    return this.queryScrollState()
   }
 
   // Sizing
@@ -777,75 +738,46 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   // Scrolling
   // -----------------------------------------------------------------------------------------------
 
-  handleScroll = (request: ScrollRequest) => {
+  updateScrollersSyncers() {
+    this.timeScroller.handleChildren([
+      this.timeHeaderScrollerRef.current,
+      this.timeBodyScrollerRef.current,
+      this.timeFooterScrollerRef.current,
+    ])
+    this.bodyScroller.handleChildren([
+      this.spreadsheetBodyScrollerRef.current,
+      this.timeBodyScrollerRef.current,
+    ])
+    this.spreadsheetScroller.handleChildren([
+      this.spreadsheetHeaderScrollerRef.current,
+      this.spreadsheetBodyScrollerRef.current,
+      this.spreadsheetFooterScrollerRef.current,
+    ])
+  }
+
+  handleScrollRequest = (request: ScrollRequest) => {
     if (request.time) {
-      this.handleTimeScroll(request.time)
+      return this.handleTimeScroll(request.time)
     }
   }
 
-  handleTimeScroll = (time: Duration) => {
-    this.forcedTimeScroll = time
-    this.applyTimeScroll()
-  }
-
-  applyTimeScroll() {
-    let timeScroll = this.forcedTimeScroll
-
-    if (timeScroll) {
+  handleTimeScroll = (scrollTime: Duration) => {
+    if (scrollTime) {
       let { slatCoords } = this.state
       if (slatCoords) {
-        let scrollLeft = slatCoords.coordFromLeft(slatCoords.durationToCoord(timeScroll))
-        this.timeScrolls.scrollTo(scrollLeft)
+        let scrollLeft = slatCoords.coordFromLeft(slatCoords.durationToCoord(scrollTime))
+        this.timeScroller.scrollTo({ x: scrollLeft }) // TODO: is this compatible with RTL?
+        return true
       }
     }
+
+    return false
   }
 
-  applyResourceScroll() {
-    let resourceScroll = this.currentResourceScroll
-
-    if (resourceScroll) {
-      let { currentGroupRowDisplays, currentResourceRowDisplays, currentBodyVerticals } = this
-      let entity: Resource | Group | undefined
-
-      // find entity. hack
-      if (resourceScroll.resourceId) {
-        for (const resourceRowDisplay of currentResourceRowDisplays) {
-          if (resourceRowDisplay.resource.id === resourceScroll.resourceId) {
-            entity = resourceRowDisplay.resource
-            break
-          }
-        }
-      } else if (resourceScroll.groupValue !== undefined) {
-        for (const groupRowDisplay of currentGroupRowDisplays) {
-          if (groupRowDisplay.group.value === resourceScroll.groupValue) {
-            entity = groupRowDisplay.group
-            break
-          }
-        }
-      }
-
-      if (entity) {
-        const vertical = currentBodyVerticals && currentBodyVerticals.get(entity)
-
-        if (vertical) {
-          const { start, size } = vertical
-          const end = start + size
-
-          let scrollTop =
-            resourceScroll.fromBottom != null ?
-              end - resourceScroll.fromBottom : // pixels from bottom edge
-              start // just use top edge
-
-          this.bodyScrolls.scrollTo(scrollTop)
-        }
-      }
-    }
-  }
-
-  queryResourceScroll(): ResourceScrollState {
+  queryScrollState(): ResourceTimelineScrollState {
     let { currentBodyHeightHierarchy, currentBodyVerticals } = this
-    let scrollTop = this.bodyScrolls.y
-    let scroll = {} as any
+    let scrollTop = this.bodyScroller.y
+    let scrollState: ResourceTimelineScrollState = {}
 
     let entityAtTop = findEntityByCoord(
       scrollTop,
@@ -859,16 +791,54 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       let elBottom = elTop + vertical.size
       let elBottomRelScroller = elBottom - scrollTop
 
-      scroll.fromBottom = elBottomRelScroller
+      scrollState.fromBottom = elBottomRelScroller
 
       if (isEntityGroup(entityAtTop)) {
-        scroll.groupValue = entityAtTop.value
+        scrollState.groupValue = entityAtTop.value
       } else {
-        scroll.resourceId = entityAtTop.id
+        scrollState.resourceId = entityAtTop.id
       }
     }
 
-    return scroll
+    return scrollState
+  }
+
+  applyScrollState(scrollState: ResourceTimelineScrollState) {
+    let { currentGroupRowDisplays, currentResourceRowDisplays, currentBodyVerticals } = this
+    let entity: Resource | Group | undefined
+
+    // find entity. hack
+    if (scrollState.resourceId) {
+      for (const resourceRowDisplay of currentResourceRowDisplays) {
+        if (resourceRowDisplay.resource.id === scrollState.resourceId) {
+          entity = resourceRowDisplay.resource
+          break
+        }
+      }
+    } else if (scrollState.groupValue !== undefined) {
+      for (const groupRowDisplay of currentGroupRowDisplays) {
+        if (groupRowDisplay.group.value === scrollState.groupValue) {
+          entity = groupRowDisplay.group
+          break
+        }
+      }
+    }
+
+    if (entity) {
+      const vertical = currentBodyVerticals && currentBodyVerticals.get(entity)
+
+      if (vertical) {
+        const { start, size } = vertical
+        const end = start + size
+
+        let scrollTop =
+          scrollState.fromBottom != null ?
+            end - scrollState.fromBottom : // pixels from bottom edge
+            start // just use top edge
+
+        this.bodyScroller.scrollTo({ y: scrollTop })
+      }
+    }
   }
 
   // Resource INDIVIDUAL-Column Area Resizing

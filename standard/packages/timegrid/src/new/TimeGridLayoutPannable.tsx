@@ -1,66 +1,95 @@
-import { BaseComponent, DateMarker, DayTableCell, NewScroller, RefMapKeyed, ScrollController2, ScrollJoinerInterface, getStickyHeaderDates } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, NewScroller, NewScrollerInterface, NewScrollerSyncerInterface, RefMapKeyed, getStickyFooterScrollbar, getStickyHeaderDates, setRef } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
-import { DayGridRowProps } from '@fullcalendar/daygrid/internal'
+import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
 import { TimeGridAllDayContent } from "./TimeGridAllDayContent.js"
 import { TimeGridNowIndicator } from "./TimeGridNowIndicator.js"
 import { TimeSlatMeta } from "../time-slat-meta.js"
 import { TimeGridAxisCell } from "./TimeGridAxisCell.js"
 import { TimeGridSlatCell } from "./TimeGridSlatCell.js"
-import { TimeGridCols, TimeGridColsProps } from "./TimeGridCols.js"
+import { TimeGridCols } from "./TimeGridCols.js"
+import { TimeColsSeg } from "../TimeColsSeg.js"
 
 export interface TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
-  scrollControllerRef?: Ref<ScrollController2> // TODO: assign this!
-  slatHeightRef?: Ref<number> // TODO: assign this!
-
-  cells: DayTableCell[]
+  dateProfile: DateProfile
   nowDate: DateMarker
+  todayRange: DateRange
+  cells: DayTableCell[]
+  slatMetas: TimeSlatMeta[]
+  forPrint: boolean
+  isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
 
+  // header content
   headerTiers: HeaderCellModel[][]
   renderHeaderLabel: (tier: number, handleEl: (el: HTMLElement) => void, height: number) => ComponentChild
   renderHeaderContent: (model: HeaderCellModel, tier: number, handleEl: (el: HTMLElement) => void) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
-  dayGridRowProps: DayGridRowProps,
-  timeGridColsProps: TimeGridColsProps,
-  slatMetas: TimeSlatMeta[],
+  // all-day content
+  fgEventSegs: TableSeg[]
+  bgEventSegs: TableSeg[]
+  businessHourSegs: TableSeg[]
+  dateSelectionSegs: TableSeg[]
+  eventDrag: EventSegUiInteractionState | null
+  eventResize: EventSegUiInteractionState | null
+  dayMaxEvents: boolean | number
+  dayMaxEventRows: boolean | number
 
-  isHeightAuto: boolean
+  // timed content
+  fgEventSegsByCol: TimeColsSeg[][]
+  bgEventSegsByCol: TimeColsSeg[][]
+  businessHourSegsByCol: TimeColsSeg[][]
+  nowIndicatorSegsByCol: TimeColsSeg[][]
+  dateSelectionSegsByCol: TimeColsSeg[][]
+  eventDragByCol: EventSegUiInteractionState[]
+  eventResizeByCol: EventSegUiInteractionState[]
+  onTimeCoords?: () => void
+
+  // universal content
+  eventSelection: string
+
+  // refs
+  dayScrollerRef?: Ref<NewScrollerInterface>
+  timeScrollerRef?: Ref<NewScrollerInterface>
+  slatHeightRef?: Ref<number>
+
+  // dimensions
   dayMinWidth: number
 }
 
 interface TimeGridLayoutPannableState {
+  width?: number
+  leftScrollbarWidth?: number
+  rightScrollbarWidth?: number
   axisWidth?: number
   headerTierHeights?: number[]
   allDayHeight?: number
   slatHeight?: number
 }
-// TODO: scrollbar-width stuff
 
 export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseComponent<TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey>, TimeGridLayoutPannableState> {
   private headerLabelElRefMap = new RefMapKeyed<number, HTMLElement>()
-  private headerContentElRefMaps: RefMapKeyed<HeaderCellKey, HTMLElement>[] = []
+  private headerContentElRefMaps: RefMapKeyed<HeaderCellKey, HTMLElement>[] = [] // TODO: rename this
   private allDayLabelElRef = createRef<HTMLElement>()
   private allDayContentElRefMap = new RefMapKeyed<string, HTMLElement>()
   private slatLabelElRefMap = new RefMapKeyed<string, HTMLElement>() // keyed by ISO-something
   private slatContentElRefMap = new RefMapKeyed<string, HTMLElement>() // keyed by ISO-something
 
-  // yes h-scroll
-  private axisScroll = new ScrollController2()
-  private mainScroll = new ScrollController2()
-  private headScroll = new ScrollController2()
-  private footScroll = new ScrollController2()
-  private allDayScroll = new ScrollController2()
+  private axisScrollerRef = createRef<NewScroller>()
+  private mainScrollerRef = createRef<NewScroller>()
+  private headScrollerRef = createRef<NewScroller>()
+  private footScrollerRef = createRef<NewScroller>()
+  private allDayScrollerRef = createRef<NewScroller>()
 
-  // TODO: define via plugin system somehow
-  private hScrollJoiner: ScrollJoinerInterface // axisScroll+mainScroll
-  private vScrollJoiner: ScrollJoinerInterface // headScroll+allDayScroll+mainScroll+footScroll
+  private hScroller: NewScrollerSyncerInterface
+  private vScroller: NewScrollerSyncerInterface
 
   render() {
     const { props, state, context } = this
     const { nowDate } = props
     const { axisWidth } = state
     const { options } = context
+    const colCnt = props.headerTiers[0].length
 
     const { headerContentElRefMaps } = this
     for (let i = headerContentElRefMaps.length; i < props.headerTiers.length; i++) {
@@ -68,10 +97,9 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     }
     // TODO: kill headerContentElRefMaps rows that are no longer used
 
-    const stickyHeaderDates = getStickyHeaderDates(options)
-    const stickyFooterScrollbar = props.isHeightAuto && options.stickyFooterScrollbar !== false
-
-    // TODO: use dayMinWidth somehow
+    const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
+    const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
+    const [canvasWidth, colWidth, colActualWidth] = computeColWidth(colCnt, state.width)
 
     return (
       <Fragment>
@@ -91,8 +119,11 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               ))}
             </div>
             {/* RIGHT */}
-            <NewScroller horizontal elRef={this.headScroll.handleEl}>
-              <div className='fc-newnew-canvas'>
+            <NewScroller
+              ref={this.headScrollerRef}
+              horizontal
+            >
+              <div className='fc-newnew-canvas' style={{ width: canvasWidth }}>
                 {props.headerTiers.map((models, tierNum) => (
                   <div className='fc-newnew-tier' style={{ height: state.headerTierHeights[tierNum] }}>
                     {models.map((model) => (
@@ -120,12 +151,39 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 height={state.allDayHeight}
               />
               {/* RIGHT */}
-              <NewScroller horizontal elRef={this.allDayScroll.handleEl}>
-                <TimeGridAllDayContent
-                  {...props.dayGridRowProps}
-                  cellRefMap={this.allDayContentElRefMap}
-                  height={state.allDayHeight}
-                />
+              <NewScroller
+                ref={this.allDayScrollerRef}
+                horizontal
+              >
+                <div className='fc-newnew-canvas' style={{ width: canvasWidth }}>
+                  <TimeGridAllDayContent
+                    dateProfile={props.dateProfile}
+                    todayRange={props.todayRange}
+                    cells={props.cells}
+                    showDayNumbers={false}
+                    forPrint={props.forPrint}
+                    isHitComboAllowed={props.isHitComboAllowed}
+
+                    // content
+                    fgEventSegs={props.fgEventSegs}
+                    bgEventSegs={props.bgEventSegs}
+                    businessHourSegs={props.businessHourSegs}
+                    dateSelectionSegs={props.dateSelectionSegs}
+                    eventSelection={props.eventSelection}
+                    eventDrag={props.eventDrag}
+                    eventResize={props.eventResize}
+                    dayMaxEvents={props.dayMaxEvents}
+                    dayMaxEventRows={props.dayMaxEventRows}
+
+                    // dimensions
+                    colWidth={colWidth}
+                    colActualWidth={colActualWidth}
+                    height={state.allDayHeight}
+
+                    // refs
+                    cellInnerElRefMap={this.allDayContentElRefMap}
+                  />
+                </div>
               </NewScroller>
             </div>
             <div className='fc-newnew-divider'></div>
@@ -133,7 +191,11 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
         )}
         <div>
           {/* LEFT */}
-          <NewScroller vertical elStyle={{ width: axisWidth }} elRef={this.axisScroll.handleEl}>
+          <NewScroller
+            ref={this.axisScrollerRef}
+            vertical
+            elStyle={{ width: axisWidth }}
+          >
             <div className='fc-newnew-canvas'>
               <div>
                 <TimeGridNowIndicator nowDate={nowDate} />
@@ -156,8 +218,15 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             </div>
           </NewScroller>
           {/* RIGHT */}
-          <NewScroller vertical horizontal elRef={this.mainScroll.handleEl}>
-            <div className='fc-newnew-canvas'>
+          <NewScroller
+            ref={this.mainScrollerRef}
+            vertical
+            horizontal
+            onWidth={this.handleWidth}
+            onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
+            onRightScrollbarWidth={this.handleRightScrollbarWidth}
+          >
+            <div className='fc-newnew-canvas' style={{ width: canvasWidth }}>
               <div>
                 {props.slatMetas.map((slatMeta) => (
                   <div
@@ -176,7 +245,29 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 ))}
               </div>
               <div className='fc-newnew-absolute'>
-                <TimeGridCols {...props.timeGridColsProps} />
+                <TimeGridCols
+                  dateProfile={props.dateProfile}
+                  nowDate={props.nowDate}
+                  todayRange={props.todayRange}
+                  cells={props.cells}
+                  forPrint={props.forPrint}
+                  isHitComboAllowed={props.isHitComboAllowed}
+
+                  // content
+                  fgEventSegsByCol={props.fgEventSegsByCol}
+                  bgEventSegsByCol={props.bgEventSegsByCol}
+                  businessHourSegsByCol={props.businessHourSegsByCol}
+                  nowIndicatorSegsByCol={props.nowIndicatorSegsByCol}
+                  dateSelectionSegsByCol={props.dateSelectionSegsByCol}
+                  eventDragByCol={props.eventDragByCol}
+                  eventResizeByCol={props.eventResizeByCol}
+                  eventSelection={props.eventSelection}
+
+                  // dimensions
+                  colWidth={colWidth}
+                  colActualWidth={colActualWidth}
+                  slatHeight={state.slatHeight}
+                />
               </div>
             </div>
           </NewScroller>
@@ -186,10 +277,10 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             {/* LEFT */}
             <div style={{ width: axisWidth }}></div>
             {/* RIGHT */}
-            <NewScroller elRef={this.footScroll.handleEl}>
+            <NewScroller ref={this.footScrollerRef}>
               <div
                 className='fc-newnew-canvas'
-                style={{ width: undefined }}
+                style={{ width: canvasWidth }}
               />
             </NewScroller>
           </div>
@@ -204,24 +295,33 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
   componentDidMount() {
     this.handleSizing()
     this.context.addResizeHandler(this.handleSizing)
+    this.initScrollers()
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(
+    prevProps: TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey>,
+    prevState: TimeGridLayoutPannableState,
+  ) {
     this.handleSizing()
+    this.updateScrollers()
+
+    if (
+      this.state.slatHeight != null &&
+      this.state.slatHeight !== prevState.slatHeight
+    ) {
+      this.props.onTimeCoords && this.props.onTimeCoords()
+    }
   }
 
   componentWillUnmount() {
     this.context.removeResizeHandler(this.handleSizing)
+    this.destroyScrollers()
   }
 
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
   handleSizing = () => {
-    console.log(
-      this.hScrollJoiner,
-      this.vScrollJoiner,
-    )
 
     // axisWidth
     // ---------
@@ -275,7 +375,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     let maxAllDayHeight = 0
     let allDayEls: HTMLElement[] = [
       this.allDayLabelElRef.current,
-      ...this.headerLabelElRefMap.current.values(),
+      ...this.allDayContentElRefMap.current.values(),
     ]
 
     for (let allDayEl of allDayEls) {
@@ -298,8 +398,58 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
       maxSlatHeight = Math.max(maxSlatHeight, slatEl.offsetHeight)
     }
 
-    this.setState({
-      slatHeight: maxSlatHeight + 1, // add border
-    })
+    const slatHeight = maxSlatHeight + 1 // add border
+    this.setState({ slatHeight })
+    setRef(this.props.slatHeightRef, slatHeight)
   }
+
+  handleWidth = (width: number) => {
+    this.setState({ width })
+  }
+
+  handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
+    this.setState({ leftScrollbarWidth })
+  }
+
+  handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
+    this.setState({ rightScrollbarWidth })
+  }
+
+  // Scrolling
+  // -----------------------------------------------------------------------------------------------
+
+  initScrollers() {
+    // this.hScroller = new NewScrollerSyncer(true) // TODO: have plugin system provide this!
+    // this.vScroller = new NewScrollerSyncer() // TODO: have plugin system provide this!
+
+    setRef(this.props.dayScrollerRef, this.hScroller)
+    setRef(this.props.timeScrollerRef, this.vScroller)
+  }
+
+  updateScrollers() {
+    this.hScroller.handleChildren([
+      this.axisScrollerRef.current,
+      this.mainScrollerRef.current,
+    ])
+    this.vScroller.handleChildren([
+      this.headScrollerRef.current,
+      this.allDayScrollerRef.current,
+      this.mainScrollerRef.current,
+      this.footScrollerRef.current,
+    ])
+  }
+
+  destroyScrollers() {
+    setRef(this.props.dayScrollerRef, null)
+    setRef(this.props.timeScrollerRef, null)
+  }
+}
+
+// NOTE: returned value used for all BUT the last
+function computeColWidth(colCnt: number, viewInnerWidth: number | number): [
+  canvasWidth: number | undefined,
+  colWidth: number | undefined,
+  colActualWidth: number | undefined,
+] {
+  return null as any // TODO
 }

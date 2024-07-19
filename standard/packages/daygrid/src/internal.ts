@@ -14,9 +14,7 @@ export { TableRows } from './old/TableRows.js'
 
 // new
 export { DateHeaderCell, DateHeaderCellModel } from './new/DateHeaderCell.js'
-export { DateHeaderCells } from './new/DateHeaderCells.js'
 export { DayOfWeekHeaderCell, DayOfWeekHeaderCellModel } from './new/DayOfWeekHeaderCell.js'
-export { DayOfWeekHeaderCells } from './new/DayOfWeekHeaderCells.js'
 export { DayGridRows, DayGridRowsProps } from './new/DayGridRows.js'
 export { DayGridRow, DayGridRowProps } from './new/DayGridRow.js'
 export { DayGridLayout, DayGridLayoutProps } from './new/DayGridLayout.js'

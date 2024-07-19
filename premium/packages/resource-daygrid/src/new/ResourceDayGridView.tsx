@@ -22,7 +22,7 @@ import {
   flattenResources,
 } from '@fullcalendar/resource/internal'
 import { ResourceDayTableJoiner } from '../ResourceDayTableJoiner.js'
-import { buildHeaderTiers } from './ResourceDayGridHeaderCells.js'
+import { buildHeaderTiers } from './header-cell-utils.js'
 import { ResourceHeaderCell } from './ResourceHeaderCell.js'
 
 export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
@@ -82,10 +82,15 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
     return (
       <NowTimer unit="day">
         {(nowDate: DateMarker, todayRange: DateRange) => (
-          // TODO: DRY with DayGridView/ResourceTimeGridView
           <DayGridLayout
             dateProfile={props.dateProfile}
+            todayRange={todayRange}
             cellRows={resourceDayTableModel.cells}
+            forPrint={props.forPrint}
+            isHitComboAllowed={this.isHitComboAllowed}
+
+            // header content
+            // TODO: DRY with DayGridView/ResourceTimeGridView
             headerTiers={headerTiers}
             renderHeaderContent={(model, tierNum) => {
               if (model.type === 'date') {
@@ -127,16 +132,15 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
                   ? cell.date.toISOString() // correct?
                   : cell.dow
             )}
-            businessHourSegs={joinedSlicedProps.businessHourSegs}
-            bgEventSegs={joinedSlicedProps.bgEventSegs}
+
+            // body content
             fgEventSegs={joinedSlicedProps.fgEventSegs}
+            bgEventSegs={joinedSlicedProps.bgEventSegs}
+            businessHourSegs={joinedSlicedProps.businessHourSegs}
             dateSelectionSegs={joinedSlicedProps.dateSelectionSegs}
-            eventSelection={joinedSlicedProps.eventSelection}
             eventDrag={joinedSlicedProps.eventDrag}
             eventResize={joinedSlicedProps.eventResize}
-            forPrint={props.forPrint}
-            isHeightAuto={props.isHeightAuto}
-            isHitComboAllowed={this.isHitComboAllowed}
+            eventSelection={joinedSlicedProps.eventSelection}
           />
         )}
       </NowTimer>

@@ -24,7 +24,7 @@ import {
   config,
 } from '@fullcalendar/core/internal'
 import { createElement, VNode, Fragment } from '@fullcalendar/core/preact'
-import { StickyScrolling } from './StickyScrolling.js'
+import { StickyScrolling } from '../StickyScrolling.js'
 import { ClippedScroller, ClippedOverflowValue } from './ClippedScroller.js'
 import { ScrollSyncer } from './ScrollSyncer.js'
 

@@ -1,6 +1,6 @@
-import { SectionConfig, ChunkConfig, ColProps, CssDimValue } from './util.js'
-import { Component, Ref } from '../preact.js'
-import { ViewContext } from '../ViewContext.js'
+import { SectionConfig, ChunkConfig, ColProps, CssDimValue } from '../util.js'
+import { Component, Ref } from '../../preact.js'
+import { ViewContext } from '../../ViewContext.js'
 
 export interface ScrollGridProps {
   elRef?: Ref<any>

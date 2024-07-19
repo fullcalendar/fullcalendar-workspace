@@ -1,4 +1,3 @@
-import { Duration } from '@fullcalendar/core'
 import {
   ViewProps,
   memoize,
@@ -14,11 +13,10 @@ import {
   getStickyFooterScrollbar,
   NewScroller,
   ScrollRequest,
-  ViewContext,
-  ScrollController2,
+  ScrollResponder,
 } from '@fullcalendar/core/internal'
 import { Fragment, createElement, createRef } from '@fullcalendar/core/preact'
-import { ScrollJoiner } from '@fullcalendar/scrollgrid/internal'
+import { NewScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
 import { buildTimelineDateProfile } from './timeline-date-profile.js'
 import { TimelineHeader } from './TimelineHeader.js'
 import { TimelineCoords, coordToCss } from './TimelineCoords.js'
@@ -27,9 +25,9 @@ import { TimelineLane } from './TimelineLane.js'
 import { computeSlotWidth } from './timeline-positioning.js'
 
 interface TimelineViewState {
-  slatCoords?: TimelineCoords
+  slatCoords?: TimelineCoords // isn't this obsolete??????????????????????
   slotCushionMaxWidth?: number
-  viewInnerWidth?: number,
+  width?: number,
   leftScrollbarWidth?: number,
   rightScrollbarWidth?: number,
 }
@@ -41,28 +39,13 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
   // refs
   private slatsRef = createRef<TimelineSlats>()
+  private headerScrollerRef = createRef<NewScroller>()
+  private bodyScrollerRef = createRef<NewScroller>()
+  private footerScrollerRef = createRef<NewScroller>()
 
-  // unmanaged state
-  private forcedTimeScroll?: Duration
-
-  // scroll managers
-  private headerScroll = new ScrollController2()
-  private bodyScroll = new ScrollController2()
-  private footerScroll = new ScrollController2()
-  private scrollJoiner = new ScrollJoiner([
-    this.headerScroll,
-    this.bodyScroll,
-    this.footerScroll,
-  ])
-
-  constructor(props: ViewProps, context: ViewContext) {
-    super(props, context)
-
-    // scroll manager further initialization
-    this.scrollJoiner.addScrollListener(() => {
-      this.forcedTimeScroll = undefined
-    })
-  }
+  // internal
+  private scrollResponder: ScrollResponder
+  private syncedScroller: NewScrollerSyncer
 
   render() {
     let { props, state, context } = this
@@ -82,10 +65,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
     let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
-    /*
-    if stickyFooterScrollbar, don't show scrollbars on main Scroller
-    only do all that if isHeightAuto
-    */
 
     /* table positions */
 
@@ -94,7 +73,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       tDateProfile,
       slotMinWidth,
       state.slotCushionMaxWidth,
-      state.viewInnerWidth
+      state.width
     )
 
     return (
@@ -111,10 +90,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       >
         {/* header */}
         <NewScroller
+          ref={this.headerScrollerRef}
           horizontal
           hideBars
           className={stickyHeaderDates ? 'fc-newnew-v-sticky' : ''}
-          elRef={this.headerScroll.handleEl}
         >
           <div style={{
             width: canvasWidth,
@@ -133,11 +112,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
         {/* body */}
         <NewScroller // how does it know to be liquid-height?
+          ref={this.bodyScrollerRef}
           vertical
           horizontal
           className='fc-newnew-flexexpand'
-          elRef={this.bodyScroll.handleEl}
-          onWidth={this.handleViewInnerWidth}
+          onWidth={this.handleWidth}
           onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
           onRightScrollbarWidth={this.handleRightScrollbarWidth}
         >
@@ -191,8 +170,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
         {/* footer scrollbar */}
         {stickyFooterScrollbar && (
           <NewScroller
+            ref={this.footerScrollerRef}
             horizontal
-            elRef={this.footerScroll.handleEl}
           >
             <div style={{ width: canvasWidth }}/>
           </NewScroller>
@@ -205,29 +184,19 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
-    // scrolling
-    this.handleTimeScroll(this.context.options.scrollTime)
-    this.context.emitter.on('_scrollRequest', this.handleScroll)
+    this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
+    // this.syncedScroller = new ScrollerSyncer() // TODO: use plugin system!
+    this.updateSyncedScroller()
   }
 
-  componentDidUpdate(
-    prevProps: ViewProps,
-    prevState: TimelineViewState,
-  ) {
-    // anything change that affects horizontal coordinates?
-    if (
-      (
-        prevProps.dateProfile !== this.props.dateProfile ||
-        prevState.slatCoords !== this.state.slatCoords
-      ) && this.context.options.scrollTimeReset
-    ) {
-      this.applyTimeScroll()
-    }
+  componentDidUpdate(prevProps: ViewProps) {
+    this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
+    this.updateSyncedScroller()
   }
 
   componentWillUnmount() {
-    // scrolling
-    this.context.emitter.off('_scrollRequest', this.handleScroll)
+    this.scrollResponder.detach()
+    this.syncedScroller.destroy()
   }
 
   // Sizing
@@ -236,9 +205,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   /*
   TODO: have Calendar, which manage view-harness, tell us about width explicitly?
   */
-  handleViewInnerWidth = (viewInnerWidth: number) => {
+  handleWidth = (width: number) => {
     this.setState({
-      viewInnerWidth,
+      width,
     })
   }
 
@@ -269,27 +238,25 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   // Scrolling
   // -----------------------------------------------------------------------------------------------
 
-  handleScroll = (request: ScrollRequest) => {
+  updateSyncedScroller() {
+    this.syncedScroller.handleChildren([
+      this.headerScrollerRef.current,
+      this.bodyScrollerRef.current,
+      this.footerScrollerRef.current
+    ])
+  }
+
+  handleScrollRequest = (request: ScrollRequest) => {
     if (request.time) {
-      this.handleTimeScroll(request.time)
-    }
-  }
-
-  handleTimeScroll = (time: Duration) => {
-    this.forcedTimeScroll = time
-    this.applyTimeScroll()
-  }
-
-  applyTimeScroll() {
-    let timeScroll = this.forcedTimeScroll
-
-    if (timeScroll) {
       let { slatCoords } = this.state
       if (slatCoords) {
-        let scrollLeft = slatCoords.coordFromLeft(slatCoords.durationToCoord(timeScroll))
-        this.scrollJoiner.scrollTo(scrollLeft)
+        let scrollLeft = slatCoords.coordFromLeft(slatCoords.durationToCoord(request.time))
+        this.syncedScroller.scrollTo({ x: scrollLeft }) // TODO: works with RTL?
+        return true
       }
     }
+
+    return false
   }
 
   // Hit System

@@ -6,9 +6,5 @@ export { ResourceDayTableView } from './old/ResourceDayTableView.js'
 export { ResourceDayTable } from './old/ResourceDayTable.js'
 
 // new
-export {
-  ResourceDayGridHeaderCells,
-  buildCellTuples,
-  buildHeaderTiers,
-  HeaderTierCell,
-} from './new/ResourceDayGridHeaderCells.js'
+export { ResourceHeaderCell } from './new/ResourceHeaderCell.js'
+export { HeaderTierCell, buildHeaderTiers } from './new/header-cell-utils.js'

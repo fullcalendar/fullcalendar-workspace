@@ -20,12 +20,37 @@ export interface TableSegPlacement {
   marginTop: number
 }
 
+// TODO
+export interface NewTableSegPlacement {
+  seg: TableSeg
+  top: number | undefined // if undefined, then should appear in +more link popover
+  isVisible: boolean
+}
+
 export function generateSegKey(seg: TableSeg): string {
   return seg.eventRange.instance.instanceId + ':' + seg.firstCol
 }
 
 export function generateSegUid(seg: TableSeg): string {
   return generateSegKey(seg) + ':' + seg.lastCol
+}
+
+// TODO
+export function newComputeFgSegPlacement(
+  segs: TableSeg[], // assumed already sorted
+  dayMaxEvents: boolean | number,
+  dayMaxEventRows: boolean | number,
+  strictOrder: boolean,
+  containerTops: number[],
+  containerHeights: number[],
+  segHeights: { [segUid: string]: number },
+  cells: DayTableCell[],
+): {
+  segPlacementsByCol: NewTableSegPlacement[][],
+  moreTops: (number | undefined)[] // by cell
+  moreCnts: number[] // by cell
+} {
+  return null as any // TODO
 }
 
 export function computeFgSegPlacement(

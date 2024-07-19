@@ -11,7 +11,7 @@ import {
 } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
 import { DateHeaderCell, DayOfWeekHeaderCell, DayTableSlicer } from '@fullcalendar/daygrid/internal'
-import { ResourceDayTableJoiner, buildHeaderTiers } from '@fullcalendar/resource-daygrid/internal'
+import { ResourceDayTableJoiner, buildHeaderTiers, ResourceHeaderCell } from '@fullcalendar/resource-daygrid/internal'
 import {
   DEFAULT_RESOURCE_ORDER,
   DayResourceTableModel,
@@ -22,7 +22,6 @@ import {
   flattenResources,
 } from '@fullcalendar/resource/internal'
 import { AllDaySplitter, DayTimeColsSlicer, TimeGridLayout, TimeGridWeekNumberCell, buildDayRanges, buildTimeColsModel, splitInteractionByCol, splitSegsByCol } from '@fullcalendar/timegrid/internal'
-import { ResourceHeaderCell } from '../../../resource-daygrid/src/new/ResourceHeaderCell.js'; // TODO: aahhhh
 import { ResourceDayTimeColsJoiner } from '../ResourceDayTimeColsJoiner.js'
 
 interface ResourceTimeGridViewState {
@@ -151,11 +150,14 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
 
           return (
             <TimeGridLayout
-              cells={resourceDayTableModel.cells[0]}
               dateProfile={dateProfile}
               nowDate={nowDate}
               todayRange={todayRange}
+              cells={resourceDayTableModel.cells[0]}
+              forPrint={props.forPrint}
+              // TODO: why not isHitComboAllowed?
 
+              // header content
               headerTiers={headerTiers}
               renderHeaderLabel={(tierNum, handleEl) => (
                 (options.weekNumbers && tierNum === headerTiers.length - 1) ? (
@@ -210,14 +212,15 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
                     : cell.dow
               )}
 
-              businessHourSegs={allDayResourceJoinedProps.businessHourSegs}
-              bgEventSegs={allDayResourceJoinedProps.bgEventSegs}
+              // all-day content
               fgEventSegs={allDayResourceJoinedProps.fgEventSegs}
+              bgEventSegs={allDayResourceJoinedProps.bgEventSegs}
+              businessHourSegs={allDayResourceJoinedProps.businessHourSegs}
               dateSelectionSegs={allDayResourceJoinedProps.dateSelectionSegs}
-              eventSelection={allDayResourceJoinedProps.eventSelection /* TODO: make a separate timed version */}
               eventDrag={allDayResourceJoinedProps.eventDrag}
               eventResize={allDayResourceJoinedProps.eventResize}
 
+              // timed content
               fgEventSegsByCol={fgEventSegsByCol}
               bgEventSegsByCol={bgEventSegsByCol}
               businessHourSegsByCol={businessHourSegsByCol}
@@ -226,8 +229,8 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
               eventDragByCol={eventDragByCol}
               eventResizeByCol={eventResizeByCol}
 
-              isHeightAuto={props.isHeightAuto}
-              forPrint={props.forPrint}
+              // universal content
+              eventSelection={allDayResourceJoinedProps.eventSelection}
             />
           )
         }}

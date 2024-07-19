@@ -11,36 +11,41 @@ import {
 } from '@fullcalendar/core/preact'
 import { TimeGridMoreLink } from './TimeGridMoreLink.js'
 import { TimeColsSeg } from '../TimeColsSeg.js'
-import { TimeColsSlatsCoords } from '../TimeColsSlatsCoords.js'
 import { SegWebRect } from '../seg-web.js'
-import { computeFgSegPlacements, computeSegVCoords } from '../event-placement.js'
+import { computeFgSegPlacements, newComputeSegVCoords } from '../event-placement.js'
 import { TimeGridEvent } from './TimeGridEvent.js'
 
 export interface TimeGridColProps {
-  elRef?: Ref<HTMLTableCellElement>
   dateProfile: DateProfile
-  date: DateMarker
   nowDate: DateMarker
   todayRange: DateRange
+  date: DateMarker
   extraDataAttrs?: any
   extraRenderProps?: any
   extraClassNames?: string[]
   extraDateSpan?: Dictionary
+  forPrint: boolean
+
+  // content
   fgEventSegs: TimeColsSeg[]
   bgEventSegs: TimeColsSeg[]
   businessHourSegs: TimeColsSeg[]
   nowIndicatorSegs: TimeColsSeg[]
   dateSelectionSegs: TimeColsSeg[]
-  eventSelection: string
   eventDrag: EventSegUiInteractionState | null
   eventResize: EventSegUiInteractionState | null
-  slatCoords: TimeColsSlatsCoords
-  forPrint: boolean
+  eventSelection: string
+
+  // refs
+  elRef?: Ref<HTMLTableCellElement>
+
+  // dimensions
+  width: number | undefined
+  slatHeight: number | undefined
 }
 
 export class TimeGridCol extends BaseComponent<TimeGridColProps> {
-  sortEventSegs = memoize(sortEventSegs) as (typeof sortEventSegs)
-  // TODO: memoize event-placement?
+  sortEventSegs = memoize(sortEventSegs)
 
   render() {
     let { props, context } = this
@@ -71,6 +76,9 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         elAttrs={{
           role: 'gridcell',
           ...props.extraDataAttrs,
+        }}
+        elStyle={{
+          width: props.width
         }}
         date={props.date}
         dateProfile={props.dateProfile}
@@ -148,10 +156,14 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     isDateSelecting: boolean,
     forcedKey?: string,
   ) {
+    let { props } = this
+
     let { eventMaxStack, eventShortHeight, eventOrderStrict, eventMinHeight } = this.context.options
-    let { date, slatCoords, eventSelection, todayRange, nowDate } = this.props
+    let { date, eventSelection, todayRange, nowDate } = this.props
     let isMirror = isDragging || isResizing || isDateSelecting
-    let segVCoords = computeSegVCoords(segs, date, slatCoords, eventMinHeight)
+
+    // TODO: memoize this???
+    let segVCoords = newComputeSegVCoords(segs, date, props.slatHeight, eventMinHeight)
     let { segPlacements, hiddenGroups } = computeFgSegPlacements(segs, segVCoords, eventOrderStrict, eventMaxStack)
 
     return (
@@ -225,7 +237,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
   renderFillSegs(segs: TimeColsSeg[], fillType: string) {
     let { props, context } = this
-    let segVCoords = computeSegVCoords(segs, props.date, props.slatCoords, context.options.eventMinHeight) // don't assume all populated
+    let segVCoords = newComputeSegVCoords(segs, props.date, props.slatHeight, context.options.eventMinHeight) // don't assume all populated
 
     let children = segVCoords.map((vcoords, i) => {
       let seg = segs[i]
@@ -246,9 +258,9 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   }
 
   renderNowIndicator(segs: TimeColsSeg[]) {
-    let { slatCoords, date } = this.props
+    let { slatHeight, date } = this.props
 
-    if (!slatCoords) { return null }
+    if (!slatHeight) { return null }
 
     return segs.map((seg, i) => (
       <NowIndicatorContainer
@@ -256,7 +268,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         key={i} // eslint-disable-line react/no-array-index-key
         elClasses={['fc-timegrid-now-indicator-line']}
         elStyle={{
-          top: slatCoords.computeDateTop(seg.start, date),
+          top: computeDateTopFromSlatHeight(seg.start, date, slatHeight),
         }}
         isAxis={false}
         date={date}
@@ -354,4 +366,8 @@ function compileSegsFromEntries(
   allSegs: TimeColsSeg[],
 ): TimeColsSeg[] {
   return segEntries.map((segEntry) => allSegs[segEntry.index])
+}
+
+function computeDateTopFromSlatHeight(date: DateMarker, startOfDay: DateMarker, slatHeight: number): number {
+  return null as any // !!!!
 }

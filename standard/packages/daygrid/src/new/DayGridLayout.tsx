@@ -1,196 +1,122 @@
 import {
   DateComponent,
+  DateMarker,
   DateProfile,
+  DateRange,
   DayTableCell,
   EventSegUiInteractionState,
   Hit,
-  PositionCache,
-  ScrollController2,
+  NewScroller,
+  ScrollRequest,
+  ScrollResponder,
   ViewContainer
 } from '@fullcalendar/core/internal'
 import { ComponentChild, createElement, createRef } from '@fullcalendar/core/preact'
 import { TableSeg } from '../TableSeg.js'
 import { DayGridLayoutNormal } from './DayGridLayoutNormal.js'
 import { DayGridLayoutPannable } from './DayGridLayoutPannable.js'
-import { DayGridRowsProps } from './DayGridRows.js'
 
 export interface DayGridLayoutProps<HeaderCellModel, HeaderCellKey> {
   dateProfile: DateProfile
+  todayRange: DateRange
   cellRows: DayTableCell[][]
+  forPrint: boolean
+  isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
 
+  // header content
   headerTiers: HeaderCellModel[][]
   renderHeaderContent: (model: HeaderCellModel, tier: number) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
-  businessHourSegs: TableSeg[]
-  bgEventSegs: TableSeg[]
+  // body content
   fgEventSegs: TableSeg[]
+  bgEventSegs: TableSeg[]
+  businessHourSegs: TableSeg[]
   dateSelectionSegs: TableSeg[]
-  eventSelection: string
   eventDrag: EventSegUiInteractionState | null
   eventResize: EventSegUiInteractionState | null
-
-  forPrint: boolean
-  isHeightAuto: boolean
-  isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean // who uses this???
+  eventSelection: string
 }
 
-interface DayGridViewState {
-  viewInnerWidth?: number
-  leftScrollbarWidth?: number
-  rightScrollbarWidth?: number
-}
+export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends DateComponent<DayGridLayoutProps<HeaderCellModel, HeaderCellKey>> {
+  // ref
+  private scrollerRef = createRef<NewScroller>()
+  private rowHeightsRef = createRef<{ [key: string]: number }>()
 
-export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends DateComponent<DayGridLayoutProps<HeaderCellModel, HeaderCellKey>, DayGridViewState> {
-  private scrollControllerRef = createRef<ScrollController2>()
-  private rowPositionsRef = createRef<PositionCache>()
+  // internal
+  private scrollResponder: ScrollResponder
 
   render() {
     const { props, context } = this
     const { options } = context
 
-    const dayGridRowsProps: DayGridRowsProps = {
-      dateProfile: props.dateProfile,
-      cells: props.cellRows,
-      showWeekNumbers: options.weekNumbers,
-      businessHourSegs: props.businessHourSegs,
-      bgEventSegs: props.bgEventSegs,
-      fgEventSegs: props.fgEventSegs,
-      dateSelectionSegs: props.dateSelectionSegs,
-      eventSelection: props.eventSelection,
-      eventDrag: props.eventDrag,
-      eventResize: props.eventResize,
-      dayMaxEvents: options.dayMaxEvents,
-      dayMaxEventRows: options.dayMaxEventRows,
-      forPrint: props.forPrint,
-      isHitComboAllowed: props.isHitComboAllowed,
+    const commonLayoutProps = {
+      ...props,
+      scrollerRef: this.scrollerRef,
+      rowHeightsRef: this.rowHeightsRef,
     }
 
     return (
-      <ViewContainer elClasses={['fc-daygrid']} viewSpec={context.viewSpec}>
+      <ViewContainer
+        viewSpec={context.viewSpec}
+        elClasses={['fc-daygrid']}
+      >
         <div className='fc-newnew-bordered'>
           {options.dayMinWidth ? (
-            <DayGridLayoutPannable
-              scrollControllerRef={this.scrollControllerRef}
-              rowPositionsRef={this.rowPositionsRef}
-              dateProfile={props.dateProfile}
-              cellRows={props.cellRows}
-              headerTiers={props.headerTiers}
-              renderHeaderContent={props.renderHeaderContent}
-              getHeaderModelKey={props.getHeaderModelKey}
-              dayGridRowsProps={dayGridRowsProps}
-              forPrint={props.forPrint}
-              isHeightAuto={props.isHeightAuto}
-              dayMinWidth={options.dayMinWidth}
-            />
+            <DayGridLayoutPannable {...commonLayoutProps} dayMinWidth={options.dayMinWidth} />
           ) : (
-            <DayGridLayoutNormal
-              scrollControllerRef={this.scrollControllerRef}
-              rowPositionsRef={this.rowPositionsRef}
-              dateProfile={props.dateProfile}
-              cellRows={props.cellRows}
-              headerTiers={props.headerTiers}
-              renderHeaderContent={props.renderHeaderContent}
-              getHeaderModelKey={props.getHeaderModelKey}
-              dayGridRowsProps={dayGridRowsProps}
-              forPrint={props.forPrint}
-              isHeightAuto={props.isHeightAuto}
-            />
+            <DayGridLayoutNormal {...commonLayoutProps} />
           )}
         </div>
       </ViewContainer>
     )
   }
 
+  // Lifecycle
+  // -----------------------------------------------------------------------------------------------
+
+  componentDidMount() {
+    this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
+  }
+
+  componentDidUpdate(prevProps: DayGridLayoutProps<HeaderCellModel, HeaderCellKey>) {
+    this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
+  }
+
+  componentWillUnmount() {
+    this.scrollResponder.detach()
+  }
+
+  // Scrolling
+  // -----------------------------------------------------------------------------------------------
+
   /*
-  TODO: hook up
+  Called when component loaded and positioning ready, as well as when dateProfile is updated
+  Does not use scrollRequest.time
   */
-  handleScroll = () => {
-    console.log(
-      this.scrollControllerRef.current,
-      this.rowPositionsRef.current,
-    )
+  handleScrollRequest = (scrollRequest: ScrollRequest) => {
+    const scroller = this.scrollerRef.current
+    const rowHeights = this.rowHeightsRef.current
+
+    if (rowHeights) {
+      const scrollTop = computeScrollTop(
+        this.props.cellRows,
+        rowHeights,
+        this.props.dateProfile.currentDate
+      )
+      scroller.scrollTo({ y: scrollTop })
+      return true
+    }
+
+    return false
   }
 }
 
-// TODO: incorporate
-// -------------------------------------------------------------------------------------------------
-
-/*
-CLASSNAME stuff:
-
-  let { dayMaxEventRows, dayMaxEvents, expandRows } = props
-  let limitViaBalanced = dayMaxEvents === true || dayMaxEventRows === true
-
-  // if rows can't expand to fill fixed height, can't do balanced-height event limit
-  // TODO: best place to normalize these options?
-  if (limitViaBalanced && !expandRows) {
-    limitViaBalanced = false
-    dayMaxEventRows = null
-    dayMaxEvents = null
-  }
-
-  let classNames = [
-    'fc-daygrid-body', // necessary for TableRows DnD parent
-    limitViaBalanced ? 'fc-daygrid-body-balanced' : 'fc-daygrid-body-unbalanced', // will all row heights be equal?
-    expandRows ? '' : 'fc-daygrid-body-natural', // will height of one row depend on the others?
-  ]
-
-SCROLL METHODS (do this for other views too?):
-
-  componentDidMount(): void {
-    this.requestScrollReset()
-  }
-
-  componentDidUpdate(prevProps: TableProps): void {
-    if (prevProps.dateProfile !== this.props.dateProfile) {
-      this.requestScrollReset()
-    } else {
-      this.flushScrollReset()
-    }
-  }
-
-  requestScrollReset() {
-    this.needsScrollReset = true
-    this.flushScrollReset()
-  }
-
-  flushScrollReset() {
-    if (
-      this.needsScrollReset &&
-      this.props.clientWidth // sizes computed?
-    ) {
-      const subjectEl = getScrollSubjectEl(this.elRef.current, this.props.dateProfile)
-
-      if (subjectEl) {
-        const originEl = subjectEl.closest('.fc-daygrid-body')
-        const scrollEl = originEl.closest('.fc-scroller')
-        const scrollTop = subjectEl.getBoundingClientRect().top -
-          originEl.getBoundingClientRect().top
-
-        scrollEl.scrollTop = scrollTop ? (scrollTop + 1) : 0 // overcome border
-      }
-
-      this.needsScrollReset = false
-    }
-  }
-
-// for dayGridYear/custom... to scroll to today's date...
-
-function getScrollSubjectEl(containerEl: HTMLElement, dateProfile: DateProfile): HTMLElement | undefined {
-  let el: HTMLElement
-
-  if (dateProfile.currentRangeUnit.match(/year|month/)) {
-    el = containerEl.querySelector(`[data-date="${formatIsoMonthStr(dateProfile.currentDate)}-01"]`)
-    // even if view is month-based, first-of-month might be hidden...
-  }
-
-  if (!el) {
-    el = containerEl.querySelector(`[data-date="${formatDayString(dateProfile.currentDate)}"]`)
-    // could still be hidden if an interior-view hidden day
-  }
-
-  return el
+function computeScrollTop(
+  cellRows: DayTableCell[][],
+  rowHeights: { [key: string]: number },
+  currentDate: DateMarker,
+): number {
+  // TODO: iterate over rowHeights, accumulate, find the row that intersects with currentDate
+  return null as any
 }
-
-*/

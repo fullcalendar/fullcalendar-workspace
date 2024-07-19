@@ -170,24 +170,25 @@ export function renderScrollShim(arg: ChunkContentCallbackArgs) {
   )
 }
 
-// TODO: make this obsolete?
-export function getStickyHeaderDates(options: BaseOptionsRefined) {
+export function getIsHeightAuto(options: BaseOptionsRefined): boolean {
+  return options.height === 'auto' || options.viewHeight === 'auto'
+}
+
+export function getStickyHeaderDates(options: BaseOptionsRefined): boolean {
   let { stickyHeaderDates } = options
 
   if (stickyHeaderDates == null || stickyHeaderDates === 'auto') {
-    // TODO: use props.isHeightAuto?
-    stickyHeaderDates = options.height === 'auto' || options.viewHeight === 'auto'
+    stickyHeaderDates = getIsHeightAuto(options)
   }
 
   return stickyHeaderDates
 }
 
-export function getStickyFooterScrollbar(options: BaseOptionsRefined) {
+export function getStickyFooterScrollbar(options: BaseOptionsRefined): boolean {
   let { stickyFooterScrollbar } = options
 
   if (stickyFooterScrollbar == null || stickyFooterScrollbar === 'auto') {
-    // TODO: use props.isHeightAuto???
-    stickyFooterScrollbar = options.height === 'auto' || options.viewHeight === 'auto'
+    stickyFooterScrollbar = getIsHeightAuto(options)
   }
 
   return stickyFooterScrollbar

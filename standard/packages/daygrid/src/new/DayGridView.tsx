@@ -42,7 +42,11 @@ export class DayGridView extends DateComponent<ViewProps> {
         {(nowDate: DateMarker, todayRange: DateRange) => (
           <DayGridLayout
             dateProfile={props.dateProfile}
-            cellRows={dayTableModel.cells /* TODO: do some renaming */}
+            todayRange={todayRange}
+            cellRows={dayTableModel.cells}
+            forPrint={props.forPrint}
+
+            // header content
             headerTiers={headerTiers}
             renderHeaderContent={(model) => {
               if (model.type === 'date') {
@@ -75,15 +79,15 @@ export class DayGridView extends DateComponent<ViewProps> {
               }
               return model.dow
             }}
-            businessHourSegs={slicedProps.businessHourSegs}
-            bgEventSegs={slicedProps.businessHourSegs}
+
+            // body content
             fgEventSegs={slicedProps.businessHourSegs}
+            bgEventSegs={slicedProps.businessHourSegs}
+            businessHourSegs={slicedProps.businessHourSegs}
             dateSelectionSegs={slicedProps.businessHourSegs}
             eventSelection={slicedProps.eventSelection}
             eventDrag={slicedProps.eventDrag}
             eventResize={slicedProps.eventResize}
-            forPrint={props.forPrint}
-            isHeightAuto={props.isHeightAuto}
           />
         )}
       </NowTimer>

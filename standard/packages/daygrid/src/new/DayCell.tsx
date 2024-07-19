@@ -4,14 +4,10 @@ import {
   DateComponent,
   DateRange,
   buildNavLinkAttrs,
-  WeekNumberContainer,
   DayCellContainer,
   DateProfile,
-  setRef,
-  createFormatter,
   Dictionary,
   EventSegUiInteractionState,
-  getUniqueDomId,
   hasCustomDayCellContent,
   addMs,
   DateEnv,
@@ -25,69 +21,68 @@ import {
   Fragment,
 } from '@fullcalendar/core/preact'
 import { DayCellMoreLink } from './DayCellMoreLink.js'
-import { TableSegPlacement } from '../event-placement.js' // TODO: rename
+import { NewTableSegPlacement } from '../event-placement.js' // TODO: rename
 
 export interface DayCellProps {
-  elRef?: Ref<HTMLTableCellElement>
-  date: DateMarker
   dateProfile: DateProfile
-  extraRenderProps?: Dictionary
-  extraDataAttrs?: Dictionary
-  extraClassNames?: string[]
-  extraDateSpan?: Dictionary
-  innerElRef?: Ref<HTMLDivElement>
-  bgContent: ComponentChildren
-  fgContentElRef?: Ref<HTMLDivElement> // TODO: rename!!! classname confusion. is the "event" div
-  fgContent: ComponentChildren
-  moreCnt: number
-  moreMarginTop: number
-  showDayNumber: boolean
-  showWeekNumber: boolean
-  forceDayTop: boolean
   todayRange: DateRange
-  eventSelection: string
+  date: DateMarker
+  showDayNumber: boolean
+
+  // content
+  segPlacements: NewTableSegPlacement[] // for +more link popover content
+  fgLiquid: boolean
+  fg: ComponentChildren
+  bg: ComponentChildren
+  moreCnt: number
   eventDrag: EventSegUiInteractionState | null
   eventResize: EventSegUiInteractionState | null
-  singlePlacements: TableSegPlacement[]
-  width?: number
-}
+  eventSelection: string
 
-const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
+  // render hooks
+  extraRenderProps?: Dictionary
+  extraDateSpan?: Dictionary
+  extraDataAttrs?: Dictionary
+  extraClassNames?: string[]
+
+  // dimensions
+  moreTop: number
+  width?: number
+
+  // refs
+  innerElRef?: Ref<HTMLDivElement>
+  fgContainerElRef?: Ref<HTMLDivElement>
+}
 
 export class DayCell extends DateComponent<DayCellProps> {
   private rootElRef = createRef<HTMLElement>()
-  state = {
-    dayNumberId: getUniqueDomId(),
-  }
 
   render() {
-    let { context, props, state, rootElRef } = this
+    let { props, context, rootElRef } = this
     let { options, dateEnv } = context
-    let { date, dateProfile } = props
 
-    // TODO: memoize this?
+    // TODO: memoize this
     const isMonthStart = props.showDayNumber &&
-      shouldDisplayMonthStart(date, dateProfile.currentRange, dateEnv)
+      shouldDisplayMonthStart(props.date, props.dateProfile.currentRange, dateEnv)
 
     return (
       <DayCellContainer
         elTag="div"
-        elRef={this.handleRootEl}
+        elRef={rootElRef}
         elClasses={[
           'fc-daygrid-day',
           ...(props.extraClassNames || []),
         ]}
         elAttrs={{
           ...props.extraDataAttrs,
-          ...(props.showDayNumber ? { 'aria-labelledby': state.dayNumberId } : {}),
           role: 'gridcell',
         }}
         elStyle={{
           width: props.width
         }}
         defaultGenerator={renderTopInner}
-        date={date}
-        dateProfile={dateProfile}
+        date={props.date}
+        dateProfile={props.dateProfile}
         todayRange={props.todayRange}
         showDayNumber={props.showDayNumber}
         isMonthStart={isMonthStart}
@@ -98,17 +93,8 @@ export class DayCell extends DateComponent<DayCellProps> {
             ref={props.innerElRef}
             className="fc-daygrid-day-frame fc-scrollgrid-sync-inner"
           >
-            {props.showWeekNumber && (
-              <WeekNumberContainer
-                elTag="a"
-                elClasses={['fc-daygrid-week-number']}
-                elAttrs={buildNavLinkAttrs(context, date, 'week')}
-                date={date}
-                defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
-              />
-            )}
             {!renderProps.isDisabled &&
-              (props.showDayNumber || hasCustomDayCellContent(options) || props.forceDayTop) ? (
+              (props.showDayNumber || hasCustomDayCellContent(options)) ? (
                 <div className="fc-daygrid-day-top">
                   <InnerContent
                     elTag="a"
@@ -116,10 +102,7 @@ export class DayCell extends DateComponent<DayCellProps> {
                       'fc-daygrid-day-number',
                       isMonthStart && 'fc-daygrid-month-start',
                     ]}
-                    elAttrs={{
-                      ...buildNavLinkAttrs(context, date),
-                      id: state.dayNumberId,
-                    }}
+                    elAttrs={buildNavLinkAttrs(context, props.date)}
                   />
                 </div>
               ) : props.showDayNumber ? (
@@ -129,14 +112,17 @@ export class DayCell extends DateComponent<DayCellProps> {
                 </div>
               ) : undefined}
             <div
-              className="fc-daygrid-day-events"
-              ref={props.fgContentElRef}
+              className={[
+                "fc-daygrid-day-events",
+                props.fgLiquid && "fc-newnew-liquid-height"
+              ].join(' ')}
+              ref={props.fgContainerElRef}
             >
-              {props.fgContent}
-              <div className="fc-daygrid-day-bottom" style={{ marginTop: props.moreMarginTop }}>
+              {props.fg}
+              <div className="fc-daygrid-day-bottom" style={{ marginTop: props.moreTop }}>
                 <DayCellMoreLink
-                  allDayDate={date}
-                  singlePlacements={props.singlePlacements}
+                  allDayDate={props.date}
+                  segPlacements={props.segPlacements}
                   moreCnt={props.moreCnt}
                   alignmentElRef={rootElRef}
                   alignGridTop={!props.showDayNumber}
@@ -150,17 +136,12 @@ export class DayCell extends DateComponent<DayCellProps> {
               </div>
             </div>
             <div className="fc-daygrid-day-bg">
-              {props.bgContent}
+              {props.bg}
             </div>
           </div>
         )}
       </DayCellContainer>
     )
-  }
-
-  handleRootEl = (el: HTMLElement) => {
-    setRef(this.rootElRef, el)
-    setRef(this.props.elRef, el)
   }
 }
 

@@ -1,51 +1,80 @@
-import { BaseComponent, DateMarker, DayTableCell, NewScroller, RefMapKeyed, ScrollController2, getStickyHeaderDates } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, NewScroller, NewScrollerInterface, RefMapKeyed, getStickyHeaderDates, setRef } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
-import { DayGridRowProps } from '@fullcalendar/daygrid/internal'
+import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
 import { TimeGridAllDayContent } from "./TimeGridAllDayContent.js"
 import { TimeGridNowIndicator } from "./TimeGridNowIndicator.js"
 import { TimeSlatMeta } from "../time-slat-meta.js"
 import { TimeGridAxisCell } from "./TimeGridAxisCell.js"
 import { TimeGridSlatCell } from "./TimeGridSlatCell.js"
-import { TimeGridCols, TimeGridColsProps } from "./TimeGridCols.js"
+import { TimeGridCols } from "./TimeGridCols.js"
+import { TimeColsSeg } from "../TimeColsSeg.js"
 
 export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
-  scrollControllerRef?: Ref<ScrollController2> // TODO: assign this!
-  slatHeightRef?: Ref<number> // TODO: assign this!
-
-  cells: DayTableCell[]
+  dateProfile: DateProfile
   nowDate: DateMarker
+  todayRange: DateRange
+  cells: DayTableCell[]
+  slatMetas: TimeSlatMeta[],
+  forPrint: boolean
+  isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
 
+  // header content
   headerTiers: HeaderCellModel[][]
   renderHeaderLabel: (tier: number, handleEl: (el: HTMLElement) => void, height: number) => ComponentChild
   renderHeaderContent: (model: HeaderCellModel, tier: number, handleEl: (el: HTMLElement) => void) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
-  dayGridRowProps: DayGridRowProps,
-  timeGridColsProps: TimeGridColsProps,
-  slatMetas: TimeSlatMeta[],
+  // all-day content
+  fgEventSegs: TableSeg[]
+  bgEventSegs: TableSeg[]
+  businessHourSegs: TableSeg[]
+  dateSelectionSegs: TableSeg[]
+  eventDrag: EventSegUiInteractionState | null
+  eventResize: EventSegUiInteractionState | null
+  dayMaxEvents: boolean | number
+  dayMaxEventRows: boolean | number
+
+  // timed content
+  fgEventSegsByCol: TimeColsSeg[][]
+  bgEventSegsByCol: TimeColsSeg[][]
+  businessHourSegsByCol: TimeColsSeg[][]
+  nowIndicatorSegsByCol: TimeColsSeg[][]
+  dateSelectionSegsByCol: TimeColsSeg[][]
+  eventDragByCol: EventSegUiInteractionState[]
+  eventResizeByCol: EventSegUiInteractionState[]
+  onTimeCoords?: () => void
+
+  // universal content
+  eventSelection: string
+
+  // refs
+  scrollerRef?: Ref<NewScrollerInterface>
+  slatHeightRef?: Ref<number>
 }
 
 interface TimeGridLayoutState {
+  width?: number
+  leftScrollbarWidth?: number
+  rightScrollbarWidth?: number
   axisWidth?: number
   slatHeight?: number
 }
-// TODO: scrollbar-width stuff
 
 export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseComponent<TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey>, TimeGridLayoutState> {
+  // refs
   private headerLabelElRefMap = new RefMapKeyed<number, HTMLElement>()
   private allDayLabelElRef = createRef<HTMLElement>()
   private slatLabelElRefMap = new RefMapKeyed<string, HTMLElement>() // keyed by ISO-something
   private slatContentElRefMap = new RefMapKeyed<string, HTMLElement>() // keyed by ISO-something
-
-  private bodyScroll = new ScrollController2()
 
   render() {
     const { props, state, context } = this
     const { nowDate } = props
     const { axisWidth } = state
     const { options } = context
-    const stickyHeaderDates = getStickyHeaderDates(options)
+    const colActualWidth = state.width !== undefined ? state.width / props.cells.length : undefined
+    const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
 
     return (
       <Fragment>
@@ -82,12 +111,37 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   elRef={this.allDayLabelElRef}
                 />
               </div>
-              <TimeGridAllDayContent {...props.dayGridRowProps} />
+              <TimeGridAllDayContent
+                dateProfile={props.dateProfile}
+                todayRange={props.todayRange}
+                cells={props.cells}
+                showDayNumbers={false}
+                forPrint={props.forPrint}
+                isHitComboAllowed={props.isHitComboAllowed}
+
+                // content
+                fgEventSegs={props.fgEventSegs}
+                bgEventSegs={props.bgEventSegs}
+                businessHourSegs={props.businessHourSegs}
+                dateSelectionSegs={props.dateSelectionSegs}
+                eventSelection={props.eventSelection}
+                eventDrag={props.eventDrag}
+                eventResize={props.eventResize}
+                dayMaxEvents={props.dayMaxEvents}
+                dayMaxEventRows={props.dayMaxEventRows}
+
+                // dimensions
+                colWidth={undefined}
+                colActualWidth={colActualWidth}
+              />
             </div>
             <div className='fc-newnew-divider'></div>
           </Fragment>
         )}
-        <NewScroller vertical elRef={this.bodyScroll.handleEl}>
+        <NewScroller
+          ref={props.scrollerRef}
+          vertical
+        >
           <div className='fc-newnew-canvas'>
             <div>
               {props.slatMetas.map((slatMeta) => (
@@ -109,7 +163,29 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
               <div style={{ width: axisWidth }}>
                 <TimeGridNowIndicator nowDate={nowDate} />
               </div>
-              <TimeGridCols {...props.timeGridColsProps} />
+              <TimeGridCols
+                dateProfile={props.dateProfile}
+                nowDate={props.nowDate}
+                todayRange={props.todayRange}
+                cells={props.cells}
+                forPrint={props.forPrint}
+                isHitComboAllowed={props.isHitComboAllowed}
+
+                // content
+                fgEventSegsByCol={props.fgEventSegsByCol}
+                bgEventSegsByCol={props.bgEventSegsByCol}
+                businessHourSegsByCol={props.businessHourSegsByCol}
+                nowIndicatorSegsByCol={props.nowIndicatorSegsByCol}
+                dateSelectionSegsByCol={props.dateSelectionSegsByCol}
+                eventDragByCol={props.eventDragByCol}
+                eventResizeByCol={props.eventResizeByCol}
+                eventSelection={props.eventSelection}
+
+                // dimensions
+                colWidth={undefined}
+                colActualWidth={colActualWidth}
+                slatHeight={state.slatHeight}
+              />
             </div>
           </div>
         </NewScroller>
@@ -125,8 +201,12 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
     this.context.addResizeHandler(this.handleSizing)
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps: unknown, prevState: TimeGridLayoutState) {
     this.handleSizing()
+
+    if (this.state.slatHeight !== prevState.slatHeight && this.props.onTimeCoords) {
+      this.props.onTimeCoords()
+    }
   }
 
   componentWillUnmount() {
@@ -151,7 +231,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
       maxAxisElWidth = Math.max(maxAxisElWidth, axisEl.offsetWidth)
     }
 
-    this.setState({
+    this.safeSetState({
       axisWidth: maxAxisElWidth
     })
 
@@ -167,8 +247,20 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
       maxSlatHeight = Math.max(maxSlatHeight, slatEl.offsetHeight)
     }
 
-    this.setState({
-      slatHeight: maxSlatHeight + 1, // add border
-    })
+    const slatHeight = maxSlatHeight + 1 // add border
+    this.safeSetState({ slatHeight })
+    setRef(this.props.slatHeightRef, slatHeight)
+  }
+
+  handleWidth = (width: number) => {
+    this.setState({ width})
+  }
+
+  handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
+    this.setState({ leftScrollbarWidth })
+  }
+
+  handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
+    this.setState({ rightScrollbarWidth })
   }
 }

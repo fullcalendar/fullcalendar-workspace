@@ -18,7 +18,7 @@ import { RecurringType } from './structs/recurring-event.js'
 import { NamedTimeZoneImplClass } from './datelib/timezone.js'
 import { ElementDraggingClass } from './interactions/ElementDragging.js'
 import { ComponentChildren } from './preact.js'
-import { ScrollGridImpl } from './scrollgrid/ScrollGridImpl.js'
+import { ScrollGridImpl } from './scrollgrid/old/ScrollGridImpl.js'
 import { GenericRefiners, GenericListenerRefiners, Dictionary } from './options.js'
 import { CalendarData } from './reducers/data-types.js'
 

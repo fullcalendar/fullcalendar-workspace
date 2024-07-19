@@ -2979,7 +2979,7 @@ importers:
   premium/packages/resource-timegrid:
     dependencies:
       '@fullcalendar/daygrid':
-        specifier: ~6.1.14
+        specifier: ~6.1.15
         version: link:../../../standard/packages/daygrid/dist
       '@fullcalendar/premium-common':
         specifier: ~6.1.15

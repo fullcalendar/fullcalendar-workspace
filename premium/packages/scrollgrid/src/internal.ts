@@ -1,3 +1,7 @@
 
-export { ScrollGrid } from './ScrollGrid.js'
-export { ScrollJoiner } from './ScrollJoiner.js'
+// new
+export { NewScrollerSyncer } from './NewScrollerSyncer.js'
+
+// old
+export { ScrollGrid } from './old/ScrollGrid.js'
+

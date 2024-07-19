@@ -1,34 +1,47 @@
 import {
   DateComponent,
   DateProfile,
+  DateRange,
   DayTableCell,
+  EventSegUiInteractionState,
+  Hit,
   NewScroller,
-  PositionCache,
-  ScrollController2,
-  getStickyHeaderDates
+  NewScrollerInterface,
+  getStickyHeaderDates,
+  getIsHeightAuto,
 } from '@fullcalendar/core/internal'
 import { ComponentChild, Fragment, Ref, createElement } from '@fullcalendar/core/preact'
-import { DayGridRows, DayGridRowsProps } from './DayGridRows.js'
+import { DayGridRows } from './DayGridRows.js'
+import { TableSeg } from '../TableSeg.js'
 
 export interface DayGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
-  scrollControllerRef?: Ref<ScrollController2>
-  rowPositionsRef?: Ref<PositionCache>
-
   dateProfile: DateProfile
+  todayRange: DateRange
   cellRows: DayTableCell[][]
+  forPrint: boolean
+  isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
 
+  // header content
   headerTiers: HeaderCellModel[][]
   renderHeaderContent: (model: HeaderCellModel, tier: number) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
-  dayGridRowsProps: DayGridRowsProps
+  // body content
+  fgEventSegs: TableSeg[]
+  bgEventSegs: TableSeg[]
+  businessHourSegs: TableSeg[]
+  dateSelectionSegs: TableSeg[]
+  eventDrag: EventSegUiInteractionState | null
+  eventResize: EventSegUiInteractionState | null
+  eventSelection: string
 
-  forPrint: boolean
-  isHeightAuto: boolean
+  // refs
+  scrollerRef?: Ref<NewScrollerInterface>
+  rowHeightsRef?: Ref<{ [key: string]: number }>
 }
 
 interface DayGridViewState {
-  viewInnerWidth?: number
+  width?: number
   leftScrollbarWidth?: number
   rightScrollbarWidth?: number
 }
@@ -37,57 +50,82 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends DateCom
   render() {
     const { props, state, context } = this
     const { options } = context
-    const stickyHeaderDates = getStickyHeaderDates(options)
+
+    const verticalScrollbars = !props.forPrint && !getIsHeightAuto(options)
+    const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
+
+    const colCnt = props.cellRows[0].length
+    const colActualWidth = state.width != null
+      ? state.width / colCnt
+      : undefined
 
     return (
       <Fragment>
-        <div
-          className={[
-            'fc-newnew-header',
-            stickyHeaderDates && 'fc-newnew-sticky',
-          ].join(' ')}
-          style={{
-            paddingLeft: state.leftScrollbarWidth,
-            paddingRight: state.rightScrollbarWidth,
-          }}
-        >
-          {props.headerTiers.map((cells, tierNum) => (
-            <div class='fc-newnew-row'>
-              {cells.map((cell) => {
-                props.renderHeaderContent(cell, tierNum)
-              })}
-            </div>
-          ))}
-        </div>
+        {options.dayHeaders && (
+          <div
+            className={[
+              'fc-newnew-header',
+              stickyHeaderDates && 'fc-newnew-sticky',
+            ].join(' ')}
+            style={{
+              paddingLeft: state.leftScrollbarWidth,
+              paddingRight: state.rightScrollbarWidth,
+            }}
+          >
+            {props.headerTiers.map((cells, tierNum) => (
+              <div key={tierNum} class='fc-newnew-row'>
+                {cells.map((cell) => (
+                  <Fragment key={props.getHeaderModelKey(cell)}>
+                    {props.renderHeaderContent(cell, tierNum)}
+                  </Fragment>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
         <NewScroller
-          vertical={!props.isHeightAuto}
-          onWidth={this.handleViewInnerWidth}
+          vertical={verticalScrollbars}
+          onWidth={this.handleWidth}
+          ref={props.scrollerRef}
         >
           <DayGridRows
-            {...props.dayGridRowsProps}
-            viewWidth={state.viewInnerWidth}
-            rowPositionsRef={props.rowPositionsRef}
+            dateProfile={props.dateProfile}
+            todayRange={props.todayRange}
+            cellRows={props.cellRows}
+            forPrint={props.forPrint}
+            isHitComboAllowed={props.isHitComboAllowed}
+
+            // content
+            fgEventSegs={props.fgEventSegs}
+            bgEventSegs={props.bgEventSegs}
+            businessHourSegs={props.businessHourSegs}
+            dateSelectionSegs={props.dateSelectionSegs}
+            eventSelection={props.eventSelection}
+            eventDrag={props.eventDrag}
+            eventResize={props.eventResize}
+
+            // dimensions
+            colWidth={undefined}
+            colActualWidth={colActualWidth}
+            width={state.width}
+
+            // refs
+            rowHeightsRef={props.rowHeightsRef}
           />
         </NewScroller>
       </Fragment>
     )
   }
 
-  handleViewInnerWidth = (viewInnerWidth: number) => {
-    this.setState({
-      viewInnerWidth,
-    })
+  handleWidth = (width: number) => {
+    this.setState({ width })
   }
 
   handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
-    this.setState({
-      leftScrollbarWidth,
-    })
+    this.setState({ leftScrollbarWidth })
   }
 
   handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
-    this.setState({
-      rightScrollbarWidth,
-    })
+    this.setState({ rightScrollbarWidth })
   }
 }

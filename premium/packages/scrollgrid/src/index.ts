@@ -1,6 +1,6 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
-import { ScrollGrid } from './ScrollGrid.js'
+import { ScrollGrid } from './old/ScrollGrid.js'
 import './ambient.js'
 
 export default createPlugin({

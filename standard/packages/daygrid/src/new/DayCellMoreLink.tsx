@@ -10,7 +10,7 @@ import {
   getSegMeta,
 } from '@fullcalendar/core/internal'
 import { createElement, RefObject, Fragment } from '@fullcalendar/core/preact'
-import { TableSegPlacement } from '../event-placement.js'
+import { NewTableSegPlacement } from '../event-placement.js'
 import { hasListItemDisplay } from '../event-rendering.js'
 import { DayGridBlockEvent } from './DayGridBlockEvent.js'
 import { DayGridListEvent } from './DayGridListEvent.js'
@@ -18,7 +18,7 @@ import { TableSeg } from '../TableSeg.js'
 
 export interface DayCellMoreLinkProps {
   allDayDate: DateMarker
-  singlePlacements: TableSegPlacement[]
+  segPlacements: NewTableSegPlacement[]
   moreCnt: number
   alignmentElRef: RefObject<HTMLElement>
   alignGridTop: boolean // for popover
@@ -35,7 +35,7 @@ export class DayCellMoreLink extends BaseComponent<DayCellMoreLinkProps> {
 
   render() {
     let { props } = this
-    let { allSegs, invisibleSegs } = this.compileSegs(props.singlePlacements)
+    let { allSegs, invisibleSegs } = this.compileSegs(props.segPlacements)
 
     return (
       <MoreLinkContainer
@@ -96,18 +96,18 @@ export class DayCellMoreLink extends BaseComponent<DayCellMoreLinkProps> {
   }
 }
 
-function compileSegs(singlePlacements: TableSegPlacement[]): {
+function compileSegs(segPlacements: NewTableSegPlacement[]): {
   allSegs: TableSeg[]
   invisibleSegs: TableSeg[]
 } {
   let allSegs: TableSeg[] = []
   let invisibleSegs: TableSeg[] = []
 
-  for (let placement of singlePlacements) {
-    allSegs.push(placement.seg)
+  for (let segPlacement of segPlacements) {
+    allSegs.push(segPlacement.seg)
 
-    if (!placement.isVisible) {
-      invisibleSegs.push(placement.seg)
+    if (segPlacement.top == null) {
+      invisibleSegs.push(segPlacement.seg)
     }
   }
 

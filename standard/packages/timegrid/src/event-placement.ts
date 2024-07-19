@@ -16,6 +16,15 @@ export interface TimeColFgSegPlacement {
   rect: SegWebRect | null
 }
 
+export function newComputeSegVCoords(
+  segs: TimeColsSeg[],
+  colDate: DateMarker,
+  slatHeight: number,
+  eventMinHeight: number = 0, // might be null/undefined :(
+): SegSpan[] {
+  return null as any // !!!!
+}
+
 export function computeSegVCoords(
   segs: TimeColsSeg[],
   colDate: DateMarker,

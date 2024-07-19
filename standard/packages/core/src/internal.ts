@@ -219,9 +219,9 @@ export type {
   ScrollGridSectionConfig,
   ColGroupConfig,
   ScrollGridChunkConfig,
-} from './scrollgrid/ScrollGridImpl.js'
-export type { SimpleScrollGridSection } from './scrollgrid/SimpleScrollGrid.js'
-export { SimpleScrollGrid } from './scrollgrid/SimpleScrollGrid.js'
+} from './scrollgrid/old/ScrollGridImpl.js'
+export type { SimpleScrollGridSection } from './scrollgrid/old/SimpleScrollGrid.js'
+export { SimpleScrollGrid } from './scrollgrid/old/SimpleScrollGrid.js'
 export type {
   ScrollerLike, ColProps, ChunkContentCallbackArgs,
   ChunkConfigRowContent, ChunkConfigContent,
@@ -234,11 +234,17 @@ export {
   renderScrollShim,
   getStickyFooterScrollbar,
   getStickyHeaderDates,
+  getIsHeightAuto,
 } from './scrollgrid/util.js'
-export { ScrollController2 } from './scrollgrid/ScrollController2.js'
-export { ScrollJoinerInterface, ScrollJoinerClassInterface } from './scrollgrid/ScrollJoinerInterface.js'
-export type {  OverflowValue } from './scrollgrid/Scroller.js'
-export { Scroller } from './scrollgrid/Scroller.js'
+
+// new
+export { NewScrollerInterface } from './scrollgrid/NewScrollerInterface.js'
+export { NewScrollerSyncerInterface } from './scrollgrid/NewScrollerSyncerInterface.js'
+
+// old
+export type {  OverflowValue } from './scrollgrid/old/Scroller.js'
+export { Scroller } from './scrollgrid/old/Scroller.js'
+
 export { getScrollbarWidths } from './util/scrollbar-width.js'
 export { RefMap } from './util/RefMap.js'
 export { RefMapKeyed } from './util/RefMapKeyed.js'
