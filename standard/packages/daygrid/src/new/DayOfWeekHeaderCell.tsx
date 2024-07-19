@@ -14,15 +14,12 @@ import {
 import { createElement } from '@fullcalendar/core/preact'
 import { CLASS_NAME, renderInner } from './util.js'
 
-export interface DayOfWeekHeaderCellModel {
+export interface DayOfWeekHeaderCellProps {
   dow: number
   extraRenderProps?: Dictionary
   extraDataAttrs?: Dictionary
   extraClassNames?: string[]
-}
 
-export interface DayOfWeekHeaderCellProps {
-  cell: DayOfWeekHeaderCellModel
   dayHeaderFormat: DateFormatter
   colSpan?: number
   colWidth: number | undefined
@@ -35,10 +32,9 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
   render() {
     let { props } = this
     let { dateEnv, theme, viewApi, options } = this.context
-    let { cell } = props
-    let date = addDays(new Date(259200000), cell.dow) // start with Sun, 04 Jan 1970 00:00:00 GMT
+    let date = addDays(new Date(259200000), props.dow) // start with Sun, 04 Jan 1970 00:00:00 GMT
     let dateMeta: DateMeta = {
-      dow: cell.dow,
+      dow: props.dow,
       isDisabled: false,
       isFuture: false,
       isPast: false,
@@ -50,7 +46,7 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
       date,
       ...dateMeta,
       view: viewApi,
-      ...cell.extraRenderProps,
+      ...props.extraRenderProps,
       text,
     }
 
@@ -60,12 +56,12 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
         elClasses={[
           CLASS_NAME,
           ...getDayClassNames(dateMeta, theme),
-          ...(cell.extraClassNames || []),
+          ...(props.extraClassNames || []),
         ]}
         elAttrs={{
           role: 'columnheader',
           colSpan: props.colSpan,
-          ...cell.extraDataAttrs,
+          ...props.extraDataAttrs,
         }}
         elStyle={{
           width: props.colWidth !== undefined ? props.colWidth * (props.colSpan || 1) : undefined

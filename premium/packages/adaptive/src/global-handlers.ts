@@ -70,6 +70,7 @@ function handleAfterPrint() {
 }
 
 // scrollgrid widths
+// TODO: kill this stuff!!!
 
 function freezeScrollgridWidths() {
   let els = findElements(document.body, '.fc-scrollgrid')

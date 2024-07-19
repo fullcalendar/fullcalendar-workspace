@@ -1,22 +1,14 @@
 import './index.css'
 
-export { TimeColsView } from './old/TimeColsView.js'
-export { DayTimeColsView, buildTimeColsModel } from './old/DayTimeColsView.js'
 export { TimeColsSeg, splitSegsByCol, splitInteractionByCol } from './TimeColsSeg.js'
-export { DayTimeCols, buildDayRanges } from './old/DayTimeCols.js'
 export { DayTimeColsSlicer } from './DayTimeColsSlicer.js'
-export { TimeCols } from './old/TimeCols.js'
 export { TimeSlatMeta, buildSlatMetas } from './time-slat-meta.js'
 export { TimeColsSlatsCoords } from './TimeColsSlatsCoords.js'
 export { AllDaySplitter } from './AllDaySplitter.js'
 
 // new
+export { TimeGridView } from './new/TimeGridView.js'
 export { TimeGridLayout, TimeGridLayoutProps } from './new/TimeGridLayout.js'
 export { TimeGridWeekNumberCell } from './new/TimeGridWeekNumberCell.js'
-export { TimeGridAllDayLabelCell } from './new/TimeGridAllDayLabelCell.js'
-export { TimeGridAxisCell } from './new/TimeGridAxisCell.js'
-export { TimeGridSlatCell } from './new/TimeGridSlatCell.js'
-export { TimeGridCol, TimeGridColProps } from './new/TimeGridCol.js'
-export { TimeGridCols, TimeGridColsProps } from './new/TimeGridCols.js'
-export { TimeGridNowIndicator, TimeGridNowIndicatorProps } from './new/TimeGridNowIndicator.js'
-export { TimeGridAllDayContent } from './new/TimeGridAllDayContent.js'
+
+export { buildTimeColsModel, buildDayRanges } from './new/util.js'

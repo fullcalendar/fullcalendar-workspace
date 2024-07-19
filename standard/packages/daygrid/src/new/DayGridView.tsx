@@ -1,11 +1,7 @@
 import {
   DateComponent,
   DateMarker,
-  DateProfile,
-  DateProfileGenerator,
   DateRange,
-  DaySeriesModel,
-  DayTableModel,
   NowTimer,
   ViewProps,
   memoize
@@ -15,6 +11,7 @@ import { DayTableSlicer } from '../DayTableSlicer.js'
 import { DateHeaderCell } from './DateHeaderCell.js'
 import { DayGridLayout } from './DayGridLayout.js'
 import { DayOfWeekHeaderCell } from './DayOfWeekHeaderCell.js'
+import { buildDayTableModel } from './util.js'
 
 export class DayGridView extends DateComponent<ViewProps> {
   private buildDayTableModel = memoize(buildDayTableModel)
@@ -52,7 +49,8 @@ export class DayGridView extends DateComponent<ViewProps> {
               if (model.type === 'date') {
                 return (
                   <DateHeaderCell
-                    cell={model}
+                    key={model.date.toISOString()}
+                    {...model}
                     navLink={dayTableModel.colCnt > 1 /* correct? */}
                     dateProfile={props.dateProfile}
                     todayRange={todayRange}
@@ -65,7 +63,7 @@ export class DayGridView extends DateComponent<ViewProps> {
                 return (
                   <DayOfWeekHeaderCell
                     key={model.dow}
-                    cell={model}
+                    {...model}
                     dayHeaderFormat={undefined /* TODO: figure `dayHeaderFormat` out */}
                     colSpan={model.colSpan}
                     colWidth={undefined}
@@ -93,14 +91,4 @@ export class DayGridView extends DateComponent<ViewProps> {
       </NowTimer>
     )
   }
-}
-
-// TODO: move to utils
-export function buildDayTableModel(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
-  let daySeries = new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
-
-  return new DayTableModel(
-    daySeries,
-    /year|month|week/.test(dateProfile.currentRangeUnit),
-  )
 }

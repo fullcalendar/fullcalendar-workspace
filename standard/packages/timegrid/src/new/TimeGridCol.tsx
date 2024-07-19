@@ -262,6 +262,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
     if (!slatHeight) { return null }
 
+    /* TODO: break TimeGridNowIndicatorLine into its own component */
+
     return segs.map((seg, i) => (
       <NowIndicatorContainer
         // key doesn't matter. will only ever be one

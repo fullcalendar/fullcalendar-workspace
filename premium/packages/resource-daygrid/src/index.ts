@@ -2,7 +2,7 @@ import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
 import resourcePlugin from '@fullcalendar/resource'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import { ResourceDayTableView } from './old/ResourceDayTableView.js'
+import { ResourceDayGridView } from './new/ResourceDayGridView.js'
 import './ambient.js'
 
 export default createPlugin({
@@ -17,7 +17,7 @@ export default createPlugin({
   views: {
     resourceDayGrid: {
       type: 'dayGrid', // will inherit this configuration
-      component: ResourceDayTableView,
+      component: ResourceDayGridView,
       needsResourceData: true,
     },
     resourceDayGridDay: {

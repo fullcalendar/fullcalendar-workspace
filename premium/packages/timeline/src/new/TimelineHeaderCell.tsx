@@ -5,7 +5,7 @@ import {
   getDayClassNames, DateProfile, memoizeObjArg, ViewContext, memoize, ContentContainer, DateEnv,
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
-import { TimelineDateProfile, TimelineHeaderCellData } from './timeline-date-profile.js'
+import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile.js'
 
 export interface TimelineHeaderThProps {
   dateProfile: DateProfile

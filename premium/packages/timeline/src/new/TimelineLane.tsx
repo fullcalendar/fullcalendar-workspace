@@ -6,13 +6,13 @@ import {
   computeEarliestSegStart,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
-import { TimelineDateProfile } from './timeline-date-profile.js'
-import { coordsToCss, TimelineCoords } from './TimelineCoords.js'
+import { TimelineDateProfile } from '../timeline-date-profile.js'
+import { coordsToCss, TimelineCoords } from '../TimelineCoords.js'
 import { TimelineLaneBg } from './TimelineLaneBg.js'
-import { TimelineLaneSlicer, TimelineLaneSeg } from './TimelineLaneSlicer.js'
+import { TimelineLaneSlicer, TimelineLaneSeg } from '../TimelineLaneSlicer.js'
 import { TimelineEvent } from './TimelineEvent.js'
 import { TimelineLaneMoreLink } from './TimelineLaneMoreLink.js'
-import { computeFgSegPlacements, computeSegHCoords, TimelineSegPlacement } from './event-placement.js'
+import { computeFgSegPlacements, computeSegHCoords, TimelineSegPlacement } from '../event-placement.js'
 
 export interface TimelineLaneProps {
   nowDate: DateMarker

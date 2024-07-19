@@ -1,8 +1,8 @@
 import { BaseComponent, DateRange, DateMarker, DateProfile, RefMapKeyed } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
-import { TimelineDateProfile } from './timeline-date-profile.js'
+import { TimelineDateProfile } from '../timeline-date-profile.js'
 import { TimelineHeaderCell } from './TimelineHeaderCell.js'
-import { CoordRange } from './timeline-positioning.js'
+import { CoordRange } from '../timeline-positioning.js'
 
 export interface TimelineHeaderRowsProps {
   dateProfile: DateProfile

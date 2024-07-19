@@ -1,11 +1,14 @@
-import { DateMarker, NowIndicatorContainer } from "@fullcalendar/core/internal";
+import { DateMarker, NowIndicatorContainer } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
 
-export interface TimeGridNowIndicatorProps {
+/*
+TODO: accept top coord
+*/
+export interface TimeGridNowIndicatorArrowProps {
   nowDate: DateMarker
 }
 
-export function TimeGridNowIndicator(props: TimeGridNowIndicatorProps) {
+export function TimeGridNowIndicatorArrow(props: TimeGridNowIndicatorArrowProps) {
   return (
     <div>
       <NowIndicatorContainer

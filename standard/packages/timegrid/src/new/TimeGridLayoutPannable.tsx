@@ -3,7 +3,7 @@ import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullca
 import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
 import { TimeGridAllDayContent } from "./TimeGridAllDayContent.js"
-import { TimeGridNowIndicator } from "./TimeGridNowIndicator.js"
+import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"
 import { TimeSlatMeta } from "../time-slat-meta.js"
 import { TimeGridAxisCell } from "./TimeGridAxisCell.js"
 import { TimeGridSlatCell } from "./TimeGridSlatCell.js"
@@ -197,8 +197,8 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             elStyle={{ width: axisWidth }}
           >
             <div className='fc-newnew-canvas'>
-              <div>
-                <TimeGridNowIndicator nowDate={nowDate} />
+              <div>{/* TODO: make TimeGridAxisCol ? */}
+                <TimeGridNowIndicatorArrow nowDate={nowDate} />
               </div>
               {props.slatMetas.map((slatMeta) => (
                 <div

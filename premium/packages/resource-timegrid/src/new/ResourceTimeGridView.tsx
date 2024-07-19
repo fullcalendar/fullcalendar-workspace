@@ -5,6 +5,7 @@ import {
   DateProfile,
   DateProfileGenerator,
   DateRange,
+  Hit,
   NowTimer,
   mapHash,
   memoize,
@@ -155,11 +156,11 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
               todayRange={todayRange}
               cells={resourceDayTableModel.cells[0]}
               forPrint={props.forPrint}
-              // TODO: why not isHitComboAllowed?
+              isHitComboAllowed={this.isHitComboAllowed}
 
               // header content
               headerTiers={headerTiers}
-              renderHeaderLabel={(tierNum, handleEl) => (
+              renderHeaderLabel={(tierNum, handleEl) => ( // TODO: make this baked into TimeGridLayout
                 (options.weekNumbers && tierNum === headerTiers.length - 1) ? (
                   <TimeGridWeekNumberCell dateProfile={dateProfile} />
                 ) : (
@@ -171,7 +172,8 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
                 if (cell.type === 'date') {
                   return (
                     <DateHeaderCell
-                      cell={cell}
+                      key={cell.date.toISOString()}
+                      {...cell}
                       navLink={headerTiers[tierNum].length > 1}
                       dateProfile={dateProfile}
                       todayRange={todayRange}
@@ -185,7 +187,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
                   return (
                     <DayOfWeekHeaderCell
                       key={cell.dow}
-                      cell={cell}
+                      {...cell}
                       dayHeaderFormat={undefined /* TODO: dayHeaderFormat */}
                       colSpan={cell.colSpan}
                       colWidth={undefined}
@@ -236,6 +238,11 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
         }}
       </NowTimer>
     )
+  }
+
+  isHitComboAllowed = (hit0: Hit, hit1: Hit) => {
+    let allowAcrossResources = this.dayRanges.length === 1
+    return allowAcrossResources || hit0.dateSpan.resourceId === hit1.dateSpan.resourceId
   }
 }
 

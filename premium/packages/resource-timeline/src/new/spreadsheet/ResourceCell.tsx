@@ -8,7 +8,7 @@ import {
 import { createElement, Fragment, ComponentChild } from '@fullcalendar/core/preact'
 import { ResourceApi } from '@fullcalendar/resource'
 import { Resource, ColSpec } from '@fullcalendar/resource/internal'
-import { ExpanderIcon } from '../ExpanderIcon.js'
+import { ExpanderIcon } from './ExpanderIcon.js'
 
 export interface ResourceCellProps {
   colSpec: ColSpec

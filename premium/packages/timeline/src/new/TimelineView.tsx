@@ -15,14 +15,14 @@ import {
   ScrollRequest,
   ScrollResponder,
 } from '@fullcalendar/core/internal'
-import { Fragment, createElement, createRef } from '@fullcalendar/core/preact'
+import { createElement, createRef } from '@fullcalendar/core/preact'
 import { NewScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
-import { buildTimelineDateProfile } from './timeline-date-profile.js'
+import { buildTimelineDateProfile } from '../timeline-date-profile.js'
 import { TimelineHeader } from './TimelineHeader.js'
-import { TimelineCoords, coordToCss } from './TimelineCoords.js'
+import { TimelineCoords, coordToCss } from '../TimelineCoords.js'
 import { TimelineSlats } from './TimelineSlats.js'
 import { TimelineLane } from './TimelineLane.js'
-import { computeSlotWidth } from './timeline-positioning.js'
+import { computeSlotWidth } from '../timeline-positioning.js'
 
 interface TimelineViewState {
   slatCoords?: TimelineCoords // isn't this obsolete??????????????????????
@@ -77,106 +77,107 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     )
 
     return (
-      <ViewContainer
-        elClasses={[
-          'fc-newnew-flexexpand', // expand within fc-view-harness
-          'fc-newnew-flexparent',
-          'fc-timeline',
-          options.eventOverlap === false ?
-            'fc-timeline-overlap-disabled' :
-            '',
-        ]}
-        viewSpec={context.viewSpec}
-      >
-        {/* header */}
-        <NewScroller
-          ref={this.headerScrollerRef}
-          horizontal
-          hideBars
-          className={stickyHeaderDates ? 'fc-newnew-v-sticky' : ''}
-        >
-          <div style={{
-            width: canvasWidth,
-            paddingLeft: state.leftScrollbarWidth,
-            paddingRight: state.rightScrollbarWidth,
-          }}>
-            <TimelineHeader
-              dateProfile={props.dateProfile}
-              tDateProfile={tDateProfile}
-              slatCoords={state.slatCoords}
-              onMaxCushionWidth={this.handleMaxCushionWidth}
-              slotWidth={slotWidth}
-            />
-          </div>
-        </NewScroller>
+      <NowTimer unit={timerUnit}>
+        {(nowDate: DateMarker, todayRange: DateRange) => (
+          <ViewContainer
+            elClasses={[
+              'fc-newnew-flexexpand', // expand within fc-view-harness
+              'fc-newnew-flexparent',
+              'fc-timeline',
+              options.eventOverlap === false ?
+                'fc-timeline-overlap-disabled' :
+                '',
+            ]}
+            viewSpec={context.viewSpec}
+            >
 
-        {/* body */}
-        <NewScroller // how does it know to be liquid-height?
-          ref={this.bodyScrollerRef}
-          vertical
-          horizontal
-          className='fc-newnew-flexexpand'
-          onWidth={this.handleWidth}
-          onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
-          onRightScrollbarWidth={this.handleRightScrollbarWidth}
-        >
-          <div
-            ref={this.handeBodyEl}
-            className="fc-timeline-body"
-          >
-            <NowTimer unit={timerUnit}>
-              {(nowDate: DateMarker, todayRange: DateRange) => (
-                <Fragment>
-                  <TimelineSlats
-                    ref={this.slatsRef}
-                    dateProfile={props.dateProfile}
-                    tDateProfile={tDateProfile}
-                    nowDate={nowDate}
-                    todayRange={todayRange}
-                    slotWidth={slotWidth}
-                    onCoords={this.handleSlatCoords}
-                  />
-                  <TimelineLane
-                    dateProfile={props.dateProfile}
-                    tDateProfile={tDateProfile}
-                    nowDate={nowDate}
-                    todayRange={todayRange}
-                    nextDayThreshold={options.nextDayThreshold}
-                    businessHours={props.businessHours}
-                    eventStore={props.eventStore}
-                    eventUiBases={props.eventUiBases}
-                    dateSelection={props.dateSelection}
-                    eventSelection={props.eventSelection}
-                    eventDrag={props.eventDrag}
-                    eventResize={props.eventResize}
-                    timelineCoords={state.slatCoords}
-                  />
-                  {(options.nowIndicator && state.slatCoords && state.slatCoords.isDateInRange(nowDate)) && (
-                    <div className="fc-timeline-now-indicator-container">
-                      <NowIndicatorContainer
-                        elClasses={['fc-timeline-now-indicator-line']}
-                        elStyle={coordToCss(state.slatCoords.dateToCoord(nowDate), context.isRtl)}
-                        isAxis={false}
-                        date={nowDate}
-                      />
-                    </div>
-                  )}
-                </Fragment>
-              )}
-            </NowTimer>
-          </div>
-        </NewScroller>
+            {/* header */}
+            <NewScroller
+              ref={this.headerScrollerRef}
+              horizontal
+              hideBars
+              className={stickyHeaderDates ? 'fc-newnew-v-sticky' : ''}
+            >
+              <div style={{
+                width: canvasWidth,
+                paddingLeft: state.leftScrollbarWidth,
+                paddingRight: state.rightScrollbarWidth,
+              }}>
+                <TimelineHeader
+                  dateProfile={props.dateProfile}
+                  tDateProfile={tDateProfile}
+                  nowDate={nowDate}
+                  todayRange={todayRange}
+                  slatCoords={state.slatCoords}
+                  onMaxCushionWidth={this.handleMaxCushionWidth}
+                  slotWidth={slotWidth}
+                />
+              </div>
+            </NewScroller>
 
-        {/* footer scrollbar */}
-        {stickyFooterScrollbar && (
-          <NewScroller
-            ref={this.footerScrollerRef}
-            horizontal
-          >
-            <div style={{ width: canvasWidth }}/>
-          </NewScroller>
+            {/* body */}
+            <NewScroller // how does it know to be liquid-height?
+              ref={this.bodyScrollerRef}
+              vertical
+              horizontal
+              className='fc-newnew-flexexpand'
+              onWidth={this.handleWidth}
+              onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
+              onRightScrollbarWidth={this.handleRightScrollbarWidth}
+            >
+              <div
+                ref={this.handeBodyEl}
+                className="fc-timeline-body"
+              >
+                <TimelineSlats
+                  ref={this.slatsRef}
+                  dateProfile={props.dateProfile}
+                  tDateProfile={tDateProfile}
+                  nowDate={nowDate}
+                  todayRange={todayRange}
+                  slotWidth={slotWidth}
+                  onCoords={this.handleSlatCoords}
+                />
+                <TimelineLane
+                  dateProfile={props.dateProfile}
+                  tDateProfile={tDateProfile}
+                  nowDate={nowDate}
+                  todayRange={todayRange}
+                  nextDayThreshold={options.nextDayThreshold}
+                  businessHours={props.businessHours}
+                  eventStore={props.eventStore}
+                  eventUiBases={props.eventUiBases}
+                  dateSelection={props.dateSelection}
+                  eventSelection={props.eventSelection}
+                  eventDrag={props.eventDrag}
+                  eventResize={props.eventResize}
+                  timelineCoords={state.slatCoords}
+                />
+                {(options.nowIndicator && state.slatCoords && state.slatCoords.isDateInRange(nowDate)) && (
+                  <div className="fc-timeline-now-indicator-container">
+                    <NowIndicatorContainer // TODO: make separate component?
+                      elClasses={['fc-timeline-now-indicator-line']}
+                      elStyle={coordToCss(state.slatCoords.dateToCoord(nowDate), context.isRtl)}
+                      isAxis={false}
+                      date={nowDate}
+                    />
+                  </div>
+                )}
+              </div>
+            </NewScroller>
+
+            {/* footer scrollbar */}
+            {stickyFooterScrollbar && (
+              <NewScroller
+                ref={this.footerScrollerRef}
+                horizontal
+              >
+                <div style={{ width: canvasWidth }}/>
+              </NewScroller>
+            )}
+          </ViewContainer>
         )}
-      </ViewContainer>
+      </NowTimer>
     )
   }
 

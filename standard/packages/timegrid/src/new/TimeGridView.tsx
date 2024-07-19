@@ -1,13 +1,13 @@
-import { DateComponent, ViewProps, memoize, DateMarker, NowTimer, DateRange, DayTableModel, DateProfile, DateEnv } from "@fullcalendar/core/internal"
+import { DateComponent, ViewProps, memoize, DateMarker, NowTimer, DateRange } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
 import { DateHeaderCell, DayTableSlicer } from '@fullcalendar/daygrid/internal'
-import { buildTimeColsModel } from "../old/DayTimeColsView.js"
+import { buildDayRanges, buildTimeColsModel } from "./util.js"
 import { AllDaySplitter } from "../AllDaySplitter.js"
 import { DayTimeColsSlicer } from "../DayTimeColsSlicer.js"
 import { splitInteractionByCol, splitSegsByCol } from "../TimeColsSeg.js"
 import { TimeGridWeekNumberCell } from "./TimeGridWeekNumberCell.js"
 import { TimeGridLayout } from './TimeGridLayout.js'
-import { createDayHeaderFormatter } from '../../../daygrid/src/new/util.js' // ahhhh
+import { createDayHeaderFormatter } from '@fullcalendar/daygrid/internal'
 
 export class TimeGridView extends DateComponent<ViewProps> {
   createDayHeaderFormatter = memoize(createDayHeaderFormatter) // TODO: better place
@@ -87,8 +87,9 @@ export class TimeGridView extends DateComponent<ViewProps> {
               )}
               renderHeaderContent={(cell, tierNum, handleEl) => (
                 <DateHeaderCell
+                  key={cell.date.toISOString()}
+                  {...cell}
                   elRef={handleEl}
-                  cell={cell}
                   navLink={dayTableModel.cells.length > 1}
                   dateProfile={dateProfile}
                   todayRange={todayRange}
@@ -120,17 +121,4 @@ export class TimeGridView extends DateComponent<ViewProps> {
       </NowTimer>
     )
   }
-}
-
-export function buildDayRanges(dayTableModel: DayTableModel, dateProfile: DateProfile, dateEnv: DateEnv): DateRange[] {
-  let ranges: DateRange[] = []
-
-  for (let date of dayTableModel.headerDates) {
-    ranges.push({
-      start: dateEnv.add(date, dateProfile.slotMinTime),
-      end: dateEnv.add(date, dateProfile.slotMaxTime),
-    })
-  }
-
-  return ranges
 }

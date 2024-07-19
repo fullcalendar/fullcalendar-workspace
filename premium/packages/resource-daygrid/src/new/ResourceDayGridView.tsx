@@ -96,7 +96,8 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
               if (model.type === 'date') {
                 return (
                   <DateHeaderCell
-                    cell={model}
+                    key={model.date.toISOString()}
+                    {...model}
                     navLink={resourceDayTableModel.dayTableModel.colCnt > 1 /* correct? */}
                     dateProfile={props.dateProfile}
                     todayRange={todayRange}
@@ -108,7 +109,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
               } else if (model.type === 'dayOfWeek') {
                 <DayOfWeekHeaderCell
                   key={model.dow}
-                  cell={model}
+                  {...model}
                   dayHeaderFormat={undefined /* TODO: figure `dayHeaderFormat` out */}
                   colSpan={model.colSpan}
                   colWidth={undefined}

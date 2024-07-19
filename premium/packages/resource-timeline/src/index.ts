@@ -2,7 +2,7 @@ import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
 import timelinePlugin from '@fullcalendar/timeline'
 import resourcePlugin from '@fullcalendar/resource'
-import { ResourceTimelineView } from './ResourceTimelineView.js'
+import { ResourceTimelineView } from './new/ResourceTimelineView.js'
 import './ambient.js'
 import './index.css'
 

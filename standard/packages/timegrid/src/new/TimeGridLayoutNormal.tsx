@@ -3,7 +3,7 @@ import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullca
 import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
 import { TimeGridAllDayContent } from "./TimeGridAllDayContent.js"
-import { TimeGridNowIndicator } from "./TimeGridNowIndicator.js"
+import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"
 import { TimeSlatMeta } from "../time-slat-meta.js"
 import { TimeGridAxisCell } from "./TimeGridAxisCell.js"
 import { TimeGridSlatCell } from "./TimeGridSlatCell.js"
@@ -160,8 +160,8 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
               ))}
             </div>
             <div className='fc-newnew-absolute'>
-              <div style={{ width: axisWidth }}>
-                <TimeGridNowIndicator nowDate={nowDate} />
+              <div style={{ width: axisWidth }}>{/* TODO: make TimeGridAxisCol ? */}
+                <TimeGridNowIndicatorArrow nowDate={nowDate} />
               </div>
               <TimeGridCols
                 dateProfile={props.dateProfile}

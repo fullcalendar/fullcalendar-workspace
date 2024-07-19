@@ -17,14 +17,11 @@ import {
 import { Ref, createElement } from '@fullcalendar/core/preact'
 import { CLASS_NAME, renderInner } from './util.js'
 
-export interface DateHeaderCellModel {
+export interface DateHeaderCellProps {
   date: DateMarker
   extraDataAttrs?: Dictionary
   extraRenderProps?: Dictionary
-}
 
-export interface DateHeaderCellProps {
-  cell: DateHeaderCellModel,
   navLink: boolean
   dateProfile: DateProfile
   todayRange: DateRange
@@ -39,8 +36,7 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
   render() {
     let { dateEnv, options, theme, viewApi } = this.context
     let { props } = this
-    let { cell, dateProfile } = props
-    let { date, extraRenderProps, extraDataAttrs } = cell
+    let { dateProfile, date, extraRenderProps, extraDataAttrs } = props
     let dayMeta = getDateMeta(date, props.todayRange, null, dateProfile)
 
     let classNames = [CLASS_NAME].concat(

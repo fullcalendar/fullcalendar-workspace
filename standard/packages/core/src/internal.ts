@@ -180,10 +180,7 @@ export type { CalendarContext } from './CalendarContext.js'
 export type { CalendarContentProps } from './CalendarContent.js'
 export { CalendarRoot } from './CalendarRoot.js'
 
-export { DayHeader } from './common/old/DayHeader.js'
 export { computeFallbackHeaderFormat } from './common/table-utils.js'
-export { TableDateCell } from './common/old/TableDateCell.js'
-export { TableDowCell } from './common/old/TableDowCell.js'
 
 export { DaySeriesModel } from './common/DaySeriesModel.js'
 

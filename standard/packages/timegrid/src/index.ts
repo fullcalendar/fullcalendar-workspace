@@ -1,5 +1,5 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
-import { DayTimeColsView } from './old/DayTimeColsView.js'
+import { TimeGridView } from './new/TimeGridView.js'
 import { OPTION_REFINERS } from './options-refiners.js'
 import './ambient.js'
 import './index.css'
@@ -10,7 +10,7 @@ export default createPlugin({
   optionRefiners: OPTION_REFINERS,
   views: {
     timeGrid: {
-      component: DayTimeColsView,
+      component: TimeGridView,
       usesMinMaxTime: true, // indicates that slotMinTime/slotMaxTime affects rendering
       allDaySlot: true,
       slotDuration: '00:30:00',

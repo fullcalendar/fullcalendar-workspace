@@ -1,13 +1,11 @@
 import { DateMarker, ViewContext } from '@fullcalendar/core/internal'
-import { DateHeaderCellModel, DayOfWeekHeaderCellModel } from '@fullcalendar/daygrid/internal'
 import { ResourceApi } from '@fullcalendar/resource'
 import { Resource } from '@fullcalendar/resource/internal'
-import { ResourceHeaderCellModel } from '../new/ResourceHeaderCell.js'
 
 export type HeaderTierCell =
-  | ResourceHeaderCellModel & { type: 'resource', colSpan: number }
-  | DateHeaderCellModel & { type: 'date', colSpan: number }
-  | DayOfWeekHeaderCellModel & { type: 'dayOfWeek', colSpan: number }
+  | { type: 'resource', resource: Resource, date?: DateMarker, colSpan: number }
+  | { type: 'date', date: DateMarker, colSpan: number }
+  | { type: 'dayOfWeek', dow: number, colSpan: number }
 
 export function buildHeaderTiers(
   resources: Resource[],
@@ -36,7 +34,7 @@ export function buildHeaderTiers(
       [].concat(
         ...dates.map((date) => (
           resources.map((resource) => (
-            { type: 'resource', colSpan: dates.length, resource, date: datesRepDistinctDays ? date : undefined }
+            { type: 'resource', resource, date: datesRepDistinctDays ? date : undefined, colSpan: dates.length }
           ))
         ))
       )

@@ -4,7 +4,7 @@ import {
   getDayClassNames, DateProfile, ContentContainer,
 } from '@fullcalendar/core/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
-import { TimelineDateProfile } from './timeline-date-profile.js'
+import { TimelineDateProfile } from '../timeline-date-profile.js'
 
 export interface TimelineSlatCellProps {
   elRef?: Ref<HTMLTableCellElement>

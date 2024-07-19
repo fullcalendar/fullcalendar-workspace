@@ -2,7 +2,7 @@ import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
 import resourcePlugin from '@fullcalendar/resource'
 import timeGridPlugin from '@fullcalendar/timegrid'
-import { ResourceDayTimeColsView } from './old/ResourceDayTimeColsView.js'
+import { ResourceTimeGridView } from './new/ResourceTimeGridView.js'
 import './ambient.js'
 
 export default createPlugin({
@@ -17,7 +17,7 @@ export default createPlugin({
   views: {
     resourceTimeGrid: {
       type: 'timeGrid', // will inherit this configuration
-      component: ResourceDayTimeColsView,
+      component: ResourceTimeGridView,
       needsResourceData: true,
     },
     resourceTimeGridDay: {

@@ -13,6 +13,8 @@ import {
   isPropsEqual,
   DateProfileGenerator,
   formatIsoMonthStr,
+  DateRange,
+  NowTimer,
 } from '@fullcalendar/core/internal'
 import { buildDayTableRenderRange } from '@fullcalendar/daygrid/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
@@ -72,30 +74,35 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
     ]
 
     return (
-      <ViewContainer
-        elRef={this.scrollElRef}
-        elClasses={rootClassNames}
-        viewSpec={context.viewSpec}
-      >
-        {monthDateProfiles.map((monthDateProfile, i) => {
-          const monthStr = formatIsoMonthStr(monthDateProfile.currentRange.start)
+      <NowTimer unit="day">
+        {(nowDate: DateMarker, todayRange: DateRange) => (
+          <ViewContainer
+            elRef={this.scrollElRef}
+            elClasses={rootClassNames}
+            viewSpec={context.viewSpec}
+          >
+            {monthDateProfiles.map((monthDateProfile, i) => {
+              const monthStr = formatIsoMonthStr(monthDateProfile.currentRange.start)
 
-          return (
-            <SingleMonth
-              {...props}
-              key={monthStr}
-              isoDateStr={monthStr}
-              elRef={i === 0 ? this.firstMonthElRef : undefined}
-              titleFormat={monthTitleFormat}
-              dateProfile={monthDateProfile}
-              width={monthWidthPct}
-              tableWidth={monthTableWidth}
-              clientWidth={clientWidth}
-              clientHeight={clientHeight}
-            />
-          )
-        })}
-      </ViewContainer>
+              return (
+                <SingleMonth
+                  {...props}
+                  key={monthStr}
+                  todayRange={todayRange}
+                  isoDateStr={monthStr}
+                  elRef={i === 0 ? this.firstMonthElRef : undefined}
+                  titleFormat={monthTitleFormat}
+                  dateProfile={monthDateProfile}
+                  width={monthWidthPct}
+                  tableWidth={monthTableWidth}
+                  clientWidth={clientWidth}
+                  clientHeight={clientHeight}
+                />
+              )
+            })}
+          </ViewContainer>
+        )}
+      </NowTimer>
     )
   }
 
@@ -148,6 +155,10 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
       }
     }
   }
+
+  /*
+  TODO: fix this messy scrolling stuff!!!!!!!!
+  */
 
   requestScrollReset() {
     this.needsScrollReset = true

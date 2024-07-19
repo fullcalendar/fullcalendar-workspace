@@ -4,9 +4,9 @@ import {
   DateRange,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
-import { TimelineCoords } from './TimelineCoords.js'
+import { TimelineCoords } from '../TimelineCoords.js'
 import { TimelineSlatCell } from './TimelineSlatCell.js'
-import { TimelineDateProfile } from './timeline-date-profile.js'
+import { TimelineDateProfile } from '../timeline-date-profile.js'
 
 export interface TimelineSlatsProps {
   dateProfile: DateProfile

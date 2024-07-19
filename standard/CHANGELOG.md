@@ -1,4 +1,6 @@
 
+Got rid of some things in exposed-classes.ts
+
 ## 6.1.15 (2024-07-12)
 
 ### General

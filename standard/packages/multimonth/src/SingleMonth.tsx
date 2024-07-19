@@ -1,9 +1,11 @@
 import { CssDimValue } from '@fullcalendar/core'
-import { DateComponent, DayHeader, ViewProps, memoize, DateFormatter, getUniqueDomId } from '@fullcalendar/core/internal'
-import { TableRows, buildDayTableModel, DayTableSlicer } from '@fullcalendar/daygrid/internal'
+import { DateComponent, ViewProps, memoize, DateFormatter, DateRange, setRef } from '@fullcalendar/core/internal'
+import { buildDayTableModel, DayTableSlicer, DayGridRows, DayOfWeekHeaderCell } from '@fullcalendar/daygrid/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 
 export interface SingleMonthProps extends ViewProps {
+  todayRange: DateRange
+
   elRef?: Ref<HTMLDivElement>
   isoDateStr?: string
   titleFormat: DateFormatter
@@ -11,19 +13,18 @@ export interface SingleMonthProps extends ViewProps {
   tableWidth: number | null // solely for computation purposes
   clientWidth: number | null
   clientHeight: number | null
+
+  // TODO: rename `cells` to cellRows
 }
 
 interface SingleMonthState {
-  labelId: string
+  width?: number
 }
 
 export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthState> {
   private buildDayTableModel = memoize(buildDayTableModel)
   private slicer = new DayTableSlicer()
-
-  state: SingleMonthState = {
-    labelId: getUniqueDomId(),
-  }
+  private rootEl: HTMLElement
 
   render() {
     const { props, state, context } = this
@@ -37,41 +38,46 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     const rowCnt = dayTableModel.cells.length
     const rowHeight = tableHeight != null ? tableHeight / rowCnt : null
 
+    // TODO: more DRY with DayGridLayout*
+    const colCnt = dayTableModel.cells[0].length
+    const colActualWidth = state.width != null
+      ? state.width / colCnt
+      : undefined
+
     return (
       <div
-        ref={props.elRef}
+        ref={this.handleRootEl}
         data-date={props.isoDateStr}
         className="fc-multimonth-month"
         style={{ width: props.width }}
         role="grid"
-        aria-labelledby={state.labelId}
       >
         <div
           className="fc-multimonth-header"
           style={{ marginBottom: rowHeight }} // for stickyness
           role="presentation"
         >
-          <div className="fc-multimonth-title" id={state.labelId}>
+          <div className="fc-multimonth-title">
             {context.dateEnv.format(
               props.dateProfile.currentRange.start,
               props.titleFormat,
             )}
           </div>
-          <table
+          <div
             className={[
               'fc-multimonth-header-table',
               context.theme.getClass('table'),
             ].join(' ')}
-            role="presentation"
           >
-            <thead role="rowgroup">
-              <DayHeader
-                dateProfile={props.dateProfile}
-                dates={dayTableModel.headerDates}
-                datesRepDistinctDays={false}
+            {dayTableModel.headerDates.map((headerDate) => (
+              <DayOfWeekHeaderCell
+                key={headerDate.getUTCDay()}
+                dow={headerDate.getUTCDay()}
+                dayHeaderFormat={undefined /* TODO: figure `dayHeaderFormat` out */}
+                colWidth={undefined}
               />
-            </thead>
-          </table>
+            ))}
+          </div>
         </div>
         <div
           className={[
@@ -84,7 +90,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
           ].join(' ')}
           style={{ marginTop: -rowHeight }} // for stickyness
         >
-          <table
+          <div
             className={[
               'fc-multimonth-daygrid-table',
               context.theme.getClass('table'),
@@ -92,23 +98,41 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             style={{ height: forPrint ? '' : tableHeight }}
             role="presentation"
           >
-            <tbody role="rowgroup">
-              <TableRows
-                {...slicedProps}
-                dateProfile={dateProfile}
-                cells={dayTableModel.cells}
-                eventSelection={props.eventSelection}
-                dayMaxEvents={!forPrint}
-                dayMaxEventRows={!forPrint}
-                showWeekNumbers={options.weekNumbers}
-                clientWidth={props.clientWidth}
-                clientHeight={props.clientHeight}
-                forPrint={forPrint}
-              />
-            </tbody>
-          </table>
+            <DayGridRows
+              dateProfile={props.dateProfile}
+              todayRange={props.todayRange}
+              cellRows={dayTableModel.cells}
+              forPrint={props.forPrint}
+
+              // content
+              fgEventSegs={slicedProps.fgEventSegs}
+              bgEventSegs={slicedProps.bgEventSegs}
+              businessHourSegs={slicedProps.businessHourSegs}
+              dateSelectionSegs={slicedProps.dateSelectionSegs}
+              eventDrag={slicedProps.eventDrag}
+              eventResize={slicedProps.eventResize}
+              eventSelection={slicedProps.eventSelection}
+
+              colWidth={undefined}
+              colActualWidth={colActualWidth}
+            />
+          </div>
         </div>
       </div>
     )
+  }
+
+  handleRootEl = (rootEl: HTMLElement | null) => {
+    this.rootEl = rootEl
+    setRef(this.props.elRef, rootEl)
+  }
+
+  handleSizing = () => {
+    this.safeSetState({
+      width: this.rootEl.getBoundingClientRect().width
+      /*
+      TODO: never use .offsetHeight/offsetWidth anywhere else because we don't want integer-rounded anymore!
+      */
+    })
   }
 }
