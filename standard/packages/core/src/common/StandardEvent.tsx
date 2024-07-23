@@ -3,7 +3,7 @@ import { BaseComponent } from '../vdom-util.js'
 import { buildSegTimeText, EventContentArg, getSegAnchorAttrs } from '../component-util/event-rendering.js'
 import { DateFormatter } from '../datelib/DateFormatter.js'
 import { EventContainer } from './EventContainer.js'
-import { Seg } from '../component-old/DateComponent.js'
+import { Seg } from '../component/DateComponent.js'
 import { ElRef } from '../content-inject/ContentInjector.js'
 
 export interface StandardEventProps {

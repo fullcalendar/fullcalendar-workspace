@@ -1,4 +1,4 @@
-import { DateComponent } from '../component-old/DateComponent.js'
+import { DateComponent } from '../component/DateComponent.js'
 import { DateRange } from '../datelib/date-range.js'
 import { DateMarker } from '../datelib/marker.js'
 import { DateProfile } from '../DateProfileGenerator.js'

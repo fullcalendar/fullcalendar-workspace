@@ -1,6 +1,6 @@
 import { ComponentChild, createElement } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
-import { Seg } from '../component-old/DateComponent.js'
+import { Seg } from '../component/DateComponent.js'
 import { EventImpl } from '../api/EventImpl.js'
 import {
   computeSegDraggable,

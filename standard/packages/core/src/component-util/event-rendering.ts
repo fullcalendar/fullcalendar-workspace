@@ -5,7 +5,7 @@ import { DateRange, invertRanges, intersectRanges, rangeContainsMarker } from '.
 import { Duration } from '../datelib/duration.js'
 import { compareByFieldSpecs, OrderSpec } from '../util/misc.js'
 import { computeVisibleDayRange } from '../util/date.js'
-import { Seg } from '../component-old/DateComponent.js'
+import { Seg } from '../component/DateComponent.js'
 import { EventImpl } from '../api/EventImpl.js'
 import { EventUi, EventUiHash, combineEventUis } from './event-ui.js'
 import { mapHash } from '../util/object.js'

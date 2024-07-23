@@ -8,8 +8,7 @@ import { memoize } from '../util/memoize.js'
 import { DateMarker } from '../datelib/marker.js'
 import { CalendarData } from '../reducers/data-types.js'
 import { ViewPropsTransformerClass } from '../plugin-system-struct.js'
-import { createElement, createRef, Fragment, VNode } from '../preact.js'
-import { ViewHarness } from './ViewHarness.js'
+import { createElement, Fragment, VNode } from '../preact.js'
 import {
   Interaction,
   InteractionSettingsInput,
@@ -25,6 +24,8 @@ import { CalendarInteraction } from '../calendar-utils.js'
 import { DelayedRunner } from '../util/DelayedRunner.js'
 import { PureComponent } from '../vdom-util.js'
 import { getIsHeightAuto } from '../internal.js'
+import { ViewHarness } from './ViewHarness.js'
+import { CssDimValue } from '../index.global.js'
 
 export interface CalendarContentProps extends CalendarData {
   forPrint: boolean
@@ -34,8 +35,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
   private buildViewContext = memoize(buildViewContext)
   private buildViewPropTransformers = memoize(buildViewPropTransformers)
   private buildToolbarProps = memoize(buildToolbarProps)
-  private headerRef = createRef<Toolbar>()
-  private footerRef = createRef<Toolbar>()
   private interactionsStore: { [componentUid: string]: Interaction[] } = {}
   private calendarInteractions: CalendarInteraction[]
 
@@ -55,14 +54,13 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
       props.viewTitle,
     )
 
-    let viewVGrow = false
-    let viewHeight: string | number = ''
+    let viewHeight: CssDimValue | undefined
     let viewAspectRatio: number | undefined
 
     if (props.forPrint || getIsHeightAuto(options)) {
-      viewHeight = ''
+      ; // don't set any heights
     } else if (options.height != null) {
-      viewVGrow = true
+      ; // nothing to do. already set via Calendar::setHeight
     } else if (options.contentHeight != null) {
       viewHeight = options.contentHeight
     } else {
@@ -88,14 +86,12 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
       <ViewContextType.Provider value={viewContext}>
         {toolbarConfig.header && (
           <Toolbar
-            ref={this.headerRef}
             extraClassName="fc-header-toolbar"
             model={toolbarConfig.header}
             {...toolbarProps}
           />
         )}
         <ViewHarness
-          liquid={viewVGrow}
           height={viewHeight}
           aspectRatio={viewAspectRatio}
         >
@@ -104,7 +100,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
         </ViewHarness>
         {toolbarConfig.footer && (
           <Toolbar
-            ref={this.footerRef}
             extraClassName="fc-footer-toolbar"
             model={toolbarConfig.footer}
             {...toolbarProps}

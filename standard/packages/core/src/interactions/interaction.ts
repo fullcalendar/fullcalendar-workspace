@@ -1,4 +1,4 @@
-import { DateComponent } from '../component-old/DateComponent.js'
+import { DateComponent } from '../component/DateComponent.js'
 import { Hit } from './hit.js'
 
 export abstract class Interaction {

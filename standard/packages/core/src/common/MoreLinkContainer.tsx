@@ -1,5 +1,5 @@
 import { EventImpl } from '../api/EventImpl.js'
-import { Seg } from '../component-old/DateComponent.js'
+import { Seg } from '../component/DateComponent.js'
 import { DateRange } from '../datelib/date-range.js'
 import { addDays, DateMarker } from '../datelib/marker.js'
 import { DateProfile } from '../DateProfileGenerator.js'

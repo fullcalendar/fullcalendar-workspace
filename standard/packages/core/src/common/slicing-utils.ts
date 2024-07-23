@@ -3,7 +3,7 @@ import { EventStore } from '../structs/event-store.js'
 import { EventUiHash } from '../component-util/event-ui.js'
 import { sliceEventStore, EventRenderRange } from '../component-util/event-rendering.js'
 import { DateProfile } from '../DateProfileGenerator.js'
-import { Seg, EventSegUiInteractionState } from '../component-old/DateComponent.js' // TODO: rename EventSegUiInteractionState, move here
+import { Seg, EventSegUiInteractionState } from '../component/DateComponent.js' // TODO: rename EventSegUiInteractionState, move here
 import { DateSpan, fabricateEventRange } from '../structs/date-span.js'
 import { EventInteractionState } from '../interactions/event-interaction-state.js'
 import { Duration } from '../datelib/duration.js'

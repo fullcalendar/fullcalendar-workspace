@@ -64,8 +64,6 @@ export {
 } from './util/dom-manip.js'
 export { parseClassNames } from './util/html.js'
 
-export { getCanVGrowWithinCell } from './util/table-styling.js'
-
 export type { EventStore } from './structs/event-store.js'
 export {
   createEmptyEventStore,
@@ -102,8 +100,8 @@ export { ScrollController, ElementScrollController, WindowScrollController } fro
 export { Theme } from './theme/Theme.js'
 export type { ViewContext } from './ViewContext.js'
 export { ViewContextType } from './ViewContext.js'
-export type { Seg, EventSegUiInteractionState } from './component-old/DateComponent.js'
-export { DateComponent } from './component-old/DateComponent.js'
+export type { Seg, EventSegUiInteractionState } from './component/DateComponent.js'
+export { DateComponent } from './component/DateComponent.js'
 export type { CalendarData } from './reducers/data-types.js'
 export type { ViewProps } from './component-util/View.js'
 
@@ -177,8 +175,8 @@ export { parseDragMeta } from './structs/drag-meta.js'
 export type { ViewPropsTransformer, PluginDef } from './plugin-system-struct.js'
 export type { Action } from './reducers/Action.js'
 export type { CalendarContext } from './CalendarContext.js'
-export type { CalendarContentProps } from './component-old/CalendarContent.js'
-export { CalendarRoot } from './component-old/CalendarRoot.js'
+export type { CalendarContentProps } from './component/CalendarContent.js'
+export { CalendarRoot } from './component/CalendarRoot.js'
 
 export { computeFallbackHeaderFormat } from './common/table-utils.js'
 
