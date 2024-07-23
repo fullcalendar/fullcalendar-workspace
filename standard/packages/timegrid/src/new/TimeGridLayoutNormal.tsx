@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, NewScroller, NewScrollerInterface, RefMapKeyed, getStickyHeaderDates, setRef } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMapKeyed, getStickyHeaderDates, setRef } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
@@ -49,7 +49,7 @@ export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
   eventSelection: string
 
   // refs
-  scrollerRef?: Ref<NewScrollerInterface>
+  scrollerRef?: Ref<ScrollerInterface>
   slatHeightRef?: Ref<number>
 }
 
@@ -133,7 +133,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
             <div className='fc-newnew-divider'></div>
           </Fragment>
         )}
-        <NewScroller
+        <Scroller
           ref={props.scrollerRef}
           vertical
         >
@@ -181,7 +181,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
               />
             </div>
           </div>
-        </NewScroller>
+        </Scroller>
       </Fragment>
     )
   }

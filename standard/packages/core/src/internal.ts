@@ -196,7 +196,7 @@ export {
 export type { DayTableCell } from './common/DayTableModel.js'
 export { DayTableModel } from './common/DayTableModel.js'
 
-export { NewScroller } from './scrollgrid/NewScroller.js'
+export { Scroller } from './scrollgrid/Scroller.js'
 
 export type { SlicedProps } from './common/slicing-utils.js'
 export { Slicer } from './common/slicing-utils.js'
@@ -211,36 +211,15 @@ export { requestJson } from './util/requestJson.js'
 export { BaseComponent, setRef } from './vdom-util.js'
 export { DelayedRunner } from './util/DelayedRunner.js'
 
-export type {
-  ScrollGridProps,
-  ScrollGridSectionConfig,
-  ColGroupConfig,
-  ScrollGridChunkConfig,
-} from './scrollgrid/old/ScrollGridImpl.js'
-export type { SimpleScrollGridSection } from './scrollgrid/old/SimpleScrollGrid.js'
-export { SimpleScrollGrid } from './scrollgrid/old/SimpleScrollGrid.js'
-export type {
-  ScrollerLike, ColProps, ChunkContentCallbackArgs,
-  ChunkConfigRowContent, ChunkConfigContent,
-} from './scrollgrid/util.js'
 export {
-  hasShrinkWidth,
-  getScrollGridClassNames, getSectionClassNames, getSectionHasLiquidHeight, getAllowYScrolling, renderChunkContent, computeShrinkWidth,
-  sanitizeShrinkWidth,
-  isColPropsEqual,
-  renderScrollShim,
   getStickyFooterScrollbar,
   getStickyHeaderDates,
   getIsHeightAuto,
 } from './scrollgrid/util.js'
 
 // new
-export { NewScrollerInterface } from './scrollgrid/NewScrollerInterface.js'
-export { NewScrollerSyncerInterface } from './scrollgrid/NewScrollerSyncerInterface.js'
-
-// old
-export type {  OverflowValue } from './scrollgrid/old/Scroller.js'
-export { Scroller } from './scrollgrid/old/Scroller.js'
+export { ScrollerInterface } from './scrollgrid/ScrollerInterface.js'
+export { ScrollerSyncerInterface } from './scrollgrid/ScrollerSyncerInterface.js'
 
 export { getScrollbarWidths } from './util/scrollbar-width.js'
 export { RefMap } from './util/RefMap.js'

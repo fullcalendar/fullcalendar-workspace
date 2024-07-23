@@ -15,7 +15,6 @@ export interface ViewProps {
   eventSelection: string
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
-  isHeightAuto: boolean
   forPrint: boolean
 }
 

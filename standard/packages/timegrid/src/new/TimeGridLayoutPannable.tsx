@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, NewScroller, NewScrollerInterface, NewScrollerSyncerInterface, RefMapKeyed, getStickyFooterScrollbar, getStickyHeaderDates, setRef } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMapKeyed, getStickyFooterScrollbar, getStickyHeaderDates, setRef } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
@@ -49,8 +49,8 @@ export interface TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
   eventSelection: string
 
   // refs
-  dayScrollerRef?: Ref<NewScrollerInterface>
-  timeScrollerRef?: Ref<NewScrollerInterface>
+  dayScrollerRef?: Ref<ScrollerInterface>
+  timeScrollerRef?: Ref<ScrollerInterface>
   slatHeightRef?: Ref<number>
 
   // dimensions
@@ -75,14 +75,14 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
   private slatLabelElRefMap = new RefMapKeyed<string, HTMLElement>() // keyed by ISO-something
   private slatContentElRefMap = new RefMapKeyed<string, HTMLElement>() // keyed by ISO-something
 
-  private axisScrollerRef = createRef<NewScroller>()
-  private mainScrollerRef = createRef<NewScroller>()
-  private headScrollerRef = createRef<NewScroller>()
-  private footScrollerRef = createRef<NewScroller>()
-  private allDayScrollerRef = createRef<NewScroller>()
+  private axisScrollerRef = createRef<Scroller>()
+  private mainScrollerRef = createRef<Scroller>()
+  private headScrollerRef = createRef<Scroller>()
+  private footScrollerRef = createRef<Scroller>()
+  private allDayScrollerRef = createRef<Scroller>()
 
-  private hScroller: NewScrollerSyncerInterface
-  private vScroller: NewScrollerSyncerInterface
+  private hScroller: ScrollerSyncerInterface
+  private vScroller: ScrollerSyncerInterface
 
   render() {
     const { props, state, context } = this
@@ -119,7 +119,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               ))}
             </div>
             {/* RIGHT */}
-            <NewScroller
+            <Scroller
               ref={this.headScrollerRef}
               horizontal
             >
@@ -138,7 +138,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   </div>
                 ))}
               </div>
-            </NewScroller>
+            </Scroller>
           </div>
         )}
         {options.allDaySlot && (
@@ -151,7 +151,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 height={state.allDayHeight}
               />
               {/* RIGHT */}
-              <NewScroller
+              <Scroller
                 ref={this.allDayScrollerRef}
                 horizontal
               >
@@ -183,14 +183,14 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                     cellInnerElRefMap={this.allDayContentElRefMap}
                   />
                 </div>
-              </NewScroller>
+              </Scroller>
             </div>
             <div className='fc-newnew-divider'></div>
           </Fragment>
         )}
         <div>
           {/* LEFT */}
-          <NewScroller
+          <Scroller
             ref={this.axisScrollerRef}
             vertical
             elStyle={{ width: axisWidth }}
@@ -215,9 +215,9 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 </div>
               ))}
             </div>
-          </NewScroller>
+          </Scroller>
           {/* RIGHT */}
-          <NewScroller
+          <Scroller
             ref={this.mainScrollerRef}
             vertical
             horizontal
@@ -268,19 +268,19 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 />
               </div>
             </div>
-          </NewScroller>
+          </Scroller>
         </div>
         {stickyFooterScrollbar && (
           <div>
             {/* LEFT */}
             <div style={{ width: axisWidth }}></div>
             {/* RIGHT */}
-            <NewScroller ref={this.footScrollerRef}>
+            <Scroller ref={this.footScrollerRef}>
               <div
                 className='fc-newnew-canvas'
                 style={{ width: canvasWidth }}
               />
-            </NewScroller>
+            </Scroller>
           </div>
         )}
       </Fragment>
@@ -417,8 +417,8 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
   // -----------------------------------------------------------------------------------------------
 
   initScrollers() {
-    // this.hScroller = new NewScrollerSyncer(true) // TODO: have plugin system provide this!
-    // this.vScroller = new NewScrollerSyncer() // TODO: have plugin system provide this!
+    // this.hScroller = new ScrollerSyncer(true) // TODO: have plugin system provide this!
+    // this.vScroller = new ScrollerSyncer() // TODO: have plugin system provide this!
 
     setRef(this.props.dayScrollerRef, this.hScroller)
     setRef(this.props.timeScrollerRef, this.vScroller)

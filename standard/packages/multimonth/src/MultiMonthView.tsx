@@ -15,6 +15,7 @@ import {
   formatIsoMonthStr,
   DateRange,
   NowTimer,
+  getIsHeightAuto,
 } from '@fullcalendar/core/internal'
 import { buildDayTableRenderRange } from '@fullcalendar/daygrid/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
@@ -68,7 +69,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
       (monthTableWidth != null && monthTableWidth < 400) ?
         'fc-multimonth-compact' :
         '',
-      props.isHeightAuto ?
+      getIsHeightAuto(options) ?
         '' :
         'fc-scroller', // for AutoScroller
     ]

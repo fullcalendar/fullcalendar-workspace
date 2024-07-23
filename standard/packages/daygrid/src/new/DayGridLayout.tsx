@@ -6,7 +6,7 @@ import {
   DayTableCell,
   EventSegUiInteractionState,
   Hit,
-  NewScroller,
+  Scroller,
   ScrollRequest,
   ScrollResponder,
   ViewContainer
@@ -40,7 +40,7 @@ export interface DayGridLayoutProps<HeaderCellModel, HeaderCellKey> {
 
 export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends DateComponent<DayGridLayoutProps<HeaderCellModel, HeaderCellKey>> {
   // ref
-  private scrollerRef = createRef<NewScroller>()
+  private scrollerRef = createRef<Scroller>()
   private rowHeightsRef = createRef<{ [key: string]: number }>()
 
   // internal

@@ -11,12 +11,12 @@ import {
   NowIndicatorContainer,
   getStickyHeaderDates,
   getStickyFooterScrollbar,
-  NewScroller,
+  Scroller,
   ScrollRequest,
   ScrollResponder,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
-import { NewScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
+import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
 import { buildTimelineDateProfile } from '../timeline-date-profile.js'
 import { TimelineHeader } from './TimelineHeader.js'
 import { TimelineCoords, coordToCss } from '../TimelineCoords.js'
@@ -39,13 +39,13 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
   // refs
   private slatsRef = createRef<TimelineSlats>()
-  private headerScrollerRef = createRef<NewScroller>()
-  private bodyScrollerRef = createRef<NewScroller>()
-  private footerScrollerRef = createRef<NewScroller>()
+  private headerScrollerRef = createRef<Scroller>()
+  private bodyScrollerRef = createRef<Scroller>()
+  private footerScrollerRef = createRef<Scroller>()
 
   // internal
   private scrollResponder: ScrollResponder
-  private syncedScroller: NewScrollerSyncer
+  private syncedScroller: ScrollerSyncer
 
   render() {
     let { props, state, context } = this
@@ -92,7 +92,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
             >
 
             {/* header */}
-            <NewScroller
+            <Scroller
               ref={this.headerScrollerRef}
               horizontal
               hideBars
@@ -113,10 +113,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   slotWidth={slotWidth}
                 />
               </div>
-            </NewScroller>
+            </Scroller>
 
             {/* body */}
-            <NewScroller // how does it know to be liquid-height?
+            <Scroller // how does it know to be liquid-height?
               ref={this.bodyScrollerRef}
               vertical
               horizontal
@@ -164,16 +164,16 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   </div>
                 )}
               </div>
-            </NewScroller>
+            </Scroller>
 
             {/* footer scrollbar */}
             {stickyFooterScrollbar && (
-              <NewScroller
+              <Scroller
                 ref={this.footerScrollerRef}
                 horizontal
               >
                 <div style={{ width: canvasWidth }}/>
-              </NewScroller>
+              </Scroller>
             )}
           </ViewContainer>
         )}

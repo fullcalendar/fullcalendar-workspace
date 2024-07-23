@@ -1,5 +1,5 @@
 import { ViewOptions } from '@fullcalendar/core'
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, NewScroller, ScrollRequest, ScrollResponder, ViewContainer, memoize } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollRequest, ScrollResponder, ViewContainer, memoize } from "@fullcalendar/core/internal"
 import { createElement, ComponentChild, createRef } from '@fullcalendar/core/preact'
 import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { buildSlatMetas } from "../time-slat-meta.js"
@@ -47,8 +47,8 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
   private buildSlatMetas = memoize(buildSlatMetas)
 
   // refs
-  private dayScrollerRef = createRef<NewScroller>()
-  private timeScrollerRef = createRef<NewScroller>()
+  private dayScrollerRef = createRef<Scroller>()
+  private timeScrollerRef = createRef<Scroller>()
   private slatHeightRef = createRef<number>()
 
   // internal

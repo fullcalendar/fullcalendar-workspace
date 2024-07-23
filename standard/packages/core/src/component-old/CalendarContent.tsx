@@ -24,10 +24,10 @@ import { getNow } from '../reducers/current-date.js'
 import { CalendarInteraction } from '../calendar-utils.js'
 import { DelayedRunner } from '../util/DelayedRunner.js'
 import { PureComponent } from '../vdom-util.js'
+import { getIsHeightAuto } from '../internal.js'
 
 export interface CalendarContentProps extends CalendarData {
   forPrint: boolean
-  isHeightAuto: boolean
 }
 
 export class CalendarContent extends PureComponent<CalendarContentProps> {
@@ -59,7 +59,7 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
     let viewHeight: string | number = ''
     let viewAspectRatio: number | undefined
 
-    if (props.isHeightAuto || props.forPrint) {
+    if (props.forPrint || getIsHeightAuto(options)) {
       viewHeight = ''
     } else if (options.height != null) {
       viewVGrow = true
@@ -173,7 +173,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
       eventSelection: props.eventSelection,
       eventDrag: props.eventDrag,
       eventResize: props.eventResize,
-      isHeightAuto: props.isHeightAuto,
       forPrint: props.forPrint,
     }
 

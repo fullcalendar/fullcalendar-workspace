@@ -5,8 +5,10 @@ import {
   findElements,
   computeInnerRect,
 } from '@fullcalendar/core/internal'
-import { ScrollListener } from './old/ScrollListener.js'
+import { ScrollListener } from './ScrollListener.js'
 import { getScrollCanvasOrigin } from './scroll-left-norm.js'
+
+// TODO: incorporate this somehow!!!
 
 interface ElementGeom {
   parentBound: Rect // relative to the canvas origin

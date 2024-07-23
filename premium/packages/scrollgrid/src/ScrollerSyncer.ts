@@ -1,3 +1,33 @@
+import { ScrollerInterface, ScrollerSyncerInterface } from "@fullcalendar/core/internal"
+
+export class ScrollerSyncer implements ScrollerSyncerInterface {
+  x: number
+  y: number
+
+  constructor(
+    public horizontal = false,
+  ) {
+  }
+
+  scrollTo(options: { x?: number, y?: number }): void {
+  }
+
+  // TODO: move to having this debounce, like scrollEnd
+  // need this anymore???
+  addScrollListener(listener: () => void): void {
+  }
+
+  handleChildren(scrollers: ScrollerInterface[]): void {
+    // TODO
+  }
+
+  destroy() {
+    // TODO
+  }
+}
+
+/*
+
 import { ScrollListener } from './ScrollListener.js'
 import { setScrollFromLeftEdge } from '../scroll-left-norm.js'
 
@@ -65,9 +95,7 @@ export class ScrollSyncer {
     }
   }
 
-  /*
-  will normalize the scrollLeft value
-  */
+  // will normalize the scrollLeft value
   forceScrollLeft(scrollLeft: number) {
     this.isPaused = true
 
@@ -88,3 +116,5 @@ export class ScrollSyncer {
     this.isPaused = false
   }
 }
+
+*/

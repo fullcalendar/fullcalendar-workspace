@@ -14,10 +14,10 @@ import {
   DateMarker,
   DateRange,
   NowIndicatorContainer,
-  NewScroller,
+  Scroller,
   RefMapKeyed,
   guid,
-  NewScrollerSyncerInterface,
+  ScrollerSyncerInterface,
   getStickyHeaderDates,
   getStickyFooterScrollbar,
   ScrollResponder,
@@ -48,7 +48,7 @@ import {
   isEntityGroup,
   ResourceSplitter,
 } from '@fullcalendar/resource/internal'
-import { NewScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
+import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
 import { ResourceCells } from './spreadsheet/ResourceCells.js'
 import { GroupWideCell } from './spreadsheet/GroupWideCell.js'
 import { GroupTallCell } from './spreadsheet/GroupTallCell.js'
@@ -118,12 +118,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private timeGroupWideRefMap = new RefMapKeyed<Group, HTMLDivElement>()
   private timeResourceRefMap = new RefMapKeyed<Resource, HTMLDivElement>()
   private slatsRef = createRef<TimelineSlats>() // needed for Hit system
-  private spreadsheetHeaderScrollerRef = createRef<NewScroller>()
-  private spreadsheetBodyScrollerRef = createRef<NewScroller>()
-  private spreadsheetFooterScrollerRef = createRef<NewScroller>()
-  private timeHeaderScrollerRef = createRef<NewScroller>()
-  private timeBodyScrollerRef = createRef<NewScroller>()
-  private timeFooterScrollerRef = createRef<NewScroller>()
+  private spreadsheetHeaderScrollerRef = createRef<Scroller>()
+  private spreadsheetBodyScrollerRef = createRef<Scroller>()
+  private spreadsheetFooterScrollerRef = createRef<Scroller>()
+  private timeHeaderScrollerRef = createRef<Scroller>()
+  private timeBodyScrollerRef = createRef<Scroller>()
+  private timeFooterScrollerRef = createRef<Scroller>()
 
   // current
   private currentGroupRowDisplays: GroupRowDisplay[]
@@ -135,9 +135,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private resourceSplitter = new ResourceSplitter()
   private bgSlicer = new TimelineLaneSlicer()
   private resourceLaneUnstableCount = 0
-  private timeScroller: NewScrollerSyncerInterface
-  private bodyScroller: NewScrollerSyncerInterface
-  private spreadsheetScroller: NewScrollerSyncerInterface
+  private timeScroller: ScrollerSyncerInterface
+  private bodyScroller: ScrollerSyncerInterface
+  private spreadsheetScroller: ScrollerSyncerInterface
   private scrollResponder: ScrollResponder
 
   render() {
@@ -203,17 +203,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       tDateProfile.cellRows.length,
     )
 
-    let [headerVerticalPositions, headerTotalHeight] = this.buildHeaderVerticalPositions(
+    let [headerVerticalPositions /*, headerTotalHeight */] = this.buildHeaderVerticalPositions(
       headerHeightHierarchy,
       state.headerNaturalHeightMap,
     )
 
-    let { viewInnerHeight } = state
-    let rowsMinHeight = (
-      options.expandRows && !props.isHeightAuto &&
-      viewInnerHeight !== undefined && headerTotalHeight !== undefined
-    ) ? viewInnerHeight - headerTotalHeight
-      : undefined
+    // let { viewInnerHeight } = state
+    let rowsMinHeight = undefined // TODO: use css
 
     let [bodyVerticals] = this.buildBodyVerticalPositions(
       bodyHeightHierarchy,
@@ -288,7 +284,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 <Fragment>
 
                   {/* spreadsheet HEADER */}
-                  <NewScroller
+                  <Scroller
                     ref={this.spreadsheetHeaderScrollerRef}
                     horizontal
                     hideBars
@@ -323,10 +319,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         })}
                       </div>
                     </div>
-                  </NewScroller>
+                  </Scroller>
 
                   {/* spreadsheet BODY */}
-                  <NewScroller
+                  <Scroller
                     ref={this.spreadsheetBodyScrollerRef}
                     vertical={verticalScrolling}
                     horizontal
@@ -423,16 +419,16 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         })}
                       </div>
                     </div>
-                  </NewScroller>
+                  </Scroller>
 
                   {/* spreadsheet FOOTER scrollbar */}
-                  <NewScroller
+                  <Scroller
                     ref={this.spreadsheetFooterScrollerRef}
                     horizontal
                     onBottomScrollbarWidth={this.handleSpreadsheetBottomScrollbarWidth}
                   >
                     <div style={{ width: spreadsheetCanvasWidth }} />
-                  </NewScroller>
+                  </Scroller>
                 </Fragment>
               )}
 
@@ -443,7 +439,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 <Fragment>
 
                   {/* time-area HEADER */}
-                  <NewScroller
+                  <Scroller
                     ref={this.timeHeaderScrollerRef}
                     horizontal
                     hideBars
@@ -466,10 +462,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         rowRefMap={this.timeHeaderRefMap}
                       />
                     </div>
-                  </NewScroller>
+                  </Scroller>
 
                   {/* time-area BODY (resources) */}
-                  <NewScroller
+                  <Scroller
                     ref={this.timeBodyScrollerRef}
                     vertical={verticalScrolling}
                     horizontal
@@ -557,16 +553,16 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         </div>
                       )}
                     </div>
-                  </NewScroller>
+                  </Scroller>
 
                   {/* time-area FOOTER */}
                   {stickyFooterScrollbar && (
-                    <NewScroller
+                    <Scroller
                       ref={this.timeFooterScrollerRef}
                       horizontal
                     >
                       <div style={{ width: timeCanvasWidth }}/>
-                    </NewScroller>
+                    </Scroller>
                   )}
 
                 </Fragment>
@@ -588,9 +584,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     // scrolling
     // TODO: use plugin system for this!!!!!!!!!!
-    this.timeScroller = new NewScrollerSyncer(true) // horizontal=true
-    this.bodyScroller = new NewScrollerSyncer() // horizontal=false
-    this.spreadsheetScroller = new NewScrollerSyncer(true) // horizontal=true
+    this.timeScroller = new ScrollerSyncer(true) // horizontal=true
+    this.bodyScroller = new ScrollerSyncer() // horizontal=false
+    this.spreadsheetScroller = new ScrollerSyncer(true) // horizontal=true
     this.updateScrollersSyncers()
     this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
   }

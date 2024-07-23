@@ -22,6 +22,7 @@ import {
   getUniqueDomId,
   formatDayString,
   ContentContainer,
+  getIsHeightAuto,
 } from '@fullcalendar/core/internal'
 import {
   ComponentChild,
@@ -52,8 +53,11 @@ export class ListView extends DateComponent<ViewProps> {
 
   render() {
     let { props, context } = this
+    let { options } = context
+
     let { dayDates, dayRanges } = this.computeDateVars(props.dateProfile)
     let eventSegs = this.eventStoreToSegs(props.eventStore, props.eventUiBases, dayRanges)
+    let verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
 
     return (
       <ViewContainer
@@ -67,11 +71,7 @@ export class ListView extends DateComponent<ViewProps> {
         ]}
         viewSpec={context.viewSpec}
       >
-        <Scroller
-          liquid={!props.isHeightAuto}
-          overflowX={props.isHeightAuto ? 'visible' : 'hidden'}
-          overflowY={props.isHeightAuto ? 'visible' : 'auto'}
-        >
+        <Scroller vertical={verticalScrolling}>
           {eventSegs.length > 0 ?
             this.renderSegList(eventSegs, dayDates) :
             this.renderEmptyMessage()}

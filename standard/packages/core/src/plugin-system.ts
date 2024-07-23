@@ -38,7 +38,6 @@ export function createPlugin(input: PluginDefInput): PluginDef {
     initialView: input.initialView || '',
     elementDraggingImpl: input.elementDraggingImpl,
     optionChangeHandlers: input.optionChangeHandlers || {},
-    scrollGridImpl: input.scrollGridImpl || null,
     listenerRefiners: input.listenerRefiners || {},
     optionRefiners: input.optionRefiners || {},
     propSetHandlers: input.propSetHandlers || {},
@@ -77,7 +76,6 @@ function buildPluginHooks(pluginDefs: PluginDef[], globalDefs: PluginDef[]): Plu
     initialView: '',
     elementDraggingImpl: null,
     optionChangeHandlers: {},
-    scrollGridImpl: null,
     listenerRefiners: {},
     optionRefiners: {},
     propSetHandlers: {},
@@ -154,7 +152,6 @@ function combineHooks(hooks0: PluginHooks, hooks1: PluginHooks): PluginHooks {
     initialView: hooks0.initialView || hooks1.initialView, // put earlier plugins FIRST
     elementDraggingImpl: hooks0.elementDraggingImpl || hooks1.elementDraggingImpl, // "
     optionChangeHandlers: { ...hooks0.optionChangeHandlers, ...hooks1.optionChangeHandlers },
-    scrollGridImpl: hooks1.scrollGridImpl || hooks0.scrollGridImpl,
     listenerRefiners: { ...hooks0.listenerRefiners, ...hooks1.listenerRefiners },
     optionRefiners: { ...hooks0.optionRefiners, ...hooks1.optionRefiners },
     propSetHandlers: { ...hooks0.propSetHandlers, ...hooks1.propSetHandlers },

@@ -5,8 +5,8 @@ import {
   DayTableCell,
   EventSegUiInteractionState,
   Hit,
-  NewScroller,
-  NewScrollerInterface,
+  Scroller,
+  ScrollerInterface,
   getStickyHeaderDates,
   getIsHeightAuto,
 } from '@fullcalendar/core/internal'
@@ -36,7 +36,7 @@ export interface DayGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
   eventSelection: string
 
   // refs
-  scrollerRef?: Ref<NewScrollerInterface>
+  scrollerRef?: Ref<ScrollerInterface>
   rowHeightsRef?: Ref<{ [key: string]: number }>
 }
 
@@ -78,7 +78,7 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends DateCom
             ))}
           </div>
         )}
-        <NewScroller
+        <Scroller
           vertical={verticalScrollbars}
           onWidth={this.handleWidth}
           ref={props.scrollerRef}
@@ -105,7 +105,7 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends DateCom
             // refs
             rowHeightsRef={props.rowHeightsRef}
           />
-        </NewScroller>
+        </Scroller>
       </Fragment>
     )
   }

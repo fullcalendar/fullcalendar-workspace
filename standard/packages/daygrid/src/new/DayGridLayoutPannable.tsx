@@ -5,9 +5,9 @@ import {
   DayTableCell,
   EventSegUiInteractionState,
   Hit,
-  NewScroller,
-  NewScrollerInterface,
-  NewScrollerSyncerInterface,
+  Scroller,
+  ScrollerInterface,
+  ScrollerSyncerInterface,
   getStickyFooterScrollbar,
   getStickyHeaderDates,
   setRef,
@@ -42,7 +42,7 @@ export interface DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
   dayMinWidth: number
 
   // refs
-  scrollerRef?: Ref<NewScrollerInterface>
+  scrollerRef?: Ref<ScrollerInterface>
   rowHeightsRef?: Ref<{ [key: string]: number }>
 }
 
@@ -53,9 +53,9 @@ interface DayGridViewState {
 }
 
 export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends DateComponent<DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey>, DayGridViewState> {
-  headerScrollerRef = createRef<NewScroller>()
-  bodyScrollerRef = createRef<NewScroller>()
-  syncedScroller: NewScrollerSyncerInterface
+  headerScrollerRef = createRef<Scroller>()
+  bodyScrollerRef = createRef<Scroller>()
+  syncedScroller: ScrollerSyncerInterface
 
   render() {
     const { props, state, context } = this
@@ -71,7 +71,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends DateC
     return (
       <Fragment>
         {options.dayHeaders && (
-          <NewScroller
+          <Scroller
             horizontal
             hideBars
             elClassName={stickyHeaderDates && 'fc-newnew-sticky'}
@@ -95,9 +95,9 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends DateC
                 </div>
               ))}
             </div>
-          </NewScroller>
+          </Scroller>
         )}
-        <NewScroller
+        <Scroller
           horizontal
           vertical={verticalScrollbars}
           hideBars={stickyFooterScrollbar}
@@ -129,11 +129,11 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends DateC
             // refs
             rowHeightsRef={props.rowHeightsRef}
           />
-        </NewScroller>
+        </Scroller>
         {Boolean(stickyFooterScrollbar) && (
-          <NewScroller horizontal>
+          <Scroller horizontal>
             <div style={{ width: canvasWidth }} />
-          </NewScroller>
+          </Scroller>
         )}
       </Fragment>
     )
@@ -173,7 +173,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends DateC
   // -----------------------------------------------------------------------------------------------
 
   initScrollers() {
-    // this.syncedScroller = new NewScrollerSyncer() // TODO: somehow get NewScrollerSyncer from plugin system
+    // this.syncedScroller = new ScrollerSyncer() // TODO: somehow get ScrollerSyncer from plugin system
     setRef(this.props.scrollerRef, this.syncedScroller)
   }
 
