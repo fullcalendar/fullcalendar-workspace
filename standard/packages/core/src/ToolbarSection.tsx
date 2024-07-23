@@ -4,7 +4,6 @@ import { ToolbarWidget } from './toolbar-struct.js'
 
 export interface ToolbarContent {
   title: string
-  titleId: string
   navUnit: string
   activeButton: string
   isTodayEnabled: boolean
@@ -35,7 +34,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
       if (buttonName === 'title') {
         isOnlyButtons = false
         children.push(
-          <h2 className="fc-toolbar-title" id={props.titleId}>{props.title}</h2>,
+          <h2 className="fc-toolbar-title">{props.title}</h2>,
         )
       } else {
         let isPressed = buttonName === props.activeButton

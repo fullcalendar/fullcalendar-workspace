@@ -24,7 +24,6 @@ import { getNow } from './reducers/current-date.js'
 import { CalendarInteraction } from './calendar-utils.js'
 import { DelayedRunner } from './util/DelayedRunner.js'
 import { PureComponent } from './vdom-util.js'
-import { getUniqueDomId } from './util/dom-manip.js'
 
 export interface CalendarContentProps extends CalendarData {
   forPrint: boolean
@@ -39,11 +38,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
   private footerRef = createRef<Toolbar>()
   private interactionsStore: { [componentUid: string]: Interaction[] } = {}
   private calendarInteractions: CalendarInteraction[]
-
-  // eslint-disable-next-line
-  state = {
-    viewLabelId: getUniqueDomId(),
-  }
 
   /*
   renders INSIDE of an outer div
@@ -90,11 +84,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
       this.registerInteractiveComponent,
       this.unregisterInteractiveComponent,
     )
-
-    let viewLabelId = (toolbarConfig.header && toolbarConfig.header.hasTitle)
-      ? this.state.viewLabelId
-      : undefined
-
     return (
       <ViewContextType.Provider value={viewContext}>
         {toolbarConfig.header && (
@@ -102,7 +91,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
             ref={this.headerRef}
             extraClassName="fc-header-toolbar"
             model={toolbarConfig.header}
-            titleId={viewLabelId}
             {...toolbarProps}
           />
         )}
@@ -110,7 +98,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
           liquid={viewVGrow}
           height={viewHeight}
           aspectRatio={viewAspectRatio}
-          labeledById={viewLabelId}
         >
           {this.renderView(props)}
           {this.buildAppendContent()}
@@ -120,7 +107,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
             ref={this.footerRef}
             extraClassName="fc-footer-toolbar"
             model={toolbarConfig.footer}
-            titleId=""
             {...toolbarProps}
           />
         )}

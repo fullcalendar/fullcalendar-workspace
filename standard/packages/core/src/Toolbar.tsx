@@ -6,7 +6,6 @@ import { ToolbarSection, ToolbarContent } from './ToolbarSection.js'
 export interface ToolbarProps extends ToolbarContent {
   extraClassName: string // wish this could be array, but easier for pureness
   model: ToolbarModel
-  titleId: string
 }
 
 export class Toolbar extends BaseComponent<ToolbarProps> {
@@ -60,7 +59,6 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
         isTodayEnabled={props.isTodayEnabled}
         isPrevEnabled={props.isPrevEnabled}
         isNextEnabled={props.isNextEnabled}
-        titleId={props.titleId}
       />
     )
   }
