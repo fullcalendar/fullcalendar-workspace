@@ -2,7 +2,7 @@ import { EventStore, parseEvents } from './event-store.js'
 import { EventInput } from './event-parse.js'
 import { DateSpanApi } from './date-span.js'
 import { EventImpl } from '../api/EventImpl.js'
-import { SplittableProps } from '../component/event-splitting.js'
+import { SplittableProps } from '../component-util/event-splitting.js'
 import { CalendarContext } from '../CalendarContext.js'
 
 // TODO: rename to "criteria" ?

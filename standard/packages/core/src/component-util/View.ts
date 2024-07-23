@@ -1,10 +1,10 @@
-import { DateProfile } from './DateProfileGenerator.js'
-import { EventStore } from './structs/event-store.js'
-import { EventUiHash } from './component/event-ui.js'
-import { sliceEventStore, EventRenderRange } from './component/event-rendering.js'
-import { DateSpan } from './structs/date-span.js'
-import { EventInteractionState } from './interactions/event-interaction-state.js'
-import { Duration } from './datelib/duration.js'
+import { DateProfile } from '../DateProfileGenerator.js'
+import { EventStore } from '../structs/event-store.js'
+import { EventUiHash } from './event-ui.js'
+import { sliceEventStore, EventRenderRange } from './event-rendering.js'
+import { DateSpan } from '../structs/date-span.js'
+import { EventInteractionState } from '../interactions/event-interaction-state.js'
+import { Duration } from '../datelib/duration.js'
 
 export interface ViewProps {
   dateProfile: DateProfile

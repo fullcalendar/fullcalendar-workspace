@@ -1,5 +1,5 @@
 import { BaseComponent } from '../vdom-util.js'
-import { EventRenderRange } from './event-rendering.js'
+import { EventRenderRange } from '../component-util/event-rendering.js'
 import { EventInstanceHash } from '../structs/event-instance.js'
 import { Hit } from '../interactions/hit.js'
 import { elementClosest } from '../util/dom-manip.js'

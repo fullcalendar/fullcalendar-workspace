@@ -1,7 +1,7 @@
 import { EventMutation } from '../structs/event-mutation.js'
 import { Hit } from './hit.js'
 import { EventDef } from '../structs/event-def.js'
-import { EventUi } from '../component/event-ui.js'
+import { EventUi } from '../component-util/event-ui.js'
 import { CalendarContext } from '../CalendarContext.js'
 import { Dictionary } from '../options.js'
 

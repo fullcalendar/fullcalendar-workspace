@@ -1,7 +1,7 @@
 import { EventDef } from '../structs/event-def.js'
 import { EVENT_NON_DATE_REFINERS, EVENT_DATE_REFINERS } from '../structs/event-parse.js'
 import { EventInstance } from '../structs/event-instance.js'
-import { EVENT_UI_REFINERS, EventUiHash } from '../component/event-ui.js'
+import { EVENT_UI_REFINERS, EventUiHash } from '../component-util/event-ui.js'
 import { EventMutation, applyMutationToEventStore } from '../structs/event-mutation.js'
 import { diffDates, computeAlignedDayRange } from '../util/date.js'
 import { createDuration, durationsEqual } from '../datelib/duration.js'

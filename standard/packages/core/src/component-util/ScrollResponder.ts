@@ -1,6 +1,6 @@
-import { Duration } from './datelib/duration.js'
-import { Emitter } from './common/Emitter.js'
-import { CalendarListeners } from './options.js'
+import { Duration } from '../datelib/duration.js'
+import { Emitter } from '../common/Emitter.js'
+import { CalendarListeners } from '../options.js'
 
 export interface ScrollRequest {
   time?: Duration

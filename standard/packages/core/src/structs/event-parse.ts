@@ -7,7 +7,7 @@ import { EventDef } from './event-def.js'
 import { createEventInstance, EventInstance } from './event-instance.js'
 import { EventSource } from './event-source.js'
 import { RefinedOptionsFromRefiners, RawOptionsFromRefiners, identity, Identity, Dictionary, refineProps, GenericRefiners } from '../options.js'
-import { EVENT_UI_REFINERS, createEventUi, EventUiInput, EventUiRefined } from '../component/event-ui.js'
+import { EVENT_UI_REFINERS, createEventUi, EventUiInput, EventUiRefined } from '../component-util/event-ui.js'
 import { EventDefIdMap, EventInstanceIdMap } from '../reducers/eventStore.js'
 
 export const EVENT_NON_DATE_REFINERS = {

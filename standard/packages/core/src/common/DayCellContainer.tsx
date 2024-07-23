@@ -1,7 +1,7 @@
 import { ComponentChild, createElement } from '../preact.js'
 import { DateMarker } from '../datelib/marker.js'
 import { DateRange } from '../datelib/date-range.js'
-import { getDateMeta, DateMeta, getDayClassNames } from '../component/date-rendering.js'
+import { getDateMeta, DateMeta, getDayClassNames } from '../component-util/date-rendering.js'
 import { createFormatter } from '../datelib/formatting.js'
 import { DateFormatter } from '../datelib/DateFormatter.js'
 import { formatDayString } from '../datelib/formatting-utils.js'

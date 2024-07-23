@@ -21,7 +21,7 @@ import { reduceSelectedEvent } from './selected-event.js'
 import { reduceEventDrag } from './event-drag.js'
 import { reduceEventResize } from './event-resize.js'
 import { Emitter } from '../common/Emitter.js'
-import { EventUiHash, EventUi, createEventUi } from '../component/event-ui.js'
+import { EventUiHash, EventUi, createEventUi } from '../component-util/event-ui.js'
 import { EventDefHash } from '../structs/event-def.js'
 import { parseToolbars } from '../toolbar-parse.js'
 import {

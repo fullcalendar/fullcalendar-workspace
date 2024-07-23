@@ -4,7 +4,7 @@ import { EventSource, EventSourceSuccessResponseHandler, EventSourceErrorRespons
 import { JSON_FEED_EVENT_SOURCE_REFINERS } from '../event-sources/json-feed-event-source-refiners.js'
 import { CalendarContext } from '../CalendarContext.js'
 import { guid } from '../util/misc.js'
-import { EVENT_UI_REFINERS, createEventUi, EventUiInput, EventUiRefined } from '../component/event-ui.js'
+import { EVENT_UI_REFINERS, createEventUi, EventUiInput, EventUiRefined } from '../component-util/event-ui.js'
 import { identity, Identity, RawOptionsFromRefiners, refineProps, RefinedOptionsFromRefiners } from '../options.js'
 
 const EVENT_SOURCE_REFINERS = { // does NOT include EVENT_UI_REFINERS

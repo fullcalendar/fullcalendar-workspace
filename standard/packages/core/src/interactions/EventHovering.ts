@@ -1,6 +1,6 @@
 import { listenToHoverBySelector } from '../util/dom-event.js'
 import { EventImpl } from '../api/EventImpl.js'
-import { getElSeg } from '../component/event-rendering.js'
+import { getElSeg } from '../component-util/event-rendering.js'
 import { Interaction, InteractionSettings } from './interaction.js'
 import { ViewApi } from '../api/ViewApi.js'
 

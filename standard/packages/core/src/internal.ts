@@ -73,11 +73,11 @@ export {
   getRelevantEvents,
   eventTupleToStore,
 } from './structs/event-store.js'
-export type { EventUiHash, EventUi } from './component/event-ui.js'
-export { combineEventUis, createEventUi } from './component/event-ui.js'
-export type { SplittableProps } from './component/event-splitting.js'
-export { Splitter } from './component/event-splitting.js'
-export { getDayClassNames, getDateMeta, getSlotClassNames, DateMeta } from './component/date-rendering.js'
+export type { EventUiHash, EventUi } from './component-util/event-ui.js'
+export { combineEventUis, createEventUi } from './component-util/event-ui.js'
+export type { SplittableProps } from './component-util/event-splitting.js'
+export { Splitter } from './component-util/event-splitting.js'
+export { getDayClassNames, getDateMeta, getSlotClassNames, DateMeta } from './component-util/date-rendering.js'
 export { buildNavLinkAttrs } from './common/nav-link.js'
 
 export {
@@ -102,10 +102,10 @@ export { ScrollController, ElementScrollController, WindowScrollController } fro
 export { Theme } from './theme/Theme.js'
 export type { ViewContext } from './ViewContext.js'
 export { ViewContextType } from './ViewContext.js'
-export type { Seg, EventSegUiInteractionState } from './component/DateComponent.js'
-export { DateComponent } from './component/DateComponent.js'
+export type { Seg, EventSegUiInteractionState } from './component-old/DateComponent.js'
+export { DateComponent } from './component-old/DateComponent.js'
 export type { CalendarData } from './reducers/data-types.js'
-export type { ViewProps } from './View.js'
+export type { ViewProps } from './component-util/View.js'
 
 export type { DateProfile } from './DateProfileGenerator.js'
 export { DateProfileGenerator } from './DateProfileGenerator.js'
@@ -177,8 +177,8 @@ export { parseDragMeta } from './structs/drag-meta.js'
 export type { ViewPropsTransformer, PluginDef } from './plugin-system-struct.js'
 export type { Action } from './reducers/Action.js'
 export type { CalendarContext } from './CalendarContext.js'
-export type { CalendarContentProps } from './CalendarContent.js'
-export { CalendarRoot } from './CalendarRoot.js'
+export type { CalendarContentProps } from './component-old/CalendarContent.js'
+export { CalendarRoot } from './component-old/CalendarRoot.js'
 
 export { computeFallbackHeaderFormat } from './common/table-utils.js'
 
@@ -191,7 +191,7 @@ export {
   sortEventSegs,
   getSegMeta, buildEventRangeKey,
   getSegAnchorAttrs,
-} from './component/event-rendering.js'
+} from './component-util/event-rendering.js'
 
 export type { DayTableCell } from './common/DayTableModel.js'
 export { DayTableModel } from './common/DayTableModel.js'
@@ -248,8 +248,8 @@ export { RefMapKeyed } from './util/RefMapKeyed.js'
 export { getIsRtlScrollbarOnLeft } from './util/scrollbar-side.js'
 
 export { NowTimer } from './NowTimer.js'
-export type { ScrollRequest } from './ScrollResponder.js'
-export { ScrollResponder } from './ScrollResponder.js'
+export type { ScrollRequest } from './component-util/ScrollResponder.js'
+export { ScrollResponder } from './component-util/ScrollResponder.js'
 export type {
   CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountArg,
 } from './common/render-hook.js'

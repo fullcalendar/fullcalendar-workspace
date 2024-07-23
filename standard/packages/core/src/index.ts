@@ -11,8 +11,8 @@ export * from './api/structs.js'
 export { FormatDateOptions, FormatRangeOptions } from './formatting-api.js'
 export { formatDate, formatRange } from './formatting-api.js'
 export { createPlugin } from './plugin-system.js'
-export { sliceEvents } from './View.js'
-export { EventRenderRange } from './component/event-rendering.js' // for sliceEvents
+export { sliceEvents } from './component-util/View.js'
+export { EventRenderRange } from './component-util/event-rendering.js' // for sliceEvents
 export { JsonRequestError } from './util/requestJson.js'
 
 export { globalLocales } from './global-locales.js'

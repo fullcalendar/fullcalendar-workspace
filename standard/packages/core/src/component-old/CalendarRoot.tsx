@@ -1,10 +1,10 @@
-import { ComponentChildren, flushSync } from './preact.js'
-import { BaseComponent } from './vdom-util.js'
-import { CssDimValue } from './scrollgrid/util.js'
-import { CalendarOptions, CalendarListeners } from './options.js'
-import { Theme } from './theme/Theme.js'
-import { getCanVGrowWithinCell } from './util/table-styling.js'
-import { Emitter } from './common/Emitter.js'
+import { ComponentChildren, flushSync } from '../preact.js'
+import { BaseComponent } from '../vdom-util.js'
+import { CssDimValue } from '../scrollgrid/util.js'
+import { CalendarOptions, CalendarListeners } from '../options.js'
+import { Theme } from '../theme/Theme.js'
+import { getCanVGrowWithinCell } from '../util/table-styling.js'
+import { Emitter } from '../common/Emitter.js'
 
 export interface CalendarRootProps {
   options: CalendarOptions

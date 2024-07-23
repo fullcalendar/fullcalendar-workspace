@@ -1,4 +1,4 @@
-import { DateMeta } from './component/date-rendering.js'
+import { DateMeta } from './component-util/date-rendering.js'
 import { Duration } from './datelib/duration.js'
 import { ViewApi } from './api/ViewApi.js'
 import { MountArg } from './common/render-hook.js'

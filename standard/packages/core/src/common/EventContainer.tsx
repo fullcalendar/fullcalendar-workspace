@@ -1,6 +1,6 @@
 import { ComponentChild, createElement } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
-import { Seg } from '../component/DateComponent.js'
+import { Seg } from '../component-old/DateComponent.js'
 import { EventImpl } from '../api/EventImpl.js'
 import {
   computeSegDraggable,
@@ -9,7 +9,7 @@ import {
   EventContentArg,
   getEventClassNames,
   setElSeg,
-} from '../component/event-rendering.js'
+} from '../component-util/event-rendering.js'
 import { ContentContainer, InnerContainerFunc } from '../content-inject/ContentContainer.js'
 import { ElProps } from '../content-inject/ContentInjector.js'
 

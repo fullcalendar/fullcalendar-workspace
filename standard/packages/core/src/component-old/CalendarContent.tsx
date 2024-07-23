@@ -1,14 +1,14 @@
-import { ViewContextType, buildViewContext } from './ViewContext.js'
-import { ViewSpec } from './structs/view-spec.js'
-import { ViewProps } from './View.js'
+import { ViewContextType, buildViewContext } from '../ViewContext.js'
+import { ViewSpec } from '../structs/view-spec.js'
+import { ViewProps } from '../component-util/View.js'
 import { Toolbar } from './Toolbar.js'
-import { DateProfileGenerator, DateProfile } from './DateProfileGenerator.js'
-import { rangeContainsMarker } from './datelib/date-range.js'
-import { memoize } from './util/memoize.js'
-import { DateMarker } from './datelib/marker.js'
-import { CalendarData } from './reducers/data-types.js'
-import { ViewPropsTransformerClass } from './plugin-system-struct.js'
-import { createElement, createRef, Fragment, VNode } from './preact.js'
+import { DateProfileGenerator, DateProfile } from '../DateProfileGenerator.js'
+import { rangeContainsMarker } from '../datelib/date-range.js'
+import { memoize } from '../util/memoize.js'
+import { DateMarker } from '../datelib/marker.js'
+import { CalendarData } from '../reducers/data-types.js'
+import { ViewPropsTransformerClass } from '../plugin-system-struct.js'
+import { createElement, createRef, Fragment, VNode } from '../preact.js'
 import { ViewHarness } from './ViewHarness.js'
 import {
   Interaction,
@@ -16,14 +16,14 @@ import {
   InteractionClass,
   parseInteractionSettings,
   interactionSettingsStore,
-} from './interactions/interaction.js'
-import { DateComponent } from './component/DateComponent.js'
-import { EventClicking } from './interactions/EventClicking.js'
-import { EventHovering } from './interactions/EventHovering.js'
-import { getNow } from './reducers/current-date.js'
-import { CalendarInteraction } from './calendar-utils.js'
-import { DelayedRunner } from './util/DelayedRunner.js'
-import { PureComponent } from './vdom-util.js'
+} from '../interactions/interaction.js'
+import { DateComponent } from './DateComponent.js'
+import { EventClicking } from '../interactions/EventClicking.js'
+import { EventHovering } from '../interactions/EventHovering.js'
+import { getNow } from '../reducers/current-date.js'
+import { CalendarInteraction } from '../calendar-utils.js'
+import { DelayedRunner } from '../util/DelayedRunner.js'
+import { PureComponent } from '../vdom-util.js'
 
 export interface CalendarContentProps extends CalendarData {
   forPrint: boolean

@@ -1,4 +1,4 @@
-import { ViewProps } from '../View.js'
+import { ViewProps } from '../component-util/View.js'
 import { mapHash } from '../util/object.js'
 import { ComponentType, Component, createElement } from '../preact.js'
 import { buildViewClassNames } from '../common/ViewContainer.js'
