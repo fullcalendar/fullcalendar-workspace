@@ -17,7 +17,7 @@ import { createDuration } from './datelib/duration.js'
 import { ViewOptionsRefined, CalendarListeners } from './options.js'
 
 export const ViewContextType: Context<any> = createContext<ViewContext>({} as any) // for Components
-export type ResizeHandler = (force: boolean) => void
+export type ResizeHandler = () => void
 
 /*
 it's important that ViewContext extends CalendarContext so that components that subscribe to ViewContext
@@ -30,8 +30,8 @@ export interface ViewContext extends CalendarContext {
   dateProfileGenerator: DateProfileGenerator
   viewSpec: ViewSpec
   viewApi: ViewImpl
-  addResizeHandler: (handler: ResizeHandler, timing?: '' | 'pre' | 'post') => void
-  removeResizeHandler: (handler: ResizeHandler, timing?: '' | 'pre' | 'post') => void
+  addResizeHandler: (handler: ResizeHandler) => void
+  removeResizeHandler: (handler: ResizeHandler) => void
   createScrollResponder: (execFunc: ScrollRequestHandler) => ScrollResponder
   registerInteractiveComponent: (component: DateComponent<any>, settingsInput: InteractionSettingsInput) => void
   unregisterInteractiveComponent: (component: DateComponent<any>) => void

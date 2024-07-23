@@ -228,7 +228,7 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
   // -----------------------------------------------------------------------------------------------------------------
 
   resizeRunner = new DelayedRunner(() => {
-    this.props.emitter.trigger('_resize', true) // should window resizes be considered "forced" ?
+    this.props.emitter.trigger('_resize')
     this.props.emitter.trigger('windowResize', { view: this.props.viewApi })
   })
 

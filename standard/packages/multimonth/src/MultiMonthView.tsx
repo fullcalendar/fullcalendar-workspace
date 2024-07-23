@@ -107,14 +107,14 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
   }
 
   componentDidMount(): void {
-    this.updateSize()
+    this.handleSizing()
     this.context.addResizeHandler(this.handleSizing)
     this.requestScrollReset()
   }
 
   componentDidUpdate(prevProps: ViewProps) {
     if (!isPropsEqual(prevProps, this.props)) { // an external change?
-      this.handleSizing(false)
+      this.handleSizing()
     }
 
     if (prevProps.dateProfile !== this.props.dateProfile) {
@@ -128,13 +128,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
     this.context.removeResizeHandler(this.handleSizing)
   }
 
-  handleSizing = (isForced: boolean) => {
-    if (isForced) {
-      this.updateSize()
-    }
-  }
-
-  updateSize() {
+  handleSizing = () => {
     const scrollEl = this.scrollElRef.current
     const firstMonthEl = this.firstMonthElRef.current
 
