@@ -49,8 +49,7 @@ export interface DayGridRowProps {
   dayMaxEventRows: boolean | number
 
   // dimensions
-  colWidth: number | undefined
-  colActualWidth: number | undefined
+  colWidth?: number
   height?: number
 
   // refs
@@ -201,7 +200,9 @@ export class DayGridRow extends DateComponent<DayGridRowProps, DayGridRowState> 
   ): VNode[] {
     let { props, context } = this
     let { isRtl } = context
-    let { colActualWidth, eventSelection } = props
+    let { colWidth, eventSelection } = props
+
+    let colCnt = props.cells.length
     let defaultDisplayEventEnd = props.cells.length === 1 // colCnt === 1
     let isMirror = isDragging || isResizing || isDateSelecting
     let nodes: VNode[] = []
@@ -210,17 +211,26 @@ export class DayGridRow extends DateComponent<DayGridRowProps, DayGridRowState> 
       let { seg, top } = placement
       let { instanceId } = seg.eventRange.instance
       let isVisible = top != null && !isForcedInvisible[instanceId]
-      let width: CssDimValue = ''
-      let left: CssDimValue = ''
-      let right: CssDimValue = ''
+      let width: CssDimValue
+      let left: CssDimValue
+      let right: CssDimValue
 
-      if (colActualWidth != null) {
-        width = (seg.lastCol - seg.firstCol + 1) * colActualWidth
+      if (colWidth != null) {
+        width = (seg.lastCol - seg.firstCol + 1) * colWidth
 
         if (isRtl) {
-          right = seg.lastCol * colActualWidth
+          right = (seg.lastCol - colCnt - 1) * colWidth
         } else {
-          left = seg.firstCol * colActualWidth
+          left = seg.firstCol * colWidth
+        }
+      } else {
+        const widthFrac = 1 / colCnt
+        width = widthFrac * 100 + '%'
+
+        if (isRtl) {
+          right = ((seg.lastCol - colCnt - 1) * widthFrac) * 100  + '%'
+        } else {
+          left = seg.firstCol * widthFrac * 100 + '%'
         }
       }
 
@@ -268,23 +278,35 @@ export class DayGridRow extends DateComponent<DayGridRowProps, DayGridRowState> 
   }
 
   renderFillSegs(segs: TableSeg[], fillType: string): VNode {
-    let { isRtl } = this.context
-    let { todayRange, colActualWidth } = this.props
+    let { props, context } = this
+    let { isRtl } = context
+    let { todayRange, colWidth } = props
+
+    let colCnt = props.cells.length
     let nodes: VNode[] = []
 
     for (let seg of segs) {
-      let width: CssDimValue = ''
-      let left: CssDimValue = ''
-      let right: CssDimValue = ''
+      let width: CssDimValue
+      let left: CssDimValue
+      let right: CssDimValue
 
       // TODO: more DRY with fg events
-      if (colActualWidth != null) {
-        width = (seg.lastCol - seg.firstCol + 1) * colActualWidth
+      if (colWidth != null) {
+        width = (seg.lastCol - seg.firstCol + 1) * colWidth
 
         if (isRtl) {
-          right = seg.lastCol * colActualWidth
+          right = (seg.lastCol - colCnt - 1) * colWidth
         } else {
-          left = seg.firstCol * colActualWidth
+          left = seg.firstCol * colWidth
+        }
+      } else {
+        const widthFrac = 1 / colCnt
+        width = widthFrac * 100 + '%'
+
+        if (isRtl) {
+          right = ((seg.lastCol - colCnt - 1) * widthFrac) * 100  + '%'
+        } else {
+          left = seg.firstCol * widthFrac * 100 + '%'
         }
       }
 

@@ -10,7 +10,9 @@ export interface SingleMonthProps extends ViewProps {
   isoDateStr?: string
   titleFormat: DateFormatter
   width: CssDimValue
-  tableWidth: number | null // solely for computation purposes
+
+  // TODO: why are these needed???
+  tableWidth: number | null
   clientWidth: number | null
   clientHeight: number | null
 
@@ -27,7 +29,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   private rootEl: HTMLElement
 
   render() {
-    const { props, state, context } = this
+    const { props, context } = this
     const { dateProfile, forPrint } = props
     const { options } = context
     const dayTableModel = this.buildDayTableModel(dateProfile, context.dateProfileGenerator)
@@ -37,12 +39,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     const tableHeight = props.tableWidth != null ? props.tableWidth / options.aspectRatio : null
     const rowCnt = dayTableModel.cells.length
     const rowHeight = tableHeight != null ? tableHeight / rowCnt : null
-
-    // TODO: more DRY with DayGridLayout*
-    const colCnt = dayTableModel.cells[0].length
-    const colActualWidth = state.width != null
-      ? state.width / colCnt
-      : undefined
 
     return (
       <div
@@ -112,9 +108,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
               eventDrag={slicedProps.eventDrag}
               eventResize={slicedProps.eventResize}
               eventSelection={slicedProps.eventSelection}
-
-              colWidth={undefined}
-              colActualWidth={colActualWidth}
             />
           </div>
         </div>

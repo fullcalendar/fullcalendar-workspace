@@ -54,11 +54,6 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends DateCom
     const verticalScrollbars = !props.forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
 
-    const colCnt = props.cellRows[0].length
-    const colActualWidth = state.width != null
-      ? state.width / colCnt
-      : undefined
-
     return (
       <Fragment>
         {options.dayHeaders && (
@@ -105,8 +100,6 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends DateCom
             eventResize={props.eventResize}
 
             // dimensions
-            colWidth={undefined}
-            colActualWidth={colActualWidth}
             width={state.width}
 
             // refs

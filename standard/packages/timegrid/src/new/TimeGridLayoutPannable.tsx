@@ -99,7 +99,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
 
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
-    const [canvasWidth, colWidth, colActualWidth] = computeColWidth(colCnt, state.width)
+    const [canvasWidth, colWidth] = computeColWidth(colCnt, state.width)
 
     return (
       <Fragment>
@@ -177,7 +177,6 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
 
                     // dimensions
                     colWidth={colWidth}
-                    colActualWidth={colActualWidth}
                     height={state.allDayHeight}
 
                     // refs
@@ -265,7 +264,6 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
 
                   // dimensions
                   colWidth={colWidth}
-                  colActualWidth={colActualWidth}
                   slatHeight={state.slatHeight}
                 />
               </div>
@@ -449,7 +447,6 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
 function computeColWidth(colCnt: number, viewInnerWidth: number | number): [
   canvasWidth: number | undefined,
   colWidth: number | undefined,
-  colActualWidth: number | undefined,
 ] {
   return null as any // TODO
 }

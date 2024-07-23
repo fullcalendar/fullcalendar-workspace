@@ -32,8 +32,7 @@ export interface DayGridRowsProps {
   eventSelection: string
 
   // dimensions
-  colWidth: number | undefined
-  colActualWidth: number | undefined
+  colWidth?: number
   width?: number
 
   // refs
@@ -91,7 +90,6 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
 
             // dimensions
             colWidth={props.colWidth}
-            colActualWidth={props.colActualWidth}
 
             // refs
             elRef={this.rowElRefMap.createRef(cells[0].key)}
@@ -155,12 +153,12 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   // Hit System
   // -----------------------------------------------------------------------------------------------
 
-  queryHit(positionLeft: number, positionTop: number): Hit {
+  queryHit(positionLeft: number, positionTop: number, elWidth: number): Hit {
     let { currentRowHeights } = this
-    let { cellRows, colActualWidth } = this.props
+    let { cellRows, colWidth } = this.props
 
     let colCnt = cellRows[0].length
-    let col = Math.floor(positionLeft / colActualWidth) // TODO: make work with RTL
+    let col = computeCol(positionLeft, elWidth, colWidth, colCnt)
     let hit = computeRowHit(positionTop, currentRowHeights)
 
     if (hit != null && col != null && col < colCnt) {
@@ -175,8 +173,8 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
         },
         dayEl: this.getCellEl(hit.row, col),
         rect: {
-          left: col * colActualWidth,
-          right: (col + 1) * colActualWidth, // TODO: make work with RTL
+          left: col * colWidth,
+          right: (col + 1) * colWidth, // TODO: make work with RTL
           top: hit.top,
           bottom: hit.top + hit.height,
         },
@@ -198,6 +196,10 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
     let end = addDays(start, 1)
     return { start, end }
   }
+}
+
+function computeCol(positionLeft: number, elWidth: number, colWidth: number | undefined, colCnt: number): number {
+  return null as any // !!! -- TODO: work with RTL
 }
 
 // TODO

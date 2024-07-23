@@ -36,8 +36,7 @@ export interface TimeGridColsProps {
   eventSelection: string
 
   // dimensions
-  colWidth: number | undefined
-  colActualWidth: number | undefined // for hit processing
+  colWidth?: number
   slatHeight: number | undefined
 }
 
@@ -98,15 +97,15 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
     }
   }
 
-  queryHit(positionLeft: number, positionTop: number): Hit {
+  queryHit(positionLeft: number, positionTop: number, elWidth: number): Hit {
     let { dateEnv, options } = this.context
-    let { dateProfile, colActualWidth } = this.props
+    let { dateProfile, colWidth } = this.props
     let { slatCoords } = this.state
 
     let { snapDuration, snapsPerSlot } = this.processSlotOptions(options.slotDuration, options.snapDuration)
 
     let colCnt = this.props.cells.length
-    let colIndex = Math.floor(positionLeft / colActualWidth) // TODO: make work with RTL
+    let colIndex = computeCol(positionLeft, elWidth, colWidth, colCnt)
     let slatIndex = slatCoords.positions.topToIndex(positionTop)
 
     if (colIndex != null && slatIndex != null && colIndex < colCnt) {
@@ -135,8 +134,8 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
         },
         dayEl: this.colElRefMap.current.get(this.props.cells[colIndex].key),
         rect: {
-          left: colIndex * colActualWidth,
-          right: (colIndex + 1) * colActualWidth, // TODO: make work with RTL
+          left: colIndex * colWidth,
+          right: (colIndex + 1) * colWidth, // TODO: make work with RTL
           top: slatTop,
           bottom: slatTop + slatHeight,
         },
@@ -146,6 +145,10 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
 
     return null
   }
+}
+
+function computeCol(positionLeft: number, elWidth: number, colWidth: number | undefined, colCnt: number): number {
+  return null as any // !!! -- TODO: work with RTL
 }
 
 function processSlotOptions(slotDuration: Duration, snapDurationOverride: Duration | null) {

@@ -73,7 +73,6 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
     const { nowDate } = props
     const { axisWidth } = state
     const { options } = context
-    const colActualWidth = state.width !== undefined ? state.width / props.cells.length : undefined
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
 
     return (
@@ -129,10 +128,6 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 eventResize={props.eventResize}
                 dayMaxEvents={props.dayMaxEvents}
                 dayMaxEventRows={props.dayMaxEventRows}
-
-                // dimensions
-                colWidth={undefined}
-                colActualWidth={colActualWidth}
               />
             </div>
             <div className='fc-newnew-divider'></div>
@@ -182,8 +177,6 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 eventSelection={props.eventSelection}
 
                 // dimensions
-                colWidth={undefined}
-                colActualWidth={colActualWidth}
                 slatHeight={state.slatHeight}
               />
             </div>

@@ -66,7 +66,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends DateC
     const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
     const colCnt = props.cellRows[0].length
-    const [canvasWidth, colWidth, colActualWidth] = computeColWidth(colCnt, state.width)
+    const [canvasWidth, colWidth] = computeColWidth(colCnt, state.width)
 
     return (
       <Fragment>
@@ -124,7 +124,6 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends DateC
 
             // dimensions
             colWidth={colWidth}
-            colActualWidth={colActualWidth}
             width={canvasWidth}
 
             // refs
@@ -194,7 +193,6 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends DateC
 function computeColWidth(colCnt: number, viewInnerWidth: number | number): [
   canvasWidth: number | undefined,
   colWidth: number | undefined,
-  colActualWidth: number | undefined,
 ] {
   return null as any // TODO
 }
