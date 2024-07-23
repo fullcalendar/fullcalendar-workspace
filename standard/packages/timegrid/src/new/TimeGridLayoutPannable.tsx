@@ -1,6 +1,6 @@
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMapKeyed, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
-import { TableSeg } from '@fullcalendar/daygrid/internal'
+import { computeColWidth, TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
 import { TimeGridAllDayContent } from "./TimeGridAllDayContent.js"
 import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"
@@ -99,7 +99,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
 
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
-    const [canvasWidth, colWidth] = computeColWidth(colCnt, state.width)
+    const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, state.width)
 
     return (
       <Fragment>
@@ -442,12 +442,4 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     setRef(this.props.dayScrollerRef, null)
     setRef(this.props.timeScrollerRef, null)
   }
-}
-
-// NOTE: returned value used for all BUT the last
-function computeColWidth(colCnt: number, viewInnerWidth: number | number): [
-  canvasWidth: number | undefined,
-  colWidth: number | undefined,
-] {
-  return null as any // TODO
 }

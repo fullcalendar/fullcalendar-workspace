@@ -11,7 +11,7 @@ import {
   memoize
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
-import { DateHeaderCell, DayGridLayout, DayOfWeekHeaderCell, DayTableSlicer, buildDayTableModel } from '@fullcalendar/daygrid/internal'
+import { DateHeaderCell, DateHeaderCellObj, DayGridLayout, DayOfWeekHeaderCell, DayOfWeekHeaderCellObj, DayTableSlicer, buildDayTableModel } from '@fullcalendar/daygrid/internal'
 import {
   DEFAULT_RESOURCE_ORDER,
   DayResourceTableModel,
@@ -22,7 +22,7 @@ import {
   flattenResources,
 } from '@fullcalendar/resource/internal'
 import { ResourceDayTableJoiner } from '../ResourceDayTableJoiner.js'
-import { buildHeaderTiers } from './header-cell-utils.js'
+import { buildResourceHeaderTiers, ResourceDateHeaderCellObj } from './header-cell-utils.js'
 import { ResourceHeaderCell } from './ResourceHeaderCell.js'
 
 export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
@@ -69,7 +69,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
 
     let datesRepDistinctDays = resourceDayTableModel.dayTableModel.rowCnt === 1
 
-    let headerTiers = buildHeaderTiers(
+    let headerTiers = buildResourceHeaderTiers(
       resources,
       resourceDayTableModel.dayTableModel.headerDates,
       options.datesAboveResources,
@@ -90,15 +90,23 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
             isHitComboAllowed={this.isHitComboAllowed}
 
             // header content
-            // TODO: DRY with DayGridView/ResourceTimeGridView
+            // TODO: DRY with ResourceDayGridView/ResourceTimeGridView
             headerTiers={headerTiers}
             renderHeaderContent={(model, tierNum) => {
-              if (model.type === 'date') {
+              if ((model as ResourceDateHeaderCellObj).resource) {
+                return (
+                  <ResourceHeaderCell
+                    {...(model as ResourceDateHeaderCellObj)}
+                    colSpan={model.colSpan}
+                    colWidth={undefined}
+                    isSticky={tierNum < headerTiers.length - 1}
+                  />
+                )
+              } else if ((model as DateHeaderCellObj).date) {
                 return (
                   <DateHeaderCell
-                    key={model.date.toISOString()}
-                    {...model}
-                    navLink={resourceDayTableModel.dayTableModel.colCnt > 1 /* correct? */}
+                    {...(model as DateHeaderCellObj)}
+                    navLink={resourceDayTableModel.dayTableModel.colCnt > 1}
                     dateProfile={props.dateProfile}
                     todayRange={todayRange}
                     dayHeaderFormat={undefined /* TODO: figure `dayHeaderFormat` out */}
@@ -106,32 +114,21 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
                     colWidth={undefined}
                   />
                 )
-              } else if (model.type === 'dayOfWeek') {
+              } else {
                 <DayOfWeekHeaderCell
-                  key={model.dow}
-                  {...model}
+                  {...(model as DayOfWeekHeaderCellObj)}
                   dayHeaderFormat={undefined /* TODO: figure `dayHeaderFormat` out */}
                   colSpan={model.colSpan}
                   colWidth={undefined}
                 />
-              } else { // 'resource'
-                return (
-                  <ResourceHeaderCell
-                    cell={model}
-                    colSpan={model.colSpan}
-                    colWidth={undefined}
-                    isSticky={tierNum < headerTiers.length - 1}
-                  />
-                )
               }
             }}
-            getHeaderModelKey={(cell) => (
-              // TODO: make DRY
-              cell.type === 'resource'
-                ? cell.resource.id
-                : cell.type === 'date'
-                  ? cell.date.toISOString() // correct?
-                  : cell.dow
+            getHeaderModelKey={(model) => (
+              (model as ResourceDateHeaderCellObj).resource
+                ? (model as ResourceDateHeaderCellObj).resource.id
+                : (model as DateHeaderCellObj).date
+                  ? (model as DateHeaderCellObj).date.toISOString()
+                  : (model as DayOfWeekHeaderCellObj).dow
             )}
 
             // body content

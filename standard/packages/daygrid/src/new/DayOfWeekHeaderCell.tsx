@@ -11,27 +11,34 @@ import {
   createFormatter,
   ContentContainer,
 } from '@fullcalendar/core/internal'
-import { createElement } from '@fullcalendar/core/preact'
-import { CLASS_NAME, renderInner } from './util.js'
+import { createElement, Ref } from '@fullcalendar/core/preact'
+import { HEADER_CELL_CLASS_NAME, renderInner } from './util.js'
 
 export interface DayOfWeekHeaderCellProps {
   dow: number
+  dayHeaderFormat: DateFormatter
+  isSticky?: boolean
+  colSpan?: number
+
+  // render hooks
   extraRenderProps?: Dictionary
   extraDataAttrs?: Dictionary
-  extraClassNames?: string[]
+  extraClassNames?: string[] // needed?
 
-  dayHeaderFormat: DateFormatter
-  colSpan?: number
-  colWidth: number | undefined
-  isSticky?: boolean
+  // dimensions
+  colWidth?: number
+
+  // ref
+  innerElRef?: Ref<HTMLDivElement>
 }
 
 const WEEKDAY_FORMAT = createFormatter({ weekday: 'long' })
 
 export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps> {
   render() {
-    let { props } = this
-    let { dateEnv, theme, viewApi, options } = this.context
+    let { props, context } = this
+    let { dateEnv, theme, viewApi, options } = context
+
     let date = addDays(new Date(259200000), props.dow) // start with Sun, 04 Jan 1970 00:00:00 GMT
     let dateMeta: DateMeta = {
       dow: props.dow,
@@ -42,7 +49,8 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
       isOther: false,
     }
     let text = dateEnv.format(date, props.dayHeaderFormat)
-    let renderProps: DayHeaderContentArg = { // TODO: make this public?
+
+    let renderProps: DayHeaderContentArg = {
       date,
       ...dateMeta,
       view: viewApi,
@@ -52,19 +60,16 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
 
     return (
       <ContentContainer
-        elTag="th"
         elClasses={[
-          CLASS_NAME,
+          HEADER_CELL_CLASS_NAME,
           ...getDayClassNames(dateMeta, theme),
           ...(props.extraClassNames || []),
         ]}
-        elAttrs={{
-          role: 'columnheader',
-          colSpan: props.colSpan,
-          ...props.extraDataAttrs,
-        }}
+        elAttrs={props.extraDataAttrs}
         elStyle={{
-          width: props.colWidth !== undefined ? props.colWidth * (props.colSpan || 1) : undefined
+          width: props.colWidth != null // TODO: DRY
+            ? props.colWidth * (props.colSpan || 1)
+            : undefined,
         }}
         renderProps={renderProps}
         generatorName="dayHeaderContent"
@@ -75,11 +80,10 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
         willUnmount={options.dayHeaderWillUnmount}
       >
         {(InnerContent) => (
-          <div className="fc-scrollgrid-sync-inner">
+          <div ref={props.innerElRef}>
             <InnerContent
               elTag="a"
               elClasses={[
-                'fc-col-header-cell-cushion',
                 props.isSticky && 'fc-sticky',
               ]}
               elAttrs={{

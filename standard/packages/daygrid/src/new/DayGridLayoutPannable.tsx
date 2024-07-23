@@ -1,5 +1,5 @@
 import {
-  DateComponent,
+  BaseComponent,
   DateProfile,
   DateRange,
   DayTableCell,
@@ -17,6 +17,7 @@ import {
 import { ComponentChild, Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
 import { TableSeg } from '../TableSeg.js'
+import { computeColWidth } from './util.js'
 
 export interface DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
   dateProfile: DateProfile
@@ -53,7 +54,7 @@ interface DayGridViewState {
   rightScrollbarWidth?: number
 }
 
-export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends DateComponent<DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey>, DayGridViewState> {
+export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseComponent<DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey>, DayGridViewState> {
   headerScrollerRef = createRef<Scroller>()
   bodyScrollerRef = createRef<Scroller>()
   syncedScroller: ScrollerSyncerInterface
@@ -67,7 +68,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends DateC
     const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
     const colCnt = props.cellRows[0].length
-    const [canvasWidth, colWidth] = computeColWidth(colCnt, state.width)
+    const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, state.width)
 
     return (
       <Fragment>
@@ -87,7 +88,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends DateC
               }}
             >
               {props.headerTiers.map((cells, tierNum) => (
-                <div key={tierNum} class='fc-newnew-row'>
+                <div key={tierNum} class='fc-newnew-header-row'>
                   {cells.map((cell) => (
                     <Fragment key={props.getHeaderModelKey(cell)}>
                       {props.renderHeaderContent(cell, tierNum)}
@@ -119,9 +120,9 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends DateC
             bgEventSegs={props.bgEventSegs}
             businessHourSegs={props.businessHourSegs}
             dateSelectionSegs={props.dateSelectionSegs}
-            eventSelection={props.eventSelection}
             eventDrag={props.eventDrag}
             eventResize={props.eventResize}
+            eventSelection={props.eventSelection}
 
             // dimensions
             colWidth={colWidth}
@@ -144,15 +145,21 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends DateC
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount(): void {
-    this.initScrollers()
+    // scroller
+    const ScrollerSyncer = getScrollerSyncerClass(this.context.pluginHooks)
+    this.syncedScroller = new ScrollerSyncer(true) // horizontal=true
+    setRef(this.props.scrollerRef, this.syncedScroller)
+    this.updateSyncedScroller()
   }
 
   componentDidUpdate(): void {
-    this.updateScrollers()
+    // scroller
+    this.updateSyncedScroller()
   }
 
   componentWillUnmount(): void {
-    this.destroyScrollers()
+    // scroller
+    this.syncedScroller.destroy()
   }
 
   // Sizing
@@ -173,28 +180,10 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends DateC
   // Scrolling
   // -----------------------------------------------------------------------------------------------
 
-  initScrollers() {
-    const ScrollerSyncer = getScrollerSyncerClass(this.context.pluginHooks)
-    this.syncedScroller = new ScrollerSyncer()
-    setRef(this.props.scrollerRef, this.syncedScroller)
-  }
-
-  updateScrollers() { // this called upon init?
+  updateSyncedScroller() {
     this.syncedScroller.handleChildren([
       this.headerScrollerRef.current,
       this.bodyScrollerRef.current,
     ])
   }
-
-  destroyScrollers() {
-    this.syncedScroller.destroy()
-  }
-}
-
-// NOTE: returned value used for all BUT the last
-function computeColWidth(colCnt: number, viewInnerWidth: number | number): [
-  canvasWidth: number | undefined,
-  colWidth: number | undefined,
-] {
-  return null as any // TODO
 }

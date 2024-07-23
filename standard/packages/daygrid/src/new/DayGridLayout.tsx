@@ -1,5 +1,5 @@
 import {
-  DateComponent,
+  BaseComponent,
   DateMarker,
   DateProfile,
   DateRange,
@@ -38,7 +38,7 @@ export interface DayGridLayoutProps<HeaderCellModel, HeaderCellKey> {
   eventSelection: string
 }
 
-export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends DateComponent<DayGridLayoutProps<HeaderCellModel, HeaderCellKey>> {
+export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent<DayGridLayoutProps<HeaderCellModel, HeaderCellKey>> {
   // ref
   private scrollerRef = createRef<Scroller>()
   private rowHeightsRef = createRef<{ [key: string]: number }>()
@@ -59,15 +59,13 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends DateComponent
     return (
       <ViewContainer
         viewSpec={context.viewSpec}
-        elClasses={['fc-daygrid']}
+        elClasses={['fc-daygrid', 'fc-newnew-bordered']}
       >
-        <div className='fc-newnew-bordered'>
-          {options.dayMinWidth ? (
-            <DayGridLayoutPannable {...commonLayoutProps} dayMinWidth={options.dayMinWidth} />
-          ) : (
-            <DayGridLayoutNormal {...commonLayoutProps} />
-          )}
-        </div>
+        {options.dayMinWidth ? (
+          <DayGridLayoutPannable {...commonLayoutProps} dayMinWidth={options.dayMinWidth} />
+        ) : (
+          <DayGridLayoutNormal {...commonLayoutProps} />
+        )}
       </ViewContainer>
     )
   }
@@ -94,17 +92,20 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends DateComponent
   Called when component loaded and positioning ready, as well as when dateProfile is updated
   Does not use scrollRequest.time
   */
-  handleScrollRequest = (scrollRequest: ScrollRequest) => {
+  handleScrollRequest = (_scrollRequest: ScrollRequest) => {
     const scroller = this.scrollerRef.current
     const rowHeights = this.rowHeightsRef.current
 
     if (rowHeights) {
-      const scrollTop = computeScrollTop(
+      const scrollTop = computeDateTop(
+        this.props.dateProfile.currentDate,
         this.props.cellRows,
         rowHeights,
-        this.props.dateProfile.currentDate
       )
-      scroller.scrollTo({ y: scrollTop })
+
+      if (scrollTop != null) {
+        scroller.scrollTo({ y: scrollTop })
+      }
       return true
     }
 
@@ -112,11 +113,24 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends DateComponent
   }
 }
 
-function computeScrollTop(
+// Utils
+// -------------------------------------------------------------------------------------------------
+
+function computeDateTop(
+  currentDate: DateMarker,
   cellRows: DayTableCell[][],
   rowHeights: { [key: string]: number },
-  currentDate: DateMarker,
-): number {
-  // TODO: iterate over rowHeights, accumulate, find the row that intersects with currentDate
-  return null as any
+): number | undefined {
+  let top = 0
+
+  for (const cells of cellRows) {
+    const start = cells[0].date
+    const end = cells[cells.length - 1].date
+
+    if (currentDate >= start && currentDate <= end) {
+      return top
+    }
+
+    top += rowHeights[start.toISOString()]
+  }
 }

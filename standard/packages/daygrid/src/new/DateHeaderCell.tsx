@@ -15,38 +15,39 @@ import {
   ContentContainer,
 } from '@fullcalendar/core/internal'
 import { Ref, createElement } from '@fullcalendar/core/preact'
-import { CLASS_NAME, renderInner } from './util.js'
+import { HEADER_CELL_CLASS_NAME, renderInner } from './util.js'
 
 export interface DateHeaderCellProps {
-  date: DateMarker
-  extraDataAttrs?: Dictionary
-  extraRenderProps?: Dictionary
-
-  navLink: boolean
   dateProfile: DateProfile
   todayRange: DateRange
+  date: DateMarker
+  navLink: boolean
   dayHeaderFormat: DateFormatter
-  colSpan?: number
-  colWidth: number | undefined
   isSticky?: boolean
-  elRef?: Ref<HTMLElement> // TODO: hook up!
+  colSpan?: number
+
+  // render props
+  extraRenderProps?: Dictionary
+  extraDataAttrs?: Dictionary
+  extraClassNames?: string[]
+
+  // dimensions
+  colWidth?: number
+
+  // ref
+  innerElRef?: Ref<HTMLDivElement>
 }
 
 export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
   render() {
-    let { dateEnv, options, theme, viewApi } = this.context
-    let { props } = this
+    let { props, context } = this
     let { dateProfile, date, extraRenderProps, extraDataAttrs } = props
+    let { dateEnv, options, theme, viewApi } = context
+
     let dayMeta = getDateMeta(date, props.todayRange, null, dateProfile)
-
-    let classNames = [CLASS_NAME].concat(
-      getDayClassNames(dayMeta, theme),
-    )
     let text = dateEnv.format(date, props.dayHeaderFormat)
-
-    // if colCnt is 1, we are already in a day-view and don't need a navlink
     let navLinkAttrs = (!dayMeta.isDisabled && props.navLink)
-      ? buildNavLinkAttrs(this.context, date)
+      ? buildNavLinkAttrs(context, date)
       : {}
 
     let renderProps: DayHeaderContentArg = {
@@ -59,15 +60,19 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
 
     return (
       <ContentContainer
-        elTag="th"
-        elClasses={classNames}
+        elClasses={[
+          HEADER_CELL_CLASS_NAME,
+          ...getDayClassNames(dayMeta, theme),
+          ...(props.extraClassNames || [])
+        ]}
         elAttrs={{
-          role: 'columnheader',
           'data-date': !dayMeta.isDisabled ? formatDayString(date) : undefined,
           ...extraDataAttrs,
         }}
         elStyle={{
-          width: props.colWidth === undefined ? undefined : props.colWidth * (props.colSpan || 1),
+          width: props.colWidth != null // TODO: DRY
+            ? props.colWidth * (props.colSpan || 1)
+            : undefined,
         }}
         renderProps={renderProps}
         generatorName="dayHeaderContent"
@@ -78,13 +83,12 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
         willUnmount={options.dayHeaderWillUnmount}
       >
         {(InnerContainer) => (
-          <div className="fc-scrollgrid-sync-inner">
+          <div ref={props.innerElRef}>
             {!dayMeta.isDisabled && (
               <InnerContainer
                 elTag="a"
                 elAttrs={navLinkAttrs}
                 elClasses={[
-                  'fc-col-header-cell-cushion',
                   props.isSticky && 'fc-sticky',
                 ]}
               />

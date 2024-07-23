@@ -11,8 +11,8 @@ import {
   memoize,
 } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
-import { DateHeaderCell, DayOfWeekHeaderCell, DayTableSlicer } from '@fullcalendar/daygrid/internal'
-import { ResourceDayTableJoiner, buildHeaderTiers, ResourceHeaderCell } from '@fullcalendar/resource-daygrid/internal'
+import { DateHeaderCell, DateHeaderCellObj, DayOfWeekHeaderCell, DayOfWeekHeaderCellObj, DayTableSlicer } from '@fullcalendar/daygrid/internal'
+import { ResourceDayTableJoiner, buildResourceHeaderTiers, ResourceHeaderCell, ResourceDateHeaderCellObj } from '@fullcalendar/resource-daygrid/internal'
 import {
   DEFAULT_RESOURCE_ORDER,
   DayResourceTableModel,
@@ -124,7 +124,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
       resourceDayTableModel,
     )
 
-    let headerTiers = buildHeaderTiers( // TODO: memoize
+    let headerTiers = buildResourceHeaderTiers( // TODO: memoize
       resources,
       resourceDayTableModel.dayTableModel.headerDates,
       options.datesAboveResources,
@@ -167,51 +167,44 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
                   <div>{/* empty */}</div>
                 )
               )}
-              renderHeaderContent={(cell, tierNum, handleEl) => {
-                // TODO: make this function reusable for ResourceDayGridView
-                if (cell.type === 'date') {
-                  return (
-                    <DateHeaderCell
-                      key={cell.date.toISOString()}
-                      {...cell}
-                      navLink={headerTiers[tierNum].length > 1}
-                      dateProfile={dateProfile}
-                      todayRange={todayRange}
-                      dayHeaderFormat={undefined /* TODO: do dayHeaderFormat somehow!!! */}
-                      colSpan={cell.colSpan}
-                      colWidth={undefined}
-                      isSticky={tierNum < headerTiers.length - 1}
-                    />
-                  )
-                } else if (cell.type === 'dayOfWeek') {
-                  return (
-                    <DayOfWeekHeaderCell
-                      key={cell.dow}
-                      {...cell}
-                      dayHeaderFormat={undefined /* TODO: dayHeaderFormat */}
-                      colSpan={cell.colSpan}
-                      colWidth={undefined}
-                      isSticky={tierNum < headerTiers.length - 1}
-                    />
-                  )
-                } else { // 'resource'
+              // TODO: DRY
+              renderHeaderContent={(model, tierNum) => {
+                if ((model as ResourceDateHeaderCellObj).resource) {
                   return (
                     <ResourceHeaderCell
-                      cell={cell}
-                      colSpan={cell.colSpan}
+                      {...(model as ResourceDateHeaderCellObj)}
+                      colSpan={model.colSpan}
                       colWidth={undefined}
                       isSticky={tierNum < headerTiers.length - 1}
                     />
                   )
+                } else if ((model as DateHeaderCellObj).date) {
+                  return (
+                    <DateHeaderCell
+                      {...(model as DateHeaderCellObj)}
+                      navLink={resourceDayTableModel.dayTableModel.colCnt > 1}
+                      dateProfile={props.dateProfile}
+                      todayRange={todayRange}
+                      dayHeaderFormat={undefined /* TODO: figure `dayHeaderFormat` out */}
+                      colSpan={model.colSpan}
+                      colWidth={undefined}
+                    />
+                  )
+                } else {
+                  <DayOfWeekHeaderCell
+                    {...(model as DayOfWeekHeaderCellObj)}
+                    dayHeaderFormat={undefined /* TODO: figure `dayHeaderFormat` out */}
+                    colSpan={model.colSpan}
+                    colWidth={undefined}
+                  />
                 }
               }}
-              getHeaderModelKey={(cell) => (
-                // TODO: make this function reusable for ResourceDayGridView
-                cell.type === 'resource'
-                  ? cell.resource.id
-                  : cell.type === 'date'
-                    ? cell.date.toISOString() // correct?
-                    : cell.dow
+              getHeaderModelKey={(model) => (
+                (model as ResourceDateHeaderCellObj).resource
+                  ? (model as ResourceDateHeaderCellObj).resource.id
+                  : (model as DateHeaderCellObj).date
+                    ? (model as DateHeaderCellObj).date.toISOString()
+                    : (model as DayOfWeekHeaderCellObj).dow
               )}
 
               // all-day content

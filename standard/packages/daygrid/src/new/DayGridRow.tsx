@@ -1,7 +1,7 @@
 import { CssDimValue } from '@fullcalendar/core'
 import {
   EventSegUiInteractionState,
-  DateComponent,
+  BaseComponent,
   DateRange,
   getSegMeta,
   DateProfile,
@@ -65,7 +65,7 @@ interface DayGridRowState {
 
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
 
-export class DayGridRow extends DateComponent<DayGridRowProps, DayGridRowState> {
+export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> {
   private rootEl?: HTMLElement
   private fcContainerElRefMap = new RefMapKeyed<string, HTMLDivElement>()
   private segHarnessElRefMap = new RefMapKeyed<string, HTMLDivElement>() // indexed by generateSegUid

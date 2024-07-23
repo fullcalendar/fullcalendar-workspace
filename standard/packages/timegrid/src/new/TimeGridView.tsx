@@ -10,7 +10,7 @@ import { TimeGridLayout } from './TimeGridLayout.js'
 import { createDayHeaderFormatter } from '@fullcalendar/daygrid/internal'
 
 export class TimeGridView extends DateComponent<ViewProps> {
-  createDayHeaderFormatter = memoize(createDayHeaderFormatter) // TODO: better place
+  createDayHeaderFormatter = memoize(createDayHeaderFormatter)
 
   private buildTimeColsModel = memoize(buildTimeColsModel)
   private buildDayRanges = memoize(buildDayRanges)
@@ -89,7 +89,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
                 <DateHeaderCell
                   key={cell.date.toISOString()}
                   {...cell}
-                  elRef={handleEl}
+                  innerElRef={handleEl}
                   navLink={dayTableModel.cells.length > 1}
                   dateProfile={dateProfile}
                   todayRange={todayRange}

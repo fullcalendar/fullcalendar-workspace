@@ -1,5 +1,5 @@
 import {
-  DateComponent,
+  BaseComponent,
   DateProfile,
   DateRange,
   DayTableCell,
@@ -41,12 +41,11 @@ export interface DayGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
 }
 
 interface DayGridViewState {
-  width?: number
   leftScrollbarWidth?: number
   rightScrollbarWidth?: number
 }
 
-export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends DateComponent<DayGridLayoutNormalProps<HeaderCellModel, HeaderCellKey>, DayGridViewState> {
+export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseComponent<DayGridLayoutNormalProps<HeaderCellModel, HeaderCellKey>, DayGridViewState> {
   render() {
     const { props, state, context } = this
     const { options } = context
@@ -68,7 +67,7 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends DateCom
             }}
           >
             {props.headerTiers.map((cells, tierNum) => (
-              <div key={tierNum} class='fc-newnew-row'>
+              <div key={tierNum} class='fc-newnew-header-row'>
                 {cells.map((cell) => (
                   <Fragment key={props.getHeaderModelKey(cell)}>
                     {props.renderHeaderContent(cell, tierNum)}
@@ -80,7 +79,8 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends DateCom
         )}
         <Scroller
           vertical={verticalScrollbars}
-          onWidth={this.handleWidth}
+          onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
+          onRightScrollbarWidth={this.handleRightScrollbarWidth}
           ref={props.scrollerRef}
         >
           <DayGridRows
@@ -95,12 +95,9 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends DateCom
             bgEventSegs={props.bgEventSegs}
             businessHourSegs={props.businessHourSegs}
             dateSelectionSegs={props.dateSelectionSegs}
-            eventSelection={props.eventSelection}
             eventDrag={props.eventDrag}
             eventResize={props.eventResize}
-
-            // dimensions
-            width={state.width}
+            eventSelection={props.eventSelection}
 
             // refs
             rowHeightsRef={props.rowHeightsRef}
@@ -108,10 +105,6 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends DateCom
         </Scroller>
       </Fragment>
     )
-  }
-
-  handleWidth = (width: number) => {
-    this.setState({ width })
   }
 
   handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {

@@ -1,41 +1,45 @@
 import { BaseComponent, DateMarker } from '@fullcalendar/core/internal'
-import { createElement } from '@fullcalendar/core/preact'
+import { createElement, Ref } from '@fullcalendar/core/preact'
+import { HEADER_CELL_CLASS_NAME } from '@fullcalendar/daygrid/internal'
 import { Resource, ResourceLabelContainer } from '@fullcalendar/resource/internal'
 
-export interface ResourceHeaderCellModel {
+export interface ResourceHeaderCellProps {
   resource: Resource
   date?: DateMarker
-}
-
-export interface ResourceHeaderCellProps {
-  cell: ResourceHeaderCellModel
   colSpan: number
-  colWidth: number | undefined // TODO: use this
   isSticky?: boolean
+
+  // dimensions
+  colWidth?: number
+
+  // ref
+  innerElRef?: Ref<HTMLDivElement>
 }
 
 export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
   render() {
     let { props } = this
-    let { cell } = props
 
     return (
       <ResourceLabelContainer
-        elTag="th"
-        elClasses={['fc-col-header-cell', 'fc-resource']}
-        elAttrs={{
-          role: 'columnheader',
-          colSpan: props.colSpan,
+        elTag="div"
+        elClasses={[
+          HEADER_CELL_CLASS_NAME,
+          'fc-resource',
+        ]}
+        elStyle={{
+          width: props.colWidth != null // TODO: DRY
+            ? props.colWidth * (props.colSpan || 1)
+            : undefined,
         }}
-        resource={cell.resource}
-        date={cell.date}
+        resource={props.resource}
+        date={props.date}
       >
         {(InnerContent) => (
-          <div className="fc-scrollgrid-sync-inner">
+          <div ref={props.innerElRef}>
             <InnerContent
               elTag="span"
               elClasses={[
-                'fc-col-header-cell-cushion',
                 props.isSticky && 'fc-sticky',
               ]}
             />

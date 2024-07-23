@@ -1,5 +1,5 @@
 import {
-  DateComponent,
+  BaseComponent,
   DateMarker,
   DateRange,
   NowTimer,
@@ -11,10 +11,15 @@ import { DayTableSlicer } from '../DayTableSlicer.js'
 import { DateHeaderCell } from './DateHeaderCell.js'
 import { DayGridLayout } from './DayGridLayout.js'
 import { DayOfWeekHeaderCell } from './DayOfWeekHeaderCell.js'
-import { buildDayTableModel } from './util.js'
+import { buildDayTableModel, buildHeaderTiers, createDayHeaderFormatter, DateHeaderCellObj, DayOfWeekHeaderCellObj } from './util.js'
 
-export class DayGridView extends DateComponent<ViewProps> {
+export class DayGridView extends BaseComponent<ViewProps> {
+  // memo
   private buildDayTableModel = memoize(buildDayTableModel)
+  private buildHeaderTiers = memoize(buildHeaderTiers)
+  private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
+
+  // internal
   private slicer = new DayTableSlicer()
 
   render() {
@@ -23,16 +28,13 @@ export class DayGridView extends DateComponent<ViewProps> {
     const dayTableModel = this.buildDayTableModel(props.dateProfile, context.dateProfileGenerator)
     const datesRepDistinctDays = dayTableModel.rowCnt === 1
 
-    const headerTiers: (
-      { type: 'date', colSpan: number, date: DateMarker } |
-      { type: 'dayOfWeek', colSpan: number, dow: number }
-    )[][] = [
-      datesRepDistinctDays // TODO: memoize. TODO: DRY-up?
-        ? dayTableModel.headerDates.map((date) => ({ type: 'date', colSpan: 1, date }))
-        : dayTableModel.headerDates.map((date) => ({ type: 'dayOfWeek', colSpan: 1, dow: date.getUTCDay() }))
-    ]
-
+    const headerTiers = this.buildHeaderTiers(dayTableModel.headerDates, datesRepDistinctDays)
     const slicedProps = this.slicer.sliceProps(props, props.dateProfile, options.nextDayThreshold, context, dayTableModel)
+    const dayHeaderFormat = this.createDayHeaderFormatter(
+      context.options.dayHeaderFormat,
+      datesRepDistinctDays,
+      dayTableModel.cells.length,
+    )
 
     return (
       <NowTimer unit="day">
@@ -46,25 +48,23 @@ export class DayGridView extends DateComponent<ViewProps> {
             // header content
             headerTiers={headerTiers}
             renderHeaderContent={(model) => {
-              if (model.type === 'date') {
+              if ((model as DateHeaderCellObj).date) {
                 return (
                   <DateHeaderCell
-                    key={model.date.toISOString()}
-                    {...model}
-                    navLink={dayTableModel.colCnt > 1 /* correct? */}
+                    {...(model as DateHeaderCellObj)}
                     dateProfile={props.dateProfile}
                     todayRange={todayRange}
-                    dayHeaderFormat={undefined /* TODO: figure `dayHeaderFormat` out */}
+                    navLink={dayTableModel.colCnt > 1}
+                    dayHeaderFormat={dayHeaderFormat}
                     colSpan={model.colSpan}
                     colWidth={undefined}
                   />
                 )
-              } else { // 'dayOfWeek'
+              } else {
                 return (
                   <DayOfWeekHeaderCell
-                    key={model.dow}
-                    {...model}
-                    dayHeaderFormat={undefined /* TODO: figure `dayHeaderFormat` out */}
+                    {...(model as DayOfWeekHeaderCellObj)}
+                    dayHeaderFormat={dayHeaderFormat}
                     colSpan={model.colSpan}
                     colWidth={undefined}
                   />
@@ -72,10 +72,10 @@ export class DayGridView extends DateComponent<ViewProps> {
               }
             }}
             getHeaderModelKey={(model) => {
-              if (model.type === 'date') {
-                return model.date.toUTCString()
+              if ((model as DateHeaderCellObj).date) {
+                return (model as DateHeaderCellObj).date.toUTCString()
               }
-              return model.dow
+              return (model as DayOfWeekHeaderCellObj).dow
             }}
 
             // body content
@@ -83,9 +83,9 @@ export class DayGridView extends DateComponent<ViewProps> {
             bgEventSegs={slicedProps.businessHourSegs}
             businessHourSegs={slicedProps.businessHourSegs}
             dateSelectionSegs={slicedProps.businessHourSegs}
-            eventSelection={slicedProps.eventSelection}
             eventDrag={slicedProps.eventDrag}
             eventResize={slicedProps.eventResize}
+            eventSelection={slicedProps.eventSelection}
           />
         )}
       </NowTimer>
