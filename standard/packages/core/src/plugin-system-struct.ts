@@ -20,6 +20,7 @@ import { ElementDraggingClass } from './interactions/ElementDragging.js'
 import { ComponentChildren } from './preact.js'
 import { GenericRefiners, GenericListenerRefiners, Dictionary } from './options.js'
 import { CalendarData } from './reducers/data-types.js'
+import { ScrollerSyncerClass } from './scrollgrid/ScrollerSyncerInterface.js'
 
 // TODO: easier way to add new hooks? need to update a million things
 
@@ -55,6 +56,7 @@ export interface PluginDefInput {
   initialView?: string
   elementDraggingImpl?: ElementDraggingClass
   optionChangeHandlers?: OptionChangeHandlerMap
+  scrollerSyncerClass?: ScrollerSyncerClass
   listenerRefiners?: GenericListenerRefiners
   optionRefiners?: GenericRefiners
   propSetHandlers?: { [propName: string]: (val: any, context: CalendarData) => void } // TODO: make better types
@@ -90,6 +92,7 @@ export interface PluginHooks {
   initialView: string
   elementDraggingImpl?: ElementDraggingClass
   optionChangeHandlers: OptionChangeHandlerMap
+  scrollerSyncerClass: ScrollerSyncerClass | null
   listenerRefiners: GenericListenerRefiners
   optionRefiners: GenericRefiners
   propSetHandlers: { [propName: string]: (val: any, context: CalendarData) => void }
