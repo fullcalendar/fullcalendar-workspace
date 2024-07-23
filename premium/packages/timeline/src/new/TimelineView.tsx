@@ -14,6 +14,7 @@ import {
   Scroller,
   ScrollRequest,
   ScrollResponder,
+  getScrollerSyncerClass,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
@@ -186,7 +187,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
   componentDidMount() {
     this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
-    // this.syncedScroller = new ScrollerSyncer() // TODO: use plugin system!
+
+    const ScrollerSyncer = getScrollerSyncerClass(this.context.pluginHooks)
+    this.syncedScroller = new ScrollerSyncer()
     this.updateSyncedScroller()
   }
 

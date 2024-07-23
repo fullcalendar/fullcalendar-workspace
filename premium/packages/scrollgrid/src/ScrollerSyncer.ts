@@ -5,7 +5,7 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
   y: number
 
   constructor(
-    public horizontal = false,
+    horizontal = false,
   ) {
   }
 

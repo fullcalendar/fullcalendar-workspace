@@ -22,6 +22,7 @@ import {
   getStickyFooterScrollbar,
   ScrollResponder,
   getIsHeightAuto,
+  getScrollerSyncerClass,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import {
@@ -48,7 +49,6 @@ import {
   isEntityGroup,
   ResourceSplitter,
 } from '@fullcalendar/resource/internal'
-import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
 import { ResourceCells } from './spreadsheet/ResourceCells.js'
 import { GroupWideCell } from './spreadsheet/GroupWideCell.js'
 import { GroupTallCell } from './spreadsheet/GroupTallCell.js'
@@ -583,7 +583,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     this.context.addResizeHandler(this.handleSizing)
 
     // scrolling
-    // TODO: use plugin system for this!!!!!!!!!!
+    const ScrollerSyncer = getScrollerSyncerClass(this.context.pluginHooks)
     this.timeScroller = new ScrollerSyncer(true) // horizontal=true
     this.bodyScroller = new ScrollerSyncer() // horizontal=false
     this.spreadsheetScroller = new ScrollerSyncer(true) // horizontal=true

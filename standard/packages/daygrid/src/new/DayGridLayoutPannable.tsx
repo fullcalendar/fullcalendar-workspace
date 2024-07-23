@@ -12,6 +12,7 @@ import {
   getStickyHeaderDates,
   setRef,
   getIsHeightAuto,
+  getScrollerSyncerClass,
 } from '@fullcalendar/core/internal'
 import { ComponentChild, Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -173,11 +174,12 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends DateC
   // -----------------------------------------------------------------------------------------------
 
   initScrollers() {
-    // this.syncedScroller = new ScrollerSyncer() // TODO: somehow get ScrollerSyncer from plugin system
+    const ScrollerSyncer = getScrollerSyncerClass(this.context.pluginHooks)
+    this.syncedScroller = new ScrollerSyncer()
     setRef(this.props.scrollerRef, this.syncedScroller)
   }
 
-  updateScrollers() {
+  updateScrollers() { // this called upon init?
     this.syncedScroller.handleChildren([
       this.headerScrollerRef.current,
       this.bodyScrollerRef.current,

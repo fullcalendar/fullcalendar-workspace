@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMapKeyed, getStickyFooterScrollbar, getStickyHeaderDates, setRef } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMapKeyed, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
@@ -417,8 +417,9 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
   // -----------------------------------------------------------------------------------------------
 
   initScrollers() {
-    // this.hScroller = new ScrollerSyncer(true) // TODO: have plugin system provide this!
-    // this.vScroller = new ScrollerSyncer() // TODO: have plugin system provide this!
+    const ScrollerSyncer = getScrollerSyncerClass(this.context.pluginHooks)
+    this.hScroller = new ScrollerSyncer(true) // horizontal=true
+    this.vScroller = new ScrollerSyncer() // horizontal=false
 
     setRef(this.props.dayScrollerRef, this.hScroller)
     setRef(this.props.timeScrollerRef, this.vScroller)

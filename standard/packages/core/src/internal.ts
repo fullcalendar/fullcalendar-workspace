@@ -215,6 +215,7 @@ export {
   getStickyFooterScrollbar,
   getStickyHeaderDates,
   getIsHeightAuto,
+  getScrollerSyncerClass,
 } from './scrollgrid/util.js'
 
 // new
