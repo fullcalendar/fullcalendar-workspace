@@ -26,7 +26,7 @@ import { TableSeg, splitSegsByFirstCol } from '../TableSeg.js'
 import { DayGridCell } from './DayGridCell.js'
 import { DayGridListEvent } from './DayGridListEvent.js'
 import { DayGridBlockEvent } from './DayGridBlockEvent.js'
-import { generateSegKey, generateSegUid, newComputeFgSegPlacement, NewTableSegPlacement } from '../event-placement.js'
+import { computeFgSegVerticals, getSegSpanId, getSegStartId } from '../event-placement.js'
 import { hasListItemDisplay } from '../event-rendering.js'
 import { computeHorizontalsFromSeg } from './util.js'
 
@@ -58,9 +58,9 @@ export interface DayGridRowProps {
 }
 
 interface DayGridRowState {
-  fgContainerTops: { [key: string]: number }
-  fgContainerHeights: { [key: string]: number }
-  segHeights: { [segUid: string]: number }
+  fgContainerTops: { [cellKey: string]: number }
+  fgContainerHeights: { [cellKey: string]: number }
+  segHeights: { [segSpanId: string]: number }
 }
 
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
@@ -70,8 +70,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
   private rootEl?: HTMLElement
 
   // internal
-  private fcContainerElRefMap = new RefMapKeyed<string, HTMLDivElement>()
-  private segHarnessElRefMap = new RefMapKeyed<string, HTMLDivElement>() // indexed by generateSegUid
+  private fcContainerElRefMap = new RefMapKeyed<string, HTMLDivElement>() // indexed by cellKey
+  private segHarnessElRefMap = new RefMapKeyed<string, HTMLDivElement>() // indexed by segSpanId
 
   state: DayGridRowState = {
     fgContainerTops: {},
@@ -87,25 +87,26 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
 
     const weekDate = props.cells[0].date
     const colCnt = props.cells.length
+    const fgHeightFixed = props.dayMaxEvents === true || props.dayMaxEventRows === true
 
     const businessHoursByCol = splitSegsByFirstCol(props.businessHourSegs, colCnt)
     const bgEventSegsByCol = splitSegsByFirstCol(props.bgEventSegs, colCnt)
     const highlightSegsByCol = splitSegsByFirstCol(this.getHighlightSegs(), colCnt)
     const mirrorSegsByCol = splitSegsByFirstCol(this.getMirrorSegs(), colCnt)
 
-    const fgHeightFixed = props.dayMaxEvents === true || props.dayMaxEventRows === true
-    const { segPlacementsByCol, moreTops, moreCnts } = newComputeFgSegPlacement(
+    // TODO: memoize this
+    const [segsByCol, hiddenSegsByCol, segTops, heightsByCol] = computeFgSegVerticals(
       sortEventSegs(props.fgEventSegs, options.eventOrder) as TableSeg[],
-      props.dayMaxEvents,
-      props.dayMaxEventRows,
-      options.eventOrderStrict,
+      state.segHeights,
+      colCnt,
       cells.map((cell) => fgContainerTops[cell.key]),
       fgHeightFixed ? cells.map((cell) => fgContainerHeights[cell.key]) : [],
-      state.segHeights,
-      props.cells,
+      options.eventOrderStrict,
+      props.dayMaxEvents,
+      props.dayMaxEventRows,
     )
 
-    const isForcedInvisible = // TODO: messy way to compute this
+    const forcedInvisibleMap = // TODO: messy way to compute this
       (props.eventDrag && props.eventDrag.affectedInstances) ||
       (props.eventResize && props.eventResize.affectedInstances) ||
       {}
@@ -127,18 +128,20 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
           />
         )}
         {props.cells.map((cell, col) => {
-          const segPlacements = segPlacementsByCol[col]
-
           const normalFgNodes = this.renderFgSegs(
-            segPlacements,
+            col,
+            segsByCol[col],
+            segTops,
             props.todayRange,
-            isForcedInvisible,
+            forcedInvisibleMap,
           )
 
           const mirrorFgNodes = this.renderFgSegs(
-            buildMirrorPlacements(mirrorSegsByCol[col], segPlacements),
+            col,
+            mirrorSegsByCol[col],
+            segTops,
             props.todayRange,
-            {},
+            {}, // forcedInvisibleMap
             Boolean(props.eventDrag),
             Boolean(props.eventResize),
             false, // date-selecting (because mirror is never drawn for date selection)
@@ -153,7 +156,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
               showDayNumber={props.showDayNumbers}
 
               // content
-              segPlacements={segPlacements}
+              segs={segsByCol[col]}
+              hiddenSegs={hiddenSegsByCol[col]}
               fgHeightFixed={fgHeightFixed}
               fg={(
                 <Fragment>
@@ -168,7 +172,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
                   {this.renderFillSegs(bgEventSegsByCol[col], 'bg-event')}
                 </Fragment>
               )}
-              moreCnt={moreCnts[col]}
               eventDrag={props.eventDrag}
               eventResize={props.eventResize}
               eventSelection={props.eventSelection}
@@ -180,7 +183,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
               extraClassNames={cell.extraClassNames}
 
               // dimensions
-              moreTop={moreTops[col]}
+              moreTop={heightsByCol[col]}
               width={props.colWidth}
 
               // refs
@@ -194,9 +197,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
   }
 
   renderFgSegs(
-    segPlacements: NewTableSegPlacement[],
+    col: number,
+    segs: TableSeg[],
+    segTops: { [segStartId: string]: number },
     todayRange: DateRange,
-    isForcedInvisible: { [instanceId: string]: any },
+    forcedInvisibleMap: { [instanceId: string]: any },
     isDragging?: boolean,
     isResizing?: boolean,
     isDateSelecting?: boolean,
@@ -210,11 +215,19 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     const isMirror = isDragging || isResizing || isDateSelecting
     const nodes: VNode[] = []
 
-    for (const placement of segPlacements) {
-      const { seg, top } = placement
-      const { instanceId } = seg.eventRange.instance
-      const isVisible = top != null && !isForcedInvisible[instanceId]
+    for (const seg of segs) {
       const { left, right, width } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
+
+      // TODO: optimize ID creation? all related
+      const instanceId = seg.eventRange.instance.instanceId
+      const segSpanId = getSegSpanId(seg)
+      const segStartId = getSegStartId(seg)
+
+      const top = segTops[segStartId]
+      const isVisible =
+        seg.firstCol !== col ||
+        top == null ||
+        forcedInvisibleMap[instanceId]
 
       /*
       known bug: events that are force to be list-item but span multiple days still take up space in later columns
@@ -222,7 +235,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       */
       nodes.push(
         <div
-          key={generateSegKey(seg)}
+          key={segSpanId}
           className="fc-new-daygrid-event-harness"
           style={{
             visibility: isVisible ? '' : 'hidden',
@@ -231,7 +244,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
             right,
             width,
           }}
-          ref={isMirror ? null : this.segHarnessElRefMap.createRef(generateSegUid(seg))}
+          ref={isMirror ? null : this.segHarnessElRefMap.createRef(segSpanId)}
         >
           {hasListItemDisplay(seg) ? (
             <DayGridListEvent
@@ -333,10 +346,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
 
   querySegHeights() {
     const { segHarnessElRefMap } = this
-    const segHeights: { [segUid: string]: number } = {}
+    const segHeights: { [segSpanId: string]: number } = {}
 
-    for (const [segUid, segHarnessEl] of segHarnessElRefMap.current.entries()) {
-      segHeights[segUid] = segHarnessEl.getBoundingClientRect().height
+    for (const [segSpanId, segHarnessEl] of segHarnessElRefMap.current.entries()) {
+      segHeights[segSpanId] = segHarnessEl.getBoundingClientRect().height
     }
 
     return segHeights
@@ -383,33 +396,4 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
 
     return props.dateSelectionSegs
   }
-}
-
-// Utils
-// -------------------------------------------------------------------------------------------------
-
-function buildMirrorPlacements(
-  mirrorSegs: TableSeg[],
-  segPlacements: NewTableSegPlacement[]
-): NewTableSegPlacement[] {
-  if (!mirrorSegs.length) {
-    return []
-  }
-  let topsByInstanceId = buildAbsoluteTopHash(segPlacements) // TODO: cache this at first render?
-
-  return mirrorSegs.map((seg: TableSeg) => ({
-    seg,
-    top: topsByInstanceId[seg.eventRange.instance.instanceId],
-    isVisible: true,
-  }))
-}
-
-function buildAbsoluteTopHash(segPlacements: NewTableSegPlacement[]): { [instanceId: string]: number } {
-  let topsByInstanceId: { [instanceId: string]: number } = {}
-
-  for (let segPlacement of segPlacements) {
-    topsByInstanceId[segPlacement.seg.eventRange.instance.instanceId] = segPlacement.top
-  }
-
-  return topsByInstanceId
 }

@@ -32,8 +32,7 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
           bottom: props.bottom,
         }}
         allDayDate={null}
-        moreCnt={props.hiddenSegs.length}
-        allSegs={props.hiddenSegs}
+        segs={props.hiddenSegs}
         hiddenSegs={props.hiddenSegs}
         extraDateSpan={props.extraDateSpan}
         dateProfile={props.dateProfile}

@@ -42,9 +42,9 @@ export class SegHierarchy {
   stackCnts: { [entryId: string]: number } = {} // TODO: use better technique!?
 
   constructor(
-    private getEntryThickness = (entry: SegEntry): number => {
+    private getEntryThickness = (entry: SegEntry): number | undefined => {
       // if no thickness known, assume 1 (if 0, so small it always fits)
-      return entry.thickness || 1
+      return entry.thickness
     },
   ) {}
 
@@ -59,17 +59,23 @@ export class SegHierarchy {
   }
 
   insertEntry(entry: SegEntry, hiddenEntries: SegEntry[]): void {
-    let insertion = this.findInsertion(entry)
+    let entryThickness = this.getEntryThickness(entry)
 
-    if (this.isInsertionValid(insertion, entry)) {
-      this.insertEntryAt(entry, insertion)
+    if (entryThickness == null) {
+      hiddenEntries.push(entry)
     } else {
-      this.handleInvalidInsertion(insertion, entry, hiddenEntries)
+      let insertion = this.findInsertion(entry, entryThickness)
+
+      if (this.isInsertionValid(insertion, entry, entryThickness)) {
+        this.insertEntryAt(entry, insertion)
+      } else {
+        this.handleInvalidInsertion(insertion, entry, hiddenEntries)
+      }
     }
   }
 
-  isInsertionValid(insertion: SegInsertion, entry: SegEntry): boolean {
-    return (this.maxCoord === -1 || insertion.levelCoord + this.getEntryThickness(entry) <= this.maxCoord) &&
+  isInsertionValid(insertion: SegInsertion, entry: SegEntry, entryThickness: number): boolean {
+    return (this.maxCoord === -1 || insertion.levelCoord + entryThickness <= this.maxCoord) &&
       (this.maxStackCnt === -1 || insertion.stackCnt < this.maxStackCnt)
   }
 
@@ -129,7 +135,7 @@ export class SegHierarchy {
   /*
   does not care about limits
   */
-  findInsertion(newEntry: SegEntry): SegInsertion {
+  findInsertion(newEntry: SegEntry, newEntryThickness: number): SegInsertion {
     let { levelCoords, entriesByLevel, strictOrder, stackCnts } = this
     let levelCnt = levelCoords.length
     let candidateCoord = 0
@@ -143,7 +149,7 @@ export class SegHierarchy {
 
       // if the current level is past the placed entry, we have found a good empty space and can stop.
       // if strictOrder, keep finding more lateral intersections.
-      if (!strictOrder && trackingCoord >= candidateCoord + this.getEntryThickness(newEntry)) {
+      if (!strictOrder && trackingCoord >= candidateCoord + newEntryThickness) {
         break
       }
 

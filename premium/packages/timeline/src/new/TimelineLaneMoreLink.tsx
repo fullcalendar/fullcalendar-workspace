@@ -40,8 +40,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
           ...hStyle,
         }}
         allDayDate={null}
-        moreCnt={hiddenSegs.length}
-        allSegs={hiddenSegs}
+        segs={hiddenSegs}
         hiddenSegs={hiddenSegs}
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}

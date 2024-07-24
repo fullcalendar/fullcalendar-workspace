@@ -20,8 +20,7 @@ export interface MoreLinkContainerProps extends Partial<ElProps> {
   dateProfile: DateProfile
   todayRange: DateRange
   allDayDate: DateMarker | null
-  moreCnt: number // can't always derive from hiddenSegs. some hiddenSegs might be due to lack of dimensions
-  allSegs: Seg[]
+  segs: Seg[]
   hiddenSegs: Seg[]
   extraDateSpan?: Dictionary
   alignmentElRef?: RefObject<HTMLElement> // will use internal <a> if unspecified
@@ -62,7 +61,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
         {(context: ViewContext) => {
           let { viewApi, options, calendarApi } = context
           let { moreLinkText } = options
-          let { moreCnt } = props
+          let moreCnt = props.hiddenSegs.length
           let range = computeRange(props)
 
           let text = typeof moreLinkText === 'function' // TODO: eventually use formatWithOrdinals
@@ -79,7 +78,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
 
           return (
             <Fragment>
-              {Boolean(props.moreCnt) && (
+              {Boolean(moreCnt) && (
                 <ContentContainer
                   elTag={props.elTag || 'a'}
                   elRef={this.handleLinkEl}
@@ -174,7 +173,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
       moreLinkClick = moreLinkClick({
         date,
         allDay: Boolean(props.allDayDate),
-        allSegs: props.allSegs.map(buildPublicSeg),
+        allSegs: props.segs.map(buildPublicSeg),
         hiddenSegs: props.hiddenSegs.map(buildPublicSeg),
         jsEvent: ev,
         view: context.viewApi,
@@ -204,11 +203,9 @@ function computeRange(props: MoreLinkContainerProps): DateRange {
       end: addDays(props.allDayDate, 1),
     }
   }
-
-  let { hiddenSegs } = props
   return {
-    start: computeEarliestSegStart(hiddenSegs),
-    end: computeLatestSegEnd(hiddenSegs),
+    start: computeEarliestSegStart(props.hiddenSegs),
+    end: computeLatestSegEnd(props.hiddenSegs),
   }
 }
 

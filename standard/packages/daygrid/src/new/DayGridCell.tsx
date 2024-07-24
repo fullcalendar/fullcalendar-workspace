@@ -21,7 +21,7 @@ import {
   Fragment,
 } from '@fullcalendar/core/preact'
 import { DayGridMoreLink } from './DayGridMoreLink.js'
-import { NewTableSegPlacement } from '../event-placement.js'
+import { TableSeg } from '../TableSeg.js'
 
 export interface DayGridCellProps {
   dateProfile: DateProfile
@@ -30,11 +30,11 @@ export interface DayGridCellProps {
   showDayNumber: boolean
 
   // content
-  segPlacements: NewTableSegPlacement[] // for +more link popover content
+  segs: TableSeg[] // for +more link popover content
+  hiddenSegs: TableSeg[] // "
   fgHeightFixed: boolean
   fg: ComponentChildren
   bg: ComponentChildren
-  moreCnt: number
   eventDrag: EventSegUiInteractionState | null
   eventResize: EventSegUiInteractionState | null
   eventSelection: string
@@ -114,8 +114,8 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               <div className="fc-new-daygrid-day-bottom" style={{ marginTop: props.moreTop }}>
                 <DayGridMoreLink
                   allDayDate={props.date}
-                  segPlacements={props.segPlacements}
-                  moreCnt={props.moreCnt}
+                  segs={props.segs}
+                  hiddenSegs={props.hiddenSegs}
                   alignmentElRef={rootElRef}
                   alignGridTop={!props.showDayNumber}
                   extraDateSpan={props.extraDateSpan}
