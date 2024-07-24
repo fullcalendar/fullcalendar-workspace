@@ -113,13 +113,14 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     return (
       <div
         role="row"
+        className={fgHeightFixed && 'fc-new-daygrid-row-liquid'}
         style={{ height: props.height }}
         ref={this.handleRootEl}
       >
         {options.weekNumbers && (
           <WeekNumberContainer
             elTag="a"
-            elClasses={['fc-daygrid-week-number']}
+            elClasses={['fc-new-daygrid-week-number']}
             elAttrs={buildNavLinkAttrs(context, weekDate, 'week')}
             date={weekDate}
             defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
@@ -222,7 +223,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       nodes.push(
         <div
           key={generateSegKey(seg)}
-          className="fc-new-daygrid-fg-harness"
+          className="fc-new-daygrid-event-harness"
           style={{
             visibility: isVisible ? '' : 'hidden',
             top,

@@ -68,9 +68,8 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     return (
       <DayCellContainer
         elTag="div"
-        elRef={rootElRef}
         elClasses={[
-          'fc-daygrid-day',
+          'fc-new-daygrid-day',
           ...(props.extraClassNames || []),
         ]}
         elAttrs={{
@@ -80,46 +79,39 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         elStyle={{
           width: props.width
         }}
+        elRef={rootElRef}
+        extraRenderProps={props.extraRenderProps}
         defaultGenerator={renderTopInner}
         date={props.date}
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
         showDayNumber={props.showDayNumber}
         isMonthStart={isMonthStart}
-        extraRenderProps={props.extraRenderProps}
       >
         {(InnerContent, renderProps) => (
-          <div
-            ref={props.innerElRef}
-            className="fc-daygrid-day-frame fc-scrollgrid-sync-inner"
-          >
+          <div ref={props.innerElRef}>
             {!renderProps.isDisabled &&
-              (props.showDayNumber || hasCustomDayCellContent(options)) ? (
-                <div className="fc-daygrid-day-top">
+              (props.showDayNumber || hasCustomDayCellContent(options)) && (
+                <div className="fc-new-daygrid-day-top">
                   <InnerContent
                     elTag="a"
                     elClasses={[
-                      'fc-daygrid-day-number',
-                      isMonthStart && 'fc-daygrid-month-start',
+                      'fc-new-daygrid-day-number',
+                      isMonthStart && 'fc-new-daygrid-month-start',
                     ]}
                     elAttrs={buildNavLinkAttrs(context, props.date)}
                   />
                 </div>
-              ) : props.showDayNumber ? (
-                // for creating correct amount of space (see issue #7162)
-                <div className="fc-daygrid-day-top" style={{ visibility: 'hidden' }}>
-                  <a className="fc-daygrid-day-number">&nbsp;</a>
-                </div>
-              ) : undefined}
+              )}
             <div
               className={[
-                "fc-daygrid-day-events",
-                props.fgHeightFixed && "fc-newnew-liquid-height"
+                "fc-new-daygrid-day-events",
+                props.fgHeightFixed && "fc-new-daygrid-day-events-liquid"
               ].join(' ')}
               ref={props.fgContainerElRef}
             >
               {props.fg}
-              <div className="fc-daygrid-day-bottom" style={{ marginTop: props.moreTop }}>
+              <div className="fc-new-daygrid-day-bottom" style={{ marginTop: props.moreTop }}>
                 <DayGridMoreLink
                   allDayDate={props.date}
                   segPlacements={props.segPlacements}
@@ -135,7 +127,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 />
               </div>
             </div>
-            <div className="fc-daygrid-day-bg">
+            <div className="fc-new-daygrid-day-bg">
               {props.bg}
             </div>
           </div>
@@ -144,6 +136,9 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     )
   }
 }
+
+// Utils
+// -------------------------------------------------------------------------------------------------
 
 function renderTopInner(props: DayCellContentArg): ComponentChild {
   return props.dayNumberText || <Fragment>&nbsp;</Fragment>
