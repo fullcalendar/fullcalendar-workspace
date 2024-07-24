@@ -76,11 +76,11 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           <Scroller
             horizontal
             hideBars
-            elClassName={stickyHeaderDates && 'fc-newnew-sticky'}
+            elClassName={stickyHeaderDates && 'fcnew-sticky'}
             ref={this.headerScrollerRef}
           >
             <div
-              className='fc-newnew-header'
+              className='fcnew-header'
               style={{
                 width: canvasWidth,
                 paddingLeft: state.leftScrollbarWidth,
@@ -88,7 +88,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
               }}
             >
               {props.headerTiers.map((cells, tierNum) => (
-                <div key={tierNum} class='fc-newnew-header-row'>
+                <div key={tierNum} class='fcnew-header-row'>
                   {cells.map((cell) => (
                     <Fragment key={props.getHeaderModelKey(cell)}>
                       {props.renderHeaderContent(cell, tierNum)}

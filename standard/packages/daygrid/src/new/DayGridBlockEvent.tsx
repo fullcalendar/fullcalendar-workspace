@@ -13,7 +13,7 @@ export class DayGridBlockEvent extends BaseComponent<DayGridBlockEventProps> {
     return (
       <StandardEvent
         {...props}
-        elClasses={['fc-daygrid-event', 'fc-daygrid-block-event', 'fc-h-event']}
+        elClasses={['fcnew-daygrid-event', 'fcnew-daygrid-block-event', 'fcnew-h-event']}
         defaultTimeFormat={DEFAULT_TABLE_EVENT_TIME_FORMAT}
         defaultDisplayEventEnd={props.defaultDisplayEventEnd}
         disableResizing={!props.seg.eventRange.def.allDay}

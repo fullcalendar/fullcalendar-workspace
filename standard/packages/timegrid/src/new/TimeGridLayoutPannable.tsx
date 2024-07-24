@@ -105,11 +105,11 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
       <Fragment>
         {options.dayHeaders && (
           <div className={[
-            'fc-newnew-header',
-            stickyHeaderDates && 'fc-newnew-sticky',
+            'fcnew-header',
+            stickyHeaderDates && 'fcnew-sticky',
           ].join(' ')}>
             {/* LEFT */}
-            <div className='fc-newnew-axis' style={{ width: axisWidth }}>
+            <div className='fcnew-axis' style={{ width: axisWidth }}>
               {props.headerTiers.map((models, tierNum) => (
                 props.renderHeaderLabel(
                   tierNum,
@@ -123,9 +123,9 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               ref={this.headScrollerRef}
               horizontal
             >
-              <div className='fc-newnew-canvas' style={{ width: canvasWidth }}>
+              <div className='fcnew-canvas' style={{ width: canvasWidth }}>
                 {props.headerTiers.map((models, tierNum) => (
-                  <div className='fc-newnew-tier' style={{ height: state.headerTierHeights[tierNum] }}>
+                  <div className='fcnew-tier' style={{ height: state.headerTierHeights[tierNum] }}>
                     {models.map((model) => (
                       props.renderHeaderContent(
                         model,
@@ -155,7 +155,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 ref={this.allDayScrollerRef}
                 horizontal
               >
-                <div className='fc-newnew-canvas' style={{ width: canvasWidth }}>
+                <div className='fcnew-canvas' style={{ width: canvasWidth }}>
                   <TimeGridAllDayContent
                     dateProfile={props.dateProfile}
                     todayRange={props.todayRange}
@@ -185,7 +185,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 </div>
               </Scroller>
             </div>
-            <div className='fc-newnew-divider'></div>
+            <div className='fcnew-divider'></div>
           </Fragment>
         )}
         <div>
@@ -195,14 +195,14 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             vertical
             elStyle={{ width: axisWidth }}
           >
-            <div className='fc-newnew-canvas'>
+            <div className='fcnew-canvas'>
               <div>{/* TODO: make TimeGridAxisCol ? */}
                 <TimeGridNowIndicatorArrow nowDate={nowDate} />
               </div>
               {props.slatMetas.map((slatMeta) => (
                 <div
                   key={slatMeta.key}
-                  className='fc-newnew-row'
+                  className='fcnew-row'
                   style={{
                     // TODO: move to cell?
                     height: state.slatHeight
@@ -225,12 +225,12 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
             onRightScrollbarWidth={this.handleRightScrollbarWidth}
           >
-            <div className='fc-newnew-canvas' style={{ width: canvasWidth }}>
+            <div className='fcnew-canvas' style={{ width: canvasWidth }}>
               <div>
                 {props.slatMetas.map((slatMeta) => (
                   <div
                     key={slatMeta.key}
-                    className='fc-newnew-row'
+                    className='fcnew-row'
                     style={{
                       // TODO: move to cell?
                       height: state.slatHeight
@@ -243,7 +243,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   </div>
                 ))}
               </div>
-              <div className='fc-newnew-absolute'>
+              <div className='fcnew-absolute'>
                 <TimeGridCols
                   dateProfile={props.dateProfile}
                   nowDate={props.nowDate}
@@ -277,7 +277,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             {/* RIGHT */}
             <Scroller ref={this.footScrollerRef}>
               <div
-                className='fc-newnew-canvas'
+                className='fcnew-canvas'
                 style={{ width: canvasWidth }}
               />
             </Scroller>

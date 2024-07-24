@@ -69,7 +69,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       <DayCellContainer
         elTag="div"
         elClasses={[
-          'fc-new-daygrid-day',
+          'fcnew-daygrid-day',
           ...(props.extraClassNames || []),
         ]}
         elAttrs={{
@@ -92,12 +92,12 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
           <div ref={props.innerElRef}>
             {!renderProps.isDisabled &&
               (props.showDayNumber || hasCustomDayCellContent(options)) && (
-                <div className="fc-new-daygrid-day-top">
+                <div className="fcnew-daygrid-day-top">
                   <InnerContent
                     elTag="a"
                     elClasses={[
-                      'fc-new-daygrid-day-number',
-                      isMonthStart && 'fc-new-daygrid-month-start',
+                      'fcnew-daygrid-day-number',
+                      isMonthStart && 'fcnew-daygrid-month-start',
                     ]}
                     elAttrs={buildNavLinkAttrs(context, props.date)}
                   />
@@ -105,13 +105,13 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               )}
             <div
               className={[
-                "fc-new-daygrid-day-events",
-                props.fgHeightFixed && "fc-new-daygrid-day-events-liquid"
+                "fcnew-daygrid-day-events",
+                props.fgHeightFixed && "fcnew-daygrid-day-events-liquid"
               ].join(' ')}
               ref={props.fgContainerElRef}
             >
               {props.fg}
-              <div className="fc-new-daygrid-day-bottom" style={{ marginTop: props.moreTop }}>
+              <div className="fcnew-daygrid-day-bottom" style={{ marginTop: props.moreTop }}>
                 <DayGridMoreLink
                   allDayDate={props.date}
                   segs={props.segs}
@@ -127,7 +127,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 />
               </div>
             </div>
-            <div className="fc-new-daygrid-day-bg">
+            <div className="fcnew-daygrid-day-bg">
               {props.bg}
             </div>
           </div>

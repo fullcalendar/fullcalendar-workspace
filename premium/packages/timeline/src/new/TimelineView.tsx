@@ -82,8 +82,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
         {(nowDate: DateMarker, todayRange: DateRange) => (
           <ViewContainer
             elClasses={[
-              'fc-newnew-flexexpand', // expand within fc-view-harness
-              'fc-newnew-flexparent',
+              'fcnew-flexexpand', // expand within fc-view-harness
+              'fcnew-flexparent',
               'fc-timeline',
               options.eventOverlap === false ?
                 'fc-timeline-overlap-disabled' :
@@ -97,7 +97,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               ref={this.headerScrollerRef}
               horizontal
               hideBars
-              className={stickyHeaderDates ? 'fc-newnew-v-sticky' : ''}
+              className={stickyHeaderDates ? 'fcnew-v-sticky' : ''}
             >
               <div style={{
                 width: canvasWidth,
@@ -121,7 +121,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               ref={this.bodyScrollerRef}
               vertical
               horizontal
-              className='fc-newnew-flexexpand'
+              className='fcnew-flexexpand'
               onWidth={this.handleWidth}
               onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
               onRightScrollbarWidth={this.handleRightScrollbarWidth}

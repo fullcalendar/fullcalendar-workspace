@@ -33,7 +33,7 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
     let { props } = this
     return (
       <MoreLinkContainer
-        elClasses={['fc-daygrid-more-link']}
+        elClasses={['fcnew-daygrid-more-link']}
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
         allDayDate={props.allDayDate}
@@ -54,10 +54,10 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
                 let instanceId = seg.eventRange.instance.instanceId
                 return (
                   <div
-                    className="fc-daygrid-event-harness"
+                    className="fcnew-daygrid-event-harness"
                     key={instanceId}
                     style={{
-                      visibility: forcedInvisibleMap[instanceId] ? 'hidden' : ('' as any),
+                      visibility: forcedInvisibleMap[instanceId] ? 'hidden' : '',
                     }}
                   >
                     {hasListItemDisplay(seg) ? (

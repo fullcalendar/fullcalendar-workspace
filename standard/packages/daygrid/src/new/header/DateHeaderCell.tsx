@@ -89,7 +89,7 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
                 elTag="a"
                 elAttrs={navLinkAttrs}
                 elClasses={[
-                  props.isSticky && 'fc-sticky',
+                  props.isSticky && 'fcnew-sticky', // TODO: how to do this???
                 ]}
               />
             )}

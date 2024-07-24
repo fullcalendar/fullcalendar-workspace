@@ -58,8 +58,8 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
         {options.dayHeaders && (
           <div
             className={[
-              'fc-newnew-header',
-              stickyHeaderDates && 'fc-newnew-sticky',
+              'fcnew-header',
+              stickyHeaderDates && 'fcnew-sticky',
             ].join(' ')}
             style={{
               paddingLeft: state.leftScrollbarWidth,
@@ -67,7 +67,7 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
             }}
           >
             {props.headerTiers.map((cells, tierNum) => (
-              <div key={tierNum} class='fc-newnew-header-row'>
+              <div key={tierNum} class='fcnew-header-row'>
                 {cells.map((cell) => (
                   <Fragment key={props.getHeaderModelKey(cell)}>
                     {props.renderHeaderContent(cell, tierNum)}

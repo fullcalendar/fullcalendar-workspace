@@ -79,12 +79,12 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
       <Fragment>
         {options.dayHeaders && (
           <div className={[
-            'fc-newnew-header',
-            stickyHeaderDates && 'fc-newnew-sticky',
+            'fcnew-header',
+            stickyHeaderDates && 'fcnew-sticky',
           ].join(' ')}>
-            <div className='fc-newnew-header-inner'>
+            <div className='fcnew-header-inner'>
               {props.headerTiers.map((models, tierNum) => (
-                <div className='fc-newnew-row'>
+                <div className='fcnew-row'>
                   {props.renderHeaderLabel(
                     tierNum,
                     this.headerLabelElRefMap.createRef(tierNum),
@@ -104,8 +104,8 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         )}
         {options.allDaySlot && (
           <Fragment>
-            <div className='fc-newnew-row'>
-              <div className='fc-newnew-col' style={{ width: axisWidth }}>
+            <div className='fcnew-row'>
+              <div className='fcnew-col' style={{ width: axisWidth }}>
                 <TimeGridAllDayLabelCell
                   elRef={this.allDayLabelElRef}
                 />
@@ -130,17 +130,17 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 dayMaxEventRows={props.dayMaxEventRows}
               />
             </div>
-            <div className='fc-newnew-divider'></div>
+            <div className='fcnew-divider'></div>
           </Fragment>
         )}
         <Scroller
           ref={props.scrollerRef}
           vertical
         >
-          <div className='fc-newnew-canvas'>
+          <div className='fcnew-canvas'>
             <div>
               {props.slatMetas.map((slatMeta) => (
-                <div className='fc-newnew-row'>
+                <div className='fcnew-row'>
                   <div style={{ width: axisWidth }}>
                     <TimeGridAxisCell
                       {...slatMeta}
@@ -154,7 +154,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 </div>
               ))}
             </div>
-            <div className='fc-newnew-absolute'>
+            <div className='fcnew-absolute'>
               <div style={{ width: axisWidth }}>{/* TODO: make TimeGridAxisCol ? */}
                 <TimeGridNowIndicatorArrow nowDate={nowDate} />
               </div>

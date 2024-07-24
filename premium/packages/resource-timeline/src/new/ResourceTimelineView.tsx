@@ -261,8 +261,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
         {(nowDate: DateMarker, todayRange: DateRange) => (
           <ViewContainer
             elClasses={[
-              'fc-newnew-flexexpand', // expand within fc-view-harness
-              'fc-newnew-flexparent',
+              'fcnew-flexexpand', // expand within fc-view-harness
+              'fcnew-flexparent',
               'fc-resource-timeline',
               !anyNesting && 'fc-resource-timeline-flat', // flat means there's no nesting
               'fc-timeline',
@@ -275,11 +275,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
             <ResizableTwoCol
               onSizes={this.handleTwoColSizes}
               elRef={this.twoColElRef}
-              className={'fc-newnew-flexexpand'}
+              className={'fcnew-flexexpand'}
 
               /* spreadsheet */
 
-              startClassName='fc-newnew-flexparent'
+              startClassName='fcnew-flexparent'
               startContent={() => (
                 <Fragment>
 
@@ -288,7 +288,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     ref={this.spreadsheetHeaderScrollerRef}
                     horizontal
                     hideBars
-                    className={stickyHeaderDates ? 'fc-newnew-v-sticky' : ''}
+                    className={stickyHeaderDates ? 'fcnew-v-sticky' : ''}
                   >
                     <div
                       class='fc-datagrid-header'
@@ -327,7 +327,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     vertical={verticalScrolling}
                     horizontal
                     hideBars
-                    className='fc-newnew-flexexpand'
+                    className='fcnew-flexexpand'
                   >
                     <div
                       className='fc-datagrid-body'
@@ -351,7 +351,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                 return (
                                   <div
                                     key={queryObjKey(group)}
-                                    class='fc-newnew-row'
+                                    class='fcnew-row'
                                     role='row'
                                     // wrong!!! can't read/write height to same el
                                     style={createVerticalStyle(vertical)}
@@ -377,7 +377,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           return (
                             <div
                               key={String(group.value)}
-                              class='fc-newnew-row'
+                              class='fcnew-row'
                               role='row'
                               // wrong!!! can't read/write height to same el
                               style={createVerticalStyle(vertical)}
@@ -400,7 +400,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           return (
                             <div
                               key={resource.id}
-                              class='fc-newnew-row'
+                              class='fcnew-row'
                               role='row'
                               // wrong!!! can't read/write height to same el
                               style={createVerticalStyle(vertical)}
@@ -434,7 +434,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
               /* time-area */
 
-              endClassName='fc-newnew-flexparent'
+              endClassName='fcnew-flexparent'
               endContent={() => (
                 <Fragment>
 
@@ -443,7 +443,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     ref={this.timeHeaderScrollerRef}
                     horizontal
                     hideBars
-                    className={stickyHeaderDates ? 'fc-newnew-v-sticky' : ''}
+                    className={stickyHeaderDates ? 'fcnew-v-sticky' : ''}
                   >
                     <div style={{
                       width: timeCanvasWidth,
@@ -504,7 +504,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           return (
                             <div
                               key={String(group.value)}
-                              class='fc-newnew-row'
+                              class='fcnew-row'
                               role='row'
                               style={createVerticalStyle(vertical)}
                               ref={this.timeGroupWideRefMap.createRef(group.value)}
@@ -521,7 +521,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           return (
                             <div
                               key={resource.id}
-                              class='fc-newnew-row'
+                              class='fcnew-row'
                               role='row'
                               style={createVerticalStyle(vertical)}
                               ref={this.timeResourceRefMap.createRef(resource)}

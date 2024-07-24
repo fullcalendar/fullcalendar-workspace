@@ -84,7 +84,7 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
             <InnerContent
               elTag="a"
               elClasses={[
-                props.isSticky && 'fc-sticky',
+                props.isSticky && 'fcnew-sticky', // TODO: how to do this???
               ]}
               elAttrs={{
                 'aria-label': dateEnv.format(date, WEEKDAY_FORMAT),

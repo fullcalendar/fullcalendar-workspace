@@ -114,14 +114,14 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     return (
       <div
         role="row"
-        className={fgHeightFixed && 'fc-new-daygrid-row-liquid'}
+        className={fgHeightFixed && 'fcnew-daygrid-row-liquid'}
         style={{ height: props.height }}
         ref={this.handleRootEl}
       >
         {options.weekNumbers && (
           <WeekNumberContainer
             elTag="a"
-            elClasses={['fc-new-daygrid-week-number']}
+            elClasses={['fcnew-daygrid-week-number']}
             elAttrs={buildNavLinkAttrs(context, weekDate, 'week')}
             date={weekDate}
             defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
@@ -236,7 +236,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       nodes.push(
         <div
           key={segSpanId}
-          className="fc-new-daygrid-event-harness"
+          className="fcnew-daygrid-event-harness fcnew-daygrid-event-harness-abs"
           style={{
             visibility: isVisible ? '' : 'hidden',
             top,
@@ -286,7 +286,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       nodes.push(
         <div
           key={buildEventRangeKey(seg.eventRange)}
-          className="fc-new-daygrid-bg-harness"
+          className="fcnew-daygrid-bg-harness"
           style={{
             left,
             right,
@@ -358,13 +358,13 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
   queryFgContainerDims() {
     const { rootEl, fcContainerElRefMap } = this
     const rootElTop = rootEl.getBoundingClientRect().top
-    const fgContainerTops: { [key: string]: number } = {}
-    const fgContainerHeights: { [key: string]: number } = {}
+    const fgContainerTops: { [cellKey: string]: number } = {}
+    const fgContainerHeights: { [cellKey: string]: number } = {}
 
-    for (const [key, fgContainerEl] of fcContainerElRefMap.current.entries()) {
+    for (const [cellKey, fgContainerEl] of fcContainerElRefMap.current.entries()) {
       const rect = fgContainerEl.getBoundingClientRect()
-      fgContainerTops[key] = rect.top - rootElTop
-      fgContainerHeights[key] = rect.height
+      fgContainerTops[cellKey] = rect.top - rootElTop
+      fgContainerHeights[cellKey] = rect.height
     }
 
     return { fgContainerTops, fgContainerHeights }

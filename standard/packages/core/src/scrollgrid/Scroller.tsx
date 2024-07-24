@@ -22,7 +22,7 @@ export class Scroller extends Component<ScrollerProps> implements ScrollerInterf
 
   render() {
     return (
-      <div class='fc-newnew-scroller' ref={this.props.elRef}></div>
+      <div class='fcnew-scroller' ref={this.props.elRef}></div>
     )
   }
 
