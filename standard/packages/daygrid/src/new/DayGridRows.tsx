@@ -13,6 +13,7 @@ import {
 import { RefObject, createElement } from '@fullcalendar/core/preact'
 import { TableSeg, splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
 import { DayGridRow } from './DayGridRow.js'
+import { computeColFromPosition, computeRowFromPosition } from './util.js'
 
 export interface DayGridRowsProps {
   dateProfile: DateProfile
@@ -35,7 +36,7 @@ export interface DayGridRowsProps {
   width?: number
 
   // refs
-  rowHeightsRef?: RefObject<{ [key: string]: number }> // NOTE: fires rapidly
+  rowHeightsRef?: RefObject<{ [key: string]: number }> // NOTE: is set rapidly
 }
 
 export class DayGridRows extends DateComponent<DayGridRowsProps> {
@@ -145,35 +146,39 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   // -----------------------------------------------------------------------------------------------
 
   queryHit(positionLeft: number, positionTop: number, elWidth: number): Hit {
-    let { currentRowHeights } = this
-    let { cellRows, colWidth } = this.props
+    const { props, context, currentRowHeights } = this
 
-    let colCnt = cellRows[0].length
-    let col = computeCol(positionLeft, elWidth, colWidth, colCnt)
-    let hit = computeRowHit(positionTop, currentRowHeights)
+    const colCnt = props.cellRows[0].length
+    const { col, left, right } = computeColFromPosition(
+      positionLeft,
+      elWidth,
+      props.colWidth,
+      colCnt,
+      context.isRtl
+    )
+    const { row, top, bottom } = computeRowFromPosition(
+      positionTop,
+      props.cellRows,
+      currentRowHeights
+    )
+    const cell = props.cellRows[row][col]
 
-    if (hit != null && col != null && col < colCnt) {
-      let cell = this.props.cellRows[hit.row][col]
-
-      return {
-        dateProfile: this.props.dateProfile,
-        dateSpan: {
-          range: this.getCellRange(hit.row, col),
-          allDay: true,
-          ...cell.extraDateSpan,
-        },
-        dayEl: this.getCellEl(hit.row, col),
-        rect: {
-          left: col * colWidth,
-          right: (col + 1) * colWidth, // TODO: make work with RTL
-          top: hit.top,
-          bottom: hit.top + hit.height,
-        },
-        layer: 0,
-      }
+    return {
+      dateProfile: props.dateProfile,
+      dateSpan: {
+        range: this.getCellRange(row, col),
+        allDay: true,
+        ...cell.extraDateSpan,
+      },
+      dayEl: this.getCellEl(row, col),
+      rect: {
+        left,
+        right,
+        top,
+        bottom,
+      },
+      layer: 0,
     }
-
-    return null
   }
 
   private getCellEl(row, col): HTMLElement {
@@ -183,27 +188,14 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   }
 
   private getCellRange(row, col) {
-    let start = this.props.cellRows[row][col].date
-    let end = addDays(start, 1)
+    const start = this.props.cellRows[row][col].date
+    const end = addDays(start, 1)
     return { start, end }
   }
 }
 
 // Utils
 // -------------------------------------------------------------------------------------------------
-
-function computeCol(positionLeft: number, elWidth: number, colWidth: number | undefined, colCnt: number): number {
-  return null as any // !!! -- TODO: work with RTL
-}
-
-// TODO
-// TODO: iterate via cellRows?
-function computeRowHit(
-  positionTop: number,
-  currentRowHeights: { [key: string]: number },
-): { row: number, top: number, height: number } | null {
-  return null // !!!
-}
 
 function isSegAllDay(seg: TableSeg) {
   return seg.eventRange.def.allDay

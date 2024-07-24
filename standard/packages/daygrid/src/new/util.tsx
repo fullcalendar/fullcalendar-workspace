@@ -1,5 +1,5 @@
 import { DayHeaderContentArg } from '@fullcalendar/core'
-import { DateFormatter, DateMarker, DateProfile, DateProfileGenerator, DaySeriesModel, DayTableModel, computeFallbackHeaderFormat } from '@fullcalendar/core/internal'
+import { DateFormatter, DateMarker, DateProfile, DateProfileGenerator, DaySeriesModel, DayTableCell, DayTableModel, computeFallbackHeaderFormat } from '@fullcalendar/core/internal'
 import { ComponentChild } from '@fullcalendar/core/preact'
 
 export const HEADER_CELL_CLASS_NAME = 'fc-new-col-header-cell'
@@ -54,4 +54,77 @@ export function buildHeaderTiers(
       ? dates.map((date) => ({ colSpan: 1, date }))
       : dates.map((date) => ({ colSpan: 1, dow: date.getUTCDay() }))
   ]
+}
+
+// Positioning
+// -------------------------------------------------------------------------------------------------
+
+export function computeTopFromDate(
+  date: DateMarker,
+  cellRows: DayTableCell[][],
+  rowHeights: { [key: string]: number },
+): number | undefined {
+  let top = 0
+
+  for (const cells of cellRows) {
+    const start = cells[0].date
+    const end = cells[cells.length - 1].date
+    const key = start.toISOString()
+
+    if (date >= start && date <= end) {
+      return top
+    }
+
+    top += rowHeights[key]
+  }
+}
+
+export function computeColFromPosition(
+  positionLeft: number,
+  elWidth: number,
+  colWidth: number | undefined,
+  colCnt: number,
+  isRtl: boolean,
+): {
+  col: number,
+  left: number,
+  right: number,
+} {
+  const realColWidth = colWidth != null ? colWidth : elWidth / colCnt
+  const colFromLeft = Math.floor(positionLeft / realColWidth)
+  const col = isRtl ? (colCnt - colFromLeft - 1) : colCnt
+  const left = colFromLeft * realColWidth
+  const right = left + realColWidth
+
+  return { col, left, right }
+}
+
+export function computeRowFromPosition(
+  positionTop: number,
+  cellRows: DayTableCell[][],
+  rowHeights: { [key: string]: number },
+): {
+  row: number,
+  top: number,
+  bottom: number,
+} {
+  let row = 0
+  let top = 0
+  let bottom = 0
+
+  for (const cells of cellRows) {
+    const start = cells[0].date
+    const key = start.toISOString()
+
+    top = bottom
+    bottom = top + rowHeights[key]
+
+    if (positionTop < bottom) {
+      break
+    }
+
+    row++
+  }
+
+  return { row, top, bottom }
 }

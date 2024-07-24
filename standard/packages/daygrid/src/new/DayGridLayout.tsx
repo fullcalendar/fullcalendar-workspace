@@ -1,6 +1,5 @@
 import {
   BaseComponent,
-  DateMarker,
   DateProfile,
   DateRange,
   DayTableCell,
@@ -15,6 +14,7 @@ import { ComponentChild, createElement, createRef } from '@fullcalendar/core/pre
 import { TableSeg } from '../TableSeg.js'
 import { DayGridLayoutNormal } from './DayGridLayoutNormal.js'
 import { DayGridLayoutPannable } from './DayGridLayoutPannable.js'
+import { computeTopFromDate } from './util.js'
 
 export interface DayGridLayoutProps<HeaderCellModel, HeaderCellKey> {
   dateProfile: DateProfile
@@ -97,7 +97,7 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
     const rowHeights = this.rowHeightsRef.current
 
     if (rowHeights) {
-      const scrollTop = computeDateTop(
+      const scrollTop = computeTopFromDate(
         this.props.dateProfile.currentDate,
         this.props.cellRows,
         rowHeights,
@@ -110,27 +110,5 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
     }
 
     return false
-  }
-}
-
-// Utils
-// -------------------------------------------------------------------------------------------------
-
-function computeDateTop(
-  currentDate: DateMarker,
-  cellRows: DayTableCell[][],
-  rowHeights: { [key: string]: number },
-): number | undefined {
-  let top = 0
-
-  for (const cells of cellRows) {
-    const start = cells[0].date
-    const end = cells[cells.length - 1].date
-
-    if (currentDate >= start && currentDate <= end) {
-      return top
-    }
-
-    top += rowHeights[start.toISOString()]
   }
 }
