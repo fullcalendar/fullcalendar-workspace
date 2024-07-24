@@ -31,7 +31,7 @@ export interface DayCellProps {
 
   // content
   segPlacements: NewTableSegPlacement[] // for +more link popover content
-  fgLiquid: boolean
+  fgHeightFixed: boolean
   fg: ComponentChildren
   bg: ComponentChildren
   moreCnt: number
@@ -114,7 +114,7 @@ export class DayCell extends DateComponent<DayCellProps> {
             <div
               className={[
                 "fc-daygrid-day-events",
-                props.fgLiquid && "fc-newnew-liquid-height"
+                props.fgHeightFixed && "fc-newnew-liquid-height"
               ].join(' ')}
               ref={props.fgContainerElRef}
             >

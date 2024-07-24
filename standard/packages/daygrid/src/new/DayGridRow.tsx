@@ -7,7 +7,6 @@ import {
   DateProfile,
   BgEvent,
   renderFill,
-  isPropsEqual,
   buildEventRangeKey,
   sortEventSegs,
   DayTableCell,
@@ -16,6 +15,7 @@ import {
   createFormatter,
   WeekNumberContainer,
   buildNavLinkAttrs,
+  setStateDimMap,
 } from '@fullcalendar/core/internal'
 import {
   VNode,
@@ -66,7 +66,10 @@ interface DayGridRowState {
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
 
 export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> {
+  // ref
   private rootEl?: HTMLElement
+
+  // internal
   private fcContainerElRefMap = new RefMapKeyed<string, HTMLDivElement>()
   private segHarnessElRefMap = new RefMapKeyed<string, HTMLDivElement>() // indexed by generateSegUid
 
@@ -77,33 +80,32 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
   }
 
   render() {
-    let { props, state, context } = this
-    let { cells, cellInnerElRefMap } = props
-    let { fgContainerTops, fgContainerHeights } = state
-    let { options } = context
+    const { props, state, context } = this
+    const { cells, cellInnerElRefMap } = props
+    const { fgContainerTops, fgContainerHeights } = state
+    const { options } = context
 
-    let weekDate = props.cells[0].date
-    let colCnt = props.cells.length
+    const weekDate = props.cells[0].date
+    const colCnt = props.cells.length
 
-    let businessHoursByCol = splitSegsByFirstCol(props.businessHourSegs, colCnt)
-    let bgEventSegsByCol = splitSegsByFirstCol(props.bgEventSegs, colCnt)
-    let highlightSegsByCol = splitSegsByFirstCol(this.getHighlightSegs(), colCnt)
-    let mirrorSegsByCol = splitSegsByFirstCol(this.getMirrorSegs(), colCnt)
+    const businessHoursByCol = splitSegsByFirstCol(props.businessHourSegs, colCnt)
+    const bgEventSegsByCol = splitSegsByFirstCol(props.bgEventSegs, colCnt)
+    const highlightSegsByCol = splitSegsByFirstCol(this.getHighlightSegs(), colCnt)
+    const mirrorSegsByCol = splitSegsByFirstCol(this.getMirrorSegs(), colCnt)
 
-    let fgLiquid = props.dayMaxEvents === true || props.dayMaxEventRows === true
-
-    let { segPlacementsByCol, moreTops, moreCnts } = newComputeFgSegPlacement(
+    const fgHeightFixed = props.dayMaxEvents === true || props.dayMaxEventRows === true
+    const { segPlacementsByCol, moreTops, moreCnts } = newComputeFgSegPlacement(
       sortEventSegs(props.fgEventSegs, options.eventOrder) as TableSeg[],
       props.dayMaxEvents,
       props.dayMaxEventRows,
       options.eventOrderStrict,
       cells.map((cell) => fgContainerTops[cell.key]),
-      fgLiquid ? cells.map((cell) => fgContainerHeights[cell.key]) : [],
+      fgHeightFixed ? cells.map((cell) => fgContainerHeights[cell.key]) : [],
       state.segHeights,
       props.cells,
     )
 
-    let isForcedInvisible = // TODO: messy way to compute this
+    const isForcedInvisible = // TODO: messy way to compute this
       (props.eventDrag && props.eventDrag.affectedInstances) ||
       (props.eventResize && props.eventResize.affectedInstances) ||
       {}
@@ -114,7 +116,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
         style={{ height: props.height }}
         ref={this.handleRootEl}
       >
-        {options.weekNumbers && ( // NOTE: this will mess-up the .children hack the owner uses
+        {options.weekNumbers && (
           <WeekNumberContainer
             elTag="a"
             elClasses={['fc-daygrid-week-number']}
@@ -151,7 +153,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
 
               // content
               segPlacements={segPlacements}
-              fgLiquid={fgLiquid}
+              fgHeightFixed={fgHeightFixed}
               fg={(
                 <Fragment>
                   <Fragment>{normalFgNodes}</Fragment>
@@ -361,12 +363,13 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     const { props } = this
     const { fgContainerTops, fgContainerHeights } = this.queryFgContainerDims()
     const segHeights = this.querySegHeights()
-    const fgLiquid = props.dayMaxEvents === true || props.dayMaxEventRows === true
+    const fgHeightFixed = props.dayMaxEvents === true || props.dayMaxEventRows === true
 
-    this.safeSetState({ fgContainerTops, segHeights })
+    setStateDimMap(this, 'fgContainerTops', fgContainerTops)
+    setStateDimMap(this, 'segHeights', segHeights)
 
-    if (fgLiquid) {
-      this.safeSetState({ fgContainerHeights })
+    if (fgHeightFixed) {
+      setStateDimMap(this, 'fgContainerHeights', fgContainerHeights)
     }
   }
 
@@ -424,14 +427,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
   }
 }
 
-/*
-TODO: make these comparisons fuzzy with coordinates
-*/
-DayGridRow.addStateEquality({
-  fgContainerTops: isPropsEqual,
-  fgContainerHeights: isPropsEqual,
-  segHeights: isPropsEqual,
-})
+// Utils
+// -------------------------------------------------------------------------------------------------
 
 function buildMirrorPlacements(
   mirrorSegs: TableSeg[],

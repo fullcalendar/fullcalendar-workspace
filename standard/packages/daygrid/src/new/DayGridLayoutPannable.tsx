@@ -14,7 +14,7 @@ import {
   getIsHeightAuto,
   getScrollerSyncerClass,
 } from '@fullcalendar/core/internal'
-import { ComponentChild, Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
+import { ComponentChild, Fragment, Ref, RefObject, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
 import { TableSeg } from '../TableSeg.js'
 import { computeColWidth } from './util.js'
@@ -45,7 +45,7 @@ export interface DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
 
   // refs
   scrollerRef?: Ref<ScrollerInterface>
-  rowHeightsRef?: Ref<{ [key: string]: number }>
+  rowHeightsRef?: RefObject<{ [key: string]: number }>
 }
 
 interface DayGridViewState {

@@ -9,9 +9,8 @@ import {
   DayTableCell,
   setRef,
   RefMapKeyed,
-  compareObjs,
 } from '@fullcalendar/core/internal'
-import { Ref, createElement } from '@fullcalendar/core/preact'
+import { RefObject, createElement } from '@fullcalendar/core/preact'
 import { TableSeg, splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
 import { DayGridRow } from './DayGridRow.js'
 
@@ -36,7 +35,7 @@ export interface DayGridRowsProps {
   width?: number
 
   // refs
-  rowHeightsRef?: Ref<{ [key: string]: number }>
+  rowHeightsRef?: RefObject<{ [key: string]: number }> // NOTE: fires rapidly
 }
 
 export class DayGridRows extends DateComponent<DayGridRowsProps> {
@@ -128,26 +127,18 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   // -----------------------------------------------------------------------------------------------
 
   handleSizing = () => {
-    // rowHeights
-    // ----------
-
     const rowHeights: { [key: string]: number } = {}
     const { cellRows } = this.props
     let row = 0
 
     for (const rowEl of this.rowElRefMap.current.values()) {
       const rect = rowEl.getBoundingClientRect()
-      const height = rect.bottom - rect.top
       const key = cellRows[row++][0].key
-
-      rowHeights[key] = height
+      rowHeights[key] = rect.height
     }
 
-    if (!this.currentRowHeights || !compareObjs(this.currentRowHeights, rowHeights)) {
-      this.currentRowHeights = rowHeights
-      setRef(this.props.rowHeightsRef, rowHeights)
-    }
-    // TODO: callers might not care if fired rapidly. if so, don't care about equality
+    this.currentRowHeights = rowHeights
+    setRef(this.props.rowHeightsRef, rowHeights)
   }
 
   // Hit System
@@ -188,7 +179,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   private getCellEl(row, col): HTMLElement {
     const rowKey = this.props.cellRows[row][0].key
     const rowEl = this.rowElRefMap.current.get(rowKey)
-    return rowEl.children[col] as HTMLElement // HACK
+    return rowEl.querySelectorAll(':scope > [role=gridcell]')[col] as HTMLElement // HACK
   }
 
   private getCellRange(row, col) {
@@ -197,6 +188,9 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
     return { start, end }
   }
 }
+
+// Utils
+// -------------------------------------------------------------------------------------------------
 
 function computeCol(positionLeft: number, elWidth: number, colWidth: number | undefined, colCnt: number): number {
   return null as any // !!! -- TODO: work with RTL

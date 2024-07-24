@@ -76,6 +76,8 @@ export { combineEventUis, createEventUi } from './component-util/event-ui.js'
 export type { SplittableProps } from './component-util/event-splitting.js'
 export { Splitter } from './component-util/event-splitting.js'
 export { getDayClassNames, getDateMeta, getSlotClassNames, DateMeta } from './component-util/date-rendering.js'
+export { setStateDimMap } from './component-util/rendering-misc.js'
+
 export { buildNavLinkAttrs } from './common/nav-link.js'
 
 export {
