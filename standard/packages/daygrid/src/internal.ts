@@ -5,10 +5,10 @@ export { TableDateProfileGenerator, buildDayTableRenderRange } from './TableDate
 export { TableSeg } from './TableSeg.js'
 
 export { DayGridView } from './new/DayGridView.js'
-export { DateHeaderCell } from './new/DateHeaderCell.js'
+export { DateHeaderCell } from './new/header/DateHeaderCell.js'
 export { DayGridLayout, DayGridLayoutProps } from './new/DayGridLayout.js'
 export { DayGridRow, DayGridRowProps } from './new/DayGridRow.js'
-export { DayOfWeekHeaderCell } from './new/DayOfWeekHeaderCell.js'
+export { DayOfWeekHeaderCell } from './new/header/DayOfWeekHeaderCell.js'
 export { DayGridRows } from './new/DayGridRows.js'
 export {
   buildDayTableModel,

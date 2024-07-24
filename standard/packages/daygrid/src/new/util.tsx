@@ -1,6 +1,7 @@
-import { DayHeaderContentArg } from '@fullcalendar/core'
+import { CssDimValue, DayHeaderContentArg } from '@fullcalendar/core'
 import { DateFormatter, DateMarker, DateProfile, DateProfileGenerator, DaySeriesModel, DayTableCell, DayTableModel, computeFallbackHeaderFormat } from '@fullcalendar/core/internal'
 import { ComponentChild } from '@fullcalendar/core/preact'
+import { TableSeg } from '../TableSeg.js'
 
 export const HEADER_CELL_CLASS_NAME = 'fc-new-col-header-cell'
 
@@ -77,6 +78,46 @@ export function computeTopFromDate(
 
     top += rowHeights[key]
   }
+}
+
+export function computeHorizontalsFromSeg(
+  seg: TableSeg,
+  colWidth: number | undefined,
+  colCnt: number,
+  isRtl: boolean,
+): {
+  left: CssDimValue | undefined,
+  right: CssDimValue | undefined,
+  width: CssDimValue | undefined,
+} {
+  let left: CssDimValue
+  let right: CssDimValue
+  let width: CssDimValue
+
+  if (colWidth != null) {
+    width = (seg.lastCol - seg.firstCol + 1) * colWidth
+
+    if (isRtl) {
+      right = (colCnt - seg.lastCol - 1) * colWidth
+    } else {
+      left = seg.firstCol * colWidth
+    }
+  } else {
+    const colWidthFrac = 1 / colCnt
+    width = fracToCssDim(colWidthFrac)
+
+    if (isRtl) {
+      right = fracToCssDim((colCnt - seg.lastCol - 1) * colWidthFrac)
+    } else {
+      left = fracToCssDim(seg.firstCol * colWidthFrac)
+    }
+  }
+
+  return { left, right, width }
+}
+
+function fracToCssDim(frac: number): string {
+  return frac * 100 + '%'
 }
 
 export function computeColFromPosition(

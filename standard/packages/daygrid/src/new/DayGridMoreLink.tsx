@@ -16,7 +16,7 @@ import { DayGridBlockEvent } from './DayGridBlockEvent.js'
 import { DayGridListEvent } from './DayGridListEvent.js'
 import { TableSeg } from '../TableSeg.js'
 
-export interface DayCellMoreLinkProps {
+export interface DayGridMoreLinkProps {
   allDayDate: DateMarker
   segPlacements: NewTableSegPlacement[]
   moreCnt: number
@@ -30,7 +30,7 @@ export interface DayCellMoreLinkProps {
   eventResize: EventSegUiInteractionState | null
 }
 
-export class DayCellMoreLink extends BaseComponent<DayCellMoreLinkProps> {
+export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
   compileSegs = memoize(compileSegs)
 
   render() {

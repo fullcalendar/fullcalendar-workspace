@@ -8,9 +8,9 @@ import {
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { DayTableSlicer } from '../DayTableSlicer.js'
-import { DateHeaderCell } from './DateHeaderCell.js'
+import { DateHeaderCell } from './header/DateHeaderCell.js'
 import { DayGridLayout } from './DayGridLayout.js'
-import { DayOfWeekHeaderCell } from './DayOfWeekHeaderCell.js'
+import { DayOfWeekHeaderCell } from './header/DayOfWeekHeaderCell.js'
 import { buildDayTableModel, buildHeaderTiers, createDayHeaderFormatter, DateHeaderCellObj, DayOfWeekHeaderCellObj } from './util.js'
 
 export class DayGridView extends BaseComponent<ViewProps> {

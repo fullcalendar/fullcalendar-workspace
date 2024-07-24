@@ -1,4 +1,3 @@
-import { CssDimValue } from '@fullcalendar/core'
 import {
   EventSegUiInteractionState,
   BaseComponent,
@@ -24,11 +23,12 @@ import {
   Ref,
 } from '@fullcalendar/core/preact'
 import { TableSeg, splitSegsByFirstCol } from '../TableSeg.js'
-import { DayCell } from './DayCell.js'
+import { DayGridCell } from './DayGridCell.js'
 import { DayGridListEvent } from './DayGridListEvent.js'
 import { DayGridBlockEvent } from './DayGridBlockEvent.js'
 import { generateSegKey, generateSegUid, newComputeFgSegPlacement, NewTableSegPlacement } from '../event-placement.js'
 import { hasListItemDisplay } from '../event-rendering.js'
+import { computeHorizontalsFromSeg } from './util.js'
 
 export interface DayGridRowProps {
   dateProfile: DateProfile
@@ -126,15 +126,15 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
           />
         )}
         {props.cells.map((cell, col) => {
-          let segPlacements = segPlacementsByCol[col]
+          const segPlacements = segPlacementsByCol[col]
 
-          let normalFgNodes = this.renderFgSegs(
+          const normalFgNodes = this.renderFgSegs(
             segPlacements,
             props.todayRange,
             isForcedInvisible,
           )
 
-          let mirrorFgNodes = this.renderFgSegs(
+          const mirrorFgNodes = this.renderFgSegs(
             buildMirrorPlacements(mirrorSegsByCol[col], segPlacements),
             props.todayRange,
             {},
@@ -144,7 +144,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
           )
 
           return (
-            <DayCell
+            <DayGridCell
               key={cell.key}
               dateProfile={props.dateProfile}
               todayRange={props.todayRange}
@@ -200,41 +200,20 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     isResizing?: boolean,
     isDateSelecting?: boolean,
   ): VNode[] {
-    let { props, context } = this
-    let { isRtl } = context
-    let { colWidth, eventSelection } = props
+    const { props, context } = this
+    const { isRtl } = context
+    const { colWidth, eventSelection } = props
 
-    let colCnt = props.cells.length
-    let defaultDisplayEventEnd = props.cells.length === 1 // colCnt === 1
-    let isMirror = isDragging || isResizing || isDateSelecting
-    let nodes: VNode[] = []
+    const colCnt = props.cells.length
+    const defaultDisplayEventEnd = props.cells.length === 1
+    const isMirror = isDragging || isResizing || isDateSelecting
+    const nodes: VNode[] = []
 
-    for (let placement of segPlacements) {
-      let { seg, top } = placement
-      let { instanceId } = seg.eventRange.instance
-      let isVisible = top != null && !isForcedInvisible[instanceId]
-      let width: CssDimValue
-      let left: CssDimValue
-      let right: CssDimValue
-
-      if (colWidth != null) {
-        width = (seg.lastCol - seg.firstCol + 1) * colWidth
-
-        if (isRtl) {
-          right = (seg.lastCol - colCnt - 1) * colWidth
-        } else {
-          left = seg.firstCol * colWidth
-        }
-      } else {
-        const widthFrac = 1 / colCnt
-        width = widthFrac * 100 + '%'
-
-        if (isRtl) {
-          right = ((seg.lastCol - colCnt - 1) * widthFrac) * 100  + '%'
-        } else {
-          left = seg.firstCol * widthFrac * 100 + '%'
-        }
-      }
+    for (const placement of segPlacements) {
+      const { seg, top } = placement
+      const { instanceId } = seg.eventRange.instance
+      const isVisible = top != null && !isForcedInvisible[instanceId]
+      const { left, right, width } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
 
       /*
       known bug: events that are force to be list-item but span multiple days still take up space in later columns
@@ -242,16 +221,16 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       */
       nodes.push(
         <div
-          className={'fc-daygrid-event-harness fc-daygrid-event-harness-abs'}
           key={generateSegKey(seg)}
-          ref={isMirror ? null : this.segHarnessElRefMap.createRef(generateSegUid(seg))}
+          className="fc-new-daygrid-fg-harness"
           style={{
-            visibility: isVisible ? ('' as any) : 'hidden',
-            top: top != null ? top : '',
+            visibility: isVisible ? '' : 'hidden',
+            top,
             left,
             right,
             width,
           }}
+          ref={isMirror ? null : this.segHarnessElRefMap.createRef(generateSegUid(seg))}
         >
           {hasListItemDisplay(seg) ? (
             <DayGridListEvent
@@ -280,42 +259,20 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
   }
 
   renderFillSegs(segs: TableSeg[], fillType: string): VNode {
-    let { props, context } = this
-    let { isRtl } = context
-    let { todayRange, colWidth } = props
+    const { props, context } = this
+    const { isRtl } = context
+    const { todayRange, colWidth } = props
 
-    let colCnt = props.cells.length
-    let nodes: VNode[] = []
+    const colCnt = props.cells.length
+    const nodes: VNode[] = []
 
-    for (let seg of segs) {
-      let width: CssDimValue
-      let left: CssDimValue
-      let right: CssDimValue
-
-      // TODO: more DRY with fg events
-      if (colWidth != null) {
-        width = (seg.lastCol - seg.firstCol + 1) * colWidth
-
-        if (isRtl) {
-          right = (seg.lastCol - colCnt - 1) * colWidth
-        } else {
-          left = seg.firstCol * colWidth
-        }
-      } else {
-        const widthFrac = 1 / colCnt
-        width = widthFrac * 100 + '%'
-
-        if (isRtl) {
-          right = ((seg.lastCol - colCnt - 1) * widthFrac) * 100  + '%'
-        } else {
-          left = seg.firstCol * widthFrac * 100 + '%'
-        }
-      }
+    for (const seg of segs) {
+      const { left, right, width } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
 
       nodes.push(
         <div
           key={buildEventRangeKey(seg.eventRange)}
-          className="fc-daygrid-bg-harness"
+          className="fc-new-daygrid-bg-harness"
           style={{
             left,
             right,
@@ -361,9 +318,9 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
 
   handleSizing = () => {
     const { props } = this
+    const fgHeightFixed = props.dayMaxEvents === true || props.dayMaxEventRows === true
     const { fgContainerTops, fgContainerHeights } = this.queryFgContainerDims()
     const segHeights = this.querySegHeights()
-    const fgHeightFixed = props.dayMaxEvents === true || props.dayMaxEventRows === true
 
     setStateDimMap(this, 'fgContainerTops', fgContainerTops)
     setStateDimMap(this, 'segHeights', segHeights)

@@ -12,7 +12,7 @@ import {
   ContentContainer,
 } from '@fullcalendar/core/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
-import { HEADER_CELL_CLASS_NAME, renderInner } from './util.js'
+import { HEADER_CELL_CLASS_NAME, renderInner } from '../util.js'
 
 export interface DayOfWeekHeaderCellProps {
   dow: number

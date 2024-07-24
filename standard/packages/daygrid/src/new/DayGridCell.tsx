@@ -20,10 +20,10 @@ import {
   ComponentChild,
   Fragment,
 } from '@fullcalendar/core/preact'
-import { DayCellMoreLink } from './DayCellMoreLink.js'
-import { NewTableSegPlacement } from '../event-placement.js' // TODO: rename
+import { DayGridMoreLink } from './DayGridMoreLink.js'
+import { NewTableSegPlacement } from '../event-placement.js'
 
-export interface DayCellProps {
+export interface DayGridCellProps {
   dateProfile: DateProfile
   todayRange: DateRange
   date: DateMarker
@@ -54,7 +54,7 @@ export interface DayCellProps {
   fgContainerElRef?: Ref<HTMLDivElement>
 }
 
-export class DayCell extends DateComponent<DayCellProps> {
+export class DayGridCell extends DateComponent<DayGridCellProps> {
   private rootElRef = createRef<HTMLElement>()
 
   render() {
@@ -120,7 +120,7 @@ export class DayCell extends DateComponent<DayCellProps> {
             >
               {props.fg}
               <div className="fc-daygrid-day-bottom" style={{ marginTop: props.moreTop }}>
-                <DayCellMoreLink
+                <DayGridMoreLink
                   allDayDate={props.date}
                   segPlacements={props.segPlacements}
                   moreCnt={props.moreCnt}

@@ -15,7 +15,7 @@ import {
   ContentContainer,
 } from '@fullcalendar/core/internal'
 import { Ref, createElement } from '@fullcalendar/core/preact'
-import { HEADER_CELL_CLASS_NAME, renderInner } from './util.js'
+import { HEADER_CELL_CLASS_NAME, renderInner } from '../util.js'
 
 export interface DateHeaderCellProps {
   dateProfile: DateProfile
