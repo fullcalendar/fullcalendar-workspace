@@ -12,11 +12,6 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
   scrollTo(options: { x?: number, y?: number }): void {
   }
 
-  // TODO: move to having this debounce, like scrollEnd
-  // need this anymore???
-  addScrollListener(listener: () => void): void {
-  }
-
   handleChildren(scrollers: ScrollerInterface[]): void {
     // TODO
   }

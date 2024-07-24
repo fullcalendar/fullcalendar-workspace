@@ -288,7 +288,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     ref={this.spreadsheetHeaderScrollerRef}
                     horizontal
                     hideBars
-                    className={stickyHeaderDates ? 'fcnew-v-sticky' : ''}
+                    elClassNames={[stickyHeaderDates ? 'fcnew-v-sticky' : '']}
                   >
                     <div
                       class='fc-datagrid-header'
@@ -327,7 +327,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     vertical={verticalScrolling}
                     horizontal
                     hideBars
-                    className='fcnew-flexexpand'
+                    elClassNames={['fcnew-flexexpand']}
                   >
                     <div
                       className='fc-datagrid-body'
@@ -443,7 +443,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     ref={this.timeHeaderScrollerRef}
                     horizontal
                     hideBars
-                    className={stickyHeaderDates ? 'fcnew-v-sticky' : ''}
+                    elClassNames={[stickyHeaderDates ? 'fcnew-v-sticky' : '']}
                   >
                     <div style={{
                       width: timeCanvasWidth,
