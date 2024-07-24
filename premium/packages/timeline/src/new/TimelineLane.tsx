@@ -81,7 +81,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       options.eventMaxStack,
     )
 
-    let isForcedInvisible = // TODO: more convenient
+    let forcedInvisibleMap = // TODO: more convenient/DRY
       (slicedProps.eventDrag ? slicedProps.eventDrag.affectedInstances : null) ||
       (slicedProps.eventResize ? slicedProps.eventResize.affectedInstances : null) ||
       {}
@@ -103,7 +103,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         >
           {this.renderFgSegs(
             fgPlacements,
-            isForcedInvisible,
+            forcedInvisibleMap,
             false,
             false,
             false,
@@ -165,7 +165,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
 
   renderFgSegs(
     segPlacements: TimelineSegPlacement[],
-    isForcedInvisible: { [instanceId: string]: any },
+    forcedInvisibleMap: { [instanceId: string]: any },
     isDragging: boolean,
     isResizing: boolean,
     isDateSelecting: boolean,
@@ -192,13 +192,13 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
                 isTimeScale={props.tDateProfile.isTimeScale}
                 eventSelection={props.eventSelection}
                 resourceId={props.resourceId}
-                isForcedInvisible={isForcedInvisible}
+                forcedInvisibleMap={forcedInvisibleMap}
               />
             )
           }
 
           let instanceId = seg.eventRange.instance.instanceId
-          let isVisible = isMirror || Boolean(!isForcedInvisible[instanceId] && hcoords && top !== null)
+          let isVisible = isMirror || Boolean(!forcedInvisibleMap[instanceId] && hcoords && top !== null)
           let hStyle = coordsToCss(hcoords, context.isRtl)
 
           return (

@@ -106,7 +106,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       props.dayMaxEventRows,
     )
 
-    const forcedInvisibleMap = // TODO: messy way to compute this
+    const forcedInvisibleMap = // TODO: more convenient/DRY
       (props.eventDrag && props.eventDrag.affectedInstances) ||
       (props.eventResize && props.eventResize.affectedInstances) ||
       {}

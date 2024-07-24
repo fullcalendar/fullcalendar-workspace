@@ -18,7 +18,7 @@ export interface TimelineLaneMoreLinkProps {
   isTimeScale: boolean
   eventSelection: string
   resourceId?: string
-  isForcedInvisible: { [instanceId: string]: any }
+  forcedInvisibleMap: { [instanceId: string]: any }
 }
 
 export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProps> {
@@ -52,7 +52,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
               return (
                 <div
                   key={instanceId}
-                  style={{ visibility: props.isForcedInvisible[instanceId] ? 'hidden' : '' }}
+                  style={{ visibility: props.forcedInvisibleMap[instanceId] ? 'hidden' : '' }}
                 >
                   <TimelineEvent
                     isTimeScale={props.isTimeScale}

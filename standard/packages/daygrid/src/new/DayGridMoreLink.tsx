@@ -43,10 +43,11 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
         alignGridTop={props.alignGridTop}
         extraDateSpan={props.extraDateSpan}
         popoverContent={() => {
-          let isForcedInvisible =
+          let forcedInvisibleMap = // TODO: more convenient/DRY
             (props.eventDrag ? props.eventDrag.affectedInstances : null) ||
             (props.eventResize ? props.eventResize.affectedInstances : null) ||
             {}
+
           return (
             <Fragment>
               {props.segs.map((seg) => {
@@ -56,7 +57,7 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
                     className="fc-daygrid-event-harness"
                     key={instanceId}
                     style={{
-                      visibility: isForcedInvisible[instanceId] ? 'hidden' : ('' as any),
+                      visibility: forcedInvisibleMap[instanceId] ? 'hidden' : ('' as any),
                     }}
                   >
                     {hasListItemDisplay(seg) ? (
