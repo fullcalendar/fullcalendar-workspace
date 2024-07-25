@@ -1,0 +1,98 @@
+
+/*
+A HORIZONTAL event
+*/
+
+.fcnew-h-event { // allowed to be top-level
+  display: block;
+  border: 1px solid var(--fc-event-border-color);
+  background-color: var(--fc-event-bg-color);
+
+  & .fcnew-event-main {
+    color: var(--fc-event-text-color);
+  }
+
+  & .fcnew-event-main-frame {
+    display: flex; // for make fc-event-title-container expand
+  }
+
+  & .fcnew-event-time {
+    max-width: 100%; // clip overflow on this element
+    overflow: hidden;
+  }
+
+  & .fcnew-event-title-container { // serves as a container for the sticky cushion
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0; // important for allowing to shrink all the way
+  }
+
+  & .fcnew-event-title {
+    display: inline-block; // need this to be sticky cross-browser
+    vertical-align: top; // for not messing up line-height
+    left: 0;  // for sticky
+    right: 0; // for sticky
+    max-width: 100%; // clip overflow on this element
+    overflow: hidden;
+  }
+
+  &.fcnew-event-selected:before {
+    // expand hit area
+    top: -10px;
+    bottom: -10px;
+  }
+
+}
+
+// adjust border and border-radius (if there is any) for non-start/end
+
+.fcnew-direction-ltr .fcnew-daygrid-block-event:not(.fcnew-event-start),
+.fcnew-direction-rtl .fcnew-daygrid-block-event:not(.fcnew-event-end) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left-width: 0;
+}
+
+.fcnew-direction-ltr .fcnew-daygrid-block-event:not(.fcnew-event-end),
+.fcnew-direction-rtl .fcnew-daygrid-block-event:not(.fcnew-event-start) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right-width: 0;
+}
+
+// resizers
+
+.fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer {
+  top: 0;
+  bottom: 0;
+  width: var(--fc-event-resizer-thickness);
+}
+
+.fcnew-direction-ltr .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-start,
+.fcnew-direction-rtl .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-end {
+  cursor: w-resize;
+  left: calc(-0.5 * var(--fc-event-resizer-thickness));
+}
+
+.fcnew-direction-ltr .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-end,
+.fcnew-direction-rtl .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-start {
+  cursor: e-resize;
+  right: calc(-0.5 * var(--fc-event-resizer-thickness));
+}
+
+// resizers for TOUCH
+
+.fcnew-h-event.fcnew-event-selected .fcnew-event-resizer {
+  top: 50%;
+  margin-top: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
+}
+
+.fcnew-direction-ltr .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-start,
+.fcnew-direction-rtl .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-end {
+  left: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
+}
+
+.fcnew-direction-ltr .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-end,
+.fcnew-direction-rtl .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-start {
+  right: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
+}

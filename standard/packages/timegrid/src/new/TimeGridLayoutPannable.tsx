@@ -106,7 +106,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
         {options.dayHeaders && (
           <div className={[
             'fcnew-header',
-            stickyHeaderDates && 'fcnew-sticky',
+            stickyHeaderDates ? 'fcnew-sticky' : '',
           ].join(' ')}>
             {/* LEFT */}
             <div className='fcnew-axis' style={{ width: axisWidth }}>

@@ -80,7 +80,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         {options.dayHeaders && (
           <div className={[
             'fcnew-header',
-            stickyHeaderDates && 'fcnew-sticky',
+            stickyHeaderDates ? 'fcnew-sticky' : '',
           ].join(' ')}>
             <div className='fcnew-header-inner'>
               {props.headerTiers.map((models, tierNum) => (

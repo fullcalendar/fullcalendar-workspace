@@ -80,9 +80,9 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             'fc-multimonth-daygrid',
             'fc-daygrid',
             'fc-daygrid-body', // necessary for TableRows DnD parent
-            !forPrint && 'fc-daygrid-body-balanced',
-            forPrint && 'fc-daygrid-body-unbalanced',
-            forPrint && 'fc-daygrid-body-natural',
+            !forPrint ? 'fc-daygrid-body-balanced' : '',
+            forPrint ? 'fc-daygrid-body-unbalanced' : '',
+            forPrint ? 'fc-daygrid-body-natural' : '',
           ].join(' ')}
           style={{ marginTop: -rowHeight }} // for stickyness
         >

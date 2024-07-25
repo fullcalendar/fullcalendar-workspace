@@ -6,6 +6,8 @@
 @import './styles/calendar-root'; */
 
 @import './styles-new/calendar-root';
+@import './styles-new/event';
+@import './styles-new/h-event';
 
 @import './styles/icons';
 @import './styles/button';
