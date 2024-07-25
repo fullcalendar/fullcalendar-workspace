@@ -110,8 +110,14 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   scrollTo({ x, y }: { x?: number, y?: number }): void {
     const { isRtl } = this.context
     const el = this.elRef.current
-    el.scrollTop = y
-    el.scrollLeft = isRtl ? getNormalizedRtlScrollLeft(x, el) : x
+
+    if (y != null) {
+      el.scrollTop = y
+    }
+
+    if (x != null) {
+      el.scrollLeft = isRtl ? getNormalizedRtlScrollLeft(x, el) : x
+    }
   }
 }
 
@@ -151,7 +157,7 @@ function getNormalizedRtlScrollLeft(x: number, el: HTMLElement): number {
 // -------------------------------------------------------------------------------------------------
 // TODO: consolidate with scroll-left-norm.ts
 
-type RtlScrollerSystem = 'positive' | 'reverse' | 'negative'
+type RtlScrollerSystem = 'positive' | 'negative' | 'reverse'
 
 interface RtlScrollerConfig {
   system: RtlScrollerSystem

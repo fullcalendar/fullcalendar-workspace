@@ -2,5 +2,8 @@
 @import '../../core/src/styles/mixins';
 @import './styles/vars';
 
-@import './styles/daygrid';
-@import './styles/daygrid-event';
+/* @import './styles/daygrid'; */
+/* @import './styles/daygrid-event'; */
+
+@import './styles-new/daygrid';
+@import './styles-new/daygrid-event';
