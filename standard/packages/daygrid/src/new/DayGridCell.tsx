@@ -69,7 +69,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       <DayCellContainer
         elTag="div"
         elClasses={[
-          'fcnew-daygrid-day',
+          'fcnew-daygrid-cell',
           ...(props.extraClassNames || []),
         ]}
         elAttrs={{
@@ -89,7 +89,13 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         isMonthStart={isMonthStart}
       >
         {(InnerContent, renderProps) => (
-          <div ref={props.innerElRef}>
+          <div
+            ref={props.innerElRef}
+            className={[
+              'fcnew-daygrid-cell-inner',
+              props.fgHeightFixed ? 'fcnew-daygrid-cell-inner-liquid' : ''
+            ].join(' ')}
+          >
             {!renderProps.isDisabled &&
               (props.showDayNumber || hasCustomDayCellContent(options)) && (
                 <div className="fcnew-daygrid-day-top">
@@ -105,8 +111,8 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               )}
             <div
               className={[
-                "fcnew-daygrid-day-events",
-                props.fgHeightFixed && "fcnew-daygrid-day-events-liquid"
+                'fcnew-daygrid-day-events',
+                props.fgHeightFixed ? 'fcnew-daygrid-day-events-liquid' : ''
               ].join(' ')}
               ref={props.fgContainerElRef}
             >

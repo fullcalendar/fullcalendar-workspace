@@ -114,7 +114,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     return (
       <div
         role="row"
-        className={fgHeightFixed && 'fcnew-daygrid-row-liquid'}
+        className={[
+          'fcnew-daygrid-row',
+          fgHeightFixed ? 'fcnew-daygrid-row-fixedheight' : '',
+        ].join(' ')}
         style={{ height: props.height }}
         ref={this.handleRootEl}
       >
@@ -307,16 +310,16 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
-    this.handleSizing()
-    this.context.addResizeHandler(this.handleSizing)
+    // this.handleSizing()
+    // this.context.addResizeHandler(this.handleSizing)
   }
 
   componentDidUpdate() {
-    this.handleSizing()
+    // this.handleSizing()
   }
 
   componentWillUnmount() {
-    this.context.removeResizeHandler(this.handleSizing)
+    // this.context.removeResizeHandler(this.handleSizing)
   }
 
   // Handlers

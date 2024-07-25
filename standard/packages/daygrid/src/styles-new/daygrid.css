@@ -1,0 +1,67 @@
+
+.fcnew-daygrid-view {
+  display: flex;
+  flex-direction: column;
+}
+
+.fcnew-daygrid-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.fcnew-daygrid-header-row {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.fcnew-daygrid-header-row > * {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+.fcnew-daygrid-main {
+  flex-grow: 1;
+}
+
+.fcnew-daygrid-rows {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.fcnew-daygrid-row {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  position: relative; // origin for event positioning
+}
+
+.fcnew-daygrid-row-fixedheight {
+  flex-basis: 0;
+}
+
+.fcnew-daygrid-cell {
+  flex-grow: 1;
+  flex-basis: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.fcnew-daygrid-cell-inner-liquid {
+  flex-grow: 1;
+}
+
+.fcnew-daygrid-cell-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.fcnew-daygrid-day-events-liquid {
+  flex-grow: 1;
+}
+
+.fcnew-daygrid-day-bg {
+  /* needs work */
+}

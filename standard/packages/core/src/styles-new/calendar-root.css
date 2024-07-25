@@ -1,5 +1,38 @@
 
-.fcnew {
+.fc {
   display: flex;
   flex-direction: column;
+
+  &,
+  & *,
+  & *:before,
+  & *:after {
+    box-sizing: border-box;
+  }
+}
+
+.fc-direction-ltr {
+  direction: ltr;
+  text-align: left; // needed?
+}
+
+.fc-direction-rtl {
+  direction: rtl;
+  text-align: right; // needed?
+}
+
+.fcnew-bordered {
+  border: 1px solid var(--fc-border-color);
+}
+
+.fcnew-view-harness-aspectratio {
+  position: relative;
+}
+
+.fcnew-view-harness-aspectratio > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }

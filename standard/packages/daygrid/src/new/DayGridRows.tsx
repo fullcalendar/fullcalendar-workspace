@@ -67,7 +67,11 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
     let eventResizeByRow = this.splitEventResize(props.eventResize, rowCnt)
 
     return (
-      <div ref={this.handleRootEl} style={{ width: props.width }}>
+      <div
+        className='fcnew-daygrid-rows'
+        style={{ width: props.width }}
+        ref={this.handleRootEl}
+      >
         {props.cellRows.map((cells, row) => (
           <DayGridRow
             key={cells[0].key}
@@ -103,11 +107,16 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount(): void {
-    this.handleSizing()
+    // this.handleSizing()
+    // this.context.addResizeHandler(this.handleSizing)
   }
 
-  componentDidUpdate(): void {
-    this.handleSizing()
+  componentDidUpdate() {
+    // this.handleSizing()
+  }
+
+  componentWillUnmount() {
+    // this.context.removeResizeHandler(this.handleSizing)
   }
 
   // Handlers

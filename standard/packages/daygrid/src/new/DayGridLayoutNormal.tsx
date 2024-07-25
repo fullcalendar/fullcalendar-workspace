@@ -13,6 +13,7 @@ import {
 import { ComponentChild, Fragment, Ref, RefObject, createElement } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
 import { TableSeg } from '../TableSeg.js'
+import { DayGridHeader } from './DayGridHeader.js'
 
 export interface DayGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
   dateProfile: DateProfile
@@ -56,31 +57,26 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
     return (
       <Fragment>
         {options.dayHeaders && (
-          <div
-            className={[
-              'fcnew-header',
-              stickyHeaderDates && 'fcnew-sticky',
-            ].join(' ')}
-            style={{
-              paddingLeft: state.leftScrollbarWidth,
-              paddingRight: state.rightScrollbarWidth,
-            }}
-          >
-            {props.headerTiers.map((cells, tierNum) => (
-              <div key={tierNum} class='fcnew-header-row'>
-                {cells.map((cell) => (
-                  <Fragment key={props.getHeaderModelKey(cell)}>
-                    {props.renderHeaderContent(cell, tierNum)}
-                  </Fragment>
-                ))}
-              </div>
-            ))}
-          </div>
+          <DayGridHeader
+            headerTiers={props.headerTiers}
+            renderHeaderContent={props.renderHeaderContent}
+            getHeaderModelKey={props.getHeaderModelKey}
+
+            // render hooks
+            extraClassNames={[
+              stickyHeaderDates ? 'fcnew-sticky' : '',
+            ]}
+
+            // dimensions
+            paddingLeft={state.leftScrollbarWidth}
+            paddingRight={state.rightScrollbarWidth}
+          />
         )}
         <Scroller
           vertical={verticalScrollbars}
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
+          elClassNames={['fcnew-daygrid-main']}
           ref={props.scrollerRef}
         >
           <DayGridRows

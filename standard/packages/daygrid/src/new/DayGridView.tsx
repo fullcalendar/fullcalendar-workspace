@@ -8,9 +8,9 @@ import {
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { DayTableSlicer } from '../DayTableSlicer.js'
-import { DateHeaderCell } from './header/DateHeaderCell.js'
+import { DateHeaderCell } from './header-cells/DateHeaderCell.js'
 import { DayGridLayout } from './DayGridLayout.js'
-import { DayOfWeekHeaderCell } from './header/DayOfWeekHeaderCell.js'
+import { DayOfWeekHeaderCell } from './header-cells/DayOfWeekHeaderCell.js'
 import { buildDayTableModel, buildHeaderTiers, createDayHeaderFormatter, DateHeaderCellObj, DayOfWeekHeaderCellObj } from './util.js'
 
 export class DayGridView extends BaseComponent<ViewProps> {
@@ -79,10 +79,10 @@ export class DayGridView extends BaseComponent<ViewProps> {
             }}
 
             // body content
-            fgEventSegs={slicedProps.businessHourSegs}
-            bgEventSegs={slicedProps.businessHourSegs}
+            fgEventSegs={slicedProps.fgEventSegs}
+            bgEventSegs={slicedProps.bgEventSegs}
             businessHourSegs={slicedProps.businessHourSegs}
-            dateSelectionSegs={slicedProps.businessHourSegs}
+            dateSelectionSegs={slicedProps.dateSelectionSegs}
             eventDrag={slicedProps.eventDrag}
             eventResize={slicedProps.eventResize}
             eventSelection={slicedProps.eventSelection}

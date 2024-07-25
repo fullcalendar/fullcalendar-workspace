@@ -122,6 +122,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             <Scroller
               ref={this.headScrollerRef}
               horizontal
+              /* TODO: how to apply paddingRight/Left? */
             >
               <div className='fcnew-canvas' style={{ width: canvasWidth }}>
                 {props.headerTiers.map((models, tierNum) => (

@@ -18,6 +18,7 @@ import { ComponentChild, Fragment, Ref, RefObject, createElement, createRef } fr
 import { DayGridRows } from './DayGridRows.js'
 import { TableSeg } from '../TableSeg.js'
 import { computeColWidth } from './util.js'
+import { DayGridHeader } from './DayGridHeader.js'
 
 export interface DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
   dateProfile: DateProfile
@@ -79,24 +80,16 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
             elClassNames={[stickyHeaderDates && 'fcnew-sticky']}
             ref={this.headerScrollerRef}
           >
-            <div
-              className='fcnew-header'
-              style={{
-                width: canvasWidth,
-                paddingLeft: state.leftScrollbarWidth,
-                paddingRight: state.rightScrollbarWidth,
-              }}
-            >
-              {props.headerTiers.map((cells, tierNum) => (
-                <div key={tierNum} class='fcnew-header-row'>
-                  {cells.map((cell) => (
-                    <Fragment key={props.getHeaderModelKey(cell)}>
-                      {props.renderHeaderContent(cell, tierNum)}
-                    </Fragment>
-                  ))}
-                </div>
-              ))}
-            </div>
+            <DayGridHeader
+              headerTiers={props.headerTiers}
+              renderHeaderContent={props.renderHeaderContent}
+              getHeaderModelKey={props.getHeaderModelKey}
+
+              // dimensions
+              width={canvasWidth}
+              paddingLeft={state.leftScrollbarWidth}
+              paddingRight={state.rightScrollbarWidth}
+            />
           </Scroller>
         )}
         <Scroller
@@ -106,6 +99,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           widthRef={this.handleWidth}
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
+          elClassNames={['fcnew-daygrid-main']}
           ref={this.bodyScrollerRef}
         >
           <DayGridRows
