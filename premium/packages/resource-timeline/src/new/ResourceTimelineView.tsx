@@ -287,7 +287,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   <Scroller
                     ref={this.spreadsheetHeaderScrollerRef}
                     horizontal
-                    hideBars
+                    hideScrollbars
                     elClassNames={[stickyHeaderDates ? 'fcnew-v-sticky' : '']}
                   >
                     <div
@@ -326,7 +326,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     ref={this.spreadsheetBodyScrollerRef}
                     vertical={verticalScrolling}
                     horizontal
-                    hideBars
+                    hideScrollbars
                     elClassNames={['fcnew-flexexpand']}
                   >
                     <div
@@ -425,7 +425,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   <Scroller
                     ref={this.spreadsheetFooterScrollerRef}
                     horizontal
-                    onBottomScrollbarWidth={this.handleSpreadsheetBottomScrollbarWidth}
+                    bottomScrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
                   >
                     <div style={{ width: spreadsheetCanvasWidth }} />
                   </Scroller>
@@ -442,7 +442,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                   <Scroller
                     ref={this.timeHeaderScrollerRef}
                     horizontal
-                    hideBars
+                    hideScrollbars
                     elClassNames={[stickyHeaderDates ? 'fcnew-v-sticky' : '']}
                   >
                     <div style={{
@@ -469,9 +469,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     ref={this.timeBodyScrollerRef}
                     vertical={verticalScrolling}
                     horizontal
-                    onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
-                    onRightScrollbarWidth={this.handleRightScrollbarWidth}
-                    onBottomScrollbarWidth={this.handleTimeBottomScrollbarWidth}
+                    leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
+                    rightScrollbarWidthRef={this.handleRightScrollbarWidth}
+                    bottomScrollbarWidthRef={this.handleTimeBottomScrollbarWidth}
                   >
                     <div
                       ref={this.handleBodyEl}

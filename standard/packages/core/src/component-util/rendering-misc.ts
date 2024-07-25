@@ -13,18 +13,19 @@ export function setStateDimMap<State>(
   }
 }
 
-function isDimMapsEqual(
+export function isDimMapsEqual(
   oldMap: { [key: string]: number },
   newMap: { [key: string]: number },
 ): boolean {
   for (const key in newMap) {
-    const newVal = newMap[key]
-    const oldVal = oldMap[key]
-
-    if (newVal !== oldVal && Math.abs(newVal - oldVal) > 0.01) {
+    if (isDimsEqual(oldMap[key], newMap[key])) {
       return false
     }
   }
 
   return true
+}
+
+export function isDimsEqual(v0: number | undefined, v1: number): boolean {
+  return v0 != null && (v0 === v1 || Math.abs(v0 - v1) > 0.01)
 }

@@ -221,9 +221,9 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             ref={this.mainScrollerRef}
             vertical
             horizontal
-            onWidth={this.handleWidth}
-            onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
-            onRightScrollbarWidth={this.handleRightScrollbarWidth}
+            widthRef={this.handleWidth}
+            leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
+            rightScrollbarWidthRef={this.handleRightScrollbarWidth}
           >
             <div className='fcnew-canvas' style={{ width: canvasWidth }}>
               <div>

@@ -73,7 +73,7 @@ function detectRtlScrollSystem() {
   if (el.scrollLeft > 0) {
     system = 'positive' // scroll is a positive number from the left edge
   } else {
-    el.scrollLeft = 1
+    el.scrollLeft = 50
     if (el.scrollLeft > 0) {
       system = 'reverse' // scroll is a positive number from the right edge
     } else {

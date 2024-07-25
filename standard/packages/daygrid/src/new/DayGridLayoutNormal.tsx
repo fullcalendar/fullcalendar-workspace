@@ -79,8 +79,8 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
         )}
         <Scroller
           vertical={verticalScrollbars}
-          onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
-          onRightScrollbarWidth={this.handleRightScrollbarWidth}
+          leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
+          rightScrollbarWidthRef={this.handleRightScrollbarWidth}
           ref={props.scrollerRef}
         >
           <DayGridRows

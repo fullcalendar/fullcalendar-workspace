@@ -1,11 +1,12 @@
-import { Dictionary } from '../internal.js'
-import { Component, ComponentChildren, createElement } from '../preact.js'
+import { isDimsEqual } from '../component-util/rendering-misc.js'
+import { DateComponent, Dictionary, removeElement, setRef } from '../internal.js'
+import { ComponentChildren, createElement, createRef, Ref } from '../preact.js'
 import { ScrollerInterface } from './ScrollerInterface.js'
 
 export interface ScrollerProps {
   vertical?: boolean // true always implies 'auto' (won't show scrollbars if no overflow)
   horizontal?: boolean // (same)
-  hideBars?: boolean // default: false
+  hideScrollbars?: boolean // default: false
   children: ComponentChildren
 
   // el hooks
@@ -13,160 +14,187 @@ export interface ScrollerProps {
   elStyle?: Dictionary
 
   // dimensions
-  onWidth?: (width: number) => void // TODO: hook updateSize
-  onLeftScrollbarWidth?: (width: number) => void
-  onRightScrollbarWidth?: (width: number) => void
-  onBottomScrollbarWidth?: (width: number) => void
+  widthRef?: Ref<number>
+  leftScrollbarWidthRef?: Ref<number>
+  rightScrollbarWidthRef?: Ref<number>
+  bottomScrollbarWidthRef?: Ref<number>
 }
 
-export class Scroller extends Component<ScrollerProps> implements ScrollerInterface {
-  x: number
-  y: number
+export class Scroller extends DateComponent<ScrollerProps> implements ScrollerInterface {
+  // ref
+  private elRef = createRef<HTMLDivElement>()
+
+  // internal
+  private currentWidth: number
+  private currentLeftScrollbarWidth: number
+  private currentRightScrollbarWidth: number
+  private currentBottomScrollbarWidth: number
 
   render() {
     const { props } = this
 
     return (
       <div
-        className={['fcnew-scroller'].concat(props.elClassNames || []).join(' ')}
+        ref={this.elRef}
+        className={[
+          'fcnew-scroller',
+          props.hideScrollbars && 'fcnew-scroller-nobars',
+          ...(props.elClassNames || []),
+        ].join(' ')}
         style={{
           ...props.elStyle,
+          overflowX: props.horizontal ? 'auto' : 'hidden',
+          overflowY: props.vertical ? 'auto' : 'hidden',
         }}
       >{props.children}</div>
     )
   }
 
-  scrollTo(options: { x?: number, y?: number }): void {
+  componentDidMount(): void {
+    this.handleSizing()
+    this.context.addResizeHandler(this.handleSizing)
   }
+
+  componentDidUpdate(): void {
+    this.handleSizing()
+  }
+
+  componentWillUnmount(): void {
+    this.context.removeResizeHandler(this.handleSizing)
+  }
+
+  handleSizing = () => {
+    const { props, context } = this
+    const el = this.elRef.current
+    const width = el.getBoundingClientRect().width
+    const bottomScrollbarWidth = el.offsetHeight - el.clientHeight
+    const horizontalScrollbarWidth = el.offsetWidth - el.clientWidth
+    let rightScrollbarWidth = 0
+    let leftScrollbarWidth = 0
+
+    if (context.isRtl && getRtlScrollerConfig().leftScrollbars) {
+      leftScrollbarWidth = horizontalScrollbarWidth
+    } else {
+      rightScrollbarWidth = horizontalScrollbarWidth
+    }
+
+    if (!isDimsEqual(this.currentWidth, width)) {
+      setRef(props.widthRef, this.currentWidth = width)
+    }
+    if (!isDimsEqual(this.currentBottomScrollbarWidth, bottomScrollbarWidth)) {
+      setRef(props.leftScrollbarWidthRef, this.currentBottomScrollbarWidth = bottomScrollbarWidth)
+    }
+    if (!isDimsEqual(this.currentRightScrollbarWidth, rightScrollbarWidth)) {
+      setRef(props.rightScrollbarWidthRef, this.currentRightScrollbarWidth = rightScrollbarWidth)
+    }
+    if (!isDimsEqual(this.currentLeftScrollbarWidth, leftScrollbarWidth)) {
+      setRef(props.bottomScrollbarWidthRef, this.currentLeftScrollbarWidth = leftScrollbarWidth)
+    }
+  }
+
+  // Public API
+  // -----------------------------------------------------------------------------------------------
+
+  get x() {
+    const { isRtl } = this.context
+    const el = this.elRef.current
+    const { scrollLeft } = el
+    return isRtl ? getNormalizedRtlScrollX(scrollLeft, el) : scrollLeft
+  }
+
+  get y() {
+    const el = this.elRef.current
+    return el.scrollTop
+  }
+
+  scrollTo({ x, y }: { x?: number, y?: number }): void {
+    const { isRtl } = this.context
+    const el = this.elRef.current
+    el.scrollTop = y
+    el.scrollLeft = isRtl ? getNormalizedRtlScrollLeft(x, el) : x
+  }
+}
+
+// Public API
+// -------------------------------------------------------------------------------------------------
+// TODO: consolidate with scroll-left-norm.ts
+
+/*
+Returns a value in the 'reverse' system
+*/
+function getNormalizedRtlScrollX(scrollLeft: number, el: HTMLElement): number {
+  switch (getRtlScrollerConfig().system) {
+    case 'positive':
+      return el.scrollWidth - el.clientWidth - scrollLeft
+    case 'negative':
+      return -scrollLeft
+  }
+  return scrollLeft
 }
 
 /*
-
-import { createElement, ComponentChildren, Ref } from '../../preact.js'
-import { BaseComponent, setRef } from '../../vdom-util.js'
-import { CssDimValue, ScrollerLike } from '../util.js'
-
-export type OverflowValue = 'auto' | 'hidden' | 'scroll' | 'visible'
-
-export interface ScrollerProps {
-  elRef?: Ref<HTMLElement>
-  overflowX: OverflowValue
-  overflowY: OverflowValue
-  overcomeLeft?: number
-  overcomeRight?: number
-  overcomeBottom?: number
-  maxHeight?: CssDimValue
-  liquid?: boolean
-  liquidIsAbsolute?: boolean
-  children?: ComponentChildren
-}
-
-const VISIBLE_HIDDEN_RE = /^(visible|hidden)$/
-
-export class Scroller extends BaseComponent<ScrollerProps> implements ScrollerLike {
-  public el: HTMLElement // TODO: just use this.base?
-
-  render() {
-    let { props } = this
-    let { liquid, liquidIsAbsolute } = props
-    let isAbsolute = liquid && liquidIsAbsolute
-    let className = ['fc-scroller']
-
-    if (liquid) {
-      if (liquidIsAbsolute) {
-        className.push('fc-scroller-liquid-absolute')
-      } else {
-        className.push('fc-scroller-liquid')
-      }
-    }
-
-    return (
-      <div
-        ref={this.handleEl}
-        className={className.join(' ')}
-        style={{
-          overflowX: props.overflowX,
-          overflowY: props.overflowY,
-          left: (isAbsolute && -(props.overcomeLeft || 0)) || '',
-          right: (isAbsolute && -(props.overcomeRight || 0)) || '',
-          bottom: (isAbsolute && -(props.overcomeBottom || 0)) || '',
-          marginLeft: (!isAbsolute && -(props.overcomeLeft || 0)) || '',
-          marginRight: (!isAbsolute && -(props.overcomeRight || 0)) || '',
-          marginBottom: (!isAbsolute && -(props.overcomeBottom || 0)) || '',
-          maxHeight: props.maxHeight || '',
-        }}
-      >
-        {props.children}
-      </div>
-    )
-  }
-
-  handleEl = (el: HTMLElement) => {
-    this.el = el
-    setRef(this.props.elRef, el)
-  }
-
-  needsXScrolling() {
-    if (VISIBLE_HIDDEN_RE.test(this.props.overflowX)) {
-      return false
-    }
-
-    // testing scrollWidth>clientWidth is unreliable cross-browser when pixel heights aren't integers.
-    // much more reliable to see if children are taller than the scroller, even tho doesn't account for
-    // inner-child margins and absolute positioning
-
-    let { el } = this
-    let realClientWidth = this.el.getBoundingClientRect().width - this.getYScrollbarWidth()
-    let { children } = el
-
-    for (let i = 0; i < children.length; i += 1) {
-      let childEl = children[i]
-
-      if (childEl.getBoundingClientRect().width > realClientWidth) {
-        return true
-      }
-    }
-
-    return false
-  }
-
-  needsYScrolling() {
-    if (VISIBLE_HIDDEN_RE.test(this.props.overflowY)) {
-      return false
-    }
-
-    // testing scrollHeight>clientHeight is unreliable cross-browser when pixel heights aren't integers.
-    // much more reliable to see if children are taller than the scroller, even tho doesn't account for
-    // inner-child margins and absolute positioning
-
-    let { el } = this
-    let realClientHeight = this.el.getBoundingClientRect().height - this.getXScrollbarWidth()
-    let { children } = el
-
-    for (let i = 0; i < children.length; i += 1) {
-      let childEl = children[i]
-
-      if (childEl.getBoundingClientRect().height > realClientHeight) {
-        return true
-      }
-    }
-
-    return false
-  }
-
-  getXScrollbarWidth() {
-    if (VISIBLE_HIDDEN_RE.test(this.props.overflowX)) {
-      return 0
-    }
-    return this.el.offsetHeight - this.el.clientHeight // only works because we guarantee no borders. TODO: add to CSS with important?
-  }
-
-  getYScrollbarWidth() {
-    if (VISIBLE_HIDDEN_RE.test(this.props.overflowY)) {
-      return 0
-    }
-    return this.el.offsetWidth - this.el.clientWidth // only works because we guarantee no borders. TODO: add to CSS with important?
-  }
-}
-
+Receives a value in the 'reverse' system
+TODO: is this really the same equations as getNormalizedRtlScrollX??? I think so
+  If so, consolidate. With isRtl check too
 */
+function getNormalizedRtlScrollLeft(x: number, el: HTMLElement): number {
+  switch (getRtlScrollerConfig().system) {
+    case 'positive':
+      return el.scrollWidth - el.clientWidth - x
+    case 'negative':
+      return -x
+  }
+  return x
+}
+
+// Detection
+// -------------------------------------------------------------------------------------------------
+// TODO: consolidate with scroll-left-norm.ts
+
+type RtlScrollerSystem = 'positive' | 'reverse' | 'negative'
+
+interface RtlScrollerConfig {
+  system: RtlScrollerSystem
+  leftScrollbars: boolean
+}
+
+let _rtlScrollerConfig: RtlScrollerConfig | undefined
+
+function getRtlScrollerConfig(): RtlScrollerConfig {
+  return _rtlScrollerConfig || (_rtlScrollerConfig = detectRtlScrollerConfig())
+}
+
+function detectRtlScrollerConfig(): RtlScrollerConfig {
+  let el = document.createElement('div')
+  el.style.position = 'absolute'
+  el.style.top = '-1000px'
+  el.style.width = '100px' // must be at least the side of scrollbars or you get inaccurate values (#7335)
+  el.style.height = '100px' // "
+  el.style.overflow = 'scroll'
+  el.style.direction = 'rtl'
+
+  let innerEl = document.createElement('div')
+  innerEl.style.width = '200px'
+  innerEl.style.height = '200px'
+
+  el.appendChild(innerEl)
+  document.body.appendChild(el)
+
+  let system: RtlScrollerSystem
+  if (el.scrollLeft > 0) {
+    system = 'positive' // scroll is a positive number from the left edge
+  } else {
+    el.scrollLeft = 50
+    if (el.scrollLeft > 0) {
+      system = 'reverse' // scroll is a positive number from the right edge
+    } else {
+      system = 'negative' // scroll is a negative number from the right edge
+    }
+  }
+
+  let leftScrollbars = innerEl.getBoundingClientRect().left > el.getBoundingClientRect().left
+
+  removeElement(el)
+
+  return { system, leftScrollbars }
+}

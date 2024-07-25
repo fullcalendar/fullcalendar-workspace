@@ -75,7 +75,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
         {options.dayHeaders && (
           <Scroller
             horizontal
-            hideBars
+            hideScrollbars
             elClassNames={[stickyHeaderDates && 'fcnew-sticky']}
             ref={this.headerScrollerRef}
           >
@@ -102,10 +102,10 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
         <Scroller
           horizontal
           vertical={verticalScrollbars}
-          hideBars={stickyFooterScrollbar}
-          onWidth={this.handleWidth}
-          onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
-          onRightScrollbarWidth={this.handleRightScrollbarWidth}
+          hideScrollbars={stickyFooterScrollbar}
+          widthRef={this.handleWidth}
+          leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
+          rightScrollbarWidthRef={this.handleRightScrollbarWidth}
           ref={this.bodyScrollerRef}
         >
           <DayGridRows

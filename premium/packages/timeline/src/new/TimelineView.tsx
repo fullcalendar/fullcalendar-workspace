@@ -96,7 +96,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
             <Scroller
               ref={this.headerScrollerRef}
               horizontal
-              hideBars
+              hideScrollbars
               elClassNames={[stickyHeaderDates ? 'fcnew-v-sticky' : '']}
             >
               <div style={{
@@ -122,9 +122,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               vertical
               horizontal
               elClassNames={['fcnew-flexexpand']}
-              onWidth={this.handleWidth}
-              onLeftScrollbarWidth={this.handleLeftScrollbarWidth}
-              onRightScrollbarWidth={this.handleRightScrollbarWidth}
+              widthRef={this.handleWidth}
+              leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
+              rightScrollbarWidthRef={this.handleRightScrollbarWidth}
             >
               <div
                 ref={this.handeBodyEl}
