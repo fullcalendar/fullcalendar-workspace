@@ -9,8 +9,9 @@ import {
   DayTableCell,
   setRef,
   RefMapKeyed,
+  isDimMapsEqual,
 } from '@fullcalendar/core/internal'
-import { RefObject, createElement } from '@fullcalendar/core/preact'
+import { Ref, createElement } from '@fullcalendar/core/preact'
 import { TableSeg, splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
 import { DayGridRow } from './DayGridRow.js'
 import { computeColFromPosition, computeRowFromPosition } from './util.js'
@@ -36,7 +37,7 @@ export interface DayGridRowsProps {
   width?: number
 
   // refs
-  rowHeightsRef?: RefObject<{ [key: string]: number }> // NOTE: is set rapidly
+  rowHeightsRef?: Ref<{ [key: string]: number }>
 }
 
 export class DayGridRows extends DateComponent<DayGridRowsProps> {
@@ -49,7 +50,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   private splitEventResize = memoize(splitInteractionByRow)
 
   // ref
-  private rowElRefMap = new RefMapKeyed<string, HTMLElement>()
+  private rowElRefMap = new RefMapKeyed<string, HTMLElement>() // keyed by first cell's key
 
   // internal
   private currentRowHeights: { [key: string]: number } = {}
@@ -83,7 +84,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
 
             // content
             fgEventSegs={fgEventSegsByRow[row]}
-            bgEventSegs={bgEventSegsByRow[row].filter(isSegAllDay) /* hack */}
+            bgEventSegs={bgEventSegsByRow[row].filter(isSegAllDay) /* HACK */}
             businessHourSegs={businessHourSegsByRow[row]}
             dateSelectionSegs={dateSelectionSegsByRow[row]}
             eventSelection={props.eventSelection}
@@ -138,17 +139,16 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
 
   handleSizing = () => {
     const rowHeights: { [key: string]: number } = {}
-    const { cellRows } = this.props
-    let row = 0
 
-    for (const rowEl of this.rowElRefMap.current.values()) {
+    for (const [cellKey, rowEl] of this.rowElRefMap.current.entries()) {
       const rect = rowEl.getBoundingClientRect()
-      const key = cellRows[row++][0].key
-      rowHeights[key] = rect.height
+      rowHeights[cellKey] = rect.height
     }
 
-    this.currentRowHeights = rowHeights
-    setRef(this.props.rowHeightsRef, rowHeights)
+    if (!isDimMapsEqual(this.currentRowHeights, rowHeights)) {
+      this.currentRowHeights = rowHeights
+      setRef(this.props.rowHeightsRef, rowHeights)
+    }
   }
 
   // Hit System

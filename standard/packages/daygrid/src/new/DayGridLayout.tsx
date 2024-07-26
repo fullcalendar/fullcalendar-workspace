@@ -25,7 +25,7 @@ export interface DayGridLayoutProps<HeaderCellModel, HeaderCellKey> {
 
   // header content
   headerTiers: HeaderCellModel[][]
-  renderHeaderContent: (model: HeaderCellModel, tier: number) => ComponentChild
+  renderHeaderContent: (model: HeaderCellModel, tier: number, colWidth: number | undefined) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
   // body content

@@ -14,7 +14,7 @@ import {
   getIsHeightAuto,
   getScrollerSyncerClass,
 } from '@fullcalendar/core/internal'
-import { ComponentChild, Fragment, Ref, RefObject, createElement, createRef } from '@fullcalendar/core/preact'
+import { ComponentChild, Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
 import { TableSeg } from '../TableSeg.js'
 import { computeColWidth } from './util.js'
@@ -29,7 +29,7 @@ export interface DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
 
   // header content
   headerTiers: HeaderCellModel[][]
-  renderHeaderContent: (model: HeaderCellModel, tier: number) => ComponentChild
+  renderHeaderContent: (model: HeaderCellModel, tier: number, colWidth: number | undefined) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
   // body content
@@ -46,7 +46,7 @@ export interface DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
 
   // refs
   scrollerRef?: Ref<ScrollerInterface>
-  rowHeightsRef?: RefObject<{ [key: string]: number }>
+  rowHeightsRef?: Ref<{ [key: string]: number }>
 }
 
 interface DayGridViewState {
@@ -86,6 +86,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
               getHeaderModelKey={props.getHeaderModelKey}
 
               // dimensions
+              colWidth={colWidth}
               width={canvasWidth}
               paddingLeft={state.leftScrollbarWidth}
               paddingRight={state.rightScrollbarWidth}
@@ -123,7 +124,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
             width={canvasWidth}
 
             // refs
-            rowHeightsRef={props.rowHeightsRef}
+            rowHeightsRef={this.handleRowHeights}
           />
         </Scroller>
         {Boolean(stickyFooterScrollbar) && (
@@ -169,6 +170,11 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
 
   handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
     this.setState({ rightScrollbarWidth })
+  }
+
+  handleRowHeights = (rowHeights: { [cellKey: string]: number }) => {
+    setRef(this.props.rowHeightsRef, rowHeights)
+    this.bodyScrollerRef.current.handleSizing()
   }
 
   // Scrolling

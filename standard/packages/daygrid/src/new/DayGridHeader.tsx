@@ -2,13 +2,14 @@ import { ComponentChild, createElement, Fragment } from '@fullcalendar/core/prea
 
 export interface DayGridHeaderProps<Model, ModelKey> {
   headerTiers: Model[][]
-  renderHeaderContent: (model: Model, tier: number) => ComponentChild
+  renderHeaderContent: (model: Model, tier: number, colWidth: number | undefined) => ComponentChild
   getHeaderModelKey: (model: Model) => ModelKey
 
   // render hooks
   extraClassNames?: string[]
 
   // dimensions
+  colWidth?: number
   width?: number
   paddingLeft?: number
   paddingRight?: number
@@ -31,7 +32,7 @@ export function DayGridHeader<Model, ModelKey>(props: DayGridHeaderProps<Model, 
         <div key={tierNum} role='row' class='fcnew-daygrid-header-row'>
           {cells.map((cell) => (
             <Fragment key={props.getHeaderModelKey(cell)}>
-              {props.renderHeaderContent(cell, tierNum)}
+              {props.renderHeaderContent(cell, tierNum, props.colWidth)}
             </Fragment>
           ))}
         </div>

@@ -9,8 +9,9 @@ import {
   ScrollerInterface,
   getStickyHeaderDates,
   getIsHeightAuto,
+  setRef,
 } from '@fullcalendar/core/internal'
-import { ComponentChild, Fragment, Ref, RefObject, createElement } from '@fullcalendar/core/preact'
+import { ComponentChild, Fragment, Ref, createElement } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
 import { TableSeg } from '../TableSeg.js'
 import { DayGridHeader } from './DayGridHeader.js'
@@ -24,7 +25,7 @@ export interface DayGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
 
   // header content
   headerTiers: HeaderCellModel[][]
-  renderHeaderContent: (model: HeaderCellModel, tier: number) => ComponentChild
+  renderHeaderContent: (model: HeaderCellModel, tier: number, colWidth: number | undefined) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
   // body content
@@ -38,7 +39,7 @@ export interface DayGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
 
   // refs
   scrollerRef?: Ref<ScrollerInterface>
-  rowHeightsRef?: RefObject<{ [key: string]: number }>
+  rowHeightsRef?: Ref<{ [key: string]: number }>
 }
 
 interface DayGridViewState {
@@ -47,6 +48,8 @@ interface DayGridViewState {
 }
 
 export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseComponent<DayGridLayoutNormalProps<HeaderCellModel, HeaderCellKey>, DayGridViewState> {
+  scroller: Scroller | undefined | null
+
   render() {
     const { props, state, context } = this
     const { options } = context
@@ -77,7 +80,7 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
           elClassNames={['fcnew-daygrid-main']}
-          ref={props.scrollerRef}
+          ref={this.handleScroller}
         >
           <DayGridRows
             dateProfile={props.dateProfile}
@@ -103,11 +106,21 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
     )
   }
 
+  handleScroller = (scroller: Scroller) => {
+    setRef(this.props.scrollerRef, scroller)
+    this.scroller = scroller
+  }
+
   handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
     this.setState({ leftScrollbarWidth })
   }
 
   handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
     this.setState({ rightScrollbarWidth })
+  }
+
+  handleRowHeights = (rowHeights: { [cellKey: string]: number }) => {
+    setRef(this.props.rowHeightsRef, rowHeights)
+    this.scroller.handleSizing()
   }
 }

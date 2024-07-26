@@ -47,7 +47,7 @@ export class DayGridView extends BaseComponent<ViewProps> {
 
             // header content
             headerTiers={headerTiers}
-            renderHeaderContent={(model) => {
+            renderHeaderContent={(model, tier, colWidth) => {
               if ((model as DateHeaderCellObj).date) {
                 return (
                   <DateHeaderCell
@@ -57,7 +57,7 @@ export class DayGridView extends BaseComponent<ViewProps> {
                     navLink={dayTableModel.colCnt > 1}
                     dayHeaderFormat={dayHeaderFormat}
                     colSpan={model.colSpan}
-                    colWidth={undefined}
+                    colWidth={colWidth}
                   />
                 )
               } else {
@@ -66,7 +66,7 @@ export class DayGridView extends BaseComponent<ViewProps> {
                     {...(model as DayOfWeekHeaderCellObj)}
                     dayHeaderFormat={dayHeaderFormat}
                     colSpan={model.colSpan}
-                    colWidth={undefined}
+                    colWidth={colWidth}
                   />
                 )
               }

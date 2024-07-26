@@ -235,6 +235,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
         !forcedInvisibleMap[instanceId]
 
       /*
+      TODO: is this comment still relevant? vvvvvvvv
       known bug: events that are force to be list-item but span multiple days still take up space in later columns
       todo: in print view, for multi-day events, don't display title within non-start/end segs
       */
