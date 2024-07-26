@@ -107,16 +107,16 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount(): void {
-    // this.handleSizing()
-    // this.context.addResizeHandler(this.handleSizing)
+    this.handleSizing()
+    this.context.addResizeHandler(this.handleSizing)
   }
 
   componentDidUpdate() {
-    // this.handleSizing()
+    this.handleSizing()
   }
 
   componentWillUnmount() {
-    // this.context.removeResizeHandler(this.handleSizing)
+    this.context.removeResizeHandler(this.handleSizing)
   }
 
   // Handlers

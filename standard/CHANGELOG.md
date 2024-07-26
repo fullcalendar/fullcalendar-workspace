@@ -2,6 +2,7 @@
 Got rid of some things in exposed-classes.ts
 Revisit https://github.com/fullcalendar/fullcalendar/issues/5606
 Reverify https://github.com/fullcalendar/fullcalendar/issues/7162
+TODO: isStandin - flag for hidden DOM-only event element
 
 ## 6.1.15 (2024-07-12)
 

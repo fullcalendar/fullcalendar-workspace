@@ -117,7 +117,11 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               ref={props.fgContainerElRef}
             >
               {props.fg}
-              <div className="fcnew-daygrid-day-bottom" style={{ marginTop: props.moreTop }}>
+              <div
+                className="fcnew-daygrid-day-bottom"
+                style={{ marginTop: props.moreTop }}
+                // ^weird to create space this way, even when there's no +more link
+              >
                 <DayGridMoreLink
                   allDayDate={props.date}
                   segs={props.segs}

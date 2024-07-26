@@ -18,7 +18,7 @@ export function isDimMapsEqual(
   newMap: { [key: string]: number },
 ): boolean {
   for (const key in newMap) {
-    if (isDimsEqual(oldMap[key], newMap[key])) {
+    if (!isDimsEqual(oldMap[key], newMap[key])) {
       return false
     }
   }
@@ -27,5 +27,5 @@ export function isDimMapsEqual(
 }
 
 export function isDimsEqual(v0: number | undefined, v1: number): boolean {
-  return v0 != null && (v0 === v1 || Math.abs(v0 - v1) > 0.01)
+  return v0 != null && (v0 === v1 || Math.abs(v0 - v1) < 0.01)
 }

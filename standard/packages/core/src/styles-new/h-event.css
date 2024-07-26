@@ -46,15 +46,15 @@ A HORIZONTAL event
 
 // adjust border and border-radius (if there is any) for non-start/end
 
-.fcnew-direction-ltr .fcnew-daygrid-block-event:not(.fcnew-event-start),
-.fcnew-direction-rtl .fcnew-daygrid-block-event:not(.fcnew-event-end) {
+.fc-direction-ltr .fcnew-daygrid-block-event:not(.fcnew-event-start),
+.fc-direction-rtl .fcnew-daygrid-block-event:not(.fcnew-event-end) {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-left-width: 0;
 }
 
-.fcnew-direction-ltr .fcnew-daygrid-block-event:not(.fcnew-event-end),
-.fcnew-direction-rtl .fcnew-daygrid-block-event:not(.fcnew-event-start) {
+.fc-direction-ltr .fcnew-daygrid-block-event:not(.fcnew-event-end),
+.fc-direction-rtl .fcnew-daygrid-block-event:not(.fcnew-event-start) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-right-width: 0;
@@ -68,14 +68,14 @@ A HORIZONTAL event
   width: var(--fc-event-resizer-thickness);
 }
 
-.fcnew-direction-ltr .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-start,
-.fcnew-direction-rtl .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-end {
+.fc-direction-ltr .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-start,
+.fc-direction-rtl .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-end {
   cursor: w-resize;
   left: calc(-0.5 * var(--fc-event-resizer-thickness));
 }
 
-.fcnew-direction-ltr .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-end,
-.fcnew-direction-rtl .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-start {
+.fc-direction-ltr .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-end,
+.fc-direction-rtl .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-start {
   cursor: e-resize;
   right: calc(-0.5 * var(--fc-event-resizer-thickness));
 }
@@ -87,12 +87,12 @@ A HORIZONTAL event
   margin-top: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
 }
 
-.fcnew-direction-ltr .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-start,
-.fcnew-direction-rtl .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-end {
+.fc-direction-ltr .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-start,
+.fc-direction-rtl .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-end {
   left: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
 }
 
-.fcnew-direction-ltr .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-end,
-.fcnew-direction-rtl .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-start {
+.fc-direction-ltr .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-end,
+.fc-direction-rtl .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-start {
   right: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
 }

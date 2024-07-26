@@ -36,11 +36,12 @@
   flex-direction: row;
   align-items: stretch;
   position: relative; // origin for event positioning
-}
-
-.fcnew-daygrid-row-fixedheight {
   flex-basis: 0;
 }
+
+/* .fcnew-daygrid-row-fixedheight {
+  flex-basis: 0;
+} */
 
 .fcnew-daygrid-cell {
   flex-grow: 1;

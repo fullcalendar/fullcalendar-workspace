@@ -6,56 +6,69 @@ export interface TableSeg extends Seg {
   row: number
   firstCol: number
   lastCol: number
+  isStandin?: boolean
 }
 
 export function splitSegsByRow(segs: TableSeg[], rowCnt: number) {
-  let byRow: TableSeg[][] = []
+  const byRow: TableSeg[][] = []
 
-  for (let i = 0; i < rowCnt; i += 1) {
-    byRow[i] = []
+  for (let row = 0; row < rowCnt; row++) {
+    byRow[row] = []
   }
 
-  for (let seg of segs) {
+  for (const seg of segs) {
     byRow[seg.row].push(seg)
   }
 
   return byRow
 }
 
-export function splitSegsByFirstCol(segs: TableSeg[], colCnt: number) {
-  let byCol: TableSeg[][] = []
-
-  for (let i = 0; i < colCnt; i += 1) {
-    byCol[i] = []
-  }
-
-  for (let seg of segs) {
-    byCol[seg.firstCol].push(seg)
-  }
-
-  return byCol
-}
-
 export function splitInteractionByRow(ui: EventSegUiInteractionState | null, rowCnt: number) {
-  let byRow: EventSegUiInteractionState[] = []
+  const byRow: EventSegUiInteractionState[] = []
 
   if (!ui) {
-    for (let i = 0; i < rowCnt; i += 1) {
-      byRow[i] = null
+    for (let row = 0; row < rowCnt; row++) {
+      byRow[row] = null
     }
   } else {
-    for (let i = 0; i < rowCnt; i += 1) {
-      byRow[i] = {
+    for (let row = 0; row < rowCnt; row++) {
+      byRow[row] = {
         affectedInstances: ui.affectedInstances,
         isEvent: ui.isEvent,
         segs: [],
       }
     }
 
-    for (let seg of ui.segs) {
+    for (const seg of ui.segs) {
       byRow[seg.row].segs.push(seg)
     }
   }
 
   return byRow
+}
+
+export function splitSegsByCol(segs: TableSeg[], colCnt: number) {
+  let byCol: TableSeg[][] = []
+
+  for (let col = 0; col < colCnt; col++) {
+    byCol.push([])
+  }
+
+  for (let seg of segs) {
+    for (let col = seg.firstCol; col <= seg.lastCol; col++) {
+      if (seg.firstCol !== col) {
+        seg = {
+          ...seg,
+          firstCol: col,
+          lastCol: col,
+          isStart: false,
+          isEnd: seg.isEnd && seg.lastCol === col,
+          isStandin: true,
+        }
+      }
+      byCol[col].push(seg)
+    }
+  }
+
+  return byCol
 }

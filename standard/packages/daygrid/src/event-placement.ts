@@ -4,6 +4,7 @@ import {
   SegInsertion,
   buildEntryKey,
   intersectSpans,
+  DayTableCell,
 } from '@fullcalendar/core/internal'
 import { TableSeg } from './TableSeg.js'
 
@@ -24,26 +25,24 @@ export function getSegSpanId(seg: TableSeg): string {
 export function computeFgSegVerticals(
   segs: TableSeg[],
   segHeights: { [segSpanId: string]: number },
-  colCnt: number,
+  cells: DayTableCell[],
   colTopOrigins: number[],
   colMaxHeights: number[],
   strictOrder: boolean,
   dayMaxEvents: boolean | number,
   dayMaxEventRows: boolean | number,
 ): [
-  segsByCol: TableSeg[][],
   hiddenSegsByCol: TableSeg[][],
   segTops: { [segStartId: string]: number },
   heightsByCol: number[],
 ] {
   // initialize column-based arrays
 
-  const segsByCol: TableSeg[][] = [] // TODO: have caller compute this?
+  const colCnt = cells.length
   const hiddenSegsByCol: TableSeg[][] = []
   const heightsByCol: number[] = []
 
   for (let col = 0; col < colCnt; col++) {
-    segsByCol.push([])
     hiddenSegsByCol.push([])
     heightsByCol.push(0)
   }
@@ -58,26 +57,22 @@ export function computeFgSegVerticals(
   }
 
   let smallestMaxBottom: number | undefined
-  let col = 0
-  for (const colMaxHeight of colMaxHeights) {
-    const colMaxBottom = colTopOrigins[col] + colMaxHeight
-    if (smallestMaxBottom == null || colMaxBottom < smallestMaxBottom) {
-      smallestMaxBottom = colMaxBottom
+
+  for (let col = 0; col < colCnt; col++) {
+    const colTopOrigin = colTopOrigins[col]
+    const colMaxHeight = colMaxHeights[col]
+
+    if (colTopOrigin != null && colMaxHeight != null) {
+      const colMaxBottom = colTopOrigin + colMaxHeight
+      if (smallestMaxBottom == null || colMaxBottom < smallestMaxBottom) {
+        smallestMaxBottom = colMaxBottom
+      }
     }
-    col++
   }
 
   let maxHeight = smallestMaxBottom != null
     ? smallestMaxBottom - segTopOrigin
     : undefined
-
-  // catalog each column that each seg occupies
-
-  for (const seg of segs) {
-    for (let col = seg.firstCol; col <= seg.lastCol; col++) {
-      segsByCol[col].push(seg)
-    }
-  }
 
   // for segs that have heights, create entries to be given to DayGridSegHierarchy
   // otherwise, record seg as hidden
@@ -138,7 +133,7 @@ export function computeFgSegVerticals(
     }
   }
 
-  return [segsByCol, hiddenSegsByCol, segTops, heightsByCol]
+  return [hiddenSegsByCol, segTops, heightsByCol]
 }
 
 // DayGridSegHierarchy

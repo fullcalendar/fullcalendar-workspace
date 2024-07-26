@@ -104,7 +104,7 @@ export function computeHorizontalsFromSeg(
     }
   } else {
     const colWidthFrac = 1 / colCnt
-    width = fracToCssDim(colWidthFrac)
+    width = fracToCssDim((seg.lastCol - seg.firstCol + 1) * colWidthFrac)
 
     if (isRtl) {
       right = fracToCssDim((colCnt - seg.lastCol - 1) * colWidthFrac)
