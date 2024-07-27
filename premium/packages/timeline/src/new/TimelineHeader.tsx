@@ -2,7 +2,7 @@ import {
   BaseComponent, DateMarker,
   DateRange, NowIndicatorContainer,
   findElements, DateProfile,
-  RefMapKeyed,
+  RefMap,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, RefObject } from '@fullcalendar/core/preact'
 import { TimelineHeaderRows } from './TimelineHeaderRows.js'
@@ -20,7 +20,7 @@ export interface TimelineHeaderProps {
   onMaxCushionWidth?: (number) => void
   slotWidth: number | undefined
   verticalPositions?: Map<boolean | number, CoordRange>
-  rowRefMap?: RefMapKeyed<number, HTMLDivElement>
+  rowRefMap?: RefMap<number, HTMLDivElement>
 }
 
 export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {

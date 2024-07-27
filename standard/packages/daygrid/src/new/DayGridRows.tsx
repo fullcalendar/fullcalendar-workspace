@@ -8,7 +8,7 @@ import {
   Hit,
   DayTableCell,
   setRef,
-  RefMapKeyed,
+  RefMap,
   isDimMapsEqual,
 } from '@fullcalendar/core/internal'
 import { Ref, createElement } from '@fullcalendar/core/preact'
@@ -50,7 +50,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   private splitEventResize = memoize(splitInteractionByRow)
 
   // ref
-  private rowElRefMap = new RefMapKeyed<string, HTMLElement>() // keyed by first cell's key
+  private rowElRefMap = new RefMap<string, HTMLElement>() // keyed by first cell's key
 
   // internal
   private currentRowHeights: { [key: string]: number } = {}

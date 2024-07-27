@@ -1,4 +1,4 @@
-export class RefMapKeyed<K, V> {
+export class RefMap<K, V> {
   public current = new Map<K, V>()
   private callbacks = new Map<K, (val: V | null) => void>
   private depths = new Map<K, number>() // TODO: still need this for repeat firing?

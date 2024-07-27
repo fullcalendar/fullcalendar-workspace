@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMapKeyed, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { computeColWidth, TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
@@ -68,12 +68,12 @@ interface TimeGridLayoutPannableState {
 }
 
 export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseComponent<TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey>, TimeGridLayoutPannableState> {
-  private headerLabelElRefMap = new RefMapKeyed<number, HTMLElement>()
-  private headerContentElRefMaps: RefMapKeyed<HeaderCellKey, HTMLElement>[] = [] // TODO: rename this
+  private headerLabelElRefMap = new RefMap<number, HTMLElement>()
+  private headerContentElRefMaps: RefMap<HeaderCellKey, HTMLElement>[] = [] // TODO: rename this
   private allDayLabelElRef = createRef<HTMLElement>()
-  private allDayContentElRefMap = new RefMapKeyed<string, HTMLElement>()
-  private slatLabelElRefMap = new RefMapKeyed<string, HTMLElement>() // keyed by ISO-something
-  private slatContentElRefMap = new RefMapKeyed<string, HTMLElement>() // keyed by ISO-something
+  private allDayContentElRefMap = new RefMap<string, HTMLElement>()
+  private slatLabelElRefMap = new RefMap<string, HTMLElement>() // keyed by ISO-something
+  private slatContentElRefMap = new RefMap<string, HTMLElement>() // keyed by ISO-something
 
   private axisScrollerRef = createRef<Scroller>()
   private mainScrollerRef = createRef<Scroller>()
@@ -93,7 +93,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
 
     const { headerContentElRefMaps } = this
     for (let i = headerContentElRefMaps.length; i < props.headerTiers.length; i++) {
-      headerContentElRefMaps.push(new RefMapKeyed())
+      headerContentElRefMaps.push(new RefMap())
     }
     // TODO: kill headerContentElRefMaps rows that are no longer used
 

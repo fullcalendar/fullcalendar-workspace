@@ -4,7 +4,7 @@ import {
   BaseComponent, memoize,
   getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs, isPropsEqual, buildIsoString,
   computeEarliestSegStart,
-  RefMapKeyed,
+  RefMap,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
@@ -41,8 +41,8 @@ interface TimelineLaneState {
 export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneState> {
   private slicer = new TimelineLaneSlicer()
   private sortEventSegs = memoize(sortEventSegs)
-  private harnessElRefs = new RefMapKeyed<string, HTMLDivElement>() // keyed by instanceId
-  private moreElRefs = new RefMapKeyed<string, HTMLDivElement>() // keyed by isoStr
+  private harnessElRefs = new RefMap<string, HTMLDivElement>() // keyed by instanceId
+  private moreElRefs = new RefMap<string, HTMLDivElement>() // keyed by isoStr
   // TODO: memoize event positioning
 
   state: TimelineLaneState = {

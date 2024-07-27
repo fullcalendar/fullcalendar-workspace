@@ -10,7 +10,7 @@ import {
   sortEventSegs,
   DayTableCell,
   setRef,
-  RefMapKeyed,
+  RefMap,
   createFormatter,
   WeekNumberContainer,
   buildNavLinkAttrs,
@@ -54,7 +54,7 @@ export interface DayGridRowProps {
 
   // refs
   elRef?: Ref<HTMLTableRowElement>
-  cellInnerElRefMap?: RefMapKeyed<string, HTMLElement>
+  cellInnerElRefMap?: RefMap<string, HTMLElement>
 }
 
 interface DayGridRowState {
@@ -70,8 +70,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
   private rootEl?: HTMLElement
 
   // internal
-  private fcContainerElRefMap = new RefMapKeyed<string, HTMLDivElement>() // indexed by cellKey
-  private segHarnessElRefMap = new RefMapKeyed<string, HTMLDivElement>() // indexed by segSpanId
+  private fcContainerElRefMap = new RefMap<string, HTMLDivElement>() // indexed by cellKey
+  private segHarnessElRefMap = new RefMap<string, HTMLDivElement>() // indexed by segSpanId
 
   state: DayGridRowState = {
     fgContainerTops: {},

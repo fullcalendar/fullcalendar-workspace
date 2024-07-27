@@ -15,7 +15,7 @@ import {
   DateRange,
   NowIndicatorContainer,
   Scroller,
-  RefMapKeyed,
+  RefMap,
   guid,
   ScrollerSyncerInterface,
   getStickyHeaderDates,
@@ -111,12 +111,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private twoColElRef = createRef<HTMLDivElement>()
   private superHeaderRef = createRef<HTMLDivElement>()
   private normalHeaderRef = createRef<HTMLDivElement>()
-  private timeHeaderRefMap = new RefMapKeyed<number, HTMLDivElement>()
-  private spreadsheetGroupTallRefMap = new RefMapKeyed<Group, HTMLDivElement>()
-  private spreadsheetGroupWideRefMap = new RefMapKeyed<Group, HTMLDivElement>()
-  private spreadsheetResourceRefMap = new RefMapKeyed<Resource, HTMLDivElement>()
-  private timeGroupWideRefMap = new RefMapKeyed<Group, HTMLDivElement>()
-  private timeResourceRefMap = new RefMapKeyed<Resource, HTMLDivElement>()
+  private timeHeaderRefMap = new RefMap<number, HTMLDivElement>()
+  private spreadsheetGroupTallRefMap = new RefMap<Group, HTMLDivElement>()
+  private spreadsheetGroupWideRefMap = new RefMap<Group, HTMLDivElement>()
+  private spreadsheetResourceRefMap = new RefMap<Resource, HTMLDivElement>()
+  private timeGroupWideRefMap = new RefMap<Group, HTMLDivElement>()
+  private timeResourceRefMap = new RefMap<Resource, HTMLDivElement>()
   private slatsRef = createRef<TimelineSlats>() // needed for Hit system
   private spreadsheetHeaderScrollerRef = createRef<Scroller>()
   private spreadsheetBodyScrollerRef = createRef<Scroller>()
@@ -841,7 +841,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   // Resource INDIVIDUAL-Column Area Resizing
   // -----------------------------------------------------------------------------------------------
 
-  private resizerElRefs = new RefMapKeyed<number, HTMLElement>(this.handleColResizerEl.bind(this)) // indexed by colIndex
+  private resizerElRefs = new RefMap<number, HTMLElement>(this.handleColResizerEl.bind(this)) // indexed by colIndex
   private colDraggings: { [index: string]: ElementDragging } = {}
 
   handleColResizerEl(resizerEl: HTMLElement | null, index: number) {

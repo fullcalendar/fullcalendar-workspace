@@ -2,7 +2,7 @@ import {
   BaseComponent, multiplyDuration, DateMarker,
   DateProfile,
   DateRange,
-  RefMapKeyed,
+  RefMap,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { TimelineCoords } from '../TimelineCoords.js'
@@ -20,7 +20,7 @@ export interface TimelineSlatsProps {
 
 export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
   private rootElRef = createRef<HTMLDivElement>()
-  private cellElRefs = new RefMapKeyed<string, HTMLTableCellElement>() // keyed by isoStr
+  private cellElRefs = new RefMap<string, HTMLTableCellElement>() // keyed by isoStr
   private coords: TimelineCoords // for positionToHit
 
   render() {

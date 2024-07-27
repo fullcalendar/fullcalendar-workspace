@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMapKeyed, getStickyHeaderDates, setRef } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
@@ -63,10 +63,10 @@ interface TimeGridLayoutState {
 
 export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseComponent<TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey>, TimeGridLayoutState> {
   // refs
-  private headerLabelElRefMap = new RefMapKeyed<number, HTMLElement>()
+  private headerLabelElRefMap = new RefMap<number, HTMLElement>()
   private allDayLabelElRef = createRef<HTMLElement>()
-  private slatLabelElRefMap = new RefMapKeyed<string, HTMLElement>() // keyed by ISO-something
-  private slatContentElRefMap = new RefMapKeyed<string, HTMLElement>() // keyed by ISO-something
+  private slatLabelElRefMap = new RefMap<string, HTMLElement>() // keyed by ISO-something
+  private slatContentElRefMap = new RefMap<string, HTMLElement>() // keyed by ISO-something
 
   render() {
     const { props, state, context } = this

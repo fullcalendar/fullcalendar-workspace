@@ -223,7 +223,7 @@ export { ScrollerInterface } from './scrollgrid/ScrollerInterface.js'
 export { ScrollerSyncerInterface } from './scrollgrid/ScrollerSyncerInterface.js'
 
 export { getScrollbarWidths } from './util/scrollbar-width.js'
-export { RefMapKeyed } from './util/RefMapKeyed.js'
+export { RefMap } from './util/RefMap.js'
 export { getIsRtlScrollbarOnLeft } from './util/scrollbar-side.js'
 
 export { NowTimer } from './NowTimer.js'

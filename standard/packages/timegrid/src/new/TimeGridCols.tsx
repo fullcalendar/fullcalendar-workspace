@@ -7,7 +7,7 @@ import {
   DayTableCell,
   EventSegUiInteractionState,
   Hit,
-  RefMapKeyed,
+  RefMap,
   addDurations,
   memoize,
   multiplyDuration,
@@ -45,7 +45,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
   private processSlotOptions = memoize(processSlotOptions)
 
   // refs
-  private colElRefMap = new RefMapKeyed<string, HTMLElement>()
+  private colElRefMap = new RefMap<string, HTMLElement>()
 
   render() {
     const { props } = this

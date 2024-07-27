@@ -1,4 +1,4 @@
-import { BaseComponent, DateRange, DateMarker, DateProfile, RefMapKeyed } from '@fullcalendar/core/internal'
+import { BaseComponent, DateRange, DateMarker, DateProfile, RefMap } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 import { TimelineHeaderCell } from './TimelineHeaderCell.js'
@@ -11,7 +11,7 @@ export interface TimelineHeaderRowsProps {
   todayRange: DateRange
   slotWidth: number | undefined
   verticalPositions?: Map<boolean | number, CoordRange>
-  rowRefMap?: RefMapKeyed<number, HTMLDivElement>
+  rowRefMap?: RefMap<number, HTMLDivElement>
 }
 
 export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
