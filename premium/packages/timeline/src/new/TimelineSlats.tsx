@@ -1,7 +1,8 @@
 import {
-  BaseComponent, multiplyDuration, RefMap, DateMarker,
+  BaseComponent, multiplyDuration, DateMarker,
   DateProfile,
   DateRange,
+  RefMapKeyed,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { TimelineCoords } from '../TimelineCoords.js'
@@ -19,7 +20,7 @@ export interface TimelineSlatsProps {
 
 export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
   private rootElRef = createRef<HTMLDivElement>()
-  private cellElRefs = new RefMap<HTMLTableCellElement>()
+  private cellElRefs = new RefMapKeyed<string, HTMLTableCellElement>() // keyed by isoStr
   private coords: TimelineCoords // for positionToHit
 
   render() {
@@ -74,7 +75,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     if (rootEl.offsetWidth) { // not hidden by css
       this.coords = new TimelineCoords(
         this.rootElRef.current,
-        collectCellEls(this.cellElRefs.currentMap, props.tDateProfile.slotDates),
+        [...this.cellElRefs.current.values()],
         props.dateProfile,
         props.tDateProfile,
         context.dateEnv,
@@ -111,7 +112,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
           range: { start, end },
           allDay: !this.props.tDateProfile.isTimeScale,
         },
-        dayEl: this.cellElRefs.currentMap[slatIndex],
+        dayEl: this.cellElRefs.current.get(slatIndex),
         left: outerCoordCache.lefts[slatIndex], // TODO: make aware of snaps?
         right: outerCoordCache.rights[slatIndex],
       }
@@ -119,11 +120,4 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
 
     return null
   }
-}
-
-function collectCellEls(elMap: { [key: string]: HTMLElement }, slotDates: DateMarker[]) {
-  return slotDates.map((slotDate) => {
-    let key = slotDate.toISOString()
-    return elMap[key]
-  })
 }

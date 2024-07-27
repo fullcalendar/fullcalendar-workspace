@@ -1,9 +1,10 @@
 import { Duration } from '@fullcalendar/core'
 import {
   EventStore, EventUiHash, DateSpan, EventInteractionState,
-  BaseComponent, memoize, RefMap, mapHash,
+  BaseComponent, memoize,
   getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs, isPropsEqual, buildIsoString,
   computeEarliestSegStart,
+  RefMapKeyed,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
@@ -40,8 +41,8 @@ interface TimelineLaneState {
 export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneState> {
   private slicer = new TimelineLaneSlicer()
   private sortEventSegs = memoize(sortEventSegs)
-  private harnessElRefs = new RefMap<HTMLDivElement>()
-  private moreElRefs = new RefMap<HTMLDivElement>()
+  private harnessElRefs = new RefMapKeyed<string, HTMLDivElement>() // keyed by instanceId
+  private moreElRefs = new RefMapKeyed<string, HTMLDivElement>() // keyed by isoStr
   // TODO: memoize event positioning
 
   state: TimelineLaneState = {
@@ -148,13 +149,19 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
     }
 
     if (timelineCoords) {
+      const eventInstanceHeights: { [instanceId: string]: number } = {}
+      for (const [instanceId, harnessEl] of this.harnessElRefs.current.entries()) {
+        eventInstanceHeights[instanceId] = harnessEl.getBoundingClientRect().height
+      }
+
+      const moreLinkHeights: { [isoStr: string]: number } = {}
+      for (const [isoStr, moreEl] of this.moreElRefs.current.entries()) {
+        moreLinkHeights[isoStr] = moreEl.getBoundingClientRect().height
+      }
+
       this.setState({
-        eventInstanceHeights: mapHash(this.harnessElRefs.currentMap, (harnessEl) => (
-          Math.round(harnessEl.getBoundingClientRect().height)
-        )),
-        moreLinkHeights: mapHash(this.moreElRefs.currentMap, (moreEl) => (
-          Math.round(moreEl.getBoundingClientRect().height)
-        )),
+        eventInstanceHeights,
+        moreLinkHeights,
       }, () => {
         if (onHeightStable) {
           onHeightStable(true)

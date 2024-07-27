@@ -3,7 +3,7 @@ import {
   memoize,
   isArraysEqual,
   ScrollRequest, ViewContainer, ViewOptionsRefined,
-  RefMap, ElementDragging,
+  ElementDragging,
   findElements,
   elementClosest,
   PointerDragEvent,
@@ -841,10 +841,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   // Resource INDIVIDUAL-Column Area Resizing
   // -----------------------------------------------------------------------------------------------
 
-  private resizerElRefs = new RefMap<HTMLElement>(this.handleColResizerEl.bind(this))
+  private resizerElRefs = new RefMapKeyed<number, HTMLElement>(this.handleColResizerEl.bind(this)) // indexed by colIndex
   private colDraggings: { [index: string]: ElementDragging } = {}
 
-  handleColResizerEl(resizerEl: HTMLElement | null, index: string) {
+  handleColResizerEl(resizerEl: HTMLElement | null, index: number) {
     let { colDraggings } = this
 
     if (!resizerEl) {
@@ -855,7 +855,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
         delete colDraggings[index]
       }
     } else {
-      let dragging = this.initColResizing(resizerEl, parseInt(index, 10))
+      let dragging = this.initColResizing(resizerEl, index)
 
       if (dragging) {
         colDraggings[index] = dragging
