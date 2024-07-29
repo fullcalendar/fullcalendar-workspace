@@ -63,7 +63,7 @@ export function buildHeaderTiers(
 export function computeTopFromDate(
   date: DateMarker,
   cellRows: DayTableCell[][],
-  rowHeights: { [key: string]: number },
+  rowHeightMap: Map<string, number>,
 ): number | undefined {
   let top = 0
 
@@ -76,7 +76,7 @@ export function computeTopFromDate(
       return top
     }
 
-    top += rowHeights[key]
+    top += rowHeightMap.get(key)
   }
 }
 
@@ -143,7 +143,7 @@ export function computeColFromPosition(
 export function computeRowFromPosition(
   positionTop: number,
   cellRows: DayTableCell[][],
-  rowHeights: { [key: string]: number },
+  rowHeightMap: Map<string, number>,
 ): {
   row: number,
   top: number,
@@ -154,11 +154,10 @@ export function computeRowFromPosition(
   let bottom = 0
 
   for (const cells of cellRows) {
-    const start = cells[0].date
-    const key = start.toISOString()
+    const key = cells[0].key
 
     top = bottom
-    bottom = top + rowHeights[key]
+    bottom = top + rowHeightMap.get(key)
 
     if (positionTop < bottom) {
       break

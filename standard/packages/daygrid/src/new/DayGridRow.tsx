@@ -14,7 +14,8 @@ import {
   createFormatter,
   WeekNumberContainer,
   buildNavLinkAttrs,
-  setStateDimMap,
+  watchHeight,
+  guid,
 } from '@fullcalendar/core/internal'
 import {
   VNode,
@@ -29,6 +30,7 @@ import { DayGridBlockEvent } from './DayGridBlockEvent.js'
 import { computeFgSegVerticals, getSegSpanId, getSegStartId } from '../event-placement.js'
 import { hasListItemDisplay } from '../event-rendering.js'
 import { computeHorizontalsFromSeg } from './util.js'
+import { DayGridEventHarness } from './DayGridEventHarness.js'
 
 export interface DayGridRowProps {
   dateProfile: DateProfile
@@ -53,37 +55,41 @@ export interface DayGridRowProps {
   height?: number
 
   // refs
-  elRef?: Ref<HTMLTableRowElement>
-  cellInnerElRefMap?: RefMap<string, HTMLElement>
+  rootElRef?: Ref<HTMLElement>
+  heightRef?: Ref<number>
+  maxCellInnerHeightRef?: Ref<number>
 }
 
 interface DayGridRowState {
-  fgContainerTops: { [cellKey: string]: number }
-  fgContainerHeights: { [cellKey: string]: number }
-  segHeights: { [segSpanId: string]: number }
+  cellInnerHeightRev?: string
+  segHeightRev?: string
 }
 
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
 
 export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> {
   // ref
-  private rootEl?: HTMLElement
+  private rootEl: HTMLElement | undefined
+  private cellInnerHeightRefMap = new RefMap<string, number>(() => {
+    this.setState({ cellInnerHeightRev: guid() })
+  })
+  private cellTopHeightRefMap = new RefMap<string, number>()
+  private cellMainHeightRefMap = new RefMap<string, number>()
+  private segHeightRefMap = new RefMap<string, number>(() => {
+    this.setState({ segHeightRev: guid() })
+  })
 
   // internal
-  private fcContainerElRefMap = new RefMap<string, HTMLDivElement>() // indexed by cellKey
-  private segHarnessElRefMap = new RefMap<string, HTMLDivElement>() // indexed by segSpanId
-
-  state: DayGridRowState = {
-    fgContainerTops: {},
-    fgContainerHeights: {},
-    segHeights: {},
-  }
+  private disconnectHeight?: () => void
 
   render() {
-    const { props, state, context } = this
-    const { cells, cellInnerElRefMap } = props
-    const { fgContainerTops, fgContainerHeights } = state
+    const { props, context, cellInnerHeightRefMap, cellTopHeightRefMap, cellMainHeightRefMap } = this
+    const { cells } = props
     const { options } = context
+
+    const cellTopHeightMap = cellTopHeightRefMap.current
+    const cellMainHeightMap = cellMainHeightRefMap.current
+    const segHeightMap = this.segHeightRefMap.current
 
     const weekDate = props.cells[0].date
     const colCnt = props.cells.length
@@ -102,10 +108,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     // TODO: memoize?
     const [hiddenSegsByCol, segTops, heightsByCol] = computeFgSegVerticals(
       fgEventSegs,
-      state.segHeights,
+      segHeightMap,
       cells,
-      cells.map((cell) => fgContainerTops[cell.key]),
-      fgHeightFixed ? cells.map((cell) => fgContainerHeights[cell.key]) : [],
+      cells.map((cell) => cellTopHeightMap.get(cell.key)),
+      fgHeightFixed ? cells.map((cell) => cellMainHeightMap.get(cell.key)) : [],
       options.eventOrderStrict,
       props.dayMaxEvents,
       props.dayMaxEventRows,
@@ -193,8 +199,9 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
               width={props.colWidth}
 
               // refs
-              innerElRef={cellInnerElRefMap && cellInnerElRefMap.createRef(cell.key)}
-              fgContainerElRef={this.fcContainerElRefMap.createRef(cell.key)}
+              innerHeightRef={cellInnerHeightRefMap.createRef(cell.key)}
+              topHeightRef={cellTopHeightRefMap.createRef(cell.key)}
+              mainHeightRef={cellMainHeightRefMap.createRef(cell.key)}
             />
           )
         })}
@@ -211,7 +218,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     isResizing?: boolean,
     isDateSelecting?: boolean,
   ): VNode[] {
-    const { props, context } = this
+    const { props, context, segHeightRefMap } = this
     const { isRtl } = context
     const { colWidth, eventSelection } = props
 
@@ -240,9 +247,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       todo: in print view, for multi-day events, don't display title within non-start/end segs
       */
       nodes.push(
-        <div
+        <DayGridEventHarness
           key={segSpanId}
-          className="fcnew-daygrid-event-harness fcnew-daygrid-event-harness-abs"
           style={{
             visibility: isVisible ? '' : 'hidden',
             top,
@@ -250,10 +256,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
             right,
             width,
           }}
-          ref={
+          heightRef={
             (isMirror || seg.isStandin)
               ? null
-              : this.segHarnessElRefMap.createRef(segSpanId)
+              : segHeightRefMap.createRef(segSpanId)
           }
         >
           {hasListItemDisplay(seg) ? (
@@ -275,7 +281,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
               {...getSegMeta(seg, todayRange)}
             />
           )}
-        </div>,
+        </DayGridEventHarness>,
       )
     }
 
@@ -313,71 +319,50 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     return createElement(Fragment, {}, ...nodes)
   }
 
-  // Lifecycle
-  // -----------------------------------------------------------------------------------------------
-
-  componentDidMount() {
-    this.handleSizing()
-    this.context.addResizeHandler(this.handleSizing)
-  }
-
-  componentDidUpdate() {
-    this.handleSizing()
-  }
-
-  componentWillUnmount() {
-    this.context.removeResizeHandler(this.handleSizing)
-  }
-
-  // Handlers
-  // -----------------------------------------------------------------------------------------------
-
-  handleRootEl = (rootEl: HTMLElement | null) => {
+  handleRootEl = (rootEl: HTMLElement) => {
     this.rootEl = rootEl
-    setRef(this.props.elRef, rootEl)
+    setRef(this.props.rootElRef, rootEl)
   }
 
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  handleSizing = () => {
-    const { props } = this
-    const fgHeightFixed = props.dayMaxEvents === true || props.dayMaxEventRows === true
-    const { fgContainerTops, fgContainerHeights } = this.queryFgContainerDims()
-    const segHeights = this.querySegHeights()
+  componentDidMount() {
+    const { rootEl } = this // TODO: make dynamic with useEffect
 
-    setStateDimMap(this, 'fgContainerTops', fgContainerTops)
-    setStateDimMap(this, 'segHeights', segHeights)
+    this.disconnectHeight = watchHeight(rootEl, (contentHeight) => {
+      setRef(this.props.heightRef, contentHeight)
+    })
 
-    if (fgHeightFixed) {
-      setStateDimMap(this, 'fgContainerHeights', fgContainerHeights)
+    this.resetMaxCellInnerHeightRef()
+  }
+
+  componentDidUpdate(prevProps: DayGridRowProps, prevState: DayGridRowState): void {
+    if (prevState.cellInnerHeightRev !== this.state.cellInnerHeightRev) {
+      this.resetMaxCellInnerHeightRef()
     }
   }
 
-  querySegHeights() {
-    const { segHarnessElRefMap } = this
-    const segHeights: { [segSpanId: string]: number } = {}
-
-    for (const [segSpanId, segHarnessEl] of segHarnessElRefMap.current.entries()) {
-      segHeights[segSpanId] = segHarnessEl.getBoundingClientRect().height
-    }
-
-    return segHeights
+  componentWillUnmount(): void {
+    this.disconnectHeight()
   }
 
-  queryFgContainerDims() {
-    const { rootEl, fcContainerElRefMap } = this
-    const rootElTop = rootEl.getBoundingClientRect().top
-    const fgContainerTops: { [cellKey: string]: number } = {}
-    const fgContainerHeights: { [cellKey: string]: number } = {}
+  // Sizing
+  // -----------------------------------------------------------------------------------------------
 
-    for (const [cellKey, fgContainerEl] of fcContainerElRefMap.current.entries()) {
-      const rect = fgContainerEl.getBoundingClientRect()
-      fgContainerTops[cellKey] = rect.top - rootElTop
-      fgContainerHeights[cellKey] = rect.height
+  resetMaxCellInnerHeightRef() {
+    const cellInnerHeightMap = this.cellInnerHeightRefMap.current
+    const resultRef = this.props.maxCellInnerHeightRef
+
+    if (resultRef && cellInnerHeightMap.size) {
+      let max = 0
+
+      for (const height of cellInnerHeightMap.values()) {
+        max = Math.max(max, height)
+      }
+
+      setRef(resultRef, max)
     }
-
-    return { fgContainerTops, fgContainerHeights }
   }
 
   // Utils

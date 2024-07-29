@@ -13,6 +13,7 @@ import {
   setRef,
   getIsHeightAuto,
   getScrollerSyncerClass,
+  RefMap,
 } from '@fullcalendar/core/internal'
 import { ComponentChild, Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -46,7 +47,7 @@ export interface DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
 
   // refs
   scrollerRef?: Ref<ScrollerInterface>
-  rowHeightsRef?: Ref<{ [key: string]: number }>
+  rowHeightRefMap?: RefMap<string, number>
 }
 
 interface DayGridViewState {
@@ -124,7 +125,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
             width={canvasWidth}
 
             // refs
-            rowHeightsRef={this.handleRowHeights}
+            rowHeightRefMap={props.rowHeightRefMap}
           />
         </Scroller>
         {Boolean(stickyFooterScrollbar) && (
@@ -170,11 +171,6 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
 
   handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
     this.setState({ rightScrollbarWidth })
-  }
-
-  handleRowHeights = (rowHeights: { [cellKey: string]: number }) => {
-    setRef(this.props.rowHeightsRef, rowHeights)
-    this.bodyScrollerRef.current.handleSizing()
   }
 
   // Scrolling

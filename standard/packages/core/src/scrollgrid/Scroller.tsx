@@ -1,4 +1,5 @@
 import { isDimsEqual } from '../component-util/rendering-misc.js'
+import { watchSize } from '../component-util/resize-observer.js'
 import { DateComponent, Dictionary, removeElement, setRef } from '../internal.js'
 import { ComponentChildren, createElement, createRef, Ref } from '../preact.js'
 import { ScrollerInterface } from './ScrollerInterface.js'
@@ -25,6 +26,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   private elRef = createRef<HTMLDivElement>()
 
   // internal
+  private disconnectSize?: () => void
   private currentWidth: number
   private currentLeftScrollbarWidth: number
   private currentRightScrollbarWidth: number
@@ -51,45 +53,38 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   }
 
   componentDidMount(): void {
-    this.handleSizing()
-    this.context.addResizeHandler(this.handleSizing)
-  }
+    const el = this.elRef.current // TODO: make dynamic with useEffect
 
-  componentDidUpdate(): void {
-    this.handleSizing()
+    this.disconnectSize = watchSize(el, (contentWidth) => {
+      const { props, context } = this
+      const bottomScrollbarWidth = el.offsetHeight - el.clientHeight
+      const horizontalScrollbarWidth = el.offsetWidth - el.clientWidth
+      let rightScrollbarWidth = 0
+      let leftScrollbarWidth = 0
+
+      if (context.isRtl && getRtlScrollerConfig().leftScrollbars) {
+        leftScrollbarWidth = horizontalScrollbarWidth
+      } else {
+        rightScrollbarWidth = horizontalScrollbarWidth
+      }
+
+      if (!isDimsEqual(this.currentWidth, contentWidth)) {
+        setRef(props.widthRef, this.currentWidth = contentWidth)
+      }
+      if (!isDimsEqual(this.currentBottomScrollbarWidth, bottomScrollbarWidth)) {
+        setRef(props.leftScrollbarWidthRef, this.currentBottomScrollbarWidth = bottomScrollbarWidth)
+      }
+      if (!isDimsEqual(this.currentRightScrollbarWidth, rightScrollbarWidth)) {
+        setRef(props.rightScrollbarWidthRef, this.currentRightScrollbarWidth = rightScrollbarWidth)
+      }
+      if (!isDimsEqual(this.currentLeftScrollbarWidth, leftScrollbarWidth)) {
+        setRef(props.bottomScrollbarWidthRef, this.currentLeftScrollbarWidth = leftScrollbarWidth)
+      }
+    })
   }
 
   componentWillUnmount(): void {
-    this.context.removeResizeHandler(this.handleSizing)
-  }
-
-  handleSizing = () => {
-    const { props, context } = this
-    const el = this.elRef.current
-    const width = el.getBoundingClientRect().width
-    const bottomScrollbarWidth = el.offsetHeight - el.clientHeight
-    const horizontalScrollbarWidth = el.offsetWidth - el.clientWidth
-    let rightScrollbarWidth = 0
-    let leftScrollbarWidth = 0
-
-    if (context.isRtl && getRtlScrollerConfig().leftScrollbars) {
-      leftScrollbarWidth = horizontalScrollbarWidth
-    } else {
-      rightScrollbarWidth = horizontalScrollbarWidth
-    }
-
-    if (!isDimsEqual(this.currentWidth, width)) {
-      setRef(props.widthRef, this.currentWidth = width)
-    }
-    if (!isDimsEqual(this.currentBottomScrollbarWidth, bottomScrollbarWidth)) {
-      setRef(props.leftScrollbarWidthRef, this.currentBottomScrollbarWidth = bottomScrollbarWidth)
-    }
-    if (!isDimsEqual(this.currentRightScrollbarWidth, rightScrollbarWidth)) {
-      setRef(props.rightScrollbarWidthRef, this.currentRightScrollbarWidth = rightScrollbarWidth)
-    }
-    if (!isDimsEqual(this.currentLeftScrollbarWidth, leftScrollbarWidth)) {
-      setRef(props.bottomScrollbarWidthRef, this.currentLeftScrollbarWidth = leftScrollbarWidth)
-    }
+    this.disconnectSize()
   }
 
   // Public API

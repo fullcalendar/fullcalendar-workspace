@@ -10,6 +10,7 @@ import {
   getStickyHeaderDates,
   getIsHeightAuto,
   setRef,
+  RefMap,
 } from '@fullcalendar/core/internal'
 import { ComponentChild, Fragment, Ref, createElement } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -39,7 +40,7 @@ export interface DayGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
 
   // refs
   scrollerRef?: Ref<ScrollerInterface>
-  rowHeightsRef?: Ref<{ [key: string]: number }>
+  rowHeightRefMap?: RefMap<string, number>
 }
 
 interface DayGridViewState {
@@ -99,7 +100,7 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
             eventSelection={props.eventSelection}
 
             // refs
-            rowHeightsRef={props.rowHeightsRef}
+            rowHeightRefMap={props.rowHeightRefMap}
           />
         </Scroller>
       </Fragment>
@@ -117,10 +118,5 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
 
   handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
     this.setState({ rightScrollbarWidth })
-  }
-
-  handleRowHeights = (rowHeights: { [cellKey: string]: number }) => {
-    setRef(this.props.rowHeightsRef, rowHeights)
-    this.scroller.handleSizing()
   }
 }

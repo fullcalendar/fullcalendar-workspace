@@ -5,6 +5,7 @@ import {
   DayTableCell,
   EventSegUiInteractionState,
   Hit,
+  RefMap,
   Scroller,
   ScrollRequest,
   ScrollResponder,
@@ -41,7 +42,7 @@ export interface DayGridLayoutProps<HeaderCellModel, HeaderCellKey> {
 export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent<DayGridLayoutProps<HeaderCellModel, HeaderCellKey>> {
   // ref
   private scrollerRef = createRef<Scroller>()
-  private rowHeightsRef = createRef<{ [key: string]: number }>()
+  private rowHeightRefMap = new RefMap<string, number>()
 
   // internal
   private scrollResponder: ScrollResponder
@@ -53,7 +54,7 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
     const commonLayoutProps = {
       ...props,
       scrollerRef: this.scrollerRef,
-      rowHeightsRef: this.rowHeightsRef,
+      rowHeightRefMap: this.rowHeightRefMap,
     }
 
     return (
@@ -94,13 +95,13 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
   */
   handleScrollRequest = (_scrollRequest: ScrollRequest) => {
     const scroller = this.scrollerRef.current
-    const rowHeights = this.rowHeightsRef.current
+    const rowHeightMap = this.rowHeightRefMap.current
 
-    if (rowHeights) {
+    if (rowHeightMap) {
       const scrollTop = computeTopFromDate(
         this.props.dateProfile.currentDate,
         this.props.cellRows,
-        rowHeights,
+        rowHeightMap,
       )
 
       if (scrollTop != null) {

@@ -7,11 +7,9 @@ import {
   DateProfile,
   Hit,
   DayTableCell,
-  setRef,
   RefMap,
-  isDimMapsEqual,
 } from '@fullcalendar/core/internal'
-import { Ref, createElement } from '@fullcalendar/core/preact'
+import { createElement } from '@fullcalendar/core/preact'
 import { TableSeg, splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
 import { DayGridRow } from './DayGridRow.js'
 import { computeColFromPosition, computeRowFromPosition } from './util.js'
@@ -37,10 +35,13 @@ export interface DayGridRowsProps {
   width?: number
 
   // refs
-  rowHeightsRef?: Ref<{ [key: string]: number }>
+  rowHeightRefMap?: RefMap<string, number>
 }
 
 export class DayGridRows extends DateComponent<DayGridRowsProps> {
+  // ref
+  private rootEl: HTMLDivElement
+
   // memo
   private splitBusinessHourSegs = memoize(splitSegsByRow)
   private splitBgEventSegs = memoize(splitSegsByRow)
@@ -49,14 +50,17 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   private splitEventDrag = memoize(splitInteractionByRow)
   private splitEventResize = memoize(splitInteractionByRow)
 
-  // ref
-  private rowElRefMap = new RefMap<string, HTMLElement>() // keyed by first cell's key
-
   // internal
-  private currentRowHeights: { [key: string]: number } = {}
+  private rowHeightRefMap = new RefMap<string, number>((height, key) => {
+    // HACKy way of syncing RefMap results with prop
+    const { rowHeightRefMap } = this.props
+    if (rowHeightRefMap) {
+      rowHeightRefMap.handleValue(height, key)
+    }
+  })
 
   render() {
-    let { props, context } = this
+    let { props, context, rowHeightRefMap } = this
     let { options } = context
     let rowCnt = props.cellRows.length
 
@@ -97,33 +101,19 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             colWidth={props.colWidth}
 
             // refs
-            elRef={this.rowElRefMap.createRef(cells[0].key)}
+            heightRef={rowHeightRefMap.createRef(cells[0].key)}
           />
         ))}
       </div>
     )
   }
 
-  // Lifecycle
-  // -----------------------------------------------------------------------------------------------
-
-  componentDidMount(): void {
-    this.handleSizing()
-    this.context.addResizeHandler(this.handleSizing)
-  }
-
-  componentDidUpdate() {
-    this.handleSizing()
-  }
-
-  componentWillUnmount() {
-    this.context.removeResizeHandler(this.handleSizing)
-  }
-
   // Handlers
   // -----------------------------------------------------------------------------------------------
 
   handleRootEl = (rootEl: HTMLDivElement) => {
+    this.rootEl = rootEl
+
     if (rootEl) {
       this.context.registerInteractiveComponent(this, {
         el: rootEl,
@@ -134,28 +124,11 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
     }
   }
 
-  // Sizing
-  // -----------------------------------------------------------------------------------------------
-
-  handleSizing = () => {
-    const rowHeights: { [key: string]: number } = {}
-
-    for (const [cellKey, rowEl] of this.rowElRefMap.current.entries()) {
-      const rect = rowEl.getBoundingClientRect()
-      rowHeights[cellKey] = rect.height
-    }
-
-    if (!isDimMapsEqual(this.currentRowHeights, rowHeights)) {
-      this.currentRowHeights = rowHeights
-      setRef(this.props.rowHeightsRef, rowHeights)
-    }
-  }
-
   // Hit System
   // -----------------------------------------------------------------------------------------------
 
   queryHit(positionLeft: number, positionTop: number, elWidth: number): Hit {
-    const { props, context, currentRowHeights } = this
+    const { props, context } = this
 
     const colCnt = props.cellRows[0].length
     const { col, left, right } = computeColFromPosition(
@@ -168,7 +141,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
     const { row, top, bottom } = computeRowFromPosition(
       positionTop,
       props.cellRows,
-      currentRowHeights
+      this.rowHeightRefMap.current,
     )
     const cell = props.cellRows[row][col]
 
@@ -191,9 +164,9 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   }
 
   private getCellEl(row, col): HTMLElement {
-    const rowKey = this.props.cellRows[row][0].key
-    const rowEl = this.rowElRefMap.current.get(rowKey)
-    return rowEl.querySelectorAll(':scope > [role=gridcell]')[col] as HTMLElement // HACK
+    return this.rootEl
+      .querySelectorAll(':scope > [role=row]')[row] // HACK
+      .querySelectorAll(':scope > [role=gridcell]')[col] as any
   }
 
   private getCellRange(row, col) {

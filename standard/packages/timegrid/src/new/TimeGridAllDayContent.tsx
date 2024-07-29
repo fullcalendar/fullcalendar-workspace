@@ -9,7 +9,7 @@ export interface TimeGridAllDayContentProps extends DayGridRowProps {
 export class TimeGridAllDayContent extends DateComponent<TimeGridAllDayContentProps> {
   render() {
     return (
-      <DayGridRow {...this.props} elRef={this.handleRootEl} />
+      <DayGridRow {...this.props} rootElRef={this.handleRootEl} />
     )
   }
 

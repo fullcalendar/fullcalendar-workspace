@@ -11,6 +11,8 @@ import {
   hasCustomDayCellContent,
   addMs,
   DateEnv,
+  watchHeight,
+  setRef,
 } from '@fullcalendar/core/internal'
 import {
   Ref,
@@ -50,15 +52,24 @@ export interface DayGridCellProps {
   width?: number
 
   // refs
-  innerElRef?: Ref<HTMLDivElement>
-  fgContainerElRef?: Ref<HTMLDivElement>
+  innerHeightRef?: Ref<number> // for resource-daygrid row-height syncing
+  topHeightRef?: Ref<number> // for event-positioning top-origin
+  mainHeightRef?: Ref<number> // for event-positioning height-limit
 }
 
 export class DayGridCell extends DateComponent<DayGridCellProps> {
-  private rootElRef = createRef<HTMLElement>()
+  // ref
+  private innerElRef = createRef<HTMLDivElement>()
+  private topElRef = createRef<HTMLDivElement>()
+  private mainElRef = createRef<HTMLDivElement>()
+
+  // internal
+  private detachInnerElSize?: () => void
+  private detachTopElSize?: () => void
+  private detachMainElSize?: () => void
 
   render() {
-    let { props, context, rootElRef } = this
+    let { props, context } = this
     let { options, dateEnv } = context
 
     // TODO: memoize this
@@ -79,7 +90,6 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         elStyle={{
           width: props.width
         }}
-        elRef={rootElRef}
         extraRenderProps={props.extraRenderProps}
         defaultGenerator={renderTopInner}
         date={props.date}
@@ -90,14 +100,14 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       >
         {(InnerContent, renderProps) => (
           <div
-            ref={props.innerElRef}
+            ref={this.innerElRef}
             className={[
               'fcnew-daygrid-cell-inner',
               props.fgHeightFixed ? 'fcnew-daygrid-cell-inner-liquid' : ''
             ].join(' ')}
           >
-            {!renderProps.isDisabled &&
-              (props.showDayNumber || hasCustomDayCellContent(options)) && (
+            <div ref={this.topElRef}>
+              {!renderProps.isDisabled && (props.showDayNumber || hasCustomDayCellContent(options)) && (
                 <div className="fcnew-daygrid-day-top">
                   <InnerContent
                     elTag="a"
@@ -109,12 +119,13 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                   />
                 </div>
               )}
+            </div>
             <div
               className={[
                 'fcnew-daygrid-day-events',
                 props.fgHeightFixed ? 'fcnew-daygrid-day-events-liquid' : ''
               ].join(' ')}
-              ref={props.fgContainerElRef}
+              ref={this.mainElRef}
             >
               {props.fg}
               <div
@@ -126,7 +137,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                   allDayDate={props.date}
                   segs={props.segs}
                   hiddenSegs={props.hiddenSegs}
-                  alignmentElRef={rootElRef}
+                  alignmentElRef={this.innerElRef}
                   alignGridTop={!props.showDayNumber}
                   extraDateSpan={props.extraDateSpan}
                   dateProfile={props.dateProfile}
@@ -144,6 +155,28 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         )}
       </DayCellContainer>
     )
+  }
+
+  componentDidMount(): void {
+    const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
+    const topEl = this.topElRef.current // "
+    const mainEl = this.mainElRef.current // "
+
+    this.detachInnerElSize = watchHeight(innerEl, (height) => {
+      setRef(this.props.innerHeightRef, height)
+    })
+    this.detachTopElSize = watchHeight(topEl, (height) => {
+      setRef(this.props.topHeightRef, height)
+    })
+    this.detachMainElSize = watchHeight(mainEl, (height) => {
+      setRef(this.props.mainHeightRef, height)
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.detachInnerElSize()
+    this.detachTopElSize()
+    this.detachMainElSize()
   }
 }
 

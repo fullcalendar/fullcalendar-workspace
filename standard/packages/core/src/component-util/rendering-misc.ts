@@ -2,6 +2,7 @@ import { Component } from '../preact.js'
 
 // TODO: kill Component::safeSetState
 
+// TODO: kill
 export function setStateDimMap<State>(
   component: Component<unknown, State>,
   key: keyof State,
@@ -13,6 +14,7 @@ export function setStateDimMap<State>(
   }
 }
 
+// TODO: kill
 export function isDimMapsEqual(
   oldMap: { [key: string]: number },
   newMap: { [key: string]: number },
@@ -26,6 +28,7 @@ export function isDimMapsEqual(
   return true
 }
 
+// TODO: kill
 export function isDimsEqual(v0: number | undefined, v1: number): boolean {
   return v0 != null && (v0 === v1 || Math.abs(v0 - v1) < 0.01)
 }

@@ -24,7 +24,7 @@ export function getSegSpanId(seg: TableSeg): string {
 
 export function computeFgSegVerticals(
   segs: TableSeg[],
-  segHeights: { [segSpanId: string]: number },
+  segHeightMap: Map<string, number>, // keyed by segSpanId
   cells: DayTableCell[],
   colTopOrigins: number[],
   colMaxHeights: number[],
@@ -88,7 +88,7 @@ export function computeFgSegVerticals(
   // configure hierarchy position-generator
 
   let hierarchy = new DayGridSegHierarchy((segEntry: SegEntry) => (
-    segHeights[getSegSpanId(segs[segEntry.index])]
+    segHeightMap.get(getSegSpanId(segs[segEntry.index]))
   ))
   hierarchy.allowReslicing = true
   hierarchy.strictOrder = strictOrder

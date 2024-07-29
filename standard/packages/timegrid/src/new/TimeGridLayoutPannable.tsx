@@ -71,7 +71,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
   private headerLabelElRefMap = new RefMap<number, HTMLElement>()
   private headerContentElRefMaps: RefMap<HeaderCellKey, HTMLElement>[] = [] // TODO: rename this
   private allDayLabelElRef = createRef<HTMLElement>()
-  private allDayContentElRefMap = new RefMap<string, HTMLElement>()
+  private allDayInnerHeightRef = createRef<number>()
   private slatLabelElRefMap = new RefMap<string, HTMLElement>() // keyed by ISO-something
   private slatContentElRefMap = new RefMap<string, HTMLElement>() // keyed by ISO-something
 
@@ -181,7 +181,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                     height={state.allDayHeight}
 
                     // refs
-                    cellInnerElRefMap={this.allDayContentElRefMap}
+                    maxCellInnerHeightRef={this.allDayInnerHeightRef}
                   />
                 </div>
               </Scroller>
@@ -371,15 +371,10 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     // allDayHeight
     // ------------
 
-    let maxAllDayHeight = 0
-    let allDayEls: HTMLElement[] = [
-      this.allDayLabelElRef.current,
-      ...this.allDayContentElRefMap.current.values(),
-    ]
-
-    for (let allDayEl of allDayEls) {
-      maxAllDayHeight = Math.max(maxAllDayHeight, allDayEl.offsetHeight)
-    }
+    let maxAllDayHeight = Math.max(
+      this.allDayLabelElRef.current.getBoundingClientRect().height,
+      this.allDayInnerHeightRef.current, // TODO: use revision-id technique like DayGrid!!!!!!!!!!!!!!!!!!!!!!
+    )
 
     this.setState({
       allDayHeight: maxAllDayHeight,
