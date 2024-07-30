@@ -58,10 +58,12 @@ export interface DayGridRowProps {
   // refs
   rootElRef?: Ref<HTMLElement>
   heightRef?: Ref<number>
-  maxCellInnerHeightRef?: Ref<number>
+  cellInnerHeightRef?: Ref<number> // only fired if !fgHeightFixed (so dayMaxEvents !== true && dayMaxEventRows !== true)
 }
 
 interface DayGridRowState {
+  cellInnerHeight?: number
+  cellHeaderHeight?: number
   segHeightRev?: string
 }
 
@@ -70,28 +72,23 @@ const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
 export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> {
   // ref
   private rootEl: HTMLElement | undefined
-  private cellInnerHeightRefMap = new RefMap<string, number>((innerHeight: number | null) => {
-    if (innerHeight != null) {
-      afterSize(this.handleMaxCellInnerHeightUpdate)
-    }
+  private cellInnerHeightRefMap = new RefMap<string, number>(() => {
+    afterSize(this.handleCellInnerHeights)
   })
-  private cellTopHeightRefMap = new RefMap<string, number>()
-  private cellMainHeightRefMap = new RefMap<string, number>()
+  private cellHeaderHeightRefMap = new RefMap<string, number>(() => {
+    afterSize(this.handleCellHeaderHeights)
+  })
   private segHeightRefMap = new RefMap<string, number>(() => {
-    this.setState({ segHeightRev: guid() })
+    afterSize(this.handleSegHeights)
   })
 
   // internal
   private disconnectHeight?: () => void
 
   render() {
-    const { props, context, cellInnerHeightRefMap, cellTopHeightRefMap, cellMainHeightRefMap } = this
+    const { props, state, context, cellInnerHeightRefMap, cellHeaderHeightRefMap } = this
     const { cells } = props
     const { options } = context
-
-    const cellTopHeightMap = cellTopHeightRefMap.current
-    const cellMainHeightMap = cellMainHeightRefMap.current
-    const segHeightMap = this.segHeightRefMap.current
 
     const weekDate = props.cells[0].date
     const colCnt = props.cells.length
@@ -110,10 +107,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     // TODO: memoize?
     const [hiddenSegsByCol, segTops, heightsByCol] = computeFgSegVerticals(
       fgEventSegs,
-      segHeightMap,
+      this.segHeightRefMap.current,
       cells,
-      cells.map((cell) => cellTopHeightMap.get(cell.key)),
-      fgHeightFixed ? cells.map((cell) => cellMainHeightMap.get(cell.key)) : [],
+      state.cellHeaderHeight,
+      (fgHeightFixed && state.cellInnerHeight != null && state.cellHeaderHeight != null)
+        ? state.cellInnerHeight - state.cellHeaderHeight
+        : undefined,
       options.eventOrderStrict,
       props.dayMaxEvents,
       props.dayMaxEventRows,
@@ -127,10 +126,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     return (
       <div
         role="row"
-        className={[
-          'fcnew-daygrid-row',
-          fgHeightFixed ? 'fcnew-daygrid-row-fixedheight' : '',
-        ].join(' ')}
+        className="fcnew-daygrid-row"
         style={{ height: props.height }}
         ref={this.handleRootEl}
       >
@@ -197,13 +193,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
               extraClassNames={cell.extraClassNames}
 
               // dimensions
-              moreTop={heightsByCol[col]}
+              fgHeight={heightsByCol[col]}
               width={props.colWidth}
 
               // refs
               innerHeightRef={cellInnerHeightRefMap.createRef(cell.key)}
-              topHeightRef={cellTopHeightRefMap.createRef(cell.key)}
-              mainHeightRef={cellMainHeightRefMap.createRef(cell.key)}
+              headerHeightRef={cellHeaderHeightRefMap.createRef(cell.key)}
             />
           )
         })}
@@ -341,13 +336,28 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     this.disconnectHeight()
 
     setRef(this.props.heightRef, null)
-    setRef(this.props.maxCellInnerHeightRef, null)
+    setRef(this.props.cellInnerHeightRef, null)
   }
 
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  handleMaxCellInnerHeightUpdate = () => {
+  private handleCellHeaderHeights = () => {
+    const cellHeaderHeightMap = this.cellHeaderHeightRefMap.current
+    let max = 0
+
+    for (const height of cellHeaderHeightMap.values()) {
+      max = Math.max(max, height)
+    }
+
+    if (this.state.cellHeaderHeight !== max) {
+      this.setState({ cellHeaderHeight: max })
+    }
+  }
+
+  private handleCellInnerHeights = () => {
+    const { props } = this
+    const fgHeightFixed = props.dayMaxEvents === true || props.dayMaxEventRows === true
     const cellInnerHeightMap = this.cellInnerHeightRefMap.current
     let max = 0
 
@@ -355,7 +365,17 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       max = Math.max(max, height)
     }
 
-    setRef(this.props.maxCellInnerHeightRef, max)
+    if (fgHeightFixed) {
+      if (this.state.cellInnerHeight !== max) {
+        this.setState({ cellInnerHeight: max }) // will trigger event rerender
+      }
+    } else {
+      setRef(props.cellInnerHeightRef, max)
+    }
+  }
+
+  private handleSegHeights = () => {
+    this.setState({ segHeightRev: guid() }) // will trigger event rerender
   }
 
   // Utils

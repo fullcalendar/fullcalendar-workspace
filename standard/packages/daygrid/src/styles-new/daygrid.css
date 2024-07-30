@@ -39,9 +39,7 @@
   flex-basis: 0;
 }
 
-/* .fcnew-daygrid-row-fixedheight {
-  flex-basis: 0;
-} */
+/* cell */
 
 .fcnew-daygrid-cell {
   flex-grow: 1;
@@ -52,17 +50,4 @@
 
 .fcnew-daygrid-cell-inner-liquid {
   flex-grow: 1;
-}
-
-.fcnew-daygrid-cell-inner {
-  display: flex;
-  flex-direction: column;
-}
-
-.fcnew-daygrid-day-events-liquid {
-  flex-grow: 1;
-}
-
-.fcnew-daygrid-day-bg {
-  /* needs work */
 }

@@ -48,25 +48,22 @@ export interface DayGridCellProps {
   extraClassNames?: string[]
 
   // dimensions
-  moreTop: number
+  fgHeight: number | undefined
   width?: number
 
   // refs
   innerHeightRef?: Ref<number> // for resource-daygrid row-height syncing
-  topHeightRef?: Ref<number> // for event-positioning top-origin
-  mainHeightRef?: Ref<number> // for event-positioning height-limit
+  headerHeightRef?: Ref<number> // for event-positioning top-origin
 }
 
 export class DayGridCell extends DateComponent<DayGridCellProps> {
   // ref
   private innerElRef = createRef<HTMLDivElement>()
-  private topElRef = createRef<HTMLDivElement>()
-  private mainElRef = createRef<HTMLDivElement>()
+  private headerWrapElRef = createRef<HTMLDivElement>()
 
   // internal
   private detachInnerElSize?: () => void
   private detachTopElSize?: () => void
-  private detachMainElSize?: () => void
 
   render() {
     let { props, context } = this
@@ -106,13 +103,13 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               props.fgHeightFixed ? 'fcnew-daygrid-cell-inner-liquid' : ''
             ].join(' ')}
           >
-            <div ref={this.topElRef}>
+            <div ref={this.headerWrapElRef} className="fcnew-daygrid-cell-header-wrap">
               {!renderProps.isDisabled && (props.showDayNumber || hasCustomDayCellContent(options)) && (
-                <div className="fcnew-daygrid-day-top">
+                <div className="fcnew-daygrid-cell-header">
                   <InnerContent
                     elTag="a"
                     elClasses={[
-                      'fcnew-daygrid-day-number',
+                      'fcnew-daygrid-cell-number',
                       isMonthStart && 'fcnew-daygrid-month-start',
                     ]}
                     elAttrs={buildNavLinkAttrs(context, props.date)}
@@ -121,36 +118,27 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               )}
             </div>
             <div
-              className={[
-                'fcnew-daygrid-day-events',
-                props.fgHeightFixed ? 'fcnew-daygrid-day-events-liquid' : ''
-              ].join(' ')}
-              ref={this.mainElRef}
+              className="fcnew-daygrid-cell-main"
+              style={{ height: props.fgHeight }}
             >
               {props.fg}
-              <div
-                className="fcnew-daygrid-day-bottom"
-                style={{ marginTop: props.moreTop }}
-                // ^weird to create space this way, even when there's no +more link
-              >
-                <DayGridMoreLink
-                  allDayDate={props.date}
-                  segs={props.segs}
-                  hiddenSegs={props.hiddenSegs}
-                  alignmentElRef={this.innerElRef}
-                  alignGridTop={!props.showDayNumber}
-                  extraDateSpan={props.extraDateSpan}
-                  dateProfile={props.dateProfile}
-                  eventSelection={props.eventSelection}
-                  eventDrag={props.eventDrag}
-                  eventResize={props.eventResize}
-                  todayRange={props.todayRange}
-                />
-              </div>
             </div>
-            <div className="fcnew-daygrid-day-bg">
-              {props.bg}
+            <div className="fcnew-daygrid-cell-footer">
+              <DayGridMoreLink
+                allDayDate={props.date}
+                segs={props.segs}
+                hiddenSegs={props.hiddenSegs}
+                alignmentElRef={this.innerElRef}
+                alignGridTop={!props.showDayNumber}
+                extraDateSpan={props.extraDateSpan}
+                dateProfile={props.dateProfile}
+                eventSelection={props.eventSelection}
+                eventDrag={props.eventDrag}
+                eventResize={props.eventResize}
+                todayRange={props.todayRange}
+              />
             </div>
+            {props.bg}
           </div>
         )}
       </DayCellContainer>
@@ -159,28 +147,22 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
 
   componentDidMount(): void {
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
-    const topEl = this.topElRef.current // "
-    const mainEl = this.mainElRef.current // "
+    const headerWrapEl = this.headerWrapElRef.current // "
 
     this.detachInnerElSize = watchHeight(innerEl, (height) => {
       setRef(this.props.innerHeightRef, height)
     })
-    this.detachTopElSize = watchHeight(topEl, (height) => {
-      setRef(this.props.topHeightRef, height)
-    })
-    this.detachMainElSize = watchHeight(mainEl, (height) => {
-      setRef(this.props.mainHeightRef, height)
+    this.detachTopElSize = watchHeight(headerWrapEl, (height) => {
+      setRef(this.props.headerHeightRef, height)
     })
   }
 
   componentWillUnmount(): void {
     this.detachInnerElSize()
     this.detachTopElSize()
-    this.detachMainElSize()
 
     setRef(this.props.innerHeightRef, null)
-    setRef(this.props.topHeightRef, null)
-    setRef(this.props.mainHeightRef, null)
+    setRef(this.props.headerHeightRef, null)
   }
 }
 

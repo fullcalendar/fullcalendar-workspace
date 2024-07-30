@@ -181,7 +181,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                     height={state.allDayHeight}
 
                     // refs
-                    maxCellInnerHeightRef={this.allDayInnerHeightRef}
+                    cellInnerHeightRef={this.allDayInnerHeightRef}
                   />
                 </div>
               </Scroller>

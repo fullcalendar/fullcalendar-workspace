@@ -26,8 +26,8 @@ export function computeFgSegVerticals(
   segs: TableSeg[],
   segHeightMap: Map<string, number>, // keyed by segSpanId
   cells: DayTableCell[],
-  colTopOrigins: number[],
-  colMaxHeights: number[],
+  topOrigin: number | undefined,
+  maxHeight: number | undefined,
   strictOrder: boolean,
   dayMaxEvents: boolean | number,
   dayMaxEventRows: boolean | number,
@@ -46,33 +46,6 @@ export function computeFgSegVerticals(
     hiddenSegsByCol.push([])
     heightsByCol.push(0)
   }
-
-  // compute segTopOrigin & maxHeight from array-like inputs
-  // (we eventually want DayGridSegHierarchy to constrain coords per-column,
-  //  but this is a fine intermediate solution)
-
-  let segTopOrigin = 0
-  for (const colOrigin of colTopOrigins) {
-    segTopOrigin = Math.max(segTopOrigin, colOrigin)
-  }
-
-  let smallestMaxBottom: number | undefined
-
-  for (let col = 0; col < colCnt; col++) {
-    const colTopOrigin = colTopOrigins[col]
-    const colMaxHeight = colMaxHeights[col]
-
-    if (colTopOrigin != null && colMaxHeight != null) {
-      const colMaxBottom = colTopOrigin + colMaxHeight
-      if (smallestMaxBottom == null || colMaxBottom < smallestMaxBottom) {
-        smallestMaxBottom = colMaxBottom
-      }
-    }
-  }
-
-  let maxHeight = smallestMaxBottom != null
-    ? smallestMaxBottom - segTopOrigin
-    : undefined
 
   // for segs that have heights, create entries to be given to DayGridSegHierarchy
   // otherwise, record seg as hidden
@@ -111,7 +84,7 @@ export function computeFgSegVerticals(
 
   for (const segRect of segRects) {
     const seg = segs[segRect.index]
-    segTops[getSegStartId(seg)] = segTopOrigin + segRect.levelCoord
+    segTops[getSegStartId(seg)] = topOrigin + segRect.levelCoord
 
     let { start: col, end: endCol } = segRect.span
     for (; col < endCol; col++) {
