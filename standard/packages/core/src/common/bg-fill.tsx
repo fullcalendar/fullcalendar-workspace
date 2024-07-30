@@ -19,7 +19,7 @@ export class BgEvent extends BaseComponent<BgEventProps> {
     return (
       <EventContainer
         elTag="div"
-        elClasses={['fc-bg-event']}
+        elClasses={['fcnew-bg-event']}
         elStyle={{ backgroundColor: seg.eventRange.ui.backgroundColor }}
         defaultGenerator={renderInnerContent}
         seg={seg}
@@ -42,12 +42,12 @@ function renderInnerContent(props: EventContentArg) {
   let { title } = props.event
 
   return title && (
-    <div className="fc-event-title">{props.event.title}</div>
+    <div className="fcnew-event-title">{props.event.title}</div>
   )
 }
 
 export function renderFill(fillType: string) {
   return (
-    <div className={`fc-${fillType}`} />
+    <div className={`fcnew-${fillType}`} />
   )
 }

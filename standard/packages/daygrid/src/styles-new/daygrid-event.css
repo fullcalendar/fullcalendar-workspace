@@ -1,14 +1,9 @@
 
-.fcnew-daygrid-event-harness {
-  position: absolute;
-}
-
 .fcnew-daygrid-event { // make root-level, because will be dragged-and-dropped outside of a component root
   position: relative; // for z-indexes assigned later
   white-space: nowrap;
   border-radius: 3px; // dot event needs this to when selected
   font-size: var(--fc-small-font-size);
-  margin-bottom: 1px;
 }
 
 /* this used to be in daygrid.css */

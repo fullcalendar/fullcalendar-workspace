@@ -1,4 +1,12 @@
 
+$daygrid-non-business-z: 1;
+$daygrid-bg-event-z: 2;
+$daygrid-highlight-z: 3;
+$daygrid-topbottom-z: 4;
+$daygrid-weeknum-z: 5;
+$daygrid-event-z: 6;
+$daygrid-event-mirror-z: 7;
+
 .fcnew-daygrid-view {
   display: flex;
   flex-direction: column;
@@ -20,7 +28,7 @@
   flex-basis: 0;
 }
 
-.fcnew-daygrid-main {
+.fcnew-daygrid-main { // best name?
   flex-grow: 1;
 }
 
@@ -39,7 +47,7 @@
   flex-basis: 0;
 }
 
-/* cell */
+// cell
 
 .fcnew-daygrid-cell {
   flex-grow: 1;
@@ -50,4 +58,38 @@
 
 .fcnew-daygrid-cell-inner-liquid {
   flex-grow: 1;
+}
+
+// event harness
+
+.fcnew-daygrid-event-harness {
+  position: absolute;
+  top: 0; // fallback coords for when cannot yet be computed
+  left: 0; //
+  right: 0; //
+}
+
+.fcnew-daygrid-bg-harness {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+// bg content
+
+.fcnew-daygrid-cell { // bad wrapper
+  & .fcnew-non-business { z-index: $daygrid-non-business-z }
+  & .fcnew-bg-event { z-index: $daygrid-bg-event-z }
+  & .fcnew-highlight { z-index: $daygrid-highlight-z }
+}
+
+// events
+
+.fcnew-daygrid-event {
+  z-index: $daygrid-event-z;
+  margin-top: 1px;
+}
+
+.fcnew-daygrid-event.fc-event-mirror {
+  z-index: $daygrid-event-mirror-z;
 }

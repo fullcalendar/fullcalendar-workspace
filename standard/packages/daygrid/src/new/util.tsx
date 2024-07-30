@@ -133,7 +133,7 @@ export function computeColFromPosition(
 } {
   const realColWidth = colWidth != null ? colWidth : elWidth / colCnt
   const colFromLeft = Math.floor(positionLeft / realColWidth)
-  const col = isRtl ? (colCnt - colFromLeft - 1) : colCnt
+  const col = isRtl ? (colCnt - colFromLeft - 1) : colFromLeft
   const left = colFromLeft * realColWidth
   const right = left + realColWidth
 

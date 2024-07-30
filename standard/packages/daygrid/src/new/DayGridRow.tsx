@@ -295,12 +295,14 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
 
     for (const seg of segs) {
       const { left, right, width } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
+      const isVisible = !seg.isStandin
 
       nodes.push(
         <div
           key={buildEventRangeKey(seg.eventRange)}
           className="fcnew-daygrid-bg-harness"
           style={{
+            visibility: isVisible ? '' : 'hidden',
             left,
             right,
             width,

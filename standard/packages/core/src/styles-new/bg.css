@@ -1,0 +1,39 @@
+
+.fc {
+
+  & .fcnew-bg-event,
+  & .fcnew-non-business,
+  & .fcnew-highlight {
+    // will always have a harness with position:relative/absolute, so absolutely expand
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  & .fcnew-non-business {
+    background: var(--fc-non-business-color);
+  }
+
+  & .fcnew-bg-event {
+    background: var(--fc-bg-event-color);
+    opacity: var(--fc-bg-event-opacity);
+
+    & .fcnew-event-title {
+      margin: .5em;
+      font-size: var(--fc-small-font-size);
+      font-style: italic;
+    }
+  }
+
+  & .fcnew-highlight {
+    background: var(--fc-highlight-color);
+  }
+
+  & .fcnew-cell-shaded,
+  & .fcnew-day-disabled {
+    background: var(--fc-neutral-bg-color);
+  }
+
+}
