@@ -1,7 +1,6 @@
 export class RefMap<K, V> {
   public current = new Map<K, V>()
   private callbacks = new Map<K, (val: V | null) => void>
-  private depths = new Map<K, number>() // TODO: still need this for repeat firing?
 
   constructor(public masterCallback?: (val: V, key: K) => void) {
   }
@@ -20,36 +19,17 @@ export class RefMap<K, V> {
   }
 
   handleValue = (val: V, key: K) => { // bind in case users want to pass it around
-    let { current, callbacks, depths } = this
-    let removed = false
-    let added = false
-    let depth = depths.get(key) || 0
+    let { current, callbacks } = this
 
-    if (val !== null) {
-      // first remove before adding?
-      // for bug... ACTUALLY: can probably do away with this now that callers don't share numeric indices anymore
-      removed = current.has(key)
-
-      current.set(key, val)
-      depths.set(key, ++depth)
-      added = true
+    if (val === null) {
+      current.delete(key)
+      callbacks.delete(key)
     } else {
-      depths.set(key, --depth)
-
-      if (!depth) {
-        current.delete(key)
-        callbacks.delete(key)
-        removed = true
-      }
+      current.set(key, val)
     }
 
     if (this.masterCallback) {
-      if (removed) {
-        this.masterCallback(null, key)
-      }
-      if (added) {
-        this.masterCallback(val, key)
-      }
+      this.masterCallback(val, key)
     }
   }
 }

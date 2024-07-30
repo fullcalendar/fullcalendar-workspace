@@ -177,6 +177,10 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     this.detachInnerElSize()
     this.detachTopElSize()
     this.detachMainElSize()
+
+    setRef(this.props.innerHeightRef, null)
+    setRef(this.props.topHeightRef, null)
+    setRef(this.props.mainHeightRef, null)
   }
 }
 

@@ -16,6 +16,7 @@ import {
   buildNavLinkAttrs,
   watchHeight,
   guid,
+  afterSize,
 } from '@fullcalendar/core/internal'
 import {
   VNode,
@@ -61,7 +62,6 @@ export interface DayGridRowProps {
 }
 
 interface DayGridRowState {
-  cellInnerHeightRev?: string
   segHeightRev?: string
 }
 
@@ -70,8 +70,10 @@ const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
 export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> {
   // ref
   private rootEl: HTMLElement | undefined
-  private cellInnerHeightRefMap = new RefMap<string, number>(() => {
-    this.setState({ cellInnerHeightRev: guid() })
+  private cellInnerHeightRefMap = new RefMap<string, number>((innerHeight: number | null) => {
+    if (innerHeight != null) {
+      afterSize(this.handleMaxCellInnerHeightUpdate)
+    }
   })
   private cellTopHeightRefMap = new RefMap<string, number>()
   private cellMainHeightRefMap = new RefMap<string, number>()
@@ -333,36 +335,27 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     this.disconnectHeight = watchHeight(rootEl, (contentHeight) => {
       setRef(this.props.heightRef, contentHeight)
     })
-
-    this.resetMaxCellInnerHeightRef()
-  }
-
-  componentDidUpdate(prevProps: DayGridRowProps, prevState: DayGridRowState): void {
-    if (prevState.cellInnerHeightRev !== this.state.cellInnerHeightRev) {
-      this.resetMaxCellInnerHeightRef()
-    }
   }
 
   componentWillUnmount(): void {
     this.disconnectHeight()
+
+    setRef(this.props.heightRef, null)
+    setRef(this.props.maxCellInnerHeightRef, null)
   }
 
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  resetMaxCellInnerHeightRef() {
+  handleMaxCellInnerHeightUpdate = () => {
     const cellInnerHeightMap = this.cellInnerHeightRefMap.current
-    const resultRef = this.props.maxCellInnerHeightRef
+    let max = 0
 
-    if (resultRef && cellInnerHeightMap.size) {
-      let max = 0
-
-      for (const height of cellInnerHeightMap.values()) {
-        max = Math.max(max, height)
-      }
-
-      setRef(resultRef, max)
+    for (const height of cellInnerHeightMap.values()) {
+      max = Math.max(max, height)
     }
+
+    setRef(this.props.maxCellInnerHeightRef, max)
   }
 
   // Utils
