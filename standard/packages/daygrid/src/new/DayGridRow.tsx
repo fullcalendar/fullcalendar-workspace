@@ -126,7 +126,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     return (
       <div
         role="row"
-        className="fcnew-daygrid-row"
+        className="fcnew-row fcnew-daygrid-row"
         style={{ height: props.height }}
         ref={this.handleRootEl}
       >

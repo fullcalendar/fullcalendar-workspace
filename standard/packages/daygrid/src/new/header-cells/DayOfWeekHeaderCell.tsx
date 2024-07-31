@@ -70,6 +70,7 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
       <ContentContainer
         elTag='div'
         elClasses={[
+          'fcnew-cell',
           HEADER_CELL_CLASS_NAME,
           ...getDayClassNames(dateMeta, theme),
           ...(props.extraClassNames || []),

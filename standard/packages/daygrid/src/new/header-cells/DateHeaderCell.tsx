@@ -70,6 +70,7 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
       <ContentContainer
         elTag='div'
         elClasses={[
+          'fcnew-cell',
           HEADER_CELL_CLASS_NAME,
           ...getDayClassNames(dayMeta, theme),
           ...(props.extraClassNames || [])

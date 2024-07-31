@@ -80,7 +80,7 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
           vertical={verticalScrollbars}
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
-          elClassNames={['fcnew-daygrid-main']}
+          elClassNames={['fcnew-rowgroup', 'fcnew-daygrid-main']}
           ref={this.handleScroller}
         >
           <DayGridRows

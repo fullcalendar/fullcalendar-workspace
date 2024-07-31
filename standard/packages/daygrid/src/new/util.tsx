@@ -3,7 +3,7 @@ import { DateFormatter, DateMarker, DateProfile, DateProfileGenerator, DaySeries
 import { ComponentChild } from '@fullcalendar/core/preact'
 import { TableSeg } from '../TableSeg.js'
 
-export const HEADER_CELL_CLASS_NAME = 'fcnew-col-header-cell'
+export const HEADER_CELL_CLASS_NAME = 'fcnew-col-header-cell' // pointless abstraction?
 
 export function renderInner(renderProps: DayHeaderContentArg): ComponentChild {
   return renderProps.text

@@ -17,17 +17,6 @@ $daygrid-event-mirror-z: 7;
   flex-direction: column;
 }
 
-.fcnew-daygrid-header-row {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-}
-
-.fcnew-daygrid-header-row > * {
-  flex-grow: 1;
-  flex-basis: 0;
-}
-
 .fcnew-daygrid-main { // best name?
   flex-grow: 1;
 }
@@ -39,26 +28,12 @@ $daygrid-event-mirror-z: 7;
 }
 
 .fcnew-daygrid-row {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
   position: relative; // origin for event positioning
   flex-basis: 0;
+  flex-grow: 1;
 }
 
 .fc {
-
-  // row
-
-  & .fcnew-daygrid-header-row,
-  & .fcnew-daygrid-row { // TODO: make this more generic, ex: for timegrid
-    border-bottom: 1px solid var(--fc-border-color); // TODO: move to theme
-  }
-
-  & .fcnew-daygrid-row:last-child {
-    border-bottom: 0; // TODO: move to theme
-  }
 
   // cell
 
@@ -73,18 +48,9 @@ $daygrid-event-mirror-z: 7;
     flex-grow: 1;
   }
 
-  & .fcnew-col-header-cell, // not the correct place for this
-  & .fcnew-daygrid-cell {
-    // TODO: change technique for RTL
-
-    border-right: 1px solid var(--fc-border-color); // TODO: move to theme
-
-    &:last-child {
-      border-right: 0;
-    }
-  }
-
   & .fcnew-col-header-cell { // not the correct place for this
+    flex-grow: 1;
+    flex-basis: 0;
     text-align: center;
   }
   & .fcnew-col-header-cell-cushion {

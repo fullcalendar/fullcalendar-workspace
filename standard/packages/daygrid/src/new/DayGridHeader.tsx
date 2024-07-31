@@ -19,6 +19,7 @@ export function DayGridHeader<Model, ModelKey>(props: DayGridHeaderProps<Model, 
   return (
     <div
       className={[
+        'fcnew-rowgroup',
         'fcnew-daygrid-header',
         ...(props.extraClassNames || []),
       ].join(' ')}
@@ -29,7 +30,7 @@ export function DayGridHeader<Model, ModelKey>(props: DayGridHeaderProps<Model, 
       }}
     >
       {props.headerTiers.map((cells, tierNum) => (
-        <div key={tierNum} role='row' class='fcnew-daygrid-header-row'>
+        <div key={tierNum} role='row' class='fcnew-row'>
           {cells.map((cell) => (
             <Fragment key={props.getHeaderModelKey(cell)}>
               {props.renderHeaderContent(cell, tierNum, props.colWidth)}

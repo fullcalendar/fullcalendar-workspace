@@ -36,3 +36,44 @@
   right: 0;
   bottom: 0;
 }
+
+// Util
+// -------------------------------------------------------------------------------------------------
+
+.fcnew-flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.fcnew-flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.fcnew-flex-grow {
+  flex-grow: 1;
+}
+
+.fcnew-row {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.fcnew-rowgroup:last-child,
+.fcnew-row:last-child {
+  border-bottom: 0;
+}
+
+.fcnew-rowgroup,
+.fcnew-row {
+  border-bottom: 1px solid var(--fc-border-color); // TODO: move to theme
+}
+
+.fcnew-cell {
+  border-right: 1px solid var(--fc-border-color); // TODO: move to theme. TODO: isRTL
+}
+
+.fcnew-cell:last-child {
+  border-right: 0;
+}

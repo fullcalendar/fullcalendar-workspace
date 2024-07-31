@@ -77,6 +77,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       <DayCellContainer
         elTag="div"
         elClasses={[
+          'fcnew-cell',
           'fcnew-daygrid-cell',
           ...(props.extraClassNames || []),
         ]}
