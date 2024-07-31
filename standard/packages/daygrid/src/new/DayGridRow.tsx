@@ -101,8 +101,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     const fgEventSegsByCol = splitSegsByCol(fgEventSegs, colCnt)
     const bgEventSegsByCol = splitSegsByCol(props.bgEventSegs, colCnt)
     const businessHoursByCol = splitSegsByCol(props.businessHourSegs, colCnt)
-    const highlightSegsByCol = splitSegsByCol(this.getHighlightSegs(), colCnt)
-    const mirrorSegsByCol = splitSegsByCol(this.getMirrorSegs(), colCnt)
+    const highlightSegsByCol = splitSegsByCol(this.getHighlightSegs(), colCnt) // TODO: doesn't need standins
+    const mirrorSegsByCol = splitSegsByCol(this.getMirrorSegs(), colCnt) // TODO: doesn't need standins
 
     // TODO: memoize?
     const [hiddenSegsByCol, segTops, heightsByCol] = computeFgSegVerticals(

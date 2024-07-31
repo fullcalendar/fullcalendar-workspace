@@ -36,6 +36,7 @@ export interface DateHeaderCellProps {
 
   // ref
   innerElRef?: Ref<HTMLDivElement>
+  // TODO: change this!!!
 }
 
 export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
@@ -60,6 +61,7 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
 
     return (
       <ContentContainer
+        elTag='div'
         elClasses={[
           HEADER_CELL_CLASS_NAME,
           ...getDayClassNames(dayMeta, theme),
@@ -89,6 +91,7 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
                 elTag="a"
                 elAttrs={navLinkAttrs}
                 elClasses={[
+                  'fcnew-col-header-cell-cushion',
                   props.isSticky && 'fcnew-sticky', // TODO: how to do this???
                 ]}
               />

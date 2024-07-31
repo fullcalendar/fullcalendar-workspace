@@ -47,49 +47,158 @@ $daygrid-event-mirror-z: 7;
   flex-basis: 0;
 }
 
-// cell
+.fc {
 
-.fcnew-daygrid-cell {
-  flex-grow: 1;
-  flex-basis: 0;
-  display: flex;
-  flex-direction: column;
-}
+  // row
 
-.fcnew-daygrid-cell-inner-liquid {
-  flex-grow: 1;
-}
+  & .fcnew-daygrid-header-row,
+  & .fcnew-daygrid-row { // TODO: make this more generic, ex: for timegrid
+    border-bottom: 1px solid var(--fc-border-color); // TODO: move to theme
+  }
 
-// event harness
+  & .fcnew-daygrid-row:last-child {
+    border-bottom: 0; // TODO: move to theme
+  }
 
-.fcnew-daygrid-event-harness {
-  position: absolute;
-  top: 0; // fallback coords for when cannot yet be computed
-  left: 0; //
-  right: 0; //
-}
+  // cell
 
-.fcnew-daygrid-bg-harness {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-}
+  & .fcnew-daygrid-cell {
+    flex-grow: 1;
+    flex-basis: 0;
+    display: flex;
+    flex-direction: column;
+  }
 
-// bg content
+  & .fcnew-daygrid-cell-inner-liquid {
+    flex-grow: 1;
+  }
 
-.fcnew-daygrid-cell { // bad wrapper
-  & .fcnew-non-business { z-index: $daygrid-non-business-z }
-  & .fcnew-bg-event { z-index: $daygrid-bg-event-z }
-  & .fcnew-highlight { z-index: $daygrid-highlight-z }
-}
+  & .fcnew-col-header-cell, // not the correct place for this
+  & .fcnew-daygrid-cell {
+    // TODO: change technique for RTL
 
-// events
+    border-right: 1px solid var(--fc-border-color); // TODO: move to theme
 
-.fcnew-daygrid-event {
-  z-index: $daygrid-event-z;
-  margin-top: 1px;
-}
+    &:last-child {
+      border-right: 0;
+    }
+  }
 
-.fcnew-daygrid-event.fc-event-mirror {
-  z-index: $daygrid-event-mirror-z;
+  & .fcnew-col-header-cell { // not the correct place for this
+    text-align: center;
+  }
+  & .fcnew-col-header-cell-cushion {
+    display: inline-block; // x-browser for when sticky (when multi-tier header)
+    padding: 2px 4px;
+  }
+
+  // cell top
+
+  & .fcnew-daygrid-cell-header {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  & .fcnew-day-other .fcnew-daygrid-cell-header {
+    opacity: 0.3;
+  }
+
+  // day number (within cell top)
+
+  & .fcnew-daygrid-cell-number {
+    position: relative;
+    z-index: $daygrid-topbottom-z;
+    padding: 4px;
+  }
+
+  & .fc-daygrid-month-start { // on .fcnew-daygrid-cell-number
+    font-weight: bold;
+    font-size: 1.1em;
+  }
+
+  // event harness
+
+  & .fcnew-daygrid-event-harness {
+    position: relative;
+  }
+  & .fcnew-daygrid-event-harness-abs {
+    position: absolute;
+    top: 0; // fallback coords for when cannot yet be computed
+    left: 0; //
+    right: 0; //
+  }
+
+  & .fcnew-daygrid-bg-harness {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+  }
+
+  // bg content
+
+  & .fcnew-daygrid-cell { // bad wrapper
+    & .fcnew-non-business { z-index: $daygrid-non-business-z }
+    & .fcnew-bg-event { z-index: $daygrid-bg-event-z }
+    & .fcnew-highlight { z-index: $daygrid-highlight-z }
+  }
+
+  // events
+
+  & .fcnew-daygrid-event {
+    z-index: $daygrid-event-z;
+    margin-top: 1px;
+  }
+
+  & .fcnew-daygrid-event.fc-event-mirror {
+    z-index: $daygrid-event-mirror-z;
+  }
+
+  // cell bottom (within day-events)
+
+  & .fcnew-daygrid-cell-footer {
+    font-size: .85em;
+    margin: 0 2px;
+
+    // just to make sure margins of +more link don't bleed out. do this everywhere
+    display: flex;
+    flex-direction: column;
+  }
+
+  & .fcnew-daygrid-more-link {
+    position: relative;
+    z-index: $daygrid-topbottom-z;
+    margin-top: 1px;
+    max-width: 100%;
+    border-radius: 3px;
+    padding: 2px;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 1; // undo themes that have thick line-height
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  // week number (within frame)
+
+  & .fcnew-daygrid-week-number {
+    position: absolute;
+    z-index: $daygrid-weeknum-z;
+    top: 0;
+    padding: 2px;
+    min-width: 1.5em;
+    text-align: center;
+    background-color: var(--fc-neutral-bg-color);
+    color: var(--fc-neutral-text-color);
+  }
+
+  // popover
+
+  & .fcnew-more-popover .fcnew-popover-body {
+    min-width: 220px;
+    padding: 10px;
+  }
+
 }

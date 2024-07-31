@@ -9,6 +9,7 @@
 @import './styles-new/event';
 @import './styles-new/bg';
 @import './styles-new/h-event';
+@import './styles-new/popover';
 
 @import './styles/icons';
 @import './styles/button';

@@ -30,6 +30,7 @@ export interface DayOfWeekHeaderCellProps {
 
   // ref
   innerElRef?: Ref<HTMLDivElement>
+  // TODO: change this!!!
 }
 
 const WEEKDAY_FORMAT = createFormatter({ weekday: 'long' })
@@ -60,6 +61,7 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
 
     return (
       <ContentContainer
+        elTag='div'
         elClasses={[
           HEADER_CELL_CLASS_NAME,
           ...getDayClassNames(dateMeta, theme),
@@ -84,6 +86,7 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
             <InnerContent
               elTag="a"
               elClasses={[
+                'fcnew-col-header-cell-cushion',
                 props.isSticky && 'fcnew-sticky', // TODO: how to do this???
               ]}
               elAttrs={{

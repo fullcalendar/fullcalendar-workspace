@@ -29,7 +29,7 @@ export class Popover extends BaseComponent<PopoverProps> {
     let { theme, options } = this.context
     let { props, state } = this
     let classNames = [
-      'fc-popover',
+      'fcnew-popover',
       theme.getClass('popover'),
     ].concat(
       props.extraClassNames || [],
@@ -43,17 +43,17 @@ export class Popover extends BaseComponent<PopoverProps> {
         aria-labelledby={state.titleId}
         ref={this.handleRootEl}
       >
-        <div className={'fc-popover-header ' + theme.getClass('popoverHeader')}>
-          <span className="fc-popover-title" id={state.titleId}>
+        <div className={'fcnew-popover-header ' + theme.getClass('popoverHeader')}>
+          <span className="fcnew-popover-title" id={state.titleId}>
             {props.title}
           </span>
           <span
-            className={'fc-popover-close ' + theme.getIconClass('close')}
+            className={'fcnew-popover-close ' + theme.getIconClass('close')}
             title={options.closeHint}
             onClick={this.handleCloseClick}
           />
         </div>
-        <div className={'fc-popover-body ' + theme.getClass('popoverContent')}>
+        <div className={'fcnew-popover-body ' + theme.getClass('popoverContent')}>
           {props.children}
         </div>
       </div>,
@@ -111,9 +111,13 @@ export class Popover extends BaseComponent<PopoverProps> {
     if (alignmentRect) {
       let popoverDims = rootEl.getBoundingClientRect()
 
+      if (alignGridTop) {
+        throw new Error('alignGridTop not supported yet')
+      }
+
       // position relative to viewport
       let popoverTop = alignGridTop
-        ? elementClosest(alignmentEl, '.fc-scrollgrid').getBoundingClientRect().top
+        ? elementClosest(alignmentEl, '.fcnew-scrollgrid').getBoundingClientRect().top // BAD!!!
         : alignmentRect.top
       let popoverLeft = isRtl ? alignmentRect.right - popoverDims.width : alignmentRect.left
 

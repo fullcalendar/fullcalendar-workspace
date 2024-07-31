@@ -149,7 +149,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
 
   updateParentEl() {
     if (this.linkEl) {
-      this.parentEl = elementClosest(this.linkEl, '.fc-view-harness')
+      this.parentEl = elementClosest(this.linkEl, '.fcnew-view-harness') // HACK. reconsider
     }
   }
 
