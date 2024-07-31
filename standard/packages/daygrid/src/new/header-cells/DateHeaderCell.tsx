@@ -13,8 +13,10 @@ import {
   DateProfile,
   Dictionary,
   ContentContainer,
+  watchHeight,
+  setRef,
 } from '@fullcalendar/core/internal'
-import { Ref, createElement } from '@fullcalendar/core/preact'
+import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { HEADER_CELL_CLASS_NAME, renderInner } from '../util.js'
 
 export interface DateHeaderCellProps {
@@ -35,11 +37,16 @@ export interface DateHeaderCellProps {
   colWidth?: number
 
   // ref
-  innerElRef?: Ref<HTMLDivElement>
-  // TODO: change this!!!
+  innerHeightRef?: Ref<number>
 }
 
 export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
+  // ref
+  private innerElRef = createRef<HTMLDivElement>()
+
+  // internal
+  private disconectInnerHeight?: () => void
+
   render() {
     let { props, context } = this
     let { dateProfile, date, extraRenderProps, extraDataAttrs } = props
@@ -85,7 +92,7 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
         willUnmount={options.dayHeaderWillUnmount}
       >
         {(InnerContainer) => (
-          <div ref={props.innerElRef}>
+          <div ref={this.innerElRef}>
             {!dayMeta.isDisabled && (
               <InnerContainer
                 elTag="a"
@@ -100,5 +107,16 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
         )}
       </ContentContainer>
     )
+  }
+
+  componentDidMount(): void {
+    const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
+    this.disconectInnerHeight = watchHeight(innerEl, (height) => {
+      setRef(this.props.innerHeightRef, height)
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.disconectInnerHeight()
   }
 }

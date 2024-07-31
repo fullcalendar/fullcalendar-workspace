@@ -11,9 +11,9 @@ export interface SplittableProps {
   dateSelection: DateSpan | null
   eventStore: EventStore
   eventUiBases: EventUiHash
-  eventSelection: string
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
+  eventSelection: string
 }
 
 const EMPTY_EVENT_STORE = createEmptyEventStore() // for purecomponents. TODO: keep elsewhere
@@ -53,9 +53,9 @@ export abstract class Splitter<PropsType extends SplittableProps = SplittablePro
         dateSelection: dateSelections[key] || null,
         eventStore,
         eventUiBases: buildEventUi(props.eventUiBases[''], keyInfo.ui, individualUi[key]),
-        eventSelection: eventStore.instances[props.eventSelection] ? props.eventSelection : '',
         eventDrag: eventDrags[key] || null,
         eventResize: eventResizes[key] || null,
+        eventSelection: eventStore.instances[props.eventSelection] ? props.eventSelection : '',
       }
     }
 

@@ -1,15 +1,26 @@
 import { AllDayContentArg } from '@fullcalendar/core'
-import { ComponentChild, Ref, createElement } from '@fullcalendar/core/preact'
-import { BaseComponent, ContentContainer } from "@fullcalendar/core/internal"
+import { ComponentChild, Ref, createElement, createRef } from '@fullcalendar/core/preact'
+import { BaseComponent, ContentContainer, setRef, watchSize } from "@fullcalendar/core/internal"
 
 export interface TimeGridAllDayLabelCellProps {
-  elRef?: Ref<HTMLElement>
-  width?: number // TODO: use!
-  height?: number // TODO: use!
+  // dimension
+  width: number | undefined // really have this component handle this?
+  height: number | undefined // "
+
+  // refs
+  innerWidthRef?: Ref<number>
+  innerHeightRef?: Ref<number>
 }
 
 export class TimeGridAllDayLabelCell extends BaseComponent<TimeGridAllDayLabelCellProps> {
+  // ref
+  private innerElRef = createRef<HTMLDivElement>()
+
+  // internal
+  private disconnectInnerSize?: () => void
+
   render() {
+    let { props } = this
     let { options, viewApi } = this.context
     let renderProps: AllDayContentArg = {
       text: options.allDayText,
@@ -26,7 +37,10 @@ export class TimeGridAllDayLabelCell extends BaseComponent<TimeGridAllDayLabelCe
         elAttrs={{
           'aria-hidden': true,
         }}
-        elRef={this.props.elRef}
+        elStyle={{
+          width: props.width,
+          height: props.height,
+        }}
         renderProps={renderProps}
         generatorName="allDayContent"
         customGenerator={options.allDayContent}
@@ -37,18 +51,13 @@ export class TimeGridAllDayLabelCell extends BaseComponent<TimeGridAllDayLabelCe
       >
         {(InnerContent) => (
           <div
-            className={[
-              'fc-timegrid-axis-frame',
-              'fc-scrollgrid-shrink-frame',
-              // rowHeight == null ? ' fc-timegrid-axis-frame-liquid' : '',
-            ].join(' ')}
-            style={{ /*height: rowHeight*/ }}
+            className='fc-timegrid-axis-frame'
+            ref={this.innerElRef}
           >
             <InnerContent
               elTag="span"
               elClasses={[
                 'fc-timegrid-axis-cushion',
-                'fc-scrollgrid-shrink-cushion',
                 'fc-scrollgrid-sync-inner',
               ]}
             />
@@ -56,6 +65,18 @@ export class TimeGridAllDayLabelCell extends BaseComponent<TimeGridAllDayLabelCe
         )}
       </ContentContainer>
     )
+  }
+
+  componentDidMount(): void {
+    const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
+    this.disconnectInnerSize = watchSize(innerEl, (width, height) => {
+      setRef(this.props.innerWidthRef, width)
+      setRef(this.props.innerHeightRef, height)
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.disconnectInnerSize()
   }
 }
 

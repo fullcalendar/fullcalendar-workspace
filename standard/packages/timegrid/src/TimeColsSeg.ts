@@ -8,7 +8,11 @@ export interface TimeColsSeg extends Seg {
   end: DateMarker
 }
 
-export function splitSegsByCol(segs: TimeColsSeg[] | null, colCnt: number) { // can be given null/undefined!
+/*
+TODO: more DRY with daygrid?
+can be given null/undefined!
+*/
+export function splitSegsByCol(segs: TimeColsSeg[] | null, colCnt: number) {
   let segsByCol: TimeColsSeg[][] = []
   let i
 
@@ -25,6 +29,10 @@ export function splitSegsByCol(segs: TimeColsSeg[] | null, colCnt: number) { // 
   return segsByCol
 }
 
+/*
+TODO: more DRY with daygrid?
+can be given null/undefined!
+*/
 export function splitInteractionByCol(ui: EventSegUiInteractionState | null, colCnt: number) {
   let byRow: EventSegUiInteractionState[] = []
 

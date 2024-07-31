@@ -74,30 +74,36 @@ export class TimeGridView extends DateComponent<ViewProps> {
               cells={dayTableModel.cells[0]}
               forPrint={props.forPrint}
 
-              eventSelection={props.eventSelection}
-
               // header content
               headerTiers={[dayTableModel.cells[0]]}
-              renderHeaderLabel={(tierNum, handleEl, height) => (
+              // TODO: rethink having cell care about received-height
+              renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width, height) => (
                 options.weekNumbers ? (
-                  <TimeGridWeekNumberCell dateProfile={dateProfile} elRef={handleEl} />
+                  <TimeGridWeekNumberCell
+                    dateProfile={dateProfile}
+                    innerWidthRef={innerWidthRef}
+                    innerHeightRef={innerHeightRef}
+                    width={width}
+                    height={height}
+                  />
                 ) : (
                   <div>{/* empty... best? */}</div>
                 )
               )}
-              renderHeaderContent={(cell, tierNum, handleEl) => (
+              // TODO: rethink having cell care about received-height
+              renderHeaderContent={(cell, tierNum, innerHeightRef, height) => (
                 <DateHeaderCell
-                  key={cell.date.toISOString()}
                   {...cell}
-                  innerElRef={handleEl}
+                  key={cell.key}
                   navLink={dayTableModel.cells.length > 1}
                   dateProfile={dateProfile}
                   todayRange={todayRange}
                   dayHeaderFormat={dayHeaderFormat}
                   colWidth={undefined}
+                  innerHeightRef={innerHeightRef}
                 />
               )}
-              getHeaderModelKey={(cell) => cell.date.toISOString()}
+              getHeaderModelKey={(cell) => cell.key}
 
               // all-day content
               fgEventSegs={allDayProps.fgEventSegs}
@@ -115,6 +121,9 @@ export class TimeGridView extends DateComponent<ViewProps> {
               dateSelectionSegsByCol={dateSelectionSegsByCol}
               eventDragByCol={eventDragByCol}
               eventResizeByCol={eventResizeByCol}
+
+              // universal content
+              eventSelection={props.eventSelection}
             />
           )
         }}

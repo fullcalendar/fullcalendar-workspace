@@ -10,8 +10,10 @@ import {
   Dictionary,
   createFormatter,
   ContentContainer,
+  watchHeight,
+  setRef,
 } from '@fullcalendar/core/internal'
-import { createElement, Ref } from '@fullcalendar/core/preact'
+import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { HEADER_CELL_CLASS_NAME, renderInner } from '../util.js'
 
 export interface DayOfWeekHeaderCellProps {
@@ -29,13 +31,18 @@ export interface DayOfWeekHeaderCellProps {
   colWidth?: number
 
   // ref
-  innerElRef?: Ref<HTMLDivElement>
-  // TODO: change this!!!
+  innerHeightRef?: Ref<number>
 }
 
 const WEEKDAY_FORMAT = createFormatter({ weekday: 'long' })
 
 export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps> {
+  // ref
+  private innerElRef = createRef<HTMLDivElement>()
+
+  // internal
+  private disconectInnerHeight?: () => void
+
   render() {
     let { props, context } = this
     let { dateEnv, theme, viewApi, options } = context
@@ -82,7 +89,7 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
         willUnmount={options.dayHeaderWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={props.innerElRef}>
+          <div ref={this.innerElRef}>
             <InnerContent
               elTag="a"
               elClasses={[
@@ -97,5 +104,16 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
         )}
       </ContentContainer>
     )
+  }
+
+  componentDidMount(): void {
+    const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
+    this.disconectInnerHeight = watchHeight(innerEl, (height) => {
+      setRef(this.props.innerHeightRef, height)
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.disconectInnerHeight()
   }
 }

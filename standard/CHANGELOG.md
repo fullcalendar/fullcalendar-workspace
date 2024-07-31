@@ -4,6 +4,7 @@ Revisit https://github.com/fullcalendar/fullcalendar/issues/5606
 Reverify https://github.com/fullcalendar/fullcalendar/issues/7162
 TODO: isStandin - flag for hidden DOM-only event element
 Reverify https://github.com/fullcalendar/fullcalendar/issues/6140
+Get rid of anything "shrink"
 
 ## 6.1.15 (2024-07-12)
 

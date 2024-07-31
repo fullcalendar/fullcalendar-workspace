@@ -1,21 +1,25 @@
 import { SlotLaneContentArg } from '@fullcalendar/core'
-import { BaseComponent, ContentContainer } from '@fullcalendar/core/internal'
-import { Ref, createElement } from '@fullcalendar/core/preact'
+import { BaseComponent, ContentContainer, setRef, watchHeight } from '@fullcalendar/core/internal'
+import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { TimeSlatMeta } from '../time-slat-meta.js'
 
-export interface TimeGridSlatCellProps {
-  slatMeta: TimeSlatMeta
-  elRef?: Ref<HTMLElement>
+export interface TimeGridSlatCellProps extends TimeSlatMeta {
+  innerHeightRef?: Ref<number>
 }
 
 export class TimeGridSlatCell extends BaseComponent<TimeGridSlatCellProps> {
+  // ref
+  private innerElRef = createRef<HTMLDivElement>()
+
+  // internal
+  private detachInnerHeight?: () => void
+
   render() {
     let { props, context } = this
-    let { slatMeta } = props
     let { options } = context
     let renderProps: SlotLaneContentArg = {
-      time: slatMeta.time,
-      date: context.dateEnv.toDate(slatMeta.date),
+      time: props.time,
+      date: context.dateEnv.toDate(props.date),
       view: context.viewApi,
     }
 
@@ -25,19 +29,41 @@ export class TimeGridSlatCell extends BaseComponent<TimeGridSlatCellProps> {
         elClasses={[
           'fc-timegrid-slot',
           'fc-timegrid-slot-lane',
-          !slatMeta.isLabeled && 'fc-timegrid-slot-minor',
+          !props.isLabeled && 'fc-timegrid-slot-minor',
         ]}
         elAttrs={{
-          'data-time': slatMeta.isoTimeStr,
+          'data-time': props.isoTimeStr,
         }}
-        elRef={props.elRef}
         renderProps={renderProps}
         generatorName="slotLaneContent"
         customGenerator={options.slotLaneContent}
         classNameGenerator={options.slotLaneClassNames}
         didMount={options.slotLaneDidMount}
         willUnmount={options.slotLaneWillUnmount}
-      />
+      >
+        {(InnerContent) => (
+          <div
+            className="fc-timegrid-slot-lane-frame"
+            ref={this.innerElRef}
+          >
+            <InnerContent
+              elTag="div"
+              elClasses={['fc-timegrid-slot-lane-cushion']}
+            />
+          </div>
+        )}
+      </ContentContainer>
     )
+  }
+
+  componentDidMount(): void {
+    const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
+    this.detachInnerHeight = watchHeight(innerEl, (height) => {
+      setRef(this.props.innerHeightRef, height)
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.detachInnerHeight()
   }
 }

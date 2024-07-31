@@ -62,8 +62,8 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
   private headerWrapElRef = createRef<HTMLDivElement>()
 
   // internal
-  private detachInnerElSize?: () => void
-  private detachTopElSize?: () => void
+  private detachInnerHeight?: () => void
+  private detachHeaderHeight?: () => void
 
   render() {
     let { props, context } = this
@@ -149,17 +149,17 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
     const headerWrapEl = this.headerWrapElRef.current // "
 
-    this.detachInnerElSize = watchHeight(innerEl, (height) => {
+    this.detachInnerHeight = watchHeight(innerEl, (height) => {
       setRef(this.props.innerHeightRef, height)
     })
-    this.detachTopElSize = watchHeight(headerWrapEl, (height) => {
+    this.detachHeaderHeight = watchHeight(headerWrapEl, (height) => {
       setRef(this.props.headerHeightRef, height)
     })
   }
 
   componentWillUnmount(): void {
-    this.detachInnerElSize()
-    this.detachTopElSize()
+    this.detachInnerHeight()
+    this.detachHeaderHeight()
 
     setRef(this.props.innerHeightRef, null)
     setRef(this.props.headerHeightRef, null)

@@ -34,8 +34,8 @@ export function createHorizontalStyle(
 export function computeSlotWidth(
   tDateProfile: TimelineDateProfile,
   slotMinWidth: number | undefined,
-  slotCushionMaxWidth: number | number, // TODO: if either is undefined, return undefined
-  timeViewportWidth: number | number
+  slotCushionMaxWidth: number | undefined, // TODO: if either is undefined, return undefined
+  timeViewportWidth: number | undefined
 ): [
   slotWidth: number, // FYI: don't apply to last cell. will have a remainder
   totalWidth: number

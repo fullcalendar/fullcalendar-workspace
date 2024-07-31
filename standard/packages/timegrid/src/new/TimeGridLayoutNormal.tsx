@@ -1,5 +1,5 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef } from "@fullcalendar/core/internal"
-import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize } from "@fullcalendar/core/internal"
+import { Fragment, createElement, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
 import { TimeGridAllDayContent } from "./TimeGridAllDayContent.js"
@@ -21,8 +21,19 @@ export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
 
   // header content
   headerTiers: HeaderCellModel[][]
-  renderHeaderLabel: (tier: number, handleEl: (el: HTMLElement) => void, height: number) => ComponentChild
-  renderHeaderContent: (model: HeaderCellModel, tier: number, handleEl: (el: HTMLElement) => void) => ComponentChild
+  renderHeaderLabel: (
+    tier: number,
+    innerWidthRef: Ref<number> | undefined,
+    innerHeightRef: Ref<number> | undefined,
+    width: number | undefined,
+    height: number | undefined,
+  ) => ComponentChild
+  renderHeaderContent: (
+    model: HeaderCellModel,
+    tier: number,
+    innerHeightRef: Ref<number> | undefined,
+    height: number | undefined,
+  ) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
   // all-day content
@@ -43,7 +54,6 @@ export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
   dateSelectionSegsByCol: TimeColsSeg[][]
   eventDragByCol: EventSegUiInteractionState[]
   eventResizeByCol: EventSegUiInteractionState[]
-  onTimeCoords?: () => void
 
   // universal content
   eventSelection: string
@@ -54,7 +64,6 @@ export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
 }
 
 interface TimeGridLayoutState {
-  width?: number
   leftScrollbarWidth?: number
   rightScrollbarWidth?: number
   axisWidth?: number
@@ -63,13 +72,26 @@ interface TimeGridLayoutState {
 
 export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseComponent<TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey>, TimeGridLayoutState> {
   // refs
-  private headerLabelElRefMap = new RefMap<number, HTMLElement>()
-  private allDayLabelElRef = createRef<HTMLElement>()
-  private slatLabelElRefMap = new RefMap<string, HTMLElement>() // keyed by ISO-something
-  private slatContentElRefMap = new RefMap<string, HTMLElement>() // keyed by ISO-something
+  private headerLabelInnerWidthRefMap = new RefMap<number, number>(() => { // keyed by tierNum
+    afterSize(this.handleAxisWidths)
+  })
+  private allDayLabelInnerWidth?: number
+  private handleAllDayLabelInnerWidth = (width: number) => {
+    this.allDayLabelInnerWidth = width
+    afterSize(this.handleAxisWidths)
+  }
+  private slatLabelInnerWidthRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
+    afterSize(this.handleAxisWidths)
+  })
+  private slatLabelInnerHeightRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
+    afterSize(this.handleSlatHeights)
+  })
+  private slatInnerHeightRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
+    afterSize(this.handleSlatHeights)
+  })
 
   render() {
-    const { props, state, context } = this
+    const { props, state, context, slatLabelInnerWidthRefMap, slatLabelInnerHeightRefMap, slatInnerHeightRefMap, headerLabelInnerWidthRefMap } = this
     const { nowDate } = props
     const { axisWidth } = state
     const { options } = context
@@ -77,65 +99,74 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
 
     return (
       <Fragment>
-        {options.dayHeaders && (
-          <div className={[
-            'fcnew-header',
-            stickyHeaderDates ? 'fcnew-sticky' : '',
-          ].join(' ')}>
-            <div className='fcnew-header-inner'>
-              {props.headerTiers.map((models, tierNum) => (
-                <div className='fcnew-row'>
-                  {props.renderHeaderLabel(
-                    tierNum,
-                    this.headerLabelElRefMap.createRef(tierNum),
-                    undefined,
-                  )}
-                  {models.map((model) => (
-                    props.renderHeaderContent(
-                      model,
+        <div style={{ paddingLeft: state.leftScrollbarWidth, paddingRight: state.rightScrollbarWidth }}>
+          {options.dayHeaders && (
+            <div className={[
+              'fcnew-header',
+              stickyHeaderDates ? 'fcnew-sticky' : '',
+            ].join(' ')}>
+              <div className='fcnew-header-inner'>
+                {props.headerTiers.map((models, tierNum) => (
+                  <div className='fcnew-row'>
+                    {props.renderHeaderLabel(
                       tierNum,
-                      undefined, // ref
-                    )
-                  ))}
-                </div>
-              ))}
+                      headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
+                      undefined, // innerHeightRef
+                      axisWidth, // width
+                      undefined, // height
+                    )}
+                    {models.map((model) => (
+                      props.renderHeaderContent( // TODO: add key!!!!!!!
+                        model,
+                        tierNum,
+                        undefined, // innerHeightRef
+                        undefined, // height
+                      )
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
-        {options.allDaySlot && (
-          <Fragment>
-            <div className='fcnew-row'>
-              <div className='fcnew-col' style={{ width: axisWidth }}>
-                <TimeGridAllDayLabelCell
-                  elRef={this.allDayLabelElRef}
+          )}
+          {options.allDaySlot && (
+            <Fragment>
+              <div className='fcnew-row'>
+                <div className='fcnew-col' style={{ width: axisWidth }}>
+                  <TimeGridAllDayLabelCell
+                    width={axisWidth /* AAHHHH -- defined in two places */}
+                    height={undefined}
+                    innerWidthRef={this.handleAllDayLabelInnerWidth}
+                  />
+                </div>
+                <TimeGridAllDayContent
+                  dateProfile={props.dateProfile}
+                  todayRange={props.todayRange}
+                  cells={props.cells}
+                  showDayNumbers={false}
+                  forPrint={props.forPrint}
+                  isHitComboAllowed={props.isHitComboAllowed}
+
+                  // content
+                  fgEventSegs={props.fgEventSegs}
+                  bgEventSegs={props.bgEventSegs}
+                  businessHourSegs={props.businessHourSegs}
+                  dateSelectionSegs={props.dateSelectionSegs}
+                  eventSelection={props.eventSelection}
+                  eventDrag={props.eventDrag}
+                  eventResize={props.eventResize}
+                  dayMaxEvents={props.dayMaxEvents}
+                  dayMaxEventRows={props.dayMaxEventRows}
                 />
               </div>
-              <TimeGridAllDayContent
-                dateProfile={props.dateProfile}
-                todayRange={props.todayRange}
-                cells={props.cells}
-                showDayNumbers={false}
-                forPrint={props.forPrint}
-                isHitComboAllowed={props.isHitComboAllowed}
-
-                // content
-                fgEventSegs={props.fgEventSegs}
-                bgEventSegs={props.bgEventSegs}
-                businessHourSegs={props.businessHourSegs}
-                dateSelectionSegs={props.dateSelectionSegs}
-                eventSelection={props.eventSelection}
-                eventDrag={props.eventDrag}
-                eventResize={props.eventResize}
-                dayMaxEvents={props.dayMaxEvents}
-                dayMaxEventRows={props.dayMaxEventRows}
-              />
-            </div>
-            <div className='fcnew-divider'></div>
-          </Fragment>
-        )}
+              <div className='fcnew-divider'></div>
+            </Fragment>
+          )}
+        </div>
         <Scroller
-          ref={props.scrollerRef}
           vertical
+          ref={props.scrollerRef}
+          leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
+          rightScrollbarWidthRef={this.handleRightScrollbarWidth}
         >
           <div className='fcnew-canvas'>
             <div>
@@ -144,12 +175,13 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   <div style={{ width: axisWidth }}>
                     <TimeGridAxisCell
                       {...slatMeta}
-                      elRef={this.slatLabelElRefMap.createRef(slatMeta.key)}
+                      innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
+                      innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                     />
                   </div>
                   <TimeGridSlatCell
-                    slatMeta={slatMeta}
-                    elRef={this.slatContentElRefMap.createRef(slatMeta.key)}
+                    {...slatMeta}
+                    innerHeightRef={slatInnerHeightRefMap.createRef(slatMeta.key)}
                   />
                 </div>
               ))}
@@ -186,74 +218,51 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
     )
   }
 
-  // Lifecycle
-  // -----------------------------------------------------------------------------------------------
-
-  componentDidMount() {
-    this.handleSizing()
-    this.context.addResizeHandler(this.handleSizing)
-  }
-
-  componentDidUpdate(prevProps: unknown, prevState: TimeGridLayoutState) {
-    this.handleSizing()
-
-    if (this.state.slatHeight !== prevState.slatHeight && this.props.onTimeCoords) {
-      this.props.onTimeCoords()
-    }
-  }
-
-  componentWillUnmount() {
-    this.context.removeResizeHandler(this.handleSizing)
-  }
-
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  handleSizing = () => {
-    // axisWidth
-    // ---------
-
-    let maxAxisElWidth = 0
-    let axisEls: HTMLElement[] = [
-      ...this.headerLabelElRefMap.current.values(),
-      this.allDayLabelElRef.current,
-      ...this.slatLabelElRefMap.current.values(),
-    ]
-
-    for (let axisEl of axisEls) {
-      maxAxisElWidth = Math.max(maxAxisElWidth, axisEl.offsetWidth)
-    }
-
-    this.safeSetState({
-      axisWidth: maxAxisElWidth
-    })
-
-    // slatHeight
-    // ----------
-
-    let maxSlatHeight = 0
-
-    for (const slatEl of this.slatLabelElRefMap.current.values()) {
-      maxSlatHeight = Math.max(maxSlatHeight, slatEl.offsetHeight)
-    }
-    for (const slatEl of this.slatContentElRefMap.current.values()) {
-      maxSlatHeight = Math.max(maxSlatHeight, slatEl.offsetHeight)
-    }
-
-    const slatHeight = maxSlatHeight + 1 // add border
-    this.safeSetState({ slatHeight })
-    setRef(this.props.slatHeightRef, slatHeight)
-  }
-
-  handleWidth = (width: number) => {
-    this.setState({ width})
-  }
-
-  handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
+  private handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
     this.setState({ leftScrollbarWidth })
   }
 
-  handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
+  private handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
     this.setState({ rightScrollbarWidth })
+  }
+
+  private handleAxisWidths = () => {
+    const headerLabelInnerWidthMap = this.headerLabelInnerWidthRefMap.current
+    const slatLabelInnerWidthMap = this.slatLabelInnerWidthRefMap.current
+    let max = this.allDayLabelInnerWidth
+
+    for (const headerLabelInnerWidth of headerLabelInnerWidthMap.values()) {
+      max = Math.max(max, headerLabelInnerWidth)
+    }
+
+    for (const slatLabelInnerWidth of slatLabelInnerWidthMap.values()) {
+      max = Math.max(max, slatLabelInnerWidth)
+    }
+
+    if (this.state.axisWidth !== max) {
+      this.setState({ axisWidth: max })
+    }
+  }
+
+  private handleSlatHeights = () => {
+    const slatLabelInnerHeightMap = this.slatLabelInnerHeightRefMap.current
+    const slatInnerHeightMap = this.slatInnerHeightRefMap.current
+    let max = 0
+
+    for (const slatLabelInnerHeight of slatLabelInnerHeightMap.values()) {
+      max = Math.max(max, slatLabelInnerHeight)
+    }
+
+    for (const slatInnerHeight of slatInnerHeightMap.values()) {
+      max = Math.max(max, slatInnerHeight)
+    }
+
+    if (this.state.slatHeight !== max) {
+      this.setState({ slatHeight: max })
+      setRef(this.props.slatHeightRef, max)
+    }
   }
 }

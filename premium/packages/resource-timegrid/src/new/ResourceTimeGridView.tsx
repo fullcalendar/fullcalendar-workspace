@@ -162,7 +162,11 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
               headerTiers={headerTiers}
               renderHeaderLabel={(tierNum, handleEl) => ( // TODO: make this baked into TimeGridLayout
                 (options.weekNumbers && tierNum === headerTiers.length - 1) ? (
-                  <TimeGridWeekNumberCell dateProfile={dateProfile} />
+                  <TimeGridWeekNumberCell
+                    dateProfile={dateProfile}
+                    width={undefined /* YUCK */}
+                    height={undefined /* YUCK */}
+                  />
                 ) : (
                   <div>{/* empty */}</div>
                 )

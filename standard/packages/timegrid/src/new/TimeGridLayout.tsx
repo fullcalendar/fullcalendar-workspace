@@ -1,6 +1,6 @@
 import { ViewOptions } from '@fullcalendar/core'
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollRequest, ScrollResponder, ViewContainer, memoize } from "@fullcalendar/core/internal"
-import { createElement, ComponentChild, createRef } from '@fullcalendar/core/preact'
+import { createElement, ComponentChild, createRef, Ref } from '@fullcalendar/core/preact'
 import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { buildSlatMetas } from "../time-slat-meta.js"
 import { TimeColsSeg } from '../TimeColsSeg.js'
@@ -17,8 +17,19 @@ export interface TimeGridLayoutProps<HeaderCellModel, HeaderCellKey> {
 
   // header content
   headerTiers: HeaderCellModel[][]
-  renderHeaderLabel: (tier: number, handleEl: (el: HTMLElement) => void, height: number) => ComponentChild
-  renderHeaderContent: (model: HeaderCellModel, tier: number, handleEl: (el: HTMLElement) => void) => ComponentChild
+  renderHeaderLabel: (
+    tier: number,
+    innerWidthRef: Ref<number>,
+    innerHeightRef: Ref<number>,
+    width: number | undefined,
+    height: number | undefined,
+  ) => ComponentChild
+  renderHeaderContent: (
+    model: HeaderCellModel,
+    tier: number,
+    innerHeightRef: Ref<number>,
+    height: number | undefined,
+  ) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
   // all-day content
@@ -110,7 +121,7 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
     }
 
     return (
-      <ViewContainer elClasses={['fc-timegrid']} viewSpec={context.viewSpec}>
+      <ViewContainer elClasses={['fc-timegrid-view', 'fc-bordered']} viewSpec={context.viewSpec}>
         {dayMinWidth ? (
           <TimeGridLayoutPannable
             {...commonLayoutProps}
@@ -164,6 +175,9 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
     return false
   }
 }
+
+// Utils
+// -----------------------------------------------------------------------------------------------
 
 const AUTO_ALL_DAY_MAX_EVENT_ROWS = 5
 
