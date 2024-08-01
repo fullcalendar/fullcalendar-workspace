@@ -40,7 +40,7 @@
 // Util
 // -------------------------------------------------------------------------------------------------
 
-.fcnew-flex-grow { // TODO: rename to just fcnew-grow
+.fcnew-grow {
   flex-grow: 1;
 }
 

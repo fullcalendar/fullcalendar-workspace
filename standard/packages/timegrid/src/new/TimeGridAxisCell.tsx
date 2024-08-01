@@ -45,7 +45,7 @@ export class TimeGridAxisCell extends Component<TimeGridAxisCellProps> {
     let { props } = this
     let classNames = [
       'fcnew-cell',
-      props.grow ? 'fcnew-flex-grow' : '',
+      props.grow ? 'fcnew-grow' : '',
       'fc-timegrid-slot',
       'fc-timegrid-slot-label',
       props.isLabeled ? 'fc-scrollgrid-shrink' : 'fc-timegrid-slot-minor',

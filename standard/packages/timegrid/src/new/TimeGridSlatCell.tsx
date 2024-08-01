@@ -28,7 +28,7 @@ export class TimeGridSlatCell extends BaseComponent<TimeGridSlatCellProps> {
         elTag="div"
         elClasses={[
           'fcnew-cell',
-          'fcnew-flex-grow',
+          'fcnew-grow',
           'fc-timegrid-slot', // TODO: investigate if we can remove
           'fc-timegrid-slot-lane', // "
           !props.isLabeled && 'fc-timegrid-slot-minor',

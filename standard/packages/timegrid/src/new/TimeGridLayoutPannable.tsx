@@ -166,7 +166,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               ref={this.headScrollerRef}
               horizontal
               hideScrollbars
-              elClassNames={['fcnew-cell fcnew-flex-grow']} // a "super" cell ... TODO: not a good idea if ever gets left/right border
+              elClassNames={['fcnew-cell fcnew-grow']} // a "super" cell ... TODO: not a good idea if ever gets left/right border
             >
               <div
                 style={{
@@ -211,10 +211,10 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 ref={this.allDayScrollerRef}
                 horizontal
                 hideScrollbars
-                elClassNames={['fcnew-cell fcnew-flex-grow']} // a "super" cell ... TODO: not a good idea if ever gets left/right border
+                elClassNames={['fcnew-cell fcnew-grow']} // a "super" cell ... TODO: not a good idea if ever gets left/right border
               >
                 <div style={{ width: canvasWidth }}>
-                  <TimeGridAllDayContent // has 'fcnew-cellgroup fcnew-flex-grow'
+                  <TimeGridAllDayContent // has 'fcnew-cellgroup fcnew-grow'
                     dateProfile={props.dateProfile}
                     todayRange={props.todayRange}
                     cells={props.cells}
@@ -252,7 +252,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             ref={this.axisScrollerRef}
             vertical
             hideScrollbars
-            elClassNames={['fcnew-cell fcnew-flex-grow']} // a "super" cell ... TODO: not a good idea if ever gets left/right border
+            elClassNames={['fcnew-cell fcnew-grow']} // a "super" cell ... TODO: not a good idea if ever gets left/right border
             elStyle={{ width: axisWidth }}
           >
             <div className='fcnew-canvas'>{/* (for abs positioning within) TODO */}
@@ -265,7 +265,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   className='fcnew-row'
                   style={{ height: state.slatHeight }}
                 >
-                  <TimeGridAxisCell // .fcnew-cell.fcnew-flex-grow
+                  <TimeGridAxisCell // .fcnew-cell.fcnew-grow
                     {...slatMeta}
                     width={undefined}
                     grow
@@ -293,7 +293,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                     className='fcnew-row'
                     style={{ height: state.slatHeight }}
                   >
-                    <TimeGridSlatCell // .fcnew-cell.fcnew-flex-grow
+                    <TimeGridSlatCell // .fcnew-cell.fcnew-grow
                       {...slatMeta}
                       innerHeightRef={this.slatMainInnerHeightRefMap.createRef(slatMeta.key)}
                     />

@@ -116,7 +116,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                     undefined, // innerHeightRef
                     axisWidth, // width
                   )}
-                  <div className='fcnew-cellgroup fcnew-flex-grow'>
+                  <div className='fcnew-cellgroup fcnew-grow'>
                     {models.map((model) => (
                       <Fragment key={props.getHeaderModelKey(model)}>
                         {props.renderHeaderContent(
@@ -139,7 +139,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   height={undefined /* TODO: kill param!!! */}
                   innerWidthRef={this.handleAllDayLabelInnerWidth}
                 />
-                <TimeGridAllDayContent // has 'fcnew-cellgroup fcnew-flex-grow'
+                <TimeGridAllDayContent // has 'fcnew-cellgroup fcnew-grow'
                   dateProfile={props.dateProfile}
                   todayRange={props.todayRange}
                   cells={props.cells}
@@ -178,7 +178,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                   innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                 />
-                <TimeGridSlatCell // has 'fcnew-cell fcnew-flex-grow'
+                <TimeGridSlatCell // has 'fcnew-cell fcnew-grow'
                   {...slatMeta}
                   innerHeightRef={slatInnerHeightRefMap.createRef(slatMeta.key)}
                 />
@@ -189,7 +189,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 {/* NOTE: is within a row, but we don't want the border, so don't use fcnew-cell  */}
                 <TimeGridNowIndicatorArrow nowDate={nowDate} />
               </div>
-              <TimeGridCols // has 'fc-cellgroup fcnew-flex-grow'
+              <TimeGridCols // has 'fc-cellgroup fcnew-grow'
                 dateProfile={props.dateProfile}
                 nowDate={props.nowDate}
                 todayRange={props.todayRange}

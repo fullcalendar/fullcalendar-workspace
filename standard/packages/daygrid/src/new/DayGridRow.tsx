@@ -128,7 +128,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       <div
         role={props.cellGroup ? '' : 'row'}
         className={[
-          props.cellGroup ? 'fcnew-cellgroup fcnew-flex-grow' : 'fcnew-row',
+          props.cellGroup ? 'fcnew-cellgroup fcnew-grow' : 'fcnew-row',
           'fcnew-daygrid-row',
         ].join(' ')}
         style={{ height: props.height }}
