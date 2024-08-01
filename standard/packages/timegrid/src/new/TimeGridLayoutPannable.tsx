@@ -119,6 +119,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
   private allDayScrollerRef = createRef<Scroller>()
 
   // internal
+  // TODO: rename these
   private hScroller: ScrollerSyncerInterface
   private vScroller: ScrollerSyncerInterface
 

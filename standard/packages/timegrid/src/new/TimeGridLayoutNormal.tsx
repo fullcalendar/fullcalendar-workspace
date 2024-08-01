@@ -180,7 +180,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
           elClassNames={['fcnew-rowgroup']}
         >
-          <div className='fcnew-canvas'>{/* (for abs positioning within) TODO */}
+          <div>{/* TODO: absolute positioning origin */}
             {props.slatMetas.map((slatMeta) => (
               <div key={slatMeta.key} className='fcnew-row'>
                 <TimeGridAxisCell // .fcnew-rowheader
@@ -195,7 +195,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 />
               </div>
             ))}
-            <div className='fc-row fcnew-absolute'>{/* TODO */}
+            <div>{/* TODO: absolute positioning */}
               <div style={{ width: axisWidth }}>{/* TODO: make TimeGridAxisCol ? */}
                 {/* NOTE: is within a row, but we don't want the border, so don't use fcnew-cell  */}
                 <TimeGridNowIndicatorArrow nowDate={nowDate} />
