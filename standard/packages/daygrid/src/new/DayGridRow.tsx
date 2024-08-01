@@ -39,6 +39,7 @@ export interface DayGridRowProps {
   cells: DayTableCell[]
   showDayNumbers: boolean
   forPrint: boolean
+  cellGroup?: boolean // also implies flex-grow
 
   // content
   fgEventSegs: TableSeg[]
@@ -56,7 +57,7 @@ export interface DayGridRowProps {
   height?: number
 
   // refs
-  rootElRef?: Ref<HTMLElement>
+  rootElRef?: Ref<HTMLElement> // needed by TimeGrid, to attach Hit system
   heightRef?: Ref<number>
   cellInnerHeightRef?: Ref<number> // only fired if !fgHeightFixed (so dayMaxEvents !== true && dayMaxEventRows !== true)
 }
@@ -125,8 +126,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
 
     return (
       <div
-        role="row"
-        className="fcnew-row fcnew-daygrid-row"
+        role={props.cellGroup ? '' : 'row'}
+        className={[
+          props.cellGroup ? 'fcnew-cellgroup fcnew-flex-grow' : 'fcnew-row',
+          'fcnew-daygrid-row',
+        ].join(' ')}
         style={{ height: props.height }}
         ref={this.handleRootEl}
       >

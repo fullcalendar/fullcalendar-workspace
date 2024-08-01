@@ -4,8 +4,8 @@ import { BaseComponent, ContentContainer, setRef, watchSize } from "@fullcalenda
 
 export interface TimeGridAllDayLabelCellProps {
   // dimension
-  width: number | undefined // really have this component handle this?
-  height: number | undefined // "
+  width: number | undefined
+  height: number | undefined
 
   // refs
   innerWidthRef?: Ref<number>
@@ -29,10 +29,9 @@ export class TimeGridAllDayLabelCell extends BaseComponent<TimeGridAllDayLabelCe
 
     return (
       <ContentContainer
-        elTag="td"
+        elTag="div"
         elClasses={[
-          'fc-timegrid-axis',
-          'fc-scrollgrid-shrink',
+          'fcnew-cell'
         ]}
         elAttrs={{
           'aria-hidden': true,

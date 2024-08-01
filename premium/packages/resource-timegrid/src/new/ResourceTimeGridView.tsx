@@ -165,7 +165,6 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
                   <TimeGridWeekNumberCell
                     dateProfile={dateProfile}
                     width={undefined /* YUCK */}
-                    height={undefined /* YUCK */}
                   />
                 ) : (
                   <div>{/* empty */}</div>

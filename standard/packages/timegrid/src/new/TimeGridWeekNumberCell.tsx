@@ -6,7 +6,6 @@ export interface TimeGridWeekNumberCellProps {
 
   // dimensions
   width: number | undefined
-  height: number | undefined
 
   // ref
   innerWidthRef?: Ref<number>
@@ -39,10 +38,7 @@ export class TimeGridWeekNumberCell extends BaseComponent<TimeGridWeekNumberCell
         elAttrs={{
           'aria-hidden': true, // why???
         }}
-        elStyle={{
-          width: props.width,
-          height: props.height,
-        }}
+        elStyle={{ width: props.width }}
         date={range.start}
         defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
       >

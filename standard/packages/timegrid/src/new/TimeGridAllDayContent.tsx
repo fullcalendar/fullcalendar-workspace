@@ -6,10 +6,13 @@ export interface TimeGridAllDayContentProps extends DayGridRowProps {
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
 }
 
+/*
+rename to TimeGridAllDayMainCells
+*/
 export class TimeGridAllDayContent extends DateComponent<TimeGridAllDayContentProps> {
   render() {
     return (
-      <DayGridRow {...this.props} rootElRef={this.handleRootEl} />
+      <DayGridRow {...this.props} cellGroup rootElRef={this.handleRootEl} />
     )
   }
 

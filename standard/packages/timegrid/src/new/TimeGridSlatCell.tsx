@@ -25,10 +25,12 @@ export class TimeGridSlatCell extends BaseComponent<TimeGridSlatCellProps> {
 
     return (
       <ContentContainer
-        elTag="td"
+        elTag="div"
         elClasses={[
-          'fc-timegrid-slot',
-          'fc-timegrid-slot-lane',
+          'fcnew-cell',
+          'fcnew-flex-grow',
+          'fc-timegrid-slot', // TODO: investigate if we can remove
+          'fc-timegrid-slot-lane', // "
           !props.isLabeled && 'fc-timegrid-slot-minor',
         ]}
         elAttrs={{

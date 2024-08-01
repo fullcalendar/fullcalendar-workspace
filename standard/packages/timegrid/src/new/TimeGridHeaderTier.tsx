@@ -12,15 +12,15 @@ export interface TimeGridHeaderTierProps<HeaderCellModel, HeaderCellKey> {
   ) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey // TODO: better name
 
-  // dimmension
-  height: number | undefined
-
   // ref
   innerHeightRef?: Ref<number>
 }
 
 /*
+ONLY does cell!! does not do TR around it. rename? will this make it more portable for Normal layout?
+ONLY USED FOR Pannable layout!!!
 TODO: combine with DayGridHeader?
+TODO: why not make this a PureComponent? search for others like this
 */
 export class TimeGridHeaderTier<HeaderCellModel, HeaderCellKey> extends Component<TimeGridHeaderTierProps<HeaderCellModel, HeaderCellKey>> {
   // ref
@@ -35,7 +35,7 @@ export class TimeGridHeaderTier<HeaderCellModel, HeaderCellKey> extends Componen
     const { props } = this
 
     return (
-      <div className='fcnew-tier' style={{ height: props.height }}>
+      <Fragment>
         {props.models.map((model) => {
           const key = props.getHeaderModelKey(model)
           return (
@@ -44,12 +44,12 @@ export class TimeGridHeaderTier<HeaderCellModel, HeaderCellKey> extends Componen
                 model,
                 props.tierNum,
                 this.innerHeightRefMap.createRef(key), // innerHeightRef
-                props.height, // height --- AHHH given here too??
+                undefined, // height --- AHHH given here too??
               )}
             </Fragment>
           )
         })}
-      </div>
+      </Fragment>
     )
   }
 

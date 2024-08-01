@@ -27,13 +27,11 @@ export interface TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
     innerWidthRef: Ref<number> | undefined,
     innerHeightRef: Ref<number> | undefined,
     width: number | undefined,
-    height: number | undefined,
   ) => ComponentChild
   renderHeaderContent: (
     model: HeaderCellModel,
     tier: number,
     innerHeightRef: Ref<number> | undefined,
-    height: number | undefined,
   ) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
@@ -113,13 +111,13 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
   private slatMainInnerHeightRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
     afterSize(this.handleSlatHeights)
   })
-
   private axisScrollerRef = createRef<Scroller>()
   private mainScrollerRef = createRef<Scroller>()
   private headScrollerRef = createRef<Scroller>()
   private footScrollerRef = createRef<Scroller>()
   private allDayScrollerRef = createRef<Scroller>()
 
+  // internal
   private hScroller: ScrollerSyncerInterface
   private vScroller: ScrollerSyncerInterface
 
@@ -137,38 +135,60 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     return (
       <Fragment>
         {options.dayHeaders && (
-          <div className={[
-            'fcnew-header',
-            stickyHeaderDates ? 'fcnew-sticky' : '',
-          ].join(' ')}>
+          <div
+            className={[
+              'fcnew-row', // a "super" row
+              stickyHeaderDates ? 'fcnew-sticky' : '',
+            ].join(' ')}
+          >
             {/* LEFT */}
-            <div className='fcnew-axis' style={{ width: axisWidth }}>
+            <div
+              className='fcnew-cell' // a "super" cell
+              style={{ width: axisWidth }}
+            >
               {props.headerTiers.map((models, tierNum) => (
-                props.renderHeaderLabel(
-                  tierNum,
-                  this.headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
-                  this.headerLabelInnerHeightRefMap.createRef(tierNum), // innerHeightRef
-                  axisWidth, // width --- AHHH used above too
-                  state.headerTierHeights[tierNum], // height
-                )
+                <div
+                  key={tierNum}
+                  className='fcnew-row'
+                  style={{ height: state.headerTierHeights[tierNum] }}
+                >
+                  {props.renderHeaderLabel(
+                    tierNum,
+                    this.headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
+                    this.headerLabelInnerHeightRefMap.createRef(tierNum), // innerHeightRef
+                    undefined, // width (no need to define, set on parent)
+                  )}
+                </div>
               ))}
             </div>
             {/* RIGHT */}
             <Scroller
               ref={this.headScrollerRef}
               horizontal
-              /* TODO: how to apply paddingRight/Left? */
+              hideScrollbars
+              elClassNames={['fcnew-cell fcnew-flex-grow']} // a "super" cell ... TODO: not a good idea if ever gets left/right border
             >
-              <div className='fcnew-canvas' style={{ width: canvasWidth }}>
+              <div
+                style={{
+                  width: canvasWidth,
+                  paddingLeft: state.leftScrollbarWidth,
+                  paddingRight: state.rightScrollbarWidth,
+                }}
+              >
                 {props.headerTiers.map((models, tierNum) => (
-                  <TimeGridHeaderTier
-                    tierNum={tierNum}
-                    models={models}
-                    renderHeaderContent={props.renderHeaderContent}
-                    getHeaderModelKey={props.getHeaderModelKey}
-                    height={state.headerTierHeights[tierNum]}
-                    innerHeightRef={this.headerMainInnerHeightRefMap.createRef(tierNum)}
-                  />
+                  <div
+                    key={tierNum}
+                    className='fcnew-row'
+                    style={{ height: state.headerTierHeights[tierNum] }}
+                  >
+                    <TimeGridHeaderTier
+                      tierNum={tierNum}
+                      models={models}
+                      renderHeaderContent={props.renderHeaderContent}
+                      getHeaderModelKey={props.getHeaderModelKey}
+                      innerHeightRef={this.headerMainInnerHeightRefMap.createRef(tierNum)}
+                    />
+                  </div>
                 ))}
               </div>
             </Scroller>
@@ -176,9 +196,11 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
         )}
         {options.allDaySlot && (
           <Fragment>
-            <div>
+            <div
+              className='fcnew-row' // a "super" row
+            >
               {/* LEFT */}
-              <TimeGridAllDayLabelCell
+              <TimeGridAllDayLabelCell // has 'fcnew-cell'
                 width={axisWidth}
                 height={state.allDayHeight}
                 innerWidthRef={this.handleAllDayLabelInnerWidth}
@@ -188,9 +210,11 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               <Scroller
                 ref={this.allDayScrollerRef}
                 horizontal
+                hideScrollbars
+                elClassNames={['fcnew-cell fcnew-flex-grow']} // a "super" cell ... TODO: not a good idea if ever gets left/right border
               >
-                <div className='fcnew-canvas' style={{ width: canvasWidth }}>
-                  <TimeGridAllDayContent
+                <div style={{ width: canvasWidth }}>
+                  <TimeGridAllDayContent // has 'fcnew-cellgroup fcnew-flex-grow'
                     dateProfile={props.dateProfile}
                     todayRange={props.todayRange}
                     cells={props.cells}
@@ -222,14 +246,16 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             <div className='fcnew-divider'></div>
           </Fragment>
         )}
-        <div>
+        <div className='fcnew-row'>{/* a "super" row */}
           {/* LEFT */}
           <Scroller
             ref={this.axisScrollerRef}
             vertical
+            hideScrollbars
+            elClassNames={['fcnew-cell fcnew-flex-grow']} // a "super" cell ... TODO: not a good idea if ever gets left/right border
             elStyle={{ width: axisWidth }}
           >
-            <div className='fcnew-canvas'>
+            <div className='fcnew-canvas'>{/* (for abs positioning within) TODO */}
               <div>{/* TODO: make TimeGridAxisCol ? */}
                 <TimeGridNowIndicatorArrow nowDate={nowDate} />
               </div>
@@ -237,13 +263,12 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 <div
                   key={slatMeta.key}
                   className='fcnew-row'
-                  style={{
-                    // TODO: move to cell?
-                    height: state.slatHeight
-                  }}
+                  style={{ height: state.slatHeight }}
                 >
-                  <TimeGridAxisCell
+                  <TimeGridAxisCell // .fcnew-cell.fcnew-flex-grow
                     {...slatMeta}
+                    width={undefined}
+                    grow
                     innerWidthRef={this.slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                     innerHeightRef={this.slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                   />
@@ -266,19 +291,16 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   <div
                     key={slatMeta.key}
                     className='fcnew-row'
-                    style={{
-                      // TODO: move to cell?
-                      height: state.slatHeight
-                    }}
+                    style={{ height: state.slatHeight }}
                   >
-                    <TimeGridSlatCell
+                    <TimeGridSlatCell // .fcnew-cell.fcnew-flex-grow
                       {...slatMeta}
                       innerHeightRef={this.slatMainInnerHeightRefMap.createRef(slatMeta.key)}
                     />
                   </div>
                 ))}
               </div>
-              <div className='fcnew-absolute'>
+              <div className='fcnew-absolute'>{/* TODO */}
                 <TimeGridCols
                   dateProfile={props.dateProfile}
                   nowDate={props.nowDate}

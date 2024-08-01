@@ -40,21 +40,12 @@
 // Util
 // -------------------------------------------------------------------------------------------------
 
-.fcnew-flex-row {
-  display: flex;
-  flex-direction: row;
-}
-
-.fcnew-flex-col {
-  display: flex;
-  flex-direction: column;
-}
-
-.fcnew-flex-grow {
+.fcnew-flex-grow { // TODO: rename to just fcnew-grow
   flex-grow: 1;
 }
 
-.fcnew-row {
+.fcnew-row,
+.fcnew-cellgroup {
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -68,6 +59,10 @@
 .fcnew-rowgroup,
 .fcnew-row {
   border-bottom: 1px solid var(--fc-border-color); // TODO: move to theme
+}
+
+.fcnew-row {
+  box-sizing: content-box; // for setting height based on innerHeight
 }
 
 .fcnew-cell {

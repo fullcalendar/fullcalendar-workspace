@@ -26,13 +26,11 @@ export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
     innerWidthRef: Ref<number> | undefined,
     innerHeightRef: Ref<number> | undefined,
     width: number | undefined,
-    height: number | undefined,
   ) => ComponentChild
   renderHeaderContent: (
     model: HeaderCellModel,
     tier: number,
     innerHeightRef: Ref<number> | undefined,
-    height: number | undefined,
   ) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
@@ -99,46 +97,49 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
 
     return (
       <Fragment>
-        <div style={{ paddingLeft: state.leftScrollbarWidth, paddingRight: state.rightScrollbarWidth }}>
+        <div
+          className='fcnew-rowgroup' // best place for this?
+          style={{
+            paddingLeft: state.leftScrollbarWidth,
+            paddingRight: state.rightScrollbarWidth
+          }}
+        >
           {options.dayHeaders && (
             <div className={[
-              'fcnew-header',
               stickyHeaderDates ? 'fcnew-sticky' : '',
             ].join(' ')}>
-              <div className='fcnew-header-inner'>
-                {props.headerTiers.map((models, tierNum) => (
-                  <div className='fcnew-row'>
-                    {props.renderHeaderLabel(
-                      tierNum,
-                      headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
-                      undefined, // innerHeightRef
-                      axisWidth, // width
-                      undefined, // height
-                    )}
+              {props.headerTiers.map((models, tierNum) => (
+                <div className='fcnew-row'>
+                  {props.renderHeaderLabel(
+                    tierNum,
+                    headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
+                    undefined, // innerHeightRef
+                    axisWidth, // width
+                  )}
+                  <div className='fcnew-cellgroup fcnew-flex-grow'>
                     {models.map((model) => (
-                      props.renderHeaderContent( // TODO: add key!!!!!!!
-                        model,
-                        tierNum,
-                        undefined, // innerHeightRef
-                        undefined, // height
-                      )
+                      <Fragment key={props.getHeaderModelKey(model)}>
+                        {props.renderHeaderContent(
+                          model,
+                          tierNum,
+                          undefined, // innerHeightRef
+                        )}
+                      </Fragment>
                     ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           )}
           {options.allDaySlot && (
             <Fragment>
               <div className='fcnew-row'>
-                <div className='fcnew-col' style={{ width: axisWidth }}>
-                  <TimeGridAllDayLabelCell
-                    width={axisWidth /* AAHHHH -- defined in two places */}
-                    height={undefined}
-                    innerWidthRef={this.handleAllDayLabelInnerWidth}
-                  />
-                </div>
-                <TimeGridAllDayContent
+                <TimeGridAllDayLabelCell // has 'fcnew-cell'
+                  width={axisWidth}
+                  height={undefined /* TODO: kill param!!! */}
+                  innerWidthRef={this.handleAllDayLabelInnerWidth}
+                />
+                <TimeGridAllDayContent // has 'fcnew-cellgroup fcnew-flex-grow'
                   dateProfile={props.dateProfile}
                   todayRange={props.todayRange}
                   cells={props.cells}
@@ -168,29 +169,27 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
         >
-          <div className='fcnew-canvas'>
-            <div>
-              {props.slatMetas.map((slatMeta) => (
-                <div className='fcnew-row'>
-                  <div style={{ width: axisWidth }}>
-                    <TimeGridAxisCell
-                      {...slatMeta}
-                      innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
-                      innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
-                    />
-                  </div>
-                  <TimeGridSlatCell
-                    {...slatMeta}
-                    innerHeightRef={slatInnerHeightRefMap.createRef(slatMeta.key)}
-                  />
-                </div>
-              ))}
-            </div>
-            <div className='fcnew-absolute'>
+          <div className='fcnew-canvas'>{/* (for abs positioning within) TODO */}
+            {props.slatMetas.map((slatMeta) => (
+              <div key={slatMeta.key} className='fcnew-row'>
+                <TimeGridAxisCell
+                  {...slatMeta}
+                  width={axisWidth}
+                  innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
+                  innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
+                />
+                <TimeGridSlatCell // has 'fcnew-cell fcnew-flex-grow'
+                  {...slatMeta}
+                  innerHeightRef={slatInnerHeightRefMap.createRef(slatMeta.key)}
+                />
+              </div>
+            ))}
+            <div className='fc-row fcnew-absolute'>{/* TODO */}
               <div style={{ width: axisWidth }}>{/* TODO: make TimeGridAxisCol ? */}
+                {/* NOTE: is within a row, but we don't want the border, so don't use fcnew-cell  */}
                 <TimeGridNowIndicatorArrow nowDate={nowDate} />
               </div>
-              <TimeGridCols
+              <TimeGridCols // has 'fc-cellgroup fcnew-flex-grow'
                 dateProfile={props.dateProfile}
                 nowDate={props.nowDate}
                 todayRange={props.todayRange}

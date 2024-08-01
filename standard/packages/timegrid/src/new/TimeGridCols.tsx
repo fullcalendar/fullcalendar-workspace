@@ -51,7 +51,10 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
     const { props } = this
 
     return (
-      <div ref={this.handleRootEl}>
+      <div
+        className='fc-cellgroup fcnew-flex-grow'
+        ref={this.handleRootEl}
+      >
         {props.cells.map((cell, col) => (
           <TimeGridCol
             key={cell.key}

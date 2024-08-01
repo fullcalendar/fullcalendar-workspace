@@ -25,6 +25,11 @@ const DEFAULT_SLAT_LABEL_FORMAT = createFormatter({
 })
 
 export interface TimeGridAxisCellProps extends TimeSlatMeta {
+  // dimensions
+  width: number | undefined
+  grow?: boolean
+
+  // ref
   innerWidthRef?: Ref<number>
   innerHeightRef?: Ref<number>
 }
@@ -39,11 +44,14 @@ export class TimeGridAxisCell extends Component<TimeGridAxisCellProps> {
   render() {
     let { props } = this
     let classNames = [
+      'fcnew-cell',
+      props.grow ? 'fcnew-flex-grow' : '',
       'fc-timegrid-slot',
       'fc-timegrid-slot-label',
       props.isLabeled ? 'fc-scrollgrid-shrink' : 'fc-timegrid-slot-minor',
     ]
 
+    // why are we using ViewContextType.Consumer???
     return (
       <ViewContextType.Consumer>
         {(context: ViewContext) => {
@@ -73,6 +81,9 @@ export class TimeGridAxisCell extends Component<TimeGridAxisCellProps> {
               elClasses={classNames}
               elAttrs={{
                 'data-time': props.isoTimeStr,
+              }}
+              elStyle={{
+                width: props.width,
               }}
               renderProps={renderProps}
               generatorName="slotLabelContent"

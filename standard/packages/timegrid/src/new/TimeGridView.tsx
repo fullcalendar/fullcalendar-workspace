@@ -77,21 +77,20 @@ export class TimeGridView extends DateComponent<ViewProps> {
               // header content
               headerTiers={[dayTableModel.cells[0]]}
               // TODO: rethink having cell care about received-height
-              renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width, height) => (
+              renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width) => (
                 options.weekNumbers ? (
                   <TimeGridWeekNumberCell
                     dateProfile={dateProfile}
                     innerWidthRef={innerWidthRef}
                     innerHeightRef={innerHeightRef}
                     width={width}
-                    height={height}
                   />
                 ) : (
                   <div>{/* empty... best? */}</div>
                 )
               )}
               // TODO: rethink having cell care about received-height
-              renderHeaderContent={(cell, tierNum, innerHeightRef, height) => (
+              renderHeaderContent={(cell, tierNum, innerHeightRef) => (
                 <DateHeaderCell
                   {...cell}
                   key={cell.key}

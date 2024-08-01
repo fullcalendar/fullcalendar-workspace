@@ -22,13 +22,11 @@ export interface TimeGridLayoutProps<HeaderCellModel, HeaderCellKey> {
     innerWidthRef: Ref<number>,
     innerHeightRef: Ref<number>,
     width: number | undefined,
-    height: number | undefined,
   ) => ComponentChild
   renderHeaderContent: (
     model: HeaderCellModel,
     tier: number,
     innerHeightRef: Ref<number>,
-    height: number | undefined,
   ) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
