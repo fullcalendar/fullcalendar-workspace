@@ -16,10 +16,10 @@ const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'short' })
 
 export class TimeGridWeekNumberCell extends BaseComponent<TimeGridWeekNumberCellProps> {
   // ref
-  innerElRef = createRef<HTMLDivElement>()
+  private innerElRef = createRef<HTMLDivElement>()
 
   // internal
-  detachInnerSize?: () => void
+  private detachInnerSize?: () => void
 
   render() {
     let { props, context } = this
@@ -34,7 +34,7 @@ export class TimeGridWeekNumberCell extends BaseComponent<TimeGridWeekNumberCell
     return (
       <WeekNumberContainer
         elTag='div'
-        elClasses={['fc-timegrid-axis']}
+        elClasses={['fcnew-rowheader']}
         elAttrs={{
           'aria-hidden': true, // why???
         }}
@@ -59,7 +59,7 @@ export class TimeGridWeekNumberCell extends BaseComponent<TimeGridWeekNumberCell
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
 
     this.detachInnerSize = watchSize(innerEl, (width, height) => {
-      // TODO: handle changes independently?
+      // TODO: handle width/height independently?
       setRef(this.props.innerWidthRef, width)
       setRef(this.props.innerHeightRef, height)
     })

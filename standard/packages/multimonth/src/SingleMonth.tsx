@@ -37,7 +37,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
 
     // ensure single-month has aspect ratio
     const tableHeight = props.tableWidth != null ? props.tableWidth / options.aspectRatio : null
-    const rowCnt = dayTableModel.cells.length
+    const rowCnt = dayTableModel.cellRows.length
     const rowHeight = tableHeight != null ? tableHeight / rowCnt : null
 
     return (
@@ -97,7 +97,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             <DayGridRows
               dateProfile={props.dateProfile}
               todayRange={props.todayRange}
-              cellRows={dayTableModel.cells}
+              cellRows={dayTableModel.cellRows}
               forPrint={props.forPrint}
 
               // content

@@ -27,7 +27,6 @@ const DEFAULT_SLAT_LABEL_FORMAT = createFormatter({
 export interface TimeGridAxisCellProps extends TimeSlatMeta {
   // dimensions
   width: number | undefined
-  grow?: boolean
 
   // ref
   innerWidthRef?: Ref<number>
@@ -44,8 +43,7 @@ export class TimeGridAxisCell extends Component<TimeGridAxisCellProps> {
   render() {
     let { props } = this
     let classNames = [
-      'fcnew-cell',
-      props.grow ? 'fcnew-grow' : '',
+      'fcnew-rowheader',
       'fc-timegrid-slot',
       'fc-timegrid-slot-label',
       props.isLabeled ? 'fc-scrollgrid-shrink' : 'fc-timegrid-slot-minor',

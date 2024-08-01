@@ -33,7 +33,7 @@ export class DayGridView extends BaseComponent<ViewProps> {
     const dayHeaderFormat = this.createDayHeaderFormatter(
       context.options.dayHeaderFormat,
       datesRepDistinctDays,
-      dayTableModel.cells.length,
+      dayTableModel.cellRows.length,
     )
 
     return (
@@ -42,7 +42,7 @@ export class DayGridView extends BaseComponent<ViewProps> {
           <DayGridLayout
             dateProfile={props.dateProfile}
             todayRange={todayRange}
-            cellRows={dayTableModel.cells}
+            cellRows={dayTableModel.cellRows}
             forPrint={props.forPrint}
 
             // header content

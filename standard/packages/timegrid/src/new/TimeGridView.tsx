@@ -10,8 +10,8 @@ import { TimeGridLayout } from './TimeGridLayout.js'
 import { createDayHeaderFormatter } from '@fullcalendar/daygrid/internal'
 
 export class TimeGridView extends DateComponent<ViewProps> {
-  createDayHeaderFormatter = memoize(createDayHeaderFormatter)
-
+  // memo
+  private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
   private buildTimeColsModel = memoize(buildTimeColsModel)
   private buildDayRanges = memoize(buildDayRanges)
   private splitFgEventSegs = memoize(splitSegsByCol)
@@ -22,6 +22,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
   private splitEventDrag = memoize(splitInteractionByCol)
   private splitEventResize = memoize(splitInteractionByCol)
 
+  // internal
   private allDaySplitter = new AllDaySplitter()
   private dayTableSlicer = new DayTableSlicer()
   private dayTimeColsSlicer = new DayTimeColsSlicer()
@@ -48,20 +49,23 @@ export class TimeGridView extends DateComponent<ViewProps> {
       context,
       dayRanges,
     )
-    let dayHeaderFormat = this.createDayHeaderFormatter(
+    const dayHeaderFormat = this.createDayHeaderFormatter(
       context.options.dayHeaderFormat,
       true, // datesRepDistinctDays
-      dayTableModel.cells.length,
+      dayTableModel.cellRows.length,
     )
 
     return (
       <NowTimer unit={options.nowIndicator ? 'minute' : 'day' /* hacky */}>
         {(nowDate: DateMarker, todayRange: DateRange) => {
-          const colCnt = dayTableModel.cells[0].length
+          const colCnt = dayTableModel.cellRows[0].length
+          const nowIndicatorSeg = options.nowIndicator &&
+            this.dayTimeColsSlicer.sliceNowDate(nowDate, dateProfile, options.nextDayThreshold, context, dayRanges)
+
           const fgEventSegsByCol = this.splitFgEventSegs(timedProps.fgEventSegs, colCnt)
           const bgEventSegsByCol = this.splitBgEventSegs(timedProps.bgEventSegs, colCnt)
           const businessHourSegsByCol = this.splitBusinessHourSegs(timedProps.businessHourSegs, colCnt)
-          const nowIndicatorSegsByCol = this.splitNowIndicatorSegs(options.nowIndicator && this.dayTimeColsSlicer.sliceNowDate(nowDate, dateProfile, options.nextDayThreshold, context, dayRanges), colCnt)
+          const nowIndicatorSegsByCol = this.splitNowIndicatorSegs(nowIndicatorSeg, colCnt)
           const dateSelectionSegsByCol = this.splitDateSelectionSegs(timedProps.dateSelectionSegs, colCnt)
           const eventDragByCol = this.splitEventDrag(timedProps.eventDrag, colCnt)
           const eventResizeByCol = this.splitEventResize(timedProps.eventResize, colCnt)
@@ -71,35 +75,35 @@ export class TimeGridView extends DateComponent<ViewProps> {
               dateProfile={dateProfile}
               nowDate={nowDate}
               todayRange={todayRange}
-              cells={dayTableModel.cells[0]}
+              cells={dayTableModel.cellRows[0]}
               forPrint={props.forPrint}
 
               // header content
-              headerTiers={[dayTableModel.cells[0]]}
-              // TODO: rethink having cell care about received-height
+              headerTiers={dayTableModel.cellRows /* guaranteed to be one row */}
               renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width) => (
                 options.weekNumbers ? (
-                  <TimeGridWeekNumberCell
+                  <TimeGridWeekNumberCell // .fcnew-rowheader
                     dateProfile={dateProfile}
                     innerWidthRef={innerWidthRef}
                     innerHeightRef={innerHeightRef}
                     width={width}
                   />
                 ) : (
-                  <div>{/* empty... best? */}</div>
+                  <div
+                    className='fcnew-rowheader'
+                    style={{ width }}
+                  />
                 )
               )}
-              // TODO: rethink having cell care about received-height
               renderHeaderContent={(cell, tierNum, innerHeightRef) => (
                 <DateHeaderCell
-                  {...cell}
-                  key={cell.key}
-                  navLink={dayTableModel.cells.length > 1}
+                  {...cell /* for date & extraRenderProps/etc */}
                   dateProfile={dateProfile}
                   todayRange={todayRange}
+                  navLink={dayTableModel.cellRows.length > 1}
                   dayHeaderFormat={dayHeaderFormat}
-                  colWidth={undefined}
                   innerHeightRef={innerHeightRef}
+                  colWidth={undefined}
                 />
               )}
               getHeaderModelKey={(cell) => cell.key}

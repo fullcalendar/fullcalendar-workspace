@@ -42,7 +42,7 @@ export abstract class AbstractResourceDayTableModel {
           let extraDataAttrs = { 'data-resource-id': resource.id }
           let extraClassNames = ['fc-resource']
           let extraDateSpan = { resourceId: resource.id }
-          let date = dayTableModel.cells[row][dateCol].date
+          let date = dayTableModel.cellRows[row][dateCol].date
 
           rowCells[
             this.computeCol(dateCol, resourceCol)

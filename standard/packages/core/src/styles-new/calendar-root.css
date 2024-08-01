@@ -40,8 +40,11 @@
 // Util
 // -------------------------------------------------------------------------------------------------
 
-.fcnew-grow {
-  flex-grow: 1;
+.fcnew-row {
+  // for setting height based on innerHeight
+  // we DON'T do the same for cells & their width because overlaid absolute position depends on
+  // regular widths
+  box-sizing: content-box;
 }
 
 .fcnew-row,
@@ -51,24 +54,31 @@
   align-items: stretch;
 }
 
-.fcnew-rowgroup:last-child,
-.fcnew-row:last-child {
+.fcnew-cell,
+.fcnew-cellgroup,
+.fcnew-rowheader:only-child {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+// theme (TODO: rtl)
+
+.fcnew-row,
+.fcnew-rowgroup {
+  border-bottom: 1px solid var(--fc-border-color);
+}
+
+.fcnew-row:last-child,
+.fcnew-rowgroup:last-child {
   border-bottom: 0;
 }
 
-.fcnew-rowgroup,
-.fcnew-row {
-  border-bottom: 1px solid var(--fc-border-color); // TODO: move to theme
+.fcnew-cell,
+.fcnew-rowheader {
+  border-right: 1px solid var(--fc-border-color);
 }
 
-.fcnew-row {
-  box-sizing: content-box; // for setting height based on innerHeight
-}
-
-.fcnew-cell {
-  border-right: 1px solid var(--fc-border-color); // TODO: move to theme. TODO: isRTL
-}
-
-.fcnew-cell:last-child {
+.fcnew-cell:last-child,
+.fcnew-rowheader:last-child {
   border-right: 0;
 }

@@ -39,7 +39,7 @@ export interface DayGridRowProps {
   cells: DayTableCell[]
   showDayNumbers: boolean
   forPrint: boolean
-  cellGroup?: boolean // also implies flex-grow
+  cellGroup?: boolean
 
   // content
   fgEventSegs: TableSeg[]
@@ -128,7 +128,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       <div
         role={props.cellGroup ? '' : 'row'}
         className={[
-          props.cellGroup ? 'fcnew-cellgroup fcnew-grow' : 'fcnew-row',
+          props.cellGroup ? 'fcnew-cellgroup' : 'fcnew-row',
           'fcnew-daygrid-row',
         ].join(' ')}
         style={{ height: props.height }}

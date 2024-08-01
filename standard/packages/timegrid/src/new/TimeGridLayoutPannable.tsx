@@ -111,6 +111,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
   private slatMainInnerHeightRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
     afterSize(this.handleSlatHeights)
   })
+  // TODO: rename these
   private axisScrollerRef = createRef<Scroller>()
   private mainScrollerRef = createRef<Scroller>()
   private headScrollerRef = createRef<Scroller>()
@@ -122,7 +123,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
   private vScroller: ScrollerSyncerInterface
 
   render() {
-    const { props, state, context } = this
+    const { props, state, context, headerLabelInnerWidthRefMap, headerLabelInnerHeightRefMap, slatLabelInnerWidthRefMap, slatLabelInnerHeightRefMap } = this
     const { nowDate } = props
     const { axisWidth } = state
     const { options } = context
@@ -141,9 +142,10 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               stickyHeaderDates ? 'fcnew-sticky' : '',
             ].join(' ')}
           >
-            {/* LEFT */}
+            {/* HEADER / labels
+            -------------------------------------------------------------------------------------*/}
             <div
-              className='fcnew-cell' // a "super" cell
+              className='fcnew-rowheader' // a "super" cell
               style={{ width: axisWidth }}
             >
               {props.headerTiers.map((models, tierNum) => (
@@ -152,36 +154,36 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   className='fcnew-row'
                   style={{ height: state.headerTierHeights[tierNum] }}
                 >
-                  {props.renderHeaderLabel(
+                  {props.renderHeaderLabel( // .fcnew-rowheader
                     tierNum,
-                    this.headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
-                    this.headerLabelInnerHeightRefMap.createRef(tierNum), // innerHeightRef
-                    undefined, // width (no need to define, set on parent)
+                    headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
+                    headerLabelInnerHeightRefMap.createRef(tierNum), // innerHeightRef
+                    undefined, // width
                   )}
                 </div>
               ))}
             </div>
-            {/* RIGHT */}
+            {/* HEADER / main (scroll area)
+            -------------------------------------------------------------------------------------*/}
             <Scroller
-              ref={this.headScrollerRef}
               horizontal
               hideScrollbars
-              elClassNames={['fcnew-cell fcnew-grow']} // a "super" cell ... TODO: not a good idea if ever gets left/right border
+              elClassNames={['fcnew-cell']} // a "super" cell
+              // ^NOTE: not a good idea if ever gets left/right border
+              ref={this.headScrollerRef}
             >
-              <div
-                style={{
-                  width: canvasWidth,
-                  paddingLeft: state.leftScrollbarWidth,
-                  paddingRight: state.rightScrollbarWidth,
-                }}
-              >
+              <div style={{
+                width: canvasWidth,
+                paddingLeft: state.leftScrollbarWidth,
+                paddingRight: state.rightScrollbarWidth,
+              }} >
                 {props.headerTiers.map((models, tierNum) => (
                   <div
                     key={tierNum}
                     className='fcnew-row'
                     style={{ height: state.headerTierHeights[tierNum] }}
                   >
-                    <TimeGridHeaderTier
+                    <TimeGridHeaderTier // collection of .fc-cell (TODO: rename)
                       tierNum={tierNum}
                       models={models}
                       renderHeaderContent={props.renderHeaderContent}
@@ -196,25 +198,30 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
         )}
         {options.allDaySlot && (
           <Fragment>
-            <div
-              className='fcnew-row' // a "super" row
-            >
-              {/* LEFT */}
-              <TimeGridAllDayLabelCell // has 'fcnew-cell'
+            <div className='fcnew-row'>{/* a "super" row */}
+              {/* ALL-DAY / label
+              -----------------------------------------------------------------------------------*/}
+              <TimeGridAllDayLabelCell // .fcnew-rowheader
                 width={axisWidth}
                 height={state.allDayHeight}
                 innerWidthRef={this.handleAllDayLabelInnerWidth}
                 innerHeightRef={this.handleAllDayLabelInnerHeight}
               />
-              {/* RIGHT */}
+              {/* ALL-DAY / main
+              -----------------------------------------------------------------------------------*/}
               <Scroller
-                ref={this.allDayScrollerRef}
                 horizontal
                 hideScrollbars
-                elClassNames={['fcnew-cell fcnew-grow']} // a "super" cell ... TODO: not a good idea if ever gets left/right border
+                elClassNames={['fcnew-cell']} // a "super" cell
+                // ^NOTE: not a good idea if ever gets left/right border
+                ref={this.allDayScrollerRef}
               >
-                <div style={{ width: canvasWidth }}>
-                  <TimeGridAllDayContent // has 'fcnew-cellgroup fcnew-grow'
+                <div style={{
+                  width: canvasWidth,
+                  paddingLeft: state.leftScrollbarWidth,
+                  paddingRight: state.rightScrollbarWidth,
+                }} >
+                  <TimeGridAllDayContent // .fcnew-cellgroup
                     dateProfile={props.dateProfile}
                     todayRange={props.todayRange}
                     cells={props.cells}
@@ -243,100 +250,101 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 </div>
               </Scroller>
             </div>
-            <div className='fcnew-divider'></div>
+            <div className='fcnew-divider'></div>{/* TODO */}
           </Fragment>
         )}
         <div className='fcnew-row'>{/* a "super" row */}
-          {/* LEFT */}
+          {/* SLATS / labels
+          ---------------------------------------------------------------------------------------*/}
           <Scroller
-            ref={this.axisScrollerRef}
             vertical
             hideScrollbars
-            elClassNames={['fcnew-cell fcnew-grow']} // a "super" cell ... TODO: not a good idea if ever gets left/right border
+            elClassNames={['fcnew-rowheader']} // a "super" cell
+            // ^NOTE: not a good idea if ever gets left/right border
             elStyle={{ width: axisWidth }}
+            ref={this.axisScrollerRef}
           >
-            <div className='fcnew-canvas'>{/* (for abs positioning within) TODO */}
-              <div>{/* TODO: make TimeGridAxisCol ? */}
-                <TimeGridNowIndicatorArrow nowDate={nowDate} />
-              </div>
+            <div>{/* TODO: abs positioning container */}
               {props.slatMetas.map((slatMeta) => (
                 <div
                   key={slatMeta.key}
                   className='fcnew-row'
                   style={{ height: state.slatHeight }}
                 >
-                  <TimeGridAxisCell // .fcnew-cell.fcnew-grow
+                  <TimeGridAxisCell // .fcnew-rowheader
                     {...slatMeta}
                     width={undefined}
-                    grow
-                    innerWidthRef={this.slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
-                    innerHeightRef={this.slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
+                    innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
+                    innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                   />
                 </div>
               ))}
+              <div>{/* TODO: make TimeGridAxisCol ? */}
+                <TimeGridNowIndicatorArrow nowDate={nowDate} />
+              </div>
             </div>
           </Scroller>
-          {/* RIGHT */}
+          {/* SLATS / main
+          ---------------------------------------------------------------------------------------*/}
           <Scroller
-            ref={this.mainScrollerRef}
             vertical
             horizontal
             widthRef={this.handleWidth}
             leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
             rightScrollbarWidthRef={this.handleRightScrollbarWidth}
+            elClassNames={['fcnew-cell']} // a "super" cell
+            // ^NOTE: not a good idea if ever gets left/right border
+            ref={this.mainScrollerRef}
           >
-            <div className='fcnew-canvas' style={{ width: canvasWidth }}>
-              <div>
-                {props.slatMetas.map((slatMeta) => (
-                  <div
-                    key={slatMeta.key}
-                    className='fcnew-row'
-                    style={{ height: state.slatHeight }}
-                  >
-                    <TimeGridSlatCell // .fcnew-cell.fcnew-grow
-                      {...slatMeta}
-                      innerHeightRef={this.slatMainInnerHeightRefMap.createRef(slatMeta.key)}
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className='fcnew-absolute'>{/* TODO */}
-                <TimeGridCols
-                  dateProfile={props.dateProfile}
-                  nowDate={props.nowDate}
-                  todayRange={props.todayRange}
-                  cells={props.cells}
-                  forPrint={props.forPrint}
-                  isHitComboAllowed={props.isHitComboAllowed}
+            <div style={{ width: canvasWidth }}>{/* TODO: abs positioning container */}
+              {props.slatMetas.map((slatMeta) => (
+                <div
+                  key={slatMeta.key}
+                  className='fcnew-row'
+                  style={{ height: state.slatHeight }}
+                >
+                  <TimeGridSlatCell // .fcnew-cell
+                    {...slatMeta}
+                    innerHeightRef={this.slatMainInnerHeightRefMap.createRef(slatMeta.key)}
+                  />
+                </div>
+              ))}
+              <TimeGridCols
+                dateProfile={props.dateProfile}
+                nowDate={props.nowDate}
+                todayRange={props.todayRange}
+                cells={props.cells}
+                forPrint={props.forPrint}
+                isHitComboAllowed={props.isHitComboAllowed}
 
-                  // content
-                  fgEventSegsByCol={props.fgEventSegsByCol}
-                  bgEventSegsByCol={props.bgEventSegsByCol}
-                  businessHourSegsByCol={props.businessHourSegsByCol}
-                  nowIndicatorSegsByCol={props.nowIndicatorSegsByCol}
-                  dateSelectionSegsByCol={props.dateSelectionSegsByCol}
-                  eventDragByCol={props.eventDragByCol}
-                  eventResizeByCol={props.eventResizeByCol}
-                  eventSelection={props.eventSelection}
+                // content
+                fgEventSegsByCol={props.fgEventSegsByCol}
+                bgEventSegsByCol={props.bgEventSegsByCol}
+                businessHourSegsByCol={props.businessHourSegsByCol}
+                nowIndicatorSegsByCol={props.nowIndicatorSegsByCol}
+                dateSelectionSegsByCol={props.dateSelectionSegsByCol}
+                eventDragByCol={props.eventDragByCol}
+                eventResizeByCol={props.eventResizeByCol}
+                eventSelection={props.eventSelection}
 
-                  // dimensions
-                  colWidth={colWidth}
-                  slatHeight={state.slatHeight}
-                />
-              </div>
+                // dimensions
+                colWidth={colWidth}
+                slatHeight={state.slatHeight}
+              />
             </div>
           </Scroller>
         </div>
         {stickyFooterScrollbar && (
-          <div>
-            {/* LEFT */}
-            <div style={{ width: axisWidth }}></div>
-            {/* RIGHT */}
-            <Scroller ref={this.footScrollerRef}>
-              <div
-                className='fcnew-canvas'
-                style={{ width: canvasWidth }}
-              />
+          <div className='fcnew-row'>
+            {/* axis */}
+            <div style={{ width: axisWidth }} />
+            {/* main */}
+            <Scroller
+              ref={this.footScrollerRef}
+              elClassNames={['fcnew-cell']}
+              // ^NOTE: not a good idea if ever gets left/right border
+            >
+              <div style={{ width: canvasWidth }} />
             </Scroller>
           </div>
         )}

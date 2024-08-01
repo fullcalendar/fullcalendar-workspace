@@ -22,7 +22,7 @@ export interface DayTableCell {
 export class DayTableModel {
   rowCnt: number
   colCnt: number
-  cells: DayTableCell[][] // TODO: rename to "rows"
+  cellRows: DayTableCell[][]
   headerDates: DateMarker[]
 
   private daySeries: DaySeriesModel
@@ -50,7 +50,7 @@ export class DayTableModel {
     this.rowCnt = rowCnt
     this.colCnt = daysPerRow
     this.daySeries = daySeries
-    this.cells = this.buildCells()
+    this.cellRows = this.buildCells()
     this.headerDates = this.buildHeaderDates()
   }
 
@@ -84,7 +84,7 @@ export class DayTableModel {
     let dates = []
 
     for (let col = 0; col < this.colCnt; col += 1) {
-      dates.push(this.cells[0][col].date)
+      dates.push(this.cellRows[0][col].date)
     }
 
     return dates

@@ -98,28 +98,34 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
     return (
       <Fragment>
         <div
-          className='fcnew-rowgroup' // best place for this?
+          className='fcnew-rowgroup' // contains other rowgroups
           style={{
             paddingLeft: state.leftScrollbarWidth,
-            paddingRight: state.rightScrollbarWidth
+            paddingRight: state.rightScrollbarWidth,
           }}
         >
+          {/* HEADER
+          ---------------------------------------------------------------------------------------*/}
           {options.dayHeaders && (
             <div className={[
+              'fcnew-rowgroup',
               stickyHeaderDates ? 'fcnew-sticky' : '',
             ].join(' ')}>
               {props.headerTiers.map((models, tierNum) => (
-                <div className='fcnew-row'>
-                  {props.renderHeaderLabel(
+                <div
+                  key={tierNum}
+                  className='fcnew-row'
+                >
+                  {props.renderHeaderLabel( // .fcnew-rowheader
                     tierNum,
                     headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
                     undefined, // innerHeightRef
                     axisWidth, // width
                   )}
-                  <div className='fcnew-cellgroup fcnew-grow'>
+                  <div className='fcnew-cellgroup'>
                     {models.map((model) => (
                       <Fragment key={props.getHeaderModelKey(model)}>
-                        {props.renderHeaderContent(
+                        {props.renderHeaderContent( // .fcnew-cell
                           model,
                           tierNum,
                           undefined, // innerHeightRef
@@ -131,15 +137,17 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
               ))}
             </div>
           )}
+          {/* ALL-DAY
+          ---------------------------------------------------------------------------------------*/}
           {options.allDaySlot && (
-            <Fragment>
+            <div className='fcnew-rowgroup'>
               <div className='fcnew-row'>
-                <TimeGridAllDayLabelCell // has 'fcnew-cell'
+                <TimeGridAllDayLabelCell // .fcnew-rowheader
                   width={axisWidth}
-                  height={undefined /* TODO: kill param!!! */}
+                  height={undefined}
                   innerWidthRef={this.handleAllDayLabelInnerWidth}
                 />
-                <TimeGridAllDayContent // has 'fcnew-cellgroup fcnew-grow'
+                <TimeGridAllDayContent // .fcnew-cellgroup
                   dateProfile={props.dateProfile}
                   todayRange={props.todayRange}
                   cells={props.cells}
@@ -159,26 +167,29 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   dayMaxEventRows={props.dayMaxEventRows}
                 />
               </div>
-              <div className='fcnew-divider'></div>
-            </Fragment>
+              <div className='fcnew-divider'></div>{/* TODO */}
+            </div>
           )}
         </div>
+        {/* SLATS
+        -----------------------------------------------------------------------------------------*/}
         <Scroller
           vertical
           ref={props.scrollerRef}
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
+          elClassNames={['fcnew-rowgroup']}
         >
           <div className='fcnew-canvas'>{/* (for abs positioning within) TODO */}
             {props.slatMetas.map((slatMeta) => (
               <div key={slatMeta.key} className='fcnew-row'>
-                <TimeGridAxisCell
+                <TimeGridAxisCell // .fcnew-rowheader
                   {...slatMeta}
                   width={axisWidth}
                   innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                   innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                 />
-                <TimeGridSlatCell // has 'fcnew-cell fcnew-grow'
+                <TimeGridSlatCell // .fcnew-cell
                   {...slatMeta}
                   innerHeightRef={slatInnerHeightRefMap.createRef(slatMeta.key)}
                 />
@@ -189,7 +200,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 {/* NOTE: is within a row, but we don't want the border, so don't use fcnew-cell  */}
                 <TimeGridNowIndicatorArrow nowDate={nowDate} />
               </div>
-              <TimeGridCols // has 'fc-cellgroup fcnew-grow'
+              <TimeGridCols // .fc-cellgroup
                 dateProfile={props.dateProfile}
                 nowDate={props.nowDate}
                 todayRange={props.todayRange}

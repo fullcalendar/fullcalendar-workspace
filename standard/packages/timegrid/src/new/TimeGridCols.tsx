@@ -52,7 +52,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
 
     return (
       <div
-        className='fc-cellgroup fcnew-grow'
+        className='fc-cellgroup'
         ref={this.handleRootEl}
       >
         {props.cells.map((cell, col) => (
