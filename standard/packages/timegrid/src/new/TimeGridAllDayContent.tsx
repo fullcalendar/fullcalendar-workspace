@@ -12,7 +12,12 @@ rename to TimeGridAllDayMainCells
 export class TimeGridAllDayContent extends DateComponent<TimeGridAllDayContentProps> {
   render() {
     return (
-      <DayGridRow {...this.props} cellGroup rootElRef={this.handleRootEl} />
+      <DayGridRow
+        {...this.props}
+        cellGroup
+        rootElRef={this.handleRootEl}
+        className='fc-timegrid-allday-main'
+      />
     )
   }
 

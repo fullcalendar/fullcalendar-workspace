@@ -140,11 +140,10 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           {/* ALL-DAY
           ---------------------------------------------------------------------------------------*/}
           {options.allDaySlot && (
-            <div className='fcnew-rowgroup'>
+            <Fragment>
               <div className='fcnew-row'>
                 <TimeGridAllDayLabelCell // .fcnew-rowheader
                   width={axisWidth}
-                  height={undefined}
                   innerWidthRef={this.handleAllDayLabelInnerWidth}
                 />
                 <TimeGridAllDayContent // .fcnew-cellgroup
@@ -160,15 +159,15 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   bgEventSegs={props.bgEventSegs}
                   businessHourSegs={props.businessHourSegs}
                   dateSelectionSegs={props.dateSelectionSegs}
-                  eventSelection={props.eventSelection}
                   eventDrag={props.eventDrag}
                   eventResize={props.eventResize}
+                  eventSelection={props.eventSelection}
                   dayMaxEvents={props.dayMaxEvents}
                   dayMaxEventRows={props.dayMaxEventRows}
                 />
               </div>
               <div className='fcnew-divider'></div>{/* TODO */}
-            </div>
+            </Fragment>
           )}
         </div>
         {/* SLATS
@@ -180,14 +179,14 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
           elClassNames={['fcnew-rowgroup']}
         >
-          <div>{/* TODO: absolute positioning origin */}
+          <div className='fc-rel'>
             {props.slatMetas.map((slatMeta) => (
               <div key={slatMeta.key} className='fcnew-row'>
                 <TimeGridAxisCell // .fcnew-rowheader
                   {...slatMeta}
-                  width={axisWidth}
                   innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                   innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
+                  width={axisWidth}
                 />
                 <TimeGridSlatCell // .fcnew-cell
                   {...slatMeta}
@@ -195,7 +194,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 />
               </div>
             ))}
-            <div>{/* TODO: absolute positioning */}
+            <div className='fcnew-absfill fcnew-cellgroup'>
               <div style={{ width: axisWidth }}>{/* TODO: make TimeGridAxisCol ? */}
                 {/* NOTE: is within a row, but we don't want the border, so don't use fcnew-cell  */}
                 <TimeGridNowIndicatorArrow nowDate={nowDate} />

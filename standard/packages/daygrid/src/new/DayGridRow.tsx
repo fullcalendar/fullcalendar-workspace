@@ -40,6 +40,7 @@ export interface DayGridRowProps {
   showDayNumbers: boolean
   forPrint: boolean
   cellGroup?: boolean
+  className?: string // TODO: better API for this
 
   // content
   fgEventSegs: TableSeg[]
@@ -130,6 +131,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
         className={[
           props.cellGroup ? 'fcnew-cellgroup' : 'fcnew-row',
           'fcnew-daygrid-row',
+          props.className || '',
         ].join(' ')}
         style={{ height: props.height }}
         ref={this.handleRootEl}

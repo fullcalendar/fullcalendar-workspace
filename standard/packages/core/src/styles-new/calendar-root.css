@@ -82,3 +82,18 @@
 .fcnew-rowheader:last-child {
   border-right: 0;
 }
+
+// Misc Utils
+// -------------------------------------------------------------------------------------------------
+
+.fcnew-rel {
+  position: relative;
+}
+
+.fcnew-absfill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}

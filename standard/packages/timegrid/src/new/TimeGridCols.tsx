@@ -24,6 +24,7 @@ export interface TimeGridColsProps {
   cells: DayTableCell[]
   forPrint: boolean
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
+  className?: string // TODO: better API for this?
 
   // content
   fgEventSegsByCol: TimeColsSeg[][]
@@ -52,7 +53,10 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
 
     return (
       <div
-        className='fc-cellgroup'
+        className={[
+          'fc-cellgroup',
+          props.className || '',
+        ].join(' ')}
         ref={this.handleRootEl}
       >
         {props.cells.map((cell, col) => (

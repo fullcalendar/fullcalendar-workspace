@@ -1,6 +1,6 @@
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
-import { computeColWidth, TableSeg } from '@fullcalendar/daygrid/internal'
+import { computeColWidth, DayGridRows, TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
 import { TimeGridAllDayContent } from "./TimeGridAllDayContent.js"
 import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"
@@ -164,7 +164,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 </div>
               ))}
             </div>
-            {/* HEADER / main (scroll area)
+            {/* HEADER / main (horizontal scroller)
             -------------------------------------------------------------------------------------*/}
             <Scroller
               horizontal
@@ -199,16 +199,18 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
         )}
         {options.allDaySlot && (
           <Fragment>
-            <div className='fcnew-row'>{/* a "super" row */}
+            <div
+              className='fcnew-row' // a "super" row
+              style={{ height: state.allDayHeight }}
+            >
               {/* ALL-DAY / label
               -----------------------------------------------------------------------------------*/}
               <TimeGridAllDayLabelCell // .fcnew-rowheader
-                width={axisWidth}
-                height={state.allDayHeight}
                 innerWidthRef={this.handleAllDayLabelInnerWidth}
                 innerHeightRef={this.handleAllDayLabelInnerHeight}
+                width={axisWidth}
               />
-              {/* ALL-DAY / main
+              {/* ALL-DAY / main (horizontal scroller)
               -----------------------------------------------------------------------------------*/}
               <Scroller
                 horizontal
@@ -222,7 +224,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   paddingLeft: state.leftScrollbarWidth,
                   paddingRight: state.rightScrollbarWidth,
                 }} >
-                  <TimeGridAllDayContent // .fcnew-cellgroup
+                  <TimeGridAllDayContent // .fcnew-cellgroup.fc-timegrid-allday-main
                     dateProfile={props.dateProfile}
                     todayRange={props.todayRange}
                     cells={props.cells}
@@ -241,12 +243,11 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                     dayMaxEvents={props.dayMaxEvents}
                     dayMaxEventRows={props.dayMaxEventRows}
 
-                    // dimensions
-                    colWidth={colWidth}
-                    height={state.allDayHeight}
-
                     // refs
                     cellInnerHeightRef={this.handleAllDayMainInnerHeight}
+
+                    // dimensions
+                    colWidth={colWidth}
                   />
                 </div>
               </Scroller>
@@ -255,7 +256,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
           </Fragment>
         )}
         <div className='fcnew-row'>{/* a "super" row */}
-          {/* SLATS / labels
+          {/* SLATS / labels (vertical scroller)
           ---------------------------------------------------------------------------------------*/}
           <Scroller
             vertical
@@ -265,7 +266,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             elStyle={{ width: axisWidth }}
             ref={this.axisScrollerRef}
           >
-            <div>{/* TODO: abs positioning container */}
+            <div className='fc-rel'>
               {props.slatMetas.map((slatMeta) => (
                 <div
                   key={slatMeta.key}
@@ -285,19 +286,19 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               </div>
             </div>
           </Scroller>
-          {/* SLATS / main
+          {/* SLATS / main (scroller)
           ---------------------------------------------------------------------------------------*/}
           <Scroller
             vertical
             horizontal
-            widthRef={this.handleWidth}
-            leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
-            rightScrollbarWidthRef={this.handleRightScrollbarWidth}
             elClassNames={['fcnew-cell']} // a "super" cell
             // ^NOTE: not a good idea if ever gets left/right border
             ref={this.mainScrollerRef}
+            widthRef={this.handleWidth}
+            leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
+            rightScrollbarWidthRef={this.handleRightScrollbarWidth}
           >
-            <div style={{ width: canvasWidth }}>{/* TODO: abs positioning container */}
+            <div className='fc-rel' style={{ width: canvasWidth }}>
               {props.slatMetas.map((slatMeta) => (
                 <div
                   key={slatMeta.key}
@@ -310,13 +311,14 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   />
                 </div>
               ))}
-              <TimeGridCols
+              <TimeGridCols // .fc-cellgroup
                 dateProfile={props.dateProfile}
                 nowDate={props.nowDate}
                 todayRange={props.todayRange}
                 cells={props.cells}
                 forPrint={props.forPrint}
                 isHitComboAllowed={props.isHitComboAllowed}
+                className='fcnew-absfill'
 
                 // content
                 fgEventSegsByCol={props.fgEventSegsByCol}
@@ -338,12 +340,15 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
         {stickyFooterScrollbar && (
           <div className='fcnew-row'>
             {/* axis */}
-            <div style={{ width: axisWidth }} />
+            <div
+              className='fcnew-rowheader'
+              style={{ width: axisWidth }}
+            />
             {/* main */}
             <Scroller
-              ref={this.footScrollerRef}
               elClassNames={['fcnew-cell']}
               // ^NOTE: not a good idea if ever gets left/right border
+              ref={this.footScrollerRef}
             >
               <div style={{ width: canvasWidth }} />
             </Scroller>

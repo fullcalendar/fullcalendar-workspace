@@ -5,7 +5,6 @@ import { BaseComponent, ContentContainer, setRef, watchSize } from "@fullcalenda
 export interface TimeGridAllDayLabelCellProps {
   // dimension
   width: number | undefined
-  height: number | undefined
 
   // refs
   innerWidthRef?: Ref<number>
@@ -38,7 +37,6 @@ export class TimeGridAllDayLabelCell extends BaseComponent<TimeGridAllDayLabelCe
         }}
         elStyle={{
           width: props.width,
-          height: props.height,
         }}
         renderProps={renderProps}
         generatorName="allDayContent"

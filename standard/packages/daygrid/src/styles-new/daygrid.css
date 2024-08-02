@@ -47,8 +47,6 @@ $daygrid-event-mirror-z: 7;
   }
 
   & .fcnew-col-header-cell { // not the correct place for this
-    flex-grow: 1;
-    flex-basis: 0;
     text-align: center;
   }
   & .fcnew-col-header-cell-cushion {
