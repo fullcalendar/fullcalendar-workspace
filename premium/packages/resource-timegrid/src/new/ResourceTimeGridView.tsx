@@ -22,7 +22,7 @@ import {
   VResourceSplitter,
   flattenResources,
 } from '@fullcalendar/resource/internal'
-import { AllDaySplitter, DayTimeColsSlicer, TimeGridLayout, TimeGridWeekNumberCell, buildDayRanges, buildTimeColsModel, splitInteractionByCol, splitSegsByCol } from '@fullcalendar/timegrid/internal'
+import { AllDaySplitter, DayTimeColsSlicer, TimeGridLayout, TimeGridWeekNumber, buildDayRanges, buildTimeColsModel, splitInteractionByCol, splitSegsByCol } from '@fullcalendar/timegrid/internal'
 import { ResourceDayTimeColsJoiner } from '../ResourceDayTimeColsJoiner.js'
 
 interface ResourceTimeGridViewState {
@@ -162,7 +162,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
               headerTiers={headerTiers}
               renderHeaderLabel={(tierNum, handleEl) => ( // TODO: make this baked into TimeGridLayout
                 (options.weekNumbers && tierNum === headerTiers.length - 1) ? (
-                  <TimeGridWeekNumberCell
+                  <TimeGridWeekNumber
                     dateProfile={dateProfile}
                     width={undefined /* YUCK */}
                   />

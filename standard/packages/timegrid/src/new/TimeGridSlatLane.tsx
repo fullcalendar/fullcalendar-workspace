@@ -3,11 +3,11 @@ import { BaseComponent, ContentContainer, setRef, watchHeight } from '@fullcalen
 import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { TimeSlatMeta } from '../time-slat-meta.js'
 
-export interface TimeGridSlatCellProps extends TimeSlatMeta {
+export interface TimeGridSlatLaneProps extends TimeSlatMeta {
   innerHeightRef?: Ref<number>
 }
 
-export class TimeGridSlatCell extends BaseComponent<TimeGridSlatCellProps> {
+export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
   // ref
   private innerElRef = createRef<HTMLDivElement>()
 

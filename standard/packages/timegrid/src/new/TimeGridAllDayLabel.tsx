@@ -2,7 +2,7 @@ import { AllDayContentArg } from '@fullcalendar/core'
 import { ComponentChild, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { BaseComponent, ContentContainer, setRef, watchSize } from "@fullcalendar/core/internal"
 
-export interface TimeGridAllDayLabelCellProps {
+export interface TimeGridAllDayLabelProps {
   // dimension
   width: number | undefined
 
@@ -11,7 +11,7 @@ export interface TimeGridAllDayLabelCellProps {
   innerHeightRef?: Ref<number>
 }
 
-export class TimeGridAllDayLabelCell extends BaseComponent<TimeGridAllDayLabelCellProps> {
+export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps> {
   // ref
   private innerElRef = createRef<HTMLDivElement>()
 

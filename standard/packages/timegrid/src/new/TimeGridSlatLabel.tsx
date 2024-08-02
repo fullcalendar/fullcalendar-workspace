@@ -24,7 +24,7 @@ const DEFAULT_SLAT_LABEL_FORMAT = createFormatter({
   meridiem: 'short',
 })
 
-export interface TimeGridAxisCellProps extends TimeSlatMeta {
+export interface TimeGridSlatLabelProps extends TimeSlatMeta {
   // dimensions
   width: number | undefined
 
@@ -33,7 +33,7 @@ export interface TimeGridAxisCellProps extends TimeSlatMeta {
   innerHeightRef?: Ref<number>
 }
 
-export class TimeGridAxisCell extends Component<TimeGridAxisCellProps> {
+export class TimeGridSlatLabel extends Component<TimeGridSlatLabelProps> {
   // ref
   private innerElRef = createRef<HTMLDivElement>()
 

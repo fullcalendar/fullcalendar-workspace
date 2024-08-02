@@ -2,14 +2,14 @@ import { DayGridRow, DayGridRowProps } from '@fullcalendar/daygrid/internal'
 import { DateComponent, Hit } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 
-export interface TimeGridAllDayContentProps extends DayGridRowProps {
+export interface TimeGridAllDayLaneProps extends DayGridRowProps {
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
 }
 
 /*
 rename to TimeGridAllDayMainCells
 */
-export class TimeGridAllDayContent extends DateComponent<TimeGridAllDayContentProps> {
+export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps> {
   render() {
     return (
       <DayGridRow

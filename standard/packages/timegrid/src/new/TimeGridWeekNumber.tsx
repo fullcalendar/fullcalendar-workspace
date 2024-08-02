@@ -1,7 +1,7 @@
 import { BaseComponent, DateProfile, WeekNumberContainer, buildNavLinkAttrs, createFormatter, diffDays, setRef, watchSize } from "@fullcalendar/core/internal"
 import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
 
-export interface TimeGridWeekNumberCellProps {
+export interface TimeGridWeekNumberProps {
   dateProfile: DateProfile
 
   // dimensions
@@ -14,7 +14,7 @@ export interface TimeGridWeekNumberCellProps {
 
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'short' })
 
-export class TimeGridWeekNumberCell extends BaseComponent<TimeGridWeekNumberCellProps> {
+export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
   // ref
   private innerElRef = createRef<HTMLDivElement>()
 

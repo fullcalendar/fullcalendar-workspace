@@ -1,12 +1,12 @@
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { computeColWidth, TableSeg, HeaderRowAdvanced } from '@fullcalendar/daygrid/internal'
-import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
-import { TimeGridAllDayContent } from "./TimeGridAllDayContent.js"
+import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
+import { TimeGridAllDayLane } from "./TimeGridAllDayLane.js"
 import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"
 import { TimeSlatMeta } from "../time-slat-meta.js"
-import { TimeGridAxisCell } from "./TimeGridAxisCell.js"
-import { TimeGridSlatCell } from "./TimeGridSlatCell.js"
+import { TimeGridSlatLabel } from "./TimeGridSlatLabel.js"
+import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
 import { TimeGridCols } from "./TimeGridCols.js"
 import { TimeColsSeg } from "../TimeColsSeg.js"
 
@@ -201,7 +201,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             >
               {/* ALL-DAY / label
               -----------------------------------------------------------------------------------*/}
-              <TimeGridAllDayLabelCell // .fcnew-rowheader
+              <TimeGridAllDayLabel // .fcnew-rowheader
                 innerWidthRef={this.handleAllDayLabelInnerWidth}
                 innerHeightRef={this.handleAllDayLabelInnerHeight}
                 width={axisWidth}
@@ -220,7 +220,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   paddingLeft: state.leftScrollbarWidth,
                   paddingRight: state.rightScrollbarWidth,
                 }} >
-                  <TimeGridAllDayContent // .fcnew-cellgroup.fc-timegrid-allday-main
+                  <TimeGridAllDayLane // .fcnew-cellgroup.fc-timegrid-allday-main
                     dateProfile={props.dateProfile}
                     todayRange={props.todayRange}
                     cells={props.cells}
@@ -269,7 +269,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   className='fcnew-row'
                   style={{ height: state.slatHeight }}
                 >
-                  <TimeGridAxisCell // .fcnew-rowheader
+                  <TimeGridSlatLabel // .fcnew-rowheader
                     {...slatMeta}
                     width={undefined}
                     innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
@@ -301,7 +301,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   className='fcnew-row'
                   style={{ height: state.slatHeight }}
                 >
-                  <TimeGridSlatCell // .fcnew-cell
+                  <TimeGridSlatLane // .fcnew-cell
                     {...slatMeta}
                     innerHeightRef={this.slatMainInnerHeightRefMap.createRef(slatMeta.key)}
                   />

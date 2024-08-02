@@ -5,7 +5,7 @@ import { buildDayRanges, buildTimeColsModel } from "./util.js"
 import { AllDaySplitter } from "../AllDaySplitter.js"
 import { DayTimeColsSlicer } from "../DayTimeColsSlicer.js"
 import { splitInteractionByCol, splitSegsByCol } from "../TimeColsSeg.js"
-import { TimeGridWeekNumberCell } from "./TimeGridWeekNumberCell.js"
+import { TimeGridWeekNumber } from "./TimeGridWeekNumber.js"
 import { TimeGridLayout } from './TimeGridLayout.js'
 import { createDayHeaderFormatter } from '@fullcalendar/daygrid/internal'
 
@@ -82,7 +82,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
               headerTiers={dayTableModel.cellRows /* guaranteed to be one row */}
               renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width) => (
                 options.weekNumbers ? (
-                  <TimeGridWeekNumberCell // .fcnew-rowheader
+                  <TimeGridWeekNumber // .fcnew-rowheader
                     dateProfile={dateProfile}
                     innerWidthRef={innerWidthRef}
                     innerHeightRef={innerHeightRef}

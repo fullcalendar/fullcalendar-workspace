@@ -1,12 +1,12 @@
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize } from "@fullcalendar/core/internal"
 import { Fragment, createElement, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { HeaderRow, TableSeg } from '@fullcalendar/daygrid/internal'
-import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
-import { TimeGridAllDayContent } from "./TimeGridAllDayContent.js"
+import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
+import { TimeGridAllDayLane } from "./TimeGridAllDayLane.js"
 import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"
 import { TimeSlatMeta } from "../time-slat-meta.js"
-import { TimeGridAxisCell } from "./TimeGridAxisCell.js"
-import { TimeGridSlatCell } from "./TimeGridSlatCell.js"
+import { TimeGridSlatLabel } from "./TimeGridSlatLabel.js"
+import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
 import { TimeGridCols } from "./TimeGridCols.js"
 import { TimeColsSeg } from "../TimeColsSeg.js"
 
@@ -139,11 +139,11 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           {options.allDaySlot && (
             <Fragment>
               <div className='fcnew-row'>
-                <TimeGridAllDayLabelCell // .fcnew-rowheader
+                <TimeGridAllDayLabel // .fcnew-rowheader
                   width={axisWidth}
                   innerWidthRef={this.handleAllDayLabelInnerWidth}
                 />
-                <TimeGridAllDayContent // .fcnew-cellgroup
+                <TimeGridAllDayLane // .fcnew-cellgroup
                   dateProfile={props.dateProfile}
                   todayRange={props.todayRange}
                   cells={props.cells}
@@ -179,13 +179,13 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           <div className='fc-rel'>
             {props.slatMetas.map((slatMeta) => (
               <div key={slatMeta.key} className='fcnew-row'>
-                <TimeGridAxisCell // .fcnew-rowheader
+                <TimeGridSlatLabel // .fcnew-rowheader
                   {...slatMeta}
                   innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                   innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                   width={axisWidth}
                 />
-                <TimeGridSlatCell // .fcnew-cell
+                <TimeGridSlatLane // .fcnew-cell
                   {...slatMeta}
                   innerHeightRef={slatInnerHeightRefMap.createRef(slatMeta.key)}
                 />

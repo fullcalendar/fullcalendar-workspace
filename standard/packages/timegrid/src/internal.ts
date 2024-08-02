@@ -9,6 +9,6 @@ export { AllDaySplitter } from './AllDaySplitter.js'
 // new
 export { TimeGridView } from './new/TimeGridView.js'
 export { TimeGridLayout, TimeGridLayoutProps } from './new/TimeGridLayout.js'
-export { TimeGridWeekNumberCell } from './new/TimeGridWeekNumberCell.js'
+export { TimeGridWeekNumber } from './new/TimeGridWeekNumber.js'
 
 export { buildTimeColsModel, buildDayRanges } from './new/util.js'
