@@ -252,7 +252,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 </div>
               </Scroller>
             </div>
-            <div className='fcnew-divider'></div>{/* TODO */}
+            <div className='fcnew-rowdivider'></div>
           </Fragment>
         )}
         <div className='fcnew-row'>{/* a "super" row */}

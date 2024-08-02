@@ -64,12 +64,14 @@
 // theme (TODO: rtl)
 
 .fcnew-row,
-.fcnew-rowgroup {
+.fcnew-rowgroup,
+.fcnew-rowdivider {
   border-bottom: 1px solid var(--fc-border-color);
 }
 
 .fcnew-row:last-child,
-.fcnew-rowgroup:last-child {
+.fcnew-rowgroup:last-child,
+.fcnew-rowdivider:last-child {
   border-bottom: 0;
 }
 
@@ -81,6 +83,11 @@
 .fcnew-cell:last-child,
 .fcnew-rowheader:last-child {
   border-right: 0;
+}
+
+.fcnew-rowdivider {
+  padding-bottom: 2px;
+  background: var(--fc-neutral-bg-color);
 }
 
 // Misc Utils

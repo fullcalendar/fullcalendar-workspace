@@ -166,7 +166,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   dayMaxEventRows={props.dayMaxEventRows}
                 />
               </div>
-              <div className='fcnew-divider'></div>{/* TODO */}
+              <div className='fcnew-rowdivider'></div>
             </Fragment>
           )}
         </div>
