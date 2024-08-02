@@ -46,7 +46,7 @@ export class TimeGridWeekNumberCell extends BaseComponent<TimeGridWeekNumberCell
           <div ref={this.innerElRef}>{/* TODO: set this up as a flex-child!!! */}
             <InnerContent
               elTag="a"
-              elClasses={['fc-timegrid-axis-cushion']}
+              elClasses={['fcnew-timegrid-axis-cushion']}
               elAttrs={navLinkAttrs}
             />
           </div>

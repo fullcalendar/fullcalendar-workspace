@@ -28,9 +28,8 @@ export class TimeGridSlatCell extends BaseComponent<TimeGridSlatCellProps> {
         elTag="div"
         elClasses={[
           'fcnew-cell',
-          'fc-timegrid-slot', // TODO: investigate if we can remove
-          'fc-timegrid-slot-lane', // "
-          !props.isLabeled && 'fc-timegrid-slot-minor',
+          'fcnew-timegrid-slot', // TODO: investigate if we can remove
+          props.isLabeled ? '' : 'fcnew-timegrid-slot-minor',
         ]}
         elAttrs={{
           'data-time': props.isoTimeStr,
@@ -43,13 +42,10 @@ export class TimeGridSlatCell extends BaseComponent<TimeGridSlatCellProps> {
         willUnmount={options.slotLaneWillUnmount}
       >
         {(InnerContent) => (
-          <div
-            className="fc-timegrid-slot-lane-frame"
-            ref={this.innerElRef}
-          >
+          <div ref={this.innerElRef}>
             <InnerContent
               elTag="div"
-              elClasses={['fc-timegrid-slot-lane-cushion']}
+              elClasses={['fcnew-timegrid-slot-lane-cushion']}
             />
           </div>
         )}

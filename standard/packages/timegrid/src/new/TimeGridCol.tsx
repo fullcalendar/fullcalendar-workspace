@@ -67,10 +67,11 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
     return (
       <DayCellContainer
-        elTag="td"
+        elTag="div"
         elRef={props.elRef}
         elClasses={[
-          'fc-timegrid-col',
+          'fcnew-cell',
+          'fcnew-timegrid-col',
           ...(props.extraClassNames || []),
         ]}
         elAttrs={{
@@ -86,13 +87,13 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         extraRenderProps={props.extraRenderProps}
       >
         {(InnerContent) => (
-          <div className="fc-timegrid-col-frame">
-            <div className="fc-timegrid-col-bg">
+          <Fragment>
+            <div className="fcnew-timegrid-col-bg">
               {this.renderFillSegs(props.businessHourSegs, 'non-business')}
               {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
               {this.renderFillSegs(props.dateSelectionSegs, 'highlight')}
             </div>
-            <div className="fc-timegrid-col-events">
+            <div className="fcnew-timegrid-col-events">
               {this.renderFgSegs(
                 sortedFgSegs,
                 interactionAffectedInstances,
@@ -101,7 +102,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 false,
               )}
             </div>
-            <div className="fc-timegrid-col-events">
+            <div className="fcnew-timegrid-col-events">
               {this.renderFgSegs(
                 mirrorSegs as TimeColsSeg[],
                 {},
@@ -111,16 +112,16 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 'mirror',
               )}
             </div>
-            <div className="fc-timegrid-now-indicator-container">
+            <div className="fcnew-timegrid-now-indicator-container">
               {this.renderNowIndicator(props.nowIndicatorSegs)}
             </div>
             {hasCustomDayCellContent(options) && (
               <InnerContent
                 elTag="div"
-                elClasses={['fc-timegrid-col-misc']}
+                elClasses={['fcnew-timegrid-col-misc']}
               />
             )}
-          </div>
+          </Fragment>
         )}
       </DayCellContainer>
     )
@@ -181,8 +182,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
           return (
             <div
               className={
-                'fc-timegrid-event-harness' +
-                (isInset ? ' fc-timegrid-event-harness-inset' : '')
+                'fcnew-timegrid-event-harness' +
+                (isInset ? ' fcnew-timegrid-event-harness-inset' : '')
               }
               key={forcedKey || instanceId}
               style={{
@@ -244,7 +245,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       return (
         <div
           key={buildEventRangeKey(seg.eventRange)}
-          className="fc-timegrid-bg-harness"
+          className="fcnew-timegrid-bg-harness"
           style={computeSegVStyle(vcoords)}
         >
           {fillType === 'bg-event' ?
@@ -268,7 +269,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       <NowIndicatorContainer
         // key doesn't matter. will only ever be one
         key={i} // eslint-disable-line react/no-array-index-key
-        elClasses={['fc-timegrid-now-indicator-line']}
+        elClasses={['fcnew-timegrid-now-indicator-line']}
         elStyle={{
           top: computeDateTopFromSlatHeight(seg.start, date, slatHeight),
         }}

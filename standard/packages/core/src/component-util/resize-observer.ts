@@ -39,6 +39,9 @@ const resizeObserver = new ResizeObserver((entries) => {
 PRECONDITIONS:
 - element can only have one listener attached ever
 - element cannot have border or padding
+
+TODO:
+- always force border/padding on these elements to `0 !important` ???
 */
 export function watchSize(
   el: HTMLElement,

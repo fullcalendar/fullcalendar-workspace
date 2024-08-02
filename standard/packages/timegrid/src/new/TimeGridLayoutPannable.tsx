@@ -1,6 +1,6 @@
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
-import { computeColWidth, DayGridRows, TableSeg } from '@fullcalendar/daygrid/internal'
+import { computeColWidth, TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
 import { TimeGridAllDayContent } from "./TimeGridAllDayContent.js"
 import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"

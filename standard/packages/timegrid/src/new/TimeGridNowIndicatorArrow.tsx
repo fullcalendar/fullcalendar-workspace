@@ -12,7 +12,7 @@ export function TimeGridNowIndicatorArrow(props: TimeGridNowIndicatorArrowProps)
   return (
     <div>
       <NowIndicatorContainer
-        elClasses={['fc-timegrid-now-indicator-arrow']}
+        elClasses={['fcnew-timegrid-now-indicator-arrow']}
         elStyle={{ top: undefined }}
         isAxis
         date={props.nowDate}

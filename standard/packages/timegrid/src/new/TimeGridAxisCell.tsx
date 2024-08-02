@@ -44,9 +44,9 @@ export class TimeGridAxisCell extends Component<TimeGridAxisCellProps> {
     let { props } = this
     let classNames = [
       'fcnew-rowheader',
-      'fc-timegrid-slot',
-      'fc-timegrid-slot-label',
-      props.isLabeled ? 'fc-scrollgrid-shrink' : 'fc-timegrid-slot-minor',
+      'fcnew-timegrid-slot',
+      'fcnew-timegrid-slot-label',
+      props.isLabeled ? '' : 'fcnew-timegrid-slot-minor',
     ]
 
     // why are we using ViewContextType.Consumer???
@@ -75,7 +75,7 @@ export class TimeGridAxisCell extends Component<TimeGridAxisCellProps> {
 
           return (
             <ContentContainer
-              elTag="td"
+              elTag="div"
               elClasses={classNames}
               elAttrs={{
                 'data-time': props.isoTimeStr,
@@ -93,15 +93,12 @@ export class TimeGridAxisCell extends Component<TimeGridAxisCellProps> {
             >
               {(InnerContent) => (
                 <div
-                  className="fc-timegrid-slot-label-frame fc-scrollgrid-shrink-frame"
+                  className="fcnew-timegrid-slot-label-frame"
                   ref={this.innerElRef}
                 >
                   <InnerContent
                     elTag="div"
-                    elClasses={[
-                      'fc-timegrid-slot-label-cushion',
-                      'fc-scrollgrid-shrink-cushion',
-                    ]}
+                    elClasses={['fcnew-timegrid-slot-label-cushion']}
                   />
                 </div>
               )}

@@ -48,15 +48,12 @@ export class TimeGridAllDayLabelCell extends BaseComponent<TimeGridAllDayLabelCe
       >
         {(InnerContent) => (
           <div
-            className='fc-timegrid-axis-frame'
+            className='fcnew-timegrid-axis-frame'
             ref={this.innerElRef}
           >
             <InnerContent
               elTag="span"
-              elClasses={[
-                'fc-timegrid-axis-cushion',
-                'fc-scrollgrid-sync-inner',
-              ]}
+              elClasses={['fcnew-timegrid-axis-cushion']}
             />
           </div>
         )}

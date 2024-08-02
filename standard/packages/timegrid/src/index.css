@@ -2,11 +2,18 @@
 @import '../../core/src/styles/mixins';
 @import './styles/constants';
 
+@import './styles-new/v-event';
 @import './styles-new/timegrid';
+@import './styles-new/timegrid-slots';
+@import './styles-new/timegrid-cols';
+@import './styles-new/timegrid-event';
+@import './styles-new/timegrid-now-indicator';
 
-/* @import './styles/v-event';
+/*
+@import './styles/v-event';
 @import './styles/timegrid';
 @import './styles/timegrid-slots';
 @import './styles/timegrid-cols';
 @import './styles/timegrid-event';
-@import './styles/timegrid-now-indicator'; */
+@import './styles/timegrid-now-indicator';
+*/

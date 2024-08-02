@@ -1,0 +1,109 @@
+
+/*
+A VERTICAL event
+*/
+
+.fcnew-v-event { // allowed to be top-level
+  display: block;
+  border: 1px solid var(--fc-event-border-color);
+  background-color: var(--fc-event-bg-color);
+
+  & .fcnew-event-main {
+    color: var(--fc-event-text-color);
+    height: 100%;
+  }
+
+  & .fcnew-event-main-frame {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  & .fcnew-event-time {
+    flex-grow: 0;
+    flex-shrink: 0;
+    max-height: 100%;
+    overflow: hidden;
+  }
+
+  & .fcnew-event-title-container { // a container for the sticky cushion
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-height: 0; // important for allowing to shrink all the way
+  }
+
+  & .fcnew-event-title { // will have fc-sticky on it
+    top: 0;
+    bottom: 0;
+    max-height: 100%; // clip overflow
+    overflow: hidden;
+  }
+
+  &:not(.fcnew-event-start) {
+    border-top-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  &:not(.fcnew-event-end) {
+    border-bottom-width: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &.fcnew-event-selected:before {
+    // expand hit area
+    left: -10px;
+    right: -10px;
+  }
+
+  // resizer (mouse AND touch)
+
+  & .fcnew-event-resizer-start {
+    cursor: n-resize;
+  }
+
+  & .fcnew-event-resizer-end {
+    cursor: s-resize;
+  }
+
+  // resizer for MOUSE
+
+  &:not(.fcnew-event-selected) {
+
+    & .fcnew-event-resizer {
+      height: var(--fc-event-resizer-thickness);
+      left: 0;
+      right: 0;
+    }
+
+    & .fcnew-event-resizer-start {
+      top: calc(var(--fc-event-resizer-thickness) / -2);
+    }
+
+    & .fcnew-event-resizer-end {
+      bottom: calc(var(--fc-event-resizer-thickness) / -2);
+    }
+
+  }
+
+  // resizer for TOUCH (when event is "selected")
+
+  &.fcnew-event-selected {
+
+    & .fcnew-event-resizer {
+      left: 50%;
+      margin-left: calc(var(--fc-event-resizer-dot-total-width) / -2);
+    }
+
+    & .fcnew-event-resizer-start {
+      top: calc(var(--fc-event-resizer-dot-total-width) / -2);
+    }
+
+    & .fcnew-event-resizer-end {
+      bottom: calc(var(--fc-event-resizer-dot-total-width) / -2);
+    }
+
+  }
+
+}
