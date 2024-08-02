@@ -1,5 +1,5 @@
 import { ComponentChild, createElement, Ref } from '@fullcalendar/core/preact'
-import { HeaderRow } from './header-cells/HeaderRow.js'
+import { HeaderRow } from './header/HeaderRow.js'
 
 export interface DayGridHeaderProps<Model, ModelKey> {
   headerTiers: Model[][]
