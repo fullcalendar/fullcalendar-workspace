@@ -11,7 +11,7 @@ import {
   ScrollResponder,
   ViewContainer
 } from '@fullcalendar/core/internal'
-import { ComponentChild, createElement, createRef } from '@fullcalendar/core/preact'
+import { ComponentChild, createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { TableSeg } from '../TableSeg.js'
 import { DayGridLayoutNormal } from './DayGridLayoutNormal.js'
 import { DayGridLayoutPannable } from './DayGridLayoutPannable.js'
@@ -26,7 +26,12 @@ export interface DayGridLayoutProps<HeaderCellModel, HeaderCellKey> {
 
   // header content
   headerTiers: HeaderCellModel[][]
-  renderHeaderContent: (model: HeaderCellModel, tier: number, colWidth: number | undefined) => ComponentChild
+  renderHeaderContent: (
+    model: HeaderCellModel,
+    tier: number,
+    innerHeightRef: Ref<number> | undefined, // unused
+    width: number | undefined,
+  ) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
   // body content

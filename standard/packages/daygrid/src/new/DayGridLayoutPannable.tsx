@@ -30,7 +30,12 @@ export interface DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
 
   // header content
   headerTiers: HeaderCellModel[][]
-  renderHeaderContent: (model: HeaderCellModel, tier: number, colWidth: number | undefined) => ComponentChild
+  renderHeaderContent: (
+    model: HeaderCellModel,
+    tier: number,
+    innerHeightRef: Ref<number> | undefined, // unused
+    colWidth: number | undefined
+  ) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
   // body content

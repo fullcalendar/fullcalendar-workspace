@@ -1,6 +1,6 @@
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize } from "@fullcalendar/core/internal"
 import { Fragment, createElement, ComponentChild, Ref } from '@fullcalendar/core/preact'
-import { TableSeg } from '@fullcalendar/daygrid/internal'
+import { HeaderRow, TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
 import { TimeGridAllDayContent } from "./TimeGridAllDayContent.js"
 import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"
@@ -24,13 +24,14 @@ export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
   renderHeaderLabel: (
     tier: number,
     innerWidthRef: Ref<number> | undefined,
-    innerHeightRef: Ref<number> | undefined,
+    innerHeightRef: Ref<number> | undefined, // unused
     width: number | undefined,
   ) => ComponentChild
   renderHeaderContent: (
     model: HeaderCellModel,
     tier: number,
-    innerHeightRef: Ref<number> | undefined,
+    innerHeightRef: Ref<number> | undefined, // unused
+    width: number | undefined,
   ) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
@@ -111,7 +112,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
               'fcnew-rowgroup',
               stickyHeaderDates ? 'fcnew-sticky' : '',
             ].join(' ')}>
-              {props.headerTiers.map((models, tierNum) => (
+              {props.headerTiers.map((cells, tierNum) => (
                 <div
                   key={tierNum}
                   className='fcnew-row'
@@ -122,17 +123,13 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                     undefined, // innerHeightRef
                     axisWidth, // width
                   )}
-                  <div className='fcnew-cellgroup'>
-                    {models.map((model) => (
-                      <Fragment key={props.getHeaderModelKey(model)}>
-                        {props.renderHeaderContent( // .fcnew-cell
-                          model,
-                          tierNum,
-                          undefined, // innerHeightRef
-                        )}
-                      </Fragment>
-                    ))}
-                  </div>
+                  <HeaderRow // .fcnew-cellgroup
+                    tierNum={tierNum}
+                    cells={cells}
+                    renderHeaderContent={props.renderHeaderContent}
+                    getHeaderModelKey={props.getHeaderModelKey}
+                    cellGroup
+                  />
                 </div>
               ))}
             </div>

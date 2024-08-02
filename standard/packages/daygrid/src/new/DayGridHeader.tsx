@@ -1,12 +1,18 @@
-import { ComponentChild, createElement, Fragment } from '@fullcalendar/core/preact'
+import { ComponentChild, createElement, Ref } from '@fullcalendar/core/preact'
+import { HeaderRow } from './header-cells/HeaderRow.js'
 
 export interface DayGridHeaderProps<Model, ModelKey> {
   headerTiers: Model[][]
-  renderHeaderContent: (model: Model, tier: number, colWidth: number | undefined) => ComponentChild
+  renderHeaderContent: (
+    model: Model,
+    tier: number,
+    innerHeightRef: Ref<number> | undefined, // unused
+    width: number | undefined
+  ) => ComponentChild
   getHeaderModelKey: (model: Model) => ModelKey
 
   // render hooks
-  extraClassNames?: string[]
+  extraClassNames?: string[] // TODO: how to make Pure-Component-like?
 
   // dimensions
   colWidth?: number
@@ -20,7 +26,7 @@ export function DayGridHeader<Model, ModelKey>(props: DayGridHeaderProps<Model, 
     <div
       className={[
         'fcnew-rowgroup',
-        'fcnew-daygrid-header',
+        'fcnew-daygrid-header', // best place to put this?
         ...(props.extraClassNames || []),
       ].join(' ')}
       style={{
@@ -30,13 +36,14 @@ export function DayGridHeader<Model, ModelKey>(props: DayGridHeaderProps<Model, 
       }}
     >
       {props.headerTiers.map((cells, tierNum) => (
-        <div key={tierNum} role='row' class='fcnew-row'>
-          {cells.map((cell) => (
-            <Fragment key={props.getHeaderModelKey(cell)}>
-              {props.renderHeaderContent(cell, tierNum, props.colWidth)}
-            </Fragment>
-          ))}
-        </div>
+        <HeaderRow
+          key={tierNum}
+          tierNum={tierNum}
+          cells={cells}
+          renderHeaderContent={props.renderHeaderContent}
+          getHeaderModelKey={props.getHeaderModelKey}
+          colWidth={props.colWidth}
+        />
       ))}
     </div>
   )

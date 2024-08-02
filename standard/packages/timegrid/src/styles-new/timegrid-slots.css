@@ -5,6 +5,9 @@
 
   & .fcnew-timegrid-slot-minor {
     // border-top-style: dotted; // how to do this when cell controls the BOTTOM border???
+    // THINK ABOUT:
+    // - bottom-sticky scrollbars prefer NO top border
+    // - top-sticky header prefers bottom border
   }
 
   & .fcnew-timegrid-slot-label-cushion,

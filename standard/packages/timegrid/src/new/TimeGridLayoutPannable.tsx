@@ -1,6 +1,6 @@
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
-import { computeColWidth, TableSeg } from '@fullcalendar/daygrid/internal'
+import { computeColWidth, TableSeg, HeaderRowAdvanced } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabelCell } from "./TimeGridAllDayLabelCell.js"
 import { TimeGridAllDayContent } from "./TimeGridAllDayContent.js"
 import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"
@@ -9,7 +9,6 @@ import { TimeGridAxisCell } from "./TimeGridAxisCell.js"
 import { TimeGridSlatCell } from "./TimeGridSlatCell.js"
 import { TimeGridCols } from "./TimeGridCols.js"
 import { TimeColsSeg } from "../TimeColsSeg.js"
-import { TimeGridHeaderTier } from "./TimeGridHeaderTier.js"
 
 export interface TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
   dateProfile: DateProfile
@@ -32,6 +31,7 @@ export interface TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
     model: HeaderCellModel,
     tier: number,
     innerHeightRef: Ref<number> | undefined,
+    width: number | undefined,
   ) => ComponentChild
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
@@ -178,20 +178,16 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 paddingLeft: state.leftScrollbarWidth,
                 paddingRight: state.rightScrollbarWidth,
               }} >
-                {props.headerTiers.map((models, tierNum) => (
-                  <div
+                {props.headerTiers.map((cells, tierNum) => (
+                  <HeaderRowAdvanced // .fcnew-row
                     key={tierNum}
-                    className='fcnew-row'
-                    style={{ height: state.headerTierHeights[tierNum] }}
-                  >
-                    <TimeGridHeaderTier // collection of .fc-cell (TODO: rename)
-                      tierNum={tierNum}
-                      models={models}
-                      renderHeaderContent={props.renderHeaderContent}
-                      getHeaderModelKey={props.getHeaderModelKey}
-                      innerHeightRef={this.headerMainInnerHeightRefMap.createRef(tierNum)}
-                    />
-                  </div>
+                    tierNum={tierNum}
+                    cells={cells}
+                    renderHeaderContent={props.renderHeaderContent}
+                    getHeaderModelKey={props.getHeaderModelKey}
+                    innerHeightRef={this.headerMainInnerHeightRefMap.createRef(tierNum)}
+                    height={state.headerTierHeights[tierNum]}
+                  />
                 ))}
               </div>
             </Scroller>

@@ -1,7 +1,7 @@
 import { CssDimValue } from '@fullcalendar/core'
 import {
   DateMarker, BaseComponent, EventSegUiInteractionState, Seg, getSegMeta,
-  DateRange, DayCellContainer, NowIndicatorContainer, BgEvent, renderFill, buildIsoString, computeEarliestSegStart,
+  DateRange, DayCellContainer, BgEvent, renderFill, buildIsoString, computeEarliestSegStart,
   DateProfile, buildEventRangeKey, sortEventSegs, memoize, SegEntryGroup, SegEntry, Dictionary, SegSpan, hasCustomDayCellContent,
 } from '@fullcalendar/core/internal'
 import {
@@ -14,6 +14,7 @@ import { TimeColsSeg } from '../TimeColsSeg.js'
 import { SegWebRect } from '../seg-web.js'
 import { computeFgSegPlacements, newComputeSegVCoords } from '../event-placement.js'
 import { TimeGridEvent } from './TimeGridEvent.js'
+import { TimeGridNowIndicatorLine } from './TimeGridNowIndicatorLine.js'
 
 export interface TimeGridColProps {
   dateProfile: DateProfile
@@ -263,18 +264,10 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
     if (!slatHeight) { return null }
 
-    /* TODO: break TimeGridNowIndicatorLine into its own component */
-
-    return segs.map((seg, i) => (
-      <NowIndicatorContainer
-        // key doesn't matter. will only ever be one
-        key={i} // eslint-disable-line react/no-array-index-key
-        elClasses={['fcnew-timegrid-now-indicator-line']}
-        elStyle={{
-          top: computeDateTopFromSlatHeight(seg.start, date, slatHeight),
-        }}
-        isAxis={false}
-        date={date}
+    return segs.map((_seg) => (
+      <TimeGridNowIndicatorLine
+        nowDate={date}
+        // top: computeDateTopFromSlatHeight(seg.start, date, slatHeight),
       />
     ))
   }
@@ -371,6 +364,6 @@ function compileSegsFromEntries(
   return segEntries.map((segEntry) => allSegs[segEntry.index])
 }
 
-function computeDateTopFromSlatHeight(date: DateMarker, startOfDay: DateMarker, slatHeight: number): number {
-  return null as any // !!!!
-}
+// function computeDateTopFromSlatHeight(date: DateMarker, startOfDay: DateMarker, slatHeight: number): number {
+//   return null as any // !!!!
+// }

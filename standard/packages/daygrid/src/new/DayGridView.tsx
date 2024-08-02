@@ -47,7 +47,7 @@ export class DayGridView extends BaseComponent<ViewProps> {
 
             // header content
             headerTiers={headerTiers}
-            renderHeaderContent={(model, tier, colWidth) => {
+            renderHeaderContent={(model, tier, innerHeightRef, colWidth) => {
               if ((model as DateHeaderCellObj).date) {
                 return (
                   <DateHeaderCell
@@ -72,6 +72,7 @@ export class DayGridView extends BaseComponent<ViewProps> {
               }
             }}
             getHeaderModelKey={(model) => {
+              // can use model.key???
               if ((model as DateHeaderCellObj).date) {
                 return (model as DateHeaderCellObj).date.toUTCString()
               }
