@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual, getIsHeightAuto } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { computeColWidth, TableSeg, HeaderRowAdvanced } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -9,6 +9,7 @@ import { TimeGridSlatLabel } from "./TimeGridSlatLabel.js"
 import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
 import { TimeGridCols } from "./TimeGridCols.js"
 import { TimeColsSeg } from "../TimeColsSeg.js"
+import { computeSlatHeight } from "./util.js"
 
 export interface TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
   dateProfile: DateProfile
@@ -67,13 +68,14 @@ export interface TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
 }
 
 interface TimeGridLayoutPannableState {
-  width?: number
+  scrollerWidth?: number
+  scrollerHeight?: number
   leftScrollbarWidth?: number
   rightScrollbarWidth?: number
   axisWidth?: number
   headerTierHeights?: number[]
   allDayHeight?: number
-  slatHeight?: number
+  slatInnerHeight?: number
 }
 
 export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseComponent<TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey>, TimeGridLayoutPannableState> {
@@ -106,11 +108,12 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     afterSize(this.handleAxisWidths)
   })
   private slatLabelInnerHeightRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
-    afterSize(this.handleSlatHeights)
+    afterSize(this.handleSlatInnerHeights)
   })
   private slatMainInnerHeightRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
-    afterSize(this.handleSlatHeights)
+    afterSize(this.handleSlatInnerHeights)
   })
+  private currentSlatHeight?: number
   // TODO: rename these
   private axisScrollerRef = createRef<Scroller>()
   private mainScrollerRef = createRef<Scroller>()
@@ -130,9 +133,25 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     const { options } = context
 
     const colCnt = props.headerTiers[0].length
+    const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
-    const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, state.width)
+
+    const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, state.scrollerWidth)
+
+    const [slatHeight, slatLiquid] = computeSlatHeight(
+      verticalScrolling,
+      options.expandRows,
+      state.scrollerHeight,
+      props.slatMetas.length,
+      state.slatInnerHeight,
+    )
+    const slatStyleHeight = slatLiquid ? '' : slatHeight
+
+    if (this.currentSlatHeight !== slatHeight) {
+      this.currentSlatHeight = slatHeight
+      setRef(props.slatHeightRef, slatHeight)
+    }
 
     return (
       <Fragment>
@@ -255,19 +274,22 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
           {/* SLATS / labels (vertical scroller)
           ---------------------------------------------------------------------------------------*/}
           <Scroller
-            vertical
+            vertical={verticalScrolling}
             hideScrollbars
             elClassNames={['fcnew-rowheader']} // a "super" cell
             // ^NOTE: not a good idea if ever gets left/right border
             elStyle={{ width: axisWidth }}
             ref={this.axisScrollerRef}
           >
-            <div className='fc-rel'>
+            <div
+              className='fc-rel'
+              style={{ minHeight: slatLiquid ? '100%' : '' }} // TODO: use className for this?
+            >
               {props.slatMetas.map((slatMeta) => (
                 <div
                   key={slatMeta.key}
                   className='fcnew-row'
-                  style={{ height: state.slatHeight }}
+                  style={{ height: slatStyleHeight }}
                 >
                   <TimeGridSlatLabel // .fcnew-rowheader
                     {...slatMeta}
@@ -285,21 +307,28 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
           {/* SLATS / main (scroller)
           ---------------------------------------------------------------------------------------*/}
           <Scroller
-            vertical
+            vertical={verticalScrolling}
             horizontal
             elClassNames={['fcnew-cell']} // a "super" cell
             // ^NOTE: not a good idea if ever gets left/right border
             ref={this.mainScrollerRef}
-            widthRef={this.handleWidth}
+            widthRef={this.handleScrollerWidth}
+            heightRef={this.handleScrollerHeight}
             leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
             rightScrollbarWidthRef={this.handleRightScrollbarWidth}
           >
-            <div className='fc-rel' style={{ width: canvasWidth }}>
+            <div
+              className='fc-rel'
+              style={{
+                width: canvasWidth,
+                minHeight: slatLiquid ? '100%' : '', // TODO: use className for this?
+              }}
+            >
               {props.slatMetas.map((slatMeta) => (
                 <div
                   key={slatMeta.key}
                   className='fcnew-row'
-                  style={{ height: state.slatHeight }}
+                  style={{ height: slatStyleHeight }}
                 >
                   <TimeGridSlatLane // .fcnew-cell
                     {...slatMeta}
@@ -328,7 +357,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
 
                 // dimensions
                 colWidth={colWidth}
-                slatHeight={state.slatHeight}
+                slatHeight={slatHeight}
               />
             </div>
           </Scroller>
@@ -372,8 +401,12 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  private handleWidth = (width: number) => {
-    this.setState({ width })
+  private handleScrollerWidth = (scrollerWidth: number) => {
+    this.setState({ scrollerWidth })
+  }
+
+  private handleScrollerHeight = (scrollerHeight: number) => {
+    this.setState({ scrollerHeight })
   }
 
   private handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
@@ -410,7 +443,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     }
   }
 
-  private handleSlatHeights = () => {
+  private handleSlatInnerHeights = () => {
     const slatLabelInnerHeightMap = this.slatLabelInnerHeightRefMap.current
     const slatMainInnerHeightMap = this.slatMainInnerHeightRefMap.current
     let max = 0
@@ -423,8 +456,8 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
       max = Math.max(max, slatMainInnerHeight)
     }
 
-    if (this.state.slatHeight !== max) {
-      this.setState({ slatHeight: max })
+    if (this.state.slatInnerHeight !== max) {
+      this.setState({ slatInnerHeight: max })
     }
   }
 
@@ -456,6 +489,8 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
 
     setRef(this.props.dayScrollerRef, this.hScroller)
     setRef(this.props.timeScrollerRef, this.vScroller)
+
+    this.updateScrollers()
   }
 
   updateScrollers() {

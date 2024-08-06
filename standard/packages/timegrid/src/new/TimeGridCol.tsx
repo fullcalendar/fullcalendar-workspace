@@ -158,10 +158,10 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     isDateSelecting: boolean,
     forcedKey?: string,
   ) {
-    let { props } = this
+    let { props, context } = this
+    let { date, eventSelection, todayRange, nowDate } = props
+    let { eventMaxStack, eventShortHeight, eventOrderStrict, eventMinHeight } = context.options
 
-    let { eventMaxStack, eventShortHeight, eventOrderStrict, eventMinHeight } = this.context.options
-    let { date, eventSelection, todayRange, nowDate } = this.props
     let isMirror = isDragging || isResizing || isDateSelecting
 
     // TODO: memoize this???

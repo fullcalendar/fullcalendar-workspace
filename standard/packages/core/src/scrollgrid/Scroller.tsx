@@ -16,6 +16,7 @@ export interface ScrollerProps {
 
   // dimensions
   widthRef?: Ref<number>
+  heightRef?: Ref<number>
   leftScrollbarWidthRef?: Ref<number>
   rightScrollbarWidthRef?: Ref<number>
   bottomScrollbarWidthRef?: Ref<number>
@@ -28,6 +29,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   // internal
   private disconnectSize?: () => void
   private currentWidth: number
+  private currentHeight: number
   private currentLeftScrollbarWidth: number
   private currentRightScrollbarWidth: number
   private currentBottomScrollbarWidth: number
@@ -55,7 +57,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   componentDidMount(): void {
     const el = this.elRef.current // TODO: make dynamic with useEffect
 
-    this.disconnectSize = watchSize(el, (contentWidth) => {
+    this.disconnectSize = watchSize(el, (contentWidth, contentHeight) => {
       const { props, context } = this
       const bottomScrollbarWidth = el.offsetHeight - el.clientHeight
       const horizontalScrollbarWidth = el.offsetWidth - el.clientWidth
@@ -70,6 +72,9 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
 
       if (!isDimsEqual(this.currentWidth, contentWidth)) {
         setRef(props.widthRef, this.currentWidth = contentWidth)
+      }
+      if (!isDimsEqual(this.currentHeight, contentHeight)) {
+        setRef(props.heightRef, this.currentHeight = contentHeight)
       }
       if (!isDimsEqual(this.currentBottomScrollbarWidth, bottomScrollbarWidth)) {
         setRef(props.leftScrollbarWidthRef, this.currentBottomScrollbarWidth = bottomScrollbarWidth)

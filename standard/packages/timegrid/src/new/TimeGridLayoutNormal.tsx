@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize, getIsHeightAuto } from "@fullcalendar/core/internal"
 import { Fragment, createElement, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { HeaderRow, TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -9,6 +9,7 @@ import { TimeGridSlatLabel } from "./TimeGridSlatLabel.js"
 import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
 import { TimeGridCols } from "./TimeGridCols.js"
 import { TimeColsSeg } from "../TimeColsSeg.js"
+import { computeSlatHeight } from "./util.js"
 
 export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
   dateProfile: DateProfile
@@ -63,38 +64,56 @@ export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
 }
 
 interface TimeGridLayoutState {
+  scrollerHeight?: number
   leftScrollbarWidth?: number
   rightScrollbarWidth?: number
   axisWidth?: number
-  slatHeight?: number
+  slatInnerHeight?: number
 }
 
 export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseComponent<TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey>, TimeGridLayoutState> {
   // refs
   private headerLabelInnerWidthRefMap = new RefMap<number, number>(() => { // keyed by tierNum
-    afterSize(this.handleAxisWidths)
+    afterSize(this.handleAxisInnerWidths)
   })
   private allDayLabelInnerWidth?: number
   private handleAllDayLabelInnerWidth = (width: number) => {
     this.allDayLabelInnerWidth = width
-    afterSize(this.handleAxisWidths)
+    afterSize(this.handleAxisInnerWidths)
   }
   private slatLabelInnerWidthRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
-    afterSize(this.handleAxisWidths)
+    afterSize(this.handleAxisInnerWidths)
   })
   private slatLabelInnerHeightRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
-    afterSize(this.handleSlatHeights)
+    afterSize(this.handleSlatInnerHeights)
   })
   private slatInnerHeightRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
-    afterSize(this.handleSlatHeights)
+    afterSize(this.handleSlatInnerHeights)
   })
+  private currentSlatHeight?: number
 
   render() {
     const { props, state, context, slatLabelInnerWidthRefMap, slatLabelInnerHeightRefMap, slatInnerHeightRefMap, headerLabelInnerWidthRefMap } = this
     const { nowDate } = props
     const { axisWidth } = state
     const { options } = context
+
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
+    const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
+
+    const [slatHeight, slatLiquid] = computeSlatHeight(
+      verticalScrolling,
+      options.expandRows,
+      state.scrollerHeight,
+      props.slatMetas.length,
+      state.slatInnerHeight,
+    )
+    const slatStyleHeight = slatLiquid ? '' : slatHeight
+
+    if (this.currentSlatHeight !== slatHeight) {
+      this.currentSlatHeight = slatHeight
+      setRef(props.slatHeightRef, slatHeight)
+    }
 
     return (
       <Fragment>
@@ -170,15 +189,23 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         {/* SLATS
         -----------------------------------------------------------------------------------------*/}
         <Scroller
-          vertical
+          vertical={verticalScrolling}
+          elClassNames={['fcnew-rowgroup']}
           ref={props.scrollerRef}
+          heightRef={this.handleScrollerHeight}
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
-          elClassNames={['fcnew-rowgroup']}
         >
-          <div className='fc-rel'>
+          <div
+            className='fc-rel'
+            style={{ minHeight: slatLiquid ? '100%' : '' }} // TODO: use className for this?
+          >
             {props.slatMetas.map((slatMeta) => (
-              <div key={slatMeta.key} className='fcnew-row'>
+              <div
+                key={slatMeta.key}
+                className='fcnew-row'
+                style={{ height: slatStyleHeight }}
+              >
                 <TimeGridSlatLabel // .fcnew-rowheader
                   {...slatMeta}
                   innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
@@ -215,7 +242,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 eventSelection={props.eventSelection}
 
                 // dimensions
-                slatHeight={state.slatHeight}
+                slatHeight={slatHeight}
               />
             </div>
           </div>
@@ -227,6 +254,10 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
+  private handleScrollerHeight = (scrollerHeight: number) => {
+    this.setState({ scrollerHeight })
+  }
+
   private handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
     this.setState({ leftScrollbarWidth })
   }
@@ -235,7 +266,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
     this.setState({ rightScrollbarWidth })
   }
 
-  private handleAxisWidths = () => {
+  private handleAxisInnerWidths = () => {
     const headerLabelInnerWidthMap = this.headerLabelInnerWidthRefMap.current
     const slatLabelInnerWidthMap = this.slatLabelInnerWidthRefMap.current
     let max = this.allDayLabelInnerWidth
@@ -253,7 +284,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
     }
   }
 
-  private handleSlatHeights = () => {
+  private handleSlatInnerHeights = () => {
     const slatLabelInnerHeightMap = this.slatLabelInnerHeightRefMap.current
     const slatInnerHeightMap = this.slatInnerHeightRefMap.current
     let max = 0
@@ -266,9 +297,8 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
       max = Math.max(max, slatInnerHeight)
     }
 
-    if (this.state.slatHeight !== max) {
-      this.setState({ slatHeight: max })
-      setRef(this.props.slatHeightRef, max)
+    if (this.state.slatInnerHeight !== max) {
+      this.setState({ slatInnerHeight: max })
     }
   }
 }

@@ -40,7 +40,6 @@
 // Table Utils
 // -------------------------------------------------------------------------------------------------
 
-.fcnew-row,
 .fcnew-rowheader {
   // for setting width/height based on innerWidth/innerHeight
   // NOTE: won't work on equal-width cells that have absolute-positioned overlay with percentages
