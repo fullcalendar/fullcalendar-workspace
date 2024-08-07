@@ -232,7 +232,11 @@ export function getEntrySpanEnd(entry: SegEntry) {
   return entry.span.end
 }
 
-export function buildEntryKey(entry: SegEntry) { // TODO: use Map instead?
+/*
+Generates a unique ID whose lifespan is a single run of SegHierarchy, so can be really specific
+without fear of accidentally busting the cache on subsequent rerenders
+*/
+export function buildEntryKey(entry: SegEntry) {
   return entry.index + ':' + entry.span.start
 }
 

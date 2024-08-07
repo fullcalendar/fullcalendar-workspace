@@ -1,4 +1,5 @@
-import { DateEnv, DateProfile, DateProfileGenerator, DateRange, DaySeriesModel, DayTableModel } from "@fullcalendar/core/internal"
+import { Duration } from '@fullcalendar/core'
+import { asRoughMs, createDuration, DateEnv, DateMarker, DateProfile, DateProfileGenerator, DateRange, DaySeriesModel, DayTableModel, startOfDay } from "@fullcalendar/core/internal"
 
 export function buildTimeColsModel(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
   let daySeries = new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
@@ -43,4 +44,32 @@ export function computeSlatHeight(
   }
 
   return [slatHeight, slatLiquid]
+}
+
+/*
+A `startOfDayDate` must be given for avoiding ambiguity over how to treat midnight.
+*/
+export function computeDateTopFrac(
+  date: DateMarker,
+  dateProfile: DateProfile,
+  startOfDayDate?: DateMarker,
+): number {
+  if (!startOfDayDate) {
+    startOfDayDate = startOfDay(date)
+  }
+  return computeTimeTopFrac(
+    createDuration(date.valueOf() - startOfDayDate.valueOf()),
+    dateProfile,
+  )
+}
+
+export function computeTimeTopFrac(time: Duration, dateProfile: DateProfile): number {
+  const startMs = asRoughMs(dateProfile.slotMinTime)
+  const endMs = asRoughMs(dateProfile.slotMaxTime)
+  let frac = (time.milliseconds - startMs) / (endMs - startMs)
+
+  frac = Math.max(0, frac)
+  frac = Math.min(1, frac)
+
+  return frac
 }

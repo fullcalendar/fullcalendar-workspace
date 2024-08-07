@@ -1,91 +1,88 @@
 import {
-  SegSpan,
   SegEntry,
   SegEntryGroup,
   DateMarker,
+  DateProfile,
 } from '@fullcalendar/core/internal'
 import { TimeColsSeg } from './TimeColsSeg.js'
-import { TimeColsSlatsCoords } from './TimeColsSlatsCoords.js'
-import { SegWebRect, buildPositioning } from './seg-web.js'
+import { SegWebRect, buildWebPositioning } from './seg-web.js'
+import { computeDateTopFrac } from './new/util.js'
 
-// public interface
-// ------------------------------------------------------------------------------------------
+// VERTICAL
+// -------------------------------------------------------------------------------------------------
 
-export interface TimeColFgSegPlacement {
-  seg: TimeColsSeg
-  rect: SegWebRect | null
+export interface TimeGridSegVertical {
+  start: number // frac
+  end: number // frac
+  size: number // frac
+  isShort: boolean
 }
 
-export function newComputeSegVCoords(
+export function computeFgSegVerticals(
   segs: TimeColsSeg[],
+  dateProfile: DateProfile,
   colDate: DateMarker,
-  slatHeight: number,
-  eventMinHeight: number = 0, // might be null/undefined :(
-): SegSpan[] {
-  return null as any // !!!!
-}
+  slatCnt: number,
+  slatHeight: number | undefined, // in pixels
+  eventMinHeight: number | undefined, // in pixels
+  eventShortHeight?: number, // in pixels
+): { [instanceId: string]: TimeGridSegVertical } {
+  const res: { [instanceId: string]: TimeGridSegVertical } = {}
 
-export function computeSegVCoords(
-  segs: TimeColsSeg[],
-  colDate: DateMarker,
-  slatCoords: TimeColsSlatsCoords = null,
-  eventMinHeight: number = 0, // might be null/undefined :(
-): SegSpan[] {
-  let vcoords: SegSpan[] = []
+  for (const seg of segs) {
+    const startFrac = computeDateTopFrac(seg.start, dateProfile, colDate)
+    const endFrac = computeDateTopFrac(seg.end, dateProfile, colDate)
+    let heightFrac = endFrac - startFrac
+    let isShort = false
 
-  if (slatCoords) {
-    for (let i = 0; i < segs.length; i += 1) {
-      let seg = segs[i]
-      let spanStart = slatCoords.computeDateTop(seg.start, colDate)
-      let spanEnd = Math.max(
-        spanStart + (eventMinHeight || 0), // :(
-        slatCoords.computeDateTop(seg.end, colDate),
-      )
-      vcoords.push({
-        start: Math.round(spanStart), // for barely-overlapping collisions
-        end: Math.round(spanEnd), //
-      })
+    if (slatHeight !== undefined) {
+      const totalHeight = slatHeight * slatCnt
+      let heightPixels = heightFrac * totalHeight
+
+      if (eventMinHeight != null && heightPixels < eventMinHeight) {
+        heightPixels = eventMinHeight
+        heightFrac = heightPixels / totalHeight
+      }
+
+      isShort = eventShortHeight != null && heightPixels < eventShortHeight
+    }
+
+    res[seg.eventRange.instance.instanceId] = {
+      start: startFrac,
+      end: startFrac + heightFrac,
+      size: heightFrac,
+      isShort,
     }
   }
 
-  return vcoords
+  return res
 }
 
-export function computeFgSegPlacements(
+// HORIZONTAL
+// -------------------------------------------------------------------------------------------------
+
+export function computeFgSegHorizontals(
   segs: TimeColsSeg[],
-  segVCoords: SegSpan[], // might not have for every seg
+  segVerticals: { [instanceId: string]: TimeGridSegVertical },
   eventOrderStrict?: boolean,
   eventMaxStack?: number,
-): { segPlacements: TimeColFgSegPlacement[], hiddenGroups: SegEntryGroup[] } {
-  let segInputs: SegEntry[] = []
-  let dumbSegs: TimeColsSeg[] = [] // segs without coords
+): [
+  segRects: { [instanceId: string]: SegWebRect },
+  hiddenGroups: SegEntryGroup[],
+] {
+  const segEntries: SegEntry[] = segs.map((seg, index) => ({
+    index,
+    thickness: 1,
+    span: segVerticals[seg.eventRange.instance.instanceId],
+  }))
 
-  for (let i = 0; i < segs.length; i += 1) {
-    let vcoords = segVCoords[i]
-    if (vcoords) {
-      segInputs.push({
-        index: i,
-        thickness: 1,
-        span: vcoords,
-      })
-    } else {
-      dumbSegs.push(segs[i])
-    }
+  const [segRectArray, hiddenGroups] = buildWebPositioning(segEntries, eventOrderStrict, eventMaxStack)
+  const segRects: { [instanceId: string]: SegWebRect } = {}
+
+  for (const segRect of segRectArray) {
+    const seg = segs[segRect.index]
+    segRects[seg.eventRange.instance.instanceId] = segRect
   }
 
-  let { segRects, hiddenGroups } = buildPositioning(segInputs, eventOrderStrict, eventMaxStack)
-  let segPlacements: TimeColFgSegPlacement[] = []
-
-  for (let segRect of segRects) {
-    segPlacements.push({
-      seg: segs[segRect.index],
-      rect: segRect,
-    })
-  }
-
-  for (let dumbSeg of dumbSegs) {
-    segPlacements.push({ seg: dumbSeg, rect: null })
-  }
-
-  return { segPlacements, hiddenGroups }
+  return [segRects, hiddenGroups]
 }

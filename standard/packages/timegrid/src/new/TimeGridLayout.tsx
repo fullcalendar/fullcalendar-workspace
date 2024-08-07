@@ -6,6 +6,7 @@ import { buildSlatMetas } from "../time-slat-meta.js"
 import { TimeColsSeg } from '../TimeColsSeg.js'
 import { TimeGridLayoutPannable } from './TimeGridLayoutPannable.js'
 import { TimeGridLayoutNormal } from './TimeGridLayoutNormal.js'
+import { computeTimeTopFrac } from './util.js'
 
 export interface TimeGridLayoutProps<HeaderCellModel, HeaderCellKey> {
   dateProfile: DateProfile
@@ -63,6 +64,7 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
 
   // internal
   private scrollResponder: ScrollResponder
+  private currentSlatCnt?: number
 
   render() {
     const { props, context } = this
@@ -77,6 +79,7 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
       options.slotDuration,
       dateEnv,
     )
+    this.currentSlatCnt = slatMetas.length
 
     const commonLayoutProps = {
       dateProfile: dateProfile,
@@ -159,8 +162,9 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
       if (slatHeight) {
         const timeScroller = this.timeScrollerRef.current
         const dayScroller = this.dayScrollerRef.current
+        const top = computeTimeTopFrac(scrollRequest.time, this.props.dateProfile)
+          * (slatHeight * this.currentSlatCnt)
 
-        const top = slatHeight * Math.random() // TODO: somehow use slatHeight!!!!!!
         timeScroller.scrollTo({ y: top })
 
         if (dayScroller) {

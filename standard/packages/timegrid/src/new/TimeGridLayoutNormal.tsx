@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize, getIsHeightAuto } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize, getIsHeightAuto, fracToCssDim } from "@fullcalendar/core/internal"
 import { Fragment, createElement, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { HeaderRow, TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -9,7 +9,7 @@ import { TimeGridSlatLabel } from "./TimeGridSlatLabel.js"
 import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
 import { TimeGridCols } from "./TimeGridCols.js"
 import { TimeColsSeg } from "../TimeColsSeg.js"
-import { computeSlatHeight } from "./util.js"
+import { computeDateTopFrac, computeSlatHeight } from "./util.js"
 
 export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
   dateProfile: DateProfile
@@ -101,11 +101,12 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
 
+    const slatCnt = props.slatMetas.length
     const [slatHeight, slatLiquid] = computeSlatHeight(
       verticalScrolling,
       options.expandRows,
       state.scrollerHeight,
-      props.slatMetas.length,
+      slatCnt,
       state.slatInnerHeight,
     )
     const slatStyleHeight = slatLiquid ? '' : slatHeight
@@ -221,13 +222,17 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
             <div className='fcnew-absfill fcnew-cellgroup'>
               <div style={{ width: axisWidth }}>{/* TODO: make TimeGridAxisCol ? */}
                 {/* NOTE: is within a row, but we don't want the border, so don't use fcnew-cell  */}
-                <TimeGridNowIndicatorArrow nowDate={nowDate} />
+                <TimeGridNowIndicatorArrow
+                  nowDate={nowDate}
+                  top={fracToCssDim(computeDateTopFrac(nowDate, props.dateProfile))}
+                />
               </div>
               <TimeGridCols // .fc-cellgroup
                 dateProfile={props.dateProfile}
                 nowDate={props.nowDate}
                 todayRange={props.todayRange}
                 cells={props.cells}
+                slatCnt={slatCnt}
                 forPrint={props.forPrint}
                 isHitComboAllowed={props.isHitComboAllowed}
 

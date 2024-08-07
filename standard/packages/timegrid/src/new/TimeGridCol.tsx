@@ -1,8 +1,8 @@
-import { CssDimValue } from '@fullcalendar/core'
 import {
   DateMarker, BaseComponent, EventSegUiInteractionState, Seg, getSegMeta,
   DateRange, DayCellContainer, BgEvent, renderFill, buildIsoString, computeEarliestSegStart,
-  DateProfile, buildEventRangeKey, sortEventSegs, memoize, SegEntryGroup, SegEntry, Dictionary, SegSpan, hasCustomDayCellContent,
+  DateProfile, buildEventRangeKey, sortEventSegs, memoize, SegEntryGroup, SegEntry, Dictionary, hasCustomDayCellContent,
+  fracToCssDim,
 } from '@fullcalendar/core/internal'
 import {
   createElement,
@@ -12,15 +12,17 @@ import {
 import { TimeGridMoreLink } from './TimeGridMoreLink.js'
 import { TimeColsSeg } from '../TimeColsSeg.js'
 import { SegWebRect } from '../seg-web.js'
-import { computeFgSegPlacements, newComputeSegVCoords } from '../event-placement.js'
+import { computeFgSegVerticals, computeFgSegHorizontals } from '../event-placement.js'
 import { TimeGridEvent } from './TimeGridEvent.js'
 import { TimeGridNowIndicatorLine } from './TimeGridNowIndicatorLine.js'
+import { computeDateTopFrac } from './util.js'
 
 export interface TimeGridColProps {
   dateProfile: DateProfile
   nowDate: DateMarker
   todayRange: DateRange
   date: DateMarker
+  slatCnt: number
   extraDataAttrs?: any
   extraRenderProps?: any
   extraClassNames?: string[]
@@ -159,26 +161,25 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     forcedKey?: string,
   ) {
     let { props, context } = this
-    let { date, eventSelection, todayRange, nowDate } = props
+    let { date, dateProfile, eventSelection, todayRange, nowDate } = props
     let { eventMaxStack, eventShortHeight, eventOrderStrict, eventMinHeight } = context.options
 
+    // TODO: memoize this?
+    let segVerticals = computeFgSegVerticals(segs, dateProfile, date, props.slatCnt, props.slatHeight, eventMinHeight, eventShortHeight)
+    let [segRects, hiddenGroups] = computeFgSegHorizontals(segs, segVerticals, eventOrderStrict, eventMaxStack)
     let isMirror = isDragging || isResizing || isDateSelecting
-
-    // TODO: memoize this???
-    let segVCoords = newComputeSegVCoords(segs, date, props.slatHeight, eventMinHeight)
-    let { segPlacements, hiddenGroups } = computeFgSegPlacements(segs, segVCoords, eventOrderStrict, eventMaxStack)
 
     return (
       <Fragment>
         {this.renderHiddenGroups(hiddenGroups, segs)}
-        {segPlacements.map((segPlacement) => {
-          let { seg, rect } = segPlacement
+        {segs.map((seg) => {
           let instanceId = seg.eventRange.instance.instanceId
-          let isVisible = isMirror || Boolean(!segIsInvisible[instanceId] && rect)
-          let vStyle = computeSegVStyle(rect && rect.span)
-          let hStyle = (!isMirror && rect) ? this.computeSegHStyle(rect) : { left: 0, right: 0 }
-          let isInset = Boolean(rect) && rect.stackForward > 0
-          let isShort = Boolean(rect) && (rect.span.end - rect.span.start) < eventShortHeight // look at other places for this problem
+          let segVertical = segVerticals[instanceId]
+          let setRect = segRects[instanceId] // for horizontals
+
+          let hStyle = !isMirror ? this.computeSegHStyle(setRect) : { left: 0, right: 0 }
+          let isVisible = isMirror || Boolean(!segIsInvisible[instanceId])
+          let isInset = setRect.stackForward > 0
 
           return (
             <div
@@ -189,7 +190,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               key={forcedKey || instanceId}
               style={{
                 visibility: isVisible ? ('' as any) : 'hidden',
-                ...vStyle,
+                top: fracToCssDim(segVertical.start),
+                height: fracToCssDim(segVertical.size),
                 ...hStyle,
               }}
             >
@@ -199,7 +201,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 isResizing={isResizing}
                 isDateSelecting={isDateSelecting}
                 isSelected={instanceId === eventSelection}
-                isShort={isShort}
+                isShort={segVertical.isShort}
                 {...getSegMeta(seg, todayRange, nowDate)}
               />
             </div>
@@ -209,20 +211,26 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     )
   }
 
-  // will already have eventMinHeight applied because segInputs already had it
+  /*
+  NOTE: will already have eventMinHeight applied because segEntries already had it
+  */
   renderHiddenGroups(hiddenGroups: SegEntryGroup[], segs: TimeColsSeg[]) {
     let { extraDateSpan, dateProfile, todayRange, nowDate, eventSelection, eventDrag, eventResize } = this.props
+
     return (
       <Fragment>
         {hiddenGroups.map((hiddenGroup) => {
-          let positionCss = computeSegVStyle(hiddenGroup.span)
           let hiddenSegs = compileSegsFromEntries(hiddenGroup.entries, segs)
+          let startFrac = hiddenGroup.span.start
+          let endFrac = hiddenGroup.span.end
+          let heightFrac = endFrac - startFrac
+
           return (
             <TimeGridMoreLink
               key={buildIsoString(computeEarliestSegStart(hiddenSegs))}
               hiddenSegs={hiddenSegs}
-              top={positionCss.top}
-              bottom={positionCss.bottom}
+              top={fracToCssDim(startFrac)}
+              height={fracToCssDim(heightFrac)}
               extraDateSpan={extraDateSpan}
               dateProfile={dateProfile}
               todayRange={todayRange}
@@ -239,44 +247,52 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
   renderFillSegs(segs: TimeColsSeg[], fillType: string) {
     let { props, context } = this
-    let segVCoords = newComputeSegVCoords(segs, props.date, props.slatHeight, context.options.eventMinHeight) // don't assume all populated
+    let segVerticals = computeFgSegVerticals(segs, props.dateProfile, props.date, props.slatCnt, props.slatHeight, context.options.eventMinHeight)
 
-    let children = segVCoords.map((vcoords, i) => {
-      let seg = segs[i]
-      return (
-        <div
-          key={buildEventRangeKey(seg.eventRange)}
-          className="fcnew-timegrid-bg-harness"
-          style={computeSegVStyle(vcoords)}
-        >
-          {fillType === 'bg-event' ?
-            <BgEvent seg={seg} {...getSegMeta(seg, props.todayRange, props.nowDate)} /> :
-            renderFill(fillType)}
-        </div>
-      )
-    })
+    return (
+      <Fragment>
+        {segs.map((seg) => {
+          const { instanceId } = seg.eventRange.instance
+          const segVertical = segVerticals[instanceId]
 
-    return <Fragment>{children}</Fragment>
+          return (
+            <div
+              key={buildEventRangeKey(seg.eventRange)}
+              className="fcnew-timegrid-bg-harness"
+              style={{
+                top: fracToCssDim(segVertical.start),
+                height: fracToCssDim(segVertical.size),
+              }}
+            >
+              {fillType === 'bg-event' ?
+                <BgEvent seg={seg} {...getSegMeta(seg, props.todayRange, props.nowDate)} /> :
+                renderFill(fillType)}
+            </div>
+          )
+        })}
+      </Fragment>
+    )
   }
 
   renderNowIndicator(segs: TimeColsSeg[]) {
-    let { slatHeight, date } = this.props
+    let { date, dateProfile } = this.props
 
-    if (!slatHeight) { return null }
-
-    return segs.map((_seg) => (
+    return segs.map((seg) => (
       <TimeGridNowIndicatorLine
         nowDate={date}
-        // top: computeDateTopFromSlatHeight(seg.start, date, slatHeight),
+        top={fracToCssDim(computeDateTopFrac(seg.start, dateProfile, date))}
       />
     ))
   }
 
-  computeSegHStyle(segHCoords: SegWebRect) {
+  /*
+  TODO: eventually move to width, not left+right
+  */
+  computeSegHStyle(segRect: SegWebRect) {
     let { isRtl, options } = this.context
     let shouldOverlap = options.slotEventOverlap
-    let nearCoord = segHCoords.levelCoord // the left side if LTR. the right side if RTL. floating-point
-    let farCoord = segHCoords.levelCoord + segHCoords.thickness // the right side if LTR. the left side if RTL. floating-point
+    let nearCoord = segRect.levelCoord // the left side if LTR. the right side if RTL. floating-point
+    let farCoord = segRect.levelCoord + segRect.thickness // the right side if LTR. the left side if RTL. floating-point
     let left // amount of space from left edge, a fraction of the total width
     let right // amount of space from right edge, a fraction of the total width
 
@@ -294,12 +310,12 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     }
 
     let props = {
-      zIndex: segHCoords.stackDepth + 1, // convert from 0-base to 1-based
-      left: left * 100 + '%',
-      right: right * 100 + '%',
+      zIndex: segRect.stackDepth + 1, // convert from 0-base to 1-based
+      left: fracToCssDim(left),
+      right: fracToCssDim(right),
     }
 
-    if (shouldOverlap && !segHCoords.stackForward) {
+    if (shouldOverlap && !segRect.stackForward) {
       // add padding to the edge so that forward stacked events don't cover the resizer's icon
       props[isRtl ? 'marginLeft' : 'marginRight'] = 10 * 2 // 10 is a guesstimate of the icon's width
     }
@@ -347,23 +363,9 @@ export function renderPlainFgSegs(
   )
 }
 
-function computeSegVStyle(segVCoords: SegSpan | null): { top: CssDimValue, bottom: CssDimValue } {
-  if (!segVCoords) {
-    return { top: '', bottom: '' }
-  }
-  return {
-    top: segVCoords.start,
-    bottom: -segVCoords.end,
-  }
-}
-
 function compileSegsFromEntries(
   segEntries: SegEntry[],
   allSegs: TimeColsSeg[],
 ): TimeColsSeg[] {
   return segEntries.map((segEntry) => allSegs[segEntry.index])
 }
-
-// function computeDateTopFromSlatHeight(date: DateMarker, startOfDay: DateMarker, slatHeight: number): number {
-//   return null as any // !!!!
-// }

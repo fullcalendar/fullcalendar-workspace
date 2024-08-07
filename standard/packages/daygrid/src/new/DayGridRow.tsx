@@ -107,7 +107,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     const mirrorSegsByCol = splitSegsByCol(this.getMirrorSegs(), colCnt) // TODO: doesn't need standins
 
     // TODO: memoize?
-    const [hiddenSegsByCol, segTops, heightsByCol] = computeFgSegVerticals(
+    const [segTops, heightsByCol, hiddenSegsByCol] = computeFgSegVerticals(
       fgEventSegs,
       this.segHeightRefMap.current,
       cells,

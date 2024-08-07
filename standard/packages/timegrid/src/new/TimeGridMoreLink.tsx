@@ -10,7 +10,7 @@ import { TimeColsSeg } from '../TimeColsSeg.js'
 export interface TimeGridMoreLinkProps {
   hiddenSegs: TimeColsSeg[]
   top: CssDimValue
-  bottom: CssDimValue
+  height: CssDimValue
   extraDateSpan?: Dictionary
   dateProfile: DateProfile
   todayRange: DateRange
@@ -29,7 +29,7 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
         elClasses={['fc-timegrid-more-link']}
         elStyle={{
           top: props.top,
-          bottom: props.bottom,
+          bottom: props.height,
         }}
         allDayDate={null}
         segs={props.hiddenSegs}

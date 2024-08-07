@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual, getIsHeightAuto } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual, getIsHeightAuto, fracToCssDim } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { computeColWidth, TableSeg, HeaderRowAdvanced } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -9,7 +9,7 @@ import { TimeGridSlatLabel } from "./TimeGridSlatLabel.js"
 import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
 import { TimeGridCols } from "./TimeGridCols.js"
 import { TimeColsSeg } from "../TimeColsSeg.js"
-import { computeSlatHeight } from "./util.js"
+import { computeDateTopFrac, computeSlatHeight } from "./util.js"
 
 export interface TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
   dateProfile: DateProfile
@@ -139,11 +139,12 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
 
     const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, state.scrollerWidth)
 
+    const slatCnt = props.slatMetas.length
     const [slatHeight, slatLiquid] = computeSlatHeight(
       verticalScrolling,
       options.expandRows,
       state.scrollerHeight,
-      props.slatMetas.length,
+      slatCnt,
       state.slatInnerHeight,
     )
     const slatStyleHeight = slatLiquid ? '' : slatHeight
@@ -300,7 +301,10 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 </div>
               ))}
               <div>{/* TODO: make TimeGridAxisCol ? */}
-                <TimeGridNowIndicatorArrow nowDate={nowDate} />
+                <TimeGridNowIndicatorArrow
+                  nowDate={nowDate}
+                  top={fracToCssDim(computeDateTopFrac(nowDate, props.dateProfile))}
+                />
               </div>
             </div>
           </Scroller>
@@ -341,6 +345,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 nowDate={props.nowDate}
                 todayRange={props.todayRange}
                 cells={props.cells}
+                slatCnt={slatCnt}
                 forPrint={props.forPrint}
                 isHitComboAllowed={props.isHitComboAllowed}
                 className='fcnew-absfill'

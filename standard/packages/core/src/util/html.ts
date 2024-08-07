@@ -11,3 +11,7 @@ export function parseClassNames(raw: ClassNamesInput) {
 
   return []
 }
+
+export function fracToCssDim(frac: number): string {
+  return frac * 100 + '%'
+}

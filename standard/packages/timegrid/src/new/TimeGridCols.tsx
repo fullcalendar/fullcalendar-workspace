@@ -13,6 +13,7 @@ import {
   multiplyDuration,
   wholeDivideDurations,
 } from '@fullcalendar/core/internal'
+import { computeColFromPosition } from '@fullcalendar/daygrid/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { TimeColsSeg } from '../TimeColsSeg.js'
 import { TimeGridCol } from './TimeGridCol.js'
@@ -22,6 +23,7 @@ export interface TimeGridColsProps {
   nowDate: DateMarker
   todayRange: DateRange
   cells: DayTableCell[]
+  slatCnt: number
   forPrint: boolean
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
   className?: string // TODO: better API for this?
@@ -66,6 +68,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
             nowDate={props.nowDate}
             todayRange={props.todayRange}
             date={cell.date}
+            slatCnt={props.slatCnt}
             extraRenderProps={cell.extraRenderProps}
             extraDataAttrs={cell.extraDataAttrs}
             extraDateSpan={cell.extraDateSpan}
@@ -105,58 +108,50 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
   }
 
   queryHit(positionLeft: number, positionTop: number, elWidth: number): Hit {
-    let { dateEnv, options } = this.context
-    let { dateProfile, colWidth } = this.props
-    let { slatCoords } = this.state
+    const { dateProfile, cells, colWidth, slatHeight } = this.props
+    const { dateEnv, options, isRtl } = this.context
+    const { snapDuration, snapsPerSlot } = this.processSlotOptions(options.slotDuration, options.snapDuration)
 
-    let { snapDuration, snapsPerSlot } = this.processSlotOptions(options.slotDuration, options.snapDuration)
+    const colCnt = cells.length
+    const { col, left, right } = computeColFromPosition(positionLeft, elWidth, colWidth, colCnt, isRtl)
+    const cell = cells[col]
 
-    let colCnt = this.props.cells.length
-    let colIndex = computeCol(positionLeft, elWidth, colWidth, colCnt)
-    let slatIndex = slatCoords.positions.topToIndex(positionTop)
+    const slatIndex = Math.floor(positionTop / slatHeight)
+    const slatTop = slatIndex * slatHeight
+    const partial = (positionTop - slatTop) / slatHeight // floating point number between 0 and 1
+    const localSnapIndex = Math.floor(partial * snapsPerSlot) // the snap # relative to start of slat
+    const snapIndex = slatIndex + localSnapIndex * snapsPerSlot
 
-    if (colIndex != null && slatIndex != null && colIndex < colCnt) {
-      let cell = this.props.cells[colIndex]
-      let slatTop = slatCoords.positions.tops[slatIndex]
-      let slatHeight = slatCoords.positions.getHeight(slatIndex)
-      let partial = (positionTop - slatTop) / slatHeight // floating point number between 0 and 1
-      let localSnapIndex = Math.floor(partial * snapsPerSlot) // the snap # relative to start of slat
-      let snapIndex = slatIndex * snapsPerSlot + localSnapIndex
+    const dayDate = cells[col].date
+    const time = addDurations(
+      dateProfile.slotMinTime,
+      multiplyDuration(snapDuration, snapIndex),
+    )
 
-      let dayDate = this.props.cells[colIndex].date
-      let time = addDurations(
-        dateProfile.slotMinTime,
-        multiplyDuration(snapDuration, snapIndex),
-      )
+    const start = dateEnv.add(dayDate, time)
+    const end = dateEnv.add(start, snapDuration)
 
-      let start = dateEnv.add(dayDate, time)
-      let end = dateEnv.add(start, snapDuration)
-
-      return {
-        dateProfile,
-        dateSpan: {
-          range: { start, end },
-          allDay: false,
-          ...cell.extraDateSpan,
-        },
-        dayEl: this.colElRefMap.current.get(this.props.cells[colIndex].key),
-        rect: {
-          left: colIndex * colWidth,
-          right: (colIndex + 1) * colWidth, // TODO: make work with RTL
-          top: slatTop,
-          bottom: slatTop + slatHeight,
-        },
-        layer: 0,
-      }
+    return {
+      dateProfile,
+      dateSpan: {
+        range: { start, end },
+        allDay: false,
+        ...cell.extraDateSpan,
+      },
+      dayEl: this.colElRefMap.current.get(cells[col].key),
+      rect: {
+        left,
+        right,
+        top: slatTop,
+        bottom: slatTop + slatHeight,
+      },
+      layer: 0,
     }
-
-    return null
   }
 }
 
-function computeCol(positionLeft: number, elWidth: number, colWidth: number | undefined, colCnt: number): number {
-  return null as any // !!! -- TODO: work with RTL
-}
+// Utils
+// -------------------------------------------------------------------------------------------------
 
 function processSlotOptions(slotDuration: Duration, snapDurationOverride: Duration | null) {
   let snapDuration = snapDurationOverride || slotDuration

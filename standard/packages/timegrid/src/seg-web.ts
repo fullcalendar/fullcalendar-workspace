@@ -26,12 +26,15 @@ export interface SegWebRect extends SegRect {
   stackForward: number
 }
 
-// segInputs assumed sorted
-export function buildPositioning(
-  segInputs: SegEntry[],
+// segEntries assumed sorted
+export function buildWebPositioning(
+  segEntries: SegEntry[],
   strictOrder?: boolean,
   maxStackCnt?: number,
-): { segRects: SegWebRect[], hiddenGroups: SegEntryGroup[] } {
+): [
+  segRects: SegWebRect[],
+  hiddenGroups: SegEntryGroup[]
+] {
   let hierarchy = new SegHierarchy()
   if (strictOrder != null) {
     hierarchy.strictOrder = strictOrder
@@ -40,14 +43,14 @@ export function buildPositioning(
     hierarchy.maxStackCnt = maxStackCnt
   }
 
-  let hiddenEntries = hierarchy.addSegs(segInputs)
+  let hiddenEntries = hierarchy.addSegs(segEntries)
   let hiddenGroups = groupIntersectingEntries(hiddenEntries)
 
   let web = buildWeb(hierarchy)
   web = stretchWeb(web, 1) // all levelCoords/thickness will have 0.0-1.0
   let segRects = webToRects(web)
 
-  return { segRects, hiddenGroups }
+  return [segRects, hiddenGroups]
 }
 
 function buildWeb(hierarchy: SegHierarchy): SegNode[] {

@@ -1,5 +1,5 @@
 import { CssDimValue, DayHeaderContentArg } from '@fullcalendar/core'
-import { DateFormatter, DateMarker, DateProfile, DateProfileGenerator, DaySeriesModel, DayTableCell, DayTableModel, computeFallbackHeaderFormat } from '@fullcalendar/core/internal'
+import { DateFormatter, DateMarker, DateProfile, DateProfileGenerator, DaySeriesModel, DayTableCell, DayTableModel, computeFallbackHeaderFormat, fracToCssDim } from '@fullcalendar/core/internal'
 import { ComponentChild } from '@fullcalendar/core/preact'
 import { TableSeg } from '../TableSeg.js'
 
@@ -114,10 +114,6 @@ export function computeHorizontalsFromSeg(
   }
 
   return { left, right, width }
-}
-
-function fracToCssDim(frac: number): string {
-  return frac * 100 + '%'
 }
 
 export function computeColFromPosition(

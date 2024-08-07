@@ -32,9 +32,9 @@ export function computeFgSegVerticals(
   dayMaxEvents: boolean | number,
   dayMaxEventRows: boolean | number,
 ): [
-  hiddenSegsByCol: TableSeg[][],
   segTops: { [segStartId: string]: number },
   heightsByCol: number[],
+  hiddenSegsByCol: TableSeg[][],
 ] {
   // initialize column-based arrays
 
@@ -47,8 +47,7 @@ export function computeFgSegVerticals(
     heightsByCol.push(0)
   }
 
-  // for segs that have heights, create entries to be given to DayGridSegHierarchy
-  // otherwise, record seg as hidden
+  // create entries to be given to DayGridSegHierarchy
 
   const segEntries: SegEntry[] = segs.map((seg, index) => ({
     index: index,
@@ -106,7 +105,7 @@ export function computeFgSegVerticals(
     }
   }
 
-  return [hiddenSegsByCol, segTops, heightsByCol]
+  return [segTops, heightsByCol, hiddenSegsByCol]
 }
 
 // DayGridSegHierarchy

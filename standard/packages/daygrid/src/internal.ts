@@ -23,4 +23,5 @@ export {
   HeaderCellObj,
   computeColWidth,
   HEADER_CELL_CLASS_NAME,
+  computeColFromPosition,
 } from './new/util.js'
