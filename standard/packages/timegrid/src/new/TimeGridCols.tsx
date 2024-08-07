@@ -12,7 +12,7 @@ import {
   multiplyDuration,
   wholeDivideDurations,
 } from '@fullcalendar/core/internal'
-import { computeColFromPosition } from '@fullcalendar/daygrid/internal'
+import { computeColFromPosition, getCellEl } from '@fullcalendar/daygrid/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { TimeColsSeg } from '../TimeColsSeg.js'
 import { TimeGridCol } from './TimeGridCol.js'
@@ -120,13 +120,11 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
     const localSnapIndex = Math.floor(partial * snapsPerSlot) // the snap # relative to start of slat
     const snapIndex = slatIndex + localSnapIndex * snapsPerSlot
 
-    const dayDate = cells[col].date
     const time = addDurations(
       dateProfile.slotMinTime,
       multiplyDuration(snapDuration, snapIndex),
     )
-
-    const start = dateEnv.add(dayDate, time)
+    const start = dateEnv.add(cell.date, time)
     const end = dateEnv.add(start, snapDuration)
 
     return {
@@ -136,7 +134,8 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
         allDay: false,
         ...cell.extraDateSpan,
       },
-      dayEl: this.getDayEl(col),
+      // HACK. TODO: This is expensive to do every hit-query
+      dayEl: getCellEl(this.rootEl, col),
       rect: {
         left,
         right,
@@ -145,15 +144,6 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
       },
       layer: 0,
     }
-  }
-
-  /*
-  HACK
-  TODO: This is expensive to do every hit-query
-  Expose this as a getter somehow?
-  */
-  getDayEl(col: number): HTMLElement {
-    return this.rootEl.querySelectorAll(':scope > [role=gridcell]')[col] as HTMLElement
   }
 }
 

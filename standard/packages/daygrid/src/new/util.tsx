@@ -164,3 +164,14 @@ export function computeRowFromPosition(
 
   return { row, top, bottom }
 }
+
+// Hit Element
+// -------------------------------------------------------------------------------------------------
+
+export function getRowEl(rootEl: HTMLElement, row: number): HTMLElement {
+  return rootEl.querySelectorAll(':scope > [role=row]')[row] as HTMLElement
+}
+
+export function getCellEl(rowEl: HTMLElement, col: number): HTMLElement {
+  return rowEl.querySelectorAll(':scope > [role=gridcell]')[col] as HTMLElement
+}

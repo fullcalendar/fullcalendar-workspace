@@ -12,7 +12,7 @@ import {
 import { createElement } from '@fullcalendar/core/preact'
 import { TableSeg, splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
 import { DayGridRow } from './DayGridRow.js'
-import { computeColFromPosition, computeRowFromPosition } from './util.js'
+import { computeColFromPosition, computeRowFromPosition, getCellEl, getRowEl } from './util.js'
 
 export interface DayGridRowsProps {
   dateProfile: DateProfile
@@ -144,15 +144,21 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
       this.rowHeightRefMap.current,
     )
     const cell = props.cellRows[row][col]
+    const cellStartDate = cell.date
+    const cellEndDate = addDays(cellStartDate, 1)
 
     return {
       dateProfile: props.dateProfile,
       dateSpan: {
-        range: this.getCellRange(row, col),
+        range: {
+          start: cellStartDate,
+          end: cellEndDate,
+        },
         allDay: true,
         ...cell.extraDateSpan,
       },
-      dayEl: this.getCellEl(row, col),
+      // HACK. TODO: This is expensive to do every hit-query
+      dayEl: getCellEl(getRowEl(this.rootEl, row), col),
       rect: {
         left,
         right,
@@ -161,23 +167,6 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
       },
       layer: 0,
     }
-  }
-
-  private getCellRange(row, col) {
-    const start = this.props.cellRows[row][col].date
-    const end = addDays(start, 1)
-    return { start, end }
-  }
-
-  /*
-  HACK
-  TODO: This is expensive to do every hit-query
-  Expose this as a getter somehow?
-  */
-  private getCellEl(row: number, col: number): HTMLElement {
-    return this.rootEl
-      .querySelectorAll(':scope > [role=row]')[row]
-      .querySelectorAll(':scope > [role=gridcell]')[col] as HTMLElement
   }
 }
 

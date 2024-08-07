@@ -24,4 +24,6 @@ export {
   computeColWidth,
   HEADER_CELL_CLASS_NAME,
   computeColFromPosition,
+  getRowEl,
+  getCellEl,
 } from './new/util.js'
