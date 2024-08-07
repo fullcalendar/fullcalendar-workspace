@@ -170,13 +170,14 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   }
 
   /*
+  HACK
   TODO: This is expensive to do every hit-query
   Expose this as a getter somehow?
   */
-  private getCellEl(row, col): HTMLElement {
+  private getCellEl(row: number, col: number): HTMLElement {
     return this.rootEl
-      .querySelectorAll(':scope > [role=row]')[row] // HACK
-      .querySelectorAll(':scope > [role=gridcell]')[col] as any
+      .querySelectorAll(':scope > [role=row]')[row]
+      .querySelectorAll(':scope > [role=gridcell]')[col] as HTMLElement
   }
 }
 

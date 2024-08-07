@@ -7,7 +7,6 @@ import {
   DayTableCell,
   EventSegUiInteractionState,
   Hit,
-  RefMap,
   addDurations,
   memoize,
   multiplyDuration,
@@ -48,7 +47,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
   private processSlotOptions = memoize(processSlotOptions)
 
   // refs
-  private colElRefMap = new RefMap<string, HTMLElement>()
+  private rootEl: HTMLElement
 
   render() {
     const { props } = this
@@ -87,9 +86,6 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
             // dimensions
             width={props.colWidth}
             slatHeight={props.slatHeight}
-
-            // refs
-            elRef={this.colElRefMap.createRef(cell.key)}
           />
         ))}
       </div>
@@ -97,6 +93,8 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
   }
 
   handleRootEl = (el: HTMLElement | null) => {
+    this.rootEl = el
+
     if (el) {
       this.context.registerInteractiveComponent(this, {
         el,
@@ -138,7 +136,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
         allDay: false,
         ...cell.extraDateSpan,
       },
-      dayEl: this.colElRefMap.current.get(cells[col].key),
+      dayEl: this.getDayEl(col),
       rect: {
         left,
         right,
@@ -147,6 +145,15 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
       },
       layer: 0,
     }
+  }
+
+  /*
+  HACK
+  TODO: This is expensive to do every hit-query
+  Expose this as a getter somehow?
+  */
+  getDayEl(col: number): HTMLElement {
+    return this.rootEl.querySelectorAll(':scope > [role=gridcell]')[col] as HTMLElement
   }
 }
 

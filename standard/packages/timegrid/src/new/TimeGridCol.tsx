@@ -7,7 +7,6 @@ import {
 import {
   createElement,
   Fragment,
-  Ref,
 } from '@fullcalendar/core/preact'
 import { TimeGridMoreLink } from './TimeGridMoreLink.js'
 import { TimeColsSeg } from '../TimeColsSeg.js'
@@ -39,9 +38,6 @@ export interface TimeGridColProps {
   eventResize: EventSegUiInteractionState | null
   eventSelection: string
 
-  // refs
-  elRef?: Ref<HTMLTableCellElement>
-
   // dimensions
   width: number | undefined
   slatHeight: number | undefined
@@ -71,7 +67,6 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     return (
       <DayCellContainer
         elTag="div"
-        elRef={props.elRef}
         elClasses={[
           'fcnew-cell',
           'fcnew-timegrid-col',
