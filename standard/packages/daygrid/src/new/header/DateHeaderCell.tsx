@@ -112,6 +112,8 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
 
   componentDidMount(): void {
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
+
+    // TODO: only attach this if refs props present
     this.disconectInnerHeight = watchHeight(innerEl, (height) => {
       setRef(this.props.innerHeightRef, height)
     })

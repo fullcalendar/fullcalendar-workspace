@@ -109,6 +109,8 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
 
   componentDidMount(): void {
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
+
+    // TODO: only attach this if refs props present
     this.disconectInnerHeight = watchHeight(innerEl, (height) => {
       setRef(this.props.innerHeightRef, height)
     })

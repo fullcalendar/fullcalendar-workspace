@@ -55,6 +55,8 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
 
   componentDidMount(): void {
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
+
+    // TODO: only attach this if refs props present
     this.detachInnerHeight = watchHeight(innerEl, (height) => {
       setRef(this.props.innerHeightRef, height)
     })

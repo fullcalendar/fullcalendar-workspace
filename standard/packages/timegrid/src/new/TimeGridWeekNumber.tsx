@@ -58,8 +58,9 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
   componentDidMount(): void {
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
 
+    // TODO: only attach this if refs props present
+    // TODO: handle width/height independently?
     this.detachInnerSize = watchSize(innerEl, (width, height) => {
-      // TODO: handle width/height independently?
       setRef(this.props.innerWidthRef, width)
       setRef(this.props.innerHeightRef, height)
     })

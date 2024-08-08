@@ -63,6 +63,8 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
 
   componentDidMount(): void {
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
+
+    // TODO: only attach this if refs props present
     this.disconnectInnerSize = watchSize(innerEl, (width, height) => {
       setRef(this.props.innerWidthRef, width)
       setRef(this.props.innerHeightRef, height)

@@ -150,6 +150,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
     const headerWrapEl = this.headerWrapElRef.current // "
 
+    // TODO: only attach this if refs props present
     this.detachInnerHeight = watchHeight(innerEl, (height) => {
       setRef(this.props.innerHeightRef, height)
     })
