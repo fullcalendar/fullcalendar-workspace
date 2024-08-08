@@ -76,8 +76,16 @@ export function computeTopFromDate(
       return top
     }
 
-    top += rowHeightMap.get(key)
+    const rowHeight = rowHeightMap.get(key)
+
+    if (rowHeight == null) {
+      return // denote unknown
+    }
+
+    top += rowHeight
   }
+
+  return top
 }
 
 export function computeHorizontalsFromSeg(

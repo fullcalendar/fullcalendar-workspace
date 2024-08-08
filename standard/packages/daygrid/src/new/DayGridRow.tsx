@@ -127,7 +127,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
 
     return (
       <div
-        role={props.cellGroup ? '' : 'row'}
+        role={props.cellGroup ? undefined : 'row'}
         className={[
           props.cellGroup ? 'fcnew-cellgroup' : 'fcnew-row',
           'fcnew-daygrid-row',

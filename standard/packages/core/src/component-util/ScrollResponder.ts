@@ -25,7 +25,7 @@ export class ScrollResponder {
     this.emitter.off('_scrollRequest', this.handleScrollRequest)
   }
 
-  update(isDatesNew: boolean) {
+  update(isDatesNew?: boolean) {
     if (isDatesNew && this.scrollTimeReset) {
       this.fireInitialScroll() // will drain
     } else {

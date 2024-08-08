@@ -1,6 +1,6 @@
 import { ViewOptions } from '@fullcalendar/core'
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollRequest, ScrollResponder, ViewContainer, memoize } from "@fullcalendar/core/internal"
-import { createElement, ComponentChild, createRef, Ref } from '@fullcalendar/core/preact'
+import { createElement, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { buildSlatMetas } from "../time-slat-meta.js"
 import { TimeColsSeg } from '../TimeColsSeg.js'
@@ -56,11 +56,6 @@ export interface TimeGridLayoutProps<HeaderCellModel, HeaderCellKey> {
 export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent<TimeGridLayoutProps<HeaderCellModel, HeaderCellKey>> {
   // memo
   private buildSlatMetas = memoize(buildSlatMetas)
-
-  // refs
-  private dayScrollerRef = createRef<Scroller>()
-  private timeScrollerRef = createRef<Scroller>()
-  private slatHeightRef = createRef<number>()
 
   // internal
   private scrollResponder: ScrollResponder
@@ -118,8 +113,8 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
       eventSelection: props.eventSelection,
 
       // refs
-      timeScrollerRef: this.timeScrollerRef,
-      slatHeightRef: this.slatHeightRef,
+      timeScrollerRef: this.handleTimeScroller,
+      slatHeightRef: this.handleSlatHeight,
     }
 
     return (
@@ -128,7 +123,7 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
           <TimeGridLayoutPannable
             {...commonLayoutProps}
             dayMinWidth={dayMinWidth}
-            dayScrollerRef={this.dayScrollerRef}
+            dayScrollerRef={this.handleDayScroller}
           />
         ) : (
           <TimeGridLayoutNormal {...commonLayoutProps} />
@@ -152,16 +147,38 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
     this.scrollResponder.detach()
   }
 
+  // Refs
+  // -----------------------------------------------------------------------------------------------
+
+  private currentDayScroller?: Scroller
+  private currentTimeScroller?: Scroller
+  private currentSlatHeight?: number
+
+  handleDayScroller = (dayScroller: Scroller) => {
+    this.currentDayScroller = dayScroller
+    this.scrollResponder && this.scrollResponder.update()
+  }
+
+  handleTimeScroller = (timeScroller: Scroller) => {
+    this.currentTimeScroller = timeScroller
+    this.scrollResponder && this.scrollResponder.update()
+  }
+
+  handleSlatHeight = (slatHeight: number) => {
+    this.currentSlatHeight = slatHeight
+    this.scrollResponder && this.scrollResponder.update()
+  }
+
   // Scrolling
   // -----------------------------------------------------------------------------------------------
 
   handleScrollRequest = (scrollRequest: ScrollRequest) => {
-    if (scrollRequest.time) {
-      const slatHeight = this.slatHeightRef.current
+    const dayScroller = this.currentDayScroller
+    const timeScroller = this.currentTimeScroller
+    const slatHeight = this.currentSlatHeight
 
+    if (scrollRequest.time) {
       if (slatHeight) {
-        const timeScroller = this.timeScrollerRef.current
-        const dayScroller = this.dayScrollerRef.current
         const top = computeTimeTopFrac(scrollRequest.time, this.props.dateProfile)
           * (slatHeight * this.currentSlatCnt)
 

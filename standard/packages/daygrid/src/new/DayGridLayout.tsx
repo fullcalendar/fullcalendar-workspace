@@ -1,4 +1,5 @@
 import {
+  afterSize,
   BaseComponent,
   DateProfile,
   DateRange,
@@ -11,7 +12,7 @@ import {
   ScrollResponder,
   ViewContainer
 } from '@fullcalendar/core/internal'
-import { ComponentChild, createElement, createRef, Ref } from '@fullcalendar/core/preact'
+import { ComponentChild, createElement, Ref } from '@fullcalendar/core/preact'
 import { TableSeg } from '../TableSeg.js'
 import { DayGridLayoutNormal } from './DayGridLayoutNormal.js'
 import { DayGridLayoutPannable } from './DayGridLayoutPannable.js'
@@ -45,10 +46,6 @@ export interface DayGridLayoutProps<HeaderCellModel, HeaderCellKey> {
 }
 
 export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent<DayGridLayoutProps<HeaderCellModel, HeaderCellKey>> {
-  // ref
-  private scrollerRef = createRef<Scroller>()
-  private rowHeightRefMap = new RefMap<string, number>()
-
   // internal
   private scrollResponder: ScrollResponder
 
@@ -58,7 +55,7 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
 
     const commonLayoutProps = {
       ...props,
-      scrollerRef: this.scrollerRef,
+      scrollerRef: this.handleScroller,
       rowHeightRefMap: this.rowHeightRefMap,
     }
 
@@ -91,27 +88,42 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
     this.scrollResponder.detach()
   }
 
+  // Refs
+  // -----------------------------------------------------------------------------------------------
+
+  private currentScroller?: Scroller
+  private rowHeightRefMap = new RefMap<string, number>(() => {
+    afterSize(this.updateScroll)
+  })
+
+  handleScroller = (scroller: Scroller) => {
+    this.currentScroller = scroller
+    this.updateScroll()
+  }
+
   // Scrolling
   // -----------------------------------------------------------------------------------------------
+
+  updateScroll = () => {
+    this.scrollResponder && this.scrollResponder.update()
+  }
 
   /*
   Called when component loaded and positioning ready, as well as when dateProfile is updated
   Does not use scrollRequest.time
   */
   handleScrollRequest = (_scrollRequest: ScrollRequest) => {
-    const scroller = this.scrollerRef.current
+    const scroller = this.currentScroller
     const rowHeightMap = this.rowHeightRefMap.current
 
-    if (rowHeightMap) {
-      const scrollTop = computeTopFromDate(
-        this.props.dateProfile.currentDate,
-        this.props.cellRows,
-        rowHeightMap,
-      )
+    const scrollTop = computeTopFromDate(
+      this.props.dateProfile.currentDate,
+      this.props.cellRows,
+      rowHeightMap,
+    )
 
-      if (scrollTop != null) {
-        scroller.scrollTo({ y: scrollTop })
-      }
+    if (scrollTop != null) {
+      scroller.scrollTo({ y: scrollTop })
       return true
     }
 

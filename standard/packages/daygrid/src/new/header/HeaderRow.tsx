@@ -23,7 +23,7 @@ export class HeaderRow<Model, ModelKey> extends BaseComponent<HeaderRowProps<Mod
 
     return (
       <div
-        role={props.cellGroup ? '' : 'row'}
+        role={props.cellGroup ? undefined : 'row'}
         className={props.cellGroup ? 'fcnew-cellgroup' : 'fcnew-row'}
       >
         {props.cells.map((cell) => (
