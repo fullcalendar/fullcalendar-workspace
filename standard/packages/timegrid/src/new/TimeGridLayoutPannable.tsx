@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual, getIsHeightAuto } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual, getIsHeightAuto, rangeContainsMarker } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { computeColWidth, TableSeg, HeaderRowAdvanced } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -308,10 +308,12 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   />
                 </div>
               ))}
-              <TimeGridNowIndicatorArrow
-                nowDate={nowDate}
-                dateProfile={props.dateProfile}
-              />
+              {rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
+                <TimeGridNowIndicatorArrow
+                  nowDate={nowDate}
+                  dateProfile={props.dateProfile}
+                />
+              )}
             </div>
           </Scroller>
           {/* SLATS / main (scroller)

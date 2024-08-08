@@ -103,9 +103,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               Boolean(isSelectMirror),
               'mirror',
             )}
-            <div className="fcnew-timegrid-now-indicator-container">
-              {this.renderNowIndicator(props.nowIndicatorSegs)}
-            </div>
+            {this.renderNowIndicator(props.nowIndicatorSegs)}
             {hasCustomDayCellContent(options) && (
               <InnerContent
                 elTag="div"

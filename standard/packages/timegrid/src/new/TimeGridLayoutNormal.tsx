@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize, getIsHeightAuto } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize, getIsHeightAuto, rangeContainsMarker } from "@fullcalendar/core/internal"
 import { Fragment, createElement, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { HeaderRow, TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -221,10 +221,12 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
             ))}
             <div className='fcnew-absfill fcnew-cellgroup'>
               <div style={{ width: axisWidth }}>
-                <TimeGridNowIndicatorArrow
-                  nowDate={nowDate}
-                  dateProfile={props.dateProfile}
-                />
+                {rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
+                  <TimeGridNowIndicatorArrow
+                    nowDate={nowDate}
+                    dateProfile={props.dateProfile}
+                  />
+                )}
               </div>
               <TimeGridCols // .fcnew-cellgroup
                 dateProfile={props.dateProfile}
