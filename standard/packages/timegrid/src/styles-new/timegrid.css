@@ -1,4 +1,14 @@
 
-.fc-timegrid-allday-main {
+.fcnew-timegrid-view {
+  display: flex;
+  flex-direction: column;
+}
+
+// NOTE: not needed if not within a scroller
+.fcnew-timegrid-allday-main {
   min-height: 100%;
+}
+
+.fcnew-timegrid-timed-main {
+  flex-grow: 1;
 }

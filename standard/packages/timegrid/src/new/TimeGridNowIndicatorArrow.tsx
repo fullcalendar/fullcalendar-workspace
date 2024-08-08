@@ -9,15 +9,13 @@ export interface TimeGridNowIndicatorArrowProps {
 
 export function TimeGridNowIndicatorArrow(props: TimeGridNowIndicatorArrowProps) {
   return (
-    <div>
-      <NowIndicatorContainer
-        elClasses={['fcnew-timegrid-now-indicator-arrow']}
-        elStyle={{
-          top: fracToCssDim(computeDateTopFrac(props.nowDate, props.dateProfile))
-        }}
-        isAxis
-        date={props.nowDate}
-      />
-    </div>
+    <NowIndicatorContainer
+      elClasses={['fcnew-timegrid-now-indicator-arrow']}
+      elStyle={{
+        top: fracToCssDim(computeDateTopFrac(props.nowDate, props.dateProfile))
+      }}
+      isAxis
+      date={props.nowDate}
+    />
   )
 }

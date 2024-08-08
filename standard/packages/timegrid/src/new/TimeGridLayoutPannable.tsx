@@ -279,7 +279,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             <div className='fcnew-rowdivider'></div>
           </Fragment>
         )}
-        <div className='fcnew-row'>{/* a "super" row */}
+        <div className='fcnew-row fcnew-timegrid-timed-main '>{/* a "super" row */}
           {/* SLATS / labels (vertical scroller)
           ---------------------------------------------------------------------------------------*/}
           <Scroller
@@ -291,7 +291,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             ref={this.axisScrollerRef}
           >
             <div
-              className='fc-rel'
+              className='fcnew-rel'
               style={{ minHeight: slatLiquid ? '100%' : '' }} // TODO: use className for this?
             >
               {props.slatMetas.map((slatMeta) => (
@@ -328,7 +328,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             rightScrollbarWidthRef={this.handleRightScrollbarWidth}
           >
             <div
-              className='fc-rel'
+              className='fcnew-rel'
               style={{
                 width: canvasWidth,
                 minHeight: slatLiquid ? '100%' : '', // TODO: use className for this?
@@ -346,7 +346,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   />
                 </div>
               ))}
-              <TimeGridCols // .fc-cellgroup.fcnew-absfill
+              <TimeGridCols // .fcnew-cellgroup.fcnew-absfill
                 dateProfile={props.dateProfile}
                 nowDate={props.nowDate}
                 todayRange={props.todayRange}
