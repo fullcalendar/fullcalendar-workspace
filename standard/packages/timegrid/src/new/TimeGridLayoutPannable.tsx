@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual, getIsHeightAuto, fracToCssDim } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual, getIsHeightAuto } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { computeColWidth, TableSeg, HeaderRowAdvanced } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -9,7 +9,7 @@ import { TimeGridSlatLabel } from "./TimeGridSlatLabel.js"
 import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
 import { TimeGridCols } from "./TimeGridCols.js"
 import { TimeColsSeg } from "../TimeColsSeg.js"
-import { computeDateTopFrac, computeSlatHeight } from "./util.js"
+import { computeSlatHeight } from "./util.js"
 
 export interface TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
   dateProfile: DateProfile
@@ -114,20 +114,28 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     afterSize(this.handleSlatInnerHeights)
   })
   private currentSlatHeight?: number
-  // TODO: rename these
-  private axisScrollerRef = createRef<Scroller>()
-  private mainScrollerRef = createRef<Scroller>()
-  private headScrollerRef = createRef<Scroller>()
-  private footScrollerRef = createRef<Scroller>()
+  private headerScrollerRef = createRef<Scroller>()
   private allDayScrollerRef = createRef<Scroller>()
+  private mainScrollerRef = createRef<Scroller>()
+  private footScrollerRef = createRef<Scroller>()
+  private axisScrollerRef = createRef<Scroller>()
 
   // internal
-  // TODO: rename these
-  private hScroller: ScrollerSyncerInterface
-  private vScroller: ScrollerSyncerInterface
+  private dayScroller: ScrollerSyncerInterface
+  private timeScroller: ScrollerSyncerInterface
 
   render() {
-    const { props, state, context, headerLabelInnerWidthRefMap, headerLabelInnerHeightRefMap, slatLabelInnerWidthRefMap, slatLabelInnerHeightRefMap } = this
+    const {
+      props,
+      state,
+      context,
+      headerLabelInnerWidthRefMap,
+      headerLabelInnerHeightRefMap,
+      headerMainInnerHeightRefMap,
+      slatLabelInnerWidthRefMap,
+      slatLabelInnerHeightRefMap,
+      slatMainInnerHeightRefMap,
+    } = this
     const { nowDate } = props
     const { axisWidth } = state
     const { options } = context
@@ -143,9 +151,9 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     const [slatHeight, slatLiquid] = computeSlatHeight(
       verticalScrolling,
       options.expandRows,
-      state.scrollerHeight,
       slatCnt,
       state.slatInnerHeight,
+      state.scrollerHeight,
     )
     const slatStyleHeight = slatLiquid ? '' : slatHeight
 
@@ -191,7 +199,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               hideScrollbars
               elClassNames={['fcnew-cell']} // a "super" cell
               // ^NOTE: not a good idea if ever gets left/right border
-              ref={this.headScrollerRef}
+              ref={this.headerScrollerRef}
             >
               <div style={{
                 width: canvasWidth,
@@ -205,7 +213,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                     cells={cells}
                     renderHeaderContent={props.renderHeaderContent}
                     getHeaderModelKey={props.getHeaderModelKey}
-                    innerHeightRef={this.headerMainInnerHeightRefMap.createRef(tierNum)}
+                    innerHeightRef={headerMainInnerHeightRefMap.createRef(tierNum)}
                     height={state.headerTierHeights[tierNum]}
                   />
                 ))}
@@ -240,7 +248,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   paddingLeft: state.leftScrollbarWidth,
                   paddingRight: state.rightScrollbarWidth,
                 }} >
-                  <TimeGridAllDayLane // .fcnew-cellgroup.fc-timegrid-allday-main
+                  <TimeGridAllDayLane // .fcnew-cellgroup
                     dateProfile={props.dateProfile}
                     todayRange={props.todayRange}
                     cells={props.cells}
@@ -260,7 +268,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                     dayMaxEventRows={props.dayMaxEventRows}
 
                     // refs
-                    cellInnerHeightRef={this.handleAllDayMainInnerHeight}
+                    innerHeightRef={this.handleAllDayMainInnerHeight}
 
                     // dimensions
                     colWidth={colWidth}
@@ -300,12 +308,10 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   />
                 </div>
               ))}
-              <div>{/* TODO: make TimeGridAxisCol ? */}
-                <TimeGridNowIndicatorArrow
-                  nowDate={nowDate}
-                  top={fracToCssDim(computeDateTopFrac(nowDate, props.dateProfile))}
-                />
-              </div>
+              <TimeGridNowIndicatorArrow
+                nowDate={nowDate}
+                dateProfile={props.dateProfile}
+              />
             </div>
           </Scroller>
           {/* SLATS / main (scroller)
@@ -336,11 +342,11 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 >
                   <TimeGridSlatLane // .fcnew-cell
                     {...slatMeta}
-                    innerHeightRef={this.slatMainInnerHeightRefMap.createRef(slatMeta.key)}
+                    innerHeightRef={slatMainInnerHeightRefMap.createRef(slatMeta.key)}
                   />
                 </div>
               ))}
-              <TimeGridCols // .fc-cellgroup
+              <TimeGridCols // .fc-cellgroup.fcnew-absfill
                 dateProfile={props.dateProfile}
                 nowDate={props.nowDate}
                 todayRange={props.todayRange}
@@ -489,25 +495,25 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
 
   initScrollers() {
     const ScrollerSyncer = getScrollerSyncerClass(this.context.pluginHooks)
-    this.hScroller = new ScrollerSyncer(true) // horizontal=true
-    this.vScroller = new ScrollerSyncer() // horizontal=false
+    this.dayScroller = new ScrollerSyncer(true) // horizontal=true
+    this.timeScroller = new ScrollerSyncer() // horizontal=false
 
-    setRef(this.props.dayScrollerRef, this.hScroller)
-    setRef(this.props.timeScrollerRef, this.vScroller)
+    setRef(this.props.dayScrollerRef, this.dayScroller)
+    setRef(this.props.timeScrollerRef, this.timeScroller)
 
     this.updateScrollers()
   }
 
   updateScrollers() {
-    this.hScroller.handleChildren([
-      this.axisScrollerRef.current,
-      this.mainScrollerRef.current,
-    ])
-    this.vScroller.handleChildren([
-      this.headScrollerRef.current,
+    this.dayScroller.handleChildren([
+      this.headerScrollerRef.current,
       this.allDayScrollerRef.current,
       this.mainScrollerRef.current,
       this.footScrollerRef.current,
+    ])
+    this.timeScroller.handleChildren([
+      this.axisScrollerRef.current,
+      this.mainScrollerRef.current,
     ])
   }
 

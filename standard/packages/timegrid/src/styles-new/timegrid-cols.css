@@ -1,62 +1,47 @@
 
 .fc {
 
-  & .fc-timegrid-col {
-    &.fc-day-today {
+  & .fcnew-timegrid-col {
+    &.fcnew-day-today {
       background-color: var(--fc-today-bg-color);
     }
   }
 
 }
 
-.fc-media-screen {
-  & .fc-timegrid-col-bg,
-  & .fc-timegrid-col-events,
-  & .fc-timegrid-now-indicator-container {
+.fc {
+
+  & .fcnew-timegrid-col {
+    position: relative;
+  }
+
+  & .fcnew-timegrid-event-harness {
+    position: absolute;
+    z-index: $timegrid-col-fg-z;
+  }
+
+  & .fcnew-timegrid-bg-harness {
+    position: absolute; // top/bottom will be set by JS
+    left: 0;
+    right: 0;
+    @include bg-z-indexes;
+  }
+
+  & .fcnew-timegrid-now-indicator-container {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-  }
-}
-
-.fc {
-
-  // bg
-
-  & .fc-timegrid-col-bg {
-    z-index: $timegrid-col-bg-z;
-    @include bg-z-indexes;
-  }
-
-  & .fc-timegrid-bg-harness {
-    position: absolute; // top/bottom will be set by JS
-    left: 0;
-    right: 0;
-  }
-
-  // fg events
-  // (the mirror segs are put into a separate container with same classname,
-  // and they must be after the normal seg container to appear at a higher z-index)
-
-  & .fc-timegrid-col-events {
-    z-index: $timegrid-col-fg-z;
-    // child event segs have z-indexes that are scoped within this div
-  }
-
-  // now indicator
-
-  & .fc-timegrid-now-indicator-container {
     bottom: 0;
     overflow: hidden; // don't let overflow of lines/arrows cause unnecessary scrolling
-    // z-index is set on the individual elements
+    // z-index is set on the inner element
   }
 
 }
 
 .fc-direction-ltr {
 
-  & .fc-timegrid-col-events {
+  & .fcnew-timegrid-col-events {
     margin: 0 2.5% 0 2px;
   }
 
@@ -64,7 +49,7 @@
 
 .fc-direction-rtl {
 
-  & .fc-timegrid-col-events {
+  & .fcnew-timegrid-col-events {
     margin: 0 2px 0 2.5%;
   }
 

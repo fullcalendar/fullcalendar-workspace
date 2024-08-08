@@ -1,24 +1,22 @@
-import { DateMarker, NowIndicatorContainer } from "@fullcalendar/core/internal"
+import { DateMarker, DateProfile, fracToCssDim, NowIndicatorContainer } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
-import { CssDimValue } from "@fullcalendar/core"
+import { computeDateTopFrac } from "./util.js"
 
-/*
-TODO: accept top coord
-*/
 export interface TimeGridNowIndicatorLineProps {
   nowDate: DateMarker
-  top: CssDimValue
+  dayDate: DateMarker
+  dateProfile: DateProfile
 }
 
 export function TimeGridNowIndicatorLine(props: TimeGridNowIndicatorLineProps) {
   return (
-    <div>
-      <NowIndicatorContainer
-        elClasses={['fcnew-timegrid-now-indicator-line']}
-        elStyle={{ top: props.top }}
-        isAxis={false}
-        date={props.nowDate}
-      />
-    </div>
+    <NowIndicatorContainer
+      elClasses={['fcnew-timegrid-now-indicator-line']}
+      elStyle={{
+        top: fracToCssDim(computeDateTopFrac(props.nowDate, props.dateProfile, props.dayDate))
+      }}
+      isAxis={false}
+      date={props.nowDate}
+    />
   )
 }

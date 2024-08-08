@@ -14,7 +14,6 @@ import { SegWebRect } from '../seg-web.js'
 import { computeFgSegVerticals, computeFgSegHorizontals } from '../event-placement.js'
 import { TimeGridEvent } from './TimeGridEvent.js'
 import { TimeGridNowIndicatorLine } from './TimeGridNowIndicatorLine.js'
-import { computeDateTopFrac } from './util.js'
 
 export interface TimeGridColProps {
   dateProfile: DateProfile
@@ -86,30 +85,24 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       >
         {(InnerContent) => (
           <Fragment>
-            <div className="fcnew-timegrid-col-bg">
-              {this.renderFillSegs(props.businessHourSegs, 'non-business')}
-              {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
-              {this.renderFillSegs(props.dateSelectionSegs, 'highlight')}
-            </div>
-            <div className="fcnew-timegrid-col-events">
-              {this.renderFgSegs(
-                sortedFgSegs,
-                interactionAffectedInstances,
-                false,
-                false,
-                false,
-              )}
-            </div>
-            <div className="fcnew-timegrid-col-events">
-              {this.renderFgSegs(
-                mirrorSegs as TimeColsSeg[],
-                {},
-                Boolean(props.eventDrag),
-                Boolean(props.eventResize),
-                Boolean(isSelectMirror),
-                'mirror',
-              )}
-            </div>
+            {this.renderFillSegs(props.businessHourSegs, 'non-business')}
+            {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
+            {this.renderFillSegs(props.dateSelectionSegs, 'highlight')}
+            {this.renderFgSegs(
+              sortedFgSegs,
+              interactionAffectedInstances,
+              false,
+              false,
+              false,
+            )}
+            {this.renderFgSegs(
+              mirrorSegs as TimeColsSeg[],
+              {},
+              Boolean(props.eventDrag),
+              Boolean(props.eventResize),
+              Boolean(isSelectMirror),
+              'mirror',
+            )}
             <div className="fcnew-timegrid-now-indicator-container">
               {this.renderNowIndicator(props.nowIndicatorSegs)}
             </div>
@@ -135,7 +128,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   ) {
     let { props } = this
     if (props.forPrint) {
-      return renderPlainFgSegs(sortedFgSegs, props)
+      return renderPlainFgSegs(sortedFgSegs, props) // TODO: test
     }
     return this.renderPositionedFgSegs(
       sortedFgSegs,
@@ -178,10 +171,10 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
           return (
             <div
-              className={
-                'fcnew-timegrid-event-harness' +
-                (isInset ? ' fcnew-timegrid-event-harness-inset' : '')
-              }
+              className={[
+                'fcnew-timegrid-event-harness',
+                isInset ? 'fcnew-timegrid-event-harness-inset' : '',
+              ].join(' ')}
               key={forcedKey || instanceId}
               style={{
                 visibility: isVisible ? ('' as any) : 'hidden',
@@ -274,8 +267,9 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
     return segs.map((seg) => (
       <TimeGridNowIndicatorLine
-        nowDate={date}
-        top={fracToCssDim(computeDateTopFrac(seg.start, dateProfile, date))}
+        nowDate={seg.start}
+        dayDate={date}
+        dateProfile={dateProfile}
       />
     ))
   }

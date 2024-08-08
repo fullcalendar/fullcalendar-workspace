@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize, getIsHeightAuto, fracToCssDim } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize, getIsHeightAuto } from "@fullcalendar/core/internal"
 import { Fragment, createElement, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { HeaderRow, TableSeg } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -9,7 +9,7 @@ import { TimeGridSlatLabel } from "./TimeGridSlatLabel.js"
 import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
 import { TimeGridCols } from "./TimeGridCols.js"
 import { TimeColsSeg } from "../TimeColsSeg.js"
-import { computeDateTopFrac, computeSlatHeight } from "./util.js"
+import { computeSlatHeight } from "./util.js"
 
 export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
   dateProfile: DateProfile
@@ -119,7 +119,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
     return (
       <Fragment>
         <div
-          className='fcnew-rowgroup' // contains other rowgroups
+          className='fcnew-rowgroup' // contains other rows/rowgroups
           style={{
             paddingLeft: state.leftScrollbarWidth,
             paddingRight: state.rightScrollbarWidth,
@@ -220,11 +220,10 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
               </div>
             ))}
             <div className='fcnew-absfill fcnew-cellgroup'>
-              <div style={{ width: axisWidth }}>{/* TODO: make TimeGridAxisCol ? */}
-                {/* NOTE: is within a row, but we don't want the border, so don't use fcnew-cell  */}
+              <div style={{ width: axisWidth }}>
                 <TimeGridNowIndicatorArrow
                   nowDate={nowDate}
-                  top={fracToCssDim(computeDateTopFrac(nowDate, props.dateProfile))}
+                  dateProfile={props.dateProfile}
                 />
               </div>
               <TimeGridCols // .fc-cellgroup
