@@ -3193,8 +3193,8 @@ importers:
   standard/packages/core:
     dependencies:
       preact:
-        specifier: ~10.12.1
-        version: 10.12.1
+        specifier: ~10.23.1
+        version: 10.23.1
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
@@ -37354,6 +37354,10 @@ packages:
 
   /preact@10.12.1:
     resolution: {integrity: sha512-l8386ixSsBdbreOAkqtrwqHwdvR35ID8c3rKPa8lCWuO86dBi32QWHV4vfsZK1utLLFMvw+Z5Ad4XLkZzchscg==}
+    dev: false
+
+  /preact@10.23.1:
+    resolution: {integrity: sha512-O5UdRsNh4vdZaTieWe3XOgSpdMAmkIYBCT3VhQDlKrzyCm8lUYsk0fmVEvoQQifoOjFRTaHZO69ylrzTW2BH+A==}
     dev: false
 
   /preferred-pm@3.1.2:
