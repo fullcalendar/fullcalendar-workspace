@@ -5,7 +5,7 @@ import {
   buildEntryKey,
   getEntrySpanEnd,
   binarySearch,
-  SegEntryGroup,
+  SegGroup,
   groupIntersectingEntries,
 } from '@fullcalendar/core/internal'
 
@@ -33,7 +33,7 @@ export function buildWebPositioning(
   maxStackCnt?: number,
 ): [
   segRects: SegWebRect[],
-  hiddenGroups: SegEntryGroup[]
+  hiddenGroups: SegGroup[]
 ] {
   let hierarchy = new SegHierarchy()
   if (strictOrder != null) {

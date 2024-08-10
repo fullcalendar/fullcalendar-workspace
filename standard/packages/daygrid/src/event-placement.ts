@@ -51,6 +51,7 @@ export function computeFgSegVerticals(
 
   const segEntries: SegEntry[] = segs.map((seg, index) => ({
     index: index,
+    seg,
     span: {
       start: seg.firstCol,
       end: seg.lastCol + 1,

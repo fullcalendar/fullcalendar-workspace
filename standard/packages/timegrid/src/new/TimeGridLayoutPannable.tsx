@@ -145,10 +145,11 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
+    // TODO: memo?
     const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, state.scrollerWidth)
 
     const slatCnt = props.slatMetas.length
-    const [slatHeight, slatLiquid] = computeSlatHeight(
+    const [slatHeight, slatLiquid] = computeSlatHeight( // TODO: memo?
       verticalScrolling,
       options.expandRows,
       slatCnt,

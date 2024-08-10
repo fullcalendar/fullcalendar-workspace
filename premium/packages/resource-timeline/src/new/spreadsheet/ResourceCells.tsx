@@ -1,5 +1,5 @@
-import { BaseComponent, ViewContext } from '@fullcalendar/core/internal'
-import { Fragment, createElement } from '@fullcalendar/core/preact'
+import { afterSize, BaseComponent, RefMap, setRef, ViewContext } from '@fullcalendar/core/internal'
+import { Fragment, Ref, createElement } from '@fullcalendar/core/preact'
 import { Resource, ColSpec, getPublicId } from '@fullcalendar/resource/internal'
 import { ResourceCell } from './ResourceCell.js'
 
@@ -10,9 +10,18 @@ export interface ResourceCellsProps {
   depth: number
   isExpanded: boolean
   hasChildren: boolean
+
+  // refs
+  innerHeightRef?: Ref<number>
 }
 
 export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext> {
+  // refs
+  private innerHeightRefMap = new RefMap<number, number>(() => {
+    afterSize(this.handleInnerHeights)
+  })
+  private currentInnerHeight?: number
+
   render() {
     let { props } = this
     let { resource, resourceFields } = props
@@ -37,5 +46,19 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
         })}
       </Fragment>
     )
+  }
+
+  private handleInnerHeights = () => {
+    const innerHeightMap = this.innerHeightRefMap.current
+    let max = 0
+
+    for (const innerHeight of innerHeightMap.values()) {
+      max = Math.max(max, innerHeight)
+    }
+
+    if (this.currentInnerHeight !== max) {
+      this.currentInnerHeight = max
+      setRef(this.props.innerHeightRef, max)
+    }
   }
 }

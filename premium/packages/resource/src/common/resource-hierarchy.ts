@@ -1,123 +1,50 @@
-import { flexibleCompare, compareByFieldSpecs, OrderSpec } from '@fullcalendar/core/internal'
-import { ResourceHash, Resource } from '../structs/resource.js'
-import { ResourceEntityExpansions } from '../reducers/resourceEntityExpansions.js'
+import { OrderSpec } from '@fullcalendar/core/internal'
+import { Resource, ResourceHash } from '../structs/resource.js'
 import { GroupSpec } from './resource-spec.js'
-import { ResourceApi } from '../api/ResourceApi.js'
-
-export interface ParentNode {
-  children: ParentNode[]
-}
-
-export interface ResourceParentNode extends ParentNode {
-  resource: Resource
-  resourceFields: any
-}
-
-type ResourceNodeHash = { [resourceId: string]: ResourceParentNode }
-
-export interface GroupParentNode extends ParentNode {
-  group: Group
-}
+import { ResourceApi } from '../public-types.js'
 
 export interface Group {
-  value: any
   spec: GroupSpec
+  value: any
 }
 
-export interface GroupNode {
-  id: string // 'field:value' -- bad for concatenating value!
-  isExpanded: boolean
-  group: Group
+export interface ParentNode<Entity> {
+  entity: Entity
+  children: ParentNode<Entity>[]
 }
 
-export interface ResourceNode {
-  id: string // 'resourceId' (won't collide with group ID's because has colon)
-  rowSpans: number[] // TODO: eventually kill this
-  depth: number
-  isExpanded: boolean
-  hasChildren: boolean
-  resource: Resource
-  resourceFields: any // fields mushed together for sorting
-}
-
-/*
-doesn't accept grouping
-*/
-export function flattenResources(resourceStore: ResourceHash, orderSpecs: OrderSpec<ResourceApi>[]): Resource[] {
-  return buildRowNodes(resourceStore, [], orderSpecs, false, {}, true)[1]
-    .map((node) => (node as ResourceNode).resource)
-}
-
-export function buildRowNodes(
+export function buildResourceHierarchy(
   resourceStore: ResourceHash,
   groupSpecs: GroupSpec[],
   orderSpecs: OrderSpec<ResourceApi>[],
-  isVGrouping: boolean,
-  expansions: ResourceEntityExpansions,
-  expansionDefault: boolean,
-): [ParentNode[], (GroupNode | ResourceNode)[]] {
-  let complexNodes = buildHierarchy(resourceStore, isVGrouping ? -1 : 1, groupSpecs, orderSpecs)
-  let flatNodes = []
-
-  flattenNodes(complexNodes, flatNodes, isVGrouping, [], 0, expansions, expansionDefault)
-
-  return [complexNodes, flatNodes]
+): ParentNode<Resource | Group>[] {
+  return null as any
+  // buildHierarchy below
 }
 
-function flattenNodes(
-  complexNodes: ParentNode[],
-  res, isVGrouping, rowSpans, depth,
-  expansions: ResourceEntityExpansions,
-  expansionDefault: boolean,
-) {
-  for (let i = 0; i < complexNodes.length; i += 1) {
-    let complexNode = complexNodes[i]
-    let group = (complexNode as GroupParentNode).group
-
-    if (group) {
-      if (isVGrouping) {
-        let firstRowIndex = res.length
-        let rowSpanIndex = rowSpans.length
-
-        flattenNodes(complexNode.children, res, isVGrouping, rowSpans.concat(0), depth, expansions, expansionDefault)
-
-        if (firstRowIndex < res.length) {
-          let firstRow = res[firstRowIndex]
-          let firstRowSpans = firstRow.rowSpans = firstRow.rowSpans.slice()
-
-          firstRowSpans[rowSpanIndex] = res.length - firstRowIndex
-        }
-      } else {
-        let id = group.spec.field + ':' + group.value
-        let isExpanded = expansions[id] != null ? expansions[id] : expansionDefault
-
-        res.push({ id, group, isExpanded })
-
-        if (isExpanded) {
-          flattenNodes(complexNode.children, res, isVGrouping, rowSpans, depth + 1, expansions, expansionDefault)
-        }
-      }
-    } else if ((complexNode as ResourceParentNode).resource) {
-      let id = (complexNode as ResourceParentNode).resource.id
-      let isExpanded = expansions[id] != null ? expansions[id] : expansionDefault
-
-      res.push({
-        id,
-        rowSpans,
-        depth,
-        isExpanded,
-        hasChildren: Boolean(complexNode.children.length),
-        resource: (complexNode as ResourceParentNode).resource,
-        resourceFields: (complexNode as ResourceParentNode).resourceFields,
-      })
-
-      if (isExpanded) {
-        flattenNodes(complexNode.children, res, isVGrouping, rowSpans, depth + 1, expansions, expansionDefault)
-      }
-    }
-  }
+export function isEntityGroup(entity: Resource | Group): entity is Group {
+  return Boolean((entity as Group).spec)
 }
 
+export function createGroupId(group: Group): string { // TODO: kill
+  return group.spec.field + ':' + group.value
+}
+
+export function isGroupsEqual(group0: Group, group1: Group) {
+  return group0.spec === group1.spec && group0.value === group1.value
+}
+
+export function flattenResources(resourceStore: ResourceHash, orderSpecs: OrderSpec<ResourceApi>[]): Resource[] {
+  const hierarchy = buildResourceHierarchy(resourceStore, [], orderSpecs)
+  return flattenHierarchy(hierarchy) as Resource[]
+}
+
+function flattenHierarchy(hierarchy: ParentNode<Resource | Group>[]): (Resource | Group)[] {
+  return null as any
+  // flattenNodes below
+}
+
+/*
 function buildHierarchy(
   resourceStore: ResourceHash,
   maxDepth: number,
@@ -244,7 +171,7 @@ function insertResourceNodeInSiblings(resourceNode, siblings, orderSpecs: OrderS
   siblings.splice(i, 0, resourceNode)
 }
 
-export function buildResourceFields(resource: Resource): any {
+function buildResourceFields(resource: Resource): any {
   let obj = { ...resource.extendedProps, ...resource.ui, ...resource }
 
   delete obj.ui
@@ -252,7 +179,60 @@ export function buildResourceFields(resource: Resource): any {
 
   return obj
 }
+*/
 
-export function isGroupsEqual(group0: Group, group1: Group) {
-  return group0.spec === group1.spec && group0.value === group1.value
+/*
+function flattenNodes(
+  complexNodes: ParentNode[],
+  res, isVGrouping, rowSpans, depth,
+  expansions: ResourceEntityExpansions,
+  expansionDefault: boolean,
+) {
+  for (let i = 0; i < complexNodes.length; i += 1) {
+    let complexNode = complexNodes[i]
+    let group = (complexNode as GroupParentNode).group
+
+    if (group) {
+      if (isVGrouping) {
+        let firstRowIndex = res.length
+        let rowSpanIndex = rowSpans.length
+
+        flattenNodes(complexNode.children, res, isVGrouping, rowSpans.concat(0), depth, expansions, expansionDefault)
+
+        if (firstRowIndex < res.length) {
+          let firstRow = res[firstRowIndex]
+          let firstRowSpans = firstRow.rowSpans = firstRow.rowSpans.slice()
+
+          firstRowSpans[rowSpanIndex] = res.length - firstRowIndex
+        }
+      } else {
+        let id = group.spec.field + ':' + group.value
+        let isExpanded = expansions[id] != null ? expansions[id] : expansionDefault
+
+        res.push({ id, group, isExpanded })
+
+        if (isExpanded) {
+          flattenNodes(complexNode.children, res, isVGrouping, rowSpans, depth + 1, expansions, expansionDefault)
+        }
+      }
+    } else if ((complexNode as ResourceParentNode).resource) {
+      let id = (complexNode as ResourceParentNode).resource.id
+      let isExpanded = expansions[id] != null ? expansions[id] : expansionDefault
+
+      res.push({
+        id,
+        rowSpans,
+        depth,
+        isExpanded,
+        hasChildren: Boolean(complexNode.children.length),
+        resource: (complexNode as ResourceParentNode).resource,
+        resourceFields: (complexNode as ResourceParentNode).resourceFields,
+      })
+
+      if (isExpanded) {
+        flattenNodes(complexNode.children, res, isVGrouping, rowSpans, depth + 1, expansions, expansionDefault)
+      }
+    }
+  }
 }
+*/

@@ -1,11 +1,14 @@
 import { BaseComponent, memoizeObjArg, ContentContainer } from '@fullcalendar/core/internal'
-import { createElement } from '@fullcalendar/core/preact'
+import { createElement, Ref } from '@fullcalendar/core/preact'
 import { Resource, refineRenderProps } from '@fullcalendar/resource/internal'
 import { TimelineLane, TimelineLaneProps } from '@fullcalendar/timeline/internal'
 
 export interface ResourceLaneProps extends TimelineLaneProps {
   resource: Resource
-  onHeightStable?: (isStable: boolean) => void
+  slotWidth: number | undefined
+
+  // refs
+  innerHeightRef?: Ref<number>
 }
 
 export class ResourceLane extends BaseComponent<ResourceLaneProps> {
@@ -52,9 +55,13 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
               eventSelection={props.eventSelection}
               eventDrag={props.eventDrag}
               eventResize={props.eventResize}
-              timelineCoords={props.timelineCoords}
               resourceId={props.resource.id}
-              onHeightStable={props.onHeightStable}
+
+              // ref
+              innerHeightRef={props.innerHeightRef}
+
+              // dimensions
+              slotWidth={props.slotWidth}
             />
           </div>
         )}

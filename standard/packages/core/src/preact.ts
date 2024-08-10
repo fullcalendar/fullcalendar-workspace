@@ -7,6 +7,9 @@ NOTE: this can be a public API, especially createElement for hooks.
 See examples/typescript-scheduler/src/index.ts
 */
 
+/*
+TODO: rethink this
+*/
 export function flushSync(runBeforeFlush) {
   runBeforeFlush()
 

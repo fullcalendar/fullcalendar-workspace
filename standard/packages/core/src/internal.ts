@@ -150,7 +150,7 @@ export type { EventSourceDef } from './structs/event-source-def.js'
 export type { EventSourceRefined } from './structs/event-source-parse.js'
 export { EventSourceRefiners } from './structs/event-source-parse.js'
 
-export type { SegSpan, SegRect, SegEntry, SegInsertion, SegEntryGroup } from './seg-hierarchy.js'
+export type { SegSpan, SegRect, SegEntry, SegInsertion, SegGroup } from './seg-hierarchy.js'
 export {
   SegHierarchy, buildEntryKey, getEntrySpanEnd, binarySearch, groupIntersectingEntries,
   intersectSpans,

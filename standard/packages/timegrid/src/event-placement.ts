@@ -1,6 +1,6 @@
 import {
   SegEntry,
-  SegEntryGroup,
+  SegGroup,
   DateMarker,
   DateProfile,
 } from '@fullcalendar/core/internal'
@@ -68,7 +68,7 @@ export function computeFgSegHorizontals(
   eventMaxStack?: number,
 ): [
   segRects: { [instanceId: string]: SegWebRect },
-  hiddenGroups: SegEntryGroup[],
+  hiddenGroups: SegGroup[],
 ] {
   const segEntries: SegEntry[] = segs.map((seg, index) => ({
     index,

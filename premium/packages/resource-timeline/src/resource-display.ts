@@ -6,7 +6,6 @@ export interface GroupCellDisplay {
 
 export interface GroupRowDisplay {
   group: Group
-  depth: number // TODO: assume 0?
   isExpanded: boolean
 }
 
@@ -14,8 +13,8 @@ export interface ResourceRowDisplay {
   resource: Resource
   resourceFields: any // fields mushed together for sorting
   depth: number
-  isExpanded: boolean
   hasChildren: boolean
+  isExpanded: boolean
 }
 
 export function buildResourceDisplays(

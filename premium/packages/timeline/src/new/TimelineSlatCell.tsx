@@ -2,12 +2,13 @@ import { SlotLaneContentArg } from '@fullcalendar/core'
 import {
   isInt, BaseComponent, DateMarker, DateRange, getDateMeta, getSlotClassNames,
   getDayClassNames, DateProfile, ContentContainer,
+  watchWidth,
+  setRef,
 } from '@fullcalendar/core/internal'
-import { createElement, Ref } from '@fullcalendar/core/preact'
+import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 
 export interface TimelineSlatCellProps {
-  elRef?: Ref<HTMLTableCellElement>
   date: DateMarker
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
@@ -15,10 +16,21 @@ export interface TimelineSlatCellProps {
   todayRange: DateRange
   isDay: boolean
   isEm: boolean
+
+  // dimensions
   width: number | undefined
+
+  // ref
+  innerWidthRef?: Ref<number>
 }
 
 export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
+  // ref
+  private innerElRef = createRef<HTMLElement>()
+
+  // internal
+  private detachWidth?: () => void
+
   render() {
     let { props, context } = this
     let { dateEnv, options, theme } = context
@@ -33,7 +45,6 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
     return (
       <ContentContainer
         elTag="div"
-        elRef={props.elRef}
         elClasses={[
           'fc-timeline-slot',
           'fc-timeline-slot-lane',
@@ -70,9 +81,24 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
         willUnmount={options.slotLaneWillUnmount}
       >
         {(InnerContent) => (
-          <InnerContent elTag="div" />
+          <InnerContent
+            elTag="div"
+            elRef={this.innerElRef} // TODO: is thie correct element? should we want a "frame"?
+          />
         )}
       </ContentContainer>
     )
+  }
+
+  componentDidMount(): void {
+    const innerEl = this.innerElRef.current
+
+    this.detachWidth = watchWidth(innerEl, (width) => {
+      setRef(this.props.innerWidthRef, width)
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.detachWidth()
   }
 }

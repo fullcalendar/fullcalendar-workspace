@@ -1,5 +1,4 @@
 import { ColSpec, Group, ParentNode, Resource } from '@fullcalendar/resource/internal'
-import { CoordRange } from '@fullcalendar/timeline/internal'
 
 // Spreadsheet Column Widths
 // -------------------------------------------------------------------------------------------------
@@ -8,14 +7,14 @@ export function computeSpreadsheetColHorizontals(
   colSpecs: ColSpec[],
   forcedWidths: number[],
   availableWidth: number | undefined
-): [CoordRange[], number] {
+): [widths: number[], totalWidth: number] {
   return null as any
 }
 
 export function sliceSpreadsheetColHorizontal(
-  colPositions: CoordRange[],
+  colWidths: number[],
   startIndex: number
-): CoordRange | undefined {
+): number | undefined {
   return null as any
 }
 
@@ -34,19 +33,28 @@ export function buildHeaderCoordHierarchy(
 
 export function buildEntityCoordRanges<Entity>(
   coordHierarchy: ParentNode<Entity>[],
-  entityNaturalHeights: Map<Entity, number> | undefined,
+  getEntityHeight: (entity: Entity) => number,
   minHeight?: number,
-): [
-  coordRanges: Map<Entity, CoordRange> | undefined,
-  totalSize: number | undefined
-] {
+): Map<Entity, number> | undefined { // entityHeights
   return null as any
 }
 
 export function findEntityByCoord(
   coord: number,
   coordHierarchy: ParentNode<Resource | Group>[],
-  coordRanges: Map<Resource | Group, CoordRange>,
-): Resource | Group | undefined {
+  entityHeights: Map<Resource | Group, number>,
+): [
+  entity: Resource | Group | undefined,
+  start: number | undefined,
+  size: number | undefined,
+] {
+  return null as any
+}
+
+export function getCoordsByEntity<Entity>(
+  entity: Entity,
+  entityHeights: Map<Entity, number>,
+  coordHierarchy: ParentNode<Entity>[],
+): { start: number, size: number } | undefined {
   return null as any
 }

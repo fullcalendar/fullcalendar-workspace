@@ -1,16 +1,25 @@
-import { BaseComponent, ContentContainer } from '@fullcalendar/core/internal'
-import { createElement } from '@fullcalendar/core/preact'
+import { BaseComponent, ContentContainer, setRef, watchHeight } from '@fullcalendar/core/internal'
+import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { ColCellContentArg } from '@fullcalendar/resource'
 import { Group } from '@fullcalendar/resource/internal'
 
 export interface GroupLaneProps {
   group: Group
+
+  // refs
+  innerHeightRef?: Ref<number>
 }
 
 /*
-parallels the SpreadsheetGroupRow
+parallels the GroupWideCell
 */
 export class GroupLane extends BaseComponent<GroupLaneProps> {
+  // ref
+  private innerElRef = createRef<HTMLDivElement>()
+
+  // internal
+  private detachInnerHeight?: () => void
+
   render() {
     let { props, context } = this
     let { group } = props
@@ -36,7 +45,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
         willUnmount={groupSpec.laneWillUnmount}
       >
         {(InnerContainer) => (
-          <div className='fc-resource-group-frame'>
+          <div className='fc-resource-group-frame' ref={this.innerElRef}>
             <InnerContainer
               elTag="div"
               elClasses={['fc-resource-group-frame-inner']}
@@ -45,5 +54,17 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
         )}
       </ContentContainer>
     )
+  }
+
+  componentDidMount(): void {
+    const innerEl = this.innerElRef.current
+
+    this.detachInnerHeight = watchHeight(innerEl, (height) => {
+      setRef(this.props.innerHeightRef, height)
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.detachInnerHeight()
   }
 }

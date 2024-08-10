@@ -1,14 +1,23 @@
-import { createElement, Ref } from '@fullcalendar/core/preact'
-import { BaseComponent, ContentContainer } from '@fullcalendar/core/internal'
+import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
+import { BaseComponent, ContentContainer, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { ColSpec, ColHeaderContentArg } from '@fullcalendar/resource'
 
 export interface HeaderCellProps {
   colSpec: ColSpec
   resizer: boolean
-  resizerElRef: Ref<HTMLDivElement>
+
+  // refs
+  resizerElRef?: Ref<HTMLDivElement> // TODO: get rid of this
+  innerHeightRef?: Ref<number>
 }
 
 export class HeaderCell extends BaseComponent<HeaderCellProps> {
+  // ref
+  private innerElRef = createRef<HTMLDivElement>()
+
+  // internal
+  private detachInnerHeight?: () => void
+
   render() {
     let { colSpec, resizer, resizerElRef } = this.props
     let renderProps: ColHeaderContentArg = { view: this.context.viewApi }
@@ -28,7 +37,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         willUnmount={colSpec.headerWillUnmount}
       >
         {(InnerContent) => (
-          <div className="fc-datagrid-cell-frame">
+          <div className="fc-datagrid-cell-frame" ref={this.innerElRef}>
             <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner">
               {colSpec.isMain && (
                 <span className="fc-datagrid-expander fc-datagrid-expander-placeholder">
@@ -47,5 +56,17 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         )}
       </ContentContainer>
     )
+  }
+
+  componentDidMount(): void {
+    const innerEl = this.innerElRef.current
+
+    this.detachInnerHeight = watchHeight(innerEl, (height) => {
+      setRef(this.props.innerHeightRef, height)
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.detachInnerHeight()
   }
 }

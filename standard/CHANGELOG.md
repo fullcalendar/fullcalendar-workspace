@@ -7,6 +7,9 @@ Reverify https://github.com/fullcalendar/fullcalendar/issues/6140
 Get rid of anything "shrink", "liquid-hack", "liquid"
 Now each event element has stable position in time based on start-date
 strictOrder affects positioning but does not affect DOM order
+check about whether timeline events align with slots or have precise coordinates
+review all memoization
+previously, Timeline's hit system would always return slat left/right, not snap. matters?
 
 ## 6.1.15 (2024-07-12)
 

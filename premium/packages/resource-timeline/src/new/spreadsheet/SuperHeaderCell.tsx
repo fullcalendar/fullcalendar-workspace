@@ -1,12 +1,21 @@
-import { BaseComponent, ContentContainer } from '@fullcalendar/core/internal'
-import { createElement } from '@fullcalendar/core/preact'
+import { BaseComponent, ContentContainer, setRef, watchHeight } from '@fullcalendar/core/internal'
+import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { ColHeaderContentArg, ColHeaderRenderHooks } from '@fullcalendar/resource'
 
 export interface SuperHeaderCellProps {
   renderHooks: ColHeaderRenderHooks
+
+  // refs
+  innerHeightRef?: Ref<number>
 }
 
 export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
+  // refs
+  private innerElRef = createRef<HTMLDivElement>()
+
+  // internal
+  private detachInnerHeight?: () => void
+
   render() {
     let { renderHooks } = this.props
     let renderProps: ColHeaderContentArg = { view: this.context.viewApi }
@@ -40,5 +49,17 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
         )}
       </ContentContainer>
     )
+  }
+
+  componentDidMount(): void {
+    const innerEl = this.innerElRef.current
+
+    this.detachInnerHeight = watchHeight(innerEl, (height) => {
+      setRef(this.props.innerHeightRef, height)
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.detachInnerHeight()
   }
 }

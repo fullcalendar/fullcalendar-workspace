@@ -2,43 +2,32 @@ import {
   BaseComponent, MoreLinkContainer,
   DateProfile, DateRange, DateMarker, getSegMeta,
 } from '@fullcalendar/core/internal'
-import { createElement, Ref, Fragment } from '@fullcalendar/core/preact'
-import { TimelineSegPlacement } from '../event-placement.js'
-import { coordsToCss } from '../TimelineCoords.js'
+import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { TimelineEvent } from './TimelineEvent.js'
 import { TimelineLaneSeg } from '../TimelineLaneSlicer.js'
 
 export interface TimelineLaneMoreLinkProps {
-  elRef: Ref<HTMLElement>
-  hiddenSegs: TimelineLaneSeg[]
-  placement: TimelineSegPlacement
   dateProfile: DateProfile
+  isTimeScale: boolean
   nowDate: DateMarker
   todayRange: DateRange
-  isTimeScale: boolean
+
+  // content
+  hiddenSegs: TimelineLaneSeg[]
   eventSelection: string
-  resourceId?: string
   forcedInvisibleMap: { [instanceId: string]: any }
+  resourceId?: string // HACK
 }
 
 export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProps> {
   render() {
-    let { props, context } = this
-    let { hiddenSegs, placement, resourceId } = props
-    let { top, hcoords } = placement
-    let isVisible = hcoords && top !== null
-    let hStyle = coordsToCss(hcoords, context.isRtl)
+    let { props } = this
+    let { hiddenSegs, resourceId } = props
     let extraDateSpan = resourceId ? { resourceId } : {}
 
     return (
       <MoreLinkContainer
-        elRef={props.elRef}
         elClasses={['fc-timeline-more-link']}
-        elStyle={{
-          visibility: isVisible ? '' : 'hidden',
-          top: top || 0,
-          ...hStyle,
-        }}
         allDayDate={null}
         segs={hiddenSegs}
         hiddenSegs={hiddenSegs}

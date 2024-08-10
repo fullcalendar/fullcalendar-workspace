@@ -8,29 +8,31 @@ import {
   NowTimer,
   DateMarker,
   DateRange,
-  NowIndicatorContainer,
   getStickyHeaderDates,
   getStickyFooterScrollbar,
   Scroller,
   ScrollRequest,
   ScrollResponder,
   getScrollerSyncerClass,
+  rangeContainsMarker,
+  multiplyDuration,
+  afterSize,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
-import { buildTimelineDateProfile } from '../timeline-date-profile.js'
-import { TimelineHeader } from './TimelineHeader.js'
-import { TimelineCoords, coordToCss } from '../TimelineCoords.js'
+import { buildTimelineDateProfile, TimelineDateProfile } from '../timeline-date-profile.js'
 import { TimelineSlats } from './TimelineSlats.js'
 import { TimelineLane } from './TimelineLane.js'
-import { computeSlotWidth } from '../timeline-positioning.js'
+import { TimelineHeaderRow } from './TimelineHeaderRow.js'
+import { computeSlotWidth, timeToCoord } from '../timeline-positioning.js'
+import { TimelineNowIndicatorLine } from './TimelineNowIndicatorLine.js'
+import { TimelineNowIndicatorArrow } from './TimelineNowIndicatorArrow.js'
 
 interface TimelineViewState {
-  slatCoords?: TimelineCoords // isn't this obsolete??????????????????????
-  slotCushionMaxWidth?: number
-  width?: number,
-  leftScrollbarWidth?: number,
-  rightScrollbarWidth?: number,
+  scrollerWidth?: number
+  leftScrollbarWidth?: number
+  rightScrollbarWidth?: number
+  slotInnerWidth?: number
 }
 
 export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
@@ -39,10 +41,15 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   private computeSlotWidth = memoize(computeSlotWidth)
 
   // refs
-  private slatsRef = createRef<TimelineSlats>()
   private headerScrollerRef = createRef<Scroller>()
   private bodyScrollerRef = createRef<Scroller>()
   private footerScrollerRef = createRef<Scroller>()
+  private bodyEl: HTMLElement
+  private headerInnerWidth?: number // within the cells (TODO: just rename these)
+  private mainInnerWidth?: number // within the slats
+  private currentCanvasWidth?: number
+  private currentSlotWidth?: number
+  private currentTDateProfile?: TimelineDateProfile
 
   // internal
   private scrollResponder: ScrollResponder
@@ -60,7 +67,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       options,
       context.dateProfileGenerator,
     )
+    this.currentTDateProfile = tDateProfile
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
+    let { cellRows } = tDateProfile
 
     /* table settings */
 
@@ -69,115 +78,136 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
     /* table positions */
 
-    let { slotMinWidth } = options
-    let [slotWidth, canvasWidth] = this.computeSlotWidth(
-      tDateProfile,
-      slotMinWidth,
-      state.slotCushionMaxWidth,
-      state.width
+    let [canvasWidth, slotWidth, slotLiquid] = this.computeSlotWidth(
+      tDateProfile.slotCnt,
+      options.slotMinWidth,
+      state.slotInnerWidth,
+      state.scrollerWidth,
     )
+    let slotStyleWidth = slotLiquid ? undefined : slotWidth
+    this.currentCanvasWidth = canvasWidth
+    this.currentSlotWidth = slotWidth
 
     return (
       <NowTimer unit={timerUnit}>
-        {(nowDate: DateMarker, todayRange: DateRange) => (
-          <ViewContainer
-            elClasses={[
-              'fcnew-flexexpand', // expand within fc-view-harness
-              'fcnew-flexparent',
-              'fc-timeline',
-              options.eventOverlap === false ?
-                'fc-timeline-overlap-disabled' :
-                '',
-            ]}
-            viewSpec={context.viewSpec}
+        {(nowDate: DateMarker, todayRange: DateRange) => {
+          const enableNowIndicator = // TODO: DRY
+            options.nowIndicator &&
+            slotWidth != null &&
+            rangeContainsMarker(props.dateProfile.currentRange, nowDate)
+
+          return (
+            <ViewContainer
+              elClasses={[
+                'fcnew-flexexpand', // expand within fc-view-harness
+                'fcnew-flexparent',
+                'fc-timeline',
+                options.eventOverlap === false ?
+                  'fc-timeline-overlap-disabled' :
+                  '',
+              ]}
+              viewSpec={context.viewSpec}
             >
 
-            {/* header */}
-            <Scroller
-              ref={this.headerScrollerRef}
-              horizontal
-              hideScrollbars
-              elClassNames={[stickyHeaderDates ? 'fcnew-v-sticky' : '']}
-            >
-              <div style={{
-                width: canvasWidth,
-                paddingLeft: state.leftScrollbarWidth,
-                paddingRight: state.rightScrollbarWidth,
-              }}>
-                <TimelineHeader
-                  dateProfile={props.dateProfile}
-                  tDateProfile={tDateProfile}
-                  nowDate={nowDate}
-                  todayRange={todayRange}
-                  slatCoords={state.slatCoords}
-                  onMaxCushionWidth={this.handleMaxCushionWidth}
-                  slotWidth={slotWidth}
-                />
-              </div>
-            </Scroller>
-
-            {/* body */}
-            <Scroller // how does it know to be liquid-height?
-              ref={this.bodyScrollerRef}
-              vertical
-              horizontal
-              elClassNames={['fcnew-flexexpand']}
-              widthRef={this.handleWidth}
-              leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
-              rightScrollbarWidthRef={this.handleRightScrollbarWidth}
-            >
-              <div
-                ref={this.handeBodyEl}
-                className="fc-timeline-body"
-              >
-                <TimelineSlats
-                  ref={this.slatsRef}
-                  dateProfile={props.dateProfile}
-                  tDateProfile={tDateProfile}
-                  nowDate={nowDate}
-                  todayRange={todayRange}
-                  slotWidth={slotWidth}
-                  onCoords={this.handleSlatCoords}
-                />
-                <TimelineLane
-                  dateProfile={props.dateProfile}
-                  tDateProfile={tDateProfile}
-                  nowDate={nowDate}
-                  todayRange={todayRange}
-                  nextDayThreshold={options.nextDayThreshold}
-                  businessHours={props.businessHours}
-                  eventStore={props.eventStore}
-                  eventUiBases={props.eventUiBases}
-                  dateSelection={props.dateSelection}
-                  eventSelection={props.eventSelection}
-                  eventDrag={props.eventDrag}
-                  eventResize={props.eventResize}
-                  timelineCoords={state.slatCoords}
-                />
-                {(options.nowIndicator && state.slatCoords && state.slatCoords.isDateInRange(nowDate)) && (
-                  <div className="fc-timeline-now-indicator-container">
-                    <NowIndicatorContainer // TODO: make separate component?
-                      elClasses={['fc-timeline-now-indicator-line']}
-                      elStyle={coordToCss(state.slatCoords.dateToCoord(nowDate), context.isRtl)}
-                      isAxis={false}
-                      date={nowDate}
-                    />
-                  </div>
-                )}
-              </div>
-            </Scroller>
-
-            {/* footer scrollbar */}
-            {stickyFooterScrollbar && (
+              {/* HEADER
+              ---------------------------------------------------------------------------------- */}
               <Scroller
-                ref={this.footerScrollerRef}
+                ref={this.headerScrollerRef}
                 horizontal
+                hideScrollbars
+                elClassNames={[stickyHeaderDates ? 'fcnew-v-sticky' : '']}
               >
-                <div style={{ width: canvasWidth }}/>
+                <div style={{
+                  width: canvasWidth,
+                  paddingLeft: state.leftScrollbarWidth,
+                  paddingRight: state.rightScrollbarWidth,
+                }}>
+                  {cellRows.map((cells, rowLevel) => (
+                    <TimelineHeaderRow
+                      key={rowLevel}
+                      dateProfile={props.dateProfile}
+                      tDateProfile={tDateProfile}
+                      nowDate={nowDate}
+                      todayRange={todayRange}
+                      rowLevel={rowLevel}
+                      isLastRow={rowLevel === cellRows.length - 1}
+                      cells={cells}
+                      slotWidth={slotStyleWidth}
+                      innerWidthRef={this.handleHeaderInnerWidth}
+                    />
+                  ))}
+                  {enableNowIndicator && (
+                    // TODO: make this positioned WITHIN padding
+                    <TimelineNowIndicatorArrow
+                      tDateProfile={tDateProfile}
+                      nowDate={nowDate}
+                      slotWidth={slotWidth}
+                    />
+                  )}
+                </div>
               </Scroller>
-            )}
-          </ViewContainer>
-        )}
+
+              {/* BODY
+              ---------------------------------------------------------------------------------- */}
+              <Scroller // how does it know to be liquid-height?
+                ref={this.bodyScrollerRef}
+                vertical
+                horizontal
+                elClassNames={['fcnew-flexexpand']}
+                widthRef={this.handleScrollerWidth}
+                leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
+                rightScrollbarWidthRef={this.handleRightScrollbarWidth}
+              >
+                <div
+                  ref={this.handeBodyEl}
+                  className="fc-timeline-body"
+                >
+                  <TimelineSlats
+                    dateProfile={props.dateProfile}
+                    tDateProfile={tDateProfile}
+                    nowDate={nowDate}
+                    todayRange={todayRange}
+                    slotWidth={slotStyleWidth}
+                    innerWidthRef={this.handleMainInnerWidth}
+                  />
+                  <TimelineLane
+                    dateProfile={props.dateProfile}
+                    tDateProfile={tDateProfile}
+                    nowDate={nowDate}
+                    todayRange={todayRange}
+                    nextDayThreshold={options.nextDayThreshold}
+                    businessHours={props.businessHours}
+                    eventStore={props.eventStore}
+                    eventUiBases={props.eventUiBases}
+                    dateSelection={props.dateSelection}
+                    eventSelection={props.eventSelection}
+                    eventDrag={props.eventDrag}
+                    eventResize={props.eventResize}
+                    slotWidth={slotWidth}
+                  />
+                  {enableNowIndicator && (
+                    <TimelineNowIndicatorLine
+                      tDateProfile={tDateProfile}
+                      nowDate={nowDate}
+                      slotWidth={slotWidth}
+                    />
+                  )}
+                </div>
+              </Scroller>
+
+              {/* FOOTER scrollbar
+              ---------------------------------------------------------------------------------- */}
+              {stickyFooterScrollbar && (
+                <Scroller
+                  ref={this.footerScrollerRef}
+                  horizontal
+                >
+                  <div style={{ width: canvasWidth }}/>
+                </Scroller>
+              )}
+            </ViewContainer>
+          )
+        }}
       </NowTimer>
     )
   }
@@ -206,24 +236,31 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  /*
-  TODO: have Calendar, which manage view-harness, tell us about width explicitly?
-  */
-  handleWidth = (width: number) => {
-    this.setState({
-      width,
-    })
+  handleHeaderInnerWidth = (innerWidth: number) => {
+    this.headerInnerWidth = innerWidth
+    afterSize(this.handleSlotInnerWidths)
   }
 
-  handleMaxCushionWidth = (slotCushionMaxWidth) => {
-    this.setState({
-      slotCushionMaxWidth,
-    })
+  handleMainInnerWidth = (innerWidth: number) => {
+    this.mainInnerWidth = innerWidth
+    afterSize(this.handleSlotInnerWidths)
   }
 
-  handleSlatCoords = (slatCoords: TimelineCoords | null) => {
+  handleSlotInnerWidths = () => {
+    const { state } = this
+    const slotInnerWidth = Math.max(
+      this.headerInnerWidth,
+      this.mainInnerWidth,
+    )
+
+    if (state.slotInnerWidth !== slotInnerWidth) {
+      this.setState({ slotInnerWidth })
+    }
+  }
+
+  handleScrollerWidth = (scrollerWidth: number) => {
     this.setState({
-      slatCoords
+      scrollerWidth,
     })
   }
 
@@ -251,11 +288,14 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   }
 
   handleScrollRequest = (request: ScrollRequest) => {
+    const { props, context } = this
+    let slotWidth = this.currentSlotWidth
+    let tDateProfile = this.currentTDateProfile
+
     if (request.time) {
-      let { slatCoords } = this.state
-      if (slatCoords) {
-        let scrollLeft = slatCoords.coordFromLeft(slatCoords.durationToCoord(request.time))
-        this.syncedScroller.scrollTo({ x: scrollLeft }) // TODO: works with RTL?
+      if (slotWidth != null && tDateProfile != null) {
+        let x = timeToCoord(request.time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth)
+        this.syncedScroller.scrollTo({ x })
         return true
       }
     }
@@ -267,6 +307,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   // -----------------------------------------------------------------------------------------------
 
   handeBodyEl = (el: HTMLElement | null) => {
+    this.bodyEl = el
+
     if (el) {
       this.context.registerInteractiveComponent(this, { el })
     } else {
@@ -274,21 +316,53 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     }
   }
 
-  queryHit(positionLeft: number, positionTop: number, elWidth: number, elHeight: number): Hit {
-    let slats = this.slatsRef.current
-    let slatHit = slats.positionToHit(positionLeft)
+  queryHit(positionLeft: number): Hit {
+    const { dateEnv, isRtl } = this.context
+    const tDateProfile = this.currentTDateProfile
+    const canvasWidth = this.currentCanvasWidth
+    const slatWidth = this.currentSlotWidth // TODO: renames?
 
-    if (slatHit) {
+    if (slatWidth) {
+      const slatIndex = Math.floor(positionLeft / slatWidth)
+      const slatLeft = slatIndex * slatWidth
+      const partial = (positionLeft - slatLeft) / slatWidth // floating point number between 0 and 1
+      const localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot) // the snap # relative to start of slat
+
+      let start = dateEnv.add(
+        tDateProfile.slotDates[slatIndex],
+        multiplyDuration(tDateProfile.snapDuration, localSnapIndex),
+      )
+      let end = dateEnv.add(start, tDateProfile.snapDuration)
+
+      // TODO: generalize this coord stuff to TimeGrid?
+
+      let snapWidth = slatWidth / tDateProfile.snapsPerSlot
+      let startCoord = slatIndex * slatWidth + (snapWidth * localSnapIndex)
+      let endCoord = startCoord + snapWidth
+      let left: number, right: number
+
+      if (isRtl) {
+        left = canvasWidth - endCoord
+        right = canvasWidth - startCoord
+      } else {
+        left = startCoord
+        right = endCoord
+      }
+
       return {
         dateProfile: this.props.dateProfile,
-        dateSpan: slatHit.dateSpan,
-        rect: {
-          left: slatHit.left,
-          right: slatHit.right,
-          top: 0,
-          bottom: elHeight,
+        dateSpan: {
+          range: { start, end },
+          allDay: !tDateProfile.isTimeScale,
         },
-        dayEl: slatHit.dayEl,
+        rect: {
+          left,
+          right,
+          top: 0,
+          bottom: this.bodyEl.getBoundingClientRect().height // okay to do here?,
+        },
+        // HACK. TODO: This is expensive to do every hit-query
+        dayEl: this.bodyEl.querySelectorAll('.fcnew-slat')[slatIndex] as HTMLElement, // TODO!
         layer: 0,
       }
     }

@@ -1,108 +1,16 @@
-import { Duration, CssDimValue } from '@fullcalendar/core'
+import { CssDimValue } from '@fullcalendar/core'
 import {
-  PositionCache, findDirectChildren,
-  isInt, DateProfile,
-  DateMarker, DateEnv, startOfDay, rangeContainsMarker, DateRange, SegSpan,
+  DateEnv,
+  DateMarker,
+  SegSpan,
+  isInt
 } from '@fullcalendar/core/internal'
+import { TimelineSegHorizontals } from './event-placement.js'
 import { TimelineDateProfile } from './timeline-date-profile.js'
 
-export class TimelineCoords { // TODO: rename to "slat" coords?
-  outerCoordCache: PositionCache
-  innerCoordCache: PositionCache
-
-  constructor(
-    public slatRootEl: HTMLElement, // okay to expose?
-    slatEls: HTMLElement[],
-    public dateProfile: DateProfile,
-    private tDateProfile: TimelineDateProfile,
-    private dateEnv: DateEnv,
-    public isRtl: boolean,
-  ) {
-    this.outerCoordCache = new PositionCache(
-      slatRootEl,
-      slatEls,
-      true, // isHorizontal
-      false, // isVertical
-    )
-
-    // for the inner divs within the slats
-    // used for event rendering and scrollTime, to disregard slat border
-    this.innerCoordCache = new PositionCache(
-      slatRootEl,
-      findDirectChildren(slatEls, 'div'),
-      true, // isHorizontal
-      false, // isVertical
-    )
-  }
-
-  isDateInRange(date: DateMarker) {
-    return rangeContainsMarker(this.dateProfile.currentRange, date)
-  }
-
-  // results range from negative width of area to 0
-  dateToCoord(date: DateMarker): number {
-    let { tDateProfile } = this
-    let snapCoverage = this.computeDateSnapCoverage(date)
-    let slotCoverage = snapCoverage / tDateProfile.snapsPerSlot
-    let slotIndex = Math.floor(slotCoverage)
-    slotIndex = Math.min(slotIndex, tDateProfile.slotCnt - 1)
-    let partial = slotCoverage - slotIndex
-    let { innerCoordCache, outerCoordCache } = this
-
-    if (this.isRtl) {
-      return outerCoordCache.originClientRect.width - (
-        outerCoordCache.rights[slotIndex] -
-        (innerCoordCache.getWidth(slotIndex) * partial)
-      )
-    }
-
-    return (
-      outerCoordCache.lefts[slotIndex] +
-      (innerCoordCache.getWidth(slotIndex) * partial)
-    )
-  }
-
-  rangeToCoords(range: DateRange): SegSpan {
-    return {
-      start: this.dateToCoord(range.start),
-      end: this.dateToCoord(range.end),
-    }
-  }
-
-  durationToCoord(duration: Duration): number {
-    let { dateProfile, tDateProfile, dateEnv, isRtl } = this
-    let coord = 0
-
-    if (dateProfile) {
-      let date = dateEnv.add(dateProfile.activeRange.start, duration)
-
-      if (!tDateProfile.isTimeScale) {
-        date = startOfDay(date)
-      }
-
-      coord = this.dateToCoord(date)
-
-      // hack to overcome the left borders of non-first slat
-      if (!isRtl && coord) {
-        coord += 1
-      }
-    }
-
-    return coord
-  }
-
-  coordFromLeft(coord: number) {
-    if (this.isRtl) {
-      return this.outerCoordCache.originClientRect.width - coord
-    }
-    return coord
-  }
-
-  // returned value is between 0 and the number of snaps
-  computeDateSnapCoverage(date: DateMarker): number {
-    return computeDateSnapCoverage(date, this.tDateProfile, this.dateEnv)
-  }
-}
+/*
+TODO: rename this file!
+*/
 
 // returned value is between 0 and the number of snaps
 export function computeDateSnapCoverage(date: DateMarker, tDateProfile: TimelineDateProfile, dateEnv: DateEnv): number {
@@ -134,6 +42,9 @@ export function computeDateSnapCoverage(date: DateMarker, tDateProfile: Timeline
   return snapCoverage
 }
 
+/*
+TODO: audit!!!
+*/
 export function coordToCss(
   hcoord: number | null,
   isRtl: boolean,
@@ -147,6 +58,9 @@ export function coordToCss(
   return { left: hcoord, right: '' }
 }
 
+/*
+TODO: audit!!!
+*/
 export function coordsToCss(
   hcoords: SegSpan | null,
   isRtl: boolean,
@@ -158,4 +72,29 @@ export function coordsToCss(
     return { right: hcoords.start, left: -hcoords.end }
   }
   return { left: hcoords.start, right: -hcoords.end }
+}
+
+/*
+TODO: DRY up with elsewhere?
+*/
+export function horizontalsToCss(
+  hcoord: TimelineSegHorizontals,
+  isRtl: boolean,
+): { left?: CssDimValue, right?: CssDimValue, width: CssDimValue } {
+  if (isRtl) {
+    return { right: hcoord.start, width: hcoord.size }
+  } else {
+    return { left: hcoord.start, width: hcoord.size }
+  }
+}
+
+export function horizontalCoordToCss(
+  start: number,
+  isRtl: boolean,
+): { left?: CssDimValue, right?: CssDimValue } {
+  if (isRtl) {
+    return { right: start }
+  } else {
+    return { left: start }
+  }
 }

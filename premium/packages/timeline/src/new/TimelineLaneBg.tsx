@@ -3,18 +3,24 @@ import {
   getSegMeta, DateRange, DateMarker, buildEventRangeKey,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
-import { computeSegHCoords } from '../event-placement.js'
-import { coordsToCss, TimelineCoords } from '../TimelineCoords.js'
+import { computeSegHorizontals } from '../event-placement.js'
+import { horizontalsToCss } from '../TimelineCoords.js'
 import { TimelineLaneSeg } from '../TimelineLaneSlicer.js'
+import { TimelineDateProfile } from '../timeline-date-profile.js'
 
 export interface TimelineLaneBgProps {
-  businessHourSegs: TimelineLaneSeg[] | null // can be null :(
+  tDateProfile: TimelineDateProfile,
+  nowDate: DateMarker
+  todayRange: DateRange
+
+  // content
   bgEventSegs: TimelineLaneSeg[] | null // can be null :(
+  businessHourSegs: TimelineLaneSeg[] | null // can be null :(
   dateSelectionSegs: TimelineLaneSeg[]
   eventResizeSegs: TimelineLaneSeg[]
-  timelineCoords: TimelineCoords | null
-  todayRange: DateRange
-  nowDate: DateMarker
+
+  // dimensions
+  slotWidth: number | undefined
 }
 
 export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
@@ -22,24 +28,27 @@ export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
     let { props } = this
     let highlightSeg = [].concat(props.eventResizeSegs, props.dateSelectionSegs)
 
-    return props.timelineCoords && (
+    return (
       <div className="fc-timeline-bg">
         {/* Fragments contain the keys */}
-        {this.renderSegs(props.businessHourSegs || [], props.timelineCoords, 'non-business')}
-        {this.renderSegs(props.bgEventSegs || [], props.timelineCoords, 'bg-event')}
-        {this.renderSegs(highlightSeg, props.timelineCoords, 'highlight')}
+        {this.renderSegs(props.businessHourSegs || [], 'non-business')}
+        {this.renderSegs(props.bgEventSegs || [], 'bg-event')}
+        {this.renderSegs(highlightSeg, 'highlight')}
       </div>
     )
   }
 
-  renderSegs(segs: TimelineLaneSeg[], timelineCoords: TimelineCoords | null, fillType: string) {
-    let { todayRange, nowDate } = this.props
-    let { isRtl } = this.context
-    let segHCoords = computeSegHCoords(segs, 0, timelineCoords)
+  renderSegs(segs: TimelineLaneSeg[], fillType: string) {
+    let { tDateProfile, todayRange, nowDate, slotWidth } = this.props
+    let { dateEnv, isRtl } = this.context
 
     let children = segs.map((seg, i) => {
-      let hcoords = segHCoords[i]
-      let hStyle = coordsToCss(hcoords, isRtl)
+      let hStyle: any
+
+      if (slotWidth != null) {
+        let segHorizontal = computeSegHorizontals(seg, undefined, dateEnv, tDateProfile, slotWidth)
+        hStyle = horizontalsToCss(segHorizontal, isRtl)
+      }
 
       return (
         <div

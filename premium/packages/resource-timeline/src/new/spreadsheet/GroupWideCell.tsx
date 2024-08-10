@@ -1,15 +1,24 @@
-import { BaseComponent, ViewContext, ContentContainer } from '@fullcalendar/core/internal'
-import { createElement, Fragment, ComponentChild } from '@fullcalendar/core/preact'
+import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef } from '@fullcalendar/core/internal'
+import { createElement, Fragment, ComponentChild, Ref, createRef } from '@fullcalendar/core/preact'
 import { ColCellContentArg } from '@fullcalendar/resource'
 import { Group, createGroupId, isGroupsEqual } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from './ExpanderIcon.js'
 
 export interface GroupWideCellProps {
-  isExpanded: boolean
   group: Group
+  isExpanded: boolean
+
+  // refs
+  innerHeightRef?: Ref<number>
 }
 
 export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext> {
+  // ref
+  private innerElRef = createRef<HTMLDivElement>()
+
+  // internal
+  private detachInnerHeight?: () => void
+
   render() {
     let { props, context } = this
     let renderProps: ColCellContentArg = { groupValue: props.group.value, view: context.viewApi }
@@ -41,7 +50,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
           willUnmount={spec.labelWillUnmount}
         >
           {(InnerContent) => (
-            <div className="fc-datagrid-cell-frame">
+            <div className="fc-datagrid-cell-frame" ref={this.innerElRef}>
               <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner">
                 <ExpanderIcon
                   depth={0}
@@ -69,6 +78,18 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
       id: createGroupId(props.group),
       isExpanded: !props.isExpanded,
     })
+  }
+
+  componentDidMount(): void {
+    const innerEl = this.innerElRef.current
+
+    this.detachInnerHeight = watchHeight(innerEl, (height) => {
+      setRef(this.props.innerHeightRef, height)
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.detachInnerHeight()
   }
 }
 

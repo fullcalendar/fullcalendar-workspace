@@ -3,8 +3,10 @@ import {
   BaseComponent, DateRange, DateMarker, getDateMeta, getSlotClassNames,
   buildNavLinkAttrs,
   getDayClassNames, DateProfile, memoizeObjArg, ViewContext, memoize, ContentContainer, DateEnv,
+  watchSize,
+  setRef,
 } from '@fullcalendar/core/internal'
-import { createElement } from '@fullcalendar/core/preact'
+import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile.js'
 
 export interface TimelineHeaderThProps {
@@ -15,12 +17,25 @@ export interface TimelineHeaderThProps {
   todayRange: DateRange
   nowDate: DateMarker
   isSticky: boolean
+
+  // dimensions
   slotWidth: number | undefined
+
+  // refs
+  innerHeightRef?: Ref<number>
+  innerWidthRef?: Ref<number>
 }
 
 export class TimelineHeaderCell extends BaseComponent<TimelineHeaderThProps> {
+  // memo
   private refineRenderProps = memoizeObjArg(refineRenderProps)
   private buildCellNavLinkAttrs = memoize(buildCellNavLinkAttrs)
+
+  // ref
+  private innerElRef = createRef<HTMLDivElement>()
+
+  // internal
+  private detachSize?: () => void
 
   render() {
     let { props, context } = this
@@ -46,7 +61,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderThProps> {
         elClasses={[
           'fc-timeline-slot',
           'fc-timeline-slot-label',
-          cell.isWeekStart && 'fc-timeline-slot-em',
+          cell.isWeekStart ? 'fc-timeline-slot-em' : '',
           ...( // TODO: so slot classnames for week/month/bigger. see note above about rowUnit
             cell.rowUnit === 'time' ?
               getSlotClassNames(dateMeta, context.theme) :
@@ -54,14 +69,15 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderThProps> {
           ),
         ]}
         elAttrs={{
-          colSpan: cell.colspan,
           'data-date': dateEnv.formatIso(cell.date, {
             omitTime: !tDateProfile.isTimeScale,
             omitTimeZoneOffset: true,
           }),
         }}
         elStyle={{
-          width: props.slotWidth != null ? props.slotWidth * cell.colspan : undefined,
+          width: props.slotWidth != null
+            ? props.slotWidth * cell.colspan
+            : undefined,
         }}
         renderProps={renderProps}
         generatorName="slotLabelContent"
@@ -72,7 +88,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderThProps> {
         willUnmount={options.slotLabelWillUnmount}
       >
         {(InnerContent) => (
-          <div className="fc-timeline-slot-frame">
+          <div className="fc-timeline-slot-frame" ref={this.innerElRef}>
             <InnerContent
               elTag="a"
               elClasses={[
@@ -86,6 +102,19 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderThProps> {
         )}
       </ContentContainer>
     )
+  }
+
+  componentDidMount(): void {
+    const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
+
+    this.detachSize = watchSize(innerEl, (width, height) => {
+      setRef(this.props.innerWidthRef, width)
+      setRef(this.props.innerHeightRef, height)
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.detachSize()
   }
 }
 

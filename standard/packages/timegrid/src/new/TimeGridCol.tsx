@@ -1,18 +1,30 @@
 import {
-  DateMarker, BaseComponent, EventSegUiInteractionState, Seg, getSegMeta,
-  DateRange, DayCellContainer, BgEvent, renderFill, buildIsoString, computeEarliestSegStart,
-  DateProfile, buildEventRangeKey, sortEventSegs, memoize, SegEntryGroup, SegEntry, Dictionary, hasCustomDayCellContent,
+  BaseComponent,
+  BgEvent,
+  buildEventRangeKey,
+  DateMarker,
+  DateProfile,
+  DateRange, DayCellContainer,
+  Dictionary,
+  EventSegUiInteractionState,
   fracToCssDim,
+  getSegMeta,
+  hasCustomDayCellContent,
+  memoize,
+  renderFill,
+  Seg,
+  SegGroup,
+  sortEventSegs
 } from '@fullcalendar/core/internal'
 import {
   createElement,
   Fragment,
 } from '@fullcalendar/core/preact'
-import { TimeGridMoreLink } from './TimeGridMoreLink.js'
 import { TimeColsSeg } from '../TimeColsSeg.js'
+import { computeFgSegHorizontals, computeFgSegVerticals } from '../event-placement.js'
 import { SegWebRect } from '../seg-web.js'
-import { computeFgSegVerticals, computeFgSegHorizontals } from '../event-placement.js'
 import { TimeGridEvent } from './TimeGridEvent.js'
+import { TimeGridMoreLink } from './TimeGridMoreLink.js'
 import { TimeGridNowIndicatorLine } from './TimeGridNowIndicatorLine.js'
 
 export interface TimeGridColProps {
@@ -200,21 +212,20 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   /*
   NOTE: will already have eventMinHeight applied because segEntries already had it
   */
-  renderHiddenGroups(hiddenGroups: SegEntryGroup[], segs: TimeColsSeg[]) {
+  renderHiddenGroups(hiddenGroups: SegGroup[], segs: TimeColsSeg[]) {
     let { extraDateSpan, dateProfile, todayRange, nowDate, eventSelection, eventDrag, eventResize } = this.props
 
     return (
       <Fragment>
         {hiddenGroups.map((hiddenGroup) => {
-          let hiddenSegs = compileSegsFromEntries(hiddenGroup.entries, segs)
           let startFrac = hiddenGroup.span.start
           let endFrac = hiddenGroup.span.end
           let heightFrac = endFrac - startFrac
 
           return (
             <TimeGridMoreLink
-              key={buildIsoString(computeEarliestSegStart(hiddenSegs))}
-              hiddenSegs={hiddenSegs}
+              key={hiddenGroup.key}
+              hiddenSegs={hiddenGroup.segs as TimeColsSeg[] /* TODO: make SegGroup generic */}
               top={fracToCssDim(startFrac)}
               height={fracToCssDim(heightFrac)}
               extraDateSpan={extraDateSpan}
@@ -262,6 +273,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
   renderNowIndicator(segs: TimeColsSeg[]) {
     let { date, dateProfile } = this.props
+
+    // TODO: what if nowIndicator turned OFF??
 
     return segs.map((seg) => (
       <TimeGridNowIndicatorLine
@@ -348,11 +361,4 @@ export function renderPlainFgSegs(
       })}
     </Fragment>
   )
-}
-
-function compileSegsFromEntries(
-  segEntries: SegEntry[],
-  allSegs: TimeColsSeg[],
-): TimeColsSeg[] {
-  return segEntries.map((segEntry) => allSegs[segEntry.index])
 }

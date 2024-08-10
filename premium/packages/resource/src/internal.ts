@@ -9,28 +9,15 @@ export { VResourceSplitter } from './common/VResourceSplitter.js'
 export { Resource, ResourceHash, getPublicId } from './structs/resource.js'
 export { ResourceViewProps } from './View.js'
 
-// OLD
-export {
-  flattenResources,
-  // Group,
-  isGroupsEqual,
-  GroupNode,
-  // ParentNode,
-  ResourceParentNode,
-  GroupParentNode,
-  ResourceNode,
-  buildRowNodes,
-  buildResourceFields,
-} from './common/resource-hierarchy.js'
-
-// NEW
 export {
   Group,
   ParentNode,
   buildResourceHierarchy,
   isEntityGroup,
   createGroupId,
-} from './common/resource-hierarchy2.js'
+  isGroupsEqual,
+  flattenResources,
+} from './common/resource-hierarchy.js'
 
 export {
   ResourceEntityExpansions,

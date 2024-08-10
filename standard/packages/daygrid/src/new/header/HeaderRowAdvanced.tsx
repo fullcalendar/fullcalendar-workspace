@@ -20,6 +20,9 @@ export interface HeaderRowAdvancedProps<Model, ModelKey> {
   colWidth?: number
 }
 
+/*
+TODO: is it even worth doing this "advanced" version?
+*/
 export class HeaderRowAdvanced<Model, ModelKey> extends BaseComponent<HeaderRowAdvancedProps<Model, ModelKey>> {
   // ref
   private innerHeightRefMap = new RefMap<ModelKey, number>(() => {

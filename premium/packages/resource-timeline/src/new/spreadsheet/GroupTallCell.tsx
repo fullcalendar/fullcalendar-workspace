@@ -1,13 +1,22 @@
-import { BaseComponent, ContentContainer } from '@fullcalendar/core/internal'
-import { ComponentChild, createElement, Fragment } from '@fullcalendar/core/preact'
+import { BaseComponent, ContentContainer, setRef, watchHeight } from '@fullcalendar/core/internal'
+import { ComponentChild, createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
 import { ColSpec, ColCellContentArg } from '@fullcalendar/resource'
 
 export interface GroupTallCellProps {
   colSpec: ColSpec
   fieldValue: any
+
+  // refs
+  innerHeightRef?: Ref<number>
 }
 
 export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
+  // ref
+  private innerElRef = createRef<HTMLDivElement>()
+
+  // internal
+  private detachInnerHeight?: () => void
+
   render() {
     let { props, context } = this
     let { colSpec } = props
@@ -46,6 +55,18 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
         )}
       </ContentContainer>
     )
+  }
+
+  componentDidMount(): void {
+    const innerEl = this.innerElRef.current
+
+    this.detachInnerHeight = watchHeight(innerEl, (height) => {
+      setRef(this.props.innerHeightRef, height)
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.detachInnerHeight()
   }
 }
 

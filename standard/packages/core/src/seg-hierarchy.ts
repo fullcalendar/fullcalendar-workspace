@@ -1,12 +1,18 @@
+import { buildIsoString } from "./datelib/formatting-utils.js"
+import { computeEarliestSegStart } from './common/MoreLinkContainer.js'
+import { Seg } from './component/DateComponent.js'
+
 export interface SegSpan {
   start: number
   end: number
 }
 
 export interface SegEntry {
-  index: number
-  thickness?: number // should be an integer
+  index: number // TODO: eventually move completely to seg as key
+  seg?: Seg
+  segGroup?: SegGroup
   span: SegSpan
+  thickness?: number // if not defined, a query-func will declare it
 }
 
 // used internally. exposed for subclasses of SegHierarchy
@@ -21,13 +27,19 @@ export interface SegInsertion {
 }
 
 export interface SegRect extends SegEntry {
-  thickness: number
+  thickness: number // TODO: rename to 'size' ?
   levelCoord: number
 }
 
-export interface SegEntryGroup {
-  entries: SegEntry[]
+export interface SegEntryMerge {
   span: SegSpan
+  entries: SegEntry[]
+}
+
+export interface SegGroup {
+  key: string
+  span: SegSpan
+  segs: Seg[]
 }
 
 export class SegHierarchy {
@@ -103,6 +115,7 @@ export class SegHierarchy {
     if (entrySpan.start < barrierSpan.start) {
       this.insertEntry({
         index: entry.index,
+        seg: entry.seg,
         thickness: entry.thickness,
         span: { start: entrySpan.start, end: barrierSpan.start },
       }, hiddenEntries)
@@ -111,6 +124,7 @@ export class SegHierarchy {
     if (entrySpan.end > barrierSpan.end) {
       this.insertEntry({
         index: entry.index,
+        seg: entry.seg,
         thickness: entry.thickness,
         span: { start: barrierSpan.end, end: entrySpan.end },
       }, hiddenEntries)
@@ -240,13 +254,15 @@ export function buildEntryKey(entry: SegEntry) {
   return entry.index + ':' + entry.span.start
 }
 
-// returns groups with entries sorted by input order
-export function groupIntersectingEntries(entries: SegEntry[]): SegEntryGroup[] {
-  let merges: SegEntryGroup[] = []
+/*
+returns groups with entries sorted by input order
+*/
+export function groupIntersectingEntries(entries: SegEntry[]): SegGroup[] {
+  let merges: SegEntryMerge[] = []
 
   for (let entry of entries) {
-    let filteredMerges: SegEntryGroup[] = []
-    let hungryMerge: SegEntryGroup = { // the merge that will eat what it collides with
+    let filteredMerges: SegEntryMerge[] = []
+    let hungryMerge: SegEntryMerge = { // the merge that will eat what it collides with
       span: entry.span,
       entries: [entry],
     }
@@ -254,8 +270,8 @@ export function groupIntersectingEntries(entries: SegEntry[]): SegEntryGroup[] {
     for (let merge of merges) {
       if (intersectSpans(merge.span, hungryMerge.span)) {
         hungryMerge = {
-          entries: merge.entries.concat(hungryMerge.entries), // keep preexisting merge's items first. maintains order
           span: joinSpans(merge.span, hungryMerge.span),
+          entries: merge.entries.concat(hungryMerge.entries), // keep preexisting merge's items first. maintains order
         }
       } else {
         filteredMerges.push(merge)
@@ -266,7 +282,18 @@ export function groupIntersectingEntries(entries: SegEntry[]): SegEntryGroup[] {
     merges = filteredMerges
   }
 
-  return merges
+  return merges.map((merge) => {
+    const segs = merge.entries.map(extractEntrySeg)
+    return {
+      key: buildIsoString(computeEarliestSegStart(segs)),
+      span: merge.span,
+      segs,
+    }
+  })
+}
+
+function extractEntrySeg(entry: SegEntry): Seg {
+  return entry.seg
 }
 
 export function joinSpans(span0: SegSpan, span1: SegSpan): SegSpan {

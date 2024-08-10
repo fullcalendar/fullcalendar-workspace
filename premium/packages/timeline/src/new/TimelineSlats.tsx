@@ -1,11 +1,12 @@
 import {
-  BaseComponent, multiplyDuration, DateMarker,
+  afterSize,
+  BaseComponent, DateMarker,
   DateProfile,
   DateRange,
   RefMap,
+  setRef,
 } from '@fullcalendar/core/internal'
-import { createElement, createRef } from '@fullcalendar/core/preact'
-import { TimelineCoords } from '../TimelineCoords.js'
+import { createElement, Ref } from '@fullcalendar/core/preact'
 import { TimelineSlatCell } from './TimelineSlatCell.js'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 
@@ -14,31 +15,33 @@ export interface TimelineSlatsProps {
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
+
+  // dimensions
   slotWidth: number | undefined
-  onCoords?: (coord: TimelineCoords | null) => void
+
+  // ref
+  innerWidthRef?: Ref<number>
 }
 
 export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
-  private rootElRef = createRef<HTMLDivElement>()
-  private cellElRefs = new RefMap<string, HTMLTableCellElement>() // keyed by isoStr
-  private coords: TimelineCoords // for positionToHit
+  private innerWidthRefMap = new RefMap<string, number>(() => { // keyed by isoStr
+    afterSize(this.handleInnerWidths)
+  })
 
   render() {
-    let { props } = this
+    let { props, innerWidthRefMap } = this
     let { tDateProfile, slotWidth } = props
     let { slotDates, isWeekStarts } = tDateProfile
     let isDay = !tDateProfile.isTimeScale && !tDateProfile.largeUnit
 
     return (
-      <div className="fc-timeline-slots" ref={this.rootElRef}>
+      <div className="fc-timeline-slots">
         {slotDates.map((slotDate, i) => {
-          let isLast = i === slotDates.length - 1
           let key = slotDate.toISOString()
 
           return (
             <TimelineSlatCell
               key={key}
-              elRef={this.cellElRefs.createRef(key)}
               date={slotDate}
               dateProfile={props.dateProfile}
               tDateProfile={tDateProfile}
@@ -46,7 +49,12 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
               todayRange={props.todayRange}
               isEm={isWeekStarts[i]}
               isDay={isDay}
-              width={isLast ? undefined : slotWidth}
+
+              // dimensions
+              width={slotWidth}
+
+              // ref
+              innerWidthRef={innerWidthRefMap.createRef(key)}
             />
           )
         })}
@@ -54,70 +62,16 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     )
   }
 
-  componentDidMount() {
-    this.updateSizing()
-  }
+  handleInnerWidths = () => {
+    const innerWidthMap = this.innerWidthRefMap.current
+    let max = 0
 
-  componentDidUpdate(prevProps: TimelineSlatsProps) {
-    this.updateSizing()
-  }
-
-  componentWillUnmount() {
-    if (this.props.onCoords) {
-      this.props.onCoords(null)
-    }
-  }
-
-  updateSizing() {
-    let { props, context } = this
-    let rootEl = this.rootElRef.current
-
-    if (rootEl.offsetWidth) { // not hidden by css
-      this.coords = new TimelineCoords(
-        this.rootElRef.current,
-        [...this.cellElRefs.current.values()],
-        props.dateProfile,
-        props.tDateProfile,
-        context.dateEnv,
-        context.isRtl,
-      )
-
-      if (props.onCoords) {
-        props.onCoords(this.coords)
-      }
-    }
-  }
-
-  positionToHit(leftPosition) { // TODO: kill somehow
-    let { outerCoordCache } = this.coords
-    let { dateEnv, isRtl } = this.context
-    let { tDateProfile } = this.props
-    let slatIndex = outerCoordCache.leftToIndex(leftPosition)
-
-    if (slatIndex != null) {
-      // somewhat similar to what TimeGrid does. consolidate?
-      let slatWidth = outerCoordCache.getWidth(slatIndex)
-      let partial = isRtl ?
-        (outerCoordCache.rights[slatIndex] - leftPosition) / slatWidth :
-        (leftPosition - outerCoordCache.lefts[slatIndex]) / slatWidth
-      let localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot)
-      let start = dateEnv.add(
-        tDateProfile.slotDates[slatIndex],
-        multiplyDuration(tDateProfile.snapDuration, localSnapIndex),
-      )
-      let end = dateEnv.add(start, tDateProfile.snapDuration)
-
-      return {
-        dateSpan: {
-          range: { start, end },
-          allDay: !this.props.tDateProfile.isTimeScale,
-        },
-        dayEl: this.cellElRefs.current.get(slatIndex),
-        left: outerCoordCache.lefts[slatIndex], // TODO: make aware of snaps?
-        right: outerCoordCache.rights[slatIndex],
-      }
+    for (const innerWidth of innerWidthMap.values()) {
+      max = Math.max(max, innerWidth)
     }
 
-    return null
+    // TODO: check to see if changed before firing ref!? YES. do in other places too
+
+    setRef(this.props.innerWidthRef, max)
   }
 }
