@@ -17,9 +17,9 @@ import {
   rangeContainsMarker,
   multiplyDuration,
   afterSize,
+  ScrollerSyncerInterface,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
-import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
 import { buildTimelineDateProfile, TimelineDateProfile } from '../timeline-date-profile.js'
 import { TimelineSlats } from './TimelineSlats.js'
 import { TimelineLane } from './TimelineLane.js'
@@ -52,7 +52,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
   // internal
   private scrollResponder: ScrollResponder
-  private syncedScroller: ScrollerSyncer
+  private syncedScroller: ScrollerSyncerInterface
 
   render() {
     const { props, state, context } = this
@@ -223,7 +223,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   componentDidMount() {
     this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
     const ScrollerSyncer = getScrollerSyncerClass(this.context.pluginHooks)
-    this.syncedScroller = new ScrollerSyncer()
+    this.syncedScroller = new ScrollerSyncer(true) // horizontal=true
     this.updateSyncedScroller()
   }
 
@@ -288,7 +288,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       this.headerScrollerRef.current,
       this.bodyScrollerRef.current,
       this.footerScrollerRef.current
-    ])
+    ], this.context.isRtl)
   }
 
   handleScrollRequest = (request: ScrollRequest) => {

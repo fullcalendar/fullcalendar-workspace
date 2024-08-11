@@ -95,14 +95,17 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   // Public API
   // -----------------------------------------------------------------------------------------------
 
-  get x() {
-    const { isRtl } = this.context
-    const el = this.elRef.current
-    const { scrollLeft } = el
-    return isRtl ? getNormalizedRtlScrollX(scrollLeft, el) : scrollLeft
+  get el(): HTMLElement {
+    return this.elRef.current
   }
 
-  get y() {
+  get x(): number {
+    const { isRtl } = this.context
+    const el = this.elRef.current
+    return getNormalizedScrollX(el, isRtl)
+  }
+
+  get y(): number {
     const el = this.elRef.current
     return el.scrollTop
   }
@@ -116,7 +119,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
     }
 
     if (x != null) {
-      el.scrollLeft = isRtl ? getNormalizedRtlScrollLeft(x, el) : x
+      setNormalizedScrollX(el, isRtl, x)
     }
   }
 }
@@ -124,6 +127,15 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
 // Public API
 // -------------------------------------------------------------------------------------------------
 // TODO: consolidate with scroll-left-norm.ts
+
+export function getNormalizedScrollX(el: HTMLElement, isRtl: boolean): number {
+  const { scrollLeft } = el
+  return isRtl ? getNormalizedRtlScrollX(scrollLeft, el) : scrollLeft
+}
+
+export function setNormalizedScrollX(el: HTMLElement, isRtl: boolean, x: number): void {
+  el.scrollLeft = isRtl ? getNormalizedRtlScrollLeft(x, el) : x
+}
 
 /*
 Returns a value in the 'reverse' system

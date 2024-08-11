@@ -5,6 +5,6 @@ export interface ScrollerSyncerClass {
 }
 
 export interface ScrollerSyncerInterface extends ScrollerInterface {
-  handleChildren(scrollers: ScrollerInterface[]): void
+  handleChildren(scrollers: ScrollerInterface[], isRtl: boolean): void
   destroy(): void
 }

@@ -508,16 +508,18 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
   }
 
   updateScrollers() {
+    const { isRtl } = this.context
+
     this.dayScroller.handleChildren([
       this.headerScrollerRef.current,
       this.allDayScrollerRef.current,
       this.mainScrollerRef.current,
       this.footScrollerRef.current,
-    ])
+    ], isRtl)
     this.timeScroller.handleChildren([
       this.axisScrollerRef.current,
       this.mainScrollerRef.current,
-    ])
+    ], isRtl)
   }
 
   destroyScrollers() {

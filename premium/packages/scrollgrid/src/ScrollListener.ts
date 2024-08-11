@@ -6,7 +6,8 @@ const WHEEL_EVENT_NAMES = 'wheel mousewheel DomMouseScroll MozMousePixelScroll'.
 ALSO, with the ability to disable touch
 */
 export class ScrollListener {
-  emitter: Emitter<any> = new Emitter()
+  public emitter: Emitter<any> = new Emitter()
+
   private isScrolling = false
   private isTouching = false // user currently has finger down?
   private isRecentlyWheeled = false

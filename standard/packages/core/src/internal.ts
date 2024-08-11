@@ -197,7 +197,7 @@ export {
 export type { DayTableCell } from './common/DayTableModel.js'
 export { DayTableModel } from './common/DayTableModel.js'
 
-export { Scroller } from './scrollgrid/Scroller.js'
+export { Scroller, getNormalizedScrollX, setNormalizedScrollX } from './scrollgrid/Scroller.js'
 
 export type { SlicedProps } from './common/slicing-utils.js'
 export { Slicer } from './common/slicing-utils.js'
