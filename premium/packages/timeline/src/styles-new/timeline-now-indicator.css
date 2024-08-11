@@ -8,7 +8,8 @@
     bottom: 0;
     left: 0;
     right: 0;
-    width: 0;
+    overflow: hidden;
+    // ^so arrow doesn't bleed out and cause overflow. DRY this up from elsewhere?
   }
 
   & .fcnew-timeline-now-indicator-arrow,

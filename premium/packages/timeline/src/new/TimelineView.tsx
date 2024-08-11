@@ -126,22 +126,24 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     paddingRight: state.rightScrollbarWidth,
                   }}
                 >
-                  {cellRows.map((cells, rowLevel) => (
-                    <TimelineHeaderRow
-                      key={rowLevel}
-                      dateProfile={props.dateProfile}
-                      tDateProfile={tDateProfile}
-                      nowDate={nowDate}
-                      todayRange={todayRange}
-                      rowLevel={rowLevel}
-                      isLastRow={rowLevel === cellRows.length - 1}
-                      cells={cells}
-                      innerWidthRef={this.handleHeaderSlotInnerWidth}
-                      slotWidth={slotStyleWidth}
-                    />
-                  ))}
+                  <div>
+                    {cellRows.map((cells, rowLevel) => (
+                      <TimelineHeaderRow
+                        key={rowLevel}
+                        dateProfile={props.dateProfile}
+                        tDateProfile={tDateProfile}
+                        nowDate={nowDate}
+                        todayRange={todayRange}
+                        rowLevel={rowLevel}
+                        isLastRow={rowLevel === cellRows.length - 1}
+                        cells={cells}
+                        innerWidthRef={this.handleHeaderSlotInnerWidth}
+                        slotWidth={slotStyleWidth}
+                      />
+                    ))}
+                  </div>
                   {enableNowIndicator && (
-                    // TODO: make this positioned WITHIN padding
+                    // TODO: make this positioned WITHIN padding?
                     <TimelineNowIndicatorArrow
                       tDateProfile={tDateProfile}
                       nowDate={nowDate}
