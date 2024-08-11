@@ -35,8 +35,8 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
     const isChrono = props.tDateProfile.isTimeScale && props.isLastRow // the final row, with times?
     const classNames = [
       'fcnew-row',
-      'fc-timeline-header-row',
-      isChrono ? 'fc-timeline-header-row-chrono' : '',
+      'fcnew-timeline-header-row',
+      isChrono ? 'fcnew-timeline-header-row-chrono' : '',
     ]
 
     return (

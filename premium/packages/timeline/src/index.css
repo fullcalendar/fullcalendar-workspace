@@ -2,9 +2,13 @@
 @import '../../../../standard/packages/core/src/styles/mixins';
 @import './styles/constants';
 
-@import './styles/timeline-body';
+@import './styles-new/timeline-slots';
+@import './styles-new/timeline-now-indicator';
+@import './styles-new/timeline-events';
+@import './styles-new/timeline-bg';
+
+/* @import './styles/timeline-body';
 @import './styles/timeline-slots';
 @import './styles/timeline-now-indicator';
 @import './styles/timeline-events';
-@import './styles/timeline-bg';
-
+@import './styles/timeline-bg'; */

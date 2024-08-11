@@ -1,0 +1,52 @@
+
+/*
+vertical slots in both the header AND the body
+*/
+
+.fc {
+
+  & .fcnew-timeline-slots {
+    position: absolute;
+    z-index: $timeline-slots-z;
+    top: 0;
+    bottom: 0;
+  }
+
+  // border for both header AND body cells
+
+  & .fcnew-timeline-slot-minor {
+    border-style: dotted;
+  }
+
+  // header cells (aka "label")
+
+  & .fcnew-timeline-slot-frame {
+    display: flex;
+    align-items: center; // vertical align
+    justify-content: center; // horizontal align
+  }
+
+  & .fcnew-timeline-header-row-chrono { // a row of times
+    & .fcnew-timeline-slot-frame {
+      justify-content: flex-start; // horizontal align left or right
+    }
+  }
+
+  & .fcnew-timeline-header-row:last-child { // guaranteed NOT to have sticky elements
+    & .fcnew-timeline-slot-frame {
+      // so text doesn't bleed out and cause extra scroll
+      // (won't work with sticky elements)
+      overflow: hidden;
+    }
+  }
+
+  & .fcnew-timeline-slot-cushion {
+    padding: 4px 5px; // TODO: unify with fc-col-header?
+    white-space: nowrap;
+  }
+
+  // NOTE: how does the top row of cells get horizontally centered?
+  // for the non-chrono-row, the fc-sticky system looks for text-align center,
+  // and it's a fluke that the default browser stylesheet already does this for <th>
+  // TODO: have StickyScrolling look at natural left coord to detect centeredness.
+}

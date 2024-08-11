@@ -97,11 +97,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
             <ViewContainer
               viewSpec={context.viewSpec}
               elClasses={[
-                'fcnew-flexexpand', // expand within fc-view-harness
-                'fcnew-flexparent',
-                'fc-timeline',
+                'fcnew-bordered',
+                'fcnew-flex-column',
+                'fcnew-timeline',
                 options.eventOverlap === false ?
-                  'fc-timeline-overlap-disabled' :
+                  'fcnew-timeline-overlap-disabled' :
                   '',
               ]}
             >
@@ -111,14 +111,20 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               <Scroller
                 horizontal
                 hideScrollbars
-                elClassNames={[stickyHeaderDates ? 'fcnew-v-sticky' : '']}
+                elClassNames={[
+                  'fnew-rowgroup',
+                  stickyHeaderDates ? 'fcnew-v-sticky' : '',
+                ]}
                 ref={this.headerScrollerRef}
               >
-                <div style={{
-                  width: canvasWidth,
-                  paddingLeft: state.leftScrollbarWidth,
-                  paddingRight: state.rightScrollbarWidth,
-                }}>
+                <div
+                  className='fcnew-rel'
+                  style={{
+                    width: canvasWidth,
+                    paddingLeft: state.leftScrollbarWidth,
+                    paddingRight: state.rightScrollbarWidth,
+                  }}
+                >
                   {cellRows.map((cells, rowLevel) => (
                     <TimelineHeaderRow
                       key={rowLevel}
@@ -149,14 +155,14 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               <Scroller
                 vertical
                 horizontal
-                elClassNames={['fcnew-flexexpand']}
+                elClassNames={['fcnew-rowgroup', 'fcnew-flex-grow']}
                 ref={this.bodyScrollerRef}
                 widthRef={this.handleScrollerWidth}
                 leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
                 rightScrollbarWidthRef={this.handleRightScrollbarWidth}
               >
                 <div
-                  className="fc-timeline-body"
+                  className="fcnew-timeline-body fcnew-rel"
                   ref={this.handeBodyEl}
                 >
                   <TimelineSlats

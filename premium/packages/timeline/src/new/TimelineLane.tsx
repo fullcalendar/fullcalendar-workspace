@@ -139,7 +139,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           slotWidth={props.slotWidth}
         />
         <div
-          className="fc-timeline-events fc-scrollgrid-sync-inner"
+          className="fcnew-timeline-events"
           style={{ height: innerHeight }}
         >
           {this.renderFgSegs(

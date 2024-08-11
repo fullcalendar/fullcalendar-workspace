@@ -17,9 +17,9 @@ export class TimelineNowIndicatorArrow extends BaseComponent<TimelineNowIndicato
     const { props, context } = this
 
     return (
-      <div className="fc-timeline-now-indicator-container">
-        <NowIndicatorContainer // TODO: make separate component?
-          elClasses={['fc-timeline-now-indicator-arrow']}
+      <div className="fcnew-timeline-now-indicator-container">
+        <NowIndicatorContainer
+          elClasses={['fcnew-timeline-now-indicator-arrow']}
           elStyle={
             props.slotWidth != null
               ? horizontalCoordToCss(
