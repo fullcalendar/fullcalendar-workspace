@@ -19,7 +19,7 @@ export class TimelineEvent extends BaseComponent<TimelineEventProps> {
     return (
       <StandardEvent
         {...props}
-        elClasses={['fc-timeline-event', 'fc-h-event']}
+        elClasses={['fcnew-timeline-event', 'fcnew-h-event']}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
         defaultDisplayEventTime={!props.isTimeScale}
       />

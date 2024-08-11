@@ -6,7 +6,6 @@
     z-index: $timeline-bg-z;
     top: 0;
     bottom: 0;
-    width: 0;
     left: 0; // will take precedence when LTR
     right: 0; // will take precedence when RTL
 

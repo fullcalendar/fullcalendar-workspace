@@ -41,7 +41,7 @@ export function getScrollerSyncerClass(pluginHooks: {
   scrollerSyncerClass: ScrollerSyncerClass | null,
 }): ScrollerSyncerClass {
   const ScrollerSyncer = pluginHooks.scrollerSyncerClass
-  if (ScrollerSyncer) {
+  if (!ScrollerSyncer) {
     throw new RangeError('Must import @fullcalendar/scrollgrid')
   }
   return ScrollerSyncer

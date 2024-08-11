@@ -1,4 +1,5 @@
 import {
+  afterSize,
   DateComponent,
   DateMarker,
   DateRange,
@@ -115,7 +116,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private timeFooterScrollerRef = createRef<Scroller>()
   private bodyEl: HTMLElement
   private headerRowInnerHeightMap = new RefMap<boolean | number, number>()
-
   private spreadsheetEntityInnerHeightMap = new RefMap<Group | Resource, number>()
   private timeEntityInnerHeightMap = new RefMap<Group | Resource, number>()
 
@@ -215,11 +215,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     )
     this.currentBodyEntityHeightMap = bodyEntityHeightMap
 
-    let { slotMinWidth } = options
     let [slotWidth, timeCanvasWidth] = this.computeSlotWidth(
       tDateProfile.slotCnt,
-      slotMinWidth,
-      state.slotInnerWidth,
+      tDateProfile.slotsPerLabel,
+      options.slotMinWidth,
+      state.slotInnerWidth, // is ACTUALLY the last-level label width. rename?
       state.mainScrollerWidth
     )
     this.currentCanvasWidth = timeCanvasWidth
@@ -461,21 +461,24 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         paddingLeft: state.leftScrollbarWidth,
                         paddingRight: state.rightScrollbarWidth,
                       }}>
-                        {cellRows.map((cells, rowLevel) => (
-                          <TimelineHeaderRow
-                            key={rowLevel}
-                            dateProfile={props.dateProfile}
-                            tDateProfile={tDateProfile}
-                            nowDate={nowDate}
-                            todayRange={todayRange}
-                            rowLevel={rowLevel}
-                            isLastRow={rowLevel === cellRows.length - 1}
-                            cells={cells}
-                            slotWidth={slotWidth}
-                            innerWidthRef={this.handleHeaderSlotInnerWidth}
-                            innerHeighRef={this.headerRowInnerHeightMap.createRef(rowLevel)}
-                          />
-                        ))}
+                        {cellRows.map((cells, rowLevel) => {
+                          const isLast = rowLevel === cellRows.length - 1
+                          return (
+                            <TimelineHeaderRow
+                              key={rowLevel}
+                              dateProfile={props.dateProfile}
+                              tDateProfile={tDateProfile}
+                              nowDate={nowDate}
+                              todayRange={todayRange}
+                              rowLevel={rowLevel}
+                              isLastRow={isLast}
+                              cells={cells}
+                              slotWidth={slotWidth}
+                              innerWidthRef={isLast ? this.handleHeaderSlotInnerWidth : undefined}
+                              innerHeighRef={this.headerRowInnerHeightMap.createRef(rowLevel)}
+                            />
+                          )
+                        })}
                         {enableNowIndicator && (
                           // TODO: make this positioned WITHIN padding
                           <TimelineNowIndicatorArrow
@@ -689,10 +692,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
   handleHeaderSlotInnerWidth = (width: number) => {
     this.headerSlotInnerWidth = width
+    afterSize(this.handleSlotInnerWidths)
   }
 
   handleBodySlotInnerWidth = (width: number) => {
     this.bodySlotInnerWidth = width
+    afterSize(this.handleSlotInnerWidths)
   }
 
   handleSlotInnerWidths = () => {

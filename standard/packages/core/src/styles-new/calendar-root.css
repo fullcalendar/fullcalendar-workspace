@@ -77,7 +77,9 @@
 .fcnew-row,
 .fcnew-rowgroup,
 .fcnew-rowdivider {
-  border-bottom: 1px solid var(--fc-border-color);
+  border-style: solid;
+  border-color: var(--fc-border-color);
+  border-width: 0 0 1px; // bottom
 }
 
 .fcnew-row:last-child,
@@ -88,7 +90,9 @@
 
 .fcnew-cell,
 .fcnew-rowheader {
-  border-right: 1px solid var(--fc-border-color);
+  border-style: solid;
+  border-color: var(--fc-border-color);
+  border-width: 0 1px 0 0; // right
 }
 
 .fcnew-cell:last-child,

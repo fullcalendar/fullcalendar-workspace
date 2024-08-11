@@ -10,6 +10,7 @@
 @import './styles-new/bg';
 @import './styles-new/h-event';
 @import './styles-new/popover';
+@import './styles-new/scroller';
 
 @import './styles/icons';
 @import './styles/button';

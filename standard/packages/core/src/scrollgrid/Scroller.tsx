@@ -77,13 +77,13 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
         setRef(props.heightRef, this.currentHeight = contentHeight)
       }
       if (!isDimsEqual(this.currentBottomScrollbarWidth, bottomScrollbarWidth)) {
-        setRef(props.leftScrollbarWidthRef, this.currentBottomScrollbarWidth = bottomScrollbarWidth)
+        setRef(props.bottomScrollbarWidthRef, this.currentBottomScrollbarWidth = bottomScrollbarWidth)
       }
       if (!isDimsEqual(this.currentRightScrollbarWidth, rightScrollbarWidth)) {
         setRef(props.rightScrollbarWidthRef, this.currentRightScrollbarWidth = rightScrollbarWidth)
       }
       if (!isDimsEqual(this.currentLeftScrollbarWidth, leftScrollbarWidth)) {
-        setRef(props.bottomScrollbarWidthRef, this.currentLeftScrollbarWidth = leftScrollbarWidth)
+        setRef(props.leftScrollbarWidthRef, this.currentLeftScrollbarWidth = leftScrollbarWidth)
       }
     })
   }

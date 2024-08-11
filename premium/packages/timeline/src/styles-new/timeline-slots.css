@@ -10,6 +10,8 @@ vertical slots in both the header AND the body
     z-index: $timeline-slots-z;
     top: 0;
     bottom: 0;
+    left: 0;
+    right: 0;
   }
 
   // border for both header AND body cells
@@ -20,27 +22,27 @@ vertical slots in both the header AND the body
 
   // header cells (aka "label")
 
-  & .fcnew-timeline-slot-frame {
+  & .fcnew-timeline-slot {
     display: flex;
     align-items: center; // vertical align
     justify-content: center; // horizontal align
+
+    // so text doesn't bleed out and cause extra scroll
+    // (won't work with sticky elements)
+    overflow: hidden;
+  }
+
+  & .fcnew-timeline-slot-inner {
   }
 
   & .fcnew-timeline-header-row-chrono { // a row of times
-    & .fcnew-timeline-slot-frame {
+    & .fcnew-timeline-slot {
       justify-content: flex-start; // horizontal align left or right
     }
   }
 
-  & .fcnew-timeline-header-row:last-child { // guaranteed NOT to have sticky elements
-    & .fcnew-timeline-slot-frame {
-      // so text doesn't bleed out and cause extra scroll
-      // (won't work with sticky elements)
-      overflow: hidden;
-    }
-  }
-
   & .fcnew-timeline-slot-cushion {
+    display: block; // NOTE: it's normally an <a> tag
     padding: 4px 5px; // TODO: unify with fc-col-header?
     white-space: nowrap;
   }

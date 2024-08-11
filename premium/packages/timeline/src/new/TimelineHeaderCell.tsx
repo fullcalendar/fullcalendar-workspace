@@ -89,7 +89,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
         willUnmount={options.slotLabelWillUnmount}
       >
         {(InnerContent) => (
-          <div className="fc-timeline-slot-frame" ref={this.innerElRef}>
+          <div className="fcnew-timeline-slot-inner" ref={this.innerElRef}>
             <InnerContent
               elTag="a"
               elClasses={[

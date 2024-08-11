@@ -78,8 +78,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
     const [canvasWidth, slotWidth, slotLiquid] = this.computeSlotWidth(
       tDateProfile.slotCnt,
+      tDateProfile.slotsPerLabel,
       options.slotMinWidth,
-      state.slotInnerWidth,
+      state.slotInnerWidth, // is ACTUALLY the label width. rename?
       state.scrollerWidth,
     )
     this.slotWidth = slotWidth
@@ -112,7 +113,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 horizontal
                 hideScrollbars
                 elClassNames={[
-                  'fnew-rowgroup',
+                  'fcnew-rowgroup',
                   stickyHeaderDates ? 'fcnew-v-sticky' : '',
                 ]}
                 ref={this.headerScrollerRef}
@@ -163,6 +164,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               >
                 <div
                   className="fcnew-timeline-body fcnew-rel"
+                  style={{ width: canvasWidth }}
                   ref={this.handeBodyEl}
                 >
                   <TimelineSlats

@@ -33,25 +33,32 @@ export function createHorizontalStyle(
 // Timeline-specific
 // -------------------------------------------------------------------------------------------------
 
+const MIN_SLOT_WIDTH = 30 // for real
+
 /*
 TODO: DRY with computeSlatHeight?
 */
 export function computeSlotWidth(
   slatCnt: number,
+  slatsPerLabel: number,
   slatMinWidth: number | undefined,
-  slatInnerWidth: number | undefined,
-  scrollerHeight: number | undefined,
+  labelInnerWidth: number | undefined,
+  viewportWidth: number | undefined,
 ): [
   canvasWidth: number | undefined,
   slatWidth: number | undefined,
   slatLiquid: boolean,
 ] {
-  if (!slatInnerWidth || !scrollerHeight) {
+  if (labelInnerWidth == null || viewportWidth == null) {
     return [undefined, undefined, false]
   }
 
-  slatMinWidth = Math.max(slatMinWidth || 0, slatInnerWidth + 1)
-  const slatTryWidth = scrollerHeight / slatCnt
+  slatMinWidth = Math.max(
+    slatMinWidth || 0,
+    (labelInnerWidth + 1) / slatsPerLabel,
+    MIN_SLOT_WIDTH,
+  )
+  const slatTryWidth = viewportWidth / slatCnt
   let slatLiquid: boolean
   let slatWidth: number
 
