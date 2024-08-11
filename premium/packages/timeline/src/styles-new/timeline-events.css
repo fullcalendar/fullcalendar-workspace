@@ -5,7 +5,6 @@
   & .fcnew-timeline-events {
     position: relative;
     z-index: $timeline-fg-z;
-    width: 0; // for event positioning. will end up on correct side based on dir
   }
 
   // harness

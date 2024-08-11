@@ -137,7 +137,7 @@ export function computeMaxBottom(
   for (const seg of segs) {
     const { instanceId } = seg.eventRange.instance
     const top = segTops[instanceId]
-    const height = segHeights[instanceId]
+    const height = segHeights.get(instanceId)
 
     if (top != null && height != null) {
       max = Math.max(max, top + height)
@@ -161,7 +161,7 @@ export function computeMoreLinkMaxBottom(
 
   for (const hiddenGroup of hiddenGroups) {
     const top = hiddenGroupTops[hiddenGroup.key]
-    const height = hiddenGroupHeights[hiddenGroup.key]
+    const height = hiddenGroupHeights.get(hiddenGroup.key)
 
     if (top != null && height != null) {
       max = Math.max(max, top + height)
