@@ -9,7 +9,7 @@ import { TimeGridSlatLabel } from "./TimeGridSlatLabel.js"
 import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
 import { TimeGridCols } from "./TimeGridCols.js"
 import { TimeColsSeg } from "../TimeColsSeg.js"
-import { computeSlatHeight } from "./util.js"
+import { computeSlatHeight, getSlatRowClassName } from "./util.js"
 
 export interface TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
   dateProfile: DateProfile
@@ -298,7 +298,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               {props.slatMetas.map((slatMeta) => (
                 <div
                   key={slatMeta.key}
-                  className='fcnew-row'
+                  className={getSlatRowClassName(slatMeta)}
                   style={{ height: slatStyleHeight }}
                 >
                   <TimeGridSlatLabel // .fcnew-rowheader
@@ -340,7 +340,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               {props.slatMetas.map((slatMeta) => (
                 <div
                   key={slatMeta.key}
-                  className='fcnew-row'
+                  className={getSlatRowClassName(slatMeta)}
                   style={{ height: slatStyleHeight }}
                 >
                   <TimeGridSlatLane // .fcnew-cell

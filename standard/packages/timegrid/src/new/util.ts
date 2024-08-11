@@ -1,5 +1,6 @@
 import { Duration } from '@fullcalendar/core'
 import { asRoughMs, createDuration, DateEnv, DateMarker, DateProfile, DateProfileGenerator, DateRange, DaySeriesModel, DayTableModel, startOfDay } from "@fullcalendar/core/internal"
+import { TimeSlatMeta } from '../time-slat-meta.js'
 
 export function buildTimeColsModel(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
   let daySeries = new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
@@ -76,4 +77,12 @@ export function computeTimeTopFrac(time: Duration, dateProfile: DateProfile): nu
   frac = Math.min(1, frac)
 
   return frac
+}
+
+export function getSlatRowClassName(slatMeta: TimeSlatMeta): string {
+  return [
+    'fcnew-row',
+    'fcnew-timegrid-slot',
+    slatMeta.isLabeled ? '' : 'fcnew-timegrid-slot-minor',
+  ].join(' ')
 }

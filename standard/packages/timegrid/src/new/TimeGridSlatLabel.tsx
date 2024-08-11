@@ -44,9 +44,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
 
     let classNames = [
       'fcnew-rowheader',
-      'fcnew-timegrid-slot',
       'fcnew-timegrid-slot-label',
-      props.isLabeled ? '' : 'fcnew-timegrid-slot-minor',
     ]
 
     if (!props.isLabeled) {
