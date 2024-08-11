@@ -55,7 +55,7 @@ export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
           return (
             <div
               key={buildEventRangeKey(seg.eventRange)}
-              className="fc-timeline-bg-harness"
+              className="fcnew-timeline-bg-harness"
               style={hStyle}
             >
               {fillType === 'bg-event' ?
