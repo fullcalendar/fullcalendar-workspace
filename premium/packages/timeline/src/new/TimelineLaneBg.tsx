@@ -42,27 +42,29 @@ export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
     let { tDateProfile, todayRange, nowDate, slotWidth } = this.props
     let { dateEnv, isRtl } = this.context
 
-    let children = segs.map((seg, i) => {
-      let hStyle: any
+    return (
+      <Fragment>
+        {segs.map((seg) => {
+          let hStyle: ReturnType<typeof horizontalsToCss> // TODO
 
-      if (slotWidth != null) {
-        let segHorizontal = computeSegHorizontals(seg, undefined, dateEnv, tDateProfile, slotWidth)
-        hStyle = horizontalsToCss(segHorizontal, isRtl)
-      }
+          if (slotWidth != null) {
+            let segHorizontal = computeSegHorizontals(seg, undefined, dateEnv, tDateProfile, slotWidth)
+            hStyle = horizontalsToCss(segHorizontal, isRtl)
+          }
 
-      return (
-        <div
-          key={buildEventRangeKey(seg.eventRange)}
-          className="fc-timeline-bg-harness"
-          style={hStyle}
-        >
-          {fillType === 'bg-event' ?
-            <BgEvent seg={seg} {...getSegMeta(seg, todayRange, nowDate)} /> :
-            renderFill(fillType)}
-        </div>
-      )
-    })
-
-    return <Fragment>{children}</Fragment>
+          return (
+            <div
+              key={buildEventRangeKey(seg.eventRange)}
+              className="fc-timeline-bg-harness"
+              style={hStyle}
+            >
+              {fillType === 'bg-event' ?
+                <BgEvent seg={seg} {...getSegMeta(seg, todayRange, nowDate)} /> :
+                renderFill(fillType)}
+            </div>
+          )
+        })}
+      </Fragment>
+    )
   }
 }

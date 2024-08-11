@@ -16,7 +16,7 @@ import { TimelineLaneBg } from './TimelineLaneBg.js'
 import { TimelineLaneSlicer, TimelineLaneSeg } from '../TimelineLaneSlicer.js'
 import { TimelineEvent } from './TimelineEvent.js'
 import { TimelineLaneMoreLink } from './TimelineLaneMoreLink.js'
-import { computeFgSegPlacements, computeManySegHorizontals, TimelineSegHorizontals } from '../event-placement.js'
+import { computeFgSegPlacements, computeManySegHorizontals, computeMoreLinkMaxBottom, TimelineSegHorizontals } from '../event-placement.js'
 import { TimelineEventHarness } from './TimelineEventHarness.js'
 
 export interface TimelineLaneProps {
@@ -48,6 +48,9 @@ interface TimelineLaneState {
   moreLinkHeightRev?: string
 }
 
+/*
+TODO: split TimelineLaneBg and TimelineLaneFg?
+*/
 export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneState> {
   // memo
   private sortEventSegs = memoize(sortEventSegs)
@@ -59,7 +62,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
   private moreLinkHeightRefMap = new RefMap<string, number>(() => { // keyed by SegGroup.key
     afterSize(this.handleMoreLinkHeights)
   })
-  private currentInnerHeight?: number
+  private innerHeight?: number
 
   // internal
   private slicer = new TimelineLaneSlicer()
@@ -102,14 +105,14 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       options.eventMaxStack,
     )
 
-    let innerHeight: number | undefined = undefined
-    let moreLinksBottom = this.getMoreLinksBottom(hiddenGroupTops)
+    let innerHeight: number | undefined
+    let moreLinksBottom = computeMoreLinkMaxBottom(hiddenGroups, hiddenGroupTops, this.moreLinkHeightRefMap.current)
 
     if (fgSegsBottom != null && moreLinksBottom != null) { // ready?
       innerHeight = Math.max(moreLinksBottom, fgSegsBottom)
 
-      if (this.currentInnerHeight !== innerHeight) {
-        this.currentInnerHeight = innerHeight
+      if (this.innerHeight !== innerHeight) {
+        this.innerHeight = innerHeight
         setRef(props.innerHeightRef, innerHeight)
       }
     }
@@ -146,13 +149,13 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
             forcedInvisibleMap,
             hiddenGroups,
             hiddenGroupTops,
-            false,
-            false,
-            false,
+            false, // isDragging
+            false, // isResizing
+            false, // isDateSelecting
           )}
           {this.renderFgSegs(
             mirrorSegs,
-            props.slotWidth
+            props.slotWidth // TODO: memoize
               ? computeManySegHorizontals(mirrorSegs, options.eventMinWidth, context.dateEnv, tDateProfile, props.slotWidth)
               : {},
             fgSegTops,
@@ -161,7 +164,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
             {},
             Boolean(slicedProps.eventDrag),
             Boolean(slicedProps.eventResize),
-            false, // because mirror is never drawn for date selection
+            false, // isDateSelecting. because mirror is never drawn for date selection
           )}
         </div>
       </Fragment>
@@ -185,20 +188,21 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
     return (
       <Fragment>
         {segs.map((seg) => {
-          const instanceId = seg.eventRange.instance.instanceId
+          const { instanceId } = seg.eventRange.instance
           const segTop = segTops[instanceId]
           const segHorizontal = segHorizontals[instanceId]
-          const isVisible = isMirror || Boolean(!forcedInvisibleMap[instanceId] && segHorizontal && segTop !== null)
+          const isVisible = segTop !== null && segHorizontal &&
+            (isMirror || Boolean(!forcedInvisibleMap[instanceId]))
 
           return (
             <TimelineEventHarness
               key={instanceId}
-              heightRef={isMirror ? undefined : segHeightRefMap.createRef(instanceId)}
               style={{
-                visibility: isVisible ? ('' as any) : 'hidden',
+                visibility: isVisible ? '' : 'hidden',
                 top: segTop || 0,
                 ...horizontalsToCss(segHorizontal, context.isRtl),
               }}
+              heightRef={isMirror ? undefined : segHeightRefMap.createRef(instanceId)}
             >
               <TimelineEvent
                 isTimeScale={props.tDateProfile.isTimeScale}
@@ -216,14 +220,14 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         {hiddenGroups.map((hiddenGroup) => (
           <TimelineEventHarness
             key={hiddenGroup.key}
-            heightRef={moreLinkHeightRefMap.createRef(hiddenGroup.key)}
             style={{
-              top: hiddenGroupTops[hiddenGroup.key],
+              top: hiddenGroupTops[hiddenGroup.key] || 0,
               ...horizontalsToCss({ // TODO: better way to do this?
                 start: hiddenGroup.span.start,
                 size: hiddenGroup.span.end - hiddenGroup.span.start
               }, context.isRtl),
             }}
+            heightRef={moreLinkHeightRefMap.createRef(hiddenGroup.key)}
           >
             <TimelineLaneMoreLink
               hiddenSegs={hiddenGroup.segs as TimelineLaneSeg[] /* TODO: make SegGroup generic! */}
@@ -242,8 +246,8 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
   }
 
   componentWillUnmount() {
-    if (this.currentInnerHeight != null) {
-      this.currentInnerHeight = undefined
+    if (this.innerHeight != null) {
+      this.innerHeight = undefined
       setRef(this.props.innerHeightRef, null)
     }
   }
@@ -254,26 +258,5 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
 
   private handleSegHeights = () => {
     this.setState({ segHeightRev: guid() }) // will trigger rerender
-  }
-
-  /*
-  TODO: converge with computeMaxBottom, but will have `key` problems
-  */
-  private getMoreLinksBottom(moreLinkTops: { [key: string]: number }): number | undefined {
-    const moreLinkHeightMap = this.moreLinkHeightRefMap.current
-    let max = 0
-
-    for (const moreLinkKey in moreLinkTops) {
-      const moreLinkTop = moreLinkTops[moreLinkKey]
-      const moreLinkHeight = moreLinkHeightMap.get(moreLinkKey)
-
-      if (moreLinkHeight != null) {
-        max = Math.max(max, moreLinkTop + moreLinkHeight)
-      } else {
-        return // not ready
-      }
-    }
-
-    return max
   }
 }

@@ -78,9 +78,12 @@ export function coordsToCss(
 TODO: DRY up with elsewhere?
 */
 export function horizontalsToCss(
-  hcoord: TimelineSegHorizontals,
+  hcoord: TimelineSegHorizontals | null,
   isRtl: boolean,
-): { left?: CssDimValue, right?: CssDimValue, width: CssDimValue } {
+): { left?: CssDimValue, right?: CssDimValue, width?: CssDimValue } {
+  if (!hcoord) {
+    return {}
+  }
   if (isRtl) {
     return { right: hcoord.start, width: hcoord.size }
   } else {

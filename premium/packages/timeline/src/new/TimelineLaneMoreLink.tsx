@@ -16,13 +16,13 @@ export interface TimelineLaneMoreLinkProps {
   hiddenSegs: TimelineLaneSeg[]
   eventSelection: string
   forcedInvisibleMap: { [instanceId: string]: any }
-  resourceId?: string // HACK
+  resourceId?: string // HACK... make a generic keyval like extraRenderProps
 }
 
 export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProps> {
   render() {
     let { props } = this
-    let { hiddenSegs, resourceId } = props
+    let { hiddenSegs, resourceId, forcedInvisibleMap } = props
     let extraDateSpan = resourceId ? { resourceId } : {}
 
     return (
@@ -41,7 +41,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
               return (
                 <div
                   key={instanceId}
-                  style={{ visibility: props.forcedInvisibleMap[instanceId] ? 'hidden' : '' }}
+                  style={{ visibility: forcedInvisibleMap[instanceId] ? 'hidden' : '' }}
                 >
                   <TimelineEvent
                     isTimeScale={props.isTimeScale}

@@ -50,11 +50,11 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
               isEm={isWeekStarts[i]}
               isDay={isDay}
 
-              // dimensions
-              width={slotWidth}
-
               // ref
               innerWidthRef={innerWidthRefMap.createRef(key)}
+
+              // dimensions
+              width={slotWidth}
             />
           )
         })}
@@ -71,7 +71,6 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     }
 
     // TODO: check to see if changed before firing ref!? YES. do in other places too
-
     setRef(this.props.innerWidthRef, max)
   }
 }

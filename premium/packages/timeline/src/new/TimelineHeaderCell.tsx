@@ -9,7 +9,7 @@ import {
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile.js'
 
-export interface TimelineHeaderThProps {
+export interface TimelineHeaderCellProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   rowLevel: number
@@ -26,7 +26,7 @@ export interface TimelineHeaderThProps {
   innerWidthRef?: Ref<number>
 }
 
-export class TimelineHeaderCell extends BaseComponent<TimelineHeaderThProps> {
+export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
   // memo
   private refineRenderProps = memoizeObjArg(refineRenderProps)
   private buildCellNavLinkAttrs = memoize(buildCellNavLinkAttrs)
@@ -94,7 +94,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderThProps> {
               elClasses={[
                 'fc-timeline-slot-cushion',
                 'fc-scrollgrid-sync-inner',
-                props.isSticky && 'fc-sticky',
+                props.isSticky ? 'fc-sticky' : '',
               ]}
               elAttrs={this.buildCellNavLinkAttrs(context, cell.date, cell.rowUnit)}
             />
@@ -116,7 +116,12 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderThProps> {
   componentWillUnmount(): void {
     this.detachSize()
   }
+
+  // TODO: unset width/height ref on unmount?
 }
+
+// Utils
+// -------------------------------------------------------------------------------------------------
 
 function buildCellNavLinkAttrs(context: ViewContext, cellDate: DateMarker, rowUnit: string): any {
   return (rowUnit && rowUnit !== 'time')

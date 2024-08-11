@@ -909,6 +909,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
       /*
       TODO: DRY-up ith TimelineView!!!
+      TODO: make RTL-friendly like TimelineView
       */
       if (slatWidth) {
         const slatIndex = Math.floor(positionLeft / slatWidth)

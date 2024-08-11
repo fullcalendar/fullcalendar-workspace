@@ -12,13 +12,13 @@ export interface TimelineHeaderRowProps {
   isLastRow: boolean
   cells: TimelineHeaderCellData[]
 
-  // dimensions
-  slotWidth: number | undefined // TODO: rename to slatWidth
-  height?: number
-
   // ref
   innerHeighRef?: Ref<number>
   innerWidthRef?: Ref<number>
+
+  // dimensions
+  slotWidth: number | undefined // TODO: rename to slatWidth
+  height?: number
 }
 
 export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
@@ -58,12 +58,12 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
               nowDate={props.nowDate}
               isSticky={!props.isLastRow}
 
-              // dimensions
-              slotWidth={props.slotWidth}
-
               // refs
               innerWidthRef={innerWidthRefMap.createRef(key)}
               innerHeightRef={innerHeightRefMap.createRef(key)}
+
+              // dimensions
+              slotWidth={props.slotWidth}
             />
           )
         })}
@@ -79,6 +79,7 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
       max = Math.max(max, innerWidth)
     }
 
+    // TODO: ensure not equal?
     setRef(this.props.innerWidthRef, max)
   }
 
@@ -90,6 +91,7 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
       max = Math.max(max, innerHeight)
     }
 
+    // TODO: ensure not equal?
     setRef(this.props.innerHeighRef, max)
   }
 }

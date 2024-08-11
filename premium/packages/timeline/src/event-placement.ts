@@ -62,7 +62,7 @@ export function computeFgSegPlacements( // mostly horizontals
   segTops: { [instanceId: string]: number },
   segsBottom: number | undefined,
   hiddenGroups: SegGroup[],
-  hiddenGroupTops: { [instanceId: string]: number },
+  hiddenGroupTops: { [key: string]: number },
 ] {
   let segEntries: SegEntry[] = []
 
@@ -138,6 +138,30 @@ export function computeMaxBottom(
     const { instanceId } = seg.eventRange.instance
     const top = segTops[instanceId]
     const height = segHeights[instanceId]
+
+    if (top != null && height != null) {
+      max = Math.max(max, top + height)
+    } else {
+      return // not ready
+    }
+  }
+
+  return max
+}
+
+/*
+TODO: converge with computeMaxBottom, but keys are different
+*/
+export function computeMoreLinkMaxBottom(
+  hiddenGroups: SegGroup[],
+  hiddenGroupTops: { [key: string]: number },
+  hiddenGroupHeights: Map<string, number>,
+): number | undefined {
+  let max = 0
+
+  for (const hiddenGroup of hiddenGroups) {
+    const top = hiddenGroupTops[hiddenGroup.key]
+    const height = hiddenGroupHeights[hiddenGroup.key]
 
     if (top != null && height != null) {
       max = Math.max(max, top + height)

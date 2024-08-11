@@ -44,49 +44,46 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   private headerScrollerRef = createRef<Scroller>()
   private bodyScrollerRef = createRef<Scroller>()
   private footerScrollerRef = createRef<Scroller>()
-  private bodyEl: HTMLElement
-  private headerInnerWidth?: number // within the cells (TODO: just rename these)
-  private mainInnerWidth?: number // within the slats
-  private currentCanvasWidth?: number
-  private currentSlotWidth?: number
-  private currentTDateProfile?: TimelineDateProfile
+  private tDateProfile?: TimelineDateProfile
+  private bodyEl?: HTMLElement
+  private slotWidth?: number
+  private headerSlotInnerWidth?: number
+  private bodySlotInnerWidth?: number
 
   // internal
   private scrollResponder: ScrollResponder
   private syncedScroller: ScrollerSyncer
 
   render() {
-    let { props, state, context } = this
-    let { options } = context
+    const { props, state, context } = this
+    const { options } = context
 
     /* date */
 
-    let tDateProfile = this.buildTimelineDateProfile(
+    const tDateProfile = this.tDateProfile = this.buildTimelineDateProfile(
       props.dateProfile,
       context.dateEnv,
       options,
       context.dateProfileGenerator,
     )
-    this.currentTDateProfile = tDateProfile
-    let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
-    let { cellRows } = tDateProfile
+    const { cellRows } = tDateProfile
+    const timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
 
     /* table settings */
 
-    let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
-    let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
+    const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
+    const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
     /* table positions */
 
-    let [canvasWidth, slotWidth, slotLiquid] = this.computeSlotWidth(
+    const [canvasWidth, slotWidth, slotLiquid] = this.computeSlotWidth(
       tDateProfile.slotCnt,
       options.slotMinWidth,
       state.slotInnerWidth,
       state.scrollerWidth,
     )
-    let slotStyleWidth = slotLiquid ? undefined : slotWidth
-    this.currentCanvasWidth = canvasWidth
-    this.currentSlotWidth = slotWidth
+    this.slotWidth = slotWidth
+    const slotStyleWidth = slotLiquid ? undefined : slotWidth
 
     return (
       <NowTimer unit={timerUnit}>
@@ -98,6 +95,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
           return (
             <ViewContainer
+              viewSpec={context.viewSpec}
               elClasses={[
                 'fcnew-flexexpand', // expand within fc-view-harness
                 'fcnew-flexparent',
@@ -106,16 +104,15 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   'fc-timeline-overlap-disabled' :
                   '',
               ]}
-              viewSpec={context.viewSpec}
             >
 
               {/* HEADER
               ---------------------------------------------------------------------------------- */}
               <Scroller
-                ref={this.headerScrollerRef}
                 horizontal
                 hideScrollbars
                 elClassNames={[stickyHeaderDates ? 'fcnew-v-sticky' : '']}
+                ref={this.headerScrollerRef}
               >
                 <div style={{
                   width: canvasWidth,
@@ -132,8 +129,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                       rowLevel={rowLevel}
                       isLastRow={rowLevel === cellRows.length - 1}
                       cells={cells}
+                      innerWidthRef={this.handleHeaderSlotInnerWidth}
                       slotWidth={slotStyleWidth}
-                      innerWidthRef={this.handleHeaderInnerWidth}
                     />
                   ))}
                   {enableNowIndicator && (
@@ -149,26 +146,26 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
               {/* BODY
               ---------------------------------------------------------------------------------- */}
-              <Scroller // how does it know to be liquid-height?
-                ref={this.bodyScrollerRef}
+              <Scroller
                 vertical
                 horizontal
                 elClassNames={['fcnew-flexexpand']}
+                ref={this.bodyScrollerRef}
                 widthRef={this.handleScrollerWidth}
                 leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
                 rightScrollbarWidthRef={this.handleRightScrollbarWidth}
               >
                 <div
-                  ref={this.handeBodyEl}
                   className="fc-timeline-body"
+                  ref={this.handeBodyEl}
                 >
                   <TimelineSlats
                     dateProfile={props.dateProfile}
                     tDateProfile={tDateProfile}
                     nowDate={nowDate}
                     todayRange={todayRange}
+                    innerWidthRef={this.handleBodySlotInnerWidth}
                     slotWidth={slotStyleWidth}
-                    innerWidthRef={this.handleMainInnerWidth}
                   />
                   <TimelineLane
                     dateProfile={props.dateProfile}
@@ -176,13 +173,13 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     nowDate={nowDate}
                     todayRange={todayRange}
                     nextDayThreshold={options.nextDayThreshold}
-                    businessHours={props.businessHours}
                     eventStore={props.eventStore}
                     eventUiBases={props.eventUiBases}
+                    businessHours={props.businessHours}
                     dateSelection={props.dateSelection}
-                    eventSelection={props.eventSelection}
                     eventDrag={props.eventDrag}
                     eventResize={props.eventResize}
+                    eventSelection={props.eventSelection}
                     slotWidth={slotWidth}
                   />
                   {enableNowIndicator && (
@@ -217,7 +214,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
   componentDidMount() {
     this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
-
     const ScrollerSyncer = getScrollerSyncerClass(this.context.pluginHooks)
     this.syncedScroller = new ScrollerSyncer()
     this.updateSyncedScroller()
@@ -236,21 +232,21 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  handleHeaderInnerWidth = (innerWidth: number) => {
-    this.headerInnerWidth = innerWidth
+  handleHeaderSlotInnerWidth = (innerWidth: number) => {
+    this.headerSlotInnerWidth = innerWidth
     afterSize(this.handleSlotInnerWidths)
   }
 
-  handleMainInnerWidth = (innerWidth: number) => {
-    this.mainInnerWidth = innerWidth
+  handleBodySlotInnerWidth = (innerWidth: number) => {
+    this.bodySlotInnerWidth = innerWidth
     afterSize(this.handleSlotInnerWidths)
   }
 
   handleSlotInnerWidths = () => {
     const { state } = this
     const slotInnerWidth = Math.max(
-      this.headerInnerWidth,
-      this.mainInnerWidth,
+      this.headerSlotInnerWidth,
+      this.bodySlotInnerWidth,
     )
 
     if (state.slotInnerWidth !== slotInnerWidth) {
@@ -288,12 +284,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   }
 
   handleScrollRequest = (request: ScrollRequest) => {
-    const { props, context } = this
-    let slotWidth = this.currentSlotWidth
-    let tDateProfile = this.currentTDateProfile
+    const { props, context, tDateProfile, slotWidth } = this
 
     if (request.time) {
-      if (slotWidth != null && tDateProfile != null) {
+      if (tDateProfile != null && slotWidth != null) {
         let x = timeToCoord(request.time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth)
         this.syncedScroller.scrollTo({ x })
         return true
@@ -316,50 +310,49 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     }
   }
 
-  queryHit(positionLeft: number): Hit {
-    const { dateEnv, isRtl } = this.context
-    const tDateProfile = this.currentTDateProfile
-    const canvasWidth = this.currentCanvasWidth
-    const slatWidth = this.currentSlotWidth // TODO: renames?
+  queryHit(positionLeft: number, positionTop: number, elWidth: number, elHeight: number): Hit {
+    const { props, context, tDateProfile, slotWidth } = this
+    const { dateEnv } = context
 
-    if (slatWidth) {
-      const slatIndex = Math.floor(positionLeft / slatWidth)
-      const slatLeft = slatIndex * slatWidth
-      const partial = (positionLeft - slatLeft) / slatWidth // floating point number between 0 and 1
+    if (slotWidth) {
+      const x = context.isRtl ? elWidth - positionLeft : positionLeft
+      const slatIndex = Math.floor(x / slotWidth)
+      const slatX = slatIndex * slotWidth
+      const partial = (x - slatX) / slotWidth // floating point number between 0 and 1
       const localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot) // the snap # relative to start of slat
 
-      let start = dateEnv.add(
+      let startDate = dateEnv.add(
         tDateProfile.slotDates[slatIndex],
         multiplyDuration(tDateProfile.snapDuration, localSnapIndex),
       )
-      let end = dateEnv.add(start, tDateProfile.snapDuration)
+      let endDate = dateEnv.add(startDate, tDateProfile.snapDuration)
 
       // TODO: generalize this coord stuff to TimeGrid?
 
-      let snapWidth = slatWidth / tDateProfile.snapsPerSlot
-      let startCoord = slatIndex * slatWidth + (snapWidth * localSnapIndex)
+      let snapWidth = slotWidth / tDateProfile.snapsPerSlot
+      let startCoord = slatIndex * slotWidth + (snapWidth * localSnapIndex)
       let endCoord = startCoord + snapWidth
       let left: number, right: number
 
-      if (isRtl) {
-        left = canvasWidth - endCoord
-        right = canvasWidth - startCoord
+      if (context.isRtl) {
+        left = elWidth - endCoord
+        right = elWidth - startCoord
       } else {
         left = startCoord
         right = endCoord
       }
 
       return {
-        dateProfile: this.props.dateProfile,
+        dateProfile: props.dateProfile,
         dateSpan: {
-          range: { start, end },
+          range: { start: startDate, end: endDate },
           allDay: !tDateProfile.isTimeScale,
         },
         rect: {
           left,
           right,
           top: 0,
-          bottom: this.bodyEl.getBoundingClientRect().height // okay to do here?,
+          bottom: elHeight,
         },
         // HACK. TODO: This is expensive to do every hit-query
         dayEl: this.bodyEl.querySelectorAll('.fcnew-slat')[slatIndex] as HTMLElement, // TODO!
