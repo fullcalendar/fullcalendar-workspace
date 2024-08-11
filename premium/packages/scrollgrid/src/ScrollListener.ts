@@ -21,7 +21,7 @@ export class ScrollListener {
     el.addEventListener('touchend', this.handleTouchEnd)
 
     for (let eventName of WHEEL_EVENT_NAMES) {
-      el.addEventListener(eventName, this.handleWheel)
+      el.addEventListener(eventName, this.handleWheel, { passive: true })
     }
   }
 
@@ -32,7 +32,7 @@ export class ScrollListener {
     el.removeEventListener('touchend', this.handleTouchEnd)
 
     for (let eventName of WHEEL_EVENT_NAMES) {
-      el.removeEventListener(eventName, this.handleWheel)
+      el.removeEventListener(eventName, this.handleWheel, { passive: true } as AddEventListenerOptions)
     }
   }
 
