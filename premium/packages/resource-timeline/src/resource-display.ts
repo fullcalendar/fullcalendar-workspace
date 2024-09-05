@@ -12,7 +12,7 @@ export interface GroupRowDisplay {
 export interface ResourceRowDisplay {
   resource: Resource
   resourceFields: any // fields mushed together for sorting
-  depth: number
+  indent: number
   hasChildren: boolean
   isExpanded: boolean
 }
@@ -24,11 +24,10 @@ export function buildResourceDisplays(
   expansionDefault: boolean,
 ): {
   groupColDisplays: GroupCellDisplay[][]
-  groupRowDisplays: GroupRowDisplay[]
-  resourceRowDisplays: ResourceRowDisplay[]
+  rowDisplays: (GroupRowDisplay | ResourceRowDisplay)[]
   heightHierarchy: ParentNode<Resource | Group>[]
-  anyNesting: boolean
 } {
+  // if any hasNesting, should return indent+1 for all
   return null as any
 }
 

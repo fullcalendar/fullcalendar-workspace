@@ -121,8 +121,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private tDateProfile?: TimelineDateProfile
   private canvasWidth?: number
   private slotWidth?: number
-  private groupRowDisplays: GroupRowDisplay[]
-  private resourceRowDisplays: ResourceRowDisplay[]
+  private rowDisplays: (GroupRowDisplay | ResourceRowDisplay)[]
   private bodyHeightHierarchy: ParentNode<Resource | Group>[]
   private bodyEntityHeightMap?: Map<Resource | Group, number>
 
@@ -177,18 +176,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     let {
       groupColDisplays,
-      groupRowDisplays,
-      resourceRowDisplays,
+      rowDisplays,
       heightHierarchy: bodyHeightHierarchy,
-      anyNesting,
     } = this.buildResourceDisplays(
       resourceHierarchy,
       groupRowDepth,
       props.resourceEntityExpansions,
       options.resourcesInitiallyExpanded,
     )
-    this.groupRowDisplays = groupRowDisplays
-    this.resourceRowDisplays = resourceRowDisplays
+    this.rowDisplays = rowDisplays
     this.bodyHeightHierarchy = bodyHeightHierarchy
 
     /* table positions */
@@ -207,7 +203,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       bodyHeightHierarchy,
       (entity) => Math.max(
         this.spreadsheetEntityInnerHeightMap.current.get(entity),
-        this.timeEntityInnerHeightMap.current.get(entity) || 0,
+        this.timeEntityInnerHeightMap.current.get(entity) || 0, // map doesn't contain group-column-cell heights
       ),
       state.mainScrollerHeight,
     )
@@ -249,7 +245,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     /* business hour display */
 
-    let hasResourceBusinessHours = this.computeHasResourceBusinessHours(resourceRowDisplays)
+    let hasResourceBusinessHours = this.computeHasResourceBusinessHours(rowDisplays)
     let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
 
     return (
@@ -265,7 +261,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               elClasses={[
                 'fcnew-flex-column',
                 'fcnew-resource-timeline',
-                !anyNesting ? 'fcnew-resource-timeline-flat' : '', // flat means there's no nesting
                 'fcnew-timeline',
                 options.eventOverlap === false ?
                   'fcnew-timeline-overlap-disabled' :
@@ -350,7 +345,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         }}
                       >
                         {/* group columns */}
-                        <Fragment>
+                        <Fragment>{/* TODO: need Fragment for key? */}
                           {groupColDisplays.map((groupCellDisplays, colIndex) => (
                             <div
                               key={colIndex}
@@ -378,58 +373,48 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             </div>
                           ))}
                         </Fragment>
-
-                        {/* QUESTION: what about DOM order for resources within a group??? */}
-
-                        {/* group rows */}
-                        <Fragment>
-                          {groupRowDisplays.map((groupRowDisplay) => {
-                            const { group } = groupRowDisplay
-                            return (
-                              <div
-                                key={String(group.value)}
-                                class='fcnew-row'
-                                role='row'
-                                style={{
-                                  height: bodyEntityHeightMap.get(group)
-                                }}
-                              >
-                                <GroupWideCell
-                                  group={group}
-                                  isExpanded={groupRowDisplay.isExpanded}
-                                  innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
-                                />
-                              </div>
-                            )
-                          })}
-                        </Fragment>
-
-                        {/* resource rows */}
-                        <div style={{
-                          width: spreadsheetResourceWidth, // NOT CORRECT. will change when resource/grouprows are ordered
-                        }}>
-                          {resourceRowDisplays.map((resourceRowDisplay) => {
-                            const { resource } = resourceRowDisplay
-                            return (
-                              <div
-                                key={resource.id}
-                                class='fcnew-row'
-                                role='row'
-                                style={{
-                                  height: bodyEntityHeightMap.get(resource)
-                                }}
-                              >
-                                <ResourceCells
-                                  resource={resource}
-                                  resourceFields={resourceRowDisplay.resourceFields}
-                                  depth={resourceRowDisplay.depth}
-                                  hasChildren={resourceRowDisplay.hasChildren}
-                                  isExpanded={resourceRowDisplay.isExpanded}
-                                  colSpecs={resourceColSpecs}
-                                  innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(resource)}
-                                />
-                              </div>
-                            )
+                        <div style={{ width: spreadsheetResourceWidth }}>
+                          {rowDisplays.map((rowDisplay: Partial<GroupRowDisplay & ResourceRowDisplay>) => {
+                            const { group, resource } = rowDisplay
+                            if (group) {
+                              return (
+                                <div
+                                  key={String(group.value)}
+                                  class='fcnew-row'
+                                  role='row'
+                                  style={{
+                                    height: bodyEntityHeightMap.get(group)
+                                  }}
+                                >
+                                  <GroupWideCell
+                                    group={group}
+                                    isExpanded={rowDisplay.isExpanded}
+                                    innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
+                                  />
+                                </div>
+                              )
+                            } else {
+                              return (
+                                <div
+                                  key={resource.id}
+                                  class='fcnew-row'
+                                  role='row'
+                                  style={{
+                                    height: bodyEntityHeightMap.get(resource)
+                                  }}
+                                >
+                                  <ResourceCells
+                                    resource={resource}
+                                    resourceFields={rowDisplay.resourceFields}
+                                    indent={rowDisplay.indent}
+                                    hasChildren={rowDisplay.hasChildren}
+                                    isExpanded={rowDisplay.isExpanded}
+                                    colSpecs={resourceColSpecs}
+                                    innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(resource)}
+                                  />
+                                </div>
+                              )
+                            }
                           })}
                         </div>
                       </div>
@@ -539,56 +524,54 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           // dimensions
                           slotWidth={slotWidth}
                         />
-                        <Fragment>
-                          {groupRowDisplays.map((groupRowDisplay) => {
-                            const { group } = groupRowDisplay
-                            return (
-                              <div
-                                key={String(group.value)}
-                                class='fcnew-row'
-                                role='row'
-                                style={{
-                                  height: bodyEntityHeightMap.get(group)
-                                }}
-                              >
-                                <GroupLane
-                                  group={group}
-                                  innerHeightRef={this.timeEntityInnerHeightMap.createRef(group)}
-                                />
-                              </div>
-                            )
-                          })}
-                        </Fragment>
-                        <Fragment>
-                          {resourceRowDisplays.map((resourceRowDisplay) => {
-                            const { resource } = resourceRowDisplay
-                            return (
-                              <div
-                                key={resource.id}
-                                class='fcnew-row'
-                                role='row'
-                                style={{
-                                  height: bodyEntityHeightMap.get(resource)
-                                }}
-                              >
-                                <ResourceLane
-                                  {...splitProps[resource.id]}
-                                  resource={resource}
-                                  dateProfile={dateProfile}
-                                  tDateProfile={tDateProfile}
-                                  nowDate={nowDate}
-                                  todayRange={todayRange}
-                                  nextDayThreshold={context.options.nextDayThreshold}
-                                  businessHours={resource.businessHours || fallbackBusinessHours}
+                        <Fragment>{/* TODO: need Fragment for key? */}
+                          {rowDisplays.map((rowDisplay: Partial<GroupRowDisplay & ResourceRowDisplay>) => {
+                            const { group, resource } = rowDisplay
+                            if (group) {
+                              return (
+                                <div
+                                  key={'g:' + String(group.value)}
+                                  class='fcnew-row'
+                                  role='row'
+                                  style={{
+                                    height: bodyEntityHeightMap.get(group)
+                                  }}
+                                >
+                                  <GroupLane
+                                    group={group}
+                                    innerHeightRef={this.timeEntityInnerHeightMap.createRef(group)}
+                                  />
+                                </div>
+                              )
+                            } else {
+                              return (
+                                <div
+                                  key={'r:' + resource.id}
+                                  class='fcnew-row'
+                                  role='row'
+                                  style={{
+                                    height: bodyEntityHeightMap.get(resource)
+                                  }}
+                                >
+                                  <ResourceLane
+                                    {...splitProps[resource.id]}
+                                    resource={resource}
+                                    dateProfile={dateProfile}
+                                    tDateProfile={tDateProfile}
+                                    nowDate={nowDate}
+                                    todayRange={todayRange}
+                                    nextDayThreshold={context.options.nextDayThreshold}
+                                    businessHours={resource.businessHours || fallbackBusinessHours}
 
-                                  // ref
-                                  innerHeightRef={this.timeEntityInnerHeightMap.createRef(resource)}
+                                    // ref
+                                    innerHeightRef={this.timeEntityInnerHeightMap.createRef(resource)}
 
-                                  // dimensions
-                                  slotWidth={slotWidth}
-                                />
-                              </div>
-                            )
+                                    // dimensions
+                                    slotWidth={slotWidth}
+                                  />
+                                </div>
+                              )
+                            }
                           })}
                         </Fragment>
                         {enableNowIndicator && (
@@ -784,21 +767,27 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   applyScrollState(scrollState: ResourceTimelineScrollState) {
-    let { groupRowDisplays, resourceRowDisplays } = this
+    let { rowDisplays } = this
     let entity: Resource | Group | undefined
 
     // find entity. hack
     if (scrollState.resourceId) {
-      for (const resourceRowDisplay of resourceRowDisplays) {
-        if (resourceRowDisplay.resource.id === scrollState.resourceId) {
-          entity = resourceRowDisplay.resource
+      for (const rowDisplay of rowDisplays) {
+        if (
+          (rowDisplay as ResourceRowDisplay).resource &&
+          (rowDisplay as ResourceRowDisplay).resource.id === scrollState.resourceId
+        ) {
+          entity = (rowDisplay as ResourceRowDisplay).resource
           break
         }
       }
     } else if (scrollState.groupValue !== undefined) {
-      for (const groupRowDisplay of groupRowDisplays) {
-        if (groupRowDisplay.group.value === scrollState.groupValue) {
-          entity = groupRowDisplay.group
+      for (const rowDisplay of rowDisplays) {
+        if (
+          (rowDisplay as GroupRowDisplay).group &&
+          (rowDisplay as GroupRowDisplay).group.value === scrollState.groupValue
+        ) {
+          entity = (rowDisplay as GroupRowDisplay).group
           break
         }
       }
@@ -1074,12 +1063,13 @@ function processColOptions(options: ViewOptionsRefined) {
   }
 }
 
-function computeHasResourceBusinessHours(resourceRowDisplays: ResourceRowDisplay[]) {
-  for (let resourceRowDisplay of resourceRowDisplays) {
-    let { resource } = resourceRowDisplay
-
-    if (resource && resource.businessHours) {
-      return true
+function computeHasResourceBusinessHours(rowDisplays: (GroupRowDisplay | ResourceRowDisplay)[]) {
+  for (let rowDisplay of rowDisplays) {
+    let { resource } = rowDisplay as Partial<ResourceRowDisplay>
+    if (resource) {
+      if (resource.businessHours) {
+        return true
+      }
     }
   }
 

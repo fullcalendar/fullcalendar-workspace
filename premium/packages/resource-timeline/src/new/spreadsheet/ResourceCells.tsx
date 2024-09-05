@@ -7,7 +7,7 @@ export interface ResourceCellsProps {
   resource: Resource
   resourceFields: any
   colSpecs: ColSpec[]
-  depth: number
+  indent: number
   isExpanded: boolean
   hasChildren: boolean
 
@@ -38,7 +38,7 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
               colSpec={colSpec}
               resource={resource}
               fieldValue={fieldValue}
-              depth={props.depth}
+              indent={props.indent}
               hasChildren={props.hasChildren}
               isExpanded={props.isExpanded}
             />

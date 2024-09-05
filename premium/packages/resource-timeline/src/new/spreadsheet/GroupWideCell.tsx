@@ -53,7 +53,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
             <div className="fc-datagrid-cell-frame" ref={this.innerElRef}>
               <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner">
                 <ExpanderIcon
-                  depth={0}
+                  indent={0}
                   hasChildren
                   isExpanded={props.isExpanded}
                   onExpanderClick={this.onExpanderClick}

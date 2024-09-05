@@ -4,10 +4,10 @@ import { createElement, VNode, Fragment } from '@fullcalendar/core/preact'
 Renders the DOM responsible for the subrow expander area,
 as well as the space before it (used to align expanders of similar depths)
 */
-export function ExpanderIcon({ depth, hasChildren, isExpanded, onExpanderClick }): VNode {
+export function ExpanderIcon({ indent, hasChildren, isExpanded, onExpanderClick }): VNode {
   let nodes: VNode[] = []
 
-  for (let i = 0; i < depth; i += 1) {
+  for (let i = 0; i < indent; i += 1) {
     nodes.push(
       <span className="fc-icon" />,
     )

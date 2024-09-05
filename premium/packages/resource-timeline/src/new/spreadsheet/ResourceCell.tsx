@@ -14,7 +14,7 @@ export interface ResourceCellProps {
   colSpec: ColSpec
   resource: Resource
   fieldValue: any
-  depth: number
+  indent: number
   hasChildren: boolean
   isExpanded: boolean
   height?: number | undefined
@@ -56,7 +56,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
             <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner">
               {colSpec.isMain && (
                 <ExpanderIcon
-                  depth={props.depth}
+                  indent={props.indent}
                   hasChildren={props.hasChildren}
                   isExpanded={props.isExpanded}
                   onExpanderClick={this.onExpanderClick}
