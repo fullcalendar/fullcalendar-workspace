@@ -86,7 +86,7 @@ interface ResourceTimelineViewState {
   timeBottomScrollbarWidth?: number
 }
 
-interface ResourceTimelineScrollState { // ???
+interface ResourceTimelineScrollState {
   resourceId?: string
   groupValue?: any
   fromBottom?: number
@@ -108,24 +108,23 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private computeHasResourceBusinessHours = memoize(computeHasResourceBusinessHours)
 
   // refs
+  private bodyEl: HTMLElement
   private spreadsheetHeaderScrollerRef = createRef<Scroller>()
   private spreadsheetBodyScrollerRef = createRef<Scroller>()
   private spreadsheetFooterScrollerRef = createRef<Scroller>()
   private timeHeaderScrollerRef = createRef<Scroller>()
   private timeBodyScrollerRef = createRef<Scroller>()
   private timeFooterScrollerRef = createRef<Scroller>()
-  private bodyEl: HTMLElement
   private headerRowInnerHeightMap = new RefMap<boolean | number, number>()
   private spreadsheetEntityInnerHeightMap = new RefMap<Group | Resource, number>()
   private timeEntityInnerHeightMap = new RefMap<Group | Resource, number>()
-
-  private currentTDateProfile?: TimelineDateProfile
-  private currentCanvasWidth?: number
-  private currentSlotWidth?: number
-  private currentGroupRowDisplays: GroupRowDisplay[]
-  private currentResourceRowDisplays: ResourceRowDisplay[]
-  private currentBodyHeightHierarchy: ParentNode<Resource | Group>[]
-  private currentBodyEntityHeightMap?: Map<Resource | Group, number>
+  private tDateProfile?: TimelineDateProfile
+  private canvasWidth?: number
+  private slotWidth?: number
+  private groupRowDisplays: GroupRowDisplay[]
+  private resourceRowDisplays: ResourceRowDisplay[]
+  private bodyHeightHierarchy: ParentNode<Resource | Group>[]
+  private bodyEntityHeightMap?: Map<Resource | Group, number>
 
   // internal
   private resourceSplitter = new ResourceSplitter()
@@ -142,13 +141,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     /* date */
 
-    let tDateProfile = this.buildTimelineDateProfile(
+    let tDateProfile = this.tDateProfile = this.buildTimelineDateProfile(
       dateProfile,
       context.dateEnv,
       options,
       context.dateProfileGenerator,
     )
-    this.currentTDateProfile = tDateProfile
     let { cellRows } = tDateProfile
     let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
 
@@ -189,9 +187,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       props.resourceEntityExpansions,
       options.resourcesInitiallyExpanded,
     )
-    this.currentGroupRowDisplays = groupRowDisplays
-    this.currentResourceRowDisplays = resourceRowDisplays
-    this.currentBodyHeightHierarchy = bodyHeightHierarchy
+    this.groupRowDisplays = groupRowDisplays
+    this.resourceRowDisplays = resourceRowDisplays
+    this.bodyHeightHierarchy = bodyHeightHierarchy
 
     /* table positions */
 
@@ -205,7 +203,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       (entity) => this.headerRowInnerHeightMap.current.get(entity),
     )
 
-    let bodyEntityHeightMap = this.buildBodyVerticalPositions(
+    let bodyEntityHeightMap = this.bodyEntityHeightMap = this.buildBodyVerticalPositions(
       bodyHeightHierarchy,
       (entity) => Math.max(
         this.spreadsheetEntityInnerHeightMap.current.get(entity),
@@ -213,7 +211,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       ),
       state.mainScrollerHeight,
     )
-    this.currentBodyEntityHeightMap = bodyEntityHeightMap
 
     let [slotWidth, timeCanvasWidth] = this.computeSlotWidth(
       tDateProfile.slotCnt,
@@ -222,8 +219,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       state.slotInnerWidth, // is ACTUALLY the last-level label width. rename?
       state.mainScrollerWidth
     )
-    this.currentCanvasWidth = timeCanvasWidth
-    this.currentSlotWidth = slotWidth
+    this.slotWidth = slotWidth
+    this.canvasWidth = timeCanvasWidth
 
     let [spreadsheetColWidths, spreadsheetCanvasWidth] = this.computeSpreadsheetColHorizontals(
       colSpecs,
@@ -266,25 +263,24 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
           return (
             <ViewContainer
               elClasses={[
-                'fcnew-flexexpand', // expand within fc-view-harness
-                'fcnew-flexparent',
-                'fc-resource-timeline',
-                !anyNesting && 'fc-resource-timeline-flat', // flat means there's no nesting
-                'fc-timeline',
+                'fcnew-flex-column',
+                'fcnew-resource-timeline',
+                !anyNesting ? 'fcnew-resource-timeline-flat' : '', // flat means there's no nesting
+                'fcnew-timeline',
                 options.eventOverlap === false ?
-                  'fc-timeline-overlap-disabled' :
-                  'fc-timeline-overlap-enabled',
+                  'fcnew-timeline-overlap-disabled' :
+                  'fcnew-timeline-overlap-enabled',
               ]}
               viewSpec={viewSpec}
             >
               <ResizableTwoCol
-                className={'fcnew-flexexpand'}
+                className={'fcnew-flex-grow'}
                 onSizes={this.handleTwoColSizes}
 
                 /* spreadsheet
                 --------------------------------------------------------------------------------- */
 
-                startClassName='fcnew-flexparent'
+                startClassName='fcnew-flex-column'
                 startContent={() => (
                   <Fragment>
 
@@ -293,12 +289,18 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     <Scroller
                       horizontal
                       hideScrollbars
-                      elClassNames={[stickyHeaderDates ? 'fcnew-v-sticky' : '']}
+                      elClassNames={[
+                        'fcnew-rowgroup',
+                        stickyHeaderDates ? 'fcnew-v-sticky' : '',
+                      ]}
                       ref={this.spreadsheetHeaderScrollerRef}
                     >
                       <div
-                        class='fc-datagrid-header'
-                        style={{ width: spreadsheetCanvasWidth }}
+                        class='fcnew-datagrid-header' // TODO: move this?
+                        style={{
+                          width: spreadsheetCanvasWidth,
+                          minHeight: '100%', // TODO: make this a class?
+                        }}
                       >
                         {Boolean(superHeaderRendering) && (
                           <div
@@ -333,17 +335,21 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       vertical={verticalScrolling}
                       horizontal
                       hideScrollbars
-                      elClassNames={['fcnew-flexexpand']}
+                      elClassNames={[
+                        'fcnew-rowgroup',
+                        'fcnew-flex-grow',
+                      ]}
                       ref={this.spreadsheetBodyScrollerRef}
                     >
                       <div
-                        className='fc-datagrid-body'
+                        className='fcnew-datagrid-body' // TODO: move this?
                         style={{
                           width: spreadsheetCanvasWidth,
                           paddingBottom: state.spreadsheetBottomScrollbarWidth - state.timeBottomScrollbarWidth,
+                          minHeight: '100%', // TODO: make this a class?
                         }}
                       >
-                        {/* group columns > cells */}
+                        {/* group columns */}
                         <Fragment>
                           {groupColDisplays.map((groupCellDisplays, colIndex) => (
                             <div
@@ -629,10 +635,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
   }
 
-  componentDidUpdate(prevProps: ResourceViewProps) {
+  componentDidUpdate(prevProps: ResourceViewProps, state: never, scrollState: ResourceTimelineScrollState) {
     // scrolling
     this.updateScrollersSyncers()
     this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
+    this.applyScrollState(scrollState)
   }
 
   componentWillUnmount() {
@@ -735,8 +742,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
   handleScrollRequest = (request: ScrollRequest) => {
     const { props, context } = this
-    let slotWidth = this.currentSlotWidth
-    let tDateProfile = this.currentTDateProfile
+    let slotWidth = this.slotWidth
+    let tDateProfile = this.tDateProfile
 
     if (request.time) {
       if (slotWidth != null && tDateProfile != null) {
@@ -750,14 +757,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   queryScrollState(): ResourceTimelineScrollState {
-    let { currentBodyHeightHierarchy, currentBodyEntityHeightMap } = this
+    let { bodyHeightHierarchy, bodyEntityHeightMap } = this
     let scrollTop = this.bodyScroller.y
     let scrollState: ResourceTimelineScrollState = {}
 
     let [entityAtTop, elTop, elHeight] = findEntityByCoord(
       scrollTop,
-      currentBodyHeightHierarchy,
-      currentBodyEntityHeightMap,
+      bodyHeightHierarchy,
+      bodyEntityHeightMap,
     )
 
     if (entityAtTop) {
@@ -776,23 +783,20 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     return scrollState
   }
 
-  /*
-  WHEN IS THIS EVER APPLIED!!??
-  */
   applyScrollState(scrollState: ResourceTimelineScrollState) {
-    let { currentGroupRowDisplays, currentResourceRowDisplays } = this
+    let { groupRowDisplays, resourceRowDisplays } = this
     let entity: Resource | Group | undefined
 
     // find entity. hack
     if (scrollState.resourceId) {
-      for (const resourceRowDisplay of currentResourceRowDisplays) {
+      for (const resourceRowDisplay of resourceRowDisplays) {
         if (resourceRowDisplay.resource.id === scrollState.resourceId) {
           entity = resourceRowDisplay.resource
           break
         }
       }
     } else if (scrollState.groupValue !== undefined) {
-      for (const groupRowDisplay of currentGroupRowDisplays) {
+      for (const groupRowDisplay of groupRowDisplays) {
         if (groupRowDisplay.group.value === scrollState.groupValue) {
           entity = groupRowDisplay.group
           break
@@ -801,7 +805,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     }
 
     if (entity) {
-      const coords = getCoordsByEntity(entity, this.currentBodyEntityHeightMap, this.currentBodyHeightHierarchy)
+      const coords = getCoordsByEntity(entity, this.bodyEntityHeightMap, this.bodyHeightHierarchy)
 
       if (coords) {
         const { start, size } = coords
@@ -897,17 +901,17 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   queryHit(positionLeft: number, positionTop: number): Hit {
-    let { currentBodyHeightHierarchy, currentBodyEntityHeightMap } = this
+    let { bodyHeightHierarchy, bodyEntityHeightMap } = this
     let { dateProfile } = this.props
     const { dateEnv, isRtl } = this.context
-    const tDateProfile = this.currentTDateProfile
-    const canvasWidth = this.currentCanvasWidth
-    const slatWidth = this.currentSlotWidth // TODO: renames?
+    const tDateProfile = this.tDateProfile
+    const canvasWidth = this.canvasWidth
+    const slatWidth = this.slotWidth // TODO: renames?
 
     let [entityAtTop, top, height] = findEntityByCoord(
       positionTop,
-      currentBodyHeightHierarchy,
-      currentBodyEntityHeightMap,
+      bodyHeightHierarchy,
+      bodyEntityHeightMap,
     )
 
     if (entityAtTop && !isEntityGroup(entityAtTop)) {
