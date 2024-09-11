@@ -3,9 +3,6 @@ import {
   DateComponent,
   DateMarker,
   DateRange,
-  elementClosest,
-  ElementDragging,
-  findElements,
   getIsHeightAuto,
   getScrollerSyncerClass,
   getStickyFooterScrollbar,
@@ -13,11 +10,9 @@ import {
   greatestDurationDenominator,
   guid,
   Hit,
-  isArraysEqual,
   memoize,
   multiplyDuration,
   NowTimer,
-  PointerDragEvent,
   rangeContainsMarker,
   RefMap,
   Scroller,
@@ -54,16 +49,18 @@ import {
 } from '@fullcalendar/timeline/internal'
 import {
   buildResourceDisplays,
+  ColWidthConfig,
   GroupRowDisplay,
   ResourceRowDisplay,
 } from '../resource-display.js'
 import {
-  buildEntityCoordRanges,
-  buildHeaderCoordHierarchy,
-  computeSpreadsheetColHorizontals,
+  buildEntityHeightMap,
+  buildHeaderHeightHierarchy,
+  processSpreadsheetColWidthConfigs,
   findEntityByCoord,
   getCoordsByEntity,
-  sliceSpreadsheetColHorizontal,
+  sliceSpreadsheetColWidth,
+  processSpreadsheetColWidthOverrides,
 } from '../resource-positioning.js'
 import { GroupLane } from './lane/GroupLane.js'
 import { ResourceLane } from './lane/ResourceLane.js'
@@ -75,9 +72,10 @@ import { ResourceCells } from './spreadsheet/ResourceCells.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
 
 interface ResourceTimelineViewState {
-  slotInnerWidth?
-  spreadsheetColWidths: number[]
-  spreadsheetViewportWidth?: number // TODO: rename
+  slotInnerWidth?: number
+  spreadsheetWidth?: number
+  spreadsheetColWidthConfigs: ColWidthConfig[]
+  spreadsheetColWidthOverrides?: number[]
   mainScrollerWidth?: number
   mainScrollerHeight?: number
   leftScrollbarWidth?: number
@@ -92,19 +90,16 @@ interface ResourceTimelineScrollState {
   fromBottom?: number
 }
 
-const SPREADSHEET_COL_MIN_WIDTH = 20
-
 export class ResourceTimelineView extends DateComponent<ResourceViewProps, ResourceTimelineViewState> {
   // memoized
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private processColOptions = memoize(processColOptions)
   private buildResourceHierarchy = memoize(buildResourceHierarchy)
   private buildResourceDisplays = memoize(buildResourceDisplays)
-  private buildHeaderHeightHierarchy = memoize(buildHeaderCoordHierarchy)
-  private buildHeaderVerticalPositions = memoize(buildEntityCoordRanges)
-  private buildBodyVerticalPositions = memoize(buildEntityCoordRanges)
+  private buildHeaderHeightHierarchy = memoize(buildHeaderHeightHierarchy)
+  private buildHeaderRowHeightMap = memoize(buildEntityHeightMap)
+  private buildBodyEntityHeightMap = memoize(buildEntityHeightMap)
   private computeSlotWidth = memoize(computeSlotWidth)
-  private computeSpreadsheetColHorizontals = memoize(computeSpreadsheetColHorizontals)
   private computeHasResourceBusinessHours = memoize(computeHasResourceBusinessHours)
 
   // refs
@@ -160,6 +155,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       groupRowDepth,
       orderSpecs,
       colSpecs,
+      colWidthConfigs: initialColWidthConfigs,
       resourceColSpecs,
       superHeaderRendering,
     } = this.processColOptions(context.options)
@@ -189,17 +185,17 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     /* table positions */
 
-    let headerHeightHierarchy = this.buildHeaderHeightHierarchy( // !!!
+    let headerHeightHierarchy = this.buildHeaderHeightHierarchy(
       Boolean(superHeaderRendering),
       tDateProfile.cellRows.length,
     )
 
-    let headerRowHeightMap = this.buildHeaderVerticalPositions(
+    let headerRowHeightMap = this.buildHeaderRowHeightMap(
       headerHeightHierarchy,
       (entity) => this.headerRowInnerHeightMap.current.get(entity),
     )
 
-    let bodyEntityHeightMap = this.bodyEntityHeightMap = this.buildBodyVerticalPositions(
+    let bodyEntityHeightMap = this.bodyEntityHeightMap = this.buildBodyEntityHeightMap(
       bodyHeightHierarchy,
       (entity) => Math.max(
         this.spreadsheetEntityInnerHeightMap.current.get(entity),
@@ -218,12 +214,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     this.slotWidth = slotWidth
     this.canvasWidth = timeCanvasWidth
 
-    let [spreadsheetColWidths, spreadsheetCanvasWidth] = this.computeSpreadsheetColHorizontals(
-      colSpecs,
-      state.spreadsheetColWidths,
-      state.spreadsheetViewportWidth,
-    )
-    let spreadsheetResourceWidth = sliceSpreadsheetColHorizontal(
+    let [spreadsheetColWidths, spreadsheetCanvasWidth] =
+      state.spreadsheetColWidthOverrides
+        ? processSpreadsheetColWidthOverrides(state.spreadsheetColWidthOverrides, state.spreadsheetWidth)
+        : processSpreadsheetColWidthConfigs(initialColWidthConfigs, state.spreadsheetWidth)
+
+    let spreadsheetResourceWidth = sliceSpreadsheetColWidth(
       spreadsheetColWidths,
       groupColDisplays.length, // start slicing here
     )
@@ -313,13 +309,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         <HeaderRow
                           colSpecs={colSpecs}
                           colWidths={spreadsheetColWidths}
-                          resizerElRefMap={this.resizerElRefs /* TODO: get rid of this */}
 
                           // refs
                           innerHeightRef={this.headerRowInnerHeightMap.createRef(false)}
 
                           // dimension
                           height={headerRowHeightMap.get(false) /* false means normalheader */}
+
+                          // handlers
+                          onColWidthOverrides={this.handleColWidthOverrides}
                         />
                       </div>
                     </Scroller>
@@ -373,13 +371,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             </div>
                           ))}
                         </Fragment>
+
+                        {/* TODO: do background column stripes; add render hooks? */}
                         <div style={{ width: spreadsheetResourceWidth }}>
                           {rowDisplays.map((rowDisplay: Partial<GroupRowDisplay & ResourceRowDisplay>) => {
                             const { group, resource } = rowDisplay
                             if (group) {
                               return (
                                 <div
-                                  key={String(group.value)}
+                                  key={'g:' + String(group.value)}
                                   class='fcnew-row'
                                   role='row'
                                   style={{
@@ -396,7 +396,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             } else {
                               return (
                                 <div
-                                  key={resource.id}
+                                  key={'r:' + resource.id}
                                   class='fcnew-row'
                                   role='row'
                                   style={{
@@ -640,9 +640,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  handleTwoColSizes = (spreadsheetViewportWidth: number, mainScrollerWidth: number) => {
+  handleTwoColSizes = (spreadsheetWidth: number, mainScrollerWidth: number) => {
     this.setState({
-      spreadsheetViewportWidth,
+      spreadsheetWidth,
       mainScrollerWidth,
     })
   }
@@ -699,6 +699,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     if (this.state.slotInnerWidth !== slotInnerWidth) {
       this.setState({ slotInnerWidth })
     }
+  }
+
+  handleColWidthOverrides(colWidthOverrides: number[]) {
+    this.setState({
+      spreadsheetColWidthOverrides: colWidthOverrides,
+    })
   }
 
   // Scrolling
@@ -810,72 +816,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     }
   }
 
-  // Resource INDIVIDUAL-Column Area Resizing
-  // -----------------------------------------------------------------------------------------------
-  /*
-  TODO: move this to SpreadsheetHeader
-  */
-
-  private resizerElRefs = new RefMap<number, HTMLDivElement>(this.handleColResizerEl.bind(this)) // indexed by colIndex
-  private colDraggings: { [index: string]: ElementDragging } = {}
-
-  handleColResizerEl(resizerEl: HTMLElement | null, index: number) {
-    let { colDraggings } = this
-
-    if (!resizerEl) {
-      let dragging = colDraggings[index]
-
-      if (dragging) {
-        dragging.destroy()
-        delete colDraggings[index]
-      }
-    } else {
-      let dragging = this.initColResizing(resizerEl, index)
-
-      if (dragging) {
-        colDraggings[index] = dragging
-      }
-    }
-  }
-
-  initColResizing(resizerEl: HTMLElement, index: number) {
-    let { pluginHooks, isRtl } = this.context
-    let ElementDraggingImpl = pluginHooks.elementDraggingImpl
-
-    if (ElementDraggingImpl) {
-      let dragging = new ElementDraggingImpl(resizerEl)
-      let startWidth: number // of just the single column
-      let currentWidths: number[] // of all columns
-
-      dragging.emitter.on('dragstart', () => {
-        let allCells = findElements(elementClosest(resizerEl, 'tr'), 'th') // TODO: change tag names!!!
-
-        currentWidths = allCells.map((cellEl) => (
-          cellEl.getBoundingClientRect().width
-        ))
-        startWidth = currentWidths[index]
-      })
-
-      dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
-        currentWidths[index] = Math.max(startWidth + pev.deltaX * (isRtl ? -1 : 1), SPREADSHEET_COL_MIN_WIDTH)
-
-        this.handleColWidthChange(currentWidths.slice()) // send a copy since currentWidths continues to be mutated
-      })
-
-      dragging.setAutoScrollEnabled(false) // because gets weird with auto-scrolling time area
-
-      return dragging
-    }
-
-    return null
-  }
-
-  handleColWidthChange(colWidths: number[]) {
-    this.setState({
-      spreadsheetColWidths: colWidths,
-    })
-  }
-
   // Hit System
   // -----------------------------------------------------------------------------------------------
 
@@ -963,7 +903,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 }
 
 ResourceTimelineView.addStateEquality({
-  spreadsheetColWidths: isArraysEqual,
+  spreadsheetColWidthConfigs: isColWidthConfigListsEqual,
 })
 
 function processColOptions(options: ViewOptionsRefined) {
@@ -1053,11 +993,18 @@ function processColOptions(options: ViewOptionsRefined) {
     }
   }
 
+  const colSpecs = groupColSpecs.concat(resourceColSpecs)
+
+  const colWidthConfigs: ColWidthConfig[] = colSpecs.map((colSpec) => (
+    parseColWidthConfig(colSpec.width)
+  ))
+
   return {
     groupSpecs,
     groupRowDepth,
     orderSpecs: plainOrderSpecs,
-    colSpecs: groupColSpecs.concat(resourceColSpecs),
+    colSpecs,
+    colWidthConfigs,
     resourceColSpecs,
     superHeaderRendering,
   }
@@ -1074,6 +1021,50 @@ function computeHasResourceBusinessHours(rowDisplays: (GroupRowDisplay | Resourc
   }
 
   return false
+}
+
+// ColWidthConfig
+// -------------------------------------------------------------------------------------------------
+
+function parseColWidthConfig(width: number | string): ColWidthConfig {
+  if (width != null) {
+    if (typeof width === 'string') {
+      const m = width.match(/^(.*)%$/)
+      if (m) {
+        const numerator = parseFloat(m[0])
+        if (!isNaN(numerator)) {
+          return { frac: numerator / 100 }
+        } else {
+          return {}
+        }
+      } else {
+        width = parseFloat(width)
+        if (isNaN(width)) {
+          return {}
+        }
+      }
+    }
+    if (typeof width === 'number') {
+      return { pixels: width }
+    }
+    return {}
+  }
+}
+
+function isColWidthConfigListsEqual(a: ColWidthConfig[], b: ColWidthConfig[]): boolean {
+  const { length } = a
+
+  if (b.length !== length) {
+    return false
+  }
+
+  for (let i = 0; i < length; i++) {
+    if (a[i].frac !== b[i].frac || a[i].pixels !== b[i].pixels) {
+      return false
+    }
+  }
+
+  return true
 }
 
 // General Utils

@@ -30,7 +30,7 @@ export interface ColHeaderRenderHooks {
 export interface ColSpec extends ColHeaderRenderHooks {
   group?: boolean
   isMain?: boolean // whether its the first resource-specific unique cell for the row
-  width?: number
+  width?: number | string // string for percentage like '50%'
   field?: string
 
   cellClassNames?: ClassNamesGenerator<ColCellContentArg>

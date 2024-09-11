@@ -1,17 +1,26 @@
-import { ColSpec, Group, ParentNode, Resource } from '@fullcalendar/resource/internal'
+import { Group, ParentNode, Resource } from '@fullcalendar/resource/internal'
+import { ColWidthConfig } from './resource-display.js'
 
 // Spreadsheet Column Widths
 // -------------------------------------------------------------------------------------------------
 
-export function computeSpreadsheetColHorizontals(
-  colSpecs: ColSpec[],
-  forcedWidths: number[],
+export const SPREADSHEET_COL_MIN_WIDTH = 20
+
+export function processSpreadsheetColWidthConfigs(
+  colWidthConfigs: ColWidthConfig[],
   availableWidth: number | undefined
-): [widths: number[], totalWidth: number] {
+): [colWidths: number[], totalWidth: number] {
   return null as any
 }
 
-export function sliceSpreadsheetColHorizontal(
+export function processSpreadsheetColWidthOverrides(
+  colWidthOverrides: number[],
+  availableWidth: number | undefined,
+): [colWidth: number[], totalWidth: number] {
+  return null as any
+}
+
+export function sliceSpreadsheetColWidth(
   colWidths: number[],
   startIndex: number
 ): number | undefined {
@@ -21,7 +30,7 @@ export function sliceSpreadsheetColHorizontal(
 // Header Verticals (both spreadsheet & time-area)
 // -------------------------------------------------------------------------------------------------
 
-export function buildHeaderCoordHierarchy(
+export function buildHeaderHeightHierarchy(
   hasSuperHeader: boolean,
   timelineHeaderCnt: number,
 ): ParentNode<boolean | number>[] {
@@ -31,8 +40,8 @@ export function buildHeaderCoordHierarchy(
 // Resource/Group Verticals
 // -------------------------------------------------------------------------------------------------
 
-export function buildEntityCoordRanges<Entity>(
-  coordHierarchy: ParentNode<Entity>[],
+export function buildEntityHeightMap<Entity>(
+  heightHierarchy: ParentNode<Entity>[],
   getEntityHeight: (entity: Entity) => number,
   minHeight?: number,
 ): Map<Entity, number> | undefined { // entityHeights
@@ -41,7 +50,7 @@ export function buildEntityCoordRanges<Entity>(
 
 export function findEntityByCoord(
   coord: number,
-  coordHierarchy: ParentNode<Resource | Group>[],
+  heightHierarchy: ParentNode<Resource | Group>[],
   entityHeights: Map<Resource | Group, number>,
 ): [
   entity: Resource | Group | undefined,
@@ -54,7 +63,7 @@ export function findEntityByCoord(
 export function getCoordsByEntity<Entity>(
   entity: Entity,
   entityHeights: Map<Entity, number>,
-  coordHierarchy: ParentNode<Entity>[],
+  heightHierarchy: ParentNode<Entity>[],
 ): { start: number, size: number } | undefined {
   return null as any
 }

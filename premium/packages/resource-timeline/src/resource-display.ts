@@ -1,5 +1,10 @@
 import { Resource, Group, ParentNode, ResourceEntityExpansions } from '@fullcalendar/resource/internal'
 
+export interface ColWidthConfig {
+  pixels?: number
+  frac?: number
+}
+
 export interface GroupCellDisplay {
   group: Group
 }

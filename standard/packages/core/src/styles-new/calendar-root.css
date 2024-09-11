@@ -52,6 +52,9 @@
 // Table Utils
 // -------------------------------------------------------------------------------------------------
 
+// TODO: apply min-height:0 to all children?
+// https://www.joshwcomeau.com/css/interactive-guide-to-flexbox/#the-minimum-size-gotcha-11
+
 .fcnew-rowheader {
   // for setting width/height based on innerWidth/innerHeight
   // NOTE: won't work on equal-width cells that have absolute-positioned overlay with percentages
