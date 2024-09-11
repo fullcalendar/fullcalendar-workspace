@@ -11,6 +11,8 @@ check about whether timeline events align with slots or have precise coordinates
 review all memoization
 previously, Timeline's hit system would always return slat left/right, not snap. matters?
 write tests for percentage-based resource-timeline spreadsheet-column resizing
+for connectors:
+  pause size-handling until all slots are rendered
 
 ## 6.1.15 (2024-07-12)
 

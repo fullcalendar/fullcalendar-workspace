@@ -26,7 +26,7 @@ export function isEntityGroup(entity: Resource | Group): entity is Group {
   return Boolean((entity as Group).spec)
 }
 
-export function createGroupId(group: Group): string { // TODO: kill
+export function createGroupId(group: Group): string {
   return group.spec.field + ':' + group.value
 }
 

@@ -103,7 +103,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
       let currentWidths: number[] // of all columns
 
       dragging.emitter.on('dragstart', () => {
-        currentWidths = this.props.colWidths
+        currentWidths = this.props.colWidths.slice() // copy
         startWidth = currentWidths[index]
       })
 
@@ -114,7 +114,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
         )
 
         if (this.props.onColWidthOverrides) {
-          this.props.onColWidthOverrides(currentWidths.slice()) // send a copy since currentWidths continues to be mutated
+          this.props.onColWidthOverrides(currentWidths)
         }
       })
 
