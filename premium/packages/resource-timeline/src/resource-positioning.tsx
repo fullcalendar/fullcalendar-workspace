@@ -1,10 +1,54 @@
-import { Group, ParentNode, Resource } from '@fullcalendar/resource/internal'
-import { ColWidthConfig } from './resource-display.js'
+import { Group, Resource } from '@fullcalendar/resource/internal'
+import { GenericLayout } from './resource-layout.js'
+
+// Resource/Group Verticals
+// -------------------------------------------------------------------------------------------------
+
+export type Coords = [start: number, size: number] // TODO: elsewhere?
+
+export function buildEntityCoords<Entity>(
+  hierarchy: GenericLayout<Entity>[],
+  getEntityHeight: (entity: Entity) => number,
+  minHeight?: number,
+): Map<Entity, Coords> | undefined {
+  return null as any
+}
+
+/*
+will do b-tree search
+*/
+export function findEntityByCoord(
+  hierarchy: GenericLayout<Resource | Group>[],
+  entityCoordMap: Map<Resource | Group, Coords>,
+  coord: number,
+): [
+  entity: Resource | Group | undefined,
+  start: number | undefined,
+  size: number | undefined,
+] {
+  return null as any
+}
+
+/*
+will do b-tree search
+TODO: use map in future? or simply to coord lookup by id?
+*/
+export function findEntityById(
+  hierarchy: GenericLayout<Resource | Group>[],
+  id: string,
+): Resource | Group {
+  return null as any
+}
 
 // Spreadsheet Column Widths
 // -------------------------------------------------------------------------------------------------
 
 export const SPREADSHEET_COL_MIN_WIDTH = 20
+
+export interface ColWidthConfig {
+  pixels?: number
+  frac?: number
+}
 
 export function processSpreadsheetColWidthConfigs(
   colWidthConfigs: ColWidthConfig[],
@@ -75,84 +119,4 @@ export function sliceSpreadsheetColWidth(
 
     return total
   }
-}
-
-// Header Verticals (both spreadsheet & time-area)
-// -------------------------------------------------------------------------------------------------
-
-export function buildHeaderHeightHierarchy(
-  hasSuperHeader: boolean,
-  timelineHeaderCnt: number,
-): ParentNode<boolean | number>[] {
-  // only one spreadsheet header. all timeline headers are height-children
-  if (!hasSuperHeader) {
-    const children: ParentNode<number>[] = []
-
-    for (let i = 0; i < timelineHeaderCnt; i++) {
-      children.push({ entity: i, children: [] })
-    }
-
-    return [{
-      entity: false, // isSuperHeader?
-      children,
-    }]
-  }
-
-  // only one timeline header. all spreadsheet headers are height-children
-  if (timelineHeaderCnt === 1) {
-    return [{
-      entity: 0, // timelineHeaderIndex
-      children: [
-        // guaranteed to have super header, or else first `if` would have executed
-        { entity: true, children: [] }, // isSuperHeader: true
-        { entity: false, children: [] }, // isSuperHeader: false
-      ],
-    }]
-  }
-
-  // otherwise, their are >1 spreadsheet header and >1 timeline header,
-  // give leftover timeline header heights to the "super" spreadsheet height
-
-  const children: ParentNode<number>[] = [] // for super-header
-  let i: number
-
-  for (i = 0; i < timelineHeaderCnt - 1; i++) {
-    children.push({ entity: i, children: [] })
-  }
-
-  return [
-    { entity: true, children }, // isSuperHeader: true
-    { entity: false, children: [{ entity: i, children: [] }] }
-  ]
-}
-
-// Resource/Group Verticals
-// -------------------------------------------------------------------------------------------------
-
-export function buildEntityHeightMap<Entity>(
-  heightHierarchy: ParentNode<Entity>[],
-  getEntityHeight: (entity: Entity) => number,
-  minHeight?: number,
-): Map<Entity, number> | undefined { // entityHeights
-  return null as any
-}
-
-export function findEntityByCoord(
-  coord: number,
-  heightHierarchy: ParentNode<Resource | Group>[],
-  entityHeightMap: Map<Resource | Group, number>,
-): [
-  entity: Resource | Group | undefined,
-  start: number | undefined,
-  size: number | undefined,
-] {
-  return null as any
-}
-
-export function getCoordsByEntity<Entity>(
-  entity: Entity,
-  entityHeightMap: Map<Entity, number>,
-  heightHierarchy: ParentNode<Entity>[],
-): { start: number, size: number } | undefined {
-  return null as any
 }

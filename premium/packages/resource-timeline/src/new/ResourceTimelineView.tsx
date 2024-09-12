@@ -25,11 +25,11 @@ import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import {
   buildResourceHierarchy,
   ColSpec,
+  createEntityId,
   DEFAULT_RESOURCE_ORDER,
   Group,
   GroupSpec,
   isEntityGroup,
-  ParentNode,
   Resource,
   ResourceSplitter,
   ResourceViewProps,
@@ -48,19 +48,14 @@ import {
   timeToCoord
 } from '@fullcalendar/timeline/internal'
 import {
-  buildResourceDisplays,
-  ColWidthConfig,
-  GroupRowDisplay,
-  ResourceRowDisplay,
-} from '../resource-display.js'
-import {
-  buildEntityHeightMap,
-  buildHeaderHeightHierarchy,
+  buildEntityCoords,
   processSpreadsheetColWidthConfigs,
   findEntityByCoord,
-  getCoordsByEntity,
   sliceSpreadsheetColWidth,
   processSpreadsheetColWidthOverrides,
+  ColWidthConfig,
+  Coords,
+  findEntityById,
 } from '../resource-positioning.js'
 import { GroupLane } from './lane/GroupLane.js'
 import { ResourceLane } from './lane/ResourceLane.js'
@@ -70,6 +65,7 @@ import { GroupWideCell } from './spreadsheet/GroupWideCell.js'
 import { HeaderRow } from './spreadsheet/HeaderRow.js'
 import { ResourceCells } from './spreadsheet/ResourceCells.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
+import { buildHeaderLayouts, buildResourceLayouts, GenericLayout, ResourceLayout } from '../resource-layout.js'
 
 interface ResourceTimelineViewState {
   slotInnerWidth?: number
@@ -85,8 +81,7 @@ interface ResourceTimelineViewState {
 }
 
 interface ResourceTimelineScrollState {
-  resourceId?: string
-  groupValue?: any
+  entity?: Resource | Group
   fromBottom?: number
 }
 
@@ -95,10 +90,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private processColOptions = memoize(processColOptions)
   private buildResourceHierarchy = memoize(buildResourceHierarchy)
-  private buildResourceDisplays = memoize(buildResourceDisplays)
-  private buildHeaderHeightHierarchy = memoize(buildHeaderHeightHierarchy)
-  private buildHeaderRowHeightMap = memoize(buildEntityHeightMap)
-  private buildBodyEntityHeightMap = memoize(buildEntityHeightMap)
+  private buildResourceLayouts = memoize(buildResourceLayouts)
+  private buildHeaderLayouts = memoize(buildHeaderLayouts)
+  private buildHeaderCoords = memoize(buildEntityCoords<boolean | number>)
+  private buildBodyCoords = memoize(buildEntityCoords<Resource | Group>)
   private computeSlotWidth = memoize(computeSlotWidth)
   private computeHasResourceBusinessHours = memoize(computeHasResourceBusinessHours)
 
@@ -111,14 +106,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private timeBodyScrollerRef = createRef<Scroller>()
   private timeFooterScrollerRef = createRef<Scroller>()
   private headerRowInnerHeightMap = new RefMap<boolean | number, number>()
-  private spreadsheetEntityInnerHeightMap = new RefMap<Group | Resource, number>()
-  private timeEntityInnerHeightMap = new RefMap<Group | Resource, number>()
+  private spreadsheetEntityInnerHeightMap = new RefMap<Resource | Group, number>()
+  private timeEntityInnerHeightMap = new RefMap<Resource | Group, number>()
   private tDateProfile?: TimelineDateProfile
   private canvasWidth?: number
   private slotWidth?: number
-  private rowDisplays: (GroupRowDisplay | ResourceRowDisplay)[]
-  private bodyHeightHierarchy: ParentNode<Resource | Group>[]
-  private bodyEntityHeightMap?: Map<Resource | Group, number>
+  private bodyLayouts: GenericLayout<Resource | Group>[]
+  private bodyCoords?: Map<Resource | Group, Coords>
 
   // internal
   private resourceSplitter = new ResourceSplitter()
@@ -164,39 +158,39 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     let resourceHierarchy = this.buildResourceHierarchy(
       props.resourceStore,
-      groupSpecs,
       orderSpecs,
+      groupSpecs,
+      groupRowDepth,
     )
 
     /* table display */
 
     let {
-      groupColDisplays,
-      rowDisplays,
-      heightHierarchy: bodyHeightHierarchy,
-    } = this.buildResourceDisplays(
+      layouts: bodyLayouts,
+      flatResourceLayouts,
+      flatGroupRowLayouts,
+      flatGroupColLayouts,
+    } = this.buildResourceLayouts(
       resourceHierarchy,
-      groupRowDepth,
       props.resourceEntityExpansions,
       options.resourcesInitiallyExpanded,
     )
-    this.rowDisplays = rowDisplays
-    this.bodyHeightHierarchy = bodyHeightHierarchy
+    this.bodyLayouts = bodyLayouts
 
     /* table positions */
 
-    let headerHeightHierarchy = this.buildHeaderHeightHierarchy(
+    let headerLayouts = this.buildHeaderLayouts(
       Boolean(superHeaderRendering),
       tDateProfile.cellRows.length,
     )
 
-    let headerRowHeightMap = this.buildHeaderRowHeightMap(
-      headerHeightHierarchy,
+    let headerCoords = this.buildHeaderCoords(
+      headerLayouts,
       (entity) => this.headerRowInnerHeightMap.current.get(entity),
     )
 
-    let bodyEntityHeightMap = this.bodyEntityHeightMap = this.buildBodyEntityHeightMap(
-      bodyHeightHierarchy,
+    let bodyCoords = this.bodyCoords = this.buildBodyCoords(
+      bodyLayouts,
       (entity) => Math.max(
         this.spreadsheetEntityInnerHeightMap.current.get(entity),
         this.timeEntityInnerHeightMap.current.get(entity) || 0, // map doesn't contain group-column-cell heights
@@ -221,7 +215,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     let spreadsheetResourceWidth = sliceSpreadsheetColWidth(
       spreadsheetColWidths,
-      groupColDisplays.length, // start slicing here
+      flatGroupColLayouts.length, // start slicing here
     )
 
     /* event display */
@@ -241,7 +235,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     /* business hour display */
 
-    let hasResourceBusinessHours = this.computeHasResourceBusinessHours(rowDisplays)
+    let hasResourceBusinessHours = this.computeHasResourceBusinessHours(flatResourceLayouts)
     let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
 
     return (
@@ -297,7 +291,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           <div
                             role="row"
                             style={{
-                              height: headerRowHeightMap.get(true) // true means superheader
+                              height: headerCoords.get(true)[1], // true means superheader
                             }}
                           >
                             <SuperHeaderCell
@@ -314,7 +308,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           innerHeightRef={this.headerRowInnerHeightMap.createRef(false)}
 
                           // dimension
-                          height={headerRowHeightMap.get(false) /* false means normalheader */}
+                          height={headerCoords.get(false)[1] /* false means normalheader */}
 
                           // handlers
                           onColWidthOverrides={this.handleColWidthOverrides}
@@ -344,21 +338,20 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       >
                         {/* group columns */}
                         <Fragment>{/* TODO: need Fragment for key? */}
-                          {groupColDisplays.map((groupCellDisplays, colIndex) => (
+                          {flatGroupColLayouts.map((groupColLayouts, colIndex) => (
                             <div
                               key={colIndex}
                               style={{ width: spreadsheetColWidths[colIndex] }}
                             >
-                              {groupCellDisplays.map((groupCellDisplay) => {
-                                const { group } = groupCellDisplay
+                              {groupColLayouts.map((groupCellLayout) => {
+                                const group = groupCellLayout.entity
+                                const [top, height] = bodyCoords.get(group)
                                 return (
                                   <div
                                     key={queryObjKey(group)}
                                     class='fcnew-row'
                                     role='row'
-                                    style={{
-                                      height: bodyEntityHeightMap.get(group)
-                                    }}
+                                    style={{ top, height }}
                                   >
                                     <GroupTallCell
                                       colSpec={group.spec}
@@ -374,47 +367,45 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
                         {/* TODO: do background column stripes; add render hooks? */}
                         <div style={{ width: spreadsheetResourceWidth }}>
-                          {rowDisplays.map((rowDisplay: Partial<GroupRowDisplay & ResourceRowDisplay>) => {
-                            const { group, resource } = rowDisplay
-                            if (group) {
-                              return (
-                                <div
-                                  key={'g:' + String(group.value)}
-                                  class='fcnew-row'
-                                  role='row'
-                                  style={{
-                                    height: bodyEntityHeightMap.get(group)
-                                  }}
-                                >
-                                  <GroupWideCell
-                                    group={group}
-                                    isExpanded={rowDisplay.isExpanded}
-                                    innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
-                                  />
-                                </div>
-                              )
-                            } else {
-                              return (
-                                <div
-                                  key={'r:' + resource.id}
-                                  class='fcnew-row'
-                                  role='row'
-                                  style={{
-                                    height: bodyEntityHeightMap.get(resource)
-                                  }}
-                                >
-                                  <ResourceCells
-                                    resource={resource}
-                                    resourceFields={rowDisplay.resourceFields}
-                                    indent={rowDisplay.indent}
-                                    hasChildren={rowDisplay.hasChildren}
-                                    isExpanded={rowDisplay.isExpanded}
-                                    colSpecs={resourceColSpecs}
-                                    innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(resource)}
-                                  />
-                                </div>
-                              )
-                            }
+                          {flatGroupRowLayouts.map((groupRowLayout) => {
+                            const group = groupRowLayout.entity
+                            const [top, height] = bodyCoords.get(group)
+                            return (
+                              <div
+                                key={String(group.value)}
+                                class='fcnew-row'
+                                role='row'
+                                style={{ top, height }}
+                              >
+                                <GroupWideCell
+                                  group={group}
+                                  isExpanded={groupRowLayout.isExpanded}
+                                  innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
+                                />
+                              </div>
+                            )
+                          })}
+                          {flatResourceLayouts.map((resourceLayout) => {
+                            const resource = resourceLayout.entity
+                            const [top, height] = bodyCoords.get(resource)
+                            return (
+                              <div
+                                key={resource.id}
+                                class='fcnew-row'
+                                role='row'
+                                style={{ top, height }}
+                              >
+                                <ResourceCells
+                                  resource={resource}
+                                  resourceFields={resourceLayout.resourceFields}
+                                  indent={resourceLayout.indent}
+                                  hasChildren={resourceLayout.hasChildren}
+                                  isExpanded={resourceLayout.isExpanded}
+                                  colSpecs={resourceColSpecs}
+                                  innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(resource)}
+                                />
+                              </div>
+                            )
                           })}
                         </div>
                       </div>
@@ -525,53 +516,51 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           slotWidth={slotWidth}
                         />
                         <Fragment>{/* TODO: need Fragment for key? */}
-                          {rowDisplays.map((rowDisplay: Partial<GroupRowDisplay & ResourceRowDisplay>) => {
-                            const { group, resource } = rowDisplay
-                            if (group) {
-                              return (
-                                <div
-                                  key={'g:' + String(group.value)}
-                                  class='fcnew-row'
-                                  role='row'
-                                  style={{
-                                    height: bodyEntityHeightMap.get(group)
-                                  }}
-                                >
-                                  <GroupLane
-                                    group={group}
-                                    innerHeightRef={this.timeEntityInnerHeightMap.createRef(group)}
-                                  />
-                                </div>
-                              )
-                            } else {
-                              return (
-                                <div
-                                  key={'r:' + resource.id}
-                                  class='fcnew-row'
-                                  role='row'
-                                  style={{
-                                    height: bodyEntityHeightMap.get(resource)
-                                  }}
-                                >
-                                  <ResourceLane
-                                    {...splitProps[resource.id]}
-                                    resource={resource}
-                                    dateProfile={dateProfile}
-                                    tDateProfile={tDateProfile}
-                                    nowDate={nowDate}
-                                    todayRange={todayRange}
-                                    nextDayThreshold={context.options.nextDayThreshold}
-                                    businessHours={resource.businessHours || fallbackBusinessHours}
+                          {flatGroupRowLayouts.map((groupRowLayout) => {
+                            const group = groupRowLayout.entity
+                            const [top, height] = bodyCoords.get(group)
+                            return (
+                              <div
+                                key={String(group.value)}
+                                class='fcnew-row'
+                                role='row'
+                                style={{ top, height }}
+                              >
+                                <GroupLane
+                                  group={group}
+                                  innerHeightRef={this.timeEntityInnerHeightMap.createRef(group)}
+                                />
+                              </div>
+                            )
+                          })}
+                          {flatResourceLayouts.map((resourceLayout) => {
+                            const resource = resourceLayout.entity
+                            const [top, height] = bodyCoords.get(resource)
+                            return (
+                              <div
+                                key={resource.id}
+                                class='fcnew-row'
+                                role='row'
+                                style={{ top, height }}
+                              >
+                                <ResourceLane
+                                  {...splitProps[resource.id]}
+                                  resource={resource}
+                                  dateProfile={dateProfile}
+                                  tDateProfile={tDateProfile}
+                                  nowDate={nowDate}
+                                  todayRange={todayRange}
+                                  nextDayThreshold={context.options.nextDayThreshold}
+                                  businessHours={resource.businessHours || fallbackBusinessHours}
 
-                                    // ref
-                                    innerHeightRef={this.timeEntityInnerHeightMap.createRef(resource)}
+                                  // ref
+                                  innerHeightRef={this.timeEntityInnerHeightMap.createRef(resource)}
 
-                                    // dimensions
-                                    slotWidth={slotWidth}
-                                  />
-                                </div>
-                              )
-                            }
+                                  // dimensions
+                                  slotWidth={slotWidth}
+                                />
+                              </div>
+                            )
                           })}
                         </Fragment>
                         {enableNowIndicator && (
@@ -746,72 +735,49 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   queryScrollState(): ResourceTimelineScrollState {
-    let { bodyHeightHierarchy, bodyEntityHeightMap } = this
+    let { bodyLayouts, bodyCoords } = this
     let scrollTop = this.bodyScroller.y
     let scrollState: ResourceTimelineScrollState = {}
 
-    let [entityAtTop, elTop, elHeight] = findEntityByCoord(
+    let [entity, elTop, elHeight] = findEntityByCoord(
+      bodyLayouts,
+      bodyCoords,
       scrollTop,
-      bodyHeightHierarchy,
-      bodyEntityHeightMap,
     )
 
-    if (entityAtTop) {
+    if (entity) {
       let elBottom = elTop + elHeight
       let elBottomRelScroller = elBottom - scrollTop
 
       scrollState.fromBottom = elBottomRelScroller
-
-      if (isEntityGroup(entityAtTop)) {
-        scrollState.groupValue = entityAtTop.value
-      } else {
-        scrollState.resourceId = entityAtTop.id
-      }
+      scrollState.entity = entity
     }
 
     return scrollState
   }
 
   applyScrollState(scrollState: ResourceTimelineScrollState) {
-    let { rowDisplays } = this
-    let entity: Resource | Group | undefined
-
-    // find entity. hack
-    if (scrollState.resourceId) {
-      for (const rowDisplay of rowDisplays) {
-        if (
-          (rowDisplay as ResourceRowDisplay).resource &&
-          (rowDisplay as ResourceRowDisplay).resource.id === scrollState.resourceId
-        ) {
-          entity = (rowDisplay as ResourceRowDisplay).resource
-          break
-        }
-      }
-    } else if (scrollState.groupValue !== undefined) {
-      for (const rowDisplay of rowDisplays) {
-        if (
-          (rowDisplay as GroupRowDisplay).group &&
-          (rowDisplay as GroupRowDisplay).group.value === scrollState.groupValue
-        ) {
-          entity = (rowDisplay as GroupRowDisplay).group
-          break
-        }
-      }
-    }
+    const { bodyLayouts, bodyCoords } = this
+    let { entity } = scrollState
 
     if (entity) {
-      const coords = getCoordsByEntity(entity, this.bodyEntityHeightMap, this.bodyHeightHierarchy)
+      // get the real current reference
+      entity = findEntityById(bodyLayouts, createEntityId(entity))
 
-      if (coords) {
-        const { start, size } = coords
-        const end = start + size
+      if (entity) {
+        const coords = bodyCoords.get(entity)
 
-        let scrollTop =
-          scrollState.fromBottom != null ?
-            end - scrollState.fromBottom : // pixels from bottom edge
-            start // just use top edge
+        if (coords) {
+          const [start, size] = coords
+          const end = start + size
 
-        this.bodyScroller.scrollTo({ y: scrollTop })
+          let scrollTop =
+            scrollState.fromBottom != null ?
+              end - scrollState.fromBottom : // pixels from bottom edge
+              start // just use top edge
+
+          this.bodyScroller.scrollTo({ y: scrollTop })
+        }
       }
     }
   }
@@ -830,7 +796,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   queryHit(positionLeft: number, positionTop: number): Hit {
-    let { bodyHeightHierarchy, bodyEntityHeightMap } = this
+    let { bodyLayouts, bodyCoords } = this
     let { dateProfile } = this.props
     const { dateEnv, isRtl } = this.context
     const tDateProfile = this.tDateProfile
@@ -838,9 +804,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     const slatWidth = this.slotWidth // TODO: renames?
 
     let [entityAtTop, top, height] = findEntityByCoord(
+      bodyLayouts,
+      bodyCoords,
       positionTop,
-      bodyHeightHierarchy,
-      bodyEntityHeightMap,
     )
 
     if (entityAtTop && !isEntityGroup(entityAtTop)) {
@@ -1010,13 +976,10 @@ function processColOptions(options: ViewOptionsRefined) {
   }
 }
 
-function computeHasResourceBusinessHours(rowDisplays: (GroupRowDisplay | ResourceRowDisplay)[]) {
-  for (let rowDisplay of rowDisplays) {
-    let { resource } = rowDisplay as Partial<ResourceRowDisplay>
-    if (resource) {
-      if (resource.businessHours) {
-        return true
-      }
+function computeHasResourceBusinessHours(resourceLayouts: ResourceLayout[]) {
+  for (let resourceLayout of resourceLayouts) {
+    if (resourceLayout.entity.businessHours) {
+      return true
     }
   }
 

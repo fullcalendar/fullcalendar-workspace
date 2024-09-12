@@ -3,7 +3,7 @@ import { Resource, ResourceHash } from '../structs/resource.js'
 import { GroupSpec } from './resource-spec.js'
 import { ResourceApi } from '../public-types.js'
 
-export interface Group {
+export interface Group { // TODO: move somewhere more general?
   spec: GroupSpec
   value: any
 }
@@ -11,13 +11,20 @@ export interface Group {
 // Hierarchy
 // -------------------------------------------------------------------------------------------------
 
-export interface ParentNode<Entity> {
-  entity: Entity
-  children: ParentNode<Entity>[]
+export interface GenericNode {
+  entity: Resource | Group
+  children: GenericNode[]
 }
 
-interface ResourceNode extends ParentNode<Resource> {
-  entityFields: any
+export interface GroupNode extends GenericNode {
+  entity: Group
+  isCol: boolean
+  children: (GroupNode | ResourceNode)[]
+}
+
+export interface ResourceNode extends GenericNode {
+  entity: Resource
+  resourceFields: any
   children: ResourceNode[]
 }
 
@@ -27,24 +34,25 @@ type ResourceNodeHash = {
 
 export function buildResourceHierarchy(
   resourceStore: ResourceHash,
-  groupSpecs: GroupSpec[],
   orderSpecs: OrderSpec<ResourceApi>[],
-): ParentNode<Resource | Group>[] {
-  let resourceNodes = buildResourceNodes(resourceStore, orderSpecs)
-  let resNodes: ParentNode<Resource | Group>[] = []
+  groupSpecs: GroupSpec[] = [],
+  groupRowDepth: number = 0,
+): GenericNode[] {
+  let resourceNodeHash = buildResourceNodeHash(resourceStore, orderSpecs)
+  let resNodes: GenericNode[] = []
 
-  for (let resourceId in resourceNodes) {
-    let resourceNode = resourceNodes[resourceId]
+  for (let resourceId in resourceNodeHash) {
+    let resourceNode = resourceNodeHash[resourceId]
 
     if (!resourceNode.entity.parentId) {
-      insertResourceNode(resourceNode, resNodes, groupSpecs, orderSpecs)
+      insertResourceNode(resourceNode, orderSpecs, groupSpecs, groupRowDepth, resNodes)
     }
   }
 
   return resNodes
 }
 
-function buildResourceNodes(
+function buildResourceNodeHash(
   resourceStore: ResourceHash,
   orderSpecs: OrderSpec<ResourceApi>[],
 ): ResourceNodeHash {
@@ -55,7 +63,7 @@ function buildResourceNodes(
 
     nodeHash[resourceId] = {
       entity: resource,
-      entityFields: buildResourceFields(resource),
+      resourceFields: buildResourceFields(resource),
       children: [],
     }
   }
@@ -67,7 +75,7 @@ function buildResourceNodes(
       let parentNode = nodeHash[resource.parentId]
 
       if (parentNode) {
-        insertResourceNodeInSiblings(nodeHash[resourceId], parentNode.children, orderSpecs)
+        insertResourceNodeInSiblings(nodeHash[resourceId], orderSpecs, parentNode.children)
       }
     }
   }
@@ -77,32 +85,34 @@ function buildResourceNodes(
 
 function insertResourceNode(
   resourceNode: ResourceNode,
-  resNodes: ParentNode<Resource | Group>[],
-  groupSpecs: GroupSpec[],
   orderSpecs: OrderSpec<ResourceApi>[],
+  groupSpecs: GroupSpec[],
+  groupRowDepth: number,
+  resNodes: GenericNode[],
 ) {
   if (groupSpecs.length) {
-    let groupNode = ensureGroupNodes(resourceNode, resNodes as ParentNode<Group>[], groupSpecs[0])
+    let groupNode = ensureGroupNodes(resourceNode, groupSpecs[0], groupRowDepth > 0, resNodes)
 
-    insertResourceNode(resourceNode, groupNode.children, groupSpecs.slice(1), orderSpecs)
+    insertResourceNode(resourceNode, orderSpecs, groupSpecs.slice(1), groupRowDepth - 1, groupNode.children)
   } else {
-    insertResourceNodeInSiblings(resourceNode, resNodes as ResourceNode[], orderSpecs)
+    insertResourceNodeInSiblings(resourceNode, orderSpecs, resNodes as ResourceNode[])
   }
 }
 
 function ensureGroupNodes(
   resourceNode: ResourceNode,
-  resNodes: ParentNode<Group>[],
   groupSpec: GroupSpec,
-): ParentNode<Group> {
-  let groupValue = resourceNode.entityFields[groupSpec.field]
-  let groupNode: ParentNode<Group>
+  isRow: boolean,
+  resNodes: GenericNode[],
+): GenericNode {
+  let groupValue = resourceNode.resourceFields[groupSpec.field]
+  let groupNode: GroupNode
   let newGroupIndex: number
 
   // find an existing group that matches, or determine the position for a new group
   if (groupSpec.order) {
     for (newGroupIndex = 0; newGroupIndex < resNodes.length; newGroupIndex += 1) {
-      let node = resNodes[newGroupIndex]
+      let node = resNodes[newGroupIndex] as GroupNode
       let group = node.entity
       let cmp = flexibleCompare(groupValue, group.value) * groupSpec.order
 
@@ -115,7 +125,7 @@ function ensureGroupNodes(
     }
   } else { // the groups are unordered
     for (newGroupIndex = 0; newGroupIndex < resNodes.length; newGroupIndex += 1) {
-      let node = resNodes[newGroupIndex]
+      let node = resNodes[newGroupIndex] as GroupNode
       let group = node.entity
 
       if (group && groupValue === group.value) {
@@ -131,6 +141,7 @@ function ensureGroupNodes(
         value: groupValue,
         spec: groupSpec,
       },
+      isCol: !isRow, // TODO: better names?
       children: [],
     }
 
@@ -142,15 +153,15 @@ function ensureGroupNodes(
 
 function insertResourceNodeInSiblings(
   resourceNode: ResourceNode,
-  siblings: ResourceNode[],
   orderSpecs: OrderSpec<ResourceApi>[],
+  siblings: ResourceNode[], // like resNodes
 ) {
   let i: number
 
   for (i = 0; i < siblings.length; i += 1) {
     let cmp = compareByFieldSpecs( // TODO: pass in ResourceApi?
-      siblings[i].entityFields,
-      resourceNode.entityFields,
+      siblings[i].resourceFields,
+      resourceNode.resourceFields,
       orderSpecs,
     )
 
@@ -178,7 +189,7 @@ export function flattenResources(
   resourceStore: ResourceHash,
   orderSpecs: OrderSpec<ResourceApi>[],
 ): Resource[] {
-  const hierarchy = buildResourceHierarchy(resourceStore, [], orderSpecs)
+  const hierarchy = buildResourceHierarchy(resourceStore, orderSpecs)
   const resResources: Resource[] = []
 
   flattenResourceHierarchy(hierarchy as ResourceNode[], resResources)
