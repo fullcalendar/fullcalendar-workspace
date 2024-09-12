@@ -24,7 +24,7 @@ export interface ResourceRowDisplay {
 
 export function buildResourceDisplays(
   hierarchy: ParentNode<Resource | Group>[],
-  groupRowDepth: number, // will cause the groupRowDisplays to populate first
+  groupRowDepth: number, // will cause the rowDisplays to populate with groups first
   expansions: ResourceEntityExpansions,
   expansionDefault: boolean,
 ): {

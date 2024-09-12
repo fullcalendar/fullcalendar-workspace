@@ -9,6 +9,7 @@ export type ResourceAction = Action |
   { type: 'REMOVE_RESOURCE', resourceId: string } |
   { type: 'SET_RESOURCE_PROP', resourceId: string, propName: string, propValue: any } |
   { type: 'SET_RESOURCE_EXTENDED_PROP', resourceId: string, propName: string, propValue: any } |
+  // if id has a ':' in it, it's a group
   { type: 'SET_RESOURCE_ENTITY_EXPANDED', id: string, isExpanded: boolean } |
   { type: 'RESET_RESOURCE_SOURCE', resourceSourceInput: any } |
   { type: 'REFETCH_RESOURCES' }

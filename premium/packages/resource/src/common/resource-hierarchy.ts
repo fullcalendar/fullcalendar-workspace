@@ -1,4 +1,4 @@
-import { OrderSpec } from '@fullcalendar/core/internal'
+import { compareByFieldSpecs, flexibleCompare, OrderSpec } from '@fullcalendar/core/internal'
 import { Resource, ResourceHash } from '../structs/resource.js'
 import { GroupSpec } from './resource-spec.js'
 import { ResourceApi } from '../public-types.js'
@@ -8,9 +8,21 @@ export interface Group {
   value: any
 }
 
+// Hierarchy
+// -------------------------------------------------------------------------------------------------
+
 export interface ParentNode<Entity> {
   entity: Entity
   children: ParentNode<Entity>[]
+}
+
+interface ResourceNode extends ParentNode<Resource> {
+  entityFields: any
+  children: ResourceNode[]
+}
+
+type ResourceNodeHash = {
+  [resourceId: string]: ResourceNode
 }
 
 export function buildResourceHierarchy(
@@ -18,62 +30,32 @@ export function buildResourceHierarchy(
   groupSpecs: GroupSpec[],
   orderSpecs: OrderSpec<ResourceApi>[],
 ): ParentNode<Resource | Group>[] {
-  return null as any
-  // buildHierarchy below
-}
-
-export function isEntityGroup(entity: Resource | Group): entity is Group {
-  return Boolean((entity as Group).spec)
-}
-
-export function createGroupId(group: Group): string {
-  return group.spec.field + ':' + group.value
-}
-
-export function isGroupsEqual(group0: Group, group1: Group) {
-  return group0.spec === group1.spec && group0.value === group1.value
-}
-
-export function flattenResources(resourceStore: ResourceHash, orderSpecs: OrderSpec<ResourceApi>[]): Resource[] {
-  const hierarchy = buildResourceHierarchy(resourceStore, [], orderSpecs)
-  return flattenHierarchy(hierarchy) as Resource[]
-}
-
-function flattenHierarchy(hierarchy: ParentNode<Resource | Group>[]): (Resource | Group)[] {
-  return null as any
-  // flattenNodes below
-}
-
-/*
-function buildHierarchy(
-  resourceStore: ResourceHash,
-  maxDepth: number,
-  groupSpecs: GroupSpec[],
-  orderSpecs: OrderSpec<ResourceApi>[],
-): ParentNode[] {
   let resourceNodes = buildResourceNodes(resourceStore, orderSpecs)
-  let builtNodes: ParentNode[] = []
+  let resNodes: ParentNode<Resource | Group>[] = []
 
   for (let resourceId in resourceNodes) {
     let resourceNode = resourceNodes[resourceId]
 
-    if (!resourceNode.resource.parentId) {
-      insertResourceNode(resourceNode, builtNodes, groupSpecs, 0, maxDepth, orderSpecs)
+    if (!resourceNode.entity.parentId) {
+      insertResourceNode(resourceNode, resNodes, groupSpecs, orderSpecs)
     }
   }
 
-  return builtNodes
+  return resNodes
 }
 
-function buildResourceNodes(resourceStore: ResourceHash, orderSpecs: OrderSpec<ResourceApi>[]): ResourceNodeHash {
+function buildResourceNodes(
+  resourceStore: ResourceHash,
+  orderSpecs: OrderSpec<ResourceApi>[],
+): ResourceNodeHash {
   let nodeHash: ResourceNodeHash = {}
 
   for (let resourceId in resourceStore) {
     let resource = resourceStore[resourceId]
 
     nodeHash[resourceId] = {
-      resource,
-      resourceFields: buildResourceFields(resource),
+      entity: resource,
+      entityFields: buildResourceFields(resource),
       children: [],
     }
   }
@@ -94,48 +76,49 @@ function buildResourceNodes(resourceStore: ResourceHash, orderSpecs: OrderSpec<R
 }
 
 function insertResourceNode(
-  resourceNode: ResourceParentNode,
-  nodes: ParentNode[],
+  resourceNode: ResourceNode,
+  resNodes: ParentNode<Resource | Group>[],
   groupSpecs: GroupSpec[],
-  depth: number,
-  maxDepth: number, // used???
   orderSpecs: OrderSpec<ResourceApi>[],
 ) {
-  if (groupSpecs.length && (maxDepth === -1 || depth <= maxDepth)) {
-    let groupNode = ensureGroupNodes(resourceNode, nodes, groupSpecs[0])
+  if (groupSpecs.length) {
+    let groupNode = ensureGroupNodes(resourceNode, resNodes as ParentNode<Group>[], groupSpecs[0])
 
-    insertResourceNode(resourceNode, groupNode.children, groupSpecs.slice(1), depth + 1, maxDepth, orderSpecs)
+    insertResourceNode(resourceNode, groupNode.children, groupSpecs.slice(1), orderSpecs)
   } else {
-    insertResourceNodeInSiblings(resourceNode, nodes, orderSpecs)
+    insertResourceNodeInSiblings(resourceNode, resNodes as ResourceNode[], orderSpecs)
   }
 }
 
-function ensureGroupNodes(resourceNode: ResourceParentNode, nodes: ParentNode[], groupSpec: GroupSpec): GroupParentNode {
-  let groupValue = resourceNode.resourceFields[groupSpec.field]
-  let groupNode
-  let newGroupIndex
+function ensureGroupNodes(
+  resourceNode: ResourceNode,
+  resNodes: ParentNode<Group>[],
+  groupSpec: GroupSpec,
+): ParentNode<Group> {
+  let groupValue = resourceNode.entityFields[groupSpec.field]
+  let groupNode: ParentNode<Group>
+  let newGroupIndex: number
 
   // find an existing group that matches, or determine the position for a new group
   if (groupSpec.order) {
-    for (newGroupIndex = 0; newGroupIndex < nodes.length; newGroupIndex += 1) {
-      let node = nodes[newGroupIndex]
+    for (newGroupIndex = 0; newGroupIndex < resNodes.length; newGroupIndex += 1) {
+      let node = resNodes[newGroupIndex]
+      let group = node.entity
+      let cmp = flexibleCompare(groupValue, group.value) * groupSpec.order
 
-      if ((node as GroupParentNode).group) {
-        let cmp = flexibleCompare(groupValue, (node as GroupParentNode).group.value) * groupSpec.order
-
-        if (cmp === 0) {
-          groupNode = node
-          break
-        } else if (cmp < 0) {
-          break
-        }
+      if (cmp === 0) {
+        groupNode = node
+        break
+      } else if (cmp < 0) {
+        break
       }
     }
   } else { // the groups are unordered
-    for (newGroupIndex = 0; newGroupIndex < nodes.length; newGroupIndex += 1) {
-      let node = nodes[newGroupIndex]
+    for (newGroupIndex = 0; newGroupIndex < resNodes.length; newGroupIndex += 1) {
+      let node = resNodes[newGroupIndex]
+      let group = node.entity
 
-      if ((node as GroupParentNode).group && groupValue === (node as GroupParentNode).group.value) {
+      if (group && groupValue === group.value) {
         groupNode = node
         break
       }
@@ -144,24 +127,32 @@ function ensureGroupNodes(resourceNode: ResourceParentNode, nodes: ParentNode[],
 
   if (!groupNode) {
     groupNode = {
-      group: {
+      entity: {
         value: groupValue,
         spec: groupSpec,
       },
       children: [],
     }
 
-    nodes.splice(newGroupIndex, 0, groupNode)
+    resNodes.splice(newGroupIndex, 0, groupNode)
   }
 
   return groupNode
 }
 
-function insertResourceNodeInSiblings(resourceNode, siblings, orderSpecs: OrderSpec<ResourceApi>[]) {
-  let i
+function insertResourceNodeInSiblings(
+  resourceNode: ResourceNode,
+  siblings: ResourceNode[],
+  orderSpecs: OrderSpec<ResourceApi>[],
+) {
+  let i: number
 
   for (i = 0; i < siblings.length; i += 1) {
-    let cmp = compareByFieldSpecs(siblings[i].resourceFields, resourceNode.resourceFields, orderSpecs) // TODO: pass in ResourceApi?
+    let cmp = compareByFieldSpecs( // TODO: pass in ResourceApi?
+      siblings[i].entityFields,
+      resourceNode.entityFields,
+      orderSpecs,
+    )
 
     if (cmp > 0) { // went 1 past. insert at i
       break
@@ -179,60 +170,46 @@ function buildResourceFields(resource: Resource): any {
 
   return obj
 }
-*/
 
-/*
-function flattenNodes(
-  complexNodes: ParentNode[],
-  res, isVGrouping, rowSpans, depth,
-  expansions: ResourceEntityExpansions,
-  expansionDefault: boolean,
-) {
-  for (let i = 0; i < complexNodes.length; i += 1) {
-    let complexNode = complexNodes[i]
-    let group = (complexNode as GroupParentNode).group
+// Hierarchy + Flattening
+// -------------------------------------------------------------------------------------------------
 
-    if (group) {
-      if (isVGrouping) {
-        let firstRowIndex = res.length
-        let rowSpanIndex = rowSpans.length
+export function flattenResources(
+  resourceStore: ResourceHash,
+  orderSpecs: OrderSpec<ResourceApi>[],
+): Resource[] {
+  const hierarchy = buildResourceHierarchy(resourceStore, [], orderSpecs)
+  const resResources: Resource[] = []
 
-        flattenNodes(complexNode.children, res, isVGrouping, rowSpans.concat(0), depth, expansions, expansionDefault)
+  flattenResourceHierarchy(hierarchy as ResourceNode[], resResources)
+  return resResources
+}
 
-        if (firstRowIndex < res.length) {
-          let firstRow = res[firstRowIndex]
-          let firstRowSpans = firstRow.rowSpans = firstRow.rowSpans.slice()
-
-          firstRowSpans[rowSpanIndex] = res.length - firstRowIndex
-        }
-      } else {
-        let id = group.spec.field + ':' + group.value
-        let isExpanded = expansions[id] != null ? expansions[id] : expansionDefault
-
-        res.push({ id, group, isExpanded })
-
-        if (isExpanded) {
-          flattenNodes(complexNode.children, res, isVGrouping, rowSpans, depth + 1, expansions, expansionDefault)
-        }
-      }
-    } else if ((complexNode as ResourceParentNode).resource) {
-      let id = (complexNode as ResourceParentNode).resource.id
-      let isExpanded = expansions[id] != null ? expansions[id] : expansionDefault
-
-      res.push({
-        id,
-        rowSpans,
-        depth,
-        isExpanded,
-        hasChildren: Boolean(complexNode.children.length),
-        resource: (complexNode as ResourceParentNode).resource,
-        resourceFields: (complexNode as ResourceParentNode).resourceFields,
-      })
-
-      if (isExpanded) {
-        flattenNodes(complexNode.children, res, isVGrouping, rowSpans, depth + 1, expansions, expansionDefault)
-      }
-    }
+function flattenResourceHierarchy(
+  resourceNodes: ResourceNode[],
+  resResources: Resource[],
+): void {
+  for (const node of resourceNodes) {
+    resResources.push(node.entity)
+    flattenResourceHierarchy(node.children, resResources)
   }
 }
-*/
+
+// Utils
+// -------------------------------------------------------------------------------------------------
+
+export function createEntityId(entity: Resource | Group): string {
+  return isEntityGroup(entity) ? createGroupId(entity) : entity.id
+}
+
+export function createGroupId(group: Group): string {
+  return group.spec.field + ':' + group.value
+}
+
+export function isEntityGroup(entity: Resource | Group): entity is Group {
+  return Boolean((entity as Group).spec)
+}
+
+export function isGroupsEqual(group0: Group, group1: Group) {
+  return group0.spec === group1.spec && group0.value === group1.value
+}

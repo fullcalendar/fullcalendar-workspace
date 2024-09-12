@@ -140,7 +140,7 @@ export function buildEntityHeightMap<Entity>(
 export function findEntityByCoord(
   coord: number,
   heightHierarchy: ParentNode<Resource | Group>[],
-  entityHeights: Map<Resource | Group, number>,
+  entityHeightMap: Map<Resource | Group, number>,
 ): [
   entity: Resource | Group | undefined,
   start: number | undefined,
@@ -151,7 +151,7 @@ export function findEntityByCoord(
 
 export function getCoordsByEntity<Entity>(
   entity: Entity,
-  entityHeights: Map<Entity, number>,
+  entityHeightMap: Map<Entity, number>,
   heightHierarchy: ParentNode<Entity>[],
 ): { start: number, size: number } | undefined {
   return null as any
