@@ -2,7 +2,7 @@ import { afterSize, BaseComponent, ElementDragging, PointerDragEvent, RefMap, se
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { ColSpec } from '@fullcalendar/resource/internal'
 import { HeaderCell } from "./HeaderCell.js"
-import { SPREADSHEET_COL_MIN_WIDTH } from "../../resource-positioning.js"
+import { SPREADSHEET_COL_MIN_WIDTH } from "../../col-positioning.js"
 
 export interface HeaderRowProps {
   colSpecs: ColSpec[]

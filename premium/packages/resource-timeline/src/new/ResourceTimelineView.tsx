@@ -49,14 +49,18 @@ import {
 } from '@fullcalendar/timeline/internal'
 import {
   buildEntityCoords,
-  processSpreadsheetColWidthConfigs,
   findEntityByCoord,
-  sliceSpreadsheetColWidth,
-  processSpreadsheetColWidthOverrides,
-  ColWidthConfig,
   Coords,
   findEntityById,
 } from '../resource-positioning.js'
+import {
+  processSpreadsheetColWidthConfigs,
+  sliceSpreadsheetColWidth,
+  processSpreadsheetColWidthOverrides,
+  ColWidthConfig,
+  isColWidthConfigListsEqual,
+  parseColWidthConfig,
+} from '../col-positioning.js'
 import { GroupLane } from './lane/GroupLane.js'
 import { ResourceLane } from './lane/ResourceLane.js'
 import { ResizableTwoCol } from './ResizableTwoCol.js'
@@ -984,50 +988,6 @@ function computeHasResourceBusinessHours(resourceLayouts: ResourceLayout[]) {
   }
 
   return false
-}
-
-// ColWidthConfig
-// -------------------------------------------------------------------------------------------------
-
-function parseColWidthConfig(width: number | string): ColWidthConfig {
-  if (width != null) {
-    if (typeof width === 'string') {
-      const m = width.match(/^(.*)%$/)
-      if (m) {
-        const numerator = parseFloat(m[0])
-        if (!isNaN(numerator)) {
-          return { frac: numerator / 100 }
-        } else {
-          return {}
-        }
-      } else {
-        width = parseFloat(width)
-        if (isNaN(width)) {
-          return {}
-        }
-      }
-    }
-    if (typeof width === 'number') {
-      return { pixels: width }
-    }
-    return {}
-  }
-}
-
-function isColWidthConfigListsEqual(a: ColWidthConfig[], b: ColWidthConfig[]): boolean {
-  const { length } = a
-
-  if (b.length !== length) {
-    return false
-  }
-
-  for (let i = 0; i < length; i++) {
-    if (a[i].frac !== b[i].frac || a[i].pixels !== b[i].pixels) {
-      return false
-    }
-  }
-
-  return true
 }
 
 // General Utils
