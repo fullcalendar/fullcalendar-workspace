@@ -11,13 +11,15 @@ export { ResourceViewProps } from './View.js'
 
 export {
   Group,
-  GenericNode as HierarchyNode,
+  GenericNode,
   buildResourceHierarchy,
   isEntityGroup,
   createGroupId,
   isGroupsEqual,
   flattenResources,
   createEntityId,
+  ResourceNode,
+  GroupNode
 } from './common/resource-hierarchy.js'
 
 export {

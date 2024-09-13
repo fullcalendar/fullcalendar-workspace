@@ -1,4 +1,4 @@
-import { Group, HierarchyNode, Resource, ResourceEntityExpansions } from '@fullcalendar/resource/internal'
+import { Group, GenericNode, Resource, ResourceEntityExpansions, ResourceNode, GroupNode, createGroupId } from '@fullcalendar/resource/internal'
 
 export interface GenericLayout<Entity> {
   entity: Entity
@@ -30,7 +30,7 @@ export interface GroupCellLayout { // specific GenericLayout
 }
 
 export function buildResourceLayouts(
-  hierarchy: HierarchyNode[],
+  hierarchy: GenericNode[],
   expansions: ResourceEntityExpansions,
   expansionDefault: boolean,
 ): {
@@ -39,27 +39,75 @@ export function buildResourceLayouts(
   flatGroupRowLayouts: GroupRowLayout[],
   flatGroupColLayouts: GroupCellLayout[][],
 } {
-  // if any hasNesting, should return indent+1 for all
-  return null as any
-}
+  const flatResourceLayouts: ResourceLayout[] = []
+  const flatGroupRowLayouts: GroupRowLayout[] = []
+  const flatGroupColLayouts: GroupCellLayout[][] = []
 
-/*
-  function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
-    for (let node of nodes) {
-      if ((node as GroupNode).group) {
-        return true
-      }
+  function processNodes(nodes: GenericNode[], depth: number): GenericLayout<Resource | Group>[] {
+    const layouts: GenericLayout<Resource | Group>[] = []
+    const initialIndent = hasNesting(nodes) ? 1 : 0
 
-      if ((node as ResourceNode).resource) {
-        if ((node as ResourceNode).hasChildren) {
-          return true
+    // TODO: more DRY within
+    for (const node of nodes) {
+      if ((node as ResourceNode).resourceFields) {
+        const isExpanded = expansions[(node as ResourceNode).entity.id]
+        const resourceLayout: ResourceLayout = {
+          entity: (node as ResourceNode).entity,
+          resourceFields: (node as ResourceNode).resourceFields,
+          isExpanded: isExpanded != null ? isExpanded : expansionDefault,
+          hasChildren: Boolean(node.children.length),
+          indent: initialIndent + depth,
+          children: processNodes(node.children, depth + 1) as ResourceLayout[],
         }
+        flatResourceLayouts.push(resourceLayout)
+        layouts.push(resourceLayout)
+      } else if ((node as GroupNode).isCol) {
+        const groupCellLayout: GroupCellLayout = {
+          entity: (node as GroupNode).entity,
+          isCol: true,
+          children: processNodes(node.children, depth + 1) as (ResourceLayout | GroupCellLayout)[],
+        }
+        ;(flatGroupColLayouts[depth] || (flatGroupColLayouts[depth] = [])) // better way?
+          .push(groupCellLayout)
+        layouts.push(groupCellLayout)
+      } else {
+        const isExpanded = expansions[createGroupId((node as GroupRowLayout).entity)]
+        const groupRowLayout: GroupRowLayout = {
+          entity: (node as GroupNode).entity,
+          isExpanded: isExpanded != null ? isExpanded : expansionDefault,
+          hasChildren: Boolean(node.children.length),
+          indent: initialIndent + depth,
+          children: processNodes(node.children, depth + 1) as (ResourceLayout | GroupRowLayout | GroupCellLayout)[]
+        }
+        flatGroupRowLayouts.push(groupRowLayout)
+        layouts.push(groupRowLayout)
       }
     }
 
-    return false
+    return layouts
   }
-*/
+
+  return {
+    layouts: processNodes(hierarchy, 0),
+    flatResourceLayouts,
+    flatGroupRowLayouts,
+    flatGroupColLayouts,
+  }
+}
+
+function hasNesting(nodes: GenericNode[]) {
+  for (let node of nodes) {
+    if ((node as ResourceNode).resourceFields) {
+      if ((node as ResourceNode).children.length) {
+        return true
+      }
+    } else { // a GroupNode
+      return true
+    }
+  }
+
+  return false
+}
 
 // Header Verticals (both spreadsheet & time-area)
 // -------------------------------------------------------------------------------------------------
