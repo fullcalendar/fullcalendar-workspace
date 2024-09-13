@@ -10,6 +10,7 @@ import {
   greatestDurationDenominator,
   guid,
   Hit,
+  isArraysEqual,
   memoize,
   multiplyDuration,
   NowTimer,
@@ -113,7 +114,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private spreadsheetEntityInnerHeightMap = new RefMap<Resource | Group, number>()
   private timeEntityInnerHeightMap = new RefMap<Resource | Group, number>()
   private tDateProfile?: TimelineDateProfile
-  private canvasWidth?: number
+  private timeCanvasWidth?: number
   private slotWidth?: number
   private bodyLayouts: GenericLayout<Resource | Group>[]
   private bodyCoords?: Map<Resource | Group, Coords>
@@ -195,10 +196,16 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     let bodyCoords = this.bodyCoords = this.buildBodyCoords(
       bodyLayouts,
-      (entity) => Math.max(
-        this.spreadsheetEntityInnerHeightMap.current.get(entity),
-        this.timeEntityInnerHeightMap.current.get(entity) || 0, // map doesn't contain group-column-cell heights
-      ),
+      (entity) => {
+        const entitySpreadsheetHeight = this.spreadsheetEntityInnerHeightMap.current.get(entity)
+        if (entitySpreadsheetHeight != null) {
+          return Math.max(
+            entitySpreadsheetHeight,
+            // map doesn't contain group-column-cell heights
+            this.timeEntityInnerHeightMap.current.get(entity) || 0,
+          )
+        }
+      },
       state.mainScrollerHeight,
     )
 
@@ -210,7 +217,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       state.mainScrollerWidth
     )
     this.slotWidth = slotWidth
-    this.canvasWidth = timeCanvasWidth
+    this.timeCanvasWidth = timeCanvasWidth
 
     let [spreadsheetColWidths, spreadsheetCanvasWidth] =
       state.spreadsheetColWidthOverrides
@@ -295,7 +302,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           <div
                             role="row"
                             style={{
-                              height: headerCoords.get(true)[1], // true means superheader
+                              height: (headerCoords.get(true) || [])[1], // true means superheader
                             }}
                           >
                             <SuperHeaderCell
@@ -312,7 +319,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           innerHeightRef={this.headerRowInnerHeightMap.createRef(false)}
 
                           // dimension
-                          height={headerCoords.get(false)[1] /* false means normalheader */}
+                          height={(headerCoords.get(false) || [])[1] /* false means normalheader */}
 
                           // handlers
                           onColWidthOverrides={this.handleColWidthOverrides}
@@ -349,7 +356,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             >
                               {groupColLayouts.map((groupCellLayout) => {
                                 const group = groupCellLayout.entity
-                                const [top, height] = bodyCoords.get(group)
+                                const [top, height] = bodyCoords.get(group) || []
                                 return (
                                   <div
                                     key={queryObjKey(group)}
@@ -373,7 +380,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         <div style={{ width: spreadsheetResourceWidth }}>
                           {flatGroupRowLayouts.map((groupRowLayout) => {
                             const group = groupRowLayout.entity
-                            const [top, height] = bodyCoords.get(group)
+                            const [top, height] = bodyCoords.get(group) || []
                             return (
                               <div
                                 key={String(group.value)}
@@ -391,7 +398,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           })}
                           {flatResourceLayouts.map((resourceLayout) => {
                             const resource = resourceLayout.entity
-                            const [top, height] = bodyCoords.get(resource)
+                            const [top, height] = bodyCoords.get(resource) || []
                             return (
                               <div
                                 key={resource.id}
@@ -522,7 +529,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         <Fragment>{/* TODO: need Fragment for key? */}
                           {flatGroupRowLayouts.map((groupRowLayout) => {
                             const group = groupRowLayout.entity
-                            const [top, height] = bodyCoords.get(group)
+                            const [top, height] = bodyCoords.get(group) || []
                             return (
                               <div
                                 key={String(group.value)}
@@ -539,7 +546,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           })}
                           {flatResourceLayouts.map((resourceLayout) => {
                             const resource = resourceLayout.entity
-                            const [top, height] = bodyCoords.get(resource)
+                            const [top, height] = bodyCoords.get(resource) || []
                             return (
                               <div
                                 key={resource.id}
@@ -743,18 +750,20 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     let scrollTop = this.bodyScroller.y
     let scrollState: ResourceTimelineScrollState = {}
 
-    let [entity, elTop, elHeight] = findEntityByCoord(
-      bodyLayouts,
-      bodyCoords,
-      scrollTop,
-    )
+    if (bodyCoords) {
+      let [entity, elTop, elHeight] = findEntityByCoord(
+        bodyLayouts,
+        bodyCoords,
+        scrollTop,
+      )
 
-    if (entity) {
-      let elBottom = elTop + elHeight
-      let elBottomRelScroller = elBottom - scrollTop
+      if (entity) {
+        let elBottom = elTop + elHeight
+        let elBottomRelScroller = elBottom - scrollTop
 
-      scrollState.fromBottom = elBottomRelScroller
-      scrollState.entity = entity
+        scrollState.fromBottom = elBottomRelScroller
+        scrollState.entity = entity
+      }
     }
 
     return scrollState
@@ -804,7 +813,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     let { dateProfile } = this.props
     const { dateEnv, isRtl } = this.context
     const tDateProfile = this.tDateProfile
-    const canvasWidth = this.canvasWidth
+    const timeCanvasWidth = this.timeCanvasWidth
     const slatWidth = this.slotWidth // TODO: renames?
 
     let [entityAtTop, top, height] = findEntityByCoord(
@@ -841,8 +850,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
         let left: number, right: number
 
         if (isRtl) {
-          left = canvasWidth - endCoord
-          right = canvasWidth - startCoord
+          left = timeCanvasWidth - endCoord
+          right = timeCanvasWidth - startCoord
         } else {
           left = startCoord
           right = endCoord
@@ -874,6 +883,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
 ResourceTimelineView.addStateEquality({
   spreadsheetColWidthConfigs: isColWidthConfigListsEqual,
+  spreadsheetColWidthOverrides: isArraysEqual,
 })
 
 function processColOptions(options: ViewOptionsRefined) {

@@ -4,7 +4,6 @@ import { GenericLayout, ResourceLayout } from './resource-layout.js'
 // Resource/Group Verticals
 // -------------------------------------------------------------------------------------------------
 // TODO: can start calling everything 'height'
-// TODO: short-circuit if coordinates not available yet?
 
 export type Coords = [start: number, size: number] // TODO: elsewhere?
 
@@ -23,20 +22,26 @@ export function buildEntityCoords<Entity>(
 
     for (const layoutNode of layoutNodes) {
       const ownHeight = getEntityHeight(layoutNode.entity)
-      const childrenHeight = processNodes(layoutNode.children)
-      let layoutNodeHeight = layoutNode.isCol
-        ? Math.max(ownHeight, childrenHeight)
-        : ownHeight + childrenHeight
 
-      // is a resource?
-      if ((layoutNode as any as ResourceLayout).resourceFields != null) { // !!!
-        resourceCnt++
-        layoutNodeHeight += extraPerResource
+      if (ownHeight != null) {
+        const childrenHeight = processNodes(layoutNode.children)
+
+        if (childrenHeight != null) {
+          let layoutNodeHeight = layoutNode.isCol
+            ? Math.max(ownHeight, childrenHeight)
+            : ownHeight + childrenHeight
+
+          // is a resource?
+          if ((layoutNode as any as ResourceLayout).resourceFields != null) { // !!!
+            resourceCnt++
+            layoutNodeHeight += extraPerResource
+          }
+
+          coords.set(layoutNode.entity, [currentTop, layoutNodeHeight])
+          currentTop += layoutNodeHeight
+          totalHeight += layoutNodeHeight
+        }
       }
-
-      coords.set(layoutNode.entity, [currentTop, layoutNodeHeight])
-      currentTop += layoutNodeHeight
-      totalHeight += layoutNodeHeight
     }
 
     return totalHeight
@@ -56,7 +61,7 @@ export function buildEntityCoords<Entity>(
 
 export function findEntityByCoord(
   hierarchy: GenericLayout<Resource | Group>[],
-  entityCoordMap: Map<Resource | Group, Coords>,
+  entityCoords: Map<Resource | Group, Coords>,
   coord: number, // assumed >= 0
 ): [
   entity: Resource | Group | undefined,
@@ -64,15 +69,19 @@ export function findEntityByCoord(
   size: number | undefined,
 ] {
   for (const layoutNode of hierarchy) {
-    const [start, size] = entityCoordMap.get(layoutNode.entity)
+    const res = entityCoords.get(layoutNode.entity)
 
-    // intersection?
-    if (start + size > coord) {
-      // group column? get more specific
-      if (layoutNode.isCol) {
-        return findEntityByCoord(layoutNode.children, entityCoordMap, coord - start)
-      } else {
-        return [layoutNode.entity, start, size]
+    if (res) {
+      const [start, size] = res
+
+      // intersection?
+      if (start + size > coord) {
+        // group column? get more specific
+        if (layoutNode.isCol) {
+          return findEntityByCoord(layoutNode.children, entityCoords, coord - start)
+        } else {
+          return [layoutNode.entity, start, size]
+        }
       }
     }
   }
