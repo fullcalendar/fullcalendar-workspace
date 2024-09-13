@@ -8,6 +8,7 @@ export interface GenericLayout<Entity> {
 
 export interface ResourceLayout { // specific GenericLayout
   entity: Resource
+  isCol?: boolean // default: false
   resourceFields: any
   isExpanded: boolean
   hasChildren: boolean // if has *any* children
@@ -17,6 +18,7 @@ export interface ResourceLayout { // specific GenericLayout
 
 export interface GroupRowLayout { // specific GenericLayout
   entity: Group
+  isCol?: boolean // default: false
   isExpanded: boolean
   hasChildren: boolean // if has *any* children
   indent: number
