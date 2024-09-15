@@ -181,8 +181,6 @@ export type { CalendarContext } from './CalendarContext.js'
 export type { CalendarContentProps } from './component/CalendarContent.js'
 export { CalendarRoot } from './component/CalendarRoot.js'
 
-export { computeFallbackHeaderFormat } from './common/table-utils.js'
-
 export { DaySeriesModel } from './common/DaySeriesModel.js'
 
 export type { EventInteractionState } from './interactions/event-interaction-state.js'

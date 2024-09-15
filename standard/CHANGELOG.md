@@ -24,6 +24,7 @@ worksheet for new minimum browser version:
   supports ?? operator
   supports ResizeObserver
 todo: ability to freeze resizing while resizing columns or resource-area
+horizontal scrolling in timegrid/daygrid (no-resource/resource)
 
 
 ## 6.1.15 (2024-07-12)

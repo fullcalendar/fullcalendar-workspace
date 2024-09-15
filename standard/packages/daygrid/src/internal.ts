@@ -12,12 +12,13 @@ export { DayOfWeekHeaderCell } from './new/header/DayOfWeekHeaderCell.js'
 export { HeaderRow } from './new/header/HeaderRow.js'
 export { HeaderRowAdvanced } from './new/header/HeaderRowAdvanced.js'
 
+export { createDayHeaderFormatter } from './new/header/util.js'
+
 export { DayGridLayout, DayGridLayoutProps } from './new/DayGridLayout.js'
 export { DayGridRow, DayGridRowProps } from './new/DayGridRow.js'
 export { DayGridRows } from './new/DayGridRows.js'
 export {
   buildDayTableModel,
-  createDayHeaderFormatter,
   DateHeaderCellObj,
   DayOfWeekHeaderCellObj,
   HeaderCellObj,

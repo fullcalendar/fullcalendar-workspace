@@ -1,6 +1,6 @@
 import { CssDimValue } from '@fullcalendar/core'
 import { DateComponent, ViewProps, memoize, DateFormatter, DateRange, setRef } from '@fullcalendar/core/internal'
-import { buildDayTableModel, DayTableSlicer, DayGridRows, DayOfWeekHeaderCell } from '@fullcalendar/daygrid/internal'
+import { buildDayTableModel, DayTableSlicer, DayGridRows, DayOfWeekHeaderCell, createDayHeaderFormatter } from '@fullcalendar/daygrid/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 
 export interface SingleMonthProps extends ViewProps {
@@ -24,9 +24,12 @@ interface SingleMonthState {
 }
 
 export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthState> {
-  private buildDayTableModel = memoize(buildDayTableModel)
   private slicer = new DayTableSlicer()
   private rootEl: HTMLElement
+
+  // memo
+  private buildDayTableModel = memoize(buildDayTableModel)
+  private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
 
   render() {
     const { props, context } = this
@@ -39,6 +42,12 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     const tableHeight = props.tableWidth != null ? props.tableWidth / options.aspectRatio : null
     const rowCnt = dayTableModel.cellRows.length
     const rowHeight = tableHeight != null ? tableHeight / rowCnt : null
+
+    const dayHeaderFormat = this.createDayHeaderFormatter(
+      context.options.dayHeaderFormat,
+      true, // datesRepDistinctDays
+      dayTableModel.colCnt,
+    )
 
     return (
       <div
@@ -69,7 +78,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
               <DayOfWeekHeaderCell
                 key={headerDate.getUTCDay()}
                 dow={headerDate.getUTCDay()}
-                dayHeaderFormat={undefined /* TODO: figure `dayHeaderFormat` out */}
+                dayHeaderFormat={dayHeaderFormat}
                 colWidth={undefined}
               />
             ))}

@@ -11,7 +11,7 @@ import {
   memoize,
 } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
-import { DateHeaderCell, DateHeaderCellObj, DayOfWeekHeaderCell, DayOfWeekHeaderCellObj, DayTableSlicer } from '@fullcalendar/daygrid/internal'
+import { createDayHeaderFormatter, DateHeaderCell, DateHeaderCellObj, DayOfWeekHeaderCell, DayOfWeekHeaderCellObj, DayTableSlicer } from '@fullcalendar/daygrid/internal'
 import { ResourceDayTableJoiner, buildResourceHeaderTiers, ResourceHeaderCell, ResourceDateHeaderCellObj } from '@fullcalendar/resource-daygrid/internal'
 import {
   DEFAULT_RESOURCE_ORDER,
@@ -56,6 +56,9 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
   private splitDateSelectionSegs = memoize(splitSegsByCol)
   private splitEventDrag = memoize(splitInteractionByCol)
   private splitEventResize = memoize(splitInteractionByCol)
+
+  // other memo
+  private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
 
   render() {
     let { props, context } = this
@@ -124,12 +127,18 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
       resourceDayTableModel,
     )
 
+    let datesRepDistinctDays = resourceDayTableModel.dayTableModel.rowCnt === 1
     let headerTiers = buildResourceHeaderTiers( // TODO: memoize
       resources,
       resourceDayTableModel.dayTableModel.headerDates,
       options.datesAboveResources,
-      resourceDayTableModel.dayTableModel.rowCnt === 1, // datesRepDistinctDays
+      datesRepDistinctDays,
       context,
+    )
+    let dayHeaderFormat = this.createDayHeaderFormatter(
+      context.options.dayHeaderFormat,
+      datesRepDistinctDays,
+      resourceDayTableModel.colCnt,
     )
 
     return (
@@ -188,7 +197,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
                       navLink={resourceDayTableModel.dayTableModel.colCnt > 1}
                       dateProfile={props.dateProfile}
                       todayRange={todayRange}
-                      dayHeaderFormat={undefined /* TODO: figure `dayHeaderFormat` out */}
+                      dayHeaderFormat={dayHeaderFormat}
                       colSpan={model.colSpan}
                       colWidth={undefined}
                     />
@@ -196,7 +205,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
                 } else {
                   <DayOfWeekHeaderCell
                     {...(model as DayOfWeekHeaderCellObj)}
-                    dayHeaderFormat={undefined /* TODO: figure `dayHeaderFormat` out */}
+                    dayHeaderFormat={dayHeaderFormat}
                     colSpan={model.colSpan}
                     colWidth={undefined}
                   />

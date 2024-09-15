@@ -11,7 +11,7 @@ import {
   memoize
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
-import { DateHeaderCell, DateHeaderCellObj, DayGridLayout, DayOfWeekHeaderCell, DayOfWeekHeaderCellObj, DayTableSlicer, buildDayTableModel } from '@fullcalendar/daygrid/internal'
+import { DateHeaderCell, DateHeaderCellObj, DayGridLayout, DayOfWeekHeaderCell, DayOfWeekHeaderCellObj, DayTableSlicer, buildDayTableModel, createDayHeaderFormatter } from '@fullcalendar/daygrid/internal'
 import {
   DEFAULT_RESOURCE_ORDER,
   DayResourceTableModel,
@@ -26,8 +26,10 @@ import { buildResourceHeaderTiers, ResourceDateHeaderCellObj } from './header-ce
 import { ResourceHeaderCell } from './ResourceHeaderCell.js'
 
 export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
+  // memo
   private flattenResources = memoize(flattenResources)
   private buildResourceDayTableModel = memoize(buildResourceDayTableModel)
+  private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
 
   private resourceDayTableModel: ResourceDayTableModel
   private splitter = new VResourceSplitter()
@@ -67,17 +69,21 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
       resourceDayTableModel.dayTableModel,
     ))
 
-    let datesRepDistinctDays = resourceDayTableModel.dayTableModel.rowCnt === 1
+    let joinedSlicedProps = this.joiner.joinProps(slicedProps, resourceDayTableModel)
 
-    let headerTiers = buildResourceHeaderTiers(
+    let datesRepDistinctDays = resourceDayTableModel.dayTableModel.rowCnt === 1
+    let headerTiers = buildResourceHeaderTiers( // TODO: memoize???
       resources,
       resourceDayTableModel.dayTableModel.headerDates,
       options.datesAboveResources,
       datesRepDistinctDays,
       context,
     )
-
-    let joinedSlicedProps = this.joiner.joinProps(slicedProps, resourceDayTableModel)
+    let dayHeaderFormat = this.createDayHeaderFormatter(
+      context.options.dayHeaderFormat,
+      datesRepDistinctDays,
+      resourceDayTableModel.colCnt,
+    )
 
     return (
       <NowTimer unit="day">
@@ -109,7 +115,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
                     navLink={resourceDayTableModel.dayTableModel.colCnt > 1}
                     dateProfile={props.dateProfile}
                     todayRange={todayRange}
-                    dayHeaderFormat={undefined /* TODO: figure `dayHeaderFormat` out */}
+                    dayHeaderFormat={dayHeaderFormat}
                     colSpan={model.colSpan}
                     colWidth={undefined}
                   />
@@ -117,7 +123,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
               } else {
                 <DayOfWeekHeaderCell
                   {...(model as DayOfWeekHeaderCellObj)}
-                  dayHeaderFormat={undefined /* TODO: figure `dayHeaderFormat` out */}
+                  dayHeaderFormat={dayHeaderFormat}
                   colSpan={model.colSpan}
                   colWidth={undefined}
                 />

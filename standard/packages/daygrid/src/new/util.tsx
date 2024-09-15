@@ -1,5 +1,5 @@
 import { CssDimValue, DayHeaderContentArg } from '@fullcalendar/core'
-import { DateFormatter, DateMarker, DateProfile, DateProfileGenerator, DaySeriesModel, DayTableCell, DayTableModel, computeFallbackHeaderFormat, fracToCssDim } from '@fullcalendar/core/internal'
+import { DateMarker, DateProfile, DateProfileGenerator, DaySeriesModel, DayTableCell, DayTableModel, fracToCssDim } from '@fullcalendar/core/internal'
 import { ComponentChild } from '@fullcalendar/core/preact'
 import { TableSeg } from '../TableSeg.js'
 
@@ -7,10 +7,6 @@ export const HEADER_CELL_CLASS_NAME = 'fcnew-col-header-cell' // pointless abstr
 
 export function renderInner(renderProps: DayHeaderContentArg): ComponentChild {
   return renderProps.text
-}
-
-export function createDayHeaderFormatter(explicitFormat: DateFormatter, datesRepDistinctDays, dateCnt) {
-  return explicitFormat || computeFallbackHeaderFormat(datesRepDistinctDays, dateCnt)
 }
 
 export function buildDayTableModel(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {

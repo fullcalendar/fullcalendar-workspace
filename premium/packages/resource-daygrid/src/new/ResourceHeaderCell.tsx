@@ -24,6 +24,7 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
       <ResourceLabelContainer
         elTag="div"
         elClasses={[
+          'fcnew-cell',
           HEADER_CELL_CLASS_NAME,
           'fc-resource',
         ]}
@@ -40,6 +41,7 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
             <InnerContent
               elTag="span"
               elClasses={[
+                'fcnew-col-header-cell-cushion',
                 props.isSticky && 'fc-sticky',
               ]}
             />
