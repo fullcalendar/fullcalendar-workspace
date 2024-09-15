@@ -119,7 +119,9 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
   }
 
   componentWillUnmount(): void {
-    this.detachInnerSize()
+    if (this.detachInnerSize) {
+      this.detachInnerSize()
+    }
   }
 }
 

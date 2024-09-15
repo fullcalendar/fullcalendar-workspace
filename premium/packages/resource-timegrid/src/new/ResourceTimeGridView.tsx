@@ -105,13 +105,13 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
     // split the timed segs by resource
     let dayRanges = this.dayRanges = this.buildDayRanges(resourceDayTableModel.dayTableModel, dateProfile, dateEnv)
     let timedResourceSplitProps = this.timedResourceSplitter.splitProps({
-      businessHours: splitProps.allDay.businessHours,
-      dateSelection: splitProps.allDay.dateSelection,
-      eventStore: splitProps.allDay.eventStore,
-      eventUiBases: splitProps.allDay.eventUiBases,
-      eventSelection: splitProps.allDay.eventSelection,
-      eventDrag: splitProps.allDay.eventDrag,
-      eventResize: splitProps.allDay.eventResize,
+      businessHours: splitProps.timed.businessHours,
+      dateSelection: splitProps.timed.dateSelection,
+      eventStore: splitProps.timed.eventStore,
+      eventUiBases: splitProps.timed.eventUiBases,
+      eventSelection: splitProps.timed.eventSelection,
+      eventDrag: splitProps.timed.eventDrag,
+      eventResize: splitProps.timed.eventResize,
       resourceDayTableModel,
     })
     this.timedResourceSlicers = mapHash(timedResourceSplitProps, (split, resourceId) => this.timedResourceSlicers[resourceId] || new DayTimeColsSlicer())
@@ -145,7 +145,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
       <NowTimer unit={options.nowIndicator ? 'minute' : 'day' /* hacky */}>
         {(nowDate: DateMarker, todayRange: DateRange) => {
           // timed-only column splitting
-          let colCnt = resourceDayTableModel.cells.length
+          let colCnt = resourceDayTableModel.colCnt
           let fgEventSegsByCol = this.splitFgEventSegs(timedResourceJoinedProps.fgEventSegs, colCnt)
           let bgEventSegsByCol = this.splitBgEventSegs(timedResourceJoinedProps.bgEventSegs, colCnt)
           let businessHourSegsByCol = this.splitBusinessHourSegs(timedResourceJoinedProps.businessHourSegs, colCnt)
@@ -169,14 +169,19 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
 
               // header content
               headerTiers={headerTiers}
-              renderHeaderLabel={(tierNum, handleEl) => ( // TODO: make this baked into TimeGridLayout
+              renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width) => (
                 (options.weekNumbers && tierNum === headerTiers.length - 1) ? (
-                  <TimeGridWeekNumber
+                  <TimeGridWeekNumber // .fcnew-rowheader
                     dateProfile={dateProfile}
-                    width={undefined /* YUCK */}
+                    innerWidthRef={innerWidthRef}
+                    innerHeightRef={innerHeightRef}
+                    width={width}
                   />
                 ) : (
-                  <div>{/* empty */}</div>
+                  <div
+                    className='fcnew-rowheader'
+                    style={{ width }}
+                  />
                 )
               )}
               // TODO: DRY
