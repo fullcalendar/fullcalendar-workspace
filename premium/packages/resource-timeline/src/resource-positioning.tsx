@@ -85,6 +85,7 @@ export function findEntityByCoord(
       }
     }
   }
+  return [undefined, undefined, undefined]
 }
 
 /*

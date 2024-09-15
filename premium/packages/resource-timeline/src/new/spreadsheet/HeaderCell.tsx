@@ -26,8 +26,8 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
     return (
       <ContentContainer
         elTag="div"
-        elClasses={['fc-datagrid-cell']}
         elAttrs={{ role: 'columnheader' }}
+        elClasses={['fcnew-cell']}
         renderProps={renderProps}
         generatorName="resourceAreaHeaderContent"
         customGenerator={colSpec.headerContent}
@@ -37,20 +37,20 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         willUnmount={colSpec.headerWillUnmount}
       >
         {(InnerContent) => (
-          <div className="fc-datagrid-cell-frame" ref={this.innerElRef}>
-            <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner">
+          <div ref={this.innerElRef} className="fcnew-rel">
+            <div className="fcnew-datagrid-cell-cushion">
               {colSpec.isMain && (
-                <span className="fc-datagrid-expander fc-datagrid-expander-placeholder">
-                  <span className="fc-icon" />
+                <span className="fcnew-datagrid-expander fcnew-datagrid-expander-placeholder">
+                  <span className="fcnew-icon" />
                 </span>
               )}
               <InnerContent
                 elTag="span"
-                elClasses={['fc-datagrid-cell-main']}
+                elClasses={['fcnew-datagrid-cell-main']}
               />
             </div>
             {resizer && (
-              <div className="fc-datagrid-cell-resizer" ref={resizerElRef} />
+              <div className="fcnew-datagrid-cell-resizer" ref={resizerElRef} />
             )}
           </div>
         )}

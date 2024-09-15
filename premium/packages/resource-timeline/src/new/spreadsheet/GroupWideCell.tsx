@@ -28,11 +28,6 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
       <Fragment>
         <ContentContainer
           elTag="div"
-          elClasses={[
-            'fc-datagrid-cell',
-            'fc-resource-group',
-            context.theme.getClass('tableCellShaded'),
-          ]}
           elAttrs={{
             // ARIA TODO: not really a columnheader
             // extremely tedious to make this aria-compliant,
@@ -41,6 +36,11 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
             role: 'columnheader',
             scope: 'colgroup',
           }}
+          elClasses={[
+            'fcnew-cell',
+            'fcnew-resource-group',
+            context.theme.getClass('tableCellShaded'),
+          ]}
           renderProps={renderProps}
           generatorName="resourceGroupLabelContent"
           customGenerator={spec.labelContent}
@@ -50,8 +50,8 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
           willUnmount={spec.labelWillUnmount}
         >
           {(InnerContent) => (
-            <div className="fc-datagrid-cell-frame" ref={this.innerElRef}>
-              <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner">
+            <div ref={this.innerElRef}>
+              <div className="fcnew-datagrid-cell-cushion">
                 <ExpanderIcon
                   indent={0}
                   hasChildren
@@ -60,7 +60,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
                 />
                 <InnerContent
                   elTag="span"
-                  elClasses={['fc-datagrid-cell-main']}
+                  elClasses={['fcnew-datagrid-cell-main']}
                 />
               </div>
             </div>

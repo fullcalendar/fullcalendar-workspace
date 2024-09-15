@@ -24,8 +24,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
       <ContentContainer
         elTag="div"
         elClasses={[
-          'fc-datagrid-cell',
-          'fc-datagrid-cell-super',
+          'fcnew-cell',
         ]}
         elAttrs={{
           role: 'columnheader',
@@ -40,10 +39,10 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
         willUnmount={renderHooks.headerWillUnmount}
       >
         {(InnerContent) => (
-          <div className="fc-datagrid-cell-frame">
+          <div ref={this.innerElRef}>
             <InnerContent
               elTag="div"
-              elClasses={['fc-datagrid-cell-cushion', 'fc-scrollgrid-sync-inner']}
+              elClasses={['fcnew-datagrid-cell-cushion']}
             />
           </div>
         )}

@@ -1,4 +1,4 @@
-import { BaseComponent, ElementDragging, PointerDragEvent, setRef } from '@fullcalendar/core/internal'
+import { afterSize, BaseComponent, ElementDragging, PointerDragEvent, setRef, watchWidth } from '@fullcalendar/core/internal'
 import { ComponentChildren, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 
 export interface ResizableTwoColProps {
@@ -18,9 +18,17 @@ interface ResizableTwoColState {
 const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
 
 export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, ResizableTwoColState> {
-  currentRootEl: null | HTMLDivElement = null
+  rootEl: null | HTMLDivElement = null
+  startElRef = createRef<HTMLDivElement>()
+  endElRef = createRef<HTMLDivElement>()
   resizerElRef = createRef<HTMLDivElement>()
+
+  // internal
+  startWidth: number // weird names, might get confused with dragging start/end
+  endWidth: number //
   resizerDragging: ElementDragging
+  unwatchStartWidth?: () => void
+  unwatchEndWidth?: () => void
 
   render() {
     let { props, state, context } = this
@@ -33,16 +41,41 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
     return (
       <div
         ref={this.handleRootEl}
-        class={props.className}
+        class={[
+          'fcnew-cellgroup',
+          props.className,
+        ].join(' ')}
       >
-        <div style={{ width: resourceAreaWidth }} class={props.startClassName}>
+        <div
+          style={{ width: resourceAreaWidth }}
+          class={[
+            'fcnew-cell',
+            'fcnew-cell-fixedsize',
+            props.startClassName
+          ].join(' ')}
+          ref={this.startElRef}
+        >
           {props.startContent}
         </div>
         <div
+          className={[
+            'fcnew-cell',
+            'fcnew-cell-fixedsize',
+            'fcnew-resource-timeline-divider',
+            theme.getClass('tableCellShaded'),
+          ].join(' ')}
           ref={this.resizerElRef}
-          className={'fc-resource-timeline-divider ' + theme.getClass('tableCellShaded')}
         />
-        <div class={props.endClassName}>
+        <div
+          class={[
+            'fcnew-cell',
+            props.endClassName,
+          ].join(' ')}
+          style={{
+            minWidth: 0, // TODO: util class for this? make it a reset?
+          }}
+          ref={this.endElRef}
+        >
           {props.endContent}
         </div>
       </div>
@@ -50,7 +83,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
   }
 
   handleRootEl = (el: HTMLDivElement | null) => {
-    this.currentRootEl = el
+    this.rootEl = el
 
     if (this.props.elRef) {
       setRef(this.props.elRef, el)
@@ -58,6 +91,16 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
   }
 
   componentDidMount() {
+    this.unwatchStartWidth = watchWidth(this.startElRef.current, (width) => {
+      this.startWidth = width
+      afterSize(this.fireSizing)
+    })
+
+    this.unwatchEndWidth = watchWidth(this.endElRef.current, (width) => {
+      this.endWidth = width
+      afterSize(this.fireSizing)
+    })
+
     this.initResizing()
   }
 
@@ -65,19 +108,24 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
     this.destroyResizing()
   }
 
+  fireSizing = () => {
+    if (this.props.onSizes) {
+      this.props.onSizes(this.startWidth, this.endWidth)
+    }
+  }
+
   initResizing() {
     let { isRtl, pluginHooks } = this.context
     let ElementDraggingImpl = pluginHooks.elementDraggingImpl
-    let resizerEl = this.resizerElRef.current
 
     if (ElementDraggingImpl) {
-      let rootEl = this.currentRootEl
-      let dragging = this.resizerDragging = new ElementDraggingImpl(resizerEl)
+      let rootEl = this.rootEl
+      let dragging = this.resizerDragging = new ElementDraggingImpl(this.resizerElRef.current)
       let dragStartWidth
       let viewWidth
 
       dragging.emitter.on('dragstart', () => {
-        dragStartWidth = resizerEl.getBoundingClientRect().width
+        dragStartWidth = this.startWidth
         viewWidth = rootEl.getBoundingClientRect().width
       })
 

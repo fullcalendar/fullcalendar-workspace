@@ -51,7 +51,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
           'fcnew-timeline-slot-lane',
           isEm && 'fcnew-timeline-slot-em',
           tDateProfile.isTimeScale ? (
-            isInt(dateEnv.countDurationsBetween(
+            isInt(dateEnv.countDurationsBetween( // best to do this here?
               tDateProfile.normalizedRange.start,
               props.date,
               tDateProfile.labelInterval,

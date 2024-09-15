@@ -18,6 +18,7 @@ import {
   multiplyDuration,
   afterSize,
   ScrollerSyncerInterface,
+  getIsHeightAuto,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { buildTimelineDateProfile, TimelineDateProfile } from '../timeline-date-profile.js'
@@ -71,6 +72,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
     /* table settings */
 
+    const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
@@ -127,20 +129,23 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   }}
                 >
                   <div>
-                    {cellRows.map((cells, rowLevel) => (
-                      <TimelineHeaderRow
-                        key={rowLevel}
-                        dateProfile={props.dateProfile}
-                        tDateProfile={tDateProfile}
-                        nowDate={nowDate}
-                        todayRange={todayRange}
-                        rowLevel={rowLevel}
-                        isLastRow={rowLevel === cellRows.length - 1}
-                        cells={cells}
-                        innerWidthRef={this.handleHeaderSlotInnerWidth}
-                        slotWidth={slotStyleWidth}
-                      />
-                    ))}
+                    {cellRows.map((cells, rowLevel) => {
+                      const isLast = rowLevel === cellRows.length - 1
+                      return (
+                        <TimelineHeaderRow
+                          key={rowLevel}
+                          dateProfile={props.dateProfile}
+                          tDateProfile={tDateProfile}
+                          nowDate={nowDate}
+                          todayRange={todayRange}
+                          rowLevel={rowLevel}
+                          isLastRow={isLast}
+                          cells={cells}
+                          slotWidth={slotStyleWidth}
+                          innerWidthRef={isLast ? this.handleHeaderSlotInnerWidth : undefined}
+                        />
+                      )
+                    })}
                   </div>
                   {enableNowIndicator && (
                     // TODO: make this positioned WITHIN padding?
@@ -156,7 +161,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               {/* BODY
               ---------------------------------------------------------------------------------- */}
               <Scroller
-                vertical
+                vertical={verticalScrolling}
                 horizontal
                 elClassNames={['fcnew-rowgroup', 'fcnew-flex-grow']}
                 ref={this.bodyScrollerRef}
@@ -165,8 +170,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 rightScrollbarWidthRef={this.handleRightScrollbarWidth}
               >
                 <div
-                  className="fcnew-timeline-body fcnew-rel"
-                  style={{ width: canvasWidth }}
+                  className="fcnew-rel"
+                  style={{
+                    width: canvasWidth,
+                    minHeight: '100%', // TODO: className for this?
+                  }}
                   ref={this.handeBodyEl}
                 >
                   <TimelineSlats
@@ -174,7 +182,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     tDateProfile={tDateProfile}
                     nowDate={nowDate}
                     todayRange={todayRange}
+
+                    // ref
                     innerWidthRef={this.handleBodySlotInnerWidth}
+
+                    // dimensions
                     slotWidth={slotStyleWidth}
                   />
                   <TimelineLane
@@ -365,7 +377,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
           bottom: elHeight,
         },
         // HACK. TODO: This is expensive to do every hit-query
-        dayEl: this.bodyEl.querySelectorAll('.fcnew-slat')[slatIndex] as HTMLElement, // TODO!
+        dayEl: this.bodyEl.querySelectorAll('.fcnew-timeline-slot')[slatIndex] as HTMLElement, // TODO!
         layer: 0,
       }
     }

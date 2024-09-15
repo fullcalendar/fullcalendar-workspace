@@ -13,6 +13,18 @@ previously, Timeline's hit system would always return slat left/right, not snap.
 write tests for percentage-based resource-timeline spreadsheet-column resizing
 for connectors:
   pause size-handling until all slots are rendered
+todo: web component, remove `shadow` attribute
+todo: implement fcnew-v-sticky/fcnew-sticky
+test matrix:
+  timeline
+    height:auto
+    multiple header rows
+    business hours per resource VS whole
+worksheet for new minimum browser version:
+  supports ?? operator
+  supports ResizeObserver
+todo: ability to freeze resizing while resizing columns or resource-area
+
 
 ## 6.1.15 (2024-07-12)
 

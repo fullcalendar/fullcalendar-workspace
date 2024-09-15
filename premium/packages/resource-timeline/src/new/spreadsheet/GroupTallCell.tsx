@@ -30,13 +30,13 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
     return (
       <ContentContainer
         elTag="div"
-        elClasses={[
-          'fc-datagrid-cell',
-          'fc-resource-group',
-        ]}
         elAttrs={{
           role: 'gridcell',
         }}
+        elClasses={[
+          'fcnew-cell',
+          'fcnew-resource-group',
+        ]}
         renderProps={renderProps}
         generatorName="resourceGroupLabelContent"
         customGenerator={colSpec.cellContent}
@@ -46,10 +46,10 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
         willUnmount={colSpec.cellWillUnmount}
       >
         {(InnerContent) => (
-          <div className="fc-datagrid-cell-frame fc-datagrid-cell-frame-liquid">
+          <div ref={this.innerElRef}>
             <InnerContent
               elTag="div"
-              elClasses={['fc-datagrid-cell-cushion', 'fc-sticky']}
+              elClasses={['fcnew-datagrid-cell-cushion', 'fcnew-sticky']}
             />
           </div>
         )}

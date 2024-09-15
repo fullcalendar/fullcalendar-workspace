@@ -58,7 +58,7 @@ export function watchSize(
 
 export function watchWidth(
   el: HTMLElement,
-  callback: (height: number) => void,
+  callback: (width: number) => void,
 ) {
   let currentWidth: number | undefined
 

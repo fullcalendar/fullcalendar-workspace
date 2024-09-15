@@ -28,8 +28,8 @@ export function parseColWidthConfig(width: number | string): ColWidthConfig {
     if (typeof width === 'number') {
       return { pixels: width }
     }
-    return {}
   }
+  return {}
 }
 
 export function isColWidthConfigListsEqual(a: ColWidthConfig[], b: ColWidthConfig[]): boolean {
@@ -56,30 +56,46 @@ export const SPREADSHEET_COL_MIN_WIDTH = 20
 export function processSpreadsheetColWidthConfigs(
   colWidthConfigs: ColWidthConfig[],
   availableWidth: number | undefined
-): [colWidths: number[], totalWidth: number] {
+): [colWidths: number[], totalWidth: number | undefined] {
+  if (availableWidth == null) {
+    return [[], undefined]
+  }
+
   let colWidths: number[] = []
   let totalWidth = 0
   let fracDenom = 0
+  let numFracCols = 0
+  let numUnknownFracCols = 0
 
   // consume pixel-based width first
   for (const c of colWidthConfigs) {
-    if (c.frac != null) {
-      colWidths.push(0)
-      fracDenom += c.frac
-    } else {
+    if (c.pixels != null) {
       const w = Math.max(c.pixels, SPREADSHEET_COL_MIN_WIDTH)
       colWidths.push(w)
       totalWidth += w
+    } else {
+      colWidths.push(0)
+      numFracCols++
+
+      if (c.frac != null) {
+        fracDenom += c.frac
+      } else {
+        numUnknownFracCols++
+      }
     }
   }
+
+  const defaultFrac = 1 / numFracCols
+  fracDenom += numUnknownFracCols * defaultFrac
 
   const leftoverWidth = Math.max(0, availableWidth - totalWidth)
   let i = 0
 
   // leftover width goes to frac-based width
   for (const c of colWidthConfigs) {
-    if (c.frac != null) {
-      const w = Math.max(c.frac / fracDenom * leftoverWidth, SPREADSHEET_COL_MIN_WIDTH)
+    if (c.pixels == null) {
+      const frac = c.frac ?? defaultFrac
+      const w = Math.max(frac / fracDenom * leftoverWidth, SPREADSHEET_COL_MIN_WIDTH)
       colWidths[i] = w
       totalWidth += w
     }
@@ -92,7 +108,11 @@ export function processSpreadsheetColWidthConfigs(
 export function processSpreadsheetColWidthOverrides(
   colWidthOverrides: number[], // already ensured >= SPREADSHEET_COL_MIN_WIDTH
   availableWidth: number | undefined,
-): [colWidth: number[], totalWidth: number] {
+): [colWidth: number[], totalWidth: number | undefined] {
+  if (availableWidth == null) {
+    return [[], undefined]
+  }
+
   let colWidths: number[] = []
   let totalWidth = 0
 
