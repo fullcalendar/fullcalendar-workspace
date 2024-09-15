@@ -7,11 +7,15 @@
   & .fc-list-table {
     width: 100%;
     border-style: hidden; // kill outer border on theme
+    border-spacing: 0;
+    border-collapse: collapse;
   }
 
   & .fc-list-table tr > * {
-    border-left: 0;
-    border-right: 0;
+    // hack. will need to separate-out for theming
+    border-style: solid;
+    border-color: var(--fc-border-color);
+    border-width: 1px 0; // top and bottom
   }
 
   & .fc-list-sticky {

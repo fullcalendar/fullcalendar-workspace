@@ -71,7 +71,7 @@ export class ListView extends DateComponent<ViewProps> {
         ]}
         viewSpec={context.viewSpec}
       >
-        <Scroller vertical={verticalScrolling}>
+        <Scroller vertical={verticalScrolling}>{/* TODO: don't need heavyweight components */}
           {eventSegs.length > 0 ?
             this.renderSegList(eventSegs, dayDates) :
             this.renderEmptyMessage()}

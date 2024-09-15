@@ -45,7 +45,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
 
     const dayHeaderFormat = this.createDayHeaderFormatter(
       context.options.dayHeaderFormat,
-      true, // datesRepDistinctDays
+      false, // datesRepDistinctDays
       dayTableModel.colCnt,
     )
 

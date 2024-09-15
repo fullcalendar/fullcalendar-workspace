@@ -26,6 +26,7 @@ worksheet for new minimum browser version:
 todo: ability to freeze resizing while resizing columns or resource-area
 horizontal scrolling in timegrid/daygrid (no-resource/resource)
 hiding all-day slot
+theme. will need to detangle some css
 
 
 ## 6.1.15 (2024-07-12)
