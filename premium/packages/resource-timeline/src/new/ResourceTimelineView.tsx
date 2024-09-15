@@ -97,8 +97,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private buildResourceHierarchy = memoize(buildResourceHierarchy)
   private buildResourceLayouts = memoize(buildResourceLayouts)
   private buildHeaderLayouts = memoize(buildHeaderLayouts)
-  private buildHeaderCoords = memoize(buildEntityCoords<boolean | number>)
-  private buildBodyCoords = memoize(buildEntityCoords<Resource | Group>)
   private computeSlotWidth = memoize(computeSlotWidth)
   private computeHasResourceBusinessHours = memoize(computeHasResourceBusinessHours)
 
@@ -189,14 +187,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       tDateProfile.cellRows.length,
     )
 
-    let headerCoords = this.buildHeaderCoords(
+    let headerCoords = buildEntityCoords(
       headerLayouts,
-      (entity) => this.headerRowInnerHeightMap.current.get(entity),
+      (entity) => this.headerRowInnerHeightMap.current.get(entity), // makes memoization impossible!
     )
 
-    let bodyCoords = this.bodyCoords = this.buildBodyCoords(
+    let bodyCoords = this.bodyCoords = buildEntityCoords(
       bodyLayouts,
-      (entity) => {
+      (entity) => { // makes memoization impossible!
         const entitySpreadsheetHeight = this.spreadsheetEntityInnerHeightMap.current.get(entity)
         if (entitySpreadsheetHeight != null) {
           return Math.max(
@@ -293,10 +291,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       ref={this.spreadsheetHeaderScrollerRef}
                     >
                       <div
-                        style={{
-                          width: spreadsheetCanvasWidth,
-                          minHeight: '100%', // TODO: make this a class?
-                        }}
+                        style={{ width: spreadsheetCanvasWidth }}
                       >
                         {Boolean(superHeaderRendering) && (
                           <div
@@ -338,6 +333,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         'fcnew-rowgroup',
                         'fcnew-flex-grow',
                       ]}
+                      elStyle={{
+                        flexBasis: 0, // TODO: make className for this somehow
+                        minHeight: 0, // needed?
+                      }}
                       ref={this.spreadsheetBodyScrollerRef}
                     >
                       <div
@@ -479,6 +478,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                               slotWidth={slotWidth}
                               innerWidthRef={isLast ? this.handleHeaderSlotInnerWidth : undefined}
                               innerHeighRef={this.headerRowInnerHeightMap.createRef(rowLevel)}
+                              height={(headerCoords.get(rowLevel) || [])[1]}
                             />
                           )
                         })}
@@ -499,6 +499,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       vertical={verticalScrolling}
                       horizontal
                       elClassNames={['fcnew-rowgroup', 'fcnew-flex-grow']}
+                      elStyle={{
+                        flexBasis: 0, // TODO: make className for this somehow
+                        minHeight: 0, // needed?
+                      }}
                       ref={this.timeBodyScrollerRef}
                       heightRef={this.handleMainScrollerHeight}
                       leftScrollbarWidthRef={this.handleLeftScrollbarWidth}

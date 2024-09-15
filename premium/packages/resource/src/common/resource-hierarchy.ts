@@ -18,7 +18,7 @@ export interface GenericNode {
 
 export interface GroupNode extends GenericNode {
   entity: Group
-  isCol: boolean
+  isOwnRow: boolean
   children: (GroupNode | ResourceNode)[]
 }
 
@@ -102,7 +102,7 @@ function insertResourceNode(
 function ensureGroupNodes(
   resourceNode: ResourceNode,
   groupSpec: GroupSpec,
-  isRow: boolean,
+  isOwnRow: boolean,
   resNodes: GenericNode[],
 ): GenericNode {
   let groupValue = resourceNode.resourceFields[groupSpec.field]
@@ -141,7 +141,7 @@ function ensureGroupNodes(
         value: groupValue,
         spec: groupSpec,
       },
-      isCol: !isRow, // TODO: better names?
+      isOwnRow,
       children: [],
     }
 

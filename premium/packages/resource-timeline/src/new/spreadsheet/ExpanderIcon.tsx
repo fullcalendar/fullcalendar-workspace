@@ -9,22 +9,22 @@ export function ExpanderIcon({ indent, hasChildren, isExpanded, onExpanderClick 
 
   for (let i = 0; i < indent; i += 1) {
     nodes.push(
-      <span className="fc-icon" />,
+      <span className="fcnew-icon" />,
     )
   }
 
-  let iconClassNames = ['fc-icon']
+  let iconClassNames = ['fcnew-icon']
   if (hasChildren) {
     if (isExpanded) {
-      iconClassNames.push('fc-icon-minus-square')
+      iconClassNames.push('fcnew-icon-minus-square')
     } else {
-      iconClassNames.push('fc-icon-plus-square')
+      iconClassNames.push('fcnew-icon-plus-square')
     }
   }
 
   nodes.push(
     <span
-      className={'fc-datagrid-expander' + (hasChildren ? '' : ' fc-datagrid-expander-placeholder')}
+      className={'fcnew-datagrid-expander' + (hasChildren ? '' : ' fcnew-datagrid-expander-placeholder')}
       onClick={onExpanderClick}
     >
       <span className={iconClassNames.join(' ')} />

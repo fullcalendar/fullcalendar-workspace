@@ -100,7 +100,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 
   // icons within buttons
 
-  & .fc-button .fc-icon {
+  & .fc-button .fcnew-icon {
     vertical-align: middle;
     font-size: 1.5em; // bump up the size (but don't make it bigger than line-height of button, which is 1.5em also)
   }

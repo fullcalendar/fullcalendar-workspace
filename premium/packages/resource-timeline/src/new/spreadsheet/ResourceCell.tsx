@@ -36,8 +36,8 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
       <ContentContainer
         elTag="div"
         elClasses={[
-          'fc-datagrid-cell',
-          'fc-resource',
+          'fcnew-cell',
+          'fcnew-resource',
         ]}
         elAttrs={{
           role: 'gridcell',
@@ -52,8 +52,8 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         willUnmount={colSpec.cellWillUnmount}
       >
         {(InnerContent) => (
-          <div className="fc-datagrid-cell-frame" style={{ height: props.height }}>
-            <div className="fc-datagrid-cell-cushion fc-scrollgrid-sync-inner">
+          <div style={{ height: props.height }}>
+            <div className="fcnew-datagrid-cell-cushion">
               {colSpec.isMain && (
                 <ExpanderIcon
                   indent={props.indent}
@@ -64,7 +64,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
               )}
               <InnerContent
                 elTag="span"
-                elClasses={['fc-datagrid-cell-main']}
+                elClasses={['fcnew-datagrid-cell-main']}
               />
             </div>
           </div>

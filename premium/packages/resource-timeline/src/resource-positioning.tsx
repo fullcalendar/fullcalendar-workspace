@@ -27,9 +27,9 @@ export function buildEntityCoords<Entity>(
         const childrenHeight = processNodes(layoutNode.children)
 
         if (childrenHeight != null) {
-          let layoutNodeHeight = layoutNode.isCol
-            ? Math.max(ownHeight, childrenHeight)
-            : ownHeight + childrenHeight
+          let layoutNodeHeight = layoutNode.isOwnRow
+            ? ownHeight + childrenHeight
+            : Math.max(ownHeight, childrenHeight)
 
           // is a resource?
           if ((layoutNode as any as ResourceLayout).resourceFields != null) { // !!!
@@ -76,11 +76,11 @@ export function findEntityByCoord(
 
       // intersection?
       if (start + size > coord) {
-        // group column? get more specific
-        if (layoutNode.isCol) {
-          return findEntityByCoord(layoutNode.children, entityCoords, coord - start)
-        } else {
+        if (layoutNode.isOwnRow) {
           return [layoutNode.entity, start, size]
+        } else {
+          // group column? get more specific
+          return findEntityByCoord(layoutNode.children, entityCoords, coord - start)
         }
       }
     }

@@ -2,13 +2,13 @@ import { Group, GenericNode, Resource, ResourceEntityExpansions, ResourceNode, G
 
 export interface GenericLayout<Entity> {
   entity: Entity
-  isCol?: boolean // default: false
+  isOwnRow?: boolean // default: false
   children: GenericLayout<Entity>[]
 }
 
 export interface ResourceLayout { // specific GenericLayout
   entity: Resource
-  isCol?: boolean // default: false
+  isOwnRow?: boolean // default: false
   resourceFields: any
   isExpanded: boolean
   hasChildren: boolean // if has *any* children
@@ -18,7 +18,7 @@ export interface ResourceLayout { // specific GenericLayout
 
 export interface GroupRowLayout { // specific GenericLayout
   entity: Group
-  isCol?: boolean // default: false
+  isOwnRow: true // default: false
   isExpanded: boolean
   hasChildren: boolean // if has *any* children
   indent: number
@@ -27,7 +27,7 @@ export interface GroupRowLayout { // specific GenericLayout
 
 export interface GroupCellLayout { // specific GenericLayout
   entity: Group
-  isCol: true
+  isOwnRow?: false
   children: (ResourceLayout | GroupCellLayout)[]
 }
 
@@ -63,19 +63,11 @@ export function buildResourceLayouts(
         }
         flatResourceLayouts.push(resourceLayout)
         layouts.push(resourceLayout)
-      } else if ((node as GroupNode).isCol) {
-        const groupCellLayout: GroupCellLayout = {
-          entity: (node as GroupNode).entity,
-          isCol: true,
-          children: processNodes(node.children, depth + 1) as (ResourceLayout | GroupCellLayout)[],
-        }
-        ;(flatGroupColLayouts[depth] || (flatGroupColLayouts[depth] = [])) // better way?
-          .push(groupCellLayout)
-        layouts.push(groupCellLayout)
-      } else {
+      } else if ((node as GroupNode).isOwnRow) {
         const isExpanded = expansions[createGroupId((node as GroupRowLayout).entity)]
         const groupRowLayout: GroupRowLayout = {
           entity: (node as GroupNode).entity,
+          isOwnRow: true,
           isExpanded: isExpanded != null ? isExpanded : expansionDefault,
           hasChildren: Boolean(node.children.length),
           indent: initialIndent + depth,
@@ -83,6 +75,14 @@ export function buildResourceLayouts(
         }
         flatGroupRowLayouts.push(groupRowLayout)
         layouts.push(groupRowLayout)
+      } else {
+        const groupCellLayout: GroupCellLayout = {
+          entity: (node as GroupNode).entity,
+          children: processNodes(node.children, depth + 1) as (ResourceLayout | GroupCellLayout)[],
+        }
+        ;(flatGroupColLayouts[depth] || (flatGroupColLayouts[depth] = [])) // better way?
+          .push(groupCellLayout)
+        layouts.push(groupCellLayout)
       }
     }
 

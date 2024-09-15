@@ -6,7 +6,7 @@
   font-style: normal;
 }
 
-.fc-icon {
+.fcnew-icon {
   /* added for fc */
   display: inline-block;
   width: 1em;
@@ -28,24 +28,24 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.fc-icon-chevron-left:before {
+.fcnew-icon-chevron-left:before {
   content: "\e900";
 }
-.fc-icon-chevron-right:before {
+.fcnew-icon-chevron-right:before {
   content: "\e901";
 }
-.fc-icon-chevrons-left:before {
+.fcnew-icon-chevrons-left:before {
   content: "\e902";
 }
-.fc-icon-chevrons-right:before {
+.fcnew-icon-chevrons-right:before {
   content: "\e903";
 }
-.fc-icon-minus-square:before {
+.fcnew-icon-minus-square:before {
   content: "\e904";
 }
-.fc-icon-plus-square:before {
+.fcnew-icon-plus-square:before {
   content: "\e905";
 }
-.fc-icon-x:before {
+.fcnew-icon-x:before {
   content: "\e906";
 }

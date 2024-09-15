@@ -7,7 +7,7 @@ export class ToolbarWrapper {
     return buttonEl && !buttonEl.disabled
   }
 
-  getButtonInfo(name, iconPrefix = 'fc-icon') { // prefix doesnt have dash
+  getButtonInfo(name, iconPrefix = 'fcnew-icon') { // prefix doesnt have dash
     let el = this.getButtonEl(name)
 
     if (el) {

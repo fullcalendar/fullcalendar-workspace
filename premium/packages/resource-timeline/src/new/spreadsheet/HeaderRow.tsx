@@ -20,7 +20,6 @@ export interface HeaderRowProps {
 
 export class HeaderRow extends BaseComponent<HeaderRowProps> {
   // refs
-  private colWrapElRefMap = new RefMap<number, HTMLDivElement>()
   private resizerElRefMap = new RefMap<number, HTMLDivElement>((resizerEl, index) => {
     let { colDraggings } = this
 
@@ -48,7 +47,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
   private colDraggings: { [index: string]: ElementDragging } = {}
 
   render() {
-    const { props, innerHeightRefMap, colWrapElRefMap, resizerElRefMap } = this
+    const { props, innerHeightRefMap, resizerElRefMap } = this
     const { colSpecs, colWidths } = props
 
     return (
@@ -59,19 +58,14 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
       >
         {colSpecs.map((colSpec, colIndex) => {
           return (
-            <div
+            <HeaderCell
               key={colIndex}
-              style={{ width: colWidths[colIndex] }}
-              ref={colWrapElRefMap.createRef(colIndex)}
-            >
-              {/* TODO: give the width to the HeaderCell directly? */}
-              <HeaderCell
-                colSpec={colSpec}
-                resizer={colIndex < colSpecs.length - 1}
-                resizerElRef={resizerElRefMap.createRef(colIndex)}
-                innerHeightRef={innerHeightRefMap.createRef(colIndex)}
-              />
-            </div>
+              width={colWidths[colIndex]}
+              colSpec={colSpec}
+              resizer={colIndex < colSpecs.length - 1}
+              resizerElRef={resizerElRefMap.createRef(colIndex)}
+              innerHeightRef={innerHeightRefMap.createRef(colIndex)}
+            />
           )
         })}
       </div>

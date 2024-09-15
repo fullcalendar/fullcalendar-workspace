@@ -11,21 +11,21 @@ StandardTheme.prototype.classes = {
   buttonActive: 'fc-button-active',
 }
 
-StandardTheme.prototype.baseIconClass = 'fc-icon'
+StandardTheme.prototype.baseIconClass = 'fcnew-icon'
 StandardTheme.prototype.iconClasses = {
-  close: 'fc-icon-x',
-  prev: 'fc-icon-chevron-left',
-  next: 'fc-icon-chevron-right',
-  prevYear: 'fc-icon-chevrons-left',
-  nextYear: 'fc-icon-chevrons-right',
+  close: 'fcnew-icon-x',
+  prev: 'fcnew-icon-chevron-left',
+  next: 'fcnew-icon-chevron-right',
+  prevYear: 'fcnew-icon-chevrons-left',
+  nextYear: 'fcnew-icon-chevrons-right',
 }
 StandardTheme.prototype.rtlIconClasses = {
-  prev: 'fc-icon-chevron-right',
-  next: 'fc-icon-chevron-left',
-  prevYear: 'fc-icon-chevrons-right',
-  nextYear: 'fc-icon-chevrons-left',
+  prev: 'fcnew-icon-chevron-right',
+  next: 'fcnew-icon-chevron-left',
+  prevYear: 'fcnew-icon-chevrons-right',
+  nextYear: 'fcnew-icon-chevrons-left',
 }
 
 StandardTheme.prototype.iconOverrideOption = 'buttonIcons' // TODO: make TS-friendly
 StandardTheme.prototype.iconOverrideCustomButtonOption = 'icon'
-StandardTheme.prototype.iconOverridePrefix = 'fc-icon-'
+StandardTheme.prototype.iconOverridePrefix = 'fcnew-icon-'

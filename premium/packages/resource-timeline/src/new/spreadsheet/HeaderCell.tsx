@@ -9,6 +9,9 @@ export interface HeaderCellProps {
   // refs
   resizerElRef?: Ref<HTMLDivElement> // TODO: get rid of this
   innerHeightRef?: Ref<number>
+
+  // size
+  width?: number
 }
 
 export class HeaderCell extends BaseComponent<HeaderCellProps> {
@@ -19,7 +22,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
   private detachInnerHeight?: () => void
 
   render() {
-    let { colSpec, resizer, resizerElRef } = this.props
+    let { colSpec, resizer, resizerElRef, width } = this.props
     let renderProps: ColHeaderContentArg = { view: this.context.viewApi }
 
     // need empty inner div for abs positioning for resizer
@@ -28,6 +31,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         elTag="div"
         elAttrs={{ role: 'columnheader' }}
         elClasses={['fcnew-cell']}
+        elStyle={{ width }}
         renderProps={renderProps}
         generatorName="resourceAreaHeaderContent"
         customGenerator={colSpec.headerContent}

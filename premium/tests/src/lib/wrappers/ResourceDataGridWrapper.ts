@@ -66,7 +66,7 @@ export class ResourceDataGridWrapper {
   }
 
   clickFirstExpander() {
-    $(this.el.querySelector('.fc-datagrid-expander')).simulate('click')
+    $(this.el.querySelector('.fcnew-datagrid-expander')).simulate('click')
   }
 
   clickExpander(resourceId) {
@@ -74,17 +74,17 @@ export class ResourceDataGridWrapper {
   }
 
   getExpanderEl(resourceId) {
-    return this.getResourceCellEl(resourceId).querySelector('.fc-datagrid-expander')
+    return this.getResourceCellEl(resourceId).querySelector('.fcnew-datagrid-expander')
   }
 
   isRowExpanded(resourceId) {
-    let iconEl = this.getExpanderEl(resourceId).querySelector('.fc-icon')
+    let iconEl = this.getExpanderEl(resourceId).querySelector('.fcnew-icon')
 
-    if (iconEl.classList.contains('fc-icon-plus-square')) {
+    if (iconEl.classList.contains('fcnew-icon-plus-square')) {
       return false
     }
 
-    if (iconEl.classList.contains('fc-icon-minus-square')) {
+    if (iconEl.classList.contains('fcnew-icon-minus-square')) {
       return true
     }
 
@@ -92,7 +92,7 @@ export class ResourceDataGridWrapper {
   }
 
   getRowIndentation(resourceId) {
-    return this.getResourceCellEl(resourceId).querySelectorAll('.fc-icon').length
+    return this.getResourceCellEl(resourceId).querySelectorAll('.fcnew-icon').length
   }
 }
 
@@ -100,7 +100,7 @@ function buildResourceInfoFromCell(cellEl) {
   return {
     type: 'resource',
     resourceId: cellEl.getAttribute('data-resource-id'),
-    text: $(cellEl.querySelector('.fc-datagrid-cell-main')).text(),
+    text: $(cellEl.querySelector('.fcnew-datagrid-cell-main')).text(),
     cellEl,
     rowEl: cellEl.parentNode,
   }
@@ -109,7 +109,7 @@ function buildResourceInfoFromCell(cellEl) {
 function buildGroupInfoFromCell(cellEl) {
   return {
     type: 'group',
-    text: $(cellEl.querySelector('.fc-datagrid-cell-main')).text(),
+    text: $(cellEl.querySelector('.fcnew-datagrid-cell-main')).text(),
     cellEl,
     rowEl: cellEl.parentNode,
   }
