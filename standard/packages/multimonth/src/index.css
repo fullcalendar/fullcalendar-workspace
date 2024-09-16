@@ -1,76 +1,80 @@
 
 .fc {
 
-  & .fc-multimonth {
+  & .fcnew-multimonth-scroller {
+    overflow-y: scroll; // HACK to prevent width oscillation, for handleScrollRequest
+    overflow-x: hidden;
+  }
+
+  & .fcnew-multimonth-flexparent {
     display: flex;
     flex-wrap: wrap;
-    border: 1px solid var(--fc-border-color);
-    overflow-y: auto;
-    overflow-x: hidden;
   }
 
   // a single month
 
-  & .fc-multimonth-title {
+  & .fcnew-multimonth-month {
+    flex-grow: 1;
+    flex-shrink: 1; // needed???
+    min-width: 0; // needed???
+  }
+
+  & .fcnew-multimonth-title {
     padding: 1em 0;
     text-align: center;
     font-weight: bold;
     font-size: 1.2em;
   }
 
-  & .fc-multimonth-daygrid {
+  & .fcnew-multimonth-header .fcnew-row {
+    border-top: 1px solid var(--fc-border-color) !important; // HACK
+  }
+
+  & .fcnew-multimonth-daygrid { // like the "body"
+    border-bottom: 1px solid var(--fc-border-color) !important; // HACK
     background: var(--fc-page-bg-color);
-  }
-
-  & .fc-multimonth-header-table,
-  & .fc-multimonth-daygrid-table {
-    width: 100%;
-    table-layout: fixed;
-  }
-
-  & .fc-multimonth-daygrid-table {
-    border-top-style: hidden !important;
   }
 
   // variants
 
-  & .fc-multimonth-singlecol {
-    & .fc-multimonth {
+  & .fcnew-multimonth-singlecol {
+    & .fcnew-multimonth {
       position: relative;
     }
 
-    & .fc-multimonth-header {
+    & .fcnew-multimonth-header {
       position: relative; // ultimately for stick
       top: 0;
       z-index: 2;
       background: var(--fc-page-bg-color);
     }
 
-    & .fc-multimonth-daygrid {
+    & .fcnew-multimonth-daygrid {
       position: relative;
       z-index: 1;
     }
-
-    & .fc-multimonth-header-table,
-    & .fc-multimonth-daygrid-table {
-      border-left-style: hidden;
-      border-right-style: hidden;
-    }
-
-    & .fc-multimonth-month:last-child .fc-multimonth-daygrid-table {
-      border-bottom-style: hidden;
-    }
   }
 
-  & .fc-multimonth-multicol {
+  & .fcnew-multimonth-multicol {
     line-height: 1; // undo themes that have thick line-height
 
-    & .fc-multimonth-month {
-      padding: 0 1.2em 1.2em;
+    & .fcnew-multimonth-header .fcnew-row {
+      border-left: 1px solid var(--fc-border-color) !important; // HACK
+      border-right: 1px solid var(--fc-border-color) !important; // HACK
     }
 
-    // more-link look like an event
-    & .fc-daygrid-more-link {
+    & .fcnew-multimonth-daygrid { // like the "body"
+      border-left: 1px solid var(--fc-border-color) !important; // HACK
+      border-right: 1px solid var(--fc-border-color) !important; // HACK
+    }
+
+    & .fcnew-multimonth-flexparent {
+      margin: 0 1.2em 1.2em;
+      gap: 2.4em;
+    }
+
+    // +more link look like an event
+    & .fcnew-daygrid-more-link {
       border: 1px solid var(--fc-event-border-color);
       padding: 1px;
       float: none;
@@ -78,26 +82,26 @@
     }
   }
 
-  & .fc-multimonth-compact {
+  & .fcnew-multimonth-compact {
     line-height: 1; // undo themes that have thick line-height
 
-    & .fc-multimonth-header-table,
-    & .fc-multimonth-daygrid-table {
+    & .fcnew-multimonth-daygrid,
+    & .fcnew-multimonth-header .fcnew-row { // TODO: better!
       font-size: 0.9em;
     }
   }
 }
 
 .fc-media-screen {
-  & .fc-multimonth-singlecol {
-    & .fc-multimonth-header {
+  & .fcnew-multimonth-singlecol {
+    & .fcnew-multimonth-header {
       position: sticky;
     }
   }
 }
 
 .fc-media-print {
-  & .fc-multimonth {
+  & .fcnew-multimonth {
     overflow: visible;
   }
 }

@@ -1,31 +1,16 @@
-import { CssDimValue } from '@fullcalendar/core'
-import { DateComponent, ViewProps, memoize, DateFormatter, DateRange, setRef } from '@fullcalendar/core/internal'
+import { DateComponent, ViewProps, memoize, DateFormatter, DateRange } from '@fullcalendar/core/internal'
 import { buildDayTableModel, DayTableSlicer, DayGridRows, DayOfWeekHeaderCell, createDayHeaderFormatter } from '@fullcalendar/daygrid/internal'
-import { createElement, Ref } from '@fullcalendar/core/preact'
+import { createElement } from '@fullcalendar/core/preact'
 
 export interface SingleMonthProps extends ViewProps {
   todayRange: DateRange
-
-  elRef?: Ref<HTMLDivElement>
   isoDateStr?: string
   titleFormat: DateFormatter
-  width: CssDimValue
-
-  // TODO: why are these needed???
-  tableWidth: number | null
-  clientWidth: number | null
-  clientHeight: number | null
-
-  // TODO: rename `cells` to cellRows
+  width: number | string // string is a temporary value
 }
 
-interface SingleMonthState {
-  width?: number
-}
-
-export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthState> {
+export class SingleMonth extends DateComponent<SingleMonthProps> {
   private slicer = new DayTableSlicer()
-  private rootEl: HTMLElement
 
   // memo
   private buildDayTableModel = memoize(buildDayTableModel)
@@ -39,7 +24,9 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     const slicedProps = this.slicer.sliceProps(props, dateProfile, options.nextDayThreshold, context, dayTableModel)
 
     // ensure single-month has aspect ratio
-    const tableHeight = props.tableWidth != null ? props.tableWidth / options.aspectRatio : null
+    const tableHeight = typeof props.width === 'number'
+      ? props.width / options.aspectRatio
+      : null
     const rowCnt = dayTableModel.cellRows.length
     const rowHeight = tableHeight != null ? tableHeight / rowCnt : null
 
@@ -49,31 +36,28 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
       dayTableModel.colCnt,
     )
 
+    // TODO: tell children if we know dimensions are unstable?
+
     return (
       <div
-        ref={this.handleRootEl}
         data-date={props.isoDateStr}
-        className="fc-multimonth-month"
-        style={{ width: props.width }}
         role="grid"
+        className="fcnew-multimonth-month"
+        style={{ width: props.width }}
       >
         <div
-          className="fc-multimonth-header"
-          style={{ marginBottom: rowHeight }} // for stickyness
+          className="fcnew-multimonth-header fcnew-rowgroup"
+          style={{ marginBottom: rowHeight }} // for stickiness
           role="presentation"
         >
-          <div className="fc-multimonth-title">
+          <div className="fcnew-multimonth-title">
             {context.dateEnv.format(
               props.dateProfile.currentRange.start,
               props.titleFormat,
             )}
           </div>
-          <div
-            className={[
-              'fc-multimonth-header-table',
-              context.theme.getClass('table'),
-            ].join(' ')}
-          >
+          {/* TODO: somehow use HeaderRow or something? */}
+          <div className='fcnew-row'>
             {dayTableModel.headerDates.map((headerDate) => (
               <DayOfWeekHeaderCell
                 key={headerDate.getUTCDay()}
@@ -86,55 +70,31 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
         </div>
         <div
           className={[
-            'fc-multimonth-daygrid',
-            'fc-daygrid',
-            'fc-daygrid-body', // necessary for TableRows DnD parent
-            !forPrint ? 'fc-daygrid-body-balanced' : '',
-            forPrint ? 'fc-daygrid-body-unbalanced' : '',
-            forPrint ? 'fc-daygrid-body-natural' : '',
+            'fcnew-multimonth-daygrid',
+            context.theme.getClass('table'), // does this still work?
           ].join(' ')}
-          style={{ marginTop: -rowHeight }} // for stickyness
+          style={{
+            marginTop: -rowHeight,
+            height: forPrint ? '' : tableHeight,
+          }}
         >
-          <div
-            className={[
-              'fc-multimonth-daygrid-table',
-              context.theme.getClass('table'),
-            ].join(' ')}
-            style={{ height: forPrint ? '' : tableHeight }}
-            role="presentation"
-          >
-            <DayGridRows
-              dateProfile={props.dateProfile}
-              todayRange={props.todayRange}
-              cellRows={dayTableModel.cellRows}
-              forPrint={props.forPrint}
+          <DayGridRows
+            dateProfile={props.dateProfile}
+            todayRange={props.todayRange}
+            cellRows={dayTableModel.cellRows}
+            forPrint={props.forPrint}
 
-              // content
-              fgEventSegs={slicedProps.fgEventSegs}
-              bgEventSegs={slicedProps.bgEventSegs}
-              businessHourSegs={slicedProps.businessHourSegs}
-              dateSelectionSegs={slicedProps.dateSelectionSegs}
-              eventDrag={slicedProps.eventDrag}
-              eventResize={slicedProps.eventResize}
-              eventSelection={slicedProps.eventSelection}
-            />
-          </div>
+            // content
+            fgEventSegs={slicedProps.fgEventSegs}
+            bgEventSegs={slicedProps.bgEventSegs}
+            businessHourSegs={slicedProps.businessHourSegs}
+            dateSelectionSegs={slicedProps.dateSelectionSegs}
+            eventDrag={slicedProps.eventDrag}
+            eventResize={slicedProps.eventResize}
+            eventSelection={slicedProps.eventSelection}
+          />
         </div>
       </div>
     )
-  }
-
-  handleRootEl = (rootEl: HTMLElement | null) => {
-    this.rootEl = rootEl
-    setRef(this.props.elRef, rootEl)
-  }
-
-  handleSizing = () => {
-    this.safeSetState({
-      width: this.rootEl.getBoundingClientRect().width
-      /*
-      TODO: never use .offsetHeight/offsetWidth anywhere else because we don't want integer-rounded anymore!
-      */
-    })
   }
 }

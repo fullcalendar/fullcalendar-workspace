@@ -27,7 +27,14 @@ todo: ability to freeze resizing while resizing columns or resource-area
 horizontal scrolling in timegrid/daygrid (no-resource/resource)
 hiding all-day slot
 theme. will need to detangle some css
-
+how month view balances week heights
+test multi-week view too (in examples)
+for ListView left-and-right, don't use floating, use flexbox
+for multi-month, ensure initially scrolls to current day
+for resource-timeline,
+  test rows expanding to fill height (but not groups)
+test the view where it's a year of months, but each month has a title
+disabled-cell styling on monthview is broken
 
 ## 6.1.15 (2024-07-12)
 

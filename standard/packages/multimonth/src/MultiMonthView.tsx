@@ -10,97 +10,109 @@ import {
   memoize,
   DateFormatter,
   createFormatter,
-  isPropsEqual,
   DateProfileGenerator,
   formatIsoMonthStr,
   DateRange,
   NowTimer,
   getIsHeightAuto,
+  ScrollResponder,
+  ScrollRequest,
+  watchWidth,
+  compareNumbers,
 } from '@fullcalendar/core/internal'
 import { buildDayTableRenderRange } from '@fullcalendar/daygrid/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { SingleMonth } from './SingleMonth.js'
 
 interface MultiMonthViewState {
-  clientWidth?: number
-  clientHeight?: number
-  monthHPadding?: number
+  clientWidth?: number // just inside the scroller
+  xGap?: number
+  xPadding?: number
+  monthWidth?: number
 }
 
 export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState> {
+  // memo
   private splitDateProfileByMonth = memoize(splitDateProfileByMonth)
   private buildMonthFormat = memoize(buildMonthFormat)
-  private scrollElRef = createRef<HTMLDivElement>()
-  private firstMonthElRef = createRef<HTMLDivElement>()
-  private needsScrollReset = false
+
+  // ref
+  private rootElRef = createRef<HTMLDivElement>() // also the scroll container
+  private innerElRef = createRef<HTMLDivElement>()
+
+  // internal
+  private scrollResponder: ScrollResponder
+  private unwatchWidth: () => void
 
   render() {
     const { context, props, state } = this
     const { options } = context
-    const { clientWidth, clientHeight } = state
-    const monthHPadding = state.monthHPadding || 0
 
-    const colCount = Math.min(
-      clientWidth != null ?
-        Math.floor(clientWidth / (options.multiMonthMinWidth + monthHPadding)) :
-        1,
-      options.multiMonthMaxColumns,
-    ) || 1
+    const colCount = state.clientWidth == null
+      ? 2
+      : Math.min(
+          options.multiMonthMaxColumns,
+          Math.floor(
+            (state.clientWidth - state.xPadding + state.xGap) /
+            (options.multiMonthMinWidth + state.xGap)
+          ),
+        )
 
-    const monthWidthPct = (100 / colCount) + '%'
-    const monthTableWidth = clientWidth == null ? null :
-      (clientWidth / colCount) - monthHPadding
+    const monthWidth = state.clientWidth == null
+      ? '34%' // will expand. now small enough to be 1/3. for allowing gap
+      : Math.floor( // exact values can cause expansion to other rows
+          (state.clientWidth - state.xPadding - (state.xGap * (colCount - 1))) /
+          colCount
+        )
 
-    const isLegitSingleCol = clientWidth != null && colCount === 1
     const monthDateProfiles = this.splitDateProfileByMonth(
       context.dateProfileGenerator,
       props.dateProfile,
       context.dateEnv,
-      isLegitSingleCol ? false : options.fixedWeekCount,
+      options.fixedWeekCount,
       options.showNonCurrentDates,
     )
 
     const monthTitleFormat = this.buildMonthFormat(options.multiMonthTitleFormat, monthDateProfiles)
     const rootClassNames = [
-      'fc-multimonth',
-      isLegitSingleCol ?
-        'fc-multimonth-singlecol' :
-        'fc-multimonth-multicol',
-      (monthTableWidth != null && monthTableWidth < 400) ?
-        'fc-multimonth-compact' :
+      'fcnew-multimonth',
+      'fcnew-bordered',
+      (colCount === 1) ?
+        'fcnew-multimonth-singlecol' :
+        'fcnew-multimonth-multicol',
+      (typeof monthWidth === 'number' && monthWidth < 400) ?
+        'fcnew-multimonth-compact' :
         '',
       getIsHeightAuto(options) ?
         '' :
-        'fc-scroller', // for AutoScroller
+        'fcnew-multimonth-scroller',
     ]
 
     return (
       <NowTimer unit="day">
         {(nowDate: DateMarker, todayRange: DateRange) => (
           <ViewContainer
-            elRef={this.scrollElRef}
+            elRef={this.rootElRef}
             elClasses={rootClassNames}
             viewSpec={context.viewSpec}
           >
-            {monthDateProfiles.map((monthDateProfile, i) => {
-              const monthStr = formatIsoMonthStr(monthDateProfile.currentRange.start)
+            <div ref={this.innerElRef} className='fcnew-multimonth-flexparent'>
+              {monthDateProfiles.map((monthDateProfile, i) => {
+                const monthStr = formatIsoMonthStr(monthDateProfile.currentRange.start)
 
-              return (
-                <SingleMonth
-                  {...props}
-                  key={monthStr}
-                  todayRange={todayRange}
-                  isoDateStr={monthStr}
-                  elRef={i === 0 ? this.firstMonthElRef : undefined}
-                  titleFormat={monthTitleFormat}
-                  dateProfile={monthDateProfile}
-                  width={monthWidthPct}
-                  tableWidth={monthTableWidth}
-                  clientWidth={clientWidth}
-                  clientHeight={clientHeight}
-                />
-              )
-            })}
+                return (
+                  <SingleMonth
+                    {...props}
+                    key={monthStr}
+                    todayRange={todayRange}
+                    isoDateStr={monthStr}
+                    titleFormat={monthTitleFormat}
+                    dateProfile={monthDateProfile}
+                    width={monthWidth}
+                  />
+                )
+              })}
+            </div>
           </ViewContainer>
         )}
       </NowTimer>
@@ -108,78 +120,57 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
   }
 
   componentDidMount(): void {
-    this.handleSizing()
-    this.context.addResizeHandler(this.handleSizing)
-    this.requestScrollReset()
+    this.unwatchWidth = watchWidth(this.rootElRef.current, this.handleClientWidth)
+    this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
   }
 
   componentDidUpdate(prevProps: ViewProps) {
-    if (!isPropsEqual(prevProps, this.props)) { // an external change?
-      this.handleSizing()
-    }
-
-    if (prevProps.dateProfile !== this.props.dateProfile) {
-      this.requestScrollReset()
-    } else {
-      this.flushScrollReset()
-    }
+    this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
   }
 
   componentWillUnmount() {
-    this.context.removeResizeHandler(this.handleSizing)
+    this.unwatchWidth()
+    this.scrollResponder.detach()
   }
 
-  handleSizing = () => {
-    const scrollEl = this.scrollElRef.current
-    const firstMonthEl = this.firstMonthElRef.current
+  handleClientWidth = (clientWidth: number) => {
+    let { xGap, xPadding } = this.state
 
-    if (scrollEl) {
-      this.setState({
-        clientWidth: scrollEl.clientWidth,
-        clientHeight: scrollEl.clientHeight,
-      })
-    }
+    // for first time, assume 2 columns and query gap/padding
+    if (xGap == null) {
+      const innerEl = this.innerElRef.current
+      const children = innerEl.childNodes
 
-    if (firstMonthEl && scrollEl) {
-      if (this.state.monthHPadding == null) { // always remember initial non-zero value
-        this.setState({
-          monthHPadding:
-            scrollEl.clientWidth - // go within padding
-            (firstMonthEl.firstChild as HTMLElement).offsetWidth,
-        })
+      if (children.length > 1) {
+        const box0 = (children[0] as HTMLElement).getBoundingClientRect()
+        const box1 = (children[1] as HTMLElement).getBoundingClientRect()
+        let xSpan: number
+        [xGap, xSpan] = [
+          Math.abs(box0.left - box1.right),
+          Math.abs(box0.right - box1.left),
+        ].sort(compareNumbers)
+        xPadding = clientWidth - xSpan
       }
     }
+
+    this.setState({ clientWidth, xGap, xPadding })
   }
 
-  /*
-  TODO: fix this messy scrolling stuff!!!!!!!!
-  */
-
-  requestScrollReset() {
-    this.needsScrollReset = true
-    this.flushScrollReset()
-  }
-
-  flushScrollReset() {
-    if (
-      this.needsScrollReset &&
-      this.state.monthHPadding != null // indicates sizing already happened
-    ) {
+  handleScrollRequest = (_request: ScrollRequest) => {
+    if (this.state.clientWidth != null) { // indicates sizing already happened
       const { currentDate } = this.props.dateProfile
-      const scrollEl = this.scrollElRef.current
-      const monthEl = scrollEl.querySelector(`[data-date="${formatIsoMonthStr(currentDate)}"]`)
+      const rootEl = this.rootElRef.current
+      const innerEl = this.innerElRef.current
+      const monthEl = innerEl.querySelector(`[data-date="${formatIsoMonthStr(currentDate)}"]`)
 
-      scrollEl.scrollTop = monthEl.getBoundingClientRect().top -
-        this.firstMonthElRef.current.getBoundingClientRect().top
+      rootEl.scrollTop = Math.ceil( // for fractions, err on the side of scrolling further
+        monthEl.getBoundingClientRect().top -
+        innerEl.getBoundingClientRect().top
+      )
 
-      this.needsScrollReset = false
+      return true
     }
-  }
-
-  // workaround for when queued setState render (w/ clientWidth) gets cancelled because
-  // subsequent update and shouldComponentUpdate says not to render :(
-  shouldComponentUpdate() {
-    return true
+    return false
   }
 }
 
