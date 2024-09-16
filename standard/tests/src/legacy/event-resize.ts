@@ -326,34 +326,6 @@ describe('eventResize', () => {
         })
       })
 
-      it('should not fire the windowResize handler', (done) => { // bug 1116
-        // has to do this crap because PhantomJS was trigger false window resizes unrelated to the event resize
-        let isDragging = false
-        let calledWhileDragging = false
-
-        let calendar = initCalendar({
-          windowResizeDelay: 0,
-          windowResize(ev) {
-            if (isDragging) {
-              calledWhileDragging = true
-            }
-          },
-        })
-
-        let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
-        timeGridWrapper.resizeEvent(
-          timeGridWrapper.getFirstEventEl(),
-          '2014-06-11T07:00:00Z',
-          '2014-06-11T09:30:00Z',
-          () => { // onBeforeRelease
-            isDragging = false
-          },
-        ).then(() => {
-          expect(calledWhileDragging).toBe(false)
-          done()
-        })
-      })
-
       // https://github.com/fullcalendar/fullcalendar/issues/7099
       it('should handle two consecutive resizes', (done) => {
         let calendar = initCalendar()

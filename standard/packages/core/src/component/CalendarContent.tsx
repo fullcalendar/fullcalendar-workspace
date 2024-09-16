@@ -21,7 +21,6 @@ import { EventClicking } from '../interactions/EventClicking.js'
 import { EventHovering } from '../interactions/EventHovering.js'
 import { getNow } from '../reducers/current-date.js'
 import { CalendarInteraction } from '../calendar-utils.js'
-import { DelayedRunner } from '../util/DelayedRunner.js'
 import { PureComponent } from '../vdom-util.js'
 import { getIsHeightAuto } from '../internal.js'
 import { ViewHarness } from './ViewHarness.js'
@@ -115,8 +114,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
     this.calendarInteractions = props.pluginHooks.calendarInteractions
       .map((CalendarInteractionClass) => new CalendarInteractionClass(props))
 
-    window.addEventListener('resize', this.handleWindowResize)
-
     let { propSetHandlers } = props.pluginHooks
     for (let propName in propSetHandlers) {
       propSetHandlers[propName](props[propName], props)
@@ -135,9 +132,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleWindowResize)
-    this.resizeRunner.clear()
-
     for (let interaction of this.calendarInteractions) {
       interaction.destroy()
     }
@@ -216,25 +210,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
     }
 
     delete interactionSettingsStore[component.uid]
-  }
-
-  // Resizing
-  // -----------------------------------------------------------------------------------------------------------------
-
-  resizeRunner = new DelayedRunner(() => {
-    this.props.emitter.trigger('_resize')
-    this.props.emitter.trigger('windowResize', { view: this.props.viewApi })
-  })
-
-  handleWindowResize = (ev: UIEvent) => {
-    let { options } = this.props
-
-    if (
-      options.handleWindowResize &&
-      ev.target === window // avoid jqui events
-    ) {
-      this.resizeRunner.request(options.windowResizeDelay)
-    }
   }
 }
 

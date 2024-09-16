@@ -35,6 +35,9 @@ for resource-timeline,
   test rows expanding to fill height (but not groups)
 test the view where it's a year of months, but each month has a title
 disabled-cell styling on monthview is broken
+test horizontal scrolling in (resource-)daygrid/timegrid
+updateSize deprecation
+document how windowResize event is no longer fired
 
 ## 6.1.15 (2024-07-12)
 

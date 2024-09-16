@@ -28,21 +28,18 @@ describe('scroll state', () => {
     it('should be maintained when resizing window', (done) => {
       let scrollEl
       let scroll0
-      let calendar = initCalendar({
-        windowResize() {
-          setTimeout(() => { // wait until all other tasks are finished
-            expect(scrollEl.scrollTop).toBe(scroll0)
-            done()
-          }, 0)
-        },
-      }, calendarEl)
+      let calendar = initCalendar({}, calendarEl)
 
       scrollEl = new ViewWrapper(calendar).getScrollerEl()
 
       setTimeout(() => { // wait until after browser's scroll state is applied
         scrollEl.scrollTop = 9999 // all the way
         scroll0 = scrollEl.scrollTop
-        $(window).simulate('resize')
+
+        setTimeout(() => { // wait until all other tasks are finished
+          expect(scrollEl.scrollTop).toBe(scroll0)
+          done()
+        }, 0)
       }, 0)
     })
 

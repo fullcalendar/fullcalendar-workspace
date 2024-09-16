@@ -5,7 +5,6 @@ import { createFormatter } from './datelib/formatting.js'
 import { parseFieldSpecs } from './util/misc.js'
 import { DateProfileGeneratorClass } from './DateProfileGenerator.js'
 import { CalendarApi } from './api/CalendarApi.js'
-import { ViewApi } from './api/ViewApi.js'
 import { EventApi } from './api/EventApi.js'
 import {
   CssDimValue,
@@ -327,7 +326,6 @@ export const CALENDAR_LISTENER_REFINERS = {
   eventAdd: identity as Identity<(arg: EventAddArg) => void>,
   eventChange: identity as Identity<(arg: EventChangeArg) => void>,
   eventRemove: identity as Identity<(arg: EventRemoveArg) => void>,
-  windowResize: identity as Identity<(arg: { view: ViewApi }) => void>,
   eventClick: identity as Identity<(arg: EventClickArg) => void>, // TODO: resource for scheduler????
   eventMouseEnter: identity as Identity<(arg: EventHoveringArg) => void>,
   eventMouseLeave: identity as Identity<(arg: EventHoveringArg) => void>,
@@ -341,7 +339,6 @@ export const CALENDAR_LISTENER_REFINERS = {
   _afterprint: identity as Identity<() => void>,
   _noEventDrop: identity as Identity<() => void>,
   _noEventResize: identity as Identity<() => void>,
-  _resize: identity as Identity<() => void>,
   _scrollRequest: identity as Identity<(arg: any) => void>,
 }
 

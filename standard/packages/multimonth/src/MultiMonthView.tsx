@@ -28,7 +28,6 @@ interface MultiMonthViewState {
   clientWidth?: number // just inside the scroller
   xGap?: number
   xPadding?: number
-  monthWidth?: number
 }
 
 export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState> {
@@ -76,7 +75,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
     const monthTitleFormat = this.buildMonthFormat(options.multiMonthTitleFormat, monthDateProfiles)
     const rootClassNames = [
       'fcnew-multimonth',
-      'fcnew-bordered',
+      'fcnew-bordered', // BAD to mix this with size-listening
       (colCount === 1) ?
         'fcnew-multimonth-singlecol' :
         'fcnew-multimonth-multicol',

@@ -49,7 +49,7 @@ export class CalendarImpl implements CalendarApi {
   }
 
   updateSize(): void {
-    this.trigger('_resize')
+    console.warn('Doesnt do anything!')
   }
 
   // Options
