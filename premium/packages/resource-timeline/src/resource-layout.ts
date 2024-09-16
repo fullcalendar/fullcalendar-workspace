@@ -52,37 +52,44 @@ export function buildResourceLayouts(
     // TODO: more DRY within
     for (const node of nodes) {
       if ((node as ResourceNode).resourceFields) {
-        const isExpanded = expansions[(node as ResourceNode).entity.id]
+        const isExpanded = expansions[(node as ResourceNode).entity.id] ?? expansionDefault
         const resourceLayout: ResourceLayout = {
           entity: (node as ResourceNode).entity,
           resourceFields: (node as ResourceNode).resourceFields,
-          isExpanded: isExpanded != null ? isExpanded : expansionDefault,
+          isExpanded,
           hasChildren: Boolean(node.children.length),
           indent: initialIndent + depth,
-          children: processNodes(node.children, depth + 1) as ResourceLayout[],
+          children: [],
         }
         flatResourceLayouts.push(resourceLayout)
         layouts.push(resourceLayout)
+        if (isExpanded) {
+          resourceLayout.children = processNodes(node.children, depth + 1) as ResourceLayout[]
+        }
       } else if ((node as GroupNode).isOwnRow) {
-        const isExpanded = expansions[createGroupId((node as GroupRowLayout).entity)]
+        const isExpanded = expansions[createGroupId((node as GroupRowLayout).entity)] ?? expansionDefault
         const groupRowLayout: GroupRowLayout = {
           entity: (node as GroupNode).entity,
           isOwnRow: true,
-          isExpanded: isExpanded != null ? isExpanded : expansionDefault,
+          isExpanded,
           hasChildren: Boolean(node.children.length),
           indent: initialIndent + depth,
-          children: processNodes(node.children, depth + 1) as (ResourceLayout | GroupRowLayout | GroupCellLayout)[]
+          children: [],
         }
         flatGroupRowLayouts.push(groupRowLayout)
         layouts.push(groupRowLayout)
+        if (isExpanded) {
+          groupRowLayout.children = processNodes(node.children, depth + 1) as (ResourceLayout | GroupRowLayout | GroupCellLayout)[]
+        }
       } else {
         const groupCellLayout: GroupCellLayout = {
           entity: (node as GroupNode).entity,
-          children: processNodes(node.children, depth + 1) as (ResourceLayout | GroupCellLayout)[],
+          children: [],
         }
         ;(flatGroupColLayouts[depth] || (flatGroupColLayouts[depth] = [])) // better way?
           .push(groupCellLayout)
         layouts.push(groupCellLayout)
+        groupCellLayout.children = processNodes(node.children, depth + 1) as (ResourceLayout | GroupCellLayout)[]
       }
     }
 

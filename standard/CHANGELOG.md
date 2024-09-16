@@ -21,7 +21,7 @@ test matrix:
     multiple header rows
     business hours per resource VS whole
 worksheet for new minimum browser version:
-  supports ?? operator
+  supports ?? operator -- we do this a bunch now
   supports ResizeObserver
 todo: ability to freeze resizing while resizing columns or resource-area
 horizontal scrolling in timegrid/daygrid (no-resource/resource)
