@@ -4,8 +4,10 @@ import {
   memoizeObjArg,
   ContentContainer,
   ViewContext,
+  watchHeight,
+  setRef,
 } from '@fullcalendar/core/internal'
-import { createElement, Fragment, ComponentChild } from '@fullcalendar/core/preact'
+import { createElement, Fragment, ComponentChild, createRef, Ref } from '@fullcalendar/core/preact'
 import { ResourceApi } from '@fullcalendar/resource'
 import { Resource, ColSpec } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from './ExpanderIcon.js'
@@ -18,10 +20,13 @@ export interface ResourceCellProps {
   hasChildren: boolean
   isExpanded: boolean
   height?: number | undefined
+  innerHeightRef?: Ref<number>
 }
 
 export class ResourceCell extends BaseComponent<ResourceCellProps> {
+  private rootElRef = createRef<HTMLDivElement>()
   private refineRenderProps = memoizeObjArg(refineRenderProps)
+  private unwatchHeight?: () => void
 
   render() {
     let { props, context } = this
@@ -43,6 +48,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           role: 'gridcell',
           'data-resource-id': props.resource.id,
         }}
+        elRef={this.rootElRef}
         renderProps={renderProps}
         generatorName={colSpec.isMain ? 'resourceLabelContent' : undefined}
         customGenerator={colSpec.cellContent}
@@ -71,6 +77,16 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         )}
       </ContentContainer>
     )
+  }
+
+  componentDidMount(): void {
+    this.unwatchHeight = watchHeight(this.rootElRef.current, (height) => {
+      setRef(this.props.innerHeightRef, height)
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.unwatchHeight()
   }
 
   onExpanderClick = (ev: UIEvent) => {

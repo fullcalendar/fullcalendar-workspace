@@ -23,7 +23,7 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
   private currentInnerHeight?: number
 
   render() {
-    let { props } = this
+    let { props, innerHeightRefMap } = this
     let { resource, resourceFields } = props
 
     return (
@@ -41,6 +41,7 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
               indent={props.indent}
               hasChildren={props.hasChildren}
               isExpanded={props.isExpanded}
+              innerHeightRef={innerHeightRefMap.createRef(i)}
             />
           )
         })}
