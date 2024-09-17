@@ -18,7 +18,7 @@ export interface GenericNode {
 
 export interface GroupNode extends GenericNode {
   entity: Group
-  isOwnRow: boolean
+  pooledHeight: boolean // does the 'own' node share height with the children?
   children: (GroupNode | ResourceNode)[]
 }
 
@@ -91,7 +91,7 @@ function insertResourceNode(
   resNodes: GenericNode[],
 ) {
   if (groupSpecs.length) {
-    let groupNode = ensureGroupNodes(resourceNode, groupSpecs[0], groupRowDepth > 0, resNodes)
+    let groupNode = ensureGroupNodes(resourceNode, groupSpecs[0], groupRowDepth <= 0, resNodes)
 
     insertResourceNode(resourceNode, orderSpecs, groupSpecs.slice(1), groupRowDepth - 1, groupNode.children)
   } else {
@@ -102,7 +102,7 @@ function insertResourceNode(
 function ensureGroupNodes(
   resourceNode: ResourceNode,
   groupSpec: GroupSpec,
-  isOwnRow: boolean,
+  pooledHeight: boolean,
   resNodes: GenericNode[],
 ): GenericNode {
   let groupValue = resourceNode.resourceFields[groupSpec.field]
@@ -141,7 +141,7 @@ function ensureGroupNodes(
         value: groupValue,
         spec: groupSpec,
       },
-      isOwnRow,
+      pooledHeight,
       children: [],
     }
 

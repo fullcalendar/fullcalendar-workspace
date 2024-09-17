@@ -86,6 +86,6 @@ export function afterSize(callback: () => void) {
   if (isHandling) {
     flushedCallbackSet.add(callback)
   } else {
-    callback()
+    callback() // TODO: should we queue microtask?
   }
 }

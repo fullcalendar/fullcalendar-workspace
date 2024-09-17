@@ -1,91 +1,143 @@
 import { createEntityId, Group, Resource } from '@fullcalendar/resource/internal'
-import { GenericLayout, ResourceLayout } from './resource-layout.js'
+import { GenericLayout } from './resource-layout.js'
 
 // Resource/Group Verticals
 // -------------------------------------------------------------------------------------------------
-// TODO: can start calling everything 'height'
 
-export type Coords = [start: number, size: number] // TODO: elsewhere?
-
-export function buildEntityCoords<Entity>(
-  hierarchy: GenericLayout<Entity>[],
+export function computeHeights<Entity>(
+  siblingNodes: GenericLayout<Entity>[],
   getEntityHeight: (entity: Entity) => number,
   minHeight?: number,
-): Map<Entity, Coords> {
-  const coords = new Map<Entity, Coords>()
-  let currentTop = 0
-  let resourceCnt = 0
-  let extraPerResource = 0
+): Map<Entity, number> {
+  const heightMap = new Map<Entity, number>()
+  const [totalHeight, expandableCount] = computeTightHeights(siblingNodes, getEntityHeight, heightMap)
 
-  function processNodes(layoutNodes: GenericLayout<Entity>[]): number { // returns total height
-    let totalHeight = 0
+  if (minHeight != null && minHeight > totalHeight) {
+    expandHeights(siblingNodes, heightMap, (minHeight - totalHeight) / expandableCount)
+  }
 
-    for (const layoutNode of layoutNodes) {
-      const ownHeight = getEntityHeight(layoutNode.entity)
+  return heightMap
+}
 
-      if (ownHeight != null) {
-        const childrenHeight = processNodes(layoutNode.children)
+function computeTightHeights<Entity>(
+  siblingNodes: GenericLayout<Entity>[],
+  getEntityHeight: (entity: Entity) => number,
+  heightMap: Map<Entity, number>,
+): [
+  totalHeight: number,
+  expandableCount: number,
+] {
+  let totalHeight = 0
+  let expandableCount = 0
 
-        if (childrenHeight != null) {
-          let layoutNodeHeight = layoutNode.isOwnRow
-            ? ownHeight + childrenHeight
-            : Math.max(ownHeight, childrenHeight)
+  for (const siblingNode of siblingNodes) {
+    let siblingOwnHeight = getEntityHeight(siblingNode.entity) || 0
+    const [siblingChildrenHeight, siblingChildrenExpandableCount] = computeTightHeights(
+      siblingNode.children,
+      getEntityHeight,
+      heightMap,
+    )
 
-          // is a resource?
-          if ((layoutNode as any as ResourceLayout).resourceFields != null) { // !!!
-            resourceCnt++
-            layoutNodeHeight += extraPerResource
-          }
-
-          coords.set(layoutNode.entity, [currentTop, layoutNodeHeight])
-          currentTop += layoutNodeHeight
-          totalHeight += layoutNodeHeight
-        }
+    if (siblingNode.pooledHeight) { // 'own' is side-by-side with children
+      if (siblingOwnHeight > siblingChildrenHeight) {
+        // children are smaller. grow them
+        expandHeights(
+          siblingNode.children,
+          heightMap,
+          (siblingOwnHeight - siblingChildrenHeight) / siblingChildrenExpandableCount
+        )
+      } else {
+        // own-element is smaller. grow to height of children
+        siblingOwnHeight = siblingChildrenHeight
       }
+
+      totalHeight += siblingOwnHeight
+    } else { // 'own' is above children
+      totalHeight += siblingOwnHeight + siblingChildrenHeight
     }
 
-    return totalHeight
+    heightMap.set(siblingNode.entity, siblingOwnHeight)
+
+    if (siblingNode.pooledHeight === undefined) { // vertically stacked, and not a group
+      expandableCount++
+    }
+    expandableCount += siblingChildrenExpandableCount
   }
 
-  const initialTotalHeight = processNodes(hierarchy)
+  return [totalHeight, expandableCount]
+}
 
-  if (minHeight != null && initialTotalHeight < minHeight) {
-    currentTop = 0
-    resourceCnt = 0
-    extraPerResource = (minHeight - initialTotalHeight) / resourceCnt
-    processNodes(hierarchy)
+function expandHeights<Entity>(
+  siblingNodes: GenericLayout<Entity>[],
+  heightMap: Map<Entity, number>,
+  expansion: number,
+): void {
+  for (const siblingNode of siblingNodes) {
+    if (!siblingNode.children.length) {
+      heightMap.set(siblingNode.entity, heightMap.get(siblingNode.entity) + expansion)
+    }
+    expandHeights(siblingNode.children, heightMap, expansion)
+  }
+}
+
+export function computeTopsFromHeights<Entity>(
+  siblingNodes: GenericLayout<Entity>[],
+  heightMap: Map<Entity, number>,
+): Map<Entity, number> {
+  const topMap = new Map<Entity, number>()
+  computeTopsStartingAt(siblingNodes, heightMap, topMap, 0)
+  return topMap
+}
+
+function computeTopsStartingAt<Entity>(
+  siblingNodes: GenericLayout<Entity>[],
+  heightMap: Map<Entity, number>,
+  topMap: Map<Entity, number>,
+  top: number,
+): number { // topAfterwards
+  for (const siblingNode of siblingNodes) {
+    topMap.set(siblingNode.entity, top)
+
+    if (!siblingNode.pooledHeight) {
+      top += heightMap.get(siblingNode.entity)
+    }
+
+    top = computeTopsStartingAt(siblingNode.children, heightMap, topMap, top)
   }
 
-  return coords
+  return top
 }
 
 export function findEntityByCoord(
-  hierarchy: GenericLayout<Resource | Group>[],
-  entityCoords: Map<Resource | Group, Coords>,
+  siblingNodes: GenericLayout<Resource | Group>[],
+  entityTops: Map<Resource | Group, number>,
+  entityHeights: Map<Resource | Group, number>,
   coord: number, // assumed >= 0
 ): [
-  entity: Resource | Group | undefined,
-  start: number | undefined,
-  size: number | undefined,
-] {
-  for (const layoutNode of hierarchy) {
-    const res = entityCoords.get(layoutNode.entity)
+  entity: Resource | Group,
+  top: number,
+  height: number,
+] | undefined {
+  for (const siblingNode of siblingNodes) {
+    const siblingOwnTop = entityTops.get(siblingNode.entity)
+    const siblingOwnHeight = entityHeights.get(siblingNode.entity)
 
-    if (res) {
-      const [start, size] = res
-
-      // intersection?
-      if (start + size > coord) {
-        if (layoutNode.isOwnRow) {
-          return [layoutNode.entity, start, size]
-        } else {
-          // group column? get more specific
-          return findEntityByCoord(layoutNode.children, entityCoords, coord - start)
-        }
+    // intersection of the sibling's own element?
+    if (siblingOwnTop + siblingOwnHeight > coord) {
+      if (siblingNode.pooledHeight) {
+        // need more specific result
+        return findEntityByCoord(siblingNode.children, entityTops, entityHeights, coord)
+      } else {
+        return [siblingNode.entity, siblingOwnTop, siblingOwnHeight]
+      }
+    } else if (!siblingNode.pooledHeight) {
+      // search siblings below
+      const childrenRes = findEntityByCoord(siblingNode.children, entityTops, entityHeights, coord)
+      if (childrenRes) {
+        return childrenRes
       }
     }
   }
-  return [undefined, undefined, undefined]
 }
 
 /*
@@ -94,10 +146,10 @@ TODO: use map in future? or simply to coord lookup by id?
 probably, since this is called frequently after rerender
 */
 export function findEntityById(
-  hierarchy: GenericLayout<Resource | Group>[],
+  siblingNodes: GenericLayout<Resource | Group>[],
   id: string,
 ): Resource | Group | undefined {
-  for (const layoutNode of hierarchy) {
+  for (const layoutNode of siblingNodes) {
     if (createEntityId(layoutNode.entity) === id) {
       return layoutNode.entity
     }

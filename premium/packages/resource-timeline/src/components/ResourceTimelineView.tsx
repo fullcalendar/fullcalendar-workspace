@@ -49,9 +49,9 @@ import {
   timeToCoord
 } from '@fullcalendar/timeline/internal'
 import {
-  buildEntityCoords,
+  computeHeights,
+  computeTopsFromHeights,
   findEntityByCoord,
-  Coords,
   findEntityById,
 } from '../resource-positioning.js'
 import {
@@ -116,7 +116,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private timeCanvasWidth?: number
   private slotWidth?: number
   private bodyLayouts: GenericLayout<Resource | Group>[]
-  private bodyCoords?: Map<Resource | Group, Coords>
+  private bodyTops?: Map<Resource | Group, number>
+  private bodyHeights?: Map<Resource | Group, number>
 
   // internal
   private resourceSplitter = new ResourceSplitter()
@@ -190,12 +191,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       tDateProfile.cellRows.length,
     )
 
-    let headerCoords = buildEntityCoords(
+    let headerHeights = computeHeights(
       headerLayouts,
       (entity) => this.headerRowInnerHeightMap.current.get(entity), // makes memoization impossible!
     )
 
-    let bodyCoords = this.bodyCoords = buildEntityCoords(
+    let bodyHeights = this.bodyHeights = computeHeights(
       bodyLayouts,
       (entity) => { // makes memoization impossible!
         const entitySpreadsheetHeight = this.spreadsheetEntityInnerHeightMap.current.get(entity)
@@ -209,6 +210,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       },
       state.mainScrollerHeight,
     )
+    let bodyTops = computeTopsFromHeights(bodyLayouts, bodyHeights)
 
     let [timeCanvasWidth, slotWidth] = this.computeSlotWidth(
       tDateProfile.slotCnt,
@@ -301,7 +303,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             role="row"
                             className="fcnew-row"
                             style={{
-                              height: (headerCoords.get(true) || [])[1], // true means superheader
+                              height: headerHeights.get(true), // true means superheader
                             }}
                           >
                             <SuperHeaderCell
@@ -319,7 +321,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           innerHeightRef={this.headerRowInnerHeightMap.createRef(false)}
 
                           // dimension
-                          height={(headerCoords.get(false) || [])[1] /* false means normalheader */}
+                          height={headerHeights.get(false) /* false means normalheader */}
 
                           // handlers
                           onColWidthOverrides={this.handleColWidthOverrides}
@@ -360,13 +362,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             >
                               {groupColLayouts.map((groupCellLayout) => {
                                 const group = groupCellLayout.entity
-                                const [top, height] = bodyCoords.get(group) || []
                                 return (
                                   <div
                                     key={queryObjKey(group)}
                                     role='row'
                                     class='fcnew-row'
-                                    style={{ top, height }}
+                                    style={{
+                                      top: bodyTops.get(group),
+                                      height: bodyHeights.get(group),
+                                    }}
                                   >
                                     <GroupTallCell
                                       colSpec={group.spec}
@@ -387,13 +391,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         >
                           {flatGroupRowLayouts.map((groupRowLayout) => {
                             const group = groupRowLayout.entity
-                            const [top, height] = bodyCoords.get(group) || []
                             return (
                               <div
                                 key={String(group.value) /* what about this!? */}
                                 role='row'
                                 class='fcnew-row'
-                                style={{ top, height }}
+                                style={{
+                                  top: bodyTops.get(group),
+                                  height: bodyHeights.get(group),
+                                }}
                               >
                                 <GroupWideCell
                                   group={group}
@@ -405,13 +411,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           })}
                           {flatResourceLayouts.map((resourceLayout) => {
                             const resource = resourceLayout.entity
-                            const [top, height] = bodyCoords.get(resource) || []
                             return (
                               <div
                                 key={resource.id}
                                 role='row'
                                 class='fcnew-row'
-                                style={{ top, height }}
+                                style={{
+                                  top: bodyTops.get(resource),
+                                  height: bodyHeights.get(resource),
+                                }}
                               >
                                 <ResourceCells
                                   resource={resource}
@@ -482,7 +490,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                               slotWidth={slotWidth}
                               innerWidthRef={isLast ? this.handleHeaderSlotInnerWidth : undefined}
                               innerHeighRef={this.headerRowInnerHeightMap.createRef(rowLevel)}
-                              height={(headerCoords.get(rowLevel) || [])[1]}
+                              height={headerHeights.get(rowLevel)}
                             />
                           )
                         })}
@@ -551,13 +559,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         <Fragment>{/* TODO: need Fragment for key? */}
                           {flatGroupRowLayouts.map((groupRowLayout) => {
                             const group = groupRowLayout.entity
-                            const [top, height] = bodyCoords.get(group) || []
                             return (
                               <div
                                 key={String(group.value)}
                                 role='row'
                                 class='fcnew-row'
-                                style={{ top, height }}
+                                style={{
+                                  top: bodyTops.get(group),
+                                  height: bodyHeights.get(group),
+                                }}
                               >
                                 <GroupLane
                                   group={group}
@@ -568,13 +578,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           })}
                           {flatResourceLayouts.map((resourceLayout) => {
                             const resource = resourceLayout.entity
-                            const [top, height] = bodyCoords.get(resource) || []
                             return (
                               <div
                                 key={resource.id}
                                 role='row'
                                 class='fcnew-row'
-                                style={{ top, height }}
+                                style={{
+                                  top: bodyTops.get(resource),
+                                  height: bodyHeights.get(resource),
+                                }}
                               >
                                 <ResourceLane
                                   {...splitProps[resource.id]}
@@ -768,18 +780,20 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   queryScrollState(): ResourceTimelineScrollState {
-    let { bodyLayouts, bodyCoords } = this
+    let { bodyLayouts, bodyTops, bodyHeights } = this
     let scrollTop = this.bodyScroller.y
     let scrollState: ResourceTimelineScrollState = {}
 
-    if (bodyCoords) {
-      let [entity, elTop, elHeight] = findEntityByCoord(
+    if (bodyTops) {
+      let coordRes = findEntityByCoord(
         bodyLayouts,
-        bodyCoords,
+        bodyTops,
+        bodyHeights,
         scrollTop,
       )
 
-      if (entity) {
+      if (coordRes) {
+        let [entity, elTop, elHeight] = coordRes
         let elBottom = elTop + elHeight
         let elBottomRelScroller = elBottom - scrollTop
 
@@ -792,7 +806,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   applyScrollState(scrollState: ResourceTimelineScrollState) {
-    const { bodyLayouts, bodyCoords } = this
+    const { bodyLayouts, bodyTops, bodyHeights } = this
     let { entity } = scrollState
 
     if (entity) {
@@ -800,19 +814,16 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       entity = findEntityById(bodyLayouts, createEntityId(entity))
 
       if (entity) {
-        const coords = bodyCoords.get(entity)
+        const top = bodyTops.get(entity)
+        const height = bodyHeights.get(entity)
+        const bottom = top + height
 
-        if (coords) {
-          const [start, size] = coords
-          const end = start + size
+        let scrollTop =
+          scrollState.fromBottom != null ?
+            bottom - scrollState.fromBottom : // pixels from bottom edge
+            top // just use top edge
 
-          let scrollTop =
-            scrollState.fromBottom != null ?
-              end - scrollState.fromBottom : // pixels from bottom edge
-              start // just use top edge
-
-          this.bodyScroller.scrollTo({ y: scrollTop })
-        }
+        this.bodyScroller.scrollTo({ y: scrollTop })
       }
     }
   }
@@ -831,70 +842,75 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   queryHit(positionLeft: number, positionTop: number): Hit {
-    let { bodyLayouts, bodyCoords } = this
+    let { bodyLayouts, bodyTops, bodyHeights } = this
     let { dateProfile } = this.props
     const { dateEnv, isRtl } = this.context
     const tDateProfile = this.tDateProfile
     const timeCanvasWidth = this.timeCanvasWidth
     const slatWidth = this.slotWidth // TODO: renames?
 
-    let [entityAtTop, top, height] = findEntityByCoord(
+    let coordRes = findEntityByCoord(
       bodyLayouts,
-      bodyCoords,
+      bodyTops,
+      bodyHeights,
       positionTop,
     )
 
-    if (entityAtTop && !isEntityGroup(entityAtTop)) {
-      let resource = entityAtTop
-      let bottom = top + height
+    if (coordRes) {
+      let [entityAtTop, top, height] = coordRes
 
-      /*
-      TODO: DRY-up ith TimelineView!!!
-      TODO: make RTL-friendly like TimelineView
-      */
-      if (slatWidth) {
-        const slatIndex = Math.floor(positionLeft / slatWidth)
-        const slatLeft = slatIndex * slatWidth
-        const partial = (positionLeft - slatLeft) / slatWidth // floating point number between 0 and 1
-        const localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot) // the snap # relative to start of slat
+      if (!isEntityGroup(entityAtTop)) {
+        let resource = entityAtTop
+        let bottom = top + height
 
-        let start = dateEnv.add(
-          tDateProfile.slotDates[slatIndex],
-          multiplyDuration(tDateProfile.snapDuration, localSnapIndex),
-        )
-        let end = dateEnv.add(start, tDateProfile.snapDuration)
+        /*
+        TODO: DRY-up ith TimelineView!!!
+        TODO: make RTL-friendly like TimelineView
+        */
+        if (slatWidth) {
+          const slatIndex = Math.floor(positionLeft / slatWidth)
+          const slatLeft = slatIndex * slatWidth
+          const partial = (positionLeft - slatLeft) / slatWidth // floating point number between 0 and 1
+          const localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot) // the snap # relative to start of slat
 
-        // TODO: generalize this coord stuff to TimeGrid?
+          let start = dateEnv.add(
+            tDateProfile.slotDates[slatIndex],
+            multiplyDuration(tDateProfile.snapDuration, localSnapIndex),
+          )
+          let end = dateEnv.add(start, tDateProfile.snapDuration)
 
-        let snapWidth = slatWidth / tDateProfile.snapsPerSlot
-        let startCoord = slatIndex * slatWidth + (snapWidth * localSnapIndex)
-        let endCoord = startCoord + snapWidth
-        let left: number, right: number
+          // TODO: generalize this coord stuff to TimeGrid?
 
-        if (isRtl) {
-          left = timeCanvasWidth - endCoord
-          right = timeCanvasWidth - startCoord
-        } else {
-          left = startCoord
-          right = endCoord
-        }
+          let snapWidth = slatWidth / tDateProfile.snapsPerSlot
+          let startCoord = slatIndex * slatWidth + (snapWidth * localSnapIndex)
+          let endCoord = startCoord + snapWidth
+          let left: number, right: number
 
-        return {
-          dateProfile,
-          dateSpan: {
-            range: { start, end },
-            allDay: !tDateProfile.isTimeScale,
-            resourceId: resource.id,
-          },
-          rect: {
-            left,
-            right,
-            top,
-            bottom,
-          },
-          // HACK. TODO: This is expensive to do every hit-query
-          dayEl: this.bodyEl.querySelectorAll('.fcnew-timeline-slot')[slatIndex] as HTMLElement, // TODO!
-          layer: 0,
+          if (isRtl) {
+            left = timeCanvasWidth - endCoord
+            right = timeCanvasWidth - startCoord
+          } else {
+            left = startCoord
+            right = endCoord
+          }
+
+          return {
+            dateProfile,
+            dateSpan: {
+              range: { start, end },
+              allDay: !tDateProfile.isTimeScale,
+              resourceId: resource.id,
+            },
+            rect: {
+              left,
+              right,
+              top,
+              bottom,
+            },
+            // HACK. TODO: This is expensive to do every hit-query
+            dayEl: this.bodyEl.querySelectorAll('.fcnew-timeline-slot')[slatIndex] as HTMLElement, // TODO!
+            layer: 0,
+          }
         }
       }
     }

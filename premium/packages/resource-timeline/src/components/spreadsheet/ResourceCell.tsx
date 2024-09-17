@@ -24,7 +24,7 @@ export interface ResourceCellProps {
 }
 
 export class ResourceCell extends BaseComponent<ResourceCellProps> {
-  private rootElRef = createRef<HTMLDivElement>()
+  private innerElRef = createRef<HTMLDivElement>()
   private refineRenderProps = memoizeObjArg(refineRenderProps)
   private unwatchHeight?: () => void
 
@@ -48,7 +48,6 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           role: 'gridcell',
           'data-resource-id': props.resource.id,
         }}
-        elRef={this.rootElRef}
         renderProps={renderProps}
         generatorName={colSpec.isMain ? 'resourceLabelContent' : undefined}
         customGenerator={colSpec.cellContent}
@@ -58,7 +57,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         willUnmount={colSpec.cellWillUnmount}
       >
         {(InnerContent) => (
-          <div style={{ height: props.height }}>
+          <div ref={this.innerElRef} style={{ height: props.height }}>
             <div className="fcnew-datagrid-cell-cushion">
               {colSpec.isMain && (
                 <ExpanderIcon
@@ -80,7 +79,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
   }
 
   componentDidMount(): void {
-    this.unwatchHeight = watchHeight(this.rootElRef.current, (height) => {
+    this.unwatchHeight = watchHeight(this.innerElRef.current, (height) => {
       setRef(this.props.innerHeightRef, height)
     })
   }
