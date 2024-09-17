@@ -49,31 +49,18 @@
 
   // expander icons
 
+  & .fcnew-icons > .fcnew-icon { // TODO: better selector!
+    width: 1em; /* ensure constant width, esp for empty icons */
+  }
+
   & .fcnew-datagrid-expander {
     cursor: pointer;
     opacity: 0.65;
-
-    & .fcnew-icon { /* the expander and spacers before the expander */
-      display: inline-block;
-      width: 1em; /* ensure constant width, esp for empty icons */
-    }
-
   }
-
-  & .fcnew-datagrid-expander-placeholder {
-    cursor: auto;
-  }
-
-  // & .fc-resource-timeline-flat {
-  //   & .fc-datagrid-expander-placeholder {
-  //     display: none;
-  //   }
-  // }
-
 }
 
 .fc-direction-ltr .fcnew-datagrid-cell-resizer { right: -3px }
 .fc-direction-rtl .fcnew-datagrid-cell-resizer { left: -3px }
 
-.fc-direction-ltr .fcnew-datagrid-expander { margin-right: 3px }
-.fc-direction-rtl .fcnew-datagrid-expander { margin-left: 3px }
+.fc-direction-ltr .fcnew-icons > .fcnew-icon:last-child { margin-right: 3px }
+.fc-direction-rtl .fcnew-icons > .fcnew-icon:last-child { margin-left: 3px }

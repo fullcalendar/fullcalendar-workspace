@@ -7,6 +7,7 @@ import { SPREADSHEET_COL_MIN_WIDTH } from "../../col-positioning.js"
 export interface HeaderRowProps {
   colSpecs: ColSpec[]
   colWidths: number[]
+  indent?: boolean
 
   // refs
   innerHeightRef?: Ref<number>
@@ -63,6 +64,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
               width={colWidths[colIndex]}
               colSpec={colSpec}
               resizer={colIndex < colSpecs.length - 1}
+              indent={colSpec.isMain && props.indent}
               resizerElRef={resizerElRefMap.createRef(colIndex)}
               innerHeightRef={innerHeightRefMap.createRef(colIndex)}
             />

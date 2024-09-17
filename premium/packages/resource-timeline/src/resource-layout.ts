@@ -33,6 +33,7 @@ export interface GroupCellLayout { // specific GenericLayout
 
 export function buildResourceLayouts(
   hierarchy: GenericNode[],
+  hasNesting: boolean,
   expansions: ResourceEntityExpansions,
   expansionDefault: boolean,
 ): {
@@ -41,13 +42,13 @@ export function buildResourceLayouts(
   flatGroupRowLayouts: GroupRowLayout[],
   flatGroupColLayouts: GroupCellLayout[][],
 } {
+  const initialIndent = hasNesting ? 1 : 0
   const flatResourceLayouts: ResourceLayout[] = []
   const flatGroupRowLayouts: GroupRowLayout[] = []
   const flatGroupColLayouts: GroupCellLayout[][] = []
 
   function processNodes(nodes: GenericNode[], depth: number): GenericLayout<Resource | Group>[] {
     const layouts: GenericLayout<Resource | Group>[] = []
-    const initialIndent = hasNesting(nodes) ? 1 : 0
 
     // TODO: more DRY within
     for (const node of nodes) {
@@ -104,7 +105,7 @@ export function buildResourceLayouts(
   }
 }
 
-function hasNesting(nodes: GenericNode[]) {
+export function computeHasNesting(nodes: GenericNode[]) {
   for (let node of nodes) {
     if ((node as ResourceNode).resourceFields) {
       if ((node as ResourceNode).children.length) {

@@ -70,7 +70,7 @@ import { GroupWideCell } from './spreadsheet/GroupWideCell.js'
 import { HeaderRow } from './spreadsheet/HeaderRow.js'
 import { ResourceCells } from './spreadsheet/ResourceCells.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
-import { buildHeaderLayouts, buildResourceLayouts, GenericLayout, ResourceLayout } from '../resource-layout.js'
+import { buildHeaderLayouts, buildResourceLayouts, computeHasNesting, GenericLayout, ResourceLayout } from '../resource-layout.js'
 
 interface ResourceTimelineViewState {
   slotInnerWidth?: number
@@ -95,6 +95,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private processColOptions = memoize(processColOptions)
   private buildResourceHierarchy = memoize(buildResourceHierarchy)
+  private computeHasNesting = memoize(computeHasNesting)
   private buildResourceLayouts = memoize(buildResourceLayouts)
   private buildHeaderLayouts = memoize(buildHeaderLayouts)
   private computeSlotWidth = memoize(computeSlotWidth)
@@ -168,6 +169,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     /* table display */
 
+    let hasNesting = this.computeHasNesting(resourceHierarchy)
     let {
       layouts: bodyLayouts,
       flatResourceLayouts,
@@ -175,6 +177,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       flatGroupColLayouts,
     } = this.buildResourceLayouts(
       resourceHierarchy,
+      hasNesting,
       props.resourceEntityExpansions,
       options.resourcesInitiallyExpanded,
     )
@@ -310,6 +313,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         <HeaderRow
                           colSpecs={colSpecs}
                           colWidths={spreadsheetColWidths}
+                          indent={hasNesting}
 
                           // refs
                           innerHeightRef={this.headerRowInnerHeightMap.createRef(false)}

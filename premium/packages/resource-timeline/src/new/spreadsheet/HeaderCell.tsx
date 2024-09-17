@@ -5,9 +5,10 @@ import { ColSpec, ColHeaderContentArg } from '@fullcalendar/resource'
 export interface HeaderCellProps {
   colSpec: ColSpec
   resizer: boolean
+  indent?: boolean
 
   // refs
-  resizerElRef?: Ref<HTMLDivElement> // TODO: get rid of this
+  resizerElRef?: Ref<HTMLDivElement>
   innerHeightRef?: Ref<number>
 
   // size
@@ -43,8 +44,8 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         {(InnerContent) => (
           <div ref={this.innerElRef} className="fcnew-rel">
             <div className="fcnew-datagrid-cell-cushion">
-              {colSpec.isMain && (
-                <span className="fcnew-datagrid-expander fcnew-datagrid-expander-placeholder">
+              {this.props.indent && (
+                <span className="fcnew-icons">
                   <span className="fcnew-icon" />
                 </span>
               )}

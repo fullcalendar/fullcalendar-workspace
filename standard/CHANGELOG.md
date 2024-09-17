@@ -38,6 +38,8 @@ disabled-cell styling on monthview is broken
 test horizontal scrolling in (resource-)daygrid/timegrid
 updateSize deprecation
 document how windowResize event is no longer fired
+in resource-timeline,
+  whether the "super" header cells obeys the minimum indent
 
 ## 6.1.15 (2024-07-12)
 
