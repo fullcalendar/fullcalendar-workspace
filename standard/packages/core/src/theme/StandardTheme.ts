@@ -4,11 +4,11 @@ export class StandardTheme extends Theme {
 }
 
 StandardTheme.prototype.classes = {
-  root: 'fc-theme-standard', // TODO: compute this off of registered theme name
+  root: 'fcnew-theme-standard', // TODO: compute this off of registered theme name
   tableCellShaded: 'fcnew-cell-shaded',
-  buttonGroup: 'fc-button-group',
-  button: 'fc-button fc-button-primary',
-  buttonActive: 'fc-button-active',
+  buttonGroup: 'fcnew-button-group',
+  button: 'fcnew-button fcnew-button-primary',
+  buttonActive: 'fcnew-button-active',
 }
 
 StandardTheme.prototype.baseIconClass = 'fcnew-icon'

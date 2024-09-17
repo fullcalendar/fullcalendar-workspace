@@ -13,27 +13,27 @@
   }
 
   & .fcnew-non-business {
-    background: var(--fc-non-business-color);
+    background: var(--fcnew-non-business-color);
   }
 
   & .fcnew-bg-event {
-    background: var(--fc-bg-event-color);
-    opacity: var(--fc-bg-event-opacity);
+    background: var(--fcnew-bg-event-color);
+    opacity: var(--fcnew-bg-event-opacity);
 
     & .fcnew-event-title {
       margin: .5em;
-      font-size: var(--fc-small-font-size);
+      font-size: var(--fcnew-small-font-size);
       font-style: italic;
     }
   }
 
   & .fcnew-highlight {
-    background: var(--fc-highlight-color);
+    background: var(--fcnew-highlight-color);
   }
 
   & .fcnew-cell-shaded,
   & .fcnew-day-disabled {
-    background: var(--fc-neutral-bg-color);
+    background: var(--fcnew-neutral-bg-color);
   }
 
 }

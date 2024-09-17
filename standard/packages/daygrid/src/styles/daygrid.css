@@ -73,7 +73,7 @@ $daygrid-event-mirror-z: 7;
     padding: 4px;
   }
 
-  & .fc-daygrid-month-start { // on .fcnew-daygrid-cell-number
+  & .fcnew-daygrid-month-start { // on .fcnew-daygrid-cell-number
     font-weight: bold;
     font-size: 1.1em;
   }
@@ -111,7 +111,7 @@ $daygrid-event-mirror-z: 7;
     margin-top: 1px;
   }
 
-  & .fcnew-daygrid-event.fc-event-mirror {
+  & .fcnew-daygrid-event.fcnew-event-mirror {
     z-index: $daygrid-event-mirror-z;
   }
 
@@ -152,8 +152,8 @@ $daygrid-event-mirror-z: 7;
     padding: 2px;
     min-width: 1.5em;
     text-align: center;
-    background-color: var(--fc-neutral-bg-color);
-    color: var(--fc-neutral-text-color);
+    background-color: var(--fcnew-neutral-bg-color);
+    color: var(--fcnew-neutral-text-color);
   }
 
   // popover

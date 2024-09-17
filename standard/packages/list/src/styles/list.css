@@ -1,8 +1,8 @@
 
-.fc-theme-standard {
+.fcnew-theme-standard {
 
-  & .fc-list {
-    border: 1px solid var(--fc-border-color);
+  & .fcnew-list {
+    border: 1px solid var(--fcnew-border-color);
   }
 
 }
@@ -10,15 +10,15 @@
 .fc {
 
   // message when no events
-  & .fc-list-empty {
-    background-color: var(--fc-neutral-bg-color);
+  & .fcnew-list-empty {
+    background-color: var(--fcnew-neutral-bg-color);
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center; // vertically aligns fc-list-empty-inner
+    align-items: center; // vertically aligns fcnew-list-empty-inner
   }
 
-  & .fc-list-empty-cushion {
+  & .fcnew-list-empty-cushion {
     margin: 5em 0;
   }
 

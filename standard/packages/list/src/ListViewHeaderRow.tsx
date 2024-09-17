@@ -44,7 +44,7 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
       <ContentContainer
         elTag="tr"
         elClasses={[
-          'fc-list-day',
+          'fcnew-list-day',
           ...getDayClassNames(dayMeta, theme),
         ]}
         elAttrs={{
@@ -63,7 +63,7 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
             <InnerContent
               elTag="div"
               elClasses={[
-                'fc-list-day-cushion',
+                'fcnew-list-day-cushion',
                 theme.getClass('tableCellShaded'),
               ]}
             />
@@ -85,12 +85,12 @@ function renderInnerContent(props: RenderProps) {
   return (
     <Fragment>
       {props.text && (
-        <a id={props.textId} className="fc-list-day-text" {...props.navLinkAttrs}>
+        <a id={props.textId} className="fcnew-list-day-text" {...props.navLinkAttrs}>
           {props.text}
         </a>
       )}
       {props.sideText && (/* not keyboard tabbable */
-        <a aria-hidden className="fc-list-day-side-text" {...props.sideNavLinkAttrs}>
+        <a aria-hidden className="fcnew-list-day-side-text" {...props.sideNavLinkAttrs}>
           {props.sideText}
         </a>
       )}

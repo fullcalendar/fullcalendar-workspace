@@ -33,8 +33,8 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
       <ContentContainer
         elTag="div"
         elClasses={[
-          'fc-timeline-lane',
-          'fc-resource-group',
+          'fcnew-timeline-lane',
+          'fcnew-resource-group',
           context.theme.getClass('tableCellShaded'),
         ]}
         renderProps={renderProps}
@@ -45,10 +45,10 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
         willUnmount={groupSpec.laneWillUnmount}
       >
         {(InnerContainer) => (
-          <div className='fc-resource-group-frame' ref={this.innerElRef}>
+          <div className='fcnew-resource-group-frame' ref={this.innerElRef}>
             <InnerContainer
               elTag="div"
-              elClasses={['fc-resource-group-frame-inner']}
+              elClasses={['fcnew-resource-group-frame-inner']}
             />
           </div>
         )}

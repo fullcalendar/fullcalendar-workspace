@@ -1,53 +1,53 @@
 
 .fc {
 
-  & .fc-button-group {
+  & .fcnew-button-group {
     position: relative;
     display: inline-flex;
     vertical-align: middle;
   }
 
-  & .fc-button-group > .fc-button {
+  & .fcnew-button-group > .fcnew-button {
     position: relative;
     flex: 1 1 auto;
   }
 
-  & .fc-button-group > .fc-button:hover {
+  & .fcnew-button-group > .fcnew-button:hover {
     z-index: 1;
   }
 
-  & .fc-button-group > .fc-button:focus,
-  & .fc-button-group > .fc-button:active,
-  & .fc-button-group > .fc-button.fc-button-active {
+  & .fcnew-button-group > .fcnew-button:focus,
+  & .fcnew-button-group > .fcnew-button:active,
+  & .fcnew-button-group > .fcnew-button.fcnew-button-active {
     z-index: 1;
   }
 
 }
 
-.fc-direction-ltr {
+.fcnew-direction-ltr {
 
-  & .fc-button-group > .fc-button:not(:first-child) {
+  & .fcnew-button-group > .fcnew-button:not(:first-child) {
     margin-left: -1px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
 
-  & .fc-button-group > .fc-button:not(:last-child) {
+  & .fcnew-button-group > .fcnew-button:not(:last-child) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
 
 }
 
-.fc-direction-rtl {
+.fcnew-direction-rtl {
 
-  & .fc-button-group > .fc-button:not(:first-child) {
+  & .fcnew-button-group > .fcnew-button:not(:first-child) {
     margin-right: -1px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
 
-  & .fc-button-group > .fc-button:not(:last-child) {
+  & .fcnew-button-group > .fcnew-button:not(:last-child) {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }

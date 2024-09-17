@@ -1,32 +1,5 @@
 
-// the "frame"
-
-// .fc-datagrid-cell-frame-liquid {
-//   height: 100%; // needs liquid hack
-// }
-
-// .fc-liquid-hack {
-//   & .fc-datagrid-cell-frame-liquid {
-//     @include liquid-absolute-override;
-//   }
-// }
-
 .fc {
-
-  // the "frame" in a HEADER
-  // needs to position the column resizer
-  // needs to vertically center content
-
-  // & .fc-datagrid-header {
-  //
-  //   & .fc-datagrid-cell-frame {
-  //     position: relative; // for resizer
-  //     display: flex;
-  //     justify-content: flex-start; // horizontal align (natural left/right)
-  //     align-items: center; // vertical align
-  //   }
-  //
-  // }
 
   // the column resizer (only in HEADER)
 
@@ -59,8 +32,8 @@
   }
 }
 
-.fc-direction-ltr .fcnew-datagrid-cell-resizer { right: -3px }
-.fc-direction-rtl .fcnew-datagrid-cell-resizer { left: -3px }
+.fcnew-direction-ltr .fcnew-datagrid-cell-resizer { right: -3px }
+.fcnew-direction-rtl .fcnew-datagrid-cell-resizer { left: -3px }
 
-.fc-direction-ltr .fcnew-icons > .fcnew-icon:last-child { margin-right: 3px }
-.fc-direction-rtl .fcnew-icons > .fcnew-icon:last-child { margin-left: 3px }
+.fcnew-direction-ltr .fcnew-icons > .fcnew-icon:last-child { margin-right: 3px }
+.fcnew-direction-rtl .fcnew-icons > .fcnew-icon:last-child { margin-left: 3px }

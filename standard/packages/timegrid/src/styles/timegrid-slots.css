@@ -45,7 +45,7 @@
 
 }
 
-.fc-direction-ltr {
+.fcnew-direction-ltr {
 
   & .fcnew-timegrid-slot-label-frame {
     text-align: right;
@@ -53,7 +53,7 @@
 
 }
 
-.fc-direction-rtl {
+.fcnew-direction-rtl {
 
   & .fcnew-timegrid-slot-label-frame {
     text-align: left;

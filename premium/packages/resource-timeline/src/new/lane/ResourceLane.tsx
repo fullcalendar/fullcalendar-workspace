@@ -23,8 +23,8 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
       <ContentContainer
         elTag="div"
         elClasses={[
-          'fc-timeline-lane',
-          'fc-resource',
+          'fcnew-timeline-lane',
+          'fcnew-resource',
         ]}
         elAttrs={{
           'data-resource-id': props.resource.id,
@@ -37,10 +37,10 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         willUnmount={options.resourceLaneWillUnmount}
       >
         {(InnerContent) => ( // TODO: apply top-coordinate
-          <div className="fc-timeline-lane-frame">
+          <div className="fcnew-timeline-lane-frame">
             <InnerContent
               elTag="div"
-              elClasses={['fc-timeline-lane-misc']}
+              elClasses={['fcnew-timeline-lane-misc']}
             />
             <TimelineLane
               dateProfile={props.dateProfile}

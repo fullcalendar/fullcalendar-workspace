@@ -3,16 +3,16 @@
   position: relative; // for z-indexes assigned later
   white-space: nowrap;
   border-radius: 3px; // dot event needs this to when selected
-  font-size: var(--fc-small-font-size);
+  font-size: var(--fcnew-small-font-size);
 }
 
 /* this used to be in daygrid.css */
-.fc-direction-ltr .fcnew-daygrid-event.fcnew-event-start,
-.fc-direction-rtl .fcnew-daygrid-event.fcnew-event-end {
+.fcnew-direction-ltr .fcnew-daygrid-event.fcnew-event-start,
+.fcnew-direction-rtl .fcnew-daygrid-event.fcnew-event-end {
   margin-left: 2px;
 }
-.fc-direction-ltr .fcnew-daygrid-event.fcnew-event-end,
-.fc-direction-rtl .fcnew-daygrid-event.fcnew-event-start {
+.fcnew-direction-ltr .fcnew-daygrid-event.fcnew-event-end,
+.fcnew-direction-rtl .fcnew-daygrid-event.fcnew-event-start {
   margin-right: 2px;
 }
 
@@ -64,8 +64,8 @@
   box-sizing: content-box;
   width: 0;
   height: 0;
-  border: calc(var(--fc-daygrid-event-dot-width) / 2) solid var(--fc-event-border-color);
-  border-radius: calc(var(--fc-daygrid-event-dot-width) / 2);
+  border: calc(var(--fcnew-daygrid-event-dot-width) / 2) solid var(--fcnew-event-border-color);
+  border-radius: calc(var(--fcnew-daygrid-event-dot-width) / 2);
 }
 
 
@@ -73,13 +73,13 @@
 
 $daygrid-event-inner-margin: 3px;
 
-.fc-direction-ltr {
+.fcnew-direction-ltr {
   & .fcnew-daygrid-event .fcnew-event-time {
     margin-right: $daygrid-event-inner-margin;
   }
 }
 
-.fc-direction-rtl {
+.fcnew-direction-rtl {
   & .fcnew-daygrid-event .fcnew-event-time {
     margin-left: $daygrid-event-inner-margin;
   }

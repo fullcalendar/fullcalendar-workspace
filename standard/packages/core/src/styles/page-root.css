@@ -1,7 +1,7 @@
 
 // classes attached to <body>
-// TODO: make fc-event selector work when calender in shadow DOM
-.fc-not-allowed,
-.fc-not-allowed .fc-event { // override events' custom cursors
+// TODO: make fcnew-event selector work when calender in shadow DOM
+.fcnew-not-allowed,
+.fcnew-not-allowed .fcnew-event { // override events' custom cursors
   cursor: not-allowed;
 }

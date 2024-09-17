@@ -27,12 +27,12 @@
   }
 
   & .fcnew-multimonth-header .fcnew-row {
-    border-top: 1px solid var(--fc-border-color) !important; // HACK
+    border-top: 1px solid var(--fcnew-border-color) !important; // HACK
   }
 
   & .fcnew-multimonth-daygrid { // like the "body"
-    border-bottom: 1px solid var(--fc-border-color) !important; // HACK
-    background: var(--fc-page-bg-color);
+    border-bottom: 1px solid var(--fcnew-border-color) !important; // HACK
+    background: var(--fcnew-page-bg-color);
   }
 
   // variants
@@ -46,7 +46,7 @@
       position: relative; // ultimately for stick
       top: 0;
       z-index: 2;
-      background: var(--fc-page-bg-color);
+      background: var(--fcnew-page-bg-color);
     }
 
     & .fcnew-multimonth-daygrid {
@@ -59,13 +59,13 @@
     line-height: 1; // undo themes that have thick line-height
 
     & .fcnew-multimonth-header .fcnew-row {
-      border-left: 1px solid var(--fc-border-color) !important; // HACK
-      border-right: 1px solid var(--fc-border-color) !important; // HACK
+      border-left: 1px solid var(--fcnew-border-color) !important; // HACK
+      border-right: 1px solid var(--fcnew-border-color) !important; // HACK
     }
 
     & .fcnew-multimonth-daygrid { // like the "body"
-      border-left: 1px solid var(--fc-border-color) !important; // HACK
-      border-right: 1px solid var(--fc-border-color) !important; // HACK
+      border-left: 1px solid var(--fcnew-border-color) !important; // HACK
+      border-right: 1px solid var(--fcnew-border-color) !important; // HACK
     }
 
     & .fcnew-multimonth-flexparent {
@@ -75,7 +75,7 @@
 
     // +more link look like an event
     & .fcnew-daygrid-more-link {
-      border: 1px solid var(--fc-event-border-color);
+      border: 1px solid var(--fcnew-event-border-color);
       padding: 1px;
       float: none;
       display: block;
@@ -92,7 +92,7 @@
   }
 }
 
-.fc-media-screen {
+.fcnew-media-screen {
   & .fcnew-multimonth-singlecol {
     & .fcnew-multimonth-header {
       position: sticky;
@@ -100,7 +100,7 @@
   }
 }
 
-.fc-media-print {
+.fcnew-media-print {
   & .fcnew-multimonth {
     overflow: visible;
   }

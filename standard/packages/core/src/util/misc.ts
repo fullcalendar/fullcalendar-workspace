@@ -14,12 +14,12 @@ export function guid() {
 
 // Make the mouse cursor express that an event is not allowed in the current area
 export function disableCursor() {
-  document.body.classList.add('fc-not-allowed')
+  document.body.classList.add('fcnew-not-allowed')
 }
 
 // Returns the mouse cursor to its original look
 export function enableCursor() {
-  document.body.classList.remove('fc-not-allowed')
+  document.body.classList.remove('fcnew-not-allowed')
 }
 
 /* Selection
@@ -181,14 +181,14 @@ export function firstDefined(...args) {
 ----------------------------------------------------------------------------------------------------------------------*/
 
 export function computeSmallestCellWidth(cellEl: HTMLElement) {
-  let allWidthEl = cellEl.querySelector('.fc-scrollgrid-shrink-frame')
-  let contentWidthEl = cellEl.querySelector('.fc-scrollgrid-shrink-cushion')
+  let allWidthEl = cellEl.querySelector('.fcnew-scrollgrid-shrink-frame')
+  let contentWidthEl = cellEl.querySelector('.fcnew-scrollgrid-shrink-cushion')
 
   if (!allWidthEl) {
-    throw new Error('needs fc-scrollgrid-shrink-frame className') // TODO: use const
+    throw new Error('needs fcnew-scrollgrid-shrink-frame className') // TODO: use const
   }
   if (!contentWidthEl) {
-    throw new Error('needs fc-scrollgrid-shrink-cushion className')
+    throw new Error('needs fcnew-scrollgrid-shrink-cushion className')
   }
 
   return cellEl.getBoundingClientRect().width - allWidthEl.getBoundingClientRect().width + // the cell padding+border

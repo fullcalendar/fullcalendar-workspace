@@ -25,28 +25,28 @@ export function getDateMeta(date: DateMarker, todayRange?: DateRange, nowDate?: 
 
 export function getDayClassNames(meta: DateMeta, theme: Theme) {
   let classNames: string[] = [
-    'fc-day',
-    `fc-day-${DAY_IDS[meta.dow]}`,
+    'fcnew-day',
+    `fcnew-day-${DAY_IDS[meta.dow]}`,
   ]
 
   if (meta.isDisabled) {
-    classNames.push('fc-day-disabled')
+    classNames.push('fcnew-day-disabled')
   } else {
     if (meta.isToday) {
-      classNames.push('fc-day-today')
+      classNames.push('fcnew-day-today')
       classNames.push(theme.getClass('today'))
     }
 
     if (meta.isPast) {
-      classNames.push('fc-day-past')
+      classNames.push('fcnew-day-past')
     }
 
     if (meta.isFuture) {
-      classNames.push('fc-day-future')
+      classNames.push('fcnew-day-future')
     }
 
     if (meta.isOther) {
-      classNames.push('fc-day-other')
+      classNames.push('fcnew-day-other')
     }
   }
 
@@ -55,24 +55,24 @@ export function getDayClassNames(meta: DateMeta, theme: Theme) {
 
 export function getSlotClassNames(meta: DateMeta, theme: Theme) {
   let classNames: string[] = [
-    'fc-slot',
-    `fc-slot-${DAY_IDS[meta.dow]}`,
+    'fcnew-slot',
+    `fcnew-slot-${DAY_IDS[meta.dow]}`,
   ]
 
   if (meta.isDisabled) {
-    classNames.push('fc-slot-disabled')
+    classNames.push('fcnew-slot-disabled')
   } else {
     if (meta.isToday) {
-      classNames.push('fc-slot-today')
+      classNames.push('fcnew-slot-today')
       classNames.push(theme.getClass('today'))
     }
 
     if (meta.isPast) {
-      classNames.push('fc-slot-past')
+      classNames.push('fcnew-slot-past')
     }
 
     if (meta.isFuture) {
-      classNames.push('fc-slot-future')
+      classNames.push('fcnew-slot-future')
     }
   }
 

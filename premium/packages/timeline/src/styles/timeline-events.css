@@ -17,19 +17,19 @@
 
 }
 
-// z-index, scoped within fc-timeline-events
+// z-index, scoped within fcnew-timeline-events
 .fcnew-timeline-event { z-index: 1 }
-.fcnew-timeline-event.fc-event-mirror { z-index: 2 }
+.fcnew-timeline-event.fcnew-event-mirror { z-index: 2 }
 
 
 .fcnew-timeline-event {
-  position: relative; // contains things. TODO: make part of fc-h-event and fc-v-event
-  display: flex; // for v-aligning start/end arrows and making fc-event-main stretch all the way
+  position: relative; // contains things. TODO: make part of fcnew-h-event and fcnew-v-event
+  display: flex; // for v-aligning start/end arrows and making fcnew-event-main stretch all the way
   align-items: center;
   border-radius: 0;
   padding: 2px 1px;
   margin-bottom: 1px;
-  font-size: var(--fc-small-font-size);
+  font-size: var(--fcnew-small-font-size);
 
   // time and title spacing
   // ----------------------------------------------------------------------------------------------------
@@ -52,13 +52,13 @@
 }
 
 // move 1px away from slot line
-.fc-direction-ltr {
+.fcnew-direction-ltr {
   & .fcnew-timeline-event.fcnew-event-end,
   & .fcnew-timeline-more-link {
     margin-right: 1px;
   }
 }
-.fc-direction-rtl {
+.fcnew-direction-rtl {
   & .fcnew-timeline-event.fcnew-event-end,
   & .fcnew-timeline-more-link {
     margin-left: 1px;
@@ -66,7 +66,7 @@
 }
 
 // make event beefier when overlap not allowed
-.fcnew-timeline-overlap-disabled .fc-timeline-event {
+.fcnew-timeline-overlap-disabled .fcnew-timeline-event {
   padding-top: 5px;
   padding-bottom: 5px;
   margin-bottom: 0;
@@ -94,14 +94,14 @@
 }
 
 // pointing left
-.fc-direction-ltr .fcnew-timeline-event:not(.fcnew-event-start):before,
-.fc-direction-rtl .fcnew-timeline-event:not(.fcnew-event-end):after {
+.fcnew-direction-ltr .fcnew-timeline-event:not(.fcnew-event-start):before,
+.fcnew-direction-rtl .fcnew-timeline-event:not(.fcnew-event-end):after {
   border-left: 0;
 }
 
 // pointing right
-.fc-direction-ltr .fcnew-timeline-event:not(.fcnew-event-end):after,
-.fc-direction-rtl .fcnew-timeline-event:not(.fcnew-event-start):before {
+.fcnew-direction-ltr .fcnew-timeline-event:not(.fcnew-event-end):after,
+.fcnew-direction-rtl .fcnew-timeline-event:not(.fcnew-event-start):before {
   border-right: 0;
 }
 
@@ -109,14 +109,14 @@
 // ----------------------------------------------------------------------------------------------------
 
 .fcnew-timeline-more-link {
-  font-size: var(--fc-small-font-size);
-  color: var(--fc-more-link-text-color);
-  background: var(--fc-more-link-bg-color);
+  font-size: var(--fcnew-small-font-size);
+  color: var(--fcnew-more-link-text-color);
+  background: var(--fcnew-more-link-bg-color);
   padding: 1px;
   cursor: pointer;
 }
 
-.fcnew-timeline-more-link-inner { // has fc-sticky
+.fcnew-timeline-more-link-inner { // has fcnew-sticky
   display: inline-block;
   left: 0;
   right: 0;

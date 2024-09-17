@@ -14,7 +14,7 @@ const DEF_DEFAULTS = {
   endTime: '17:00',
   daysOfWeek: [1, 2, 3, 4, 5], // monday - friday
   display: 'inverse-background',
-  classNames: 'fc-non-business',
+  classNames: 'fcnew-non-business',
   groupId: '_businessHours', // so multiple defs get grouped
 }
 

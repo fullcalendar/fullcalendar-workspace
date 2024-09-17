@@ -11,25 +11,25 @@
   }
 }
 
-.fc-direction-ltr {
+.fcnew-direction-ltr {
   direction: ltr;
   text-align: left; // needed?
 }
 
-.fc-direction-rtl {
+.fcnew-direction-rtl {
   direction: rtl;
   text-align: right; // needed?
 }
 
 .fcnew-bordered {
-  border: 1px solid var(--fc-border-color);
+  border: 1px solid var(--fcnew-border-color);
 }
 
 .fcnew-view-harness-aspectratio {
   position: relative;
 }
 
-.fcnew-view-harness-aspectratio > .fc-view {
+.fcnew-view-harness-aspectratio > .fcnew-view {
   position: absolute;
   top: 0;
   left: 0;
@@ -94,7 +94,7 @@
 .fcnew-rowgroup,
 .fcnew-rowdivider {
   border-style: solid;
-  border-color: var(--fc-border-color);
+  border-color: var(--fcnew-border-color);
   border-width: 0 0 1px; // bottom
 }
 
@@ -107,7 +107,7 @@
 .fcnew-cell,
 .fcnew-rowheader {
   border-style: solid;
-  border-color: var(--fc-border-color);
+  border-color: var(--fcnew-border-color);
   border-width: 0 1px 0 0; // right
 }
 
@@ -118,7 +118,7 @@
 
 .fcnew-rowdivider {
   padding-bottom: 2px;
-  background: var(--fc-neutral-bg-color);
+  background: var(--fcnew-neutral-bg-color);
 }
 
 // Misc Utils

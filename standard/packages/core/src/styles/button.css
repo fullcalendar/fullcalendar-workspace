@@ -3,14 +3,14 @@
 Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
 
 These styles only apply when the standard-theme is activated.
-When it's NOT activated, the fc-button classes won't even be in the DOM.
+When it's NOT activated, the fcnew-button classes won't even be in the DOM.
 */
 
 .fc {
 
   // reset
 
-  & .fc-button {
+  & .fcnew-button {
     border-radius: 0;
     overflow: visible;
     text-transform: none;
@@ -20,22 +20,22 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
     line-height: inherit;
   }
 
-  & .fc-button:focus {
+  & .fcnew-button:focus {
     outline: 1px dotted;
     outline: 5px auto -webkit-focus-ring-color;
   }
 
-  & .fc-button {
+  & .fcnew-button {
     -webkit-appearance: button;
   }
 
-  & .fc-button:not(:disabled) {
+  & .fcnew-button:not(:disabled) {
     cursor: pointer;
   }
 
   // theme
 
-  & .fc-button {
+  & .fcnew-button {
     display: inline-block;
     font-weight: 400;
     text-align: center;
@@ -49,58 +49,58 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
     border-radius: 0.25em;
   }
 
-  & .fc-button:hover {
+  & .fcnew-button:hover {
     text-decoration: none;
   }
 
-  & .fc-button:focus {
+  & .fcnew-button:focus {
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.25);
   }
 
-  & .fc-button:disabled {
+  & .fcnew-button:disabled {
     opacity: 0.65;
   }
 
   // "primary" coloring
 
-  & .fc-button-primary {
-    color: var(--fc-button-text-color);
-    background-color: var(--fc-button-bg-color);
-    border-color: var(--fc-button-border-color);
+  & .fcnew-button-primary {
+    color: var(--fcnew-button-text-color);
+    background-color: var(--fcnew-button-bg-color);
+    border-color: var(--fcnew-button-border-color);
   }
 
-  & .fc-button-primary:hover {
-    color: var(--fc-button-text-color);
-    background-color: var(--fc-button-hover-bg-color);
-    border-color: var(--fc-button-hover-border-color);
+  & .fcnew-button-primary:hover {
+    color: var(--fcnew-button-text-color);
+    background-color: var(--fcnew-button-hover-bg-color);
+    border-color: var(--fcnew-button-hover-border-color);
   }
 
-  & .fc-button-primary:disabled { // not DRY
-    color: var(--fc-button-text-color);
-    background-color: var(--fc-button-bg-color);
-    border-color: var(--fc-button-border-color); // overrides :hover
+  & .fcnew-button-primary:disabled { // not DRY
+    color: var(--fcnew-button-text-color);
+    background-color: var(--fcnew-button-bg-color);
+    border-color: var(--fcnew-button-border-color); // overrides :hover
   }
 
-  & .fc-button-primary:focus {
+  & .fcnew-button-primary:focus {
     box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5);
   }
 
-  & .fc-button-primary:not(:disabled):active,
-  & .fc-button-primary:not(:disabled).fc-button-active {
-    color: var(--fc-button-text-color);
-    background-color: var(--fc-button-active-bg-color);
-    border-color: var(--fc-button-active-border-color);
+  & .fcnew-button-primary:not(:disabled):active,
+  & .fcnew-button-primary:not(:disabled).fcnew-button-active {
+    color: var(--fcnew-button-text-color);
+    background-color: var(--fcnew-button-active-bg-color);
+    border-color: var(--fcnew-button-active-border-color);
   }
 
-  & .fc-button-primary:not(:disabled):active:focus,
-  & .fc-button-primary:not(:disabled).fc-button-active:focus {
+  & .fcnew-button-primary:not(:disabled):active:focus,
+  & .fcnew-button-primary:not(:disabled).fcnew-button-active:focus {
     box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5);
   }
 
   // icons within buttons
 
-  & .fc-button .fcnew-icon {
+  & .fcnew-button .fcnew-icon {
     vertical-align: middle;
     font-size: 1.5em; // bump up the size (but don't make it bigger than line-height of button, which is 1.5em also)
   }

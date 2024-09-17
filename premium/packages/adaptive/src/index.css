@@ -1,38 +1,38 @@
 
 .fc {
 
-  & .fc-event,
-  & .fc-scrollgrid table tr {
+  & .fcnew-event,
+  & .fcnew-scrollgrid table tr {
     break-inside: avoid;
   }
 
 }
 
-.fc-media-print {
+.fcnew-media-print {
   display: block; // undo flexbox. FF doesn't know how to flow
   max-width: 100%; // width will be hardcoded too
 
-  & .fc-timegrid-slots,
-  & .fc-timegrid-axis-chunk, // when it's a separate axis
-  & .fc-timeline-slots,
-  & .fc-non-business,
-  & .fc-bg-event {
+  & .fcnew-timegrid-slots,
+  & .fcnew-timegrid-axis-chunk, // when it's a separate axis
+  & .fcnew-timeline-slots,
+  & .fcnew-non-business,
+  & .fcnew-bg-event {
     display: none;
   }
 
-  & .fc-toolbar button,
-  & .fc-h-event,
-  & .fc-v-event {
+  & .fcnew-toolbar button,
+  & .fcnew-h-event,
+  & .fcnew-v-event {
     color: #000 !important;
     background: #fff !important;
   }
 
-  & .fc-event,
-  & .fc-event-main { // often controls the text-color
+  & .fcnew-event,
+  & .fcnew-event-main { // often controls the text-color
     color: #000 !important;
   }
 
-  & .fc-timegrid-event {
+  & .fcnew-timegrid-event {
     margin: 0.5em 0;
   }
 }

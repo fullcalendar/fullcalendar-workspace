@@ -33,8 +33,8 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
 
     let classNames = [
       extraClassName || '',
-      'fc-toolbar',
-      forceLtr ? 'fc-toolbar-ltr' : '',
+      'fcnew-toolbar',
+      forceLtr ? 'fcnew-toolbar-ltr' : '',
     ]
 
     return (

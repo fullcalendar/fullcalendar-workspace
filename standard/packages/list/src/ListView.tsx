@@ -63,10 +63,10 @@ export class ListView extends DateComponent<ViewProps> {
       <ViewContainer
         elRef={this.setRootEl}
         elClasses={[
-          'fc-list',
+          'fcnew-list',
           context.theme.getClass('table'), // just for the outer border. will be on div
           context.options.stickyHeaderDates !== false ?
-            'fc-list-sticky' :
+            'fcnew-list-sticky' :
             '',
         ]}
         viewSpec={context.viewSpec}
@@ -100,7 +100,7 @@ export class ListView extends DateComponent<ViewProps> {
     return (
       <ContentContainer
         elTag="div"
-        elClasses={['fc-list-empty']}
+        elClasses={['fcnew-list-empty']}
         renderProps={renderProps}
         generatorName="noEventsContent"
         customGenerator={options.noEventsContent}
@@ -112,7 +112,7 @@ export class ListView extends DateComponent<ViewProps> {
         {(InnerContent) => (
           <InnerContent
             elTag="div"
-            elClasses={['fc-list-empty-cushion']}
+            elClasses={['fcnew-list-empty-cushion']}
           />
         )}
       </ContentContainer>
@@ -168,7 +168,7 @@ export class ListView extends DateComponent<ViewProps> {
           }
 
           return (
-            <table className={'fc-list-table ' + theme.getClass('table')}>
+            <table className={'fcnew-list-table ' + theme.getClass('table')}>
               <thead>
                 <tr>
                   <th scope="col" id={timeHeaderId}>{options.timeHint}</th>

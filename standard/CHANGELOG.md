@@ -40,6 +40,7 @@ updateSize deprecation
 document how windowResize event is no longer fired
 in resource-timeline,
   whether the "super" header cells obeys the minimum indent
+resource timeline setting where events fill entire height of row
 
 ## 6.1.15 (2024-07-12)
 

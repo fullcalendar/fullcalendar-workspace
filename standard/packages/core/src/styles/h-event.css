@@ -5,15 +5,15 @@ A HORIZONTAL event
 
 .fcnew-h-event { // allowed to be top-level
   display: block;
-  border: 1px solid var(--fc-event-border-color);
-  background-color: var(--fc-event-bg-color);
+  border: 1px solid var(--fcnew-event-border-color);
+  background-color: var(--fcnew-event-bg-color);
 
   & .fcnew-event-main {
-    color: var(--fc-event-text-color);
+    color: var(--fcnew-event-text-color);
   }
 
   & .fcnew-event-main-frame {
-    display: flex; // for make fc-event-title-container expand
+    display: flex; // for make fcnew-event-title-container expand
   }
 
   & .fcnew-event-time {
@@ -46,15 +46,15 @@ A HORIZONTAL event
 
 // adjust border and border-radius (if there is any) for non-start/end
 
-.fc-direction-ltr .fcnew-daygrid-block-event:not(.fcnew-event-start),
-.fc-direction-rtl .fcnew-daygrid-block-event:not(.fcnew-event-end) {
+.fcnew-direction-ltr .fcnew-daygrid-block-event:not(.fcnew-event-start),
+.fcnew-direction-rtl .fcnew-daygrid-block-event:not(.fcnew-event-end) {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-left-width: 0;
 }
 
-.fc-direction-ltr .fcnew-daygrid-block-event:not(.fcnew-event-end),
-.fc-direction-rtl .fcnew-daygrid-block-event:not(.fcnew-event-start) {
+.fcnew-direction-ltr .fcnew-daygrid-block-event:not(.fcnew-event-end),
+.fcnew-direction-rtl .fcnew-daygrid-block-event:not(.fcnew-event-start) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-right-width: 0;
@@ -65,34 +65,34 @@ A HORIZONTAL event
 .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer {
   top: 0;
   bottom: 0;
-  width: var(--fc-event-resizer-thickness);
+  width: var(--fcnew-event-resizer-thickness);
 }
 
-.fc-direction-ltr .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-start,
-.fc-direction-rtl .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-end {
+.fcnew-direction-ltr .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-start,
+.fcnew-direction-rtl .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-end {
   cursor: w-resize;
-  left: calc(-0.5 * var(--fc-event-resizer-thickness));
+  left: calc(-0.5 * var(--fcnew-event-resizer-thickness));
 }
 
-.fc-direction-ltr .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-end,
-.fc-direction-rtl .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-start {
+.fcnew-direction-ltr .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-end,
+.fcnew-direction-rtl .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-start {
   cursor: e-resize;
-  right: calc(-0.5 * var(--fc-event-resizer-thickness));
+  right: calc(-0.5 * var(--fcnew-event-resizer-thickness));
 }
 
 // resizers for TOUCH
 
 .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer {
   top: 50%;
-  margin-top: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
+  margin-top: calc(-0.5 * var(--fcnew-event-resizer-dot-total-width));
 }
 
-.fc-direction-ltr .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-start,
-.fc-direction-rtl .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-end {
-  left: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
+.fcnew-direction-ltr .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-start,
+.fcnew-direction-rtl .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-end {
+  left: calc(-0.5 * var(--fcnew-event-resizer-dot-total-width));
 }
 
-.fc-direction-ltr .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-end,
-.fc-direction-rtl .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-start {
-  right: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
+.fcnew-direction-ltr .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-end,
+.fcnew-direction-rtl .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer-start {
+  right: calc(-0.5 * var(--fcnew-event-resizer-dot-total-width));
 }

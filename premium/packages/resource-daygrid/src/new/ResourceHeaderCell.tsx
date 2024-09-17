@@ -26,7 +26,7 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
         elClasses={[
           'fcnew-cell',
           HEADER_CELL_CLASS_NAME,
-          'fc-resource',
+          'fcnew-resource',
         ]}
         elStyle={{
           width: props.colWidth != null // TODO: DRY
@@ -42,7 +42,7 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
               elTag="span"
               elClasses={[
                 'fcnew-col-header-cell-cushion',
-                props.isSticky && 'fc-sticky',
+                props.isSticky && 'fcnew-sticky',
               ]}
             />
           </div>

@@ -27,7 +27,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
 
     return (
       <MoreLinkContainer
-        elClasses={['fc-timeline-more-link']}
+        elClasses={['fcnew-timeline-more-link']}
         allDayDate={null}
         segs={hiddenSegs}
         hiddenSegs={hiddenSegs}
@@ -61,7 +61,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
         {(InnerContent) => (
           <InnerContent
             elTag="div"
-            elClasses={['fc-timeline-more-link-inner', 'fc-sticky']}
+            elClasses={['fcnew-timeline-more-link-inner', 'fcnew-sticky']}
           />
         )}
       </MoreLinkContainer>

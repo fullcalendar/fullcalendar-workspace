@@ -4,45 +4,45 @@
   // table within the scroller
   // ----------------------------------------------------------------------------------------------------
 
-  & .fc-list-table {
+  & .fcnew-list-table {
     width: 100%;
     border-style: hidden; // kill outer border on theme
     border-spacing: 0;
     border-collapse: collapse;
   }
 
-  & .fc-list-table tr > * {
+  & .fcnew-list-table tr > * {
     // hack. will need to separate-out for theming
     border-style: solid;
-    border-color: var(--fc-border-color);
+    border-color: var(--fcnew-border-color);
     border-width: 1px 0; // top and bottom
   }
 
-  & .fc-list-sticky {
-    & .fc-list-day > * { // the cells
+  & .fcnew-list-sticky {
+    & .fcnew-list-day > * { // the cells
       position: sticky;
       top: 0;
-      background: var(--fc-page-bg-color); // for when headers are styled to be transparent and sticky
+      background: var(--fcnew-page-bg-color); // for when headers are styled to be transparent and sticky
     }
   }
 
   // only exists for aria reasons, hide for non-screen-readers
-  & .fc-list-table thead {
+  & .fcnew-list-table thead {
     position: absolute;
     left: -10000px;
   }
 
   // the table's border-style:hidden gets confused by hidden thead. force-hide top border of first cell
-  & .fc-list-table tbody > tr:first-child th {
+  & .fcnew-list-table tbody > tr:first-child th {
     border-top: 0;
   }
 
-  & .fc-list-table th {
+  & .fcnew-list-table th {
     padding: 0; // uses an inner-wrapper instead...
   }
 
-  & .fc-list-table td,
-  & .fc-list-day-cushion {
+  & .fcnew-list-table td,
+  & .fcnew-list-day-cushion {
     padding: 8px 14px;
   }
 
@@ -50,7 +50,7 @@
   // date heading rows
   // ----------------------------------------------------------------------------------------------------
 
-  & .fc-list-day-cushion {
+  & .fcnew-list-day-cushion {
     &:after {
       @include clearfix; // clear floating
     }
@@ -58,24 +58,24 @@
 
 }
 
-.fc-theme-standard {
+.fcnew-theme-standard {
 
-  & .fc-list-day-cushion {
-    background-color: var(--fc-neutral-bg-color);
+  & .fcnew-list-day-cushion {
+    background-color: var(--fcnew-neutral-bg-color);
   }
 
 }
 
-.fc-direction-ltr .fc-list-day-text,
-.fc-direction-rtl .fc-list-day-side-text {
+.fcnew-direction-ltr .fcnew-list-day-text,
+.fcnew-direction-rtl .fcnew-list-day-side-text {
   float: left;
 }
 
-.fc-direction-ltr .fc-list-day-side-text,
-.fc-direction-rtl .fc-list-day-text {
+.fcnew-direction-ltr .fcnew-list-day-side-text,
+.fcnew-direction-rtl .fcnew-list-day-text {
   float: right;
 }
 
 // make the dot closer to the event title
-.fc-direction-ltr .fc-list-table .fc-list-event-graphic { padding-right: 0 }
-.fc-direction-rtl .fc-list-table .fc-list-event-graphic { padding-left: 0 }
+.fcnew-direction-ltr .fcnew-list-table .fcnew-list-event-graphic { padding-right: 0 }
+.fcnew-direction-rtl .fcnew-list-table .fcnew-list-event-graphic { padding-left: 0 }

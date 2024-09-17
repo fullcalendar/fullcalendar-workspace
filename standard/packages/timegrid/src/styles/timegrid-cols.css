@@ -3,7 +3,7 @@
 
   & .fcnew-timegrid-col {
     &.fcnew-day-today {
-      background-color: var(--fc-today-bg-color);
+      background-color: var(--fcnew-today-bg-color);
     }
   }
 
@@ -39,7 +39,7 @@
 
 }
 
-.fc-direction-ltr {
+.fcnew-direction-ltr {
 
   & .fcnew-timegrid-col-events {
     margin: 0 2.5% 0 2px;
@@ -47,7 +47,7 @@
 
 }
 
-.fc-direction-rtl {
+.fcnew-direction-rtl {
 
   & .fcnew-timegrid-col-events {
     margin: 0 2px 0 2.5%;

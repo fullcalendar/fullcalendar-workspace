@@ -73,13 +73,13 @@ a.fcnew-event:hover {
 .fcnew-event-selected {
 
   & .fcnew-event-resizer {
-    border-radius: calc(var(--fc-event-resizer-dot-total-width) / 2);
-    border-width: var(--fc-event-resizer-dot-border-width);
-    width: var(--fc-event-resizer-dot-total-width);
-    height: var(--fc-event-resizer-dot-total-width);
+    border-radius: calc(var(--fcnew-event-resizer-dot-total-width) / 2);
+    border-width: var(--fcnew-event-resizer-dot-border-width);
+    width: var(--fcnew-event-resizer-dot-total-width);
+    height: var(--fcnew-event-resizer-dot-total-width);
     border-style: solid;
     border-color: inherit;
-    background: var(--fc-page-bg-color);
+    background: var(--fcnew-page-bg-color);
 
     // expand hit area
     &:before {
@@ -98,7 +98,7 @@ a.fcnew-event:hover {
 
 // selecting (always TOUCH)
 // OR, focused by tab-index
-// (TODO: maybe not the best focus-styling for .fc-daygrid-dot-event)
+// (TODO: maybe not the best focus-styling for .fcnew-daygrid-dot-event)
 // ----------------------------------------------------------------------------------------------------
 
 .fcnew-event-selected,
@@ -119,7 +119,7 @@ a.fcnew-event:hover {
   // dimmer effect
   &:after {
     content: "";
-    background: var(--fc-event-selected-overlay-color);
+    background: var(--fcnew-event-selected-overlay-color);
     position: absolute;
     z-index: $event-selected-dimmer-z;
 

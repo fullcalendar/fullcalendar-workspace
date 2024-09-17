@@ -18,13 +18,13 @@ interface ElementGeom {
   textAlign: string
 }
 
-const STICKY_SELECTOR = '.fc-sticky'
+const STICKY_SELECTOR = '.fcnew-sticky'
 
 /*
 Goes beyond mere position:sticky, allows horizontal centering
 
-REQUIREMENT: fc-sticky elements, if the fc-sticky className is taken away, should NOT have relative or absolute positioning.
-This is because we attach the coords with JS, and the VDOM might take away the fc-sticky class but doesn't know kill the positioning.
+REQUIREMENT: fcnew-sticky elements, if the fcnew-sticky className is taken away, should NOT have relative or absolute positioning.
+This is because we attach the coords with JS, and the VDOM might take away the fcnew-sticky class but doesn't know kill the positioning.
 
 TODO: don't query text-align:center. isn't compatible with flexbox centering. instead, check natural X coord within parent container
 */
@@ -105,7 +105,7 @@ function assignStickyPositions(els: HTMLElement[], elGeoms: ElementGeom[], viewp
       left = ''
     }
 
-    applyStyle(el, { // will already have fc-sticky class which makes it sticky
+    applyStyle(el, { // will already have fcnew-sticky class which makes it sticky
       left,
       right: left, // for when centered
       top: 0,

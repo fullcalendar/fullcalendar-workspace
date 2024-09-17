@@ -17,7 +17,7 @@
     position: absolute;
     top: 0;
     border-style: solid;
-    border-color: var(--fc-now-indicator-color);
+    border-color: var(--fcnew-now-indicator-color);
     pointer-events: none;
   }
 

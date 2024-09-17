@@ -1,42 +1,42 @@
 
 .fc {
 
-  & .fc-toolbar {
+  & .fcnew-toolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
-  & .fc-toolbar.fc-header-toolbar {
+  & .fcnew-toolbar.fcnew-header-toolbar {
     margin-bottom: 1.5em;
   }
 
-  & .fc-toolbar.fc-footer-toolbar {
+  & .fcnew-toolbar.fcnew-footer-toolbar {
     margin-top: 1.5em;
   }
 
-  & .fc-toolbar-title {
+  & .fcnew-toolbar-title {
     font-size: 1.75em;
     margin: 0;
   }
 
 }
 
-.fc-direction-ltr {
+.fcnew-direction-ltr {
 
-  & .fc-toolbar > * > :not(:first-child) {
+  & .fcnew-toolbar > * > :not(:first-child) {
     margin-left: .75em; // space between
   }
 
 }
 
-.fc-direction-rtl {
+.fcnew-direction-rtl {
 
-  & .fc-toolbar > * > :not(:first-child) {
+  & .fcnew-toolbar > * > :not(:first-child) {
     margin-right: .75em; // space between
   }
 
-  & .fc-toolbar-ltr { // when the toolbar-chunk positioning system is explicitly left-to-right
+  & .fcnew-toolbar-ltr { // when the toolbar-chunk positioning system is explicitly left-to-right
     flex-direction: row-reverse;
   }
 

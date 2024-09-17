@@ -73,7 +73,7 @@ function handleAfterPrint() {
 // TODO: kill this stuff!!!
 
 function freezeScrollgridWidths() {
-  let els = findElements(document.body, '.fc-scrollgrid')
+  let els = findElements(document.body, '.fcnew-scrollgrid')
   els.forEach(freezeScrollGridWidth)
   return () => els.forEach(unfreezeScrollGridWidth)
 }
@@ -82,7 +82,7 @@ function freezeScrollGridWidth(el: HTMLElement) {
   let elWidth = el.getBoundingClientRect().width
 
   // along with collapsibleWidth, this is a hack for #5707
-  if (!el.classList.contains('fc-scrollgrid-collapsible') || elWidth < config.COLLAPSIBLE_WIDTH_THRESHOLD) {
+  if (!el.classList.contains('fcnew-scrollgrid-collapsible') || elWidth < config.COLLAPSIBLE_WIDTH_THRESHOLD) {
     el.style.width = elWidth + 'px'
   }
 }
