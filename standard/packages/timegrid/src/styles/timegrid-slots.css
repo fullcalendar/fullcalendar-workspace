@@ -1,66 +1,53 @@
 
 .fc {
 
-  & .fc-timegrid-slots {
-    position: relative;
-    z-index: $timegrid-slots-z;
+  // & .fcnew-timegrid-slot {}
+
+  & .fcnew-timegrid-slot-minor {
+    border-style: dotted;
+    // how to do this when cell controls the BOTTOM border???
+    // THINK ABOUT:
+    // - bottom-sticky scrollbars prefer NO top border
+    // - top-sticky header prefers bottom border
   }
 
-  & .fc-timegrid-slot { // a <td>
-    height: 1.5em;
-    border-bottom: 0; // each cell owns its top border
-
-    &:empty:before {
-      content: '\00a0'; // make sure there's at least an empty space to create height for height syncing
-    }
-  }
-
-  & .fc-timegrid-slot-minor {
-    border-top-style: dotted;
-  }
-
-  & .fc-timegrid-slot-label-cushion {
-    display: inline-block;
+  & .fcnew-timegrid-slot-label-cushion,
+  & .fcnew-timegrid-slot-lane-cushion {
     white-space: nowrap;
+    height: 1.5em;
   }
 
-  & .fc-timegrid-slot-label {
-    vertical-align: middle; // vertical align the slots
+  & .fcnew-timegrid-slot-label {
+    /* TODO-figure-out-verical-alignment: vertical-align: middle; // vertical align the slots */
   }
-
 
   // slots AND axis cells (top-left corner of view including the "all-day" text)
 
-  & .fc-timegrid-axis-cushion,
-  & .fc-timegrid-slot-label-cushion {
+  & .fcnew-timegrid-axis-cushion,
+  & .fcnew-timegrid-slot-label-cushion {
     padding: 0 4px;
   }
-
 
   // axis cells (top-left corner of view including the "all-day" text)
   // vertical align is more complicated, uses flexbox
 
-  & .fc-timegrid-axis-frame-liquid {
-    height: 100%; // will need liquid-hack in FF
-  }
-
-  & .fc-timegrid-axis-frame {
-    overflow: hidden;
+  & .fcnew-timegrid-axis-frame {
+    /* overflow: hidden;
     display: flex;
     align-items: center; // vertical align
-    justify-content: flex-end; // horizontal align. matches text-align below
+    justify-content: flex-end; // horizontal align. matches text-align below */
   }
 
-  & .fc-timegrid-axis-cushion {
+  /* & .fcnew-timegrid-axis-cushion {
     max-width: 60px; // limits the width of the "all-day" text
     flex-shrink: 0; // allows text to expand how it normally would, regardless of constrained width
-  }
+  } */
 
 }
 
 .fc-direction-ltr {
 
-  & .fc-timegrid-slot-label-frame {
+  & .fcnew-timegrid-slot-label-frame {
     text-align: right;
   }
 
@@ -68,16 +55,8 @@
 
 .fc-direction-rtl {
 
-  & .fc-timegrid-slot-label-frame {
+  & .fcnew-timegrid-slot-label-frame {
     text-align: left;
-  }
-
-}
-
-.fc-liquid-hack {
-
-  & .fc-timegrid-axis-frame-liquid {
-    @include liquid-absolute-override;
   }
 
 }

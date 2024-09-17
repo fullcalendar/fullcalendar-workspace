@@ -4,7 +4,7 @@ class BootstrapTheme extends Theme {
 }
 
 BootstrapTheme.prototype.classes = {
-  root: 'fc-theme-bootstrap', // TODO: compute this off of registered theme name
+  root: 'fcnew-theme-bootstrap', // TODO: compute this off of registered theme name
   table: 'table-bordered', // don't attache the `table` class. we only want the borders, not any layout
   tableCellShaded: 'table-active',
   buttonGroup: 'btn-group',

@@ -45,7 +45,7 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
 
 export function buildViewClassNames(viewSpec: ViewSpec): string[] {
   return [
-    `fc-${viewSpec.type}-view`,
-    'fc-view',
+    `fcnew-${viewSpec.type}-view`,
+    'fcnew-view',
   ]
 }

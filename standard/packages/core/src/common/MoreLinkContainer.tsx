@@ -84,7 +84,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                   elRef={this.handleLinkEl}
                   elClasses={[
                     ...(props.elClasses || []),
-                    'fc-more-link',
+                    'fcnew-more-link',
                   ]}
                   elStyle={props.elStyle}
                   elAttrs={{

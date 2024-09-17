@@ -1,13 +1,13 @@
 
 .fc {
-  & .fc-timegrid-now-indicator-line,
-  & .fc-timegrid-now-indicator-arrow {
+  & .fcnew-timegrid-now-indicator-line,
+  & .fcnew-timegrid-now-indicator-arrow {
     pointer-events: none;
   }
 
   // line
 
-  & .fc-timegrid-now-indicator-line {
+  & .fcnew-timegrid-now-indicator-line {
     position: absolute;
     z-index: $timegrid-now-indicator-z;
     left: 0;
@@ -19,7 +19,7 @@
 
   // arrow
 
-  & .fc-timegrid-now-indicator-arrow {
+  & .fcnew-timegrid-now-indicator-arrow {
     position: absolute;
     z-index: $timegrid-now-indicator-z;
     margin-top: -5px; // vertically center on top coordinate
@@ -31,7 +31,7 @@
 
 .fc-direction-ltr {
 
-  & .fc-timegrid-now-indicator-arrow {
+  & .fcnew-timegrid-now-indicator-arrow {
     left: 0;
 
     // triangle pointing right. TODO: mixin
@@ -44,7 +44,7 @@
 
 .fc-direction-rtl {
 
-  & .fc-timegrid-now-indicator-arrow {
+  & .fcnew-timegrid-now-indicator-arrow {
     right: 0;
 
     // triangle pointing left. TODO: mixin

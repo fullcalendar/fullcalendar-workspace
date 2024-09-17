@@ -1,9 +1,9 @@
 
 .fc {
 
-  & .fc-bg-event,
-  & .fc-non-business,
-  & .fc-highlight {
+  & .fcnew-bg-event,
+  & .fcnew-non-business,
+  & .fcnew-highlight {
     // will always have a harness with position:relative/absolute, so absolutely expand
     position: absolute;
     top: 0;
@@ -12,27 +12,27 @@
     bottom: 0;
   }
 
-  & .fc-non-business {
+  & .fcnew-non-business {
     background: var(--fc-non-business-color);
   }
 
-  & .fc-bg-event {
+  & .fcnew-bg-event {
     background: var(--fc-bg-event-color);
     opacity: var(--fc-bg-event-opacity);
 
-    & .fc-event-title {
+    & .fcnew-event-title {
       margin: .5em;
       font-size: var(--fc-small-font-size);
       font-style: italic;
     }
   }
 
-  & .fc-highlight {
+  & .fcnew-highlight {
     background: var(--fc-highlight-color);
   }
 
-  & .fc-cell-shaded,
-  & .fc-day-disabled {
+  & .fcnew-cell-shaded,
+  & .fcnew-day-disabled {
     background: var(--fc-neutral-bg-color);
   }
 

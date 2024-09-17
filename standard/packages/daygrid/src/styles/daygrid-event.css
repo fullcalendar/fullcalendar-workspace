@@ -1,21 +1,31 @@
 
-.fc-daygrid-event { // make root-level, because will be dragged-and-dropped outside of a component root
+.fcnew-daygrid-event { // make root-level, because will be dragged-and-dropped outside of a component root
   position: relative; // for z-indexes assigned later
   white-space: nowrap;
   border-radius: 3px; // dot event needs this to when selected
   font-size: var(--fc-small-font-size);
 }
 
+/* this used to be in daygrid.css */
+.fc-direction-ltr .fcnew-daygrid-event.fcnew-event-start,
+.fc-direction-rtl .fcnew-daygrid-event.fcnew-event-end {
+  margin-left: 2px;
+}
+.fc-direction-ltr .fcnew-daygrid-event.fcnew-event-end,
+.fc-direction-rtl .fcnew-daygrid-event.fcnew-event-start {
+  margin-right: 2px;
+}
+
 // --- the rectangle ("block") style of event ---
 
-.fc-daygrid-block-event {
+.fcnew-daygrid-block-event {
 
-  & .fc-event-time {
+  & .fcnew-event-time {
     font-weight: bold;
   }
 
-  & .fc-event-time,
-  & .fc-event-title {
+  & .fcnew-event-time,
+  & .fcnew-event-title {
     padding: 1px;
   }
 
@@ -23,12 +33,12 @@
 
 // --- the dot style of event ---
 
-.fc-daygrid-dot-event {
+.fcnew-daygrid-dot-event {
   display: flex;
   align-items: center;
   padding: 2px 0;
 
-  & .fc-event-title {
+  & .fcnew-event-title {
     flex-grow: 1;
     flex-shrink: 1;
     min-width: 0; // important for allowing to shrink all the way
@@ -37,11 +47,11 @@
   }
 
   &:hover,
-  &.fc-event-mirror {
+  &.fcnew-event-mirror {
     background: rgba(0, 0, 0, 0.1);
   }
 
-  &.fc-event-selected:before {
+  &.fcnew-event-selected:before {
     // expand hit area
     top: -10px;
     bottom: -10px;
@@ -49,7 +59,7 @@
 
 }
 
-.fc-daygrid-event-dot { // the actual dot
+.fcnew-daygrid-event-dot { // the actual dot
   margin: 0 4px;
   box-sizing: content-box;
   width: 0;
@@ -64,13 +74,13 @@
 $daygrid-event-inner-margin: 3px;
 
 .fc-direction-ltr {
-  & .fc-daygrid-event .fc-event-time {
+  & .fcnew-daygrid-event .fcnew-event-time {
     margin-right: $daygrid-event-inner-margin;
   }
 }
 
 .fc-direction-rtl {
-  & .fc-daygrid-event .fc-event-time {
+  & .fcnew-daygrid-event .fcnew-event-time {
     margin-left: $daygrid-event-inner-margin;
   }
 }

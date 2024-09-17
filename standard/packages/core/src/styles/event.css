@@ -8,14 +8,14 @@ $event-resizer-z: 4;
 // link resets
 // ----------------------------------------------------------------------------------------------------
 
-a.fc-event,
-a.fc-event:hover {
+a.fcnew-event,
+a.fcnew-event:hover {
   text-decoration: none;
 }
 
 // cursor
-.fc-event[href],
-.fc-event.fc-event-draggable {
+.fcnew-event[href],
+.fcnew-event.fcnew-event-draggable {
   cursor: pointer;
 }
 
@@ -23,8 +23,8 @@ a.fc-event:hover {
 // event text content
 // ----------------------------------------------------------------------------------------------------
 
-.fc-event {
-  & .fc-event-main {
+.fcnew-event {
+  & .fcnew-event-main {
     position: relative;
     z-index: $event-main-z;
   }
@@ -34,13 +34,13 @@ a.fc-event:hover {
 // dragging
 // ----------------------------------------------------------------------------------------------------
 
-.fc-event-dragging {
+.fcnew-event-dragging {
 
-  &:not(.fc-event-selected) { // MOUSE
+  &:not(.fcnew-event-selected) { // MOUSE
     opacity: 0.75;
   }
 
-  &.fc-event-selected { // TOUCH
+  &.fcnew-event-selected { // TOUCH
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
   }
 
@@ -51,9 +51,9 @@ a.fc-event:hover {
 // ----------------------------------------------------------------------------------------------------
 // (subclasses should hone positioning for touch and non-touch)
 
-.fc-event {
+.fcnew-event {
 
-  & .fc-event-resizer {
+  & .fcnew-event-resizer {
     display: none;
     position: absolute;
     z-index: $event-resizer-z;
@@ -61,18 +61,18 @@ a.fc-event:hover {
 
 }
 
-.fc-event:hover, // MOUSE
-.fc-event-selected { // TOUCH
+.fcnew-event:hover, // MOUSE
+.fcnew-event-selected { // TOUCH
 
-  & .fc-event-resizer {
+  & .fcnew-event-resizer {
     display: block;
   }
 
 }
 
-.fc-event-selected {
+.fcnew-event-selected {
 
-  & .fc-event-resizer {
+  & .fcnew-event-resizer {
     border-radius: calc(var(--fc-event-resizer-dot-total-width) / 2);
     border-width: var(--fc-event-resizer-dot-border-width);
     width: var(--fc-event-resizer-dot-total-width);
@@ -101,8 +101,8 @@ a.fc-event:hover {
 // (TODO: maybe not the best focus-styling for .fc-daygrid-dot-event)
 // ----------------------------------------------------------------------------------------------------
 
-.fc-event-selected,
-.fc-event:focus {
+.fcnew-event-selected,
+.fcnew-event:focus {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 
   // expand hit area (subclasses should expand)
