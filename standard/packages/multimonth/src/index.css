@@ -1,5 +1,5 @@
 
-.fc {
+.fcnew {
 
   & .fcnew-multimonth-scroller {
     overflow-y: scroll; // HACK to prevent width oscillation, for handleScrollRequest

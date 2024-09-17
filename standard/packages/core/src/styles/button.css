@@ -6,7 +6,7 @@ These styles only apply when the standard-theme is activated.
 When it's NOT activated, the fcnew-button classes won't even be in the DOM.
 */
 
-.fc {
+.fcnew {
 
   // reset
 

@@ -27,7 +27,7 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
     let { forPrint } = state
 
     let classNames: string[] = [
-      'fc',
+      'fcnew',
       forPrint ? 'fcnew-media-print' : 'fcnew-media-screen',
       `fcnew-direction-${options.direction}`,
       props.theme.getClass('root'),
