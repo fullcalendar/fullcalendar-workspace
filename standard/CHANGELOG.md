@@ -43,6 +43,9 @@ in resource-timeline,
   whether the "super" header cells obeys the minimum indent
 resource timeline setting where events fill entire height of row
 in resource-timeline, we need margin below events
+sticky footer scrollbars
+resource-timeline,
+  slight slat misalignment with header cells when header cells are half as frequent
 
 ## 6.1.15 (2024-07-12)
 

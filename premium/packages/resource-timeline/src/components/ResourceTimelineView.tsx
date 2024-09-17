@@ -101,6 +101,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private computeSlotWidth = memoize(computeSlotWidth)
   private computeHasResourceBusinessHours = memoize(computeHasResourceBusinessHours)
 
+  // TODO: make this nice
+  // This is a means to recompute row positioning when *HeightMaps change
+  handleHeightChange = () => {
+    afterSize(this.handleHeightChangeXXX)
+  }
+  handleHeightChangeXXX = () => {
+    this.forceUpdate()
+  }
+
   // refs
   private bodyEl: HTMLElement
   private spreadsheetHeaderScrollerRef = createRef<Scroller>()
@@ -109,9 +118,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private timeHeaderScrollerRef = createRef<Scroller>()
   private timeBodyScrollerRef = createRef<Scroller>()
   private timeFooterScrollerRef = createRef<Scroller>()
-  private headerRowInnerHeightMap = new RefMap<boolean | number, number>()
-  private spreadsheetEntityInnerHeightMap = new RefMap<Resource | Group, number>()
-  private timeEntityInnerHeightMap = new RefMap<Resource | Group, number>()
+  private headerRowInnerHeightMap = new RefMap<boolean | number, number>(this.handleHeightChange)
+  private spreadsheetEntityInnerHeightMap = new RefMap<Resource | Group, number>(this.handleHeightChange)
+  private timeEntityInnerHeightMap = new RefMap<Resource | Group, number>(this.handleHeightChange)
   private tDateProfile?: TimelineDateProfile
   private timeCanvasWidth?: number
   private slotWidth?: number
@@ -471,6 +480,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         className='fcnew-rel'
                         style={{
                           width: timeCanvasWidth,
+                          boxSizing: 'content-box', // this needs to be same elsewhere too!!!! make className
                           paddingLeft: state.leftScrollbarWidth,
                           paddingRight: state.rightScrollbarWidth,
                         }}
@@ -525,6 +535,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         className='fcnew-rel'
                         style={{
                           width: timeCanvasWidth,
+                          boxSizing: 'content-box', // this needs to be same elsewhere too!!!! make className
                           minHeight: '100%', // TODO: className for this?
                         }}
                         ref={this.handleBodyEl}
@@ -625,7 +636,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         ref={this.timeFooterScrollerRef}
                         horizontal
                       >
-                        <div style={{ width: timeCanvasWidth }}/>
+                        <div style={{
+                          width: timeCanvasWidth,
+                          boxSizing: 'content-box',
+                        }}/>
                       </Scroller>
                     )}
 
