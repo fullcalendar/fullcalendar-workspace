@@ -15,6 +15,7 @@ for connectors:
   pause size-handling until all slots are rendered
 todo: web component, remove `shadow` attribute
 todo: implement fcnew-v-sticky/fcnew-sticky
+  what to do with StickyScrolling class???
 test matrix:
   timeline
     height:auto

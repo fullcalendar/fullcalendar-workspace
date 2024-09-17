@@ -1,3 +1,3 @@
 import './index.css'
 
-export { ListView } from './ListView.js'
+export { ListView } from './components/ListView.js'

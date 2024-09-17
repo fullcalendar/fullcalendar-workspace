@@ -1,5 +1,5 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
-import { ListView } from './ListView.js'
+import { ListView } from './components/ListView.js'
 import { OPTION_REFINERS } from './option-refiners.js'
 import './ambient.js'
 import './index.css'

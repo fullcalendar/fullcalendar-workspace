@@ -1,5 +1,5 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
-import { TimeGridView } from './new/TimeGridView.js'
+import { TimeGridView } from './components/TimeGridView.js'
 import { OPTION_REFINERS } from './options-refiners.js'
 import './ambient.js'
 import './index.css'

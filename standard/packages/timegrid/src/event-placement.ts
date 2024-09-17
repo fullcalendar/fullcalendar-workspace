@@ -6,7 +6,7 @@ import {
 } from '@fullcalendar/core/internal'
 import { TimeColsSeg } from './TimeColsSeg.js'
 import { SegWebRect, buildWebPositioning } from './seg-web.js'
-import { computeDateTopFrac } from './new/util.js'
+import { computeDateTopFrac } from './components/util.js'
 
 // VERTICAL
 // -------------------------------------------------------------------------------------------------

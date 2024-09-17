@@ -2,6 +2,6 @@
 export { ResourceDayTableJoiner } from './ResourceDayTableJoiner.js'
 
 // new
-export { ResourceDayGridView } from './new/ResourceDayGridView.js'
-export { ResourceHeaderCell } from './new/ResourceHeaderCell.js'
-export { buildResourceHeaderTiers, ResourceDateHeaderCellObj, ResourceHeaderCellObj } from './new/header-cell-utils.js'
+export { ResourceDayGridView } from './components/ResourceDayGridView.js'
+export { ResourceHeaderCell } from './components/ResourceHeaderCell.js'
+export { buildResourceHeaderTiers, ResourceDateHeaderCellObj, ResourceHeaderCellObj } from './components/header-cell-utils.js'

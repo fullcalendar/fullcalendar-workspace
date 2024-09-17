@@ -1,5 +1,5 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
-import { DayGridView } from './new/DayGridView.js'
+import { DayGridView } from './components/DayGridView.js'
 import { TableDateProfileGenerator } from './TableDateProfileGenerator.js'
 import './index.css'
 

@@ -1,6 +1,6 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
-import { TimelineView } from './new/TimelineView.js'
+import { TimelineView } from './components/TimelineView.js'
 import './ambient.js'
 import './index.css'
 

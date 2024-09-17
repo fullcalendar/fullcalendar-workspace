@@ -2,7 +2,7 @@ import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
 import resourcePlugin from '@fullcalendar/resource'
 import timeGridPlugin from '@fullcalendar/timegrid'
-import { ResourceTimeGridView } from './new/ResourceTimeGridView.js'
+import { ResourceTimeGridView } from './components/ResourceTimeGridView.js'
 import './ambient.js'
 
 export default createPlugin({

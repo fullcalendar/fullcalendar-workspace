@@ -6,8 +6,8 @@ export { TimeSlatMeta, buildSlatMetas } from './time-slat-meta.js'
 export { AllDaySplitter } from './AllDaySplitter.js'
 
 // new
-export { TimeGridView } from './new/TimeGridView.js'
-export { TimeGridLayout, TimeGridLayoutProps } from './new/TimeGridLayout.js'
-export { TimeGridWeekNumber } from './new/TimeGridWeekNumber.js'
+export { TimeGridView } from './components/TimeGridView.js'
+export { TimeGridLayout, TimeGridLayoutProps } from './components/TimeGridLayout.js'
+export { TimeGridWeekNumber } from './components/TimeGridWeekNumber.js'
 
-export { buildTimeColsModel, buildDayRanges } from './new/util.js'
+export { buildTimeColsModel, buildDayRanges } from './components/util.js'
