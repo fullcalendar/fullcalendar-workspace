@@ -200,12 +200,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       tDateProfile.cellRows.length,
     )
 
-    let headerHeights = computeHeights(
+    let [headerHeights] = computeHeights(
       headerLayouts,
       (entity) => this.headerRowInnerHeightMap.current.get(entity), // makes memoization impossible!
     )
 
-    let bodyHeights = this.bodyHeights = computeHeights(
+    let [bodyHeights, bodyCanvasHeight] = computeHeights(
       bodyLayouts,
       (entity) => { // makes memoization impossible!
         const entitySpreadsheetHeight = this.spreadsheetEntityInnerHeightMap.current.get(entity)
@@ -220,6 +220,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       state.mainScrollerHeight,
     )
     let bodyTops = computeTopsFromHeights(bodyLayouts, bodyHeights)
+    this.bodyHeights = bodyHeights
+    this.bodyTops = bodyTops
 
     let [timeCanvasWidth, slotWidth] = this.computeSlotWidth(
       tDateProfile.slotCnt,
@@ -355,94 +357,103 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       ref={this.spreadsheetBodyScrollerRef}
                     >
                       <div
+                        className='fcnew-roworigin'
                         style={{
+                          boxSizing: 'content-box',
                           width: spreadsheetCanvasWidth,
-                          paddingBottom: state.spreadsheetBottomScrollbarWidth - state.timeBottomScrollbarWidth,
                           minHeight: '100%', // TODO: make this a class?
+                          paddingBottom: state.spreadsheetBottomScrollbarWidth - state.timeBottomScrollbarWidth,
                         }}
                       >
-                        {/* group columns */}
-                        <Fragment>{/* TODO: need Fragment for key? */}
-                          {flatGroupColLayouts.map((groupColLayouts, colIndex) => (
-                            <div
-                              key={colIndex}
-                              className='fcnew-rel'
-                              style={{ width: spreadsheetColWidths[colIndex] }}
-                            >
-                              {groupColLayouts.map((groupCellLayout) => {
-                                const group = groupCellLayout.entity
-                                return (
-                                  <div
-                                    key={queryObjKey(group)}
-                                    role='row'
-                                    class='fcnew-row'
-                                    style={{
-                                      top: bodyTops.get(group),
-                                      height: bodyHeights.get(group),
-                                    }}
-                                  >
-                                    <GroupTallCell
-                                      colSpec={group.spec}
-                                      fieldValue={group.value}
-                                      innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
-                                    />
-                                  </div>
-                                )
-                              })}
-                            </div>
-                          ))}
-                        </Fragment>
-
-                        {/* TODO: do background column stripes; add render hooks? */}
                         <div
-                          className='fcnew-rel'
-                          style={{ width: spreadsheetResourceWidth }}
+                          className='fcnew-flex-row fcnew-supercolumns'
+                          style={{
+                            height: bodyCanvasHeight,
+                          }}
                         >
-                          {flatGroupRowLayouts.map((groupRowLayout) => {
-                            const group = groupRowLayout.entity
-                            return (
+                          {/* group columns */}
+                          <Fragment>{/* TODO: need Fragment for key? */}
+                            {flatGroupColLayouts.map((groupColLayouts, colIndex) => (
                               <div
-                                key={String(group.value) /* what about this!? */}
-                                role='row'
-                                class='fcnew-row'
-                                style={{
-                                  top: bodyTops.get(group),
-                                  height: bodyHeights.get(group),
-                                }}
+                                key={colIndex}
+                                className='fcnew-roworigin'
+                                style={{ width: spreadsheetColWidths[colIndex] }}
                               >
-                                <GroupWideCell
-                                  group={group}
-                                  isExpanded={groupRowLayout.isExpanded}
-                                  innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
-                                />
+                                {groupColLayouts.map((groupCellLayout) => {
+                                  const group = groupCellLayout.entity
+                                  return (
+                                    <div
+                                      key={queryObjKey(group)}
+                                      role='row'
+                                      class='fcnew-row'
+                                      style={{
+                                        top: bodyTops.get(group),
+                                        height: bodyHeights.get(group),
+                                      }}
+                                    >
+                                      <GroupTallCell
+                                        colSpec={group.spec}
+                                        fieldValue={group.value}
+                                        innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
+                                      />
+                                    </div>
+                                  )
+                                })}
                               </div>
-                            )
-                          })}
-                          {flatResourceLayouts.map((resourceLayout) => {
-                            const resource = resourceLayout.entity
-                            return (
-                              <div
-                                key={resource.id}
-                                role='row'
-                                class='fcnew-row'
-                                style={{
-                                  top: bodyTops.get(resource),
-                                  height: bodyHeights.get(resource),
-                                }}
-                              >
-                                <ResourceCells
-                                  resource={resource}
-                                  resourceFields={resourceLayout.resourceFields}
-                                  indent={resourceLayout.indent}
-                                  hasChildren={resourceLayout.hasChildren}
-                                  isExpanded={resourceLayout.isExpanded}
-                                  colSpecs={resourceColSpecs}
-                                  innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(resource)}
-                                />
-                              </div>
-                            )
-                          })}
+                            ))}
+                          </Fragment>
+                          {/* TODO: do background column stripes; add render hooks? */}
+                          <div
+                            className='fcnew-roworigin'
+                            style={{ width: spreadsheetResourceWidth }}
+                          >
+                            {flatResourceLayouts.map((resourceLayout) => {
+                              const resource = resourceLayout.entity
+                              return (
+                                <div
+                                  key={resource.id}
+                                  role='row'
+                                  class='fcnew-row'
+                                  style={{
+                                    top: bodyTops.get(resource),
+                                    height: bodyHeights.get(resource),
+                                  }}
+                                >
+                                  <ResourceCells
+                                    resource={resource}
+                                    resourceFields={resourceLayout.resourceFields}
+                                    indent={resourceLayout.indent}
+                                    hasChildren={resourceLayout.hasChildren}
+                                    isExpanded={resourceLayout.isExpanded}
+                                    colSpecs={resourceColSpecs}
+                                    innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(resource)}
+                                    colWidths={spreadsheetColWidths}
+                                  />
+                                </div>
+                              )
+                            })}
+                          </div>
                         </div>
+                        {flatGroupRowLayouts.map((groupRowLayout) => {
+                          const group = groupRowLayout.entity
+                          return (
+                            <div
+                              key={String(group.value) /* what about this!? */}
+                              role='row'
+                              class='fcnew-row'
+                              style={{
+                                top: bodyTops.get(group),
+                                height: bodyHeights.get(group),
+                              }}
+                            >
+                              <GroupWideCell
+                                group={group}
+                                isExpanded={groupRowLayout.isExpanded}
+                                innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
+                              />
+                            </div>
+                          )
+                        })}
                       </div>
                     </Scroller>
 
@@ -532,10 +543,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       bottomScrollbarWidthRef={this.handleTimeBottomScrollbarWidth}
                     >
                       <div
-                        className='fcnew-rel'
+                        className='fcnew-roworigin'
                         style={{
-                          width: timeCanvasWidth,
                           boxSizing: 'content-box', // this needs to be same elsewhere too!!!! make className
+                          width: timeCanvasWidth,
+                          height: bodyCanvasHeight,
                           minHeight: '100%', // TODO: className for this?
                         }}
                         ref={this.handleBodyEl}

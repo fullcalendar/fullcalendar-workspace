@@ -8,15 +8,19 @@ export function computeHeights<Entity>(
   siblingNodes: GenericLayout<Entity>[],
   getEntityHeight: (entity: Entity) => number,
   minHeight?: number,
-): Map<Entity, number> {
+): [
+  heightMap: Map<Entity, number>,
+  totalHeight: number,
+] {
   const heightMap = new Map<Entity, number>()
-  const [totalHeight, expandableCount] = computeTightHeights(siblingNodes, getEntityHeight, heightMap)
+  let [totalHeight, expandableCount] = computeTightHeights(siblingNodes, getEntityHeight, heightMap)
 
   if (minHeight != null && minHeight > totalHeight) {
     expandHeights(siblingNodes, heightMap, (minHeight - totalHeight) / expandableCount)
+    totalHeight = minHeight
   }
 
-  return heightMap
+  return [heightMap, totalHeight]
 }
 
 function computeTightHeights<Entity>(

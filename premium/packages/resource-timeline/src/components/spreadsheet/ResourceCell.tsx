@@ -19,8 +19,8 @@ export interface ResourceCellProps {
   indent: number
   hasChildren: boolean
   isExpanded: boolean
-  height?: number | undefined
   innerHeightRef?: Ref<number>
+  width?: number
 }
 
 export class ResourceCell extends BaseComponent<ResourceCellProps> {
@@ -48,6 +48,9 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           role: 'gridcell',
           'data-resource-id': props.resource.id,
         }}
+        elStyle={{
+          width: props.width,
+        }}
         renderProps={renderProps}
         generatorName={colSpec.isMain ? 'resourceLabelContent' : undefined}
         customGenerator={colSpec.cellContent}
@@ -57,7 +60,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         willUnmount={colSpec.cellWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef} style={{ height: props.height }}>
+          <div ref={this.innerElRef}>
             <div className="fcnew-datagrid-cell-cushion">
               {colSpec.isMain && (
                 <ExpanderIcon

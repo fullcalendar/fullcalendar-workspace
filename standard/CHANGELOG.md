@@ -46,6 +46,7 @@ in resource-timeline, we need margin below events
 sticky footer scrollbars
 resource-timeline,
   slight slat misalignment with header cells when header cells are half as frequent
+indent for timeline-column-grouping is wrong
 
 ## 6.1.15 (2024-07-12)
 

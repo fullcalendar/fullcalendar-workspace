@@ -12,6 +12,23 @@
     cursor: col-resize;
   }
 
+  & .fcnew-roworigin {
+    position: relative;
+  }
+  & .fcnew-roworigin > .fcnew-row {
+    position: absolute;
+    left: 0;
+    right: 0;
+    // transition: top 0.5s ease;
+  }
+
+  & .fcnew-supercolumns > * { // TODO: better selector
+    border-right: 1px solid var(--fcnew-border-color);
+  }
+  & .fcnew-supercolumns > *:last-child { // TODO: better selector
+    border-right: 0;
+  }
+
   // the cushion
 
   & .fcnew-datagrid-cell-cushion {
