@@ -54,8 +54,6 @@ interface DayGridViewState {
 }
 
 export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseComponent<DayGridLayoutNormalProps<HeaderCellModel, HeaderCellKey>, DayGridViewState> {
-  scroller: Scroller | undefined | null
-
   render() {
     const { props, state, context } = this
     const { options } = context
@@ -114,7 +112,6 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
 
   handleScroller = (scroller: Scroller) => {
     setRef(this.props.scrollerRef, scroller)
-    this.scroller = scroller
   }
 
   handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {

@@ -1,7 +1,5 @@
 
 FOR beta.1
-  scroll-handling initializing. rethink
-    (because I ripped out hacks from DayGridLayout)
   drag-n-drop
     get working!
     test external drag-n-drop
@@ -49,6 +47,8 @@ ensure automated tests for...
 AFTER beta.1
   restore print-mode
   implement ResizeObserver fallback
+  initial-scroll for views with complex rendering is wrong
+    multiweek (uses DayGridLayout), (maybe multimonth too)
   daygrid
     for event rendering, expose an isStandin flag for if hidden behind multiday
   timeline
@@ -68,6 +68,8 @@ AFTER beta.1
     percentage-based resource-timeline spreadsheet-column resizing
 
 CHANGELOG
+  temporary
+    the space to accommodate scrollbars is just blank
   exports
     DayTable no longer exposed from '@fullcalendar/daygrid/internal'
     DayGridView ('@fullcalendar/daygrid/internal') renamed to DayGridView
