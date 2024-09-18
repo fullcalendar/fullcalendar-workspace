@@ -46,7 +46,10 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
         style={{ height: props.height }}
       >
         {props.cells.map((cell) => {
-          const key = cell.date.toISOString() // TODO: make this part of the cell obj?
+          // TODO: make this part of the cell obj?
+          // TODO: rowUnit seems wrong sometimes. says 'month' when it should be day
+          // TODO: rowUnit is relevant to whole row. put it on a row object, not the cells
+          const key = cell.rowUnit + ':' + cell.date.toISOString()
 
           return (
             <TimelineHeaderCell
