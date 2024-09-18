@@ -6,4 +6,11 @@
     cursor: col-resize;
   }
 
+  & .fcnew-resource-timeline-row {
+    border-bottom: 1px solid var(--fcnew-border-color);
+  }
+  & .fcnew-resource-timeline-row:last-child {
+    border-bottom: 0;
+  }
+
 }

@@ -7,9 +7,8 @@ import {
   RefMap,
   guid,
   afterSize,
-  setRef,
 } from '@fullcalendar/core/internal'
-import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
+import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 import { horizontalsToCss } from '../TimelineCoords.js'
 import { TimelineLaneBg } from './TimelineLaneBg.js'
@@ -38,9 +37,6 @@ export interface TimelineLaneProps {
 
   // dimensions
   slotWidth: number | undefined
-
-  // refs
-  innerHeightRef?: Ref<number>
 }
 
 interface TimelineLaneState {
@@ -62,7 +58,6 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
   private moreLinkHeightRefMap = new RefMap<string, number>(() => { // keyed by SegGroup.key
     afterSize(this.handleMoreLinkHeights)
   })
-  private innerHeight?: number
 
   // internal
   private slicer = new TimelineLaneSlicer()
@@ -105,16 +100,11 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       options.eventMaxStack,
     )
 
-    let innerHeight: number | undefined
+    let innerHeight: number | undefined // TODO: rename to *events*-height
     let moreLinksBottom = computeMoreLinkMaxBottom(hiddenGroups, hiddenGroupTops, this.moreLinkHeightRefMap.current)
 
     if (fgSegsBottom != null && moreLinksBottom != null) { // ready?
       innerHeight = Math.max(moreLinksBottom, fgSegsBottom)
-
-      if (this.innerHeight !== innerHeight) {
-        this.innerHeight = innerHeight
-        setRef(props.innerHeightRef, innerHeight)
-      }
     }
 
     let forcedInvisibleMap = // TODO: more convenient/DRY
@@ -139,7 +129,12 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           slotWidth={props.slotWidth}
         />
         <div
-          className="fcnew-timeline-events"
+          className={[
+            'fcnew-timeline-events',
+            options.eventOverlap === false // TODO: fix bad default
+              ? 'fcnew-timeline-events-overlap-disabled'
+              : 'fcnew-timeline-events-overlap-enabled'
+          ].join(' ')}
           style={{ height: innerHeight }}
         >
           {this.renderFgSegs(
@@ -243,13 +238,6 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         ))}
       </Fragment>
     )
-  }
-
-  componentWillUnmount() {
-    if (this.innerHeight != null) {
-      this.innerHeight = undefined
-      setRef(this.props.innerHeightRef, null)
-    }
   }
 
   private handleMoreLinkHeights = () => {

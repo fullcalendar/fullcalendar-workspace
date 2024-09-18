@@ -1,5 +1,5 @@
-import { BaseComponent, memoizeObjArg, ContentContainer } from '@fullcalendar/core/internal'
-import { createElement, Ref } from '@fullcalendar/core/preact'
+import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef } from '@fullcalendar/core/internal'
+import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { Resource, refineRenderProps } from '@fullcalendar/resource/internal'
 import { TimelineLane, TimelineLaneProps } from '@fullcalendar/timeline/internal'
 
@@ -13,6 +13,8 @@ export interface ResourceLaneProps extends TimelineLaneProps {
 
 export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)
+  private frameElRef = createRef<HTMLDivElement>()
+  private unwatchHeight?: () => void
 
   render() {
     let { props, context } = this
@@ -37,7 +39,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         willUnmount={options.resourceLaneWillUnmount}
       >
         {(InnerContent) => ( // TODO: apply top-coordinate
-          <div className="fcnew-timeline-lane-frame">
+          <div className="fcnew-timeline-lane-frame" ref={this.frameElRef}>
             <InnerContent
               elTag="div"
               elClasses={['fcnew-timeline-lane-misc']}
@@ -57,9 +59,6 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
               eventResize={props.eventResize}
               resourceId={props.resource.id}
 
-              // ref
-              innerHeightRef={props.innerHeightRef}
-
               // dimensions
               slotWidth={props.slotWidth}
             />
@@ -67,5 +66,15 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         )}
       </ContentContainer>
     )
+  }
+
+  componentDidMount(): void {
+    this.unwatchHeight = watchHeight(this.frameElRef.current, (height) => {
+      setRef(this.props.innerHeightRef, height)
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.unwatchHeight()
   }
 }

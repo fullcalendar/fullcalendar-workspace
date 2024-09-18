@@ -605,7 +605,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                               <div
                                 key={resource.id}
                                 role='row'
-                                class='fcnew-row'
+                                className='fcnew-resource-timeline-row'
                                 style={{
                                   top: bodyTops.get(resource),
                                   height: bodyHeights.get(resource),

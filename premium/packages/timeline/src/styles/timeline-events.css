@@ -5,6 +5,10 @@
   & .fcnew-timeline-events {
     position: relative;
     z-index: $timeline-fg-z;
+    box-sizing: content-box; // so padding and height are separate. height is set in js
+  }
+  & .fcnew-timeline-events-overlap-enabled {
+    padding-bottom: 10px;
   }
 
   // harness
@@ -49,6 +53,11 @@
     white-space: nowrap;
     padding: 0 2px;
   }
+}
+.fcnew-timeline-event-thick {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 0;
 }
 
 // move 1px away from slot line

@@ -1,32 +1,33 @@
 
 FOR beta.1
-  drag-n-drop
-    get working!
-    test external drag-n-drop
   test for ALL views
-    stickyHeaderDates
-    stickyFooterScrollbars
-    h-events have sticky event title text
     height:auto
       and sticky footer scrollbars (daygrid/timegrid/timeline/resource-timeline)
+    stickyHeaderDates
+    stickyFooterScrollbars
     theming
       i can write table-inspired css utils however i want, with borders
+    axis as top left (timegrid w/ hscroll, resource-timeline) doesn't have correct v-centering
+    RTL
+    redo cell borders
+      we have major/minor mixed up
+      should we always assume solid border style?
+      TEST: with horizontal scrolling (dayMinWidth),
+        header doesn't have top border
   daygrid
-    dayGridYear - test starts at correct initial day
-    disabled-cell styling on monthview is broken
-    with horizontal scrolling (dayMinWidth),
-      header doesn't have top border
+    height:auto is really messed up
     test how month view balances week heights
     test no "final squished row"
       https://github.com/fullcalendar/fullcalendar/issues/7162
   timegrid
+    need margin below events in ALL-DAY section
     test hiding all-day slot (for pannable layout too)
   timeline
+    need bottom margins *between* events
     slight slat misalignment with header cells when header cells are half as frequent
       (recreated in resource timeline.. in regular timeline too?)
   resource-timeline
     indent for timeline-column-grouping.html is wrong (related to GroupCells accidentally requiring it)
-    need margin below events
     setting where events fill entire height of row
     test sticky GroupCell content (vertically sticky)
     test whether the "super" header cells obeys the minimum indent
@@ -34,6 +35,9 @@ FOR beta.1
     test business hours per resource VS whole
     test rows expanding to fill height (but not groups)
       ensure no awkward behavior when contracting parent-resources
+    for syncing heights, is row-height off-by-one because inner heights don't include border?
+    when DnD fits multiple tiers of events on one resource and expands height, there's a flicker
+      TODO: prevent multiple passes of height-watching?
   list-view
     for left-and-right, don't use floating, use flexbox
   multi-month
@@ -48,7 +52,7 @@ AFTER beta.1
   restore print-mode
   implement ResizeObserver fallback
   initial-scroll for views with complex rendering is wrong
-    multiweek (uses DayGridLayout), (maybe multimonth too)
+    multiweek (uses DayGridLayout/dayGridYear-view), (maybe multimonth too)
   daygrid
     for event rendering, expose an isStandin flag for if hidden behind multiday
   timeline
