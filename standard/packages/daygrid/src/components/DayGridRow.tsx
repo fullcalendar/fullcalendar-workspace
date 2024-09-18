@@ -60,7 +60,7 @@ export interface DayGridRowProps {
   // refs
   rootElRef?: Ref<HTMLElement> // needed by TimeGrid, to attach Hit system
   heightRef?: Ref<number>
-  innerHeightRef?: Ref<number> // only fired if !fgHeightFixed (so dayMaxEvents !== true && dayMaxEventRows !== true)
+  innerHeightRef?: Ref<number> // only fired if !fgLiquidHeight (so dayMaxEvents !== true && dayMaxEventRows !== true)
 }
 
 interface DayGridRowState {
@@ -94,7 +94,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
 
     const weekDate = props.cells[0].date
     const colCnt = props.cells.length
-    const fgHeightFixed = props.dayMaxEvents === true || props.dayMaxEventRows === true
+    const fgLiquidHeight = props.dayMaxEvents === true || props.dayMaxEventRows === true
 
     // TODO: memoize? sort all types of segs?
     const fgEventSegs = sortEventSegs(props.fgEventSegs, options.eventOrder) as TableSeg[]
@@ -112,7 +112,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       this.segHeightRefMap.current,
       cells,
       state.headerHeight,
-      (fgHeightFixed && state.innerHeight != null && state.headerHeight != null)
+      (fgLiquidHeight && state.innerHeight != null && state.headerHeight != null)
         ? state.innerHeight - state.headerHeight
         : undefined,
       options.eventOrderStrict,
@@ -176,7 +176,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
               // content
               segs={fgEventSegsByCol[col]}
               hiddenSegs={hiddenSegsByCol[col]}
-              fgHeightFixed={fgHeightFixed}
+              fgLiquidHeight={fgLiquidHeight}
               fg={(
                 <Fragment>
                   <Fragment>{normalFgNodes}</Fragment>
@@ -367,7 +367,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
 
   private handleInnerHeights = () => {
     const { props } = this
-    const fgHeightFixed = props.dayMaxEvents === true || props.dayMaxEventRows === true
+    const fgLiquidHeight = props.dayMaxEvents === true || props.dayMaxEventRows === true
     const cellInnerHeightMap = this.cellInnerHeightRefMap.current
     let max = 0
 
@@ -375,7 +375,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       max = Math.max(max, height)
     }
 
-    if (fgHeightFixed) {
+    if (fgLiquidHeight) {
       if (this.state.innerHeight !== max) {
         this.setState({ innerHeight: max }) // will trigger event rerender
       }

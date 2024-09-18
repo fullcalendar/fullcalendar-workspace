@@ -34,7 +34,7 @@ export interface DayGridCellProps {
   // content
   segs: TableSeg[] // for +more link popover content
   hiddenSegs: TableSeg[] // "
-  fgHeightFixed: boolean
+  fgLiquidHeight: boolean
   fg: ComponentChildren
   bg: ComponentChildren
   eventDrag: EventSegUiInteractionState | null
@@ -49,7 +49,7 @@ export interface DayGridCellProps {
 
   // dimensions
   fgHeight: number | undefined
-  width?: number
+  width?: number | string
 
   // refs
   innerHeightRef?: Ref<number> // for resource-daygrid row-height syncing
@@ -101,7 +101,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
             ref={this.innerElRef}
             className={[
               'fcnew-daygrid-cell-inner',
-              props.fgHeightFixed ? 'fcnew-daygrid-cell-inner-liquid' : ''
+              props.fgLiquidHeight ? 'fcnew-daygrid-cell-inner-liquid' : ''
             ].join(' ')}
           >
             <div ref={this.headerWrapElRef} className="fcnew-daygrid-cell-header-wrap">
@@ -120,11 +120,20 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
             </div>
             <div
               className="fcnew-daygrid-cell-main"
-              style={{ height: props.fgHeight }}
+              style={{
+                height: props.fgLiquidHeight ? '' : props.fgHeight
+              }}
             >
               {props.fg}
             </div>
-            <div className="fcnew-daygrid-cell-footer">
+            <div
+              className="fcnew-daygrid-cell-footer"
+              style={
+                props.fgLiquidHeight
+                  ? { position: 'relative', top: props.fgHeight }
+                  : {}
+              }
+            >
               <DayGridMoreLink
                 allDayDate={props.date}
                 segs={props.segs}
