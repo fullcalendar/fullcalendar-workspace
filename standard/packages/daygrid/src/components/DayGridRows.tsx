@@ -8,6 +8,7 @@ import {
   Hit,
   DayTableCell,
   RefMap,
+  watchWidth,
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { TableSeg, splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
@@ -32,13 +33,17 @@ export interface DayGridRowsProps {
 
   // dimensions
   colWidth?: number
-  width?: number
+  width?: number | string // a CSS value
 
   // refs
   rowHeightRefMap?: RefMap<string, number>
 }
 
-export class DayGridRows extends DateComponent<DayGridRowsProps> {
+interface DayGridRowsState {
+  width?: number
+}
+
+export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsState> {
   // ref
   private rootEl: HTMLDivElement
 
@@ -58,9 +63,10 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
       rowHeightRefMap.handleValue(height, key)
     }
   })
+  private unwatchWidth?: () => void
 
   render() {
-    let { props, context, rowHeightRefMap } = this
+    let { props, state, context, rowHeightRefMap } = this
     let { options } = context
     let rowCnt = props.cellRows.length
 
@@ -70,6 +76,12 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
     let dateSelectionSegsByRow = this.splitDateSelectionSegs(props.dateSelectionSegs, rowCnt)
     let eventDragByRow = this.splitEventDrag(props.eventDrag, rowCnt)
     let eventResizeByRow = this.splitEventResize(props.eventResize, rowCnt)
+
+    // for DayGrid view with many rows, force a min-height on cells so doesn't appear squished
+    // choose 7 because a month view will have max 6 rows
+    let rowMinHeight = (rowCnt >= 7 && state.width != null) ?
+      state.width / context.options.aspectRatio / 6 :
+      null
 
     return (
       <div
@@ -99,6 +111,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
 
             // dimensions
             colWidth={props.colWidth}
+            minHeight={rowMinHeight}
 
             // refs
             heightRef={rowHeightRefMap.createRef(cells[0].key)}
@@ -107,9 +120,6 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
       </div>
     )
   }
-
-  // Handlers
-  // -----------------------------------------------------------------------------------------------
 
   handleRootEl = (rootEl: HTMLDivElement) => {
     this.rootEl = rootEl
@@ -122,6 +132,16 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
     } else {
       this.context.unregisterInteractiveComponent(this)
     }
+  }
+
+  componentDidMount(): void {
+    this.unwatchWidth = watchWidth(this.rootEl, (width) => {
+      this.setState({ width })
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.unwatchWidth()
   }
 
   // Hit System

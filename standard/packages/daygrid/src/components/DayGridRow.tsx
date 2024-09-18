@@ -55,7 +55,7 @@ export interface DayGridRowProps {
 
   // dimensions
   colWidth?: number
-  height?: number
+  minHeight?: number | string
 
   // refs
   rootElRef?: Ref<HTMLElement> // needed by TimeGrid, to attach Hit system
@@ -133,7 +133,9 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
           'fcnew-daygrid-row',
           props.className || '',
         ].join(' ')}
-        style={{ height: props.height }}
+        style={{
+          minHeight: props.minHeight,
+        }}
         ref={this.handleRootEl}
       >
         {options.weekNumbers && (

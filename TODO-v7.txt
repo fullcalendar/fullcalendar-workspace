@@ -4,6 +4,8 @@ FOR beta.1
     is this also... "the view where it's a year of months, but each month has a title"
   stickyness!!!!! (fcnew-v-sticky/fcnew-sticky)
     remove StickyScrolling class?
+  scroll-handling initializing. rethink
+    (because I ripped out hacks from DayGridLayout)
   drag-n-drop
     get working!
     test external drag-n-drop
@@ -13,6 +15,8 @@ FOR beta.1
     theming
       i can write table-inspired css utils however i want, with borders
   daygrid
+    bug: if day with a lot of events, but no +more link, and calendar sized down, does not go into +more
+    dayGridYear - test starts at correct initial day
     disabled-cell styling on monthview is broken
     with horizontal scrolling (dayMinWidth),
       header doesn't have top border
