@@ -32,11 +32,12 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
 
   render() {
     const { props, innerWidthRefMap, innerHeightRefMap } = this
-    const isChrono = props.tDateProfile.isTimeScale && props.isLastRow // the final row, with times?
+    const isCentered = !(props.tDateProfile.isTimeScale && props.isLastRow)
+    const isSticky = !props.isLastRow
+
     const classNames = [
       'fcnew-row',
       'fcnew-timeline-header-row',
-      isChrono ? 'fcnew-timeline-header-row-chrono' : '',
     ]
 
     return (
@@ -56,7 +57,8 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
               tDateProfile={props.tDateProfile}
               todayRange={props.todayRange}
               nowDate={props.nowDate}
-              isSticky={!props.isLastRow}
+              isCentered={isCentered}
+              isSticky={isSticky}
 
               // refs
               innerWidthRef={innerWidthRefMap.createRef(key)}

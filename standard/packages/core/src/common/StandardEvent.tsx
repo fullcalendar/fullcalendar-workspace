@@ -79,7 +79,7 @@ function renderInnerContent(innerProps: EventContentArg) {
         <div className="fcnew-event-time">{innerProps.timeText}</div>
       )}
       <div className="fcnew-event-title-container">
-        <div className="fcnew-event-title fcnew-sticky">
+        <div className="fcnew-event-title fcnew-h-sticky">
           {innerProps.event.title || <Fragment>&nbsp;</Fragment>}
         </div>
       </div>

@@ -116,7 +116,7 @@
   cursor: pointer;
 }
 
-.fcnew-timeline-more-link-inner { // has fcnew-sticky
+.fcnew-timeline-more-link-inner { // has fcnew-h-sticky
   display: inline-block;
   left: 0;
   right: 0;

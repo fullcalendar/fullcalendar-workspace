@@ -135,3 +135,15 @@
   right: 0;
   bottom: 0;
 }
+
+.fcnew-v-sticky {
+  position: sticky;
+  top: 0;
+  bottom: 0;
+}
+
+.fcnew-h-sticky {
+  position: sticky;
+  left: 0;
+  right: 0;
+}

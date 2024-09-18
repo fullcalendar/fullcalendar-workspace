@@ -1,13 +1,14 @@
 
 FOR beta.1
-  stickyness!!!!! (fcnew-v-sticky/fcnew-sticky)
-    remove StickyScrolling class?
   scroll-handling initializing. rethink
     (because I ripped out hacks from DayGridLayout)
   drag-n-drop
     get working!
     test external drag-n-drop
   test for ALL views
+    stickyHeaderDates
+    stickyFooterScrollbars
+    h-events have sticky event title text
     height:auto
       and sticky footer scrollbars (daygrid/timegrid/timeline/resource-timeline)
     theming
@@ -29,6 +30,7 @@ FOR beta.1
     indent for timeline-column-grouping.html is wrong (related to GroupCells accidentally requiring it)
     need margin below events
     setting where events fill entire height of row
+    test sticky GroupCell content (vertically sticky)
     test whether the "super" header cells obeys the minimum indent
     test multiple header rows, all combos
     test business hours per resource VS whole

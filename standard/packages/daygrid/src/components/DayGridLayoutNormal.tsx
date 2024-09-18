@@ -73,7 +73,7 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
 
             // render hooks
             extraClassNames={[
-              stickyHeaderDates ? 'fcnew-sticky' : '',
+              stickyHeaderDates ? 'fcnew-v-sticky' : '',
             ]}
 
             // dimensions

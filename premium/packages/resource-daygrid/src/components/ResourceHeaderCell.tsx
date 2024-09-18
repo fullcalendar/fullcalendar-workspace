@@ -42,7 +42,7 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
               elTag="span"
               elClasses={[
                 'fcnew-col-header-cell-cushion',
-                props.isSticky && 'fcnew-sticky',
+                props.isSticky ? 'fcnew-h-sticky' : '',
               ]}
             />
           </div>

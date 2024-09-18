@@ -49,7 +49,7 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
           <div ref={this.innerElRef}>
             <InnerContent
               elTag="div"
-              elClasses={['fcnew-datagrid-cell-cushion', 'fcnew-sticky']}
+              elClasses={['fcnew-datagrid-cell-cushion', 'fcnew-v-sticky']}
             />
           </div>
         )}

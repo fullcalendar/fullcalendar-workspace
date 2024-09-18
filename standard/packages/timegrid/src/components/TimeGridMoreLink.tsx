@@ -44,7 +44,7 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
         {(InnerContent) => (
           <InnerContent
             elTag="div"
-            elClasses={['fcnew-timegrid-more-link-inner', 'fcnew-sticky']}
+            elClasses={['fcnew-timegrid-more-link-inner', 'fcnew-v-sticky']}
           />
         )}
       </MoreLinkContainer>

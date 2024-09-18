@@ -32,7 +32,7 @@ A VERTICAL event
     min-height: 0; // important for allowing to shrink all the way
   }
 
-  & .fcnew-event-title { // will have fcnew-sticky on it
+  & .fcnew-event-title { // will have fcnew-v-sticky on it
     top: 0;
     bottom: 0;
     max-height: 100%; // clip overflow

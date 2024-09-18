@@ -83,7 +83,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           <Scroller
             horizontal
             hideScrollbars
-            elClassNames={[stickyHeaderDates && 'fcnew-sticky']}
+            elClassNames={[stickyHeaderDates ? 'fcnew-v-sticky' : '']}
             ref={this.headerScrollerRef}
           >
             <DayGridHeader

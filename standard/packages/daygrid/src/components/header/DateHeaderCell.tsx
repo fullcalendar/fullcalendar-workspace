@@ -100,7 +100,7 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
                 elAttrs={navLinkAttrs}
                 elClasses={[
                   'fcnew-col-header-cell-cushion',
-                  props.isSticky && 'fcnew-sticky', // TODO: how to do this???
+                  props.isSticky ? 'fcnew-h-sticky' : '',
                 ]}
               />
             )}

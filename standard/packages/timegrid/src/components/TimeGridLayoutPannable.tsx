@@ -174,7 +174,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
           <div
             className={[
               'fcnew-row', // a "super" row
-              stickyHeaderDates ? 'fcnew-sticky' : '',
+              stickyHeaderDates ? 'fcnew-v-sticky' : '',
             ].join(' ')}
           >
             {/* HEADER / labels

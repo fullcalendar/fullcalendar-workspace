@@ -130,7 +130,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           {options.dayHeaders && (
             <div className={[
               'fcnew-rowgroup',
-              stickyHeaderDates ? 'fcnew-sticky' : '',
+              stickyHeaderDates ? 'fcnew-v-sticky' : '',
             ].join(' ')}>
               {props.headerTiers.map((cells, tierNum) => (
                 <div

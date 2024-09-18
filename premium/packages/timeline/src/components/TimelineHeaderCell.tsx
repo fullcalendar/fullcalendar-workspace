@@ -16,6 +16,7 @@ export interface TimelineHeaderCellProps {
   cell: TimelineHeaderCellData
   todayRange: DateRange
   nowDate: DateMarker
+  isCentered: boolean
   isSticky: boolean
 
   // dimensions
@@ -62,6 +63,8 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
           'fcnew-cell',
           'fcnew-timeline-slot',
           'fcnew-timeline-slot-label',
+          props.isCentered ? 'fcnew-timeline-slot-centered' : '',
+          props.isSticky ? 'fcnew-timeline-slot-sticky' : '',
           cell.isWeekStart ? 'fcnew-timeline-slot-em' : '',
           ...( // TODO: so slot classnames for week/month/bigger. see note above about rowUnit
             cell.rowUnit === 'time' ?
@@ -92,11 +95,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
           <div className="fcnew-timeline-slot-inner" ref={this.innerElRef}>
             <InnerContent
               elTag="a"
-              elClasses={[
-                'fcnew-timeline-slot-cushion',
-                'fcnew-scrollgrid-sync-inner',
-                props.isSticky ? 'fcnew-sticky' : '',
-              ]}
+              elClasses={['fcnew-timeline-slot-cushion']}
               elAttrs={this.buildCellNavLinkAttrs(context, cell.date, cell.rowUnit)}
             />
           </div>
@@ -106,11 +105,18 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
   }
 
   componentDidMount(): void {
+    const { props } = this
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
 
     this.detachSize = watchSize(innerEl, (width, height) => {
-      setRef(this.props.innerWidthRef, width)
-      setRef(this.props.innerHeightRef, height)
+      setRef(props.innerWidthRef, width)
+      setRef(props.innerHeightRef, height)
+
+      // HACK for sticky-centering
+      innerEl.style.left = innerEl.style.right =
+        (props.isCentered && props.isSticky)
+          ? `calc(50% - ${width / 2}px)`
+          : ''
     })
   }
 
