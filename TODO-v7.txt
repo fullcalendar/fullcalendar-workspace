@@ -2,7 +2,6 @@
 FOR beta.1
   test multi-week view too (in examples) !!!!!!!!!!!
     is this also... "the view where it's a year of months, but each month has a title"
-  print-mode for all views!??!!!!???? adaptive plugin???????? esp daygrid
   stickyness!!!!! (fcnew-v-sticky/fcnew-sticky)
     remove StickyScrolling class?
   drag-n-drop
@@ -45,6 +44,7 @@ ensure automated tests for...
   XXX
 
 AFTER beta.1
+  restore print-mode
   implement ResizeObserver fallback
   daygrid
     for event rendering, expose an isStandin flag for if hidden behind multiday
