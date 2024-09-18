@@ -72,13 +72,18 @@ interface TimeGridLayoutPannableState {
   scrollerHeight?: number
   leftScrollbarWidth?: number
   rightScrollbarWidth?: number
+  bottomScrollbarWidth?: number
   axisWidth?: number
-  headerTierHeights?: number[]
+  headerTierHeights: number[]
   allDayHeight?: number
   slatInnerHeight?: number
 }
 
 export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseComponent<TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey>, TimeGridLayoutPannableState> {
+  state: TimeGridLayoutPannableState = {
+    headerTierHeights: [],
+  }
+
   // refs
   private headerLabelInnerWidthRefMap = new RefMap<number, number>(() => { // keyed by tierNum
     afterSize(this.handleAxisWidths)
@@ -203,6 +208,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               ref={this.headerScrollerRef}
             >
               <div style={{
+                boxSizing: 'content-box',
                 width: canvasWidth,
                 paddingLeft: state.leftScrollbarWidth,
                 paddingRight: state.rightScrollbarWidth,
@@ -245,6 +251,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 ref={this.allDayScrollerRef}
               >
                 <div style={{
+                  boxSizing: 'content-box',
                   width: canvasWidth,
                   paddingLeft: state.leftScrollbarWidth,
                   paddingRight: state.rightScrollbarWidth,
@@ -293,7 +300,11 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
           >
             <div
               className='fcnew-rel'
-              style={{ minHeight: slatLiquid ? '100%' : '' }} // TODO: use className for this?
+              style={{
+                boxSizing: 'content-box',
+                minHeight: slatLiquid ? '100%' : '', // TODO: use className for this?
+                paddingBottom: state.bottomScrollbarWidth,
+              }}
             >
               {props.slatMetas.map((slatMeta) => (
                 <div
@@ -329,10 +340,12 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             heightRef={this.handleScrollerHeight}
             leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
             rightScrollbarWidthRef={this.handleRightScrollbarWidth}
+            bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
           >
             <div
               className='fcnew-rel'
               style={{
+                boxSizing: 'content-box',
                 width: canvasWidth,
                 minHeight: slatLiquid ? '100%' : '', // TODO: use className for this?
               }}
@@ -389,7 +402,10 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               // ^NOTE: not a good idea if ever gets left/right border
               ref={this.footScrollerRef}
             >
-              <div style={{ width: canvasWidth }} />
+              <div style={{
+                boxSizing: 'content-box',
+                width: canvasWidth,
+              }} />
             </Scroller>
           </div>
         )}
@@ -431,6 +447,10 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     this.setState({ rightScrollbarWidth })
   }
 
+  private handleBottomScrollbarWidth = (bottomScrollbarWidth: number) => {
+    this.setState({ bottomScrollbarWidth })
+  }
+
   private handleHeaderHeights = () => {
     const headerLabelInnerHeightMap = this.headerLabelInnerHeightRefMap.current
     const headerMainInnerHeightMap = this.headerMainInnerHeightRefMap.current
@@ -441,7 +461,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     }
 
     const { headerTierHeights } = this.state
-    if (!headerTierHeights || !isArraysEqual(headerTierHeights, heights)) {
+    if (!isArraysEqual(headerTierHeights, heights)) {
       this.setState({ headerTierHeights: heights })
     }
   }

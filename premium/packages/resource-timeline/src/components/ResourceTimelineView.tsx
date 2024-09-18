@@ -362,7 +362,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           boxSizing: 'content-box',
                           width: spreadsheetCanvasWidth,
                           minHeight: '100%', // TODO: make this a class?
-                          paddingBottom: state.spreadsheetBottomScrollbarWidth - state.timeBottomScrollbarWidth,
+                          paddingBottom: state.timeBottomScrollbarWidth - state.spreadsheetBottomScrollbarWidth,
                         }}
                       >
                         <div
@@ -460,8 +460,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     {/* spreadsheet FOOTER scrollbar
                     ---------------------------------------------------------------------------- */}
                     <Scroller
-                      ref={this.spreadsheetFooterScrollerRef}
                       horizontal
+                      ref={this.spreadsheetFooterScrollerRef}
                       bottomScrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
                     >
                       <div style={{ width: spreadsheetCanvasWidth }} />

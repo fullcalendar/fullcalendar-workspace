@@ -47,6 +47,8 @@ sticky footer scrollbars
 resource-timeline,
   slight slat misalignment with header cells when header cells are half as frequent
 indent for timeline-column-grouping is wrong
+dayGridMonth with horizontal scrolling (dayMinWidth), header doesn't have top border
+test resource-timeline "spreadsheet FOOTER scrollbar"
 
 ## 6.1.15 (2024-07-12)
 
