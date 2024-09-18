@@ -1,0 +1,79 @@
+
+FOR beta.1
+  test multi-week view too (in examples) !!!!!!!!!!!
+    is this also... "the view where it's a year of months, but each month has a title"
+  print-mode for all views!??!!!!???? adaptive plugin???????? esp daygrid
+  stickyness!!!!! (fcnew-v-sticky/fcnew-sticky)
+    remove StickyScrolling class?
+  drag-n-drop
+    get working!
+    test external drag-n-drop
+  test for ALL views
+    height:auto
+      and sticky footer scrollbars (daygrid/timegrid/timeline/resource-timeline)
+    theming
+      i can write table-inspired css utils however i want, with borders
+  daygrid
+    disabled-cell styling on monthview is broken
+    with horizontal scrolling (dayMinWidth),
+      header doesn't have top border
+    test how month view balances week heights
+    test no "final squished row"
+      https://github.com/fullcalendar/fullcalendar/issues/7162
+  timegrid
+    test hiding all-day slot (for pannable layout too)
+  timeline
+    slight slat misalignment with header cells when header cells are half as frequent
+      (recreated in resource timeline.. in regular timeline too?)
+  resource-timeline
+    indent for timeline-column-grouping.html is wrong (related to GroupCells accidentally requiring it)
+    need margin below events
+    setting where events fill entire height of row
+    test whether the "super" header cells obeys the minimum indent
+    test multiple header rows, all combos
+    test business hours per resource VS whole
+    test rows expanding to fill height (but not groups)
+      ensure no awkward behavior when contracting parent-resources
+  list-view
+    for left-and-right, don't use floating, use flexbox
+  multi-month
+    ensure initially scrolls to current day (did i abuse handleScrollRequest?)
+  react/vue/angular connectors
+    pause size-handling until all slots are rendered
+
+ensure automated tests for...
+  XXX
+
+AFTER beta.1
+  implement ResizeObserver fallback
+  daygrid
+    for event rendering, expose an isStandin flag for if hidden behind multiday
+  timeline
+    previously, Timeline's hit system would always return slat left/right, not snap. matters?
+  resource-timeline
+    needed?- ability to freeze resizing while resizing columns or resource-area
+  hit-system
+    only query DOM element for handlers like dayClick at very end
+  web-component
+    remove `shadow` attribute
+  dev cleanliness
+    remove unused css mixins
+  revisit these tickets
+    "Maximum update depth exceeded" error after resizing many times in Chrome --- reemerged?
+      https://github.com/fullcalendar/fullcalendar/issues/5606
+  write tests
+    percentage-based resource-timeline spreadsheet-column resizing
+
+CHANGELOG
+  exports
+    DayTable no longer exposed from '@fullcalendar/daygrid/internal'
+    DayGridView ('@fullcalendar/daygrid/internal') renamed to DayGridView
+    DayTimeCols no longer exposed from '@fullcalendar/timegrid/internal'
+    DayTimeColsView ('@fullcalendar/timegrid/internal') renamed to TimeGridView
+  events & a11y
+    Now each event element has stable position in time based on start-date
+      in effect: strictOrder affects positioning but does not affect DOM order
+  minimum browser support
+    supports ?? operator -- we do this a bunch now
+  updateSize deprecation
+    and windowResize event is no longer fired
