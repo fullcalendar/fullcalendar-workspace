@@ -105,7 +105,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
     if (options.fixedMirrorParent) {
       mirror.parentNode = options.fixedMirrorParent
     } else {
-      mirror.parentNode = elementClosest(origTarget, '.fc')
+      mirror.parentNode = elementClosest(origTarget, '.fcnew')
     }
 
     mirror.revertDuration = options.dragRevertDuration
