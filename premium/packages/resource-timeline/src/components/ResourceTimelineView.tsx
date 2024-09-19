@@ -382,7 +382,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                 key={colIndex}
                                 className='fcnew-roworigin'
                                 style={{
-                                  flexBasis: 'auto', // !!!
                                   width: spreadsheetColWidths[colIndex],
                                 }}
                               >
@@ -414,7 +413,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           <div
                             className='fcnew-roworigin'
                             style={{
-                              flexBasis: 'auto', // !!!
                               width: spreadsheetResourceWidth
                             }}
                           >
@@ -438,7 +436,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                     isExpanded={resourceLayout.isExpanded}
                                     colSpecs={resourceColSpecs}
                                     innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(resource)}
-                                    colWidths={spreadsheetColWidths}
+                                    colWidths={spreadsheetColWidths.slice(flatGroupColLayouts.length) /* !!! */}
                                   />
                                 </div>
                               )

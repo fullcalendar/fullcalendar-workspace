@@ -1,4 +1,4 @@
-import { afterSize, BaseComponent, RefMap, setRef, ViewContext } from '@fullcalendar/core/internal'
+import { afterSize, BaseComponent, isArraysEqual, RefMap, setRef, ViewContext } from '@fullcalendar/core/internal'
 import { Fragment, Ref, createElement } from '@fullcalendar/core/preact'
 import { Resource, ColSpec, getPublicId } from '@fullcalendar/resource/internal'
 import { ResourceCell } from './ResourceCell.js'
@@ -67,3 +67,7 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
     }
   }
 }
+
+ResourceCells.addPropsEquality({
+  colWidths: isArraysEqual,
+})

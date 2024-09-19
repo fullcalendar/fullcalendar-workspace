@@ -62,7 +62,6 @@ flexBasis:
 minWidth:
 minHeight:
 
-flex-grow: 0;
 flex-grow: 1;
 min-width: 0;
 min-height: 0;
@@ -95,7 +94,7 @@ min-height: 0;
 
 .fcnew-cell-fixedsize { // TODO: instead of negating, have fcnew-cell-eq instead?
   flex-basis: auto;
-  flex-grow: 0;
+  flex-grow: 0; // -- this is the default, which means users of this are overriding!!!
 }
 
 // theme (TODO: rtl)
