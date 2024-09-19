@@ -154,7 +154,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     /* table settings */
 
-    let verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
+    let isHeightAuto = getIsHeightAuto(options) // TODO: in future, forPrint should always imply isHeightAuto
+    let verticalScrolling = !props.forPrint && !isHeightAuto
     let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
@@ -348,10 +349,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       hideScrollbars
                       elClassNames={[
                         'fcnew-rowgroup',
-                        'fcnew-flex-grow',
+                        isHeightAuto ? '' : 'fcnew-flex-grow',
                       ]}
                       elStyle={{
-                        flexBasis: 0, // TODO: make className for this somehow
+                        flexBasis: isHeightAuto ? '' : 0, // TODO: make className for this somehow
                         minHeight: 0, // needed?
                       }}
                       ref={this.spreadsheetBodyScrollerRef}
@@ -531,9 +532,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     <Scroller
                       vertical={verticalScrolling}
                       horizontal
-                      elClassNames={['fcnew-rowgroup', 'fcnew-flex-grow']}
+                      elClassNames={[
+                        'fcnew-rowgroup',
+                        isHeightAuto ? '' : 'fcnew-flex-grow',
+                      ]}
                       elStyle={{
-                        flexBasis: 0, // TODO: make className for this somehow
+                        flexBasis: isHeightAuto ? '' : 0, // TODO: make className for this somehow
                         minHeight: 0, // needed?
                       }}
                       ref={this.timeBodyScrollerRef}

@@ -17,7 +17,6 @@ import {
   watchHeight,
   guid,
   afterSize,
-  getIsHeightAuto,
 } from '@fullcalendar/core/internal'
 import {
   VNode,
@@ -43,6 +42,7 @@ export interface DayGridRowProps {
   cellGroup?: boolean
   className?: string // TODO: better API for this
   forceVSpacing?: boolean
+  liquidHeight?: boolean
 
   // content
   fgEventSegs: TableSeg[]
@@ -96,9 +96,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
 
     const weekDate = props.cells[0].date
     const colCnt = props.cells.length
-    const fgLiquidHeight =
-      (props.dayMaxEvents === true || props.dayMaxEventRows === true) &&
-      !getIsHeightAuto(options)
+    const rowLiquidHeight = props.liquidHeight
+    const fgLiquidHeight = props.dayMaxEvents === true || props.dayMaxEventRows === true
 
     // TODO: memoize? sort all types of segs?
     const fgEventSegs = sortEventSegs(props.fgEventSegs, options.eventOrder) as TableSeg[]
@@ -135,12 +134,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
         className={[
           props.cellGroup ? 'fcnew-cellgroup' : 'fcnew-row',
           'fcnew-daygrid-row',
-          fgLiquidHeight ? 'fcnew-daygrid-row-liquid' : '',
           props.forceVSpacing ? 'fcnew-daygrid-row-vspacious' : '',
           props.className || '',
         ].join(' ')}
         style={{
           minHeight: props.minHeight,
+          flexBasis: rowLiquidHeight ? 0 : '',
         }}
         ref={this.handleRootEl}
       >

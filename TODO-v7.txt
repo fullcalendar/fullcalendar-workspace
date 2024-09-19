@@ -4,6 +4,7 @@ FOR beta.1
     height:auto
       and sticky footer scrollbars (daygrid/timegrid/timeline/resource-timeline)
     stickyHeaderDates
+      non-pannable timegrid doesn't work because header+all-day-section have tight parent
     stickyFooterScrollbars
     axis as top left (timegrid w/ hscroll, resource-timeline) doesn't have correct v-centering
     RTL
@@ -18,6 +19,8 @@ FOR beta.1
     test how month view balances week heights
     test no "final squished row"
       https://github.com/fullcalendar/fullcalendar/issues/7162
+    multiweek
+      drag-n-drop resets scroll
   timegrid
     need margin below events in ALL-DAY section
     need RIGHT margin for timed events
@@ -27,6 +30,7 @@ FOR beta.1
     slight slat misalignment with header cells when header cells are half as frequent
       (recreated in resource timeline.. in regular timeline too?)
   resource-timeline
+    there's a double-border at bottom of datagrid
     indent for timeline-column-grouping.html is wrong (related to GroupCells accidentally requiring it)
     setting where events fill entire height of row
     test sticky GroupCell content (vertically sticky)
