@@ -50,7 +50,7 @@ FOR beta.1
     pause size-handling until all slots are rendered
 
 ensure automated tests for...
-  XXX
+  positioning of sticky headers in all views. list view sticky subheaders too
 
 AFTER beta.1
   restore print-mode

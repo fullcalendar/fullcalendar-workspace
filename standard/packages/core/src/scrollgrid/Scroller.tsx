@@ -47,8 +47,8 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
         ].join(' ')}
         style={{
           ...props.elStyle,
-          overflowX: props.horizontal ? 'auto' : 'hidden',
-          overflowY: props.vertical ? 'auto' : 'hidden',
+          overflowX: props.horizontal ? 'auto' : '',
+          overflowY: props.vertical ? 'auto' : '',
         }}
       >{props.children}</div>
     )
