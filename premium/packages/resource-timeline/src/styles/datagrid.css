@@ -41,16 +41,20 @@
   & .fcnew-datagrid-cell-cushion {
     padding: 8px;
     white-space: nowrap;
-    overflow: hidden; // problem for col resizer :(
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    // children: .fcnew-icons/.fcnew-datagrid-cell-main
   }
 
   // expander icons
 
-  & .fcnew-icons > .fcnew-icon { // TODO: better selector!
-    width: 1em; /* ensure constant width, esp for empty icons */
+  & .fcnew-icons {
+    display: flex;
+    align-items: center;
   }
 
-  & .fcnew-datagrid-expander {
+  & .fcnew-datagrid-expander { // a .fc-icon
     cursor: pointer;
     opacity: 0.65;
   }
