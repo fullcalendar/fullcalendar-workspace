@@ -22,7 +22,6 @@ FOR beta.1
     in TimeGridLayoutNormal, not nice how axis text isn't selectable
       (related to how now-indicator is rendered in axis)
   resource-timeline
-    test business hours per resource VS whole
     align expander/indent icons with flexbox
   react/vue/angular connectors
     pause size-handling until all slots are rendered
