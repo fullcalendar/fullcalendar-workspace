@@ -330,93 +330,89 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
           </Scroller>
           {/* SLATS / main (scroller)
           ---------------------------------------------------------------------------------------*/}
-          <Scroller
-            vertical={verticalScrolling}
-            horizontal
-            hideScrollbars={stickyFooterScrollbar /* also means height:auto, so won't need vertical scrollbars anyway */}
-            elClassNames={['fcnew-cell']} // a "super" cell
-            // ^NOTE: not a good idea if ever gets left/right border
-            ref={this.mainScrollerRef}
-            widthRef={this.handleScrollerWidth}
-            heightRef={this.handleScrollerHeight}
-            leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
-            rightScrollbarWidthRef={this.handleRightScrollbarWidth}
-            bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
+          <div
+            className='fcnew-cell fcnew-flex-column' // a "super" cell
+            style={{ minWidth: 0 }} // TODO: className!
           >
-            <div
-              className='fcnew-rel'
-              style={{
-                boxSizing: 'content-box',
-                width: canvasWidth,
-                minHeight: slatLiquid ? '100%' : '', // TODO: use className for this?
-              }}
-            >
-              {props.slatMetas.map((slatMeta) => (
-                <div
-                  key={slatMeta.key}
-                  className={getSlatRowClassName(slatMeta)}
-                  style={{ height: slatStyleHeight }}
-                >
-                  <TimeGridSlatLane // .fcnew-cell
-                    {...slatMeta}
-                    innerHeightRef={slatMainInnerHeightRefMap.createRef(slatMeta.key)}
-                  />
-                </div>
-              ))}
-              <TimeGridCols // .fcnew-cellgroup.fcnew-absfill
-                dateProfile={props.dateProfile}
-                nowDate={props.nowDate}
-                todayRange={props.todayRange}
-                cells={props.cells}
-                slatCnt={slatCnt}
-                forPrint={props.forPrint}
-                isHitComboAllowed={props.isHitComboAllowed}
-                className='fcnew-absfill'
-
-                // content
-                fgEventSegsByCol={props.fgEventSegsByCol}
-                bgEventSegsByCol={props.bgEventSegsByCol}
-                businessHourSegsByCol={props.businessHourSegsByCol}
-                nowIndicatorSegsByCol={props.nowIndicatorSegsByCol}
-                dateSelectionSegsByCol={props.dateSelectionSegsByCol}
-                eventDragByCol={props.eventDragByCol}
-                eventResizeByCol={props.eventResizeByCol}
-                eventSelection={props.eventSelection}
-
-                // dimensions
-                colWidth={colWidth}
-                slatHeight={slatHeight}
-              />
-            </div>
-          </Scroller>
-        </div>
-        {Boolean(stickyFooterScrollbar) && (
-          <div className='fcnew-row fcnew-sticky-footer'>
-            {/* axis */}
-            <div // TODO: make this a grey color to match the scrollbars
-              className='fcnew-rowheader'
-              style={{ width: axisWidth }}
-            />
-            {/* main */}
             <Scroller
+              vertical={verticalScrolling}
               horizontal
-              elClassNames={['fcnew-cell']}
-              elStyle={{
-                marginTop: '-1px', // HACK
-              }}
-              // ^NOTE: not a good idea if ever gets left/right border
-              ref={this.footScrollerRef}
+              hideScrollbars={stickyFooterScrollbar /* also means height:auto, so won't need vertical scrollbars anyway */}
+              elClassNames={['fcnew-flex-grow']}
+              ref={this.mainScrollerRef}
+              widthRef={this.handleScrollerWidth}
+              heightRef={this.handleScrollerHeight}
+              leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
+              rightScrollbarWidthRef={this.handleRightScrollbarWidth}
+              bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
             >
               <div
+                className='fcnew-rel'
                 style={{
                   boxSizing: 'content-box',
                   width: canvasWidth,
-                  height: '1px', // HACK
+                  minHeight: slatLiquid ? '100%' : '', // TODO: use className for this?
                 }}
-              />
+              >
+                {props.slatMetas.map((slatMeta) => (
+                  <div
+                    key={slatMeta.key}
+                    className={getSlatRowClassName(slatMeta)}
+                    style={{ height: slatStyleHeight }}
+                  >
+                    <TimeGridSlatLane // .fcnew-cell
+                      {...slatMeta}
+                      innerHeightRef={slatMainInnerHeightRefMap.createRef(slatMeta.key)}
+                    />
+                  </div>
+                ))}
+                <TimeGridCols // .fcnew-cellgroup.fcnew-absfill
+                  dateProfile={props.dateProfile}
+                  nowDate={props.nowDate}
+                  todayRange={props.todayRange}
+                  cells={props.cells}
+                  slatCnt={slatCnt}
+                  forPrint={props.forPrint}
+                  isHitComboAllowed={props.isHitComboAllowed}
+                  className='fcnew-absfill'
+
+                  // content
+                  fgEventSegsByCol={props.fgEventSegsByCol}
+                  bgEventSegsByCol={props.bgEventSegsByCol}
+                  businessHourSegsByCol={props.businessHourSegsByCol}
+                  nowIndicatorSegsByCol={props.nowIndicatorSegsByCol}
+                  dateSelectionSegsByCol={props.dateSelectionSegsByCol}
+                  eventDragByCol={props.eventDragByCol}
+                  eventResizeByCol={props.eventResizeByCol}
+                  eventSelection={props.eventSelection}
+
+                  // dimensions
+                  colWidth={colWidth}
+                  slatHeight={slatHeight}
+                />
+              </div>
             </Scroller>
+            {Boolean(stickyFooterScrollbar) && (
+              <Scroller
+                horizontal
+                elClassNames={['fcnew-sticky-footer']}
+                elStyle={{
+                  marginTop: '-1px', // HACK
+                }}
+                // ^NOTE: not a good idea if ever gets left/right border
+                ref={this.footScrollerRef}
+              >
+                <div
+                  style={{
+                    boxSizing: 'content-box',
+                    width: canvasWidth,
+                    height: '1px', // HACK
+                  }}
+                />
+              </Scroller>
+            )}
           </div>
-        )}
+        </div>
       </Fragment>
     )
   }

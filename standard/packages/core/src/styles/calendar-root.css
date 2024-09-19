@@ -150,8 +150,6 @@
 .fcnew-sticky-footer {
   position: sticky;
   bottom: 0;
-  // background: var(--fcnew-page-bg-color); --- NOTE: all transparent parts should color themselves grey
-  // or maybe do a pointer-events:none trick?
   z-index: 999; // TODO: what was it before?
 }
 

@@ -12,11 +12,11 @@ FOR beta.1
       rethink fcnew-cell-fixedwidth or whatever
     RTL
     stop doing "frame" elements for measurements, and instead use just "cushion"
+      how would that work for getting a scroller's "clientWidth/clientHeight"?
   daygrid
     in "timeline-column-grouping.html" example, go to "month" view, hover over "event 3"
       and horizontal scrollbars appear quickly
   timegrid
-    change how floating bottom scrollbar works
     in TimeGridLayoutNormal, not nice how axis text isn't selectable
       (related to how now-indicator is rendered in axis)
   timeline
