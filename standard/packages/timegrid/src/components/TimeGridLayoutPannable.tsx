@@ -333,6 +333,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
           <Scroller
             vertical={verticalScrolling}
             horizontal
+            hideScrollbars={stickyFooterScrollbar /* also means height:auto, so won't need vertical scrollbars anyway */}
             elClassNames={['fcnew-cell']} // a "super" cell
             // ^NOTE: not a good idea if ever gets left/right border
             ref={this.mainScrollerRef}
@@ -389,23 +390,30 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             </div>
           </Scroller>
         </div>
-        {stickyFooterScrollbar && (
-          <div className='fcnew-row'>
+        {Boolean(stickyFooterScrollbar) && (
+          <div className='fcnew-row fcnew-sticky-footer'>
             {/* axis */}
-            <div
+            <div // TODO: make this a grey color to match the scrollbars
               className='fcnew-rowheader'
               style={{ width: axisWidth }}
             />
             {/* main */}
             <Scroller
+              horizontal
               elClassNames={['fcnew-cell']}
+              elStyle={{
+                marginTop: '-1px', // HACK
+              }}
               // ^NOTE: not a good idea if ever gets left/right border
               ref={this.footScrollerRef}
             >
-              <div style={{
-                boxSizing: 'content-box',
-                width: canvasWidth,
-              }} />
+              <div
+                style={{
+                  boxSizing: 'content-box',
+                  width: canvasWidth,
+                  height: '1px', // HACK
+                }}
+              />
             </Scroller>
           </div>
         )}

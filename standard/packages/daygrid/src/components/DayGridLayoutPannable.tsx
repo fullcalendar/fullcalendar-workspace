@@ -64,6 +64,7 @@ interface DayGridViewState {
 export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseComponent<DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey>, DayGridViewState> {
   headerScrollerRef = createRef<Scroller>()
   bodyScrollerRef = createRef<Scroller>()
+  footerScrollerRef = createRef<Scroller>()
   syncedScroller: ScrollerSyncerInterface
 
   render() {
@@ -100,8 +101,8 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           </Scroller>
         )}
         <Scroller
-          horizontal
           vertical={verticalScrollbars}
+          horizontal
           hideScrollbars={stickyFooterScrollbar}
           widthRef={this.handleWidth}
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
@@ -134,8 +135,21 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           />
         </Scroller>
         {Boolean(stickyFooterScrollbar) && (
-          <Scroller horizontal>
-            <div style={{ width: canvasWidth }} />
+          <Scroller
+            ref={this.footerScrollerRef}
+            horizontal
+            elClassNames={['fcnew-sticky-footer']}
+            elStyle={{
+              marginTop: '-1px', // HACK
+            }}
+          >
+            <div
+              style={{
+                boxSizing: 'content-box',
+                width: canvasWidth,
+                height: '1px', // HACK
+              }}
+            />
           </Scroller>
         )}
       </Fragment>
@@ -187,6 +201,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
     this.syncedScroller.handleChildren([
       this.headerScrollerRef.current,
       this.bodyScrollerRef.current,
+      this.footerScrollerRef.current,
     ], isRtl)
   }
 }

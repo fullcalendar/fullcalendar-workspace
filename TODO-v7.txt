@@ -1,7 +1,6 @@
 
 FOR beta.1
   test for ALL views
-    stickyFooterScrollbars
     axis as top left (timegrid w/ hscroll, resource-timeline) doesn't have correct v-centering
     redo cell borders
       we have major/minor mixed up
@@ -10,34 +9,20 @@ FOR beta.1
         header doesn't have top border
       theming
         i can write table-inspired css utils however i want, with borders
+      resource-timeline: there's a double-border at bottom of datagrid
     RTL
-  daygrid
-    multiweek
-      bug: drag-n-drop resets scroll
   timegrid
     need RIGHT margin for timed events
     test hiding all-day slot (for pannable layout too)
   timeline
     need bottom margins *between* events
-    slight slat misalignment with header cells when header cells are half as frequent
-      (recreated in resource timeline.. in regular timeline too?)
   resource-timeline
-    there's a double-border at bottom of datagrid
     indent for timeline-column-grouping.html is wrong (related to GroupCells accidentally requiring it)
-    setting where events fill entire height of row
-    test sticky GroupCell content (vertically sticky)
     test whether the "super" header cells obeys the minimum indent
     test multiple header rows, all combos
     test business hours per resource VS whole
     test rows expanding to fill height (but not groups)
       ensure no awkward behavior when contracting parent-resources
-    for syncing heights, is row-height off-by-one because inner heights don't include border?
-    when DnD fits multiple tiers of events on one resource and expands height, there's a flicker
-      TODO: prevent multiple passes of height-watching?
-  list-view
-    for left-and-right, don't use floating, use flexbox
-  multi-month
-    ensure initially scrolls to current day (did i abuse handleScrollRequest?)
   react/vue/angular connectors
     pause size-handling until all slots are rendered
 
@@ -48,14 +33,24 @@ ensure automated tests for...
 AFTER beta.1
   restore print-mode
   implement ResizeObserver fallback
+  slatline alignment bugs
+    in daygrid (esp with sticky header, or horizontal scrolling?)
+    timeline: with header cells when header cells are half as frequent
+      (recreated in resource timeline.. in regular timeline too?)
   initial-scroll for views with complex rendering is wrong
-    multiweek (uses DayGridLayout/dayGridYear-view), (maybe multimonth too)
+    multiweek (uses DayGridLayout/dayGridYear-view), (and multimonth too?)
   daygrid
     for event rendering, expose an isStandin flag for if hidden behind multiday
+    multiweek bug: drag-n-drop resets scroll
   timeline
     previously, Timeline's hit system would always return slat left/right, not snap. matters?
   resource-timeline
     needed?- ability to freeze resizing while resizing columns or resource-area
+    for syncing heights, is row-height off-by-one because inner heights don't include border?
+    when DnD fits multiple tiers of events on one resource and expands height, there's a flicker
+      TODO: prevent multiple passes of height-watching?
+  list-view
+    for left-and-right, don't use floating, use flexbox
   hit-system
     only query DOM element for handlers like dayClick at very end
   web-component

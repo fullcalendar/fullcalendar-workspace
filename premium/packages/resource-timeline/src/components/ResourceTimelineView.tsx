@@ -532,6 +532,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     <Scroller
                       vertical={verticalScrolling}
                       horizontal
+                      hideScrollbars={stickyFooterScrollbar}
                       elClassNames={[
                         'fcnew-rowgroup',
                         isHeightAuto ? '' : 'fcnew-flex-grow',
@@ -651,10 +652,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       <Scroller
                         ref={this.timeFooterScrollerRef}
                         horizontal
+                        elClassNames={['fcnew-sticky-footer']}
+                        elStyle={{
+                          marginTop: '-1px', // HACK
+                        }}
                       >
                         <div style={{
-                          width: timeCanvasWidth,
                           boxSizing: 'content-box',
+                          width: timeCanvasWidth,
+                          height: '1px', // HACK
                         }}/>
                       </Scroller>
                     )}

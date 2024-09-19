@@ -25,8 +25,8 @@
   border: 1px solid var(--fcnew-border-color);
 }
 
-.fcnew-view-harness-aspectratio {
-  position: relative;
+.fcnew-view-harness {
+  position: relative; // for aspectratio AND for being origin for premium-message at bottom-left corner
 }
 
 .fcnew-view-harness-aspectratio > .fcnew-view {
@@ -145,6 +145,13 @@
   position: sticky;
   top: 0;
   background: var(--fcnew-page-bg-color);
+  z-index: 999; // TODO: what was it before?
+}
+.fcnew-sticky-footer {
+  position: sticky;
+  bottom: 0;
+  // background: var(--fcnew-page-bg-color); --- NOTE: all transparent parts should color themselves grey
+  // or maybe do a pointer-events:none trick?
   z-index: 999; // TODO: what was it before?
 }
 
