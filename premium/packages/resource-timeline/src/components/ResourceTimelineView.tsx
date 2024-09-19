@@ -303,7 +303,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       hideScrollbars
                       elClassNames={[
                         'fcnew-rowgroup',
-                        stickyHeaderDates ? 'fcnew-v-sticky' : '',
+                        stickyHeaderDates ? 'fcnew-sticky-header' : '',
                       ]}
                       ref={this.spreadsheetHeaderScrollerRef}
                     >
@@ -485,7 +485,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       hideScrollbars
                       elClassNames={[
                         'fcnew-rowgroup',
-                        stickyHeaderDates ? 'fcnew-v-sticky' : '',
+                        stickyHeaderDates ? 'fcnew-sticky-header' : '',
                       ]}
                     >
                       <div

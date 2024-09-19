@@ -61,7 +61,7 @@
   margin-bottom: 1px; // match space below fcnew-timegrid-event
 }
 
-.fcnew-timegrid-more-link-inner { // has fcnew-v-sticky
+.fcnew-timegrid-more-link-inner { // has fcnew-v-sticky... really?
   padding: 3px 2px;
   top: 0;
 }

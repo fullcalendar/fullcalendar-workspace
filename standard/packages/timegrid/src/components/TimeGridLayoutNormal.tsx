@@ -124,7 +124,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           <div
             className={[
               'fcnew-rowgroup',
-              stickyHeaderDates ? 'fcnew-v-sticky' : '',
+              stickyHeaderDates ? 'fcnew-sticky-header' : '',
             ].join(' ')}
             style={{
               paddingLeft: state.leftScrollbarWidth,

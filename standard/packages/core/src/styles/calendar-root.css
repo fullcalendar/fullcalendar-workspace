@@ -141,6 +141,12 @@
   top: 0;
   bottom: 0;
 }
+.fcnew-sticky-header {
+  position: sticky;
+  top: 0;
+  background: var(--fcnew-page-bg-color);
+  z-index: 999; // TODO: what was it before?
+}
 
 .fcnew-h-sticky {
   position: sticky;

@@ -1,13 +1,8 @@
 
 FOR beta.1
   test for ALL views
-    height:auto
-      and sticky footer scrollbars (daygrid/timegrid/timeline/resource-timeline)
-    stickyHeaderDates
-      ALL of the views need a bg color somehow
     stickyFooterScrollbars
     axis as top left (timegrid w/ hscroll, resource-timeline) doesn't have correct v-centering
-    RTL
     redo cell borders
       we have major/minor mixed up
       should we always assume solid border style?
@@ -15,14 +10,11 @@ FOR beta.1
         header doesn't have top border
       theming
         i can write table-inspired css utils however i want, with borders
+    RTL
   daygrid
-    test how month view balances week heights
-    test no "final squished row"
-      https://github.com/fullcalendar/fullcalendar/issues/7162
     multiweek
-      drag-n-drop resets scroll
+      bug: drag-n-drop resets scroll
   timegrid
-    need margin below events in ALL-DAY section
     need RIGHT margin for timed events
     test hiding all-day slot (for pannable layout too)
   timeline
@@ -51,6 +43,7 @@ FOR beta.1
 
 ensure automated tests for...
   positioning of sticky headers in all views. list view sticky subheaders too
+  resource-timeline indent works
 
 AFTER beta.1
   restore print-mode

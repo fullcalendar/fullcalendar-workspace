@@ -116,7 +116,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 hideScrollbars
                 elClassNames={[
                   'fcnew-rowgroup',
-                  stickyHeaderDates ? 'fcnew-v-sticky' : '',
+                  stickyHeaderDates ? 'fcnew-sticky-header' : '',
                 ]}
                 ref={this.headerScrollerRef}
               >
