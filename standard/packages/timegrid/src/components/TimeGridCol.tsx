@@ -79,6 +79,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       <DayCellContainer
         elTag="div"
         elClasses={[
+          'fcnew-flex-column',
           'fcnew-cell',
           'fcnew-timegrid-col',
           ...(props.extraClassNames || []),
@@ -100,21 +101,23 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {this.renderFillSegs(props.businessHourSegs, 'non-business')}
             {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
             {this.renderFillSegs(props.dateSelectionSegs, 'highlight')}
-            {this.renderFgSegs(
-              sortedFgSegs,
-              interactionAffectedInstances,
-              false,
-              false,
-              false,
-            )}
-            {this.renderFgSegs(
-              mirrorSegs as TimeColsSeg[],
-              {},
-              Boolean(props.eventDrag),
-              Boolean(props.eventResize),
-              Boolean(isSelectMirror),
-              'mirror',
-            )}
+            <div className='fcnew-flex-grow fcnew-rel fcnew-timegrid-col-fg'>
+              {this.renderFgSegs(
+                sortedFgSegs,
+                interactionAffectedInstances,
+                false,
+                false,
+                false,
+              )}
+              {this.renderFgSegs(
+                mirrorSegs as TimeColsSeg[],
+                {},
+                Boolean(props.eventDrag),
+                Boolean(props.eventResize),
+                Boolean(isSelectMirror),
+                'mirror',
+              )}
+            </div>
             {this.renderNowIndicator(props.nowIndicatorSegs)}
             {hasCustomDayCellContent(options) && (
               <InnerContent
