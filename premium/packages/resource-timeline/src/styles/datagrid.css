@@ -5,7 +5,8 @@
 
   & .fcnew-header-cell { // weird name
     display: flex;
-    align-items: center; // vertical align
+    flex-direction: column;
+    justify-content: center; // vertical align
   }
 
   & .fcnew-datagrid-cell-resizer {

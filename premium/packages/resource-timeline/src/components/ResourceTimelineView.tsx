@@ -298,49 +298,51 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
                     {/* spreadsheet HEADER
                     ---------------------------------------------------------------------------- */}
-                    <Scroller
-                      horizontal
-                      hideScrollbars
-                      elClassNames={[
+                    <div
+                      className={[
                         'fcnew-rowgroup',
                         stickyHeaderDates ? 'fcnew-sticky-header' : '',
-                      ]}
-                      ref={this.spreadsheetHeaderScrollerRef}
+                      ].join(' ')}
                     >
-                      <div
-                        style={{ width: spreadsheetCanvasWidth }}
+                      {Boolean(superHeaderRendering) && (
+                        <div
+                          role="row"
+                          className="fcnew-row"
+                          style={{
+                            height: headerHeights.get(true), // true means superheader
+                          }}
+                        >
+                          <SuperHeaderCell
+                            renderHooks={superHeaderRendering}
+                            indent={hasNesting}
+                            innerHeightRef={this.headerRowInnerHeightMap.createRef(true)}
+                          />
+                        </div>
+                      )}
+                      <Scroller
+                        horizontal
+                        hideScrollbars
+                        elClassNames={['fcnew-rowgroup']}
+                        ref={this.spreadsheetHeaderScrollerRef}
                       >
-                        {Boolean(superHeaderRendering) && (
-                          <div
-                            role="row"
-                            className="fcnew-row"
-                            style={{
-                              height: headerHeights.get(true), // true means superheader
-                            }}
-                          >
-                            <SuperHeaderCell
-                              renderHooks={superHeaderRendering}
-                              indent={hasNesting}
-                              innerHeightRef={this.headerRowInnerHeightMap.createRef(true)}
-                            />
-                          </div>
-                        )}
-                        <HeaderRow
-                          colSpecs={colSpecs}
-                          colWidths={spreadsheetColWidths}
-                          indent={hasNesting}
+                        <div style={{ width: spreadsheetCanvasWidth }}>
+                          <HeaderRow
+                            colSpecs={colSpecs}
+                            colWidths={spreadsheetColWidths}
+                            indent={hasNesting}
 
-                          // refs
-                          innerHeightRef={this.headerRowInnerHeightMap.createRef(false)}
+                            // refs
+                            innerHeightRef={this.headerRowInnerHeightMap.createRef(false)}
 
-                          // dimension
-                          height={headerHeights.get(false) /* false means normalheader */}
+                            // dimension
+                            height={headerHeights.get(false) /* false means normalheader */}
 
-                          // handlers
-                          onColWidthOverrides={this.handleColWidthOverrides}
-                        />
-                      </div>
-                    </Scroller>
+                            // handlers
+                            onColWidthOverrides={this.handleColWidthOverrides}
+                          />
+                        </div>
+                      </Scroller>
+                    </div>
 
                     {/* spreadsheet BODY
                     ---------------------------------------------------------------------------- */}
@@ -379,7 +381,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                               <div
                                 key={colIndex}
                                 className='fcnew-roworigin'
-                                style={{ width: spreadsheetColWidths[colIndex] }}
+                                style={{
+                                  flexBasis: 'auto', // !!!
+                                  width: spreadsheetColWidths[colIndex],
+                                }}
                               >
                                 {groupColLayouts.map((groupCellLayout) => {
                                   const group = groupCellLayout.entity
@@ -408,7 +413,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           {/* BADDD: this should be within something with {height:bodyCanvasHeight} */}
                           <div
                             className='fcnew-roworigin'
-                            style={{ width: spreadsheetResourceWidth }}
+                            style={{
+                              flexBasis: 'auto', // !!!
+                              width: spreadsheetResourceWidth
+                            }}
                           >
                             {flatResourceLayouts.map((resourceLayout) => {
                               const resource = resourceLayout.entity
@@ -464,10 +472,20 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     ---------------------------------------------------------------------------- */}
                     <Scroller
                       horizontal
+                      elClassNames={[
+                        stickyFooterScrollbar ? 'fcnew-sticky-footer' : '',
+                      ]}
+                      elStyle={{
+                        marginTop: '-1px', // HACK
+                      }}
                       ref={this.spreadsheetFooterScrollerRef}
                       bottomScrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
                     >
-                      <div style={{ width: spreadsheetCanvasWidth }} />
+                      <div style={{
+                        boxSizing: 'content-box',
+                        width: spreadsheetCanvasWidth,
+                        height: '1px', // HACK
+                      }} />
                     </Scroller>
                   </Fragment>
                 }
@@ -773,7 +791,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     }
   }
 
-  handleColWidthOverrides(colWidthOverrides: number[]) {
+  handleColWidthOverrides = (colWidthOverrides: number[]) => {
     this.setState({
       spreadsheetColWidthOverrides: colWidthOverrides,
     })

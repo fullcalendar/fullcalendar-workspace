@@ -114,7 +114,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
         )
 
         if (this.props.onColWidthOverrides) {
-          this.props.onColWidthOverrides(currentWidths)
+          this.props.onColWidthOverrides(currentWidths.slice())
         }
       })
 

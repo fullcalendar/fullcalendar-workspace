@@ -1,4 +1,4 @@
-import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
+import { createElement, createRef, Ref, Fragment } from '@fullcalendar/core/preact'
 import { BaseComponent, ContentContainer, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { ColSpec, ColHeaderContentArg } from '@fullcalendar/resource'
 
@@ -34,10 +34,14 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
           role: 'columnheader'
         }}
         elClasses={[
+          'fcnew-rel', // for resizer abs positioning
           'fcnew-cell',
           'fcnew-header-cell',
         ]}
-        elStyle={{ width }}
+        elStyle={{
+          flexBasis: 'auto', // !!!
+          width,
+        }}
         renderProps={renderProps}
         generatorName="resourceAreaHeaderContent"
         customGenerator={colSpec.headerContent}
@@ -47,22 +51,24 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         willUnmount={colSpec.headerWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef} className="fcnew-rel">
-            <div className="fcnew-datagrid-cell-cushion">
-              {this.props.indent && (
-                <span className="fcnew-icons">
-                  <span className="fcnew-icon" />
-                </span>
-              )}
-              <InnerContent
-                elTag="span"
-                elClasses={['fcnew-datagrid-cell-main']}
-              />
+          <Fragment>
+            <div ref={this.innerElRef}>
+              <div className="fcnew-datagrid-cell-cushion">
+                {this.props.indent && (
+                  <span className="fcnew-icons">
+                    <span className="fcnew-icon" />
+                  </span>
+                )}
+                <InnerContent
+                  elTag="span"
+                  elClasses={['fcnew-datagrid-cell-main']}
+                />
+              </div>
             </div>
             {resizer && (
               <div className="fcnew-datagrid-cell-resizer" ref={resizerElRef} />
             )}
-          </div>
+          </Fragment>
         )}
       </ContentContainer>
     )
