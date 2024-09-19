@@ -20,8 +20,11 @@ FOR beta.1
     in TimeGridLayoutNormal, not nice how axis text isn't selectable
       (related to how now-indicator is rendered in axis)
   resource-timeline
+    resource-grouping.html
+      in time-area, group shading is broken
+      in datagrid-area, missing bottom-border on group "564 Pacific"
+      click 3-day view, positioning is broken
     column resizing is broken
-    resource-group heights aren't syncing (see resource-grouping.html)
     turn off expandRows by default
       to test, collaps groups in resource-grouping.html
     test row-grouping WITH column-grouping

@@ -13,4 +13,10 @@
     border-bottom: 0;
   }
 
+  & .fcnew-roworigin > .fcnew-resource-timeline-row {
+    position: absolute;
+    left: 0;
+    right: 0;
+    // transition: top 0.5s ease;
+  }
 }
