@@ -15,8 +15,6 @@
 
   & .fcnew-multimonth-month {
     flex-grow: 1;
-    flex-shrink: 1; // needed???
-    min-width: 0; // needed???
   }
 
   & .fcnew-multimonth-title {

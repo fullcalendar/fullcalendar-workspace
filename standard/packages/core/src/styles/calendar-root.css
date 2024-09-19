@@ -57,6 +57,17 @@
 // Table Utils
 // -------------------------------------------------------------------------------------------------
 
+/*
+flexBasis:
+minWidth:
+minHeight:
+
+flex-grow: 0;
+flex-grow: 1;
+min-width: 0;
+min-height: 0;
+*/
+
 // TODO: separate border (and their colors) for theme!
 
 // TODO: apply min-height:0 to all children?
@@ -85,7 +96,6 @@
 .fcnew-cell-fixedsize { // TODO: instead of negating, have fcnew-cell-eq instead?
   flex-basis: auto;
   flex-grow: 0;
-  flex-shrink: 0;
 }
 
 // theme (TODO: rtl)

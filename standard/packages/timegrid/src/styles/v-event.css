@@ -21,7 +21,7 @@ A VERTICAL event
 
   & .fcnew-event-time {
     flex-grow: 0;
-    flex-shrink: 0;
+    flex-shrink: 0; // needed?
     max-height: 100%;
     overflow: hidden;
   }
