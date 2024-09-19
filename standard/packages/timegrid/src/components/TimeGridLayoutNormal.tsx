@@ -118,75 +118,79 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
 
     return (
       <Fragment>
-        <div
-          className='fcnew-rowgroup' // contains other rows/rowgroups
-          style={{
-            paddingLeft: state.leftScrollbarWidth,
-            paddingRight: state.rightScrollbarWidth,
-          }}
-        >
-          {/* HEADER
-          ---------------------------------------------------------------------------------------*/}
-          {options.dayHeaders && (
-            <div className={[
+        {/* HEADER
+        ---------------------------------------------------------------------------------------*/}
+        {options.dayHeaders && (
+          <div
+            className={[
               'fcnew-rowgroup',
               stickyHeaderDates ? 'fcnew-v-sticky' : '',
-            ].join(' ')}>
-              {props.headerTiers.map((cells, tierNum) => (
-                <div
-                  key={tierNum}
-                  className='fcnew-row'
-                >
-                  {props.renderHeaderLabel( // .fcnew-rowheader
-                    tierNum,
-                    headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
-                    undefined, // innerHeightRef
-                    axisWidth, // width
-                  )}
-                  <HeaderRow // .fcnew-cellgroup
-                    tierNum={tierNum}
-                    cells={cells}
-                    renderHeaderContent={props.renderHeaderContent}
-                    getHeaderModelKey={props.getHeaderModelKey}
-                    cellGroup
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-          {/* ALL-DAY
-          ---------------------------------------------------------------------------------------*/}
-          {options.allDaySlot && (
-            <Fragment>
-              <div className='fcnew-row'>
-                <TimeGridAllDayLabel // .fcnew-rowheader
-                  width={axisWidth}
-                  innerWidthRef={this.handleAllDayLabelInnerWidth}
-                />
-                <TimeGridAllDayLane // .fcnew-cellgroup
-                  dateProfile={props.dateProfile}
-                  todayRange={props.todayRange}
-                  cells={props.cells}
-                  showDayNumbers={false}
-                  forPrint={props.forPrint}
-                  isHitComboAllowed={props.isHitComboAllowed}
-
-                  // content
-                  fgEventSegs={props.fgEventSegs}
-                  bgEventSegs={props.bgEventSegs}
-                  businessHourSegs={props.businessHourSegs}
-                  dateSelectionSegs={props.dateSelectionSegs}
-                  eventDrag={props.eventDrag}
-                  eventResize={props.eventResize}
-                  eventSelection={props.eventSelection}
-                  dayMaxEvents={props.dayMaxEvents}
-                  dayMaxEventRows={props.dayMaxEventRows}
+            ].join(' ')}
+            style={{
+              paddingLeft: state.leftScrollbarWidth,
+              paddingRight: state.rightScrollbarWidth,
+            }}
+          >
+            {props.headerTiers.map((cells, tierNum) => (
+              <div
+                key={tierNum}
+                className='fcnew-row'
+              >
+                {props.renderHeaderLabel( // .fcnew-rowheader
+                  tierNum,
+                  headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
+                  undefined, // innerHeightRef
+                  axisWidth, // width
+                )}
+                <HeaderRow // .fcnew-cellgroup
+                  tierNum={tierNum}
+                  cells={cells}
+                  renderHeaderContent={props.renderHeaderContent}
+                  getHeaderModelKey={props.getHeaderModelKey}
+                  cellGroup
                 />
               </div>
-              <div className='fcnew-rowdivider'></div>
-            </Fragment>
-          )}
-        </div>
+            ))}
+          </div>
+        )}
+        {/* ALL-DAY
+        ---------------------------------------------------------------------------------------*/}
+        {options.allDaySlot && (
+          <Fragment>
+            <div
+              className='fcnew-row'
+              style={{
+                paddingLeft: state.leftScrollbarWidth,
+                paddingRight: state.rightScrollbarWidth,
+              }}
+            >
+              <TimeGridAllDayLabel // .fcnew-rowheader
+                width={axisWidth}
+                innerWidthRef={this.handleAllDayLabelInnerWidth}
+              />
+              <TimeGridAllDayLane // .fcnew-cellgroup
+                dateProfile={props.dateProfile}
+                todayRange={props.todayRange}
+                cells={props.cells}
+                showDayNumbers={false}
+                forPrint={props.forPrint}
+                isHitComboAllowed={props.isHitComboAllowed}
+
+                // content
+                fgEventSegs={props.fgEventSegs}
+                bgEventSegs={props.bgEventSegs}
+                businessHourSegs={props.businessHourSegs}
+                dateSelectionSegs={props.dateSelectionSegs}
+                eventDrag={props.eventDrag}
+                eventResize={props.eventResize}
+                eventSelection={props.eventSelection}
+                dayMaxEvents={props.dayMaxEvents}
+                dayMaxEventRows={props.dayMaxEventRows}
+              />
+            </div>
+            <div className='fcnew-rowdivider'></div>
+          </Fragment>
+        )}
         {/* SLATS
         -----------------------------------------------------------------------------------------*/}
         <Scroller

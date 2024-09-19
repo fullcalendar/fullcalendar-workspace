@@ -4,7 +4,7 @@ FOR beta.1
     height:auto
       and sticky footer scrollbars (daygrid/timegrid/timeline/resource-timeline)
     stickyHeaderDates
-      non-pannable timegrid doesn't work because header+all-day-section have tight parent
+      ALL of the views need a bg color somehow
     stickyFooterScrollbars
     axis as top left (timegrid w/ hscroll, resource-timeline) doesn't have correct v-centering
     RTL
