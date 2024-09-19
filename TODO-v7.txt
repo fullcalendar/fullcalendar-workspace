@@ -19,10 +19,12 @@ FOR beta.1
   timegrid
     in TimeGridLayoutNormal, not nice how axis text isn't selectable
       (related to how now-indicator is rendered in axis)
-  timeline
-    need bottom margins *between* events
   resource-timeline
-    indent for timeline-column-grouping.html is wrong (related to GroupCells accidentally requiring it)
+    column resizing is broken
+    resource-group heights aren't syncing (see resource-grouping.html)
+    turn off expandRows by default
+      to test, collaps groups in resource-grouping.html
+    test row-grouping WITH column-grouping
     test business hours per resource VS whole
     test rows expanding to fill height (but not groups)
       ensure no awkward behavior when contracting parent-resources

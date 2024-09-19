@@ -42,12 +42,11 @@ export function buildResourceLayouts(
   flatGroupRowLayouts: GroupRowLayout[],
   flatGroupColLayouts: GroupCellLayout[][],
 } {
-  const initialIndent = hasNesting ? 1 : 0
   const flatResourceLayouts: ResourceLayout[] = []
   const flatGroupRowLayouts: GroupRowLayout[] = []
   const flatGroupColLayouts: GroupCellLayout[][] = []
 
-  function processNodes(nodes: GenericNode[], depth: number): GenericLayout<Resource | Group>[] {
+  function processNodes(nodes: GenericNode[], depth: number, indent: number): GenericLayout<Resource | Group>[] {
     const layouts: GenericLayout<Resource | Group>[] = []
 
     // TODO: more DRY within
@@ -59,13 +58,13 @@ export function buildResourceLayouts(
           resourceFields: (node as ResourceNode).resourceFields,
           isExpanded,
           hasChildren: Boolean(node.children.length),
-          indent: initialIndent + depth,
+          indent,
           children: [],
         }
         flatResourceLayouts.push(resourceLayout)
         layouts.push(resourceLayout)
         if (isExpanded) {
-          resourceLayout.children = processNodes(node.children, depth + 1) as ResourceLayout[]
+          resourceLayout.children = processNodes(node.children, depth + 1, indent + 1) as ResourceLayout[]
         }
       } else if ((node as GroupNode).pooledHeight) {
         const groupCellLayout: GroupCellLayout = {
@@ -73,10 +72,10 @@ export function buildResourceLayouts(
           pooledHeight: true,
           children: [],
         }
-        ;(flatGroupColLayouts[depth] || (flatGroupColLayouts[depth] = [])) // better way?
+        ;(flatGroupColLayouts[depth] || (flatGroupColLayouts[depth] = []))
           .push(groupCellLayout)
         layouts.push(groupCellLayout)
-        groupCellLayout.children = processNodes(node.children, depth + 1) as (ResourceLayout | GroupCellLayout)[]
+        groupCellLayout.children = processNodes(node.children, depth + 1, indent) as (ResourceLayout | GroupCellLayout)[]
       } else {
         const isExpanded = expansions[createGroupId((node as GroupRowLayout).entity)] ?? expansionDefault
         const groupRowLayout: GroupRowLayout = {
@@ -84,13 +83,13 @@ export function buildResourceLayouts(
           pooledHeight: false,
           isExpanded,
           hasChildren: Boolean(node.children.length),
-          indent: initialIndent + depth,
+          indent,
           children: [],
         }
         flatGroupRowLayouts.push(groupRowLayout)
         layouts.push(groupRowLayout)
         if (isExpanded) {
-          groupRowLayout.children = processNodes(node.children, depth + 1) as (ResourceLayout | GroupRowLayout | GroupCellLayout)[]
+          groupRowLayout.children = processNodes(node.children, depth + 1, indent + 1) as (ResourceLayout | GroupRowLayout | GroupCellLayout)[]
         }
       }
     }
@@ -99,7 +98,7 @@ export function buildResourceLayouts(
   }
 
   return {
-    layouts: processNodes(hierarchy, 0),
+    layouts: processNodes(hierarchy, 0, hasNesting ? 1 : 0),
     flatResourceLayouts,
     flatGroupRowLayouts,
     flatGroupColLayouts,
