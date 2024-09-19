@@ -12,9 +12,9 @@ FOR beta.1
       rethink fcnew-cell-fixedwidth or whatever
       resource-grouping.html
         in datagrid-area, missing bottom-border on group "564 Pacific"
-    RTL
     stop doing "frame" elements for measurements, and instead use just "cushion"
       how would that work for getting a scroller's "clientWidth/clientHeight"?
+    RTL
   daygrid
     in "timeline-column-grouping.html" example, go to "month" view, hover over "event 3"
       and horizontal scrollbars appear quickly
@@ -22,9 +22,6 @@ FOR beta.1
     in TimeGridLayoutNormal, not nice how axis text isn't selectable
       (related to how now-indicator is rendered in axis)
   resource-timeline
-    bug with expandRows,
-      parent-resources aren't expanding
-      strange order of collapsing row-groups when should be deterministic
     test row-grouping WITH column-grouping
     test business hours per resource VS whole
     test rows expanding to fill height (but not groups)

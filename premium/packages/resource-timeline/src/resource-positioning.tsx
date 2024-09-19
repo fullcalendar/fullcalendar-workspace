@@ -62,7 +62,9 @@ function computeTightHeights<Entity>(
 
     heightMap.set(siblingNode.entity, siblingOwnHeight)
 
-    if (siblingNode.pooledHeight === undefined) { // vertically stacked, and not a group
+    // expandable?
+    // vertically stacked, and not a group
+    if (siblingNode.pooledHeight === undefined) {
       expandableCount++
     }
     expandableCount += siblingChildrenExpandableCount
@@ -77,9 +79,12 @@ function expandHeights<Entity>(
   expansion: number,
 ): void {
   for (const siblingNode of siblingNodes) {
-    if (!siblingNode.children.length) {
+    // expandable?
+    // vertically stacked, and not a group
+    if (siblingNode.pooledHeight === undefined) {
       heightMap.set(siblingNode.entity, heightMap.get(siblingNode.entity) + expansion)
     }
+
     expandHeights(siblingNode.children, heightMap, expansion)
   }
 }
