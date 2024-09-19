@@ -31,7 +31,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
       <ContentContainer
         elTag="div"
         elAttrs={{ role: 'columnheader' }}
-        elClasses={['fcnew-cell']}
+        elClasses={['fcnew-cell', 'fcnew-header-cell']}
         elStyle={{ width }}
         renderProps={renderProps}
         generatorName="resourceAreaHeaderContent"

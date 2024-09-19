@@ -25,6 +25,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
         elTag="div"
         elClasses={[
           'fcnew-cell',
+          'fcnew-header-cell',
         ]}
         elAttrs={{
           role: 'columnheader',

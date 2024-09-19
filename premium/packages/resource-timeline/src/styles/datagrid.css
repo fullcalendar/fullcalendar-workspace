@@ -3,6 +3,11 @@
 
   // the column resizer (only in HEADER)
 
+  & .fcnew-header-cell { // weird name
+    display: flex;
+    align-items: center; // vertical align
+  }
+
   & .fcnew-datagrid-cell-resizer {
     position: absolute;
     z-index: 1;

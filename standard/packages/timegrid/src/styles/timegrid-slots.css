@@ -1,7 +1,30 @@
 
 .fcnew {
 
-  // & .fcnew-timegrid-slot {}
+  // TODO: fix bad selectors
+  & .fcnew-timegrid-view {
+    // axis of slots
+    & .fcnew-rowheader:not(.fcnew-scroller) { // HACK for hscroll view
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    // axis of slots --- inside
+    & .fcnew-timegrid-axis-frame,
+    & .fcnew-timegrid-slot-label-frame,
+    & .fcnew-timegrid-slot-lane-frame {
+      min-height: 1.5em;
+      display: flex;
+      flex-direction: row;
+      // aligns the single-item in the flexrow; needs to measure its width
+      align-items: center; // vertically center
+      justify-content: flex-end; // horizontally (right)
+    }
+    // specifically the all-day
+    & .fcnew-timegrid-axis-cushion {
+      max-width: 60px; // limits the width of the "all-day" text
+    }
+  }
 
   & .fcnew-timegrid-slot-minor {
     border-style: dotted;
@@ -14,11 +37,6 @@
   & .fcnew-timegrid-slot-label-cushion,
   & .fcnew-timegrid-slot-lane-cushion {
     white-space: nowrap;
-    height: 1.5em;
-  }
-
-  & .fcnew-timegrid-slot-label {
-    /* TODO-figure-out-verical-alignment: vertical-align: middle; // vertical align the slots */
   }
 
   // slots AND axis cells (top-left corner of view including the "all-day" text)
@@ -27,36 +45,4 @@
   & .fcnew-timegrid-slot-label-cushion {
     padding: 0 4px;
   }
-
-  // axis cells (top-left corner of view including the "all-day" text)
-  // vertical align is more complicated, uses flexbox
-
-  & .fcnew-timegrid-axis-frame {
-    /* overflow: hidden;
-    display: flex;
-    align-items: center; // vertical align
-    justify-content: flex-end; // horizontal align. matches text-align below */
-  }
-
-  /* & .fcnew-timegrid-axis-cushion {
-    max-width: 60px; // limits the width of the "all-day" text
-    flex-shrink: 0; // allows text to expand how it normally would, regardless of constrained width
-  } */
-
-}
-
-.fcnew-direction-ltr {
-
-  & .fcnew-timegrid-slot-label-frame {
-    text-align: right;
-  }
-
-}
-
-.fcnew-direction-rtl {
-
-  & .fcnew-timegrid-slot-label-frame {
-    text-align: left;
-  }
-
 }

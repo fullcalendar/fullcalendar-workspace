@@ -526,6 +526,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
 
   initScrollers() {
     const ScrollerSyncer = getScrollerSyncerClass(this.context.pluginHooks)
+
     this.dayScroller = new ScrollerSyncer(true) // horizontal=true
     this.timeScroller = new ScrollerSyncer() // horizontal=false
 

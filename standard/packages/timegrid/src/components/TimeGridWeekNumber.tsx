@@ -43,7 +43,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
         defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef}>{/* TODO: set this up as a flex-child!!! */}
+          <div ref={this.innerElRef}>
             <InnerContent
               elTag="a"
               elClasses={['fcnew-timegrid-axis-cushion']}

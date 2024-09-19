@@ -1,7 +1,7 @@
 
 FOR beta.1
+  stop doing "frame" elements for measurements, and instead use just "cushion"
   test for ALL views
-    axis as top left (timegrid w/ hscroll, resource-timeline) doesn't have correct v-centering
     redo cell borders
       we have major/minor mixed up
       should we always assume solid border style?
@@ -11,9 +11,14 @@ FOR beta.1
         i can write table-inspired css utils however i want, with borders
       resource-timeline: there's a double-border at bottom of datagrid
     RTL
+  daygrid
+    in "timeline-column-grouping.html" example, go to "month" view, hover over "event 3"
+      and horizontal scrollbars appear quickly
   timegrid
     need RIGHT margin for timed events
-    test hiding all-day slot (for pannable layout too)
+    test hiding all-day slot (for pannable layout too)... broken!!!
+    change how floating bottom scrollbar works
+    in TimeGridLayoutNormal, not nice how axis text isn't selectable
   timeline
     need bottom margins *between* events
   resource-timeline
@@ -23,6 +28,7 @@ FOR beta.1
     test business hours per resource VS whole
     test rows expanding to fill height (but not groups)
       ensure no awkward behavior when contracting parent-resources
+    align expander/indent icons with flexbox
   react/vue/angular connectors
     pause size-handling until all slots are rendered
 
@@ -80,3 +86,6 @@ CHANGELOG
     supports ?? operator -- we do this a bunch now
   updateSize deprecation
     and windowResize event is no longer fired
+  tickets closed
+    unnecessary scrollbars
+      https://github.com/fullcalendar/fullcalendar/issues/6047
