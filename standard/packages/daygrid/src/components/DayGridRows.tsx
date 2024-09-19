@@ -9,6 +9,7 @@ import {
   DayTableCell,
   RefMap,
   watchWidth,
+  getIsHeightAuto,
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { TableSeg, splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
@@ -77,11 +78,14 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
     let eventDragByRow = this.splitEventDrag(props.eventDrag, rowCnt)
     let eventResizeByRow = this.splitEventResize(props.eventResize, rowCnt)
 
-    // for DayGrid view with many rows, force a min-height on cells so doesn't appear squished
-    // choose 7 because a month view will have max 6 rows
-    let rowMinHeight = (rowCnt >= 7 && state.width != null) ?
-      state.width / context.options.aspectRatio / 6 :
-      null
+    // maintain at least aspectRatio for cells?
+    let rowMinHeight = (
+      state.width != null && (
+        rowCnt >= 7 || // TODO: better way to infer if across single-month boundary
+        getIsHeightAuto(options)
+      )
+    ) ? state.width / context.options.aspectRatio / 6 // okay to hardcode 6 (weeks) ?
+      : null
 
     return (
       <div

@@ -5,8 +5,6 @@ FOR beta.1
       and sticky footer scrollbars (daygrid/timegrid/timeline/resource-timeline)
     stickyHeaderDates
     stickyFooterScrollbars
-    theming
-      i can write table-inspired css utils however i want, with borders
     axis as top left (timegrid w/ hscroll, resource-timeline) doesn't have correct v-centering
     RTL
     redo cell borders
@@ -14,13 +12,15 @@ FOR beta.1
       should we always assume solid border style?
       TEST: with horizontal scrolling (dayMinWidth),
         header doesn't have top border
+      theming
+        i can write table-inspired css utils however i want, with borders
   daygrid
-    height:auto is really messed up
     test how month view balances week heights
     test no "final squished row"
       https://github.com/fullcalendar/fullcalendar/issues/7162
   timegrid
     need margin below events in ALL-DAY section
+    need RIGHT margin for timed events
     test hiding all-day slot (for pannable layout too)
   timeline
     need bottom margins *between* events
@@ -74,6 +74,8 @@ AFTER beta.1
 CHANGELOG
   temporary
     the space to accommodate scrollbars is just blank
+  daygrid
+    how height:'auto' isn't as squished... will always try to maintain at least aspectRatio
   exports
     DayTable no longer exposed from '@fullcalendar/daygrid/internal'
     DayGridView ('@fullcalendar/daygrid/internal') renamed to DayGridView

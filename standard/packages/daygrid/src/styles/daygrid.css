@@ -29,8 +29,19 @@ $daygrid-event-mirror-z: 7;
 
 .fcnew-daygrid-row {
   position: relative; // origin for event positioning
-  flex-basis: 0;
   flex-grow: 1;
+}
+
+.fcnew-daygrid-row-liquid {
+  flex-basis: 0;
+}
+.fcnew-daygrid-row-vspacious {
+  & .fcnew-daygrid-cell-inner {
+    min-height: 3em; // needs to be done on the "inner" for height syncing to other grids
+  }
+  & .fcnew-daygrid-cell-footer {
+    margin-bottom: 1em !important; // see below for why important
+  }
 }
 
 .fcnew {
