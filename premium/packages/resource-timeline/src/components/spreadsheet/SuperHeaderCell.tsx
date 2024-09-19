@@ -4,11 +4,15 @@ import { ColHeaderContentArg, ColHeaderRenderHooks } from '@fullcalendar/resourc
 
 export interface SuperHeaderCellProps {
   renderHooks: ColHeaderRenderHooks
+  indent?: boolean
 
   // refs
   innerHeightRef?: Ref<number>
 }
 
+/*
+TODO: make more DRY with HeaderCell. Almost exactly the same except doesn't need resizer
+*/
 export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
   // refs
   private innerElRef = createRef<HTMLDivElement>()
@@ -23,14 +27,14 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
     return (
       <ContentContainer
         elTag="div"
-        elClasses={[
-          'fcnew-cell',
-          'fcnew-header-cell',
-        ]}
         elAttrs={{
           role: 'columnheader',
           scope: 'colgroup',
         }}
+        elClasses={[
+          'fcnew-cell',
+          'fcnew-header-cell',
+        ]}
         renderProps={renderProps}
         generatorName="resourceAreaHeaderContent"
         customGenerator={renderHooks.headerContent}
@@ -41,10 +45,17 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
       >
         {(InnerContent) => (
           <div ref={this.innerElRef}>
-            <InnerContent
-              elTag="div"
-              elClasses={['fcnew-datagrid-cell-cushion']}
-            />
+            <div className="fcnew-datagrid-cell-cushion">
+              {this.props.indent && (
+                <span className="fcnew-icons">
+                  <span className="fcnew-icon" />
+                </span>
+              )}
+              <InnerContent
+                elTag="span"
+                elClasses={['fcnew-datagrid-cell-main']}
+              />
+            </div>
           </div>
         )}
       </ContentContainer>

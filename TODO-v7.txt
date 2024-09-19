@@ -23,8 +23,6 @@ FOR beta.1
     need bottom margins *between* events
   resource-timeline
     indent for timeline-column-grouping.html is wrong (related to GroupCells accidentally requiring it)
-    test whether the "super" header cells obeys the minimum indent
-    test multiple header rows, all combos
     test business hours per resource VS whole
     test rows expanding to fill height (but not groups)
       ensure no awkward behavior when contracting parent-resources

@@ -320,6 +320,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           >
                             <SuperHeaderCell
                               renderHooks={superHeaderRendering}
+                              indent={hasNesting}
                               innerHeightRef={this.headerRowInnerHeightMap.createRef(true)}
                             />
                           </div>
