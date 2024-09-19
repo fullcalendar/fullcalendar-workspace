@@ -506,7 +506,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
   private handleAxisWidths = () => {
     const headerLabelInnerWidthMap = this.headerLabelInnerWidthRefMap.current
     const slatLabelInnerWidthMap = this.slatLabelInnerWidthRefMap.current
-    let max = this.allDayLabelInnerWidth
+    let max = this.allDayLabelInnerWidth || 0 // guard against all-day slot hidden
 
     for (const headerLabelInnerWidth of headerLabelInnerWidthMap.values()) {
       max = Math.max(max, headerLabelInnerWidth)
