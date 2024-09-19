@@ -218,7 +218,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
           )
         }
       },
-      state.mainScrollerHeight,
+      options.expandRows ? state.mainScrollerHeight : undefined,
     )
     let bodyTops = computeTopsFromHeights(bodyLayouts, bodyHeights)
     this.bodyHeights = bodyHeights
@@ -363,7 +363,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       <div
                         className='fcnew-roworigin'
                         style={{
-                          boxSizing: 'content-box',
+                          // boxSizing: 'content-box', -- DON't WANT because of 100% minHeight
                           width: spreadsheetCanvasWidth,
                           minHeight: '100%', // TODO: make this a class?
                           paddingBottom: state.timeBottomScrollbarWidth - state.spreadsheetBottomScrollbarWidth,
