@@ -33,6 +33,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
       <ContentContainer
         elTag="div"
         elClasses={[
+          'fcnew-cell',
           'fcnew-timeline-lane',
           'fcnew-resource-group',
           context.theme.getClass('tableCellShaded'),

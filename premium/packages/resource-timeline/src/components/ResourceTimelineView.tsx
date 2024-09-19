@@ -405,6 +405,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             ))}
                           </Fragment>
                           {/* TODO: do background column stripes; add render hooks? */}
+                          {/* BADDD: this should be within something with {height:bodyCanvasHeight} */}
                           <div
                             className='fcnew-roworigin'
                             style={{ width: spreadsheetResourceWidth }}
@@ -440,7 +441,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           const group = groupRowLayout.entity
                           return (
                             <div
-                              key={String(group.value) /* what about this!? */}
+                              key={queryObjKey(group)}
                               role='row'
                               class='fcnew-row'
                               style={{
@@ -590,7 +591,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             const group = groupRowLayout.entity
                             return (
                               <div
-                                key={String(group.value)}
+                                key={queryObjKey(group)}
                                 role='row'
                                 class='fcnew-row'
                                 style={{

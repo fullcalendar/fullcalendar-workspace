@@ -10,6 +10,8 @@ FOR beta.1
         i can write table-inspired css utils however i want, with borders
       resource-timeline: there's a double-border at bottom of datagrid
       rethink fcnew-cell-fixedwidth or whatever
+      resource-grouping.html
+        in datagrid-area, missing bottom-border on group "564 Pacific"
     RTL
     stop doing "frame" elements for measurements, and instead use just "cushion"
       how would that work for getting a scroller's "clientWidth/clientHeight"?
@@ -20,10 +22,6 @@ FOR beta.1
     in TimeGridLayoutNormal, not nice how axis text isn't selectable
       (related to how now-indicator is rendered in axis)
   resource-timeline
-    resource-grouping.html
-      in time-area, group shading is broken
-      in datagrid-area, missing bottom-border on group "564 Pacific"
-      click 3-day view, positioning is broken
     column resizing is broken
     turn off expandRows by default
       to test, collaps groups in resource-grouping.html
@@ -69,6 +67,8 @@ AFTER beta.1
   revisit these tickets
     "Maximum update depth exceeded" error after resizing many times in Chrome --- reemerged?
       https://github.com/fullcalendar/fullcalendar/issues/5606
+  optimizations
+    this.detachInnerHeight() // should fire a 'null' height? yes! will cleanup any map listeners
   write tests
     percentage-based resource-timeline spreadsheet-column resizing
 
@@ -92,5 +92,6 @@ CHANGELOG
   tickets closed
     unnecessary scrollbars
       https://github.com/fullcalendar/fullcalendar/issues/6047
+    ticket where timegrid time-axis isn't selectable
   tickets to implement
     fix those 2 incorrect date-yielding results
