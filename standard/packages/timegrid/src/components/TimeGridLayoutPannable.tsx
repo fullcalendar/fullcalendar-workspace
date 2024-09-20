@@ -338,7 +338,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               vertical={verticalScrolling}
               horizontal
               hideScrollbars={stickyFooterScrollbar /* also means height:auto, so won't need vertical scrollbars anyway */}
-              elClassNames={['fcnew-flex-grow']}
+              elClassNames={['fcnew-grow']}
               ref={this.mainScrollerRef}
               widthRef={this.handleScrollerWidth}
               heightRef={this.handleScrollerHeight}

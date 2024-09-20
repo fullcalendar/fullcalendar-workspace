@@ -286,7 +286,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               viewSpec={viewSpec}
             >
               <ResizableTwoCol
-                className={'fcnew-flex-grow'}
+                className={'fcnew-grow'}
                 onSizes={this.handleTwoColSizes}
 
                 /* spreadsheet

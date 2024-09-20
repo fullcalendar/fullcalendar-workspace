@@ -107,7 +107,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           widthRef={this.handleWidth}
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
-          elClassNames={['fcnew-rowgroup', 'fcnew-daygrid-main', 'fcnew-flex-grow']}
+          elClassNames={['fcnew-rowgroup', 'fcnew-daygrid-main', 'fcnew-grow']}
           ref={this.bodyScrollerRef}
         >
           <DayGridRows

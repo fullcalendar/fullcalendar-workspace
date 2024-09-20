@@ -101,7 +101,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {this.renderFillSegs(props.businessHourSegs, 'non-business')}
             {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
             {this.renderFillSegs(props.dateSelectionSegs, 'highlight')}
-            <div className='fcnew-flex-grow fcnew-rel fcnew-timegrid-col-fg'>
+            <div className='fcnew-grow fcnew-rel fcnew-timegrid-col-fg'>
               {this.renderFgSegs(
                 sortedFgSegs,
                 interactionAffectedInstances,

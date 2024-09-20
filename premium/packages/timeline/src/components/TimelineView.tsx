@@ -163,7 +163,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               <Scroller
                 vertical={verticalScrolling}
                 horizontal
-                elClassNames={['fcnew-rowgroup', 'fcnew-flex-grow']}
+                elClassNames={['fcnew-rowgroup', 'fcnew-grow']}
                 ref={this.bodyScrollerRef}
                 widthRef={this.handleScrollerWidth}
                 leftScrollbarWidthRef={this.handleLeftScrollbarWidth}

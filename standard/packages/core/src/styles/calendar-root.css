@@ -50,7 +50,7 @@
   flex-direction: column;
 }
 
-.fcnew-flex-grow { // TODO: rename to fcnew-grow
+.fcnew-grow {
   flex-grow: 1;
 }
 
@@ -67,7 +67,7 @@
 }
 
 /*
-TODO: replace with 'fcnew-flex-grow fcnew-basis0'
+TODO: replace with 'fcnew-grow fcnew-basis0'
 
 will essentially shrink to zero before expanding, but then ensures min-width/height so content isn't clipped
 (in effect, gives more space to siblings that are also expanding)
@@ -78,7 +78,7 @@ will essentially shrink to zero before expanding, but then ensures min-width/hei
 }
 
 /*
-TODO: replace with 'fcnew-flex-grow fcnew-basis0 fcnew-minw0/minh0'
+TODO: replace with 'fcnew-grow fcnew-basis0 fcnew-minw0/minh0'
 
 will essentially shrink to zero before expanding
 (in effect, will have identical dimensions as other siblings that are also expanding)
@@ -117,7 +117,7 @@ min-height: 100%;
 }
 
 /*
-TODO: add-on 'fcnew-flex-grow fcnew-basis0 fcnew-minw0'
+TODO: add-on 'fcnew-grow fcnew-basis0 fcnew-minw0'
   .fcnew-cell
   .fcnew-cellgroup
   .fcnew-rowheader:only-child
