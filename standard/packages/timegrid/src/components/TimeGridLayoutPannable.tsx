@@ -160,7 +160,6 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
       state.slatInnerHeight,
       state.scrollerHeight,
     )
-    const slatStyleHeight = slatLiquid ? '' : slatHeight
 
     if (this.currentSlatHeight !== slatHeight) {
       this.currentSlatHeight = slatHeight
@@ -309,9 +308,8 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             ref={this.axisScrollerRef}
           >
             <div
-              className='fcnew-rel fcnew-content-box'
+              className='fcnew-rel fcnew-flex-column'
               style={{
-                boxSizing: 'content-box',
                 minHeight: '100%', // TODO: use className for this?
                 paddingBottom: state.bottomScrollbarWidth,
               }}
@@ -319,8 +317,13 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               {props.slatMetas.map((slatMeta) => (
                 <div
                   key={slatMeta.key}
-                  className={getSlatRowClassName(slatMeta)}
-                  style={{ height: slatStyleHeight }}
+                  className={[
+                    getSlatRowClassName(slatMeta),
+                    slatLiquid ? 'fcnew-liquid' : ''
+                  ].join(' ')}
+                  style={{
+                    height: slatLiquid ? '' : slatHeight
+                  }}
                 >
                   <TimeGridSlatLabel // .fcnew-cell
                     {...slatMeta}
@@ -358,9 +361,8 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
             >
               <div
-                className='fcnew-rel'
+                className='fcnew-rel fcnew-flex-column'
                 style={{
-                  boxSizing: 'content-box',
                   width: canvasWidth,
                   minHeight: '100%', // TODO: use className for this?
                 }}
@@ -368,8 +370,13 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 {props.slatMetas.map((slatMeta) => (
                   <div
                     key={slatMeta.key}
-                    className={getSlatRowClassName(slatMeta)}
-                    style={{ height: slatStyleHeight }}
+                    className={[
+                      getSlatRowClassName(slatMeta),
+                      slatLiquid ? 'fcnew-liquid' : ''
+                    ].join(' ')}
+                    style={{
+                      height: slatLiquid ? '' : slatHeight
+                    }}
                   >
                     <TimeGridSlatLane // .fcnew-cell
                       {...slatMeta}

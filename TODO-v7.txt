@@ -23,6 +23,8 @@ FOR beta.1
     in "timeline-column-grouping.html" example, go to "month" view, hover over "event 3"
       and horizontal scrollbars appear quickly
     businessHours in month view, right side, has weird 1px gap
+  timegrid
+    near end, checkout hscroll, expandRows, slots are aligning
   timeline
     test liquid-width columns (few slots)
     ensure events are positioned with pixels in both column-width scenarios

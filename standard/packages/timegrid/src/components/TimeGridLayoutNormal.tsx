@@ -108,7 +108,6 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
       state.slatInnerHeight,
       state.scrollerHeight,
     )
-    const slatStyleHeight = slatLiquid ? '' : slatHeight
 
     if (this.currentSlatHeight !== slatHeight) {
       this.currentSlatHeight = slatHeight
@@ -206,7 +205,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
         >
           <div
-            className='fcnew-rel'
+            className='fcnew-rel fcnew-flex-column'
             style={{
               minHeight: '100%' // TODO: use className for this?
             }}
@@ -214,8 +213,13 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
             {props.slatMetas.map((slatMeta) => (
               <div
                 key={slatMeta.key}
-                className={getSlatRowClassName(slatMeta)}
-                style={{ height: slatStyleHeight }}
+                className={[
+                  getSlatRowClassName(slatMeta),
+                  slatLiquid ? 'fcnew-liquid' : ''
+                ].join(' ')}
+                style={{
+                  height: slatLiquid ? '' : slatHeight
+                }}
               >
                 <TimeGridSlatLabel // .fcnew-cell
                   {...slatMeta}
