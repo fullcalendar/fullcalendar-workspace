@@ -37,7 +37,8 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
             scope: 'colgroup',
           }}
           elClasses={[
-            'fcnew-cell fcnew-grow', // need this at all? don't use the cell borders
+            'fcnew-cell',
+            'fcnew-liquid',
             'fcnew-resource-group',
             context.theme.getClass('tableCellShaded'),
           ]}

@@ -32,7 +32,8 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           scope: 'colgroup',
         }}
         elClasses={[
-          'fcnew-cell fcnew-grow', // need this at all? don't use the cell borders
+          'fcnew-cell',
+          'fcnew-liquid',
           'fcnew-header-cell',
         ]}
         renderProps={renderProps}
