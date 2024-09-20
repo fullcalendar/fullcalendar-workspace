@@ -352,12 +352,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       hideScrollbars
                       elClassNames={[
                         'fcnew-rowgroup',
-                        isHeightAuto ? '' : 'fcnew-flex-grow',
+                        isHeightAuto ? '' : 'fcnew-flex-liquid',
                       ]}
-                      elStyle={{
-                        flexBasis: isHeightAuto ? '' : 0, // TODO: make className for this somehow
-                        minHeight: 0, // needed?
-                      }}
                       ref={this.spreadsheetBodyScrollerRef}
                     >
                       <div
@@ -553,12 +549,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       hideScrollbars={stickyFooterScrollbar}
                       elClassNames={[
                         'fcnew-rowgroup',
-                        isHeightAuto ? '' : 'fcnew-flex-grow',
+                        isHeightAuto ? '' : 'fcnew-flex-liquid',
                       ]}
-                      elStyle={{
-                        flexBasis: isHeightAuto ? '' : 0, // TODO: make className for this somehow
-                        minHeight: 0, // needed?
-                      }}
                       ref={this.timeBodyScrollerRef}
                       heightRef={this.handleMainScrollerHeight}
                       leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
