@@ -75,6 +75,10 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
     let sortedFgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder) as TimeColsSeg[]
 
+    // HACK: equired for when column is taller than slats. because all positioning of events is
+    // done via percentages. needs to be a percentage of the total slat height
+    let slatsTotalHeight = props.slatHeight != null ? props.slatHeight * props.slatCnt : undefined
+
     return (
       <DayCellContainer
         elTag="div"
@@ -98,11 +102,11 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         extraRenderProps={props.extraRenderProps}
       >
         {(InnerContent) => (
-          <Fragment>
+          <div className='fcnew-rel fcnew-flex-column' style={{ height: slatsTotalHeight }}>
             {this.renderFillSegs(props.businessHourSegs, 'non-business')}
             {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
             {this.renderFillSegs(props.dateSelectionSegs, 'highlight')}
-            <div className='fcnew-grow fcnew-rel fcnew-timegrid-col-fg'>
+            <div className='fcnew-liquid fcnew-rel fcnew-timegrid-col-fg'>
               {this.renderFgSegs(
                 sortedFgSegs,
                 interactionAffectedInstances,
@@ -126,7 +130,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 elClasses={['fcnew-timegrid-col-misc']}
               />
             )}
-          </Fragment>
+          </div>
         )}
       </DayCellContainer>
     )
