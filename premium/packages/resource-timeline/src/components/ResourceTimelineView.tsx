@@ -286,7 +286,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               viewSpec={viewSpec}
             >
               <ResizableTwoCol
-                className={isHeightAuto ? '' : 'fcnew-grow fcnew-basis0 fcnew-minh0'}
+                className={isHeightAuto ? '' : 'fcnew-liquid'}
                 onSizes={this.handleTwoColSizes}
 
                 /* spreadsheet
@@ -352,7 +352,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       hideScrollbars
                       elClassNames={[
                         'fcnew-rowgroup',
-                        isHeightAuto ? '' : 'fcnew-grow fcnew-basis0 fcnew-minh0',
+                        isHeightAuto ? '' : 'fcnew-liquid',
                       ]}
                       ref={this.spreadsheetBodyScrollerRef}
                     >
@@ -549,7 +549,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       hideScrollbars={stickyFooterScrollbar}
                       elClassNames={[
                         'fcnew-rowgroup',
-                        isHeightAuto ? '' : 'fcnew-grow fcnew-basis0 fcnew-minh0',
+                        isHeightAuto ? '' : 'fcnew-liquid',
                       ]}
                       ref={this.timeBodyScrollerRef}
                       heightRef={this.handleMainScrollerHeight}

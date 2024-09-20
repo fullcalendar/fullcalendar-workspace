@@ -16,7 +16,7 @@ export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps> {
       <DayGridRow
         {...this.props}
         cellGroup
-        className='fcnew-timegrid-allday-main fcnew-grow fcnew-basis0 fcnew-minw0'
+        className='fcnew-timegrid-allday-main fcnew-liquid'
         forceVSpacing
         rootElRef={this.handleRootEl}
         heightRef={this.heightRef}

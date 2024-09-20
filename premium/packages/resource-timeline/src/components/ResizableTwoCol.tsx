@@ -67,7 +67,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
         <div
           class={[
             'fcnew-cell',
-            'fcnew-grow fcnew-basis0 fcnew-minw0',
+            'fcnew-liquid',
             props.endClassName,
           ].join(' ')}
           ref={this.endElRef}

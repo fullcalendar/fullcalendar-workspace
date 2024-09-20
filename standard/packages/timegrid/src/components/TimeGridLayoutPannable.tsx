@@ -205,7 +205,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             <Scroller
               horizontal
               hideScrollbars
-              elClassNames={['fcnew-cell fcnew-grow fcnew-basis0 fcnew-minw0']} // a "super" cell
+              elClassNames={['fcnew-cell fcnew-liquid']} // a "super" cell
               // ^NOTE: not a good idea if ever gets left/right border
               ref={this.headerScrollerRef}
             >
@@ -249,7 +249,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               <Scroller
                 horizontal
                 hideScrollbars
-                elClassNames={['fcnew-cell fcnew-grow fcnew-basis0 fcnew-minw0']} // a "super" cell
+                elClassNames={['fcnew-cell fcnew-liquid']} // a "super" cell
                 // ^NOTE: not a good idea if ever gets left/right border
                 ref={this.allDayScrollerRef}
               >
@@ -293,7 +293,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
         <div className={[ // a "super" row
           'fcnew-row',
           'fcnew-timegrid-timed-main',
-          isHeightAuto ? '' : 'fcnew-grow fcnew-basis0 fcnew-minh0',
+          isHeightAuto ? '' : 'fcnew-liquid',
         ].join(' ')}>
           {/* SLATS / labels (vertical scroller)
           ---------------------------------------------------------------------------------------*/}
@@ -340,14 +340,14 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
           {/* SLATS / main (scroller)
           ---------------------------------------------------------------------------------------*/}
           <div
-            className='fcnew-cell fcnew-grow fcnew-basis0 fcnew-minw0 fcnew-flex-column' // a "super" cell
+            className='fcnew-cell fcnew-liquid fcnew-flex-column' // a "super" cell
           >
             <Scroller
               vertical={verticalScrolling}
               horizontal
               hideScrollbars={stickyFooterScrollbar /* also means height:auto, so won't need vertical scrollbars anyway */}
               elClassNames={[
-                isHeightAuto ? '' : 'fcnew-grow fcnew-basis0 fcnew-minh0',
+                isHeightAuto ? '' : 'fcnew-liquid',
               ]}
               ref={this.mainScrollerRef}
               widthRef={this.handleScrollerWidth}
@@ -384,7 +384,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   slatCnt={slatCnt}
                   forPrint={props.forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
-                  className='fcnew-absfill fcnew-grow fcnew-basis0 fcnew-minw0'
+                  className='fcnew-absfill fcnew-liquid'
 
                   // content
                   fgEventSegsByCol={props.fgEventSegsByCol}

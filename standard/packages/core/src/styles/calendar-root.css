@@ -58,11 +58,10 @@
   flex-basis: 0;
 }
 
-.fcnew-minw0 {
+.fcnew-liquid {
+  flex-grow: 1;
+  flex-basis: 0;
   min-width: 0;
-}
-
-.fcnew-minh0 {
   min-height: 0;
 }
 
@@ -73,17 +72,11 @@
 TODO: make a className for
   min-height: 100%;
 
-TODO: is this always necessary??
-  props.colWidth != null ? '' : 'fcnew-grow fcnew-basis0 fcnew-minw0',
-  props.width != null ? '' : 'fcnew-grow fcnew-basis0 fcnew-minw0',
-
 TODO: kill fcnew-cellgroup?
   just use fcnew-flex-row instead?
 
 TODO: kill fcnew-rowgroup?
   just use fcnew-row
-
-TODO: make fcnew-liquid util that combines all 3? a fcnew-min0 util as well?
 
 TODO: look for `box-sizing: content-box` or `boxSizing:` --- make util
 */

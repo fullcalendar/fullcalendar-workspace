@@ -149,7 +149,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   renderHeaderContent={props.renderHeaderContent}
                   getHeaderModelKey={props.getHeaderModelKey}
                   cellGroup
-                  className='fcnew-grow fcnew-basis0 fcnew-minw0'
+                  className='fcnew-liquid'
                 />
               </div>
             ))}
@@ -200,7 +200,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           elClassNames={[
             'fcnew-rowgroup', // why this is 'rowgroup', but Pannable just uses 'row'
             'fcnew-timegrid-timed-main',
-            isHeightAuto ? '' : 'fcnew-grow fcnew-basis0 fcnew-minh0',
+            isHeightAuto ? '' : 'fcnew-liquid',
           ]}
           ref={props.timeScrollerRef}
           heightRef={this.handleScrollerHeight}
@@ -250,7 +250,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 slatCnt={slatCnt}
                 forPrint={props.forPrint}
                 isHitComboAllowed={props.isHitComboAllowed}
-                className='fcnew-grow fcnew-basis0 fcnew-minw0'
+                className='fcnew-liquid'
 
                 // content
                 fgEventSegsByCol={props.fgEventSegsByCol}
