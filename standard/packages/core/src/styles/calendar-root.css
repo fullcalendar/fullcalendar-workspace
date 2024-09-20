@@ -69,7 +69,10 @@
 // -------------------------------------------------------------------------------------------------
 
 /*
-TODO: make a className for
+TODO: audit all fcnew-grow and ensure fcnew-liquid isn't needed instead
+
+TODO: make a className for -- or use use fcnew-liquid?
+  minHeight:
   min-height: 100%;
 
 TODO: kill fcnew-cellgroup?
@@ -77,10 +80,6 @@ TODO: kill fcnew-cellgroup?
 
 TODO: kill fcnew-rowgroup?
   just use fcnew-row
-
-TODO: look for `box-sizing: content-box` or `boxSizing:` --- make util
-
-TODO: audit all fcnew-grow and ensure fcnew-liquid isn't needed instead
 */
 
 .fcnew-row,
