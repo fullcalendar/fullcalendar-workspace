@@ -231,7 +231,10 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
             ))}
             {/* TODO: fix problem with last-child always showing border! */}
             <div className='fcnew-absfill fcnew-cellgroup'>
-              <div style={{ width: axisWidth }}>
+              <div
+                className='fcnew-cell fcnew-timegrid-header-axises'
+                style={{ width: axisWidth }}
+              >
                 {rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
                   <TimeGridNowIndicatorArrow
                     nowDate={nowDate}

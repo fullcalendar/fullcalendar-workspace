@@ -31,7 +31,7 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
         elTag="div"
         elClasses={[
           'fcnew-cell',
-          'fcnew-timegrid-axis', // TODO: rename this 'axis' stuff
+          'fcnew-timegrid-allday-label',
         ]}
         elAttrs={{
           'aria-hidden': true,
@@ -49,12 +49,12 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
       >
         {(InnerContent) => (
           <div
-            className='fcnew-timegrid-axis-frame'
+            className='fcnew-timegrid-allday-label-frame'
             ref={this.innerElRef}
           >
             <InnerContent
               elTag="span"
-              elClasses={['fcnew-timegrid-axis-cushion']}
+              elClasses={['fcnew-timegrid-allday-label-cushion']}
             />
           </div>
         )}

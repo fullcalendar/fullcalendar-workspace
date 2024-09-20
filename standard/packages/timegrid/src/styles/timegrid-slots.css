@@ -1,7 +1,18 @@
 
 .fcnew {
 
-  & .fcnew-timegrid-axis,
+  & .fcnew-timegrid-header-axises, // the header column chunk for h-scroll scroller
+  & .fcnew-timegrid-weeknumber,
+  & .fcnew-timegrid-allday-label,
+  & .fcnew-timegrid-slot-label,
+  & .fcnew-timegrid-slot-labels { // the chunk within h-scroll scroller
+    box-sizing: content-box;
+    // because inner-width as calcuated from frames, then is set on this element,
+    // so the `width` must be the *inner* dimension
+  }
+
+  & .fcnew-timegrid-weeknumber,
+  & .fcnew-timegrid-allday-label,
   & .fcnew-timegrid-slot-label,
   & .fcnew-timegrid-slot-lane {
     display: flex;
@@ -10,7 +21,8 @@
   }
 
   // axis of slots --- inside
-  & .fcnew-timegrid-axis-frame,
+  & .fcnew-timegrid-weeknumber-frame,
+  & .fcnew-timegrid-allday-label-frame,
   & .fcnew-timegrid-slot-label-frame,
   & .fcnew-timegrid-slot-lane-frame {
     min-height: 1.5em;
@@ -20,26 +32,14 @@
     justify-content: flex-end; // horizontally (right)
   }
 
-  & .fcnew-timegrid-axis,
-  & .fcnew-timegrid-slot-label {
-    box-sizing: content-box;
-    // because inner-width as calcuated from frames, then is set on this element,
-    // so the `width` must be the *inner* dimension
-  }
-
-  & .fcnew-timegrid-axis-cushion,
-  & .fcnew-timegrid-slot-label-cushion,
-  & .fcnew-timegrid-slot-lane-cushion {
+  & .fcnew-timegrid-weeknumber-cushion,
+  & .fcnew-timegrid-allday-label-cushion,
+  & .fcnew-timegrid-slot-label-cushion {
+    padding: 0 4px;
     white-space: nowrap;
   }
 
-  & .fcnew-timegrid-axis-cushion,
-  & .fcnew-timegrid-slot-label-cushion {
-    padding: 0 4px;
-  }
-
-  // specifically the all-day
-  & .fcnew-timegrid-axis-cushion {
+  & .fcnew-timegrid-allday-label-cushion {
     max-width: 60px; // limits the width of the "all-day" text
   }
 

@@ -13,7 +13,6 @@
   max-width: 100%; // width will be hardcoded too
 
   & .fcnew-timegrid-slots,
-  & .fcnew-timegrid-axis-chunk, // when it's a separate axis
   & .fcnew-timeline-slots,
   & .fcnew-non-business,
   & .fcnew-bg-event {

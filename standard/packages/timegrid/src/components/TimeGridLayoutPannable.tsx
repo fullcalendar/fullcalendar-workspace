@@ -182,7 +182,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             {/* HEADER / labels
             -------------------------------------------------------------------------------------*/}
             <div
-              className='fcnew-cell' // a "super" cell
+              className='fcnew-cell fcnew-timegrid-header-axises' // a "super" cell
               style={{ width: axisWidth }}
             >
               {props.headerTiers.map((models, tierNum) => (
@@ -224,6 +224,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                     getHeaderModelKey={props.getHeaderModelKey}
                     innerHeightRef={headerMainInnerHeightRefMap.createRef(tierNum)}
                     height={state.headerTierHeights[tierNum]}
+                    colWidth={colWidth}
                   />
                 ))}
               </div>
@@ -299,8 +300,10 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
           <Scroller
             vertical={verticalScrolling}
             hideScrollbars
-            elClassNames={['fcnew-cell']} // a "super" cell
-            // ^NOTE: not a good idea if ever gets left/right border
+            elClassNames={[
+              'fcnew-cell', // NOTE: not a good idea if ever gets left/right border
+              'fcnew-timegrid-slot-labels',
+            ]}
             elStyle={{ width: axisWidth }}
             ref={this.axisScrollerRef}
           >

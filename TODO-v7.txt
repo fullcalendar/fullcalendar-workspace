@@ -9,15 +9,16 @@ FOR beta.1
       theming
         i can write table-inspired css utils however i want, with borders
       resource-timeline: there's a double-border at bottom of datagrid
-      rethink fcnew-cell-fixedwidth or whatever
       resource-grouping.html
         in datagrid-area, missing bottom-border on group "564 Pacific"
     stop doing "frame" elements for measurements, and instead use just "cushion"
       how would that work for getting a scroller's "clientWidth/clientHeight"?
+    weekNumbers (esp TimeGrid)
     RTL
   daygrid
     in "timeline-column-grouping.html" example, go to "month" view, hover over "event 3"
       and horizontal scrollbars appear quickly
+    businessHours in month view, right side, has weird 1px gap
   timegrid
     in TimeGridLayoutNormal, not nice how axis text isn't selectable
       (related to how now-indicator is rendered in axis)

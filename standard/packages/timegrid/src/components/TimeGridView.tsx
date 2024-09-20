@@ -90,12 +90,12 @@ export class TimeGridView extends DateComponent<ViewProps> {
                   />
                 ) : (
                   <div
-                    className='fcnew-cell'
+                    className='fcnew-cell fcnew-timegrid-weeknumber' // okay to mock this className?
                     style={{ width }}
                   />
                 )
               )}
-              renderHeaderContent={(cell, tierNum, innerHeightRef) => (
+              renderHeaderContent={(cell, tierNum, innerHeightRef, colWidth) => (
                 <DateHeaderCell
                   {...cell /* for date & extraRenderProps/etc */}
                   dateProfile={dateProfile}
@@ -103,7 +103,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
                   navLink={dayTableModel.cellRows.length > 1}
                   dayHeaderFormat={dayHeaderFormat}
                   innerHeightRef={innerHeightRef}
-                  colWidth={undefined}
+                  colWidth={colWidth}
                 />
               )}
               getHeaderModelKey={(cell) => cell.key}

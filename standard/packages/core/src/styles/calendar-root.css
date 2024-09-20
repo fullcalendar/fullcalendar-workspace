@@ -80,9 +80,12 @@ TODO: is this always necessary??
 TODO: kill fcnew-cellgroup?
   just use fcnew-flex-row instead?
 
-TODO: make fcnew-liquid util that combines all 3?
+TODO: kill fcnew-rowgroup?
+  just use fcnew-row
 
-TODO: look for `box-sizing: content-box` or `boxSizing:`
+TODO: make fcnew-liquid util that combines all 3? a fcnew-min0 util as well?
+
+TODO: look for `box-sizing: content-box` or `boxSizing:` --- make util
 */
 
 .fcnew-row,
