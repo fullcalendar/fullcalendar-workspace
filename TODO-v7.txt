@@ -26,9 +26,6 @@ FOR beta.1
   timegrid
     near end, checkout hscroll, expandRows, slots are aligning
     make sure the cushions within the axis can have whatever width they want; parent doesn't crush them
-  timeline
-    test liquid-width columns (few slots)
-    ensure events are positioned with pixels in both column-width scenarios
   react/vue/angular connectors
     pause size-handling until all slots are rendered
 

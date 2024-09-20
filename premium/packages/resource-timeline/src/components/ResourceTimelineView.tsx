@@ -553,6 +553,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         verticalScrolling ? 'fcnew-liquid' : '',
                       ]}
                       ref={this.timeBodyScrollerRef}
+                      widthRef={this.handleMainScrollerWidth}
                       heightRef={this.handleMainScrollerHeight}
                       leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
                       rightScrollbarWidthRef={this.handleRightScrollbarWidth}
@@ -722,10 +723,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  handleTwoColSizes = (spreadsheetWidth: number, mainScrollerWidth: number) => {
+  handleTwoColSizes = (spreadsheetWidth: number) => {
     this.setState({
       spreadsheetWidth,
-      mainScrollerWidth,
+    })
+  }
+
+  handleMainScrollerWidth = (width: number) => {
+    this.setState({
+      mainScrollerWidth: width,
     })
   }
 

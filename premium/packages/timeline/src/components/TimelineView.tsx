@@ -78,7 +78,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
     /* table positions */
 
-    const [canvasWidth, slotWidth, slotLiquid] = this.computeSlotWidth(
+    const [canvasWidth, slotWidth] = this.computeSlotWidth(
       tDateProfile.slotCnt,
       tDateProfile.slotsPerLabel,
       options.slotMinWidth,
@@ -86,7 +86,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       state.scrollerWidth,
     )
     this.slotWidth = slotWidth
-    const slotStyleWidth = slotLiquid ? undefined : slotWidth
 
     return (
       <NowTimer unit={timerUnit}>
@@ -141,7 +140,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                           rowLevel={rowLevel}
                           isLastRow={isLast}
                           cells={cells}
-                          slotWidth={slotStyleWidth}
+                          slotWidth={slotWidth}
                           innerWidthRef={isLast ? this.handleHeaderSlotInnerWidth : undefined}
                         />
                       )
@@ -190,7 +189,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     innerWidthRef={this.handleBodySlotInnerWidth}
 
                     // dimensions
-                    slotWidth={slotStyleWidth}
+                    slotWidth={slotWidth}
                   />
                   <TimelineLane
                     dateProfile={props.dateProfile}

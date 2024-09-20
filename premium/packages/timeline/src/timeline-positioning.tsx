@@ -47,7 +47,7 @@ export function computeSlotWidth(
 ): [
   canvasWidth: number | undefined,
   slatWidth: number | undefined,
-  slatLiquid: boolean, // used???
+  slatLiquid: boolean, // unused. TODO: kill this or have good reason to revive
 ] {
   if (labelInnerWidth == null || viewportWidth == null) {
     return [undefined, undefined, false]
