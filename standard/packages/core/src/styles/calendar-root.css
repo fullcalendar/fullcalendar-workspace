@@ -61,6 +61,14 @@
   min-height: 0;
 }
 
+/*
+when we want to preserve min-height:auto (where inner content determines min-height)
+*/
+.fcnew-flex-liquid-min {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
 // Table Utils
 // -------------------------------------------------------------------------------------------------
 
@@ -69,7 +77,6 @@ flexBasis:
 minWidth:
 minHeight:
 
-flex-grow: 1;
 min-width: 0;
 min-height: 0;
 

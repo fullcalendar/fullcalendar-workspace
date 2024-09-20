@@ -42,7 +42,6 @@ export interface DayGridRowProps {
   cellGroup?: boolean
   className?: string // TODO: better API for this
   forceVSpacing?: boolean
-  liquidHeight?: boolean
 
   // content
   fgEventSegs: TableSeg[]
@@ -96,7 +95,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
 
     const weekDate = props.cells[0].date
     const colCnt = props.cells.length
-    const rowLiquidHeight = props.liquidHeight
     const fgLiquidHeight = props.dayMaxEvents === true || props.dayMaxEventRows === true
 
     // TODO: memoize? sort all types of segs?
@@ -135,13 +133,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
           props.cellGroup ? 'fcnew-cellgroup' : 'fcnew-row',
           'fcnew-daygrid-row',
           'fcnew-rel',
-          'fcnew-flex-grow',
           props.forceVSpacing ? 'fcnew-daygrid-row-vspacious' : '',
           props.className || '',
         ].join(' ')}
         style={{
           minHeight: props.minHeight,
-          flexBasis: rowLiquidHeight ? 0 : '',
         }}
         ref={this.handleRootEl}
       >

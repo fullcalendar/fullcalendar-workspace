@@ -80,13 +80,13 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
 
     // whether the ROW should expand in height
     // (not to be confused with whether the fg events within the row should be molded by height of row)
-    let rowHeightsAreLiquid = !getIsHeightAuto(options)
+    let isHeightAuto = getIsHeightAuto(options)
 
     // maintain at least aspectRatio for cells?
     let rowMinHeight = (
       state.width != null && (
         rowCnt >= 7 || // TODO: better way to infer if across single-month boundary
-        !rowHeightsAreLiquid
+        isHeightAuto
       )
     ) ? state.width / context.options.aspectRatio / 6 // okay to hardcode 6 (weeks) ?
       : null
@@ -105,7 +105,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
             cells={cells}
             showDayNumbers={rowCnt > 1}
             forPrint={props.forPrint}
-            liquidHeight={rowHeightsAreLiquid}
+            className={isHeightAuto ? '' : 'fcnew-flex-liquid-min'}
 
             // content
             fgEventSegs={fgEventSegsByRow[row]}
