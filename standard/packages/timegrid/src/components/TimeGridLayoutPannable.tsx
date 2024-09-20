@@ -259,7 +259,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                     paddingRight: state.rightScrollbarWidth,
                   }}
                 >
-                  <TimeGridAllDayLane // .fcnew-cellgroup
+                  <TimeGridAllDayLane
                     dateProfile={props.dateProfile}
                     todayRange={props.todayRange}
                     cells={props.cells}
@@ -384,7 +384,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                     />
                   </div>
                 ))}
-                <TimeGridCols // .fcnew-cellgroup.fcnew-absfill
+                <TimeGridCols // .fcnew-absfill
                   dateProfile={props.dateProfile}
                   nowDate={props.nowDate}
                   todayRange={props.todayRange}

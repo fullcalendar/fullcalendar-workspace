@@ -140,7 +140,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   undefined, // innerHeightRef
                   axisWidth, // width
                 )}
-                <HeaderRow // .fcnew-cellgroup
+                <HeaderRow
                   tierNum={tierNum}
                   cells={cells}
                   renderHeaderContent={props.renderHeaderContent}
@@ -167,7 +167,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 width={axisWidth}
                 innerWidthRef={this.handleAllDayLabelInnerWidth}
               />
-              <TimeGridAllDayLane // .fcnew-cellgroup
+              <TimeGridAllDayLane
                 dateProfile={props.dateProfile}
                 todayRange={props.todayRange}
                 cells={props.cells}
@@ -234,7 +234,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
               </div>
             ))}
             {/* TODO: fix problem with last-child always showing border! */}
-            <div className='fcnew-absfill fcnew-cellgroup'>
+            <div className='fcnew-absfill fcnew-flex-row'>
               <div
                 className='fcnew-cell fcnew-timegrid-header-axises'
                 style={{ width: axisWidth }}
@@ -246,7 +246,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   />
                 )}
               </div>
-              <TimeGridCols // .fcnew-cellgroup
+              <TimeGridCols
                 dateProfile={props.dateProfile}
                 nowDate={props.nowDate}
                 todayRange={props.todayRange}

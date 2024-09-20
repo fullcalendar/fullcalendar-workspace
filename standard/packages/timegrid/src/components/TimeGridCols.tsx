@@ -55,7 +55,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
     return (
       <div
         className={[
-          'fcnew-cellgroup',
+          'fcnew-flex-row',
           props.className || '',
         ].join(' ')}
         ref={this.handleRootEl}

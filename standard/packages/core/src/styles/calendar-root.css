@@ -73,18 +73,12 @@ TODO: make a className for -- or use use fcnew-liquid?
   minHeight:
   min-height: 100%;
 
-TODO: kill fcnew-cellgroup?
-  just use fcnew-flex-row instead?
-
-TODO: kill fcnew-rowgroup?
-  just use fcnew-row
+NOTE: fcnew-rowgroup is like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CELLS
 */
 
-.fcnew-row,
-.fcnew-cellgroup {
+.fcnew-row {
   display: flex;
   flex-direction: row;
-  align-items: stretch;
 }
 
 // theme (TODO: rtl)

@@ -42,7 +42,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
       <div
         ref={this.handleRootEl}
         class={[
-          'fcnew-cellgroup',
+          'fcnew-flex-row',
           props.className,
         ].join(' ')}
       >

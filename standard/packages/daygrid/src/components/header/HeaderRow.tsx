@@ -11,7 +11,7 @@ export interface HeaderRowProps<Model, ModelKey> {
     width: number | undefined
   ) => ComponentChild
   getHeaderModelKey: (model: Model) => ModelKey
-  cellGroup?: boolean
+  cellGroup?: boolean // bad name now
   className?: string
 
   // dimensions
@@ -26,7 +26,7 @@ export class HeaderRow<Model, ModelKey> extends BaseComponent<HeaderRowProps<Mod
       <div
         role={props.cellGroup ? undefined : 'row'}
         className={[
-          props.cellGroup ? 'fcnew-cellgroup' : 'fcnew-row',
+          props.cellGroup ? 'fcnew-flex-row' : 'fcnew-row',
           props.className || '',
         ].join(' ')}
       >

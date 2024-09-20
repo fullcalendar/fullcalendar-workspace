@@ -39,7 +39,7 @@ export interface DayGridRowProps {
   cells: DayTableCell[]
   showDayNumbers: boolean
   forPrint: boolean
-  cellGroup?: boolean
+  cellGroup?: boolean // bad name now
   className?: string // TODO: better API for this
   forceVSpacing?: boolean
 
@@ -130,7 +130,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       <div
         role={props.cellGroup ? undefined : 'row'}
         className={[
-          props.cellGroup ? 'fcnew-cellgroup' : 'fcnew-row',
+          props.cellGroup ? 'fcnew-flex-row' : 'fcnew-row',
           'fcnew-daygrid-row',
           'fcnew-rel',
           props.forceVSpacing ? 'fcnew-daygrid-row-vspacious' : '',
