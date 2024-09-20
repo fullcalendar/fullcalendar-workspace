@@ -15,6 +15,7 @@ FOR beta.1
     stop doing "frame" elements for measurements, and instead use just "cushion"
       how would that work for getting a scroller's "clientWidth/clientHeight"?
     is text-selection disabled everywhere? was it before? (if fixed, find ticket)
+    test inverse-bg events (like businessHours) and ensure `instance.instanceId` doesn't error
     weekNumbers (esp TimeGrid)
     ensure print-mode disables all scrolling at least (stop using isHeightAuto directly)
     RTL
@@ -39,6 +40,7 @@ ensure automated tests for...
 AFTER beta.1
   restore print-mode
   implement ResizeObserver fallback
+  just like scrollbar dead area should have grey bg, make timegrid bottom area w/o slots a grey bg
   slatline alignment bugs
     in daygrid (esp with sticky header, or horizontal scrolling?)
     timeline: with header cells when header cells are half as frequent

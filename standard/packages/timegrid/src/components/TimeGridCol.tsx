@@ -167,17 +167,25 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     let { eventMaxStack, eventShortHeight, eventOrderStrict, eventMinHeight } = context.options
 
     // TODO: memoize this?
-    let segVerticals = computeFgSegVerticals(segs, dateProfile, date, props.slatCnt, props.slatHeight, eventMinHeight, eventShortHeight)
+    let segVerticals = computeFgSegVerticals(
+      segs,
+      dateProfile,
+      date,
+      props.slatCnt,
+      props.slatHeight,
+      eventMinHeight,
+      eventShortHeight,
+    )
     let [segRects, hiddenGroups] = computeFgSegHorizontals(segs, segVerticals, eventOrderStrict, eventMaxStack)
     let isMirror = isDragging || isResizing || isDateSelecting
 
     return (
       <Fragment>
         {this.renderHiddenGroups(hiddenGroups, segs)}
-        {segs.map((seg) => {
-          let instanceId = seg.eventRange.instance.instanceId
-          let segVertical = segVerticals[instanceId]
-          let setRect = segRects[instanceId] // for horizontals
+        {segs.map((seg, index) => {
+          let instanceId = seg.eventRange.instance.instanceId // guaranteed because it's an fg event
+          let segVertical = segVerticals[index]
+          let setRect = segRects[index] // for horizontals
 
           let hStyle = !isMirror ? this.computeSegHStyle(setRect) : { left: 0, right: 0 }
           let isVisible = isMirror || Boolean(!segIsInvisible[instanceId])
@@ -248,13 +256,19 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
   renderFillSegs(segs: TimeColsSeg[], fillType: string) {
     let { props, context } = this
-    let segVerticals = computeFgSegVerticals(segs, props.dateProfile, props.date, props.slatCnt, props.slatHeight, context.options.eventMinHeight)
+    let segVerticals = computeFgSegVerticals(
+      segs,
+      props.dateProfile,
+      props.date,
+      props.slatCnt,
+      props.slatHeight,
+      context.options.eventMinHeight,
+    )
 
     return (
       <Fragment>
-        {segs.map((seg) => {
-          const { instanceId } = seg.eventRange.instance
-          const segVertical = segVerticals[instanceId]
+        {segs.map((seg, index) => {
+          const segVertical = segVerticals[index]
 
           return (
             <div

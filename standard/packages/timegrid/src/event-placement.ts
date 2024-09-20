@@ -26,8 +26,8 @@ export function computeFgSegVerticals(
   slatHeight: number | undefined, // in pixels
   eventMinHeight: number | undefined, // in pixels
   eventShortHeight?: number, // in pixels
-): { [instanceId: string]: TimeGridSegVertical } {
-  const res: { [instanceId: string]: TimeGridSegVertical } = {}
+): TimeGridSegVertical[] {
+  const res: TimeGridSegVertical[] = []
 
   for (const seg of segs) {
     const startFrac = computeDateTopFrac(seg.start, dateProfile, colDate)
@@ -47,12 +47,12 @@ export function computeFgSegVerticals(
       isShort = eventShortHeight != null && heightPixels < eventShortHeight
     }
 
-    res[seg.eventRange.instance.instanceId] = {
+    res.push({
       start: startFrac,
       end: startFrac + heightFrac,
       size: heightFrac,
       isShort,
-    }
+    })
   }
 
   return res
@@ -63,25 +63,24 @@ export function computeFgSegVerticals(
 
 export function computeFgSegHorizontals(
   segs: TimeColsSeg[],
-  segVerticals: { [instanceId: string]: TimeGridSegVertical },
+  segVerticals: TimeGridSegVertical[],
   eventOrderStrict?: boolean,
   eventMaxStack?: number,
 ): [
-  segRects: { [instanceId: string]: SegWebRect },
+  segRects: SegWebRect[],
   hiddenGroups: SegGroup[],
 ] {
   const segEntries: SegEntry[] = segs.map((seg, index) => ({
     index,
     thickness: 1,
-    span: segVerticals[seg.eventRange.instance.instanceId],
+    span: segVerticals[index],
   }))
 
-  const [segRectArray, hiddenGroups] = buildWebPositioning(segEntries, eventOrderStrict, eventMaxStack)
-  const segRects: { [instanceId: string]: SegWebRect } = {}
+  const [segRectsUnordered, hiddenGroups] = buildWebPositioning(segEntries, eventOrderStrict, eventMaxStack)
+  const segRects: SegWebRect[] = []
 
-  for (const segRect of segRectArray) {
-    const seg = segs[segRect.index]
-    segRects[seg.eventRange.instance.instanceId] = segRect
+  for (const segRect of segRectsUnordered) {
+    segRects[segRect.index] = segRect
   }
 
   return [segRects, hiddenGroups]
