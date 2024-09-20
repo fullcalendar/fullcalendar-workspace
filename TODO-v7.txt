@@ -25,6 +25,7 @@ FOR beta.1
     businessHours in month view, right side, has weird 1px gap
   timegrid
     near end, checkout hscroll, expandRows, slots are aligning
+    make sure the cushions within the axis can have whatever width they want; parent doesn't crush them
   timeline
     test liquid-width columns (few slots)
     ensure events are positioned with pixels in both column-width scenarios
