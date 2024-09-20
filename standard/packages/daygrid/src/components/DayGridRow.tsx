@@ -134,6 +134,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
         className={[
           props.cellGroup ? 'fcnew-cellgroup' : 'fcnew-row',
           'fcnew-daygrid-row',
+          'fcnew-rel',
+          'fcnew-flex-grow',
           props.forceVSpacing ? 'fcnew-daygrid-row-vspacious' : '',
           props.className || '',
         ].join(' ')}

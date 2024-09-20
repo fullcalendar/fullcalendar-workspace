@@ -18,7 +18,6 @@ $daygrid-event-mirror-z: 7;
 }
 
 .fcnew-daygrid-main { // best name?
-  flex-grow: 1;
 }
 
 .fcnew-daygrid-rows {
@@ -27,9 +26,7 @@ $daygrid-event-mirror-z: 7;
   min-height: 100%;
 }
 
-.fcnew-daygrid-row {
-  position: relative; // origin for event positioning
-  flex-grow: 1;
+.fcnew-daygrid-row { // origin for event positioning
 }
 
 .fcnew-daygrid-row-vspacious {
@@ -48,10 +45,6 @@ $daygrid-event-mirror-z: 7;
   & .fcnew-daygrid-cell {
     display: flex;
     flex-direction: column;
-  }
-
-  & .fcnew-daygrid-cell-inner-liquid {
-    flex-grow: 1;
   }
 
   & .fcnew-col-header-cell { // not the correct place for this

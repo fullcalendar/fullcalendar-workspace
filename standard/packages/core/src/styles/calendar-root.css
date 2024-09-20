@@ -54,6 +54,13 @@
   flex-grow: 1;
 }
 
+.fcnew-flex-liquid {
+  flex-grow: 1;
+  flex-basis: 0;
+  min-width: 0;
+  min-height: 0;
+}
+
 // Table Utils
 // -------------------------------------------------------------------------------------------------
 
@@ -65,6 +72,8 @@ minHeight:
 flex-grow: 1;
 min-width: 0;
 min-height: 0;
+
+min-height: 100%;
 */
 
 // TODO: separate border (and their colors) for theme!
@@ -88,13 +97,14 @@ min-height: 0;
 .fcnew-cell,
 .fcnew-cellgroup,
 .fcnew-rowheader:only-child {
-  flex-basis: 0;
   flex-grow: 1;
+  flex-basis: 0;
+  min-width: 0;
 }
 
 .fcnew-cell-fixedsize { // TODO: instead of negating, have fcnew-cell-eq instead?
-  flex-basis: auto;
   flex-grow: 0; // -- this is the default, which means users of this are overriding!!!
+  flex-basis: auto;
 }
 
 // theme (TODO: rtl)

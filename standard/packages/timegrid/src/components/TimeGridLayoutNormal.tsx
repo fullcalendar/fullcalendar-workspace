@@ -195,7 +195,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         -----------------------------------------------------------------------------------------*/}
         <Scroller
           vertical={verticalScrolling}
-          elClassNames={['fcnew-rowgroup', 'fcnew-timegrid-timed-main']}
+          elClassNames={['fcnew-rowgroup', 'fcnew-timegrid-timed-main', 'fcnew-flex-liquid']}
           ref={props.timeScrollerRef}
           heightRef={this.handleScrollerHeight}
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}

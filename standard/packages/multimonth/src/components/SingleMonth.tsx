@@ -42,7 +42,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
       <div
         data-date={props.isoDateStr}
         role="grid"
-        className="fcnew-multimonth-month"
+        className="fcnew-multimonth-month fcnew-flex-grow"
         style={{ width: props.width }}
       >
         <div

@@ -287,7 +287,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             <div className='fcnew-rowdivider'></div>
           </Fragment>
         )}
-        <div className='fcnew-row fcnew-timegrid-timed-main '>{/* a "super" row */}
+        <div className='fcnew-row fcnew-timegrid-timed-main fcnew-flex-liquid'>{/* a "super" row */}
           {/* SLATS / labels (vertical scroller)
           ---------------------------------------------------------------------------------------*/}
           <Scroller
