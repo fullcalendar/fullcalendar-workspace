@@ -78,6 +78,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         elTag="div"
         elClasses={[
           'fcnew-cell',
+          props.width != null ? '' : 'fcnew-grow fcnew-basis0 fcnew-minw0',
           'fcnew-daygrid-cell',
           ...(props.extraClassNames || []),
         ]}
@@ -101,7 +102,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
             ref={this.innerElRef}
             className={[
               'fcnew-daygrid-cell-inner',
-              props.fgLiquidHeight ? 'fcnew-flex-liquid' : ''
+              props.fgLiquidHeight ? 'fcnew-grow fcnew-basis0 fcnew-minh0' : ''
             ].join(' ')}
           >
             <div ref={this.headerWrapElRef} className="fcnew-daygrid-cell-header-wrap">

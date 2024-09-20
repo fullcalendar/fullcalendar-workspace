@@ -43,7 +43,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
     let { dateEnv, options, viewApi } = context
 
     let classNames = [
-      'fcnew-rowheader',
+      'fcnew-cell',
       'fcnew-timegrid-slot-label',
     ]
 

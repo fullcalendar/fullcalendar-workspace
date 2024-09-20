@@ -81,6 +81,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         elClasses={[
           'fcnew-flex-column',
           'fcnew-cell',
+          props.width != null ? '' : 'fcnew-grow fcnew-basis0 fcnew-minw0',
           'fcnew-timegrid-col',
           ...(props.extraClassNames || []),
         ]}

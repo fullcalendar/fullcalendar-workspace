@@ -33,7 +33,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
       <ContentContainer
         elTag="div"
         elClasses={[
-          'fcnew-cell',
+          'fcnew-cell fcnew-grow', // need this? we don't use cell borders so what's the point
           'fcnew-timeline-lane',
           'fcnew-resource-group',
           context.theme.getClass('tableCellShaded'),

@@ -47,12 +47,11 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
         ].join(' ')}
       >
         <div
-          style={{ width: resourceAreaWidth }}
           class={[
             'fcnew-cell',
-            'fcnew-cell-fixedsize',
             props.startClassName
           ].join(' ')}
+          style={{ width: resourceAreaWidth }}
           ref={this.startElRef}
         >
           {props.startContent}
@@ -60,7 +59,6 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
         <div
           className={[
             'fcnew-cell',
-            'fcnew-cell-fixedsize',
             'fcnew-resource-timeline-divider',
             theme.getClass('tableCellShaded'),
           ].join(' ')}
@@ -69,11 +67,9 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
         <div
           class={[
             'fcnew-cell',
+            'fcnew-grow fcnew-basis0 fcnew-minw0',
             props.endClassName,
           ].join(' ')}
-          style={{
-            minWidth: 0, // TODO: util class for this? make it a reset?
-          }}
           ref={this.endElRef}
         >
           {props.endContent}

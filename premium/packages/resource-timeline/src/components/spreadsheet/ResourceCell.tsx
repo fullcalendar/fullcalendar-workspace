@@ -49,7 +49,6 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           'data-resource-id': props.resource.id,
         }}
         elStyle={{
-          flexBasis: 'auto', // !!!
           width: props.width,
         }}
         renderProps={renderProps}

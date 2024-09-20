@@ -34,7 +34,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
     return (
       <WeekNumberContainer
         elTag='div'
-        elClasses={['fcnew-rowheader']}
+        elClasses={['fcnew-cell']}
         elAttrs={{
           'aria-hidden': true, // why???
         }}

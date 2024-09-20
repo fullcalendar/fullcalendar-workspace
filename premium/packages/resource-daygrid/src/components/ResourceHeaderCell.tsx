@@ -25,6 +25,7 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
         elTag="div"
         elClasses={[
           'fcnew-cell',
+          props.colWidth != null ? '' : 'fcnew-grow fcnew-basis0 fcnew-minw0',
           HEADER_CELL_CLASS_NAME,
           'fcnew-resource',
         ]}

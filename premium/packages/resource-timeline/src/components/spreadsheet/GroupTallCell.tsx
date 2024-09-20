@@ -34,7 +34,7 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
           role: 'gridcell',
         }}
         elClasses={[
-          'fcnew-cell',
+          'fcnew-cell fcnew-grow', // need this at all? don't use the cell borders
           'fcnew-resource-group',
         ]}
         renderProps={renderProps}

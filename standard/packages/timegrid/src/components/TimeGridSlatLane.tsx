@@ -26,7 +26,7 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
     return (
       <ContentContainer
         elTag="div"
-        elClasses={['fcnew-cell']}
+        elClasses={['fcnew-cell fcnew-grow']}
         elAttrs={{
           'data-time': props.isoTimeStr,
         }}

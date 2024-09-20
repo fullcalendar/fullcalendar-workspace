@@ -98,8 +98,9 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
     const { axisWidth } = state
     const { options } = context
 
+    const isHeightAuto = getIsHeightAuto(options)
+    const verticalScrolling = !props.forPrint && !isHeightAuto
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
-    const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
 
     const slatCnt = props.slatMetas.length
     const [slatHeight, slatLiquid] = computeSlatHeight(
@@ -136,7 +137,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 key={tierNum}
                 className='fcnew-row'
               >
-                {props.renderHeaderLabel( // .fcnew-rowheader
+                {props.renderHeaderLabel( // .fcnew-cell
                   tierNum,
                   headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
                   undefined, // innerHeightRef
@@ -148,6 +149,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   renderHeaderContent={props.renderHeaderContent}
                   getHeaderModelKey={props.getHeaderModelKey}
                   cellGroup
+                  className='fcnew-grow fcnew-basis0 fcnew-minw0'
                 />
               </div>
             ))}
@@ -164,7 +166,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 paddingRight: state.rightScrollbarWidth,
               }}
             >
-              <TimeGridAllDayLabel // .fcnew-rowheader
+              <TimeGridAllDayLabel // .fcnew-cell
                 width={axisWidth}
                 innerWidthRef={this.handleAllDayLabelInnerWidth}
               />
@@ -195,7 +197,11 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         -----------------------------------------------------------------------------------------*/}
         <Scroller
           vertical={verticalScrolling}
-          elClassNames={['fcnew-rowgroup', 'fcnew-timegrid-timed-main', 'fcnew-flex-liquid']}
+          elClassNames={[
+            'fcnew-rowgroup', // why this is 'rowgroup', but Pannable just uses 'row'
+            'fcnew-timegrid-timed-main',
+            isHeightAuto ? '' : 'fcnew-grow fcnew-basis0 fcnew-minh0',
+          ]}
           ref={props.timeScrollerRef}
           heightRef={this.handleScrollerHeight}
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
@@ -211,7 +217,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 className={getSlatRowClassName(slatMeta)}
                 style={{ height: slatStyleHeight }}
               >
-                <TimeGridSlatLabel // .fcnew-rowheader
+                <TimeGridSlatLabel // .fcnew-cell
                   {...slatMeta}
                   innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                   innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
@@ -241,6 +247,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 slatCnt={slatCnt}
                 forPrint={props.forPrint}
                 isHitComboAllowed={props.isHitComboAllowed}
+                className='fcnew-grow fcnew-basis0 fcnew-minw0'
 
                 // content
                 fgEventSegsByCol={props.fgEventSegsByCol}

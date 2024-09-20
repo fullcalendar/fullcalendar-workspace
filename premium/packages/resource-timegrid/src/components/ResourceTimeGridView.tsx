@@ -171,7 +171,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
               headerTiers={headerTiers}
               renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width) => (
                 (options.weekNumbers && tierNum === headerTiers.length - 1) ? (
-                  <TimeGridWeekNumber // .fcnew-rowheader
+                  <TimeGridWeekNumber // .fcnew-cell
                     dateProfile={dateProfile}
                     innerWidthRef={innerWidthRef}
                     innerHeightRef={innerHeightRef}
@@ -179,7 +179,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
                   />
                 ) : (
                   <div
-                    className='fcnew-rowheader'
+                    className='fcnew-cell'
                     style={{ width }}
                   />
                 )

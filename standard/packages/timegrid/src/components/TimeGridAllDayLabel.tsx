@@ -30,7 +30,8 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
       <ContentContainer
         elTag="div"
         elClasses={[
-          'fcnew-rowheader'
+          'fcnew-cell',
+          'fcnew-timegrid-axis', // TODO: rename this 'axis' stuff
         ]}
         elAttrs={{
           'aria-hidden': true,

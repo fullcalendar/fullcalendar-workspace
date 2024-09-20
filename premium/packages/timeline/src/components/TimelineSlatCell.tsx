@@ -18,7 +18,7 @@ export interface TimelineSlatCellProps {
   isEm: boolean
 
   // dimensions
-  width: number | undefined
+  width: number | undefined // always provided. if pending, use `undefined`
 
   // ref
   innerWidthRef?: Ref<number>

@@ -39,7 +39,6 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
           'fcnew-header-cell',
         ]}
         elStyle={{
-          flexBasis: 'auto', // !!!
           width,
         }}
         renderProps={renderProps}

@@ -20,7 +20,7 @@ export interface TimelineHeaderCellProps {
   isSticky: boolean
 
   // dimensions
-  slotWidth: number | undefined
+  slotWidth: number | undefined // always provided. if pending, use `undefined`
 
   // refs
   innerHeightRef?: Ref<number>
@@ -60,9 +60,9 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
       <ContentContainer
         elTag="div"
         elClasses={[
-          'fcnew-cell',
           'fcnew-timeline-slot',
           'fcnew-timeline-slot-label',
+          'fcnew-cell',
           props.isCentered ? 'fcnew-timeline-slot-centered' : '',
           props.isSticky ? 'fcnew-timeline-slot-sticky' : '',
           cell.isWeekStart ? 'fcnew-timeline-slot-em' : '',

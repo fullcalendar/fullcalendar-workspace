@@ -54,7 +54,7 @@
   flex-grow: 1;
 }
 
-.fcnew-basis0 {
+.fcnew-basis0 { // only important if there are siblings that are expanding too
   flex-basis: 0;
 }
 
@@ -66,73 +66,30 @@
   min-height: 0;
 }
 
-/*
-TODO: replace with 'fcnew-grow fcnew-basis0'
-
-will essentially shrink to zero before expanding, but then ensures min-width/height so content isn't clipped
-(in effect, gives more space to siblings that are also expanding)
-*/
-.fcnew-flex-liquid-min {
-  flex-grow: 1;
-  flex-basis: 0; // !!!!
-}
-
-/*
-TODO: replace with 'fcnew-grow fcnew-basis0 fcnew-minw0/minh0'
-
-will essentially shrink to zero before expanding
-(in effect, will have identical dimensions as other siblings that are also expanding)
-*/
-.fcnew-flex-liquid {
-  flex-grow: 1;
-  flex-basis: 0;
-  min-width: 0; // !!!!
-  min-height: 0; // !!!!
-}
-
 // Table Utils
 // -------------------------------------------------------------------------------------------------
 
 /*
-flexBasis:
-minWidth:
-minHeight:
-min-width: 0;
-min-height: 0;
-min-height: 100%;
-*/
+TODO: make a className for
+  min-height: 100%;
 
-.fcnew-rowheader {
-  // for setting width/height based on innerWidth/innerHeight
-  // NOTE: won't work on equal-width cells that have absolute-positioned overlay with percentages
-  // what!!!???
-  box-sizing: content-box;
-}
+TODO: is this always necessary??
+  props.colWidth != null ? '' : 'fcnew-grow fcnew-basis0 fcnew-minw0',
+  props.width != null ? '' : 'fcnew-grow fcnew-basis0 fcnew-minw0',
+
+TODO: kill fcnew-cellgroup?
+  just use fcnew-flex-row instead?
+
+TODO: make fcnew-liquid util that combines all 3?
+
+TODO: look for `box-sizing: content-box` or `boxSizing:`
+*/
 
 .fcnew-row,
 .fcnew-cellgroup {
   display: flex;
   flex-direction: row;
   align-items: stretch;
-}
-
-/*
-TODO: add-on 'fcnew-grow fcnew-basis0 fcnew-minw0'
-  .fcnew-cell
-  .fcnew-cellgroup
-  .fcnew-rowheader:only-child
-*/
-.fcnew-cell,
-.fcnew-cellgroup,
-.fcnew-rowheader:only-child { // TODO: what is this used for?
-  flex-grow: 1;
-  flex-basis: 0;
-  min-width: 0;
-}
-
-.fcnew-cell-fixedsize { // TODO: instead of negating, have fcnew-cell-eq instead?
-  flex-grow: 0; // -- this is the default, which means users of this are overriding!!!
-  flex-basis: auto;
 }
 
 // theme (TODO: rtl)
@@ -161,6 +118,16 @@ TODO: add-on 'fcnew-grow fcnew-basis0 fcnew-minw0'
 .fcnew-cell:last-child,
 .fcnew-rowheader:last-child {
   border-right: 0;
+}
+
+/*
+HACK for lone cell (usually an axis)
+... won't work well when abs-positioned elements inside the row!
+*/
+.fcnew-cell:only-child {
+  flex-grow: 1;
+  flex-basis: 0;
+  min-width: 0;
 }
 
 .fcnew-rowdivider {

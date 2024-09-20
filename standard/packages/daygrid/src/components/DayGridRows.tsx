@@ -105,7 +105,10 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
             cells={cells}
             showDayNumbers={rowCnt > 1}
             forPrint={props.forPrint}
-            className={isHeightAuto ? '' : 'fcnew-flex-liquid-min'}
+
+            // if not auto-height, distribute height of container somewhat evently to rows
+            // (treat all as zero, distribute height, then ensure min-heights -- the inner content height)
+            className={isHeightAuto ? '' : 'fcnew-grow fcnew-basis0'}
 
             // content
             fgEventSegs={fgEventSegsByRow[row]}

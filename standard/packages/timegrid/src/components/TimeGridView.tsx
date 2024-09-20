@@ -82,7 +82,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
               headerTiers={dayTableModel.cellRows /* guaranteed to be one row */}
               renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width) => (
                 options.weekNumbers ? (
-                  <TimeGridWeekNumber // .fcnew-rowheader
+                  <TimeGridWeekNumber // .fcnew-cell
                     dateProfile={dateProfile}
                     innerWidthRef={innerWidthRef}
                     innerHeightRef={innerHeightRef}
@@ -90,7 +90,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
                   />
                 ) : (
                   <div
-                    className='fcnew-rowheader'
+                    className='fcnew-cell'
                     style={{ width }}
                   />
                 )

@@ -146,7 +146,9 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     const { options } = context
 
     const colCnt = props.headerTiers[0].length
-    const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
+
+    const isHeightAuto = getIsHeightAuto(options)
+    const verticalScrolling = !props.forPrint && !isHeightAuto
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
@@ -180,7 +182,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             {/* HEADER / labels
             -------------------------------------------------------------------------------------*/}
             <div
-              className='fcnew-rowheader' // a "super" cell
+              className='fcnew-cell' // a "super" cell
               style={{ width: axisWidth }}
             >
               {props.headerTiers.map((models, tierNum) => (
@@ -189,7 +191,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   className='fcnew-row'
                   style={{ height: state.headerTierHeights[tierNum] }}
                 >
-                  {props.renderHeaderLabel( // .fcnew-rowheader
+                  {props.renderHeaderLabel( // .fcnew-cell
                     tierNum,
                     headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
                     headerLabelInnerHeightRefMap.createRef(tierNum), // innerHeightRef
@@ -203,7 +205,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             <Scroller
               horizontal
               hideScrollbars
-              elClassNames={['fcnew-cell']} // a "super" cell
+              elClassNames={['fcnew-cell fcnew-grow fcnew-basis0 fcnew-minw0']} // a "super" cell
               // ^NOTE: not a good idea if ever gets left/right border
               ref={this.headerScrollerRef}
             >
@@ -236,7 +238,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             >
               {/* ALL-DAY / label
               -----------------------------------------------------------------------------------*/}
-              <TimeGridAllDayLabel // .fcnew-rowheader
+              <TimeGridAllDayLabel // .fcnew-cell
                 innerWidthRef={this.handleAllDayLabelInnerWidth}
                 innerHeightRef={this.handleAllDayLabelInnerHeight}
                 width={axisWidth}
@@ -246,7 +248,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               <Scroller
                 horizontal
                 hideScrollbars
-                elClassNames={['fcnew-cell']} // a "super" cell
+                elClassNames={['fcnew-cell fcnew-grow fcnew-basis0 fcnew-minw0']} // a "super" cell
                 // ^NOTE: not a good idea if ever gets left/right border
                 ref={this.allDayScrollerRef}
               >
@@ -287,13 +289,17 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             <div className='fcnew-rowdivider'></div>
           </Fragment>
         )}
-        <div className='fcnew-row fcnew-timegrid-timed-main fcnew-flex-liquid'>{/* a "super" row */}
+        <div className={[ // a "super" row
+          'fcnew-row',
+          'fcnew-timegrid-timed-main',
+          isHeightAuto ? '' : 'fcnew-grow fcnew-basis0 fcnew-minh0',
+        ].join(' ')}>
           {/* SLATS / labels (vertical scroller)
           ---------------------------------------------------------------------------------------*/}
           <Scroller
             vertical={verticalScrolling}
             hideScrollbars
-            elClassNames={['fcnew-rowheader']} // a "super" cell
+            elClassNames={['fcnew-cell']} // a "super" cell
             // ^NOTE: not a good idea if ever gets left/right border
             elStyle={{ width: axisWidth }}
             ref={this.axisScrollerRef}
@@ -312,7 +318,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   className={getSlatRowClassName(slatMeta)}
                   style={{ height: slatStyleHeight }}
                 >
-                  <TimeGridSlatLabel // .fcnew-rowheader
+                  <TimeGridSlatLabel // .fcnew-cell
                     {...slatMeta}
                     width={undefined}
                     innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
@@ -331,14 +337,15 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
           {/* SLATS / main (scroller)
           ---------------------------------------------------------------------------------------*/}
           <div
-            className='fcnew-cell fcnew-flex-column' // a "super" cell
-            style={{ minWidth: 0 }} // TODO: className!
+            className='fcnew-cell fcnew-grow fcnew-basis0 fcnew-minw0 fcnew-flex-column' // a "super" cell
           >
             <Scroller
               vertical={verticalScrolling}
               horizontal
               hideScrollbars={stickyFooterScrollbar /* also means height:auto, so won't need vertical scrollbars anyway */}
-              elClassNames={['fcnew-grow']}
+              elClassNames={[
+                isHeightAuto ? '' : 'fcnew-grow fcnew-basis0 fcnew-minh0',
+              ]}
               ref={this.mainScrollerRef}
               widthRef={this.handleScrollerWidth}
               heightRef={this.handleScrollerHeight}
@@ -374,7 +381,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   slatCnt={slatCnt}
                   forPrint={props.forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
-                  className='fcnew-absfill'
+                  className='fcnew-absfill fcnew-grow fcnew-basis0 fcnew-minw0'
 
                   // content
                   fgEventSegsByCol={props.fgEventSegsByCol}
