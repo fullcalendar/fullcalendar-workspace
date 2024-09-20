@@ -50,23 +50,44 @@
   flex-direction: column;
 }
 
-.fcnew-flex-grow {
+.fcnew-flex-grow { // TODO: rename to fcnew-grow
   flex-grow: 1;
 }
 
-.fcnew-flex-liquid {
-  flex-grow: 1;
+.fcnew-basis0 {
   flex-basis: 0;
+}
+
+.fcnew-minw0 {
   min-width: 0;
+}
+
+.fcnew-minh0 {
   min-height: 0;
 }
 
 /*
-when we want to preserve min-height:auto (where inner content determines min-height)
+TODO: replace with 'fcnew-flex-grow fcnew-basis0'
+
+will essentially shrink to zero before expanding, but then ensures min-width/height so content isn't clipped
+(in effect, gives more space to siblings that are also expanding)
 */
 .fcnew-flex-liquid-min {
   flex-grow: 1;
+  flex-basis: 0; // !!!!
+}
+
+/*
+TODO: replace with 'fcnew-flex-grow fcnew-basis0 fcnew-minw0/minh0'
+
+will essentially shrink to zero before expanding
+(in effect, will have identical dimensions as other siblings that are also expanding)
+*/
+.fcnew-flex-liquid {
+  flex-grow: 1;
   flex-basis: 0;
+  min-width: 0; // !!!!
+  min-height: 0; // !!!!
 }
 
 // Table Utils
@@ -76,21 +97,15 @@ when we want to preserve min-height:auto (where inner content determines min-hei
 flexBasis:
 minWidth:
 minHeight:
-
 min-width: 0;
 min-height: 0;
-
 min-height: 100%;
 */
-
-// TODO: separate border (and their colors) for theme!
-
-// TODO: apply min-height:0 to all children?
-// https://www.joshwcomeau.com/css/interactive-guide-to-flexbox/#the-minimum-size-gotcha-11
 
 .fcnew-rowheader {
   // for setting width/height based on innerWidth/innerHeight
   // NOTE: won't work on equal-width cells that have absolute-positioned overlay with percentages
+  // what!!!???
   box-sizing: content-box;
 }
 
@@ -101,9 +116,15 @@ min-height: 100%;
   align-items: stretch;
 }
 
+/*
+TODO: add-on 'fcnew-flex-grow fcnew-basis0 fcnew-minw0'
+  .fcnew-cell
+  .fcnew-cellgroup
+  .fcnew-rowheader:only-child
+*/
 .fcnew-cell,
 .fcnew-cellgroup,
-.fcnew-rowheader:only-child {
+.fcnew-rowheader:only-child { // TODO: what is this used for?
   flex-grow: 1;
   flex-basis: 0;
   min-width: 0;

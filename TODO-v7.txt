@@ -48,6 +48,9 @@ AFTER beta.1
     for syncing heights, is row-height off-by-one because inner heights don't include border?
     when DnD fits multiple tiers of events on one resource and expands height, there's a flicker
       TODO: prevent multiple passes of height-watching?
+    change how column-resizing widths is distibuted?
+      right now it's impossible to resize last column
+      try to take width away from next column when expanding
   list-view
     for left-and-right, don't use floating, use flexbox
   hit-system
