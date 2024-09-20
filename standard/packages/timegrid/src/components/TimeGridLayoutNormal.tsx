@@ -98,14 +98,12 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
     const { axisWidth } = state
     const { options } = context
 
-    const isHeightAuto = getIsHeightAuto(options)
-    const verticalScrolling = !props.forPrint && !isHeightAuto
+    const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
 
     const slatCnt = props.slatMetas.length
     const [slatHeight, slatLiquid] = computeSlatHeight(
-      verticalScrolling,
-      options.expandRows,
+      verticalScrolling && options.expandRows,
       slatCnt,
       state.slatInnerHeight,
       state.scrollerHeight,
@@ -200,7 +198,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           elClassNames={[
             'fcnew-rowgroup', // why this is 'rowgroup', but Pannable just uses 'row'
             'fcnew-timegrid-timed-main',
-            isHeightAuto ? '' : 'fcnew-liquid',
+            verticalScrolling ? 'fcnew-liquid' : '',
           ]}
           ref={props.timeScrollerRef}
           heightRef={this.handleScrollerHeight}
@@ -209,7 +207,9 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         >
           <div
             className='fcnew-rel'
-            style={{ minHeight: slatLiquid ? '100%' : '' }} // TODO: use className for this?
+            style={{
+              minHeight: '100%' // TODO: use className for this?
+            }}
           >
             {props.slatMetas.map((slatMeta) => (
               <div

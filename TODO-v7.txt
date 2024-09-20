@@ -11,17 +11,24 @@ FOR beta.1
       resource-timeline: there's a double-border at bottom of datagrid
       resource-grouping.html
         in datagrid-area, missing bottom-border on group "564 Pacific"
+      anytime pseudo-row/cells fabricate borders, need to be aware of removing last-child border
     stop doing "frame" elements for measurements, and instead use just "cushion"
       how would that work for getting a scroller's "clientWidth/clientHeight"?
+    is text-selection disabled everywhere? was it before? (if fixed, find ticket)
     weekNumbers (esp TimeGrid)
+    ensure print-mode disables all scrolling at least (stop using isHeightAuto directly)
     RTL
   daygrid
     in "timeline-column-grouping.html" example, go to "month" view, hover over "event 3"
       and horizontal scrollbars appear quickly
     businessHours in month view, right side, has weird 1px gap
   timegrid
+    use pixel positioning for events
     in TimeGridLayoutNormal, not nice how axis text isn't selectable
       (related to how now-indicator is rendered in axis)
+  timeline
+    test liquid-width columns (few slots)
+    ensure events are positioned with pixels in both column-width scenarios
   react/vue/angular connectors
     pause size-handling until all slots are rendered
 
@@ -67,6 +74,7 @@ AFTER beta.1
     this.detachInnerHeight() // should fire a 'null' height? yes! will cleanup any map listeners
   write tests
     percentage-based resource-timeline spreadsheet-column resizing
+    that expandRows works enabled/disabled for timegrid/resource-timeline views
 
 CHANGELOG
   temporary

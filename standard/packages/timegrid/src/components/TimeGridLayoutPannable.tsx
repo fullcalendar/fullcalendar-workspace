@@ -146,9 +146,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     const { options } = context
 
     const colCnt = props.headerTiers[0].length
-
-    const isHeightAuto = getIsHeightAuto(options)
-    const verticalScrolling = !props.forPrint && !isHeightAuto
+    const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
@@ -157,8 +155,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
 
     const slatCnt = props.slatMetas.length
     const [slatHeight, slatLiquid] = computeSlatHeight( // TODO: memo?
-      verticalScrolling,
-      options.expandRows,
+      verticalScrolling && options.expandRows,
       slatCnt,
       state.slatInnerHeight,
       state.scrollerHeight,
@@ -209,12 +206,14 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               // ^NOTE: not a good idea if ever gets left/right border
               ref={this.headerScrollerRef}
             >
-              <div style={{
-                boxSizing: 'content-box',
-                width: canvasWidth,
-                paddingLeft: state.leftScrollbarWidth,
-                paddingRight: state.rightScrollbarWidth,
-              }} >
+              <div
+                className='fcnew-content-box'
+                style={{
+                  width: canvasWidth,
+                  paddingLeft: state.leftScrollbarWidth,
+                  paddingRight: state.rightScrollbarWidth,
+                }}
+              >
                 {props.headerTiers.map((cells, tierNum) => (
                   <HeaderRowAdvanced // .fcnew-row
                     key={tierNum}
@@ -253,12 +252,14 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 // ^NOTE: not a good idea if ever gets left/right border
                 ref={this.allDayScrollerRef}
               >
-                <div style={{
-                  boxSizing: 'content-box',
-                  width: canvasWidth,
-                  paddingLeft: state.leftScrollbarWidth,
-                  paddingRight: state.rightScrollbarWidth,
-                }} >
+                <div
+                  className='fcnew-content-box'
+                  style={{
+                    width: canvasWidth,
+                    paddingLeft: state.leftScrollbarWidth,
+                    paddingRight: state.rightScrollbarWidth,
+                  }}
+                >
                   <TimeGridAllDayLane // .fcnew-cellgroup
                     dateProfile={props.dateProfile}
                     todayRange={props.todayRange}
@@ -293,7 +294,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
         <div className={[ // a "super" row
           'fcnew-row',
           'fcnew-timegrid-timed-main',
-          isHeightAuto ? '' : 'fcnew-liquid',
+          verticalScrolling ? 'fcnew-liquid' : '',
         ].join(' ')}>
           {/* SLATS / labels (vertical scroller)
           ---------------------------------------------------------------------------------------*/}
@@ -308,10 +309,10 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             ref={this.axisScrollerRef}
           >
             <div
-              className='fcnew-rel'
+              className='fcnew-rel fcnew-content-box'
               style={{
                 boxSizing: 'content-box',
-                minHeight: slatLiquid ? '100%' : '', // TODO: use className for this?
+                minHeight: '100%', // TODO: use className for this?
                 paddingBottom: state.bottomScrollbarWidth,
               }}
             >
@@ -347,7 +348,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               horizontal
               hideScrollbars={stickyFooterScrollbar /* also means height:auto, so won't need vertical scrollbars anyway */}
               elClassNames={[
-                isHeightAuto ? '' : 'fcnew-liquid',
+                verticalScrolling ? 'fcnew-liquid' : '',
               ]}
               ref={this.mainScrollerRef}
               widthRef={this.handleScrollerWidth}
@@ -361,7 +362,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 style={{
                   boxSizing: 'content-box',
                   width: canvasWidth,
-                  minHeight: slatLiquid ? '100%' : '', // TODO: use className for this?
+                  minHeight: '100%', // TODO: use className for this?
                 }}
               >
                 {props.slatMetas.map((slatMeta) => (

@@ -154,8 +154,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     /* table settings */
 
-    let isHeightAuto = getIsHeightAuto(options) // TODO: in future, forPrint should always imply isHeightAuto
-    let verticalScrolling = !props.forPrint && !isHeightAuto
+    let verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
     let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
@@ -218,7 +217,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
           )
         }
       },
-      options.expandRows ? state.mainScrollerHeight : undefined,
+      (verticalScrolling && options.expandRows)
+        ? state.mainScrollerHeight
+        : undefined,
     )
     let bodyTops = computeTopsFromHeights(bodyLayouts, bodyHeights)
     this.bodyHeights = bodyHeights
@@ -286,7 +287,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               viewSpec={viewSpec}
             >
               <ResizableTwoCol
-                className={isHeightAuto ? '' : 'fcnew-liquid'}
+                className={verticalScrolling ? 'fcnew-liquid' : ''}
                 onSizes={this.handleTwoColSizes}
 
                 /* spreadsheet
@@ -352,14 +353,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       hideScrollbars
                       elClassNames={[
                         'fcnew-rowgroup',
-                        isHeightAuto ? '' : 'fcnew-liquid',
+                        verticalScrolling ? 'fcnew-liquid' : '',
                       ]}
                       ref={this.spreadsheetBodyScrollerRef}
                     >
                       <div
                         className='fcnew-roworigin'
                         style={{
-                          // boxSizing: 'content-box', -- DON't WANT because of 100% minHeight
                           width: spreadsheetCanvasWidth,
                           minHeight: '100%', // TODO: make this a class?
                           paddingBottom: state.timeBottomScrollbarWidth - state.spreadsheetBottomScrollbarWidth,
@@ -475,11 +475,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       ref={this.spreadsheetFooterScrollerRef}
                       bottomScrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
                     >
-                      <div style={{
-                        boxSizing: 'content-box',
-                        width: spreadsheetCanvasWidth,
-                        height: '1px', // HACK
-                      }} />
+                      <div
+                        className='fcnew-content-box'
+                        style={{
+                          width: spreadsheetCanvasWidth,
+                          height: '1px', // HACK
+                        }}
+                      />
                     </Scroller>
                   </Fragment>
                 }
@@ -503,10 +505,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       ]}
                     >
                       <div
-                        className='fcnew-rel'
+                        className='fcnew-rel fcnew-content-box'
                         style={{
                           width: timeCanvasWidth,
-                          boxSizing: 'content-box', // this needs to be same elsewhere too!!!! make className
                           paddingLeft: state.leftScrollbarWidth,
                           paddingRight: state.rightScrollbarWidth,
                         }}
@@ -549,7 +550,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       hideScrollbars={stickyFooterScrollbar}
                       elClassNames={[
                         'fcnew-rowgroup',
-                        isHeightAuto ? '' : 'fcnew-liquid',
+                        verticalScrolling ? 'fcnew-liquid' : '',
                       ]}
                       ref={this.timeBodyScrollerRef}
                       heightRef={this.handleMainScrollerHeight}
@@ -558,9 +559,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       bottomScrollbarWidthRef={this.handleTimeBottomScrollbarWidth}
                     >
                       <div
-                        className='fcnew-roworigin'
+                        className='fcnew-roworigin fcnew-content-box'
                         style={{
-                          boxSizing: 'content-box', // this needs to be same elsewhere too!!!! make className
                           width: timeCanvasWidth,
                           height: bodyCanvasHeight,
                           minHeight: '100%', // TODO: className for this?
@@ -667,11 +667,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           marginTop: '-1px', // HACK
                         }}
                       >
-                        <div style={{
-                          boxSizing: 'content-box',
-                          width: timeCanvasWidth,
-                          height: '1px', // HACK
-                        }}/>
+                        <div
+                          className='fcnew-content-box'
+                          style={{
+                            width: timeCanvasWidth,
+                            height: '1px', // HACK
+                          }}
+                        />
                       </Scroller>
                     )}
 

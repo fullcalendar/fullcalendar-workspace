@@ -168,3 +168,7 @@ HACK for lone cell (usually an axis)
   left: 0;
   right: 0;
 }
+
+.fcnew-content-box {
+  box-sizing: content-box;
+}
