@@ -559,41 +559,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       bottomScrollbarWidthRef={this.handleTimeBottomScrollbarWidth}
                     >
                       <div
-                        className='fcnew-roworigin fcnew-grow'
-                        style={{
-                          width: timeCanvasWidth,
-                          height: bodyCanvasHeight,
-                        }}
+                        className='fcnew-rel fcnew-grow'
+                        style={{ width: timeCanvasWidth }}
                         ref={this.handleBodyEl}
                       >
-                        <TimelineSlats
-                          dateProfile={dateProfile}
-                          tDateProfile={tDateProfile}
-                          nowDate={nowDate}
-                          todayRange={todayRange}
-
-                          // ref
-                          innerWidthRef={this.handleBodySlotInnerWidth}
-
-                          // dimensions
-                          slotWidth={slotWidth}
-                        />
-                        <TimelineLaneBg
-                          tDateProfile={tDateProfile}
-                          nowDate={nowDate}
-                          todayRange={todayRange}
-
-                          // content
-                          bgEventSegs={bgSlicedProps.bgEventSegs}
-                          businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
-                          dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
-                          // empty array will result in unnecessary rerenders?...
-                          eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs as TimelineLaneSeg[] : [])}
-
-                          // dimensions
-                          slotWidth={slotWidth}
-                        />
-                        <Fragment>{/* TODO: need Fragment for key? */}
+                        <div
+                          className='fcnew-rel fcnew-roworigin'
+                          style={{ height: bodyCanvasHeight }}
+                        >
                           {flatGroupRowLayouts.map((groupRowLayout) => {
                             const group = groupRowLayout.entity
                             return (
@@ -644,14 +617,43 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                               </div>
                             )
                           })}
-                        </Fragment>
-                        {enableNowIndicator && (
-                          <TimelineNowIndicatorLine
+                        </div>
+                        <div className='fcnew-absfill'>
+                          <TimelineSlats
+                            dateProfile={dateProfile}
                             tDateProfile={tDateProfile}
                             nowDate={nowDate}
+                            todayRange={todayRange}
+
+                            // ref
+                            innerWidthRef={this.handleBodySlotInnerWidth}
+
+                            // dimensions
                             slotWidth={slotWidth}
                           />
-                        )}
+                          <TimelineLaneBg
+                            tDateProfile={tDateProfile}
+                            nowDate={nowDate}
+                            todayRange={todayRange}
+
+                            // content
+                            bgEventSegs={bgSlicedProps.bgEventSegs}
+                            businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
+                            dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
+                            // empty array will result in unnecessary rerenders?...
+                            eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs as TimelineLaneSeg[] : [])}
+
+                            // dimensions
+                            slotWidth={slotWidth}
+                          />
+                          {enableNowIndicator && (
+                            <TimelineNowIndicatorLine
+                              tDateProfile={tDateProfile}
+                              nowDate={nowDate}
+                              slotWidth={slotWidth}
+                            />
+                          )}
+                        </div>
                       </div>
                     </Scroller>
 

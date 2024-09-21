@@ -247,7 +247,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               <Scroller
                 horizontal
                 hideScrollbars
-                elClassNames={['fcnew-cell fcnew-liquid']} // a "super" cell
+                elClassNames={['fcnew-cell', 'fcnew-liquid']} // a "super" cell
                 // ^NOTE: not a good idea if ever gets left/right border
                 ref={this.allDayScrollerRef}
               >
@@ -361,30 +361,27 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               rightScrollbarWidthRef={this.handleRightScrollbarWidth}
               bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
             >
-              <div
-                className='fcnew-rel fcnew-grow fcnew-flex-column'
-                style={{
-                  width: canvasWidth,
-                }}
-              >
-                {props.slatMetas.map((slatMeta) => (
-                  <div
-                    key={slatMeta.key}
-                    className={[
-                      getSlatRowClassName(slatMeta),
-                      slatLiquid ? 'fcnew-liquid' : ''
-                    ].join(' ')}
-                    style={{
-                      height: slatLiquid ? '' : slatHeight
-                    }}
-                  >
-                    <TimeGridSlatLane // .fcnew-cell
-                      {...slatMeta}
-                      innerHeightRef={slatMainInnerHeightRefMap.createRef(slatMeta.key)}
-                    />
-                  </div>
-                ))}
-                <TimeGridCols // .fcnew-absfill
+              <div className='fcnew-grow fcnew-flex-column fcnew-rel' style={{ width: canvasWidth }}>
+                <div className='fcnew-grow fcnew-flex-column'>
+                  {props.slatMetas.map((slatMeta) => (
+                    <div
+                      key={slatMeta.key}
+                      className={[
+                        getSlatRowClassName(slatMeta),
+                        slatLiquid ? 'fcnew-liquid' : ''
+                      ].join(' ')}
+                      style={{
+                        height: slatLiquid ? '' : slatHeight
+                      }}
+                    >
+                      <TimeGridSlatLane // .fcnew-cell
+                        {...slatMeta}
+                        innerHeightRef={slatMainInnerHeightRefMap.createRef(slatMeta.key)}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <TimeGridCols
                   dateProfile={props.dateProfile}
                   nowDate={props.nowDate}
                   todayRange={props.todayRange}

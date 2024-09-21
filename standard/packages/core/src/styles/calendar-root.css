@@ -111,6 +111,7 @@ NOTE: fcnew-rowgroup is like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CEL
 /*
 HACK for lone cell (usually an axis)
 ... won't work well when abs-positioned elements inside the row!
+... PROBABLY OKAY
 */
 .fcnew-cell:only-child {
   flex-grow: 1;

@@ -205,30 +205,31 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
         >
           <div className='fcnew-rel fcnew-flex-column fcnew-grow'>
-            {props.slatMetas.map((slatMeta) => (
-              <div
-                key={slatMeta.key}
-                className={[
-                  getSlatRowClassName(slatMeta),
-                  slatLiquid ? 'fcnew-liquid' : ''
-                ].join(' ')}
-                style={{
-                  height: slatLiquid ? '' : slatHeight
-                }}
-              >
-                <TimeGridSlatLabel // .fcnew-cell
-                  {...slatMeta}
-                  innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
-                  innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
-                  width={axisWidth}
-                />
-                <TimeGridSlatLane // .fcnew-cell
-                  {...slatMeta}
-                  innerHeightRef={slatInnerMainHeightRefMap.createRef(slatMeta.key)}
-                />
-              </div>
-            ))}
-            {/* TODO: fix problem with last-child always showing border! */}
+            <div className='fcnew-flex-column fcnew-grow'>
+              {props.slatMetas.map((slatMeta) => (
+                <div
+                  key={slatMeta.key}
+                  className={[
+                    getSlatRowClassName(slatMeta),
+                    slatLiquid ? 'fcnew-liquid' : ''
+                  ].join(' ')}
+                  style={{
+                    height: slatLiquid ? '' : slatHeight
+                  }}
+                >
+                  <TimeGridSlatLabel // .fcnew-cell
+                    {...slatMeta}
+                    innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
+                    innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
+                    width={axisWidth}
+                  />
+                  <TimeGridSlatLane // .fcnew-cell
+                    {...slatMeta}
+                    innerHeightRef={slatInnerMainHeightRefMap.createRef(slatMeta.key)}
+                  />
+                </div>
+              ))}
+            </div>
             <div className='fcnew-absfill fcnew-flex-row'>
               <div
                 className='fcnew-cell fcnew-timegrid-header-axises'
