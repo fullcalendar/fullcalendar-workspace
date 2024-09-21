@@ -4,11 +4,10 @@ FOR beta.1
     redo cell borders
       we have major/minor mixed up
       should we always assume solid border style?
-      TEST: with horizontal scrolling (dayMinWidth),
-        header doesn't have top border
       theming
         i can write table-inspired css utils however i want, with borders
       resource-timeline: there's a double-border at bottom of datagrid
+        similar double-border at bottom of month-view-hscroll.html when height:auto
       resource-grouping.html
         in datagrid-area, missing bottom-border on group "564 Pacific"
       anytime pseudo-row/cells fabricate borders, need to be aware of removing last-child border
