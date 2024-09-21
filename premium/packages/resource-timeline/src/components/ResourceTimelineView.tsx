@@ -824,7 +824,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     if (request.time) {
       if (slotWidth != null && tDateProfile != null) {
-        let x = timeToCoord(request.time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth)
+        let x = timeToCoord(request.time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth) +
+          (context.isRtl ? -1 : 1) // overcome border. TODO: DRY this up
         this.timeScroller.scrollTo({ x })
         return true
       }

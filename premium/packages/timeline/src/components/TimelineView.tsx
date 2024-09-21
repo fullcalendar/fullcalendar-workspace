@@ -311,7 +311,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
     if (request.time) {
       if (tDateProfile != null && slotWidth != null) {
-        let x = timeToCoord(request.time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth)
+        let x = timeToCoord(request.time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth) +
+          (context.isRtl ? -1 : 1) // overcome border. TODO: DRY this up
         this.syncedScroller.scrollTo({ x })
         return true
       }

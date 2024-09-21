@@ -101,11 +101,11 @@ NOTE: fcnew-rowgroup is like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CEL
 .fcnew-cell {
   border-style: solid;
   border-color: var(--fcnew-border-color);
-  border-width: 0 1px 0 0; // right
+  border-width: 0 0 0 1px; // left
 }
 
-.fcnew-cell:last-child {
-  border-right: 0;
+.fcnew-cell:first-of-type {
+  border-left: 0;
 }
 
 /*

@@ -18,6 +18,8 @@ FOR beta.1
     weekNumbers (esp TimeGrid)
     ensure print-mode disables all scrolling at least (stop using isHeightAuto directly)
     RTL
+  resource-timeline
+    when switching back and forth from 1-day to 3-day, many times, scrolltime gets messed up
   daygrid
     in "timeline-column-grouping.html" example, go to "month" view, hover over "event 3"
       and horizontal scrollbars appear quickly
