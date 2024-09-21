@@ -69,16 +69,17 @@
 // -------------------------------------------------------------------------------------------------
 
 /*
-TODO: make a className for -- or use use fcnew-liquid?
-  minHeight:
-  min-height: 100%;
-
 NOTE: fcnew-rowgroup is like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CELLS
 */
 
 .fcnew-row {
   display: flex;
   flex-direction: row;
+}
+
+.fcnew-rowgroup {
+  display: flex;
+  flex-direction: column;
 }
 
 // theme (TODO: rtl)
@@ -97,15 +98,13 @@ NOTE: fcnew-rowgroup is like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CEL
   border-bottom: 0;
 }
 
-.fcnew-cell,
-.fcnew-rowheader {
+.fcnew-cell {
   border-style: solid;
   border-color: var(--fcnew-border-color);
   border-width: 0 1px 0 0; // right
 }
 
-.fcnew-cell:last-child,
-.fcnew-rowheader:last-child {
+.fcnew-cell:last-child {
   border-right: 0;
 }
 

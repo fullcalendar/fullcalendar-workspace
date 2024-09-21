@@ -23,7 +23,6 @@ $daygrid-event-mirror-z: 7;
 .fcnew-daygrid-rows {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
 }
 
 .fcnew-daygrid-row { // origin for event positioning

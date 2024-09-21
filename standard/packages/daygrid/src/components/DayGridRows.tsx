@@ -93,7 +93,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
 
     return (
       <div
-        className='fcnew-daygrid-rows'
+        className='fcnew-daygrid-rows fcnew-grow'
         style={{ width: props.width }}
         ref={this.handleRootEl}
       >

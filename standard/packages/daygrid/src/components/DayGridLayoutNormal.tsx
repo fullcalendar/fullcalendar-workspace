@@ -86,11 +86,12 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
           elClassNames={[
             'fcnew-rowgroup',
             'fcnew-daygrid-main',
+            'fcnew-flex-column',
             verticalScrollbars ? 'fcnew-liquid' : '',
           ]}
           ref={this.handleScroller}
         >
-          <DayGridRows
+          <DayGridRows // .fcnew-grow
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
             cellRows={props.cellRows}

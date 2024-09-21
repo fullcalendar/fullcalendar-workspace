@@ -172,10 +172,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 rightScrollbarWidthRef={this.handleRightScrollbarWidth}
               >
                 <div
-                  className="fcnew-rel"
+                  className="fcnew-rel fcnew-grow"
                   style={{
                     width: canvasWidth,
-                    minHeight: '100%', // TODO: className for this?
                   }}
                   ref={this.handeBodyEl}
                 >

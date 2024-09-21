@@ -302,15 +302,15 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             hideScrollbars
             elClassNames={[
               'fcnew-cell', // NOTE: not a good idea if ever gets left/right border
+              'fcnew-flex-column',
               'fcnew-timegrid-slot-labels',
             ]}
             elStyle={{ width: axisWidth }}
             ref={this.axisScrollerRef}
           >
             <div
-              className='fcnew-rel fcnew-flex-column'
+              className='fcnew-rel fcnew-grow fcnew-flex-column'
               style={{
-                minHeight: '100%', // TODO: use className for this?
                 paddingBottom: state.bottomScrollbarWidth,
               }}
             >
@@ -352,6 +352,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               hideScrollbars={stickyFooterScrollbar /* also means height:auto, so won't need vertical scrollbars anyway */}
               elClassNames={[
                 verticalScrolling ? 'fcnew-liquid' : '',
+                'fcnew-flex-column',
               ]}
               ref={this.mainScrollerRef}
               widthRef={this.handleScrollerWidth}
@@ -361,10 +362,9 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
             >
               <div
-                className='fcnew-rel fcnew-flex-column'
+                className='fcnew-rel fcnew-grow fcnew-flex-column'
                 style={{
                   width: canvasWidth,
-                  minHeight: '100%', // TODO: use className for this?
                 }}
               >
                 {props.slatMetas.map((slatMeta) => (

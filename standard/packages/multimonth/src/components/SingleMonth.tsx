@@ -71,6 +71,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
         <div
           className={[
             'fcnew-multimonth-daygrid',
+            'fcnew-flex-column',
             context.theme.getClass('table'), // does this still work?
           ].join(' ')}
           style={{
@@ -78,7 +79,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
             height: forPrint ? '' : tableHeight,
           }}
         >
-          <DayGridRows
+          <DayGridRows // .fcnew-grow
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
             cellRows={dayTableModel.cellRows}

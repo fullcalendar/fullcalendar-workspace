@@ -110,11 +110,12 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           elClassNames={[
             'fcnew-rowgroup',
             'fcnew-daygrid-main',
+            'fcnew-flex-column',
             verticalScrollbars ? 'fcnew-liquid' : '',
           ]}
           ref={this.bodyScrollerRef}
         >
-          <DayGridRows
+          <DayGridRows // .fcnew-grow
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
             cellRows={props.cellRows}

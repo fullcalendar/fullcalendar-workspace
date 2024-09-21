@@ -195,7 +195,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         <Scroller
           vertical={verticalScrolling}
           elClassNames={[
-            'fcnew-rowgroup', // why this is 'rowgroup', but Pannable just uses 'row'
+            'fcnew-rowgroup',
             'fcnew-timegrid-timed-main',
             verticalScrolling ? 'fcnew-liquid' : '',
           ]}
@@ -204,12 +204,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
         >
-          <div
-            className='fcnew-rel fcnew-flex-column'
-            style={{
-              minHeight: '100%' // TODO: use className for this?
-            }}
-          >
+          <div className='fcnew-rel fcnew-flex-column fcnew-grow'>
             {props.slatMetas.map((slatMeta) => (
               <div
                 key={slatMeta.key}

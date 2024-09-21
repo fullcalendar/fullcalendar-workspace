@@ -53,6 +53,7 @@ AFTER beta.1
   timeline
     previously, Timeline's hit system would always return slat left/right, not snap. matters?
   resource-timeline
+    when few resources, and lots of space below, spreadsheet column lines should span entire height (currently doesn't)
     needed?- ability to freeze resizing while resizing columns or resource-area
     get grouping via row and col simultaneously working. should be possible. see timeline-row-n-col-grouping-not-working.html
     for syncing heights, is row-height off-by-one because inner heights don't include border?

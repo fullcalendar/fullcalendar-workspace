@@ -358,10 +358,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       ref={this.spreadsheetBodyScrollerRef}
                     >
                       <div
-                        className='fcnew-roworigin'
+                        className='fcnew-roworigin fcnew-grow'
                         style={{
                           width: spreadsheetCanvasWidth,
-                          minHeight: '100%', // TODO: make this a class?
                           paddingBottom: state.timeBottomScrollbarWidth - state.spreadsheetBottomScrollbarWidth,
                         }}
                       >
@@ -542,7 +541,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       </div>
                     </Scroller>
 
-                    {/* time-area BODY (resources)
+                    {/* time-area BODY (w/ events)
                     ---------------------------------------------------------------------------- */}
                     <Scroller
                       vertical={verticalScrolling}
@@ -560,11 +559,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       bottomScrollbarWidthRef={this.handleTimeBottomScrollbarWidth}
                     >
                       <div
-                        className='fcnew-roworigin fcnew-content-box'
+                        className='fcnew-roworigin fcnew-grow'
                         style={{
                           width: timeCanvasWidth,
                           height: bodyCanvasHeight,
-                          minHeight: '100%', // TODO: className for this?
                         }}
                         ref={this.handleBodyEl}
                       >
