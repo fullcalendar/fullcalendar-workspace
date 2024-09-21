@@ -181,6 +181,7 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
       if (slatHeight) {
         const top = computeTimeTopFrac(scrollRequest.time, this.props.dateProfile)
           * (slatHeight * this.currentSlatCnt)
+          + (this.context.isRtl ? -1 : 1) // overcome border
 
         timeScroller.scrollTo({ y: top })
 

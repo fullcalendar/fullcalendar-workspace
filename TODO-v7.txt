@@ -20,12 +20,14 @@ FOR beta.1
     RTL
   resource-timeline
     when switching back and forth from 1-day to 3-day, many times, scrolltime gets messed up
+    bug: resizing two-column causes datagrid bottom padding to collapse to 1px !?
   daygrid
     in "timeline-column-grouping.html" example, go to "month" view, hover over "event 3"
       and horizontal scrollbars appear quickly
     businessHours in month view, right side, has weird 1px gap
       (happens because percentage left/width -- try to return to using 'right'?)
   timegrid
+    initial-scroll broken!!!
     hscroll weirdness: why isn't topleft empty cell's parentrow height-synced to the day header?
       audit examples-v7/resource-timegrid.html too
     make sure the cushions within the axis can have whatever width they want; parent doesn't crush them
@@ -56,6 +58,7 @@ AFTER beta.1
     needed?- ability to freeze resizing while resizing columns or resource-area
     get grouping via row and col simultaneously working. should be possible. see timeline-row-n-col-grouping-not-working.html
     for syncing heights, is row-height off-by-one because inner heights don't include border?
+      why not just make all column-widths done with content-box?
     when DnD fits multiple tiers of events on one resource and expands height, there's a flicker
       TODO: prevent multiple passes of height-watching?
     change how column-resizing widths is distibuted?

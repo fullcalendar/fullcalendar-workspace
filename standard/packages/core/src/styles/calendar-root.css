@@ -94,20 +94,26 @@ NOTE: fcnew-rowgroup is like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CEL
   flex-direction: column;
 }
 
-// theme (TODO: rtl)
+/*
+TODO: rtl
+TODO: get rid of roworigin!
+TODO: make celldivider className? use it for Resizable twocol?
+TODO: try making all rows/cells content-box! easier for width assigning
+  HOWEVER, when explicitly setting tops/heights for resource rows, will overlap
+*/
 
 .fcnew-row,
 .fcnew-rowgroup,
 .fcnew-rowdivider {
   border-style: solid;
   border-color: var(--fcnew-border-color);
-  border-width: 0 0 1px; // bottom
+  border-width: 1px 0 0; // top
 }
 
-.fcnew-row:last-of-type,
-.fcnew-rowgroup:last-of-type,
-.fcnew-rowdivider:last-of-type {
-  border-bottom: 0;
+.fcnew-row:first-child,
+.fcnew-rowgroup:first-child,
+.fcnew-rowdivider:first-child {
+  border-top-width: 0;
 }
 
 .fcnew-cell {
@@ -116,22 +122,34 @@ NOTE: fcnew-rowgroup is like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CEL
   border-width: 0 0 0 1px; // left
 }
 
-.fcnew-cell:first-of-type {
-  border-left: 0;
+.fcnew-cell:first-child {
+  border-left-width: 0;
 }
 
 /*
 Lone cell in a row should always fill row. Makes axis widths much easier
 */
-.fcnew-cell:only-of-type {
+.fcnew-cell:only-child {
   flex-grow: 1;
   flex-basis: 0;
   min-width: 0;
 }
 
 .fcnew-rowdivider {
-  padding-bottom: 2px;
+  padding-bottom: 2px; // can use just height if we move towards content-box!
   background: var(--fcnew-neutral-bg-color);
+}
+
+.fcnew-rowdivider,
+.fcnew-sticky-header {
+  border-bottom-width: 1px; // takeover the bottom border
+}
+
+.fcnew-sticky-header + .fcnew-row,
+.fcnew-sticky-header + .fcnew-rowgroup,
+.fcnew-rowdivider + .fcnew-row,
+.fcnew-rowdivider + .fcnew-rowgroup { // TODO: combine this with above
+  border-top-width: 0;
 }
 
 // Misc Utils

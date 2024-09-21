@@ -22,7 +22,6 @@
     position: relative;
   }
   & .fcnew-roworigin > .fcnew-row {
-    // TODO: DRY-up with fcnew-resource-timeline-row
     position: absolute;
     left: 0;
     right: 0;

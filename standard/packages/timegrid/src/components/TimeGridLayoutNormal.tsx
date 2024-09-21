@@ -252,7 +252,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 slatCnt={slatCnt}
                 forPrint={props.forPrint}
                 isHitComboAllowed={props.isHitComboAllowed}
-                className='fcnew-liquid'
+                className='fcnew-liquid fcnew-cell'
 
                 // content
                 fgEventSegsByCol={props.fgEventSegsByCol}
