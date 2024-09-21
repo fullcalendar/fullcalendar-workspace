@@ -146,7 +146,8 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   renderHeaderContent={props.renderHeaderContent}
                   getHeaderModelKey={props.getHeaderModelKey}
                   cellGroup
-                  className='fcnew-liquid'
+                  className='fcnew-cell fcnew-liquid'
+                  // ^weird we're setting 'cell' ... just have HeaderRow be HeaderCells and wrap ourselves?
                 />
               </div>
             ))}
@@ -174,6 +175,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 showDayNumbers={false}
                 forPrint={props.forPrint}
                 isHitComboAllowed={props.isHitComboAllowed}
+                className='fcnew-cell'
 
                 // content
                 fgEventSegs={props.fgEventSegs}

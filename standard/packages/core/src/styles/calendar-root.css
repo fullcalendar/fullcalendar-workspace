@@ -104,9 +104,9 @@ NOTE: fcnew-rowgroup is like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CEL
   border-width: 0 0 1px; // bottom
 }
 
-.fcnew-row:last-child,
-.fcnew-rowgroup:last-child,
-.fcnew-rowdivider:last-child {
+.fcnew-row:last-of-type,
+.fcnew-rowgroup:last-of-type,
+.fcnew-rowdivider:last-of-type {
   border-bottom: 0;
 }
 

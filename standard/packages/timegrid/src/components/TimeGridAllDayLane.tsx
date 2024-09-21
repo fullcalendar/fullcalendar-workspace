@@ -16,7 +16,11 @@ export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps> {
       <DayGridRow
         {...this.props}
         cellGroup
-        className='fcnew-timegrid-allday-main fcnew-liquid'
+        className={[
+          'fcnew-timegrid-allday-main',
+          'fcnew-liquid',
+          this.props.className || '',
+        ].join(' ')}
         forceVSpacing
         rootElRef={this.handleRootEl}
         heightRef={this.heightRef}
