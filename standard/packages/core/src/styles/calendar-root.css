@@ -95,11 +95,19 @@ NOTE: fcnew-rowgroup is like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CEL
 }
 
 /*
+TODO: because of cell first-child issue, spreadsheet columns don't align
+  need to devise similar solution where parent doesn't have a border, and first-child border is preserved
+    - for spreadsheet cols
+    - for virtualization scrolling of resources (first row should have top border)
+    - for timegrid's abs-positioned cols needing left-inset from axis
+
 TODO: rtl
-TODO: get rid of roworigin!
 TODO: make celldivider className? use it for Resizable twocol?
 TODO: try making all rows/cells content-box! easier for width assigning
   HOWEVER, when explicitly setting tops/heights for resource rows, will overlap
+  HOWEVER, when manually calculating how to distribute datagrid width to columns,
+    resulting pixel array our cell outer widths (because they must add up to the total)
+TODO: move away from 'spreadsheet' and use 'datagrid' instead
 */
 
 .fcnew-row,
@@ -159,12 +167,18 @@ Lone cell in a row should always fill row. Makes axis widths much easier
   position: relative;
 }
 
-.fcnew-absfill {
+.fcnew-absfill { // rename?
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.fcnew-absfill-x { // rename?
+  position: absolute;
+  left: 0;
+  right: 0;
 }
 
 .fcnew-v-sticky {

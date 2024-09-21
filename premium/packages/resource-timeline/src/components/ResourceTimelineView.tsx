@@ -358,14 +358,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       ref={this.spreadsheetBodyScrollerRef}
                     >
                       <div
-                        className='fcnew-roworigin fcnew-grow'
+                        className='fcnew-rel fcnew-grow'
                         style={{
                           width: spreadsheetCanvasWidth,
                           paddingBottom: state.timeBottomScrollbarWidth - state.spreadsheetBottomScrollbarWidth,
+                          // ^^weird to have same element responsible for width and veritical padding
                         }}
                       >
                         <div
-                          className='fcnew-flex-row fcnew-supercolumns'
+                          className='fcnew-flex-row'
                           style={{
                             height: bodyCanvasHeight,
                           }}
@@ -375,7 +376,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             {flatGroupColLayouts.map((groupColLayouts, colIndex) => (
                               <div
                                 key={colIndex}
-                                className='fcnew-roworigin'
+                                className='fcnew-cell fcnew-rel'
                                 style={{
                                   width: spreadsheetColWidths[colIndex],
                                 }}
@@ -386,7 +387,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                     <div
                                       key={queryObjKey(group)}
                                       role='row'
-                                      class='fcnew-row'
+                                      class='fcnew-row fcnew-absfill-x'
                                       style={{
                                         top: bodyTops.get(group),
                                         height: bodyHeights.get(group),
@@ -406,7 +407,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           {/* TODO: do background column stripes; add render hooks? */}
                           {/* BADDD: this should be within something with {height:bodyCanvasHeight} */}
                           <div
-                            className='fcnew-roworigin'
+                            className='fcnew-cell fcnew-rel'
                             style={{
                               width: spreadsheetResourceWidth
                             }}
@@ -417,7 +418,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                 <div
                                   key={resource.id}
                                   role='row'
-                                  class='fcnew-row'
+                                  class='fcnew-row fcnew-absfill-x'
                                   style={{
                                     top: bodyTops.get(resource),
                                     height: bodyHeights.get(resource),
@@ -444,7 +445,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             <div
                               key={queryObjKey(group)}
                               role='row'
-                              class='fcnew-row'
+                              class='fcnew-row fcnew-absfill-x'
                               style={{
                                 top: bodyTops.get(group),
                                 height: bodyHeights.get(group),
@@ -564,7 +565,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         ref={this.handleBodyEl}
                       >
                         <div
-                          className='fcnew-rel fcnew-roworigin'
+                          className='fcnew-rel'
                           style={{ height: bodyCanvasHeight }}
                         >
                           {flatGroupRowLayouts.map((groupRowLayout) => {
@@ -573,7 +574,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                               <div
                                 key={queryObjKey(group)}
                                 role='row'
-                                class='fcnew-row'
+                                class='fcnew-row fcnew-absfill-x'
                                 style={{
                                   top: bodyTops.get(group),
                                   height: bodyHeights.get(group),
@@ -592,7 +593,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                               <div
                                 key={resource.id}
                                 role='row'
-                                className='fcnew-row'
+                                className='fcnew-row fcnew-absfill-x'
                                 style={{
                                   top: bodyTops.get(resource),
                                   height: bodyHeights.get(resource),

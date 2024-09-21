@@ -6,10 +6,4 @@
     cursor: col-resize;
   }
 
-  & .fcnew-roworigin > .fcnew-row {
-    position: absolute;
-    left: 0;
-    right: 0;
-    // transition: top 0.5s ease;
-  }
 }
