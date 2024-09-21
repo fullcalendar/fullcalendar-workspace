@@ -130,7 +130,7 @@ TODO: move away from 'spreadsheet' and use 'datagrid' instead
   border-width: 0 0 0 1px; // left
 }
 
-.fcnew-cell:first-child {
+.fcnew-cell:first-child:not(.fcnew-not-first) {
   border-left-width: 0;
 }
 
@@ -153,7 +153,7 @@ Lone cell in a row should always fill row. Makes axis widths much easier
   border-bottom-width: 1px; // takeover the bottom border
 }
 
-.fcnew-sticky-header + .fcnew-row,
+.fcnew-sticky-header + .fcnew-row, // TODO: move to fcnew-rowgroup-sticky?
 .fcnew-sticky-header + .fcnew-rowgroup,
 .fcnew-rowdivider + .fcnew-row,
 .fcnew-rowdivider + .fcnew-rowgroup { // TODO: combine this with above

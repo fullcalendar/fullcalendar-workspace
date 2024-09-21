@@ -164,7 +164,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       orderSpecs,
       colSpecs,
       colWidthConfigs: initialColWidthConfigs,
-      resourceColSpecs,
       superHeaderRendering,
     } = this.processColOptions(context.options)
 
@@ -407,7 +406,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           {/* TODO: do background column stripes; add render hooks? */}
                           {/* BADDD: this should be within something with {height:bodyCanvasHeight} */}
                           <div
-                            className='fcnew-cell fcnew-rel'
+                            className='fcnew-flex-row fcnew-rel'
                             style={{
                               width: spreadsheetResourceWidth
                             }}
@@ -430,9 +429,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                     indent={resourceLayout.indent}
                                     hasChildren={resourceLayout.hasChildren}
                                     isExpanded={resourceLayout.isExpanded}
-                                    colSpecs={resourceColSpecs}
+                                    colStartIndex={flatGroupColLayouts.length}
+                                    colSpecs={colSpecs}
                                     innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(resource)}
-                                    colWidths={spreadsheetColWidths.slice(flatGroupColLayouts.length) /* !!! */}
+                                    colWidths={spreadsheetColWidths}
                                   />
                                 </div>
                               )
@@ -1079,7 +1079,6 @@ function processColOptions(options: ViewOptionsRefined) {
     orderSpecs: plainOrderSpecs,
     colSpecs,
     colWidthConfigs,
-    resourceColSpecs,
     superHeaderRendering,
   }
 }

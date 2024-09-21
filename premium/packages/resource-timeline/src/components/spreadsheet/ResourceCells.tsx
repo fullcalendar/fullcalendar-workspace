@@ -6,7 +6,8 @@ import { ResourceCell } from './ResourceCell.js'
 export interface ResourceCellsProps {
   resource: Resource
   resourceFields: any
-  colSpecs: ColSpec[]
+  colStartIndex: number
+  colSpecs: ColSpec[] // starts at colStartIndex
   indent: number
   isExpanded: boolean
   hasChildren: boolean
@@ -15,7 +16,7 @@ export interface ResourceCellsProps {
   innerHeightRef?: Ref<number>
 
   // sizing
-  colWidths: number[]
+  colWidths: number[] // starts at colStartIndex
 }
 
 export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext> {
@@ -27,17 +28,19 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
 
   render() {
     let { props, innerHeightRefMap } = this
-    let { resource, resourceFields, colWidths } = props
+    let { resource, resourceFields, colSpecs, colWidths } = props
 
     return (
       <Fragment>
-        {props.colSpecs.map((colSpec, i) => {
-          let fieldValue = colSpec.field ? resourceFields[colSpec.field] :
+        {mapRange(props.colStartIndex, colSpecs.length, (i) => {
+          const colSpec = colSpecs[i]
+          const fieldValue = colSpec.field ? resourceFields[colSpec.field] :
             (resource.title || getPublicId(resource.id))
 
           return (
             <ResourceCell
               key={i} // eslint-disable-line react/no-array-index-key
+              colIndex={i}
               colSpec={colSpec}
               resource={resource}
               fieldValue={fieldValue}
@@ -71,3 +74,17 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
 ResourceCells.addPropsEquality({
   colWidths: isArraysEqual,
 })
+
+// Utils
+// -------------------------------------------------------------------------------------------------
+// TODO: make public
+
+function mapRange<Item>(start: number, end: number, func: (index: number) => Item): Item[] {
+  const items: Item[] = []
+
+  for (let i = start; i < end; i++) {
+    items.push(func(i))
+  }
+
+  return items
+}

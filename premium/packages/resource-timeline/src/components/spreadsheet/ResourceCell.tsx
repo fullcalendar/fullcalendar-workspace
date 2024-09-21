@@ -13,6 +13,7 @@ import { Resource, ColSpec } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from './ExpanderIcon.js'
 
 export interface ResourceCellProps {
+  colIndex: number
   colSpec: ColSpec
   resource: Resource
   fieldValue: any
@@ -43,9 +44,11 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         elClasses={[
           'fcnew-cell',
           'fcnew-resource',
+          props.colIndex ? 'fcnew-not-first' : '',
         ]}
         elAttrs={{
           role: 'gridcell',
+          'aria-colindex': props.colIndex,
           'data-resource-id': props.resource.id,
         }}
         elStyle={{
