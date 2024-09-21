@@ -109,11 +109,9 @@ NOTE: fcnew-rowgroup is like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CEL
 }
 
 /*
-HACK for lone cell (usually an axis)
-... won't work well when abs-positioned elements inside the row!
-... PROBABLY OKAY
+Lone cell in a row should always fill row. Makes axis widths much easier
 */
-.fcnew-cell:only-child {
+.fcnew-cell:only-of-type {
   flex-grow: 1;
   flex-basis: 0;
   min-width: 0;

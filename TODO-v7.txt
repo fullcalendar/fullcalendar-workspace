@@ -23,6 +23,7 @@ FOR beta.1
     in "timeline-column-grouping.html" example, go to "month" view, hover over "event 3"
       and horizontal scrollbars appear quickly
     businessHours in month view, right side, has weird 1px gap
+      (happens because percentage left/width -- try to return to using 'right'?)
   timegrid
     hscroll weirdness: why isn't topleft empty cell's parentrow height-synced to the day header?
       audit examples-v7/resource-timegrid.html too
@@ -38,10 +39,6 @@ AFTER beta.1
   restore print-mode
   implement ResizeObserver fallback
   just like scrollbar dead area should have grey bg, make timegrid bottom area w/o slots a grey bg
-  slatline alignment bugs
-    in daygrid (esp with sticky header, or horizontal scrolling?)
-    timeline: with header cells when header cells are half as frequent
-      (recreated in resource timeline.. in regular timeline too?)
   initial-scroll for views with complex rendering is wrong
     multiweek (uses DayGridLayout/dayGridYear-view), (and multimonth too?)
   daygrid
@@ -54,7 +51,6 @@ AFTER beta.1
   timeline
     previously, Timeline's hit system would always return slat left/right, not snap. matters?
   resource-timeline
-    when few resources, and lots of space below, spreadsheet column lines should span entire height (currently doesn't)
     needed?- ability to freeze resizing while resizing columns or resource-area
     get grouping via row and col simultaneously working. should be possible. see timeline-row-n-col-grouping-not-working.html
     for syncing heights, is row-height off-by-one because inner heights don't include border?
