@@ -29,6 +29,18 @@
   position: relative; // for aspectratio AND for being origin for premium-message at bottom-left corner
 }
 
+.fcnew-view-harness-fixedheight {
+  display: flex;
+  flex-direction: column;
+}
+
+.fcnew-view-harness-fixedheight > .fcnew-view {
+  // liquid
+  flex-basis: 0;
+  flex-grow: 1;
+  min-height: 0;
+}
+
 .fcnew-view-harness-aspectratio > .fcnew-view {
   position: absolute;
   top: 0;

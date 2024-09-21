@@ -11,16 +11,19 @@ export class ViewHarness extends Component<ViewHarnessProps> {
   render() {
     const { props } = this
     const { height, aspectRatio } = props
+    const fixedHeightEnabled = height != null
+    const aspectRatioEnabled = !fixedHeightEnabled && aspectRatio != null
 
     return (
       <div
         className={[
           'fcnew-view-harness',
-          aspectRatio != null ? 'fcnew-view-harness-aspectratio' : '',
+          fixedHeightEnabled ? 'fcnew-view-harness-fixedheight' : '',
+          aspectRatioEnabled ? 'fcnew-view-harness-aspectratio' : '',
         ].join(' ')}
         style={{
           height,
-          paddingBottom: (height == null && aspectRatio != null)
+          paddingBottom: aspectRatioEnabled
             ? `${(1 / aspectRatio) * 100}%`
             : undefined
         }}

@@ -35,6 +35,7 @@ FOR beta.1
 ensure automated tests for...
   positioning of sticky headers in all views. list view sticky subheaders too
   resource-timeline indent works
+  pixel # for height/contentHeight works
 
 AFTER beta.1
   restore print-mode

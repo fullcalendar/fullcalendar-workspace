@@ -27,6 +27,7 @@ export function DayGridHeader<Model, ModelKey>(props: DayGridHeaderProps<Model, 
       className={[
         'fcnew-rowgroup',
         'fcnew-daygrid-header', // best place to put this?
+        'fcnew-content-box',
         ...(props.extraClassNames || []),
       ].join(' ')}
       style={{

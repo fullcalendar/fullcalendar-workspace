@@ -120,7 +120,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 ref={this.headerScrollerRef}
               >
                 <div
-                  className='fcnew-rel'
+                  className='fcnew-rel fcnew-content-box' // origin for now-indicator
                   style={{
                     width: canvasWidth,
                     paddingLeft: state.leftScrollbarWidth,
