@@ -476,7 +476,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       bottomScrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
                     >
                       <div
-                        className='fcnew-content-box'
                         style={{
                           width: spreadsheetCanvasWidth,
                           height: '1px', // HACK
@@ -670,7 +669,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         }}
                       >
                         <div
-                          className='fcnew-content-box'
                           style={{
                             width: timeCanvasWidth,
                             height: '1px', // HACK

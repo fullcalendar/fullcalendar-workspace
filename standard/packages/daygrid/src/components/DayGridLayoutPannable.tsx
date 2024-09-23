@@ -152,7 +152,6 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
             }}
           >
             <div
-              className='fcnew-content-box'
               style={{
                 width: canvasWidth,
                 height: '1px', // HACK

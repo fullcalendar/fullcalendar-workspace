@@ -418,7 +418,6 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 ref={this.footScrollerRef}
               >
                 <div
-                  className='fcnew-content-box'
                   style={{
                     width: canvasWidth,
                     height: '1px', // HACK
