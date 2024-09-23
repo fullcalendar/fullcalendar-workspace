@@ -28,26 +28,26 @@ export function buildResourceHeaderTiers(
   if (datesAboveResources) {
     return [
       datesRepDistinctDays
-        ? dates.map((date) => ({ date, colSpan: 1 }))
-        : dates.map((date) => ({ dow: date.getUTCDay(), colSpan: 1 })),
+        ? dates.map((date) => ({ date, colSpan: resources.length }))
+        : dates.map((date) => ({ dow: date.getUTCDay(), colSpan: resources.length })),
       [].concat(
         ...dates.map((date) => (
           resources.map((resource) => (
-            { resource, date: datesRepDistinctDays ? date : undefined, colSpan: dates.length }
+            { resource, date: datesRepDistinctDays ? date : undefined, colSpan: 1 }
           ))
         ))
       )
     ]
   }
   return [
-    resources.map((resource) => ({ resource, date: dates[0], colSpan: 1 })),
+    resources.map((resource) => ({ resource, date: dates[0], colSpan: dates.length })),
     datesRepDistinctDays
       ? [].concat(
           ...resources.map((resource) => (
             dates.map((date) => (
               {
                 date,
-                colSpan: resources.length,
+                colSpan: 1,
                 extraRenderProps: { resource: new ResourceApi(context, resource) },
                 extraDataAttrs: { 'data-resource-id': resource.id },
               }
@@ -59,7 +59,7 @@ export function buildResourceHeaderTiers(
             dates.map((date) => (
               {
                 dow: date.getUTCDay(),
-                colSpan: resources.length,
+                colSpan: 1,
                 extraRenderProps: { resource: new ResourceApi(context, resource) },
                 extraDataAttrs: { 'data-resource-id': resource.id },
               }

@@ -141,15 +141,15 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
       slatLabelInnerHeightRefMap,
       slatMainInnerHeightRefMap,
     } = this
-    const { nowDate } = props
+    const { nowDate, headerTiers } = props
     const { axisWidth } = state
     const { options } = context
 
-    const colCnt = props.headerTiers[0].length
     const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
+    const colCnt = props.cells.length
     // TODO: memo?
     const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, state.scrollerWidth)
 
@@ -181,7 +181,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               className='fcnew-cell fcnew-timegrid-header-axises' // a "super" cell
               style={{ width: axisWidth }}
             >
-              {props.headerTiers.map((models, tierNum) => (
+              {headerTiers.map((models, tierNum) => (
                 <div
                   key={tierNum}
                   className='fcnew-row'
