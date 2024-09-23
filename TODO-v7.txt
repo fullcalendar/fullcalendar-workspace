@@ -1,26 +1,15 @@
 
+audit all CSS
+  write table-inspired CSS utils for ListView
+  universal "frame" element. ensure nobody is styling it
+  audit z-indexes
+
 FOR beta.1
   test for ALL views
-    redo cell borders
-      we have major/minor mixed up
-      should we always assume solid border style?
-      theming
-        i can write table-inspired css utils however i want, with borders
-      resource-timeline: there's a double-border at bottom of datagrid
-        similar double-border at bottom of month-view-hscroll.html when height:auto
-      resource-grouping.html
-        in datagrid-area, missing bottom-border on group "564 Pacific"
-      anytime pseudo-row/cells fabricate borders, need to be aware of removing last-child border
-    stop doing "frame" elements for measurements, and instead use just "cushion"
-      how would that work for getting a scroller's "clientWidth/clientHeight"?
-    is text-selection disabled everywhere? was it before? (if fixed, find ticket)
-    test inverse-bg events (like businessHours) and ensure `instance.instanceId` doesn't error
-    weekNumbers (esp TimeGrid)
     ensure print-mode disables all scrolling at least (stop using isHeightAuto directly)
     RTL
-    audit z-indexs
-    how are events positioned (with percentage or pixels?) for daygrid w/ hscroll!? should be pixels
   resource-timeline
+    resource-grouping.html BUG: in datagrid-area, missing bottom-border on group "564 Pacific"
     resource-row dom-structure unnecessarily complex
     when switching back and forth from 1-day to 3-day, many times, scrolltime gets messed up
     bug: resizing two-column causes datagrid bottom padding to collapse to 1px !?
@@ -28,12 +17,8 @@ FOR beta.1
         (ResizeObserver needs to support box:border-box)
       RELATED BUG: when bottom-padding of spreadsheet DOES work, it's off by one because querying
         for scrollbar width is faulty due to offsetWidth/clientWidth bug including border
-  daygrid
-    businessHours in month view, right side, has weird 1px gap
-      (happens because percentage left/width -- try to return to using 'right'?)
   timegrid
     initial-scroll broken!!!
-    make sure the cushions within the axis can have whatever width they want; parent doesn't crush them
   react/vue/angular connectors
     pause size-handling until all slots are rendered
 
@@ -44,6 +29,9 @@ ensure automated tests for...
   correct header row heights for multi-header resource-TIMEgrid row with horizontal scrolling
 
 AFTER beta.1
+  css refactor
+    maybe stop doing "frame" elements for measurements, and instead use just "cushion"
+      how would that work for getting a scroller's "clientWidth/clientHeight"?
   restore print-mode
   implement ResizeObserver fallback
   just like scrollbar dead area should have grey bg, make timegrid bottom area w/o slots a grey bg
@@ -52,6 +40,8 @@ AFTER beta.1
   daygrid
     for event rendering, expose an isStandin flag for if hidden behind multiday
     multiweek bug: drag-n-drop resets scroll
+    businessHours in month view, right side, has weird 1px gap
+      (happens because percentage left/width -- try to return to using 'right'?)
   timegrid
     use pixel positioning for events (to avoid TimeGridCol height hack)
     in TimeGridLayoutNormal, not nice how axis text isn't selectable
@@ -77,6 +67,7 @@ AFTER beta.1
   revisit these tickets
     "Maximum update depth exceeded" error after resizing many times in Chrome --- reemerged?
       https://github.com/fullcalendar/fullcalendar/issues/5606
+    is text-selection disabled everywhere? was it before? (if fixed, find ticket)
   optimizations
     this.detachInnerHeight() // should fire a 'null' height? yes! will cleanup any map listeners
   write tests
