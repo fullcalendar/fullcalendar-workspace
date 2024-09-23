@@ -386,7 +386,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                     <div
                                       key={queryObjKey(group)}
                                       role='row'
-                                      class='fcnew-row fcnew-absfill-x'
+                                      aria-rowindex={groupCellLayout.rowIndex}
+                                      class={[
+                                        'fcnew-row fcnew-absfill-x',
+                                        groupCellLayout.rowIndex ? 'fcnew-not-first' : '',
+                                      ].join(' ')}
                                       style={{
                                         top: bodyTops.get(group),
                                         height: bodyHeights.get(group),
@@ -417,7 +421,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                 <div
                                   key={resource.id}
                                   role='row'
-                                  class='fcnew-row fcnew-absfill-x'
+                                  aria-rowindex={resourceLayout.rowIndex}
+                                  class={[
+                                    'fcnew-row fcnew-absfill-x',
+                                    resourceLayout.rowIndex ? 'fcnew-not-first' : '',
+                                  ].join(' ')}
                                   style={{
                                     top: bodyTops.get(resource),
                                     height: bodyHeights.get(resource),
@@ -439,26 +447,32 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             })}
                           </div>
                         </div>
-                        {flatGroupRowLayouts.map((groupRowLayout) => {
-                          const group = groupRowLayout.entity
-                          return (
-                            <div
-                              key={queryObjKey(group)}
-                              role='row'
-                              class='fcnew-row fcnew-absfill-x'
-                              style={{
-                                top: bodyTops.get(group),
-                                height: bodyHeights.get(group),
-                              }}
-                            >
-                              <GroupWideCell
-                                group={group}
-                                isExpanded={groupRowLayout.isExpanded}
-                                innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
-                              />
-                            </div>
-                          )
-                        })}
+                        <div>{/* container simply to enclose siblings for :first-child, etc */}
+                          {flatGroupRowLayouts.map((groupRowLayout) => {
+                            const group = groupRowLayout.entity
+                            return (
+                              <div
+                                key={queryObjKey(group)}
+                                role='row'
+                                aria-rowindex={groupRowLayout.rowIndex}
+                                class={[
+                                  'fcnew-row fcnew-absfill-x',
+                                  groupRowLayout.rowIndex ? 'fcnew-not-first' : '',
+                                ].join(' ')}
+                                style={{
+                                  top: bodyTops.get(group),
+                                  height: bodyHeights.get(group),
+                                }}
+                              >
+                                <GroupWideCell
+                                  group={group}
+                                  isExpanded={groupRowLayout.isExpanded}
+                                  innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
+                                />
+                              </div>
+                            )
+                          })}
+                        </div>
                       </div>
                     </Scroller>
 

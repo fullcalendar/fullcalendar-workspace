@@ -122,7 +122,7 @@ TODO: move away from 'spreadsheet' and use 'datagrid' instead
   border-width: 1px 0 0; // top
 }
 
-.fcnew-row:first-child,
+.fcnew-row:first-child:not(.fcnew-not-first),
 .fcnew-rowgroup:first-child,
 .fcnew-rowdivider:first-child {
   border-top-width: 0;

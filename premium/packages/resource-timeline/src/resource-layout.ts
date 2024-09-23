@@ -7,6 +7,7 @@ export interface GenericLayout<Entity> {
 }
 
 export interface ResourceLayout { // specific GenericLayout
+  rowIndex: number
   entity: Resource
   pooledHeight?: boolean // should NOT be defined!
   resourceFields: any
@@ -17,6 +18,7 @@ export interface ResourceLayout { // specific GenericLayout
 }
 
 export interface GroupRowLayout { // specific GenericLayout
+  rowIndex: number
   entity: Group
   pooledHeight: false
   isExpanded: boolean
@@ -26,6 +28,7 @@ export interface GroupRowLayout { // specific GenericLayout
 }
 
 export interface GroupCellLayout { // specific GenericLayout
+  rowIndex: number
   entity: Group
   pooledHeight: true
   children: (ResourceLayout | GroupCellLayout)[]
@@ -45,6 +48,7 @@ export function buildResourceLayouts(
   const flatResourceLayouts: ResourceLayout[] = []
   const flatGroupRowLayouts: GroupRowLayout[] = []
   const flatGroupColLayouts: GroupCellLayout[][] = []
+  let rowCnt = 0
 
   function processNodes(nodes: GenericNode[], depth: number, indent: number): GenericLayout<Resource | Group>[] {
     const layouts: GenericLayout<Resource | Group>[] = []
@@ -54,6 +58,7 @@ export function buildResourceLayouts(
       if ((node as ResourceNode).resourceFields) {
         const isExpanded = expansions[(node as ResourceNode).entity.id] ?? expansionDefault
         const resourceLayout: ResourceLayout = {
+          rowIndex: rowCnt++,
           entity: (node as ResourceNode).entity,
           resourceFields: (node as ResourceNode).resourceFields,
           isExpanded,
@@ -68,6 +73,7 @@ export function buildResourceLayouts(
         }
       } else if ((node as GroupNode).pooledHeight) {
         const groupCellLayout: GroupCellLayout = {
+          rowIndex: rowCnt, // DON'T advance
           entity: (node as GroupNode).entity,
           pooledHeight: true,
           children: [],
@@ -79,6 +85,7 @@ export function buildResourceLayouts(
       } else {
         const isExpanded = expansions[createGroupId((node as GroupRowLayout).entity)] ?? expansionDefault
         const groupRowLayout: GroupRowLayout = {
+          rowIndex: rowCnt++,
           entity: (node as GroupNode).entity,
           pooledHeight: false,
           isExpanded,

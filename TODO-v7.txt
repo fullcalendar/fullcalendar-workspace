@@ -3,13 +3,13 @@ audit all CSS
   write table-inspired CSS utils for ListView
   universal "frame" element. ensure nobody is styling it
   audit z-indexes
+  the "+2 more" bg color should not fill entire width. just itself
 
 FOR beta.1
   test for ALL views
     ensure print-mode disables all scrolling at least (stop using isHeightAuto directly)
     RTL
   resource-timeline
-    resource-grouping.html BUG: in datagrid-area, missing bottom-border on group "564 Pacific"
     resource-row dom-structure unnecessarily complex
     when switching back and forth from 1-day to 3-day, many times, scrolltime gets messed up
     bug: resizing two-column causes datagrid bottom padding to collapse to 1px !?
