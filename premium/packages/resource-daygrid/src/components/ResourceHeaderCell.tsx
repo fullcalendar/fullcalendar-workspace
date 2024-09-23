@@ -1,5 +1,5 @@
-import { BaseComponent, DateMarker } from '@fullcalendar/core/internal'
-import { createElement, Ref } from '@fullcalendar/core/preact'
+import { BaseComponent, DateMarker, setRef, watchHeight } from '@fullcalendar/core/internal'
+import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { HEADER_CELL_CLASS_NAME } from '@fullcalendar/daygrid/internal'
 import { Resource, ResourceLabelContainer } from '@fullcalendar/resource/internal'
 
@@ -13,10 +13,16 @@ export interface ResourceHeaderCellProps {
   colWidth?: number
 
   // ref
-  innerElRef?: Ref<HTMLDivElement>
+  innerHeightRef?: Ref<number>
 }
 
 export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
+  // ref
+  private innerElRef = createRef<HTMLDivElement>()
+
+  // internal
+  private disconectInnerHeight?: () => void
+
   render() {
     let { props } = this
 
@@ -38,7 +44,7 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
         date={props.date}
       >
         {(InnerContent) => (
-          <div ref={props.innerElRef}>
+          <div ref={this.innerElRef}>
             <InnerContent
               elTag="span"
               elClasses={[
@@ -50,5 +56,18 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
         )}
       </ResourceLabelContainer>
     )
+  }
+
+  componentDidMount(): void {
+    const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
+
+    // TODO: only attach this if refs props present
+    this.disconectInnerHeight = watchHeight(innerEl, (height) => {
+      setRef(this.props.innerHeightRef, height)
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.disconectInnerHeight()
   }
 }

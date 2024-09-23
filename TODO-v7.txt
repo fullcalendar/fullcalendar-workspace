@@ -26,8 +26,6 @@ FOR beta.1
       (happens because percentage left/width -- try to return to using 'right'?)
   timegrid
     initial-scroll broken!!!
-    hscroll weirdness: why isn't topleft empty cell's parentrow height-synced to the day header?
-      audit examples-v7/resource-timegrid.html too
     make sure the cushions within the axis can have whatever width they want; parent doesn't crush them
   react/vue/angular connectors
     pause size-handling until all slots are rendered
@@ -36,6 +34,7 @@ ensure automated tests for...
   positioning of sticky headers in all views. list view sticky subheaders too
   resource-timeline indent works
   pixel # for height/contentHeight works
+  correct header row heights for multi-header resource-TIMEgrid row with horizontal scrolling
 
 AFTER beta.1
   restore print-mode

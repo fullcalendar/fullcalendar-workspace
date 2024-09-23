@@ -175,7 +175,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 showDayNumbers={false}
                 forPrint={props.forPrint}
                 isHitComboAllowed={props.isHitComboAllowed}
-                className='fcnew-cell'
+                className='fcnew-liquid fcnew-cell'
 
                 // content
                 fgEventSegs={props.fgEventSegs}

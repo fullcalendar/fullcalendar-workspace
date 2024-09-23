@@ -474,8 +474,9 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     const headerMainInnerHeightMap = this.headerMainInnerHeightRefMap.current
     const heights = []
 
-    for (const [tierNum, labelHeight] of headerLabelInnerHeightMap.entries()) {
-      heights[tierNum] = Math.max(labelHeight, headerMainInnerHeightMap.get(tierNum))
+    // important to loop using 'main' because 'label' might not be tracking height if empty
+    for (const [tierNum, mainHeight] of headerMainInnerHeightMap.entries()) {
+      heights[tierNum] = Math.max(headerLabelInnerHeightMap.get(tierNum) || 0, mainHeight)
     }
 
     const { headerTierHeights } = this.state
