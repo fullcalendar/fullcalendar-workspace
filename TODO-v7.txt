@@ -18,9 +18,16 @@ FOR beta.1
     weekNumbers (esp TimeGrid)
     ensure print-mode disables all scrolling at least (stop using isHeightAuto directly)
     RTL
+    audit z-indexs
+    how are events positioned (with percentage or pixels?) for daygrid w/ hscroll!? should be pixels
   resource-timeline
+    resource-row dom-structure unnecessarily complex
     when switching back and forth from 1-day to 3-day, many times, scrolltime gets messed up
     bug: resizing two-column causes datagrid bottom padding to collapse to 1px !?
+      because bottom scrollbars widths don't notify update because the inner-box doesn't change
+        (ResizeObserver needs to support box:border-box)
+      RELATED BUG: when bottom-padding of spreadsheet DOES work, it's off by one because querying
+        for scrollbar width is faulty due to offsetWidth/clientWidth bug including border
   daygrid
     businessHours in month view, right side, has weird 1px gap
       (happens because percentage left/width -- try to return to using 'right'?)
@@ -56,8 +63,6 @@ AFTER beta.1
     get grouping via row and col simultaneously working. should be possible. see timeline-row-n-col-grouping-not-working.html
     for syncing heights, is row-height off-by-one because inner heights don't include border?
       why not just make all column-widths done with content-box?
-    when DnD fits multiple tiers of events on one resource and expands height, there's a flicker
-      TODO: prevent multiple passes of height-watching?
     change how column-resizing widths is distibuted?
       right now it's impossible to resize last column
       try to take width away from next column when expanding

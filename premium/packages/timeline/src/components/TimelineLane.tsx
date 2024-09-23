@@ -100,12 +100,8 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       options.eventMaxStack,
     )
 
-    let innerHeight: number | undefined // TODO: rename to *events*-height
     let moreLinksBottom = computeMoreLinkMaxBottom(hiddenGroups, hiddenGroupTops, this.moreLinkHeightRefMap.current)
-
-    if (fgSegsBottom != null && moreLinksBottom != null) { // ready?
-      innerHeight = Math.max(moreLinksBottom, fgSegsBottom)
-    }
+    let innerHeight = Math.max(moreLinksBottom, fgSegsBottom)
 
     let forcedInvisibleMap = // TODO: more convenient/DRY
       (slicedProps.eventDrag ? slicedProps.eventDrag.affectedInstances : null) ||

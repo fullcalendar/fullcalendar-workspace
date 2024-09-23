@@ -60,7 +60,7 @@ export function computeFgSegPlacements( // mostly horizontals
   maxStackCnt?: number,
 ): [
   segTops: { [instanceId: string]: number },
-  segsBottom: number | undefined,
+  segsBottom: number,
   hiddenGroups: SegGroup[],
   hiddenGroupTops: { [key: string]: number },
 ] {
@@ -131,7 +131,7 @@ export function computeMaxBottom(
   segs: TimelineLaneSeg[],
   segTops: { [instanceId: string]: number },
   segHeights: Map<string, number>,
-): number | undefined {
+): number {
   let max = 0
 
   for (const seg of segs) {
@@ -141,8 +141,6 @@ export function computeMaxBottom(
 
     if (top != null && height != null) {
       max = Math.max(max, top + height)
-    } else {
-      return // not ready
     }
   }
 
@@ -156,7 +154,7 @@ export function computeMoreLinkMaxBottom(
   hiddenGroups: SegGroup[],
   hiddenGroupTops: { [key: string]: number },
   hiddenGroupHeights: Map<string, number>,
-): number | undefined {
+): number {
   let max = 0
 
   for (const hiddenGroup of hiddenGroups) {
@@ -165,8 +163,6 @@ export function computeMoreLinkMaxBottom(
 
     if (top != null && height != null) {
       max = Math.max(max, top + height)
-    } else {
-      return // not ready
     }
   }
 
