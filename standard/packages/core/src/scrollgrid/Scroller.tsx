@@ -37,6 +37,10 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   render() {
     const { props } = this
 
+    // if there's only one axis that needs scrolling, the other axis will unintentionally have
+    // scrollbars too, so we must force to 'hidden'
+    const fallbackOverflow = (props.horizontal || props.vertical) ? 'hidden' : ''
+
     return (
       <div
         ref={this.elRef}
@@ -47,8 +51,8 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
         ].join(' ')}
         style={{
           ...props.elStyle,
-          overflowX: props.horizontal ? 'auto' : '',
-          overflowY: props.vertical ? 'auto' : '',
+          overflowX: props.horizontal ? 'auto' : fallbackOverflow,
+          overflowY: props.vertical ? 'auto' : fallbackOverflow,
         }}
       >{props.children}</div>
     )

@@ -22,9 +22,6 @@ FOR beta.1
     when switching back and forth from 1-day to 3-day, many times, scrolltime gets messed up
     bug: resizing two-column causes datagrid bottom padding to collapse to 1px !?
   daygrid
-    in "timeline-column-grouping.html" example, go to "month" view, hover over "event 3"
-      and horizontal scrollbars appear quickly
-      BECAUSE... resizer appears on hover
     businessHours in month view, right side, has weird 1px gap
       (happens because percentage left/width -- try to return to using 'right'?)
   timegrid
