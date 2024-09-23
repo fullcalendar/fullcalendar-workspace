@@ -98,13 +98,13 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
             // header content
             // TODO: DRY with ResourceDayGridView/ResourceTimeGridView
             headerTiers={headerTiers}
-            renderHeaderContent={(model, tierNum) => {
+            renderHeaderContent={(model, tierNum, innerHeightRef, colWidth) => {
               if ((model as ResourceDateHeaderCellObj).resource) {
                 return (
                   <ResourceHeaderCell
                     {...(model as ResourceDateHeaderCellObj)}
                     colSpan={model.colSpan}
-                    colWidth={undefined}
+                    colWidth={colWidth}
                     isSticky={tierNum < headerTiers.length - 1}
                   />
                 )
@@ -117,7 +117,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
                     todayRange={todayRange}
                     dayHeaderFormat={dayHeaderFormat}
                     colSpan={model.colSpan}
-                    colWidth={undefined}
+                    colWidth={colWidth}
                   />
                 )
               } else {
@@ -125,7 +125,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
                   {...(model as DayOfWeekHeaderCellObj)}
                   dayHeaderFormat={dayHeaderFormat}
                   colSpan={model.colSpan}
-                  colWidth={undefined}
+                  colWidth={colWidth}
                 />
               }
             }}
