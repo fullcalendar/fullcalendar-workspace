@@ -22,7 +22,6 @@ FOR beta.1
     when switching back and forth from 1-day to 3-day, many times, scrolltime gets messed up
     bug: resizing two-column causes datagrid bottom padding to collapse to 1px !?
   daygrid
-    bug where current-day yellow bg (and maybe all bg events?) don't show in all-day lane?
     in "timeline-column-grouping.html" example, go to "month" view, hover over "event 3"
       and horizontal scrollbars appear quickly
     businessHours in month view, right side, has weird 1px gap

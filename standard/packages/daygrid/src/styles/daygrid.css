@@ -44,6 +44,10 @@ $daygrid-event-mirror-z: 7;
   & .fcnew-daygrid-cell {
     display: flex;
     flex-direction: column;
+
+    &.fcnew-day-today {
+      background-color: var(--fcnew-today-bg-color);
+    }
   }
 
   & .fcnew-col-header-cell { // not the correct place for this
