@@ -14,7 +14,7 @@ import {
   setRef,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
-import { HEADER_CELL_CLASS_NAME, renderInner } from '../util.js'
+import { renderInner } from '../util.js'
 
 export interface DayOfWeekHeaderCellProps {
   dow: number
@@ -72,7 +72,7 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
         elClasses={[
           'fcnew-cell',
           props.colWidth != null ? '' : 'fcnew-liquid',
-          HEADER_CELL_CLASS_NAME,
+          'fcnew-col-header',
           ...getDayClassNames(dateMeta, theme),
           ...(props.extraClassNames || []),
         ]}
@@ -95,7 +95,7 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
             <InnerContent
               elTag="a"
               elClasses={[
-                'fcnew-col-header-cell-cushion',
+                'fcnew-col-header-cushion',
                 props.isSticky ? 'fcnew-h-sticky' : '',
               ]}
               elAttrs={{

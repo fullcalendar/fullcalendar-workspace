@@ -1,6 +1,5 @@
 import { BaseComponent, DateMarker, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
-import { HEADER_CELL_CLASS_NAME } from '@fullcalendar/daygrid/internal'
 import { Resource, ResourceLabelContainer } from '@fullcalendar/resource/internal'
 
 export interface ResourceHeaderCellProps {
@@ -32,7 +31,7 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
         elClasses={[
           'fcnew-cell',
           props.colWidth != null ? '' : 'fcnew-liquid',
-          HEADER_CELL_CLASS_NAME,
+          'fcnew-col-header',
           'fcnew-resource',
         ]}
         elStyle={{
@@ -48,7 +47,7 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
             <InnerContent
               elTag="span"
               elClasses={[
-                'fcnew-col-header-cell-cushion',
+                'fcnew-col-header-cushion',
                 props.isSticky ? 'fcnew-h-sticky' : '',
               ]}
             />

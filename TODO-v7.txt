@@ -5,19 +5,15 @@ audit all CSS
   audit z-indexes
     for example, fcnew-timeline-bg seems above slats
   the "+2 more" bg color should not fill entire width. just itself
+  no more event <a> tags when not a link
+  rethink .fcnew-cell/fcnew-daygrid-cell classNames
 
 FOR beta.1
+  bootstrap theme support
   test for ALL views
-    ensure print-mode disables all scrolling at least (stop using isHeightAuto directly)
     RTL
   resource-timeline
-    resource-row dom-structure unnecessarily complex
     when switching back and forth from 1-day to 3-day, many times, scrolltime gets messed up
-    bug: resizing two-column causes datagrid bottom padding to collapse to 1px !?
-      because bottom scrollbars widths don't notify update because the inner-box doesn't change
-        (ResizeObserver needs to support box:border-box)
-      RELATED BUG: when bottom-padding of spreadsheet DOES work, it's off by one because querying
-        for scrollbar width is faulty due to offsetWidth/clientWidth bug including border
   timegrid
     initial-scroll broken!!!
   react/vue/angular connectors
@@ -30,6 +26,7 @@ ensure automated tests for...
   correct header row heights for multi-header resource-TIMEgrid row with horizontal scrolling
 
 AFTER beta.1
+  test on touch
   css refactor
     maybe stop doing "frame" elements for measurements, and instead use just "cushion"
       how would that work for getting a scroller's "clientWidth/clientHeight"?
@@ -50,6 +47,12 @@ AFTER beta.1
   timeline
     previously, Timeline's hit system would always return slat left/right, not snap. matters?
   resource-timeline
+    resource-row dom-structure unnecessarily complex
+    bug: resizing two-column causes datagrid bottom padding to collapse to 1px !?
+      because bottom scrollbars widths don't notify update because the inner-box doesn't change
+        (ResizeObserver needs to support box:border-box)
+      RELATED BUG: when bottom-padding of spreadsheet DOES work, it's off by one because querying
+        for scrollbar width is faulty due to offsetWidth/clientWidth bug including border
     needed?- ability to freeze resizing while resizing columns or resource-area
     get grouping via row and col simultaneously working. should be possible. see timeline-row-n-col-grouping-not-working.html
     for syncing heights, is row-height off-by-one because inner heights don't include border?
@@ -78,6 +81,7 @@ AFTER beta.1
 CHANGELOG
   temporary
     the space to accommodate scrollbars is just blank
+    print mode lacking
   daygrid
     how height:'auto' isn't as squished... will always try to maintain at least aspectRatio
   exports

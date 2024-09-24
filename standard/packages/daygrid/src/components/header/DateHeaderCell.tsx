@@ -17,7 +17,7 @@ import {
   setRef,
 } from '@fullcalendar/core/internal'
 import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
-import { HEADER_CELL_CLASS_NAME, renderInner } from '../util.js'
+import { renderInner } from '../util.js'
 
 export interface DateHeaderCellProps {
   dateProfile: DateProfile
@@ -72,7 +72,7 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
         elClasses={[
           'fcnew-cell',
           props.colWidth != null ? '' : 'fcnew-liquid',
-          HEADER_CELL_CLASS_NAME,
+          'fcnew-col-header',
           ...getDayClassNames(dayMeta, theme),
           ...(props.extraClassNames || [])
         ]}
@@ -100,7 +100,7 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
                 elTag="a"
                 elAttrs={navLinkAttrs}
                 elClasses={[
-                  'fcnew-col-header-cell-cushion',
+                  'fcnew-col-header-cushion',
                   props.isSticky ? 'fcnew-h-sticky' : '',
                 ]}
               />

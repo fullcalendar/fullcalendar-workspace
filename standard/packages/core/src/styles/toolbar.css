@@ -1,25 +1,21 @@
 
-.fcnew {
+.fcnew-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  & .fcnew-toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+.fcnew-toolbar.fcnew-header-toolbar {
+  margin-bottom: 1.5em;
+}
 
-  & .fcnew-toolbar.fcnew-header-toolbar {
-    margin-bottom: 1.5em;
-  }
+.fcnew-toolbar.fcnew-footer-toolbar {
+  margin-top: 1.5em;
+}
 
-  & .fcnew-toolbar.fcnew-footer-toolbar {
-    margin-top: 1.5em;
-  }
-
-  & .fcnew-toolbar-title {
-    font-size: 1.75em;
-    margin: 0;
-  }
-
+.fcnew-toolbar-title {
+  font-size: 1.75em;
+  margin: 0;
 }
 
 .fcnew-direction-ltr {
