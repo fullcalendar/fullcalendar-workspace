@@ -36,7 +36,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         elClasses={[
           'fcnew-rel', // for resizer abs positioning
           'fcnew-cell',
-          'fcnew-header-cell',
+          'fcnew-datagrid-cell',
         ]}
         elStyle={{
           width,
@@ -54,7 +54,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
             <div ref={this.innerElRef}>
               <div className="fcnew-datagrid-cell-cushion">
                 {this.props.indent && (
-                  <span className="fcnew-icons">
+                  <span className="fcnew-datagrid-indent">
                     <span className="fcnew-icon" />
                   </span>
                 )}

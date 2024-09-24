@@ -297,6 +297,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     ---------------------------------------------------------------------------- */}
                     <div
                       className={[
+                        'fcnew-datagrid-header',
                         'fcnew-rowgroup',
                         stickyHeaderDates ? 'fcnew-sticky-header' : '',
                       ].join(' ')}

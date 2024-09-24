@@ -33,7 +33,7 @@ export function ExpanderIcon({ indent, hasChildren, isExpanded, onExpanderClick 
   }
 
   return (
-    <span className='fcnew-icons'>
+    <span className='fcnew-datagrid-indent'>
       {...nodes}
     </span>
   )

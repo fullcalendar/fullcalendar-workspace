@@ -13,6 +13,8 @@ audit all CSS
   we shouldn't have 'fcnew-slot-sat' ... it's a day! instead 'fcnew-day-sat'
   call it 'fcnew-header-col' instead of 'fcnew-col-header'? look at html rol
   ensure navlink <a> tags in headers (daygrid/timeline) are styled correctly
+  tests aleady have fcnew- className prefix!?
+  restore all head/body/foot classes
 
 FOR beta.1
   bootstrap theme support

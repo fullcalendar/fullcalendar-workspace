@@ -32,9 +32,9 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           scope: 'colgroup',
         }}
         elClasses={[
-          'fcnew-cell',
           'fcnew-liquid',
-          'fcnew-header-cell',
+          'fcnew-cell',
+          'fcnew-datagrid-cell',
         ]}
         renderProps={renderProps}
         generatorName="resourceAreaHeaderContent"
@@ -48,7 +48,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           <div ref={this.innerElRef}>
             <div className="fcnew-datagrid-cell-cushion">
               {this.props.indent && (
-                <span className="fcnew-icons">
+                <span className="fcnew-datagrid-indent">
                   <span className="fcnew-icon" />
                 </span>
               )}
