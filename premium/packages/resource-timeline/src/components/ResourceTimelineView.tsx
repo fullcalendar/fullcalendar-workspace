@@ -364,10 +364,38 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           // ^^weird to have same element responsible for width and veritical padding
                         }}
                       >
+                        {/* resource-group rows */}
+                        {/* container simply to enclose siblings for :first-child, etc */}
+                        <div>
+                          {flatGroupRowLayouts.map((groupRowLayout) => {
+                            const group = groupRowLayout.entity
+                            return (
+                              <div
+                                key={queryObjKey(group)}
+                                role='row'
+                                aria-rowindex={groupRowLayout.rowIndex}
+                                class={[
+                                  'fcnew-row fcnew-absfill-x',
+                                  groupRowLayout.rowIndex ? 'fcnew-not-first' : '',
+                                ].join(' ')}
+                                style={{
+                                  top: bodyTops.get(group),
+                                  height: bodyHeights.get(group),
+                                }}
+                              >
+                                <GroupWideCell
+                                  group={group}
+                                  isExpanded={groupRowLayout.isExpanded}
+                                  innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
+                                />
+                              </div>
+                            )
+                          })}
+                        </div>
                         <div
                           className='fcnew-flex-row'
                           style={{
-                            height: bodyCanvasHeight,
+                            height: bodyCanvasHeight, // why is the height on here???
                           }}
                         >
                           {/* group columns */}
@@ -446,32 +474,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                               )
                             })}
                           </div>
-                        </div>
-                        <div>{/* container simply to enclose siblings for :first-child, etc */}
-                          {flatGroupRowLayouts.map((groupRowLayout) => {
-                            const group = groupRowLayout.entity
-                            return (
-                              <div
-                                key={queryObjKey(group)}
-                                role='row'
-                                aria-rowindex={groupRowLayout.rowIndex}
-                                class={[
-                                  'fcnew-row fcnew-absfill-x',
-                                  groupRowLayout.rowIndex ? 'fcnew-not-first' : '',
-                                ].join(' ')}
-                                style={{
-                                  top: bodyTops.get(group),
-                                  height: bodyHeights.get(group),
-                                }}
-                              >
-                                <GroupWideCell
-                                  group={group}
-                                  isExpanded={groupRowLayout.isExpanded}
-                                  innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
-                                />
-                              </div>
-                            )
-                          })}
                         </div>
                       </div>
                     </Scroller>
@@ -581,56 +583,68 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           className='fcnew-rel'
                           style={{ height: bodyCanvasHeight }}
                         >
-                          {flatGroupRowLayouts.map((groupRowLayout) => {
-                            const group = groupRowLayout.entity
-                            return (
-                              <div
-                                key={queryObjKey(group)}
-                                role='row'
-                                class='fcnew-row fcnew-absfill-x'
-                                style={{
-                                  top: bodyTops.get(group),
-                                  height: bodyHeights.get(group),
-                                }}
-                              >
-                                <GroupLane
-                                  group={group}
-                                  innerHeightRef={this.timeEntityInnerHeightMap.createRef(group)}
-                                />
-                              </div>
-                            )
-                          })}
-                          {flatResourceLayouts.map((resourceLayout) => {
-                            const resource = resourceLayout.entity
-                            return (
-                              <div
-                                key={resource.id}
-                                role='row'
-                                className='fcnew-row fcnew-absfill-x'
-                                style={{
-                                  top: bodyTops.get(resource),
-                                  height: bodyHeights.get(resource),
-                                }}
-                              >
-                                <ResourceLane
-                                  {...splitProps[resource.id]}
-                                  resource={resource}
-                                  dateProfile={dateProfile}
-                                  tDateProfile={tDateProfile}
-                                  nowDate={nowDate}
-                                  todayRange={todayRange}
-                                  nextDayThreshold={context.options.nextDayThreshold}
-                                  businessHours={resource.businessHours || fallbackBusinessHours}
+                          <div>
+                            {flatGroupRowLayouts.map((groupRowLayout) => {
+                              const group = groupRowLayout.entity
+                              return (
+                                <div
+                                  key={queryObjKey(group)}
+                                  role='row'
+                                  aria-rowindex={groupRowLayout.rowIndex}
+                                  class={[
+                                    'fcnew-row fcnew-absfill-x',
+                                    groupRowLayout.rowIndex ? 'fcnew-not-first' : '',
+                                  ].join(' ')}
+                                  style={{
+                                    top: bodyTops.get(group),
+                                    height: bodyHeights.get(group),
+                                  }}
+                                >
+                                  <GroupLane
+                                    group={group}
+                                    innerHeightRef={this.timeEntityInnerHeightMap.createRef(group)}
+                                  />
+                                </div>
+                              )
+                            })}
+                          </div>
+                          <div>
+                            {flatResourceLayouts.map((resourceLayout) => {
+                              const resource = resourceLayout.entity
+                              return (
+                                <div
+                                  key={resource.id}
+                                  role='row'
+                                  aria-rowindex={resourceLayout.rowIndex}
+                                  className={[
+                                    'fcnew-row fcnew-absfill-x',
+                                    resourceLayout.rowIndex ? 'fcnew-not-first' : '',
+                                  ].join(' ')}
+                                  style={{
+                                    top: bodyTops.get(resource),
+                                    height: bodyHeights.get(resource),
+                                  }}
+                                >
+                                  <ResourceLane
+                                    {...splitProps[resource.id]}
+                                    resource={resource}
+                                    dateProfile={dateProfile}
+                                    tDateProfile={tDateProfile}
+                                    nowDate={nowDate}
+                                    todayRange={todayRange}
+                                    nextDayThreshold={context.options.nextDayThreshold}
+                                    businessHours={resource.businessHours || fallbackBusinessHours}
 
-                                  // ref
-                                  innerHeightRef={this.timeEntityInnerHeightMap.createRef(resource)}
+                                    // ref
+                                    innerHeightRef={this.timeEntityInnerHeightMap.createRef(resource)}
 
-                                  // dimensions
-                                  slotWidth={slotWidth}
-                                />
-                              </div>
-                            )
-                          })}
+                                    // dimensions
+                                    slotWidth={slotWidth}
+                                  />
+                                </div>
+                              )
+                            })}
+                          </div>
                         </div>
                         <div className='fcnew-absfill'>
                           <TimelineSlats

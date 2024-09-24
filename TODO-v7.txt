@@ -3,6 +3,7 @@ audit all CSS
   write table-inspired CSS utils for ListView
   universal "frame" element. ensure nobody is styling it
   audit z-indexes
+    for example, fcnew-timeline-bg seems above slats
   the "+2 more" bg color should not fill entire width. just itself
 
 FOR beta.1
