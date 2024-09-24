@@ -7,6 +7,7 @@ audit all CSS
   the "+2 more" bg color should not fill entire width. just itself
   no more event <a> tags when not a link
   rethink .fcnew-cell/fcnew-daygrid-cell classNames
+  change names to runon, like "fcnew-nowindicator"?
 
 FOR beta.1
   bootstrap theme support

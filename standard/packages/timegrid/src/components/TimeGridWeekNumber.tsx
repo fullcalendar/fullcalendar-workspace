@@ -37,11 +37,11 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
         elClasses={[
           'fcnew-cell',
           'fcnew-timegrid-weeknumber',
+          'fcnew-content-box',
         ]}
-        elAttrs={{
-          'aria-hidden': true, // why???
+        elStyle={{
+          width: props.width
         }}
-        elStyle={{ width: props.width }}
         date={range.start}
         defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
       >

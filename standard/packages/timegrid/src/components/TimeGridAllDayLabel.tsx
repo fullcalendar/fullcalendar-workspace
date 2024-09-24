@@ -32,6 +32,7 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
         elClasses={[
           'fcnew-cell',
           'fcnew-timegrid-allday-label',
+          'fcnew-content-box',
         ]}
         elAttrs={{
           'aria-hidden': true,

@@ -1,42 +1,17 @@
 
-.fcnew {
+.fcnew-timegrid-col {
+  position: relative;
 
-  & .fcnew-timegrid-col {
-    &.fcnew-day-today {
-      background-color: var(--fcnew-today-bg-color);
-    }
+  &.fcnew-day-today {
+    background-color: var(--fcnew-today-bg-color);
   }
-
 }
 
-.fcnew {
-
-  & .fcnew-timegrid-col {
-    position: relative;
-  }
-
-  & .fcnew-timegrid-event-harness {
-    position: absolute;
-    z-index: $timegrid-col-fg-z;
-  }
-
-  & .fcnew-timegrid-bg-harness {
-    position: absolute; // top/bottom will be set by JS
-    left: 0;
-    right: 0;
-    @include bg-z-indexes;
-  }
-
-  & .fcnew-timegrid-now-indicator-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: hidden; // don't let overflow of lines/arrows cause unnecessary scrolling
-    // z-index is set on the inner element
-  }
-
+.fcnew-timegrid-bg-harness {
+  position: absolute; // top/bottom will be set by JS
+  left: 0;
+  right: 0;
+  @include bg-z-indexes;
 }
 
 .fcnew-direction-ltr {

@@ -1,32 +1,39 @@
 
-.fcnew {
-  & .fcnew-timegrid-now-indicator-line,
-  & .fcnew-timegrid-now-indicator-arrow {
-    pointer-events: none;
-  }
+.fcnew-timegrid-now-indicator-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden; // don't let overflow of lines/arrows cause unnecessary scrolling
+  // z-index is set on the inner element
+}
 
-  // line
+.fcnew-timegrid-now-indicator-line,
+.fcnew-timegrid-now-indicator-arrow {
+  pointer-events: none;
+}
 
-  & .fcnew-timegrid-now-indicator-line {
-    position: absolute;
-    z-index: $timegrid-now-indicator-z;
-    left: 0;
-    right: 0;
-    border-style: solid;
-    border-color: var(--fcnew-now-indicator-color);
-    border-width: 1px 0 0;
-  }
+// line
 
-  // arrow
+.fcnew-timegrid-now-indicator-line {
+  position: absolute;
+  z-index: $timegrid-now-indicator-z;
+  left: 0;
+  right: 0;
+  border-style: solid;
+  border-color: var(--fcnew-now-indicator-color);
+  border-width: 1px 0 0;
+}
 
-  & .fcnew-timegrid-now-indicator-arrow {
-    position: absolute;
-    z-index: $timegrid-now-indicator-z;
-    margin-top: -5px; // vertically center on top coordinate
-    border-style: solid;
-    border-color: var(--fcnew-now-indicator-color);
-  }
+// arrow
 
+.fcnew-timegrid-now-indicator-arrow {
+  position: absolute;
+  z-index: $timegrid-now-indicator-z;
+  margin-top: -5px; // vertically center on top coordinate
+  border-style: solid;
+  border-color: var(--fcnew-now-indicator-color);
 }
 
 .fcnew-direction-ltr {

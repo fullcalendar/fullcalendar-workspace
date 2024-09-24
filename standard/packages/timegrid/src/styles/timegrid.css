@@ -1,12 +1,2 @@
 
-.fcnew-timegrid-view {
-  display: flex;
-  flex-direction: column;
-}
-
-// NOTE: not needed if not within a scroller
-.fcnew-timegrid-allday-main {
-}
-
-.fcnew-timegrid-timed-main {
-}
+// nothing to see here

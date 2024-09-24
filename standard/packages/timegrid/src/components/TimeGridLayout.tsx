@@ -118,7 +118,14 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
     }
 
     return (
-      <ViewContainer elClasses={['fcnew-timegrid-view', 'fcnew-bordered']} viewSpec={context.viewSpec}>
+      <ViewContainer
+        elClasses={[
+          'fcnew-timegrid-view',
+          'fcnew-flex-column',
+          'fcnew-bordered'
+        ]}
+        viewSpec={context.viewSpec}
+      >
         {dayMinWidth ? (
           <TimeGridLayoutPannable
             {...commonLayoutProps}

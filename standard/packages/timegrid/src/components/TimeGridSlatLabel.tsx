@@ -45,6 +45,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
     let classNames = [
       'fcnew-cell',
       'fcnew-timegrid-slot-label',
+      'fcnew-content-box',
     ]
 
     if (!props.isLabeled) {

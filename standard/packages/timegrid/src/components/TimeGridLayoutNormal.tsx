@@ -198,7 +198,6 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           vertical={verticalScrolling}
           elClassNames={[
             'fcnew-rowgroup',
-            'fcnew-timegrid-timed-main',
             verticalScrolling ? 'fcnew-liquid' : '',
           ]}
           ref={props.timeScrollerRef}
@@ -234,7 +233,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
             </div>
             <div className='fcnew-absfill fcnew-flex-row'>
               <div
-                className='fcnew-cell fcnew-timegrid-header-axises'
+                className='fcnew-cell fcnew-content-box'
                 style={{ width: axisWidth }}
               >
                 {rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (

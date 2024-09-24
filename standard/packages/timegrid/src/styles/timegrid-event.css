@@ -1,6 +1,7 @@
 
 .fcnew-timegrid-event-harness {
   position: absolute; // top/left/right/bottom will all be set by JS
+  z-index: $timegrid-col-fg-z;
 
   & > .fcnew-timegrid-event {
     position: absolute; // absolute WITHIN the harness

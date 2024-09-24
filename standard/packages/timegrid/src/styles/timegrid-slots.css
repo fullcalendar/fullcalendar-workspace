@@ -1,53 +1,40 @@
 
-.fcnew {
+.fcnew-timegrid-weeknumber,
+.fcnew-timegrid-allday-label,
+.fcnew-timegrid-slot-label,
+.fcnew-timegrid-slot-lane {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; // vertically center
+}
 
-  & .fcnew-timegrid-header-axises, // the header column chunk for h-scroll scroller
-  & .fcnew-timegrid-weeknumber,
-  & .fcnew-timegrid-allday-label,
-  & .fcnew-timegrid-slot-label,
-  & .fcnew-timegrid-slot-labels { // the chunk within h-scroll scroller
-    box-sizing: content-box;
-    // because inner-width as calcuated from frames, then is set on this element,
-    // so the `width` must be the *inner* dimension
-  }
+// axis of slots --- inside
+.fcnew-timegrid-weeknumber-frame,
+.fcnew-timegrid-allday-label-frame,
+.fcnew-timegrid-slot-label-frame,
+.fcnew-timegrid-slot-lane-frame {
+  min-height: 1.5em;
+  display: flex;
+  flex-direction: row;
+  align-items: center; // vertically center
+  justify-content: flex-end; // horizontally (right)
+}
 
-  & .fcnew-timegrid-weeknumber,
-  & .fcnew-timegrid-allday-label,
-  & .fcnew-timegrid-slot-label,
-  & .fcnew-timegrid-slot-lane {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; // vertically center
-  }
+.fcnew-timegrid-weeknumber-cushion,
+.fcnew-timegrid-allday-label-cushion,
+.fcnew-timegrid-slot-label-cushion {
+  padding: 0 4px;
+  white-space: nowrap;
+}
 
-  // axis of slots --- inside
-  & .fcnew-timegrid-weeknumber-frame,
-  & .fcnew-timegrid-allday-label-frame,
-  & .fcnew-timegrid-slot-label-frame,
-  & .fcnew-timegrid-slot-lane-frame {
-    min-height: 1.5em;
-    display: flex;
-    flex-direction: row;
-    align-items: center; // vertically center
-    justify-content: flex-end; // horizontally (right)
-  }
+.fcnew-timegrid-allday-label-cushion {
+  max-width: 60px; // limits the width of the "all-day" text
+}
 
-  & .fcnew-timegrid-weeknumber-cushion,
-  & .fcnew-timegrid-allday-label-cushion,
-  & .fcnew-timegrid-slot-label-cushion {
-    padding: 0 4px;
-    white-space: nowrap;
-  }
-
-  & .fcnew-timegrid-allday-label-cushion {
-    max-width: 60px; // limits the width of the "all-day" text
-  }
-
-  & .fcnew-timegrid-slot-minor {
-    border-style: dotted;
-    // how to do this when cell controls the BOTTOM border???
-    // THINK ABOUT:
-    // - bottom-sticky scrollbars prefer NO top border
-    // - top-sticky header prefers bottom border
-  }
+.fcnew-timegrid-slot-minor {
+  border-style: dotted;
+  // how to do this when cell controls the BOTTOM border???
+  // THINK ABOUT:
+  // - bottom-sticky scrollbars prefer NO top border
+  // - top-sticky header prefers bottom border
 }

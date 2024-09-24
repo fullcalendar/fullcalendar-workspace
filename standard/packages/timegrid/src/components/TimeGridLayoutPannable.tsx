@@ -178,7 +178,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             {/* HEADER / labels
             -------------------------------------------------------------------------------------*/}
             <div
-              className='fcnew-cell fcnew-timegrid-header-axises' // a "super" cell
+              className='fcnew-cell fcnew-content-box' // a "super" cell
               style={{ width: axisWidth }}
             >
               {headerTiers.map((models, tierNum) => (
@@ -292,7 +292,6 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
         )}
         <div className={[ // a "super" row
           'fcnew-row',
-          'fcnew-timegrid-timed-main',
           verticalScrolling ? 'fcnew-liquid' : '',
         ].join(' ')}>
           {/* SLATS / labels (vertical scroller)
@@ -303,9 +302,11 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             elClassNames={[
               'fcnew-cell', // NOTE: not a good idea if ever gets left/right border
               'fcnew-flex-column',
-              'fcnew-timegrid-slot-labels',
+              'fcnew-content-box',
             ]}
-            elStyle={{ width: axisWidth }}
+            elStyle={{
+              width: axisWidth,
+            }}
             ref={this.axisScrollerRef}
           >
             <div
