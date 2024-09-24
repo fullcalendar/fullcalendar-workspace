@@ -1,4 +1,8 @@
 
+/*
+extends fcnew-h-event
+*/
+
 .fcnew-daygrid-event { // make root-level, because will be dragged-and-dropped outside of a component root
   position: relative; // for z-indexes assigned later
   border-radius: 3px; // dot event needs this to when selected

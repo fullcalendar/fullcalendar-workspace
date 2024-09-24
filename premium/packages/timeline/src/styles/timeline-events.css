@@ -1,82 +1,67 @@
 
-.fcnew {
+// TimelineEventContainer
+// -------------------------------------------------------------------------------------------------
 
-  // container
-  & .fcnew-timeline-events {
-    position: relative;
-    z-index: $timeline-fg-z;
-    box-sizing: content-box; // so padding and height are separate. height is set in js
-  }
-  & .fcnew-timeline-events-overlap-enabled {
-    padding-bottom: 10px;
-  }
-
-  // harness
-  // for MORE-LINK too. is this okay?
-  & .fcnew-timeline-event-harness {
-    position: absolute;
-    top: 0; // for when when top can't be computed yet
-    // JS will set tht left/right
-  }
-
+.fcnew-timeline-events {
+  position: relative;
+  z-index: $timeline-fg-z;
 }
 
-// z-index, scoped within fcnew-timeline-events
-.fcnew-timeline-event { z-index: 1 }
-.fcnew-timeline-event.fcnew-event-mirror { z-index: 2 }
+.fcnew-timeline-events-overlap-enabled { // (allow-overlap variant)
+  padding-bottom: 10px;
+}
 
+// TimelineEventContainer > TimelineEvent
+// -------------------------------------------------------------------------------------------------
+// extends fcnew-h-event
 
 .fcnew-timeline-event {
-  align-items: center; // vertically align items
+  align-items: center; // vertically align items, for arrow
   border-radius: 0;
   padding: 2px 1px;
   margin-bottom: 1px;
   font-size: var(--fcnew-small-font-size);
-
-  // time and title spacing
-  // ----------------------------------------------------------------------------------------------------
-
-  & .fcnew-event-time,
-  & .fcnew-event-title {
-    padding: 0 2px;
-  }
-
-  & .fcnew-event-time {
-    font-weight: bold;
-  }
-
-}
-.fcnew-timeline-event-thick {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin-bottom: 0;
+  z-index: 1; // scoped within container
 }
 
-// move 1px away from slot line
-.fcnew-direction-ltr {
+.fcnew-timeline-event.fcnew-event-mirror { // (mirror variant)
+  z-index: 2; // scoped within container
+}
+
+.fcnew-direction-ltr { // (end-edge w/ LTR variant)
   & .fcnew-timeline-event.fcnew-event-end,
   & .fcnew-timeline-more-link {
     margin-right: 1px;
   }
 }
-.fcnew-direction-rtl {
+
+.fcnew-direction-rtl { // (end-edge w/ RTL variant)
   & .fcnew-timeline-event.fcnew-event-end,
   & .fcnew-timeline-more-link {
     margin-left: 1px;
   }
 }
 
-// make event beefier when overlap not allowed
-.fcnew-timeline-overlap-disabled .fcnew-timeline-event {
+.fcnew-timeline-event-thick { // (thick variant)
   padding-top: 5px;
   padding-bottom: 5px;
   margin-bottom: 0;
 }
 
-// arrows indicating the event continues into past/future
-// ----------------------------------------------------------------------------------------------------
+.fcnew-timeline-event {
+  & .fcnew-event-time, // > Time
+  & .fcnew-event-title { // > TitleOuter > Title
+    padding: 0 2px;
+  }
 
-// part of the flexbox flow
+  & .fcnew-event-time { // > Time
+    font-weight: bold;
+  }
+}
+
+// TimelineEventContainer > TimelineEvent > Arrows
+// -------------------------------------------------------------------------------------------------
+// (indicating the event continues into past/future)
 
 .fcnew-timeline-event:not(.fcnew-event-start):before,
 .fcnew-timeline-event:not(.fcnew-event-end):after {
@@ -94,20 +79,20 @@
   border-bottom-color: transparent;
 }
 
-// pointing left
+// (pointing left variant)
 .fcnew-direction-ltr .fcnew-timeline-event:not(.fcnew-event-start):before,
 .fcnew-direction-rtl .fcnew-timeline-event:not(.fcnew-event-end):after {
   border-left: 0;
 }
 
-// pointing right
+// (pointing right variant)
 .fcnew-direction-ltr .fcnew-timeline-event:not(.fcnew-event-end):after,
 .fcnew-direction-rtl .fcnew-timeline-event:not(.fcnew-event-start):before {
   border-right: 0;
 }
 
-// +more events indicator
-// ----------------------------------------------------------------------------------------------------
+// TimelineEventContainer > MoreLink
+// -------------------------------------------------------------------------------------------------
 
 .fcnew-timeline-more-link {
   font-size: var(--fcnew-small-font-size);
@@ -117,8 +102,8 @@
   cursor: pointer;
 }
 
-.fcnew-timeline-more-link-inner { // has fcnew-h-sticky
-  display: inline-block;
+.fcnew-timeline-more-link-inner { // has fcnew-h-sticky???
+  display: inline-block; // ???
   left: 0;
   right: 0;
   padding: 2px;

@@ -183,6 +183,10 @@ Lone cell in a row should always fill row. Makes axis widths much easier
   position: relative;
 }
 
+.fcnew-abs {
+  position: absolute;
+}
+
 .fcnew-absfill { // rename?
   position: absolute;
   top: 0;

@@ -1,4 +1,10 @@
 
+/*
+extends fcnew-v-event
+
+TODO: refactor this
+*/
+
 .fcnew-timegrid-event-harness {
   position: absolute; // top/left/right/bottom will all be set by JS
   z-index: $timegrid-col-fg-z;

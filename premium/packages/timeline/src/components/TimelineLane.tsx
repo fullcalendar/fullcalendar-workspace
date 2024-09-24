@@ -127,6 +127,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         <div
           className={[
             'fcnew-timeline-events',
+            'fcnew-content-box', // because height is set, and padding might be set
             options.eventOverlap === false // TODO: fix bad default
               ? 'fcnew-timeline-events-overlap-disabled'
               : 'fcnew-timeline-events-overlap-enabled'

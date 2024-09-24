@@ -279,9 +279,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 'fcnew-flex-column', // so ReisableTwoCol can grow
                 'fcnew-timeline',
                 'fcnew-resource-timeline',
-                options.eventOverlap === false ?
-                  'fcnew-timeline-overlap-disabled' :
-                  '',
               ]}
               viewSpec={viewSpec}
             >

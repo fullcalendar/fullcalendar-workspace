@@ -9,17 +9,23 @@ audit all CSS
   rethink .fcnew-cell/fcnew-daygrid-cell classNames
   change names to runon, like "fcnew-nowindicator" and "morelink"
   disable sticky when media:print?
+  we shouldn't have 'fcnew-slot-sat' ... it's a day! instead 'fcnew-day-sat'
+  call it 'fcnew-header-col' instead of 'fcnew-col-header'? look at html rol
+  ensure navlink <a> tags in headers (daygrid/timeline) are styled correctly
 
 FOR beta.1
   bootstrap theme support
   test for ALL views
     RTL
+  timeline
+    test that +more link works
   resource-timeline
     when switching back and forth from 1-day to 3-day, many times, scrolltime gets messed up
   multimonth
     multiweek-view.html: when dragging and dropping event, scroll jumps down
   timegrid
     initial-scroll broken!!!
+    test that +more link works
   react/vue/angular connectors
     pause size-handling until all slots are rendered
 

@@ -2,7 +2,7 @@ import { Component, createRef, Ref, createElement, ComponentChildren } from '@fu
 import { watchHeight, setRef } from '@fullcalendar/core/internal'
 
 export interface TimelineEventHarnessProps {
-  style: any // TODO
+  style: any // should set top/left/right/width
   children?: ComponentChildren
 
   // ref
@@ -24,7 +24,7 @@ export class TimelineEventHarness extends Component<TimelineEventHarnessProps> {
 
     return (
       <div
-        className="fcnew-timeline-event-harness fcnew-timeline-event-harness-abs"
+        className="fcnew-abs"
         style={props.style}
         ref={this.rootElRef}
       >

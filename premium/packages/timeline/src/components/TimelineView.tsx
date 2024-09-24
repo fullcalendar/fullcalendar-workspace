@@ -102,9 +102,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 'fcnew-bordered',
                 'fcnew-flex-column',
                 'fcnew-timeline',
-                options.eventOverlap === false ?
-                  'fcnew-timeline-overlap-disabled' :
-                  '',
               ]}
             >
 

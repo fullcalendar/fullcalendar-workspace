@@ -3,7 +3,6 @@
 @import './styles/constants';
 
 @import './styles/v-event';
-@import './styles/timegrid';
 @import './styles/timegrid-slots';
 @import './styles/timegrid-cols';
 @import './styles/timegrid-event';
