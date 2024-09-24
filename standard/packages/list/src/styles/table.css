@@ -1,0 +1,37 @@
+
+/*
+Make it like the flexbox-based table utils
+We do borders on cells only, not rows, because they're the only thing that can be sticky
+Unlike flex utils, put borders on bottom of cells because there's no need for dividers, major/minor,
+  etc, and easier for sticky
+*/
+
+.fcnew-table {
+  width: 100%;
+  border-spacing: 0;
+}
+
+// cells
+
+.fcnew-table > * > * > * {
+  padding: 0; // default padding
+
+  border-style: solid;
+  border-color: var(--fcnew-border-color);
+  border-width: 0 0 1px; // bottom border
+}
+
+.fcnew-table > :last-child > :last-child > * {
+  border-bottom-width: 0; // kill last row's cells' borders
+}
+
+/* for horizontal borders
+
+.fcnew-direction-ltr .fcnew-table > * > * > :not(:first-child) {
+  border-left-width: 1px;
+}
+
+.fcnew-direction-rtl .fcnew-table > * > * > :not(:first-child) {
+  border-right-width: 1px;
+}
+*/

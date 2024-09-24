@@ -48,6 +48,17 @@
   bottom: 0;
 }
 
+// NavLink
+// -------------------------------------------------------------------------------------------------
+
+.fcnew a[data-navlink] {
+  cursor: pointer;
+}
+
+.fcnew a[data-navlink]:hover {
+  text-decoration: underline;
+}
+
 // Flexbox Utils
 // -------------------------------------------------------------------------------------------------
 
@@ -97,6 +108,8 @@ like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CELLS
 }
 
 /*
+TODO: move utils into a different file
+
 TODO: because of cell first-child issue, spreadsheet columns don't align
   need to devise similar solution where parent doesn't have a border, and first-child border is preserved
     - for spreadsheet cols
@@ -259,4 +272,13 @@ Only needed when padding/border must be separate from width/height
 
 .fcnew-bordered {
   border: 1px solid var(--fcnew-border-color);
+}
+
+.fcnew-offscreen {
+  position: absolute;
+  left: -10000px;
+}
+
+.fcnew-shaded { // replaces tableCellShaded
+  background-color: var(--fcnew-neutral-bg-color);
 }

@@ -15,9 +15,16 @@ audit all CSS
   ensure navlink <a> tags in headers (daygrid/timeline) are styled correctly
   tests aleady have fcnew- className prefix!?
   restore all head/body/foot classes
+  did themeSystem:false ever clear the theme?
+  search for all aria-* tags
+  rename frame/cushion elements to just inner
+  theme.getClass('table') get removed?... yes
+  test angular connector with elTag="th" (for ListViewHeaderRow)
 
 FOR beta.1
   bootstrap theme support
+    kill usage of .fcnew-scrollgrid
+    kill tableCellShaded.. just use CSS variable, just like border-color
   test for ALL views
     RTL
   timeline
@@ -29,6 +36,8 @@ FOR beta.1
   timegrid
     initial-scroll broken!!!
     test that +more link works
+  daygrid
+    +more link renders weird
   react/vue/angular connectors
     pause size-handling until all slots are rendered
 
@@ -44,6 +53,8 @@ AFTER beta.1
     maybe stop doing "frame" elements for measurements, and instead use just "cushion"
       how would that work for getting a scroller's "clientWidth/clientHeight"?
   restore print-mode
+    ensure print-view has nothing sticky
+      (wait, maybe we want it titles sticky onscreen for h-scroll daygrid/timeline)
   implement ResizeObserver fallback
   just like scrollbar dead area should have grey bg, make timegrid bottom area w/o slots a grey bg
   initial-scroll for views with complex rendering is wrong
@@ -115,3 +126,4 @@ CHANGELOG
     ticket where timegrid time-axis isn't selectable
     fix those 2 incorrect date-yielding results
     make ticket where resource-timline super-header stays fixed during horizontal scrolling of datagrid
+    sticky subheader of listview, don't have bottom border. ticket?

@@ -64,14 +64,15 @@ export class ListView extends DateComponent<ViewProps> {
         elRef={this.setRootEl}
         elClasses={[
           'fcnew-list',
-          context.theme.getClass('table'), // just for the outer border. will be on div
-          context.options.stickyHeaderDates !== false ?
-            'fcnew-list-sticky' :
-            '',
+          'fcnew-flex-column',
+          'fcnew-bordered',
         ]}
         viewSpec={context.viewSpec}
       >
-        <Scroller vertical={verticalScrolling}>{/* TODO: don't need heavyweight components */}
+        <Scroller // TODO: don't need heavyweight component
+          vertical={verticalScrolling}
+          elClassNames={[verticalScrolling ? 'fcnew-liquid' : '']}
+        >
           {eventSegs.length > 0 ?
             this.renderSegList(eventSegs, dayDates) :
             this.renderEmptyMessage()}
@@ -120,7 +121,7 @@ export class ListView extends DateComponent<ViewProps> {
   }
 
   renderSegList(allSegs: Seg[], dayDates: DateMarker[]) {
-    let { theme, options } = this.context
+    let { options } = this.context
     let { timeHeaderId, eventHeaderId, dateHeaderIdRoot } = this.state
     let segsByDay = groupSegsByDay(allSegs) // sparse array
 
@@ -168,8 +169,8 @@ export class ListView extends DateComponent<ViewProps> {
           }
 
           return (
-            <table className={'fcnew-list-table ' + theme.getClass('table')}>
-              <thead>
+            <table className='fcnew-table'>
+              <thead className='fcnew-offscreen'>
                 <tr>
                   <th scope="col" id={timeHeaderId}>{options.timeHint}</th>
                   <th scope="col" aria-hidden />

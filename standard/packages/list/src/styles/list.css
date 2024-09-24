@@ -1,25 +1,25 @@
 
-.fcnew-theme-standard {
+//
+// TableCell
+//
 
-  & .fcnew-list {
-    border: 1px solid var(--fcnew-border-color);
-  }
-
+.fcnew-list .fcnew-table > * > .fcnew-list-event > *,
+.fcnew-list .fcnew-table > * > .fcnew-list-day .fcnew-list-day-inner {
+  padding: 8px 14px;
 }
 
-.fcnew {
+//
+// ListEmpty
+//
 
-  // message when no events
-  & .fcnew-list-empty {
-    background-color: var(--fcnew-neutral-bg-color);
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center; // vertically aligns fcnew-list-empty-inner
-  }
+.fcnew-list-empty {
+  background-color: var(--fcnew-neutral-bg-color);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center; // vertically aligns fcnew-list-empty-inner
+}
 
-  & .fcnew-list-empty-cushion {
-    margin: 5em 0;
-  }
-
+.fcnew-list-empty-cushion {
+  margin: 5em 0;
 }

@@ -3,7 +3,7 @@ import {
   BaseComponent, DateMarker, DateRange, getDateMeta,
   getDayClassNames, formatDayString, buildNavLinkAttrs, getUniqueDomId, ContentContainer,
 } from '@fullcalendar/core/internal'
-import { createElement, Fragment } from '@fullcalendar/core/preact'
+import { createElement } from '@fullcalendar/core/preact'
 
 export interface ListViewHeaderRowProps {
   cellId: string
@@ -58,16 +58,19 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
         didMount={options.dayHeaderDidMount}
         willUnmount={options.dayHeaderWillUnmount}
       >
-        {(InnerContent) => ( // TODO: force-hide top border based on :first-child
-          <th scope="colgroup" colSpan={3} id={cellId} aria-labelledby={textId}>
-            <InnerContent
-              elTag="div"
-              elClasses={[
-                'fcnew-list-day-cushion',
-                theme.getClass('tableCellShaded'),
-              ]}
-            />
-          </th>
+        {(InnerContent) => (
+          <InnerContent
+            elTag="th"
+            elAttrs={{
+              id: cellId,
+              colSpan: 3,
+              'aria-labelledby': textId,
+            }}
+            elClasses={[
+              'fcnew-list-day-cell',
+              options.stickyHeaderDates ? 'fcnew-list-day-cell-sticky' : '',
+            ]}
+          />
         )}
       </ContentContainer>
     )
@@ -83,7 +86,7 @@ interface RenderProps extends DayHeaderContentArg {
 
 function renderInnerContent(props: RenderProps) {
   return (
-    <Fragment>
+    <div className='fcnew-list-day-inner'>
       {props.text && (
         <a id={props.textId} className="fcnew-list-day-text" {...props.navLinkAttrs}>
           {props.text}
@@ -94,6 +97,6 @@ function renderInnerContent(props: RenderProps) {
           {props.sideText}
         </a>
       )}
-    </Fragment>
+    </div>
   )
 }

@@ -47,7 +47,7 @@ export class ListViewEventRow extends BaseComponent<ListViewEventRowProps> {
         {(InnerContent, eventContentArg) => (
           <Fragment>
             {buildTimeContent(seg, timeFormat, context, timeHeaderId, dateHeaderId)}
-            <td aria-hidden className="fcnew-list-event-graphic">
+            <td aria-hidden className="fcnew-list-event-dot-cell">
               <span
                 className="fcnew-list-event-dot"
                 style={{
