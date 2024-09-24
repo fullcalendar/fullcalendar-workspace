@@ -945,12 +945,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
         /*
         TODO: DRY-up ith TimelineView!!!
-        TODO: make RTL-friendly like TimelineView
         */
         if (slatWidth) {
-          const slatIndex = Math.floor(positionLeft / slatWidth)
+          const x = isRtl ? timeCanvasWidth - positionLeft : positionLeft
+          const slatIndex = Math.floor(x / slatWidth)
           const slatLeft = slatIndex * slatWidth
-          const partial = (positionLeft - slatLeft) / slatWidth // floating point number between 0 and 1
+          const partial = (x - slatLeft) / slatWidth // floating point number between 0 and 1
           const localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot) // the snap # relative to start of slat
 
           let start = dateEnv.add(

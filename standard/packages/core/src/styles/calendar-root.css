@@ -107,16 +107,6 @@ like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CELLS
   flex-direction: column;
 }
 
-/*
-TODO: move utils into a different file
-
-TODO: because of cell first-child issue, spreadsheet columns don't align
-  need to devise similar solution where parent doesn't have a border, and first-child border is preserved
-    - for spreadsheet cols
-    - for virtualization scrolling of resources (first row should have top border)
-    - for timegrid's abs-positioned cols needing left-inset from axis
-*/
-
 .fcnew-row,
 .fcnew-rowgroup,
 .fcnew-rowdivider {
@@ -173,7 +163,7 @@ TODO: because of cell first-child issue, spreadsheet columns don't align
   // (first-child)
   & .fcnew-cell:first-child:not(.fcnew-not-first),
   // (when left of a divider)
-  & .fcnew-celldivier + .fcnew-cell {
+  & .fcnew-celldivider + .fcnew-cell {
     border-right-width: 0;
   }
 

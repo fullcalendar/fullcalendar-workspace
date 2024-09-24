@@ -1,12 +1,17 @@
 
 //
-// TableCell
+// Common
 //
 
-.fcnew-list .fcnew-table > * > .fcnew-list-event > *,
-.fcnew-list .fcnew-table > * > .fcnew-list-day .fcnew-list-day-inner {
+.fcnew-list-event-time,
+.fcnew-list-event-dot-cell,
+.fcnew-list-event-title,
+.fcnew-list-day-inner {
   padding: 8px 14px;
 }
+// make the dot closer to the event title
+.fcnew-direction-ltr .fcnew-list-event-dot-cell { padding-right: 0 }
+.fcnew-direction-rtl .fcnew-list-event-dot-cell { padding-left: 0 }
 
 //
 // ListEmpty

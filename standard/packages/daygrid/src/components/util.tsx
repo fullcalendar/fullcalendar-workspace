@@ -100,7 +100,7 @@ export function computeHorizontalsFromSeg(
     width = (seg.lastCol - seg.firstCol + 1) * colWidth
 
     if (isRtl) {
-      right = (colCnt - seg.lastCol - 1) * colWidth
+      right = seg.firstCol * colWidth
     } else {
       left = seg.firstCol * colWidth
     }
@@ -109,7 +109,7 @@ export function computeHorizontalsFromSeg(
     width = fracToCssDim((seg.lastCol - seg.firstCol + 1) * colWidthFrac)
 
     if (isRtl) {
-      right = fracToCssDim((colCnt - seg.lastCol - 1) * colWidthFrac)
+      right = fracToCssDim(seg.firstCol * colWidthFrac)
     } else {
       left = fracToCssDim(seg.firstCol * colWidthFrac)
     }

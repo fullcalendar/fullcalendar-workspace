@@ -33,7 +33,3 @@
 .fcnew-list-event.fcnew-event-forced-url:hover a {
   text-decoration: underline;
 }
-
-// make the dot closer to the event title
-.fcnew-direction-ltr .fcnew-list-event-dot-cell { padding-right: 0 }
-.fcnew-direction-rtl .fcnew-list-event-dot-cell { padding-left: 0 }

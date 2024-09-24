@@ -214,9 +214,9 @@ function detectRtlScrollerConfig(): RtlScrollerConfig {
     }
   }
 
-  let leftScrollbars = innerEl.getBoundingClientRect().left > el.getBoundingClientRect().left
+  let rightScrollbars = innerEl.getBoundingClientRect().right < el.getBoundingClientRect().right
 
   removeElement(el)
 
-  return { system, leftScrollbars }
+  return { system, leftScrollbars: !rightScrollbars }
 }

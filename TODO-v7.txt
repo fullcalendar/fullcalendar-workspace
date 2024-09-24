@@ -18,10 +18,11 @@ audit all CSS
   search for all aria-* tags
   rename frame/cushion elements to just inner
   in bootstrap themes, event-height line-height is very tall. normalize? then make changelog entry?
+  in timegrid, background events are incorrectly covering foreground events (background-events.html)
+  test horizontal scroll normalization (for isRTL) in variety of browsers
+  move CSS flexbox/utils into separate file
 
 FOR beta.1
-  test for ALL views
-    RTL
   timeline
     test that +more link works
   resource-timeline
