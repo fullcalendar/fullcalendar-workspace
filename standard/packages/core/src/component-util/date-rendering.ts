@@ -34,7 +34,6 @@ export function getDayClassNames(meta: DateMeta, theme: Theme) {
   } else {
     if (meta.isToday) {
       classNames.push('fcnew-day-today')
-      classNames.push(theme.getClass('today'))
     }
 
     if (meta.isPast) {
@@ -64,7 +63,6 @@ export function getSlotClassNames(meta: DateMeta, theme: Theme) {
   } else {
     if (meta.isToday) {
       classNames.push('fcnew-slot-today')
-      classNames.push(theme.getClass('today'))
     }
 
     if (meta.isPast) {

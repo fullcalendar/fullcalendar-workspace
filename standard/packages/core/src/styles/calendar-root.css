@@ -195,9 +195,6 @@ Lone cell in a row should always fill row. Makes axis widths much easier
 .fcnew-rowdivider,
 .fcnew-celldivider {
   background: var(--fcnew-neutral-bg-color);
-  /*
-  should we use theme.getClass('tableCellShaded'), or kill that???
-  */
 }
 
 .fcnew-celldivider {
@@ -279,6 +276,6 @@ Only needed when padding/border must be separate from width/height
   left: -10000px;
 }
 
-.fcnew-shaded { // replaces tableCellShaded
+.fcnew-shaded {
   background-color: var(--fcnew-neutral-bg-color);
 }

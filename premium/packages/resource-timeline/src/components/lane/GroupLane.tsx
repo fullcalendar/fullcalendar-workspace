@@ -37,7 +37,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
           'fcnew-liquid',
           'fcnew-timeline-lane',
           'fcnew-resource-group',
-          context.theme.getClass('tableCellShaded'),
+          'fcnew-shaded', // TODO: make part of fcnew-resource-group so ppl can style both cells together?
         ]}
         renderProps={renderProps}
         generatorName="resourceGroupLaneContent"

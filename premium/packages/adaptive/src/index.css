@@ -1,17 +1,5 @@
 
-.fcnew {
-
-  & .fcnew-event,
-  & .fcnew-scrollgrid table tr {
-    break-inside: avoid;
-  }
-
-}
-
 .fcnew-media-print {
-  display: block; // undo flexbox. FF doesn't know how to flow
-  max-width: 100%; // width will be hardcoded too
-
   & .fcnew-timegrid-slots,
   & .fcnew-timeline-slots,
   & .fcnew-non-business,
@@ -24,6 +12,10 @@
   & .fcnew-v-event {
     color: #000 !important;
     background: #fff !important;
+  }
+
+  & .fcnew-event {
+    break-inside: avoid;
   }
 
   & .fcnew-event,

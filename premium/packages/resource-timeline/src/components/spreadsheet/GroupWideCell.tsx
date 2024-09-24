@@ -40,7 +40,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
             'fcnew-cell',
             'fcnew-liquid',
             'fcnew-resource-group',
-            context.theme.getClass('tableCellShaded'),
+            'fcnew-shaded', // TODO: make part of fcnew-resource-group so ppl can style both cells together?
           ]}
           renderProps={renderProps}
           generatorName="resourceGroupLabelContent"

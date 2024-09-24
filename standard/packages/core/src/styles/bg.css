@@ -29,7 +29,6 @@
   background: var(--fcnew-highlight-color);
 }
 
-.fcnew-day-shaded,
 .fcnew-day-disabled {
   background: var(--fcnew-neutral-bg-color);
 }

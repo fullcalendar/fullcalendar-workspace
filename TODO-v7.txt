@@ -1,6 +1,5 @@
 
 audit all CSS
-  write table-inspired CSS utils for ListView
   universal "frame" element. ensure nobody is styling it
   audit z-indexes
     for example, fcnew-timeline-bg seems above slats
@@ -18,13 +17,9 @@ audit all CSS
   did themeSystem:false ever clear the theme?
   search for all aria-* tags
   rename frame/cushion elements to just inner
-  theme.getClass('table') get removed?... yes
-  test angular connector with elTag="th" (for ListViewHeaderRow)
+  in bootstrap themes, event-height line-height is very tall. normalize? then make changelog entry?
 
 FOR beta.1
-  bootstrap theme support
-    kill usage of .fcnew-scrollgrid
-    kill tableCellShaded.. just use CSS variable, just like border-color
   test for ALL views
     RTL
   timeline
@@ -38,6 +33,8 @@ FOR beta.1
     test that +more link works
   daygrid
     +more link renders weird
+  list
+    test angular connector with elTag="th" (for ListViewHeaderRow)
   react/vue/angular connectors
     pause size-handling until all slots are rendered
 

@@ -69,10 +69,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
           </div>
         </div>
         <div
-          className={[
-            'fcnew-multimonth-body fcnew-flex-column',
-            context.theme.getClass('table'), // does this still work?
-          ].join(' ')}
+          className='fcnew-multimonth-body fcnew-flex-column'
           style={{
             marginTop: -rowHeight,
             height: forPrint ? '' : tableHeight,

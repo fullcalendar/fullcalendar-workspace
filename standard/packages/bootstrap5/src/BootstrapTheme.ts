@@ -5,7 +5,6 @@ export class BootstrapTheme extends Theme {
 
 BootstrapTheme.prototype.classes = {
   root: 'fcnew-theme-bootstrap5',
-  tableCellShaded: 'fcnew-theme-bootstrap5-shaded',
   buttonGroup: 'btn-group',
   button: 'btn btn-primary',
   buttonActive: 'active',
