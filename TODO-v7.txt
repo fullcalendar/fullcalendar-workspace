@@ -7,7 +7,8 @@ audit all CSS
   the "+2 more" bg color should not fill entire width. just itself
   no more event <a> tags when not a link
   rethink .fcnew-cell/fcnew-daygrid-cell classNames
-  change names to runon, like "fcnew-nowindicator" and "morelink"
+  change names to runon, like "fcnew-nowindicator" and "morelink" and "viewharness"
+    or "view-outer"?
   disable sticky when media:print?
   we shouldn't have 'fcnew-slot-sat' ... it's a day! instead 'fcnew-day-sat'
   call it 'fcnew-header-col' instead of 'fcnew-col-header'? look at html rol

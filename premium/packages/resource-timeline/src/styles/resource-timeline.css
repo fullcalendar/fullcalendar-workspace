@@ -1,9 +1,0 @@
-
-.fcnew {
-
-  & .fcnew-resource-timeline-divider {
-    width: 3px; // important to have width to shrink this cell. no cross-browser problems
-    cursor: col-resize;
-  }
-
-}

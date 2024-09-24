@@ -83,15 +83,14 @@ Rarely used. Just inline this?
 // Table Utils
 // -------------------------------------------------------------------------------------------------
 
-/*
-NOTE: fcnew-rowgroup is like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CELLS
-*/
-
 .fcnew-row {
   display: flex;
   flex-direction: row;
 }
 
+/*
+like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CELLS
+*/
 .fcnew-rowgroup {
   display: flex;
   flex-direction: column;
@@ -103,14 +102,6 @@ TODO: because of cell first-child issue, spreadsheet columns don't align
     - for spreadsheet cols
     - for virtualization scrolling of resources (first row should have top border)
     - for timegrid's abs-positioned cols needing left-inset from axis
-
-TODO: rtl
-TODO: make celldivider className? use it for Resizable twocol?
-TODO: try making all rows/cells content-box! easier for width assigning
-  HOWEVER, when explicitly setting tops/heights for resource rows, will overlap
-  HOWEVER, when manually calculating how to distribute datagrid width to columns,
-    resulting pixel array our cell outer widths (because they must add up to the total)
-TODO: move away from 'spreadsheet' and use 'datagrid' instead
 */
 
 .fcnew-row,
@@ -121,32 +112,61 @@ TODO: move away from 'spreadsheet' and use 'datagrid' instead
   border-width: 1px 0 0; // top
 }
 
+// kill top border
+// (first-child)
 .fcnew-row:first-child:not(.fcnew-not-first),
 .fcnew-rowgroup:first-child,
-.fcnew-rowdivider:first-child {
+.fcnew-rowdivider:first-child,
+// (when below a header/divider)
+.fcnew-sticky-header + .fcnew-row, // TODO: move to fcnew-rowgroup-sticky?
+.fcnew-sticky-header + .fcnew-rowgroup,
+.fcnew-rowdivider + .fcnew-row,
+.fcnew-rowdivider + .fcnew-rowgroup { // TODO: combine this with above
   border-top-width: 0;
 }
 
-.fcnew-cell {
-  border-style: solid;
-  border-color: var(--fcnew-border-color);
+.fcnew-cell,
+.fcnew-celldivider {
+  border: 0 solid var(--fcnew-border-color);
 }
 
 .fcnew-direction-ltr {
-  & .fcnew-cell {
-    border-width: 0 0 0 1px; // left
+  & .fcnew-cell,
+  & .fcnew-celldivider {
+    border-left-width: 1px;
   }
-  & .fcnew-cell:first-child:not(.fcnew-not-first) {
+
+  // kill left border
+  // (first-child)
+  & .fcnew-cell:first-child:not(.fcnew-not-first),
+  // (when right of a divider)
+  & .fcnew-celldivider + .fcnew-cell {
     border-left-width: 0;
+  }
+
+  // takeover right border
+  & .fcnew-celldivider {
+    border-right-width: 1px;
   }
 }
 
 .fcnew-direction-rtl {
-  & .fcnew-cell {
-    border-width: 0 1px 0 0; // right
+  & .fcnew-cell,
+  & .fcnew-celldivider {
+    border-right-width: 1px;
   }
-  & .fcnew-cell:first-child:not(.fcnew-not-first) {
+
+  // kill right border
+  // (first-child)
+  & .fcnew-cell:first-child:not(.fcnew-not-first),
+  // (when left of a divider)
+  & .fcnew-celldivier + .fcnew-cell {
     border-right-width: 0;
+  }
+
+  // takeover left border
+  & .fcnew-celldivider {
+    border-left-width: 1px;
   }
 }
 
@@ -159,21 +179,25 @@ Lone cell in a row should always fill row. Makes axis widths much easier
   min-width: 0;
 }
 
-.fcnew-rowdivider {
-  padding-bottom: 2px; // can use just height if we move towards content-box!
+.fcnew-rowdivider,
+.fcnew-celldivider {
   background: var(--fcnew-neutral-bg-color);
+  /*
+  should we use theme.getClass('tableCellShaded'), or kill that???
+  */
 }
 
+.fcnew-celldivider {
+  padding-left: 2px;
+}
+.fcnew-rowdivider {
+  padding-bottom: 2px; // can use just height if we move towards content-box!
+}
+
+// takeover bottom border
 .fcnew-rowdivider,
 .fcnew-sticky-header {
   border-bottom-width: 1px; // takeover the bottom border
-}
-
-.fcnew-sticky-header + .fcnew-row, // TODO: move to fcnew-rowgroup-sticky?
-.fcnew-sticky-header + .fcnew-rowgroup,
-.fcnew-rowdivider + .fcnew-row,
-.fcnew-rowdivider + .fcnew-rowgroup { // TODO: combine this with above
-  border-top-width: 0;
 }
 
 // Misc Utils

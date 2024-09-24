@@ -32,7 +32,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
 
   render() {
     let { props, state, context } = this
-    let { options, theme } = context
+    let { options } = context
 
     let resourceAreaWidth = state.startWidthOverride != null
       ? state.startWidthOverride
@@ -57,11 +57,10 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
           {props.startContent}
         </div>
         <div
-          className={[
-            'fcnew-cell',
-            'fcnew-resource-timeline-divider',
-            theme.getClass('tableCellShaded'),
-          ].join(' ')}
+          className='fcnew-celldivider'
+          // TODO: make a className somehow?...
+          // TODO: what if not resizable?
+          style={{ cursor: 'col-resize' }}
           ref={this.resizerElRef}
         />
         <div
