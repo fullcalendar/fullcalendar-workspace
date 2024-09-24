@@ -1,39 +1,35 @@
 
-.fcnew {
+.fcnew-bg-event,
+.fcnew-non-business,
+.fcnew-highlight {
+  // will always have a harness with position:relative/absolute, so absolutely expand
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
 
-  & .fcnew-bg-event,
-  & .fcnew-non-business,
-  & .fcnew-highlight {
-    // will always have a harness with position:relative/absolute, so absolutely expand
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+.fcnew-non-business {
+  background: var(--fcnew-non-business-color);
+}
+
+.fcnew-bg-event {
+  background: var(--fcnew-bg-event-color);
+  opacity: var(--fcnew-bg-event-opacity);
+
+  & .fcnew-event-title {
+    margin: .5em;
+    font-size: var(--fcnew-small-font-size);
+    font-style: italic;
   }
+}
 
-  & .fcnew-non-business {
-    background: var(--fcnew-non-business-color);
-  }
+.fcnew-highlight {
+  background: var(--fcnew-highlight-color);
+}
 
-  & .fcnew-bg-event {
-    background: var(--fcnew-bg-event-color);
-    opacity: var(--fcnew-bg-event-opacity);
-
-    & .fcnew-event-title {
-      margin: .5em;
-      font-size: var(--fcnew-small-font-size);
-      font-style: italic;
-    }
-  }
-
-  & .fcnew-highlight {
-    background: var(--fcnew-highlight-color);
-  }
-
-  & .fcnew-cell-shaded,
-  & .fcnew-day-disabled {
-    background: var(--fcnew-neutral-bg-color);
-  }
-
+.fcnew-day-shaded,
+.fcnew-day-disabled {
+  background: var(--fcnew-neutral-bg-color);
 }

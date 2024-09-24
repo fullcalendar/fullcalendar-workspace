@@ -1,27 +1,23 @@
 
-.fcnew {
+.fcnew-button-group {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+}
 
-  & .fcnew-button-group {
-    position: relative;
-    display: inline-flex;
-    vertical-align: middle;
-  }
+.fcnew-button-group > .fcnew-button {
+  position: relative;
+  flex: 1 1 auto;
+}
 
-  & .fcnew-button-group > .fcnew-button {
-    position: relative;
-    flex: 1 1 auto;
-  }
+.fcnew-button-group > .fcnew-button:hover {
+  z-index: 1;
+}
 
-  & .fcnew-button-group > .fcnew-button:hover {
-    z-index: 1;
-  }
-
-  & .fcnew-button-group > .fcnew-button:focus,
-  & .fcnew-button-group > .fcnew-button:active,
-  & .fcnew-button-group > .fcnew-button.fcnew-button-active {
-    z-index: 1;
-  }
-
+.fcnew-button-group > .fcnew-button:focus,
+.fcnew-button-group > .fcnew-button:active,
+.fcnew-button-group > .fcnew-button.fcnew-button-active {
+  z-index: 1;
 }
 
 .fcnew-direction-ltr {

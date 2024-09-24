@@ -20,17 +20,6 @@ a.fcnew-event:hover {
 }
 
 
-// event text content
-// ----------------------------------------------------------------------------------------------------
-
-.fcnew-event {
-  & .fcnew-event-main {
-    position: relative;
-    z-index: $event-main-z;
-  }
-}
-
-
 // dragging
 // ----------------------------------------------------------------------------------------------------
 
@@ -51,14 +40,10 @@ a.fcnew-event:hover {
 // ----------------------------------------------------------------------------------------------------
 // (subclasses should hone positioning for touch and non-touch)
 
-.fcnew-event {
-
-  & .fcnew-event-resizer {
-    display: none;
-    position: absolute;
-    z-index: $event-resizer-z;
-  }
-
+.fcnew-event-resizer {
+  display: none;
+  position: absolute;
+  z-index: $event-resizer-z;
 }
 
 .fcnew-event:hover, // MOUSE

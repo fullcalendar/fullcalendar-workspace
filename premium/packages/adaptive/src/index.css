@@ -27,7 +27,7 @@
   }
 
   & .fcnew-event,
-  & .fcnew-event-main { // often controls the text-color
+  & .fcnew-event-inner { // often controls the text-color
     color: #000 !important;
   }
 

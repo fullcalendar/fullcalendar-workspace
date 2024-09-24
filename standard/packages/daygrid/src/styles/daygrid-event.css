@@ -1,7 +1,6 @@
 
 .fcnew-daygrid-event { // make root-level, because will be dragged-and-dropped outside of a component root
   position: relative; // for z-indexes assigned later
-  white-space: nowrap;
   border-radius: 3px; // dot event needs this to when selected
   font-size: var(--fcnew-small-font-size);
 }
@@ -29,6 +28,22 @@
     padding: 1px;
   }
 
+}
+
+// adjust border and border-radius (if there is any) for non-start/end
+
+.fcnew-direction-ltr .fcnew-daygrid-block-event:not(.fcnew-event-start),
+.fcnew-direction-rtl .fcnew-daygrid-block-event:not(.fcnew-event-end) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left-width: 0;
+}
+
+.fcnew-direction-ltr .fcnew-daygrid-block-event:not(.fcnew-event-end),
+.fcnew-direction-rtl .fcnew-daygrid-block-event:not(.fcnew-event-start) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right-width: 0;
 }
 
 // --- the dot style of event ---

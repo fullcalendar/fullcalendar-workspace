@@ -26,7 +26,7 @@
 .fcnew-timegrid-event { // events need to be root
   margin-bottom: 1px; // give some space from bottom
 
-  & .fcnew-event-main {
+  & .fcnew-event-inner {
     padding: 1px 1px 0;
   }
 
@@ -38,7 +38,7 @@
 }
 
 .fcnew-timegrid-event-short {
-  & .fcnew-event-main-frame {
+  & .fcnew-event-inner {
     flex-direction: row;
     overflow: hidden;
   }

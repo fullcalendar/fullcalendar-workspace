@@ -56,7 +56,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
           <Fragment>
             <InnerContent
               elTag="div"
-              elClasses={['fcnew-event-main']}
+              elClasses={['fcnew-event-inner']}
               elStyle={{ color: eventContentArg.textColor }}
             />
             {Boolean(eventContentArg.isStartResizable) && (
@@ -74,15 +74,15 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
 
 function renderInnerContent(innerProps: EventContentArg) {
   return (
-    <div className="fcnew-event-main-frame">
+    <Fragment>
       {innerProps.timeText && (
         <div className="fcnew-event-time">{innerProps.timeText}</div>
       )}
-      <div className="fcnew-event-title-container">
-        <div className="fcnew-event-title fcnew-h-sticky">
+      <div className="fcnew-event-title-outer">
+        <div className="fcnew-event-title">
           {innerProps.event.title || <Fragment>&nbsp;</Fragment>}
         </div>
       </div>
-    </div>
+    </Fragment>
   )
 }

@@ -27,9 +27,7 @@
 
 
 .fcnew-timeline-event {
-  position: relative; // contains things. TODO: make part of fcnew-h-event and fcnew-v-event
-  display: flex; // for v-aligning start/end arrows and making fcnew-event-main stretch all the way
-  align-items: center;
+  align-items: center; // vertically align items
   border-radius: 0;
   padding: 2px 1px;
   margin-bottom: 1px;
@@ -38,21 +36,15 @@
   // time and title spacing
   // ----------------------------------------------------------------------------------------------------
 
-  & .fcnew-event-main {
-    flex-grow: 1;
-    flex-shrink: 1;
-    min-width: 0; // important for allowing to shrink all the way
+  & .fcnew-event-time,
+  & .fcnew-event-title {
+    padding: 0 2px;
   }
 
   & .fcnew-event-time {
     font-weight: bold;
   }
 
-  & .fcnew-event-time,
-  & .fcnew-event-title {
-    white-space: nowrap;
-    padding: 0 2px;
-  }
 }
 .fcnew-timeline-event-thick {
   padding-top: 5px;

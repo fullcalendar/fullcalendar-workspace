@@ -13,17 +13,16 @@
 
 .fcnew-direction-ltr {
   direction: ltr;
-  text-align: left; // needed?
+  text-align: left;
 }
 
 .fcnew-direction-rtl {
   direction: rtl;
-  text-align: right; // needed?
+  text-align: right;
 }
 
-.fcnew-bordered {
-  border: 1px solid var(--fcnew-border-color);
-}
+// ViewHarness
+// -------------------------------------------------------------------------------------------------
 
 .fcnew-view-harness {
   position: relative; // for aspectratio AND for being origin for premium-message at bottom-left corner
@@ -131,11 +130,24 @@ TODO: move away from 'spreadsheet' and use 'datagrid' instead
 .fcnew-cell {
   border-style: solid;
   border-color: var(--fcnew-border-color);
-  border-width: 0 0 0 1px; // left
 }
 
-.fcnew-cell:first-child:not(.fcnew-not-first) {
-  border-left-width: 0;
+.fcnew-direction-ltr {
+  & .fcnew-cell {
+    border-width: 0 0 0 1px; // left
+  }
+  & .fcnew-cell:first-child:not(.fcnew-not-first) {
+    border-left-width: 0;
+  }
+}
+
+.fcnew-direction-rtl {
+  & .fcnew-cell {
+    border-width: 0 1px 0 0; // right
+  }
+  & .fcnew-cell:first-child:not(.fcnew-not-first) {
+    border-right-width: 0;
+  }
 }
 
 /*
@@ -190,12 +202,14 @@ Lone cell in a row should always fill row. Makes axis widths much easier
   top: 0;
   bottom: 0;
 }
+
 .fcnew-sticky-header {
   position: sticky;
   top: 0;
   background: var(--fcnew-page-bg-color);
   z-index: 999; // TODO: what was it before?
 }
+
 .fcnew-sticky-footer {
   position: sticky;
   bottom: 0;
@@ -213,4 +227,8 @@ Only needed when padding/border must be separate from width/height
 */
 .fcnew-content-box {
   box-sizing: content-box;
+}
+
+.fcnew-bordered {
+  border: 1px solid var(--fcnew-border-color);
 }

@@ -6,103 +6,99 @@ These styles only apply when the standard-theme is activated.
 When it's NOT activated, the fcnew-button classes won't even be in the DOM.
 */
 
-.fcnew {
+// reset
 
-  // reset
+.fcnew-button {
+  border-radius: 0;
+  overflow: visible;
+  text-transform: none;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
 
-  & .fcnew-button {
-    border-radius: 0;
-    overflow: visible;
-    text-transform: none;
-    margin: 0;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-  }
+.fcnew-button:focus {
+  outline: 1px dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+}
 
-  & .fcnew-button:focus {
-    outline: 1px dotted;
-    outline: 5px auto -webkit-focus-ring-color;
-  }
+.fcnew-button {
+  -webkit-appearance: button;
+}
 
-  & .fcnew-button {
-    -webkit-appearance: button;
-  }
+.fcnew-button:not(:disabled) {
+  cursor: pointer;
+}
 
-  & .fcnew-button:not(:disabled) {
-    cursor: pointer;
-  }
+// theme
 
-  // theme
+.fcnew-button {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.4em 0.65em;
+  font-size: 1em;
+  line-height: 1.5;
+  border-radius: 0.25em;
+}
 
-  & .fcnew-button {
-    display: inline-block;
-    font-weight: 400;
-    text-align: center;
-    vertical-align: middle;
-    user-select: none;
-    background-color: transparent;
-    border: 1px solid transparent;
-    padding: 0.4em 0.65em;
-    font-size: 1em;
-    line-height: 1.5;
-    border-radius: 0.25em;
-  }
+.fcnew-button:hover {
+  text-decoration: none;
+}
 
-  & .fcnew-button:hover {
-    text-decoration: none;
-  }
+.fcnew-button:focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.25);
+}
 
-  & .fcnew-button:focus {
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.25);
-  }
+.fcnew-button:disabled {
+  opacity: 0.65;
+}
 
-  & .fcnew-button:disabled {
-    opacity: 0.65;
-  }
+// "primary" coloring
 
-  // "primary" coloring
+.fcnew-button-primary {
+  color: var(--fcnew-button-text-color);
+  background-color: var(--fcnew-button-bg-color);
+  border-color: var(--fcnew-button-border-color);
+}
 
-  & .fcnew-button-primary {
-    color: var(--fcnew-button-text-color);
-    background-color: var(--fcnew-button-bg-color);
-    border-color: var(--fcnew-button-border-color);
-  }
+.fcnew-button-primary:hover {
+  color: var(--fcnew-button-text-color);
+  background-color: var(--fcnew-button-hover-bg-color);
+  border-color: var(--fcnew-button-hover-border-color);
+}
 
-  & .fcnew-button-primary:hover {
-    color: var(--fcnew-button-text-color);
-    background-color: var(--fcnew-button-hover-bg-color);
-    border-color: var(--fcnew-button-hover-border-color);
-  }
+.fcnew-button-primary:disabled { // not DRY
+  color: var(--fcnew-button-text-color);
+  background-color: var(--fcnew-button-bg-color);
+  border-color: var(--fcnew-button-border-color); // overrides :hover
+}
 
-  & .fcnew-button-primary:disabled { // not DRY
-    color: var(--fcnew-button-text-color);
-    background-color: var(--fcnew-button-bg-color);
-    border-color: var(--fcnew-button-border-color); // overrides :hover
-  }
+.fcnew-button-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5);
+}
 
-  & .fcnew-button-primary:focus {
-    box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5);
-  }
+.fcnew-button-primary:not(:disabled):active,
+.fcnew-button-primary:not(:disabled).fcnew-button-active {
+  color: var(--fcnew-button-text-color);
+  background-color: var(--fcnew-button-active-bg-color);
+  border-color: var(--fcnew-button-active-border-color);
+}
 
-  & .fcnew-button-primary:not(:disabled):active,
-  & .fcnew-button-primary:not(:disabled).fcnew-button-active {
-    color: var(--fcnew-button-text-color);
-    background-color: var(--fcnew-button-active-bg-color);
-    border-color: var(--fcnew-button-active-border-color);
-  }
+.fcnew-button-primary:not(:disabled):active:focus,
+.fcnew-button-primary:not(:disabled).fcnew-button-active:focus {
+  box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5);
+}
 
-  & .fcnew-button-primary:not(:disabled):active:focus,
-  & .fcnew-button-primary:not(:disabled).fcnew-button-active:focus {
-    box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5);
-  }
+// icons within buttons
 
-  // icons within buttons
-
-  & .fcnew-button .fcnew-icon {
-    vertical-align: middle;
-    font-size: 1.5em; // bump up the size (but don't make it bigger than line-height of button, which is 1.5em also)
-  }
-
+.fcnew-button .fcnew-icon {
+  vertical-align: middle;
+  font-size: 1.5em; // bump up the size (but don't make it bigger than line-height of button, which is 1.5em also)
 }
