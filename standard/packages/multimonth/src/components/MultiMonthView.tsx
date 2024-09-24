@@ -84,7 +84,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
         '',
       getIsHeightAuto(options) ?
         '' :
-        'fcnew-multimonth-scroller',
+        'fcnew-multimonth-scroll',
     ]
 
     return (
@@ -95,7 +95,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
             elClasses={rootClassNames}
             viewSpec={context.viewSpec}
           >
-            <div ref={this.innerElRef} className='fcnew-multimonth-flexparent'>
+            <div ref={this.innerElRef} className='fcnew-multimonth-inner'>
               {monthDateProfiles.map((monthDateProfile, i) => {
                 const monthStr = formatIsoMonthStr(monthDateProfile.currentRange.start)
 

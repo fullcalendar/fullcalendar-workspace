@@ -46,7 +46,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
         style={{ width: props.width }}
       >
         <div
-          className="fcnew-multimonth-header fcnew-rowgroup"
+          className="fcnew-multimonth-header"
           style={{ marginBottom: rowHeight }} // for stickiness
           role="presentation"
         >
@@ -57,7 +57,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
             )}
           </div>
           {/* TODO: somehow use HeaderRow or something? */}
-          <div className='fcnew-row'>
+          <div className='fcnew-multimonth-header-row fcnew-flex-row'>
             {dayTableModel.headerDates.map((headerDate) => (
               <DayOfWeekHeaderCell
                 key={headerDate.getUTCDay()}
@@ -70,8 +70,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
         </div>
         <div
           className={[
-            'fcnew-multimonth-daygrid',
-            'fcnew-flex-column',
+            'fcnew-multimonth-body fcnew-flex-column',
             context.theme.getClass('table'), // does this still work?
           ].join(' ')}
           style={{

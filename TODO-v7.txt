@@ -7,7 +7,8 @@ audit all CSS
   the "+2 more" bg color should not fill entire width. just itself
   no more event <a> tags when not a link
   rethink .fcnew-cell/fcnew-daygrid-cell classNames
-  change names to runon, like "fcnew-nowindicator"?
+  change names to runon, like "fcnew-nowindicator" and "morelink"
+  disable sticky when media:print?
 
 FOR beta.1
   bootstrap theme support
@@ -15,6 +16,8 @@ FOR beta.1
     RTL
   resource-timeline
     when switching back and forth from 1-day to 3-day, many times, scrolltime gets messed up
+  multimonth
+    multiweek-view.html: when dragging and dropping event, scroll jumps down
   timegrid
     initial-scroll broken!!!
   react/vue/angular connectors
