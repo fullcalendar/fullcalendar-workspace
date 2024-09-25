@@ -311,7 +311,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       nodes.push(
         <div
           key={buildEventRangeKey(seg.eventRange)}
-          className="fcnew-absfill-y"
+          className="fcnew-fill-y"
           style={{
             visibility: isVisible ? '' : 'hidden',
             left,

@@ -231,7 +231,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 </div>
               ))}
             </div>
-            <div className='fcnew-absfill fcnew-flex-row'>
+            <div className='fcnew-fill fcnew-flex-row'>
               <div
                 className='fcnew-cell fcnew-content-box'
                 style={{ width: axisWidth }}

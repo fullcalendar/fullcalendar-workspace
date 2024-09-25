@@ -103,7 +103,7 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
                 elClasses={[
                   'fcnew-cell-inner',
                   'fcnew-padding-sm',
-                  props.isSticky ? 'fcnew-h-sticky' : '',
+                  props.isSticky ? 'fcnew-sticky-x' : '',
                 ]}
               />
             )}

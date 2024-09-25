@@ -161,7 +161,7 @@ Lone cell in a row should always fill row. Makes axis widths much easier
   position: absolute;
 }
 
-.fcnew-absfill { // rename?
+.fcnew-fill {
   position: absolute;
   top: 0;
   left: 0;
@@ -169,22 +169,28 @@ Lone cell in a row should always fill row. Makes axis widths much easier
   bottom: 0;
 }
 
-.fcnew-absfill-x { // rename?
+.fcnew-fill-x {
   position: absolute;
   left: 0;
   right: 0;
 }
 
-.fcnew-absfill-y { // rename?
+.fcnew-fill-y {
   position: absolute;
   top: 0;
   bottom: 0;
 }
 
-.fcnew-v-sticky {
+.fcnew-sticky-y {
   position: sticky;
   top: 0;
   bottom: 0;
+}
+
+.fcnew-sticky-x {
+  position: sticky;
+  left: 0;
+  right: 0;
 }
 
 .fcnew-sticky-header {
@@ -198,12 +204,6 @@ Lone cell in a row should always fill row. Makes axis widths much easier
   position: sticky;
   bottom: 0;
   z-index: 999; // TODO: what was it before?
-}
-
-.fcnew-h-sticky {
-  position: sticky;
-  left: 0;
-  right: 0;
 }
 
 /*

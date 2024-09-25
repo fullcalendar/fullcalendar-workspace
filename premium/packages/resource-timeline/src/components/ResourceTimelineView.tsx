@@ -373,7 +373,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                 role='row'
                                 aria-rowindex={groupRowLayout.rowIndex}
                                 class={[
-                                  'fcnew-row fcnew-absfill-x',
+                                  'fcnew-row fcnew-fill-x',
                                   groupRowLayout.rowIndex ? 'fcnew-not-first' : '',
                                 ].join(' ')}
                                 style={{
@@ -414,7 +414,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                       role='row'
                                       aria-rowindex={groupCellLayout.rowIndex}
                                       class={[
-                                        'fcnew-row fcnew-absfill-x',
+                                        'fcnew-row fcnew-fill-x',
                                         groupCellLayout.rowIndex ? 'fcnew-not-first' : '',
                                       ].join(' ')}
                                       style={{
@@ -449,7 +449,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   role='row'
                                   aria-rowindex={resourceLayout.rowIndex}
                                   class={[
-                                    'fcnew-row fcnew-absfill-x',
+                                    'fcnew-row fcnew-fill-x',
                                     resourceLayout.rowIndex ? 'fcnew-not-first' : '',
                                   ].join(' ')}
                                   style={{
@@ -590,7 +590,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   role='row'
                                   aria-rowindex={groupRowLayout.rowIndex}
                                   class={[
-                                    'fcnew-row fcnew-absfill-x',
+                                    'fcnew-row fcnew-fill-x',
                                     groupRowLayout.rowIndex ? 'fcnew-not-first' : '',
                                   ].join(' ')}
                                   style={{
@@ -615,7 +615,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   role='row'
                                   aria-rowindex={resourceLayout.rowIndex}
                                   className={[
-                                    'fcnew-row fcnew-absfill-x',
+                                    'fcnew-row fcnew-fill-x',
                                     resourceLayout.rowIndex ? 'fcnew-not-first' : '',
                                   ].join(' ')}
                                   style={{
@@ -644,7 +644,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             })}
                           </div>
                         </div>
-                        <div className='fcnew-absfill'>
+                        <div className='fcnew-fill'>
                           <TimelineSlats
                             dateProfile={dateProfile}
                             tDateProfile={tDateProfile}

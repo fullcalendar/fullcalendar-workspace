@@ -99,7 +99,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
               elClasses={[
                 'fcnew-cell-inner',
                 'fcnew-padding-md',
-                props.isSticky ? 'fcnew-h-sticky' : '',
+                props.isSticky ? 'fcnew-sticky-x' : '',
               ]}
               elAttrs={this.buildCellNavLinkAttrs(context, cell.date, cell.rowUnit)}
             />

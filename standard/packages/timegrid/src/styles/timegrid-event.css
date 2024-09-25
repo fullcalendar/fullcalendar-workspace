@@ -8,7 +8,7 @@
   margin-bottom: 1px; // give some space from bottom
 
   // absolutely fill within harness
-  // (can't use fcnew-absfill because `position` gets overriden by fcnew-v-event)
+  // (can't use fcnew-fill because `position` gets overriden by fcnew-v-event)
   position: absolute;
   top: 0;
   bottom: 0;

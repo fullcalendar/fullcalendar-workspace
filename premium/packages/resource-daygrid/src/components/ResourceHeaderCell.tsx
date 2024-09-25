@@ -50,7 +50,7 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
               elClasses={[
                 'fcnew-cell-inner',
                 'fcnew-padding-sm',
-                props.isSticky ? 'fcnew-h-sticky' : '',
+                props.isSticky ? 'fcnew-sticky-x' : '',
               ]}
             />
           </div>

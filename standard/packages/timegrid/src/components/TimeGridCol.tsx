@@ -275,7 +275,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
           return (
             <div
               key={buildEventRangeKey(seg.eventRange)}
-              className="fcnew-timegrid-bg-harness fcnew-absfill-x"
+              className="fcnew-timegrid-bg-harness fcnew-fill-x"
               style={{
                 top: fracToCssDim(segVertical.start),
                 height: fracToCssDim(segVertical.size),

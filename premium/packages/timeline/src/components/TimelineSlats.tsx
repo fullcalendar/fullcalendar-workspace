@@ -35,7 +35,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     let isDay = !tDateProfile.isTimeScale && !tDateProfile.largeUnit
 
     return (
-      <div className="fcnew-timeline-slots fcnew-absfill fcnew-flex-row">
+      <div className="fcnew-timeline-slots fcnew-fill fcnew-flex-row">
         {slotDates.map((slotDate, i) => {
           let key = slotDate.toISOString()
 

@@ -390,7 +390,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   slatCnt={slatCnt}
                   forPrint={props.forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
-                  className='fcnew-absfill fcnew-liquid'
+                  className='fcnew-fill fcnew-liquid'
 
                   // content
                   fgEventSegsByCol={props.fgEventSegsByCol}
