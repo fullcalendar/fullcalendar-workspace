@@ -63,8 +63,8 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         willUnmount={colSpec.cellWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef}>
-            <div className="fcnew-datagrid-cell-cushion">
+          <div ref={this.innerElRef} className='fcnew-flex-column'>
+            <div className="fcnew-cell-inner fcnew-padding-lg fcnew-flex-row fcnew-align-center">
               {colSpec.isMain && (
                 <ExpanderIcon
                   indent={props.indent}
@@ -75,7 +75,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
               )}
               <InnerContent
                 elTag="span"
-                elClasses={['fcnew-datagrid-cell-main']}
+                elClasses={['fcnew-cell-main']}
               />
             </div>
           </div>

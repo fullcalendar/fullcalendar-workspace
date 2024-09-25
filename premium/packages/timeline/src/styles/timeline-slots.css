@@ -4,57 +4,22 @@
 // SlotContainer > SlotLane
 //
 
-.fcnew-timeline-slot {
-  overflow: hidden; // so text doesn't bleed out and cause extra scroll
-}
-
 //
 // SlotLabel
 //
-
-.fcnew-timeline-slot-label {
-  display: flex;
-  align-items: center; // vertical align
-  justify-content: flex-start; // horizontal align
-}
-
-.fcnew-timeline-slot-centered { // TODO: className that includes "label"
-  justify-content: center; // horizontal align
-}
-
-.fcnew-timeline-slot-sticky { // TODO: className that includes "label"
-  overflow: visible; // undo
-
-  & .fcnew-timeline-slot-inner {
-    position: sticky;
-    left: 0;
-    right: 0;
-  }
-}
 
 //
 // SlotContainer
 //
 
-.fcnew-timeline-slots { // TODO: className that includes "lane"
-  position: absolute;
+.fcnew-timeline-slots {
   z-index: $timeline-slots-z;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
 }
 
 //
 // SlotContainer > SlotLane
 //
 
-.fcnew-timeline-slot-minor { // (minor variant) // TODO: className that includes "lane"
+.fcnew-timeline-slot-minor { // (minor variant)
   border-style: dotted;
-}
-
-.fcnew-timeline-slot-cushion { // > Frame > Cushion
-  display: block; // NOTE: it's normally an <a> tag
-  padding: 4px 5px; // TODO: unify with fcnew-col-header?
-  white-space: nowrap;
 }

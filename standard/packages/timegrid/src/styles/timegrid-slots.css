@@ -1,40 +1,20 @@
 
-.fcnew-timegrid-weeknumber,
-.fcnew-timegrid-allday-label,
-.fcnew-timegrid-slot-label,
-.fcnew-timegrid-slot-lane {
+.fcnew-timegrid-axis {
   display: flex;
   flex-direction: column;
-  justify-content: center; // vertically center
+  justify-content: center; // vertically
+  align-items: flex-end; // horizontally
 }
 
-// axis of slots --- inside
-.fcnew-timegrid-weeknumber-frame,
-.fcnew-timegrid-allday-label-frame,
-.fcnew-timegrid-slot-label-frame,
-.fcnew-timegrid-slot-lane-frame {
+.fcnew-timegrid-axis-inner {
   min-height: 1.5em;
+
+  // vertical alignment for *text inside*
   display: flex;
-  flex-direction: row;
-  align-items: center; // vertically center
-  justify-content: flex-end; // horizontally (right)
-}
-
-.fcnew-timegrid-weeknumber-cushion,
-.fcnew-timegrid-allday-label-cushion,
-.fcnew-timegrid-slot-label-cushion {
-  padding: 0 4px;
-  white-space: nowrap;
-}
-
-.fcnew-timegrid-allday-label-cushion {
-  max-width: 60px; // limits the width of the "all-day" text
+  flex-direction: column;
+  justify-content: center; // vertically
 }
 
 .fcnew-timegrid-slot-minor {
   border-style: dotted;
-  // how to do this when cell controls the BOTTOM border???
-  // THINK ABOUT:
-  // - bottom-sticky scrollbars prefer NO top border
-  // - top-sticky header prefers bottom border
 }

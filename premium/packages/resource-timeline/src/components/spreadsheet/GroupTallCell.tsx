@@ -47,10 +47,10 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
         willUnmount={colSpec.cellWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef} className='fcnew-v-sticky'>
+          <div ref={this.innerElRef} className='fcnew-flex-column fcnew-v-sticky'>
             <InnerContent
               elTag="div"
-              elClasses={['fcnew-datagrid-cell-cushion']}
+              elClasses={['fcnew-cell-inner', 'fcnew-padding-lg']}
             />
           </div>
         )}

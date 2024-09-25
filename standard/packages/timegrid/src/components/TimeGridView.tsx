@@ -90,7 +90,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
                   />
                 ) : (
                   <div
-                    className='fcnew-cell fcnew-timegrid-weeknumber fcnew-content-box'
+                    className='fcnew-timegrid-axis fcnew-cell fcnew-content-box'
                     style={{ width }}
                   />
                 )

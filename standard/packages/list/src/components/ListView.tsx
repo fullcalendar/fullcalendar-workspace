@@ -113,7 +113,7 @@ export class ListView extends DateComponent<ViewProps> {
         {(InnerContent) => (
           <InnerContent
             elTag="div"
-            elClasses={['fcnew-list-empty-cushion']}
+            elClasses={['fcnew-list-empty-inner']}
           />
         )}
       </ContentContainer>

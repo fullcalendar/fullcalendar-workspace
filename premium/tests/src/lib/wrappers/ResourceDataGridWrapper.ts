@@ -100,7 +100,7 @@ function buildResourceInfoFromCell(cellEl) {
   return {
     type: 'resource',
     resourceId: cellEl.getAttribute('data-resource-id'),
-    text: $(cellEl.querySelector('.fcnew-datagrid-cell-main')).text(),
+    text: $(cellEl.querySelector('.fcnew-cell-main')).text(),
     cellEl,
     rowEl: cellEl.parentNode,
   }
@@ -109,7 +109,7 @@ function buildResourceInfoFromCell(cellEl) {
 function buildGroupInfoFromCell(cellEl) {
   return {
     type: 'group',
-    text: $(cellEl.querySelector('.fcnew-datagrid-cell-main')).text(),
+    text: $(cellEl.querySelector('.fcnew-cell-main')).text(),
     cellEl,
     rowEl: cellEl.parentNode,
   }

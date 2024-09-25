@@ -25,6 +25,6 @@
   align-items: center; // vertically aligns fcnew-list-empty-inner
 }
 
-.fcnew-list-empty-cushion {
+.fcnew-list-empty-inner {
   margin: 5em 0;
 }

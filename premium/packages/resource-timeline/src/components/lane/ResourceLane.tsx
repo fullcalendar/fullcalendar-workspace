@@ -38,8 +38,8 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         didMount={options.resourceLaneDidMount}
         willUnmount={options.resourceLaneWillUnmount}
       >
-        {(InnerContent) => ( // TODO: apply top-coordinate
-          <div className="fcnew-timeline-lane-frame" ref={this.frameElRef}>
+        {(InnerContent) => (
+          <div ref={this.frameElRef} className='fcnew-flex-column'>
             <InnerContent
               elTag="div"
               elClasses={['fcnew-timeline-lane-misc']}

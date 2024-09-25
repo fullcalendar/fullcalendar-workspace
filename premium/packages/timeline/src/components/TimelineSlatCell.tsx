@@ -49,7 +49,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
           'fcnew-cell',
           'fcnew-timeline-slot',
           'fcnew-timeline-slot-lane',
-          isEm && 'fcnew-timeline-slot-em',
+          isEm ? 'fcnew-timeline-slot-em' : '', // TODO: document this semantic className
           tDateProfile.isTimeScale ? (
             isInt(dateEnv.countDurationsBetween( // best to do this here?
               tDateProfile.normalizedRange.start,

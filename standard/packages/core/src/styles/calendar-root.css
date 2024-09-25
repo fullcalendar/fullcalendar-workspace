@@ -133,6 +133,16 @@ like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CELLS
   border: 0 solid var(--fcnew-border-color);
 }
 
+.fcnew-cell {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.fcnew-cell-inner {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .fcnew-direction-ltr {
   & .fcnew-cell,
   & .fcnew-celldivider {
@@ -268,4 +278,26 @@ Only needed when padding/border must be separate from width/height
 
 .fcnew-shaded {
   background-color: var(--fcnew-neutral-bg-color);
+}
+
+.fcnew-padding-sm {
+  padding: 2px 4px;
+}
+.fcnew-padding-md {
+  padding: 4px 5px;
+}
+.fcnew-padding-lg {
+  padding: 8px;
+}
+
+.fcnew-justify-center {
+  justify-content: center;
+}
+
+.fcnew-align-center {
+  align-items: center;
+}
+
+.fcnew-align-start {
+  align-items: start;
 }

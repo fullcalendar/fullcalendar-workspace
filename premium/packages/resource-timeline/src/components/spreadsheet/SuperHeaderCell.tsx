@@ -34,7 +34,8 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
         elClasses={[
           'fcnew-liquid',
           'fcnew-cell',
-          'fcnew-datagrid-cell',
+          'fcnew-flex-column',
+          'fcnew-justify-center',
         ]}
         renderProps={renderProps}
         generatorName="resourceAreaHeaderContent"
@@ -45,8 +46,8 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
         willUnmount={renderHooks.headerWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef}>
-            <div className="fcnew-datagrid-cell-cushion">
+          <div ref={this.innerElRef} className='fcnew-flex-column'>
+            <div className="fcnew-cell-inner fcnew-padding-lg fcnew-flex-row fcnew-align-center">
               {this.props.indent && (
                 <span className="fcnew-datagrid-indent">
                   <span className="fcnew-icon" />
@@ -54,7 +55,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
               )}
               <InnerContent
                 elTag="span"
-                elClasses={['fcnew-datagrid-cell-main']}
+                elClasses={['fcnew-cell-main']}
               />
             </div>
           </div>

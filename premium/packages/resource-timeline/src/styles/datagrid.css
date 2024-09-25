@@ -2,32 +2,6 @@
 // TODO: move to flex utils for most of these things?
 
 //
-// Cell
-//
-
-.fcnew-datagrid-cell {
-  display: flex;
-  flex-direction: column;
-}
-
-// (in header)
-.fcnew-datagrid-header .fcnew-datagrid-cell {
-  justify-content: center; // vertical align
-}
-
-//
-// Cell > Cushion
-//
-
-.fcnew-datagrid-cell-cushion {
-  display: flex;
-  align-items: center; // horizontally align icons & main
-  padding: 8px;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-//
 // Cell > Cushion > Indent
 //
 
@@ -53,15 +27,10 @@
 }
 
 //
-// Cell > Cushion > Main
-// .fcnew-datagrid-cell-main
-//
-
-//
 // ColHeader > Resizer
 //
 
-.fcnew-datagrid-cell-resizer {
+.fcnew-datagrid-col-resizer {
   position: absolute;
   z-index: 1;
   top: 0;
@@ -71,11 +40,11 @@
 }
 
 // (LTR)
-.fcnew-direction-ltr .fcnew-datagrid-cell-resizer {
+.fcnew-direction-ltr .fcnew-datagrid-col-resizer {
   right: -3px;
 }
 
 // (RTL)
-.fcnew-direction-rtl .fcnew-datagrid-cell-resizer {
+.fcnew-direction-rtl .fcnew-datagrid-col-resizer {
   left: -3px;
 }

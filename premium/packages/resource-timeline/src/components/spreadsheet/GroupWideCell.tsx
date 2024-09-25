@@ -51,8 +51,8 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
           willUnmount={spec.labelWillUnmount}
         >
           {(InnerContent) => (
-            <div ref={this.innerElRef}>
-              <div className="fcnew-datagrid-cell-cushion">
+            <div ref={this.innerElRef} className='fcnew-flex-column'>
+              <div className="fcnew-cell-inner fcnew-padding-lg fcnew-flex-row fcnew-align-center">
                 <ExpanderIcon
                   indent={0}
                   hasChildren
@@ -61,7 +61,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
                 />
                 <InnerContent
                   elTag="span"
-                  elClasses={['fcnew-datagrid-cell-main']}
+                  elClasses={['fcnew-cell-main']}
                 />
               </div>
             </div>

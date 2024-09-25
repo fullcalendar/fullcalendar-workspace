@@ -70,11 +70,12 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
       <ContentContainer
         elTag='div'
         elClasses={[
+          ...getDayClassNames(dayMeta, theme),
+          ...(props.extraClassNames || []),
           'fcnew-cell',
           props.colWidth != null ? '' : 'fcnew-liquid',
-          'fcnew-col-header',
-          ...getDayClassNames(dayMeta, theme),
-          ...(props.extraClassNames || [])
+          'fcnew-flex-column',
+          'fcnew-align-center',
         ]}
         elAttrs={{
           'data-date': !dayMeta.isDisabled ? formatDayString(date) : undefined,
@@ -94,13 +95,14 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
         willUnmount={options.dayHeaderWillUnmount}
       >
         {(InnerContainer) => (
-          <div ref={this.innerElRef}>
+          <div ref={this.innerElRef} className='fcnew-flex-column'>
             {!dayMeta.isDisabled && (
               <InnerContainer
                 elTag="a"
                 elAttrs={navLinkAttrs}
                 elClasses={[
-                  'fcnew-col-header-cushion',
+                  'fcnew-cell-inner',
+                  'fcnew-padding-sm',
                   props.isSticky ? 'fcnew-h-sticky' : '',
                 ]}
               />

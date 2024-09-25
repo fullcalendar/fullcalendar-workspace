@@ -43,8 +43,9 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
     let { dateEnv, options, viewApi } = context
 
     let classNames = [
-      'fcnew-cell',
       'fcnew-timegrid-slot-label',
+      'fcnew-timegrid-axis',
+      'fcnew-cell',
       'fcnew-content-box',
     ]
 
@@ -92,13 +93,14 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
         willUnmount={options.slotLabelWillUnmount}
       >
         {(InnerContent) => (
-          <div
-            className="fcnew-timegrid-slot-label-frame"
-            ref={this.innerElRef}
-          >
+          <div ref={this.innerElRef} className='fcnew-flex-column'>
             <InnerContent
               elTag="div"
-              elClasses={['fcnew-timegrid-slot-label-cushion']}
+              elClasses={[
+                'fcnew-timegrid-axis-inner',
+                'fcnew-cell-inner',
+                'fcnew-padding-sm',
+              ]}
             />
           </div>
         )}

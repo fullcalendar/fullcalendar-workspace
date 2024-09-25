@@ -1,6 +1,5 @@
 
 audit all CSS
-  universal "frame" element. ensure nobody is styling it
   audit z-indexes
     for example, fcnew-timeline-bg seems above slats
   the "+2 more" bg color should not fill entire width. just itself
@@ -10,17 +9,25 @@ audit all CSS
     or "view-outer"?
   disable sticky when media:print?
   we shouldn't have 'fcnew-slot-sat' ... it's a day! instead 'fcnew-day-sat'
-  call it 'fcnew-header-col' instead of 'fcnew-col-header'? look at html rol
   ensure navlink <a> tags in headers (daygrid/timeline) are styled correctly
-  tests aleady have fcnew- className prefix!?
+  tests aleady have fcnew- className prefix!?... actually some have .fc
   restore all head/body/foot classes
   did themeSystem:false ever clear the theme?
   search for all aria-* tags
-  rename frame/cushion elements to just inner
   in bootstrap themes, event-height line-height is very tall. normalize? then make changelog entry?
   in timegrid, background events are incorrectly covering foreground events (background-events.html)
   test horizontal scroll normalization (for isRTL) in variety of browsers
   move CSS flexbox/utils into separate file
+  eventually redo list-view (and find tickets -- better <a> tag wrapper. better stickiness)
+    and redo empty-list message
+  rename 'bordered' to 'border'
+  all views have *-view (unlike fcnew-list, fcnew-multimonth)
+  make daycol-header-thing a 'fcnew-daygrid-header' container!
+  AFTER: audit all locales' allDayText. there's no more max-width in the CSS. use allDayHtml with breaks if needed
+
+  RETHINK lane names:
+    'fcnew-timeline-lane', // is this the best name?
+    // TODO: have lane classNames like 'fcnew-timegrid-lane'/'fcnew-timegrid-slot-lane'/'fcnew-timegrid-slat-lane'
 
 FOR beta.1
   timeline

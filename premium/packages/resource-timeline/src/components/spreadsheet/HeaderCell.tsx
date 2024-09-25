@@ -36,7 +36,8 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         elClasses={[
           'fcnew-rel', // for resizer abs positioning
           'fcnew-cell',
-          'fcnew-datagrid-cell',
+          'fcnew-flex-column',
+          'fcnew-justify-center',
         ]}
         elStyle={{
           width,
@@ -51,8 +52,8 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
       >
         {(InnerContent) => (
           <Fragment>
-            <div ref={this.innerElRef}>
-              <div className="fcnew-datagrid-cell-cushion">
+            <div ref={this.innerElRef} className='fcnew-flex-column'>
+              <div className="fcnew-cell-inner fcnew-padding-lg fcnew-flex-row fcnew-align-center">
                 {this.props.indent && (
                   <span className="fcnew-datagrid-indent">
                     <span className="fcnew-icon" />
@@ -60,12 +61,12 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
                 )}
                 <InnerContent
                   elTag="span"
-                  elClasses={['fcnew-datagrid-cell-main']}
+                  elClasses={['fcnew-cell-main']}
                 />
               </div>
             </div>
             {resizer && (
-              <div className="fcnew-datagrid-cell-resizer" ref={resizerElRef} />
+              <div className="fcnew-datagrid-col-resizer" ref={resizerElRef} />
             )}
           </Fragment>
         )}

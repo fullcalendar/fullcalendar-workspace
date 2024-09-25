@@ -16,17 +16,6 @@ $daygrid-event-mirror-z: 7;
   }
 }
 
-// column header (TODO: move to new file)
-
-.fcnew-col-header { // not the correct place for this
-  text-align: center;
-}
-
-.fcnew-col-header-cushion {
-  display: inline-block; // x-browser for when sticky (when multi-tier header)
-  padding: 2px 4px;
-}
-
 // cell
 
 .fcnew-daygrid-cell {

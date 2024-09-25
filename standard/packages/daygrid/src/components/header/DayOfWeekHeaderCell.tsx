@@ -70,11 +70,12 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
       <ContentContainer
         elTag='div'
         elClasses={[
-          'fcnew-cell',
-          props.colWidth != null ? '' : 'fcnew-liquid',
-          'fcnew-col-header',
           ...getDayClassNames(dateMeta, theme),
           ...(props.extraClassNames || []),
+          'fcnew-cell',
+          props.colWidth != null ? '' : 'fcnew-liquid',
+          'fcnew-flex-column',
+          'fcnew-align-center',
         ]}
         elAttrs={props.extraDataAttrs}
         elStyle={{
@@ -91,11 +92,12 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
         willUnmount={options.dayHeaderWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef}>
+          <div ref={this.innerElRef} className='fcnew-flex-column'>
             <InnerContent
               elTag="a"
               elClasses={[
-                'fcnew-col-header-cushion',
+                'fcnew-cell-inner',
+                'fcnew-padding-sm',
                 props.isSticky ? 'fcnew-h-sticky' : '',
               ]}
               elAttrs={{
