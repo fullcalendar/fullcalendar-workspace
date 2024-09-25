@@ -3,6 +3,10 @@
 A VERTICAL event
 */
 
+//
+// v-event
+//
+
 .fcnew-v-event {
   display: flex;
   flex-direction: column;
@@ -10,6 +14,7 @@ A VERTICAL event
   background-color: var(--fcnew-event-bg-color);
   position: relative;
 
+  // can provide padding. resizers are siblings and can absolutely expand to edges of event
   & .fcnew-event-inner {
     flex-grow: 1; // expand horizontally
     min-width: 0; // can shrink regardless of inner content

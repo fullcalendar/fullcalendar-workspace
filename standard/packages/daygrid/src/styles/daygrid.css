@@ -1,44 +1,52 @@
 
-$daygrid-non-business-z: 1;
-$daygrid-bg-event-z: 2;
-$daygrid-highlight-z: 3;
-$daygrid-topbottom-z: 4;
-$daygrid-weeknum-z: 5;
-$daygrid-event-z: 6;
-$daygrid-event-mirror-z: 7;
+//
+// daygrid-row > week-number
+//
 
-.fcnew-daygrid-row-vspacious {
-  & .fcnew-daygrid-cell-inner {
-    min-height: 3em; // needs to be done on the "inner" for height syncing to other grids
-  }
-  & .fcnew-daygrid-cell-footer {
-    margin-bottom: 1em !important; // see below for why important
-  }
+.fcnew-daygrid-week-number {
+  position: absolute;
+  z-index: $daygrid-weeknum-z;
+  top: 0;
+  padding: 2px;
+  min-width: 1.5em;
+  text-align: center;
+  background-color: var(--fcnew-neutral-bg-color);
+  color: var(--fcnew-neutral-text-color);
 }
 
-// cell
+//
+// daygrid-cell
+//
 
-.fcnew-daygrid-cell {
-  display: flex;
-  flex-direction: column;
-
-  &.fcnew-day-today {
-    background-color: var(--fcnew-today-bg-color);
-  }
+.fcnew-daygrid-cell.fcnew-day-today { // (today)
+  // TODO: can we just make all fcnew-day-today's a bg color?
+  background-color: var(--fcnew-today-bg-color);
 }
 
-// cell top (but within cell)
+//
+// daygrid-cell > inner
+//
+
+.fcnew-daygrid-row-spacious .fcnew-daygrid-cell-inner { // (spacious)
+  min-height: 3em;
+}
+
+//
+// daygrid-cell > inner > header
+//
 
 .fcnew-daygrid-cell-header {
   display: flex;
   flex-direction: row-reverse;
 }
 
-.fcnew-day-other .fcnew-daygrid-cell-header {
+.fcnew-day-other .fcnew-daygrid-cell-header { // (day-other)
   opacity: 0.3;
 }
 
-// day number (within cell top)
+//
+// daygrid-cell > inner > header > number
+//
 
 .fcnew-daygrid-cell-number {
   position: relative;
@@ -46,59 +54,33 @@ $daygrid-event-mirror-z: 7;
   padding: 4px;
 }
 
-.fcnew-daygrid-month-start { // on .fcnew-daygrid-cell-number
+.fcnew-daygrid-month-start { // (month-start) on .fcnew-daygrid-cell-number
   font-weight: bold;
   font-size: 1.1em;
 }
 
-// event harness
-
-.fcnew-daygrid-event-harness {
-  position: relative;
-}
-
-.fcnew-daygrid-event-harness-abs {
-  position: absolute;
-  top: 0; // fallback coords for when cannot yet be computed
-  left: 0; //
-  right: 0; //
-}
-
-.fcnew-daygrid-bg-harness {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-}
-
-// bg content
-
-.fcnew-daygrid-cell { // bad wrapper
-  & .fcnew-non-business { z-index: $daygrid-non-business-z }
-  & .fcnew-bg-event { z-index: $daygrid-bg-event-z }
-  & .fcnew-highlight { z-index: $daygrid-highlight-z }
-}
-
-// events
-
-.fcnew-daygrid-event {
-  z-index: $daygrid-event-z;
-  margin-top: 1px;
-}
-
-.fcnew-daygrid-event.fcnew-event-mirror {
-  z-index: $daygrid-event-mirror-z;
-}
-
-// cell bottom (within day-events)
+//
+// daygrid-cell > inner > footer
+//
 
 .fcnew-daygrid-cell-footer {
   font-size: .85em;
   margin: 0 2px;
 
-  // just to make sure margins of +more link don't bleed out. do this everywhere
+  // control alignment of +more link
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
+
+// (spacious)
+.fcnew-daygrid-row-spacious .fcnew-daygrid-cell-footer {
+  margin-bottom: 1em !important; // see below for why important
+}
+
+//
+// daygrid-cell > inner > footer > more-link
+//
 
 .fcnew-daygrid-more-link {
   position: relative;
@@ -117,20 +99,19 @@ $daygrid-event-mirror-z: 7;
   }
 }
 
-// week number (within frame)
+//
+// daygrid-cell > inner > bg-content (???)
+//
 
-.fcnew-daygrid-week-number {
-  position: absolute;
-  z-index: $daygrid-weeknum-z;
-  top: 0;
-  padding: 2px;
-  min-width: 1.5em;
-  text-align: center;
-  background-color: var(--fcnew-neutral-bg-color);
-  color: var(--fcnew-neutral-text-color);
+.fcnew-daygrid-cell {
+  & .fcnew-non-business { z-index: $daygrid-non-business-z }
+  & .fcnew-bg-event { z-index: $daygrid-bg-event-z }
+  & .fcnew-highlight { z-index: $daygrid-highlight-z }
 }
 
-// popover
+//
+// more-popover > body
+//
 
 .fcnew-more-popover .fcnew-popover-body {
   min-width: 220px;

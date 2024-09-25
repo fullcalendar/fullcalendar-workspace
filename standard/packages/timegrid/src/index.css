@@ -1,6 +1,6 @@
 
 @import '../../core/src/styles/mixins';
-@import './styles/constants';
+@import './styles/vars';
 
 @import './styles/v-event';
 @import './styles/timegrid-slots';

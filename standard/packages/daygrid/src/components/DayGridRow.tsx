@@ -130,10 +130,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       <div
         role={props.cellGroup ? undefined : 'row'}
         className={[
-          props.cellGroup ? 'fcnew-flex-row' : 'fcnew-row',
           'fcnew-daygrid-row',
+          props.forceVSpacing ? 'fcnew-daygrid-row-spacious' : '',
+          props.cellGroup ? 'fcnew-flex-row' : 'fcnew-row',
           'fcnew-rel',
-          props.forceVSpacing ? 'fcnew-daygrid-row-vspacious' : '',
           props.className || '',
         ].join(' ')}
         style={{
@@ -311,7 +311,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       nodes.push(
         <div
           key={buildEventRangeKey(seg.eventRange)}
-          className="fcnew-daygrid-bg-harness"
+          className="fcnew-absfill-y"
           style={{
             visibility: isVisible ? '' : 'hidden',
             left,

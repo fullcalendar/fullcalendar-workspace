@@ -77,9 +77,10 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       <DayCellContainer
         elTag="div"
         elClasses={[
+          'fcnew-daygrid-cell',
           'fcnew-cell',
           props.width != null ? '' : 'fcnew-liquid',
-          'fcnew-daygrid-cell',
+          'fcnew-flex-column',
           ...(props.extraClassNames || []),
         ]}
         elAttrs={{
@@ -105,7 +106,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               props.fgLiquidHeight ? 'fcnew-liquid' : ''
             ].join(' ')}
           >
-            <div ref={this.headerWrapElRef} className="fcnew-daygrid-cell-header-wrap">
+            <div ref={this.headerWrapElRef} className="fcnew-flex-column">
               {!renderProps.isDisabled && (props.showDayNumber || hasCustomDayCellContent(options)) && (
                 <div className="fcnew-daygrid-cell-header">
                   <InnerContent

@@ -54,7 +54,6 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
                 let instanceId = seg.eventRange.instance.instanceId
                 return (
                   <div
-                    className="fcnew-daygrid-event-harness"
                     key={instanceId}
                     style={{
                       visibility: forcedInvisibleMap[instanceId] ? 'hidden' : '',

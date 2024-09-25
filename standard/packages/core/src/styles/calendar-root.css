@@ -235,6 +235,12 @@ Lone cell in a row should always fill row. Makes axis widths much easier
   right: 0;
 }
 
+.fcnew-absfill-y { // rename?
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
 .fcnew-v-sticky {
   position: sticky;
   top: 0;
@@ -299,5 +305,5 @@ Only needed when padding/border must be separate from width/height
 }
 
 .fcnew-align-start {
-  align-items: start;
+  align-items: flex-start;
 }

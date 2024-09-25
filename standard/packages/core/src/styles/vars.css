@@ -1,13 +1,8 @@
 
-/*
-for css vars only.
-these values are automatically known in all stylesheets.
-the :root statement itself is only included in the common stylesheet.
-this file is not processed by postcss when imported into the postcss-custom-properties plugin,
-so only write standard css!
-
-NOTE: for old browsers, will need to restart watcher after changing a variable
-*/
+$event-selected-dimmer-z: 1;
+$event-main-z: 2;
+$event-selected-hit-z: 3;
+$event-resizer-z: 4;
 
 :root {
   --fcnew-small-font-size: .85em;

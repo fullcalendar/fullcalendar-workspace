@@ -21,7 +21,7 @@ export class DayGridEventHarness extends Component<DayGridEventHarnessProps> {
 
     return (
       <div
-        className="fcnew-daygrid-event-harness fcnew-daygrid-event-harness-abs"
+        className="fcnew-abs"
         style={props.style}
         ref={this.rootElRef}
       >
