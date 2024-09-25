@@ -141,6 +141,7 @@ export class ListView extends DateComponent<ViewProps> {
               innerNodes.push(
                 <ListViewHeaderRow
                   key={dayStr}
+                  forPrint={this.props.forPrint}
                   cellId={dateHeaderId}
                   dayDate={dayDates[dayIndex]}
                   todayRange={todayRange}

@@ -2,10 +2,12 @@ import { DayHeaderContentArg } from '@fullcalendar/core'
 import {
   BaseComponent, DateMarker, DateRange, getDateMeta,
   getDayClassNames, formatDayString, buildNavLinkAttrs, getUniqueDomId, ContentContainer,
+  getStickyHeaderDates,
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 
 export interface ListViewHeaderRowProps {
+  forPrint: boolean
   cellId: string
   dayDate: DateMarker
   todayRange: DateRange
@@ -20,6 +22,8 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
     let { theme, dateEnv, options, viewApi } = this.context
     let { cellId, dayDate, todayRange } = this.props
     let { textId } = this.state
+    let stickyHeaderDates = !this.props.forPrint && getStickyHeaderDates(options)
+
     let dayMeta = getDateMeta(dayDate, todayRange)
 
     // will ever be falsy?
@@ -68,7 +72,7 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
             }}
             elClasses={[
               'fcnew-list-day-cell',
-              options.stickyHeaderDates ? 'fcnew-list-day-cell-sticky' : '',
+              stickyHeaderDates ? 'fcnew-list-day-cell-sticky' : '',
             ]}
           />
         )}

@@ -27,6 +27,7 @@ audit all CSS
   test week numbers
   ensure outputted CSS doesn't have multiple :root declarations because of how we shifted vars.css around
   test timeline more-link
+  changelog: list-view defaults to stickyHeaderDates:'auto' (usually none) like it should have
 
   RETHINK lane names:
     'fcnew-timeline-lane', // is this the best name?

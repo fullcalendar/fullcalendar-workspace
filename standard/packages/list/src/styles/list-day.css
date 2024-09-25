@@ -1,23 +1,16 @@
 
 //
-// ListViewHeaderRow (<TR>)
-// .fcnew-list-day
+// list-day > cell
 //
 
-//
-// ListViewHeaderRow > Cell
-// .fcnew-list-day-cell
-//
-
-.fcnew-list-day-cell-sticky { // (sticky variant)
+.fcnew-list-day-cell-sticky { // (sticky)
   position: sticky;
   top: 0;
   background: var(--fcnew-page-bg-color); // for fcnew-list-day-inner's semitransparent color
 }
 
 //
-// ListViewHeaderRow > Cell > Inner
-// .fcnew-list-day-inner
+// list-day > cell > inner
 //
 
 .fcnew-list-day-inner {
@@ -25,13 +18,3 @@
   justify-content: space-between;
   background: var(--fcnew-neutral-bg-color);
 }
-
-//
-// ListViewHeaderRow > Cell > Inner > Text
-// .fcnew-list-day-text
-//
-
-//
-// ListViewHeaderRow > Cell > Inner > SideText
-// .fcnew-list-day-side-text
-//
