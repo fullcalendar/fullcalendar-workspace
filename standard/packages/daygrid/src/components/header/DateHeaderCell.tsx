@@ -95,7 +95,13 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
         willUnmount={options.dayHeaderWillUnmount}
       >
         {(InnerContainer) => (
-          <div ref={this.innerElRef} className='fcnew-flex-column'>
+          <div
+            ref={this.innerElRef}
+            className={[
+              'fcnew-flex-column',
+              props.isSticky ? 'fcnew-sticky-x' : '',
+            ].join(' ')}
+          >
             {!dayMeta.isDisabled && (
               <InnerContainer
                 elTag="a"
@@ -103,7 +109,6 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
                 elClasses={[
                   'fcnew-cell-inner',
                   'fcnew-padding-sm',
-                  props.isSticky ? 'fcnew-sticky-x' : '',
                 ]}
               />
             )}

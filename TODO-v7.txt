@@ -25,6 +25,11 @@ audit all CSS
 
 correct header/body containers
   make daycol-header-thing a 'fcnew-daygrid-header' container!
+hard to style daygrid header cells
+  revive fcnew-daygrid-colheader ?
+  will be mutually exclusive with fcnew-daygrid-cell
+  (use this technique on datagrid too?)
+  (these selectors aren't used for styling anymore! right?)
 all views have *-view (unlike fcnew-list, fcnew-multimonth)
 audit z-indexes
   for example, fcnew-timeline-bg seems above slats

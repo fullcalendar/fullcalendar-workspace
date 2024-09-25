@@ -1,8 +1,8 @@
 
 @import './styles/mixins';
 @import './styles/vars';
-@import './styles/util';
 @import './styles/calendar-root';
+@import './styles/util'; // go after calendar-root border-box for higher precedence
 @import './styles/navlink';
 @import './styles/view-harness';
 @import './styles/event';
