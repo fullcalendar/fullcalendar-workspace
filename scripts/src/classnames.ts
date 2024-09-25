@@ -2,7 +2,7 @@ import { join as joinPaths } from 'path'
 import { execCapture } from '@fullcalendar-scripts/standard/utils/exec'
 
 const CLASSNAME_PREFIX = 'fcnew-'
-const CLASSNAME_RE = /(--)?fcnew-[\w-]+/
+const CLASSNAME_RE = /(--)?fcnew-[\w-]+/g
 const CSS_ONLY = false
 const JS_ONLY = false
 
@@ -17,16 +17,11 @@ export default async function() {
     if (line) {
       const [file, _lineNum, code] = splitLimit(line, ':', 3)
       const isCss = file.endsWith('.css')
-      const match = CLASSNAME_RE.exec(code)
 
-      if (
-        match &&
-        (!CSS_ONLY || isCss) &&
-        (!JS_ONLY || !isCss)
-      ) {
-        const className = match[0]
-
-        occurences.set(className, (occurences.get(className) || 0) + 1)
+      if ((!CSS_ONLY || isCss) && (!JS_ONLY || !isCss)) {
+        for (const [className] of code.matchAll(CLASSNAME_RE)) {
+          occurences.set(className, (occurences.get(className) || 0) + 1)
+        }
       }
     }
   }
@@ -43,7 +38,7 @@ export default async function() {
 
 function splitLimit(input: string, delimiter: string, limit: number) {
   const parts = input.split(delimiter)
-  const result = parts.slice(0, limit)
-  result.push(parts.slice(limit).join(delimiter))
+  const result = parts.slice(0, limit - 1)
+  result.push(parts.slice(limit - 1).join(delimiter))
   return result
 }
