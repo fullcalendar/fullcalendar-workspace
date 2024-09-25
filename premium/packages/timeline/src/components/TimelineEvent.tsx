@@ -24,7 +24,7 @@ export class TimelineEvent extends BaseComponent<TimelineEventProps> {
           'fcnew-timeline-event',
           'fcnew-h-event',
           options.eventOverlap === false // TODO: fix bad default
-            ? 'fcnew-timeline-event-thick'
+            ? 'fcnew-timeline-event-spacious'
             : ''
         ]}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
