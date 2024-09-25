@@ -65,7 +65,7 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
     return (
       <ViewContainer
         viewSpec={context.viewSpec}
-        elClasses={['fcnew-daygrid-view', 'fcnew-flex-column', 'fcnew-bordered']}
+        elClasses={['fcnew-daygrid-view', 'fcnew-flex-column', 'fcnew-border']}
       >
         {options.dayMinWidth ? (
           <DayGridLayoutPannable {...commonLayoutProps} dayMinWidth={options.dayMinWidth} />

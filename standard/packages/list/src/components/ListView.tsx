@@ -65,7 +65,7 @@ export class ListView extends DateComponent<ViewProps> {
         elClasses={[
           'fcnew-list',
           'fcnew-flex-column',
-          'fcnew-bordered',
+          'fcnew-border',
         ]}
         viewSpec={context.viewSpec}
       >

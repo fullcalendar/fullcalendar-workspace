@@ -8,24 +8,17 @@
 }
 
 .fcnew-timegrid-bg-harness {
-  position: absolute; // top/bottom will be set by JS
-  left: 0;
-  right: 0;
   @include bg-z-indexes;
 }
 
 .fcnew-direction-ltr {
-
   & .fcnew-timegrid-col-fg {
     margin: 0 2.5% 0 2px;
   }
-
 }
 
 .fcnew-direction-rtl {
-
   & .fcnew-timegrid-col-fg {
     margin: 0 2px 0 2.5%;
   }
-
 }

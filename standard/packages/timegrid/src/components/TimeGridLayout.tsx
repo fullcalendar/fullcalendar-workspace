@@ -122,7 +122,7 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
         elClasses={[
           'fcnew-timegrid-view',
           'fcnew-flex-column',
-          'fcnew-bordered'
+          'fcnew-border'
         ]}
         viewSpec={context.viewSpec}
       >

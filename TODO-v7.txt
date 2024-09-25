@@ -20,10 +20,10 @@ audit all CSS
   move CSS flexbox/utils into separate file
   eventually redo list-view (and find tickets -- better <a> tag wrapper. better stickiness)
     and redo empty-list message
-  rename 'bordered' to 'border'
   all views have *-view (unlike fcnew-list, fcnew-multimonth)
   make daycol-header-thing a 'fcnew-daygrid-header' container!
   AFTER: audit all locales' allDayText. there's no more max-width in the CSS. use allDayHtml with breaks if needed
+  look for places where fcnew-absfill* should be used
 
   RETHINK lane names:
     'fcnew-timeline-lane', // is this the best name?

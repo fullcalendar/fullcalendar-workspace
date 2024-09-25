@@ -267,7 +267,7 @@ Only needed when padding/border must be separate from width/height
   box-sizing: content-box;
 }
 
-.fcnew-bordered {
+.fcnew-border {
   border: 1px solid var(--fcnew-border-color);
 }
 
