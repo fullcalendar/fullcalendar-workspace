@@ -2,7 +2,7 @@ import { join as joinPaths } from 'path'
 import { execCapture } from '@fullcalendar-scripts/standard/utils/exec'
 
 const CLASSNAME_PREFIX = 'fcnew-'
-const CLASSNAME_RE = /fcnew-[\w-]+/
+const CLASSNAME_RE = /(--)?fcnew-[\w-]+/
 const CSS_ONLY = false
 const JS_ONLY = false
 
