@@ -25,6 +25,8 @@ audit all CSS
   AFTER: audit all locales' allDayText. there's no more max-width in the CSS. use allDayHtml with breaks if needed
   look for places where fcnew-absfill* should be used
   test week numbers
+  ensure outputted CSS doesn't have multiple :root declarations because of how we shifted vars.css around
+  test timeline more-link
 
   RETHINK lane names:
     'fcnew-timeline-lane', // is this the best name?

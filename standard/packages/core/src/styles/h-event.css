@@ -1,55 +1,69 @@
 
-/*
-A HORIZONTAL event
-*/
+//
+// h-event (extends event)
+//   "horizontal"
+//
 
 .fcnew-h-event {
+  position: relative; // NOTE: subclasses should supply z-index
   display: flex;
+  flex-direction: column;
   border: 1px solid var(--fcnew-event-border-color);
   background-color: var(--fcnew-event-bg-color);
-  position: relative;
-
-  & .fcnew-event-inner {
-    flex-grow: 1; // expand horizontally
-    min-width: 0; // can shrink regardless of inner content
-    z-index: $event-main-z;
-    display: flex;
-    color: var(--fcnew-event-text-color);
-  }
-
-  & .fcnew-event-time,
-  & .fcnew-event-title {
-    white-space: nowrap;
-    overflow: hidden;
-  }
-
-  & .fcnew-event-title-outer {
-    flex-grow: 1;
-    min-width: 0;
-    display: flex;
-  }
-
-  & .fcnew-event-title {
-    position: sticky;
-    left: 0;
-    right: 0;
-  }
-
-  &.fcnew-event-selected:before {
-    // expand hit area
-    top: -10px;
-    bottom: -10px;
-  }
-
 }
 
-// resizers
+.fcnew-h-event.fcnew-event-selected:before { // (selected) > hit-area
+  // expand hit area
+  top: -10px;
+  bottom: -10px;
+}
+
+//
+// h-event > inner
+//
+
+.fcnew-h-event .fcnew-event-inner {
+  flex-grow: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  color: var(--fcnew-event-text-color);
+}
+
+//
+// h-event > inner > *
+//
+
+.fcnew-h-event .fcnew-event-time, // > time
+.fcnew-h-event .fcnew-event-title { // > title-outer > title
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.fcnew-h-event .fcnew-event-title-outer { // > title-outer
+  flex-grow: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+.fcnew-h-event .fcnew-event-title { // > title-outer > title
+  position: sticky;
+  left: 0;
+  right: 0;
+}
+
+//
+// h-event > resizer
+//
 
 .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer {
   top: 0;
   bottom: 0;
   width: var(--fcnew-event-resizer-thickness);
 }
+
+// (mouse)
 
 .fcnew-direction-ltr .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-start,
 .fcnew-direction-rtl .fcnew-h-event:not(.fcnew-event-selected) .fcnew-event-resizer-end {
@@ -63,7 +77,7 @@ A HORIZONTAL event
   right: calc(-0.5 * var(--fcnew-event-resizer-thickness));
 }
 
-// resizers for TOUCH
+// (touch)
 
 .fcnew-h-event.fcnew-event-selected .fcnew-event-resizer {
   top: 50%;

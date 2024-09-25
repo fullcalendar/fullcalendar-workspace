@@ -1,0 +1,31 @@
+
+//
+// timeline-more-link
+//
+
+.fcnew-timeline-more-link {
+  font-size: var(--fcnew-small-font-size);
+  color: var(--fcnew-more-link-text-color);
+  background: var(--fcnew-more-link-bg-color);
+  padding: 1px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.fcnew-direction-ltr .fcnew-timeline-more-link { // (ltr)
+  margin-right: 1px; // TODO: DRY with timeline-event?
+}
+
+.fcnew-direction-rtl .fcnew-timeline-more-link { // (rtl)
+  margin-left: 1px; // TODO: DRY with timeline-event?
+}
+
+//
+// timeline-more-link > inner
+//
+
+.fcnew-timeline-more-link-inner {
+  padding: 2px;
+}

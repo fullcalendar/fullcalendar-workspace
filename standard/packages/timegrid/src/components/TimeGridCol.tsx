@@ -197,10 +197,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
           return (
             <div
-              className={[
-                'fcnew-timegrid-event-harness',
-                isInset ? 'fcnew-timegrid-event-harness-inset' : '',
-              ].join(' ')}
+              className='fcnew-abs'
               key={forcedKey || instanceId}
               style={{
                 visibility: isVisible ? ('' as any) : 'hidden',
@@ -216,6 +213,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 isDateSelecting={isDateSelecting}
                 isSelected={instanceId === eventSelection}
                 isShort={segVertical.isShort}
+                isInset={isInset}
                 {...getSegMeta(seg, todayRange, nowDate)}
               />
             </div>
@@ -376,6 +374,7 @@ export function renderPlainFgSegs(
               isDateSelecting={false}
               isSelected={instanceId === eventSelection}
               isShort={false}
+              isInset={false}
               {...getSegMeta(seg, todayRange, nowDate)}
             />
           </div>

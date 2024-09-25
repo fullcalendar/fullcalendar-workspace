@@ -8,18 +8,22 @@ const DEFAULT_TIME_FORMAT = createFormatter({
 })
 
 export interface TimeGridEventProps extends MinimalEventProps {
+  isInset: boolean
   isShort: boolean
 }
 
 export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
   render() {
+    const { props } = this
+
     return (
       <StandardEvent
-        {...this.props}
+        {...props}
         elClasses={[
           'fcnew-timegrid-event',
           'fcnew-v-event',
-          this.props.isShort && 'fcnew-timegrid-event-short',
+          props.isShort ? 'fcnew-timegrid-event-short' : '',
+          props.isInset ? 'fcnew-timegrid-event-inset' : '',
         ]}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
       />

@@ -1,111 +1,112 @@
 
-/*
-A VERTICAL event
-*/
-
 //
-// v-event
+// v-event (extends event)
+//   "vertical"
 //
 
 .fcnew-v-event {
+  position: relative; // NOTE: subclasses should supply z-index
   display: flex;
   flex-direction: column;
   border: 1px solid var(--fcnew-event-border-color);
   background-color: var(--fcnew-event-bg-color);
-  position: relative;
+}
 
-  // can provide padding. resizers are siblings and can absolutely expand to edges of event
-  & .fcnew-event-inner {
-    flex-grow: 1; // expand horizontally
-    min-width: 0; // can shrink regardless of inner content
-    display: flex;
-    flex-direction: column;
-    color: var(--fcnew-event-text-color); // why all this repeating?
+.fcnew-v-event:not(.fcnew-event-start) { // (not-start)
+  border-top-width: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.fcnew-v-event:not(.fcnew-event-end) { // (not-end)
+  border-bottom-width: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.fcnew-v-event.fcnew-event-selected:before { // (selected) > hit-area
+  // expand hit area
+  left: -10px;
+  right: -10px;
+}
+
+//
+// v-event > inner
+//
+
+.fcnew-v-event .fcnew-event-inner {
+  flex-grow: 1; // expand horizontally
+  min-width: 0; // can shrink regardless of inner content
+  display: flex;
+  flex-direction: column;
+  color: var(--fcnew-event-text-color); // why all this repeating?
+}
+
+//
+// v-event > inner > *
+//
+
+.fcnew-v-event .fcnew-event-time { // > time
+  white-space: nowrap;
+}
+
+.fcnew-v-event .fcnew-event-time, // > time
+.fcnew-v-event .fcnew-event-title { // > title-outer > title
+  overflow: hidden;
+}
+
+.fcnew-v-event .fcnew-event-title-outer { // > title-outer
+  flex-grow: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.fcnew-v-event .fcnew-event-title { // > title-outer > title
+  position: sticky;
+  top: 0;
+  bottom: 0;
+}
+
+//
+// v-event > resizer
+//
+
+.fcnew-v-event .fcnew-event-resizer-start { // (start)
+  cursor: n-resize;
+}
+
+.fcnew-v-event .fcnew-event-resizer-end { // (end)
+  cursor: s-resize;
+}
+
+.fcnew-v-event:not(.fcnew-event-selected) { // (mouse)
+  & .fcnew-event-resizer {
+    height: var(--fcnew-event-resizer-thickness);
+    left: 0;
+    right: 0;
   }
 
-  & .fcnew-event-time,
-  & .fcnew-event-title {
-    overflow: hidden;
+  & .fcnew-event-resizer-start { // (start)
+    top: calc(var(--fcnew-event-resizer-thickness) / -2);
   }
 
-  & .fcnew-event-title-outer {
-    flex-grow: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
+  & .fcnew-event-resizer-end { // (end)
+    bottom: calc(var(--fcnew-event-resizer-thickness) / -2);
+  }
+}
+
+.fcnew-v-event.fcnew-event-selected { // (touch)
+  & .fcnew-event-resizer {
+    left: 50%;
+    margin-left: calc(var(--fcnew-event-resizer-dot-total-width) / -2);
   }
 
-  & .fcnew-event-title { // will have fcnew-v-sticky on it
-    position: sticky;
-    top: 0;
-    bottom: 0;
+  & .fcnew-event-resizer-start { // (start)
+    top: calc(var(--fcnew-event-resizer-dot-total-width) / -2);
   }
 
-  &:not(.fcnew-event-start) {
-    border-top-width: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+  & .fcnew-event-resizer-end { // (end)
+    bottom: calc(var(--fcnew-event-resizer-dot-total-width) / -2);
   }
-
-  &:not(.fcnew-event-end) {
-    border-bottom-width: 0;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  &.fcnew-event-selected:before {
-    // expand hit area
-    left: -10px;
-    right: -10px;
-  }
-
-  // resizer (mouse AND touch)
-
-  & .fcnew-event-resizer-start {
-    cursor: n-resize;
-  }
-
-  & .fcnew-event-resizer-end {
-    cursor: s-resize;
-  }
-
-  // resizer for MOUSE
-
-  &:not(.fcnew-event-selected) {
-
-    & .fcnew-event-resizer {
-      height: var(--fcnew-event-resizer-thickness);
-      left: 0;
-      right: 0;
-    }
-
-    & .fcnew-event-resizer-start {
-      top: calc(var(--fcnew-event-resizer-thickness) / -2);
-    }
-
-    & .fcnew-event-resizer-end {
-      bottom: calc(var(--fcnew-event-resizer-thickness) / -2);
-    }
-
-  }
-
-  // resizer for TOUCH (when event is "selected")
-
-  &.fcnew-event-selected {
-
-    & .fcnew-event-resizer {
-      left: 50%;
-      margin-left: calc(var(--fcnew-event-resizer-dot-total-width) / -2);
-    }
-
-    & .fcnew-event-resizer-start {
-      top: calc(var(--fcnew-event-resizer-dot-total-width) / -2);
-    }
-
-    & .fcnew-event-resizer-end {
-      bottom: calc(var(--fcnew-event-resizer-dot-total-width) / -2);
-    }
-
-  }
-
 }

@@ -26,7 +26,7 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
 
     return (
       <MoreLinkContainer
-        elClasses={['fcnew-timegrid-more-link']}
+        elClasses={['fcnew-timegrid-more-link', 'fcnew-abs']}
         elStyle={{
           top: props.top,
           bottom: props.height,

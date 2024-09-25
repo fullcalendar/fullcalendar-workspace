@@ -1,70 +1,64 @@
+// TODO: rename this file to timeline-event.css
 
-// TimelineEventContainer
-// -------------------------------------------------------------------------------------------------
+//
+// timeline-events
+//   the container for multiple events
+//
 
 .fcnew-timeline-events {
-  position: relative;
   z-index: $timeline-fg-z;
 }
 
-.fcnew-timeline-events-overlap-enabled { // (allow-overlap variant)
+.fcnew-timeline-events-overlap-enabled { // (overlap-enabled)
   padding-bottom: 10px;
 }
 
-// TimelineEventContainer > TimelineEvent
-// -------------------------------------------------------------------------------------------------
-// extends fcnew-h-event
+//
+// timeline-event (extends h-event)
+//
 
 .fcnew-timeline-event {
-  align-items: center; // vertically align items, for arrow
   border-radius: 0;
-  padding: 2px 1px;
   margin-bottom: 1px;
   font-size: var(--fcnew-small-font-size);
   z-index: 1; // scoped within container
 }
 
-.fcnew-timeline-event.fcnew-event-mirror { // (mirror variant)
+.fcnew-timeline-event.fcnew-event-mirror { // (mirror)
   z-index: 2; // scoped within container
 }
 
-.fcnew-direction-ltr { // (end-edge w/ LTR variant)
-  & .fcnew-timeline-event.fcnew-event-end,
-  & .fcnew-timeline-more-link {
-    margin-right: 1px;
-  }
+.fcnew-direction-ltr .fcnew-timeline-event.fcnew-event-end { // (ltr+end)
+  margin-right: 1px;
 }
 
-.fcnew-direction-rtl { // (end-edge w/ RTL variant)
-  & .fcnew-timeline-event.fcnew-event-end,
-  & .fcnew-timeline-more-link {
-    margin-left: 1px;
-  }
+.fcnew-direction-rtl .fcnew-timeline-event.fcnew-event-end { // (rtl+end)
+  margin-left: 1px;
 }
 
-.fcnew-timeline-event-thick { // (thick variant)
+.fcnew-timeline-event-thick { // (thick)
   padding-top: 5px;
   padding-bottom: 5px;
   margin-bottom: 0;
 }
 
-.fcnew-timeline-event {
-  & .fcnew-event-time, // > Time
-  & .fcnew-event-title { // > TitleOuter > Title
-    padding: 0 2px;
-  }
+//
+// timeline-event > inner
+//
 
-  & .fcnew-event-time { // > Time
-    font-weight: bold;
-  }
+.fcnew-event-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 2px 1px;
 }
 
-// TimelineEventContainer > TimelineEvent > Arrows
-// -------------------------------------------------------------------------------------------------
-// (indicating the event continues into past/future)
+//
+// timeline-event > inner > arrows
+//
 
-.fcnew-timeline-event:not(.fcnew-event-start):before,
-.fcnew-timeline-event:not(.fcnew-event-end):after {
+.fcnew-timeline-event:not(.fcnew-event-start) .fcnew-event-inner:before,
+.fcnew-timeline-event:not(.fcnew-event-end) .fcnew-event-inner:after {
   content: "";
   flex-grow: 0;
   flex-shrink: 0;
@@ -80,31 +74,26 @@
 }
 
 // (pointing left variant)
-.fcnew-direction-ltr .fcnew-timeline-event:not(.fcnew-event-start):before,
-.fcnew-direction-rtl .fcnew-timeline-event:not(.fcnew-event-end):after {
+.fcnew-direction-ltr .fcnew-timeline-event:not(.fcnew-event-start) .fcnew-event-inner:before,
+.fcnew-direction-rtl .fcnew-timeline-event:not(.fcnew-event-end) .fcnew-event-inner:after {
   border-left: 0;
 }
 
 // (pointing right variant)
-.fcnew-direction-ltr .fcnew-timeline-event:not(.fcnew-event-end):after,
-.fcnew-direction-rtl .fcnew-timeline-event:not(.fcnew-event-start):before {
+.fcnew-direction-ltr .fcnew-timeline-event:not(.fcnew-event-end) .fcnew-event-inner:after,
+.fcnew-direction-rtl .fcnew-timeline-event:not(.fcnew-event-start) .fcnew-event-inner:before {
   border-right: 0;
 }
 
-// TimelineEventContainer > MoreLink
-// -------------------------------------------------------------------------------------------------
+//
+// timeline-event > inner > *
+//
 
-.fcnew-timeline-more-link {
-  font-size: var(--fcnew-small-font-size);
-  color: var(--fcnew-more-link-text-color);
-  background: var(--fcnew-more-link-bg-color);
-  padding: 1px;
-  cursor: pointer;
+.fcnew-timeline-event .fcnew-event-time { // > time
+  font-weight: bold;
 }
 
-.fcnew-timeline-more-link-inner { // has fcnew-h-sticky???
-  display: inline-block; // ???
-  left: 0;
-  right: 0;
-  padding: 2px;
+.fcnew-timeline-event .fcnew-event-time, // > time
+.fcnew-timeline-event .fcnew-event-title { // > title-outer > title-outer
+  padding: 0 2px;
 }

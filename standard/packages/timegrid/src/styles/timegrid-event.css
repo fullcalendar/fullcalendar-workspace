@@ -1,85 +1,60 @@
 
-/*
-extends fcnew-v-event
+//
+// timegrid-event (extends v-event)
+//
 
-TODO: refactor this
-*/
-
-.fcnew-timegrid-event-harness {
-  position: absolute; // top/left/right/bottom will all be set by JS
+.fcnew-timegrid-event {
   z-index: $timegrid-col-fg-z;
+  margin-bottom: 1px; // give some space from bottom
 
-  & > .fcnew-timegrid-event {
-    position: absolute; // absolute WITHIN the harness
-    top: 0; // for when not yet positioned
-    bottom: 0; // "
-    left: 0;
-    right: 0;
-  }
-}
+  // absolutely fill within harness
+  // (can't use fcnew-absfill because `position` gets overriden by fcnew-v-event)
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
-.fcnew-timegrid-event-harness-inset .fcnew-timegrid-event,
-.fcnew-timegrid-event.fcnew-event-mirror,
-.fcnew-timegrid-more-link {
-  box-shadow: 0px 0px 0px 1px var(--fcnew-page-bg-color);
-}
-
-.fcnew-timegrid-event,
-.fcnew-timegrid-more-link { // events need to be root
   font-size: var(--fcnew-small-font-size);
   border-radius: 3px;
 }
 
-.fcnew-timegrid-event { // events need to be root
-  margin-bottom: 1px; // give some space from bottom
-
-  & .fcnew-event-inner {
-    padding: 1px 1px 0;
-  }
-
-  & .fcnew-event-time {
-    white-space: nowrap;
-    font-size: var(--fcnew-small-font-size);
-    margin-bottom: 1px;
-  }
+.fcnew-timegrid-event-inset, // (inset)
+.fcnew-timegrid-event.fcnew-event-mirror { // (mirror)
+  box-shadow: 0px 0px 0px 1px var(--fcnew-page-bg-color); // apply border w/o mass
 }
 
-.fcnew-timegrid-event-short {
-  & .fcnew-event-inner {
-    flex-direction: row;
-    overflow: hidden;
-  }
+//
+// timegrid-event > inner
+//
 
-  & .fcnew-event-time:after {
-    content: '\00a0-\00a0'; // dash surrounded by non-breaking spaces
-  }
-
-  & .fcnew-event-title {
-    font-size: var(--fcnew-small-font-size)
-  }
+.fcnew-timegrid-event .fcnew-event-inner {
+  padding: 1px 1px 0;
 }
 
-.fcnew-timegrid-more-link { // does NOT inherit from fcnew-timegrid-event
-  position: absolute;
-  z-index: 9999; // hack
-  color: var(--fcnew-more-link-text-color);
-  background: var(--fcnew-more-link-bg-color);
-  cursor: pointer;
-  margin-bottom: 1px; // match space below fcnew-timegrid-event
+.fcnew-timegrid-event-short .fcnew-event-inner { // (short)
+  flex-direction: row; // overrides v-event!
+  overflow: hidden;
 }
 
-.fcnew-timegrid-more-link-inner { // has fcnew-v-sticky... really?
-  padding: 3px 2px;
-  top: 0;
+//
+// timegrid-event > inner > time
+//
+
+.fcnew-timegrid-event .fcnew-event-time {
+  white-space: nowrap;
+  font-size: var(--fcnew-small-font-size);
+  margin-bottom: 1px;
 }
 
-.fcnew-direction-ltr {
-  & .fcnew-timegrid-more-link {
-    right: 0;
-  }
+.fcnew-timegrid-event-short .fcnew-event-time:after { // (short) > dash
+  content: '\00a0-\00a0'; // dash surrounded by non-breaking spaces
 }
-.fcnew-direction-rtl {
-  & .fcnew-timegrid-more-link {
-    left: 0;
-  }
+
+//
+// timegrid-event > inner > > title-outer > title
+//
+
+.fcnew-timegrid-event-short .fcnew-event-title { // (short)
+  font-size: var(--fcnew-small-font-size)
 }

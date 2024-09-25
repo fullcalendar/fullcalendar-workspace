@@ -5,4 +5,5 @@
 @import './styles/timeline-slots';
 @import './styles/timeline-now-indicator';
 @import './styles/timeline-events';
+@import './styles/timeline-more-link';
 @import './styles/timeline-bg';

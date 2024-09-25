@@ -1,0 +1,33 @@
+
+//
+// timegrid-more-link
+//
+
+.fcnew-timegrid-more-link { // does NOT inherit from fcnew-timegrid-event
+  z-index: 9999; // hack
+  color: var(--fcnew-more-link-text-color);
+  background: var(--fcnew-more-link-bg-color);
+  margin-bottom: 1px; // match space below fcnew-timegrid-event
+  cursor: pointer;
+
+  // TODO: DRY with timegrid-event?
+  box-shadow: 0px 0px 0px 1px var(--fcnew-page-bg-color);
+  font-size: var(--fcnew-small-font-size);
+  border-radius: 3px;
+}
+
+.fcnew-direction-ltr .fcnew-timegrid-more-link {
+  right: 0; // alignment within column. has natural width
+}
+
+.fcnew-direction-rtl .fcnew-timegrid-more-link {
+  left: 0; // alignment within column. has natural width
+}
+
+//
+// timegrid-more-link > inner
+//
+
+.fcnew-timegrid-more-link-inner {
+  padding: 3px 2px;
+}

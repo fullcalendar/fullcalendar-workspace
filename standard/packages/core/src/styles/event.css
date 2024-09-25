@@ -1,87 +1,29 @@
 
-// link resets
-// ----------------------------------------------------------------------------------------------------
+//
+// event
+//
 
-a.fcnew-event,
-a.fcnew-event:hover {
+a.fcnew-event, // (anchor)
+a.fcnew-event:hover { // (anchor:hover)
   text-decoration: none;
 }
 
-// cursor
-.fcnew-event[href],
-.fcnew-event.fcnew-event-draggable {
+.fcnew-event[href], // (link)
+.fcnew-event.fcnew-event-draggable { // (draggable)
   cursor: pointer;
 }
 
-
-// dragging
-// ----------------------------------------------------------------------------------------------------
-
-.fcnew-event-dragging {
-
-  &:not(.fcnew-event-selected) { // MOUSE
-    opacity: 0.75;
-  }
-
-  &.fcnew-event-selected { // TOUCH
-    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
-  }
-
+.fcnew-event-dragging:not(.fcnew-event-selected) { // (dragging)
+  opacity: 0.75;
 }
 
-
-// resizing
-// ----------------------------------------------------------------------------------------------------
-// (subclasses should hone positioning for touch and non-touch)
-
-.fcnew-event-resizer {
-  display: none;
-  position: absolute;
-  z-index: $event-resizer-z;
+.fcnew-event-dragging.fcnew-event-selected { // (touch-selected)
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
 }
 
-.fcnew-event:hover, // MOUSE
-.fcnew-event-selected { // TOUCH
-
-  & .fcnew-event-resizer {
-    display: block;
-  }
-
-}
-
-.fcnew-event-selected {
-
-  & .fcnew-event-resizer {
-    border-radius: calc(var(--fcnew-event-resizer-dot-total-width) / 2);
-    border-width: var(--fcnew-event-resizer-dot-border-width);
-    width: var(--fcnew-event-resizer-dot-total-width);
-    height: var(--fcnew-event-resizer-dot-total-width);
-    border-style: solid;
-    border-color: inherit;
-    background: var(--fcnew-page-bg-color);
-
-    // expand hit area
-    &:before {
-      content: '';
-      position: absolute;
-      top: -20px;
-      left: -20px;
-      right: -20px;
-      bottom: -20px;
-    }
-
-  }
-
-}
-
-
-// selecting (always TOUCH)
-// OR, focused by tab-index
-// (TODO: maybe not the best focus-styling for .fcnew-daygrid-dot-event)
-// ----------------------------------------------------------------------------------------------------
-
-.fcnew-event-selected,
-.fcnew-event:focus {
+.fcnew-event-selected, // (touch-selected)
+.fcnew-event:focus { // (tab-focused)
+  // TODO: improve focus-styling for .fcnew-daygrid-dot-event)
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 
   // expand hit area (subclasses should expand)
@@ -110,5 +52,48 @@ a.fcnew-event:hover {
     right: -1px;
     bottom: -1px;
   }
+}
 
+//
+// event > inner
+//
+
+.fcnew-event-inner {
+  position: relative;
+  z-index: $event-main-z;
+}
+
+//
+// event > resizer
+//
+
+.fcnew-event-resizer {
+  display: none; // hide
+  position: absolute;
+  z-index: $event-resizer-z;
+}
+
+.fcnew-event:hover .fcnew-event-resizer, // (hover)
+.fcnew-event-selected .fcnew-event-resizer { // (selected)
+  display: block; // reveal
+}
+
+.fcnew-event-selected .fcnew-event-resizer { // (selected)
+  border-radius: calc(var(--fcnew-event-resizer-dot-total-width) / 2);
+  border-width: var(--fcnew-event-resizer-dot-border-width);
+  width: var(--fcnew-event-resizer-dot-total-width);
+  height: var(--fcnew-event-resizer-dot-total-width);
+  border-style: solid;
+  border-color: inherit;
+  background: var(--fcnew-page-bg-color);
+
+  // expand hit area
+  &:before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+  }
 }
