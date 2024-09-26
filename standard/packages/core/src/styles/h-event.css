@@ -35,7 +35,7 @@
 //
 
 .fc-h-event .fc-event-time, // > time
-.fc-h-event .fc-event-title-outer { // > title-outer
+.fc-h-event .fc-event-title { // > title-outer > title
   white-space: nowrap;
   overflow: hidden;
 }
