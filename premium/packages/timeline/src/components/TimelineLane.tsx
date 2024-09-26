@@ -183,8 +183,8 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           const { instanceId } = seg.eventRange.instance
           const segTop = segTops[instanceId]
           const segHorizontal = segHorizontals[instanceId]
-          const isVisible = segTop !== null && segHorizontal &&
-            (isMirror || Boolean(!forcedInvisibleMap[instanceId]))
+          const isVisible = isMirror ||
+            (segHorizontal && segTop != null && !forcedInvisibleMap[instanceId])
 
           return (
             <TimelineEventHarness

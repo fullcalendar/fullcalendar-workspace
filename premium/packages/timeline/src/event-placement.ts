@@ -99,6 +99,7 @@ export function computeFgSegPlacements( // mostly horizontals
     index: segs.length + index, // HACK: ensure no collision
     segGroup: hiddenGroup,
     span: hiddenGroup.span,
+    thickness: 1, // HACK to ensure it's placed
   }))
 
   // add more-links into the hierarchy, but don't limit
