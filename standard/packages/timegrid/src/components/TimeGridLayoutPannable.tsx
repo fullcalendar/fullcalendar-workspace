@@ -311,7 +311,8 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             ref={this.axisScrollerRef}
           >
             <div
-              className='fcnew-rel fcnew-grow fcnew-flex-column'
+              // NOTE: fcnew-timegrid-slots is purely for tests/old-print-view. remove somehow?
+              className='fcnew-timegrid-slots fcnew-rel fcnew-grow fcnew-flex-column'
               style={{
                 paddingBottom: state.bottomScrollbarWidth,
               }}

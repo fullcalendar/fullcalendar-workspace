@@ -11,14 +11,14 @@ export class ResourceDayGridWrapper {
     this.base = new DayGridWrapper(el)
   }
 
-  getRootTableEl() {
-    return this.base.getRootTableEl()
+  getCanvasEl() {
+    return this.base.getCanvasEl()
   }
 
   getDayEl(resourceId, date) {
     date = ensureDate(date)
     return this.el.querySelector(
-      '.fc-day[data-date="' + formatIsoDay(date) + '"]' +
+      '.fcnew-day[data-date="' + formatIsoDay(date) + '"]' +
       '[data-resource-id="' + resourceId + '"]',
     )
   }

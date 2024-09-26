@@ -121,11 +121,11 @@ export class ResourceTimelineGridWrapper {
   }
 
   getResourceLaneEl(resourceId) {
-    return this.el.querySelector(`.fc-timeline-lane[data-resource-id="${resourceId}"]`) as HTMLElement
+    return this.el.querySelector(`.fcnew-timeline-lane[data-resource-id="${resourceId}"]`) as HTMLElement
   }
 
   getResourceLaneEls() { // are <td> cells
-    return findElements(this.el, '.fc-timeline-lane[data-resource-id]')
+    return findElements(this.el, '.fcnew-timeline-lane[data-resource-id]')
   }
 
   getLeft(targetDate) {
@@ -145,7 +145,7 @@ export class ResourceTimelineGridWrapper {
   }
 
   getHGroupCnt() {
-    return this.el.querySelectorAll('.fc-timeline-lane.fc-resource-group').length
+    return this.el.querySelectorAll('.fcnew-timeline-lane.fcnew-resource-group').length
   }
 
   hasNowIndicator() {
@@ -169,7 +169,7 @@ export class ResourceTimelineGridWrapper {
   }
 
   getMoreEls() {
-    return findElements(this.el, '.fc-timeline-more-link')
+    return findElements(this.el, '.fcnew-timeline-more-link')
   }
 
   openMorePopover(index?) {
@@ -177,18 +177,18 @@ export class ResourceTimelineGridWrapper {
   }
 
   getMorePopoverEl() {
-    let viewWrapperEl = this.el.closest('.fc-view-harness')
-    return viewWrapperEl.querySelector('.fc-more-popover') as HTMLElement
+    let viewWrapperEl = this.el.closest('.fcnew-view-harness')
+    return viewWrapperEl.querySelector('.fcnew-more-popover') as HTMLElement
   }
 
   getMorePopoverEventEls() {
-    return findElements(this.getMorePopoverEl(), '.fc-event')
+    return findElements(this.getMorePopoverEl(), '.fcnew-event')
   }
 
   static getEventElInfo(eventEl) {
     return {
-      title: $(eventEl).find('.fc-event-title').text(),
-      timeText: $(eventEl).find('.fc-event-time').text(),
+      title: $(eventEl).find('.fcnew-event-title').text(),
+      timeText: $(eventEl).find('.fcnew-event-time').text(),
     }
   }
 }

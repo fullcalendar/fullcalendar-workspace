@@ -27,8 +27,14 @@ audit all CSS
   view should have classNames like fcnew-resource-timegrid AND fcnew-timegrid
   changelog: th tags are no longer used, which would have given bold
   solve z-index:9999 hacks. audit all z-indexes
+  fcnew-daygrid-cell-number is an awkward classname... fcnew-daygrid-day-number instead? fcnew-daygrid-datenumber/daynumber?
+  the testing "wrappers" like DayGridWrapper should us aria tags to find rows/cells
+  test license warning message
+  in datagrid, move fcnew-resource to the fcnew-row (instead of each fcnew-cell)... add to changelog
+    will need to change tests after
+  inconsistent abbrev of 'col' like 'fcnew-timegrid-col'
 
-tests aleady have fcnew- className prefix!?... actually some have .fc
+review all classnames again
 restore .fc prefix
 verify timeline-external-dragging.html works
 bug: small-months in multimonth don't display +more link!
@@ -46,8 +52,6 @@ FOR beta.1
     test that +more link works
   daygrid
     +more link renders weird
-  list
-    test angular connector with elTag="th" (for ListViewHeaderRow)
   react/vue/angular connectors
     pause size-handling until all slots are rendered
 

@@ -1,3 +1,4 @@
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 import { ListViewWrapper } from '../lib/wrappers/ListViewWrapper.js'
 
 describe('list-view event rendering', () => {
@@ -15,6 +16,6 @@ describe('list-view event rendering', () => {
     let wrapper = new ListViewWrapper(calendar)
     let eventEls = wrapper.getEventEls()
 
-    expect(eventEls[0]).toHaveClass('fc-event-past')
+    expect(eventEls[0]).toHaveClass(CalendarWrapper.EVENT_PAST_CLASSNAME)
   })
 })

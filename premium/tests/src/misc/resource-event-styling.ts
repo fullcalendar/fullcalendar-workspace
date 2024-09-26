@@ -1,3 +1,5 @@
+import { CalendarWrapper } from "@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper"
+
 describe('event styling hooks', () => {
   pushOptions({
     now: '2016-02-14',
@@ -104,7 +106,7 @@ describe('event styling hooks', () => {
       const el = $('.event1')
       expect(el.length).toBe(1)
       expect(el.css('border-left-color')).toMatch(BLUE_RE)
-      expect(el.find('.fc-event-title').css('color')).toMatch(BLUE_RE) // text color
+      expect(el.find('.' + CalendarWrapper.EVENT_TITLE_CLASSNAME).css('color')).toMatch(BLUE_RE) // text color
     })
 
     it('receives eventClassName from resourceId', () => {

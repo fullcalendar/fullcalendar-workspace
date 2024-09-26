@@ -48,34 +48,34 @@ export class TimelineGridWrapper {
   }
 
   getHighlightEls() {
-    return findElements(this.el, '.fc-highlight')
+    return findElements(this.el, '.fcnew-highlight')
   }
 
   getEventEls() { // FG events
-    return findElements(this.el, '.fc-timeline-event')
+    return findElements(this.el, '.fcnew-timeline-event')
   }
 
   getFirstEventEl() {
-    return this.el.querySelector('.fc-timeline-event') as HTMLElement
+    return this.el.querySelector('.fcnew-timeline-event') as HTMLElement
   }
 
   getMirrorEventEls() {
-    return findElements(this.el, '.fc-event-mirror')
+    return findElements(this.el, '.fcnew-event-mirror')
   }
 
   getNonBusinessDayEls() {
-    return findElements(this.el, '.fc-non-business')
+    return findElements(this.el, '.fcnew-non-business')
   }
 
   getSlatEls() { // TODO: rename to "slot label"
-    return findElements(this.el, '.fc-timeline-slot-lane')
+    return findElements(this.el, '.fcnew-timeline-slot-lane')
   }
 
   getSlatElByDate(dateOrStr) { // prefers string. we do this because all-day doesnt have 00:00:00. TODO: rename to "slot label"
     if (typeof dateOrStr !== 'string') {
       dateOrStr = formatIsoWithoutTz(ensureDate(dateOrStr))
     }
-    return this.el.querySelector('.fc-timeline-slot-lane[data-date="' + dateOrStr + '"]')
+    return this.el.querySelector('.fcnew-timeline-slot-lane[data-date="' + dateOrStr + '"]')
   }
 
   getRect(start, end) {
@@ -178,10 +178,10 @@ export class TimelineGridWrapper {
   }
 
   getNowIndicatorEl() {
-    return this.el.querySelector('.fc-timeline-now-indicator-line')
+    return this.el.querySelector('.fcnew-timeline-now-indicator-line')
   }
 
   getBgEventEls() {
-    return findElements(this.el, '.fc-bg-event')
+    return findElements(this.el, '.fcnew-bg-event')
   }
 }

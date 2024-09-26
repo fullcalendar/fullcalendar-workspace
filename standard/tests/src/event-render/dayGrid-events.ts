@@ -1,3 +1,4 @@
+import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 import { anyElsIntersect } from '../lib/dom-geom.js'
 import { filterVisibleEls } from '../lib/dom-misc.js'
@@ -600,7 +601,7 @@ describe('dayGrid advanced event rendering', () => {
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     let eventEls = dayGridWrapper.getEventEls()
 
-    expect(eventEls[0]).toHaveClass('fc-event-past')
+    expect(eventEls[0]).toHaveClass(CalendarWrapper.EVENT_PAST_CLASSNAME)
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/7462

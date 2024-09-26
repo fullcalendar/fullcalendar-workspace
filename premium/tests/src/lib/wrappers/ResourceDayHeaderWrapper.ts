@@ -5,7 +5,7 @@ export class ResourceDayHeaderWrapper {
   constructor(private el: HTMLElement) {
   }
 
-  getRootTableEl() {
+  getCanvasEl() {
     return this.el // it is the root el
   }
 
@@ -19,11 +19,11 @@ export class ResourceDayHeaderWrapper {
       datePart = '[data-date="' + formatIsoDay(date) + '"]'
     }
 
-    return findElements(this.el, '.fc-col-header-cell.fc-resource[data-resource-id="' + resourceId + '"]' + datePart)
+    return findElements(this.el, '.fcnew-cell.fcnew-resource[data-resource-id="' + resourceId + '"]' + datePart)
   }
 
   getAllResourceEls() {
-    return findElements(this.el, '.fc-col-header-cell.fc-resource')
+    return findElements(this.el, '.fcnew-cell.fcnew-resource')
   }
 
   getResourceIds() {
@@ -42,12 +42,12 @@ export class ResourceDayHeaderWrapper {
   }
 
   getDowEls(dayAbbrev) {
-    return findElements(this.el, `.fc-col-header-cell.fc-day-${dayAbbrev}`)
+    return findElements(this.el, `.fcnew-cell.fcnew-day-${dayAbbrev}`)
   }
 
   getWeekNumberStrings() {
-    return findElements(this.el, 'tr').map((trEl) => {
-      let cushionEl = trEl.querySelector('.fc-timegrid-axis-cushion')
+    return findElements(this.el, '.fcnew-row').map((trEl) => {
+      let cushionEl = trEl.querySelector('.fcnew-timegrid-axis-inner')
       return $(cushionEl).text()
     })
   }

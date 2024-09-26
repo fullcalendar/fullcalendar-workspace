@@ -584,7 +584,7 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
         } else {
           innerHTML += '<br><br>'
         }
-        return { html: '<div class="fc-event-description">' + innerHTML + '</div>' }
+        return { html: '<div class="event-description">' + innerHTML + '</div>' }
       },
     })
     let timelineGridWrapper = new TimelineViewWrapper(calendar).timelineGrid

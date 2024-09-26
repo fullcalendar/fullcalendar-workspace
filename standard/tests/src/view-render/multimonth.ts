@@ -124,6 +124,6 @@ describe('multimonth view', () => {
     })
 
     const viewWrapper = new MultiMonthViewWrapper(calendar)
-    expect(viewWrapper.el.querySelectorAll('.fc-daygrid-month-start').length).toBe(0)
+    expect(viewWrapper.el.querySelectorAll('.fcnew-daygrid-month-start').length).toBe(0)
   })
 })

@@ -241,15 +241,15 @@ describe('vresource structure', () => {
 
     setTimeout(() => {
       expect(
-        viewWrapper.getHeaderAxisTable().offsetHeight,
+        viewWrapper.getHeaderAxisCanvas().offsetHeight,
       ).toBe(
-        viewWrapper.header.getRootTableEl().offsetHeight,
+        viewWrapper.header.getCanvasEl().offsetHeight,
       )
 
       expect(
-        viewWrapper.getAllDayAxisTable().offsetHeight,
+        viewWrapper.getAllDayAxisCanvas().offsetHeight,
       ).toBe(
-        viewWrapper.dayGrid.getRootTableEl().offsetHeight,
+        viewWrapper.dayGrid.getCanvasEl().offsetHeight,
       )
 
       done()

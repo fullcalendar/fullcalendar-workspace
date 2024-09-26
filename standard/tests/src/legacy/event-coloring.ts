@@ -218,7 +218,7 @@ describe('event coloring', () => {
       : calendarWrapper.getEventEls()[0]
 
     if (prop === 'color') {
-      return $(eventEl).find('.fc-event-title').css(prop)
+      return $(eventEl).find('.' + CalendarWrapper.EVENT_TITLE_CLASSNAME).css(prop)
     }
 
     return $(eventEl).css(prop)

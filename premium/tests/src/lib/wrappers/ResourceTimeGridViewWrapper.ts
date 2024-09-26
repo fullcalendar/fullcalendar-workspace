@@ -6,32 +6,32 @@ import { ResourceDayGridWrapper } from './ResourceDayGridWrapper.js'
 
 export class ResourceTimeGridViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {
-    super(calendar, 'fc-timegrid')
+    super(calendar, 'fcnew-timegrid-view')
   }
 
   get header() {
-    let headerEl = this.el.querySelector('.fc-col-header') as HTMLElement
+    let headerEl = this.el.querySelector('.fcnew-timegrid-header') as HTMLElement
     return headerEl ? new ResourceDayHeaderWrapper(headerEl) : null
   }
 
   get timeGrid() {
-    return new ResourceTimeGridWrapper(this.el.querySelector('.fc-timegrid-body'))
+    return new ResourceTimeGridWrapper(this.el.querySelector('.fcnew-timegrid-body'))
   }
 
   get dayGrid() {
-    let dayGridEl = this.el.querySelector('.fc-daygrid-body') as HTMLElement
+    let dayGridEl = this.el.querySelector('.fcnew-daygrid-body') as HTMLElement
     return dayGridEl ? new ResourceDayGridWrapper(dayGridEl) : null
   }
 
   getScrollEl() {
-    return this.el.querySelector('.fc-timegrid-body').parentElement // TODO: use closest
+    return this.el.querySelector('.fcnew-timegrid-body') // is also the scroller
   }
 
-  getHeaderAxisTable() {
-    return this.el.querySelectorAll('.fc-timegrid-axis')[0].closest('table')
+  getHeaderAxisCanvas() {
+    return this.el.querySelector('.fcnew-timegrid-header .fcnew-timegrid-axis')
   }
 
-  getAllDayAxisTable() {
-    return this.el.querySelectorAll('.fc-timegrid-axis')[1].closest('table')
+  getAllDayAxisCanvas() {
+    return this.el.querySelector('.fcnew-timegrid-allday .fcnew-timegrid-axis')
   }
 }

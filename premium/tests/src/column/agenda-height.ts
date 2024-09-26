@@ -25,8 +25,8 @@ describe('timegrid height with horizontal scrolling', () => {
 
   function expectSlotsEqualHeight(calendar) {
     let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
-    expect(timeGridWrapper.getMainSlotTable().offsetHeight).toBe(
-      timeGridWrapper.getSeparateSlotAxisTable().offsetHeight,
+    expect(timeGridWrapper.getMainSlotCanvas().offsetHeight).toBe(
+      timeGridWrapper.getSeparateSlotAxisCanvas().offsetHeight,
     )
   }
 })
