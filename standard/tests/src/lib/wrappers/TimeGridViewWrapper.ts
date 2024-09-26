@@ -5,29 +5,29 @@ import { DayHeaderWrapper } from './DayHeaderWrapper.js'
 
 export class TimeGridViewWrapper extends ViewWrapper {
   constructor(calendar) {
-    super(calendar, 'fcnew-timegrid-view')
+    super(calendar, 'fc-timegrid-view')
   }
 
   get header() {
-    let headerEl = this.el.querySelector('.fcnew-timegrid-header') as HTMLElement
+    let headerEl = this.el.querySelector('.fc-timegrid-header') as HTMLElement
     return headerEl ? new DayHeaderWrapper(headerEl) : null
   }
 
   get timeGrid() {
-    return new TimeGridWrapper(this.el.querySelector('.fcnew-timegrid-body'))
+    return new TimeGridWrapper(this.el.querySelector('.fc-timegrid-body'))
   }
 
   get dayGrid() { // TODO: rename to allDaySection()
-    let dayGridEl = this.el.querySelector('.fcnew-timegrid-allday') as HTMLElement
+    let dayGridEl = this.el.querySelector('.fc-timegrid-allday') as HTMLElement
     return dayGridEl ? new DayGridWrapper(dayGridEl) : null
   }
 
   getScrollerEl() {
-    return this.el.querySelector('.fcnew-timegrid-body') // it IS the scroller
+    return this.el.querySelector('.fc-timegrid-body') // it IS the scroller
   }
 
   getHeaderAxisEl() {
-    return this.el.querySelector('.fcnew-timegrid-header .fcnew-timegrid-axis')
+    return this.el.querySelector('.fc-timegrid-header .fc-timegrid-axis')
   }
 
   getHeaderWeekNumberLink() {
@@ -39,7 +39,7 @@ export class TimeGridViewWrapper extends ViewWrapper {
   }
 
   getAllDayAxisEl() {
-    return this.el.querySelector('.fcnew-timegrid-allday .fcnew-timegrid-axis')
+    return this.el.querySelector('.fc-timegrid-allday .fc-timegrid-axis')
   }
 
   getAllDayAxisElText() {

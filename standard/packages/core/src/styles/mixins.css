@@ -15,7 +15,7 @@
 }
 
 @mixin bg-z-indexes { // TODO: kill
-  & .fcnew-non-business { z-index: 1 }
-  & .fcnew-bg-event { z-index: 2 }
-  & .fcnew-highlight { z-index: 3 }
+  & .fc-non-business { z-index: 1 }
+  & .fc-bg-event { z-index: 2 }
+  & .fc-highlight { z-index: 3 }
 }

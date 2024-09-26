@@ -5,25 +5,25 @@ import { TimelineHeaderWrapper } from './TimelineHeaderWrapper.js'
 
 export class TimelineViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {
-    super(calendar, 'fcnew-timeline-view')
+    super(calendar, 'fc-timeline-view')
   }
 
   get header() {
-    return new TimelineHeaderWrapper(this.el.querySelector('.fcnew-timeline-header'))
+    return new TimelineHeaderWrapper(this.el.querySelector('.fc-timeline-header'))
   }
 
   get timelineGrid() {
     return new TimelineGridWrapper(
-      this.el.querySelector('.fcnew-timeline-body'),
+      this.el.querySelector('.fc-timeline-body'),
     )
   }
 
   getHeaderScrollEl() {
-    return this.el.querySelector('.fcnew-timeline-header') // IS the scroller
+    return this.el.querySelector('.fc-timeline-header') as HTMLElement // IS the scroller
   }
 
   getBodyScrollerEl() {
-    return this.el.querySelector('.fcnew-timeline-body') // IS the scroller
+    return this.el.querySelector('.fc-timeline-body') as HTMLElement // IS the scroller
   }
 
   hasNowIndicator() {

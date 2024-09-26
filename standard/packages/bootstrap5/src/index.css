@@ -1,7 +1,7 @@
 
-.fcnew-theme-bootstrap5 {
-  --fcnew-border-color: var(--bs-gray-400);
-  --fcnew-neutral-bg-color: var(--bs-gray-200);
+.fc-theme-bootstrap5 {
+  --fc-border-color: var(--bs-gray-400);
+  --fc-neutral-bg-color: var(--bs-gray-200);
 
   & a:not([href]) {
     color: inherit;

@@ -54,7 +54,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
     return (
       <div
         role="row"
-        className="fcnew-row"
+        className="fc-row"
         style={{ height: props.height }}
       >
         {colSpecs.map((colSpec, colIndex) => {

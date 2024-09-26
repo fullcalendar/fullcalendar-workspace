@@ -10,20 +10,20 @@ export class TimeGridWrapper {
   }
 
   getAllDayEls() { // TODO: rename to getColEls()
-    return findElements(this.el, '.fcnew-timegrid-col[data-date]')
+    return findElements(this.el, '.fc-timegrid-col[data-date]')
   }
 
   getMirrorEls() {
-    return findElements(this.el, '.fcnew-event.fcnew-event-mirror')
+    return findElements(this.el, '.fc-event.fc-event-mirror')
   }
 
   getDayEls(date) { // TODO: rename to getColEl()
     date = ensureDate(date)
-    return findElements(this.el, '.fcnew-timegrid-col[data-date="' + formatIsoDay(date) + '"]')
+    return findElements(this.el, '.fc-timegrid-col[data-date="' + formatIsoDay(date) + '"]')
   }
 
   getSlotEls() {
-    return findElements(this.el, '.fcnew-timegrid-slot-label[data-time]')
+    return findElements(this.el, '.fc-timegrid-slot-label[data-time]')
   }
 
   getAxisTexts() {
@@ -31,25 +31,25 @@ export class TimeGridWrapper {
   }
 
   getSlotAxisEls() { // TODO: rename to label
-    return findElements(this.el, '.fcnew-timegrid-slot-label[data-time]')
+    return findElements(this.el, '.fc-timegrid-slot-label[data-time]')
   }
 
   getSlotLaneEls() {
-    return findElements(this.el, '.fcnew-timegrid-slot-lane[data-time]')
+    return findElements(this.el, '.fc-timegrid-slot-lane[data-time]')
   }
 
   getSlotElByIndex(index) {
-    return $(`.fcnew-timegrid-slots .fcnew-timegrid-slot:eq(${index})`, this.el).get()
+    return $(`.fc-timegrid-slots .fc-timegrid-slot:eq(${index})`, this.el).get()
   }
 
   getMainSlotCanvas() {
-    return $('.fcnew-timegrid-slots', this.el)[0]
+    return $('.fc-timegrid-slots', this.el)[0]
   }
 
   // HACK for h-scroll view
   getSeparateSlotAxisCanvas() {
-    // relative to fcnew-timegrid-body
-    return $('> .fcnew-scroller > .fcnew-timegrid-slots', this.el)[0]
+    // relative to fc-timegrid-body
+    return $('> .fc-scroller > .fc-timegrid-slots', this.el)[0]
   }
 
   getSlotElByTime(timeMs) {
@@ -57,44 +57,44 @@ export class TimeGridWrapper {
     date = new Date(date.valueOf() + timeMs)
 
     if (date.getUTCDate() === 1) { // ensure no time overflow/underflow
-      return this.el.querySelector('.fcnew-timegrid-slot-label[data-time="' + formatIsoTime(date) + '"]')
+      return this.el.querySelector('.fc-timegrid-slot-label[data-time="' + formatIsoTime(date) + '"]')
     }
 
     return null
   }
 
   getNonBusinessDayEls() {
-    return findElements(this.el, '.fcnew-non-business')
+    return findElements(this.el, '.fc-non-business')
   }
 
   getColEl(col) {
-    return this.el.querySelectorAll('.fcnew-timegrid-col:not(.fcnew-timegrid-axis)')[col] as HTMLElement
+    return this.el.querySelectorAll('.fc-timegrid-col:not(.fc-timegrid-axis)')[col] as HTMLElement
   }
 
   queryBgEventsInCol(col) {
-    return findElements(this.getColEl(col), '.fcnew-bg-event')
+    return findElements(this.getColEl(col), '.fc-bg-event')
   }
 
   queryNonBusinessSegsInCol(col) {
-    return findElements(this.getColEl(col), '.fcnew-non-business')
+    return findElements(this.getColEl(col), '.fc-non-business')
   }
 
   getHighlightEls() { // FG events
-    return findElements(this.el, '.fcnew-highlight')
+    return findElements(this.el, '.fc-highlight')
   }
 
   // TODO: discourage use
   getDowEls(dayAbbrev) {
-    return findElements(this.el, `.fcnew-day-${dayAbbrev}`)
+    return findElements(this.el, `.fc-day-${dayAbbrev}`)
   }
 
   // for https://github.com/fullcalendar/fullcalendar-scheduler/issues/363
   isStructureValid() {
-    return Boolean(this.el.querySelector('.fcnew-timegrid-slots'))
+    return Boolean(this.el.querySelector('.fc-timegrid-slots'))
   }
 
   getMoreEls() {
-    return findElements(this.el, '.fcnew-timegrid-more-link')
+    return findElements(this.el, '.fc-timegrid-more-link')
   }
 
   openMorePopover(index?) {
@@ -102,12 +102,12 @@ export class TimeGridWrapper {
   }
 
   getMorePopoverEl() {
-    let viewWrapperEl = this.el.closest('.fcnew-view-harness')
-    return viewWrapperEl.querySelector('.fcnew-more-popover') as HTMLElement
+    let viewWrapperEl = this.el.closest('.fc-view-harness')
+    return viewWrapperEl.querySelector('.fc-more-popover') as HTMLElement
   }
 
   getMorePopoverEventEls() {
-    return findElements(this.getMorePopoverEl(), '.fcnew-event')
+    return findElements(this.getMorePopoverEl(), '.fc-event')
   }
 
   hasNowIndicator() {
@@ -122,17 +122,17 @@ export class TimeGridWrapper {
   }
 
   getNowIndicatorArrowEl() {
-    return this.el.querySelector('.fcnew-timegrid-now-indicator-arrow')
+    return this.el.querySelector('.fc-timegrid-now-indicator-arrow')
   }
 
   getNowIndicatorLineEl() {
-    return this.el.querySelector('.fcnew-timegrid-now-indicator-line')
+    return this.el.querySelector('.fc-timegrid-now-indicator-line')
   }
 
   getTimeAxisInfo() {
-    return $('.fcnew-timegrid-slot-label[data-time]', this.el).map((i, td) => ({
+    return $('.fc-timegrid-slot-label[data-time]', this.el).map((i, td) => ({
       text: $(td).text(),
-      isMajor: !$(td).hasClass('fcnew-timegrid-slot-minor'),
+      isMajor: !$(td).hasClass('fc-timegrid-slot-minor'),
     })).get()
   }
 
@@ -544,25 +544,25 @@ export class TimeGridWrapper {
   }
 
   getEventEls() { // FG events
-    return findElements(this.el, '.fcnew-timegrid-event')
+    return findElements(this.el, '.fc-timegrid-event')
   }
 
   getFirstEventEl() {
-    return this.el.querySelector('.fcnew-timegrid-event') as HTMLElement
+    return this.el.querySelector('.fc-timegrid-event') as HTMLElement
   }
 
   getBgEventEls() {
-    return findElements(this.el, '.fcnew-bg-event')
+    return findElements(this.el, '.fc-bg-event')
   }
 
   getEventTimeTexts() {
-    return this.getEventEls().map((eventEl) => $(eventEl.querySelector('.fcnew-event-time')).text())
+    return this.getEventEls().map((eventEl) => $(eventEl.querySelector('.fc-event-time')).text())
   }
 
   static getEventElInfo(eventEl) {
     return {
-      title: $(eventEl).find('.fcnew-event-title').text(),
-      timeText: $(eventEl).find('.fcnew-event-time').text(),
+      title: $(eventEl).find('.fc-event-title').text(),
+      timeText: $(eventEl).find('.fc-event-time').text(),
     }
   }
 
@@ -623,7 +623,7 @@ function checkEventRenderingMatch(expectedRects, eventEls) {
 
 export function queryEventElInfo(eventEl: HTMLElement) {
   return {
-    timeText: $(eventEl.querySelector('.fcnew-event-time')).text(),
-    isShort: eventEl.classList.contains('fcnew-timegrid-event-short'),
+    timeText: $(eventEl.querySelector('.fc-event-time')).text(),
+    isShort: eventEl.classList.contains('fc-timegrid-event-short'),
   }
 }

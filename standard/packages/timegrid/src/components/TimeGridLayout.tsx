@@ -122,8 +122,8 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
       <ViewContainer
         elClasses={[
           props.className,
-          'fcnew-flex-column',
-          'fcnew-border'
+          'fc-flex-column',
+          'fc-border'
         ]}
         viewSpec={context.viewSpec}
       >

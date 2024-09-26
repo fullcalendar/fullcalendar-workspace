@@ -3,27 +3,27 @@
 // event
 //
 
-a.fcnew-event, // (anchor)
-a.fcnew-event:hover { // (anchor:hover)
+a.fc-event, // (anchor)
+a.fc-event:hover { // (anchor:hover)
   text-decoration: none;
 }
 
-.fcnew-event[href], // (link)
-.fcnew-event.fcnew-event-draggable { // (draggable)
+.fc-event[href], // (link)
+.fc-event.fc-event-draggable { // (draggable)
   cursor: pointer;
 }
 
-.fcnew-event-dragging:not(.fcnew-event-selected) { // (dragging)
+.fc-event-dragging:not(.fc-event-selected) { // (dragging)
   opacity: 0.75;
 }
 
-.fcnew-event-dragging.fcnew-event-selected { // (touch-selected)
+.fc-event-dragging.fc-event-selected { // (touch-selected)
   box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
 }
 
-.fcnew-event-selected, // (touch-selected)
-.fcnew-event:focus { // (tab-focused)
-  // TODO: improve focus-styling for .fcnew-daygrid-dot-event)
+.fc-event-selected, // (touch-selected)
+.fc-event:focus { // (tab-focused)
+  // TODO: improve focus-styling for .fc-daygrid-dot-event)
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 
   // expand hit area (subclasses should expand)
@@ -40,7 +40,7 @@ a.fcnew-event:hover { // (anchor:hover)
   // dimmer effect
   &:after {
     content: "";
-    background: var(--fcnew-event-selected-overlay-color);
+    background: var(--fc-event-selected-overlay-color);
     position: absolute;
     z-index: $event-selected-dimmer-z;
 
@@ -58,7 +58,7 @@ a.fcnew-event:hover { // (anchor:hover)
 // event > inner
 //
 
-.fcnew-event-inner {
+.fc-event-inner {
   position: relative;
   z-index: $event-main-z;
 }
@@ -67,25 +67,25 @@ a.fcnew-event:hover { // (anchor:hover)
 // event > resizer
 //
 
-.fcnew-event-resizer {
+.fc-event-resizer {
   display: none; // hide
   position: absolute;
   z-index: $event-resizer-z;
 }
 
-.fcnew-event:hover .fcnew-event-resizer, // (hover)
-.fcnew-event-selected .fcnew-event-resizer { // (selected)
+.fc-event:hover .fc-event-resizer, // (hover)
+.fc-event-selected .fc-event-resizer { // (selected)
   display: block; // reveal
 }
 
-.fcnew-event-selected .fcnew-event-resizer { // (selected)
-  border-radius: calc(var(--fcnew-event-resizer-dot-total-width) / 2);
-  border-width: var(--fcnew-event-resizer-dot-border-width);
-  width: var(--fcnew-event-resizer-dot-total-width);
-  height: var(--fcnew-event-resizer-dot-total-width);
+.fc-event-selected .fc-event-resizer { // (selected)
+  border-radius: calc(var(--fc-event-resizer-dot-total-width) / 2);
+  border-width: var(--fc-event-resizer-dot-border-width);
+  width: var(--fc-event-resizer-dot-total-width);
+  height: var(--fc-event-resizer-dot-total-width);
   border-style: solid;
   border-color: inherit;
-  background: var(--fcnew-page-bg-color);
+  background: var(--fc-page-bg-color);
 
   // expand hit area
   &:before {

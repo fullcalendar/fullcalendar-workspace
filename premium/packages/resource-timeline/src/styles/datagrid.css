@@ -5,24 +5,24 @@
 // Cell > Cushion > Indent
 //
 
-.fcnew-datagrid-indent {
+.fc-datagrid-indent {
   display: flex;
   flex-direction: row;
   align-items: center; // vertical align
 }
 
 // > Icon (rightmost when LTR)
-.fcnew-direction-ltr .fcnew-datagrid-indent > .fcnew-icon:last-child {
+.fc-direction-ltr .fc-datagrid-indent > .fc-icon:last-child {
   margin-right: 3px;
 }
 
 // > Icon (leftmost when RTL)
-.fcnew-direction-rtl .fcnew-datagrid-indent > .fcnew-icon:last-child {
+.fc-direction-rtl .fc-datagrid-indent > .fc-icon:last-child {
   margin-left: 3px;
 }
 
 // > Icon (expander)
-.fcnew-datagrid-expander {
+.fc-datagrid-expander {
   cursor: pointer;
   opacity: 0.65;
 }
@@ -31,7 +31,7 @@
 // ColHeader > Resizer
 //
 
-.fcnew-datagrid-col-resizer {
+.fc-datagrid-col-resizer {
   position: absolute;
   z-index: 1;
   top: 0;
@@ -41,11 +41,11 @@
 }
 
 // (LTR)
-.fcnew-direction-ltr .fcnew-datagrid-col-resizer {
+.fc-direction-ltr .fc-datagrid-col-resizer {
   right: -3px;
 }
 
 // (RTL)
-.fcnew-direction-rtl .fcnew-datagrid-col-resizer {
+.fc-direction-rtl .fc-datagrid-col-resizer {
   left: -3px;
 }

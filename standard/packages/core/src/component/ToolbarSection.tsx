@@ -19,7 +19,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
   render(): any {
     let children = this.props.widgetGroups.map((widgetGroup) => this.renderWidgetGroup(widgetGroup))
 
-    return createElement('div', { className: 'fcnew-toolbar-chunk' }, ...children)
+    return createElement('div', { className: 'fc-toolbar-chunk' }, ...children)
   }
 
   renderWidgetGroup(widgetGroup: ToolbarWidget[]): any {
@@ -34,7 +34,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
       if (buttonName === 'title') {
         isOnlyButtons = false
         children.push(
-          <h2 className="fcnew-toolbar-title">{props.title}</h2>,
+          <h2 className="fc-toolbar-title">{props.title}</h2>,
         )
       } else {
         let isPressed = buttonName === props.activeButton
@@ -43,7 +43,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
           (!props.isPrevEnabled && buttonName === 'prev') ||
           (!props.isNextEnabled && buttonName === 'next')
 
-        let buttonClasses = [`fcnew-${buttonName}-button`, theme.getClass('button')]
+        let buttonClasses = [`fc-${buttonName}-button`, theme.getClass('button')]
         if (isPressed) {
           buttonClasses.push(theme.getClass('buttonActive'))
         }

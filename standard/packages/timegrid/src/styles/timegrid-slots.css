@@ -1,12 +1,12 @@
 
-.fcnew-timegrid-axis {
+.fc-timegrid-axis {
   display: flex;
   flex-direction: column;
   justify-content: center; // vertically
   align-items: flex-end; // horizontally
 }
 
-.fcnew-timegrid-axis-inner {
+.fc-timegrid-axis-inner {
   min-height: 1.5em;
 
   // vertical alignment for *text inside*
@@ -15,6 +15,6 @@
   justify-content: center; // vertically
 }
 
-.fcnew-timegrid-slot-minor {
+.fc-timegrid-slot-minor {
   border-style: dotted;
 }

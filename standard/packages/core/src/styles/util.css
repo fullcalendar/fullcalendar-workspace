@@ -2,17 +2,17 @@
 // Flexbox Utils
 // -------------------------------------------------------------------------------------------------
 
-.fcnew-flex-row {
+.fc-flex-row {
   display: flex;
   flex-direction: row;
 }
 
-.fcnew-flex-column {
+.fc-flex-column {
   display: flex;
   flex-direction: column;
 }
 
-.fcnew-grow {
+.fc-grow {
   flex-grow: 1;
 }
 
@@ -20,11 +20,11 @@
 Only important if there are siblings that are expanding too.
 Rarely used. Just inline this?
 */
-.fcnew-basis0 {
+.fc-basis0 {
   flex-basis: 0;
 }
 
-.fcnew-liquid {
+.fc-liquid {
   flex-grow: 1;
   flex-basis: 0;
   min-width: 0;
@@ -34,91 +34,91 @@ Rarely used. Just inline this?
 // Table Utils
 // -------------------------------------------------------------------------------------------------
 
-.fcnew-row {
+.fc-row {
   display: flex;
   flex-direction: row;
 }
 
 /*
-like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CELLS
+like an fc-row, but DOES NOT FORCE CHILDREN TO BE CELLS
 */
-.fcnew-rowgroup {
+.fc-rowgroup {
   display: flex;
   flex-direction: column;
 }
 
-.fcnew-row,
-.fcnew-rowgroup,
-.fcnew-rowdivider {
+.fc-row,
+.fc-rowgroup,
+.fc-rowdivider {
   border-style: solid;
-  border-color: var(--fcnew-border-color);
+  border-color: var(--fc-border-color);
   border-width: 1px 0 0; // top
 }
 
 // kill top border
 // (first-child)
-.fcnew-row:first-child:not(.fcnew-not-first),
-.fcnew-rowgroup:first-child,
-.fcnew-rowdivider:first-child,
+.fc-row:first-child:not(.fc-not-first),
+.fc-rowgroup:first-child,
+.fc-rowdivider:first-child,
 // (when below a header/divider)
-.fcnew-sticky-header + .fcnew-row, // TODO: move to fcnew-rowgroup-sticky?
-.fcnew-sticky-header + .fcnew-rowgroup,
-.fcnew-rowdivider + .fcnew-row,
-.fcnew-rowdivider + .fcnew-rowgroup { // TODO: combine this with above
+.fc-sticky-header + .fc-row, // TODO: move to fc-rowgroup-sticky?
+.fc-sticky-header + .fc-rowgroup,
+.fc-rowdivider + .fc-row,
+.fc-rowdivider + .fc-rowgroup { // TODO: combine this with above
   border-top-width: 0;
 }
 
-.fcnew-cell,
-.fcnew-celldivider {
-  border: 0 solid var(--fcnew-border-color);
+.fc-cell,
+.fc-celldivider {
+  border: 0 solid var(--fc-border-color);
 }
 
-.fcnew-cell {
+.fc-cell {
   margin: 0 !important;
   padding: 0 !important;
 }
 
-.fcnew-cell-inner {
+.fc-cell-inner {
   white-space: nowrap;
   overflow: hidden;
 }
 
-.fcnew-direction-ltr {
-  & .fcnew-cell,
-  & .fcnew-celldivider {
+.fc-direction-ltr {
+  & .fc-cell,
+  & .fc-celldivider {
     border-left-width: 1px;
   }
 
   // kill left border
   // (first-child)
-  & .fcnew-cell:first-child:not(.fcnew-not-first),
+  & .fc-cell:first-child:not(.fc-not-first),
   // (when right of a divider)
-  & .fcnew-celldivider + .fcnew-cell {
+  & .fc-celldivider + .fc-cell {
     border-left-width: 0;
   }
 
   // takeover right border
-  & .fcnew-celldivider {
+  & .fc-celldivider {
     border-right-width: 1px;
   }
 }
 
-.fcnew-direction-rtl {
-  & .fcnew-cell,
-  & .fcnew-celldivider {
+.fc-direction-rtl {
+  & .fc-cell,
+  & .fc-celldivider {
     border-right-width: 1px;
   }
 
   // kill right border
   // (first-child)
-  & .fcnew-cell:first-child:not(.fcnew-not-first),
+  & .fc-cell:first-child:not(.fc-not-first),
   // (when left of a divider)
-  & .fcnew-celldivider + .fcnew-cell {
+  & .fc-celldivider + .fc-cell {
     border-right-width: 0;
   }
 
   // takeover left border
-  & .fcnew-celldivider {
+  & .fc-celldivider {
     border-left-width: 1px;
   }
 }
@@ -126,42 +126,42 @@ like an fcnew-row, but DOES NOT FORCE CHILDREN TO BE CELLS
 /*
 Lone cell in a row should always fill row. Makes axis widths much easier
 */
-.fcnew-cell:only-child {
+.fc-cell:only-child {
   flex-grow: 1;
   flex-basis: 0;
   min-width: 0;
 }
 
-.fcnew-rowdivider,
-.fcnew-celldivider {
-  background: var(--fcnew-neutral-bg-color);
+.fc-rowdivider,
+.fc-celldivider {
+  background: var(--fc-neutral-bg-color);
 }
 
-.fcnew-celldivider {
+.fc-celldivider {
   padding-left: 2px;
 }
-.fcnew-rowdivider {
+.fc-rowdivider {
   padding-bottom: 2px; // can use just height if we move towards content-box!
 }
 
 // takeover bottom border
-.fcnew-rowdivider,
-.fcnew-sticky-header {
+.fc-rowdivider,
+.fc-sticky-header {
   border-bottom-width: 1px; // takeover the bottom border
 }
 
 // Misc Utils
 // -------------------------------------------------------------------------------------------------
 
-.fcnew-rel {
+.fc-rel {
   position: relative;
 }
 
-.fcnew-abs {
+.fc-abs {
   position: absolute;
 }
 
-.fcnew-fill {
+.fc-fill {
   position: absolute;
   top: 0;
   left: 0;
@@ -169,38 +169,38 @@ Lone cell in a row should always fill row. Makes axis widths much easier
   bottom: 0;
 }
 
-.fcnew-fill-x {
+.fc-fill-x {
   position: absolute;
   left: 0;
   right: 0;
 }
 
-.fcnew-fill-y {
+.fc-fill-y {
   position: absolute;
   top: 0;
   bottom: 0;
 }
 
-.fcnew-sticky-y {
+.fc-sticky-y {
   position: sticky;
   top: 0;
   bottom: 0;
 }
 
-.fcnew-sticky-x {
+.fc-sticky-x {
   position: sticky;
   left: 0;
   right: 0;
 }
 
-.fcnew-sticky-header {
+.fc-sticky-header {
   position: sticky;
   top: 0;
-  background: var(--fcnew-page-bg-color);
+  background: var(--fc-page-bg-color);
   z-index: 9999; // TODO: what was it before?
 }
 
-.fcnew-sticky-footer {
+.fc-sticky-footer {
   position: sticky;
   bottom: 0;
   z-index: 9999; // TODO: what was it before?
@@ -209,41 +209,41 @@ Lone cell in a row should always fill row. Makes axis widths much easier
 /*
 Only needed when padding/border must be separate from width/height
 */
-.fcnew-content-box {
+.fc-content-box {
   box-sizing: content-box;
 }
 
-.fcnew-border {
-  border: 1px solid var(--fcnew-border-color);
+.fc-border {
+  border: 1px solid var(--fc-border-color);
 }
 
-.fcnew-offscreen {
+.fc-offscreen {
   position: absolute;
   left: -10000px;
 }
 
-.fcnew-shaded {
-  background-color: var(--fcnew-neutral-bg-color);
+.fc-shaded {
+  background-color: var(--fc-neutral-bg-color);
 }
 
-.fcnew-padding-sm {
+.fc-padding-sm {
   padding: 2px 4px;
 }
-.fcnew-padding-md {
+.fc-padding-md {
   padding: 4px 5px;
 }
-.fcnew-padding-lg {
+.fc-padding-lg {
   padding: 8px;
 }
 
-.fcnew-justify-center {
+.fc-justify-center {
   justify-content: center;
 }
 
-.fcnew-align-center {
+.fc-align-center {
   align-items: center;
 }
 
-.fcnew-align-start {
+.fc-align-start {
   align-items: flex-start;
 }

@@ -77,13 +77,13 @@ export class TimeGridView extends DateComponent<ViewProps> {
               todayRange={todayRange}
               cells={dayTableModel.cellRows[0]}
               forPrint={props.forPrint}
-              className='fcnew-timegrid-view'
+              className='fc-timegrid-view'
 
               // header content
               headerTiers={dayTableModel.cellRows /* guaranteed to be one row */}
               renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width) => (
                 options.weekNumbers ? (
-                  <TimeGridWeekNumber // .fcnew-cell
+                  <TimeGridWeekNumber // .fc-cell
                     dateProfile={dateProfile}
                     innerWidthRef={innerWidthRef}
                     innerHeightRef={innerHeightRef}
@@ -91,7 +91,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
                   />
                 ) : (
                   <div
-                    className='fcnew-timegrid-axis fcnew-cell fcnew-content-box'
+                    className='fc-timegrid-axis fc-cell fc-content-box'
                     style={{ width }}
                   />
                 )

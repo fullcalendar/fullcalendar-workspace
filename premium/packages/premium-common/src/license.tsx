@@ -31,7 +31,7 @@ export function buildLicenseWarning(context: CalendarContext) {
 
     if (status !== 'valid') {
       return (
-        <div className="fcnew-license-message" style={CSS}>
+        <div className="fc-license-message" style={CSS}>
           {(status === 'outdated') ? (
             <Fragment>
               {'Your license key is too old to work with this version. '}

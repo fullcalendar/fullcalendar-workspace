@@ -20,10 +20,10 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
       <StandardEvent
         {...props}
         elClasses={[
-          'fcnew-timegrid-event',
-          'fcnew-v-event',
-          props.isShort ? 'fcnew-timegrid-event-short' : '',
-          props.isInset ? 'fcnew-timegrid-event-inset' : '',
+          'fc-timegrid-event',
+          'fc-v-event',
+          props.isShort ? 'fc-timegrid-event-short' : '',
+          props.isInset ? 'fc-timegrid-event-inset' : '',
         ]}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
       />

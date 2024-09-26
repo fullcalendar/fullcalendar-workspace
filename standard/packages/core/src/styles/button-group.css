@@ -1,49 +1,49 @@
 
-.fcnew-button-group {
+.fc-button-group {
   position: relative;
   display: inline-flex;
   vertical-align: middle;
 }
 
-.fcnew-button-group > .fcnew-button {
+.fc-button-group > .fc-button {
   position: relative;
   flex: 1 1 auto;
 }
 
-.fcnew-button-group > .fcnew-button:hover {
+.fc-button-group > .fc-button:hover {
   z-index: 1;
 }
 
-.fcnew-button-group > .fcnew-button:focus,
-.fcnew-button-group > .fcnew-button:active,
-.fcnew-button-group > .fcnew-button.fcnew-button-active {
+.fc-button-group > .fc-button:focus,
+.fc-button-group > .fc-button:active,
+.fc-button-group > .fc-button.fc-button-active {
   z-index: 1;
 }
 
-.fcnew-direction-ltr {
+.fc-direction-ltr {
 
-  & .fcnew-button-group > .fcnew-button:not(:first-child) {
+  & .fc-button-group > .fc-button:not(:first-child) {
     margin-left: -1px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
 
-  & .fcnew-button-group > .fcnew-button:not(:last-child) {
+  & .fc-button-group > .fc-button:not(:last-child) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
 
 }
 
-.fcnew-direction-rtl {
+.fc-direction-rtl {
 
-  & .fcnew-button-group > .fcnew-button:not(:first-child) {
+  & .fc-button-group > .fc-button:not(:first-child) {
     margin-right: -1px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
 
-  & .fcnew-button-group > .fcnew-button:not(:last-child) {
+  & .fc-button-group > .fc-button:not(:last-child) {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }

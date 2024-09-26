@@ -30,10 +30,10 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
       <ContentContainer
         elTag="div"
         elClasses={[
-          'fcnew-timegrid-allday-label',
-          'fcnew-timegrid-axis',
-          'fcnew-cell',
-          'fcnew-content-box',
+          'fc-timegrid-allday-label',
+          'fc-timegrid-axis',
+          'fc-cell',
+          'fc-content-box',
         ]}
         elStyle={{
           width: props.width,
@@ -47,13 +47,13 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
         willUnmount={options.allDayWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef} className='fcnew-flex-column'>
+          <div ref={this.innerElRef} className='fc-flex-column'>
             <InnerContent
               elTag="span"
               elClasses={[
-                'fcnew-timegrid-axis-inner',
-                'fcnew-cell-inner',
-                'fcnew-padding-sm',
+                'fc-timegrid-axis-inner',
+                'fc-cell-inner',
+                'fc-padding-sm',
               ]}
             />
           </div>

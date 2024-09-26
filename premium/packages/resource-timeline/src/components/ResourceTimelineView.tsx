@@ -275,20 +275,20 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
           return (
             <ViewContainer
               elClasses={[
-                'fcnew-resource-timeline-view',
-                'fcnew-flex-column', // so ReisableTwoCol can grow
-                'fcnew-border',
+                'fc-resource-timeline-view',
+                'fc-flex-column', // so ReisableTwoCol can grow
+                'fc-border',
               ]}
               viewSpec={viewSpec}
             >
               <ResizableTwoCol
-                className={verticalScrolling ? 'fcnew-liquid' : ''}
+                className={verticalScrolling ? 'fc-liquid' : ''}
                 onSizes={this.handleTwoColSizes}
 
                 /* spreadsheet
                 --------------------------------------------------------------------------------- */
 
-                startClassName='fcnew-flex-column'
+                startClassName='fc-flex-column'
                 startContent={
                   <Fragment>
 
@@ -296,15 +296,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     ---------------------------------------------------------------------------- */}
                     <div
                       className={[
-                        'fcnew-datagrid-header',
-                        'fcnew-rowgroup',
-                        stickyHeaderDates ? 'fcnew-sticky-header' : '',
+                        'fc-datagrid-header',
+                        'fc-rowgroup',
+                        stickyHeaderDates ? 'fc-sticky-header' : '',
                       ].join(' ')}
                     >
                       {Boolean(superHeaderRendering) && (
                         <div
                           role="row"
-                          className="fcnew-row"
+                          className="fc-row"
                           style={{
                             height: headerHeights.get(true), // true means superheader
                           }}
@@ -319,7 +319,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       <Scroller
                         horizontal
                         hideScrollbars
-                        elClassNames={['fcnew-rowgroup']}
+                        elClassNames={['fc-rowgroup']}
                         ref={this.spreadsheetHeaderScrollerRef}
                       >
                         <div style={{ width: spreadsheetCanvasWidth }}>
@@ -348,14 +348,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       horizontal
                       hideScrollbars
                       elClassNames={[
-                        'fcnew-datagrid-body',
-                        'fcnew-rowgroup',
-                        verticalScrolling ? 'fcnew-liquid' : '',
+                        'fc-datagrid-body',
+                        'fc-rowgroup',
+                        verticalScrolling ? 'fc-liquid' : '',
                       ]}
                       ref={this.spreadsheetBodyScrollerRef}
                     >
                       <div
-                        className='fcnew-rel fcnew-grow'
+                        className='fc-rel fc-grow'
                         style={{
                           width: spreadsheetCanvasWidth,
                           paddingBottom: state.timeBottomScrollbarWidth - state.spreadsheetBottomScrollbarWidth,
@@ -373,8 +373,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                 role='row'
                                 aria-rowindex={groupRowLayout.rowIndex}
                                 class={[
-                                  'fcnew-row fcnew-fill-x',
-                                  groupRowLayout.rowIndex ? 'fcnew-not-first' : '',
+                                  'fc-row fc-fill-x',
+                                  groupRowLayout.rowIndex ? 'fc-not-first' : '',
                                 ].join(' ')}
                                 style={{
                                   top: bodyTops.get(group),
@@ -391,7 +391,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           })}
                         </div>
                         <div
-                          className='fcnew-flex-row'
+                          className='fc-flex-row'
                           style={{
                             height: bodyCanvasHeight, // why is the height on here???
                           }}
@@ -401,7 +401,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             {flatGroupColLayouts.map((groupColLayouts, colIndex) => (
                               <div
                                 key={colIndex}
-                                className='fcnew-cell fcnew-rel'
+                                className='fc-cell fc-rel'
                                 style={{
                                   width: spreadsheetColWidths[colIndex],
                                 }}
@@ -414,8 +414,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                       role='row'
                                       aria-rowindex={groupCellLayout.rowIndex}
                                       class={[
-                                        'fcnew-row fcnew-fill-x',
-                                        groupCellLayout.rowIndex ? 'fcnew-not-first' : '',
+                                        'fc-row fc-fill-x',
+                                        groupCellLayout.rowIndex ? 'fc-not-first' : '',
                                       ].join(' ')}
                                       style={{
                                         top: bodyTops.get(group),
@@ -436,7 +436,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           {/* TODO: do background column stripes; add render hooks? */}
                           {/* BADDD: this should be within something with {height:bodyCanvasHeight} */}
                           <div
-                            className='fcnew-flex-row fcnew-rel'
+                            className='fc-flex-row fc-rel'
                             style={{
                               width: spreadsheetResourceWidth
                             }}
@@ -449,8 +449,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   role='row'
                                   aria-rowindex={resourceLayout.rowIndex}
                                   class={[
-                                    'fcnew-row fcnew-fill-x',
-                                    resourceLayout.rowIndex ? 'fcnew-not-first' : '',
+                                    'fc-row fc-fill-x',
+                                    resourceLayout.rowIndex ? 'fc-not-first' : '',
                                   ].join(' ')}
                                   style={{
                                     top: bodyTops.get(resource),
@@ -481,7 +481,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     <Scroller
                       horizontal
                       elClassNames={[
-                        stickyFooterScrollbar ? 'fcnew-sticky-footer' : '',
+                        stickyFooterScrollbar ? 'fc-sticky-footer' : '',
                       ]}
                       elStyle={{
                         marginTop: '-1px', // HACK
@@ -502,7 +502,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 /* time-area (TODO: try to make this DRY-er with TimelineView???)
                 --------------------------------------------------------------------------------- */
 
-                endClassName='fcnew-flex-column'
+                endClassName='fc-flex-column'
                 endContent={
                   <Fragment>
 
@@ -513,13 +513,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       horizontal
                       hideScrollbars
                       elClassNames={[
-                        'fcnew-timeline-header',
-                        'fcnew-rowgroup',
-                        stickyHeaderDates ? 'fcnew-sticky-header' : '',
+                        'fc-timeline-header',
+                        'fc-rowgroup',
+                        stickyHeaderDates ? 'fc-sticky-header' : '',
                       ]}
                     >
                       <div
-                        className='fcnew-rel fcnew-content-box'
+                        className='fc-rel fc-content-box'
                         style={{
                           width: timeCanvasWidth,
                           paddingLeft: state.leftScrollbarWidth,
@@ -563,9 +563,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       horizontal
                       hideScrollbars={stickyFooterScrollbar}
                       elClassNames={[
-                        'fcnew-timeline-body',
-                        'fcnew-rowgroup',
-                        verticalScrolling ? 'fcnew-liquid' : '',
+                        'fc-timeline-body',
+                        'fc-rowgroup',
+                        verticalScrolling ? 'fc-liquid' : '',
                       ]}
                       ref={this.timeBodyScrollerRef}
                       widthRef={this.handleMainScrollerWidth}
@@ -575,12 +575,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       bottomScrollbarWidthRef={this.handleTimeBottomScrollbarWidth}
                     >
                       <div
-                        className='fcnew-rel fcnew-grow'
+                        className='fc-rel fc-grow'
                         style={{ width: timeCanvasWidth }}
                         ref={this.handleBodyEl}
                       >
                         <div
-                          className='fcnew-rel'
+                          className='fc-rel'
                           style={{ height: bodyCanvasHeight }}
                         >
                           <div>
@@ -592,8 +592,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   role='row'
                                   aria-rowindex={groupRowLayout.rowIndex}
                                   class={[
-                                    'fcnew-row fcnew-fill-x',
-                                    groupRowLayout.rowIndex ? 'fcnew-not-first' : '',
+                                    'fc-row fc-fill-x',
+                                    groupRowLayout.rowIndex ? 'fc-not-first' : '',
                                   ].join(' ')}
                                   style={{
                                     top: bodyTops.get(group),
@@ -617,8 +617,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   role='row'
                                   aria-rowindex={resourceLayout.rowIndex}
                                   className={[
-                                    'fcnew-row fcnew-fill-x',
-                                    resourceLayout.rowIndex ? 'fcnew-not-first' : '',
+                                    'fc-row fc-fill-x',
+                                    resourceLayout.rowIndex ? 'fc-not-first' : '',
                                   ].join(' ')}
                                   style={{
                                     top: bodyTops.get(resource),
@@ -646,7 +646,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             })}
                           </div>
                         </div>
-                        <div className='fcnew-fill'>
+                        <div className='fc-fill'>
                           <TimelineSlats
                             dateProfile={dateProfile}
                             tDateProfile={tDateProfile}
@@ -691,7 +691,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       <Scroller
                         ref={this.timeFooterScrollerRef}
                         horizontal
-                        elClassNames={['fcnew-sticky-footer']}
+                        elClassNames={['fc-sticky-footer']}
                         elStyle={{
                           marginTop: '-1px', // HACK
                         }}
@@ -990,7 +990,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               bottom,
             },
             // HACK. TODO: This is expensive to do every hit-query
-            dayEl: this.bodyEl.querySelectorAll('.fcnew-timeline-slot')[slatIndex] as HTMLElement, // TODO!
+            dayEl: this.bodyEl.querySelectorAll('.fc-timeline-slot')[slatIndex] as HTMLElement, // TODO!
             layer: 0,
           }
         }

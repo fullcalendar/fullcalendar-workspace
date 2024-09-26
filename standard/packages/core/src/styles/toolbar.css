@@ -1,38 +1,38 @@
 
-.fcnew-toolbar {
+.fc-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.fcnew-toolbar.fcnew-header-toolbar {
+.fc-toolbar.fc-header-toolbar {
   margin-bottom: 1.5em;
 }
 
-.fcnew-toolbar.fcnew-footer-toolbar {
+.fc-toolbar.fc-footer-toolbar {
   margin-top: 1.5em;
 }
 
-.fcnew-toolbar-title {
+.fc-toolbar-title {
   font-size: 1.75em;
   margin: 0;
 }
 
-.fcnew-direction-ltr {
+.fc-direction-ltr {
 
-  & .fcnew-toolbar > * > :not(:first-child) {
+  & .fc-toolbar > * > :not(:first-child) {
     margin-left: .75em; // space between
   }
 
 }
 
-.fcnew-direction-rtl {
+.fc-direction-rtl {
 
-  & .fcnew-toolbar > * > :not(:first-child) {
+  & .fc-toolbar > * > :not(:first-child) {
     margin-right: .75em; // space between
   }
 
-  & .fcnew-toolbar-ltr { // when the toolbar-chunk positioning system is explicitly left-to-right
+  & .fc-toolbar-ltr { // when the toolbar-chunk positioning system is explicitly left-to-right
     flex-direction: row-reverse;
   }
 

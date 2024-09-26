@@ -48,7 +48,7 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
       <ContentContainer
         elTag="tr"
         elClasses={[
-          'fcnew-list-day',
+          'fc-list-day',
           ...getDayClassNames(dayMeta, theme),
         ]}
         elAttrs={{
@@ -71,8 +71,8 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
               'aria-labelledby': textId,
             }}
             elClasses={[
-              'fcnew-list-day-cell',
-              stickyHeaderDates ? 'fcnew-list-day-cell-sticky' : '',
+              'fc-list-day-cell',
+              stickyHeaderDates ? 'fc-list-day-cell-sticky' : '',
             ]}
           />
         )}
@@ -90,14 +90,14 @@ interface RenderProps extends DayHeaderContentArg {
 
 function renderInnerContent(props: RenderProps) {
   return (
-    <div className='fcnew-list-day-inner'>
+    <div className='fc-list-day-inner'>
       {props.text && (
-        <a id={props.textId} className="fcnew-list-day-text" {...props.navLinkAttrs}>
+        <a id={props.textId} className="fc-list-day-text" {...props.navLinkAttrs}>
           {props.text}
         </a>
       )}
       {props.sideText && (/* not keyboard tabbable */
-        <a aria-hidden className="fcnew-list-day-side-text" {...props.sideNavLinkAttrs}>
+        <a aria-hidden className="fc-list-day-side-text" {...props.sideNavLinkAttrs}>
           {props.sideText}
         </a>
       )}

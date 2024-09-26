@@ -36,7 +36,7 @@ export class HeaderRowAdvanced<Model, ModelKey> extends BaseComponent<HeaderRowA
     const { props } = this
 
     return (
-      <div role='row' className='fcnew-row' style={{ height: props.height }}>
+      <div role='row' className='fc-row' style={{ height: props.height }}>
         {props.cells.map((cell) => {
           const key = props.getHeaderModelKey(cell)
           return (

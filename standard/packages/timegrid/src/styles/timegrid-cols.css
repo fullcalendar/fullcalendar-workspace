@@ -1,31 +1,31 @@
 
-.fcnew-timegrid-col {
+.fc-timegrid-col {
   position: relative;
 
-  &.fcnew-day-today {
-    background-color: var(--fcnew-today-bg-color);
+  &.fc-day-today {
+    background-color: var(--fc-today-bg-color);
   }
 }
 
-.fcnew-timegrid-bg-harness {
+.fc-timegrid-bg-harness {
   @include bg-z-indexes;
 }
 
 /*
-HACK because fcnew-timegrid-event isn't doing its job with z-index
+HACK because fc-timegrid-event isn't doing its job with z-index
 */
-.fcnew-timegrid-col-fg { // has .fcnew-rel
+.fc-timegrid-col-fg { // has .fc-rel
   z-index: $timegrid-col-fg-z;
 }
 
-.fcnew-direction-ltr {
-  & .fcnew-timegrid-col-fg {
+.fc-direction-ltr {
+  & .fc-timegrid-col-fg {
     margin: 0 2.5% 0 2px;
   }
 }
 
-.fcnew-direction-rtl {
-  & .fcnew-timegrid-col-fg {
+.fc-direction-rtl {
+  & .fc-timegrid-col-fg {
     margin: 0 2px 0 2.5%;
   }
 }

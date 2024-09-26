@@ -4,27 +4,27 @@
 //   "vertical"
 //
 
-.fcnew-v-event {
+.fc-v-event {
   position: relative; // NOTE: subclasses should supply z-index
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--fcnew-event-border-color);
-  background-color: var(--fcnew-event-bg-color);
+  border: 1px solid var(--fc-event-border-color);
+  background-color: var(--fc-event-bg-color);
 }
 
-.fcnew-v-event:not(.fcnew-event-start) { // (not-start)
+.fc-v-event:not(.fc-event-start) { // (not-start)
   border-top-width: 0;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
-.fcnew-v-event:not(.fcnew-event-end) { // (not-end)
+.fc-v-event:not(.fc-event-end) { // (not-end)
   border-bottom-width: 0;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.fcnew-v-event.fcnew-event-selected:before { // (selected) > hit-area
+.fc-v-event.fc-event-selected:before { // (selected) > hit-area
   // expand hit area
   left: -10px;
   right: -10px;
@@ -34,35 +34,35 @@
 // v-event > inner
 //
 
-.fcnew-v-event .fcnew-event-inner {
+.fc-v-event .fc-event-inner {
   flex-grow: 1; // expand horizontally
   min-width: 0; // can shrink regardless of inner content
   display: flex;
   flex-direction: column;
-  color: var(--fcnew-event-text-color); // why all this repeating?
+  color: var(--fc-event-text-color); // why all this repeating?
 }
 
 //
 // v-event > inner > *
 //
 
-.fcnew-v-event .fcnew-event-time { // > time
+.fc-v-event .fc-event-time { // > time
   white-space: nowrap;
 }
 
-.fcnew-v-event .fcnew-event-time, // > time
-.fcnew-v-event .fcnew-event-title { // > title-outer > title
+.fc-v-event .fc-event-time, // > time
+.fc-v-event .fc-event-title { // > title-outer > title
   overflow: hidden;
 }
 
-.fcnew-v-event .fcnew-event-title-outer { // > title-outer
+.fc-v-event .fc-event-title-outer { // > title-outer
   flex-grow: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
 }
 
-.fcnew-v-event .fcnew-event-title { // > title-outer > title
+.fc-v-event .fc-event-title { // > title-outer > title
   position: sticky;
   top: 0;
   bottom: 0;
@@ -72,41 +72,41 @@
 // v-event > resizer
 //
 
-.fcnew-v-event .fcnew-event-resizer-start { // (start)
+.fc-v-event .fc-event-resizer-start { // (start)
   cursor: n-resize;
 }
 
-.fcnew-v-event .fcnew-event-resizer-end { // (end)
+.fc-v-event .fc-event-resizer-end { // (end)
   cursor: s-resize;
 }
 
-.fcnew-v-event:not(.fcnew-event-selected) { // (mouse)
-  & .fcnew-event-resizer {
-    height: var(--fcnew-event-resizer-thickness);
+.fc-v-event:not(.fc-event-selected) { // (mouse)
+  & .fc-event-resizer {
+    height: var(--fc-event-resizer-thickness);
     left: 0;
     right: 0;
   }
 
-  & .fcnew-event-resizer-start { // (start)
-    top: calc(var(--fcnew-event-resizer-thickness) / -2);
+  & .fc-event-resizer-start { // (start)
+    top: calc(var(--fc-event-resizer-thickness) / -2);
   }
 
-  & .fcnew-event-resizer-end { // (end)
-    bottom: calc(var(--fcnew-event-resizer-thickness) / -2);
+  & .fc-event-resizer-end { // (end)
+    bottom: calc(var(--fc-event-resizer-thickness) / -2);
   }
 }
 
-.fcnew-v-event.fcnew-event-selected { // (touch)
-  & .fcnew-event-resizer {
+.fc-v-event.fc-event-selected { // (touch)
+  & .fc-event-resizer {
     left: 50%;
-    margin-left: calc(var(--fcnew-event-resizer-dot-total-width) / -2);
+    margin-left: calc(var(--fc-event-resizer-dot-total-width) / -2);
   }
 
-  & .fcnew-event-resizer-start { // (start)
-    top: calc(var(--fcnew-event-resizer-dot-total-width) / -2);
+  & .fc-event-resizer-start { // (start)
+    top: calc(var(--fc-event-resizer-dot-total-width) / -2);
   }
 
-  & .fcnew-event-resizer-end { // (end)
-    bottom: calc(var(--fcnew-event-resizer-dot-total-width) / -2);
+  & .fc-event-resizer-end { // (end)
+    bottom: calc(var(--fc-event-resizer-dot-total-width) / -2);
   }
 }

@@ -1,29 +1,29 @@
 
-.fcnew-media-print {
-  & .fcnew-timegrid-slots,
-  & .fcnew-timeline-slots,
-  & .fcnew-non-business,
-  & .fcnew-bg-event {
+.fc-media-print {
+  & .fc-timegrid-slots,
+  & .fc-timeline-slots,
+  & .fc-non-business,
+  & .fc-bg-event {
     display: none;
   }
 
-  & .fcnew-toolbar button,
-  & .fcnew-h-event,
-  & .fcnew-v-event {
+  & .fc-toolbar button,
+  & .fc-h-event,
+  & .fc-v-event {
     color: #000 !important;
     background: #fff !important;
   }
 
-  & .fcnew-event {
+  & .fc-event {
     break-inside: avoid;
   }
 
-  & .fcnew-event,
-  & .fcnew-event-inner { // often controls the text-color
+  & .fc-event,
+  & .fc-event-inner { // often controls the text-color
     color: #000 !important;
   }
 
-  & .fcnew-timegrid-event {
+  & .fc-timegrid-event {
     margin: 0.5em 0;
   }
 }

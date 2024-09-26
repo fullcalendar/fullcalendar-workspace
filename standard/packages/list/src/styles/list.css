@@ -3,28 +3,28 @@
 // Common
 //
 
-.fcnew-list-event-time,
-.fcnew-list-event-dot-cell,
-.fcnew-list-event-title,
-.fcnew-list-day-inner {
+.fc-list-event-time,
+.fc-list-event-dot-cell,
+.fc-list-event-title,
+.fc-list-day-inner {
   padding: 8px 14px;
 }
 // make the dot closer to the event title
-.fcnew-direction-ltr .fcnew-list-event-dot-cell { padding-right: 0 }
-.fcnew-direction-rtl .fcnew-list-event-dot-cell { padding-left: 0 }
+.fc-direction-ltr .fc-list-event-dot-cell { padding-right: 0 }
+.fc-direction-rtl .fc-list-event-dot-cell { padding-left: 0 }
 
 //
 // ListEmpty
 //
 
-.fcnew-list-empty {
-  background-color: var(--fcnew-neutral-bg-color);
+.fc-list-empty {
+  background-color: var(--fc-neutral-bg-color);
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center; // vertically aligns fcnew-list-empty-inner
+  align-items: center; // vertically aligns fc-list-empty-inner
 }
 
-.fcnew-list-empty-inner {
+.fc-list-empty-inner {
   margin: 5em 0;
 }

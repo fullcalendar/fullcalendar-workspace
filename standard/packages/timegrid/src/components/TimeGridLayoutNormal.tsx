@@ -121,9 +121,9 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         {options.dayHeaders && (
           <div
             className={[
-              'fcnew-timegrid-header',
-              'fcnew-rowgroup',
-              stickyHeaderDates ? 'fcnew-sticky-header' : '',
+              'fc-timegrid-header',
+              'fc-rowgroup',
+              stickyHeaderDates ? 'fc-sticky-header' : '',
             ].join(' ')}
             style={{
               paddingLeft: state.leftScrollbarWidth,
@@ -133,9 +133,9 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
             {props.headerTiers.map((cells, tierNum) => (
               <div
                 key={tierNum}
-                className='fcnew-row'
+                className='fc-row'
               >
-                {props.renderHeaderLabel( // .fcnew-cell
+                {props.renderHeaderLabel( // .fc-cell
                   tierNum,
                   headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
                   undefined, // innerHeightRef
@@ -147,7 +147,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   renderHeaderContent={props.renderHeaderContent}
                   getHeaderModelKey={props.getHeaderModelKey}
                   cellGroup
-                  className='fcnew-cell fcnew-liquid'
+                  className='fc-cell fc-liquid'
                   // ^weird we're setting 'cell' ... just have HeaderRow be HeaderCells and wrap ourselves?
                 />
               </div>
@@ -159,13 +159,13 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         {options.allDaySlot && (
           <Fragment>
             <div
-              className='fcnew-timegrid-allday fcnew-row'
+              className='fc-timegrid-allday fc-row'
               style={{
                 paddingLeft: state.leftScrollbarWidth,
                 paddingRight: state.rightScrollbarWidth,
               }}
             >
-              <TimeGridAllDayLabel // .fcnew-cell
+              <TimeGridAllDayLabel // .fc-cell
                 width={axisWidth}
                 innerWidthRef={this.handleAllDayLabelInnerWidth}
               />
@@ -176,7 +176,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 showDayNumbers={false}
                 forPrint={props.forPrint}
                 isHitComboAllowed={props.isHitComboAllowed}
-                className='fcnew-liquid fcnew-cell'
+                className='fc-liquid fc-cell'
 
                 // content
                 fgEventSegs={props.fgEventSegs}
@@ -190,7 +190,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 dayMaxEventRows={props.dayMaxEventRows}
               />
             </div>
-            <div className='fcnew-rowdivider'></div>
+            <div className='fc-rowdivider'></div>
           </Fragment>
         )}
         {/* SLATS
@@ -198,45 +198,45 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         <Scroller
           vertical={verticalScrolling}
           elClassNames={[
-            'fcnew-timegrid-body',
-            'fcnew-rowgroup',
-            verticalScrolling ? 'fcnew-liquid' : '',
+            'fc-timegrid-body',
+            'fc-rowgroup',
+            verticalScrolling ? 'fc-liquid' : '',
           ]}
           ref={props.timeScrollerRef}
           heightRef={this.handleScrollerHeight}
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
         >
-          {/* fcnew-timegrid-slots is purely for tests/old-print-view. remove somehow? */}
-          <div className='fcnew-timegrid-slots fcnew-rel fcnew-flex-column fcnew-grow'>
-            <div className='fcnew-flex-column fcnew-grow'>
+          {/* fc-timegrid-slots is purely for tests/old-print-view. remove somehow? */}
+          <div className='fc-timegrid-slots fc-rel fc-flex-column fc-grow'>
+            <div className='fc-flex-column fc-grow'>
               {props.slatMetas.map((slatMeta) => (
                 <div
                   key={slatMeta.key}
                   className={[
                     getSlatRowClassName(slatMeta),
-                    slatLiquid ? 'fcnew-liquid' : ''
+                    slatLiquid ? 'fc-liquid' : ''
                   ].join(' ')}
                   style={{
                     height: slatLiquid ? '' : slatHeight
                   }}
                 >
-                  <TimeGridSlatLabel // .fcnew-cell
+                  <TimeGridSlatLabel // .fc-cell
                     {...slatMeta}
                     innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                     innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                     width={axisWidth}
                   />
-                  <TimeGridSlatLane // .fcnew-cell
+                  <TimeGridSlatLane // .fc-cell
                     {...slatMeta}
                     innerHeightRef={slatInnerMainHeightRefMap.createRef(slatMeta.key)}
                   />
                 </div>
               ))}
             </div>
-            <div className='fcnew-fill fcnew-flex-row'>
+            <div className='fc-fill fc-flex-row'>
               <div
-                className='fcnew-cell fcnew-content-box'
+                className='fc-cell fc-content-box'
                 style={{ width: axisWidth }}
               >
                 {rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
@@ -254,7 +254,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 slatCnt={slatCnt}
                 forPrint={props.forPrint}
                 isHitComboAllowed={props.isHitComboAllowed}
-                className='fcnew-liquid fcnew-cell'
+                className='fc-liquid fc-cell'
 
                 // content
                 fgEventSegsByCol={props.fgEventSegsByCol}

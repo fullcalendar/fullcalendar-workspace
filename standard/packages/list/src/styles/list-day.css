@@ -3,18 +3,18 @@
 // list-day > cell
 //
 
-.fcnew-list-day-cell-sticky { // (sticky)
+.fc-list-day-cell-sticky { // (sticky)
   position: sticky;
   top: 0;
-  background: var(--fcnew-page-bg-color); // for fcnew-list-day-inner's semitransparent color
+  background: var(--fc-page-bg-color); // for fc-list-day-inner's semitransparent color
 }
 
 //
 // list-day > cell > inner
 //
 
-.fcnew-list-day-inner {
+.fc-list-day-inner {
   display: flex;
   justify-content: space-between;
-  background: var(--fcnew-neutral-bg-color);
+  background: var(--fc-neutral-bg-color);
 }

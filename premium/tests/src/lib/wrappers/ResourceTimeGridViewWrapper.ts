@@ -6,32 +6,32 @@ import { ResourceDayGridWrapper } from './ResourceDayGridWrapper.js'
 
 export class ResourceTimeGridViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {
-    super(calendar, 'fcnew-timegrid-view')
+    super(calendar, 'fc-timegrid-view')
   }
 
   get header() {
-    let headerEl = this.el.querySelector('.fcnew-timegrid-header') as HTMLElement
+    let headerEl = this.el.querySelector('.fc-timegrid-header') as HTMLElement
     return headerEl ? new ResourceDayHeaderWrapper(headerEl) : null
   }
 
   get timeGrid() {
-    return new ResourceTimeGridWrapper(this.el.querySelector('.fcnew-timegrid-body'))
+    return new ResourceTimeGridWrapper(this.el.querySelector('.fc-timegrid-body'))
   }
 
   get dayGrid() {
-    let dayGridEl = this.el.querySelector('.fcnew-daygrid-body') as HTMLElement
+    let dayGridEl = this.el.querySelector('.fc-daygrid-body') as HTMLElement
     return dayGridEl ? new ResourceDayGridWrapper(dayGridEl) : null
   }
 
   getScrollEl() {
-    return this.el.querySelector('.fcnew-timegrid-body') // is also the scroller
+    return this.el.querySelector('.fc-timegrid-body') // is also the scroller
   }
 
   getHeaderAxisCanvas() {
-    return this.el.querySelector('.fcnew-timegrid-header .fcnew-timegrid-axis')
+    return this.el.querySelector('.fc-timegrid-header .fc-timegrid-axis') as HTMLElement
   }
 
   getAllDayAxisCanvas() {
-    return this.el.querySelector('.fcnew-timegrid-allday .fcnew-timegrid-axis')
+    return this.el.querySelector('.fc-timegrid-allday .fc-timegrid-axis') as HTMLElement
   }
 }

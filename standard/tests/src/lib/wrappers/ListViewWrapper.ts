@@ -4,20 +4,20 @@ import { ViewWrapper } from './ViewWrapper.js'
 import { formatIsoDay } from '../datelib-utils.js'
 
 export class ListViewWrapper extends ViewWrapper {
-  static EVENT_DOT_CLASSNAME = 'fcnew-list-event-dot'
+  static EVENT_DOT_CLASSNAME = 'fc-list-event-dot'
 
   constructor(calendar: Calendar) {
-    super(calendar, 'fcnew-list-view')
+    super(calendar, 'fc-list-view')
   }
 
   getEventEls() {
-    return findElements(this.el, '.fcnew-list-event')
+    return findElements(this.el, '.fc-list-event')
   }
 
   getEventInfo() {
     return this.getEventEls().map((eventEl) => ({
-      title: $(eventEl).find('.fcnew-list-event-title').text(),
-      timeText: $(eventEl).find('.fcnew-list-event-time').text(),
+      title: $(eventEl).find('.fc-list-event-title').text(),
+      timeText: $(eventEl).find('.fc-list-event-time').text(),
     }))
   }
 
@@ -25,15 +25,15 @@ export class ListViewWrapper extends ViewWrapper {
     return this.getHeadingEls().map((el) => {
       let $el = $(el)
       return {
-        mainText: $el.find('.fcnew-list-day-text').text() || '',
-        altText: $el.find('.fcnew-list-day-side-text').text() || '',
+        mainText: $el.find('.fc-list-day-text').text() || '',
+        altText: $el.find('.fc-list-day-side-text').text() || '',
         date: new Date(el.getAttribute('data-date')),
       }
     })
   }
 
   getHeadingEls() {
-    return findElements(this.el, '.fcnew-list-day')
+    return findElements(this.el, '.fc-list-day')
   }
 
   getScrollerEl() {
@@ -41,14 +41,14 @@ export class ListViewWrapper extends ViewWrapper {
   }
 
   hasEmptyMessage() {
-    return Boolean(this.el.querySelector('.fcnew-list-empty'))
+    return Boolean(this.el.querySelector('.fc-list-empty'))
   }
 
   getNavLinkEl(dayDate) {
     if (typeof dayDate === 'string') {
       dayDate = new Date(dayDate)
     }
-    return this.el.querySelector('.fcnew-list-day[data-date="' + formatIsoDay(dayDate) + '"] a.fcnew-list-day-text')
+    return this.el.querySelector('.fc-list-day[data-date="' + formatIsoDay(dayDate) + '"] a.fc-list-day-text')
   }
 
   clickNavLink(dayDate) {

@@ -6,32 +6,32 @@ Unlike flex utils, put borders on bottom of cells because there's no need for di
   etc, and easier for sticky
 */
 
-.fcnew-table {
+.fc-table {
   width: 100%;
   border-spacing: 0;
 }
 
 // cells
 
-.fcnew-table > * > * > * {
+.fc-table > * > * > * {
   padding: 0; // default padding
 
   border-style: solid;
-  border-color: var(--fcnew-border-color);
+  border-color: var(--fc-border-color);
   border-width: 0 0 1px; // bottom border
 }
 
-.fcnew-table > :last-child > :last-child > * {
+.fc-table > :last-child > :last-child > * {
   border-bottom-width: 0; // kill last row's cells' borders
 }
 
 /* for horizontal borders
 
-.fcnew-direction-ltr .fcnew-table > * > * > :not(:first-child) {
+.fc-direction-ltr .fc-table > * > * > :not(:first-child) {
   border-left-width: 1px;
 }
 
-.fcnew-direction-rtl .fcnew-table > * > * > :not(:first-child) {
+.fc-direction-rtl .fc-table > * > * > :not(:first-child) {
   border-right-width: 1px;
 }
 */

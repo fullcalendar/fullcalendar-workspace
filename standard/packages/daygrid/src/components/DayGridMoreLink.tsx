@@ -33,7 +33,7 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
     let { props } = this
     return (
       <MoreLinkContainer
-        elClasses={['fcnew-daygrid-more-link']}
+        elClasses={['fc-daygrid-more-link']}
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
         allDayDate={props.allDayDate}

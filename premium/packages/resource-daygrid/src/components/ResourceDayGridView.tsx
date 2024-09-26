@@ -94,7 +94,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
             cellRows={resourceDayTableModel.cells}
             forPrint={props.forPrint}
             isHitComboAllowed={this.isHitComboAllowed}
-            className='fcnew-resource-daygrid-view'
+            className='fc-resource-daygrid-view'
 
             // header content
             // TODO: DRY with ResourceDayGridView/ResourceTimeGridView

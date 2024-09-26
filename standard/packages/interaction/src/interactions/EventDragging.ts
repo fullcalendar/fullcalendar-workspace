@@ -41,7 +41,7 @@ export interface EventDragArg {
 export class EventDragging extends Interaction { // TODO: rename to EventSelectingAndDragging
   // TODO: test this in IE11
   // QUESTION: why do we need it on the resizable???
-  static SELECTOR = '.fcnew-event-draggable, .fcnew-event-resizable'
+  static SELECTOR = '.fc-event-draggable, .fc-event-resizable'
 
   dragging: FeaturefulElementDragging
   hitDragging: HitDragging
@@ -105,21 +105,21 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
     if (options.fixedMirrorParent) {
       mirror.parentNode = options.fixedMirrorParent
     } else {
-      mirror.parentNode = elementClosest(origTarget, '.fcnew')
+      mirror.parentNode = elementClosest(origTarget, '.fc')
     }
 
     mirror.revertDuration = options.dragRevertDuration
 
     let isValid =
       component.isValidSegDownEl(origTarget) &&
-      !elementClosest(origTarget, '.fcnew-event-resizer') // NOT on a resizer
+      !elementClosest(origTarget, '.fc-event-resizer') // NOT on a resizer
 
     dragging.setIgnoreMove(!isValid)
 
     // disable dragging for elements that are resizable (ie, selectable)
     // but are not draggable
     this.isDragging = isValid &&
-      (ev.subjectEl as HTMLElement).classList.contains('fcnew-event-draggable')
+      (ev.subjectEl as HTMLElement).classList.contains('fc-event-draggable')
   }
 
   handleDragStart = (ev: PointerDragEvent) => {
@@ -225,7 +225,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
       // render the mirror if no already-rendered mirror
       // TODO: wish we could somehow wait for dispatch to guarantee render
       this.dragging.setMirrorIsVisible(
-        !hit || !(this.subjectEl.getRootNode() as ParentNode).querySelector('.fcnew-event-mirror'), // TODO: turn className into constant
+        !hit || !(this.subjectEl.getRootNode() as ParentNode).querySelector('.fc-event-mirror'), // TODO: turn className into constant
       )
 
       // assign states based on new hit

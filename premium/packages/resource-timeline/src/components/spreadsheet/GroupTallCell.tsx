@@ -34,9 +34,9 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
           role: 'gridcell',
         }}
         elClasses={[
-          'fcnew-cell',
-          'fcnew-liquid',
-          'fcnew-resource-group',
+          'fc-cell',
+          'fc-liquid',
+          'fc-resource-group',
         ]}
         renderProps={renderProps}
         generatorName="resourceGroupLabelContent"
@@ -47,10 +47,10 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
         willUnmount={colSpec.cellWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef} className='fcnew-flex-column fcnew-sticky-y'>
+          <div ref={this.innerElRef} className='fc-flex-column fc-sticky-y'>
             <InnerContent
               elTag="div"
-              elClasses={['fcnew-cell-inner', 'fcnew-padding-lg']}
+              elClasses={['fc-cell-inner', 'fc-padding-lg']}
             />
           </div>
         )}

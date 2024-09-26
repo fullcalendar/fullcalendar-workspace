@@ -45,7 +45,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
             id={props.id}
             title={title}
             extraClassNames={
-              ['fcnew-more-popover'].concat(
+              ['fc-more-popover'].concat(
                 (elAttrs.className as (string | undefined)) || [],
               )
             }
@@ -58,7 +58,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
             {hasCustomDayCellContent(options) && (
               <InnerContent
                 elTag="div"
-                elClasses={['fcnew-more-popover-misc']}
+                elClasses={['fc-more-popover-misc']}
               />
             )}
             {props.children}

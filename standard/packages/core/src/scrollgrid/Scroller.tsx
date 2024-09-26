@@ -45,8 +45,8 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
       <div
         ref={this.elRef}
         className={[
-          'fcnew-scroller',
-          props.hideScrollbars ? 'fcnew-scroller-nobars' : '',
+          'fc-scroller',
+          props.hideScrollbars ? 'fc-scroller-nobars' : '',
           ...(props.elClassNames || []),
         ].join(' ')}
         style={{

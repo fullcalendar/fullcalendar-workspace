@@ -26,7 +26,7 @@ export class HeaderRow<Model, ModelKey> extends BaseComponent<HeaderRowProps<Mod
       <div
         role={props.cellGroup ? undefined : 'row'}
         className={[
-          props.cellGroup ? 'fcnew-flex-row' : 'fcnew-row',
+          props.cellGroup ? 'fc-flex-row' : 'fc-row',
           props.className || '',
         ].join(' ')}
       >

@@ -93,7 +93,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
 
     return (
       <div
-        className='fcnew-grow fcnew-flex-column'
+        className='fc-grow fc-flex-column'
         style={{ width: props.width }}
         ref={this.handleRootEl}
       >
@@ -108,7 +108,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
 
             // if not auto-height, distribute height of container somewhat evently to rows
             // (treat all as zero, distribute height, then ensure min-heights -- the inner content height)
-            className={isHeightAuto ? '' : 'fcnew-grow fcnew-basis0'}
+            className={isHeightAuto ? '' : 'fc-grow fc-basis0'}
 
             // content
             fgEventSegs={fgEventSegsByRow[row]}

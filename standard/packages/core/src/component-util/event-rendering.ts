@@ -284,50 +284,50 @@ export function getSegMeta(seg: Seg, todayRange: DateRange, nowDate?: DateMarker
 }
 
 export function getEventClassNames(props: EventContentArg) { // weird that we use this interface, but convenient
-  let classNames: string[] = ['fcnew-event']
+  let classNames: string[] = ['fc-event']
 
   if (props.isMirror) {
-    classNames.push('fcnew-event-mirror')
+    classNames.push('fc-event-mirror')
   }
 
   if (props.isDraggable) {
-    classNames.push('fcnew-event-draggable')
+    classNames.push('fc-event-draggable')
   }
 
   if (props.isStartResizable || props.isEndResizable) {
-    classNames.push('fcnew-event-resizable')
+    classNames.push('fc-event-resizable')
   }
 
   if (props.isDragging) {
-    classNames.push('fcnew-event-dragging')
+    classNames.push('fc-event-dragging')
   }
 
   if (props.isResizing) {
-    classNames.push('fcnew-event-resizing')
+    classNames.push('fc-event-resizing')
   }
 
   if (props.isSelected) {
-    classNames.push('fcnew-event-selected')
+    classNames.push('fc-event-selected')
   }
 
   if (props.isStart) {
-    classNames.push('fcnew-event-start')
+    classNames.push('fc-event-start')
   }
 
   if (props.isEnd) {
-    classNames.push('fcnew-event-end')
+    classNames.push('fc-event-end')
   }
 
   if (props.isPast) {
-    classNames.push('fcnew-event-past')
+    classNames.push('fc-event-past')
   }
 
   if (props.isToday) {
-    classNames.push('fcnew-event-today')
+    classNames.push('fc-event-today')
   }
 
   if (props.isFuture) {
-    classNames.push('fcnew-event-future')
+    classNames.push('fc-event-future')
   }
 
   return classNames

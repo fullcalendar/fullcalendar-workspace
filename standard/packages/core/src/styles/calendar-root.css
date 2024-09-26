@@ -1,5 +1,5 @@
 
-.fcnew {
+.fc {
   display: flex;
   flex-direction: column;
 
@@ -11,12 +11,12 @@
   }
 }
 
-.fcnew-direction-ltr {
+.fc-direction-ltr {
   direction: ltr;
   text-align: left;
 }
 
-.fcnew-direction-rtl {
+.fc-direction-rtl {
   direction: rtl;
   text-align: right;
 }

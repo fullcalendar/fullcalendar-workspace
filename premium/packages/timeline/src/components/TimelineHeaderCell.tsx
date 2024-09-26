@@ -60,13 +60,13 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
       <ContentContainer
         elTag="div"
         elClasses={[
-          'fcnew-timeline-slot-label',
-          'fcnew-timeline-slot',
-          cell.isWeekStart ? 'fcnew-timeline-slot-em' : '', // TODO: document this semantic className
-          'fcnew-cell',
-          'fcnew-flex-column',
-          'fcnew-justify-center',
-          props.isCentered ? 'fcnew-align-center' : 'fcnew-align-start',
+          'fc-timeline-slot-label',
+          'fc-timeline-slot',
+          cell.isWeekStart ? 'fc-timeline-slot-em' : '', // TODO: document this semantic className
+          'fc-cell',
+          'fc-flex-column',
+          'fc-justify-center',
+          props.isCentered ? 'fc-align-center' : 'fc-align-start',
           ...( // TODO: so slot classnames for week/month/bigger. see note above about rowUnit
             cell.rowUnit === 'time' ?
               getSlotClassNames(dateMeta, context.theme) :
@@ -96,15 +96,15 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
           <div
             ref={this.innerElRef}
             className={[
-              'fcnew-flex-column',
-              props.isSticky ? 'fcnew-sticky-x' : '',
+              'fc-flex-column',
+              props.isSticky ? 'fc-sticky-x' : '',
             ].join(' ')}
           >
             <InnerContent
               elTag="a"
               elClasses={[
-                'fcnew-cell-inner',
-                'fcnew-padding-md',
+                'fc-cell-inner',
+                'fc-padding-md',
               ]}
               elAttrs={this.buildCellNavLinkAttrs(context, cell.date, cell.rowUnit)}
             />

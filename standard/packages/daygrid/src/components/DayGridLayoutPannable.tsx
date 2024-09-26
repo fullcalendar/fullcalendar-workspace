@@ -85,9 +85,9 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
             horizontal
             hideScrollbars
             elClassNames={[
-              'fcnew-daygrid-header',
-              'fcnew-rowgroup',
-              stickyHeaderDates ? 'fcnew-sticky-header' : ''
+              'fc-daygrid-header',
+              'fc-rowgroup',
+              stickyHeaderDates ? 'fc-sticky-header' : ''
             ]}
             ref={this.headerScrollerRef}
           >
@@ -112,14 +112,14 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
           elClassNames={[
-            'fcnew-daygrid-body',
-            'fcnew-rowgroup',
-            'fcnew-flex-column',
-            verticalScrollbars ? 'fcnew-liquid' : '',
+            'fc-daygrid-body',
+            'fc-rowgroup',
+            'fc-flex-column',
+            verticalScrollbars ? 'fc-liquid' : '',
           ]}
           ref={this.bodyScrollerRef}
         >
-          <DayGridRows // .fcnew-grow
+          <DayGridRows // .fc-grow
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
             cellRows={props.cellRows}
@@ -147,7 +147,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           <Scroller
             ref={this.footerScrollerRef}
             horizontal
-            elClassNames={['fcnew-sticky-footer']}
+            elClassNames={['fc-sticky-footer']}
             elStyle={{
               marginTop: '-1px', // HACK
             }}

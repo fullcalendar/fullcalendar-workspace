@@ -3,36 +3,36 @@
 // timegrid-event (extends v-event)
 //
 
-.fcnew-timegrid-event {
+.fc-timegrid-event {
   z-index: $timegrid-col-fg-z;
   margin-bottom: 1px; // give some space from bottom
 
   // absolutely fill within harness
-  // (can't use fcnew-fill because `position` gets overriden by fcnew-v-event)
+  // (can't use fc-fill because `position` gets overriden by fc-v-event)
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
 
-  font-size: var(--fcnew-small-font-size);
+  font-size: var(--fc-small-font-size);
   border-radius: 3px;
 }
 
-.fcnew-timegrid-event-inset, // (inset)
-.fcnew-timegrid-event.fcnew-event-mirror { // (mirror)
-  box-shadow: 0px 0px 0px 1px var(--fcnew-page-bg-color); // apply border w/o mass
+.fc-timegrid-event-inset, // (inset)
+.fc-timegrid-event.fc-event-mirror { // (mirror)
+  box-shadow: 0px 0px 0px 1px var(--fc-page-bg-color); // apply border w/o mass
 }
 
 //
 // timegrid-event > inner
 //
 
-.fcnew-timegrid-event .fcnew-event-inner {
+.fc-timegrid-event .fc-event-inner {
   padding: 1px 1px 0;
 }
 
-.fcnew-timegrid-event-short .fcnew-event-inner { // (short)
+.fc-timegrid-event-short .fc-event-inner { // (short)
   flex-direction: row; // overrides v-event!
   overflow: hidden;
 }
@@ -41,13 +41,13 @@
 // timegrid-event > inner > time
 //
 
-.fcnew-timegrid-event .fcnew-event-time {
+.fc-timegrid-event .fc-event-time {
   white-space: nowrap;
-  font-size: var(--fcnew-small-font-size);
+  font-size: var(--fc-small-font-size);
   margin-bottom: 1px;
 }
 
-.fcnew-timegrid-event-short .fcnew-event-time:after { // (short) > dash
+.fc-timegrid-event-short .fc-event-time:after { // (short) > dash
   content: '\00a0-\00a0'; // dash surrounded by non-breaking spaces
 }
 
@@ -55,6 +55,6 @@
 // timegrid-event > inner > > title-outer > title
 //
 
-.fcnew-timegrid-event-short .fcnew-event-title { // (short)
-  font-size: var(--fcnew-small-font-size)
+.fc-timegrid-event-short .fc-event-title { // (short)
+  font-size: var(--fc-small-font-size)
 }

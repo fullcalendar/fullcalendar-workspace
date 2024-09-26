@@ -73,13 +73,13 @@ export class ResourceTimeGridWrapper {
 
     return findElements(
       this.el,
-      '.fcnew-timegrid-body .fcnew-timegrid-col[data-date="' + formatIsoDay(date) + '"]' +
+      '.fc-timegrid-body .fc-timegrid-col[data-date="' + formatIsoDay(date) + '"]' +
       '[data-resource-id="' + resourceId + '"]',
     )
   }
 
   getAllDayEls() { // TODO: rename
-    return findElements(this.el, '.fcnew-timegrid-body .fcnew-timegrid-col[data-resource-id]')
+    return findElements(this.el, '.fc-timegrid-body .fc-timegrid-col[data-resource-id]')
   }
 
   getResourceIds() {
@@ -91,11 +91,11 @@ export class ResourceTimeGridWrapper {
   }
 
   getEventEls() { // FG events
-    return findElements(this.el, '.fcnew-timegrid-event')
+    return findElements(this.el, '.fc-timegrid-event')
   }
 
   getFirstEventEl() {
-    return this.el.querySelector('.fcnew-timegrid-event') as HTMLElement
+    return this.el.querySelector('.fc-timegrid-event') as HTMLElement
   }
 
   getNonBusinessDayEls() {

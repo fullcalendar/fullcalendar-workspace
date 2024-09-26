@@ -63,15 +63,15 @@ export class ListView extends DateComponent<ViewProps> {
       <ViewContainer
         elRef={this.setRootEl}
         elClasses={[
-          'fcnew-list-view',
-          'fcnew-flex-column',
-          'fcnew-border',
+          'fc-list-view',
+          'fc-flex-column',
+          'fc-border',
         ]}
         viewSpec={context.viewSpec}
       >
         <Scroller // TODO: don't need heavyweight component
           vertical={verticalScrolling}
-          elClassNames={[verticalScrolling ? 'fcnew-liquid' : '']}
+          elClassNames={[verticalScrolling ? 'fc-liquid' : '']}
         >
           {eventSegs.length > 0 ?
             this.renderSegList(eventSegs, dayDates) :
@@ -101,7 +101,7 @@ export class ListView extends DateComponent<ViewProps> {
     return (
       <ContentContainer
         elTag="div"
-        elClasses={['fcnew-list-empty']}
+        elClasses={['fc-list-empty']}
         renderProps={renderProps}
         generatorName="noEventsContent"
         customGenerator={options.noEventsContent}
@@ -113,7 +113,7 @@ export class ListView extends DateComponent<ViewProps> {
         {(InnerContent) => (
           <InnerContent
             elTag="div"
-            elClasses={['fcnew-list-empty-inner']}
+            elClasses={['fc-list-empty-inner']}
           />
         )}
       </ContentContainer>
@@ -170,8 +170,8 @@ export class ListView extends DateComponent<ViewProps> {
           }
 
           return (
-            <table className='fcnew-table'>
-              <thead className='fcnew-offscreen'>
+            <table className='fc-table'>
+              <thead className='fc-offscreen'>
                 <tr>
                   <th scope="col" id={timeHeaderId}>{options.timeHint}</th>
                   <th scope="col" aria-hidden />

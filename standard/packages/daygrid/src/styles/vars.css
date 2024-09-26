@@ -10,5 +10,5 @@ $daygrid-event-mirror-z: 7;
 $daygrid-event-inner-margin: 3px;
 
 :root {
-  --fcnew-daygrid-event-dot-width: 8px;
+  --fc-daygrid-event-dot-width: 8px;
 }

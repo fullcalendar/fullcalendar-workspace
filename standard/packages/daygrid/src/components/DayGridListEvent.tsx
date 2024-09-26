@@ -38,7 +38,7 @@ export class DayGridListEvent extends BaseComponent<DayGridListEventProps> {
       <EventContainer
         {...props}
         elTag="a"
-        elClasses={['fcnew-daygrid-event', 'fcnew-daygrid-dot-event']}
+        elClasses={['fc-daygrid-event', 'fc-daygrid-dot-event']}
         elAttrs={getSegAnchorAttrs(props.seg, context)}
         defaultGenerator={renderInnerContent}
         timeText={timeText}
@@ -53,13 +53,13 @@ function renderInnerContent(renderProps: EventContentArg) {
   return (
     <Fragment>
       <div
-        className="fcnew-daygrid-event-dot"
+        className="fc-daygrid-event-dot"
         style={{ borderColor: renderProps.borderColor || renderProps.backgroundColor }}
       />
       {renderProps.timeText && (
-        <div className="fcnew-event-time">{renderProps.timeText}</div>
+        <div className="fc-event-time">{renderProps.timeText}</div>
       )}
-      <div className="fcnew-event-title">
+      <div className="fc-event-title">
         {renderProps.event.title || <Fragment>&nbsp;</Fragment>}
       </div>
     </Fragment>

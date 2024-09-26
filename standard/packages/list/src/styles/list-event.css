@@ -1,35 +1,35 @@
 
-.fcnew-list-event.fcnew-event-forced-url {
+.fc-list-event.fc-event-forced-url {
   cursor: pointer; // whole row will seem clickable
 }
 
-.fcnew-list-event:hover td {
-  background-color: var(--fcnew-list-event-hover-bg-color);
+.fc-list-event:hover td {
+  background-color: var(--fc-list-event-hover-bg-color);
 }
 
 // shrink certain cols
-.fcnew-list-event-dot-cell,
-.fcnew-list-event-time {
+.fc-list-event-dot-cell,
+.fc-list-event-time {
   white-space: nowrap;
   width: 1px;
 }
 
-.fcnew-list-event-dot {
+.fc-list-event-dot {
   display: inline-block;
   box-sizing: content-box;
   width: 0;
   height: 0;
-  border: calc(var(--fcnew-list-event-dot-width) / 2) solid var(--fcnew-event-border-color);
-  border-radius: calc(var(--fcnew-list-event-dot-width) / 2);
+  border: calc(var(--fc-list-event-dot-width) / 2) solid var(--fc-event-border-color);
+  border-radius: calc(var(--fc-list-event-dot-width) / 2);
 }
 
 // reset <a> styling
-.fcnew-list-event-title a {
+.fc-list-event-title a {
   color: inherit;
   text-decoration: none;
 }
 
 // underline link when hovering over any part of row
-.fcnew-list-event.fcnew-event-forced-url:hover a {
+.fc-list-event.fc-event-forced-url:hover a {
   text-decoration: underline;
 }

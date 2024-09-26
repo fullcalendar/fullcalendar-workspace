@@ -42,22 +42,22 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
       <div
         data-date={props.isoDateStr}
         role="grid"
-        className="fcnew-multimonth-month fcnew-grow"
+        className="fc-multimonth-month fc-grow"
         style={{ width: props.width }}
       >
         <div
-          className="fcnew-multimonth-header"
+          className="fc-multimonth-header"
           style={{ marginBottom: rowHeight }} // for stickiness
           role="presentation"
         >
-          <div className="fcnew-multimonth-title">
+          <div className="fc-multimonth-title">
             {context.dateEnv.format(
               props.dateProfile.currentRange.start,
               props.titleFormat,
             )}
           </div>
           {/* TODO: somehow use HeaderRow or something? */}
-          <div className='fcnew-multimonth-header-row fcnew-flex-row'>
+          <div className='fc-multimonth-header-row fc-flex-row'>
             {dayTableModel.headerDates.map((headerDate) => (
               <DayOfWeekHeaderCell
                 key={headerDate.getUTCDay()}
@@ -69,13 +69,13 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
           </div>
         </div>
         <div
-          className='fcnew-multimonth-body fcnew-flex-column'
+          className='fc-multimonth-body fc-flex-column'
           style={{
             marginTop: -rowHeight,
             height: forPrint ? '' : tableHeight,
           }}
         >
-          <DayGridRows // .fcnew-grow
+          <DayGridRows // .fc-grow
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
             cellRows={dayTableModel.cellRows}

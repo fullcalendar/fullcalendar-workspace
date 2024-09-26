@@ -42,9 +42,9 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
       <ContentContainer
         elTag="div"
         elClasses={[
-          'fcnew-cell',
-          'fcnew-resource',
-          props.colIndex ? 'fcnew-not-first' : '',
+          'fc-cell',
+          'fc-resource',
+          props.colIndex ? 'fc-not-first' : '',
         ]}
         elAttrs={{
           role: 'gridcell',
@@ -63,8 +63,8 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         willUnmount={colSpec.cellWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef} className='fcnew-flex-column'>
-            <div className="fcnew-cell-inner fcnew-padding-lg fcnew-flex-row fcnew-align-center">
+          <div ref={this.innerElRef} className='fc-flex-column'>
+            <div className="fc-cell-inner fc-padding-lg fc-flex-row fc-align-center">
               {colSpec.isMain && (
                 <ExpanderIcon
                   indent={props.indent}
@@ -75,7 +75,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
               )}
               <InnerContent
                 elTag="span"
-                elClasses={['fcnew-cell-main']}
+                elClasses={['fc-cell-main']}
               />
             </div>
           </div>

@@ -33,11 +33,11 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
       <ContentContainer
         elTag="div"
         elClasses={[
-          'fcnew-resource-group',
-          'fcnew-timeline-lane', // is this the best name?
-          'fcnew-cell',
-          'fcnew-liquid',
-          'fcnew-shaded', // TODO: make part of fcnew-resource-group so ppl can style both cells together?
+          'fc-resource-group',
+          'fc-timeline-lane', // is this the best name?
+          'fc-cell',
+          'fc-liquid',
+          'fc-shaded', // TODO: make part of fc-resource-group so ppl can style both cells together?
         ]}
         renderProps={renderProps}
         generatorName="resourceGroupLaneContent"
@@ -47,8 +47,8 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
         willUnmount={groupSpec.laneWillUnmount}
       >
         {(InnerContainer) => (
-          <div ref={this.innerElRef} className='fcnew-flex-column'>
-            <InnerContainer elTag="div" elClasses={['fcnew-cell-inner']} />
+          <div ref={this.innerElRef} className='fc-flex-column'>
+            <InnerContainer elTag="div" elClasses={['fc-cell-inner']} />
           </div>
         )}
       </ContentContainer>

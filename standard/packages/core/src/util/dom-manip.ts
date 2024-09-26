@@ -110,5 +110,5 @@ let guid = 0
 
 export function getUniqueDomId() {
   guid += 1
-  return 'fcnew-dom-' + guid
+  return 'fc-dom-' + guid
 }

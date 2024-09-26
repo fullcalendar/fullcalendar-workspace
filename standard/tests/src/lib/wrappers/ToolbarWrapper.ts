@@ -3,11 +3,11 @@ export class ToolbarWrapper {
   }
 
   getButtonEnabled(name) {
-    let buttonEl = this.el.querySelector('.fcnew-' + name + '-button') as HTMLButtonElement
+    let buttonEl = this.el.querySelector('.fc-' + name + '-button') as HTMLButtonElement
     return buttonEl && !buttonEl.disabled
   }
 
-  getButtonInfo(name, iconPrefix = 'fcnew-icon') { // prefix doesnt have dash
+  getButtonInfo(name, iconPrefix = 'fc-icon') { // prefix doesnt have dash
     let el = this.getButtonEl(name)
 
     if (el) {
@@ -25,16 +25,16 @@ export class ToolbarWrapper {
   }
 
   getButtonEl(name) { // for custom or standard buttons
-    return this.el.querySelector(`.fcnew-${name}-button`)
+    return this.el.querySelector(`.fc-${name}-button`)
   }
 
   getTitleText() {
-    return (this.el.querySelector('.fcnew-toolbar-title') as HTMLElement).innerText.trim()
+    return (this.el.querySelector('.fc-toolbar-title') as HTMLElement).innerText.trim()
   }
 
   getSectionContent(index) { // 0=start, 1=center, 2=end
     return processSectionItems(
-      this.el.querySelectorAll('.fcnew-toolbar-chunk')[index] as HTMLElement,
+      this.el.querySelectorAll('.fc-toolbar-chunk')[index] as HTMLElement,
     )
   }
 }
@@ -43,13 +43,13 @@ function processSectionItems(sectionEl: HTMLElement) {
   let children = Array.prototype.slice.call(sectionEl.children) as HTMLElement[]
 
   return children.map((childEl) => {
-    if (childEl.classList.contains('fcnew-button')) {
+    if (childEl.classList.contains('fc-button')) {
       return {
         type: 'button',
-        name: childEl.className.match(/fcnew-(\w+)-button/)[1],
+        name: childEl.className.match(/fc-(\w+)-button/)[1],
       }
     }
-    if (childEl.classList.contains('fcnew-button-group')) {
+    if (childEl.classList.contains('fc-button-group')) {
       return {
         type: 'button-group',
         children: processSectionItems(childEl),

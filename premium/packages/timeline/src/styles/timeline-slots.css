@@ -3,7 +3,7 @@
 // SlotContainer
 //
 
-.fcnew-timeline-slots {
+.fc-timeline-slots {
   z-index: $timeline-slots-z;
 }
 
@@ -11,6 +11,6 @@
 // SlotContainer > SlotLane
 //
 
-.fcnew-timeline-slot-minor { // (minor variant)
+.fc-timeline-slot-minor { // (minor variant)
   border-style: dotted;
 }

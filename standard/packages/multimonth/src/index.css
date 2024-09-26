@@ -3,13 +3,13 @@
 // MultiMonthView
 //
 
-.fcnew-multimonth-scroll { // (scrollable variant)
+.fc-multimonth-scroll { // (scrollable variant)
   overflow-y: scroll; // HACK to prevent width oscillation, for handleScrollRequest
   overflow-x: hidden;
 }
 
-.fcnew-multimonth-multicol, // (multicol variant)
-.fcnew-multimonth-compact { // (compact variant)
+.fc-multimonth-multicol, // (multicol variant)
+.fc-multimonth-compact { // (compact variant)
   line-height: 1; // undo themes that have thick line-height
 }
 
@@ -17,12 +17,12 @@
 // MultiMonthView > Inner
 //
 
-.fcnew-multimonth-inner {
+.fc-multimonth-inner {
   display: flex;
   flex-wrap: wrap;
 }
 
-.fcnew-multimonth-multicol .fcnew-multimonth-inner { // (multicol variant)
+.fc-multimonth-multicol .fc-multimonth-inner { // (multicol variant)
   margin: 0 1.2em 1.2em;
   gap: 2.4em;
 }
@@ -31,35 +31,35 @@
 // MultiMonthView > Month
 //
 
-.fcnew-multimonth-month,
-.fcnew-multimonth-header-row { // > Header > Row
-  border-bottom: 1px solid var(--fcnew-border-color);
+.fc-multimonth-month,
+.fc-multimonth-header-row { // > Header > Row
+  border-bottom: 1px solid var(--fc-border-color);
 }
 
-.fcnew-multimonth-singlecol .fcnew-multimonth-month:last-child { // (variant)
+.fc-multimonth-singlecol .fc-multimonth-month:last-child { // (variant)
   border-bottom: 0;
 }
 
-.fcnew-multimonth-title { // > Header > Title
+.fc-multimonth-title { // > Header > Title
   padding: 1em 0;
   text-align: center;
   font-weight: bold;
   font-size: 1.2em;
 }
 
-.fcnew-multimonth-header-row { // > Header > Row
-  border-top: 1px solid var(--fcnew-border-color);
+.fc-multimonth-header-row { // > Header > Row
+  border-top: 1px solid var(--fc-border-color);
 }
 
 //
 // MultiMonthView > Month (multicol variant)
 //
 
-.fcnew-multimonth-multicol {
-  & .fcnew-multimonth-header-row, // > Header > Row
-  & .fcnew-multimonth-body { // > Body
-    border-left: 1px solid var(--fcnew-border-color);
-    border-right: 1px solid var(--fcnew-border-color);
+.fc-multimonth-multicol {
+  & .fc-multimonth-header-row, // > Header > Row
+  & .fc-multimonth-body { // > Body
+    border-left: 1px solid var(--fc-border-color);
+    border-right: 1px solid var(--fc-border-color);
   }
 }
 
@@ -67,16 +67,16 @@
 // MultiMonthView > Month (sticky variant)
 //
 
-.fcnew-media-screen {
-  & .fcnew-multimonth-singlecol {
-    & .fcnew-multimonth-header { // > Header
+.fc-media-screen {
+  & .fc-multimonth-singlecol {
+    & .fc-multimonth-header { // > Header
       position: sticky;
       top: 0;
       z-index: 2;
-      background: var(--fcnew-page-bg-color);
+      background: var(--fc-page-bg-color);
     }
 
-    & .fcnew-multimonth-body { // > Body
+    & .fc-multimonth-body { // > Body
       position: relative;
       z-index: 1;
     }
@@ -87,9 +87,9 @@
 // MultiMonthView > Month (compact variant)
 //
 
-.fcnew-multimonth-compact {
-  & .fcnew-multimonth-header-row, // > Header > Row
-  & .fcnew-multimonth-body { // > Body
+.fc-multimonth-compact {
+  & .fc-multimonth-header-row, // > Header > Row
+  & .fc-multimonth-body { // > Body
     font-size: 0.9em;
   }
 }
@@ -99,12 +99,12 @@
 // MultiMonthView > Month > Body > MoreLink
 //
 
-.fcnew-multimonth-multicol .fcnew-daygrid-cell-footer { // TODO: move this
+.fc-multimonth-multicol .fc-daygrid-cell-footer { // TODO: move this
   align-items: stretch; // HACK: undo flex-start, which aligned more-link to side
 }
 
-.fcnew-multimonth-multicol .fcnew-daygrid-more-link { // (multicol variant)
+.fc-multimonth-multicol .fc-daygrid-more-link { // (multicol variant)
   // look like an event
-  border: 1px solid var(--fcnew-event-border-color);
+  border: 1px solid var(--fc-event-border-color);
   padding: 1px;
 }

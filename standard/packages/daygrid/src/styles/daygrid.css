@@ -3,31 +3,31 @@
 // daygrid-row > week-number
 //
 
-.fcnew-daygrid-week-number {
+.fc-daygrid-week-number {
   position: absolute;
   z-index: $daygrid-weeknum-z;
   top: 0;
   padding: 2px;
   min-width: 1.5em;
   text-align: center;
-  background-color: var(--fcnew-neutral-bg-color);
-  color: var(--fcnew-neutral-text-color);
+  background-color: var(--fc-neutral-bg-color);
+  color: var(--fc-neutral-text-color);
 }
 
 //
 // daygrid-cell
 //
 
-.fcnew-daygrid-cell.fcnew-day-today { // (today)
-  // TODO: can we just make all fcnew-day-today's a bg color?
-  background-color: var(--fcnew-today-bg-color);
+.fc-daygrid-cell.fc-day-today { // (today)
+  // TODO: can we just make all fc-day-today's a bg color?
+  background-color: var(--fc-today-bg-color);
 }
 
 //
 // daygrid-cell > inner
 //
 
-.fcnew-daygrid-row-spacious .fcnew-daygrid-cell-inner { // (spacious)
+.fc-daygrid-row-spacious .fc-daygrid-cell-inner { // (spacious)
   min-height: 3em;
 }
 
@@ -35,12 +35,12 @@
 // daygrid-cell > inner > header
 //
 
-.fcnew-daygrid-cell-header {
+.fc-daygrid-cell-header {
   display: flex;
   flex-direction: row-reverse;
 }
 
-.fcnew-day-other .fcnew-daygrid-cell-header { // (day-other)
+.fc-day-other .fc-daygrid-cell-header { // (day-other)
   opacity: 0.3;
 }
 
@@ -48,13 +48,13 @@
 // daygrid-cell > inner > header > number
 //
 
-.fcnew-daygrid-cell-number {
+.fc-daygrid-cell-number {
   position: relative;
   z-index: $daygrid-topbottom-z;
   padding: 4px;
 }
 
-.fcnew-daygrid-month-start { // (month-start) on .fcnew-daygrid-cell-number
+.fc-daygrid-month-start { // (month-start) on .fc-daygrid-cell-number
   font-weight: bold;
   font-size: 1.1em;
 }
@@ -63,7 +63,7 @@
 // daygrid-cell > inner > footer
 //
 
-.fcnew-daygrid-cell-footer {
+.fc-daygrid-cell-footer {
   font-size: .85em;
   margin: 0 2px;
 
@@ -74,7 +74,7 @@
 }
 
 // (spacious)
-.fcnew-daygrid-row-spacious .fcnew-daygrid-cell-footer {
+.fc-daygrid-row-spacious .fc-daygrid-cell-footer {
   margin-bottom: 1em !important; // see below for why important
 }
 
@@ -82,7 +82,7 @@
 // daygrid-cell > inner > footer > more-link
 //
 
-.fcnew-daygrid-more-link {
+.fc-daygrid-more-link {
   position: relative;
   z-index: $daygrid-topbottom-z;
   margin-top: 1px;
@@ -103,17 +103,17 @@
 // daygrid-cell > inner > bg-content (???)
 //
 
-.fcnew-daygrid-cell {
-  & .fcnew-non-business { z-index: $daygrid-non-business-z }
-  & .fcnew-bg-event { z-index: $daygrid-bg-event-z }
-  & .fcnew-highlight { z-index: $daygrid-highlight-z }
+.fc-daygrid-cell {
+  & .fc-non-business { z-index: $daygrid-non-business-z }
+  & .fc-bg-event { z-index: $daygrid-bg-event-z }
+  & .fc-highlight { z-index: $daygrid-highlight-z }
 }
 
 //
 // more-popover > body
 //
 
-.fcnew-more-popover .fcnew-popover-body {
+.fc-more-popover .fc-popover-body {
   min-width: 220px;
   padding: 10px;
 }

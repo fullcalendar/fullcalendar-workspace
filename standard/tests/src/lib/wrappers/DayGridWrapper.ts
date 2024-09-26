@@ -4,8 +4,8 @@ import { getRectCenter, intersectRects, addPoints, subtractPoints } from '../geo
 import { CalendarWrapper } from './CalendarWrapper.js'
 
 export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
-  static EVENT_IS_START_CLASSNAME = 'fcnew-event-start'
-  static EVENT_IS_END_CLASSNAME = 'fcnew-event-end'
+  static EVENT_IS_START_CLASSNAME = 'fc-event-start'
+  static EVENT_IS_END_CLASSNAME = 'fc-event-end'
 
   /*
   `el` assumed to be the scroller
@@ -18,67 +18,67 @@ export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
   }
 
   getAllDayEls() {
-    return findElements(this.el, '.fcnew-daygrid-cell[data-date]')
+    return findElements(this.el, '.fc-daygrid-cell[data-date]')
   }
 
   getMirrorEls() {
-    return findElements(this.el, '.fcnew-event.fcnew-event-mirror')
+    return findElements(this.el, '.fc-event.fc-event-mirror')
   }
 
   getDayEl(date) {
     if (typeof date === 'string') {
       date = new Date(date)
     }
-    return this.el.querySelector('.fcnew-daygrid-cell[data-date="' + formatIsoDay(date) + '"]')
+    return this.el.querySelector('.fc-daygrid-cell[data-date="' + formatIsoDay(date) + '"]')
   }
 
   getDayEls(date) { // TODO: return single el??? accept 'tues'
     if (typeof date === 'number') {
-      return findElements(this.el, `.fcnew-daygrid-cell.${CalendarWrapper.DOW_CLASSNAMES[date]}`)
+      return findElements(this.el, `.fc-daygrid-cell.${CalendarWrapper.DOW_CLASSNAMES[date]}`)
     }
     if (typeof date === 'string') {
       date = new Date(date)
     }
-    return findElements(this.el, '.fcnew-daygrid-cell[data-date="' + formatIsoDay(date) + '"]')
+    return findElements(this.el, '.fc-daygrid-cell[data-date="' + formatIsoDay(date) + '"]')
   }
 
   getDayNumberText(date) {
-    return $(this.getDayEl(date).querySelector('.fcnew-daygrid-cell-header')).text()
+    return $(this.getDayEl(date).querySelector('.fc-daygrid-cell-header')).text()
   }
 
   getDayElsInRow(row) {
-    return findElements(this.getRowEl(row), '.fcnew-daygrid-cell')
+    return findElements(this.getRowEl(row), '.fc-daygrid-cell')
   }
 
   // TODO: discourage use
   getNonBusinessDayEls() {
-    return findElements(this.el, '.fcnew-non-business')
+    return findElements(this.el, '.fc-non-business')
   }
 
   // example: gets all the Mondays in the first row of days
   // TODO: discourage use
   getDowEls(dayAbbrev) {
-    return findElements(this.el, `.fcnew-daygrid-row > .fcnew-day-${dayAbbrev}`)
+    return findElements(this.el, `.fc-daygrid-row > .fc-day-${dayAbbrev}`)
   }
 
   getMonthStartEls() {
-    return findElements(this.el, '.fcnew-daygrid-month-start')
+    return findElements(this.el, '.fc-daygrid-month-start')
   }
 
   getDisabledDayEls() {
-    return findElements(this.el, '.fcnew-day-disabled')
+    return findElements(this.el, '.fc-day-disabled')
   }
 
   getMoreEl() {
-    return this.el.querySelector('.fcnew-daygrid-more-link')
+    return this.el.querySelector('.fc-daygrid-more-link')
   }
 
   getMoreEls() {
-    return findElements(this.el, '.fcnew-daygrid-more-link')
+    return findElements(this.el, '.fc-daygrid-more-link')
   }
 
   getWeekNavLinkEls() {
-    return findElements(this.el, '.fcnew-daygrid-week-number[data-navlink]')
+    return findElements(this.el, '.fc-daygrid-week-number[data-navlink]')
   }
 
   getWeekNumberEls() {
@@ -94,7 +94,7 @@ export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
   }
 
   getNavLinkEl(date) {
-    return this.getDayEl(date).querySelector('.fcnew-daygrid-cell-number[data-navlink]')
+    return this.getDayEl(date).querySelector('.fc-daygrid-cell-number[data-navlink]')
   }
 
   clickNavLink(date) {
@@ -105,21 +105,21 @@ export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
     if (index == null) {
       $(this.getMoreEl()).simulate('click')
     } else {
-      $(this.el.querySelectorAll('.fcnew-daygrid-more-link')[index]).simulate('click')
+      $(this.el.querySelectorAll('.fc-daygrid-more-link')[index]).simulate('click')
     }
   }
 
   getMorePopoverEl() {
-    let viewWrapperEl = this.el.closest('.fcnew-view-harness')
-    return viewWrapperEl.querySelector('.fcnew-more-popover') as HTMLElement
+    let viewWrapperEl = this.el.closest('.fc-view-harness')
+    return viewWrapperEl.querySelector('.fc-more-popover') as HTMLElement
   }
 
   getMorePopoverHeaderEl() {
-    return this.getMorePopoverEl().querySelector('.fcnew-popover-header') as HTMLElement
+    return this.getMorePopoverEl().querySelector('.fc-popover-header') as HTMLElement
   }
 
   getMorePopoverEventEls() {
-    return findElements(this.getMorePopoverEl(), '.fcnew-event')
+    return findElements(this.getMorePopoverEl(), '.fc-event')
   }
 
   getMorePopoverEventCnt() { // fg
@@ -127,54 +127,54 @@ export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
   }
 
   getMorePopoverEventTitles() {
-    return this.getMorePopoverEventEls().map((el) => $(el.querySelector('.fcnew-event-title')).text())
+    return this.getMorePopoverEventEls().map((el) => $(el.querySelector('.fc-event-title')).text())
   }
 
   getMorePopoverBgEventCnt() {
-    return this.getMorePopoverEl().querySelectorAll('.fcnew-bg-event').length
+    return this.getMorePopoverEl().querySelectorAll('.fc-bg-event').length
   }
 
   closeMorePopover() {
-    $(this.getMorePopoverEl().querySelector('.fcnew-popover-close')).simulate('click')
+    $(this.getMorePopoverEl().querySelector('.fc-popover-close')).simulate('click')
   }
 
   getMorePopoverTitle() {
-    return $(this.getMorePopoverEl().querySelector('.fcnew-popover-title')).text()
+    return $(this.getMorePopoverEl().querySelector('.fc-popover-title')).text()
   }
 
   getRowEl(i) {
-    return this.el.querySelector(`.fcnew-daygrid-row:nth-child(${i + 1})`) as HTMLElement // nth-child is 1-indexed!
+    return this.el.querySelector(`.fc-daygrid-row:nth-child(${i + 1})`) as HTMLElement // nth-child is 1-indexed!
   }
 
   getRowEls() {
-    return findElements(this.el, '.fcnew-daygrid-row')
+    return findElements(this.el, '.fc-daygrid-row')
   }
 
   getBgEventEls(row?) {
     let parentEl = row == null ? this.el : this.getRowEl(row)
-    return findElements(parentEl, '.fcnew-bg-event')
+    return findElements(parentEl, '.fc-bg-event')
   }
 
   getEventEls() { // FG events
-    return findElements(this.el, '.fcnew-daygrid-event')
+    return findElements(this.el, '.fc-daygrid-event')
   }
 
   isEventListItem(el: HTMLElement) {
-    return el.classList.contains('fcnew-daygrid-dot-event')
+    return el.classList.contains('fc-daygrid-dot-event')
   }
 
   getFirstEventEl() {
-    return this.el.querySelector('.fcnew-daygrid-event') as HTMLElement
+    return this.el.querySelector('.fc-daygrid-event') as HTMLElement
   }
 
   getHighlightEls() { // FG events
-    return findElements(this.el, '.fcnew-highlight')
+    return findElements(this.el, '.fc-highlight')
   }
 
   static getEventElInfo(eventEl) {
     return {
-      title: $(eventEl).find('.fcnew-event-title').text(),
-      timeText: $(eventEl).find('.fcnew-event-time').text(),
+      title: $(eventEl).find('.fc-event-title').text(),
+      timeText: $(eventEl).find('.fc-event-time').text(),
     }
   }
 

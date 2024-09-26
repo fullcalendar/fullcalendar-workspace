@@ -18,7 +18,7 @@ export class ResourceDayGridWrapper {
   getDayEl(resourceId, date) {
     date = ensureDate(date)
     return this.el.querySelector(
-      '.fcnew-day[data-date="' + formatIsoDay(date) + '"]' +
+      '.fc-day[data-date="' + formatIsoDay(date) + '"]' +
       '[data-resource-id="' + resourceId + '"]',
     )
   }

@@ -46,18 +46,18 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
       <ContentContainer
         elTag="div"
         elClasses={[
-          'fcnew-cell',
-          'fcnew-timeline-slot',
-          'fcnew-timeline-slot-lane',
-          isEm ? 'fcnew-timeline-slot-em' : '', // TODO: document this semantic className
+          'fc-cell',
+          'fc-timeline-slot',
+          'fc-timeline-slot-lane',
+          isEm ? 'fc-timeline-slot-em' : '', // TODO: document this semantic className
           tDateProfile.isTimeScale ? (
             isInt(dateEnv.countDurationsBetween( // best to do this here?
               tDateProfile.normalizedRange.start,
               props.date,
               tDateProfile.labelInterval,
             )) ?
-              'fcnew-timeline-slot-major' :
-              'fcnew-timeline-slot-minor'
+              'fc-timeline-slot-major' :
+              'fc-timeline-slot-minor'
           ) : '',
           ...(
             props.isDay ?

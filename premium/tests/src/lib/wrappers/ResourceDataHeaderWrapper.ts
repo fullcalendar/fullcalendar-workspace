@@ -5,10 +5,10 @@ export class ResourceDataHeaderWrapper {
   }
 
   getCellEls() {
-    return findElements(this.el, '.fcnew-cell')
+    return findElements(this.el, '.fc-cell')
   }
 
   getColResizerEls() {
-    return findElements(this.el, '.fcnew-datagrid-col-resizer')
+    return findElements(this.el, '.fc-datagrid-col-resizer')
   }
 }

@@ -99,9 +99,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
             <ViewContainer
               viewSpec={context.viewSpec}
               elClasses={[
-                'fcnew-timeline-view',
-                'fcnew-flex-column',
-                'fcnew-border',
+                'fc-timeline-view',
+                'fc-flex-column',
+                'fc-border',
               ]}
             >
 
@@ -111,14 +111,14 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 horizontal
                 hideScrollbars
                 elClassNames={[
-                  'fcnew-timeline-header',
-                  'fcnew-rowgroup',
-                  stickyHeaderDates ? 'fcnew-sticky-header' : '',
+                  'fc-timeline-header',
+                  'fc-rowgroup',
+                  stickyHeaderDates ? 'fc-sticky-header' : '',
                 ]}
                 ref={this.headerScrollerRef}
               >
                 <div
-                  className='fcnew-rel fcnew-content-box' // origin for now-indicator
+                  className='fc-rel fc-content-box' // origin for now-indicator
                   style={{
                     width: canvasWidth,
                     paddingLeft: state.leftScrollbarWidth,
@@ -161,9 +161,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 vertical={verticalScrolling}
                 horizontal
                 elClassNames={[
-                  'fcnew-timeline-body',
-                  'fcnew-rowgroup',
-                  verticalScrolling ? 'fcnew-liquid' : '',
+                  'fc-timeline-body',
+                  'fc-rowgroup',
+                  verticalScrolling ? 'fc-liquid' : '',
                 ]}
                 ref={this.bodyScrollerRef}
                 widthRef={this.handleScrollerWidth}
@@ -171,7 +171,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 rightScrollbarWidthRef={this.handleRightScrollbarWidth}
               >
                 <div
-                  className="fcnew-rel fcnew-grow"
+                  className="fc-rel fc-grow"
                   style={{
                     width: canvasWidth,
                   }}
@@ -378,7 +378,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
           bottom: elHeight,
         },
         // HACK. TODO: This is expensive to do every hit-query
-        dayEl: this.bodyEl.querySelectorAll('.fcnew-timeline-slot')[slatIndex] as HTMLElement, // TODO!
+        dayEl: this.bodyEl.querySelectorAll('.fc-timeline-slot')[slatIndex] as HTMLElement, // TODO!
         layer: 0,
       }
     }

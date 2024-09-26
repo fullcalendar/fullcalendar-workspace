@@ -35,8 +35,8 @@ export class ListViewEventRow extends BaseComponent<ListViewEventRowProps> {
         {...props}
         elTag="tr"
         elClasses={[
-          'fcnew-list-event',
-          seg.eventRange.def.url && 'fcnew-event-forced-url',
+          'fc-list-event',
+          seg.eventRange.def.url && 'fc-event-forced-url',
         ]}
         defaultGenerator={() => renderEventInnerContent(seg, context) /* weird */}
         seg={seg}
@@ -47,9 +47,9 @@ export class ListViewEventRow extends BaseComponent<ListViewEventRowProps> {
         {(InnerContent, eventContentArg) => (
           <Fragment>
             {buildTimeContent(seg, timeFormat, context, timeHeaderId, dateHeaderId)}
-            <td aria-hidden className="fcnew-list-event-dot-cell">
+            <td aria-hidden className="fc-list-event-dot-cell">
               <span
-                className="fcnew-list-event-dot"
+                className="fc-list-event-dot"
                 style={{
                   borderColor: eventContentArg.borderColor || eventContentArg.backgroundColor,
                 }}
@@ -57,7 +57,7 @@ export class ListViewEventRow extends BaseComponent<ListViewEventRowProps> {
             </td>
             <InnerContent
               elTag="td"
-              elClasses={['fcnew-list-event-title']}
+              elClasses={['fc-list-event-title']}
               elAttrs={{ headers: `${eventHeaderId} ${dateHeaderId}` }}
             />
           </Fragment>
@@ -135,7 +135,7 @@ function buildTimeContent(
       return (
         <ContentContainer
           elTag="td"
-          elClasses={['fcnew-list-event-time']}
+          elClasses={['fc-list-event-time']}
           elAttrs={{
             headers: `${timeHeaderId} ${dateHeaderId}`,
           }}
@@ -151,7 +151,7 @@ function buildTimeContent(
     }
 
     return (
-      <td className="fcnew-list-event-time">
+      <td className="fc-list-event-time">
         {timeText}
       </td>
     )

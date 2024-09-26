@@ -14,17 +14,17 @@ export function ExpanderIcon({ indent, hasChildren, isExpanded, onExpanderClick 
 
   for (let i = 0; i < emptyIconCnt; i += 1) {
     nodes.push(
-      <span className="fcnew-icon" />,
+      <span className="fc-icon" />,
     )
   }
 
   if (hasChildren) {
-    let iconClassNames = ['fcnew-datagrid-expander', 'fcnew-icon']
+    let iconClassNames = ['fc-datagrid-expander', 'fc-icon']
 
     if (isExpanded) {
-      iconClassNames.push('fcnew-icon-minus-square')
+      iconClassNames.push('fc-icon-minus-square')
     } else {
-      iconClassNames.push('fcnew-icon-plus-square')
+      iconClassNames.push('fc-icon-plus-square')
     }
 
     nodes.push(
@@ -33,7 +33,7 @@ export function ExpanderIcon({ indent, hasChildren, isExpanded, onExpanderClick 
   }
 
   return (
-    <span className='fcnew-datagrid-indent'>
+    <span className='fc-datagrid-indent'>
       {...nodes}
     </span>
   )

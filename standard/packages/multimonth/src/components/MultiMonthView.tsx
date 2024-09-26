@@ -74,17 +74,17 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
 
     const monthTitleFormat = this.buildMonthFormat(options.multiMonthTitleFormat, monthDateProfiles)
     const rootClassNames = [
-      'fcnew-multimonth-view',
+      'fc-multimonth-view',
       (colCount === 1) ?
-        'fcnew-multimonth-singlecol' :
-        'fcnew-multimonth-multicol',
+        'fc-multimonth-singlecol' :
+        'fc-multimonth-multicol',
       (typeof monthWidth === 'number' && monthWidth < 400) ?
-        'fcnew-multimonth-compact' :
+        'fc-multimonth-compact' :
         '',
       getIsHeightAuto(options) ?
         '' :
-        'fcnew-multimonth-scroll',
-      'fcnew-border', // BAD to mix this with size-listening?
+        'fc-multimonth-scroll',
+      'fc-border', // BAD to mix this with size-listening?
     ]
 
     return (
@@ -95,7 +95,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
             elClasses={rootClassNames}
             viewSpec={context.viewSpec}
           >
-            <div ref={this.innerElRef} className='fcnew-multimonth-inner'>
+            <div ref={this.innerElRef} className='fc-multimonth-inner'>
               {monthDateProfiles.map((monthDateProfile, i) => {
                 const monthStr = formatIsoMonthStr(monthDateProfile.currentRange.start)
 

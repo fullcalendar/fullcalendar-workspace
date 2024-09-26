@@ -166,13 +166,13 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
               cells={resourceDayTableModel.cells[0]}
               forPrint={props.forPrint}
               isHitComboAllowed={this.isHitComboAllowed}
-              className='fcnew-resource-timegrid-view'
+              className='fc-resource-timegrid-view'
 
               // header content
               headerTiers={headerTiers}
               renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width) => (
                 (options.weekNumbers && tierNum === headerTiers.length - 1) ? (
-                  <TimeGridWeekNumber // .fcnew-cell
+                  <TimeGridWeekNumber // .fc-cell
                     dateProfile={dateProfile}
                     innerWidthRef={innerWidthRef}
                     innerHeightRef={innerHeightRef}
@@ -180,7 +180,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
                   />
                 ) : (
                   <div
-                    className='fcnew-cell'
+                    className='fc-cell'
                     style={{ width }}
                   />
                 )

@@ -3,33 +3,33 @@
 // daygrid-event (extends h-event)
 //
 
-.fcnew-daygrid-event {
+.fc-daygrid-event {
   z-index: $daygrid-event-z;
   margin-top: 1px;
   border-radius: 3px; // dot event needs this to when selected
-  font-size: var(--fcnew-small-font-size);
+  font-size: var(--fc-small-font-size);
 }
 
-.fcnew-daygrid-event.fcnew-event-mirror { // (mirror)
+.fc-daygrid-event.fc-event-mirror { // (mirror)
   z-index: $daygrid-event-mirror-z;
 }
 
-.fcnew-direction-ltr .fcnew-daygrid-event.fcnew-event-start,
-.fcnew-direction-rtl .fcnew-daygrid-event.fcnew-event-end {
+.fc-direction-ltr .fc-daygrid-event.fc-event-start,
+.fc-direction-rtl .fc-daygrid-event.fc-event-end {
   margin-left: 2px;
 }
 
-.fcnew-direction-ltr .fcnew-daygrid-event.fcnew-event-end,
-.fcnew-direction-rtl .fcnew-daygrid-event.fcnew-event-start {
+.fc-direction-ltr .fc-daygrid-event.fc-event-end,
+.fc-direction-rtl .fc-daygrid-event.fc-event-start {
   margin-right: 2px;
 }
 
 // spacing between time and title
 // TODO: use gap, though be mindful of 3 siblings
-.fcnew-direction-ltr .fcnew-daygrid-event .fcnew-event-time { // (ltr) > time
+.fc-direction-ltr .fc-daygrid-event .fc-event-time { // (ltr) > time
   margin-right: $daygrid-event-inner-margin;
 }
-.fcnew-direction-rtl .fcnew-daygrid-event .fcnew-event-time { // (rtl) > time
+.fc-direction-rtl .fc-daygrid-event .fc-event-time { // (rtl) > time
   margin-left: $daygrid-event-inner-margin;
 }
 
@@ -38,26 +38,26 @@
 //   the rectangle ("block") style of event
 //
 
-.fcnew-direction-ltr .fcnew-daygrid-block-event:not(.fcnew-event-start),
-.fcnew-direction-rtl .fcnew-daygrid-block-event:not(.fcnew-event-end) {
+.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-start),
+.fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-end) {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-left-width: 0;
 }
 
-.fcnew-direction-ltr .fcnew-daygrid-block-event:not(.fcnew-event-end),
-.fcnew-direction-rtl .fcnew-daygrid-block-event:not(.fcnew-event-start) {
+.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-end),
+.fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-start) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-right-width: 0;
 }
 
-.fcnew-daygrid-block-event .fcnew-event-time { // > time
+.fc-daygrid-block-event .fc-event-time { // > time
   font-weight: bold;
 }
 
-.fcnew-daygrid-block-event .fcnew-event-time, // > time
-.fcnew-daygrid-block-event .fcnew-event-title { // > title
+.fc-daygrid-block-event .fc-event-time, // > time
+.fc-daygrid-block-event .fc-event-title { // > title
   padding: 1px;
 }
 
@@ -66,36 +66,36 @@
 //   the dot style of event
 //
 
-.fcnew-daygrid-dot-event {
+.fc-daygrid-dot-event {
   display: flex;
   direction: row;
   align-items: center; // vertical
   padding: 2px 0;
 }
 
-.fcnew-daygrid-dot-event:hover, // (hover)
-.fcnew-daygrid-dot-event.fcnew-event-mirror { // (mirror)
+.fc-daygrid-dot-event:hover, // (hover)
+.fc-daygrid-dot-event.fc-event-mirror { // (mirror)
   background: rgba(0, 0, 0, 0.1);
 }
 
-// NOTE: does NOT have .fcnew-event-inner, .fcnew-event-resizer, or .fcnew-event-title-outer
+// NOTE: does NOT have .fc-event-inner, .fc-event-resizer, or .fc-event-title-outer
 
-.fcnew-daygrid-event-dot { // > dot
+.fc-daygrid-event-dot { // > dot
   margin: 0 4px;
   box-sizing: content-box;
   width: 0;
   height: 0;
-  border: calc(var(--fcnew-daygrid-event-dot-width) / 2) solid var(--fcnew-event-border-color);
-  border-radius: calc(var(--fcnew-daygrid-event-dot-width) / 2);
+  border: calc(var(--fc-daygrid-event-dot-width) / 2) solid var(--fc-event-border-color);
+  border-radius: calc(var(--fc-daygrid-event-dot-width) / 2);
 }
 
-.fcnew-daygrid-dot-event .fcnew-event-time, // > time
-.fcnew-daygrid-dot-event .fcnew-event-title { // > title
+.fc-daygrid-dot-event .fc-event-time, // > time
+.fc-daygrid-dot-event .fc-event-title { // > title
   white-space: nowrap;
   overflow: hidden;
 }
 
-.fcnew-daygrid-dot-event .fcnew-event-title { // > title
+.fc-daygrid-dot-event .fc-event-title { // > title
   // liquid
   flex-grow: 1;
   flex-basis: 0;

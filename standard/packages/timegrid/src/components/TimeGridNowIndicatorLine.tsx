@@ -10,9 +10,9 @@ export interface TimeGridNowIndicatorLineProps {
 
 export function TimeGridNowIndicatorLine(props: TimeGridNowIndicatorLineProps) {
   return (
-    <div className="fcnew-timegrid-now-indicator-container">
+    <div className="fc-timegrid-now-indicator-container">
       <NowIndicatorContainer
-        elClasses={['fcnew-timegrid-now-indicator-line']}
+        elClasses={['fc-timegrid-now-indicator-line']}
         elStyle={{
           top: fracToCssDim(computeDateTopFrac(props.nowDate, props.dateProfile, props.dayDate))
         }}

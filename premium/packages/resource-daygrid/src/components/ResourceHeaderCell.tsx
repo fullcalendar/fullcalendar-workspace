@@ -29,11 +29,11 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
       <ResourceLabelContainer
         elTag="div"
         elClasses={[
-          'fcnew-resource',
-          'fcnew-cell',
-          props.colWidth != null ? '' : 'fcnew-liquid',
-          'fcnew-flex-column',
-          'fcnew-align-center',
+          'fc-resource',
+          'fc-cell',
+          props.colWidth != null ? '' : 'fc-liquid',
+          'fc-flex-column',
+          'fc-align-center',
         ]}
         elStyle={{
           width: props.colWidth != null // TODO: DRY
@@ -47,15 +47,15 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
           <div
             ref={this.innerElRef}
             className={[
-              'fcnew-flex-column',
-              props.isSticky ? 'fcnew-sticky-x' : '',
+              'fc-flex-column',
+              props.isSticky ? 'fc-sticky-x' : '',
             ].join(' ')}
           >
             <InnerContent
               elTag="span"
               elClasses={[
-                'fcnew-cell-inner',
-                'fcnew-padding-sm',
+                'fc-cell-inner',
+                'fc-padding-sm',
               ]}
             />
           </div>

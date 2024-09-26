@@ -37,10 +37,10 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
             scope: 'colgroup',
           }}
           elClasses={[
-            'fcnew-cell',
-            'fcnew-liquid',
-            'fcnew-resource-group',
-            'fcnew-shaded', // TODO: make part of fcnew-resource-group so ppl can style both cells together?
+            'fc-cell',
+            'fc-liquid',
+            'fc-resource-group',
+            'fc-shaded', // TODO: make part of fc-resource-group so ppl can style both cells together?
           ]}
           renderProps={renderProps}
           generatorName="resourceGroupLabelContent"
@@ -51,8 +51,8 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
           willUnmount={spec.labelWillUnmount}
         >
           {(InnerContent) => (
-            <div ref={this.innerElRef} className='fcnew-flex-column'>
-              <div className="fcnew-cell-inner fcnew-padding-lg fcnew-flex-row fcnew-align-center">
+            <div ref={this.innerElRef} className='fc-flex-column'>
+              <div className="fc-cell-inner fc-padding-lg fc-flex-row fc-align-center">
                 <ExpanderIcon
                   indent={0}
                   hasChildren
@@ -61,7 +61,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
                 />
                 <InnerContent
                   elTag="span"
-                  elClasses={['fcnew-cell-main']}
+                  elClasses={['fc-cell-main']}
                 />
               </div>
             </div>

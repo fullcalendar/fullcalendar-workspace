@@ -3,7 +3,7 @@
 // TimemlineBackground
 //
 
-.fcnew-timeline-bg { // a container for bg content
+.fc-timeline-bg { // a container for bg content
   position: absolute;
   z-index: $timeline-bg-z;
   top: 0;
@@ -18,7 +18,7 @@
 // TimemlineBackground > Harness
 //
 
-.fcnew-timeline-bg-harness {
+.fc-timeline-bg-harness {
   position: absolute;
   top: 0;
   bottom: 0;

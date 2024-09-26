@@ -25,8 +25,8 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
       <ContentContainer
         elTag="div"
         elClasses={[
-          'fcnew-timeline-lane',
-          'fcnew-resource',
+          'fc-timeline-lane',
+          'fc-resource',
         ]}
         elAttrs={{
           'data-resource-id': props.resource.id,
@@ -39,10 +39,10 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         willUnmount={options.resourceLaneWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.frameElRef} className='fcnew-flex-column'>
+          <div ref={this.frameElRef} className='fc-flex-column'>
             <InnerContent
               elTag="div"
-              elClasses={['fcnew-timeline-lane-misc']}
+              elClasses={['fc-timeline-lane-misc']}
             />
             <TimelineLane
               dateProfile={props.dateProfile}

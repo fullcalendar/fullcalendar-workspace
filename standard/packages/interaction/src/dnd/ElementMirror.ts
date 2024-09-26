@@ -126,7 +126,7 @@ export class ElementMirror {
       mirrorEl.style.webkitUserSelect = 'none'
       mirrorEl.style.pointerEvents = 'none'
 
-      mirrorEl.classList.add('fcnew-event-dragging')
+      mirrorEl.classList.add('fc-event-dragging')
 
       applyStyle(mirrorEl, {
         position: 'fixed',

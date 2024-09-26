@@ -29,7 +29,7 @@ export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
     let highlightSeg = [].concat(props.eventResizeSegs, props.dateSelectionSegs)
 
     return (
-      <div className="fcnew-timeline-bg">
+      <div className="fc-timeline-bg">
         {/* Fragments contain the keys */}
         {this.renderSegs(props.businessHourSegs || [], 'non-business')}
         {this.renderSegs(props.bgEventSegs || [], 'bg-event')}
@@ -55,7 +55,7 @@ export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
           return (
             <div
               key={buildEventRangeKey(seg.eventRange)}
-              className="fcnew-timeline-bg-harness"
+              className="fc-timeline-bg-harness"
               style={hStyle}
             >
               {fillType === 'bg-event' ?

@@ -7,16 +7,16 @@ import { ResourceDataHeaderWrapper } from './ResourceDataHeaderWrapper.js'
 
 export class ResourceTimelineViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {
-    super(calendar, 'fcnew-resource-timeline-view')
+    super(calendar, 'fc-resource-timeline-view')
   }
 
   get header() {
-    return new TimelineHeaderWrapper(this.el.querySelector('.fcnew-timeline-header'))
+    return new TimelineHeaderWrapper(this.el.querySelector('.fc-timeline-header'))
   }
 
   get timelineGrid() {
     return new ResourceTimelineGridWrapper(
-      this.el.querySelector('.fcnew-timeline-body'),
+      this.el.querySelector('.fc-timeline-body'),
     )
   }
 
@@ -26,11 +26,11 @@ export class ResourceTimelineViewWrapper extends ViewWrapper {
 
   get dataHeader() { // rename `header` now?
     // doesnt exist yet. also, delete one other one by mistake
-    return new ResourceDataHeaderWrapper(this.el.querySelector('.fcnew-datagrid-header'))
+    return new ResourceDataHeaderWrapper(this.el.querySelector('.fc-datagrid-header'))
   }
 
   getDataGridEl() {
-    return this.el.querySelector('.fcnew-datagrid-body') as HTMLElement
+    return this.el.querySelector('.fc-datagrid-body') as HTMLElement
   }
 
   getDataGridWidth() {
@@ -38,11 +38,11 @@ export class ResourceTimelineViewWrapper extends ViewWrapper {
   }
 
   getDataScrollEl() {
-    return this.el.querySelector('.fcnew-datagrid-body') // IS the scroll element
+    return this.el.querySelector('.fc-datagrid-body') // IS the scroll element
   }
 
   getTimeScrollEl() {
-    return this.el.querySelector('.fcnew-timeline-body') // IS the scroll element
+    return this.el.querySelector('.fc-timeline-body') // IS the scroll element
   }
 
   hasNowIndicator() {

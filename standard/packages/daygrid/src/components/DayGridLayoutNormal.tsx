@@ -71,8 +71,8 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
 
             // render hooks
             extraClassNames={[
-              'fcnew-daygrid-header',
-              stickyHeaderDates ? 'fcnew-sticky-header' : '',
+              'fc-daygrid-header',
+              stickyHeaderDates ? 'fc-sticky-header' : '',
             ]}
 
             // dimensions
@@ -85,14 +85,14 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
           elClassNames={[
-            'fcnew-daygrid-body',
-            'fcnew-rowgroup',
-            'fcnew-flex-column',
-            verticalScrollbars ? 'fcnew-liquid' : '',
+            'fc-daygrid-body',
+            'fc-rowgroup',
+            'fc-flex-column',
+            verticalScrollbars ? 'fc-liquid' : '',
           ]}
           ref={this.handleScroller}
         >
-          <DayGridRows // .fcnew-grow
+          <DayGridRows // .fc-grow
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
             cellRows={props.cellRows}

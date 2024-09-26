@@ -72,10 +72,10 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
         elClasses={[
           ...getDayClassNames(dateMeta, theme),
           ...(props.extraClassNames || []),
-          'fcnew-cell',
-          props.colWidth != null ? '' : 'fcnew-liquid',
-          'fcnew-flex-column',
-          'fcnew-align-center',
+          'fc-cell',
+          props.colWidth != null ? '' : 'fc-liquid',
+          'fc-flex-column',
+          'fc-align-center',
         ]}
         elAttrs={props.extraDataAttrs}
         elStyle={{
@@ -95,15 +95,15 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
           <div
             ref={this.innerElRef}
             className={[
-              'fcnew-flex-column',
-              props.isSticky ? 'fcnew-sticky-x' : '',
+              'fc-flex-column',
+              props.isSticky ? 'fc-sticky-x' : '',
             ].join(' ')}
           >
             <InnerContent
               elTag="a"
               elClasses={[
-                'fcnew-cell-inner',
-                'fcnew-padding-sm',
+                'fc-cell-inner',
+                'fc-padding-sm',
               ]}
               elAttrs={{
                 'aria-label': dateEnv.format(date, WEEKDAY_FORMAT),

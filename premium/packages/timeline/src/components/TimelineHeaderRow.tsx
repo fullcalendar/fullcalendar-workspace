@@ -37,7 +37,7 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
 
     return (
       <div
-        className='fcnew-row'
+        className='fc-row'
         style={{ height: props.height }}
       >
         {props.cells.map((cell) => {

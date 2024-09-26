@@ -4,7 +4,7 @@ class BootstrapTheme extends Theme {
 }
 
 BootstrapTheme.prototype.classes = {
-  root: 'fcnew-theme-bootstrap', // TODO: compute this off of registered theme name
+  root: 'fc-theme-bootstrap', // TODO: compute this off of registered theme name
   buttonGroup: 'btn-group',
   button: 'btn btn-primary',
   buttonActive: 'active',

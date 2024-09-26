@@ -77,10 +77,10 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       <DayCellContainer
         elTag="div"
         elClasses={[
-          'fcnew-daygrid-cell',
-          'fcnew-cell',
-          props.width != null ? '' : 'fcnew-liquid',
-          'fcnew-flex-column',
+          'fc-daygrid-cell',
+          'fc-cell',
+          props.width != null ? '' : 'fc-liquid',
+          'fc-flex-column',
           ...(props.extraClassNames || []),
         ]}
         elAttrs={{
@@ -102,18 +102,18 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
           <div
             ref={this.innerElRef}
             className={[
-              'fcnew-daygrid-cell-inner',
-              props.fgLiquidHeight ? 'fcnew-liquid' : ''
+              'fc-daygrid-cell-inner',
+              props.fgLiquidHeight ? 'fc-liquid' : ''
             ].join(' ')}
           >
-            <div ref={this.headerWrapElRef} className="fcnew-flex-column">
+            <div ref={this.headerWrapElRef} className="fc-flex-column">
               {!renderProps.isDisabled && (props.showDayNumber || hasCustomDayCellContent(options)) && (
-                <div className="fcnew-daygrid-cell-header">
+                <div className="fc-daygrid-cell-header">
                   <InnerContent
                     elTag="a"
                     elClasses={[
-                      'fcnew-daygrid-cell-number',
-                      isMonthStart && 'fcnew-daygrid-month-start',
+                      'fc-daygrid-cell-number',
+                      isMonthStart && 'fc-daygrid-month-start',
                     ]}
                     elAttrs={buildNavLinkAttrs(context, props.date)}
                   />
@@ -121,7 +121,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               )}
             </div>
             <div
-              className="fcnew-daygrid-cell-main"
+              className="fc-daygrid-cell-main"
               style={{
                 height: props.fgLiquidHeight ? '' : props.fgHeight
               }}
@@ -129,7 +129,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               {props.fg}
             </div>
             <div
-              className="fcnew-daygrid-cell-footer"
+              className="fc-daygrid-cell-footer"
               style={
                 props.fgLiquidHeight
                   ? { position: 'relative', top: props.fgHeight }

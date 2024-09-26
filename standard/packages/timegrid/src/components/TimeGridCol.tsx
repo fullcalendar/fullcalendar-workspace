@@ -83,10 +83,10 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       <DayCellContainer
         elTag="div"
         elClasses={[
-          'fcnew-flex-column',
-          'fcnew-cell',
-          props.width != null ? '' : 'fcnew-liquid',
-          'fcnew-timegrid-col',
+          'fc-flex-column',
+          'fc-cell',
+          props.width != null ? '' : 'fc-liquid',
+          'fc-timegrid-col',
           ...(props.extraClassNames || []),
         ]}
         elAttrs={{
@@ -102,11 +102,11 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         extraRenderProps={props.extraRenderProps}
       >
         {(InnerContent) => (
-          <div className='fcnew-rel fcnew-flex-column' style={{ height: slatsTotalHeight }}>
+          <div className='fc-rel fc-flex-column' style={{ height: slatsTotalHeight }}>
             {this.renderFillSegs(props.businessHourSegs, 'non-business')}
             {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
             {this.renderFillSegs(props.dateSelectionSegs, 'highlight')}
-            <div className='fcnew-liquid fcnew-rel fcnew-timegrid-col-fg'>
+            <div className='fc-liquid fc-rel fc-timegrid-col-fg'>
               {this.renderFgSegs(
                 sortedFgSegs,
                 interactionAffectedInstances,
@@ -127,7 +127,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {hasCustomDayCellContent(options) && (
               <InnerContent
                 elTag="div"
-                elClasses={['fcnew-timegrid-col-misc']}
+                elClasses={['fc-timegrid-col-misc']}
               />
             )}
           </div>
@@ -197,7 +197,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
           return (
             <div
-              className='fcnew-abs'
+              className='fc-abs'
               key={forcedKey || instanceId}
               style={{
                 visibility: isVisible ? ('' as any) : 'hidden',
@@ -275,7 +275,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
           return (
             <div
               key={buildEventRangeKey(seg.eventRange)}
-              className="fcnew-timegrid-bg-harness fcnew-fill-x"
+              className="fc-timegrid-bg-harness fc-fill-x"
               style={{
                 top: fracToCssDim(segVertical.start),
                 height: fracToCssDim(segVertical.size),

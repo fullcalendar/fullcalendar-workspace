@@ -130,10 +130,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       <div
         role={props.cellGroup ? undefined : 'row'}
         className={[
-          'fcnew-daygrid-row',
-          props.forceVSpacing ? 'fcnew-daygrid-row-spacious' : '',
-          props.cellGroup ? 'fcnew-flex-row' : 'fcnew-row',
-          'fcnew-rel',
+          'fc-daygrid-row',
+          props.forceVSpacing ? 'fc-daygrid-row-spacious' : '',
+          props.cellGroup ? 'fc-flex-row' : 'fc-row',
+          'fc-rel',
           props.className || '',
         ].join(' ')}
         style={{
@@ -144,7 +144,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
         {options.weekNumbers && (
           <WeekNumberContainer
             elTag="a"
-            elClasses={['fcnew-daygrid-week-number']}
+            elClasses={['fc-daygrid-week-number']}
             elAttrs={buildNavLinkAttrs(context, weekDate, 'week')}
             date={weekDate}
             defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
@@ -311,7 +311,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       nodes.push(
         <div
           key={buildEventRangeKey(seg.eventRange)}
-          className="fcnew-fill-y"
+          className="fc-fill-y"
           style={{
             visibility: isVisible ? '' : 'hidden',
             left,

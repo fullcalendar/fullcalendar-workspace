@@ -13,15 +13,15 @@ export class TimelineHeaderWrapper {
   }
 
   getDateRowCnt() {
-    return this.el.querySelectorAll('.fcnew-row').length
+    return this.el.querySelectorAll('.fc-row').length
   }
 
   getDateEls(dateRow = 0) {
-    return findElements(this.el, `.fcnew-row:nth-child(${dateRow + 1}) > .fcnew-cell[data-date]`)
+    return findElements(this.el, `.fc-row:nth-child(${dateRow + 1}) > .fc-cell[data-date]`)
   }
 
   getDateElByDate(dateStr, dateRow = 0) {
-    return this.el.querySelector(`.fcnew-row:nth-child(${dateRow + 1}) > .fcnew-cell[data-date="${dateStr}"]`)
+    return this.el.querySelector(`.fc-row:nth-child(${dateRow + 1}) > .fc-cell[data-date="${dateStr}"]`)
   }
 
   getCellInfo(dateRow = 0) {
@@ -30,8 +30,8 @@ export class TimelineHeaderWrapper {
 
       return {
         date: parseUtcDate(cell.getAttribute('data-date')),
-        isDisabled: classList.contains('fcnew-slot-disabled')
-          || classList.contains('fcnew-day-disabled'),
+        isDisabled: classList.contains('fc-slot-disabled')
+          || classList.contains('fc-day-disabled'),
         hasNavLink: !!cell.querySelector('a[data-navlink]'),
       }
     })
@@ -42,6 +42,6 @@ export class TimelineHeaderWrapper {
   }
 
   getNowIndicatorEl() {
-    return this.el.querySelector('.fcnew-timeline-now-indicator-arrow')
+    return this.el.querySelector('.fc-timeline-now-indicator-arrow')
   }
 }

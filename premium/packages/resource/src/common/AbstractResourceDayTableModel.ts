@@ -40,7 +40,7 @@ export abstract class AbstractResourceDayTableModel {
           let resource = resources[resourceCol]
           let extraRenderProps = { resource: new ResourceApi(this.context, resource) }
           let extraDataAttrs = { 'data-resource-id': resource.id }
-          let extraClassNames = ['fcnew-resource']
+          let extraClassNames = ['fc-resource']
           let extraDateSpan = { resourceId: resource.id }
           let date = dayTableModel.cellRows[row][dateCol].date
 

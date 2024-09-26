@@ -21,10 +21,10 @@ export class TimelineEvent extends BaseComponent<TimelineEventProps> {
       <StandardEvent
         {...props}
         elClasses={[
-          'fcnew-timeline-event',
-          'fcnew-h-event',
+          'fc-timeline-event',
+          'fc-h-event',
           options.eventOverlap === false // TODO: fix bad default
-            ? 'fcnew-timeline-event-spacious'
+            ? 'fc-timeline-event-spacious'
             : ''
         ]}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}

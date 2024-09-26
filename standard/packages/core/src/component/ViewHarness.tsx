@@ -17,9 +17,9 @@ export class ViewHarness extends Component<ViewHarnessProps> {
     return (
       <div
         className={[
-          'fcnew-view-harness',
-          fixedHeightEnabled ? 'fcnew-view-harness-fixedheight' : '',
-          aspectRatioEnabled ? 'fcnew-view-harness-aspectratio' : '',
+          'fc-view-harness',
+          fixedHeightEnabled ? 'fc-view-harness-fixedheight' : '',
+          aspectRatioEnabled ? 'fc-view-harness-aspectratio' : '',
         ].join(' ')}
         style={{
           height,

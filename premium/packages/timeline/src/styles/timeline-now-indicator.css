@@ -2,7 +2,7 @@
 // TimelineNowIndicatorContainer
 // -------------------------------------------------------------------------------------------------
 
-.fcnew-timeline-now-indicator-container {
+.fc-timeline-now-indicator-container {
   position: absolute;
   z-index: $timeline-now-indicator-z;
   top: 0;
@@ -16,19 +16,19 @@
 // TimelineNowIndicatorContainer > TimelineNowIndicator(Arrow|Line)
 // -------------------------------------------------------------------------------------------------
 
-.fcnew-timeline-now-indicator-arrow,
-.fcnew-timeline-now-indicator-line {
+.fc-timeline-now-indicator-arrow,
+.fc-timeline-now-indicator-line {
   position: absolute;
   top: 0;
   border-style: solid;
-  border-color: var(--fcnew-now-indicator-color);
+  border-color: var(--fc-now-indicator-color);
   pointer-events: none;
 }
 
 // TimelineNowIndicatorContainer > TimelineNowIndicatorArrow
 // -------------------------------------------------------------------------------------------------
 
-.fcnew-timeline-now-indicator-arrow {
+.fc-timeline-now-indicator-arrow {
   margin: 0 -5px; // center triangle at element origin
 
   // triangle pointing down. TODO: mixin
@@ -40,7 +40,7 @@
 // TimelineNowIndicatorContainer > TimelineNowIndicatorLine
 // -------------------------------------------------------------------------------------------------
 
-.fcnew-timeline-now-indicator-line {
+.fc-timeline-now-indicator-line {
   bottom: 0;
   border-width: 0 0 0 1px;
 }

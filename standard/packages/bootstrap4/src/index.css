@@ -1,12 +1,12 @@
 
-.fcnew-theme-bootstrap {
+.fc-theme-bootstrap {
   // use FullCalendar's default colors. Bootstrap 4's colors aren't very versatile
 
   & a:not([href]) {
     color: inherit; // natural color for navlinks
   }
 
-  & .fcnew-more-link:hover {
+  & .fc-more-link:hover {
     text-decoration: none;
   }
 }

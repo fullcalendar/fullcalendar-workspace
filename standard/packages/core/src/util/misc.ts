@@ -14,12 +14,12 @@ export function guid() {
 
 // Make the mouse cursor express that an event is not allowed in the current area
 export function disableCursor() {
-  document.body.classList.add('fcnew-not-allowed')
+  document.body.classList.add('fc-not-allowed')
 }
 
 // Returns the mouse cursor to its original look
 export function enableCursor() {
-  document.body.classList.remove('fcnew-not-allowed')
+  document.body.classList.remove('fc-not-allowed')
 }
 
 /* Selection
