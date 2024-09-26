@@ -48,6 +48,7 @@ audit all CSS
     if event will never be rendered because >eventMaxStack or >dayMaxEvents, don't put in dom at all!
   in timegrid (and other views), when rendering +more link, ensure it's in the correct DOM order
     right now, all hidden +more links are put at beginning
+  position the popover -1px -1px, to overlap border
 
 FOR beta.1
   resource-timeline
@@ -59,8 +60,9 @@ FOR beta.1
   react/vue/angular connectors
     pause size-handling until all slots are rendered
   ALL
-    go back to simple classNames for views
+    implement responsiveness
     implement scroller padding rectangles
+    go back to simple classNames for views
 
 ensure automated tests for...
   positioning of sticky headers in all views. list view sticky subheaders too
