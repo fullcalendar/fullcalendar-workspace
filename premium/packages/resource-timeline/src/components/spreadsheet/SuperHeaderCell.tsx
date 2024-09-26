@@ -32,8 +32,9 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           scope: 'colgroup',
         }}
         elClasses={[
-          'fc-liquid',
+          'fc-header-cell',
           'fc-cell',
+          'fc-liquid',
           'fc-flex-column',
           'fc-justify-center',
         ]}

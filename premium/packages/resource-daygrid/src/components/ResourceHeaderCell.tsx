@@ -30,6 +30,7 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
         elTag="div"
         elClasses={[
           'fc-resource',
+          'fc-header-cell',
           'fc-cell',
           props.colWidth != null ? '' : 'fc-liquid',
           'fc-flex-column',

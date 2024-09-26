@@ -34,9 +34,10 @@ audit all CSS
   inconsistent abbrev of 'col' like 'fc-timegrid-col'
   .fc-cell-main doesn't need to be span anymore (within a flex parent)
   .fc-timeline-now-indicator-container covers all the text in the header cells
+  events in timeline-no-overlap.html are too thick now?
+  changelog: what used to be <th> cells are no longer bold (except for list view)
 
 FOR beta.1
-  RESTORE bolded text to all headers. introduce new fc-header-cell className?
   timeline
     test that +more link works
   resource-timeline
@@ -51,6 +52,9 @@ FOR beta.1
     +more link renders weird
   react/vue/angular connectors
     pause size-handling until all slots are rendered
+  ALL
+    go back to simple classNames for views
+    implement scroller padding rectangles
 
 ensure automated tests for...
   positioning of sticky headers in all views. list view sticky subheaders too

@@ -72,6 +72,7 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
         elClasses={[
           ...getDayClassNames(dayMeta, theme),
           ...(props.extraClassNames || []),
+          'fc-header-cell',
           'fc-cell',
           props.colWidth != null ? '' : 'fc-liquid',
           'fc-flex-column',

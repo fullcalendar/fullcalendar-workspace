@@ -63,6 +63,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
           'fc-timeline-slot-label',
           'fc-timeline-slot',
           cell.isWeekStart ? 'fc-timeline-slot-em' : '', // TODO: document this semantic className
+          'fc-header-cell',
           'fc-cell',
           'fc-flex-column',
           'fc-justify-center',

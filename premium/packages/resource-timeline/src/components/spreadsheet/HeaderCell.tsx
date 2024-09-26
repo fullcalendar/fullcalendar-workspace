@@ -34,10 +34,11 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
           role: 'columnheader'
         }}
         elClasses={[
-          'fc-rel', // for resizer abs positioning
+          'fc-header-cell',
           'fc-cell',
           'fc-flex-column',
           'fc-justify-center',
+          'fc-rel', // for resizer abs positioning
         ]}
         elStyle={{
           width,
