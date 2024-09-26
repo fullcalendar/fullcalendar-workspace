@@ -25,7 +25,6 @@ audit all CSS
   rething -main vs -body naming
   remove -view from view classNames? looks nice!
   view should have classNames like fc-resource-timegrid AND fc-timegrid
-  changelog: th tags are no longer used, which would have given bold
   solve z-index:9999 hacks. audit all z-indexes
   fc-daygrid-cell-number is an awkward classname... fc-daygrid-day-number instead? fc-daygrid-datenumber/daynumber?
   the testing "wrappers" like DayGridWrapper should us aria tags to find rows/cells
@@ -33,8 +32,11 @@ audit all CSS
   in datagrid, move fc-resource to the fc-row (instead of each fc-cell)... add to changelog
     will need to change tests after
   inconsistent abbrev of 'col' like 'fc-timegrid-col'
+  .fc-cell-main doesn't need to be span anymore (within a flex parent)
+  .fc-timeline-now-indicator-container covers all the text in the header cells
 
 FOR beta.1
+  RESTORE bolded text to all headers. introduce new fc-header-cell className?
   timeline
     test that +more link works
   resource-timeline
