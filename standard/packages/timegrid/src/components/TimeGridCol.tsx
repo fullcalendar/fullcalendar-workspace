@@ -189,11 +189,14 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         {segs.map((seg, index) => {
           let instanceId = seg.eventRange.instance.instanceId // guaranteed because it's an fg event
           let segVertical = segVerticals[index]
-          let setRect = segRects[index] // for horizontals
+          let setRect = segRects[index] // for horizontals. could be undefined!? HACK
 
-          let hStyle = !isMirror ? this.computeSegHStyle(setRect) : { left: 0, right: 0 }
-          let isVisible = isMirror || Boolean(!segIsInvisible[instanceId])
-          let isInset = setRect.stackForward > 0
+          let hStyle = (!isMirror && setRect)
+            ? this.computeSegHStyle(setRect)
+            : { left: 0, right: 0 }
+
+          let isVisible = isMirror || (setRect && !segIsInvisible[instanceId])
+          let isInset = setRect && setRect.stackForward > 0
 
           return (
             <div
@@ -365,6 +368,7 @@ export function renderPlainFgSegs(
         return (
           <div
             key={instanceId}
+            className='fc-timegrid-harness-plain'
             style={{ visibility: hiddenInstances[instanceId] ? 'hidden' : ('' as any) }}
           >
             <TimeGridEvent

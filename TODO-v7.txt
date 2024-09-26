@@ -44,6 +44,10 @@ audit all CSS
   daygrid event "reslicing" disabled to prevent compact daygrid bug (in multimonth) --- `allowReslicing`
     TODO: thing hard about whether to keep this
     if removing, can probably optimize and avoid getSegStartId/getSegSpanId
+  performance improvement:
+    if event will never be rendered because >eventMaxStack or >dayMaxEvents, don't put in dom at all!
+  in timegrid (and other views), when rendering +more link, ensure it's in the correct DOM order
+    right now, all hidden +more links are put at beginning
 
 FOR beta.1
   resource-timeline
@@ -52,7 +56,6 @@ FOR beta.1
     multiweek-view.html: when dragging and dropping event, scroll jumps down
   timegrid
     initial-scroll broken!!!
-    test that +more link works
   react/vue/angular connectors
     pause size-handling until all slots are rendered
   ALL

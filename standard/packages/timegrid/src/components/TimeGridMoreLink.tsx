@@ -29,7 +29,7 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
         elClasses={['fc-timegrid-more-link', 'fc-abs']}
         elStyle={{
           top: props.top,
-          bottom: props.height,
+          height: props.height,
         }}
         allDayDate={null}
         segs={props.hiddenSegs}

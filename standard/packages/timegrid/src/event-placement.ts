@@ -72,6 +72,7 @@ export function computeFgSegHorizontals(
 ] {
   const segEntries: SegEntry[] = segs.map((seg, index) => ({
     index,
+    seg,
     thickness: 1,
     span: segVerticals[index],
   }))
