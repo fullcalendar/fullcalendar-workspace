@@ -36,6 +36,8 @@ audit z-indexes
 tests aleady have fcnew- className prefix!?... actually some have .fc
 restore .fc prefix
 verify timeline-external-dragging.html works
+bug: small-months in multimonth don't display +more link!
+  multi-day events just cover over them!
 
 FOR beta.1
   timeline

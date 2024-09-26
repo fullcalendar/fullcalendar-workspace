@@ -35,14 +35,17 @@
 //
 
 .fcnew-h-event .fcnew-event-time, // > time
-.fcnew-h-event .fcnew-event-title { // > title-outer > title
+.fcnew-h-event .fcnew-event-title-outer { // > title-outer
   white-space: nowrap;
   overflow: hidden;
 }
 
 .fcnew-h-event .fcnew-event-title-outer { // > title-outer
+  // liquid
   flex-grow: 1;
+  flex-basis: 0;
   min-width: 0;
+
   display: flex;
   flex-direction: row;
 }
