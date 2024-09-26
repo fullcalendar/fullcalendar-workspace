@@ -99,10 +99,12 @@
 // MultiMonthView > Month > Body > MoreLink
 //
 
+.fcnew-multimonth-multicol .fcnew-daygrid-cell-footer { // TODO: move this
+  align-items: stretch; // HACK: undo flex-start, which aligned more-link to side
+}
+
 .fcnew-multimonth-multicol .fcnew-daygrid-more-link { // (multicol variant)
   // look like an event
   border: 1px solid var(--fcnew-event-border-color);
   padding: 1px;
-  float: none; // ???
-  display: block;
 }

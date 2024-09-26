@@ -63,7 +63,7 @@ export class ListView extends DateComponent<ViewProps> {
       <ViewContainer
         elRef={this.setRootEl}
         elClasses={[
-          'fcnew-list',
+          'fcnew-list-view',
           'fcnew-flex-column',
           'fcnew-border',
         ]}

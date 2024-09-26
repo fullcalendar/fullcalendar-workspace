@@ -74,8 +74,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
 
     const monthTitleFormat = this.buildMonthFormat(options.multiMonthTitleFormat, monthDateProfiles)
     const rootClassNames = [
-      'fcnew-multimonth',
-      'fcnew-border', // BAD to mix this with size-listening
+      'fcnew-multimonth-view',
       (colCount === 1) ?
         'fcnew-multimonth-singlecol' :
         'fcnew-multimonth-multicol',
@@ -85,6 +84,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
       getIsHeightAuto(options) ?
         '' :
         'fcnew-multimonth-scroll',
+      'fcnew-border', // BAD to mix this with size-listening?
     ]
 
     return (

@@ -275,10 +275,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
           return (
             <ViewContainer
               elClasses={[
-                'fcnew-border',
+                'fcnew-resource-timeline-view',
                 'fcnew-flex-column', // so ReisableTwoCol can grow
-                'fcnew-timeline',
-                'fcnew-resource-timeline',
+                'fcnew-border',
               ]}
               viewSpec={viewSpec}
             >

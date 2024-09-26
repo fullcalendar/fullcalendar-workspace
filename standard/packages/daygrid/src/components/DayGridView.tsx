@@ -45,6 +45,7 @@ export class DayGridView extends BaseComponent<ViewProps> {
             todayRange={todayRange}
             cellRows={dayTableModel.cellRows}
             forPrint={props.forPrint}
+            className='fcnew-daygrid-view'
 
             // header content
             headerTiers={headerTiers}

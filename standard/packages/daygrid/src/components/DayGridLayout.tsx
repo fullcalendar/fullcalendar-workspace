@@ -23,6 +23,7 @@ export interface DayGridLayoutProps<HeaderCellModel, HeaderCellKey> {
   cellRows: DayTableCell[][]
   forPrint: boolean
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
+  className: string
 
   // header content
   headerTiers: HeaderCellModel[][]
@@ -65,7 +66,7 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
     return (
       <ViewContainer
         viewSpec={context.viewSpec}
-        elClasses={['fcnew-daygrid-view', 'fcnew-flex-column', 'fcnew-border']}
+        elClasses={[props.className, 'fcnew-flex-column', 'fcnew-border']}
       >
         {options.dayMinWidth ? (
           <DayGridLayoutPannable {...commonLayoutProps} dayMinWidth={options.dayMinWidth} />

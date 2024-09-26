@@ -77,6 +77,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
               todayRange={todayRange}
               cells={dayTableModel.cellRows[0]}
               forPrint={props.forPrint}
+              className='fcnew-timegrid-view'
 
               // header content
               headerTiers={dayTableModel.cellRows /* guaranteed to be one row */}

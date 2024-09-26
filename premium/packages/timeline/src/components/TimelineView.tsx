@@ -99,9 +99,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
             <ViewContainer
               viewSpec={context.viewSpec}
               elClasses={[
-                'fcnew-border',
+                'fcnew-timeline-view',
                 'fcnew-flex-column',
-                'fcnew-timeline',
+                'fcnew-border',
               ]}
             >
 

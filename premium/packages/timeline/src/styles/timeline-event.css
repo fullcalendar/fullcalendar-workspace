@@ -45,7 +45,7 @@
 // timeline-event > inner
 //
 
-.fcnew-event-inner {
+.fcnew-timeline-event .fcnew-event-inner {
   display: flex;
   flex-direction: row;
   align-items: center;

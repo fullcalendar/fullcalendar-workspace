@@ -15,6 +15,7 @@ export interface TimeGridLayoutProps<HeaderCellModel, HeaderCellKey> {
   cells: DayTableCell[]
   forPrint: boolean
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
+  className: string
 
   // header content
   headerTiers: HeaderCellModel[][]
@@ -120,7 +121,7 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
     return (
       <ViewContainer
         elClasses={[
-          'fcnew-timegrid-view',
+          props.className,
           'fcnew-flex-column',
           'fcnew-border'
         ]}
