@@ -171,6 +171,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
         {options.dayHeaders && (
           <div
             className={[
+              'fcnew-timegrid-header',
               'fcnew-row', // a "super" row
               stickyHeaderDates ? 'fcnew-sticky-header' : '',
             ].join(' ')}
@@ -232,7 +233,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
         {options.allDaySlot && (
           <Fragment>
             <div
-              className='fcnew-row' // a "super" row
+              className='fcnew-timegrid-allday fcnew-row' // a "super" row
               style={{ height: state.allDayHeight }}
             >
               {/* ALL-DAY / label
@@ -291,7 +292,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
           </Fragment>
         )}
         <div className={[ // a "super" row
-          'fcnew-row',
+          'fcnew-timegrid-body fcnew-row',
           verticalScrolling ? 'fcnew-liquid' : '',
         ].join(' ')}>
           {/* SLATS / labels (vertical scroller)

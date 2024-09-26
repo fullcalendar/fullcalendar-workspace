@@ -111,6 +111,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 horizontal
                 hideScrollbars
                 elClassNames={[
+                  'fcnew-timeline-header',
                   'fcnew-rowgroup',
                   stickyHeaderDates ? 'fcnew-sticky-header' : '',
                 ]}
@@ -160,6 +161,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 vertical={verticalScrolling}
                 horizontal
                 elClassNames={[
+                  'fcnew-timeline-body',
                   'fcnew-rowgroup',
                   verticalScrolling ? 'fcnew-liquid' : '',
                 ]}

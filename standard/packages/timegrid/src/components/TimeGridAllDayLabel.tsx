@@ -35,9 +35,6 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
           'fcnew-cell',
           'fcnew-content-box',
         ]}
-        elAttrs={{
-          'aria-hidden': true,
-        }}
         elStyle={{
           width: props.width,
         }}

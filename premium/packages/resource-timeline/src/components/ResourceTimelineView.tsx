@@ -348,6 +348,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       horizontal
                       hideScrollbars
                       elClassNames={[
+                        'fcnew-datagrid-body',
                         'fcnew-rowgroup',
                         verticalScrolling ? 'fcnew-liquid' : '',
                       ]}
@@ -512,6 +513,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       horizontal
                       hideScrollbars
                       elClassNames={[
+                        'fcnew-timeline-header',
                         'fcnew-rowgroup',
                         stickyHeaderDates ? 'fcnew-sticky-header' : '',
                       ]}
@@ -561,6 +563,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       horizontal
                       hideScrollbars={stickyFooterScrollbar}
                       elClassNames={[
+                        'fcnew-timeline-body',
                         'fcnew-rowgroup',
                         verticalScrolling ? 'fcnew-liquid' : '',
                       ]}

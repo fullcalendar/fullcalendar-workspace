@@ -85,6 +85,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
             horizontal
             hideScrollbars
             elClassNames={[
+              'fcnew-daygrid-header',
               'fcnew-rowgroup',
               stickyHeaderDates ? 'fcnew-sticky-header' : ''
             ]}
@@ -111,6 +112,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
           elClassNames={[
+            'fcnew-daygrid-body',
             'fcnew-rowgroup',
             'fcnew-flex-column',
             verticalScrollbars ? 'fcnew-liquid' : '',

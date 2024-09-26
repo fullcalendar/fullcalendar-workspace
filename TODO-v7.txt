@@ -23,14 +23,9 @@ audit all CSS
     'fcnew-timeline-lane', // is this the best name?
     // TODO: have lane classNames like 'fcnew-timegrid-lane'/'fcnew-timegrid-slot-lane'/'fcnew-timegrid-slat-lane'
   rething -main vs -body naming
+  remove -view from view classNames? looks nice!
+  view should have classNames like fcnew-resource-timegrid AND fcnew-timegrid
 
-correct header/body containers
-  make daycol-header-thing a 'fcnew-daygrid-header' container!
-hard to style daygrid header cells
-  revive fcnew-daygrid-colheader ?
-  will be mutually exclusive with fcnew-daygrid-cell
-  (use this technique on datagrid too?)
-  (these selectors aren't used for styling anymore! right?)
 audit z-indexes
   for example, fcnew-timeline-bg seems above slats
 tests aleady have fcnew- className prefix!?... actually some have .fc
@@ -67,6 +62,7 @@ AFTER beta.1
   css refactor
     maybe stop doing "frame" elements for measurements, and instead use just "cushion"
       how would that work for getting a scroller's "clientWidth/clientHeight"?
+    research every possible event overflow scenario when events don't have much space
   restore print-mode
     ensure print-view has nothing sticky
       (wait, maybe we want it titles sticky onscreen for h-scroll daygrid/timeline)
@@ -142,3 +138,11 @@ CHANGELOG
     fix those 2 incorrect date-yielding results
     make ticket where resource-timline super-header stays fixed during horizontal scrolling of datagrid
     sticky subheader of listview, don't have bottom border. ticket?
+    "Event titles repeated each day in print"
+      https://github.com/fullcalendar/fullcalendar/issues/6657
+    "Compressed space between events in dayGrid when month-start title"
+      https://github.com/fullcalendar/fullcalendar/issues/7184
+    "Events times are cutoff with eventDisplay: "block" when there is not enough space for the title"
+      https://github.com/fullcalendar/fullcalendar/issues/6457
+    "Events overflow below day cell with dayMaxEvents: true and showNonCurrentDates: false"
+      https://github.com/fullcalendar/fullcalendar/issues/6749

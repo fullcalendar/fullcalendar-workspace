@@ -121,6 +121,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         {options.dayHeaders && (
           <div
             className={[
+              'fcnew-timegrid-header',
               'fcnew-rowgroup',
               stickyHeaderDates ? 'fcnew-sticky-header' : '',
             ].join(' ')}
@@ -158,7 +159,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         {options.allDaySlot && (
           <Fragment>
             <div
-              className='fcnew-row'
+              className='fcnew-timegrid-allday fcnew-row'
               style={{
                 paddingLeft: state.leftScrollbarWidth,
                 paddingRight: state.rightScrollbarWidth,
@@ -197,6 +198,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         <Scroller
           vertical={verticalScrolling}
           elClassNames={[
+            'fcnew-timegrid-body',
             'fcnew-rowgroup',
             verticalScrolling ? 'fcnew-liquid' : '',
           ]}

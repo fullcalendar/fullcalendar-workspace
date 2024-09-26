@@ -35,14 +35,9 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
     const isCentered = !(props.tDateProfile.isTimeScale && props.isLastRow)
     const isSticky = !props.isLastRow
 
-    const classNames = [
-      'fcnew-row',
-      'fcnew-timeline-header-row',
-    ]
-
     return (
       <div
-        className={classNames.join(' ')}
+        className='fcnew-row'
         style={{ height: props.height }}
       >
         {props.cells.map((cell) => {
