@@ -11,6 +11,13 @@
   @include bg-z-indexes;
 }
 
+/*
+HACK because fcnew-timegrid-event isn't doing its job with z-index
+*/
+.fcnew-timegrid-col-fg { // has .fcnew-rel
+  z-index: $timegrid-col-fg-z;
+}
+
 .fcnew-direction-ltr {
   & .fcnew-timegrid-col-fg {
     margin: 0 2.5% 0 2px;

@@ -25,9 +25,9 @@ audit all CSS
   rething -main vs -body naming
   remove -view from view classNames? looks nice!
   view should have classNames like fcnew-resource-timegrid AND fcnew-timegrid
+  changelog: th tags are no longer used, which would have given bold
+  solve z-index:9999 hacks. audit all z-indexes
 
-audit z-indexes
-  for example, fcnew-timeline-bg seems above slats
 tests aleady have fcnew- className prefix!?... actually some have .fc
 restore .fc prefix
 verify timeline-external-dragging.html works

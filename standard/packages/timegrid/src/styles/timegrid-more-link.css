@@ -1,9 +1,10 @@
 
 //
 // timegrid-more-link
+//   does NOT inherit from fcnew-timegrid-event
 //
 
-.fcnew-timegrid-more-link { // does NOT inherit from fcnew-timegrid-event
+.fcnew-timegrid-more-link {
   z-index: 9999; // hack
   color: var(--fcnew-more-link-text-color);
   background: var(--fcnew-more-link-bg-color);

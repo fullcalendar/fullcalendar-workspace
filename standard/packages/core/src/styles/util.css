@@ -197,13 +197,13 @@ Lone cell in a row should always fill row. Makes axis widths much easier
   position: sticky;
   top: 0;
   background: var(--fcnew-page-bg-color);
-  z-index: 999; // TODO: what was it before?
+  z-index: 9999; // TODO: what was it before?
 }
 
 .fcnew-sticky-footer {
   position: sticky;
   bottom: 0;
-  z-index: 999; // TODO: what was it before?
+  z-index: 9999; // TODO: what was it before?
 }
 
 /*
