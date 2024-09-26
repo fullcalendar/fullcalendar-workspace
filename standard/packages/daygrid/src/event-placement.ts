@@ -63,7 +63,7 @@ export function computeFgSegVerticals(
   let hierarchy = new DayGridSegHierarchy((segEntry: SegEntry) => (
     segHeightMap.get(getSegSpanId(segs[segEntry.index]))
   ))
-  hierarchy.allowReslicing = true
+  hierarchy.allowReslicing = false
   hierarchy.strictOrder = strictOrder
 
   if (dayMaxEvents === true || dayMaxEventRows === true) {

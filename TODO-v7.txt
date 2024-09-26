@@ -36,20 +36,23 @@ audit all CSS
   .fc-timeline-now-indicator-container covers all the text in the header cells
   events in timeline-no-overlap.html are too thick now?
   changelog: what used to be <th> cells are no longer bold (except for list view)
+  why does TimelineLane::render get called 3 times initially?
+  file bug for timeline event dragging:
+    1. have +more link with eventMaxStack
+    2. open link, begin to drag event
+    3. event looses it's duration. inconsistent with how normal event dragging happens
+  daygrid event "reslicing" disabled to prevent compact daygrid bug (in multimonth) --- `allowReslicing`
+    TODO: thing hard about whether to keep this
+    if removing, can probably optimize and avoid getSegStartId/getSegSpanId
 
 FOR beta.1
-  timeline
-    test that +more link works
   resource-timeline
     when switching back and forth from 1-day to 3-day, many times, scrolltime gets messed up
   multimonth
-    compact months don't display +more link! multi-day events just cover over them!
     multiweek-view.html: when dragging and dropping event, scroll jumps down
   timegrid
     initial-scroll broken!!!
     test that +more link works
-  daygrid
-    +more link renders weird
   react/vue/angular connectors
     pause size-handling until all slots are rendered
   ALL
