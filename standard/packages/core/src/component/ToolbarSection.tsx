@@ -12,6 +12,7 @@ export interface ToolbarContent {
 }
 
 export interface ToolbarSectionProps extends ToolbarContent {
+  name: string
   widgetGroups: ToolbarWidget[][]
 }
 
@@ -19,7 +20,12 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
   render(): any {
     let children = this.props.widgetGroups.map((widgetGroup) => this.renderWidgetGroup(widgetGroup))
 
-    return createElement('div', { className: 'fc-toolbar-chunk' }, ...children)
+    return createElement(
+      'div', {
+        className: 'fc-toolbar-chunk fc-toolbar-' + this.props.name
+      },
+      ...children,
+    )
   }
 
   renderWidgetGroup(widgetGroup: ToolbarWidget[]): any {

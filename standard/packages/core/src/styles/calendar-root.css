@@ -2,6 +2,7 @@
 .fc {
   display: flex;
   flex-direction: column;
+  gap: 1.5em; // space between toolbars and view
 
   &,
   & *,

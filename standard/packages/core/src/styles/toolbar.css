@@ -1,39 +1,37 @@
 
+//
+// toolbar
+//
+
 .fc-toolbar {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: center; // vertical
+  gap: .75em; // space between start/center/right
 }
 
-.fc-toolbar.fc-header-toolbar {
-  margin-bottom: 1.5em;
+.fc-direction-rtl .fc-toolbar-ltr { // (explicitly ltr within rtl)
+  flex-direction: row-reverse; // reverse to ensure ltr
 }
 
-.fc-toolbar.fc-footer-toolbar {
-  margin-top: 1.5em;
+//
+// toolbar > section
+//
+
+.fc-toolbar-chunk {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  gap: .75em; // space between items
 }
+
+//
+// toolbar > section > title
+//
 
 .fc-toolbar-title {
   font-size: 1.75em;
   margin: 0;
-}
-
-.fc-direction-ltr {
-
-  & .fc-toolbar > * > :not(:first-child) {
-    margin-left: .75em; // space between
-  }
-
-}
-
-.fc-direction-rtl {
-
-  & .fc-toolbar > * > :not(:first-child) {
-    margin-right: .75em; // space between
-  }
-
-  & .fc-toolbar-ltr { // when the toolbar-chunk positioning system is explicitly left-to-right
-    flex-direction: row-reverse;
-  }
-
+  white-space: nowrap;
 }
