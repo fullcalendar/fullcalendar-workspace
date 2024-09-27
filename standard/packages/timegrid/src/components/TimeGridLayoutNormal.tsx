@@ -1,6 +1,6 @@
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize, getIsHeightAuto, rangeContainsMarker } from "@fullcalendar/core/internal"
 import { Fragment, createElement, ComponentChild, Ref } from '@fullcalendar/core/preact'
-import { HeaderRow, TableSeg } from '@fullcalendar/daygrid/internal'
+import { HeaderRow, TableSeg, COMPACT_CELL_WIDTH } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
 import { TimeGridAllDayLane } from "./TimeGridAllDayLane.js"
 import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"
@@ -64,6 +64,7 @@ export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
 }
 
 interface TimeGridLayoutState {
+  scrollerWidth?: number
   scrollerHeight?: number
   leftScrollbarWidth?: number
   rightScrollbarWidth?: number
@@ -174,6 +175,10 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 forPrint={props.forPrint}
                 isHitComboAllowed={props.isHitComboAllowed}
                 className='fc-liquid fc-cell'
+                compact={
+                  (state.scrollerWidth != null && state.axisWidth != null)
+                    && (state.scrollerWidth - state.axisWidth) / props.cells.length < COMPACT_CELL_WIDTH
+                }
 
                 // content
                 fgEventSegs={props.fgEventSegs}
@@ -200,6 +205,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
             verticalScrolling ? 'fc-liquid' : '',
           ]}
           ref={props.timeScrollerRef}
+          widthRef={this.handleScrollerWidth}
           heightRef={this.handleScrollerHeight}
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
@@ -292,6 +298,10 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
 
   // Sizing
   // -----------------------------------------------------------------------------------------------
+
+  private handleScrollerWidth = (scrollerWidth: number) => {
+    this.setState({ scrollerWidth })
+  }
 
   private handleScrollerHeight = (scrollerHeight: number) => {
     this.setState({ scrollerHeight })

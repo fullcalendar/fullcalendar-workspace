@@ -1,20 +1,15 @@
 
 //
-// MultiMonthView
+// multimonth
 //
 
-.fc-multimonth-scroll { // (scrollable variant)
+.fc-multimonth-scroll { // (scroll)
   overflow-y: scroll; // HACK to prevent width oscillation, for handleScrollRequest
   overflow-x: hidden;
 }
 
-.fc-multimonth-multicol, // (multicol variant)
-.fc-multimonth-compact { // (compact variant)
-  line-height: 1; // undo themes that have thick line-height
-}
-
 //
-// MultiMonthView > Inner
+// multimonth > inner
 //
 
 .fc-multimonth-inner {
@@ -22,49 +17,53 @@
   flex-wrap: wrap;
 }
 
-.fc-multimonth-multicol .fc-multimonth-inner { // (multicol variant)
+//
+// multimonth > month
+//
+
+.fc-multimonth-multicol .fc-multimonth-month { // (multicol)
   margin: 0 1.2em 1.2em;
-  gap: 2.4em;
 }
 
-//
-// MultiMonthView > Month
-//
-
-.fc-multimonth-month,
-.fc-multimonth-header-row { // > Header > Row
-  border-bottom: 1px solid var(--fc-border-color);
-}
-
-.fc-multimonth-singlecol .fc-multimonth-month:last-child { // (variant)
-  border-bottom: 0;
-}
-
-.fc-multimonth-title { // > Header > Title
+.fc-multimonth-multicol .fc-multimonth-title { // (multicol) > header > title
   padding: 1em 0;
+}
+
+.fc-multimonth-singlecol .fc-multimonth-title { // (singlecol) > header > title
+  padding: 0.5em 0;
+}
+
+.fc-multimonth-title { // > header > title
   text-align: center;
   font-weight: bold;
   font-size: 1.2em;
 }
 
-.fc-multimonth-header-row { // > Header > Row
+.fc-multimonth-header-row { // > header > row
   border-top: 1px solid var(--fc-border-color);
 }
 
-//
-// MultiMonthView > Month (multicol variant)
-//
+.fc-multimonth-header-row, // > header > row
+.fc-multimonth-month {
+  border-bottom: 1px solid var(--fc-border-color);
+}
 
-.fc-multimonth-multicol {
-  & .fc-multimonth-header-row, // > Header > Row
-  & .fc-multimonth-body { // > Body
-    border-left: 1px solid var(--fc-border-color);
-    border-right: 1px solid var(--fc-border-color);
-  }
+.fc-multimonth-singlecol .fc-multimonth-month:last-child { // (singlecol)
+  border-bottom: 0;
+}
+
+.fc-multimonth-multicol .fc-multimonth-header-row, // (multicol) > header > row
+.fc-multimonth-multicol .fc-multimonth-body { // (multicol) > body
+  border-left: 1px solid var(--fc-border-color);
+  border-right: 1px solid var(--fc-border-color);
+
+  // shrink font
+  font-size: 0.9em;
+  line-height: 1;
 }
 
 //
-// MultiMonthView > Month (sticky variant)
+// multimonth > month (sticky)
 //
 
 .fc-media-screen {
@@ -81,30 +80,4 @@
       z-index: 1;
     }
   }
-}
-
-//
-// MultiMonthView > Month (compact variant)
-//
-
-.fc-multimonth-compact {
-  & .fc-multimonth-header-row, // > Header > Row
-  & .fc-multimonth-body { // > Body
-    font-size: 0.9em;
-  }
-}
-
-
-//
-// MultiMonthView > Month > Body > MoreLink
-//
-
-.fc-multimonth-multicol .fc-daygrid-cell-footer { // TODO: move this
-  align-items: stretch; // HACK: undo flex-start, which aligned more-link to side
-}
-
-.fc-multimonth-multicol .fc-daygrid-more-link { // (multicol variant)
-  // look like an event
-  border: 1px solid var(--fc-event-border-color);
-  padding: 1px;
 }

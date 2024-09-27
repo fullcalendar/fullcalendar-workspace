@@ -61,6 +61,7 @@ audit all CSS
   angular not compiling with our Preact version
     https://github.com/preactjs/preact/issues/4023
     tried skipLibCheck:true, but getting runtime errors (related!?). reverted
+  responsive: make ticket where popover is responsive?
 
 FOR beta.1
   ALL

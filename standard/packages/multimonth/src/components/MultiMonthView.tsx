@@ -77,9 +77,6 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
       (colCount === 1) ?
         'fc-multimonth-singlecol' :
         'fc-multimonth-multicol',
-      (typeof monthWidth === 'number' && monthWidth < 400) ?
-        'fc-multimonth-compact' :
-        '',
       getIsHeightAuto(options) ?
         '' :
         'fc-multimonth-scroll',

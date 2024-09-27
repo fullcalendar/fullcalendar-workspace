@@ -13,7 +13,7 @@ import {
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { TableSeg, splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
-import { DayGridRow } from './DayGridRow.js'
+import { COMPACT_CELL_WIDTH, DayGridRow } from './DayGridRow.js'
 import { computeColFromPosition, computeRowFromPosition, getCellEl, getRowEl } from './util.js'
 
 export interface DayGridRowsProps {
@@ -105,6 +105,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
             cells={cells}
             showDayNumbers={rowCnt > 1}
             forPrint={props.forPrint}
+            compact={state.width != null && (state.width / cells.length) < COMPACT_CELL_WIDTH}
 
             // if not auto-height, distribute height of container somewhat evently to rows
             // (treat all as zero, distribute height, then ensure min-heights -- the inner content height)

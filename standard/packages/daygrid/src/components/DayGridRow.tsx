@@ -41,6 +41,7 @@ export interface DayGridRowProps {
   cellGroup?: boolean // bad name now
   className?: string // TODO: better API for this
   forceVSpacing?: boolean
+  compact?: boolean
 
   // content
   fgEventSegs: TableSeg[]
@@ -70,6 +71,8 @@ interface DayGridRowState {
 }
 
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
+
+export const COMPACT_CELL_WIDTH = 80
 
 export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> {
   // ref
@@ -130,7 +133,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
         role={props.cellGroup ? undefined : 'row'}
         className={[
           'fc-daygrid-row',
-          props.forceVSpacing ? 'fc-daygrid-row-spacious' : '',
+          props.forceVSpacing
+            ? 'fc-daygrid-row-spacious'
+            : props.compact
+              ? 'fc-daygrid-row-compact'
+              : '',
           props.cellGroup ? 'fc-flex-row' : 'fc-row',
           'fc-rel',
           props.className || '',

@@ -73,9 +73,12 @@
   align-items: flex-start;
 }
 
-// (spacious)
-.fc-daygrid-row-spacious .fc-daygrid-cell-footer {
+.fc-daygrid-row-spacious .fc-daygrid-cell-footer { // (spacious)
   margin-bottom: 1em !important; // see below for why important
+}
+
+.fc-daygrid-row-compact .fc-daygrid-cell-footer { // (compact)
+  align-items: stretch; // undo flex-start, which aligned more-link to side
 }
 
 //
@@ -97,6 +100,12 @@
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
+}
+
+.fc-daygrid-row-compact .fc-daygrid-more-link { // (compact)
+  // look like an event
+  border: 1px solid var(--fc-event-border-color);
+  padding: 1px;
 }
 
 //
