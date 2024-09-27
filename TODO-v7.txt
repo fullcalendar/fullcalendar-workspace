@@ -59,7 +59,6 @@ audit all CSS
       multiweek 'today' doesn't scroll into view
 
 FOR beta.1
-  on month view, selection is above events. can't dnd events after selecting
   react/vue/angular connectors
     pause size-handling until all slots are rendered
   ALL

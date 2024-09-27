@@ -34,7 +34,7 @@
 }
 
 //
-// daygrid-block-event (extends daygrid-event)
+// daygrid-block-event (extends daygrid-event --- BUT *NOT* h-event, WEIRD, TODO)
 //   the rectangle ("block") style of event
 //
 
@@ -67,6 +67,7 @@
 //
 
 .fc-daygrid-dot-event {
+  position: relative; // HACK: related to "BUT *NOT* h-event" above
   display: flex;
   direction: row;
   align-items: center; // vertical
