@@ -1,8 +1,10 @@
+import { guid } from "./misc.js"
 
 /*
 TODO: make API where createRefMap() called
 */
 export class RefMap<K, V> {
+  public rev: string = ''
   public current = new Map<K, V>()
   private callbacks = new Map<K, (val: V | null) => void>
 
@@ -31,6 +33,8 @@ export class RefMap<K, V> {
     } else {
       current.set(key, val)
     }
+
+    this.rev = guid()
 
     if (this.masterCallback) {
       this.masterCallback(val, key)

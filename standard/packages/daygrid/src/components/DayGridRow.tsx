@@ -15,7 +15,6 @@ import {
   WeekNumberContainer,
   buildNavLinkAttrs,
   watchHeight,
-  guid,
   afterSize,
 } from '@fullcalendar/core/internal'
 import {
@@ -388,7 +387,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
   }
 
   private handleSegHeights = () => {
-    this.setState({ segHeightRev: guid() }) // will trigger event rerender
+    this.setState({ segHeightRev: this.segHeightRefMap.rev }) // will trigger event rerender
   }
 
   // Utils

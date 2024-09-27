@@ -5,7 +5,6 @@ import {
   getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs,
   SegGroup,
   RefMap,
-  guid,
   afterSize,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
@@ -238,10 +237,10 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
   }
 
   private handleMoreLinkHeights = () => {
-    this.setState({ moreLinkHeightRev: guid() }) // will trigger rerender
+    this.setState({ moreLinkHeightRev: this.moreLinkHeightRefMap.rev }) // will trigger rerender
   }
 
   private handleSegHeights = () => {
-    this.setState({ segHeightRev: guid() }) // will trigger rerender
+    this.setState({ segHeightRev: this.segHeightRefMap.rev }) // will trigger rerender
   }
 }
