@@ -57,10 +57,12 @@ audit all CSS
       multiweek-view.html: when dragging and dropping event, scroll jumps down
     daygrid
       multiweek 'today' doesn't scroll into view
+  audit flickering during react custom rendering
+  angular not compiling with our Preact version
+    https://github.com/preactjs/preact/issues/4023
+    tried skipLibCheck:true, but getting runtime errors (related!?). reverted
 
 FOR beta.1
-  react/vue/angular connectors
-    pause size-handling until all slots are rendered
   ALL
     implement responsiveness
     implement scroller padding rectangles
@@ -130,6 +132,7 @@ AFTER beta.1
 
 CHANGELOG
   temporary
+    angular broken because of Preact version
     the space to accommodate scrollbars is just blank
     print mode lacking
   daygrid
@@ -161,3 +164,4 @@ CHANGELOG
       https://github.com/fullcalendar/fullcalendar/issues/6457
     "Events overflow below day cell with dayMaxEvents: true and showNonCurrentDates: false"
       https://github.com/fullcalendar/fullcalendar/issues/6749
+    ticket where someone complains about needing to call .updateSize()

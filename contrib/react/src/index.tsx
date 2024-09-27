@@ -23,7 +23,6 @@ export default class FullCalendar extends Component<CalendarOptions, CalendarSta
   private elRef = createRef<HTMLDivElement>()
   private calendar: Calendar
   private handleCustomRendering: (customRendering: CustomRendering<any>) => void
-  private resizeId: number | undefined
   private isUpdating = false
   private isUnmounting = false
 
@@ -89,14 +88,7 @@ export default class FullCalendar extends Component<CalendarOptions, CalendarSta
         : flushSync // guaranteed sync rendering
 
       runFunc(() => {
-        this.setState({ customRenderingMap }, () => {
-          lastRequestTimestamp = requestTimestamp
-          if (isMounting) {
-            this.doResize()
-          } else {
-            this.requestResize()
-          }
-        })
+        this.setState({ customRenderingMap })
       })
     })
   }
@@ -112,28 +104,7 @@ export default class FullCalendar extends Component<CalendarOptions, CalendarSta
 
   componentWillUnmount() {
     this.isUnmounting = true
-    this.cancelResize()
     this.calendar.destroy()
-  }
-
-  requestResize = () => {
-    if (!this.isUnmounting) {
-      this.cancelResize()
-      this.resizeId = requestAnimationFrame(() => {
-        this.doResize()
-      })
-    }
-  }
-
-  doResize() {
-    this.calendar.updateSize()
-  }
-
-  cancelResize() {
-    if (this.resizeId !== undefined) {
-      cancelAnimationFrame(this.resizeId)
-      this.resizeId = undefined
-    }
   }
 
   getApi(): CalendarApi {
