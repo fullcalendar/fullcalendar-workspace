@@ -118,7 +118,8 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
   private slatMainInnerHeightRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
     afterSize(this.handleSlatInnerHeights)
   })
-  private currentSlatHeight?: number
+  private slatHeight?: number
+  private prevSlatHeight?: number
   private headerScrollerRef = createRef<Scroller>()
   private allDayScrollerRef = createRef<Scroller>()
   private mainScrollerRef = createRef<Scroller>()
@@ -160,11 +161,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
       state.slatInnerHeight,
       state.scrollerHeight,
     )
-
-    if (this.currentSlatHeight !== slatHeight) {
-      this.currentSlatHeight = slatHeight
-      setRef(props.slatHeightRef, slatHeight)
-    }
+    this.slatHeight = slatHeight
 
     return (
       <Fragment>
@@ -439,14 +436,22 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
 
   componentDidMount() {
     this.initScrollers()
+    this.updateSlatHeight()
   }
 
   componentDidUpdate() {
     this.updateScrollers()
+    this.updateSlatHeight()
   }
 
   componentWillUnmount() {
     this.destroyScrollers()
+  }
+
+  updateSlatHeight() {
+    if (this.prevSlatHeight !== this.slatHeight) {
+      setRef(this.props.slatHeightRef, this.prevSlatHeight = this.slatHeight)
+    }
   }
 
   // Sizing

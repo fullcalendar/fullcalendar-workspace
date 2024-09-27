@@ -8,7 +8,7 @@ import {
   Hit,
   RefMap,
   Scroller,
-  TimeScrollResponder,
+  ScrollResponder,
   ViewContainer
 } from '@fullcalendar/core/internal'
 import { ComponentChild, createElement, createRef, Ref } from '@fullcalendar/core/preact'
@@ -50,9 +50,6 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
   private scrollerRef = createRef<Scroller>()
   private rowHeightRefMap = new RefMap<string, number>()
 
-  // internal
-  private timeScrollResponder: TimeScrollResponder
-
   render() {
     const { props, context } = this
     const { options } = context
@@ -81,24 +78,34 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
-    this.timeScrollResponder = this.context.createTimeScrollResponder(this.handleTimeScroll)
+    const { context } = this
+    const { options } = context
+
+    context.emitter.on('_timeScrollRequest', this.timeScrollResponder.handleScroll)
+    this.timeScrollResponder.handleScroll(options.scrollTime)
   }
 
-  componentDidUpdate(prevProps: DayGridLayoutProps<HeaderCellModel, HeaderCellKey>) {
-    this.timeScrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
+  componentDidUpdate(prevProps: DayGridLayoutProps<unknown, unknown>) {
+    const { options } = this.context
+
+    if (prevProps.dateProfile !== this.props.dateProfile && options.scrollTimeReset) {
+      this.timeScrollResponder.handleScroll(options.scrollTime)
+    } else {
+      this.timeScrollResponder.drain()
+    }
   }
 
   componentWillUnmount() {
-    this.timeScrollResponder.detach()
+    this.context.emitter.off('_timeScrollRequest', this.timeScrollResponder.handleScroll)
   }
 
   // Scrolling
   // -----------------------------------------------------------------------------------------------
 
-  // HACK to scroll to day
-  handleTimeScroll = (_time: Duration) => {
-    const scroller = this.scrollerRef.current
+  private timeScrollResponder = new ScrollResponder((_time: Duration) => {
+    // HACK to scroll to day
     const rowHeightMap = this.rowHeightRefMap.current
+    const scroller = this.scrollerRef.current
 
     const scrollTop = computeTopFromDate(
       this.props.dateProfile.currentDate,
@@ -108,6 +115,9 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
 
     if (scrollTop != null) {
       scroller.scrollTo({ y: scrollTop })
+      return true
     }
-  }
+
+    return false
+  })
 }

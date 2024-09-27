@@ -18,7 +18,7 @@ import {
   afterSize,
   ScrollerSyncerInterface,
   getIsHeightAuto,
-  TimeScrollResponder,
+  ScrollResponder,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { buildTimelineDateProfile, TimelineDateProfile } from '../timeline-date-profile.js'
@@ -52,7 +52,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   private bodySlotInnerWidth?: number
 
   // internal
-  private timeScrollResponder: TimeScrollResponder
   private syncedScroller: ScrollerSyncerInterface
 
   render() {
@@ -235,20 +234,33 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
-    this.timeScrollResponder = this.context.createTimeScrollResponder(this.handleTimeScroll)
+    const { context } = this
+    const { options } = context
+
     const ScrollerSyncer = getScrollerSyncerClass(this.context.pluginHooks)
     this.syncedScroller = new ScrollerSyncer(true) // horizontal=true
     this.updateSyncedScroller()
+
+    context.emitter.on('_timeScrollRequest', this.timeScrollResponder.handleScroll)
+    this.timeScrollResponder.handleScroll(options.scrollTime)
   }
 
   componentDidUpdate(prevProps: ViewProps) {
-    this.timeScrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
+    const { options } = this.context
+
     this.updateSyncedScroller()
+
+    if (prevProps.dateProfile !== this.props.dateProfile && options.scrollTimeReset) {
+      this.timeScrollResponder.handleScroll(options.scrollTime)
+    } else {
+      this.timeScrollResponder.drain()
+    }
   }
 
   componentWillUnmount() {
-    this.timeScrollResponder.detach()
     this.syncedScroller.destroy()
+
+    this.context.emitter.off('_timeScrollRequest', this.timeScrollResponder.handleScroll)
   }
 
   // Sizing
@@ -305,14 +317,19 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     ], this.context.isRtl)
   }
 
-  handleTimeScroll = (time: Duration) => {
+  private timeScrollResponder = new ScrollResponder((time: Duration) => {
     const { props, context, tDateProfile, slotWidth } = this
 
-    const x = timeToCoord(time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth) +
-      (context.isRtl ? -1 : 1) // overcome border. TODO: DRY this up
+    if (slotWidth != null) {
+      const x = timeToCoord(time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth) +
+        (context.isRtl ? -1 : 1) // overcome border. TODO: DRY this up
 
-    this.syncedScroller.scrollTo({ x })
-  }
+      this.syncedScroller.scrollTo({ x })
+      return true
+    }
+
+    return false
+  })
 
   // Hit System
   // -----------------------------------------------------------------------------------------------

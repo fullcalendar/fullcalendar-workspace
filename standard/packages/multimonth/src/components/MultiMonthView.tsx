@@ -16,9 +16,9 @@ import {
   DateRange,
   NowTimer,
   getIsHeightAuto,
-  TimeScrollResponder,
   watchWidth,
   compareNumbers,
+  ScrollResponder,
 } from '@fullcalendar/core/internal'
 import { buildDayTableRenderRange } from '@fullcalendar/daygrid/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
@@ -40,7 +40,6 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
   private innerElRef = createRef<HTMLDivElement>()
 
   // internal
-  private timeScrollResponder: TimeScrollResponder
   private unwatchWidth: () => void
 
   render() {
@@ -119,17 +118,29 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
   }
 
   componentDidMount(): void {
+    const { context } = this
+    const { options } = context
+
     this.unwatchWidth = watchWidth(this.rootElRef.current, this.handleClientWidth)
-    this.timeScrollResponder = this.context.createTimeScrollResponder(this.handleTimeScroll)
+
+    context.emitter.on('_timeScrollRequest', this.timeScrollResponder.handleScroll)
+    this.timeScrollResponder.handleScroll(options.scrollTime)
   }
 
   componentDidUpdate(prevProps: ViewProps) {
-    this.timeScrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
+    const { options } = this.context
+
+    if (prevProps.dateProfile !== this.props.dateProfile && options.scrollTimeReset) {
+      this.timeScrollResponder.handleScroll(options.scrollTime)
+    } else {
+      this.timeScrollResponder.drain()
+    }
   }
 
   componentWillUnmount() {
     this.unwatchWidth()
-    this.timeScrollResponder.detach()
+
+    this.context.emitter.off('_timeScrollRequest', this.timeScrollResponder.handleScroll)
   }
 
   handleClientWidth = (clientWidth: number) => {
@@ -155,18 +166,24 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
     this.setState({ clientWidth, xGap, xPadding })
   }
 
-  handleTimeScroll = (_time: Duration) => {
+  private timeScrollResponder = new ScrollResponder((_time: Duration) => {
     // HACK to scroll to day
-    const { currentDate } = this.props.dateProfile
-    const rootEl = this.rootElRef.current
-    const innerEl = this.innerElRef.current
-    const monthEl = innerEl.querySelector(`[data-date="${formatIsoMonthStr(currentDate)}"]`)
 
-    rootEl.scrollTop = Math.ceil( // for fractions, err on the side of scrolling further
-      monthEl.getBoundingClientRect().top -
-      innerEl.getBoundingClientRect().top
-    )
-  }
+    if (this.state.clientWidth != null) {
+      const { currentDate } = this.props.dateProfile
+      const rootEl = this.rootElRef.current
+      const innerEl = this.innerElRef.current
+      const monthEl = innerEl.querySelector(`[data-date="${formatIsoMonthStr(currentDate)}"]`)
+
+      rootEl.scrollTop = Math.ceil( // for fractions, err on the side of scrolling further
+        monthEl.getBoundingClientRect().top -
+        innerEl.getBoundingClientRect().top
+      )
+      return true
+    }
+
+    return false
+  })
 }
 
 // date profile

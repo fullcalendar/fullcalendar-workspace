@@ -90,7 +90,8 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
   private slatInnerMainHeightRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
     afterSize(this.handleSlatInnerHeights)
   })
-  private currentSlatHeight?: number
+  private slatHeight?: number
+  private prevSlatHeight?: number
 
   render() {
     const { props, state, context, slatLabelInnerWidthRefMap, slatLabelInnerHeightRefMap, slatInnerMainHeightRefMap, headerLabelInnerWidthRefMap } = this
@@ -108,11 +109,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
       state.slatInnerHeight,
       state.scrollerHeight,
     )
-
-    if (this.currentSlatHeight !== slatHeight) {
-      this.currentSlatHeight = slatHeight
-      setRef(props.slatHeightRef, slatHeight)
-    }
+    this.slatHeight = slatHeight
 
     return (
       <Fragment>
@@ -274,6 +271,23 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         </Scroller>
       </Fragment>
     )
+  }
+
+  // Lifecycle
+  // -----------------------------------------------------------------------------------------------
+
+  componentDidMount() {
+    this.updateSlatHeight()
+  }
+
+  componentDidUpdate() {
+    this.updateSlatHeight()
+  }
+
+  updateSlatHeight() {
+    if (this.prevSlatHeight !== this.slatHeight) {
+      setRef(this.props.slatHeightRef, this.prevSlatHeight = this.slatHeight)
+    }
   }
 
   // Sizing

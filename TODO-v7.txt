@@ -49,14 +49,17 @@ audit all CSS
   in timegrid (and other views), when rendering +more link, ensure it's in the correct DOM order
     right now, all hidden +more links are put at beginning
   position the popover -1px -1px, to overlap border
+  scroll issues
+    resource-timeline
+      when switching back and forth from 1-day to 3-day, many times, scrolltime gets messed up
+        related to slots growing in size!
+    multimonth
+      multiweek-view.html: when dragging and dropping event, scroll jumps down
+    daygrid
+      multiweek 'today' doesn't scroll into view
 
 FOR beta.1
-  resource-timeline
-    when switching back and forth from 1-day to 3-day, many times, scrolltime gets messed up
-  multimonth
-    multiweek-view.html: when dragging and dropping event, scroll jumps down
-  timegrid
-    initial-scroll broken!!!
+  on month view, selection is above events. can't dnd events after selecting
   react/vue/angular connectors
     pause size-handling until all slots are rendered
   ALL

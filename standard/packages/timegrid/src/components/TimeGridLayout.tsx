@@ -1,5 +1,5 @@
 import { Duration, ViewOptions } from '@fullcalendar/core'
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, TimeScrollResponder, ViewContainer, memoize } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, ScrollResponder, Scroller, ViewContainer, afterSize, memoize } from "@fullcalendar/core/internal"
 import { createElement, ComponentChild, Ref, createRef } from '@fullcalendar/core/preact'
 import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { buildSlatMetas } from "../time-slat-meta.js"
@@ -61,10 +61,9 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
   // refs
   private dayScrollerRef = createRef<Scroller>()
   private timeScrollerRef = createRef<Scroller>()
-  private slatHeightRef = createRef<number>()
+  private slatHeight?: number
 
   // internal
-  private timeScrollResponder: TimeScrollResponder
   private currentSlatCnt?: number
 
   render() {
@@ -120,7 +119,7 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
 
       // refs
       timeScrollerRef: this.timeScrollerRef,
-      slatHeightRef: this.slatHeightRef,
+      slatHeightRef: this.handleSlatHeight,
     }
 
     return (
@@ -149,36 +148,65 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
-    this.timeScrollResponder = this.context.createTimeScrollResponder(this.handleTimeScroll)
+    const { context } = this
+    const { options } = context
+
+    context.emitter.on('_timeScrollRequest', this.timeScrollResponder.handleScroll)
+    this.timeScrollResponder.handleScroll(options.scrollTime)
   }
 
   componentDidUpdate(prevProps: TimeGridLayoutProps<unknown, unknown>) {
-    this.timeScrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
+    const { options } = this.context
+
+    if (prevProps.dateProfile !== this.props.dateProfile && options.scrollTimeReset) {
+      this.timeScrollResponder.handleScroll(options.scrollTime)
+    } else {
+      this.handleSize()
+    }
   }
 
   componentWillUnmount() {
-    this.timeScrollResponder.detach()
+    this.context.emitter.off('_timeScrollRequest', this.timeScrollResponder.handleScroll)
   }
 
   // Scrolling
   // -----------------------------------------------------------------------------------------------
 
-  handleTimeScroll = (time: Duration) => {
+  private handleSlatHeight = (slatHeight: number) => {
+    this.slatHeight = slatHeight
+    afterSize(this.handleSize)
+  }
+
+  private handleSize = () => {
+    this.timeScrollResponder.drain()
+  }
+
+  private timeScrollResponder = new ScrollResponder((time: Duration) => {
     const dayScroller = this.dayScrollerRef.current
     const timeScroller = this.timeScrollerRef.current
-    const slatHeight = this.slatHeightRef.current
+    const { slatHeight } = this
 
-    const top = computeTimeTopFrac(time, this.props.dateProfile)
-      * (slatHeight * this.currentSlatCnt)
-      + (this.context.isRtl ? -1 : 1) // overcome border
+    if (slatHeight != null) {
+      let top = computeTimeTopFrac(time, this.props.dateProfile)
+        * (slatHeight * this.currentSlatCnt)
+        + (this.context.isRtl ? -1 : 1) // overcome border
 
-    timeScroller.scrollTo({ y: top })
+      if (top) {
+        top++ // overcome top border
+      }
 
-    // HACK to scroll to day
-    if (dayScroller) {
-      dayScroller.scrollTo({ x: 0 })
+      timeScroller.scrollTo({ y: top })
+
+      // HACK to scroll to day
+      if (dayScroller) {
+        dayScroller.scrollTo({ x: 0 })
+      }
+
+      return true
     }
-  }
+
+    return false
+  })
 }
 
 // Utils
