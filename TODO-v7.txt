@@ -62,10 +62,15 @@ audit all CSS
     https://github.com/preactjs/preact/issues/4023
     tried skipLibCheck:true, but getting runtime errors (related!?). reverted
   responsive: make ticket where popover is responsive?
+  for header cells, all of which are flex-columns with aligned inner content, somehow to overflow:hidden?
+    right now, if sized really narrow, text bleeds out. in conflict with stickiness? way around?
+  multimonth responsive BUG:
+    1. start out in different view, size window really small
+    2. switch to multimonth, size window large
+    3. multi-columns don't appear. just one column with vertically-squished months
 
 FOR beta.1
   ALL
-    implement responsiveness
     implement scroller padding rectangles
     go back to simple classNames for views
 
