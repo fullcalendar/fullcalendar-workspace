@@ -60,4 +60,7 @@ export const LISTENER_REFINERS = {
   resourceAdd: identity as Identity<(arg: ResourceAddArg) => void>,
   resourceChange: identity as Identity<(arg: ResourceChangeArg) => void>,
   resourceRemove: identity as Identity<(arg: ResourceRemoveArg) => void>,
+
+  // internal
+  _resourceScrollRequest: identity as Identity<(resourceId: string) => void>
 }

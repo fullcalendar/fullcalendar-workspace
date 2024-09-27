@@ -559,6 +559,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
       this.mainScrollerRef.current,
       this.footScrollerRef.current,
     ], isRtl)
+
     this.timeScroller.handleChildren([
       this.axisScrollerRef.current,
       this.mainScrollerRef.current,

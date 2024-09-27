@@ -1,4 +1,4 @@
-import { createDuration } from './datelib/duration.js'
+import { createDuration, Duration } from './datelib/duration.js'
 import { mergeProps, isPropsEqual } from './util/object.js'
 import { isArraysEqual } from './util/array.js'
 import { createFormatter } from './datelib/formatting.js'
@@ -339,7 +339,7 @@ export const CALENDAR_LISTENER_REFINERS = {
   _afterprint: identity as Identity<() => void>,
   _noEventDrop: identity as Identity<() => void>,
   _noEventResize: identity as Identity<() => void>,
-  _scrollRequest: identity as Identity<(arg: any) => void>,
+  _timeScrollRequest: identity as Identity<(time: Duration) => void>,
 }
 
 type BuiltInCalendarListenerRefiners = typeof CALENDAR_LISTENER_REFINERS

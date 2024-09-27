@@ -18,8 +18,8 @@ import {
   RefMap,
   Scroller,
   ScrollerSyncerInterface,
-  ScrollRequest,
   ScrollResponder,
+  TimeScrollResponder,
   ViewContainer, ViewOptionsRefined,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
@@ -71,6 +71,7 @@ import { HeaderRow } from './spreadsheet/HeaderRow.js'
 import { ResourceCells } from './spreadsheet/ResourceCells.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
 import { buildHeaderLayouts, buildResourceLayouts, computeHasNesting, GenericLayout, ResourceLayout } from '../resource-layout.js'
+import { Duration } from '@fullcalendar/core'
 
 interface ResourceTimelineViewState {
   slotInnerWidth?: number
@@ -85,8 +86,8 @@ interface ResourceTimelineViewState {
   timeBottomScrollbarWidth?: number
 }
 
-interface ResourceTimelineScrollState {
-  entity?: Resource | Group
+interface EntityScroll {
+  entityId: string
   fromBottom?: number
 }
 
@@ -134,7 +135,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private timeScroller: ScrollerSyncerInterface
   private bodyScroller: ScrollerSyncerInterface
   private spreadsheetScroller: ScrollerSyncerInterface
-  private scrollResponder: ScrollResponder
+  private timeScrollResponder: TimeScrollResponder
+  private entityScrollResponder: ScrollResponder<EntityScroll>
 
   render() {
     let { props, state, context } = this
@@ -719,32 +721,34 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
-    // scrolling
     const ScrollerSyncer = getScrollerSyncerClass(this.context.pluginHooks)
     this.timeScroller = new ScrollerSyncer(true) // horizontal=true
     this.bodyScroller = new ScrollerSyncer() // horizontal=false
     this.spreadsheetScroller = new ScrollerSyncer(true) // horizontal=true
+
     this.updateScrollersSyncers()
-    this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
+    this.timeScrollResponder = this.context.createTimeScrollResponder(this.handleTimeScroll)
+
+    this.entityScrollResponder = new ScrollResponder<EntityScroll>(this.handleEntityScroll, this.queryEntityScroll)
+    this.context.emitter.on('_resourceScrollRequest', this.handleResourceScroll)
+
+    // TODO
+    this.entityScrollResponder.handleWillUpdate
+    this.entityScrollResponder.handleDidUpdate
   }
 
-  componentDidUpdate(prevProps: ResourceViewProps, state: never, scrollState: ResourceTimelineScrollState) {
-    // scrolling
+  componentDidUpdate(prevProps: ResourceViewProps) {
     this.updateScrollersSyncers()
-    this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
-    this.applyScrollState(scrollState)
+    this.timeScrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
   }
 
   componentWillUnmount() {
-    // scrolling
     this.timeScroller.destroy()
     this.bodyScroller.destroy()
     this.spreadsheetScroller.destroy()
-    this.scrollResponder.detach()
-  }
+    this.timeScrollResponder.detach()
 
-  getSnapshotBeforeUpdate(): ResourceTimelineScrollState {
-    return this.queryScrollState()
+    this.context.emitter.off('_resourceScrollRequest', this.handleResourceScroll)
   }
 
   // Sizing
@@ -833,10 +837,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       this.timeBodyScrollerRef.current,
       this.timeFooterScrollerRef.current,
     ], isRtl)
+
     this.bodyScroller.handleChildren([
       this.spreadsheetBodyScrollerRef.current,
       this.timeBodyScrollerRef.current,
     ], isRtl)
+
     this.spreadsheetScroller.handleChildren([
       this.spreadsheetHeaderScrollerRef.current,
       this.spreadsheetBodyScrollerRef.current,
@@ -844,69 +850,57 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     ], isRtl)
   }
 
-  handleScrollRequest = (request: ScrollRequest) => {
+  handleTimeScroll = (time: Duration) => {
     const { props, context } = this
-    let slotWidth = this.slotWidth
-    let tDateProfile = this.tDateProfile
+    const slotWidth = this.slotWidth
+    const tDateProfile = this.tDateProfile
 
-    if (request.time) {
-      if (slotWidth != null && tDateProfile != null) {
-        let x = timeToCoord(request.time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth) +
-          (context.isRtl ? -1 : 1) // overcome border. TODO: DRY this up
-        this.timeScroller.scrollTo({ x })
-        return true
-      }
-    }
+    const x = timeToCoord(time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth) +
+      (context.isRtl ? -1 : 1) // overcome border. TODO: DRY this up
 
-    return false
+    this.timeScroller.scrollTo({ x })
   }
 
-  queryScrollState(): ResourceTimelineScrollState {
-    let { bodyLayouts, bodyTops, bodyHeights } = this
-    let scrollTop = this.bodyScroller.y
-    let scrollState: ResourceTimelineScrollState = {}
-
-    if (bodyTops) {
-      let coordRes = findEntityByCoord(
-        bodyLayouts,
-        bodyTops,
-        bodyHeights,
-        scrollTop,
-      )
-
-      if (coordRes) {
-        let [entity, elTop, elHeight] = coordRes
-        let elBottom = elTop + elHeight
-        let elBottomRelScroller = elBottom - scrollTop
-
-        scrollState.fromBottom = elBottomRelScroller
-        scrollState.entity = entity
-      }
-    }
-
-    return scrollState
+  handleResourceScroll = (resoureId: string) => {
+    this.handleEntityScroll({ entityId: resoureId })
   }
 
-  applyScrollState(scrollState: ResourceTimelineScrollState) {
+  handleEntityScroll = (entityScroll: EntityScroll) => {
     const { bodyLayouts, bodyTops, bodyHeights } = this
-    let { entity } = scrollState
+    const entity = findEntityById(bodyLayouts, entityScroll.entityId)
 
     if (entity) {
-      // get the real current reference
-      entity = findEntityById(bodyLayouts, createEntityId(entity))
+      const top = bodyTops.get(entity)
+      const height = bodyHeights.get(entity)
+      const bottom = top + height
 
-      if (entity) {
-        const top = bodyTops.get(entity)
-        const height = bodyHeights.get(entity)
-        const bottom = top + height
+      let scrollTop =
+        entityScroll.fromBottom != null ?
+          bottom - entityScroll.fromBottom : // pixels from bottom edge
+          top // just use top edge
 
-        let scrollTop =
-          scrollState.fromBottom != null ?
-            bottom - scrollState.fromBottom : // pixels from bottom edge
-            top // just use top edge
+      this.bodyScroller.scrollTo({ y: scrollTop })
+    }
+  }
 
-        this.bodyScroller.scrollTo({ y: scrollTop })
-      }
+  queryEntityScroll(): EntityScroll {
+    let { bodyLayouts, bodyTops, bodyHeights } = this
+    let scrollTop = this.bodyScroller.y
+
+    let coordRes = findEntityByCoord(
+      bodyLayouts,
+      bodyTops,
+      bodyHeights,
+      scrollTop,
+    )
+
+    let [entity, elTop, elHeight] = coordRes
+    let elBottom = elTop + elHeight
+    let elBottomRelScroller = elBottom - scrollTop
+
+    return {
+      entityId: createEntityId(entity),
+      fromBottom: elBottomRelScroller,
     }
   }
 

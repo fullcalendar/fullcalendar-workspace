@@ -508,7 +508,7 @@ export class CalendarImpl implements CalendarApi {
     let time = createDuration(timeInput)
 
     if (time) {
-      this.trigger('_scrollRequest', { time })
+      this.trigger('_timeScrollRequest', time)
     }
   }
 }

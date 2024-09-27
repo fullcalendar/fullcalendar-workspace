@@ -1,3 +1,4 @@
+import { Duration } from '@fullcalendar/core'
 import {
   BaseComponent,
   DateProfile,
@@ -7,8 +8,7 @@ import {
   Hit,
   RefMap,
   Scroller,
-  ScrollRequest,
-  ScrollResponder,
+  TimeScrollResponder,
   ViewContainer
 } from '@fullcalendar/core/internal'
 import { ComponentChild, createElement, createRef, Ref } from '@fullcalendar/core/preact'
@@ -51,7 +51,7 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
   private rowHeightRefMap = new RefMap<string, number>()
 
   // internal
-  private scrollResponder: ScrollResponder
+  private timeScrollResponder: TimeScrollResponder
 
   render() {
     const { props, context } = this
@@ -81,25 +81,22 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
-    this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
+    this.timeScrollResponder = this.context.createTimeScrollResponder(this.handleTimeScroll)
   }
 
   componentDidUpdate(prevProps: DayGridLayoutProps<HeaderCellModel, HeaderCellKey>) {
-    this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
+    this.timeScrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
   }
 
   componentWillUnmount() {
-    this.scrollResponder.detach()
+    this.timeScrollResponder.detach()
   }
 
   // Scrolling
   // -----------------------------------------------------------------------------------------------
 
-  /*
-  Called when component loaded and positioning ready, as well as when dateProfile is updated
-  Does not use scrollRequest.time
-  */
-  handleScrollRequest = (_scrollRequest: ScrollRequest) => {
+  // HACK to scroll to day
+  handleTimeScroll = (_time: Duration) => {
     const scroller = this.scrollerRef.current
     const rowHeightMap = this.rowHeightRefMap.current
 
@@ -111,9 +108,6 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
 
     if (scrollTop != null) {
       scroller.scrollTo({ y: scrollTop })
-      return true
     }
-
-    return false
   }
 }

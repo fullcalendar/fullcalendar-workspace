@@ -49,7 +49,7 @@ CalendarImpl.prototype.addResource = function ( // eslint-disable-line func-name
 
   if (scrollTo) {
     // TODO: wait til dispatch completes somehow
-    this.trigger('_scrollRequest', { resourceId: resource.id })
+    this.trigger('_resourceScrollRequest', resource.id)
   }
 
   let resourceApi = new ResourceApi(currentState, resource)

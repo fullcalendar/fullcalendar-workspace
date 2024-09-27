@@ -1,6 +1,6 @@
-import { ViewOptions } from '@fullcalendar/core'
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollRequest, ScrollResponder, ViewContainer, memoize } from "@fullcalendar/core/internal"
-import { createElement, ComponentChild, Ref } from '@fullcalendar/core/preact'
+import { Duration, ViewOptions } from '@fullcalendar/core'
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, TimeScrollResponder, ViewContainer, memoize } from "@fullcalendar/core/internal"
+import { createElement, ComponentChild, Ref, createRef } from '@fullcalendar/core/preact'
 import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { buildSlatMetas } from "../time-slat-meta.js"
 import { TimeColsSeg } from '../TimeColsSeg.js'
@@ -58,8 +58,13 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
   // memo
   private buildSlatMetas = memoize(buildSlatMetas)
 
+  // refs
+  private dayScrollerRef = createRef<Scroller>()
+  private timeScrollerRef = createRef<Scroller>()
+  private slatHeightRef = createRef<number>()
+
   // internal
-  private scrollResponder: ScrollResponder
+  private timeScrollResponder: TimeScrollResponder
   private currentSlatCnt?: number
 
   render() {
@@ -114,8 +119,8 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
       eventSelection: props.eventSelection,
 
       // refs
-      timeScrollerRef: this.handleTimeScroller,
-      slatHeightRef: this.handleSlatHeight,
+      timeScrollerRef: this.timeScrollerRef,
+      slatHeightRef: this.slatHeightRef,
     }
 
     return (
@@ -131,7 +136,7 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
           <TimeGridLayoutPannable
             {...commonLayoutProps}
             dayMinWidth={dayMinWidth}
-            dayScrollerRef={this.handleDayScroller}
+            dayScrollerRef={this.dayScrollerRef}
           />
         ) : (
           <TimeGridLayoutNormal {...commonLayoutProps} />
@@ -144,64 +149,35 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
-    this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
+    this.timeScrollResponder = this.context.createTimeScrollResponder(this.handleTimeScroll)
   }
 
   componentDidUpdate(prevProps: TimeGridLayoutProps<unknown, unknown>) {
-    this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
+    this.timeScrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
   }
 
   componentWillUnmount() {
-    this.scrollResponder.detach()
-  }
-
-  // Refs
-  // -----------------------------------------------------------------------------------------------
-
-  private currentDayScroller?: Scroller
-  private currentTimeScroller?: Scroller
-  private currentSlatHeight?: number
-
-  handleDayScroller = (dayScroller: Scroller) => {
-    this.currentDayScroller = dayScroller
-    this.scrollResponder && this.scrollResponder.update()
-  }
-
-  handleTimeScroller = (timeScroller: Scroller) => {
-    this.currentTimeScroller = timeScroller
-    this.scrollResponder && this.scrollResponder.update()
-  }
-
-  handleSlatHeight = (slatHeight: number) => {
-    this.currentSlatHeight = slatHeight
-    this.scrollResponder && this.scrollResponder.update()
+    this.timeScrollResponder.detach()
   }
 
   // Scrolling
   // -----------------------------------------------------------------------------------------------
 
-  handleScrollRequest = (scrollRequest: ScrollRequest) => {
-    const dayScroller = this.currentDayScroller
-    const timeScroller = this.currentTimeScroller
-    const slatHeight = this.currentSlatHeight
+  handleTimeScroll = (time: Duration) => {
+    const dayScroller = this.dayScrollerRef.current
+    const timeScroller = this.timeScrollerRef.current
+    const slatHeight = this.slatHeightRef.current
 
-    if (scrollRequest.time) {
-      if (slatHeight) {
-        const top = computeTimeTopFrac(scrollRequest.time, this.props.dateProfile)
-          * (slatHeight * this.currentSlatCnt)
-          + (this.context.isRtl ? -1 : 1) // overcome border
+    const top = computeTimeTopFrac(time, this.props.dateProfile)
+      * (slatHeight * this.currentSlatCnt)
+      + (this.context.isRtl ? -1 : 1) // overcome border
 
-        timeScroller.scrollTo({ y: top })
+    timeScroller.scrollTo({ y: top })
 
-        if (dayScroller) {
-          dayScroller.scrollTo({ x: 0 })
-        }
-
-        return true
-      }
+    // HACK to scroll to day
+    if (dayScroller) {
+      dayScroller.scrollTo({ x: 0 })
     }
-
-    return false
   }
 }
 

@@ -1,3 +1,4 @@
+import { Duration } from '@fullcalendar/core'
 import {
   DateComponent,
   ViewProps,
@@ -15,8 +16,7 @@ import {
   DateRange,
   NowTimer,
   getIsHeightAuto,
-  ScrollResponder,
-  ScrollRequest,
+  TimeScrollResponder,
   watchWidth,
   compareNumbers,
 } from '@fullcalendar/core/internal'
@@ -40,7 +40,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
   private innerElRef = createRef<HTMLDivElement>()
 
   // internal
-  private scrollResponder: ScrollResponder
+  private timeScrollResponder: TimeScrollResponder
   private unwatchWidth: () => void
 
   render() {
@@ -120,16 +120,16 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
 
   componentDidMount(): void {
     this.unwatchWidth = watchWidth(this.rootElRef.current, this.handleClientWidth)
-    this.scrollResponder = this.context.createScrollResponder(this.handleScrollRequest)
+    this.timeScrollResponder = this.context.createTimeScrollResponder(this.handleTimeScroll)
   }
 
   componentDidUpdate(prevProps: ViewProps) {
-    this.scrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
+    this.timeScrollResponder.update(prevProps.dateProfile !== this.props.dateProfile)
   }
 
   componentWillUnmount() {
     this.unwatchWidth()
-    this.scrollResponder.detach()
+    this.timeScrollResponder.detach()
   }
 
   handleClientWidth = (clientWidth: number) => {
@@ -155,21 +155,17 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
     this.setState({ clientWidth, xGap, xPadding })
   }
 
-  handleScrollRequest = (_request: ScrollRequest) => {
-    if (this.state.clientWidth != null) { // indicates sizing already happened
-      const { currentDate } = this.props.dateProfile
-      const rootEl = this.rootElRef.current
-      const innerEl = this.innerElRef.current
-      const monthEl = innerEl.querySelector(`[data-date="${formatIsoMonthStr(currentDate)}"]`)
+  handleTimeScroll = (_time: Duration) => {
+    // HACK to scroll to day
+    const { currentDate } = this.props.dateProfile
+    const rootEl = this.rootElRef.current
+    const innerEl = this.innerElRef.current
+    const monthEl = innerEl.querySelector(`[data-date="${formatIsoMonthStr(currentDate)}"]`)
 
-      rootEl.scrollTop = Math.ceil( // for fractions, err on the side of scrolling further
-        monthEl.getBoundingClientRect().top -
-        innerEl.getBoundingClientRect().top
-      )
-
-      return true
-    }
-    return false
+    rootEl.scrollTop = Math.ceil( // for fractions, err on the side of scrolling further
+      monthEl.getBoundingClientRect().top -
+      innerEl.getBoundingClientRect().top
+    )
   }
 }
 
