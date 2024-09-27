@@ -52,7 +52,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
     const dayHeaderFormat = this.createDayHeaderFormatter(
       context.options.dayHeaderFormat,
       true, // datesRepDistinctDays
-      dayTableModel.cellRows.length,
+      dayTableModel.colCnt,
     )
 
     return (

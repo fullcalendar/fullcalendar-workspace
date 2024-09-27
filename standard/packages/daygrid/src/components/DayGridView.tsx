@@ -34,7 +34,7 @@ export class DayGridView extends BaseComponent<ViewProps> {
     const dayHeaderFormat = this.createDayHeaderFormatter(
       context.options.dayHeaderFormat,
       datesRepDistinctDays,
-      dayTableModel.cellRows.length,
+      dayTableModel.colCnt,
     )
 
     return (
