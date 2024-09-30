@@ -70,6 +70,18 @@ audit all CSS
     3. multi-columns don't appear. just one column with vertically-squished months
 
 FOR beta.1
+  Bootstrap color mode:
+    https://github.com/fullcalendar/fullcalendar/issues/7465
+    (ensure minimum Bootstrap version)
+  get Angular working?
+    (because this depends on it: https://github.com/fullcalendar/fullcalendar/issues/6457)
+  remove <a> tags from events w/o url (or editable?)
+    https://github.com/fullcalendar/fullcalendar/issues/7675
+    use `getSegAnchorAttrs`
+  salvage month-view print
+    no white text on multi-day events
+    disable dayMaxEvents=true behavior
+    ensure: "event titles each day" https://github.com/fullcalendar/fullcalendar/issues/6657
   ALL
     implement scroller padding rectangles
     go back to simple classNames for views
@@ -137,37 +149,36 @@ AFTER beta.1
     that expandRows works enabled/disabled for timegrid/resource-timeline views
 
 CHANGELOG
+  very few breaking changes
   temporary
     angular broken because of Preact version
     the space to accommodate scrollbars is just blank
     print mode lacking
+    a11y lacking
+    timegrid time-axis isn't selectable
+      (need to fix z-indexes or change fc-flex-row's first cell)
   daygrid
     how height:'auto' isn't as squished... will always try to maintain at least aspectRatio
+    this is a breaking change
+      tickets:
+        https://github.com/fullcalendar/fullcalendar/issues/5762
+        https://github.com/fullcalendar/fullcalendar/issues/6033
   exports
     DayTable no longer exposed from '@fullcalendar/daygrid/internal'
     DayGridView ('@fullcalendar/daygrid/internal') renamed to DayGridView
     DayTimeCols no longer exposed from '@fullcalendar/timegrid/internal'
     DayTimeColsView ('@fullcalendar/timegrid/internal') renamed to TimeGridView
-  events & a11y
-    Now each event element has stable position in time based on start-date
-      in effect: strictOrder affects positioning but does not affect DOM order
   minimum browser support
     supports ?? operator -- we do this a bunch now
+    resizeobserver
   updateSize deprecation
-    and windowResize event is no longer fired
-  tickets
-    unnecessary scrollbars
-      https://github.com/fullcalendar/fullcalendar/issues/6047
-    ticket where timegrid time-axis isn't selectable
-    fix those 2 incorrect date-yielding results
-    make ticket where resource-timline super-header stays fixed during horizontal scrolling of datagrid
-    sticky subheader of listview, don't have bottom border. ticket?
-    "Event titles repeated each day in print"
-      https://github.com/fullcalendar/fullcalendar/issues/6657
-    "Compressed space between events in dayGrid when month-start title"
-      https://github.com/fullcalendar/fullcalendar/issues/7184
-    "Events times are cutoff with eventDisplay: "block" when there is not enough space for the title"
-      https://github.com/fullcalendar/fullcalendar/issues/6457
-    "Events overflow below day cell with dayMaxEvents: true and showNonCurrentDates: false"
-      https://github.com/fullcalendar/fullcalendar/issues/6749
-    ticket where someone complains about needing to call .updateSize()
+    also, windowResize event is no longer fired
+  performance
+    https://github.com/fullcalendar/fullcalendar/issues/7677 (perf)
+    https://github.com/fullcalendar/fullcalendar/issues/7488 (flickering)
+    https://github.com/fullcalendar/fullcalendar/issues/4906 (layout thrashing)
+    https://github.com/fullcalendar/fullcalendar/issues/3003
+      (not rerendinering events that didn't change --- see if/when this was fixed)
+    reflows from some interaction:
+      https://github.com/fullcalendar/fullcalendar/issues/7209 (initially a about multimonth?)
+      https://github.com/fullcalendar/fullcalendar/issues/6199 (dateClick)
