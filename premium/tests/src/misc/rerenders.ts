@@ -8,7 +8,6 @@ describe('rerender performance for resource timeline', () => {
     events: [
       { title: 'event 0', start: '2017-10-04', resourceId: 'a' },
     ],
-    windowResizeDelay: 0,
   })
 
   it('calls methods a limited number of times', (done) => {
@@ -110,6 +109,6 @@ describe('rerender performance for resource timeline', () => {
       expect(resourceLaneRenderCnt).toBe(0)
       expect(eventRenderCnt).toBe(0)
       done()
-    }, 1) // more than windowResizeDelay
+    }, 1)
   })
 })

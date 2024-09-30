@@ -121,8 +121,6 @@ export const BASE_OPTION_REFINERS = {
   eventOrder: parseFieldSpecs,
   eventOrderStrict: Boolean,
 
-  handleWindowResize: Boolean,
-  windowResizeDelay: Number,
   longPressDelay: Number,
   eventDragMinDistance: Number,
   expandRows: Boolean,
@@ -299,8 +297,6 @@ export const BASE_OPTION_DEFAULTS = {
   dropAccept: '*',
   eventOrder: 'start,-duration,allDay,title',
   dayPopoverFormat: { month: 'long', day: 'numeric', year: 'numeric' },
-  handleWindowResize: true,
-  windowResizeDelay: 100, // milliseconds before an updateSize happens
   longPressDelay: 1000,
   eventDragMinDistance: 5, // only applies to mouse
   expandRows: false,

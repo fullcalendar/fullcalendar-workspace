@@ -11,7 +11,6 @@ describe('more-link popover', () => {
       { title: 'event3', start: '2014-07-29', className: 'event3' },
       { title: 'event4', start: '2014-07-29', className: 'event4' },
     ],
-    handleWindowResize: false, // because showing the popover causes scrollbars and fires resize
   })
 
   it('closes when user clicks the X and trigger eventWillUnmount for every render', (done) => {

@@ -18,7 +18,6 @@ describe('more-link popover', () => {
     dayMaxEventRows: 3,
     events: testEvents,
     dragScroll: false, // don't do autoscrolling while dragging. close quarters in PhantomJS
-    handleWindowResize: false, // because showing the popover causes scrollbars and fires resize
   })
 
   describeOptions('initialView', {

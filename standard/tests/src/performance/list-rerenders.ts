@@ -6,7 +6,6 @@ it('list view rerenders well', (done) => {
   let calendar = initCalendar({
     initialView: 'listWeek',
     initialDate: '2017-10-04',
-    windowResizeDelay: 0,
     events: [
       { title: 'event 0', start: '2017-10-04' },
     ],
@@ -52,5 +51,5 @@ it('list view rerenders well', (done) => {
     expect(noEventsRenderCnt).toBe(0)
 
     done()
-  }, 1) // more than windowResizeDelay
+  }, 1)
 })

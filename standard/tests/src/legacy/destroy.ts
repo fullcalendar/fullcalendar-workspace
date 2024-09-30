@@ -67,23 +67,5 @@ describe('destroy', () => {
 
       $el.remove()
     })
-
-    // Issue 2432
-    it('preserves existing window handlers when handleWindowResize is off', () => {
-      let resizeHandler = () => {}
-      let windowListenerCounter = new ListenerCounter(window)
-      windowListenerCounter.startWatching()
-
-      window.addEventListener('resize', resizeHandler)
-      expect(windowListenerCounter.computeDelta()).toBe(1)
-
-      initCalendar({
-        handleWindowResize: false,
-      })
-      currentCalendar.destroy()
-
-      expect(windowListenerCounter.stopWatching()).toBe(1)
-      window.removeEventListener('resize', resizeHandler)
-    })
   })
 })
