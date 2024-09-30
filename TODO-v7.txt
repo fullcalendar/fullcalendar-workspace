@@ -1,4 +1,21 @@
 
+FOR beta.1
+  Bootstrap color mode:
+    https://github.com/fullcalendar/fullcalendar/issues/7465
+    (ensure minimum Bootstrap version)
+  get Angular working?
+    (because this depends on it: https://github.com/fullcalendar/fullcalendar/issues/6457)
+  remove <a> tags from events w/o url (or editable?)
+    https://github.com/fullcalendar/fullcalendar/issues/7675
+    use `getSegAnchorAttrs`
+  salvage month-view print
+    no white text on multi-day events
+    disable dayMaxEvents=true behavior
+    ensure: "event titles each day" https://github.com/fullcalendar/fullcalendar/issues/6657
+  ALL
+    implement scroller padding rectangles
+    go back to simple classNames for views
+
 audit all CSS
   no more event <a> tags when not a link
   rethink .fc-cell/fc-daygrid-cell classNames
@@ -69,23 +86,6 @@ audit all CSS
     2. switch to multimonth, size window large
     3. multi-columns don't appear. just one column with vertically-squished months
 
-FOR beta.1
-  Bootstrap color mode:
-    https://github.com/fullcalendar/fullcalendar/issues/7465
-    (ensure minimum Bootstrap version)
-  get Angular working?
-    (because this depends on it: https://github.com/fullcalendar/fullcalendar/issues/6457)
-  remove <a> tags from events w/o url (or editable?)
-    https://github.com/fullcalendar/fullcalendar/issues/7675
-    use `getSegAnchorAttrs`
-  salvage month-view print
-    no white text on multi-day events
-    disable dayMaxEvents=true behavior
-    ensure: "event titles each day" https://github.com/fullcalendar/fullcalendar/issues/6657
-  ALL
-    implement scroller padding rectangles
-    go back to simple classNames for views
-
 ensure automated tests for...
   positioning of sticky headers in all views. list view sticky subheaders too
   resource-timeline indent works
@@ -147,38 +147,3 @@ AFTER beta.1
   write tests
     percentage-based resource-timeline spreadsheet-column resizing
     that expandRows works enabled/disabled for timegrid/resource-timeline views
-
-CHANGELOG
-  very few breaking changes
-  temporary
-    angular broken because of Preact version
-    the space to accommodate scrollbars is just blank
-    print mode lacking
-    a11y lacking
-    timegrid time-axis isn't selectable
-      (need to fix z-indexes or change fc-flex-row's first cell)
-  daygrid
-    how height:'auto' isn't as squished... will always try to maintain at least aspectRatio
-    this is a breaking change
-      tickets:
-        https://github.com/fullcalendar/fullcalendar/issues/5762
-        https://github.com/fullcalendar/fullcalendar/issues/6033
-  exports
-    DayTable no longer exposed from '@fullcalendar/daygrid/internal'
-    DayGridView ('@fullcalendar/daygrid/internal') renamed to DayGridView
-    DayTimeCols no longer exposed from '@fullcalendar/timegrid/internal'
-    DayTimeColsView ('@fullcalendar/timegrid/internal') renamed to TimeGridView
-  minimum browser support
-    supports ?? operator -- we do this a bunch now
-    resizeobserver
-  updateSize deprecation
-    also, windowResize event is no longer fired
-  performance
-    https://github.com/fullcalendar/fullcalendar/issues/7677 (perf)
-    https://github.com/fullcalendar/fullcalendar/issues/7488 (flickering)
-    https://github.com/fullcalendar/fullcalendar/issues/4906 (layout thrashing)
-    https://github.com/fullcalendar/fullcalendar/issues/3003
-      (not rerendinering events that didn't change --- see if/when this was fixed)
-    reflows from some interaction:
-      https://github.com/fullcalendar/fullcalendar/issues/7209 (initially a about multimonth?)
-      https://github.com/fullcalendar/fullcalendar/issues/6199 (dateClick)
