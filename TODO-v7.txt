@@ -100,6 +100,15 @@ ensure automated tests for...
   pixel # for height/contentHeight works
   correct header row heights for multi-header resource-TIMEgrid row with horizontal scrolling
 
+update these tickets with our updated repros (could be in examples-v7 dir):
+  performance
+    [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
+      not rerendinering events that didn't change --- see if/when this was fixed...
+      ...not fixed in v6 or v7-beta
+    [ ] https://github.com/fullcalendar/fullcalendar/issues/6199 (dateClick)
+      V6 repro: https://codepen.io/arshaw/pen/OJKMLRR?editors=0010
+      V7 has no real improvement
+
 AFTER beta.1
   test on touch
   css refactor
