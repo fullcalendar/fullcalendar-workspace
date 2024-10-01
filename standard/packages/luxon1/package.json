@@ -10,12 +10,12 @@
   ],
   "homepage": "https://fullcalendar.io/docs/luxon1",
   "peerDependencies": {
-    "@fullcalendar/core": "7.0.0-beta.0",
+    "@fullcalendar/core": "workspace:7.0.0-beta.0",
     "luxon": "^1.12.1"
   },
   "devDependencies": {
-    "@fullcalendar/core": "7.0.0-beta.0",
-    "@fullcalendar-scripts/standard": "0.0.1-beta.0",
+    "@fullcalendar/core": "workspace:7.0.0-beta.0",
+    "@fullcalendar-scripts/standard": "workspace:*",
     "luxon": "^1.12.1"
   },
   "scripts": {

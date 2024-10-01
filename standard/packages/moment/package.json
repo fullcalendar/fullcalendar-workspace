@@ -8,12 +8,12 @@
   ],
   "homepage": "https://fullcalendar.io/docs/moment-plugin",
   "peerDependencies": {
-    "@fullcalendar/core": "7.0.0-beta.0",
+    "@fullcalendar/core": "workspace:7.0.0-beta.0",
     "moment": "^2.29.1"
   },
   "devDependencies": {
-    "@fullcalendar/core": "7.0.0-beta.0",
-    "@fullcalendar-scripts/standard": "0.0.1-beta.0",
+    "@fullcalendar/core": "workspace:7.0.0-beta.0",
+    "@fullcalendar-scripts/standard": "workspace:*",
     "moment": "^2.29.1"
   },
   "scripts": {

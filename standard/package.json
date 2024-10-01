@@ -23,7 +23,7 @@
   },
   "copyright": "2024 Adam Shaw",
   "devDependencies": {
-    "@fullcalendar-scripts/standard": "0.0.1-beta.0"
+    "@fullcalendar-scripts/standard": "workspace:*"
   },
   "type": "module",
   "scripts": {

@@ -23,7 +23,7 @@
     "xhr-mock": "^2.5.1"
   },
   "devDependencies": {
-    "@fullcalendar-scripts/standard": "0.0.1-beta.0",
+    "@fullcalendar-scripts/standard": "workspace:*",
     "@types/jasmine": "^3.3.12",
     "@types/jasmine-jquery": "^1.5.33",
     "@types/jquery": "^3.3.29",

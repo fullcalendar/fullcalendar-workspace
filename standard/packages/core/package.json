@@ -7,7 +7,7 @@
     "preact": "~10.23.1"
   },
   "devDependencies": {
-    "@fullcalendar-scripts/standard": "0.0.1-beta.0",
+    "@fullcalendar-scripts/standard": "workspace:*",
     "globby": "^13.1.2",
     "handlebars": "^4.1.2"
   },

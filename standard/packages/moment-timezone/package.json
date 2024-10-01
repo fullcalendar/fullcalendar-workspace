@@ -10,12 +10,12 @@
   ],
   "homepage": "https://fullcalendar.io/docs/moment-timezone-plugin",
   "peerDependencies": {
-    "@fullcalendar/core": "7.0.0-beta.0",
+    "@fullcalendar/core": "workspace:7.0.0-beta.0",
     "moment-timezone": "^0.5.40"
   },
   "devDependencies": {
-    "@fullcalendar/core": "7.0.0-beta.0",
-    "@fullcalendar-scripts/standard": "0.0.1-beta.0",
+    "@fullcalendar/core": "workspace:7.0.0-beta.0",
+    "@fullcalendar-scripts/standard": "workspace:*",
     "moment-timezone": "^0.5.40"
   },
   "scripts": {

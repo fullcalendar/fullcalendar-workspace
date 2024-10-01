@@ -4,14 +4,14 @@
   "title": "FullCalendar ScrollGrid Plugin",
   "description": "Tabular data chunked into scrollable panes",
   "dependencies": {
-    "@fullcalendar/premium-common": "7.0.0-beta.0"
+    "@fullcalendar/premium-common": "workspace:7.0.0-beta.0"
   },
   "peerDependencies": {
-    "@fullcalendar/core": "7.0.0-beta.0"
+    "@fullcalendar/core": "workspace:7.0.0-beta.0"
   },
   "devDependencies": {
-    "@fullcalendar/core": "7.0.0-beta.0",
-    "@fullcalendar-scripts/standard": "0.0.1-beta.0"
+    "@fullcalendar/core": "workspace:7.0.0-beta.0",
+    "@fullcalendar-scripts/standard": "workspace:*"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",

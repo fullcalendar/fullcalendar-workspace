@@ -18,7 +18,7 @@
   "peerDependencies": {
     "@angular/common": "12 - 18",
     "@angular/core": "12 - 18",
-    "@fullcalendar/core": "7.0.0-beta.0"
+    "@fullcalendar/core": "workspace:7.0.0-beta.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.3.10",
@@ -32,13 +32,13 @@
     "@angular/platform-browser": "~13.3.0",
     "@angular/platform-browser-dynamic": "~13.3.0",
     "@angular/router": "~13.3.0",
-    "@fullcalendar/core": "7.0.0-beta.0",
-    "@fullcalendar/daygrid": "7.0.0-beta.0",
-    "@fullcalendar/interaction": "7.0.0-beta.0",
-    "@fullcalendar/list": "7.0.0-beta.0",
-    "@fullcalendar/resource": "7.0.0-beta.0",
-    "@fullcalendar/resource-timegrid": "7.0.0-beta.0",
-    "@fullcalendar/resource-timeline": "7.0.0-beta.0",
+    "@fullcalendar/core": "workspace:7.0.0-beta.0",
+    "@fullcalendar/daygrid": "workspace:7.0.0-beta.0",
+    "@fullcalendar/interaction": "workspace:7.0.0-beta.0",
+    "@fullcalendar/list": "workspace:7.0.0-beta.0",
+    "@fullcalendar/resource": "workspace:7.0.0-beta.0",
+    "@fullcalendar/resource-timegrid": "workspace:7.0.0-beta.0",
+    "@fullcalendar/resource-timeline": "workspace:7.0.0-beta.0",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
     "jasmine-core": "~4.0.0",

@@ -12,11 +12,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fullcalendar/core": "7.0.0-beta.0",
-    "@fullcalendar/daygrid": "7.0.0-beta.0",
-    "@fullcalendar/interaction": "7.0.0-beta.0",
-    "@fullcalendar/react": "7.0.0-beta.0",
-    "@fullcalendar/timegrid": "7.0.0-beta.0",
+    "@fullcalendar/core": "workspace:7.0.0-beta.0",
+    "@fullcalendar/daygrid": "workspace:7.0.0-beta.0",
+    "@fullcalendar/interaction": "workspace:7.0.0-beta.0",
+    "@fullcalendar/react": "workspace:7.0.0-beta.0",
+    "@fullcalendar/timegrid": "workspace:7.0.0-beta.0",
     "react": "^19.0.0-rc.0",
     "react-dom": "^19.0.0-rc.0"
   },

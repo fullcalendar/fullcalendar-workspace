@@ -10,18 +10,18 @@
   ],
   "homepage": "https://fullcalendar.io/docs/timeline-view",
   "dependencies": {
-    "@fullcalendar/premium-common": "7.0.0-beta.0",
-    "@fullcalendar/scrollgrid": "7.0.0-beta.0",
-    "@fullcalendar/timeline": "7.0.0-beta.0"
+    "@fullcalendar/premium-common": "workspace:7.0.0-beta.0",
+    "@fullcalendar/scrollgrid": "workspace:7.0.0-beta.0",
+    "@fullcalendar/timeline": "workspace:7.0.0-beta.0"
   },
   "peerDependencies": {
-    "@fullcalendar/core": "7.0.0-beta.0",
-    "@fullcalendar/resource": "7.0.0-beta.0"
+    "@fullcalendar/core": "workspace:7.0.0-beta.0",
+    "@fullcalendar/resource": "workspace:7.0.0-beta.0"
   },
   "devDependencies": {
-    "@fullcalendar/core": "7.0.0-beta.0",
-    "@fullcalendar/resource": "7.0.0-beta.0",
-    "@fullcalendar-scripts/standard": "0.0.1-beta.0"
+    "@fullcalendar/core": "workspace:7.0.0-beta.0",
+    "@fullcalendar/resource": "workspace:7.0.0-beta.0",
+    "@fullcalendar-scripts/standard": "workspace:*"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",
