@@ -18,8 +18,11 @@ FOR beta.1
   ALL
     implement scroller padding rectangles
     go back to simple classNames for views
+  Add to changelog
+    Behavior-change for daygrid events being split-up by more link (that freshdesk ticket)
 
 audit all CSS
+  does every timegrid event have the 'inset' border class even when not needed?
   Is the event style in timeline-no-overlap.html too chunky?
   resource-timeline column grouping, should expand to full height, but doesn't
     See bundle/examples/responsive.html
@@ -105,6 +108,7 @@ ensure automated tests for...
   resource-timeline indent works
   pixel # for height/contentHeight works
   correct header row heights for multi-header resource-TIMEgrid row with horizontal scrolling
+  when nowIndicator is OFF, doesn't render in DOM at all
 
 update these tickets with our updated repros (could be in examples-v7 dir):
   performance

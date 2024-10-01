@@ -242,7 +242,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 className='fc-cell fc-content-box'
                 style={{ width: axisWidth }}
               >
-                {rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
+                {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
                   <TimeGridNowIndicatorArrow
                     nowDate={nowDate}
                     dateProfile={props.dateProfile}

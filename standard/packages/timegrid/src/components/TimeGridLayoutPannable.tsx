@@ -337,7 +337,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   />
                 </div>
               ))}
-              {rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
+              {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
                 <TimeGridNowIndicatorArrow
                   nowDate={nowDate}
                   dateProfile={props.dateProfile}
