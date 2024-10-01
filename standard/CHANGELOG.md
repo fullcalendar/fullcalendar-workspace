@@ -1,115 +1,153 @@
 
 ## 7.0.0-beta.1
 
-minimum browser support
-  supports ?? operator
-  resizeobserver
+This is a beta release for the upcoming v7. It includes a complete refactor of the HTML/CSS to allow
+for increased performance, better accessibility, and to serve as a foundation for advanced features
+in *future* releases such as virtual rendering and endless scrolling.
+
+v7 has very few breaking changes. However, If you've written custom CSS that overrides any of
+FullCalendar's default styles, there's a chance your CSS will need to be updated. We will release
+an upgrade guide specifically for how to upgrade CSS statements as soon as all v7 classNames
+become stable. In the meantime, it's recommended to simply disable your custom CSS.
+
+Please test things out! and report bugs on the [issue tracker](https://github.com/fullcalendar/fullcalendar/issues).
+
+<!-- ENSURE all tickets have status "Staged" -->
+
+### Features
+
+- More streamlined HTML skeleton and more flexbox-based CSS (as opposed to table-based)
+- No longer a need to call `.updateSize()` after the page's dimensions have been programmatically
+  changed. All sizing/positioning of events and views will stay updated automatically. Related to
+  the "resizing" bugfixes below.
+- In resource-timeline view, `resourceAreaHeaderContent` above columns now stays fixed during
+  horizontal scrolling (#7779) https://github.com/fullcalendar/fullcalendar/issues/7779
+
+### Performance
+
+- daygrid/timegrid rendering 2x performance gain (#7677)
+  https://github.com/fullcalendar/fullcalendar/issues/7677
+- multimonth performance gain, solving "Forced reflow while executing JavaScript took <#> ms"
+  violation (#7209) https://github.com/fullcalendar/fullcalendar/issues/7209 (manually verified)
+- Likely less layout thrashing (#4906), awaiting confirmation
+  https://github.com/fullcalendar/fullcalendar/issues/4906 (could not recreate)
+- Likely less flickering during event rerendering for React connector (#7488), awaiting confirmation
+  https://github.com/fullcalendar/fullcalendar/issues/7488 (could not recreate)
+
+Performance is expected to improve between now and the v7 official release.
+Profiling will eventually be conducted.
+
+### Bugfixes
+
+- Responsiveness
+  - "More" button (events) on smartphones not working properly (#2991)
+    https://github.com/fullcalendar/fullcalendar/issues/2991
+    (no repro, not sure if fixed in past version, but definitely fixed now)
+  - Toolbar CSS is more robust on smaller screens and more customizable for desired responsive
+    behavior (#4638) https://github.com/fullcalendar/fullcalendar/issues/4638
+- Accessibility
+  - No `role` attributes on td/th/tr elements inside a table element (#7568)
+    https://github.com/fullcalendar/fullcalendar/issues/7568
+  - Event time order different than DOM order, bad for tabbing (#6943)
+    https://github.com/fullcalendar/fullcalendar/issues/6943
+- Resizing
+  - Layout does not resize to new container width after browser resizing (#6407)
+    https://github.com/fullcalendar/fullcalendar/issues/6407
+    (too hard to recreate... definitely fixed)
+  - Resource rows don't adjust height to fit resourceLaneContent (#6103)
+    https://github.com/fullcalendar/fullcalendar/issues/6103
+  - Resource rows don't render with correct height (#6082)
+    https://github.com/fullcalendar/fullcalendar/issues/6082
+    (no good reproduction - ask them to do it)
+  - dynamic calendar width doesn't adjust (#5507)
+    https://github.com/fullcalendar/fullcalendar/issues/5507
+    (no repro available)
+  - Adjust calendar sizing when scrollbar width changes (or (de)activated) (#5561)
+    https://github.com/fullcalendar/fullcalendar/issues/5561
+    (tested manually w/ system settings)
+  - Day number in day cells are hidden by vertical scrollbar (#6798)
+    https://github.com/fullcalendar/fullcalendar/issues/6798
+- Scrollbars
+  - Don't show MacOS/iOS hovering scrollbars in timeline header/left (#5180)
+    https://github.com/fullcalendar/fullcalendar/issues/5180
+  - Disable hovering scrollbars in header/resourceArea (#6894)
+    https://github.com/fullcalendar/fullcalendar/issues/6894
+  - Unnecessary scrollbars in day headers (#6047)
+    https://github.com/fullcalendar/fullcalendar/issues/6047
+- List View sticky headers lack bottom border (#7778)
+  https://github.com/fullcalendar/fullcalendar/issues/7778
+- Vertical resource view with no resources shows blank resource row (#7377)
+  https://github.com/fullcalendar/fullcalendar/issues/7377
+- DayGrid view
+  - Better dayGrid height row height, height:auto, and +more link behavior (#6033)
+    https://github.com/fullcalendar/fullcalendar/issues/6033
+    (^^^ repro in other issue vvv)
+  - Day cells are not always equal height with calendar height set to auto (#5762)
+    https://github.com/fullcalendar/fullcalendar/issues/5762
+  - Events not rendered when container is resized (#7555)
+    https://github.com/fullcalendar/fullcalendar/issues/7555
+    (can't produce - ask them)
+  - Events overflow below day cell with dayMaxEvents:true and showNonCurrentDates:false (#6749)
+    https://github.com/fullcalendar/fullcalendar/issues/6749
+    (updated original repro: https://codepen.io/arshaw/pen/NWQGQLN?editors=0110)
+  - Events times are cutoff with eventDisplay: "block" when there is not enough space for the title (#6457)
+    https://github.com/fullcalendar/fullcalendar/issues/6457
+  - Compressed space between events in dayGrid when month-start title (#7184)
+    https://github.com/fullcalendar/fullcalendar/issues/7184
+
+### Breaking Changes
+
+- Some custom CSS will need to be rewritten (upgrade guide coming soon)
+- `.updateSize()` method deprecated
+- `windowResize` event no longer fires
+- `windowResizeDelay` setting removed
+- `handleWindowResize` callback removed
+- FullCalendar-internal exports
+  - `DayTable` from `'@fullcalendar/daygrid/internal'` removed
+  - `DayTableView` from `'@fullcalendar/daygrid/internal'` renamed to `DayGridView`
+  - `DayTimeCols` from `'@fullcalendar/timegrid/internal'` removed
+  - `DayTimeColsView` from `'@fullcalendar/timegrid/internal'` renamed to `TimeGridView`
+
+### Temporary Regressions
+
+These will be addressed before v7 official release. No need to report bugs related to these.
+
+- **Accessibility** - almost all `role` and `aria-*` attributes have been stripped out
+- **Print mode** - very broken
+- **Angular support** - not working and not yet released, caused by
+  [this Preact issue](https://github.com/preactjs/preact/issues/4023)
+- **Minimum browser support** - because `ResizeObserver` is not used internally, and because newer
+  ES syntax is used in places, the minimum supported browsers have been temporarily raised. However
+  ponyfills and transpiling will come to the rescue before official release.
   - Safari: Sept 2020
   - Firefox: July 2020
   - Chrome: Aug 2020
   - Edge: Aug 2020
+- **Minor bugs**
+  - the space to accommodate scrollbars is just blank (#7780)
+    https://github.com/fullcalendar/fullcalendar/issues/7780
+  - timegrid time-axis isn't selectable (#7781)
+    https://github.com/fullcalendar/fullcalendar/issues/7781
 
-temporary regressions
-  a11y regressions
-  print mode
-  angular broken because of Preact version
-  the space to accommodate scrollbars is just blank
-  timegrid time-axis isn't selectable
-    (need to fix z-indexes or change fc-flex-row's first cell)
+### Not Yet Implemented
 
-very few breaking changes
-we want people to test performance
-updateSize method deprected
-windowResize/windowResizeDelay/handleWindowResize settings removed
-className breakage (separete changelog coming)
-exports
-  DayTable no longer exposed from '@fullcalendar/daygrid/internal'
-  DayGridView ('@fullcalendar/daygrid/internal') renamed to DayGridView
-  DayTimeCols no longer exposed from '@fullcalendar/timegrid/internal'
-  DayTimeColsView ('@fullcalendar/timegrid/internal') renamed to TimeGridView
-performance
-  [x] https://github.com/fullcalendar/fullcalendar/issues/7677 (perf)
-    (about 2x perf improvement in timegrid and daygrid)
-  [x] https://github.com/fullcalendar/fullcalendar/issues/7488 (flickering)
-    (could not recreate)
-  [x] https://github.com/fullcalendar/fullcalendar/issues/4906 (layout thrashing)
-    (just graphs, no good recreation)
-  reflows from some interaction:
-    [x] https://github.com/fullcalendar/fullcalendar/issues/7209 (initially a about multimonth?)
-      (I manually verified warning doesn't appear)
-resoure-timeline
-  Resource Timeline Rows don't render with correct height (#6082)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/6082
-    (no good reproduction - ask them to do it)
-resource-timeline view
-  resourceAreaHeaderContent above columns should stay fixed, not scroll horizontally (#7779)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/7779
-list view
-  List View sticky headers lack bottom border (#7778)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/7778
-daygrid + timegrid (with resources)
-  Vertical resource view with no resources shows blank resource row (#7377)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/7377
-daygrid
-  Better dayGrid height row height, height:auto, and +more link behavior (#6033)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/6033
-    BREAKING (^^^ repro in other issue vvv)
-  Day cells are not always equal height with calendar height set to auto (#5762)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/5762
-    BREAKING
-  Events not rendered when container is resized (#7555)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/7555
-    (can't produce - ask them)
-resizing (all views)
-  Layout does not resize to new container width after browser resizing (#6407)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/6407
-    (too hard to recreate... definitely fixed)
-  Resource rows don't adjust height to fit resourceLaneContent (#6103)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/6103
-  dynamic calendar width doesn't adjust (#5507)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/5507
-    (no repro available)
-  Adjust calendar sizing when scrollbar width changes (or (de)activated) (#5561)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/5561
-    (tested manually w/ system settings)
-  Day number in day cells are hidden by vertical scrollbar (#6798)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/6798
-responsive (all views)
-  "More" button (events) on smartphones not working properly (#2991)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/2991
-    (no repro, not sure if fixed in past version, but definitely fixed now)
-  More responsive toolbar controls (#4638)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/4638
-    (TODO: retitle this issue)
-events (all views)
-  bugfix: Events overflow below day cell with dayMaxEvents:true and showNonCurrentDates:false (#6749)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/6749
-    (updated original repro: https://codepen.io/arshaw/pen/NWQGQLN?editors=0110)
-  Events times are cutoff with eventDisplay: "block" when there is not enough space for the title (#6457)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/6457
-  Compressed space between events in dayGrid when month-start title (#7184)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/7184
-scrollbars (all views)
-  Don't show MacOS/iOS hovering scrollbars in timeline header/left (#5180)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/5180
-  Disable hovering scrollbars in header/resourceArea (#6894)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/6894
-  Unnecessary scrollbars in day headers (#6047)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/6047
-a11y
-  No `role` attributes on td/th/tr elements inside a table element (#7568)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/7568
-  Event time order different than DOM order, bad for tabbing (#6943)
-    [x] https://github.com/fullcalendar/fullcalendar/issues/6943
+These will be addressed before v7 official release:
 
-for future beta release (not yet implemented)
-  Event titles repeated each day in print (#6657)
-    https://github.com/fullcalendar/fullcalendar/issues/6657
-  a11y
-    Remaining a11y-* tickets
-  Upgrade to peerDep ical.js v2 (#7734)
-    https://github.com/fullcalendar/fullcalendar/issues/7734
+- All remaining `a11y-*` in the v7 milestone of the [GitHub Project](https://github.com/orgs/fullcalendar/projects/1/views/2)
+- Event titles repeated each day in print (#6657)
+  https://github.com/fullcalendar/fullcalendar/issues/6657
+- Upgrade to peerDep ical.js v2 (#7734)
+  https://github.com/fullcalendar/fullcalendar/issues/7734
+- `moreLinkClick` date is not adjusted for moment timezone (#7314)
+  https://github.com/fullcalendar/fullcalendar/issues/7314
 
+### Features Postponed Until v7.5
+
+Unfortunately we didn't have time to get to these but will implement them in a follow-up minor
+release:
+
+- Improve resource timeline performance with virtual rendering (#5673)
+  https://github.com/fullcalendar/fullcalendar/issues/5673
 
 ## 6.1.15 (2024-07-12)
 

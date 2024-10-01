@@ -1,4 +1,6 @@
 
+Make v7-dev branch
+
 FOR beta.1
   Bootstrap color mode:
     https://github.com/fullcalendar/fullcalendar/issues/7465
