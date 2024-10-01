@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "@fullcalendar/angular",
   "version": "7.0.0-beta.0",
   "title": "FullCalendar Angular Component",
